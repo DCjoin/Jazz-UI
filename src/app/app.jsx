@@ -4,7 +4,11 @@ import React from 'react';
 
 import Router  from 'react-router';
 import injectTapEventPlugin from "react-tap-event-plugin";
-import App from './components/App.jsx';
+
+import JazzApp from './components/JazzApp.jsx';
+import MainApp from './components/MainApp.jsx';
+import Alarm from './components/alarm/Alarm.jsx';
+import Setting from './components/setting/Setting.jsx';
 
 import './less/main.less';
 
@@ -30,8 +34,13 @@ injectTapEventPlugin();
 
 
 var routes = (
-    <Route name="app" path="/:lang?" handler={App}>
-
+    <Route name="app" path="/:lang?" handler={JazzApp}>
+      <Route name="main" path="main" handler={MainApp}>
+        <Route name="alarm" path="alarmsetting" handler={Alarm}>
+        </Route>
+        <Route name="setting" path="setting" handler={Setting}>
+        </Route>
+      </Route>
    </Route>
 );
 
