@@ -34,36 +34,21 @@ let JazzApp = React.createClass({
             window.I18N=b;
             me.replaceWith('main',{lang:lang});
 
+            //me.transitionTo('main',{lang:lang});
         };
 
-        if(lang){
-            //console.log(lang);
-
-            if(lang.toLowerCase() == 'en-us'){
-                require(['../lang/zh-cn.js'],afterLoadLang);//should be changed when support english
-            }
-            else{
-                require(['../lang/zh-cn.js'],afterLoadLang);
-            }
-
-        }
-        else{
-            lang = window.navigator.language.toLowerCase();
-            //this.setState({shouldRender : true});
-            this.replaceWith('app',{lang:lang});
-        }
-
-    },
-    componentWillMount: function() {
-        var params = this.getParams();
-        var lang = params.lang;
-        var routes = this.getRoutes();
         if(!lang){
             lang = window.navigator.language.toLowerCase();
             //this.setState({shouldRender : true});
             this.replaceWith('app',{lang:lang});
         }
 
+        if(lang.toLowerCase() == 'en-us'){
+            require(['../lang/zh-cn.js'],afterLoadLang);//should be changed when support english
+        }
+        else{
+            require(['../lang/zh-cn.js'],afterLoadLang);
+        }
     },
     getInitialState: function() {
         return {
