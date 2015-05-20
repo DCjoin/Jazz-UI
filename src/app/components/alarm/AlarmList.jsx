@@ -26,9 +26,9 @@ let AlarmList = React.createClass({
 
 		return (
 			<div>
-				<ul>
+				
 					{hierarchyItems}
-				</ul>
+
 			</div>
 		);
 	}
