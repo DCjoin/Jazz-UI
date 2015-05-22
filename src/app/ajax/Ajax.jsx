@@ -2,7 +2,7 @@
 
 import request from 'superagent';
 import Path from '../constants/Path.jsx';
-import Util from '../util/util.jsx';
+import Util from '../util/Util.jsx';
 
 
 /**
