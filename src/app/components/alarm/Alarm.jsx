@@ -6,10 +6,14 @@ import assign from "object-assign";
 
 import LeftPanel from './AlarmLeftPanel.jsx';
 import ChartPanel from './ChartPanel.jsx';
+import AlarmAction from '../../actions/AlarmAction.jsx';
+
 
 let Alarm = React.createClass({
     mixins:[Navigation,State],
-
+    componentDidMount: function() {
+        AlarmAction.tryAjax();
+    },
     render() {
 
           return(

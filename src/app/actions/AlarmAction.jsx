@@ -13,6 +13,17 @@ let ALarmAction = {
         dateType: dateType
     });
   },
+  tryAjax(){
+      Ajax.post('/DashBoard.svc/GetUnReadSharedItemCount', {
+          params: {},
+          success: function(resBody){
+              console.log(resBody);
+          },
+          error: function(err, res){
+          }
+      });
+
+  },
   changeDate(date){
     var url = '/building/create';
         Ajax.post(url, {

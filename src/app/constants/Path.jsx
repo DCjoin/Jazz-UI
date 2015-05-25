@@ -2,9 +2,9 @@
 
 module.exports = {
 
-	//APIBasePath: "/pop/web/api",
+	//APIBasePath: "/webhost/API/DashBoard.svc/GetUnReadSharedItemCount",
 
-	 APIBasePath: "/api",
+	 APIBasePath: "/webhost/API",
 
 	APISubPaths: {
 
