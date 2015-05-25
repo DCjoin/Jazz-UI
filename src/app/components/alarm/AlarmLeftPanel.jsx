@@ -7,6 +7,7 @@ import assign from "object-assign";
 import ALarmAction from '../../actions/ALarmAction.jsx';
 import AlarmList from './AlarmList.jsx';
 import {dateType} from '../../constants/AlarmConstants.jsx';
+import AlarmStore from '../../stores/AlarmStore.jsx';
 
 var  menuItems = [
    { type: dateType.DAY_ALARM, text: '查看日报警列表' },
@@ -20,19 +21,48 @@ let AlarmLeftPanel = React.createClass({
     _dateTypeChangeHandler: function(e, selectedIndex, menuItem) {
       ALarmAction.changeDateType(menuItem.type);
     },
+    _onChange() {
+    		let dateType = AlarmStore.getDateType();
+        let dateValue = AlarmStore.getDateValue();
+        let list = AlarmStore.getHierarchyList();
+    		this.setState({
+              dateType: dateType,
+    	        dateValue: dateValue,
+              hierList: list
+    		});
+    },
+    getInitialState() {
+        return {
+          dateType: dateType.DAY_ALARM,
+          dateValue: null,
+          hierList: null
+        };
+    },
+    componentDidMount: function() {
+      AlarmStore.addChangeListener(this._onChange);
+    },
 
     render: function () {
+
+      let dateSelector;
+      if(this.state.dateType == dateType.DAY_ALARM){
+        dateSelector = (  <DatePicker hintText='day_dateSelector'></DatePicker>);
+      }else if(this.state.dateType == dateType.MONTH_ALARM){
+        dateSelector = (  <DatePicker hintText='month_dateSelector'  mode="landscape"></DatePicker>);
+      }else{
+        dateSelector = (  <DatePicker hintText='year_dateSelector'></DatePicker>);
+      }
+
         return (
-          <div style={{width:'310px',display:'flex','flex-flow':'column'}}>
+          <div style={{width:'310px',display:'flex','flexFlow':'column'}}>
             <div style={{margin:'10px auto'}}>
                 <DropDownMenu onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
             </div>
             <div style={{margin:'10px auto'}}>
-                <DatePicker hintText='dateSelector'></DatePicker>
+              {dateSelector}
+
             </div>
-            <div style={{margin:'10px auto'}}>
-                <AlarmList style={{margin:'auto'}}></AlarmList>
-            </div>
+            <AlarmList style={{margin:'auto'}}></AlarmList>
 
           </div>
         );

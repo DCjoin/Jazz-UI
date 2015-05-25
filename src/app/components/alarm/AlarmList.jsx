@@ -25,8 +25,8 @@ let AlarmList = React.createClass({
 		});
 
 		return (
-			<div>
-				
+			<div className='jazz-alarm-grid-body'>
+
 					{hierarchyItems}
 
 			</div>
