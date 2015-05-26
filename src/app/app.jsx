@@ -9,12 +9,16 @@ import JazzApp from './components/JazzApp.jsx';
 import MainApp from './components/MainApp.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
+import {getCookie} from './util/Util.jsx';
 
 import './less/main.less';
 
 let { Route, DefaultRoute, Redirect, RouteHandler, Link,Navigation,State } = Router;
 
 injectTapEventPlugin();
+
+window.currentUserId = getCookie('currentUserId');
+window.currentCustomerId = getCookie('currentCustomerId');
 
 var routes = (
     <Route name="app" path="/:lang?" handler={JazzApp}>
@@ -27,7 +31,7 @@ var routes = (
    </Route>
 );
 
-Router.run(routes, Router.HistoryLocation, (Root, state) => {
+Router.run(routes, Router.HashLocation, (Root, state) => {
     //var muiTheme=theme.getCurrentTheme();
     var muiTheme=null;
     React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));

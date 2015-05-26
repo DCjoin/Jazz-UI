@@ -13,7 +13,7 @@ let ALarmAction = {
         dateType: dateType
     });
   },
-  tryAjax(){
+  tryAjax2(){
       Ajax.post('/DashBoard.svc/GetUnReadSharedItemCount', {
           params: {},
           success: function(resBody){
@@ -23,6 +23,16 @@ let ALarmAction = {
           }
       });
 
+  },
+  tryAjax(){//getAlarmTagIdsByDate(){
+    Ajax.post('/TargetBaseline.svc/GetAlarmTagIdsByDate', {
+        params: {date:'20150101',customerId:window.currentCustomerId, step: 3},
+        success: function(resBody){
+            console.log(resBody);
+        },
+        error: function(err, res){
+        }
+    });
   },
   changeDate(date){
     var url = '/building/create';
