@@ -26,7 +26,7 @@ let ALarmAction = {
   },
   tryAjax(){//getAlarmTagIdsByDate(){
     Ajax.post('/TargetBaseline.svc/GetAlarmTagIdsByDate', {
-        params: {date:'20150101',customerId:window.currentCustomerId, step: 3},
+        params: {date:'201505',customerId:window.currentCustomerId, step: 3},
         success: function(resBody){
             console.log(resBody);
         },

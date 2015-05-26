@@ -4,6 +4,8 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import {DropDownMenu, DatePicker} from 'material-ui';
 import assign from "object-assign";
 
+import MonthPicker from '../../controls/MonthPicker.jsx';
+import YearPicker from '../../controls/YearPicker.jsx';
 import ALarmAction from '../../actions/ALarmAction.jsx';
 import AlarmList from './AlarmList.jsx';
 import {dateType} from '../../constants/AlarmConstants.jsx';
@@ -48,9 +50,9 @@ let AlarmLeftPanel = React.createClass({
       if(this.state.dateType == dateType.DAY_ALARM){
         dateSelector = (  <DatePicker hintText='day_dateSelector'></DatePicker>);
       }else if(this.state.dateType == dateType.MONTH_ALARM){
-        dateSelector = (  <DatePicker hintText='month_dateSelector'  mode="landscape"></DatePicker>);
+        dateSelector = (  <MonthPicker />);
       }else{
-        dateSelector = (  <DatePicker hintText='year_dateSelector'></DatePicker>);
+        dateSelector = (  <YearPicker></YearPicker>);
       }
 
         return (
