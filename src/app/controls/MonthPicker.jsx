@@ -73,7 +73,7 @@ let MonthPicker = React.createClass({
       }
     }
 
-    this.setState({yearIndex:yearIndex,monthIndex:this.state.selectedMonth-1});
+    this.setState({yearIndex: yearIndex, monthIndex: this.state.selectedMonth - 1});
 
     this.refs.dialogWindow.show();
     if (this.props.onTouchTap) this.props.onTouchTap(e);

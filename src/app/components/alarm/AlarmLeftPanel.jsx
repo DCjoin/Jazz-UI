@@ -34,6 +34,9 @@ let AlarmLeftPanel = React.createClass({
               hierList: list
     		});
     },
+    onYearPickerSelected(yearDate){
+      ALarmAction.changeDate(yearDate, 4);
+    },
     onMonthPickerSelected(monthDate){
       ALarmAction.changeDate(monthDate, 3);
     },
@@ -60,7 +63,7 @@ let AlarmLeftPanel = React.createClass({
       }else if(this.state.dateType == dateType.MONTH_ALARM){
         dateSelector = ( <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected} ref='monthSelector'/>);
       }else{
-        dateSelector = ( <YearPicker></YearPicker>);
+        dateSelector = ( <YearPicker ref='yearSelector' onYearPickerSelected={this.onYearPickerSelected}/>);
       }
 
       return (
@@ -93,7 +96,8 @@ let AlarmLeftPanel = React.createClass({
         let monthDate = this.refs.monthSelector.getDateValue();
         ALarmAction.changeDate(monthDate, 3);
       }else{
-
+        let yearDate = this.refs.yearSelector.getDateValue();
+        ALarmAction.changeDate(yearDate, 4);
       }
     }
 });

@@ -2,71 +2,45 @@ import React from 'react';
 import mui from 'material-ui';
 import classSet from 'classnames';
 
-let { Dialog, DropDownMenu, FlatButton, TextField } = mui;
+let { DropDownMenu } = mui;
 
 let YearPicker = React.createClass({
-  getInitialState() {
+  getDefaultProps(){
     let date = new Date();
     let yearMenuItems =[];
-    for(var i=2010, thisYear=date.getFullYear(); i<=thisYear; i++){
-      yearMenuItems.push({text:i+'',value:i});
+    let yearRange = 10;
+    for(var thisYear=date.getFullYear(), i = thisYear - yearRange; i<=thisYear; i++){
+      yearMenuItems.push({text:i+'年',value:i});
     }
+    return {
+      _yearItems: yearMenuItems,
+      yearRange: yearRange
+    };
+  },
+  getInitialState() {
+    let date = new Date();
       return {
-          _yearItems: yearMenuItems
+          selectedYear: date.getFullYear(),//默认今年
+          yearIndex: this.props.yearRange - 1
       };
   },
-  getDate: function() {
-    return this.state.date;
+  getDateValue(year){
+    var yearValue = year || this.state.selectedYear;
+
+    return yearValue + '' ;
   },
 
-  setDate: function(d) {
-    this.setState({
-      date: d
-    });
-    //this.refs.input.setValue(this.props.formatDate(d));
-  },
-  _onDialogSubmit(){
-    this.refs.dialogWindow.dismiss();
-  },
-  _onDialogCancel(){
-    this.refs.dialogWindow.dismiss();
-  },
-  _handleInputFocus: function(e) {
-    e.target.blur();
-    if (this.props.onFocus) this.props.onFocus(e);
-  },
-  _handleInputTouchTap: function(e) {
-    this.setState({
-      dialogDate: this.getDate()
-    });
+  _onYearChanged(e, selectedIndex, menuItem){
+    if(menuItem){
+      this.setState({selectedYear: menuItem.value, yearIndex: selectedIndex});
 
-    this.refs.dialogWindow.show();
-    if (this.props.onTouchTap) this.props.onTouchTap(e);
+      if (this.props.onYearPickerSelected) {
+        this.props.onYearPickerSelected(this.getDateValue(menuItem.value));
+      }
+    }
   },
   render(){
-    var _buttonActions = [
-            <FlatButton
-            label="确定"
-            secondary={true}
-            onClick={this._onDialogSubmit} />,
-            <FlatButton
-            label="取消"
-            primary={true}
-            onClick={this._onDialogCancel} />
-        ];
-    var style={
-        //width:'480px'
-    };
-    var dialog = <Dialog style={style} title="Month Picker" actions={_buttonActions} modal={true} ref="dialogWindow">
-      <DropDownMenu menuItems={this.state._yearItems} />
-    </Dialog>;
-
-    var textField = <TextField hintText='select year' onFocus={this._handleInputFocus} onTouchTap={this._handleInputTouchTap}/>;
-
-    return <div>
-      {textField}
-      {dialog}
-    </div>;
+    return <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}/>;
   }
 });
 
