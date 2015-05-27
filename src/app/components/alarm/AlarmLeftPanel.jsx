@@ -4,6 +4,7 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import {DropDownMenu, DatePicker} from 'material-ui';
 import assign from "object-assign";
 
+import {dateFormat} from '../../util/Util.jsx';
 import MonthPicker from '../../controls/MonthPicker.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
 import ALarmAction from '../../actions/ALarmAction.jsx';
@@ -23,7 +24,7 @@ let AlarmLeftPanel = React.createClass({
     _dateTypeChangeHandler: function(e, selectedIndex, menuItem) {
       ALarmAction.changeDateType(menuItem.type);
     },
-    _onChange() {
+    _onChange() {//change dateType
     		let dateType = AlarmStore.getDateType();
         let dateValue = AlarmStore.getDateValue();
         let list = AlarmStore.getHierarchyList();
@@ -33,6 +34,13 @@ let AlarmLeftPanel = React.createClass({
               hierList: list
     		});
     },
+    onMonthPickerSelected(monthDate){
+      ALarmAction.changeDate(monthDate, 3);
+    },
+    onDayPickerSelected(e, newDate){
+      let dayDate = dateFormat(newDate,'YYYYMMDD');
+      ALarmAction.changeDate(dayDate, 2);
+    },
     getInitialState() {
         return {
           dateType: dateType.DAY_ALARM,
@@ -40,36 +48,53 @@ let AlarmLeftPanel = React.createClass({
           hierList: null
         };
     },
-    componentDidMount: function() {
-      AlarmStore.addChangeListener(this._onChange);
-    },
-    onMonthPickerSelected(monthDate){
-      ALarmAction.changeDate(monthDate, 3);
-    },
     render: function () {
 
-      let dateSelector;
+      let dateSelector,
+          date = new Date();
+
       if(this.state.dateType == dateType.DAY_ALARM){
-        dateSelector = (  <DatePicker hintText='day_dateSelector'></DatePicker>);
+        date.setDate(date.getDate() - 1);
+        date.setMinutes(0,0,0,0);
+        dateSelector = ( <DatePicker hintText='day_dateSelector' defaultDate={date} onChange={this.onDayPickerSelected} ref='daySelector'/>);
       }else if(this.state.dateType == dateType.MONTH_ALARM){
-        dateSelector = (  <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected}/>);
+        dateSelector = ( <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected} ref='monthSelector'/>);
       }else{
-        dateSelector = (  <YearPicker></YearPicker>);
+        dateSelector = ( <YearPicker></YearPicker>);
       }
 
-        return (
-          <div style={{width:'310px',display:'flex','flexFlow':'column'}}>
-            <div style={{margin:'10px auto'}}>
-                <DropDownMenu onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
-            </div>
-            <div style={{margin:'10px auto'}}>
-              {dateSelector}
-
-            </div>
-            <AlarmList style={{margin:'auto'}}></AlarmList>
+      return (
+        <div style={{width:'310px',display:'flex','flexFlow':'column'}}>
+          <div style={{margin:'10px auto'}}>
+              <DropDownMenu onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
+          </div>
+          <div style={{margin:'10px auto'}}>
+            {dateSelector}
 
           </div>
-        );
+          <AlarmList style={{margin:'auto'}}></AlarmList>
+
+        </div>
+      );
+    },
+    componentDidMount: function() {
+      AlarmStore.addChangeListener(this._onChange);
+
+      let dayDate = dateFormat(this.refs.daySelector.getDate(),'YYYYMMDD');
+      ALarmAction.changeDate(dayDate, 2);
+    },
+    componentDidUpdate(){//change dateType cause render
+      let type = this.state.dateType;
+
+      if(type == dateType.DAY_ALARM){
+        let dayDate = dateFormat(this.refs.daySelector.getDate(),'YYYYMMDD');
+        ALarmAction.changeDate(dayDate, 2);
+      }else if(type == dateType.MONTH_ALARM){
+        let monthDate = this.refs.monthSelector.getDateValue();
+        ALarmAction.changeDate(monthDate, 3);
+      }else{
+
+      }
     }
 });
 

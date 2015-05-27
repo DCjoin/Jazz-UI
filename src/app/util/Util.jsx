@@ -1,5 +1,5 @@
 'use strict';
-
+import Momment from 'moment';
 
 module.exports = {
 	isSuccess: function(data) {
@@ -160,5 +160,8 @@ module.exports = {
 			    }
 			  }
 			return "";
+	},
+	dateFormat(date, formatDate){
+		return (new Momment(date)).format(formatDate);
 	}
 };
