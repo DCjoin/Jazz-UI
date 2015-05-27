@@ -3,7 +3,7 @@
 
 module.exports = {
 	isSuccess: function(data) {
-		return data && data.Error == '0' && data.Result;
+		return data && data.error.Code == '0' && module.exports.getResResult(data);
 	},
 	isObject: function(it) {
 		return it !== null && (typeof it == 'object' && typeof it != 'function');
@@ -31,6 +31,15 @@ module.exports = {
 	    }
 	  }
 	  return true;
+	},
+	getResResult(data){
+		if(module.exports.isObject(data)){
+			for(var key in data){
+				if(data.hasOwnProperty(key) && key != 'error')
+					return data[key];
+				}
+		}
+		return null;
 	},
   base64ToBackgroundImageUrl: function(base64Data) {
 		return "url(data:image/*;base64," + base64Data + ")";

@@ -3,26 +3,34 @@
 import React from 'react';
 
 import AlarmHierarchyItem from './AlarmHierarchyItem.jsx';
+import AlarmStore from '../../stores/AlarmStore.jsx';
 
 let AlarmList = React.createClass({
-
+	getInitialState(){
+		return {hierarchies:null};
+	},
+	_onChange(){
+		this.setState({hierarchies:AlarmStore.getHierarchyList()});
+	},
+	componentDidMount: function() {
+		AlarmStore.addAlarmlistChangeListener(this._onChange);
+	},
 	render: function() {
 		//var that = this;
 		//var hierarchies = that.props.allHierarchies;
-    let hierarchies = [{Name:'hierarchy1',Tags:[{Name:'tag1'},{Name:'tag2'},{Name:'tag3'}]},
-                       {Name:'hierarchy2',Tags:[{Name:'tag1'},{Name:'tag2'},{Name:'tag3'}]},
-                       {Name:'hierarchy3',Tags:[{Name:'tag1'},{Name:'tag2'},{Name:'tag3'}]},
-                       {Name:'hierarchy4',Tags:[{Name:'tag1'},{Name:'tag2'},{Name:'tag3'}]}];
+    let hierarchies = this.state.hierarchies;
+		let hierarchyItems = null;
 
-
-		var hierarchyItems = hierarchies.map(function(hierarchy) {
-			let props = {
-        hierarchy:hierarchy
-			};
-			return (
-				<AlarmHierarchyItem  {...props}/>
-			);
-		});
+		if(hierarchies && hierarchies.length > 0){
+			hierarchyItems = hierarchies.map(function(hierarchy) {
+				let props = {
+	        hierarchy:hierarchy
+				};
+				return (
+					<AlarmHierarchyItem  {...props}/>
+				);
+			});
+		}
 
 		return (
 			<div className='jazz-alarm-grid-body'>

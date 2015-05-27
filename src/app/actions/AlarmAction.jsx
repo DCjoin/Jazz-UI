@@ -13,42 +13,19 @@ let ALarmAction = {
         dateType: dateType
     });
   },
-  tryAjax2(){
-      Ajax.post('/DashBoard.svc/GetUnReadSharedItemCount', {
-          params: {},
-          success: function(resBody){
-              console.log(resBody);
-          },
-          error: function(err, res){
-          }
-      });
-
-  },
-  tryAjax(){//getAlarmTagIdsByDate(){
+  changeDate(date,step){
     Ajax.post('/TargetBaseline.svc/GetAlarmTagIdsByDate', {
-        params: {date:'201505',customerId:window.currentCustomerId, step: 3},
-        success: function(resBody){
-            console.log(resBody);
+        params: {date:date,customerId:window.currentCustomerId, step: step},
+        success: function(alarmList){
+          AppDispatcher.dispatch({
+              type: Action.DATALIST_CHANGED,
+              alarmList: alarmList
+          });
         },
         error: function(err, res){
+          console.log(err,res);
         }
     });
-  },
-  changeDate(date){
-    var url = '/building/create';
-        Ajax.post(url, {
-            params: {},
-            success: function(resBody){
-
-                AppDispatcher.dispatch({
-                  type:Action.DATEVALUE_CHANGED,
-                  date: date,
-                  data: resBody
-                });
-            },
-            error: function(err, res){
-            }
-        });
   }
 };
 

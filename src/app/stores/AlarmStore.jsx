@@ -13,6 +13,7 @@ var _dateType = dateType.DAY_ALARM;
 var _dateValue = null;
 var _hierarchyList = null;
 
+let CHANGE_ALAMLIST_EVENT = 'changealarmlist';
 var AlarmStore = assign({},PrototypeStore,{
   getDateType(){
     return _dateType;
@@ -30,16 +31,42 @@ var AlarmStore = assign({},PrototypeStore,{
   },
   getHierarchyList(){
     return _hierarchyList;
-  }
+  },
+  convertAlarmList(alarmList){
+    if(!alarmList || alarmList.length===0){
+      _hierarchyList = null;
+    }else{
+      _hierarchyList = alarmList;
+    }
+  },
+  emitAlarmlistChange: function() {
+    this.emit(CHANGE_ALAMLIST_EVENT);
+  },
+  /**
+   * @param {function} callback
+   */
+  addAlarmlistChangeListener: function(callback) {
+    this.on(CHANGE_ALAMLIST_EVENT, callback);
+  },
 
+  /**
+   * @param {function} callback
+   */
+  removeAlarmlistChangeListener: function(callback) {
+    this.removeListener(CHANGE_ALAMLIST_EVENT, callback);
+    this.dispose();
+  },
 });
 
 AlarmStore.dispatchToken = PopAppDispatcher.register(function(action) {
     switch(action.type) {
       case Action.DATETYPE_CHANGED:
-      AlarmStore.onDateTypeChanged(action.dateType);
-      AlarmStore.emitChange();
-      break;
+        AlarmStore.onDateTypeChanged(action.dateType);
+        AlarmStore.emitChange();
+        break;
+      case Action.DATALIST_CHANGED:
+        AlarmStore.convertAlarmList(action.alarmList);
+        AlarmStore.emitAlarmlistChange();
     }
 });
 

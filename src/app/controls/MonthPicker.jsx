@@ -24,7 +24,6 @@ let MonthPicker = React.createClass({
       _yearItems: yearMenuItems,
       _monthItems: monthMenuItems
     };
-
   },
   getInitialState() {
     let date = new Date();
@@ -35,18 +34,26 @@ let MonthPicker = React.createClass({
           tempSelectedMonth: date.getMonth()//默认上个月
       };
   },
-  getDateValue(){
-    return '' + this.state.selectedYear + this.state.selectedMonth;
+  getDateValue(year, month){
+    var yearValue = year || this.state.selectedYear;
+    var monthValue = month || this.state.selectedMonth;
+    if(monthValue < 10){
+      return '' + yearValue + '0' + monthValue;
+    }
+    return '' + yearValue + monthValue;
   },
   getFormatDate: function() {
     return this.state.selectedYear+'年'+this.state.selectedMonth+'月';
   },
   _onDialogSubmit(){
+    this.refs.dialogWindow.dismiss();
+    if (this.props.onMonthPickerSelected) {
+      this.props.onMonthPickerSelected(this.getDateValue(this.state.tempSelectedYear,this.state.tempSelectedMonth));
+    }
     this.setState({
           selectedYear:this.state.tempSelectedYear,
           selectedMonth:this.state.tempSelectedMonth
       });
-    this.refs.dialogWindow.dismiss();
   },
   _onDialogCancel(){
     this.refs.dialogWindow.dismiss();

@@ -12,7 +12,7 @@ import AlarmAction from '../../actions/AlarmAction.jsx';
 let Alarm = React.createClass({
     mixins:[Navigation,State],
     componentDidMount: function() {
-        AlarmAction.tryAjax();
+        //AlarmAction.tryAjax();
     },
     render() {
 

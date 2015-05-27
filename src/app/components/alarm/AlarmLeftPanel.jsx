@@ -43,14 +43,16 @@ let AlarmLeftPanel = React.createClass({
     componentDidMount: function() {
       AlarmStore.addChangeListener(this._onChange);
     },
-
+    onMonthPickerSelected(monthDate){
+      ALarmAction.changeDate(monthDate, 3);
+    },
     render: function () {
 
       let dateSelector;
       if(this.state.dateType == dateType.DAY_ALARM){
         dateSelector = (  <DatePicker hintText='day_dateSelector'></DatePicker>);
       }else if(this.state.dateType == dateType.MONTH_ALARM){
-        dateSelector = (  <MonthPicker />);
+        dateSelector = (  <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected}/>);
       }else{
         dateSelector = (  <YearPicker></YearPicker>);
       }
