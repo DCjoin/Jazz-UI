@@ -163,5 +163,12 @@ module.exports = {
 	},
 	dateFormat(date, formatDate){
 		return (new Momment(date)).format(formatDate);
+	},
+	hourPickerData: function () {
+      var arr = [];
+      for (var i = 0; i <= 24; ++i) {
+          arr.push({ value: i, text: ((i < 10) ? '0' : '') + i + ':00' });
+      }
+      return arr;
 	}
 };
