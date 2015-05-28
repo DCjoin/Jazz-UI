@@ -59,7 +59,7 @@ let AlarmLeftPanel = React.createClass({
       if(this.state.dateType == dateType.DAY_ALARM){
         date.setDate(date.getDate() - 1);
         date.setMinutes(0,0,0,0);
-        dateSelector = ( <DatePicker hintText='day_dateSelector' defaultDate={date} onChange={this.onDayPickerSelected} ref='daySelector'/>);
+        dateSelector = ( <DatePicker className='jazz-alarm-datepicker' hintText='day_dateSelector' defaultDate={date} onChange={this.onDayPickerSelected} ref='daySelector'/>);
       }else if(this.state.dateType == dateType.MONTH_ALARM){
         dateSelector = ( <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected} ref='monthSelector'/>);
       }else{
@@ -68,10 +68,10 @@ let AlarmLeftPanel = React.createClass({
 
       return (
         <div style={{width:'310px',display:'flex','flexFlow':'column'}}>
-          <div style={{margin:'10px auto'}}>
+          <div style={{margin:'10px auto 0px auto'}}>
               <DropDownMenu onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
           </div>
-          <div style={{margin:'10px auto'}}>
+          <div style={{margin:'0px auto 10px auto'}}>
             {dateSelector}
 
           </div>

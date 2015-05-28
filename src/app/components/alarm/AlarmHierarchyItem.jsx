@@ -39,11 +39,13 @@ let AlarmHierarchyItem = React.createClass({
       <div>
     			<div className={classNames({
 						'jazz-alarm-grid-tr-item':true,
-						'jazz-alarm-grid-tr-item-selected':!!me.props.selected
+						'jazz-alarm-grid-tr-item-extended': !!me.state.extended
 						})} onClick={me._onHierarchyItemSelected}>
-    				<span style={{display:'inline-block'}}>{hierarchy.HierName}</span>
-            <span style={{display:'inline-block',  'min-width':'25px', 'margin-left':'60px',border:'2px solid #a1a1a1','border-radius':'15px'}}>{hierarchy.TagAlarmInfoDtos.length}</span>
-    			</div>
+    				<span>{hierarchy.HierName}</span>
+						<span>
+            	<span>{hierarchy.TagAlarmInfoDtos.length}</span>
+						</span>
+					</div>
           {tagItems}
       </div>
 		);

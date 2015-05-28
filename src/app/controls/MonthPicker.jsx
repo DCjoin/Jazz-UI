@@ -80,7 +80,7 @@ let MonthPicker = React.createClass({
   },
   _onYearChanged(e, selectedIndex, menuItem){
     if(menuItem){
-      this.setState({tempSelectedYear:menuItem.value, yearIndex:selectedIndex});
+      this.setState({tempSelectedYear: menuItem.value, yearIndex: selectedIndex});
     }
   },
   _onMonthChanged(e, selectedIndex, menuItem){
@@ -100,12 +100,12 @@ let MonthPicker = React.createClass({
             onClick={this._onDialogCancel} />
         ];
 
-    var dialog = <Dialog title="Month Picker" actions={_buttonActions} modal={true} ref="dialogWindow">
+    var dialog = <Dialog className='jazz-alarm-monthpicker-dialog' title="Month Picker" actions={_buttonActions} modal={false} ref="dialogWindow">
       <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}/>
       <DropDownMenu menuItems={this.props._monthItems} onChange={this._onMonthChanged} selectedIndex ={this.state.monthIndex}/>
     </Dialog>;
 
-    var textField = <TextField ref='input' hintText='select month' value={this.getFormatDate()} onFocus={this._handleInputFocus} onTouchTap={this._handleInputTouchTap}/>;
+    var textField = <TextField className='jazz-alarm-monthpicker-textfield' ref='input' hintText='select month' value={this.getFormatDate()} onFocus={this._handleInputFocus} onTouchTap={this._handleInputTouchTap}/>;
 
     return <div>
       {textField}
