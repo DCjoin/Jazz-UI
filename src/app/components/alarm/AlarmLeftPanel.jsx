@@ -34,15 +34,19 @@ let AlarmLeftPanel = React.createClass({
               hierList: list
     		});
     },
+    loadListByDate(date, step){
+      this.refs.alarmResList.setState({loadingStatus:true});
+      ALarmAction.changeDate(date, step);
+    },
     onYearPickerSelected(yearDate){
-      ALarmAction.changeDate(yearDate, 4);
+      this.loadListByDate(yearDate, 4);
     },
     onMonthPickerSelected(monthDate){
-      ALarmAction.changeDate(monthDate, 3);
+      this.loadListByDate(monthDate, 3);
     },
     onDayPickerSelected(e, newDate){
       let dayDate = dateFormat(newDate,'YYYYMMDD');
-      ALarmAction.changeDate(dayDate, 2);
+      this.loadListByDate(dayDate, 2);
     },
     getInitialState() {
         return {
@@ -75,7 +79,7 @@ let AlarmLeftPanel = React.createClass({
             {dateSelector}
 
           </div>
-          <AlarmList style={{margin:'auto'}}></AlarmList>
+          <AlarmList style={{margin:'auto'}} ref='alarmResList'></AlarmList>
 
         </div>
       );
@@ -84,20 +88,20 @@ let AlarmLeftPanel = React.createClass({
       AlarmStore.addChangeListener(this._onChange);
 
       let dayDate = dateFormat(this.refs.daySelector.getDate(),'YYYYMMDD');
-      ALarmAction.changeDate(dayDate, 2);
+      this.loadListByDate(dayDate, 2);
     },
     componentDidUpdate(){//change dateType cause render
       let type = this.state.dateType;
 
       if(type == dateType.DAY_ALARM){
         let dayDate = dateFormat(this.refs.daySelector.getDate(),'YYYYMMDD');
-        ALarmAction.changeDate(dayDate, 2);
+        this.loadListByDate(dayDate, 2);
       }else if(type == dateType.MONTH_ALARM){
         let monthDate = this.refs.monthSelector.getDateValue();
-        ALarmAction.changeDate(monthDate, 3);
+        this.loadListByDate(monthDate, 3);
       }else{
         let yearDate = this.refs.yearSelector.getDateValue();
-        ALarmAction.changeDate(yearDate, 4);
+        this.loadListByDate(yearDate, 4);
       }
     }
 });
