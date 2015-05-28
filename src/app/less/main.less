@@ -9,6 +9,7 @@
 @import "fonts/font-awesome.less";
 @import "../../../node_modules/react-grid-layout/css/styles.css";
 @import "alarm.less";
+@import "treeView.less";
 
 
 @mainGreen:#15cb9e;
@@ -618,3 +619,50 @@ ul{
   -moz-transition: @transition;
   transition: @transition;
 }
+.select-dropdownmenu{
+  width:110px !important;
+  float:right;
+  margin-left: 5px;
+}
+.jazz-dataselectpanel{
+  display:inline-block;
+  height:100%;
+  .jazz-dataselectpanel-button{
+    min-width:initial;
+    height:48px;
+    border:solid 2px gray;
+    vertical-align:middle;
+    margin-top:250px
+  }
+
+}
+.jazz-dataselectmainpanel{
+  width:275px;
+  height:100%;
+  float:right;
+  background-color:rgb(245, 245, 245)
+}
+input:focus{
+  background-color:yellow;
+  border-color: transparent
+}
+.jazz-hierarchybutton{
+    position: relative;
+    * {
+        transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    }
+    }
+.jazz-hierarchybutton-paper{
+
+        position: absolute;
+        left:0;
+        top:100%;
+        background-color: white;
+        z-index: 1;
+        width:275px;
+        height:500px;
+        display: flex;
+        flex-flow:column;
+
+
+    }

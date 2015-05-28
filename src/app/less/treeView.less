@@ -1,0 +1,108 @@
+.pop-tree-view {
+  padding: 0 4px;
+}
+
+.pop-tree-node-container {
+  > .tree-node {
+    cursor: pointer;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    padding-right: 14px;
+    &.selected {
+      background-color: #bbb;
+    }
+    &:hover {
+      background-color: #cfcfcf;
+    }
+    > .arrow {
+      cursor: pointer;
+      width: 20px;
+      > .hasChild {
+        display: block;
+      }
+      > .hasNoChild {
+        display: none;
+      }
+    }
+    > .chevron {
+      width: 20px;
+    }
+    > .content {
+      flex: 1;
+    }
+  }
+  > .tree-children {
+    &.collapse {
+      display: none
+    }
+  }
+}
+
+
+.pop-child-container-collapsed{
+  display: none;
+}
+
+.pop-arrow{
+  float: left;
+  width: 20px;
+  min-height: 10px;
+  line-height:40px;
+}
+.pop-has-child{
+  display: block;
+}
+.pop-no-child{
+  display: none;
+}
+.pop-tree-arrow{
+  .pop-arrow;
+  background-color: yellow;
+}
+.tree-arrow-collapsed{
+  .pop-arrow;
+  background-color: white;
+}
+
+.pop-icon{
+  float: left;
+  width: 20%;
+  min-height: 10px;
+}
+
+.pop-node{
+  float: left;
+  width: 90%;
+  min-height: 10px;
+  line-height:40px;
+}
+.pop-node-checkbox{
+  float: left;
+
+  min-height: 10px;
+}
+.pop-selected{
+  background-color: #bbb;
+}
+
+.pop-clear{
+  clear: both;
+}
+.tree-node-content {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  > .node-content-icon {
+    margin-left: 8px;
+  }
+  > .node-content-text {
+    margin-left: 6px;
+    font-size: 14px;
+    color: black;
+  }
+
+}
