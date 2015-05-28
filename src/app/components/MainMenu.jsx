@@ -3,10 +3,6 @@
 import React from 'react';
 import { Link,Navigation,State,RouteHandler } from 'react-router';
 import lang from '../lang/lang.jsx';
-import {FlatButton} from 'material-ui';
-//import LoginActionCreator from '../actions/LoginActionCreator.jsx';
-//import LoginStore from '../stores/LoginStore.jsx';
-
 
 var f = lang.f;
 
