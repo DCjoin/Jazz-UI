@@ -67,6 +67,11 @@ AlarmStore.dispatchToken = PopAppDispatcher.register(function(action) {
       case Action.DATALIST_CHANGED:
         AlarmStore.convertAlarmList(action.alarmList);
         AlarmStore.emitAlarmlistChange();
+        break;
+      case Action.GET_HIERARCHY_LIST_ERROR:
+        AlarmStore.convertAlarmList([]);
+        AlarmStore.emitAlarmlistChange();
+        break;
     }
 });
 

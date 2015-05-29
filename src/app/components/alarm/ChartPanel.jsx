@@ -22,13 +22,13 @@ render: function () {
         <div style={{flex:1}}>
           <div>
             <span >{'1塔办公电梯日能耗报警'}</span>
-            <i className='fa fa-floppy-o' style={{'margin-left':'10px'}}></i>
+            <i className='fa fa-floppy-o' style={{'marginLeft':'10px'}}></i>
           </div>
-          <div style={{display:'flex', 'flexFlow':'row', 'align-items':'center'}}>
+          <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center'}}>
             <DropDownMenu menuItems={searchDate}></DropDownMenu>
             <DatePicker className='jazz-alarm-datepicker' defaultDate={date} />
             <DropDownMenu menuItems={dateTime}></DropDownMenu>
-            <span style={{'margin-left':'10px'}}> {'到'} </span>
+            <span style={{'marginLeft':'10px'}}> {'到'} </span>
             <DatePicker className='jazz-alarm-datepicker' defaultDate={date} />
             <DropDownMenu menuItems={dateTime}></DropDownMenu>
             <RaisedButton label='查看' secondary={true} />

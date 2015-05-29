@@ -4,10 +4,14 @@ import React from 'react';
 
 import AlarmHierarchyItem from './AlarmHierarchyItem.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
+import AlarmAction from '../../actions/AlarmAction.jsx';
 
 let AlarmList = React.createClass({
 	getInitialState(){
-		return {hierarchies:null, loadingStatus: false};
+		return { hierarchies: null,
+						 dateValue: null,
+						 step: null,
+						 loadingStatus: false};
 	},
 	_onChange(){
 		this.setState({
@@ -18,6 +22,12 @@ let AlarmList = React.createClass({
 	componentDidMount: function() {
 		AlarmStore.addAlarmlistChangeListener(this._onChange);
 	},
+	onTagItemClick(hierId, tagId){
+		let date = this.state.dateValue,
+				step = this.state.step;
+
+		AlarmAction.getAlarmTagData(tagId, date, step);
+	},
 	render: function() {
 		let displayedDom = null;
 		if(this.state.loadingStatus){
@@ -27,9 +37,10 @@ let AlarmList = React.createClass({
 			let hierarchyItems = null;
 
 			if(hierarchies && hierarchies.length > 0){
-				hierarchyItems = hierarchies.map(function(hierarchy) {
+				hierarchyItems = hierarchies.map( hierarchy => {
 					let props = {
-						hierarchy:hierarchy
+						hierarchy:hierarchy,
+						onTagItemClick: this.onTagItemClick
 					};
 					return (
 						<AlarmHierarchyItem  {...props}/>

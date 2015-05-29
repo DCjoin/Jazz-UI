@@ -109,7 +109,7 @@ let BaselineModify = React.createClass({
                  <span style={{display:'inline-block',width:'40%'}}>
                    <input style={{display:'inline-block',width:'100%'}} type="text" value={line.LeftValue}  disabled={disable}/>
                  </span>
-                <span style={{display:'inline-block', width:'20%', 'margin-left':'5%'}}>{Uom}</span>
+                <span style={{display:'inline-block', width:'20%', 'marginLeft':'5%'}}>{Uom}</span>
               </td>
               <td align="right">
                  <span style={{display:'inline-block', width:'30%'}}>{line.RightMonth}月</span>

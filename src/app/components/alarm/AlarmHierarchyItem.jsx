@@ -2,6 +2,8 @@
 
 import React from 'react';
 import classNames from 'classnames';
+import AlarmTagItem from './AlarmTagItem.jsx';
+import AlarmAction from '../../actions/AlarmAction.jsx';
 
 let AlarmHierarchyItem = React.createClass({
 	_onHierarchyItemSelected(){
@@ -10,8 +12,10 @@ let AlarmHierarchyItem = React.createClass({
 	    });
 
 	},
-	_onTagItemSelected(){
-
+	_onTagItemSelected(hierId, tagId){
+		if(this.props.onTagItemClick){
+			this.props.onTagItemClick(hierId, tagId);
+		}
 	},
 	getInitialState: function() {
     return {
@@ -24,13 +28,16 @@ let AlarmHierarchyItem = React.createClass({
 		let tagItems = null;
 		if(me.state.extended){
 			tagItems = hierarchy.TagAlarmInfoDtos.map(function(tag) {
+				let props = {
+					tagName: tag.TagName,
+					tagId: tag.TagId,
+					hierarchyId: tag.HierarchyId,
+					hierarchyName: tag.HierarchyName,
+					extended: me.state.extended,
+					onTagItemClick: me._onTagItemSelected
+				};
 				return (
-	  				<div className={classNames(
-										{
-											'jazz-alarm-grid-tr-item':true,
-											'jazz-alarm-grid-tr-item-extended': !!me.state.extended
-										}
-								)} onClick={me._onTagItemSelected}>{tag.TagName}</div>
+	  				<AlarmTagItem {...props}></AlarmTagItem>
 				);
 			});
 		}

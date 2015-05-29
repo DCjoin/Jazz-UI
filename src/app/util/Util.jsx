@@ -1,7 +1,7 @@
 'use strict';
 import Momment from 'moment';
 
-module.exports = {
+let CommonFuns = {
 	isSuccess: function(data) {
 		return data && data.error.Code == '0' && module.exports.getResResult(data);
 	},
@@ -170,5 +170,30 @@ module.exports = {
           arr.push({ value: i, text: ((i < 10) ? '0' : '') + i + ':00' });
       }
       return arr;
+	},
+	DataConverter:{
+		DatetimeToJson: function (datetime) {
+        var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+        var l = datetime.getTime() - timezoneoffset;
+        return '\/Date(' + l + ')\/';
+    },
+    JsonToDateTime: function (jsonstring, outintval) {
+        outintval = typeof (outintval) === 'boolean' ? outintval : true;
+        jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+
+        var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+        var mydate;
+        if (outintval) {
+            mydate = parseInt(jsonstring) + timezoneoffset;
+        }
+        else {
+            mydate = parseInt(jsonstring) + timezoneoffset;
+            mydate = new Date( mydate );
+        }
+
+        return mydate;
+    }
 	}
 };
+
+module.exports = CommonFuns;

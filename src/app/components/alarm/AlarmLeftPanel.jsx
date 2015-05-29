@@ -7,7 +7,7 @@ import assign from "object-assign";
 import {dateFormat} from '../../util/Util.jsx';
 import MonthPicker from '../../controls/MonthPicker.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
-import ALarmAction from '../../actions/ALarmAction.jsx';
+import AlarmAction from '../../actions/AlarmAction.jsx';
 import AlarmList from './AlarmList.jsx';
 import {dateType} from '../../constants/AlarmConstants.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
@@ -17,17 +17,21 @@ var  menuItems = [
    { type: dateType.MONTH_ALARM, text: '查看月报警列表' },
    { type: dateType.YEAR_ALARM, text: '查看年报警列表' }
 ];
+const MONTHSTEP = 3,
+      DAYSTEP = 2,
+      HOURSTEP = 1;
 
-let AlarmLeftPanel = React.createClass({
+var AlarmLeftPanel = React.createClass({
     mixins:[Navigation,State],
 
     _dateTypeChangeHandler: function(e, selectedIndex, menuItem) {
-      ALarmAction.changeDateType(menuItem.type);
+      AlarmAction.changeDateType(menuItem.type);
     },
-    _onChange() {//change dateType
-    		let dateType = AlarmStore.getDateType();
-        let dateValue = AlarmStore.getDateValue();
-        let list = AlarmStore.getHierarchyList();
+    _onChange() {//change dateType 此处调用action去修改store是为了更新store中的hierList，有待商榷是否必要
+    		let dateType = AlarmStore.getDateType(),
+            dateValue = AlarmStore.getDateValue(),
+            list = AlarmStore.getHierarchyList();
+
     		this.setState({
               dateType: dateType,
     	        dateValue: dateValue,
@@ -35,18 +39,21 @@ let AlarmLeftPanel = React.createClass({
     		});
     },
     loadListByDate(date, step){
-      this.refs.alarmResList.setState({loadingStatus:true});
-      ALarmAction.changeDate(date, step);
+      this.refs.alarmResList.setState({loadingStatus: true,
+                                       dateValue: date,
+                                       step: step} );
+
+      AlarmAction.getHierarchyListByDate(date, step);
     },
     onYearPickerSelected(yearDate){
-      this.loadListByDate(yearDate, 4);
+      this.loadListByDate(yearDate, MONTHSTEP);
     },
     onMonthPickerSelected(monthDate){
-      this.loadListByDate(monthDate, 3);
+      this.loadListByDate(monthDate, DAYSTEP);
     },
     onDayPickerSelected(e, newDate){
       let dayDate = dateFormat(newDate,'YYYYMMDD');
-      this.loadListByDate(dayDate, 2);
+      this.loadListByDate(dayDate, HOURSTEP);
     },
     getInitialState() {
         return {
@@ -88,20 +95,20 @@ let AlarmLeftPanel = React.createClass({
       AlarmStore.addChangeListener(this._onChange);
 
       let dayDate = dateFormat(this.refs.daySelector.getDate(),'YYYYMMDD');
-      this.loadListByDate(dayDate, 2);
+      this.loadListByDate(dayDate, HOURSTEP);
     },
     componentDidUpdate(){//change dateType cause render
       let type = this.state.dateType;
 
       if(type == dateType.DAY_ALARM){
         let dayDate = dateFormat(this.refs.daySelector.getDate(),'YYYYMMDD');
-        this.loadListByDate(dayDate, 2);
+        this.loadListByDate(dayDate, HOURSTEP);
       }else if(type == dateType.MONTH_ALARM){
         let monthDate = this.refs.monthSelector.getDateValue();
-        this.loadListByDate(monthDate, 3);
+        this.loadListByDate(monthDate, DAYSTEP);
       }else{
         let yearDate = this.refs.yearSelector.getDateValue();
-        this.loadListByDate(yearDate, 4);
+        this.loadListByDate(yearDate, MONTHSTEP);
       }
     }
 });
