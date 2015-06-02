@@ -44,6 +44,7 @@ let AlarmAction = {
                        };
 
     AppDispatcher.dispatch({
+         type: Action.GET_TAG_DATA_LOADING,
          submitParams: submitParams
     });
 
