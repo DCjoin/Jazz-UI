@@ -31,14 +31,14 @@ let Highstock = React.createClass({
     },
 
     render () {
-        return <div className="pop-chart-paper" ref="pop_chart_paper"/>;
+        return <div className="pop-chart-paper" ref="jazz_energy_view"/>;
     },
 
     _draw () {
 
         let that = this,
             options = assign({}, that.props.options, {
-                chart: assign({}, that.props.options.chart, {renderTo: this.refs.pop_chart_paper.getDOMNode()})
+                chart: assign({}, that.props.options.chart, {renderTo: this.refs.jazz_energy_view.getDOMNode()})
             });
 
         that._paper = new Highcharts.StockChart(options);

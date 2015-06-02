@@ -42,17 +42,24 @@ let AlarmAction = {
                                       TimeRanges:[{StartTime:timeRange[0], EndTime:timeRange[1]}]
                                    }
                        };
+
+    AppDispatcher.dispatch({
+         submitParams: submitParams
+    });
+
     Ajax.post('/Energy.svc/GetTagsData', {
          params:submitParams,
          success: function(energyData){
            AppDispatcher.dispatch({
                type: Action.GET_TAG_DATA_SUCCESS,
-               energyData: energyData
+               energyData: energyData,
+               submitParams: submitParams
            });
          },
          error: function(err, res){
            AppDispatcher.dispatch({
-               type: Action.GET_TAG_DATA_ERROR
+               type: Action.GET_TAG_DATA_ERROR,
+               submitParams: submitParams
            });
          }
        });

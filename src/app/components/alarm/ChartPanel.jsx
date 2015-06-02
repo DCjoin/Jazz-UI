@@ -4,6 +4,7 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, RaisedButton, DatePicker} from 'material-ui';
 import assign from "object-assign";
 import {hourPickerData} from '../../util/Util.jsx';
+import EnergyStore from '../../stores/EnergyStore.jsx';
 
 const searchDate = [{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -14,9 +15,29 @@ const dateTime = hourPickerData();
 let ChartPanel = React.createClass({
     mixins:[Navigation,State],
 
-render: function () {
-      var date = new Date();
-
+    _onLoadingStatusChange(){
+      let isLoading = EnergyStore.getLoadingStatus();
+      this.setState({isLoading: isLoading});
+    },
+    _onEnergyDataChange(){
+      let isLoading = EnergyStore.getLoadingStatus();
+      this.setState({isLoading: isLoading});
+    },
+    getInitialState() {
+        return {
+          isLoading: false,
+          energyData: null,
+          submitParams: null
+        };
+    },
+    render: function () {
+      let date = new Date();
+      let energyPart;
+      if(this.state.isLoading){
+        energyPart = 'loading...';
+      }else{
+        energyPart = 'ChartPanel';
+      }
 
       return (
         <div style={{flex:1}}>
@@ -34,10 +55,15 @@ render: function () {
             <RaisedButton label='查看' secondary={true} />
           </div>
           <div>
-            {'ChartPanel'}
+
+            {energyPart}
           </div>
         </div>
       );
+  },
+  componentDidMount: function() {
+    EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
+    EnergyStore.addTagDataChangeListener(this._onEnergyDataChange);
   }
 });
 

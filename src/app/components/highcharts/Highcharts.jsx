@@ -49,7 +49,7 @@ let Highstock = React.createClass({
     },
 
     render () {
-        return <div className="pop-chart-paper" ref="pop_chart_paper"/>;
+        return <div className="pop-chart-paper" ref="jazz_energy_view"/>;
     },
 
     _draw () {
@@ -57,7 +57,7 @@ let Highstock = React.createClass({
         let that = this,
             _tempOptions = JSON.parse(that.state.options),
             options = assign({}, _tempOptions, {
-                chart: assign({}, _tempOptions.chart, {renderTo: this.refs.pop_chart_paper.getDOMNode()})
+                chart: assign({}, _tempOptions.chart, {renderTo: this.refs.jazz_energy_view.getDOMNode()})
             });
 
         that._paper = new Highcharts.Chart(options);
