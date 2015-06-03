@@ -64,6 +64,10 @@ let ChartPanel = React.createClass({
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
     EnergyStore.addTagDataChangeListener(this._onEnergyDataChange);
+  },
+  componentWillUnmount: function() {
+    EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
+    EnergyStore.removeTagDataChangeListener(this._onEnergyDataChange);
   }
 });
 

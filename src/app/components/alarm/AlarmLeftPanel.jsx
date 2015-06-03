@@ -110,6 +110,9 @@ var AlarmLeftPanel = React.createClass({
         let yearDate = this.refs.yearSelector.getDateValue();
         this.loadListByDate(yearDate, MONTHSTEP);
       }
+    },
+    componentWillUnmount: function() {
+      AlarmStore.removeChangeListener(this._onChange);
     }
 });
 

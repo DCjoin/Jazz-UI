@@ -8,6 +8,7 @@ import Immutable from 'immutable';
 
 import {dateType} from '../constants/AlarmConstants.jsx';
 import {Action} from '../constants/actionType/Alarm.jsx';
+import ReaderFuncs from './MixedChartReader.jsx';
 
 let TAG_DATA_LOADING_EVENT = 'tagdataloading',
     TAG_DATA_CHANGED_EVENT = 'tagdatachanged';
@@ -34,6 +35,12 @@ var EnergyStore = assign({},PrototypeStore,{
   _onDataChanged(data, params){
     _isLoading = false;
     _energyRawData = data;
+
+    let obj = {start: params.viewOption.TimeRanges[0].StartTime,
+               end: params.viewOption.TimeRanges[0].EndTime,
+               step:params.viewOption.Step, timeRanges:params.viewOption.TimeRanges};
+               
+    _energyData = ReaderFuncs.convert(data, obj);
   },
   addTagDataLoadingListener: function(callback) {
     this.on(TAG_DATA_LOADING_EVENT, callback);
@@ -41,12 +48,18 @@ var EnergyStore = assign({},PrototypeStore,{
   emitTagDataLoading: function() {
     this.emit(TAG_DATA_LOADING_EVENT);
   },
+  removeTagDataLoadingListener: function(callback) {
+    this.removeListener(TAG_DATA_LOADING_EVENT, callback);
+  },
   addTagDataChangeListener: function(callback) {
     this.on(TAG_DATA_CHANGED_EVENT, callback);
   },
   emitTagDataChange: function() {
     this.emit(TAG_DATA_CHANGED_EVENT);
-  }
+  },
+  removeTagDataChangeListener: function(callback) {
+    this.removeListener(TAG_DATA_CHANGED_EVENT, callback);
+  },
 });
 
 EnergyStore.dispatchToken = PopAppDispatcher.register(function(action) {

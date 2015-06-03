@@ -193,7 +193,10 @@ let CommonFuns = {
 
         return mydate;
     }
-	}
+	},
+	isNumber: function(value) {
+      return typeof value === 'number' && isFinite(value);
+  },
 };
 
 module.exports = CommonFuns;

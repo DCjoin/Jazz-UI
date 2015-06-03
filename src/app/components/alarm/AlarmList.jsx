@@ -19,9 +19,6 @@ let AlarmList = React.createClass({
 			loadingStatus:false
 			});
 	},
-	componentDidMount: function() {
-		AlarmStore.addAlarmlistChangeListener(this._onChange);
-	},
 	onTagItemClick(hierId, tagId){
 		let date = this.state.dateValue,
 				step = this.state.step;
@@ -57,6 +54,12 @@ let AlarmList = React.createClass({
 
 			</div>
 		);
+	},
+	componentDidMount: function() {
+		AlarmStore.addAlarmlistChangeListener(this._onChange);
+	},
+	componentWillUnmount(){
+		AlarmStore.removeAlarmlistChangeListener(this._onChange);
 	}
 });
 
