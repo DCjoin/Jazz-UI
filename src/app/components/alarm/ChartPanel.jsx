@@ -46,7 +46,7 @@ let ChartPanel = React.createClass({
       }
 
       return (
-        <div style={{flex:1, display:'flex','flex-direction':'column'}}>
+        <div style={{flex:1, display:'flex','flex-direction':'column', marginLeft:'10px'}}>
           <div style={{height:'30px'}}>
             <span >{'1塔办公电梯日能耗报警'}</span>
             <i className='fa fa-floppy-o' style={{'marginLeft':'10px'}}></i>

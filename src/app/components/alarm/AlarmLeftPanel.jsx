@@ -78,7 +78,7 @@ var AlarmLeftPanel = React.createClass({
       }
 
       return (
-        <div style={{width:'310px',display:'flex','flexFlow':'column'}}>
+        <div style={{width:'310px',display:'flex','flexFlow':'column', 'background-color':'rgb(243, 243, 243)'}}>
           <div style={{margin:'10px auto 0px auto'}}>
               <DropDownMenu onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
           </div>
