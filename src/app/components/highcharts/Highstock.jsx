@@ -31,7 +31,7 @@ let Highstock = React.createClass({
     },
 
     render () {
-        return <div className="pop-chart-paper" ref="jazz_energy_view"/>;
+        return <div style={{flex:1, width:'100%'}} className="pop-chart-paper" ref="jazz_energy_view"/>;
     },
 
     _draw () {

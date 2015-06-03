@@ -164,6 +164,11 @@ let CommonFuns = {
 	dateFormat(date, formatDate){
 		return (new Momment(date)).format(formatDate);
 	},
+	dateAdd( date, value, unit ){
+		var mdate = new Momment(date);
+		var newDate = mdate.add(value, unit);
+		return newDate._d;
+	},
 	hourPickerData: function () {
       var arr = [];
       for (var i = 0; i <= 24; ++i) {

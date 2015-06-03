@@ -62,11 +62,11 @@ let JazzApp = React.createClass({
         // }
         var loading = null;
         if(this.state.loading){
-            loading = (<AjaxDialog ref="ajax" />);
+            loading = '';//(<AjaxDialog ref="ajax" />);
         }
 
         return (
-          <div className="pop-app">
+          <div className="jazz-app">
               <RouteHandler {...this.props} showLoading={this._showLoading} hideLoading={this._hideLoading} showError={this._showError} />
               {loading}
           </div>

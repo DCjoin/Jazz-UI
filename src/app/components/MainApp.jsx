@@ -27,7 +27,7 @@ render: function () {
   var logoUrl="http://112.124.7.117/v1.9.1.299/hardcore/simple/sejazz-test/img-logo-100001";
 
       return (
-        <div className="pop-app">
+        <div className='jazz-main'>
             <MainMenu items={menuItems} logoUrl={logoUrl} />
             <RouteHandler {...this.props} />
         </div>

@@ -16,7 +16,8 @@ let TAG_DATA_LOADING_EVENT = 'tagdataloading',
 let _isLoading = false,
     _energyData = null,
     _energyRawData = null,
-    _submitParams = null;
+    _submitParams = null,
+    _paramsObj = null;
 
 var EnergyStore = assign({},PrototypeStore,{
   getLoadingStatus(){
@@ -28,9 +29,17 @@ var EnergyStore = assign({},PrototypeStore,{
   getSubmitParams(){
     return _submitParams;
   },
+  getParamsObj(){
+    return _paramsObj;
+  },
   _onDataLoading(params){
     _submitParams = params;
     _isLoading = true;
+
+    _paramsObj = {startTime: params.viewOption.TimeRanges[0].StartTime,
+               endTime: params.viewOption.TimeRanges[0].EndTime,
+               step: params.viewOption.Step,
+               timeRanges: params.viewOption.TimeRanges};
   },
   _onDataChanged(data, params){
     _isLoading = false;
@@ -38,8 +47,10 @@ var EnergyStore = assign({},PrototypeStore,{
 
     let obj = {start: params.viewOption.TimeRanges[0].StartTime,
                end: params.viewOption.TimeRanges[0].EndTime,
-               step:params.viewOption.Step, timeRanges:params.viewOption.TimeRanges};
-               
+               step: params.viewOption.Step,
+               timeRanges: params.viewOption.TimeRanges};
+
+
     _energyData = ReaderFuncs.convert(data, obj);
   },
   addTagDataLoadingListener: function(callback) {

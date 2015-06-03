@@ -17,7 +17,7 @@ let Alarm = React.createClass({
     render() {
 
           return(
-            <div style={{display:'flex', height:'100%'}}>
+            <div style={{display:'flex', flex:1}}>
               <LeftPanel ></LeftPanel>
               <ChartPanel ></ChartPanel>
               <DataSelectPanel ></DataSelectPanel>
