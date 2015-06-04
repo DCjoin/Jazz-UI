@@ -10,7 +10,10 @@ import MainApp from './components/MainApp.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
 import {getCookie} from './util/Util.jsx';
+import {Styles} from 'material-ui';
+let {ThemeManager} = Styles;
 
+var theme = new ThemeManager();
 import './less/main.less';
 
 let { Route, DefaultRoute, Redirect, RouteHandler, Link,Navigation,State } = Router;
@@ -32,8 +35,8 @@ var routes = (
 );
 
 Router.run(routes, Router.HashLocation, (Root, state) => {
-    //var muiTheme=theme.getCurrentTheme();
-    var muiTheme=null;
+    var muiTheme=theme.getCurrentTheme();
+    
     React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));
 
 });

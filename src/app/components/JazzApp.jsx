@@ -11,6 +11,14 @@ let { Route, DefaultRoute, RouteHandler, Link, Navigation, State } = Router;
 
 let JazzApp = React.createClass({
     mixins:[Navigation,State],
+    childContextTypes:{
+        muiTheme: React.PropTypes.object.isRequired
+    },
+    getChildContext() {
+        return {
+            muiTheme: this.props.muiTheme
+        };
+    },
     _showLoading:function(argument) {
         this.setState({loading:true},function (argument) {
             this.refs.ajax._show();
