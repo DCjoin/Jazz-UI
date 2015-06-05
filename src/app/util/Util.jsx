@@ -11,6 +11,9 @@ let CommonFuns = {
 	isFunction: function(it) {
 		return it !== null && typeof it == 'function';
 	},
+	isArray(it){
+		return window.toString.call(it) === '[object Array]';
+	},
 	log: function(content) {
 		if(true) { // Todo change, is open log
 			if(console && typeof this.isFunction(console.log)) {

@@ -2,6 +2,7 @@
 
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
+import CommonFuns from '../util/Util.jsx';
 import {Action} from '../constants/actionType/Alarm.jsx';
 import {DataConverter} from '../util/Util.jsx';
 import Ajax from '../ajax/ajax.jsx';
@@ -33,13 +34,24 @@ let AlarmAction = {
         }
     });
   },
-  getAlarmTagData(tagId, dateStr, step){
-    var timeRange = AlarmAction.getDateByStep(dateStr, step);
-    var submitParams = { tagIds:[tagId],
+  /*
+   date--从alarm tag list 过来的时间格式是:'20150101'；从查询和修改step是时间数组
+  */
+  getAlarmTagData(tagIds, date, step){
+    var timeRange;
+    if(CommonFuns.isArray(date)){
+      timeRange = date;
+    }else{
+      let dateArray = AlarmAction.getDateByStep(date, step);
+      timeRange = [{StartTime:dateArray[0], EndTime:dateArray[1]}];
+    }
+
+    var tags = CommonFuns.isArray(tagIds) ? tagIds:[tagIds];
+    var submitParams = { tagIds:tags,
                          viewOption:{ DataUsageType: 1,
                                       IncludeNavigatorData: true,
                                       Step: step,
-                                      TimeRanges:[{StartTime:timeRange[0], EndTime:timeRange[1]}]
+                                      TimeRanges: timeRange
                                    }
                        };
 

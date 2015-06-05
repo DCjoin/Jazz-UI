@@ -292,7 +292,8 @@ let ChartComponent = React.createClass({
     var newConfig = assign({}, DEFAULT_OPTIONS,
       {animation: true,
        title: {
-                text: this.title,
+                text: '',//'<div style="height:1px"> </div>',
+                useHTML: true,
                 x: -75,
                 margin: 85,
                 style: {

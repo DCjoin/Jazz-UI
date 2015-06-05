@@ -22,7 +22,6 @@ const MONTHSTEP = 3,
       HOURSTEP = 1;
 
 var AlarmLeftPanel = React.createClass({
-    mixins:[Navigation,State],
 
     _dateTypeChangeHandler: function(e, selectedIndex, menuItem) {
       AlarmAction.changeDateType(menuItem.type);
