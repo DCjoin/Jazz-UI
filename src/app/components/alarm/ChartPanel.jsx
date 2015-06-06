@@ -63,7 +63,7 @@ let ChartPanel = React.createClass({
       let energyPart=null;
       if(this.state.isLoading){
         energyPart = <div style={{margin:'auto'}}>{'loading...'}</div>;
-      }else if(!!this.state.energyData){
+      }else if(!!this.state.energyData|| true){
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                         <div style={{display:'flex'}}>
                           <YaxisSelector initYaxisDialog={me._initYaxisDialog}/>
