@@ -13,19 +13,36 @@ let DataSelectPanel=React.createClass({
           open: false
         };
       },
+
+
     _onToggle:function(){
       this.setState({ open: !this.state.open });
       return this;
     },
+
+
     render:function(){
       var mainpanel;
       if(this.state.open) mainpanel=<DataSelectMainPanel />;
+        var buttonStyle = {
 
+
+          width:'initial',
+          height:'48px',
+          border:'solid 2px gray',
+          verticalAlign:'middle',
+          marginTop:'250px'
+
+
+             };
       return(
         <div className="jazz-dataselectpanel">
-          <FlatButton className="jazz-dataselectpanel-button"  onClick={this._onToggle}>
-            <FontIcon className="fa fa-list" style={{color:'black'}}/>
-          </FlatButton>
+
+            <FlatButton   style={buttonStyle} onClick={this._onToggle}>
+              <FontIcon className="fa fa-list" style={{color:'black'}}/>
+            </FlatButton>
+
+
 
           {mainpanel}
 

@@ -35,7 +35,7 @@ let AlarmAction = {
     });
   },
   /*
-   date--ä»alarm tag list è¿‡æ¥çš„æ—¶é—´æ ¼å¼æ˜¯:'20150101'ï¼›ä»æŸ¥è¯¢å’Œä¿®æ”¹stepæ˜¯æ—¶é—´æ•°ç»„
+   date--´Óalarm tag list ¹ıÀ´µÄÊ±¼ä¸ñÊ½ÊÇ:'20150101'£»´Ó²éÑ¯ºÍĞŞ¸ÄstepÊÇÊ±¼äÊı×é
   */
   getAlarmTagData(tagIds, date, step, hierName){
     var timeRange;

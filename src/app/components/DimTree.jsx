@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import {Paper} from 'material-ui';
 import { Link,Navigation,State,RouteHandler } from 'react-router';
 import assign from 'object-assign';
-import HierarchyStore from "../stores/HierarchyStore.jsx";
+
 import {nodeType} from '../constants/TreeConstants.jsx';
-import Search from './HierarchySearch.jsx'
+import Search from './DimSearch.jsx'
 
 
 var TreeNode = React.createClass({
@@ -40,7 +40,7 @@ var TreeNode = React.createClass({
       return;
     };
 
-    if(this.props.selectedNode.ParentId==this.props.id){
+    if(this.props.selectedNode.HierarchyId==this.props.id){
       this.setState({
         collapsed: false,
       });
@@ -208,6 +208,7 @@ var TreeView = React.createClass({
     collapseAll: function () {
 
       var nodes = this.refs;
+
       for(var key in nodes){
         nodes[key].collapseAll(nodes[key].refs);
       }
@@ -245,13 +246,13 @@ var TreeView = React.createClass({
         var drawTree = (dataSource, parentNode, parentIndent) => {
           if(dataSource !== null){
 
+
             // node properties, map response data to props
             var props = {
               indent: parentIndent || 0,
               nodeData: dataSource,
               selectedNode: this.state.selectedNode || this.props.selectedNode,
               onSelectedNode: this._onSelectNode,
-
               ref: dataSource.Id
             };
             parentNode.push(
@@ -262,6 +263,7 @@ var TreeView = React.createClass({
 
         // began to draw tree
         if(Array.isArray(dataSource)){
+
           dataSource.forEach(function(node){
             drawTree(node, tree, 0);
           });
@@ -278,7 +280,7 @@ var TreeView = React.createClass({
 
 });
 
-let HierarchyTree=React.createClass({
+let DimTree=React.createClass({
   mixins:[Navigation,State],
   propTypes: {
       allNode: React.PropTypes.object.isRequired,
@@ -296,7 +298,7 @@ let HierarchyTree=React.createClass({
     },
 
    _onSearchChange:function(text){
-
+    
      var value= document.getElementById("searchfield").value;
 
      if(value){
@@ -344,7 +346,8 @@ let HierarchyTree=React.createClass({
                                       zIndex: '1',
                                       width:'350px',
                                       height:'500px',
-                                      position:'absolute'
+                                      position:'absolute',
+                                      left:'-165px'
 
                                          };
 
@@ -368,4 +371,4 @@ let HierarchyTree=React.createClass({
   }
 });
 
-module.exports=HierarchyTree;
+module.exports=DimTree;

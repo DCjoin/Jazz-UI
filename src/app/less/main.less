@@ -634,15 +634,16 @@ ul{
   transition: @transition;
 }
 .select-dropdownmenu{
-  width:110px !important;
+  min-width:110px ;
   float:right;
   margin-left: 5px;
 }
 .jazz-dataselectpanel{
-  display:inline-block;
+  display: flex;
+  flex-flow: row nowrap;
   height:100%;
   .jazz-dataselectpanel-button{
-    min-width:initial;
+    width:25px;
     height:48px;
     border:solid 2px gray;
     vertical-align:middle;
@@ -651,7 +652,7 @@ ul{
 
 }
 .jazz-dataselectmainpanel{
-  width:275px;
+  width:350px;
   height:100%;
   float:right;
   background-color:rgb(245, 245, 245)
@@ -673,10 +674,24 @@ input:focus{
         top:100%;
         background-color: white;
         z-index: 1;
-        width:275px;
+        width:350px;
         height:500px;
+        flex: 1;
         display: flex;
-        flex-flow:column;
+        flex-direction: column;
 
+
+    }
+    .jazz-search{
+      display: flex;
+      flex-flow: row nowrap;
+    }
+    .jazz-searchtype{
+      width:15%;
+      height:100%;
+
+    }
+    .jazz-searchmenu{
+      width:85%;
 
     }

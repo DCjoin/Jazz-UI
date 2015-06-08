@@ -11,6 +11,7 @@ import AlarmAction from '../../actions/AlarmAction.jsx';
 import AlarmList from './AlarmList.jsx';
 import {dateType} from '../../constants/AlarmConstants.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
+import HierarchyStore from '../../stores/HierarchyStore.jsx';
 
 var  menuItems = [
    { type: dateType.DAY_ALARM, text: '查看日报警列表' },
