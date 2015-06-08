@@ -37,6 +37,10 @@ let CommonFuns = {
 	},
 	getResResult(data){
 		if(module.exports.isObject(data)){
+			let keys = Object.getOwnPropertyNames(data);
+			if(keys.length > 2){
+				return data;
+			}
 			for(var key in data){
 				if(data.hasOwnProperty(key) && key != 'error')
 					return data[key];

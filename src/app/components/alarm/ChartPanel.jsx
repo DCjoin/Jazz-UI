@@ -96,11 +96,11 @@ let ChartPanel = React.createClass({
         <div style={{flex:1, display:'flex','flex-direction':'column', marginLeft:'10px'}}>
           {title}
           <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
-            <DropDownMenu menuItems={searchDate} ref='relativeDate'></DropDownMenu>
-            <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='startDate'/>
+            <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'140px'}}></DropDownMenu>
+            <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='startDate' style={{width:'90px', padding:'13px 0'}}/>
             <DropDownMenu menuItems={dateTime} ref='startTime'></DropDownMenu>
             <span style={{'marginLeft':'10px'}}> {'到'} </span>
-            <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='endDate'/>
+            <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='endDate' style={{width:'90px', padding:'13px 0', marginLeft:'10px'}}/>
             <DropDownMenu menuItems={dateTime} ref='endTime'></DropDownMenu>
             <RaisedButton label='查看' secondary={true} ref='searchBtn'/>
           </div>

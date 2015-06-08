@@ -4,9 +4,58 @@ import React from 'react';
 import assign from 'object-assign';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
-import {dateAdd, dateFormat, DataConverter} from '../../util/Util.jsx';
+import {dateAdd, dateFormat, DataConverter, isArray} from '../../util/Util.jsx';
 
 var yAxisOffset = 70;
+
+var dataLabelFormatter = function (format) {
+    var f = window.Highcharts.numberFormat;
+    var v = Number(this.value);
+    var sign = this.value < 0 ? -1 : 1;
+
+    v = Math.abs(v);
+    if (v === 0) {
+        if (format === false) {
+            return this.value;
+        }
+        else {
+            return v;
+        }
+    }
+    if (v < Math.pow(10, 3)) {
+        if (format === false) {
+            return v * sign;
+        }
+        else {
+            return f(v * sign, 2);
+        }
+    }
+    else if (v < Math.pow(10, 6)) {
+        if (format === false) {
+            var len = parseInt(v / 1000).toString().length;
+            var v1 = v.toString();
+            var retV = v1.substring(0, len) + ',' + v1.substring(len);
+            if (sign < 0) retV = '-' + retV;
+            return retV;
+        }
+        else {
+            return f(v * sign, 0);
+        }
+    }
+    else if (v < Math.pow(10, 8)) {
+        v = f(parseInt(v / Math.pow(10, 3)) * sign, 0) + 'k';
+    }
+    else if (v < Math.pow(10, 11)) {
+        v = f(parseInt(v / Math.pow(10, 6)) * sign, 0) + 'M';
+    }
+    else if (v < Math.pow(10, 14)) {
+        v = f(parseInt(v / Math.pow(10, 9)) * sign, 0) + 'G';
+    }
+    else if (v < Math.pow(10, 17)) {
+        v = f(parseInt(v / Math.pow(10, 12)) * sign, 0) + 'T';
+    }
+    return v;
+};
 const DEFAULT_OPTIONS = {
     colors: [
                 '#3399cc',
@@ -304,6 +353,8 @@ let ChartComponent = React.createClass({
 
       newConfig.tooltip.shared = true;
       newConfig.tooltip.crosshairs = true;
+
+      this.initYaxis(data.Data, newConfig);
 
       var realData = this.convertData(data.Data, newConfig);
       var timeRange = this.initRange(newConfig, realData);
@@ -623,7 +674,107 @@ let ChartComponent = React.createClass({
       }
 
       return max;
-   }
+   },
+   initYaxis: function (data, config) {
+        if (!isArray(data)) return;
+        var yList = [];
+        var dic = {};
+        var count = 0;
+        var offset = yAxisOffset;
+        for (let i = 0; i < data.length; i++) {
+            let uom = data[i].option.uom;
+            if (dic[uom]) continue;
+            //when no data,not generate yaxis
+            if (data[i].data.length < 1) continue;
+            let name = uom;
+            let sign = count === 0 ? 1 : -1;
+            let min = 0, max;
+            if (this.yaxisSelector) {
+                let yconfig = this.yaxisSelector.getYaxisConfig();
+                for (let j = 0; j < yconfig.length; j++) {
+                    if (yconfig[j].uom == name) {
+                        min = yconfig[j].val[1];
+                        max = yconfig[j].val[0];
+                        break;
+                    }
+                }
+            }
+            yList.push({
+                'yname': name,
+                showLastLabel: true,
+                min: min,
+                max: max,
+                type: 'linear',
+                title: {
+                    align: 'high',
+                    rotation: 0,
+                    y: -15,
+                    text: ''
+                },
+                minRange: 0.1,//must have when values are all the same, make it draw y axis
+                labels: {
+                    align: count === 0 ? 'right' : 'left',
+                    y: 5,
+                    x: -6 * sign,
+                    formatter: dataLabelFormatter
+                },
+                offset: yList.length >= 3 ? -10000 : count != 2 ? 0 : offset,
+                opposite: (count !== 0)//,
+                //gridLineWidth: count == 0 ? 1 : 0//for contour 等高线对齐，要使用此属性
+            });
+            count++;
+            dic[uom] = true;
+        }
+        if (yList.length === 0) {
+            yList.push({});
+        }
+
+        if (this.type != 'pie') {
+            var yconfig = this.yaxisSelector;
+            if (yconfig) yconfig = this.yaxisSelector.getYaxisConfig();
+            if (!yconfig) yconfig = [];
+            for (let i = 0; i < data.length; ++i) {
+                if (data[i].data.length < 1) continue;
+                var uom = data[i].option.uom;
+                var name = uom;
+                var customized = false;
+                for (let j = 0; j < yconfig.length; j++) {
+                    if (yconfig[j].uom == name) {
+                        customized = true;
+                        break;
+                    }
+                }
+                if (customized) continue;
+
+                var data1 = data[i] && data[i].data;
+                var hasNeg = false;
+                for (var j = 0; j < data1.length; ++j) {
+                    if (isArray(data1[j])) {
+                        if (data1[j][1] && data1[j][1] < 0) {
+                            hasNeg = true;
+                            break;
+                        }
+                    }
+                    else {
+                        if (data1[j] < 0) {
+                            hasNeg = true;
+                            break;
+                        }
+                    }
+                }
+                if (hasNeg) {
+                    for (var k = 0; k < yList.length; ++k) {
+                        var y = yList[k];
+                        if (y.yname == name) {
+                            y.min = undefined;
+                        }
+                    }
+                }
+            }
+        }
+
+        config.yAxis = yList;
+    }
 });
 
 module.exports = ChartComponent;
