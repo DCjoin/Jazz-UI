@@ -21,7 +21,7 @@ let YearPicker = React.createClass({
     let date = new Date();
       return {
           selectedYear: date.getFullYear(),//默认今年
-          yearIndex: this.props.yearRange - 1
+          yearIndex: this.props.yearRange 
       };
   },
   getDateValue(year){

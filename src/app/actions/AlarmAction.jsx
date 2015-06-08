@@ -37,7 +37,7 @@ let AlarmAction = {
   /*
    date--从alarm tag list 过来的时间格式是:'20150101'；从查询和修改step是时间数组
   */
-  getAlarmTagData(tagIds, date, step){
+  getAlarmTagData(tagIds, date, step, hierName){
     var timeRange;
     if(CommonFuns.isArray(date)){
       timeRange = date;
@@ -57,7 +57,8 @@ let AlarmAction = {
 
     AppDispatcher.dispatch({
          type: Action.GET_TAG_DATA_LOADING,
-         submitParams: submitParams
+         submitParams: submitParams,
+         hierName: hierName
     });
 
     Ajax.post('/Energy.svc/GetTagsData', {

@@ -8,7 +8,7 @@ let AlarmTagItem = React.createClass({
 
 	_onTagItemSelected(){
 		if(this.props.onTagItemClick){
-			this.props.onTagItemClick(this.props.hierarchyId, this.props.tagId);
+			this.props.onTagItemClick(this.props.hierarchyId, this.props.tagId, this.props.hierarchyName);
 		}
   },
 

@@ -17,7 +17,8 @@ let _isLoading = false,
     _energyData = null,
     _energyRawData = null,
     _submitParams = null,
-    _paramsObj = null;
+    _paramsObj = null,
+    _hierName = null;
 
 var EnergyStore = assign({},PrototypeStore,{
   getLoadingStatus(){
@@ -32,9 +33,13 @@ var EnergyStore = assign({},PrototypeStore,{
   getParamsObj(){
     return _paramsObj;
   },
-  _onDataLoading(params){
+  getHierName(){
+    return _hierName;
+  },
+  _onDataLoading(params, hierName){
     _submitParams = params;
     _isLoading = true;
+    _hierName = hierName;
 
     _paramsObj = {startTime: params.viewOption.TimeRanges[0].StartTime,
                endTime: params.viewOption.TimeRanges[0].EndTime,
@@ -76,7 +81,7 @@ var EnergyStore = assign({},PrototypeStore,{
 EnergyStore.dispatchToken = PopAppDispatcher.register(function(action) {
     switch(action.type) {
       case Action.GET_TAG_DATA_LOADING:
-        EnergyStore._onDataLoading(action.submitParams);
+        EnergyStore._onDataLoading(action.submitParams, action.hierName);
         EnergyStore.emitTagDataLoading();
         break;
       case Action.GET_TAG_DATA_SUCCESS:

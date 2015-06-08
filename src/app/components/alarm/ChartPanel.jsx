@@ -24,6 +24,7 @@ let ChartPanel = React.createClass({
       let isLoading = EnergyStore.getLoadingStatus();
       let paramsObj = EnergyStore.getParamsObj();
       paramsObj.isLoading = isLoading;
+      paramsObj.hierName = EnergyStore.getHierName();
 
       this.setState(paramsObj);
     },
@@ -53,6 +54,7 @@ let ChartPanel = React.createClass({
         return {
           isLoading: false,
           energyData: null,
+          hierName: null,
           submitParams: null,
           step: 2
         };
@@ -63,7 +65,7 @@ let ChartPanel = React.createClass({
       let energyPart=null;
       if(this.state.isLoading){
         energyPart = <div style={{margin:'auto'}}>{'loading...'}</div>;
-      }else if(!!this.state.energyData|| true){
+      }else if(!!this.state.energyData){
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                         <div style={{display:'flex'}}>
                           <YaxisSelector initYaxisDialog={me._initYaxisDialog}/>
@@ -73,13 +75,26 @@ let ChartPanel = React.createClass({
                         <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj}/>
                       </div>;
       }
+      let title = null;
+      if(me.state.hierName){
+        var uom='';
+        if(me.state.step ==1) {
+          uom = '小时';
+        }else if(me.state.step ==2){
+          uom = '日';
+        }else if(me.state.step == 3){
+          uom = '月';
+        }
+        title = <span >{me.state.hierName + uom + '能耗报警'}</span>;
+        title =  <div style={{height:'30px'}}>
+            {title}
+            <i className='fa fa-floppy-o' style={{'marginLeft':'10px'}}></i>
+          </div>;
+      }
 
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', marginLeft:'10px'}}>
-          <div style={{height:'30px'}}>
-            <span >{'1塔办公电梯日能耗报警'}</span>
-            <i className='fa fa-floppy-o' style={{'marginLeft':'10px'}}></i>
-          </div>
+          {title}
           <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
             <DropDownMenu menuItems={searchDate} ref='relativeDate'></DropDownMenu>
             <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='startDate'/>
