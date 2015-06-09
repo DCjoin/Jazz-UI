@@ -2,7 +2,10 @@
 import React from "react";
 import mui from 'material-ui';
 
-let { Dialog, DropDownMenu, FlatButton, TextField } = mui;
+import CommonFuns from '../../util/Util.jsx';
+
+let {isNumeric} = CommonFuns;
+let { Dialog, DropDownMenu, FlatButton, TextField, FontIcon } = mui;
 
 var _currentChartObj = null,
     _storedConfig = null;
@@ -15,8 +18,14 @@ let YaxisSelector = React.createClass({
       var chartObj = this.props.initYaxisDialog();
       _currentChartObj = chartObj;
       var config = this.getConfig4Dialog(chartObj);
-      this.setState({yaxisConfig:config, storedConfig: _storedConfig});
+      this.setState({yaxisConfig:config, storedConfig: _storedConfig, showDialog: true});
+    }
+  },
+
+  componentDidUpdate(){
+    if(this.state.showDialog){
       this.refs.yaxisDialog.show();
+      this.refs.yaxisDialog.initDefaultValues();
     }
   },
   getConfig4Dialog(chartObj){
@@ -108,8 +117,8 @@ var YaxisDialog = React.createClass({
     var ret = [];
     for (let key in yaxisConfig) {
       let uom = key;//key == 'undefined' ? '' : key;
-      let maxValue = this.refs[uom+'_max'].getValue();
-      let minValue = this.refs[uom+'_min'].getValue();
+      let maxValue = this.refs[uom+'_pair'].refs[uom+'_max'].getValue();
+      let minValue = this.refs[uom+'_pair'].refs[uom+'_min'].getValue();
       if(maxValue === '' && minValue === ''){
         continue;
       }
@@ -123,6 +132,20 @@ var YaxisDialog = React.createClass({
   _onDialogCancel(){
     this.hide();
   },
+  _onRemoveAllClick(){
+    var yaxisConfig = this.props.yaxisConfig;
+    for (var key in yaxisConfig) {
+      let uom = key;
+      let maxField = this.refs[uom+'_pair'].refs[uom+'_max'];
+      let minField = this.refs[uom+'_pair'].refs[uom+'_min'];
+
+      maxField.setValue('');
+      minField.setValue('');
+
+      maxField.setErrorText();
+      minField.setErrorText();
+    }
+  },
   show(){
     this.refs.dialogWindow.show();
   },
@@ -132,13 +155,18 @@ var YaxisDialog = React.createClass({
   render(){
     var _buttonActions = [
             <FlatButton
-            label="确定"
-            secondary={true}
-            onClick={this._onDialogSubmit} />,
+              label="保存"
+              secondary={true}
+              onClick={this._onDialogSubmit} />,
             <FlatButton
-            label="取消"
-            primary={true}
-            onClick={this._onDialogCancel} />
+              label="放弃"
+              primary={true}
+              onClick={this._onDialogCancel} style={{marginRight:'420px'}}/>,
+
+            <FlatButton secondary={true} style={{marginRight:'20px'}} onClick={this._onRemoveAllClick}>
+               <FontIcon className="fa fa-trash-o"/>
+               <span>{'全部清除'}</span>
+            </FlatButton>
         ];
 
     var yaxisConfig = this.props.yaxisConfig;
@@ -147,14 +175,11 @@ var YaxisDialog = React.createClass({
 
     for (var key in yaxisConfig) {
       var uom = key; //== 'undefined' ? '' : key;
-      let storedConfigItem = this.getStoredConfigItemByUOM(uom, this.props.storedConfig);
-      let maxStored = (!!storedConfigItem)? storedConfigItem.val[0] : null;
-      let minStored = (!!storedConfigItem)? storedConfigItem.val[1] : null;
+
       let group = <div>
         <div> {'Y坐标轴' + i} </div>
         <div> <span>{'相关数据点:'}</span> <span> {yaxisConfig[key].join(',')}</span></div>
-        <div> <span>{'最大值:'}</span> <TextField hintText="自动" ref={uom+'_max'} value = {maxStored}/><span>{uom}</span></div>
-        <div> <span>{'最小值:'}</span> <TextField hintText="自动" ref={uom+'_min'} value = {minStored}/><span>{uom}</span></div>
+        <MaxMinPair ref={uom+'_pair'} uom = {uom}></MaxMinPair>
       </div>;
 
         ++i;
@@ -166,6 +191,28 @@ var YaxisDialog = React.createClass({
     </Dialog>;
 
     return dialog;
+  },
+  _onFieldChange(e){
+    console.log(arguments);
+  },
+  initDefaultValues(){
+    var yaxisConfig = this.props.yaxisConfig;
+    for (var key in yaxisConfig) {
+      var uom = key;
+      let storedConfigItem = this.getStoredConfigItemByUOM(uom, this.props.storedConfig);
+      let maxField = this.refs[uom+'_pair'].refs[uom+'_max'];
+      let minField = this.refs[uom+'_pair'].refs[uom+'_min'];
+
+      if(storedConfigItem){
+        maxField.setValue(storedConfigItem.val[0]);
+        minField.setValue(storedConfigItem.val[1]);
+      }else{
+        maxField.setValue('');
+        minField.setValue('');
+      }
+      maxField.setErrorText();
+      minField.setErrorText();
+    }
   },
   getStoredConfigItemByUOM(uom, storedConfig){
     if(storedConfig){
@@ -184,22 +231,53 @@ var YaxisDialog = React.createClass({
 
     for (let key in yaxisConfig) {
       let uom = key == 'undefined' ? '' : key;
-      let maxField = this.refs[uom+'_max'];
-      let minField = this.refs[uom+'_min'];
+      let maxField = this.refs[uom+'_pair'].refs[uom+'_max'],
+          minField = this.refs[uom+'_pair'].refs[uom+'_min'],
+          maxValue = maxField.getValue(),
+          minValue = minField.getValue();
 
-      if(maxField.getValue()==='' && minField.getValue()===''){
+      if(maxValue==='' && minValue===''){
         //flag = false;
         continue;
-      }else if(maxField.getValue()===''){
+      }else if(maxValue ===''){
         maxField.setErrorText('必填项。');
         flag = false;
-      }else if(minField.getValue()===''){
+      }else if(minValue === ''){
         minField.setErrorText('必填项。');
+        flag = false;
+      }
+
+      if(!isNumeric(maxValue)){
+        maxField.setErrorText('必填为数字。');
+        flag = false;
+      }
+      if(!isNumeric(minValue)){
+        minField.setErrorText('必填为数字。');
+        flag = false;
+      }
+
+      if(flag && (parseFloat(minValue) >= parseFloat(maxValue))){
+        maxField.setErrorText('最大值要大于最小值。');
         flag = false;
       }
     }
     return flag;
     }
+});
+
+var MaxMinPair = React.createClass({
+  render(){
+    return  <div>
+         <div> <span>{'最大值:'}</span> <TextField hintText="自动" onChange={this._onMaxFieldChange} ref={this.props.uom+'_max'} /><span>{this.props.uom}</span></div>
+         <div> <span>{'最小值:'}</span> <TextField hintText="自动" onChange={this._onMinFieldChange}ref={this.props.uom+'_min'} /><span>{this.props.uom}</span></div>
+       </div>;
+  },
+  _onMaxFieldChange(){
+    this.refs[this.props.uom+'_max'].setErrorText();
+  },
+  _onMinFieldChange(){
+    this.refs[this.props.uom+'_min'].setErrorText();
+  }
 });
 
 module.exports = YaxisSelector;

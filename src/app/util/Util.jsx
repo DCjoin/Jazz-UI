@@ -14,6 +14,12 @@ let CommonFuns = {
 	isArray(it){
 		return window.toString.call(it) === '[object Array]';
 	},
+	isNumber: function(value) {
+      return typeof value === 'number' && isFinite(value);
+  },
+	isNumeric: function(value) {
+      return !isNaN(parseFloat(value)) && isFinite(value);
+  },
 	log: function(content) {
 		if(true) { // Todo change, is open log
 			if(console && typeof this.isFunction(console.log)) {
@@ -21,7 +27,6 @@ let CommonFuns = {
 			}
 		}
 	},
-
   isEmpty: function(data){
 	  if(typeof data == "object"){
 	    if(Array.isArray(data)){
@@ -205,10 +210,7 @@ let CommonFuns = {
 
         return mydate;
     }
-	},
-	isNumber: function(value) {
-      return typeof value === 'number' && isFinite(value);
-  },
+	}
 };
 
 module.exports = CommonFuns;
