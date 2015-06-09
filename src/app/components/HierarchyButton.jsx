@@ -47,7 +47,7 @@ let HierarchyButton=React.createClass({
 
     componentDidMount: function() {
       HierarchyStore.addChangeListener(this._onChange);
-      HierarchyAction.loadall(100002);
+      HierarchyAction.loadall(window.currentCustomerId);
      },
      componentWillUnmount: function() {
 

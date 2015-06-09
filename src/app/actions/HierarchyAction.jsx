@@ -9,9 +9,11 @@ var Action = Hierarchy.Action;
 
 let HierarchyAction = {
   loadall(date){
-    Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive?_dc=1432863139860', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive?', {
         params: {customerId: date},
         success: function(hierarchyList){
+          console.log("hierarchyList");
+          console.log(hierarchyList);
           AppDispatcher.dispatch({
               type: Action.LOAD_HIE_NODE,
               hierarchyList: hierarchyList
