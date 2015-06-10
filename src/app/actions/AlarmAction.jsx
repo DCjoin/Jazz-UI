@@ -36,6 +36,7 @@ let AlarmAction = {
   },
   /*
    date format:'20150101' or timeRange like
+
   */
   getAlarmTagData(tagIds, date, step, hierName){
     var timeRange;
