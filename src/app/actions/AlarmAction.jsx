@@ -35,7 +35,7 @@ let AlarmAction = {
     });
   },
   /*
-   date--��alarm tag list ������ʱ����ʽ��:'20150101'���Ӳ�ѯ���޸�step��ʱ������
+   999date--��alarm tag list ������ʱ����ʽ��:'20150101'���Ӳ�ѯ���޸�step��ʱ������
   */
   getAlarmTagData(tagIds, date, step, hierName){
     var timeRange;
