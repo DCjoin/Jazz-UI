@@ -9,6 +9,7 @@ import EnergyStore from '../../stores/EnergyStore.jsx';
 import YaxisSelector from '../energy/YaxisSelector.jsx';
 import StepSelector from '../energy/StepSelector.jsx';
 import ChartComponent from '../energy/ChartComponent.jsx';
+import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
@@ -43,6 +44,9 @@ let ChartPanel = React.createClass({
 
       this.setState({step:step});
       AlarmAction.getAlarmTagData(tagIds, timeRanges, step);
+    },
+    _onChart2WidgetClick(){
+        this.refs.saveChartDialog.show();
     },
     _initYaxisDialog(){
       var chartCmp = this.refs.ChartComponent;
@@ -88,12 +92,13 @@ let ChartPanel = React.createClass({
         title = <span >{me.state.hierName + uom + '能耗报警'}</span>;
         title =  <div style={{height:'30px'}}>
             {title}
-            <i className='fa fa-floppy-o' style={{'marginLeft':'10px'}}></i>
+              <IconButton iconClassName="fa fa-floppy-o" style={{'marginLeft':'10px'}} onClick={this._onChart2WidgetClick}/>
           </div>;
       }
 
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', marginLeft:'10px'}}>
+          <WidgetSaveWindow ref={'saveChartDialog'}></WidgetSaveWindow>
           {title}
           <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
             <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'140px'}}></DropDownMenu>
