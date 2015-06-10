@@ -1,5 +1,5 @@
 'use strict';
-
+   
 import React from 'react';
 
 import Router  from 'react-router';
@@ -36,7 +36,7 @@ var routes = (
 
 Router.run(routes, Router.HashLocation, (Root, state) => {
     var muiTheme=theme.getCurrentTheme();
-    
+
     React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));
 
 });
