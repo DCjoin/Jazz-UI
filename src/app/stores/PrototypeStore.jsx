@@ -1,4 +1,4 @@
-import PopAppDispatcher from '../dispatcher/AppDispatcher.jsx';
+'use strict';
 import events from 'events';
 import assign from 'object-assign';
 let { EventEmitter } = events;

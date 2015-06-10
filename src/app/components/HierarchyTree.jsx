@@ -6,7 +6,7 @@ import { Link,Navigation,State,RouteHandler } from 'react-router';
 import assign from 'object-assign';
 import HierarchyStore from "../stores/HierarchyStore.jsx";
 import {nodeType} from '../constants/TreeConstants.jsx';
-import Search from './HierarchySearch.jsx'
+import Search from './HierarchySearch.jsx';
 
 
 var TreeNode = React.createClass({
@@ -33,12 +33,12 @@ var TreeNode = React.createClass({
     };
   },
   componentWillMount:function(){
-    if(this.props.indent==0){
+    if(this.props.indent===0){
       this.setState({
         collapsed: false,
       });
       return;
-    };
+    }
 
     if(this.props.selectedNode.ParentId==this.props.id){
       this.setState({
@@ -305,14 +305,14 @@ let HierarchyTree=React.createClass({
          searchList:true,
          searchTree:false,
          searchValue:value
-       })
+       });
      }
      else{
        this.setState({
        initialTree:true,
        searchList:false,
        searchTree:false
-     })
+     });
      }
    },
   render:function(){
@@ -321,27 +321,27 @@ let HierarchyTree=React.createClass({
     var searchfield;
     var searchtree;
     if(this.state.initialTree) {
-                    tree=<TreeView  allNode={this.props.allNode}
+                    tree = <TreeView  allNode={this.props.allNode}
                                     selectedNode={this.props.selectedNode}
-                                    onTreeClick={this.props.onTreeClick} />
-                              };
+                                    onTreeClick={this.props.onTreeClick} />;
+                              }
     if(this.state.searchList){
       searchfield=<Search
                     allNode={this.props.allNode}
                     searchValue={this.state.searchValue}
-                    onSearchNodeClick={this.props.onTreeClick}/>
+                    onSearchNodeClick={this.props.onTreeClick}/>;
 
-    };
+    }
     if(this.state.searchTree) {
       searchtree=<TreeView  allNode={this.props.allNode}
                             selectedNode={this.state.selectedNode}
-                            onTreeClick={this.props.onTreeClick} />
-                              };
+                            onTreeClick={this.props.onTreeClick} />;
+                              }
 
                                     var buttonStyle = {
 
                                       backgroundColor: 'white',
-                                      zIndex: '1',
+                                      zIndex: '100',
                                       width:'350px',
                                       height:'500px',
                                       position:'absolute'
@@ -361,10 +361,8 @@ let HierarchyTree=React.createClass({
               {searchfield}
               {searchtree}
             </div>
-
         </Paper>
-
-    )
+    );
   }
 });
 

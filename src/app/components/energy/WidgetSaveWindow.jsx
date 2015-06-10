@@ -4,32 +4,42 @@ import React from "react";
 import mui from 'material-ui';
 import {dateFormat} from '../../util/Util.jsx';
 import HierarchyButton from '../HierarchyButton.jsx';
+import AlarmAction from '../../actions/AlarmAction.jsx';
+import DashboardStore from '../../stores/DashboardStore.jsx';
 
 let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
 
 var WidgetSaveWindow = React.createClass({
   getInitialState() {
-    return {dashboardState:'existDashboard'};
+    return {dashboardState:'existDashboard',
+            dashboardMenuItems:[{text:''}]
+           };
   },
   show(){
     this.refs.dialogWindow.show();
   },
-  onTreeItemClick(){
+  onTreeItemClick(hierItem){
+    //console.log(item);
+    AlarmAction.getDashboardByHierachy(hierItem.Id);
+  },
+  onHierButtonClick(){
 
+  },
+  _onDashboardListLoaded(){
+    var menuItems = DashboardStore.getDashboardMenuItems();
+    this.setState({dashboardMenuItems:menuItems});
   },
   _onExistRadioChanged(){
     this.setState({dashboardState:'existDashboard'});
-    console.log('_onExistRadioChanged');
   },
   _onNewRadioChanged(){
     this.setState({dashboardState:'newDashboard'});
-    console.log('_onNewRadioChanged');
   },
   render(){
     let existDashBoardRadioContent;
     let newDashboardRadioContent;
     if(this.state.dashboardState ==='existDashboard'){
-      existDashBoardRadioContent = <div><DropDownMenu menuItems={[{text:'dashboard1'}]}></DropDownMenu></div>;
+      existDashBoardRadioContent = <div><DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems}></DropDownMenu></div>;
     }else{
       newDashboardRadioContent = <div><TextField ref={'dashboardname'} hintText={'新建仪表盘'}/></div>;
     }
@@ -38,7 +48,7 @@ var WidgetSaveWindow = React.createClass({
         <span className='jazz-form-field-title'>图标名称：</span> <TextField ref={'widgetname'} />
       </div>
       <div>
-        <span className='jazz-form-field-title'>层级节点：</span> <HierarchyButton onTreeClick={this.onTreeItemClick} ></HierarchyButton>
+        <span className='jazz-form-field-title'>层级节点：</span> <HierarchyButton onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
       </div>
       <div>
         <span className='jazz-form-field-title'>选择仪表盘：</span>
@@ -76,9 +86,14 @@ var WidgetSaveWindow = React.createClass({
     return dialog;
   },
   componentDidMount: function() {
-    //this.refs.existDashboardRadio.setSelectedValue('existDashboard');
+    DashboardStore.addDashboardListLoadedListener(this._onDashboardListLoaded);
   },
-
+  componentWillUnmount: function() {
+    DashboardStore.removeDashboardListLoadedListener(this._onDashboardListLoaded);
+  },
+  componentDidUpdate(){
+    this.refs.dashboardListDropDownMenu._setWidth();
+  }
 });
 
 module.exports = WidgetSaveWindow;

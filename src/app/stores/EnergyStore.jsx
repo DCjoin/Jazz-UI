@@ -1,7 +1,6 @@
 'use strict';
 
-
-import PopAppDispatcher from '../dispatcher/AppDispatcher.jsx';
+import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
@@ -10,8 +9,8 @@ import {dateType} from '../constants/AlarmConstants.jsx';
 import {Action} from '../constants/actionType/Alarm.jsx';
 import ReaderFuncs from './MixedChartReader.jsx';
 
-let TAG_DATA_LOADING_EVENT = 'tagdataloading',
-    TAG_DATA_CHANGED_EVENT = 'tagdatachanged';
+const TAG_DATA_LOADING_EVENT = 'tagdataloading',
+      TAG_DATA_CHANGED_EVENT = 'tagdatachanged';
 
 let _isLoading = false,
     _energyData = null,
@@ -78,7 +77,7 @@ var EnergyStore = assign({},PrototypeStore,{
   },
 });
 
-EnergyStore.dispatchToken = PopAppDispatcher.register(function(action) {
+EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case Action.GET_TAG_DATA_LOADING:
         EnergyStore._onDataLoading(action.submitParams, action.hierName);
