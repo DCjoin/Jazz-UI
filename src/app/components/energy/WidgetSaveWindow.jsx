@@ -28,6 +28,7 @@ var WidgetSaveWindow = React.createClass({
   },
   onTreeItemClick(hierItem){
     //console.log(item);
+    this.setState({selectedNode: hierItem});
     AlarmAction.getDashboardByHierachy(hierItem.Id);
   },
   onHierButtonClick(){
@@ -50,18 +51,18 @@ var WidgetSaveWindow = React.createClass({
     if(this.state.dashboardState ==='existDashboard'){
       existDashBoardRadioContent = <div><DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems}></DropDownMenu></div>;
     }else{
-      newDashboardRadioContent = <div><TextField ref={'dashboardname'} hintText={'新建仪表盘'}/></div>;
+      newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}/></div>;
     }
     var form =<div>
-      <div>
-        <span className='jazz-form-field-title'>图标名称：</span> <TextField ref={'widgetname'} />
+      <div style={{paddingBottom:'10px'}}>
+        <span className='jazz-form-text-field-title'>图标名称：</span> <TextField ref={'widgetname'} />
       </div>
-      <div>
-        <span className='jazz-form-field-title'>层级节点：</span> <HierarchyButton ref={'hierTreeButton'} onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
+      <div style={{marginBottom:'10px'}}>
+        <span className='jazz-form-field-title' style={{marginTop:'12px'}}>层级节点：</span> <HierarchyButton ref={'hierTreeButton'} onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
       </div>
-      <div>
-        <span className='jazz-form-field-title'>选择仪表盘：</span>
-        <div style={{marginLeft: '140px'}}>
+      <div style={{ marginBottom:'10px'}}>
+        <span className='jazz-form-field-title' style={{marginTop:'2px'}}>选择仪表盘：</span>
+        <div style={{width: '200px', display:'inline-block'}}>
           <RadioButtonGroup ref={'existDashboardRadio'} onChange={this._onExistRadioChanged} valueSelected={this.state.dashboardState}>
             {[<RadioButton label="已存在仪表盘" value="existDashboard" ></RadioButton>]}
           </RadioButtonGroup>
@@ -73,7 +74,7 @@ var WidgetSaveWindow = React.createClass({
         </div>
       </div>
       <div>
-        <span className='jazz-form-field-title'>备注：</span><TextField ref={'dashboardname'} multiLine='true'/>
+        <span className='jazz-form-text-field-title'>备注：</span><TextField ref={'dashboardComment'} multiLine='true'/>
       </div>
     </div>;
 
@@ -110,7 +111,10 @@ var WidgetSaveWindow = React.createClass({
   },
   _onDialogSubmit(){
     console.log('_onDialogSubmit');
-    this.hide();
+    if(this.validate()){
+      this.hide();
+    }
+
   },
   _onDialogCancel(){
     console.log('_onDialogCancel');
@@ -123,6 +127,22 @@ var WidgetSaveWindow = React.createClass({
       this.refs.widgetname.setErrorText('必填项。');
       flag = false;
     }
+
+    if(!!this.state.selectedNode){
+      this.refs.hierTreeButton.setErrorText('必填项。');
+      flag = false;
+    }
+    if(this.state.dashboardState === 'existDashboard'){
+
+    }else{
+      let newDashboardName = this.refs.newDashboardName.getValue();
+      if(newDashboardName.trim() === ''){
+        this.refs.newDashboardName.setErrorText('必填项。');
+        flag = false;
+      }
+    }
+
+    return flag;
   }
 });
 

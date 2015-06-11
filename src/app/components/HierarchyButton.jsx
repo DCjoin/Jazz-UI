@@ -61,6 +61,9 @@ let HierarchyButton=React.createClass({
       }
       return null;
     },
+    setErrorText: function(newErrorText) {
+      this.setState({errorText: newErrorText});
+    },
     componentDidMount: function() {
       HierarchyStore.addChangeListener(this._onChange);
       HierarchyAction.loadall(window.currentCustomerId);
@@ -90,12 +93,24 @@ let HierarchyButton=React.createClass({
         dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
 
       }
+      var errorStyle = {
+        position: 'absolute',
+        bottom: -10,
+        fontSize: '12px',
+        lineHeight: '12px',
+        color: 'red'
+      };
+      var errorTextElement = this.state.errorText ? (
+        <div style={errorStyle}>{this.state.errorText}</div>
+      ) : null;
+
       return(
             <div className='jazz-hierarchybutton' style={{display:'inline-block'}}>
               <FlatButton style={buttonStyle} onClick={this._onShowPaper}>
                   <FontIcon className="fa fa-th-large" />
                   <span className="mui-flat-button-label" style={{margin:'5px'}} >{this.state.buttonName}</span>
               </FlatButton>
+              {errorTextElement}
                 {dropdownPaper}
             </div>
       );
