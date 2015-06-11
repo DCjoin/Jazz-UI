@@ -19,11 +19,13 @@ let AlarmList = React.createClass({
 			loadingStatus:false
 			});
 	},
-	onTagItemClick(hierId, tagId, hierName){
+	onTagItemClick(tagOption){
 		let date = this.state.dateValue,
-				step = this.state.step;
+				step = this.state.step,
+				tagId = tagOption.tagId,
+				hierName = tagOption.hierName;
 
-		AlarmAction.getAlarmTagData(tagId, date, step, hierName);
+		AlarmAction.getAlarmTagData(tagId, date, step, hierName, tagOption);
 	},
 	render: function() {
 		let displayedDom = null;

@@ -1,5 +1,5 @@
 'use strict';
-     
+
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import CommonFuns from '../util/Util.jsx';
@@ -37,7 +37,7 @@ let AlarmAction = {
   /*
    date--��alarm tag list ������ʱ����ʽ��:'20150101'���Ӳ�ѯ���޸�step��ʱ������
   */
-  getAlarmTagData(tagIds, date, step, hierName){
+  getAlarmTagData(tagIds, date, step, hierName, tagOption){
     var timeRange;
     if(CommonFuns.isArray(date)){
       timeRange = date;
@@ -58,7 +58,8 @@ let AlarmAction = {
     AppDispatcher.dispatch({
          type: Action.GET_TAG_DATA_LOADING,
          submitParams: submitParams,
-         hierName: hierName
+         hierName: hierName,
+         tagOptions: tagOption
     });
 
     Ajax.post('/Energy.svc/GetTagsData', {
