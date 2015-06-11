@@ -1,5 +1,4 @@
  'use strict';
-
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import CommonFuns from '../util/Util.jsx';
