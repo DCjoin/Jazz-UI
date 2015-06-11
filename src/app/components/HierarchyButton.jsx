@@ -44,15 +44,23 @@ let HierarchyButton=React.createClass({
         selectedNode:data
       });
     },
-    selectHierItem(hierId){
+    selectHierItem(hierId, isCallClickEvent){
+      let item = this.getHierById(hierId);
+      if(item)
+        this.setState({selectedNode:item, buttonName:item.Name});
+
+        if(!!isCallClickEvent){
+          this.props.onTreeClick(item);
+        }
+    },
+    getHierById(hierId){
       var data=HierarchyStore.getDate();
       if(data){
         let item = HierarchyStore.findHierItem(data, hierId);
-        if(item)
-          this.setState({selectedNode:item});
+        return item;
       }
+      return null;
     },
-
     componentDidMount: function() {
       HierarchyStore.addChangeListener(this._onChange);
       HierarchyAction.loadall(window.currentCustomerId);

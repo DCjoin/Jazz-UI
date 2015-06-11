@@ -8,6 +8,7 @@ import AlarmAction from '../../actions/AlarmAction.jsx';
 import DashboardStore from '../../stores/DashboardStore.jsx';
 
 let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
+let isShowed = false;
 
 var WidgetSaveWindow = React.createClass({
   getInitialState() {
@@ -17,9 +18,13 @@ var WidgetSaveWindow = React.createClass({
   },
   show(){
     this.refs.dialogWindow.show();
+    isShowed = true;
   },
   hide(){
     this.refs.dialogWindow.dismiss();
+  },
+  _onDismiss(){
+    isShowed = false;
   },
   onTreeItemClick(hierItem){
     //console.log(item);
@@ -83,7 +88,7 @@ var WidgetSaveWindow = React.createClass({
               onClick={this._onDialogCancel} style={{marginRight:'560px'}}/>
         ];
 
-    var dialog = <Dialog  title="保存图标至仪表盘"  actions={_buttonActions} modal={false} ref="dialogWindow">
+    var dialog = <Dialog  title="保存图标至仪表盘"  actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
                   {form}
                  </Dialog>;
 
@@ -96,9 +101,9 @@ var WidgetSaveWindow = React.createClass({
     DashboardStore.removeDashboardListLoadedListener(this._onDashboardListLoaded);
   },
   componentDidUpdate(){
-    if(this.props.openImmediately){
-
-      this.refs.hierTreeButton.selectHierItem();
+    if(this.props.openImmediately && !isShowed){
+      var tagOption = this.props.tagOption;
+      this.refs.hierTreeButton.selectHierItem(tagOption.hierId, true);
       this.show();
     }
 

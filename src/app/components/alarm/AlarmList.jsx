@@ -21,11 +21,9 @@ let AlarmList = React.createClass({
 	},
 	onTagItemClick(tagOption){
 		let date = this.state.dateValue,
-				step = this.state.step,
-				tagId = tagOption.tagId,
-				hierName = tagOption.hierName;
+				step = this.state.step;
 
-		AlarmAction.getAlarmTagData(tagId, date, step, hierName, tagOption);
+		AlarmAction.getAlarmTagData(date, step, tagOption);
 	},
 	render: function() {
 		let displayedDom = null;

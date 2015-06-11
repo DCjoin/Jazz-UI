@@ -36,7 +36,7 @@ let AlarmAction = {
   /*
    date--��alarm tag list ������ʱ����ʽ��:'20150101'���Ӳ�ѯ���޸�step��ʱ������
   */
-  getAlarmTagData(tagIds, date, step, hierName, tagOption){
+  getAlarmTagData(date, step, tagOption){
     var timeRange;
     if(CommonFuns.isArray(date)){
       timeRange = date;
@@ -45,8 +45,11 @@ let AlarmAction = {
       timeRange = [{StartTime:dateArray[0], EndTime:dateArray[1]}];
     }
 
-    var tags = CommonFuns.isArray(tagIds) ? tagIds:[tagIds];
-    var submitParams = { tagIds:tags,
+    var tagId = tagOption[0].tagId,
+        hierName = tagOption[0].hierName;
+
+    var tagIds = CommonFuns.isArray(tagId) ? tagIds:[tagId];
+    var submitParams = { tagIds:tagIds,
                          viewOption:{ DataUsageType: 1,
                                       IncludeNavigatorData: true,
                                       Step: step,
@@ -57,7 +60,6 @@ let AlarmAction = {
     AppDispatcher.dispatch({
          type: Action.GET_TAG_DATA_LOADING,
          submitParams: submitParams,
-         hierName: hierName,
          tagOptions: tagOption
     });
 
