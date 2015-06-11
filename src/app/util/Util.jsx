@@ -210,6 +210,16 @@ let CommonFuns = {
 
         return mydate;
     }
+	},
+	getSelecetedItemFromDropdownMenu(dropdownMenu){
+		if(dropdownMenu){
+			let items = dropdownMenu.props.menuItems,
+					selectedIndex = dropdownMenu.state.selectedIndex;
+			if(items.length>= selectedIndex){
+				return items[selectedIndex];
+			}
+			return null;
+		}
 	}
 };
 

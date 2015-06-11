@@ -6,6 +6,7 @@ import {dateFormat} from '../../util/Util.jsx';
 import HierarchyButton from '../HierarchyButton.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import DashboardStore from '../../stores/DashboardStore.jsx';
+import CommonFuns from '../../util/Util.jsx';
 
 let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
 let isShowed = false;
@@ -44,12 +45,16 @@ var WidgetSaveWindow = React.createClass({
   _onNewRadioChanged(){
     this.setState({dashboardState:'newDashboard'});
   },
+  _onExistDashboardChanged(e, selectedIndex, menuItem){
+    console.log(selectedIndex, menuItem);
+    this.setState({selectedExistingDashboard:menuItem});
+  },
   render(){
     let me = this;
     let existDashBoardRadioContent;
     let newDashboardRadioContent;
     if(this.state.dashboardState ==='existDashboard'){
-      existDashBoardRadioContent = <div><DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems}></DropDownMenu></div>;
+      existDashBoardRadioContent = <div><DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} onChange={this._onExistDashboardChanged}></DropDownMenu></div>;
     }else{
       newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}/></div>;
     }
@@ -109,13 +114,6 @@ var WidgetSaveWindow = React.createClass({
     }
 
   },
-  _onDialogSubmit(){
-    console.log('_onDialogSubmit');
-    if(this.validate()){
-      this.hide();
-    }
-
-  },
   _onDialogCancel(){
     console.log('_onDialogCancel');
     this.hide();
@@ -128,12 +126,15 @@ var WidgetSaveWindow = React.createClass({
       flag = false;
     }
 
-    if(!!this.state.selectedNode){
+    if(!this.state.selectedNode){
       this.refs.hierTreeButton.setErrorText('必填项。');
       flag = false;
     }
     if(this.state.dashboardState === 'existDashboard'){
-
+      let existDashboardItem = CommonFuns.getSelecetedItemFromDropdownMenu(this.refs.dashboardListDropDownMenu);
+      if(!existDashboardItem || !existDashboardItem.id) {
+        flag = false;
+      }
     }else{
       let newDashboardName = this.refs.newDashboardName.getValue();
       if(newDashboardName.trim() === ''){
@@ -143,6 +144,38 @@ var WidgetSaveWindow = React.createClass({
     }
 
     return flag;
+  },
+  _onDialogSubmit(){
+    if(this.validate()){
+      let widgetDto;
+      let createNewDashboard = (this.state.dashboardState === 'newDashboard');
+      if(!createNewDashboard){
+        let existDashboardItem = CommonFuns.getSelecetedItemFromDropdownMenu(this.refs.dashboardListDropDownMenu),
+            dashboardId = existDashboardItem.id,
+            title = this.refs.widgetname.getValue();
+
+        widgetDto = {widgetDto: {
+                                  ContentSyntax:this.props.contentSyntax,
+                                  DashboardId:dashboardId,
+                                  Name: title
+                                }
+                    };
+      }else{
+        widgetDto ={ dashboard: { HierarchyId: this.state.selectedNode.Id,
+                                  Name:this.refs.newDashboardName.getValue(),
+                                  IsFavorite: false,
+                                  IsRead: false
+                                },
+                     widget: { ContentSyntax:this.props.contentSyntax,
+                               Name:this.refs.widgetname.getValue()
+                             }
+                   };
+      }
+
+      AlarmAction.save2Dashboard(widgetDto, createNewDashboard);
+      this.hide();
+    }
+
   }
 });
 

@@ -106,7 +106,27 @@ let AlarmAction = {
            });
          }
        });
-
+  },
+  save2Dashboard(params, createNewDashboard){
+    let url;
+    if(!createNewDashboard){
+      url = '/DashBoard.svc/CreateWidget';
+    }else{
+      url = '/DashBoard.svc/CreateDashboard';
+    }
+    Ajax.post(url, {
+         params:params,
+         success: function(dashboardList){
+           AppDispatcher.dispatch({
+               type: Action.SAVE_TO_DASHBOARD_SUCESS
+           });
+         },
+         error: function(err, res){
+           AppDispatcher.dispatch({
+               type: Action.SAVE_TO_DASHBOARD_ERROR
+           });
+         }
+       });
   }
 };
 

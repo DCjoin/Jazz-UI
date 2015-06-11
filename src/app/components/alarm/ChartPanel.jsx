@@ -53,7 +53,7 @@ let ChartPanel = React.createClass({
     },
     _onChart2WidgetClick(){
         if(!!this.state.energyData){
-          let contentSyntax =this.getContentSyntax();
+          let contentSyntax = JSON.stringify(this.getContentSyntax());
           this.setState({ dashboardOpenImmediately: true,
                           contentSyntax: contentSyntax});
         }
