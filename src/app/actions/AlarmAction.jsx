@@ -33,9 +33,6 @@ let AlarmAction = {
         }
     });
   },
-  /*
-   date--��alarm tag list ������ʱ����ʽ��:'20150101'���Ӳ�ѯ���޸�step��ʱ������
-  */
   getAlarmTagData(date, step, tagOption){
     var timeRange;
     if(CommonFuns.isArray(date)){
@@ -93,6 +90,23 @@ let AlarmAction = {
       endDate = new Date(parseInt(dateStr.substr(0,4)) + 1, 0, 1);
     }
     return [DataConverter.DatetimeToJson(startDate), DataConverter.DatetimeToJson(endDate)];
+  },
+  getDashboardByHierachy(hierId){
+    Ajax.post('/DashBoard.svc/GetDashboardByHierachy', {
+         params:{hierarchyId:hierId, userId: window.currentUserId},
+         success: function(dashboardList){
+           AppDispatcher.dispatch({
+               type: Action.GET_DASHBOARD_BY_HIERARCHY_SUCCESS,
+               dashboardList: dashboardList
+           });
+         },
+         error: function(err, res){
+           AppDispatcher.dispatch({
+               type: Action.GET_DASHBOARD_BY_HIERARCHY_ERROR
+           });
+         }
+       });
+
   }
 };
 
