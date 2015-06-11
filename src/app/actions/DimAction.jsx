@@ -3,7 +3,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import Dim from '../constants/actionType/Dim.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import Ajax from '../ajax/ajax.jsx';   
 
 var Action = Dim.Action;
 
