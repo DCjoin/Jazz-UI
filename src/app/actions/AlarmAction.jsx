@@ -35,8 +35,7 @@ let AlarmAction = {
     });
   },
   /*
-   date format:'20150101' or timeRange like
-
+   date--��alarm tag list ������ʱ����ʽ��:'20150101'���Ӳ�ѯ���޸�step��ʱ������
   */
   getAlarmTagData(tagIds, date, step, hierName){
     var timeRange;
@@ -92,22 +91,6 @@ let AlarmAction = {
       endDate = new Date(parseInt(dateStr.substr(0,4)) + 1, 0, 1);
     }
     return [DataConverter.DatetimeToJson(startDate), DataConverter.DatetimeToJson(endDate)];
-  },
-  getDashboardByHierachy(hierId){
-    Ajax.post('/DashBoard.svc/GetDashboardByHierachy', {
-        params: {userId:parseInt(window.currentUserId), hierarchyId: hierId},
-        success: function(dashboardList){
-          AppDispatcher.dispatch({
-              type: Action.GET_DASHBOARD_BY_HIERARCHY_SUCCESS,
-              dashboardList: dashboardList
-          });
-        },
-        error: function(err, res){
-          AppDispatcher.dispatch({
-              type: Action.GET_DASHBOARD_BY_HIERARCHY_ERROR
-          });
-        }
-    });
   }
 };
 
