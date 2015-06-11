@@ -18,6 +18,9 @@ var WidgetSaveWindow = React.createClass({
   show(){
     this.refs.dialogWindow.show();
   },
+  hide(){
+    this.refs.dialogWindow.dismiss();
+  },
   onTreeItemClick(hierItem){
     //console.log(item);
     AlarmAction.getDashboardByHierachy(hierItem.Id);
@@ -36,6 +39,7 @@ var WidgetSaveWindow = React.createClass({
     this.setState({dashboardState:'newDashboard'});
   },
   render(){
+    let me = this;
     let existDashBoardRadioContent;
     let newDashboardRadioContent;
     if(this.state.dashboardState ==='existDashboard'){
@@ -48,7 +52,7 @@ var WidgetSaveWindow = React.createClass({
         <span className='jazz-form-field-title'>图标名称：</span> <TextField ref={'widgetname'} />
       </div>
       <div>
-        <span className='jazz-form-field-title'>层级节点：</span> <HierarchyButton onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
+        <span className='jazz-form-field-title'>层级节点：</span> <HierarchyButton ref={'hierTreeButton'} onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
       </div>
       <div>
         <span className='jazz-form-field-title'>选择仪表盘：</span>
@@ -92,7 +96,28 @@ var WidgetSaveWindow = React.createClass({
     DashboardStore.removeDashboardListLoadedListener(this._onDashboardListLoaded);
   },
   componentDidUpdate(){
-    this.refs.dashboardListDropDownMenu._setWidth();
+    if(this.props.openImmediately){
+
+      this.refs.hierTreeButton.selectHierItem();
+      this.show();
+    }
+
+  },
+  _onDialogSubmit(){
+    console.log('_onDialogSubmit');
+    this.hide();
+  },
+  _onDialogCancel(){
+    console.log('_onDialogCancel');
+    this.hide();
+  },
+  validate(){
+    let title = this.refs.widgetname.getValue();
+    let flag = true;
+    if(title.trim() === '' ){
+      this.refs.widgetname.setErrorText('必填项。');
+      flag = false;
+    }
   }
 });
 

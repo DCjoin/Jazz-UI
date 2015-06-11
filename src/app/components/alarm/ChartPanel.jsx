@@ -3,7 +3,7 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, RaisedButton, DatePicker} from 'material-ui';
 import assign from "object-assign";
-import {hourPickerData} from '../../util/Util.jsx';
+import {hourPickerData, isArray} from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
 
 import YaxisSelector from '../energy/YaxisSelector.jsx';
@@ -46,7 +46,43 @@ let ChartPanel = React.createClass({
       AlarmAction.getAlarmTagData(tagIds, timeRanges, step);
     },
     _onChart2WidgetClick(){
-        this.refs.saveChartDialog.show();
+        if(!!this.state.energyData){
+          let contentSyntax =this.getContentSyntax();
+          this.setState({ dashboardOpenImmediately: true,
+                          contentSyntax: contentSyntax});
+        }
+    },
+    getContentSyntax(){
+      let tagOptions = EnergyStore.getTagOpions(), options;
+
+      if(tagOptions){
+        if(isArray(tagOptions)){
+          options = [];
+          for(let i=0,len=tagOptions.length; i<len; i++){
+            let tag = tagOptions[i];
+            options.push({Id:tag.tagId, Name: tag.tagName, HierId: tag.hierId, NodeName: tag.hierName});
+          }
+        } else{
+          options = [{Id:tagOptions.tagId, Name: tagOptions.tagName, HierId: tagOptions.hierId, NodeName: tagOptions.hierName}];
+        }
+      }
+
+      let submitParams = EnergyStore.getSubmitParams();
+
+      var contentSyntax = {xtype:'widgetcontainer',
+                           params:{ submitParams:{ options: options,
+                                                   tagIds: submitParams.tagIds,
+                                                   interval:[],
+                                                   viewOption:submitParams.viewOption
+                                                 },
+                                     config:{ type:"line",xtype:"mixedtrendchartcomponent",reader:"mixedchartreader",
+                                              storeType:"energy.Energy",searcherType:"analysissearcher",
+                                              widgetStyler:"widgetchartstyler",maxWidgetStyler:"maxchartstyler"}
+
+                                  }
+                          };
+
+      return contentSyntax;
     },
     _initYaxisDialog(){
       var chartCmp = this.refs.ChartComponent;
@@ -60,7 +96,8 @@ let ChartPanel = React.createClass({
           energyData: null,
           hierName: null,
           submitParams: null,
-          step: 2
+          step: 2,
+          dashboardOpenImmediately: false
         };
     },
     render: function () {
@@ -98,7 +135,7 @@ let ChartPanel = React.createClass({
 
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', marginLeft:'10px'}}>
-          <WidgetSaveWindow ref={'saveChartDialog'}></WidgetSaveWindow>
+          <WidgetSaveWindow ref={'saveChartDialog'} openImmediately={me.state.dashboardOpenImmediately} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>
           {title}
           <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
             <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'140px'}}></DropDownMenu>

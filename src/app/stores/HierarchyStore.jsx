@@ -11,11 +11,25 @@ var HierarchyStore = assign({},PrototypeStore,{
     return _data;
   },
   setDate(data){
-
-      _data =  data;
-
-
+    _data =  data;
   },
+  findHierItem(item, hierId){
+
+    if(item.Id === hierId){
+      return item;
+    }
+
+    if(item.Children){
+      for(let i=0,len=item.Children.length; i<len; i++){
+        let resultItem = HierarchyStore.findHierItem(item.Children[i], hierId);
+        if(resultItem){
+          return resultItem;
+        }
+      }
+    }
+
+    return null;
+  }
 });
 var Action = Hierarchy.Action;
 HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {

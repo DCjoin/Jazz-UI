@@ -42,7 +42,15 @@ let HierarchyButton=React.createClass({
       this.setState({
         hieList:data,
         selectedNode:data
-      })
+      });
+    },
+    selectHierItem(hierId){
+      var data=HierarchyStore.getDate();
+      if(data){
+        let item = HierarchyStore.findHierItem(data, hierId);
+        if(item)
+          this.setState({selectedNode:item});
+      }
     },
 
     componentDidMount: function() {
@@ -61,7 +69,7 @@ let HierarchyButton=React.createClass({
           open: false,
           selectedNode:node,
           buttonName:node.Name
-        })
+        });
       },
     render:function(){
 
@@ -73,7 +81,7 @@ let HierarchyButton=React.createClass({
       if(this.state.open) {
         dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
 
-      };
+      }
       return(
             <div className='jazz-hierarchybutton' style={{display:'inline-block'}}>
               <FlatButton style={buttonStyle} onClick={this._onShowPaper}>
@@ -82,7 +90,7 @@ let HierarchyButton=React.createClass({
               </FlatButton>
                 {dropdownPaper}
             </div>
-      )
+      );
     }
 });
 
