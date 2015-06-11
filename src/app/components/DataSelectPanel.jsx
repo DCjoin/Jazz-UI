@@ -8,6 +8,9 @@ import DataSelectMainPanel from './DataSelectMainPanel.jsx';
 let DataSelectPanel=React.createClass({
     mixins:[Classable,Navigation,State],
 
+    propTypes: {
+      onButtonClick:React.PropTypes.func.isRequired
+    },
     getInitialState: function() {
         return {
           open: false
@@ -16,6 +19,7 @@ let DataSelectPanel=React.createClass({
 
 
     _onToggle:function(){
+      this.props.onButtonClick();
       this.setState({ open: !this.state.open });
       return this;
     },

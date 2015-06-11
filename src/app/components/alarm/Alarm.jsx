@@ -11,16 +11,31 @@ import DataSelectPanel from '../DataSelectPanel.jsx';
 
 let Alarm = React.createClass({
     mixins:[Navigation,State],
+
+    _onSwitchButtonClick(){
+      this.setState({
+        switchButton:!this.state.switchButton
+      })
+    },
+
+    getInitialState: function() {
+        return {
+          switchButton: true
+        };
+      },
     componentDidMount: function() {
         //AlarmAction.tryAjax();
     },
     render() {
-
+      var LeftPanelField;
+      if(this.state.switchButton){
+        LeftPanelField=<LeftPanel ></LeftPanel>;
+        }
           return(
             <div style={{display:'flex', flex:1}}>
-              <LeftPanel ></LeftPanel>
+              {LeftPanelField}
               <ChartPanel ></ChartPanel>
-              <DataSelectPanel ></DataSelectPanel>
+              <DataSelectPanel onButtonClick={this._onSwitchButtonClick}></DataSelectPanel>
             </div>
           );
       }
