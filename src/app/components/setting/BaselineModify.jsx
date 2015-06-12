@@ -2,6 +2,7 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, Overlay} from 'material-ui';
 import assign from "object-assign";
+import YearPicker from '../../controls/YearPicker.jsx';
 
 let BaselineModify = React.createClass({
     mixins:[Navigation,State],
@@ -44,6 +45,9 @@ let BaselineModify = React.createClass({
     dismiss(){
         this.refs.baselineModifyDialog.dismiss();
       },
+    onYearPickerSelected(yearDate){
+
+      },
     render: function () {
       let months =[
                    {LeftMonth:"一", LeftValue:'100',RightMonth:"二", RightValue:'200'},
@@ -69,6 +73,12 @@ let BaselineModify = React.createClass({
       return (
         <Dialog title="基准值修改" ref="baselineModifyDialog">
           <div style={{width:'500px',display:'flex','flex-flow':'column'}} >
+            <span>
+              请选择配置年份进行编辑
+               <YearPicker ref='yearSelector' onYearPickerSelected={this.onYearPickerSelected}/>;
+              <br/>
+              <br/>
+            </span>
             <span>
               年度基准值
               <br/>
