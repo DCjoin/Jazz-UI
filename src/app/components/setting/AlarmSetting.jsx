@@ -39,19 +39,13 @@ let AlarmSetting = React.createClass({
         });
       },
 
-    showDialog: function(){
-      this.refs.alarmSettingDialog.show();
-    },
-    dismiss(){
-        this.refs.alarmSettingDialog.dismiss();
-      },
     handleChange: function(event) {
         this.setState({threshold: event.target.value});
     },
     render: function () {
 
       return (
-        <Dialog title="报警配置" ref="alarmSettingDialog">
+        <div ref="alarmSettingDialog">
           <div style={{width:'310px',display:'flex','flex-flow':'column'}} >
             <span>
               <input className="checkbox" type="checkbox" checked="checked"  disabled={this.state.disable}/>
@@ -73,7 +67,7 @@ let AlarmSetting = React.createClass({
               <button type="submit" hidden={this.state.disable} style={{width:'50px'}} onClick={this.handleCancel}> 放弃 </button>
             </span>
           </div>
-      </Dialog>
+      </div>
 
       );
   }

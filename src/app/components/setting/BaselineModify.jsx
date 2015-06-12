@@ -37,13 +37,6 @@ let BaselineModify = React.createClass({
         });
       },
 
-    showDialog: function(){
-      console.log("showDialog");
-      this.refs.baselineModifyDialog.show();
-    },
-    dismiss(){
-        this.refs.baselineModifyDialog.dismiss();
-      },
     render: function () {
       let months =[
                    {LeftMonth:"一", LeftValue:'100',RightMonth:"二", RightValue:'200'},
@@ -67,7 +60,7 @@ let BaselineModify = React.createClass({
       });
 
       return (
-        <Dialog title="基准值修改" ref="baselineModifyDialog">
+        <div title="基准值修改" ref="baselineModifyDialog">
           <div style={{width:'500px',display:'flex','flex-flow':'column'}} >
             <span>
               年度基准值
@@ -87,7 +80,7 @@ let BaselineModify = React.createClass({
               <button type="submit" hidden={this.state.disable} style={{width:'50px'}} onClick={this.handleCancel}> 放弃 </button>
             </span>
           </div>
-      </Dialog>
+      </div>
 
       );
   }

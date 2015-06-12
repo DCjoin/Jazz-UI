@@ -210,7 +210,13 @@ let CommonFuns = {
 
         return mydate;
     }
-	}
+	},
+	numberToTime: function(num){
+    var h = Math.floor(num / 60), m = num % 60,
+    hmstr = ((h>9)?h:('0'+h)) + ':' + ((m>9)?m:('0'+m));
+
+    return hmstr;
+  }
 };
 
 module.exports = CommonFuns;

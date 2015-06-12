@@ -5,6 +5,11 @@ import classSet from 'classnames';
 let { DropDownMenu } = mui;
 
 let YearPicker = React.createClass({
+
+  propTypes: {
+      isViewStatus: React.PropTypes.bool,
+      onYearPickerSelected: React.PropTypes.func
+  },
   getDefaultProps(){
     let date = new Date();
     let yearMenuItems =[];
@@ -21,7 +26,7 @@ let YearPicker = React.createClass({
     let date = new Date();
       return {
           selectedYear: date.getFullYear(),//默认今年
-          yearIndex: this.props.yearRange 
+          yearIndex: this.props.yearRange
       };
   },
   getDateValue(year){
