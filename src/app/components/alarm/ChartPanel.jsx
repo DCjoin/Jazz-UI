@@ -51,7 +51,7 @@ let ChartPanel = React.createClass({
       let timeRanges = paramsObj.timeRanges;
 
       this.setState({step:step, dashboardOpenImmediately: false});
-      AlarmAction.getAlarmTagData(timeRanges, step, tagOptins);
+      AlarmAction.getEnergyDate(timeRanges, step, tagOptins);
     },
     _onChart2WidgetClick(){
         if(!!this.state.energyData){

@@ -40,12 +40,13 @@ var EnergyStore = assign({},PrototypeStore,{
     return _ChartTitle;
   },
   //only one tagOptions if click tag in alarm list
-  _onDataLoading(params, tagOptions){
+  _onDataLoading(params, tagOptions, isAlarmLoading){
     _submitParams = params;
     _isLoading = true;
 
-    if(tagOptions){
-      _tagOptions = tagOptions;
+    _tagOptions = tagOptions;
+
+    if(isAlarmLoading){
       let tagName = _tagOptions[0].tagName;
       let step = _submitParams.viewOption.Step;
 
@@ -100,8 +101,12 @@ var EnergyStore = assign({},PrototypeStore,{
 
 EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
+      case Action.GET_ALARM_TAG_DATA_LOADING:
+      EnergyStore._onDataLoading(action.submitParams, action.tagOptions, true);
+      EnergyStore.emitTagDataLoading();
+        break;
       case Action.GET_TAG_DATA_LOADING:
-        EnergyStore._onDataLoading(action.submitParams, action.tagOptions);
+        EnergyStore._onDataLoading(action.submitParams, action.tagOptions, false);
         EnergyStore.emitTagDataLoading();
         break;
       case Action.GET_TAG_DATA_SUCCESS:

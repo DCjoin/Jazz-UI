@@ -33,20 +33,14 @@ let AlarmAction = {
         }
     });
   },
-  getAlarmTagData(date, step, tagOption){
-    var timeRange;
-    if(CommonFuns.isArray(date)){
-      timeRange = date;
-    }else{
-      let dateArray = AlarmAction.getDateByStep(date, step);
-      timeRange = [{StartTime:dateArray[0], EndTime:dateArray[1]}];
-    }
+  //only for alarm tag to get energy data.
+  getAlarmTagData(date, step, tagOptions){
 
-    var tagId = tagOption[0].tagId,
-        hierName = tagOption[0].hierName;
+    let dateArray = AlarmAction.getDateByStep(date, step);
+    let timeRange = [{StartTime:dateArray[0], EndTime:dateArray[1]}];
+    let tagId = tagOptions[0].tagId;
 
-    var tagIds = CommonFuns.isArray(tagId) ? tagIds:[tagId];
-    var submitParams = { tagIds:tagIds,
+    var submitParams = { tagIds:[tagId],
                          viewOption:{ DataUsageType: 1,
                                       IncludeNavigatorData: true,
                                       Step: step,
@@ -55,9 +49,9 @@ let AlarmAction = {
                        };
 
     AppDispatcher.dispatch({
-         type: Action.GET_TAG_DATA_LOADING,
+         type: Action.GET_ALARM_TAG_DATA_LOADING,
          submitParams: submitParams,
-         tagOptions: tagOption
+         tagOptions: tagOptions
     });
 
     Ajax.post('/Energy.svc/GetTagsData', {
@@ -76,6 +70,50 @@ let AlarmAction = {
            });
          }
        });
+  },
+  //for select tags from taglist and click search button.
+  getEnergyDate(date, step, tagOptions){
+    var timeRange = date;
+
+    var tagIds = AlarmAction.getTagIdsFromTagOptions(tagOptions);
+    var submitParams = { tagIds:tagIds,
+                         viewOption:{ DataUsageType: 1,
+                                      IncludeNavigatorData: true,
+                                      Step: step,
+                                      TimeRanges: timeRange
+                                   }
+                       };
+
+    AppDispatcher.dispatch({
+         type: Action.GET_TAG_DATA_LOADING,
+         submitParams: submitParams,
+         tagOptions: tagOptions
+    });
+
+    Ajax.post('/Energy.svc/GetTagsData', {
+         params:submitParams,
+         success: function(energyData){
+           AppDispatcher.dispatch({
+               type: Action.GET_TAG_DATA_SUCCESS,
+               energyData: energyData,
+               submitParams: submitParams
+           });
+         },
+         error: function(err, res){
+           AppDispatcher.dispatch({
+               type: Action.GET_TAG_DATA_ERROR,
+               submitParams: submitParams
+           });
+         }
+       });
+  },
+  getTagIdsFromTagOptions(tagOptions){
+    let tagIds =[];
+    for(let i=0,len=tagOptions.length; i<len; i++){
+      tagIds.push(tagOptions[i].tagId);
+    }
+
+    return tagIds;
   },
   getDateByStep(dateStr, step){
     let startDate, endDate;

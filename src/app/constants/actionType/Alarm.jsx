@@ -6,6 +6,7 @@ module.exports = {
         DATETYPE_CHANGED: null,
         DATALIST_CHANGED: null,
         GET_HIERARCHY_LIST_ERROR: null,
+        GET_ALARM_TAG_DATA_LOADING: null,
         GET_TAG_DATA_LOADING: null,
         GET_TAG_DATA_SUCCESS: null,
         GET_TAG_DATA_ERROR:null,
