@@ -35,7 +35,7 @@ let DimButton=React.createClass({
     //  this.props.onButtonClick();
     },
     _onChange(){
-      var data=DimStore.getDate();
+      var data=DimStore.getData();
 
       if(data && this.props.parentNode){
         var tree={};

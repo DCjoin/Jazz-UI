@@ -37,7 +37,7 @@ let HierarchyButton=React.createClass({
       this.props.onButtonClick();
     },
     _onChange(){
-      var data=HierarchyStore.getDate();
+      var data=HierarchyStore.getData();
 
       this.setState({
         hieList:data,
@@ -54,7 +54,7 @@ let HierarchyButton=React.createClass({
         }
     },
     getHierById(hierId){
-      var data=HierarchyStore.getDate();
+      var data=HierarchyStore.getData();
       if(data){
         let item = HierarchyStore.findHierItem(data, hierId);
         return item;

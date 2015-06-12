@@ -8,9 +8,9 @@ import Ajax from '../ajax/ajax.jsx';
 var Action = Hierarchy.Action;
 
 let HierarchyAction = {
-  loadall(date){
+  loadall(data){
     Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive?', {
-        params: {customerId: date},
+        params: {customerId: data},
         success: function(hierarchyList){
           console.log("hierarchyList");
           console.log(hierarchyList);

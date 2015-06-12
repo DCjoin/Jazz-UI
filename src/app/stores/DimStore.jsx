@@ -7,10 +7,10 @@ import Dim from '../constants/actionType/Dim.jsx';
 var _data = {};
 
 var DimStore = assign({},PrototypeStore,{
-  getDate(){
+  getData(){
     return _data;
   },
-  setDate(data){
+  setData(data){
 
       _data =  data;
 
@@ -24,7 +24,7 @@ DimStore.dispatchToken = AppDispatcher.register(function(action) {
       case Action.LOAD_DIM_NODE:
       console.log("**wyh***DimStore");
       console.log(action.dimList);
-           DimStore.setDate(action.dimList);
+           DimStore.setData(action.dimList);
            DimStore.emitChange();
         break;
 

@@ -5,10 +5,10 @@ import {Action} from '../constants/actionType/AlarmTag.jsx';
 let AlarmTagAction = {
   setSearchTagList(HierId,HierName,TagId,TagName){
     var node={
-        'HierId':HierId,
-        'HierName':HierName,
-        'TagId':TagId,
-        'TagName':TagName
+        hierId:HierId,
+        hierName:HierName,
+        tagId:TagId,
+        tagName:TagName
       };
     AppDispatcher.dispatch({
         type: Action.SEARCH_TAGLIST_CHANGED,

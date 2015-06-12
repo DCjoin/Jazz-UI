@@ -8,16 +8,24 @@ import {Action} from '../constants/actionType/AlarmTag.jsx';
 let searchTagList=[];
 let interData=null;
 
-const SEARCH_TAGLIST_CHANGED_EVENT = 'searchtaglistchanged',
-      INTER_DATA_CHANGED_EVENT = 'interdatachanged';
+const INTER_DATA_CHANGED_EVENT = 'interdatachanged';
 
 var AlarmTagStore = assign({},PrototypeStore,{
 
   getSearchTagList(){
     return searchTagList;
   },
-  setSearchTagList(tagNode){
+  addSearchTagList(tagNode){
     searchTagList.push(tagNode);
+  },
+  removeSearchTagList(tagNode){
+    searchTagList.forEach(function(nodeData,i){
+    if(tagNode.tagId==nodeData.tagId){
+      searchTagList.remove(i);
+      return;
+    }
+    });
+
   },
   clearSearchTagList(){
     searchTagList.length=0;
@@ -27,15 +35,6 @@ var AlarmTagStore = assign({},PrototypeStore,{
   },
   setInterData(iaData){
     interData=iaData;
-  },
-  addSearchTagListListener: function(callback) {
-    this.on(SEARCH_TAGLIST_CHANGED_EVENT, callback);
-  },
-  emitSearchTagList: function() {
-    this.emit(SEARCH_TAGLIST_CHANGED_EVENT);
-  },
-  removeSearchTagListListener: function(callback) {
-    this.removeListener(SEARCH_TAGLIST_CHANGED_EVENT, callback);
   },
   addInterDataListener: function(callback) {
     this.on(INTER_DATA_CHANGED_EVENT, callback);
@@ -49,9 +48,11 @@ var AlarmTagStore = assign({},PrototypeStore,{
 });
 AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
-      case Action.SEARCH_TAGLIST_CHANGED:
-        AlarmTagStore.setSearchTagList(action.tagNode);
-        AlarmTagStore.emitSearchTagList();
+      case Action.ADD_SEARCH_TAGLIST_CHANGED:
+        AlarmTagStore.addSearchTagList(action.tagNode);
+        break;
+      case Action.REMOVE_SEARCH_TAGLIST_CHANGED:
+        AlarmTagStore.removeSearchTagList(action.tagNode);
         break;
       case Action.INTER_DATA_CHANGED:
         AlarmTagStore.setInterData(action.tagNode);

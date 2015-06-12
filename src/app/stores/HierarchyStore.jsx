@@ -7,10 +7,10 @@ import Hierarchy from '../constants/actionType/Hierarchy.jsx';
 var _data = {};
 
 var HierarchyStore = assign({},PrototypeStore,{
-  getDate(){
+  getData(){
     return _data;
   },
-  setDate(data){
+  setData(data){
     _data =  data;
   },
   findHierItem(item, hierId){
@@ -36,7 +36,7 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
 
     switch(action.type) {
       case Action.LOAD_HIE_NODE:
-           HierarchyStore.setDate(action.hierarchyList);
+           HierarchyStore.setData(action.hierarchyList);
            HierarchyStore.emitChange();
         break;
 

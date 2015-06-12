@@ -260,7 +260,7 @@ let DataSelectMainPanel=React.createClass({
       })
     },
     _onChange:function(){
-      var data=TagStore.getDate();
+      var data=TagStore.getData();
 
       this.setState({
         tagList:data.GetTagsByFilterResult,
