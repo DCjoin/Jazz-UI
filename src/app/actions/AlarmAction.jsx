@@ -1,5 +1,4 @@
 'use strict';
-     
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import CommonFuns from '../util/Util.jsx';
@@ -34,11 +33,7 @@ let AlarmAction = {
         }
     });
   },
-  /*
-   date format:'20150101' or timeRange like
-
-  */
-  getAlarmTagData(tagIds, date, step, hierName){
+  getAlarmTagData(date, step, tagOption){
     var timeRange;
     if(CommonFuns.isArray(date)){
       timeRange = date;
@@ -47,8 +42,11 @@ let AlarmAction = {
       timeRange = [{StartTime:dateArray[0], EndTime:dateArray[1]}];
     }
 
-    var tags = CommonFuns.isArray(tagIds) ? tagIds:[tagIds];
-    var submitParams = { tagIds:tags,
+    var tagId = tagOption[0].tagId,
+        hierName = tagOption[0].hierName;
+
+    var tagIds = CommonFuns.isArray(tagId) ? tagIds:[tagId];
+    var submitParams = { tagIds:tagIds,
                          viewOption:{ DataUsageType: 1,
                                       IncludeNavigatorData: true,
                                       Step: step,
@@ -59,7 +57,7 @@ let AlarmAction = {
     AppDispatcher.dispatch({
          type: Action.GET_TAG_DATA_LOADING,
          submitParams: submitParams,
-         hierName: hierName
+         tagOptions: tagOption
     });
 
     Ajax.post('/Energy.svc/GetTagsData', {
@@ -95,19 +93,40 @@ let AlarmAction = {
   },
   getDashboardByHierachy(hierId){
     Ajax.post('/DashBoard.svc/GetDashboardByHierachy', {
-        params: {userId:parseInt(window.currentUserId), hierarchyId: hierId},
-        success: function(dashboardList){
-          AppDispatcher.dispatch({
-              type: Action.GET_DASHBOARD_BY_HIERARCHY_SUCCESS,
-              dashboardList: dashboardList
-          });
-        },
-        error: function(err, res){
-          AppDispatcher.dispatch({
-              type: Action.GET_DASHBOARD_BY_HIERARCHY_ERROR
-          });
-        }
-    });
+         params:{hierarchyId:hierId, userId: window.currentUserId},
+         success: function(dashboardList){
+           AppDispatcher.dispatch({
+               type: Action.GET_DASHBOARD_BY_HIERARCHY_SUCCESS,
+               dashboardList: dashboardList
+           });
+         },
+         error: function(err, res){
+           AppDispatcher.dispatch({
+               type: Action.GET_DASHBOARD_BY_HIERARCHY_ERROR
+           });
+         }
+       });
+  },
+  save2Dashboard(params, createNewDashboard){
+    let url;
+    if(!createNewDashboard){
+      url = '/DashBoard.svc/CreateWidget';
+    }else{
+      url = '/DashBoard.svc/CreateDashboard';
+    }
+    Ajax.post(url, {
+         params:params,
+         success: function(dashboardList){
+           AppDispatcher.dispatch({
+               type: Action.SAVE_TO_DASHBOARD_SUCESS
+           });
+         },
+         error: function(err, res){
+           AppDispatcher.dispatch({
+               type: Action.SAVE_TO_DASHBOARD_ERROR
+           });
+         }
+       });
   }
 };
 

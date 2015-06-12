@@ -42,9 +42,28 @@ let HierarchyButton=React.createClass({
       this.setState({
         hieList:data,
         selectedNode:data
-      })
+      });
     },
+    selectHierItem(hierId, isCallClickEvent){
+      let item = this.getHierById(hierId);
+      if(item)
+        this.setState({selectedNode:item, buttonName:item.Name});
 
+        if(!!isCallClickEvent){
+          this.props.onTreeClick(item);
+        }
+    },
+    getHierById(hierId){
+      var data=HierarchyStore.getDate();
+      if(data){
+        let item = HierarchyStore.findHierItem(data, hierId);
+        return item;
+      }
+      return null;
+    },
+    setErrorText: function(newErrorText) {
+      this.setState({errorText: newErrorText});
+    },
     componentDidMount: function() {
       HierarchyStore.addChangeListener(this._onChange);
       HierarchyAction.loadall(window.currentCustomerId);
@@ -61,7 +80,7 @@ let HierarchyButton=React.createClass({
           open: false,
           selectedNode:node,
           buttonName:node.Name
-        })
+        });
       },
     render:function(){
 
@@ -73,16 +92,28 @@ let HierarchyButton=React.createClass({
       if(this.state.open) {
         dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
 
+      }
+      var errorStyle = {
+        position: 'absolute',
+        bottom: -10,
+        fontSize: '12px',
+        lineHeight: '12px',
+        color: 'red'
       };
+      var errorTextElement = this.state.errorText ? (
+        <div style={errorStyle}>{this.state.errorText}</div>
+      ) : null;
+
       return(
             <div className='jazz-hierarchybutton' style={{display:'inline-block'}}>
               <FlatButton style={buttonStyle} onClick={this._onShowPaper}>
                   <FontIcon className="fa fa-th-large" />
                   <span className="mui-flat-button-label" style={{margin:'5px'}} >{this.state.buttonName}</span>
               </FlatButton>
+              {errorTextElement}
                 {dropdownPaper}
             </div>
-      )
+      );
     }
 });
 

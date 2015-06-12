@@ -6,8 +6,10 @@ import {dateFormat} from '../../util/Util.jsx';
 import HierarchyButton from '../HierarchyButton.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import DashboardStore from '../../stores/DashboardStore.jsx';
+import CommonFuns from '../../util/Util.jsx';
 
 let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
+let isShowed = false;
 
 var WidgetSaveWindow = React.createClass({
   getInitialState() {
@@ -17,9 +19,17 @@ var WidgetSaveWindow = React.createClass({
   },
   show(){
     this.refs.dialogWindow.show();
+    isShowed = true;
+  },
+  hide(){
+    this.refs.dialogWindow.dismiss();
+  },
+  _onDismiss(){
+    isShowed = false;
   },
   onTreeItemClick(hierItem){
     //console.log(item);
+    this.setState({selectedNode: hierItem});
     AlarmAction.getDashboardByHierachy(hierItem.Id);
   },
   onHierButtonClick(){
@@ -35,24 +45,29 @@ var WidgetSaveWindow = React.createClass({
   _onNewRadioChanged(){
     this.setState({dashboardState:'newDashboard'});
   },
+  _onExistDashboardChanged(e, selectedIndex, menuItem){
+    console.log(selectedIndex, menuItem);
+    this.setState({selectedExistingDashboard:menuItem});
+  },
   render(){
+    let me = this;
     let existDashBoardRadioContent;
     let newDashboardRadioContent;
     if(this.state.dashboardState ==='existDashboard'){
-      existDashBoardRadioContent = <div><DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems}></DropDownMenu></div>;
+      existDashBoardRadioContent = <div><DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} onChange={this._onExistDashboardChanged}></DropDownMenu></div>;
     }else{
-      newDashboardRadioContent = <div><TextField ref={'dashboardname'} hintText={'新建仪表盘'}/></div>;
+      newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}/></div>;
     }
     var form =<div>
-      <div>
-        <span className='jazz-form-field-title'>图标名称：</span> <TextField ref={'widgetname'} />
+      <div style={{paddingBottom:'10px'}}>
+        <span className='jazz-form-text-field-title'>图标名称：</span> <TextField ref={'widgetname'} />
       </div>
-      <div>
-        <span className='jazz-form-field-title'>层级节点：</span> <HierarchyButton onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
+      <div style={{marginBottom:'10px'}}>
+        <span className='jazz-form-field-title' style={{marginTop:'12px'}}>层级节点：</span> <HierarchyButton ref={'hierTreeButton'} onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
       </div>
-      <div>
-        <span className='jazz-form-field-title'>选择仪表盘：</span>
-        <div style={{marginLeft: '140px'}}>
+      <div style={{ marginBottom:'10px'}}>
+        <span className='jazz-form-field-title' style={{marginTop:'2px'}}>选择仪表盘：</span>
+        <div style={{width: '200px', display:'inline-block'}}>
           <RadioButtonGroup ref={'existDashboardRadio'} onChange={this._onExistRadioChanged} valueSelected={this.state.dashboardState}>
             {[<RadioButton label="已存在仪表盘" value="existDashboard" ></RadioButton>]}
           </RadioButtonGroup>
@@ -64,7 +79,7 @@ var WidgetSaveWindow = React.createClass({
         </div>
       </div>
       <div>
-        <span className='jazz-form-field-title'>备注：</span><TextField ref={'dashboardname'} multiLine='true'/>
+        <span className='jazz-form-text-field-title'>备注：</span><TextField ref={'dashboardComment'} multiLine='true'/>
       </div>
     </div>;
 
@@ -79,7 +94,7 @@ var WidgetSaveWindow = React.createClass({
               onClick={this._onDialogCancel} style={{marginRight:'560px'}}/>
         ];
 
-    var dialog = <Dialog  title="保存图标至仪表盘"  actions={_buttonActions} modal={false} ref="dialogWindow">
+    var dialog = <Dialog  title="保存图标至仪表盘"  actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
                   {form}
                  </Dialog>;
 
@@ -92,7 +107,75 @@ var WidgetSaveWindow = React.createClass({
     DashboardStore.removeDashboardListLoadedListener(this._onDashboardListLoaded);
   },
   componentDidUpdate(){
-    this.refs.dashboardListDropDownMenu._setWidth();
+    if(this.props.openImmediately && !isShowed){
+      var tagOption = this.props.tagOption;
+      this.refs.hierTreeButton.selectHierItem(tagOption.hierId, true);
+      this.show();
+    }
+
+  },
+  _onDialogCancel(){
+    console.log('_onDialogCancel');
+    this.hide();
+  },
+  validate(){
+    let title = this.refs.widgetname.getValue();
+    let flag = true;
+    if(title.trim() === '' ){
+      this.refs.widgetname.setErrorText('必填项。');
+      flag = false;
+    }
+
+    if(!this.state.selectedNode){
+      this.refs.hierTreeButton.setErrorText('必填项。');
+      flag = false;
+    }
+    if(this.state.dashboardState === 'existDashboard'){
+      let existDashboardItem = CommonFuns.getSelecetedItemFromDropdownMenu(this.refs.dashboardListDropDownMenu);
+      if(!existDashboardItem || !existDashboardItem.id) {
+        flag = false;
+      }
+    }else{
+      let newDashboardName = this.refs.newDashboardName.getValue();
+      if(newDashboardName.trim() === ''){
+        this.refs.newDashboardName.setErrorText('必填项。');
+        flag = false;
+      }
+    }
+
+    return flag;
+  },
+  _onDialogSubmit(){
+    if(this.validate()){
+      let widgetDto;
+      let createNewDashboard = (this.state.dashboardState === 'newDashboard');
+      if(!createNewDashboard){
+        let existDashboardItem = CommonFuns.getSelecetedItemFromDropdownMenu(this.refs.dashboardListDropDownMenu),
+            dashboardId = existDashboardItem.id,
+            title = this.refs.widgetname.getValue();
+
+        widgetDto = {widgetDto: {
+                                  ContentSyntax:this.props.contentSyntax,
+                                  DashboardId:dashboardId,
+                                  Name: title
+                                }
+                    };
+      }else{
+        widgetDto ={ dashboard: { HierarchyId: this.state.selectedNode.Id,
+                                  Name:this.refs.newDashboardName.getValue(),
+                                  IsFavorite: false,
+                                  IsRead: false
+                                },
+                     widget: { ContentSyntax:this.props.contentSyntax,
+                               Name:this.refs.widgetname.getValue()
+                             }
+                   };
+      }
+
+      AlarmAction.save2Dashboard(widgetDto, createNewDashboard);
+      this.hide();
+    }
+
   }
 });
 

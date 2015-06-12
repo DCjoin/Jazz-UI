@@ -8,17 +8,19 @@ import Ajax from '../ajax/ajax.jsx';
 var Action = Tag.Action;
 
 let TagAction = {
-  loadall(node,page){
+  loadData(nodeId,option,page,alarmType,filters){
     Ajax.post('/Tag.svc/GetTagsByFilter?', {
          params: {
           filter: {
             Association: {
-              AssociationId: node.Id,
-              AssociationOption: 2
+              AssociationId: nodeId,
+              AssociationOption: option
             },
             CustomerId: window.currentCustomerId,
-            IncludeAssociationName: true
+            IncludeAssociationName: true,
+            AlarmStatus:alarmType
           },
+          filters:filters,
           limit: 20,
           page: page,
           size: 20,

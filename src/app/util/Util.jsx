@@ -216,7 +216,17 @@ let CommonFuns = {
     hmstr = ((h>9)?h:('0'+h)) + ':' + ((m>9)?m:('0'+m));
 
     return hmstr;
-  }
+  },
+	getSelecetedItemFromDropdownMenu(dropdownMenu){
+		if(dropdownMenu){
+			let items = dropdownMenu.props.menuItems,
+					selectedIndex = dropdownMenu.state.selectedIndex;
+			if(items.length>= selectedIndex){
+				return items[selectedIndex];
+			}
+			return null;
+		}
+	}
 };
 
 module.exports = CommonFuns;

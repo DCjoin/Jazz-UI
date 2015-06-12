@@ -58,6 +58,10 @@ DashboardStore.dispatchToken = AppDispatcher.register(function(action) {
       case Action.GET_DASHBOARD_BY_HIERARCHY_ERROR:
         DashboardStore.onDashboardLoaded([]);
         break;
+      case Action.SAVE_TO_DASHBOARD_SUCESS:
+        break;
+      case Action.SAVE_TO_DASHBOARD_ERROR:
+        break;
     }
 });
 

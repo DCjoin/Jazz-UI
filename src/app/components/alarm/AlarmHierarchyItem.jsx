@@ -12,9 +12,9 @@ let AlarmHierarchyItem = React.createClass({
 	    });
 
 	},
-	_onTagItemSelected(hierId, tagId, hierName){
+	_onTagItemSelected(tagOption){
 		if(this.props.onTagItemClick){
-			this.props.onTagItemClick(hierId, tagId, hierName);
+			this.props.onTagItemClick(tagOption);
 		}
 	},
 	getInitialState: function() {

@@ -18,7 +18,8 @@ let DimButton=React.createClass({
     active:React.PropTypes.bool,
     parentNode:React.PropTypes.object.isRequired,
     onButtonClick:React.PropTypes.func.isRequired,
-    show:React.PropTypes.bool
+    show:React.PropTypes.bool,
+    onTreeClick:React.PropTypes.func.isRequired
   },
 
     getInitialState: function() {
@@ -50,27 +51,29 @@ let DimButton=React.createClass({
     },
     componentDidMount: function() {
       DimStore.addChangeListener(this._onChange);
+
      },
 
 
      componentWillUnmount: function() {
        DimStore.removeChangeListener(this._onChange);
+
       },
 
       componentWillReceiveProps: function(nextProps) {
 
-        if(nextProps.parentNode){        
+        if(nextProps.parentNode){
           DimAction.loadall(nextProps.parentNode.Id);
         };
         this.setState({
           open: false,
           dimList:null,
-          selectedNode:null,
-          buttonName:"全部维度"
+          selectedNode:null
         })
 
       },
       _onTreeClick:function(node){
+        this.props.onTreeClick(node);
         this.setState({
           open: false,
           selectedNode:node,
