@@ -25,12 +25,14 @@ let ChartPanel = React.createClass({
       let isLoading = EnergyStore.getLoadingStatus();
       let paramsObj = EnergyStore.getParamsObj();
       let tagOption = EnergyStore.getTagOpions()[0];
+      let chartTitle = EnergyStore.getChartTitle();
 
       var obj = assign({},paramsObj);
       obj.isLoading = isLoading;
       obj.tagName = tagOption.tagName;
       obj.dashboardOpenImmediately = false;
       obj.tagOption = tagOption;
+      obj.chartTitle = chartTitle;
 
       this.setState(obj);
     },
@@ -72,22 +74,18 @@ let ChartPanel = React.createClass({
           options = [{Id:tagOptions.tagId, Name: tagOptions.tagName, HierId: tagOptions.hierId, NodeName: tagOptions.hierName}];
         }
       }
-
       var submitParams = EnergyStore.getSubmitParams();
-
-      var contentSyntax = {xtype:'widgetcontainer',
-                           params:{ submitParams:{ options: options,
+      var contentSyntax = { xtype:'widgetcontainer',
+                            params:{ submitParams:{ options: options,
                                                    tagIds: submitParams.tagIds,
                                                    interval:[],
                                                    viewOption:submitParams.viewOption
                                                  },
-                                     config:{ type:"line",xtype:"mixedtrendchartcomponent",reader:"mixedchartreader",
-                                              storeType:"energy.Energy",searcherType:"analysissearcher",
-                                              widgetStyler:"widgetchartstyler",maxWidgetStyler:"maxchartstyler"}
-
-                                  }
+                                    config:{ type:"line",xtype:"mixedtrendchartcomponent",reader:"mixedchartreader",
+                                             storeType:"energy.Energy",searcherType:"analysissearcher",
+                                             widgetStyler:"widgetchartstyler",maxWidgetStyler:"maxchartstyler"}
+                                   }
                           };
-
       return contentSyntax;
     },
     _initYaxisDialog(){
@@ -110,6 +108,11 @@ let ChartPanel = React.createClass({
       let date = new Date();
       let me = this;
       let energyPart=null;
+
+      if(!me.state.chartTitle){
+         return null;
+      }
+
       if(this.state.isLoading){
         energyPart = <div style={{margin:'auto'}}>{'loading...'}</div>;
       }else if(!!this.state.energyData){
@@ -122,22 +125,10 @@ let ChartPanel = React.createClass({
                         <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj}/>
                       </div>;
       }
-      let title = null;
-      if(me.state.tagName){
-        var uom='';
-        if(me.state.step ==1) {
-          uom = '小时';
-        }else if(me.state.step ==2){
-          uom = '日';
-        }else if(me.state.step == 3){
-          uom = '月';
-        }
-        title = <span >{me.state.tagName + uom + '能耗报警'}</span>;
-        title =  <div style={{height:'30px'}}>
-            {title}
-              <IconButton iconClassName="fa fa-floppy-o" style={{'marginLeft':'10px'}} onClick={this._onChart2WidgetClick}/>
-          </div>;
-      }
+      let title = <div style={{height:'30px',paddingBottom:'10px'}}>
+                    <span >{me.state.chartTitle}</span>
+                    <IconButton iconClassName="fa fa-floppy-o" style={{'marginLeft':'10px'}} onClick={this._onChart2WidgetClick}/>
+                 </div>;
 
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', marginLeft:'10px'}}>

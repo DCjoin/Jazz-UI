@@ -17,7 +17,8 @@ let _isLoading = false,
     _energyRawData = null,
     _submitParams = null,
     _paramsObj = null,
-    _tagOptions = null;
+    _tagOptions = null,
+    _ChartTitle = null;
 
 var EnergyStore = assign({},PrototypeStore,{
   getLoadingStatus(){
@@ -35,12 +36,28 @@ var EnergyStore = assign({},PrototypeStore,{
   getTagOpions(){
     return _tagOptions;
   },
+  getChartTitle(){
+    return _ChartTitle;
+  },
+  //only one tagOptions if click tag in alarm list
   _onDataLoading(params, tagOptions){
     _submitParams = params;
     _isLoading = true;
 
     if(tagOptions){
       _tagOptions = tagOptions;
+      let tagName = _tagOptions[0].tagName;
+      let step = _submitParams.viewOption.Step;
+
+      var uom='';
+      if(step ==1) {
+        uom = '小时';
+      }else if(step ==2){
+        uom = '日';
+      }else if(step == 3){
+        uom = '月';
+      }
+      _ChartTitle = tagName + uom + '能耗报警';
     }
 
     _paramsObj = {tagIds: params.tagIds,
