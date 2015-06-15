@@ -13,6 +13,7 @@ const TAG_DATA_LOADING_EVENT = 'tagdataloading',
       TAG_DATA_CHANGED_EVENT = 'tagdatachanged';
 
 let _isLoading = false,
+    _isAlarmLoading = false,
     _energyData = null,
     _energyRawData = null,
     _submitParams = null,
@@ -23,6 +24,9 @@ let _isLoading = false,
 var EnergyStore = assign({},PrototypeStore,{
   getLoadingStatus(){
     return _isLoading;
+  },
+  getAlarmLoadingStatus(){
+    return _isAlarmLoading;
   },
   getEnergyData(){
     return _energyData;
@@ -43,10 +47,12 @@ var EnergyStore = assign({},PrototypeStore,{
   _onDataLoading(params, tagOptions, isAlarmLoading){
     _submitParams = params;
     _isLoading = true;
+    _isAlarmLoading = false;
 
     _tagOptions = tagOptions;
 
     if(isAlarmLoading){
+      _isAlarmLoading = true;
       let tagName = _tagOptions[0].tagName;
       let step = _submitParams.viewOption.Step;
 
@@ -69,6 +75,7 @@ var EnergyStore = assign({},PrototypeStore,{
   },
   _onDataChanged(data, params){
     _isLoading = false;
+    _isAlarmLoading = false;
     _energyRawData = data;
 
     let obj = {start: params.viewOption.TimeRanges[0].StartTime,

@@ -3,7 +3,7 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, RaisedButton, DatePicker} from 'material-ui';
 import assign from "object-assign";
-import {hourPickerData, isArray} from '../../util/Util.jsx';
+import CommonFuns from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
 
 import YaxisSelector from '../energy/YaxisSelector.jsx';
@@ -11,6 +11,8 @@ import StepSelector from '../energy/StepSelector.jsx';
 import ChartComponent from '../energy/ChartComponent.jsx';
 import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
+
+let {hourPickerData, isArray} = CommonFuns;
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -35,6 +37,18 @@ let ChartPanel = React.createClass({
       obj.chartTitle = chartTitle;
 
       this.setState(obj);
+    },
+    componentDidUpdate(){
+      if(EnergyStore.getAlarmLoadingStatus()){
+        let paramsObj = EnergyStore.getParamsObj();
+
+        let startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
+        let endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
+        console.log(startDate, endDate);
+
+        this.refs.startDate.setDate(startDate);
+        this.refs.endDate.setDate(endDate);
+      }
     },
     _onEnergyDataChange(){
       let isLoading = EnergyStore.getLoadingStatus();
