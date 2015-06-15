@@ -9,6 +9,8 @@ import ChartPanel from './ChartPanel.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import DataSelectPanel from '../DataSelectPanel.jsx';
 
+import EnergyStore from '../../stores/EnergyStore.jsx';
+
 let Alarm = React.createClass({
     mixins:[Navigation,State],
 
@@ -17,30 +19,41 @@ let Alarm = React.createClass({
         showLeftPanel:!this.state.showLeftPanel
       });
     },
-
+    _onLoadingStatusChange(){
+      if(!this.state.showDataSelectPanelButton){
+        this.setState({showDataSelectPanelButton:true});
+      }
+    },
     getInitialState: function() {
         return {
-          showLeftPanel: true
+          showLeftPanel: true,
+          showDataSelectPanelButton: false
         };
-      },
-    componentDidMount: function() {
-        //AlarmAction.tryAjax();
     },
     render() {
-      var LeftPanelField;
+      var LeftPanelField, dataSelectPanel;
       if(this.state.showLeftPanel){
           LeftPanelField= <div style={{display:'flex'}}> <LeftPanel ></LeftPanel> </div> ;
       }else{
         LeftPanelField= <div style={{display:'none'}}> <LeftPanel ></LeftPanel> </div> ;
       }
+
+      if(this.state.showDataSelectPanelButton){
+        dataSelectPanel = <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm"></DataSelectPanel>;
+      }
       return(
         <div style={{display:'flex', flex:1}}>
           {LeftPanelField}
-
           <ChartPanel ></ChartPanel>
-          <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm"></DataSelectPanel>
+          {dataSelectPanel}
         </div>
       );
+    },
+    componentDidMount: function() {
+      EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
+    },
+    componentWillUnmount: function() {
+      EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
     }
 });
 

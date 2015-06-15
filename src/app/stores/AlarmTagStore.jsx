@@ -7,6 +7,11 @@ import {Action} from '../constants/actionType/AlarmTag.jsx';
 
 let searchTagList=[];
 let interData=null;
+
+/*
+ if change checked state of the tags from the tag list,than it is true;
+ when select item of alarm list, set it false in AlarmList.jsx
+*/
 let _useTaglistSelect = false;
 
 const INTER_DATA_CHANGED_EVENT = 'interdatachanged';
