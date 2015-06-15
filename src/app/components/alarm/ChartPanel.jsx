@@ -67,6 +67,11 @@ let ChartPanel = React.createClass({
       this.setState({step:step, dashboardOpenImmediately: false});
       AlarmAction.getEnergyDate(timeRanges, step, tagOptins);
     },
+    onSearchDataButtonClick(){
+      var startDate = this.refs.startDate.getDate(),
+          endDate = this.refs.endDate.getDate();
+          console.log(startDate, endDate);
+    },
     _onChart2WidgetClick(){
         if(!!this.state.energyData){
           let contentSyntax = JSON.stringify(this.getContentSyntax());
@@ -133,7 +138,7 @@ let ChartPanel = React.createClass({
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                         <div style={{display:'flex'}}>
                           <YaxisSelector initYaxisDialog={me._initYaxisDialog}/>
-                          <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange}/>
+                          <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange} timeRanges={me.state.timeRanges}/>
 
                         </div>
                         <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj}/>
@@ -155,7 +160,7 @@ let ChartPanel = React.createClass({
             <span style={{'marginLeft':'10px'}}> {'到'} </span>
             <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='endDate' style={{width:'90px', padding:'13px 0', marginLeft:'10px'}}/>
             <DropDownMenu menuItems={dateTime} ref='endTime'></DropDownMenu>
-            <RaisedButton label='查看' secondary={true} ref='searchBtn'/>
+            <RaisedButton label='查看' secondary={true} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
           </div>
           {energyPart}
         </div>
