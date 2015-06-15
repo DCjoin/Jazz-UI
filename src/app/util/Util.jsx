@@ -230,7 +230,88 @@ let CommonFuns = {
 	getTimeRangesByDate(startTime, endTime){
 		let d2j = CommonFuns.DataConverter.DatetimeToJson;
 		return [{StartTime: d2j(startTime), EndTime: d2j(endTime)}];
-	}
+	},
+	GetDateRegion: function (datestr) {
+        var region = {};
+        var now = new Date();
+				var dateAdd = CommonFuns.dateAdd;
+        switch (datestr) {
+            case 'last7day':
+                now.setHours(0, 0, 0, 0);
+                region.start = dateAdd(now, -6, 'days');
+                region.end = dateAdd(now, 1, 'days');
+                break;
+            case 'last30day':
+                now.setHours(0, 0, 0, 0);
+                region.start = dateAdd(now, -29, 'days');
+                region.end = dateAdd(now, 1, 'days');
+                break;
+            case 'last12month':
+                now.setHours(0, 0, 0, 0);
+                now.setDate(1);
+                region.start = dateAdd(now, -11, 'months');
+
+                var v = dateAdd(now, 1,'months');
+                region.end = v;
+                break;
+            case 'today':
+                now.setHours(0, 0, 0, 0);
+                region.start = now;
+                region.end = dateAdd(now, 1, 'days');
+                break;
+            case 'yesterday':
+                now.setHours(0, 0, 0, 0);
+                region.start = dateAdd(now, -1, 'days');
+                region.end = now;
+                break;
+                //monday - today
+            case 'thisweek':
+                now.setHours(0, 0, 0, 0);
+								while (now.getDay() != 1)
+                    now = dateAdd(now, -1, 'days');
+
+                region.start = now;
+                region.end = dateAdd(now, 7, 'days');
+                break;
+                //monday - sunday
+            case 'lastweek':
+                now.setHours(0, 0, 0, 0);
+
+                if(now.getDay() === 0){
+									now = dateAdd(now, -1, 'days');
+								}
+                while (now.getDay() != 1){
+								   now = dateAdd(now, -1, 'days');
+								}
+
+                region.start = dateAdd(now, -7, 'days');
+                region.end = now;
+                break;
+            case 'thismonth':
+								now.setHours(0, 0, 0, 0);
+								now.setDate(1);
+                region.start = now;
+                region.end = dateAdd(region.start, 1, 'months');
+                break;
+            case 'lastmonth':
+								now.setHours(0, 0, 0, 0);
+								now.setDate(1);
+                region.start = dateAdd(now, -1, 'months');
+                region.end = dateAdd(region.end, -1, 'months');
+                break;
+            case 'thisyear':
+                region.start = new Date(now.getFullYear(), 0, 1);
+                region.end = dateAdd(region.start, 1, 'years');
+                break;
+            case 'lastyear':
+                var firstdateofyear = new Date(now.getFullYear(), 0, 1);
+                region.start = new Date(now.getFullYear() - 1, 0, 1);
+                region.end = firstdateofyear;
+                break;
+            default: break;
+        }
+        return region;
+    },
 };
 
 module.exports = CommonFuns;

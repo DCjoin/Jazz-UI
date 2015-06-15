@@ -78,9 +78,12 @@ let ChartPanel = React.createClass({
       }else{
         tagOptions = AlarmTagStore.getSearchTagList();
       }
+      if( !tagOptions || tagOptions.length === 0){
+        return;
+      }
       let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
       let step = this.state.step;
-console.log(timeRanges, step, tagOptions);
+
       AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
 
     },
@@ -90,6 +93,23 @@ console.log(timeRanges, step, tagOptions);
           this.setState({ dashboardOpenImmediately: true,
                           contentSyntax: contentSyntax});
         }
+    },
+    _onRelativeDateChange(e, selectedIndex, menuItem){
+      let value = menuItem.value;
+      let startField = this.refs.startDate;
+      let startTimeField = this.refs.startTime;
+      let endField = this.refs.endDate;
+      let endTimeField = this.refs.endTime;
+
+      if(value && value !=='Customerize'){
+        var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
+        startField.setDate(timeregion.start);
+        endField.setDate(timeregion.end);
+
+        startTimeField.setState({selectedIndex:0});
+        endTimeField.setState({selectedIndex:0});
+      }
+
     },
     getContentSyntax(){
       let tagOptions = EnergyStore.getTagOpions(), options;
@@ -166,7 +186,7 @@ console.log(timeRanges, step, tagOptions);
           <WidgetSaveWindow ref={'saveChartDialog'} openImmediately={me.state.dashboardOpenImmediately} tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>
           {title}
           <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
-            <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'140px'}}></DropDownMenu>
+            <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'140px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='startDate' style={{width:'90px', padding:'13px 0'}}/>
             <DropDownMenu menuItems={dateTime} ref='startTime'></DropDownMenu>
             <span style={{'marginLeft':'10px'}}> {'到'} </span>
