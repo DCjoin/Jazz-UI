@@ -46,6 +46,16 @@ var TreeNode = React.createClass({
       });
       return;
     }
+    var that=this;
+    if(this.props.nodeData.Children){
+      this.props.nodeData.Children.forEach(function(nodeData,i){
+        if(nodeData.Id==that.props.selectedNode.ParentId){
+          that.setState({
+            collapsed: false,
+          })
+        }
+      })
+    };
 
   },
   handleClickArrow: function(e){
@@ -139,6 +149,7 @@ var TreeNode = React.createClass({
     var indentStyle = {
       "padding-left": Number(this.props.indent * this.props.indentUnit)
     };
+
 
     return (
       <div className={classNames({
@@ -251,7 +262,7 @@ var TreeView = React.createClass({
               nodeData: dataSource,
               selectedNode: this.state.selectedNode || this.props.selectedNode,
               onSelectedNode: this._onSelectNode,
-
+              id: dataSource.Id,
               ref: dataSource.Id
             };
             parentNode.push(
@@ -338,19 +349,18 @@ let HierarchyTree=React.createClass({
                             onTreeClick={this.props.onTreeClick} />;
                               }
 
-                                    var buttonStyle = {
+    var paperStyle = {
+                  backgroundColor: 'white',
+                  zIndex: '100',
+                  width:'350px',
+                  height:'500px',
+                  position:'absolute'
 
-                                      backgroundColor: 'white',
-                                      zIndex: '100',
-                                      width:'350px',
-                                      height:'500px',
-                                      position:'absolute'
-
-                                         };
+                           };
 
     return(
 
-        <Paper style={buttonStyle}>
+        <Paper style={paperStyle}>
 
             <label style={{display:'inline-block',width:'200px',height:'25px',border:'3px solid gray','border-radius':'20px','margin-top':'10px'}}>
               <img style={{float:'left'}} src={require('../less/images/search-input-search.png')}/>

@@ -39,7 +39,7 @@ let Alarm = React.createClass({
       }
 
       if(this.state.showDataSelectPanelButton){
-        dataSelectPanel = <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm"></DataSelectPanel>;
+        dataSelectPanel = <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm" defaultStatus={false}></DataSelectPanel>;
       }
       return(
         <div style={{display:'flex', flex:1}}>

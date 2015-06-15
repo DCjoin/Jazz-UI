@@ -21,7 +21,8 @@ let HierarchyButton=React.createClass({
   propTypes: {
       onTreeClick:React.PropTypes.func.isRequired,
       onButtonClick:React.PropTypes.func.isRequired,
-      show:React.PropTypes.bool
+      show:React.PropTypes.bool,
+      hierId:React.PropTypes.number
   },
     getInitialState: function() {
       return {
@@ -41,11 +42,12 @@ let HierarchyButton=React.createClass({
 
       this.setState({
         hieList:data,
-        selectedNode:data
+
       });
     },
     selectHierItem(hierId, isCallClickEvent){
       let item = this.getHierById(hierId);
+
       if(item)
         this.setState({selectedNode:item, buttonName:item.Name});
 
@@ -67,11 +69,23 @@ let HierarchyButton=React.createClass({
     componentDidMount: function() {
       HierarchyStore.addChangeListener(this._onChange);
       HierarchyAction.loadall(window.currentCustomerId);
+      if(this.props.hierId!=null){
+        this.selectHierItem(this.props.hierId,true)
+      }
      },
      componentWillUnmount: function() {
 
        HierarchyStore.removeChangeListener(this._onChange);
 
+      },
+      componentWillReceiveProps: function(nextProps) {
+        if(!nextProps.show){
+          this.setState({
+            open:false
+          }
+
+          )
+        }
       },
       _onTreeClick:function(node){
         this.props.onTreeClick(node);
@@ -89,8 +103,14 @@ let HierarchyButton=React.createClass({
            };
 
       var dropdownPaper;
-      if(this.state.open) {
-        dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
+
+      if(this.state.open && this.props.show) {
+        if(this.state.selectedNode){
+          dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
+        }else{
+          dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.hieList} onTreeClick={this._onTreeClick}/>;
+        }
+
 
       }
       var errorStyle = {

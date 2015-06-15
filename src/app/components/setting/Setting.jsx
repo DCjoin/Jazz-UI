@@ -5,6 +5,7 @@ import assign from "object-assign";
 import AlarmSetting from './AlarmSetting.jsx';
 import BaselineModify from './BaselineModify.jsx';
 import BaselineCfg from './BaselineCfg.jsx';
+import DataSelectPanel from '../DataSelectPanel.jsx';
 
 let Setting = React.createClass({
   mixins:[Navigation,State],
@@ -29,6 +30,7 @@ let Setting = React.createClass({
         <BaselineCfg  ref="baselineCfg"/>
         <br/>
         <button  onClick={this.handleBaselineCfg}>BaselineBasic</button>
+          <DataSelectPanel  onButtonClick={this._onSwitchButtonClick} linkFrom="Setting" defaultStatus={true}></DataSelectPanel>
       </div>
     );
   }

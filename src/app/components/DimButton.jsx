@@ -32,7 +32,7 @@ let DimButton=React.createClass({
     },
     _onShowPaper:function(){
       this.setState({open:!this.state.open});
-    //  this.props.onButtonClick();
+      this.props.onButtonClick();
     },
     _onChange(){
       var data=DimStore.getData();
@@ -65,8 +65,13 @@ let DimButton=React.createClass({
         if(nextProps.parentNode){
           DimAction.loadall(nextProps.parentNode.Id);
         };
+        if(!nextProps.show){
+          this.setState({
+            open:false
+          })
+        };
         this.setState({
-          open: false,
+
           dimList:null,
           selectedNode:null
         })
@@ -96,8 +101,8 @@ let DimButton=React.createClass({
         fontStyle={
            color:'rgb(187, 184, 184)',
         };
-      }
-      if((this.state.open) && (this.props.active)) {
+      };
+      if((this.state.open) && (this.props.active) && (this.props.show)) {
 
         dropdownPaper=<DimTree allNode={this.state.dimList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
 

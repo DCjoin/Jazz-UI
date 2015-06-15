@@ -298,7 +298,7 @@ let DimTree=React.createClass({
     },
 
    _onSearchChange:function(text){
-    
+
      var value= document.getElementById("searchfield").value;
 
      if(value){
@@ -340,20 +340,20 @@ let DimTree=React.createClass({
                             onTreeClick={this.props.onTreeClick} />
                               };
 
-                                    var buttonStyle = {
+    var paperStyle = {
 
-                                      backgroundColor: 'white',
-                                      zIndex: '1',
-                                      width:'350px',
-                                      height:'500px',
-                                      position:'absolute',
-                                      left:'-165px'
+            backgroundColor: 'white',
+            zIndex: '100',
+            width:'350px',
+            height:'500px',
+            position:'absolute',
+            left:'-165px'
 
                                          };
 
     return(
 
-        <Paper style={buttonStyle}>
+        <Paper style={paperStyle}>
 
             <label style={{display:'inline-block',width:'200px',height:'25px',border:'3px solid gray','border-radius':'20px','margin-top':'10px'}}>
               <img style={{float:'left'}} src={require('../less/images/search-input-search.png')}/>

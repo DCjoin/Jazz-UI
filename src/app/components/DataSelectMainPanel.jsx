@@ -222,7 +222,7 @@ let DataSelectMainPanel=React.createClass({
         dimNode:null,
         dimParentNode:null,
         HierarchyShow:false,
-        DimShow:true,
+        DimShow:false,
         tagList:null,
         allChecked:false,
         tagId:null,
@@ -244,7 +244,9 @@ let DataSelectMainPanel=React.createClass({
         dimActive:true,
         dimParentNode:node,
         tagId:node.Id,
-        optionType:2
+        optionType:2,
+        HierarchyShow:false,
+        DimShow:true
        })
     },
     _onDimTreeClick:function(node){
@@ -256,7 +258,9 @@ let DataSelectMainPanel=React.createClass({
       this.setState({
         page:1,
         tagId:node.Id,
-        optionType:6
+        optionType:6,
+        HierarchyShow:true,
+        DimShow:false
        })
     },
     _onHierarchButtonClick:function(){
@@ -439,6 +443,14 @@ let DataSelectMainPanel=React.createClass({
   },
 
     render:function(){
+      var alarmTagOption;
+      if(this.props.linkFrom=="Alarm"){
+        alarmTagOption=EnergyStore.getTagOpions()[0];
+      }else{
+        alarmTagOption={
+          hierId:null
+        }
+      }
       var buttonStyle = {
                height:'48px',
            };
@@ -471,7 +483,7 @@ let DataSelectMainPanel=React.createClass({
         <div className="jazz-dataselectmainpanel">
 
           <div  style={{display:'flex','flex-flow':'row nowrap','align-items':'center'}}>
-            <HierarchyButton onTreeClick={this._onHierachyTreeClick} onButtonClick={this._onHierarchButtonClick} show={this.state.HierarchyShow}/>
+            <HierarchyButton hierId={alarmTagOption.hierId} onTreeClick={this._onHierachyTreeClick} onButtonClick={this._onHierarchButtonClick} show={this.state.HierarchyShow}/>
 
             <FontIcon className="fa fa-minus" style={{margin:'30px'}}/>
 

@@ -9,18 +9,28 @@ let DataSelectPanel=React.createClass({
     mixins:[Classable,Navigation,State],
 
     propTypes: {
-      onButtonClick:React.PropTypes.func.isRequired,
-      linkFrom: React.PropTypes.string
+      onButtonClick:React.PropTypes.func,
+      linkFrom: React.PropTypes.string,
+      defaultStatus:React.PropTypes.bool
     },
     getInitialState: function() {
         return {
           open: false
         };
       },
+    componentWillMount: function(nextProps) {
 
+        this.setState({
+          open:this.props.defaultStatus
+        })
+      },
 
     _onToggle:function(){
-      this.props.onButtonClick();
+  
+      if(this.props.onButtonClick){
+        this.props.onButtonClick();
+      };
+
       this.setState({ open: !this.state.open });
       return this;
     },
@@ -31,7 +41,7 @@ let DataSelectPanel=React.createClass({
       if(this.state.open) mainpanel=<DataSelectMainPanel linkFrom={this.props.linkFrom}/>;
         var buttonStyle = {
 
-
+          float:'right',
           width:'initial',
           height:'48px',
           border:'solid 2px gray',
