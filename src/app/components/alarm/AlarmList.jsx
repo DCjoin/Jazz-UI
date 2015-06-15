@@ -4,6 +4,7 @@ import React from 'react';
 
 import AlarmHierarchyItem from './AlarmHierarchyItem.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
+import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 
 let AlarmList = React.createClass({
@@ -23,6 +24,7 @@ let AlarmList = React.createClass({
 		let date = this.state.dateValue,
 				step = this.state.step;
 
+		AlarmTagStore.setUseTagListSelect(false);
 		AlarmAction.getAlarmTagData(date, step, tagOption);
 	},
 	render: function() {

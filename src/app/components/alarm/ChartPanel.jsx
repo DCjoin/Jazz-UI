@@ -5,6 +5,7 @@ import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, Raised
 import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
+import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 
 import YaxisSelector from '../energy/YaxisSelector.jsx';
 import StepSelector from '../energy/StepSelector.jsx';
@@ -60,17 +61,28 @@ let ChartPanel = React.createClass({
                       dashboardOpenImmediately: false});
     },
     _onStepChange(step){
-      let tagOptins = EnergyStore.getTagOpions();
+      let tagOptions = EnergyStore.getTagOpions();
       let paramsObj = EnergyStore.getParamsObj();
       let timeRanges = paramsObj.timeRanges;
 
       this.setState({step:step, dashboardOpenImmediately: false});
-      AlarmAction.getEnergyDate(timeRanges, step, tagOptins);
+      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
     },
     onSearchDataButtonClick(){
-      var startDate = this.refs.startDate.getDate(),
-          endDate = this.refs.endDate.getDate();
-          console.log(startDate, endDate);
+      let startDate = this.refs.startDate.getDate(),
+          endDate = this.refs.endDate.getDate(),
+          userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+      let tagOptions;
+      if(!userTagListSelect){
+        tagOptions = EnergyStore.getTagOpions();
+      }else{
+        tagOptions = AlarmTagStore.getSearchTagList();
+      }
+      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+      let step = this.state.step;
+console.log(timeRanges, step, tagOptions);
+      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
+
     },
     _onChart2WidgetClick(){
         if(!!this.state.energyData){

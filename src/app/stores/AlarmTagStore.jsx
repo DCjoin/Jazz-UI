@@ -7,6 +7,7 @@ import {Action} from '../constants/actionType/AlarmTag.jsx';
 
 let searchTagList=[];
 let interData=null;
+let _useTaglistSelect = false;
 
 const INTER_DATA_CHANGED_EVENT = 'interdatachanged';
 
@@ -15,8 +16,15 @@ var AlarmTagStore = assign({},PrototypeStore,{
   getSearchTagList(){
     return searchTagList;
   },
+  setUseTagListSelect(useTaglistSelect){
+    _useTaglistSelect = useTaglistSelect;
+  },
+  getUseTaglistSelect(){
+    return _useTaglistSelect;
+  },
   addSearchTagList(tagNode){
     var flag=false;
+    AlarmTagStore.setUseTagListSelect(true);
 
     searchTagList.forEach(function(nodeData,i){
 
@@ -30,6 +38,7 @@ var AlarmTagStore = assign({},PrototypeStore,{
 
     },
   removeSearchTagList(tagNode){
+    AlarmTagStore.setUseTagListSelect(true);
     searchTagList.forEach(function(nodeData,i){
     if(tagNode.tagId==nodeData.tagId){
 
@@ -40,6 +49,7 @@ var AlarmTagStore = assign({},PrototypeStore,{
 
   },
   clearSearchTagList(){
+    AlarmTagStore.setUseTagListSelect(true);
     searchTagList.length=0;
   },
   getInterData(){

@@ -226,6 +226,10 @@ let CommonFuns = {
 			}
 			return null;
 		}
+	},
+	getTimeRangesByDate(startTime, endTime){
+		let d2j = CommonFuns.DataConverter.DatetimeToJson;
+		return [{StartTime: d2j(startTime), EndTime: d2j(endTime)}];
 	}
 };
 

@@ -14,13 +14,13 @@ let Alarm = React.createClass({
 
     _onSwitchButtonClick(){
       this.setState({
-        switchButton:!this.state.switchButton
-      })
+        showLeftPanel:!this.state.showLeftPanel
+      });
     },
 
     getInitialState: function() {
         return {
-          switchButton: true
+          showLeftPanel: true
         };
       },
     componentDidMount: function() {
@@ -28,17 +28,20 @@ let Alarm = React.createClass({
     },
     render() {
       var LeftPanelField;
-      if(this.state.switchButton){
-        LeftPanelField=<LeftPanel ></LeftPanel>;
-        }
-          return(
-            <div style={{display:'flex', flex:1}}>
-              {LeftPanelField}
-              <ChartPanel ></ChartPanel>
-              <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm"></DataSelectPanel>
-            </div>
-          );
+      if(this.state.showLeftPanel){
+          LeftPanelField= <div style={{display:'flex'}}> <LeftPanel ></LeftPanel> </div> ;
+      }else{
+        LeftPanelField= <div style={{display:'none'}}> <LeftPanel ></LeftPanel> </div> ;
       }
+      return(
+        <div style={{display:'flex', flex:1}}>
+          {LeftPanelField}
+
+          <ChartPanel ></ChartPanel>
+          <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm"></DataSelectPanel>
+        </div>
+      );
+    }
 });
 
 module.exports = Alarm;
