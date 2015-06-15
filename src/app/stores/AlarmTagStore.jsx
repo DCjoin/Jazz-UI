@@ -16,13 +16,25 @@ var AlarmTagStore = assign({},PrototypeStore,{
     return searchTagList;
   },
   addSearchTagList(tagNode){
-    searchTagList.push(tagNode);
-  },
+    var flag=false;
+
+    searchTagList.forEach(function(nodeData,i){
+
+      if(tagNode.tagId==nodeData.tagId){
+        flag=true;
+      }
+    });
+      if(!flag){
+        searchTagList.push(tagNode);
+      }
+
+    },
   removeSearchTagList(tagNode){
     searchTagList.forEach(function(nodeData,i){
     if(tagNode.tagId==nodeData.tagId){
-      searchTagList.remove(i);
-      return;
+
+      searchTagList.splice(i,1);
+
     }
     });
 

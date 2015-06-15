@@ -9,7 +9,8 @@ let DataSelectPanel=React.createClass({
     mixins:[Classable,Navigation,State],
 
     propTypes: {
-      onButtonClick:React.PropTypes.func.isRequired
+      onButtonClick:React.PropTypes.func.isRequired,
+      linkFrom: React.PropTypes.string
     },
     getInitialState: function() {
         return {
@@ -27,7 +28,7 @@ let DataSelectPanel=React.createClass({
 
     render:function(){
       var mainpanel;
-      if(this.state.open) mainpanel=<DataSelectMainPanel />;
+      if(this.state.open) mainpanel=<DataSelectMainPanel linkFrom={this.props.linkFrom}/>;
         var buttonStyle = {
 
 

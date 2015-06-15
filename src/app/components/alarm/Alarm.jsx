@@ -35,7 +35,7 @@ let Alarm = React.createClass({
             <div style={{display:'flex', flex:1}}>
               {LeftPanelField}
               <ChartPanel ></ChartPanel>
-              <DataSelectPanel onButtonClick={this._onSwitchButtonClick}></DataSelectPanel>
+              <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm"></DataSelectPanel>
             </div>
           );
       }

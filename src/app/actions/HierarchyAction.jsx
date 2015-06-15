@@ -12,8 +12,7 @@ let HierarchyAction = {
     Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive?', {
         params: {customerId: data},
         success: function(hierarchyList){
-          console.log("hierarchyList");
-          console.log(hierarchyList);
+        
           AppDispatcher.dispatch({
               type: Action.LOAD_HIE_NODE,
               hierarchyList: hierarchyList
