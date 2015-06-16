@@ -44,7 +44,7 @@ let Alarm = React.createClass({
       return(
         <div style={{display:'flex', flex:1}}>
           {LeftPanelField}
-          <ChartPanel ></ChartPanel>
+          <ChartPanel isSettingChart={false}></ChartPanel>
           {dataSelectPanel}
         </div>
       );

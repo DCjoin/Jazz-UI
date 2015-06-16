@@ -6,6 +6,7 @@ import AlarmSetting from './AlarmSetting.jsx';
 import BaselineModify from './BaselineModify.jsx';
 import BaselineCfg from './BaselineCfg.jsx';
 import DataSelectPanel from '../DataSelectPanel.jsx';
+import ChartPanel from '../alarm/ChartPanel.jsx';
 
 let Setting = React.createClass({
   mixins:[Navigation,State],
@@ -26,11 +27,11 @@ let Setting = React.createClass({
 
     return (
       <div >
-        {'setting page'}
         <BaselineCfg  ref="baselineCfg"/>
-        <br/>
         <button  onClick={this.handleBaselineCfg}>BaselineBasic</button>
-          <DataSelectPanel  onButtonClick={this._onSwitchButtonClick} linkFrom="Setting" defaultStatus={true}></DataSelectPanel>
+        <br/>
+        <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
+        <DataSelectPanel  onButtonClick={this._onSwitchButtonClick} linkFrom="Setting" defaultStatus={true}></DataSelectPanel>
       </div>
     );
   }

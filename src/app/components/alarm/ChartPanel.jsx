@@ -23,19 +23,28 @@ const dateTime = hourPickerData();
 
 let ChartPanel = React.createClass({
     mixins:[Navigation,State],
+    propTypes:{
+      isSettingChart: React.PropTypes.bool
+    },
 
     _onLoadingStatusChange(){
+      let isSettingChart = this.props.isSettingChart;
+
       let isLoading = EnergyStore.getLoadingStatus();
       let paramsObj = EnergyStore.getParamsObj();
       let tagOption = EnergyStore.getTagOpions()[0];
-      let chartTitle = EnergyStore.getChartTitle();
+
 
       var obj = assign({},paramsObj);
       obj.isLoading = isLoading;
       obj.tagName = tagOption.tagName;
       obj.dashboardOpenImmediately = false;
       obj.tagOption = tagOption;
-      obj.chartTitle = chartTitle;
+
+      if(!isSettingChart){
+        let chartTitle = EnergyStore.getChartTitle();
+        obj.chartTitle = chartTitle;
+      }
 
       this.setState(obj);
     },
@@ -146,7 +155,7 @@ let ChartPanel = React.createClass({
       return chartObj;
     },
     getInitialState() {
-        return {
+        let state = {
           isLoading: false,
           energyData: null,
           hierName: null,
@@ -154,6 +163,10 @@ let ChartPanel = React.createClass({
           step: 2,
           dashboardOpenImmediately: false
         };
+        if(this.props.chartTitle){
+          state.chartTitle = this.props.chartTitle;
+        }
+        return state;
     },
     render: function () {
       let date = new Date();
