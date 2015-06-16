@@ -13,6 +13,8 @@ import ChartComponent from '../energy/ChartComponent.jsx';
 import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 
+import BaselineCfg from '../setting/BaselineCfg.jsx';
+
 let {hourPickerData, isArray} = CommonFuns;
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
@@ -49,12 +51,11 @@ let ChartPanel = React.createClass({
       this.setState(obj);
     },
     componentDidUpdate(){
-      if(EnergyStore.getAlarmLoadingStatus()){
+      if((!this.props.isSettingChart) && EnergyStore.getAlarmLoadingStatus()){
         let paramsObj = EnergyStore.getParamsObj();
 
         let startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
         let endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
-        console.log(startDate, endDate);
 
         this.refs.startDate.setDate(startDate);
         this.refs.endDate.setDate(endDate);
@@ -206,6 +207,8 @@ let ChartPanel = React.createClass({
             <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='endDate' style={{width:'90px', padding:'13px 0', marginLeft:'10px'}}/>
             <DropDownMenu menuItems={dateTime} ref='endTime'></DropDownMenu>
             <RaisedButton label='查看' secondary={true} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
+            <BaselineCfg  ref="baselineCfg"/>
+            <RaisedButton style={{marginLeft:'10px'}} label='BaselineBasic' secondary={true} onClick={this.handleBaselineCfg}/>
           </div>
           {energyPart}
         </div>
@@ -218,6 +221,9 @@ let ChartPanel = React.createClass({
   componentWillUnmount: function() {
     EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
     EnergyStore.removeTagDataChangeListener(this._onEnergyDataChange);
+  },
+  handleBaselineCfg: function(e){
+    this.refs.baselineCfg.showDialog();
   }
 });
 
