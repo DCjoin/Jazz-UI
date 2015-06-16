@@ -3,11 +3,13 @@
 import React from 'react';
 import Router from 'react-router';
 import MainMenu from './MainMenu.jsx';
-
+import I18N from '../lang/zh-cn.js';
 
 import keyMirror from   'keymirror';
 
 let { Route, DefaultRoute, RouteHandler, Link, Navigation, State } = Router;
+
+
 
 let JazzApp = React.createClass({
     mixins:[Navigation,State],
@@ -51,12 +53,17 @@ let JazzApp = React.createClass({
             this.replaceWith('app',{lang:lang});
         }
 
+        afterLoadLang(I18N);
+
+        return;
+/*
         if(lang.toLowerCase() == 'en-us'){
             require(['../lang/zh-cn.js'],afterLoadLang);//should be changed when support english
         }
         else{
             require(['../lang/zh-cn.js'],afterLoadLang);
         }
+        */
     },
     getInitialState: function() {
         return {
