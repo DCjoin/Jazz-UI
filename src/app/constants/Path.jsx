@@ -2,11 +2,11 @@
 
 let basePath;
 if ("production" !== process.env.NODE_ENV) {
-	basePath = "/web/API";
+	basePath = "/webhost/API";
 	console.log(process.env.NODE_ENV+'---------------------------');
 }else{
 	console.log(process.env.NODE_ENV+'+++++++++++++++++++++++');
-	basePath = "/webhost/API";
+	basePath = "/web/API";
 }
 
  let pathConfig = {
