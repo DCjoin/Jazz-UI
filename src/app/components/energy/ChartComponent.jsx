@@ -484,8 +484,6 @@ let ChartComponent = React.createClass({
        var endTime = j2d(this.props.endTime, true);
        var startTime = j2d(this.props.startTime, true);
 
-
-
        newConfig.series = realData;
        if (realData && realData.length > 1) {
            this.navCache = true;
@@ -506,7 +504,7 @@ let ChartComponent = React.createClass({
        switch (this.props.step) {
            case 0:
                endTime = new Date(endTime);
-
+               startTime = new Date(startTime);
                nowBound.setMinutes(endTime.getMinutes(), 0, 0);
                break;
            case 1:
@@ -515,6 +513,7 @@ let ChartComponent = React.createClass({
                    endTime = dateAdd(new Date(endTime), 1, 'hours');
                }
                nowBound = dateAdd(nowBound, 1, 'hours');
+               startTime = new Date(startTime);
                break;
            case 2:
                endTime = new Date(endTime);
@@ -589,7 +588,7 @@ let ChartComponent = React.createClass({
                break;
            case 6:
                endTime = new Date(endTime);
-
+               startTime = new Date(startTime);
                nowBound.setMinutes(endTime.getMinutes(), 0, 0);
                break;
            case 7:
@@ -598,6 +597,7 @@ let ChartComponent = React.createClass({
                    endTime = dateAdd(new Date(endTime), 1, 'hours');
                }
                nowBound = dateAdd(nowBound, 1, 'hours');
+               startTime = new Date(startTime);
                break;
        }
        newConfig.xAxis.max = endTime.getTime();

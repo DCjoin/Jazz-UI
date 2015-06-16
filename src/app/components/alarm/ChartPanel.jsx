@@ -85,7 +85,7 @@ let ChartPanel = React.createClass({
       let tagOptions;
 
       if(startDate.getTime()>= endDate.getTime()){
-         alert('请选择正确的时间范围'); 
+         window.alert('请选择正确的时间范围');
         return;
       }
 
@@ -228,6 +228,24 @@ let ChartPanel = React.createClass({
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
     EnergyStore.addTagDataChangeListener(this._onEnergyDataChange);
+
+    if(this.props.isSettingChart){
+      this.refs.relativeDate.setState({selectedIndex:1});
+
+      let startField = this.refs.startDate;
+      let startTimeField = this.refs.startTime;
+      let endField = this.refs.endDate;
+      let endTimeField = this.refs.endTime;
+      let date = new Date();
+      date.setHours(0,0,0);
+      let last7Days = CommonFuns.dateAdd(date, -7, 'days');
+
+      startField.setDate(last7Days);
+      endField.setDate(date);
+
+      startTimeField.setState({selectedIndex:0});
+      endTimeField.setState({selectedIndex:0});
+    }
   },
   componentWillUnmount: function() {
     EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
