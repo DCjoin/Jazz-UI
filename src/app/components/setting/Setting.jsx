@@ -16,7 +16,7 @@ let Setting = React.createClass({
     return (
       <div style={{display:'flex', flex:1}}>
         <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
-        <DataSelectPanel  onButtonClick={this._onSwitchButtonClick} linkFrom="Setting" defaultStatus={true}></DataSelectPanel>
+        <DataSelectPanel linkFrom="Setting" defaultStatus={true}></DataSelectPanel>
       </div>
     );
   }

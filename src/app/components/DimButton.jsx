@@ -21,7 +21,38 @@ let DimButton=React.createClass({
     show:React.PropTypes.bool,
     onTreeClick:React.PropTypes.func.isRequired
   },
+  _onShowPaper:function(){
+    this.setState({open:!this.state.open});
+    this.props.onButtonClick();
+  },
+  _onChange(){
+    var data=DimStore.getData();
 
+    if(data && this.props.parentNode){
+      var tree={};
+      tree.Id=this.props.parentNode.Id;
+      tree.Name=this.props.parentNode.Name;
+      tree.Children=data;
+      this.setState({
+        dimList:tree,
+        selectedNode:tree
+      });
+    }
+
+  },
+  resetButtonName:function(){
+    this.setState({
+      buttonName:"全部维度"
+    });
+  },
+  _onTreeClick:function(node){
+    this.props.onTreeClick(node);
+    this.setState({
+      open: false,
+      selectedNode:node,
+      buttonName:node.Name
+    });
+  },
     getInitialState: function() {
       return {
         open: false,
@@ -30,61 +61,30 @@ let DimButton=React.createClass({
         buttonName:"全部维度"
       };
     },
-    _onShowPaper:function(){
-      this.setState({open:!this.state.open});
-      this.props.onButtonClick();
-    },
-    _onChange(){
-      var data=DimStore.getData();
-
-      if(data && this.props.parentNode){
-        var tree={};
-        tree.Id=this.props.parentNode.Id;
-        tree.Name=this.props.parentNode.Name;
-        tree.Children=data;
-        this.setState({
-          dimList:tree,
-          selectedNode:tree
-        })
-      }
-
-    },
     componentDidMount: function() {
       DimStore.addChangeListener(this._onChange);
 
      },
-
-
-     componentWillUnmount: function() {
+    componentWillUnmount: function() {
        DimStore.removeChangeListener(this._onChange);
 
       },
 
-      componentWillReceiveProps: function(nextProps) {
-
+    componentWillReceiveProps: function(nextProps) {
         if(nextProps.parentNode){
           DimAction.loadall(nextProps.parentNode.Id);
-        };
+        }
         if(!nextProps.show){
           this.setState({
             open:false
-          })
-        };
+          });
+        }
         this.setState({
-
           dimList:null,
           selectedNode:null
-        })
+        });
+      },
 
-      },
-      _onTreeClick:function(node){
-        this.props.onTreeClick(node);
-        this.setState({
-          open: false,
-          selectedNode:node,
-          buttonName:node.Name
-        })
-      },
 
     render:function(){
 
@@ -101,10 +101,10 @@ let DimButton=React.createClass({
         fontStyle={
            color:'rgb(187, 184, 184)',
         };
-      };
+      }
       if((this.state.open) && (this.props.active) && (this.props.show)) {
 
-        dropdownPaper=<DimTree allNode={this.state.dimList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
+        dropdownPaper=<DimTree allNode={this.state.dimList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick} />
 
       };
       return(

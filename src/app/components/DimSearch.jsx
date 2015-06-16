@@ -23,16 +23,13 @@ let DimSearch = React.createClass({
 
     nodemenuItems.length=0;
     treeMap.forEach(function(nodeData,i){
-
-
-
         let menuItem;
         var name=(nodeData.Name).toLocaleUpperCase();
         if(name.indexOf(searchvalue.toLocaleUpperCase())>=0){
           payloadNo++;
 
-             menuItem={payload:payloadNo,iconClassName:"fa fa-users",text:nodeData.Name,node:nodeData};
-             nodemenuItems.push(menuItem);
+          menuItem={payload:payloadNo,iconClassName:"fa fa-users",text:nodeData.Name,node:nodeData};
+          nodemenuItems.push(menuItem);
 
         }
 
