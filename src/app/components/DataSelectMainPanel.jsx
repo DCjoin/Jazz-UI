@@ -21,15 +21,15 @@ var alarmType=null;//alarmType:0:neither 1:baseline 2:both null:all
 var filters=null;
 var tagStatus=[];
 var selectTotal=0;
+var page=0;
 
 var CheckboxItem=React.createClass({
   mixins:[Navigation,State],
   propTypes: {
-      title: React.PropTypes.string,
+      title: React.PropTypes.string.isRequired,
       label:React.PropTypes.number,
       defaultChecked:React.PropTypes.bool,
       payload:React.PropTypes.number,
-      page:React.PropTypes.number,
       selectFull:React.PropTypes.func,
       disabled:React.PropTypes.bool,
       nodeData:React.PropTypes.object
@@ -38,11 +38,11 @@ var CheckboxItem=React.createClass({
   _onClick:function(){
 
     if(!this.props.disabled){
-      if(tagStatus[this.props.page]===null){
-        tagStatus[this.props.page]=new Array();
-        tagStatus[this.props.page]=false;
+      if(tagStatus[page]===null){
+        tagStatus[page]=new Array();
+        tagStatus[page]=false;
       }
-      tagStatus[this.props.page][this.props.payload]=!this.state.boxChecked;
+      tagStatus[page][this.props.payload]=!this.state.boxChecked;
     let tagData={
       hierId:this.props.nodeData.HierarchyId,
       hierName:this.props.nodeData.HierarchyName,
@@ -72,15 +72,14 @@ var CheckboxItem=React.createClass({
   },
   getInitialState: function() {
     return {
-      boxChecked:false
+      boxChecked:this.props.defaultChecked
     };
   },
-  componentWillReceiveProps: function(nextProps) {
-
+  componentWillReceiveProps:function(nextProps){
     this.setState({
       boxChecked:nextProps.defaultChecked
-    });
-},
+    })
+  },
   render:function(){
     var alarm,baseline,checkBox;
     switch(this.props.label){
@@ -118,7 +117,6 @@ var TagMenu=React.createClass({
 
   propTypes: {
       checked: React.PropTypes.bool,
-      page:React.PropTypes.number,
       total:React.PropTypes.number,
       disalbed:React.PropTypes.bool,
       onSelectFull:React.PropTypes.func,
@@ -127,6 +125,7 @@ var TagMenu=React.createClass({
       onLeftPage:React.PropTypes.func,
       onRightPage:React.PropTypes.func,
       allCheckDisable:React.PropTypes.bool,
+      initialTagId:React.PropTypes.number
 
   },
   _onCheckSelect:function(checkFlag){
@@ -152,7 +151,6 @@ var TagMenu=React.createClass({
          height:'25px',
      };
     var disalbed,
-        page=this.props.page,
         checked=this.props.checked,
         onSelectFull=function(selectFlag){
           me.props.onSelectFull(selectFlag);
@@ -166,8 +164,10 @@ var TagMenu=React.createClass({
       else{
         disalbed=me.props.disalbe
       };
-
-      menuItem=<CheckboxItem page={page} payload={i} style={buttonStyle}
+      if(nodeData.Id==me.props.initialTagId){
+        tagStatus[page][i]=true;
+      };
+      menuItem=<CheckboxItem payload={i} style={buttonStyle}
                             title={nodeData.Name} label={nodeData.AlarmStatus}
                             defaultChecked={tagStatus[page][i] || checked}
                             selectFull={onSelectFull}
@@ -199,7 +199,7 @@ var TagMenu=React.createClass({
       <FlatButton style={pageButtonStyle} onClick={this.props.onLeftPage}>
         <FontIcon className="fa fa-caret-left fa-lg" style={{margin:'30px'}}/>
       </FlatButton>
-      {this.props.page}/{parseInt((this.props.total+19)/20)}
+      {page}/{parseInt((this.props.total+19)/20)}
 
       <FlatButton style={pageButtonStyle} onClick={this.props.onRightPage}>
         <FontIcon className="fa fa-caret-right fa-lg" style={{margin:'30px'}} />
@@ -237,10 +237,9 @@ let DataSelectMainPanel=React.createClass({
     _onHierachyTreeClick:function(node){
       TagAction.loadData(node.Id,2,1,alarmType,filters);
        tagStatus.length=0;
-       selectTotal=0;
+       page=1;
        tagStatus[1]=new Array();
       this.setState({
-        page:1,
         dimActive:true,
         dimParentNode:node,
         tagId:node.Id,
@@ -253,10 +252,10 @@ let DataSelectMainPanel=React.createClass({
 
       TagAction.loadData(node.Id,6,1,alarmType,filters);
       tagStatus.length=0;
-      selectTotal=0;
+      page=1;
       tagStatus[1]=new Array();
       this.setState({
-        page:1,
+
         tagId:node.Id,
         optionType:6,
         HierarchyShow:true,
@@ -280,20 +279,35 @@ let DataSelectMainPanel=React.createClass({
     _onTagNodeChange:function(){
       var data=TagStore.getData();
 
-      this.setState({
-        tagList:data.GetTagsByFilterResult,
-        total:data.total
-      })
+         if(selectTotal>10){
+           this.setState({
+             tagList:data.GetTagsByFilterResult,
+             total:data.total,
+             allChecked:false,
+             allCheckDisable:true
+           })
+         }
+         else{
+           this.setState({
+             tagList:data.GetTagsByFilterResult,
+             total:data.total,
+             allChecked:false,
+             allCheckDisable:false
+           })
+         }
+
+
     },
     _onAlarmTagNodeChange:function(){
       var data=TagStore.getData();
       var alarmTag=EnergyStore.getTagOpions()[0];
-
+      selectTotal=1;
+      page=data.pageIndex;
       tagStatus[data.pageIndex]=[];
       this.setState({
         tagList:data.GetPageTagDataResult,
         total:data.totalCount,
-        page:data.pageIndex,
+
         tagId:alarmTag.hierId,
         optionType:2
       })
@@ -320,56 +334,34 @@ let DataSelectMainPanel=React.createClass({
 
       },
       _onLeftPage:function(){
-       if(this.state.page>1){
-         TagAction.loadData(this.state.tagId,this.state.optionType,this.state.page-1,alarmType,filters);
-         if(tagStatus[this.state.page-1]==null){
-           tagStatus[this.state.page-1]=new Array();
+       if(page>1){
+         page=page-1;
+         if(tagStatus[page]==null){
+           tagStatus[page]=new Array();
          }
-         if(selectTotal>10){
-           this.setState({
-             page:this.state.page-1,
-             allChecked:false,
-             allCheckDisable:true
-           })
-         }
-         else{
-           this.setState({
-             page:this.state.page-1,
-             allChecked:false,
-             allCheckDisable:false
-           })
-         }
+         TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
+
+
 
        }
       },
       _onRightPage:function(){
-        if(tagStatus[this.state.page+1]==null){
-          tagStatus[this.state.page+1]=new Array();
-        }
-        if(20*this.state.page<this.state.total){
 
-                    TagAction.loadData(this.state.tagId,this.state.optionType,this.state.page+1,alarmType,filters);
-                    if(selectTotal>10){
-                      this.setState({
-                        page:this.state.page+1,
-                        allChecked:false,
-                        allCheckDisable:true
-                      })
+        if(20*page<this.state.total){
+                    page=page+1;
+
+                    if(tagStatus[page]==null){
+                      tagStatus[page]=new Array();
                     }
-                    else{
-                      this.setState({
-                        page:this.state.page+1,
-                        allChecked:false,
-                        allCheckDisable:false
-                      })
-                    }
+
+                    TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
 
                           }
       },
       _onAllCheck:function(){
         var that=this;
           this.state.tagList.forEach(function(nodeData,i){
-            tagStatus[that.state.page][i]=!that.state.allChecked;
+            tagStatus[page][i]=!that.state.allChecked;
             let tagData={
               hierId:nodeData.HierarchyId,
               hierName:nodeData.HierarchyName,
@@ -403,11 +395,8 @@ let DataSelectMainPanel=React.createClass({
 
 
         if(alarmType==3) alarmType=null;
-
-        TagAction.loadData(this.state.tagId,this.state.optionType,1,alarmType,filters);
-        this.setState({
-          page:1
-          })
+        page=1;
+        TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
 
         },
       _onSearch:function(){
@@ -424,10 +413,9 @@ let DataSelectMainPanel=React.createClass({
         else{
           filters=null
         };
-        TagAction.loadData(this.state.tagId,this.state.optionType,1,alarmType,filters);
-        this.setState({
-          page:1
-          })
+        page=1;
+        TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
+
       },
       _onSelectFull:function(fullFlag){
         this.setState({
@@ -448,7 +436,8 @@ let DataSelectMainPanel=React.createClass({
         alarmTagOption=EnergyStore.getTagOpions()[0];
       }else{
         alarmTagOption={
-          hierId:null
+          hierId:null,
+          tagId:null
         }
       }
       var buttonStyle = {
@@ -467,7 +456,6 @@ let DataSelectMainPanel=React.createClass({
       if(this.state.tagList){
 
         menupaper=<TagMenu checked={this.state.allChecked}
-                            page={this.state.page}
                             total={this.state.total}
                             disalbed={this.state.checkAbled}
                             onSelectFull={this._onSelectFull}
@@ -476,6 +464,7 @@ let DataSelectMainPanel=React.createClass({
                             allCheckDisable={this.state.allCheckDisable}
                             onLeftPage={this._onLeftPage}
                             onRightPage={this._onRightPage}
+                            initialTagId={alarmTagOption.tagId}
                           />;
       }
 

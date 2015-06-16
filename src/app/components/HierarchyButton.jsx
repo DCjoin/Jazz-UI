@@ -70,7 +70,7 @@ let HierarchyButton=React.createClass({
       HierarchyStore.addChangeListener(this._onChange);
       HierarchyAction.loadall(window.currentCustomerId);
       if(this.props.hierId!=null){
-        this.selectHierItem(this.props.hierId,true)
+        this.selectHierItem(this.props.hierId,false)
       }
      },
      componentWillUnmount: function() {
