@@ -382,7 +382,17 @@ let CommonFuns = {
 			interval.display = display;
 			interval.gridList = gridList;
 			return interval;
-		}
+		},
+		getLimitInterval(timeRanges){
+	    let timeRange = timeRanges[0];
+	    let j2d = CommonFuns.DataConverter.JsonToDateTime;
+
+	    let startTime = j2d(timeRange.StartTime, true),
+	        endTime = j2d(timeRange.EndTime, true);
+
+	    let interval = CommonFuns.getInterval(startTime, endTime);
+	    return interval;
+	  }
 };
 
 module.exports = CommonFuns;

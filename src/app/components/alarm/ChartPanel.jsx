@@ -83,6 +83,12 @@ let ChartPanel = React.createClass({
           endDate = this.refs.endDate.getDate(),
           userTagListSelect = AlarmTagStore.getUseTaglistSelect();
       let tagOptions;
+
+      if(startDate.getTime()>= endDate.getTime()){
+         alert('请选择正确的时间范围'); 
+        return;
+      }
+
       if(!userTagListSelect){
         tagOptions = EnergyStore.getTagOpions();
       }else{
@@ -94,8 +100,13 @@ let ChartPanel = React.createClass({
       let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
       let step = this.state.step;
 
-      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
+      let limitInterval = CommonFuns.getLimitInterval(timeRanges);
+      let stepList = limitInterval.stepList;
+      if( stepList.indexOf(step) == -1){
+        step = limitInterval.display;
+      }
 
+      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
     },
     _onChart2WidgetClick(){
         if(!!this.state.energyData){
