@@ -11,12 +11,6 @@ const MONTHSTEP = 3,
       HOURSTEP = 1;
 
 let AlarmAction = {
-  changeDateType(dateType){
-    AppDispatcher.dispatch({
-        type: Action.DATETYPE_CHANGED,
-        dateType: dateType
-    });
-  },
   getHierarchyListByDate(date,step){
     Ajax.post('/TargetBaseline.svc/GetAlarmTagIdsByDate', {
         params: {date:date,customerId:window.currentCustomerId, step: step},

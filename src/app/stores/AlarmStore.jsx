@@ -9,26 +9,11 @@ import Immutable from 'immutable';
 import {dateType} from '../constants/AlarmConstants.jsx';
 import {Action} from '../constants/actionType/Alarm.jsx';
 
-var _dateType = dateType.DAY_ALARM;
-var _dateValue = null;
-var _hierarchyList = null;
+let _hierarchyList = null;
 
 let CHANGE_ALAMLIST_EVENT = 'changealarmlist';
 var AlarmStore = assign({},PrototypeStore,{
-  getDateType(){
-    return _dateType;
-  },
-  setDateType(type){
-    _dateType = type;
-  },
-  onDateTypeChanged(type){
-    _dateType = type;
-    _dateValue = null;
-    _hierarchyList = null;
-  },
-  getDateValue(){
-    return _dateValue;
-  },
+
   getHierarchyList(){
     return _hierarchyList;
   },
@@ -60,10 +45,6 @@ var AlarmStore = assign({},PrototypeStore,{
 
 AlarmStore.dispatchToken = PopAppDispatcher.register(function(action) {
     switch(action.type) {
-      case Action.DATETYPE_CHANGED:
-        AlarmStore.onDateTypeChanged(action.dateType);
-        AlarmStore.emitChange();
-        break;
       case Action.DATALIST_CHANGED:
         AlarmStore.convertAlarmList(action.alarmList);
         AlarmStore.emitAlarmlistChange();
