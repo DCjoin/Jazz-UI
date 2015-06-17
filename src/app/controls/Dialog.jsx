@@ -255,6 +255,7 @@ let Dialog = React.createClass({
         margin: 0,
         padding: gutter + gutter + '0 ' + gutter,
         color: this.context.muiTheme.palette.textColor,
+        fontFamily: 'Microsoft YaHei',
         fontSize: '24px',
         lineHeight: '32px',
         fontWeight: '400',
@@ -270,6 +271,7 @@ let Dialog = React.createClass({
     //debugger;
     var styles = {
       root: {
+       fontFamily: 'Microsoft YaHei',
         position: 'fixed',
         boxSizing: 'border-box',
         WebkitTapHighlightColor: 'rgba(0,0,0,0)',
@@ -280,6 +282,7 @@ let Dialog = React.createClass({
         height: '100%',
       },
       contents: {
+       fontFamily: 'Microsoft YaHei',
         boxSizing: 'border-box',
         WebkitTapHighlightColor: 'rgba(0,0,0,0)',
         position: 'relative',
@@ -307,11 +310,13 @@ let Dialog = React.createClass({
         height: '30px',
         background: '#ccc',
         fontWeight: 'bold',
+        fontFamily: 'Microsoft YaHei',
       },
       buttons:{
         position: 'absolute',
         zIndex: 100,
         fontSize: 32,
+        fontFamily: 'Microsoft YaHei',
         float: 'right',
         top: 0,
         background: 'transparent',

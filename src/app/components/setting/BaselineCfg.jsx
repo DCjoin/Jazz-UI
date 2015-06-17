@@ -37,7 +37,6 @@ let BaselineCfg = React.createClass({
   },
 
   setTB: function(){
-    debugger;
     TBAction.loadData(this.props.tagId);
     var tbs = TBStore.getData();
     if(tbs && tbs.length > 0){
@@ -68,6 +67,9 @@ let BaselineCfg = React.createClass({
   },
 
   render: function () {
+    var dialogStyle = {
+      fontFamily: "Microsoft YaHei",
+    };
 
     var basicProps = {
       name: this.state.name || null,
@@ -75,7 +77,7 @@ let BaselineCfg = React.createClass({
     };
 
     return (
-      <Dialog title="基准值配置" ref="cfgDialog">
+      <Dialog title="基准值配置" ref="cfgDialog" style={dialogStyle}>
         <Tabs>
           <Tab label="基准值配置" >
             <BaselineBasic  ref="baselineBasic" {...basicProps}/>

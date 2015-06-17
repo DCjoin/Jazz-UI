@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker} from 'material-ui';
+import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker,RaisedButton } from 'material-ui';
 import assign from "object-assign";
 import YearPicker from '../../controls/YearPicker.jsx';
 import DaytimeSelector from '../../controls/DaytimeSelector.jsx';
@@ -249,7 +249,7 @@ var NormalSetting = React.createClass({
 
   getValue: function () {
     var workdays = this.refs.workdayValues.getValue(),
-      nonWorkdays = this.refs.nonWorkdayValues.getValue();
+      nonWorkdays = this.refs.nonWorkdayValues.getValue(),
       set = [];
     for (var i = 0; i < workdays.length; i++) {
       workdays[i].DayType = 0;
@@ -355,9 +355,13 @@ var SpecialSetting = React.createClass({
 
   getInitialState: function() {
     return {
-      items: this.props.items,
+      items: this.props.items || [],
       isViewStatus: this.props.isViewStatus
     };
+  },
+
+  getValue: function(){
+    
   },
 
   render: function() {
@@ -410,11 +414,11 @@ var TBSettingItem = React.createClass({
       TbSetting:{
         Year: this.props.year,
         TBId: this.props.tbId,
-        StartTime: this.props.start,
-        EndTime: this.props.end
+        StartTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.startFeild.getDate()),
+        EndTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.endFeild.getDate())
       },
       NormalDates: this.refs.NormalSettingCtrl.getValue(),
-      //SpecialDates: this.refs.SpecialSettingCtrl.getValue(),
+      SpecialDates: this.refs.SpecialSettingCtrl.getValue(),
       //TbAvgDtos: this.refs.CalcSettingCtrl.getValue(),
     }
   },
@@ -465,18 +469,20 @@ var TBSettingItem = React.createClass({
     specialProps = {
       isViewStatus: me.props.isViewStatus,
       items: me.props.specials
+    },
+    clearStyle = {
+      clear: 'both',
     };
 
     return (<div>
-        <div>
-          <div>
+        <div style={clearStyle}>
+          <div style={clearStyle}>
             <DatePicker  ref='startFeild' {...startProps} />
             <span className='jazz-setting-basic-datespan'>到</span>
             <DatePicker  ref='endFeild' {...endProps} />
-            <FloatingActionButton ref="remove"  onClick={this._onRemove} />
+            <FlatButton label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
-
-          <div>
+          <div style={clearStyle}>
             <input type='radio' name='timetype' /><span> 手动设置基准值 </span>
             <NormalSetting ref="NormalSettingCtrl" {...normalProps} />
 
@@ -484,8 +490,8 @@ var TBSettingItem = React.createClass({
             <CalcSetting ref="CalcSettingCtrl" {...avgProps} />
           </div>
         </div>
-        <div><span>补充日期</span> <FloatingActionButton onClick={this._addSpecial}  /></div>
-        <div ref="SpecialSettingContainer">
+        <div style={clearStyle}><span>补充日期</span> <FlatButton label="＋" onClick={this._addSpecial}  /></div>
+        <div ref="SpecialSettingContainer" style={clearStyle}>
           <SpecialSetting ref="SpecialSettingCtrl" {...specialProps} />
         </div>
       </div>
@@ -522,13 +528,13 @@ var TBSettingItems = React.createClass({
   },
 
   getValue: function(){
+    debugger;
     var vals = [];
-    for (var i = 0; i < this.state.refIdx; i++) {
+    for (var i = 0; i < this.state.items.length; i++) {
       var ref = this.refs['item_' + i];
-      if(ref) continue;
-      val.push(ref.getValue());
+      if(ref) vals.push(ref.getValue());
     }
-    return val;
+    return vals;
   },
 
   setValue: function(items){
@@ -558,7 +564,7 @@ var TBSettingItems = React.createClass({
       isViewStatus: this.props.isViewStatus
     },
     item = (<TBSettingItem {...itemProps} />),
-    newItems = this.props.items.concat(item);
+    newItems = this.state.items.concat(item);
     this.setState({items: newItems});
   },
 
@@ -579,7 +585,7 @@ var TBSettingItems = React.createClass({
         isViewStatus: isViewStatus,
         onRemove: me._removeSetting
       };
-      debugger;
+
       if(item.TbSetting && item.TbSetting.StartTime){
         drvProps.start = CommonFuns.DataConverter.JsonToDateTime(item.TbSetting.StartTime, false);
       }
@@ -590,7 +596,7 @@ var TBSettingItems = React.createClass({
     };
 
     return (<div>
-        <div><span>时段设置</span><FloatingActionButton onClick={this._addSetting} /></div>
+        <div><span>时段设置</span><FlatButton label="＋" onClick={this._addSetting} /></div>
         <div>{this.state.items.map(createItem)}</div>
       </div>);
   }
@@ -620,7 +626,7 @@ var BaselineBasic = React.createClass({
 
   getInitialState: function() {
     return {
-      items: this.props.items,
+      items: this.props.items || [],
       name: this.props.name,
       year: this.props.year,
       isViewStatus: this.props.isViewStatus
@@ -630,7 +636,7 @@ var BaselineBasic = React.createClass({
   getValue: function(){
     return {
       TBId: this.props.tbId,
-      Year: this.props.Year,
+      Year: this.props.year,
       TBSettings: this.refs.TBSettingItems.getValue()
     };
   },
@@ -647,11 +653,16 @@ var BaselineBasic = React.createClass({
       //me.setState({items: tbSetting.TBSettings});
 
       var itemsCtrl = me.refs.TBSettingItems;
-      itemsCtrl.setValue(tbSetting.TBSettings);
+      if(!tbSetting.TBSettings){
+        itemsCtrl.setValue([]);
+      }else{
+        itemsCtrl.setValue(tbSetting.TBSettings);
+      }
     });
   },
 
   saveDataToServer: function(){
+    debugger;
     var val = this.getValue();
     TBSettingAction.saveData(val);
     var tbSetting = TBSettingStore.getData();
