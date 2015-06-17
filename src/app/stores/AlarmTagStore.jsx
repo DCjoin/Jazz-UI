@@ -8,6 +8,12 @@ import {Action} from '../constants/actionType/AlarmTag.jsx';
 let searchTagList=[];
 let interData=null;
 
+/*
+ if change checked state of the tags from the tag list,than it is true;
+ when select item of alarm list, set it false in AlarmList.jsx
+*/
+let _useTaglistSelect = false;
+
 const INTER_DATA_CHANGED_EVENT = 'interdatachanged';
 
 var AlarmTagStore = assign({},PrototypeStore,{
@@ -15,19 +21,40 @@ var AlarmTagStore = assign({},PrototypeStore,{
   getSearchTagList(){
     return searchTagList;
   },
-  addSearchTagList(tagNode){
-    searchTagList.push(tagNode);
+  setUseTagListSelect(useTaglistSelect){
+    _useTaglistSelect = useTaglistSelect;
   },
+  getUseTaglistSelect(){
+    return _useTaglistSelect;
+  },
+  addSearchTagList(tagNode){
+    var flag=false;
+    AlarmTagStore.setUseTagListSelect(true);
+
+    searchTagList.forEach(function(nodeData,i){
+
+      if(tagNode.tagId==nodeData.tagId){
+        flag=true;
+      }
+    });
+      if(!flag){
+        searchTagList.push(tagNode);
+      }
+
+    },
   removeSearchTagList(tagNode){
+    AlarmTagStore.setUseTagListSelect(true);
     searchTagList.forEach(function(nodeData,i){
     if(tagNode.tagId==nodeData.tagId){
-      searchTagList.remove(i);
-      return;
+
+      searchTagList.splice(i,1);
+
     }
     });
 
   },
   clearSearchTagList(){
+    AlarmTagStore.setUseTagListSelect(true);
     searchTagList.length=0;
   },
   getInterData(){

@@ -28,10 +28,28 @@ let TagAction = {
           start: 20*(page-1)
           },
         success: function(tagList){
-          console.log("**wyh**TagAction");
-          console.log(tagList);
+
           AppDispatcher.dispatch({
               type: Action.LOAD_TAG_NODE,
+              tagList: tagList
+          });
+        },
+        error: function(err, res){
+          console.log(err,res);
+        }
+    });
+  },
+  loadAlarmData(ioData){
+    Ajax.post('/Tag.svc/GetPageTagData', {
+         params: {
+           hierarchyId:ioData.hierId,
+           tagId:ioData.tagId,
+           pageSize: 20,
+          },
+        success: function(tagList){
+
+          AppDispatcher.dispatch({
+              type: Action.LOAD_ALARM_TAG_NODE,
               tagList: tagList
           });
         },

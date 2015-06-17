@@ -23,6 +23,12 @@ let BaselineCfg = React.createClass({
     isViewStatus: React.PropTypes.bool
   },
 
+  getDefaultProps: function(){
+    return {
+      tagId: 100006
+    }
+  },
+
   getInitialState: function() {
     return {
       tbId: this.props.tbId,
@@ -31,6 +37,7 @@ let BaselineCfg = React.createClass({
   },
 
   setTB: function(){
+    debugger;
     TBAction.loadData(this.props.tagId);
     var tbs = TBStore.getData();
     if(tbs && tbs.length > 0){

@@ -1,14 +1,23 @@
 'use strict';
 
-module.exports = {
+let basePath;
+if ("production" !== process.env.NODE_ENV) {
+	basePath = "/webhost/API";
+	console.log(process.env.NODE_ENV+'---------------------------');
+}else{
+	console.log(process.env.NODE_ENV+'+++++++++++++++++++++++');
+	basePath = "/web/API";
+}
 
-	//APIBasePath: "/webhost/API/DashBoard.svc/GetUnReadSharedItemCount",
+ let pathConfig = {
 
-	 APIBasePath: "/webhost/API",
-	 //APIBasePath: "/webhost/API",
+	 //APIBasePath: "/WebHost/API",
+	 APIBasePath: basePath,
 
-	APISubPaths: {
+	 APISubPaths: {
 
   }
 
 };
+
+module.exports = pathConfig;

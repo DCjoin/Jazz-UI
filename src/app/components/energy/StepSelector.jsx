@@ -1,5 +1,7 @@
 'use strict';
 import React from "react";
+import assign from "object-assign";
+import CommonFuns from '../../util/Util.jsx';
 
 let StepItem = React.createClass({
   _onStepClick(){
@@ -15,6 +17,14 @@ let StepItem = React.createClass({
 
 });
 
+const ALLSTEPITEMS = [ {val: 'minute', text: '分钟', step: 0},
+                       {val: 'hour', text: '小时', step: 1},
+                       {val: 'day', text: '天', step: 2},
+                       {val: 'week', text: '周', step: 5},
+                       {val: 'month', text: '月', step: 3},
+                       {val: 'year', text: '年', step: 4}
+                     ];
+
 let StepSelector = React.createClass({
   _onStepChange(step){
     if(this.props.onStepChange){
@@ -22,28 +32,39 @@ let StepSelector = React.createClass({
     }
   },
   getDefaultProps(){
-    let items = [ {val: 'minute', text: '分钟', step: 0},
-                  {val: 'hour', text: '小时', step: 1},
-                  {val: 'day', text: '天', step: 2},
-                  {val: 'week', text: '周', step: 5},
-                  {val: 'month', text: '月', step: 3},
-                  {val: 'year', text: '年', step: 4}];
-    return {stepItems: items};
+    return {stepItems: ALLSTEPITEMS, timeRanges:[]};
+  },
+  getInitialState(){
+    let limitInterval = CommonFuns.getLimitInterval(this.props.timeRanges);
+    return limitInterval;
+  },
+  componentWillReceiveProps(nextProps){
+    console.log('==componentWillReceiveProps==',nextProps);
   },
   render(){
     var me = this;
     var selectedStep = this.props.stepValue;
-    let items = this.props.stepItems.map(item => {
-      if(selectedStep === item.step){
-        item.selected = true;
-      }else{
-        item.selected = false;
-      }
-      return <StepItem {...item} onStepChange={me._onStepChange}></StepItem>;
-    });
+
+    let stepList = this.state.stepList,
+        stepElementList = [],
+        stepItem;
+
+    for(let i = 0, len = ALLSTEPITEMS.length; i<len; i++){
+        stepItem = ALLSTEPITEMS[i];
+        if(stepList.indexOf(stepItem.step)> -1){
+          let obj = assign({},stepItem);
+          if(selectedStep === stepItem.step){
+            obj.selected = true;
+          }else{
+            obj.selected = false;
+          }
+
+          stepElementList.push(<StepItem {...obj} onStepChange={me._onStepChange}></StepItem>);
+        }
+    }
 
     return <div className='jazz-energy-step'>
-      {items}
+      {stepElementList}
     </div>;
   }
 

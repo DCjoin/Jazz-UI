@@ -5,25 +5,56 @@ import {FlatButton,FontIcon,Menu,Paper} from 'material-ui';
 import HierarchyTree from './HierarchyTree.jsx';
 import HierarchyAction from "../actions/HierarchyAction.jsx";
 import HierarchyStore from "../stores/HierarchyStore.jsx";
-var testnode={
-  "Name":"111",
-  "Id":111,
-  "Type":-1,
-  Children:[
-  {  "Name":"101",
-    "Id":101,
-    "ParentId":111,
-    "Type":0}
-  ]
 
-};
 let HierarchyButton=React.createClass({
   propTypes: {
       onTreeClick:React.PropTypes.func.isRequired,
       onButtonClick:React.PropTypes.func.isRequired,
-      show:React.PropTypes.bool
+      show:React.PropTypes.bool,
+      hierId:React.PropTypes.number
   },
-    getInitialState: function() {
+  _onShowPaper:function(){
+    this.setState({open:!this.state.open});
+    this.props.onButtonClick();
+  },
+  _onChange(){
+    var data=HierarchyStore.getData();
+
+    this.setState({
+      hieList:data,
+
+    });
+  },
+  selectHierItem(hierId, isCallClickEvent){
+    let item = this.getHierById(hierId);
+
+    if(item)
+      this.setState({selectedNode:item, buttonName:item.Name});
+
+      if(!!isCallClickEvent){
+        this.props.onTreeClick(item);
+      }
+  },
+  getHierById(hierId){
+    var data=HierarchyStore.getData();
+    if(data){
+      let item = HierarchyStore.findHierItem(data, hierId);
+      return item;
+    }
+    return null;
+  },
+  setErrorText: function(newErrorText) {
+    this.setState({errorText: newErrorText});
+  },
+  _onTreeClick:function(node){
+    this.props.onTreeClick(node);
+    this.setState({
+      open: false,
+      selectedNode:node,
+      buttonName:node.Name
+    });
+  },
+  getInitialState: function() {
       return {
         open: false,
         hieList:null,
@@ -31,66 +62,40 @@ let HierarchyButton=React.createClass({
         buttonName:"请选择层级节点"
       };
     },
-
-    _onShowPaper:function(){
-      this.setState({open:!this.state.open});
-      this.props.onButtonClick();
-    },
-    _onChange(){
-      var data=HierarchyStore.getData();
-
-      this.setState({
-        hieList:data,
-        selectedNode:data
-      });
-    },
-    selectHierItem(hierId, isCallClickEvent){
-      let item = this.getHierById(hierId);
-      if(item)
-        this.setState({selectedNode:item, buttonName:item.Name});
-
-        if(!!isCallClickEvent){
-          this.props.onTreeClick(item);
-        }
-    },
-    getHierById(hierId){
-      var data=HierarchyStore.getData();
-      if(data){
-        let item = HierarchyStore.findHierItem(data, hierId);
-        return item;
-      }
-      return null;
-    },
-    setErrorText: function(newErrorText) {
-      this.setState({errorText: newErrorText});
-    },
-    componentDidMount: function() {
+  componentDidMount: function() {
       HierarchyStore.addChangeListener(this._onChange);
       HierarchyAction.loadall(window.currentCustomerId);
+      if(this.props.hierId!=null){
+        this.selectHierItem(this.props.hierId,false)
+      }
      },
-     componentWillUnmount: function() {
-
+   componentWillUnmount: function() {
        HierarchyStore.removeChangeListener(this._onChange);
 
       },
-      _onTreeClick:function(node){
-        this.props.onTreeClick(node);
-
-        this.setState({
-          open: false,
-          selectedNode:node,
-          buttonName:node.Name
-        });
+  componentWillReceiveProps: function(nextProps) {
+        if(!nextProps.show){
+          this.setState({
+            open:false
+          })
+        }
       },
-    render:function(){
+
+  render:function(){
 
       var buttonStyle = {
                minHeight:'48px',
            };
 
       var dropdownPaper;
-      if(this.state.open) {
-        dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
+
+      if(this.state.open && this.props.show) {
+        if(this.state.selectedNode){
+          dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
+        }else{
+          dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.hieList} onTreeClick={this._onTreeClick}/>;
+        }
+
 
       }
       var errorStyle = {

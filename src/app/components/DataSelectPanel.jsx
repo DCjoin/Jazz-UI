@@ -9,35 +9,42 @@ let DataSelectPanel=React.createClass({
     mixins:[Classable,Navigation,State],
 
     propTypes: {
-      onButtonClick:React.PropTypes.func.isRequired
+      onButtonClick:React.PropTypes.func,
+      linkFrom: React.PropTypes.string,
+      defaultStatus:React.PropTypes.bool
     },
+    _onToggle:function(){
+
+      if(this.props.onButtonClick){
+        this.props.onButtonClick();
+      };
+
+      this.setState({ open: !this.state.open });
+      return this;
+    },
+
     getInitialState: function() {
         return {
           open: false
         };
       },
-
-
-    _onToggle:function(){
-      this.props.onButtonClick();
-      this.setState({ open: !this.state.open });
-      return this;
-    },
+    componentWillMount: function() {
+        this.setState({
+          open:this.props.defaultStatus
+        })
+      },
 
 
     render:function(){
       var mainpanel;
-      if(this.state.open) mainpanel=<DataSelectMainPanel />;
+      if(this.state.open) mainpanel=<DataSelectMainPanel linkFrom={this.props.linkFrom}/>;
         var buttonStyle = {
-
-
+          float:'right',
           width:'initial',
           height:'48px',
           border:'solid 2px gray',
           verticalAlign:'middle',
           marginTop:'250px'
-
-
              };
       return(
         <div className="jazz-dataselectpanel">
@@ -45,9 +52,6 @@ let DataSelectPanel=React.createClass({
             <FlatButton   style={buttonStyle} onClick={this._onToggle}>
               <FontIcon className="fa fa-list" style={{color:'black'}}/>
             </FlatButton>
-
-
-
           {mainpanel}
 
         </div>
