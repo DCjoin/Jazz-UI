@@ -7,6 +7,7 @@ import BaselineModify from './BaselineModify.jsx';
 import BaselineCfg from './BaselineCfg.jsx';
 
 let Setting = React.createClass({
+
   mixins:[Navigation,State],
   handleAlarmSetting: function(e){
 
@@ -22,11 +23,14 @@ let Setting = React.createClass({
     this.refs.baselineCfg.showDialog();
   },
   render: function () {
+    var baselineCfgProps = {
+      tagId: 100006
+    };
 
     return (
       <div >
         {'setting page'}
-        <BaselineCfg  ref="baselineCfg"/>
+        <BaselineCfg  ref="baselineCfg" {...baselineCfgProps} />
         <br/>
         <button  onClick={this.handleBaselineCfg}>BaselineBasic</button>
       </div>

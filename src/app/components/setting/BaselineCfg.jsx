@@ -6,9 +6,55 @@ import BaselineBasic from './BaselineBasic.jsx';
 import AlarmSetting from './AlarmSetting.jsx';
 import BaselineModify from './BaselineModify.jsx';
 import Dialog from "../../controls/Dialog.jsx";
+import TBStore from "../../stores/TBStore.jsx";
+import TBAction from "../../actions/TBAction.jsx";
 
 let BaselineCfg = React.createClass({
   mixins:[Navigation,State],
+
+  propTypes: {
+    tagId: React.PropTypes.number,
+    tbId: React.PropTypes.number,
+
+    name: React.PropTypes.string,
+    year: React.PropTypes.number,
+    items: React.PropTypes.array,
+
+    isViewStatus: React.PropTypes.bool
+  },
+
+  getInitialState: function() {
+    return {
+      tbId: this.props.tbId,
+      name: this.props.name || "",
+    };
+  },
+
+  setTB: function(){
+    TBAction.loadData(this.props.tagId);
+    var tbs = TBStore.getData();
+    if(tbs && tbs.length > 0){
+      for(var i=0; i< tbs.length; i++){
+        if(tbs[i].TBType == 2){
+          this.setState({
+            tbId: tbs[i].Id,
+            name: tbs[i].Name,
+          });
+          this.refs.baselineBasic.name = tbs[i].Name;
+          this.refs.baselineBasic.tbId = tbs[i].Id;
+          break;
+        }
+      }
+    }
+  },
+
+  componentDidMount: function() {
+    this.setTB();
+  },
+
+  componentWillReceiveProps: function(){
+    this.setTB();
+  },
 
   showDialog: function(){
     this.refs.cfgDialog.show();
@@ -16,11 +62,16 @@ let BaselineCfg = React.createClass({
 
   render: function () {
 
+    var basicProps = {
+      name: this.state.name || null,
+      tbId: this.state.tbId || null,
+    };
+
     return (
       <Dialog title="基准值配置" ref="cfgDialog">
         <Tabs>
           <Tab label="基准值配置" >
-            <BaselineBasic  ref="baselineBasic"/>
+            <BaselineBasic  ref="baselineBasic" {...basicProps}/>
           </Tab>
           <Tab label="计算值修正" >
             <BaselineModify  ref="baselineModify"/>

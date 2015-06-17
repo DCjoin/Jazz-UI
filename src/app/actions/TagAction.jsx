@@ -8,10 +8,11 @@ import Ajax from '../ajax/ajax.jsx';
 var Action = Tag.Action;
 
 let TagAction = {
-  loadData(nodeId,option,page,alarmType,filters){
+  loadData(nodeId,option,page,alarmType,filters,ids){
     Ajax.post('/Tag.svc/GetTagsByFilter?', {
          params: {
           filter: {
+            Ids: ids,
             Association: {
               AssociationId: nodeId,
               AssociationOption: option

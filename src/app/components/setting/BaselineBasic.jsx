@@ -6,99 +6,83 @@ import YearPicker from '../../controls/YearPicker.jsx';
 import DaytimeSelector from '../../controls/DaytimeSelector.jsx';
 import NodeButtonBar from './NodeButtonBar.jsx';
 import CommonFuns from '../../util/Util.jsx';
+import TBSettingAction from '../../actions/TBSettingAction.jsx';
+import TBSettingStore from '../../stores/TBSettingStore.jsx';
 
 var DaytimeRangeValue = React.createClass({
+  mixins:[Navigation,State],
   propTypes: {
-    from: React.PropTypes.number,
-    to: React.PropTypes.number,
+    curIdx: React.PropTypes.number,
+    start: React.PropTypes.number,
+    end: React.PropTypes.number,
     step: React.PropTypes.number,
 
-    defaultValue:React.PropTypes.number,
+    defaultValue: React.PropTypes.number,
     isViewStatus: React.PropTypes.bool,
 
-    onChange: React.PropTypes.func
+    onDaytimeChange: React.PropTypes.func,
+    onValueChange: React.PropTypes.func,
   },
 
   getDefaultProps: function() {
     return {
-      from: 0,
-      to: 1440,
+      start: 0,
+      step: 30,
+      end: 1440,
       isViewStatus: true
     };
   },
 
-  getInitialState: function() {
-    return {
-      from: this.props.from,
-      to: this.props.to,
-      value: this.props.defaultValue,
-    };
-  },
+  _onEndChange: function(e, curEnd, preEnd){
+    var preStart = this.props.start, curStart = preStart;
 
-  _onFromChange: function(e, curFrom, preFrom){
-    var preTo = this.state.to;
-
-    if(curFrom >= preTo){
-      this.state.to = curFrom + this.props.step;
+    if(curEnd <= preStart){
+      curStart = curEnd - this.props.step;
     }
 
-    if(this.props.onChange){
-      this.props.onChange(e, this.state.from, this.state.to, preFrom, preTo);
-    }
-  },
-
-  _onToChange: function(e, curTo, preTo){
-    var preFrom = this.state.from;
-
-    if(curTo <= preFrom){
-      this.state.from = curTo - this.props.step;
-    }
-
-    if(this.props.onChange){
-      this.props.onChange(e, this.state.from, this.state.to, preFrom, preTo);
+    if(this.props.onDaytimeChange){
+      this.props.onDaytimeChange(e, this.props.curIdx, {
+        StartTime: curStart,
+        EndTime: curEnd,
+        Value: this.refs.valueField.getValue()
+      }, {
+        StartTime: preStart,
+        EndTime: preEnd,
+        Value: this.props.defaultValue
+      });
     }
   },
 
-  getValue: function(){
-    return {
-      from: this.refs.fromFeild.getValue(),
-      to: this.refs.toField.getValue(),
-      value: this.refs.valueField.getValue(),
-    };
-  },
-
-  setValue: function (val) {
-    if(val){
-      if(val.from) this.refs.fromFeild.setValue(val.from);
-      if(val.to) this.refs.toFeild.setValue(val.to);
-      if(val.value) this.refs.valueField.setValue(val.value);
+  _onValueChange: function(e){
+    if(this.props.onValueChange){
+      this.props.onValueChange(e, this.props.curIdx,
+        this.refs.valueField.getValue());
     }
   },
 
   render: function(){
-    var fromProps = {
-      start: this.props.from,
-      end: this.props.to || (1440 - (this.props.step || 30)),
-      step: this.props.step,
-      defaultMinute: this.props.from,
-      onChange: this._onFromChange
+    var startProps = {
+      defaultMinute: this.props.start,
+      isViewStatus: true
     },
-    toProps = {
-      start: this.props.from || (this.props.step || 30),
-      end: this.props.to || 1440,
+    endProps = {
+      from: this.props.start + this.props.step,
+      to: 1440,
       step: this.props.step,
-      defaultMinute: this.props.to,
-      onChange: this._onToChange
+      defaultMinute: this.props.end,
+      isViewStatus: this.props.isViewStatus,
+      onChange: this._onEndChange
     },
     valProps = {
-      defaultValue: this.state.value
+      defaultValue: this.props.defaultValue,
+      onChange: this._onValueChange
     };
 
     return (
       <div>
-        <DaytimeSelector {...fromProps} ref='fromFeild' />
+        <DaytimeSelector {...startProps} ref='startFeild' />
         <span>到</span>
-        <DaytimeSelector {...toProps} ref='toFeild' />
+        <DaytimeSelector {...endProps} ref='endFeild' />
         <TextField {...valProps} ref='valueField'/>
         <span>千瓦</span>
       </div>
@@ -107,44 +91,197 @@ var DaytimeRangeValue = React.createClass({
 });
 
 var DaytimeRangeValues = React.createClass({
-    propTypes: {
-      items: React.PropTypes.array,
-      isViewStatus: React.PropTypes.bool
-    },
+  propTypes: {
+    items: React.PropTypes.array,
+    isViewStatus: React.PropTypes.bool
+  },
 
-    getInitialState: function() {
-      return {
-        items: this.props.items || [],
-        isViewStatus: true
-      };
-    },
+  getInitialState: function() {
+    return {
+      items: this.props.items
+    };
+  },
 
-    render: function() {
-      var createItem = function(item, index) {
-        var drvProps = {
-          from: item.StartTime,
-          value: item.Value,
-          isViewStatus: this.props.isViewStatus
-        };
-        return (<DaytimeRangeValue {...drvProps} />);
-      };
-      return <ul>{this.state.items.map(createItem)}</ul>;
+  getValue: function(){
+    return this.state.items;
+  },
+
+  _onDaytimeRangeValueChange: function(e, curIdx, newObj, preObj){
+    var items = this.state.items, newItems=[];
+
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      if(curIdx > i){
+        newItems.push(item);
+      }else if(curIdx == i){
+        item.EndTime = newObj.EndTime;
+        newItems.push(item);
+      }
+
+      if(newObj.end == 1440){
+        break;
+      }
+
+      if(curIdx < i){
+        if(item.EndTime <= newObj.EndTime){
+          continue;
+        }else if(item.EndTime > newObj.EndTime && item.StartTime <= newObj.StartTime){
+          item.StartTime = newObj.EndTime;
+          newItems.push(item);
+        }else if(item.StartTime > newObj.EndTime){
+          if(curIdx == i - 1) item.StartTime = newObj.EndTime;
+          newItems.push(item);
+        }
+      }
     }
+    if(curIdx == newItems.length - 1){
+      newItems.push({
+        StartTime: newObj.EndTime,
+        DayType: 0,
+        EndTime: 1440
+      });
+    }
+    this.setState({items: newItems});
+  },
+
+  _onValueChange: function (e, curIdx, newVal) {
+    var items = this.state.items;
+    items[curIdx].Value = newVal;
+  },
+
+  render: function() {
+    var me = this, idx = 0, items = this.state.items;
+    var createItem = function(item){
+      var props = {
+        curIdx: idx++,
+        start: item.StartTime,
+        end: item.EndTime,
+        defaultValue: item.Value,
+        isViewStatus: me.props.isViewStatus,
+        onDaytimeChange: me._onDaytimeRangeValueChange,
+        onValueChange: me._onValueChange
+      };
+      return (<DaytimeRangeValue {...props} />);
+    }
+    return <ul>{items.map(createItem)}</ul>;
+  }
 });
 
-var ManualSetting = React.createClass({
+var NormalSetting = React.createClass({
+  propTypes: {
+    items: React.PropTypes.array,
+    isViewStatus: React.PropTypes.bool
+  },
+
+  getInitialState: function() {
+    return {
+      start: this.props.start,
+      workdays: this._extractWorkItems(),
+      nonWorkdays: this._extractNonWorkItems(),
+      isViewStatus: this.props.isViewStatus,
+    };
+  },
+
+  componentDidMount: function() {
+    var workdays = this._extractWorkItems(),
+    nonWorkdays = this._extractNonWorkItems();
+    this.setState({
+      workdays: workdays,
+      nonWorkdays: nonWorkdays
+    });
+  },
+
+  componentWillReceiveProps: function(){
+    var workdays = this._extractWorkItems(),
+    nonWorkdays = this._extractNonWorkItems();
+    this.setState({
+      workdays: workdays,
+      nonWorkdays: nonWorkdays
+    });
+  },
+
+  composeEndTime: function(items){
+    for (var i = 0; i < items.length; i++) {
+      if(i == items.length - 1){
+        items[i].EndTime = 1440;
+      }else{
+        items[i].EndTime = items[i+1].StartTime;
+      }
+    }
+    return items;
+  },
+
+  _extractWorkItems: function(){
+    var workdays=[], items = this.props.items, newWorkdays=[];
+    if(! items) items = [];
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      if(item.DayType==0){
+        workdays.push(item);
+      }
+    }
+    if(workdays.length == 0){
+      workdays.push({
+        StartTime: 0,
+        DayType: 0,
+        EndTime: 1440,
+      });
+    }
+    return this.composeEndTime(workdays);
+  },
+
+  _extractNonWorkItems: function(){
+    var nonWorkdays = [], items = this.props.items;
+    if(! items) items = [];
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      if(item.DayType == 1){
+        nonWorkdays.push(item);
+      }
+    }
+    if(nonWorkdays.length == 0){
+      nonWorkdays.push({
+        StartTime: 0
+      });
+    }
+    return this.composeEndTime(nonWorkdays);
+  },
+
+  getValue: function () {
+    var workdays = this.refs.workdayValues.getValue(),
+      nonWorkdays = this.refs.nonWorkdayValues.getValue();
+      set = [];
+    for (var i = 0; i < workdays.length; i++) {
+      workdays[i].DayType = 0;
+      set.push(workdays[i]);
+    }
+    for (var i = 0; i < nonWorkdays.length; i++) {
+      nonWorkdays[i].DayType = 1;
+      set.push(nonWorkdays[i]);
+    }
+    return set;
+  },
 
   render: function () {
+    var workProps = {
+      items: this.state.workdays,
+      isViewStatus: this.props.isViewStatus
+    },
+    nonWorkdayProps = {
+      items: this.state.nonWorkdays,
+      isViewStatus: this.props.isViewStatus
+    };
+
     return (
       <div>
         <div>小时基准值</div>
         <div>工作日</div>
         <div>
-          <DaytimeRangeValues />
+          <DaytimeRangeValues ref="workdayValues" {...workProps} />
         </div>
         <div>非工作日</div>
         <div>
-          <DaytimeRangeValues />
+          <DaytimeRangeValues ref="nonWorkdayValues" {...nonWorkdayProps} />
         </div>
       </div>
     );
@@ -152,6 +289,7 @@ var ManualSetting = React.createClass({
 });
 
 var CalcSetting = React.createClass({
+
   render: function () {
     return (
       <div>
@@ -190,10 +328,10 @@ var SpecialItem = React.createClass({
 
     return (
       <div>
-        <DatePicker />
+        <DatePicker value={this.props.StartTime} />
         <DropDownMenu menuItems={menuItems}/>
         <span>到</span>
-        <DatePicker />
+        <DatePicker  value={this.props.EndTime}/>
         <DropDownMenu menuItems={menuItems}/>
         <FloatingActionButton /><br/>
         <TextField /><span>千瓦时</span>
@@ -203,175 +341,345 @@ var SpecialItem = React.createClass({
 });
 
 var SpecialSetting = React.createClass({
-    propTypes: {
-      items: React.PropTypes.array,
-      isViewStatus: React.PropTypes.bool
-    },
+  propTypes: {
+    items: React.PropTypes.array,
+    isViewStatus: React.PropTypes.bool,
+  },
 
-    getInitialState: function() {
-      return {
-        items: this.props.items || [],
-        isViewStatus: true
-      };
-    },
+  getDefaultProps: function() {
+    return {
+      items: [],
+      isViewStatus: true
+    };
+  },
 
-    render: function() {
-      var createItem = function(item, index) {
-        var drvProps = {
-          from: item.StartTime,
-          value: item.Value,
-          isViewStatus: this.props.isViewStatus
-        };
-        return (<SpecialItem {...drvProps} />);
+  getInitialState: function() {
+    return {
+      items: this.props.items,
+      isViewStatus: this.props.isViewStatus
+    };
+  },
+
+  render: function() {
+    var me = this;
+    var createItem = function(item, index) {
+      var drvProps = {
+        start: CommonFuns.DataConverter.JsonToDateTime(item.StartTime),
+        end: CommonFuns.DataConverter.JsonToDateTime(item.EndTime),
+        value: item.Value,
+        isViewStatus: me.state.isViewStatus
       };
-      return <ul>{this.state.items.map(createItem)}</ul>;
-    }
+      return (<SpecialItem {...drvProps} />);
+    };
+    return <div>{this.state.items.map(createItem)}</div>;
+  }
 });
 
 var TBSettingItem = React.createClass({
-    propTypes: {
-      from: React.PropTypes.number,
-      to: React.PropTypes.number,
-      step: React.PropTypes.number,
+  propTypes: {
+    year: React.PropTypes.number,
+    start: React.PropTypes.number,
+    end: React.PropTypes.number,
 
-      defaultValue: React.PropTypes.number,
+    normals: React.PropTypes.array,
+    specials: React.PropTypes.array,
+    avgs: React.PropTypes.array,
 
-      isViewStatus: React.PropTypes.bool,
-      onChange:React.PropTypes.func
-    },
+    isViewStatus: React.PropTypes.bool,
+    onRemove:React.PropTypes.func
+  },
 
-    getDefaultProps: function() {
-      return {
-        from: 0,
-        to: 1440,
-        isViewStatus: false
-      };
-    },
-    _addSpecial: function(){
-      var con = this.refs.SpecialSettingContainer;
-      var normal = (<SpecialSettingContainer />);
+  getDefaultProps: function() {
+    return {
+      isViewStatus: false,
+      normals: [],
+      avgs:[],
+      specials: []
+    };
+  },
 
-      con.children.add(normal);
-    },
-    render: function(){
-      var menuItems = [],
-      minutes = 0,
-      fromProps = {
-        start: this.props.from,
-        end: this.props.to || (1440 - (this.props.step || 30)),
-        step: this.props.step,
-        defaultMinute: this.props.from
+  _onRemove: function () {
+    var me = this;
+    if(this.props.onRemove){
+      this.props.onRemove(me, this.props.id);
+    }
+  },
+
+  getValue: function(){
+    return {
+      TbSetting:{
+        Year: this.props.year,
+        TBId: this.props.tbId,
+        StartTime: this.props.start,
+        EndTime: this.props.end
       },
-      toProps = {
-        start: this.props.from || (this.props.step || 30),
-        end: this.props.to || 1440,
-        step: this.props.step,
-        defaultMinute: this.props.from
-      };
-      for (var i = 1; ; i++) {
-        var hmstr = CommonFuns.numberToTime(minutes);
-        menuItems.push({ payload: i.toString(), text: hmstr });
+      NormalDates: this.refs.NormalSettingCtrl.getValue(),
+      //SpecialDates: this.refs.SpecialSettingCtrl.getValue(),
+      //TbAvgDtos: this.refs.CalcSettingCtrl.getValue(),
+    }
+  },
 
-        minutes = minutes + 30;
-        if(minutes > 1440) break;
+  render: function(){
+    var me = this,
+    menuItems = [],
+    minutes = 0,
+    step = (me.props.step || 30),
+    startProps = {
+      defaultDate: this.props.start,
+      minDate: new Date(me.props.year, 1, 1),
+      maxDate: new Date(me.props.year, 12, 31),
+      autoOk: true,
+      className: 'jazz-setting-basic-date',
+      onChange: function(e, v){
+        me.refs.endFeild.minDate = me.refs.startFeild.getDate();
+        var endDate = me.refs.endFeild.getDate();
+
+        if(endDate && endDate < v){
+          me.refs.endFeild.setDate(v);
+        }
       }
-      return (
+    },
+    endProps = {
+      defaultDate: me.props.end,
+      minDate: new Date(me.props.year, 1, 1),
+      maxDate: new Date(me.props.year, 12, 31),
+      autoOk: true,
+      className: 'jazz-setting-basic-date',
+    };
+    for (var i = 1; ; i++) {
+      var hmstr = CommonFuns.numberToTime(minutes);
+      menuItems.push({ payload: i.toString(), text: hmstr });
+
+      minutes = minutes + step;
+      if(minutes > 1440) break;
+    }
+
+    var normalProps = {
+      isViewStatus: me.props.isViewStatus,
+      items: me.props.normals
+    },
+    avgProps = {
+      isViewStatus: me.props.isViewStatus,
+      items: me.props.avgs
+    },
+    specialProps = {
+      isViewStatus: me.props.isViewStatus,
+      items: me.props.specials
+    };
+
+    return (<div>
         <div>
           <div>
-            <div>
-              <DatePicker  ref='fromFeild' />
-              <span>到</span>
-              <DatePicker  ref='toFeild' />
-              <FloatingActionButton />
-            </div>
-
-            <div>
-              <input type='radio' name='timetype' /><span> 手动设置基准值 </span>
-              <ManualSetting />
-
-              <input type='radio' name='timetype' /><span> 计算所选数据平均值为基准数据 </span>
-              <CalcSetting />
-
-            </div>
+            <DatePicker  ref='startFeild' {...startProps} />
+            <span className='jazz-setting-basic-datespan'>到</span>
+            <DatePicker  ref='endFeild' {...endProps} />
+            <FloatingActionButton ref="remove"  onClick={this._onRemove} />
           </div>
-          <div><span>补充日期</span> <FloatingActionButton onClick={this._addSpecial}  /></div>
-          <div ref="SpecialSettingContainer">
-            <SpecialSetting />
+
+          <div>
+            <input type='radio' name='timetype' /><span> 手动设置基准值 </span>
+            <NormalSetting ref="NormalSettingCtrl" {...normalProps} />
+
+            <input type='radio' name='timetype' /><span> 计算所选数据平均值为基准数据 </span>
+            <CalcSetting ref="CalcSettingCtrl" {...avgProps} />
           </div>
         </div>
-      );
-    }
+        <div><span>补充日期</span> <FloatingActionButton onClick={this._addSpecial}  /></div>
+        <div ref="SpecialSettingContainer">
+          <SpecialSetting ref="SpecialSettingCtrl" {...specialProps} />
+        </div>
+      </div>
+    );
+  }
 });
 
-var DateRangeValues = React.createClass({
-    propTypes: {
-      items: React.PropTypes.array,
-      isViewStatus: React.PropTypes.bool
-    },
+var TBSettingItems = React.createClass({
+  propTypes: {
+    year: React.PropTypes.number,
+    items: React.PropTypes.array,
+    isViewStatus: React.PropTypes.bool
+  },
 
-    getInitialState: function() {
-      return {
-        items: this.props.items || [],
-        isViewStatus: true
-      };
-    },
+  getDefaultProps: function() {
+    return {
+      items: [],
+      isViewStatus: false,
+    };
+  },
 
-    render: function() {
-      var createItem = function(item, index) {
-        var drvProps = {
-          from: item.StartTime,
-          value: item.Value,
-          isViewStatus: this.props.isViewStatus
-        };
-        return (<DateRangeValue {...drvProps} />);
-      };
-      return <ul>{this.state.items.map(createItem)}</ul>;
+  getInitialState: function(){
+    return {
+      items: this.props.items || []
     }
+  },
+
+  componentDidMount: function(nextProps) {
+    this._setSetting(nextProps);
+  },
+
+  componentWillReceiveProps: function(nextProps){
+    this._setSetting(nextProps);
+  },
+
+  getValue: function(){
+    var vals = [];
+    for (var i = 0; i < this.state.refIdx; i++) {
+      var ref = this.refs['item_' + i];
+      if(ref) continue;
+      val.push(ref.getValue());
+    }
+    return val;
+  },
+
+  setValue: function(items){
+    this.setState({items: items});
+  },
+
+  _setSetting: function(nextProps) {
+    var items = [];
+    if(nextProps){
+      items = nextProps.items;
+    }
+    this.setState({ items: items });
+  },
+
+  _removeSetting: function (src, id) {
+    var oldItems = this.state.items, newItems= [];
+    for (var i = 0; i < oldItems.length; i++) {
+      if(oldItems[i].id != id){
+        newItems.push(oldItems[i]);
+      }
+    }
+    this.setState({items: newItems});
+  },
+
+  _addSetting: function(){
+    var itemProps = {
+      isViewStatus: this.props.isViewStatus
+    },
+    item = (<TBSettingItem {...itemProps} />),
+    newItems = this.props.items.concat(item);
+    this.setState({items: newItems});
+  },
+
+  render: function() {
+    var me = this, refIdx = 0,
+      cyear = this.props.year,
+      isViewStatus = this.props.isViewStatus;
+
+    var createItem = function(item, index) {
+      var drvProps = {
+        ref: 'item_' + (refIdx++),
+        year: cyear,
+
+        normals: item.NormalDates,
+        specials: item.SpecialDates,
+        avgs: item.TbAvgDtos,
+
+        isViewStatus: isViewStatus,
+        onRemove: me._removeSetting
+      };
+      debugger;
+      if(item.TbSetting && item.TbSetting.StartTime){
+        drvProps.start = CommonFuns.DataConverter.JsonToDateTime(item.TbSetting.StartTime, false);
+      }
+      if(item.TbSetting && item.TbSetting.EndTime){
+        drvProps.end = CommonFuns.DataConverter.JsonToDateTime(item.TbSetting.EndTime, false);
+      }
+      return (<TBSettingItem {...drvProps} />);
+    };
+
+    return (<div>
+        <div><span>时段设置</span><FloatingActionButton onClick={this._addSetting} /></div>
+        <div>{this.state.items.map(createItem)}</div>
+      </div>);
+  }
 });
 
 var BaselineBasic = React.createClass({
   mixins:[Navigation,State],
 
-  getTimeRange: function(time1, time2, step){
-    var menuItems0 = [ { payload: '1', text: 'Never' }],
-      menuItems1 = [],
-      menuItems2 = [ { payload: '1', text: 'Never' }];
+  propTypes: {
+    tagId: React.PropTypes.number,
+    tbId: React.PropTypes.number,
 
-    var timeCtrl1, timeCtrl2;
-    if(!!time1){
-      timeCtrl1 = <DropDownMenu menuItems={menuItems} />;
-    }
+    name: React.PropTypes.string,
+    year: React.PropTypes.number,
+    items: React.PropTypes.array,
+
+    isViewStatus: React.PropTypes.bool
   },
 
-  getSetting: function(){
-
+  getDefaultProps: function() {
+    return {
+      items: [],
+      isViewStatus: false,
+      year: (new Date()).getFullYear()
+    };
   },
 
-  _addNormal: function(){
-    var con = this.refs.NormalSettingContainer;
-    var normal = (<NormalSetting />);
-
-    con.children.add(normal);
+  getInitialState: function() {
+    return {
+      items: this.props.items,
+      name: this.props.name,
+      year: this.props.year,
+      isViewStatus: this.props.isViewStatus
+    };
   },
 
-  render: function () {
-    return (
-      <div>
-        <div>
-          <div><TextField /></div>
-          <div><span>请选择配置年份进行编辑</span><YearPicker /><a>显示日历详情</a></div>
+  getValue: function(){
+    return {
+      TBId: this.props.tbId,
+      Year: this.props.Year,
+      TBSettings: this.refs.TBSettingItems.getValue()
+    };
+  },
 
-          <div><span>时段设置</span> <FloatingActionButton onClick={this._addNormal}  /></div>
-          <div ref="NormalSettingContainer">
-            <TBSettingItem />
-          </div>
+  _onYearChanged: function(yearstr){
+    var year = parseInt(yearstr);
+    this._fetchServerData(year);
+    this.setState({year: year});
+  },
 
-        </div>
-        <div>
-          <NodeButtonBar />
+  _fetchServerData: function(year) {
+    var me = this;
+    TBSettingAction.loadData(me.props.tbId, year, function(tbSetting){
+      //me.setState({items: tbSetting.TBSettings});
+
+      var itemsCtrl = me.refs.TBSettingItems;
+      itemsCtrl.setValue(tbSetting.TBSettings);
+    });
+  },
+
+  saveDataToServer: function(){
+    var val = this.getValue();
+    TBSettingAction.saveData(val);
+    var tbSetting = TBSettingStore.getData();
+    var itemsCtrl = this.refs.TBSettingItems;
+    itemsCtrl.items = tbSetting.TBSettings;
+  },
+
+  render: function (){
+    var itemProps = {
+      items: this.state.items,
+      year: this.state.year,
+      isViewStatus: this.state.isViewStatus,
+    };
+    var btnProps = {onSave: this.saveDataToServer};
+
+    return (<div className='jazz-setting-basic-container'>
+      <div className='jazz-setting-basic-content'>
+        <div><TextField ref="TBName" value={this.props.name} /></div>
+        <div><span>请选择配置年份进行编辑</span><YearPicker ref="Year" className="yearpicker" onYearPickerSelected={this._onYearChanged} /><a>显示日历详情</a></div>
+
+        <div ref="TBSettingContainer">
+          <TBSettingItems ref="TBSettingItems" {...itemProps} />
         </div>
       </div>
-    );
+      <div>
+        <NodeButtonBar {...btnProps} />
+      </div>
+     </div>);
   }
 });
 
