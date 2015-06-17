@@ -7,8 +7,9 @@ let { DropDownMenu } = mui;
 let YearPicker = React.createClass({
 
   propTypes: {
-      isViewStatus: React.PropTypes.bool,
-      onYearPickerSelected: React.PropTypes.func
+    selectedIndex: React.PropTypes.number,
+    isViewStatus: React.PropTypes.bool,
+    onYearPickerSelected: React.PropTypes.func
   },
   getDefaultProps(){
     let date = new Date();
@@ -26,7 +27,7 @@ let YearPicker = React.createClass({
     let date = new Date();
       return {
           selectedYear: date.getFullYear() -1,//默认去年
-          yearIndex: this.props.yearRange - 1
+          yearIndex: this.props.selectedIndex || this.props.yearRange - 1
       };
   },
   getDateValue(year){

@@ -312,6 +312,14 @@ var CalcSetting = React.createClass({
 });
 
 var SpecialItem = React.createClass({
+  propTypes: {
+    items: React.PropTypes.array,
+    isViewStatus: React.PropTypes.bool
+  },
+
+  _addSpecial:function(){
+
+  },
 
   render: function () {
 
@@ -328,13 +336,16 @@ var SpecialItem = React.createClass({
 
     return (
       <div>
-        <DatePicker value={this.props.StartTime} />
-        <DropDownMenu menuItems={menuItems}/>
-        <span>到</span>
-        <DatePicker  value={this.props.EndTime}/>
-        <DropDownMenu menuItems={menuItems}/>
-        <FloatingActionButton /><br/>
-        <TextField /><span>千瓦时</span>
+        <div><span>补充日期</span> <FlatButton label="＋" onClick={this._addSpecial}  /></div>
+        <div>
+          <DatePicker value={this.props.StartTime} />
+          <DropDownMenu menuItems={menuItems}/>
+          <span>到</span>
+          <DatePicker  value={this.props.EndTime}/>
+          <DropDownMenu menuItems={menuItems}/>
+          <FloatingActionButton /><br/>
+          <TextField /><span>千瓦时</span>
+        </div>
       </div>
     );
   }
@@ -361,7 +372,7 @@ var SpecialSetting = React.createClass({
   },
 
   getValue: function(){
-    
+
   },
 
   render: function() {
@@ -407,6 +418,9 @@ var TBSettingItem = React.createClass({
     if(this.props.onRemove){
       this.props.onRemove(me, this.props.id);
     }
+  },
+  _onRadioChange:function(){
+
   },
 
   getValue: function(){
@@ -483,14 +497,13 @@ var TBSettingItem = React.createClass({
             <FlatButton label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
           <div style={clearStyle}>
-            <input type='radio' name='timetype' /><span> 手动设置基准值 </span>
+            <input type='radio' ref='normalRadio' name='timetype' onChange={this._onClick} /><span> 手动设置基准值 </span>
             <NormalSetting ref="NormalSettingCtrl" {...normalProps} />
 
-            <input type='radio' name='timetype' /><span> 计算所选数据平均值为基准数据 </span>
+            <input type='radio' ref='calcRadio' name='timetype' onChange={this._onClick} /><span> 计算所选数据平均值为基准数据 </span>
             <CalcSetting ref="CalcSettingCtrl" {...avgProps} />
           </div>
         </div>
-        <div style={clearStyle}><span>补充日期</span> <FlatButton label="＋" onClick={this._addSpecial}  /></div>
         <div ref="SpecialSettingContainer" style={clearStyle}>
           <SpecialSetting ref="SpecialSettingCtrl" {...specialProps} />
         </div>
@@ -662,7 +675,6 @@ var BaselineBasic = React.createClass({
   },
 
   saveDataToServer: function(){
-    debugger;
     var val = this.getValue();
     TBSettingAction.saveData(val);
     var tbSetting = TBSettingStore.getData();
@@ -681,7 +693,8 @@ var BaselineBasic = React.createClass({
     return (<div className='jazz-setting-basic-container'>
       <div className='jazz-setting-basic-content'>
         <div><TextField ref="TBName" value={this.props.name} /></div>
-        <div><span>请选择配置年份进行编辑</span><YearPicker ref="Year" className="yearpicker" onYearPickerSelected={this._onYearChanged} /><a>显示日历详情</a></div>
+        <div><span>请选择配置年份进行编辑</span><YearPicker ref="Year" selectedIndex='10'
+          className="yearpicker" onYearPickerSelected={this._onYearChanged} /><a>显示日历详情</a></div>
 
         <div ref="TBSettingContainer">
           <TBSettingItems ref="TBSettingItems" {...itemProps} />
