@@ -313,17 +313,22 @@ const DEFAULT_OPTIONS = {
 };
 
 let ChartComponent = React.createClass({
-
     getInitialState() {
         return {
 
         };
     },
+    componentWillUnmount() {
 
-    componentWillMount() {
+    },
+    componentDidMount(){
+
     },
     componentWillReceiveProps(nextProps) {
     	console.log('componentWillReceiveProps', nextProps);
+    },
+    componentWillUpdate(){
+
     },
     render () {
 
@@ -333,8 +338,13 @@ let ChartComponent = React.createClass({
       }
 
       return (
-              <Highstock ref="highstock" options={that._initChartObj()}></Highstock>
+              <Highstock ref="highstock" options={that._initChartObj()} onDeleteButtonClick={that._onDeleteButtonClick}></Highstock>
       );
+  },
+  _onDeleteButtonClick(obj){
+    if(this.props.onDeleteButtonClick){
+      this.props.onDeleteButtonClick(obj);
+    }
   },
   _initChartObj() {
     var data = this.props.energyData;
@@ -374,10 +384,14 @@ let ChartComponent = React.createClass({
           //if (n.indexOf('<br') < 0) {//hack for multi-timespan compare
           //    n = Ext.String.ellipsis(n, 23, false); //greater than 23 then truncate with ...
           //}
+          let enableDelete = true;
+          if(item.dType == 13 || item.dType == 14 || item.dType == 15){
+            enableDelete = false;
+          }
           var s = {
               type: 'line',
               name: n,
-              enableDelete: false,
+              enableDelete: enableDelete,
               enableHide: !!!item.disableHide,
               data: item.data,
               option: item.option,

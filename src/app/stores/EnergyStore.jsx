@@ -86,6 +86,25 @@ var EnergyStore = assign({},PrototypeStore,{
 
     _energyData = ReaderFuncs.convert(data, obj);
   },
+  removeSeriesDataByUid(uid){
+    if(_energyData){
+      let latestDataList = [];
+      let dataList = _energyData.Data;
+
+      for(let i=0,len=dataList.length; i<len; i++){
+        let data = dataList[i];
+        if(data.uid !== uid){
+          latestDataList.push(data);
+        }
+      }
+      if(latestDataList.length > 0){
+        _energyData.Data = latestDataList;
+      }else{
+        _energyData = null;
+      }
+    }
+
+  },
   addTagDataLoadingListener: function(callback) {
     this.on(TAG_DATA_LOADING_EVENT, callback);
   },

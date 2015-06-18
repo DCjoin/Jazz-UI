@@ -42,8 +42,17 @@ let Highstock = React.createClass({
             });
 
         that._paper = new Highcharts.StockChart(options);
+        this.bindChartObjEvents();
     },
-
+    bindChartObjEvents(){
+      var me = this;
+      this._paper.bind('deleteButtonClick', me._onDeleteButtonClick.bind(me));
+    },
+    _onDeleteButtonClick(obj){
+      if(this.props.onDeleteButtonClick){
+        this.props.onDeleteButtonClick(obj);
+      }
+    },
     getPaper() {
         return this._paper;
     }

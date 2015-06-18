@@ -10811,6 +10811,7 @@ Legend.prototype = {
 
                 if (item.options.enableDelete) {
                     allowDelete = true;
+										legend.setText(item);
                     var xPosition = li.getBBox().width + li.xGetter('x') + 7;//7 is padding
                     var deleteCt = renderer.rect(xPosition - 1, legend.baseline - 10 - 1, 12, 12).
                                             attr({ zIndex: 111, fill: 'white' }).
