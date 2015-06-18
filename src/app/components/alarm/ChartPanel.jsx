@@ -198,7 +198,7 @@ let ChartPanel = React.createClass({
                           <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange} timeRanges={me.state.timeRanges}/>
 
                         </div>
-                        <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj} onDeleteButtonClick={me._onDeleteButtonClick}/>
+                        <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj} onDeleteButtonClick={me._onDeleteButtonClick} onDeleteAllButtonClick={me._onDeleteAllButtonClick}/>
                       </div>;
       }
       let title = <div style={{height:'30px',paddingBottom:'10px'}}>
@@ -247,6 +247,9 @@ let ChartPanel = React.createClass({
       let energyData = EnergyStore.getEnergyData();
       this.setState({ energyData: energyData});
     }
+  },
+  _onDeleteAllButtonClick(){
+    
   },
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);

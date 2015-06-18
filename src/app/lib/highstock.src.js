@@ -3490,7 +3490,10 @@ SVGRenderer.prototype = {
 		return label
 			.on('click', function () {
 				if (curState !== 3) {
-					callback.call(label);
+					// rem modified start
+					callback.call(label, arguments[0]);
+					//callback.call(label);
+					//rem modified end
 				}
 			})
 			.attr(normalState)
@@ -11157,6 +11160,24 @@ Legend.prototype = {
 		if (!chart.isResizing) {
 			this.positionCheckboxes();
 		}
+
+/* rem add start*/
+		if(options.deleteAllButtonText){
+			renderer.button( options.deleteAllButtonText, 10, legendHeight + 10, function(evt){
+				fireEvent(chart, 'deleteAllButtonClick');
+					if (evt.preventDefault) {
+							evt.preventDefault();
+							evt.stopPropagation();
+					}
+					else {
+							evt.cancelBubble = true;
+							evt.returnValue = null;
+					}
+				}
+			).add(legendGroup);
+		}
+
+		/*rem add end	*/
 	},
 
 	/**

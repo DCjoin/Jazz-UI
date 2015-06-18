@@ -234,6 +234,7 @@ const DEFAULT_OPTIONS = {
     },
     style: { "fontSize": "12px", fontFamily: 'Microsoft YaHei' },
     legend: {
+        deleteAllButtonText:'全部清除',
         enabled: true,
         layout: 'vertical',
         verticalAlign: 'top',
@@ -313,6 +314,10 @@ const DEFAULT_OPTIONS = {
 };
 
 let ChartComponent = React.createClass({
+    propTypes: {
+        onDeleteButtonClick: React.PropTypes.func,
+        onDeleteAllButtonClick: React.PropTypes.func
+    },
     getInitialState() {
         return {
 
@@ -338,12 +343,17 @@ let ChartComponent = React.createClass({
       }
 
       return (
-              <Highstock ref="highstock" options={that._initChartObj()} onDeleteButtonClick={that._onDeleteButtonClick}></Highstock>
+              <Highstock ref="highstock" options={that._initChartObj()} onDeleteButtonClick={that._onDeleteButtonClick} onDeleteAllButtonClick={that._onDeleteAllButtonClick}></Highstock>
       );
   },
   _onDeleteButtonClick(obj){
     if(this.props.onDeleteButtonClick){
       this.props.onDeleteButtonClick(obj);
+    }
+  },
+  _onDeleteAllButtonClick(){
+    if(this.props.onDeleteAllButtonClick){
+      this.props.onDeleteAllButtonClick();
     }
   },
   _initChartObj() {
