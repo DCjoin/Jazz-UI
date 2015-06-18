@@ -21,6 +21,19 @@ let AlarmTagAction = {
         tagNode: iaData
     });
   },
+  addSearchTagList(tagData){
+    AppDispatcher.dispatch({
+        type: Action.ADD_SEARCH_TAGLIST_CHANGED,
+        tagNode: tagData
+    });
+  },
+
+  removeSearchTagList(tagData){
+    AppDispatcher.dispatch({
+        type: Action.REMOVE_SEARCH_TAGLIST_CHANGED,
+        tagNode: tagData
+    });
+  },
   clearSearchTagList(){
     AppDispatcher.dispatch({
         type: Action.CLEAR_SEARCH_TAGLIST

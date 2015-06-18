@@ -1,6 +1,6 @@
 'use strict';
 import React from "react";
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {FlatButton,FontIcon,Menu,Paper} from 'material-ui';
 import DimTree from './DimTree.jsx';
 import DimAction from "../actions/DimAction.jsx";
@@ -88,31 +88,20 @@ let DimButton=React.createClass({
 
     render:function(){
 
-
-      var buttonStyle = {
-               minHeight:'48px',
-           },
-           fontStyle={
-              margin:'5px',
-           };
-
       var dropdownPaper;
-      if(!this.props.active){
-        fontStyle={
-           color:'rgb(187, 184, 184)',
-        };
-      }
+
       if((this.state.open) && (this.props.active) && (this.props.show)) {
 
         dropdownPaper=<DimTree allNode={this.state.dimList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick} />
 
       };
       return(
-            <div className='jazz-hierarchybutton' style={{display:'inline-block'}}>
-              <FlatButton style={buttonStyle} onClick={this._onShowPaper}>
-
-                  <span className="mui-flat-button-label" style={fontStyle} >{this.state.buttonName}</span>
-              </FlatButton>
+            <div className='jazz-dimbutton' style={{display:'inline-block'}}>
+              <div className={classNames({
+                            "dimname": true,
+                            "active": (this.props.active)})} onClick={this._onShowPaper}>
+                {this.state.buttonName}
+              </div>
                 {dropdownPaper}
             </div>
       )
