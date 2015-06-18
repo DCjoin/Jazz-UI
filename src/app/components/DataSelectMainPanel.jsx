@@ -408,9 +408,15 @@ let DataSelectMainPanel=React.createClass({
         allCheckDisable:checkFlag
       })
     },
+    _onClearTagList:function(){
+      this.setState({
+        tagList:null
+      })
+    },
 
     componentDidMount: function() {
       TagStore.addTagNodeListener(this._onTagNodeChange);
+      TagStore.addClearDataListener(this._onClearTagList);
       if(this.props.linkFrom=="Alarm"){
         var alarmTagOption = EnergyStore.getTagOpions()[0];
 
@@ -422,6 +428,7 @@ let DataSelectMainPanel=React.createClass({
     componentWillUnmount: function() {
 
        TagStore.removeTagNodeListener(this._onTagNodeChange);
+       TagStore.removeClearDataListener(this._onClearTagList);
        if(this.props.linkFrom=="Alarm"){
          TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
        }

@@ -14,7 +14,8 @@ let interData=null;
 */
 let _useTaglistSelect = false;
 
-const INTER_DATA_CHANGED_EVENT = 'interdatachanged';
+const INTER_DATA_CHANGED_EVENT = 'interdatachanged',
+      CLEAR_DATA_CHANGED_EVENT = 'cleardatachanged';
 
 var AlarmTagStore = assign({},PrototypeStore,{
 
@@ -72,6 +73,15 @@ var AlarmTagStore = assign({},PrototypeStore,{
   removeInterDataListener: function(callback) {
     this.removeListener(INTER_DATA_CHANGED_EVENT, callback);
   },
+  addClearDataListener: function(callback) {
+    this.on(CLEAR_DATA_CHANGED_EVENT, callback);
+  },
+  emitClearData: function() {
+    this.emit(CLEAR_DATA_CHANGED_EVENT);
+  },
+  removeClearDataListener: function(callback) {
+    this.removeListener(CLEAR_DATA_CHANGED_EVENT, callback);
+  },
 });
 AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
@@ -87,6 +97,7 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case Action.CLEAR_SEARCH_TAGLIST:
         AlarmTagStore.clearSearchTagList();
+        AlarmTagStore.emitClearData();
         break;
     }
 });
