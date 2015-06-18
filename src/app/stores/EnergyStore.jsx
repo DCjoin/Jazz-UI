@@ -86,6 +86,9 @@ var EnergyStore = assign({},PrototypeStore,{
 
     _energyData = ReaderFuncs.convert(data, obj);
   },
+  /*
+    returns boolean: if only one tag left, then reload data.
+  */
   removeSeriesDataByUid(uid){
     if(_energyData){
       let latestDataList = [];
@@ -97,13 +100,15 @@ var EnergyStore = assign({},PrototypeStore,{
           latestDataList.push(data);
         }
       }
-      if(latestDataList.length > 0){
+      if(latestDataList.length === 1){
+        return true;
+      }else if(latestDataList.length > 0){
         _energyData.Data = latestDataList;
       }else{
         _energyData = null;
       }
     }
-
+    return false;
   },
   addTagDataLoadingListener: function(callback) {
     this.on(TAG_DATA_LOADING_EVENT, callback);
