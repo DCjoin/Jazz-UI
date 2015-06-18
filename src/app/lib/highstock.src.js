@@ -11164,7 +11164,9 @@ Legend.prototype = {
 /* rem add start*/
 		if(options.deleteAllButtonText){
 			renderer.button( options.deleteAllButtonText, 10, legendHeight + 10, function(evt){
-				fireEvent(chart, 'deleteAllButtonClick');
+				try{
+					fireEvent(chart, 'deleteAllButtonClick');
+				}catch(e){if(win.console)console.log(e);}
 					if (evt.preventDefault) {
 							evt.preventDefault();
 							evt.stopPropagation();

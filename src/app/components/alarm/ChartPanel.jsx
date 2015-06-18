@@ -12,6 +12,7 @@ import StepSelector from '../energy/StepSelector.jsx';
 import ChartComponent from '../energy/ChartComponent.jsx';
 import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
+import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
@@ -232,7 +233,7 @@ let ChartPanel = React.createClass({
 
     //unselect tags in taglist of right panel
     if(userTagListSelect){
-      AlarmTagStore.removeSearchTagList({tagId:uid});
+      AlarmTagAction.removeSearchTagList({tagId:uid});
     }
 
     let needReload = EnergyStore.removeSeriesDataByUid(uid);
@@ -249,7 +250,13 @@ let ChartPanel = React.createClass({
     }
   },
   _onDeleteAllButtonClick(){
-    
+    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+    if(userTagListSelect){
+      AlarmTagAction.clearSearchTagList();
+    }
+  
+    EnergyStore.clearEnergyDate();
+    this.setState({ energyData: null});
   },
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);

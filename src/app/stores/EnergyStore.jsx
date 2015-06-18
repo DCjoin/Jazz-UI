@@ -31,6 +31,9 @@ var EnergyStore = assign({},PrototypeStore,{
   getEnergyData(){
     return _energyData;
   },
+  clearEnergyDate(){
+    _energyData = null;
+  },
   getSubmitParams(){
     return _submitParams;
   },
