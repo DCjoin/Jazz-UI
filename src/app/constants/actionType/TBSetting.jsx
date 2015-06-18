@@ -6,5 +6,6 @@ module.exports = {
       LOADED_TBSETTING: null,
       LOAD_TBSETTING: null,
       SAVE_TBSETTING: null,
+      CALCED_AVG_TAGDATA: null,
   })
 };

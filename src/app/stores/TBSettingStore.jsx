@@ -8,6 +8,7 @@ import Immutable from 'immutable';
 import TBSetting from '../constants/actionType/TBSetting.jsx';
 
 var _tbSetting = null;
+var _calcData = null;
 
 let CHANGE_TAG_EVENT = 'changetag';
 let CHANGE_TBYEAR_EVENT = 'changetbyear';

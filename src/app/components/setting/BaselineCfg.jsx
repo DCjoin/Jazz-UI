@@ -72,6 +72,7 @@ let BaselineCfg = React.createClass({
     };
 
     var basicProps = {
+      tagId: this.props.tagId,
       name: this.state.name || null,
       tbId: this.state.tbId || null,
     };
