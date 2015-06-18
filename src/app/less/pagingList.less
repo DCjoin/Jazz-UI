@@ -1,0 +1,107 @@
+@oddRow: #f1f1f1;
+@evenRow: #f6f6f6;
+@mainGreen:#15cb9e;
+@gray : gray;
+@black : black;
+
+.item{
+  height: 60px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  align-content: flex-start;
+  .checkbox{
+    // height: 14px;
+    // width: 14px;
+    // border: 1px solid #B9BBBE;
+    // box-sizing: border-box;
+    // background-color: @mainGreen;
+  }
+  .content{
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    font-size: 14px;
+    color: #464949;
+    height: 100%;
+    .default-item-name{
+      display: flex;
+      align-items: center;
+    }
+  }
+  &.odd-row-default{
+    background-color: @oddRow;
+  }
+  &.even-row-default{
+    background-color: @evenRow;
+  }
+  &.selectAllItem{
+    border-top: 1px solid lightgray;
+    background-color: #ffffff;
+  }
+}
+
+.head{
+  height: 50px;
+  font-size: 20px;
+}
+
+.buttonBar{
+  height: 50px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  align-content: flex-start;
+  font-size: 14px;
+  border-top: 1px solid lightgray;
+  > .pre-btn {
+    margin: 0 8px;
+    cursor: pointer;
+    color: @gray;
+    &:hover {
+      color: @black;
+    }
+  }
+  > .next-btn {
+    margin: 0 8px;
+    cursor: pointer;
+    color: @gray;
+    &:hover {
+      color: @black;
+    }
+  }
+  > .page-num {
+    // margin: 0 8px;
+  }
+  > .page-jump {
+    position:relative;
+    > .jump-btn {
+      cursor: pointer;
+      color: @gray;
+      &:hover {
+        color: @black;
+      }
+    }
+    > .page-jump-box {
+      width: 220px;
+      background-color: #fff;
+      padding: 0 8px;
+      position:absolute;
+      right: 0px;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .jump-input {
+        display: flex;
+        align-items: center;
+        > .jump-text {
+          font-size: 14px;
+        }
+        input {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

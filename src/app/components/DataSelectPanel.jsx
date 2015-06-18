@@ -40,11 +40,11 @@ let DataSelectPanel=React.createClass({
       if(this.state.open) mainpanel=<DataSelectMainPanel linkFrom={this.props.linkFrom}/>;
         var buttonStyle = {
           float:'right',
-          width:'initial',
-          height:'48px',
+          minWidth:'36px',
+          height:'36px',
           border:'solid 2px gray',
           verticalAlign:'middle',
-          marginTop:'250px'
+          marginTop:'10px'
              };
       return(
         <div className="jazz-dataselectpanel">

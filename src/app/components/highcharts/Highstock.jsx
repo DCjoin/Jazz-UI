@@ -13,7 +13,9 @@ let Highstock = React.createClass({
     _paper: null,
 
     propTypes: {
-        options: React.PropTypes.object
+        options: React.PropTypes.object,
+        onDeleteButtonClick: React.PropTypes.func,
+        onDeleteAllButtonClick: React.PropTypes.func
     },
 
     getDefaultProps() {
@@ -42,8 +44,23 @@ let Highstock = React.createClass({
             });
 
         that._paper = new Highcharts.StockChart(options);
+        this.bindChartObjEvents();
     },
-
+    bindChartObjEvents(){
+      var me = this;
+      this._paper.bind('deleteButtonClick', me._onDeleteButtonClick.bind(me));
+      this._paper.bind('deleteAllButtonClick', me._onDeleteAllButtonClick.bind(me));
+    },
+    _onDeleteButtonClick(obj){
+      if(this.props.onDeleteButtonClick){
+        this.props.onDeleteButtonClick(obj);
+      }
+    },
+    _onDeleteAllButtonClick(){
+      if(this.props.onDeleteAllButtonClick){
+        this.props.onDeleteAllButtonClick();
+      }
+    },
     getPaper() {
         return this._paper;
     }

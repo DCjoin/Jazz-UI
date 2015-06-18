@@ -12,6 +12,7 @@ import StepSelector from '../energy/StepSelector.jsx';
 import ChartComponent from '../energy/ChartComponent.jsx';
 import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
+import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
@@ -198,7 +199,7 @@ let ChartPanel = React.createClass({
                           <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange} timeRanges={me.state.timeRanges}/>
 
                         </div>
-                        <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj}/>
+                        <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj} onDeleteButtonClick={me._onDeleteButtonClick} onDeleteAllButtonClick={me._onDeleteAllButtonClick}/>
                       </div>;
       }
       let title = <div style={{height:'30px',paddingBottom:'10px'}}>
@@ -224,6 +225,38 @@ let ChartPanel = React.createClass({
           {energyPart}
         </div>
       );
+  },
+  _onDeleteButtonClick(obj){
+    let uid = obj.uid;
+
+    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+
+    //unselect tags in taglist of right panel
+    if(userTagListSelect){
+      AlarmTagAction.removeSearchTagList({tagId:uid});
+    }
+
+    let needReload = EnergyStore.removeSeriesDataByUid(uid);
+    if(needReload){
+      let tagOptions = AlarmTagStore.getSearchTagList(),
+          paramsObj = EnergyStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges,
+          step = paramsObj.step;
+
+      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
+    }else{
+      let energyData = EnergyStore.getEnergyData();
+      this.setState({ energyData: energyData});
+    }
+  },
+  _onDeleteAllButtonClick(){
+    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+    if(userTagListSelect){
+      AlarmTagAction.clearSearchTagList();
+    }
+  
+    EnergyStore.clearEnergyDate();
+    this.setState({ energyData: null});
   },
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);

@@ -14,7 +14,8 @@ let interData=null;
 */
 let _useTaglistSelect = false;
 
-const INTER_DATA_CHANGED_EVENT = 'interdatachanged';
+const INTER_DATA_CHANGED_EVENT = 'interdatachanged',
+      CLEAR_DATA_CHANGED_EVENT = 'cleardatachanged';
 
 var AlarmTagStore = assign({},PrototypeStore,{
 
@@ -43,12 +44,11 @@ var AlarmTagStore = assign({},PrototypeStore,{
 
     },
   removeSearchTagList(tagNode){
+
     AlarmTagStore.setUseTagListSelect(true);
     searchTagList.forEach(function(nodeData,i){
     if(tagNode.tagId==nodeData.tagId){
-
       searchTagList.splice(i,1);
-
     }
     });
 
@@ -72,14 +72,43 @@ var AlarmTagStore = assign({},PrototypeStore,{
   removeInterDataListener: function(callback) {
     this.removeListener(INTER_DATA_CHANGED_EVENT, callback);
   },
+  addAddSearchTagListListener: function(callback) {
+    this.on(INTER_DATA_CHANGED_EVENT, callback);
+  },
+  emitAddSearchTagList: function() {
+    this.emit(INTER_DATA_CHANGED_EVENT);
+  },
+  removeAddSearchTagListListener: function(callback) {
+    this.removeListener(INTER_DATA_CHANGED_EVENT, callback);
+  },
+  addRemoveSearchTagListListener: function(callback) {
+    this.on(INTER_DATA_CHANGED_EVENT, callback);
+  },
+  emitRemoveSearchTagList: function() {
+    this.emit(INTER_DATA_CHANGED_EVENT);
+  },
+  removeRemoveSearchTagListListener: function(callback) {
+    this.removeListener(INTER_DATA_CHANGED_EVENT, callback);
+  },
+  addClearDataListener: function(callback) {
+    this.on(CLEAR_DATA_CHANGED_EVENT, callback);
+  },
+  emitClearData: function() {
+    this.emit(CLEAR_DATA_CHANGED_EVENT);
+  },
+  removeClearDataListener: function(callback) {
+    this.removeListener(CLEAR_DATA_CHANGED_EVENT, callback);
+  },
 });
 AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case Action.ADD_SEARCH_TAGLIST_CHANGED:
         AlarmTagStore.addSearchTagList(action.tagNode);
+        AlarmTagStore.emitAddSearchTagList();
         break;
       case Action.REMOVE_SEARCH_TAGLIST_CHANGED:
         AlarmTagStore.removeSearchTagList(action.tagNode);
+        AlarmTagStore.emitRemoveSearchTagList();
         break;
       case Action.INTER_DATA_CHANGED:
         AlarmTagStore.setInterData(action.tagNode);
@@ -87,6 +116,7 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case Action.CLEAR_SEARCH_TAGLIST:
         AlarmTagStore.clearSearchTagList();
+        AlarmTagStore.emitClearData();
         break;
     }
 });
