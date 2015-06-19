@@ -23,6 +23,7 @@ var filters=null;
 var tagStatus=[];
 var selectTotal=0;
 var page=0;
+var alarmTagOption=null;
 
 var CheckboxItem=React.createClass({
   mixins:[Navigation,State],
@@ -157,7 +158,6 @@ var TagMenu=React.createClass({
         };
 
     this.props.tagList.forEach(function(nodeData,i){
-
         if(me.props.disalbed){
           disalbed=!(tagStatus[page][i] || checked)
         }
@@ -178,18 +178,23 @@ var TagMenu=React.createClass({
 
       });
 
-     var pageButtonStyle = {
-             width:'20px'
+     var allCheckStyle = {
+             marginLeft:'20px',
+
                 };
 
   return(
     <div>
-      <Checkbox
-        label="全选"
-        onCheck={this.props.onAllCheck}
-        checked={this.props.checked}
-        disabled={this.state.allCheckDisable}
-        />
+      <div className="allcheck">
+        <Checkbox
+          label="全选"
+          onCheck={this.props.onAllCheck}
+          checked={this.props.checked}
+          disabled={this.state.allCheckDisable}
+          style={allCheckStyle}
+          />
+      </div>
+
       <div style={{'overflow':'auto',height:'450px'}}>
         {nodemenuItems}
       </div>
@@ -381,9 +386,11 @@ let DataSelectMainPanel=React.createClass({
     },
     _onClearTagList:function(){
       tagStatus.length=0;
+      tagStatus[page]=false;
       this.setState({
-        tagList:null
-      })
+        allChecked:false,
+        allCheckDisable:false
+      });
     },
     _onSearchTagListChange:function(){
       var searchTagList=AlarmTagStore.getSearchTagList();
@@ -426,13 +433,12 @@ let DataSelectMainPanel=React.createClass({
             searchTagListChanged:false
           };
         },
+    componentWillMount:function(){
+      alarmTagOption = EnergyStore.getTagOpions()[0];
+    },
     componentDidMount: function() {
       TagStore.addTagNodeListener(this._onTagNodeChange);
-
-
       if(this.props.linkFrom=="Alarm"){
-        var alarmTagOption = EnergyStore.getTagOpions()[0];
-
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
         AlarmTagStore.addClearDataListener(this._onClearTagList);
         AlarmTagStore.addAddSearchTagListListener(this._onSearchTagListChange);
@@ -455,10 +461,7 @@ let DataSelectMainPanel=React.createClass({
       },
 
     render:function(){
-      var alarmTagOption;
-      if(this.props.linkFrom=="Alarm"){
-        alarmTagOption=EnergyStore.getTagOpions()[0];
-      }else{
+      if(this.props.linkFrom!="Alarm"){
         alarmTagOption={
           hierId:null,
           tagId:null
@@ -469,6 +472,7 @@ let DataSelectMainPanel=React.createClass({
            },
           dropdownmenuStyle = {
                 width:'120px',
+                height:'46px',
                 float:'right',
                 marginLeft: '5px',
                 zIndex:'90'
@@ -478,7 +482,6 @@ let DataSelectMainPanel=React.createClass({
       alarmType=null;
       filters=[];
       if(this.state.tagList){
-
         menupaper=<TagMenu checked={this.state.allChecked}
                             total={this.state.total}
                             disalbed={this.state.checkAbled}
@@ -505,7 +508,7 @@ let DataSelectMainPanel=React.createClass({
 
             <DimButton ref={'dimButton'} active={this.state.dimActive} onTreeClick={this._onDimTreeClick} parentNode={this.state.dimParentNode} onButtonClick={this._onDimButtonClick} show={this.state.DimShow}/>
           </div>
-          <div  style={{display:'inline-block','padding':'5px 0','border-width':'2px','border-style':'solid','border-color':'green transparent',width:'100%'}}>
+          <div  className="filter">
             <label style={{display:'inline-block',width:'156px',height:'25px',border:'3px solid gray','border-radius':'20px','margin-top':'10px'}}>
               <img style={{float:'left'}} src={require('../less/images/search-input-search.png')}/>
               <input style={{width:'130px',height:'20px','background-color':'transparent',border:'transparent'}} id="searchField" onChange={this._onSearch}/>
