@@ -88,27 +88,32 @@ var CheckboxItem=React.createClass({
     var alarm,baseline,checkBox;
     switch(this.props.label){
       case 0:
-        alarm=<div style={{color:'rgb(187, 184, 184)'}}>基准值未配置,</div>;
-        baseline=<div style={{color:'rgb(187, 184, 184)'}}>报警未配置</div>;
+        alarm=<div className="disable">基准值未配置,</div>;
+        baseline=<div className="disable">报警未配置</div>;
         break;
       case 1:
-        alarm=<div>基准值已配置,</div>;
-        baseline=<div style={{color:'rgb(187, 184, 184)'}}>报警未配置</div>;
+        alarm=<div className="able">基准值已配置,</div>;
+        baseline=<div className="disable">报警未配置</div>;
         break;
       case 2:
-        alarm=<div>基准值已配置,</div>;
-        baseline=<div>报警已配置</div>;
+        alarm=<div className="able">基准值已配置,</div>;
+        baseline=<div className="able">报警已配置</div>;
         break;
     };
-
+    var boxStyle={
+      fontSize:'14px',
+      color:'#464949',
+      marginLeft:'20px'
+    };
     return(
-      <div onClick={this._onClick} >
+      <div className="taglist" onClick={this._onClick} >
         <Checkbox
             label={this.props.title}
             checked={this.state.boxChecked}
             disabled={this.props.disabled}
+            style={boxStyle}
             />
-        <div style={{'margin-Pre':'40px',display:'inline-flex','font-size':'15px'}}>
+          <div className="font">
             {alarm}
             {baseline}
         </div>
@@ -179,9 +184,13 @@ var TagMenu=React.createClass({
       });
 
      var allCheckStyle = {
-             marginLeft:'20px',
-
-                };
+             margin:'11px 0 0 20px',
+             fontSize:'14px',
+             color:'#464949'
+           },
+         iconStyle={
+           marginRight:'10px'
+         };
 
   return(
     <div>
@@ -195,7 +204,7 @@ var TagMenu=React.createClass({
           />
       </div>
 
-      <div style={{'overflow':'auto',height:'450px'}}>
+      <div style={{'overflow':'auto',height:'460px'}}>
         {nodemenuItems}
       </div>
 
@@ -379,7 +388,6 @@ let DataSelectMainPanel=React.createClass({
 
     },
     _onCheckSelect:function(checkFlag){
-
       this.setState({
         allCheckDisable:checkFlag
       })
@@ -434,8 +442,10 @@ let DataSelectMainPanel=React.createClass({
           };
         },
     componentWillMount:function(){
-      alarmTagOption = EnergyStore.getTagOpions()[0];
-    },
+      if(this.props.linkFrom=="Alarm"){
+          alarmTagOption = EnergyStore.getTagOpions()[0];
+      }
+      },
     componentDidMount: function() {
       TagStore.addTagNodeListener(this._onTagNodeChange);
       if(this.props.linkFrom=="Alarm"){
