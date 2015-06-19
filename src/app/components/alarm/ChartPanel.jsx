@@ -65,9 +65,11 @@ let ChartPanel = React.createClass({
     _onEnergyDataChange(){
       let isLoading = EnergyStore.getLoadingStatus();
       let energyData = EnergyStore.getEnergyData();
+      let energyRawData = EnergyStore.getEnergyRawData();
       let paramsObj = assign({},EnergyStore.getParamsObj());
       this.setState({ isLoading: isLoading,
                       energyData: energyData,
+                      energyRawData: energyRawData,
                       paramsObj: paramsObj,
                       dashboardOpenImmediately: false});
     },
@@ -171,6 +173,7 @@ let ChartPanel = React.createClass({
         let state = {
           isLoading: false,
           energyData: null,
+          energyRawData: null,
           hierName: null,
           submitParams: null,
           step: 2,
@@ -199,7 +202,7 @@ let ChartPanel = React.createClass({
                           <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange} timeRanges={me.state.timeRanges}/>
 
                         </div>
-                        <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj} onDeleteButtonClick={me._onDeleteButtonClick} onDeleteAllButtonClick={me._onDeleteAllButtonClick}/>
+                        <ChartComponent ref='ChartComponent' energyData={this.state.energyData} energyRawData={this.state.energyRawData} {...this.state.paramsObj} onDeleteButtonClick={me._onDeleteButtonClick} onDeleteAllButtonClick={me._onDeleteAllButtonClick}/>
                       </div>;
       }
       let title = <div style={{height:'30px',paddingBottom:'10px'}}>
@@ -254,7 +257,7 @@ let ChartPanel = React.createClass({
     if(userTagListSelect){
       AlarmTagAction.clearSearchTagList();
     }
-  
+
     EnergyStore.clearEnergyDate();
     this.setState({ energyData: null});
   },

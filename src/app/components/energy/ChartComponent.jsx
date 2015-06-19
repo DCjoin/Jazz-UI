@@ -4,7 +4,8 @@ import React from 'react';
 import assign from 'object-assign';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
-import {dateAdd, dateFormat, DataConverter, isArray} from '../../util/Util.jsx';
+import EnergyCommentFactory from './EnergyCommentFactory.jsx';
+import {dateAdd, dateFormat, DataConverter, isArray, isNumber} from '../../util/Util.jsx';
 
 var yAxisOffset = 70;
 
@@ -380,6 +381,8 @@ let ChartComponent = React.createClass({
       var timeRange = this.initRange(newConfig, realData);
       this.initNavigatorData(newConfig, timeRange, data);
 
+      this.initFlagSeriesData(newConfig, realData);
+
       newConfig.tooltipSidePosition = true;
 
       return newConfig;
@@ -406,6 +409,7 @@ let ChartComponent = React.createClass({
               data: item.data,
               option: item.option,
               uid: item.uid,
+              id: item.uid + '' + item.dType,
               seriesKey: item.seriesKey,
               graySerie: item.hasOwnProperty('graySerie') ? item.graySerie : (item.hasOwnProperty('visible') ? !item.visible : false)
           };
@@ -798,6 +802,51 @@ let ChartComponent = React.createClass({
         }
 
         config.yAxis = yList;
+    },
+    initFlagSeriesData: function (newConfig, convertedData) {
+        var item,
+            serieObj,
+            flagSeries = [],
+            alarmSeries = [],
+            dmData = this.props.energyRawData,
+            t = dmData.TargetEnergyData,
+            factory = EnergyCommentFactory;
+
+        var type, subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
+        var xaxisMap;
+
+        for (var i = 0, len = t.length; i < len; i++) {
+            item = t[i];
+            xaxisMap = {};
+
+            if(false){//not support comment for new version
+                // get and push comment flag series
+                if (item.EnergyAssociatedData && item.EnergyAssociatedData.Comments && item.EnergyAssociatedData.Comments.length > 0) {
+                    serieObj = factory.createCommentSeriesByTargetEnergyDataItem(item, this.props.step, convertedData[i].id, xaxisMap);
+                    serieObj.visible = !convertedData[i].graySerie;
+                    flagSeries.push(serieObj);
+                }
+            }
+
+            if(true){//will check privilidge for alarm
+                //get and push alarm flag series
+                if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
+                    serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, convertedData[i].id, xaxisMap, this.props.step);
+                    serieObj.visible = !convertedData[i].graySerie;
+                    alarmSeries.push(serieObj);
+                }
+            }
+
+            //set type and subtype for this scope
+            if (!isNumber(type)) {
+                if (item.EnergyAssociatedData && isNumber(item.EnergyAssociatedData.Type)) {
+                    type = this.chartCommentType = item.EnergyAssociatedData.Type;
+                    this.chartCommentSubtype = item.EnergyAssociatedData.SubType;
+                }
+            }
+        }
+        newConfig.series = newConfig.series.concat(flagSeries);
+        newConfig.series = newConfig.series.concat(alarmSeries);
     }
 });
 
