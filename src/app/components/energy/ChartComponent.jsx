@@ -342,9 +342,11 @@ let ChartComponent = React.createClass({
       if(!this.props.energyData) {
           return null;
       }
-
+      let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,
+                             onDeleteAllButtonClick: that._onDeleteAllButtonClick,
+                             onIgnoreAlarmEvent: that.onIgnoreAlarmEvent};
       return (
-              <Highstock ref="highstock" options={that._initChartObj()} onDeleteButtonClick={that._onDeleteButtonClick} onDeleteAllButtonClick={that._onDeleteAllButtonClick}></Highstock>
+              <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
       );
   },
   _onDeleteButtonClick(obj){
@@ -356,6 +358,13 @@ let ChartComponent = React.createClass({
     if(this.props.onDeleteAllButtonClick){
       this.props.onDeleteAllButtonClick();
     }
+  },
+  onIgnoreAlarmEvent(obj){
+    let point = obj.point,
+        factory = EnergyCommentFactory;
+
+        factory.ignoreAlarm(point, this.refs.highstock);
+        return false;
   },
   _initChartObj() {
     var data = this.props.energyData;
