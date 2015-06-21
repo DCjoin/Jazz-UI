@@ -196,13 +196,18 @@ let ChartPanel = React.createClass({
       if(this.state.isLoading){
         energyPart = <div style={{margin:'auto'}}>{'loading...'}</div>;
       }else if(!!this.state.energyData){
+        let chartCmpObj ={ref:'ChartComponent',
+                          energyData: this.state.energyData,
+                          energyRawData: this.state.energyRawData,
+                          onDeleteButtonClick: me._onDeleteButtonClick,
+                          onDeleteAllButtonClick: me._onDeleteAllButtonClick};
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                         <div style={{display:'flex'}}>
                           <YaxisSelector initYaxisDialog={me._initYaxisDialog}/>
                           <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange} timeRanges={me.state.timeRanges}/>
 
                         </div>
-                        <ChartComponent ref='ChartComponent' energyData={this.state.energyData} energyRawData={this.state.energyRawData} {...this.state.paramsObj} onDeleteButtonClick={me._onDeleteButtonClick} onDeleteAllButtonClick={me._onDeleteAllButtonClick}/>
+                        <ChartComponent {...this.state.paramsObj} {...chartCmpObj}/>
                       </div>;
       }
       let title = <div style={{height:'30px',paddingBottom:'10px'}}>

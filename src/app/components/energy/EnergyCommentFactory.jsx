@@ -133,9 +133,12 @@ let EnergyCommentFactory = {
             return newFlagSeries;
         },
         ignoreAlarm: function (point, chartCmp) {
-            var alarmId = point.options.alarmId;
-            var me = this;
-            var factory = EnergyCommentFactory;
+          console.log('--ignoreAlarm--',point, chartCmp);
+      
+            //var alarmId = point.options.alarmId;
+          //  var me = this;
+          //  var factory = EnergyCommentFactory;
+
 /*
             var win = Ext.create('Ext.window.Window', {
                 scale: 'small',

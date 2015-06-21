@@ -50,6 +50,7 @@ let Highstock = React.createClass({
       var me = this;
       this._paper.bind('deleteButtonClick', me._onDeleteButtonClick.bind(me));
       this._paper.bind('deleteAllButtonClick', me._onDeleteAllButtonClick.bind(me));
+      this._paper.bind('ignorealarm', me._ignoreAlarmEvent.bind(me));
     },
     _onDeleteButtonClick(obj){
       if(this.props.onDeleteButtonClick){
@@ -59,6 +60,11 @@ let Highstock = React.createClass({
     _onDeleteAllButtonClick(){
       if(this.props.onDeleteAllButtonClick){
         this.props.onDeleteAllButtonClick();
+      }
+    },
+    _ignoreAlarmEvent(obj){
+      if(this.props.onIgnoreAlarmEvent){
+        this.props.onIgnoreAlarmEvent(obj);
       }
     },
     getPaper() {
