@@ -22074,7 +22074,7 @@ Scroller.prototype = {
 		    try {
 		        if (e.type !== 'mousemove') {
 		            scroller.grabbedLeft = scroller.grabbedRight = scroller.grabbedCenter = scroller.fixedWidth = scroller.fixedExtreme = scroller.otherHandlePos = hasDragged = dragOffset = null;
-		            bodyStyle.cursor = defaultBodyCursor || '';
+		            //bodyStyle.cursor = defaultBodyCursor || '';
 		        }
 		    }catch (exc) { }
             //rem add end try-catch
