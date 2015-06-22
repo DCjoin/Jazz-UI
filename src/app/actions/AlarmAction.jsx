@@ -159,6 +159,26 @@ let AlarmAction = {
            });
          }
        });
+  },
+  ignoreAlarm(ids, isBatch){
+    let url, dto={};
+    if(isBatch){
+      url = '/TargetBaseline.svc/IgnoreAlarmContinuousPoints';
+      dto.ids = ids;
+    }else{
+      url = '/TargetBaseline.svc/IgnoreAlarmPoint';
+      dto.id = ids;
+    }
+
+    Ajax.post(url, {
+         params: dto,
+         success: function(){
+
+         },
+         error: function(err, res){
+
+         }
+       });
   }
 };
 

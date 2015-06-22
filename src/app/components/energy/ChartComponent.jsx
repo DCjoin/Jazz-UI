@@ -2,12 +2,15 @@
 
 import React from 'react';
 import assign from 'object-assign';
+import mui from 'material-ui';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
+import AlarmAction from '../../actions/AlarmAction.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber} from '../../util/Util.jsx';
 
-var yAxisOffset = 70;
+let { Dialog, FlatButton, Checkbox } = mui;
+let yAxisOffset = 70;
 
 var dataLabelFormatter = function (format) {
     var f = window.Highcharts.numberFormat;
@@ -336,18 +339,53 @@ let ChartComponent = React.createClass({
     componentWillUpdate(){
 
     },
+    _onIgnoreDialogSubmit(){
+      let isBatchIgnore = this.refs.batchIgnore.isChecked();
+      let point = this.selectedIgnorePoint,
+          factory = EnergyCommentFactory,
+          ids;
+      if(isBatchIgnore){
+        let ignorePoints = [];
+        ids = factory.getContinuousPointids(point, ignorePoints);
+
+      }else{
+        ids = point.alarmId;
+      }
+      AlarmAction.ignoreAlarm(ids, isBatchIgnore);
+      this.refs.ignoreDialogWindow.dismiss();
+    },
+    _onIgnoreDialogCancel(){
+      this.refs.ignoreDialogWindow.dismiss();
+    },
     render () {
 
       let that = this;
       if(!this.props.energyData) {
           return null;
       }
+      var _buttonActions = [
+              <FlatButton
+              label="忽略"
+              secondary={true}
+              onClick={this._onIgnoreDialogSubmit} />,
+              <FlatButton
+              label="放弃"
+              primary={true}
+              onClick={this._onIgnoreDialogCancel} />
+          ];
+      var dialog = <Dialog actions={_buttonActions} modal={false} ref="ignoreDialogWindow">
+        <div>忽略该点报警吗？</div>
+        <div style={{marginTop:'20px'}}> <Checkbox ref='batchIgnore' label='忽略该点后的连续报警'/></div>
+      </Dialog>;
+
       let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,
                              onDeleteAllButtonClick: that._onDeleteAllButtonClick,
                              onIgnoreAlarmEvent: that.onIgnoreAlarmEvent};
-      return (
-              <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
-      );
+      return <div style={{display:'flex', flex:1}}>
+                <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
+                {dialog}
+             </div>;
+
   },
   _onDeleteButtonClick(obj){
     if(this.props.onDeleteButtonClick){
@@ -360,10 +398,13 @@ let ChartComponent = React.createClass({
     }
   },
   onIgnoreAlarmEvent(obj){
-    let point = obj.point,
-        factory = EnergyCommentFactory;
+    let point = obj.point;
+        this.refs.batchIgnore.setChecked(false);
+        this.refs.ignoreDialogWindow.show();
+        this.selectedIgnorePoint = point;
+        //factory = EnergyCommentFactory;
 
-        factory.ignoreAlarm(point, this.refs.highstock);
+        //factory.ignoreAlarm(point, this.refs.highstock);
         return false;
   },
   _initChartObj() {
