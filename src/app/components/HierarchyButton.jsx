@@ -77,19 +77,11 @@ let HierarchyButton=React.createClass({
         if(!nextProps.show){
           this.setState({
             open:false
-          })
+          });
         }
       },
 
   render:function(){
-
-      var buttonStyle = {
-               fontSize:'16px',
-               color:'#ffffff',
-               textDecoration:'underline',
-               marginLeft:'20px'
-           };
-
       var dropdownPaper;
 
       if(this.state.open && this.props.show) {

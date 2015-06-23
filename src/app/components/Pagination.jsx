@@ -65,7 +65,7 @@ var Pagination = React.createClass({
       );
     }
     var pageNum = (
-      <div className="page-num">{this.props.curPageNum}/{this.props.totalPageNum}</div>
+      <div className="page-num">{this.props.curPageNum}/{this.props.totalPageNum}页</div>
     );
 
     var jumpBtn = null;
