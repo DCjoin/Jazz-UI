@@ -12,6 +12,10 @@ let AlarmSetting = React.createClass({
       };
   },
 
+  loadDataByYear: function(year){
+
+  },
+
   handleCheck: function(e) {
     console.log(e.target.value);
   },

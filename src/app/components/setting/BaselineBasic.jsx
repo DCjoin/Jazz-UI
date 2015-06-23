@@ -61,32 +61,56 @@ var DaytimeRangeValue = React.createClass({
   },
 
   render: function(){
-    var startProps = {
-      defaultMinute: this.props.start,
-      isViewStatus: true
-    },
-    endProps = {
-      from: this.props.start + this.props.step,
-      to: 1440,
-      step: this.props.step,
-      defaultMinute: this.props.end,
-      isViewStatus: this.props.isViewStatus,
-      onChange: this._onEndChange
-    },
-    valProps = {
-      defaultValue: this.props.defaultValue,
-      onChange: this._onValueChange
-    };
+    if(this.props.isViewStatus){
+      var startStr = CommonFuns.numberToTime(this.props.start),
+       endStr = CommonFuns.numberToTime(this.props.end),
+       val = this.props.defaultValue;
 
-    return (
-      <div>
-        <DaytimeSelector {...startProps} ref='startFeild' />
-        <span>到</span>
-        <DaytimeSelector {...endProps} ref='endFeild' />
-        <TextField {...valProps} ref='valueField'/>
-        <span>千瓦</span>
-      </div>
-    );
+      var style = { padding: '2px 10px', border: '1px solid #ddd' };
+
+      return (
+        <div>
+          <span style={style}>{startStr}</span>
+          <span>到</span>
+          <span style={style}>{endStr}</span>
+          <span style={style}>{val}</span>
+          <span>千瓦</span>
+        </div>
+      );
+    }else{
+      var startProps = {
+        defaultMinute: this.props.start,
+        isViewStatus: true
+      },
+      endProps = {
+        from: this.props.start + this.props.step,
+        to: 1440,
+        step: this.props.step,
+        defaultMinute: this.props.end,
+        isViewStatus: this.props.isViewStatus,
+        onChange: this._onEndChange,
+        style: {
+
+        }
+      },
+      valProps = {
+        defaultValue: this.props.defaultValue,
+        onChange: this._onValueChange,
+        style: {
+          width: "120px",
+        }
+      };
+
+      return (
+        <div>
+          <DaytimeSelector {...startProps} ref='startFeild' />
+          <span>到</span>
+          <DaytimeSelector {...endProps} ref='endFeild' />
+          <TextField {...valProps} ref='valueField'/>
+          <span>千瓦</span>
+        </div>
+      );
+    }
   }
 });
 
@@ -163,7 +187,7 @@ var DaytimeRangeValues = React.createClass({
       };
       return (<DaytimeRangeValue {...props} />);
     }
-    return <ul>{items.map(createItem)}</ul>;
+    return <div>{items.map(createItem)}</div>;
   }
 });
 
@@ -264,7 +288,6 @@ var NormalSetting = React.createClass({
   },
 
   render: function () {
-
     if(!this.props.isDisplay){
       return <div></div>;
     }
@@ -278,8 +301,11 @@ var NormalSetting = React.createClass({
       isViewStatus: this.props.isViewStatus
     };
 
+    var style = {
+      marginLeft: "30px"
+    };
     return (
-      <div>
+      <div style={style}>
         <div>小时基准值</div>
         <div>工作日</div>
         <div>
@@ -300,7 +326,8 @@ var CalcItem = React.createClass({
     val1: React.PropTypes.string,
     val2: React.PropTypes.string,
     val1Med: React.PropTypes.bool,
-    val2Med: React.PropTypes.bool
+    val2Med: React.PropTypes.bool,
+    isViewStatus: React.PropTypes.bool,
   },
 
   getInitialState: function(){
@@ -335,13 +362,34 @@ var CalcItem = React.createClass({
   },
 
   render: function(){
-    var val1Med = this.state.val1Med ? "修正": "",
-      val2Med = this.state.val2Med? "修正": "";
-    return <tr>
-      <td><span>{this._getTimeStr(this.props.time)}</span></td>
-      <td><TextField ref='val1' defaultValue={this.props.val1} onChange={this._onVal1Change} /><span>千瓦时</span><span>{val1Med}</span></td>
-      <td><TextField ref='val2' defaultValue={this.props.val2} onChange={this._onVal2Change} /><span>千瓦时</span><span>{val2Med}</span></td>
-    </tr>;
+    if(this.props.isViewStatus){
+      return (<tr>
+        <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
+        <td minwidth='250'>
+          <span>{this.props.val1}</span>
+          <span>千瓦时</span><span>{this.props.val1Med ? "修正": ""}</span>
+        </td>
+        <td minwidth='250'>
+          <span>{this.props.val2}</span>
+          <span>千瓦时</span><span>{this.props.val2Med? "修正": ""}</span>
+        </td>
+      </tr>);
+    }else{
+      var style={
+        width: "120px"
+      };
+      return (<tr>
+        <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
+        <td minwidth='250'>
+          <TextField ref='val1' defaultValue={this.props.val1} onChange={this._onVal1Change} style={style} />
+          <span>千瓦时</span><span>{this.state.val1Med ? "修正": ""}</span>
+        </td>
+        <td minwidth='250'>
+          <TextField ref='val2' defaultValue={this.props.val2} onChange={this._onVal2Change} style={style} />
+          <span>千瓦时</span><span>{this.state.val2Med? "修正": ""}</span>
+        </td>
+      </tr>);
+    }
   }
 });
 
@@ -382,6 +430,7 @@ var CalcSetting = React.createClass({
 
     var items = this.props.items || [];
     var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+    var me = this;
     var createItem = function(item, index){
       for (var i = 0; i < items.length; i++) {
         if(items[i].TBTime == item){
@@ -391,20 +440,31 @@ var CalcSetting = React.createClass({
             val1: items[i].WorkDayValue,
             val2: items[i].HolidayDayValue,
             val1Med: items[i].WorkDayModifyStatus,
-            val2Med: items[i].HolidayModifyStatus
+            val2Med: items[i].HolidayModifyStatus,
+            isViewStatus: me.props.isViewStatus,
           };
           return <CalcItem {...props} />
         }
       }
       var props = {
         ref: 'item'+ item,
-        time: item
+        time: item,
+        isViewStatus: me.props.isViewStatus,
       };
       return <CalcItem {...props} />;
     }, rows = arr.map(createItem);
 
+    var style = {
+      marginLeft: "30px"
+    };
+
+    var reCalcCtrl;
+    if(!this.props.isViewStatus){
+      reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick}>重新计算</a>;
+    }
+
     return (
-      <div>
+      <div style={style}>
         <table>
           <tr>
             <td>时间</td>
@@ -413,7 +473,7 @@ var CalcSetting = React.createClass({
           </tr>
           {rows}
         </table>
-        <a href="javascript:void(0)" onClick={this._onCalcClick}>重新计算</a>
+        {reCalcCtrl}
       </div>
     );
   }
@@ -421,6 +481,7 @@ var CalcSetting = React.createClass({
 
 var SpecialItem = React.createClass({
   propTypes: {
+    year: React.PropTypes.number,
     index: React.PropTypes.number,
     settingId: React.PropTypes.number,
     start: React.PropTypes.object,
@@ -430,10 +491,15 @@ var SpecialItem = React.createClass({
     onRemove:React.PropTypes.func
   },
 
-  _getJsonDateTime: function(date, time){
-    var d = new Date(date);
-    d = new Date(d.getFullYear(), d.getMonth(), d.getDay(), Math.floor(time/60), time % 60);
-    return CommonFuns.DataConverter.DatetimeToJson(d);
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps){
+      if(nextProps.start && nextProps.start != this.props.start ){
+        this.refs.startDateField.setDate(this._toFormDate(me.props.start));
+      };
+      if(nextProps.end && nextProps.end != this.props.end ){
+        this.refs.endDateField.setDate(this._toFormDate(me.props.end));
+      };
+    }
   },
 
   getValue: function(){
@@ -445,6 +511,12 @@ var SpecialItem = React.createClass({
     };
   },
 
+  _getJsonDateTime: function(date, time){
+    var d = new Date(date);
+    d = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(time/60), time % 60);
+    return CommonFuns.DataConverter.DatetimeToJson(d);
+  },
+
   _onRemove: function () {
     var me = this;
     if(this.props.onRemove){
@@ -453,8 +525,9 @@ var SpecialItem = React.createClass({
   },
 
   _toFormDate: function(dtJson){
-    var date = new Date( CommonFuns.DataConverter.JsonToDateTime(dtJson, false));
-    return date;
+    var date = new Date(CommonFuns.DataConverter.JsonToDateTime(dtJson, false));
+    return new Date(date.getFullYear(), date.getMonth()+1, date.getDay());
+    //return date.getFullYear() + '-' + (date.getMonth() +1) + '-' + date.getDate();
   },
   _toFormTime: function(dtJson){
     var dt = new Date(CommonFuns.DataConverter.JsonToDateTime(dtJson, false));
@@ -462,56 +535,110 @@ var SpecialItem = React.createClass({
   },
 
   render: function () {
+    if(this.props.isViewStatus){
+      var me = this, menuItems = [], minutes = 0,
+      sd = this._toFormDate(this.props.start),
+      ed = this._toFormDate(this.props.end), st= this._toFormTime(this.props.start),
+      et = this._toFormTime(this.props.end);
 
-    var me = this, menuItems = [], minutes = 0,
-    sd = this._toFormDate(this.props.start),
-    ed = this._toFormDate(this.props.end), st= this._toFormTime(this.props.start),
-    et = this._toFormTime(this.props.end);
+      var startDate = new Date(me.props.year, 0, 1), dstartDate = startDate,
+      endDate = new Date(me.props.year, 11, 31), dendDate = endDate;
+      if(me.props.start) dstartDate = this._toFormDate(me.props.start);
+      if(me.props.end) dendDate = this._toFormDate(me.props.end);
 
-    for (var i = 1; ; i++) {
-      var hmstr = CommonFuns.numberToTime(minutes);
-      menuItems.push({ payload: i.toString(), text: hmstr });
+      var startDateStr = dstartDate.getFullYear() + '-' + (dstartDate.getMonth() + 1) + '-' + dstartDate.getDate(),
+        endDateStr = dendDate.getFullYear() + '-' + (dendDate.getMonth() + 1) + '-' + dendDate.getDate();
 
-      minutes = minutes + 30;
-      if(minutes > 1440) break;
-    }
+      var startTimeStr = CommonFuns.numberToTime(st),
+       endTimeStr = CommonFuns.numberToTime(et),
+       val = this.props.defaultValue;
 
-    var startDate = new Date(me.props.year, 0, 1), dstartDate = startDate,
-    endDate = new Date(me.props.year, 11, 31), dendDate = endDate;
-    if(me.props.start) dstartDate = this._toFormDate(me.props.start);
-    if(me.props.end) dendDate = this._toFormDate(me.props.end);
+      var style = { padding: '2px 10px', border: '1px solid #ddd' };
 
-    var startProps = {
-      defaultDate: dstartDate,
-      minDate: startDate,
-      maxDate: endDate,
-      className: 'jazz-setting-basic-date',
-      onChange: function(e, v){
-        me.refs.endDateField.minDate = me.refs.startDateField.getDate();
-        var endDate = me.refs.endFeild.getDate();
+      return (<div>
+          <span style={style}>{startDateStr}</span>
+          <span style={style}>{startTimeStr}</span>
+          <span >到</span>
+          <span style={style}>{endDateStr}</span>
+          <span style={style}>{endTimeStr}</span>
+          <br/>
+          <span style={style}>{val}</span><span>千瓦时</span>
+        </div>
+      );
+    }else{
 
-        if(endDate && endDate < v){
-          me.refs.endDateField.setDate(v);
-        }
+      var me = this, menuItems = [], minutes = 0,
+      sd = this._toFormDate(this.props.start),
+      ed = this._toFormDate(this.props.end), st= this._toFormTime(this.props.start),
+      et = this._toFormTime(this.props.end);
+
+      for (var i = 1; ; i++) {
+        var hmstr = CommonFuns.numberToTime(minutes);
+        menuItems.push({ payload: i.toString(), text: hmstr });
+
+        minutes = minutes + 30;
+        if(minutes > 1440) break;
       }
-    },
-    endProps = {
-      defaultDate: dendDate,
-      minDate: startDate,
-      maxDate: endDate,
-      className: 'jazz-setting-basic-date',
-    };
 
-    return (<div>
-        <DatePicker ref='startDateField' value={sd} {...startProps} />
-        <DaytimeSelector ref='startTimeField'  />
-        <span>到</span>
-        <DatePicker ref='endDateField' value={ed}  {...endProps} />
-        <DaytimeSelector ref='endTimeField'  />
-        <FlatButton label="－"  ref="remove"  onClick={this._onRemove} /><br/>
-        <TextField ref='valueField' /><span>千瓦时</span>
-      </div>
-    );
+      var startDate = new Date(me.props.year, 0, 1), dstartDate = startDate,
+      endDate = new Date(me.props.year, 11, 31), dendDate = endDate;
+      if(me.props.start) dstartDate = this._toFormDate(me.props.start);
+      if(me.props.end) dendDate = this._toFormDate(me.props.end);
+
+      var datapickerStyle = {
+        width: "100px",
+        display: "block",
+        float: "left",
+        height: "32px",
+      };
+
+      var startProps = {
+        //formatDate: formatDate,
+        //defaultDate: dstartDate,
+        minDate: startDate,
+        maxDate: endDate,
+        style: datapickerStyle,
+        //className: 'jazz-setting-basic-date',
+        onChange: function(e, v){
+          me.refs.endDateField.minDate = me.refs.startDateField.getDate();
+          var endDate = me.refs.endFeild.getDate();
+
+          if(endDate && endDate < v){
+            me.refs.endDateField.setDate(v);
+          }
+        }
+      },
+      endProps = {
+        //formatDate: formatDate,
+        //defaultDate: dendDate,
+        minDate: startDate,
+        maxDate: endDate,
+        style: datapickerStyle,
+        //className: 'jazz-setting-basic-date',
+      };
+
+      var daytimeProps = {
+        from: 0,
+        to: 1440,
+        step: 30,
+        isViewStatus: this.props.isViewStatus,
+        style:{
+          display: "block",
+          float: "left"
+        }
+      };
+
+      return (<div>
+          <DatePicker ref='startDateField' {...startProps} />
+          <DaytimeSelector ref='startTimeField' defaultMinute={st} {...daytimeProps} />
+          <span className='jazz-setting-basic-datespan'>到</span>
+          <DatePicker ref='endDateField' {...endProps} />
+          <DaytimeSelector ref='endTimeField' defaultMinute={et} {...daytimeProps} />
+          <FlatButton label="－"  ref="remove"  onClick={this._onRemove} /><br/>
+          <TextField ref='valueField' /><span>千瓦时</span>
+        </div>
+      );
+    }
   }
 });
 
@@ -553,7 +680,7 @@ var SpecialSetting = React.createClass({
       StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
       EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1))
     },
-    newItems = this.state.items.concat(item);
+    newItems = this.state.items.concat([item]);
     this.setState({items: newItems});
   },
 
@@ -569,6 +696,7 @@ var SpecialSetting = React.createClass({
     var me = this,
       createItem = function(item, index) {
         var drvProps = {
+          year: me.props.year,
           index: index,
           ref: 'item' + index,
           start: item.StartTime,
@@ -579,9 +707,17 @@ var SpecialSetting = React.createClass({
         };
         return (<SpecialItem {...drvProps} />);
       };
-    return <div>
-      <div><span>补充日期</span><FlatButton label="＋" onClick={this._addItem} /></div>
-      <div>{this.state.items.map(createItem)}</div></div>;
+    var style = {
+      marginLeft: "20px"
+    };
+    var addBtnCtrl;
+    if(!this.props.isViewStatus){
+      addBtnCtrl = <FlatButton label="＋" onClick={this._addItem} />;
+    }
+    return (<div style={style}>
+        <div><span>补充日期</span>{addBtnCtrl}</div>
+        <div>{this.state.items.map(createItem)}</div>
+      </div>);
   }
 });
 
@@ -624,21 +760,13 @@ var TBSettingItem = React.createClass({
 
   _getJsonDateTime: function(date){
     var d = new Date(date);
-    d = new Date(d.getFullYear(), d.getMonth(), d.getDay());
+    d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
     return CommonFuns.DataConverter.DatetimeToJson(d);
   },
 
   _toFormDate: function(dtJson){
-    var date = new Date( CommonFuns.DataConverter.JsonToDateTime(dtJson, false));
+    var date = new Date(CommonFuns.DataConverter.JsonToDateTime(dtJson, false));
     return date;
-  },
-
-  _onStartChange: function(e, date){
-    this.setState({ start: date });
-  },
-
-  _onEndChange: function(e, date){
-    this.setState({ end: date });
   },
 
   _onRemove: function () {
@@ -669,7 +797,7 @@ var TBSettingItem = React.createClass({
       SpecialDates: this.refs.SpecialSettingCtrl.getValue(),
       //TbAvgDtos: this.refs.CalcSettingCtrl.getValue(),
     };
-    if(rtn.radio == "CalcRadio") {
+    if(this.state.radio == "CalcRadio") {
       rtn.TbAvgDtos =  this.refs.CalcSettingCtrl.getValue();
     }
     else {
@@ -688,34 +816,6 @@ var TBSettingItem = React.createClass({
     endDate = new Date(me.props.year, 11, 31), dendDate = endDate;
     if(me.props.start) dstartDate = this._toFormDate(me.props.start);
     if(me.props.end) dendDate = this._toFormDate(me.props.end);
-
-    var startProps = {
-      defaultDate: dstartDate,
-      minDate: startDate,
-      maxDate: endDate,
-      className: 'jazz-setting-basic-date',
-      onChange: function(e, v){
-        me.refs.endFeild.minDate = me.refs.startFeild.getDate();
-        var endDate = me.refs.endFeild.getDate();
-
-        if(endDate && endDate < v){
-          me.refs.endFeild.setDate(v);
-        }
-      }
-    },
-    endProps = {
-      defaultDate: dendDate,
-      minDate: startDate,
-      maxDate: endDate,
-      className: 'jazz-setting-basic-date',
-    };
-    for (var i = 1; ; i++) {
-      var hmstr = CommonFuns.numberToTime(minutes);
-      menuItems.push({ payload: i.toString(), text: hmstr });
-
-      minutes = minutes + step;
-      if(minutes > 1440) break;
-    }
 
     var normalProps = {
       isViewStatus: me.props.isViewStatus,
@@ -736,13 +836,88 @@ var TBSettingItem = React.createClass({
     clearStyle = {
       clear: 'both',
     };
+    if(this.props.isViewStatus){
+      var middleCtrl ;
+      // Middle
+      if(this.props.avgs && this.props.avgs.length){
+        avgProps.isDisplay = true;
+        middleCtrl = <div style={clearStyle}>
+          <RadioButton name='CalcRadio' key='CalcRadio' ref='CalcRadio' value="CalcRadio"
+            label="计算所选数据平均值为基准数据" disabled="true" checked="true"  />
+          <CalcSetting ref="CalcSettingCtrl" {...avgProps} />
+        </div>
+      }
+      else{
+        normalProps.isDisplay = true;
+        middleCtrl = <div style={clearStyle}>
+          <RadioButton name='NormalRadio' key='NormalRadio' ref='NormalRadio' value="NormalRadio"
+            label="手动设置基准值" disabled="true" checked="true" />
+          <NormalSetting ref="NormalSettingCtrl" {...normalProps} />
+        </div>
+      }
+      var startDateStr = dstartDate.getFullYear() + '-' +(dstartDate.getMonth() + 1) + '-' + dstartDate.getDate();
+      var endDateStr = dendDate.getFullYear() + '-' +(dendDate.getMonth() + 1) + '-' + dendDate.getDate();
+
+      return (<div>
+          <div style={clearStyle}>
+            <div style={clearStyle}>
+              <span style={{ padding: '2px 10px', border: '1px solid #ddd' }}>{startDateStr}</span>
+              <span>到</span>
+              <span style={{ padding: '2px 10px', border: '1px solid #ddd' }}>{endDateStr}</span>
+            </div>
+            {middleCtrl}
+          </div>
+          <div ref="SpecialSettingContainer" style={clearStyle}>
+            <SpecialSetting ref="SpecialSettingCtrl" {...specialProps} />
+          </div>
+        </div>
+      );
+    }
+
+    var datapickerStyle = {
+      width: "100px",
+      display: "block",
+      float: "left",
+      height: "32px",
+    };
+
+    var startProps = {
+      defaultDate: dstartDate,
+      minDate: startDate,
+      maxDate: endDate,
+      style: datapickerStyle,
+      //className: 'jazz-setting-basic-date',
+      onChange: function(e, v){
+        me.refs.endFeild.minDate = me.refs.startFeild.getDate();
+        var endDate = me.refs.endFeild.getDate();
+
+        if(endDate && endDate < v){
+          me.refs.endFeild.setDate(v);
+        }
+      }
+    };
+    var endProps = {
+      defaultDate: dendDate,
+      minDate: startDate,
+      maxDate: endDate,
+      style: datapickerStyle,
+      //className: 'jazz-setting-basic-date',
+    };
+
+    for (var i = 1; ; i++) {
+      var hmstr = CommonFuns.numberToTime(minutes);
+      menuItems.push({ payload: i.toString(), text: hmstr });
+
+      minutes = minutes + step;
+      if(minutes > 1440) break;
+    }
 
     return (<div>
         <div style={clearStyle}>
           <div style={clearStyle}>
-            <DatePicker  ref='startFeild' {...startProps} onChange={this._onStartChange} />
+            <DatePicker  ref='startFeild' {...startProps} />
             <span className='jazz-setting-basic-datespan'>到</span>
-            <DatePicker  ref='endFeild' {...endProps} onChange={this._onEndChange} />
+            <DatePicker  ref='endFeild' {...endProps} />
             <FlatButton label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
           <div style={clearStyle}>
@@ -784,17 +959,8 @@ var TBSettingItems = React.createClass({
     }
   },
 
-  componentDidMount: function(nextProps) {
-    this._setSetting(nextProps);
-  },
-
-  componentWillReceiveProps: function(nextProps){
-    this._setSetting(nextProps);
-  },
-
   getValue: function(){
     var vals = [];
-    debugger;
     for (var i = 0; i < this.state.items.length; i++) {
       var ref = this.refs['item' + i];
       if(ref) vals.push(ref.getValue());
@@ -839,10 +1005,8 @@ var TBSettingItems = React.createClass({
   },
 
   render: function() {
-
     var me = this,
-      cyear = this.props.year,
-      isViewStatus = this.props.isViewStatus;
+      cyear = this.props.year;
 
     var createItem = function(item, index) {
       var drvProps = {
@@ -855,7 +1019,7 @@ var TBSettingItems = React.createClass({
         specials: item.SpecialDates,
         avgs: item.TbAvgDtos,
 
-        isViewStatus: isViewStatus,
+        isViewStatus: me.props.isViewStatus,
         onRemove: me._removeSetting
       };
 
@@ -868,8 +1032,20 @@ var TBSettingItems = React.createClass({
       return (<TBSettingItem {...drvProps} />);
     };
 
+    var addBtnCtrl;
+    if(!this.props.isViewStatus){
+      var addBtnProps = {
+        padding: '0',
+        width: '20px',
+        height: '20px',
+        label: "+",
+        onClick: this._addSetting,
+        disabled: this.props.isViewStatus,
+      };
+      addBtnCtrl =  <FlatButton {...addBtnProps} />
+    }
     return (<div>
-        <div><span>时段设置</span><FlatButton label="＋" onClick={this._addSetting} /></div>
+        <div><span>时段设置</span>{addBtnCtrl}</div>
         <div>{this.state.items.map(createItem)}</div>
       </div>);
   }
@@ -886,13 +1062,15 @@ var BaselineBasic = React.createClass({
     year: React.PropTypes.number,
     items: React.PropTypes.array,
 
-    isViewStatus: React.PropTypes.bool
+    isViewStatus: React.PropTypes.bool,
+    onNameChanged: React.PropTypes.func,
+    onYearChanged: React.PropTypes.func,
   },
 
   getDefaultProps: function() {
     return {
       items: [],
-      isViewStatus: false,
+      isViewStatus: true,
       year: (new Date()).getFullYear()
     };
   },
@@ -901,9 +1079,18 @@ var BaselineBasic = React.createClass({
     return {
       items: this.props.items || [],
       name: this.props.name,
-      year: this.props.year,
-      isViewStatus: this.props.isViewStatus
+      isViewStatus: this.props.isViewStatus,
     };
+  },
+
+  componentWillMount: function(){
+    this._onYearChanged(this.props.year + '');
+  },
+
+  componentWillUpdate: function(nextProps, nextState){
+    if(this.state.year != nextProps.year && nextProps.tbId){
+      this._onYearChanged(nextProps.year + '');
+    }
   },
 
   getValue: function(){
@@ -914,10 +1101,27 @@ var BaselineBasic = React.createClass({
     };
   },
 
+  loadDataByYear: function(year){
+    this.setState({year: year});
+  },
+
+  _onTBNameChanged: function(){
+    var tbname = this.refs.TBName.getValue();
+    if(tbname != this.state.name){
+      this.setState("name", tbname);
+      if(this.props.onNameChanged){
+        this.props.onNameChanged(tbname);
+      }
+    }
+  },
+
   _onYearChanged: function(yearstr){
     var year = parseInt(yearstr);
-    this._fetchServerData(year);
     this.setState({year: year});
+    if(this.props.onYearChanged){
+      this.props.onYearChanged(year);
+    }
+    this._fetchServerData(year);
   },
 
   _fetchServerData: function(year) {
@@ -934,13 +1138,34 @@ var BaselineBasic = React.createClass({
     });
   },
 
-  saveDataToServer: function(){
+  _saveDataToServer: function(){
     var val = this.getValue();
     TBSettingAction.saveData(val);
     var tbSetting = TBSettingStore.getData();
     var itemsCtrl = this.refs.TBSettingItems;
     itemsCtrl.items = tbSetting.TBSettings;
   },
+
+
+  _handleEdit: function(){
+    this.setState({
+      isViewStatus : false,
+    });
+	},
+
+  _handleSave: function(){
+    this._saveDataToServer();
+    this.setState({
+      isViewStatus : true,
+    });
+  },
+
+  _handleCancel: function(){
+    this.setState({
+      isViewStatus : true,
+    });
+  },
+
 
   render: function (){
     var itemProps = {
@@ -949,20 +1174,60 @@ var BaselineBasic = React.createClass({
       year: this.state.year,
       isViewStatus: this.state.isViewStatus,
     };
-    var btnProps = {onSave: this.saveDataToServer};
+    var tbNameProps = {
+      value: this.props.name,
+      onBlur: this._onTBNameChanged,
+      disabled: !this.state.isViewStatus,
+    };
+
+    var curYear = (new Date()).getFullYear();
+    var btnProps = {
+      onSave: this._saveDataToServer
+    };
+
+    var yearCtrl;
+    if(this.state.isViewStatus){
+      yearCtrl = <span style={{ padding: '2px 10px', border: '1px solid #ddd' }}>{this.state.year}</span>;
+    }
+    else {
+      var yearProps = {
+        disabled: this.state.isViewStatus,
+        ref: "YearField",
+        selectedIndex: ((this.state.year || curYear) - curYear + 10) + '',
+        onYearPickerSelected: this._onYearChanged,
+        //className: "yearpicker",
+        style:{
+          height: "24px",
+        },
+        labelStyle: {
+          height: "24px",
+        },
+        underlineStyle: {
+          height: "24px",
+        },
+        menuItemStyle: {
+          height: "30px",
+        }
+      };
+
+      yearCtrl = <YearPicker {...yearProps} />
+    }
 
     return (<div className='jazz-setting-basic-container'>
       <div className='jazz-setting-basic-content'>
-        <div><TextField ref="TBName" value={this.props.name} /></div>
-        <div><span>请选择配置年份进行编辑</span><YearPicker ref="Year" selectedIndex='10'
-          className="yearpicker" onYearPickerSelected={this._onYearChanged} /><a>显示日历详情</a></div>
+        <div><TextField ref="TBName" {...tbNameProps} /></div>
+        <div><span>请选择配置年份进行编辑</span>{yearCtrl}<a>显示日历详情</a></div>
 
         <div ref="TBSettingContainer">
           <TBSettingItems ref="TBSettingItems" {...itemProps} />
         </div>
       </div>
       <div>
-        <NodeButtonBar {...btnProps} />
+        <button type="submit" hidden={!this.state.isViewStatus} style={{width:'50px'}} onClick={this._handleEdit}> 修正 </button>
+        <span>
+          <button type="submit" hidden={this.state.isViewStatus} style={{width:'50px'}} onClick={this._handleSave}> 保存 </button>
+          <button type="submit" hidden={this.state.isViewStatus} style={{width:'50px'}} onClick={this._handleCancel}> 放弃 </button>
+        </span>
       </div>
      </div>);
   }

@@ -7,10 +7,10 @@ import YearPicker from '../../controls/YearPicker.jsx';
 let BaselineModify = React.createClass({
     mixins:[Navigation,State],
     getInitialState:function(){
-				return {
-          disable: true,
-				}
-			},
+			return {
+        disable: true,
+			}
+		},
 
     handleCheck:function(e){
       console.log(e.target.value)
@@ -21,32 +21,40 @@ let BaselineModify = React.createClass({
         disable : false,
       });
       console.log("handle Edit");
-			},
+		},
 
-      handleSave: function(){
-        //save
-        console.log("handleSave");
+    handleSave: function(){
+      //save
+      console.log("handleSave");
+      this.setState({
+        disable : true,
+      });
+    },
+
+    handleCancel: function(){
+        console.log("handleCancel");
         this.setState({
-          disable : true,
-        });
-      },
+        disable : true,
+      });
+    },
 
-      handleCancel: function(){
-          console.log("handleCancel");
-          this.setState({
-          disable : true,
-        });
-      },
     showDialog: function(){
       console.log("showDialog");
       this.refs.baselineModifyDialog.show();
     },
+
     dismiss(){
         this.refs.baselineModifyDialog.dismiss();
-      },
+    },
+
     onYearPickerSelected(yearDate){
 
-      },
+    },
+
+    loadDataByYear: function(year){
+
+    },
+    
     render: function () {
       let months =[
                    {LeftMonth:"一", LeftValue:'100',RightMonth:"二", RightValue:'200'},

@@ -26,6 +26,10 @@ TBStore.dispatchToken = AppDispatcher.register(function(action) {
            TBStore.setData(action.tbs);
            TBStore.emitChange();
         break;
+      case Action.SAVE_TB:
+           TBStore.setData(action.tbs);
+           TBStore.emitChange();
+        break;
 
     }
 });

@@ -13,10 +13,8 @@ var extend = function(object, overrides) {
 
   Object.keys(object).forEach(function(currentKey) {
 
-    // Arrays and null are also objects,
     var overridesIsValidObject = object[currentKey] && !Array.isArray(object[currentKey]);
 
-    // Recursive call to next level
     if (typeof(object[currentKey]) === 'object' && overridesIsValidObject) {
       mergeObject[currentKey] = extend(object[currentKey], overrides[currentKey]);
     } else {
@@ -26,10 +24,8 @@ var extend = function(object, overrides) {
         mergeObject[currentKey] = object[currentKey];
       }
     }
-
   });
 
-  // Overrides not defined in object are immediately added.
   if (overrides && typeof(overrides) === 'object' && !Array.isArray(overrides)) {
     Object.keys(overrides).diff(Object.keys(object)).forEach(function(currentDiff) {
       mergeObject[currentDiff] = overrides[currentDiff];
@@ -56,68 +52,12 @@ let Dialog = React.createClass({
     }
   },
 
-  //Returns the correct event name to use
-  transitionEndEventName: function() {
-    return this._testSupportedProps({
-      'transition':'transitionend',
-      'OTransition':'otransitionend',
-      'MozTransition':'transitionend',
-      'WebkitTransition':'webkitTransitionEnd'
-    });
-  },
-
-  animationEndEventName: function() {
-    return this._testSupportedProps({
-      'animation': 'animationend',
-      '-o-animation': 'oAnimationEnd',
-      '-moz-animation': 'animationend',
-      '-webkit-animation': 'webkitAnimationEnd'
-    });
-  },
-
-  onTransitionEnd: function (el, callback) {
-    var transitionEnd = this.transitionEndEventName();
-
-    this.once(el, transitionEnd, function() {
-      return callback();
-    });
-  },
-
-  onAnimationEnd: function (el, callback) {
-    var animationEnd = this.animationEndEventName();
-
-    this.once(el, animationEnd, function() {
-      return callback();
-    });
-  },
-
   all: function(styles) {
     var prefixedStyle = {};
     for (var key in styles) {
-      prefixedStyle[this.single(key)] = styles[key];
+      prefixedStyle[key] = styles[key];
     }
     return prefixedStyle;
-  },
-
-  set: function(style, key, value) {
-    style[this.single(key)] = value;
-  },
-
-  single: function(key) {
-    return  key;
-  },
-
-  singleHyphened: function(key) {
-    var str = this.single(key);
-
-    return !str ? key : str.replace(/([A-Z])/g, function(str,m1){
-      return '-' + m1.toLowerCase();
-    }).replace(/^ms-/,'-ms-');
-  },
-
-
-  contextTypes: {
-    muiTheme: React.PropTypes.object
   },
 
   propTypes: {
@@ -125,10 +65,6 @@ let Dialog = React.createClass({
     width: React.PropTypes.number,
     onDismiss: React.PropTypes.func,
     onShow: React.PropTypes.func
-  },
-
-  windowListeners: {
-    'resize': '_positionDialog'
   },
 
   getDefaultProps: function() {
@@ -152,76 +88,21 @@ let Dialog = React.createClass({
     }
     return base;
   },
-  once: function(el, type, callback) {
-    var typeArray = type.split(' ');
-    var recursiveFunction = function(e){
-      e.target.removeEventListener(e.type, recursiveFunction);
-      return callback(e);
-    };
 
-    for (var i = typeArray.length - 1; i >= 0; i--) {
-      this.on(el, typeArray[i], recursiveFunction);
-    }
-  },
-
-  // IE8+ Support
-  on: function(el, type, callback) {
-    if(el.addEventListener) {
-      el.addEventListener(type, callback);
-    } else {
-      el.attachEvent('on' + type, function() {
-        callback.call(el);
-      });
-    }
-  },
-
-  // IE8+ Support
-  off: function(el, type, callback) {
-    if(el.removeEventListener) {
-      el.removeEventListener(type, callback);
-    } else {
-      el.detachEvent('on' + type, callback);
-    }
-  },
-
-  /**
-   * loops through all properties defined in the first argument, so overrides
-   * of undefined properties will not take place.
-   */
   mergeAndPrefix: function() {
     var mergedStyles = this.mergeStyles.apply(this, arguments);
-    return this.all(mergedStyles);
+    var prefixedStyle = {};
+    for (var key in mergedStyles) {
+      prefixedStyle[key] = mergedStyles[key];
+    }
+    return prefixedStyle;
 	},
-
-  componentDidUpdate: function(prevProps, prevState) {
-    //debugger;
-    this._positionDialog();
-  },
 
   _onShow: function() {
     if (this.props.onShow) this.props.onShow();
   },
   _onDismiss: function() {
     if (this.props.onDismiss) this.props.onDismiss();
-  },
-
-  _positionDialog: function() {
-    //debugger;
-    var container = React.findDOMNode(this);
-    var dialogWindow = React.findDOMNode(this.refs.dialogWindow);
-    var containerHeight = container.offsetHeight;
-    var dialogWindowHeight = dialogWindow.offsetHeight;
-
-    //Reset the height in case the window was resized.
-    dialogWindow.style.height = '';
-
-    var paddingTop = Math.max(((containerHeight - dialogWindowHeight) / 2) - 64, 0);
-
-    //Vertically center the dialog window, but make sure it doesn't
-    //transition to that position.
-    if (this.props.repositionOnUpdate || !container.style.paddingTop) {
-      container.style.paddingTop = paddingTop + 'px';
-    }
   },
 
   dismiss: function() {
@@ -248,32 +129,14 @@ let Dialog = React.createClass({
     //debugger;
     return this.context.muiTheme.spacing;
   },
-  getCttStyles: function() {
-    var gutter = 24 + 'px ';
-    var styles = {
-      title: {
-        margin: 0,
-        padding: gutter + gutter + '0 ' + gutter,
-        color: this.context.muiTheme.palette.textColor,
-        fontFamily: 'Microsoft YaHei',
-        fontSize: '24px',
-        lineHeight: '32px',
-        fontWeight: '400',
-      },
-      content: {
-        padding: 24
-      }
-    };
-    return styles;
-  },
 
   getWinStyles: function() {
     //debugger;
     var styles = {
       root: {
-       fontFamily: 'Microsoft YaHei',
+        background: 'rgba(23,25,25,0.7)',
+        fontFamily: 'Microsoft YaHei',
         position: 'fixed',
-        boxSizing: 'border-box',
         WebkitTapHighlightColor: 'rgba(0,0,0,0)',
         zIndex: 10,
         top: 0,
@@ -283,13 +146,17 @@ let Dialog = React.createClass({
       },
       contents: {
        fontFamily: 'Microsoft YaHei',
-        boxSizing: 'border-box',
         WebkitTapHighlightColor: 'rgba(0,0,0,0)',
         position: 'relative',
-        width: '75%',
+        width: '830px',
+        height: '650px',
         margin: '0 auto',
         zIndex: 10,
-        opacity: 0
+        opacity: 0,
+        borderRadius: 0,
+
+        top: '50%',
+        transform: 'translateY(-50%)'
       },
       rootWhenOpen: {
         left: 2
@@ -306,26 +173,45 @@ let Dialog = React.createClass({
     var styles = {
       root:{
         margin: 0,
-        padding: '12px 0 0 12px',
+        padding: '19px 24px 24px 50px',
         height: '30px',
-        background: '#ccc',
-        fontWeight: 'bold',
+        color: '#464949',
+        fontSize: '20px',
         fontFamily: 'Microsoft YaHei',
       },
       buttons:{
         position: 'absolute',
         zIndex: 100,
-        fontSize: 32,
+        fontSize: 38,
         fontFamily: 'Microsoft YaHei',
         float: 'right',
         top: 0,
         background: 'transparent',
         border: 0,
-        padding: 3,
+        padding: '5px 24px 11px 0px',
         width: 40,
-        right: 0,
+        right: 6,
         cursor: 'pointer',
         color: '#666'
+      }
+    };
+    return styles;
+  },
+
+  getCttStyles: function() {
+    var gutter = 24 + 'px ';
+    var styles = {
+      title: {
+        margin: 0,
+        padding: gutter + gutter + '0 ' + gutter,
+        fontFamily: 'Microsoft YaHei',
+        fontSize: '24px',
+        lineHeight: '32px',
+        fontWeight: '400',
+        width: '830px',
+      },
+      content: {
+        padding: 24
       }
     };
     return styles;

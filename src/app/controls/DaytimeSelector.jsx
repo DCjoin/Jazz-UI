@@ -9,6 +9,7 @@ var DaytimeSelector = React.createClass({
     step: React.PropTypes.number,
     to: React.PropTypes.number,
     defaultMinute: React.PropTypes.number,
+    style: React.PropTypes.object,
 
     isViewStatus: React.PropTypes.bool,
     onChange:React.PropTypes.func
@@ -72,7 +73,7 @@ var DaytimeSelector = React.createClass({
       }
       ddmProps.selectedIndex = index;
 
-      var ddm = <DropDownMenu ref="DropDownMenu"
+      var ddm = <DropDownMenu ref="DropDownMenu" style={this.props.style}
         {...ddmProps} />;
       return ddm;
     }

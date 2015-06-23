@@ -9,7 +9,11 @@ let YearPicker = React.createClass({
   propTypes: {
     selectedIndex: React.PropTypes.number,
     isViewStatus: React.PropTypes.bool,
-    onYearPickerSelected: React.PropTypes.func
+    onYearPickerSelected: React.PropTypes.func,
+    menuItemStyle: React.PropTypes.object,
+    underlineStyle:React.PropTypes.object,
+    iconStyle:React.PropTypes.object,
+    labelStyle:React.PropTypes.object,
   },
   getDefaultProps(){
     let date = new Date();
@@ -46,7 +50,9 @@ let YearPicker = React.createClass({
     }
   },
   render(){
-    return <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}/>;
+    return <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}
+      menuItemStyle={this.props.menuItemStyle} underlineStyle={this.props.underlineStyle} style={this.props.style}
+      iconStyle={this.props.iconStyle} labelStyle={this.props.labelStyle} />;
   }
 });
 
