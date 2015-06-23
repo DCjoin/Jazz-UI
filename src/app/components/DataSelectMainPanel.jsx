@@ -34,7 +34,8 @@ var CheckboxItem=React.createClass({
       payload:React.PropTypes.number,
       selectFull:React.PropTypes.func,
       disabled:React.PropTypes.bool,
-      nodeData:React.PropTypes.object
+      nodeData:React.PropTypes.object,
+      allcheck:React.PropTypes.bool
 
   },
   _onClick:function(){
@@ -86,6 +87,11 @@ var CheckboxItem=React.createClass({
   },
   render:function(){
     var alarm,baseline,checkBox;
+    var checkBoxClassName=classnames({
+                    "taglist": true,
+                    selected: tagStatus[page][this.props.payload]
+                  });
+    //tagStatus[page][this.props.payload]=this.state.boxChecked;
     switch(this.props.label){
       case 0:
         alarm=<div className="disable">基准值未配置,</div>;
@@ -101,22 +107,37 @@ var CheckboxItem=React.createClass({
         break;
     };
     var boxStyle={
-      fontSize:'14px',
-      color:'#464949',
-      marginLeft:'20px'
+      marginLeft:'20px',
+      width:'24px'
+    },
+      iconstyle={
+      marginTop:'11px'
+    },
+      labelstyle={
+      width:'0px',
+      height:'0px'
     };
     return(
-      <div className="taglist" onClick={this._onClick} >
+      <div className={checkBoxClassName}  onClick={this._onClick} >
         <Checkbox
-            label={this.props.title}
             checked={this.state.boxChecked}
             disabled={this.props.disabled}
             style={boxStyle}
+            iconStyle={iconstyle}
+            labelStyle={labelstyle}
             />
-          <div className="font">
-            {alarm}
-            {baseline}
-        </div>
+          <div className="label">
+            <div className="title">
+            {this.props.title}
+            </div>
+            <div className="font">
+              {alarm}
+              {baseline}
+          </div>
+
+          </div>
+
+
 
       </div>
     )
@@ -178,6 +199,7 @@ var TagMenu=React.createClass({
                             selectFull={onSelectFull}
                             disabled={disalbed}
                             nodeData={nodeData}
+                            allcheck={checked}
                           />;
         nodemenuItems.push(menuItem);
 
@@ -204,7 +226,7 @@ var TagMenu=React.createClass({
           />
       </div>
 
-      <div style={{'overflow':'auto',height:'460px'}}>
+      <div style={{'overflow':'auto',height:'480px'}}>
         {nodemenuItems}
       </div>
 
@@ -355,9 +377,45 @@ let DataSelectMainPanel=React.createClass({
 
     },
     _onAlarmFilter:function(e, selectedIndex, menuItem){
+      switch(selectedIndex)
+      {
+      case 0:this.setState({
+            dropdownmenuStyle:{
+              width:'77px',
+              height:'46px',
+
+              float:'right',
+              paddingLeft:'0'
+            }
+              });
+            break;
+      case 1:this.setState({
+            dropdownmenuStyle:{
+              width:'122px',
+              height:'46px',
+              float:'right'
+            }
+              });
+            break;
+      case 2:this.setState({
+            dropdownmenuStyle:{
+              width:'137px',
+              height:'46px',
+              float:'right'
+            }
+              });
+            break;
+      case 3:
+      this.setState({
+            dropdownmenuStyle:{
+              width:'92px',
+              height:'46px',
+              float:'right'
+            }
+              });
+            break;
+          }
       alarmType=3-selectedIndex;
-
-
       if(alarmType==3) alarmType=null;
       page=1;
       TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
@@ -438,7 +496,12 @@ let DataSelectMainPanel=React.createClass({
             total:0,
             checkAbled:false,
             allCheckDisable:false,
-            searchTagListChanged:false
+            searchTagListChanged:false,
+            dropdownmenuStyle:{
+              width:'77px',
+              height:'46px',
+              float:'right'
+            }
           };
         },
     componentWillMount:function(){
@@ -479,15 +542,7 @@ let DataSelectMainPanel=React.createClass({
       }
       var buttonStyle = {
                height:'48px',
-           },
-          dropdownmenuStyle = {
-                width:'120px',
-                height:'46px',
-                float:'right',
-                marginLeft: '5px',
-                zIndex:'90'
-          };
-
+           };
       var menupaper,pagination;
       alarmType=null;
       filters=[];
@@ -519,12 +574,12 @@ let DataSelectMainPanel=React.createClass({
             <DimButton ref={'dimButton'} active={this.state.dimActive} onTreeClick={this._onDimTreeClick} parentNode={this.state.dimParentNode} onButtonClick={this._onDimButtonClick} show={this.state.DimShow}/>
           </div>
           <div  className="filter">
-            <label style={{display:'inline-block',width:'156px',height:'25px',border:'3px solid gray','border-radius':'20px','margin-top':'10px'}}>
-              <img style={{float:'left'}} src={require('../less/images/search-input-search.png')}/>
-              <input style={{width:'130px',height:'20px','background-color':'transparent',border:'transparent'}} id="searchField" onChange={this._onSearch}/>
+            <label className="search">
+              <img className="img" src={require('../less/images/search-input-search.png')}/>
+              <input className="input" id="searchField" onChange={this._onSearch}/>
             </label>
 
-            <DropDownMenu autoWidth={false} style={dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
+            <DropDownMenu autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
 
           </div>
 
