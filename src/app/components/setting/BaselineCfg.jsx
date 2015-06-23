@@ -19,7 +19,7 @@ let BaselineCfg = React.createClass({
   getDefaultProps: function(){
     return {
       tagId: 100006
-    }
+    };
   },
 
   getInitialState: function() {
@@ -70,7 +70,7 @@ let BaselineCfg = React.createClass({
   },
 
   _onTabChanged: function(tabIndex, tab){
-    if(tabIndex == 0){
+    if(tabIndex === 0){
       if(this.refs.baselineBasic){
         this.refs.baselineBasic.loadDataByYear(this.state.year);
       }
@@ -150,7 +150,7 @@ let BaselineCfg = React.createClass({
             <BaselineModify  ref="baselineModify" />
           </Tab>
           <Tab label="报警设置"  {...tabProps}>
-            <AlarmSetting  ref="alarmSetting" />
+            <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId} />
           </Tab>
         </Tabs>
       </Dialog>
