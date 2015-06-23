@@ -38,6 +38,17 @@ let TBSettingAction = {
           console.log(err,res);
         }
     });
+  },
+  calcData(timeRange, tagId, callback){
+    Ajax.post('/Energy.svc/GetTagAvgEnergyData?', {
+        params: {timeRange: timeRange, tagId: tagId},
+        success: function(data){
+          callback(data);
+        },
+        error: function(err, res){
+          console.log(err,res);
+        }
+    });
   }
 };
 

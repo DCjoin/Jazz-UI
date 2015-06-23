@@ -2,11 +2,15 @@
 
 import React from 'react';
 import assign from 'object-assign';
+import mui from 'material-ui';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
-import {dateAdd, dateFormat, DataConverter, isArray} from '../../util/Util.jsx';
+import EnergyCommentFactory from './EnergyCommentFactory.jsx';
+import AlarmAction from '../../actions/AlarmAction.jsx';
+import {dateAdd, dateFormat, DataConverter, isArray, isNumber} from '../../util/Util.jsx';
 
-var yAxisOffset = 70;
+let { Dialog, FlatButton, Checkbox } = mui;
+let yAxisOffset = 70;
 
 var dataLabelFormatter = function (format) {
     var f = window.Highcharts.numberFormat;
@@ -234,6 +238,7 @@ const DEFAULT_OPTIONS = {
     },
     style: { "fontSize": "12px", fontFamily: 'Microsoft YaHei' },
     legend: {
+        deleteAllButtonText:'全部清除',
         enabled: true,
         layout: 'vertical',
         verticalAlign: 'top',
@@ -313,17 +318,44 @@ const DEFAULT_OPTIONS = {
 };
 
 let ChartComponent = React.createClass({
-
+    propTypes: {
+        onDeleteButtonClick: React.PropTypes.func,
+        onDeleteAllButtonClick: React.PropTypes.func
+    },
     getInitialState() {
         return {
 
         };
     },
+    componentWillUnmount() {
 
-    componentWillMount() {
+    },
+    componentDidMount(){
+
     },
     componentWillReceiveProps(nextProps) {
     	console.log('componentWillReceiveProps', nextProps);
+    },
+    componentWillUpdate(){
+
+    },
+    _onIgnoreDialogSubmit(){
+      let isBatchIgnore = this.refs.batchIgnore.isChecked();
+      let point = this.selectedIgnorePoint,
+          factory = EnergyCommentFactory,
+          ids;
+      if(isBatchIgnore){
+        let ignorePoints = [];
+        ids = factory.getContinuousPointids(point, ignorePoints);
+
+      }else{
+        ids = point.alarmId;
+      }
+      AlarmAction.ignoreAlarm(ids, isBatchIgnore);
+      this.refs.ignoreDialogWindow.dismiss();
+    },
+    _onIgnoreDialogCancel(){
+      this.refs.ignoreDialogWindow.dismiss();
     },
     render () {
 
@@ -331,10 +363,49 @@ let ChartComponent = React.createClass({
       if(!this.props.energyData) {
           return null;
       }
+      var _buttonActions = [
+              <FlatButton
+              label="忽略"
+              secondary={true}
+              onClick={this._onIgnoreDialogSubmit} />,
+              <FlatButton
+              label="放弃"
+              primary={true}
+              onClick={this._onIgnoreDialogCancel} />
+          ];
+      var dialog = <Dialog actions={_buttonActions} modal={false} ref="ignoreDialogWindow">
+        <div>忽略该点报警吗？</div>
+        <div style={{marginTop:'20px'}}> <Checkbox ref='batchIgnore' label='忽略该点后的连续报警'/></div>
+      </Dialog>;
 
-      return (
-              <Highstock ref="highstock" options={that._initChartObj()}></Highstock>
-      );
+      let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,
+                             onDeleteAllButtonClick: that._onDeleteAllButtonClick,
+                             onIgnoreAlarmEvent: that.onIgnoreAlarmEvent};
+      return <div style={{display:'flex', flex:1}}>
+                <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
+                {dialog}
+             </div>;
+
+  },
+  _onDeleteButtonClick(obj){
+    if(this.props.onDeleteButtonClick){
+      this.props.onDeleteButtonClick(obj);
+    }
+  },
+  _onDeleteAllButtonClick(){
+    if(this.props.onDeleteAllButtonClick){
+      this.props.onDeleteAllButtonClick();
+    }
+  },
+  onIgnoreAlarmEvent(obj){
+    let point = obj.point;
+        this.refs.batchIgnore.setChecked(false);
+        this.refs.ignoreDialogWindow.show();
+        this.selectedIgnorePoint = point;
+        //factory = EnergyCommentFactory;
+
+        //factory.ignoreAlarm(point, this.refs.highstock);
+        return false;
   },
   _initChartObj() {
     var data = this.props.energyData;
@@ -360,6 +431,8 @@ let ChartComponent = React.createClass({
       var timeRange = this.initRange(newConfig, realData);
       this.initNavigatorData(newConfig, timeRange, data);
 
+      this.initFlagSeriesData(newConfig, realData);
+
       newConfig.tooltipSidePosition = true;
 
       return newConfig;
@@ -374,14 +447,19 @@ let ChartComponent = React.createClass({
           //if (n.indexOf('<br') < 0) {//hack for multi-timespan compare
           //    n = Ext.String.ellipsis(n, 23, false); //greater than 23 then truncate with ...
           //}
+          let enableDelete = true;
+          if(item.dType == 13 || item.dType == 14 || item.dType == 15){
+            enableDelete = false;
+          }
           var s = {
               type: 'line',
               name: n,
-              enableDelete: false,
+              enableDelete: enableDelete,
               enableHide: !!!item.disableHide,
               data: item.data,
               option: item.option,
               uid: item.uid,
+              id: item.uid + '' + item.dType,
               seriesKey: item.seriesKey,
               graySerie: item.hasOwnProperty('graySerie') ? item.graySerie : (item.hasOwnProperty('visible') ? !item.visible : false)
           };
@@ -774,6 +852,51 @@ let ChartComponent = React.createClass({
         }
 
         config.yAxis = yList;
+    },
+    initFlagSeriesData: function (newConfig, convertedData) {
+        var item,
+            serieObj,
+            flagSeries = [],
+            alarmSeries = [],
+            dmData = this.props.energyRawData,
+            t = dmData.TargetEnergyData,
+            factory = EnergyCommentFactory;
+
+        var type, subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
+        var xaxisMap;
+
+        for (var i = 0, len = t.length; i < len; i++) {
+            item = t[i];
+            xaxisMap = {};
+
+            if(false){//not support comment for new version
+                // get and push comment flag series
+                if (item.EnergyAssociatedData && item.EnergyAssociatedData.Comments && item.EnergyAssociatedData.Comments.length > 0) {
+                    serieObj = factory.createCommentSeriesByTargetEnergyDataItem(item, this.props.step, convertedData[i].id, xaxisMap);
+                    serieObj.visible = !convertedData[i].graySerie;
+                    flagSeries.push(serieObj);
+                }
+            }
+
+            if(true){//will check privilidge for alarm
+                //get and push alarm flag series
+                if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
+                    serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, convertedData[i].id, xaxisMap, this.props.step);
+                    serieObj.visible = !convertedData[i].graySerie;
+                    alarmSeries.push(serieObj);
+                }
+            }
+
+            //set type and subtype for this scope
+            if (!isNumber(type)) {
+                if (item.EnergyAssociatedData && isNumber(item.EnergyAssociatedData.Type)) {
+                    type = this.chartCommentType = item.EnergyAssociatedData.Type;
+                    this.chartCommentSubtype = item.EnergyAssociatedData.SubType;
+                }
+            }
+        }
+        newConfig.series = newConfig.series.concat(flagSeries);
+        newConfig.series = newConfig.series.concat(alarmSeries);
     }
 });
 

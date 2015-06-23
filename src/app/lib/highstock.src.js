@@ -3490,7 +3490,10 @@ SVGRenderer.prototype = {
 		return label
 			.on('click', function () {
 				if (curState !== 3) {
-					callback.call(label);
+					// rem modified start
+					callback.call(label, arguments[0]);
+					//callback.call(label);
+					//rem modified end
 				}
 			})
 			.attr(normalState)
@@ -10811,6 +10814,7 @@ Legend.prototype = {
 
                 if (item.options.enableDelete) {
                     allowDelete = true;
+										legend.setText(item);
                     var xPosition = li.getBBox().width + li.xGetter('x') + 7;//7 is padding
                     var deleteCt = renderer.rect(xPosition - 1, legend.baseline - 10 - 1, 12, 12).
                                             attr({ zIndex: 111, fill: 'white' }).
@@ -11156,6 +11160,26 @@ Legend.prototype = {
 		if (!chart.isResizing) {
 			this.positionCheckboxes();
 		}
+
+/* rem add start*/
+		if(options.deleteAllButtonText){
+			renderer.button( options.deleteAllButtonText, 10, legendHeight + 10, function(evt){
+				try{
+					fireEvent(chart, 'deleteAllButtonClick');
+				}catch(e){if(win.console)console.log(e);}
+					if (evt.preventDefault) {
+							evt.preventDefault();
+							evt.stopPropagation();
+					}
+					else {
+							evt.cancelBubble = true;
+							evt.returnValue = null;
+					}
+				}
+			).add(legendGroup);
+		}
+
+		/*rem add end	*/
 	},
 
 	/**
@@ -22050,7 +22074,7 @@ Scroller.prototype = {
 		    try {
 		        if (e.type !== 'mousemove') {
 		            scroller.grabbedLeft = scroller.grabbedRight = scroller.grabbedCenter = scroller.fixedWidth = scroller.fixedExtreme = scroller.otherHandlePos = hasDragged = dragOffset = null;
-		            bodyStyle.cursor = defaultBodyCursor || '';
+		            //bodyStyle.cursor = defaultBodyCursor || '';
 		        }
 		    }catch (exc) { }
             //rem add end try-catch

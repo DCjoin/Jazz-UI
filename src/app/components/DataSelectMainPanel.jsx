@@ -8,7 +8,8 @@ import DimButton from './DimButton.jsx';
 import TagStore from '../stores/TagStore.jsx';
 import TagAction from '../actions/TagAction.jsx';
 import AlarmTagStore from '../stores/AlarmTagStore.jsx';
-import EnergyStore from '../stores/EnergyStore.jsx'
+import EnergyStore from '../stores/EnergyStore.jsx';
+import Pagination from './Pagination.jsx'
 
 var menuItems = [
    { payload: '1', text: '全部' },
@@ -22,6 +23,7 @@ var filters=null;
 var tagStatus=[];
 var selectTotal=0;
 var page=0;
+var alarmTagOption=null;
 
 var CheckboxItem=React.createClass({
   mixins:[Navigation,State],
@@ -86,27 +88,32 @@ var CheckboxItem=React.createClass({
     var alarm,baseline,checkBox;
     switch(this.props.label){
       case 0:
-        alarm=<div style={{color:'rgb(187, 184, 184)'}}>基准值未配置,</div>;
-        baseline=<div style={{color:'rgb(187, 184, 184)'}}>报警未配置</div>;
+        alarm=<div className="disable">基准值未配置,</div>;
+        baseline=<div className="disable">报警未配置</div>;
         break;
       case 1:
-        alarm=<div>基准值已配置,</div>;
-        baseline=<div style={{color:'rgb(187, 184, 184)'}}>报警未配置</div>;
+        alarm=<div className="able">基准值已配置,</div>;
+        baseline=<div className="disable">报警未配置</div>;
         break;
       case 2:
-        alarm=<div>基准值已配置,</div>;
-        baseline=<div>报警已配置</div>;
+        alarm=<div className="able">基准值已配置,</div>;
+        baseline=<div className="able">报警已配置</div>;
         break;
     };
-
+    var boxStyle={
+      fontSize:'14px',
+      color:'#464949',
+      marginLeft:'20px'
+    };
     return(
-      <div onClick={this._onClick} >
+      <div className="taglist" onClick={this._onClick} >
         <Checkbox
             label={this.props.title}
             checked={this.state.boxChecked}
             disabled={this.props.disabled}
+            style={boxStyle}
             />
-        <div style={{'margin-left':'40px',display:'inline-flex','font-size':'15px'}}>
+          <div className="font">
             {alarm}
             {baseline}
         </div>
@@ -124,8 +131,6 @@ var TagMenu=React.createClass({
       onSelectFull:React.PropTypes.func,
       tagList:React.PropTypes.object,
       onAllCheck:React.PropTypes.func,
-      onLeftPage:React.PropTypes.func,
-      onRightPage:React.PropTypes.func,
       allCheckDisable:React.PropTypes.bool,
       initialTagId:React.PropTypes.number
   },
@@ -158,7 +163,6 @@ var TagMenu=React.createClass({
         };
 
     this.props.tagList.forEach(function(nodeData,i){
-
         if(me.props.disalbed){
           disalbed=!(tagStatus[page][i] || checked)
         }
@@ -179,32 +183,32 @@ var TagMenu=React.createClass({
 
       });
 
-     var pageButtonStyle = {
-             width:'20px'
-                };
+     var allCheckStyle = {
+             margin:'11px 0 0 20px',
+             fontSize:'14px',
+             color:'#464949'
+           },
+         iconStyle={
+           marginRight:'10px'
+         };
 
   return(
     <div>
-      <Checkbox
-        label="全选"
-        onCheck={this.props.onAllCheck}
-        checked={this.props.checked}
-        disabled={this.state.allCheckDisable}
-        />
-      <div style={{'overflow':'auto',height:'450px'}}>
+      <div className="allcheck">
+        <Checkbox
+          label="全选"
+          onCheck={this.props.onAllCheck}
+          checked={this.props.checked}
+          disabled={this.state.allCheckDisable}
+          style={allCheckStyle}
+          />
+      </div>
+
+      <div style={{'overflow':'auto',height:'460px'}}>
         {nodemenuItems}
       </div>
 
-      <div style={{display:'inline-block',width:'100%','text-align':'center'}}>
-        <FlatButton style={pageButtonStyle} onClick={this.props.onLeftPage}>
-          <FontIcon className="fa fa-caret-left fa-lg" style={{margin:'30px'}}/>
-        </FlatButton>
-        {page}/{parseInt((this.props.total+19)/20)}
 
-        <FlatButton style={pageButtonStyle} onClick={this.props.onRightPage}>
-          <FontIcon className="fa fa-caret-right fa-lg" style={{margin:'30px'}} />
-        </FlatButton>
-      </div>
   </div>
 
 
@@ -263,7 +267,9 @@ let DataSelectMainPanel=React.createClass({
     },
     _onTagNodeChange:function(){
       var data=TagStore.getData();
-
+      if(tagStatus[page]==null){
+        tagStatus[page]=new Array();
+      }
          if(selectTotal>10){
            this.setState({
              tagList:data.GetTagsByFilterResult,
@@ -298,44 +304,23 @@ let DataSelectMainPanel=React.createClass({
       })
     },
 
-    getInitialState: function() {
-      return {
-        dimActive:false,
-        dimNode:null,
-        dimParentNode:null,
-        HierarchyShow:false,
-        DimShow:false,
-        tagList:null,
-        allChecked:false,
-        tagId:null,
-        optionType:null,
-        page:0,
-        total:0,
-        checkAbled:false,
-        allCheckDisable:false
-      };
-    },
 
-    _onLeftPage:function(){
+    _onPrePage:function(){
      if(page>1){
        page=page-1;
-       if(tagStatus[page]==null){
-         tagStatus[page]=new Array();
-       }
        TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
       }
     },
-    _onRightPage:function(){
+    _onNextPage:function(){
       if(20*page<this.state.total){
                   page=page+1;
-
-                  if(tagStatus[page]==null){
-                    tagStatus[page]=new Array();
-                  }
-
                   TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
 
                         }
+    },
+    jumpToPage:function(targetPage){
+      page=targetPage;
+      TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
     },
     _onAllCheck:function(){
       var that=this;
@@ -403,36 +388,90 @@ let DataSelectMainPanel=React.createClass({
 
     },
     _onCheckSelect:function(checkFlag){
-
       this.setState({
         allCheckDisable:checkFlag
       })
     },
+    _onClearTagList:function(){
+      tagStatus.length=0;
+      tagStatus[page]=false;
+      this.setState({
+        allChecked:false,
+        allCheckDisable:false
+      });
+    },
+    _onSearchTagListChange:function(){
+      var searchTagList=AlarmTagStore.getSearchTagList();
+      this.state.tagList.forEach(function(nodeData,i){
+        var tagFlag=false;
+        searchTagList.forEach(function(tagData){
+          if(tagData.tagId==nodeData.Id){
+            tagFlag=true;
+            if(tagStatus[page][i]==false){
+              tagStatus[page][i]=true;
+              selectTotal++;
+            }
+          }
+        });
+        if(!tagFlag){
+          tagStatus[page][i]=false;
+          selectTotal--
+        }
+      });
+    this.setState({
+      searchTagListChanged:true
+    });
+    },
 
+    getInitialState: function() {
+          return {
+            dimActive:false,
+            dimNode:null,
+            dimParentNode:null,
+            HierarchyShow:false,
+            DimShow:false,
+            tagList:null,
+            allChecked:false,
+            tagId:null,
+            optionType:null,
+            page:0,
+            total:0,
+            checkAbled:false,
+            allCheckDisable:false,
+            searchTagListChanged:false
+          };
+        },
+    componentWillMount:function(){
+      if(this.props.linkFrom=="Alarm"){
+          alarmTagOption = EnergyStore.getTagOpions()[0];
+      }
+      },
     componentDidMount: function() {
       TagStore.addTagNodeListener(this._onTagNodeChange);
       if(this.props.linkFrom=="Alarm"){
-        var alarmTagOption = EnergyStore.getTagOpions()[0];
-
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
-
+        AlarmTagStore.addClearDataListener(this._onClearTagList);
+        AlarmTagStore.addAddSearchTagListListener(this._onSearchTagListChange);
+        AlarmTagStore.addRemoveSearchTagListListener(this._onSearchTagListChange);
         TagAction.loadAlarmData(alarmTagOption);
+        AlarmTagStore.addSearchTagList(alarmTagOption);
       }
      },
     componentWillUnmount: function() {
 
        TagStore.removeTagNodeListener(this._onTagNodeChange);
+
        if(this.props.linkFrom=="Alarm"){
          TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
+         AlarmTagStore.removeClearDataListener(this._onClearTagList);
+         AlarmTagStore.removeAddSearchTagListListener(this._onSearchTagListChange);
+         AlarmTagStore.removeRemoveSearchTagListListener(this._onSearchTagListChange);
        }
 
       },
 
     render:function(){
-      var alarmTagOption;
-      if(this.props.linkFrom=="Alarm"){
-        alarmTagOption=EnergyStore.getTagOpions()[0];
-      }else{
+      if(this.props.linkFrom!="Alarm"){
         alarmTagOption={
           hierId:null,
           tagId:null
@@ -443,16 +482,16 @@ let DataSelectMainPanel=React.createClass({
            },
           dropdownmenuStyle = {
                 width:'120px',
+                height:'46px',
                 float:'right',
                 marginLeft: '5px',
                 zIndex:'90'
           };
 
-      var menupaper;
+      var menupaper,pagination;
       alarmType=null;
       filters=[];
       if(this.state.tagList){
-
         menupaper=<TagMenu checked={this.state.allChecked}
                             total={this.state.total}
                             disalbed={this.state.checkAbled}
@@ -460,23 +499,26 @@ let DataSelectMainPanel=React.createClass({
                             tagList={this.state.tagList}
                             onAllCheck={this._onAllCheck}
                             allCheckDisable={this.state.allCheckDisable}
-                            onLeftPage={this._onLeftPage}
-                            onRightPage={this._onRightPage}
                             initialTagId={alarmTagOption.tagId}
                           />;
+       pagination=<Pagination onPrePage={this._onPrePage}
+                                             onNextPage={this._onNextPage}
+                                             jumpToPage={this.jumpToPage}
+                                             curPageNum={page}
+                                             totalPageNum={parseInt((this.state.total+19)/20)}/>;
       }
 
       return(
         <div className="jazz-dataselectmainpanel">
 
-          <div  style={{display:'flex','flex-flow':'row nowrap','align-items':'center'}}>
+          <div  className="header">
             <HierarchyButton hierId={alarmTagOption.hierId} onTreeClick={this._onHierachyTreeClick} onButtonClick={this._onHierarchButtonClick} show={this.state.HierarchyShow}/>
 
-            <FontIcon className="fa fa-minus" style={{margin:'30px'}}/>
+            <div style={{color:'#ffffff'}}>-</div>
 
             <DimButton ref={'dimButton'} active={this.state.dimActive} onTreeClick={this._onDimTreeClick} parentNode={this.state.dimParentNode} onButtonClick={this._onDimButtonClick} show={this.state.DimShow}/>
           </div>
-          <div  style={{display:'inline-block','padding':'5px 0','border-width':'2px','border-style':'solid','border-color':'green transparent',width:'100%'}}>
+          <div  className="filter">
             <label style={{display:'inline-block',width:'156px',height:'25px',border:'3px solid gray','border-radius':'20px','margin-top':'10px'}}>
               <img style={{float:'left'}} src={require('../less/images/search-input-search.png')}/>
               <input style={{width:'130px',height:'20px','background-color':'transparent',border:'transparent'}} id="searchField" onChange={this._onSearch}/>
@@ -487,7 +529,8 @@ let DataSelectMainPanel=React.createClass({
           </div>
 
             {menupaper}
-            
+            {pagination}
+
         </div>
 
 

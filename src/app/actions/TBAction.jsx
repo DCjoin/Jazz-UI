@@ -30,7 +30,7 @@ let TBAction = {
           console.log(dto);
           AppDispatcher.dispatch({
               type: Action.SAVE_TB,
-              tbs: dto
+              tbs: [dto]
           });
         },
         error: function(err, res){

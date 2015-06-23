@@ -1,0 +1,45 @@
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 17 different commits each, respectively.
+# All conflicts fixed but you are still merging.
+# Changes to be committed:
+# 
+# 	modified:   reference.jsx
+# 	modified:   src/app/actions/AlarmAction.jsx
+# 	modified:   src/app/actions/AlarmTagAction.jsx
+# 	modified:   src/app/actions/TBAction.jsx
+# 	modified:   src/app/actions/TBSettingAction.jsx
+# 	modified:   src/app/components/DataSelectMainPanel.jsx
+# 	modified:   src/app/components/DataSelectPanel.jsx
+# 	modified:   src/app/components/DimButton.jsx
+# 	modified:   src/app/components/HierarchyButton.jsx
+# 	modified:   src/app/components/HierarchyTree.jsx
+# 	new file:   src/app/components/Pagination.jsx
+# 	modified:   src/app/components/alarm/ChartPanel.jsx
+# 	modified:   src/app/components/energy/ChartComponent.jsx
+# 	new file:   src/app/components/energy/EnergyCommentFactory.jsx
+# 	modified:   src/app/components/highcharts/Highstock.jsx
+# 	modified:   src/app/components/setting/AlarmSetting.jsx
+# 	modified:   src/app/components/setting/BaselineBasic.jsx
+# 	modified:   src/app/components/setting/BaselineCfg.jsx
+# 	modified:   src/app/components/setting/BaselineModify.jsx
+# 	modified:   src/app/constants/actionType/TBSetting.jsx
+# 	modified:   src/app/controls/DaytimeSelector.jsx
+# 	modified:   src/app/controls/Dialog.jsx
+# 	modified:   src/app/controls/YearPicker.jsx
+# 	modified:   src/app/less/main.less
+# 	new file:   src/app/less/pagingList.less
+# 	modified:   src/app/less/setting.less
+# 	new file:   src/app/less/tagSelectPanel.less
+# 	modified:   src/app/less/treeView.less
+# 	modified:   src/app/lib/highstock.src.js
+# 	deleted:    src/app/lib/standalone-framework.js
+# 	new file:   src/app/lib/standalone-framework.src.js
+# 	modified:   src/app/stores/AlarmTagStore.jsx
+# 	modified:   src/app/stores/EnergyStore.jsx
+# 	modified:   src/app/stores/TBSettingStore.jsx
+# 	modified:   src/app/stores/TBStore.jsx

@@ -15,12 +15,18 @@ let AlarmSetting = React.createClass({
       };
   },
 
+<<<<<<< HEAD
 	_onChange(){
     var alarmSettingData = AlarmSettingStore.getData();
     this.setState({
       threshold: alarmSettingData.AlarmThreshold
     });
 	},
+=======
+  loadDataByYear: function(year){
+
+  },
+>>>>>>> origin/master
 
   handleCheck: function(e) {
     console.log(e.target.value);

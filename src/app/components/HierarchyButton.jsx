@@ -77,16 +77,11 @@ let HierarchyButton=React.createClass({
         if(!nextProps.show){
           this.setState({
             open:false
-          })
+          });
         }
       },
 
   render:function(){
-
-      var buttonStyle = {
-               minHeight:'48px',
-           };
-
       var dropdownPaper;
 
       if(this.state.open && this.props.show) {
@@ -111,10 +106,9 @@ let HierarchyButton=React.createClass({
 
       return(
             <div className='jazz-hierarchybutton' style={{display:'inline-block'}}>
-              <FlatButton style={buttonStyle} onClick={this._onShowPaper}>
-                  <FontIcon className="fa fa-th-large" />
-                  <span className="mui-flat-button-label" style={{margin:'5px'}} >{this.state.buttonName}</span>
-              </FlatButton>
+              <div className='hiername' onClick={this._onShowPaper}>
+                {this.state.buttonName}
+              </div>
               {errorTextElement}
                 {dropdownPaper}
             </div>

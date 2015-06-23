@@ -12,6 +12,7 @@ import StepSelector from '../energy/StepSelector.jsx';
 import ChartComponent from '../energy/ChartComponent.jsx';
 import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
+import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
@@ -64,9 +65,11 @@ let ChartPanel = React.createClass({
     _onEnergyDataChange(){
       let isLoading = EnergyStore.getLoadingStatus();
       let energyData = EnergyStore.getEnergyData();
+      let energyRawData = EnergyStore.getEnergyRawData();
       let paramsObj = assign({},EnergyStore.getParamsObj());
       this.setState({ isLoading: isLoading,
                       energyData: energyData,
+                      energyRawData: energyRawData,
                       paramsObj: paramsObj,
                       dashboardOpenImmediately: false});
     },
@@ -170,6 +173,7 @@ let ChartPanel = React.createClass({
         let state = {
           isLoading: false,
           energyData: null,
+          energyRawData: null,
           hierName: null,
           submitParams: null,
           step: 2,
@@ -192,13 +196,18 @@ let ChartPanel = React.createClass({
       if(this.state.isLoading){
         energyPart = <div style={{margin:'auto'}}>{'loading...'}</div>;
       }else if(!!this.state.energyData){
+        let chartCmpObj ={ref:'ChartComponent',
+                          energyData: this.state.energyData,
+                          energyRawData: this.state.energyRawData,
+                          onDeleteButtonClick: me._onDeleteButtonClick,
+                          onDeleteAllButtonClick: me._onDeleteAllButtonClick};
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                         <div style={{display:'flex'}}>
                           <YaxisSelector initYaxisDialog={me._initYaxisDialog}/>
                           <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange} timeRanges={me.state.timeRanges}/>
 
                         </div>
-                        <ChartComponent ref='ChartComponent' energyData={this.state.energyData} {...this.state.paramsObj}/>
+                        <ChartComponent {...this.state.paramsObj} {...chartCmpObj}/>
                       </div>;
       }
       let title = <div style={{height:'30px',paddingBottom:'10px'}}>
@@ -224,6 +233,38 @@ let ChartPanel = React.createClass({
           {energyPart}
         </div>
       );
+  },
+  _onDeleteButtonClick(obj){
+    let uid = obj.uid;
+
+    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+
+    //unselect tags in taglist of right panel
+    if(userTagListSelect){
+      AlarmTagAction.removeSearchTagList({tagId:uid});
+    }
+
+    let needReload = EnergyStore.removeSeriesDataByUid(uid);
+    if(needReload){
+      let tagOptions = AlarmTagStore.getSearchTagList(),
+          paramsObj = EnergyStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges,
+          step = paramsObj.step;
+
+      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
+    }else{
+      let energyData = EnergyStore.getEnergyData();
+      this.setState({ energyData: energyData});
+    }
+  },
+  _onDeleteAllButtonClick(){
+    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+    if(userTagListSelect){
+      AlarmTagAction.clearSearchTagList();
+    }
+
+    EnergyStore.clearEnergyDate();
+    this.setState({ energyData: null});
   },
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);

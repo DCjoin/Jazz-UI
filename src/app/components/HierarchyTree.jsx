@@ -22,7 +22,7 @@ var TreeNode = React.createClass({
   getDefaultProps: function() {
     return {
       indent: 0,
-      indentUnit: 15,
+      indentUnit: 25,
     };
   },
 
@@ -104,7 +104,7 @@ var TreeNode = React.createClass({
         <div className={classNames({
           "hasChild": hasChild,
           "hasNoChild": !hasChild
-          })}>
+        })} >
           <div className={classNames({
             "fa fa-minus-circle": !this.state.collapsed,
             "fa fa-plus-circle": this.state.collapsed,
@@ -350,11 +350,13 @@ let HierarchyTree=React.createClass({
                               }
 
     var paperStyle = {
-                  backgroundColor: 'white',
+                  backgroundColor: '#ffffff',
                   zIndex: '100',
-                  width:'350px',
-                  height:'500px',
-                  position:'absolute'
+                  width:'300px',
+                  height:'390px',
+                  position:'absolute',
+                  border:'1px solid #c9c8c8',
+                  margin:'12px 10px'
 
                            };
 
@@ -362,11 +364,11 @@ let HierarchyTree=React.createClass({
 
         <Paper style={paperStyle}>
 
-            <label style={{display:'inline-block',width:'200px',height:'25px',border:'3px solid gray','border-radius':'20px','margin-top':'10px'}}>
-              <img style={{float:'left'}} src={require('../less/images/search-input-search.png')}/>
-              <input style={{width:'130px',height:'20px','background-color':'transparent',border:'transparent'}} type="text" id="searchfield" onChange={this._onSearchChange}/>
+            <label className="tree_search">
+              <img className="img" src={require('../less/images/search-input-search.png')}/>
+              <input className="input" type="text" id="searchfield" onChange={this._onSearchChange}/>
             </label>
-            <div style={{'overflow':'auto',height:'460px'}}>
+            <div className="tree-field">
               {tree}
               {searchfield}
               {searchtree}
