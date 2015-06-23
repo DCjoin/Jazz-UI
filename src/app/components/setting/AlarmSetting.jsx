@@ -59,6 +59,21 @@ let AlarmSetting = React.createClass({
     this.setState({
       disable: true
     });
+    var alarmSettingData = AlarmSettingStore.getData();
+    this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
+    this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
+    var stepValue = alarmSettingData.AlarmSteps;
+    for(var i = 0; i < stepValue.length; i++){
+      if(stepValue[i] === YEARSTEP){
+        this.refs.alarmSteps.refs.year.setChecked(true);
+      }
+      else if(stepValue[i] === MONTHSTEP){
+        this.refs.alarmSteps.refs.month.setChecked(true);
+      }
+      else if(stepValue[i] === DAYSTEP){
+        this.refs.alarmSteps.refs.day.setChecked(true);
+      }
+    }
   },
 
   render: function() {
