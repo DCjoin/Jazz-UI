@@ -3,6 +3,9 @@ import {Route, DefaultRoute, RouteHandler, Link, Navigation, State} from 'react-
 import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, Overlay} from 'material-ui';
 import assign from "object-assign";
 
+import AlarmSettingStore from '../../stores/AlarmSettingStore.jsx';
+import AlarmSettingAction from "../../actions/AlarmSettingAction.jsx";
+
 let AlarmSetting = React.createClass({
   mixins:[Navigation,State,React.addons.LinkedStateMixin],
   getInitialState: function() {
@@ -11,6 +14,13 @@ let AlarmSetting = React.createClass({
       threshold: 100
       };
   },
+
+	_onChange(){
+    var alarmSettingData = AlarmSettingStore.getData();
+    this.setState({
+      threshold: alarmSettingData.AlarmThreshold
+    });
+	},
 
   handleCheck: function(e) {
     console.log(e.target.value);
@@ -39,7 +49,9 @@ let AlarmSetting = React.createClass({
   },
 
   handleChange: function(event) {
-    this.setState({threshold: event.target.value});
+    this.setState({
+      threshold: event.target.value
+    });
   },
 
   render: function() {
@@ -47,7 +59,7 @@ let AlarmSetting = React.createClass({
       <div ref="alarmSettingDialog">
         <div className='jazz-setting-alarm-content'>
           <span>
-            <input className="jazz-setting-alarm-checkbox" type="checkbox" checked="checked" disabled={this.state.disable} />
+            <input className="jazz-setting-alarm-checkbox" type="checkbox" disabled={this.state.disable} />
             <span>开启能耗报警</span>
           </span>
           <span className='jazz-setting-alarm-top'>
@@ -70,6 +82,15 @@ let AlarmSetting = React.createClass({
         </div>
       </div>
     );
+  },
+
+  componentDidMount: function() {
+    AlarmSettingStore.addSettingDataListener(this._onChange);
+    AlarmSettingAction.loadData(this.props.tbId);
+  },
+
+  componentWillUnmount: function() {
+    AlarmSettingStore.removeSettingDataListener(this._onChange);
   }
 });
 
@@ -77,11 +98,11 @@ var Checkboxes = React.createClass({
 	render: function(){
 		return (
 			<span>
-				<input onChange={this.props.handleCheck}  name="stepCheckbox" type="checkbox" value="day"  disabled={this.props.disabled}/>
+				<input onClick={this.props.handleCheck}  name="stepCheckbox" type="checkbox" value="day"  disabled={this.props.disabled} />
         日
-				<input onChange={this.props.handleCheck} name="stepCheckbox" type="checkbox" value="month"  disabled={this.props.disabled}/>
+				<input onClick={this.props.handleCheck} name="stepCheckbox" type="checkbox" value="month"  disabled={this.props.disabled} />
 			  月
-				<input onChange={this.props.handleCheck} name="stepCheckbox" type="checkbox" value="year"  disabled={this.props.disabled}/>
+				<input onClick={this.props.handleCheck} name="stepCheckbox" type="checkbox" value="year"  disabled={this.props.disabled} />
         年
 			</span>
     );
