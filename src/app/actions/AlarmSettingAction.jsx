@@ -5,11 +5,9 @@ import Ajax from '../ajax/ajax.jsx';
 
 let AlarmSettingAction = {
   loadData(tbId){
-    console.log(tbId);
     Ajax.post('/TargetBaseline.svc/GetTBAlarmSetting', {
       params: {tbId: tbId},
       success: function(alarmSettingData){
-        console.log(alarmSettingData);
         AppDispatcher.dispatch({
             type: Action.LOAD_SETTING_DATA,
             alarmSettingData: alarmSettingData
@@ -19,10 +17,22 @@ let AlarmSettingAction = {
         console.log(err, res);
       }
     });
+  },
+  saveData(setting){
+    Ajax.post('/TargetBaseline.svc/ModifyAlarmSetting', {
+      params: setting,
+      success: function(){
+        AppDispatcher.dispatch({
+            type: Action.SAVE_SETTING_SUCESS
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+            type: Action.SAVE_SETTING_ERROR
+        });
+      }
+    });
   }
-
-
-
 };
 
 module.exports = AlarmSettingAction;
