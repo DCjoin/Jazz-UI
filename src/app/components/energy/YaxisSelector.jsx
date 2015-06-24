@@ -48,6 +48,9 @@ let YaxisSelector = React.createClass({
     }
     return config;
   },
+  onYaxisDialogDismiss(){
+    this.setState({showDialog: false});
+  },
   _onDialogSubmit(ret){
     _storedConfig = ret;
     this.redraw();
@@ -56,7 +59,8 @@ let YaxisSelector = React.createClass({
     var me = this;
     return <div style={{'align-self': 'center'}}>
         <div className='jazz-energy-yaxis-button' onTouchTap={me._onYaxisClick}> {'Y坐标轴'} </div>
-        <YaxisDialog yaxisConfig={me.state.yaxisConfig} storedConfig={me.state.storedConfig} onDialogSubmit={me._onDialogSubmit} ref='yaxisDialog'></YaxisDialog>
+        <YaxisDialog yaxisConfig={me.state.yaxisConfig} storedConfig={me.state.storedConfig}
+          onDialogSubmit={me._onDialogSubmit} ref='yaxisDialog' onYaxisDialogDismiss={me.onYaxisDialogDismiss}></YaxisDialog>
       </div>;
   },
   redraw: function () {
@@ -152,6 +156,11 @@ var YaxisDialog = React.createClass({
   hide(){
     this.refs.dialogWindow.dismiss();
   },
+  onYaxisDialogDismiss(){
+    if(this.props.onYaxisDialogDismiss){
+      this.props.onYaxisDialogDismiss();
+    }
+  },
   render(){
     var _buttonActions = [
             <FlatButton
@@ -186,7 +195,7 @@ var YaxisDialog = React.createClass({
         groups.push(group);
     }
 
-    var dialog = <Dialog  title="Y坐标轴设置"  actions={_buttonActions} modal={false} ref="dialogWindow">
+    var dialog = <Dialog title="Y坐标轴设置" actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
       {groups}
     </Dialog>;
 
