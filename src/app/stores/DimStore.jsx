@@ -22,8 +22,6 @@ DimStore.dispatchToken = AppDispatcher.register(function(action) {
 
     switch(action.type) {
       case Action.LOAD_DIM_NODE:
-      console.log("**wyh***DimStore");
-      console.log(action.dimList);
            DimStore.setData(action.dimList);
            DimStore.emitChange();
         break;

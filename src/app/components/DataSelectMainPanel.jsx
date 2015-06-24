@@ -40,12 +40,14 @@ var CheckboxItem=React.createClass({
   },
   _onClick:function(){
     if(!this.props.disabled){
+
       if(tagStatus[page]===null){
         tagStatus[page]=new Array();
         tagStatus[page]=false;
       }
 
       tagStatus[page][this.props.payload]=!this.state.boxChecked;
+
 
       let tagData={
         hierId:this.props.nodeData.HierarchyId,
@@ -62,6 +64,7 @@ var CheckboxItem=React.createClass({
         selectTotal--;
         AlarmTagStore.removeSearchTagList(tagData)
       }
+
       if(selectTotal>=30){
         this.props.selectFull(true);
       }
@@ -71,7 +74,8 @@ var CheckboxItem=React.createClass({
 
       this.setState({
         boxChecked:!this.state.boxChecked
-      })
+      });
+
       }
 
   },
@@ -85,13 +89,9 @@ var CheckboxItem=React.createClass({
       boxChecked:nextProps.defaultChecked
     })
   },
+
   render:function(){
     var alarm,baseline,checkBox;
-    var checkBoxClassName=classnames({
-                    "taglist": true,
-                    selected: tagStatus[page][this.props.payload]
-                  });
-    //tagStatus[page][this.props.payload]=this.state.boxChecked;
     switch(this.props.label){
       case 0:
         alarm=<div className="disable">基准值未配置,</div>;
@@ -117,8 +117,9 @@ var CheckboxItem=React.createClass({
       width:'0px',
       height:'0px'
     };
+
     return(
-      <div className={checkBoxClassName}  onClick={this._onClick} >
+      <div className="taglist"  onClick={this._onClick} >
         <Checkbox
             checked={this.state.boxChecked}
             disabled={this.props.disabled}
@@ -244,10 +245,7 @@ let DataSelectMainPanel=React.createClass({
     },
     _onHierachyTreeClick:function(node){
       TagAction.loadData(node.Id,2,1,alarmType,filters);
-       tagStatus.length=0;
-       page=1;
-       tagStatus[1]=new Array();
-
+      page=1;
        this.refs.dimButton.resetButtonName();
 
        this.setState({
@@ -262,9 +260,7 @@ let DataSelectMainPanel=React.createClass({
     _onDimTreeClick:function(node){
 
       TagAction.loadData(node.Id,6,1,alarmType,filters);
-      tagStatus.length=0;
-      page=1;
-      tagStatus[1]=new Array();
+
 
       this.setState({
         tagId:node.Id,
@@ -452,7 +448,8 @@ let DataSelectMainPanel=React.createClass({
     },
     _onClearTagList:function(){
       tagStatus.length=0;
-      tagStatus[page]=false;
+      tagStatus[page]=new Array();
+
       this.setState({
         allChecked:false,
         allCheckDisable:false
@@ -511,24 +508,25 @@ let DataSelectMainPanel=React.createClass({
       },
     componentDidMount: function() {
       TagStore.addTagNodeListener(this._onTagNodeChange);
+      AlarmTagStore.addClearDataListener(this._onClearTagList);
+      AlarmTagStore.addAddSearchTagListListener(this._onSearchTagListChange);
+      AlarmTagStore.addRemoveSearchTagListListener(this._onSearchTagListChange);
       if(this.props.linkFrom=="Alarm"){
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
-        AlarmTagStore.addClearDataListener(this._onClearTagList);
-        AlarmTagStore.addAddSearchTagListListener(this._onSearchTagListChange);
-        AlarmTagStore.addRemoveSearchTagListListener(this._onSearchTagListChange);
+
         TagAction.loadAlarmData(alarmTagOption);
-        AlarmTagStore.addSearchTagList(alarmTagOption);
+
       }
      },
     componentWillUnmount: function() {
 
        TagStore.removeTagNodeListener(this._onTagNodeChange);
-
+       AlarmTagStore.removeClearDataListener(this._onClearTagList);
+       AlarmTagStore.removeAddSearchTagListListener(this._onSearchTagListChange);
+       AlarmTagStore.removeRemoveSearchTagListListener(this._onSearchTagListChange);
        if(this.props.linkFrom=="Alarm"){
          TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
-         AlarmTagStore.removeClearDataListener(this._onClearTagList);
-         AlarmTagStore.removeAddSearchTagListListener(this._onSearchTagListChange);
-         AlarmTagStore.removeRemoveSearchTagListListener(this._onSearchTagListChange);
+
        }
 
       },
