@@ -33,7 +33,7 @@ AlarmSettingStore.dispatchToken = AppDispatcher.register(function(action) {
       AlarmSettingStore.setData(action.alarmSettingData);
       AlarmSettingStore.emitSettingData();
       break;
-    case Action.SAVE_SETTING_SUCESS:
+    case Action.SAVE_SETTING_SUCCESS:
       break;
     case Action.SAVE_SETTING_ERROR:
       break;
