@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, DefaultRoute, RouteHandler, Link, Navigation, State} from 'react-router';
-import {Toggle, Checkbox} from 'material-ui';
+import {Toggle, Checkbox, RaisedButton} from 'material-ui';
 import assign from "object-assign";
 
 import AlarmSettingStore from '../../stores/AlarmSettingStore.jsx';
@@ -20,42 +20,40 @@ let AlarmSetting = React.createClass({
   },
 
 
-	_onChange(){
+	_onChange: function(){
     var alarmSettingData = AlarmSettingStore.getData();
     this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
     this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
     var stepValue = alarmSettingData.AlarmSteps;
-    for(var i = 0; i < stepValue.length; i++){
-      if(stepValue[i] === YEARSTEP){
-        this.refs.alarmSteps.refs.year.setChecked(true);
-      }
-      else if(stepValue[i] === MONTHSTEP){
-        this.refs.alarmSteps.refs.month.setChecked(true);
-      }
-      else if(stepValue[i] === DAYSTEP){
-        this.refs.alarmSteps.refs.day.setChecked(true);
-      }
-    }
+    this.refs.alarmSteps.setValue(stepValue);
 	},
 
+  getValue: function(){
+    var alarmSteps = this.refs.alarmSteps.getValue();
+
+    return {
+      tbId: this.props.tbId,
+      alarmSteps: alarmSteps,
+      thresholdValue: this.refs.threshold.getDOMNode().value,
+      enableStatus: this.refs.openAlarm.isToggled()
+    };
+  },
 
   handleEdit: function() {
     this.setState({
       disable: false
     });
-    console.log("handle Edit");
 	},
 
   handleSave: function() {
-    //save
-    console.log("handleSave");
     this.setState({
       disable: true
     });
+    var val = this.getValue();
+    AlarmSettingAction.saveData(val);
   },
 
   handleCancel: function() {
-    console.log("handleCancel");
     this.setState({
       disable: true
     });
@@ -63,17 +61,7 @@ let AlarmSetting = React.createClass({
     this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
     this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
     var stepValue = alarmSettingData.AlarmSteps;
-    for(var i = 0; i < stepValue.length; i++){
-      if(stepValue[i] === YEARSTEP){
-        this.refs.alarmSteps.refs.year.setChecked(true);
-      }
-      else if(stepValue[i] === MONTHSTEP){
-        this.refs.alarmSteps.refs.month.setChecked(true);
-      }
-      else if(stepValue[i] === DAYSTEP){
-        this.refs.alarmSteps.refs.day.setChecked(true);
-      }
-    }
+    this.refs.alarmSteps.setValue(stepValue);
   },
 
   render: function() {
@@ -95,10 +83,10 @@ let AlarmSetting = React.createClass({
           <span className='jazz-setting-alarm-top'>
             <Checkboxes ref="alarmSteps" disabled={this.state.disable}/>
           </span>
-          <button type="submit" hidden={!this.state.disable} style={{width:'50px'}} onClick={this.handleEdit}> 编辑 </button>
+          <button className='jazz-setting-alarm-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
           <span>
-            <button type="submit" hidden={this.state.disable} style={{width:'50px'}} onClick={this.handleSave}> 保存 </button>
-            <button type="submit" hidden={this.state.disable} style={{width:'50px'}} onClick={this.handleCancel}> 放弃 </button>
+            <button className='jazz-setting-alarm-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
+            <button className='jazz-setting-alarm-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
           </span>
         </div>
       </div>
@@ -116,6 +104,34 @@ let AlarmSetting = React.createClass({
 });
 
 var Checkboxes = React.createClass({
+  getValue: function() {
+    var alarmSteps = [];
+
+    if(this.refs.year.isChecked()){
+      alarmSteps.push(YEARSTEP);
+    }
+    if(this.refs.month.isChecked()){
+      alarmSteps.push(MONTHSTEP);
+    }
+    if(this.refs.day.isChecked()){
+      alarmSteps.push(DAYSTEP);
+    }
+
+    return alarmSteps;
+  },
+  setValue: function(stepValue) {
+    for(var i = 0; i < stepValue.length; i++){
+      if(stepValue[i] === YEARSTEP){
+        this.refs.year.setChecked(true);
+      }
+      else if(stepValue[i] === MONTHSTEP){
+        this.refs.month.setChecked(true);
+      }
+      else if(stepValue[i] === DAYSTEP){
+        this.refs.day.setChecked(true);
+      }
+    }
+  },
 	render: function(){
 		return (
 			<span>
