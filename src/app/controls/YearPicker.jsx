@@ -50,9 +50,11 @@ let YearPicker = React.createClass({
     }
   },
   render(){
-    return <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}
+    return <div className={'jazz-alarm-left-panel-year-dropdownmenu-container'}>
+      <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}
       menuItemStyle={this.props.menuItemStyle} underlineStyle={this.props.underlineStyle} style={this.props.style}
-      iconStyle={this.props.iconStyle} labelStyle={this.props.labelStyle} />;
+      iconStyle={this.props.iconStyle} labelStyle={this.props.labelStyle} />
+    </div>;
   }
 });
 

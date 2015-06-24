@@ -4,15 +4,18 @@
   span{
     display: inline-block;
   }
+  background-color: rgb(53, 64, 82);
+  color: #ffffff;
+  font-size: 14px;
 }
 .jazz-alarm-grid-tr-item:hover{
-  background-color:rgb(181, 181, 181);
+  background-color: #2d3645;
 }
 .jazz-alarm-grid-tr-item-selected{
-  background-color:rgb(161, 161, 161);
+  background-color:#2d3645 !important;
 }
 .jazz-alarm-grid-tr-item-extended{
-  background-color:rgb(200, 194, 194);
+  background-color:#313b4b; //rgb(200, 194, 194);
 }
 .jazz-alarm-grid-tr-item span:last-child{
   min-width: 20px;
@@ -68,4 +71,68 @@
 .jazz-energy-step{
   align-self: flex-end;
   margin: 20px 180px 20px auto;
+}
+.jazz-alarm-left-panel-dropdownmenu-container>div {
+  >div:first-child
+  {
+    div:nth-of-type(2){
+      background-color: rgb(134,204,255) !important;
+      opacity: 1 !important;
+    }
+
+    div:nth-of-type(3){
+      color: #ffffff !important;
+      font-size: 14px !important;
+      padding-left: 100px !important;
+      top: 0px !important;
+    }
+    svg{
+      left: 212px !important;
+    }
+    svg+div{
+      border-top-width: 0px !important;
+    }
+  }
+
+  >div:last-child{
+    left: 48px !important;
+    top: 33px !important;
+    width: 220px !important;
+    div{
+      padding-left: 51px !important;
+      padding-right: auto !important;
+    }
+  }
+}
+.jazz-alarm-left-panel-year-dropdownmenu-container>div {
+  >div:first-child
+  {
+    div:nth-of-type(2){
+      background-color: rgb(53, 64, 82) !important;
+      opacity: 1 !important;
+    }
+
+    div:nth-of-type(3){
+      color: #ffffff !important;
+      font-size: 14px !important;
+      padding-left: 100px !important;
+      top: 0px !important;
+    }
+    svg{
+      left: 212px !important;
+    }
+    svg+div{
+      border-top-width: 0px !important;
+    }
+  }
+
+  >div:last-child{
+    left: 48px !important;
+    top: 33px !important;
+    width: 220px !important;
+    div{
+      padding-left: 51px !important;
+      padding-right: auto !important;
+    }
+  }
 }
