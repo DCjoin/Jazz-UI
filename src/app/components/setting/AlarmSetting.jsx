@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, DefaultRoute, RouteHandler, Link, Navigation, State} from 'react-router';
-import {Toggle, Checkbox} from 'material-ui';
+import {Toggle, Checkbox, RaisedButton} from 'material-ui';
 import assign from "object-assign";
 
 import AlarmSettingStore from '../../stores/AlarmSettingStore.jsx';
@@ -83,10 +83,10 @@ let AlarmSetting = React.createClass({
           <span className='jazz-setting-alarm-top'>
             <Checkboxes ref="alarmSteps" disabled={this.state.disable}/>
           </span>
-          <button type="submit" hidden={!this.state.disable} style={{width:'50px'}} onClick={this.handleEdit}> 编辑 </button>
+          <button className='jazz-setting-alarm-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
           <span>
-            <button type="submit" hidden={this.state.disable} style={{width:'50px'}} onClick={this.handleSave}> 保存 </button>
-            <button type="submit" hidden={this.state.disable} style={{width:'50px'}} onClick={this.handleCancel}> 放弃 </button>
+            <button className='jazz-setting-alarm-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
+            <button className='jazz-setting-alarm-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
           </span>
         </div>
       </div>
