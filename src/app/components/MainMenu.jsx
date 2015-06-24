@@ -19,11 +19,11 @@ var MainMenu = React.createClass({
         });
 
         return (
-            <div className="pop-mainmenu" id="pop_mainmenu">
-                <div className="pop-logo">
+            <div className="jazz-mainmenu">
+                <div className="jazz-logo">
                     <img alt="logo" src={this.props.logoUrl}/>
                 </div>
-                <div className="pop-menu">
+                <div className="jazz-menu">
                     {links}
 
                 </div>
