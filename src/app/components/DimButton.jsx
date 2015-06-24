@@ -5,14 +5,7 @@ import {FlatButton,FontIcon,Menu,Paper} from 'material-ui';
 import DimTree from './DimTree.jsx';
 import DimAction from "../actions/DimAction.jsx";
 import DimStore from "../stores/DimStore.jsx";
-var testList=[
-{"Name":"1","Id":1,"HierarchyId":101},
-{"Name":"2","Id":2,"HierarchyId":101},
-{"Name":"3","Id":3,"HierarchyId":101,Children:[
-  {"Name":"4","Id":4,"HierarchyId":3},
-  {"Name":"5","Id":5,"HierarchyId":3},
-  ]},
-]
+
 let DimButton=React.createClass({
   propTypes: {
     active:React.PropTypes.bool,
