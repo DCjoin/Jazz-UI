@@ -562,7 +562,7 @@ var SpecialItem = React.createClass({
           <span style={style}>{endDateStr}</span>
           <span style={style}>{endTimeStr}</span>
           <br/>
-          <span style={style}>{val}</span><span>千瓦时</span>
+          <span style={style}>{this.props.value}</span><span>千瓦时</span>
         </div>
       );
     }else{
@@ -594,14 +594,14 @@ var SpecialItem = React.createClass({
 
       var startProps = {
         //formatDate: formatDate,
-        //defaultDate: dstartDate,
+        defaultDate: dstartDate,
         minDate: startDate,
         maxDate: endDate,
         style: datapickerStyle,
         //className: 'jazz-setting-basic-date',
         onChange: function(e, v){
           me.refs.endDateField.minDate = me.refs.startDateField.getDate();
-          var endDate = me.refs.endFeild.getDate();
+          var endDate = me.refs.endDateField.getDate();
 
           if(endDate && endDate < v){
             me.refs.endDateField.setDate(v);
@@ -610,7 +610,7 @@ var SpecialItem = React.createClass({
       },
       endProps = {
         //formatDate: formatDate,
-        //defaultDate: dendDate,
+        defaultDate: dendDate,
         minDate: startDate,
         maxDate: endDate,
         style: datapickerStyle,
@@ -635,7 +635,7 @@ var SpecialItem = React.createClass({
           <DatePicker ref='endDateField' {...endProps} />
           <DaytimeSelector ref='endTimeField' defaultMinute={et} {...daytimeProps} />
           <FlatButton label="－"  ref="remove"  onClick={this._onRemove} /><br/>
-          <TextField ref='valueField' /><span>千瓦时</span>
+          <TextField ref='valueField' defaultValue={this.props.value} /><span>千瓦时</span>
         </div>
       );
     }
@@ -702,7 +702,7 @@ var SpecialSetting = React.createClass({
           start: item.StartTime,
           end: item.EndTime,
           value: item.Value,
-          isViewStatus: me.state.isViewStatus,
+          isViewStatus: me.props.isViewStatus,
           onRemove: me._removeItem
         };
         return (<SpecialItem {...drvProps} />);
@@ -1139,13 +1139,13 @@ var BaselineBasic = React.createClass({
   },
 
   _saveDataToServer: function(){
-    var val = this.getValue();
-    TBSettingAction.saveData(val);
-    var tbSetting = TBSettingStore.getData();
-    var itemsCtrl = this.refs.TBSettingItems;
-    itemsCtrl.items = tbSetting.TBSettings;
+    var val = this.getValue(), me = this;
+    TBSettingAction.saveData(val, function(tbSetting){
+      debugger;
+      var itemsCtrl = me.refs.TBSettingItems;
+      itemsCtrl.items = tbSetting.TBSettings;
+    });
   },
-
 
   _handleEdit: function(){
     this.setState({
@@ -1164,8 +1164,8 @@ var BaselineBasic = React.createClass({
     this.setState({
       isViewStatus : true,
     });
+    this._fetchServerData(this.state.year);
   },
-
 
   render: function (){
     var itemProps = {
@@ -1185,38 +1185,30 @@ var BaselineBasic = React.createClass({
       onSave: this._saveDataToServer
     };
 
-    var yearCtrl;
-    if(this.state.isViewStatus){
-      yearCtrl = <span style={{ padding: '2px 10px', border: '1px solid #ddd' }}>{this.state.year}</span>;
-    }
-    else {
-      var yearProps = {
-        disabled: this.state.isViewStatus,
-        ref: "YearField",
-        selectedIndex: ((this.state.year || curYear) - curYear + 10) + '',
-        onYearPickerSelected: this._onYearChanged,
-        //className: "yearpicker",
-        style:{
-          height: "24px",
-        },
-        labelStyle: {
-          height: "24px",
-        },
-        underlineStyle: {
-          height: "24px",
-        },
-        menuItemStyle: {
-          height: "30px",
-        }
-      };
-
-      yearCtrl = <YearPicker {...yearProps} />
-    }
+    var yearProps = {
+      disabled: this.state.isViewStatus,
+      ref: "YearField",
+      selectedIndex: ((this.state.year || curYear) - curYear + 10) + '',
+      onYearPickerSelected: this._onYearChanged,
+      //className: "yearpicker",
+      style:{
+        height: "24px",
+      },
+      labelStyle: {
+        height: "24px",
+      },
+      underlineStyle: {
+        height: "24px",
+      },
+      menuItemStyle: {
+        height: "30px",
+      }
+    };
 
     return (<div className='jazz-setting-basic-container'>
       <div className='jazz-setting-basic-content'>
         <div><TextField ref="TBName" {...tbNameProps} /></div>
-        <div><span>请选择配置年份进行编辑</span>{yearCtrl}<a>显示日历详情</a></div>
+        <div><span>请选择配置年份进行编辑</span><YearPicker {...yearProps} /><a>显示日历详情</a></div>
 
         <div ref="TBSettingContainer">
           <TBSettingItems ref="TBSettingItems" {...itemProps} />

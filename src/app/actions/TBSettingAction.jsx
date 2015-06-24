@@ -17,14 +17,14 @@ let TBSettingAction = {
               type: Action.LOADED_TBSETTING,
               setting: setting
           });
-          callback(setting);
+          if(callback) callback(setting);
         },
         error: function(err, res){
           console.log(err,res);
         }
     });
   },
-  saveData(setting){
+  saveData(setting, callback){
     Ajax.post('/TargetBaseline.svc/SetTBSetting2?', {
         params: {dto: setting},
         success: function(setting2){
@@ -33,6 +33,7 @@ let TBSettingAction = {
               type: Action.SAVE_TBSETTING,
               setting: setting2
           });
+          if(callback) callback(setting2);
         },
         error: function(err, res){
           console.log(err,res);
@@ -43,7 +44,7 @@ let TBSettingAction = {
     Ajax.post('/Energy.svc/GetTagAvgEnergyData?', {
         params: {timeRange: timeRange, tagId: tagId},
         success: function(data){
-          callback(data);
+          if(callback) callback(data);
         },
         error: function(err, res){
           console.log(err,res);
