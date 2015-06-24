@@ -399,6 +399,7 @@ var CalcSetting = React.createClass({
     start: React.PropTypes.object,
     end: React.PropTypes.object,
     items: React.PropTypes.array,
+    onCalc: React.PropTypes.func,
     isViewStatus: React.PropTypes.bool,
     isDisplay: React.PropTypes.bool
   },
@@ -406,13 +407,16 @@ var CalcSetting = React.createClass({
     return {items: []};
   },
   _onCalcClick: function(){
-    var tr = {
-      StartTime: CommonFuns.DataConverter.DatetimeToJson(this.props.start),
-      EndTime: CommonFuns.DataConverter.DatetimeToJson(this.props.end)
-    };
-    TBSettingAction.calcData(tr, this.props.tagId, function(data){
-      this.setState({items: data});
-    });
+    if(this.props.onCalc){
+      this.props.onCalc();
+    }
+    // var tr = {
+    //   StartTime: CommonFuns.DataConverter.DatetimeToJson(this.props.start),
+    //   EndTime: CommonFuns.DataConverter.DatetimeToJson(this.props.end)
+    // };
+    // TBSettingAction.calcData(tr, this.props.tagId, function(data){
+    //   this.setState({items: data});
+    // });
   },
 
   getValue: function(){
@@ -785,6 +789,18 @@ var TBSettingItem = React.createClass({
     this.setState({radio: "CalcRadio"});
   },
 
+  _onCalc: function(){
+    debugger;
+    var me = this;
+    var tr = {
+      StartTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.startFeild.getDate()),
+      EndTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.endFeild.getDate())
+    };
+    TBSettingAction.calcData(tr, this.props.tagId, function(data){
+      me.setState({avgs: data});
+    });
+  },
+
   getValue: function(){
     var rtn = {
       TbSetting:{
@@ -827,6 +843,7 @@ var TBSettingItem = React.createClass({
       items: me.props.avgs,
       start: me.state.start,
       end: me.state.end,
+      onCalc: me._onCalc,
     },
     specialProps = {
       year: me.props.year,
