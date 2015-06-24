@@ -50,6 +50,44 @@ let TBSettingAction = {
           console.log(err,res);
         }
     });
+  },
+  calDetailData(hierId){
+    Ajax.post('/Hierarchy.svc/GetHierarchyCalendarByHierarchyId', {
+         params: {
+           hierarchyId:hierId
+          },
+        success: function(data){
+          AppDispatcher.dispatch({
+              type: Action.LOAD_CALDETAIL,
+              data: data
+          });
+        },
+        error: function(err, res){
+          console.log(err,res);
+        }
+    });
+  },
+  setHierId(hierId){
+    AppDispatcher.dispatch({
+        type: Action.SET_HIERID,
+        hierId: hierId
+    });
+  },
+  setTagId(tagId){
+    AppDispatcher.dispatch({
+        type: Action.SET_TAGID,
+        tagId: tagId
+    });
+  },
+  ResetHierId(){
+    AppDispatcher.dispatch({
+        type: Action.RESET_HIERID,
+    });
+  },
+  ResetTagId(){
+    AppDispatcher.dispatch({
+        type: Action.RESET_HIERID,
+    });
   }
 };
 
