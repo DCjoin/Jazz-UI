@@ -49,13 +49,17 @@ let BaselineModify = React.createClass({
     });
   },
 
-  onYearPickerSelected(year){
-    BaselineModifyAction.loadData(this.props.tbId, year);
+  _onYearPickerSelected(yearData){
     var year = parseInt(yearDate);
-     this.setState({year: year});
-     if(year!=TBSettingStore.getYear()){
-        TBSettingAction.setYear(year);
-      }
+    BaselineModifyAction.loadData(this.props.tbId, year);
+    this.setState({year: year});
+    if(year != TBSettingStore.getYear()){
+      TBSettingAction.setYear(year);
+    }
+  },
+
+  _onYearChanged:function(){
+    this._onYearPickerSelected(TBSettingStore.getYear());
   },
 
   loadDataByYear: function(){
@@ -83,9 +87,7 @@ let BaselineModify = React.createClass({
       monthValues : monthValues
     });
   },
-    _onYearChanged:function(){
-      this.onYearPickerSelected(TBSettingStore.getYear());
-    },
+
   componentDidMount: function(){
     BaselineModifyStore.addSettingDataListener(this.loadDataByYear);
     BaselineModifyAction.loadData(this.props.tbId, this.refs.yearSelector.getDateValue());
@@ -123,10 +125,9 @@ let BaselineModify = React.createClass({
       });
       var curYear = (new Date()).getFullYear();
       var yearProps = {
-        disabled: this.state.isViewStatus,
         ref: "yearSelector",
         selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
-        onYearPickerSelected: this.onYearPickerSelected,
+        onYearPickerSelected: this._onYearPickerSelected,
         //className: "yearpicker",
 
       };
