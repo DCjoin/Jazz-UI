@@ -105,6 +105,7 @@ const DEFAULT_OPTIONS = {
     },
     chart: {
         panning: false,
+        backgroundColor:  "#FBFBFB",
         plotBackgroundColor: null,
         plotBorderWidth: null,
         plotShadow: false,
