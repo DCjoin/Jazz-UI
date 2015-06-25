@@ -1068,6 +1068,85 @@ var TBSettingItems = React.createClass({
   }
 });
 
+var CalDetail = React.createClass({
+  _onChange:function(){
+    var data=TBSettingStore.getCalDetailData();
+    this.setState({
+      calendar:data.Calendar,
+      workTimeCalendar:data.WorkTimeCalendar,
+      calendarName:data.Calendar.Name,
+      workTimeCalendarName:data.WorkTimeCalendar.Name
+    })
+  },
+  getInitialState: function() {
+        return {
+          calendar:null,
+          workTimeCalendar:null,
+          calendarName:null,
+          workTimeCalendarName:null
+        };
+      },
+  componentWillMount:function(){
+    var hierId=TBSettingStore.getHierId();
+    TBSettingStore.addCalDetailListener(this._onChange);
+    TBSettingAction.calDetailData(hierId);
+  },
+  componentWillUnmount:function(){
+    TBSettingStore.removeCalDetailListener(this._onChange)
+  },
+  render:function(){
+    var workDay=[],
+        offDay=[],
+        workTime=[];
+        if(this.state.calendar){
+          this.state.calendar.Items.forEach(function(item){
+            if(item.Type==0){
+              workDay.push(
+                <div>{item.StartFirstPart}月{item.StartSecondPart}日至{item.EndFirstPart}月{item.EndSecondPart}日</div>
+              )
+            }
+            else{
+              offDay.push(
+                  <div>{item.StartFirstPart}月{item.StartSecondPart}日至{item.EndFirstPart}月{item.EndSecondPart}日</div>
+              )
+            }
+
+          });
+        }
+        if(this.state.workTimeCalendar){
+          this.state.workTimeCalendar.Items.forEach(function(item){
+            workTime.push(
+              <div>{item.StartFirstPart}:{item.StartSecondPart}-{item.EndFirstPart}:{item.EndSecondPart}  </div>
+            )
+          })
+        }
+
+    return(
+      <div className="jazz-setting-basic-caldetail">
+        <div>公休日日历：{this.state.calendarName}</div>
+        <div>默认工作日：周一至周五</div>
+        <div className="workday">
+          <div>工作日</div>
+          <div>{workDay}</div>
+        </div>
+
+      <div className="workday">
+        <div>休息日</div>
+        <div>{offDay}</div>
+      </div>
+      <div>工作时间日历：{this.state.workTimeCalendarName}</div>
+      <div>工作时间以外均为非工作时间</div>
+      <div className="worktime">
+        <div>工作时间</div>
+        <div className="time">
+          {workTime}
+        </div>
+      </div>
+    </div>
+    )
+  }
+});
+
 var BaselineBasic = React.createClass({
   mixins:[Navigation,State],
 
@@ -1097,19 +1176,19 @@ var BaselineBasic = React.createClass({
       items: this.props.items || [],
       name: this.props.name,
       isViewStatus: this.props.isViewStatus,
+      calButton:'显示日历详情',
+      showCalDetail:false,
+      year:TBSettingStore.getYear()
     };
   },
 
   componentWillMount: function(){
-    this._onYearChanged(this.props.year + '');
+  //  this._onYearChanged(this.props.year + '');
+    TBSettingStore.addSetYearListener(this._onSetYear);
   },
-
-  componentWillUpdate: function(nextProps, nextState){
-    if(this.state.year != nextProps.year && nextProps.tbId){
-      this._onYearChanged(nextProps.year + '');
-    }
+  componentWillUnmount:function(){
+    TBSettingStore.removeSetYearListener(this._onSetYear);
   },
-
   getValue: function(){
     return {
       TBId: this.props.tbId,
@@ -1135,12 +1214,14 @@ var BaselineBasic = React.createClass({
   _onYearChanged: function(yearstr){
     var year = parseInt(yearstr);
     this.setState({year: year});
-    if(this.props.onYearChanged){
-      this.props.onYearChanged(year);
-    }
     this._fetchServerData(year);
+    if(year!=TBSettingStore.getYear()){
+      TBSettingAction.setYear(year)
+    }
   },
-
+  _onSetYear:function(){
+    this._onYearChanged(TBSettingStore.getYear())
+  },
   _fetchServerData: function(year) {
     var me = this;
     TBSettingAction.loadData(me.props.tbId, year, function(tbSetting){
@@ -1183,7 +1264,12 @@ var BaselineBasic = React.createClass({
     });
     this._fetchServerData(this.state.year);
   },
-
+  showCalDetail:function(){
+    this.setState({
+      showCalDetail:!this.state.showCalDetail,
+      calButton:((this.state.calButton=='显示日历详情')?'隐藏日历详情':'显示日历详情')
+    })
+  },
   render: function (){
     var itemProps = {
       tagId: this.props.tagId,
@@ -1192,7 +1278,7 @@ var BaselineBasic = React.createClass({
       isViewStatus: this.state.isViewStatus,
     };
     var tbNameProps = {
-      value: this.props.name,
+      defaultValue: this.props.name,
       onBlur: this._onTBNameChanged,
       disabled: !this.state.isViewStatus,
     };
@@ -1201,35 +1287,35 @@ var BaselineBasic = React.createClass({
     var btnProps = {
       onSave: this._saveDataToServer
     };
-
     var yearProps = {
       disabled: this.state.isViewStatus,
       ref: "YearField",
-      selectedIndex: ((this.state.year || curYear) - curYear + 10) + '',
+      selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
       onYearPickerSelected: this._onYearChanged,
       //className: "yearpicker",
-      style:{
-        height: "24px",
-      },
-      labelStyle: {
-        height: "24px",
-      },
-      underlineStyle: {
-        height: "24px",
-      },
-      menuItemStyle: {
-        height: "30px",
-      }
+
     };
-
-    return (<div className='jazz-setting-basic-container'>
+    var calDetailButton=(
+        <div onClick={this.showCalDetail}>{this.state.calButton}</div>
+    ),showCalDetail;
+    if(this.state.showCalDetail){
+      showCalDetail=<CalDetail />
+    }
+    return (
+      <div className='jazz-setting-basic-container'>
       <div className='jazz-setting-basic-content'>
-        <div><TextField ref="TBName" {...tbNameProps} /></div>
-        <div><span>请选择配置年份进行编辑</span><YearPicker {...yearProps} /><a>显示日历详情</a></div>
+        <div>
+          <div><TextField ref="TBName" {...tbNameProps} /></div>
+          <div style={{display:'flex','flex-flow':'row'}}><span>请选择配置年份进行编辑</span><YearPicker {...yearProps} />
+          <span>{calDetailButton}</span>
+          </div>
 
-        <div ref="TBSettingContainer">
-          <TBSettingItems ref="TBSettingItems" {...itemProps} />
+          <div ref="TBSettingContainer">
+            <TBSettingItems ref="TBSettingItems" {...itemProps} />
+          </div>
         </div>
+        {showCalDetail}
+
       </div>
       <div>
         <button type="submit" hidden={!this.state.isViewStatus} style={{width:'50px'}} onClick={this._handleEdit}> 修正 </button>

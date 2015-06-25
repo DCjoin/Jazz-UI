@@ -13,6 +13,7 @@ import ChartComponent from '../energy/ChartComponent.jsx';
 import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
+import TBSettingAction from '../../actions/TBSettingAction.jsx';
 
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
@@ -294,6 +295,8 @@ let ChartPanel = React.createClass({
   },
   handleBaselineCfg: function(e){
     this.refs.baselineCfg.showDialog();
+    var year=(new Date()).getFullYear();
+    TBSettingAction.setYear(year);
   }
 });
 

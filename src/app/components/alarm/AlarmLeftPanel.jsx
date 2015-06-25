@@ -94,7 +94,7 @@ var AlarmLeftPanel = React.createClass({
       }else if(this.state.dateType == dateType.MONTH_ALARM){
         dateSelector = ( <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected} ref='monthSelector'/>);
       }else{
-        dateSelector = ( <YearPicker ref='yearSelector' style={{width:'300px'}} onYearPickerSelected={this.onYearPickerSelected}/>);
+        dateSelector = ( <div className={'jazz-alarm-left-panel-year-dropdownmenu-container'}> <YearPicker ref='yearSelector' style={{width:'300px'}} onYearPickerSelected={this.onYearPickerSelected}/></div>);
       }
 
       return (
