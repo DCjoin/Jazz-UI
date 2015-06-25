@@ -1157,28 +1157,28 @@ var CalDetail = React.createClass({
         if(this.state.workTimeCalendar){
           this.state.workTimeCalendar.Items.forEach(function(item){
             workTime.push(
-              <div>{item.StartFirstPart}:{item.StartSecondPart}-{item.EndFirstPart}:{item.EndSecondPart}  </div>
+              <div className="timecontent">{item.StartFirstPart}:{item.StartSecondPart}-{item.EndFirstPart}:{item.EndSecondPart}  </div>
             )
           })
         }
 
     return(
       <div className="jazz-setting-basic-caldetail">
-        <div>公休日日历：{this.state.calendarName}</div>
-        <div>默认工作日：周一至周五</div>
+        <div className="workdaytitle">公休日日历 ：{this.state.calendarName}</div>
+        <div className="workdaycontent">默认工作日 : 周一至周五</div>
         <div className="workday">
-          <div>工作日</div>
-          <div>{workDay}</div>
+          <div>工作日 :</div>
+          <div className="font">{workDay}</div>
         </div>
 
       <div className="workday">
-        <div>休息日</div>
-        <div>{offDay}</div>
+        <div>休息日 :</div>
+        <div className="font">{offDay}</div>
       </div>
-      <div>工作时间日历：{this.state.workTimeCalendarName}</div>
-      <div>工作时间以外均为非工作时间</div>
+      <div className="worktimetitle">工作时间日历：{this.state.workTimeCalendarName}</div>
+      <div className="worktimecontent">工作时间以外均为非工作时间</div>
       <div className="worktime">
-        <div>工作时间</div>
+        <div>工作时间 :</div>
         <div className="time">
           {workTime}
         </div>
@@ -1223,13 +1223,7 @@ var BaselineBasic = React.createClass({
     };
   },
 
-  componentWillMount: function(){
-  //  this._onYearChanged(this.props.year + '');
-    TBSettingStore.addSetYearListener(this._onSetYear);
-  },
-  componentWillUnmount:function(){
-    TBSettingStore.removeSetYearListener(this._onSetYear);
-  },
+
   getValue: function(){
     return {
       TBId: this.props.tbId,
@@ -1260,9 +1254,7 @@ var BaselineBasic = React.createClass({
       TBSettingAction.setYear(year)
     }
   },
-  _onSetYear:function(){
-    this._onYearChanged(TBSettingStore.getYear())
-  },
+
   _fetchServerData: function(year) {
     var me = this;
     TBSettingAction.loadData(me.props.tbId, year, function(tbSetting){
@@ -1336,7 +1328,7 @@ var BaselineBasic = React.createClass({
 
     };
     var calDetailButton=(
-        <div onClick={this.showCalDetail}>{this.state.calButton}</div>
+        <div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
     ),showCalDetail;
     if(this.state.showCalDetail){
       showCalDetail=<CalDetail />
