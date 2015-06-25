@@ -1278,7 +1278,7 @@ var BaselineBasic = React.createClass({
       isViewStatus: this.state.isViewStatus,
     };
     var tbNameProps = {
-      value: this.props.name,
+      defaultValue: this.props.name,
       onBlur: this._onTBNameChanged,
       disabled: !this.state.isViewStatus,
     };
