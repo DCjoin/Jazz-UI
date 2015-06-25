@@ -51,7 +51,6 @@ let BaselineModify = React.createClass({
 
   _onYearPickerSelected(yearData){
     var year = parseInt(yearDate);
-    BaselineModifyAction.loadData(this.props.tbId, year);
     this.setState({year: year});
     if(year != TBSettingStore.getYear()){
       TBSettingAction.setYear(year);
@@ -60,6 +59,7 @@ let BaselineModify = React.createClass({
 
   _onYearChanged:function(){
     this._onYearPickerSelected(TBSettingStore.getYear());
+    BaselineModifyAction.loadData(this.props.tbId, TBSettingStore.getYear());
   },
 
   loadDataByYear: function(){
@@ -90,7 +90,6 @@ let BaselineModify = React.createClass({
 
   componentDidMount: function(){
     BaselineModifyStore.addSettingDataListener(this.loadDataByYear);
-    BaselineModifyAction.loadData(this.props.tbId, this.refs.yearSelector.getDateValue());
     TBSettingStore.addSetYearListener(this._onYearChanged);
   },
 
