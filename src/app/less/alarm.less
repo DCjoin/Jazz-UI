@@ -4,15 +4,18 @@
   span{
     display: inline-block;
   }
+  background-color: rgb(53, 64, 82);
+  color: #ffffff;
+  font-size: 14px;
 }
 .jazz-alarm-grid-tr-item:hover{
-  background-color:rgb(181, 181, 181);
+  background-color: #2d3645;
 }
 .jazz-alarm-grid-tr-item-selected{
-  background-color:rgb(161, 161, 161);
+  background-color:#2d3645 !important;
 }
 .jazz-alarm-grid-tr-item-extended{
-  background-color:rgb(200, 194, 194);
+  background-color:#313b4b; //rgb(200, 194, 194);
 }
 .jazz-alarm-grid-tr-item span:last-child{
   min-width: 20px;
@@ -20,7 +23,7 @@
   border: 0px solid #a1a1a1;
   border-radius: 15px;
   text-align: center;
-  background-color: black;
+  background-color: rgb(244, 106, 88);
   color: white;
   padding: 0px 1px;
 }
@@ -38,16 +41,17 @@
   width: 120px;
 }
 .jazz-energy-yaxis-button{
-  background-color: black;
-  color: white;
+  background-color: #ffffff;
+  color: black;
+  border: 1px solid rgb(235, 235, 235);
   align-self: center;
-  border-radius: 6px;
+  border-radius: 2px;
   margin-left: 20px;
-  padding: 0 5px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 .jazz-energy-yaxis-button:hover{
-  background-color: blue;
+  //background-color: grey;
 }
 .jazz-energy-step-item{
   display: inline-block;
@@ -68,4 +72,154 @@
 .jazz-energy-step{
   align-self: flex-end;
   margin: 20px 180px 20px auto;
+}
+.jazz-alarm-left-panel-dropdownmenu-container>div {
+  >div:first-child
+  {
+    div:nth-of-type(2){
+      background-color: rgb(134,204,255) !important;
+      opacity: 1 !important;
+    }
+
+    div:nth-of-type(3){
+      color: #ffffff !important;
+      font-size: 14px !important;
+      padding-left: 100px !important;
+      top: 0px !important;
+    }
+    svg{
+      left: 212px !important;
+    }
+    svg+div{
+      border-top-width: 0px !important;
+    }
+  }
+
+  >div:last-child{
+    left: 48px !important;
+    top: 33px !important;
+    width: 220px !important;
+    div{
+      padding-left: 51px !important;
+      padding-right: auto !important;
+    }
+  }
+}
+.jazz-alarm-left-panel-year-dropdownmenu-container>div {
+  >div:first-child
+  {
+    div:nth-of-type(2){
+      background-color: rgb(53, 64, 82) !important;
+      opacity: 1 !important;
+    }
+
+    div:nth-of-type(3){
+      color: #ffffff !important;
+      font-size: 14px !important;
+      padding-left: 100px !important;
+      top: 0px !important;
+    }
+    svg{
+      left: 212px !important;
+    }
+    svg+div{
+      border-top-width: 0px !important;
+    }
+  }
+
+  >div:last-child{
+    left: 48px !important;
+    top: 33px !important;
+    width: 220px !important;
+    div{
+      padding-left: 51px !important;
+      padding-right: auto !important;
+    }
+  }
+}
+.jazz-full-border-dropdownmenu-relativedate-container{
+  >div{
+    border: 1px solid rgb(235, 235, 235);
+    >div:first-child
+    {
+      div:nth-of-type(2){
+        opacity: 1 !important;
+      }
+
+      div:nth-of-type(3){
+        font-size: 12px !important;
+        top: 0px !important;
+        padding-left: 15px !important;
+      }
+      svg{
+        right: 9px !important;
+      }
+      svg+div{
+        border-top-width: 0px !important;
+      }
+    }
+
+    >div:last-child{
+      left: 0px !important;
+      top: 33px !important;
+      width: 120px !important;
+      div{
+        padding-left: 22px !important;
+        padding-right: auto !important;
+        font-size: 12px !important;
+      }
+    }
+  }
+}
+.jazz-full-border-dropdownmenu-time-container{
+  margin-right: 10px;
+  >div{
+    border: 1px solid rgb(235, 235, 235);
+    >div:first-child
+    {
+      div:nth-of-type(2){
+        opacity: 1 !important;
+      }
+
+      div:nth-of-type(3){
+        font-size: 12px !important;
+        top: 0px !important;
+        padding-left: 12px !important;
+      }
+      svg{
+        right: 9px !important;
+      }
+      svg+div{
+        border-top-width: 0px !important;
+      }
+    }
+
+    >div:last-child{
+      left: 0px !important;
+      top: 33px !important;
+      width: 90px !important;
+      div{
+        padding-left: 22px !important;
+        padding-right: auto !important;
+        font-size: 12px !important;
+      }
+    }
+  }
+}
+.jazz-full-border-datepicker-container{
+  height: 38px;
+  margin-right: 10px;
+  >div{
+    cursor: pointer;
+    border: 1px solid rgb(235, 235, 235);
+    >div{
+      >input{
+        cursor: pointer;
+        font-size: 12px !important;
+      }
+      >hr{
+        border-bottom-width: 0px !important;
+      }
+    }
+  }
 }

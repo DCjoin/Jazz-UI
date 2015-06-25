@@ -13,6 +13,7 @@ import ChartComponent from '../energy/ChartComponent.jsx';
 import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
+import TBSettingAction from '../../actions/TBSettingAction.jsx';
 
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
@@ -29,7 +30,21 @@ let ChartPanel = React.createClass({
     propTypes:{
       isSettingChart: React.PropTypes.bool
     },
+    childContextTypes:{
+        muiTheme: React.PropTypes.object.isRequired
+    },
+    contextTypes: {
+      muiTheme: React.PropTypes.object
+    },
+    getChildContext() {
+      let childContext = assign({}, this.context.muiTheme);
+      childContext.spacing = assign({}, childContext.spacing);
+      childContext.spacing.desktopToolbarHeight = 32;
 
+      return {
+          muiTheme: childContext
+      };
+    },
     _onLoadingStatusChange(){
       let isSettingChart = this.props.isSettingChart;
 
@@ -211,8 +226,8 @@ let ChartPanel = React.createClass({
                       </div>;
       }
       let title = <div style={{height:'30px',paddingBottom:'10px'}}>
-                    <span >{me.state.chartTitle}</span>
-                    <IconButton iconClassName="fa fa-floppy-o" style={{'marginLeft':'10px'}} onClick={this._onChart2WidgetClick}/>
+                    <span style={{fontSize:'14px'}}>{me.state.chartTitle}</span>
+                    <IconButton iconClassName="fa fa-floppy-o" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}/>
                  </div>;
 
       return (
@@ -220,15 +235,25 @@ let ChartPanel = React.createClass({
           <WidgetSaveWindow ref={'saveChartDialog'} openImmediately={me.state.dashboardOpenImmediately} tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>
           {title}
           <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
-            <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'140px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
-            <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='startDate' style={{width:'90px', padding:'13px 0'}}/>
-            <DropDownMenu menuItems={dateTime} ref='startTime'></DropDownMenu>
-            <span style={{'marginLeft':'10px'}}> {'到'} </span>
-            <DatePicker className='jazz-alarm-datepicker' defaultDate={date} ref='endDate' style={{width:'90px', padding:'13px 0', marginLeft:'10px'}}/>
-            <DropDownMenu menuItems={dateTime} ref='endTime'></DropDownMenu>
-            <RaisedButton label='查看' secondary={true} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
+            <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+              <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'100px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
+            </div>
+            <div className={'jazz-full-border-datepicker-container'}>
+              <DatePicker defaultDate={date} ref='startDate' style={{width:'85px', height:'32px',marginLeft:'10px'}}/>
+            </div>
+            <div className={'jazz-full-border-dropdownmenu-time-container'}>
+              <DropDownMenu menuItems={dateTime} ref='startTime' style={{width:'76px'}}></DropDownMenu>
+            </div>
+            <span> {'到'} </span>
+            <div className={'jazz-full-border-datepicker-container'}>
+              <DatePicker defaultDate={date} ref='endDate' style={{width:'85px', height:'32px', marginLeft:'10px'}}/>
+            </div>
+            <div className={'jazz-full-border-dropdownmenu-time-container'}>
+              <DropDownMenu menuItems={dateTime} ref='endTime' style={{width:'76px'}}></DropDownMenu>
+            </div>
+            <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
-            <RaisedButton style={{marginLeft:'10px'}} label='BaselineBasic' secondary={true} onClick={this.handleBaselineCfg}/>
+            <RaisedButton style={{marginLeft:'10px', height:'32px', marginBottom:'4px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
           </div>
           {energyPart}
         </div>
@@ -294,6 +319,8 @@ let ChartPanel = React.createClass({
   },
   handleBaselineCfg: function(e){
     this.refs.baselineCfg.showDialog();
+    var year=(new Date()).getFullYear();
+    TBSettingAction.setYear(year);
   }
 });
 

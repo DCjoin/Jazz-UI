@@ -7,15 +7,15 @@ import Immutable from 'immutable';
 import {Action} from '../constants/actionType/Setting.jsx';
 
 
-const SETTING_DATA_CHANGED_EVENT = 'seetingdatachanged';
-var _alarmSettingData = {};
+const SETTING_DATA_CHANGED_EVENT = 'modifydatachanged';
+var _baselineModifyData = {};
 
-var AlarmSettingStore = assign({},PrototypeStore,{
+var BaselineModifyStore = assign({},PrototypeStore,{
   getData(){
-    return _alarmSettingData;
+    return _baselineModifyData;
   },
   setData(data){
-    _alarmSettingData =  data;
+    _baselineModifyData =  data;
   },
   addSettingDataListener: function(callback) {
     this.on(SETTING_DATA_CHANGED_EVENT, callback);
@@ -27,17 +27,17 @@ var AlarmSettingStore = assign({},PrototypeStore,{
     this.removeListener(SETTING_DATA_CHANGED_EVENT, callback);
   },
 });
-AlarmSettingStore.dispatchToken = AppDispatcher.register(function(action) {
+BaselineModifyStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
-    case Action.LOAD_SETTING_DATA:
-      AlarmSettingStore.setData(action.alarmSettingData);
-      AlarmSettingStore.emitSettingData();
+    case Action.GET_MODIFY_DATA:
+      BaselineModifyStore.setData();
+      BaselineModifyStore.emitSettingData();
       break;
-    case Action.SAVE_SETTING_SUCCESS:
+    case Action.SET_MODIFY_DATA_SUCCESS:
       break;
-    case Action.SAVE_SETTING_ERROR:
+    case Action.SET_MODIFY_DATA_ERROR:
       break;
   }
 });
 
-module.exports = AlarmSettingStore;
+module.exports = BaselineModifyStore;

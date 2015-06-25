@@ -26,6 +26,8 @@ let AlarmList = React.createClass({
 
 		AlarmTagStore.setUseTagListSelect(false);
 		AlarmAction.getAlarmTagData(date, step, tagOption);
+
+		this.setState({selectedTag: tagOption[0] });
 	},
 	render: function() {
 		let displayedDom = null;
@@ -39,7 +41,8 @@ let AlarmList = React.createClass({
 				hierarchyItems = hierarchies.map( hierarchy => {
 					let props = {
 						hierarchy:hierarchy,
-						onTagItemClick: this.onTagItemClick
+						onTagItemClick: this.onTagItemClick,
+						selectedTag: this.state.selectedTag
 					};
 					return (
 						<AlarmHierarchyItem  {...props}/>

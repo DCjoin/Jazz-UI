@@ -23,7 +23,21 @@ const MONTHSTEP = 3,
       HOURSTEP = 1;
 
 var AlarmLeftPanel = React.createClass({
+    childContextTypes:{
+        muiTheme: React.PropTypes.object.isRequired
+    },
+    contextTypes: {
+      muiTheme: React.PropTypes.object
+    },
+    getChildContext() {
+      let childContext = assign({}, this.context.muiTheme);
+      childContext.spacing = assign({}, childContext.spacing);
+      childContext.spacing.desktopToolbarHeight = 32;
 
+      return {
+          muiTheme: childContext
+      };
+    },
     _dateTypeChangeHandler: function(e, selectedIndex, menuItem) {
       let type = menuItem.type;
 
@@ -81,13 +95,13 @@ var AlarmLeftPanel = React.createClass({
       }else if(this.state.dateType == dateType.MONTH_ALARM){
         dateSelector = ( <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected} ref='monthSelector'/>);
       }else{
-        dateSelector = ( <YearPicker ref='yearSelector' onYearPickerSelected={this.onYearPickerSelected}/>);
+        dateSelector = ( <div className={'jazz-alarm-left-panel-year-dropdownmenu-container'}> <YearPicker ref='yearSelector' style={{width:'300px'}} onYearPickerSelected={this.onYearPickerSelected}/></div>);
       }
 
       return (
-        <div style={{width:'310px',display:'flex','flexFlow':'column', 'background-color':'rgb(243, 243, 243)'}}>
-          <div style={{margin:'10px auto 0px auto'}}>
-              <DropDownMenu onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
+        <div style={{width:'300px',display:'flex','flexFlow':'column', 'background-color':'rgb(53, 64, 82)'}}>
+          <div className={'jazz-alarm-left-panel-dropdownmenu-container'}>
+              <DropDownMenu autoWidth={false} style={{width:'300px'}} onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
           </div>
           <div style={{margin:'0px auto 10px auto'}}>
             {dateSelector}
