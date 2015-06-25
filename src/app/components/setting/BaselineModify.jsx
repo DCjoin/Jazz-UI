@@ -3,7 +3,8 @@ import {Route, DefaultRoute, RouteHandler, Link, Navigation, State} from 'react-
 import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, Overlay} from 'material-ui';
 import assign from "object-assign";
 import YearPicker from '../../controls/YearPicker.jsx';
-
+import TBSettingAction from '../../actions/TBSettingAction.jsx';
+import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import BaselineModifyStore from '../../stores/BaselineModifyStore.jsx';
 import BaselineModifyAction from "../../actions/BaselineModifyAction.jsx";
 import Util from "../../util/Util.jsx";
@@ -21,7 +22,8 @@ let BaselineModify = React.createClass({
   getInitialState:function(){
 		return {
       disable: true,
-      monthValues: monthValues
+      monthValues: monthValues,
+      year:TBSettingStore.getYear()
 		};
 	},
 
@@ -49,6 +51,11 @@ let BaselineModify = React.createClass({
 
   onYearPickerSelected(year){
     BaselineModifyAction.loadData(this.props.tbId, year);
+    var year = parseInt(yearDate);
+     this.setState({year: year});
+     if(year!=TBSettingStore.getYear()){
+        TBSettingAction.setYear(year);
+      }
   },
 
   loadDataByYear: function(){
@@ -76,14 +83,18 @@ let BaselineModify = React.createClass({
       monthValues : monthValues
     });
   },
-
+    _onYearChanged:function(){
+      this.onYearPickerSelected(TBSettingStore.getYear());
+    },
   componentDidMount: function(){
     BaselineModifyStore.addSettingDataListener(this.loadDataByYear);
     BaselineModifyAction.loadData(this.props.tbId, this.refs.yearSelector.getDateValue());
+    TBSettingStore.addSetYearListener(this._onYearChanged);
   },
 
   componentWillUnmount: function(){
     BaselineModifyStore.removeSettingDataListener(this.loadDataByYear);
+    TBSettingStore.removeSetYearListener(this._onYearChanged);
   },
 
   render: function(){
@@ -106,17 +117,25 @@ let BaselineModify = React.createClass({
         disable: disable,
         monthValue: monthValues[idx++]
       };
-      return (
-        <MonthItem  {...props}/>
-      );
-    });
+        return (
+          <MonthItem  {...props}/>
+        );
+      });
+      var curYear = (new Date()).getFullYear();
+      var yearProps = {
+        disabled: this.state.isViewStatus,
+        ref: "yearSelector",
+        selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
+        onYearPickerSelected: this.onYearPickerSelected,
+        //className: "yearpicker",
 
+      };
     return (
       <div ref="baselineModifyDialog">
         <div className='jazz-setting-alarm-content'>
           <span>
             请选择配置年份进行编辑
-             <YearPicker ref='yearSelector' onYearPickerSelected={this.onYearPickerSelected}/>
+               <YearPicker {...yearProps}/>;
           </span>
           <span className='jazz-setting-baseline-margin'>
             年基准值
