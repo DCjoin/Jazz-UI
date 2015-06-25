@@ -41,16 +41,17 @@
   width: 120px;
 }
 .jazz-energy-yaxis-button{
-  background-color: black;
-  color: white;
+  background-color: #ffffff;
+  color: black;
+  border: 1px solid rgb(235, 235, 235);
   align-self: center;
-  border-radius: 6px;
+  border-radius: 2px;
   margin-left: 20px;
-  padding: 0 5px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 .jazz-energy-yaxis-button:hover{
-  background-color: blue;
+  //background-color: grey;
 }
 .jazz-energy-step-item{
   display: inline-block;
@@ -148,9 +149,10 @@
       div:nth-of-type(3){
         font-size: 12px !important;
         top: 0px !important;
+        padding-left: 15px !important;
       }
       svg{
-        //left: 212px !important;
+        right: 9px !important;
       }
       svg+div{
         border-top-width: 0px !important;
@@ -208,9 +210,11 @@
   height: 38px;
   margin-right: 10px;
   >div{
+    cursor: pointer;
     border: 1px solid rgb(235, 235, 235);
     >div{
       >input{
+        cursor: pointer;
         font-size: 12px !important;
       }
       >hr{

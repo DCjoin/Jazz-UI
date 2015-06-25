@@ -29,9 +29,15 @@ let YearPicker = React.createClass({
   },
   getInitialState() {
     let date = new Date();
+    let index;
+    if(this.props.selectedIndex === null || this.props.selectedIndex === undefined){
+      index = this.props.yearRange - 1;
+    }else{
+      index = this.props.selectedIndex;
+    }
       return {
           selectedYear: date.getFullYear() -1,//默认去年
-          yearIndex: this.props.selectedIndex || this.props.yearRange - 1
+          yearIndex: index
       };
   },
   getDateValue(year){

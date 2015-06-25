@@ -236,7 +236,7 @@ let ChartPanel = React.createClass({
           {title}
           <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
             <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
-              <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'120px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
+              <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'100px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
             <div className={'jazz-full-border-datepicker-container'}>
               <DatePicker defaultDate={date} ref='startDate' style={{width:'85px', height:'32px',marginLeft:'10px'}}/>
@@ -251,9 +251,9 @@ let ChartPanel = React.createClass({
             <div className={'jazz-full-border-dropdownmenu-time-container'}>
               <DropDownMenu menuItems={dateTime} ref='endTime' style={{width:'76px'}}></DropDownMenu>
             </div>
-            <RaisedButton label='查看' secondary={true} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
+            <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
-            <RaisedButton style={{marginLeft:'10px'}} label='BaselineBasic' secondary={true} onClick={this.handleBaselineCfg}/>
+            <RaisedButton style={{marginLeft:'10px', height:'32px', marginBottom:'4px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
           </div>
           {energyPart}
         </div>
