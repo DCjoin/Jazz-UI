@@ -222,13 +222,14 @@ let Dialog = React.createClass({
     var winstyles = this.getWinStyles();
     var titlestyles = this.getTitleStyle();
     var title;
+    var paper=null;
     if (this.props.title) {
       title = Object.prototype.toString.call(this.props.title) === '[object String]' ?
         <h3 style={cttstyles.title}>{this.props.title}</h3> :
         this.props.title;
     }
-    return (
-      <div ref="container"  style={this.mergeAndPrefix(winstyles.root, this.props.style, this.state.open && winstyles.rootWhenOpen)}>
+    if(this.state.open){
+      paper=(
         <Paper zDepth={5}
           ref="dialogWindow"
           style={this.mergeAndPrefix(winstyles.contents, this.props.contentStyle, this.state.open && winstyles.contentsWhenOpen)}
@@ -242,6 +243,11 @@ let Dialog = React.createClass({
             {this.props.children}
           </div>
         </Paper>
+      )
+    }
+    return (
+      <div ref="container"  style={this.mergeAndPrefix(winstyles.root, this.props.style, this.state.open && winstyles.rootWhenOpen)}>
+        {paper}
       </div>
     );
   },
