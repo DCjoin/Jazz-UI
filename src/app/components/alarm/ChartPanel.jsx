@@ -225,13 +225,13 @@ let ChartPanel = React.createClass({
                         <ChartComponent {...this.state.paramsObj} {...chartCmpObj}/>
                       </div>;
       }
-      let title = <div style={{height:'30px',paddingBottom:'10px'}}>
-                    <span style={{fontSize:'14px'}}>{me.state.chartTitle}</span>
+      let title = <div className='jazz-alarm-chart-title'>
+                    <span>{me.state.chartTitle}</span>
                     <IconButton iconClassName="fa fa-floppy-o" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}/>
                  </div>;
 
       return (
-        <div style={{flex:1, display:'flex','flex-direction':'column', marginLeft:'10px'}}>
+        <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
           <WidgetSaveWindow ref={'saveChartDialog'} openImmediately={me.state.dashboardOpenImmediately} tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>
           {title}
           <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
