@@ -91,6 +91,9 @@ let BaselineModify = React.createClass({
   componentDidMount: function(){
     BaselineModifyStore.addSettingDataListener(this.loadDataByYear);
     TBSettingStore.addSetYearListener(this._onYearChanged);
+    if(TBSettingStore.getYear() == (new Date()).getFullYear()){
+      BaselineModifyAction.loadData(this.props.tbId, TBSettingStore.getYear());
+    }
   },
 
   componentWillUnmount: function(){
