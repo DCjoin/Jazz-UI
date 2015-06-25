@@ -511,8 +511,8 @@ let DataSelectMainPanel=React.createClass({
       AlarmTagStore.addClearDataListener(this._onClearTagList);
       AlarmTagStore.addAddSearchTagListListener(this._onSearchTagListChange);
       AlarmTagStore.addRemoveSearchTagListListener(this._onSearchTagListChange);
-      TBSettingAction.ResetHierId();
-      TBSettingAction.ResetTagId();
+      TBSettingAction.resetHierId();
+      TBSettingAction.resetTagId();
       if(this.props.linkFrom=="Alarm"){
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
         TagAction.loadAlarmData(alarmTagOption);

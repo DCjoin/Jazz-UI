@@ -12,10 +12,12 @@ var _calcData = null;
 var _hierId=null;
 var _tagId=null;
 var _calDetail=null;
+var _year=null;
 
 let CHANGE_TAG_EVENT = 'changetag';
 let CHANGE_TBYEAR_EVENT = 'changetbyear';
-let CHANGE_CALDETAIL_EVENT= 'changecaldetail'
+let CHANGE_CALDETAIL_EVENT= 'changecaldetail';
+let CHANGE_SETYEAR_EVENT= 'changesetyear';
 
 var TBSettingStore = assign({},PrototypeStore,{
   getData(){
@@ -61,7 +63,25 @@ var TBSettingStore = assign({},PrototypeStore,{
   },
   resetTagId(){
     _tagId=null;
-  }
+  },
+  setYear(year){
+    _year=year
+  },
+  getYear(){
+    return _year
+  },
+  emitSetYearChange: function() {
+        this.emit(CHANGE_SETYEAR_EVENT);
+      },
+
+  addSetYearListener: function(callback) {
+        this.on(CHANGE_SETYEAR_EVENT, callback);
+      },
+
+  removeSetYearListener: function(callback) {
+        this.removeListener(CHANGE_SETYEAR_EVENT, callback);
+        this.dispose();
+      },
 });
 
 var Action = TBSetting.Action;
@@ -88,8 +108,12 @@ TBSettingStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.RESET_HIERID:
       TBSettingStore.resetHierId();
       break;
-    case Action.RESET_HIERID:
+    case Action.RESET_TAGID:
       TBSettingStore.resetTagId();
+      break;
+    case Action.SET_YEAR:
+      TBSettingStore.setYear(action.year);
+      TBSettingStore.emitSetYearChange();
       break;
   }
 });

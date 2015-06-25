@@ -11,6 +11,7 @@ module.exports = {
       SET_HIERID:null,
       SET_TAGID:null,
       RESET_HIERID:null,
-      RESET_TAGID:null
+      RESET_TAGID:null,
+      SET_YEAR:null
   })
 };

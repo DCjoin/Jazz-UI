@@ -3,12 +3,15 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, Overlay} from 'material-ui';
 import assign from "object-assign";
 import YearPicker from '../../controls/YearPicker.jsx';
+import TBSettingAction from '../../actions/TBSettingAction.jsx';
+import TBSettingStore from '../../stores/TBSettingStore.jsx';
 
 let BaselineModify = React.createClass({
     mixins:[Navigation,State],
     getInitialState:function(){
 			return {
         disable: true,
+        year:TBSettingStore.getYear()
 			}
 		},
 
@@ -47,14 +50,26 @@ let BaselineModify = React.createClass({
         this.refs.baselineModifyDialog.dismiss();
     },
 
-    onYearPickerSelected(yearDate){
-
+    _onYearPickerSelected(yearDate){
+      var year = parseInt(yearDate);
+      this.setState({year: year});
+      if(year!=TBSettingStore.getYear()){
+        TBSettingAction.setYear(year);
+      }
     },
 
     loadDataByYear: function(year){
 
     },
-    
+    _onYearChanged:function(){
+      this._onYearPickerSelected(TBSettingStore.getYear());
+    },
+    componentDidMount:function(){
+      TBSettingStore.addSetYearListener(this._onYearChanged);
+    },
+    componentWillUnmount:function(){
+      TBSettingStore.removeSetYearListener(this._onYearChanged);
+    },
     render: function () {
       let months =[
                    {LeftMonth:"一", LeftValue:'100',RightMonth:"二", RightValue:'200'},
@@ -76,13 +91,21 @@ let BaselineModify = React.createClass({
           <MonthItem  {...props}/>
         );
       });
+      var curYear = (new Date()).getFullYear();
+      var yearProps = {
+        disabled: this.state.isViewStatus,
+        ref: "yearSelector",
+        selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
+        onYearPickerSelected: this._onYearPickerSelected,
+        //className: "yearpicker",
 
+      };
       return (
         <div title="基准值修改" ref="baselineModifyDialog">
           <div style={{width:'500px',display:'flex','flex-flow':'column'}} >
             <span>
               请选择配置年份进行编辑
-               <YearPicker ref='yearSelector' onYearPickerSelected={this.onYearPickerSelected}/>;
+               <YearPicker {...yearProps}/>;
               <br/>
               <br/>
             </span>

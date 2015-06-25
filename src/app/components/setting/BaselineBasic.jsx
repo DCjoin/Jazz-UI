@@ -1113,13 +1113,13 @@ var CalDetail = React.createClass({
 
           });
         }
-if(this.state.workTimeCalendar){
-  this.state.workTimeCalendar.Items.forEach(function(item){
-    workTime.push(
-      <div>{item.StartFirstPart}:{item.StartSecondPart}-{item.EndFirstPart}:{item.EndSecondPart}  </div>
-    )
-  })
-}
+        if(this.state.workTimeCalendar){
+          this.state.workTimeCalendar.Items.forEach(function(item){
+            workTime.push(
+              <div>{item.StartFirstPart}:{item.StartSecondPart}-{item.EndFirstPart}:{item.EndSecondPart}  </div>
+            )
+          })
+        }
 
     return(
       <div className="jazz-setting-basic-caldetail">
@@ -1177,20 +1177,18 @@ var BaselineBasic = React.createClass({
       name: this.props.name,
       isViewStatus: this.props.isViewStatus,
       calButton:'显示日历详情',
-      showCalDetail:false
+      showCalDetail:false,
+      year:TBSettingStore.getYear()
     };
   },
 
   componentWillMount: function(){
-    this._onYearChanged(this.props.year + '');
+  //  this._onYearChanged(this.props.year + '');
+    TBSettingStore.addSetYearListener(this._onSetYear);
   },
-
-  componentWillUpdate: function(nextProps, nextState){
-    if(this.state.year != nextProps.year && nextProps.tbId){
-      this._onYearChanged(nextProps.year + '');
-    }
+  componentWillUnmount:function(){
+    TBSettingStore.removeSetYearListener(this._onSetYear);
   },
-
   getValue: function(){
     return {
       TBId: this.props.tbId,
@@ -1216,12 +1214,14 @@ var BaselineBasic = React.createClass({
   _onYearChanged: function(yearstr){
     var year = parseInt(yearstr);
     this.setState({year: year});
-    if(this.props.onYearChanged){
-      this.props.onYearChanged(year);
-    }
     this._fetchServerData(year);
+    if(year!=TBSettingStore.getYear()){
+      TBSettingAction.setYear(year)
+    }
   },
-
+  _onSetYear:function(){
+    this._onYearChanged(TBSettingStore.getYear())
+  },
   _fetchServerData: function(year) {
     var me = this;
     TBSettingAction.loadData(me.props.tbId, year, function(tbSetting){
@@ -1287,25 +1287,13 @@ var BaselineBasic = React.createClass({
     var btnProps = {
       onSave: this._saveDataToServer
     };
-
     var yearProps = {
       disabled: this.state.isViewStatus,
       ref: "YearField",
-      selectedIndex: ((this.state.year || curYear) - curYear + 10) + '',
+      selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
       onYearPickerSelected: this._onYearChanged,
       //className: "yearpicker",
-      style:{
-        height: "24px",
-      },
-      labelStyle: {
-        height: "24px",
-      },
-      underlineStyle: {
-        height: "24px",
-      },
-      menuItemStyle: {
-        height: "30px",
-      }
+
     };
     var calDetailButton=(
         <div onClick={this.showCalDetail}>{this.state.calButton}</div>

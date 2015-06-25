@@ -79,16 +79,23 @@ let TBSettingAction = {
         tagId: tagId
     });
   },
-  ResetHierId(){
+  resetHierId(){
     AppDispatcher.dispatch({
         type: Action.RESET_HIERID,
     });
   },
-  ResetTagId(){
+  resetTagId(){
     AppDispatcher.dispatch({
         type: Action.RESET_HIERID,
     });
+  },
+  setYear(year){
+    AppDispatcher.dispatch({
+        type: Action.SET_YEAR,
+        year:year
+    });
   }
+
 };
 
 module.exports = TBSettingAction;
