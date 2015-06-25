@@ -4,8 +4,8 @@ import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, Overla
 import assign from "object-assign";
 import YearPicker from '../../controls/YearPicker.jsx';
 
-import BaclineModifyStore from '../../stores/BaselineModifyStore.jsx';
-import BaclineModifyAction from "../../actions/BaselineModifyAction.jsx";
+import BaselineModifyStore from '../../stores/BaselineModifyStore.jsx';
+import BaselineModifyAction from "../../actions/BaselineModifyAction.jsx";
 import Util from "../../util/Util.jsx";
 
 var monthValues = [

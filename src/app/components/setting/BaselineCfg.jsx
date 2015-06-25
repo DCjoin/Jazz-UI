@@ -147,7 +147,7 @@ let BaselineCfg = React.createClass({
             <BaselineBasic  ref="baselineBasic" {...basicProps} />
           </Tab>
           <Tab label="计算值修正"  {...tabProps}>
-            <BaselineModify  ref="baselineModify" />
+            <BaselineModify  ref="baselineModify" tbId={this.state.tbId} />
           </Tab>
           <Tab label="报警设置"  {...tabProps}>
             <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId} />
