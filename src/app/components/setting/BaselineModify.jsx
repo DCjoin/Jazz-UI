@@ -23,7 +23,7 @@ let BaselineModify = React.createClass({
 		return {
       disable: true,
       monthValues: monthValues,
-      year:TBSettingStore.getYear()
+      year: TBSettingStore.getYear()
 		};
 	},
 
