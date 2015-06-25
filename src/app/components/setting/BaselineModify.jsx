@@ -50,7 +50,7 @@ let BaselineModify = React.createClass({
   },
 
   _onYearPickerSelected(yearData){
-    var year = parseInt(yearDate);
+    var year = parseInt(yearData);
     this.setState({year: year});
     if(year != TBSettingStore.getYear()){
       TBSettingAction.setYear(year);
