@@ -55,11 +55,11 @@ let BaselineModify = React.createClass({
     if(year != TBSettingStore.getYear()){
       TBSettingAction.setYear(year);
     }
+    BaselineModifyAction.loadData(this.props.tbId, year);
   },
 
   _onYearChanged:function(){
     this._onYearPickerSelected(TBSettingStore.getYear());
-    BaselineModifyAction.loadData(this.props.tbId, TBSettingStore.getYear());
   },
 
   loadDataByYear: function(){
@@ -91,9 +91,7 @@ let BaselineModify = React.createClass({
   componentDidMount: function(){
     BaselineModifyStore.addSettingDataListener(this.loadDataByYear);
     TBSettingStore.addSetYearListener(this._onYearChanged);
-    if(TBSettingStore.getYear() == (new Date()).getFullYear()){
-      BaselineModifyAction.loadData(this.props.tbId, TBSettingStore.getYear());
-    }
+    BaselineModifyAction.loadData(this.props.tbId, this.state.year);
   },
 
   componentWillUnmount: function(){
@@ -134,8 +132,8 @@ let BaselineModify = React.createClass({
 
       };
     return (
-      <div ref="baselineModifyDialog">
-        <div className='jazz-setting-alarm-content'>
+      <div className="jazz-setting-container">
+        <div className='jazz-setting-content'>
           <span>
             请选择配置年份进行编辑
                <YearPicker {...yearProps}/>;
@@ -152,10 +150,12 @@ let BaselineModify = React.createClass({
           <span>
             {monthItems}
           </span>
-          <button className='jazz-setting-alarm-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
+        </div>
+        <div>
+          <button className='jazz-setting-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
           <span>
-            <button className='jazz-setting-alarm-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
-            <button className='jazz-setting-alarm-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
+            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
+            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
           </span>
         </div>
     </div>

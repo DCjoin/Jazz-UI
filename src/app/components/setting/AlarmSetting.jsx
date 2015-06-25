@@ -66,8 +66,8 @@ let AlarmSetting = React.createClass({
 
   render: function(){
     return (
-      <div ref="alarmSettingDialog">
-        <div className='jazz-setting-alarm-content'>
+      <div className="jazz-setting-container">
+        <div className='jazz-setting-content'>
           <span>
             <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="right" disabled={this.state.disable}/>
           </span>
@@ -83,10 +83,12 @@ let AlarmSetting = React.createClass({
           <span>
             <Checkboxes ref="alarmSteps" disabled={this.state.disable}/>
           </span>
-          <button className='jazz-setting-alarm-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
+        </div>
+        <div>
+          <button className='jazz-setting-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
           <span>
-            <button className='jazz-setting-alarm-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
-            <button className='jazz-setting-alarm-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
+            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
+            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
           </span>
         </div>
       </div>
