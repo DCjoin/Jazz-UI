@@ -372,8 +372,8 @@ var CalcItem = React.createClass({
         val1Mod: nextProps.val1Mod,
         val2Mod: nextProps.val2Mod,
       });
-      //this.refs.val1Feild.setValue(nextProps.val1);
-      //this.refs.val2Feild.setValue(nextProps.val2);
+      this.refs.val1Feild.setValue(nextProps.val1);
+      this.refs.val2Feild.setValue(nextProps.val2);
     }
   },
 
@@ -456,7 +456,9 @@ var CalcSetting = React.createClass({
   getValue: function(){
     var arr = [];
     for (var i = 1; i < 25; i++) {
-      arr.push(this.refs['item' + i].getValue());
+      var val = this.refs['item' + i].getValue();
+      val.TBTime = i;
+      arr.push(val);
     }
     return arr;
   },
@@ -812,9 +814,9 @@ var TBSettingItem = React.createClass({
   componentWillReceiveProps: function(nextProps){
     if(nextProps){
       var s = {};
+      s.avgs = nextProps.avgs;
       if(nextProps.avgs && nextProps.avgs.length > 0 && this.state.radio == "NormalRadio"){
         s.radio = "CalcRadio";
-        s.avgs = nextProps.avgs;
       }
       else if(nextProps.normals && nextProps.normals.length > 0 && this.state.radio == "CalcRadio"){
         s.radio = "NormalRadio";
