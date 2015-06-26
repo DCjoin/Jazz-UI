@@ -57,11 +57,7 @@ let AlarmSetting = React.createClass({
     this.setState({
       disable: true
     });
-    var alarmSettingData = AlarmSettingStore.getData();
-    this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
-    this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
-    var stepValue = alarmSettingData.AlarmSteps;
-    this.refs.alarmSteps.setValue(stepValue);
+    this._onChange();
   },
 
   render: function(){
@@ -137,9 +133,9 @@ var Checkboxes = React.createClass({
 	render: function(){
 		return (
 			<span>
-				<Checkbox ref="day"  label="日" disabled={this.props.disabled}/>
-				<Checkbox ref="month"  label="月" disabled={this.props.disabled}/>
-				<Checkbox ref="year"  label="年" disabled={this.props.disabled}/>
+				<Checkbox ref="day" label="日" disabled={this.props.disabled}/>
+				<Checkbox ref="month" label="月" disabled={this.props.disabled}/>
+				<Checkbox ref="year" label="年" disabled={this.props.disabled}/>
 			</span>
     );
   }
