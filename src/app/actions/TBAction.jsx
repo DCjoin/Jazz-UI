@@ -8,7 +8,7 @@ import Ajax from '../ajax/ajax.jsx';
 var Action = TB.Action;
 
 let TBAction = {
-  loadData(tagId){
+  loadData(tagId, callback){
     Ajax.post('/TargetBaseline.svc/GetTBsByVTag?', {
         params: {vtagId: tagId},
         success: function(tbs){
@@ -17,6 +17,9 @@ let TBAction = {
               type: Action.LOAD_TB,
               tbs: tbs
           });
+          if(callback){
+            callback(tbs);
+          }
         },
         error: function(err, res){
           console.log(err,res);

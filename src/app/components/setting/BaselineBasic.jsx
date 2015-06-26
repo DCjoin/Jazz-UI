@@ -33,6 +33,14 @@ var DaytimeRangeValue = React.createClass({
     };
   },
 
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps && this.refs.valueField){
+      if(nextProps.value != this.props.value ){
+        this.refs.valueField.setValue(nextProps.value);
+      }
+    }
+  },
+
   _onEndChange: function(e, curEnd, preEnd){
     var preStart = this.props.start, curStart = preStart;
 
@@ -95,7 +103,7 @@ var DaytimeRangeValue = React.createClass({
         }
       },
       valProps = {
-        value: this.props.value,
+        defaultValue: this.props.value,
         onChange: this._onValueChange,
         style: {
           width: "120px",
@@ -342,8 +350,8 @@ var CalcItem = React.createClass({
     time: React.PropTypes.number,
     val1: React.PropTypes.string,
     val2: React.PropTypes.string,
-    val1Med: React.PropTypes.bool,
-    val2Med: React.PropTypes.bool,
+    val1Mod: React.PropTypes.bool,
+    val2Mod: React.PropTypes.bool,
     isViewStatus: React.PropTypes.bool,
   },
 
@@ -351,26 +359,39 @@ var CalcItem = React.createClass({
     return {
       val1: this.props.val1,
       val2: this.props.val2,
-      val1Med: this.props.val1Med,
-      val2Med: this.props.val2Med
+      val1Mod: this.props.val1Mod,
+      val2Mod: this.props.val2Mod
     };
+  },
+
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps){
+      this.setState({
+        val1: nextProps.val1,
+        val2: nextProps.val2,
+        val1Mod: nextProps.val1Mod,
+        val2Mod: nextProps.val2Mod,
+      });
+      //this.refs.val1Feild.setValue(nextProps.val1);
+      //this.refs.val2Feild.setValue(nextProps.val2);
+    }
   },
 
   getValue: function(){
     return {
       WorkDayValue: this.state.val1,
       HolidayDayValue: this.state.val2,
-      WorkDayModifyStatus: this.state.val1 != this.props.val1,
-      HolidayModifyStatus: this.state.val2 != this.props.val2
+      WorkDayModifyStatus: this.state.val1Mod || this.state.val1 != this.props.val1,
+      HolidayModifyStatus: this.state.val2Mod || this.state.val2 != this.props.val2
     }
   },
 
   _onVal1Change: function(e, d){
-    this.setState({val1: e.target.value, val1Med: e.target.value != this.props.val1});
+    this.setState({val1: e.target.value, val1Mod: this.state.val1Mod || e.target.value != this.props.val1});
   },
 
   _onVal2Change: function(e, d){
-    this.setState({val2: e.target.value, val2Med: e.target.value != this.props.val2});
+    this.setState({val2: e.target.value, val2Mod: this.state.val2Mod || e.target.value != this.props.val2});
   },
 
   _getTimeStr: function(timeNum){
@@ -384,26 +405,27 @@ var CalcItem = React.createClass({
         <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
         <td minwidth='250'>
           <span>{this.props.val1}</span>
-          <span>千瓦时</span><span>{this.props.val1Med ? "修正": ""}</span>
+          <span>千瓦时</span><span>{this.props.val1Mod ? "修正": ""}</span>
         </td>
         <td minwidth='250'>
           <span>{this.props.val2}</span>
-          <span>千瓦时</span><span>{this.props.val2Med? "修正": ""}</span>
+          <span>千瓦时</span><span>{this.props.val2Mod? "修正": ""}</span>
         </td>
       </tr>);
-    }else{
+    }
+    else{
       var style={
         width: "120px"
       };
       return (<tr>
         <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
         <td minwidth='250'>
-          <TextField ref='val1' value={this.props.val1} onChange={this._onVal1Change} style={style} />
-          <span>千瓦时</span><span>{this.state.val1Med ? "修正": ""}</span>
+          <TextField ref='val1Feild' defaultValue={this.state.val1} onChange={this._onVal1Change} style={style} />
+          <span>千瓦时</span><span>{this.state.val1Mod ? "修正": ""}</span>
         </td>
         <td minwidth='250'>
-          <TextField ref='val2' value={this.props.val2} onChange={this._onVal2Change} style={style} />
-          <span>千瓦时</span><span>{this.state.val2Med? "修正": ""}</span>
+          <TextField ref='val2Feild' defaultValue={this.state.val2} onChange={this._onVal2Change} style={style} />
+          <span>千瓦时</span><span>{this.state.val2Mod? "修正": ""}</span>
         </td>
       </tr>);
     }
@@ -443,7 +465,6 @@ var CalcSetting = React.createClass({
     if(!this.props.isDisplay){
       return <div></div>;
     }
-
     var items = this.props.items || [];
     var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
     var me = this;
@@ -451,12 +472,12 @@ var CalcSetting = React.createClass({
       for (var i = 0; i < items.length; i++) {
         if(items[i].TBTime == item){
           var props = {
-            //ref: 'item'+ item,
+            ref: 'item'+ item,
             time: item,
             val1: items[i].WorkDayValue,
             val2: items[i].HolidayDayValue,
-            val1Med: items[i].WorkDayModifyStatus,
-            val2Med: items[i].HolidayModifyStatus,
+            val1Mod: items[i].WorkDayModifyStatus,
+            val2Mod: items[i].HolidayModifyStatus,
             isViewStatus: me.props.isViewStatus,
           };
           return <CalcItem {...props} />
@@ -468,8 +489,8 @@ var CalcSetting = React.createClass({
         isViewStatus: me.props.isViewStatus,
         val1: '',
         val2: '',
-        val1Med: false,
-        val2Med: false,
+        val1Mod: false,
+        val2Mod: false,
       };
       return <CalcItem {...props} />;
     }, rows = arr.map(createItem);
@@ -658,7 +679,7 @@ var SpecialItem = React.createClass({
           <DatePicker ref='endDateField' {...endProps} />
           <DaytimeSelector ref='endTimeField' minute={et} {...daytimeProps} />
           <FlatButton label="－"  ref="remove"  onClick={this._onRemove} /><br/>
-          <TextField ref='valueField' value={this.props.value} /><span>千瓦时</span>
+          <TextField ref='valueField' defaultValue={this.props.value} /><span>千瓦时</span>
         </div>
       );
     }
@@ -793,6 +814,7 @@ var TBSettingItem = React.createClass({
       var s = {};
       if(nextProps.avgs && nextProps.avgs.length > 0 && this.state.radio == "NormalRadio"){
         s.radio = "CalcRadio";
+        s.avgs = nextProps.avgs;
       }
       else if(nextProps.normals && nextProps.normals.length > 0 && this.state.radio == "CalcRadio"){
         s.radio = "NormalRadio";

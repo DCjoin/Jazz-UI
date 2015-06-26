@@ -31,30 +31,31 @@ let BaselineCfg = React.createClass({
 
   refreshData: function(){
     var me = this;
-    TBAction.loadData(this.props.tagId);
-    var tbs = TBStore.getData();
-    if(tbs && tbs.length > 0){
-      for(var i=0; i< tbs.length; i++){
-        if(tbs[i].TBType == 2){
-          this.setState({
-            tbId: tbs[i].Id,
-            name: tbs[i].Name,
-            onNameChanged: function(newName){
-              if(this.state.name != newName){
-                this.setState({name: newName});
-                tbs[i].Name = newName;
-                TBAction.saveData(tbs[i]);
+    TBAction.loadData(this.props.tagId, function(tbs){      
+      if(tbs && tbs.length > 0){
+        for(var i=0; i< tbs.length; i++){
+          if(tbs[i].TBType == 2){
+            this.setState({
+              tbId: tbs[i].Id,
+              name: tbs[i].Name,
+              onNameChanged: function(newName){
+                if(this.state.name != newName){
+                  this.setState({name: newName});
+                  tbs[i].Name = newName;
+                  TBAction.saveData(tbs[i]);
+                }
+              },
+              onYearChanged: function(year){
+                if(this.state.year != year){
+                  this.setState({year: year});
+                }
               }
-            },
-            onYearChanged: function(year){
-              if(this.state.year != year){
-                this.setState({year: year});
-              }
-            }
-          });
+            });
+          }
         }
       }
-    }
+    });
+    //var tbs = TBStore.getData();
   },
 
   componentDidMount: function() {
