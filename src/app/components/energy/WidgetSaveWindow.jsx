@@ -12,6 +12,9 @@ let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup
 let isShowed = false;
 
 var WidgetSaveWindow = React.createClass({
+  propTypes:{
+    onWidgetSaveWindowDismiss: React.PropTypes.func
+  },
   getInitialState() {
     return {dashboardState:'existDashboard',
             dashboardMenuItems:[{text:''}]
@@ -25,6 +28,9 @@ var WidgetSaveWindow = React.createClass({
     this.refs.dialogWindow.dismiss();
   },
   _onDismiss(){
+    if(this.props.onWidgetSaveWindowDismiss){
+      this.props.onWidgetSaveWindowDismiss();
+    }
     isShowed = false;
   },
   onTreeItemClick(hierItem){
@@ -90,11 +96,11 @@ var WidgetSaveWindow = React.createClass({
               onClick={this._onDialogSubmit} />,
             <FlatButton
               label="放弃"
-              primary={true}
-              onClick={this._onDialogCancel} style={{marginRight:'560px'}}/>
+              onClick={this._onDialogCancel} style={{marginRight:'360px'}}/>
         ];
 
-    var dialog = <Dialog  title="保存图标至仪表盘"  actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
+    var dialog = <Dialog  title="保存图标至仪表盘" contentStyle={{height:'460px', width:'600px'}}
+                          actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
                   {form}
                  </Dialog>;
 

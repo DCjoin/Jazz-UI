@@ -30,7 +30,7 @@ var BaselineModifyStore = assign({},PrototypeStore,{
 BaselineModifyStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case Action.GET_MODIFY_DATA:
-      BaselineModifyStore.setData();
+      BaselineModifyStore.setData(action.modifyData);
       BaselineModifyStore.emitSettingData();
       break;
     case Action.SET_MODIFY_DATA_SUCCESS:

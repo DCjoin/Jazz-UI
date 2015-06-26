@@ -1178,8 +1178,12 @@ var CalDetail = React.createClass({
         }
         if(this.state.workTimeCalendar){
           this.state.workTimeCalendar.Items.forEach(function(item){
+            let StartFirstPart=(item.StartFirstPart<10)?('0'+item.StartFirstPart):(item.StartFirstPart);
+            let StartSecondPart=(item.StartSecondPart<10)?('0'+item.StartSecondPart):(item.StartSecondPart);
+            let EndFirstPart=(item.EndFirstPart<10)?('0'+item.EndFirstPart):(item.EndFirstPart);
+            let EndSecondPart=(item.EndSecondPart<10)?('0'+item.EndSecondPart):(item.EndSecondPart);
             workTime.push(
-              <div className="timecontent">{item.StartFirstPart}:{item.StartSecondPart}-{item.EndFirstPart}:{item.EndSecondPart}  </div>
+              <div className="timecontent">{StartFirstPart}:{StartSecondPart}-{EndFirstPart}:{EndSecondPart}</div>
             )
           })
         }
