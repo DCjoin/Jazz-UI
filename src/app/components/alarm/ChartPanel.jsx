@@ -184,6 +184,9 @@ let ChartPanel = React.createClass({
 
       return chartObj;
     },
+    onWidgetSaveWindowDismiss(){
+      this.setState({dashboardOpenImmediately:false});
+    },
     getInitialState() {
         let state = {
           isLoading: false,
@@ -232,9 +235,10 @@ let ChartPanel = React.createClass({
 
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
-          <WidgetSaveWindow ref={'saveChartDialog'} openImmediately={me.state.dashboardOpenImmediately} tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>
+          <WidgetSaveWindow ref={'saveChartDialog'} openImmediately={me.state.dashboardOpenImmediately} onWidgetSaveWindowDismiss={me.onWidgetSaveWindowDismiss}
+                            tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>
           {title}
-          <div style={{display:'flex', 'flexFlow':'row', 'alignItems':'center', height:'60px'}}>
+          <div className={'jazz-alarm-chart-toolbar-container'}>
             <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
               <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'100px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
