@@ -9,7 +9,7 @@ import BaselineModifyStore from '../../stores/BaselineModifyStore.jsx';
 import BaselineModifyAction from "../../actions/BaselineModifyAction.jsx";
 import Util from "../../util/Util.jsx";
 
-var monthValues = [
+let monthValues = [
   {LeftValue: 100, LeftIsModify: false, RightValue: 200, RightIsModify: false},
   {LeftValue: 300, LeftIsModify: false, RightValue: 400, RightIsModify: false},
   {LeftValue: 500, LeftIsModify: false, RightValue: 600, RightIsModify: false},
@@ -17,6 +17,8 @@ var monthValues = [
   {LeftValue: 900, LeftIsModify: false, RightValue: 1000, RightIsModify: false},
   {LeftValue: 1100, LeftIsModify: false, RightValue: 1200, RightIsModify: false}
 ];
+const monthItemNum = 6;
+const monthValueNum = 12;
 let BaselineModify = React.createClass({
   mixins:[Navigation,State],
   getInitialState: function(){
@@ -32,7 +34,7 @@ let BaselineModify = React.createClass({
     var BaselineModifyData = BaselineModifyStore.getData();
     var MonthlyValues = [];
     var monthValue;
-    for(var i = 0; i < 6; i++){
+    for(var i = 0; i < monthItemNum; i++){
       monthValue = {
         TargetBaselinedId: this.props.tbId,
         LocalTime: BaselineModifyData.MonthlyValues[i*2].LocalTime,
@@ -84,7 +86,7 @@ let BaselineModify = React.createClass({
   clearModify: function(){
     this.state.yearIsModify = false;
     var monthValues = this.state.monthValues;
-    for(var i = 0; i < 6; i++){
+    for(var i = 0; i < monthItemNum; i++){
       monthValues[i].LeftIsModify = false;
       monthValues[i].RightIsModify = false;
     }
@@ -92,15 +94,15 @@ let BaselineModify = React.createClass({
 
   handleCancel: function(){
     this.setState({
-      disable : true
+      disable: true
     });
     this.loadDataByYear();
     this.clearModify();
   },
-  
+
   yearValueChange: function(e){
     this.setState({
-      yearIsModify : true,
+      yearIsModify: true,
       yearValue: e.target.value
     });
   },
@@ -122,12 +124,12 @@ let BaselineModify = React.createClass({
     var getMonthData = BaselineModifyData.MonthlyValues;
     var monthValues = this.state.monthValues;
     var date, month, monthItemIndex, partIndex, monthValue;
-    for(var i = 0; i < getMonthData.length; i++){
+    for(var i = 0; i < monthValueNum; i++){
       date = Util.DataConverter.JsonToDateTime(getMonthData[i].LocalTime);
       month = (new Date(date)).getMonth();
       monthItemIndex = parseInt(month / 2);
       partIndex = month % 2;
-      for(var j = 0; j < monthValues.length; j++){
+      for(var j = 0; j < monthItemNum; j++){
         monthValue = monthValues[j];
         if(j == monthItemIndex){
           if(partIndex === 0){
@@ -148,7 +150,6 @@ let BaselineModify = React.createClass({
 
   componentDidMount: function(){
     BaselineModifyStore.addSettingDataListener(this.loadDataByYear);
-
     BaselineModifyAction.loadData(this.props.tbId, this.state.year);
   },
 
