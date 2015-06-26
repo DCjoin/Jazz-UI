@@ -8,7 +8,7 @@ var DaytimeSelector = React.createClass({
     from: React.PropTypes.number,
     step: React.PropTypes.number,
     to: React.PropTypes.number,
-    defaultMinute: React.PropTypes.number,
+    minute: React.PropTypes.number,
     style: React.PropTypes.object,
 
     isViewStatus: React.PropTypes.bool,
@@ -24,16 +24,16 @@ var DaytimeSelector = React.createClass({
   },
   getInitialState: function() {
     return {
-      value: this.props.defaultMinute || this.props.from || 0
+      value: this.props.minute || this.props.from || 0
     };
   },
   shouldComponentUpdate: function(nextProps, nextState){
     var p = this.props, n = nextProps;
-    return n.from != p.from || n.to != p.to || n.defaultMinute != p.defaultMinute || n.isViewStatus != p.isViewStatus;
+    return n.from != p.from || n.to != p.to || n.minute != p.minute || n.isViewStatus != p.isViewStatus;
   },
   componentDidUpdate: function () {
     this.setState({
-      value: this.props.defaultMinute,
+      value: this.props.minute,
       from: this.props.start,
       to: this.props.end,
     }) ;
@@ -68,8 +68,8 @@ var DaytimeSelector = React.createClass({
         menuItems: menuItems
       };
       var index = 0;
-      if(this.props.defaultMinute){
-        index = (this.props.defaultMinute - this.props.from) / this.props.step;
+      if(this.props.minute){
+        index = (this.props.minute - this.props.from) / this.props.step;
       }
       ddmProps.selectedIndex = index;
 

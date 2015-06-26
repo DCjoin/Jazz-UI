@@ -17,7 +17,7 @@ var _year=null;
 let CHANGE_TAG_EVENT = 'changetag';
 let CHANGE_TBYEAR_EVENT = 'changetbyear';
 let CHANGE_CALDETAIL_EVENT= 'changecaldetail';
-let CHANGE_SETYEAR_EVENT= 'changesetyear';
+
 
 var TBSettingStore = assign({},PrototypeStore,{
   getData(){
@@ -70,18 +70,6 @@ var TBSettingStore = assign({},PrototypeStore,{
   getYear(){
     return _year
   },
-  emitSetYearChange: function() {
-        this.emit(CHANGE_SETYEAR_EVENT);
-      },
-
-  addSetYearListener: function(callback) {
-        this.on(CHANGE_SETYEAR_EVENT, callback);
-      },
-
-  removeSetYearListener: function(callback) {
-        this.removeListener(CHANGE_SETYEAR_EVENT, callback);
-        this.dispose();
-      },
 });
 
 var Action = TBSetting.Action;
@@ -113,7 +101,6 @@ TBSettingStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SET_YEAR:
       TBSettingStore.setYear(action.year);
-      TBSettingStore.emitSetYearChange();
       break;
   }
 });

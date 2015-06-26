@@ -15,7 +15,7 @@
   height:500px;
   overflow: auto;
   display: flex;
-  flex-flow: row
+  flex-flow: row;
 }
 .jazz-setting-container{
   height: 428px;
@@ -49,20 +49,61 @@
   margin-top: 18px;
   margin-bottom: 10px;
 }
+.jazz-setting-basic-calbutton{
+  font-size: 14px;
+  color:#1ca8dd;
+  text-decoration:underline;
 
+}
 .jazz-setting-basic-caldetail{
+  margin-top: 24px;
+  margin-right: 24px;
   display:flex;
   flex-flow: column;
+  margin-left: auto;
+  .workdaytitle{
+    color:#abafae;
+    font-size: 14px;
+  }
+  .workdaycontent{
+    color:#767a7a;
+    font-size: 16px;
+    margin:20px 0 5px 0;
+  }
   .workday{
     display: flex;
     flex-flow: row;
+    color:#767a7a;
+    font-size: 16px;
+    line-height:26px;
+    .font{
+      margin-left:3px;
+    }
+  }
+  .worktimetitle{
+    color:#abafae;
+    font-size: 14px;
+    margin-top:45px;
+  }
+  .worktimecontent{
+    color:#767a7a;
+    font-size: 16px;
+    margin:20px 0 5px 0;
   }
   .worktime{
     display: flex;
     flex-flow: row;
+    color:#767a7a;
+    font-size: 16px;
+    line-height:26px;
     .time{
       display: flex;
       flex-flow: row wrap;
+      width:170px;
+      margin-left: 3px;
+      .timecontent{
+        margin-right:10px
+      }
     }
   }
 }
