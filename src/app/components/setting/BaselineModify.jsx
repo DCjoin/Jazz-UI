@@ -10,45 +10,99 @@ import BaselineModifyAction from "../../actions/BaselineModifyAction.jsx";
 import Util from "../../util/Util.jsx";
 
 var monthValues = [
-  {LeftValue: 100, LeftMonth: 1, RightValue: 200, RightMonth: 2},
-  {LeftValue: 300, LeftMonth: 3, RightValue: 400, RightMonth: 4},
-  {LeftValue: 500, LeftMonth: 5, RightValue: 600, RightMonth: 6},
-  {LeftValue: 700, LeftMonth: 7, RightValue: 800, RightMonth: 8},
-  {LeftValue: 900, LeftMonth: 9, RightValue: 1000, RightMonth: 10},
-  {LeftValue: 1100, LeftMonth: 11, RightValue: 1200, RightMonth: 12}
+  {LeftValue: 100, LeftIsModify: false, RightValue: 200, RightIsModify: false},
+  {LeftValue: 300, LeftIsModify: false, RightValue: 400, RightIsModify: false},
+  {LeftValue: 500, LeftIsModify: false, RightValue: 600, RightIsModify: false},
+  {LeftValue: 700, LeftIsModify: false, RightValue: 800, RightIsModify: false},
+  {LeftValue: 900, LeftIsModify: false, RightValue: 1000, RightIsModify: false},
+  {LeftValue: 1100, LeftIsModify: false, RightValue: 1200, RightIsModify: false}
 ];
 let BaselineModify = React.createClass({
   mixins:[Navigation,State],
-  getInitialState:function(){
+  getInitialState: function(){
 		return {
       disable: true,
+      yearValue: 100,
+      yearIsModify: false,
       monthValues: monthValues,
       year: TBSettingStore.getYear()
 		};
 	},
+  getValue: function(){
+    var BaselineModifyData = BaselineModifyStore.getData();
+    var MonthlyValues = [];
+    var monthValue;
+    for(var i = 0; i < 6; i++){
+      monthValue = {
+        TargetBaselinedId: this.props.tbId,
+        LocalTime: BaselineModifyData.MonthlyValues[i*2].LocalTime,
+        DataValue: this.refs['monthItem' + (i + 1)].state.monthValue.LeftValue,
+        IsModify: this.refs['monthItem' + (i + 1)].state.monthValue.LeftIsModify
+      };
+      MonthlyValues.push(monthValue);
+      monthValue = {
+        TargetBaselinedId: this.props.tbId,
+        LocalTime: BaselineModifyData.MonthlyValues[i*2+1].LocalTime,
+        DataValue: this.refs['monthItem' + (i + 1)].state.monthValue.RightValue,
+        IsModify: this.refs['monthItem' + (i + 1)].state.monthValue.RightIsModify
+      };
+      MonthlyValues.push(monthValue);
+    }
+    var YearlyValues=[];
+    var yearValue = {
+      TargetBaselinedId: this.props.tbId,
+      LocalTime: BaselineModifyData.YearlyValues[0].LocalTime,
+      DataValue: this.state.yearValue,
+      IsModify: this.state.yearIsModify
+    };
+    YearlyValues.push(yearValue);
+    return {
+      Id: this.props.tbId,
+      Year: this.state.year,
+      TBVersion: BaselineModifyData.TBVersion,
+      Version: BaselineModifyData.Version,
+      MonthlyValues: MonthlyValues,
+      YearlyValues: YearlyValues
+    };
+  },
 
   handleEdit: function(){
     this.setState({
       disable : false
     });
-    console.log("handle Edit");
 	},
 
   handleSave: function(){
-    //save
-    console.log("handleSave");
     this.setState({
       disable : true
     });
+    var val = this.getValue();
+    BaselineModifyAction.saveData(val);
+    this.clearModify();
+  },
+
+  clearModify: function(){
+    this.state.yearIsModify = false;
+    var monthValues = this.state.monthValues;
+    for(var i = 0; i < 6; i++){
+      monthValues[i].LeftIsModify = false;
+      monthValues[i].RightIsModify = false;
+    }
   },
 
   handleCancel: function(){
-      console.log("handleCancel");
-      this.setState({
+    this.setState({
       disable : true
     });
+    this.loadDataByYear();
+    this.clearModify();
   },
-
+  yearValueChange: function(e){
+    this.setState({
+      yearIsModify : true,
+      yearValue: e.target.value
+    });
+  },
   _onYearPickerSelected(yearData){
     var year = parseInt(yearData);
     this.setState({year: year});
@@ -64,27 +118,33 @@ let BaselineModify = React.createClass({
 
   loadDataByYear: function(){
     var BaselineModifyData = BaselineModifyStore.getData();
-    this.refs.yearValue.getDOMNode().value = BaselineModifyData.YearlyValues.DataValue;
+    this.setState({
+      yearValue: BaselineModifyData.YearlyValues.DataValue
+    });
     var getMonthData = BaselineModifyData.MonthlyValues;
     var monthValues = this.state.monthValues;
-    var date, month, monthValue;
+    var date, month, monthItemIndex, partIndex, monthValue;
     for(var i = 0; i < getMonthData.length; i++){
-      date = Util.JsonToDateTime(getMonthData[i].LocalTime);
-      month = date.getMonth() + 1;
+      date = Util.DataConverter.JsonToDateTime(getMonthData[i].LocalTime);
+      month = (new Date(date)).getMonth();
+      monthItemIndex = parseInt(month / 2);
+      partIndex = month % 2;
       for(var j = 0; j < monthValues.length; j++){
         monthValue = monthValues[j];
-        if(monthValue.LeftMonth === month){
-          monthValue.LeftValue = getMonthData[i].DataValue;
+        if(j == monthItemIndex){
+          if(partIndex === 0){
+            monthValue.LeftValue = getMonthData[i].DataValue;
+          }
+          else if(partIndex === 1){
+            monthValue.RightValue = getMonthData[i].DataValue;
+          }
           monthValues.splice(j, 1, monthValue);
-        }
-        else if(monthValue.RightMonth === month){
-          monthValue.RightValue = getMonthData[i].DataValue;
-          monthValues.splice(j, 1, monthValue);
+          break;
         }
       }
     }
     this.setState({
-      monthValues : monthValues
+      monthValues: monthValues
     });
   },
 
@@ -109,28 +169,28 @@ let BaselineModify = React.createClass({
      {LeftMonth:"十一", RightMonth:"十二"}
     ];
     let uom = '千瓦时';
-    var disable = this.state.disable;
     var monthValues = this.state.monthValues;
+    var disable = this.state.disable;
     var idx = 0;
     var monthItems = months.map(function(month) {
       let props = {
+        ref: "monthItem" + (idx + 1),
         line: month,
         uom: uom,
         disable: disable,
         monthValue: monthValues[idx++]
       };
-        return (
-          <MonthItem  {...props}/>
-        );
-      });
-      var curYear = (new Date()).getFullYear();
-      var yearProps = {
-        ref: "yearSelector",
-        selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
-        onYearPickerSelected: this._onYearPickerSelected,
-        //className: "yearpicker",
-
-      };
+      return (
+        <MonthItem {...props}/>
+      );
+    });
+    var curYear = (new Date()).getFullYear();
+    var yearProps = {
+      ref: "yearSelector",
+      selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
+      onYearPickerSelected: this._onYearPickerSelected,
+      //className: "yearpicker",
+    };
     return (
       <div className="jazz-setting-container">
         <div className='jazz-setting-content'>
@@ -142,7 +202,7 @@ let BaselineModify = React.createClass({
             年基准值
           </span>
           <span>
-            年度 <input type="text" ref="yearValue" style={{width:'50px', marginRight:'10px'}} value="100" disabled={this.state.disable}/> 千瓦时
+            年度 <input type="text" ref="yearValue" style={{width:'50px', marginRight:'10px'}} value={this.state.yearValue} disabled={this.state.disable} onChange={this.yearValueChange}/> 千瓦时
           </span>
           <span className='jazz-setting-baseline-margin'>
             月基准值
@@ -164,25 +224,50 @@ let BaselineModify = React.createClass({
 });
 
 let MonthItem = React.createClass({
-	render() {
+  getInitialState:function(){
+		return {
+      monthValue: this.props.monthValue
+		};
+	},
+  componentWillReceiveProps: function(nextProps){
+    this.setState({
+      monthValue: nextProps.monthValue
+    });
+  },
+  _onLeftChange: function(e){
+    var monthValue = this.state.monthValue;
+    monthValue.LeftValue = parseInt(e.target.value);
+    monthValue.LeftIsModify = true;
+    this.setState({
+      monthValue: monthValue
+    });
+  },
+  _onRightChange: function(e){
+    var monthValue = this.state.monthValue;
+    monthValue.RightValue = parseInt(e.target.value);
+    monthValue.RightIsModify = true;
+    this.setState({
+      monthValue: monthValue
+    });
+  },
+	render: function(){
 	  let line = this.props.line;
     let Uom = this.props.uom;
     let disable = this.props.disable;
-    let monthValue = this.props.monthValue;
 		return (
       <table border="1">
         <tr>
           <td align="left">
             <span style={{display:'inline-block', width:'58px'}}>{line.LeftMonth}月</span>
             <span style={{display:'inline-block',width:'90px'}}>
-             <input style={{display:'inline-block',width:'80px'}}  ref={line.LeftRef} type="text" value={monthValue.LeftValue}  disabled={disable}/>
+             <input type="text" style={{display:'inline-block',width:'80px'}} value={this.state.monthValue.LeftValue} onChange={this._onLeftChange} disabled={disable}/>
             </span>
             <span style={{display:'inline-block',width:'100px'}}>{Uom}</span>
           </td>
           <td align="right">
             <span style={{display:'inline-block', width:'58px'}}>{line.RightMonth}月</span>
             <span style={{display:'inline-block',width:'90px'}}>
-             <input type="text" style={{display:'inline-block',width:'80px'}}  ref={line.RightRef} value={monthValue.RightValue}  disabled={disable}/>
+             <input type="text" style={{display:'inline-block',width:'80px'}} value={this.state.monthValue.RightValue} onChange={this._onRightChange} disabled={disable}/>
             </span>
             <span style={{display:'inline-block',width:'50px'}}>{Uom}</span>
           </td>

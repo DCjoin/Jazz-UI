@@ -6,8 +6,10 @@ import Ajax from '../ajax/ajax.jsx';
 let BaselineModifyAction = {
   loadData(tbId, year){
     Ajax.post('/TargetBaseline.svc/GetTargetBaselineDataSetting', {
-      params: {id: tbId,
-               year: year},
+      params: {
+        tbId: tbId,
+        year: year
+      },
       success: function(modifyData){
         AppDispatcher.dispatch({
             type: Action.GET_MODIFY_DATA,
@@ -19,9 +21,9 @@ let BaselineModifyAction = {
       }
     });
   },
-  saveData(setting){
-    Ajax.post('/TargetBaseline.svc/ModifyAlarmSetting', {
-      params: setting,
+  saveData(data){
+    Ajax.post('/TargetBaseline.svc/ModifyTargetBaselineDataSetting', {
+      params: {dto: data},
       success: function(){
         AppDispatcher.dispatch({
             type: Action.SET_MODIFY_DATA_SUCCESS
