@@ -28,14 +28,14 @@ let BaselineModify = React.createClass({
     var monthValue;
     for(var i = 0; i < monthItemNum; i++){
       monthValue = {
-        TargetBaselinedId: this.props.tbId,
+        TargetBaselineId: this.props.tbId,
         LocalTime: BaselineModifyData.MonthlyValues[i*2].LocalTime,
         DataValue: this.refs['monthItem' + (i + 1)].state.monthValue.LeftValue,
         IsModify: this.refs['monthItem' + (i + 1)].state.monthValue.LeftIsModify
       };
       MonthlyValues.push(monthValue);
       monthValue = {
-        TargetBaselinedId: this.props.tbId,
+        TargetBaselineId: this.props.tbId,
         LocalTime: BaselineModifyData.MonthlyValues[i*2+1].LocalTime,
         DataValue: this.refs['monthItem' + (i + 1)].state.monthValue.RightValue,
         IsModify: this.refs['monthItem' + (i + 1)].state.monthValue.RightIsModify
@@ -44,7 +44,7 @@ let BaselineModify = React.createClass({
     }
     var YearlyValues=[];
     var yearValue = {
-      TargetBaselinedId: this.props.tbId,
+      TargetBaselineId: this.props.tbId,
       LocalTime: BaselineModifyData.YearlyValues[0].LocalTime,
       DataValue: this.state.yearValue,
       IsModify: this.state.yearIsModify
@@ -149,7 +149,7 @@ let BaselineModify = React.createClass({
       year: TBSettingStore.getYear()
 		};
 	},
-  
+
   componentDidMount: function(){
     BaselineModifyStore.addSettingDataListener(this.loadDataByYear);
     BaselineModifyAction.loadData(this.props.tbId, this.state.year);
