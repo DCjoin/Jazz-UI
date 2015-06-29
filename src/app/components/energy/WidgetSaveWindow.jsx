@@ -11,6 +11,7 @@ import CommonFuns from '../../util/Util.jsx';
 
 let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
 let isShowed = false;
+let isCommited = false;
 
 var WidgetSaveWindow = React.createClass({
   propTypes:{
@@ -18,7 +19,8 @@ var WidgetSaveWindow = React.createClass({
   },
   getInitialState() {
     return {dashboardState:'existDashboard',
-            dashboardMenuItems:[{text:''}]
+            dashboardMenuItems:[{text:''}],
+            selectedExistingDashboardIndex: 0
            };
   },
   show(){
@@ -55,25 +57,34 @@ var WidgetSaveWindow = React.createClass({
     this.setState({dashboardState:'newDashboard'});
   },
   _onExistDashboardChanged(e, selectedIndex, menuItem){
-    console.log(selectedIndex, menuItem);
-    this.setState({selectedExistingDashboard:menuItem});
+    this.setState({selectedExistingDashboard:menuItem,
+                   selectedExistingDashboardIndex: selectedIndex});
+  },
+  _onNameFieldChange(){
+    this.refs.widgetname.setErrorText();
+  },
+  _onNewDSNameFieldChange(){
+    this.refs.newDashboardName.setErrorText();
   },
   render(){
     let me = this;
     let existDashBoardRadioContent;
     let newDashboardRadioContent;
     if(this.state.dashboardState ==='existDashboard'){
-      existDashBoardRadioContent = <div><MutableDropMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems}
-                                                      onChange={this._onExistDashboardChanged}></MutableDropMenu></div>;
+      existDashBoardRadioContent = <div>
+          <MutableDropMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
+            selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></MutableDropMenu></div>;
     }else{
-      newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}/></div>;
+      newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}
+        className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNewDSNameFieldChange}/></div>;
     }
-    var form =<div style={{marginLeft:'17px'}}>
+    var form =<div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
       <div style={{paddingBottom:'10px'}}>
-        <span className='jazz-form-text-field-title'>*图标名称：</span> <TextField ref={'widgetname'} />
+        <span className='jazz-form-text-field-label'>*图标名称：</span>
+        <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNameFieldChange}/>
       </div>
-      <div style={{marginBottom:'10px'}} className={'jazz-normal-hierarchybutton-container'}>
-        <span className='jazz-form-field-title' style={{marginTop:'12px'}}>*层级节点：</span>
+      <div style={{marginBottom:'20px'}} className={'jazz-normal-hierarchybutton-container'}>
+        <span className='jazz-form-field-title'>*层级节点：</span>
           <HierarchyButton ref={'hierTreeButton'} show={true}
               onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
       </div>
@@ -81,7 +92,7 @@ var WidgetSaveWindow = React.createClass({
         <span className='jazz-form-field-title' style={{marginTop:'2px'}}>*选择仪表盘：</span>
         <div style={{width: '200px', display:'inline-block'}}>
           <RadioButtonGroup ref={'existDashboardRadio'} onChange={this._onExistRadioChanged} valueSelected={this.state.dashboardState}>
-            {[<RadioButton label="已存在仪表盘" value="existDashboard" ></RadioButton>]}
+            {[<RadioButton label="已存在仪表盘" value="existDashboard" className={'jazz-widget-save-dialog-radiobutton'} ></RadioButton>]}
           </RadioButtonGroup>
           {existDashBoardRadioContent}
           <RadioButtonGroup ref={'newDashboardRadio'} onChange={this._onNewRadioChanged} valueSelected={this.state.dashboardState}>
@@ -91,7 +102,8 @@ var WidgetSaveWindow = React.createClass({
         </div>
       </div>
       <div>
-        <span className='jazz-form-text-field-title'>备注：</span><TextField ref={'dashboardComment'} multiLine='true'/>
+        <span className='jazz-form-text-field-label'>备注：</span>
+        <TextField ref={'dashboardComment'} multiLine='true' className={'jazz-widget-save-dialog-textfiled'}/>
       </div>
     </div>;
 
@@ -115,11 +127,25 @@ var WidgetSaveWindow = React.createClass({
   },
   componentDidUpdate(){
     if(this.props.openImmediately && !isShowed){
+      this.resetFields();
       var tagOption = this.props.tagOption;
       this.refs.hierTreeButton.selectHierItem(tagOption.hierId, true);
       this.show();
     }
+  },
+  resetFields(){
+    isCommited = false;
+    this.refs.widgetname.setValue('');
+    this.refs.widgetname.setErrorText();
+    if(this.refs.newDashboard){
+      this.refs.newDashboard.setValue('');
+      this.refs.newDashboard.setErrorText();
+    }
+    if(this.refs.dashboardComment) {
+      this.refs.dashboardComment.setValue('');
+    }
 
+    this.setState({dashboardState: 'existDashboard'});
   },
   _onDialogCancel(){
     this.hide();
@@ -137,7 +163,11 @@ var WidgetSaveWindow = React.createClass({
       flag = false;
     }
     if(this.state.dashboardState === 'existDashboard'){
-      let existDashboardItem = CommonFuns.getSelecetedItemFromDropdownMenu(this.refs.dashboardListDropDownMenu);
+      if(!this.state.dashboardMenuItems || this.state.dashboardMenuItems.length===0){
+        flag = false;
+        return flag;
+      }
+      let existDashboardItem = this.state.dashboardMenuItems[this.state.selectedExistingDashboardIndex];
       if(!existDashboardItem || !existDashboardItem.id) {
         flag = false;
       }
@@ -152,11 +182,12 @@ var WidgetSaveWindow = React.createClass({
     return flag;
   },
   _onDialogSubmit(){
-    if(this.validate()){
+    if(this.validate() && !isCommited){
+      isCommited = true;
       let widgetDto;
       let createNewDashboard = (this.state.dashboardState === 'newDashboard');
       if(!createNewDashboard){
-        let existDashboardItem = CommonFuns.getSelecetedItemFromDropdownMenu(this.refs.dashboardListDropDownMenu),
+        let existDashboardItem = this.state.dashboardMenuItems[this.state.selectedExistingDashboardIndex],
             dashboardId = existDashboardItem.id,
             title = this.refs.widgetname.getValue();
 
