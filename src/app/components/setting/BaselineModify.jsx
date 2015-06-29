@@ -21,15 +21,7 @@ const monthItemNum = 6;
 const monthValueNum = 12;
 let BaselineModify = React.createClass({
   mixins:[Navigation,State],
-  getInitialState: function(){
-		return {
-      disable: true,
-      yearValue: 100,
-      yearIsModify: false,
-      monthValues: monthValues,
-      year: TBSettingStore.getYear()
-		};
-	},
+
   getValue: function(){
     var BaselineModifyData = BaselineModifyStore.getData();
     var MonthlyValues = [];
@@ -148,6 +140,16 @@ let BaselineModify = React.createClass({
     });
   },
 
+  getInitialState: function(){
+		return {
+      disable: true,
+      yearValue: 100,
+      yearIsModify: false,
+      monthValues: monthValues,
+      year: TBSettingStore.getYear()
+		};
+	},
+  
   componentDidMount: function(){
     BaselineModifyStore.addSettingDataListener(this.loadDataByYear);
     BaselineModifyAction.loadData(this.props.tbId, this.state.year);
