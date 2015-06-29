@@ -4,6 +4,7 @@ import React from "react";
 import mui from 'material-ui';
 import {dateFormat} from '../../util/Util.jsx';
 import HierarchyButton from '../HierarchyButton.jsx';
+import MutableDropMenu from '../../controls/MutableDropMenu.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import DashboardStore from '../../stores/DashboardStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
@@ -39,7 +40,9 @@ var WidgetSaveWindow = React.createClass({
     AlarmAction.getDashboardByHierachy(hierItem.Id);
   },
   onHierButtonClick(){
-
+    this.setState({
+      HierarchyShow:true
+    });
   },
   _onDashboardListLoaded(){
     var menuItems = DashboardStore.getDashboardMenuItems();
@@ -60,19 +63,22 @@ var WidgetSaveWindow = React.createClass({
     let existDashBoardRadioContent;
     let newDashboardRadioContent;
     if(this.state.dashboardState ==='existDashboard'){
-      existDashBoardRadioContent = <div><DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} onChange={this._onExistDashboardChanged}></DropDownMenu></div>;
+      existDashBoardRadioContent = <div><MutableDropMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems}
+                                                      onChange={this._onExistDashboardChanged}></MutableDropMenu></div>;
     }else{
       newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}/></div>;
     }
-    var form =<div>
+    var form =<div style={{marginLeft:'17px'}}>
       <div style={{paddingBottom:'10px'}}>
-        <span className='jazz-form-text-field-title'>图标名称：</span> <TextField ref={'widgetname'} />
+        <span className='jazz-form-text-field-title'>*图标名称：</span> <TextField ref={'widgetname'} />
       </div>
-      <div style={{marginBottom:'10px'}}>
-        <span className='jazz-form-field-title' style={{marginTop:'12px'}}>层级节点：</span> <HierarchyButton ref={'hierTreeButton'} onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
+      <div style={{marginBottom:'10px'}} className={'jazz-normal-hierarchybutton-container'}>
+        <span className='jazz-form-field-title' style={{marginTop:'12px'}}>*层级节点：</span>
+          <HierarchyButton ref={'hierTreeButton'} show={true}
+              onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
       </div>
       <div style={{ marginBottom:'10px'}}>
-        <span className='jazz-form-field-title' style={{marginTop:'2px'}}>选择仪表盘：</span>
+        <span className='jazz-form-field-title' style={{marginTop:'2px'}}>*选择仪表盘：</span>
         <div style={{width: '200px', display:'inline-block'}}>
           <RadioButtonGroup ref={'existDashboardRadio'} onChange={this._onExistRadioChanged} valueSelected={this.state.dashboardState}>
             {[<RadioButton label="已存在仪表盘" value="existDashboard" ></RadioButton>]}
@@ -90,16 +96,11 @@ var WidgetSaveWindow = React.createClass({
     </div>;
 
     var _buttonActions = [
-            <FlatButton
-              label="保存"
-              secondary={true}
-              onClick={this._onDialogSubmit} />,
-            <FlatButton
-              label="放弃"
-              onClick={this._onDialogCancel} style={{marginRight:'360px'}}/>
+            <FlatButton label="保存" onClick={this._onDialogSubmit} />,
+            <FlatButton label="放弃" onClick={this._onDialogCancel} style={{marginRight:'364px'}}/>
         ];
-
-    var dialog = <Dialog  title="保存图标至仪表盘" contentStyle={{height:'460px', width:'600px'}}
+    let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'保存图标至仪表盘'}</h3>;
+    var dialog = <Dialog  title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}}
                           actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
                   {form}
                  </Dialog>;
@@ -121,7 +122,6 @@ var WidgetSaveWindow = React.createClass({
 
   },
   _onDialogCancel(){
-    console.log('_onDialogCancel');
     this.hide();
   },
   validate(){
