@@ -63,7 +63,7 @@ let HierarchySearch = React.createClass({
 
       if(hasSearchValue){
         if(nodelength==0){
-          typeItem=<div>{nodetypename[node[0].Type+1]}</div>
+          typeItem=<div className="jazz-hiersearch-type">{nodetypename[node[0].Type+1]}</div>
         }
         else{
           var nodeProps={
@@ -71,7 +71,7 @@ let HierarchySearch = React.createClass({
               "margin-top":Number(nodelength * itemUnit)
             }
           };
-          typeItem=<div {...nodeProps}>{nodetypename[node[0].Type+1]}</div>
+          typeItem=<div {...nodeProps} className="jazz-hiersearch-type">{nodetypename[node[0].Type+1]}</div>
         }
 
         nodelength=payloadNo-lastpayloadNo;
@@ -85,7 +85,7 @@ let HierarchySearch = React.createClass({
             <div className="jazz-searchtype">
               {nodetype}
             </div>
-            <Menu menuItems={nodemenuItems} autoWidth={false} className="jazz-searchmenu" onItemClick={this._onItemClick}/>
+            <Menu menuItems={nodemenuItems} autoWidth={false} className="jazz-searchmenu" menuItemClassName="jazz-searchmenuitem" onItemClick={this._onItemClick}/>
           </div>
     );
   },
