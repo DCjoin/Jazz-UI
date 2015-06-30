@@ -174,7 +174,7 @@ let Dialog = React.createClass({
       root:{
         margin: 0,
         padding: '19px 24px 24px 50px',
-        height: '30px',
+      
         color: '#464949',
         fontSize: '20px',
         fontFamily: 'Microsoft YaHei',
@@ -235,7 +235,7 @@ let Dialog = React.createClass({
           style={this.mergeAndPrefix(winstyles.contents, this.props.contentStyle, this.state.open && winstyles.contentsWhenOpen)}
           className={this.props.contentClassName}
           >
-          <div style={titlestyles.root}>
+          <div style={this.mergeAndPrefix(titlestyles.root,this.props.titleStyle)}>
             <div>{this.props.title}</div>
             <button style={titlestyles.buttons} onClick={this.dismiss}>×</button>
           </div>

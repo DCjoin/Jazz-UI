@@ -372,11 +372,12 @@ let ChartComponent = React.createClass({
               <FlatButton
               label="放弃"
               primary={true}
-              onClick={this._onIgnoreDialogCancel} />
+              onClick={this._onIgnoreDialogCancel} style={{marginRight:'364px'}}/>
           ];
-      var dialog = <Dialog actions={_buttonActions} modal={false} ref="ignoreDialogWindow">
-        <div>忽略该点报警吗？</div>
-        <div style={{marginTop:'20px'}}> <Checkbox ref='batchIgnore' label='忽略该点后的连续报警'/></div>
+
+      var dialog = <Dialog actions={_buttonActions} modal={false} ref="ignoreDialogWindow" contentStyle={{width:'600px'}}>
+        <div style={{fontSize:'20px', fontWeight:'bold', padding:'0px 0 0 24px'}}>忽略该点报警吗？</div>
+        <div style={{margin:'30px auto 10px 24px'}}> <Checkbox ref='batchIgnore' label='忽略该点后的连续报警'/></div>
       </Dialog>;
 
       let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,

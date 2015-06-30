@@ -9,13 +9,14 @@
 }
 .jazz-setting-basic-container{
   height:600px;
-  margin-left: 35px;
+  margin-left: 20px;
 }
 .jazz-setting-basic-content{
-  height:500px;
+  height:400px;
   overflow: auto;
   display: flex;
   flex-flow: row;
+  font-size:14px;
 }
 .jazz-setting-container{
   height: 428px;
@@ -57,7 +58,6 @@
 }
 .jazz-setting-basic-caldetail{
   margin-top: 24px;
-  margin-right: 24px;
   display:flex;
   flex-flow: column;
   margin-left: auto;
@@ -99,11 +99,55 @@
     .time{
       display: flex;
       flex-flow: row wrap;
-      width:170px;
+      width:200px;
       margin-left: 3px;
       .timecontent{
         margin-right:10px
       }
     }
+  }
+}
+.jazz-tabs{
+  >div:first-of-type{
+      >div:nth-child(2){
+        background-color:#1ca8dd !important
+      }
+
+  }
+}
+.jazz-setting-basic-edit{
+  display:flex;
+  flex-flow:row;
+  margin:10px 0;
+  align-items:center;
+  color:#767a7a
+}
+.jazz-setting-basic-editbutton{
+  width:100px;
+  font-size:14px;
+  color:#767a7a;
+  background-color:transparent;
+  border: 1px solid #e4e7e6
+}
+.jazz-setting-basic-calcsetting{
+  font-size: 14px;
+  margin: 18px 0;
+  padding:9px;
+  border:1px solid #efefef;
+  //width: 410px;
+  height:150px;
+  overflow:auto;
+  display: flex;
+  table{
+    border:solid #adafaf;
+    border-width:1px 0px 0px 1px;
+    border-spacing: 0;
+  }
+  td{
+    border:solid #adafaf;
+    border-width:0px 1px 1px 0px;
+    height:29px;
+    padding:0 20px;
+    text-align: center;
   }
 }

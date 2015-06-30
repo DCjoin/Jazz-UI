@@ -94,8 +94,22 @@ let BaselineCfg = React.createClass({
   },
 
   render: function () {
-    var dialogStyle = {
-      fontFamily: "Microsoft YaHei",
+    var dialogProps={
+      style:{
+        fontFamily: "Microsoft YaHei",
+        backgroundColor:'#171919 opacity(0.7)',
+        zIndex:'110'
+      },
+      contentStyle:{
+        width:'830px',
+        height:'550px',
+        zIndex:'110'
+      },
+      titleStyle:{
+        paddingTop:'24px',
+        color:'#464949',
+        fontSize:'20px'
+      }
     };
 
     var basicProps = {
@@ -111,50 +125,49 @@ let BaselineCfg = React.createClass({
     var tabsProps = {
       tabItemContainerStyle:{
         backgroundColor: 'transparent',
-        borderBottom: '1px solid #ddd',
-        height: '30px',
-        marginTop: '-31px',
+        borderBottom: '1px solid #e4e7e6',
+        height: '28px',
+        color:'#1ca8dd',
       },
-      tabWidth: 150,
+      tabWidth: 110,
       style:{
-        width: '760px',
-        paddingLeft: '15px',
+        width: '790px',
+        paddingLeft: '30px',
       },
       onChange: this._onTabChanged
     }, tabProps = {
       style:{
         display: 'block',
         float: 'left',
-        height: '20px',
-        color:'#1ca8dd',
+        fontSize: '14px',
+        height:'18px',
+        color:'#1c8add',
         fontWeight:'bold',
         fontFamily: 'Microsoft YaHei'
       }
-    }, lnProps={
-      style:{
-        marginTop: '16px',
-        position: 'relative',
-        height: '1px',
-        backgroundColor: '#ddd',
-      }
+
     };
 
     return (
-      <Dialog title="基准值配置" ref="cfgDialog" style={dialogStyle}>
-        <div {...lnProps}>
-        </div>
-        <Tabs {...tabsProps}>
-          <Tab label="基准值配置" {...tabProps}>
-            <BaselineBasic  ref="baselineBasic" {...basicProps} />
-          </Tab>
-          <Tab label="计算值修正"  {...tabProps}>
-            <BaselineModify  ref="baselineModify" tbId={this.state.tbId} />
-          </Tab>
-          <Tab label="报警设置"  {...tabProps}>
-            <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId} />
-          </Tab>
-        </Tabs>
-      </Dialog>
+
+        <Dialog title="基准值配置" ref="cfgDialog" {...dialogProps}>
+          <div className="jazz-tabs">
+            <Tabs {...tabsProps}>
+              <Tab label="基准值配置" {...tabProps}>
+                <BaselineBasic  ref="baselineBasic" {...basicProps} />
+              </Tab>
+              <Tab label="计算值修正"  {...tabProps}>
+                <BaselineModify  ref="baselineModify" tbId={this.state.tbId} />
+              </Tab>
+              <Tab label="报警设置"  {...tabProps}>
+                <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId} />
+              </Tab>
+            </Tabs>
+          </div>
+
+        </Dialog>
+
+
     );
   }
 });

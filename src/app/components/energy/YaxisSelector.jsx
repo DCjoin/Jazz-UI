@@ -184,19 +184,24 @@ var YaxisDialog = React.createClass({
 
     for (var key in yaxisConfig) {
       var uom = key; //== 'undefined' ? '' : key;
-
-      let group = <div>
-        <div> {'Y坐标轴' + i} </div>
-        <div> <span>{'相关数据点:'}</span> <span> {yaxisConfig[key].join(',')}</span></div>
+      let styleObj = {};
+      if(i>1){
+        styleObj ={marginTop:'40px'};
+      }
+      let group = <div style = {styleObj}>
+        <div style={{fontSize:'14px', marginBottom:'18px'}}> {'Y坐标轴' + i} </div>
+        <div style={{marginBottom:'40px'}}> <span style={{width:'100px', display:'inline-block'}}>{'相关数据点:'}</span> <span> {yaxisConfig[key].join(',')}</span></div>
         <MaxMinPair ref={uom+'_pair'} uom = {uom}></MaxMinPair>
       </div>;
 
         ++i;
         groups.push(group);
     }
-
-    var dialog = <Dialog title="Y坐标轴设置" actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
-      {groups}
+    let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'Y坐标轴设置'}</h3>;
+    var dialog = <Dialog title={_titleElement} actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
+      <div className={'jazz-energy-yaxis-container'} style={{marginLeft:'26px'}}>
+        {groups}
+      </div>
     </Dialog>;
 
     return dialog;
@@ -277,8 +282,8 @@ var YaxisDialog = React.createClass({
 var MaxMinPair = React.createClass({
   render(){
     return  <div>
-         <div> <span>{'最大值:'}</span> <TextField hintText="自动" onChange={this._onMaxFieldChange} ref={this.props.uom+'_max'} /><span>{this.props.uom}</span></div>
-         <div> <span>{'最小值:'}</span> <TextField hintText="自动" onChange={this._onMinFieldChange}ref={this.props.uom+'_min'} /><span>{this.props.uom}</span></div>
+         <div> <span style={{width:'100px', display:'inline-block'}}>{'最大值:'}</span> <TextField hintText="自动" onChange={this._onMaxFieldChange} ref={this.props.uom+'_max'} /><span>{this.props.uom}</span></div>
+         <div> <span style={{width:'100px', display:'inline-block'}}>{'最小值:'}</span> <TextField hintText="自动" onChange={this._onMinFieldChange}ref={this.props.uom+'_min'} /><span>{this.props.uom}</span></div>
        </div>;
   },
   _onMaxFieldChange(){

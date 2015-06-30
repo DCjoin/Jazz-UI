@@ -13,12 +13,6 @@ const YEARSTEP = 4,
 
 let AlarmSetting = React.createClass({
   mixins:[Navigation,State,React.addons.LinkedStateMixin],
-  getInitialState: function(){
-    return {
-      disable: true
-      };
-  },
-
 
 	_onChange: function(){
     var alarmSettingData = AlarmSettingStore.getData();
@@ -60,6 +54,21 @@ let AlarmSetting = React.createClass({
     this._onChange();
   },
 
+  getInitialState: function(){
+    return {
+      disable: true
+      };
+  },
+
+  componentDidMount: function(){
+    AlarmSettingStore.addSettingDataListener(this._onChange);
+    AlarmSettingAction.loadData(this.props.tbId);
+  },
+
+  componentWillUnmount: function(){
+    AlarmSettingStore.removeSettingDataListener(this._onChange);
+  },
+  
   render: function(){
     return (
       <div className="jazz-setting-container">
@@ -89,15 +98,6 @@ let AlarmSetting = React.createClass({
         </div>
       </div>
     );
-  },
-
-  componentDidMount: function(){
-    AlarmSettingStore.addSettingDataListener(this._onChange);
-    AlarmSettingAction.loadData(this.props.tbId);
-  },
-
-  componentWillUnmount: function(){
-    AlarmSettingStore.removeSettingDataListener(this._onChange);
   }
 });
 

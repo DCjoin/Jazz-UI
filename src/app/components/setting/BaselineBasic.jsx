@@ -388,14 +388,17 @@ var CalcItem = React.createClass({
   },
 
   render: function(){
+    var tdStyle={
+      minWidth:'120px'
+    };
     if(this.props.isViewStatus){
       return (<tr>
-        <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
-        <td minwidth='250'>
+        <td width='110px'><span>{this._getTimeStr(this.props.time)}</span></td>
+        <td style={tdStyle}>
           <span>{this.props.val1}</span>
           <span>千瓦时</span><span>{this.props.val1Mod ? "修正": ""}</span>
         </td>
-        <td minwidth='250'>
+        <td style={tdStyle}>
           <span>{this.props.val2}</span>
           <span>千瓦时</span><span>{this.props.val2Mod? "修正": ""}</span>
         </td>
@@ -403,7 +406,8 @@ var CalcItem = React.createClass({
     }
     else{
       var style={
-        width: "120px"
+        width: "50px",
+        height:'29px'
       };
       return (<tr>
         <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
@@ -486,24 +490,31 @@ var CalcSetting = React.createClass({
     }, rows = arr.map(createItem);
 
     var style = {
-      marginLeft: "30px"
+      margin: "18px 0",
+      padding:'9px',
+      border:"1px solid #efefef",
+
+
     };
 
     var reCalcCtrl;
     if(!this.props.isViewStatus){
-      reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick}>重新计算</a>;
+      reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick} style={{color:'#1ca8dd','margin-left':'27px'}}>重新计算</a>;
     }
 
     return (
-      <div style={style}>
-        <table>
-          <tr>
-            <td>时间</td>
-            <td>工作日</td>
-            <td>非工作日</td>
-          </tr>
-          {rows}
-        </table>
+      <div>
+        <div className="jazz-setting-basic-calcsetting">
+          <table >
+            <tr>
+              <td>时间</td>
+              <td>工作日</td>
+              <td>非工作日</td>
+            </tr>
+            {rows}
+          </table>
+
+        </div>
         {reCalcCtrl}
       </div>
     );
