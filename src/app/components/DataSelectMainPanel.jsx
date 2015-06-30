@@ -43,7 +43,7 @@ var CheckboxItem=React.createClass({
     if(!this.props.disabled){
 
       if(tagStatus[page]===null){
-        tagStatus[page]=new Array();
+        tagStatus[page]= [];
         tagStatus[page]=false;
       }
 
@@ -54,16 +54,17 @@ var CheckboxItem=React.createClass({
         hierId:this.props.nodeData.HierarchyId,
         hierName:this.props.nodeData.HierarchyName,
         tagId:this.props.nodeData.Id,
-        tagName:this.props.nodeData.Name
+        tagName:this.props.nodeData.Name,
+        uomId: this.props.nodeData.UomId
       };
 
       if(!this.state.boxChecked)  {
         selectTotal++;
-        AlarmTagStore.addSearchTagList(tagData)
+        AlarmTagStore.addSearchTagList(tagData);
       }
       else{
         selectTotal--;
-        AlarmTagStore.removeSearchTagList(tagData)
+        AlarmTagStore.removeSearchTagList(tagData);
       }
 
       if(selectTotal>=30){

@@ -392,7 +392,21 @@ let CommonFuns = {
 
 	    let interval = CommonFuns.getInterval(startTime, endTime);
 	    return interval;
-	  }
+	  },
+		getUomById(id){
+			let uomArray = window.uoms;
+			let uom;
+			if(uomArray && uomArray.length>0){
+				for(let i=0,len=uomArray.length; i<len; i++){
+					uom = uomArray[i];
+					if(uom.Id == id){
+						return uom;
+					}
+				}
+			}
+
+			return null;
+		}
 };
 
 module.exports = CommonFuns;

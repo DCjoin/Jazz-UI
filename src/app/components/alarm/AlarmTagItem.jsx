@@ -9,7 +9,9 @@ let AlarmTagItem = React.createClass({
 		if(this.props.onTagItemClick){
 			//this.props.onTagItemClick(this.props.hierarchyId, this.props.tagId, this.props.hierarchyName);
 			var tagOption = { tagId: this.props.tagId, tagName: this.props.tagName,
-				 						 hierId: this.props.hierarchyId, hierName: this.props.hierarchyName};
+				 						 		hierId: this.props.hierarchyId, hierName: this.props.hierarchyName,
+												uomId: this.props.uomId
+											};
 			this.props.onTagItemClick([tagOption]);
 		}
   },
