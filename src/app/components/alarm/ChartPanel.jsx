@@ -17,7 +17,7 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
-let {hourPickerData, isArray} = CommonFuns;
+let {hourPickerData, isArray, getUomById} = CommonFuns;
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -321,7 +321,26 @@ let ChartPanel = React.createClass({
     EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
     EnergyStore.removeTagDataChangeListener(this._onEnergyDataChange);
   },
+  getSelectedTagOptions(){
+    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+    let tagOptions;
+    if(!userTagListSelect){
+      tagOptions = EnergyStore.getTagOpions();
+    }else{
+      tagOptions = AlarmTagStore.getSearchTagList();
+    }
+    return tagOptions;
+  },
   handleBaselineCfg: function(e){
+    let tagOptions = this.getSelectedTagOptions();
+    let tagOption, tagObj;
+    if(tagOptions && tagOptions.length === 1){
+      tagOption = tagOptions[0];
+      let uom = getUomById(tagOption.uomId);
+      tagObj = {tagId: tagOption.tagId, hierarchyId: tagOption.hierId, uom:uom.Comment};
+    }else{
+      return ;
+    }
     this.refs.baselineCfg.showDialog();
     var year=(new Date()).getFullYear();
     TBSettingAction.setYear(year);

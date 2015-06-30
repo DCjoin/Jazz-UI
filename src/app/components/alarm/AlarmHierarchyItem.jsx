@@ -33,6 +33,7 @@ let AlarmHierarchyItem = React.createClass({
 					tagId: tag.TagId,
 					hierarchyId: tag.HierarchyId,
 					hierarchyName: tag.HierName,
+					uomId: tag.UomId,
 					extended: me.state.extended,
 					onTagItemClick: me._onTagItemSelected,
 					selectedTag: me.props.selectedTag
