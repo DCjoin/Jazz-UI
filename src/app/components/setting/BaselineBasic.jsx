@@ -9,6 +9,11 @@ import CommonFuns from '../../util/Util.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 
+let formatDate = function(date){
+  var m = (date.getMonth() + 1), d = date.getDate();
+  return date.getFullYear() + '-' + (m>9?''+m:'0'+m) + '-' + (d>9?''+d:'0'+d);
+};
+
 var DaytimeRangeValue = React.createClass({
   mixins:[Navigation,State],
   propTypes: {
@@ -16,6 +21,7 @@ var DaytimeRangeValue = React.createClass({
     start: React.PropTypes.number,
     end: React.PropTypes.number,
     step: React.PropTypes.number,
+    uom: React.PropTypes.string,
 
     value: React.PropTypes.number,
     isViewStatus: React.PropTypes.bool,
@@ -29,8 +35,14 @@ var DaytimeRangeValue = React.createClass({
       start: 0,
       step: 30,
       end: 1440,
-      isViewStatus: true
+      isViewStatus: true,
     };
+  },
+
+  getInitialState:  function(){
+    return {
+      error: ''
+    }
   },
 
   componentWillReceiveProps: function(nextProps){
@@ -61,10 +73,37 @@ var DaytimeRangeValue = React.createClass({
     }
   },
 
+  validate: function(){
+    var val = this.refs.valueField.getValue();
+    return this._validate(val);
+  },
+
+  _validate: function(val){
+    var value = val.replace(/[^\d\.]/g,'');
+    var dotIndex = value.indexOf('.');
+    if(dotIndex != -1){
+      if(dotIndex == 0) value = '0'+value;
+      dotIndex = value.indexOf('.');
+      value = value.split('.').join('');
+      value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
+    }
+
+    this.refs.valueField.setValue(value);
+    if(value == ''){
+      this.setState({error: "必填项"});
+      return false;
+    }
+    else{
+      this.setState({error: ""});
+      return true;
+    }
+  },
+
   _onValueChange: function(e){
-    if(this.props.onValueChange){
-      this.props.onValueChange(e, this.props.curIdx,
-        this.refs.valueField.getValue());
+    if(this._validate(e.target.value)){
+      if(this.props.onValueChange){
+        this.props.onValueChange(e, this.props.curIdx, this.refs.valueField.getValue());
+      }
     }
   },
 
@@ -82,7 +121,7 @@ var DaytimeRangeValue = React.createClass({
           <span>到</span>
           <span style={style}>{endStr}</span>
           <span style={style}>{val}</span>
-          <span>千瓦</span>
+          <span>{this.props.uom}</span>
         </div>
       );
     }
@@ -105,6 +144,7 @@ var DaytimeRangeValue = React.createClass({
       valProps = {
         defaultValue: this.props.value,
         onChange: this._onValueChange,
+        errorText: this.state.error,
         style: {
           width: "120px",
         }
@@ -116,7 +156,7 @@ var DaytimeRangeValue = React.createClass({
           <span>到</span>
           <DaytimeSelector {...endProps} ref='endFeild' />
           <TextField {...valProps} ref='valueField'/>
-          <span>千瓦</span>
+          <span>{this.props.uom}</span>
         </div>
       );
     }
@@ -125,6 +165,7 @@ var DaytimeRangeValue = React.createClass({
 
 var DaytimeRangeValues = React.createClass({
   propTypes: {
+    uom: React.PropTypes.string,
     items: React.PropTypes.array,
     isViewStatus: React.PropTypes.bool
   },
@@ -139,6 +180,17 @@ var DaytimeRangeValues = React.createClass({
     if(nextProps){
       this.setState({items: nextProps.items});
     }
+  },
+
+  validate: function(){
+    var valiate = true;
+    var items = this.state.items;
+    for (var i = 0; i < items.length; i++) {
+      if(!items[i].validate()){
+        valiate = false;
+      }
+    }
+    return validate;
   },
 
   getValue: function(){
@@ -180,6 +232,8 @@ var DaytimeRangeValues = React.createClass({
     var me = this, idx = 0, items = this.state.items;
     var createItem = function(item){
       var props = {
+        ref: 'item'+ item,
+        uom: me.props.uom,
         curIdx: idx++,
         start: item.StartTime,
         end: item.EndTime,
@@ -196,6 +250,7 @@ var DaytimeRangeValues = React.createClass({
 
 var NormalSetting = React.createClass({
   propTypes: {
+    uom: React.PropTypes.string,
     items: React.PropTypes.array,
     isViewStatus: React.PropTypes.bool,
     isDisplay: React.PropTypes.bool
@@ -388,17 +443,14 @@ var CalcItem = React.createClass({
   },
 
   render: function(){
-    var tdStyle={
-      minWidth:'120px'
-    };
     if(this.props.isViewStatus){
       return (<tr>
-        <td width='110px'><span>{this._getTimeStr(this.props.time)}</span></td>
-        <td style={tdStyle}>
+        <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
+        <td minwidth='250'>
           <span>{this.props.val1}</span>
           <span>千瓦时</span><span>{this.props.val1Mod ? "修正": ""}</span>
         </td>
-        <td style={tdStyle}>
+        <td minwidth='250'>
           <span>{this.props.val2}</span>
           <span>千瓦时</span><span>{this.props.val2Mod? "修正": ""}</span>
         </td>
@@ -406,8 +458,7 @@ var CalcItem = React.createClass({
     }
     else{
       var style={
-        width: "50px",
-        height:'29px'
+        width: "120px"
       };
       return (<tr>
         <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
@@ -490,31 +541,24 @@ var CalcSetting = React.createClass({
     }, rows = arr.map(createItem);
 
     var style = {
-      margin: "18px 0",
-      padding:'9px',
-      border:"1px solid #efefef",
-
-
+      marginLeft: "30px"
     };
 
     var reCalcCtrl;
     if(!this.props.isViewStatus){
-      reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick} style={{color:'#1ca8dd','margin-left':'27px'}}>重新计算</a>;
+      reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick}>重新计算</a>;
     }
 
     return (
-      <div>
-        <div className="jazz-setting-basic-calcsetting">
-          <table >
-            <tr>
-              <td>时间</td>
-              <td>工作日</td>
-              <td>非工作日</td>
-            </tr>
-            {rows}
-          </table>
-
-        </div>
+      <div style={style}>
+        <table>
+          <tr>
+            <td>时间</td>
+            <td>工作日</td>
+            <td>非工作日</td>
+          </tr>
+          {rows}
+        </table>
         {reCalcCtrl}
       </div>
     );
@@ -863,15 +907,12 @@ var TBSettingItem = React.createClass({
   },
 
   getValue: function(){
-    var tmpDate = this.refs.endFeild.getDate();
-    var endDate = new Date(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate());
-    endDate.setDate(endDate.getDate() + 1);
     var rtn = {
       TbSetting:{
         Year: this.props.year,
         TBId: this.props.tbId,
         StartTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.startFeild.getDate()),
-        EndTime: CommonFuns.DataConverter.DatetimeToJson(endDate)
+        EndTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.endFeild.getDate())
       },
       SpecialDates: this.refs.SpecialSettingCtrl.getValue()
     };
@@ -893,11 +934,7 @@ var TBSettingItem = React.createClass({
     var startDate = new Date(me.props.year, 0, 1), dstartDate = startDate,
     endDate = new Date(me.props.year, 11, 31), dendDate = endDate;
     if(me.props.start) dstartDate = this._toFormDate(me.props.start);
-    if(me.props.end) {
-      var tmpDate = this._toFormDate(me.props.end);
-      dendDate = new Date(tmpDate);
-      dendDate.setDate(tmpDate.getDate() -1);
-    }
+    if(me.props.end) dendDate = this._toFormDate(me.props.end);
 
     var normalProps = {
       isViewStatus: me.props.isViewStatus,

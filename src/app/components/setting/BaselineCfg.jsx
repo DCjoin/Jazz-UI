@@ -13,25 +13,32 @@ let BaselineCfg = React.createClass({
   mixins:[Navigation,State],
 
   propTypes: {
-    tagId: React.PropTypes.number
+    tag: React.PropTypes.object
   },
 
   getDefaultProps: function(){
     return {
-      tagId: 100006
+      tag: {
+        tagId: 100006,
+        hierarchyId: 1,
+        uom: {
+          Comment: '千瓦时'
+        }
+      }
     };
   },
 
   getInitialState: function() {
     return {
+      tag: this.tag,
       tbId: this.props.tbId,
       year: (new Date()).getFullYear()
     };
   },
 
-  refreshData: function(){
+  refreshData: function(tagId){
     var me = this;
-    TBAction.loadData(this.props.tagId, function(tbs){
+    TBAction.loadData(tagId, function(tbs){
       if(tbs && tbs.length > 0){
         for(var i=0; i< tbs.length; i++){
           if(tbs[i].TBType == 2){
@@ -55,15 +62,17 @@ let BaselineCfg = React.createClass({
         }
       }
     });
-    //var tbs = TBStore.getData();
   },
 
   componentDidMount: function() {
-    this.refreshData();
+    this.refreshData(this.props.tag.tagId);
   },
 
-  componentWillReceiveProps: function(){
-    this.refreshData();
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps && nextProps.tag && nextProps.tag.tagId){
+      this.setState({tag: nextProps.tag});
+      this.refreshData(nextProps.tag.tagId);
+    }
   },
 
   showDialog: function(){
@@ -112,8 +121,14 @@ let BaselineCfg = React.createClass({
       }
     };
 
+    var cusTag = {
+      tagId: this.props.tag.tagId,
+      hierarchyId: this.props.tag.hierarchyId,
+      uom: this.props.tag.uom.Comment,
+    }
+
     var basicProps = {
-      tagId: this.props.tagId,
+      tag: this.props.tag,
       name: this.state.name || null,
       tbId: this.state.tbId || null,
     };
