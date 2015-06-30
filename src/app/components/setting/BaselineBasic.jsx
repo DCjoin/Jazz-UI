@@ -75,15 +75,15 @@ var DaytimeRangeValue = React.createClass({
        val = this.props.value;
 
       var style = {
-        padding: '2px 10px',
-        border: '1px solid #ddd' };
+        padding:'2px 10px',
+        border: '1px solid #efefef' };
 
       return (
-        <div>
+        <div style={{'margin-top':'10px'}}>
           <span style={style}>{startStr}</span>
-          <span>到</span>
+          <span style={{margin:'0 10px'}}>到</span>
           <span style={style}>{endStr}</span>
-          <span style={style}>{val}</span>
+          <span style={{padding:'2px 10px',border: '1px solid #efefef',margin:'0 10px'}}>{val}</span>
           <span>千瓦</span>
         </div>
       );
@@ -602,16 +602,25 @@ var SpecialItem = React.createClass({
        endTimeStr = CommonFuns.numberToTime(et),
        val = this.props.value;
 
-      var style = { padding: '2px 10px', border: '1px solid #ddd' };
+      var style = { padding: '2px 10px', border: '1px solid #efefef','margin-right':'10px'};
 
-      return (<div>
+      return (<div style={{'margin-top':'10px'}}>
           <span style={style}>{startDateStr}</span>
           <span style={style}>{startTimeStr}</span>
-          <span >到</span>
+          <span style={{'margin-right':'10px'}} >到</span>
           <span style={style}>{endDateStr}</span>
           <span style={style}>{endTimeStr}</span>
-          <br/>
-          <span style={style}>{this.props.value}</span><span>千瓦时</span>
+          <div style={{display:'flex','flex-flow':'row','margin-top':'10px'}}>
+            <div style={style}>
+              {this.props.value}
+
+            </div>
+            <div>
+              千瓦时
+            </div>
+
+          </div>
+
         </div>
       );
     }
@@ -965,7 +974,29 @@ var TBSettingItem = React.createClass({
     },
     labelStyle={
       color:'#767a7a'
-    };
+    },
+    datapickerStyle = {
+      width:'90px',
+      height:'32px',
+      marginLeft:'10px',
+      fontSize:'14px',
+      color:'#767a7a'
+    },
+    datePickerAreaStyle={
+      display:'flex',
+      flexFlow:'row',
+      marginTop:'18px',
+      alignItems:'center'
+    },
+    flatButtonStyle={
+      padding: '0',
+      minWidth: '20px',
+      width:'30px',
+      height: '20px',
+      verticalAlign:'middle',
+      lineHeight:'20px',
+      marginLeft:'5px'
+    };;
     if(this.props.isViewStatus){
       var middleCtrl ;
       // Middle
@@ -990,10 +1021,10 @@ var TBSettingItem = React.createClass({
 
       return (<div>
           <div style={clearStyle}>
-            <div style={clearStyle}>
-              <span style={{ padding: '2px 10px', border: '1px solid #ddd' }}>{startDateStr}</span>
-              <span>到</span>
-              <span style={{ padding: '2px 10px', border: '1px solid #ddd' }}>{endDateStr}</span>
+            <div style={datePickerAreaStyle}>
+              <span style={{'font-size':'14px',color:'#767a7a',border:'1px solid #efefef',padding:'10px'}}>{startDateStr}</span>
+              <span style={{margin:'0 10px'}}>到</span>
+              <span style={{'font-size':'14px',color:'#767a7a',border:'1px solid #efefef',padding:'10px'}}>{endDateStr}</span>
             </div>
             {middleCtrl}
           </div>
@@ -1005,7 +1036,7 @@ var TBSettingItem = React.createClass({
     }
 
     var datapickerStyle = {
-      width:'75px',
+      width:'90px',
       height:'32px',
       marginLeft:'10px',
       fontSize:'14px',
@@ -1445,7 +1476,8 @@ var BaselineBasic = React.createClass({
       disabled: !this.state.isViewStatus,
       style:{
         fontSize:'14px',
-        marginTop:'8px'
+        marginTop:'8px',
+        color:'#767a7a'
       }
     };
 
@@ -1457,9 +1489,7 @@ var BaselineBasic = React.createClass({
       onYearPickerSelected: this._onYearChanged,
       style:{
         border:'1px solid #efefef',
-        margin:'0px 10px',
-        fontSize:'14px',
-        color:'#767a7a !important'
+        margin:'0px 10px'
       }
       //className: "yearpicker",
 
