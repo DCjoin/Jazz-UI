@@ -74,7 +74,9 @@ var DaytimeRangeValue = React.createClass({
        endStr = CommonFuns.numberToTime(this.props.end),
        val = this.props.value;
 
-      var style = { padding: '2px 10px', border: '1px solid #ddd' };
+      var style = {
+        padding: '2px 10px',
+        border: '1px solid #ddd' };
 
       return (
         <div>
@@ -87,12 +89,9 @@ var DaytimeRangeValue = React.createClass({
       );
     }
     else{
-      var startProps = {
-        minute: this.props.start,
-        isViewStatus: true,
-        style:{
-          border:'1px solid #efefef'
-        }
+      var startStyle = {
+          border:'1px solid #efefef',
+          padding:'10px'
       },
       endProps = {
         from: this.props.start + this.props.step,
@@ -102,24 +101,26 @@ var DaytimeRangeValue = React.createClass({
         isViewStatus: this.props.isViewStatus,
         onChange: this._onEndChange,
         style: {
-          border:'1px solid #efefef'
+          border:'1px solid #efefef',
+          color:'#767a7a',
+          marginRight:'10px'
         }
       },
       valProps = {
         defaultValue: this.props.value,
         onChange: this._onValueChange,
         style: {
-          width: "120px",
+          width: "60px",
         }
       };
       var startStr = CommonFuns.numberToTime(this.props.start);
       return (
-        <div>
-          <span>{startStr}</span>
-          <span>到</span>
+        <div style={{display:'flex','flex-flow':'row','align-items':'center','margin-top':'10px'}}>
+          <div style={startStyle}>{startStr}</div>
+          <div style={{margin:'0 10px'}}>到</div>
           <DaytimeSelector {...endProps} ref='endFeild' />
           <TextField {...valProps} ref='valueField'/>
-          <span>千瓦</span>
+          <div style={{'margin-left':'10px'}}>千瓦</div>
         </div>
       );
     }
@@ -634,11 +635,22 @@ var SpecialItem = React.createClass({
       if(me.props.end) dendDate = this._toFormDate(me.props.end);
 
       var datapickerStyle = {
-        width: "100px",
-        display: "block",
-        float: "left",
-        height: "32px",
-      };
+          width:'75px',
+          height:'32px',
+          marginLeft:'10px',
+          fontSize:'14px',
+          color:'#767a7a'
+      },
+        flatButtonStyle={
+          padding: '0',
+          minWidth: '20px',
+          width:'30px',
+          height: '20px',
+          verticalAlign:'middle',
+          lineHeight:'20px',
+          marginLeft:'5px',
+          marginTop:'7px'
+        };
 
       var startProps = {
         //formatDate: formatDate,
@@ -672,19 +684,32 @@ var SpecialItem = React.createClass({
         isViewStatus: this.props.isViewStatus,
         style:{
           display: "block",
-          float: "left"
+          border:'1px solid #efefef',
+          width:'100px',
+          fontSize:'14px',
+          marginLeft:'10px'
         }
       };
 
-      return (<div>
-          <DatePicker ref='startDateField' {...startProps} />
-          <DaytimeSelector ref='startTimeField' minute={st} {...daytimeProps} />
-          <span className='jazz-setting-basic-datespan'>到</span>
-          <DatePicker ref='endDateField' {...endProps} />
-          <DaytimeSelector ref='endTimeField' minute={et} {...daytimeProps} />
-          <FlatButton label="－"  ref="remove"  onClick={this._onRemove} /><br/>
-          <TextField ref='valueField' defaultValue={this.props.value} /><span>千瓦时</span>
+      return (
+        <div>
+          <div style={{display:'flex','flex-flow':'row','margin-top':'18px'}}>
+              <div className="jazz-setting-basic-datepicker-container">
+            <DatePicker ref='startDateField' {...startProps} />
+            </div>
+            <DaytimeSelector ref='startTimeField' minute={st} {...daytimeProps} />
+            <div className='jazz-setting-basic-datespan'>到</div>
+              <div className="jazz-setting-basic-datepicker-container">
+            <DatePicker ref='endDateField' {...endProps} />
+            </div>
+            <DaytimeSelector ref='endTimeField' minute={et} {...daytimeProps} />
+            <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} label="－"  ref="remove"  onClick={this._onRemove} /><br/>
+            </div>
+            <div>
+            <TextField ref='valueField' defaultValue={this.props.value} /><span>千瓦时</span>
+          </div>
         </div>
+
       );
     }
   }
@@ -784,7 +809,7 @@ var SpecialSetting = React.createClass({
       addBtnCtrl = <FlatButton {...addBtnProps}/>;
     }
     return (<div style={style}>
-        <div><span>补充日期</span>{addBtnCtrl}</div>
+        <div style={{'margin-top':'18px'}}><span>补充日期</span>{addBtnCtrl}</div>
         <div>{this.state.items.map(createItem)}</div>
       </div>);
   }
@@ -1418,6 +1443,10 @@ var BaselineBasic = React.createClass({
       defaultValue: this.props.name,
       onBlur: this._onTBNameChanged,
       disabled: !this.state.isViewStatus,
+      style:{
+        fontSize:'14px',
+        marginTop:'8px'
+      }
     };
 
     var curYear = (new Date()).getFullYear();
@@ -1459,10 +1488,10 @@ var BaselineBasic = React.createClass({
       </div>
       <div>{this.state.validationError}</div>
       <div>
-        <button type="submit" hidden={!this.state.isViewStatus} style={{width:'50px'}} onClick={this._handleEdit}> 编辑 </button>
+        <button type="submit" hidden={!this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleEdit}> 编辑 </button>
         <span>
-          <button type="submit" hidden={this.state.isViewStatus} style={{width:'50px'}} onClick={this._handleSave}> 保存 </button>
-          <button type="submit" hidden={this.state.isViewStatus} style={{width:'50px'}} onClick={this._handleCancel}> 放弃 </button>
+          <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleSave}> 保存 </button>
+          <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleCancel}> 放弃 </button>
         </span>
       </div>
      </div>);
