@@ -89,7 +89,10 @@ var DaytimeRangeValue = React.createClass({
     else{
       var startProps = {
         minute: this.props.start,
-        isViewStatus: true
+        isViewStatus: true,
+        style:{
+          border:'1px solid #efefef'
+        }
       },
       endProps = {
         from: this.props.start + this.props.step,
@@ -99,7 +102,7 @@ var DaytimeRangeValue = React.createClass({
         isViewStatus: this.props.isViewStatus,
         onChange: this._onEndChange,
         style: {
-
+          border:'1px solid #efefef'
         }
       },
       valProps = {
@@ -315,16 +318,16 @@ var NormalSetting = React.createClass({
     };
 
     var style = {
-      marginLeft: "30px"
+      marginLeft: "35px"
     };
     return (
       <div style={style}>
-        <div>小时基准值</div>
-        <div>工作日</div>
+        <div style={{'margin-top':'10px'}}>小时基准值</div>
+        <div style={{color:'#abafae','margin-top':'18px'}}>工作日</div>
         <div>
           <DaytimeRangeValues ref="workdayValues" {...workProps} />
         </div>
-        <div>非工作日</div>
+        <div style={{color:'#abafae','margin-top':'18px'}}>非工作日</div>
         <div>
           <DaytimeRangeValues ref="nonWorkdayValues" {...nonWorkdayProps} />
         </div>
@@ -410,12 +413,12 @@ var CalcItem = React.createClass({
         height:'29px'
       };
       return (<tr>
-        <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
-        <td minwidth='250'>
+        <td width='110px'><span>{this._getTimeStr(this.props.time)}</span></td>
+        <td style={tdStyle}>
           <TextField ref='val1Feild' defaultValue={this.state.val1} onChange={this._onVal1Change} style={style} />
           <span>千瓦时</span><span>{this.state.val1Mod ? "修正": ""}</span>
         </td>
-        <td minwidth='250'>
+        <td style={tdStyle}>
           <TextField ref='val2Feild' defaultValue={this.state.val2} onChange={this._onVal2Change} style={style} />
           <span>千瓦时</span><span>{this.state.val2Mod? "修正": ""}</span>
         </td>
@@ -761,9 +764,24 @@ var SpecialSetting = React.createClass({
     var style = {
       marginLeft: "20px"
     };
+    var addBtnProps = {
+    style:{
+      padding: '0',
+      minWidth: '20px',
+      width:'30px',
+      height: '20px',
+      verticalAlign:'middle',
+      lineHeight:'20px'
+    },
+    labelStyle:{
+      padding:'0'
+    },
+    label: "+",
+    onClick: this._addItem
+  };
     var addBtnCtrl;
     if(!this.props.isViewStatus){
-      addBtnCtrl = <FlatButton label="＋" onClick={this._addItem} />;
+      addBtnCtrl = <FlatButton {...addBtnProps}/>;
     }
     return (<div style={style}>
         <div><span>补充日期</span>{addBtnCtrl}</div>
@@ -918,6 +936,10 @@ var TBSettingItem = React.createClass({
     },
     clearStyle = {
       clear: 'both',
+      fontSize:'14px'
+    },
+    labelStyle={
+      color:'#767a7a'
     };
     if(this.props.isViewStatus){
       var middleCtrl ;
@@ -932,7 +954,7 @@ var TBSettingItem = React.createClass({
       }
       else{
         normalProps.isDisplay = true;
-        middleCtrl = <div style={clearStyle}>
+        middleCtrl = <div className="jazz-setting-basic-clear">
           <RadioButton name='NormalRadio' key='NormalRadio' ref='NormalRadio' value="NormalRadio"
             label="手动设置基准值" disabled="true" checked="true" />
           <NormalSetting ref="NormalSettingCtrl" {...normalProps} />
@@ -958,10 +980,26 @@ var TBSettingItem = React.createClass({
     }
 
     var datapickerStyle = {
-      width: "100px",
-      display: "block",
-      float: "left",
-      height: "32px",
+      width:'75px',
+      height:'32px',
+      marginLeft:'10px',
+      fontSize:'14px',
+      color:'#767a7a'
+    },
+    datePickerAreaStyle={
+      display:'flex',
+      flexFlow:'row',
+      marginTop:'18px',
+      alignItems:'center'
+    },
+    flatButtonStyle={
+      padding: '0',
+      minWidth: '20px',
+      width:'30px',
+      height: '20px',
+      verticalAlign:'middle',
+      lineHeight:'20px',
+      marginLeft:'5px'
     };
 
     var startProps = {
@@ -997,13 +1035,18 @@ var TBSettingItem = React.createClass({
 
     return (<div>
         <div style={clearStyle}>
-          <div style={clearStyle}>
-            <DatePicker  ref='startFeild' {...startProps} />
-            <span className='jazz-setting-basic-datespan'>到</span>
-            <DatePicker  ref='endFeild' {...endProps} />
-            <FlatButton label="－"  ref="remove"  onClick={this._onRemove} />
+          <div style={datePickerAreaStyle}>
+            <div className="jazz-setting-basic-datepicker-container">
+              <DatePicker  ref='startFeild' {...startProps} />
+            </div>
+            <div style={{'margin-left':'10px'}}>到</div>
+            <div className="jazz-setting-basic-datepicker-container">
+              <DatePicker  ref='endFeild' {...endProps} />
+            </div>
+
+            <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
-          <div style={clearStyle}>
+          <div className="jazz-setting-basic-clear">
             <RadioButton name='NormalRadio' ref='NormalRadio' value="NormalRadio"
               label="手动设置基准值" onCheck={this._onNormalCheck} checked={this.state.radio == 'NormalRadio'} />
             <NormalSetting ref="NormalSettingCtrl" {...normalProps} isDisplay={this.state.radio == "NormalRadio"} />
@@ -1123,16 +1166,24 @@ var TBSettingItems = React.createClass({
     var addBtnCtrl;
     if(!this.props.isViewStatus){
       var addBtnProps = {
-        padding: '0',
-        width: '20px',
-        height: '20px',
+        style:{
+          padding: '0',
+          minWidth: '20px',
+          width:'30px',
+          height: '20px',
+          verticalAlign:'middle',
+          lineHeight:'20px'
+        },
+        labelStyle:{
+          padding:'0'
+        },
         label: "+",
         onClick: this._addSetting,
         disabled: this.props.isViewStatus,
       };
       addBtnCtrl =  <FlatButton {...addBtnProps} />
     }
-    return (<div>
+    return (<div style={{'margin-top':'15px'}}>
         <div><span>时段设置</span>{addBtnCtrl}</div>
         <div>{this.state.items.map(createItem)}</div>
       </div>);
@@ -1375,6 +1426,14 @@ var BaselineBasic = React.createClass({
       ref: "YearField",
       selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
       onYearPickerSelected: this._onYearChanged,
+      style:{
+        border:'1px solid #efefef',
+        margin:'0px 10px',
+        fontSize:'14px',
+        color:'#767a7a !important'
+      }
+      //className: "yearpicker",
+
     };
     var calDetailButton=(
         <div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
@@ -1387,7 +1446,7 @@ var BaselineBasic = React.createClass({
       <div className='jazz-setting-basic-content'>
         <div>
           <div><TextField ref="TBName" {...tbNameProps} /></div>
-          <div style={{display:'flex','flex-flow':'row'}}><span>请选择配置年份进行编辑</span><YearPicker {...yearProps} />
+          <div className="jazz-setting-basic-firstline"><span>请选择配置年份进行编辑</span><YearPicker {...yearProps} />
           <span>{calDetailButton}</span>
           </div>
 

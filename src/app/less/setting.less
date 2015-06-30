@@ -5,7 +5,13 @@
   height: 30px;
 }
 .jazz-setting-basic-datespan{
-  width: 34px; float: left; heigh: 32px; line-height: 32px; vertical-align:middle; text-align: center;
+//  width: 34px;
+//  float: left;
+//  heigh: 32px;
+//  line-height: 32px;
+font-size: 14px;
+  vertical-align:middle;
+  text-align: center;
 }
 .jazz-setting-basic-container{
   height:600px;
@@ -17,6 +23,7 @@
   display: flex;
   flex-flow: row;
   font-size:14px;
+  color:#767a7a
 }
 .jazz-setting-container{
   height: 428px;
@@ -149,5 +156,42 @@
     height:29px;
     padding:0 20px;
     text-align: center;
+  }
+}
+.jazz-setting-basic-clear{
+  clear: both;
+  margin-top:14px;
+  >div{
+    >div{
+      >div{
+        margin-right:10px !important
+      }
+      >label{
+        color:#767a7a !important
+      }
+    }
+  }
+}
+.jazz-setting-basic-firstline{
+  display:flex;
+  flex-flow:row;
+  align-items:center;
+  margin-top:15px;
+}
+.jazz-setting-basic-datepicker-container{
+  height: 38px;
+  background-color: #ffffff;
+  >div{
+    cursor: pointer;
+    border: 1px solid rgb(235, 235, 235);
+    >div{
+      >input{
+        cursor: pointer;
+        font-size: 12px !important;
+      }
+      >hr{
+        border-bottom-width: 0px !important;
+      }
+    }
   }
 }
