@@ -109,10 +109,10 @@ var DaytimeRangeValue = React.createClass({
           width: "120px",
         }
       };
-
+      var startStr = CommonFuns.numberToTime(this.props.start);
       return (
         <div>
-          <DaytimeSelector {...startProps} ref='startFeild' />
+          <span>{startStr}</span>
           <span>到</span>
           <DaytimeSelector {...endProps} ref='endFeild' />
           <TextField {...valProps} ref='valueField'/>
@@ -159,26 +159,14 @@ var DaytimeRangeValues = React.createClass({
 
       if(newObj.end == 1440){
         break;
+      }else{
+        newItems.push({
+          StartTime: newObj.EndTime,
+          DayType: 0,
+          EndTime: 1440
+        });
+        break;
       }
-
-      if(curIdx < i){
-        if(item.EndTime <= newObj.EndTime){
-          continue;
-        }else if(item.EndTime > newObj.EndTime && item.StartTime <= newObj.StartTime){
-          item.StartTime = newObj.EndTime;
-          newItems.push(item);
-        }else if(item.StartTime > newObj.EndTime){
-          if(curIdx == i - 1) item.StartTime = newObj.EndTime;
-          newItems.push(item);
-        }
-      }
-    }
-    if(curIdx == newItems.length - 1){
-      newItems.push({
-        StartTime: newObj.EndTime,
-        DayType: 0,
-        EndTime: 1440
-      });
     }
     this.setState({items: newItems});
   },
@@ -864,12 +852,15 @@ var TBSettingItem = React.createClass({
   },
 
   getValue: function(){
+    var tmpDate = this.refs.endFeild.getDate();
+    var endDate = new Date(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate());
+    endDate.setDate(endDate.getDate() + 1);
     var rtn = {
       TbSetting:{
         Year: this.props.year,
         TBId: this.props.tbId,
         StartTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.startFeild.getDate()),
-        EndTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.endFeild.getDate())
+        EndTime: CommonFuns.DataConverter.DatetimeToJson(endDate)
       },
       SpecialDates: this.refs.SpecialSettingCtrl.getValue()
     };
@@ -891,7 +882,11 @@ var TBSettingItem = React.createClass({
     var startDate = new Date(me.props.year, 0, 1), dstartDate = startDate,
     endDate = new Date(me.props.year, 11, 31), dendDate = endDate;
     if(me.props.start) dstartDate = this._toFormDate(me.props.start);
-    if(me.props.end) dendDate = this._toFormDate(me.props.end);
+    if(me.props.end) {
+      var tmpDate = this._toFormDate(me.props.end);
+      dendDate = new Date(tmpDate);
+      dendDate.setDate(tmpDate.getDate() -1);
+    }
 
     var normalProps = {
       isViewStatus: me.props.isViewStatus,
@@ -1106,10 +1101,10 @@ var TBSettingItems = React.createClass({
       };
 
       if(item.TbSetting && item.TbSetting.StartTime){
-        drvProps.start = item.TbSetting.StartTime, false;
+        drvProps.start = item.TbSetting.StartTime;
       }
       if(item.TbSetting && item.TbSetting.EndTime){
-        drvProps.end = item.TbSetting.EndTime, false;
+        drvProps.end = item.TbSetting.EndTime;
       }
       return (<TBSettingItem {...drvProps} />);
     };
@@ -1236,7 +1231,7 @@ var BaselineBasic = React.createClass({
     return {
       items: [],
       isViewStatus: true,
-      year: (new Date()).getFullYear()
+      year: (new Date()).getFullYear(),
     };
   },
 
@@ -1247,7 +1242,8 @@ var BaselineBasic = React.createClass({
       isViewStatus: this.props.isViewStatus,
       calButton:'显示日历详情',
       showCalDetail:false,
-      year:TBSettingStore.getYear()
+      year:TBSettingStore.getYear(),
+      validationError: ''
     };
   },
 
@@ -1297,8 +1293,8 @@ var BaselineBasic = React.createClass({
     });
   },
 
-  _saveDataToServer: function(){
-    var val = this.getValue(), me = this;
+  _saveDataToServer: function(val){
+    var me = this;
     TBSettingAction.saveData(val, function(tbSetting){
       var itemsCtrl = me.refs.TBSettingItems;
       itemsCtrl.items = tbSetting.TBSettings;
@@ -1311,11 +1307,30 @@ var BaselineBasic = React.createClass({
     });
 	},
 
+  _validateForm: function(val){
+    debugger;
+    var settings = val.TBSettings;
+    for (var i = 0; i < settings.length - 1; i++) {
+      for (var j = 1; j < settings.length; j++) {
+        if(settings[i].TbSetting.StartTime <= settings[j].TbSetting.StartTime
+          && settings[i].TbSetting.EndTime >= settings[j].TbSetting.StartTime){
+            this.setState({validationError:'时间重叠'});
+            return false;
+        }
+      }
+    }
+    this.setState({validationError:''});
+    return true;
+  },
+
   _handleSave: function(){
-    this._saveDataToServer();
-    this.setState({
-      isViewStatus : true,
-    });
+    var val = this.getValue();
+    if(this._validateForm(val)){
+      this._saveDataToServer(val);
+      this.setState({
+        isViewStatus : true,
+      });
+    }
   },
 
   _handleCancel: function(){
@@ -1344,16 +1359,11 @@ var BaselineBasic = React.createClass({
     };
 
     var curYear = (new Date()).getFullYear();
-    var btnProps = {
-      onSave: this._saveDataToServer
-    };
     var yearProps = {
       disabled: this.state.isViewStatus,
       ref: "YearField",
       selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
       onYearPickerSelected: this._onYearChanged,
-      //className: "yearpicker",
-
     };
     var calDetailButton=(
         <div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
@@ -1377,6 +1387,7 @@ var BaselineBasic = React.createClass({
         {showCalDetail}
 
       </div>
+      <div>{this.state.validationError}</div>
       <div>
         <button type="submit" hidden={!this.state.isViewStatus} style={{width:'50px'}} onClick={this._handleEdit}> 编辑 </button>
         <span>
