@@ -344,6 +344,11 @@ var NormalSetting = React.createClass({
     return this._composeEndTime(nonWorkdays);
   },
 
+  validate: function(){
+    return this.refs.workdayValues.validate()
+      && this.refs.nonWorkdayValues.validate();
+  },
+
   getValue: function () {
     var workdays = this.refs.workdayValues.getValue(),
       nonWorkdays = this.refs.nonWorkdayValues.getValue(),
@@ -511,6 +516,7 @@ var CalcSetting = React.createClass({
   },
 
   render: function () {
+    debugger;
     if(!this.props.isDisplay){
       return <div></div>;
     }
@@ -1463,7 +1469,6 @@ var BaselineBasic = React.createClass({
 	},
 
   _validateForm: function(val){
-    debugger;
     var settings = val.TBSettings;
     for (var i = 0; i < settings.length - 1; i++) {
       for (var j = 1; j < settings.length; j++) {

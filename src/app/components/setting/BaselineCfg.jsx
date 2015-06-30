@@ -30,7 +30,7 @@ let BaselineCfg = React.createClass({
 
   getInitialState: function() {
     return {
-      tag: this.tag,
+      tag: this.props.tag,
       tbId: this.props.tbId,
       year: (new Date()).getFullYear()
     };
@@ -65,7 +65,7 @@ let BaselineCfg = React.createClass({
   },
 
   componentDidMount: function() {
-    this.refreshData(this.props.tag.tagId);
+    this.refreshData(this.state.tag.tagId);
   },
 
   componentWillReceiveProps: function(nextProps){
@@ -75,7 +75,9 @@ let BaselineCfg = React.createClass({
     }
   },
 
-  showDialog: function(){
+  showDialog: function(tag){
+    this.setState({tag: tag});
+    this.refreshData(tag.tagId);
     this.refs.cfgDialog.show();
   },
 
@@ -122,13 +124,13 @@ let BaselineCfg = React.createClass({
     };
 
     var cusTag = {
-      tagId: this.props.tag.tagId,
-      hierarchyId: this.props.tag.hierarchyId,
-      uom: this.props.tag.uom.Comment,
-    }
+      tagId: this.state.tag.tagId,
+      hierarchyId: this.state.tag.hierarchyId,
+      uom: this.state.tag.uom.Comment,
+    };
 
     var basicProps = {
-      tag: this.props.tag,
+      tag: cusTag,
       name: this.state.name || null,
       tbId: this.state.tbId || null,
     };
@@ -164,7 +166,6 @@ let BaselineCfg = React.createClass({
     };
 
     return (
-
         <Dialog title="基准值配置" ref="cfgDialog" {...dialogProps}>
           <div className="jazz-tabs">
             <Tabs {...tabsProps}>
