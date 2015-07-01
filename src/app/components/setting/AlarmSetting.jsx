@@ -57,16 +57,41 @@ let AlarmSetting = React.createClass({
     this._onChange();
   },
 
+  _validate: function(val){
+    var value = val.replace(/[^\d\.]/g,'');
+    var dotIndex = value.indexOf('.');
+    if(dotIndex != -1){
+      if(dotIndex === 0){
+        value = '0' + value;
+      }
+      value = value.split('.').join('');
+      value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
+    }
+
+    this.refs.threshold.getDOMNode().value = value;
+    if(value === ''){
+      this.setState({error: "必填项"});
+      return false;
+    }
+    else{
+      this.setState({error: ""});
+      return true;
+    }
+  },
+
   changeThreshold: function(e){
-    this.setState({
-      threshold: e.target.value
-    });
+    if(this._validate(e.target.value)){
+      this.setState({
+        threshold: e.target.value
+      });
+    }
   },
 
   getInitialState: function(){
     return {
       disable: true,
-      threshold: 100
+      threshold: 100,
+      error: ""
     };
   },
 
@@ -87,7 +112,7 @@ let AlarmSetting = React.createClass({
             <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="right" disabled={this.state.disable}/>
           </div>
           <div className='jazz-setting-alarm-threshold'>
-            报警敏感度<input value={this.state.threshold} className='jazz-setting-alarm-input' type="text" disabled={this.state.disable} onChange={this.changeThreshold}/>%
+            报警敏感度<input ref="threshold" value={this.state.threshold} className='jazz-setting-alarm-input' type="text" disabled={this.state.disable} onChange={this.changeThreshold}/>%
           </div>
           <div className='jazz-setting-alarm-tip'>
             当数据高于基准值所设敏感度时，显示报警。
@@ -100,10 +125,10 @@ let AlarmSetting = React.createClass({
           </div>
         </div>
         <div>
-          <button className='jazz-setting-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
+          <button className='jazz-setting-basic-editbutton' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
           <span>
-            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
-            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
+            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
+            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
           </span>
         </div>
       </div>
@@ -127,7 +152,13 @@ var Checkboxes = React.createClass({
 
     return alarmSteps;
   },
+  clearValue: function(){
+    this.refs.year.setChecked(false);
+    this.refs.month.setChecked(false);
+    this.refs.day.setChecked(false);
+  },
   setValue: function(stepValue){
+    this.clearValue();
     for(var i = 0; i < stepValue.length; i++){
       if(stepValue[i] === YEARSTEP){
         this.refs.year.setChecked(true);
