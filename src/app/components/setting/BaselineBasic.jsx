@@ -160,7 +160,7 @@ var DaytimeRangeValue = React.createClass({
           <div style={{margin:'0 10px'}}>到</div>
           <DaytimeSelector {...endProps} ref='endFeild' />
           <TextField {...valProps} ref='valueField'/>
-          <div style={{'margin-left':'10px'}}>{this.props.uom}</div>
+          <div style={{marginLeft:'10px'}}>{this.props.tag.uom}</div>
         </div>
       );
     }
@@ -238,7 +238,6 @@ var DaytimeRangeValues = React.createClass({
       var props = {
         tag: me.props.tag,
         ref: 'item'+ item,
-        uom: me.props.uom,
         curIdx: idx++,
         start: item.StartTime,
         end: item.EndTime,
@@ -529,6 +528,10 @@ var CalcSetting = React.createClass({
     }
   },
 
+  validate: function(){
+
+  },
+
   getValue: function(){
     var arr = [];
     for (var i = 1; i < 25; i++) {
@@ -615,7 +618,8 @@ var SpecialItem = React.createClass({
     end: React.PropTypes.string,
     value: React.PropTypes.number,
     isViewStatus: React.PropTypes.bool,
-    onRemove: React.PropTypes.func
+    onRemove: React.PropTypes.func,
+    onChange: React.PropTypes.func,
   },
 
   componentWillReceiveProps: function(nextProps){
@@ -628,6 +632,40 @@ var SpecialItem = React.createClass({
       };
       if(nextProps.value != this.props.value ){
         this.refs.valueField.setValue(nextProps.value);
+      }
+    }
+  },
+
+  validate: function(){
+    var val = this.refs.valueField.getValue();
+    return this._validate(val);
+  },
+
+  _validate: function(val){
+    var value = val.replace(/[^\d\.]/g,'');
+    var dotIndex = value.indexOf('.');
+    if(dotIndex != -1){
+      if(dotIndex == 0) value = '0'+value;
+      dotIndex = value.indexOf('.');
+      value = value.split('.').join('');
+      value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
+    }
+
+    this.refs.valueField.setValue(value);
+    if(value == ''){
+      this.setState({error: "必填项"});
+      return false;
+    }
+    else{
+      this.setState({error: ""});
+      return true;
+    }
+  },
+
+  _onValueChange: function(e){
+    if(this._validate(e.target.value)){
+      if(this.props.onValueChange){
+        this.props.onValueChange(e, this.props.curIdx, this.refs.valueField.getValue());
       }
     }
   },
@@ -726,16 +764,16 @@ var SpecialItem = React.createClass({
           fontSize:'14px',
           color:'#767a7a'
       },
-        flatButtonStyle={
-          padding: '0',
-          minWidth: '20px',
-          width:'30px',
-          height: '20px',
-          verticalAlign:'middle',
-          lineHeight:'20px',
-          marginLeft:'5px',
-          marginTop:'7px'
-        };
+      flatButtonStyle={
+        padding: '0',
+        minWidth: '20px',
+        width:'30px',
+        height: '20px',
+        verticalAlign:'middle',
+        lineHeight:'20px',
+        marginLeft:'5px',
+        marginTop:'7px'
+      };
 
       var startProps = {
         //formatDate: formatDate,
@@ -745,11 +783,15 @@ var SpecialItem = React.createClass({
         style: datapickerStyle,
         //className: 'jazz-setting-basic-date',
         onChange: function(e, v){
-          me.refs.endDateField.minDate = me.refs.startDateField.getDate();
+          var startDate = v;
           var endDate = me.refs.endDateField.getDate();
 
           if(endDate && endDate < v){
             me.refs.endDateField.setDate(v);
+            endDate = v;
+          }
+          if(this.props.onDateTimeChange){
+            this.props.onDateTimeChange()
           }
         }
       },
@@ -791,10 +833,10 @@ var SpecialItem = React.createClass({
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} label="－"  ref="remove"  onClick={this._onRemove} /><br/>
             </div>
             <div>
-            <TextField ref='valueField' defaultValue={this.props.value} /><span>{this.props.tag.uom}</span>
+            <TextField ref='valueField' defaultValue={this.props.value}
+              errorText={this.state.error} /><span>{this.props.tag.uom}</span>
           </div>
         </div>
-
       );
     }
   }
@@ -1159,6 +1201,14 @@ var TBSettingItem = React.createClass({
       maxDate: endDate,
       style: datapickerStyle,
       //className: 'jazz-setting-basic-date',
+      onChange: function(e, v){
+        me.refs.endFeild.minDate = me.refs.startFeild.getDate();
+        var endDate = me.refs.endFeild.getDate();
+
+        if(endDate && endDate < v){
+          me.refs.endFeild.setDate(v);
+        }
+      }
     };
 
     for (var i = 1; ; i++) {
