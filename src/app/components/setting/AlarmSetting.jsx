@@ -16,7 +16,10 @@ let AlarmSetting = React.createClass({
 
 	_onChange: function(){
     var alarmSettingData = AlarmSettingStore.getData();
-    this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
+    //this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
+    this.setState({
+      threshold: alarmSettingData.AlarmThreshold
+    });
     this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
     var stepValue = alarmSettingData.AlarmSteps;
     this.refs.alarmSteps.setValue(stepValue);
@@ -54,10 +57,17 @@ let AlarmSetting = React.createClass({
     this._onChange();
   },
 
+  changeThreshold: function(e){
+    this.setState({
+      threshold: e.target.value
+    });
+  },
+
   getInitialState: function(){
     return {
-      disable: true
-      };
+      disable: true,
+      threshold: 100
+    };
   },
 
   componentDidMount: function(){
@@ -68,26 +78,26 @@ let AlarmSetting = React.createClass({
   componentWillUnmount: function(){
     AlarmSettingStore.removeSettingDataListener(this._onChange);
   },
-  
+
   render: function(){
     return (
-      <div className="jazz-setting-container">
-        <div className='jazz-setting-content'>
-          <span>
+      <div className="jazz-setting-alarm-container">
+        <div className='jazz-setting-alarm-content'>
+          <div>
             <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="right" disabled={this.state.disable}/>
-          </span>
-          <span className='jazz-setting-alarm-margin'>
-            报警敏感度<input ref="threshold" className='jazz-setting-alarm-input' type="text" disabled={this.state.disable}/>%
-          </span>
-          <span className='jazz-setting-alarm-tip'>
+          </div>
+          <div className='jazz-setting-alarm-threshold'>
+            报警敏感度<input value={this.state.threshold} className='jazz-setting-alarm-input' type="text" disabled={this.state.disable} onChange={this.changeThreshold}/>%
+          </div>
+          <div className='jazz-setting-alarm-tip'>
             当数据高于基准值所设敏感度时，显示报警。
-          </span>
-          <span className='jazz-setting-alarm-margin'>
+          </div>
+          <div className='jazz-setting-alarm-text'>
             对以下时段产生报警
-          </span>
-          <span>
+          </div>
+          <div>
             <Checkboxes ref="alarmSteps" disabled={this.state.disable}/>
-          </span>
+          </div>
         </div>
         <div>
           <button className='jazz-setting-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
@@ -132,11 +142,11 @@ var Checkboxes = React.createClass({
   },
 	render: function(){
 		return (
-			<span>
-				<Checkbox ref="day" label="日" disabled={this.props.disabled}/>
-				<Checkbox ref="month" label="月" disabled={this.props.disabled}/>
-				<Checkbox ref="year" label="年" disabled={this.props.disabled}/>
-			</span>
+			<div style={{display:'flex', 'flex-flow':'row'}}>
+				<Checkbox style={{width: '80px'}} iconStyle={{fill: '#767a7a'}} ref="day" label="日" disabled={this.props.disabled}/>
+				<Checkbox style={{width: '80px'}} iconStyle={{fill: '#767a7a'}} ref="month" label="月" disabled={this.props.disabled}/>
+				<Checkbox style={{width: '80px'}} iconStyle={{fill: '#767a7a'}} ref="year" label="年" disabled={this.props.disabled}/>
+			</div>
     );
   }
 });
