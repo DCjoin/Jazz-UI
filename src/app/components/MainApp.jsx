@@ -29,7 +29,7 @@ let MainApp = React.createClass({
               }
           ];
 
-      var logoUrl="http://112.124.7.117/v1.9.1.299/hardcore/simple/sejazz-test/img-logo-100001";
+      var logoUrl='Logo.aspx?hierarchyId=' + window.currentCustomerId;
 
       return (
         <div className='jazz-main'>
