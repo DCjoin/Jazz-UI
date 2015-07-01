@@ -1673,7 +1673,7 @@ var BaselineBasic = React.createClass({
       <div>
         <button type="submit" ref="editButton" hidden={!this.state.isViewStatus} className={classNames({
                                                                                     "jazz-setting-basic-editbutton": true,
-                                                                                    "active": this.state.hasCal
+                                                                                    "disabled": !this.state.hasCal
                                                                                   })} onClick={this._handleEdit}> 编辑 </button>
         <span>
           <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleSave}> 保存 </button>
