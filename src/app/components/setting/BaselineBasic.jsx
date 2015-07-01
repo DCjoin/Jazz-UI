@@ -21,7 +21,7 @@ var DaytimeRangeValue = React.createClass({
     start: React.PropTypes.number,
     end: React.PropTypes.number,
     step: React.PropTypes.number,
-    uom: React.PropTypes.string,
+    tag: React.PropTypes.object,
 
     value: React.PropTypes.number,
     isViewStatus: React.PropTypes.bool,
@@ -123,7 +123,7 @@ var DaytimeRangeValue = React.createClass({
           <span style={{margin:'0 10px'}}>到</span>
           <span style={style}>{endStr}</span>
           <span style={{padding:'2px 10px',border: '1px solid #efefef',margin:'0 10px'}}>{val}</span>
-          <span>{this.props.uom}</span>
+          <span>{this.props.tag.uom}</span>
         </div>
       );
     }
@@ -169,7 +169,7 @@ var DaytimeRangeValue = React.createClass({
 
 var DaytimeRangeValues = React.createClass({
   propTypes: {
-    uom: React.PropTypes.string,
+    tag: React.PropTypes.object,
     items: React.PropTypes.array,
     isViewStatus: React.PropTypes.bool
   },
@@ -236,6 +236,7 @@ var DaytimeRangeValues = React.createClass({
     var me = this, idx = 0, items = this.state.items;
     var createItem = function(item){
       var props = {
+        tag: me.props.tag,
         ref: 'item'+ item,
         uom: me.props.uom,
         curIdx: idx++,
@@ -254,7 +255,7 @@ var DaytimeRangeValues = React.createClass({
 
 var NormalSetting = React.createClass({
   propTypes: {
-    uom: React.PropTypes.string,
+    tag: React.PropTypes.object,
     items: React.PropTypes.array,
     isViewStatus: React.PropTypes.bool,
     isDisplay: React.PropTypes.bool
@@ -370,10 +371,12 @@ var NormalSetting = React.createClass({
     }
 
     var workProps = {
+      tag: this.props.tag,
       items: this.state.workdays,
       isViewStatus: this.props.isViewStatus
     },
     nonWorkdayProps = {
+      tag: this.props.tag,
       items: this.state.nonWorkdays,
       isViewStatus: this.props.isViewStatus
     };
@@ -399,12 +402,13 @@ var NormalSetting = React.createClass({
 
 var CalcItem = React.createClass({
   propTypes: {
+    tag: React.PropTypes.object,
     time: React.PropTypes.number,
     val1: React.PropTypes.string,
     val2: React.PropTypes.string,
     val1Mod: React.PropTypes.bool,
     val2Mod: React.PropTypes.bool,
-    isViewStatus: React.PropTypes.bool,
+    isViewStatus: React.PropTypes.bool
   },
 
   getInitialState: function(){
@@ -422,7 +426,7 @@ var CalcItem = React.createClass({
         val1: nextProps.val1,
         val2: nextProps.val2,
         val1Mod: nextProps.val1Mod,
-        val2Mod: nextProps.val2Mod,
+        val2Mod: nextProps.val2Mod
       });
       this.refs.val1Feild.setValue(nextProps.val1);
       this.refs.val2Feild.setValue(nextProps.val2);
@@ -438,12 +442,28 @@ var CalcItem = React.createClass({
     }
   },
 
+  _formatValue: function(idx){
+    var ctrl = this.refs["val"+idx+"Feild"];
+    var value = ctrl.getValue().replace(/[^\d\.]/g,'');
+    var dotIndex = value.indexOf('.');
+    if(dotIndex != -1){
+      if(dotIndex == 0) value = '0'+value;
+      dotIndex = value.indexOf('.');
+      value = value.split('.').join('');
+      value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
+    }
+    ctrl.setValue(value);
+    return value;
+  },
+
   _onVal1Change: function(e, d){
-    this.setState({val1: e.target.value, val1Mod: this.state.val1Mod || e.target.value != this.props.val1});
+    var val = this._formatValue(1);
+    this.setState({val1: val, val1Mod: this.state.val1Mod || val != this.props.val1});
   },
 
   _onVal2Change: function(e, d){
-    this.setState({val2: e.target.value, val2Mod: this.state.val2Mod || e.target.value != this.props.val2});
+    var val = this._formatValue(2);
+    this.setState({val2: val, val2Mod: this.state.val2Mod || val != this.props.val2});
   },
 
   _getTimeStr: function(timeNum){
@@ -452,32 +472,36 @@ var CalcItem = React.createClass({
   },
 
   render: function(){
+    var tdStyle={
+      minWidth:'120px'
+    };
     if(this.props.isViewStatus){
       return (<tr>
-        <td width='120'><span>{this._getTimeStr(this.props.time)}</span></td>
-        <td minwidth='250'>
+        <td width='110px'><span>{this._getTimeStr(this.props.time)}</span></td>
+        <td style={tdStyle}>
           <span>{this.props.val1}</span>
-          <span>千瓦时</span><span>{this.props.val1Mod ? "修正": ""}</span>
+          <span>{this.props.tag.uom}</span><span>{this.props.val1Mod ? "修正": ""}</span>
         </td>
-        <td minwidth='250'>
+        <td style={tdStyle}>
           <span>{this.props.val2}</span>
-          <span>千瓦时</span><span>{this.props.val2Mod? "修正": ""}</span>
+          <span>{this.props.tag.uom}</span><span>{this.props.val2Mod? "修正": ""}</span>
         </td>
       </tr>);
     }
     else{
       var style={
-        width: "120px"
+        width: "50px",
+        height:'29px'
       };
       return (<tr>
         <td width='110px'><span>{this._getTimeStr(this.props.time)}</span></td>
         <td style={tdStyle}>
           <TextField ref='val1Feild' defaultValue={this.state.val1} onChange={this._onVal1Change} style={style} />
-          <span>千瓦时</span><span>{this.state.val1Mod ? "修正": ""}</span>
+          <span>{this.props.tag.uom}</span><span>{this.state.val1Mod ? "修正": ""}</span>
         </td>
         <td style={tdStyle}>
           <TextField ref='val2Feild' defaultValue={this.state.val2} onChange={this._onVal2Change} style={style} />
-          <span>千瓦时</span><span>{this.state.val2Mod? "修正": ""}</span>
+          <span>{this.props.tag.uom}</span><span>{this.state.val2Mod? "修正": ""}</span>
         </td>
       </tr>);
     }
@@ -486,7 +510,7 @@ var CalcItem = React.createClass({
 
 var CalcSetting = React.createClass({
   propTypes: {
-    tagId: React.PropTypes.number,
+    tag: React.PropTypes.object,
     start: React.PropTypes.object,
     end: React.PropTypes.object,
     items: React.PropTypes.array,
@@ -516,7 +540,6 @@ var CalcSetting = React.createClass({
   },
 
   render: function () {
-    debugger;
     if(!this.props.isDisplay){
       return <div></div>;
     }
@@ -527,6 +550,7 @@ var CalcSetting = React.createClass({
       for (var i = 0; i < items.length; i++) {
         if(items[i].TBTime == item){
           var props = {
+            tag: me.props.tag,
             ref: 'item'+ item,
             time: item,
             val1: items[i].WorkDayValue,
@@ -535,10 +559,11 @@ var CalcSetting = React.createClass({
             val2Mod: items[i].HolidayModifyStatus,
             isViewStatus: me.props.isViewStatus,
           };
-          return <CalcItem {...props} />
+          return <CalcItem {...props} />;
         }
       }
       var props = {
+        tag: me.props.tag,
         ref: 'item'+ item,
         time: item,
         isViewStatus: me.props.isViewStatus,
@@ -548,27 +573,32 @@ var CalcSetting = React.createClass({
         val2Mod: false,
       };
       return <CalcItem {...props} />;
-    }, rows = arr.map(createItem);
+    },
+    rows = arr.map(createItem);
 
     var style = {
-      marginLeft: "30px"
+      margin: "18px 0",
+      padding:'9px',
+      border:"1px solid #efefef",
     };
 
     var reCalcCtrl;
     if(!this.props.isViewStatus){
-      reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick}>重新计算</a>;
+      reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick}  style={{color:'#1ca8dd','margin-left':'27px'}}>重新计算</a>;
     }
 
     return (
-      <div style={style}>
-        <table>
-          <tr>
-            <td>时间</td>
-            <td>工作日</td>
-            <td>非工作日</td>
-          </tr>
-          {rows}
-        </table>
+      <div>
+        <div className="jazz-setting-basic-calcsetting">
+          <table >
+            <tr>
+              <td>时间</td>
+              <td>工作日</td>
+              <td>非工作日</td>
+            </tr>
+            {rows}
+          </table>
+        </div>
         {reCalcCtrl}
       </div>
     );
@@ -577,6 +607,7 @@ var CalcSetting = React.createClass({
 
 var SpecialItem = React.createClass({
   propTypes: {
+    tag: React.PropTypes.object,
     year: React.PropTypes.number,
     index: React.PropTypes.number,
     settingId: React.PropTypes.number,
@@ -584,7 +615,7 @@ var SpecialItem = React.createClass({
     end: React.PropTypes.string,
     value: React.PropTypes.number,
     isViewStatus: React.PropTypes.bool,
-    onRemove:React.PropTypes.func
+    onRemove: React.PropTypes.func
   },
 
   componentWillReceiveProps: function(nextProps){
@@ -663,14 +694,9 @@ var SpecialItem = React.createClass({
           <div style={{display:'flex','flex-flow':'row','margin-top':'10px'}}>
             <div style={style}>
               {this.props.value}
-
             </div>
-            <div>
-              千瓦时
-            </div>
-
+            <span> {this.props.tag.uom}</span>
           </div>
-
         </div>
       );
     }
@@ -765,7 +791,7 @@ var SpecialItem = React.createClass({
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} label="－"  ref="remove"  onClick={this._onRemove} /><br/>
             </div>
             <div>
-            <TextField ref='valueField' defaultValue={this.props.value} /><span>千瓦时</span>
+            <TextField ref='valueField' defaultValue={this.props.value} /><span>{this.props.tag.uom}</span>
           </div>
         </div>
 
@@ -776,6 +802,7 @@ var SpecialItem = React.createClass({
 
 var SpecialSetting = React.createClass({
   propTypes: {
+    tag: React.PropTypes.object,
     year: React.PropTypes.number,
     items: React.PropTypes.array,
     isViewStatus: React.PropTypes.bool,
@@ -834,6 +861,7 @@ var SpecialSetting = React.createClass({
     var me = this,
       createItem = function(item, index) {
         var drvProps = {
+          tag: me.props.tag,
           year: me.props.year,
           index: index,
           ref: 'item' + index,
@@ -877,7 +905,7 @@ var SpecialSetting = React.createClass({
 var TBSettingItem = React.createClass({
   propTypes: {
     index: React.PropTypes.number,
-    tagId: React.PropTypes.number,
+    tag: React.PropTypes.object,
     year: React.PropTypes.number,
     start: React.PropTypes.string,
     end: React.PropTypes.string,
@@ -959,18 +987,21 @@ var TBSettingItem = React.createClass({
       StartTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.startFeild.getDate()),
       EndTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.endFeild.getDate())
     };
-    TBSettingAction.calcData(tr, this.props.tagId, function(data){
+    TBSettingAction.calcData(tr, me.props.tag.tagId, function(data){
       me.setState({avgs: data});
     });
   },
 
   getValue: function(){
+    var tmpDate = this.refs.endFeild.getDate();
+    var endDate = new Date(tmpDate.getFullYear(), tmpDate.getMonth(), tmpDate.getDate());
+    endDate.setDate(endDate.getDate() + 1);
     var rtn = {
       TbSetting:{
         Year: this.props.year,
         TBId: this.props.tbId,
         StartTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.startFeild.getDate()),
-        EndTime: CommonFuns.DataConverter.DatetimeToJson(this.refs.endFeild.getDate())
+        EndTime: CommonFuns.DataConverter.DatetimeToJson(endDate)
       },
       SpecialDates: this.refs.SpecialSettingCtrl.getValue()
     };
@@ -992,14 +1023,19 @@ var TBSettingItem = React.createClass({
     var startDate = new Date(me.props.year, 0, 1), dstartDate = startDate,
     endDate = new Date(me.props.year, 11, 31), dendDate = endDate;
     if(me.props.start) dstartDate = this._toFormDate(me.props.start);
-    if(me.props.end) dendDate = this._toFormDate(me.props.end);
+    if(me.props.end) {
+      var tmpDate = this._toFormDate(me.props.end);
+      dendDate = new Date(tmpDate);
+      dendDate.setDate(tmpDate.getDate() -1);
+    }
 
     var normalProps = {
+      tag: me.props.tag,
       isViewStatus: me.props.isViewStatus,
       items: me.props.normals
     },
     avgProps = {
-      tagId: me.props.tagId,
+      tag: me.props.tag,
       isViewStatus: me.props.isViewStatus,
       items: me.state.avgs,
       start: me.state.start,
@@ -1007,6 +1043,7 @@ var TBSettingItem = React.createClass({
       onCalc: me._onCalc,
     },
     specialProps = {
+      tag: me.props.tag,
       year: me.props.year,
       isViewStatus: me.props.isViewStatus,
       items: me.props.specials
@@ -1165,7 +1202,7 @@ var TBSettingItem = React.createClass({
 
 var TBSettingItems = React.createClass({
   propTypes: {
-    tagId: React.PropTypes.number,
+    tag: React.PropTypes.object,
     year: React.PropTypes.number,
     items: React.PropTypes.array,
     isViewStatus: React.PropTypes.bool
@@ -1240,7 +1277,7 @@ var TBSettingItems = React.createClass({
 
     var createItem = function(item, index) {
       var drvProps = {
-        tagId: me.props.tagId,
+        tag: me.props.tag,
         index: index,
         ref: 'item' + index,
         year: cyear,
@@ -1376,7 +1413,7 @@ var BaselineBasic = React.createClass({
   mixins:[Navigation,State],
 
   propTypes: {
-    tagId: React.PropTypes.number,
+    tag: React.PropTypes.object,
     tbId: React.PropTypes.number,
 
     name: React.PropTypes.string,
@@ -1507,7 +1544,7 @@ var BaselineBasic = React.createClass({
   },
   render: function (){
     var itemProps = {
-      tagId: this.props.tagId,
+      tag: this.props.tag,
       items: this.state.items,
       year: this.state.year,
       isViewStatus: this.state.isViewStatus,

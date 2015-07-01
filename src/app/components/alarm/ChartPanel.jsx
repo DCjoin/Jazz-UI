@@ -337,7 +337,7 @@ let ChartPanel = React.createClass({
     if(tagOptions && tagOptions.length === 1){
       tagOption = tagOptions[0];
       let uom = getUomById(tagOption.uomId);
-      tagObj = {tagId: tagOption.tagId, hierarchyId: tagOption.hierId, uom:uom.Comment};
+      tagObj = {tagId: tagOption.tagId, hierarchyId: tagOption.hierId, uom:uom};
     }else{
       return ;
     }
