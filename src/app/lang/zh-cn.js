@@ -60,6 +60,15 @@ I18N.M212005='用户未生效';
 I18N.M212006='密码错误';
 I18N.M212007='服务商域名不正确';
 
+I18N.Common={};
+I18N.Common.Glossary={};
+I18N.Common.Glossary.HierarchyNode = '层级节点';
+
+I18N.Message={};
+
+I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';
+I18N.Message.UpdateConcurrency = '该{0}已被修改，马上为您刷新。';
+I18N.Message.CustomerUnavailable = '抱歉，该客户不存在或无访问权限，请退出系统后重新登录。';
 
 I18N.Message.M1 = '服务器错误。';
 I18N.Message.M8 = '您没有该功能权限。';
@@ -76,7 +85,6 @@ I18N.Message.M01015 = '当前层级节点无子节点'; //for energy view single
 I18N.Message.M01016 = '相关的##Common.Glossary.Hierarchy##无有效日历，无法获得本年的目标值和基准值。';
 I18N.Message.M01018 = '无法移动到目标节点下，请按照规则拖动层级节点：<br/>组织->组织、客户；<br/>园区->组织、客户；<br/>楼宇->园区、组织、客户。';
 I18N.Message.M01019 = '层级被修改';
-I18N.Message.M01051 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.HierarchyNode);
 I18N.Message.M01251 = '该层级节点的高级属性已被其他用户修改。界面即将刷新';
 I18N.Message.M01254 = '高级属性的输入项非法，无法保存。';
 I18N.Message.M01301 = '日历已被其他用户修改。';
@@ -149,16 +157,12 @@ I18N.Message.M02701 = '所选层级部分删除，无法排名。';
  * Carbon
  ******/
 I18N.Message.M03005 = '转换因子重复，界面即将刷新。';
-I18N.Message.M03006 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.CarbonFactor);
-I18N.Message.M03007 = I18N.format(I18N.Message.UpdateConcurrency, I18N.Common.Glossary.CarbonFactor);
 I18N.Message.M03008 = '该转换物与转换目标不匹配，无法保存转换因子。';
 
 /******
  * TOU Tariff Error Code
  ******/
 I18N.Message.M03025 = '价格策略配置已被他人修改，界面即将刷新。';
-I18N.Message.M03026 = I18N.format(I18N.Message.UpdateConcurrency, I18N.Common.Glossary.PulsePeak);
-I18N.Message.M03028 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.PriceStrategy);
 I18N.Message.M03029 = '峰值季节不存在，界面即将刷新。';
 I18N.Message.M03030 = '不能保存空的价格策略。';
 I18N.Message.M03032 = '未设置平时电价，请确保峰时区间和谷时区间充满24小时。';
@@ -177,8 +181,6 @@ I18N.Message.M03042 = '该输入项只能是正数';
 I18N.Message.M03052 = '日历的结束日期必须大于等于开始日期。';
 I18N.Message.M03053 = '##Common.Label.TimeOverlap##';
 I18N.Message.M03054 = '##Common.Label.DuplicatedName##';
-I18N.Message.M03055 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.Calendar);
-I18N.Message.M03056 = I18N.format(I18N.Message.UpdateConcurrency, I18N.Common.Glossary.Calendar);
 I18N.Message.M03057 = '结束时间必须大于开始时间。';
 I18N.Message.M03058 = '日历已被引用，不可删除。';     //--------------
 I18N.Message.M03059 = '二月日期不能为29/30/31。';
@@ -186,7 +188,6 @@ I18N.Message.M03060 = '小月日期不能为31。';
 I18N.Message.M03061 = '至少添加一个采暖季或者供冷季。';
 I18N.Message.M03062 = '采暖季与供冷季时间段不能在同一月份内。';
 I18N.Message.M03063 = '采暖季与供冷季时间段相差不能小于7天。';
-I18N.Message.M03064 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.HierarchyNode);
 I18N.Message.M03902 = '价格策略名称超过100个字符';
 I18N.Message.M03903 = '价格策略名称中包含非法字符';
 
@@ -206,9 +207,7 @@ SystemDimension Error Code, NOTE that for error of
 refresh is needed.
 04051 should refresh hierarchy tree
 *******/
-I18N.Message.M04051 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.HierarchyNode);
 I18N.Message.M04052 = '勾选当前##Common.Glossary.DimensionNode##前，必须确保它的父节点已被勾选。';
-I18N.Message.M04053 = I18N.format(I18N.Message.UpdateConcurrency, I18N.Common.Glossary.DimensionNode);
 I18N.Message.M04054 = '反勾选当前##Common.Glossary.DimensionNode##前，必须确保它的所有子节点未被勾选。';
 I18N.Message.M04055 = '当前系统维度节点无子节点';   //for energy view single tag to pie chart
 I18N.Message.M04056 = '无法删除该系统维度节点。请先删除该节点下的所有数据点关联关系。';
@@ -225,8 +224,7 @@ I18N.Message.M05014 = '“我的收藏”内容已达上限，请删除部分内
 I18N.Message.M05015 = '##Common.Label.DuplicatedName##';
 I18N.Message.M05016 = '当前的##Common.Glossary.Dashboard##的##Common.Glossary.Widget##数量已达上限，无法创建新的##Common.Glossary.Widget##。';
 I18N.Message.M05017 = '所有##Common.Glossary.Widget##的##Common.Glossary.Dashboard##的Id不完全一致。';
-I18N.Message.M05018 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.Dashboard);
-I18N.Message.M05022 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.Widget);
+
 I18N.Message.M05023 = '{0}{1}';
 I18N.Message.M05023_Sub0 = '以下用户Id已被删除：{0}。';
 I18N.Message.M05023_Sub1 = '无法分享给这些人：{0}。';
@@ -234,7 +232,7 @@ I18N.Message.M05023_Sub1 = '无法分享给这些人：{0}。';
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
 *******/
-I18N.Message.M06001 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.HierarchyNode);
+
 I18N.Message.M06100 = '##Common.Glossary.Tag##已经被删除，无法加载。';
 I18N.Message.M06104 = '##Common.Label.DuplicatedName##';
 I18N.Message.M06107 = '该##Common.Glossary.Code##已存在';
@@ -244,8 +242,7 @@ I18N.Message.M06127 = '该##Common.Glossary.Code##已存在';
 I18N.Message.M06133 = '##Common.Glossary.Formula##的格式有误，请检查。';
 I18N.Message.M06134 = '##Common.Glossary.VirtualTag##的##Common.Glossary.Formula##包含非法的##Common.Glossary.Tag##，无法保存。';
 I18N.Message.M06136 = '##Common.Glossary.VirtualTag##的##Common.Glossary.Formula##包含循环调用，无法保存。';
-I18N.Message.M06141 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.SystemDimension);
-I18N.Message.M06143 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.AreaDimension);
+
 I18N.Message.M06156 = '##Common.Glossary.VirtualTag##的##Common.Glossary.Formula##包含非法的##Common.Glossary.Tag##，无法保存。';
 I18N.Message.M06160 = '##Common.Glossary.PhysicalTag##的##Common.Glossary.Commodity##与##Common.Glossary.UOM##不匹配，无法保存。';
 I18N.Message.M06161 = '##Common.Glossary.VirtualTag##的##Common.Glossary.Commodity##与##Common.Glossary.UOM##不匹配，无法保存。';
@@ -261,20 +258,15 @@ I18N.Message.M06195 = '当前区域维度的子节点下不包含与该数据点
 I18N.Message.M06196 = '当前层级节点不包含与该数据点介质单位相同的数据点';
 I18N.Message.M06197 = '当前系统维度不包含与该数据点介质单位相同的数据点';
 I18N.Message.M06198 = '当前区域维度不包含与该数据点介质单位相同的数据点';
-I18N.Message.M06200 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.Customer);
 I18N.Message.M06201 = '无法将##Common.Glossary.CalculationStep##修改为“{0}”。本##Common.Glossary.Tag##与其他##Common.Glossary.Tag##存在引用关系，引用##Common.Glossary.Tag##的##Common.Glossary.CalculationStep##必须大于等于被引用##Common.Glossary.Tag##的##Common.Glossary.CalculationStep##。';
 I18N.Message.M06202 = '对应节点下已存在相同介质的能耗数据点。';
 I18N.Message.M06203 = '该##Common.Glossary.Tag##不是能耗数据。';
 
 
 I18N.Message.M07001 = '数据权限已被其他用户修改，界面将被刷新。';
-I18N.Message.M07002 = I18N.format(I18N.Message.UpdateConcurrency, '角色');
-I18N.Message.M07006 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.User);
-I18N.Message.M07007 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.Customer);
 I18N.Message.M07000 = '没有功能权限。';
 I18N.Message.M07009 = '没有数据权限。';
-I18N.Message.M07018 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.HierarchyNode);
-I18N.Message.M07019 = I18N.format(I18N.Message.DeletionConcurrency, '角色');
+
 I18N.Message.M07010 = '##Common.Label.DuplicatedName##';
 I18N.Message.M07011 = '角色已绑定用户，无法删除。';
 I18N.Message.M07021 = '层级节点不存在或已被删除，界面将被刷新。';
@@ -293,7 +285,6 @@ I18N.Message.M08209 = '当前的##Common.Glossary.DimensionNode##的级次超出
 I18N.Message.M08210 = '当前的##Common.Glossary.DimensionNode##的父节点已被删除，界面将被刷新。';
 I18N.Message.M08211 = '当前的##Common.Glossary.DimensionNode##已被他人删除，界面将被刷新。';
 I18N.Message.M08212 = '无法删除该区域维度节点。请先删除该节点下的所有子节点。';
-I18N.Message.M08213 = I18N.format(I18N.Message.UpdateConcurrency, I18N.Common.Glossary.DimensionNode);
 I18N.Message.M08214 = '当前区域维度节点无子节点';   //for energy view single tag to pie chart
 I18N.Message.M08215 = '无法删除该区域维度节点。请先删除该节点下的所有数据点关联关系。';
 
@@ -312,8 +303,6 @@ I18N.Message.M09160 = '##Common.Glossary.Tag##所关联的层级树日历属性�
 //Cost concurrency error
 I18N.Message.M10007 = '峰谷平电价展示不支持按小时展示';
 I18N.Message.M10015 = '已经存在同##Common.Glossary.HierarchyNode##的数据,界面将被刷新';
-I18N.Message.M10016 = I18N.format(I18N.Message.UpdateConcurrency, I18N.Setting.Label.HierarchyNodeCostProperties);
-I18N.Message.M10017 = I18N.format(I18N.Message.DeletionConcurrency, I18N.Common.Glossary.HierarchyNode);
 I18N.Message.M10019 = '需量成本Tag为无效数据';
 I18N.Message.M10020 = '无功电量Tag为无效数据';
 I18N.Message.M10021 = '有功电量Tag为无效数据';
@@ -321,7 +310,6 @@ I18N.Message.M10021 = '有功电量Tag为无效数据';
 I18N.Message.M11012 = '该客户被层级引用，不能删除！';
 I18N.Message.M11351 = '编码重复';
 I18N.Message.M11352 = '##Common.Label.DuplicatedName##';
-I18N.Message.M11353 = I18N.format(I18N.Message.UpdateConcurrency, I18N.Common.Glossary.Customer);
 I18N.Message.M11354 = '图片文件太大，请您重新上传。';
 I18N.Message.M11355 = '图片尺寸太大，请您重新上传。';
 I18N.Message.M11356 = '只允许上传GIF/PNG格式图片，请重新上传';
@@ -332,7 +320,6 @@ I18N.Message.M11408 = '该客户被数据点引用，不能删除。';
 
 
 I18N.Message.M12001 = '##Common.Label.DuplicatedName##';
-I18N.Message.M12002 = I18N.format(I18N.Message.UpdateConcurrency, I18N.Common.Glossary.User);
 I18N.Message.M12003 = '登录密码错误';
 I18N.Message.M12006 = '默认平台管理员账户不可删除。';
 I18N.Message.M12008 = '用户已被删除。界面将刷新。';
