@@ -159,15 +159,17 @@ var Checkboxes = React.createClass({
   },
   setValue: function(stepValue){
     this.clearValue();
-    for(var i = 0; i < stepValue.length; i++){
-      if(stepValue[i] === YEARSTEP){
-        this.refs.year.setChecked(true);
-      }
-      else if(stepValue[i] === MONTHSTEP){
-        this.refs.month.setChecked(true);
-      }
-      else if(stepValue[i] === DAYSTEP){
-        this.refs.day.setChecked(true);
+    if(stepValue !== null){
+      for(var i = 0; i < stepValue.length; i++){
+        if(stepValue[i] === YEARSTEP){
+          this.refs.year.setChecked(true);
+        }
+        else if(stepValue[i] === MONTHSTEP){
+          this.refs.month.setChecked(true);
+        }
+        else if(stepValue[i] === DAYSTEP){
+          this.refs.day.setChecked(true);
+        }
       }
     }
   },
