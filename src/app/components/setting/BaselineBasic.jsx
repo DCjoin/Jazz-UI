@@ -2,7 +2,6 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker,RaisedButton } from 'material-ui';
 import assign from "object-assign";
-import classNames from 'classnames';
 import YearPicker from '../../controls/YearPicker.jsx';
 import DaytimeSelector from '../../controls/DaytimeSelector.jsx';
 import NodeButtonBar from './NodeButtonBar.jsx';
@@ -127,12 +126,9 @@ var DaytimeRangeValue = React.createClass({
   },
 
   _onValueChange: function(e){
-    var value = _validateValue(e.target.value);
-
-    if(value != e.target.value){
-      if(this.props.onValueChange){
-        this.props.onValueChange(e, this.props.index, value);
-      }
+    var value = this._validateValue(e.target.value);
+    if(this.props.onValueChange){
+      this.props.onValueChange(e, this.props.index, value);
     }
   },
 
@@ -726,7 +722,7 @@ var SpecialItem = React.createClass({
         et = jsonToFormTime(this.props.end);
 
       var startDate = me.props.start ? jsonToFormDate(me.props.start) : new Date(me.props.year, 0, 1),
-        endDate = me.props.end ? toFormEndDate(jsonToFormDate(me.props.start)) : new Date(me.props.year, 11, 31),
+        endDate = me.props.end ? toFormEndDate(jsonToFormDate(me.props.end)) : new Date(me.props.year, 11, 31),
         startDateStr = formatDate(startDate),
         endDateStr = formatDate(endDate),
         startTimeStr = CommonFuns.numberToTime(st),
@@ -1289,9 +1285,9 @@ var TBSettingItem = React.createClass({
           endDate = v;
         }
         if(me.props.onSettingItemDateChange){
-          me.props.onSettingItemDateChange(v, fromFormEndDate(endDate));
+          me.props.onSettingItemDateChange(v, fromFormEndDate(endDate), me.props.index);
         }
-        me.refs.SpecialSettingCtrl.validate(me.state.items);
+        me.refs.SpecialSettingCtrl.validate(me.getValue());
       }
     };
     var endProps = {
@@ -1306,9 +1302,9 @@ var TBSettingItem = React.createClass({
           me.refs.startFeild.setDate(v);
         }
         if(me.props.onSettingItemDateChange){
-          me.props.onSettingItemDateChange(v, fromFormEndDate(v));
+          me.props.onSettingItemDateChange(v, fromFormEndDate(v), me.props.index);
         }
-        me.refs.SpecialSettingCtrl.validate(me.state.items);
+        me.refs.SpecialSettingCtrl.validate(me.getValue());
       }
     };
 
@@ -1330,10 +1326,9 @@ var TBSettingItem = React.createClass({
             <div className="jazz-setting-basic-datepicker-container">
               <DatePicker  ref='endFeild' {...endProps} />
             </div>
-
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
-          <div>{this.props.error}</div>
+          <div>{this.state.error}</div>
           <div className="jazz-setting-basic-clear">
             <RadioButton name='NormalRadio' ref='NormalRadio' value="NormalRadio"
               label="手动设置基准值" onCheck={this._onNormalCheck} checked={this.state.radio == 'NormalRadio'} />
@@ -1374,7 +1369,6 @@ var TBSettingItems = React.createClass({
   },
 
   tryGetValue: function(){
-    debugger;
     var val = this.getValue(),
       len = this.state.items.length,
       valid = true;
@@ -1421,9 +1415,9 @@ var TBSettingItems = React.createClass({
   },
 
   _onSettingItemDateChange: function(){
-    var valid = true, items = this.state.items;
-    for (var i = 0; i < items.length; i++) {
-      valid = valid && this.refs['item' + i].validate(items);
+    var valid = true, vals = this.getValue();
+    for (var i = 0; i < vals.length; i++) {
+      valid = valid && this.refs['item' + i].validate(vals);
     }
   },
 
@@ -1499,15 +1493,31 @@ var TBSettingItems = React.createClass({
 });
 
 var CalDetail = React.createClass({
-
+  _onChange:function(){
+    var data=TBSettingStore.getCalDetailData();
+    this.setState({
+      calendar:data.Calendar,
+      workTimeCalendar:data.WorkTimeCalendar,
+      calendarName:data.Calendar.Name,
+      workTimeCalendarName:data.WorkTimeCalendar.Name
+    })
+  },
   getInitialState: function() {
         return {
-          calendar:this.props.calendar,
-          workTimeCalendar:this.props.workTimeCalendar,
-          calendarName:this.props.calendarName,
-          workTimeCalendarName:this.props.workTimeCalendarName
+          calendar:null,
+          workTimeCalendar:null,
+          calendarName:null,
+          workTimeCalendarName:null
         };
       },
+  componentWillMount:function(){
+    var hierId=TBSettingStore.getHierId();
+    TBSettingStore.addCalDetailListener(this._onChange);
+    TBSettingAction.calDetailData(hierId);
+  },
+  componentWillUnmount:function(){
+    TBSettingStore.removeCalDetailListener(this._onChange)
+  },
   render:function(){
     var workDay=[],
         offDay=[],
@@ -1597,9 +1607,20 @@ var BaselineBasic = React.createClass({
       calButton:'显示日历详情',
       showCalDetail:false,
       year:TBSettingStore.getYear(),
-      validationError: '',
-      hasCal:null,
+      validationError: ''
     };
+  },
+
+  componentDidMount: function(){
+    debugger;
+    this._fetchServerData(this.state.year);
+  },
+
+  componentWillReceiveProps: function(nextProps){
+    debugger;
+    if(nextProps){
+      this._fetchServerData(this.state.year);
+    }
   },
 
   tryGetValue: function(){
@@ -1711,28 +1732,6 @@ var BaselineBasic = React.createClass({
       calButton:((this.state.calButton=='显示日历详情')?'隐藏日历详情':'显示日历详情')
     })
   },
-  _onChange:function(){
-    var data=TBSettingStore.getCalDetailData();
-    if(data){
-      this.setState({
-        hasCal:true
-      })
-    }
-    else{
-      this.setState({
-        hasCal:false
-      })
-    }
-
-  },
-  componentWillMount:function(){
-    var hierId=TBSettingStore.getHierId();
-    TBSettingStore.addCalDetailListener(this._onChange);
-    TBSettingAction.calDetailData(hierId);
-  },
-  componentWillUnmount:function(){
-    TBSettingStore.removeCalDetailListener(this._onChange)
-  },
   render: function (){
     var itemProps = {
       tag: this.props.tag,
@@ -1764,28 +1763,12 @@ var BaselineBasic = React.createClass({
       //className: "yearpicker",
 
     };
-    var calDetailButton,showCalDetail;
-    if(!(this.state.hasCal===null)){
-      calDetailButton=((!!this.state.hasCal)?<div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
-    :<div>该数据点所关联层级节点未引用任何日历模板。请引用后再设置，保证设置内容可被计算</div>);
-    if(this.state.hasCal==false){
-      React.findDOMNode(this.refs.editButton).disabled="disabled"
-    }
-    else{
-      React.findDOMNode(this.refs.editButton).disabled=null
-    }
-    };
-
+    var calDetailButton=(
+        <div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
+    ),showCalDetail;
     if(this.state.showCalDetail){
-        var data=TBSettingStore.getCalDetailData(),
-        calDetailprops={
-          calendar:data.Calendar,
-          workTimeCalendar:data.WorkTimeCalendar,
-          calendarName:data.Calendar.Name,
-          workTimeCalendarName:data.WorkTimeCalendar.Name
-        }
-        showCalDetail=<CalDetail  {...calDetailprops}/>
-    };
+      showCalDetail=<CalDetail />
+    }
     return (
       <div className='jazz-setting-basic-container'>
       <div className='jazz-setting-basic-content'>
@@ -1804,10 +1787,7 @@ var BaselineBasic = React.createClass({
       </div>
       <div>{this.state.validationError}</div>
       <div>
-        <button type="submit" ref="editButton" hidden={!this.state.isViewStatus} className={classNames({
-                                                                                    "jazz-setting-basic-editbutton": true,
-                                                                                    "disabled": !this.state.hasCal
-                                                                                  })} onClick={this._handleEdit}> 编辑 </button>
+        <button type="submit" hidden={!this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleEdit}> 编辑 </button>
         <span>
           <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleSave}> 保存 </button>
           <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleCancel}> 放弃 </button>

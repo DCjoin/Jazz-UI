@@ -16,40 +16,28 @@ let BaselineCfg = React.createClass({
     tag: React.PropTypes.object
   },
 
-  getDefaultProps: function(){
-    return {
-      tag: {
-        tagId: 100006,
-        hierarchyId: 1,
-        uom: {
-          Comment: '千瓦时'
-        }
-      }
-    };
-  },
-
   getInitialState: function() {
     return {
       tag: this.props.tag,
-      tbId: this.props.tbId,
       year: (new Date()).getFullYear()
     };
   },
 
-  refreshData: function(tagId){
+  refreshData: function(tagId, callback){
     var me = this;
     TBAction.loadData(tagId, function(tbs){
       if(tbs && tbs.length > 0){
         for(var i=0; i< tbs.length; i++){
           if(tbs[i].TBType == 2){
+            var tb = tbs[i];
             me.setState({
-              tbId: tbs[i].Id,
-              name: tbs[i].Name,
+              tbId: tb.Id,
+              name: tb.Name,
               onNameChanged: function(newName){
                 if(me.state.name != newName){
                   me.setState({name: newName});
-                  tbs[i].Name = newName;
-                  TBAction.saveData(tbs[i]);
+                  tb.Name = newName;
+                  TBAction.saveData(tb);
                 }
               },
               onYearChanged: function(year){
@@ -58,6 +46,7 @@ let BaselineCfg = React.createClass({
                 }
               }
             });
+            if(callback) callback(tb);
           }
         }
       }
@@ -65,7 +54,9 @@ let BaselineCfg = React.createClass({
   },
 
   componentDidMount: function() {
-    this.refreshData(this.state.tag.tagId);
+    if(this.state.tag){
+      this.refreshData(this.state.tag.tagId);
+    }
   },
 
   componentWillReceiveProps: function(nextProps){
@@ -76,9 +67,11 @@ let BaselineCfg = React.createClass({
   },
 
   showDialog: function(tag){
+    var me = this;
     this.setState({tag: tag});
-    this.refreshData(tag.tagId);
-    this.refs.cfgDialog.show();
+    this.refreshData(tag.tagId, function(tb){
+      me.refs.cfgDialog.show();
+    });
   },
 
   _onTabChanged: function(tabIndex, tab){
@@ -123,11 +116,12 @@ let BaselineCfg = React.createClass({
       }
     };
 
-    var cusTag = {
-      tagId: this.state.tag.tagId,
-      hierarchyId: this.state.tag.hierarchyId,
-      uom: this.state.tag.uom.Comment,
-    };
+    var cusTag = {};
+    if(this.state.tag){
+      cusTag.tagId = this.state.tag.tagId;
+      cusTag.hierarchyId = this.state.tag.hierarchyId;
+      cusTag.uom = this.state.tag.uom.Comment;
+    }
 
     var basicProps = {
       tag: cusTag,
