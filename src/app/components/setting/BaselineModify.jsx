@@ -9,14 +9,6 @@ import BaselineModifyStore from '../../stores/BaselineModifyStore.jsx';
 import BaselineModifyAction from "../../actions/BaselineModifyAction.jsx";
 import Util from "../../util/Util.jsx";
 
-let monthValues = [
-  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
-  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
-  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
-  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
-  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
-  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false}
-];
 const monthItemNum = 6;
 const monthValueNum = 12;
 let BaselineModify = React.createClass({
@@ -135,7 +127,7 @@ let BaselineModify = React.createClass({
   loadDataByYear: function(){
     var BaselineModifyData = BaselineModifyStore.getData();
     this.setState({
-      yearValue: BaselineModifyData.YearlyValues.DataValue
+      yearValue: BaselineModifyData.YearlyValues[0].DataValue
     });
     var getMonthData = BaselineModifyData.MonthlyValues;
     var monthValues = this.state.monthValues;
@@ -165,6 +157,14 @@ let BaselineModify = React.createClass({
   },
 
   getInitialState: function(){
+    let monthValues = [
+      {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+      {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+      {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+      {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+      {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+      {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false}
+    ];
 		return {
       disable: true,
       yearValue: null,
