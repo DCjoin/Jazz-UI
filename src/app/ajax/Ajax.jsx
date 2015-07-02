@@ -43,8 +43,12 @@ var _ajax = function(url, options) {
         .set('Content-Type', dataType)
         .end(function(err, res){
         	if (res.ok && Util.isSuccess(res.body)) {
-    			success.call(options, Util.getResResult(res.body));
+    				success.call(options, Util.getResResult(res.body));
         	} else {
+						if(res.body){
+							Util.ErrorHandler(options, res.body.error.Code);
+						}
+
         		error.call(options, err, res);
         	}
         });

@@ -64,6 +64,50 @@ let CommonFuns = {
 		}
 		return null;
 	},
+	getErrorMessage: function (code) {
+    if (!window.I18N.Message['M' + code]) return window.I18N.Common.Label.UnknownError;
+    else return window.I18N.Message['M' + code];
+  },
+  processErrorCode: function (errorCode) {
+      if (typeof errorCode == 'number') errorCode = errorCode.toString();
+      var errorModelNCode,
+          errorType;
+      if (errorCode === undefined || errorCode === null) {
+          errorType = undefined;
+          errorModelNCode = undefined;
+      } else if (errorCode.length == 1) {
+          errorType = undefined;
+          errorModelNCode = errorCode;
+      } else {
+          errorModelNCode = errorCode.substr(7);
+          errorType = errorCode.substr(0, 2);
+      }
+
+      return {
+          errorType: errorType,
+          errorCode: errorModelNCode
+      };
+  },
+  popupErrorMessage: function (message, context, fns, errorCode) {
+		window.alert(message);
+
+  },
+	ErrorHandler: function (context, errorCode, errorMessages) {
+    if (context.commonErrorHandling === false) return;
+
+    if (typeof errorCode == 'number') errorCode = errorCode + '';
+
+    var error = CommonFuns.processErrorCode(errorCode),
+        errorModelNCode = error.errorCode,
+        errorType = error.errorType; // 02、05输入错误，06并发错误;
+
+    if (errorType === undefined) {
+			CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorCode), context, undefined, errorCode);
+        return;
+    }
+		CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorModelNCode), context, undefined, errorCode);
+
+	},
   base64ToBackgroundImageUrl: function(base64Data) {
 		return "url(data:image/*;base64," + base64Data + ")";
 	},
