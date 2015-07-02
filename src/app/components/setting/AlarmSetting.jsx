@@ -172,11 +172,12 @@ var Checkboxes = React.createClass({
     }
   },
 	render: function(){
+    let checkWidth = {width: '60px'};
 		return (
-			<div style={{display:'flex', 'flex-flow':'row'}}>
-				<Checkbox style={{width: '80px'}} iconStyle={{fill: '#767a7a'}} ref="day" label="日" disabled={this.props.disabled}/>
-				<Checkbox style={{width: '80px'}} iconStyle={{fill: '#767a7a'}} ref="month" label="月" disabled={this.props.disabled}/>
-				<Checkbox style={{width: '80px'}} iconStyle={{fill: '#767a7a'}} ref="year" label="年" disabled={this.props.disabled}/>
+			<div className="jazz-setting-alarm-checkbox">
+				<Checkbox style={checkWidth} ref="day" label="日" disabled={this.props.disabled}/>
+				<Checkbox style={checkWidth} ref="month" label="月" disabled={this.props.disabled}/>
+				<Checkbox style={checkWidth} ref="year" label="年" disabled={this.props.disabled}/>
 			</div>
     );
   }
