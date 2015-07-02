@@ -10,12 +10,12 @@ import BaselineModifyAction from "../../actions/BaselineModifyAction.jsx";
 import Util from "../../util/Util.jsx";
 
 let monthValues = [
-  {LeftValue: 100, LeftIsModify: false, RightValue: 200, RightIsModify: false},
-  {LeftValue: 300, LeftIsModify: false, RightValue: 400, RightIsModify: false},
-  {LeftValue: 500, LeftIsModify: false, RightValue: 600, RightIsModify: false},
-  {LeftValue: 700, LeftIsModify: false, RightValue: 800, RightIsModify: false},
-  {LeftValue: 900, LeftIsModify: false, RightValue: 1000, RightIsModify: false},
-  {LeftValue: 1100, LeftIsModify: false, RightValue: 1200, RightIsModify: false}
+  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false},
+  {LeftValue: null, LeftIsModify: false, RightValue: null, RightIsModify: false}
 ];
 const monthItemNum = 6;
 const monthValueNum = 12;
@@ -92,11 +92,35 @@ let BaselineModify = React.createClass({
     this.clearModify();
   },
 
+  _validate: function(val, obj){
+    var value = val.replace(/[^\d\.]/g,'');
+    var dotIndex = value.indexOf('.');
+    if(dotIndex != -1){
+      if(dotIndex === 0){
+        value = '0' + value;
+      }
+      value = value.split('.').join('');
+      value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
+    }
+
+    obj.value = value;
+    if(value === ''){
+      this.setState({error: "必填项"});
+      return false;
+    }
+    else{
+      this.setState({error: ""});
+      return true;
+    }
+  },
+
   yearValueChange: function(e){
-    this.setState({
-      yearIsModify: true,
-      yearValue: e.target.value
-    });
+    if(this._validate(e.target.value, e.target)){
+      this.setState({
+        yearIsModify: true,
+        yearValue: e.target.value
+      });
+    }
   },
 
   _onYearPickerSelected(yearData){
@@ -143,7 +167,7 @@ let BaselineModify = React.createClass({
   getInitialState: function(){
 		return {
       disable: true,
-      yearValue: 100,
+      yearValue: null,
       yearIsModify: false,
       monthValues: monthValues,
       year: TBSettingStore.getYear()
@@ -172,12 +196,14 @@ let BaselineModify = React.createClass({
     var monthValues = this.state.monthValues;
     var disable = this.state.disable;
     var idx = 0;
+    let me = this;
     var monthItems = months.map(function(month) {
       let props = {
         ref: "monthItem" + (idx + 1),
         line: month,
         uom: uom,
         disable: disable,
+        validate: me._validate,
         monthValue: monthValues[idx++]
       };
       return (
@@ -187,35 +213,41 @@ let BaselineModify = React.createClass({
     var curYear = (new Date()).getFullYear();
     var yearProps = {
       ref: "yearSelector",
-      selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
+      selectedIndex: ((this.state.year || curYear) - curYear + 10),
       onYearPickerSelected: this._onYearPickerSelected,
-      //className: "yearpicker",
+      style:{
+        border:'1px solid #efefef',
+        margin:'14px 0px 0px 10px'
+      }
+      //className: "jazz-setting-basic-yearpicker"
     };
     return (
-      <div className="jazz-setting-container">
-        <div className='jazz-setting-content'>
-          <span>
+      <div className="jazz-setting-baseline-container">
+        <div className='jazz-setting-baseline-content'>
+          <div style={{display:'flex','flex-flow':'row'}}>
+            <div style={{marginTop:'21px', height:'20px'}}>
             请选择配置年份进行编辑
-               <YearPicker {...yearProps}/>;
-          </span>
-          <span className='jazz-setting-baseline-margin'>
+          </div>
+               <YearPicker {...yearProps}/>
+          </div>
+          <div className='jazz-setting-baseline-margin'>
             年基准值
-          </span>
-          <span>
-            年度 <input type="text" ref="yearValue" style={{width:'50px', marginRight:'10px'}} value={this.state.yearValue} disabled={this.state.disable} onChange={this.yearValueChange}/> 千瓦时
-          </span>
-          <span className='jazz-setting-baseline-margin'>
+          </div>
+          <div>
+            年度 <input type="text" ref="yearValue"className='jazz-setting-baseline-year' value={this.state.yearValue} disabled={this.state.disable} onChange={this.yearValueChange}/> 千瓦时
+          </div>
+          <div className='jazz-setting-baseline-margin'>
             月基准值
-          </span>
-          <span>
+          </div>
+          <div>
             {monthItems}
-          </span>
+          </div>
         </div>
         <div>
-          <button className='jazz-setting-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
+          <button className='jazz-setting-basic-editbutton' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
           <span>
-            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
-            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
+            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
+            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
           </span>
         </div>
     </div>
@@ -234,42 +266,59 @@ let MonthItem = React.createClass({
       monthValue: nextProps.monthValue
     });
   },
+  _validate: function(val, obj){
+    if(this.props.validate){
+      if(this.props.validate(val, obj)){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+  },
   _onLeftChange: function(e){
-    var monthValue = this.state.monthValue;
-    monthValue.LeftValue = parseInt(e.target.value);
-    monthValue.LeftIsModify = true;
-    this.setState({
-      monthValue: monthValue
-    });
+    if(this._validate(e.target.value, e.target)){
+      var monthValue = this.state.monthValue;
+      monthValue.LeftValue = e.target.value;
+      monthValue.LeftIsModify = true;
+      this.setState({
+        monthValue: monthValue
+      });
+    }
   },
   _onRightChange: function(e){
-    var monthValue = this.state.monthValue;
-    monthValue.RightValue = parseInt(e.target.value);
-    monthValue.RightIsModify = true;
-    this.setState({
-      monthValue: monthValue
-    });
+    if(this._validate(e.target.value, e.target)){
+      var monthValue = this.state.monthValue;
+      monthValue.RightValue = e.target.value;
+      monthValue.RightIsModify = true;
+      this.setState({
+        monthValue: monthValue
+      });
+    }
   },
 	render: function(){
 	  let line = this.props.line;
     let Uom = this.props.uom;
     let disable = this.props.disable;
+    var leftDivStyle = {display:'inline-block',width:'52px'};
+    var centerDivStyle = {display:'inline-block',width:'103px'};
+    var rightDivStyle = {display:'inline-block',width:'92px'};
 		return (
-      <table border="1">
+      <table border='0' cellSpacing='1' cellPadding='0'>
         <tr>
           <td align="left">
-            <span style={{display:'inline-block', width:'58px'}}>{line.LeftMonth}月</span>
-            <span style={{display:'inline-block',width:'90px'}}>
-             <input type="text" style={{display:'inline-block',width:'80px'}} value={this.state.monthValue.LeftValue} onChange={this._onLeftChange} disabled={disable}/>
-            </span>
-            <span style={{display:'inline-block',width:'100px'}}>{Uom}</span>
+            <div style={leftDivStyle}>{line.LeftMonth}月</div>
+            <div style={centerDivStyle}>
+             <input ref="leftValue" type="text" className="jazz-setting-baseline-month" value={this.state.monthValue.LeftValue} onChange={this._onLeftChange} disabled={disable}/>
+            </div>
+            <div style={rightDivStyle}>{Uom}</div>
           </td>
           <td align="right">
-            <span style={{display:'inline-block', width:'58px'}}>{line.RightMonth}月</span>
-            <span style={{display:'inline-block',width:'90px'}}>
-             <input type="text" style={{display:'inline-block',width:'80px'}} value={this.state.monthValue.RightValue} onChange={this._onRightChange} disabled={disable}/>
-            </span>
-            <span style={{display:'inline-block',width:'50px'}}>{Uom}</span>
+            <div style={leftDivStyle}>{line.RightMonth}月</div>
+            <div style={centerDivStyle}>
+             <input ref="rightValue" type="text" className="jazz-setting-baseline-month" value={this.state.monthValue.RightValue} onChange={this._onRightChange} disabled={disable}/>
+            </div>
+            <div style={rightDivStyle}>{Uom}</div>
           </td>
         </tr>
       </table>

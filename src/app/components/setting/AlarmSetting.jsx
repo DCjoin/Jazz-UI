@@ -16,7 +16,10 @@ let AlarmSetting = React.createClass({
 
 	_onChange: function(){
     var alarmSettingData = AlarmSettingStore.getData();
-    this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
+    //this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
+    this.setState({
+      threshold: alarmSettingData.AlarmThreshold
+    });
     this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
     var stepValue = alarmSettingData.AlarmSteps;
     this.refs.alarmSteps.setValue(stepValue);
@@ -54,10 +57,42 @@ let AlarmSetting = React.createClass({
     this._onChange();
   },
 
+  _validate: function(val){
+    var value = val.replace(/[^\d\.]/g,'');
+    var dotIndex = value.indexOf('.');
+    if(dotIndex != -1){
+      if(dotIndex === 0){
+        value = '0' + value;
+      }
+      value = value.split('.').join('');
+      value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
+    }
+
+    this.refs.threshold.getDOMNode().value = value;
+    if(value === ''){
+      this.setState({error: "必填项"});
+      return false;
+    }
+    else{
+      this.setState({error: ""});
+      return true;
+    }
+  },
+
+  changeThreshold: function(e){
+    if(this._validate(e.target.value)){
+      this.setState({
+        threshold: e.target.value
+      });
+    }
+  },
+
   getInitialState: function(){
     return {
-      disable: true
-      };
+      disable: true,
+      threshold: 100,
+      error: ""
+    };
   },
 
   componentDidMount: function(){
@@ -68,32 +103,32 @@ let AlarmSetting = React.createClass({
   componentWillUnmount: function(){
     AlarmSettingStore.removeSettingDataListener(this._onChange);
   },
-  
+
   render: function(){
     return (
-      <div className="jazz-setting-container">
-        <div className='jazz-setting-content'>
-          <span>
+      <div className="jazz-setting-alarm-container">
+        <div className='jazz-setting-alarm-content'>
+          <div>
             <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="right" disabled={this.state.disable}/>
-          </span>
-          <span className='jazz-setting-alarm-margin'>
-            报警敏感度<input ref="threshold" className='jazz-setting-alarm-input' type="text" disabled={this.state.disable}/>%
-          </span>
-          <span className='jazz-setting-alarm-tip'>
+          </div>
+          <div className='jazz-setting-alarm-threshold'>
+            报警敏感度<input ref="threshold" value={this.state.threshold} className='jazz-setting-alarm-input' type="text" disabled={this.state.disable} onChange={this.changeThreshold}/>%
+          </div>
+          <div className='jazz-setting-alarm-tip'>
             当数据高于基准值所设敏感度时，显示报警。
-          </span>
-          <span className='jazz-setting-alarm-margin'>
+          </div>
+          <div className='jazz-setting-alarm-text'>
             对以下时段产生报警
-          </span>
-          <span>
+          </div>
+          <div>
             <Checkboxes ref="alarmSteps" disabled={this.state.disable}/>
-          </span>
+          </div>
         </div>
         <div>
-          <button className='jazz-setting-button' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
+          <button className='jazz-setting-basic-editbutton' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
           <span>
-            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
-            <button className='jazz-setting-button' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
+            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
+            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
           </span>
         </div>
       </div>
@@ -117,7 +152,13 @@ var Checkboxes = React.createClass({
 
     return alarmSteps;
   },
+  clearValue: function(){
+    this.refs.year.setChecked(false);
+    this.refs.month.setChecked(false);
+    this.refs.day.setChecked(false);
+  },
   setValue: function(stepValue){
+    this.clearValue();
     for(var i = 0; i < stepValue.length; i++){
       if(stepValue[i] === YEARSTEP){
         this.refs.year.setChecked(true);
@@ -131,12 +172,13 @@ var Checkboxes = React.createClass({
     }
   },
 	render: function(){
+    let checkWidth = {width: '60px'};
 		return (
-			<span>
-				<Checkbox ref="day" label="日" disabled={this.props.disabled}/>
-				<Checkbox ref="month" label="月" disabled={this.props.disabled}/>
-				<Checkbox ref="year" label="年" disabled={this.props.disabled}/>
-			</span>
+			<div className="jazz-setting-alarm-checkbox">
+				<Checkbox style={checkWidth} ref="day" label="日" disabled={this.props.disabled}/>
+				<Checkbox style={checkWidth} ref="month" label="月" disabled={this.props.disabled}/>
+				<Checkbox style={checkWidth} ref="year" label="年" disabled={this.props.disabled}/>
+			</div>
     );
   }
 });

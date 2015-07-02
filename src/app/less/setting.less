@@ -26,44 +26,98 @@
   font-size:14px;
   color:#767a7a
 }
-.jazz-setting-container{
-  height: 428px;
-  margin-top: 24px;
-  margin-left: 35px;
-  margin-bottom: 24px;
-}
-.jazz-setting-content{
-  height: 400px;
-  overflow: auto;
-  display: flex;
-  flex-flow: column;
-}
-.jazz-setting-alarm-input{
-  width: 45px;
-  margin-left: 10px;
-  margin-right: 10px;
-}
-.jazz-setting-button{
-  width: 50px;
-}
-.jazz-setting-alarm-margin{
-  margin-top: 18px;
-  margin-bottom: 18px;
-}
-.jazz-setting-alarm-tip{
-  font-size: 12px;
-  color: #abafae;
-}
-.jazz-setting-baseline-margin{
-  margin-top: 18px;
-  margin-bottom: 10px;
-}
 .jazz-setting-basic-calbutton{
   font-size: 14px;
   color:#1ca8dd;
   text-decoration:underline;
   cursor: pointer;
 
+}
+.jazz-setting-alarm-container{
+  height: 398px;
+  margin-top: 24px;
+  margin-left: 20px;
+  margin-bottom: 24px;
+}
+.jazz-setting-alarm-content{
+  height: 374px;
+  overflow: auto;
+  display: flex;
+  flex-flow: column;
+  font-size: 14px;
+  color:#767a7a
+}
+.jazz-setting-alarm-input{
+  width: 45px;
+  height: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size:14px;
+  color:#767a7a;
+  background-color:transparent;
+  border: 1px solid #e4e7e6;
+}
+.jazz-setting-alarm-threshold{
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+.jazz-setting-alarm-text{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.jazz-setting-alarm-tip{
+  font-size: 12px;
+  color: #abafae;
+}
+.jazz-setting-alarm-checkbox{
+  display: flex;
+  flex-flow: row;
+  div{
+    div{
+      div{
+        margin-right: 0px !important;
+      }
+    }
+  }
+}
+.jazz-setting-baseline-container{
+  height: 424px;
+  margin-top: 0px;
+  margin-left: 20px;
+  margin-bottom: 24px;
+}
+.jazz-setting-baseline-content{
+  height: 398px;
+  overflow: auto;
+  display: flex;
+  flex-flow: column;
+  font-size:14px;
+  color:#767a7a
+}
+.jazz-setting-baseline-margin{
+  margin-top: 12px;
+  margin-bottom: 6px;
+  height: 20px;
+}
+.jazz-setting-baseline-year{
+  display: inline-block;
+  width: 90px;
+  height: 24px;
+  margin-left: 21px;
+  margin-right: 10px;
+  font-size:14px;
+  color:#767a7a;
+  background-color:transparent;
+  border: 1px solid #e4e7e6;
+}
+.jazz-setting-baseline-month{
+  display: inline-block;
+  width: 90px;
+  height: 24px;
+  font-size:14px;
+  color:#767a7a;
+  background-color:transparent;
+  border: 1px solid #e4e7e6;
 }
 .jazz-setting-basic-caldetail{
   margin-top: 24px;
@@ -139,9 +193,14 @@
   background-color:transparent;
   border: 1px solid #e4e7e6;
   margin-right:10px;
-  &:hover{
-    color:#1ca8dd
-  }
+    &:hover{
+      color:#1ca8dd
+    }
+   &.disabled{
+     &:hover{
+       color:#767a7a;
+     }
+   }
 }
 .jazz-setting-basic-calcsetting{
   font-size: 14px;

@@ -30,7 +30,13 @@ var TBSettingStore = assign({},PrototypeStore,{
     return _calDetail;
   },
   setCalDetailData(data){
-    _calDetail = data.CalendarItemGroups[0].CalendarItems[0];
+    if(data.CalendarItemGroups){
+        _calDetail = data.CalendarItemGroups[0].CalendarItems[0];
+    }
+    else{
+        _calDetail = null;
+    }
+
 
   },
   emitCalDetailChange: function() {
@@ -58,7 +64,6 @@ var TBSettingStore = assign({},PrototypeStore,{
     return _tagId;
   },
   resetHierId(){
-    console.log("**wyh**resetHierId");
     _hierId=null;
   },
   resetTagId(){
