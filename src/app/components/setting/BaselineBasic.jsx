@@ -2,6 +2,7 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker,RaisedButton } from 'material-ui';
 import assign from "object-assign";
+import classNames from 'classnames';
 import YearPicker from '../../controls/YearPicker.jsx';
 import DaytimeSelector from '../../controls/DaytimeSelector.jsx';
 import NodeButtonBar from './NodeButtonBar.jsx';
@@ -1454,31 +1455,15 @@ var TBSettingItems = React.createClass({
 });
 
 var CalDetail = React.createClass({
-  _onChange:function(){
-    var data=TBSettingStore.getCalDetailData();
-    this.setState({
-      calendar:data.Calendar,
-      workTimeCalendar:data.WorkTimeCalendar,
-      calendarName:data.Calendar.Name,
-      workTimeCalendarName:data.WorkTimeCalendar.Name
-    })
-  },
+
   getInitialState: function() {
         return {
-          calendar:null,
-          workTimeCalendar:null,
-          calendarName:null,
-          workTimeCalendarName:null
+          calendar:this.props.calendar,
+          workTimeCalendar:this.props.workTimeCalendar,
+          calendarName:this.props.calendarName,
+          workTimeCalendarName:this.props.workTimeCalendarName
         };
       },
-  componentWillMount:function(){
-    var hierId=TBSettingStore.getHierId();
-    TBSettingStore.addCalDetailListener(this._onChange);
-    TBSettingAction.calDetailData(hierId);
-  },
-  componentWillUnmount:function(){
-    TBSettingStore.removeCalDetailListener(this._onChange)
-  },
   render:function(){
     var workDay=[],
         offDay=[],
@@ -1568,7 +1553,8 @@ var BaselineBasic = React.createClass({
       calButton:'显示日历详情',
       showCalDetail:false,
       year:TBSettingStore.getYear(),
-      validationError: ''
+      validationError: '',
+      hasCal:null,
     };
   },
 
@@ -1685,6 +1671,28 @@ var BaselineBasic = React.createClass({
       calButton:((this.state.calButton=='显示日历详情')?'隐藏日历详情':'显示日历详情')
     })
   },
+  _onChange:function(){
+    var data=TBSettingStore.getCalDetailData();
+    if(data){
+      this.setState({
+        hasCal:true
+      })
+    }
+    else{
+      this.setState({
+        hasCal:false
+      })
+    }
+
+  },
+  componentWillMount:function(){
+    var hierId=TBSettingStore.getHierId();
+    TBSettingStore.addCalDetailListener(this._onChange);
+    TBSettingAction.calDetailData(hierId);
+  },
+  componentWillUnmount:function(){
+    TBSettingStore.removeCalDetailListener(this._onChange)
+  },
   render: function (){
     var itemProps = {
       tag: this.props.tag,
@@ -1716,12 +1724,28 @@ var BaselineBasic = React.createClass({
       //className: "yearpicker",
 
     };
-    var calDetailButton=(
-        <div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
-    ),showCalDetail;
-    if(this.state.showCalDetail){
-      showCalDetail=<CalDetail />
+    var calDetailButton,showCalDetail;
+    if(!(this.state.hasCal===null)){
+      calDetailButton=((!!this.state.hasCal)?<div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
+    :<div>该数据点所关联层级节点未引用任何日历模板。请引用后再设置，保证设置内容可被计算</div>);
+    if(this.state.hasCal==false){
+      React.findDOMNode(this.refs.editButton).disabled="disabled"
     }
+    else{
+      React.findDOMNode(this.refs.editButton).disabled=null
+    }
+    };
+
+    if(this.state.showCalDetail){
+        var data=TBSettingStore.getCalDetailData(),
+        calDetailprops={
+          calendar:data.Calendar,
+          workTimeCalendar:data.WorkTimeCalendar,
+          calendarName:data.Calendar.Name,
+          workTimeCalendarName:data.WorkTimeCalendar.Name
+        }
+        showCalDetail=<CalDetail  {...calDetailprops}/>
+    };
     return (
       <div className='jazz-setting-basic-container'>
       <div className='jazz-setting-basic-content'>
@@ -1740,7 +1764,10 @@ var BaselineBasic = React.createClass({
       </div>
       <div>{this.state.validationError}</div>
       <div>
-        <button type="submit" hidden={!this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleEdit}> 编辑 </button>
+        <button type="submit" ref="editButton" hidden={!this.state.isViewStatus} className={classNames({
+                                                                                    "jazz-setting-basic-editbutton": true,
+                                                                                    "disabled": !this.state.hasCal
+                                                                                  })} onClick={this._handleEdit}> 编辑 </button>
         <span>
           <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleSave}> 保存 </button>
           <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleCancel}> 放弃 </button>
