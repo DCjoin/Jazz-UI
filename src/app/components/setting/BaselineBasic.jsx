@@ -531,12 +531,6 @@ var CalcSetting = React.createClass({
     return {items: []};
   },
 
-  _onCalcClick: function(){
-    if(this.props.onCalc){
-      this.props.onCalc();
-    }
-  },
-
   getValue: function(){
     var arr = [];
     for (var i = 1; i < 25; i++) {
@@ -547,42 +541,41 @@ var CalcSetting = React.createClass({
     return arr;
   },
 
+  _onCalcClick: function(){
+    if(this.props.onCalc){
+      this.props.onCalc();
+    }
+  },
+
   render: function () {
     if(!this.props.isDisplay){
       return <div></div>;
     }
-    var items = this.props.items || [];
-    var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+    var items = this.props.items || [], rows = [];
     var me = this;
-    var createItem = function(item, index){
-      for (var i = 0; i < items.length; i++) {
-        if(items[i].TBTime == item){
-          var props = {
-            tag: me.props.tag,
-            ref: 'item'+ item,
-            time: item,
-            val1: items[i].WorkDayValue,
-            val2: items[i].HolidayDayValue,
-            val1Mod: items[i].WorkDayModifyStatus,
-            val2Mod: items[i].HolidayModifyStatus,
-            isViewStatus: me.props.isViewStatus,
-          };
-          return <CalcItem {...props} />;
-        }
-      }
-      var props = {
-        tag: me.props.tag,
-        ref: 'item'+ item,
-        time: item,
-        isViewStatus: me.props.isViewStatus,
-        val1: '',
-        val2: '',
-        val1Mod: false,
-        val2Mod: false,
-      };
-      return <CalcItem {...props} />;
-    },
-    rows = arr.map(createItem);
+    for (var i = 0; i < 24; i++) {
+      var calProp =
+        items.length == 0 ? {
+          tag: me.props.tag,
+          ref: 'item'+ i,
+          time: i,
+          val1: '',
+          val2: '',
+          val1Mod: false,
+          val2Mod: false,
+          isViewStatus: me.props.isViewStatus,
+        } : {
+          tag: me.props.tag,
+          ref: 'item'+ i,
+          time: i,
+          val1: items[i].WorkDayValue,
+          val2: items[i].HolidayDayValue,
+          val1Mod: items[i].WorkDayModifyStatus,
+          val2Mod: items[i].HolidayModifyStatus,
+          isViewStatus: me.props.isViewStatus,
+        };
+      rows.push(<CalcItem {...calProp} />);
+    }
 
     var style = {
       margin: "18px 0",
@@ -919,40 +912,7 @@ var SpecialSetting = React.createClass({
       valid = valid & this.refs['item' + i].validate(tbsItem);
     }
     return valid;
-    // return (
-    //   this.validateSettingItem(tbsItem) &&
-    //   this.validateSpecialItem(tbsItem.SpecialDates));
   },
-
-  // validateSettingItem: function(tbsItem){
-  //   var tbSetting = tbsItem.TbSetting, valid = true, len = this.items.length;
-  //   for (var i = 0; i < len; i++) {
-  //     valid = valid && this.refs['item' + i].validate(tbsItem);
-  //   }
-  //   return valid;
-  // },
-  //
-  // validateSpecialItem: function(specials){
-  //   var valid = true;
-  //   for (var i = 0; i < specials.length; i++) {
-  //     valid = valid && (this.refs['item' + i]).validate(specials);
-  //   }
-  //   return valid;
-  // },
-
-  // validateSettingItem: function(item){
-  //   var val = this.getValue(), valid = true;
-  //   for (var i = 0; i < items.length; i++) {
-  //     if(i != this.props.index){
-  //       valid = valid && (items[i].EndTime <= val.StartTime || items[i].StartTime >= val.EndTime);
-  //     }
-  //   }
-  //   if(!valid){
-  //     this.setState({error: '时间段冲突， 请重新选择时段'});
-  //     return false;
-  //   }
-  //   return true;
-  // },
 
   getValue: function(){
     var arr = [], len = this.state.items.length;
@@ -1075,9 +1035,10 @@ var TBSettingItem = React.createClass({
 
   _onCalcCheck:function(e, newSel){
     this.setState({radio: "CalcRadio"});
+    this._calcValues();
   },
 
-  _onCalc: function(){
+  _calcValues: function(){
     var me = this, startDate = this.refs.startFeild.getDate(), endDate = fromFormEndDate(this.refs.endFeild.getDate());
     var tr = {
       StartTime: CommonFuns.DataConverter.DatetimeToJson(startDate),
@@ -1174,7 +1135,7 @@ var TBSettingItem = React.createClass({
       items: me.state.avgs,
       start: me.state.start,
       end: me.state.end,
-      onCalc: me._onCalc,
+      onCalc: me._calcValues,
     },
     specialProps = {
       tag: me.props.tag,
@@ -1612,12 +1573,10 @@ var BaselineBasic = React.createClass({
   },
 
   componentDidMount: function(){
-    debugger;
     this._fetchServerData(this.state.year);
   },
 
   componentWillReceiveProps: function(nextProps){
-    debugger;
     if(nextProps){
       this._fetchServerData(this.state.year);
     }
@@ -1711,12 +1670,6 @@ var BaselineBasic = React.createClass({
       this.setState({
         isViewStatus : true,
       });
-      // if(this._validateForm(val)){
-      //   this._saveDataToServer(val);
-      //   this.setState({
-      //     isViewStatus : true,
-      //   });
-      // }
     }
   },
 
