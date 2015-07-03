@@ -246,6 +246,10 @@ let DataSelectMainPanel=React.createClass({
         linkFrom: React.PropTypes.string
     },
     _onHierachyTreeClick:function(node){
+      if(node!=this.state.dimParentNode){
+        tagStatus.length=0;
+        tagStatus[page]=new Array();
+      };
       TagAction.loadData(node.Id,2,1,alarmType,filters);
       TBSettingAction.setHierId(node.Id);
       page=1;
@@ -542,6 +546,9 @@ let DataSelectMainPanel=React.createClass({
       }
       var buttonStyle = {
                height:'48px',
+           },
+           iconStyle={
+             fontSize:'20px'
            };
       var menupaper,pagination;
       alarmType=null;
@@ -575,7 +582,7 @@ let DataSelectMainPanel=React.createClass({
           </div>
           <div  className="filter">
             <label className="search">
-              <img className="img" src={require('../less/images/search-input-search.png')}/>
+              <FontIcon className="icon-search" style={iconStyle}/>
               <input className="input" id="searchField" onChange={this._onSearch}/>
             </label>
 

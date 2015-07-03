@@ -45,13 +45,13 @@ let HierarchySearch = React.createClass({
           payloadNo++;
           hasSearchValue=true;
           var icon = classNames({
-              "fa fa-users": nodeData.Type == nodeType.Customer,
-              "fa fa-hospital-o": nodeData.Type == nodeType.Organization,
-              "fa fa-building-o": nodeData.Type == nodeType.Site,
-              "fa fa-building": nodeData.Type == nodeType.Building,
-              "fa fa-shirtsinbulk": nodeData.Type == nodeType.Room,
-              "fa fa-server": nodeData.Type == nodeType.Panel,
-              "fa fa-tablet": nodeData.Type == nodeType.Device
+            "icon-customer": nodeData.Type == nodeType.Customer,
+            "icon-orgnization": nodeData.Type == nodeType.Organization,
+            "icon-site": nodeData.Type == nodeType.Site,
+            "icon-building": nodeData.Type == nodeType.Building,
+            "icon-room": nodeData.Type == nodeType.Room,
+            "icon-panel": nodeData.Type == nodeType.Panel,
+            "icon-device": nodeData.Type == nodeType.Device
             });
              menuItem={payload:payloadNo,iconClassName:icon,text:nodeData.Name,node:nodeData};
              nodemenuItems.push(menuItem);

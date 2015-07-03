@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import classNames from 'classnames';
-import {Paper} from 'material-ui';
+import {Paper,FontIcon} from 'material-ui';
 import { Link,Navigation,State,RouteHandler } from 'react-router';
 import assign from 'object-assign';
 import HierarchyStore from "../stores/HierarchyStore.jsx";
@@ -106,8 +106,8 @@ var TreeNode = React.createClass({
           "hasNoChild": !hasChild
         })} >
           <div className={classNames({
-            "fa fa-minus-circle": !this.state.collapsed,
-            "fa fa-plus-circle": this.state.collapsed,
+            "icon-hierarchy-unfold": !this.state.collapsed,
+            "icon-hierarchy-fold": this.state.collapsed,
           })} />
         </div>
       </div>
@@ -122,13 +122,13 @@ var TreeNode = React.createClass({
     var icon = (
       <div className="node-content-icon">
         <div className={classNames({
-          "fa fa-users": nodeData.Type == nodeType.Customer,
-          "fa fa-hospital-o": nodeData.Type == nodeType.Organization,
-          "fa fa-building-o": nodeData.Type == nodeType.Site,
-          "fa fa-building": nodeData.Type == nodeType.Building,
-          "fa fa-shirtsinbulk": nodeData.Type == nodeType.Room,
-          "fa fa-server": nodeData.Type == nodeType.Panel,
-          "fa fa-tablet": nodeData.Type == nodeType.Device
+          "icon-customer": nodeData.Type == nodeType.Customer,
+          "icon-orgnization": nodeData.Type == nodeType.Organization,
+          "icon-site": nodeData.Type == nodeType.Site,
+          "icon-building": nodeData.Type == nodeType.Building,
+          "icon-room": nodeData.Type == nodeType.Room,
+          "icon-panel": nodeData.Type == nodeType.Panel,
+          "icon-device": nodeData.Type == nodeType.Device
         })}></div>
       </div>
     );
@@ -357,15 +357,18 @@ let HierarchyTree=React.createClass({
                   position:'absolute',
                   border:'1px solid #c9c8c8',
                   margin:'12px 10px'
-
-                           };
+                },
+                iconStyle={
+                  fontSize:'20px',
+                  marginTop:'3px'
+                };
 
     return(
 
         <Paper style={paperStyle}>
 
             <label className="tree_search">
-              <img className="img" src={require('../less/images/search-input-search.png')}/>
+              <FontIcon className="icon-search" style={iconStyle}/>
               <input className="input" type="text" id="searchfield" onChange={this._onSearchChange}/>
             </label>
             <div className="tree-field">
