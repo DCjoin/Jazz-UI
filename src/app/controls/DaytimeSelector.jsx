@@ -48,6 +48,9 @@ var DaytimeSelector = React.createClass({
   getValue: function(){
     return this.state.value;
   },
+  setValue: function(val){
+    this.setState({value: val});
+  },
   render: function(){
     var menuItems = [];
     var minutes = this.props.from;
@@ -68,8 +71,8 @@ var DaytimeSelector = React.createClass({
         menuItems: menuItems
       };
       var index = 0;
-      if(this.props.minute){
-        index = (this.props.minute - this.props.from) / this.props.step;
+      if(this.state.value){
+        index = (this.state.value - this.props.from) / this.props.step;
       }
       ddmProps.selectedIndex = index;
 

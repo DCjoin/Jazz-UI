@@ -47,12 +47,15 @@ var jsonToFormTime = function(dtJson){
   return dt.getHours() * 60 + dt.getMinutes();
 };
 
-var datetimeTojson = function(date, time){
+var mergeDateTime = function(date, time){
   var d = new Date(date);
-
   if(time) d = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(time/60), time % 60);
   else d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  return d;
+}
 
+var datetimeTojson = function(date, time){
+  var d = mergeDateTime(date, time);
   return CommonFuns.DataConverter.DatetimeToJson(d);
 };
 
@@ -455,8 +458,8 @@ var CalcItem = React.createClass({
 
   getValue: function(){
     return {
-      WorkDayValue: this.state.val1,
-      HolidayDayValue: this.state.val2,
+      WorkDayValue: this.state.val1 == "" ? null : this.state.val1,
+      HolidayDayValue: this.state.val2 == "" ? null : this.state.val2,
       WorkDayModifyStatus: this.state.val1Mod || this.state.val1 != this.props.val1,
       HolidayModifyStatus: this.state.val2Mod || this.state.val2 != this.props.val2
     }
@@ -552,31 +555,37 @@ var CalcSetting = React.createClass({
       return <div></div>;
     }
     var items = this.props.items || [], rows = [];
+    var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
     var me = this;
-    for (var i = 0; i < 24; i++) {
-      var calProp =
-        items.length == 0 ? {
-          tag: me.props.tag,
-          ref: 'item'+ i,
-          time: i,
-          val1: '',
-          val2: '',
-          val1Mod: false,
-          val2Mod: false,
-          isViewStatus: me.props.isViewStatus,
-        } : {
-          tag: me.props.tag,
-          ref: 'item'+ i,
-          time: i,
-          val1: items[i].WorkDayValue,
-          val2: items[i].HolidayDayValue,
-          val1Mod: items[i].WorkDayModifyStatus,
-          val2Mod: items[i].HolidayModifyStatus,
-          isViewStatus: me.props.isViewStatus,
-        };
-      rows.push(<CalcItem {...calProp} />);
-    }
-
+    var createItem = function(item, index){
+      for (var i = 0; i < items.length; i++) {
+        if(items[i].TBTime == item){
+          var props = {
+            tag: me.props.tag,
+            ref: 'item'+ item,
+            time: item,
+            val1: items[i].WorkDayValue,
+            val2: items[i].HolidayDayValue,
+            val1Mod: items[i].WorkDayModifyStatus,
+            val2Mod: items[i].HolidayModifyStatus,
+            isViewStatus: me.props.isViewStatus,
+          };
+          return <CalcItem {...props} />;
+        }
+      }
+      var props = {
+        tag: me.props.tag,
+        ref: 'item'+ item,
+        time: item,
+        isViewStatus: me.props.isViewStatus,
+        val1: '',
+        val2: '',
+        val1Mod: false,
+        val2Mod: false,
+      };
+      return <CalcItem {...props} />;
+    },
+    rows = arr.map(createItem);
     var style = {
       margin: "18px 0",
       padding:'9px',
@@ -617,7 +626,7 @@ var SpecialItem = React.createClass({
     value: React.PropTypes.number,
     isViewStatus: React.PropTypes.bool,
     onRemove: React.PropTypes.func,
-    onChange: React.PropTypes.func,
+    onDateTimeChange: React.PropTypes.func,
   },
 
   getInitialState: function(){
@@ -642,12 +651,13 @@ var SpecialItem = React.createClass({
     }
   },
 
-  validate: function(tbsItem){
-    var specials = tbsItem.SpecialDates, val = specials[this.props.index];
+  validate: function(tbsItem, specials){
+    if(!specials) specials = tbsItem.SpecialDates;
+    var val = specials[this.props.index];
     return (
-        this.validateTBSettingItem(tbsItem) &
-        this.validateSpecialItem(specials) &
-        this.validateValue(val));
+      this.validateTBSettingItem(tbsItem, specials) &
+      this.validateSpecialItem(specials) &
+      this.validateValue(val));
   },
 
   validateValue: function(special){
@@ -656,10 +666,11 @@ var SpecialItem = React.createClass({
     return this._validateValue(val) != '';
   },
 
-  validateTBSettingItem: function(tbsItem){
+  validateTBSettingItem: function(tbsItem, specials){
+    if(!specials) specials = tbsItem.SpecialDates;
     var tbSetting = tbsItem.TbSetting,
-        val = tbsItem.SpecialDates[this.props.index],
-        valid = tbSetting.EndTime >= val.EndTime && tbSetting.StartTime <= val.EndTime;
+        val = specials[this.props.index],
+        valid = jsonToFormDate(tbSetting.EndTime) >= jsonToFormDate(val.EndTime) && jsonToFormDate(tbSetting.StartTime) <= jsonToFormDate(val.EndTime);
     this.setState({tbSettingError: valid ? '' : '与已添加时段冲突，请重新选择时段'});
     return valid;
   },
@@ -668,7 +679,7 @@ var SpecialItem = React.createClass({
     var val = specials[this.props.index], len = specials.length, valid = true;
     for (var i = 0; i < len; i++) {
       if(i != this.props.index){
-        valid = valid && (specials[i].EndTime <= val.StartTime || specials[i].StartTime >= val.EndTime);
+        valid = valid && (jsonToFormDate(specials[i].EndTime) <= jsonToFormDate(val.StartTime) || jsonToFormDate(specials[i].StartTime) >= jsonToFormDate(val.EndTime));
         if(!valid) break;
       }
     }
@@ -677,17 +688,24 @@ var SpecialItem = React.createClass({
   },
 
   getValue: function(){
-    var startDate = this.refs.startDateField.getDate(),
-      startTime = this.refs.startTimeField.getValue(),
-      endDate = fromFormEndDate(this.refs.endDateField.getDate()),
-      endTime = this.refs.endTimeField.getValue();
-
     return {
       TBSettingId: this.props.settingId,
-      StartTime: datetimeTojson(startDate, startTime),
-      EndTime: datetimeTojson(endDate, endTime),
+      StartTime: this._getStartTime(),
+      EndTime: this._getEndTime(),
       Value: this.refs.valueField.getValue()
     };
+  },
+
+  _getStartTime: function(){
+    var startDate = this.refs.startDateField.getDate(),
+      startTime = this.refs.startTimeField.getValue();
+    return datetimeTojson(startDate, startTime);
+  },
+
+  _getEndTime: function(){
+    var endDate = fromFormEndDate(this.refs.endDateField.getDate()),
+      endTime = this.refs.endTimeField.getValue();
+    return datetimeTojson(endDate, endTime);
   },
 
   _validateValue: function(val){
@@ -705,6 +723,45 @@ var SpecialItem = React.createClass({
     var me = this;
     if(this.props.onRemove){
       this.props.onRemove(me, this.props.index);
+    }
+  },
+
+  _slideDateTime: function(sd, st, ed, et){
+    var startDate = sd, startTime = st, endDate = ed, endTime = et;
+    if(!startDate) startDate = this.refs.startDateField.getDate();
+    if(!startTime) startTime = this.refs.startTimeField.getValue();
+    if(!endDate) endDate = this.refs.endDateField.getDate();
+    if(!endTime) endTime = this.refs.endTimeField.getValue();
+    var computedStartTime = mergeDateTime(startDate, startTime),
+      computedEndTime = mergeDateTime(endDate, endTime);
+
+    if(computedStartTime >= computedEndTime){
+      if(sd || st){
+        if(startTime == 1440){
+          endDate.setDate(endDate.getDate() + 1);
+          this.refs.endDateField.setDate(endDate);
+          this.refs.endTimeField.setValue(30);
+        }
+        else{
+          this.refs.endTimeField.setValue(startTime + 30);
+        }
+        computedEndTime.setMinutes(computedEndTime.getMinutes() + 30);
+      } else if(ed || dt){
+        if(endTime == 0){
+          startDate.setDate(startDate.getDate() - 1);
+          this.refs.startDateField.setDate(startDate);
+          this.refs.startTimeField.setValue(1410);
+        }else{
+          this.refs.startTimeField.setValue(endTime - 30);
+        }
+        computedStartTime.setMinutes(computedStartTime.getMinutes() - 30);
+      }
+    }
+    if(this.props.onDateTimeChange){
+      this.props.onDateTimeChange({
+        StartTime: computedStartTime,
+        EndTime: computedEndTime
+      }, this.props.index);
     }
   },
 
@@ -763,86 +820,75 @@ var SpecialItem = React.createClass({
           marginLeft:'10px',
           fontSize:'14px',
           color:'#767a7a'
-      },
-      flatButtonStyle={
-        padding: '0',
-        minWidth: '20px',
-        width:'30px',
-        height: '20px',
-        verticalAlign:'middle',
-        lineHeight:'20px',
-        marginLeft:'5px',
-        marginTop:'7px'
-      };
-
-      var startProps = {
-        //formatDate: formatDate,
-        defaultDate: dstartDate,
-        minDate: startDate,
-        maxDate: endDate,
-        style: datapickerStyle,
-
-        onChange: function(e, v){
-          var startDate = v;
-          var endDate = me.refs.endDateField.getDate();
-
-          if(endDate && endDate < v){
-            me.refs.endDateField.setDate(v);
-            endDate = v;
-          }
-          if(this.props.onDateTimeChange){
-            this.props.onDateTimeChange();
-          }
-        }
-      },
-      endProps = {
-        //formatDate: formatDate,
-        defaultDate: dendDate,
-        minDate: startDate,
-        maxDate: endDate,
-        style: datapickerStyle,
-
-        onChange: function(e, v){
-          var endDate = v;
-          var startDate = me.refs.startDateField.getDate();
-
-          if(startDate && startDate > v){
-            me.refs.startDateField.setDate(v);
-            startDate = v;
-          }
-          if(this.props.onDateTimeChange){
-            this.props.onDateTimeChange();
-          }
-        }
-        //className: 'jazz-setting-basic-date',
-      };
-
-      var daytimeProps = {
-        from: 0,
-        to: 1440,
-        step: 30,
-        isViewStatus: this.props.isViewStatus,
-        style:{
+        }, flatButtonStyle={
+          padding: '0',
+          minWidth: '20px',
+          width:'30px',
+          height: '20px',
+          verticalAlign:'middle',
+          lineHeight:'20px',
+          marginLeft:'5px',
+          marginTop:'7px'
+        }, daytimeStyle = {
           display: "block",
           border:'1px solid #efefef',
           width:'100px',
           fontSize:'14px',
           marginLeft:'10px'
-        }
-      };
+        };
+
+      var startDateProps = {
+          //formatDate: formatDate,
+          defaultDate: dstartDate,
+          minDate: startDate,
+          maxDate: endDate,
+          style: datapickerStyle,
+          onChange: function(e, v){
+            me._slideDateTime(v);
+          }
+        }, endDateProps = {
+          //formatDate: formatDate,
+          defaultDate: dendDate,
+          minDate: startDate,
+          maxDate: endDate,
+          style: datapickerStyle,
+          onChange: function(e, v){
+            me._slideDateTime(null, null, v);
+          }
+        }, startTimeProps = {
+          from: 0,
+          to: 1410,
+          step: 30,
+          isViewStatus: this.props.isViewStatus,
+          style: daytimeStyle,
+          minute: st,
+          onChange: function(e, v){
+            me._slideDateTime(null, v);
+          }
+        }, endTimeProps = {
+          from: 30,
+          to: 1440,
+          step: 30,
+          isViewStatus: this.props.isViewStatus,
+          style: daytimeStyle,
+          minute: et,
+          onChange: function(e, v){
+            me._slideDateTime(null, null, null, v);
+          }
+        };
 
       return (
         <div>
           <div style={{display:'flex','flex-flow':'row','margin-top':'18px'}}>
               <div className="jazz-setting-basic-datepicker-container">
-            <DatePicker ref='startDateField' {...startProps} />
+            <DatePicker ref='startDateField' {...startDateProps} />
             </div>
-            <DaytimeSelector ref='startTimeField' minute={st} {...daytimeProps} />
+            <DaytimeSelector ref='startTimeField' {...startTimeProps} />
             <div className='jazz-setting-basic-datespan'>到</div>
               <div className="jazz-setting-basic-datepicker-container">
-            <DatePicker ref='endDateField' {...endProps} />
+            <DatePicker ref='endDateField' {...endDateProps} />
             </div>
-            <DaytimeSelector ref='endTimeField' minute={et} {...daytimeProps} />
+            <DaytimeSelector ref='endTimeField' {...endTimeProps} />
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} label="－"  ref="remove"  onClick={this._onRemove} /><br/>
           </div>
           <div>{this.state.tbSettingError}</div>
@@ -868,14 +914,16 @@ var SpecialSetting = React.createClass({
   getDefaultProps: function() {
     return {
       items: [],
-      isViewStatus: true
+      isViewStatus: true,
+      tbsItem: null,
     };
   },
 
   getInitialState: function() {
     return {
       items: this.props.items || [],
-      isViewStatus: this.props.isViewStatus
+      isViewStatus: this.props.isViewStatus,
+      tbsItem: null,
     };
   },
 
@@ -906,13 +954,37 @@ var SpecialSetting = React.createClass({
     this.setState({items: arr});
   },
 
+  _onItemDateTimeChange: function(obj, index){
+    if(this.state.tbsItem){
+      this.validate(this.state.tbsItem, this.getValue());
+    }
+  },
+
   validate: function(tbsItem){
+    this.setState({tbsItem: tbsItem});
     var valid = true, len = this.state.items.length;
     for (var i = 0; i < len; i++) {
       valid = valid & this.refs['item' + i].validate(tbsItem);
     }
     return valid;
   },
+
+  // validateTBSettingItem: function(tbsItem){
+  //   var valid = true, len = this.state.items.length;
+  //   for (var i = 0; i < len; i++) {
+  //     valid = valid & this.refs['item' + i].validate(tbsItem);
+  //   }
+  //   return valid;
+  // },
+  //
+  // validateSpecialItem: function(specials){
+  //   if(!specials) specials = this.getValue();
+  //   var valid = true, len = this.state.items.length;
+  //   for (var i = 0; i < len; i++) {
+  //     valid = valid & this.refs['item' + i].validate(tbsItem);
+  //   }
+  //   return valid;
+  // },
 
   getValue: function(){
     var arr = [], len = this.state.items.length;
@@ -934,7 +1006,8 @@ var SpecialSetting = React.createClass({
           end: item.EndTime,
           value: item.Value,
           isViewStatus: me.props.isViewStatus,
-          onRemove: me._removeItem
+          onRemove: me._removeItem,
+          onDateTimeChange: me._onItemDateTimeChange
         };
         return (<SpecialItem {...drvProps} />);
       };
@@ -942,20 +1015,20 @@ var SpecialSetting = React.createClass({
       marginLeft: "20px"
     };
     var addBtnProps = {
-    style:{
-      padding: '0',
-      minWidth: '20px',
-      width:'30px',
-      height: '20px',
-      verticalAlign:'middle',
-      lineHeight:'20px'
-    },
-    labelStyle:{
-      padding:'0'
-    },
-    label: "+",
-    onClick: this._addItem
-  };
+      style:{
+        padding: '0',
+        minWidth: '20px',
+        width:'30px',
+        height: '20px',
+        verticalAlign:'middle',
+        lineHeight:'20px'
+      },
+      labelStyle:{
+        padding:'0'
+      },
+      label: "+",
+      onClick: this._addItem
+    };
     var addBtnCtrl;
     if(!this.props.isViewStatus){
       addBtnCtrl = <FlatButton {...addBtnProps}/>;
@@ -1623,8 +1696,6 @@ var BaselineBasic = React.createClass({
   _fetchServerData: function(year) {
     var me = this;
     TBSettingAction.loadData(me.props.tbId, year, function(tbSetting){
-      //me.setState({items: tbSetting.TBSettings});
-
       var itemsCtrl = me.refs.TBSettingItems;
       if(!tbSetting.TBSettings){
         itemsCtrl.setValue([]);
@@ -1647,21 +1718,6 @@ var BaselineBasic = React.createClass({
       isViewStatus : false,
     });
 	},
-
-  _validateForm: function(val){
-    var settings = val.TBSettings;
-    for (var i = 0; i < settings.length - 1; i++) {
-      for (var j = 1; j < settings.length; j++) {
-        if(settings[i].TbSetting.StartTime <= settings[j].TbSetting.StartTime
-          && settings[i].TbSetting.EndTime >= settings[j].TbSetting.StartTime){
-            this.setState({validationError:'时间重叠'});
-            return false;
-        }
-      }
-    }
-    this.setState({validationError:''});
-    return true;
-  },
 
   _handleSave: function(){
     var val = this.tryGetValue();
