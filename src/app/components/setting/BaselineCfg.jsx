@@ -33,18 +33,18 @@ let BaselineCfg = React.createClass({
             me.setState({
               tbId: tb.Id,
               name: tb.Name,
-              onNameChanged: function(newName){
-                if(me.state.name != newName){
-                  me.setState({name: newName});
-                  tb.Name = newName;
-                  TBAction.saveData(tb);
-                }
-              },
-              onYearChanged: function(year){
-                if(me.state.year != year){
-                  me.setState({year: year});
-                }
-              }
+              // onNameChanged: function(newName){
+              //   if(me.state.name != newName){
+              //     me.setState({name: newName});
+              //     tb.Name = newName;
+              //     TBAction.saveData(tb);
+              //   }
+              // },
+              // onYearChanged: function(year){
+              //   if(me.state.year != year){
+              //     me.setState({year: year});
+              //   }
+              // }
             });
             if(callback) callback(tb);
           }
@@ -115,7 +115,7 @@ let BaselineCfg = React.createClass({
         fontSize:'20px'
       }
     };
-
+    var me = this;
     var cusTag = {};
     if(this.state.tag){
       cusTag.tagId = this.state.tag.tagId;
@@ -127,6 +127,20 @@ let BaselineCfg = React.createClass({
       tag: cusTag,
       name: this.state.name || null,
       tbId: this.state.tbId || null,
+      onNameChanged: function(newName){
+
+        if(me.state.name != newName){
+          me.setState({name: newName});
+          var tbs = TBStore.getData();
+          for(var i=0; i< tbs.length; i++){
+            if(tbs[i].TBType == 2){
+              var tb = tbs[i];
+              tb.Name = newName;
+              TBAction.saveData(tb);
+            }
+          }
+        }
+      }
     };
 
     var modifyProps = {

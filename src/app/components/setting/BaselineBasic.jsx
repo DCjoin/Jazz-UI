@@ -1663,7 +1663,7 @@ var BaselineBasic = React.createClass({
   _onTBNameChanged: function(){
     var tbname = this.refs.TBName.getValue();
     if(tbname != this.state.name){
-      this.setState("name", tbname);
+      this.setState({name, tbname});
       if(this.props.onNameChanged){
         this.props.onNameChanged(tbname);
       }
