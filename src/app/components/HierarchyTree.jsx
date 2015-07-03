@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import classNames from 'classnames';
-import {Paper,FontIcon} from 'material-ui';
+import {Paper,FontIcon,TextField} from 'material-ui';
 import { Link,Navigation,State,RouteHandler } from 'react-router';
 import assign from 'object-assign';
 import HierarchyStore from "../stores/HierarchyStore.jsx";
@@ -306,11 +306,12 @@ let HierarchyTree=React.createClass({
       };
     },
 
-   _onSearchChange:function(text){
+   _onSearchChange:function(e){
 
-     var value= document.getElementById("searchfield").value;
+     var value= e.target.value;
 
      if(value){
+      React.findDOMNode(this.refs.cleanIcon).style.display='block';
        this.setState({
          initialTree:false,
          searchList:true,
@@ -319,12 +320,30 @@ let HierarchyTree=React.createClass({
        });
      }
      else{
+       React.findDOMNode(this.refs.cleanIcon).style.display='none';
        this.setState({
        initialTree:true,
        searchList:false,
        searchTree:false
      });
      }
+   },
+   _onSearchClick:function(){
+     React.findDOMNode(this.refs.searchIcon).style.display='none';
+   },
+   _onSearchBlur:function(e){
+     if(!e.target.value){
+         React.findDOMNode(this.refs.searchIcon).style.display='block';
+     }
+   },
+   _onCleanButtonClick:function(){
+     React.findDOMNode(this.refs.cleanIcon).style.display='none';
+     this.refs.searchText.setValue("");
+     this.setState({
+       initialTree:true,
+       searchList:false,
+       searchTree:false
+     });
    },
   render:function(){
 
@@ -358,9 +377,17 @@ let HierarchyTree=React.createClass({
                   border:'1px solid #c9c8c8',
                   margin:'12px 10px'
                 },
-                iconStyle={
-                  fontSize:'20px',
-                  marginTop:'3px'
+                searchIconStyle={
+                  fontSize:'20px'
+                },
+                cleanIconStyle={
+                  marginTop:'3px',
+                  fontSize:'16px',
+                  display:'none'
+                },
+                textFieldStyle={
+                  flex:'1',
+                  height:'26px'
                 };
 
     return(
@@ -368,8 +395,9 @@ let HierarchyTree=React.createClass({
         <Paper style={paperStyle}>
 
             <label className="tree_search">
-              <FontIcon className="icon-search" style={iconStyle}/>
-              <input className="input" type="text" id="searchfield" onChange={this._onSearchChange}/>
+              <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
+              <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearchChange}/>
+              <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
             </label>
             <div className="tree-field">
               {tree}

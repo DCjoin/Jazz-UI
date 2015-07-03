@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {IconButton,DropDownMenu,DatePicker,FlatButton,FontIcon,Menu,Checkbox} from 'material-ui';
+import {IconButton,DropDownMenu,DatePicker,FlatButton,FontIcon,Menu,Checkbox,TextField} from 'material-ui';
 import classnames from 'classnames';
 import HierarchyButton from './HierarchyButton.jsx';
 import DimButton from './DimButton.jsx';
@@ -275,14 +275,16 @@ let DataSelectMainPanel=React.createClass({
        })
     },
     _onHierarchButtonClick:function(){
-
+      React.findDOMNode(this.refs.searchIcon).style.display='block';
+      this.refs.searchText.setValue("");
       this.setState({
         HierarchyShow:true,
         DimShow:false
       })
     },
     _onDimButtonClick:function(){
-
+      React.findDOMNode(this.refs.searchIcon).style.display='block';
+      this.refs.searchText.setValue("");
       this.setState({
         HierarchyShow:false,
         DimShow:true
@@ -422,9 +424,10 @@ let DataSelectMainPanel=React.createClass({
       TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
 
       },
-    _onSearch:function(){
-      var value= document.getElementById("searchField").value;
+    _onSearch:function(e){
+      var value= e.target.value;
       if(value){
+        React.findDOMNode(this.refs.cleanIcon).style.display='block';
         filters=[
         {
           "type": "string",
@@ -434,11 +437,26 @@ let DataSelectMainPanel=React.createClass({
         ]
       }
       else{
+          React.findDOMNode(this.refs.cleanIcon).style.display='none';
         filters=null
       };
       page=1;
       TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
 
+    },
+    _onSearchClick:function(){
+      React.findDOMNode(this.refs.searchIcon).style.display='none';
+    },
+    _onSearchBlur:function(e){
+      if(!e.target.value){
+          React.findDOMNode(this.refs.searchIcon).style.display='block';
+      }
+    },
+    _onCleanButtonClick:function(){
+      React.findDOMNode(this.refs.cleanIcon).style.display='none';
+      this.refs.searchText.setValue("");
+      filters=null;
+      TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
     },
     _onSelectFull:function(fullFlag){
       this.setState({
@@ -494,7 +512,6 @@ let DataSelectMainPanel=React.createClass({
             allChecked:false,
             tagId:null,
             optionType:null,
-            page:0,
             total:0,
             checkAbled:false,
             allCheckDisable:false,
@@ -547,8 +564,17 @@ let DataSelectMainPanel=React.createClass({
       var buttonStyle = {
                height:'48px',
            },
-           iconStyle={
+           searchIconStyle={
              fontSize:'20px'
+           },
+           cleanIconStyle={
+             marginTop:'3px',
+             fontSize:'16px',
+             display:'none'
+           },
+           textFieldStyle={
+             flex:'1',
+             height:'26px'
            };
       var menupaper,pagination;
       alarmType=null;
@@ -581,10 +607,11 @@ let DataSelectMainPanel=React.createClass({
             <DimButton ref={'dimButton'} active={this.state.dimActive} onTreeClick={this._onDimTreeClick} parentNode={this.state.dimParentNode} onButtonClick={this._onDimButtonClick} show={this.state.DimShow}/>
           </div>
           <div  className="filter">
-            <label className="search">
-              <FontIcon className="icon-search" style={iconStyle}/>
-              <input className="input" id="searchField" onChange={this._onSearch}/>
-            </label>
+            <label className="search" onBlur={this._onSearchBlur}>
+              <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
+              <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearch}/>
+              <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
+          </label>
 
             <DropDownMenu autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
 
