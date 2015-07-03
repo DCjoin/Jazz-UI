@@ -230,7 +230,7 @@ let ChartPanel = React.createClass({
       }
       let title = <div className='jazz-alarm-chart-title'>
                     <span>{me.state.chartTitle}</span>
-                    <IconButton iconClassName="fa fa-floppy-o" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}/>
+                    <IconButton iconClassName="icon-send" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}/>
                  </div>;
 
       return (
