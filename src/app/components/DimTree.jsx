@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import classNames from 'classnames';
-import {Paper,FontIcon} from 'material-ui';
+import {Paper,FontIcon,TextField} from 'material-ui';
 import { Link,Navigation,State,RouteHandler } from 'react-router';
 import assign from 'object-assign';
 
@@ -297,11 +297,12 @@ let DimTree=React.createClass({
       };
     },
 
-   _onSearchChange:function(text){
+   _onSearchChange:function(e){
 
-     var value= document.getElementById("searchfield").value;
+     var value= e.target.value;
 
      if(value){
+       React.findDOMNode(this.refs.cleanIcon).style.display='block';
        this.setState({
          initialTree:false,
          searchList:true,
@@ -310,12 +311,30 @@ let DimTree=React.createClass({
        })
      }
      else{
+       React.findDOMNode(this.refs.cleanIcon).style.display='none';
        this.setState({
        initialTree:true,
        searchList:false,
        searchTree:false
      })
      }
+   },
+   _onSearchClick:function(){
+     React.findDOMNode(this.refs.searchIcon).style.display='none';
+   },
+   _onSearchBlur:function(e){
+     if(!e.target.value){
+         React.findDOMNode(this.refs.searchIcon).style.display='block';
+     }
+   },
+   _onCleanButtonClick:function(){
+     React.findDOMNode(this.refs.cleanIcon).style.display='none';
+     this.refs.searchText.setValue("");
+     this.setState({
+       initialTree:true,
+       searchList:false,
+       searchTree:false
+     });
    },
   render:function(){
 
@@ -350,9 +369,17 @@ let DimTree=React.createClass({
                       margin:'12px -60px'
 
                     },
-                    iconStyle={
-                      fontSize:'20px',
-                      marginTop:'3px'
+                    searchIconStyle={
+                      fontSize:'20px'
+                    },
+                    cleanIconStyle={
+                      marginTop:'3px',
+                      fontSize:'16px',
+                      display:'none'
+                    },
+                    textFieldStyle={
+                      flex:'1',
+                      height:'26px'
                     };
 
     return(
@@ -360,8 +387,9 @@ let DimTree=React.createClass({
         <Paper style={paperStyle}>
 
             <label className="tree_search">
-              <FontIcon className="icon-search" style={iconStyle}/>
-              <input className="input" type="text" id="searchfield" onChange={this._onSearchChange}/>
+              <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
+              <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearchChange}/>
+              <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
             </label>
             <div className="tree-field">
               {tree}

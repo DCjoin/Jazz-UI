@@ -816,7 +816,7 @@ var SpecialItem = React.createClass({
         dendDate = me.props.end ? toFormEndDate(jsonToFormDate(me.props.end)) : endDate;
 
       var datapickerStyle = {
-          width:'75px',
+          width:'90px',
           height:'32px',
           marginLeft:'10px',
           fontSize:'14px',
