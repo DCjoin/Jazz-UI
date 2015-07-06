@@ -14,6 +14,7 @@ let ChartXAxisSetter = {
                 if (serieses[i].xData) {
                     if (serieses[i].xData.length > xDataMax) {
                         series = serieses[i];
+                        xDataMax = serieses[i].xData.length;
                     }
                 }
             }

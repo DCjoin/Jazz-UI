@@ -64,6 +64,22 @@ I18N.Common={};
 I18N.Common.Glossary={};
 I18N.Common.Glossary.HierarchyNode = '层级节点';
 
+I18N.DateTimeFormat = {};
+I18N.DateTimeFormat.HighFormat = {};
+I18N.DateTimeFormat.HighFormat.Millisecond = '%H点%M分%S秒%L毫秒';
+I18N.DateTimeFormat.HighFormat.Second = '%H点%M分%S秒';
+I18N.DateTimeFormat.HighFormat.Minute = '%H点%M分';
+I18N.DateTimeFormat.HighFormat.Hour = '%H点';
+I18N.DateTimeFormat.HighFormat.Day = '%m月%d日';
+I18N.DateTimeFormat.HighFormat.Dayhour = '%m月%d日%H点';
+I18N.DateTimeFormat.HighFormat.Week = '%m月%d日';
+I18N.DateTimeFormat.HighFormat.Month = '%m月';
+I18N.DateTimeFormat.HighFormat.Fullmonth = '%Y年%m月';
+I18N.DateTimeFormat.HighFormat.Year = '%Y年';
+I18N.DateTimeFormat.HighFormat.FullDateTime = '%Y年%m月%d日 %H点%M分%S秒';
+I18N.DateTimeFormat.HighFormat.FullDate = '%Y年%m月%d日';
+I18N.DateTimeFormat.HighFormat.FullYear = '全年';
+
 I18N.Message={};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';

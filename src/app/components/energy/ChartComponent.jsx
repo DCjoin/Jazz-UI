@@ -60,7 +60,7 @@ var dataLabelFormatter = function (format) {
     }
     return v;
 };
-const DEFAULT_OPTIONS = {
+let defaultConfig = {
     colors: [
                 '#3399cc',
                 '#99cc66',
@@ -221,10 +221,10 @@ const DEFAULT_OPTIONS = {
                     var chart = this.chart;
                     var step = chart.options.navigator.step;
                     if (step == 4) {
-                        return dateFormat(new Date(v), 'Y年');
+                        return dateFormat(new Date(v), 'YYYY年');
                     }
                     else {
-                        return dateFormat(new Date(v), 'Y年m月');
+                        return dateFormat(new Date(v), 'YYYY年MM月');
                     }
                 }
             }
@@ -328,6 +328,9 @@ let ChartComponent = React.createClass({
 
         };
     },
+    componentWillMount(){
+      this.initDefaultConfig();
+    },
     componentWillUnmount() {
 
     },
@@ -338,6 +341,21 @@ let ChartComponent = React.createClass({
     },
     componentWillUpdate(){
 
+    },
+    initDefaultConfig: function () {
+      let cap = function(string) {
+            return string.charAt(0).toUpperCase() + string.substr(1);
+        };
+      var t = ['millisecond', 'second', 'minute', 'hour', 'day', 'dayhour', 'week', 'month', 'fullmonth', 'year'],
+          c = defaultConfig,
+          x = c.xAxis,
+          f = I18N.DateTimeFormat.HighFormat;
+
+      t.forEach(function (n) {
+          x.dateTimeLabelFormats[n] = (f[cap(n)]);
+      });
+
+      c.chart.cancelChartContainerclickBubble = true;
     },
     _onIgnoreDialogSubmit(){
       let isBatchIgnore = this.refs.batchIgnore.isChecked();
@@ -410,7 +428,7 @@ let ChartComponent = React.createClass({
   },
   _initChartObj() {
     var data = this.props.energyData;
-    var newConfig = assign({}, DEFAULT_OPTIONS,
+    var newConfig = assign({}, defaultConfig,
       {animation: true,
        title: {
                 text: this.title,
@@ -425,6 +443,7 @@ let ChartComponent = React.createClass({
 
       newConfig.tooltip.shared = true;
       newConfig.tooltip.crosshairs = true;
+      newConfig.navigator.step = this.props.step;
 
       this.initYaxis(data.Data, newConfig);
 
