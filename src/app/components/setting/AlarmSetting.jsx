@@ -114,6 +114,17 @@ let AlarmSetting = React.createClass({
       backgroundColor: 'transparent',
       border: '1px solid #e4e7e6'
     };
+    var buttonStyle = {
+      width: '80px',
+      minWidth: "80px",
+      height: '30px',
+      marginRight: '10px'
+    };
+    var labelStyle = {
+      fontSize: '14px',
+      color: '#767a7a',
+      lineHeight: '30px',
+    };
     return (
       <div className="jazz-setting-alarm-container">
         <div className='jazz-setting-alarm-content'>
@@ -134,11 +145,13 @@ let AlarmSetting = React.createClass({
           </div>
         </div>
         <div>
-          <button className='jazz-setting-basic-editbutton' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
-          <span>
-            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
-            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
-          </span>
+          <div hidden={!this.state.disable}>
+            <RaisedButton label="编辑" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleEdit}/>
+          </div>
+          <div hidden={this.state.disable}>
+            <RaisedButton label="保存" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleSave}/>
+            <RaisedButton label="放弃" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleCancel}/>
+          </div>
         </div>
       </div>
     );
