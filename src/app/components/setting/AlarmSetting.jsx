@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, DefaultRoute, RouteHandler, Link, Navigation, State} from 'react-router';
-import {Toggle, Checkbox, RaisedButton, TextField} from 'material-ui';
+import {Toggle, Checkbox, RaisedButton} from 'material-ui';
 import assign from "object-assign";
 
 import AlarmSettingStore from '../../stores/AlarmSettingStore.jsx';
@@ -16,6 +16,7 @@ let AlarmSetting = React.createClass({
 
 	_onChange: function(){
     var alarmSettingData = AlarmSettingStore.getData();
+    //this.refs.threshold.getDOMNode().value = alarmSettingData.AlarmThreshold;
     this.setState({
       threshold: alarmSettingData.AlarmThreshold
     });
@@ -30,7 +31,7 @@ let AlarmSetting = React.createClass({
     return {
       tbId: this.props.tbId,
       alarmSteps: alarmSteps,
-      thresholdValue: this.state.threshold,
+      thresholdValue: this.refs.threshold.getDOMNode().value,
       enableStatus: this.refs.openAlarm.isToggled()
     };
   },
@@ -104,16 +105,6 @@ let AlarmSetting = React.createClass({
   },
 
   render: function(){
-    var inputStyle = {
-      width: '45px',
-      height: '30px',
-      marginLeft: '10px',
-      marginRight: '10px',
-      fontSize: '14px',
-      color: '#767a7a',
-      backgroundColor: 'transparent',
-      border: '1px solid #e4e7e6'
-    };
     return (
       <div className="jazz-setting-alarm-container">
         <div className='jazz-setting-alarm-content'>
@@ -121,7 +112,7 @@ let AlarmSetting = React.createClass({
             <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="right" disabled={this.state.disable}/>
           </div>
           <div className='jazz-setting-alarm-threshold'>
-            报警敏感度<TextField ref="threshold" value={this.state.threshold} style={inputStyle} className="jazz-setting-input" disabled={this.state.disable} onChange={this.changeThreshold}/>%
+            报警敏感度<input ref="threshold" value={this.state.threshold} className='jazz-setting-alarm-input' type="text" disabled={this.state.disable} onChange={this.changeThreshold}/>%
           </div>
           <div className='jazz-setting-alarm-tip'>
             当数据高于基准值所设敏感度时，显示报警。
