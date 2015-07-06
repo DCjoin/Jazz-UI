@@ -215,9 +215,9 @@ let BaselineModify = React.createClass({
       ref: "yearSelector",
       selectedIndex: ((this.state.year || curYear) - curYear + 10),
       onYearPickerSelected: this._onYearPickerSelected,
-      style:{
-        border:'1px solid #efefef',
-        margin:'14px 0px 0px 10px'
+      style: {
+        border: '1px solid #efefef',
+        margin: '14px 0px 0px 10px'
       }
       //className: "jazz-setting-basic-yearpicker"
     };
