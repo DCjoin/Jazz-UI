@@ -704,7 +704,7 @@ var SpecialItem = React.createClass({
   },
 
   _getEndTime: function(){
-    var endDate = fromFormEndDate(this.refs.endDateField.getDate()),
+    var endDate = this.refs.endDateField.getDate(),
       endTime = this.refs.endTimeField.getValue();
     return datetimeTojson(endDate, endTime);
   },
@@ -918,6 +918,12 @@ var SpecialSetting = React.createClass({
       isViewStatus: true,
       tbsItem: null,
     };
+  },  
+
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps){
+      this.setState({items: nextProps.items});
+    }
   },
 
   getInitialState: function() {
@@ -1679,16 +1685,19 @@ var BaselineBasic = React.createClass({
     }
   },
 
+  _bindData: function(tbSetting){
+    var me = this;
+    var itemsCtrl = me.refs.TBSettingItems;
+    if(!tbSetting.TBSettings){
+      itemsCtrl.setValue([]);
+    }else{
+      itemsCtrl.setValue(tbSetting.TBSettings);
+    }
+  },
+
   _fetchServerData: function(year) {
     var me = this;
-    TBSettingAction.loadData(me.props.tbId, year, function(tbSetting){
-      var itemsCtrl = me.refs.TBSettingItems;
-      if(!tbSetting.TBSettings){
-        itemsCtrl.setValue([]);
-      }else{
-        itemsCtrl.setValue(tbSetting.TBSettings);
-      }
-    });
+    TBSettingAction.loadData(me.props.tbId, year, this._bindData);
   },
 
   _saveDataToServer: function(val){
@@ -1708,10 +1717,8 @@ var BaselineBasic = React.createClass({
   _handleSave: function(){
     var val = this.tryGetValue();
     if(val){
-      this._saveDataToServer(val);
-      this.setState({
-        isViewStatus : true,
-      });
+      this._saveDataToServer(val, this._bindData);
+      this.setState({ isViewStatus : true });
     }
   },
 
