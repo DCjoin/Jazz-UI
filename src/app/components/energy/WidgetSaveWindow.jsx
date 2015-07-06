@@ -19,7 +19,7 @@ var WidgetSaveWindow = React.createClass({
   },
   getInitialState() {
     return {dashboardState:'existDashboard',
-            dashboardMenuItems:[{text:''}],
+            dashboardMenuItems:[],
             selectedExistingDashboardIndex: 0
            };
   },
@@ -71,9 +71,13 @@ var WidgetSaveWindow = React.createClass({
     let existDashBoardRadioContent;
     let newDashboardRadioContent;
     if(this.state.dashboardState ==='existDashboard'){
-      existDashBoardRadioContent = <div>
-          <MutableDropMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
-            selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></MutableDropMenu></div>;
+      if(this.state.dashboardMenuItems.length === 0){
+          existDashBoardRadioContent = <div></div>;
+      }else{
+        existDashBoardRadioContent = <div>
+            <MutableDropMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
+              selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></MutableDropMenu></div>;
+      }
     }else{
       newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}
         className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNewDSNameFieldChange}/></div>;
