@@ -221,6 +221,17 @@ let BaselineModify = React.createClass({
       }
       //className: "jazz-setting-basic-yearpicker"
     };
+    var yearStyle = {
+      display: 'inline-block',
+      width: '90px',
+      height: '24px',
+      marginLeft: '21px',
+      marginRight: '10px',
+      fontSize: '14px',
+      color: '#767a7a',
+      backgroundColor: 'transparent',
+      border: '1px solid #e4e7e6'
+    };
     return (
       <div className="jazz-setting-baseline-container">
         <div className='jazz-setting-baseline-content'>
@@ -234,7 +245,7 @@ let BaselineModify = React.createClass({
             年基准值
           </div>
           <div>
-            年度 <input type="text" ref="yearValue"className='jazz-setting-baseline-year' value={this.state.yearValue} disabled={this.state.disable} onChange={this.yearValueChange}/> 千瓦时
+            年度 <TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} value={this.state.yearValue} disabled={this.state.disable} onChange={this.yearValueChange}/> 千瓦时
           </div>
           <div className='jazz-setting-baseline-margin'>
             月基准值
@@ -303,20 +314,29 @@ let MonthItem = React.createClass({
     var leftDivStyle = {display:'inline-block',width:'52px'};
     var centerDivStyle = {display:'inline-block',width:'103px'};
     var rightDivStyle = {display:'inline-block',width:'92px'};
+    var monthStyle = {
+      display: 'inline-block',
+      width: '90px',
+      height: '24px',
+      fontSize: '14px',
+      color: '#767a7a',
+      backgroundColor: 'transparent',
+      border: '1px solid #e4e7e6'
+    };
 		return (
       <table border='0' cellSpacing='1' cellPadding='0'>
         <tr>
           <td align="left">
             <div style={leftDivStyle}>{line.LeftMonth}月</div>
             <div style={centerDivStyle}>
-             <input ref="leftValue" type="text" className="jazz-setting-baseline-month" value={this.state.monthValue.LeftValue} onChange={this._onLeftChange} disabled={disable}/>
+              <TextField ref="leftValue" className="jazz-setting-input" style={monthStyle}   value={this.state.monthValue.LeftValue} onChange={this._onLeftChange} disabled={disable}/>
             </div>
             <div style={rightDivStyle}>{Uom}</div>
           </td>
           <td align="right">
             <div style={leftDivStyle}>{line.RightMonth}月</div>
             <div style={centerDivStyle}>
-             <input ref="rightValue" type="text" className="jazz-setting-baseline-month" value={this.state.monthValue.RightValue} onChange={this._onRightChange} disabled={disable}/>
+              <TextField ref="rightValue" className="jazz-setting-input" style={monthStyle} value={this.state.monthValue.RightValue} onChange={this._onRightChange} disabled={disable}/>
             </div>
             <div style={rightDivStyle}>{Uom}</div>
           </td>
