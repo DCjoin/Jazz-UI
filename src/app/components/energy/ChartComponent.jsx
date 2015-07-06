@@ -335,7 +335,6 @@ let ChartComponent = React.createClass({
 
     },
     componentWillReceiveProps(nextProps) {
-    	console.log('componentWillReceiveProps', nextProps);
     },
     componentWillUpdate(){
 

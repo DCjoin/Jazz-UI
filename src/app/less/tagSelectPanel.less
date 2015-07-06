@@ -42,10 +42,12 @@
 }
 .jazz-dataselectmainpanel{
           width:320px;
-          height:100%;
           float:right;
+          display: flex;
+          flex-direction: column;
+          flex:1;
           .header{
-            height:48px;
+            min-height:48px;
             width:100%;
             background-color: #1ca8dd;
             display:flex;
@@ -59,12 +61,12 @@
             border-style:solid;
             border-color:#e4e7e9 transparent;
             width:100%;
-            height:46px;
+            min-height:46px;
             .search{
               flex:1;
               display:flex;
               flex-flow:row nowrap;
-              height:26px;
+              min-height:26px;
               border:1px solid #e4e7e6;
               margin:9px 0px 9px 20px;
               .input{
@@ -106,7 +108,7 @@
   }
 }
 .taglist{
-  height:46px;
+  min-height:46px;
   border-width:1px;
   border-style:solid;
   border-color: transparent;
