@@ -218,7 +218,7 @@ var TagMenu=React.createClass({
          };
 
   return(
-    <div>
+    <div style={{display:'flex','flex-direction':'column'}}>
       <div className="allcheck">
         <Checkbox
           label="全选"
@@ -229,7 +229,7 @@ var TagMenu=React.createClass({
           />
       </div>
 
-      <div style={{'overflow':'auto',height:'480px'}}>
+      <div style={{'overflow':'auto',display:'flex','flex-direction':'column',flex:'1'}}>
         {nodemenuItems}
       </div>
 
