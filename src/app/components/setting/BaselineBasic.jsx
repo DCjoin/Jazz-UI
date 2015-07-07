@@ -1592,10 +1592,7 @@ var CalDetail = React.createClass({
             }
 
           });
-          console.log("**wyh**workDay");
-          console.log(workDay);
          if(workDay.length!=0){
-           console.log("**wyh**inworkDay");
              workCal.push(
                <div className="workday">
                  <div>工作日 :</div>
