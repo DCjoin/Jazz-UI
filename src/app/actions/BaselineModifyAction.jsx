@@ -5,6 +5,9 @@ import Ajax from '../ajax/ajax.jsx';
 
 let BaselineModifyAction = {
   loadData(tbId, year){
+    AppDispatcher.dispatch({
+         type: Action.GET_BASELINE_DATA_LOADING
+    });
     Ajax.post('/TargetBaseline.svc/GetTargetBaselineDataSetting', {
       params: {
         tbId: tbId,
@@ -12,26 +15,32 @@ let BaselineModifyAction = {
       },
       success: function(modifyData){
         AppDispatcher.dispatch({
-            type: Action.GET_MODIFY_DATA,
-            modifyData: modifyData
+          type: Action.GET_BASELINE_DATA_SUCCESS,
+          modifyData: modifyData
         });
       },
       error: function(err, res){
-        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.GET_BASELINE_DATA_ERROR
+        });
       }
     });
   },
   saveData(data){
+    AppDispatcher.dispatch({
+         type: Action.SET_BASELINE_DATA_LOADING
+    });
     Ajax.post('/TargetBaseline.svc/ModifyTargetBaselineDataSetting', {
       params: {dto: data},
-      success: function(){
+      success: function(modifyData){
         AppDispatcher.dispatch({
-            type: Action.SET_MODIFY_DATA_SUCCESS
+            type: Action.SET_BASELINE_DATA_SUCCESS,
+            modifyData: modifyData
         });
       },
       error: function(err, res){
         AppDispatcher.dispatch({
-            type: Action.SET_MODIFY_DATA_ERROR
+            type: Action.SET_BASELINE_DATA_ERROR
         });
       }
     });
