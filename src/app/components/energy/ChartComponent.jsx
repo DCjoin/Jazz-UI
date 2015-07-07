@@ -118,7 +118,7 @@ let defaultConfig = {
                     var y = this.yAxis[i];
                     var left, top = y.top - 6 - 10;
                     if (!y.options.opposite) {
-                        left = this.options.chart.spacingLeft;
+                        left = this.options.chart.spacingLeft || 12;
                     }
                     else {
                         left = y.left + this.plotWidth + 5 + (offset * (i - 1));

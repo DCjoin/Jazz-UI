@@ -12139,6 +12139,12 @@ Chart.prototype = {
 			chart.plotTop = mathMax(chart.plotTop, titleOffset + chart.options.title.margin + spacing[0]);
 		}
 
+		//REM change start --if not set title, leave some space
+		if(!titleOffset){
+				chart.plotTop = 30;
+		}
+		//REM change end
+
 		// Adjust for legend
 		chart.legend.adjustMargins(margin, spacing);
 
