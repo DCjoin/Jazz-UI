@@ -112,11 +112,11 @@ let AlarmAction = {
   getDateByStep(dateStr, step){
     let startDate, endDate;
     if(step === HOURSTEP){
-      startDate = new Date(parseInt(dateStr.substr(0,4)),parseInt(dateStr.substr(4,2)), parseInt(dateStr.substr(6,2)));
-      endDate = new Date(parseInt(dateStr.substr(0,4)),parseInt(dateStr.substr(4,2)), parseInt(dateStr.substr(6,2)), 24);
+      startDate = new Date(parseInt(dateStr.substr(0,4)),parseInt(dateStr.substr(4,2))-1, parseInt(dateStr.substr(6,2)));
+      endDate = new Date(parseInt(dateStr.substr(0,4)),parseInt(dateStr.substr(4,2))-1, parseInt(dateStr.substr(6,2)), 24);
     }else if(step === DAYSTEP){
-      startDate = new Date(parseInt(dateStr.substr(0,4)),parseInt(dateStr.substr(4,2)), 1);
-      endDate = new Date(parseInt(dateStr.substr(0,4)),parseInt(dateStr.substr(4,2)) + 1, 1);
+      startDate = new Date(parseInt(dateStr.substr(0,4)),parseInt(dateStr.substr(4,2))-1, 1);
+      endDate = new Date(parseInt(dateStr.substr(0,4)),parseInt(dateStr.substr(4,2)), 1);
     }else{
       startDate = new Date(parseInt(dateStr.substr(0,4)), 0, 1);
       endDate = new Date(parseInt(dateStr.substr(0,4)) + 1, 0, 1);

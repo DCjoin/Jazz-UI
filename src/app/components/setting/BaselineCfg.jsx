@@ -1,6 +1,6 @@
 import React from "react";
-import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {Tabs, Tab} from 'material-ui';
+import { Route, DefaultRoute, RouteHandler, Link, Navigation, State} from 'react-router';
+import mui from 'material-ui';
 import assign from "object-assign";
 import BaselineBasic from './BaselineBasic.jsx';
 import AlarmSetting from './AlarmSetting.jsx';
@@ -8,9 +8,12 @@ import BaselineModify from './BaselineModify.jsx';
 import Dialog from "../../controls/Dialog.jsx";
 import TBStore from "../../stores/TBStore.jsx";
 import TBAction from "../../actions/TBAction.jsx";
+var lastTab=null;
+
+let {Tabs, Tab} = mui;
 
 let BaselineCfg = React.createClass({
-  mixins:[Navigation,State],
+  mixins:[Navigation,State,mui.Mixins.StylePropable],
 
   propTypes: {
     tag: React.PropTypes.object
@@ -19,7 +22,10 @@ let BaselineCfg = React.createClass({
   getInitialState: function() {
     return {
       tag: this.props.tag,
-      year: (new Date()).getFullYear()
+      year: (new Date()).getFullYear(),
+      firstTabStyle:{
+        color:'#1ca8dd'
+      }
     };
   },
 
@@ -56,7 +62,7 @@ let BaselineCfg = React.createClass({
   componentDidMount: function() {
     if(this.state.tag){
       this.refreshData(this.state.tag.tagId);
-    }
+    };
   },
 
   componentWillReceiveProps: function(nextProps){
@@ -75,28 +81,17 @@ let BaselineCfg = React.createClass({
   },
 
   _onTabChanged: function(tabIndex, tab){
-    if(tabIndex === 0){
-      if(this.refs.baselineBasic){
-        this.refs.baselineBasic.loadDataByYear(this.state.year);
+    this.setState({
+      firstTabStyle:{
+        color:'#767a7a'
       }
-      else{
-
-      }
-    }else if(tabIndex == 1){
-      if(this.refs.baselineModify){
-        this.refs.baselineModify.loadDataByYear(this.state.year);
-      } else{
-
-      }
-    }else if(tabIndex == 2){
-      if(this.refs.alarmSetting){
-        this.refs.alarmSetting.loadDataByYear(this.state.year);
-      } else{
-
-      }
+    });
+    tab.getDOMNode().style.color='#1ca8dd';
+    if(lastTab){
+        lastTab.getDOMNode().style.color='#767a7a';
     }
+    lastTab=tab;
   },
-
   render: function () {
     var dialogProps={
       style:{
@@ -152,38 +147,38 @@ let BaselineCfg = React.createClass({
         backgroundColor: 'transparent',
         borderBottom: '1px solid #e4e7e6',
         height: '28px',
-        color:'#1ca8dd',
+        color:'red',
       },
       tabWidth: 110,
       style:{
         width: '790px',
         paddingLeft: '30px',
+        color:'red'
       },
-      onChange: this._onTabChanged
-    }, tabProps = {
-      style:{
-        display: 'block',
-        float: 'left',
-        fontSize: '14px',
-        height:'18px',
-        color:'#1c8add',
-        fontWeight:'bold',
-        fontFamily: 'Microsoft YaHei'
-      }
-
-    };
+     onChange: this._onTabChanged
+   },
+   tabStyle={
+     display: 'block',
+     float: 'left',
+     fontSize: '14px',
+     height:'18px',
+     color:'#767a7a',
+     fontWeight:'bold',
+     fontFamily: 'Microsoft YaHei'
+   };
+   var firstTabStyles=this.mergeAndPrefix(tabStyle,this.state.firstTabStyle);
 
     return (
         <Dialog title="基准值配置" ref="cfgDialog" {...dialogProps}>
           <div className="jazz-tabs">
             <Tabs {...tabsProps}>
-              <Tab label="基准值配置" {...tabProps}>
+              <Tab label="基准值配置" style={firstTabStyles}>
                 <BaselineBasic  ref="baselineBasic" {...basicProps} />
               </Tab>
-              <Tab label="计算值修正"  {...tabProps}>
-                <BaselineModify  ref="baselineModify" tbId={this.state.tbId} />
+              <Tab label="计算值修正" style={tabStyle}>
+                <BaselineModify  ref="baselineModify" tbId={this.state.tbId}/>
               </Tab>
-              <Tab label="报警设置"  {...tabProps}>
+              <Tab label="报警设置"  style={tabStyle}>
                 <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId} />
               </Tab>
             </Tabs>
