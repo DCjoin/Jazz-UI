@@ -7,7 +7,7 @@ import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
-import {dateAdd, dateFormat, DataConverter, isArray, isNumber} from '../../util/Util.jsx';
+import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed} from '../../util/Util.jsx';
 
 let { Dialog, FlatButton, Checkbox } = mui;
 let yAxisOffset = 70;
@@ -445,6 +445,8 @@ let ChartComponent = React.createClass({
       newConfig.tooltip.crosshairs = true;
       newConfig.navigator.step = this.props.step;
 
+      this.mergeConfig(newConfig);
+
       this.initYaxis(data.Data, newConfig);
 
       var realData = this.convertData(data.Data, newConfig);
@@ -458,6 +460,49 @@ let ChartComponent = React.createClass({
       return newConfig;
 
   },
+  mergeConfig: function (defaultConfig) {
+
+    var commonTooltipFormatter = function () {
+        var op = this.points[0].series.options.option,
+            start = op.start,
+            end = op.end, uom,
+            step = op.targetStep || op.step,
+            decimalDigits, serieDecimalDigits;
+        var str = formatDateByStep(this.x, start, end, step);
+        str += '<br/>';
+        var total = 0;
+        decimalDigits = 0;
+        for (var i = 0; i < this.points.length; ++i) {
+            var point = this.points[i],
+                series = point.series,
+                name = series.name,
+                color = series.color;
+
+                uom = series.options.option.uom;
+            str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
+                color, name, dataLabelFormatter.call({ value: point.y }, false), uom);
+            if (isNumber(point.y)) {
+                total += point.y;
+
+                serieDecimalDigits = getDecimalDigits(point.y);
+                if (serieDecimalDigits > 0 && serieDecimalDigits > decimalDigits) {
+                    decimalDigits = serieDecimalDigits;
+                }
+            }
+        }
+        if (decimalDigits > 0) {
+            total = toFixed(total, decimalDigits);
+        }
+        total = dataLabelFormatter.call({ value: total }, false);
+        if (this.points.length > 1 && this.points[0].series.chart.userOptions.chartTooltipHasTotal) {
+            str += '总计：<b>' + total + uom + '</b>';
+        }
+        return str;
+    };
+
+    defaultConfig.tooltip.formatter = commonTooltipFormatter;
+  },
+
   convertData: function (data, config) {
       var ret = [];
       for (var j = 0; j < data.length; ++j) {
