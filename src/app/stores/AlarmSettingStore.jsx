@@ -7,7 +7,7 @@ import Immutable from 'immutable';
 import {Action} from '../constants/actionType/Setting.jsx';
 
 
-const SETTING_DATA_CHANGED_EVENT = 'seetingdatachanged';
+const DATA_CHANGED_EVENT = 'datachanged';
 var _alarmSettingData = {};
 
 var AlarmSettingStore = assign({},PrototypeStore,{
@@ -18,24 +18,28 @@ var AlarmSettingStore = assign({},PrototypeStore,{
     _alarmSettingData =  data;
   },
   addSettingDataListener: function(callback) {
-    this.on(SETTING_DATA_CHANGED_EVENT, callback);
+    this.on(DATA_CHANGED_EVENT, callback);
   },
   emitSettingData: function() {
-    this.emit(SETTING_DATA_CHANGED_EVENT);
+    this.emit(DATA_CHANGED_EVENT);
   },
   removeSettingDataListener: function(callback) {
-    this.removeListener(SETTING_DATA_CHANGED_EVENT, callback);
+    this.removeListener(DATA_CHANGED_EVENT, callback);
   },
 });
 AlarmSettingStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
-    case Action.LOAD_SETTING_DATA:
+    case Action.GET_ALARM_DATA_SUCCESS:
       AlarmSettingStore.setData(action.alarmSettingData);
       AlarmSettingStore.emitSettingData();
       break;
-    case Action.SAVE_SETTING_SUCCESS:
+    case Action.GET_ALARM_DATA_ERROR:
       break;
-    case Action.SAVE_SETTING_ERROR:
+    case Action.SET_ALARM_DATA_SUCCESS:
+      AlarmSettingStore.setData(action.alarmSettingData);
+      AlarmSettingStore.emitSettingData();
+      break;
+    case Action.SET_ALARM_DATA_ERROR:
       break;
   }
 });

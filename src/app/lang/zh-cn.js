@@ -80,6 +80,33 @@ I18N.DateTimeFormat.HighFormat.FullDateTime = '%Y年%m月%d日 %H点%M分%S秒';
 I18N.DateTimeFormat.HighFormat.FullDate = '%Y年%m月%d日';
 I18N.DateTimeFormat.HighFormat.FullYear = '全年';
 
+I18N.DateTimeFormat.IntervalFormat={};
+I18N.DateTimeFormat.IntervalFormat.Second = 'YYYY年MM月DD日 HH点mm分ss秒';
+I18N.DateTimeFormat.IntervalFormat.FullMinute = 'YYYY年MM月DD日 HH点mm分';
+I18N.DateTimeFormat.IntervalFormat.RangeFullMinute = 'YYYY年MM月DD日 HH点mm分';
+I18N.DateTimeFormat.IntervalFormat.Minute = 'HH点mm分';
+I18N.DateTimeFormat.IntervalFormat.FullHour = 'YYYY年MM月DD日HH点';
+I18N.DateTimeFormat.IntervalFormat.Hour = 'HH点';
+I18N.DateTimeFormat.IntervalFormat.FullDay = 'YYYY年MM月DD日';
+I18N.DateTimeFormat.IntervalFormat.Day = 'DD日';
+I18N.DateTimeFormat.IntervalFormat.Week = 'YYYY年MM月DD日';
+I18N.DateTimeFormat.IntervalFormat.Month = 'YYYY年MM月';
+I18N.DateTimeFormat.IntervalFormat.MonthDate = 'MM月DD日';
+I18N.DateTimeFormat.IntervalFormat.Year = 'YYYY年';
+I18N.DateTimeFormat.IntervalFormat.FullDateTime = 'YYYY年MM月DD日 HH点mm分ss秒';
+I18N.DateTimeFormat.IntervalFormat.FullDate = 'YYYY年MM月DD日';
+
+I18N.EM = {};
+I18N.EM.Week = '周';
+I18N.EM.Raw = '分钟';
+I18N.EM.Hour = '小时';
+I18N.EM.Day = '天';
+I18N.EM.Month = '月';
+I18N.EM.Year = '年';
+I18N.EM.Clock24 = '24点';
+I18N.EM.Clock24InWidget = '24点';
+I18N.EM.Clock24Minute0 = '24点00';
+
 I18N.Message={};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';

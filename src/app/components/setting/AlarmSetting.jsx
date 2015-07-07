@@ -6,103 +6,94 @@ import assign from "object-assign";
 import AlarmSettingStore from '../../stores/AlarmSettingStore.jsx';
 import AlarmSettingAction from "../../actions/AlarmSettingAction.jsx";
 
+var extractNumber = function(str){
+  var value = str.replace(/[^\d\.]/g,'');
+  var dotIndex = value.indexOf('.');
+  if(dotIndex != -1){
+    if(dotIndex === 0) value = '0' + value;
+    dotIndex = value.indexOf('.');
+    value = value.split('.').join('');
+    value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
+  }
+  return value;
+};
 
-const YEARSTEP = 4,
-      MONTHSTEP = 3,
-      DAYSTEP = 2;
+const YEARSTEP = 3,
+      MONTHSTEP = 2,
+      DAYSTEP = 1;
 
 let AlarmSetting = React.createClass({
   mixins:[Navigation,State,React.addons.LinkedStateMixin],
 
 	_onChange: function(){
     var alarmSettingData = AlarmSettingStore.getData();
-    this.setState({
-      threshold: alarmSettingData.AlarmThreshold
-    });
-    this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
-    var stepValue = alarmSettingData.AlarmSteps;
-    this.refs.alarmSteps.setValue(stepValue);
+    this.setValue(alarmSettingData);
 	},
-
   getValue: function(){
     var alarmSteps = this.refs.alarmSteps.getValue();
 
     return {
       tbId: this.props.tbId,
       alarmSteps: alarmSteps,
-      thresholdValue: this.state.threshold,
+      thresholdValue: this.refs.threshold.getValue(),
       enableStatus: this.refs.openAlarm.isToggled()
     };
   },
-
+  setValue: function(alarmSettingData){
+    this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
+    this.refs.threshold.setValue(alarmSettingData.AlarmThreshold);
+    this.refs.alarmSteps.setValue(alarmSettingData.AlarmSteps);
+  },
   handleEdit: function(){
     this.setState({
       disable: false
     });
 	},
-
   handleSave: function(){
-    this.setState({
-      disable: true
-    });
-    var val = this.getValue();
-    AlarmSettingAction.saveData(val);
+    if(this._validate()){
+      this.setState({
+        disable: true
+      });
+      var val = this.getValue();
+      AlarmSettingAction.saveData(val);
+    }
   },
-
   handleCancel: function(){
     this.setState({
-      disable: true
+      disable: true,
+      errorText: ""
     });
     this._onChange();
   },
-
-  _validate: function(val){
-    var value = val.replace(/[^\d\.]/g,'');
-    var dotIndex = value.indexOf('.');
-    if(dotIndex != -1){
-      if(dotIndex === 0){
-        value = '0' + value;
-      }
-      value = value.split('.').join('');
-      value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
-    }
-
-    this.refs.threshold.getDOMNode().value = value;
-    if(value === ''){
-      this.setState({error: "必填项"});
-      return false;
-    }
-    else{
-      this.setState({error: ""});
-      return true;
-    }
+  _validate: function(){
+    var val = this.refs.threshold.getValue();
+    return this._validateValue(val) !== '';
   },
-
+  _validateValue: function(val){
+    var value = extractNumber(val);
+    if(val !== value){
+      this.refs.threshold.setValue(value);
+    }
+    this.setState({errorText: (value === '' ? '必填项' : '')});
+    return value;
+  },
   changeThreshold: function(e){
-    if(this._validate(e.target.value)){
-      this.setState({
-        threshold: e.target.value
-      });
-    }
+    var value = this._validateValue(e.target.value);
   },
-
   getInitialState: function(){
     return {
       disable: true,
       threshold: 100,
-      error: ""
+      errorText: ""
     };
   },
-
   componentDidMount: function(){
     AlarmSettingStore.addSettingDataListener(this._onChange);
     AlarmSettingAction.loadData(this.props.tbId);
   },
-
   componentWillUnmount: function(){
     AlarmSettingStore.removeSettingDataListener(this._onChange);
   },
-
   render: function(){
     var inputStyle = {
       width: '45px',
@@ -113,14 +104,14 @@ let AlarmSetting = React.createClass({
       color: '#767a7a',
       backgroundColor: 'transparent',
       border: '1px solid #e4e7e6'
-    };
-    var buttonStyle = {
+    },
+    buttonStyle = {
       width: '80px',
       minWidth: "80px",
       height: '30px',
       marginRight: '10px'
-    };
-    var labelStyle = {
+    },
+    labelStyle = {
       fontSize: '14px',
       color: '#767a7a',
       lineHeight: '30px',
@@ -132,7 +123,7 @@ let AlarmSetting = React.createClass({
             <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="right" disabled={this.state.disable}/>
           </div>
           <div className='jazz-setting-alarm-threshold'>
-            报警敏感度<TextField ref="threshold" value={this.state.threshold} style={inputStyle} className="jazz-setting-input" disabled={this.state.disable} onChange={this.changeThreshold}/>%
+            报警敏感度<TextField ref="threshold" defaultValue={this.state.threshold} style={inputStyle}  className="jazz-setting-input" errorText={this.state.errorText} disabled={this.state.disable} onChange={this.changeThreshold}/>%
           </div>
           <div className='jazz-setting-alarm-tip'>
             当数据高于基准值所设敏感度时，显示报警。
