@@ -51,7 +51,7 @@ let TBSettingAction = {
         }
     });
   },
-  calDetailData(hierId,year){
+  calDetailData(hierId){
     Ajax.post('/Hierarchy.svc/GetHierarchyCalendarByHierarchyId', {
          params: {
            hierarchyId:hierId
@@ -59,7 +59,6 @@ let TBSettingAction = {
         success: function(data){
           AppDispatcher.dispatch({
               type: Action.LOAD_CALDETAIL,
-              year:year,
               data: data
           });
         },

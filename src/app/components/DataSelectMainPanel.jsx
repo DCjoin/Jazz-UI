@@ -604,7 +604,7 @@ let DataSelectMainPanel=React.createClass({
 
             <div style={{color:'#ffffff'}}>-</div>
 
-            <DimButton ref={'dimButton'} active={this.state.dimActive} onTreeClick={this._onDimTreeClick} parentNode={this.state.dimParentNode} onButtonClick={this._onDimButtonClick} show={this.state.DimShow}/>
+         <DimButton ref={'dimButton'} active={this.state.dimActive} onTreeClick={this._onDimTreeClick} parentNode={this.state.dimParentNode} onButtonClick={this._onDimButtonClick} show={this.state.DimShow}/>
           </div>
           <div  className="filter">
             <label className="search" onBlur={this._onSearchBlur}>
@@ -613,12 +613,12 @@ let DataSelectMainPanel=React.createClass({
               <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
           </label>
 
-            <DropDownMenu autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
+          <DropDownMenu autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
 
           </div>
 
-            {menupaper}
-            {pagination}
+         {menupaper}
+        {pagination}
 
         </div>
 
