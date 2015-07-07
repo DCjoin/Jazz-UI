@@ -148,7 +148,9 @@ let ChartPanel = React.createClass({
         startTimeField.setState({selectedIndex:0});
         endTimeField.setState({selectedIndex:0});
       }
-
+    },
+    _onDateSelectorChanged(){
+        this.refs.relativeDate.setState({selectedIndex:0});
     },
     getContentSyntax(){
       let tagOptions = EnergyStore.getTagOpions(), options;
@@ -243,17 +245,17 @@ let ChartPanel = React.createClass({
               <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'100px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
             <div className={'jazz-full-border-datepicker-container'}>
-              <DatePicker defaultDate={date} ref='startDate' style={{width:'85px', height:'32px',marginLeft:'10px'}}/>
+              <DatePicker defaultDate={date} ref='startDate' style={{width:'85px', height:'32px',marginLeft:'10px'}} onChange={this._onDateSelectorChanged}/>
             </div>
             <div className={'jazz-full-border-dropdownmenu-time-container'}>
-              <DropDownMenu menuItems={dateTime} ref='startTime' style={{width:'76px'}}></DropDownMenu>
+              <DropDownMenu menuItems={dateTime} ref='startTime' style={{width:'76px'}} onChange={this._onDateSelectorChanged}></DropDownMenu>
             </div>
             <span> {'到'} </span>
             <div className={'jazz-full-border-datepicker-container'}>
-              <DatePicker defaultDate={date} ref='endDate' style={{width:'85px', height:'32px', marginLeft:'10px'}}/>
+              <DatePicker defaultDate={date} ref='endDate' style={{width:'85px', height:'32px', marginLeft:'10px'}} onChange={this._onDateSelectorChanged}/>
             </div>
             <div className={'jazz-full-border-dropdownmenu-time-container'}>
-              <DropDownMenu menuItems={dateTime} ref='endTime' style={{width:'76px'}}></DropDownMenu>
+              <DropDownMenu menuItems={dateTime} ref='endTime' style={{width:'76px'}} onChange={this._onDateSelectorChanged}></DropDownMenu>
             </div>
             <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
