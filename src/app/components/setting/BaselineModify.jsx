@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, DefaultRoute, RouteHandler, Link, Navigation, State} from 'react-router';
-import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, Overlay} from 'material-ui';
+import {TextField, RaisedButton} from 'material-ui';
 import assign from "object-assign";
 import YearPicker from '../../controls/YearPicker.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
@@ -225,12 +225,23 @@ let BaselineModify = React.createClass({
       display: 'inline-block',
       width: '90px',
       height: '24px',
-      marginLeft: '21px',
+      marginLeft: '24px',
       marginRight: '10px',
       fontSize: '14px',
       color: '#767a7a',
       backgroundColor: 'transparent',
       border: '1px solid #e4e7e6'
+    };
+    var buttonStyle = {
+      width: '80px',
+      minWidth: "80px",
+      height: '30px',
+      marginRight: '10px'
+    };
+    var labelStyle = {
+      fontSize: '14px',
+      color: '#767a7a',
+      lineHeight: '30px',
     };
     return (
       <div className="jazz-setting-baseline-container">
@@ -239,13 +250,13 @@ let BaselineModify = React.createClass({
             <div style={{marginTop:'21px', height:'20px'}}>
             请选择配置年份进行编辑
           </div>
-               <YearPicker {...yearProps}/>
+            <YearPicker {...yearProps}/>
           </div>
           <div className='jazz-setting-baseline-margin'>
             年基准值
           </div>
           <div>
-            年度 <TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} value={this.state.yearValue} disabled={this.state.disable} onChange={this.yearValueChange}/> 千瓦时
+            年度<TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} value={this.state.yearValue} disabled={this.state.disable} onChange={this.yearValueChange}/> 千瓦时
           </div>
           <div className='jazz-setting-baseline-margin'>
             月基准值
@@ -255,11 +266,13 @@ let BaselineModify = React.createClass({
           </div>
         </div>
         <div>
-          <button className='jazz-setting-basic-editbutton' hidden={!this.state.disable} onClick={this.handleEdit}> 编辑 </button>
-          <span>
-            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleSave}> 保存 </button>
-            <button className='jazz-setting-basic-editbutton' hidden={this.state.disable} onClick={this.handleCancel}> 放弃 </button>
-          </span>
+          <div hidden={!this.state.disable}>
+            <RaisedButton label="编辑" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleEdit}/>
+          </div>
+          <div hidden={this.state.disable}>
+            <RaisedButton label="保存" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleSave}/>
+            <RaisedButton label="放弃" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleCancel}/>
+          </div>
         </div>
     </div>
     );
