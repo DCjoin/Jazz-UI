@@ -45,6 +45,8 @@ let Highstock = React.createClass({
 
         that._paper = new Highcharts.StockChart(options);
         this.bindChartObjEvents();
+
+        this.props.afterChartCreated(that._paper);
     },
     bindChartObjEvents(){
       var me = this;
