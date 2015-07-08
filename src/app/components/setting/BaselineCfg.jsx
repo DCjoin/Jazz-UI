@@ -65,7 +65,7 @@ let BaselineCfg = React.createClass({
     this.setState({tag: tag});
     this.refreshData(tag.tagId, function(tb){
       me.refs.cfgDialog.show();
-      //me.showMask();
+      me.showMask();
     });
   },
 
@@ -148,6 +148,9 @@ let BaselineCfg = React.createClass({
             }
           }
         }
+      },
+      onDataLoaded: function(obj){
+        me.hideMask();
       },
       onRequestShowMask: function(obj){
         me.showMask();

@@ -1663,6 +1663,7 @@ var BaselineBasic = React.createClass({
     isViewStatus: React.PropTypes.bool,
     onNameChanged: React.PropTypes.func,
     onYearChanged: React.PropTypes.func,
+    onDataLoaded: React.PropTypes.func,
     onRequestShowMask: React.PropTypes.func,
     onRequestHideMask: React.PropTypes.func,
   },
@@ -1713,10 +1714,6 @@ var BaselineBasic = React.createClass({
     };
   },
 
-  loadDataByYear: function(year){
-    this.setState({year: year});
-  },
-
   _onTBNameChanged: function(){
     var tbname = this.refs.TBName.getValue();
     if(tbname != this.state.name){
@@ -1735,20 +1732,20 @@ var BaselineBasic = React.createClass({
       TBSettingAction.setYear(year);
       var data=TBSettingStore.getCalDetailData();
       if(data){
-      this.setState({
-        hasCal:true,
-        calButton:'显示日历详情',
-        showCalDetail:false,
-      })
+        this.setState({
+          hasCal:true,
+          calButton:'显示日历详情',
+          showCalDetail:false,
+        })
+      }
+      else{
+        this.setState({
+          hasCal:false,
+          showCalDetail:false,
+        })
+      }
     }
-    else{
-      this.setState({
-        hasCal:false,
-        showCalDetail:false,
-      })
-    }
-  }
-},
+  },
 
   _bindData: function(tbSetting){
     var itemsCtrl = this.refs.TBSettingItems;
@@ -1761,7 +1758,12 @@ var BaselineBasic = React.createClass({
 
   _fetchServerData: function(year) {
     var me = this;
-    TBSettingAction.loadData(me.props.tbId, year, this._bindData);
+    TBSettingAction.loadData(me.props.tbId, year, function(data){
+      me._bindData(data);
+      if(me.props.onDataLoaded){
+        me.props.onDataLoaded(me);
+      }
+    });
   },
 
   _saveDataToServer: function(val, callback){
