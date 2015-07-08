@@ -14,16 +14,15 @@ import WidgetSaveWindow from '../energy/WidgetSaveWindow.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
+import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
-let {hourPickerData, isArray, getUomById} = CommonFuns;
+let {hourPickerData, isArray, getUomById, JazzCommon, DataConverter, dateAdd} = CommonFuns;
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
  {value: 'ThisMonth', text: '本月'}, {value: 'LastMonth', text: '上月'}, {value: 'ThisYear', text: '今年'}, {value: 'LastYear', text: '去年'}];
-
-const dateTime = hourPickerData();
 
 let ChartPanel = React.createClass({
     mixins:[Navigation,State],
@@ -73,8 +72,7 @@ let ChartPanel = React.createClass({
         let startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
         let endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
 
-        this.refs.startDate.setDate(startDate);
-        this.refs.endDate.setDate(endDate);
+        this.refs.dateTimeSelector.setDateField(startDate, endDate);
       }
     },
     _onEnergyDataChange(){
@@ -97,8 +95,11 @@ let ChartPanel = React.createClass({
       AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
     },
     onSearchDataButtonClick(){
-      let startDate = this.refs.startDate.getDate(),
-          endDate = this.refs.endDate.getDate(),
+      let dateSelector = this.refs.dateTimeSelector;
+      let dateRange = dateSelector.getDateTime();
+
+      let startDate = dateRange.start,
+          endDate = dateRange.end,
           userTagListSelect = AlarmTagStore.getUseTaglistSelect();
       let tagOptions;
 
@@ -135,18 +136,11 @@ let ChartPanel = React.createClass({
     },
     _onRelativeDateChange(e, selectedIndex, menuItem){
       let value = menuItem.value;
-      let startField = this.refs.startDate;
-      let startTimeField = this.refs.startTime;
-      let endField = this.refs.endDate;
-      let endTimeField = this.refs.endTime;
+      let dateSelector = this.refs.dateTimeSelector;
 
       if(value && value !=='Customerize'){
         var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
-        startField.setDate(timeregion.start);
-        endField.setDate(timeregion.end);
-
-        startTimeField.setState({selectedIndex:0});
-        endTimeField.setState({selectedIndex:0});
+        dateSelector.setDateField(timeregion.start, timeregion.end);
       }
     },
     _onDateSelectorChanged(){
@@ -205,7 +199,6 @@ let ChartPanel = React.createClass({
         return state;
     },
     render: function () {
-      let date = new Date();
       let me = this;
       let energyPart=null;
 
@@ -227,7 +220,7 @@ let ChartPanel = React.createClass({
                           <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange} timeRanges={me.state.timeRanges}/>
 
                         </div>
-                        <ChartComponent {...this.state.paramsObj} {...chartCmpObj}/>
+                        <ChartComponent {...this.state.paramsObj} {...chartCmpObj} afterChartCreated={this._afterChartCreated}/>
                       </div>;
       }
       let title = <div className='jazz-alarm-chart-title'>
@@ -244,19 +237,7 @@ let ChartPanel = React.createClass({
             <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
               <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'100px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
-            <div className={'jazz-full-border-datepicker-container'}>
-              <DatePicker defaultDate={date} ref='startDate' style={{width:'85px', height:'32px',marginLeft:'10px'}} onChange={this._onDateSelectorChanged}/>
-            </div>
-            <div className={'jazz-full-border-dropdownmenu-time-container'}>
-              <DropDownMenu menuItems={dateTime} ref='startTime' style={{width:'76px'}} onChange={this._onDateSelectorChanged}></DropDownMenu>
-            </div>
-            <span> {'到'} </span>
-            <div className={'jazz-full-border-datepicker-container'}>
-              <DatePicker defaultDate={date} ref='endDate' style={{width:'85px', height:'32px', marginLeft:'10px'}} onChange={this._onDateSelectorChanged}/>
-            </div>
-            <div className={'jazz-full-border-dropdownmenu-time-container'}>
-              <DropDownMenu menuItems={dateTime} ref='endTime' style={{width:'76px'}} onChange={this._onDateSelectorChanged}></DropDownMenu>
-            </div>
+            <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
             <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
             <RaisedButton style={{marginLeft:'10px', height:'32px', marginBottom:'4px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
@@ -264,6 +245,11 @@ let ChartPanel = React.createClass({
           {energyPart}
         </div>
       );
+  },
+  _afterChartCreated(chartObj){
+    if (chartObj.options.scrollbar.enabled) {
+        chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
+    }
   },
   _onDeleteButtonClick(obj){
     let uid = obj.uid;
@@ -304,19 +290,11 @@ let ChartPanel = React.createClass({
     if(this.props.isSettingChart){
       this.refs.relativeDate.setState({selectedIndex:1});
 
-      let startField = this.refs.startDate;
-      let startTimeField = this.refs.startTime;
-      let endField = this.refs.endDate;
-      let endTimeField = this.refs.endTime;
       let date = new Date();
       date.setHours(0,0,0);
       let last7Days = CommonFuns.dateAdd(date, -7, 'days');
 
-      startField.setDate(last7Days);
-      endField.setDate(date);
-
-      startTimeField.setState({selectedIndex:0});
-      endTimeField.setState({selectedIndex:0});
+      this.refs.dateTimeSelector.setDateField(last7Days, date);
     }
   },
   componentWillUnmount: function() {
@@ -346,6 +324,75 @@ let ChartPanel = React.createClass({
     this.refs.baselineCfg.showDialog(tagObj);
     var year=(new Date()).getFullYear();
     TBSettingAction.setYear(year);
+  },
+  OnNavigatorChanged: function (obj) {
+    var chart = obj.target.chart;
+    var scroller = chart.scroller;
+
+    var min = obj.min;
+    var max = obj.max;
+
+    var start = Math.round(min);
+    var end = Math.round(max);
+    var validator = JazzCommon.IsValidDate;
+
+    var converter = DataConverter.JsonToDateTime;
+    var type = 'resize';
+    var startTime, endTime;
+
+    //this.migrateAndHideAllCommentPanel();
+
+    if (scroller.grabbedLeft) {
+        startTime = new Date(start);
+        startTime.setMinutes(0, 0, 0);
+        endTime = new Date(converter(this.endTime, true));
+        endTime.setMinutes(0, 0, 0);
+        this.needRollback = true;
+    }
+    else if (scroller.grabbedRight) {
+        endTime = new Date(end);
+        endTime.setMinutes(0, 0, 0);
+
+        startTime = new Date(converter(this.startTime, true));
+        startTime.setMinutes(0, 0, 0);
+        this.needRollback = true;
+    }
+    else {
+        startTime = new Date(start);
+        startTime.setMinutes(0, 0, 0);
+        endTime = new Date(end);
+        endTime.setMinutes(0, 0, 0);
+        type = 'move';
+    }
+
+    if (startTime > endTime) {
+        startTime = new Date(start);
+        startTime.setMinutes(0, 0, 0);
+        endTime = new Date(end);
+        endTime.setMinutes(0, 0, 0);
+    }
+
+    //if (endTime > Ext.Date.now()) {
+    //    endTime = new Date();
+    //    endTime.setMinutes(0, 0, 0);
+    //}
+
+    if (startTime.getTime() == endTime.getTime()) {
+        if (scroller.grabbedLeft) {
+            startTime = dateAdd(endTime, -1, 'hours');
+        }
+        else {
+            endTime = dateAdd(startTime, 1, 'hours');
+        }
+    }
+
+    //this.navigatorChanged = true;
+    //return this.fireEvent('eventfired', 'datechanged', { chart: this, start: startTime, end: endTime, type: type });
+    this.dateChanged(this, startTime, endTime, type);
+  },
+  dateChanged(chart, start, end, type){
+    this.refs.dateTimeSelector.setDateField(start, end);
+      this.refs.relativeDate.setState({selectedIndex:0});
   }
 });
 

@@ -8,9 +8,32 @@ import Tag from '../constants/actionType/Tag.jsx';
 let LOAD_TAG_NODE_EVENT = 'loadtagnode';
 let LOAD_ALARM_TAG_NODE_EVENT = 'loadalarmtagnode';
 var _data = {};
+var _totalTagStatus=[];
+var _hierId=null;
 
 
 var TagStore = assign({},PrototypeStore,{
+  setTagStatusByHierarchyId:function(hierId,tagStatus){
+    _totalTagStatus.push({
+      hierId:hierId,
+      tagStatus:tagStatus
+    })
+  },
+  getTagStatusByHierarchyId:function(hierId){
+    var tagStatus=null;
+    _totalTagStatus.forEach(function(status,i){
+      if(status.hierId==hierId){
+        tagStatus=status.tagStatus
+      }
+    });
+    return tagStatus;
+  },
+  setCurrentHierarchyId:function(hierId){
+    _hierId=hierId;
+  },
+  getCurrentHierarchyId:function(hierId){
+    return _hierId;
+  },
   getData(){
     return _data;
   },
@@ -53,6 +76,12 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       case Action.LOAD_ALARM_TAG_NODE:
              TagStore.setData(action.tagList);
              TagStore.emitAlarmTagNodeChange();
+        break;
+      case Action.SET_TAGSTATUS:
+            TagStore.setTagStatusByHierarchyId(action.hierId,action.tagStatus);
+        break;
+      case Action.SET_HIERARCHYID:
+            TagStore.setCurrentHierarchyId(action.hierId);
         break;
 
     }

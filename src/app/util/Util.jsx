@@ -621,6 +621,16 @@ let CommonFuns = {
         result = s / temp;
     }
     return result.toFixed(len);
+	},
+	JazzCommon:{
+		IsValidDate(date) {
+	    if (typeof (date) === 'number') {
+	        var earliest = new Date(2000, 0, 1).getTime();
+	        var now = new Date().getTime();
+	        return date >= earliest && date <= now;
+	    }
+	    else return date && date.getTime && (date >= new Date(2000, 0, 1)) && (date <= new Date());
+		}
 	}
 };
 

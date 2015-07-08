@@ -138,7 +138,7 @@ let defaultConfig = {
                     var title = y.yTitle;
                     var left, top = y.top - 6 - 10;
                     if (!y.options.opposite) {
-                        left = this.options.chart.spacingLeft;
+                        left = this.options.chart.spacingLeft || 12;
                     }
                     else {
                         left = y.left + this.plotWidth + 5 + (offset * (i - 1));
@@ -321,7 +321,8 @@ let defaultConfig = {
 let ChartComponent = React.createClass({
     propTypes: {
         onDeleteButtonClick: React.PropTypes.func,
-        onDeleteAllButtonClick: React.PropTypes.func
+        onDeleteAllButtonClick: React.PropTypes.func,
+        afterChartCreated: React.PropTypes.func,
     },
     getInitialState() {
         return {
@@ -399,12 +400,16 @@ let ChartComponent = React.createClass({
 
       let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,
                              onDeleteAllButtonClick: that._onDeleteAllButtonClick,
-                             onIgnoreAlarmEvent: that.onIgnoreAlarmEvent};
+                             onIgnoreAlarmEvent: that.onIgnoreAlarmEvent,
+                             afterChartCreated: that._afterChartCreated};
       return <div style={{display:'flex', flex:1}}>
                 <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
                 {dialog}
              </div>;
 
+  },
+  _afterChartCreated(chartObj){
+    this.props.afterChartCreated(chartObj);
   },
   _onDeleteButtonClick(obj){
     if(this.props.onDeleteButtonClick){
