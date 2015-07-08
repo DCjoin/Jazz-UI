@@ -85,10 +85,20 @@ let BaselineCfg = React.createClass({
       }
     });
     tab.getDOMNode().style.color='#1ca8dd';
+
     if(lastTab){
         lastTab.getDOMNode().style.color='#767a7a';
     }
     lastTab=tab;
+
+  },
+  _onDismiss:function(){
+    lastTab=null;
+    this.setState({
+      firstTabStyle:{
+        color:'#1ca8dd'
+      }
+    });
   },
   render: function () {
     var dialogProps={
@@ -107,7 +117,8 @@ let BaselineCfg = React.createClass({
         paddingTop:'24px',
         color:'#464949',
         fontSize:'20px'
-      }
+      },
+        onDismiss:this._onDismiss
     },
     cvrProps = {
       titleStyle:{
@@ -123,6 +134,7 @@ let BaselineCfg = React.createClass({
         height:'550px',
         opacity: 0.5,
       },
+
     };
     var me = this;
     var cusTag = {};
@@ -170,7 +182,7 @@ let BaselineCfg = React.createClass({
         paddingLeft: '30px',
         color:'red'
       },
-     onChange: this._onTabChanged
+    onChange: this._onTabChanged
    },
    tabStyle={
      display: 'block',
@@ -182,7 +194,6 @@ let BaselineCfg = React.createClass({
      fontFamily: 'Microsoft YaHei'
    };
    var firstTabStyles=this.mergeAndPrefix(tabStyle,this.state.firstTabStyle);
-
     return (
       <div>
         <Dialog title="基准值配置" ref="cfgDialog" {...dialogProps}>
