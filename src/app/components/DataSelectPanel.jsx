@@ -37,7 +37,7 @@ let DataSelectPanel=React.createClass({
 
     render:function(){
       var mainpanel;
-      if(this.state.open) mainpanel=<DataSelectMainPanel linkFrom={this.props.linkFrom}/
+      if(this.state.open) mainpanel=<DataSelectMainPanel linkFrom={this.props.linkFrom}/>;
         var buttonStyle = {
 
           float:'right',
