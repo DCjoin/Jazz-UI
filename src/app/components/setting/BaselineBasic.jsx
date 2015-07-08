@@ -795,6 +795,7 @@ var SpecialItem = React.createClass({
       var me = this,
         st = jsonToFormTime(this.props.start),
         et = jsonToFormTime(this.props.end);
+      if(et == 0) et = 1440;
 
       var startDate = me.props.start ? jsonToFormDate(me.props.start) : new Date(me.props.year, 0, 1),
         endDate = me.props.end ? toFormEndDate(jsonToFormDate(me.props.end)) : new Date(me.props.year, 11, 31),
@@ -825,6 +826,7 @@ var SpecialItem = React.createClass({
       var me = this, menuItems = [], minutes = 0,
         st = jsonToFormTime(this.props.start),
         et = jsonToFormTime(this.props.end);
+      if(et == 0) et = 1440;
 
       for (var i = 1; ; i++) {
         var hmstr = CommonFuns.numberToTime(minutes);
