@@ -114,13 +114,13 @@ let BaselineCfg = React.createClass({
         display: 'none',
       },
       style:{
-        background:'rgb(255,255,255,0.9)',
+        background: 'transparent',
         zIndex:'111',
         opacity: 1,
       },
       contentStyle:{
-        background:'rgb(255,255,255,0.9)',
-        height:'650px',
+        background:'rgb(255,255,255)',
+        height:'550px',
         opacity: 0.5,
       },
     };
@@ -201,7 +201,7 @@ let BaselineCfg = React.createClass({
           </div>
         </Dialog>
         <Dialog  ref="cvrDialog" {...cvrProps}>
-          <div style={{margin:"0 auto 0", width:50, paddingTop: 255}}>
+          <div style={{margin:"0 auto 0", width:154, paddingTop: 255}}>
             <CircularProgress mode="indeterminate"  size={1.5} />
           </div>
         </Dialog>
