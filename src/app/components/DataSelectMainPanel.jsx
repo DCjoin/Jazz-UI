@@ -218,7 +218,7 @@ var TagMenu=React.createClass({
          };
 
   return(
-    <div style={{display:'flex','flex-direction':'column'}}>
+    <div style={{display:'flex','flex-direction':'column', flex:1}}>
       <div className="allcheck">
         <Checkbox
           label="全选"
@@ -597,7 +597,7 @@ let DataSelectMainPanel=React.createClass({
       }
 
       return(
-        <div className="jazz-dataselectmainpanel">
+        <div className="jazz-dataselectmainpanel" style={{flex:1}}>
 
           <div  className="header">
             <HierarchyButton hierId={alarmTagOption.hierId} onTreeClick={this._onHierachyTreeClick} onButtonClick={this._onHierarchButtonClick} show={this.state.HierarchyShow}/>
