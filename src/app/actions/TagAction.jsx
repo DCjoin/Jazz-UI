@@ -57,6 +57,19 @@ let TagAction = {
           console.log(err,res);
         }
     });
+  },
+  setTagStatusByHierarchyId(hierId,tagStatus){
+    AppDispatcher.dispatch({
+        type: Action.SET_TAGSTATUS,
+        hierId:hierId,
+        tagStatus: tagStatus
+    });
+  },
+  setCurrentHierarchyId(hierId){
+    AppDispatcher.dispatch({
+        type: Action.SET_HIERARCHYID,
+        hierId:hierId
+    });
   }
 
 };

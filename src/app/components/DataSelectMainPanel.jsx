@@ -247,14 +247,12 @@ let DataSelectMainPanel=React.createClass({
     },
     _onHierachyTreeClick:function(node){
       if(node!=this.state.dimParentNode){
-        tagStatus.length=0;
-        tagStatus[page]=new Array();
+        TagAction.setCurrentHierarchyId(node.Id);
       };
       TagAction.loadData(node.Id,2,1,alarmType,filters);
       TBSettingAction.setHierId(node.Id);
       page=1;
        this.refs.dimButton.resetButtonName();
-
        this.setState({
          dimActive:true,
          dimParentNode:node,
@@ -280,7 +278,10 @@ let DataSelectMainPanel=React.createClass({
       this.setState({
         HierarchyShow:true,
         DimShow:false
-      })
+      });
+      if(this.state.dimParentNode!=null){
+        TagAction.setTagStatusByHierarchyId(this.state.dimParentNode.Id,tagStatus)
+      }
     },
     _onDimButtonClick:function(){
       React.findDOMNode(this.refs.searchIcon).style.display='block';
@@ -291,10 +292,18 @@ let DataSelectMainPanel=React.createClass({
       })
     },
     _onTagNodeChange:function(){
-      var data=TagStore.getData();
-      if(tagStatus[page]==null){
+      var data=TagStore.getData(),
+          hierId=TagStore.getCurrentHierarchyId();
+      tagStatus=TagStore.getTagStatusByHierarchyId(hierId);
+      if(tagStatus===null){
+        tagStatus=new Array();
         tagStatus[page]=new Array();
       }
+      else{
+        if(tagStatus[page]==null){
+          tagStatus[page]=new Array();
+        }
+      };
          if(selectTotal>10){
            this.setState({
              tagList:data.GetTagsByFilterResult,
