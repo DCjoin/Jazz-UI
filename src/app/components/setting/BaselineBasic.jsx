@@ -487,16 +487,32 @@ var CalcItem = React.createClass({
     var tdStyle={
       minWidth:'120px'
     };
+    var icon = (
+      <div style={{'margin-left':'10px'}}>
+        <div className={classNames({
+          "icon-revised": true
+        })}></div>
+      </div>
+
+    );
     if(this.props.isViewStatus){
-      return (<tr>
+      return (<tr >
         <td width='110px'><span>{this._getTimeStr(this.props.time)}</span></td>
         <td style={tdStyle}>
-          <span>{this.props.val1}</span>
-          <span>{this.props.tag.uom}</span><span>{this.props.val1Mod ? "修正": ""}</span>
+          <div style={{display:'flex','flex-flow':'row','align-items':'center'}}>
+          <div>{this.props.val1}</div>
+          <div>{this.props.tag.uom}</div>
+          {this.props.val1Mod ? {icon}: ""}
+          </div>
+
         </td>
         <td style={tdStyle}>
-          <span>{this.props.val2}</span>
-          <span>{this.props.tag.uom}</span><span>{this.props.val2Mod? "修正": ""}</span>
+          <div style={{display:'flex','flex-flow':'row','align-items':'center'}}>
+            <div>{this.props.val2}</div>
+            <div>{this.props.tag.uom}</div>
+            {this.props.val2Mod? {icon}: ""}
+          </div>
+
         </td>
       </tr>);
     }
@@ -508,12 +524,20 @@ var CalcItem = React.createClass({
       return (<tr>
         <td width='110px'><span>{this._getTimeStr(this.props.time)}</span></td>
         <td style={tdStyle}>
-          <TextField ref='val1Feild' defaultValue={this.state.val1} onChange={this._onVal1Change} style={style} />
-          <span>{this.props.tag.uom}</span><span>{this.state.val1Mod ? "修正": ""}</span>
+          <div style={{display:'flex','flex-flow':'row','align-items':'center'}}>
+            <TextField ref='val1Feild' defaultValue={this.state.val1} onChange={this._onVal1Change} style={style} />
+            <div>{this.props.tag.uom}</div>
+            {this.state.val1Mod ? {icon}: ""}
+          </div>
+
         </td>
         <td style={tdStyle}>
-          <TextField ref='val2Feild' defaultValue={this.state.val2} onChange={this._onVal2Change} style={style} />
-          <span>{this.props.tag.uom}</span><span>{this.state.val2Mod? "修正": ""}</span>
+          <div style={{display:'flex','flex-flow':'row','align-items':'center'}}>
+            <TextField ref='val2Feild' defaultValue={this.state.val2} onChange={this._onVal2Change} style={style} />
+            <div>{this.props.tag.uom}</div>
+            {this.state.val2Mod? {icon}: ""}
+          </div>
+
         </td>
       </tr>);
     }
@@ -1547,10 +1571,17 @@ var CalDetail = React.createClass({
         };
       },
   render:function(){
-    var workDay=[],
+    var workCal=[],
+        workDay=[],
         offDay=[],
         workTime=[];
         if(this.state.calendar){
+          workCal.push(
+            <div className="workdaytitle">公休日日历 ：{this.state.calendarName}</div>
+          );
+          workCal.push(
+            <div className="workdaycontent">默认工作日 : 周一至周五</div>
+          );
           this.state.calendar.Items.forEach(function(item){
             if(item.Type==0){
               workDay.push(
@@ -1564,8 +1595,30 @@ var CalDetail = React.createClass({
             }
 
           });
+         if(workDay.length!=0){
+             workCal.push(
+               <div className="workday">
+                 <div>工作日 :</div>
+                 <div className="font">{workDay}</div>
+               </div>
+             )
+         };
+         if(offDay.length!=0){
+           workCal.push(
+             <div className="workday">
+                 <div>休息日 :</div>
+                 <div className="font">{offDay}</div>
+               </div>
+           )
+         }
         }
         if(this.state.workTimeCalendar){
+          workCal.push(
+            <div className="worktimetitle">工作时间日历：{this.state.workTimeCalendarName}</div>
+          );
+          workCal.push(
+            <div className="worktimecontent">工作时间以外均为非工作时间</div>
+          );
           this.state.workTimeCalendar.Items.forEach(function(item){
             let StartFirstPart=(item.StartFirstPart<10)?('0'+item.StartFirstPart):(item.StartFirstPart);
             let StartSecondPart=(item.StartSecondPart<10)?('0'+item.StartSecondPart):(item.StartSecondPart);
@@ -1574,30 +1627,23 @@ var CalDetail = React.createClass({
             workTime.push(
               <div className="timecontent">{StartFirstPart}:{StartSecondPart}-{EndFirstPart}:{EndSecondPart}</div>
             )
-          })
+          });
+          if(workTime.length!=0){
+              workCal.push(
+                <div className="worktime">
+                  <div>工作时间 :</div>
+                  <div className="time">
+                    {workTime}
+                  </div>
+                </div>
+              );
+          }
         }
 
     return(
       <div className="jazz-setting-basic-caldetail">
-        <div className="workdaytitle">公休日日历 ：{this.state.calendarName}</div>
-        <div className="workdaycontent">默认工作日 : 周一至周五</div>
-        <div className="workday">
-          <div>工作日 :</div>
-          <div className="font">{workDay}</div>
-        </div>
+    {workCal}
 
-      <div className="workday">
-        <div>休息日 :</div>
-        <div className="font">{offDay}</div>
-      </div>
-      <div className="worktimetitle">工作时间日历：{this.state.workTimeCalendarName}</div>
-      <div className="worktimecontent">工作时间以外均为非工作时间</div>
-      <div className="worktime">
-        <div>工作时间 :</div>
-        <div className="time">
-          {workTime}
-        </div>
-      </div>
     </div>
     )
   }
@@ -1686,9 +1732,23 @@ var BaselineBasic = React.createClass({
     this.setState({year: year});
     this._fetchServerData(year);
     if(year!=TBSettingStore.getYear()){
-      TBSettingAction.setYear(year)
+      TBSettingAction.setYear(year);
+      var data=TBSettingStore.getCalDetailData();
+      if(data){
+      this.setState({
+        hasCal:true,
+        calButton:'显示日历详情',
+        showCalDetail:false,
+      })
     }
-  },
+    else{
+      this.setState({
+        hasCal:false,
+        showCalDetail:false,
+      })
+    }
+  }
+},
 
   _bindData: function(tbSetting){
     var itemsCtrl = this.refs.TBSettingItems;
@@ -1799,7 +1859,7 @@ var BaselineBasic = React.createClass({
     var calDetailButton,showCalDetail;
     if(!(this.state.hasCal===null)){
       calDetailButton=((!!this.state.hasCal)?<div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
-    :<div>该数据点所关联层级节点未引用任何日历模板。请引用后再设置，保证设置内容可被计算</div>);
+    :<div>该数据点所关联层级节点在所选年份未引用任何日历模板。请引用后再设置，保证设置内容可被计算</div>);
     if(this.state.hasCal==false){
       React.findDOMNode(this.refs.editButton).disabled="disabled"
     }
@@ -1810,13 +1870,16 @@ var BaselineBasic = React.createClass({
 
     if(this.state.showCalDetail){
         var data=TBSettingStore.getCalDetailData(),
-        calDetailprops={
-          calendar:data.Calendar,
-          workTimeCalendar:data.WorkTimeCalendar,
-          calendarName:data.Calendar.Name,
-          workTimeCalendarName:data.WorkTimeCalendar.Name
-        }
-        showCalDetail=<CalDetail  {...calDetailprops}/>
+            calDetailprops={};
+        if(data.Calendar){
+          calDetailprops.calendar=data.Calendar;
+          calDetailprops.calendarName=data.Calendar.Name;
+        };
+        if(data.WorkTimeCalendar){
+          calDetailprops.workTimeCalendar=data.WorkTimeCalendar;
+          calDetailprops.workTimeCalendarName=data.WorkTimeCalendar.Name;
+        };
+      var showCalDetail=<CalDetail  {...calDetailprops}/>
     };
     return (
       <div className='jazz-setting-basic-container'>

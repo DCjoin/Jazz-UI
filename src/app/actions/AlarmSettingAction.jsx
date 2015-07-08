@@ -9,26 +9,29 @@ let AlarmSettingAction = {
       params: {tbId: tbId},
       success: function(alarmSettingData){
         AppDispatcher.dispatch({
-            type: Action.LOAD_SETTING_DATA,
-            alarmSettingData: alarmSettingData
+          type: Action.GET_ALARM_DATA_SUCCESS,
+          alarmSettingData: alarmSettingData
         });
       },
       error: function(err, res){
-        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.GET_ALARM_DATA_ERROR
+        });
       }
     });
   },
   saveData(setting){
     Ajax.post('/TargetBaseline.svc/ModifyAlarmSetting', {
       params: setting,
-      success: function(){
+      success: function(alarmSettingData){
         AppDispatcher.dispatch({
-            type: Action.SAVE_SETTING_SUCESS
+          type: Action.SET_ALARM_DATA_SUCCESS,
+          alarmSettingData: alarmSettingData
         });
       },
       error: function(err, res){
         AppDispatcher.dispatch({
-            type: Action.SAVE_SETTING_ERROR
+          type: Action.SET_ALARM_DATA_ERROR
         });
       }
     });

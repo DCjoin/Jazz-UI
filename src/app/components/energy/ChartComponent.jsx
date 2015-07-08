@@ -7,7 +7,7 @@ import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
-import {dateAdd, dateFormat, DataConverter, isArray, isNumber} from '../../util/Util.jsx';
+import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed} from '../../util/Util.jsx';
 
 let { Dialog, FlatButton, Checkbox } = mui;
 let yAxisOffset = 70;
@@ -60,7 +60,7 @@ var dataLabelFormatter = function (format) {
     }
     return v;
 };
-const DEFAULT_OPTIONS = {
+let defaultConfig = {
     colors: [
                 '#3399cc',
                 '#99cc66',
@@ -118,7 +118,7 @@ const DEFAULT_OPTIONS = {
                     var y = this.yAxis[i];
                     var left, top = y.top - 6 - 10;
                     if (!y.options.opposite) {
-                        left = this.options.chart.spacingLeft;
+                        left = this.options.chart.spacingLeft || 12;
                     }
                     else {
                         left = y.left + this.plotWidth + 5 + (offset * (i - 1));
@@ -221,10 +221,10 @@ const DEFAULT_OPTIONS = {
                     var chart = this.chart;
                     var step = chart.options.navigator.step;
                     if (step == 4) {
-                        return dateFormat(new Date(v), 'Y年');
+                        return dateFormat(new Date(v), 'YYYY年');
                     }
                     else {
-                        return dateFormat(new Date(v), 'Y年m月');
+                        return dateFormat(new Date(v), 'YYYY年MM月');
                     }
                 }
             }
@@ -328,6 +328,9 @@ let ChartComponent = React.createClass({
 
         };
     },
+    componentWillMount(){
+      this.initDefaultConfig();
+    },
     componentWillUnmount() {
 
     },
@@ -338,6 +341,21 @@ let ChartComponent = React.createClass({
     },
     componentWillUpdate(){
 
+    },
+    initDefaultConfig: function () {
+      let cap = function(string) {
+            return string.charAt(0).toUpperCase() + string.substr(1);
+        };
+      var t = ['millisecond', 'second', 'minute', 'hour', 'day', 'dayhour', 'week', 'month', 'fullmonth', 'year'],
+          c = defaultConfig,
+          x = c.xAxis,
+          f = I18N.DateTimeFormat.HighFormat;
+
+      t.forEach(function (n) {
+          x.dateTimeLabelFormats[n] = (f[cap(n)]);
+      });
+
+      c.chart.cancelChartContainerclickBubble = true;
     },
     _onIgnoreDialogSubmit(){
       let isBatchIgnore = this.refs.batchIgnore.isChecked();
@@ -410,7 +428,7 @@ let ChartComponent = React.createClass({
   },
   _initChartObj() {
     var data = this.props.energyData;
-    var newConfig = assign({}, DEFAULT_OPTIONS,
+    var newConfig = assign({}, defaultConfig,
       {animation: true,
        title: {
                 text: this.title,
@@ -425,6 +443,9 @@ let ChartComponent = React.createClass({
 
       newConfig.tooltip.shared = true;
       newConfig.tooltip.crosshairs = true;
+      newConfig.navigator.step = this.props.step;
+
+      this.mergeConfig(newConfig);
 
       this.initYaxis(data.Data, newConfig);
 
@@ -439,6 +460,49 @@ let ChartComponent = React.createClass({
       return newConfig;
 
   },
+  mergeConfig: function (defaultConfig) {
+
+    var commonTooltipFormatter = function () {
+        var op = this.points[0].series.options.option,
+            start = op.start,
+            end = op.end, uom,
+            step = op.targetStep || op.step,
+            decimalDigits, serieDecimalDigits;
+        var str = formatDateByStep(this.x, start, end, step);
+        str += '<br/>';
+        var total = 0;
+        decimalDigits = 0;
+        for (var i = 0; i < this.points.length; ++i) {
+            var point = this.points[i],
+                series = point.series,
+                name = series.name,
+                color = series.color;
+
+                uom = series.options.option.uom;
+            str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
+                color, name, dataLabelFormatter.call({ value: point.y }, false), uom);
+            if (isNumber(point.y)) {
+                total += point.y;
+
+                serieDecimalDigits = getDecimalDigits(point.y);
+                if (serieDecimalDigits > 0 && serieDecimalDigits > decimalDigits) {
+                    decimalDigits = serieDecimalDigits;
+                }
+            }
+        }
+        if (decimalDigits > 0) {
+            total = toFixed(total, decimalDigits);
+        }
+        total = dataLabelFormatter.call({ value: total }, false);
+        if (this.points.length > 1 && this.points[0].series.chart.userOptions.chartTooltipHasTotal) {
+            str += '总计：<b>' + total + uom + '</b>';
+        }
+        return str;
+    };
+
+    defaultConfig.tooltip.formatter = commonTooltipFormatter;
+  },
+
   convertData: function (data, config) {
       var ret = [];
       for (var j = 0; j < data.length; ++j) {

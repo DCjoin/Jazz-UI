@@ -450,7 +450,178 @@ let CommonFuns = {
 			}
 
 			return null;
-		}
+		},
+		formatDateByStep: function (time, start, end, step) {
+			var date = new Date(time),
+					ft = I18N.DateTimeFormat.IntervalFormat,
+					str = '', dateFormat= CommonFuns.dateFormat,
+					dateAdd = CommonFuns.dateAdd,
+					newDate;
+			switch (step) {
+					case 0: //raw 2010年10月3日23点45分-3日24点  2010年10月3日0点-0点15分
+							{
+									date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), Math.floor(date.getMinutes() / 15) * 15);
+
+									str = dateFormat(date, ft.FullMinute);
+									newDate = dateAdd(date, 15, 'minutes');
+									if (newDate.getHours() < date.getHours()) {//2010年10月3日23点45分-3日24点
+											str += '-' + I18N.EM.Clock24Minute0/*'24点:00分'*/ + dateFormat(date, ft.Minute).substr(5);
+									}
+									else {// 2010年10月3日0点-0点15分
+											str += '-' + dateFormat(newDate, ft.Minute);
+									}
+
+									break;
+							}
+					case 1: //hour 2010年10月3日0点-1点; 2010年10月3日23点-3日24点
+							//hour 20-21,08/08, 2014
+							{
+									//currentLanguage： 0 中文, 1 英文
+									if (false && window.currentLanguage == 1) {
+											str = dateFormat(date, ft.Hour);
+											newDate = dateAdd(date, 1,'hours');
+											if (newDate.getHours() < date.getHours()) {//2010年10月3日23点-3日24点
+													str += '-' + I18N.EM.Clock24/*'24点'*/ + dateFormat(date, ft.FullHour).substr(2);
+											}
+											else {// 2010年10月3日0点-1点
+													str += '-' + dateFormat(newDate, ft.FullHour);
+											}
+									} else {
+											str = dateFormat(date, ft.FullHour);
+											newDate = dateAdd(date, 1, 'hours');
+											if (newDate.getHours() < date.getHours()) {//2010年10月3日23点-3日24点
+													str += '-' + I18N.EM.Clock24/*'24点'*/;
+											}
+											else {// 2010年10月3日0点-1点
+													str += '-' + dateFormat(newDate, ft.Hour);
+											}
+									}
+
+
+									break;
+							}
+					case 2: //day 2010年10月3日
+							{
+									str = dateFormat(date, ft.FullDay);
+									break;
+							}
+					case 3: //month 2010年10月
+							{
+									str = dateFormat(date, ft.Month);
+									break;
+							}
+					case 4: //2010年
+							{
+									str = dateFormat(date, ft.Year);
+									break;
+							}
+					case 5: //week 2010年10月3日-10日,2010年10月29日-11月5日,2010年12月29日-2011年1月5日
+							//week 10/3-10,2010; 10/29-11/5,2010; 12/29,2010-1/5,2011
+							{
+									date = dateAdd(date, 0 - date.getDay() + 1, 'days');
+									newDate = dateAdd(date, 6, 'days');
+									//因为week显示时，中英文格式差距较大，所以分开处理
+									//currentLanguage： 0 中文, 1 英文
+									if (false && window.currentLanguage == 1) {
+											if (newDate.getFullYear() > date.getFullYear()) {
+													//12/29,2010-1/5,2011
+													str = dateFormat(date, ft.FullDay);
+													str += '-' + dateFormat(newDate, ft.FullDay);
+											}
+											else if (newDate.getMonth() > date.getMonth()) {
+													// 10/29-11/5,2010
+													str = dateFormat(date, ft.MonthDate);
+													str += '-' + dateFormat(newDate, ft.FullDay);
+											}
+											else {
+													//10/3-10,2010
+													str = dateFormat(date, ft.MonthDate);
+													str += '-' + dateFormat(newDate, ft.Day) + ', ' + dateFormat(newDate, ft.Year);
+											}
+									} else {
+											str = dateFormat(date, ft.FullDay);
+											if (newDate.getFullYear() > date.getFullYear()) {
+													//2010年12月29日-2011年1月5日
+													str += '-' + dateFormat(newDate, ft.FullDay);
+											}
+											else if (newDate.getMonth() > date.getMonth()) {
+													//2010年10月29日-11月5日
+													str += '-' + dateFormat(newDate, ft.MonthDate);
+											}
+											else {
+													//2010年10月3日-10日
+													str += '-' + dateFormat(newDate, ft.Day);
+											}
+									}
+
+									break;
+							}
+					case 6: //15mins 2010年10月3日23点45分-3日24点  2010年10月3日0点-0点15分
+							{
+									date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), Math.floor(date.getMinutes() / 15) * 15);
+
+									str = dateFormat(date, ft.FullMinute);
+									newDate = dateAdd(date, 15, 'minutes');
+									if (newDate.getHours() < date.getHours()) {//2010年10月3日23点45分-3日24点
+											str += '-' + I18N.EM.Clock24Minute0/*'24点:00分'*/ + dateFormat(date, ft.Minute).substr(5);
+									}
+									else {// 2010年10月3日0点-0点15分
+											str += '-' + dateFormat(newDate, ft.Minute);
+									}
+
+									break;
+							}
+					case 7: //30mins 2010年10月3日23点45分-3日24点  2010年10月3日0点-0点15分
+							{
+									date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), Math.floor(date.getMinutes() / 30) * 30);
+
+									str = dateFormat(date, ft.FullMinute);
+									newDate = dateAdd(date, 30, 'minutes');
+									if (newDate.getHours() < date.getHours()) {//2010年10月3日23点45分-3日24点
+											str += '-' + I18N.EM.Clock24Minute0/*'24点:00分'*/ + dateFormat(date, ft.Minute).substr(5);
+									}
+									else {// 2010年10月3日0点-0点15分
+											str += '-' + dateFormat(newDate, ft.Minute);
+									}
+
+									break;
+							}
+			}
+			return str;
+	},
+	getDecimalDigits(num) {
+    var str = num + '',
+        arr = str.split('.'),
+        decimalDigits = 0;
+
+    if (arr.length == 1) {
+        decimalDigits=0;
+    } else {
+        decimalDigits = arr[1].length;
+    }
+    return decimalDigits;
+	},
+	toFixed(s, len) {
+    var tempNum = 0, temp, result,
+        s1 = s + '',
+        start = s1.indexOf('.');
+    if (start == -1 || s1.length - 1 - start <= len) {
+        result = s;
+    } else {
+        if (s1.substr(start + len + 1, 1) >= 5) {
+            tempNum = 1;
+        }
+        temp = Math.pow(10, len);
+        if ((s * temp + '').indexOf('.') > -1) {
+            s = Math.floor(s * temp) + tempNum;
+        } else {
+            s = s * temp;
+        }
+
+        result = s / temp;
+    }
+    return result.toFixed(len);
+	}
 };
 
 module.exports = CommonFuns;

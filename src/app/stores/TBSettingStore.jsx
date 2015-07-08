@@ -27,17 +27,29 @@ var TBSettingStore = assign({},PrototypeStore,{
     _tbSetting = data;
   },
   getCalDetailData(){
-    return _calDetail;
+    var selectCal=null;
+    _calDetail.forEach(function(calData,i){
+    if(_year>=calData.EffectiveTime){
+        selectCal=calData
+      }
+    });
+    return selectCal;
   },
-  setCalDetailData(data){
+  setCalDetailData(data,year){
+    _calDetail = null;
+/*    if(data.CalendarItemGroups){
+      data.CalendarItemGroups[0].CalendarItems.sort(function(a,b){return a.EffectiveTime>b.EffectiveTime?1:-1});
+       data.CalendarItemGroups[0].CalendarItems.forEach(function(calData,i){
+         if(year>=calData.EffectiveTime){
+           _calDetail=calData
+         }
+       });
+    }
+    */
     if(data.CalendarItemGroups){
-        _calDetail = data.CalendarItemGroups[0].CalendarItems[0];
-    }
-    else{
-        _calDetail = null;
-    }
-
-
+        data.CalendarItemGroups[0].CalendarItems.sort(function(a,b){return a.EffectiveTime>b.EffectiveTime?1:-1});
+        _calDetail=data.CalendarItemGroups[0].CalendarItems
+        }
   },
   emitCalDetailChange: function() {
         this.emit(CHANGE_CALDETAIL_EVENT);
