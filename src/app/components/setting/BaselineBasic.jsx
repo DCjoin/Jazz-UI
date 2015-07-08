@@ -12,7 +12,7 @@ import TBSettingStore from '../../stores/TBSettingStore.jsx';
 
 var formatDate = function(date){
   var m = (date.getMonth() + 1), d = date.getDate();
-  return date.getFullYear() + '-' + (m>9?''+m:'0'+m) + '-' + (d>9?''+d:'0'+d);
+  return (m>9?''+m:'0'+m) + '-' + (d>9?''+d:'0'+d);
 };
 
 var extractNumber = function(str){
@@ -259,7 +259,7 @@ var DaytimeRangeValues = React.createClass({
   },
 
   render: function() {
-    var me = this, idx = 0, items = this.state.items;
+    var me = this, idx = 0;
     var createItem = function(item){
       var props = {
         tag: me.props.tag,
@@ -274,7 +274,7 @@ var DaytimeRangeValues = React.createClass({
       };
       return (<DaytimeRangeValue {...props} />);
     }
-    return <div>{items.map(createItem)}</div>;
+    return <div>{this.state.items.map(createItem)}</div>;
   }
 });
 
@@ -452,8 +452,8 @@ var CalcItem = React.createClass({
         val1Mod: nextProps.val1Mod,
         val2Mod: nextProps.val2Mod
       });
-      this.refs.val1Feild.setValue(nextProps.val1);
-      this.refs.val2Feild.setValue(nextProps.val2);
+      if(this.refs.val1Feild) this.refs.val1Feild.setValue(nextProps.val1);
+      if(this.refs.val2Feild) this.refs.val2Feild.setValue(nextProps.val2);
     }
   },
 
@@ -461,8 +461,8 @@ var CalcItem = React.createClass({
     return {
       WorkDayValue: this.state.val1 == "" ? null : this.state.val1,
       HolidayDayValue: this.state.val2 == "" ? null : this.state.val2,
-      WorkDayModifyStatus: this.state.val1Mod || this.state.val1 != this.props.val1,
-      HolidayModifyStatus: this.state.val2Mod || this.state.val2 != this.props.val2
+      WorkDayValueStatus: this.state.val1Mod || this.state.val1 != this.props.val1,
+      HolidayValueStatus: this.state.val2Mod || this.state.val2 != this.props.val2
     }
   },
 
@@ -567,8 +567,8 @@ var CalcSetting = React.createClass({
             time: item,
             val1: items[i].WorkDayValue,
             val2: items[i].HolidayDayValue,
-            val1Mod: items[i].WorkDayModifyStatus,
-            val2Mod: items[i].HolidayModifyStatus,
+            val1Mod: items[i].WorkDayValueStatus,
+            val2Mod: items[i].HolidayValueStatus,
             isViewStatus: me.props.isViewStatus,
           };
           return <CalcItem {...props} />;
@@ -839,7 +839,7 @@ var SpecialItem = React.createClass({
         };
 
       var startDateProps = {
-          //formatDate: formatDate,
+          formatDate: formatDate,
           defaultDate: dstartDate,
           minDate: startDate,
           maxDate: endDate,
@@ -848,7 +848,7 @@ var SpecialItem = React.createClass({
             me._slideDateTime(v);
           }
         }, endDateProps = {
-          //formatDate: formatDate,
+          formatDate: formatDate,
           defaultDate: dendDate,
           minDate: startDate,
           maxDate: endDate,
@@ -918,7 +918,7 @@ var SpecialSetting = React.createClass({
       isViewStatus: true,
       tbsItem: null,
     };
-  },  
+  },
 
   componentWillReceiveProps: function(nextProps){
     if(nextProps){
@@ -1163,6 +1163,7 @@ var TBSettingItem = React.createClass({
 
   validateValue: function(tbsItem){
     if(this.state.radio == "CalcRadio") {
+      return true;
       //rtn.TbAvgDtos =  this.refs.CalcSettingCtrl.getValue();
     }
     else {
@@ -1271,8 +1272,8 @@ var TBSettingItem = React.createClass({
           <NormalSetting ref="NormalSettingCtrl" {...normalProps} />
         </div>
       }
-      var startDateStr = dstartDate.getFullYear() + '-' +(dstartDate.getMonth() + 1) + '-' + dstartDate.getDate();
-      var endDateStr = dendDate.getFullYear() + '-' +(dendDate.getMonth() + 1) + '-' + dendDate.getDate();
+      var startDateStr = formatDate(dstartDate); //dstartDate.getFullYear() + '-' +(dstartDate.getMonth() + 1) + '-' + dstartDate.getDate();
+      var endDateStr = formatDate(dendDate);  //dendDate.getFullYear() + '-' +(dendDate.getMonth() + 1) + '-' + dendDate.getDate();
 
       return (<div>
           <div style={clearStyle}>
@@ -1315,6 +1316,7 @@ var TBSettingItem = React.createClass({
 
     var startProps = {
       defaultDate: dstartDate,
+      formatDate: formatDate,
       minDate: startDate,
       maxDate: endDate,
       style: datapickerStyle,
@@ -1332,6 +1334,7 @@ var TBSettingItem = React.createClass({
       }
     };
     var endProps = {
+      formatDate: formatDate,
       defaultDate: dendDate,
       minDate: startDate,
       maxDate: endDate,
@@ -1614,6 +1617,8 @@ var BaselineBasic = React.createClass({
     isViewStatus: React.PropTypes.bool,
     onNameChanged: React.PropTypes.func,
     onYearChanged: React.PropTypes.func,
+    onRequestShowMask: React.PropTypes.func,
+    onRequestHideMask: React.PropTypes.func,
   },
 
   getDefaultProps: function() {
@@ -1686,8 +1691,7 @@ var BaselineBasic = React.createClass({
   },
 
   _bindData: function(tbSetting){
-    var me = this;
-    var itemsCtrl = me.refs.TBSettingItems;
+    var itemsCtrl = this.refs.TBSettingItems;
     if(!tbSetting.TBSettings){
       itemsCtrl.setValue([]);
     }else{
@@ -1700,12 +1704,9 @@ var BaselineBasic = React.createClass({
     TBSettingAction.loadData(me.props.tbId, year, this._bindData);
   },
 
-  _saveDataToServer: function(val){
+  _saveDataToServer: function(val, callback){
     var me = this;
-    TBSettingAction.saveData(val, function(tbSetting){
-      var itemsCtrl = me.refs.TBSettingItems;
-      itemsCtrl.items = tbSetting.TBSettings;
-    });
+    TBSettingAction.saveData(val, callback);
   },
 
   _handleEdit: function(){
@@ -1715,9 +1716,18 @@ var BaselineBasic = React.createClass({
 	},
 
   _handleSave: function(){
+    var me = this;
     var val = this.tryGetValue();
     if(val){
-      this._saveDataToServer(val, this._bindData);
+      if(this.props.onRequestShowMask){
+        this.props.onRequestShowMask(this);
+      }
+      this._saveDataToServer(val, function(setting){
+        me._bindData(setting);
+        if(me.props.onRequestHideMask){
+          me.props.onRequestHideMask(me);
+        }
+      });
       this.setState({ isViewStatus : true });
     }
   },
@@ -1746,7 +1756,6 @@ var BaselineBasic = React.createClass({
         hasCal:false
       })
     }
-
   },
   componentWillMount:function(){
     var hierId=TBSettingStore.getHierId();

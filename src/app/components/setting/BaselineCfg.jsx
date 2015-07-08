@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {Tabs, Tab} from 'material-ui';
+import {Tabs, Tab, CircularProgress} from 'material-ui';
 import assign from "object-assign";
 import BaselineBasic from './BaselineBasic.jsx';
 import AlarmSetting from './AlarmSetting.jsx';
@@ -32,19 +32,7 @@ let BaselineCfg = React.createClass({
             var tb = tbs[i];
             me.setState({
               tbId: tb.Id,
-              name: tb.Name,
-              // onNameChanged: function(newName){
-              //   if(me.state.name != newName){
-              //     me.setState({name: newName});
-              //     tb.Name = newName;
-              //     TBAction.saveData(tb);
-              //   }
-              // },
-              // onYearChanged: function(year){
-              //   if(me.state.year != year){
-              //     me.setState({year: year});
-              //   }
-              // }
+              name: tb.Name
             });
             if(callback) callback(tb);
           }
@@ -71,7 +59,17 @@ let BaselineCfg = React.createClass({
     this.setState({tag: tag});
     this.refreshData(tag.tagId, function(tb){
       me.refs.cfgDialog.show();
+      //me.showMask();
     });
+  },
+
+  showMask: function(){
+    this.refs.cvrDialog.show();
+  },
+
+  hideMask: function(){
+    this.refs.cvrDialog.closeable = true;
+    this.refs.cvrDialog.dismiss();
   },
 
   _onTabChanged: function(tabIndex, tab){
@@ -105,15 +103,31 @@ let BaselineCfg = React.createClass({
         zIndex:'110'
       },
       contentStyle:{
-        width:'830px',
         height:'550px',
-        zIndex:'110'
+        width:'830px',
+        zIndex:'110',
+        opacity: 1,
       },
       titleStyle:{
         paddingTop:'24px',
         color:'#464949',
         fontSize:'20px'
       }
+    },
+    cvrProps = {
+      titleStyle:{
+        display: 'none',
+      },
+      style:{
+        background:'rgb(255,255,255,0.9)',
+        zIndex:'111',
+        opacity: 1,
+      },
+      contentStyle:{
+        background:'rgb(255,255,255,0.9)',
+        height:'650px',
+        opacity: 0.5,
+      },
     };
     var me = this;
     var cusTag = {};
@@ -128,7 +142,6 @@ let BaselineCfg = React.createClass({
       name: this.state.name || null,
       tbId: this.state.tbId || null,
       onNameChanged: function(newName){
-
         if(me.state.name != newName){
           me.setState({name: newName});
           var tbs = TBStore.getData();
@@ -140,11 +153,13 @@ let BaselineCfg = React.createClass({
             }
           }
         }
-      }
-    };
-
-    var modifyProps = {
-
+      },
+      onRequestShowMask: function(obj){
+        me.showMask();
+      },
+      onRequestHideMask: function(obj){
+        me.hideMask();
+      },
     };
 
     var tabsProps = {
@@ -170,10 +185,10 @@ let BaselineCfg = React.createClass({
         fontWeight:'bold',
         fontFamily: 'Microsoft YaHei'
       }
-
     };
 
     return (
+      <div>
         <Dialog title="基准值配置" ref="cfgDialog" {...dialogProps}>
           <div className="jazz-tabs">
             <Tabs {...tabsProps}>
@@ -188,10 +203,13 @@ let BaselineCfg = React.createClass({
               </Tab>
             </Tabs>
           </div>
-
         </Dialog>
-
-
+        <Dialog  ref="cvrDialog" {...cvrProps}>
+          <div style={{margin:"0 auto 0", width:50, paddingTop: 255}}>
+            <CircularProgress mode="indeterminate"  size={1.5} />
+          </div>
+        </Dialog>
+      </div>
     );
   }
 });

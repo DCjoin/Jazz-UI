@@ -162,7 +162,7 @@ let Dialog = React.createClass({
         left: 2
       },
       contentsWhenOpen: {
-        opacity: 1,
+        //opacity: 1,
         top: 0
       }
     };
@@ -174,7 +174,7 @@ let Dialog = React.createClass({
       root:{
         margin: 0,
         padding: '19px 24px 24px 50px',
-      
+
         color: '#464949',
         fontSize: '20px',
         fontFamily: 'Microsoft YaHei',
