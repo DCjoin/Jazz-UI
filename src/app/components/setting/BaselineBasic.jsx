@@ -916,7 +916,7 @@ var SpecialItem = React.createClass({
             <DatePicker ref='endDateField' {...endDateProps} />
             </div>
             <DaytimeSelector ref='endTimeField' {...endTimeProps} />
-            <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} label="－"  ref="remove"  onClick={this._onRemove} /><br/>
+            <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} className='icon-delete' label="－"  ref="remove"  onClick={this._onRemove} /><br/>
           </div>
           <div>{this.state.tbSettingError}</div>
           <div>{this.state.specialError}</div>
@@ -1396,7 +1396,7 @@ var TBSettingItem = React.createClass({
             <div className="jazz-setting-basic-datepicker-container">
               <DatePicker  ref='endFeild' {...endProps} />
             </div>
-            <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} label="－"  ref="remove"  onClick={this._onRemove} />
+            <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} className='icon-delete' label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
           <div>{this.state.error}</div>
           <div className="jazz-setting-basic-clear">
@@ -1688,6 +1688,7 @@ var BaselineBasic = React.createClass({
       year:TBSettingStore.getYear(),
       validationError: '',
       hasCal:null,
+      tbnameError: '',
     };
   },
 
@@ -1711,7 +1712,7 @@ var BaselineBasic = React.createClass({
     if(!items) items = this.refs.TBSettingItems.getValue();
     return {
       TBId: this.props.tbId,
-      Year: this.props.year,
+      Year: this.state.year,
       TBSettings: items
     };
   },
@@ -1719,9 +1720,15 @@ var BaselineBasic = React.createClass({
   _onTBNameChanged: function(){
     var tbname = this.refs.TBName.getValue();
     if(tbname != this.state.name){
-      this.setState({name, tbname});
-      if(this.props.onNameChanged){
-        this.props.onNameChanged(tbname);
+      this.setState({name: tbname});
+      if(tbname === ''){
+        this.setState({tbnameError:'必填项'});
+      }
+      else{
+        if(this.props.onNameChanged){
+          this.props.onNameChanged(tbname);
+        }
+        this.setState({tbnameError:''});
       }
     }
   },
@@ -1751,6 +1758,7 @@ var BaselineBasic = React.createClass({
 
   _bindData: function(tbSetting){
     var itemsCtrl = this.refs.TBSettingItems;
+    this.setState({items: tbSetting.TBSettings});
     if(!tbSetting.TBSettings){
       itemsCtrl.setValue([]);
     }else{
@@ -1840,6 +1848,7 @@ var BaselineBasic = React.createClass({
       defaultValue: this.props.name,
       onBlur: this._onTBNameChanged,
       disabled: !this.state.isViewStatus,
+      errorText: this.state.tbnameError,
       style:{
         fontSize:'14px',
         marginTop:'8px',
