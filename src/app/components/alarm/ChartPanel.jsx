@@ -345,7 +345,7 @@ let ChartPanel = React.createClass({
     if (scroller.grabbedLeft) {
         startTime = new Date(start);
         startTime.setMinutes(0, 0, 0);
-        endTime = new Date(converter(this.endTime, true));
+        endTime = new Date(end);
         endTime.setMinutes(0, 0, 0);
         this.needRollback = true;
     }
@@ -353,7 +353,7 @@ let ChartPanel = React.createClass({
         endTime = new Date(end);
         endTime.setMinutes(0, 0, 0);
 
-        startTime = new Date(converter(this.startTime, true));
+        startTime = new Date(start);
         startTime.setMinutes(0, 0, 0);
         this.needRollback = true;
     }
