@@ -98,7 +98,7 @@ var EnergyStore = assign({},PrototypeStore,{
                timeRanges: params.viewOption.TimeRanges};
 
 
-    _energyData = ReaderFuncs.convert(data, obj);
+    _energyData = Immutable.fromJS(ReaderFuncs.convert(data, obj));
   },
   /*
     returns boolean: if only one tag left, then reload data.
@@ -106,7 +106,7 @@ var EnergyStore = assign({},PrototypeStore,{
   removeSeriesDataByUid(uid){
     if(_energyData){
       let latestDataList = [];
-      let dataList = _energyData.Data;
+      let dataList = _energyData.toJS().Data;
 
       for(let i=0,len=dataList.length; i<len; i++){
         let data = dataList[i];
@@ -117,7 +117,7 @@ var EnergyStore = assign({},PrototypeStore,{
       if(latestDataList.length === 1){
         return true;
       }else if(latestDataList.length > 0){
-        _energyData.Data = latestDataList;
+        _energyData = _energyData.set('Data', latestDataList);
       }else{
         _energyData = null;
       }

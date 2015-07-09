@@ -220,7 +220,7 @@ let ChartPanel = React.createClass({
           energyRawData: null,
           hierName: null,
           submitParams: null,
-          step: 2,
+          step: null,
           dashboardOpenImmediately: false
         };
         if(this.props.chartTitle){
