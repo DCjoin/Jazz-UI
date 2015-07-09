@@ -21,6 +21,7 @@ let BaselineCfg = React.createClass({
 
   getInitialState: function() {
     return {
+      dateRange: null,
       tag: this.props.tag,
       year: (new Date()).getFullYear(),
       firstTabStyle:{
@@ -29,7 +30,7 @@ let BaselineCfg = React.createClass({
     };
   },
 
-  refreshData: function(tagId, callback){
+  refreshData: function(tagId, dateRange, callback){
     var me = this;
     TBAction.loadData(tagId, function(tbs){
       if(tbs && tbs.length > 0){
@@ -60,10 +61,10 @@ let BaselineCfg = React.createClass({
     }
   },
 
-  showDialog: function(tag){
+  showDialog: function(tag, dateRange){
     var me = this;
-    this.setState({tag: tag});
-    this.refreshData(tag.tagId, function(tb){
+    this.setState({tag: tag, dateRange: dateRange});
+    this.refreshData(tag.tagId, dateRange, function(tb){
       me.refs.cfgDialog.show();
       me.showMask();
     });
@@ -148,6 +149,7 @@ let BaselineCfg = React.createClass({
       tag: cusTag,
       name: this.state.name || null,
       tbId: this.state.tbId || null,
+      dateRange: this.state.dateRange,
       onNameChanged: function(newName){
         if(me.state.name != newName){
           me.setState({name: newName});

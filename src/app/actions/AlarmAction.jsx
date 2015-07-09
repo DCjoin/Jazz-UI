@@ -66,7 +66,7 @@ let AlarmAction = {
        });
   },
   //for select tags from taglist and click search button.
-  getEnergyDate(date, step, tagOptions){
+  getEnergyData(date, step, tagOptions, relativeDate){
     var timeRange = date;
 
     var tagIds = AlarmAction.getTagIdsFromTagOptions(tagOptions);
@@ -81,7 +81,8 @@ let AlarmAction = {
     AppDispatcher.dispatch({
          type: Action.GET_TAG_DATA_LOADING,
          submitParams: submitParams,
-         tagOptions: tagOptions
+         tagOptions: tagOptions,
+         relativeDate: relativeDate
     });
 
     Ajax.post('/Energy.svc/GetTagsData', {
