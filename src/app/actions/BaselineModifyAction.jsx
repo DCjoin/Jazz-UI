@@ -34,15 +34,39 @@ let BaselineModifyAction = {
       params: {dto: data},
       success: function(modifyData){
         AppDispatcher.dispatch({
-            type: Action.SET_BASELINE_DATA_SUCCESS,
-            modifyData: modifyData
+          type: Action.SET_BASELINE_DATA_SUCCESS,
+          modifyData: modifyData
         });
       },
       error: function(err, res){
         AppDispatcher.dispatch({
-            type: Action.SET_BASELINE_DATA_ERROR
+          type: Action.SET_BASELINE_DATA_ERROR
         });
       }
+    });
+  },
+  setYearIsModify: function(){
+    AppDispatcher.dispatch({
+      type: Action.SET_YEAR_IS_MODIFY
+    });
+  },
+  setMonthIsModify: function(index){
+    AppDispatcher.dispatch({
+      type: Action.SET_MONTH_IS_MODIFY,
+      index: index
+    });
+  },
+  setYearData: function(data){
+    AppDispatcher.dispatch({
+      type: Action.SET_YEAR_DATA,
+      data: data
+    });
+  },
+  setMonthData: function(index, data){
+    AppDispatcher.dispatch({
+      type: Action.SET_MONTH_DATA,
+      index: index,
+      data: data
     });
   }
 };

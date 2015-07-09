@@ -11,6 +11,10 @@ module.exports = {
     GET_BASELINE_DATA_ERROR: null,
     SET_BASELINE_DATA_LOADING: null,
     SET_BASELINE_DATA_SUCCESS: null,
-    SET_BASELINE_DATA_ERROR: null
+    SET_BASELINE_DATA_ERROR: null,
+    SET_YEAR_IS_MODIFY: null,
+    SET_MONTH_IS_MODIFY: null,
+    SET_YEAR_DATA: null,
+    SET_MONTH_DATA: null
   })
 };
