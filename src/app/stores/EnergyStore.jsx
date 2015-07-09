@@ -19,7 +19,8 @@ let _isLoading = false,
     _submitParams = null,
     _paramsObj = null,
     _tagOptions = null,
-    _ChartTitle = null;
+    _chartTitle = null,
+    _relativeDate = null;
 
 var EnergyStore = assign({},PrototypeStore,{
   getLoadingStatus(){
@@ -47,15 +48,22 @@ var EnergyStore = assign({},PrototypeStore,{
     return _tagOptions;
   },
   getChartTitle(){
-    return _ChartTitle;
+    return _chartTitle;
+  },
+  getRelativeDate(){
+    return _relativeDate;
   },
   //only one tagOptions if click tag in alarm list
-  _onDataLoading(params, tagOptions, isAlarmLoading){
+  _onDataLoading(params, tagOptions, relativeDate, isAlarmLoading){
     _submitParams = params;
     _isLoading = true;
     _isAlarmLoading = false;
 
     _tagOptions = tagOptions;
+
+    if(relativeDate !== false){
+      _relativeDate = relativeDate;
+    }
 
     if(isAlarmLoading){
       _isAlarmLoading = true;
@@ -70,7 +78,7 @@ var EnergyStore = assign({},PrototypeStore,{
       }else if(step == 3){
         uom = '月';
       }
-      _ChartTitle = tagName + uom + '能耗报警';
+      _chartTitle = tagName + uom + '能耗报警';
     }
 
     _paramsObj = {tagIds: params.tagIds,
@@ -139,11 +147,11 @@ var EnergyStore = assign({},PrototypeStore,{
 EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case Action.GET_ALARM_TAG_DATA_LOADING:
-      EnergyStore._onDataLoading(action.submitParams, action.tagOptions, true);
+      EnergyStore._onDataLoading(action.submitParams, action.tagOptions, null, true);
       EnergyStore.emitTagDataLoading();
         break;
       case Action.GET_TAG_DATA_LOADING:
-        EnergyStore._onDataLoading(action.submitParams, action.tagOptions, false);
+        EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate, false);
         EnergyStore.emitTagDataLoading();
         break;
       case Action.GET_TAG_DATA_SUCCESS:

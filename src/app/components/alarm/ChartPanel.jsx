@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import Immutable from 'immutable';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, RaisedButton, DatePicker} from 'material-ui';
 import assign from "object-assign";
@@ -92,7 +93,7 @@ let ChartPanel = React.createClass({
       let timeRanges = paramsObj.timeRanges;
 
       this.setState({step:step, dashboardOpenImmediately: false});
-      AlarmAction.getEnergyData(timeRanges, step, tagOptions);
+      AlarmAction.getEnergyData(timeRanges, step, tagOptions, false);
     },
     _onNavigatorChangeLoad(){
       let tagOptions = EnergyStore.getTagOpions();
@@ -104,7 +105,7 @@ let ChartPanel = React.createClass({
       let startDate = dateRange.start,
           endDate = dateRange.end;
 
-      this._setFitStepAndGetData(startDate, endDate, tagOptions);
+      this._setFitStepAndGetData(startDate, endDate, tagOptions, false);
     },
     onSearchDataButtonClick(){
       let dateSelector = this.refs.dateTimeSelector;
@@ -128,10 +129,15 @@ let ChartPanel = React.createClass({
       if( !tagOptions || tagOptions.length === 0){
         return;
       }
-
-      this._setFitStepAndGetData(startDate, endDate, tagOptions);
+      let relativeDateValue = this._getRelativeDateValue();
+      this._setFitStepAndGetData(startDate, endDate, tagOptions, relativeDateValue);
     },
-    _setFitStepAndGetData(startDate, endDate, tagOptions){
+    _getRelativeDateValue(){
+      let relativeDateIndex = this.refs.relativeDate.state.selectedIndex;
+      let obj = searchDate[relativeDateIndex];
+      return obj.value;
+    },
+    _setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate){
       let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
       let step = this.state.step;
 
@@ -141,7 +147,7 @@ let ChartPanel = React.createClass({
         step = limitInterval.display;
       }
 
-      AlarmAction.getEnergyData(timeRanges, step, tagOptions);
+      AlarmAction.getEnergyData(timeRanges, step, tagOptions, relativeDate);
     },
     _onChart2WidgetClick(){
         if(!!this.state.energyData){
@@ -164,6 +170,7 @@ let ChartPanel = React.createClass({
     },
     getContentSyntax(){
       let tagOptions = EnergyStore.getTagOpions(), options;
+      let relativeDate = EnergyStore.getRelativeDate();
 
       if(tagOptions){
         if(isArray(tagOptions)){
@@ -176,16 +183,23 @@ let ChartPanel = React.createClass({
           options = [{Id:tagOptions.tagId, Name: tagOptions.tagName, HierId: tagOptions.hierId, NodeName: tagOptions.hierName}];
         }
       }
-      var submitParams = EnergyStore.getSubmitParams();
+      let submitParams = EnergyStore.getSubmitParams();
+
+      if(relativeDate !== 'Customerize'){
+        let immutableSubmitParams = Immutable.fromJS(submitParams);
+        let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption','TimeRanges'], [{relativeDate: relativeDate}]);
+        submitParams = immutableSubmitParamsClone.toJS();
+      }
+
       var contentSyntax = { xtype:'widgetcontainer',
                             params:{ submitParams:{ options: options,
                                                    tagIds: submitParams.tagIds,
                                                    interval:[],
                                                    viewOption:submitParams.viewOption
                                                  },
-                                    config:{ type:"line",xtype:"mixedtrendchartcomponent",reader:"mixedchartreader",
-                                             storeType:"energy.Energy",searcherType:"analysissearcher",
-                                             widgetStyler:"widgetchartstyler",maxWidgetStyler:"maxchartstyler"}
+                                     config:{ type:"line",xtype:"mixedtrendchartcomponent",reader:"mixedchartreader",
+                                              storeType:"energy.Energy",searcherType:"analysissearcher",
+                                              widgetStyler:"widgetchartstyler",maxWidgetStyler:"maxchartstyler"}
                                    }
                           };
       return contentSyntax;
@@ -284,7 +298,7 @@ let ChartPanel = React.createClass({
           timeRanges = paramsObj.timeRanges,
           step = paramsObj.step;
 
-      AlarmAction.getEnergyData(timeRanges, step, tagOptions);
+      AlarmAction.getEnergyData(timeRanges, step, tagOptions, false);
     }else{
       let energyData = EnergyStore.getEnergyData();
       this.setState({ energyData: energyData});
