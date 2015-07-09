@@ -2,6 +2,7 @@
 
 import React from 'react';
 import assign from 'object-assign';
+import Immutable from 'immutable';
 import mui from 'material-ui';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
@@ -343,6 +344,10 @@ let ChartComponent = React.createClass({
     componentWillUpdate(){
 
     },
+    shouldComponentUpdate: function(nextProps, nextState) {
+      return !(this.props.energyData.equals(nextProps.energyData));
+
+    },
     initDefaultConfig: function () {
       let cap = function(string) {
             return string.charAt(0).toUpperCase() + string.substr(1);
@@ -432,7 +437,7 @@ let ChartComponent = React.createClass({
         return false;
   },
   _initChartObj() {
-    var data = this.props.energyData;
+    var data = this.props.energyData.toJS();
     var newConfig = assign({}, defaultConfig,
       {animation: true,
        title: {
