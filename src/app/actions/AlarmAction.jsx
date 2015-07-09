@@ -66,7 +66,7 @@ let AlarmAction = {
        });
   },
   //for select tags from taglist and click search button.
-  getEnergyDate(date, step, tagOptions){
+  getEnergyData(date, step, tagOptions){
     var timeRange = date;
 
     var tagIds = AlarmAction.getTagIdsFromTagOptions(tagOptions);

@@ -92,7 +92,19 @@ let ChartPanel = React.createClass({
       let timeRanges = paramsObj.timeRanges;
 
       this.setState({step:step, dashboardOpenImmediately: false});
-      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
+      AlarmAction.getEnergyData(timeRanges, step, tagOptions);
+    },
+    _onNavigatorChangeLoad(){
+      let tagOptions = EnergyStore.getTagOpions();
+      let paramsObj = EnergyStore.getParamsObj();
+
+      let dateSelector = this.refs.dateTimeSelector;
+      let dateRange = dateSelector.getDateTime();
+
+      let startDate = dateRange.start,
+          endDate = dateRange.end;
+
+      this._setFitStepAndGetData(startDate, endDate, tagOptions);
     },
     onSearchDataButtonClick(){
       let dateSelector = this.refs.dateTimeSelector;
@@ -116,6 +128,10 @@ let ChartPanel = React.createClass({
       if( !tagOptions || tagOptions.length === 0){
         return;
       }
+
+      this._setFitStepAndGetData(startDate, endDate, tagOptions);
+    },
+    _setFitStepAndGetData(startDate, endDate, tagOptions){
       let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
       let step = this.state.step;
 
@@ -125,7 +141,7 @@ let ChartPanel = React.createClass({
         step = limitInterval.display;
       }
 
-      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
+      AlarmAction.getEnergyData(timeRanges, step, tagOptions);
     },
     _onChart2WidgetClick(){
         if(!!this.state.energyData){
@@ -268,7 +284,7 @@ let ChartPanel = React.createClass({
           timeRanges = paramsObj.timeRanges,
           step = paramsObj.step;
 
-      AlarmAction.getEnergyDate(timeRanges, step, tagOptions);
+      AlarmAction.getEnergyData(timeRanges, step, tagOptions);
     }else{
       let energyData = EnergyStore.getEnergyData();
       this.setState({ energyData: energyData});
@@ -388,11 +404,15 @@ let ChartPanel = React.createClass({
 
     //this.navigatorChanged = true;
     //return this.fireEvent('eventfired', 'datechanged', { chart: this, start: startTime, end: endTime, type: type });
-    this.dateChanged(this, startTime, endTime, type);
+    this.dateChanged(chart, startTime, endTime, type);
   },
   dateChanged(chart, start, end, type){
     this.refs.dateTimeSelector.setDateField(start, end);
-      this.refs.relativeDate.setState({selectedIndex:0});
+    this.refs.relativeDate.setState({selectedIndex:0});
+
+     if (type === 'resize' || chart.navCache === false) {
+       this._onNavigatorChangeLoad();
+     }
   }
 });
 
