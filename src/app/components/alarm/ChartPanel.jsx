@@ -351,7 +351,11 @@ let ChartPanel = React.createClass({
     }else{
       return ;
     }
-    this.refs.baselineCfg.showDialog(tagObj);
+
+    let dateSelector = this.refs.dateTimeSelector;
+    let dateRange = dateSelector.getDateTime();
+
+    this.refs.baselineCfg.showDialog(tagObj, dateRange);
     var year=(new Date()).getFullYear();
     TBSettingAction.setYear(year);
   },
