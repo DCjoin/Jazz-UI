@@ -352,7 +352,7 @@ let CommonFuns = {
 								now.setHours(0, 0, 0, 0);
 								now.setDate(1);
                 region.start = dateAdd(now, -1, 'months');
-                region.end = dateAdd(region.end, -1, 'months');
+                region.end = now;
                 break;
             case 'thisyear':
                 region.start = new Date(now.getFullYear(), 0, 1);
