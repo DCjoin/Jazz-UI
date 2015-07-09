@@ -31,7 +31,6 @@ let AlarmSetting = React.createClass({
 	},
   getValue: function(){
     var alarmSteps = this.refs.alarmSteps.getValue();
-
     return {
       tbId: this.props.tbId,
       alarmSteps: alarmSteps,
@@ -46,12 +45,14 @@ let AlarmSetting = React.createClass({
   },
   handleEdit: function(){
     this.setState({
-      disable: false
+      isDisplay: false,
+      disable: !this.refs.openAlarm.isToggled()
     });
 	},
   handleSave: function(){
     if(this._validate()){
       this.setState({
+        isDisplay: true,
         disable: true
       });
       var val = this.getValue();
@@ -60,6 +61,7 @@ let AlarmSetting = React.createClass({
   },
   handleCancel: function(){
     this.setState({
+      isDisplay: true,
       disable: true,
       errorText: ""
     });
@@ -80,9 +82,15 @@ let AlarmSetting = React.createClass({
   changeThreshold: function(e){
     var value = this._validateValue(e.target.value);
   },
+  changeToggle: function(){
+    this.setState({
+      disable: !this.refs.openAlarm.isToggled()
+    });
+  },
   getInitialState: function(){
     return {
       disable: true,
+      isDisplay: true,
       threshold: 100,
       errorText: ""
     };
@@ -120,7 +128,7 @@ let AlarmSetting = React.createClass({
       <div className="jazz-setting-alarm-container">
         <div className='jazz-setting-alarm-content'>
           <div>
-            <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="right" disabled={this.state.disable}/>
+            <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="right" onToggle={this.changeToggle} disabled={this.state.disable&&this.state.isDisplay}/>
           </div>
           <div className='jazz-setting-alarm-threshold'>
             报警敏感度<TextField ref="threshold" defaultValue={this.state.threshold} style={inputStyle}  className="jazz-setting-input" errorText={this.state.errorText} disabled={this.state.disable} onChange={this.changeThreshold}/>%
@@ -136,10 +144,10 @@ let AlarmSetting = React.createClass({
           </div>
         </div>
         <div>
-          <div hidden={!this.state.disable}>
+          <div hidden={!this.state.isDisplay}>
             <RaisedButton label="编辑" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleEdit}/>
           </div>
-          <div hidden={this.state.disable}>
+          <div hidden={this.state.isDisplay}>
             <RaisedButton label="保存" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleSave}/>
             <RaisedButton label="放弃" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleCancel}/>
           </div>
@@ -152,7 +160,6 @@ let AlarmSetting = React.createClass({
 var Checkboxes = React.createClass({
   getValue: function(){
     var alarmSteps = [];
-
     if(this.refs.year.isChecked()){
       alarmSteps.push(YEARSTEP);
     }
@@ -162,7 +169,6 @@ var Checkboxes = React.createClass({
     if(this.refs.day.isChecked()){
       alarmSteps.push(DAYSTEP);
     }
-
     return alarmSteps;
   },
   clearValue: function(){
