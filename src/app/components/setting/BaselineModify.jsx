@@ -154,7 +154,7 @@ let BaselineModify = React.createClass({
       border: '1px solid #efefef',
       margin: '14px 0px 0px 10px',
       fontSize: '15px',
-      color: '#767a7a',
+      color: '#b3b3b3',
       textAlign: 'center'
     };
     var curYear = (new Date()).getFullYear();
