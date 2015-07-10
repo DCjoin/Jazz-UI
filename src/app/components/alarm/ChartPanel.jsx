@@ -313,9 +313,14 @@ let ChartPanel = React.createClass({
     EnergyStore.clearEnergyDate();
     this.setState({ energyData: null});
   },
+  _onGetEnergyDataError(){
+    this.setState({step:null});
+    this._onEnergyDataChange();
+  },
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
     EnergyStore.addTagDataChangeListener(this._onEnergyDataChange);
+    EnergyStore.addGetTagDataErrorListener(this._onGetEnergyDataError);
 
     if(this.props.isSettingChart){
       this.refs.relativeDate.setState({selectedIndex:1});
@@ -330,6 +335,7 @@ let ChartPanel = React.createClass({
   componentWillUnmount: function() {
     EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
     EnergyStore.removeTagDataChangeListener(this._onEnergyDataChange);
+    EnergyStore.removeGetTagDataErrorListener(this._onGetEnergyDataError);
   },
   getSelectedTagOptions(){
     let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
