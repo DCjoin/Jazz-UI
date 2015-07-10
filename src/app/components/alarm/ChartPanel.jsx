@@ -284,7 +284,7 @@ let ChartPanel = React.createClass({
   _onDeleteButtonClick(obj){
     let uid = obj.uid;
 
-    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+    //let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
 
     //unselect tags in taglist of right panel
     //if(userTagListSelect){
@@ -305,10 +305,10 @@ let ChartPanel = React.createClass({
     }
   },
   _onDeleteAllButtonClick(){
-    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
-    if(userTagListSelect){
+    //let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+    //if(userTagListSelect){
       AlarmTagAction.clearSearchTagList();
-    }
+    //}
 
     EnergyStore.clearEnergyDate();
     this.setState({ energyData: null});
