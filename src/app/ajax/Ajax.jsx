@@ -47,6 +47,9 @@ var _ajax = function(url, options) {
         	} else {
 						if(res.body){
 							Util.ErrorHandler(options, res.body.error.Code);
+						}else if(res.text){
+							let errorObj = JSON.parse(res.text);
+							Util.ErrorHandler(options, errorObj.error.Code);
 						}
 
         		error.call(options, err, res);

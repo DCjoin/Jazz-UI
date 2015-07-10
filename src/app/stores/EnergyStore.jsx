@@ -10,7 +10,8 @@ import {Action} from '../constants/actionType/Alarm.jsx';
 import ReaderFuncs from './MixedChartReader.jsx';
 
 const TAG_DATA_LOADING_EVENT = 'tagdataloading',
-      TAG_DATA_CHANGED_EVENT = 'tagdatachanged';
+      TAG_DATA_CHANGED_EVENT = 'tagdatachanged',
+      GET_DATA_ERROR_EVENT = 'gettagdataerror';
 
 let _isLoading = false,
     _isAlarmLoading = false,
@@ -19,7 +20,8 @@ let _isLoading = false,
     _submitParams = null,
     _paramsObj = null,
     _tagOptions = null,
-    _ChartTitle = null;
+    _chartTitle = null,
+    _relativeDate = null;
 
 var EnergyStore = assign({},PrototypeStore,{
   getLoadingStatus(){
@@ -47,15 +49,22 @@ var EnergyStore = assign({},PrototypeStore,{
     return _tagOptions;
   },
   getChartTitle(){
-    return _ChartTitle;
+    return _chartTitle;
+  },
+  getRelativeDate(){
+    return _relativeDate;
   },
   //only one tagOptions if click tag in alarm list
-  _onDataLoading(params, tagOptions, isAlarmLoading){
+  _onDataLoading(params, tagOptions, relativeDate, isAlarmLoading){
     _submitParams = params;
     _isLoading = true;
     _isAlarmLoading = false;
 
     _tagOptions = tagOptions;
+
+    if(relativeDate !== false){
+      _relativeDate = relativeDate;
+    }
 
     if(isAlarmLoading){
       _isAlarmLoading = true;
@@ -70,7 +79,7 @@ var EnergyStore = assign({},PrototypeStore,{
       }else if(step == 3){
         uom = '月';
       }
-      _ChartTitle = tagName + uom + '能耗报警';
+      _chartTitle = tagName + uom + '能耗报警';
     }
 
     _paramsObj = {tagIds: params.tagIds,
@@ -90,7 +99,7 @@ var EnergyStore = assign({},PrototypeStore,{
                timeRanges: params.viewOption.TimeRanges};
 
 
-    _energyData = ReaderFuncs.convert(data, obj);
+    _energyData = Immutable.fromJS(ReaderFuncs.convert(data, obj));
   },
   /*
     returns boolean: if only one tag left, then reload data.
@@ -98,7 +107,7 @@ var EnergyStore = assign({},PrototypeStore,{
   removeSeriesDataByUid(uid){
     if(_energyData){
       let latestDataList = [];
-      let dataList = _energyData.Data;
+      let dataList = _energyData.toJS().Data;
 
       for(let i=0,len=dataList.length; i<len; i++){
         let data = dataList[i];
@@ -109,7 +118,7 @@ var EnergyStore = assign({},PrototypeStore,{
       if(latestDataList.length === 1){
         return true;
       }else if(latestDataList.length > 0){
-        _energyData.Data = latestDataList;
+        _energyData = _energyData.set('Data', latestDataList);
       }else{
         _energyData = null;
       }
@@ -134,16 +143,25 @@ var EnergyStore = assign({},PrototypeStore,{
   removeTagDataChangeListener: function(callback) {
     this.removeListener(TAG_DATA_CHANGED_EVENT, callback);
   },
+  addGetTagDataErrorListener:function(callback) {
+    this.on(GET_DATA_ERROR_EVENT, callback);
+  },
+  emitGetTagDataErrorListener:function(callback) {
+    this.emit(GET_DATA_ERROR_EVENT);
+  },
+  removeGetTagDataErrorListener: function(callback) {
+    this.removeListener(GET_DATA_ERROR_EVENT, callback);
+  }
 });
 
 EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case Action.GET_ALARM_TAG_DATA_LOADING:
-      EnergyStore._onDataLoading(action.submitParams, action.tagOptions, true);
+      EnergyStore._onDataLoading(action.submitParams, action.tagOptions, null, true);
       EnergyStore.emitTagDataLoading();
         break;
       case Action.GET_TAG_DATA_LOADING:
-        EnergyStore._onDataLoading(action.submitParams, action.tagOptions, false);
+        EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate, false);
         EnergyStore.emitTagDataLoading();
         break;
       case Action.GET_TAG_DATA_SUCCESS:
@@ -152,7 +170,7 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case Action.GET_TAG_DATA_ERROR:
         EnergyStore._onDataChanged(null, action.submitParams);
-        EnergyStore.emitTagDataChange();
+        EnergyStore.emitGetTagDataErrorListener();
         break;
     }
 });

@@ -85,10 +85,6 @@ var DaytimeRangeValue = React.createClass({
     };
   },
 
-  getInitialState:  function(){
-    return { error: '' };
-  },
-
   componentWillReceiveProps: function(nextProps){
     if(nextProps && this.refs.valueField){
       if(nextProps.value != this.props.value ){
@@ -117,20 +113,16 @@ var DaytimeRangeValue = React.createClass({
     }
   },
 
-  validate: function(){
-    var val = this.refs.valueField.getValue();
-    return this._validateValue(val) != '';
-  },
-
   _validateValue: function(val){
     var value = extractNumber(val);
     this.refs.valueField.setValue(value);
-    this.setState({error: (value == '' ? '必填项' : '')});
+    //this.setState({error: (value == '' ? '必填项' : '')});
     return value;
   },
 
   _onValueChange: function(e){
     var value = this._validateValue(e.target.value);
+    if(value == "") value = null;
     if(this.props.onValueChange){
       this.props.onValueChange(e, this.props.index, value);
     }
@@ -177,7 +169,7 @@ var DaytimeRangeValue = React.createClass({
       valProps = {
         defaultValue: this.props.value,
         onChange: this._onValueChange,
-        errorText: this.state.error,
+        //errorText: this.state.error,
         style: {
           width: "60px",
         }
@@ -213,14 +205,6 @@ var DaytimeRangeValues = React.createClass({
     if(nextProps){
       this.setState({items: nextProps.items});
     }
-  },
-
-  validate: function(){
-    var valid = true, length = this.state.items.length;
-    for (var i = 0; i < length; i++) {
-      valid = valid && this.refs['item' + i].validate();
-    }
-    return valid;
   },
 
   getValue: function(){
@@ -368,10 +352,6 @@ var NormalSetting = React.createClass({
       });
     }
     return this._composeEndTime(nonWorkdays);
-  },
-
-  validate: function(){
-    return this.refs.workdayValues.validate() & this.refs.nonWorkdayValues.validate();
   },
 
   getValue: function () {
@@ -552,7 +532,7 @@ var CalcSetting = React.createClass({
     items: React.PropTypes.array,
     onCalc: React.PropTypes.func,
     isViewStatus: React.PropTypes.bool,
-    isDisplay: React.PropTypes.bool
+    isDisplay: React.PropTypes.bool,
   },
 
   getDefaultProps:function(){
@@ -1088,6 +1068,8 @@ var TBSettingItem = React.createClass({
     isViewStatus: React.PropTypes.bool,
     onRemove: React.PropTypes.func,
     onSettingItemDateChange: React.PropTypes.func,
+
+    dateRange:  React.PropTypes.object,
   },
 
   getDefaultProps: function() {
@@ -1145,6 +1127,8 @@ var TBSettingItem = React.createClass({
   },
 
   _calcValues: function(){
+    var dateRange = this.props.dateRange;
+    debugger;
     var me = this, startDate = this.refs.startFeild.getDate(), endDate = fromFormEndDate(this.refs.endFeild.getDate());
     var tr = {
       StartTime: CommonFuns.DataConverter.DatetimeToJson(startDate),
@@ -1159,8 +1143,7 @@ var TBSettingItem = React.createClass({
     var curTbsItem = tbsItems[this.props.index];
     return (
       this.validateTbSettingItem(tbsItems) &
-      this.validateSpecialItems(curTbsItem) &
-      this.validateValue(curTbsItem));
+      this.validateSpecialItems(curTbsItem));
   },
 
   validateTbSettingItem: function(tbsItems){
@@ -1185,16 +1168,6 @@ var TBSettingItem = React.createClass({
   validateSpecialItems: function(tbsItem){
     if(!tbsItem) tbsItem = this.getValue();
     return this.refs.SpecialSettingCtrl.validate(tbsItem);
-  },
-
-  validateValue: function(tbsItem){
-    if(this.state.radio == "CalcRadio") {
-      return true;
-      //rtn.TbAvgDtos =  this.refs.CalcSettingCtrl.getValue();
-    }
-    else {
-      return this.refs.NormalSettingCtrl.validate(tbsItem);
-    }
   },
 
   getValue: function(){
@@ -1243,6 +1216,7 @@ var TBSettingItem = React.createClass({
       start: me.state.start,
       end: me.state.end,
       onCalc: me._calcValues,
+      //dateRange:  me.props.dateRange,
     },
     specialProps = {
       tag: me.props.tag,
@@ -1422,7 +1396,8 @@ var TBSettingItems = React.createClass({
     tag: React.PropTypes.object,
     year: React.PropTypes.number,
     items: React.PropTypes.array,
-    isViewStatus: React.PropTypes.bool
+    isViewStatus: React.PropTypes.bool,
+    dateRange: React.PropTypes.object,
   },
 
   getDefaultProps: function() {
@@ -1523,7 +1498,8 @@ var TBSettingItems = React.createClass({
 
         isViewStatus: me.props.isViewStatus,
         onRemove: me._removeSetting,
-        onSettingItemDateChange: me._onSettingItemDateChange
+        onSettingItemDateChange: me._onSettingItemDateChange,
+        dateRange:  me.props.dateRange,
       };
 
       if(item.TbSetting && item.TbSetting.StartTime){
@@ -1656,6 +1632,7 @@ var BaselineBasic = React.createClass({
 
   propTypes: {
     tag: React.PropTypes.object,
+    dateRange: React.PropTypes.object,
     tbId: React.PropTypes.number,
 
     name: React.PropTypes.string,

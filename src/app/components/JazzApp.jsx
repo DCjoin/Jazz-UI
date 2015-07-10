@@ -3,7 +3,8 @@
 import React from 'react';
 import Router from 'react-router';
 import MainMenu from './MainMenu.jsx';
-
+import GlobalErrorMessageDialog from './GlobalErrorMessageDialog.jsx';
+import GlobalErrorMessageStore from '../stores/GlobalErrorMessageStore.jsx';
 
 import keyMirror from   'keymirror';
 
@@ -63,8 +64,15 @@ let JazzApp = React.createClass({
         else{
             require(['../lang/zh-cn.js'],afterLoadLang);
         }
-
+        GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
     },
+    _onErrorMessageChanged(){
+      let errorMessage = GlobalErrorMessageStore.getErrorMessage();
+      this.refs.globalErrorMessageDialog.setState({isShowed:true, errorMessage:errorMessage});
+    },
+    componentWillUnmount(){
+  	   GlobalErrorMessageStore.removeChangeListener(this._onErrorMessageChanged);
+  	},
     getInitialState: function() {
         return {
             shouldRender:false,
@@ -84,6 +92,7 @@ let JazzApp = React.createClass({
           <div className="jazz-app">
               <RouteHandler {...this.props} showLoading={this._showLoading} hideLoading={this._hideLoading} showError={this._showError} />
               {loading}
+              <GlobalErrorMessageDialog ref='globalErrorMessageDialog'/>
           </div>
         );
     }

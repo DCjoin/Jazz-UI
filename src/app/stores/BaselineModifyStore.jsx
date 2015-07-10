@@ -22,6 +22,30 @@ var BaselineModifyStore = assign({},PrototypeStore,{
   setData: function(data){
     _baselineModifyData = data;
   },
+  getYearData: function(){
+    return _baselineModifyData.YearlyValues[0].DataValue;
+  },
+  setYearData: function(data){
+    _baselineModifyData.YearlyValues[0].DataValue = data;
+  },
+  getMonthData: function(index){
+    return _baselineModifyData.MonthlyValues[index].DataValue;
+  },
+  setMonthData: function(index, data){
+    _baselineModifyData.MonthlyValues[index].DataValue = data;
+  },
+  getYearIsModify: function(){
+    return _baselineModifyData.YearlyValues[0].IsModify;
+  },
+  setYearIsModify: function(){
+    _baselineModifyData.YearlyValues[0].IsModify = true;
+  },
+  getMonthIsModify: function(index){
+    return _baselineModifyData.MonthlyValues[index].IsModify;
+  },
+  setMonthIsModify: function(index){
+    _baselineModifyData.MonthlyValues[index].IsModify = true;
+  },
   _onDataLoading: function(){
     _isLoading = true;
   },
@@ -69,6 +93,18 @@ BaselineModifyStore.dispatchToken = AppDispatcher.register(function(action) {
       BaselineModifyStore.emitDataChange();
       break;
     case Action.SET_BASELINE_DATA_ERROR:
+      break;
+    case Action.SET_YEAR_IS_MODIFY:
+      BaselineModifyStore.setYearIsModify();
+      break;
+    case Action.SET_MONTH_IS_MODIFY:
+      BaselineModifyStore.setMonthIsModify(action.index);
+      break;
+    case Action.SET_YEAR_DATA:
+      BaselineModifyStore.setYearData(action.data);
+      break;
+    case Action.SET_MONTH_DATA:
+      BaselineModifyStore.setMonthData(action.index, action.data);
       break;
   }
 });
