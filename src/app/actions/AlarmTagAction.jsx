@@ -21,6 +21,7 @@ let AlarmTagAction = {
         tagNode: iaData
     });
   },
+
   addSearchTagList(tagData){
     AppDispatcher.dispatch({
         type: Action.ADD_SEARCH_TAGLIST_CHANGED,

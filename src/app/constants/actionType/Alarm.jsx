@@ -3,6 +3,7 @@ import keyMirror from 'keymirror';
 module.exports = {
 
     Action:keyMirror({
+        GLOBAL_ERROR_MESSAGE_CHANGED: null,
         DATETYPE_CHANGED: null,
         DATALIST_CHANGED: null,
         GET_HIERARCHY_LIST_ERROR: null,

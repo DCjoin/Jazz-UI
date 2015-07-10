@@ -1,6 +1,7 @@
 'use strict';
 import Momment from 'moment';
-
+import _ from 'lodash';
+import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 const FIXEDTIMES = {
 								millisecond: 1,
 								second: 1000,
@@ -23,7 +24,7 @@ let CommonFuns = {
 		return it !== null && typeof it == 'function';
 	},
 	isArray(it){
-		return window.toString.call(it) === '[object Array]';
+		return _.isArray(it);
 	},
 	isNumber: function(value) {
       return typeof value === 'number' && isFinite(value);
@@ -89,8 +90,8 @@ let CommonFuns = {
       };
   },
   popupErrorMessage: function (message, context, fns, errorCode) {
-		window.alert(message);
-
+		//window.alert(message);
+    GlobalErrorMessageAction.fireGlobalErrorMessage(message);
   },
 	ErrorHandler: function (context, errorCode, errorMessages) {
     if (context.commonErrorHandling === false) return;

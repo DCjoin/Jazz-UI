@@ -5,10 +5,10 @@ import assign from "object-assign";
 import classNames from 'classnames';
 import YearPicker from '../../controls/YearPicker.jsx';
 import DaytimeSelector from '../../controls/DaytimeSelector.jsx';
+import NodeButtonBar from './NodeButtonBar.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
-import Calendar from '../../controls/Calendar.jsx';
 
 var formatDate = function(date){
   var m = (date.getMonth() + 1), d = date.getDate();
@@ -227,7 +227,7 @@ var DaytimeRangeValues = React.createClass({
         newItems.push(item);
       }
 
-      if(newObj.EndTime == 1440){
+      if(newObj.end == 1440){
         break;
       }else{
         newItems.push({
@@ -652,7 +652,7 @@ var SpecialItem = React.createClass({
         this.refs.startDateField.setDate(jsonToFormDate(this.props.start));
       };
       if(nextProps.end && nextProps.end != this.props.end ){
-        this.refs.endDateField.setDate(jsonToFormDate(this.props.end));
+        this.refs.endDateField.setDate(toFormEndDate(jsonToFormDate(this.props.end)));
       };
       if(nextProps.value != this.props.value ){
         this.refs.valueField.setValue(nextProps.value);
@@ -782,7 +782,7 @@ var SpecialItem = React.createClass({
       if(et == 0) et = 1440;
 
       var startDate = me.props.start ? jsonToFormDate(me.props.start) : new Date(me.props.year, 0, 1),
-        endDate = me.props.end ? jsonToFormDate(me.props.end) : new Date(me.props.year, 11, 31),
+        endDate = me.props.end ? toFormEndDate(jsonToFormDate(me.props.end)) : new Date(me.props.year, 11, 31),
         startDateStr = formatDate(startDate),
         endDateStr = formatDate(endDate),
         startTimeStr = CommonFuns.numberToTime(st),
@@ -823,7 +823,7 @@ var SpecialItem = React.createClass({
       var startDate = new Date(me.props.year, 0, 1),
         endDate = new Date(me.props.year, 11, 31),
         dstartDate = me.props.start ? jsonToFormDate(me.props.start) : startDate,
-        dendDate = me.props.end ? jsonToFormDate(me.props.end) : endDate;
+        dendDate = me.props.end ? toFormEndDate(jsonToFormDate(me.props.end)) : endDate;
 
       var datapickerStyle = {
           width:'90px',
@@ -1132,7 +1132,8 @@ var TBSettingItem = React.createClass({
 
   _calcValues: function(){
     var dateRange = this.props.dateRange;
-    var me = this, startDate = dateRange.start, endDate = dateRange.end;
+    debugger;
+    var me = this, startDate = this.refs.startFeild.getDate(), endDate = fromFormEndDate(this.refs.endFeild.getDate());
     var tr = {
       StartTime: CommonFuns.DataConverter.DatetimeToJson(startDate),
       EndTime: CommonFuns.DataConverter.DatetimeToJson(endDate)
@@ -1367,7 +1368,6 @@ var TBSettingItem = React.createClass({
         <div style={clearStyle}>
           <div style={datePickerAreaStyle}>
             <div className="jazz-setting-basic-datepicker-container">
-
               <DatePicker  ref='startFeild' {...startProps} />
             </div>
             <div style={{'margin-left':'10px'}}>到</div>
@@ -1503,7 +1503,7 @@ var TBSettingItems = React.createClass({
         isViewStatus: me.props.isViewStatus,
         onRemove: me._removeSetting,
         onSettingItemDateChange: me._onSettingItemDateChange,
-        dateRange: me.props.dateRange,
+        dateRange:  me.props.dateRange,
       };
 
       if(item.TbSetting && item.TbSetting.StartTime){
@@ -1828,7 +1828,6 @@ var BaselineBasic = React.createClass({
       items: this.state.items,
       year: this.state.year,
       isViewStatus: this.state.isViewStatus,
-      dateRange: this.props.dateRange,
     };
     var tbNameProps = {
       defaultValue: this.props.name,
