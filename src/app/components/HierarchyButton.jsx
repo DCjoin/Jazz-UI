@@ -19,10 +19,8 @@ let HierarchyButton=React.createClass({
   },
   _onChange(){
     var data=HierarchyStore.getData();
-
     this.setState({
       hieList:data,
-
     });
   },
   selectHierItem(hierId, isCallClickEvent){

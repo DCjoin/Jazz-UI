@@ -3,11 +3,13 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
-import {Action} from '../constants/actionType/AlarmTag.jsx';
+import AlarmTag from '../constants/actionType/AlarmTag.jsx';
+import Tag from '../constants/actionType/Tag.jsx';
 
 let searchTagList=[];
 let interData=null;
-
+let AlarmTagAction=AlarmTag.Action;
+let TagAction=Tag.Action;
 /*
  if change checked state of the tags from the tag list,than it is true;
  when select item of alarm list, set it false in AlarmList.jsx
@@ -51,6 +53,46 @@ var AlarmTagStore = assign({},PrototypeStore,{
       searchTagList.splice(i,1);
     }
     });
+
+  },
+  searchTagChange(tagNode,selected){
+    console.log("searchTagChange");
+    console.log("selected="+selected);
+    console.log(tagNode);
+    let tagData={
+      hierId:tagNode.HierarchyId,
+      hierName:tagNode.HierarchyName,
+      tagId:tagNode.Id,
+      tagName:tagNode.Name,
+      uomId: tagNode.UomId
+    };
+    console.log(tagData);
+    if(selected){
+      this.addSearchTagList(tagData);
+    }
+    else{
+      this.removeSearchTagList(tagData);
+    }
+  },
+  searchTagListChange(tagList,selected){
+    console.log("searchTagListChange");
+    console.log(tagList);
+    var that=this;
+    tagList.forEach(function(tagNode){
+      let tagData={
+        hierId:tagNode.HierarchyId,
+        hierName:tagNode.HierarchyName,
+        tagId:tagNode.Id,
+        tagName:tagNode.Name,
+        uomId: tagNode.UomId
+      };
+      if(selected){
+        that.addSearchTagList(tagData);
+      }
+      else{
+        that.removeSearchTagList(tagData);
+      }
+    })
 
   },
   clearSearchTagList(){
@@ -102,21 +144,29 @@ var AlarmTagStore = assign({},PrototypeStore,{
 });
 AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
-      case Action.ADD_SEARCH_TAGLIST_CHANGED:
+
+      case AlarmTagAction.ADD_SEARCH_TAGLIST_CHANGED:
         AlarmTagStore.addSearchTagList(action.tagNode);
         AlarmTagStore.emitAddSearchTagList();
         break;
-      case Action.REMOVE_SEARCH_TAGLIST_CHANGED:
+
+      case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
         AlarmTagStore.removeSearchTagList(action.tagNode);
         AlarmTagStore.emitRemoveSearchTagList();
         break;
-      case Action.INTER_DATA_CHANGED:
+      case AlarmTagAction.INTER_DATA_CHANGED:
         AlarmTagStore.setInterData(action.tagNode);
         AlarmTagStore.emitInterData();
         break;
-      case Action.CLEAR_SEARCH_TAGLIST:
+      case AlarmTagAction.CLEAR_SEARCH_TAGLIST:
         AlarmTagStore.clearSearchTagList();
         AlarmTagStore.emitClearData();
+        break;
+      case TagAction.SET_TAGSTATUS_TAG:
+        AlarmTagStore.searchTagChange(action.node,action.selected);
+        break;
+      case TagAction.SET_TAGSTATUS_TAGLIST:
+          AlarmTagStore.searchTagListChange(action.tagList,action.add);
         break;
     }
 });
