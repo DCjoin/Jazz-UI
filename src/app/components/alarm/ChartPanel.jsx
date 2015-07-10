@@ -287,9 +287,9 @@ let ChartPanel = React.createClass({
     let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
 
     //unselect tags in taglist of right panel
-    if(userTagListSelect){
+    //if(userTagListSelect){
       AlarmTagAction.removeSearchTagList({tagId:uid});
-    }
+    //}
 
     let needReload = EnergyStore.removeSeriesDataByUid(uid);
     if(needReload){
