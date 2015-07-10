@@ -135,7 +135,6 @@ let BaselineCfg = React.createClass({
         height:'550px',
         opacity: 0.5,
       },
-
     };
     var me = this;
     var cusTag = {};
