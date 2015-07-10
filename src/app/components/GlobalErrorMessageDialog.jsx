@@ -27,7 +27,8 @@ let GlobalErrorMessageDialog = React.createClass({
             onClick={this._hide} />
         ];
 
-    var dialog = <Dialog title="Error Message" openImmediately={this.state.isShowed} actions={_buttonActions} modal={false} ref='errorMessageDialog'>
+    var dialog = <Dialog title="Error Message" openImmediately={this.state.isShowed} actions={_buttonActions} modal={false}
+                      ref='errorMessageDialog' contentStyle={{width:'500px', color:'#464949'}}> 
       <div> {this.state.errorMessage}</div>
     </Dialog>;
 

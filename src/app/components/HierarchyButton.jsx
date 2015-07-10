@@ -19,11 +19,12 @@ let HierarchyButton=React.createClass({
   },
   _onChange(){
     var data=HierarchyStore.getData();
-
     this.setState({
       hieList:data,
-
     });
+    if(this.props.hierId!=null){
+      this.selectHierItem(this.props.hierId,false);
+    }
   },
   selectHierItem(hierId, isCallClickEvent){
     let item = this.getHierById(hierId);
@@ -65,9 +66,6 @@ let HierarchyButton=React.createClass({
   componentDidMount: function() {
       HierarchyStore.addChangeListener(this._onChange);
       HierarchyAction.loadall(window.currentCustomerId);
-      if(this.props.hierId!=null){
-        this.selectHierItem(this.props.hierId,false)
-      }
      },
    componentWillUnmount: function() {
        HierarchyStore.removeChangeListener(this._onChange);

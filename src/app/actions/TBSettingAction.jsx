@@ -24,7 +24,7 @@ let TBSettingAction = {
         }
     });
   },
-  saveData(setting, callback){
+  saveData(setting, callback, fail){
     Ajax.post('/TargetBaseline.svc/SetTBSetting2?', {
         params: {dto: setting},
         success: function(setting2){
@@ -37,6 +37,7 @@ let TBSettingAction = {
         },
         error: function(err, res){
           console.log(err,res);
+          if(fail) fail(err, res);
         }
     });
   },

@@ -8,12 +8,17 @@ var _data = {};
 
 var HierarchyStore = assign({},PrototypeStore,{
   getData(){
+    console.log("**wyh**HierarchyStore_getData");
+    console.log(_data);
     return _data;
   },
   setData(data){
+    console.log("**wyh**HierarchyStore_setData");
+    console.log(data);
     _data =  data;
   },
   findHierItem(item, hierId){
+    console.log("**wyh**HierarchyStore_gfindHierItem");
 
     if(item.Id === hierId){
       return item;

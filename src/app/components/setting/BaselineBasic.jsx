@@ -130,9 +130,12 @@ var DaytimeRangeValue = React.createClass({
 
   render: function(){
     if(this.props.isViewStatus){
+      var val = this.props.value;
+      if(!val){
+        return null;
+      }
       var startStr = CommonFuns.numberToTime(this.props.start),
-       endStr = CommonFuns.numberToTime(this.props.end),
-       val = this.props.value;
+        endStr = CommonFuns.numberToTime(this.props.end);
 
       var style = {
         padding:'2px 10px',
@@ -218,6 +221,7 @@ var DaytimeRangeValues = React.createClass({
       var item = items[i];
       if(index > i){
         newItems.push(item);
+        continue;
       }else if(index == i){
         item.EndTime = newObj.EndTime;
         newItems.push(item);
@@ -1753,9 +1757,9 @@ var BaselineBasic = React.createClass({
     });
   },
 
-  _saveDataToServer: function(val, callback){
+  _saveDataToServer: function(val, callback, fail){
     var me = this;
-    TBSettingAction.saveData(val, callback);
+    TBSettingAction.saveData(val, callback, fail);
   },
 
   _handleEdit: function(){
@@ -1773,6 +1777,10 @@ var BaselineBasic = React.createClass({
       }
       this._saveDataToServer(val, function(setting){
         me._bindData(setting);
+        if(me.props.onRequestHideMask){
+          me.props.onRequestHideMask(me);
+        }
+      }, function(err, res){
         if(me.props.onRequestHideMask){
           me.props.onRequestHideMask(me);
         }

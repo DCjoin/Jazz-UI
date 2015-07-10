@@ -10,7 +10,8 @@ import {Action} from '../constants/actionType/Alarm.jsx';
 import ReaderFuncs from './MixedChartReader.jsx';
 
 const TAG_DATA_LOADING_EVENT = 'tagdataloading',
-      TAG_DATA_CHANGED_EVENT = 'tagdatachanged';
+      TAG_DATA_CHANGED_EVENT = 'tagdatachanged',
+      GET_DATA_ERROR_EVENT = 'gettagdataerror';
 
 let _isLoading = false,
     _isAlarmLoading = false,
@@ -142,6 +143,15 @@ var EnergyStore = assign({},PrototypeStore,{
   removeTagDataChangeListener: function(callback) {
     this.removeListener(TAG_DATA_CHANGED_EVENT, callback);
   },
+  addGetTagDataErrorListener:function(callback) {
+    this.on(GET_DATA_ERROR_EVENT, callback);
+  },
+  emitGetTagDataErrorListener:function(callback) {
+    this.emit(GET_DATA_ERROR_EVENT);
+  },
+  removeGetTagDataErrorListener: function(callback) {
+    this.removeListener(GET_DATA_ERROR_EVENT, callback);
+  }
 });
 
 EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -160,7 +170,7 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case Action.GET_TAG_DATA_ERROR:
         EnergyStore._onDataChanged(null, action.submitParams);
-        EnergyStore.emitTagDataChange();
+        EnergyStore.emitGetTagDataErrorListener();
         break;
     }
 });

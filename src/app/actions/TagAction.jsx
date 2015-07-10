@@ -58,11 +58,26 @@ let TagAction = {
         }
     });
   },
-  setTagStatusByHierarchyId(hierId,tagStatus){
+  setTagStatusByTag(tagNode,selectd){
     AppDispatcher.dispatch({
-        type: Action.SET_TAGSTATUS,
+        type: Action.SET_TAGSTATUS_TAG,
+        node:tagNode,
+        selected:selectd
+    });
+  },
+  setTagStatusById(hierId,tagId){
+    AppDispatcher.dispatch({
+        type: Action.SET_TAGSTATUS_ID,
         hierId:hierId,
-        tagStatus: tagStatus
+        tagId:tagId
+    });
+
+  },
+  setTagStatusByTagList(tagList,add){
+    AppDispatcher.dispatch({
+        type: Action.SET_TAGSTATUS_TAGLIST,
+        tagList:tagList,
+        add: add
     });
   },
   setCurrentHierarchyId(hierId){
@@ -70,8 +85,23 @@ let TagAction = {
         type: Action.SET_HIERARCHYID,
         hierId:hierId
     });
-  }
-
+  },
+  resetTagInfo(){
+    AppDispatcher.dispatch({
+        type: Action.RESET_TAGINFO
+    });
+  },
+  setCurrentTagList(tagList){
+    AppDispatcher.dispatch({
+        type: Action.SET_CURRENT_TAGLIST,
+        tagList:tagList
+    });
+  },
+  setCheckAllStatus(){
+    AppDispatcher.dispatch({
+        type: Action.SET_CHECK_ALL_STATUS,
+    });
+  },
 };
 
 module.exports = TagAction;

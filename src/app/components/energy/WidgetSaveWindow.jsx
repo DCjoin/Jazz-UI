@@ -74,7 +74,7 @@ var WidgetSaveWindow = React.createClass({
       if(this.state.dashboardMenuItems.length === 0){
           existDashBoardRadioContent = <div></div>;
       }else{
-        existDashBoardRadioContent = <div>
+        existDashBoardRadioContent = <div className='jazz-widget-save-dialog-existing-dashboard'>
             <MutableDropMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
               selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></MutableDropMenu></div>;
       }
