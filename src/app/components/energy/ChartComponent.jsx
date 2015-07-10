@@ -9,7 +9,7 @@ import ChartXAxisSetter from './ChartXAxisSetter.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed} from '../../util/Util.jsx';
-
+import _ from 'lodash';
 let { Dialog, FlatButton, Checkbox } = mui;
 let yAxisOffset = 70;
 
@@ -587,7 +587,7 @@ let ChartComponent = React.createClass({
           startTime = converter.JsonToDateTime(this.props.startTime, true);
 
 
-      if (window.toString.call(d) === '[object Array]' && d.length === 0) {
+      if (_.isArray(d) && d.length === 0) {
           d = [[startTime, null], [endTime, null]];
       }
       else {
@@ -610,7 +610,7 @@ let ChartComponent = React.createClass({
                   range = 7 * 24 * 3600000;
                   break;
           }
-          if (window.toString.call(d) === '[object Array]') {
+          if (_.isArray(d)) {
               var currentTime = (new Date()).getTime();
               while (d[0][0] > startTime) {
                   d.unshift([d[0][0] - range, null]);

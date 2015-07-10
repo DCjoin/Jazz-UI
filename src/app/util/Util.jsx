@@ -1,6 +1,6 @@
 'use strict';
 import Momment from 'moment';
-
+import _ from 'lodash';
 const FIXEDTIMES = {
 								millisecond: 1,
 								second: 1000,
@@ -23,7 +23,7 @@ let CommonFuns = {
 		return it !== null && typeof it == 'function';
 	},
 	isArray(it){
-		return window.toString.call(it) === '[object Array]';
+		return _.isArray(it);
 	},
 	isNumber: function(value) {
       return typeof value === 'number' && isFinite(value);
