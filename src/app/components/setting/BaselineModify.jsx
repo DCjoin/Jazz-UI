@@ -154,7 +154,7 @@ let BaselineModify = React.createClass({
       border: '1px solid #efefef',
       margin: '14px 0px 0px 10px',
       fontSize: '15px',
-      color: '#767a7a',
+      color: '#b3b3b3',
       textAlign: 'center'
     };
     var curYear = (new Date()).getFullYear();
@@ -182,6 +182,7 @@ let BaselineModify = React.createClass({
       marginLeft: '24px',
       marginRight: '10px',
       fontSize: '14px',
+      fontFamily: 'Microsoft YaHei',
       color: '#767a7a',
       backgroundColor: 'transparent',
       border: '1px solid #e4e7e6'
@@ -312,6 +313,7 @@ let MonthItem = React.createClass({
       width: '90px',
       height: '24px',
       fontSize: '14px',
+      fontFamily: 'Microsoft YaHei',
       color: '#767a7a',
       backgroundColor: 'transparent',
       border: '1px solid #e4e7e6'

@@ -22,8 +22,8 @@ let DateTimeSelector = React.createClass({
     startDate.setHours(0,0,0);
     endDate.setHours(0,0,0);
 
-    startField.setDate(startDate);
-    endField.setDate(endDate);
+    startField.setValue(startDate);
+    endField.setValue(endDate);
 
     startTimeField.setState({selectedIndex:startTime});
     endTimeField.setState({selectedIndex:endTime});
@@ -34,8 +34,8 @@ let DateTimeSelector = React.createClass({
         endField = this.refs.endDate,
         endTimeField = this.refs.endTime;
 
-    let startDate = this.refs.startDate.getDate(),
-        endDate = this.refs.endDate.getDate();
+    let startDate = this.refs.startDate.getValue(),
+        endDate = this.refs.endDate.getValue();
 
     startDate.setHours(startTimeField.state.selectedIndex, 0, 0);
     endDate.setHours(endTimeField.state.selectedIndex, 0, 0);
@@ -46,32 +46,36 @@ let DateTimeSelector = React.createClass({
     var startTimeProps = {
       errorMessage: "日期不能早于2010-1-1",
       style: {
-        width:'85px',
-        height:'32px'
+        width:'95px',
+        height:'32px',
+        fontSize: '14px',
+        fontFamily: 'Microsoft YaHei'
       },
       onChange: this.props._onDateSelectorChanged
     };
-    var startTime = <ViewableDatePicker ref="startTimePicker" {...startTimeProps}/>;
+    var startDate = <ViewableDatePicker ref="startDate" {...startTimeProps}/>;
     var endTimeProps = {
       errorMessage: "日期不能早于2010-1-1",
       style: {
-        width:'85px',
-        height:'32px'
+        width:'95px',
+        height:'32px',
+        fontSize: '14px',
+        fontFamily: 'Microsoft YaHei'
       },
       onChange: this.props._onDateSelectorChanged
     };
-    var endTime = <ViewableDatePicker ref="endTimePicker" {...endTimeProps}/>;
+    var endDate = <ViewableDatePicker ref="endDate" {...endTimeProps}/>;
 
     return <div style={{display:'flex',flexDirection:'row', alignItems:'center', backgroundColor:'#fbfbfb'}}>
       <div className={'jazz-full-border-datepicker-container'}>
-        {startTime}
+        {startDate}
       </div>
       <div className={'jazz-full-border-dropdownmenu-time-container'}>
         <DropDownMenu menuItems={dateTime} ref='startTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>
       </div>
       <span> {'到'} </span>
       <div className={'jazz-full-border-datepicker-container'}>
-        {endTime}
+        {endDate}
       </div>
       <div className={'jazz-full-border-dropdownmenu-time-container'}>
         <DropDownMenu menuItems={dateTime} ref='endTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>

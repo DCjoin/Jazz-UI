@@ -63,7 +63,9 @@ var ViewableDatePicker = React.createClass({
             return m.toDate();
         }
     },
-
+    setValue: function(value){
+      this.setState({curDate:value});
+    },
     _onFocus(e){
          e.stopPropagation();
          e.preventDefault();
