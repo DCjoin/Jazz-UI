@@ -2,6 +2,7 @@
 import React from "react";
 import {DropDownMenu, DatePicker} from 'material-ui';
 import CommonFuns from '../util/Util.jsx';
+import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
 
 let {hourPickerData} = CommonFuns;
 
@@ -42,17 +43,35 @@ let DateTimeSelector = React.createClass({
   },
   render(){
     let date = new Date();
+    var startTimeProps = {
+      errorMessage: "日期不能早于2010-1-1",
+      style: {
+        width:'85px',
+        height:'32px'
+      },
+      onChange: this.props._onDateSelectorChanged
+    };
+    var startTime = <ViewableDatePicker ref="startTimePicker" {...startTimeProps}/>;
+    var endTimeProps = {
+      errorMessage: "日期不能早于2010-1-1",
+      style: {
+        width:'85px',
+        height:'32px'
+      },
+      onChange: this.props._onDateSelectorChanged
+    };
+    var endTime = <ViewableDatePicker ref="endTimePicker" {...endTimeProps}/>;
 
     return <div style={{display:'flex',flexDirection:'row', alignItems:'center', backgroundColor:'#fbfbfb'}}>
       <div className={'jazz-full-border-datepicker-container'}>
-        <DatePicker defaultDate={date} ref='startDate' style={{width:'85px', height:'32px',marginLeft:'10px'}} onChange={this.props._onDateSelectorChanged}/>
+        {startTime}
       </div>
       <div className={'jazz-full-border-dropdownmenu-time-container'}>
         <DropDownMenu menuItems={dateTime} ref='startTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>
       </div>
       <span> {'到'} </span>
       <div className={'jazz-full-border-datepicker-container'}>
-        <DatePicker defaultDate={date} ref='endDate' style={{width:'85px', height:'32px', marginLeft:'10px'}} onChange={this.props._onDateSelectorChanged}/>
+        {endTime}
       </div>
       <div className={'jazz-full-border-dropdownmenu-time-container'}>
         <DropDownMenu menuItems={dateTime} ref='endTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>

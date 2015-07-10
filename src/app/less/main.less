@@ -250,7 +250,43 @@ ul{
   }
 
 }
+.jazz-viewableTextField{
+  .jazz-viewableTextField-focus,.jazz-viewableTextField-noempty{
+    label{
+      transform: scale(0.75) translate(0, -20px) !important;
+      font-size: 20px;
+    }
+  }
+}
 
+.jazz-viewableTextField{
+  margin-left:10px;
+  label{
+    transform: scale(1) translate(0, 0) !important;
+  }
+  display:inline-block;
+  >div{
+    > hr:first-of-type {
+      border-bottom: none !important;
+    }
+    >div{
+      >div{
+        bottom:5px !important;
+        position:relative !important;
+      }
+    }
+  }
+  .jazz-viewable-title{
+    font-size:14px;
+    color: @propTitle;
+    margin-bottom:6px;
+  }
+  .jazz-viewable-value{
+    font-size:16px;
+    color: @propValue;
+    word-break: break-all;
+  }
+}
 input:focus{
   background-color:yellow;
   border-color: transparent
