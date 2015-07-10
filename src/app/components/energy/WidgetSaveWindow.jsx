@@ -84,7 +84,7 @@ var WidgetSaveWindow = React.createClass({
     }
     var form =<div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
       <div style={{paddingBottom:'10px'}}>
-        <span className='jazz-form-text-field-label'>*图标名称：</span>
+        <span className='jazz-form-text-field-label'>*图表名称：</span>
         <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNameFieldChange}/>
       </div>
       <div style={{marginBottom:'20px'}} className={'jazz-normal-hierarchybutton-container'}>
@@ -115,7 +115,7 @@ var WidgetSaveWindow = React.createClass({
             <FlatButton label="保存" onClick={this._onDialogSubmit} />,
             <FlatButton label="放弃" onClick={this._onDialogCancel} style={{marginRight:'364px'}}/>
         ];
-    let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'保存图标至仪表盘'}</h3>;
+    let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'保存图表至仪表盘'}</h3>;
     var dialog = <Dialog  title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}}
                           actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
                   {form}
