@@ -117,9 +117,7 @@ var TagStore = assign({},PrototypeStore,{
   return tagStatus;
   },
   removeTagStatusByTagId:function(tagId){
-    console.log("**wyh**tagId="+tagId);
     _totalTagStatus.forEach(function(tagNode){
-        console.log("**wyh**in");
         let index=tagNode.tagStatus.indexOf(tagId);
         if(index>=0){
           tagNode.tagStatus=tagNode.tagStatus.delete(index);
