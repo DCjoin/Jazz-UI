@@ -45,7 +45,7 @@ let DateTimeSelector = React.createClass({
     let date = new Date();
     var startTimeProps = {
       errorMessage: "日期不能早于2010-1-1",
-      defaultValue: this.props.startDate,
+      defaultValue: this.props.startDate || date,
       style: {
         width:'95px',
         height:'32px',
@@ -57,7 +57,7 @@ let DateTimeSelector = React.createClass({
     var startDate = <ViewableDatePicker ref="startDate" {...startTimeProps}/>;
     var endTimeProps = {
       errorMessage: "日期不能早于2010-1-1",
-      defaultValue: this.props.endDate,
+      defaultValue: this.props.endDate || date,
       style: {
         width:'95px',
         height:'32px',

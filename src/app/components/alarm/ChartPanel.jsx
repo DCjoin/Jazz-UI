@@ -232,9 +232,12 @@ let ChartPanel = React.createClass({
       let me = this;
       let energyPart=null;
       let paramsObj = EnergyStore.getParamsObj();
-      let startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
-      let endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
-
+      var startDate = null,
+          endDate = null;
+      if(paramsObj){
+        startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
+        endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
+      }
       if(!me.state.chartTitle){
          return null;
       }
