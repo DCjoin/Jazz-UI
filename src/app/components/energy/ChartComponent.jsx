@@ -9,7 +9,7 @@ import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
-import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed} from '../../util/Util.jsx';
+import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
 let { Dialog, FlatButton, Checkbox } = mui;
 let yAxisOffset = 70;
@@ -520,9 +520,9 @@ let ChartComponent = React.createClass({
           var item = data[j];
           var n = item.name;
           var isBenchmarkLine = item.dType == 15;
-          //if (n.indexOf('<br') < 0) {//hack for multi-timespan compare
-          //    n = Ext.String.ellipsis(n, 23, false); //greater than 23 then truncate with ...
-          //}
+          if (n.indexOf('<br') < 0) {//hack for multi-timespan compare
+             n = JazzCommon.GetArialStr(n, 23); //greater than 23 then truncate with ...
+          }
           let enableDelete = true;
           if(item.dType == 13 || item.dType == 14 || item.dType == 15){
             enableDelete = false;
