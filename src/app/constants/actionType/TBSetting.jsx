@@ -12,6 +12,7 @@ module.exports = {
       SET_TAGID:null,
       RESET_HIERID:null,
       RESET_TAGID:null,
-      SET_YEAR:null
+      SET_YEAR:null,
+      SET_CALDETAIL_LOAGDING:null,
   })
 };

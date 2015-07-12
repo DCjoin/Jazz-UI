@@ -168,6 +168,9 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
       case TagAction.SET_TAGSTATUS_TAGLIST:
           AlarmTagStore.searchTagListChange(action.tagList,action.add);
         break;
+      case TagAction.CLEAR_ALARM_SEARCH_TAGLIST:
+          AlarmTagStore.clearSearchTagList();
+        break;
     }
 });
 

@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import classnames from 'classnames';
-import {FlatButton,FontIcon,Menu,Paper} from 'material-ui';
+import {FlatButton,FontIcon,Menu,Paper,CircularProgress} from 'material-ui';
 import HierarchyTree from './HierarchyTree.jsx';
 import HierarchyAction from "../actions/HierarchyAction.jsx";
 import HierarchyStore from "../stores/HierarchyStore.jsx";
@@ -21,10 +21,13 @@ let HierarchyButton=React.createClass({
     var data=HierarchyStore.getData();
     this.setState({
       hieList:data,
+        isLoading:HierarchyStore.getNodeLoading()
     });
-    if(this.props.hierId!=null){
-      this.selectHierItem(this.props.hierId,false);
-    }
+  },
+  _onNodeLoadingChange:function(){
+    this.setState({
+      isLoading:HierarchyStore.getNodeLoading()
+    });
   },
   selectHierItem(hierId, isCallClickEvent){
     let item = this.getHierById(hierId);
@@ -60,18 +63,27 @@ let HierarchyButton=React.createClass({
         open: false,
         hieList:null,
         selectedNode:null,
-        buttonName:"请选择层级节点"
+        buttonName:"请选择层级节点",
+        isLoading:false
       };
     },
   componentDidMount: function() {
-      HierarchyStore.addChangeListener(this._onChange);
+      HierarchyStore.addHierarchyNodeListener(this._onChange);
+      HierarchyStore.addNodeLoadingListener(this._onNodeLoadingChange);
       HierarchyAction.loadall(window.currentCustomerId);
+      if(this.props.hierId!==null){
+        this.selectHierItem(this.props.hierId,false);
+      }
      },
    componentWillUnmount: function() {
-       HierarchyStore.removeChangeListener(this._onChange);
+       HierarchyStore.removeHierarchyNodeListener(this._onChange);
+        HierarchyStore.removeNodeLoadingListener(this._onNodeLoadingChange);
 
       },
   componentWillReceiveProps: function(nextProps) {
+    if(nextProps.hierId!==null){
+      this.selectHierItem(nextProps.hierId,false);
+    }
         if(!nextProps.show){
           this.setState({
             open:false
@@ -80,17 +92,38 @@ let HierarchyButton=React.createClass({
       },
 
   render:function(){
-      var dropdownPaper;
+      var dropdownPaper,
+        paperStyle = {
+                    backgroundColor: '#ffffff',
+                    zIndex: '100',
+                    width:'300px',
+                    height:'390px',
+                    position:'absolute',
+                    border:'1px solid #c9c8c8',
+                    margin:'12px 10px'
+                  };
 
       if(this.state.open && this.props.show) {
-        if(this.state.selectedNode){
-          dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
-        }else{
-          dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.hieList} onTreeClick={this._onTreeClick}/>;
+        if(this.state.isLoading){
+          dropdownPaper=(
+            <Paper style={paperStyle}>
+              <div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center',marginTop:'160px'}}>
+              <CircularProgress  mode="indeterminate" size={1} />
+            </div>
+          </Paper>
+          )
+        }
+        else {
+          if(this.state.selectedNode){
+            dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
+          }else{
+            dropdownPaper=<HierarchyTree allNode={this.state.hieList} selectedNode={this.state.hieList} onTreeClick={this._onTreeClick}/>;
+          }
         }
 
 
-      }
+
+      };
       var errorStyle = {
         position: 'absolute',
         bottom: -10,

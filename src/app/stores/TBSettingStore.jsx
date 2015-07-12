@@ -13,10 +13,12 @@ var _hierId=null;
 var _tagId=null;
 var _calDetail=null;
 var _year=null;
+var _isCalDetailLoading=false;
 
 let CHANGE_TAG_EVENT = 'changetag';
 let CHANGE_TBYEAR_EVENT = 'changetbyear';
 let CHANGE_CALDETAIL_EVENT= 'changecaldetail';
+let CALDETAIL_LOADING_EVENT='caldetailloading';
 
 
 var TBSettingStore = assign({},PrototypeStore,{
@@ -37,19 +39,11 @@ var TBSettingStore = assign({},PrototypeStore,{
   },
   setCalDetailData(data,year){
     _calDetail = null;
-/*    if(data.CalendarItemGroups){
-      data.CalendarItemGroups[0].CalendarItems.sort(function(a,b){return a.EffectiveTime>b.EffectiveTime?1:-1});
-       data.CalendarItemGroups[0].CalendarItems.forEach(function(calData,i){
-         if(year>=calData.EffectiveTime){
-           _calDetail=calData
-         }
-       });
-    }
-    */
     if(data.CalendarItemGroups){
         data.CalendarItemGroups[0].CalendarItems.sort(function(a,b){return a.EffectiveTime>b.EffectiveTime?1:-1});
         _calDetail=data.CalendarItemGroups[0].CalendarItems
-        }
+      };
+    _isCalDetailLoading=false;
   },
   emitCalDetailChange: function() {
         this.emit(CHANGE_CALDETAIL_EVENT);
@@ -82,11 +76,29 @@ var TBSettingStore = assign({},PrototypeStore,{
     _tagId=null;
   },
   setYear(year){
-    _year=year
+    _year=year;
   },
   getYear(){
-    return _year
+    return _year;
   },
+  setCalDetailLoading(){
+    _isCalDetailLoading=true;
+  },
+  getCalDetailLoading(){
+    return _isCalDetailLoading;
+  },
+  emitCalDetailLoadingChange: function() {
+        this.emit(CALDETAIL_LOADING_EVENT);
+        },
+
+  addCalDetailLoadingListener: function(callback) {
+       this.on(CALDETAIL_LOADING_EVENT, callback);
+        },
+
+  removeCalDetailLoadingListener: function(callback) {
+      this.removeListener(CALDETAIL_LOADING_EVENT, callback);
+      this.dispose();
+        },
 });
 
 var Action = TBSetting.Action;
@@ -118,6 +130,10 @@ TBSettingStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SET_YEAR:
       TBSettingStore.setYear(action.year);
+      break;
+    case Action.SET_CALDETAIL_LOAGDING:
+      TBSettingStore.setCalDetailLoading();
+      TBSettingStore.emitCalDetailLoadingChange();
       break;
   }
 });
