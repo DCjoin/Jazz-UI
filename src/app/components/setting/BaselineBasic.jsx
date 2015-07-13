@@ -1701,6 +1701,13 @@ var BaselineBasic = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps){
+<<<<<<< HEAD
+    if(nextProps){
+      this._fetchServerData(this.state.year);
+    }
+    var hierId=TagStore.getCurrentHierarchyId();
+      TBSettingAction.calDetailData(hierId);
+=======
     // if(nextProps){
     //   this._fetchServerData(this.state.year);
     // }
@@ -1708,6 +1715,7 @@ var BaselineBasic = React.createClass({
 
   fetchServerData(){
     this._fetchServerData(this.state.year);
+>>>>>>> 2790ff64c289315c8f02ab87e1d8183abec85ac5
   },
 
   tryGetValue: function(){
@@ -1891,16 +1899,28 @@ var BaselineBasic = React.createClass({
       //className: "yearpicker",
 
     };
-    var calDetailButton,showCalDetail;
+    var calDetailButton,showCalDetail,editButton;
     if(!(this.state.hasCal===null)){
       calDetailButton=((!!this.state.hasCal)?<div className="jazz-setting-basic-calbutton" onClick={this.showCalDetail}>{this.state.calButton}</div>
     :<div>该数据点所关联层级节点在所选年份未引用任何日历模板。请引用后再设置，保证设置内容可被计算</div>);
+
     if(this.state.hasCal==false){
-      React.findDOMNode(this.refs.editButton).disabled="disabled"
+      editButton=(
+        <button type="submit" ref="editButton" disabled="disabled" hidden={!this.state.isViewStatus} className={classNames({
+                                                                                    "jazz-setting-basic-editbutton": true,
+                                                                                    "disabled": !this.state.hasCal
+                                                                                  })} onClick={this._handleEdit}> 编辑 </button>
+      )
     }
     else{
-      React.findDOMNode(this.refs.editButton).disabled=null
+      editButton=(
+        <button type="submit" ref="editButton" hidden={!this.state.isViewStatus} className={classNames({
+                                                                                    "jazz-setting-basic-editbutton": true,
+                                                                                    "disabled": !this.state.hasCal
+                                                                                  })} onClick={this._handleEdit}> 编辑 </button>
+      )
     }
+
     };
 
     if(this.state.showCalDetail){
@@ -1949,10 +1969,7 @@ var BaselineBasic = React.createClass({
         </div>
         <div>{this.state.validationError}</div>
         <div>
-          <button type="submit" ref="editButton" hidden={!this.state.isViewStatus} className={classNames({
-                                                                                      "jazz-setting-basic-editbutton": true,
-                                                                                      "disabled": !this.state.hasCal
-                                                                                    })} onClick={this._handleEdit}> 编辑 </button>
+        {editButton}
           <span>
             <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleSave}> 保存 </button>
             <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleCancel}> 放弃 </button>
