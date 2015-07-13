@@ -560,14 +560,11 @@ var CalcSetting = React.createClass({
   },
 
   validate: function(){
-    // var startDate = new Date(this.props.dateRange.start),
-    //   endDate = new Date(this.props.dateRange.end),
-    //   tmpDate = new Date(startDate);
-    // tmpDate.setMonth(tmpDate.getMonth() + 1);
-    //
-    // if(tmpDate > endDate){
-    //
-    // }
+    var startDate = new Date(this.props.dateRange.start),
+      endDate = new Date(this.props.dateRange.end),
+      tmpDate = new Date(startDate);
+    tmpDate.setMonth(tmpDate.getMonth() + 1);
+    return tmpDate > endDate;
   },
 
   _onCalcClick: function(){
@@ -579,6 +576,9 @@ var CalcSetting = React.createClass({
   render: function () {
     if(!this.props.isDisplay){
       return <div></div>;
+    }
+    if(!this.validate()){
+      return <div>所选数据的时间跨度大于一个月，无法计算，请重新选择数据</div>;
     }
     var items = this.props.items || [], rows = [];
     var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
@@ -1921,6 +1921,7 @@ var BaselineBasic = React.createClass({
       items: this.state.items,
       year: this.state.year,
       isViewStatus: this.state.isViewStatus,
+      dateRange: this.props.dateRange,
     };
     var tbNameProps = {
       defaultValue: this.props.name,
