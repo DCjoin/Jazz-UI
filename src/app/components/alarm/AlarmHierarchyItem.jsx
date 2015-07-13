@@ -43,7 +43,10 @@ let AlarmHierarchyItem = React.createClass({
 				);
 			});
 		}
-
+		let tagCount = hierarchy.TagAlarmInfoDtos.length;
+		if(tagCount > 99){
+			tagCount= '99+';
+		}
 		return (
       <div>
     			<div className={classNames({
@@ -52,7 +55,7 @@ let AlarmHierarchyItem = React.createClass({
 						})} onClick={me._onHierarchyItemSelected}>
     				<span>{hierarchy.HierName}</span>
 						<span>
-            	<span>{hierarchy.TagAlarmInfoDtos.length}</span>
+            	<span>{tagCount}</span>
 						</span>
 					</div>
           {tagItems}
