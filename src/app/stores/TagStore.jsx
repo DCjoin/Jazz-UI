@@ -12,6 +12,7 @@ let TAG_TOTAL_EVENT = 'tagtotal';
 let TAG_STATUS_EVENT = 'tagstatus';
 let CHECKALL_STATUS_EVENT = 'checkallstatus';
 let NODE_LOADING_EVENT= 'nodeloading';
+let BASELINE_BTN_DISABLED_EVENT='baselinebtndisabled';
 var _data = {};
 var _totalTagStatus=[];
 var _hierId=null;
@@ -21,6 +22,7 @@ var _checkall_disable_status=null;
 var _checkall_checked_status=null;
 var _isLoading=false;
 var _tagTotalStatus=false;
+var baseline_btn_disabled=false;
 
 
 var TagStore = assign({},PrototypeStore,{
@@ -74,6 +76,7 @@ var TagStore = assign({},PrototypeStore,{
      _tagTotal--;
    };
      this.checkAllStatus();
+     this.checkBaselineBtnDisabled();
   },
   setTagStatusById:function(hierId,tagId){
     _tagTotal++;
@@ -130,6 +133,7 @@ var TagStore = assign({},PrototypeStore,{
         this.setTagTotalStatus();
       }
     }
+   this.checkBaselineBtnDisabled();
 
   },
   getCurrentHierIdTagStatus:function(){
@@ -149,11 +153,13 @@ var TagStore = assign({},PrototypeStore,{
           _tagTotal--
         }
       });
+      this.checkBaselineBtnDisabled();
+
   },
   clearTagStatus:function(){
     _tagTotal=0;
     _totalTagStatus=[];
-  //  this.checkAllStatus();
+     this.checkBaselineBtnDisabled();
 },
   getTagTotal:function(){
     return _tagTotal
@@ -211,6 +217,18 @@ else{
   },
   getCheckAllCheckedStatus:function(){
     return _checkall_checked_status;
+  },
+  checkBaselineBtnDisabled:function(){
+    if(_tagTotal>1){
+      baseline_btn_disabled=true;
+    }
+    else {
+      baseline_btn_disabled=false;
+    }
+      this.emitBaselineBtnDisabledChange();
+  },
+  getBaselineBtnDisabled:function(){
+    return baseline_btn_disabled
   },
   getData(){
     return _data;
@@ -299,6 +317,18 @@ else{
       this.removeListener(NODE_LOADING_EVENT, callback);
       this.dispose();
         },
+  emitBaselineBtnDisabledChange: function() {
+     this.emit(BASELINE_BTN_DISABLED_EVENT);
+        },
+
+  addBaselineBtnDisabledListener: function(callback) {
+   this.on(BASELINE_BTN_DISABLED_EVENT, callback);
+          },
+
+  removeBaselineBtnDisabledListener: function(callback) {
+      this.removeListener(BASELINE_BTN_DISABLED_EVENT, callback);
+      this.dispose();
+          },
 });
 var TagAction = Tag.Action,
     AlarmTagAction = AlarmTag.Action;

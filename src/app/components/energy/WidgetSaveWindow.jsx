@@ -8,6 +8,7 @@ import HierarchyButton from '../HierarchyButton.jsx';
 import MutableDropMenu from '../../controls/MutableDropMenu.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import DashboardStore from '../../stores/DashboardStore.jsx';
+import TagStore from '../../stores/TagStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
 let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
