@@ -30,16 +30,19 @@ var TBSettingStore = assign({},PrototypeStore,{
   },
   getCalDetailData(){
     var selectCal=null;
-    _calDetail.forEach(function(calData,i){
-    if(_year>=calData.EffectiveTime){
-        selectCal=calData
-      }
-    });
+    if(_calDetail!==null){
+      _calDetail.forEach(function(calData,i){
+      if(_year>=calData.EffectiveTime){
+          selectCal=calData
+        }
+      });
+    }
+
     return selectCal;
   },
   setCalDetailData(data,year){
     _calDetail = null;
-    if(data.CalendarItemGroups){
+    if(data.CalendarItemGroups.length!=0){
         data.CalendarItemGroups[0].CalendarItems.sort(function(a,b){return a.EffectiveTime>b.EffectiveTime?1:-1});
         _calDetail=data.CalendarItemGroups[0].CalendarItems
       };
