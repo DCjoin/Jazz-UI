@@ -138,7 +138,7 @@ let Dialog = React.createClass({
         fontFamily: 'Microsoft YaHei',
         position: 'fixed',
         WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-        zIndex: 10,
+        zIndex: 5,
         top: 0,
         left: -10000,
         width: '100%',
@@ -151,7 +151,7 @@ let Dialog = React.createClass({
         width: '830px',
         height: '650px',
         margin: '0 auto',
-        zIndex: 10,
+        zIndex: 5,
         opacity: 0,
         borderRadius: 0,
 
@@ -181,7 +181,7 @@ let Dialog = React.createClass({
       },
       buttons:{
         position: 'absolute',
-        zIndex: 100,
+        zIndex: 5,
         fontSize: 38,
         fontFamily: 'Microsoft YaHei',
         float: 'right',

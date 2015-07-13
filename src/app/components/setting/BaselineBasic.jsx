@@ -227,7 +227,7 @@ var DaytimeRangeValues = React.createClass({
         newItems.push(item);
       }
 
-      if(newObj.end == 1440){
+      if(newObj.EndTime == 1440){
         break;
       }else{
         newItems.push({
@@ -554,7 +554,7 @@ var CalcSetting = React.createClass({
     return arr;
   },
 
-  validate: function(){  
+  validate: function(){
     // var startDate = new Date(this.props.dateRange.start),
     //   endDate = new Date(this.props.dateRange.end),
     //   tmpDate = new Date(startDate);
@@ -682,9 +682,13 @@ var SpecialItem = React.createClass({
   },
 
   validateValue: function(special){
-    var val;
+    var val， valid=true;
     if(special) val = special.Value; else val = this.refs.valueField.getValue();
-    return this._validateValue(val) != '';
+    if(special.StartTime >= special.EndTime){
+      valid = false;
+      this.setState({specialError: valid ? '' : '补充日期非法， 请重新选择时段'});
+    }
+    return  valid & this._validateValue(val) != '';
   },
 
   validateTBSettingItem: function(tbsItem, specials){
@@ -1788,6 +1792,7 @@ var BaselineBasic = React.createClass({
       if(this.props.onRequestShowMask){
         this.props.onRequestShowMask(this);
       }
+      this._bindData(val);
       this._saveDataToServer(val,
         function(setting){
           me._bindData(setting);
@@ -1896,12 +1901,20 @@ var BaselineBasic = React.createClass({
         };
       var showCalDetail=<CalDetail  {...calDetailprops}/>
     };
+
+    var yearPicker = null;
+    if(this.state.isViewStatus){
+      yearPicker = <span>{this.state.year}</span>;
+    }else{
+      yearPicker = <YearPicker {...yearProps} />;
+    }
+
     return (
       <div className='jazz-setting-basic-container'>
       <div className='jazz-setting-basic-content'>
         <div>
           <div><TextField ref="TBName" {...tbNameProps} /></div>
-          <div className="jazz-setting-basic-firstline"><span>请选择配置年份进行编辑</span><YearPicker {...yearProps} />
+          <div className="jazz-setting-basic-firstline"><span>请选择配置年份进行编辑</span>{yearPicker}
           <span>{calDetailButton}</span>
           </div>
 

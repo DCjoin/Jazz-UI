@@ -106,12 +106,12 @@ let BaselineCfg = React.createClass({
       style:{
         fontFamily: "Microsoft YaHei",
         backgroundColor:'#171919 opacity(0.7)',
-        zIndex:'110'
+        zIndex:'6'
       },
       contentStyle:{
         height:'550px',
         width:'830px',
-        zIndex:'110',
+        zIndex:'6',
         opacity: 1,
       },
       titleStyle:{
@@ -127,7 +127,7 @@ let BaselineCfg = React.createClass({
       },
       style:{
         background: 'transparent',
-        zIndex:'111',
+        zIndex:'7',
         opacity: 1,
       },
       contentStyle:{
