@@ -101,6 +101,22 @@ let BaselineCfg = React.createClass({
       }
     });
   },
+  _tab0Active(tab){
+    var ctrl = this.refs.baselineBasic;
+    if(ctrl){
+      ctrl.fetchServerData();
+    }
+  },
+  _tab1Active(tab){
+    var ctrl = this.refs.baselineModify;
+    if(ctrl){
+    }
+  },
+  _tab2Active(tab){
+    var ctrl = this.refs.alarmSetting;
+    if(ctrl){
+    }
+  },
   render: function () {
     var dialogProps={
       style:{
@@ -204,14 +220,14 @@ let BaselineCfg = React.createClass({
         <Dialog title="基准值配置" ref="cfgDialog" {...dialogProps}>
           <div className="jazz-tabs">
             <Tabs {...tabsProps}>
-              <Tab label="基准值配置" style={firstTabStyles}>
+              <Tab label="基准值配置" style={firstTabStyles} onActive={this._tab0Active}>
                 <BaselineBasic  ref="baselineBasic" {...basicProps} />
               </Tab>
-              <Tab label="计算值修正" style={tabStyle}>
+              <Tab label="计算值修正" style={tabStyle}  onActive={this._tab1Active}>
                 <BaselineModify  ref="baselineModify" tbId={this.state.tbId}/>
               </Tab>
-              <Tab label="报警设置"  style={tabStyle}>
-                <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId} />
+              <Tab label="报警设置"  style={tabStyle}  onActive={this._tab2Active}>
+                <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId}/>
               </Tab>
             </Tabs>
           </div>
