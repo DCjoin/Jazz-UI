@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {IconButton,DropDownMenu,DatePicker,FlatButton,FontIcon,Menu,Checkbox,TextField} from 'material-ui';
+import {IconButton,DropDownMenu,DatePicker,FlatButton,FontIcon,Menu,Checkbox,TextField,CircularProgress} from 'material-ui';
 import classnames from 'classnames';
 import HierarchyButton from './HierarchyButton.jsx';
 import DimButton from './DimButton.jsx';
@@ -37,6 +37,11 @@ let DataSelectMainPanel=React.createClass({
     _onHierachyTreeClick:function(node){
       if(node!=this.state.dimParentNode){
         TagAction.setCurrentHierarchyId(node.Id);
+        filters=null;
+        alarmType=null;
+        React.findDOMNode(this.refs.searchIcon).style.display='block';
+        this.refs.searchText.setValue("");
+        this.refs.dropDownMenu.setState({selectedIndex:0})
       }
       TagAction.loadData(node.Id,2,1,alarmType,filters);
       TBSettingAction.setHierId(node.Id);
@@ -79,10 +84,12 @@ let DataSelectMainPanel=React.createClass({
     },
 
     _onTagNodeChange:function(){
+      console.log("**wyh**_onTagNodeChange");
       var data=TagStore.getData();
       this.setState({
         tagList:data.GetTagsByFilterResult,
         total:data.total,
+        isLoading:TagStore.getNodeLoading(),
       })
     },
     _onAlarmTagNodeChange:function(){
@@ -94,7 +101,8 @@ let DataSelectMainPanel=React.createClass({
         total:data.totalCount,
         tagId:alarmTag.hierId,
         optionType:2,
-        dimActive:true
+        dimActive:true,
+        isLoading:TagStore.getNodeLoading(),
       })
     },
 
@@ -237,11 +245,14 @@ let DataSelectMainPanel=React.createClass({
       searchTagListChanged:true
     });
     },
-    _onTagTotalChange:function(){
-
+    _onNodeLoadingChange:function(){
+      this.setState({
+        isLoading:TagStore.getNodeLoading(),
+      });
     },
     getInitialState: function() {
           return {
+            isLoading:false,
             dimActive:false,
             dimNode:null,
             dimParentNode:null,
@@ -268,9 +279,20 @@ let DataSelectMainPanel=React.createClass({
           alarmTagOption = EnergyStore.getTagOpions()[0];
           }
       },
+    componentWillReceiveProps:function(){
+      if(this.props.linkFrom=="Alarm"){
+          alarmTagOption = EnergyStore.getTagOpions()[0];
+          TagAction.resetTagInfo();
+          TagAction.loadAlarmData(alarmTagOption);
+          //set the first tag select status from alarm left panel
+          TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+          }
+      },
     componentDidMount: function() {
       TagStore.addTagNodeListener(this._onTagNodeChange); //listener for load tag
+      TagStore.addNodeLoadingListener(this._onNodeLoadingChange);
       TagAction.resetTagInfo();
+
       if(this.props.linkFrom=="Alarm"){
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
         TagAction.loadAlarmData(alarmTagOption);
@@ -278,10 +300,14 @@ let DataSelectMainPanel=React.createClass({
         TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
 
       }
+      else {
+        TagAction.clearAlarmSearchTagList();
+      }
      },
     componentWillUnmount: function() {
 
        TagStore.removeTagNodeListener(this._onTagNodeChange);
+       TagStore.removeNodeLoadingListener(this._onNodeLoadingChange);
        if(this.props.linkFrom=="Alarm"){
          TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
 
@@ -311,18 +337,33 @@ let DataSelectMainPanel=React.createClass({
              flex:'1',
              height:'26px'
            };
-      var menupaper,pagination;
-      alarmType=null;
-      filters=[];
+      var menupaper,pagination,
+          totalPageNum=parseInt((this.state.total+19)/20)==0?1:parseInt((this.state.total+19)/20);
+
       if(this.state.tagList){
        menupaper=<TagMenu tagList={this.state.tagList}/>;
        pagination=<Pagination onPrePage={this._onPrePage}
                                              onNextPage={this._onNextPage}
                                              jumpToPage={this.jumpToPage}
                                              curPageNum={page}
-                                             totalPageNum={parseInt((this.state.total+19)/20)}/>;
+                                             totalPageNum={totalPageNum}/>;
       }
+      var content;
+      if(this.state.isLoading){
+        content=(  <div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center',marginTop:'160px'}}>
+            <CircularProgress  mode="indeterminate" size={1} />
+          </div>
+        )
+      }
+      else{
+        content=(
+          <div style={{display:'flex','flex-direction':'column',flex:1}}>
+            {menupaper}
+            {pagination}
+          </div>
 
+        )
+      }
       return(
         <div className="jazz-dataselectmainpanel" style={{flex:1}}>
 
@@ -340,12 +381,11 @@ let DataSelectMainPanel=React.createClass({
               <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
           </label>
 
-          <DropDownMenu autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
+          <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
 
           </div>
 
-         {menupaper}
-         {pagination}
+          {content}
 
         </div>
 

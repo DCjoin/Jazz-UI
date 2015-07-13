@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker,RaisedButton,CircularProgress } from 'material-ui';
+import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker,RaisedButton } from 'material-ui';
 import assign from "object-assign";
 import classNames from 'classnames';
 import YearPicker from '../../controls/YearPicker.jsx';
@@ -229,6 +229,7 @@ var DaytimeRangeValues = React.createClass({
       }
 
       if(newObj.EndTime == 1440){
+      if(newObj.end == 1440){
         break;
       }else{
         newItems.push({
@@ -683,13 +684,9 @@ var SpecialItem = React.createClass({
   },
 
   validateValue: function(special){
-    var val, valid=true;
+    var val;
     if(special) val = special.Value; else val = this.refs.valueField.getValue();
-    if(special.StartTime >= special.EndTime){
-      valid = false;
-      this.setState({specialError: valid ? '' : '补充日期非法， 请重新选择时段'});
-    }
-    return  valid & this._validateValue(val) != '';
+    return this._validateValue(val) != '';
   },
 
   validateTBSettingItem: function(tbsItem, specials){
@@ -1688,15 +1685,10 @@ var BaselineBasic = React.createClass({
       validationError: '',
       hasCal:null,
       tbnameError: '',
-      isCalDetailLoading:false
     };
   },
 
   componentDidMount: function(){
-    var hierId=TagStore.getCurrentHierarchyId();
-    TBSettingStore.addCalDetailListener(this._onChange);
-    TBSettingStore.addCalDetailLoadingListener(this._onCalDetailLoadingChange);
-    TBSettingAction.calDetailData(hierId);
     this._fetchServerData(this.state.year);
   },
 
@@ -1762,13 +1754,11 @@ var BaselineBasic = React.createClass({
 
   _bindData: function(tbSetting){
     var itemsCtrl = this.refs.TBSettingItems;
-      if(itemsCtrl){
-      this.setState({items: tbSetting.TBSettings});
-      if(!tbSetting.TBSettings){
-        itemsCtrl.setValue([]);
-      }else{
-        itemsCtrl.setValue(tbSetting.TBSettings);
-      }
+    this.setState({items: tbSetting.TBSettings});
+    if(!tbSetting.TBSettings){
+      itemsCtrl.setValue([]);
+    }else{
+      itemsCtrl.setValue(tbSetting.TBSettings);
     }
   },
 
@@ -1800,7 +1790,6 @@ var BaselineBasic = React.createClass({
       if(this.props.onRequestShowMask){
         this.props.onRequestShowMask(this);
       }
-      this._bindData(val);
       this._saveDataToServer(val,
         function(setting){
           me._bindData(setting);
@@ -1835,25 +1824,22 @@ var BaselineBasic = React.createClass({
     var data=TBSettingStore.getCalDetailData();
     if(data){
       this.setState({
-        hasCal:true,
-        isCalDetailLoading:TBSettingStore.getCalDetailLoading()
+        hasCal:true
       })
     }
     else{
       this.setState({
-        hasCal:false,
-        isCalDetailLoading:TBSettingStore.getCalDetailLoading()
+        hasCal:false
       })
     }
   },
-  _onCalDetailLoadingChange:function(){
-    this.setState({
-      isCalDetailLoading:TBSettingStore.getCalDetailLoading()
-    })
+  componentWillMount:function(){
+    var hierId=TBSettingStore.getHierId();
+    TBSettingStore.addCalDetailListener(this._onChange);
+    TBSettingAction.calDetailData(hierId);
   },
   componentWillUnmount:function(){
-    TBSettingStore.removeCalDetailListener(this._onChange);
-    TBSettingStore.removeCalDetailLoadingListener(this._onCalDetailLoadingChange);
+    TBSettingStore.removeCalDetailListener(this._onChange)
   },
   render: function (){
     var itemProps = {
@@ -1912,51 +1898,34 @@ var BaselineBasic = React.createClass({
         };
       var showCalDetail=<CalDetail  {...calDetailprops}/>
     };
-
-    var yearPicker = null;
-    if(this.state.isViewStatus){
-      yearPicker = <span>{this.state.year}</span>;
-    }else{
-      yearPicker = <YearPicker {...yearProps} />;
-    }
-    if(this.state.isCalDetailLoading){
-      return (
-        <div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center',marginTop:'160px'}}>
-          <CircularProgress  mode="indeterminate" size={1} />
-        </div>
-      );
-    }
-    else{
-      return (
-        <div className='jazz-setting-basic-container'>
-        <div className='jazz-setting-basic-content'>
-          <div>
-            <div><TextField ref="TBName" {...tbNameProps} /></div>
-            <div className="jazz-setting-basic-firstline"><span>请选择配置年份进行编辑</span>{yearPicker}
-            <span>{calDetailButton}</span>
-            </div>
-
-            <div ref="TBSettingContainer">
-              <TBSettingItems ref="TBSettingItems" {...itemProps} />
-            </div>
-          </div>
-          {showCalDetail}
-
-        </div>
-        <div>{this.state.validationError}</div>
+    return (
+      <div className='jazz-setting-basic-container'>
+      <div className='jazz-setting-basic-content'>
         <div>
-          <button type="submit" ref="editButton" hidden={!this.state.isViewStatus} className={classNames({
-                                                                                      "jazz-setting-basic-editbutton": true,
-                                                                                      "disabled": !this.state.hasCal
-                                                                                    })} onClick={this._handleEdit}> 编辑 </button>
-          <span>
-            <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleSave}> 保存 </button>
-            <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleCancel}> 放弃 </button>
-          </span>
-        </div>
-       </div>);
-    }
+          <div><TextField ref="TBName" {...tbNameProps} /></div>
+          <div className="jazz-setting-basic-firstline"><span>请选择配置年份进行编辑</span><YearPicker {...yearProps} />
+          <span>{calDetailButton}</span>
+          </div>
 
+          <div ref="TBSettingContainer">
+            <TBSettingItems ref="TBSettingItems" {...itemProps} />
+          </div>
+        </div>
+        {showCalDetail}
+
+      </div>
+      <div>{this.state.validationError}</div>
+      <div>
+        <button type="submit" ref="editButton" hidden={!this.state.isViewStatus} className={classNames({
+                                                                                    "jazz-setting-basic-editbutton": true,
+                                                                                    "disabled": !this.state.hasCal
+                                                                                  })} onClick={this._handleEdit}> 编辑 </button>
+        <span>
+          <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleSave}> 保存 </button>
+          <button type="submit" hidden={this.state.isViewStatus} className="jazz-setting-basic-editbutton" onClick={this._handleCancel}> 放弃 </button>
+        </span>
+      </div>
+     </div>);
   }
 });
 

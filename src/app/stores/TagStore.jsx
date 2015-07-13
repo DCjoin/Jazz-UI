@@ -11,6 +11,7 @@ let LOAD_ALARM_TAG_NODE_EVENT = 'loadalarmtagnode';
 let TAG_TOTAL_EVENT = 'tagtotal';
 let TAG_STATUS_EVENT = 'tagstatus';
 let CHECKALL_STATUS_EVENT = 'checkallstatus';
+let NODE_LOADING_EVENT= 'nodeloading';
 var _data = {};
 var _totalTagStatus=[];
 var _hierId=null;
@@ -18,9 +19,16 @@ var _tagTotal=0;
 var _tagList=[];
 var _checkall_disable_status=null;
 var _checkall_checked_status=null;
+var _isLoading=false;
 
 
 var TagStore = assign({},PrototypeStore,{
+  setNodeLoading:function(){
+    _isLoading=true;
+  },
+  getNodeLoading:function(){
+    return _isLoading;
+  },
   setTagStatusByTag:function(node,selected){
     var hasHierId=false;
     //total的加减 emit total change 判断 total>30  和 第一次小于30的情况 都调用emit
@@ -56,7 +64,8 @@ var TagStore = assign({},PrototypeStore,{
        this.emitTagTotalChange();
      }
      _tagTotal--;
-   }
+   };
+     this.checkAllStatus();
   },
   setTagStatusById:function(hierId,tagId){
     _tagTotal++;
@@ -142,12 +151,15 @@ var TagStore = assign({},PrototypeStore,{
     _hierId=hierId;
   },
   setCurrentTagList:function(tagList){
+    console.log("**wyh**setCurrentTagList");
     _tagList=tagList
   },
   getCurrentHierarchyId:function(hierId){
     return _hierId;
   },
   checkAllStatus:function(){
+    console.log("**wyh**checkAllStatus");
+    console.log(_tagList);
    var length=_tagList.length;
    var selectedNum=0;
    var tagStatus=Immutable.List([]);
@@ -162,23 +174,19 @@ var TagStore = assign({},PrototypeStore,{
        selectedNum++;
      }
    });
-   if(selectedNum==length){
+   if((selectedNum==length) && (length!=0)){
      _checkall_checked_status=true;
    }
    else {
       _checkall_checked_status=false;
    }
+   console.log("**wyh**selectedNum="+selectedNum);
   checkStauts=((length-selectedNum+1+_tagTotal)>30);
 
 if(_checkall_checked_status){
   _checkall_disable_status=false
 }
 else{
-  if(_checkall_disable_status!=null){
-    if(checkStauts!=_checkall_disable_status){
-      this.emitCheckAllStatusChange();
-    }
-  }
   _checkall_disable_status=checkStauts;
 }
 
@@ -194,13 +202,17 @@ else{
     return _data;
   },
   setData(data){
+    console.log("**wyh**setData");
+    console.log(data);
       _data =  data;
+      _isLoading=false;
       this.setCurrentTagList(data.GetTagsByFilterResult);
       //每次load当页的taglist，判断“全选”的状态 disable or not?
 
       },
   setDataByAlarm(data){
       _data =  data;
+      _isLoading=false;
       this.setCurrentTagList(data.GetPageTagDataResult);
   },
   emitTagNodeChange: function() {
@@ -263,6 +275,18 @@ else{
         this.removeListener(CHECKALL_STATUS_EVENT, callback);
         this.dispose();
         },
+  emitNodeLoadingChange: function() {
+        this.emit(NODE_LOADING_EVENT);
+        },
+
+  addNodeLoadingListener: function(callback) {
+       this.on(NODE_LOADING_EVENT, callback);
+        },
+
+  removeNodeLoadingListener: function(callback) {
+      this.removeListener(NODE_LOADING_EVENT, callback);
+      this.dispose();
+        },
 });
 var TagAction = Tag.Action,
     AlarmTagAction = AlarmTag.Action;
@@ -276,6 +300,10 @@ var TagAction = Tag.Action,
              TagStore.setDataByAlarm(action.tagList);
              TagStore.emitAlarmTagNodeChange();
         break;
+      case TagAction.SET_NODE_LOAGDING:
+            TagStore.setNodeLoading();
+            TagStore.emitNodeLoadingChange();
+          break;
       case TagAction.SET_TAGSTATUS_TAG:
             TagStore.setTagStatusByTag(action.node,action.selected);
             TagStore.emitTagStatusChange();

@@ -9,6 +9,9 @@ var Action = Tag.Action;
 
 let TagAction = {
   loadData(nodeId,option,page,alarmType,filters,ids){
+    AppDispatcher.dispatch({
+         type: Action.SET_NODE_LOAGDING
+    });
     Ajax.post('/Tag.svc/GetTagsByFilter?', {
          params: {
           filter: {
@@ -40,6 +43,9 @@ let TagAction = {
     });
   },
   loadAlarmData(ioData){
+    AppDispatcher.dispatch({
+         type: Action.SET_NODE_LOAGDING
+    });
     Ajax.post('/Tag.svc/GetPageTagData', {
          params: {
            hierarchyId:ioData.hierId,
@@ -102,6 +108,11 @@ let TagAction = {
         type: Action.SET_CHECK_ALL_STATUS,
     });
   },
+  clearAlarmSearchTagList(){
+    AppDispatcher.dispatch({
+        type: Action.CLEAR_ALARM_SEARCH_TAGLIST,
+    });
+  }
 };
 
 module.exports = TagAction;
