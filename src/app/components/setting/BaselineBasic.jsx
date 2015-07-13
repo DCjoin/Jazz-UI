@@ -557,12 +557,14 @@ var CalcSetting = React.createClass({
   },
 
   validate: function(){
-    var startDate = new Date(this.props.dateRange.start),
-      endDate = new Date(this.props.dateRange.end),
-      tmpDate = new Date(startDate);
-    tmpDate.setMonth(tmpDate.getMonth() + 1);
-
-    return tmpDate > endDate;
+    // var startDate = new Date(this.props.dateRange.start),
+    //   endDate = new Date(this.props.dateRange.end),
+    //   tmpDate = new Date(startDate);
+    // tmpDate.setMonth(tmpDate.getMonth() + 1);
+    //
+    // if(tmpDate > endDate){
+    //
+    // }
   },
 
   _onCalcClick: function(){
@@ -616,10 +618,6 @@ var CalcSetting = React.createClass({
     var reCalcCtrl;
     if(!this.props.isViewStatus){
       reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick}  style={{color:'#1ca8dd','margin-left':'27px'}}>重新计算</a>;
-    }
-
-    if(!this.validate()){
-      return <div>所选数据的时间跨度大于一个月，无法计算，请重新选择数据</div>;
     }
 
     return (
@@ -1702,15 +1700,18 @@ var BaselineBasic = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps){
+
     if(nextProps){
       this._fetchServerData(this.state.year);
     }
     var hierId=TagStore.getCurrentHierarchyId();
       TBSettingAction.calDetailData(hierId);
+
   },
 
   fetchServerData(){
     this._fetchServerData(this.state.year);
+
   },
 
   tryGetValue: function(){
@@ -1868,7 +1869,6 @@ var BaselineBasic = React.createClass({
       items: this.state.items,
       year: this.state.year,
       isViewStatus: this.state.isViewStatus,
-      dateRange: this.props.dateRange
     };
     var tbNameProps = {
       defaultValue: this.props.name,

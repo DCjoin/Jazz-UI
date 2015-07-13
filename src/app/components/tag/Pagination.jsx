@@ -63,9 +63,10 @@ var Pagination = React.createClass({
       nextPageBtn = (
         <div className="next-btn" onClick={this.props.onNextPage}>下一页</div>
       );
-    }
+    };
+    var page=((this.props.totalPageNum==0)?0:this.props.curPageNum);
     var pageNum = (
-      <div className="page-num">{this.props.curPageNum}/{this.props.totalPageNum}页</div>
+      <div className="page-num">{page}/{this.props.totalPageNum}页</div>
     );
 
     var jumpBtn = null;
@@ -82,13 +83,23 @@ var Pagination = React.createClass({
             </div>
           </div>
         );
+      };
+      if(this.props.totalPageNum==0){
+        jumpBtn = (
+         <div className="page-jump">
+           <div style={{'font-size':'14px',color:'#464949'}}>跳转</div>
+         </div>
+       );
       }
-      jumpBtn = (
-       <div className="page-jump">
-         <div className="jump-btn" onClick={this.showJumpBox}>跳转</div>
-         {jumpBox}
-       </div>
-     );
+      else {
+        jumpBtn = (
+         <div className="page-jump">
+           <div className="jump-btn" onClick={this.showJumpBox}>跳转</div>
+           {jumpBox}
+         </div>
+       );
+      }
+
 
 
     return (
