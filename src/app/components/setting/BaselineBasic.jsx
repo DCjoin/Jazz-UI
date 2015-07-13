@@ -660,20 +660,28 @@ var SpecialItem = React.createClass({
       valueError: '',
       tbSettingError: '',
       specialError: '',
+      start: this.props.start,
+      end: this.props.end,
+      value: this.props.value,
     };
   },
 
   componentWillReceiveProps: function(nextProps){
     if(nextProps){
-      if(nextProps.start && nextProps.start != this.props.start ){
-        this.refs.startDateField.setValue(jsonToFormDate(this.props.start));
+      if(nextProps.start && nextProps.start != this.state.start ){
+        this.refs.startDateField.setValue(jsonToFormDate(nextProps.start));
       };
       if(nextProps.end && nextProps.end != this.props.end ){
-        this.refs.endDateField.setValue(toFormEndDate(jsonToFormDate(this.props.end)));
+        this.refs.endDateField.setValue(toFormEndDate(jsonToFormDate(nextProps.end)));
       };
       if(nextProps.value != this.props.value ){
         this.refs.valueField.setValue(nextProps.value);
       }
+      this.setState({
+        start: nextProps.start,
+        end: nextProps.end,
+        value: nextProps.value,
+      });
     }
   },
 
@@ -787,10 +795,17 @@ var SpecialItem = React.createClass({
         computedStartTime.setMinutes(computedStartTime.getMinutes() - 30);
       }
     }
+    var jstart =  CommonFuns.DataConverter.DatetimeToJson(computedStartTime),
+      jend = CommonFuns.DataConverter.DatetimeToJson(computedEndTime),
+      val = this.refs.valueField.getValue();
+    var tmpVal = {start: jstart, end: jend, value: val};
+    this.setState(tmpVal);
+
     if(this.props.onDateTimeChange){
       this.props.onDateTimeChange({
-        StartTime: computedStartTime,
-        EndTime: computedEndTime
+        StartTime: jstart,
+        EndTime: jend,
+        Value: val
       }, this.props.index);
     }
   },
@@ -798,17 +813,20 @@ var SpecialItem = React.createClass({
   render: function () {
     if(this.props.isViewStatus){
       var me = this,
-        st = jsonToFormTime(this.props.start),
-        et = jsonToFormTime(this.props.end);
-      if(et == 0) et = 1440;
+        st = jsonToFormTime(this.state.start),
+        et = jsonToFormTime(this.state.end),
+        startDate = jsonToFormDate(me.state.start),
+        endDate = jsonToFormDate(me.state.end);
 
-      var startDate = me.props.start ? jsonToFormDate(me.props.start) : new Date(me.props.year, 0, 1),
-        endDate = me.props.end ? toFormEndDate(jsonToFormDate(me.props.end)) : new Date(me.props.year, 11, 31),
-        startDateStr = formatDate(startDate),
+      if(et == 0){
+        et = 1440;
+        endDate = toFormEndDate(endDate);
+      }
+      var startDateStr = formatDate(startDate),
         endDateStr = formatDate(endDate),
         startTimeStr = CommonFuns.numberToTime(st),
         endTimeStr = CommonFuns.numberToTime(et),
-        val = this.props.value;
+        val = this.state.value;
 
       var style = { padding: '2px 10px', border: '1px solid #efefef','margin-right':'10px'};
 
@@ -820,7 +838,7 @@ var SpecialItem = React.createClass({
           <span style={style}>{endTimeStr}</span>
           <div style={{display:'flex','flex-flow':'row','margin-top':'10px'}}>
             <div style={style}>
-              {this.props.value}
+              {this.state.value}
             </div>
             <span> {this.props.tag.uom}</span>
           </div>
@@ -829,9 +847,17 @@ var SpecialItem = React.createClass({
     }
     else{
       var me = this, menuItems = [], minutes = 0,
-        st = jsonToFormTime(this.props.start),
-        et = jsonToFormTime(this.props.end);
-      if(et == 0) et = 1440;
+        st = jsonToFormTime(this.state.start),
+        et = jsonToFormTime(this.state.end),
+        startDate = new Date(me.props.year, 0, 1),
+        endDate = new Date(me.props.year, 11, 31),
+        dstartDate = me.state.start ? jsonToFormDate(me.state.start) : startDate,
+        dendDate = me.state.end ? jsonToFormDate(me.state.end) : endDate;
+
+      if(et == 0) {
+        et = 1440;
+        dendDate = toFormEndDate(dendDate);
+      }
 
       for (var i = 1; ; i++) {
         var hmstr = CommonFuns.numberToTime(minutes);
@@ -840,11 +866,6 @@ var SpecialItem = React.createClass({
         minutes = minutes + 30;
         if(minutes > 1440) break;
       }
-
-      var startDate = new Date(me.props.year, 0, 1),
-        endDate = new Date(me.props.year, 11, 31),
-        dstartDate = me.props.start ? jsonToFormDate(me.props.start) : startDate,
-        dendDate = me.props.end ? toFormEndDate(jsonToFormDate(me.props.end)) : endDate;
 
       var datapickerStyle = {
           width:'90px',
@@ -925,7 +946,7 @@ var SpecialItem = React.createClass({
           <div>{this.state.tbSettingError}</div>
           <div>{this.state.specialError}</div>
           <div>
-            <TextField ref='valueField' defaultValue={this.props.value}
+            <TextField ref='valueField' defaultValue={this.state.value}
               errorText={this.state.valueError} onChange={this._onValueChange} /><span>{this.props.tag.uom}</span>
           </div>
         </div>
@@ -992,16 +1013,23 @@ var SpecialSetting = React.createClass({
   },
 
   _onItemDateTimeChange: function(obj, index){
-    if(this.state.tbsItem){
-      this.validate(this.state.tbsItem, this.getValue());
+    var tbsItem = this.state.tbsItem;
+    if(tbsItem){
+      var val = this.getValue();
+      if(val && obj) val[index] = obj;
+      this._validate(tbsItem, val);
     }
   },
 
   validate: function(tbsItem){
     this.setState({tbsItem: tbsItem});
+    return this._validate(tbsItem);
+  },
+
+  _validate: function(tbsItem, val){
     var valid = true, len = this.state.items.length;
     for (var i = 0; i < len; i++) {
-      valid = valid & this.refs['item' + i].validate(tbsItem);
+      valid = valid & this.refs['item' + i].validate(tbsItem, val);
     }
     return valid;
   },
@@ -1108,8 +1136,8 @@ var TBSettingItem = React.createClass({
 
   getInitialState: function(){
     var s = {
-      start: this.props.start || new Date(this.props.year),
-      end: this.props.end || new Date(this.props.year + 1, 0, 1),
+      start: this.props.start,
+      end: this.props.end,
       avgs: this.props.avgs,
       radio: "NormalRadio",
       normals: this.props.normals,
@@ -1145,12 +1173,14 @@ var TBSettingItem = React.createClass({
   },
 
   _onNormalCheck:function(e, newSel){
-    this.setState({radio: "NormalRadio"});
+    var specialVal = this.refs.SpecialSettingCtrl.getValue();
+    this.setState({radio: "NormalRadio", specials: specialVal});
     //this.refs.NormalSettingCtrl.
   },
 
   _onCalcCheck:function(e, newSel){
-    this.setState({radio: "CalcRadio"});
+    var specialVal = this.refs.SpecialSettingCtrl.getValue();
+    this.setState({radio: "CalcRadio", specials: specialVal});
     this._calcValues();
   },
 
@@ -1245,7 +1275,7 @@ var TBSettingItem = React.createClass({
     var normalProps = {
       tag: me.props.tag,
       isViewStatus: me.props.isViewStatus,
-      items: me.props.normals
+      items: me.state.normals
     },
     avgProps = {
       tag: me.props.tag,
@@ -1260,7 +1290,7 @@ var TBSettingItem = React.createClass({
       tag: me.props.tag,
       year: me.props.year,
       isViewStatus: me.props.isViewStatus,
-      items: me.props.specials
+      items: me.state.specials
     },
     clearStyle = {
       clear: 'both',
@@ -1294,7 +1324,7 @@ var TBSettingItem = React.createClass({
     if(this.props.isViewStatus){
       var middleCtrl ;
       // Middle
-      if(this.props.avgs && this.props.avgs.length){
+      if(this.state.avgs && this.state.avgs.length){
         avgProps.isDisplay = true;
         middleCtrl = <div style={clearStyle}>
           <RadioButton name='CalcRadio' key='CalcRadio' ref='CalcRadio' value="CalcRadio"
@@ -1374,9 +1404,9 @@ var TBSettingItem = React.createClass({
         me.setState({
           start: jstart,
           end: jend,
-          normals: myVal.normals,
-          avgs: myVal.avgs,
-          specials: myVal.specials,
+          normals: myVal.NormalDates,
+          avgs: myVal.TbAvgDtos,
+          specials: myVal.SpecialDates,
         });
 
         if(me.props.onSettingItemDateChange){
@@ -1408,9 +1438,9 @@ var TBSettingItem = React.createClass({
         me.setState({
           start: jstart,
           end: jend,
-          normals: myVal.normals,
-          avgs: myVal.avgs,
-          specials: myVal.specials,
+          normals: myVal.NormalDates,
+          avgs: myVal.TbAvgDtos,
+          specials: myVal.SpecialDates,
         });
 
         if(me.props.onSettingItemDateChange){
@@ -1480,6 +1510,15 @@ var TBSettingItems = React.createClass({
       items: this.props.items || []
     }
   },
+
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps){
+      this.setState({
+        items: nextProps.items,
+      });
+    }
+  },
+
 
   tryGetValue: function(){
     var val = this.getValue(),
@@ -1752,8 +1791,7 @@ var BaselineBasic = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps){
-
-    if(nextProps){
+    if(nextProps && nextProps.tag && nextProps.tag.tagId){
       this._fetchServerData(this.state.year);
     }
     var hierId=TagStore.getCurrentHierarchyId();
@@ -1763,7 +1801,6 @@ var BaselineBasic = React.createClass({
 
   fetchServerData(){
     this._fetchServerData(this.state.year);
-
   },
 
   tryGetValue: function(){
@@ -1821,25 +1858,27 @@ var BaselineBasic = React.createClass({
   },
 
   _bindData: function(tbSetting){
-    var itemsCtrl = this.refs.TBSettingItems;
-      if(itemsCtrl){
-      this.setState({items: tbSetting.TBSettings});
-      if(!tbSetting.TBSettings){
-        itemsCtrl.setValue([]);
-      }else{
-        itemsCtrl.setValue(tbSetting.TBSettings);
-      }
-    }
+    this.setState({items: tbSetting.TBSettings});
+    // if(itemsCtrl){
+    //   var itemsCtrl = this.refs.TBSettingItems;
+    //   if(!tbSetting.TBSettings){
+    //     itemsCtrl.setValue([]);
+    //   }else{
+    //     itemsCtrl.setValue(tbSetting.TBSettings);
+    //   }
+    // }
   },
 
   _fetchServerData: function(year) {
-    var me = this;
-    TBSettingAction.loadData(me.props.tbId, year, function(data){
-      me._bindData(data);
-      if(me.props.onDataLoaded){
-        me.props.onDataLoaded(me);
-      }
-    });
+    if(this.props.shouldLoad){
+      var me = this;
+      TBSettingAction.loadData(me.props.tbId, year, function(data){
+        me._bindData(data);
+        if(me.props.onDataLoaded){
+          me.props.onDataLoaded(me);
+        }
+      });
+    }
   },
 
   _saveDataToServer: function(val, callback, fail){
@@ -1916,6 +1955,10 @@ var BaselineBasic = React.createClass({
     TBSettingStore.removeCalDetailLoadingListener(this._onCalDetailLoadingChange);
   },
   render: function (){
+    if(!this.props.shouldLoad){
+      return null;
+    }
+
     var itemProps = {
       tag: this.props.tag,
       items: this.state.items,
@@ -1986,9 +2029,13 @@ var BaselineBasic = React.createClass({
       var showCalDetail=<CalDetail  {...calDetailprops}/>
     };
 
+    var spanStyle = {
+      padding:'2px 10px',
+      border: '1px solid #efefef' };
+
     var yearPicker = null;
     if(this.state.isViewStatus){
-      yearPicker = <span>{this.state.year}</span>;
+      yearPicker = <span style={spanStyle}>{this.state.year}</span>;
     }else{
       yearPicker = <YearPicker {...yearProps} />;
     }
