@@ -128,6 +128,7 @@ let ChartPanel = React.createClass({
         tagOptions = AlarmTagStore.getSearchTagList();
       }
       if( !tagOptions || tagOptions.length === 0){
+        this.setState({energyData:null});
         return;
       }
       let relativeDateValue = this._getRelativeDateValue();
