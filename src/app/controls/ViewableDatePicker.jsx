@@ -116,14 +116,27 @@ var ViewableDatePicker = React.createClass({
               inputProps.className="jazz-viewableTextField-noempty";
 
           }
+          var minDate,maxDate;
+          if(this.props.minDate){
+            minDate = this.props.minDate;
+          }
+          else{
+            minDate = moment("2000-01-01").toDate();
+          }
+          if(this.props.maxDate){
+            maxDate = this.props.maxDate;
+          }
+          else{
+            maxDate = moment("2050-01-01").toDate();
+          }
           datePicker = (<TextField {...inputProps} ref="TextField"/>);
           if(this.state.showCalendar){
           calendar=(<div style={{position:'absolute',"zIndex":99,width:"300px",marginTop:'2px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}><Calendar
                 ref="calendar"
                 onSelectedDate={this._onSelectedDate}
                 initialDate={moment(this.state.curDate||new Date()).toDate()}
-                minDate= {moment("2000-01-01").toDate()}
-                maxDate = {moment("2050-01-01").toDate()}
+                minDate= {minDate}
+                maxDate = {maxDate}
                  /></div>);
             }
         }

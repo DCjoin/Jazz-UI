@@ -10,6 +10,7 @@ import CommonFuns from '../../util/Util.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
+import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 
 var formatDate = function(date){
   var m = (date.getMonth() + 1), d = date.getDate();
@@ -555,7 +556,7 @@ var CalcSetting = React.createClass({
     return arr;
   },
 
-  validate: function(){  
+  validate: function(){
     // var startDate = new Date(this.props.dateRange.start),
     //   endDate = new Date(this.props.dateRange.end),
     //   tmpDate = new Date(startDate);
@@ -841,7 +842,6 @@ var SpecialItem = React.createClass({
       var datapickerStyle = {
           width:'90px',
           height:'32px',
-          marginLeft:'10px',
           fontSize:'14px',
           color:'#767a7a'
         }, flatButtonStyle={
@@ -863,7 +863,7 @@ var SpecialItem = React.createClass({
 
       var startDateProps = {
           formatDate: formatDate,
-          defaultDate: dstartDate,
+          defaultValue: dstartDate,
           minDate: startDate,
           maxDate: endDate,
           style: datapickerStyle,
@@ -872,7 +872,7 @@ var SpecialItem = React.createClass({
           }
         }, endDateProps = {
           formatDate: formatDate,
-          defaultDate: dendDate,
+          defaultValue: dendDate,
           minDate: startDate,
           maxDate: endDate,
           style: datapickerStyle,
@@ -905,12 +905,12 @@ var SpecialItem = React.createClass({
         <div>
           <div style={{display:'flex','flex-flow':'row','margin-top':'18px'}}>
               <div className="jazz-setting-basic-datepicker-container">
-            <DatePicker ref='startDateField' {...startDateProps} />
+            <ViewableDatePicker ref='startDateField' {...startDateProps} />
             </div>
             <DaytimeSelector ref='startTimeField' {...startTimeProps} />
             <div className='jazz-setting-basic-datespan'>到</div>
               <div className="jazz-setting-basic-datepicker-container">
-            <DatePicker ref='endDateField' {...endDateProps} />
+            <ViewableDatePicker ref='endDateField' {...endDateProps} />
             </div>
             <DaytimeSelector ref='endTimeField' {...endTimeProps} />
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} className='icon-delete' label="－"  ref="remove"  onClick={this._onRemove} /><br/>
@@ -1310,7 +1310,6 @@ var TBSettingItem = React.createClass({
     var datapickerStyle = {
       width:'90px',
       height:'32px',
-      marginLeft:'10px',
       fontSize:'14px',
       color:'#767a7a'
     },
@@ -1331,7 +1330,7 @@ var TBSettingItem = React.createClass({
     };
 
     var startProps = {
-      defaultDate: dstartDate,
+      defaultValue: dstartDate,
       formatDate: formatDate,
       minDate: startDate,
       maxDate: endDate,
@@ -1351,7 +1350,7 @@ var TBSettingItem = React.createClass({
     };
     var endProps = {
       formatDate: formatDate,
-      defaultDate: dendDate,
+      defaultValue: dendDate,
       minDate: startDate,
       maxDate: endDate,
       style: datapickerStyle,
@@ -1380,11 +1379,11 @@ var TBSettingItem = React.createClass({
         <div style={clearStyle}>
           <div style={datePickerAreaStyle}>
             <div className="jazz-setting-basic-datepicker-container">
-              <DatePicker  ref='startFeild' {...startProps} />
+              <ViewableDatePicker  ref='startFeild' {...startProps} />
             </div>
             <div style={{'margin-left':'10px'}}>到</div>
             <div className="jazz-setting-basic-datepicker-container">
-              <DatePicker  ref='endFeild' {...endProps} />
+              <ViewableDatePicker  ref='endFeild' {...endProps} />
             </div>
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} className='icon-delete' label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
