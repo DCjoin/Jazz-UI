@@ -18,6 +18,7 @@ var TagMenu=React.createClass({
     this.setState({
       tagStatus:TagStore.getCurrentHierIdTagStatus(),
       checked:TagStore.getCheckAllCheckedStatus(),
+      tagTotal:TagStore.getTagTotalStatus()
     })
   },
   _onAllCheck:function(){
@@ -28,11 +29,6 @@ var TagMenu=React.createClass({
   });
   },
 
-  _onTagTotalChange:function(){
-    this.setState({
-      tagTotal:!this.state.tagTotal
-    });
-  },
   _onMouseOver:function(e){
     pageX=e.pageX;
     pageY=e.pageY+20;
@@ -48,31 +44,19 @@ var TagMenu=React.createClass({
   },
   getInitialState: function() {
     return {
-      allDisable:false,
       tagStatus:TagStore.getCurrentHierIdTagStatus(),
-      tagTotal:false,
+      allCheckDisable:TagStore.getCheckAllDisabledStatus(),
+      tagTotal:TagStore.getTagTotalStatus(),
       checked:TagStore.getCheckAllCheckedStatus(),
       toolTipShow:false,
     };
   },
-
-  componentWillReceiveProps: function(nextProps) {
-    console.log("**wyh**TagMenu_componentWillReceiveProps");
-    this.setState({
-      allCheckDisable:TagStore.getCheckAllDisabledStatus(),
-      tagStatus:TagStore.getCurrentHierIdTagStatus(),
-      checked:TagStore.getCheckAllCheckedStatus(),
-      toolTipShow:false,
-    });
-  },
   componentDidMount: function() {
     TagStore.addTagStatusListener(this._onTagStatusChange);
-    TagStore.addTagTotalListener(this._onTagTotalChange);
 
     },
   componentWillUnmount: function() {
     TagStore.removeTagStatusListener(this._onTagStatusChange);
-    TagStore.removeTagTotalListener(this._onTagTotalChange);
   },
   render:function(){
     let that = this;

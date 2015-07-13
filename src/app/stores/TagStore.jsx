@@ -20,9 +20,16 @@ var _tagList=[];
 var _checkall_disable_status=null;
 var _checkall_checked_status=null;
 var _isLoading=false;
+var _tagTotalStatus=false;
 
 
 var TagStore = assign({},PrototypeStore,{
+  setTagTotalStatus:function(){
+    _tagTotalStatus=!_tagTotalStatus;
+  },
+  getTagTotalStatus:function(){
+    return _tagTotalStatus;
+  },
   setNodeLoading:function(){
     _isLoading=true;
   },
@@ -31,6 +38,7 @@ var TagStore = assign({},PrototypeStore,{
   },
   setTagStatusByTag:function(node,selected){
     var hasHierId=false;
+    var tagTotal=_tagTotal;
     //total的加减 emit total change 判断 total>30  和 第一次小于30的情况 都调用emit
 
       _totalTagStatus.forEach(function(tagNode){
@@ -56,12 +64,12 @@ var TagStore = assign({},PrototypeStore,{
    if(selected){
      _tagTotal++;
      if(_tagTotal==30){
-       this.emitTagTotalChange();
+       this.setTagTotalStatus();
      }
    }
    else {
-     if(_tagTotal==30){
-       this.emitTagTotalChange();
+     if(tagTotal==30){
+       this.setTagTotalStatus();
      }
      _tagTotal--;
    };
@@ -112,9 +120,17 @@ var TagStore = assign({},PrototypeStore,{
         tagStatus:tagStatus,
       });
     }
-    if(tagTotal==30){
-      this.emitTagTotalChange();
+    if(add){
+      if(_tagTotal==30){
+        this.setTagTotalStatus();
+      }
     }
+    else {
+      if(tagTotal==30){
+        this.setTagTotalStatus();
+      }
+    }
+
   },
   getCurrentHierIdTagStatus:function(){
    var tagStatus=Immutable.List([]);
@@ -151,15 +167,12 @@ var TagStore = assign({},PrototypeStore,{
     _hierId=hierId;
   },
   setCurrentTagList:function(tagList){
-    console.log("**wyh**setCurrentTagList");
     _tagList=tagList
   },
   getCurrentHierarchyId:function(hierId){
     return _hierId;
   },
   checkAllStatus:function(){
-    console.log("**wyh**checkAllStatus");
-    console.log(_tagList);
    var length=_tagList.length;
    var selectedNum=0;
    var tagStatus=Immutable.List([]);
@@ -180,8 +193,7 @@ var TagStore = assign({},PrototypeStore,{
    else {
       _checkall_checked_status=false;
    }
-   console.log("**wyh**selectedNum="+selectedNum);
-  checkStauts=((length-selectedNum+1+_tagTotal)>30);
+  checkStauts=((length-selectedNum+_tagTotal)>30);
 
 if(_checkall_checked_status){
   _checkall_disable_status=false
@@ -202,8 +214,6 @@ else{
     return _data;
   },
   setData(data){
-    console.log("**wyh**setData");
-    console.log(data);
       _data =  data;
       _isLoading=false;
       this.setCurrentTagList(data.GetTagsByFilterResult);
