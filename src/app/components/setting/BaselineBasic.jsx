@@ -1701,9 +1701,13 @@ var BaselineBasic = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps){
-    if(nextProps){
-      this._fetchServerData(this.state.year);
-    }
+    // if(nextProps){
+    //   this._fetchServerData(this.state.year);
+    // }
+  },
+
+  fetchServerData(){
+    this._fetchServerData(this.state.year);
   },
 
   tryGetValue: function(){

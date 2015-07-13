@@ -104,19 +104,17 @@ let BaselineCfg = React.createClass({
   _tab0Active(tab){
     var ctrl = this.refs.baselineBasic;
     if(ctrl){
-      debugger;
+      ctrl.fetchServerData();
     }
   },
   _tab1Active(tab){
     var ctrl = this.refs.baselineModify;
     if(ctrl){
-      debugger;
     }
   },
   _tab2Active(tab){
     var ctrl = this.refs.alarmSetting;
     if(ctrl){
-      debugger;
     }
   },
   render: function () {
