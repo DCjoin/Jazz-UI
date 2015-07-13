@@ -231,7 +231,13 @@ let ChartPanel = React.createClass({
     render: function () {
       let me = this;
       let energyPart=null;
-
+      let paramsObj = EnergyStore.getParamsObj();
+      var startDate = null,
+          endDate = null;
+      if(paramsObj){
+        startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
+        endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
+      }
       if(!me.state.chartTitle){
          return null;
       }
@@ -267,7 +273,7 @@ let ChartPanel = React.createClass({
             <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
               <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'100px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
-            <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
+            <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={this._onDateSelectorChanged}/>
             <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
             <RaisedButton style={{marginLeft:'10px', height:'32px', marginBottom:'4px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>

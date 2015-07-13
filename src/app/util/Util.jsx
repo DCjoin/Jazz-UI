@@ -631,6 +631,43 @@ let CommonFuns = {
 	        return date >= earliest && date <= now;
 	    }
 	    else return date && date.getTime && (date >= new Date(2000, 0, 1)) && (date <= new Date());
+		},
+		GetArialStr(str, requisiteLen) {
+	    var lencounter = 0,
+	        oldLencounter = 0,
+	        ch;
+
+	    for (var i = 0, len = str.length; i < len; i++) {
+	        ch = str[i];
+
+	        if (ch.charCodeAt() > 128) {
+	            lencounter++;
+	        }
+	        else if (ch == 'f' || ch == 'i' || ch == 'j' || ch == 'l' || ch == 'r' || ch == 'I' || ch == 't' || ch == '1' ||
+	        ch == '.' || ch == ':' || ch == ';' || ch == '(' || ch == ')' || ch == '-' || ch == '_' || ch == '*' || ch == '!' || ch == '\'') {
+	            lencounter += 0.3;
+	        }
+	        else if (ch >= '0' && ch <= '9') {
+	            lencounter += 0.6;
+	        }
+	        else if (ch >= 'a' && ch <= 'z') {
+	            lencounter += 0.6;
+	        }
+	        else if (ch >= 'A' && ch <= 'Z') {
+	            lencounter += 0.7;
+	        }
+	        else {
+	            lencounter++;
+	        }
+
+	        if (lencounter <= requisiteLen) {
+	            oldLencounter = lencounter;
+	        } else {
+	            str = str.substring(0, i) + '...';
+	            break;
+	        }
+	    }
+	    return str;
 		}
 	}
 };

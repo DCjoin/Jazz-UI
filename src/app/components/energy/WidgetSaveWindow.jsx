@@ -2,6 +2,7 @@
 
 import React from "react";
 import mui from 'material-ui';
+import classNames from 'classnames';
 import {dateFormat} from '../../util/Util.jsx';
 import HierarchyButton from '../HierarchyButton.jsx';
 import MutableDropMenu from '../../controls/MutableDropMenu.jsx';
@@ -74,7 +75,7 @@ var WidgetSaveWindow = React.createClass({
       if(this.state.dashboardMenuItems.length === 0){
           existDashBoardRadioContent = <div></div>;
       }else{
-        existDashBoardRadioContent = <div className='jazz-widget-save-dialog-existing-dashboard'>
+        existDashBoardRadioContent = <div className={classNames({'jazz-widget-save-dialog-existing-dashboard':true, 'jazz-drop-down-menu-scroll':true})} >
             <MutableDropMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
               selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></MutableDropMenu></div>;
       }

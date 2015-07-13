@@ -190,7 +190,9 @@ var YaxisDialog = React.createClass({
       }
       let group = <div style = {styleObj}>
         <div style={{fontSize:'14px', marginBottom:'18px'}}> {'Y坐标轴' + i} </div>
-        <div style={{marginBottom:'40px'}}> <span style={{width:'100px', display:'inline-block'}}>{'相关数据点:'}</span> <span> {yaxisConfig[key].join(',')}</span></div>
+        <div style={{marginBottom:'40px'}}>
+          <span style={{width:'100px', display:'inline-block'}}>{'相关数据点:'}</span>
+          <span style={{ 'word-break':'break-all'}}> {yaxisConfig[key].join(',')}</span></div>
         <MaxMinPair ref={uom+'_pair'} uom = {uom}></MaxMinPair>
       </div>;
 
@@ -198,8 +200,9 @@ var YaxisDialog = React.createClass({
         groups.push(group);
     }
     let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'Y坐标轴设置'}</h3>;
-    var dialog = <Dialog title={_titleElement} actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
-      <div className={'jazz-energy-yaxis-container'} style={{marginLeft:'26px'}}>
+    var dialog = <Dialog title={_titleElement} actions={_buttonActions}
+                  modal={false} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
+      <div className={'jazz-energy-yaxis-container'} style={{marginLeft:'26px','overflow-y':'auto', maxHeight:'300px'}}>
         {groups}
       </div>
     </Dialog>;

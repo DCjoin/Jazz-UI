@@ -538,6 +538,7 @@ var CalcSetting = React.createClass({
     onCalc: React.PropTypes.func,
     isViewStatus: React.PropTypes.bool,
     isDisplay: React.PropTypes.bool,
+    dateRange:  React.PropTypes.object,
   },
 
   getDefaultProps:function(){
@@ -552,6 +553,17 @@ var CalcSetting = React.createClass({
       arr.push(val);
     }
     return arr;
+  },
+
+  validate: function(){  
+    // var startDate = new Date(this.props.dateRange.start),
+    //   endDate = new Date(this.props.dateRange.end),
+    //   tmpDate = new Date(startDate);
+    // tmpDate.setMonth(tmpDate.getMonth() + 1);
+    //
+    // if(tmpDate > endDate){
+    //
+    // }
   },
 
   _onCalcClick: function(){
@@ -1133,7 +1145,6 @@ var TBSettingItem = React.createClass({
 
   _calcValues: function(){
     var dateRange = this.props.dateRange;
-    debugger;
     var me = this, startDate = this.refs.startFeild.getDate(), endDate = fromFormEndDate(this.refs.endFeild.getDate());
     var tr = {
       StartTime: CommonFuns.DataConverter.DatetimeToJson(startDate),
@@ -1221,7 +1232,7 @@ var TBSettingItem = React.createClass({
       start: me.state.start,
       end: me.state.end,
       onCalc: me._calcValues,
-      //dateRange:  me.props.dateRange,
+      dateRange:  me.props.dateRange,
     },
     specialProps = {
       tag: me.props.tag,
@@ -1516,8 +1527,10 @@ var TBSettingItems = React.createClass({
       return (<TBSettingItem {...drvProps} />);
     };
 
-    var addBtnCtrl;
-    if(!this.props.isViewStatus){
+    var addBtnCtrl, title = <span>时段设置</span>;
+    if(this.props.isViewStatus){
+      if(this.props.items.length == 0) title = null;
+    }else{
       var addBtnProps = {
         style:{
           padding: '0',
@@ -1537,7 +1550,7 @@ var TBSettingItems = React.createClass({
       addBtnCtrl =  <FlatButton {...addBtnProps} />
     }
     return (<div style={{'margin-top':'15px'}}>
-        <div><span>时段设置</span>{addBtnCtrl}</div>
+        <div>{title}{addBtnCtrl}</div>
         <div>{this.state.items.map(createItem)}</div>
       </div>);
   }
@@ -1781,17 +1794,21 @@ var BaselineBasic = React.createClass({
       if(this.props.onRequestShowMask){
         this.props.onRequestShowMask(this);
       }
-      this._saveDataToServer(val, function(setting){
-        me._bindData(setting);
-        if(me.props.onRequestHideMask){
-          me.props.onRequestHideMask(me);
+      this._saveDataToServer(val,
+        function(setting){
+          me._bindData(setting);
+          if(me.props.onRequestHideMask){
+            me.props.onRequestHideMask(me);
+          }
+          me.setState({ isViewStatus : true });
+        },
+        function(err, res){
+          if(me.props.onRequestHideMask){
+            me.props.onRequestHideMask(me);
+          }
+          me.setState({ isViewStatus : true });
         }
-      }, function(err, res){
-        if(me.props.onRequestHideMask){
-          me.props.onRequestHideMask(me);
-        }
-      });
-      this.setState({ isViewStatus : true });
+      );
     }
   },
 
