@@ -24,6 +24,11 @@ var WidgetSaveWindow = React.createClass({
             selectedExistingDashboardIndex: 0
            };
   },
+  getDefaultProps: function() {
+    return {
+      chartTitle:''
+    };
+  },
   show(){
     this.refs.dialogWindow.show();
   },
@@ -90,7 +95,8 @@ var WidgetSaveWindow = React.createClass({
     let form = <div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
         <div style={{paddingBottom:'10px'}}>
           <span className='jazz-form-text-field-label'>*图表名称：</span>
-          <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNameFieldChange}/>
+          <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'}
+                    onChange={this._onNameFieldChange} defaultValue={this.props.chartTitle}/>
         </div>
         <div style={{marginBottom:'20px'}} className={'jazz-normal-hierarchybutton-container'}>
           <span className='jazz-form-field-title'>*层级节点：</span>
@@ -112,7 +118,7 @@ var WidgetSaveWindow = React.createClass({
         </div>
         <div>
           <span className='jazz-form-text-field-label'>备注：</span>
-          <TextField ref='dashboardComment' multiLine='true' className={'jazz-widget-save-dialog-textfiled'}/>
+          <TextField ref='dashboardComment' multiLine='true' className={'jazz-widget-save-dialog-textfiled'} hintText='写下您的建议或看法。'/>
         </div>
       </div>;
     var dialog = <div className={'jazz-dialog-body-visible'}><Dialog  title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}} openImmediately={true}
