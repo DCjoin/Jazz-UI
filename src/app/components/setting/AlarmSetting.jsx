@@ -95,6 +95,10 @@ let AlarmSetting = React.createClass({
       errorText: ""
     };
   },
+  componentWillReceiveProps: function(nextProps){
+    AlarmSettingStore.addSettingDataListener(this._onChange);
+    AlarmSettingAction.loadData(this.props.tbId);
+  },
   componentDidMount: function(){
     AlarmSettingStore.addSettingDataListener(this._onChange);
     AlarmSettingAction.loadData(this.props.tbId);

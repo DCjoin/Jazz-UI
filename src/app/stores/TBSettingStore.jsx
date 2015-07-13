@@ -45,7 +45,7 @@ var TBSettingStore = assign({},PrototypeStore,{
     if(data.CalendarItemGroups.length!=0){
         data.CalendarItemGroups[0].CalendarItems.sort(function(a,b){return a.EffectiveTime>b.EffectiveTime?1:-1});
         _calDetail=data.CalendarItemGroups[0].CalendarItems
-      };
+      }
     _isCalDetailLoading=false;
   },
   emitCalDetailChange: function() {

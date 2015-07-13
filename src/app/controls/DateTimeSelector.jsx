@@ -43,27 +43,23 @@ let DateTimeSelector = React.createClass({
   },
   render(){
     let date = new Date();
+    var dateStyle = {
+      width:'95px',
+      height:'32px',
+      fontSize: '14px',
+      fontFamily: 'Microsoft YaHei'
+    };
     var startTimeProps = {
       errorMessage: "日期不能早于2010-1-1",
       defaultValue: this.props.startDate || date,
-      style: {
-        width:'95px',
-        height:'32px',
-        fontSize: '14px',
-        fontFamily: 'Microsoft YaHei'
-      },
+      style: dateStyle,
       onChange: this.props._onDateSelectorChanged
     };
     var startDate = <ViewableDatePicker ref="startDate" {...startTimeProps}/>;
     var endTimeProps = {
       errorMessage: "日期不能早于2010-1-1",
       defaultValue: this.props.endDate || date,
-      style: {
-        width:'95px',
-        height:'32px',
-        fontSize: '14px',
-        fontFamily: 'Microsoft YaHei'
-      },
+      style: dateStyle,
       onChange: this.props._onDateSelectorChanged
     };
     var endDate = <ViewableDatePicker ref="endDate" {...endTimeProps}/>;

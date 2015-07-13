@@ -146,6 +146,7 @@ var TagStore = assign({},PrototypeStore,{
         let index=tagNode.tagStatus.indexOf(tagId);
         if(index>=0){
           tagNode.tagStatus=tagNode.tagStatus.delete(index);
+          _tagTotal--
         }
       });
   },
