@@ -267,7 +267,7 @@ let ChartPanel = React.createClass({
                  </div>;
       let widgetWd;
       if(me.state.dashboardOpenImmediately){
-        widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={me.onWidgetSaveWindowDismiss}
+        widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={me.onWidgetSaveWindowDismiss} chartTitle={me.state.chartTitle}
                                 tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>;
       }
       else{

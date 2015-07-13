@@ -548,7 +548,7 @@ var CalcSetting = React.createClass({
 
   getValue: function(){
     var arr = [];
-    if(!this.refs['item0']){
+    if(!this.refs['item1']){
       return arr;
     }
     for (var i = 1; i < 25; i++) {
@@ -560,14 +560,11 @@ var CalcSetting = React.createClass({
   },
 
   validate: function(){
-    // var startDate = new Date(this.props.dateRange.start),
-    //   endDate = new Date(this.props.dateRange.end),
-    //   tmpDate = new Date(startDate);
-    // tmpDate.setMonth(tmpDate.getMonth() + 1);
-    //
-    // if(tmpDate > endDate){
-    //
-    // }
+    var startDate = new Date(this.props.dateRange.start),
+      endDate = new Date(this.props.dateRange.end),
+      tmpDate = new Date(startDate);
+    tmpDate.setMonth(tmpDate.getMonth() + 1);
+    return tmpDate > endDate;
   },
 
   _onCalcClick: function(){
@@ -579,6 +576,9 @@ var CalcSetting = React.createClass({
   render: function () {
     if(!this.props.isDisplay){
       return <div></div>;
+    }
+    if(!this.validate()){
+      return <div>所选数据的时间跨度大于一个月，无法计算，请重新选择数据</div>;
     }
     var items = this.props.items || [], rows = [];
     var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
@@ -869,7 +869,7 @@ var SpecialItem = React.createClass({
         };
 
       var startDateProps = {
-          formatDate: formatDate,
+          dateFormatStr: 'MM-DD',
           defaultValue: dstartDate,
           minDate: startDate,
           maxDate: endDate,
@@ -878,7 +878,7 @@ var SpecialItem = React.createClass({
             me._slideDateTime(v);
           }
         }, endDateProps = {
-          formatDate: formatDate,
+          dateFormatStr: 'MM-DD',
           defaultValue: dendDate,
           minDate: startDate,
           maxDate: endDate,
@@ -1111,7 +1111,9 @@ var TBSettingItem = React.createClass({
       start: this.props.start || new Date(this.props.year),
       end: this.props.end || new Date(this.props.year + 1, 0, 1),
       avgs: this.props.avgs,
-      radio: "NormalRadio"
+      radio: "NormalRadio",
+      normals: this.props.normals,
+      specials: this.props.specials,
     };
     if(this.props.avgs && this.props.avgs.length > 0){
       s.radio = "CalcRadio";
@@ -1123,6 +1125,8 @@ var TBSettingItem = React.createClass({
     if(nextProps){
       var s = {};
       s.avgs = nextProps.avgs;
+      s.normals = nextProps.normals;
+      s.specials = nextProps.specials;
       if(nextProps.avgs && nextProps.avgs.length > 0 && this.state.radio == "NormalRadio"){
         s.radio = "CalcRadio";
       }
@@ -1165,15 +1169,16 @@ var TBSettingItem = React.createClass({
   validate: function(tbsItems){
     var curTbsItem = tbsItems[this.props.index];
     return (
+      this.validateValue() &
       this.validateTbSettingItem(tbsItems) &
-      this.validateSpecialItems(curTbsItem) &
-      this.validateValue
+      this.validateSpecialItems(curTbsItem)
     );
   },
 
   validateTbSettingItem: function(tbsItems){
     var curItem = tbsItems[this.props.index],
-      curSetting = curItem.TbSetting;
+      curSetting = curItem.TbSetting,
+      error = "";
 
     for (var i = 0; i < tbsItems.length; i++) {
       var tmpSetting = tbsItems[i].TbSetting;
@@ -1181,13 +1186,13 @@ var TBSettingItem = React.createClass({
         var valid = (tmpSetting.EndTime <= curSetting.StartTime ||
           tmpSetting.StartTime >= curSetting.EndTime);
         if(!valid){
-          this.setState({error: '时间段冲突， 请重新选择时段'});
-          return false;
+          error = '时间段冲突， 请重新选择时段';
+          break;
         }
       }
     }
-    this.setState({error: ''});
-    return true;
+    this.setState({ error: error});
+    return error == '';
   },
 
   validateSpecialItems: function(tbsItem){
@@ -1195,7 +1200,7 @@ var TBSettingItem = React.createClass({
     return this.refs.SpecialSettingCtrl.validate(tbsItem);
   },
 
-  validateValue: function(tbsItem){
+  validateValue: function(){
     var calcCtrl = this.refs.CalcSettingCtrl, valid = true;
     if(calcCtrl){
       valid = valid & calcCtrl.validate();
@@ -1231,9 +1236,9 @@ var TBSettingItem = React.createClass({
 
     var startDate = new Date(me.props.year, 0, 1), dstartDate = startDate,
     endDate = new Date(me.props.year, 11, 31), dendDate = endDate;
-    if(me.props.start) dstartDate = jsonToFormDate(me.props.start);
-    if(me.props.end) {
-      var tmpDate = jsonToFormDate(me.props.end);
+    if(me.state.start) dstartDate = jsonToFormDate(me.state.start);
+    if(me.state.end) {
+      var tmpDate = jsonToFormDate(me.state.end);
       dendDate = toFormEndDate(tmpDate);
     }
 
@@ -1348,7 +1353,7 @@ var TBSettingItem = React.createClass({
 
     var startProps = {
       defaultValue: dstartDate,
-      formatDate: formatDate,
+      dateFormatStr: 'MM-DD',
       minDate: startDate,
       maxDate: endDate,
       style: datapickerStyle,
@@ -1359,14 +1364,29 @@ var TBSettingItem = React.createClass({
           me.refs.endFeild.setValue(v);
           endDate = v;
         }
+        var jstart =  CommonFuns.DataConverter.DatetimeToJson(v),
+          jend = CommonFuns.DataConverter.DatetimeToJson(fromFormEndDate(endDate)),
+          myVal = me.getValue();
+
+        myVal.TbSetting.StartTime = jend;
+        myVal.TbSetting.EndTime = jend;
+
+        me.setState({
+          start: jstart,
+          end: jend,
+          normals: myVal.normals,
+          avgs: myVal.avgs,
+          specials: myVal.specials,
+        });
+
         if(me.props.onSettingItemDateChange){
-          me.props.onSettingItemDateChange(v, fromFormEndDate(endDate), me.props.index);
+          me.props.onSettingItemDateChange(myVal, me.props.index);
         }
-        me.refs.SpecialSettingCtrl.validate(me.getValue());
+        me.refs.SpecialSettingCtrl.validate(myVal);
       }
     };
     var endProps = {
-      formatDate: formatDate,
+      dateFormatStr: 'MM-DD',
       defaultValue: dendDate,
       minDate: startDate,
       maxDate: endDate,
@@ -1376,11 +1396,27 @@ var TBSettingItem = React.createClass({
         var startDate = me.refs.startFeild.getValue();
         if(startDate && startDate > v){
           me.refs.startFeild.setValue(v);
+          startDate = v;
         }
+        var jstart =  CommonFuns.DataConverter.DatetimeToJson(startDate),
+          jend = CommonFuns.DataConverter.DatetimeToJson(fromFormEndDate(v)),
+          myVal = me.getValue();
+
+        myVal.TbSetting.StartTime = jstart;
+        myVal.TbSetting.EndTime = jend;
+
+        me.setState({
+          start: jstart,
+          end: jend,
+          normals: myVal.normals,
+          avgs: myVal.avgs,
+          specials: myVal.specials,
+        });
+
         if(me.props.onSettingItemDateChange){
-          me.props.onSettingItemDateChange(v, fromFormEndDate(v), me.props.index);
+          me.props.onSettingItemDateChange(myVal, me.props.index);
         }
-        me.refs.SpecialSettingCtrl.validate(me.getValue());
+        me.refs.SpecialSettingCtrl.validate(myVal);
       }
     };
 
@@ -1491,8 +1527,11 @@ var TBSettingItems = React.createClass({
     this.setState({items: newItems});
   },
 
-  _onSettingItemDateChange: function(){
+  _onSettingItemDateChange: function(childVal, idx){
     var valid = true, vals = this.getValue();
+    if(vals && vals[idx]){
+      vals[idx] = childVal;
+    }
     for (var i = 0; i < vals.length; i++) {
       valid = valid && this.refs['item' + i].validate(vals);
     }
@@ -1882,6 +1921,7 @@ var BaselineBasic = React.createClass({
       items: this.state.items,
       year: this.state.year,
       isViewStatus: this.state.isViewStatus,
+      dateRange: this.props.dateRange,
     };
     var tbNameProps = {
       defaultValue: this.props.name,
