@@ -54,7 +54,7 @@ var ViewableDatePicker = React.createClass({
             this.props.didChanged(str);
         }
         if(this.props.onChange){
-          this.props.onChange();
+          this.props.onChange(this, date);
         }
     },
     _handleChange: function(date1, date2){

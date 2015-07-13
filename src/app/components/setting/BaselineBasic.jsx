@@ -548,6 +548,9 @@ var CalcSetting = React.createClass({
 
   getValue: function(){
     var arr = [];
+    if(!this.refs['item0']){
+      return arr;
+    }
     for (var i = 1; i < 25; i++) {
       var val = this.refs['item' + i].getValue();
       val.TBTime = i;
@@ -663,10 +666,10 @@ var SpecialItem = React.createClass({
   componentWillReceiveProps: function(nextProps){
     if(nextProps){
       if(nextProps.start && nextProps.start != this.props.start ){
-        this.refs.startDateField.setDate(jsonToFormDate(this.props.start));
+        this.refs.startDateField.setValue(jsonToFormDate(this.props.start));
       };
       if(nextProps.end && nextProps.end != this.props.end ){
-        this.refs.endDateField.setDate(toFormEndDate(jsonToFormDate(this.props.end)));
+        this.refs.endDateField.setValue(toFormEndDate(jsonToFormDate(this.props.end)));
       };
       if(nextProps.value != this.props.value ){
         this.refs.valueField.setValue(nextProps.value);
@@ -724,13 +727,13 @@ var SpecialItem = React.createClass({
   },
 
   _getStartTime: function(){
-    var startDate = this.refs.startDateField.getDate(),
+    var startDate = this.refs.startDateField.getValue(),
       startTime = this.refs.startTimeField.getValue();
     return datetimeTojson(startDate, startTime);
   },
 
   _getEndTime: function(){
-    var endDate = this.refs.endDateField.getDate(),
+    var endDate = this.refs.endDateField.getValue(),
       endTime = this.refs.endTimeField.getValue();
     return datetimeTojson(endDate, endTime);
   },
@@ -755,9 +758,9 @@ var SpecialItem = React.createClass({
 
   _slideDateTime: function(sd, st, ed, et){
     var startDate = sd, startTime = st, endDate = ed, endTime = et;
-    if(!startDate) startDate = this.refs.startDateField.getDate();
+    if(!startDate) startDate = this.refs.startDateField.getValue();
     if(!startTime) startTime = this.refs.startTimeField.getValue();
-    if(!endDate) endDate = this.refs.endDateField.getDate();
+    if(!endDate) endDate = this.refs.endDateField.getValue();
     if(!endTime) endTime = this.refs.endTimeField.getValue();
     var computedStartTime = mergeDateTime(startDate, startTime),
       computedEndTime = mergeDateTime(endDate, endTime);
@@ -765,8 +768,8 @@ var SpecialItem = React.createClass({
     if(computedStartTime >= computedEndTime){
       if(sd || st){
         if(startTime == 1440){
-          endDate.setDate(endDate.getDate() + 1);
-          this.refs.endDateField.setDate(endDate);
+          endDate.setDate(endDate.getValue() + 1);
+          this.refs.endDateField.setValue(endDate);
           this.refs.endTimeField.setValue(30);
         }
         else{
@@ -775,8 +778,8 @@ var SpecialItem = React.createClass({
         computedEndTime.setMinutes(computedEndTime.getMinutes() + 30);
       } else if(ed || dt){
         if(endTime == 0){
-          startDate.setDate(startDate.getDate() - 1);
-          this.refs.startDateField.setDate(startDate);
+          startDate.setDate(startDate.getValue() - 1);
+          this.refs.startDateField.setValue(startDate);
           this.refs.startTimeField.setValue(1410);
         }else{
           this.refs.startTimeField.setValue(endTime - 30);
@@ -1149,10 +1152,10 @@ var TBSettingItem = React.createClass({
 
   _calcValues: function(){
     var dateRange = this.props.dateRange;
-    var me = this, startDate = this.refs.startFeild.getDate(), endDate = fromFormEndDate(this.refs.endFeild.getDate());
+    var me = this;
     var tr = {
-      StartTime: CommonFuns.DataConverter.DatetimeToJson(startDate),
-      EndTime: CommonFuns.DataConverter.DatetimeToJson(endDate)
+      StartTime: CommonFuns.DataConverter.DatetimeToJson(dateRange.start),
+      EndTime: CommonFuns.DataConverter.DatetimeToJson(dateRange.end)
     };
     TBSettingAction.calcData(tr, me.props.tag.tagId, function(data){
       me.setState({avgs: data});
@@ -1163,7 +1166,9 @@ var TBSettingItem = React.createClass({
     var curTbsItem = tbsItems[this.props.index];
     return (
       this.validateTbSettingItem(tbsItems) &
-      this.validateSpecialItems(curTbsItem));
+      this.validateSpecialItems(curTbsItem) &
+      this.validateValue
+    );
   },
 
   validateTbSettingItem: function(tbsItems){
@@ -1190,8 +1195,16 @@ var TBSettingItem = React.createClass({
     return this.refs.SpecialSettingCtrl.validate(tbsItem);
   },
 
+  validateValue: function(tbsItem){
+    var calcCtrl = this.refs.CalcSettingCtrl, valid = true;
+    if(calcCtrl){
+      valid = valid & calcCtrl.validate();
+    }
+    return valid;
+  },
+
   getValue: function(){
-    var startDate = this.refs.startFeild.getDate(), endDate = fromFormEndDate(this.refs.endFeild.getDate());
+    var startDate = this.refs.startFeild.getValue(), endDate = fromFormEndDate(this.refs.endFeild.getValue());
     var rtn = {
       TbSetting:{
         Year: this.props.year,
@@ -1341,9 +1354,9 @@ var TBSettingItem = React.createClass({
       style: datapickerStyle,
       //className: 'jazz-setting-basic-date',
       onChange: function(e, v){
-        var endDate = me.refs.endFeild.getDate();
+        var endDate = me.refs.endFeild.getValue();
         if(endDate && endDate < v){
-          me.refs.endFeild.setDate(v);
+          me.refs.endFeild.setValue(v);
           endDate = v;
         }
         if(me.props.onSettingItemDateChange){
@@ -1360,9 +1373,9 @@ var TBSettingItem = React.createClass({
       style: datapickerStyle,
       //className: 'jazz-setting-basic-date',
       onChange: function(e, v){
-        var startDate = me.refs.startFeild.getDate();
+        var startDate = me.refs.startFeild.getValue();
         if(startDate && startDate > v){
-          me.refs.startFeild.setDate(v);
+          me.refs.startFeild.setValue(v);
         }
         if(me.props.onSettingItemDateChange){
           me.props.onSettingItemDateChange(v, fromFormEndDate(v), me.props.index);
