@@ -153,6 +153,7 @@ var TagStore = assign({},PrototypeStore,{
   clearTagStatus:function(){
     _tagTotal=0;
     _totalTagStatus=[];
+  //  this.checkAllStatus();
 },
   getTagTotal:function(){
     return _tagTotal
