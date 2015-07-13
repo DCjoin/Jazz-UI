@@ -548,6 +548,9 @@ var CalcSetting = React.createClass({
 
   getValue: function(){
     var arr = [];
+    if(!this.refs['item0']){
+      return arr;
+    }
     for (var i = 1; i < 25; i++) {
       var val = this.refs['item' + i].getValue();
       val.TBTime = i;
@@ -1151,10 +1154,10 @@ var TBSettingItem = React.createClass({
 
   _calcValues: function(){
     var dateRange = this.props.dateRange;
-    var me = this, startDate = this.refs.startFeild.getDate(), endDate = fromFormEndDate(this.refs.endFeild.getDate());
+    var me = this;
     var tr = {
-      StartTime: CommonFuns.DataConverter.DatetimeToJson(startDate),
-      EndTime: CommonFuns.DataConverter.DatetimeToJson(endDate)
+      StartTime: CommonFuns.DataConverter.DatetimeToJson(dateRange.start),
+      EndTime: CommonFuns.DataConverter.DatetimeToJson(dateRange.end)
     };
     TBSettingAction.calcData(tr, me.props.tag.tagId, function(data){
       me.setState({avgs: data});
@@ -1165,7 +1168,9 @@ var TBSettingItem = React.createClass({
     var curTbsItem = tbsItems[this.props.index];
     return (
       this.validateTbSettingItem(tbsItems) &
-      this.validateSpecialItems(curTbsItem));
+      this.validateSpecialItems(curTbsItem) &
+      this.validateValue
+    );
   },
 
   validateTbSettingItem: function(tbsItems){
@@ -1190,6 +1195,14 @@ var TBSettingItem = React.createClass({
   validateSpecialItems: function(tbsItem){
     if(!tbsItem) tbsItem = this.getValue();
     return this.refs.SpecialSettingCtrl.validate(tbsItem);
+  },
+
+  validateValue: function(tbsItem){
+    var calcCtrl = this.refs.CalcSettingCtrl, valid = true;
+    if(calcCtrl){
+      valid = valid & calcCtrl.validate();
+    }
+    return valid;
   },
 
   getValue: function(){
