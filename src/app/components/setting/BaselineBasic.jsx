@@ -548,7 +548,7 @@ var CalcSetting = React.createClass({
 
   getValue: function(){
     var arr = [];
-    if(!this.refs['item0']){
+    if(!this.refs['item1']){
       return arr;
     }
     for (var i = 1; i < 25; i++) {
@@ -1113,7 +1113,9 @@ var TBSettingItem = React.createClass({
       start: this.props.start || new Date(this.props.year),
       end: this.props.end || new Date(this.props.year + 1, 0, 1),
       avgs: this.props.avgs,
-      radio: "NormalRadio"
+      radio: "NormalRadio",
+      normals: this.props.normals,
+      specials: this.props.specials,
     };
     if(this.props.avgs && this.props.avgs.length > 0){
       s.radio = "CalcRadio";
@@ -1125,6 +1127,8 @@ var TBSettingItem = React.createClass({
     if(nextProps){
       var s = {};
       s.avgs = nextProps.avgs;
+      s.normals = nextProps.normals;
+      s.specials = nextProps.specials;
       if(nextProps.avgs && nextProps.avgs.length > 0 && this.state.radio == "NormalRadio"){
         s.radio = "CalcRadio";
       }
@@ -1363,11 +1367,19 @@ var TBSettingItem = React.createClass({
           endDate = v;
         }
         var jstart =  CommonFuns.DataConverter.DatetimeToJson(v),
-          jend = CommonFuns.DataConverter.DatetimeToJson(fromFormEndDate(endDate));
-        me.setState({start: jstart, end: jend});
-        var myVal = me.getValue();
+          jend = CommonFuns.DataConverter.DatetimeToJson(fromFormEndDate(endDate)),
+          myVal = me.getValue();
+
         myVal.TbSetting.StartTime = jend;
         myVal.TbSetting.EndTime = jend;
+
+        me.setState({
+          start: jstart,
+          end: jend,
+          normals: myVal.normals,
+          avgs: myVal.avgs,
+          specials: myVal.specials,
+        });
 
         if(me.props.onSettingItemDateChange){
           me.props.onSettingItemDateChange(myVal, me.props.index);
@@ -1389,11 +1401,19 @@ var TBSettingItem = React.createClass({
           startDate = v;
         }
         var jstart =  CommonFuns.DataConverter.DatetimeToJson(startDate),
-          jend = CommonFuns.DataConverter.DatetimeToJson(fromFormEndDate(v));
-        me.setState({start: jstart, end: jend});
-        var myVal = me.getValue();
+          jend = CommonFuns.DataConverter.DatetimeToJson(fromFormEndDate(v)),
+          myVal = me.getValue();
+
         myVal.TbSetting.StartTime = jstart;
         myVal.TbSetting.EndTime = jend;
+
+        me.setState({
+          start: jstart,
+          end: jend,
+          normals: myVal.normals,
+          avgs: myVal.avgs,
+          specials: myVal.specials,
+        });
 
         if(me.props.onSettingItemDateChange){
           me.props.onSettingItemDateChange(myVal, me.props.index);
