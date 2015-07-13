@@ -28,6 +28,9 @@ let HierarchyButton=React.createClass({
     this.setState({
       isLoading:HierarchyStore.getNodeLoading()
     });
+    if(this.props.hierIdAndClick!=null){
+        this.selectHierItem(this.props.hierIdAndClick,true);
+    }
   },
   selectHierItem(hierId, isCallClickEvent){
     let item = this.getHierById(hierId);

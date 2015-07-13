@@ -263,11 +263,17 @@ let ChartPanel = React.createClass({
                     <span>{me.state.chartTitle}</span>
                     <IconButton iconClassName="icon-send" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}/>
                  </div>;
-
+      let widgetWd;
+      if(me.state.dashboardOpenImmediately){
+        widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={me.onWidgetSaveWindowDismiss}
+                                tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>;
+      }
+      else{
+        widgetWd=null;
+      }
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
-          <WidgetSaveWindow ref={'saveChartDialog'} openImmediately={me.state.dashboardOpenImmediately} onWidgetSaveWindowDismiss={me.onWidgetSaveWindowDismiss}
-                            tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>
+          {widgetWd}
           {title}
           <div className={'jazz-alarm-chart-toolbar-container'}>
             <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
