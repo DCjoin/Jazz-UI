@@ -11,7 +11,6 @@ import DashboardStore from '../../stores/DashboardStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
 let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
-let isShowed = false;
 let isCommited = false;
 
 var WidgetSaveWindow = React.createClass({
@@ -21,12 +20,12 @@ var WidgetSaveWindow = React.createClass({
   getInitialState() {
     return {dashboardState:'existDashboard',
             dashboardMenuItems:[],
+            tagOption:{},
             selectedExistingDashboardIndex: 0
            };
   },
   show(){
     this.refs.dialogWindow.show();
-    isShowed = true;
   },
   hide(){
     this.refs.dialogWindow.dismiss();
@@ -35,7 +34,6 @@ var WidgetSaveWindow = React.createClass({
     if(this.props.onWidgetSaveWindowDismiss){
       this.props.onWidgetSaveWindowDismiss();
     }
-    isShowed = false;
   },
   onTreeItemClick(hierItem){
     //console.log(item);
@@ -75,82 +73,61 @@ var WidgetSaveWindow = React.createClass({
       if(this.state.dashboardMenuItems.length === 0){
           existDashBoardRadioContent = <div></div>;
       }else{
-        existDashBoardRadioContent = <div className={classNames({'jazz-widget-save-dialog-existing-dashboard':true, 'jazz-drop-down-menu-scroll':true})} >
-            <MutableDropMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
-              selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></MutableDropMenu></div>;
+        existDashBoardRadioContent = <div className={classNames({'jazz-widget-save-dialog-existing-dashboard':true})} >
+            <DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
+              selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></DropDownMenu></div>;
       }
     }else{
       newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}
         className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNewDSNameFieldChange}/></div>;
     }
-    var form =<div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
-      <div style={{paddingBottom:'10px'}}>
-        <span className='jazz-form-text-field-label'>*图表名称：</span>
-        <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNameFieldChange}/>
-      </div>
-      <div style={{marginBottom:'20px'}} className={'jazz-normal-hierarchybutton-container'}>
-        <span className='jazz-form-field-title'>*层级节点：</span>
-          <HierarchyButton ref={'hierTreeButton'} show={true}
-              onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
-      </div>
-      <div style={{ marginBottom:'10px'}}>
-        <span className='jazz-form-field-title' style={{marginTop:'2px'}}>*选择仪表盘：</span>
-        <div style={{width: '200px', display:'inline-block'}}>
-          <RadioButtonGroup ref={'existDashboardRadio'} onChange={this._onExistRadioChanged} valueSelected={this.state.dashboardState}>
-            {[<RadioButton label="已存在仪表盘" value="existDashboard" className={'jazz-widget-save-dialog-radiobutton'} ></RadioButton>]}
-          </RadioButtonGroup>
-          {existDashBoardRadioContent}
-          <RadioButtonGroup ref={'newDashboardRadio'} onChange={this._onNewRadioChanged} valueSelected={this.state.dashboardState}>
-            {[<RadioButton label="新建仪表盘" name="newDashboard" value="newDashboard"></RadioButton>]}
-          </RadioButtonGroup>
-          {newDashboardRadioContent}
-        </div>
-      </div>
-      <div>
-        <span className='jazz-form-text-field-label'>备注：</span>
-        <TextField ref={'dashboardComment'} multiLine='true' className={'jazz-widget-save-dialog-textfiled'}/>
-      </div>
-    </div>;
 
     var _buttonActions = [
             <FlatButton label="保存" onClick={this._onDialogSubmit} />,
             <FlatButton label="放弃" onClick={this._onDialogCancel} style={{marginRight:'364px'}}/>
         ];
     let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'保存图表至仪表盘'}</h3>;
-    var dialog = <Dialog  title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}}
+    let form = <div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
+        <div style={{paddingBottom:'10px'}}>
+          <span className='jazz-form-text-field-label'>*图表名称：</span>
+          <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNameFieldChange}/>
+        </div>
+        <div style={{marginBottom:'20px'}} className={'jazz-normal-hierarchybutton-container'}>
+          <span className='jazz-form-field-title'>*层级节点：</span>
+            <HierarchyButton ref={'hierTreeButton'} show={true} hierIdAndClick={this.props.tagOption.hierId}
+                onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
+        </div>
+        <div style={{ marginBottom:'10px'}}>
+          <span className='jazz-form-field-title' style={{marginTop:'2px'}}>*选择仪表盘：</span>
+          <div style={{width: '200px', display:'inline-block'}}>
+            <RadioButtonGroup ref={'existDashboardRadio'} onChange={this._onExistRadioChanged} valueSelected={this.state.dashboardState}>
+              {[<RadioButton label="已存在仪表盘" value="existDashboard" className={'jazz-widget-save-dialog-radiobutton'} ></RadioButton>]}
+            </RadioButtonGroup>
+            {existDashBoardRadioContent}
+            <RadioButtonGroup ref='newDashboardRadio' onChange={this._onNewRadioChanged} valueSelected={this.state.dashboardState}>
+              {[<RadioButton label="新建仪表盘" name="newDashboard" value="newDashboard"></RadioButton>]}
+            </RadioButtonGroup>
+            {newDashboardRadioContent}
+          </div>
+        </div>
+        <div>
+          <span className='jazz-form-text-field-label'>备注：</span>
+          <TextField ref='dashboardComment' multiLine='true' className={'jazz-widget-save-dialog-textfiled'}/>
+        </div>
+      </div>;
+    var dialog = <div className={'jazz-dialog-body-visible'}><Dialog  title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}} openImmediately={true}
                           actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
-                  {form}
-                 </Dialog>;
+                          {form}
+                 </Dialog></div>;
 
     return dialog;
   },
   componentDidMount: function() {
     DashboardStore.addDashboardListLoadedListener(this._onDashboardListLoaded);
+    isCommited = false;
   },
   componentWillUnmount: function() {
     DashboardStore.removeDashboardListLoadedListener(this._onDashboardListLoaded);
-  },
-  componentDidUpdate(){
-    if(this.props.openImmediately && !isShowed){
-      this.resetFields();
-      var tagOption = this.props.tagOption;
-      this.refs.hierTreeButton.selectHierItem(tagOption.hierId, true);
-      this.show();
-    }
-  },
-  resetFields(){
-    isCommited = false;
-    this.refs.widgetname.setValue('');
-    this.refs.widgetname.setErrorText();
-    if(this.refs.newDashboard){
-      this.refs.newDashboard.setValue('');
-      this.refs.newDashboard.setErrorText();
-    }
-    if(this.refs.dashboardComment) {
-      this.refs.dashboardComment.setValue('');
-    }
-
-    this.setState({dashboardState: 'existDashboard'});
   },
   _onDialogCancel(){
     this.hide();
@@ -191,6 +168,10 @@ var WidgetSaveWindow = React.createClass({
       isCommited = true;
       let widgetDto;
       let createNewDashboard = (this.state.dashboardState === 'newDashboard');
+      let comment = this.refs.dashboardComment.getValue();
+      if(comment === null || comment.trim() ===''){
+        comment='';
+      }
       if(!createNewDashboard){
         let existDashboardItem = this.state.dashboardMenuItems[this.state.selectedExistingDashboardIndex],
             dashboardId = existDashboardItem.id,
@@ -199,7 +180,8 @@ var WidgetSaveWindow = React.createClass({
         widgetDto = {widgetDto: {
                                   ContentSyntax:this.props.contentSyntax,
                                   DashboardId:dashboardId,
-                                  Name: title
+                                  Name: title,
+                                  Annotation: comment
                                 }
                     };
       }else{
@@ -209,7 +191,8 @@ var WidgetSaveWindow = React.createClass({
                                   IsRead: false
                                 },
                      widget: { ContentSyntax:this.props.contentSyntax,
-                               Name:this.refs.widgetname.getValue()
+                               Name:this.refs.widgetname.getValue(),
+                               Annotation: comment
                              }
                    };
       }

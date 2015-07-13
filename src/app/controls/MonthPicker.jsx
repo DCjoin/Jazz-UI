@@ -101,8 +101,10 @@ let MonthPicker = React.createClass({
         ];
 
     var dialog = <Dialog className='jazz-alarm-monthpicker-dialog' title="Month Picker" actions={_buttonActions} modal={false} ref="dialogWindow">
-      <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}/>
-      <DropDownMenu menuItems={this.props._monthItems} onChange={this._onMonthChanged} selectedIndex ={this.state.monthIndex}/>
+      <div style={{position: 'absolute'}}>
+        <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}/>
+        <DropDownMenu menuItems={this.props._monthItems} onChange={this._onMonthChanged} selectedIndex ={this.state.monthIndex}/>
+      </div>
     </Dialog>;
 
     var textField = <TextField className='jazz-alarm-monthpicker-textfield' ref='input' hintText='select month' value={this.getFormatDate()} onFocus={this._handleInputFocus} onTouchTap={this._handleInputTouchTap}/>;
