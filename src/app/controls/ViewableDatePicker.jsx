@@ -15,7 +15,14 @@ var ViewableDatePicker = React.createClass({
         isViewStatus: React.PropTypes.bool,
         defaultValue: React.PropTypes.string,
         minDate: React.PropTypes.object,
-        maxDate: React.PropTypes.object
+        maxDate: React.PropTypes.object,
+        dateFormatStr: React.PropTypes.string
+    },
+
+    getDefaultProps: function(){
+      return {
+        dateFormatStr: "YYYY年MM月DD日"
+      }
     },
 
     getInitialState: function() {
@@ -81,7 +88,7 @@ var ViewableDatePicker = React.createClass({
     },
     _formatDate(date){
         if(date){
-            return moment(new Date(date)).format("YYYY年MM月DD日");
+          return moment(new Date(date)).format(this.props.dateFormatStr);
         }
         return '';
     },
