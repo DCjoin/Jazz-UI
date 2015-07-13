@@ -1701,21 +1701,18 @@ var BaselineBasic = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps){
-<<<<<<< HEAD
+
     if(nextProps){
       this._fetchServerData(this.state.year);
     }
     var hierId=TagStore.getCurrentHierarchyId();
       TBSettingAction.calDetailData(hierId);
-=======
-    // if(nextProps){
-    //   this._fetchServerData(this.state.year);
-    // }
+
   },
 
   fetchServerData(){
     this._fetchServerData(this.state.year);
->>>>>>> 2790ff64c289315c8f02ab87e1d8183abec85ac5
+
   },
 
   tryGetValue: function(){
