@@ -368,15 +368,15 @@ let ChartComponent = React.createClass({
       let isBatchIgnore = this.refs.batchIgnore.isChecked();
       let point = this.selectedIgnorePoint,
           factory = EnergyCommentFactory,
-          ids;
+          ids, ignorePoints = [];
       if(isBatchIgnore){
-        let ignorePoints = [];
         ids = factory.getContinuousPointids(point, ignorePoints);
 
       }else{
         ids = point.alarmId;
+        ignorePoints.push(point);
       }
-      AlarmAction.ignoreAlarm(ids, isBatchIgnore);
+      AlarmAction.ignoreAlarm(ids, isBatchIgnore, ignorePoints);
       this.refs.ignoreDialogWindow.dismiss();
     },
     _onIgnoreDialogCancel(){

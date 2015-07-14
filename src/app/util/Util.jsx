@@ -15,7 +15,7 @@ const FIXEDTIMES = {
 
 let CommonFuns = {
 	isSuccess: function(data) {
-		return data && data.error.Code == '0' && module.exports.getResResult(data);
+		return data && data.error.Code == '0';// && module.exports.getResResult(data);
 	},
 	isObject: function(it) {
 		return it !== null && (typeof it == 'object' && typeof it != 'function');
