@@ -565,7 +565,7 @@ var CalcSetting = React.createClass({
       endDate = new Date(this.props.dateRange.end),
       tmpDate = new Date(startDate);
     tmpDate.setMonth(tmpDate.getMonth() + 1);
-    return tmpDate > endDate;
+    return tmpDate >= endDate;
   },
 
   _onCalcClick: function(){
