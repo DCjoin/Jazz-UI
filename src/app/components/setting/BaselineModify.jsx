@@ -23,10 +23,10 @@ const monthItemNum = 6;
 let BaselineModify = React.createClass({
   mixins:[Navigation,State],
 
-  setValue: function(){
-    this.refs.yearValue.setValue(BaselineModifyStore.getYearData());
+  setValue: function(data){
+    this.refs.yearValue.setValue(data.getIn(["YearlyValues",0,"DataValue"]));
     for(var i = 0; i < monthItemNum; i++){
-      this.refs['monthItem' + (i + 1)].setValue();
+      this.refs['monthItem' + (i + 1)].setValue(data);
     }
   },
   _onLoadingStatusChange: function(){
@@ -37,16 +37,17 @@ let BaselineModify = React.createClass({
   },
   _onDataChange: function(){
     var isLoading = BaselineModifyStore.getLoadingStatus();
-    var yearIsModify = BaselineModifyStore.getYearIsModify();
+    var data = BaselineModifyStore.getOrginData();
+    var yearIsModify = data.getIn(["YearlyValues",0,"IsModify"]);
     this.setState({
       isLoading: isLoading,
       yearIsModify: yearIsModify
     });
-    this.setValue();
+    this.setValue(data);
   },
   handleEdit: function(){
     this.setState({
-      disable : false
+      disable: false
     });
 	},
   handleSave: function(){
@@ -69,7 +70,8 @@ let BaselineModify = React.createClass({
         errorRightText:""
       });
     }
-    this.setValue();
+    var data = BaselineModifyStore.getOrginData();
+    this.setValue(data);
   },
   _validate: function(){
     var valid = true;
@@ -249,13 +251,13 @@ let BaselineModify = React.createClass({
 });
 
 let MonthItem = React.createClass({
-  setValue: function(){
+  setValue: function(data){
     var index = this.props.index;
-    this.refs.leftValue.setValue(BaselineModifyStore.getMonthData(index*2));
-    this.refs.rightValue.setValue(BaselineModifyStore.getMonthData(index*2+1));
+    this.refs.leftValue.setValue(data.getIn(["MonthlyValues",index*2,"DataValue"]));
+    this.refs.rightValue.setValue(data.getIn(["MonthlyValues",index*2+1,"DataValue"]));
     this.setState({
-      leftIsModify: BaselineModifyStore.getMonthIsModify(index*2),
-      rightIsModify: BaselineModifyStore.getMonthIsModify(index*2+1)
+      leftIsModify: data.getIn(["MonthlyValues",index*2,"IsModify"]),
+      rightIsModify: data.getIn(["MonthlyValues",index*2+1,"IsModify"])
     });
   },
   _validateLeft: function(){

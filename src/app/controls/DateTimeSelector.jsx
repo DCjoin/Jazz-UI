@@ -4,9 +4,10 @@ import {DropDownMenu, DatePicker} from 'material-ui';
 import CommonFuns from '../util/Util.jsx';
 import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
 
-let {hourPickerData} = CommonFuns;
+let {hourPickerData, dateAdd} = CommonFuns;
 
-const dateTime = hourPickerData();
+const startDateTime = hourPickerData(0, 23);
+const endDateTime = hourPickerData(1, 24);
 
 let DateTimeSelector = React.createClass({
 
@@ -19,8 +20,14 @@ let DateTimeSelector = React.createClass({
     let startTime = startDate.getHours(),
         endTime = endDate.getHours();
 
+
     startDate.setHours(0,0,0);
     endDate.setHours(0,0,0);
+    if(endTime === 0){
+       endDate = dateAdd(endDate, -1, 'days');
+       endDate.setHours(0,0,0);
+       endTime = 23;
+    }
 
     startField.setValue(startDate);
     endField.setValue(endDate);
@@ -69,14 +76,14 @@ let DateTimeSelector = React.createClass({
         {startDate}
       </div>
       <div className={'jazz-full-border-dropdownmenu-time-container'}>
-        <DropDownMenu menuItems={dateTime} ref='startTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>
+        <DropDownMenu menuItems={startDateTime} ref='startTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>
       </div>
       <span> {'到'} </span>
       <div className={'jazz-full-border-datepicker-container'}>
         {endDate}
       </div>
       <div className={'jazz-full-border-dropdownmenu-time-container'}>
-        <DropDownMenu menuItems={dateTime} ref='endTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>
+        <DropDownMenu menuItems={endDateTime} ref='endTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>
       </div>
     </div>;
 

@@ -335,7 +335,7 @@ let ChartPanel = React.createClass({
   _onBaselineBtnDisabled:function(){
     this.setState({
         baselineBtnStatus:TagStore.getBaselineBtnDisabled()
-    })
+    });
   },
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
@@ -347,7 +347,7 @@ let ChartPanel = React.createClass({
 
       let date = new Date();
       date.setHours(0,0,0);
-      let last7Days = CommonFuns.dateAdd(date, -7, 'days');
+      let last7Days = CommonFuns.dateAdd(date, -6, 'days');
 
       this.refs.dateTimeSelector.setDateField(last7Days, date);
     }

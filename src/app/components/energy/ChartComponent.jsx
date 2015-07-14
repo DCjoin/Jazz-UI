@@ -368,15 +368,15 @@ let ChartComponent = React.createClass({
       let isBatchIgnore = this.refs.batchIgnore.isChecked();
       let point = this.selectedIgnorePoint,
           factory = EnergyCommentFactory,
-          ids;
+          ids, ignorePoints = [];
       if(isBatchIgnore){
-        let ignorePoints = [];
         ids = factory.getContinuousPointids(point, ignorePoints);
 
       }else{
         ids = point.alarmId;
+        ignorePoints.push(point);
       }
-      AlarmAction.ignoreAlarm(ids, isBatchIgnore);
+      AlarmAction.ignoreAlarm(ids, isBatchIgnore, ignorePoints);
       this.refs.ignoreDialogWindow.dismiss();
     },
     _onIgnoreDialogCancel(){
@@ -947,6 +947,7 @@ let ChartComponent = React.createClass({
                 if (item.EnergyAssociatedData && item.EnergyAssociatedData.Comments && item.EnergyAssociatedData.Comments.length > 0) {
                     serieObj = factory.createCommentSeriesByTargetEnergyDataItem(item, this.props.step, convertedData[i].id, xaxisMap);
                     serieObj.visible = !convertedData[i].graySerie;
+                    serieObj.zIndex = 11;
                     flagSeries.push(serieObj);
                 }
             }
@@ -956,6 +957,7 @@ let ChartComponent = React.createClass({
                 if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
                     serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, convertedData[i].id, xaxisMap, this.props.step);
                     serieObj.visible = !convertedData[i].graySerie;
+                    serieObj.zIndex = 11; //default 10
                     alarmSeries.push(serieObj);
                 }
             }
