@@ -2041,9 +2041,9 @@ var BaselineBasic = React.createClass({
 
     var yearPicker = null;
     if(this.state.isViewStatus){
-      yearPicker = <span style={spanStyle}>{this.state.year}</span>;
-    }else{
       yearPicker = <YearPicker {...yearProps} />;
+    }else{
+      yearPicker = <span style={spanStyle}>{this.state.year}</span>;
     }
     if(this.state.isCalDetailLoading){
       return (
