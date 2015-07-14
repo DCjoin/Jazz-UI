@@ -168,8 +168,9 @@ var DaytimeRangeValue = React.createClass({
         style: {
           border:'1px solid #efefef',
           color:'#767a7a',
-          marginRight:'10px'
-        }
+          marginRight:'10px',
+          //zIndex: 2,
+        },
       },
       valProps = {
         defaultValue: this.props.value,
@@ -564,7 +565,7 @@ var CalcSetting = React.createClass({
       endDate = new Date(this.props.dateRange.end),
       tmpDate = new Date(startDate);
     tmpDate.setMonth(tmpDate.getMonth() + 1);
-    return tmpDate > endDate;
+    return tmpDate >= endDate;
   },
 
   _onCalcClick: function(){
@@ -1474,11 +1475,11 @@ var TBSettingItem = React.createClass({
           </div>
           <div>{this.state.error}</div>
           <div className="jazz-setting-basic-clear">
-            <RadioButton name='NormalRadio' ref='NormalRadio' value="NormalRadio"
+            <RadioButton name='NormalRadio' ref='NormalRadio' value="NormalRadio" style={{zIndex:0}}
               label="手动设置基准值" onCheck={this._onNormalCheck} checked={this.state.radio == 'NormalRadio'} />
             <NormalSetting ref="NormalSettingCtrl" {...normalProps} isDisplay={this.state.radio == "NormalRadio"} />
 
-            <RadioButton name='CalcRadio' ref='CalcRadio' value="CalcRadio"
+            <RadioButton name='CalcRadio' ref='CalcRadio' value="CalcRadio" style={{zIndex:0}}
               label="计算所选数据平均值为基准数据" onCheck={this._onCalcCheck} checked={this.state.radio == 'CalcRadio'}  />
             <CalcSetting ref="CalcSettingCtrl" {...avgProps} isDisplay={this.state.radio == "CalcRadio"}  />
           </div>
@@ -1521,7 +1522,6 @@ var TBSettingItems = React.createClass({
     }
   },
 
-
   tryGetValue: function(){
     var val = this.getValue(),
       len = this.state.items.length,
@@ -1529,8 +1529,7 @@ var TBSettingItems = React.createClass({
     for (var i = 0; i < len; i++) {
       valid = valid & this.refs['item' + i].validate(val);
     }
-    if(valid) return val;
-    return null;
+    return [valid, val];
   },
 
   getValue: function(){
@@ -1807,8 +1806,9 @@ var BaselineBasic = React.createClass({
 
   tryGetValue: function(){
     var items = this.refs.TBSettingItems.tryGetValue();
-    if(items) return this.getValue(items);
-    return null;
+    //if(items && items[0]) return this.getValue(items);
+    items[1] = this.getValue(items[1]);
+    return items;
   },
 
   getValue: function(items){
@@ -1896,27 +1896,32 @@ var BaselineBasic = React.createClass({
 
   _handleSave: function(){
     var me = this;
-    var val = this.tryGetValue();
-    if(val){
-      if(this.props.onRequestShowMask){
-        this.props.onRequestShowMask(this);
-      }
-      this._bindData(val);
-      this._saveDataToServer(val,
-        function(setting){
-          me._bindData(setting);
-          if(me.props.onRequestHideMask){
-            me.props.onRequestHideMask(me);
-          }
-          me.setState({ isViewStatus : true });
-        },
-        function(err, res){
-          if(me.props.onRequestHideMask){
-            me.props.onRequestHideMask(me);
-          }
-          me.setState({ isViewStatus : true });
+    var valArr = this.tryGetValue();
+    if(valArr){
+      var val = valArr[1];
+      if(valArr[0]){
+        if(this.props.onRequestShowMask){
+          this.props.onRequestShowMask(this);
         }
-      );
+        this._bindData(val);
+        this._saveDataToServer(val,
+          function(setting){
+            me._bindData(setting);
+            if(me.props.onRequestHideMask){
+              me.props.onRequestHideMask(me);
+            }
+            me.setState({ isViewStatus : true });
+          },
+          function(err, res){
+            if(me.props.onRequestHideMask){
+              me.props.onRequestHideMask(me);
+            }
+            me.setState({ isViewStatus : true });
+          }
+        );
+      }else {
+        this._bindData(val);
+      }
     }
   },
 
@@ -1988,8 +1993,9 @@ var BaselineBasic = React.createClass({
       onYearPickerSelected: this._onYearChanged,
       style:{
         border:'1px solid #efefef',
-        margin:'0px 10px'
-      }
+        margin:'0px 10px',
+        //zIndex: 2,
+      },
       //className: "yearpicker",
 
     };

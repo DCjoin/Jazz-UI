@@ -49,12 +49,15 @@ let DimButton=React.createClass({
     });
   },
     getInitialState: function() {
-      return {
-        open: false,
-        dimList:null,
-        selectedNode:null,
-        buttonName:"全部维度"
-      };
+
+        return {
+          open: false,
+          dimList:null,
+          selectedNode:null,
+          buttonName:"维度节点"
+        };
+      
+
     },
     componentDidMount: function() {
       DimStore.addChangeListener(this._onChange);
@@ -68,6 +71,9 @@ let DimButton=React.createClass({
     componentWillReceiveProps: function(nextProps) {
         if(nextProps.parentNode){
           DimAction.loadall(nextProps.parentNode.Id);
+          this.setState({
+            buttonName:"全部节点"
+          })
         }
         if(!nextProps.show){
           this.setState({
