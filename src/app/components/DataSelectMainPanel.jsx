@@ -95,11 +95,16 @@ let DataSelectMainPanel=React.createClass({
     _onAlarmTagNodeChange:function(){
       var data=TagStore.getData();
       var alarmTag=EnergyStore.getTagOpions()[0];
+      var node={
+        Id:alarmTag.hierId,
+        Name:alarmTag.hierName
+      };
       page=data.pageIndex;
       this.setState({
         tagList:data.GetPageTagDataResult,
         total:data.totalCount,
         tagId:alarmTag.hierId,
+        dimParentNode:node,
         optionType:2,
         dimActive:true,
         isLoading:TagStore.getNodeLoading(),
