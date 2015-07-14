@@ -237,9 +237,9 @@ let CommonFuns = {
 		var newDate = mdate.add(value, unit);
 		return newDate._d;
 	},
-	hourPickerData: function () {
+	hourPickerData: function (start, end) {
       var arr = [];
-      for (var i = 0; i <= 24; ++i) {
+      for (var i = start; i <= end; ++i) {
           arr.push({ value: i, text: ((i < 10) ? '0' : '') + i + ':00' });
       }
       return arr;
