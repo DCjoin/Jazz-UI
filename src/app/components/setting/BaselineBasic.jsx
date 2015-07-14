@@ -1519,7 +1519,6 @@ var TBSettingItems = React.createClass({
     }
   },
 
-
   tryGetValue: function(){
     var val = this.getValue(),
       len = this.state.items.length,
@@ -1527,8 +1526,7 @@ var TBSettingItems = React.createClass({
     for (var i = 0; i < len; i++) {
       valid = valid & this.refs['item' + i].validate(val);
     }
-    if(valid) return val;
-    return null;
+    return [valid, val];
   },
 
   getValue: function(){
@@ -1805,8 +1803,9 @@ var BaselineBasic = React.createClass({
 
   tryGetValue: function(){
     var items = this.refs.TBSettingItems.tryGetValue();
-    if(items) return this.getValue(items);
-    return null;
+    //if(items && items[0]) return this.getValue(items);
+    items[1] = this.getValue(items[1]);
+    return items;
   },
 
   getValue: function(items){
@@ -1894,27 +1893,32 @@ var BaselineBasic = React.createClass({
 
   _handleSave: function(){
     var me = this;
-    var val = this.tryGetValue();
-    if(val){
-      if(this.props.onRequestShowMask){
-        this.props.onRequestShowMask(this);
-      }
-      this._bindData(val);
-      this._saveDataToServer(val,
-        function(setting){
-          me._bindData(setting);
-          if(me.props.onRequestHideMask){
-            me.props.onRequestHideMask(me);
-          }
-          me.setState({ isViewStatus : true });
-        },
-        function(err, res){
-          if(me.props.onRequestHideMask){
-            me.props.onRequestHideMask(me);
-          }
-          me.setState({ isViewStatus : true });
+    var valArr = this.tryGetValue();
+    if(valArr){
+      var val = valArr[1];
+      if(valArr[0]){
+        if(this.props.onRequestShowMask){
+          this.props.onRequestShowMask(this);
         }
-      );
+        this._bindData(val);
+        this._saveDataToServer(val,
+          function(setting){
+            me._bindData(setting);
+            if(me.props.onRequestHideMask){
+              me.props.onRequestHideMask(me);
+            }
+            me.setState({ isViewStatus : true });
+          },
+          function(err, res){
+            if(me.props.onRequestHideMask){
+              me.props.onRequestHideMask(me);
+            }
+            me.setState({ isViewStatus : true });
+          }
+        );
+      }else {
+        this._bindData(val);
+      }
     }
   },
 
