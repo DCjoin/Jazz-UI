@@ -9,7 +9,8 @@ import {Action} from '../constants/actionType/Setting.jsx';
 
 const DATA_CHANGED_EVENT = 'datachanged',
       DATA_LOADING_EVENT = 'dataloading';
-var _baselineModifyData = null,
+var _orginBaselineModifyData = null,
+    _baselineModifyData = null,
     _isLoading = false;
 
 var BaselineModifyStore = assign({},PrototypeStore,{
@@ -19,32 +20,24 @@ var BaselineModifyStore = assign({},PrototypeStore,{
   getData: function(){
     return _baselineModifyData;
   },
-  setData: function(data){
-    _baselineModifyData = data;
+  getOrginData: function(){
+    return _orginBaselineModifyData;
   },
-  getYearData: function(){
-    return _baselineModifyData.YearlyValues[0].DataValue;
+  setData: function(data){
+    _baselineModifyData = Immutable.fromJS(data);
+    _orginBaselineModifyData = _baselineModifyData;
   },
   setYearData: function(data){
-    _baselineModifyData.YearlyValues[0].DataValue = data;
-  },
-  getMonthData: function(index){
-    return _baselineModifyData.MonthlyValues[index].DataValue;
+    _baselineModifyData = _baselineModifyData.setIn(["YearlyValues",0,"DataValue"], data);
   },
   setMonthData: function(index, data){
-    _baselineModifyData.MonthlyValues[index].DataValue = data;
-  },
-  getYearIsModify: function(){
-    return _baselineModifyData.YearlyValues[0].IsModify;
+    _baselineModifyData = _baselineModifyData.setIn(["MonthlyValues",index,"DataValue"], data);
   },
   setYearIsModify: function(){
-    _baselineModifyData.YearlyValues[0].IsModify = true;
-  },
-  getMonthIsModify: function(index){
-    return _baselineModifyData.MonthlyValues[index].IsModify;
+    _baselineModifyData = _baselineModifyData.setIn(["YearlyValues",0,"IsModify"], true);
   },
   setMonthIsModify: function(index){
-    _baselineModifyData.MonthlyValues[index].IsModify = true;
+    _baselineModifyData = _baselineModifyData.setIn(["MonthlyValues",index,"IsModify"], true);
   },
   _onDataLoading: function(){
     _isLoading = true;
