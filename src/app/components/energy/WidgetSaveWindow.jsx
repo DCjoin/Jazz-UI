@@ -12,7 +12,6 @@ import TagStore from '../../stores/TagStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
 let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
-let isCommited = false;
 
 var WidgetSaveWindow = React.createClass({
   propTypes:{
@@ -131,7 +130,6 @@ var WidgetSaveWindow = React.createClass({
   },
   componentDidMount: function() {
     DashboardStore.addDashboardListLoadedListener(this._onDashboardListLoaded);
-    isCommited = false;
   },
   componentWillUnmount: function() {
     DashboardStore.removeDashboardListLoadedListener(this._onDashboardListLoaded);
@@ -171,8 +169,7 @@ var WidgetSaveWindow = React.createClass({
     return flag;
   },
   _onDialogSubmit(){
-    if(this.validate() && !isCommited){
-      isCommited = true;
+    if(this.validate()){
       let widgetDto;
       let createNewDashboard = (this.state.dashboardState === 'newDashboard');
       let comment = this.refs.dashboardComment.getValue();
