@@ -847,6 +847,7 @@ var SpecialItem = React.createClass({
           width:'90px',
           height:'32px',
           fontSize:'14px',
+          fontFamily: 'Microsoft YaHei',
           color:'#767a7a'
         }, flatButtonStyle={
           padding: '0',
@@ -866,7 +867,7 @@ var SpecialItem = React.createClass({
         };
 
       var startDateProps = {
-          formatDate: formatDate,
+          dateFormatStr: "MM-DD",
           defaultValue: dstartDate,
           minDate: startDate,
           maxDate: endDate,
@@ -875,7 +876,7 @@ var SpecialItem = React.createClass({
             me._slideDateTime(v);
           }
         }, endDateProps = {
-          formatDate: formatDate,
+          dateFormatStr: "MM-DD",
           defaultValue: dendDate,
           minDate: startDate,
           maxDate: endDate,
@@ -1315,6 +1316,7 @@ var TBSettingItem = React.createClass({
       width:'90px',
       height:'32px',
       fontSize:'14px',
+      fontFamily: 'Microsoft YaHei',
       color:'#767a7a'
     },
     datePickerAreaStyle={
@@ -1335,7 +1337,7 @@ var TBSettingItem = React.createClass({
 
     var startProps = {
       defaultValue: dstartDate,
-      formatDate: formatDate,
+      dateFormatStr: "MM-DD",
       minDate: startDate,
       maxDate: endDate,
       style: datapickerStyle,
@@ -1353,7 +1355,7 @@ var TBSettingItem = React.createClass({
       }
     };
     var endProps = {
-      formatDate: formatDate,
+      dateFormatStr: "MM-DD",
       defaultValue: dendDate,
       minDate: startDate,
       maxDate: endDate,
