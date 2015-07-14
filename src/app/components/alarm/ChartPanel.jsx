@@ -7,6 +7,7 @@ import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
 import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
+import TagStore from '../../stores/TagStore.jsx';
 
 import YaxisSelector from '../energy/YaxisSelector.jsx';
 import StepSelector from '../energy/StepSelector.jsx';
@@ -127,6 +128,7 @@ let ChartPanel = React.createClass({
         tagOptions = AlarmTagStore.getSearchTagList();
       }
       if( !tagOptions || tagOptions.length === 0){
+        this.setState({energyData:null});
         return;
       }
       let relativeDateValue = this._getRelativeDateValue();
@@ -221,7 +223,8 @@ let ChartPanel = React.createClass({
           hierName: null,
           submitParams: null,
           step: null,
-          dashboardOpenImmediately: false
+          dashboardOpenImmediately: false,
+          baselineBtnStatus:TagStore.getBaselineBtnDisabled()
         };
         if(this.props.chartTitle){
           state.chartTitle = this.props.chartTitle;
@@ -263,11 +266,17 @@ let ChartPanel = React.createClass({
                     <span>{me.state.chartTitle}</span>
                     <IconButton iconClassName="icon-send" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}/>
                  </div>;
-
+      let widgetWd;
+      if(me.state.dashboardOpenImmediately){
+        widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={me.onWidgetSaveWindowDismiss} chartTitle={me.state.chartTitle}
+                                tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>;
+      }
+      else{
+        widgetWd=null;
+      }
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
-          <WidgetSaveWindow ref={'saveChartDialog'} openImmediately={me.state.dashboardOpenImmediately} onWidgetSaveWindowDismiss={me.onWidgetSaveWindowDismiss}
-                            tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>
+          {widgetWd}
           {title}
           <div className={'jazz-alarm-chart-toolbar-container'}>
             <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
@@ -276,7 +285,7 @@ let ChartPanel = React.createClass({
             <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={this._onDateSelectorChanged}/>
             <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
-            <RaisedButton style={{marginLeft:'10px', height:'32px', marginBottom:'4px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
+            <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
           </div>
           {energyPart}
         </div>
@@ -323,11 +332,16 @@ let ChartPanel = React.createClass({
     this.setState({step:null});
     this._onEnergyDataChange();
   },
+  _onBaselineBtnDisabled:function(){
+    this.setState({
+        baselineBtnStatus:TagStore.getBaselineBtnDisabled()
+    })
+  },
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
     EnergyStore.addTagDataChangeListener(this._onEnergyDataChange);
     EnergyStore.addGetTagDataErrorListener(this._onGetEnergyDataError);
-
+    TagStore.addBaselineBtnDisabledListener(this._onBaselineBtnDisabled);
     if(this.props.isSettingChart){
       this.refs.relativeDate.setState({selectedIndex:1});
 
@@ -342,6 +356,7 @@ let ChartPanel = React.createClass({
     EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
     EnergyStore.removeTagDataChangeListener(this._onEnergyDataChange);
     EnergyStore.removeGetTagDataErrorListener(this._onGetEnergyDataError);
+    TagStore.removeBaselineBtnDisabledListener(this._onBaselineBtnDisabled);
   },
   getSelectedTagOptions(){
     let userTagListSelect = AlarmTagStore.getUseTaglistSelect();

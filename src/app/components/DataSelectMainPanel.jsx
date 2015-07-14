@@ -338,8 +338,7 @@ let DataSelectMainPanel=React.createClass({
              height:'26px'
            };
       var menupaper,pagination,
-          totalPageNum=parseInt((this.state.total+19)/20)==0?1:parseInt((this.state.total+19)/20);
-
+          totalPageNum=parseInt((this.state.total+19)/20);
       if(this.state.tagList){
        menupaper=<TagMenu tagList={this.state.tagList}/>;
        pagination=<Pagination onPrePage={this._onPrePage}

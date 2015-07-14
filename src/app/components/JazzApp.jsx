@@ -43,7 +43,7 @@ let JazzApp = React.createClass({
         var me = this;
         var afterLoadLang = function(b) {
             window.I18N=b;
-            me.replaceWith('main',{lang:lang});
+            me.replaceWith('alarm',{lang:lang});
 
             //me.transitionTo('main',{lang:lang});
         };

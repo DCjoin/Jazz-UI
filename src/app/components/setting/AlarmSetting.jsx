@@ -39,11 +39,9 @@ let AlarmSetting = React.createClass({
     };
   },
   setValue: function(alarmSettingData){
-    if(this.refs){
-      this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
-      this.refs.threshold.setValue(alarmSettingData.AlarmThreshold);
-      this.refs.alarmSteps.setValue(alarmSettingData.AlarmSteps);
-    }
+    this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
+    this.refs.threshold.setValue(alarmSettingData.AlarmThreshold);
+    this.refs.alarmSteps.setValue(alarmSettingData.AlarmSteps);
   },
   handleEdit: function(){
     this.setState({

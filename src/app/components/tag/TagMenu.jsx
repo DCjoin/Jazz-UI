@@ -17,8 +17,10 @@ var TagMenu=React.createClass({
   _onTagStatusChange:function(){
     this.setState({
       tagStatus:TagStore.getCurrentHierIdTagStatus(),
+      allCheckDisable:TagStore.getCheckAllDisabledStatus(),
       checked:TagStore.getCheckAllCheckedStatus(),
-      tagTotal:TagStore.getTagTotalStatus()
+      tagTotal:TagStore.getTagTotalStatus(),
+
     })
   },
   _onAllCheck:function(){
@@ -51,6 +53,17 @@ var TagMenu=React.createClass({
       toolTipShow:false,
     };
   },
+  /*
+  componentWillReceiveProps:function(){
+    this.setState({
+      tagStatus:TagStore.getCurrentHierIdTagStatus(),
+      allCheckDisable:TagStore.getCheckAllDisabledStatus(),
+      tagTotal:TagStore.getTagTotalStatus(),
+      checked:TagStore.getCheckAllCheckedStatus(),
+      toolTipShow:false,
+    })
+  },
+  */
   componentDidMount: function() {
     TagStore.addTagStatusListener(this._onTagStatusChange);
 
@@ -81,7 +94,7 @@ var TagMenu=React.createClass({
     if(this.state.toolTipShow){
       var tooltipText="已选择数据点 "+TagStore.getTagTotal()+'/30';
       if(this.state.allCheckDisable){
-        tooltipText+="新增全选的数据点数量超出了可选范围，无法全选，请注意选择布标数据点"
+        tooltipText+="新增全选的数据点数量超出了可选范围，无法全选，请逐一选择目标数据点"
       }
       tooltip=<div style={tooltipStyle}>{tooltipText}</div>
     }

@@ -39,6 +39,8 @@ var DaytimeSelector = React.createClass({
     }) ;
   },
   _onChange(e, selectedIndex, menuItem){
+    // e.preventDefault();
+    // e.stopPropagation();
     var preVal = this.state.value;
     this.state.value = this.props.from + this.props.step * selectedIndex;
     if(this.props.onChange){

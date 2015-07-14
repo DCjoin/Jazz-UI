@@ -54,7 +54,7 @@ var ViewableDatePicker = React.createClass({
             this.props.didChanged(str);
         }
         if(this.props.onChange){
-          this.props.onChange();
+          this.props.onChange(this, date);
         }
     },
     _handleChange: function(date1, date2){
@@ -101,9 +101,6 @@ var ViewableDatePicker = React.createClass({
         if(this.state.showCalendar){
             //this.refs.calendar.getDOMNode().children[1].style.display = 'none';
             // this.refs.calendar.getDOMNode().parentElement.style.top = '-32px';
-            var ele = React.findDOMNode(this.refs.TextField);
-            var top = ele.offsetTop;
-            React.findDOMNode(this.refs.calendarCt).top = top;
         }
     },
     render: function(){
@@ -141,7 +138,7 @@ var ViewableDatePicker = React.createClass({
           }
           datePicker = (<TextField {...inputProps} ref="TextField"/>);
           if(this.state.showCalendar){
-          calendar=(<div ref="calendarCt" style={{position:'absolute',"zIndex":99,width:"300px",marginTop:'2px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}><Calendar
+          calendar=(<div style={{position:'absolute',"zIndex":99,width:"300px",marginTop:'2px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}><Calendar
                 ref="calendar"
                 onSelectedDate={this._onSelectedDate}
                 initialDate={moment(this.state.curDate||new Date()).toDate()}

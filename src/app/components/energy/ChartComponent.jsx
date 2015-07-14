@@ -401,7 +401,7 @@ let ChartComponent = React.createClass({
 
       var dialog = <Dialog actions={_buttonActions} modal={false} ref="ignoreDialogWindow" contentStyle={{width:'600px'}}>
         <div style={{fontSize:'20px', fontWeight:'bold', padding:'0px 0 0 24px'}}>忽略该点报警吗？</div>
-        <div style={{margin:'30px auto 10px 24px'}}> <Checkbox ref='batchIgnore' label='忽略该点后的连续报警'/></div>
+        <div style={{margin:'30px auto 10px 24px'}}> <Checkbox ref='batchIgnore'  label='忽略该点后的连续报警'/></div>
       </Dialog>;
 
       let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,
@@ -429,12 +429,9 @@ let ChartComponent = React.createClass({
   },
   onIgnoreAlarmEvent(obj){
     let point = obj.point;
-        this.refs.batchIgnore.setChecked(false);
         this.refs.ignoreDialogWindow.show();
         this.selectedIgnorePoint = point;
-        //factory = EnergyCommentFactory;
 
-        //factory.ignoreAlarm(point, this.refs.highstock);
         return false;
   },
   _initChartObj() {

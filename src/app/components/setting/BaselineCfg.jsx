@@ -26,7 +26,8 @@ let BaselineCfg = React.createClass({
       year: (new Date()).getFullYear(),
       firstTabStyle:{
         color:'#1ca8dd'
-      }
+      },
+      activeTabIndex: 0,
     };
   },
 
@@ -49,15 +50,15 @@ let BaselineCfg = React.createClass({
   },
 
   componentDidMount: function() {
-    if(this.state.tag){
-      this.refreshData(this.state.tag.tagId);
-    };
+    // if(this.state.tag){
+    //   this.refreshData(this.state.tag.tagId);
+    // };
   },
 
   componentWillReceiveProps: function(nextProps){
     if(nextProps && nextProps.tag && nextProps.tag.tagId){
       this.setState({tag: nextProps.tag});
-      this.refreshData(nextProps.tag.tagId);
+      //this.refreshData(nextProps.tag.tagId);
     }
   },
 
@@ -102,17 +103,20 @@ let BaselineCfg = React.createClass({
     });
   },
   _tab0Active(tab){
+    this.setState({activeTabIndex: 0});
     var ctrl = this.refs.baselineBasic;
     if(ctrl){
       ctrl.fetchServerData();
     }
   },
   _tab1Active(tab){
+    this.setState({activeTabIndex: 1});
     var ctrl = this.refs.baselineModify;
     if(ctrl){
     }
   },
   _tab2Active(tab){
+    this.setState({activeTabIndex: 2});
     var ctrl = this.refs.alarmSetting;
     if(ctrl){
     }
@@ -166,6 +170,7 @@ let BaselineCfg = React.createClass({
       name: this.state.name || null,
       tbId: this.state.tbId || null,
       dateRange: this.state.dateRange,
+      shouldLoad: (this.state.activeTabIndex == 0),
       onNameChanged: function(newName){
         if(me.state.name != newName){
           me.setState({name: newName});
