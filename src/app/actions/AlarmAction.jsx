@@ -149,6 +149,7 @@ let AlarmAction = {
     }
     Ajax.post(url, {
          params:params,
+         commonErrorHandling:false,
          success: function(dashboardList){
            AppDispatcher.dispatch({
                type: Action.SAVE_TO_DASHBOARD_SUCESS
@@ -156,7 +157,8 @@ let AlarmAction = {
          },
          error: function(err, res){
            AppDispatcher.dispatch({
-               type: Action.SAVE_TO_DASHBOARD_ERROR
+               type: Action.SAVE_TO_DASHBOARD_ERROR,
+               res:res
            });
          }
        });

@@ -22,7 +22,10 @@ var WidgetSaveWindow = React.createClass({
     return {dashboardState:'existDashboard',
             dashboardMenuItems:[],
             tagOption:{},
-            selectedExistingDashboardIndex: 0
+            selectedExistingDashboardIndex: 0,
+            error:{},
+            newDashboardNameError:null,
+            chartTileError:null
            };
   },
   getDefaultProps: function() {
@@ -56,10 +59,15 @@ var WidgetSaveWindow = React.createClass({
     this.setState({dashboardMenuItems:menuItems});
   },
   _onExistRadioChanged(){
-    this.setState({dashboardState:'existDashboard'});
+    this.setState({
+      dashboardState:'existDashboard',
+      error:{}
+    });
   },
   _onNewRadioChanged(){
-    this.setState({dashboardState:'newDashboard'});
+    this.setState({dashboardState:'newDashboard',
+      error:{}
+    });
   },
   _onExistDashboardChanged(e, selectedIndex, menuItem){
     this.setState({selectedExistingDashboard:menuItem,
@@ -70,6 +78,19 @@ var WidgetSaveWindow = React.createClass({
   },
   _onNewDSNameFieldChange(){
     this.refs.newDashboardName.setErrorText();
+  },
+  _onDashboardErrorLoaded(){
+    this.setState({
+      error:DashboardStore.GetDashboardError()
+    });
+      isCommited = false;
+  },
+  _onSaveDashboardSuccessLoaded(){
+    this.setState({
+      error:{}
+    });
+  this.hide();
+  isCommited = false;
   },
   render(){
     let me = this;
@@ -85,7 +106,8 @@ var WidgetSaveWindow = React.createClass({
       }
     }else{
       newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}
-        className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNewDSNameFieldChange}/></div>;
+        className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNewDSNameFieldChange}
+        errorText={this.state.newDashboardNameError}/></div>;
     }
 
     var _buttonActions = [
@@ -93,11 +115,24 @@ var WidgetSaveWindow = React.createClass({
             <FlatButton label="放弃" onClick={this._onDialogCancel} style={{marginRight:'364px'}}/>
         ];
     let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'保存图表至仪表盘'}</h3>;
+    let chartTitleError,oldDashboardError,newDashboardError;
+    if(this.state.error){
+      if(this.state.error.chartTitle){
+         chartTitleError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'120px'}}>{this.state.error.chartTitle}</div>
+      };
+      if(this.state.error.oldDashboard){
+        oldDashboardError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'20px'}}>{this.state.error.oldDashboard}</div>
+      };
+      if(this.state.error.newDashboard){
+        newDashboardError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'120px'}}>{this.state.error.newDashboard}</div>
+      };
+    }
     let form = <div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
         <div style={{paddingBottom:'10px'}}>
           <span className='jazz-form-text-field-label'>*图表名称：</span>
           <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'}
-                    onChange={this._onNameFieldChange} defaultValue={this.props.chartTitle}/>
+                    onChange={this._onNameFieldChange} defaultValue={this.props.chartTitle} errorText={this.state.chartTitleError}/>
+                  {chartTitleError}
         </div>
         <div style={{marginBottom:'20px'}} className={'jazz-normal-hierarchybutton-container'}>
           <span className='jazz-form-field-title'>*层级节点：</span>
@@ -111,10 +146,12 @@ var WidgetSaveWindow = React.createClass({
               {[<RadioButton label="已存在仪表盘" value="existDashboard" className={'jazz-widget-save-dialog-radiobutton'} ></RadioButton>]}
             </RadioButtonGroup>
             {existDashBoardRadioContent}
+            {oldDashboardError}
             <RadioButtonGroup ref='newDashboardRadio' onChange={this._onNewRadioChanged} valueSelected={this.state.dashboardState}>
               {[<RadioButton label="新建仪表盘" name="newDashboard" value="newDashboard"></RadioButton>]}
             </RadioButtonGroup>
             {newDashboardRadioContent}
+            {newDashboardError}
           </div>
         </div>
         <div>
@@ -131,11 +168,17 @@ var WidgetSaveWindow = React.createClass({
   },
   componentDidMount: function() {
     DashboardStore.addDashboardListLoadedListener(this._onDashboardListLoaded);
+    DashboardStore.addDashboardErrorListener(this._onDashboardErrorLoaded);
+    DashboardStore.addSaveDashboardSuccessListener(this._onSaveDashboardSuccessLoaded);
+
     isCommited = false;
   },
   componentWillUnmount: function() {
     DashboardStore.removeDashboardListLoadedListener(this._onDashboardListLoaded);
+    DashboardStore.removeDashboardErrorListener(this._onDashboardErrorListLoaded);
+    DashboardStore.removeSaveDashboardSuccessListener(this._onSaveDashboardSuccessLoaded);
   },
+
   _onDialogCancel(){
     this.hide();
   },
@@ -205,7 +248,7 @@ var WidgetSaveWindow = React.createClass({
       }
 
       AlarmAction.save2Dashboard(widgetDto, createNewDashboard);
-      this.hide();
+
     }
 
   }

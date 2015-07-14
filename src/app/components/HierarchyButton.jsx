@@ -96,7 +96,10 @@ let HierarchyButton=React.createClass({
         }
       },
   componentClickAway:function(){
-    this.props.handleClickAway();
+    if(this.props.handleClickAway){
+          this.props.handleClickAway();
+    }
+
     },
   render:function(){
       var dropdownPaper,
