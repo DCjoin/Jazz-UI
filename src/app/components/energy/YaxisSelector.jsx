@@ -25,7 +25,7 @@ let YaxisSelector = React.createClass({
   componentDidUpdate(){
     if(this.state.showDialog){
       this.refs.yaxisDialog.show();
-      this.refs.yaxisDialog.initDefaultValues();
+    //  this.refs.yaxisDialog.initDefaultValues();
     }
   },
   getConfig4Dialog(chartObj){
