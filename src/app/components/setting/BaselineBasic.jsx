@@ -872,6 +872,7 @@ var SpecialItem = React.createClass({
           width:'90px',
           height:'32px',
           fontSize:'14px',
+          fontFamily:'Microsoft YaHei',
           color:'#767a7a'
         }, flatButtonStyle={
           padding: '0',
@@ -1364,6 +1365,7 @@ var TBSettingItem = React.createClass({
       width:'90px',
       height:'32px',
       fontSize:'14px',
+      fontFamily:'Microsoft YaHei',
       color:'#767a7a'
     },
     datePickerAreaStyle={
