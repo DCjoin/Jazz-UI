@@ -3,7 +3,7 @@
 import React from "react";
 import mui from 'material-ui';
 import classNames from 'classnames';
-import {dateFormat} from '../../util/Util.jsx';
+import {dateFormat,Regex} from '../../util/Util.jsx';
 import HierarchyButton from '../HierarchyButton.jsx';
 import MutableDropMenu from '../../controls/MutableDropMenu.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
@@ -25,7 +25,7 @@ var WidgetSaveWindow = React.createClass({
             selectedExistingDashboardIndex: 0,
             error:{},
             newDashboardNameError:null,
-            chartTileError:null
+            chartTitleError:null
            };
   },
   getDefaultProps: function() {
@@ -73,11 +73,31 @@ var WidgetSaveWindow = React.createClass({
     this.setState({selectedExistingDashboard:menuItem,
                    selectedExistingDashboardIndex: selectedIndex});
   },
-  _onNameFieldChange(){
-    this.refs.widgetname.setErrorText();
+  _onNameFieldChange(e){
+    if(Regex.NameRule.test(e.target.value)){
+      this.setState({
+        chartTitleError:null
+      })
+    }
+    else {
+      this.setState({
+        chartTitleError:'非法输入'
+      })
+    }
+  //  this.refs.widgetname.setErrorText();
   },
-  _onNewDSNameFieldChange(){
-    this.refs.newDashboardName.setErrorText();
+  _onNewDSNameFieldChange(e){
+    if(Regex.NameRule.test(e.target.value)){
+      this.setState({
+        newDashboardNameError:null
+      })
+    }
+    else {
+      this.setState({
+        newDashboardNameError:'非法输入'
+      })
+    }
+  //  this.refs.newDashboardName.setErrorText();
   },
   _onDashboardErrorLoaded(){
     this.setState({
