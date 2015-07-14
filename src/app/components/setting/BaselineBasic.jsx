@@ -168,8 +168,9 @@ var DaytimeRangeValue = React.createClass({
         style: {
           border:'1px solid #efefef',
           color:'#767a7a',
-          marginRight:'10px'
-        }
+          marginRight:'10px',
+          //zIndex: 2,
+        },
       },
       valProps = {
         defaultValue: this.props.value,
@@ -1472,11 +1473,11 @@ var TBSettingItem = React.createClass({
           </div>
           <div>{this.state.error}</div>
           <div className="jazz-setting-basic-clear">
-            <RadioButton name='NormalRadio' ref='NormalRadio' value="NormalRadio"
+            <RadioButton name='NormalRadio' ref='NormalRadio' value="NormalRadio" style={{zIndex:0}}
               label="手动设置基准值" onCheck={this._onNormalCheck} checked={this.state.radio == 'NormalRadio'} />
             <NormalSetting ref="NormalSettingCtrl" {...normalProps} isDisplay={this.state.radio == "NormalRadio"} />
 
-            <RadioButton name='CalcRadio' ref='CalcRadio' value="CalcRadio"
+            <RadioButton name='CalcRadio' ref='CalcRadio' value="CalcRadio" style={{zIndex:0}}
               label="计算所选数据平均值为基准数据" onCheck={this._onCalcCheck} checked={this.state.radio == 'CalcRadio'}  />
             <CalcSetting ref="CalcSettingCtrl" {...avgProps} isDisplay={this.state.radio == "CalcRadio"}  />
           </div>
@@ -1990,8 +1991,9 @@ var BaselineBasic = React.createClass({
       onYearPickerSelected: this._onYearChanged,
       style:{
         border:'1px solid #efefef',
-        margin:'0px 10px'
-      }
+        margin:'0px 10px',
+        //zIndex: 2,
+      },
       //className: "yearpicker",
 
     };
