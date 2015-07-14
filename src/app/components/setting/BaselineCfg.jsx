@@ -170,7 +170,7 @@ let BaselineCfg = React.createClass({
       name: this.state.name || null,
       tbId: this.state.tbId || null,
       dateRange: this.state.dateRange,
-      shouldLoad: (this.state.activeTabIndex == 0),
+      shouldLoad: (this.state.activeTabIndex === 0),
       onNameChanged: function(newName){
         if(me.state.name != newName){
           me.setState({name: newName});
@@ -229,10 +229,10 @@ let BaselineCfg = React.createClass({
                 <BaselineBasic  ref="baselineBasic" {...basicProps} />
               </Tab>
               <Tab label="计算值修正" style={tabStyle}  onActive={this._tab1Active}>
-                <BaselineModify  ref="baselineModify" tbId={this.state.tbId}/>
+                <BaselineModify  ref="baselineModify" tbId={this.state.tbId} shouldLoad= {this.state.activeTabIndex === 1}/>
               </Tab>
               <Tab label="报警设置"  style={tabStyle}  onActive={this._tab2Active}>
-                <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId}/>
+                <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId} shouldLoad= {this.state.activeTabIndex === 2}/>
               </Tab>
             </Tabs>
           </div>

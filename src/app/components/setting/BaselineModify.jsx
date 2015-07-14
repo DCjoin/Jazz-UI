@@ -115,14 +115,13 @@ let BaselineModify = React.createClass({
 		};
 	},
   componentWillReceiveProps: function(nextProps){
-    BaselineModifyStore.addDataLoadingListener(this._onLoadingStatusChange);
-    BaselineModifyStore.addDataChangeListener(this._onDataChange);
-    BaselineModifyAction.loadData(this.props.tbId, this.state.year);
+    if(nextProps.shouldLoad){
+      BaselineModifyAction.loadData(this.props.tbId, this.state.year);
+    }
   },
   componentDidMount: function(){
     BaselineModifyStore.addDataLoadingListener(this._onLoadingStatusChange);
     BaselineModifyStore.addDataChangeListener(this._onDataChange);
-    BaselineModifyAction.loadData(this.props.tbId, this.state.year);
   },
   componentWillUnmount: function(){
     BaselineModifyStore.removeDataLoadingListener(this._onLoadingStatusChange);

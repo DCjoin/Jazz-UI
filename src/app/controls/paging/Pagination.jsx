@@ -4,19 +4,24 @@ import React from 'react';
 import mui from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
-let {FlatButton, TextField} = mui;
+import JumpBox from './JumpBox.jsx';
+let {Checkbox, FlatButton, TextField, Mixins} = mui;
 
 var Pagination = React.createClass({
+  mixins: [React.addons.PureRenderMixin],
+
   propTypes: {
     curPageNum: React.PropTypes.number,
     totalPageNum: React.PropTypes.number,
-    onPrePage: React.PropTypes.func,
-    onNextPage: React.PropTypes.func,
-    jumpToPage: React.PropTypes.func
+    previousPage: React.PropTypes.func,
+    nextPage: React.PropTypes.func,
+    jumpToPage: React.PropTypes.func,
+    hasJumpBtn: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
+      hasJumpBtn: false,
       jumpToPage: function () {}
     };
   },
@@ -27,8 +32,7 @@ var Pagination = React.createClass({
     };
   },
 
-  jumpToPage: function () {
-    var targetPage = Number(this.refs.pageNumField.getValue());
+  jumpToPage: function (targetPage) {
     if(Number.isInteger(targetPage) && targetPage > 0 && targetPage <= this.props.totalPageNum){
       this.props.jumpToPage(targetPage);
       this.dismissJumpBox();
@@ -38,10 +42,6 @@ var Pagination = React.createClass({
   showJumpBox: function () {
     this.setState({
       showBox: !this.state.showBox
-    }, function () {
-      if(this.state.showBox){
-        this.refs.pageNumField.focus();
-      }
     });
   },
 
@@ -55,13 +55,13 @@ var Pagination = React.createClass({
     var prePageBtn = null;
     if(this.props.curPageNum > 1){
       prePageBtn = (
-        <div className="pre-btn" onClick={this.props.onPrePage}>上一页</div>
+        <div className="pre-btn" onClick={this.props.previousPage}>上一页</div>
       );
     }
     var nextPageBtn = null;
     if(this.props.curPageNum < this.props.totalPageNum){
       nextPageBtn = (
-        <div className="next-btn" onClick={this.props.onNextPage}>下一页</div>
+        <div className="next-btn" onClick={this.props.nextPage}>下一页</div>
       );
     };
     var page=((this.props.totalPageNum==0)?0:this.props.curPageNum);
@@ -70,37 +70,24 @@ var Pagination = React.createClass({
     );
 
     var jumpBtn = null;
-
+    if(this.props.hasJumpBtn){
       var jumpBox = null;
       if(this.state.showBox){
+        var jumpBoxProps = {
+          handleClickAway: this.dismissJumpBox,
+          jumpToPage: this.jumpToPage
+        };
         jumpBox = (
-          <div className="page-jump-box">
-            <div className="jump-input">
-              <div className="jump-text">跳转到第</div>
-              <TextField ref="pageNumField" style={{width: "48px"}}/>
-              <div className="jump-text">页</div>
-              <FlatButton mini={true} label="跳转" onClick={this.jumpToPage}/>
-            </div>
-          </div>
+          <JumpBox {...jumpBoxProps}/>
         );
-      };
-      if(this.props.totalPageNum==0){
-        jumpBtn = (
-         <div className="page-jump">
-           <div style={{'font-size':'14px',color:'#464949'}}>跳转</div>
-         </div>
-       );
       }
-      else {
-        jumpBtn = (
-         <div className="page-jump">
-           <div className="jump-btn" onClick={this.showJumpBox}>跳转</div>
-           {jumpBox}
-         </div>
-       );
-      }
-
-
+      jumpBtn = (
+       <div className="page-jump">
+         <div className="jump-btn" onClick={this.showJumpBox}>跳转</div>
+         {jumpBox}
+       </div>
+     );
+    }
 
     return (
       <div className="buttonBar">

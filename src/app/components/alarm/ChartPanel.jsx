@@ -187,7 +187,7 @@ let ChartPanel = React.createClass({
       }
       let submitParams = EnergyStore.getSubmitParams();
 
-      if(relativeDate !== 'Customerize'){
+      if(relativeDate !== 'Customerize' && relativeDate !== null){
         let immutableSubmitParams = Immutable.fromJS(submitParams);
         let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption','TimeRanges'], [{relativeDate: relativeDate}]);
         submitParams = immutableSubmitParamsClone.toJS();

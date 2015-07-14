@@ -1,18 +1,20 @@
 'use strict';
 import React from "react";
 import classNames from 'classnames';
-import {FlatButton,FontIcon,Menu,Paper} from 'material-ui';
+import {FlatButton,FontIcon,Menu,Paper,Mixins} from 'material-ui';
 import DimTree from './DimTree.jsx';
 import DimAction from "../actions/DimAction.jsx";
 import DimStore from "../stores/DimStore.jsx";
 
 let DimButton=React.createClass({
+  mixins: [Mixins.ClickAwayable],
   propTypes: {
     active:React.PropTypes.bool,
     parentNode:React.PropTypes.object.isRequired,
     onButtonClick:React.PropTypes.func.isRequired,
     show:React.PropTypes.bool,
-    onTreeClick:React.PropTypes.func.isRequired
+    onTreeClick:React.PropTypes.func.isRequired,
+    handleClickAway:React.PropTypes.func
   },
   _onShowPaper:function(){
     this.setState({open:!this.state.open});
@@ -78,6 +80,9 @@ let DimButton=React.createClass({
         });
       },
 
+      componentClickAway:function(){
+        this.props.handleClickAway();
+        },
 
     render:function(){
 

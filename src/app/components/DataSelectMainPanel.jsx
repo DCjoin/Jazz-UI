@@ -10,7 +10,7 @@ import TagAction from '../actions/TagAction.jsx';
 import TBSettingAction from '../actions/TBSettingAction.jsx'
 import AlarmTagStore from '../stores/AlarmTagStore.jsx';
 import EnergyStore from '../stores/EnergyStore.jsx';
-import Pagination from './tag/Pagination.jsx';
+import Pagination from '../controls/paging/Pagination.jsx';
 import TagMenu from './tag/TagMenu.jsx';
 
 var menuItems = [
@@ -314,7 +314,16 @@ let DataSelectMainPanel=React.createClass({
        }
 
       },
-
+   handleHierClickAway:function(){
+     this.setState({
+       HierarchyShow:false
+     })
+   },
+   handleDimClickAway:function(){
+     this.setState({
+       DimShow:false
+     })
+   },
     render:function(){
       if(this.props.linkFrom!="Alarm"){
         alarmTagOption={
@@ -338,14 +347,17 @@ let DataSelectMainPanel=React.createClass({
              height:'26px'
            };
       var menupaper,pagination,
-          totalPageNum=parseInt((this.state.total+19)/20);
+          totalPageNum=parseInt((this.state.total+19)/20),
+          hasJumpBtn=(this.state.total==0)?false:true;
+
       if(this.state.tagList){
        menupaper=<TagMenu tagList={this.state.tagList}/>;
-       pagination=<Pagination onPrePage={this._onPrePage}
-                                             onNextPage={this._onNextPage}
+       pagination=<Pagination previousPage={this._onPrePage}
+                                             nextPage={this._onNextPage}
                                              jumpToPage={this.jumpToPage}
                                              curPageNum={page}
-                                             totalPageNum={totalPageNum}/>;
+                                             totalPageNum={totalPageNum}
+                                             hasJumpBtn={hasJumpBtn}/>;
       }
       var content;
       if(this.state.isLoading){
@@ -367,11 +379,21 @@ let DataSelectMainPanel=React.createClass({
         <div className="jazz-dataselectmainpanel" style={{flex:1}}>
 
           <div  className="header">
-            <HierarchyButton hierId={alarmTagOption.hierId} onTreeClick={this._onHierachyTreeClick} onButtonClick={this._onHierarchButtonClick} show={this.state.HierarchyShow}/>
+            <HierarchyButton hierId={alarmTagOption.hierId}
+                              onTreeClick={this._onHierachyTreeClick}
+                              onButtonClick={this._onHierarchButtonClick}
+                              show={this.state.HierarchyShow}
+                              handleClickAway={this.handleHierClickAway}/>
 
             <div style={{color:'#ffffff'}}>-</div>
 
-         <DimButton ref={'dimButton'} active={this.state.dimActive} onTreeClick={this._onDimTreeClick} parentNode={this.state.dimParentNode} onButtonClick={this._onDimButtonClick} show={this.state.DimShow}/>
+         <DimButton ref={'dimButton'}
+                    active={this.state.dimActive}
+                    onTreeClick={this._onDimTreeClick}
+                    parentNode={this.state.dimParentNode}
+                    onButtonClick={this._onDimButtonClick}
+                    show={this.state.DimShow}
+                    handleClickAway={this.handleDimClickAway}/>
           </div>
           <div  className="filter">
             <label className="search" onBlur={this._onSearchBlur}>

@@ -1,17 +1,19 @@
 'use strict';
 import React from "react";
 import classnames from 'classnames';
-import {FlatButton,FontIcon,Menu,Paper,CircularProgress} from 'material-ui';
+import {FlatButton,FontIcon,Menu,Paper,CircularProgress,Mixins} from 'material-ui';
 import HierarchyTree from './HierarchyTree.jsx';
 import HierarchyAction from "../actions/HierarchyAction.jsx";
 import HierarchyStore from "../stores/HierarchyStore.jsx";
 
 let HierarchyButton=React.createClass({
+    mixins: [Mixins.ClickAwayable],
   propTypes: {
       onTreeClick:React.PropTypes.func.isRequired,
       onButtonClick:React.PropTypes.func.isRequired,
       show:React.PropTypes.bool,
-      hierId:React.PropTypes.number
+      hierId:React.PropTypes.number,
+      handleClickAway:React.PropTypes.func
   },
   _onShowPaper:function(){
     this.setState({open:!this.state.open});
@@ -93,7 +95,9 @@ let HierarchyButton=React.createClass({
           });
         }
       },
-
+  componentClickAway:function(){
+    this.props.handleClickAway();
+    },
   render:function(){
       var dropdownPaper,
         paperStyle = {
