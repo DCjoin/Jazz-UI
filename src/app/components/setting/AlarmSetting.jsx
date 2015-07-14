@@ -132,8 +132,8 @@ let AlarmSetting = React.createClass({
     return (
       <div className="jazz-setting-alarm-container">
         <div className='jazz-setting-alarm-content'>
-          <div style={{width:'160px'}}>
-            <Toggle ref="openAlarm" label="开启能耗报警" labelPosition="left" onToggle={this.changeToggle} disabled={this.state.disable&&this.state.isDisplay}/>
+          <div style={{width:'130px'}}>
+            <Toggle ref="openAlarm" label="能耗报警" labelPosition="left" onToggle={this.changeToggle} disabled={this.state.disable&&this.state.isDisplay}/>
           </div>
           <div className='jazz-setting-alarm-threshold'>
             报警敏感度<TextField ref="threshold" defaultValue={this.state.threshold} style={inputStyle}  className="jazz-setting-input" errorText={this.state.errorText} disabled={this.state.disable} onChange={this.changeThreshold}/>%

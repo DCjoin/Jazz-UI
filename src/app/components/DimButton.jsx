@@ -26,7 +26,7 @@ let DimButton=React.createClass({
     if(data && this.props.parentNode){
       var tree={};
       tree.Id=this.props.parentNode.Id;
-      tree.Name=this.props.parentNode.Name;
+      tree.Name="全部维度";
       tree.Children=data;
       this.setState({
         dimList:tree,
@@ -56,7 +56,7 @@ let DimButton=React.createClass({
           selectedNode:null,
           buttonName:"维度节点"
         };
-      
+
 
     },
     componentDidMount: function() {
@@ -87,7 +87,10 @@ let DimButton=React.createClass({
       },
 
       componentClickAway:function(){
-        this.props.handleClickAway();
+        if(this.props.handleClickAway){
+                this.props.handleClickAway();
+        }
+
         },
 
     render:function(){
