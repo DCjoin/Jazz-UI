@@ -31,7 +31,10 @@ let DateTimeSelector = React.createClass({
 
     startField.setValue(startDate);
     endField.setValue(endDate);
-
+    this.setState({
+      startDate: startDate,
+      endDate: endDate
+    });
     startTimeField.setState({selectedIndex:startTime});
     endTimeField.setState({selectedIndex:endTime});
   },
@@ -45,11 +48,16 @@ let DateTimeSelector = React.createClass({
         endDate = this.refs.endDate.getValue();
 
     startDate.setHours(startTimeField.state.selectedIndex, 0, 0);
-    endDate.setHours(endTimeField.state.selectedIndex, 0, 0);
+    endDate.setHours(endTimeField.state.selectedIndex+1, 0, 0);
     return {start: startDate, end: endDate};
   },
+  getInitialState: function(){
+    return {
+      startDate: null,
+      endDate: null
+    };
+  },
   render(){
-    let date = new Date();
     var dateStyle = {
       width:'95px',
       height:'32px',
@@ -58,14 +66,14 @@ let DateTimeSelector = React.createClass({
     };
     var startTimeProps = {
       errorMessage: "日期不能早于2010-1-1",
-      defaultValue: this.props.startDate || date,
+      defaultValue: this.state.startDate,
       style: dateStyle,
       onChange: this.props._onDateSelectorChanged
     };
     var startDate = <ViewableDatePicker ref="startDate" {...startTimeProps}/>;
     var endTimeProps = {
       errorMessage: "日期不能早于2010-1-1",
-      defaultValue: this.props.endDate || date,
+      defaultValue: this.state.endDate,
       style: dateStyle,
       onChange: this.props._onDateSelectorChanged
     };
