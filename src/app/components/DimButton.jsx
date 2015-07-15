@@ -25,7 +25,8 @@ let DimButton=React.createClass({
 
     if(data && this.props.parentNode){
       var tree={};
-      tree.Id=this.props.parentNode.Id;
+    //  tree.Id=this.props.parentNode.Id;
+    tree.Id=0;
       tree.Name="全部维度";
       tree.Children=data;
       this.setState({
@@ -87,7 +88,7 @@ let DimButton=React.createClass({
       },
 
       componentClickAway:function(){
-        if(this.props.handleClickAway){
+        if(this.props.show){
                 this.props.handleClickAway();
         }
 
@@ -98,8 +99,13 @@ let DimButton=React.createClass({
       var dropdownPaper;
 
       if((this.state.open) && (this.props.active) && (this.props.show)) {
+        if(this.state.selectedNode){
+            dropdownPaper=<DimTree allNode={this.state.dimList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick} />
+        }
+        else {
+            dropdownPaper=<DimTree allNode={this.state.dimList} selectedNode={this.state.dimList} onTreeClick={this._onTreeClick} />
+        }
 
-        dropdownPaper=<DimTree allNode={this.state.dimList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick} />
 
       };
       return(
