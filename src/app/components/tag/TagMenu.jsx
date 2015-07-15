@@ -30,20 +30,6 @@ var TagMenu=React.createClass({
     checked:!this.state.checked
   });
   },
-
-  _onMouseOver:function(e){
-    pageX=e.pageX;
-    pageY=e.pageY+20;
-    this.setState({
-      toolTipShow:true
-    })
-  },
-
-  _onMouseLeave:function(){
-    this.setState({
-      toolTipShow:false
-    })
-  },
   getInitialState: function() {
     return {
       tagStatus:TagStore.getCurrentHierIdTagStatus(),
@@ -91,16 +77,13 @@ var TagMenu=React.createClass({
         fontSize:'14px',
         border:'1px solid #efefef'
        };
-    if(this.state.toolTipShow){
+
       var tooltipText="已选择数据点 "+TagStore.getTagTotal()+'/30';
       if(this.state.allCheckDisable){
         tooltipText+="新增全选的数据点数量超出了可选范围，无法全选，请逐一选择目标数据点"
       }
-      tooltip=<div style={tooltipStyle}>{tooltipText}</div>
-    }
-    else{
-        tooltip=<div style={{display:'none'}}></div>
-    }
+
+
     this.props.tagList.forEach(function(nodeData,i){
       var tagStatus=false;
       if(that.state.tagStatus.includes(nodeData.Id)){
@@ -132,7 +115,7 @@ var TagMenu=React.createClass({
 
   return(
     <div style={{display:'flex','flex-direction':'column', flex:1}}>
-      <div className="allcheck" onMouseOut={this._onMouseLeave}>
+      <div className="allcheck" >
           <Checkbox
             onClick={this._onAllCheck}
             ref="checkall"
@@ -140,13 +123,8 @@ var TagMenu=React.createClass({
             disabled={this.state.allCheckDisable}
             style={allCheckStyle}
             labelStyle={labelstyle}
-            onMouseEnter={this._onMouseOver}
-
+            title={tooltipText}
             />
-
-
-
-
         <div>
           全选
         </div>

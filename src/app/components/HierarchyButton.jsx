@@ -97,7 +97,15 @@ let HierarchyButton=React.createClass({
       },
   componentClickAway:function(){
     if(this.props.show){
-          this.props.handleClickAway();
+      if(this.props.handleClickAwa){
+        this.props.handleClickAway();
+      }
+        else {
+          this.setState({
+            open:false
+          })
+        }
+
     }
 
     },
