@@ -23,7 +23,6 @@ let BaselineCfg = React.createClass({
     return {
       dateRange: null,
       tag: this.props.tag,
-      year: (new Date()).getFullYear(),
       firstTabStyle:{
         color:'#1ca8dd'
       },
@@ -49,11 +48,6 @@ let BaselineCfg = React.createClass({
     });
   },
 
-  componentDidMount: function() {
-    // if(this.state.tag){
-    //   this.refreshData(this.state.tag.tagId);
-    // };
-  },
 
   componentWillReceiveProps: function(nextProps){
     if(nextProps && nextProps.tag && nextProps.tag.tagId){
@@ -170,6 +164,7 @@ let BaselineCfg = React.createClass({
       name: this.state.name || null,
       tbId: this.state.tbId || null,
       dateRange: this.state.dateRange,
+      year: this.state.year,
       shouldLoad: (this.state.activeTabIndex === 0),
       onNameChanged: function(newName){
         if(me.state.name != newName){
@@ -183,9 +178,6 @@ let BaselineCfg = React.createClass({
             }
           }
         }
-      },
-      onYearChanged: function(year){
-        me.setState({year: year});
       },
       onDataLoaded: function(obj){
         me.hideMask();
