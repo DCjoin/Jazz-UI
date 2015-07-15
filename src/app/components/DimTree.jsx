@@ -111,15 +111,7 @@ var TreeNode = React.createClass({
     // show different icon depend on node type
     var icon = (
       <div className="node-content-icon">
-        <div className={classNames({
-          "icon-customer": nodeData.Type == nodeType.Customer,
-          "icon-orgnization": nodeData.Type == nodeType.Organization,
-          "icon-site": nodeData.Type == nodeType.Site,
-          "icon-building": nodeData.Type == nodeType.Building,
-          "icon-room": nodeData.Type == nodeType.Room,
-          "icon-panel": nodeData.Type == nodeType.Panel,
-          "icon-device": nodeData.Type == nodeType.Device
-        })}></div>
+        <div className="icon-hierarchy"></div>
       </div>
     );
 
