@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import {CircularProgress} from 'material-ui';
 
 import AlarmHierarchyItem from './AlarmHierarchyItem.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
@@ -34,7 +35,9 @@ let AlarmList = React.createClass({
 	render: function() {
 		let displayedDom = null;
 		if(this.state.loadingStatus){
-			displayedDom = (<div style={{margin:'auto',width:'95px'}}>loading</div>);
+			displayedDom = (<div style={{margin:'auto',width:'80px', height:'60px', backgroundColor:'transparent'}}>
+				<CircularProgress  mode="indeterminate" size={0.5} />
+			</div>);
 		}else{
 			let hierarchies = this.state.hierarchies;
 			let hierarchyItems = null;

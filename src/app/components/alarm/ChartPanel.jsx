@@ -2,7 +2,7 @@
 import React from "react";
 import Immutable from 'immutable';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, RaisedButton, DatePicker} from 'material-ui';
+import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, RaisedButton, CircularProgress} from 'material-ui';
 import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
@@ -239,7 +239,9 @@ let ChartPanel = React.createClass({
       }
 
       if(this.state.isLoading){
-        energyPart = <div style={{margin:'auto'}}>{'loading...'}</div>;
+        energyPart = <div style={{margin:'auto',width:'100px'}}>
+          <CircularProgress  mode="indeterminate" size={2} />
+        </div>;
       }else if(!!this.state.energyData){
         let chartCmpObj ={ref:'ChartComponent',
                           energyData: this.state.energyData,
@@ -278,7 +280,7 @@ let ChartPanel = React.createClass({
             <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
             <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px', width:'92px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
-            <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px', width:'122px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
+            <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px', width:'122px'}} label='基准值配置' onClick={this.handleBaselineCfg}/>
           </div>
           {energyPart}
         </div>
