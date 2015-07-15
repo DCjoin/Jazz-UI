@@ -107,6 +107,14 @@ I18N.EM.Clock24 = '24点';
 I18N.EM.Clock24InWidget = '24点';
 I18N.EM.Clock24Minute0 = '24点00';
 
+I18N.EM.UseRaw = '按分钟';
+I18N.EM.UseWeek = '按周';
+I18N.EM.UseHour = '按小时';
+I18N.EM.UseDay = '按天';
+I18N.EM.UseMonth = '按月';
+I18N.EM.UseYear = '按年';
+I18N.EM.StepError = '所选数据点不支持{0}的步长显示，换个步长试试。';
+
 I18N.Message={};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';
