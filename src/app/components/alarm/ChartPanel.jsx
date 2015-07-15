@@ -273,12 +273,12 @@ let ChartPanel = React.createClass({
           {title}
           <div className={'jazz-alarm-chart-toolbar-container'}>
             <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
-              <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'100px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
+              <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
             <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
-            <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
+            <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px', width:'92px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
-            <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
+            <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px', width:'122px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
           </div>
           {energyPart}
         </div>
