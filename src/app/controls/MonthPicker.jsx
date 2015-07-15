@@ -43,7 +43,7 @@ let MonthPicker = React.createClass({
     return '' + yearValue + monthValue;
   },
   getFormatDate: function() {
-    return this.state.selectedYear+'年'+this.state.selectedMonth+'月';
+    return this.state.selectedYear+'/'+this.state.selectedMonth;
   },
   _onDialogSubmit(){
     this.refs.dialogWindow.dismiss();
@@ -109,7 +109,8 @@ let MonthPicker = React.createClass({
       <div style={{height:'20px'}}></div>
     </Dialog>;
 
-    var textField = <TextField className='jazz-alarm-monthpicker-textfield' ref='input' hintText='select month' value={this.getFormatDate()} onFocus={this._handleInputFocus} onTouchTap={this._handleInputTouchTap}/>;
+    var textField = <TextField className='jazz-alarm-monthpicker-textfield' style={{fontSize: '14px',
+    fontFamily: 'Microsoft YaHei'}} ref='input' hintText='select month' value={this.getFormatDate()} onFocus={this._handleInputFocus} onTouchTap={this._handleInputTouchTap}/>;
 
     return <div>
       {textField}

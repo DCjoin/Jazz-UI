@@ -20,7 +20,7 @@ let YearPicker = React.createClass({
     let yearMenuItems =[];
     let yearRange = 10;
     for(var thisYear=date.getFullYear(), i = thisYear - yearRange; i<=thisYear; i++){
-      yearMenuItems.push({text:i+'年',value:i});
+      yearMenuItems.push({text:i,value:i});
     }
     return {
       _yearItems: yearMenuItems,
