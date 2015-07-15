@@ -76,12 +76,12 @@ var WidgetSaveWindow = React.createClass({
     if(Regex.NameRule.test(e.target.value)){
       this.setState({
         chartTitleError:null
-      })
+      });
     }
     else {
       this.setState({
         chartTitleError:'非法输入'
-      })
+      });
     }
   //  this.refs.widgetname.setErrorText();
   },
@@ -89,12 +89,12 @@ var WidgetSaveWindow = React.createClass({
     if(Regex.NameRule.test(e.target.value)){
       this.setState({
         newDashboardNameError:null
-      })
+      });
     }
     else {
       this.setState({
         newDashboardNameError:'非法输入'
-      })
+      });
     }
   //  this.refs.newDashboardName.setErrorText();
   },
@@ -102,14 +102,12 @@ var WidgetSaveWindow = React.createClass({
     this.setState({
       error:DashboardStore.GetDashboardError()
     });
-      isCommited = false;
   },
   _onSaveDashboardSuccessLoaded(){
     this.setState({
       error:{}
     });
   this.hide();
-  isCommited = false;
   },
   render(){
     let me = this;
@@ -137,14 +135,14 @@ var WidgetSaveWindow = React.createClass({
     let chartTitleError,oldDashboardError,newDashboardError;
     if(this.state.error){
       if(this.state.error.chartTitle){
-         chartTitleError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'120px'}}>{this.state.error.chartTitle}</div>
-      };
+         chartTitleError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'120px'}}>{this.state.error.chartTitle}</div>;
+      }
       if(this.state.error.oldDashboard){
-        oldDashboardError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'20px'}}>{this.state.error.oldDashboard}</div>
-      };
+        oldDashboardError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'20px'}}>{this.state.error.oldDashboard}</div>;
+      }
       if(this.state.error.newDashboard){
-        newDashboardError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'120px'}}>{this.state.error.newDashboard}</div>
-      };
+        newDashboardError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'120px'}}>{this.state.error.newDashboard}</div>;
+      }
     }
     let form = <div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
         <div style={{paddingBottom:'10px'}}>
