@@ -8,6 +8,7 @@ import Immutable from 'immutable';
 import {dateType} from '../constants/AlarmConstants.jsx';
 import {Action} from '../constants/actionType/Alarm.jsx';
 import ReaderFuncs from './MixedChartReader.jsx';
+import CommonFuns from '../util/Util.jsx';
 
 const TAG_DATA_LOADING_EVENT = 'tagdataloading',
       TAG_DATA_CHANGED_EVENT = 'tagdatachanged',
@@ -21,7 +22,9 @@ let _isLoading = false,
     _paramsObj = null,
     _tagOptions = null,
     _chartTitle = null,
-    _relativeDate = null;
+    _relativeDate = null,
+    _errorCode = null,
+    _errorMessage = null;
 
 var EnergyStore = assign({},PrototypeStore,{
   getLoadingStatus(){
@@ -53,6 +56,18 @@ var EnergyStore = assign({},PrototypeStore,{
   },
   getRelativeDate(){
     return _relativeDate;
+  },
+  getErrorMessage(){
+    return _errorMessage;
+  },
+  getErrorCode(){
+    return _errorCode;
+  },
+  _initErrorText(errorText){
+    let error = JSON.parse(errorText).error;
+    let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
+    _errorCode = errorCode;
+    _errorMessage = error.Messages;
   },
   //only one tagOptions if click tag in alarm list
   _onDataLoading(params, tagOptions, relativeDate, isAlarmLoading){
@@ -170,6 +185,7 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case Action.GET_TAG_DATA_ERROR:
         EnergyStore._onDataChanged(null, action.submitParams);
+        EnergyStore._initErrorText(action.errorText);
         EnergyStore.emitGetTagDataErrorListener();
         break;
     }

@@ -87,6 +87,7 @@ let AlarmAction = {
 
     Ajax.post('/Energy.svc/GetTagsData', {
          params:submitParams,
+         commonErrorHandling: false,
          success: function(energyData){
            AppDispatcher.dispatch({
                type: Action.GET_TAG_DATA_SUCCESS,
@@ -97,6 +98,7 @@ let AlarmAction = {
          error: function(err, res){
            AppDispatcher.dispatch({
                type: Action.GET_TAG_DATA_ERROR,
+               errorText: res.text,
                submitParams: submitParams
            });
          }

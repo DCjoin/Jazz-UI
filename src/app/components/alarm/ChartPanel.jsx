@@ -2,7 +2,7 @@
 import React from "react";
 import Immutable from 'immutable';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, RaisedButton, DatePicker} from 'material-ui';
+import {SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, RaisedButton, CircularProgress} from 'material-ui';
 import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
@@ -17,6 +17,8 @@ import AlarmAction from '../../actions/AlarmAction.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
+import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
+import ErrorStepDialog from './ErrorStepDialog.jsx';
 
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
@@ -77,16 +79,22 @@ let ChartPanel = React.createClass({
         this.refs.dateTimeSelector.setDateField(startDate, endDate);
       }
     },
-    _onEnergyDataChange(){
+    _onEnergyDataChange(isError, errorObj){
       let isLoading = EnergyStore.getLoadingStatus();
       let energyData = EnergyStore.getEnergyData();
       let energyRawData = EnergyStore.getEnergyRawData();
       let paramsObj = assign({},EnergyStore.getParamsObj());
-      this.setState({ isLoading: isLoading,
+      let state = { isLoading: isLoading,
                       energyData: energyData,
                       energyRawData: energyRawData,
                       paramsObj: paramsObj,
-                      dashboardOpenImmediately: false});
+                      dashboardOpenImmediately: false};
+      if(isError === true){
+        state.step = null;
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+
     },
     _onStepChange(step){
       let tagOptions = EnergyStore.getTagOpions();
@@ -215,6 +223,12 @@ let ChartPanel = React.createClass({
     onWidgetSaveWindowDismiss(){
       this.setState({dashboardOpenImmediately:false});
     },
+    _onErrorDialogAction(step){
+      this.setState({errorObj:null});
+      if(step !== 'cancel'){
+        this._onStepChange(step);
+      }
+    },
     getInitialState() {
         let state = {
           isLoading: false,
@@ -237,9 +251,16 @@ let ChartPanel = React.createClass({
       if(!me.state.chartTitle){
          return null;
       }
-
+      let errorDialog;
+      if(me.state.errorObj){
+        errorDialog = <ErrorStepDialog {...me.state.errorObj} onErrorDialogAction={me._onErrorDialogAction}></ErrorStepDialog>;
+      }else{
+        errorDialog = <div></div>;
+      }
       if(this.state.isLoading){
-        energyPart = <div style={{margin:'auto'}}>{'loading...'}</div>;
+        energyPart = <div style={{margin:'auto',width:'100px'}}>
+          <CircularProgress  mode="indeterminate" size={2} />
+        </div>;
       }else if(!!this.state.energyData){
         let chartCmpObj ={ref:'ChartComponent',
                           energyData: this.state.energyData,
@@ -278,9 +299,10 @@ let ChartPanel = React.createClass({
             <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
             <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px', width:'92px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
-            <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px', width:'122px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
+            <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px', width:'122px'}} label='基准值配置' onClick={this.handleBaselineCfg}/>
           </div>
           {energyPart}
+          {errorDialog}
         </div>
       );
   },
@@ -322,8 +344,65 @@ let ChartPanel = React.createClass({
     this.setState({ energyData: null});
   },
   _onGetEnergyDataError(){
-    this.setState({step:null});
-    this._onEnergyDataChange();
+    let errorObj = this.errorProcess();
+
+    this._onEnergyDataChange(true, errorObj);
+  },
+  errorProcess(){
+    let code = EnergyStore.getErrorCode(),
+        messages = EnergyStore.getErrorMessage();
+
+    if (code.toString() == '02004') {
+        let errorObj = this.showStepError(messages[0]);
+        return errorObj;
+    }else{
+      let errorMsg = CommonFuns.getErrorMessage(code);
+      GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg);
+      return null;
+    }
+  },
+  showStepError(step){
+    var btns = [], msg = [], map = { Hour: 1, Day: 2, Week: 5, Month: 3, Year: 4 };
+    let paramsObj = EnergyStore.getParamsObj();
+    let timeRanges = paramsObj.timeRanges;
+    let limitInterval = CommonFuns.getLimitInterval(timeRanges);
+    let availableList = limitInterval.stepList;
+
+    switch (step) {
+            case 'Hourly':
+                btns = ['Hour', 'Day', 'Week'];
+                msg = ['UseRaw'];
+                break;
+            case 'Daily':
+                btns = ['Day', 'Week', 'Month'];
+                msg = ['UseHour'];
+                break;
+            case 'Weekly':
+                btns = ['Week', 'Month', 'Year'];
+                msg = ['UseHour', 'UseDay'];
+                break;
+            case 'Monthly':
+                btns = ['Month', 'Year'];
+                msg = ['UseHour', 'UseDay', 'UseWeek'];
+                break;
+            case 'Yearly':
+                btns = ['Year'];
+                msg = ['UseHour', 'UseDay', 'UseMonth'];
+                break;
+        }
+      var newBtns = [];
+      btns.forEach(btn => {
+        let code = map[btn];
+        if( availableList.indexOf(code) != -1){
+         newBtns.push({text: btn, code:code});
+        }
+      });
+      btns = newBtns;
+      var msg1 = [];
+      msg.forEach(item =>{
+        msg1.push('"' + I18N.EM[item] + '"');
+      });
+      return {stepBtnList: btns, errorMessage: I18N.format(I18N.EM.StepError, msg1.join(','))};
   },
   _onBaselineBtnDisabled:function(){
     this.setState({
