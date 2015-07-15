@@ -20,13 +20,11 @@ let DateTimeSelector = React.createClass({
     let startTime = startDate.getHours(),
         endTime = endDate.getHours();
 
-
-    startDate.setHours(0,0,0);
-    endDate.setHours(0,0,0);
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
     if(endTime === 0){
        endDate = dateAdd(endDate, -1, 'days');
-       endDate.setHours(0,0,0);
-       endTime = 23;
+       endTime = 24;
     }
 
     startField.setValue(startDate);
@@ -36,7 +34,7 @@ let DateTimeSelector = React.createClass({
       endDate: endDate
     });
     startTimeField.setState({selectedIndex:startTime});
-    endTimeField.setState({selectedIndex:endTime});
+    endTimeField.setState({selectedIndex:endTime-1});
   },
   getDateTime(){
     let startField = this.refs.startDate,
@@ -44,12 +42,46 @@ let DateTimeSelector = React.createClass({
         endField = this.refs.endDate,
         endTimeField = this.refs.endTime;
 
-    let startDate = this.refs.startDate.getValue(),
-        endDate = this.refs.endDate.getValue();
+    let startDate = startField.getValue(),
+        endDate = endField.getValue();
 
-    startDate.setHours(startTimeField.state.selectedIndex, 0, 0);
-    endDate.setHours(endTimeField.state.selectedIndex+1, 0, 0);
+    startDate.setHours(startTimeField.state.selectedIndex, 0, 0, 0);
+    if(endTimeField.state.selectedIndex === 23){
+      endDate = dateAdd(endDate, 1, 'days');
+      endDate.setHours(0, 0, 0, 0);
+    }
+    else{
+      endDate.setHours(endTimeField.state.selectedIndex+1, 0, 0, 0);
+    }
     return {start: startDate, end: endDate};
+  },
+  _onChangeDateTime: function(sd, st, ed, et){
+    this.props._onDateSelectorChanged();
+    var startDate = sd, startTime = st, endDate = ed, endTime = et;
+    if(sd === null) startDate = this.refs.startDate.getValue();
+    if(st === null) startTime = this.refs.startTime.state.selectedIndex;
+    if(ed === null) endDate = this.refs.endDate.getValue();
+    if(et === null) endTime = this.refs.endTime.state.selectedIndex;
+    var startTimeField = this.refs.startTime,
+        endTimeField = this.refs.endTime;
+
+    startDate.setHours(startTime, 0, 0, 0);
+    if(endTime === 23){
+      endDate = dateAdd(endDate, 1, 'days');
+      endDate.setHours(0, 0, 0, 0);
+    }
+    else{
+      endDate.setHours(endTime+1, 0, 0, 0);
+    }
+    if(startDate.getTime()>= endDate.getTime()){
+       if((sd !== null) || (st !== null)){
+         endDate = dateAdd(startDate, 1, 'hours');
+       }
+       else if((ed !== null) || (et !== null)){
+         startDate = dateAdd(endDate, -1, 'hours');
+       }
+       this.setDateField(startDate, endDate);
+    }
   },
   getInitialState: function(){
     return {
@@ -58,40 +90,56 @@ let DateTimeSelector = React.createClass({
     };
   },
   render(){
+    var me = this;
     var dateStyle = {
-      width:'95px',
+      width:'112px',
       height:'32px',
       fontSize: '14px',
       fontFamily: 'Microsoft YaHei'
     };
-    var startTimeProps = {
-      errorMessage: "日期不能早于2010-1-1",
+    var startDateProps = {
+      dateFormatStr: 'YYYY/MM/DD',
       defaultValue: this.state.startDate,
       style: dateStyle,
-      onChange: this.props._onDateSelectorChanged
+      onChange: function(e, v){
+        me._onChangeDateTime(v, null, null, null);
+      }
     };
-    var startDate = <ViewableDatePicker ref="startDate" {...startTimeProps}/>;
-    var endTimeProps = {
-      errorMessage: "日期不能早于2010-1-1",
+    var endDateProps = {
+      dateFormatStr: 'YYYY/MM/DD',
       defaultValue: this.state.endDate,
       style: dateStyle,
-      onChange: this.props._onDateSelectorChanged
+      onChange: function(e, v){
+        me._onChangeDateTime(null, null, v, null);
+      }
     };
-    var endDate = <ViewableDatePicker ref="endDate" {...endTimeProps}/>;
-
+    var startTimeProps = {
+      menuItems: startDateTime,
+      style: {width: '76px'},
+      onChange: function(e, selectedIndex, menuItem){
+        me._onChangeDateTime(null, selectedIndex, null, null);
+      }
+    };
+    var endTimeProps = {
+      menuItems: endDateTime,
+      style: {width: '76px'},
+      onChange: function(e, selectedIndex, menuItem){
+        me._onChangeDateTime(null, null, null, selectedIndex);
+      }
+    };
     return <div style={{display:'flex',flexDirection:'row', alignItems:'center', backgroundColor:'#fbfbfb'}}>
       <div className={'jazz-full-border-datepicker-container'}>
-        {startDate}
+        <ViewableDatePicker ref="startDate" {...startDateProps}/>
       </div>
       <div className={'jazz-full-border-dropdownmenu-time-container'}>
-        <DropDownMenu menuItems={startDateTime} ref='startTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>
+        <DropDownMenu ref='startTime' {...startTimeProps}></DropDownMenu>
       </div>
       <span> {'到'} </span>
       <div className={'jazz-full-border-datepicker-container'}>
-        {endDate}
+        <ViewableDatePicker ref="endDate" {...endDateProps}/>
       </div>
       <div className={'jazz-full-border-dropdownmenu-time-container'}>
-        <DropDownMenu menuItems={endDateTime} ref='endTime' style={{width:'76px'}} onChange={this.props._onDateSelectorChanged}></DropDownMenu>
+        <DropDownMenu ref='endTime' {...endTimeProps}></DropDownMenu>
       </div>
     </div>;
 
