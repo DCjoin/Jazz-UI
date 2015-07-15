@@ -132,7 +132,7 @@ let EnergyCommentFactory = {
             };
             return newFlagSeries;
         },
-        getContinuousPointids: function (selectedPoint, ignorePoints) {
+        getContinuousPointids: function (selectedPoint, ignorePoints, step) {
             var series = selectedPoint.series,
                 points = series.data,
                 previousPoint,
@@ -147,11 +147,19 @@ let EnergyCommentFactory = {
                 }
             }
 
+            let maxTime ;
+            if(step ===1){
+              maxTime = 3600000;
+            }else if( step === 2){
+              maxTime = 3600000 * 24;
+            }else{
+              maxTime = 3600000 * 24 *31;
+            }
             //找到连续的points
             for (let i = position, len = points.length; i < len; i++) {
                 point = points[i];
 
-                if (ids.length === 0 || point.x - previousPoint.x === 3600000) {//alarm都是小时步长，所以用3600000来判断是否是连续的
+                if (ids.length === 0 || point.x - previousPoint.x <= maxTime) {//alarm都是小时步长，所以用3600000来判断是否是连续的
                     ids.push(point.options.alarmId);
                     ignorePoints.push(point);
                 } else {
