@@ -56,7 +56,7 @@ let TBSettingAction = {
     AppDispatcher.dispatch({
          type: Action.SET_CALDETAIL_LOAGDING
     });
-    Ajax.post('/Hierarchy.svc/GetHierarchyCalendarByHierarchyId', {
+    Ajax.post('/Hierarchy.svc/GetHiearchyOrInheritedCalendarByHierarchyId', {
          params: {
            hierarchyId:hierId
           },
