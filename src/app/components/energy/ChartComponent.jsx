@@ -370,7 +370,7 @@ let ChartComponent = React.createClass({
           factory = EnergyCommentFactory,
           ids, ignorePoints = [];
       if(isBatchIgnore){
-        ids = factory.getContinuousPointids(point, ignorePoints);
+        ids = factory.getContinuousPointids(point, ignorePoints, this.props.step);
 
       }else{
         ids = point.alarmId;

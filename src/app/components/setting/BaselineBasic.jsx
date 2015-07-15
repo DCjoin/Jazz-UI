@@ -579,7 +579,7 @@ var CalcSetting = React.createClass({
       return <div></div>;
     }
     if(!this.validate()){
-      return <div>所选数据的时间跨度大于一个月，无法计算，请重新选择数据</div>;
+      return <div style={{color:'red', fontSize: 12}}>所选数据的时间跨度大于一个月，无法计算，请重新选择数据</div>;
     }
     var items = this.props.items || [], rows = [];
     var arr = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
@@ -690,8 +690,8 @@ var SpecialItem = React.createClass({
     if(!specials) specials = tbsItem.SpecialDates;
     var val = specials[this.props.index];
     return (
-      this.validateTBSettingItem(tbsItem, specials) &
-      this.validateSpecialItem(specials) &
+      this.validateTBSettingItem(tbsItem, specials) &&
+      this.validateSpecialItem(specials) &&
       this.validateValue(val));
   },
 
@@ -702,7 +702,7 @@ var SpecialItem = React.createClass({
       valid = false;
       this.setState({specialError: valid ? '' : '补充日期非法， 请重新选择时段'});
     }
-    return  valid & this._validateValue(val) != '';
+    return  valid && this._validateValue(val) != '';
   },
 
   validateTBSettingItem: function(tbsItem, specials){
@@ -945,8 +945,8 @@ var SpecialItem = React.createClass({
             <DaytimeSelector ref='endTimeField' {...endTimeProps} />
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} className='icon-delete' label="－"  ref="remove"  onClick={this._onRemove} /><br/>
           </div>
-          <div>{this.state.tbSettingError}</div>
-          <div>{this.state.specialError}</div>
+          <div style={{color:'red', fontSize: 12}}>{this.state.tbSettingError}</div>
+          <div style={{color:'red', fontSize: 12}}>{this.state.specialError}</div>
           <div>
             <TextField ref='valueField' defaultValue={this.state.value}
               errorText={this.state.valueError} onChange={this._onValueChange} /><span>{this.props.tag.uom}</span>
@@ -1030,8 +1030,8 @@ var SpecialSetting = React.createClass({
 
   _validate: function(tbsItem, val){
     var valid = true, len = this.state.items.length;
-    for (var i = 0; i < len; i++) {
-      valid = valid & this.refs['item' + i].validate(tbsItem, val);
+    for (var i = len - 1; i > -1; i--) {
+      valid = valid && this.refs['item' + i].validate(tbsItem, val);
     }
     return valid;
   },
@@ -1201,9 +1201,9 @@ var TBSettingItem = React.createClass({
   validate: function(tbsItems){
     var curTbsItem = tbsItems[this.props.index];
     return (
-      this.validateValue() &
-      this.validateTbSettingItem(tbsItems) &
-      this.validateSpecialItems(curTbsItem)
+      this.validateTbSettingItem(tbsItems) &&
+      this.validateSpecialItems(curTbsItem) &&
+      this.validateValue()
     );
   },
 
@@ -1473,7 +1473,7 @@ var TBSettingItem = React.createClass({
             </div>
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} className='icon-delete' label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
-          <div>{this.state.error}</div>
+          <div style={{color:'red', fontSize: 12}}>{this.state.error}</div>
           <div className="jazz-setting-basic-clear">
             <RadioButton name='NormalRadio' ref='NormalRadio' value="NormalRadio" style={{zIndex:0}}
               label="手动设置基准值" onCheck={this._onNormalCheck} checked={this.state.radio == 'NormalRadio'} />
@@ -1526,8 +1526,8 @@ var TBSettingItems = React.createClass({
     var val = this.getValue(),
       len = this.state.items.length,
       valid = true;
-    for (var i = 0; i < len; i++) {
-      valid = valid & this.refs['item' + i].validate(val);
+    for (var i = len - 1; i > -1; i--) {
+      valid = valid && this.refs['item' + i].validate(val);
     }
     return [valid, val];
   },
@@ -1793,11 +1793,12 @@ var BaselineBasic = React.createClass({
 
   componentWillReceiveProps: function(nextProps){
     if(nextProps && nextProps.tag && nextProps.tag.tagId){
+      var s = {year: nextProps.year || this.state.year, };
+      this.setState(s);
       this._fetchServerData(this.state.year);
     }
     var hierId=TagStore.getCurrentHierarchyId();
       TBSettingAction.calDetailData(hierId);
-
   },
 
   fetchServerData(){
@@ -1842,6 +1843,9 @@ var BaselineBasic = React.createClass({
     this._fetchServerData(year);
     if(year!=TBSettingStore.getYear()){
       TBSettingAction.setYear(year);
+      if(this.props.onYearChanged){
+        this.props.onYearChanged(year);
+      }
       var data=TBSettingStore.getCalDetailData();
       if(data){
         this.setState({

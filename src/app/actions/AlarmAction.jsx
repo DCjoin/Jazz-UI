@@ -163,7 +163,7 @@ let AlarmAction = {
          }
        });
   },
-  ignoreAlarm(ids, isBatch, ignorePoints){
+  ignoreAlarm(ids, isBatch){
     let url, dto={};
     if(isBatch){
       url = '/TargetBaseline.svc/IgnoreAlarmContinuousPoints';
@@ -176,10 +176,7 @@ let AlarmAction = {
     Ajax.post(url, {
          params: dto,
          success: function(){
-           var points = ignorePoints;
-           for (var i = 0, len = points.length; i < len; i++) {
-               points[i].remove(false);
-           }
+
          },
          error: function(err, res){
 

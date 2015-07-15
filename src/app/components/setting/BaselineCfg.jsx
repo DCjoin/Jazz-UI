@@ -184,6 +184,9 @@ let BaselineCfg = React.createClass({
           }
         }
       },
+      onYearChanged: function(year){
+        this.setState({year: year});
+      },
       onDataLoaded: function(obj){
         me.hideMask();
       },

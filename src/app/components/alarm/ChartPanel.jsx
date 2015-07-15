@@ -234,13 +234,6 @@ let ChartPanel = React.createClass({
     render: function () {
       let me = this;
       let energyPart=null;
-      let paramsObj = EnergyStore.getParamsObj();
-      var startDate = null,
-          endDate = null;
-      if(paramsObj){
-        startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
-        endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
-      }
       if(!me.state.chartTitle){
          return null;
       }
@@ -282,7 +275,7 @@ let ChartPanel = React.createClass({
             <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
               <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'100px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
-            <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={this._onDateSelectorChanged}/>
+            <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
             <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
             <BaselineCfg  ref="baselineCfg"/>
             <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px'}} label='BaselineBasic' onClick={this.handleBaselineCfg}/>
@@ -348,8 +341,9 @@ let ChartPanel = React.createClass({
       let date = new Date();
       date.setHours(0,0,0);
       let last7Days = CommonFuns.dateAdd(date, -6, 'days');
+      let endDate = CommonFuns.dateAdd(date, 1, 'days');
 
-      this.refs.dateTimeSelector.setDateField(last7Days, date);
+      this.refs.dateTimeSelector.setDateField(last7Days, endDate);
     }
   },
   componentWillUnmount: function() {
