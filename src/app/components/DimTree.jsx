@@ -108,13 +108,14 @@ var TreeNode = React.createClass({
 
   generateNodeConent: function (nodeData) {
 
-    // show different icon depend on node type
-    var icon = (
-      <div className="node-content-icon">
-        <div className="icon-hierarchy"></div>
-      </div>
-    );
-
+    var icon;
+    if(nodeData.Id!=0){
+      icon=(
+        <div className="node-content-icon">
+          <div className="icon-hierarchy"></div>
+        </div>
+      );
+    }
     var text = (
       <div className="node-content-text">{nodeData.Name}</div>
     );

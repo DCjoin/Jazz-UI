@@ -73,7 +73,7 @@ let DimButton=React.createClass({
         if(nextProps.parentNode){
           DimAction.loadall(nextProps.parentNode.Id);
           this.setState({
-            buttonName:"全部节点"
+            buttonName:"全部维度"
           })
         }
         if(!nextProps.show){
