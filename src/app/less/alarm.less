@@ -18,7 +18,7 @@
   background-color:#313b4b; //rgb(200, 194, 194);
 }
 .jazz-alarm-grid-tr-item span:last-child{
-  min-width: 20px;
+  min-width: 15px;
   float: right;
   border: 0px solid #a1a1a1;
   border-radius: 15px;
@@ -47,6 +47,10 @@
   width:120px;
   >input{
     color: white !important;
+    text-align: center;
+  }
+  >hr{
+    border-bottom: 1px solid #434d5e !important;
   }
 }
 .jazz-alarm-monthpicker-dialog .mui-dialog-window-contents{
@@ -55,8 +59,17 @@
 .jazz-alarm-datepicker .mui-text-field{
   width: 120px;
 }
-.jazz-alarm-datepicker >input{
-  color: white !important;
+.jazz-alarm-datepicker {
+  >div{
+    >div{
+      >input{
+        color: white !important;
+      }
+      >hr{
+        border-bottom: 1px solid #434d5e !important;
+      }
+    }
+  }
 }
 .jazz-energy-yaxis-button{
   background-color: #ffffff;
@@ -141,11 +154,14 @@
       color: #ffffff !important;
       font-size: 14px !important;
       padding-left: 100px !important;
+      height: 48px !important;
+      line-height: 48px !important;
       top: 0px !important;
       opacity: 1 !important;
     }
     svg{
       left: 212px !important;
+      margin-top: 6px !important; 
     }
     svg+div{
       border-top-width: 0px !important;

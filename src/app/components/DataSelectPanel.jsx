@@ -49,10 +49,11 @@ let DataSelectPanel=React.createClass({
 
           float:'right',
           minWidth:'36px',
+          width:'36px',
           height:'36px',
         //  border:'solid 2px #efefef',
           verticalAlign:'middle',
-          marginTop:'10px'
+          margin:'10px 0 0 -36px',
         },
         iconStyle={
           fontSize:'36px'
