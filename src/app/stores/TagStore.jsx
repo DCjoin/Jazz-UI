@@ -208,9 +208,13 @@ if(_checkall_checked_status){
   _checkall_disable_status=false;
 }
 else{
-  _checkall_disable_status=checkStauts;
-}
-
+  if(_tagList.length===0){
+    _checkall_disable_status=true;
+  }
+  else {
+    _checkall_disable_status=checkStauts;
+  }
+  }
   },
   getCheckAllDisabledStatus:function(){
     this.checkAllStatus();
