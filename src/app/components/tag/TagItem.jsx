@@ -44,7 +44,8 @@ var TagItem=React.createClass({
       width:'24px'
     },
       iconstyle={
-      marginTop:'11px'
+      marginTop:'11px',
+      width:'24px'
     },
       labelstyle={
       width:'0px',
@@ -54,7 +55,7 @@ var TagItem=React.createClass({
      boxDisabledStatus=true
    };
     return(
-      <div className="taglist"  onClick={this._onClick} >
+      <div className="taglist"  onClick={this._onClick} title={this.props.title}>
         <Checkbox
             checked={this.props.status}
             disabled={boxDisabledStatus}

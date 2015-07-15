@@ -170,12 +170,13 @@ var TagStore = assign({},PrototypeStore,{
     _hierId=null;
     _tagTotal=0;
     _tagList=[];
+    baseline_btn_disabled=false;
   },
   setCurrentHierarchyId:function(hierId){
     _hierId=hierId;
   },
   setCurrentTagList:function(tagList){
-    _tagList=tagList
+    _tagList=tagList;
   },
   getCurrentHierarchyId:function(hierId){
     return _hierId;
@@ -195,7 +196,7 @@ var TagStore = assign({},PrototypeStore,{
        selectedNum++;
      }
    });
-   if((selectedNum==length) && (length!=0)){
+   if((selectedNum==length) && (length!==0)){
      _checkall_checked_status=true;
    }
    else {
@@ -204,7 +205,7 @@ var TagStore = assign({},PrototypeStore,{
   checkStauts=((length-selectedNum+_tagTotal)>30);
 
 if(_checkall_checked_status){
-  _checkall_disable_status=false
+  _checkall_disable_status=false;
 }
 else{
   _checkall_disable_status=checkStauts;
@@ -228,7 +229,7 @@ else{
       this.emitBaselineBtnDisabledChange();
   },
   getBaselineBtnDisabled:function(){
-    return baseline_btn_disabled
+    return baseline_btn_disabled;
   },
   getData(){
     return _data;

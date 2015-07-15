@@ -193,7 +193,7 @@ var WidgetSaveWindow = React.createClass({
   },
   componentWillUnmount: function() {
     DashboardStore.removeDashboardListLoadedListener(this._onDashboardListLoaded);
-    DashboardStore.removeDashboardErrorListener(this._onDashboardErrorListLoaded);
+    DashboardStore.removeDashboardErrorListener(this._onDashboardErrorLoaded);
     DashboardStore.removeSaveDashboardSuccessListener(this._onSaveDashboardSuccessLoaded);
   },
 
