@@ -35,8 +35,8 @@ let AlarmList = React.createClass({
 	render: function() {
 		let displayedDom = null;
 		if(this.state.loadingStatus){
-			displayedDom = (<div style={{margin:'auto',width:'80px', height:'60px', backgroundColor:'transparent'}}>
-				<CircularProgress  mode="indeterminate" size={0.5} />
+			displayedDom = (<div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center',paddingTop:'260px',backgroundColor:'rgb(53, 64, 82)'}}>
+				<CircularProgress  mode="indeterminate" size={1} />
 			</div>);
 		}else{
 			let hierarchies = this.state.hierarchies;
