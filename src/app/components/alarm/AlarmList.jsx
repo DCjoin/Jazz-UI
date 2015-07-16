@@ -35,9 +35,7 @@ let AlarmList = React.createClass({
 	render: function() {
 		let displayedDom = null;
 		if(this.state.loadingStatus){
-			displayedDom = (<div style={{backgroundColor:'rgb(53, 64, 82)',textAlign:'center'}}>
-				<CircularProgress  mode="indeterminate" size={1} />
-			</div>);
+			displayedDom = (<div className='jazz-alarm-loading'><div style={{backgroundColor:'rgb(53, 64, 82)',textAlign:'center'}}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
 		}else{
 			let hierarchies = this.state.hierarchies;
 			let hierarchyItems = null;
@@ -54,16 +52,10 @@ let AlarmList = React.createClass({
 					);
 				});
 			}
-			displayedDom = hierarchyItems;
+			displayedDom = (<div className='jazz-alarm-grid-body'>{hierarchyItems}</div>);
 		}
 
-		return (
-			<div className='jazz-alarm-grid-body'>
-
-					{displayedDom}
-
-			</div>
-		);
+		return displayedDom;
 	},
 	componentDidMount: function() {
 		AlarmStore.addAlarmlistChangeListener(this._onChange);
