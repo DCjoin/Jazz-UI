@@ -44,7 +44,6 @@ var TagItem=React.createClass({
       width:'24px'
     },
       iconstyle={
-      marginTop:'11px',
       width:'24px'
     },
       labelstyle={

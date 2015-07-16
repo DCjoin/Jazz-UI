@@ -47,13 +47,13 @@ let DataSelectPanel=React.createClass({
     //  if(this.state.open) mainpanel=<DataSelectMainPanel linkFrom={this.props.linkFrom}/>;
         var buttonStyle = {
 
-          float:'right',
           minWidth:'36px',
           width:'36px',
           height:'36px',
         //  border:'solid 2px #efefef',
           verticalAlign:'middle',
           margin:'10px 0 0 -36px',
+        //  margin:'10px 0 0',
         },
         iconStyle={
           fontSize:'36px'

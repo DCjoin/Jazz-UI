@@ -375,13 +375,16 @@ let DataSelectMainPanel=React.createClass({
         content=(
           <div style={{display:'flex','flex-direction':'column',flex:1}}>
             {menupaper}
-            {pagination}
+            <div style={{'margin-left':''}}>
+              {pagination}
+            </div>
+
           </div>
 
         )
       }
       return(
-        <div className="jazz-dataselectmainpanel" style={{flex:1}}>
+        <div className="jazz-dataselectmainpanel" >
 
           <div  className="header">
             <HierarchyButton hierId={alarmTagOption.hierId}
