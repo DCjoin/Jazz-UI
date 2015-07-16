@@ -122,7 +122,7 @@ var AlarmLeftPanel = React.createClass({
       );
     },
     componentDidMount: function() {
-      let dayDate = dateFormat(this.refs.daySelector.getDate(),'YYYYMMDD');
+      let dayDate = dateFormat(this.refs.daySelector.getValue(),'YYYYMMDD');
       this.loadListByDate(dayDate, HOURSTEP);
     }
 });

@@ -35,7 +35,7 @@ let AlarmList = React.createClass({
 	render: function() {
 		let displayedDom = null;
 		if(this.state.loadingStatus){
-			displayedDom = (<div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center',paddingTop:'160px',height:'200px',backgroundColor:'rgb(53, 64, 82)'}}>
+			displayedDom = (<div style={{backgroundColor:'rgb(53, 64, 82)',textAlign:'center'}}>
 				<CircularProgress  mode="indeterminate" size={1} />
 			</div>);
 		}else{
