@@ -72,9 +72,6 @@ let DimButton=React.createClass({
     componentWillReceiveProps: function(nextProps) {
         if(nextProps.parentNode){
           DimAction.loadall(nextProps.parentNode.Id);
-          this.setState({
-            buttonName:"全部维度"
-          })
         }
         if(!nextProps.show){
           this.setState({
