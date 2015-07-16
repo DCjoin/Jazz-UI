@@ -27,6 +27,13 @@ var DaytimeSelector = React.createClass({
       value: this.props.minute || this.props.from || 0
     };
   },
+
+  componentWillReceiveProps: function(nextProps){
+    if(nextProps && nextProps.minute){
+      this.setState({value: nextProps.minute});
+    }
+  },
+
   shouldComponentUpdate: function(nextProps, nextState){
     var p = this.props, n = nextProps;
     return n.from != p.from || n.to != p.to || n.minute != p.minute || n.isViewStatus != p.isViewStatus;

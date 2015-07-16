@@ -166,6 +166,7 @@ let BaselineCfg = React.createClass({
       dateRange: this.state.dateRange,
       year: this.state.year,
       shouldLoad: (this.state.activeTabIndex === 0),
+      isViewStatus: (this.state.activeTabIndex === 0),
       onNameChanged: function(newName){
         if(me.state.name != newName){
           me.setState({name: newName});

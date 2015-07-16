@@ -258,7 +258,7 @@ var DaytimeRangeValues = React.createClass({
         index: idx++,
         start: item.StartTime,
         end: item.EndTime,
-        value: item.Value,
+        value: item.Value == undefined ? '': item.Value,
         isViewStatus: me.props.isViewStatus,
         onDaytimeChange: me._onDaytimeRangeValueChange,
         onValueChange: me._onValueChange
@@ -355,7 +355,9 @@ var NormalSetting = React.createClass({
     }
     if(nonWorkdays.length == 0){
       nonWorkdays.push({
-        StartTime: 0
+        StartTime: 0,
+        DayType: 0,
+        EndTime: 1440,
       });
     }
     return this._composeEndTime(nonWorkdays);
@@ -687,6 +689,10 @@ var SpecialItem = React.createClass({
   },
 
   validate: function(tbsItem, specials){
+    this.setState({
+      valueError: '',
+      tbSettingError: '',
+    });
     if(!specials) specials = tbsItem.SpecialDates;
     var val = specials[this.props.index];
     return (
@@ -1007,10 +1013,10 @@ var SpecialSetting = React.createClass({
     var item = {
       Id: 0,
       TBSettingId: 0,
-      //StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
-      //EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1)),
-      StartTime: null,
-      EndTime: null,
+      StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
+      EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1)),
+      //StartTime: null,
+      //EndTime: null,
     };
     newArr.push(item);
     for (var i = 0; i < arr.length; i++) {
@@ -1035,7 +1041,7 @@ var SpecialSetting = React.createClass({
 
   _validate: function(tbsItem, val){
     var valid = true, len = this.state.items.length;
-    for (var i = 0; i < len -1; i++) {
+    for (var i = 0; i < len; i++) {
       valid = valid && this.refs['item' + i].validate(tbsItem, val);
     }
     return valid;
@@ -1168,6 +1174,11 @@ var TBSettingItem = React.createClass({
       else if(nextProps.normals && nextProps.normals.length > 0 && this.state.radio == "CalcRadio"){
         s.radio = "NormalRadio";
       }
+      else{
+        s.radio = "NormalRadio";
+      }
+      s.start = nextProps.start;
+      s.end = nextProps.end;
       this.setState(s);
     }
   },
@@ -1204,6 +1215,7 @@ var TBSettingItem = React.createClass({
   },
 
   validate: function(tbsItems){
+    this.setState({ error: '' });
     var curTbsItem = tbsItems[this.props.index];
     return (
       this.validateTbSettingItem(tbsItems) &&
@@ -1247,6 +1259,8 @@ var TBSettingItem = React.createClass({
 
   getValue: function(){
     var startDate = this.refs.startFeild.getValue(), endDate = fromFormEndDate(this.refs.endFeild.getValue());
+    startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0);
+    endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0);
     var rtn = {
       TbSetting:{
         Year: this.props.year,
@@ -1531,7 +1545,7 @@ var TBSettingItems = React.createClass({
     var val = this.getValue(),
       len = this.state.items.length,
       valid = true;
-    for (var i = 0; i < len -1; i++) {
+    for (var i = 0; i < len; i++) {
       valid = valid && this.refs['item' + i].validate(val);
     }
     return [valid, val];
@@ -1586,10 +1600,10 @@ var TBSettingItems = React.createClass({
     var arr = this.getValue(), newArr = [];
     var item = {
       TbSetting: {
-        //StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
-        //$RECYCLE.BIN\EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1)),
-        StartTime: null,
-        EndTime: null
+        StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
+        EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1)),
+        //StartTime: null,
+        //EndTime: null
       },
       NormalDates: [],
       SpecialDates: [],
@@ -1803,6 +1817,9 @@ var BaselineBasic = React.createClass({
     if(nextProps && nextProps.tag && nextProps.tag.tagId){
       this._fetchServerData(TBSettingStore.getYear());
     }
+    if(nextProps && nextProps.isViewStatus != this.props.isViewStatus){
+      this.setState({isViewStatus: nextProps.isViewStatus});
+    }
     var hierId=TagStore.getCurrentHierarchyId();
       TBSettingAction.calDetailData(hierId);
   },
@@ -1813,7 +1830,6 @@ var BaselineBasic = React.createClass({
 
   tryGetValue: function(){
     var items = this.refs.TBSettingItems.tryGetValue();
-    //if(items && items[0]) return this.getValue(items);
     items[1] = this.getValue(items[1]);
     return items;
   },
