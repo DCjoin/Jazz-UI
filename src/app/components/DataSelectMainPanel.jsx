@@ -57,7 +57,7 @@ let DataSelectMainPanel=React.createClass({
        });
     },
     _onDimTreeClick:function(node){
-
+      page=1;
       TagAction.loadData(node.Id,6,1,alarmType,filters);
       this.setState({
         tagId:node.Id,
@@ -84,7 +84,6 @@ let DataSelectMainPanel=React.createClass({
     },
 
     _onTagNodeChange:function(){
-      console.log("**wyh**_onTagNodeChange");
       var data=TagStore.getData();
       this.setState({
         tagList:data.GetTagsByFilterResult,
