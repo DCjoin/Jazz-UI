@@ -245,7 +245,7 @@ let defaultConfig = {
         enabled: true,
         layout: 'vertical',
         verticalAlign: 'top',
-        y: 60,
+        y: 40,
         x: -25,
         itemStyle: {
             cursor: 'default',
