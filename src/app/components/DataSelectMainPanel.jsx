@@ -57,7 +57,7 @@ let DataSelectMainPanel=React.createClass({
        });
     },
     _onDimTreeClick:function(node){
-
+      page=1;
       TagAction.loadData(node.Id,6,1,alarmType,filters);
       this.setState({
         tagId:node.Id,
@@ -84,7 +84,6 @@ let DataSelectMainPanel=React.createClass({
     },
 
     _onTagNodeChange:function(){
-      console.log("**wyh**_onTagNodeChange");
       var data=TagStore.getData();
       this.setState({
         tagList:data.GetTagsByFilterResult,
@@ -375,13 +374,16 @@ let DataSelectMainPanel=React.createClass({
         content=(
           <div style={{display:'flex','flex-direction':'column',flex:1}}>
             {menupaper}
-            {pagination}
+            <div style={{'margin-left':''}}>
+              {pagination}
+            </div>
+
           </div>
 
         )
       }
       return(
-        <div className="jazz-dataselectmainpanel" style={{flex:1}}>
+        <div className="jazz-dataselectmainpanel" >
 
           <div  className="header">
             <HierarchyButton hierId={alarmTagOption.hierId}
