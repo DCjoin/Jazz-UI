@@ -954,8 +954,11 @@ var SpecialItem = React.createClass({
           <div style={{color:'red', fontSize: 12}}>{this.state.tbSettingError}</div>
           <div style={{color:'red', fontSize: 12}}>{this.state.specialError}</div>
           <div>
-            <TextField ref='valueField' defaultValue={this.state.value}
-              errorText={this.state.valueError} onChange={this._onValueChange} /><span>{this.props.tag.uom}</span>
+            <div style={{display:'block', float:'left', verticalAlign:'top', width:270}}>
+              <TextField ref='valueField' defaultValue={this.state.value}
+                errorText={this.state.valueError} onChange={this._onValueChange} />
+            </div>
+            <div style={{display:'block', float:'left', verticalAlign:'top', width:100, paddingTop: '15px'}}>{this.props.tag.uom}</div>
           </div>
         </div>
       );
@@ -1849,9 +1852,12 @@ var BaselineBasic = React.createClass({
   _onTBNameChanged: function(){
     var tbname = this.refs.TBName.getValue();
     if(tbname != this.state.name){
-      this.setState({name: tbname});
+      var pattern = new RegExp("/^[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\;\.\~\+\%]+( +[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\;\.\~\+\%]+)*$/");
       if(tbname === ''){
         this.setState({tbnameError:'必填项'});
+      }
+      else if(!pattern.test(tbname)){
+        this.setState({tbnameError:'允许汉字，英文字母，数字，下划线和空格'});
       }
       else{
         if(this.props.onNameChanged){
