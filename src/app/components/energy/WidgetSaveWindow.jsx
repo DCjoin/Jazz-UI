@@ -173,10 +173,11 @@ var WidgetSaveWindow = React.createClass({
         </div>
         <div>
           <span className='jazz-form-text-field-label'>备注：</span>
-          <TextField ref='dashboardComment' multiLine='true' className={'jazz-widget-save-dialog-textfiled'} hintText='写下您的建议或看法。'/>
+          <TextField ref='dashboardComment' multiLine='true' className={'jazz-widget-save-dialog-textfiled'} hintText='写下您的建议或看法。' />
         </div>
       </div>;
-    var dialog = <div className={'jazz-dialog-body-visible'}><Dialog  title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}} openImmediately={true}
+    var dialog = <div className={'jazz-dialog-body-visible'}><Dialog  title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}}
+      autoScrollBodyContent={true} openImmediately={true} contentInnerStyle={{'max-height':'340px'}}
                           actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
                           {form}
                  </Dialog></div>;
