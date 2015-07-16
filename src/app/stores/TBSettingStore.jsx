@@ -12,7 +12,7 @@ var _calcData = null;
 var _hierId=null;
 var _tagId=null;
 var _calDetail=null;
-var _year=null;
+var _year=(new Date).getFullYear();
 var _isCalDetailLoading=false;
 
 let CHANGE_TAG_EVENT = 'changetag';

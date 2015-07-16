@@ -129,7 +129,6 @@ let ChartPanel = React.createClass({
          window.alert('请选择正确的时间范围');
         return;
       }
-
       if(!userTagListSelect){
         tagOptions = EnergyStore.getTagOpions();
       }else{

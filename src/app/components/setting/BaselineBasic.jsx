@@ -1003,15 +1003,20 @@ var SpecialSetting = React.createClass({
   },
 
   _addItem: function(){
-    var arr = this.getValue();
+    var arr = this.getValue(), newArr = [];
     var item = {
       Id: 0,
       TBSettingId: 0,
-      StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
-      EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1))
+      //StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
+      //EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1)),
+      StartTime: null,
+      EndTime: null,
     };
-    arr.push(item);
-    this.setState({items: arr});
+    newArr.push(item);
+    for (var i = 0; i < arr.length; i++) {
+      newArr.push(arr[i]);
+    }
+    this.setState({items: newArr});
   },
 
   _onItemDateTimeChange: function(obj, index){
@@ -1030,7 +1035,7 @@ var SpecialSetting = React.createClass({
 
   _validate: function(tbsItem, val){
     var valid = true, len = this.state.items.length;
-    for (var i = len - 1; i > -1; i--) {
+    for (var i = 0; i < len -1; i++) {
       valid = valid && this.refs['item' + i].validate(tbsItem, val);
     }
     return valid;
@@ -1526,7 +1531,7 @@ var TBSettingItems = React.createClass({
     var val = this.getValue(),
       len = this.state.items.length,
       valid = true;
-    for (var i = len - 1; i > -1; i--) {
+    for (var i = 0; i < len -1; i++) {
       valid = valid && this.refs['item' + i].validate(val);
     }
     return [valid, val];
@@ -1578,18 +1583,23 @@ var TBSettingItems = React.createClass({
   },
 
   _addSetting: function(){
-    var arr = this.getValue();
+    var arr = this.getValue(), newArr = [];
     var item = {
       TbSetting: {
-        StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
-        EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1))
+        //StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
+        //$RECYCLE.BIN\EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1)),
+        StartTime: null,
+        EndTime: null
       },
       NormalDates: [],
       SpecialDates: [],
       TbAvgDtos: []
     };
-    arr.push(item);
-    this.setState({items: arr});
+    newArr.push(item);
+    for (var i = 0; i < arr.length; i++) {
+      newArr.push(arr[i]);
+    }
+    this.setState({items: newArr});
   },
 
   render: function() {
@@ -1754,7 +1764,6 @@ var BaselineBasic = React.createClass({
 
     isViewStatus: React.PropTypes.bool,
     onNameChanged: React.PropTypes.func,
-    onYearChanged: React.PropTypes.func,
     onDataLoaded: React.PropTypes.func,
     onRequestShowMask: React.PropTypes.func,
     onRequestHideMask: React.PropTypes.func,
@@ -1764,7 +1773,6 @@ var BaselineBasic = React.createClass({
     return {
       items: [],
       isViewStatus: true,
-      year: (new Date()).getFullYear(),
     };
   },
 
@@ -1775,7 +1783,7 @@ var BaselineBasic = React.createClass({
       isViewStatus: this.props.isViewStatus,
       calButton:'显示日历详情',
       showCalDetail:false,
-      year:TBSettingStore.getYear(),
+      year: TBSettingStore.getYear(),
       validationError: '',
       hasCal:null,
       tbnameError: '',
@@ -1788,21 +1796,19 @@ var BaselineBasic = React.createClass({
     TBSettingStore.addCalDetailListener(this._onChange);
     TBSettingStore.addCalDetailLoadingListener(this._onCalDetailLoadingChange);
     TBSettingAction.calDetailData(hierId);
-    this._fetchServerData(this.state.year);
+    this._fetchServerData(TBSettingStore.getYear());
   },
 
   componentWillReceiveProps: function(nextProps){
     if(nextProps && nextProps.tag && nextProps.tag.tagId){
-      var s = {year: nextProps.year || this.state.year, };
-      this.setState(s);
-      this._fetchServerData(this.state.year);
+      this._fetchServerData(TBSettingStore.getYear());
     }
     var hierId=TagStore.getCurrentHierarchyId();
       TBSettingAction.calDetailData(hierId);
   },
 
   fetchServerData(){
-    this._fetchServerData(this.state.year);
+    this._fetchServerData(TBSettingStore.getYear());
   },
 
   tryGetValue: function(){
@@ -1816,7 +1822,7 @@ var BaselineBasic = React.createClass({
     if(!items) items = this.refs.TBSettingItems.getValue();
     return {
       TBId: this.props.tbId,
-      Year: this.state.year,
+      Year: TBSettingStore.getYear(),
       TBSettings: items
     };
   },
@@ -1841,11 +1847,9 @@ var BaselineBasic = React.createClass({
     var year = parseInt(yearstr);
     this.setState({year: year});
     this._fetchServerData(year);
-    if(year!=TBSettingStore.getYear()){
+    if(year != TBSettingStore.getYear()){
       TBSettingAction.setYear(year);
-      if(this.props.onYearChanged){
-        this.props.onYearChanged(year);
-      }
+
       var data=TBSettingStore.getCalDetailData();
       if(data){
         this.setState({
@@ -1865,14 +1869,6 @@ var BaselineBasic = React.createClass({
 
   _bindData: function(tbSetting){
     this.setState({items: tbSetting.TBSettings});
-    // if(itemsCtrl){
-    //   var itemsCtrl = this.refs.TBSettingItems;
-    //   if(!tbSetting.TBSettings){
-    //     itemsCtrl.setValue([]);
-    //   }else{
-    //     itemsCtrl.setValue(tbSetting.TBSettings);
-    //   }
-    // }
   },
 
   _fetchServerData: function(year) {
@@ -1933,7 +1929,7 @@ var BaselineBasic = React.createClass({
     this.setState({
       isViewStatus : true,
     });
-    this._fetchServerData(this.state.year);
+    this._fetchServerData(TBSettingStore.getYear());
   },
   showCalDetail:function(){
     this.setState({
@@ -1973,7 +1969,7 @@ var BaselineBasic = React.createClass({
     var itemProps = {
       tag: this.props.tag,
       items: this.state.items,
-      year: this.state.year,
+      year: TBSettingStore.getYear(),
       isViewStatus: this.state.isViewStatus,
       dateRange: this.props.dateRange,
     };
