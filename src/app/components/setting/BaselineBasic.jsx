@@ -141,6 +141,7 @@ var DaytimeRangeValue = React.createClass({
 
       var style = {
         padding:'2px 10px',
+        color:'#b3b3b3',
         border: '1px solid #efefef' };
 
       return (
@@ -479,16 +480,16 @@ var CalcItem = React.createClass({
     var icon = (
       <div style={{'margin-left':'10px'}}>
         <div className={classNames({
-          "icon-revised": true
+          "icon-revised-cn": true
         })}></div>
       </div>
 
     );
     if(this.props.isViewStatus){
       return (<tr >
-        <td width='110px'><span>{this._getTimeStr(this.props.time)}</span></td>
+        <td width='110px' style={{color:'#b3b3b3'}}><span>{this._getTimeStr(this.props.time)}</span></td>
         <td style={tdStyle}>
-          <div style={{display:'flex','flex-flow':'row','align-items':'center'}}>
+          <div style={{display:'flex','flex-flow':'row','align-items':'center',color:'#b3b3b3'}}>
           <div>{this.props.val1}</div>
           <div>{this.props.tag.uom}</div>
           {this.props.val1Mod ? {icon}: ""}
@@ -496,7 +497,7 @@ var CalcItem = React.createClass({
 
         </td>
         <td style={tdStyle}>
-          <div style={{display:'flex','flex-flow':'row','align-items':'center'}}>
+          <div style={{display:'flex','flex-flow':'row','align-items':'center',color:'#b3b3b3'}}>
             <div>{this.props.val2}</div>
             <div>{this.props.tag.uom}</div>
             {this.props.val2Mod? {icon}: ""}
@@ -835,7 +836,7 @@ var SpecialItem = React.createClass({
         endTimeStr = CommonFuns.numberToTime(et),
         val = this.state.value;
 
-      var style = { padding: '2px 10px', border: '1px solid #efefef','margin-right':'10px'};
+      var style = { padding: '2px 10px', border: '1px solid #efefef','margin-right':'10px',color:'#b3b3b3'};
 
       return (<div style={{'margin-top':'10px'}}>
           <span style={style}>{startDateStr}</span>
@@ -1090,7 +1091,7 @@ var SpecialSetting = React.createClass({
         return (<SpecialItem {...drvProps} />);
       };
     var style = {
-      marginLeft: "20px"
+      marginLeft: "20px",
     };
     var addBtnProps = {
       style:{
@@ -1113,7 +1114,7 @@ var SpecialSetting = React.createClass({
     }
     return (<div style={style}>
         <div style={{'margin-top':'18px'}}><span>补充日期</span>{addBtnCtrl}</div>
-        <div>{this.state.items.map(createItem)}</div>
+        <div style={{color:'#b3b3b3'}}>{this.state.items.map(createItem)}</div>
       </div>);
   }
 });
@@ -1367,9 +1368,9 @@ var TBSettingItem = React.createClass({
       return (<div>
           <div style={clearStyle}>
             <div style={datePickerAreaStyle}>
-              <span style={{'font-size':'14px',color:'#767a7a',border:'1px solid #efefef',padding:'10px'}}>{startDateStr}</span>
+              <span style={{'font-size':'14px',color:'#b3b3b3',border:'1px solid #efefef',padding:'10px'}}>{startDateStr}</span>
               <span style={{margin:'0 10px'}}>到</span>
-              <span style={{'font-size':'14px',color:'#767a7a',border:'1px solid #efefef',padding:'10px'}}>{endDateStr}</span>
+              <span style={{'font-size':'14px',color:'#b3b3b3',border:'1px solid #efefef',padding:'10px'}}>{endDateStr}</span>
             </div>
             {middleCtrl}
           </div>

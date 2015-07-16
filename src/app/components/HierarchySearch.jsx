@@ -53,7 +53,10 @@ let HierarchySearch = React.createClass({
             "icon-panel": nodeData.Type == nodeType.Panel,
             "icon-device": nodeData.Type == nodeType.Device
             });
-             menuItem={payload:payloadNo,iconClassName:icon,text:nodeData.Name,node:nodeData};
+            var iconStyle={
+              fontSize:'14px'
+            };
+             menuItem={payload:payloadNo,iconClassName:icon,iconStyle:iconStyle,text:nodeData.Name,node:nodeData};
              nodemenuItems.push(menuItem);
 
         }
