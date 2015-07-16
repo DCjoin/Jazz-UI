@@ -62,8 +62,6 @@ let DateTimeSelector = React.createClass({
     if(st === null) startTime = this.refs.startTime.state.selectedIndex;
     if(ed === null) endDate = this.refs.endDate.getValue();
     if(et === null) endTime = this.refs.endTime.state.selectedIndex;
-    var startTimeField = this.refs.startTime,
-        endTimeField = this.refs.endTime;
 
     startDate.setHours(startTime, 0, 0, 0);
     if(endTime === 23){
@@ -80,8 +78,8 @@ let DateTimeSelector = React.createClass({
        else if((ed !== null) || (et !== null)){
          startDate = dateAdd(endDate, -1, 'hours');
        }
-       this.setDateField(startDate, endDate);
     }
+    this.setDateField(startDate, endDate);
   },
   getInitialState: function(){
     return {
