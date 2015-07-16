@@ -1800,6 +1800,9 @@ var BaselineBasic = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps){
+    this.setState({
+      year: TBSettingStore.getYear()
+    });
     if(nextProps && nextProps.tag && nextProps.tag.tagId){
       this._fetchServerData(TBSettingStore.getYear());
     }

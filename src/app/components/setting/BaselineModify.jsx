@@ -117,6 +117,9 @@ let BaselineModify = React.createClass({
 		};
 	},
   componentWillReceiveProps: function(nextProps){
+    this.setState({
+      year: TBSettingStore.getYear()
+    });
     if(nextProps.shouldLoad){
       BaselineModifyAction.loadData(this.props.tbId, this.state.year);
     }
