@@ -182,7 +182,7 @@ let BaselineModify = React.createClass({
       YearSelect = <YearPicker {...yearProps}/>;
     }
     else{
-      YearSelect = <span style={yearPickerStyle}>{this.state.year || curYear}年</span>;
+      YearSelect = <span style={yearPickerStyle}>{selectYear}</span>;
     }
     var yearStyle = {
       display: 'inline-block',
