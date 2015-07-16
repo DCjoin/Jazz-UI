@@ -64,6 +64,44 @@ I18N.Common={};
 I18N.Common.Glossary={};
 I18N.Common.Glossary.HierarchyNode = '层级节点';
 
+I18N.Common.Glossary.MonthName = {};
+I18N.Common.Glossary.ShortMonth = {};
+I18N.Common.Glossary.WeekDay = {};
+
+I18N.Common.Glossary.MonthName.January = '一月';
+I18N.Common.Glossary.MonthName.February = '二月';
+I18N.Common.Glossary.MonthName.March = '三月';
+I18N.Common.Glossary.MonthName.April = '四月';
+I18N.Common.Glossary.MonthName.May = '五月';
+I18N.Common.Glossary.MonthName.June = '六月';
+I18N.Common.Glossary.MonthName.July = '七月';
+I18N.Common.Glossary.MonthName.August = '八月';
+I18N.Common.Glossary.MonthName.September = '九月';
+I18N.Common.Glossary.MonthName.October = '十月';
+I18N.Common.Glossary.MonthName.November = '十一月';
+I18N.Common.Glossary.MonthName.December = '十二月';
+
+I18N.Common.Glossary.ShortMonth.January = '一月';
+I18N.Common.Glossary.ShortMonth.February = '二月';
+I18N.Common.Glossary.ShortMonth.March = '三月';
+I18N.Common.Glossary.ShortMonth.April = '四月';
+I18N.Common.Glossary.ShortMonth.May = '五月';
+I18N.Common.Glossary.ShortMonth.June = '六月';
+I18N.Common.Glossary.ShortMonth.July = '七月';
+I18N.Common.Glossary.ShortMonth.August = '八月';
+I18N.Common.Glossary.ShortMonth.September = '九月';
+I18N.Common.Glossary.ShortMonth.October = '十月';
+I18N.Common.Glossary.ShortMonth.November = '十一月';
+I18N.Common.Glossary.ShortMonth.December = '十二月';
+
+I18N.Common.Glossary.WeekDay.Monday = '周一';
+I18N.Common.Glossary.WeekDay.Tuesday = '周二';
+I18N.Common.Glossary.WeekDay.Wednesday = '周三';
+I18N.Common.Glossary.WeekDay.Thursday = '周四';
+I18N.Common.Glossary.WeekDay.Friday = '周五';
+I18N.Common.Glossary.WeekDay.Saturday = '周六';
+I18N.Common.Glossary.WeekDay.Sunday = '周日';
+
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
 I18N.DateTimeFormat.HighFormat.Millisecond = '%H点%M分%S秒%L毫秒';

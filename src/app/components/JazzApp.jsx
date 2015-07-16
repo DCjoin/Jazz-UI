@@ -35,6 +35,30 @@ let JazzApp = React.createClass({
             this.refs.ajax._error(msg);
         });
     },
+    _setHighchartConfig(){
+      window.Highcharts.setOptions({
+          global: {
+              useUTC: false
+          },
+          lang: (function () {
+              var m = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                  w = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                  g = I18N.Common.Glossary,
+                  mn = g.MonthName,
+                  sn = g.ShortMonth,
+                  wk = g.WeekDay,
+                  ret = { months: [], shortMonths: [], weekdays: [] };
+              m.forEach(function (n) {
+                  ret.months.push(mn[n]);
+                  ret.shortMonths.push(sn[n]);
+              });
+              w.forEach(function (n) {
+                  ret.weekdays.push(wk[n]);
+              });
+              return ret;
+          })()
+      });
+    },
     componentDidMount: function() {
         var params = this.getParams();
         var lang = params.lang;
@@ -45,6 +69,7 @@ let JazzApp = React.createClass({
             window.I18N=b;
             me.replaceWith('alarm',{lang:lang});
 
+            me._setHighchartConfig();
             //me.transitionTo('main',{lang:lang});
         };
 
@@ -53,7 +78,6 @@ let JazzApp = React.createClass({
             //this.setState({shouldRender : true});
             this.replaceWith('app',{lang:lang});
         }
-
         //afterLoadLang(I18N);
 
         //return;
