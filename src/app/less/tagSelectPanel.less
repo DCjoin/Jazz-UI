@@ -44,7 +44,7 @@
         }
         }
 .jazz-hiersearch-type{
-  font-size:12px !important;
+  font-size:14px !important;
   color:rgb(152,152,152);
   margin:7px 7px 0 0;
 }
@@ -185,8 +185,7 @@
   height:341px
 }
 .jazz-search{
-  display: flex;
-  flex-flow: row nowrap;
+  display: block;
 }
 .jazz-searchtype{
   width:15%;
@@ -194,9 +193,52 @@
   margin:7px 7px 0 7px;
 }
 .jazz-searchmenu{
-  width:85%;
+  box-shadow:null !important;
+}
+.jazz-search-nodetype{
+  width:50px;
+  color:#abafae;
+  font-size:14px;
+  display: flex;
+  justify-content: flex-end;
+  margin-right:6px;
+  margin-top:17px
+
 }
 .jazz-searchmenuitem{
-  font-size:12px !important;
-  color:#222222;
+display:flex;
+flex-flow:row;
+line-height:32px;
+&:hover{
+background-color: #eaebec;
+}
+}
+.jazz-search-divider{
+  width:56px;
+  height:350px;
+  border-right:1px solid black;
+  position:fixed;
+  top:150px;
+}
+.jazz-hiersearch-nodename{
+  margin-left:6px;
+  font-size:14px;
+  color:#767a7a;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 210px
+}
+.jazz-dimsearch-nodename{
+  margin-left:6px;
+  font-size:14px;
+  color:#767a7a;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 260px
+}
+.jazz-search-dimmuenuitem{
+  font-size:14px;
+  line-height:32px
 }
