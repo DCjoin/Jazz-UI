@@ -61,6 +61,7 @@ let ChartPanel = React.createClass({
       obj.tagName = tagOption.tagName;
       obj.dashboardOpenImmediately = false;
       obj.tagOption = tagOption;
+      obj.energyData = null;
 
       if(!isSettingChart){
         let chartTitle = EnergyStore.getChartTitle();
@@ -277,7 +278,7 @@ let ChartPanel = React.createClass({
       }
       let title = <div className='jazz-alarm-chart-title'>
                     <span>{me.state.chartTitle}</span>
-                    <IconButton iconClassName="icon-send" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}/>
+                    <IconButton iconClassName="icon-send" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick} disabled={!this.state.energyData}/>
                  </div>;
       let widgetWd;
       if(me.state.dashboardOpenImmediately){

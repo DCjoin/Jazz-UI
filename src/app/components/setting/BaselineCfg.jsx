@@ -58,7 +58,7 @@ let BaselineCfg = React.createClass({
 
   showDialog: function(tag, dateRange){
     var me = this;
-    this.setState({tag: tag, dateRange: dateRange});
+    this.setState({tag: tag, dateRange: dateRange, activeTabIndex: 0});
     this.refreshData(tag.tagId, dateRange, function(tb){
       me.refs.cfgDialog.show();
       me.showMask();

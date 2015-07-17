@@ -100,7 +100,7 @@ let MonthPicker = React.createClass({
             onClick={this._onDialogCancel} />
         ];
 
-    var dialog = <Dialog className='jazz-alarm-monthpicker-dialog' title="Month Picker" contentStyle={{width:'400px'}}
+    var dialog = <Dialog className='jazz-alarm-monthpicker-dialog' title="月份选择" contentStyle={{width:'400px'}}
                   actions={_buttonActions} modal={false} ref="dialogWindow">
       <div style={{position: 'absolute'}} className='jazz-drop-down-menu-scroll'>
         <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}/>

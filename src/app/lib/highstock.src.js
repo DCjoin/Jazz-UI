@@ -11177,6 +11177,9 @@ Legend.prototype = {
 					}
 				}
 			).add(legendGroup);
+		}else if(options.deleteAllButtonText){
+
+				chart.deleteAllButton.translate(10, legendHeight + 10);
 		}
 
 		/*rem add end	*/
@@ -11215,8 +11218,14 @@ Legend.prototype = {
 
 		// Reset the legend height and adjust the clipping rectangle
 		pages.length = 0;
-		if (legendHeight > spaceHeight && !options.useHTML) {
 
+		//REM change start "-30" is for delete all button
+		if(legendHeight > spaceHeight - 30 && !options.useHTML){
+			spaceHeight = spaceHeight - 30;
+		}
+		//REM change end
+		if (legendHeight > spaceHeight && !options.useHTML) {
+			spaceHeight = spaceHeight;
 			this.clipHeight = clipHeight = mathMax(spaceHeight - 20 - this.titleHeight - this.padding, 0);
 			this.currentPage = pick(this.currentPage, 1);
 			this.fullHeight = legendHeight;
