@@ -117,7 +117,7 @@ var TreeNode = React.createClass({
       );
     }
     var text = (
-      <div className="node-content-text">{nodeData.Name}</div>
+      <div className="node-content-text" title={nodeData.Name}>{nodeData.Name}</div>
     );
 
     return (
