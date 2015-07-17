@@ -33,7 +33,7 @@ var Pagination = React.createClass({
   },
 
   jumpToPage: function (targetPage) {
-    if(Number.isInteger(targetPage) && targetPage > 0 && targetPage <= this.props.totalPageNum){
+    if(targetPage > 0 && targetPage <= this.props.totalPageNum){
       this.props.jumpToPage(targetPage);
       this.dismissJumpBox();
     }
@@ -75,7 +75,8 @@ var Pagination = React.createClass({
       if(this.state.showBox){
         var jumpBoxProps = {
           handleClickAway: this.dismissJumpBox,
-          jumpToPage: this.jumpToPage
+          jumpToPage: this.jumpToPage,
+          totalPageNum: this.props.totalPageNum
         };
         jumpBox = (
           <JumpBox {...jumpBoxProps}/>
