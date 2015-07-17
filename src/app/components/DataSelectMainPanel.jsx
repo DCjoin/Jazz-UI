@@ -299,7 +299,10 @@ let DataSelectMainPanel=React.createClass({
           TagAction.resetTagInfo();
           TagAction.loadAlarmData(alarmTagOption);
           //set the first tag select status from alarm left panel
-          TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+          if(AlarmTagStore.getSearchTagList().length!==0){
+              TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+          }
+
           }
       },
     componentDidMount: function() {
@@ -311,7 +314,10 @@ let DataSelectMainPanel=React.createClass({
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
         TagAction.loadAlarmData(alarmTagOption);
         //set the first tag select status from alarm left panel
-        TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+        if(AlarmTagStore.getSearchTagList().length!==0){
+            TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+        }
+
 
       }
       else {
