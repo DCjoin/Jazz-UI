@@ -46,7 +46,7 @@ var ViewableDatePicker = React.createClass({
         this.setState({showCalendar:false});
     },
     _onSelectedDate(date){
-        this.setState({curDate:date.toLocaleDateString('zh-cn'),showCalendar:false});
+        this.setState({curDate:date,showCalendar:false});
         //To kill 'Z' char from date format  eg. "2015-06-12T08:35:02.467Z" => "2015-06-12T08:35:02.467"
         var str = date.toISOString();
         str = str.substring(0, str.length-1);
