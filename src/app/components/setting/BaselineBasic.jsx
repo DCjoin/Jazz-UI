@@ -1171,10 +1171,10 @@ var TBSettingItem = React.createClass({
       s.avgs = nextProps.avgs;
       s.normals = nextProps.normals;
       s.specials = nextProps.specials;
-      if(nextProps.avgs && nextProps.avgs.length > 0 && this.state.radio == "NormalRadio"){
+      if(nextProps.avgs && nextProps.avgs.length > 0){
         s.radio = "CalcRadio";
       }
-      else if(nextProps.normals && nextProps.normals.length > 0 && this.state.radio == "CalcRadio"){
+      else if(nextProps.normals && nextProps.normals.length > 0){
         s.radio = "NormalRadio";
       }
       else{
