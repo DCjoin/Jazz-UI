@@ -407,12 +407,34 @@ let ChartComponent = React.createClass({
       let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,
                              onDeleteAllButtonClick: that._onDeleteAllButtonClick,
                              onIgnoreAlarmEvent: that.onIgnoreAlarmEvent,
-                             afterChartCreated: that._afterChartCreated};
+                             afterChartCreated: that._afterChartCreated,
+                             onLegendItemClick: that._onLegendItemClick};
       return <div style={{display:'flex', flex:1}}>
                 <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
                 {dialog}
              </div>;
 
+  },
+  _onLegendItemClick(obj){
+    var event = obj.event,
+        seriesItem = obj.seriesItem,
+        enableHide = obj.enableHide,
+        flagSerie,
+        factory = EnergyCommentFactory;
+
+    if (enableHide) {
+        flagSerie = factory.getFlagSeriesByOnSeriesId(seriesItem.options.id, seriesItem.chart.series, 'comment');
+        if (flagSerie) {
+            flagSerie.setVisible();
+        }
+
+        flagSerie = factory.getFlagSeriesByOnSeriesId(seriesItem.options.id, seriesItem.chart.series, 'alarm');
+        if (flagSerie) {
+            flagSerie.setVisible();
+        }
+
+        //this.hideOrDestroyOtherCommentPanel(true);//隐藏所有的comment panel
+    }
   },
   _afterChartCreated(chartObj){
     this.props.afterChartCreated(chartObj);
