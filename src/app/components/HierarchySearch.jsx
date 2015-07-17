@@ -12,7 +12,38 @@ var nodetypename=[
                   "园区",
                   "楼宇"
 ]
+let SearchItem = React.createClass({
+  propTypes: {
+      nodeData: React.PropTypes.object.isRequired,
+      onClick: React.PropTypes.func.isRequired
+  },
+  _onClick:function(){
+    this.props.onClick(this.props.nodeData)
+  },
+  render:function(){
+    var icon = (
+      <div className={classNames({
+        "icon-customer": this.props.nodeData.Type == nodeType.Customer,
+        "icon-orgnization": this.props.nodeData.Type == nodeType.Organization,
+        "icon-site": this.props.nodeData.Type == nodeType.Site,
+        "icon-building": this.props.nodeData.Type == nodeType.Building,
+        "icon-room": this.props.nodeData.Type == nodeType.Room,
+        "icon-panel": this.props.nodeData.Type == nodeType.Panel,
+        "icon-device": this.props.nodeData.Type == nodeType.Device
+      })}></div>
+    );
 
+    return(
+      <div className="jazz-searchmenuitem" onClick={this._onClick}>
+      <div style={{'font-size':'16px'}}>
+      {icon}
+    </div>
+    <div className='jazz-hiersearch-nodename' title={this.props.nodeData.Name}>
+    {this.props.nodeData.Name}</div>
+      </div>
+    )
+  }
+});
 let HierarchySearch = React.createClass({
   propTypes: {
       allNode: React.PropTypes.object.isRequired,
@@ -26,69 +57,76 @@ let HierarchySearch = React.createClass({
   },
   drawNodeType:function(){
     let nodetype=[];
-    let nodemenuItems=[];
+    let nodemenu=[];
+    let that=this;
     var searchvalue=this.props.searchValue;
     var payloadNo=0;
     var nodelength=0;
     var lastpayloadNo=0;
 
     nodetype.length=0;
-    nodemenuItems.length=0;
+    nodemenu.length=0;
     treeMap.forEach(function(node,i){
       var typeItem;
       var hasSearchValue=false;
-
+      var nodemenuItems=[];
       node.forEach(function(nodeData,i){
         let menuItem;
         var name=(nodeData.Name).toLocaleUpperCase();
         if(name.indexOf(searchvalue.toLocaleUpperCase())>=0){
-          payloadNo++;
           hasSearchValue=true;
-          var icon = classNames({
-            "icon-customer": nodeData.Type == nodeType.Customer,
-            "icon-orgnization": nodeData.Type == nodeType.Organization,
-            "icon-site": nodeData.Type == nodeType.Site,
-            "icon-building": nodeData.Type == nodeType.Building,
-            "icon-room": nodeData.Type == nodeType.Room,
-            "icon-panel": nodeData.Type == nodeType.Panel,
-            "icon-device": nodeData.Type == nodeType.Device
-            });
-            var iconStyle={
-              fontSize:'14px'
-            };
-             menuItem={payload:payloadNo,iconClassName:icon,iconStyle:iconStyle,text:nodeData.Name,node:nodeData};
-             nodemenuItems.push(menuItem);
 
-        }
+          if(nodemenuItems.length==0){
+            nodemenuItems.push(
+              <div style={{'padding-top':'10px'}}>
+                <SearchItem nodeData={nodeData}
+                            onClick={that.props.onSearchNodeClick}/>
+              </div>
+
+            )
+          }
+           else {
+             nodemenuItems.push(
+                 <SearchItem nodeData={nodeData}
+                             onClick={that.props.onSearchNodeClick}/>
+             )
+           }
+          }
 
       });
 
-
-      if(hasSearchValue){
-        if(nodelength==0){
-          typeItem=<div className="jazz-hiersearch-type">{nodetypename[node[0].Type+1]}</div>
-        }
-        else{
-          var nodeProps={
-            style:{
-              "margin-top":Number(nodelength * itemUnit)
-            }
-          };
-          typeItem=<div {...nodeProps} className="jazz-hiersearch-type">{nodetypename[node[0].Type+1]}</div>
-        }
-
-        nodelength=payloadNo-lastpayloadNo;
-        lastpayloadNo=payloadNo;
-        nodetype.push(typeItem);
-      }
+if(hasSearchValue){
+  if(nodemenu.length==0){
+    nodemenu.push(
+      <div style={{display:'flex','flex-flow':'row'}}>
+        <div className="jazz-search-nodetype" >
+            {nodetypename[node[0].Type+1]}
+        </div>
+        <div style={{'margin-left':'10px',flex:1}}>
+        {nodemenuItems}
+        </div>
+      </div>
+    );
+  }
+  else {
+    nodemenu.push(
+      <div style={{display:'flex','flex-flow':'row'}}>
+        <div className="jazz-search-nodetype" >
+            {nodetypename[node[0].Type+1]}
+        </div>
+        <div style={{'margin-left':'10px',flex:1}}>
+        {nodemenuItems}
+        </div>
+        </div>
+    );
+  }
+}
 
     })
     return(
         <div className="jazz-search" >
-            <div className="jazz-searchtype">
-              {nodetype}
-            </div>
-            <Menu menuItems={nodemenuItems} autoWidth={false} className="jazz-searchmenu" menuItemClassName="jazz-searchmenuitem" onItemClick={this._onItemClick}/>
+          {nodemenu}
+
           </div>
     );
   },
@@ -126,6 +164,7 @@ let HierarchySearch = React.createClass({
     return(
       <div>
         {this.drawNodeType()}
+        <div className="jazz-search-divider"/>
       </div>
 
       )
