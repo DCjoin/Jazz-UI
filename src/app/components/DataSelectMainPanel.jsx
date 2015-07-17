@@ -58,13 +58,16 @@ let DataSelectMainPanel=React.createClass({
     },
     _onDimTreeClick:function(node){
       page=1;
-      TagAction.loadData(node.Id,6,1,alarmType,filters);
-      this.setState({
-        tagId:node.Id,
-        optionType:6,
-        HierarchyShow:true,
-        DimShow:false
-       })
+      if(node.Id!=0){
+        TagAction.loadData(node.Id,6,1,alarmType,filters);
+        this.setState({
+          tagId:node.Id,
+          optionType:6,
+          HierarchyShow:true,
+          DimShow:false
+         })
+      }
+
     },
     _onHierarchButtonClick:function(){
       React.findDOMNode(this.refs.searchIcon).style.display='block';
@@ -281,6 +284,13 @@ let DataSelectMainPanel=React.createClass({
       //linkFrom="Alarm"时，读取初始tag状态
       if(this.props.linkFrom=="Alarm"){
           alarmTagOption = EnergyStore.getTagOpions()[0];
+          let node={
+            Id:alarmTagOption.hierId,
+            Name:alarmTagOption.hierName
+          };
+          this.setState({
+            dimParentNode:node
+          })
           }
       },
     componentWillReceiveProps:function(){
@@ -289,7 +299,10 @@ let DataSelectMainPanel=React.createClass({
           TagAction.resetTagInfo();
           TagAction.loadAlarmData(alarmTagOption);
           //set the first tag select status from alarm left panel
-          TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+          if(AlarmTagStore.getSearchTagList().length!==0){
+              TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+          }
+
           }
       },
     componentDidMount: function() {
@@ -301,7 +314,10 @@ let DataSelectMainPanel=React.createClass({
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
         TagAction.loadAlarmData(alarmTagOption);
         //set the first tag select status from alarm left panel
-        TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+        if(AlarmTagStore.getSearchTagList().length!==0){
+            TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
+        }
+
 
       }
       else {
@@ -329,12 +345,7 @@ let DataSelectMainPanel=React.createClass({
      })
    },
     render:function(){
-      if(this.props.linkFrom!="Alarm"){
-        alarmTagOption={
-          hierId:null,
-          tagId:null
-        }
-      }
+
       var buttonStyle = {
                height:'48px',
            },
@@ -382,11 +393,12 @@ let DataSelectMainPanel=React.createClass({
 
         )
       }
+      var hierId=(this.state.dimParentNode===null)?null:this.state.dimParentNode.Id;
       return(
         <div className="jazz-dataselectmainpanel" >
 
           <div  className="header">
-            <HierarchyButton hierId={alarmTagOption.hierId}
+            <HierarchyButton hierId={hierId}
                               onTreeClick={this._onHierachyTreeClick}
                               onButtonClick={this._onHierarchButtonClick}
                               show={this.state.HierarchyShow}

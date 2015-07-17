@@ -5,6 +5,30 @@ import {Paper,Menu} from 'material-ui';
 
 let treeMap=new Array();
 
+let SearchItem = React.createClass({
+  propTypes: {
+      nodeData: React.PropTypes.object.isRequired,
+      onClick: React.PropTypes.func.isRequired
+  },
+  _onClick:function(){
+    this.props.onClick(this.props.nodeData)
+  },
+  render:function(){
+    var icon = (
+      <div className="icon-hierarchy"></div>
+    );
+
+    return(
+      <div className="jazz-searchmenuitem" onClick={this._onClick}>
+      <div style={{'font-size':'16px'}}>
+      {icon}
+    </div>
+    <div className='jazz-dimsearch-nodename' title={this.props.nodeData.Name}>
+    {this.props.nodeData.Name}</div>
+      </div>
+    )
+  }
+});
 let DimSearch = React.createClass({
   propTypes: {
       allNode: React.PropTypes.object.isRequired,
@@ -12,24 +36,20 @@ let DimSearch = React.createClass({
       searchValue: React.PropTypes.string,
 
   },
-  _onItemClick:function(e, index, menuItem){
-
-    this.props.onSearchNodeClick(menuItem.node);
-  },
   drawNodeType:function(){
+    let that=this;
     let nodemenuItems=[];
     var searchvalue=this.props.searchValue;
-    var payloadNo=0;
-
     nodemenuItems.length=0;
     treeMap.forEach(function(nodeData,i){
-        let menuItem;
+
         var name=(nodeData.Name).toLocaleUpperCase();
         if(name.indexOf(searchvalue.toLocaleUpperCase())>=0){
-          payloadNo++;
 
-          menuItem={payload:payloadNo,iconClassName:"fa fa-users",text:nodeData.Name,node:nodeData};
-          nodemenuItems.push(menuItem);
+
+          nodemenuItems.push(
+            <SearchItem nodeData={nodeData} onClick={that.props.onSearchNodeClick}/>
+          );
 
         }
 
@@ -37,8 +57,8 @@ let DimSearch = React.createClass({
 
 
     return(
-        <div className="jazz-search" >
-            <Menu menuItems={nodemenuItems} autoWidth={false} onItemClick={this._onItemClick}/>
+        <div className="jazz-search" style={{'margin-left':'16px'}}>
+          {nodemenuItems}
           </div>
     );
   },
