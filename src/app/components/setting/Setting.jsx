@@ -7,6 +7,7 @@ import BaselineModify from './BaselineModify.jsx';
 
 import DataSelectPanel from '../DataSelectPanel.jsx';
 import ChartPanel from '../alarm/ChartPanel.jsx';
+import ChartAction from '../../actions/ChartAction.jsx';
 
 let Setting = React.createClass({
 
@@ -19,7 +20,7 @@ let Setting = React.createClass({
   _onSwitchButtonClick(){
     this.setState({
       showRightPanel:!this.state.showRightPanel
-    });
+    }, ChartAction.redrawChart);
   },
 
   render: function () {

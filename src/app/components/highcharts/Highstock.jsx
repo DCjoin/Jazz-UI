@@ -1,5 +1,6 @@
 'use strict';
 
+import EnergyChartStore from '../../stores/EnergyChartStore.jsx';
 
 let React = require('react');
 let assign = require('object-assign');
@@ -25,9 +26,13 @@ let Highstock = React.createClass({
     },
 
     componentDidMount  () {
+      EnergyChartStore.addRedrawListener(this._draw);
+
       this._draw();
     },
-
+    componentWillUnmount: function() {
+      EnergyChartStore.removeRedrawListener(this._draw);
+    },
     componentDidUpdate () {
       this._draw();
     },

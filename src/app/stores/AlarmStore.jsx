@@ -1,6 +1,5 @@
 'use strict';
 
-
 import PopAppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
