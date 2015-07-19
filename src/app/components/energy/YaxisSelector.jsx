@@ -201,7 +201,7 @@ var YaxisDialog = React.createClass({
     }
     let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'Y坐标轴设置'}</h3>;
     var dialog = <Dialog title={_titleElement} actions={_buttonActions}
-                  modal={false} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
+                  modal={true} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
       <div className={'jazz-energy-yaxis-container'} style={{marginLeft:'26px','overflow-y':'auto', maxHeight:'300px'}}>
         {groups}
       </div>
