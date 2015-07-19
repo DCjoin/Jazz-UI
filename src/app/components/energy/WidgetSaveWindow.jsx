@@ -135,9 +135,10 @@ var WidgetSaveWindow = React.createClass({
       if(this.state.dashboardMenuItems.length === 0){
           existDashBoardRadioContent = <div></div>;
       }else{
-        existDashBoardRadioContent = <div className={classNames({'jazz-widget-save-dialog-existing-dashboard':true})} >
+        existDashBoardRadioContent =<div style={{height:'40px', marginTop:'10px'}}>
+          <div className={classNames({'jazz-widget-save-dialog-existing-dashboard':true,'jazz-drop-down-menu-scroll':true})} >
             <DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
-              selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></DropDownMenu></div>;
+              selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></DropDownMenu></div></div> ;
       }
     }else{
       newDashboardRadioContent = <div><TextField ref={'newDashboardName'} value={this.state.newDashboardNameValue} hintText={'新建仪表盘'}
