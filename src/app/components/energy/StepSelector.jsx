@@ -38,9 +38,6 @@ let StepSelector = React.createClass({
     let limitInterval = CommonFuns.getLimitInterval(this.props.timeRanges);
     return limitInterval;
   },
-  componentWillReceiveProps(nextProps){
-    console.log('==componentWillReceiveProps==',nextProps);
-  },
   render(){
     var me = this;
     var selectedStep = this.props.stepValue;

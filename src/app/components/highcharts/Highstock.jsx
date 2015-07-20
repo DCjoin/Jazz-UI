@@ -1,5 +1,6 @@
 'use strict';
 
+import EnergyChartStore from '../../stores/EnergyChartStore.jsx';
 
 let React = require('react');
 let assign = require('object-assign');
@@ -25,9 +26,13 @@ let Highstock = React.createClass({
     },
 
     componentDidMount  () {
+      EnergyChartStore.addRedrawListener(this._draw);
+
       this._draw();
     },
-
+    componentWillUnmount: function() {
+      EnergyChartStore.removeRedrawListener(this._draw);
+    },
     componentDidUpdate () {
       this._draw();
     },
@@ -50,9 +55,15 @@ let Highstock = React.createClass({
     },
     bindChartObjEvents(){
       var me = this;
-      this._paper.bind('deleteButtonClick', me._onDeleteButtonClick.bind(me));
-      this._paper.bind('deleteAllButtonClick', me._onDeleteAllButtonClick.bind(me));
-      this._paper.bind('ignorealarm', me._ignoreAlarmEvent.bind(me));
+      this._paper.bind('deleteButtonClick', me._onDeleteButtonClick);
+      this._paper.bind('deleteAllButtonClick', me._onDeleteAllButtonClick);
+      this._paper.bind('ignorealarm', me._ignoreAlarmEvent);
+      this._paper.bind('legendItemClick', me._onLegendItemClick);
+    },
+    _onLegendItemClick(obj){
+      if(this.props.onLegendItemClick){
+        this.props.onLegendItemClick(obj);
+      }
     },
     _onDeleteButtonClick(obj){
       if(this.props.onDeleteButtonClick){
