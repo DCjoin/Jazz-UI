@@ -338,7 +338,19 @@
 .jazz-widget-save-dialog-existing-dashboard >div{
   div:nth-of-type(2){
     z-index: 10 !important;
+    >div:nth-of-type(1){
+      max-width:360px !important;
+    }
+
   }
+    >div:nth-of-type(1){
+      >div:nth-of-type(3){
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width:340px
+      }
+    }
 }
 .jazz-dialog-body-visible{
   >div:nth-of-type(1){
@@ -348,10 +360,15 @@
           >div:nth-of-type(1){
       //      overflow-y: visible !important;
             max-height:300px;
-            overflow-x: visible !important;
+      //      overflow-x: visible !important;
           }
         }
       }
     }
   }
+}
+.jazz-energy-oldDashBoardName{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

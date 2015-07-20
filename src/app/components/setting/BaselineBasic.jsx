@@ -149,7 +149,7 @@ var DaytimeRangeValue = React.createClass({
           <span style={style}>{startStr}</span>
           <span style={{margin:'0 10px'}}>到</span>
           <span style={style}>{endStr}</span>
-          <span style={{padding:'2px 10px',border: '1px solid #efefef',margin:'0 10px'}}>{val}</span>
+          <span style={{padding:'2px 10px',color:'#b3b3b3',border: '1px solid #efefef',margin:'0 10px'}}>{val}</span>
           <span>{this.props.tag.uom}</span>
         </div>
       );

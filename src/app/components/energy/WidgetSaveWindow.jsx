@@ -24,7 +24,9 @@ var WidgetSaveWindow = React.createClass({
             selectedExistingDashboardIndex: 0,
             error:{},
             newDashboardNameError:null,
-            chartTitleError:null
+            chartTitleError:null,
+            chartTitleValue:null,
+            newDashboardNameValue:null
            };
   },
   getDefaultProps: function() {
@@ -83,7 +85,13 @@ var WidgetSaveWindow = React.createClass({
         chartTitleError:'非法输入'
       });
     }
-  //  this.refs.widgetname.setErrorText();
+
+  if(e.target.value.length<=100){
+    this.setState({
+      chartTitleValue:e.target.value
+    });
+  //  this.refs.widgetname.setValue(e.target.value.slice(0,99))
+  }
   },
   _onNewDSNameFieldChange(e){
     if(Regex.NameRule.test(e.target.value)){
@@ -94,6 +102,11 @@ var WidgetSaveWindow = React.createClass({
     else {
       this.setState({
         newDashboardNameError:'非法输入'
+      });
+    }
+    if(e.target.value.length<=100){
+      this.setState({
+        newDashboardNameValue:e.target.value
       });
     }
   //  this.refs.newDashboardName.setErrorText();
@@ -113,16 +126,21 @@ var WidgetSaveWindow = React.createClass({
     let me = this;
     let existDashBoardRadioContent;
     let newDashboardRadioContent;
+    let dashboardListMenuItemStyle={
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis'
+    };
     if(this.state.dashboardState ==='existDashboard'){
       if(this.state.dashboardMenuItems.length === 0){
           existDashBoardRadioContent = <div></div>;
       }else{
         existDashBoardRadioContent = <div className={classNames({'jazz-widget-save-dialog-existing-dashboard':true})} >
-            <DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} style={{width:'392px'}}
+            <DropDownMenu ref={'dashboardListDropDownMenu'} menuItems={this.state.dashboardMenuItems} menuItemStyle={dashboardListMenuItemStyle} style={{width:'392px'}}
               selectedIndex={this.state.selectedExistingDashboardIndex} onChange={this._onExistDashboardChanged}></DropDownMenu></div>;
       }
     }else{
-      newDashboardRadioContent = <div><TextField ref={'newDashboardName'} hintText={'新建仪表盘'}
+      newDashboardRadioContent = <div><TextField ref={'newDashboardName'} value={this.state.newDashboardNameValue} hintText={'新建仪表盘'}
         className={'jazz-widget-save-dialog-textfiled'} onChange={this._onNewDSNameFieldChange}
         errorText={this.state.newDashboardNameError}/></div>;
     }
@@ -147,7 +165,7 @@ var WidgetSaveWindow = React.createClass({
     let form = <div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
         <div style={{paddingBottom:'10px'}}>
           <span className='jazz-form-text-field-label'>*图表名称：</span>
-          <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'}
+          <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'} value={this.state.chartTitleValue}
                     onChange={this._onNameFieldChange} defaultValue={this.props.chartTitle} errorText={this.state.chartTitleError}/>
                   {chartTitleError}
         </div>

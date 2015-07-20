@@ -67,6 +67,16 @@ let DataSelectMainPanel=React.createClass({
           DimShow:false
          })
       }
+      else {
+        let id=TagStore.getCurrentHierarchyId();
+        TagAction.loadData(id,2,1,alarmType,filters);
+        this.setState({
+          tagId:id,
+          optionType:2,
+          HierarchyShow:true,
+          DimShow:false
+         })
+      }
 
     },
     _onHierarchButtonClick:function(){

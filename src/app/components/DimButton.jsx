@@ -26,7 +26,7 @@ let DimButton=React.createClass({
     if(data && this.props.parentNode){
       var tree={};
     //  tree.Id=this.props.parentNode.Id;
-    tree.Id=0;
+      tree.Id=0;
       tree.Name="全部维度";
       tree.Children=data;
       this.setState({
