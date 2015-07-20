@@ -71,18 +71,26 @@ var WidgetSaveWindow = React.createClass({
     });
   },
   _onExistDashboardChanged(e, selectedIndex, menuItem){
+    var error=this.state.error;
+    error.oldDashboard=null;
     this.setState({selectedExistingDashboard:menuItem,
-                   selectedExistingDashboardIndex: selectedIndex});
+                   selectedExistingDashboardIndex: selectedIndex,
+                   error:error
+                 });
   },
   _onNameFieldChange(e){
+    var error=this.state.error;
+    error.chartTitle=null;
     if(Regex.NameRule.test(e.target.value)){
       this.setState({
-        chartTitleError:null
+        chartTitleError:null,
+        error:error
       });
     }
     else {
       this.setState({
-        chartTitleError:'非法输入'
+        chartTitleError:'非法输入',
+        error:error
       });
     }
 
@@ -94,14 +102,18 @@ var WidgetSaveWindow = React.createClass({
   }
   },
   _onNewDSNameFieldChange(e){
+    var error=this.state.error;
+    error.newDashboard=null;
     if(Regex.NameRule.test(e.target.value)){
       this.setState({
-        newDashboardNameError:null
+        newDashboardNameError:null,
+        error:error
       });
     }
     else {
       this.setState({
-        newDashboardNameError:'非法输入'
+        newDashboardNameError:'非法输入',
+        error:error
       });
     }
     if(e.target.value.length<=100){
