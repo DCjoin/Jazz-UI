@@ -11,7 +11,7 @@ import DashboardStore from '../../stores/DashboardStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
-let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup } = mui;
+let { Dialog, DropDownMenu, FlatButton, TextField, RadioButton, RadioButtonGroup, CircularProgress } = mui;
 
 var WidgetSaveWindow = React.createClass({
   propTypes:{
@@ -26,7 +26,8 @@ var WidgetSaveWindow = React.createClass({
             newDashboardNameError:null,
             chartTitleError:null,
             chartTitleValue:null,
-            newDashboardNameValue:null
+            newDashboardNameValue:null,
+            saveLoading: false
            };
   },
   getDefaultProps: function() {
@@ -125,11 +126,13 @@ var WidgetSaveWindow = React.createClass({
   },
   _onDashboardErrorLoaded(){
     this.setState({
+      saveLoading:false,
       error:DashboardStore.GetDashboardError()
     });
   },
   _onSaveDashboardSuccessLoaded(){
     this.setState({
+      saveLoading:false,
       error:{}
     });
   this.hide();
@@ -143,6 +146,21 @@ var WidgetSaveWindow = React.createClass({
       whiteSpace: 'nowrap',
       textOverflow: 'ellipsis'
     };
+    let _buttonActions = [
+            <FlatButton label="保存" onClick={this._onDialogSubmit} />,
+            <FlatButton label="放弃" onClick={this._onDialogCancel} style={{marginRight:'364px'}}/>
+        ];
+
+    let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'保存图表至仪表盘'}</h3>;
+
+    let form;
+    //if(this.state.saveLoading){
+    let loadingForm = <div style={{display:this.state.saveLoading?'block':'none', height:'220px',paddingTop:'50px'}}>
+                          <div style={{margin:'auto',width:'150px'}}>
+                              <CircularProgress  mode="indeterminate" size={2} />
+                          </div>
+                      </div>;
+
     if(this.state.dashboardState ==='existDashboard'){
       if(this.state.dashboardMenuItems.length === 0){
           existDashBoardRadioContent = <div></div>;
@@ -158,11 +176,6 @@ var WidgetSaveWindow = React.createClass({
         errorText={this.state.newDashboardNameError}/></div>;
     }
 
-    var _buttonActions = [
-            <FlatButton label="保存" onClick={this._onDialogSubmit} />,
-            <FlatButton label="放弃" onClick={this._onDialogCancel} style={{marginRight:'364px'}}/>
-        ];
-    let _titleElement = <h3 style={{fontSize:'20px', fontWeight:'bold', padding:'24px 0 0 50px'}}>{'保存图表至仪表盘'}</h3>;
     let chartTitleError,oldDashboardError,newDashboardError;
     if(this.state.error){
       if(this.state.error.chartTitle){
@@ -175,7 +188,7 @@ var WidgetSaveWindow = React.createClass({
         newDashboardError=<div style={{color:'#f46a58','font-size':'12px','margin-left':'120px'}}>{this.state.error.newDashboard}</div>;
       }
     }
-    let form = <div style={{marginLeft:'27px'}} className='jazz-widget-save-dialog-content-container'>
+    form = <div style={{marginLeft:'27px', display:this.state.saveLoading?'none':'block'}} className='jazz-widget-save-dialog-content-container'>
         <div style={{paddingBottom:'10px'}}>
           <span className='jazz-form-text-field-label'>*图表名称：</span>
           <TextField ref={'widgetname'} className={'jazz-widget-save-dialog-textfiled'} value={this.state.chartTitleValue}
@@ -207,11 +220,15 @@ var WidgetSaveWindow = React.createClass({
           <TextField ref='dashboardComment' multiLine='true' className={'jazz-widget-save-dialog-textfiled'} hintText='写下您的建议或看法。' />
         </div>
       </div>;
-    var dialog = <div className={'jazz-dialog-body-visible'}><Dialog  title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}}
-      autoScrollBodyContent={true} openImmediately={true} contentInnerStyle={{'max-height':'340px'}}
-                          actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
-                          {form}
-                 </Dialog></div>;
+
+    var dialog = <div className={'jazz-dialog-body-visible'}>
+                    <Dialog title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}}
+                            autoScrollBodyContent={true} openImmediately={true} contentInnerStyle={{'max-height':'340px'}}
+                            actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
+                      {form}
+                      {loadingForm}
+                    </Dialog>
+                </div>;
 
     return dialog;
   },
@@ -262,7 +279,7 @@ var WidgetSaveWindow = React.createClass({
     return flag;
   },
   _onDialogSubmit(){
-    if(this.validate()){
+    if(this.validate() && !this.state.saveLoading){
       let widgetDto;
       let createNewDashboard = (this.state.dashboardState === 'newDashboard');
       let comment = this.refs.dashboardComment.getValue();
@@ -293,7 +310,7 @@ var WidgetSaveWindow = React.createClass({
                              }
                    };
       }
-
+      this.setState({saveLoading:true});
       AlarmAction.save2Dashboard(widgetDto, createNewDashboard);
 
     }
