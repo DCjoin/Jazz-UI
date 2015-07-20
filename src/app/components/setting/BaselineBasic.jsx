@@ -1077,6 +1077,9 @@ var SpecialSetting = React.createClass({
   },
 
   render: function() {
+    if(this.props.isViewStatus && this.props.items.length == 0){
+      return null;
+    }
     var me = this,
       createItem = function(item, index) {
         var drvProps = {
@@ -1115,6 +1118,7 @@ var SpecialSetting = React.createClass({
     if(!this.props.isViewStatus){
       addBtnCtrl = <FlatButton {...addBtnProps}/>;
     }
+
     return (<div style={style}>
         <div style={{'margin-top':'18px'}}><span>补充日期</span>{addBtnCtrl}</div>
         <div style={{color:'#b3b3b3'}}>{this.state.items.map(createItem)}</div>
