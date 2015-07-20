@@ -11,11 +11,6 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 
-var formatDate = function(date){
-  var m = (date.getMonth() + 1), d = date.getDate();
-  return (m>9?''+m:'0'+m) + '-' + (d>9?''+d:'0'+d);
-};
-
 var extractNumber = function(str){
   var value = str.replace(/[^\d\.]/g,'');
   var dotIndex = value.indexOf('.');
@@ -26,39 +21,6 @@ var extractNumber = function(str){
     value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
   }
   return value;
-};
-
-var fromFormEndDate = function(date){
-  var tmpDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  tmpDate.setDate(tmpDate.getDate() + 1);
-  return tmpDate;
-};
-
-var toFormEndDate = function(date){
-  var tmpDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  tmpDate.setDate(tmpDate.getDate() - 1);
-  return tmpDate;
-};
-
-var jsonToFormDate = function(dtJson){
-  return new Date(CommonFuns.DataConverter.JsonToDateTime(dtJson, false));
-};
-
-var jsonToFormTime = function(dtJson){
-  var dt = new Date(CommonFuns.DataConverter.JsonToDateTime(dtJson, false));
-  return dt.getHours() * 60 + dt.getMinutes();
-};
-
-var mergeDateTime = function(date, time){
-  var d = new Date(date);
-  if(time) d = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(time/60), time % 60);
-  else d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  return d;
-}
-
-var datetimeTojson = function(date, time){
-  var d = mergeDateTime(date, time);
-  return CommonFuns.DataConverter.DatetimeToJson(d);
 };
 
 var CalcItem = React.createClass({

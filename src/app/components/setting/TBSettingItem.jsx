@@ -23,17 +23,6 @@ var formatDate = function(date){
   return (m>9?''+m:'0'+m) + '-' + (d>9?''+d:'0'+d);
 };
 
-var extractNumber = function(str){
-  var value = str.replace(/[^\d\.]/g,'');
-  var dotIndex = value.indexOf('.');
-  if(dotIndex != -1){
-    if(dotIndex == 0) value = '0' + value;
-    dotIndex = value.indexOf('.');
-    value = value.split('.').join('');
-    value = [value.slice(0, dotIndex), '.', value.slice(dotIndex)].join('');
-  }
-  return value;
-};
 
 var fromFormEndDate = function(date){
   var tmpDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
