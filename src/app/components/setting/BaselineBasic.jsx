@@ -940,7 +940,7 @@ var SpecialItem = React.createClass({
 
       return (
         <div>
-          <div style={{display:'flex','flex-flow':'row','margin-top':'18px'}}>
+          <div style={{clear:'both', display:'flex','flex-flow':'row','margin-top':'18px'}}>
               <div className="jazz-setting-basic-datepicker-container">
             <ViewableDatePicker ref='startDateField' {...startDateProps} />
             </div>
