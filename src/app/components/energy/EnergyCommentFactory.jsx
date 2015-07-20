@@ -95,7 +95,7 @@ let EnergyCommentFactory = {
             var point = {
                 x: xaxis,
                 alarmId: alarmId,
-                title: ' '
+                title: '- -'//fix IE can not click alarm point bug #8136
             };
             if (hasStackIndex) {
                 point.customizedStackIndex = 1;
@@ -109,11 +109,13 @@ let EnergyCommentFactory = {
                 option: {
                     flagType: 'alarm'
                 },
+                style:{color:'red', cursor: 'pointer'},//fix IE can not click alarm point bug #8136
                 onSeries: onSeriesId,
                 shape: 'url(./Images/Alarm_Normal_Icon.png)',
                 showInLegend: false,
                 notShowTooltip: true,
-                width: 16,
+                width: 18,
+                height: 22,
                 tooltip: {
                     formatter: function () {
                         return '';
@@ -127,7 +129,7 @@ let EnergyCommentFactory = {
                         }
                     }
                 },
-                y: -18,
+                y: -28,
                 stackDistance: 22
             };
             return newFlagSeries;
