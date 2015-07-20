@@ -12,6 +12,7 @@ import TBSettingStore from '../../stores/TBSettingStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import TBSettingItems from './TBSettingItems.jsx';
+import CalDetail from './CalDetail.jsx';
 
 var BaselineBasic = React.createClass({
   mixins:[Navigation,State],
