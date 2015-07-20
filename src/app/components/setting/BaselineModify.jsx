@@ -96,6 +96,9 @@ let BaselineModify = React.createClass({
   },
   yearValueChange: function(e){
     var value = this._validateValue(e.target.value);
+    if(value === ""){
+      value = null;
+    }
     BaselineModifyAction.setYearData(value);
     BaselineModifyAction.setYearIsModify();
   },
@@ -279,6 +282,9 @@ let MonthItem = React.createClass({
     var value = this._validateLeftValue(e.target.value);
     var itemIndex = this.props.index;
     var monthIndex = itemIndex * 2;
+    if(value === ""){
+      value = null;
+    }
     BaselineModifyAction.setMonthData(monthIndex, value);
     BaselineModifyAction.setMonthIsModify(monthIndex);
   },
@@ -298,6 +304,9 @@ let MonthItem = React.createClass({
     var value = this._validateRightValue(e.target.value);
     var itemIndex = this.props.index;
     var monthIndex = itemIndex * 2 + 1;
+    if(value === ""){
+      value = null;
+    }
     BaselineModifyAction.setMonthData(monthIndex, value);
     BaselineModifyAction.setMonthIsModify(monthIndex);
   },
