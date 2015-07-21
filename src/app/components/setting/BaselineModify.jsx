@@ -231,9 +231,9 @@ let BaselineModify = React.createClass({
             <div className='jazz-setting-baseline-margin'>
               年基准值
             </div>
-            <div>
+            <div style={{display:'flex',flexFlow:'row',alignItems:'center'}}>
               年度<TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} defalutValue={null} errorText={this.state.errorText} disabled={this.state.disable} onChange={this.yearValueChange}/>千瓦时
-              <span className="icon-revised-cn" style={{marginLeft:'5px', color:'red',fontSize:'24px',height:'24px',lineHeight:'24px',display:'inline-block',verticalAlign:'bottom'}} hidden={!this.state.yearIsModify}></span>
+              <span className="icon-revised-cn" style={{marginLeft:'5px', color:'red',fontSize:'24px'}} hidden={!this.state.yearIsModify}></span>
             </div>
             <div className='jazz-setting-baseline-margin'>
               月基准值
@@ -324,9 +324,9 @@ let MonthItem = React.createClass({
 	  let line = this.props.line;
     let Uom = this.props.uom;
     let disable = this.props.disable;
-    var leftDivStyle = {display:'inline-block',width:'52px'};
-    var centerDivStyle = {display:'inline-block',width:'103px'};
-    var rightDivStyle = {display:'inline-block',width:'92px',height:'24px',lineHeight:'24px'};
+    var leftDivStyle = {width:'52px',display:'flex',flexFlow:'row',alignItems:'center'};
+    var centerDivStyle = {width:'103px',display:'flex',flexFlow:'row',alignItems:'center'};
+    var rightDivStyle = {width:'92px',display:'flex',flexFlow:'row',alignItems:'center'};
     var monthStyle = {
       display: 'inline-block',
       width: '90px',
@@ -340,24 +340,28 @@ let MonthItem = React.createClass({
 		return (
       <table border='0' cellSpacing='1' cellPadding='0'>
         <tr>
-          <td align="left">
-            <div style={leftDivStyle}>{line.LeftMonth}月</div>
-            <div style={centerDivStyle}>
-              <TextField ref="leftValue" className="jazz-setting-input" style={monthStyle}   defaultValue={null} errorText={this.state.errorLeftText} onChange={this._onLeftChange} disabled={disable}/>
-            </div>
-            <div style={rightDivStyle}>
-              {Uom}
-              <span className="icon-revised-cn" style={{marginLeft:'5px',color:'red',fontSize:'24px',height:'24px',lineHeight:'24px',display:'inline-block',verticalAlign:'bottom'}} hidden={!this.state.leftIsModify}></span>
+          <td>
+            <div style={{display:'flex',flexFlow:'row',alignItems:'center',height:'28px'}}>
+              <div style={leftDivStyle}>{line.LeftMonth}月</div>
+              <div style={centerDivStyle}>
+                <TextField ref="leftValue" className="jazz-setting-input" style={monthStyle}   defaultValue={null} errorText={this.state.errorLeftText} onChange={this._onLeftChange} disabled={disable}/>
+              </div>
+              <div style={rightDivStyle}>
+                {Uom}
+                <span className="icon-revised-cn" style={{marginLeft:'5px',color:'red',fontSize:'24px'}} hidden={!this.state.leftIsModify}></span>
+              </div>
             </div>
           </td>
-          <td align="right">
-            <div style={leftDivStyle}>{line.RightMonth}月</div>
-            <div style={centerDivStyle}>
-              <TextField ref="rightValue" className="jazz-setting-input" style={monthStyle} defaultValue={null} errorText={this.state.errorRightText} onChange={this._onRightChange} disabled={disable}/>
-            </div>
-            <div style={rightDivStyle}>
-              {Uom}
-              <span className="icon-revised" style={{marginLeft:'5px',color:'red'}} hidden={!this.state.rightIsModify}></span>
+          <td>
+            <div style={{display:'flex',flexFlow:'row',alignItems:'center',height:'28px'}}>
+              <div style={leftDivStyle}>{line.RightMonth}月</div>
+              <div style={centerDivStyle}>
+                <TextField ref="rightValue" className="jazz-setting-input" style={monthStyle} defaultValue={null} errorText={this.state.errorRightText} onChange={this._onRightChange} disabled={disable}/>
+              </div>
+              <div style={rightDivStyle}>
+                {Uom}
+                <span className="icon-revised-cn" style={{marginLeft:'5px',color:'red',fontSize:'24px'}} hidden={!this.state.rightIsModify}></span>
+              </div>
             </div>
           </td>
         </tr>
