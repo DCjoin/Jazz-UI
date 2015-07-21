@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 
 import Tag from '../constants/actionType/Tag.jsx';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
+import AlarmSetting from '../constants/actionType/Setting.jsx';
 
 let LOAD_TAG_NODE_EVENT = 'loadtagnode';
 let LOAD_ALARM_TAG_NODE_EVENT = 'loadalarmtagnode';
@@ -13,6 +14,7 @@ let TAG_STATUS_EVENT = 'tagstatus';
 let CHECKALL_STATUS_EVENT = 'checkallstatus';
 let NODE_LOADING_EVENT= 'nodeloading';
 let BASELINE_BTN_DISABLED_EVENT='baselinebtndisabled';
+let DATA_CHANGED_EVENT="datachanged";
 var _data = {};
 var _totalTagStatus=[];
 var _hierId=null;
@@ -334,9 +336,22 @@ else{
       this.removeListener(BASELINE_BTN_DISABLED_EVENT, callback);
       this.dispose();
           },
+
+  addSettingDataListener: function(callback) {
+      this.on(DATA_CHANGED_EVENT, callback);
+        },
+ emitSettingData: function() {
+      this.emit(DATA_CHANGED_EVENT);
+        },
+  removeSettingDataListener: function(callback) {
+      this.removeListener(DATA_CHANGED_EVENT, callback);
+      this.dispose();
+          },
+
 });
 var TagAction = Tag.Action,
-    AlarmTagAction = AlarmTag.Action;
+    AlarmTagAction = AlarmTag.Action,
+    AlarmSettingAction=AlarmSetting.Action;
     TagStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case TagAction.LOAD_TAG_NODE:
@@ -377,6 +392,9 @@ var TagAction = Tag.Action,
       case TagAction.RESET_TAGINFO:
             TagStore.resetTagInfo();
         break;
+      case AlarmSettingAction.SET_ALARM_DATA_SUCCESS:
+            TagStore.emitSettingData();
+          break;
 
 
 

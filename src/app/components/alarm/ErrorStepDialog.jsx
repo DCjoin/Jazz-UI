@@ -46,7 +46,7 @@ let ErrorStepDialog = React.createClass({
             onClick={me._onAction.bind(me, 'cancel')} />
         );
 
-    var dialog = <Dialog contentStyle={{width:'400px'}} actions={_buttonActions} modal={false}
+    var dialog = <Dialog contentStyle={{width:'400px'}} actions={_buttonActions} modal={true}
                   onDismiss={this._onDismiss} ref="dialogWindow" openImmediately={true}>
       <div style={{marginTop:'15px'}}>
         {this.props.errorMessage}

@@ -5,6 +5,7 @@ import assign from "object-assign";
 
 import AlarmSettingStore from '../../stores/AlarmSettingStore.jsx';
 import AlarmSettingAction from "../../actions/AlarmSettingAction.jsx";
+import {DataSelectMainPanel} from "../DataSelectMainPanel.jsx";
 
 var extractNumber = function(str){
   var value = str.replace(/[^\d\.]/g,'');
@@ -28,6 +29,7 @@ let AlarmSetting = React.createClass({
 	_onChange: function(){
     var alarmSettingData = AlarmSettingStore.getData();
     this.setValue(alarmSettingData);
+    //DataSelectMainPanel.resetTagNode();
 	},
   getValue: function(){
     var alarmSteps = this.refs.alarmSteps.getValue();

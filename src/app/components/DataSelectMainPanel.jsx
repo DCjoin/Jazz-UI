@@ -10,6 +10,7 @@ import TagAction from '../actions/TagAction.jsx';
 import TBSettingAction from '../actions/TBSettingAction.jsx'
 import AlarmTagStore from '../stores/AlarmTagStore.jsx';
 import EnergyStore from '../stores/EnergyStore.jsx';
+import AlarmSettingStore from '../stores/AlarmSettingStore.jsx';
 import Pagination from '../controls/paging/Pagination.jsx';
 import TagMenu from './tag/TagMenu.jsx';
 
@@ -267,6 +268,9 @@ let DataSelectMainPanel=React.createClass({
         isLoading:TagStore.getNodeLoading(),
       });
     },
+    _onSettingDataChange:function(){
+      TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
+    },
     getInitialState: function() {
           return {
             isLoading:false,
@@ -318,6 +322,7 @@ let DataSelectMainPanel=React.createClass({
     componentDidMount: function() {
       TagStore.addTagNodeListener(this._onTagNodeChange); //listener for load tag
       TagStore.addNodeLoadingListener(this._onNodeLoadingChange);
+      TagStore.addSettingDataListener(this._onSettingDataChange);
       TagAction.resetTagInfo();
 
       if(this.props.linkFrom=="Alarm"){
@@ -338,6 +343,7 @@ let DataSelectMainPanel=React.createClass({
 
        TagStore.removeTagNodeListener(this._onTagNodeChange);
        TagStore.removeNodeLoadingListener(this._onNodeLoadingChange);
+       TagStore.removeSettingDataListener(this._onSettingDataChange);
        if(this.props.linkFrom=="Alarm"){
          TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
 
