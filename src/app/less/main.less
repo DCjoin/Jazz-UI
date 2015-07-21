@@ -271,7 +271,7 @@ ul{
   position: relative;
   >div{
     > hr:first-of-type {
-      border-bottom: 1px solid #434d5e !important;
+      border-bottom: 0px solid #434d5e !important;
       bottom: 0px !important;
     }
     >div{
@@ -325,3 +325,10 @@ input:focus{
       vertical-align: top;
       margin-top: 20px;
     }
+.jazz-year-selector_dropdownmenu_nounderline{
+  >div:first-of-type{
+    div:nth-child(5){
+      border-top-width: 0px !important;
+    }
+  }
+}

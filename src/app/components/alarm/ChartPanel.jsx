@@ -297,10 +297,14 @@ let ChartPanel = React.createClass({
               <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
             <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
-            <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px', width:'92px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
+            <div className={'jazz-flat-button'}>
+              <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px', width:'92px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
+            </div>
             <BaselineCfg  ref="baselineCfg"/>
-            <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px', width:'122px'}} label='基准值配置' onClick={this.handleBaselineCfg}/>
-          </div>
+            <div className={'jazz-flat-button'}>
+              <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px', width:'122px'}} label='基准值配置' onClick={this.handleBaselineCfg}/>
+            </div>
+        </div>
           {energyPart}
           {errorDialog}
         </div>
