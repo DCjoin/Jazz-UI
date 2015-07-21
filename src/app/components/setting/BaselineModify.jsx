@@ -233,7 +233,7 @@ let BaselineModify = React.createClass({
             </div>
             <div>
               年度<TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} defalutValue={null} errorText={this.state.errorText} disabled={this.state.disable} onChange={this.yearValueChange}/>千瓦时
-              <span className="icon-revised" style={{marginLeft:'5px', color:'red'}} hidden={!this.state.yearIsModify}></span>
+              <span className="icon-revised-cn" style={{marginLeft:'5px', color:'red',fontSize:'24px',height:'24px',lineHeight:'24px',display:'inline-block',verticalAlign:'bottom'}} hidden={!this.state.yearIsModify}></span>
             </div>
             <div className='jazz-setting-baseline-margin'>
               月基准值
@@ -347,7 +347,7 @@ let MonthItem = React.createClass({
             </div>
             <div style={rightDivStyle}>
               {Uom}
-              <span className="icon-revised" style={{marginLeft:'5px',color:'red'}} hidden={!this.state.leftIsModify}></span>
+              <span className="icon-revised-cn" style={{marginLeft:'5px',color:'red',fontSize:'24px',height:'24px',lineHeight:'24px',display:'inline-block',verticalAlign:'bottom'}} hidden={!this.state.leftIsModify}></span>
             </div>
           </td>
           <td align="right">
