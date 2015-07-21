@@ -224,7 +224,7 @@ var WidgetSaveWindow = React.createClass({
     var dialog = <div className={'jazz-dialog-body-visible'}>
                     <Dialog title={_titleElement} contentStyle={{height:'460px', width:'600px', color:'#464949'}}
                             autoScrollBodyContent={true} openImmediately={true} contentInnerStyle={{'max-height':'340px'}}
-                            actions={_buttonActions} modal={false} ref="dialogWindow" onDismiss={this._onDismiss}>
+                            actions={_buttonActions} modal={true} ref="dialogWindow" onDismiss={this._onDismiss}>
                       {form}
                       {loadingForm}
                     </Dialog>

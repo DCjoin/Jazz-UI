@@ -100,7 +100,7 @@ let BaselineCfg = React.createClass({
     this.setState({activeTabIndex: 0});
     var ctrl = this.refs.baselineBasic;
     if(ctrl){
-      ctrl.fetchServerData();
+      ctrl.fetchServerData(true);
     }
   },
   _tab1Active(tab){

@@ -1,6 +1,6 @@
 import React from 'react';
 import mui from 'material-ui';
-import classSet from 'classnames';
+import classNames from 'classnames';
 
 let { DropDownMenu } = mui;
 
@@ -23,6 +23,7 @@ let YearPicker = React.createClass({
       yearMenuItems.push({text:i,value:i});
     }
     return {
+      noUnderline: false,
       _yearItems: yearMenuItems,
       yearRange: yearRange
     };
@@ -58,7 +59,7 @@ let YearPicker = React.createClass({
   render(){
     return <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}
       menuItemStyle={this.props.menuItemStyle} underlineStyle={this.props.underlineStyle} style={this.props.style}
-      iconStyle={this.props.iconStyle} labelStyle={this.props.labelStyle} />;
+      iconStyle={this.props.iconStyle} labelStyle={this.props.labelStyle} className={classNames({'jazz-year-selector_dropdownmenu_nounderline':this.props.noUnderline})} />;
   }
 });
 
