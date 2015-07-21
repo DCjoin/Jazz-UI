@@ -84,10 +84,10 @@ var CalcItem = React.createClass({
 
   render: function(){
     var tdStyle={
-      minWidth:'120px'
+      minWidth:'140px'
     };
     var icon = (
-      <div style={{'margin-left':'10px'}}>
+      <div style={{'margin-left':'10px','font-size':'24px','color':'red'}}>
         <div className={classNames({
           "icon-revised-cn": true
         })}></div>

@@ -9,9 +9,11 @@ var Action = Tag.Action;
 
 let TagAction = {
   loadData(nodeId,option,page,alarmType,filters,ids){
-    AppDispatcher.dispatch({
-         type: Action.SET_NODE_LOAGDING
-    });
+    setTimeout(()=>{
+      AppDispatcher.dispatch({
+           type: Action.SET_NODE_LOAGDING
+      });
+    },0);
     Ajax.post('/Tag.svc/GetTagsByFilter?', {
          params: {
           filter: {

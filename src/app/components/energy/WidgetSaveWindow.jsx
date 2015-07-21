@@ -198,13 +198,13 @@ var WidgetSaveWindow = React.createClass({
         <div style={{marginBottom:'20px'}} className={'jazz-normal-hierarchybutton-container'}>
           <span className='jazz-form-field-title'>*层级节点：</span>
             <HierarchyButton ref={'hierTreeButton'} show={true} hierIdAndClick={this.props.tagOption.hierId}
-                onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick} ></HierarchyButton>
+                onButtonClick={this.onHierButtonClick} onTreeClick={this.onTreeItemClick}></HierarchyButton>
         </div>
         <div style={{ marginBottom:'10px'}}>
           <span className='jazz-form-field-title' style={{marginTop:'2px'}}>*选择仪表盘：</span>
           <div style={{width: '200px', display:'inline-block'}}>
             <RadioButtonGroup ref={'existDashboardRadio'} onChange={this._onExistRadioChanged} valueSelected={this.state.dashboardState}>
-              {[<RadioButton label="已存在仪表盘" value="existDashboard" className={'jazz-widget-save-dialog-radiobutton'} ></RadioButton>]}
+              {[<RadioButton label="已存在仪表盘" value="existDashboard" className={'jazz-widget-save-dialog-radiobutton'}></RadioButton>]}
             </RadioButtonGroup>
             {existDashBoardRadioContent}
             {oldDashboardError}
