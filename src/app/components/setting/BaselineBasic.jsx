@@ -77,8 +77,8 @@ var BaselineBasic = React.createClass({
       TBSettingAction.calDetailData(hierId);
   },
 
-  fetchServerData(){
-    this._fetchServerData(TBSettingStore.getYear());
+  fetchServerData(force){
+    this._fetchServerData(TBSettingStore.getYear(), force);
   },
 
   tryGetValue: function(){
@@ -143,8 +143,8 @@ var BaselineBasic = React.createClass({
     this.setState({items: tbSetting.TBSettings});
   },
 
-  _fetchServerData: function(year) {
-    if(this.props.shouldLoad){
+  _fetchServerData: function(year, force) {
+    if(this.props.shouldLoad || force){
       var me = this;
       TBSettingAction.loadData(me.props.tbId, year, function(data){
         me._bindData(data);
