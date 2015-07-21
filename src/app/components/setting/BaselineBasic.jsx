@@ -99,7 +99,7 @@ var BaselineBasic = React.createClass({
   _onTBNameChanged: function(){
     var tbname = this.refs.TBName.getValue();
     if(tbname != this.state.name){
-      var pattern = new RegExp("/^[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\;\.\~\+\%]+( +[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\;\.\~\+\%]+)*$/");
+      var pattern = /^[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\;\.\~\+\%]+( +[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\;\.\~\+\%]+)*$/;
       if(tbname === ''){
         this.setState({tbnameError:'必填项'});
       }
