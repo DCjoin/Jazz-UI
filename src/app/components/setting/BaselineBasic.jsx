@@ -259,6 +259,7 @@ var BaselineBasic = React.createClass({
 
     var curYear = (new Date()).getFullYear();
     var yearProps = {
+      noUnderline: true,
       disabled: this.state.isViewStatus,
       ref: "YearField",
       selectedIndex: ((this.state.year || curYear) - curYear + 10) ,
