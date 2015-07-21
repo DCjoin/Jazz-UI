@@ -326,7 +326,7 @@ let MonthItem = React.createClass({
     let disable = this.props.disable;
     var leftDivStyle = {display:'inline-block',width:'52px'};
     var centerDivStyle = {display:'inline-block',width:'103px'};
-    var rightDivStyle = {display:'inline-block',width:'92px'};
+    var rightDivStyle = {display:'inline-block',width:'92px',height:'24px',lineHeight:'24px'};
     var monthStyle = {
       display: 'inline-block',
       width: '90px',
