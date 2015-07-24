@@ -22,7 +22,7 @@ var ViewableDatePicker = React.createClass({
     getDefaultProps: function(){
       return {
         dateFormatStr: "YYYY年MM月DD日"
-      }
+      };
     },
 
     getInitialState: function() {
