@@ -30,7 +30,7 @@ let MainApp = React.createClass({
               },
               {
                 name:'setting',
-                title:'报警设置'
+                title:'能源'
               },
               {
                 name:'report',
