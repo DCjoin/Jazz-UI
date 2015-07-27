@@ -8,7 +8,6 @@ import CommonFuns from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
 import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
-
 import YaxisSelector from '../energy/YaxisSelector.jsx';
 import StepSelector from '../energy/StepSelector.jsx';
 import ChartComponent from '../energy/ChartComponent.jsx';
@@ -19,7 +18,6 @@ import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import ErrorStepDialog from './ErrorStepDialog.jsx';
-
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 
 let {hourPickerData, isArray, getUomById, JazzCommon, DataConverter, dateAdd} = CommonFuns;
@@ -50,11 +48,9 @@ let ChartPanel = React.createClass({
     },
     _onLoadingStatusChange(){
       let isSettingChart = this.props.isSettingChart;
-
       let isLoading = EnergyStore.getLoadingStatus();
       let paramsObj = EnergyStore.getParamsObj();
       let tagOption = EnergyStore.getTagOpions()[0];
-
 
       var obj = assign({},paramsObj);
       obj.isLoading = isLoading;
@@ -73,7 +69,6 @@ let ChartPanel = React.createClass({
     componentDidUpdate(){
       if((!this.props.isSettingChart) && EnergyStore.getAlarmLoadingStatus()){
         let paramsObj = EnergyStore.getParamsObj();
-
         let startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
         let endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
 
@@ -81,50 +76,46 @@ let ChartPanel = React.createClass({
       }
     },
     _onEnergyDataChange(isError, errorObj){
-      let isLoading = EnergyStore.getLoadingStatus();
-      let energyData = EnergyStore.getEnergyData();
-      let energyRawData = EnergyStore.getEnergyRawData();
-      let paramsObj = assign({},EnergyStore.getParamsObj());
-      let state = { isLoading: isLoading,
-                      energyData: energyData,
-                      energyRawData: energyRawData,
-                      paramsObj: paramsObj,
-                      dashboardOpenImmediately: false};
+      let isLoading = EnergyStore.getLoadingStatus(),
+          energyData = EnergyStore.getEnergyData(),
+          energyRawData = EnergyStore.getEnergyRawData(),
+          paramsObj = assign({},EnergyStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    energyData: energyData,
+                    energyRawData: energyRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
       if(isError === true){
         state.step = null;
         state.errorObj = errorObj;
       }
       this.setState(state);
-
     },
     _onStepChange(step){
-      let tagOptions = EnergyStore.getTagOpions();
-      let paramsObj = EnergyStore.getParamsObj();
-      let timeRanges = paramsObj.timeRanges;
+      let tagOptions = EnergyStore.getTagOpions(),
+          paramsObj = EnergyStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges;
 
       this.setState({step:step, dashboardOpenImmediately: false});
       AlarmAction.getEnergyData(timeRanges, step, tagOptions, false);
     },
     _onNavigatorChangeLoad(){
-      let tagOptions = EnergyStore.getTagOpions();
-      let paramsObj = EnergyStore.getParamsObj();
-
-      let dateSelector = this.refs.dateTimeSelector;
-      let dateRange = dateSelector.getDateTime();
-
-      let startDate = dateRange.start,
+      let tagOptions = EnergyStore.getTagOpions(),
+          paramsObj = EnergyStore.getParamsObj(),
+          dateSelector = this.refs.dateTimeSelector,
+          dateRange = dateSelector.getDateTime(),
+          startDate = dateRange.start,
           endDate = dateRange.end;
 
       this._setFitStepAndGetData(startDate, endDate, tagOptions, false);
     },
     onSearchDataButtonClick(){
-      let dateSelector = this.refs.dateTimeSelector;
-      let dateRange = dateSelector.getDateTime();
-
-      let startDate = dateRange.start,
+      let dateSelector = this.refs.dateTimeSelector,
+          dateRange = dateSelector.getDateTime(),
+          startDate = dateRange.start,
           endDate = dateRange.end,
-          userTagListSelect = AlarmTagStore.getUseTaglistSelect();
-      let tagOptions;
+          userTagListSelect = AlarmTagStore.getUseTaglistSelect(),
+          tagOptions;
 
       if(startDate.getTime()>= endDate.getTime()){
          window.alert('请选择正确的时间范围');
@@ -143,16 +134,15 @@ let ChartPanel = React.createClass({
       this._setFitStepAndGetData(startDate, endDate, tagOptions, relativeDateValue);
     },
     _getRelativeDateValue(){
-      let relativeDateIndex = this.refs.relativeDate.state.selectedIndex;
-      let obj = searchDate[relativeDateIndex];
+      let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
+          obj = searchDate[relativeDateIndex];
       return obj.value;
     },
     _setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate){
-      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-      let step = this.state.step;
-
-      let limitInterval = CommonFuns.getLimitInterval(timeRanges);
-      let stepList = limitInterval.stepList;
+      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
+          step = this.state.step,
+          limitInterval = CommonFuns.getLimitInterval(timeRanges),
+          stepList = limitInterval.stepList;
       if( stepList.indexOf(step) == -1){
         step = limitInterval.display;
       }
@@ -160,15 +150,15 @@ let ChartPanel = React.createClass({
       AlarmAction.getEnergyData(timeRanges, step, tagOptions, relativeDate);
     },
     _onChart2WidgetClick(){
-        if(!!this.state.energyData){
-          let contentSyntax = JSON.stringify(this.getContentSyntax());
-          this.setState({ dashboardOpenImmediately: true,
-                          contentSyntax: contentSyntax});
-        }
+      if(!!this.state.energyData){
+        let contentSyntax = JSON.stringify(this.getContentSyntax());
+        this.setState({ dashboardOpenImmediately: true,
+                        contentSyntax: contentSyntax});
+      }
     },
     _onRelativeDateChange(e, selectedIndex, menuItem){
-      let value = menuItem.value;
-      let dateSelector = this.refs.dateTimeSelector;
+      let value = menuItem.value,
+          dateSelector = this.refs.dateTimeSelector;
 
       if(value && value !=='Customerize'){
         var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
@@ -176,11 +166,11 @@ let ChartPanel = React.createClass({
       }
     },
     _onDateSelectorChanged(){
-        this.refs.relativeDate.setState({selectedIndex:0});
+      this.refs.relativeDate.setState({selectedIndex:0});
     },
     getContentSyntax(){
-      let tagOptions = EnergyStore.getTagOpions(), options;
-      let relativeDate = EnergyStore.getRelativeDate();
+      let tagOptions = EnergyStore.getTagOpions(), options,
+          relativeDate = EnergyStore.getRelativeDate();
 
       if(tagOptions){
         if(isArray(tagOptions)){
@@ -194,19 +184,17 @@ let ChartPanel = React.createClass({
         }
       }
       let submitParams = EnergyStore.getSubmitParams();
-
       if(relativeDate !== 'Customerize' && relativeDate !== null){
         let immutableSubmitParams = Immutable.fromJS(submitParams);
         let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption','TimeRanges'], [{relativeDate: relativeDate}]);
         submitParams = immutableSubmitParamsClone.toJS();
       }
-
       var contentSyntax = { xtype:'widgetcontainer',
                             params:{ submitParams:{ options: options,
-                                                   tagIds: submitParams.tagIds,
-                                                   interval:[],
-                                                   viewOption:submitParams.viewOption
-                                                 },
+                                                    tagIds: submitParams.tagIds,
+                                                    interval:[],
+                                                    viewOption:submitParams.viewOption
+                                                  },
                                      config:{ type:"line",xtype:"mixedtrendchartcomponent",reader:"mixedchartreader",
                                               storeType:"energy.Energy",searcherType:"analysissearcher",
                                               widgetStyler:"widgetchartstyler",maxWidgetStyler:"maxchartstyler"}
@@ -215,8 +203,8 @@ let ChartPanel = React.createClass({
       return contentSyntax;
     },
     _initYaxisDialog(){
-      var chartCmp = this.refs.ChartComponent;
-      var chartObj = chartCmp.refs.highstock.getPaper();
+      var chartCmp = this.refs.ChartComponent,
+          chartObj = chartCmp.refs.highstock.getPaper();
 
       return chartObj;
     },
@@ -230,28 +218,26 @@ let ChartPanel = React.createClass({
       }
     },
     getInitialState() {
-        let state = {
-          isLoading: false,
-          energyData: null,
-          energyRawData: null,
-          hierName: null,
-          submitParams: null,
-          step: null,
-          dashboardOpenImmediately: false,
-          baselineBtnStatus:TagStore.getBaselineBtnDisabled()
-        };
-        if(this.props.chartTitle){
-          state.chartTitle = this.props.chartTitle;
-        }
-        return state;
+      let state = {
+        isLoading: false,
+        energyData: null,
+        energyRawData: null,
+        hierName: null,
+        submitParams: null,
+        step: null,
+        dashboardOpenImmediately: false,
+        baselineBtnStatus:TagStore.getBaselineBtnDisabled()
+      };
+      if(this.props.chartTitle){
+        state.chartTitle = this.props.chartTitle;
+      }
+      return state;
     },
     render: function () {
-      let me = this;
-      let energyPart=null;
+      let me = this, errorDialog, energyPart = null;
       if(!me.state.chartTitle){
          return null;
       }
-      let errorDialog;
       if(me.state.errorObj){
         errorDialog = <ErrorStepDialog {...me.state.errorObj} onErrorDialogAction={me._onErrorDialogAction}></ErrorStepDialog>;
       }else{
@@ -271,7 +257,6 @@ let ChartPanel = React.createClass({
                         <div style={{display:'flex'}}>
                           <YaxisSelector initYaxisDialog={me._initYaxisDialog}/>
                           <StepSelector stepValue={me.state.step} onStepChange={me._onStepChange} timeRanges={me.state.timeRanges}/>
-
                         </div>
                         <ChartComponent {...this.state.paramsObj} {...chartCmpObj} afterChartCreated={this._afterChartCreated}/>
                       </div>;
@@ -279,11 +264,11 @@ let ChartPanel = React.createClass({
       let title = <div className='jazz-alarm-chart-title'>
                     <span>{me.state.chartTitle}</span>
                     <IconButton iconClassName="icon-send" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick} disabled={!this.state.energyData}/>
-                 </div>;
+                  </div>;
       let widgetWd;
       if(me.state.dashboardOpenImmediately){
         widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={me.onWidgetSaveWindowDismiss} chartTitle={me.state.chartTitle}
-                                tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>;
+                      tagOption={this.state.tagOption} contentSyntax={this.state.contentSyntax}></WidgetSaveWindow>;
       }
       else{
         widgetWd=null;
@@ -316,16 +301,11 @@ let ChartPanel = React.createClass({
     }
   },
   _onDeleteButtonClick(obj){
-    let uid = obj.uid;
+    let uid = obj.uid,
+        needReload = EnergyStore.removeSeriesDataByUid(uid);
 
-    //let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+    AlarmTagAction.removeSearchTagList({tagId:uid});
 
-    //unselect tags in taglist of right panel
-    //if(userTagListSelect){
-      AlarmTagAction.removeSearchTagList({tagId:uid});
-    //}
-
-    let needReload = EnergyStore.removeSeriesDataByUid(uid);
     if(needReload){
       let tagOptions = AlarmTagStore.getSearchTagList(),
           paramsObj = EnergyStore.getParamsObj(),
@@ -339,17 +319,12 @@ let ChartPanel = React.createClass({
     }
   },
   _onDeleteAllButtonClick(){
-    //let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
-    //if(userTagListSelect){
-      AlarmTagAction.clearSearchTagList();
-    //}
-
+    AlarmTagAction.clearSearchTagList();
     EnergyStore.clearEnergyDate();
     this.setState({ energyData: null});
   },
   _onGetEnergyDataError(){
     let errorObj = this.errorProcess();
-
     this._onEnergyDataChange(true, errorObj);
   },
   errorProcess(){
@@ -366,47 +341,47 @@ let ChartPanel = React.createClass({
     }
   },
   showStepError(step){
-    var btns = [], msg = [], map = { Hour: 1, Day: 2, Week: 5, Month: 3, Year: 4 };
-    let paramsObj = EnergyStore.getParamsObj();
-    let timeRanges = paramsObj.timeRanges;
-    let limitInterval = CommonFuns.getLimitInterval(timeRanges);
-    let availableList = limitInterval.stepList;
+    let btns = [], msg = [], map = { Hour: 1, Day: 2, Week: 5, Month: 3, Year: 4 },
+        paramsObj = EnergyStore.getParamsObj(),
+        timeRanges = paramsObj.timeRanges,
+        limitInterval = CommonFuns.getLimitInterval(timeRanges),
+        availableList = limitInterval.stepList;
 
     switch (step) {
-            case 'Hourly':
-                btns = ['Hour', 'Day', 'Week'];
-                msg = ['UseRaw'];
-                break;
-            case 'Daily':
-                btns = ['Day', 'Week', 'Month'];
-                msg = ['UseHour'];
-                break;
-            case 'Weekly':
-                btns = ['Week', 'Month', 'Year'];
-                msg = ['UseHour', 'UseDay'];
-                break;
-            case 'Monthly':
-                btns = ['Month', 'Year'];
-                msg = ['UseHour', 'UseDay', 'UseWeek'];
-                break;
-            case 'Yearly':
-                btns = ['Year'];
-                msg = ['UseHour', 'UseDay', 'UseMonth'];
-                break;
-        }
-      var newBtns = [];
-      btns.forEach(btn => {
-        let code = map[btn];
-        if( availableList.indexOf(code) != -1){
-         newBtns.push({text: btn, code:code});
-        }
-      });
-      btns = newBtns;
-      var msg1 = [];
-      msg.forEach(item =>{
-        msg1.push('"' + I18N.EM[item] + '"');
-      });
-      return {stepBtnList: btns, errorMessage: I18N.format(I18N.EM.StepError, msg1.join(','))};
+      case 'Hourly':
+          btns = ['Hour', 'Day', 'Week'];
+          msg = ['UseRaw'];
+          break;
+      case 'Daily':
+          btns = ['Day', 'Week', 'Month'];
+          msg = ['UseHour'];
+          break;
+      case 'Weekly':
+          btns = ['Week', 'Month', 'Year'];
+          msg = ['UseHour', 'UseDay'];
+          break;
+      case 'Monthly':
+          btns = ['Month', 'Year'];
+          msg = ['UseHour', 'UseDay', 'UseWeek'];
+          break;
+      case 'Yearly':
+          btns = ['Year'];
+          msg = ['UseHour', 'UseDay', 'UseMonth'];
+          break;
+    }
+    var newBtns = [];
+    btns.forEach(btn => {
+      let code = map[btn];
+      if( availableList.indexOf(code) != -1){
+       newBtns.push({text: btn, code:code});
+      }
+    });
+    btns = newBtns;
+    var msg1 = [];
+    msg.forEach(item =>{
+      msg1.push('"' + I18N.EM[item] + '"');
+    });
+    return {stepBtnList: btns, errorMessage: I18N.format(I18N.EM.StepError, msg1.join(','))};
   },
   _onBaselineBtnDisabled:function(){
     this.setState({
@@ -436,8 +411,9 @@ let ChartPanel = React.createClass({
     TagStore.removeBaselineBtnDisabledListener(this._onBaselineBtnDisabled);
   },
   getSelectedTagOptions(){
-    let userTagListSelect = AlarmTagStore.getUseTaglistSelect();
-    let tagOptions;
+    let tagOptions,
+        userTagListSelect = AlarmTagStore.getUseTaglistSelect();
+
     if(!userTagListSelect){
       tagOptions = EnergyStore.getTagOpions();
     }else{
@@ -446,8 +422,9 @@ let ChartPanel = React.createClass({
     return tagOptions;
   },
   handleBaselineCfg: function(e){
-    let tagOptions = this.getSelectedTagOptions();
-    let tagOption, tagObj;
+    let tagOption, tagObj,
+        tagOptions = this.getSelectedTagOptions();
+
     if(tagOptions && tagOptions.length === 1){
       tagOption = tagOptions[0];
       let uom = getUomById(tagOption.uomId);
@@ -464,21 +441,17 @@ let ChartPanel = React.createClass({
     TBSettingAction.setYear(year);
   },
   OnNavigatorChanged: function (obj) {
-    var chart = obj.target.chart;
-    var scroller = chart.scroller;
-
-    var min = obj.min;
-    var max = obj.max;
-
-    var start = Math.round(min);
-    var end = Math.round(max);
-    var validator = JazzCommon.IsValidDate;
-
-    var converter = DataConverter.JsonToDateTime;
-    var type = 'resize';
-    var startTime, endTime;
-
-    //this.migrateAndHideAllCommentPanel();
+    var chart = obj.target.chart,
+        scroller = chart.scroller,
+        min = obj.min,
+        max = obj.max,
+        start = Math.round(min),
+        end = Math.round(max),
+        validator = JazzCommon.IsValidDate,
+        converter = DataConverter.JsonToDateTime,
+        type = 'resize',
+        startTime,
+        endTime;
 
     if (scroller.grabbedLeft) {
         startTime = new Date(start);
@@ -510,11 +483,6 @@ let ChartPanel = React.createClass({
         endTime.setMinutes(0, 0, 0);
     }
 
-    //if (endTime > Ext.Date.now()) {
-    //    endTime = new Date();
-    //    endTime.setMinutes(0, 0, 0);
-    //}
-
     if (startTime.getTime() == endTime.getTime()) {
         if (scroller.grabbedLeft) {
             startTime = dateAdd(endTime, -1, 'hours');
@@ -524,17 +492,15 @@ let ChartPanel = React.createClass({
         }
     }
 
-    //this.navigatorChanged = true;
-    //return this.fireEvent('eventfired', 'datechanged', { chart: this, start: startTime, end: endTime, type: type });
     this.dateChanged(chart, startTime, endTime, type);
   },
   dateChanged(chart, start, end, type){
     this.refs.dateTimeSelector.setDateField(start, end);
     this.refs.relativeDate.setState({selectedIndex:0});
 
-     if (type === 'resize' || chart.navCache === false) {
-       this._onNavigatorChangeLoad();
-     }
+    if (type === 'resize' || chart.navCache === false) {
+      this._onNavigatorChangeLoad();
+    }
   }
 });
 
