@@ -47,12 +47,12 @@ let ChartPanel = React.createClass({
       };
     },
     _onLoadingStatusChange(){
-      let isSettingChart = this.props.isSettingChart;
-      let isLoading = EnergyStore.getLoadingStatus();
-      let paramsObj = EnergyStore.getParamsObj();
-      let tagOption = EnergyStore.getTagOpions()[0];
+      let isSettingChart = this.props.isSettingChart,
+          isLoading = EnergyStore.getLoadingStatus(),
+          paramsObj = EnergyStore.getParamsObj(),
+          tagOption = EnergyStore.getTagOpions()[0],
+          obj = assign({}, paramsObj);
 
-      var obj = assign({},paramsObj);
       obj.isLoading = isLoading;
       obj.tagName = tagOption.tagName;
       obj.dashboardOpenImmediately = false;
@@ -68,9 +68,9 @@ let ChartPanel = React.createClass({
     },
     componentDidUpdate(){
       if((!this.props.isSettingChart) && EnergyStore.getAlarmLoadingStatus()){
-        let paramsObj = EnergyStore.getParamsObj();
-        let startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false);
-        let endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
+        let paramsObj = EnergyStore.getParamsObj(),
+            startDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false),
+            endDate = CommonFuns.DataConverter.JsonToDateTime(paramsObj.endTime, false);
 
         this.refs.dateTimeSelector.setDateField(startDate, endDate);
       }
