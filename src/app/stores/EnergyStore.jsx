@@ -113,6 +113,10 @@ var EnergyStore = assign({},PrototypeStore,{
                step: params.viewOption.Step,
                timeRanges: params.viewOption.TimeRanges};
 
+    //add this for test team start
+    window.testObj = window.testObj || {};
+    window.testObj._energyRawData = _energyRawData;
+    //add this for test team end
 
     _energyData = Immutable.fromJS(ReaderFuncs.convert(data, obj));
   },
