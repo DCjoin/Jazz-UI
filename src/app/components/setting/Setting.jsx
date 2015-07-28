@@ -9,12 +9,14 @@ import DataSelectPanel from '../DataSelectPanel.jsx';
 import ChartPanel from '../alarm/ChartPanel.jsx';
 import ChartAction from '../../actions/ChartAction.jsx';
 
+import LeftPanel from '../file/FileLeftPanel.jsx';
+
 let Setting = React.createClass({
 
   mixins:[Navigation,State],
   getInitialState: function() {
       return {
-        showRightPanel: true
+        showRightPanel: false
       };
   },
   _onSwitchButtonClick(){
@@ -26,8 +28,9 @@ let Setting = React.createClass({
   render: function () {
     return (
       <div style={{display:'flex', flex:1}}>
+        <LeftPanel isShow={!this.state.showRightPanel} onToggle={this._onSwitchButtonClick}/>
         <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
-        <DataSelectPanel linkFrom="Setting" defaultStatus={true} onButtonClick={this._onSwitchButtonClick}></DataSelectPanel>
+        <DataSelectPanel linkFrom="Setting" defaultStatus={this.state.showRightPanel} onButtonClick={this._onSwitchButtonClick}></DataSelectPanel>
       </div>
     );
   }

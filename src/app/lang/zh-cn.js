@@ -482,5 +482,12 @@ I18N.Message.M21705 = '报表名称重复';
 I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
 
+I18N.File={};
+I18N.File.NewChart={};
+I18N.File.NewChart.Menu1 = '能耗分析';
+I18N.File.NewChart.Menu2 = '单位指标';
+I18N.File.NewChart.Menu3 = '时段能耗比';
+I18N.File.NewChart.Menu4 = '能效标识';
+I18N.File.NewChart.Menu5 = '集团排名';
 
 module.exports = I18N;
