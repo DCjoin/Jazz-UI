@@ -325,29 +325,17 @@ let ChartComponent = React.createClass({
         onDeleteButtonClick: React.PropTypes.func,
         onDeleteAllButtonClick: React.PropTypes.func,
         afterChartCreated: React.PropTypes.func,
-    },
-    getInitialState() {
-        return {
-
-        };
+        energyData: React.PropTypes.object,
+        energyRawData: React.PropTypes.object,
+        step: React.PropTypes.number,
+        startTime: React.PropTypes.string,
+        endTime: React.PropTypes.string
     },
     componentWillMount(){
       this.initDefaultConfig();
     },
-    componentWillUnmount() {
-
-    },
-    componentDidMount(){
-
-    },
-    componentWillReceiveProps(nextProps) {
-    },
-    componentWillUpdate(){
-
-    },
     shouldComponentUpdate: function(nextProps, nextState) {
       return !(this.props.energyData.equals(nextProps.energyData));
-
     },
     initDefaultConfig: function () {
       let cap = function(string) {
