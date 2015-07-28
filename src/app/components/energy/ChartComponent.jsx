@@ -7,6 +7,7 @@ import Immutable from 'immutable';
 import mui from 'material-ui';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
+import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
@@ -353,7 +354,7 @@ let ChartComponent = React.createClass({
       c.chart.cancelChartContainerclickBubble = true;
     },
     _onIgnoreDialogSubmit(){
-      let isBatchIgnore = this.refs.batchIgnore.isChecked();
+      let isBatchIgnore = this.refs.ignoreDialogWindow.refs.batchIgnore.isChecked();
       let point = this.selectedIgnorePoint,
           factory = EnergyCommentFactory,
           ids, ignorePoints = [];
@@ -371,26 +372,15 @@ let ChartComponent = React.createClass({
       this.refs.ignoreDialogWindow.dismiss();
     },
     render () {
-
       let that = this;
       if(!this.props.energyData) {
           return null;
       }
-      var _buttonActions = [
-              <FlatButton
-              label="忽略"
-              secondary={true}
-              onClick={this._onIgnoreDialogSubmit} />,
-              <FlatButton
-              label="放弃"
-              primary={true}
-              onClick={this._onIgnoreDialogCancel} style={{marginRight:'364px'}}/>
-          ];
-
-      var dialog = <Dialog actions={_buttonActions} modal={true} ref="ignoreDialogWindow" contentStyle={{width:'600px'}}>
-        <div style={{fontSize:'20px', fontWeight:'bold', padding:'0px 0 0 24px'}}>忽略该点报警吗？</div>
-        <div style={{margin:'30px auto 10px 24px'}}> <Checkbox ref='batchIgnore'  label='忽略该点后的连续报警'/></div>
-      </Dialog>;
+      var ignoreObj = { _onIgnoreDialogSubmit: this._onIgnoreDialogSubmit,
+                        _onIgnoreDialogCancel: this._onIgnoreDialogCancel,
+                        ref: 'ignoreDialogWindow'
+                      };
+      var dialog = <AlarmIgnoreWindow {...ignoreObj} ></AlarmIgnoreWindow>;
 
       let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,
                              onDeleteAllButtonClick: that._onDeleteAllButtonClick,
