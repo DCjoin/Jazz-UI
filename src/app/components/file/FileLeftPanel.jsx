@@ -1,11 +1,15 @@
 'use strict';
 import React from "react";
 import {Navigation, State } from 'react-router';
-import {IconButton,IconMenu,MenuItem,FontIcon,FlatButton} from 'material-ui';
+import {IconButton,IconMenu,FontIcon,FlatButton} from 'material-ui';
 import SearchBox from './FileSearchBox.jsx';
+let MenuItem = require('material-ui/lib/menus/menu-item');
 
 var PanelContainer = React.createClass({
 
+  _onItemTouchTap:function(e, item){
+    //item.ref="Menu1"...
+  },
   render:function(){
     //style
     var menuStyle={
@@ -32,12 +36,12 @@ var PanelContainer = React.createClass({
             <IconButton iconClassName="icon-column-fold"/>
           </div>
           <div className="newchart">
-            <IconMenu {...iconMenuProps}>
-               <MenuItem primaryText={I18N.File.NewChart.Menu1} leftIcon={menuIcon}/>
-               <MenuItem primaryText={I18N.File.NewChart.Menu2} leftIcon={menuIcon}/>
-               <MenuItem primaryText={I18N.File.NewChart.Menu3} leftIcon={menuIcon}/>
-               <MenuItem primaryText={I18N.File.NewChart.Menu4} leftIcon={menuIcon}/>
-               <MenuItem primaryText={I18N.File.NewChart.Menu5} leftIcon={menuIcon}/>
+            <IconMenu {...iconMenuProps} onItemTouchTap={this._onItemTouchTap}>
+               <MenuItem ref="Menu1" primaryText={I18N.File.NewChart.Menu1} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu2" primaryText={I18N.File.NewChart.Menu2} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu3" primaryText={I18N.File.NewChart.Menu3} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu4" primaryText={I18N.File.NewChart.Menu4} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu5" primaryText={I18N.File.NewChart.Menu5} leftIcon={menuIcon}/>
             </IconMenu>
           </div>
         </div>

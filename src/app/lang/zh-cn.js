@@ -490,4 +490,6 @@ I18N.File.NewChart.Menu3 = '时段能耗比';
 I18N.File.NewChart.Menu4 = '能效标识';
 I18N.File.NewChart.Menu5 = '集团排名';
 
+I18N.Commodity={};
+I18N.Commodity.Overview = '介质总览';
 module.exports = I18N;

@@ -3,8 +3,8 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {IconButton,DropDownMenu,DatePicker,FlatButton,FontIcon,Menu,Checkbox,TextField,CircularProgress} from 'material-ui';
 import classnames from 'classnames';
-import HierarchyButton from './HierarchyButton.jsx';
-import DimButton from './DimButton.jsx';
+import HierarchyButton from './Hierarchy/HierarchyButton.jsx';
+import DimButton from './Dim/DimButton.jsx';
 import TagStore from '../stores/TagStore.jsx';
 import TagAction from '../actions/TagAction.jsx';
 import TBSettingAction from '../actions/TBSettingAction.jsx'

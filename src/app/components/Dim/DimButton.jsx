@@ -3,8 +3,8 @@ import React from "react";
 import classNames from 'classnames';
 import {FlatButton,FontIcon,Menu,Paper,Mixins} from 'material-ui';
 import DimTree from './DimTree.jsx';
-import DimAction from "../actions/DimAction.jsx";
-import DimStore from "../stores/DimStore.jsx";
+import DimAction from "../../actions/DimAction.jsx";
+import DimStore from "../../stores/DimStore.jsx";
 
 let DimButton=React.createClass({
   mixins: [Mixins.ClickAwayable],

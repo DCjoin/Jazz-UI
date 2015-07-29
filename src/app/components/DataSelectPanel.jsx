@@ -28,12 +28,13 @@ let DataSelectPanel=React.createClass({
           open: this.props.defaultStatus
         };
       },
+      /*
     componentWillReceiveProps: function(nextProps) {
         this.setState({
           open:nextProps.defaultStatus
         })
       },
-
+*/
 
     render:function(){
       var mainpanel;

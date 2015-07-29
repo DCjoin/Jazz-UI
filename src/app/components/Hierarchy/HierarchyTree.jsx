@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import {Paper,FontIcon,TextField} from 'material-ui';
 import { Link,Navigation,State,RouteHandler } from 'react-router';
 import assign from 'object-assign';
-import HierarchyStore from "../stores/HierarchyStore.jsx";
-import {nodeType} from '../constants/TreeConstants.jsx';
+import HierarchyStore from "../../stores/HierarchyStore.jsx";
+import {nodeType} from '../../constants/TreeConstants.jsx';
 import Search from './HierarchySearch.jsx';
 
 

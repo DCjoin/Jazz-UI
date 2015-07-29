@@ -2,7 +2,7 @@
 import React from "react";
 import classNames from 'classnames';
 import {Paper,Menu} from 'material-ui';
-import {nodeType} from '../constants/TreeConstants.jsx';
+import {nodeType} from '../../constants/TreeConstants.jsx';
 
 let treeMap=new Array();
 var itemUnit=48;
