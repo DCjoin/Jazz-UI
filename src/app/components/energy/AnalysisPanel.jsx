@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import Immutable from 'immutable';
-import ChartMixins from '../energy/ChartMixins.jsx';
+import ChartMixins from '/ChartMixins.jsx';
 import {IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
 import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
@@ -29,7 +29,8 @@ const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', t
 let ChartPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
-      isSettingChart: React.PropTypes.bool
+      isSettingChart: React.PropTypes.bool,
+      chartTitle:  React.PropTypes.string
     },
     _onLoadingStatusChange(){
       let isSettingChart = this.props.isSettingChart,
