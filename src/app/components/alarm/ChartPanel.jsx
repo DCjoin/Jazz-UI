@@ -2,7 +2,7 @@
 import React from "react";
 import Immutable from 'immutable';
 import ChartMixins from '../energy/ChartMixins.jsx';
-import {IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
+import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
 import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
@@ -19,6 +19,10 @@ import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import ErrorStepDialog from './ErrorStepDialog.jsx';
 import BaselineCfg from '../setting/BaselineCfg.jsx';
+import ButtonMenu from '../../controls/ButtonMenu.jsx';
+
+let MenuItem = require('material-ui/lib/menus/menu-item');
+let MenuDivider = require('material-ui/lib/menus/menu-divider');
 
 let {hourPickerData, isArray, getUomById, JazzCommon, DataConverter, dateAdd} = CommonFuns;
 
@@ -211,7 +215,8 @@ let ChartPanel = React.createClass({
         submitParams: null,
         step: null,
         dashboardOpenImmediately: false,
-        baselineBtnStatus:TagStore.getBaselineBtnDisabled()
+        baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
+        selectedChartType:'line'
       };
       if(this.props.chartTitle){
         state.chartTitle = this.props.chartTitle;
@@ -258,6 +263,14 @@ let ChartPanel = React.createClass({
       else{
         widgetWd=null;
       }
+      let buttonMenu = <ButtonMenu label='查看' onButtonClick={me.onSearchDataButtonClick}
+        value={this.state.selectedChartType} onItemTouchTap={this._onItemTouchTap}>
+         <MenuItem primaryText="折线图" value='line'/>
+         <MenuItem primaryText="柱状图"  value='column'/>
+         <MenuItem primaryText="堆积图"  value='stack'/>
+         <MenuItem primaryText="饼状图"  value='pie'/>
+         <MenuItem primaryText="原始数据"  value='rawdata'/>
+      </ButtonMenu>;
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
           {widgetWd}
@@ -268,7 +281,7 @@ let ChartPanel = React.createClass({
             </div>
             <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
             <div className={'jazz-flat-button'}>
-              <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px', width:'92px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
+              {buttonMenu}
             </div>
             <BaselineCfg  ref="baselineCfg"/>
             <div className={'jazz-flat-button'}>
@@ -279,6 +292,10 @@ let ChartPanel = React.createClass({
           {errorDialog}
         </div>
       );
+  },
+  _onItemTouchTap(e, child){
+    console.log(e, child);
+    this.setState({selectedChartType:child.props.value});
   },
   _afterChartCreated(chartObj){
     if (chartObj.options.scrollbar.enabled) {

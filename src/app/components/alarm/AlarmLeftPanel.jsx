@@ -34,6 +34,7 @@ var AlarmLeftPanel = React.createClass({
       let childContext = assign({}, this.context.muiTheme);
       childContext.spacing = assign({}, childContext.spacing);
       childContext.spacing.desktopToolbarHeight = 32;
+      childContext.spacing.desktopSubheaderHeight = 32;
 
       return {
           muiTheme: childContext
