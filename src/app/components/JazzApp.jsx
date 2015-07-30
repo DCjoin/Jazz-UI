@@ -67,8 +67,12 @@ let JazzApp = React.createClass({
         var me = this;
         var afterLoadLang = function(b) {
             window.I18N=b;
-            me.replaceWith('alarm',{lang:lang});
-
+            var url = window.location.toLocaleString();
+            if(url.indexOf('menutype=energy')>-1){
+                me.replaceWith('setting',{lang:lang});
+            }else{
+                me.replaceWith('alarm',{lang:lang});
+            }
             me._setHighchartConfig();
             //me.transitionTo('main',{lang:lang});
         };

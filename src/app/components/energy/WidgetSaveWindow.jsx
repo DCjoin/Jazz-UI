@@ -4,7 +4,7 @@ import React from "react";
 import mui from 'material-ui';
 import classNames from 'classnames';
 import {dateFormat,Regex} from '../../util/Util.jsx';
-import HierarchyButton from '../HierarchyButton.jsx';
+import HierarchyButton from '../Hierarchy/HierarchyButton.jsx';
 import MutableDropMenu from '../../controls/MutableDropMenu.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import DashboardStore from '../../stores/DashboardStore.jsx';

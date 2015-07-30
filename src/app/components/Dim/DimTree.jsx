@@ -5,7 +5,7 @@ import {Paper,FontIcon,TextField} from 'material-ui';
 import { Link,Navigation,State,RouteHandler } from 'react-router';
 import assign from 'object-assign';
 
-import {nodeType} from '../constants/TreeConstants.jsx';
+import {nodeType} from '../../constants/TreeConstants.jsx';
 import Search from './DimSearch.jsx'
 
 

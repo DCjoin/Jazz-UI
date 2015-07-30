@@ -20,12 +20,22 @@ let MainApp = React.createClass({
     render: function () {
       var   menuItems = [
               {
+                name:'map',
+                title:'地图',
+                disabled: true
+              },
+              {
                 name:'alarm',
                 title:'报警'
               },
               {
                 name:'setting',
-                title:'报警设置'
+                title:'能源'
+              },
+              {
+                name:'report',
+                title:'报告',
+                disabled: true
               }
           ];
 

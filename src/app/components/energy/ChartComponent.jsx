@@ -7,6 +7,7 @@ import Immutable from 'immutable';
 import mui from 'material-ui';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
+import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
@@ -64,36 +65,11 @@ var dataLabelFormatter = function (format) {
 };
 let defaultConfig = {
     colors: [
-                '#3399cc',
-                '#99cc66',
-                '#996699',
-                '#cccc33',
-                '#663366',
-                '#cc6666',
-                '#6699cc',
-                '#cc9999',
-                '#cc3399',
-                '#cccc00',
-                '#cc6633',
-                '#336666',
-                '#669933',
-                '#6699ff',
-                '#66cccc',
-                '#3399ff',
-                '#66cc66',
-                '#996699',
-                '#999966',
-                '#669999',
-                '#996666',
-                '#666699',
-                '#669966',
-                '#cc3366',
-                '#99cc00',
-                '#cc9933',
-                '#666666',
-                '#99cc99',
-                '#ffcc66',
-                '#336699'
+                '#3399cc', '#99cc66', '#996699', '#cccc33', '#663366', '#cc6666',
+                '#6699cc', '#cc9999', '#cc3399', '#cccc00', '#cc6633', '#336666',
+                '#669933', '#6699ff', '#66cccc', '#3399ff', '#66cc66', '#996699',
+                '#999966', '#669999', '#996666', '#666699', '#669966', '#cc3366',
+                '#99cc00', '#cc9933', '#666666', '#99cc99', '#ffcc66', '#336699'
     ],
     lang: {
         loading: 'loading',
@@ -325,29 +301,17 @@ let ChartComponent = React.createClass({
         onDeleteButtonClick: React.PropTypes.func,
         onDeleteAllButtonClick: React.PropTypes.func,
         afterChartCreated: React.PropTypes.func,
-    },
-    getInitialState() {
-        return {
-
-        };
+        energyData: React.PropTypes.object,
+        energyRawData: React.PropTypes.object,
+        step: React.PropTypes.number,
+        startTime: React.PropTypes.string,
+        endTime: React.PropTypes.string
     },
     componentWillMount(){
       this.initDefaultConfig();
     },
-    componentWillUnmount() {
-
-    },
-    componentDidMount(){
-
-    },
-    componentWillReceiveProps(nextProps) {
-    },
-    componentWillUpdate(){
-
-    },
     shouldComponentUpdate: function(nextProps, nextState) {
       return !(this.props.energyData.equals(nextProps.energyData));
-
     },
     initDefaultConfig: function () {
       let cap = function(string) {
@@ -365,7 +329,7 @@ let ChartComponent = React.createClass({
       c.chart.cancelChartContainerclickBubble = true;
     },
     _onIgnoreDialogSubmit(){
-      let isBatchIgnore = this.refs.batchIgnore.isChecked();
+      let isBatchIgnore = this.refs.ignoreDialogWindow.refs.batchIgnore.isChecked();
       let point = this.selectedIgnorePoint,
           factory = EnergyCommentFactory,
           ids, ignorePoints = [];
@@ -383,26 +347,15 @@ let ChartComponent = React.createClass({
       this.refs.ignoreDialogWindow.dismiss();
     },
     render () {
-
       let that = this;
       if(!this.props.energyData) {
           return null;
       }
-      var _buttonActions = [
-              <FlatButton
-              label="忽略"
-              secondary={true}
-              onClick={this._onIgnoreDialogSubmit} />,
-              <FlatButton
-              label="放弃"
-              primary={true}
-              onClick={this._onIgnoreDialogCancel} style={{marginRight:'364px'}}/>
-          ];
-
-      var dialog = <Dialog actions={_buttonActions} modal={true} ref="ignoreDialogWindow" contentStyle={{width:'600px'}}>
-        <div style={{fontSize:'20px', fontWeight:'bold', padding:'0px 0 0 24px'}}>忽略该点报警吗？</div>
-        <div style={{margin:'30px auto 10px 24px'}}> <Checkbox ref='batchIgnore'  label='忽略该点后的连续报警'/></div>
-      </Dialog>;
+      var ignoreObj = { _onIgnoreDialogSubmit: this._onIgnoreDialogSubmit,
+                        _onIgnoreDialogCancel: this._onIgnoreDialogCancel,
+                        ref: 'ignoreDialogWindow'
+                      };
+      var dialog = <AlarmIgnoreWindow {...ignoreObj} ></AlarmIgnoreWindow>;
 
       let highstockEvents = {onDeleteButtonClick:that._onDeleteButtonClick,
                              onDeleteAllButtonClick: that._onDeleteAllButtonClick,
@@ -413,7 +366,6 @@ let ChartComponent = React.createClass({
                 <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
                 {dialog}
              </div>;
-
   },
   _onLegendItemClick(obj){
     var event = obj.event,
@@ -491,7 +443,6 @@ let ChartComponent = React.createClass({
 
   },
   mergeConfig: function (defaultConfig) {
-
     var commonTooltipFormatter = function () {
         var op = this.points[0].series.options.option,
             start = op.start,
@@ -532,7 +483,6 @@ let ChartComponent = React.createClass({
 
     defaultConfig.tooltip.formatter = commonTooltipFormatter;
   },
-
   convertData: function (data, config) {
       var ret = [];
       for (var j = 0; j < data.length; ++j) {
@@ -581,9 +531,7 @@ let ChartComponent = React.createClass({
                   offsetY: 3
               };
           }
-
           this.convertSingleItem(item, s);
-
           var yList = config.yAxis; //pie chart don't return yAxis
           if (yList && yList.length > 0) {
               for (var i = 0; i < yList.length; ++i) {
@@ -591,11 +539,9 @@ let ChartComponent = React.createClass({
                       s.yAxis = i;
                   }
               }
-
           }
           ret.push(s);
       }
-
       return ret;
   },
   convertSingleItem: function (item, s) {
@@ -606,11 +552,9 @@ let ChartComponent = React.createClass({
           endTime = converter.JsonToDateTime(this.props.endTime, true),
           startTime = converter.JsonToDateTime(this.props.startTime, true);
 
-
       if (_.isArray(d) && d.length === 0) {
           d = [[startTime, null], [endTime, null]];
-      }
-      else {
+      } else {
           var step = s.option.step;
           var range = 100000 ;
           switch (step) {
@@ -637,7 +581,6 @@ let ChartComponent = React.createClass({
               }
 
               var realEndTime = DataConverter.JsonToDateTime(this.props.endTime, true);
-
               currentTime = currentTime > realEndTime ? currentTime : realEndTime;
               if (d[d.length - 1][0] < currentTime) {
                   while (d[d.length - 1][0] < currentTime) {
@@ -651,143 +594,138 @@ let ChartComponent = React.createClass({
       }
   },
   initRange: function (newConfig, realData) {
+     var converter = DataConverter;
+     var j2d = converter.JsonToDateTime;
+     var endTime = j2d(this.props.endTime, true);
+     var startTime = j2d(this.props.startTime, true);
 
-       var converter = DataConverter;
-       var j2d = converter.JsonToDateTime;
-       var endTime = j2d(this.props.endTime, true);
-       var startTime = j2d(this.props.startTime, true);
+     newConfig.series = realData;
+     if (realData && realData.length > 1) {
+         this.navCache = true;
+         newConfig.scrollbar.liveRedraw = true;
+     }
+     else {
+         this.navCache = true;
+     }
+     if (this.props.step === 1 || this.props.step === 0) {
+         this.navCache = false;
+         newConfig.scrollbar.liveRedraw = false;
+     }
 
-       newConfig.series = realData;
-       if (realData && realData.length > 1) {
-           this.navCache = true;
-           newConfig.scrollbar.liveRedraw = true;
-       }
-       else {
-           this.navCache = true;
-       }
-       if (this.props.step === 1 || this.props.step === 0) {
-           this.navCache = false;
-           newConfig.scrollbar.liveRedraw = false;
-       }
+     newConfig.xAxis.min = startTime;
+     var nowBound = new Date();
+     nowBound.setMinutes(0, 0, 0);
+     //#2488
+     switch (this.props.step) {
+         case 0:
+             endTime = new Date(endTime);
+             startTime = new Date(startTime);
+             nowBound.setMinutes(endTime.getMinutes(), 0, 0);
+             break;
+         case 1:
+             endTime = new Date(endTime);
+             if (endTime.getMinutes() < 30) {
+                 endTime = dateAdd(new Date(endTime), 1, 'hours');
+             }
+             nowBound = dateAdd(nowBound, 1, 'hours');
+             startTime = new Date(startTime);
+             break;
+         case 2:
+             endTime = new Date(endTime);
+             if (endTime.getHours() > 0 && endTime.getHours() < 12) {
+                 endTime = dateAdd(new Date(endTime), 1, 'days');
+             }
+             startTime = new Date(startTime);
+             if (startTime.getHours() !==0 && startTime.getHours() <= 12) {
+                 startTime.setHours(13);
+                 newConfig.xAxis.min = startTime.getTime();
+             }
+             nowBound.setHours(0);
+             nowBound = dateAdd(nowBound, 1, 'days');
+             break;
+         case 3:
+             endTime = new Date(endTime);
+             if (!(endTime.getDate() === 1 && endTime.getHours() === 0)) {
+                 if (endTime.getDate() < 15) {
+                     endTime = dateAdd(new Date(endTime), 1, 'months');
+                 }
+             }
+             startTime = new Date(startTime);
+             if (startTime.getDate() > 1 && startTime.getDate() <= 16) {
+                 startTime.setDate(17);
+                 newConfig.xAxis.min = startTime.getTime();
+             }
+             nowBound.setDate(1);
+             nowBound.setHours(0);
+             nowBound = dateAdd(nowBound, 1, 'months');
+             break;
+         case 4:
+             endTime = new Date(endTime);
+             if (!(endTime.getMonth() === 0 && endTime.getDate() === 1 && endTime.getHours() === 0)) {
+                 if (endTime.getMonth() < 5) {
+                     endTime = dateAdd(new Date(endTime), 1, 'years');
+                 }
+             }
+             startTime = new Date(startTime);
+             if (!(startTime.getMonth() === 0 && startTime.getDate() === 1 && startTime.getHours() === 0)) {
 
-       newConfig.xAxis.min = startTime;
-       var nowBound = new Date();
-       nowBound.setMinutes(0, 0, 0);
-       //#2488
-       switch (this.props.step) {
-           case 0:
-               endTime = new Date(endTime);
-               startTime = new Date(startTime);
-               nowBound.setMinutes(endTime.getMinutes(), 0, 0);
-               break;
-           case 1:
-               endTime = new Date(endTime);
-               if (endTime.getMinutes() < 30) {
-                   endTime = dateAdd(new Date(endTime), 1, 'hours');
-               }
-               nowBound = dateAdd(nowBound, 1, 'hours');
-               startTime = new Date(startTime);
-               break;
-           case 2:
-               endTime = new Date(endTime);
-               if (endTime.getHours() > 0 && endTime.getHours() < 12) {
-                   endTime = dateAdd(new Date(endTime), 1, 'days');
-               }
-               startTime = new Date(startTime);
-               if (startTime.getHours() !==0 && startTime.getHours() <= 12) {
-                   startTime.setHours(13);
-                   newConfig.xAxis.min = startTime.getTime();
-               }
-               nowBound.setHours(0);
-               nowBound = dateAdd(nowBound, 1, 'days');
-               break;
-           case 3:
-               endTime = new Date(endTime);
-               if (!(endTime.getDate() === 1 && endTime.getHours() === 0)) {
-                   if (endTime.getDate() < 15) {
-                       endTime = dateAdd(new Date(endTime), 1, 'months');
-                   }
-               }
-               startTime = new Date(startTime);
-               if (startTime.getDate() > 1 && startTime.getDate() <= 16) {
-                   startTime.setDate(17);
-                   newConfig.xAxis.min = startTime.getTime();
-               }
-               nowBound.setDate(1);
-               nowBound.setHours(0);
-               nowBound = dateAdd(nowBound, 1, 'months');
-               break;
-           case 4:
-               endTime = new Date(endTime);
-               if (!(endTime.getMonth() === 0 && endTime.getDate() === 1 && endTime.getHours() === 0)) {
-                   if (endTime.getMonth() < 5) {
-                       endTime = dateAdd(new Date(endTime), 1, 'years');
-                   }
-               }
-               startTime = new Date(startTime);
-               if (!(startTime.getMonth() === 0 && startTime.getDate() === 1 && startTime.getHours() === 0)) {
+                 if (startTime.getMonth() > 0 && startTime.getMonth() <= 6) {
+                     startTime.setMonth(7);
+                     newConfig.xAxis.min = startTime.getTime();
+                 }
+             }
+             nowBound.setMonth(0, 1);
+             nowBound.setHours(0);
+             nowBound = dateAdd(nowBound, 1, 'years');
+             break;
+         case 5:
+             endTime = new Date(endTime);
+             if (!(endTime.getDay() === 1 && endTime.getHours() === 0)) {
+                 if (endTime.getDay() !== 0 && (endTime.getDay() < 3 || (endTime.getDay() < 4 && endTime.getHours() < 12))) {
+                     endTime = dateAdd(new Date(endTime), 7, 'days');
+                 }
+             }
+             startTime = new Date(startTime);
+             if (startTime.getDay() !== 1 && startTime.getDay() !== 0 && startTime.getDay() < 4) { //not monday
 
-                   if (startTime.getMonth() > 0 && startTime.getMonth() <= 6) {
-                       startTime.setMonth(7);
-                       newConfig.xAxis.min = startTime.getTime();
-                   }
-               }
-               nowBound.setMonth(0, 1);
-               nowBound.setHours(0);
-               nowBound = dateAdd(nowBound, 1, 'years');
-               break;
-           case 5:
-               endTime = new Date(endTime);
-               if (!(endTime.getDay() === 1 && endTime.getHours() === 0)) {
-                   if (endTime.getDay() !== 0 && (endTime.getDay() < 3 || (endTime.getDay() < 4 && endTime.getHours() < 12))) {
-                       endTime = dateAdd(new Date(endTime), 7, 'days');
-                   }
-               }
-               startTime = new Date(startTime);
-               if (startTime.getDay() !== 1 && startTime.getDay() !== 0 && startTime.getDay() < 4) { //not monday
+                 startTime = dateAdd(startTime, 5 - startTime.getDay(), 'days');
 
-                   startTime = dateAdd(startTime, 5 - startTime.getDay(), 'days');
+                 newConfig.xAxis.min = startTime.getTime();
+             }
+             if (nowBound.getDay() === 0) {
+                 nowBound = dateAdd(nowBound, -6, 'days');
+             }
+             else {
+                 nowBound = dateAdd(nowBound, 1 - nowBound.getDay(), 'days');
+             }
+             nowBound.setHours(0);
+             nowBound = dateAdd(nowBound, 7, 'days');
+             break;
+         case 6:
+             endTime = new Date(endTime);
+             startTime = new Date(startTime);
+             nowBound.setMinutes(endTime.getMinutes(), 0, 0);
+             break;
+         case 7:
+             endTime = new Date(endTime);
+             if (endTime.getMinutes() < 30) {
+                 endTime = dateAdd(new Date(endTime), 1, 'hours');
+             }
+             nowBound = dateAdd(nowBound, 1, 'hours');
+             startTime = new Date(startTime);
+             break;
+     }
+     newConfig.xAxis.max = endTime.getTime();
 
-                   newConfig.xAxis.min = startTime.getTime();
-               }
-               if (nowBound.getDay() === 0) {
-                   nowBound = dateAdd(nowBound, -6, 'days');
-               }
-               else {
-                   nowBound = dateAdd(nowBound, 1 - nowBound.getDay(), 'days');
-               }
-               nowBound.setHours(0);
-               nowBound = dateAdd(nowBound, 7, 'days');
-               break;
-           case 6:
-               endTime = new Date(endTime);
-               startTime = new Date(startTime);
-               nowBound.setMinutes(endTime.getMinutes(), 0, 0);
-               break;
-           case 7:
-               endTime = new Date(endTime);
-               if (endTime.getMinutes() < 30) {
-                   endTime = dateAdd(new Date(endTime), 1, 'hours');
-               }
-               nowBound = dateAdd(nowBound, 1, 'hours');
-               startTime = new Date(startTime);
-               break;
-       }
-       newConfig.xAxis.max = endTime.getTime();
-
-       return [startTime, endTime, nowBound];
+     return [startTime, endTime, nowBound];
    },
    initNavigatorData: function (newConfig, timeRange, data) {
        var startTime = timeRange[0], endTime = timeRange[1], nowBound = timeRange[2];
        if (newConfig.navigator.enabled && data.Navigator) {
-
-           var navData = data.Navigator;
-           var numStartTime = startTime,
-               numEndTime = endTime;
-               numStartTime = startTime.getTime();
-               numEndTime = endTime.getTime();
-
-           var navStart = navData[0][0],
+           var navData = data.Navigator,
+               numStartTime = startTime.getTime(),
+               numEndTime = endTime.getTime(),
+               navStart = navData[0][0],
                navShouldBeStartAt = numStartTime,
                navShouldBeEndAt = numEndTime;
 
@@ -821,7 +759,6 @@ let ChartComponent = React.createClass({
                else {
                }
            }
-
        }
        else {
            newConfig.navigator.enabled = false;
@@ -833,27 +770,22 @@ let ChartComponent = React.createClass({
      var max = array[0], i, ln, item;
       for (i = 0, ln = array.length; i < ln; i++) {
           item = array[i];
-
           if (comparisonFn) {
               if (comparisonFn(max, item) === -1) {
                   max = item;
               }
-          }
-          else {
+          }else {
               if (item > max) {
                   max = item;
               }
           }
       }
-
       return max;
    },
    initYaxis: function (data, config) {
         if (!isArray(data)) return;
-        var yList = [];
-        var dic = {};
-        var count = 0;
-        var offset = yAxisOffset;
+        var yList = [], dic = {}, count = 0, offset = yAxisOffset;
+
         for (let i = 0; i < data.length; i++) {
             let uom = data[i].option.uom;
             if (dic[uom]) continue;
@@ -901,7 +833,6 @@ let ChartComponent = React.createClass({
         if (yList.length === 0) {
             yList.push({});
         }
-
         if (this.type != 'pie') {
             var yconfig = this.yaxisSelector;
             if (yconfig) yconfig = this.yaxisSelector.getYaxisConfig();
@@ -945,7 +876,6 @@ let ChartComponent = React.createClass({
                 }
             }
         }
-
         config.yAxis = yList;
     },
     initFlagSeriesData: function (newConfig, convertedData) {

@@ -5,11 +5,14 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import Tag from '../constants/actionType/Tag.jsx';
+import Commodity from '../constants/actionType/Commodity.jsx';
+import CommodityStore from '../stores/CommodityStore.jsx';
 
 let searchTagList=[];
 let interData=null;
 let AlarmTagAction=AlarmTag.Action;
 let TagAction=Tag.Action;
+let CommodityAction=Commodity.Action;
 /*
  if change checked state of the tags from the tag list,than it is true;
  when select item of alarm list, set it false in AlarmList.jsx
@@ -95,6 +98,30 @@ var AlarmTagStore = assign({},PrototypeStore,{
     })
 
   },
+  CommodityDataChange(commodityId,commodityName,selected){
+
+      if(selected){
+        let commodityData={
+          hierId:CommodityStore.getCurrentHierarchyId(),
+          hierName:CommodityStore.getCurrentHierarchyName(),
+          commodityId:commodityId,
+          commodityName:commodityName
+        };
+        searchTagList.push(commodityData);
+      }
+      else{
+        searchTagList.forEach(function(nodeData,i){
+          if(nodeData.commodityId){
+            if(commodityId==nodeData.commodityId){
+              searchTagList.splice(i,1);
+            }
+          }
+
+        });
+      }
+
+
+  },
   clearSearchTagList(){
     AlarmTagStore.setUseTagListSelect(true);
     searchTagList.length=0;
@@ -170,6 +197,9 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case TagAction.CLEAR_ALARM_SEARCH_TAGLIST:
           AlarmTagStore.clearSearchTagList();
+        break;
+      case CommodityAction.SET_COMMODITY_STATUS:
+          AlarmTagStore.CommodityDataChange(action.commodityId,action.commodityName,action.selected);
         break;
     }
 });

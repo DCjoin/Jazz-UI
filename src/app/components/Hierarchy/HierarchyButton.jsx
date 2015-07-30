@@ -3,8 +3,8 @@ import React from "react";
 import classnames from 'classnames';
 import {FlatButton,FontIcon,Menu,Paper,CircularProgress,Mixins} from 'material-ui';
 import HierarchyTree from './HierarchyTree.jsx';
-import HierarchyAction from "../actions/HierarchyAction.jsx";
-import HierarchyStore from "../stores/HierarchyStore.jsx";
+import HierarchyAction from "../../actions/HierarchyAction.jsx";
+import HierarchyStore from "../../stores/HierarchyStore.jsx";
 
 let HierarchyButton=React.createClass({
     mixins: [Mixins.ClickAwayable],

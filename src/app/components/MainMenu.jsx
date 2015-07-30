@@ -15,6 +15,9 @@ var MainMenu = React.createClass({
 
         var params = this.getParams();
         var links = this.props.items.map(item=>{
+            if(item.disabled){
+              return (<span>{item.title}</span>);
+            }
             return (<Link to={item.name} params={params}>{item.title}</Link>);
         });
 
