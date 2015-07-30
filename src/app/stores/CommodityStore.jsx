@@ -68,20 +68,21 @@ var CommodityStore = assign({},PrototypeStore,{
     var hasCommodity=false;
     if(_commodityStatus){
       _commodityStatus.forEach(function(element){
-        if(element.hierId==_currentHierId){
+        if((element.hierId==_currentHierId) && (element.dimId==_currentDimId)){
           hasCommodity=true;
           if(selected){
             element.statusList=element.statusList.push(id)
           }
           else {
             let index=element.statusList.indexOf(id);
-            element.statusLists=element.statusList.delete(index);
+            element.statusList=element.statusList.delete(index);
           }
         }
       });
       if(!hasCommodity){
         _commodityStatus.push({
           hierId:_currentHierId,
+          dimId:_currentDimId,
           statusList:Immutable.List.of(id),
         });
       }
@@ -90,6 +91,7 @@ var CommodityStore = assign({},PrototypeStore,{
     else {
       _commodityStatus.push({
         hierId:_currentHierId,
+        dimId:_currentDimId,
         statusList:Immutable.List.of(id),
       });
     }
@@ -97,7 +99,7 @@ var CommodityStore = assign({},PrototypeStore,{
   removeCommodityStatus:function(node){
     if(node.commodityId){
       _commodityStatus.forEach(function(element){
-        if(element.hierId==_currentHierId){
+        if((element.hierId==_currentHierId) && (element.dimId==_currentDimId)){
             let index=element.statusList.indexOf(node.commodityId);
             element.statusLists=element.statusList.delete(index);
           }
@@ -110,7 +112,7 @@ var CommodityStore = assign({},PrototypeStore,{
   getCurrentHierIdCommodityStatus:function(){
    var statusList=Immutable.List([]);
     _commodityStatus.forEach(function(element){
-  if(element.hierId==_currentHierId){
+  if((element.hierId==_currentHierId) && (element.dimId==_currentDimId)){
     statusList=element.statusList;
     }
   });

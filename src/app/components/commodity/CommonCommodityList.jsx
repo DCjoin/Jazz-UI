@@ -4,6 +4,7 @@ import {Navigation, State } from 'react-router';
 import {CircularProgress,Checkbox} from 'material-ui';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
+import Immutable from 'immutable';
 
 var CommonCommodityList = React.createClass({
 
@@ -12,6 +13,7 @@ var CommonCommodityList = React.createClass({
   _onCommodityListChange:function(){
     this.setState({
       commdityList:CommodityStore.getCommodityList(),
+      commodityStatus:CommodityStore.getCurrentHierIdCommodityStatus(),
       isLoading:false
     })
   },
@@ -29,7 +31,8 @@ var CommonCommodityList = React.createClass({
           isLoading:true
         });
   },
-  isCommoditySingleItemSelected:function(id){
+  isCommoditySingleItemSelected:function(commodityId){
+      let id=commodityId+'';
       let index=this.state.commodityStatus.indexOf(id);
       if(index>=0){
         return true;
@@ -56,9 +59,6 @@ var CommonCommodityList = React.createClass({
   },
   componentWillReceiveProps:function(){
     this._loadCommodityList();
-    this.setState({
-      commodityStatus:CommodityStore.getCurrentHierIdCommodityStatus()
-    });
   },
   componentDidMount: function() {
     CommodityStore.addCommoddityListListener(this._onCommodityListChange);
@@ -77,7 +77,7 @@ var CommonCommodityList = React.createClass({
         <Checkbox label={I18N.Commodity.Overview}
                   value={-1}
                   name={I18N.Commodity.Overview}
-                  status={status}
+                  checked={status}
                   onCheck={this._onCheck}/>
     ];
     this.state.commdityList.forEach(function(element){
@@ -86,7 +86,7 @@ var CommonCommodityList = React.createClass({
         <Checkbox label={element.Comment}
                   value={element.Id}
                   name={element.Comment}
-                  status={status}
+                  checked={status}
                   onCheck={that._onCheck}/>
       )
     })

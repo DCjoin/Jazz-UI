@@ -85,7 +85,7 @@ let DimButton=React.createClass({
       },
 
       componentClickAway:function(){
-        if(this.props.show){
+        if((this.props.show) && (this.state.open)){
                 this.props.handleClickAway();
         }
 

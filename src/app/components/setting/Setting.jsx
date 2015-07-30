@@ -30,14 +30,14 @@ let Setting = React.createClass({
   },
   //just for test commoditypanel
 componentWillMount:function(){
-  CommodityAction.setEnergyConsumptionType('Carbon');
+  CommodityAction.setEnergyConsumptionType('Cost');
 },
   render: function () {
     return (
       <div style={{display:'flex', flex:1}}>
         <LeftPanel isShow={!this.state.showRightPanel} onToggle={this._onSwitchButtonClick}/>
         <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
-        <CommodityPanel/>
+        <CommodityPanel onButtonClick={this._onSwitchButtonClick} defaultStatus={this.state.showRightPanel}/>
       </div>
     );
   }
