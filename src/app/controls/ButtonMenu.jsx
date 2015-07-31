@@ -99,9 +99,10 @@ var ButtonMenu = React.createClass({
     var mergedRootStyles = this.mergeAndPrefix(styles.root, style);
     var mergedMenuStyles = this.mergeStyles(styles.menu, menuStyle);
 
-    var menuButton =<RaisedButton label={this.props.label} onClick={this._onButtonClick}>
-                  <FontIcon className="icon-voltage" hoverColor='red' onClick={this._onDropdownIconClick}/>
-                </RaisedButton>;
+    var menuButton = <RaisedButton label={this.props.label} onClick={this._onButtonClick}>
+                      <FontIcon className="icon-arrow-down" style={{ fontSize:'10px', marginRight:'10px', marginLeft:'-5px'}}
+                        hoverColor='yellow' onClick={this._onDropdownIconClick}/>
+                    </RaisedButton>;
 
     var menu = open ? React.createElement(
       Menu,
