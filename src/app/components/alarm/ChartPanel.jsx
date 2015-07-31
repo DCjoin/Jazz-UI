@@ -265,22 +265,32 @@ let ChartPanel = React.createClass({
       else{
         widgetWd=null;
       }
-      let searchButton = <ButtonMenu label='查看' onButtonClick={me.onSearchDataButtonClick}
+      let searchButton = <ButtonMenu label='查看' onButtonClick={me.onSearchDataButtonClick} desktop={true}
         value={this.state.selectedChartType} onItemTouchTap={this._onSearchBtnItemTouchTap}>
          <MenuItem primaryText="折线图" value='line'/>
          <MenuItem primaryText="柱状图"  value='column'/>
          <MenuItem primaryText="堆积图"  value='stack'/>
          <MenuItem primaryText="饼状图"  value='pie'/>
          <MenuItem primaryText="原始数据"  value='rawdata'/>
-         <ExtendableMenuItem primaryText="test"  value='test'></ExtendableMenuItem>
       </ButtonMenu>;
-      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}}
+      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                     onItemTouchTap={this._onConfigBtnItemTouchTap}>
         <MenuItem primaryText="历史对比" value='history'/>
-        <MenuItem primaryText="基准值设置" value='config' />
+        <MenuItem primaryText="基准值设置" value='config' disabled={this.state.baselineBtnStatus}/>
+        <MenuDivider />
         <MenuItem primaryText="数据求和" value='sum'/>
-        <MenuItem primaryText="日历背景色" value='background'/>
-        <MenuItem primaryText="天气信息" value='weather'/>
+        <ExtendableMenuItem primaryText="日历背景色" value='background'>
+          <Menu>
+            <MenuItem primaryText="非工作时间" value='noneWorkTime'/>
+            <MenuItem primaryText="冷暖季" value='hotColdSeason'/>
+          </Menu>
+        </ExtendableMenuItem>
+        <ExtendableMenuItem primaryText="天气信息" value='weather'>
+                  <Menu>
+                    <MenuItem primaryText="温度" value='temperature'/>
+                    <MenuItem primaryText="湿度" value='humidity'/>
+                  </Menu>
+                </ExtendableMenuItem>
       </ButtonMenu>;
 
       return (
