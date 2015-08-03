@@ -28,6 +28,7 @@ let MonthPicker = React.createClass({
   },
   getInitialState() {
     return {
+      displayYear: this.props.defaultYear,
       curYear: this.props.defaultYear,
       curMonth: this.props.defaultMonth,
       showMonth: false
@@ -41,30 +42,15 @@ let MonthPicker = React.createClass({
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     if(this.state.curYear == nextProps.defaultYear && this.state.curYear == nextState.curYear && this.state.curMonth == nextProps.defaultMonth && this.state.curMonth == nextState.curMonth && this.state.showMonth == nextState.showMonth){
-            return false;
-        }
-        return true;
-
+      return false;
+    }
+    return true;
   },
   componentClickAway(){
-    this.setState({showMonth: false});
-  },
-  getDateValue(){
-    var yearValue = this.state.curYear;
-    var monthValue = this.state.curMonth;
-    if(monthValue < 10){
-      return '' + yearValue + '0' + monthValue;
-    }
-    return '' + yearValue + monthValue;
-  },
-  setYearValue(year){
+    var yearValue = this.state.displayYear;
     this.setState({
-      curYear: year
-    });
-  },
-  setMonthValue(month){
-    this.setState({
-      curMonth: month
+      showMonth: false,
+      curYear: yearValue
     });
   },
   _onSelectedYear: function(year) {
@@ -80,17 +66,24 @@ let MonthPicker = React.createClass({
     });
   },
   _onSelectMonth: function(month){
+    var date;
+    var yearValue = this.state.curYear;
+    var monthValue = month;
     this.setState({
       curMonth: month,
+      displayYear: yearValue,
       showMonth: false
     });
-    var date = this.getDateValue();
+
+    if(monthValue < 10){
+      date = '' + yearValue + '0' + monthValue;
+    }
+    else{
+      date = '' + yearValue + monthValue;
+    }
     if(this.props.onMonthPickerSelected){
       this.props.onMonthPickerSelected(date);
     }
-  },
-  _onMonthChange: function(e, month) {
-    this._onSelectMonth(parseInt(month.value));
   },
   _getYearInteractions: function() {
     return {
@@ -114,24 +107,28 @@ let MonthPicker = React.createClass({
   _onYearChange: function(years) {
     this._onSelectedYear(parseInt(this.state.curYear) + years);
   },
+  _onMonthChange: function(e, month) {
+    this._onSelectMonth(parseInt(month.value));
+  },
   render(){
     var datePicker = null;
     var calendar = null;
     var calendarYear = null;
     var calendarMonth = null;
     var yearValue = this.state.curYear;
+    var displayYear = this.state.displayYear;
     var monthValue = this.state.curMonth;
     var yearInteractions = this._getYearInteractions();
     var inputProps = {
       onFocus:this._onFocus,
       onBlur:this._onBlur,
-      value: '' + yearValue + '-' + monthValue,
+      value: '' + displayYear + '-' + monthValue,
       onChange:this._onChange,
       className: "jazz-month-picker-noempty"
     };
     datePicker = (<TextField {...inputProps} ref="TextField"/>);
     if(this.state.showMonth){
-    calendar=(<div style={{position:'absolute',"zIndex":99,width:"150px",marginTop:'2px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}>
+    calendar=(<div style={{position:'absolute',"zIndex":99,width:"150px",marginTop:'2px',marginLeft:'53px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}>
       <CalendarYear
         ref="calendarYear"
         onYearChange={this._onYearChange}
