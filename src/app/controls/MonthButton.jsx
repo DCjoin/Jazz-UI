@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Mixins,Styles,ClearFix,StylePropable,EnhancedButton} from 'material-ui';
+import {Mixins,Styles,ClearFix,StylePropable,EnhancedButton,FlatButton} from 'material-ui';
 
 
 let MonthButton = React.createClass({
@@ -47,7 +47,7 @@ let MonthButton = React.createClass({
         float: 'left',
         width: 60,
         fontSize: '14px',
-        padding: '4px 2px'
+        padding: '0px'
       },
 
       label: {
@@ -58,10 +58,10 @@ let MonthButton = React.createClass({
       buttonState: {
         position: 'absolute',
         height: 32,
-        width: 32,
+        width: 60,
         opacity: 0,
-        borderRadius: '50%',
-        transform: 'scale(0)'
+        transform: 'scale(0)',
+        backgroundColor: this.getTheme().selectColor
       },
     };
     if (this.state.hover) {
