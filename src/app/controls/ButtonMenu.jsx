@@ -134,6 +134,8 @@ var ButtonMenu = React.createClass({
   _onButtonClick(){
     if(this.props.onButtonClick){
        this.props.onButtonClick();
+     }else{
+       this._onDropdownIconClick();
      }
   },
   _onDropdownIconClick(){
