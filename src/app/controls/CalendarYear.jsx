@@ -42,6 +42,7 @@ var CalendarYear = React.createClass({
         position: 'relative',
         padding: 0,
         backgroundColor: 'inherit',
+        height: '40px'
       },
 
       title: {
@@ -52,7 +53,7 @@ var CalendarYear = React.createClass({
         height: '14px',
         width: '100%',
         fontWeight: '500',
-        textAlign: 'center',
+        textAlign: 'center'
       },
     };
   },

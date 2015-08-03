@@ -183,6 +183,7 @@ var BaselineBasic = React.createClass({
               me.props.onRequestHideMask(me);
             }
             me.setState({ isViewStatus : true });
+            TagStore.emitSettingData();
           },
           function(err, res){
             if(me.props.onRequestHideMask){
