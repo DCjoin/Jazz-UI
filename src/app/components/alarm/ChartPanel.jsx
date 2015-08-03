@@ -2,7 +2,7 @@
 import React from "react";
 import Immutable from 'immutable';
 import ChartMixins from '../energy/ChartMixins.jsx';
-import {IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
+import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
 import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
 import EnergyStore from '../../stores/EnergyStore.jsx';
@@ -19,6 +19,12 @@ import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import ErrorStepDialog from './ErrorStepDialog.jsx';
 import BaselineCfg from '../setting/BaselineCfg.jsx';
+import ButtonMenu from '../../controls/ButtonMenu.jsx';
+import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
+
+let Menu = require('material-ui/lib/menus/menu');
+let MenuItem = require('material-ui/lib/menus/menu-item');
+let MenuDivider = require('material-ui/lib/menus/menu-divider');
 
 let {hourPickerData, isArray, getUomById, JazzCommon, DataConverter, dateAdd} = CommonFuns;
 
@@ -211,7 +217,8 @@ let ChartPanel = React.createClass({
         submitParams: null,
         step: null,
         dashboardOpenImmediately: false,
-        baselineBtnStatus:TagStore.getBaselineBtnDisabled()
+        baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
+        selectedChartType:'line'
       };
       if(this.props.chartTitle){
         state.chartTitle = this.props.chartTitle;
@@ -258,6 +265,34 @@ let ChartPanel = React.createClass({
       else{
         widgetWd=null;
       }
+      let searchButton = <ButtonMenu label='查看' onButtonClick={me.onSearchDataButtonClick} desktop={true}
+        value={this.state.selectedChartType} onItemTouchTap={this._onSearchBtnItemTouchTap}>
+         <MenuItem primaryText="折线图" value='line'/>
+         <MenuItem primaryText="柱状图"  value='column'/>
+         <MenuItem primaryText="堆积图"  value='stack'/>
+         <MenuItem primaryText="饼状图"  value='pie'/>
+         <MenuItem primaryText="原始数据"  value='rawdata'/>
+      </ButtonMenu>;
+      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+                                    onItemTouchTap={this._onConfigBtnItemTouchTap}>
+        <MenuItem primaryText="历史对比" value='history'/>
+        <MenuItem primaryText="基准值设置" value='config' disabled={this.state.baselineBtnStatus}/>
+        <MenuDivider />
+        <MenuItem primaryText="数据求和" value='sum'/>
+        <ExtendableMenuItem primaryText="日历背景色" value='background'>
+          <Menu>
+            <MenuItem primaryText="非工作时间" value='noneWorkTime'/>
+            <MenuItem primaryText="冷暖季" value='hotColdSeason'/>
+          </Menu>
+        </ExtendableMenuItem>
+        <ExtendableMenuItem primaryText="天气信息" value='weather'>
+                  <Menu>
+                    <MenuItem primaryText="温度" value='temperature'/>
+                    <MenuItem primaryText="湿度" value='humidity'/>
+                  </Menu>
+                </ExtendableMenuItem>
+      </ButtonMenu>;
+
       return (
         <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
           {widgetWd}
@@ -268,17 +303,35 @@ let ChartPanel = React.createClass({
             </div>
             <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>
             <div className={'jazz-flat-button'}>
-              <RaisedButton label='查看' style={{height:'32px', marginBottom:'4px', width:'92px'}} ref='searchBtn' onClick={me.onSearchDataButtonClick}/>
+              {searchButton}
             </div>
             <BaselineCfg  ref="baselineCfg"/>
             <div className={'jazz-flat-button'}>
-              <RaisedButton disabled={this.state.baselineBtnStatus} style={{marginLeft:'10px', height:'32px', marginBottom:'4px', width:'122px'}} label='基准值配置' onClick={this.handleBaselineCfg}/>
+              {configButton}
             </div>
+
         </div>
           {energyPart}
           {errorDialog}
         </div>
       );
+  },
+  _onSearchBtnItemTouchTap(e, child){
+    this.setState({selectedChartType:child.props.value});
+  },
+  _onConfigBtnItemTouchTap(e, child){
+    let itemValue = child.props.value;
+    switch (itemValue) {
+      case 'history':
+        console.log('history');
+        break;
+      case 'config':
+        this.handleBaselineCfg();
+        break;
+      case 'sum':
+        console.log('sum');
+        break;
+    }
   },
   _afterChartCreated(chartObj){
     if (chartObj.options.scrollbar.enabled) {

@@ -140,11 +140,13 @@ var YaxisDialog = React.createClass({
     var yaxisConfig = this.props.yaxisConfig;
     for (var key in yaxisConfig) {
       let uom = key;
-      let maxField = this.refs[uom+'_pair'].refs[uom+'_max'];
-      let minField = this.refs[uom+'_pair'].refs[uom+'_min'];
+      let maxMinPair = this.refs[uom+'_pair'];
+      let maxField = maxMinPair.refs[uom+'_max'];
+      let minField = maxMinPair.refs[uom+'_min'];
 
-      maxField.setValue('');
-      minField.setValue('');
+      if(maxMinPair){
+        maxMinPair.setState({maxValue:null, minValue:null});
+      }
 
       maxField.setErrorText();
       minField.setErrorText();
@@ -188,12 +190,19 @@ var YaxisDialog = React.createClass({
       if(i>1){
         styleObj ={marginTop:'40px'};
       }
+
+      let defaultValues = null;
+      let storedConfigItem = this.getStoredConfigItemByUOM(uom, this.props.storedConfig);
+      if(storedConfigItem){
+        defaultValues = storedConfigItem.val;
+      }
+
       let group = <div style = {styleObj}>
         <div style={{fontSize:'14px', marginBottom:'18px'}}> {'Y坐标轴' + i} </div>
         <div style={{marginBottom:'40px'}}>
           <span style={{width:'100px', display:'inline-block'}}>{'相关数据点:'}</span>
           <span style={{ 'word-break':'break-all'}}> {yaxisConfig[key].join(',')}</span></div>
-        <MaxMinPair ref={uom+'_pair'} uom = {uom}></MaxMinPair>
+        <MaxMinPair ref={uom+'_pair'} uom = {uom} defaultValues={defaultValues}></MaxMinPair>
       </div>;
 
         ++i;
@@ -283,17 +292,31 @@ var YaxisDialog = React.createClass({
 });
 
 var MaxMinPair = React.createClass({
+  getInitialState(){
+    let maxValue = null, minValue = null;
+    if(this.props.defaultValues){
+      maxValue = this.props.defaultValues[0];
+      minValue = this.props.defaultValues[1];
+    }
+    return {maxValue: maxValue, minValue:minValue};
+  },
   render(){
     return  <div>
-         <div> <span style={{width:'100px', display:'inline-block'}}>{'最大值:'}</span> <TextField hintText="自动" onChange={this._onMaxFieldChange} ref={this.props.uom+'_max'} /><span>{this.props.uom}</span></div>
-         <div> <span style={{width:'100px', display:'inline-block'}}>{'最小值:'}</span> <TextField hintText="自动" onChange={this._onMinFieldChange}ref={this.props.uom+'_min'} /><span>{this.props.uom}</span></div>
+         <div> <span style={{width:'100px', display:'inline-block'}}>{'最大值:'}</span>
+               <TextField hintText="自动" onChange={this._onMaxFieldChange} ref={this.props.uom+'_max'} value={this.state.maxValue}/>
+               <span>{this.props.uom}</span></div>
+         <div> <span style={{width:'100px', display:'inline-block'}}>{'最小值:'}</span>
+               <TextField hintText="自动" onChange={this._onMinFieldChange}ref={this.props.uom+'_min'} value={this.state.minValue}/>
+               <span>{this.props.uom}</span></div>
        </div>;
   },
-  _onMaxFieldChange(){
+  _onMaxFieldChange(e){
     this.refs[this.props.uom+'_max'].setErrorText();
+    this.setState({maxValue:e.currentTarget.value});
   },
-  _onMinFieldChange(){
+  _onMinFieldChange(e){
     this.refs[this.props.uom+'_min'].setErrorText();
+      this.setState({minValue:e.currentTarget.value});
   }
 });
 

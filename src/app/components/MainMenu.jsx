@@ -24,7 +24,7 @@ var MainMenu = React.createClass({
         return (
             <div className="jazz-mainmenu">
                 <div className="jazz-logo">
-                    <img alt="logo" src={this.props.logoUrl}/>
+                  <div className='jazz_logo_img' style={{backgroundImage:'url(' + this.props.logoUrl +')' }}></div>  
                 </div>
                 <div className="jazz-menu">
                     {links}
