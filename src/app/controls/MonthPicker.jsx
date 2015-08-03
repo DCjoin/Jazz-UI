@@ -118,11 +118,18 @@ let MonthPicker = React.createClass({
     var yearValue = this.state.curYear;
     var displayYear = this.state.displayYear;
     var monthValue = this.state.curMonth;
+    var date;
+    if(monthValue < 10){
+      date = '' + displayYear + '/0' + monthValue;
+    }
+    else{
+      date = '' + displayYear + '/' + monthValue;
+    }
     var yearInteractions = this._getYearInteractions();
     var inputProps = {
       onFocus:this._onFocus,
       onBlur:this._onBlur,
-      value: '' + displayYear + '-' + monthValue,
+      value: date,
       onChange:this._onChange,
       className: "jazz-month-picker-noempty"
     };
