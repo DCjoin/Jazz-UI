@@ -49,14 +49,16 @@ var DashboardStore = assign({},PrototypeStore,{
   },
   GetDashboardError:function(){
     var error={};
-    switch(_dashboard_error_code){
-          case "050001205015":
+    var length=_dashboard_error_code.length;
+    var errorCode=_dashboard_error_code.substring(length-5,length-1);
+    switch(errorCode){
+          case "05015":
             error.chartTitle="该名称已存在";
             break;
-          case "050001205016":
+          case "05016":
             error.oldDashboard="该仪表盘已满，无法保存新的图表";
             break;
-          case "050001205001":
+          case "05001":
             error.newDashboard="该名称已存在";
             break;
     }

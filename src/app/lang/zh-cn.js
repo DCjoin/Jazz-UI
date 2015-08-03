@@ -492,4 +492,11 @@ I18N.File.NewChart.Menu5 = '集团排名';
 
 I18N.Commodity={};
 I18N.Commodity.Overview = '介质总览';
+
+I18N.Hierarchy={};
+I18N.Hierarchy.RankingButtonName = '请选择层级节点进行排名';
+I18N.Hierarchy.ButtonName = '请选择层级节点';
+I18N.Hierarchy.Confirm = '确定';
+I18N.Hierarchy.Clear = '清空';
+
 module.exports = I18N;

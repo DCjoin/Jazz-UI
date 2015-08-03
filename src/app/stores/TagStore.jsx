@@ -340,7 +340,7 @@ else{
   addSettingDataListener: function(callback) {
       this.on(DATA_CHANGED_EVENT, callback);
         },
- emitSettingData: function() {
+  emitSettingData: function() {
       this.emit(DATA_CHANGED_EVENT);
         },
   removeSettingDataListener: function(callback) {

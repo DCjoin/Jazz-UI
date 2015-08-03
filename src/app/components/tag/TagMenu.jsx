@@ -114,7 +114,7 @@ var TagMenu=React.createClass({
            };
 
   return(
-    <div style={{display:'flex','flex-direction':'column', flex:1}}>
+    <div style={{display:'flex','flex-direction':'column', flex:1,overflow:'hidden'}}>
       <div className="allcheck" >
           <Checkbox
             onClick={this._onAllCheck}

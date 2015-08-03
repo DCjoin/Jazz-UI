@@ -113,6 +113,7 @@ let DataSelectMainPanel=React.createClass({
         Name:alarmTag.hierName
       };
       page=data.pageIndex;
+       this.refs.dimButton.resetButtonName();
       this.setState({
         tagList:data.GetPageTagDataResult,
         total:data.totalCount,
@@ -399,9 +400,9 @@ let DataSelectMainPanel=React.createClass({
       }
       else{
         content=(
-          <div style={{display:'flex','flex-direction':'column',flex:1}}>
+          <div style={{display:'flex','flex-direction':'column',flex:1,overflow:'hidden'}}>
             {menupaper}
-            <div style={{'margin-left':''}}>
+            <div style={{'min-height':'52px'}}>
               {pagination}
             </div>
 

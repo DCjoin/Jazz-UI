@@ -68,7 +68,7 @@ let HierarchyButton=React.createClass({
         open: false,
         hieList:null,
         selectedNode:null,
-        buttonName:"请选择层级节点",
+        buttonName:I18N.Hierarchy.ButtonName,
         isLoading:false
       };
     },

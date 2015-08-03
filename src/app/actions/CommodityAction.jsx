@@ -24,9 +24,39 @@ let CommodityAction = {
       }
     });
   },
+  loadRankingCommodityList(list){
+    var hierarchyIds=[];
+    list.forEach(function(node){
+      hierarchyIds.push(node.get('Id'))
+    });
+    Ajax.post('/Energy.svc/RankingGetCommodities', {
+      params: {
+        hierarchyIds:hierarchyIds,
+        limit: 25,
+        page: 1,
+        start: 0
+      },
+      success: function(CommodityList){
+        AppDispatcher.dispatch({
+          type: Action.GET_RANKING_COMMODITY_DATA_SUCCESS,
+          CommodityList: CommodityList,
+          treeList:list,
+        });
+      },
+      error: function(err, res){
+        console.log(err,res);
+      }
+    });
+  },
   setEnergyConsumptionType:function(typeData){
     AppDispatcher.dispatch({
       type: Action.SET_ENERGY_CONSUMPTION_TYPE,
+      typeData:typeData
+    });
+  },
+  setRankingECType:function(typeData){
+    AppDispatcher.dispatch({
+      type: Action.SET_RANKING_EC_TYPE,
       typeData:typeData
     });
   },
@@ -54,6 +84,14 @@ let CommodityAction = {
       commodityId:commodityId,
       commodityName:commodityName,
       selected:selected
+    });
+  },
+  //ranking
+  setRankingCommodity:function(commodityId,commodityName){
+    AppDispatcher.dispatch({
+      type: Action.SET_RANKING_COMMODITY,
+      commodityId:commodityId,
+      commodityName:commodityName,
     });
   }
 };

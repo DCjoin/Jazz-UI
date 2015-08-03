@@ -38,7 +38,8 @@ let DimButton=React.createClass({
   },
   resetButtonName:function(){
     this.setState({
-      buttonName:"全部维度"
+      buttonName:"全部维度",
+      selectedNode:null
     });
   },
   _onTreeClick:function(node){
@@ -70,18 +71,19 @@ let DimButton=React.createClass({
       },
 
     componentWillReceiveProps: function(nextProps) {
-        if(nextProps.parentNode){
+        if((nextProps.parentNode) && (nextProps.parentNode!=this.props.parentNode)){
           DimAction.loadall(nextProps.parentNode.Id);
+          this.setState({
+            dimList:null,
+            selectedNode:null
+          });
         }
         if(!nextProps.show){
           this.setState({
             open:false
           });
         }
-        this.setState({
-          dimList:null,
-          selectedNode:null
-        });
+
       },
 
       componentClickAway:function(){
