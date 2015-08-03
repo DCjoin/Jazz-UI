@@ -1,121 +1,155 @@
 import React from 'react';
 import mui from 'material-ui';
 import classSet from 'classnames';
+import CalendarYear from '../controls/CalendarYear.jsx';
+import CalendarMonth from '../controls/CalendarMonth.jsx';
+import DateTime from '../../../node_modules/material-ui/lib/utils/date-time.js';
 
-let { Dialog, DropDownMenu, FlatButton, TextField } = mui;
+let { Dialog, DropDownMenu, FlatButton, TextField,Mixins} = mui;
+let {ClickAwayable} = Mixins;
 
 let MonthPicker = React.createClass({
+  mixins:[ClickAwayable],
+  propTypes: {
+      defaultYear: React.PropTypes.number,
+      defaultMonth: React.PropTypes.number,
+      minYear: React.PropTypes.string,
+      maxYear: React.PropTypes.string
+  },
   getDefaultProps(){
     let date = new Date();
-    let yearMenuItems =[];
-    for(var thisYear=date.getFullYear(), i = thisYear-10; i<=thisYear; i++){
-      yearMenuItems.push({text:i+'年',value:i});
-    }
-    let monthMenuItems =[
-      {text:'一月', value:1}, {text:'二月', value:2},
-      {text:'三月', value:3}, {text:'四月', value:4},
-      {text:'五月', value:5}, {text:'六月', value:6},
-      {text:'七月', value:7}, {text:'八月', value:8},
-      {text:'九月', value:9}, {text:'十月', value:10},
-      {text:'十一月', value:11}, {text:'十二月', value:12}
-    ];
 
     return {
-      _yearItems: yearMenuItems,
-      _monthItems: monthMenuItems
+      defaultYear: date.getFullYear(),
+      defaultMonth: date.getMonth(),
+      minYear: '2000',
+      maxYear: '2050'
     };
   },
   getInitialState() {
-    let date = new Date();
-      return {
-          selectedYear: date.getFullYear(),//默认今年
-          selectedMonth: date.getMonth(),//默认上个月
-          tempSelectedYear: date.getFullYear(),//默认今年
-          tempSelectedMonth: date.getMonth()//默认上个月
-      };
+    return {
+      curYear: this.props.defaultYear,
+      curMonth: this.props.defaultMonth,
+      showMonth: false
+    };
   },
-  getDateValue(year, month){
-    var yearValue = year || this.state.selectedYear;
-    var monthValue = month || this.state.selectedMonth;
+  componentWillReceiveProps: function(nextProps) {
+      this.setState({
+        curYear: nextProps.defaultYear,
+        curMonth: nextProps.defaultMonth
+      });
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if(this.state.curYear == nextProps.defaultYear && this.state.curYear == nextState.curYear && this.state.curMonth == nextProps.defaultMonth && this.state.curMonth == nextState.curMonth && this.state.showMonth == nextState.showMonth){
+            return false;
+        }
+        return true;
+
+  },
+  componentClickAway(){
+    this.setState({showMonth: false});
+  },
+  getDateValue(){
+    var yearValue = this.state.curYear;
+    var monthValue = this.state.curMonth;
     if(monthValue < 10){
       return '' + yearValue + '0' + monthValue;
     }
     return '' + yearValue + monthValue;
   },
-  getFormatDate: function() {
-    return this.state.selectedYear+'/'+this.state.selectedMonth;
+  setYearValue(year){
+    this.setState({
+      curYear: year
+    });
   },
-  _onDialogSubmit(){
-    this.refs.dialogWindow.dismiss();
-    if (this.props.onMonthPickerSelected) {
-      this.props.onMonthPickerSelected(this.getDateValue(this.state.tempSelectedYear,this.state.tempSelectedMonth));
+  setMonthValue(month){
+    this.setState({
+      curMonth: month
+    });
+  },
+  _onSelectedYear: function(year) {
+    var adjustedYear = year;
+    if (year < this.props.minYear) {
+      adjustedYear = this.props.minYear;
+    }
+    else if (year > this.props.maxYear) {
+      adjustedYear = this.props.maxYear;
     }
     this.setState({
-          selectedYear:this.state.tempSelectedYear,
-          selectedMonth:this.state.tempSelectedMonth
-      });
+      curYear: adjustedYear
+    });
   },
-  _onDialogCancel(){
-    this.refs.dialogWindow.dismiss();
-  },
-  _handleInputFocus: function(e) {
-    e.target.blur();
-    if (this.props.onFocus) this.props.onFocus(e);
-  },
-  _handleInputTouchTap: function(e) {
-    var yitems = this.props._yearItems;
-    let yearIndex;
-    for(var i = 0, len = yitems.length; i<len; i++){
-      let item = yitems[i];
-      if(item.value == this.state.selectedYear){
-        yearIndex = i;
-        break;
-      }
-    }
-
-    this.setState({yearIndex: yearIndex, monthIndex: this.state.selectedMonth - 1});
-
-    this.refs.dialogWindow.show();
-    if (this.props.onTouchTap) this.props.onTouchTap(e);
-  },
-  _onYearChanged(e, selectedIndex, menuItem){
-    if(menuItem){
-      this.setState({tempSelectedYear: menuItem.value, yearIndex: selectedIndex});
+  _onSelectMonth: function(month){
+    this.setState({
+      curMonth: month,
+      showMonth: false
+    });
+    var date = this.getDateValue();
+    if(this.props.onMonthPickerSelected){
+      this.props.onMonthPickerSelected(date);
     }
   },
-  _onMonthChanged(e, selectedIndex, menuItem){
-    if(menuItem){
-      this.setState({tempSelectedMonth:menuItem.value, monthIndex:selectedIndex});
+  _onMonthChange: function(e, month) {
+    this._onSelectMonth(parseInt(month.value));
+  },
+  _getYearInteractions: function() {
+    return {
+      prevYear: this.state.curYear > this.props.minYear,
+      nextYear: this.state.curYear < this.props.maxYear
+    };
+  },
+  _onFocus(e){
+    e.stopPropagation();
+    e.preventDefault();
+    if(!this.state.showMonth){
+      this.setState({showMonth: true});
     }
+  },
+  _clearTime:function(){
+    this.setState({
+      curYear: '',
+      curMonth: ''
+    });
+  },
+  _onYearChange: function(years) {
+    this._onSelectedYear(parseInt(this.state.curYear) + years);
   },
   render(){
-    var _buttonActions = [
-            <FlatButton
-            label="确定"
-            secondary={true}
-            onClick={this._onDialogSubmit} />,
-            <FlatButton
-            label="取消"
-            primary={true}
-            onClick={this._onDialogCancel} />
-        ];
-
-    var dialog = <Dialog className='jazz-alarm-monthpicker-dialog' title="月份选择" contentStyle={{width:'400px'}}
-                  actions={_buttonActions} modal={false} ref="dialogWindow">
-      <div style={{position: 'absolute'}} className='jazz-drop-down-menu-scroll'>
-        <DropDownMenu menuItems={this.props._yearItems} onChange={this._onYearChanged} selectedIndex={this.state.yearIndex}/>
-        <DropDownMenu menuItems={this.props._monthItems} onChange={this._onMonthChanged} selectedIndex ={this.state.monthIndex}/>
+    var datePicker = null;
+    var calendar = null;
+    var calendarYear = null;
+    var calendarMonth = null;
+    var yearValue = this.state.curYear;
+    var monthValue = this.state.curMonth;
+    var yearInteractions = this._getYearInteractions();
+    var inputProps = {
+      onFocus:this._onFocus,
+      onBlur:this._onBlur,
+      value: '' + yearValue + '-' + monthValue,
+      onChange:this._onChange,
+      className: "jazz-month-picker-noempty"
+    };
+    datePicker = (<TextField {...inputProps} ref="TextField"/>);
+    if(this.state.showMonth){
+    calendar=(<div style={{position:'absolute',"zIndex":99,width:"150px",marginTop:'2px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}>
+      <CalendarYear
+        ref="calendarYear"
+        onYearChange={this._onYearChange}
+        selectedYear={yearValue}
+        prevYear={yearInteractions.prevYear}
+        nextYear={yearInteractions.nextYear}/>
+      <CalendarMonth
+        ref="calendarMonth"
+        onMonthChange={this._onMonthChange}
+        selectedMonth={monthValue}/>
+    </div>);
+    }
+    return (
+      <div className="jazz-month-picker">
+        {datePicker}
+        {calendar}
       </div>
-      <div style={{height:'20px'}}></div>
-    </Dialog>;
-
-    var textField = <TextField className='jazz-alarm-monthpicker-textfield' style={{fontSize: '14px',
-    fontFamily: 'Microsoft YaHei'}} ref='input' hintText='select month' value={this.getFormatDate()} onFocus={this._handleInputFocus} onTouchTap={this._handleInputTouchTap}/>;
-
-    return <div>
-      {textField}
-      {dialog}
-    </div>;
+    );
   }
 });
 
