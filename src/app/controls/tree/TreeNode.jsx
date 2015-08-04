@@ -73,27 +73,29 @@ var TreeNode = React.createClass({
 
   getInitialState: function () {
     return {
-      collapsed: this.getDefaultCollapsed(this.props.checkedNodes),
+      collapsed: this.getDefaultCollapsed(),
     };
   },
+  /*
   componentWillReceiveProps:function(nextProps){
     if(nextProps.checkedNodes!=this.props.checkedNodes){
       this.setState({
         collapsed: this.getDefaultCollapsed(nextProps.checkedNodes)
       });
     }
-  },
-  getDefaultCollapsed: function (checkednodes) {
+  },*/
+  getDefaultCollapsed: function () {
     var levelStatus=false,
         checkedStatus=true;
     if(this.props.collapsedLevel === 0 ||  this.props.collapsedLevel){
       levelStatus=this.props.level > this.props.collapsedLevel;
     } ;
     let nodes=this.props.nodeData.get("Children");
+    let that=this;
     if(nodes!==null){
       nodes.forEach(function(node){
-        if(checkednodes!==null){
-          checkednodes.forEach(function(checkedNode){
+        if(that.props.checkedNodes!==null){
+          that.props.checkedNodes.forEach(function(checkedNode){
             if(node.get("Id")==checkedNode.get("Id")){
               checkedStatus=false;
             }
