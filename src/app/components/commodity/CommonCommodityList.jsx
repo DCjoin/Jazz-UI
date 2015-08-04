@@ -73,12 +73,31 @@ var CommonCommodityList = React.createClass({
   render:function(){
     var that=this;
     var status=this.isCommoditySingleItemSelected(-1);
+    //style
+    var style={
+      height:'46px',
+      width:'320px',
+      borderBottom:'1px solid #e4e7e6',
+    },
+      iconStyle={
+        marginLeft:'10px',
+        marginTop:'5px'
+      },
+      labelStyle={
+        marginTop:'10px',
+        marginLeft:'5px',
+        fontSize:'16px',
+        color:'#464949'
+      };
     var list=[
         <Checkbox label={I18N.Commodity.Overview}
                   value={-1}
                   name={I18N.Commodity.Overview}
                   checked={status}
-                  onCheck={this._onCheck}/>
+                  onCheck={this._onCheck}
+                  style={style}
+                  iconStyle={iconStyle}
+                  labelStyle={labelStyle}/>
     ];
     this.state.commdityList.forEach(function(element){
       status=that.isCommoditySingleItemSelected(element.Id);
@@ -87,7 +106,10 @@ var CommonCommodityList = React.createClass({
                   value={element.Id}
                   name={element.Comment}
                   checked={status}
-                  onCheck={that._onCheck}/>
+                  onCheck={that._onCheck}
+                  style={style}
+                  iconStyle={iconStyle}
+                  labelStyle={labelStyle}/>
       )
     })
 

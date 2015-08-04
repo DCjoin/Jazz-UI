@@ -36,18 +36,18 @@ componentWillMount:function(){
   CommodityAction.setEnergyConsumptionType('Cost');
 },
   render: function () {
-    /*
+
     var commoditypanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
                                    defaultStatus={this.state.showRightPanel}
-                                   container={<CommodityContainer/>}/>); */
+                                   container={<CommodityContainer/>}/>);
     var checkedCommodity={
       commodityId:-1,
       commodityName:'介质总览'
     };
   //如果checkedTreeNodes为一个普通数组，转换成immutable
     var checkedTreeNodes=Immutable.fromJS([
-    {Id:100005,
-    Name:"组织A"},
+    {Id:100008,
+    Name:"园区B"},
     {Id:100006,
     Name:"组织B"}
     ]);

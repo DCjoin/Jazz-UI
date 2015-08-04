@@ -73,16 +73,36 @@ var TreeNode = React.createClass({
 
   getInitialState: function () {
     return {
-      collapsed: this.getDefaultCollapsed(),
+      collapsed: this.getDefaultCollapsed(this.props.checkedNodes),
     };
   },
-
-  getDefaultCollapsed: function () {
-    if(this.props.collapsedLevel === 0 ||  this.props.collapsedLevel){
-      return this.props.level > this.props.collapsedLevel;
-    } else {
-      return false;
+  componentWillReceiveProps:function(nextProps){
+    if(nextProps.checkedNodes!=this.props.checkedNodes){
+      this.setState({
+        collapsed: this.getDefaultCollapsed(nextProps.checkedNodes)
+      });
     }
+  },
+  getDefaultCollapsed: function (checkednodes) {
+    var levelStatus=false,
+        checkedStatus=true;
+    if(this.props.collapsedLevel === 0 ||  this.props.collapsedLevel){
+      levelStatus=this.props.level > this.props.collapsedLevel;
+    } ;
+    let nodes=this.props.nodeData.get("Children");
+    if(nodes!==null){
+      nodes.forEach(function(node){
+        if(checkednodes!==null){
+          checkednodes.forEach(function(checkedNode){
+            if(node.get("Id")==checkedNode.get("Id")){
+              checkedStatus=false;
+            }
+          });
+        }
+      })
+    };
+
+    return(levelStatus && checkedStatus);
   },
 
   handleClickArrow: function (e) {

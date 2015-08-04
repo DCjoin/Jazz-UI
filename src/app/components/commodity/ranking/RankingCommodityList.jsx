@@ -30,18 +30,39 @@ var RankingCommodityList = React.createClass({
 
   render:function(){
     var that=this;
+    //style
+    var style={
+      height:'46px',
+      width:'320px',
+      borderBottom:'1px solid #e4e7e6',
+    },
+      iconStyle={
+        marginLeft:'10px',
+        marginTop:'5px'
+      },
+      labelStyle={
+        marginTop:'10px',
+        marginLeft:'5px',
+        fontSize:'16px',
+        color:'#464949'
+      };
     var content=[],
         defaultSelected=((!!this.props.checkedCommodity)?this.props.checkedCommodity.commodityId:null);
     if(this.props.ecType!=='Energy'){
       content.push(
-        <RadioButton value={-1} label={I18N.Commodity.Overview} />
+        <RadioButton value={-1} label={I18N.Commodity.Overview}
+                      style={style} iconStyle={iconStyle} labelStyle={labelStyle}/>
       )
     };
-    this.props.commdityList.forEach(function(element){
-      content.push(
-        <RadioButton value={element.Id} label={element.Comment} />
-      )
-    })
+    if(this.props.commdityList!==null){
+      this.props.commdityList.forEach(function(element){
+        content.push(
+          <RadioButton value={element.Id} label={element.Comment}
+                      style={style} iconStyle={iconStyle} labelStyle={labelStyle}/>
+        )
+      })
+    }
+
     return(
        <RadioButtonGroup  defaultSelected={defaultSelected} onChange={this._onChange}>
          {content}

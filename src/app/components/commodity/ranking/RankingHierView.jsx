@@ -11,13 +11,18 @@ var RankingHierView = React.createClass({
     allNode: React.PropTypes.object.isRequired,
     checkedTreeNodes:React.PropTypes.array,
     onConfirm:React.PropTypes.func,
+    onClear:React.PropTypes.func,
   },
   _onConfirm:function(){
     this.props.onConfirm(this.state.checkedNodes);
     CommodityAction.loadRankingCommodityList(this.state.checkedNodes);
   },
   _onClear:function(){
-
+    this.props.onClear();
+    /*
+    this.setState({
+      checkedNodes:Immutable.List()
+    })*/
   },
   _onSelectNode:function(node){
     var list = this.state.checkedNodes;
@@ -28,12 +33,14 @@ var RankingHierView = React.createClass({
         else{
               list = list.push(node);
             }
-      this.setState({checkedNodes:list});
+      this.setState({
+        checkedNodes:list,
+      });
   },
   getInitialState:function(){
     var status=((!this.props.checkedTreeNodes)?Immutable.List():this.props.checkedTreeNodes);
     return{
-      checkedNodes:status
+      checkedNodes:status,
     };
   },
   render:function(){

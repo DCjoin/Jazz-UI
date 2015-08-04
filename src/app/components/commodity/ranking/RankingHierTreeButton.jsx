@@ -60,6 +60,11 @@ var RankingHierTreeButton = React.createClass({
       display:'none'
     });
   },
+  _onClear:function(){
+    this.setState({
+      buttonName:I18N.Hierarchy.RankingButtonName
+    })
+  },
   getInitialState: function() {
       return {
         open: false,
@@ -69,7 +74,7 @@ var RankingHierTreeButton = React.createClass({
       };
     },
   componentWillReceiveProps: function(nextProps) {
-      if(nextProps.checkedTreeNodes!==null){
+      if((nextProps.checkedTreeNodes!==null) && (nextProps.checkedTreeNodes!=this.props.checkedTreeNodes)){
         //let checkedTreeNodes=Immutable.fromJS(nextProps.checkedTreeNodes);
         this.setButtonName(nextProps.checkedTreeNodes);
       }
@@ -109,7 +114,7 @@ var RankingHierTreeButton = React.createClass({
             {this.state.buttonName}
           </div>
           <div style={{display:this.state.display}}>
-          <HierView allNode={this.state.hieList} onConfirm={this._onConfirm} checkedTreeNodes={this.props.checkedTreeNodes}/>
+          <HierView allNode={this.state.hieList} onConfirm={this._onConfirm} onClear={this._onClear} checkedTreeNodes={this.props.checkedTreeNodes}/>
           </div>
 
         </div>

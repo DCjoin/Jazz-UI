@@ -31,9 +31,6 @@ var RankingCommodityPanel = React.createClass({
       commodityList:CommodityStore.getCommodityList()
     });
   },
-  _onCommoditySelect:function(commodityId,commodityName){
-    // add setRankingCommodity for chart
-  },
   _onButtonClick:function(){
     this.setState({
       isShow:false,
@@ -55,6 +52,13 @@ var RankingCommodityPanel = React.createClass({
   componentDidMount: function() {
   CommodityStore.addRankingECTypeListener(this._onRankingECTypeChange);
   CommodityStore.addRankingCommodityListListener(this._onRankingCommodityListChange);
+
+  if(this.props.checkedCommodity!==null){
+    CommodityAction.loadRankingCommodityList(this.props.checkedTreeNodes);
+    this.setState({
+      isShow:true
+    })
+  }
   },
 
   componentWillUnmount: function() {
