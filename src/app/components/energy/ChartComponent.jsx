@@ -305,13 +305,19 @@ let ChartComponent = React.createClass({
         energyRawData: React.PropTypes.object,
         step: React.PropTypes.number,
         startTime: React.PropTypes.string,
-        endTime: React.PropTypes.string
+        endTime: React.PropTypes.string,
+        chartType: React.PropTypes.string
+    },
+    getDefaultProps(){
+      return {
+        chartType:'line'
+      };
     },
     componentWillMount(){
       this.initDefaultConfig();
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-      return !(this.props.energyData.equals(nextProps.energyData));
+      return !(this.props.energyData.equals(nextProps.energyData) && this.props.chartType === nextProps.chartType);
     },
     initDefaultConfig: function () {
       let cap = function(string) {
@@ -389,7 +395,9 @@ let ChartComponent = React.createClass({
     }
   },
   _afterChartCreated(chartObj){
-    this.props.afterChartCreated(chartObj);
+    if(this.props.afterChartCreated){
+        this.props.afterChartCreated(chartObj);
+    }
   },
   _onDeleteButtonClick(obj){
     if(this.props.onDeleteButtonClick){
@@ -497,7 +505,7 @@ let ChartComponent = React.createClass({
             enableDelete = false;
           }
           var s = {
-              type: 'line',
+              type: isBenchmarkLine ? 'line' : this.props.chartType,
               name: n,
               enableDelete: enableDelete,
               enableHide: !!!item.disableHide,
