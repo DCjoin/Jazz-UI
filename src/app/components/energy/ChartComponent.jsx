@@ -802,8 +802,8 @@ let ChartComponent = React.createClass({
             let name = uom;
             let sign = count === 0 ? 1 : -1;
             let min = 0, max;
-            if (this.yaxisSelector) {
-                let yconfig = this.yaxisSelector.getYaxisConfig();
+            if (this.props.getYaxisConfig && this.props.getYaxisConfig()) {
+                let yconfig =this.props.getYaxisConfig(); 
                 for (let j = 0; j < yconfig.length; j++) {
                     if (yconfig[j].uom == name) {
                         min = yconfig[j].val[1];
