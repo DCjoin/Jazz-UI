@@ -52,6 +52,24 @@ let CommonFuns = {
 	  }
 	  return true;
 	},
+	applyIf(target, source){
+		var from;
+		var keys;
+		var to = target;
+
+		for (var s = 1; s < arguments.length; s++) {
+			from = arguments[s];
+			keys = Object.keys(Object(from));
+
+			for (var i = 0; i < keys.length; i++) {
+				if(to[keys[i]] === undefined){
+					to[keys[i]] = from[keys[i]];
+				}
+			}
+		}
+
+		return to;
+	},
 	getResResult(data){
 		if(module.exports.isObject(data)){
 			let keys = Object.getOwnPropertyNames(data);

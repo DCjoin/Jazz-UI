@@ -21,8 +21,7 @@ let MainApp = React.createClass({
       var   menuItems = [
               {
                 name:'map',
-                title:'地图',
-                disabled: true
+                title:'地图'
               },
               {
                 name:'alarm',

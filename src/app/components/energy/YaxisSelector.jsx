@@ -21,7 +21,9 @@ let YaxisSelector = React.createClass({
       this.setState({yaxisConfig:config, storedConfig: _storedConfig, showDialog: true});
     }
   },
-
+  getYaxisConfig(){
+      return _storedConfig;
+  },
   componentDidUpdate(){
     if(this.state.showDialog){
       this.refs.yaxisDialog.show();
@@ -54,6 +56,9 @@ let YaxisSelector = React.createClass({
   _onDialogSubmit(ret){
     _storedConfig = ret;
     this.redraw();
+    if(this.props.onYaxisSelectorDialogSubmit){
+      this.props.onYaxisSelectorDialogSubmit(ret);
+    }
   },
   render: function () {
     var me = this;
@@ -319,5 +324,7 @@ var MaxMinPair = React.createClass({
       this.setState({minValue:e.currentTarget.value});
   }
 });
+
+YaxisSelector.reset = function(){_storedConfig = null;};
 
 module.exports = YaxisSelector;
