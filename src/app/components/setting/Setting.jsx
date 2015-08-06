@@ -16,7 +16,7 @@ import ChartAction from '../../actions/ChartAction.jsx';
 //for test commoditypanel
 import CommodityAction from '../../actions/CommodityAction.jsx';
 
-import LeftPanel from '../file/FileLeftPanel.jsx';
+import LeftPanel from '../folder/FolderLeftPanel.jsx';
 
 let Setting = React.createClass({
 
