@@ -325,4 +325,6 @@ var MaxMinPair = React.createClass({
   }
 });
 
+YaxisSelector.reset = function(){_storedConfig = null;};
+
 module.exports = YaxisSelector;

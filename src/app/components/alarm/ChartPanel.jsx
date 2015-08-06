@@ -456,6 +456,8 @@ let ChartPanel = React.createClass({
     EnergyStore.removeTagDataChangeListener(this._onEnergyDataChange);
     EnergyStore.removeGetTagDataErrorListener(this._onGetEnergyDataError);
     TagStore.removeBaselineBtnDisabledListener(this._onBaselineBtnDisabled);
+
+    YaxisSelector.reset();
   },
   getSelectedTagOptions(){
     let tagOptions,
