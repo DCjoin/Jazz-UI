@@ -56,7 +56,8 @@ let dataLabelFormatter = function(format) {
 
 let ChartCmpStrategyFactor = {
   defaultStrategy: {
-    convertDataFn:'convertData'
+    convertDataFn:'convertData',
+    convertSingleItemFn:'convertSingleItem'
   },
   strategyConfiguration: {
     EnergyChartComponent:{
@@ -67,7 +68,8 @@ let ChartCmpStrategyFactor = {
     },
     PieChartComponent:{
       mergeConfigFn:'pieChartCmpMergeConfig',
-      convertDataFn:'pieConvertData'
+      convertDataFn:'pieConvertData',
+      pieConvertSingleItemFn:'pieConvertSingleItem'
     }
   },
 
@@ -236,7 +238,62 @@ let ChartCmpStrategyFactor = {
        return [{ type: 'pie', data: ret }];
     }
   },
+  convertSingleItemFnStrategy:{
+    convertSingleItem(item, s){
+      var d = s.data;
+      if (!d) return;
 
+      var converter = DataConverter,
+          endTime = converter.JsonToDateTime(this.props.endTime, true),
+          startTime = converter.JsonToDateTime(this.props.startTime, true);
+
+      if (_.isArray(d) && d.length === 0) {
+          d = [[startTime, null], [endTime, null]];
+      } else {
+          var step = s.option.step;
+          var range = 100000 ;
+          switch (step) {
+              case 1: //hour add 30mins
+                  range = 3600000;
+                  break;
+              case 2: //day add 12hours
+                  range =  24 * 3600000;
+                  break;
+              case 3: //month add 15days
+                  range = 30 * 24 * 3600000;
+                  break;
+              case 4: //2010年 add 6months
+                  range = 12 * 30 * 24 * 3600000;
+                  break;
+              case 5: //week add 3days&12hours
+                  range = 7 * 24 * 3600000;
+                  break;
+          }
+          if (_.isArray(d)) {
+              var currentTime = (new Date()).getTime();
+              while (d[0][0] > startTime) {
+                  d.unshift([d[0][0] - range, null]);
+              }
+
+              var realEndTime = DataConverter.JsonToDateTime(this.props.endTime, true);
+              currentTime = currentTime > realEndTime ? currentTime : realEndTime;
+              if (d[d.length - 1][0] < currentTime) {
+                  while (d[d.length - 1][0] < currentTime) {
+                      d.push([d[d.length - 1][0] + range, null]);
+                  }
+                  if (d[d.length - 1][0] > currentTime) {
+                      d.pop();
+                  }
+              }
+          }
+      }
+    },
+    pieConvertSingleItem(item, convertedItem){
+      convertedItem.y = item.y;
+      delete convertedItem.data;
+      delete convertedItem.marker; //for pie chart ,can't use marker
+    }
+  },
 
 
   getStrategyByChartType (chartType) {

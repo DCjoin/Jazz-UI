@@ -180,6 +180,31 @@ let ChartPanel = React.createClass({
     },
     _onSearchBtnItemTouchTap(e, child){
       this.setState({selectedChartType:child.props.value});
+      if(this.state.chartStrategy.canShareDataWithFn(this.state.selectedChartType, child.props.value)){
+        this.setState({selectedChartType:child.props.value});
+      }else if(child.props.value === 'pie'){
+        let dateSelector = this.refs.dateTimeSelector,
+            dateRange = dateSelector.getDateTime(),
+            startDate = dateRange.start,
+            endDate = dateRange.end,
+            nodeOptions;
+
+        if(startDate.getTime()>= endDate.getTime()){
+           window.alert('请选择正确的时间范围');
+          return;
+        }
+
+        nodeOptions = this.state.chartStrategy.getSelectedNodesFn();
+
+        if( !nodeOptions || nodeOptions.length === 0){
+          this.setState({energyData:null});
+          return;
+        }
+        let relativeDateValue = this._getRelativeDateValue();
+        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+
+        this.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+      }
     },
 });
 

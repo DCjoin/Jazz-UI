@@ -460,53 +460,7 @@ let ChartComponentBox = React.createClass({
       return this.props.chartStrategy.converDataFn(data, config);
   },
   convertSingleItem: function (item, s) {
-      var d = s.data;
-      if (!d) return;
-
-      var converter = DataConverter,
-          endTime = converter.JsonToDateTime(this.props.endTime, true),
-          startTime = converter.JsonToDateTime(this.props.startTime, true);
-
-      if (_.isArray(d) && d.length === 0) {
-          d = [[startTime, null], [endTime, null]];
-      } else {
-          var step = s.option.step;
-          var range = 100000 ;
-          switch (step) {
-              case 1: //hour add 30mins
-                  range = 3600000;
-                  break;
-              case 2: //day add 12hours
-                  range =  24 * 3600000;
-                  break;
-              case 3: //month add 15days
-                  range = 30 * 24 * 3600000;
-                  break;
-              case 4: //2010年 add 6months
-                  range = 12 * 30 * 24 * 3600000;
-                  break;
-              case 5: //week add 3days&12hours
-                  range = 7 * 24 * 3600000;
-                  break;
-          }
-          if (_.isArray(d)) {
-              var currentTime = (new Date()).getTime();
-              while (d[0][0] > startTime) {
-                  d.unshift([d[0][0] - range, null]);
-              }
-
-              var realEndTime = DataConverter.JsonToDateTime(this.props.endTime, true);
-              currentTime = currentTime > realEndTime ? currentTime : realEndTime;
-              if (d[d.length - 1][0] < currentTime) {
-                  while (d[d.length - 1][0] < currentTime) {
-                      d.push([d[d.length - 1][0] + range, null]);
-                  }
-                  if (d[d.length - 1][0] > currentTime) {
-                      d.pop();
-                  }
-              }
-          }
-      }
+    this.props.chartStrategy.convertSingleItemFn(item, s);
   },
   initRange: function (newConfig, realData) {
      var converter = DataConverter;

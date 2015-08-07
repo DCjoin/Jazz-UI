@@ -10,6 +10,7 @@ import ButtonMenu from '../../controls/ButtonMenu.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
+import EnergyAction from '../../actions/EnergyAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponent from './ChartComponent.jsx';
@@ -34,9 +35,11 @@ let ChartStrategyFactor = {
       searchBarGenFn:'energySearchBarGen',
       getSelectedNodesFn:'getSelectedTagList',
       getEnergyDataFn:'energyDataLoad',
+      getPieEnergyDataFn:'pieEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
       bindStoreListenersFn:'energyBindStoreListeners',
-      unbindStoreListenersFn:'energyUnbindStoreListeners'
+      unbindStoreListenersFn:'energyUnbindStoreListeners',
+      canShareDataWithFn:'canShareDataWith'
     },
     MultiIntervalDistribution:{
 
@@ -73,6 +76,11 @@ let ChartStrategyFactor = {
      AlarmAction.getEnergyData(timeRanges, step, tagOptions, relativeDate);
    }
  },
+ getPieEnergyDataFnStrategy:{
+   pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate){
+     EnergyAction.getPieEnergyData(timeRanges, step, tagOptions, relativeDate);
+   }
+ },
  getChartComponentFnStrategy:{
    getEnergyChartComponent(analysisPanel){
      let energyPart;
@@ -91,6 +99,15 @@ let ChartStrategyFactor = {
                      <ChartComponent {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
       return energyPart;
+   }
+ },
+ canShareDataWithFnStrategy:{
+   canShareDataWith(curChartType, nextChartType){
+     if((curChartType==='line'||curChartType==='column'||curChartType==='stack')&&(nextChartType==='line'||nextChartType==='column'||nextChartType==='stack')){
+       return true;
+     }else{
+       return false;
+     }
    }
  },
  bindStoreListenersFnStrategy:{
