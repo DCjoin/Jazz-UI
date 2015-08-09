@@ -457,10 +457,10 @@ let ChartComponentBox = React.createClass({
     this.props.chartCmpStrategy.mergeConfigFn(defaultConfig);
   },
   convertData: function (data, config) {
-      return this.props.chartStrategy.converDataFn(data, config);
+      return this.props.chartCmpStrategy.convertDataFn(data, config, this);
   },
   convertSingleItem: function (item, s) {
-    this.props.chartStrategy.convertSingleItemFn(item, s);
+    this.props.chartCmpStrategy.convertSingleItemFn(item, s);
   },
   initRange: function (newConfig, realData) {
      var converter = DataConverter;

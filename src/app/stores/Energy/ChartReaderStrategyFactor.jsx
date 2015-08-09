@@ -25,7 +25,7 @@ let ChartReaderStrategyFactor = {
     },
     EnergyPieReader:{
       baseReader:'pieReaderBase',
-      setItemByTarget:'setItemByTarget'
+      setItemByTargetFn:'setItemByTarget'
     }
   },
   convertFnStrategy:{
@@ -52,7 +52,7 @@ let ChartReaderStrategyFactor = {
          for (var i = 0; i < d.length; ++i) {
              t = d[i].Target;
              item = {};
-             this.setItemByTargetStrategy.setItemByTarget(item, t, i);
+             this.setItemByTargetFn(item, t, i);
              if (!item.option) item.option = {};
              if (t.Uom) {
                  uom = t.Uom;
@@ -78,7 +78,7 @@ let ChartReaderStrategyFactor = {
          return { Data: arr };
     }
   },
-  setItemByTargetStrategy:{
+  setItemByTargetFnStrategy:{
     setItemByTarget(item, target){
       item.name = target.Name;
       item.uid = target.TargetId;

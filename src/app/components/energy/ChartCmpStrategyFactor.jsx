@@ -74,7 +74,7 @@ let ChartCmpStrategyFactor = {
     }
   },
 
-  mergeConfigStrategy:{
+  mergeConfigFnStrategy:{
     energyChartCmpMergeConfig(defaultConfig){
       var commonTooltipFormatter = function () {
           var op = this.points[0].series.options.option,
@@ -165,7 +165,7 @@ let ChartCmpStrategyFactor = {
     }
   },
   convertDataFnStrategy:{
-    convertData(data, config){
+    convertData(data, config, cmpBox){
       var ret = [];
       for (var j = 0; j < data.length; ++j) {
           var item = data[j];
@@ -179,7 +179,6 @@ let ChartCmpStrategyFactor = {
             enableDelete = false;
           }
           var s = {
-              //type: isBenchmarkLine ? 'line' : this.props.chartType,
               name: n,
               enableDelete: enableDelete,
               enableHide: !!!item.disableHide,
@@ -213,15 +212,15 @@ let ChartCmpStrategyFactor = {
                   offsetY: 3
               };
               s.type = 'line';
-          }else if(this.props.chartType == 'stack'){
+          }else if(cmpBox.props.chartType == 'stack'){
             s.type = 'column';
             s.stacking = 'normal';
             s.stack = item.option.uomId;
           }else{
-            s.type = this.props.chartType;
+            s.type = cmpBox.props.chartType;
             s.stacking = undefined;
           }
-          this.convertSingleItem(item, s);
+          cmpBox.props.chartCmpStrategy.convertSingleItemFn(item, s, cmpBox);
           var yList = config.yAxis; //pie chart don't return yAxis
           if (yList && yList.length > 0) {
               for (var i = 0; i < yList.length; ++i) {
@@ -240,13 +239,13 @@ let ChartCmpStrategyFactor = {
     }
   },
   convertSingleItemFnStrategy:{
-    convertSingleItem(item, s){
+    convertSingleItem(item, s, cmpBox){
       var d = s.data;
       if (!d) return;
 
       var converter = DataConverter,
-          endTime = converter.JsonToDateTime(this.props.endTime, true),
-          startTime = converter.JsonToDateTime(this.props.startTime, true);
+          endTime = converter.JsonToDateTime(cmpBox.props.endTime, true),
+          startTime = converter.JsonToDateTime(cmpBox.props.startTime, true);
 
       if (_.isArray(d) && d.length === 0) {
           d = [[startTime, null], [endTime, null]];
@@ -276,7 +275,7 @@ let ChartCmpStrategyFactor = {
                   d.unshift([d[0][0] - range, null]);
               }
 
-              var realEndTime = DataConverter.JsonToDateTime(this.props.endTime, true);
+              var realEndTime = DataConverter.JsonToDateTime(cmpBox.props.endTime, true);
               currentTime = currentTime > realEndTime ? currentTime : realEndTime;
               if (d[d.length - 1][0] < currentTime) {
                   while (d[d.length - 1][0] < currentTime) {

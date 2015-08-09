@@ -13,7 +13,7 @@ import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx
 import EnergyAction from '../../actions/EnergyAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
-import ChartComponent from './ChartComponent.jsx';
+import ChartComponentBox from './ChartComponentBox.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 
@@ -167,7 +167,7 @@ let ChartStrategyFactor = {
                        <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
                        <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
                      </div>
-                     <ChartComponent {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                     <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
       return energyPart;
    }
