@@ -19,11 +19,11 @@ let ChartPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
       chartTitle:  React.PropTypes.string,
-      busTypes: React.PropTypes.oneOf(['energy', 'unit','ratio','labelling','ranking'])
+      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Labelling','Rank'])
     },
     getDefaultProps(){
       return {
-        busTypes:'energy'
+        bizType:'Energy'
       };
     },
     getInitialState(){
@@ -38,6 +38,7 @@ let ChartPanel = React.createClass({
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
         selectedChartType:'line',
+        energyType:'energy',//'one of energy, cost carbon'
         chartStrategy: chartStrategy
       };
       if(this.props.chartTitle){
@@ -88,8 +89,8 @@ let ChartPanel = React.createClass({
       this.state.chartStrategy.unbindStoreListenersFn(me);
     },
     getEnergyTypeCombo(){
-      let busTypes = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
-      return <DropDownMenu menuItems={busTypes}></DropDownMenu>;
+      let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
+      return <DropDownMenu menuItems={types}></DropDownMenu>;
     },
     _onDateSelectorChanged(){
       this.refs.relativeDate.setState({selectedIndex:0});

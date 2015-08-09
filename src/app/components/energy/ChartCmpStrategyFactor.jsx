@@ -61,19 +61,119 @@ let ChartCmpStrategyFactor = {
     convertSingleItemFn:'convertSingleItem'
   },
   strategyConfiguration: {
-    EnergyChartComponent:{
-      mergeConfigFn:'energyChartCmpMergeConfig'
+    EnergyTrendComponent:{
+      mergeConfigFn:'energyChartCmpMergeConfig',
+      initYaxisFn:'initYaxis'
     },
-    RankChartComponent:{
+    RankTrendComponent:{
 
     },
-    PieChartComponent:{
+    EnergyPieComponent:{
       mergeConfigFn:'pieChartCmpMergeConfig',
       convertDataFn:'pieConvertData',
-      pieConvertSingleItemFn:'pieConvertSingleItem'
+      pieConvertSingleItemFn:'pieConvertSingleItem',
+      initYaxisFn:'empty'
     }
   },
+  initYaxisFnStrategy:{
+    empty:function(){},
+    initYaxis(data, config, yAxisOffset, cmpBox){
+      if (!isArray(data)) return;
+      var yList = [], dic = {}, count = 0, offset = yAxisOffset;
 
+      for (let i = 0; i < data.length; i++) {
+          let uom = data[i].option.uom;
+          if (dic[uom]) continue;
+          //when no data,not generate yaxis
+          if (data[i].data.length < 1) continue;
+          let name = uom;
+          let sign = count === 0 ? 1 : -1;
+          let min = 0, max;
+          if (cmpBox.props.getYaxisConfig && cmpBox.props.getYaxisConfig()) {
+              let yconfig = cmpBox.props.getYaxisConfig();
+              for (let j = 0; j < yconfig.length; j++) {
+                  if (yconfig[j].uom == name) {
+                      min = yconfig[j].val[1];
+                      max = yconfig[j].val[0];
+                      break;
+                  }
+              }
+          }
+          yList.push({
+              'yname': name,
+              showLastLabel: true,
+              min: min,
+              max: max,
+              type: 'linear',
+              title: {
+                  align: 'high',
+                  rotation: 0,
+                  y: -15,
+                  text: ''
+              },
+              minRange: 0.1,//must have when values are all the same, make it draw y axis
+              labels: {
+                  align: count === 0 ? 'right' : 'left',
+                  y: 5,
+                  x: -6 * sign,
+                  formatter: dataLabelFormatter
+              },
+              offset: yList.length >= 3 ? -10000 : count != 2 ? 0 : offset,
+              opposite: (count !== 0)//,
+              //gridLineWidth: count == 0 ? 1 : 0//for contour 等高线对齐，要使用此属性
+          });
+          count++;
+          dic[uom] = true;
+      }
+      if (yList.length === 0) {
+          yList.push({});
+      }
+      if (cmpBox.type != 'pie') {
+          var yconfig = cmpBox.yaxisSelector;
+          if (yconfig) yconfig = cmpBox.yaxisSelector.getYaxisConfig();
+          if (!yconfig) yconfig = [];
+          for (let i = 0; i < data.length; ++i) {
+              if (data[i].data.length < 1) continue;
+              var uom = data[i].option.uom;
+              var name = uom;
+              var customized = false;
+              for (let j = 0; j < yconfig.length; j++) {
+                  if (yconfig[j].uom == name) {
+                      customized = true;
+                      break;
+                  }
+              }
+              if (customized) continue;
+
+              var data1 = data[i] && data[i].data;
+              var hasNeg = false;
+              for (var j = 0; j < data1.length; ++j) {
+                  if (isArray(data1[j])) {
+                      if (data1[j][1] && data1[j][1] < 0) {
+                          hasNeg = true;
+                          break;
+                      }
+                  }
+                  else {
+                      if (data1[j] < 0) {
+                          hasNeg = true;
+                          break;
+                      }
+                  }
+              }
+              if (hasNeg) {
+                  for (var k = 0; k < yList.length; ++k) {
+                      var y = yList[k];
+                      if (y.yname == name) {
+                          y.min = undefined;
+                      }
+                  }
+              }
+          }
+      }
+      config.yAxis = yList;
+    }
+  },
   mergeConfigFnStrategy:{
     energyChartCmpMergeConfig(defaultConfig){
       var commonTooltipFormatter = function () {

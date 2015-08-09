@@ -156,11 +156,14 @@ let ChartStrategyFactor = {
    getEnergyChartComponent(analysisPanel){
      let energyPart;
      let chartCmpObj ={ref:'ChartComponent',
+                       bizType:analysisPanel.props.bizType,
+                       energyType: analysisPanel.state.energyType,
                        chartType: analysisPanel.state.selectedChartType,
                        energyData: analysisPanel.state.energyData,
                        energyRawData: analysisPanel.state.energyRawData,
                        onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
-                       onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick};
+                       onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                     };
 
      energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                      <div style={{display:'flex'}}>
