@@ -4,6 +4,10 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
+import CommonFuns from '../util/Util.jsx';
+import ActionTypes from '../../constants/actionType/Energy.jsx';
+import ChartReaderStrategyFactor from './ChartReaderStrategyFactor.jsx';
+
 
 let _isLoading = false,
     _energyData = null,
@@ -16,7 +20,14 @@ let _isLoading = false,
     _errorCode = null,
     _errorMessage = null;
 
+const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
+      ENERGY_DATA_LOADED_EVENT = 'energydataloadedevent',
+      ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror';
+
 let EnergyStore = assign({},PrototypeStore,{
+  initReader(bizChartType){
+    this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType();
+  },
   getLoadingStatus(){
     return _isLoading;
   },
@@ -56,7 +67,7 @@ let EnergyStore = assign({},PrototypeStore,{
     _errorCode = errorCode;
     _errorMessage = error.Messages;
   },
-  //only one tagOptions if click tag in alarm list
+
   _onDataLoading(params, tagOptions, relativeDate){
     _submitParams = params;
     _isLoading = true;
@@ -87,26 +98,53 @@ let EnergyStore = assign({},PrototypeStore,{
     window.testObj._energyRawData = _energyRawData;
     //add this for test team end
 
-    _energyData = Immutable.fromJS(ReaderFuncs.convert(data, obj));
+    _energyData = Immutable.fromJS(this.readerStrategy.convert(data, obj));
   },
   removeSeriesDataByUid(uid){
 
   },
   //listners--------------------------------
+  addEnergyDataLoadingListener: function(callback) {
+    this.on(ENERGY_DATA_LOADING_EVENT, callback);
+  },
+  emitEnergyDataLoading: function() {
+    this.emit(ENERGY_DATA_LOADING_EVENT);
+  },
+  removeEnergyDataLoadingListener: function(callback) {
+    this.removeListener(ENERGY_DATA_LOADING_EVENT, callback);
+  },
+  addEnergyDataLoadedListener: function(callback) {
+    this.on(ENERGY_DATA_LOADED_EVENT, callback);
+  },
+  emitEnergyDataLoadedListener: function() {
+    this.emit(ENERGY_DATA_LOADED_EVENT);
+  },
+  removeEnergyDataLoadedListener: function(callback) {
+    this.removeListener(ENERGY_DATA_LOADED_EVENT, callback);
+  },
+  addEnergyDataLoadErrorListener:function(callback) {
+    this.on(ENERGY_DATA_LOAD_ERROR_EVENT, callback);
+  },
+  emitEnergyDataLoadErrorListener:function(callback) {
+    this.emit(ENERGY_DATA_LOAD_ERROR_EVENT);
+  },
+  removeEnergyDataLoadErrorListener: function(callback) {
+    this.removeListener(ENERGY_DATA_LOAD_ERROR_EVENT, callback);
+  }
 });
 
 
 EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
-      case Action.GET_TAG_DATA_LOADING:
+      case ActionTypes.GET_ENERGY_DATA_LOADING:
         EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate);
         EnergyStore.emitTagDataLoading();
         break;
-      case Action.GET_TAG_DATA_SUCCESS:
+      case ActionTypes.GET_ENERGY_DATA_SUCCESS:
         EnergyStore._onDataChanged(action.energyData, action.submitParams);
         EnergyStore.emitTagDataChange();
         break;
-      case Action.GET_TAG_DATA_ERROR:
+      case ActionTypes.GET_ENERGY_DATA_ERROR:
         EnergyStore._onDataChanged(null, action.submitParams);
         EnergyStore._initErrorText(action.errorText);
         EnergyStore.emitGetTagDataErrorListener();

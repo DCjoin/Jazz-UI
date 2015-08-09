@@ -31,7 +31,7 @@ let EnergyAction = {
                        };
 
     AppDispatcher.dispatch({
-         type: ActionTypes.GET_ALARM_TAG_DATA_LOADING,
+         type: ActionTypes.GET_ENERGY_DATA_LOADING,
          submitParams: submitParams,
          tagOptions: tagOptions,
          relativeDate: relativeDate
@@ -42,14 +42,14 @@ let EnergyAction = {
          commonErrorHandling: false,
          success: function(energyData){
            AppDispatcher.dispatch({
-               type: ActionTypes.GET_ENERGY_PIE_DATA_SUCCESS,
+               type: ActionTypes.GET_ENERGY_DATA_SUCCESS,
                energyData: energyData,
                submitParams: submitParams
            });
          },
          error: function(err, res){
            AppDispatcher.dispatch({
-               type: ActionTypes.GET_ENERGY_PIE_DATA_ERROR,
+               type: ActionTypes.GET_ENERGY_DATA_ERROR,
                errorText: res.text,
                submitParams: submitParams
            });

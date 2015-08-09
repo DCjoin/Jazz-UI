@@ -2,7 +2,8 @@
 import React from "react";
 import _ from 'lodash';
 import CommonFuns from '../../util/Util.jsx';
-import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
+
+let {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} = CommonFuns;
 
 let  tooltipPattern = '<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>';
 let dataLabelFormatter = function(format) {
