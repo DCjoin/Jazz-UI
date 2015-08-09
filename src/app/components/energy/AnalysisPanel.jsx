@@ -125,25 +125,7 @@ let ChartPanel = React.createClass({
       this.setState(state);
     },
     onSearchDataButtonClick(){
-      let dateSelector = this.refs.dateTimeSelector,
-          dateRange = dateSelector.getDateTime(),
-          startDate = dateRange.start,
-          endDate = dateRange.end,
-          nodeOptions;
-
-      if(startDate.getTime()>= endDate.getTime()){
-         window.alert('请选择正确的时间范围');
-        return;
-      }
-
-      nodeOptions = this.state.chartStrategy.getSelectedNodesFn();
-
-      if( !nodeOptions || nodeOptions.length === 0){
-        this.setState({energyData:null});
-        return;
-      }
-      let relativeDateValue = this._getRelativeDateValue();
-      this._setFitStepAndGetData(startDate, endDate, nodeOptions, relativeDateValue);
+      this.state.chartStrategy.onSearchDataButtonClickFn(this);
     },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
@@ -151,14 +133,15 @@ let ChartPanel = React.createClass({
       return obj.value;
     },
     _setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate){
-      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
-          step = this.state.step,
-          limitInterval = CommonFuns.getLimitInterval(timeRanges),
-          stepList = limitInterval.stepList;
-      if( stepList.indexOf(step) == -1){
-        step = limitInterval.display;
-      }
-      this.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
+      this.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, relativeDate. this);
+      // let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
+      //     step = this.state.step,
+      //     limitInterval = CommonFuns.getLimitInterval(timeRanges),
+      //     stepList = limitInterval.stepList;
+      // if( stepList.indexOf(step) == -1){
+      //   step = limitInterval.display;
+      // }
+      // this.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
     },
     _onRelativeDateChange(e, selectedIndex, menuItem){
       let value = menuItem.value,

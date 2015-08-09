@@ -25,8 +25,8 @@ const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
       ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror';
 
 let EnergyStore = assign({},PrototypeStore,{
-  initReader(bizChartType){
-    this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType();
+  initReaderStrategy(bizChartType){
+    this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType(bizChartType);
   },
   getLoadingStatus(){
     return _isLoading;
@@ -98,7 +98,7 @@ let EnergyStore = assign({},PrototypeStore,{
     window.testObj._energyRawData = _energyRawData;
     //add this for test team end
 
-    _energyData = Immutable.fromJS(this.readerStrategy.convert(data, obj));
+    _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj));
   },
   removeSeriesDataByUid(uid){
 
@@ -138,16 +138,16 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case ActionTypes.GET_ENERGY_DATA_LOADING:
         EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate);
-        EnergyStore.emitTagDataLoading();
+        EnergyStore.emitEnergyDataLoading();
         break;
       case ActionTypes.GET_ENERGY_DATA_SUCCESS:
         EnergyStore._onDataChanged(action.energyData, action.submitParams);
-        EnergyStore.emitTagDataChange();
+        EnergyStore.emitEnergyDataLoadedListener();
         break;
       case ActionTypes.GET_ENERGY_DATA_ERROR:
         EnergyStore._onDataChanged(null, action.submitParams);
         EnergyStore._initErrorText(action.errorText);
-        EnergyStore.emitGetTagDataErrorListener();
+        EnergyStore.emitEnergyDataLoadErrorListener();
         break;
     }
 });

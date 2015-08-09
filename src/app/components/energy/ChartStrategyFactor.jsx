@@ -9,12 +9,12 @@ import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import ButtonMenu from '../../controls/ButtonMenu.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
-import AlarmAction from '../../actions/AlarmAction.jsx';
+import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import EnergyAction from '../../actions/EnergyAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponent from './ChartComponent.jsx';
-import EnergyStore from '../../stores/EnergyStore.jsx';
+import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 
 let Menu = require('material-ui/lib/menus/menu');
@@ -34,6 +34,9 @@ let ChartStrategyFactor = {
     Energy: {
       searchBarGenFn:'energySearchBarGen',
       getSelectedNodesFn:'getSelectedTagList',
+      onSearchDataButtonClickFn:'onSearchDataButtonClick',
+      initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
+      setFitStepAndGetDataFn:'setFitStepAndGetData',
       getEnergyDataFn:'energyDataLoad',
       getPieEnergyDataFn:'pieEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
@@ -48,6 +51,58 @@ let ChartStrategyFactor = {
     },UnitEnergyUsage:{
 
     }
+ },
+ initEnergyStoreByBizChartTypeFnStrategy:{
+   initEnergyStoreByBizChartType(analysisPanel){
+     let chartType = analysisPanel.state.selectedChartType;
+     switch (chartType) {
+       case 'line':
+       case 'column':
+       case 'stack':
+         EnergyStore.initReaderStrategy('EnergyTrendReader');
+         break;
+      case 'pie':
+        EnergyStore.initReaderStrategy('EnergyPieReader');
+        break;
+     }
+   }
+ },
+ onSearchDataButtonClickFnStrategy:{
+   onSearchDataButtonClick(analysisPanel){
+      analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+
+     let dateSelector = analysisPanel.refs.dateTimeSelector,
+         dateRange = dateSelector.getDateTime(),
+         startDate = dateRange.start,
+         endDate = dateRange.end,
+         nodeOptions;
+
+     if(startDate.getTime()>= endDate.getTime()){
+         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+       return;
+     }
+
+     nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+
+     if( !nodeOptions || nodeOptions.length === 0){
+       analysisPanel.setState({energyData:null});
+       return;
+     }
+     let relativeDateValue = analysisPanel._getRelativeDateValue();
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+   }
+ },
+ setFitStepAndGetDataFnStrategy:{
+   setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
+     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
+         step = analysisPanel.state.step,
+         limitInterval = CommonFuns.getLimitInterval(timeRanges),
+         stepList = limitInterval.stepList;
+     if( stepList.indexOf(step) == -1){
+       step = limitInterval.display;
+     }
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
+   }
  },
  searchBarGenFnStrategy:{
    energySearchBarGen(analysisPanel){
@@ -73,7 +128,7 @@ let ChartStrategyFactor = {
  },
  getEnergyDataFnStrategy:{
    energyDataLoad(timeRanges, step, tagOptions, relativeDate){
-     AlarmAction.getEnergyData(timeRanges, step, tagOptions, relativeDate);
+     EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate);
    }
  },
  getPieEnergyDataFnStrategy:{
@@ -112,17 +167,17 @@ let ChartStrategyFactor = {
  },
  bindStoreListenersFnStrategy:{
    energyBindStoreListeners(analysisPanel){
-     EnergyStore.addTagDataLoadingListener(analysisPanel._onLoadingStatusChange);
-     EnergyStore.addTagDataChangeListener(analysisPanel._onEnergyDataChange);
-     EnergyStore.addGetTagDataErrorListener(analysisPanel._onGetEnergyDataError);
+     EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    }
  },
  unbindStoreListenersFnStrategy:{
    energyUnbindStoreListeners(analysisPanel){
-     EnergyStore.removeTagDataLoadingListener(analysisPanel._onLoadingStatusChange);
-     EnergyStore.removeTagDataChangeListener(analysisPanel._onEnergyDataChange);
-     EnergyStore.removeGetTagDataErrorListener(analysisPanel._onGetEnergyDataError);
+     EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    }
  },

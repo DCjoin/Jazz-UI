@@ -56,6 +56,44 @@ let EnergyAction = {
          }
        });
   },
+  //for select tags from taglist and click search button.
+  getEnergyTrendChartData(date, step, tagOptions, relativeDate){
+    var timeRange = date;
 
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
+    var submitParams = { tagIds:tagIds,
+                         viewOption:{ DataUsageType: 1,
+                                      IncludeNavigatorData: true,
+                                      Step: step,
+                                      TimeRanges: timeRange
+                                   }
+                       };
+
+    AppDispatcher.dispatch({
+         type: ActionTypes.GET_ENERGY_DATA_LOADING,
+         submitParams: submitParams,
+         tagOptions: tagOptions,
+         relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/GetTagsData', {
+         params:submitParams,
+         commonErrorHandling: false,
+         success: function(energyData){
+           AppDispatcher.dispatch({
+               type: ActionTypes.GET_ENERGY_DATA_SUCCESS,
+               energyData: energyData,
+               submitParams: submitParams
+           });
+         },
+         error: function(err, res){
+           AppDispatcher.dispatch({
+               type: ActionTypes.GET_ENERGY_DATA_ERROR,
+               errorText: res.text,
+               submitParams: submitParams
+           });
+         }
+       });
+  },
 };
 module.exports = EnergyAction;
