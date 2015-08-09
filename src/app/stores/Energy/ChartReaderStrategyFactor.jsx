@@ -3,7 +3,7 @@
 import moment from 'moment';
 import assign from 'object-assign';
 import _ from 'lodash';
-import CommonFuns from '../util/Util.jsx';
+import CommonFuns from '../../util/Util.jsx';
 
 let {DataConverter} = CommonFuns;
 let j2d = DataConverter.JsonToDateTime,

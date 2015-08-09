@@ -1,10 +1,10 @@
 'use strict';
 
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import PrototypeStore from './PrototypeStore.jsx';
+import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
+import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-import CommonFuns from '../util/Util.jsx';
+import CommonFuns from '../../util/Util.jsx';
 import ActionTypes from '../../constants/actionType/Energy.jsx';
 import ChartReaderStrategyFactor from './ChartReaderStrategyFactor.jsx';
 
