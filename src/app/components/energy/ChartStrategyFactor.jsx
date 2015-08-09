@@ -35,6 +35,7 @@ let ChartStrategyFactor = {
       searchBarGenFn:'energySearchBarGen',
       getSelectedNodesFn:'getSelectedTagList',
       onSearchDataButtonClickFn:'onSearchDataButtonClick',
+      onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn:'setFitStepAndGetData',
       getEnergyDataFn:'energyDataLoad',
@@ -83,13 +84,28 @@ let ChartStrategyFactor = {
      }
 
      nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-
      if( !nodeOptions || nodeOptions.length === 0){
        analysisPanel.setState({energyData:null});
        return;
      }
      let relativeDateValue = analysisPanel._getRelativeDateValue();
-     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+
+     let chartType = analysisPanel.state.selectedChartType;
+     if(chartType ==='line' || chartType === 'column' || chartType === 'stack'){
+        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+     }else if(chartType === 'pie'){
+        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+     }
+   }
+ },
+ onSearchBtnItemTouchTapFnStrategy:{
+   onSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel){
+     if(analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType)){
+       analysisPanel.setState({selectedChartType:nextChartType});
+     }else if(nextChartType === 'pie'){
+       analysisPanel.setState({selectedChartType:nextChartType}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
+     }
    }
  },
  setFitStepAndGetDataFnStrategy:{

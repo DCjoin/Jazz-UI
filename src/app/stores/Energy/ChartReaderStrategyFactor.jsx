@@ -252,13 +252,17 @@ let ChartReaderStrategyFactor = {
           cloneConfig = _.cloneDeep(strategyConfig);
 
       if(strategyConfig.baseReader){
-          cloneConfig = CommonFuns.applyIf(cloneConfig, strategyConfig.baseReader);
+          cloneConfig = CommonFuns.applyIf(cloneConfig, ChartReaderStrategyFactor[strategyConfig.baseReader]);
       }
 
       cloneConfig = CommonFuns.applyIf(cloneConfig, this.defaultStrategy);
 
       for (var n in cloneConfig) {
+        if(n === 'baseReader'){
+
+        }else{
           strategyObj[n] = this[n + 'Strategy'][cloneConfig[n]];
+        }
       }
       return strategyObj;
   }

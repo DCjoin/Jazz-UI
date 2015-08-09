@@ -134,14 +134,6 @@ let ChartPanel = React.createClass({
     },
     _setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate){
       this.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, relativeDate. this);
-      // let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
-      //     step = this.state.step,
-      //     limitInterval = CommonFuns.getLimitInterval(timeRanges),
-      //     stepList = limitInterval.stepList;
-      // if( stepList.indexOf(step) == -1){
-      //   step = limitInterval.display;
-      // }
-      // this.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
     },
     _onRelativeDateChange(e, selectedIndex, menuItem){
       let value = menuItem.value,
@@ -162,32 +154,8 @@ let ChartPanel = React.createClass({
       });
     },
     _onSearchBtnItemTouchTap(e, child){
-      this.setState({selectedChartType:child.props.value});
-      if(this.state.chartStrategy.canShareDataWithFn(this.state.selectedChartType, child.props.value)){
-        this.setState({selectedChartType:child.props.value});
-      }else if(child.props.value === 'pie'){
-        let dateSelector = this.refs.dateTimeSelector,
-            dateRange = dateSelector.getDateTime(),
-            startDate = dateRange.start,
-            endDate = dateRange.end,
-            nodeOptions;
-
-        if(startDate.getTime()>= endDate.getTime()){
-           window.alert('请选择正确的时间范围');
-          return;
-        }
-
-        nodeOptions = this.state.chartStrategy.getSelectedNodesFn();
-
-        if( !nodeOptions || nodeOptions.length === 0){
-          this.setState({energyData:null});
-          return;
-        }
-        let relativeDateValue = this._getRelativeDateValue();
-        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-
-        this.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
-      }
+      //this.setState({selectedChartType:child.props.value});
+      this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
     },
 });
 
