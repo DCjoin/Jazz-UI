@@ -1,16 +1,18 @@
 'use strict';
 import React from "react";
 import {Navigation, State } from 'react-router';
-import {CircularProgress,FlatButton,FontIcon,IconButton,IconMenu,} from 'material-ui';
+import {CircularProgress,FlatButton,FontIcon,IconButton,IconMenu} from 'material-ui';
 import SearchBox from './FolderSearchBox.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 import NodeContent from './TreeNodeContent.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
+import Copy from '../../controls/Copy.jsx';
 
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
+
 
 import Immutable from 'immutable';
 
