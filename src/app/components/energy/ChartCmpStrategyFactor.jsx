@@ -69,6 +69,7 @@ let ChartCmpStrategyFactor = {
     },
     RankTrendComponent:{
       mergeConfigFn:'rankChartCmpMergeConfig',
+      convertDataFn:'rankConvertData',
       initNavigatorDataFn:'empty',
       initRangeFn:'empty',
       initYaxisFn:'initYaxis'
@@ -557,6 +558,57 @@ let ChartCmpStrategyFactor = {
           ret.push(s);
       }
       return ret;
+    },
+    rankConvertDataFn(data, config, cmpBox){
+      var item = data[0];
+        var s = {
+            type: 'column',
+            enableDelete: false,
+            enableHide: false,
+            data: item.data,
+            seriesKey: item.seriesKey,
+            uid: 'ranking'
+        };
+        var list = item.option.list;
+
+
+        if (cmpBox.status.order != 1) {//default is asc
+            s.data.reverse();
+            list.reverse();
+        }
+
+
+
+        s.option = {
+            list: cmpBox.makePosition(list),
+            commodity: item.option.commodity,
+            uom: item.option.uom
+        };
+
+        if (s.data.length < this.range) {
+
+            if (s.data.length > 1) {
+                config.xAxis.range = s.data.length - 1;
+                config.xAxis.max = s.data.length - 1;
+                config.xAxis.min = 0;
+            }
+            else {
+                config.xAxis.min = 0;
+                config.xAxis.max = 1;
+                config.xAxis.range = config.xAxis.max;
+            }
+            //newConfig.xAxis.range = newConfig.xAxis.max;
+        }
+
+        if (s.data.length === 0) {
+            config.xAxis = null;
+            config.yAxis = null;
+            config.series = [{data:[]}];
+        }
+        else {
+            config.series = [s];
+        }
+        return [s];
     },
     pieConvertData(data, config){
        var ret = ChartCmpStrategyFactor.convertDataFnStrategy.convertData(data, config);
