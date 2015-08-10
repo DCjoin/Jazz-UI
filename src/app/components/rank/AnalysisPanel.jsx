@@ -8,14 +8,14 @@ import CommonFuns from '../../util/Util.jsx';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
-import EnergyStore from '../../stores/EnergyStore.jsx';
+import EnergyStore from '../../stores/RankStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
  {value: 'ThisMonth', text: '本月'}, {value: 'LastMonth', text: '上月'}, {value: 'ThisYear', text: '今年'}, {value: 'LastYear', text: '去年'}];
 
-let AnalysisPanel = React.createClass({
+let ChartPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
       chartTitle:  React.PropTypes.string,
@@ -23,11 +23,11 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        busTypes:'ranking'
+        busTypes:'energy'
       };
     },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType('Ranking');
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType('Energy');
       let state = {
         isLoading: false,
         energyData: null,
@@ -37,7 +37,7 @@ let AnalysisPanel = React.createClass({
         step: null,
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
-        selectedChartType:'column',
+        selectedChartType:'line',
         chartStrategy: chartStrategy
       };
       if(this.props.chartTitle){
@@ -125,7 +125,25 @@ let AnalysisPanel = React.createClass({
       this.setState(state);
     },
     onSearchDataButtonClick(){
-      this.state.chartStrategy.searchButtonClickFn(this);
+      let dateSelector = this.refs.dateTimeSelector,
+          dateRange = dateSelector.getDateTime(),
+          startDate = dateRange.start,
+          endDate = dateRange.end,
+          nodeOptions;
+
+      if(startDate.getTime()>= endDate.getTime()){
+         window.alert('请选择正确的时间范围');
+        return;
+      }
+
+      nodeOptions = this.state.chartStrategy.getSelectedNodesFn();
+
+      if( !nodeOptions || nodeOptions.length === 0){
+        this.setState({energyData:null});
+        return;
+      }
+      let relativeDateValue = this._getRelativeDateValue();
+      this._setFitStepAndGetData(startDate, endDate, nodeOptions, relativeDateValue);
     },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
@@ -165,4 +183,4 @@ let AnalysisPanel = React.createClass({
     },
 });
 
-module.exports = AnalysisPanel;
+module.exports = ChartPanel;
