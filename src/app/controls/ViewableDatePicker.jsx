@@ -13,7 +13,7 @@ var ViewableDatePicker = React.createClass({
     mixins:[ClickAwayable],
     propTypes: {
         isViewStatus: React.PropTypes.bool,
-        defaultValue: React.PropTypes.string,
+        defaultValue: React.PropTypes.object,
         minDate: React.PropTypes.object,
         maxDate: React.PropTypes.object,
         dateFormatStr: React.PropTypes.string

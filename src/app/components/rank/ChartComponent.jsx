@@ -505,7 +505,7 @@ let ChartComponent = React.createClass({
             enableDelete = false;
           }
           var s = {
-              //type: isBenchmarkLine ? 'line' : this.props.chartType,
+              type: isBenchmarkLine ? 'line' : this.props.chartType,
               name: n,
               enableDelete: enableDelete,
               enableHide: !!!item.disableHide,
@@ -538,14 +538,6 @@ let ChartComponent = React.createClass({
                   offsetX: 0,
                   offsetY: 3
               };
-              s.type = 'line';
-          }else if(this.props.chartType == 'stack'){
-            s.type = 'column';
-            s.stacking = 'normal';
-            s.stack = item.option.uomId;
-          }else{
-            s.type = this.props.chartType;
-            s.stacking = undefined;
           }
           this.convertSingleItem(item, s);
           var yList = config.yAxis; //pie chart don't return yAxis
@@ -810,8 +802,8 @@ let ChartComponent = React.createClass({
             let name = uom;
             let sign = count === 0 ? 1 : -1;
             let min = 0, max;
-            if (this.props.getYaxisConfig && this.props.getYaxisConfig()) {
-                let yconfig =this.props.getYaxisConfig();
+            if (this.yaxisSelector) {
+                let yconfig = this.yaxisSelector.getYaxisConfig();
                 for (let j = 0; j < yconfig.length; j++) {
                     if (yconfig[j].uom == name) {
                         min = yconfig[j].val[1];

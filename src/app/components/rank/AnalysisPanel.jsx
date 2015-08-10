@@ -8,26 +8,26 @@ import CommonFuns from '../../util/Util.jsx';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
-import EnergyStore from '../../stores/energy/EnergyStore.jsx';
+import EnergyStore from '../../stores/RankStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
  {value: 'ThisMonth', text: '本月'}, {value: 'LastMonth', text: '上月'}, {value: 'ThisYear', text: '今年'}, {value: 'LastYear', text: '去年'}];
 
-let AnalysisPanel = React.createClass({
+let ChartPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
       chartTitle:  React.PropTypes.string,
-      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Labelling','Rank'])
+      busTypes: React.PropTypes.oneOf(['energy', 'unit','ratio','labelling','ranking'])
     },
     getDefaultProps(){
       return {
-        bizType:'Energy'
+        busTypes:'energy'
       };
     },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType('Rank');
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType('Energy');
       let state = {
         isLoading: false,
         energyData: null,
@@ -38,7 +38,6 @@ let AnalysisPanel = React.createClass({
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
         selectedChartType:'line',
-        energyType:'energy',//'one of energy, cost carbon'
         chartStrategy: chartStrategy
       };
       if(this.props.chartTitle){
@@ -89,8 +88,8 @@ let AnalysisPanel = React.createClass({
       this.state.chartStrategy.unbindStoreListenersFn(me);
     },
     getEnergyTypeCombo(){
-      let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
-      return <DropDownMenu menuItems={types}></DropDownMenu>;
+      let busTypes = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
+      return <DropDownMenu menuItems={busTypes}></DropDownMenu>;
     },
     _onDateSelectorChanged(){
       this.refs.relativeDate.setState({selectedIndex:0});
@@ -126,7 +125,25 @@ let AnalysisPanel = React.createClass({
       this.setState(state);
     },
     onSearchDataButtonClick(){
-      this.state.chartStrategy.onSearchDataButtonClickFn(this);
+      let dateSelector = this.refs.dateTimeSelector,
+          dateRange = dateSelector.getDateTime(),
+          startDate = dateRange.start,
+          endDate = dateRange.end,
+          nodeOptions;
+
+      if(startDate.getTime()>= endDate.getTime()){
+         window.alert('请选择正确的时间范围');
+        return;
+      }
+
+      nodeOptions = this.state.chartStrategy.getSelectedNodesFn();
+
+      if( !nodeOptions || nodeOptions.length === 0){
+        this.setState({energyData:null});
+        return;
+      }
+      let relativeDateValue = this._getRelativeDateValue();
+      this._setFitStepAndGetData(startDate, endDate, nodeOptions, relativeDateValue);
     },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
@@ -134,7 +151,14 @@ let AnalysisPanel = React.createClass({
       return obj.value;
     },
     _setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate){
-      this.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, relativeDate. this);
+      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
+          step = this.state.step,
+          limitInterval = CommonFuns.getLimitInterval(timeRanges),
+          stepList = limitInterval.stepList;
+      if( stepList.indexOf(step) == -1){
+        step = limitInterval.display;
+      }
+      this.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
     },
     _onRelativeDateChange(e, selectedIndex, menuItem){
       let value = menuItem.value,
@@ -155,9 +179,8 @@ let AnalysisPanel = React.createClass({
       });
     },
     _onSearchBtnItemTouchTap(e, child){
-      //this.setState({selectedChartType:child.props.value});
-      this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
+      this.setState({selectedChartType:child.props.value});
     },
 });
 
-module.exports = AnalysisPanel;
+module.exports = ChartPanel;

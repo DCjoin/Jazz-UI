@@ -1,5 +1,8 @@
 'use strict';
-
+/*
+此store是为了出发让chart重新绘制的事件，
+其中的一个使用场景是当在setting页面隐藏树panel的时候，重绘chart使它能撑满整个页面、
+*/
 import PopAppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import assign from 'object-assign';
 import events from 'events';

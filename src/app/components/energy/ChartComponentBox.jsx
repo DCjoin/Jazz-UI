@@ -11,6 +11,7 @@ import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
+import ChartCmpStrategyFactor from './ChartCmpStrategyFactor.jsx';
 
 let { Dialog, FlatButton, Checkbox } = mui;
 let yAxisOffset = 70;
@@ -296,7 +297,7 @@ let defaultConfig = {
     }
 };
 
-let ChartComponent = React.createClass({
+let ChartComponentBox = React.createClass({
     propTypes: {
         onDeleteButtonClick: React.PropTypes.func,
         onDeleteAllButtonClick: React.PropTypes.func,
@@ -315,6 +316,40 @@ let ChartComponent = React.createClass({
     },
     componentWillMount(){
       this.initDefaultConfig();
+    },
+    getInitialState(){
+      let bizType = this.props.bizType,
+          energyType = this.props.energyType,
+          chartType = this.props.chartType;
+
+      let chartCmpStrategy;
+      switch (bizType) {
+        case 'Energy':
+          if(energyType === 'energy'){
+            if(chartType ==='line' || chartType ==='column' || chartType === 'stack'){
+              chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
+            }else if(chartType === 'pie'){
+              chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
+            }
+          }
+          break;
+        case 'Unit':
+
+          break;
+        case 'Ratio':
+
+          break;
+        case 'Labelling':
+
+          break;
+        case 'Rank':
+
+          break;
+
+      }
+      return {
+        chartCmpStrategy: chartCmpStrategy
+      };
     },
     shouldComponentUpdate: function(nextProps, nextState) {
       return !(this.props.energyData.equals(nextProps.energyData) && this.props.chartType === nextProps.chartType);
@@ -451,163 +486,13 @@ let ChartComponent = React.createClass({
 
   },
   mergeConfig: function (defaultConfig) {
-    var commonTooltipFormatter = function () {
-        var op = this.points[0].series.options.option,
-            start = op.start,
-            end = op.end, uom,
-            step = op.targetStep || op.step,
-            decimalDigits, serieDecimalDigits;
-        var str = formatDateByStep(this.x, start, end, step);
-        str += '<br/>';
-        var total = 0;
-        decimalDigits = 0;
-        for (var i = 0; i < this.points.length; ++i) {
-            var point = this.points[i],
-                series = point.series,
-                name = series.name,
-                color = series.color;
-
-                uom = series.options.option.uom;
-            str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
-                color, name, dataLabelFormatter.call({ value: point.y }, false), uom);
-            if (isNumber(point.y)) {
-                total += point.y;
-
-                serieDecimalDigits = getDecimalDigits(point.y);
-                if (serieDecimalDigits > 0 && serieDecimalDigits > decimalDigits) {
-                    decimalDigits = serieDecimalDigits;
-                }
-            }
-        }
-        if (decimalDigits > 0) {
-            total = toFixed(total, decimalDigits);
-        }
-        total = dataLabelFormatter.call({ value: total }, false);
-        if (this.points.length > 1 && this.points[0].series.chart.userOptions.chartTooltipHasTotal) {
-            str += '总计：<b>' + total + uom + '</b>';
-        }
-        return str;
-    };
-
-    defaultConfig.tooltip.formatter = commonTooltipFormatter;
+    this.state.chartCmpStrategy.mergeConfigFn(defaultConfig);
   },
   convertData: function (data, config) {
-      var ret = [];
-      for (var j = 0; j < data.length; ++j) {
-          var item = data[j];
-          var n = item.name;
-          var isBenchmarkLine = item.dType == 15;
-          if (n.indexOf('<br') < 0) {//hack for multi-timespan compare
-             n = JazzCommon.GetArialStr(n, 23); //greater than 23 then truncate with ...
-          }
-          let enableDelete = true;
-          if(item.dType == 13 || item.dType == 14 || item.dType == 15){
-            enableDelete = false;
-          }
-          var s = {
-              //type: isBenchmarkLine ? 'line' : this.props.chartType,
-              name: n,
-              enableDelete: enableDelete,
-              enableHide: !!!item.disableHide,
-              data: item.data,
-              option: item.option,
-              uid: item.uid,
-              id: item.uid + '' + item.dType,
-              seriesKey: item.seriesKey,
-              graySerie: item.hasOwnProperty('graySerie') ? item.graySerie : (item.hasOwnProperty('visible') ? !item.visible : false)
-          };
-
-          if (isBenchmarkLine) {
-              //benchmark line color
-              s.color = '#f15e31';
-              s.lineWidth = 4;
-
-              s.states = s.states || {};
-              s.states.hover = s.states.hover || {};
-              s.states.hover.enabled = true;
-              s.states.hover.lineWidth = 4;
-
-              s.marker = {
-                  enabled: true, radius: 6, lineWidth: 2, lineColor: 'white',
-                  states: { hover: { enabled: true, radius: 8, lineWidth: 2, lineColor: 'white' } }
-              };
-
-              s.shadow = {
-                  color: 'grey',
-                  width: 3,
-                  offsetX: 0,
-                  offsetY: 3
-              };
-              s.type = 'line';
-          }else if(this.props.chartType == 'stack'){
-            s.type = 'column';
-            s.stacking = 'normal';
-            s.stack = item.option.uomId;
-          }else{
-            s.type = this.props.chartType;
-            s.stacking = undefined;
-          }
-          this.convertSingleItem(item, s);
-          var yList = config.yAxis; //pie chart don't return yAxis
-          if (yList && yList.length > 0) {
-              for (var i = 0; i < yList.length; ++i) {
-                  if (yList[i].yname == s.option.uom) {
-                      s.yAxis = i;
-                  }
-              }
-          }
-          ret.push(s);
-      }
-      return ret;
+      return this.state.chartCmpStrategy.convertDataFn(data, config, this);
   },
   convertSingleItem: function (item, s) {
-      var d = s.data;
-      if (!d) return;
-
-      var converter = DataConverter,
-          endTime = converter.JsonToDateTime(this.props.endTime, true),
-          startTime = converter.JsonToDateTime(this.props.startTime, true);
-
-      if (_.isArray(d) && d.length === 0) {
-          d = [[startTime, null], [endTime, null]];
-      } else {
-          var step = s.option.step;
-          var range = 100000 ;
-          switch (step) {
-              case 1: //hour add 30mins
-                  range = 3600000;
-                  break;
-              case 2: //day add 12hours
-                  range =  24 * 3600000;
-                  break;
-              case 3: //month add 15days
-                  range = 30 * 24 * 3600000;
-                  break;
-              case 4: //2010年 add 6months
-                  range = 12 * 30 * 24 * 3600000;
-                  break;
-              case 5: //week add 3days&12hours
-                  range = 7 * 24 * 3600000;
-                  break;
-          }
-          if (_.isArray(d)) {
-              var currentTime = (new Date()).getTime();
-              while (d[0][0] > startTime) {
-                  d.unshift([d[0][0] - range, null]);
-              }
-
-              var realEndTime = DataConverter.JsonToDateTime(this.props.endTime, true);
-              currentTime = currentTime > realEndTime ? currentTime : realEndTime;
-              if (d[d.length - 1][0] < currentTime) {
-                  while (d[d.length - 1][0] < currentTime) {
-                      d.push([d[d.length - 1][0] + range, null]);
-                  }
-                  if (d[d.length - 1][0] > currentTime) {
-                      d.pop();
-                  }
-              }
-          }
-      }
+    this.state.chartCmpStrategy.convertSingleItemFn(item, s);
   },
   initRange: function (newConfig, realData) {
      var converter = DataConverter;
@@ -799,100 +684,7 @@ let ChartComponent = React.createClass({
       return max;
    },
    initYaxis: function (data, config) {
-        if (!isArray(data)) return;
-        var yList = [], dic = {}, count = 0, offset = yAxisOffset;
-
-        for (let i = 0; i < data.length; i++) {
-            let uom = data[i].option.uom;
-            if (dic[uom]) continue;
-            //when no data,not generate yaxis
-            if (data[i].data.length < 1) continue;
-            let name = uom;
-            let sign = count === 0 ? 1 : -1;
-            let min = 0, max;
-            if (this.props.getYaxisConfig && this.props.getYaxisConfig()) {
-                let yconfig =this.props.getYaxisConfig();
-                for (let j = 0; j < yconfig.length; j++) {
-                    if (yconfig[j].uom == name) {
-                        min = yconfig[j].val[1];
-                        max = yconfig[j].val[0];
-                        break;
-                    }
-                }
-            }
-            yList.push({
-                'yname': name,
-                showLastLabel: true,
-                min: min,
-                max: max,
-                type: 'linear',
-                title: {
-                    align: 'high',
-                    rotation: 0,
-                    y: -15,
-                    text: ''
-                },
-                minRange: 0.1,//must have when values are all the same, make it draw y axis
-                labels: {
-                    align: count === 0 ? 'right' : 'left',
-                    y: 5,
-                    x: -6 * sign,
-                    formatter: dataLabelFormatter
-                },
-                offset: yList.length >= 3 ? -10000 : count != 2 ? 0 : offset,
-                opposite: (count !== 0)//,
-                //gridLineWidth: count == 0 ? 1 : 0//for contour 等高线对齐，要使用此属性
-            });
-            count++;
-            dic[uom] = true;
-        }
-        if (yList.length === 0) {
-            yList.push({});
-        }
-        if (this.type != 'pie') {
-            var yconfig = this.yaxisSelector;
-            if (yconfig) yconfig = this.yaxisSelector.getYaxisConfig();
-            if (!yconfig) yconfig = [];
-            for (let i = 0; i < data.length; ++i) {
-                if (data[i].data.length < 1) continue;
-                var uom = data[i].option.uom;
-                var name = uom;
-                var customized = false;
-                for (let j = 0; j < yconfig.length; j++) {
-                    if (yconfig[j].uom == name) {
-                        customized = true;
-                        break;
-                    }
-                }
-                if (customized) continue;
-
-                var data1 = data[i] && data[i].data;
-                var hasNeg = false;
-                for (var j = 0; j < data1.length; ++j) {
-                    if (isArray(data1[j])) {
-                        if (data1[j][1] && data1[j][1] < 0) {
-                            hasNeg = true;
-                            break;
-                        }
-                    }
-                    else {
-                        if (data1[j] < 0) {
-                            hasNeg = true;
-                            break;
-                        }
-                    }
-                }
-                if (hasNeg) {
-                    for (var k = 0; k < yList.length; ++k) {
-                        var y = yList[k];
-                        if (y.yname == name) {
-                            y.min = undefined;
-                        }
-                    }
-                }
-            }
-        }
-        config.yAxis = yList;
+        this.state.chartCmpStrategy.initYaxisFn(data, config, yAxisOffset, this);
     },
     initFlagSeriesData: function (newConfig, convertedData) {
         var item,
@@ -943,4 +735,4 @@ let ChartComponent = React.createClass({
     }
 });
 
-module.exports = ChartComponent;
+module.exports = ChartComponentBox;
