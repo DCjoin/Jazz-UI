@@ -85,10 +85,13 @@ server.route({
 module.exports = server;
 
 server.register([
-    
+
 	{
         register: require("./orgnization.js")
-    }
+    },
+		{
+	        register: require("./file.js")
+	    }
 ], function () {
     //Start the server
     server.start(function() {

@@ -125,7 +125,8 @@ let ReaderFuncs = {
               end: end,
               step: step,
               targetStep: t.Step,
-              uom: uom
+              uom: uom,
+              uomId: t.UomId
           });
           obj.data = arr;
           if (setter) {

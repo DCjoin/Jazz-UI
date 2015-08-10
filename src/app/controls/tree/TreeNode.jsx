@@ -7,6 +7,7 @@ import assign from 'object-assign';
 import classNames from 'classnames';
 import _ from 'lodash';
 import Immutable from 'immutable';
+import {List,includes} from 'immutable';
 
 //import AlarmStore from '../../stores/AlarmStore.jsx';
 //import BubbleIcon from '../../components/BubbleIcon.jsx';
@@ -76,33 +77,57 @@ var TreeNode = React.createClass({
       collapsed: this.getDefaultCollapsed(),
     };
   },
-  /*
-  componentWillReceiveProps:function(nextProps){
-    if(nextProps.checkedNodes!=this.props.checkedNodes){
-      this.setState({
-        collapsed: this.getDefaultCollapsed(nextProps.checkedNodes)
-      });
+
+
+  componentWillUnmount:function(){
+    console.log("**wyh***");
+  },
+  getDefaultCollapsedBySelectedNode:function(){
+    var that=this;
+    var f=function(item){
+      if(item.get('Id')==that.props.selectedNode.get('Id')){
+        return true;
+      }
+      else{
+        if(item.get('Children')!==null){
+          let has=false;
+          item.get('Children').forEach(function(child){
+            if(f(child)) has=true;
+          });
+          return has;
+        }
+        return false;
+      }
+    };
+    if(!!this.props.selectedNode){
+        return f(this.props.nodeData)
     }
-  },*/
+    else {
+      return false
+    }
+  },
   getDefaultCollapsed: function () {
     var levelStatus=false,
-        checkedStatus=true;
+        checkedStatus=!this.getDefaultCollapsedBySelectedNode();
     if(this.props.collapsedLevel === 0 ||  this.props.collapsedLevel){
       levelStatus=this.props.level > this.props.collapsedLevel;
-    } ;
-    let nodes=this.props.nodeData.get("Children");
-    let that=this;
-    if(nodes!==null){
-      nodes.forEach(function(node){
-        if(that.props.checkedNodes!==null){
-          that.props.checkedNodes.forEach(function(checkedNode){
-            if(node.get("Id")==checkedNode.get("Id")){
-              checkedStatus=false;
-            }
-          });
-        }
-      })
     };
+    if(checkedStatus){
+      let nodes=this.props.nodeData.get("Children");
+      let that=this;
+      if(!!nodes){
+        nodes.forEach(function(node){
+            if(!!that.props.checkedNodes){
+              that.props.checkedNodes.forEach(function(checkedNode){
+                if(node.get("Id")==checkedNode.get("Id")){
+                  checkedStatus=false;
+                }
+              });
+            }
+        })
+      };
+    }
+
 
     return(levelStatus && checkedStatus);
   },
@@ -166,11 +191,13 @@ var TreeNode = React.createClass({
   },
 
   generateArrow: function (hasChild) {
+    var nodeData=this.props.nodeData;
+    var type = nodeData.get("Type");
     return (
       <div className="arrow" onClick={this.handleClickArrow}>
         <div className={classNames({
-          "hasChild"  : hasChild,
-          "hasNoChild": !hasChild
+          "hasChild"  : (hasChild || type == nodeType.Folder),
+          "hasNoChild": !(hasChild || type == nodeType.Folder)
         })}>
           <div className={classNames({
             "fa icon-hierarchy-unfold": !this.state.collapsed,
@@ -214,7 +241,7 @@ var TreeNode = React.createClass({
             "icon-panel"      : type == nodeType.Panel && isAsset,
             "icon-panel-box"  : type == nodeType.Panel && !isAsset,
             "icon-device"     : type == nodeType.Device && isAsset,
-            "icon-device-box" : type == nodeType.Device && !isAsset
+            "icon-device-box" : type == nodeType.Device && !isAsset,
           })}/>
         </div>
     );
@@ -286,8 +313,8 @@ var TreeNode = React.createClass({
 
           hasBubble: this.props.hasBubble,
           hasCheckBox: this.props.allHasCheckBox || childNodeData.get("hasCheckBox"),
-          disabled: !this.props.enabledChangeDataPrivilege && ( this.props.allDisabled || (childNodeData.get("HasDataPrivilege") !== null && !childNodeData.get("HasDataPrivilege")) ),
-
+        //  disabled: !this.props.enabledChangeDataPrivilege && ( this.props.allDisabled || (childNodeData.get("HasDataPrivilege") !== null && !childNodeData.get("HasDataPrivilege")) ),
+          disabled:this.props.allDisabled,
           selectedNode: this.props.selectedNode,
           checkedNodes: this.props.checkedNodes,
           onSelectNode: this.props.onSelectNode,

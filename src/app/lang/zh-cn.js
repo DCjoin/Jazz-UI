@@ -482,13 +482,15 @@ I18N.Message.M21705 = '报表名称重复';
 I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
 
-I18N.File={};
-I18N.File.NewChart={};
-I18N.File.NewChart.Menu1 = '能耗分析';
-I18N.File.NewChart.Menu2 = '单位指标';
-I18N.File.NewChart.Menu3 = '时段能耗比';
-I18N.File.NewChart.Menu4 = '能效标识';
-I18N.File.NewChart.Menu5 = '集团排名';
+I18N.Folder={};
+I18N.Folder.NewWidget={};
+I18N.Folder.NewWidget.Menu1 = '能耗分析';
+I18N.Folder.NewWidget.Menu2 = '单位指标';
+I18N.Folder.NewWidget.Menu3 = '时段能耗比';
+I18N.Folder.NewWidget.Menu4 = '能效标识';
+I18N.Folder.NewWidget.Menu5 = '集团排名';
+
+I18N.Folder.NewFolder= '新建文件夹';
 
 I18N.Commodity={};
 I18N.Commodity.Overview = '介质总览';
@@ -498,5 +500,8 @@ I18N.Hierarchy.RankingButtonName = '请选择层级节点进行排名';
 I18N.Hierarchy.ButtonName = '请选择层级节点';
 I18N.Hierarchy.Confirm = '确定';
 I18N.Hierarchy.Clear = '清空';
+
+
+
 
 module.exports = I18N;

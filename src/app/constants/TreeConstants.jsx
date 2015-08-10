@@ -9,5 +9,7 @@ module.exports = {
     Room: 3,
     Panel: 4,
     Device: 5,
+    Folder:6,
+    Widget:7
   }
 };

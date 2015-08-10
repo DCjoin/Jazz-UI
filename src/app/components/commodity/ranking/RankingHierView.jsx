@@ -19,7 +19,7 @@ var RankingHierView = React.createClass({
   },
   _onClear:function(){
     this.props.onClear();
-    
+
     this.setState({
       checkedNodes:Immutable.List()
     })

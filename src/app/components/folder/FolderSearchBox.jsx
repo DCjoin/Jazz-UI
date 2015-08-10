@@ -40,7 +40,7 @@ var FileSearchBox = React.createClass({
                         height:'26px'
                       };
     return(
-      <label className="jazz-file-leftpanel-searchbox" onBlur={this._onSearchBlur}>
+      <label className="jazz-folder-leftpanel-searchbox" onBlur={this._onSearchBlur}>
           <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
           <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearchChange}/>
           <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
