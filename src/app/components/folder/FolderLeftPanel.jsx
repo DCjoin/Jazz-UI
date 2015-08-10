@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import {Navigation, State } from 'react-router';
-import {CircularProgress,FlatButton,FontIcon,IconButton,IconMenu} from 'material-ui';
+import {CircularProgress,FlatButton,FontIcon,IconButton,IconMenu,} from 'material-ui';
 import SearchBox from './FolderSearchBox.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
@@ -14,6 +14,20 @@ import HierarchyAction from '../../actions/HierarchyAction.jsx';
 
 import Immutable from 'immutable';
 
+let _newWidget=[];
+/*
+ _newWidget[2]=I18N.Folder.NewWidget.Menu2;
+_newWidget[3]=I18N.Folder.NewWidget.Menu3;
+_newWidget[4]=I18N.Folder.NewWidget.Menu4;
+_newWidget[5]=I18N.Folder.NewWidget.Menu5;
+_newWidget[7]=I18N.Folder.NewWidget.Menu1;
+*/
+_newWidget[2]='Menu2';
+_newWidget[3]='Menu3';
+_newWidget[4]='Menu4';
+_newWidget[5]='Menu5';
+_newWidget[7]='Menu1';
+
 var PanelContainer = React.createClass({
 
   _onFolderTreeChange:function(){
@@ -23,8 +37,10 @@ var PanelContainer = React.createClass({
       isLoading:false
     });
   },
+
   generateNodeConent:function(nodeData){
-    return(<NodeContent nodeData={nodeData} selectedNode={this.state.selectedNode}/>);
+    return(<NodeContent nodeData={nodeData}
+                        selectedNode={this.state.selectedNode}/>);
   },
   _onChange:function(){
     this.setState({
@@ -53,13 +69,24 @@ var PanelContainer = React.createClass({
 
   },
   _onNewWidget:function(e, item){
-    //item.ref="Menu1"...
+    let widgetType=parseInt(item.key);
+    let name=I18N.format(I18N.Folder.NewWidget.DefaultName, _newWidget[widgetType]);
+    this.setState({
+      isLoading:true
+    });
+    FolderAction.createWidgetOrFolder(this.state.selectedNode,name,7,window.currentCustomerId,widgetType);
+  },
+  _onTemplateTest:function(){
+    this.setState({
+      templateShow:!this.state.templateShow
+    })
   },
   getInitialState:function(){
     return{
       allNode:null,
       isLoading:true,
-      selectedNode:null
+      selectedNode:null,
+      templateShow:false
     };
   },
 
@@ -76,7 +103,7 @@ var PanelContainer = React.createClass({
   componentWillUnmount:function(){
 
     FolderStore.removeFolderTreeListener(this._onFolderTreeChange);
-      FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
+    FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
 
   //  HierarchyStore.removeHierarchyNodeListener(this._onChange);
   },
@@ -106,8 +133,10 @@ var PanelContainer = React.createClass({
         onSelectNode:this._onSelectNode,
         selectedNode:this.state.selectedNode
       };
-      var treeContent;
+
       var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
+      var template=(this.state.templateShow?<Copy />:null);
+
 
     return(
       <div className="jazz-folder-leftpanel-container">
@@ -118,12 +147,16 @@ var PanelContainer = React.createClass({
           </div>
           <div className="newwidget">
             <IconMenu {...iconMenuProps} onItemTouchTap={this._onNewWidget}>
-               <MenuItem ref="Menu1" primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={menuIcon}/>
-               <MenuItem ref="Menu2" primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={menuIcon}/>
-               <MenuItem ref="Menu3" primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={menuIcon}/>
-               <MenuItem ref="Menu4" primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={menuIcon}/>
-               <MenuItem ref="Menu5" primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu1" key={7} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu2" key={2} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu4" key={4} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu5" key={5} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={menuIcon}/>
             </IconMenu>
+          </div>
+          <IconButton iconClassName="icon-alarm" onClick={this._onTemplateTest}/>
+          <div>
+
           </div>
         </div>
 
@@ -134,6 +167,7 @@ var PanelContainer = React.createClass({
         <div className="jazz-folder-leftpanel-foldertree">
           {treeContent}
         </div>
+        {template}
       </div>
     )
   }

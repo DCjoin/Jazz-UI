@@ -489,8 +489,19 @@ I18N.Folder.NewWidget.Menu2 = '单位指标';
 I18N.Folder.NewWidget.Menu3 = '时段能耗比';
 I18N.Folder.NewWidget.Menu4 = '能效标识';
 I18N.Folder.NewWidget.Menu5 = '集团排名';
+I18N.Folder.NewWidget.DefaultName = '最近7天{0}';
 
 I18N.Folder.NewFolder= '新建文件夹';
+I18N.Folder.FolderName='文件夹';
+I18N.Folder.WidgetName='图表';
+
+I18N.Folder.SaveNameError={};
+I18N.Folder.SaveNameError.E032= '名称为“{0}”的{1}已存在，请选取其他名称。';
+I18N.Folder.SaveNameError.E029= '{0}名称不能为空，请重新输入';
+I18N.Folder.SaveNameError.E031= '{0}名称超过最大长度100，请重新输入';
+
+
+
 
 I18N.Commodity={};
 I18N.Commodity.Overview = '介质总览';

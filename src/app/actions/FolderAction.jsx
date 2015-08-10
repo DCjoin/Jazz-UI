@@ -26,7 +26,7 @@ let FolderAction = {
       Name:name,
       Type:type,
       CustomerId:customerId,
-      widgetType:widgetType
+      WidgetType:widgetType
     };
     Ajax.post('/Dashboard.svc/CreateWidgetOrFolder', {
          params: {
@@ -44,12 +44,14 @@ let FolderAction = {
         }
     });
   },
-  modifyFolderName:function(sourceId,newName){
+  modifyFolderName:function(sourceId,newName,type){
     Ajax.post('/Dashboard.svc/ModifyFolderName', {
          params: {
-           sourceId:sourceId,
-           newName:newName
+           id:sourceId,
+           type:type,
+           newName:newName,
           },
+          commonErrorHandling:false,
         success: function(newNode){
           AppDispatcher.dispatch({
               type: Action.MODIFY_NAME_SECCESS,
@@ -59,6 +61,8 @@ let FolderAction = {
         error: function(err, res){
           AppDispatcher.dispatch({
               type: Action.MODIFY_NAME_ERROR,
+              newName:newName,
+              stype:type,
               res:res
           });
         }

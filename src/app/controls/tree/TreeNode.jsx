@@ -89,10 +89,13 @@ var TreeNode = React.createClass({
         return true;
       }
       else{
-        if(item.get('Children')!==null){
+        if(!!item.get('Children')){
           let has=false;
           item.get('Children').forEach(function(child){
-            if(f(child)) has=true;
+            if(child!==null){
+              if(f(child)) has=true;
+            }
+
           });
           return has;
         }
