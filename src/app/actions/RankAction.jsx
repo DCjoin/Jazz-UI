@@ -8,8 +8,7 @@ import Ajax from '../ajax/ajax.jsx';
 
 let RankAction = {
   //for select tags from taglist and click search button.
-  getRankData(data, selectedList, relativeDate, rankType){
-    var timeRange = data;
+  getRankData(timeRanges, rankType, selectedList, relativeDate){
     var commodityList = selectedList.commodityList;
     var hierarchyList = selectedList.hierarchyList;
     var hierarchyIds = RankAction.getHierarchyIdsFromList(hierarchyList);
@@ -18,7 +17,7 @@ let RankAction = {
     var submitParams = { hierarchyIds:hierarchyIds,
                          commodityIds:commodityIds,
                          rankType: rankType,
-                         viewOption:{TimeRanges: timeRange}
+                         viewOption:{TimeRanges: timeRanges}
                        };
 
     AppDispatcher.dispatch({

@@ -58,14 +58,16 @@ let ChartStrategyFactor = {
 
     },UnitEnergyUsage:{
 
-    },Ranking:{
+    },Rank:{
       searchBarGenFn:'rankSearchBarGen',
       getSelectedNodesFn:'getSelectedList',
-      searchButtonClickFn:'onRankSearchButtonClick',
+      onSearchDataButtonClickFn:'onRankSearchDataButtonClick',
+      setFitStepAndGetDataFn:'setRankTypeAndGetData',
       getEnergyDataFn: 'rankDataLoad',
       getChartComponentFn:'getRankChartComponent',
       bindStoreListenersFn:'rankBindStoreListeners',
-      unbindStoreListenersFn:'rankUnbindStoreListeners'
+      unbindStoreListenersFn:'rankUnbindStoreListeners',
+      canShareDataWithFn:'canRankShareDataWith'
     }
  },
  initEnergyStoreByBizChartTypeFnStrategy:{
@@ -112,6 +114,35 @@ let ChartStrategyFactor = {
         let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
         analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
      }
+   },
+   onSearchRankDataButtonClick(analysisPanel){
+      analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+
+     let dateSelector = analysisPanel.refs.dateTimeSelector,
+         dateRange = dateSelector.getDateTime(),
+         startDate = dateRange.start,
+         endDate = dateRange.end,
+         nodeOptions;
+
+     if(startDate.getTime()>= endDate.getTime()){
+         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+       return;
+     }
+
+     nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     if( !nodeOptions.hierarchyList || nodeOptions.hierarchyList.length === 0 || !nodeOptions.commodityList || nodeOptions.commodityList.length === 0){
+       analysisPanel.setState({energyData:null});
+       return;
+     }
+     let relativeDateValue = analysisPanel._getRelativeDateValue();
+
+     let chartType = analysisPanel.state.selectedChartType;
+     if(chartType ==='line' || chartType === 'column' || chartType === 'stack'){
+        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+     }else if(chartType === 'pie'){
+        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+     }
    }
  },
  onSearchBtnItemTouchTapFnStrategy:{
@@ -133,6 +164,12 @@ let ChartStrategyFactor = {
        step = limitInterval.display;
      }
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
+   },
+   setRankTypeAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
+     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+     let rankType = analysisPanel.refs.rankType.state.selectedIndex;
+
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, rankType, tagOptions, relativeDate);
    }
  },
  searchBarGenFnStrategy:{
@@ -150,17 +187,44 @@ let ChartStrategyFactor = {
          {configBtn}
        </div>
    </div>;
-   }
+  },
+  rankSearchBarGen(analysisPanel){
+    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
+
+    return <div className={'jazz-alarm-chart-toolbar-container'}>
+      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+        <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+      </div>
+      <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+        <DropDownMenu menuItems={rankTypeItem} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
+      </div>
+      <div className={'jazz-flat-button'}>
+        {searchButton}
+      </div>
+  </div>;
+  }
  },
  getSelectedNodesFnStrategy:{
    getSelectedTagList(){
      return  AlarmTagStore.getSearchTagList();
+   },
+   getSelectedList(){
+     var selectedList = {};
+     var hierarchyList = CommodityStore.getRankingTreeList();
+     var commodityList = CommodityStore.getRankingCommodity();
+     selectedList.hierarchyList = hierarchyList;
+     selectedList.commodityList = commodityList;
+     return selectedList;
    }
  },
  getEnergyDataFnStrategy:{
    energyDataLoad(timeRanges, step, tagOptions, relativeDate){
      EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate);
-   }
+   },
+   rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
+     EnergyAction.getEnergyTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
+   },
  },
  getPieEnergyDataFnStrategy:{
    pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate){
@@ -188,6 +252,28 @@ let ChartStrategyFactor = {
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
       return energyPart;
+   },
+   getRankChartComponent(analysisPanel){
+     let energyPart;
+     let chartCmpObj ={ref:'ChartComponent',
+                       bizType:analysisPanel.props.bizType,
+                       energyType: analysisPanel.state.energyType,
+                       chartType: analysisPanel.state.selectedChartType,
+                       energyData: analysisPanel.state.energyData,
+                       energyRawData: analysisPanel.state.energyRawData,
+                       onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                       onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                     };
+
+      energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                     <div style={{display:'flex'}}>
+                       <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+                       <StepSelector
+                       bizType={analysisPanel.props.bizType}/>
+                     </div>
+                     <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                   </div>;
+      return energyPart;
    }
  },
  canShareDataWithFnStrategy:{
@@ -197,6 +283,9 @@ let ChartStrategyFactor = {
      }else{
        return false;
      }
+   },
+   canRankShareDataWith(curChartType, nextChartType){
+     return false;
    }
  },
  bindStoreListenersFnStrategy:{
@@ -205,6 +294,11 @@ let ChartStrategyFactor = {
      EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
      EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+   },
+   rankBindStoreListeners(analysisPanel){
+     RankStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     RankStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     RankStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
    }
  },
  unbindStoreListenersFnStrategy:{
@@ -213,6 +307,11 @@ let ChartStrategyFactor = {
      EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
      EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+   },
+   rankUnbindStoreListeners(analysisPanel){
+     RankStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     RankStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     RankStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
    }
  },
 

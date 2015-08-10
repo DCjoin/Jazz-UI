@@ -27,7 +27,7 @@ let AnalysisPanel = React.createClass({
       };
     },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType('Ranking');
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType('Rank');
       let state = {
         isLoading: false,
         energyData: null,
