@@ -23,7 +23,7 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Energy'
+        bizType:'Rank'
       };
     },
     getInitialState(){
@@ -81,6 +81,9 @@ let AnalysisPanel = React.createClass({
       let endDate = CommonFuns.dateAdd(date, 1, 'days');
 
       this.refs.dateTimeSelector.setDateField(last7Days, endDate);
+      if(this.props.bizType === "Rank"){
+        this.state.chartStrategy.getInitialStateFn(this);
+      }
 
       this.state.chartStrategy.bindStoreListenersFn(me);
     },

@@ -501,6 +501,9 @@ I18N.Hierarchy.ButtonName = '请选择层级节点';
 I18N.Hierarchy.Confirm = '确定';
 I18N.Hierarchy.Clear = '清空';
 
+I18N.Rank={};
+I18N.Rank.RankTooltip = '排名:{0}/{1}';
+
 
 
 

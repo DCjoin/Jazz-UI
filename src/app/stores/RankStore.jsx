@@ -10,9 +10,9 @@ import {Action} from '../constants/actionType/Ranking.jsx';
 import ReaderFuncs from './MixedChartReader.jsx';
 import CommonFuns from '../util/Util.jsx';
 
-const TAG_DATA_LOADING_EVENT = 'tagdataloading',
-      TAG_DATA_CHANGED_EVENT = 'tagdatachanged',
-      GET_DATA_ERROR_EVENT = 'gettagdataerror';
+const RANK_DATA_LOADING_EVENT = 'rankdataloading',
+      RANK_DATA_CHANGED_EVENT = 'rankdatachanged',
+      RANK_DATA_LOAD_ERROR_EVENT = 'rankdataloaderror';
 
 let _isLoading = false,
     _energyData = null,
@@ -174,49 +174,49 @@ var RankStore = assign({},PrototypeStore,{
     }
     return false;
   },
-  addTagDataLoadingListener: function(callback) {
-    this.on(TAG_DATA_LOADING_EVENT, callback);
+  addRankDataLoadingListener: function(callback) {
+    this.on(RANK_DATA_LOADING_EVENT, callback);
   },
-  emitTagDataLoading: function() {
-    this.emit(TAG_DATA_LOADING_EVENT);
+  emitRankDataLoading: function() {
+    this.emit(RANK_DATA_LOADING_EVENT);
   },
-  removeTagDataLoadingListener: function(callback) {
-    this.removeListener(TAG_DATA_LOADING_EVENT, callback);
+  removeRankDataLoadingListener: function(callback) {
+    this.removeListener(RANK_DATA_LOADING_EVENT, callback);
   },
-  addTagDataChangeListener: function(callback) {
-    this.on(TAG_DATA_CHANGED_EVENT, callback);
+  addRankDataLoadedListener: function(callback) {
+    this.on(RANK_DATA_CHANGED_EVENT, callback);
   },
-  emitTagDataChange: function() {
-    this.emit(TAG_DATA_CHANGED_EVENT);
+  emitRankDataLoaded: function() {
+    this.emit(RANK_DATA_CHANGED_EVENT);
   },
-  removeTagDataChangeListener: function(callback) {
-    this.removeListener(TAG_DATA_CHANGED_EVENT, callback);
+  addRankDataLoadErrorListener: function(callback) {
+    this.removeListener(RANK_DATA_CHANGED_EVENT, callback);
   },
-  addGetTagDataErrorListener:function(callback) {
-    this.on(GET_DATA_ERROR_EVENT, callback);
+  emitRankDataLoadErrorListener:function(callback) {
+    this.on(RANK_DATA_LOAD_ERROR_EVENT, callback);
   },
-  emitGetTagDataErrorListener:function(callback) {
-    this.emit(GET_DATA_ERROR_EVENT);
+  removeRankDataLoadErrorListener:function(callback) {
+    this.emit(RANK_DATA_LOAD_ERROR_EVENT);
   },
-  removeGetTagDataErrorListener: function(callback) {
-    this.removeListener(GET_DATA_ERROR_EVENT, callback);
+  removeRankDataErrorListener: function(callback) {
+    this.removeListener(RANK_DATA_LOAD_ERROR_EVENT, callback);
   }
 });
 
 RankStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
-      case Action.GET_TAG_DATA_LOADING:
+      case Action.GET_RANK_DATA_LOADING:
         RankStore._onDataLoading(action.submitParams, action.selectedList, action.relativeDate);
-        RankStore.emitTagDataLoading();
+        RankStore.emitRankDataLoading();
         break;
-      case Action.GET_TAG_DATA_SUCCESS:
+      case Action.GET_RANK_DATA_SUCCESS:
         RankStore._onDataChanged(action.energyData, action.submitParams);
-        RankStore.emitTagDataChange();
+        RankStore.emitRankDataChange();
         break;
-      case Action.GET_TAG_DATA_ERROR:
+      case Action.GET_RANK_DATA_ERROR:
         RankStore._onDataChanged(null, action.submitParams);
         RankStore._initErrorText(action.errorText);
-        RankStore.emitGetTagDataErrorListener();
+        RankStore.emitRankDataLoadErrorListener();
         break;
     }
 });
