@@ -42,6 +42,18 @@ var sleep = util.sleep;
             }).type("application/json");
         	}
         },
+        {
+          method: 'POST',
+          path: '/webhost/API/Dashboard.svc/ModifyFolderName',
+          handler: function (request, reply) {
+              var newUser = request.payload;
+
+            reply({
+              error: {Code: "05029", Messages: null}
+
+            }).type("application/json");
+          }
+        }
     ]);
     next();
 };
