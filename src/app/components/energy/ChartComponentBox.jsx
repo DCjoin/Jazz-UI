@@ -310,6 +310,14 @@ let ChartComponentBox = React.createClass({
         chartType: React.PropTypes.string
     },
     getDefaultProps(){
+      return {
+        chartType:'line'
+      };
+    },
+    componentWillMount(){
+      this.initDefaultConfig();
+    },
+    getInitialState(){
       let bizType = this.props.bizType,
           energyType = this.props.energyType,
           chartType = this.props.chartType;
@@ -339,14 +347,9 @@ let ChartComponentBox = React.createClass({
           break;
 
       }
-
       return {
-        chartType:'line',
         chartCmpStrategy: chartCmpStrategy
       };
-    },
-    componentWillMount(){
-      this.initDefaultConfig();
     },
     shouldComponentUpdate: function(nextProps, nextState) {
       return !(this.props.energyData.equals(nextProps.energyData) && this.props.chartType === nextProps.chartType);
@@ -483,13 +486,13 @@ let ChartComponentBox = React.createClass({
 
   },
   mergeConfig: function (defaultConfig) {
-    this.props.chartCmpStrategy.mergeConfigFn(defaultConfig);
+    this.state.chartCmpStrategy.mergeConfigFn(defaultConfig);
   },
   convertData: function (data, config) {
-      return this.props.chartCmpStrategy.convertDataFn(data, config, this);
+      return this.state.chartCmpStrategy.convertDataFn(data, config, this);
   },
   convertSingleItem: function (item, s) {
-    this.props.chartCmpStrategy.convertSingleItemFn(item, s);
+    this.state.chartCmpStrategy.convertSingleItemFn(item, s);
   },
   initRange: function (newConfig, realData) {
      var converter = DataConverter;
@@ -681,7 +684,7 @@ let ChartComponentBox = React.createClass({
       return max;
    },
    initYaxis: function (data, config) {
-        this.props.chartCmpStrategy.initYaxisFn(data, config, yAxisOffset, this);
+        this.state.chartCmpStrategy.initYaxisFn(data, config, yAxisOffset, this);
     },
     initFlagSeriesData: function (newConfig, convertedData) {
         var item,
