@@ -327,9 +327,9 @@ let ChartComponentBox = React.createClass({
         case 'Energy':
           if(energyType === 'energy'){
             if(chartType ==='line' || chartType ==='column' || chartType === 'stack'){
-              ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
+              chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
             }else if(chartType === 'pie'){
-              ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
+              chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
             }
           }
           break;

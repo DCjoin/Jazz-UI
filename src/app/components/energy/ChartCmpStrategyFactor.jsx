@@ -320,7 +320,7 @@ let ChartCmpStrategyFactor = {
             s.type = cmpBox.props.chartType;
             s.stacking = undefined;
           }
-          cmpBox.props.chartCmpStrategy.convertSingleItemFn(item, s, cmpBox);
+          cmpBox.state.chartCmpStrategy.convertSingleItemFn(item, s, cmpBox);
           var yList = config.yAxis; //pie chart don't return yAxis
           if (yList && yList.length > 0) {
               for (var i = 0; i < yList.length; ++i) {
