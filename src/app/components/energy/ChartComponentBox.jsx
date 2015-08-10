@@ -516,6 +516,80 @@ let ChartComponentBox = React.createClass({
     }
     return max;
   },
+  makePosition: function (list) {
+    var listItem, newList = [];
+    var pos = 1, gap = 0;
+    for (var i = 0; i < list.length; ++i) {
+      listItem = list[i];
+      if (i !== 0) {
+        if (listItem.val == list[i - 1].val) {
+          gap++;
+        }
+        else {
+          pos++;
+          if (gap !== 0) {
+              pos += gap;
+              gap = 0;
+          }
+        }
+      }
+      newList.push({
+        name: listItem.name,
+        pos: pos,
+        val: listItem.val
+      });
+    }
+    return newList;
+  },
+  xAxisTickPositioner: function (min, max) {
+    var width = this.width,
+               serieses = this.series,
+               series,
+               ret = [];
+    if (!!serieses || serieses.length === 0) return;
+    series = serieses[0];
+    ret.info = {
+      higherRanks: {}
+    };
+    var tpp = (max - min) / width;
+
+    var xData = series.xData;
+    var yData = series.yData;
+    var firstData, i = 0;
+
+    while (i < xData.length) {
+      if (yData[i] !== null) {
+          firstData = xData[i];
+          break;
+      }
+      ++i;
+    }
+
+    var count = 1;
+    var j = i;
+    while ((xData[j + count] - xData[j]) / tpp < 40) {
+      count++;
+    }
+    j = i;
+    while (j < xData.length) {
+      //when use all data, data will be greater than xAxis
+      if (xData[j] >= min && xData[j] <= max) {
+        ret.push(xData[j]);
+        ret.info.higherRanks[xData[j]] = '';
+      }
+      j += count;
+    }
+    return ret;
+  },
+  xAxisLabelFormatter: function () {
+    var v = this.value, chart = this.chart;
+    var series = chart.series[0];
+    var list = series.options.option.list;
+    if (list.length - 1 < v) return '';
+    var name = list[v].name;
+
+    return JazzCommon.TrimText(name, 4, 'left');
+  },
   initYaxis: function (data, config) {
       this.state.chartCmpStrategy.initYaxisFn(data, config, yAxisOffset, this);
   },

@@ -430,11 +430,11 @@ let ChartCmpStrategyFactor = {
           overflow: undefined,
           //x: -5,
 
-          //formatter: cmpBox.state.chartCmpStrategy.xAxisLabelFormatter
+          formatter: cmpBox.xAxisLabelFormatter
       };
       defaultConfig.xAxis.showFirstLabel = true;
       defaultConfig.xAxis.showLastLabel = true;
-      //defaultConfig.xAxis.tickPositioner = cmpBox.state.chartCmpStrategy.xAxisTickPositioner;
+      defaultConfig.xAxis.tickPositioner = cmpBox.xAxisTickPositioner;
       defaultConfig.tooltip.formatter = tooltipFormatter;
       var range = cmpBox.state.rangeCode - 1;
       var order = cmpBox.state.orderCode;
@@ -562,7 +562,7 @@ let ChartCmpStrategyFactor = {
     rankConvertDataFn(data, config, cmpBox){
       var item = data[0];
         var s = {
-            type: 'column',
+            type: cmpBox.props.chartType,
             enableDelete: false,
             enableHide: false,
             data: item.data,

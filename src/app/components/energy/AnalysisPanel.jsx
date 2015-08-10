@@ -37,7 +37,7 @@ let AnalysisPanel = React.createClass({
         step: null,
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
-        selectedChartType:'line',
+        selectedChartType:'column',
         energyType:'energy',//'one of energy, cost carbon'
         chartStrategy: chartStrategy
       };
