@@ -11,7 +11,7 @@ import ReaderFuncs from './MixedChartReader.jsx';
 import CommonFuns from '../util/Util.jsx';
 
 const RANK_DATA_LOADING_EVENT = 'rankdataloading',
-      RANK_DATA_CHANGED_EVENT = 'rankdatachanged',
+      RANK_DATA_LOADED_EVENT = 'rankdatachanged',
       RANK_DATA_LOAD_ERROR_EVENT = 'rankdataloaderror';
 
 let _isLoading = false,
@@ -179,13 +179,16 @@ var RankStore = assign({},PrototypeStore,{
     this.removeListener(RANK_DATA_LOADING_EVENT, callback);
   },
   addRankDataLoadedListener: function(callback) {
-    this.on(RANK_DATA_CHANGED_EVENT, callback);
+    this.on(RANK_DATA_LOADED_EVENT, callback);
   },
   emitRankDataLoaded: function() {
-    this.emit(RANK_DATA_CHANGED_EVENT);
+    this.emit(RANK_DATA_LOADED_EVENT);
+  },
+  removeRankDataLoadedListener : function(callback) {
+    this.removeListener(RANK_DATA_LOADED_EVENT, callback);
   },
   addRankDataLoadErrorListener: function(callback) {
-    this.removeListener(RANK_DATA_CHANGED_EVENT, callback);
+    this.removeListener(RANK_DATA_LOAD_ERROR_EVENT, callback);
   },
   emitRankDataLoadErrorListener:function(callback) {
     this.on(RANK_DATA_LOAD_ERROR_EVENT, callback);

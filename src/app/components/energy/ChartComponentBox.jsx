@@ -317,6 +317,12 @@ let ChartComponentBox = React.createClass({
     componentWillMount(){
       this.initDefaultConfig();
     },
+    componentWillReceiveProps(nextProps){
+      if(nextProps.range && nextProps.range != this.props.range){
+        this.state.chartCmpStrategy.onChangeRangeFn(nextProps.range, this);
+
+      }
+    },
     getInitialState(){
       let bizType = this.props.bizType,
           energyType = this.props.energyType,

@@ -178,6 +178,7 @@ let AnalysisPanel = React.createClass({
       }
     },
     _onOrderChange(order){
+      this.setState({order: order});
        if (!this.chartObj) {
             this.order = order;
             return;
@@ -218,59 +219,7 @@ let AnalysisPanel = React.createClass({
         this.chartObj.xAxis[0].setExtremes(0, range, true, true);
     },
     _onRangeChange(range){
-      if (range == this.range) return;
-        if (!this.chartObj) {
-            this.range = range - 1;
-            return;
-        }
-        var r = range;
-
-        //var ext = this.chartObj.xAxis[0].getExtremes();
-        //var min = ext.min, max = ext.max;
-        var oldRange = this.range;
-        var list = this.chartObj.series[0].options.option.list;
-
-        if (list.length <= 10) return;
-
-        var dataMax = list.length - 1;
-        this.range = range - 1;
-        var min = this.minPosition, max = 0;
-        //this.minPosition = Math.floor(min) + 1;
-        if (range == 1000) {
-            min = 0;
-            max = dataMax;
-            r = range;
-        }
-        else {
-            if (oldRange == 999) {
-                min = 0;
-                max = this.range;
-                if (max > dataMax) {
-                    max = dataMax;
-                }
-            }
-            else {
-                var delta = this.range - oldRange;
-
-
-                //if (delta < 0) {
-                max = this.minPosition + this.range;
-                //}
-                //else {
-                //    max = max + delta;
-                //}
-                if (max > dataMax) {
-                    min = min - (max - dataMax);
-                    if (min < 0) min = 0;
-                    max = dataMax;
-                }
-
-            }
-
-        }
-        //this.minPosition = Math.floor(min) + 1;
-        this.maxPosition = max;
-        this.chartObj.xAxis[0].setExtremes(min, max, true, true, { changeRange: true });
+      this.setState({range: range});
     },
     _onGetEnergyDataError(){
       let errorObj = this.errorProcess();

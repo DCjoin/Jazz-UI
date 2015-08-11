@@ -84,7 +84,64 @@ let ChartCmpStrategyFactor = {
       convertSingleItemFn:'pieConvertSingleItem',
       initYaxisFn:'empty',
       initRangeFn:'pieInitRange',
-      initNavigatorDataFn:'pieInitNavigatorData'
+      initNavigatorDataFn:'pieInitNavigatorData',
+      onChangeRangeFn:'onChangeRange'
+    }
+  },
+  onChangeRangeFnStrategy:{
+    onChangeRange(range,cmpBox){
+      if (!this.chartObj) {
+          this.range = range - 1;
+          return;
+      }
+      var r = range;
+
+      //var ext = this.chartObj.xAxis[0].getExtremes();
+      //var min = ext.min, max = ext.max;
+      var oldRange = this.props.range;
+      var list = this.chartObj.series[0].options.option.list;
+
+      if (list.length <= 10) return;
+
+      var dataMax = list.length - 1;
+      this.range = range - 1;
+      var min = this.minPosition, max = 0;
+      //this.minPosition = Math.floor(min) + 1;
+      if (range == 1000) {
+          min = 0;
+          max = dataMax;
+          r = range;
+      }
+      else {
+          if (oldRange == 999) {
+              min = 0;
+              max = this.range;
+              if (max > dataMax) {
+                  max = dataMax;
+              }
+          }
+          else {
+              var delta = this.range - oldRange;
+
+
+              //if (delta < 0) {
+              max = this.minPosition + this.range;
+              //}
+              //else {
+              //    max = max + delta;
+              //}
+              if (max > dataMax) {
+                  min = min - (max - dataMax);
+                  if (min < 0) min = 0;
+                  max = dataMax;
+              }
+
+          }
+
+      }
+      //this.minPosition = Math.floor(min) + 1;
+      this.maxPosition = max;
+      this.chartObj.xAxis[0].setExtremes(min, max, true, true, { changeRange: true });
     }
   },
   initNavigatorDataFnStrategy:{
