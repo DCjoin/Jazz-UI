@@ -53,6 +53,9 @@ var TreeNode = React.createClass({
     selectedNode: React.PropTypes.object,
     // checked node when nodeData.Id == a node.Id in checkedNodes
     checkedNodes: React.PropTypes.array,
+
+    //for copy opertation
+    isFolderOperationTree:React.PropTypes.bool,
   },
 
   getDefaultProps: function () {
@@ -68,20 +71,18 @@ var TreeNode = React.createClass({
       hasBubble: false,
       hasCheckBox: false,
       // custome method
-      generateNodeConent: null
+      generateNodeConent: null,
+      isFolderOperationTree:false
     };
   },
 
   getInitialState: function () {
     return {
       collapsed: this.getDefaultCollapsed(),
+      IsSendCopyReaded:false,
     };
   },
 
-
-  componentWillUnmount:function(){
-    console.log("**wyh***");
-  },
   getDefaultCollapsedBySelectedNode:function(){
     var that=this;
     var f=function(item){
@@ -103,7 +104,13 @@ var TreeNode = React.createClass({
       }
     };
     if(!!this.props.selectedNode){
+      if(this.props.selectedNode.get('Id')==this.props.nodeData.get('Id')){
+        return false
+      }
+      else {
         return f(this.props.nodeData)
+      }
+
     }
     else {
       return false
@@ -140,6 +147,11 @@ var TreeNode = React.createClass({
     this.setState({
       collapsed: !this.state.collapsed
     });
+    if(this.props.nodeData.get('IsSendCopy') && !this.props.nodeData.get('IsRead')){
+      this.setState({
+        IsSendCopyReaded:true
+      })
+    }
   },
 
   handleClickNode: function (e) {
@@ -245,6 +257,8 @@ var TreeNode = React.createClass({
             "icon-panel-box"  : type == nodeType.Panel && !isAsset,
             "icon-device"     : type == nodeType.Device && isAsset,
             "icon-device-box" : type == nodeType.Device && !isAsset,
+            "icon-column-fold" : type == nodeType.Folder,
+            "icon-image" : type == nodeType.Widget
           })}/>
         </div>
     );
@@ -293,7 +307,7 @@ var TreeNode = React.createClass({
         {this.generateArrow(nodeData.get("Children") && nodeData.get("Children").size > 0)}
         {this.props.hasCheckBox ? this.generateCheckbox() : null}
         <div className="content">
-          {this.props.generateNodeConent ? this.props.generateNodeConent(this.props.nodeData) : this.generateNodeConent(this.props.nodeData)}
+          {this.props.generateNodeConent ? this.props.generateNodeConent(this.props.nodeData,this.state.IsSendCopyReaded) : this.generateNodeConent(this.props.nodeData)}
         </div>
       </div>
     );
@@ -338,9 +352,10 @@ var TreeNode = React.createClass({
   },
 
   render: function () {
+    var generateNode=((this.props.isFolderOperationTree && this.props.nodeData.get("Type") == nodeType.Widget)?null:this.generateNode());
     return (
       <div key={this.props.nodeData.get("Id")} className="pop-tree-node-container">
-        {this.generateNode()}
+        {generateNode}
         {this.generateChildren()}
       </div>
     );

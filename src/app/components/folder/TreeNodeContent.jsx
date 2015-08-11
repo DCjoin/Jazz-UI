@@ -13,7 +13,8 @@ var TreeNodeContent = React.createClass({
 
     propTypes: {
       nodeData: React.PropTypes.object,
-      selectedNode: React.PropTypes.object
+      selectedNode: React.PropTypes.object,
+      readStatus :React.PropTypes.bool,
     },
     _onClick:function(){
       if(this.state.isSelect===null){
@@ -58,7 +59,7 @@ var TreeNodeContent = React.createClass({
       });
 
         if(this.props.nodeData.get("Name")!=this.state.text){
-          FolderAction.modifyFolderName(this.props.nodeData.get('Id'),this.state.text,this.props.nodeData.get('Type'));
+          FolderAction.modifyFolderName(this.props.nodeData,this.state.text);
         }
 
 
@@ -66,6 +67,7 @@ var TreeNodeContent = React.createClass({
     render:function(){
       var type = this.props.nodeData.get("Type");
       var isSenderCopy = this.props.nodeData.get("IsSenderCopy");
+      var isRead = this.props.nodeData.get("IsRead");
       var icon = (
       <div className="node-content-icon">
         <div className={classNames({
@@ -93,7 +95,7 @@ var TreeNodeContent = React.createClass({
 
       var isSenderCopyIcon = <div className={classNames({
                                 //add for file operation
-                                "icon-humidity" : isSenderCopy,
+                                "icon-humidity" : (isSenderCopy && !isRead && !this.props.readStatus),
                               })}/>;
 
 

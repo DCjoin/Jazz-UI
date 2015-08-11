@@ -44,11 +44,10 @@ let FolderAction = {
         }
     });
   },
-  modifyFolderName:function(sourceId,newName,type){
+  modifyFolderName:function(widgetFolderDto,newName){
     Ajax.post('/Dashboard.svc/ModifyFolderName', {
          params: {
-           id:sourceId,
-           type:type,
+           widgetFolderDto:widgetFolderDto,
            newName:newName,
           },
           commonErrorHandling:false,
@@ -62,12 +61,48 @@ let FolderAction = {
           AppDispatcher.dispatch({
               type: Action.MODIFY_NAME_ERROR,
               newName:newName,
-              stype:type,
+              widgetFolderDto:widgetFolderDto,
               res:res
           });
         }
     });
 
+  },
+  setSelectedNode:function(selectedNode){
+    AppDispatcher.dispatch({
+        type: Action.SET_SELECTED_NODE,
+        selectedNode: selectedNode
+    });
+  },
+  copyItem:function(sourceItem,destItem,newName){
+    Ajax.post('/Dashboard.svc/CopyItem', {
+         params: {
+           sourceId:sourceItem.get('Id'),
+           desParentId:destItem.get('Id'),
+           newName:newName,
+          },
+          commonErrorHandling:false,
+        success: function(newNode){
+          AppDispatcher.dispatch({
+              type: Action.COPY_ITEM,
+              sourceItem: sourceItem,
+              destItem :destItem
+          });
+        },
+        error: function(err, res){
+          AppDispatcher.dispatch({
+              type: Action.COPY_ITEM_ERROR,
+              res:res
+          });
+        }
+    });
+
+  },
+  ModifyFolderReadStatus:function(selectedNode){
+    AppDispatcher.dispatch({
+        type: Action.SET_SELECTED_NODE,
+        selectedNode: selectedNode
+    });
   },
 };
 
