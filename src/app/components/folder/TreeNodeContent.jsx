@@ -1,18 +1,19 @@
 'use strict';
 import React from "react";
 import {Navigation, State } from 'react-router';
-import {TextField,Mixins} from 'material-ui';
+import {TextField,Mixins,Snackbar} from 'material-ui';
 import TreeConstants from '../../constants/TreeConstants.jsx';
 import classNames from 'classnames';
 let { nodeType } = TreeConstants;
+import FolderAction from '../../actions/FolderAction.jsx';
+import FolderStore from '../../stores/FolderStore.jsx';
 
 var TreeNodeContent = React.createClass({
   mixins: [Mixins.ClickAwayable],
 
     propTypes: {
       nodeData: React.PropTypes.object,
-      edited:React.PropTypes.bool,
-      selectedNode: React.PropTypes.object,
+      selectedNode: React.PropTypes.object
     },
     _onClick:function(){
       if(this.state.isSelect===null){
@@ -28,10 +29,15 @@ var TreeNodeContent = React.createClass({
         text:e.target.value
       })
     },
+
+    _onModifyNameError:function(){
+      this.setState({
+        text:this.props.nodeData.get("Name"),
+      });
+    },
     getInitialState:function(){
       return{
         isSelect:(this.props.nodeData.get('Id')==this.props.selectedNode.get('Id')),
-        errorText:null,
         text:this.props.nodeData.get("Name"),
       };
     },
@@ -39,14 +45,20 @@ var TreeNodeContent = React.createClass({
         if(this.props.nodeData.get('Id')<-1){
       this.refs.textField.focus();
     }
+
+    FolderStore.addModifyNameErrorListener(this._onModifyNameError);
+    },
+    componentWillUnmount:function(){
+
+    FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
     },
     componentClickAway:function(){
       this.setState({
           isSelect:null,
-      })
+      });
 
         if(this.props.nodeData.get("Name")!=this.state.text){
-          console.log("**wyh***");
+          FolderAction.modifyFolderName(this.props.nodeData.get('Id'),this.state.text,this.props.nodeData.get('Type'));
         }
 
 
@@ -70,19 +82,21 @@ var TreeNodeContent = React.createClass({
       };
       var text;
       if(this.props.nodeData.get('Id')<-1){
-        text=  <TextField ref="textField" style={textStyle} value={this.state.text}  errorText={this.state.errorText} onChange={this._onChanged}/>
+        text=  <TextField ref="textField" style={textStyle} value={this.state.text} onChange={this._onChanged}/>
       }
       else {
         text= (!this.state.isSelect?
                   <div className="node-content-text" title={this.state.text}>{this.state.text}</div>:
-                  <TextField ref="textField" style={textStyle} value={this.state.text}  errorText={this.state.errorText} onChange={this._onChanged}/>
+                  <TextField ref="textField" style={textStyle} value={this.state.text} onChange={this._onChanged}/>
               );
-      }
+      };
 
       var isSenderCopyIcon = <div className={classNames({
                                 //add for file operation
                                 "icon-humidity" : isSenderCopy,
                               })}/>;
+
+
       return(
         <div className="tree-node-content" onClick={this._onClick} onBlur={this._onBlur}>
           {icon}

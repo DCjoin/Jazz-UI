@@ -10,10 +10,13 @@ let _folderTree=Immutable.fromJS(),
     _parentId=null,
     _changedNode=Immutable.fromJS(),
     _newNode=null,
-    _modifyNameErrorCode=null;
+    _modifyNameErrorCode=null,
+    _errorName=null,
+    _errorType=null;
 let FOLDER_TREE_EVENT = 'foldertree',
     CREATE_FOLDER_EVENT='createfolder',
-    MODIFY_NAME_ERROR_EVENT='modifynameerror';
+    MODIFY_NAME_ERROR_EVENT='modifynameerror',
+    MODIFY_NAME_SUCCESS_EVENT='modifynamesuccess';
 
 var FolderStore = assign({},PrototypeStore,{
 
@@ -45,19 +48,22 @@ var FolderStore = assign({},PrototypeStore,{
       return _changedNode;
     }
     else{
+
       if(node.get('Children')){
           var children=node.get('Children');
           var index=null;
           var changedNode=null;
           children.forEach(function(item,i){
-            let node=that.modifyTreebyNode(item);
-            if(node) {
+            let result=that.modifyTreebyNode(item);
+            if(result) {
               index=i;
-              changedNode=node;
+              changedNode=result;
             }
           });
-          node=node.set('Children',children.update(index,(item)=>{return changedNode}));
-        return node;
+          if(index!==null){
+            node=node.set('Children',children.update(index,(item)=>{return changedNode}));
+            return node;
+          }
       }
       return false;
     }
@@ -107,24 +113,34 @@ var FolderStore = assign({},PrototypeStore,{
     _changedNode=parent;
     _folderTree=this.modifyTreebyNode(_folderTree);
     _modifyNameErrorCode=null;
+    _errorName=null;
+    _errorType=null;
   },
-  setModifyNameError:function(errorCode){
+  setModifyNameError:function(res,newName,type){
     var errorCode=eval("(" + res + ")");
-    _modifyNameErrorCode=errorCode.error.Code
+    _modifyNameErrorCode=errorCode.error.Code;
+    _errorName=newName;
+    if(type==6) {
+      _errorType=I18N.Folder.FolderName;
+    }
+    else {
+      _errorType=I18N.Folder.WidgetName;
+    }
   },
-  GetModifyNameError:function(text){
-    var error={};
+  GetModifyNameError:function(){
+    var error;
     var length=_modifyNameErrorCode.length;
-    var errorCode=_modifyNameErrorCode.substring(length-5,length-1);
+    var errorCode=_modifyNameErrorCode.substring(length-5,length);
     switch(errorCode){
+          case "05032":
+          //FolderNameDuplicated
+            error=I18N.format(I18N.Folder.SaveNameError.E032, _errorName,_errorType);
+            break;
           case "05029":
-            error.chartTitle="该名称已存在";
+            error=I18N.format(I18N.Folder.SaveNameError.E029,_errorType);
             break;
           case "05030":
-            error.oldDashboard="该仪表盘已满，无法保存新的图表";
-            break;
-          case "05031":
-            error.newDashboard="该名称已存在";
+            error=I18N.format(I18N.Folder.SaveNameError.E030,_errorType);
             break;
     }
     return error;
@@ -151,6 +167,28 @@ var FolderStore = assign({},PrototypeStore,{
             this.removeListener(CREATE_FOLDER_EVENT, callback);
             this.dispose();
               },
+  emitModifyNameSuccessChange: function() {
+            this.emit(MODIFY_NAME_SUCCESS_EVENT);
+                          },
+  addModifyNameSuccessListener: function(callback) {
+            this.on(MODIFY_NAME_SUCCESS_EVENT, callback);
+                          },
+
+  removeModifyNameSuccessListener: function(callback) {
+            this.removeListener(MODIFY_NAME_SUCCESS_EVENT, callback);
+            this.dispose();
+                          },
+  emitModifyNameErrorChange: function() {
+            this.emit(MODIFY_NAME_ERROR_EVENT);
+                          },
+  addModifyNameErrorListener: function(callback) {
+            this.on(MODIFY_NAME_ERROR_EVENT, callback);
+                          },
+
+  removeModifyNameErrorListener: function(callback) {
+            this.removeListener(MODIFY_NAME_ERROR_EVENT, callback);
+            this.dispose();
+                          },
 });
 
 var FolderAction = Folder.Action;
@@ -167,9 +205,11 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case FolderAction.MODIFY_NAME_SECCESS:
          FolderStore.modifyName(action.newNode);
+         FolderStore.emitModifyNameSuccessChange();
       break;
     case FolderAction.MODIFY_NAME_ERROR:
-         FolderStore.setModifyNameError(action.res.text);
+         FolderStore.setModifyNameError(action.res.text,action.newName,action.stype);
+         FolderStore.emitModifyNameErrorChange();
       break;
   }
 });

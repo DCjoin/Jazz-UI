@@ -136,8 +136,8 @@ var CommodityStore = assign({},PrototypeStore,{
     _RankingTreeList=[];
     treeList.forEach(function(treeNode){
       _RankingTreeList.push({
-        Id:treeNode.Id,
-        Name:treeNode.Name
+        Id:treeNode.get('Id'),
+        Name:treeNode.get('Name')
       });
     });
   },

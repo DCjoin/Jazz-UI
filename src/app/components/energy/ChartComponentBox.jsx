@@ -343,7 +343,7 @@ let ChartComponentBox = React.createClass({
 
           break;
         case 'Rank':
-
+          chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('RankTrendComponent');
           break;
 
       }
@@ -487,86 +487,160 @@ let ChartComponentBox = React.createClass({
 
   },
   mergeConfig: function (defaultConfig) {
-    this.state.chartCmpStrategy.mergeConfigFn(defaultConfig);
+    this.state.chartCmpStrategy.mergeConfigFn(defaultConfig, this);
   },
   convertData: function (data, config) {
-      return this.state.chartCmpStrategy.convertDataFn(data, config, this);
+    return this.state.chartCmpStrategy.convertDataFn(data, config, this);
   },
   convertSingleItem: function (item, s) {
     this.state.chartCmpStrategy.convertSingleItemFn(item, s);
   },
   initRange: function (newConfig, realData) {
-    return this.state.chartCmpStrategy.initRangeFn(newConfig, realData, this);
-   },
-   initNavigatorData: function (newConfig, timeRange, data) {
-        this.state.chartCmpStrategy.initNavigatorDataFn(newConfig, timeRange, data, this);
-   },
-   arrayMax(array, comparisonFn){
-     var max = array[0], i, ln, item;
-      for (i = 0, ln = array.length; i < ln; i++) {
-          item = array[i];
-          if (comparisonFn) {
-              if (comparisonFn(max, item) === -1) {
-                  max = item;
-              }
-          }else {
-              if (item > max) {
-                  max = item;
-              }
-          }
-      }
-      return max;
-   },
-   initYaxis: function (data, config) {
-        this.state.chartCmpStrategy.initYaxisFn(data, config, yAxisOffset, this);
-    },
-    initFlagSeriesData: function (newConfig, convertedData) {
-        var item,
-            serieObj,
-            flagSeries = [],
-            alarmSeries = [],
-            dmData = this.props.energyRawData,
-            t = dmData.TargetEnergyData,
-            factory = EnergyCommentFactory;
-
-        var type, subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
-        var xaxisMap;
-
-        for (var i = 0, len = t.length; i < len; i++) {
-            item = t[i];
-            xaxisMap = {};
-
-            if(false){//not support comment for new version
-                // get and push comment flag series
-                if (item.EnergyAssociatedData && item.EnergyAssociatedData.Comments && item.EnergyAssociatedData.Comments.length > 0) {
-                    serieObj = factory.createCommentSeriesByTargetEnergyDataItem(item, this.props.step, convertedData[i].id, xaxisMap);
-                    serieObj.visible = !convertedData[i].graySerie;
-                    serieObj.zIndex = 11;
-                    flagSeries.push(serieObj);
-                }
+    this.state.chartCmpStrategy.initRangeFn(newConfig, realData, this);
+  },
+  initNavigatorData: function (newConfig, timeRange, data) {
+   this.state.chartCmpStrategy.initNavigatorDataFn(newConfig, timeRange, data, this);
+  },
+  arrayMax(array, comparisonFn){
+   var max = array[0], i, ln, item;
+    for (i = 0, ln = array.length; i < ln; i++) {
+        item = array[i];
+        if (comparisonFn) {
+            if (comparisonFn(max, item) === -1) {
+                max = item;
             }
-
-            if(true){//will check privilidge for alarm
-                //get and push alarm flag series
-                if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
-                    serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, convertedData[i].id, xaxisMap, this.props.step);
-                    serieObj.visible = !convertedData[i].graySerie;
-                    serieObj.zIndex = 11; //default 10
-                    alarmSeries.push(serieObj);
-                }
-            }
-
-            //set type and subtype for this scope
-            if (!isNumber(type)) {
-                if (item.EnergyAssociatedData && isNumber(item.EnergyAssociatedData.Type)) {
-                    type = this.chartCommentType = item.EnergyAssociatedData.Type;
-                    this.chartCommentSubtype = item.EnergyAssociatedData.SubType;
-                }
+        }else {
+            if (item > max) {
+                max = item;
             }
         }
-        newConfig.series = newConfig.series.concat(flagSeries);
-        newConfig.series = newConfig.series.concat(alarmSeries);
     }
+    return max;
+  },
+  makePosition: function (list) {
+    var listItem, newList = [];
+    var pos = 1, gap = 0;
+    for (var i = 0; i < list.length; ++i) {
+      listItem = list[i];
+      if (i !== 0) {
+        if (listItem.val == list[i - 1].val) {
+          gap++;
+        }
+        else {
+          pos++;
+          if (gap !== 0) {
+              pos += gap;
+              gap = 0;
+          }
+        }
+      }
+      newList.push({
+        name: listItem.name,
+        pos: pos,
+        val: listItem.val
+      });
+    }
+    return newList;
+  },
+  xAxisTickPositioner: function (min, max) {
+    var width = this.width,
+               serieses = this.series,
+               series,
+               ret = [];
+    if (!!serieses || serieses.length === 0) return;
+    series = serieses[0];
+    ret.info = {
+      higherRanks: {}
+    };
+    var tpp = (max - min) / width;
+
+    var xData = series.xData;
+    var yData = series.yData;
+    var firstData, i = 0;
+
+    while (i < xData.length) {
+      if (yData[i] !== null) {
+          firstData = xData[i];
+          break;
+      }
+      ++i;
+    }
+
+    var count = 1;
+    var j = i;
+    while ((xData[j + count] - xData[j]) / tpp < 40) {
+      count++;
+    }
+    j = i;
+    while (j < xData.length) {
+      //when use all data, data will be greater than xAxis
+      if (xData[j] >= min && xData[j] <= max) {
+        ret.push(xData[j]);
+        ret.info.higherRanks[xData[j]] = '';
+      }
+      j += count;
+    }
+    return ret;
+  },
+  xAxisLabelFormatter: function () {
+    var v = this.value, chart = this.chart;
+    var series = chart.series[0];
+    var list = series.options.option.list;
+    if (list.length - 1 < v) return '';
+    var name = list[v].name;
+
+    return JazzCommon.TrimText(name, 4, 'left');
+  },
+  initYaxis: function (data, config) {
+      this.state.chartCmpStrategy.initYaxisFn(data, config, yAxisOffset, this);
+  },
+  initFlagSeriesData: function (newConfig, convertedData) {
+    var item,
+        serieObj,
+        flagSeries = [],
+        alarmSeries = [],
+        dmData = this.props.energyRawData,
+        t = dmData.TargetEnergyData,
+        factory = EnergyCommentFactory;
+
+    var type, subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
+    var xaxisMap;
+
+    for (var i = 0, len = t.length; i < len; i++) {
+        item = t[i];
+        xaxisMap = {};
+
+        if(false){//not support comment for new version
+            // get and push comment flag series
+            if (item.EnergyAssociatedData && item.EnergyAssociatedData.Comments && item.EnergyAssociatedData.Comments.length > 0) {
+                serieObj = factory.createCommentSeriesByTargetEnergyDataItem(item, this.props.step, convertedData[i].id, xaxisMap);
+                serieObj.visible = !convertedData[i].graySerie;
+                serieObj.zIndex = 11;
+                flagSeries.push(serieObj);
+            }
+        }
+
+        if(true){//will check privilidge for alarm
+            //get and push alarm flag series
+            if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
+                serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, convertedData[i].id, xaxisMap, this.props.step);
+                serieObj.visible = !convertedData[i].graySerie;
+                serieObj.zIndex = 11; //default 10
+                alarmSeries.push(serieObj);
+            }
+        }
+
+        //set type and subtype for this scope
+        if (!isNumber(type)) {
+            if (item.EnergyAssociatedData && isNumber(item.EnergyAssociatedData.Type)) {
+                type = this.chartCommentType = item.EnergyAssociatedData.Type;
+                this.chartCommentSubtype = item.EnergyAssociatedData.SubType;
+            }
+        }
+    }
+    newConfig.series = newConfig.series.concat(flagSeries);
+    newConfig.series = newConfig.series.concat(alarmSeries);
+  }
 });
 
 module.exports = ChartComponentBox;

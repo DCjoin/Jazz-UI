@@ -57,6 +57,9 @@ let dataLabelFormatter = function(format) {
 
 let ChartCmpStrategyFactor = {
   defaultStrategy: {
+    convertDataFn:'convertData',
+    convertSingleItemFn:'convertSingleItem',
+    initNavigatorDataFn:'initNavigatorData',
     initRangeFn:'initRange'
   },
   strategyConfiguration: {
@@ -69,7 +72,11 @@ let ChartCmpStrategyFactor = {
 
     },
     RankTrendComponent:{
-
+      mergeConfigFn:'rankChartCmpMergeConfig',
+      convertDataFn:'rankConvertData',
+      initNavigatorDataFn:'empty',
+      initRangeFn:'empty',
+      initYaxisFn:'initYaxis'
     },
     EnergyPieComponent:{
       mergeConfigFn:'pieChartCmpMergeConfig',
@@ -266,6 +273,185 @@ let ChartCmpStrategyFactor = {
       newConfig.series = realData;
     }
   },
+  initRangeFnStrategy:{
+    empty:function(){},
+    initRange(newConfig, realData, cmpBox){
+      var converter = DataConverter;
+      var j2d = converter.JsonToDateTime;
+      var endTime = j2d(cmpBox.props.endTime, true);
+      var startTime = j2d(cmpBox.props.startTime, true);
+
+      newConfig.series = realData;
+      if (realData && realData.length > 1) {
+          cmpBox.navCache = true;
+          newConfig.scrollbar.liveRedraw = true;
+      }
+      else {
+          cmpBox.navCache = true;
+      }
+      if (cmpBox.props.step === 1 || cmpBox.props.step === 0) {
+          cmpBox.navCache = false;
+          newConfig.scrollbar.liveRedraw = false;
+      }
+
+      newConfig.xAxis.min = startTime;
+      var nowBound = new Date();
+      nowBound.setMinutes(0, 0, 0);
+      //#2488
+      switch (cmpBox.props.step) {
+          case 0:
+              endTime = new Date(endTime);
+              startTime = new Date(startTime);
+              nowBound.setMinutes(endTime.getMinutes(), 0, 0);
+              break;
+          case 1:
+              endTime = new Date(endTime);
+              if (endTime.getMinutes() < 30) {
+                  endTime = dateAdd(new Date(endTime), 1, 'hours');
+              }
+              nowBound = dateAdd(nowBound, 1, 'hours');
+              startTime = new Date(startTime);
+              break;
+          case 2:
+              endTime = new Date(endTime);
+              if (endTime.getHours() > 0 && endTime.getHours() < 12) {
+                  endTime = dateAdd(new Date(endTime), 1, 'days');
+              }
+              startTime = new Date(startTime);
+              if (startTime.getHours() !==0 && startTime.getHours() <= 12) {
+                  startTime.setHours(13);
+                  newConfig.xAxis.min = startTime.getTime();
+              }
+              nowBound.setHours(0);
+              nowBound = dateAdd(nowBound, 1, 'days');
+              break;
+          case 3:
+              endTime = new Date(endTime);
+              if (!(endTime.getDate() === 1 && endTime.getHours() === 0)) {
+                  if (endTime.getDate() < 15) {
+                      endTime = dateAdd(new Date(endTime), 1, 'months');
+                  }
+              }
+              startTime = new Date(startTime);
+              if (startTime.getDate() > 1 && startTime.getDate() <= 16) {
+                  startTime.setDate(17);
+                  newConfig.xAxis.min = startTime.getTime();
+              }
+              nowBound.setDate(1);
+              nowBound.setHours(0);
+              nowBound = dateAdd(nowBound, 1, 'months');
+              break;
+          case 4:
+              endTime = new Date(endTime);
+              if (!(endTime.getMonth() === 0 && endTime.getDate() === 1 && endTime.getHours() === 0)) {
+                  if (endTime.getMonth() < 5) {
+                      endTime = dateAdd(new Date(endTime), 1, 'years');
+                  }
+              }
+              startTime = new Date(startTime);
+              if (!(startTime.getMonth() === 0 && startTime.getDate() === 1 && startTime.getHours() === 0)) {
+
+                  if (startTime.getMonth() > 0 && startTime.getMonth() <= 6) {
+                      startTime.setMonth(7);
+                      newConfig.xAxis.min = startTime.getTime();
+                  }
+              }
+              nowBound.setMonth(0, 1);
+              nowBound.setHours(0);
+              nowBound = dateAdd(nowBound, 1, 'years');
+              break;
+          case 5:
+              endTime = new Date(endTime);
+              if (!(endTime.getDay() === 1 && endTime.getHours() === 0)) {
+                  if (endTime.getDay() !== 0 && (endTime.getDay() < 3 || (endTime.getDay() < 4 && endTime.getHours() < 12))) {
+                      endTime = dateAdd(new Date(endTime), 7, 'days');
+                  }
+              }
+              startTime = new Date(startTime);
+              if (startTime.getDay() !== 1 && startTime.getDay() !== 0 && startTime.getDay() < 4) { //not monday
+
+                  startTime = dateAdd(startTime, 5 - startTime.getDay(), 'days');
+
+                  newConfig.xAxis.min = startTime.getTime();
+              }
+              if (nowBound.getDay() === 0) {
+                  nowBound = dateAdd(nowBound, -6, 'days');
+              }
+              else {
+                  nowBound = dateAdd(nowBound, 1 - nowBound.getDay(), 'days');
+              }
+              nowBound.setHours(0);
+              nowBound = dateAdd(nowBound, 7, 'days');
+              break;
+          case 6:
+              endTime = new Date(endTime);
+              startTime = new Date(startTime);
+              nowBound.setMinutes(endTime.getMinutes(), 0, 0);
+              break;
+          case 7:
+              endTime = new Date(endTime);
+              if (endTime.getMinutes() < 30) {
+                  endTime = dateAdd(new Date(endTime), 1, 'hours');
+              }
+              nowBound = dateAdd(nowBound, 1, 'hours');
+              startTime = new Date(startTime);
+              break;
+      }
+      newConfig.xAxis.max = endTime.getTime();
+
+      return [startTime, endTime, nowBound];
+    }
+  },
+  initNavigatorDataFnStrategy:{
+    empty:function(){},
+    initNavigatorData(newConfig, timeRange, data, cmpBox){
+      var startTime = timeRange[0], endTime = timeRange[1], nowBound = timeRange[2];
+      if (newConfig.navigator.enabled && data.Navigator) {
+          var navData = data.Navigator,
+              numStartTime = startTime.getTime(),
+              numEndTime = endTime.getTime(),
+              navStart = navData[0][0],
+              navShouldBeStartAt = numStartTime,
+              navShouldBeEndAt = numEndTime;
+
+          for (var i = 0; i < newConfig.series.length; i++) {
+              var s = newConfig.series[i];
+              if (!s.data || s.data.length === 0) continue;
+              var sMin = s.data[0][0], sMax = s.data[s.data.length - 1][0];
+              if (sMin < navShouldBeStartAt) navShouldBeStartAt = sMin;
+              if (sMax > navShouldBeEndAt) navShouldBeEndAt = sMax;
+          }
+          navShouldBeEndAt = cmpBox.arrayMax([navShouldBeEndAt, new Date(), DataConverter.JsonToDateTime(cmpBox.props.endTime)]);
+
+          // Oscar: Fix bug #5615. Disable the stickToMax function in highstock. Search "stickToMax" in highstock source code for detail
+          navShouldBeEndAt++;
+          // #5615 fixing end
+
+          if (navData[0][0] > navShouldBeStartAt) {
+              navData.unshift([navShouldBeStartAt, null]);
+          }
+          if (navData[navData.length - 1][0] < navShouldBeEndAt) {
+              navData.push([navShouldBeEndAt, null]);
+          }
+
+          newConfig.navigator.xAxis.max = navData[navData.length - 1][0];
+          newConfig.navigator.series = { data: navData, dataGrouping: { enabled: false } };
+
+          if (newConfig.series.length > 0) {
+              if (newConfig.series[0].data.length === 0) {
+                  newConfig.series[0].data = [[numStartTime, null], [numEndTime, null]];
+              }
+              else {
+              }
+          }
+      }
+      else {
+          newConfig.navigator.enabled = false;
+          newConfig.navigator.series = null;
+          newConfig.scrollbar.enabled = false;
+      }
+    }
+  },
   initYaxisFnStrategy:{
     empty:function(){},
     initYaxis(data, config, yAxisOffset, cmpBox){
@@ -407,6 +593,47 @@ let ChartCmpStrategyFactor = {
 
       defaultConfig.tooltip.formatter = commonTooltipFormatter;
     },
+    rankChartCmpMergeConfig(defaultConfig, cmpBox){
+      var tooltipFormatter = function () {
+        var series = this.points[0].series;
+        var option = series.options.option;
+        var uom = option.uom;
+        var list = option.list;
+        var total = list.length;
+        if (this.x > total - 1) return '';
+        var tooltip = I18N.Rank.RankTooltip;//排名:{0}/{1}
+        var str = tooltip.
+                    replace('{0}', list[this.x].pos).
+                        replace('{1}', total);
+        str += "<br/>";
+        str += list[this.x].name + '-';
+        var val = dataLabelFormatter.call({ value: list[this.x].val }, false);
+        str += series.options.option.commodity + ':' + val;
+        str += uom;
+        return str;
+      };
+      defaultConfig.navigator.enabled = false;
+      defaultConfig.legend.enabled = false;
+      defaultConfig.chart.spacingRight = 30;
+      defaultConfig.xAxis.labels = {
+          rotation: -45,
+          align: 'center',
+          y: 20,
+          overflow: undefined,
+          //x: -5,
+
+          formatter: cmpBox.xAxisLabelFormatter
+      };
+      defaultConfig.xAxis.showFirstLabel = true;
+      defaultConfig.xAxis.showLastLabel = true;
+      defaultConfig.xAxis.tickPositioner = cmpBox.xAxisTickPositioner;
+      defaultConfig.tooltip.formatter = tooltipFormatter;
+      var range = cmpBox.state.range - 1;
+      var order = cmpBox.state.order;
+      defaultConfig.xAxis.min = cmpBox.state.minPosition;
+      defaultConfig.xAxis.max = cmpBox.state.minPosition + range;
+      defaultConfig.xAxis.range = range;
+    },
     pieChartCmpMergeConfig(defaultConfig){
       defaultConfig.tooltip.formatter = function () {
           var series = this.point.series,
@@ -524,8 +751,59 @@ let ChartCmpStrategyFactor = {
       }
       return ret;
     },
-    pieConvertData(data, config, cmpBox){
-       var ret = ChartCmpStrategyFactor.convertDataFnStrategy.convertData(data, config, cmpBox);
+    rankConvertDataFn(data, config, cmpBox){
+      var item = data[0];
+        var s = {
+            type: cmpBox.props.chartType,
+            enableDelete: false,
+            enableHide: false,
+            data: item.data,
+            seriesKey: item.seriesKey,
+            uid: 'ranking'
+        };
+        var list = item.option.list;
+
+
+        if (cmpBox.status.order != 1) {//default is asc
+            s.data.reverse();
+            list.reverse();
+        }
+
+
+
+        s.option = {
+            list: cmpBox.makePosition(list),
+            commodity: item.option.commodity,
+            uom: item.option.uom
+        };
+
+        if (s.data.length < cmpBox.state.range) {
+
+            if (s.data.length > 1) {
+                config.xAxis.range = s.data.length - 1;
+                config.xAxis.max = s.data.length - 1;
+                config.xAxis.min = 0;
+            }
+            else {
+                config.xAxis.min = 0;
+                config.xAxis.max = 1;
+                config.xAxis.range = config.xAxis.max;
+            }
+            //newConfig.xAxis.range = newConfig.xAxis.max;
+        }
+
+        if (s.data.length === 0) {
+            config.xAxis = null;
+            config.yAxis = null;
+            config.series = [{data:[]}];
+        }
+        else {
+            config.series = [s];
+        }
+        return [s];
+    },
+    pieConvertData(data, config){
+       var ret = ChartCmpStrategyFactor.convertDataFnStrategy.convertData(data, config);
        return [{ type: 'pie', data: ret }];
     }
   },
