@@ -2,8 +2,8 @@
 import React from "react";
 import {Navigation, State } from 'react-router';
 import {Dialog,FlatButton,TextField,Paper} from 'material-ui';
-import Tree from './tree/Tree.jsx';
-import FolderStore from '../stores/FolderStore.jsx';
+import Tree from '../tree/Tree.jsx';
+import FolderStore from '../../stores/FolderStore.jsx';
 
 var Copy = React.createClass({
   propTypes: {
@@ -69,8 +69,6 @@ var Copy = React.createClass({
     });
   },
   render:function(){
-
-
       //style
       let paperStyle = {
                     backgroundColor: '#ffffff',

@@ -8,7 +8,8 @@ import FolderStore from '../../stores/FolderStore.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 import NodeContent from './TreeNodeContent.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
-import CopyView from './CopyView.jsx';
+import CopyView from './operationView/CopyView.jsx';
+import DeleteView from './operationView/DeleteView.jsx';
 
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
@@ -209,12 +210,24 @@ var PanelContainer = React.createClass({
       buttonDisabled:false
     };
   },
-
+  _onDeleteItem:function(){
+    this.setState({
+      allNode:FolderStore.getFolderTree()
+    })
+  },
+  _onCopyItem:function(){
+    this.setState({
+      allNode:FolderStore.getFolderTree()
+    })
+  },
   componentDidMount: function() {
 
     FolderStore.addFolderTreeListener(this._onFolderTreeChange);
     FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
-    FolderAction.getFolderTreeByCustomerId(100012);
+    FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
+
+    FolderStore.addDeleteItemSuccessListener(this._onDeleteItem);
+    FolderStore.addCopyItemSuccessListener(this._onCopyItem);
     /*
     HierarchyStore.addHierarchyNodeListener(this._onChange);
     HierarchyAction.loadall(window.currentCustomerId);
@@ -224,6 +237,9 @@ var PanelContainer = React.createClass({
 
     FolderStore.removeFolderTreeListener(this._onFolderTreeChange);
     FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
+
+    FolderStore.removeDeleteItemSuccessListener(this._onDeleteItem);
+    FolderStore.removeCopyItemSuccessListener(this._onCopyItem);
 
   //  HierarchyStore.removeHierarchyNodeListener(this._onChange);
   },
@@ -256,8 +272,8 @@ var PanelContainer = React.createClass({
 
 
       var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
-      var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={Immutable.fromJS(testnode)}/>:null);
-
+      //var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={Immutable.fromJS(testnode)}/>:null);
+      var template=(this.state.templateShow?<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.selectedNode}/>:null);
 
     return(
       <div className="jazz-folder-leftpanel-container">
@@ -324,7 +340,7 @@ var FolderLeftPanel = React.createClass({
     iconStyle={
       fontSize:'36px'
     };
-    var panel=(this.state.isShow?(<div style={{display:'flex'}}><PanelContainer></PanelContainer> </div>)
+    var panel=(this.state.isShow?(<div style={{display:'flex',flex:1}}><PanelContainer></PanelContainer> </div>)
                     :(<div style={{display:'none'}}><PanelContainer></PanelContainer></div>)
               );
     return(

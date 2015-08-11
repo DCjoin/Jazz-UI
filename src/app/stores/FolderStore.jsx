@@ -19,7 +19,8 @@ let FOLDER_TREE_EVENT = 'foldertree',
     MODIFY_NAME_ERROR_EVENT='modifynameerror',
     MODIFY_NAME_SUCCESS_EVENT='modifynamesuccess',
     COPY_ITEM_SUCCESS_EVENT='copyitemsuccess',
-    COPY_ITEM_ERROR_EVENT='copyitemerror';
+    COPY_ITEM_ERROR_EVENT='copyitemerror',
+    DELETE_ITEM_SUCCESS_EVENT='deleteitemsuccess';
 
 var FolderStore = assign({},PrototypeStore,{
 
@@ -119,8 +120,33 @@ var FolderStore = assign({},PrototypeStore,{
     _errorName=null;
     _errorType=null;
   },
-  copyItem:function(sourceItem,destItem){
-
+  copyItem:function(destItem,newNode){
+    var parent=destItem;
+    var children=parent.get('Children');
+      parent=parent.set('Children',children.push(newNode));
+      _parentId=parent.get('Id');
+      _changedNode=parent;
+      _folderTree=this.modifyTreebyNode(_folderTree);
+  },
+  deleteItem:function(deleteNode){
+    //如果左边选中的是一个widget，在右边执行删除后，左边焦点项下移
+    var parent;
+    var f=function(item){
+      if(item.get('Id')==deleteNode.get('ParentId')){
+        parent = item;
+      }
+      else {
+        if(item.get('Children')){
+          item.get('Children').forEach(child=>{f(child)})
+        }
+      }
+    };
+    f(_folderTree);
+    var children=parent.get('Children');
+    parent=parent.set('Children',children.delete(children.findIndex(item=>item.get('Id')==deleteNode.get('Id'))));
+    _parentId=parent.get('Id');
+    _changedNode=parent;
+    _folderTree=this.modifyTreebyNode(_folderTree);
   },
   setModifyNameError:function(res,newName,type){
     var errorCode=eval("(" + res + ")");
@@ -246,7 +272,17 @@ var FolderStore = assign({},PrototypeStore,{
   removeCopyItemSuccessrListener: function(callback) {
           this.removeListener(COPY_ITEM_SUCCESS_EVENT, callback);
           this.dispose();
-          },
+        },
+  emitDeleteItemSuccessChange: function() {
+          this.emit(DELETE_ITEM_SUCCESS_EVENT);
+        },
+  addDeleteItemSuccessListener: function(callback) {
+        this.on(DELETE_ITEM_SUCCESS_EVENT, callback);
+        },
+  removeDeleteItemSuccessrListener: function(callback) {
+      this.removeListener(DELETE_ITEM_SUCCESS_EVENT, callback);
+      this.dispose();
+      },
 });
 
 var FolderAction = Folder.Action;
@@ -273,8 +309,12 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
         FolderStore.setSelectedNode(action.selectedNode);
       break;
     case FolderAction.COPY_ITEM:
-        FolderStore.copyItem(action.sourceItem,action.destItem);
+        FolderStore.copyItem(action.destItem,action.newNode);
         FolderStore.emitCopyItemSuccessChange();
+      break;
+    case FolderAction.DELETE_ITEM:
+        FolderStore.deleteItem(action.deleteNode);
+        FolderStore.emitDeleteItemSuccessChange();
       break;
   }
 });

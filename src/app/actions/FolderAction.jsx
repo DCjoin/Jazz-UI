@@ -81,12 +81,11 @@ let FolderAction = {
            desParentId:destItem.get('Id'),
            newName:newName,
           },
-          commonErrorHandling:false,
         success: function(newNode){
           AppDispatcher.dispatch({
               type: Action.COPY_ITEM,
-              sourceItem: sourceItem,
-              destItem :destItem
+              destItem :destItem,
+              newNode:newNode
           });
         },
         error: function(err, res){
@@ -97,6 +96,26 @@ let FolderAction = {
         }
     });
 
+  },
+  deleteItem:function(node){
+    Ajax.post('/Dashboard.svc/DeleteFolderOrWidgetById', {
+         params: {
+           id:node.get('Id'),
+           type:node.get('Type')
+          },
+        success: function(newNode){
+          AppDispatcher.dispatch({
+              type: Action.DELETE_ITEM,
+              deleteNode:node
+          });
+        },
+        error: function(err, res){
+          AppDispatcher.dispatch({
+              type: Action.DELETE_ITEM_ERROR,
+              res:res
+          });
+        }
+    });
   },
   ModifyFolderReadStatus:function(selectedNode){
     AppDispatcher.dispatch({
