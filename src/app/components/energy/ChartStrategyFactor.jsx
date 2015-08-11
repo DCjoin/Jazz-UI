@@ -262,23 +262,43 @@ let ChartStrategyFactor = {
  getChartComponentFnStrategy:{
    getEnergyChartComponent(analysisPanel){
      let energyPart;
-     let chartCmpObj ={ref:'ChartComponent',
-                       bizType:analysisPanel.props.bizType,
-                       energyType: analysisPanel.state.energyType,
-                       chartType: analysisPanel.state.selectedChartType,
-                       energyData: analysisPanel.state.energyData,
-                       energyRawData: analysisPanel.state.energyRawData,
-                       onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
-                       onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
-                     };
+     let chartType = analysisPanel.state.selectedChartType;
+     if(chartType === 'rawdata'){
 
-      energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
-                     <div style={{display:'flex'}}>
-                       <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-                       <StepSelector stepValue={analysisPanel.state.step}      onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
-                     </div>
-                     <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
-                   </div>;
+     }else if(chartType === 'pie'){
+       let chartCmpObj ={ref:'ChartComponent',
+                         bizType:analysisPanel.props.bizType,
+                         energyType: analysisPanel.state.energyType,
+                         chartType: analysisPanel.state.selectedChartType,
+                         energyData: analysisPanel.state.energyData,
+                         energyRawData: analysisPanel.state.energyRawData,
+                         onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                         onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                       };
+
+        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                       <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                     </div>;
+     }else{
+       let chartCmpObj ={ref:'ChartComponent',
+                         bizType:analysisPanel.props.bizType,
+                         energyType: analysisPanel.state.energyType,
+                         chartType: analysisPanel.state.selectedChartType,
+                         energyData: analysisPanel.state.energyData,
+                         energyRawData: analysisPanel.state.energyRawData,
+                         onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                         onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                       };
+
+        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                       <div style={{display:'flex'}}>
+                         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+                         <StepSelector stepValue={analysisPanel.state.step}      onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+                       </div>
+                       <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                     </div>;
+     }
+
       return energyPart;
    },
    getRankChartComponent(analysisPanel){

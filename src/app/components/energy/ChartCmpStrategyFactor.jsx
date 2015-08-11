@@ -731,8 +731,8 @@ let ChartCmpStrategyFactor = {
         }
         return [s];
     },
-    pieConvertData(data, config){
-       var ret = ChartCmpStrategyFactor.convertDataFnStrategy.convertData(data, config);
+    pieConvertData(data, config, cmpBox){
+       var ret = ChartCmpStrategyFactor.convertDataFnStrategy.convertData(data, config, cmpBox);
        return [{ type: 'pie', data: ret }];
     }
   },
