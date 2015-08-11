@@ -500,8 +500,10 @@ I18N.Folder.SaveNameError.E032= '名称为“{0}”的{1}已存在，请选取�
 I18N.Folder.SaveNameError.E029= '{0}名称不能为空，请重新输入';
 I18N.Folder.SaveNameError.E031= '{0}名称超过最大长度100，请重新输入';
 
-
-
+I18N.Folder.Copy={};
+I18N.Folder.Copy.Title='复制文件夹';
+I18N.Folder.Copy.Label='文件夹名称';
+I18N.Folder.Copy.firstActionLabel='复制';
 
 I18N.Commodity={};
 I18N.Commodity.Overview = '介质总览';
@@ -511,6 +513,12 @@ I18N.Hierarchy.RankingButtonName = '请选择层级节点进行排名';
 I18N.Hierarchy.ButtonName = '请选择层级节点';
 I18N.Hierarchy.Confirm = '确定';
 I18N.Hierarchy.Clear = '清空';
+
+I18N.Template={};
+I18N.Template.Copy={};
+I18N.Template.Copy.DestinationFolder='目标文件夹';
+I18N.Template.Copy.Cancel='放弃';
+I18N.Template.Copy.DefaultName='{0}-副本';
 
 I18N.Rank={};
 I18N.Rank.RankTooltip = '排名:{0}/{1}';

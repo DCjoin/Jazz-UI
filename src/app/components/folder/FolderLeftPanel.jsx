@@ -1,14 +1,14 @@
 'use strict';
 import React from "react";
 import {Navigation, State } from 'react-router';
-import {CircularProgress,FlatButton,FontIcon,IconButton,IconMenu} from 'material-ui';
+import {CircularProgress,FlatButton,FontIcon,IconButton,IconMenu,Dialog} from 'material-ui';
 import SearchBox from './FolderSearchBox.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 import NodeContent from './TreeNodeContent.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
-import Copy from '../../controls/Copy.jsx';
+import CopyView from './CopyView.jsx';
 
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
@@ -16,20 +16,108 @@ import HierarchyAction from '../../actions/HierarchyAction.jsx';
 
 import Immutable from 'immutable';
 
-let _newWidget=[];
-/*
- _newWidget[2]=I18N.Folder.NewWidget.Menu2;
-_newWidget[3]=I18N.Folder.NewWidget.Menu3;
-_newWidget[4]=I18N.Folder.NewWidget.Menu4;
-_newWidget[5]=I18N.Folder.NewWidget.Menu5;
-_newWidget[7]=I18N.Folder.NewWidget.Menu1;
-*/
-_newWidget[2]='Menu2';
-_newWidget[3]='Menu3';
-_newWidget[4]='Menu4';
-_newWidget[5]='Menu5';
-_newWidget[7]='Menu1';
+//for test
+var testnode={
+  Id : 1,
+  CustomerId : 100001,
+  UserId : 1,
+  Name:"child1",
+  Path:"仪表盘/child1",
+  ChildWidgetCount:5,
+  ChildFolderCount:1,
+  ParentId:-1,
+  Order:1,
+  Type:6,
+  IsSenderCopy:false,
+  HasChildren : true,
+  IsRead:true,
+  Children:[
+  {
+    Id : 2,
+CustomerId: 100001,
+UserId: 1,
+Name : "child1_1",
+Path : "仪表盘/child1/child1_1",
+ChildWidgetCount : 0,
+ChildFolderCount :0,
+ParentId : 1,
+Order :1,
+Type :6,
+IsSenderCopy : false,
+IsRead:false,
+  },{
+    Id : 3,
+      CustomerId : 100001,
+      UserId : 1,
+      Name : "child1_2",
+      Path : "仪表盘/child1/child1_2",
+      ChildWidgetCount : 0,
+      ChildFolderCount : 0,
+      ParentId : 1,
+      Order : 2,
+      Type : 7,
+      WidgetType:1,
+      IsSenderCopy : true,
+      SourceUserName:"User2",
+      IsRead : false,
 
+  },{
+    Id : 4,
+CustomerId : 100001,
+UserId : 1,
+Name : "child1_3",
+Path : "仪表盘/child1/child1_3",
+ChildWidgetCount : 0,
+ChildFolderCount : 0,
+ParentId : 1,
+Order : 3,
+Type :7,
+WidgetType : 4,
+IsSenderCopy : true,
+SourceUserName : "User2",
+IsRead : false,
+  },{
+    Id : 5,
+    CustomerId : 100001,
+    UserId : 1,
+    Name : "child1_4",
+    Path : "仪表盘/child1/child1_4",
+    ChildWidgetCount : 0,
+    ChildFolderCount : 0,
+    ParentId : 1,
+    Order : 4,
+    Type : 7,
+    WidgetType : 3,
+    IsRead : false,
+  },{
+    Id : 6,
+CustomerId : 100001,
+UserId : 1,
+Name : "child1_5",
+Path : "仪表盘/child1/child1_5",
+ChildWidgetCount : 0,
+ChildFolderCount : 0,
+ParentId : 1,
+Order : 5,
+Type : 7,
+WidgetType : 5,
+IsRead : false,
+  },{
+    Id : 7,
+  CustomerId : 100001,
+  UserId : 1,
+  Name : "child1_6",
+  Path : "仪表盘/child1/child1_6",
+  ChildWidgetCount : 0,
+  ChildFolderCount : 0,
+  ParentId : 1,
+  Order : 6,
+  Type :7,
+  WidgetType : 2,
+  IsRead : false,
+  }
+  ]
+  }
 var PanelContainer = React.createClass({
 
   _onFolderTreeChange:function(){
@@ -40,9 +128,10 @@ var PanelContainer = React.createClass({
     });
   },
 
-  generateNodeConent:function(nodeData){
+  generateNodeConent:function(nodeData,IsSendCopyReaded){
     return(<NodeContent nodeData={nodeData}
-                        selectedNode={this.state.selectedNode}/>);
+                        selectedNode={this.state.selectedNode}
+                        readStatus={IsSendCopyReaded}/>);
   },
   _onChange:function(){
     this.setState({
@@ -52,9 +141,19 @@ var PanelContainer = React.createClass({
     });
   },
   _onSelectNode:function(nodeData){
-    this.setState({
-      selectedNode:nodeData
-    })
+    FolderAction.setSelectedNode(nodeData);
+    if(nodeData.get('Type')==7){
+      this.setState({
+        selectedNode:nodeData,
+        buttonDisabled:true,
+      })
+    }
+    else {
+      this.setState({
+        selectedNode:nodeData,
+        buttonDisabled:false,
+      })
+    }
   },
   _onNewFolder:function(){
     this.setState({
@@ -72,6 +171,14 @@ var PanelContainer = React.createClass({
   },
   _onNewWidget:function(e, item){
     let widgetType=parseInt(item.key);
+    let _newWidget=[];
+
+    _newWidget[1]=I18N.Folder.NewWidget.Menu1;
+    _newWidget[2]=I18N.Folder.NewWidget.Menu2;
+    _newWidget[3]=I18N.Folder.NewWidget.Menu3;
+    _newWidget[4]=I18N.Folder.NewWidget.Menu4;
+    _newWidget[5]=I18N.Folder.NewWidget.Menu5;
+
     let name=I18N.format(I18N.Folder.NewWidget.DefaultName, _newWidget[widgetType]);
     this.setState({
       isLoading:true
@@ -80,7 +187,17 @@ var PanelContainer = React.createClass({
   },
   _onTemplateTest:function(){
     this.setState({
-      templateShow:!this.state.templateShow
+      templateShow:true
+    })
+  },
+  _onTemplateDismiss:function(){
+    this.setState({
+      templateShow:false
+    })
+  },
+  _onSearchClick:function(node){
+    this.setState({
+      selectedNode:node
     })
   },
   getInitialState:function(){
@@ -88,7 +205,8 @@ var PanelContainer = React.createClass({
       allNode:null,
       isLoading:true,
       selectedNode:null,
-      templateShow:false
+      templateShow:false,
+      buttonDisabled:false
     };
   },
 
@@ -118,7 +236,7 @@ var PanelContainer = React.createClass({
           paddingTop:'0px'
         };
     //icon
-    var IconButtonElement=<IconButton iconClassName="icon-log"/>,
+    var IconButtonElement=<IconButton iconClassName="icon-log" disabled={this.state.buttonDisabled}/>,
         menuIcon=<FontIcon className="icon-language" style={iconStyle}/>;
     //props
     var iconMenuProps={
@@ -136,8 +254,9 @@ var PanelContainer = React.createClass({
         selectedNode:this.state.selectedNode
       };
 
+
       var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
-      var template=(this.state.templateShow?<Copy />:null);
+      var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={Immutable.fromJS(testnode)}/>:null);
 
 
     return(
@@ -145,11 +264,11 @@ var PanelContainer = React.createClass({
 
         <div className="jazz-folder-leftpanel-header">
           <div className="newfolder">
-            <IconButton iconClassName="icon-column-fold" onClick={this._onNewFolder}/>
+            <IconButton iconClassName="icon-column-fold" onClick={this._onNewFolder} disabled={this.state.buttonDisabled}/>
           </div>
           <div className="newwidget">
             <IconMenu {...iconMenuProps} onItemTouchTap={this._onNewWidget}>
-               <MenuItem ref="Menu1" key={7} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={menuIcon}/>
+               <MenuItem ref="Menu1" key={1} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={menuIcon}/>
                <MenuItem ref="Menu2" key={2} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={menuIcon}/>
                <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={menuIcon}/>
                <MenuItem ref="Menu4" key={4} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={menuIcon}/>
@@ -163,7 +282,7 @@ var PanelContainer = React.createClass({
         </div>
 
         <div className="jazz-folder-leftpanel-search">
-          <SearchBox></SearchBox>
+          <SearchBox onSearchClick={this._onSearchClick}></SearchBox>
         </div>
 
         <div className="jazz-folder-leftpanel-foldertree">
