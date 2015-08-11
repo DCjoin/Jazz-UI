@@ -316,11 +316,14 @@ let ChartComponentBox = React.createClass({
     },
     componentWillMount(){
       this.initDefaultConfig();
+      this.state.chartCmpStrategy.getInitialStateFn(this);
     },
     componentWillReceiveProps(nextProps){
-      if(nextProps.range && nextProps.range != this.props.range){
+      if(nextProps.range && nextProps.range !== this.props.range){
         this.state.chartCmpStrategy.onChangeRangeFn(nextProps.range, this);
-
+      }
+      if(nextProps.order && nextProps.order !== this.props.order){
+        this.state.chartCmpStrategy.onChangeOrderFn(nextProps.order, this);
       }
     },
     getInitialState(){

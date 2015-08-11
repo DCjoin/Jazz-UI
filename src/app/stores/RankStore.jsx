@@ -188,15 +188,12 @@ var RankStore = assign({},PrototypeStore,{
     this.removeListener(RANK_DATA_LOADED_EVENT, callback);
   },
   addRankDataLoadErrorListener: function(callback) {
-    this.removeListener(RANK_DATA_LOAD_ERROR_EVENT, callback);
-  },
-  emitRankDataLoadErrorListener:function(callback) {
     this.on(RANK_DATA_LOAD_ERROR_EVENT, callback);
   },
-  removeRankDataLoadErrorListener:function(callback) {
+  emitRankDataLoadErrorListener:function() {
     this.emit(RANK_DATA_LOAD_ERROR_EVENT);
   },
-  removeRankDataErrorListener: function(callback) {
+  removeRankDataLoadErrorListener:function(callback) {
     this.removeListener(RANK_DATA_LOAD_ERROR_EVENT, callback);
   }
 });
