@@ -51,6 +51,8 @@ var Tree = React.createClass({
     // interface
     onSelectNode: React.PropTypes.func.isRequired,
     generateNodeConent: React.PropTypes.func,
+    //for copy operation
+    isFolderOperationTree:React.PropTypes.bool,
   },
 
   getDefaultProps: function () {
@@ -113,7 +115,8 @@ var Tree = React.createClass({
           selectedNode: this.compatibleJSON(this.props.selectedNode),
           checkedNodes: this.compatibleJSON(this.props.checkedNodes),
           onSelectNode: this.onSelectNode,
-          generateNodeConent: this.props.generateNodeConent
+          generateNodeConent: this.props.generateNodeConent,
+          isFolderOperationTree:this.props.isFolderOperationTree,
         };
         parentNode.push(<TreeNode {...props}></TreeNode>);
       }

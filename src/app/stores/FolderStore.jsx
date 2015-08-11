@@ -12,11 +12,14 @@ let _folderTree=Immutable.fromJS(),
     _newNode=null,
     _modifyNameErrorCode=null,
     _errorName=null,
-    _errorType=null;
+    _errorType=null,
+    _selectedNode=null;
 let FOLDER_TREE_EVENT = 'foldertree',
     CREATE_FOLDER_EVENT='createfolder',
     MODIFY_NAME_ERROR_EVENT='modifynameerror',
-    MODIFY_NAME_SUCCESS_EVENT='modifynamesuccess';
+    MODIFY_NAME_SUCCESS_EVENT='modifynamesuccess',
+    COPY_ITEM_SUCCESS_EVENT='copyitemsuccess',
+    COPY_ITEM_ERROR_EVENT='copyitemerror';
 
 var FolderStore = assign({},PrototypeStore,{
 
@@ -95,7 +98,7 @@ var FolderStore = assign({},PrototypeStore,{
   modifyName:function(newNode){
     var parent;
     var f=function(item){
-      if(item.get('Id')==newNode.get('ParentId ')){
+      if(item.get('Id')==newNode.get('ParentId')){
         parent = item;
       }
       else {
@@ -115,6 +118,9 @@ var FolderStore = assign({},PrototypeStore,{
     _modifyNameErrorCode=null;
     _errorName=null;
     _errorType=null;
+  },
+  copyItem:function(sourceItem,destItem){
+
   },
   setModifyNameError:function(res,newName,type){
     var errorCode=eval("(" + res + ")");
@@ -144,6 +150,38 @@ var FolderStore = assign({},PrototypeStore,{
             break;
     }
     return error;
+  },
+  setSelectedNode:function(selectedNode){
+    _selectedNode=selectedNode;
+  },
+  getSelectedNode:function(){
+    return _selectedNode;
+  },
+  getCopyLabelName:function(folderName,type){
+    var nameArray=[],index=0;
+    if(_selectedNode===null){
+      _selectedNode=_folderTree;
+    }
+    _selectedNode.get('Children').forEach(function(child){
+      if(child.get('Type')==type){
+        if(child.get('Name').indexOf(I18N.format(I18N.Template.Copy.DefaultName,folderName))>=0){
+          nameArray.push(child.get('Name'));
+        }
+      }
+    });
+    if(nameArray){
+      nameArray.forEach(function(name,i){
+        let num=(i+1)+'';
+        if((name.indexOf(num)<0) && (index==0)){
+          index=i+1;
+        }
+      });
+      if(index==0){index=nameArray.length+1}
+    }
+    else {
+      index=1
+    }
+    return (I18N.format(I18N.Template.Copy.DefaultName,folderName)+index);
   },
   emitFolderTreeChange: function() {
               this.emit(FOLDER_TREE_EVENT);
@@ -189,6 +227,26 @@ var FolderStore = assign({},PrototypeStore,{
             this.removeListener(MODIFY_NAME_ERROR_EVENT, callback);
             this.dispose();
                           },
+  emitCopyItemErrorChange: function() {
+            this.emit(COPY_ITEM_ERROR_EVENT);
+              },
+  addCopyItemErrorListener: function(callback) {
+          this.on(COPY_ITEM_ERROR_EVENT, callback);
+          },
+  removeCopyItemErrorListener: function(callback) {
+          this.removeListener(COPY_ITEM_ERROR_EVENT, callback);
+          this.dispose();
+          },
+  emitCopyItemSuccessChange: function() {
+          this.emit(COPY_ITEM_SUCCESS_EVENT);
+            },
+  addCopyItemSuccessListener: function(callback) {
+          this.on(COPY_ITEM_SUCCESS_EVENT, callback);
+          },
+  removeCopyItemSuccessrListener: function(callback) {
+          this.removeListener(COPY_ITEM_SUCCESS_EVENT, callback);
+          this.dispose();
+          },
 });
 
 var FolderAction = Folder.Action;
@@ -204,12 +262,19 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
          FolderStore.emitCreateFolderOrWidgetChange();
       break;
     case FolderAction.MODIFY_NAME_SECCESS:
-         FolderStore.modifyName(action.newNode);
+         FolderStore.modifyName(Immutable.fromJS(action.newNode));
          FolderStore.emitModifyNameSuccessChange();
       break;
     case FolderAction.MODIFY_NAME_ERROR:
          FolderStore.setModifyNameError(action.res.text,action.newName,action.stype);
          FolderStore.emitModifyNameErrorChange();
+      break;
+    case FolderAction.SET_SELECTED_NODE:
+        FolderStore.setSelectedNode(action.selectedNode);
+      break;
+    case FolderAction.COPY_ITEM:
+        FolderStore.copyItem(action.sourceItem,action.destItem);
+        FolderStore.emitCopyItemSuccessChange();
       break;
   }
 });

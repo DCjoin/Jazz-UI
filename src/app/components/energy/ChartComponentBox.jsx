@@ -317,6 +317,12 @@ let ChartComponentBox = React.createClass({
     componentWillMount(){
       this.initDefaultConfig();
     },
+    componentWillReceiveProps(nextProps){
+      if(nextProps.range && nextProps.range != this.props.range){
+        this.state.chartCmpStrategy.onChangeRangeFn(nextProps.range, this);
+
+      }
+    },
     getInitialState(){
       let bizType = this.props.bizType,
           energyType = this.props.energyType,
@@ -541,55 +547,6 @@ let ChartComponentBox = React.createClass({
       });
     }
     return newList;
-  },
-  xAxisTickPositioner: function (min, max) {
-    var width = this.width,
-               serieses = this.series,
-               series,
-               ret = [];
-    if (!!serieses || serieses.length === 0) return;
-    series = serieses[0];
-    ret.info = {
-      higherRanks: {}
-    };
-    var tpp = (max - min) / width;
-
-    var xData = series.xData;
-    var yData = series.yData;
-    var firstData, i = 0;
-
-    while (i < xData.length) {
-      if (yData[i] !== null) {
-          firstData = xData[i];
-          break;
-      }
-      ++i;
-    }
-
-    var count = 1;
-    var j = i;
-    while ((xData[j + count] - xData[j]) / tpp < 40) {
-      count++;
-    }
-    j = i;
-    while (j < xData.length) {
-      //when use all data, data will be greater than xAxis
-      if (xData[j] >= min && xData[j] <= max) {
-        ret.push(xData[j]);
-        ret.info.higherRanks[xData[j]] = '';
-      }
-      j += count;
-    }
-    return ret;
-  },
-  xAxisLabelFormatter: function () {
-    var v = this.value, chart = this.chart;
-    var series = chart.series[0];
-    var list = series.options.option.list;
-    if (list.length - 1 < v) return '';
-    var name = list[v].name;
-
-    return JazzCommon.TrimText(name, 4, 'left');
   },
   initYaxis: function (data, config) {
       this.state.chartCmpStrategy.initYaxisFn(data, config, yAxisOffset, this);

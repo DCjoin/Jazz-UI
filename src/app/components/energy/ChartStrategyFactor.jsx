@@ -32,6 +32,9 @@ const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', t
  {value:'RankByArea', text:'单位面积排名'},{value:'RankByHeatArea',text:'单位供冷面积排名'},
  {value:'RankByCoolArea',text:'单位采暖面积排名'},{value:'RankByRoom',text:'单位客房排名'},
  {value:'RankByUsedRoom',text:'单位已用客房排名'},{value:'RankByBed',text:'单位床位排名'}];
+ const orderItem = [{value:'1',text:'降序'}, {value:'2',text:'升序'}];
+ const rangeItem = [{value:'3',text:'前3名'},{value:'5',text:'前5名'},{value:'10',text:'前10名'},
+ {value:'20',text:'前20名'},{value:'50',text:'前50名'},{value:'1000',text:'全部'}];
 
 let ChartStrategyFactor = {
   defaultStrategy: {
@@ -95,7 +98,7 @@ let ChartStrategyFactor = {
    getRankInitialState(analysisPanel){
      let state = {
        order: 1,
-       range: 20,
+       range: 3,
        minPosition: 0
      };
      analysisPanel.setState(state);
@@ -272,7 +275,7 @@ let ChartStrategyFactor = {
       energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                      <div style={{display:'flex'}}>
                        <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-                       <StepSelector bizType={analysisPanel.props.bizType} stepValue={analysisPanel.state.step}      onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+                       <StepSelector stepValue={analysisPanel.state.step}      onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
                      </div>
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
@@ -280,6 +283,8 @@ let ChartStrategyFactor = {
    },
    getRankChartComponent(analysisPanel){
      let energyPart;
+     var orderCombo = <DropDownMenu menuItems={orderItem} ref='orderCombo' onChange={analysisPanel._onOrderChange}></DropDownMenu>;
+     var rangeCombo = <DropDownMenu menuItems={rangeItem} ref='rangeCombo' onChange={analysisPanel._onRangeChange}></DropDownMenu>;
      let chartCmpObj ={ref:'ChartComponent',
                        bizType:analysisPanel.props.bizType,
                        energyType: analysisPanel.state.energyType,
@@ -295,7 +300,10 @@ let ChartStrategyFactor = {
       energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                      <div style={{display:'flex'}}>
                        <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-                       <StepSelector bizType={analysisPanel.props.bizType} orderValue={analysisPanel.state.order}        rangeValue={analysisPanel.state.range} onOrderChange={analysisPanel._onOrderChange} onRangeChange={analysisPanel._onRangeChange}/>
+                       <div className='jazz-energy-step'>
+                         {orderCombo}
+                         {rangeCombo}
+                       </div>
                      </div>
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
@@ -329,15 +337,15 @@ let ChartStrategyFactor = {
  },
  unbindStoreListenersFnStrategy:{
    energyUnbindStoreListeners(analysisPanel){
-     EnergyStore.removeRankDataLoadingListener(analysisPanel._onLoadingStatusChange);
-     EnergyStore.removeRankDataLoadedListener(analysisPanel._onEnergyDataChange);
-     EnergyStore.removeRankDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
    rankUnbindStoreListeners(analysisPanel){
-     RankStore.removeEnergyDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
-     RankStore.removeEnergyDataLoadedListener(analysisPanel._onRankDataChange);
-     RankStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetRankDataError);
+     RankStore.removeRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
+     RankStore.removeRankDataLoadedListener(analysisPanel._onRankDataChange);
+     RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    }
  },
 

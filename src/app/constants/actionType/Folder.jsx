@@ -7,6 +7,9 @@ module.exports = {
       CREATE_FOLDER_OR_WIDGET:null,
       MODIFY_NAME_SECCESS:null,
       MODIFY_NAME_ERROR:null,
+      SET_SELECTED_NODE:null,
+      COPY_ITEM:null,
+      COPY_ITEM_ERROR:null,
   })
 
 };
