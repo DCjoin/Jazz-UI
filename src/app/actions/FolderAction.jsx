@@ -98,6 +98,26 @@ let FolderAction = {
     });
 
   },
+  deleteItem:function(node){
+    Ajax.post('/Dashboard.svc/DeleteFolderOrWidgetById', {
+         params: {
+           id:node.get('Id'),
+           type:node.get('Type')
+          },
+        success: function(newNode){
+          AppDispatcher.dispatch({
+              type: Action.DELETE_ITEM,
+              deleteNode:node
+          });
+        },
+        error: function(err, res){
+          AppDispatcher.dispatch({
+              type: Action.DELETE_ITEM_ERROR,
+              res:res
+          });
+        }
+    });
+  },
   ModifyFolderReadStatus:function(selectedNode){
     AppDispatcher.dispatch({
         type: Action.SET_SELECTED_NODE,

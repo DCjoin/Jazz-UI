@@ -10,6 +10,8 @@ module.exports = {
       SET_SELECTED_NODE:null,
       COPY_ITEM:null,
       COPY_ITEM_ERROR:null,
+      DELETE_ITEM:null,
+      DELETE_ITEM_ERROR:null
   })
 
 };
