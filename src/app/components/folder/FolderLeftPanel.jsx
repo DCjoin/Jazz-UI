@@ -215,6 +215,11 @@ var PanelContainer = React.createClass({
       allNode:FolderStore.getFolderTree()
     })
   },
+  _onCopyItem:function(){
+    this.setState({
+      allNode:FolderStore.getFolderTree()
+    })
+  },
   componentDidMount: function() {
 
     FolderStore.addFolderTreeListener(this._onFolderTreeChange);
@@ -222,6 +227,7 @@ var PanelContainer = React.createClass({
     FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
 
     FolderStore.addDeleteItemSuccessListener(this._onDeleteItem);
+    FolderStore.addCopyItemSuccessListener(this._onCopyItem);
     /*
     HierarchyStore.addHierarchyNodeListener(this._onChange);
     HierarchyAction.loadall(window.currentCustomerId);
@@ -233,6 +239,7 @@ var PanelContainer = React.createClass({
     FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
 
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteItem);
+    FolderStore.removeCopyItemSuccessListener(this._onCopyItem);
 
   //  HierarchyStore.removeHierarchyNodeListener(this._onChange);
   },

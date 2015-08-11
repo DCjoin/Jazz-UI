@@ -81,12 +81,11 @@ let FolderAction = {
            desParentId:destItem.get('Id'),
            newName:newName,
           },
-          commonErrorHandling:false,
         success: function(newNode){
           AppDispatcher.dispatch({
               type: Action.COPY_ITEM,
-              sourceItem: sourceItem,
-              destItem :destItem
+              destItem :destItem,
+              newNode:newNode
           });
         },
         error: function(err, res){

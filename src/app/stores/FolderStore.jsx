@@ -120,8 +120,13 @@ var FolderStore = assign({},PrototypeStore,{
     _errorName=null;
     _errorType=null;
   },
-  copyItem:function(sourceItem,destItem){
-
+  copyItem:function(destItem,newNode){
+    var parent=destItem;
+    var children=parent.get('Children');
+      parent=parent.set('Children',children.push(newNode));
+      _parentId=parent.get('Id');
+      _changedNode=parent;
+      _folderTree=this.modifyTreebyNode(_folderTree);
   },
   deleteItem:function(deleteNode){
     //如果左边选中的是一个widget，在右边执行删除后，左边焦点项下移
@@ -304,7 +309,7 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
         FolderStore.setSelectedNode(action.selectedNode);
       break;
     case FolderAction.COPY_ITEM:
-        FolderStore.copyItem(action.sourceItem,action.destItem);
+        FolderStore.copyItem(action.destItem,action.newNode);
         FolderStore.emitCopyItemSuccessChange();
       break;
     case FolderAction.DELETE_ITEM:
