@@ -436,8 +436,8 @@ let ChartCmpStrategyFactor = {
       defaultConfig.xAxis.showLastLabel = true;
       defaultConfig.xAxis.tickPositioner = cmpBox.xAxisTickPositioner;
       defaultConfig.tooltip.formatter = tooltipFormatter;
-      var range = cmpBox.state.rangeCode - 1;
-      var order = cmpBox.state.orderCode;
+      var range = cmpBox.state.range - 1;
+      var order = cmpBox.state.order;
       defaultConfig.xAxis.min = cmpBox.state.minPosition;
       defaultConfig.xAxis.max = cmpBox.state.minPosition + range;
       defaultConfig.xAxis.range = range;
@@ -585,7 +585,7 @@ let ChartCmpStrategyFactor = {
             uom: item.option.uom
         };
 
-        if (s.data.length < this.range) {
+        if (s.data.length < cmpBox.state.range) {
 
             if (s.data.length > 1) {
                 config.xAxis.range = s.data.length - 1;

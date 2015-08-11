@@ -8,7 +8,7 @@ import Ajax from '../ajax/ajax.jsx';
 
 let RankAction = {
   //for select tags from taglist and click search button.
-  getRankData(timeRanges, rankType, selectedList, relativeDate){
+  getRankTrendChartData(timeRanges, rankType, selectedList, relativeDate){
     var commodityList = selectedList.commodityList;
     var hierarchyList = selectedList.hierarchyList;
     var hierarchyIds = RankAction.getHierarchyIdsFromList(hierarchyList);
@@ -21,7 +21,7 @@ let RankAction = {
                        };
 
     AppDispatcher.dispatch({
-         type: Action.GET_TAG_DATA_LOADING,
+         type: Action.GET_RANK_DATA_LOADING,
          submitParams: submitParams,
          selectedList: selectedList,
          relativeDate: relativeDate
@@ -32,14 +32,14 @@ let RankAction = {
          commonErrorHandling: false,
          success: function(energyData){
            AppDispatcher.dispatch({
-               type: Action.GET_TAG_DATA_SUCCESS,
+               type: Action.GET_RANK_DATA_SUCCESS,
                energyData: energyData,
                submitParams: submitParams
            });
          },
          error: function(err, res){
            AppDispatcher.dispatch({
-               type: Action.GET_TAG_DATA_ERROR,
+               type: Action.GET_RANK_DATA_ERROR,
                errorText: res.text,
                submitParams: submitParams
            });
@@ -55,9 +55,7 @@ let RankAction = {
   },
   getCommodityIdsFromList(commodityList){
     let commodityIds =[];
-    for(let i=0,len=commodityList.length; i<len; i++){
-      commodityIds.push(commodityList[i].Id);
-    }
+    commodityIds.push(commodityList.commodityId);
     return commodityIds;
   }
 };

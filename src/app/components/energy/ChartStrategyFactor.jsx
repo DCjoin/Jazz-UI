@@ -90,8 +90,8 @@ let ChartStrategyFactor = {
  getInitialStateFnStrategy:{
    getRankInitialState(analysisPanel){
      let state = {
-       orderCode: 1,
-       rangeCode: 20,
+       order: 1,
+       range: 20,
        minPosition: 0
      };
      analysisPanel.setState(state);
@@ -179,7 +179,7 @@ let ChartStrategyFactor = {
    },
    setRankTypeAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-     let rankType = analysisPanel.refs.rankType.state.selectedIndex;
+     let rankType = analysisPanel.refs.rankType.state.selectedIndex + 1;
 
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, rankType, tagOptions, relativeDate);
    }
@@ -209,7 +209,7 @@ let ChartStrategyFactor = {
       </div>
       <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
-        <DropDownMenu menuItems={rankTypeItem} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
+        <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'92px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
         <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
@@ -235,7 +235,7 @@ let ChartStrategyFactor = {
      EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate);
    },
    rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
-     EnergyAction.getEnergyTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
+     RankAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
    },
  },
  getPieEnergyDataFnStrategy:{
@@ -259,7 +259,7 @@ let ChartStrategyFactor = {
       energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                      <div style={{display:'flex'}}>
                        <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-                       <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+                       <StepSelector bizType={analysisPanel.props.bizType} stepValue={analysisPanel.state.step}      onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
                      </div>
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
@@ -282,6 +282,7 @@ let ChartStrategyFactor = {
       energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                      <div style={{display:'flex'}}>
                        <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+                       <StepSelector bizType={analysisPanel.props.bizType} orderValue={analysisPanel.state.order}        rangeValue={analysisPanel.state.range} onOrderChange={analysisPanel._onOrderChange} onRangeChange={analysisPanel._onRangeChange}/>
                      </div>
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
@@ -308,9 +309,9 @@ let ChartStrategyFactor = {
      TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
    rankBindStoreListeners(analysisPanel){
-     RankStore.addRankDataLoadingListener(analysisPanel._onLoadingStatusChange);
-     RankStore.addRankDataLoadedListener(analysisPanel._onEnergyDataChange);
-     RankStore.addRankDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
+     RankStore.addRankDataLoadedListener(analysisPanel._onRankDataChange);
+     RankStore.addRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    }
  },
  unbindStoreListenersFnStrategy:{
@@ -321,9 +322,9 @@ let ChartStrategyFactor = {
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
    rankUnbindStoreListeners(analysisPanel){
-     RankStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
-     RankStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
-     RankStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     RankStore.removeEnergyDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
+     RankStore.removeEnergyDataLoadedListener(analysisPanel._onRankDataChange);
+     RankStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetRankDataError);
    }
  },
 
