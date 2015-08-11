@@ -642,6 +642,43 @@ let CommonFuns = {
     return result.toFixed(len);
 	},
 	JazzCommon:{
+		TrimText(text, maxlength, from) {
+			var max = maxlength;
+	    var sum = 0;
+
+	    var ret = [], begin, end;
+	    if (from == 'left') {
+	      for (var i = 0; i < text.length; i++) {
+	        if (/^[\u4e00-\u9fa5]$/.test(text[i])) {
+	          sum++;
+	        }
+	        else {
+	          sum += 0.6;
+	        }
+	        if (sum > max) {
+	          ret.push('...');
+	          break;
+	        }
+	        ret.push(text[i]);
+	      }
+	    }
+	    else {
+	      for (var i = text.length - 1; i >= 0; i--) {
+	        if (/^[\u4e00-\u9fa5]$/.test(text[i])) {
+	          sum++;
+	        }
+	        else {
+	          sum += 0.6;
+	        }
+	        if (sum > max) {
+	          ret.unshift('...');
+	          break;
+	        }
+	        ret.unshift(text[i]);
+	      }
+	    }
+	    return ret.join('');
+		},
 		IsValidDate(date) {
 	    if (typeof (date) === 'number') {
 	        var earliest = new Date(2000, 0, 1).getTime();

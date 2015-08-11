@@ -2,6 +2,7 @@
 import React from "react";
 import assign from "object-assign";
 import CommonFuns from '../../util/Util.jsx';
+import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
 
 let StepItem = React.createClass({
   _onStepClick(){
@@ -40,6 +41,8 @@ let StepSelector = React.createClass({
   },
   render(){
     var me = this;
+
+
     var selectedStep = this.props.stepValue;
 
     let stepList = this.state.stepList,
@@ -59,7 +62,6 @@ let StepSelector = React.createClass({
           stepElementList.push(<StepItem {...obj} onStepChange={me._onStepChange}></StepItem>);
         }
     }
-
     return <div className='jazz-energy-step'>
       {stepElementList}
     </div>;

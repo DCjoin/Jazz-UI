@@ -477,8 +477,9 @@ let ChartComponentBox = React.createClass({
       var realData = this.convertData(data.Data, newConfig);
       var timeRange = this.initRange(newConfig, realData);
       this.initNavigatorData(newConfig, timeRange, data);
-
-      this.initFlagSeriesData(newConfig, realData);
+      if (this.props.chartType == "line" || this.props.chartType == "column") {
+        this.initFlagSeriesData(newConfig, realData);
+      }
 
       newConfig.tooltipSidePosition = true;
 
@@ -515,6 +516,31 @@ let ChartComponentBox = React.createClass({
         }
     }
     return max;
+  },
+  makePosition: function (list) {
+    var listItem, newList = [];
+    var pos = 1, gap = 0;
+    for (var i = 0; i < list.length; ++i) {
+      listItem = list[i];
+      if (i !== 0) {
+        if (listItem.val == list[i - 1].val) {
+          gap++;
+        }
+        else {
+          pos++;
+          if (gap !== 0) {
+              pos += gap;
+              gap = 0;
+          }
+        }
+      }
+      newList.push({
+        name: listItem.name,
+        pos: pos,
+        val: listItem.val
+      });
+    }
+    return newList;
   },
   initYaxis: function (data, config) {
       this.state.chartCmpStrategy.initYaxisFn(data, config, yAxisOffset, this);

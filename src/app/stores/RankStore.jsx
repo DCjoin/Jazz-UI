@@ -126,13 +126,8 @@ var RankStore = assign({},PrototypeStore,{
     if (uom == 'null') uom = '';
     d1.option.uom = uom;
     var commodityList = _selectedList.commodityList;
-    for(var i=0,len=commodityList.length; i<len; i++){
-      if(commodityList[i].Id === commodityId){
-        d1.option.commodity = commodityList[i].Comment;
-        break;
-      }
-    }
-    for (i = 0; i < series.length; ++i) {
+    d1.option.commodity = commodityList.commodityName;
+    for (var i = 0; i < series.length; ++i) {
         s = series[i];
         if (s.EnergyData.length > 0) {
             v = s.EnergyData[0].DataValue;
@@ -211,7 +206,7 @@ RankStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case Action.GET_RANK_DATA_SUCCESS:
         RankStore._onDataChanged(action.energyData, action.submitParams);
-        RankStore.emitRankDataChange();
+        RankStore.emitRankDataLoaded();
         break;
       case Action.GET_RANK_DATA_ERROR:
         RankStore._onDataChanged(null, action.submitParams);
