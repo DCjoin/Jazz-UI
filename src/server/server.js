@@ -91,7 +91,10 @@ server.register([
     },
 		{
 	        register: require("./file.js")
-	    }
+	    },
+			{
+		        register: require("./rank.js")
+		  }
 ], function () {
     //Start the server
     server.start(function() {

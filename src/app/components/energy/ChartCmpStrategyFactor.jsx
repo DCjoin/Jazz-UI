@@ -74,6 +74,9 @@ let ChartCmpStrategyFactor = {
     RankTrendComponent:{
       mergeConfigFn:'rankChartCmpMergeConfig',
       convertDataFn:'rankConvertData',
+      getInitialStateFn: 'getRankInitialState',
+      onChangeRangeFn:'onChangeRange',
+      onChangeOrderFn:'onChangeOrder',
       initNavigatorDataFn:'empty',
       initRangeFn:'empty',
       initYaxisFn:'initYaxis'
@@ -84,64 +87,101 @@ let ChartCmpStrategyFactor = {
       convertSingleItemFn:'pieConvertSingleItem',
       initYaxisFn:'empty',
       initRangeFn:'pieInitRange',
-      initNavigatorDataFn:'pieInitNavigatorData',
-      onChangeRangeFn:'onChangeRange'
+      initNavigatorDataFn:'pieInitNavigatorData'
+    }
+  },
+  getInitialStateFnStrategy:{
+    getRankInitialState(cmpBox){
+      let state = {
+        order: cmpBox.props.order,
+        range: cmpBox.props.range,
+        minPosition: 0
+      };
+      cmpBox.setState(state);
     }
   },
   onChangeRangeFnStrategy:{
-    onChangeRange(range,cmpBox){
-      if (!this.chartObj) {
-          this.range = range - 1;
-          return;
+    onChangeRange(range, cmpBox){
+      var rangeWidth = range - 1;
+      var chartObj = cmpBox.refs.highstock._paper;
+      if (!chartObj) {
+        cmpBox.setState({range: rangeWidth});
+        return;
       }
-      var r = range;
+      //var r = range;
+      var oldRange = cmpBox.props.range;
+      var list = chartObj.series[0].options.option.list;
 
-      //var ext = this.chartObj.xAxis[0].getExtremes();
-      //var min = ext.min, max = ext.max;
-      var oldRange = this.props.range;
-      var list = this.chartObj.series[0].options.option.list;
-
-      if (list.length <= 10) return;
+      if (list.length <= 3) return;
 
       var dataMax = list.length - 1;
-      this.range = range - 1;
-      var min = this.minPosition, max = 0;
-      //this.minPosition = Math.floor(min) + 1;
+      cmpBox.setState({range: rangeWidth});
+      var min = cmpBox.state.minPosition, max = 0;
       if (range == 1000) {
-          min = 0;
-          max = dataMax;
-          r = range;
+        min = 0;
+        max = dataMax;
+        //r = range;
       }
       else {
-          if (oldRange == 999) {
-              min = 0;
-              max = this.range;
-              if (max > dataMax) {
-                  max = dataMax;
-              }
+        if (oldRange == 999) {
+          min = 0;
+          max = rangeWidth;
+          if (max > dataMax) {
+            max = dataMax;
           }
-          else {
-              var delta = this.range - oldRange;
-
-
-              //if (delta < 0) {
-              max = this.minPosition + this.range;
-              //}
-              //else {
-              //    max = max + delta;
-              //}
-              if (max > dataMax) {
-                  min = min - (max - dataMax);
-                  if (min < 0) min = 0;
-                  max = dataMax;
-              }
-
+        }
+        else {
+          max = cmpBox.state.minPosition + rangeWidth;
+          if (max > dataMax) {
+            min = min - (max - dataMax);
+            if (min < 0) min = 0;
+            max = dataMax;
           }
-
+        }
       }
-      //this.minPosition = Math.floor(min) + 1;
-      this.maxPosition = max;
-      this.chartObj.xAxis[0].setExtremes(min, max, true, true, { changeRange: true });
+      cmpBox.setState({maxPosition:max});
+      chartObj.xAxis[0].setExtremes(min, max, true, true, { changeRange: true });
+    }
+  },
+  onChangeOrderFnStrategy:{
+    onChangeOrder(order, cmpBox){
+      var chartObj = cmpBox.refs.highstock._paper;
+      if (!chartObj) {
+        cmpBox.setState({order: order});
+        return;
+      }
+      var series = chartObj.series[0];
+      if (!series) return;
+      var list = series.options.option.list;
+      var data = [];
+      for (var i = 0; i < list.length; ++i) {
+        data.unshift(list[i].val);
+      }
+      list.reverse();
+      cmpBox.setState({order: order});
+      var config = { xAxis: {} };
+
+      series.options.option.list = cmpBox.makePosition(list);
+      //don't redraw
+      chartObj.series[0].setData(data, false);
+      //redraw with animiation
+      var range;
+      if (cmpBox.state.range === 1000) {
+        range = data.length - 1;
+      }
+
+      if (list.length < cmpBox.state.range) {
+        if (list.length > 1) {
+          range = list.length - 1;
+        }
+        else {
+          range = 1;
+        }
+      }
+      else{
+        range = cmpBox.state.range - 1;
+      }
+      chartObj.xAxis[0].setExtremes(0, range, true, true);
     }
   },
   initNavigatorDataFnStrategy:{

@@ -95,8 +95,7 @@ let ChartStrategyFactor = {
    getRankInitialState(analysisPanel){
      let state = {
        order: 1,
-       range: 3,
-       minPosition: 0
+       range: 3
      };
      analysisPanel.setState(state);
    }
