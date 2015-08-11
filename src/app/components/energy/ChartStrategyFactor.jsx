@@ -95,12 +95,13 @@ let ChartStrategyFactor = {
    }
  },
  getInitialStateFnStrategy:{
-   getRankInitialState(analysisPanel){
+   getRankInitialState(){
      let state = {
        order: 1,
-       range: 3
+       range: 3,
+       selectedChartType:'column'
      };
-     analysisPanel.setState(state);
+     return state;
    }
  },
  onSearchDataButtonClickFnStrategy:{

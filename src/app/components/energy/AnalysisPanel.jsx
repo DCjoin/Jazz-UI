@@ -24,7 +24,7 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Energy'
+        bizType:'Rank'
       };
     },
     getInitialState(){
@@ -38,10 +38,15 @@ let AnalysisPanel = React.createClass({
         step: null,
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
-        selectedChartType:'column',
+        selectedChartType:'line',
         energyType:'energy',//'one of energy, cost carbon'
         chartStrategy: chartStrategy
       };
+
+      var obj = chartStrategy.getInitialStateFn();
+
+      assign(state, obj);
+
       if(this.props.chartTitle){
         state.chartTitle = this.props.chartTitle;
       }
@@ -82,8 +87,6 @@ let AnalysisPanel = React.createClass({
       let endDate = CommonFuns.dateAdd(date, 0, 'days');
       this.refs.relativeDate.setState({selectedIndex: 1});
       this.refs.dateTimeSelector.setDateField(last7Days, endDate);
-
-      this.state.chartStrategy.getInitialStateFn(this);
 
       this.state.chartStrategy.bindStoreListenersFn(me);
     },

@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import assign from "object-assign";
 import _ from 'lodash';
 import CommonFuns from '../../util/Util.jsx';
 
@@ -97,7 +98,7 @@ let ChartCmpStrategyFactor = {
         range: cmpBox.props.range,
         minPosition: 0
       };
-      cmpBox.setState(state);
+      return state;
     }
   },
   onChangeRangeFnStrategy:{
