@@ -26,6 +26,9 @@ let ChartReaderStrategyFactor = {
     EnergyPieReader:{
       baseReader:'pieReaderBase',
       setItemByTargetFn:'setItemByTarget'
+    },
+    EnergyGridReader:{
+      convertFn:'gridConvert'
     }
   },
   convertFnStrategy:{
@@ -76,6 +79,30 @@ let ChartReaderStrategyFactor = {
          }
 
          return { Data: arr };
+    },
+    gridConvert(data, timeRange){
+      var targetEnergyData = data.TargetEnergyData;
+        if (!targetEnergyData || targetEnergyData.length < 1) return [];
+
+        var transfer = [];
+        for (var i = 0; i < targetEnergyData.length; i++) {
+            var targetDataItem = targetEnergyData[i],
+                energy = targetDataItem.EnergyData,
+                target = targetDataItem.Target;
+
+            if (!energy || energy.length < 1) continue;
+
+            energy = _.cloneDeep(energy);
+
+            var item = {}, targetKey = this.getTargetKey(target);
+
+            item.TargetKey = targetKey;
+            item.Energy = _.cloneDeep(energy);
+
+            transfer.push(item);
+        }
+        var organizeStep = 0;
+        return this.organize(transfer, timeRange, organizeStep);
     }
   },
   setItemByTargetFnStrategy:{

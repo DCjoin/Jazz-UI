@@ -51,7 +51,8 @@ let ChartStrategyFactor = {
       getChartComponentFn:'getEnergyChartComponent',
       bindStoreListenersFn:'energyBindStoreListeners',
       unbindStoreListenersFn:'energyUnbindStoreListeners',
-      canShareDataWithFn:'canShareDataWith'
+      canShareDataWithFn:'canShareDataWith',
+      getEnergyRawDataFn:'getEnergyRawData'
     },
     MultiIntervalDistribution:{
 
@@ -125,6 +126,9 @@ let ChartStrategyFactor = {
      }else if(chartType === 'pie'){
         let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
         analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+     }else if(chartType === 'rawdata'){
+       let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+       analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
      }
    },
    onRankSearchDataButtonClick(analysisPanel){
@@ -159,9 +163,10 @@ let ChartStrategyFactor = {
  },
  onSearchBtnItemTouchTapFnStrategy:{
    onSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel){
-     if(analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType)){
+
+     if(analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData){
        analysisPanel.setState({selectedChartType:nextChartType});
-     }else if(nextChartType === 'pie'){
+     }else{ //if(nextChartType === 'pie'){
        analysisPanel.setState({selectedChartType:nextChartType}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
      }
    }
@@ -241,6 +246,11 @@ let ChartStrategyFactor = {
  getPieEnergyDataFnStrategy:{
    pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate){
      EnergyAction.getPieEnergyData(timeRanges, step, tagOptions, relativeDate);
+   }
+ },
+ getEnergyRawDataFnStrategy:{
+   getEnergyRawData(timeRanges, step, tagOptions, relativeDate){
+     EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate);
    }
  },
  getChartComponentFnStrategy:{

@@ -64,8 +64,12 @@ let ChartCmpStrategyFactor = {
   },
   strategyConfiguration: {
     EnergyTrendComponent:{
+      convertDataFn:'convertData',
+      convertSingleItemFn:'convertSingleItem',
       mergeConfigFn:'energyChartCmpMergeConfig',
-      initYaxisFn:'initYaxis'
+      initYaxisFn:'initYaxis',
+      initNavigatorDataFn:'initNavigatorData'
+
     },
     RankTrendComponent:{
       mergeConfigFn:'rankChartCmpMergeConfig',
@@ -77,17 +81,75 @@ let ChartCmpStrategyFactor = {
     EnergyPieComponent:{
       mergeConfigFn:'pieChartCmpMergeConfig',
       convertDataFn:'pieConvertData',
-      pieConvertSingleItemFn:'pieConvertSingleItem',
-      initYaxisFn:'empty'
+      convertSingleItemFn:'pieConvertSingleItem',
+      initYaxisFn:'empty',
+      initRangeFn:'pieInitRange',
+      initNavigatorDataFn:'pieInitNavigatorData'
+    }
+  },
+  initNavigatorDataFnStrategy:{
+    empty:function(){},
+    initNavigatorData(newConfig, timeRange, data, cmpBox){
+      var startTime = timeRange[0], endTime = timeRange[1], nowBound = timeRange[2];
+      if (newConfig.navigator.enabled && data.Navigator) {
+          var navData = data.Navigator,
+              numStartTime = startTime.getTime(),
+              numEndTime = endTime.getTime(),
+              navStart = navData[0][0],
+              navShouldBeStartAt = numStartTime,
+              navShouldBeEndAt = numEndTime;
+
+          for (var i = 0; i < newConfig.series.length; i++) {
+              var s = newConfig.series[i];
+              if (!s.data || s.data.length === 0) continue;
+              var sMin = s.data[0][0], sMax = s.data[s.data.length - 1][0];
+              if (sMin < navShouldBeStartAt) navShouldBeStartAt = sMin;
+              if (sMax > navShouldBeEndAt) navShouldBeEndAt = sMax;
+          }
+          navShouldBeEndAt = cmpBox.arrayMax([navShouldBeEndAt, new Date(), DataConverter.JsonToDateTime(cmpBox.props.endTime)]);
+
+          // Oscar: Fix bug #5615. Disable the stickToMax function in highstock. Search "stickToMax" in highstock source code for detail
+          navShouldBeEndAt++;
+          // #5615 fixing end
+
+          if (navData[0][0] > navShouldBeStartAt) {
+              navData.unshift([navShouldBeStartAt, null]);
+          }
+          if (navData[navData.length - 1][0] < navShouldBeEndAt) {
+              navData.push([navShouldBeEndAt, null]);
+          }
+
+          newConfig.navigator.xAxis.max = navData[navData.length - 1][0];
+          newConfig.navigator.series = { data: navData, dataGrouping: { enabled: false } };
+
+          if (newConfig.series.length > 0) {
+              if (newConfig.series[0].data.length === 0) {
+                  newConfig.series[0].data = [[numStartTime, null], [numEndTime, null]];
+              }
+              else {
+              }
+          }
+      }
+      else {
+          newConfig.navigator.enabled = false;
+          newConfig.navigator.series = null;
+          newConfig.scrollbar.enabled = false;
+      }
+    },
+    pieInitNavigatorData(newConfig, timeRange, data){
+      newConfig.navigator.enabled = false;
+      newConfig.navigator.series = null;
+      newConfig.scrollbar.enabled = false;
     }
   },
   initRangeFnStrategy:{
     empty:function(){},
     initRange(newConfig, realData, cmpBox){
-      var converter = DataConverter;
-      var j2d = converter.JsonToDateTime;
-      var endTime = j2d(cmpBox.props.endTime, true);
-      var startTime = j2d(cmpBox.props.startTime, true);
+      let converter = DataConverter,
+          j2d = converter.JsonToDateTime,
+          endTime = j2d(cmpBox.props.endTime, true),
+          startTime = j2d(cmpBox.props.startTime, true),
+          step = cmpBox.props.step || 2;
 
       newConfig.series = realData;
       if (realData && realData.length > 1) {
@@ -97,7 +159,7 @@ let ChartCmpStrategyFactor = {
       else {
           cmpBox.navCache = true;
       }
-      if (cmpBox.props.step === 1 || cmpBox.props.step === 0) {
+      if (step === 1 || step === 0) {
           cmpBox.navCache = false;
           newConfig.scrollbar.liveRedraw = false;
       }
@@ -106,7 +168,7 @@ let ChartCmpStrategyFactor = {
       var nowBound = new Date();
       nowBound.setMinutes(0, 0, 0);
       //#2488
-      switch (cmpBox.props.step) {
+      switch (step) {
           case 0:
               endTime = new Date(endTime);
               startTime = new Date(startTime);
@@ -208,56 +270,9 @@ let ChartCmpStrategyFactor = {
       newConfig.xAxis.max = endTime.getTime();
 
       return [startTime, endTime, nowBound];
-    }
-  },
-  initNavigatorDataFnStrategy:{
-    empty:function(){},
-    initNavigatorData(newConfig, timeRange, data, cmpBox){
-      var startTime = timeRange[0], endTime = timeRange[1], nowBound = timeRange[2];
-      if (newConfig.navigator.enabled && data.Navigator) {
-          var navData = data.Navigator,
-              numStartTime = startTime.getTime(),
-              numEndTime = endTime.getTime(),
-              navStart = navData[0][0],
-              navShouldBeStartAt = numStartTime,
-              navShouldBeEndAt = numEndTime;
-
-          for (var i = 0; i < newConfig.series.length; i++) {
-              var s = newConfig.series[i];
-              if (!s.data || s.data.length === 0) continue;
-              var sMin = s.data[0][0], sMax = s.data[s.data.length - 1][0];
-              if (sMin < navShouldBeStartAt) navShouldBeStartAt = sMin;
-              if (sMax > navShouldBeEndAt) navShouldBeEndAt = sMax;
-          }
-          navShouldBeEndAt = cmpBox.arrayMax([navShouldBeEndAt, new Date(), DataConverter.JsonToDateTime(cmpBox.props.endTime)]);
-
-          // Oscar: Fix bug #5615. Disable the stickToMax function in highstock. Search "stickToMax" in highstock source code for detail
-          navShouldBeEndAt++;
-          // #5615 fixing end
-
-          if (navData[0][0] > navShouldBeStartAt) {
-              navData.unshift([navShouldBeStartAt, null]);
-          }
-          if (navData[navData.length - 1][0] < navShouldBeEndAt) {
-              navData.push([navShouldBeEndAt, null]);
-          }
-
-          newConfig.navigator.xAxis.max = navData[navData.length - 1][0];
-          newConfig.navigator.series = { data: navData, dataGrouping: { enabled: false } };
-
-          if (newConfig.series.length > 0) {
-              if (newConfig.series[0].data.length === 0) {
-                  newConfig.series[0].data = [[numStartTime, null], [numEndTime, null]];
-              }
-              else {
-              }
-          }
-      }
-      else {
-          newConfig.navigator.enabled = false;
-          newConfig.navigator.series = null;
-          newConfig.scrollbar.enabled = false;
-      }
+    },
+    pieInitRange(newConfig, realData, cmpBox){
+      newConfig.series = realData;
     }
   },
   initYaxisFnStrategy:{

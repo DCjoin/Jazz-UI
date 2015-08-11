@@ -477,8 +477,9 @@ let ChartComponentBox = React.createClass({
       var realData = this.convertData(data.Data, newConfig);
       var timeRange = this.initRange(newConfig, realData);
       this.initNavigatorData(newConfig, timeRange, data);
-
-      this.initFlagSeriesData(newConfig, realData);
+      if (this.props.chartType == "line" || this.props.chartType == "column") {
+        this.initFlagSeriesData(newConfig, realData);
+      }
 
       newConfig.tooltipSidePosition = true;
 
