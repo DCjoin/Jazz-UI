@@ -24,11 +24,11 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Rank'
+        bizType:'Energy'
       };
     },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType('Rank');
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(this.props.bizType);
       let state = {
         isLoading: false,
         energyData: null,
