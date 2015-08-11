@@ -316,15 +316,15 @@ let ChartStrategyFactor = {
  },
  unbindStoreListenersFnStrategy:{
    energyUnbindStoreListeners(analysisPanel){
-     EnergyStore.removeRankDataLoadingListener(analysisPanel._onLoadingStatusChange);
-     EnergyStore.removeRankDataLoadedListener(analysisPanel._onEnergyDataChange);
-     EnergyStore.removeRankDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
    rankUnbindStoreListeners(analysisPanel){
-     RankStore.removeEnergyDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
-     RankStore.removeEnergyDataLoadedListener(analysisPanel._onRankDataChange);
-     RankStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetRankDataError);
+     RankStore.removeRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
+     RankStore.removeRankDataLoadedListener(analysisPanel._onRankDataChange);
+     RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    }
  },
 

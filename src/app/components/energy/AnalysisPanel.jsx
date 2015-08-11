@@ -78,9 +78,9 @@ let AnalysisPanel = React.createClass({
       let me = this;
       let date = new Date();
       date.setHours(0,0,0);
-      let last7Days = CommonFuns.dateAdd(date, -6, 'days');
-      let endDate = CommonFuns.dateAdd(date, 1, 'days');
-
+      let last7Days = CommonFuns.dateAdd(date, -7, 'days');
+      let endDate = CommonFuns.dateAdd(date, 0, 'days');
+      this.refs.relativeDate.setState({selectedIndex: 1});
       this.refs.dateTimeSelector.setDateField(last7Days, endDate);
       if(this.props.bizType === "Rank"){
         this.state.chartStrategy.getInitialStateFn(this);
