@@ -725,6 +725,98 @@ let CommonFuns = {
 	    return str;
 		}
 	},
+	formatDateValue: function (time, step) {
+      var date = new Date(time),
+          ft = I18N.DateTimeFormat.IntervalFormat,
+					eft = CommonFuns.dateFormat,
+          str = '',
+					dateAdd = CommonFuns.dateAdd,
+					newDate;
+      switch (step) {
+          case 0: //raw 2010年10月3日23点45分-3日24点  2010年10月3日0点-0点15分
+              {
+                  date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), Math.floor(date.getMinutes() / 15) * 15);
+                  str = eft(date, ft.RangeFullMinute);
+                  break;
+              }
+          case 1: //hour 2010年10月3日0点-1点; 2010年10月3日23点-3日24点
+              //hour 20-21,08/08, 2014
+              {
+                  str = eft(date, ft.FullHour);
+                  break;
+              }
+          case 2: //day 2010年10月3日
+              {
+                  str = eft(date, ft.FullDay);
+                  break;
+              }
+          case 3: //month 2010年10月
+              {
+                  str = eft(date, ft.Month);
+                  break;
+              }
+          case 4: //2010年
+              {
+                  str = eft(date, ft.Year);
+                  break;
+              }
+          case 5: //week 2010年10月3日-10日,2010年10月29日-11月5日,2010年12月29日-2011年1月5日
+              //week 10/3-10,2010; 10/29-11/5,2010; 12/29,2010-1/5,2011
+              {
+                  date = dateAdd(date, 0 - date.getDay() + 1, 'days');
+                  newDate = dateAdd(date, 6, 'days');
+                  //因为week显示时，中英文格式差距较大，所以分开处理
+                  //currentLanguage： 0 中文, 1 英文
+									let currentLanguage = 0;
+                  if (currentLanguage == 1) {
+                      if (newDate.getFullYear() > date.getFullYear()) {
+                          //12/29,2010-1/5,2011
+                          str = eft(date, ft.FullDay);
+                          str += '-' + eft(newDate, ft.FullDay);
+                      }
+                      else if (newDate.getMonth() > date.getMonth()) {
+                          // 10/29-11/5,2010
+                          str = eft(date, ft.MonthDate);
+                          str += '-' + eft(newDate, ft.FullDay);
+                      }
+                      else {
+                          //10/3-10,2010
+                          str = eft(date, ft.MonthDate);
+                          str += '-' + eft(newDate, ft.Day) + ', ' + eft(newDate, ft.Year);
+                      }
+                  } else {
+                      str = eft(date, ft.FullDay);
+                      if (newDate.getFullYear() > date.getFullYear()) {
+                          //2010年12月29日-2011年1月5日
+                          str += '-' + eft(newDate, ft.FullDay);
+                      }
+                      else if (newDate.getMonth() > date.getMonth()) {
+                          //2010年10月29日-11月5日
+                          str += '-' + eft(newDate, ft.MonthDate);
+                      }
+                      else {
+                          //2010年10月3日-10日
+                          str += '-' + eft(newDate, ft.Day);
+                      }
+                  }
+
+                  break;
+              }
+          case 6: //15mins 2010年10月3日23点45分-3日24点  2010年10月3日0点-0点15分
+              {
+                  date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), Math.floor(date.getMinutes() / 15) * 15);
+                  str = eft(date, ft.RangeFullMinute);
+                  break;
+              }
+          case 7: //30mins 2010年10月3日23点45分-3日24点  2010年10月3日0点-0点15分
+              {
+                  date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), Math.floor(date.getMinutes() / 30) * 30);
+                  str = eft(date, ft.RangeFullMinute);
+                  break;
+              }
+      }
+      return str;
+  },
 	Regex:{
 		ExcelCell: /[a-z]+\d+/i, //A4,AA66
 		PositiveInterger : /^\d+$/,

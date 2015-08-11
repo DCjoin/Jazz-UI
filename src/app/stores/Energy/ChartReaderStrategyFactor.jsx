@@ -5,9 +5,13 @@ import assign from 'object-assign';
 import _ from 'lodash';
 import CommonFuns from '../../util/Util.jsx';
 
-let {DataConverter} = CommonFuns;
+let {DataConverter, formatDateValue} = CommonFuns;
 let j2d = DataConverter.JsonToDateTime,
-    d2j = DataConverter.DatetimeToJson;
+    d2j = DataConverter.DatetimeToJson,
+    compareStep = function (src, dest) {
+        var stepOrder = [6, 7, 1, 2, 5, 3, 4];
+        return _.indexOf(stepOrder, src) - _.indexOf(stepOrder, dest);
+    };
 
 let ChartReaderStrategyFactor = {
   defaultStrategy: {
@@ -27,8 +31,10 @@ let ChartReaderStrategyFactor = {
       baseReader:'pieReaderBase',
       setItemByTargetFn:'setItemByTarget'
     },
-    EnergyGridReader:{
-      convertFn:'gridConvert'
+    EnergyRawGridReader:{
+      convertFn:'rawGridConvert',
+      getTargetKeyFn:'getTargetKey',
+      organizeFn:'rawGridOrganize'
     }
   },
   convertFnStrategy:{
@@ -80,29 +86,63 @@ let ChartReaderStrategyFactor = {
 
          return { Data: arr };
     },
-    gridConvert(data, timeRange){
+    rawGridConvert(data, timeRange){
       var targetEnergyData = data.TargetEnergyData;
-        if (!targetEnergyData || targetEnergyData.length < 1) return [];
+      if (!targetEnergyData || targetEnergyData.length < 1) return [];
 
-        var transfer = [];
-        for (var i = 0; i < targetEnergyData.length; i++) {
-            var targetDataItem = targetEnergyData[i],
-                energy = targetDataItem.EnergyData,
-                target = targetDataItem.Target;
+      var transfer = [], minStep = null;
 
-            if (!energy || energy.length < 1) continue;
+      for (let i = 0,len = targetEnergyData.length; i < len; i++) {
+          let targetDataItem = targetEnergyData[i],
+              energy = targetDataItem.EnergyData,
+              target = targetDataItem.Target;
 
-            energy = _.cloneDeep(energy);
+          if (!energy || energy.length < 1) continue;
 
-            var item = {}, targetKey = this.getTargetKey(target);
+          energy = _.cloneDeep(energy);
 
-            item.TargetKey = targetKey;
-            item.Energy = _.cloneDeep(energy);
+          var item = {},
+              targetKey = this.getTargetKeyFn(target);
 
-            transfer.push(item);
+          item.TargetKey = targetKey;
+          item.Target = _.cloneDeep(target);
+          item.Energy = energy;
+
+          transfer.push(item);
+          if(minStep === null || compareStep(minStep, item.Target.Step)>0){
+            minStep = item.Target.Step;
+          }
+      }
+      return this.organizeFn(transfer, minStep);
+    }
+  },
+  getTargetKeyFnStrategy:{
+    getTargetKey(target){
+      return target.TargetId+'_'+target.Type;
+    }
+  },
+  organizeFnStrategy:{
+    rawGridOrganize(energyArray, step){
+      let length = energyArray.length,
+          result = [];
+      let energyData, dataArray, retItem, items, dataItem, dataValue, localTime;
+      if(length > 0){
+        for(let i = 0; i<length; i++){
+          energyData = energyArray[i];
+          retItem = energyData.Target;
+          items = retItem.items = [];
+          dataArray = energyData.Energy;
+          step = retItem.Step;
+          for(let j = 0, len = dataArray.length; j<len; j++){
+            dataItem = dataArray[j];
+            dataValue = (dataItem.DataQuality == 7) ? 'NA' : dataItem.DataValue;
+            localTime = formatDateValue(j2d(dataItem.LocalTime, true), step);
+            items.push({value:dataValue, localTime: localTime, dataTime:dataItem.LocalTime});
+          }
+          result.push(retItem);
         }
-        var organizeStep = 0;
-        return this.organize(transfer, timeRange, organizeStep);
+      }
+       return result;
     }
   },
   setItemByTargetFnStrategy:{
