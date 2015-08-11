@@ -85,6 +85,9 @@ let ChartStrategyFactor = {
       case 'pie':
         EnergyStore.initReaderStrategy('EnergyPieReader');
         break;
+      case 'rawdata':
+        EnergyStore.initReaderStrategy('EnergyRawGridReader');
+        break;
      }
    }
  },
