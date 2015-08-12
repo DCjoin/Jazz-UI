@@ -13,6 +13,7 @@ import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import RankAction from '../../actions/RankAction.jsx';
 import EnergyAction from '../../actions/EnergyAction.jsx';
+import CommodityAction from '../../actions/CommodityAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
@@ -68,6 +69,7 @@ let ChartStrategyFactor = {
       searchBarGenFn:'rankSearchBarGen',
       getSelectedNodesFn:'getSelectedList',
       onSearchDataButtonClickFn:'onRankSearchDataButtonClick',
+      onEnegyTypeChangeFn:'onRankEnegyTypeChange',
       setFitStepAndGetDataFn:'setRankTypeAndGetData',
       getInitialStateFn:'getRankInitialState',
       getEnergyDataFn: 'rankDataLoad',
@@ -76,6 +78,11 @@ let ChartStrategyFactor = {
       unbindStoreListenersFn:'rankUnbindStoreListeners',
       canShareDataWithFn:'canRankShareDataWith'
     }
+ },
+ onEnegyTypeChangeFnStrategy:{
+   onRankEnegyTypeChange(e, selectedIndex, menuItem){
+     CommodityAction.setRankingECType(menuItem.value);
+   }
  },
  initEnergyStoreByBizChartTypeFnStrategy:{
    initEnergyStoreByBizChartType(analysisPanel){
@@ -95,14 +102,15 @@ let ChartStrategyFactor = {
      }
    }
  },
+
  getInitialStateFnStrategy:{
-   getRankInitialState(analysisPanel){
+   getRankInitialState(){
      let state = {
        order: 1,
        range: 3,
-       minPosition: 0
+       selectedChartType:'column'
      };
-     analysisPanel.setState(state);
+     return state;
    }
  },
  onSearchDataButtonClickFnStrategy:{

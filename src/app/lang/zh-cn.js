@@ -501,8 +501,8 @@ I18N.Folder.SaveNameError.E029= '{0}名称不能为空，请重新输入';
 I18N.Folder.SaveNameError.E031= '{0}名称超过最大长度100，请重新输入';
 
 I18N.Folder.Copy={};
-I18N.Folder.Copy.Title='复制文件夹';
-I18N.Folder.Copy.Label='文件夹名称';
+I18N.Folder.Copy.Title='复制{0}';
+I18N.Folder.Copy.Label='{0}名称';
 I18N.Folder.Copy.firstActionLabel='复制';
 
 I18N.Commodity={};
@@ -519,6 +519,12 @@ I18N.Template.Copy={};
 I18N.Template.Copy.DestinationFolder='目标文件夹';
 I18N.Template.Copy.Cancel='放弃';
 I18N.Template.Copy.DefaultName='{0}-副本';
+I18N.Template.Delete={};
+I18N.Template.Delete.Delete='删除';
+I18N.Template.Delete.Cancel='放弃';
+I18N.Template.Delete.Title='删除{0}';
+I18N.Template.Delete.FolderContent='删除文件夹"{0}",该文件夹下的所有内容也将被删除';
+I18N.Template.Delete.WidgetContent='删除图表"{0}"';
 
 I18N.Rank={};
 I18N.Rank.RankTooltip = '排名:{0}/{1}';
