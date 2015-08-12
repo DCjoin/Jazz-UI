@@ -14,7 +14,7 @@ let ChartMixins ={
     childContext.spacing = assign({}, childContext.spacing);
     childContext.spacing.desktopToolbarHeight = 32;
     childContext.spacing.desktopSubheaderHeight = 32;
-    childContext.component.tableRow.stripeColor = 'white';
+    childContext.component.tableRow.stripeColor = '#fbfbfb';
     return {
         muiTheme: childContext
     };

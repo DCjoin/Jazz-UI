@@ -104,6 +104,7 @@ let ChartStrategyFactor = {
  },
 
  getInitialStateFnStrategy:{
+   getEnergyInitialState(){},
    getRankInitialState(){
      let state = {
        order: 1,

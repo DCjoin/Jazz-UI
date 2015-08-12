@@ -41,13 +41,22 @@ let GridComponent = React.createClass({
 
     let headerCols = {
       localTime: {
-        content: '时间'
+        content: <div style={{marginLeft:'10px'}}>{'时间'}</div>
       }
     };
     for(let i=0;i<dataArray.length;i++){
-      headerCols[dataArray[i].TargetId + ''] ={content:dataArray[i].Name};
+      headerCols[dataArray[i].TargetId + ''] =this.getTagColumnContent(dataArray[i].Name, dataArray[i].Name, dataArray[i].Name);//{content: dataArray[i].Name};
     }
     return headerCols;
+  },
+  getTagColumnContent(hieName, tagName, uom){
+    var tagColumn = {  content: <div style={{height:'120px', borderLeft:'1px solid #e0e0e0'}}>
+                                  <div className={'jazz-energy-gridcomponent-header-item'}> {hieName} </div>
+                                  <div className={'jazz-energy-gridcomponent-header-item'}> {tagName} </div>
+                                  <div className={'jazz-energy-gridcomponent-header-item'} style={{ borderBottom:'0px'}}> {uom} </div>
+                               </div>
+                    };
+    return tagColumn;
   },
   getColOrder(energyData){
       let dataArray = energyData;

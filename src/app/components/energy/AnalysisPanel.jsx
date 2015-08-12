@@ -24,7 +24,7 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Rank'
+        bizType:'Energy'
       };
     },
     getInitialState(){
