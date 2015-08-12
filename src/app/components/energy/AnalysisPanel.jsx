@@ -96,7 +96,7 @@ let AnalysisPanel = React.createClass({
     },
     getEnergyTypeCombo(){
       let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
-      return <DropDownMenu menuItems={types}></DropDownMenu>;
+      return <DropDownMenu menuItems={types} onChange={this.state.chartStrategy.onEnegyTypeChangeFn}></DropDownMenu>;
     },
     _onDateSelectorChanged(){
       this.refs.relativeDate.setState({selectedIndex:0});
