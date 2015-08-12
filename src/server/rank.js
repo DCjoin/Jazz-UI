@@ -100,29 +100,9 @@ var sleep = util.sleep;
                   }],
                   TotalCount:4
                 },
-                error:{Code:"0",Messages:null}}).type("application/json");
+                error:{Code:"0",Messages:null}
+              }).type("application/json");
             }
-        },
-        {
-          method: 'POST',
-          path: '/webhost/API/Dashboard.svc/CreateWidgetOrFolder',
-          handler: function (request, reply) {
-            	var newUser = request.payload;
-
-        		reply({
-              GetHierarchyTreeDtosRecursiveResult:{
-                Id: (newUser.ParentId+10),
-                Name: newUser.Name,
-                Version: 3345938,
-                AssoiciatedTagCountP: null,
-                Type:newUser.Type,
-                SubWidgetCount :0,
-                SubFolderCount :0
-              },
-              error: {Code: "0", Messages: null}
-
-            }).type("application/json");
-        	}
         }
     ]);
     next();
