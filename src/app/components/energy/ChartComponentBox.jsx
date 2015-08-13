@@ -507,7 +507,7 @@ let ChartComponentBox = React.createClass({
     this.state.chartCmpStrategy.convertSingleItemFn(item, s);
   },
   initRange: function (newConfig, realData) {
-    this.state.chartCmpStrategy.initRangeFn(newConfig, realData, this);
+    return this.state.chartCmpStrategy.initRangeFn(newConfig, realData, this);
   },
   initNavigatorData: function (newConfig, timeRange, data) {
    this.state.chartCmpStrategy.initNavigatorDataFn(newConfig, timeRange, data, this);

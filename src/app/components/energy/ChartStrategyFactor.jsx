@@ -17,6 +17,7 @@ import CommodityAction from '../../actions/CommodityAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
+import GridComponent from './GridComponent.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
@@ -103,6 +104,7 @@ let ChartStrategyFactor = {
  },
 
  getInitialStateFnStrategy:{
+   getEnergyInitialState(){},
    getRankInitialState(){
      let state = {
        order: 1,
@@ -181,7 +183,7 @@ let ChartStrategyFactor = {
      if(analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData){
        analysisPanel.setState({selectedChartType:nextChartType});
      }else{ //if(nextChartType === 'pie'){
-       analysisPanel.setState({selectedChartType:nextChartType}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
+       analysisPanel.setState({selectedChartType:nextChartType, energyData:null}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
      }
    }
  },
@@ -272,7 +274,11 @@ let ChartStrategyFactor = {
      let energyPart;
      let chartType = analysisPanel.state.selectedChartType;
      if(chartType === 'rawdata'){
-
+       let properties = {energyData: analysisPanel.state.energyData,
+                         energyRawData: analysisPanel.state.energyRawData};
+       energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px', overflow:'hidden'}}>
+                      <GridComponent {...properties}></GridComponent>
+                    </div>;
      }else if(chartType === 'pie'){
        let chartCmpObj ={ref:'ChartComponent',
                          bizType:analysisPanel.props.bizType,

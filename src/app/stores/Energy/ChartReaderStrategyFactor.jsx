@@ -87,6 +87,8 @@ let ChartReaderStrategyFactor = {
          return { Data: arr };
     },
     rawGridConvert(data, timeRange){
+      if(!data) return null;
+
       var targetEnergyData = data.TargetEnergyData;
       if (!targetEnergyData || targetEnergyData.length < 1) return [];
 
@@ -104,8 +106,8 @@ let ChartReaderStrategyFactor = {
           var item = {},
               targetKey = this.getTargetKeyFn(target);
 
-          item.TargetKey = targetKey;
           item.Target = _.cloneDeep(target);
+          item.Target.TargetKey = targetKey;
           item.Energy = energy;
 
           transfer.push(item);
