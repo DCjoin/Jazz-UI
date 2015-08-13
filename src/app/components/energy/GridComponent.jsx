@@ -1,6 +1,8 @@
 'use strict';
 import React from "react";
 import {Table} from 'material-ui';
+import EnergyStore from '../../stores/energy/EnergyStore.jsx';
+import {getUomById} from '../../util/Util.jsx';
 
 let GridComponent = React.createClass({
 
@@ -45,9 +47,25 @@ let GridComponent = React.createClass({
       }
     };
     for(let i=0;i<dataArray.length;i++){
-      headerCols[dataArray[i].TargetId + ''] =this.getTagColumnContent(dataArray[i].Name, dataArray[i].Name, dataArray[i].Name);//{content: dataArray[i].Name};
+      var tagOption = this.getTagInfo(dataArray[i].TargetId);
+      headerCols[dataArray[i].TargetId + ''] =this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.uom);//{content: dataArray[i].Name};
     }
     return headerCols;
+  },
+  getTagInfo(tagId){
+    var tagOptions = EnergyStore.getTagOpions(),
+        option;
+
+    for(let i=0; i<tagOptions.length;i++){
+      option = tagOptions[i];
+      if(option.tagId === tagId){
+        var hieName = option.hierName.split('\\');
+        hieName = hieName[hieName.length-1];
+        var uom = getUomById(option.uomId);
+        var uomName = uom.Code;
+        return { hieName:hieName, tagName:option.tagName, uom: uomName};
+      }
+    }
   },
   getTagColumnContent(hieName, tagName, uom){
     var tagColumn = {  content: <div style={{height:'120px', borderLeft:'1px solid #e0e0e0'}}>
