@@ -69,8 +69,8 @@ let ChartCmpStrategyFactor = {
       convertSingleItemFn:'convertSingleItem',
       mergeConfigFn:'energyChartCmpMergeConfig',
       initYaxisFn:'initYaxis',
-      initNavigatorDataFn:'initNavigatorData'
-
+      initNavigatorDataFn:'initNavigatorData',
+      getInitialStateFn:'empty'
     },
     RankTrendComponent:{
       mergeConfigFn:'rankChartCmpMergeConfig',
@@ -88,10 +88,12 @@ let ChartCmpStrategyFactor = {
       convertSingleItemFn:'pieConvertSingleItem',
       initYaxisFn:'empty',
       initRangeFn:'pieInitRange',
-      initNavigatorDataFn:'pieInitNavigatorData'
+      initNavigatorDataFn:'pieInitNavigatorData',
+      getInitialStateFn:'empty'
     }
   },
   getInitialStateFnStrategy:{
+    empty(){},
     getRankInitialState(cmpBox){
       let state = {
         order: cmpBox.props.order,
