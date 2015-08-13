@@ -183,7 +183,7 @@ let ChartStrategyFactor = {
      if(analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData){
        analysisPanel.setState({selectedChartType:nextChartType});
      }else{ //if(nextChartType === 'pie'){
-       analysisPanel.setState({selectedChartType:nextChartType}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
+       analysisPanel.setState({selectedChartType:nextChartType, energyData:null}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
      }
    }
  },
