@@ -8,7 +8,7 @@ import User from '../constants/actionType/User.jsx';
 
 let _userStatusList=Immutable.List([]),
     _userList=null,
-    _sendUserIds=[];
+    _userIds=[];
 let SET_USER_STATUS_EVENT='setuserstatus',
     SET_USER_LIST_EVENT;
 
@@ -16,29 +16,29 @@ var UserStore = assign({},PrototypeStore,{
   setUserStatus:function(user,status){
     if(status){
     _userStatusList=_userStatusList.push(user);
-    _sendUserIds.push(user.get('Id'))
+    _userIds.push(user.get('Id'))
     }
     else {
       let index=_userStatusList.findIndex(item=>item.get('Id')==user.get('Id'));
       _userStatusList=_userStatusList.delete(index);
-      _sendUserIds.splice(index,1)
+      _userIds.splice(index,1)
     }
   },
   setUserStatusByAllCheck:function(status){
     _userStatusList=Immutable.List([]);
-    _sendUserIds=[];
+    _userIds=[];
     if(status){
       _userList.forEach(function(user){
         _userStatusList=_userStatusList.push(user);
-        _sendUserIds.push(user.get('Id'));
+        _userIds.push(user.get('Id'));
       });
     }
   },
   getUserStatus:function(){
     return _userStatusList;
   },
-  getSendUserIds:function(){
-    return _sendUserIds;
+  getUserIds:function(){
+    return _userIds;
   },
   setUserList:function(userList){
     _userList=userList;

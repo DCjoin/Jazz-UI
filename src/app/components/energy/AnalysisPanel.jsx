@@ -181,7 +181,7 @@ let AnalysisPanel = React.createClass({
       this.state.chartStrategy.onSearchDataButtonClickFn(this);
     },
     exportChart(){
-
+        this.state.chartStrategy.exportChartFn(this);
     },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
@@ -225,7 +225,9 @@ let AnalysisPanel = React.createClass({
           return errorObj;
       }else{
         let errorMsg = CommonFuns.getErrorMessage(code);
-        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg);
+        setTimeout(()=>{
+          GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg);
+        },0);
         return null;
       }
     },
