@@ -78,15 +78,15 @@ var TreeNode = React.createClass({
 
   getInitialState: function () {
     return {
-      collapsed: this.getDefaultCollapsed(),
+      collapsed: this.getDefaultCollapsed(this.props),
       IsSendCopyReaded:false,
     };
   },
 
-  getDefaultCollapsedBySelectedNode:function(){
+  getDefaultCollapsedBySelectedNode:function(props){
     var that=this;
     var f=function(item){
-      if(item.get('Id')==that.props.selectedNode.get('Id')){
+      if(item.get('Id')==props.selectedNode.get('Id')){
         return true;
       }
       else{
@@ -103,12 +103,12 @@ var TreeNode = React.createClass({
         return false;
       }
     };
-    if(!!this.props.selectedNode){
-      if(this.props.selectedNode.get('Id')==this.props.nodeData.get('Id')){
+    if(!!props.selectedNode){
+      if(props.selectedNode.get('Id')==props.nodeData.get('Id')){
         return false
       }
       else {
-        return f(this.props.nodeData)
+        return f(props.nodeData)
       }
 
     }
@@ -116,19 +116,19 @@ var TreeNode = React.createClass({
       return false
     }
   },
-  getDefaultCollapsed: function () {
+  getDefaultCollapsed: function (props) {
     var levelStatus=false,
-        checkedStatus=!this.getDefaultCollapsedBySelectedNode();
-    if(this.props.collapsedLevel === 0 ||  this.props.collapsedLevel){
-      levelStatus=this.props.level > this.props.collapsedLevel;
+        checkedStatus=!this.getDefaultCollapsedBySelectedNode(props);
+    if(props.collapsedLevel === 0 ||  props.collapsedLevel){
+      levelStatus=props.level > props.collapsedLevel;
     };
     if(checkedStatus){
-      let nodes=this.props.nodeData.get("Children");
+      let nodes=props.nodeData.get("Children");
       let that=this;
       if(!!nodes){
         nodes.forEach(function(node){
-            if(!!that.props.checkedNodes){
-              that.props.checkedNodes.forEach(function(checkedNode){
+            if(!!props.checkedNodes){
+              props.checkedNodes.forEach(function(checkedNode){
                 if(node.get("Id")==checkedNode.get("Id")){
                   checkedStatus=false;
                 }
@@ -141,7 +141,13 @@ var TreeNode = React.createClass({
 
     return(levelStatus && checkedStatus);
   },
-
+  componentWillReceiveProps:function(nextProps){
+    if(nextProps.selectedNode!=this.props.selectedNode){
+      this.setState({
+        collapsed: this.getDefaultCollapsed(nextProps),
+      })
+    }
+  },
   handleClickArrow: function (e) {
     e.stopPropagation();
     this.setState({

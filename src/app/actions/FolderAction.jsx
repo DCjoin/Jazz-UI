@@ -77,15 +77,15 @@ let FolderAction = {
   copyItem:function(sourceItem,destItem,newName){
     Ajax.post('/Dashboard.svc/CopyItem', {
          params: {
-           sourceId:sourceItem.get('Id'),
-           desParentId:destItem.get('Id'),
+           sourceTreeNode:sourceItem.toJSON(),
+           desFolder:destItem.toJSON(),
            newName:newName,
           },
         success: function(newNode){
           AppDispatcher.dispatch({
               type: Action.COPY_ITEM,
               destItem :destItem,
-              newNode:newNode
+              newNode:Immutable.fromJS(newNode)
           });
         },
         error: function(err, res){

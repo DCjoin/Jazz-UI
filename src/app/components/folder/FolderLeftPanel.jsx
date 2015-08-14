@@ -10,6 +10,7 @@ import NodeContent from './TreeNodeContent.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
 import CopyView from './operationView/CopyView.jsx';
 import DeleteView from './operationView/DeleteView.jsx';
+import ShareView from './operationView/ShareView.jsx';
 
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
@@ -217,7 +218,8 @@ var PanelContainer = React.createClass({
   },
   _onCopyItem:function(){
     this.setState({
-      allNode:FolderStore.getFolderTree()
+      allNode:FolderStore.getFolderTree(),
+      selectedNode:FolderStore.getSelectedNode()
     })
   },
   componentDidMount: function() {
@@ -272,8 +274,9 @@ var PanelContainer = React.createClass({
 
 
       var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
-      //var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={Immutable.fromJS(testnode)}/>:null);
-      var template=(this.state.templateShow?<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.selectedNode}/>:null);
+    //  var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.selectedNode}/>:null);
+    //  var template=(this.state.templateShow?<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.selectedNode}/>:null);
+    var template=(this.state.templateShow?<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.selectedNode}/>:null);
 
     return(
       <div className="jazz-folder-leftpanel-container">

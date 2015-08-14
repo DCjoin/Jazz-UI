@@ -12,6 +12,7 @@ var RankingCommodityList = React.createClass({
     checkedCommodity:React.PropTypes.object,
     commdityList:React.PropTypes.array,
   },
+  
   getNamebyId:function(id){
     var comment=I18N.Commodity.Overview;
     var Id=id+'';
