@@ -153,7 +153,7 @@ var TreeNode = React.createClass({
     this.setState({
       collapsed: !this.state.collapsed
     });
-    if(this.props.nodeData.get('IsSendCopy') && !this.props.nodeData.get('IsRead')){
+    if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
       this.setState({
         IsSendCopyReaded:true
       })

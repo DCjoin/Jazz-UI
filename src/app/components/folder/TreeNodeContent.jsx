@@ -20,15 +20,20 @@ var TreeNodeContent = React.createClass({
       if(this.state.isSelect===null){
         this.setState({
           isSelect:true,
-        })
+        });
       }
 
+      if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
+        this.setState({
+          readStatus:false
+        });
+      }
 
     },
     _onChanged:function(e){
       this.setState({
         text:e.target.value
-      })
+      });
     },
 
     _onModifyNameError:function(){
@@ -40,6 +45,7 @@ var TreeNodeContent = React.createClass({
       return{
         isSelect:(this.props.nodeData.get('Id')==this.props.selectedNode.get('Id')),
         text:this.props.nodeData.get("Name"),
+        readStatus:true
       };
     },
     componentDidMount:function(){
@@ -95,7 +101,7 @@ var TreeNodeContent = React.createClass({
 
       var isSenderCopyIcon = <div className={classNames({
                                 //add for file operation
-                                "icon-humidity" : (isSenderCopy && !isRead && !this.props.readStatus),
+                                "icon-humidity" : (isSenderCopy && !isRead && !this.props.readStatus && this.state.readStatus),
                               })}/>;
 
 

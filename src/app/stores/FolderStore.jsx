@@ -219,8 +219,8 @@ var FolderStore = assign({},PrototypeStore,{
     }
     return (I18N.format(I18N.Template.Copy.DefaultName,folderName)+index);
   },
-  setSendStatus:function(sourceNode,status,userIds){
-    if(status){
+  setSendStatus:function(sourceNode,userIds){
+    if(userIds.length==0){
       _sendStatus=I18N.format(I18N.Folder.Send.Success,sourceNode.get('Name'))
     }
     else {
@@ -368,12 +368,8 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
         FolderStore.deleteItem(action.deleteNode);
         FolderStore.emitDeleteItemSuccessChange();
       break;
-    case FolderAction.SEND_ITEM_SUCCESS:
-        FolderStore.setSendStatus(action.sourceTreeNode,true,action.userIds);
-        FolderStore.emitSendStatusChange();
-      break;
-    case FolderAction.SEND_ITEM_ERROR:
-        FolderStore.setSendStatus(action.sourceTreeNode,true,action.userIds);
+    case FolderAction.SEND_ITEM:
+        FolderStore.setSendStatus(action.sourceTreeNode,action.userIds);
         FolderStore.emitSendStatusChange();
       break;
   }
