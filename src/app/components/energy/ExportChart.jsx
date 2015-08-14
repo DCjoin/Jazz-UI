@@ -1,27 +1,35 @@
 'use strict';
 
 import React from 'react';
-
+import ExportChartStore from '../../stores/energy/ExportChartStore.jsx';
 
 let ExportChart = React.createClass({
   propTypes:{
     url:React.PropTypes.string
   },
   render(){
-    return <iframe style={{display: 'none'}} ref='exportIframe'></iframe>;
 
+    return <iframe style={{display: 'none'}} ref='exportIframe'></iframe>;
   },
-  exportFn(){
+  componentDidMount(){
+    ExportChartStore.addChangeListener(this._exportFn);
+  },
+  componentWillUnmount(){
+    ExportChartStore.removeChangeListener(this._exportFn);
+  },
+  _exportFn(){
     var createElement = window.Highcharts.createElement,
         discardElement = window.Highcharts.discardElement,
-        frame = this.refs.exportIframe,
+        frame = this.refs.exportIframe.getDOMNode(),
         doc = frame.contentDocument;
 
-    let url = '', data, name;
+    let url = 'API/Energy.svc/GetTagsData4Export',
+        data = ExportChartStore.getExportParamsObj(),
+        name;
     let form = createElement('form', {
                method: 'post',
                action: url,
-               target:''
+               target:'_self'
            }, {
                display: 'none'
            }, doc.body);
@@ -31,7 +39,7 @@ let ExportChart = React.createClass({
         createElement('input', {
             type: 'hidden',
             name: name,
-            value: data[name]
+            value: JSON.stringify(data[name])
         }, null, form);
      }
 
