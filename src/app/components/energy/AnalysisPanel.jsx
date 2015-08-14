@@ -7,6 +7,7 @@ import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgre
 import CommonFuns from '../../util/Util.jsx';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
+import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
@@ -21,7 +22,7 @@ let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
       chartTitle:  React.PropTypes.string,
-      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Labelling','Rank'])
+      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Label','Rank'])
     },
     getDefaultProps(){
       return {

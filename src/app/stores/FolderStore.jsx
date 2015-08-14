@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import { List,updater,update,Map} from 'immutable';
 
 import Folder from '../constants/actionType/Folder.jsx';
+import UserStore from './UserStore.jsx';
 
 let _folderTree=Immutable.fromJS(),
     _parentId=null,
@@ -13,14 +14,16 @@ let _folderTree=Immutable.fromJS(),
     _modifyNameErrorCode=null,
     _errorName=null,
     _errorType=null,
-    _selectedNode=null;
+    _selectedNode=null,
+    _sendStatus=null;
 let FOLDER_TREE_EVENT = 'foldertree',
     CREATE_FOLDER_EVENT='createfolder',
     MODIFY_NAME_ERROR_EVENT='modifynameerror',
     MODIFY_NAME_SUCCESS_EVENT='modifynamesuccess',
     COPY_ITEM_SUCCESS_EVENT='copyitemsuccess',
     COPY_ITEM_ERROR_EVENT='copyitemerror',
-    DELETE_ITEM_SUCCESS_EVENT='deleteitemsuccess';
+    DELETE_ITEM_SUCCESS_EVENT='deleteitemsuccess',
+    SEND_STATUS_EVENT='sendstatus';
 
 var FolderStore = assign({},PrototypeStore,{
 
@@ -216,6 +219,37 @@ var FolderStore = assign({},PrototypeStore,{
     }
     return (I18N.format(I18N.Template.Copy.DefaultName,folderName)+index);
   },
+  setSendStatus:function(sourceNode,status,userIds){
+    if(status){
+      _sendStatus=I18N.format(I18N.Folder.Send.Success,sourceNode.get('Name'))
+    }
+    else {
+        let userNames;
+        let userList=UserStore.getUserStatus();
+        userList.forEach(function(user,i){
+           var hasUser=false;
+           userIds.forEach(function(id){
+             if(id==user.get('Id')){
+               hasUser=true;
+             }
+           });
+           if(hasUser){
+             if(userNames){
+               userNames=userNames+','+user.get('Name');
+             }
+             else {
+               userNames=user.get('Name');
+             }
+           }
+        });
+      _sendStatus=I18N.format(I18N.Folder.Send.Error,sourceNode.get('Name'),userNames);
+
+    }
+
+  },
+  getSendStatus:function(){
+    return _sendStatus;
+  },
   emitFolderTreeChange: function() {
               this.emit(FOLDER_TREE_EVENT);
               },
@@ -289,7 +323,18 @@ var FolderStore = assign({},PrototypeStore,{
   removeDeleteItemSuccessListener: function(callback) {
       this.removeListener(DELETE_ITEM_SUCCESS_EVENT, callback);
       this.dispose();
+  },
+  emitSendStatusChange: function() {
+          this.emit(SEND_STATUS_EVENT);
+        },
+  addSendStatusListener: function(callback) {
+        this.on(SEND_STATUS_EVENT, callback);
+        },
+  removeSendStatusListener: function(callback) {
+      this.removeListener(SEND_STATUS_EVENT, callback);
+      this.dispose();
       },
+
 });
 
 var FolderAction = Folder.Action;
@@ -322,6 +367,14 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.DELETE_ITEM:
         FolderStore.deleteItem(action.deleteNode);
         FolderStore.emitDeleteItemSuccessChange();
+      break;
+    case FolderAction.SEND_ITEM_SUCCESS:
+        FolderStore.setSendStatus(action.sourceTreeNode,true,action.userIds);
+        FolderStore.emitSendStatusChange();
+      break;
+    case FolderAction.SEND_ITEM_ERROR:
+        FolderStore.setSendStatus(action.sourceTreeNode,true,action.userIds);
+        FolderStore.emitSendStatusChange();
       break;
   }
 });
