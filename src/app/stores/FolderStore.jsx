@@ -122,11 +122,18 @@ var FolderStore = assign({},PrototypeStore,{
   },
   copyItem:function(destItem,newNode){
     var parent=destItem;
-    var children=parent.get('Children');
+    var children;
+    if(parent.get('Children')){
+      children=parent.get('Children')
+    }
+    else {
+      children=Immutable.List([])
+    }
       parent=parent.set('Children',children.push(newNode));
       _parentId=parent.get('Id');
       _changedNode=parent;
       _folderTree=this.modifyTreebyNode(_folderTree);
+      _selectedNode=newNode;
   },
   deleteItem:function(deleteNode){
     //如果左边选中的是一个widget，在右边执行删除后，左边焦点项下移
@@ -269,7 +276,7 @@ var FolderStore = assign({},PrototypeStore,{
   addCopyItemSuccessListener: function(callback) {
           this.on(COPY_ITEM_SUCCESS_EVENT, callback);
           },
-  removeCopyItemSuccessrListener: function(callback) {
+  removeCopyItemSuccessListener: function(callback) {
           this.removeListener(COPY_ITEM_SUCCESS_EVENT, callback);
           this.dispose();
         },
@@ -279,7 +286,7 @@ var FolderStore = assign({},PrototypeStore,{
   addDeleteItemSuccessListener: function(callback) {
         this.on(DELETE_ITEM_SUCCESS_EVENT, callback);
         },
-  removeDeleteItemSuccessrListener: function(callback) {
+  removeDeleteItemSuccessListener: function(callback) {
       this.removeListener(DELETE_ITEM_SUCCESS_EVENT, callback);
       this.dispose();
       },

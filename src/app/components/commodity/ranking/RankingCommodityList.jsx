@@ -12,6 +12,7 @@ var RankingCommodityList = React.createClass({
     checkedCommodity:React.PropTypes.object,
     commdityList:React.PropTypes.array,
   },
+  
   getNamebyId:function(id){
     var comment=I18N.Commodity.Overview;
     var Id=id+'';
@@ -48,7 +49,7 @@ var RankingCommodityList = React.createClass({
       };
     var content=[],
         defaultSelected=((!!this.props.checkedCommodity)?this.props.checkedCommodity.commodityId:null);
-    if(this.props.ecType!=='Energy'){
+    if(this.props.ecType!=='energy'){
       content.push(
         <RadioButton value={-1} label={I18N.Commodity.Overview}
                       style={style} iconStyle={iconStyle} labelStyle={labelStyle}/>

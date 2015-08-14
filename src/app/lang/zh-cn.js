@@ -525,6 +525,12 @@ I18N.Template.Delete.Cancel='放弃';
 I18N.Template.Delete.Title='删除{0}';
 I18N.Template.Delete.FolderContent='删除文件夹"{0}",该文件夹下的所有内容也将被删除';
 I18N.Template.Delete.WidgetContent='删除图表"{0}"';
+I18N.Template.Share={};
+I18N.Template.Share.Title='共享图表';
+I18N.Template.Share.Share='共享';
+I18N.Template.Share.Cancel='放弃';
+I18N.Template.User={};
+I18N.Template.User.Selected='已选{0}人';
 
 I18N.Rank={};
 I18N.Rank.RankTooltip = '排名:{0}/{1}';

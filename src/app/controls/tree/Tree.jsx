@@ -2,6 +2,7 @@
 
 import React from 'react';
 import mui from 'material-ui';
+import {Mixins} from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import _ from 'lodash';
@@ -9,7 +10,7 @@ import Immutable from 'immutable';
 import TreeNode from './TreeNode.jsx';
 
 var Tree = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  mixins: [React.addons.PureRenderMixin,Mixins.ClickAwayable],
   // compatibleJSON data transfer json to a immutableJS
   compatibleJSON: function (data) {
     if(data && data.toJSON) {
@@ -69,7 +70,6 @@ var Tree = React.createClass({
       generateNodeConent: null
     };
   },
-
   onSelectNode: function (node, event) {
     if(!this.props.disable){
       this.props.onSelectNode(node, event);

@@ -42,3 +42,94 @@
  overflow: auto;
  flex:1
 }
+.jazz-folder-alluser-useritem{
+  min-height:32px;
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  &:hover{
+    background-color: #f4f4f4;
+  }
+  .name{
+    font-size:14px;
+    color:#767a7a;
+  }
+  .type{
+    font-size:14px;
+    color:#abafae;
+    margin-left:10px
+  }
+}
+.jazz-folder-allusers{
+  height:357px;
+  width:311px;
+  border:1px solid #e4e7e6;
+  margin-top:10px;
+  display: flex;
+  flex-direction: column;
+  .allcheck{
+    min-height:36px;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: row
+  }
+  .content{
+    flex:1;
+    overflow:auto
+  }
+}
+.jazz-folder-selectedusers{
+  height:357px;
+  width:311px;
+  border:1px solid #e4e7e6;
+  margin-top:10px;
+  display: flex;
+  flex-direction: column;
+  .title{
+    min-height:36px;
+    background-color: #f4f4f4;
+    font-size:14px;
+    color:#abafae
+  }
+  .content{
+    flex:1;
+    overflow:auto
+  }
+  .icon{
+
+  }
+}
+.jazz-folder-selectedusers-useritem{
+  min-height:32px;
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  &:hover{
+    background-color: #f4f4f4;
+  }
+&.selected{
+    display: block
+  }
+  &.noselected{
+    display: none
+  }
+  .name{
+    font-size:14px;
+    color:#767a7a;
+  }
+  .type{
+    font-size:14px;
+    color:#abafae;
+    margin-left:10px
+  }
+}
+.jazz-folder-user{
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  .usericon{
+    font-size:22px;
+    margin-left:12px;
+    margin-right:12px;
+  }
+}
