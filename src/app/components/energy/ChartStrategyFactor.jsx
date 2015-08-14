@@ -218,6 +218,7 @@ let ChartStrategyFactor = {
        <div className={'jazz-flat-button'}>
          {searchButton}
          {configBtn}
+         <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
        </div>
    </div>;
   },

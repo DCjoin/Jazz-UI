@@ -177,6 +177,9 @@ let AnalysisPanel = React.createClass({
     onSearchDataButtonClick(){
       this.state.chartStrategy.onSearchDataButtonClickFn(this);
     },
+    exportChart(){
+
+    },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
           obj = searchDate[relativeDateIndex];
