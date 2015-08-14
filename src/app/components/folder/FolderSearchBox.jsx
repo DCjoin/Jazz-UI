@@ -7,7 +7,7 @@ import FolderStore from '../../stores/FolderStore.jsx';
 
 import Immutable from 'immutable';
 
-var FileSearchBox = React.createClass({
+var FolderSearchBox = React.createClass({
   propTypes: {
     onSearchClick:React.PropTypes.func.isRequired,
 },
@@ -50,6 +50,10 @@ var FileSearchBox = React.createClass({
   },
   _onSearchNodeClick:function(node){
     this.props.onSearchClick(Immutable.fromJS(node));
+    this.refs.searchText.setValue(node.Name);
+    this.setState({
+      showPaper:false,
+    })
   },
   _handleClickAway:function(){
     this.setState({
@@ -101,4 +105,4 @@ var FileSearchBox = React.createClass({
   }
 
 });
-module.exports = FileSearchBox;
+module.exports = FolderSearchBox;

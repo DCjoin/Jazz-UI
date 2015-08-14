@@ -79,10 +79,41 @@ var TreeNode = React.createClass({
   getInitialState: function () {
     return {
       collapsed: this.getDefaultCollapsed(this.props),
-      IsSendCopyReaded:false,
+      IsSendCopyReaded:this.getDefaultReadStatus(),
     };
   },
+  getDefaultReadStatus:function(){
+      var that=this;
+      var f=function(item){
+        if(item.get('Id')==that.props.selectedNode.get('Id')){
+          return true;
+        }
+        else{
+          if(!!item.get('Children')){
+            let has=false;
+            item.get('Children').forEach(function(child){
+              if(child!==null){
+                if(f(child)) has=true;
+              }
 
+            });
+            return has;
+          }
+          return false;
+        }
+      };
+      if(this.props.nodeData.get('IsSenderCopy')){
+        if(!!this.props.selectedNode){
+          if(this.props.selectedNode.get('Id')==this.props.nodeData.get('Id')){
+            return false;
+          }
+          else {
+            return f(this.props.nodeData);
+          }
+        }
+      }
+      return false;
+  },
   getDefaultCollapsedBySelectedNode:function(props){
     var that=this;
     var f=function(item){
@@ -134,11 +165,9 @@ var TreeNode = React.createClass({
                 }
               });
             }
-        })
-      };
+        });
+      }
     }
-
-
     return(levelStatus && checkedStatus);
   },
   componentWillReceiveProps:function(nextProps){
