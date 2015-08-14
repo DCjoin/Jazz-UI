@@ -316,7 +316,6 @@ let ChartComponentBox = React.createClass({
     },
     componentWillMount(){
       this.initDefaultConfig();
-      this.state.chartCmpStrategy.getInitialStateFn(this);
     },
     componentWillReceiveProps(nextProps){
       if(nextProps.range && nextProps.range !== this.props.range){
@@ -356,9 +355,12 @@ let ChartComponentBox = React.createClass({
           break;
 
       }
-      return {
+      var obj = chartCmpStrategy.getInitialStateFn(this);
+      var state = {
         chartCmpStrategy: chartCmpStrategy
       };
+      assign(state, obj);
+      return state;
     },
     shouldComponentUpdate: function(nextProps, nextState) {
       return !(this.props.energyData.equals(nextProps.energyData) && this.props.chartType === nextProps.chartType);
@@ -505,7 +507,7 @@ let ChartComponentBox = React.createClass({
     this.state.chartCmpStrategy.convertSingleItemFn(item, s);
   },
   initRange: function (newConfig, realData) {
-    this.state.chartCmpStrategy.initRangeFn(newConfig, realData, this);
+    return this.state.chartCmpStrategy.initRangeFn(newConfig, realData, this);
   },
   initNavigatorData: function (newConfig, timeRange, data) {
    this.state.chartCmpStrategy.initNavigatorDataFn(newConfig, timeRange, data, this);

@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import assign from "object-assign";
 import _ from 'lodash';
 import CommonFuns from '../../util/Util.jsx';
 
@@ -68,8 +69,8 @@ let ChartCmpStrategyFactor = {
       convertSingleItemFn:'convertSingleItem',
       mergeConfigFn:'energyChartCmpMergeConfig',
       initYaxisFn:'initYaxis',
-      initNavigatorDataFn:'initNavigatorData'
-
+      initNavigatorDataFn:'initNavigatorData',
+      getInitialStateFn:'empty'
     },
     RankTrendComponent:{
       mergeConfigFn:'rankChartCmpMergeConfig',
@@ -87,17 +88,19 @@ let ChartCmpStrategyFactor = {
       convertSingleItemFn:'pieConvertSingleItem',
       initYaxisFn:'empty',
       initRangeFn:'pieInitRange',
-      initNavigatorDataFn:'pieInitNavigatorData'
+      initNavigatorDataFn:'pieInitNavigatorData',
+      getInitialStateFn:'empty'
     }
   },
   getInitialStateFnStrategy:{
+    empty(){},
     getRankInitialState(cmpBox){
       let state = {
         order: cmpBox.props.order,
         range: cmpBox.props.range,
         minPosition: 0
       };
-      cmpBox.setState(state);
+      return state;
     }
   },
   onChangeRangeFnStrategy:{
@@ -105,25 +108,23 @@ let ChartCmpStrategyFactor = {
       var rangeWidth = range - 1;
       var chartObj = cmpBox.refs.highstock._paper;
       if (!chartObj) {
-        cmpBox.setState({range: rangeWidth});
+        cmpBox.setState({range: range});
         return;
       }
-      //var r = range;
       var oldRange = cmpBox.props.range;
       var list = chartObj.series[0].options.option.list;
 
       if (list.length <= 3) return;
 
       var dataMax = list.length - 1;
-      cmpBox.setState({range: rangeWidth});
+      cmpBox.setState({range: range});
       var min = cmpBox.state.minPosition, max = 0;
       if (range == 1000) {
         min = 0;
         max = dataMax;
-        //r = range;
       }
       else {
-        if (oldRange == 999) {
+        if (oldRange == 1000) {
           min = 0;
           max = rangeWidth;
           if (max > dataMax) {

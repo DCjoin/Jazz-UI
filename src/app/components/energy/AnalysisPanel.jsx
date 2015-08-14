@@ -11,6 +11,7 @@ import TagStore from '../../stores/TagStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
+import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -38,10 +39,15 @@ let AnalysisPanel = React.createClass({
         step: null,
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
-        selectedChartType:'column',
+        selectedChartType:'line',
         energyType:'energy',//'one of energy, cost carbon'
         chartStrategy: chartStrategy
       };
+
+      var obj = chartStrategy.getInitialStateFn();
+
+      assign(state, obj);
+
       if(this.props.chartTitle){
         state.chartTitle = this.props.chartTitle;
       }
@@ -83,17 +89,29 @@ let AnalysisPanel = React.createClass({
       this.refs.relativeDate.setState({selectedIndex: 1});
       this.refs.dateTimeSelector.setDateField(last7Days, endDate);
 
-      this.state.chartStrategy.getInitialStateFn(this);
-
       this.state.chartStrategy.bindStoreListenersFn(me);
     },
     componentWillUnmount: function() {
       let me = this;
       this.state.chartStrategy.unbindStoreListenersFn(me);
     },
+    _onErrorDialogAction(step){
+      this.setState({errorObj:null});
+      if(step !== 'cancel'){
+        this._onStepChange(step);
+      }
+    },
     getEnergyTypeCombo(){
       let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
-      return <DropDownMenu menuItems={types}></DropDownMenu>;
+      return <DropDownMenu menuItems={types} onChange={this.state.chartStrategy.onEnegyTypeChangeFn}></DropDownMenu>;
+    },
+    _onStepChange(step){
+      let tagOptions = EnergyStore.getTagOpions(),
+          paramsObj = EnergyStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges;
+
+      this.setState({step:step});
+      this.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
     },
     _onDateSelectorChanged(){
       this.refs.relativeDate.setState({selectedIndex:0});
@@ -159,6 +177,9 @@ let AnalysisPanel = React.createClass({
     onSearchDataButtonClick(){
       this.state.chartStrategy.onSearchDataButtonClickFn(this);
     },
+    exportChart(){
+
+    },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
           obj = searchDate[relativeDateIndex];
@@ -191,6 +212,62 @@ let AnalysisPanel = React.createClass({
     _onGetRankDataError(){
       let errorObj = this.errorProcess();
       this._onRankDataChange(true, errorObj);
+    },
+    errorProcess(){
+      let code = EnergyStore.getErrorCode(),
+          messages = EnergyStore.getErrorMessage();
+
+      if (code.toString() == '02004') {
+          let errorObj = this.showStepError(messages[0]);
+          return errorObj;
+      }else{
+        let errorMsg = CommonFuns.getErrorMessage(code);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg);
+        return null;
+      }
+    },
+    showStepError(step){
+      let btns = [], msg = [], map = { Hour: 1, Day: 2, Week: 5, Month: 3, Year: 4 },
+          paramsObj = EnergyStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges,
+          limitInterval = CommonFuns.getLimitInterval(timeRanges),
+          availableList = limitInterval.stepList;
+
+      switch (step) {
+        case 'Hourly':
+            btns = ['Hour', 'Day', 'Week'];
+            msg = ['UseRaw'];
+            break;
+        case 'Daily':
+            btns = ['Day', 'Week', 'Month'];
+            msg = ['UseHour'];
+            break;
+        case 'Weekly':
+            btns = ['Week', 'Month', 'Year'];
+            msg = ['UseHour', 'UseDay'];
+            break;
+        case 'Monthly':
+            btns = ['Month', 'Year'];
+            msg = ['UseHour', 'UseDay', 'UseWeek'];
+            break;
+        case 'Yearly':
+            btns = ['Year'];
+            msg = ['UseHour', 'UseDay', 'UseMonth'];
+            break;
+      }
+      var newBtns = [];
+      btns.forEach(btn => {
+        let code = map[btn];
+        if( availableList.indexOf(code) != -1){
+         newBtns.push({text: btn, code:code});
+        }
+      });
+      btns = newBtns;
+      var msg1 = [];
+      msg.forEach(item =>{
+        msg1.push('"' + I18N.EM[item] + '"');
+      });
+      return {stepBtnList: btns, errorMessage: I18N.format(I18N.EM.StepError, msg1.join(','))};
     },
     _onBaselineBtnDisabled:function(){
       this.setState({
