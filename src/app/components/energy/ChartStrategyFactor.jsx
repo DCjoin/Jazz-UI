@@ -13,6 +13,7 @@ import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import RankAction from '../../actions/RankAction.jsx';
 import EnergyAction from '../../actions/EnergyAction.jsx';
+import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
@@ -57,7 +58,8 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'energyBindStoreListeners',
       unbindStoreListenersFn:'energyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      getEnergyRawDataFn:'getEnergyRawData'
+      getEnergyRawDataFn:'getEnergyRawData',
+      exportChartFn:'exportChart'
     },
     MultiIntervalDistribution:{
 
@@ -383,7 +385,25 @@ let ChartStrategyFactor = {
      RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    }
  },
+ exportChartFnStrategy:{
+   exportChart(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let tagOptions = EnergyStore.getTagOpions();
+     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let viewOption = EnergyStore.getSubmitParams().viewOption;
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
 
+     let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i=0;i<seriesNumber;i++){
+       charTypes.push(analysisPanel.state.selectedChartType);
+     }
+
+     ExportChartAction.getTagsData4Export(tagIds, viewOption, nodeNameAssociation,'能耗分析',charTypes);
+   }
+ },
  getSearchBtn(analysisPanel){
    var searchButton = <ButtonMenu label='查看' onButtonClick={analysisPanel.onSearchDataButtonClick} desktop={true}
      value={analysisPanel.state.selectedChartType} onItemTouchTap={analysisPanel._onSearchBtnItemTouchTap}>

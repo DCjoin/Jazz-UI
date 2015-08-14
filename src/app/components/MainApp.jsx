@@ -9,6 +9,7 @@ import {LeftNav} from 'material-ui';
 import assign from 'object-assign';
 import UOMStore from '../stores/UOMStore.jsx';
 import MainAction from '../actions/MainAction.jsx';
+import ExportChart from './energy/ExportChart.jsx';
 
 let MainApp = React.createClass({
     mixins:[Navigation,State],
@@ -44,6 +45,7 @@ let MainApp = React.createClass({
         <div className='jazz-main'>
             <MainMenu items={menuItems} logoUrl={logoUrl} />
             <RouteHandler {...this.props} />
+            <ExportChart></ExportChart>
         </div>
       );
     },
