@@ -123,6 +123,28 @@ let FolderAction = {
         selectedNode: selectedNode
     });
   },
+  SendFolderCopy:function(sourceTreeNode,userIds){
+    Ajax.post('/Dashboard.svc/SendItemCopy', {
+         params: {
+           sourceTreeNode:sourceTreeNode.toJSON(),
+           userIds:userIds
+          },
+        success: function(userIds){
+          AppDispatcher.dispatch({
+            sourceTreeNode:sourceTreeNode,
+              type: Action.SEND_ITEM_SUCCESS,
+              userIds:[]
+          });
+        },
+        error: function(err, res){
+          AppDispatcher.dispatch({
+            sourceTreeNode:sourceTreeNode,
+              type: Action.SEND_ITEM_ERROR,
+              userIds:[]
+          });
+        }
+    });
+  },
 };
 
 module.exports = FolderAction;

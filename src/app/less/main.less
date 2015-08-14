@@ -379,3 +379,41 @@ input:focus{
     }
   }
 }
+.networkchecker{
+   right:-200px;
+   position: absolute;
+   top: 50px;
+   z-index: 99;
+   transition: all 0.5s ease-in;
+   color: white;
+   font-size: 14px;
+   height: 40px;
+   font-weight: bold;
+   font-family: Microsoft Yahei;
+   padding: 10px;
+   width: 160px;
+   display: none;
+   align-items: flex-end;
+   justify-content: center;
+   flex-direction: column;
+   span{
+     margin-top:-20px;
+       font-size: 14px;
+   }
+   h5{
+     margin-top:-5px;
+       font-size: 16px;
+   }
+
+    &.networkoffline{
+        background-color: #E83D3D;
+        right:0;
+        display: flex;
+    }
+    &.networkonline{
+        background-color: green;
+        right:0;
+        display: flex;
+    }
+
+}
