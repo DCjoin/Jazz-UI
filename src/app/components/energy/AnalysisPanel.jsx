@@ -7,12 +7,14 @@ import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgre
 import CommonFuns from '../../util/Util.jsx';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
-import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
+import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
+
+let MenuItem = require('material-ui/lib/menus/menu-item');
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -89,7 +91,7 @@ let AnalysisPanel = React.createClass({
       let endDate = CommonFuns.dateAdd(date, 0, 'days');
       this.refs.relativeDate.setState({selectedIndex: 1});
       this.refs.dateTimeSelector.setDateField(last7Days, endDate);
-
+      this.state.chartStrategy.getAllDataFn();
       this.state.chartStrategy.bindStoreListenersFn(me);
     },
     componentWillUnmount: function() {
@@ -179,7 +181,7 @@ let AnalysisPanel = React.createClass({
       this.state.chartStrategy.onSearchDataButtonClickFn(this);
     },
     exportChart(){
-
+        this.state.chartStrategy.exportChartFn(this);
     },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
@@ -223,7 +225,9 @@ let AnalysisPanel = React.createClass({
           return errorObj;
       }else{
         let errorMsg = CommonFuns.getErrorMessage(code);
-        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg);
+        setTimeout(()=>{
+          GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg);
+        },0);
         return null;
       }
     },
@@ -279,6 +283,66 @@ let AnalysisPanel = React.createClass({
       //this.setState({selectedChartType:child.props.value});
       this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
     },
+    getIndustyLabelMenu(){
+      var labelItems = this.state.industyLabelMenuItems;
+      var labelMenuItems = labelItems.map(function(item) {
+        let props = {
+          value: item.value,
+          primaryText: item.text
+        };
+        return (
+          <MenuItem {...props}/>
+        );
+      });
+    },
+    getIndustyLabelItems(){
+      var industryStore = LabelMenuStore.getIndustryData();
+      var labelingsStore = LabelMenuStore.getLabelData();
+      var zoneStore = LabelMenuStore.getZoneData();
+      var hierNode = LabelMenuStore.getHierNode();
+      var industryId, zoneId, parentId, items = [];
+      if(!!hierNode){
+        industryId = hierNode.industryId;
+        zoneId = hierNode.zoneId;
+        if(hierNode.Type !== 2){
+          return;
+        }
+        this.addIndustyLabelItem(labelingsStore, industryId, zoneId);
+        var industryNode = industryStore.find((item, index)=>{
+          return (item.Id === industryId);
+        });
+        parentId = industryNode.ParentId;
+        if(parentId !== 0) {
+          this.addIndustyLabelItem(labelingsStore, parentId, zoneId);
+        }
+        this.addIndustyLabelItem(labelingsStore, 0, zoneId);
+      }
+    },
+    addIndustyLabelItem(labelingsStore, industryId, zoneId){
+      let labelItem = null;
+      labelItem = labelingsStore.find((item, index)=>{
+        return (item.IndustryId === industryId && item.ZoneId === zoneId);
+      });
+      if(!!labelItem){
+        this.pushIndustryLabelItem(industryId, zoneId, labelItem);
+      }
+      labelItem = labelingsStore.find((item, index)=>{
+        return (item.IndustryId === industryId && item.ZoneId === 0);
+      });
+      if(!!labelItem){
+        this.pushIndustryLabelItem(industryId, 0, labelItem);
+      }
+    },
+    pushIndustryLabelItem(industryId, zoneId, labelItem){
+      var labelMenuItem = {};
+      labelMenuItem.industryId = industryId;
+      labelMenuItem.ZoneId = zoneId;
+      labelMenuItem.text = labelItem.ZoneComment + labelItem.IndustryComment;
+      labelMenuItem.value = "" + zoneId + "/" + industryId;
+      var labelMenuItems = this.state.industyLabelMenuItems;
+      labelMenuItems.push(labelMenuItem);
+      this.setState({industyLabelMenuItems: labelMenuItems});
+    }
 });
 
 module.exports = AnalysisPanel;
