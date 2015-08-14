@@ -8,6 +8,7 @@ import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import DateSelector from '../../controls/DateSelector.jsx';
 import ButtonMenu from '../../controls/ButtonMenu.jsx';
+import YearPicker from '../../controls/YearPicker.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
@@ -19,7 +20,9 @@ import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
 import GridComponent from './GridComponent.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
-import RankStore from '../../stores/RankStore.jsx';
+import LabelStore from '../../stores/LabelStore.jsx';
+import LabelMenuStore from '../../stores/LabelStore.jsx';
+import RankStore from '../../stores/LabelMenuStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 
@@ -34,9 +37,18 @@ const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', t
  {value:'RankByArea', text:'单位面积排名'},{value:'RankByHeatArea',text:'单位供冷面积排名'},
  {value:'RankByCoolArea',text:'单位采暖面积排名'},{value:'RankByRoom',text:'单位客房排名'},
  {value:'RankByUsedRoom',text:'单位已用客房排名'},{value:'RankByBed',text:'单位床位排名'}];
+ var kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
+ {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
+ {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
+ {value:'UnitBed',text:'单位床位'},{value:'DayNightRatio',text:'昼夜比'},
+ {value:'WorkHolidayRatio',text:'公休比'}];
  const orderItem = [{value:'1',text:'降序'}, {value:'2',text:'升序'}];
  const rangeItem = [{value:'3',text:'前3名'},{value:'5',text:'前5名'},{value:'10',text:'前10名'},
  {value:'20',text:'前20名'},{value:'50',text:'前50名'},{value:'1000',text:'全部'}];
+ const monthItem =  [{value:'13',text:'全年'},{value:'1',text:'01'},{value:'2',text:'02'},{value:'3',text:'03'},
+ {value:'4',text:'04'},{value:'5',text:'05'},{value:'6',text:'06'},{value:'7',text:'07'},
+ {value:'8',text:'08'},{value:'9',text:'09'},{value:'10',text:'10'},
+ {value:'11',text:'11'},{value:'12',text:'12'}];
 
 let ChartStrategyFactor = {
   defaultStrategy: {
@@ -65,6 +77,17 @@ let ChartStrategyFactor = {
 
     },UnitEnergyUsage:{
 
+    },Labelling:{
+      searchBarGenFn:'labelSearchBarGen',
+      getSelectedNodesFn:'getSelectedTagList',
+      onSearchDataButtonClickFn:'onLabelSearchDataButtonClick',
+      setFitStepAndGetDataFn:'setLabelTypeAndGetData',
+      getInitialStateFn:'getLabelInitialState',
+      getEnergyDataFn: 'labelDataLoad',
+      getChartComponentFn:'getLabelChartComponent',
+      bindStoreListenersFn:'labelBindStoreListeners',
+      unbindStoreListenersFn:'labelUnbindStoreListeners',
+      canShareDataWithFn:'canRankShareDataWith'
     },Rank:{
       searchBarGenFn:'rankSearchBarGen',
       getSelectedNodesFn:'getSelectedList',
@@ -110,6 +133,18 @@ let ChartStrategyFactor = {
        order: 1,
        range: 3,
        selectedChartType:'column'
+     };
+     return state;
+   },
+   getLabelInitialState(){
+     let state = {
+       labelType: "industryZone",//industry,customized
+       labelValue: null,
+       labelText: null,
+       kpiTypeValue: 1,
+       industryId: null,
+       zoneId: null,
+       customerizedId: null
      };
      return state;
    }
@@ -223,20 +258,57 @@ let ChartStrategyFactor = {
    </div>;
   },
   rankSearchBarGen(analysisPanel){
-    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
-
     return <div className={'jazz-alarm-chart-toolbar-container'}>
       <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
-      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
-        <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'92px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
+      <div className={'jazz-full-border-dropdownmenu-ranktype-container'} >
+        <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'140px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
         <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
-  </div>;
+    </div>;
+  },
+  labelSearchBarGen(analysisPanel){
+    var yearPickerStyle = {
+      width: '128px',
+      height: '32px',
+      lineHeight: '32px',
+      border: '1px solid #efefef',
+      margin: '14px 0px 0px 10px',
+      fontSize: '15px',
+      color: '#b3b3b3',
+      textAlign: 'center'
+    };
+    var curYear = (new Date()).getFullYear();
+    var selectYear = (this.state.year || curYear) + '年';
+    var yearProps = {
+      ref: "yearSelector",
+      selectedIndex: ((this.state.year || curYear) - curYear + 10),
+      onYearPickerSelected: this._onYearPickerSelected,
+      style: {
+        border: '1px solid #efefef',
+        margin: '14px 0px 0px 10px'
+      }
+    };
+    var YearSelect = <YearPicker {...yearProps}/>;
+    var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
+    var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
+    return <div className={'jazz-alarm-chart-toolbar-container'}>
+      {YearSelect}
+      <div className={'jazz-full-border-dropdownmenu-month-container'} >
+        <DropDownMenu menuItems={monthItem} ref='monthSelector'></DropDownMenu>
+      </div>
+      {labelBtn}
+      <div className={'jazz-full-border-dropdownmenu-ranktype-container'} >
+        <DropDownMenu menuItems={kpiTypeItem} ref='kpiType'></DropDownMenu>
+      </div>
+      <div className={'jazz-flat-button'}>
+        <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+      </div>
+    </div>;
   }
  },
  getSelectedNodesFnStrategy:{
@@ -394,6 +466,32 @@ let ChartStrategyFactor = {
       <MenuItem primaryText="原始数据"  value='rawdata'/>
     </ButtonMenu>;
     return searchButton;
+  },
+  getLabelBtn(analysisPanel){
+    var industyLabelMenu = analysisPanel.getIndustyLabelMenu();
+    var customizedLabelMenu = analysisPanel.getCustomizedLabelMenu();
+    let labelButton = <ButtonMenu label={analysisPanel.state.kpiTypeText} style={{marginLeft:'10px'}} desktop={true}>
+      <ExtendableMenuItem primaryText="行业能效标识" value='industryZone'>
+      <Menu>
+        {industyLabelMenu}
+      </Menu>
+      </ExtendableMenuItem>
+      <ExtendableMenuItem primaryText="自定义能效标识" value='customized'>
+      <Menu>
+        {customizedLabelMenu}
+      </Menu>
+      </ExtendableMenuItem>
+    </ButtonMenu>;
+    return labelButton;
+  },
+  getKpiTypeBtn(analysisPanel){
+    let kpiTypeButton = null;
+    if(analysisPanel.state.labelType === 1){
+      kpiTypeButton = <DropDownMenu menuItems={kpiTypeItem} ref='kpiType'></DropDownMenu>;
+    }
+    else{
+      kpiTypeButton = <RaisedButton label={analysisPanel.state.kpiTypeText} disabled={true}></RaisedButton>;
+    }
   },
   getConfigBtn(analysisPanel){
     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
