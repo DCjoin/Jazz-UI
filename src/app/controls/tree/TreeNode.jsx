@@ -79,10 +79,41 @@ var TreeNode = React.createClass({
   getInitialState: function () {
     return {
       collapsed: this.getDefaultCollapsed(this.props),
-      IsSendCopyReaded:false,
+      IsSendCopyReaded:this.getDefaultReadStatus(this.props),
     };
   },
+  getDefaultReadStatus:function(props){
 
+      var f=function(item){
+        if(item.get('Id')==props.selectedNode.get('Id')){
+          return true;
+        }
+        else{
+          if(!!item.get('Children')){
+            let has=false;
+            item.get('Children').forEach(function(child){
+              if(child!==null){
+                if(f(child)) has=true;
+              }
+
+            });
+            return has;
+          }
+          return false;
+        }
+      };
+      if(props.nodeData.get('IsSenderCopy')){
+        if(!!props.selectedNode){
+          if(props.selectedNode.get('Id')==props.nodeData.get('Id')){
+            return false;
+          }
+          else {
+            return f(props.nodeData);
+          }
+        }
+      }
+      return false;
+  },
   getDefaultCollapsedBySelectedNode:function(props){
     var that=this;
     var f=function(item){
@@ -134,17 +165,16 @@ var TreeNode = React.createClass({
                 }
               });
             }
-        })
-      };
+        });
+      }
     }
-
-
     return(levelStatus && checkedStatus);
   },
   componentWillReceiveProps:function(nextProps){
     if(nextProps.selectedNode!=this.props.selectedNode){
       this.setState({
         collapsed: this.getDefaultCollapsed(nextProps),
+        IsSendCopyReaded:this.getDefaultReadStatus(nextProps),
       })
     }
   },
@@ -153,7 +183,7 @@ var TreeNode = React.createClass({
     this.setState({
       collapsed: !this.state.collapsed
     });
-    if(this.props.nodeData.get('IsSendCopy') && !this.props.nodeData.get('IsRead')){
+    if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
       this.setState({
         IsSendCopyReaded:true
       })
