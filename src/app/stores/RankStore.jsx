@@ -70,7 +70,7 @@ var RankStore = assign({},PrototypeStore,{
     _errorMessage = error.Messages;
   },
   //only one tagOptions if click tag in alarm list
-  _onDataLoading(params, selectedList, relativeDate, isAlarmLoading){
+  _onDataLoading(params, selectedList, relativeDate){
     _submitParams = params;
     _isLoading = true;
     _selectedList = selectedList;

@@ -528,7 +528,30 @@ let AnalysisPanel = React.createClass({
         return null;
       }
     },
+    getViewOption: function () {
+      var step = 3;//default month
 
+      var year = parseInt(this.refs.yearSelector.getDateValue()),
+          month = this.refs.monthSelector.state.selectedIndex;
+
+      if(month === 0){
+        month = 1;
+        step = 4;//year
+      }
+      var start = new Date(year, month - 1, 1, 0, 0, 0, 0);
+      var end = new Date(year, month - 1, 2, 0, 0, 0, 0);
+      var timeRanges = CommonFuns.getTimeRangesByDate(start, end);
+      //return
+      var viewOption = {
+        IncludeNavigatorData: false,
+        Step: step,
+        TimeRanges: timeRanges
+      };
+      return viewOption;
+    },
+    getKpiType: function () {
+      return this.state.kpiTypeValue;
+    },
 });
 
 module.exports = AnalysisPanel;

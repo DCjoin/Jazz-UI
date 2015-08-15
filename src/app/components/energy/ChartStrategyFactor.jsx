@@ -13,6 +13,7 @@ import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
+import LabelAction from '../../actions/LabelAction.jsx';
 import RankAction from '../../actions/RankAction.jsx';
 import EnergyAction from '../../actions/EnergyAction.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
@@ -243,14 +244,18 @@ let ChartStrategyFactor = {
        return;
      }
      let relativeDateValue = analysisPanel._getRelativeDateValue();
-
-     let chartType = analysisPanel.state.selectedChartType;
-     if(chartType ==='line' || chartType === 'column' || chartType === 'stack'){
-        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
-     }else if(chartType === 'pie'){
-        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+   },
+   onLabelSearchDataButtonClick(analysisPanel){
+     var nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     if( !nodeOptions || nodeOptions.length === 0){
+       analysisPanel.setState({energyData:null});
+       return;
      }
+     var viewOption = analysisPanel.getViewOption();
+     var benchmarkOption = analysisPanel.getBenchmarkOption();
+     var labelingType = analysisPanel.getKpiType();
+     analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
    }
  },
  onSearchBtnItemTouchTapFnStrategy:{
@@ -354,7 +359,7 @@ let ChartStrategyFactor = {
  },
  getSelectedNodesFnStrategy:{
    getSelectedTagList(){
-     return  AlarmTagStore.getSearchTagList();
+     return AlarmTagStore.getSearchTagList();
    },
    getSelectedList(){
      var selectedList = {};
@@ -372,6 +377,9 @@ let ChartStrategyFactor = {
    rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
      RankAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
    },
+   labelDataLoad(viewOption, tagOptions, benchmarkOption, labelingType){
+     LabelAction.getLabelChartData(viewOption, tagOptions, benchmarkOption, labelingType);
+   }
  },
  getPieEnergyDataFnStrategy:{
    pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate){
