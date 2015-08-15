@@ -66,6 +66,7 @@ let ChartStrategyFactor = {
       setFitStepAndGetDataFn:'setFitStepAndGetData',
       getInitialStateFn:'getEnergyInitialState',
       getAllDataFn: 'empty',
+      getCustomizedLabelItemsFn: 'empty',
       getEnergyDataFn:'energyDataLoad',
       getPieEnergyDataFn:'pieEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
@@ -89,6 +90,7 @@ let ChartStrategyFactor = {
       setFitStepAndGetDataFn:'setLabelTypeAndGetData',
       getInitialStateFn:'getLabelInitialState',
       getAllDataFn: 'getAllData',
+      getCustomizedLabelItemsFn: 'getCustomizedLabelItems',
       getEnergyDataFn: 'labelDataLoad',
       getChartComponentFn:'getLabelChartComponent',
       bindStoreListenersFn:'labelBindStoreListeners',
@@ -102,6 +104,7 @@ let ChartStrategyFactor = {
       setFitStepAndGetDataFn:'setRankTypeAndGetData',
       getInitialStateFn:'getRankInitialState',
       getAllDataFn: 'empty',
+      getCustomizedLabelItemsFn: 'empty',
       getEnergyDataFn: 'rankDataLoad',
       getChartComponentFn:'getRankChartComponent',
       bindStoreListenersFn:'rankBindStoreListeners',
@@ -122,6 +125,26 @@ let ChartStrategyFactor = {
      LabelMenuAction.getAllZones();
      LabelMenuAction.getAllLabels();
      LabelMenuAction.getCustomerLabels();
+   }
+ },
+ getCustomizedLabelItemsFnStrategy:{
+   empty(){},
+   getCustomizedLabelItems(analysisPanel){
+     var menuItems = [];
+     var customizedStore = LabelMenuStore.getCustomerLabelData();
+     if(!!analysisPanel.hasCustomizedMenuItems()){
+       customizedStore.forEach((item, index) => {
+         menuItems.push({
+          customerizedId: item.Id,
+          text: item.Name,
+          kpiType: item.LabellingType
+        });
+       });
+     }
+     if(menuItems.length === 0){
+       menuItems = this.getNoneMenuItem(false);
+     }
+     this.setState({customerMenuItems: menuItems});
    }
  },
  initEnergyStoreByBizChartTypeFnStrategy:{
@@ -153,14 +176,16 @@ let ChartStrategyFactor = {
      };
      return state;
    },
-   getLabelInitialState(){
+   getLabelInitialState(analysisPanel){
+     var selectedLabelItem = analysisPanel.initSlectedLabelItem();
      let state = {
        labelType: "industryZone",//industry,customized
-       industyLabelMenuItems: [],
-       customerLabelMenuItems: [],
+       industyMenuItems: [],
+       customerMenuItems: [],
+       selectedLabelItem: selectedLabelItem,
        kpiTypeValue: 1,
        labelDisable: true,
-       skiTypeDisable: false
+       kpiTypeDisable: false
      };
      return state;
    }
@@ -456,6 +481,12 @@ let ChartStrategyFactor = {
      RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
      RankStore.addRankDataLoadedListener(analysisPanel._onRankDataChange);
      RankStore.addRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
+   },
+   labelBindStoreListeners(analysisPanel){
+     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange);
+     LabelStore.addRankDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
+     LabelStore.addRankDataLoadedListener(analysisPanel._onLabelDataChange);
+     LabelStore.addRankDataLoadErrorListener(analysisPanel._onGetLabelDataError);
    }
  },
  unbindStoreListenersFnStrategy:{
@@ -469,6 +500,12 @@ let ChartStrategyFactor = {
      RankStore.removeRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
      RankStore.removeRankDataLoadedListener(analysisPanel._onRankDataChange);
      RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
+   },
+   labelUnbindStoreListeners(analysisPanel){
+     LabelMenuStore.removeRankDataLoadingListener(analysisPanel._onHierNodeChange);
+     LabelStore.removeRankDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
+     LabelStore.removeRankDataLoadedListener(analysisPanel._onLabelDataChange);
+     LabelStore.removeRankDataLoadErrorListener(analysisPanel._onGetLabelDataError);
    }
  },
  exportChartFnStrategy:{
@@ -504,8 +541,8 @@ let ChartStrategyFactor = {
   getLabelBtn(analysisPanel){
     var industyLabelMenu = analysisPanel.getIndustyLabelMenu();
     var customizedLabelMenu = analysisPanel.getCustomizedLabelMenu();
-    let labelButton = <ButtonMenu label="请选择能效标识" style={{marginLeft:'10px'}} desktop={true}
-      disabled={this.state.labelDisable}>
+    let labelButton = <ButtonMenu label={this.state.selectedLabelItem.text} style={{marginLeft:'10px'}} desktop={true}
+      disabled={this.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
       <ExtendableMenuItem primaryText="行业能效标识" value='industryZone'>
       <Menu>
         {industyLabelMenu}
