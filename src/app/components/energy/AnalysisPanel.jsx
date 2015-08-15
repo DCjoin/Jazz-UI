@@ -8,6 +8,7 @@ import CommonFuns from '../../util/Util.jsx';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
+import LabelStore from '../../stores/LabelStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
@@ -147,6 +148,20 @@ let AnalysisPanel = React.createClass({
 
       this.setState(obj);
     },
+    _onLabelLoadingStatusChange(){
+      let isLoading = LabelStore.getLoadingStatus(),
+          paramsObj = LabelStore.getParamsObj(),
+          tagOption = RankStore.getTagOpions()[0],
+          obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      obj.tagName = tagOption.tagName;
+      obj.dashboardOpenImmediately = false;
+      obj.tagOption = tagOption;
+      obj.energyData = null;
+
+      this.setState(obj);
+    },
     _onEnergyDataChange(isError, errorObj){
       let isLoading = EnergyStore.getLoadingStatus(),
           energyData = EnergyStore.getEnergyData(),
@@ -167,7 +182,22 @@ let AnalysisPanel = React.createClass({
       let isLoading = RankStore.getLoadingStatus(),
           energyData = RankStore.getEnergyData(),
           energyRawData = RankStore.getEnergyRawData(),
-          paramsObj = assign({},EnergyStore.getParamsObj()),
+          paramsObj = assign({},RankStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    energyData: energyData,
+                    energyRawData: energyRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
+      if(isError === true){
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+    },
+    _onLabelDataChange(isError, errorObj){
+      let isLoading = LabelStore.getLoadingStatus(),
+          energyData = LabelStore.getEnergyData(),
+          energyRawData = LabelStore.getEnergyRawData(),
+          paramsObj = assign({},LabelStore.getParamsObj()),
           state = { isLoading: isLoading,
                     energyData: energyData,
                     energyRawData: energyRawData,
@@ -216,6 +246,10 @@ let AnalysisPanel = React.createClass({
     _onGetRankDataError(){
       let errorObj = this.errorProcess();
       this._onRankDataChange(true, errorObj);
+    },
+    _onGetLabelDataError(){
+      let errorObj = this.errorProcess();
+      this._onLabelDataChange(true, errorObj);
     },
     errorProcess(){
       let code = EnergyStore.getErrorCode(),
