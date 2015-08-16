@@ -340,8 +340,8 @@ let ChartStrategyFactor = {
    }
  },
  getEnergyRawDataFnStrategy:{
-   getEnergyRawData(timeRanges, step, tagOptions, relativeDate){
-     EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate);
+   getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize){
+     EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize);
    }
  },
  getChartComponentFnStrategy:{
@@ -350,7 +350,8 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
-                         energyRawData: analysisPanel.state.energyRawData};
+                         energyRawData: analysisPanel.state.energyRawData,
+                         chartStrategy: analysisPanel.state.chartStrategy };
        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px', overflow:'hidden'}}>
                       <GridComponent {...properties}></GridComponent>
                     </div>;

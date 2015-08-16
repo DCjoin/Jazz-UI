@@ -33,7 +33,7 @@ let ExtendableMenuItem = React.createClass({
     this.setState({showSubmenu:true});
   },
   _onItemMouseOut(){
-    this.setState({showSubmenu:false});
+    //this.setState({showSubmenu:false});
   }
 });
 
