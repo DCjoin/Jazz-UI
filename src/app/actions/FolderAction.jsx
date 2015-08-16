@@ -119,7 +119,7 @@ let FolderAction = {
   },
   ModifyFolderReadStatus:function(selectedNode){
     AppDispatcher.dispatch({
-        type: Action.SET_SELECTED_NODE,
+        type: Action.MODIFY_NODE_READ_STATUS,
         selectedNode: selectedNode
     });
   },
@@ -132,17 +132,10 @@ let FolderAction = {
         success: function(userIds){
           AppDispatcher.dispatch({
             sourceTreeNode:sourceTreeNode,
-              type: Action.SEND_ITEM_SUCCESS,
-              userIds:[]
+              type: Action.SEND_ITEM,
+              userIds:userIds
           });
         },
-        error: function(err, res){
-          AppDispatcher.dispatch({
-            sourceTreeNode:sourceTreeNode,
-              type: Action.SEND_ITEM_ERROR,
-              userIds:[]
-          });
-        }
     });
   },
 };

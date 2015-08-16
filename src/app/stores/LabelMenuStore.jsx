@@ -7,55 +7,72 @@ import Immutable from 'immutable';
 
 import {Action} from '../constants/actionType/Labeling.jsx';
 
+var _hierNode = null;
 var _industryData = null;
 var _zoneData = null;
 var _labelData = null;
 var _customerLabelData = null;
+var HIER_NODE_CHANGE_EVENT = 'hiernodechange';
 
 var LabelMenuStore = assign({},PrototypeStore,{
+  getHierNode(){
+    return _hierNode;
+  },
+  setHierMode(hierNode){
+    _hierNode = hierNode;
+  },
   getIndustryData(){
     return _industryData;
   },
   setIndustryData(industryData){
-    _industryData =  industryData;
+    _industryData =  Immutable.fromJS(industryData);
   },
   getZoneData(){
     return _zoneData;
   },
   setZoneData(zoneData){
-    _zoneData =  zoneData;
+    _zoneData = Immutable.fromJS(zoneData);
   },
   getLabelData(){
     return _zoneData;
   },
   setLabelData(labelData){
-    _labelData =  labelData;
+    _labelData =  Immutable.fromJS(labelData);
   },
   getCustomerLabelData(){
     return _customerLabelData;
   },
   setCustomerLabelData(customerLabelData){
-    _customerLabelData =  customerLabelData;
+    _customerLabelData = Immutable.fromJS(customerLabelData);
+  },
+  addHierNodeChangeListener: function(callback) {
+    this.on(HIER_NODE_CHANGE_EVENT, callback);
+  },
+  emitHierNodeChange: function() {
+    this.emit(HIER_NODE_CHANGE_EVENT);
+  },
+  removeHierNodeChangeListener: function(callback) {
+    this.removeListener(HIER_NODE_CHANGE_EVENT, callback);
   },
 });
 
 LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
+    case Action.HIERNODE_CHANGED:
+      LabelMenuStore.setIndustryData(action.hierNode);
+      LabelMenuStore.emitHierNodeChange();
+      break;
     case Action.GET_ALL_INDUSTRIES_SUCCESS:
       LabelMenuStore.setIndustryData(action.industryData);
-      LabelMenuStore.emitChange();
       break;
     case Action.GET_ALL_ZONES_SUCCESS:
       LabelMenuStore.setZoneData(action.zoneData);
-      LabelMenuStore.emitChange();
       break;
     case Action.GET_ALL_LABELS_SUCCESS:
       LabelMenuStore.setLabelData(action.labelData);
-      LabelMenuStore.emitChange();
       break;
     case Action.GET_ALL_CUSTOMER_LABELS_SUCCESS:
       LabelMenuStore.setCustomerLabelData(action.customerLabelData);
-      LabelMenuStore.emitChange();
       break;
   }
 });

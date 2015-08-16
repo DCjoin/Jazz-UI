@@ -8,6 +8,12 @@ import Ajax from '../ajax/ajax.jsx';
 
 
 let LabelMenuAction = {
+  setHierNode(hierNode){
+    AppDispatcher.dispatch({
+        type: Action.HIERNODE_CHANGED,
+        hierNode: hierNode
+    });
+  },
   getAllIndustries(){
     Ajax.post('/Administration.svc/GetAllIndustries', {
       params: {includeRoot:true,onlyLeaf:false},
@@ -58,7 +64,7 @@ let LabelMenuAction = {
   },
   getCustomerLabels(){
     Ajax.post('/Administration.svc/GetCustomerLabellings', {
-      params: {},
+      params: {filter:{CustomerId:window.currentCustomerId}},
       success: function(customerLabelData){
         AppDispatcher.dispatch({
             type: Action.GET_ALL_CUSTOMER_LABELS_SUCCESS,
