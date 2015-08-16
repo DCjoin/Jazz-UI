@@ -9,31 +9,60 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 
 let ExtendableMenuItem = React.createClass({
   propTypes:{
-    subMenu: React.PropTypes.element.isRequired
+    subItems: React.PropTypes.array
   },
   getInitialState(){
-    return {showSubmenu:false};
+    this.itemOverTimeouts = [];
+    this.subMenuOverTimeouts = [];
+    return { itemMouseOver: false,
+             subMenuMouseOver: false};
   },
   render(){
     let me = this;
     let subMenu = null;
-    let other = _objectWithoutProperties(this.props, [ 'children']);
+    let other = _objectWithoutProperties(this.props, [ 'subItems']);
 
-    if(this.state.showSubmenu){
-      subMenu = <div style={{position:'relative',overflow:'visible', left:'114px', top:'-48px'}}>
-                  {this.props.children}
+    if((this.state.itemMouseOver || this.state.subMenuMouseOver) && this.props.subItems && this.props.subItems.length > 0 ){
+      let subItems = this.props.subItems;
+      subItems = subItems.map((item)=>{
+        return <MenuItem {...item}/>;
+      });
+      subMenu = <div style={{position:'absolute',overflow:'visible', display:'inline-block'}}>
+                  <Menu onMouseOver={me._onSubMenuMouseOver} onMouseOut={me._onSubMenuMouseOut} style={{left:'2px'}}>{subItems}</Menu>
                 </div> ;
     }
     return <div style={{position:'relative'}} onMouseOver={me._onItemMouseOver} onMouseOut={me._onItemMouseOut}>
-              <MenuItem {...other}></MenuItem>
+              <div style={{display:'inline-block', width:'100%'}}>
+                <MenuItem {...other}></MenuItem>
+              </div>
               {subMenu}
     </div>;
   },
   _onItemMouseOver(){
-    this.setState({showSubmenu:true});
+    this.itemOverTimeouts.forEach((item)=>{
+      window.clearTimeout(item);
+    });
+    this.itemOverTimeouts.length = 0;
+    this.setState({itemMouseOver:true});
   },
   _onItemMouseOut(){
-    //this.setState({showSubmenu:false});
+    let me = this;
+    this.itemOverTimeouts.push(window.setTimeout(()=>{
+      me.setState({itemMouseOver:false});
+    },200));
+  },
+  _onSubMenuMouseOver(){
+    this.subMenuOverTimeouts.forEach((item)=>{
+      window.clearTimeout(item);
+    });
+    this.subMenuOverTimeouts.length = 0;
+    this.setState({subMenuMouseOver:true});
+  },
+  _onSubMenuMouseOut(){
+    let me = this;
+    this.subMenuOverTimeouts.push(window.setTimeout(()=>{
+      me.setState({subMenuMouseOver:false});
+    },200));
   }
 });
 
