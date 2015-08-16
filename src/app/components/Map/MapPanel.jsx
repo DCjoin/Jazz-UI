@@ -51,7 +51,7 @@ let MapPanel = React.createClass({
 
     return <div style={{display:'flex', flex:1}}>
         {chartPanel}
-        {RankingPanel}
+        {dataSelectPanel}
       </div>;
   }
 

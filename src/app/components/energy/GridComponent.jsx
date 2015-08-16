@@ -2,7 +2,7 @@
 import React from "react";
 import {Table} from 'material-ui';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
-import {getUomById} from '../../util/Util.jsx';
+import {getUomById, getCommodityById} from '../../util/Util.jsx';
 import Pagination from '../../controls/paging/Pagination.jsx';
 
 let GridComponent = React.createClass({
@@ -47,22 +47,25 @@ let GridComponent = React.createClass({
     };
     for(let i=0;i<dataArray.length;i++){
       var tagOption = this.getTagInfo(dataArray[i].TargetId);
-      headerCols[dataArray[i].TargetId + ''] =this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.uom);//{content: dataArray[i].Name};
+      headerCols[dataArray[i].TargetId + ''] =this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.commodityAndUomName);//{content: dataArray[i].Name};
     }
     return headerCols;
   },
   getTagInfo(tagId){
     var tagOptions = EnergyStore.getTagOpions(),
-        option;
+        option, hieName, uom, uomName, commodity, commodityName, commodityAndUomName;
 
     for(let i=0; i<tagOptions.length;i++){
       option = tagOptions[i];
       if(option.tagId === tagId){
-        var hieName = option.hierName.split('\\');
+        hieName = option.hierName.split('\\');
         hieName = hieName[hieName.length-1];
-        var uom = getUomById(option.uomId);
-        var uomName = uom.Code;
-        return { hieName:hieName, tagName:option.tagName, uom: uomName};
+        uom = getUomById(option.uomId);
+        uomName = uom.Code;
+        commodity = getCommodityById(option.commodityId);
+        commodityName = commodity.Comment;
+        commodityAndUomName = commodityName + '/' + uomName;
+        return { hieName:hieName, tagName:option.tagName, commodityAndUomName: commodityAndUomName};
       }
     }
   },
