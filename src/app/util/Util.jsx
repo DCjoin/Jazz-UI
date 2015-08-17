@@ -470,6 +470,19 @@ let CommonFuns = {
 
 			return null;
 		},
+		getCommodityById(id){
+			let commodities = window.allCommodities;
+			let commodity;
+			if(commodities && commodities.length>0){
+				for(let i=0,len=commodities.length; i<len; i++){
+					commodity = commodities[i];
+					if(commodity.Id == id){
+						return commodity;
+					}
+				}
+			}
+			return null;
+		},
 		formatDateByStep: function (time, start, end, step) {
 			var date = new Date(time),
 					ft = I18N.DateTimeFormat.IntervalFormat,
