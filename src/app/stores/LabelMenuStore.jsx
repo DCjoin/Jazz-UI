@@ -34,7 +34,7 @@ var LabelMenuStore = assign({},PrototypeStore,{
     _zoneData = Immutable.fromJS(zoneData);
   },
   getLabelData(){
-    return _zoneData;
+    return _labelData;
   },
   setLabelData(labelData){
     _labelData =  Immutable.fromJS(labelData);

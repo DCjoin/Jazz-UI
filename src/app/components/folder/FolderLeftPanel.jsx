@@ -26,7 +26,7 @@ var PanelContainer = React.createClass({
   _onFolderTreeChange:function(){
     this.setState({
       allNode:FolderStore.getFolderTree(),
-      selectedNode:FolderStore.getFolderTree(),
+      selectedNode:FolderStore.getSelectedNode(),
       isLoading:false
     });
   },
@@ -69,7 +69,7 @@ var PanelContainer = React.createClass({
     this.setState({
       isLoading:false,
       allNode:FolderStore.getFolderTree(),
-      selectedNode:FolderStore.getNewNode()
+      selectedNode:FolderStore.getSelectedNode()
     });
 
   },

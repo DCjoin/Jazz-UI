@@ -21,6 +21,7 @@ import CommodityAction from '../../actions/CommodityAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
+import LabelChartComponent from './LabelChartComponent.jsx';
 import GridComponent from './GridComponent.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
@@ -579,7 +580,24 @@ let ChartStrategyFactor = {
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
       return energyPart;
-   }
+   },
+   getLabelChartComponent(analysisPanel){
+     let energyPart;
+     let chartCmpObj ={ref:'ChartComponent',
+                       bizType:analysisPanel.props.bizType,
+                       energyData: analysisPanel.state.energyData,
+                       ctWidth: analysisPanel.refs.chartContainer.getDOMNode().style.width,
+                       ctHeight: analysisPanel.refs.chartContainer.getDOMNode().style.height,
+                       energyRawData: analysisPanel.state.energyRawData,
+                       onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                       onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                     };
+
+      energyPart = <div ref="chartContainer" style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                     <LabelChartComponent ref="chartComponent" {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                   </div>;
+      return energyPart;
+    }
  },
  canShareDataWithFnStrategy:{
    canShareDataWith(curChartType, nextChartType){
