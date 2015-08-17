@@ -59,17 +59,17 @@ var AlarmTagStore = assign({},PrototypeStore,{
 
   },
   searchTagChange(tagNode,selected){
-    console.log("searchTagChange");
-    console.log("selected="+selected);
-    console.log(tagNode);
+
     let tagData={
       hierId:tagNode.HierarchyId,
       hierName:tagNode.HierarchyName,
       tagId:tagNode.Id,
       tagName:tagNode.Name,
-      uomId: tagNode.UomId
+      uomId: tagNode.UomId,
+      commodityId:tagNode.CommodityId,
+      commodityName:tagNode.Comment,
     };
-    console.log(tagData);
+
     if(selected){
       this.addSearchTagList(tagData);
     }
@@ -78,8 +78,7 @@ var AlarmTagStore = assign({},PrototypeStore,{
     }
   },
   searchTagListChange(tagList,selected){
-    console.log("searchTagListChange");
-    console.log(tagList);
+
     var that=this;
     tagList.forEach(function(tagNode){
       let tagData={
@@ -87,7 +86,9 @@ var AlarmTagStore = assign({},PrototypeStore,{
         hierName:tagNode.HierarchyName,
         tagId:tagNode.Id,
         tagName:tagNode.Name,
-        uomId: tagNode.UomId
+        uomId: tagNode.UomId,
+        commodityId:tagNode.CommodityId,
+        commodityName:tagNode.Comment,
       };
       if(selected){
         that.addSearchTagList(tagData);

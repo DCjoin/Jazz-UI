@@ -470,6 +470,19 @@ let CommonFuns = {
 
 			return null;
 		},
+		getCommodityById(id){
+			let commodities = window.allCommodities;
+			let commodity;
+			if(commodities && commodities.length>0){
+				for(let i=0,len=commodities.length; i<len; i++){
+					commodity = commodities[i];
+					if(commodity.Id == id){
+						return commodity;
+					}
+				}
+			}
+			return null;
+		},
 		formatDateByStep: function (time, start, end, step) {
 			var date = new Date(time),
 					ft = I18N.DateTimeFormat.IntervalFormat,
@@ -817,6 +830,23 @@ let CommonFuns = {
       }
       return str;
   },
+	getTagIdsFromTagOptions(tagOptions){
+    let tagIds =[];
+    for(let i=0,len=tagOptions.length; i<len; i++){
+      tagIds.push(tagOptions[i].tagId);
+    }
+    return tagIds;
+  },
+	getNodeNameAssociationByTagOptions(tagOptions){
+		let nodeNameAssociation = [], tag, hieNameArr, hieName;
+		for(let i=0,len=tagOptions.length; i<len; i++){
+			tag = tagOptions[i];
+			hieNameArr = tag.hierName.split('\\');
+			hieName = hieNameArr[hieNameArr.length-1];
+			nodeNameAssociation.push({Id:tag.tagId, Name:tag.tagName, HierId: tag.hierId, NodeName:hieName, AssociationOption:1, DimensionName:null});
+		}
+		return nodeNameAssociation;
+	},
 	Regex:{
 		ExcelCell: /[a-z]+\d+/i, //A4,AA66
 		PositiveInterger : /^\d+$/,

@@ -44,6 +44,12 @@ let Setting = React.createClass({
     });
     this.refs.snackbar.show();
   },
+  _onSendStatusChange:function(){
+    this.setState({
+      errorText:FolderStore.getSendStatus()
+    });
+    this.refs.snackbar.show();
+  },
   //just for test commoditypanel
 componentWillMount:function(){
   CommodityAction.setEnergyConsumptionType('Cost');
@@ -51,10 +57,12 @@ componentWillMount:function(){
 componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
   FolderStore.addModifyNameErrorListener(this._onModifyNameError);
+  FolderStore.addSendStatusListener(this._onSendStatusChange);
 },
 componentWillUnmount:function(){
   FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
   FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
+  FolderStore.removeSendStatusListener(this._onSendStatusChange);
 },
   render: function () {
 

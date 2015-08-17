@@ -11,7 +11,9 @@ module.exports = {
       COPY_ITEM:null,
       COPY_ITEM_ERROR:null,
       DELETE_ITEM:null,
-      DELETE_ITEM_ERROR:null
+      DELETE_ITEM_ERROR:null,
+      SEND_ITEM:null,
+      MODIFY_NODE_READ_STATUS:null
   })
 
 };

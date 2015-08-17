@@ -44,6 +44,9 @@ var Copy = React.createClass({
       treeShow:false
     });
   },
+  _onBlur:function(){
+    console.log("**wyh**");
+  },
   getInitialState:function(){
     var selectedNode=FolderStore.getSelectedNode();
     if(selectedNode===null){
@@ -77,7 +80,8 @@ var Copy = React.createClass({
                     height:'220px',
                     position:'absolute',
                     border:'1px solid #c9c8c8',
-                    margin:'12px 10px'
+                    margin:'12px 10px',
+                    overflow:'auto'
                   },
           titleStyle={
             fontSize:'20px',
@@ -149,7 +153,10 @@ var Copy = React.createClass({
         <Dialog {...dialogProps}>
           {nameField}
           {FolderTreeField}
-          {FolderTree}
+          <div onBlur={this._onBlur}>
+              {FolderTree}
+          </div>
+
         </Dialog>
       </div>
 

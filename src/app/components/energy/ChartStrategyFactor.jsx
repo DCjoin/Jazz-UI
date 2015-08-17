@@ -8,18 +8,24 @@ import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import DateSelector from '../../controls/DateSelector.jsx';
 import ButtonMenu from '../../controls/ButtonMenu.jsx';
+import YearPicker from '../../controls/YearPicker.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
+import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
+import LabelAction from '../../actions/LabelAction.jsx';
 import RankAction from '../../actions/RankAction.jsx';
 import EnergyAction from '../../actions/EnergyAction.jsx';
+import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
 import GridComponent from './GridComponent.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
-import RankStore from '../../stores/RankStore.jsx';
+import LabelStore from '../../stores/LabelStore.jsx';
+import LabelMenuStore from '../../stores/LabelStore.jsx';
+import RankStore from '../../stores/LabelMenuStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 
@@ -35,9 +41,18 @@ const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', t
  {value:'RankByArea', text:'单位面积排名'},{value:'RankByHeatArea',text:'单位供冷面积排名'},
  {value:'RankByCoolArea',text:'单位采暖面积排名'},{value:'RankByRoom',text:'单位客房排名'},
  {value:'RankByUsedRoom',text:'单位已用客房排名'},{value:'RankByBed',text:'单位床位排名'}];
+ var kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
+ {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
+ {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
+ {value:'UnitBed',text:'单位床位'},{value:'DayNightRatio',text:'昼夜比'},
+ {value:'WorkHolidayRatio',text:'公休比'}];
  const orderItem = [{value:'1',text:'降序'}, {value:'2',text:'升序'}];
  const rangeItem = [{value:'3',text:'前3名'},{value:'5',text:'前5名'},{value:'10',text:'前10名'},
  {value:'20',text:'前20名'},{value:'50',text:'前50名'},{value:'1000',text:'全部'}];
+ const monthItem =  [{value:'13',text:'全年'},{value:'1',text:'01'},{value:'2',text:'02'},{value:'3',text:'03'},
+ {value:'4',text:'04'},{value:'5',text:'05'},{value:'6',text:'06'},{value:'7',text:'07'},
+ {value:'8',text:'08'},{value:'9',text:'09'},{value:'10',text:'10'},
+ {value:'11',text:'11'},{value:'12',text:'12'}];
 
 let ChartStrategyFactor = {
   defaultStrategy: {
@@ -52,6 +67,8 @@ let ChartStrategyFactor = {
       initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn:'setFitStepAndGetData',
       getInitialStateFn:'getEnergyInitialState',
+      getAllDataFn: 'empty',
+      getCustomizedLabelItemsFn: 'empty',
       getEnergyDataFn:'energyDataLoad',
       getPieEnergyDataFn:'pieEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
@@ -59,7 +76,8 @@ let ChartStrategyFactor = {
       unbindStoreListenersFn:'energyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
       getEnergyRawDataFn:'getEnergyRawData',
-      onEnegyTypeChangeFn:'onEnegyTypeChange',
+      exportChartFn:'exportChart',
+      onEnergyTypeChangeFn: 'EnergyTypeChange',
     },
     MultiIntervalDistribution:{
 
@@ -82,13 +100,29 @@ let ChartStrategyFactor = {
 
     },UnitEnergyUsage:{
 
+    },Labelling:{
+      searchBarGenFn:'labelSearchBarGen',
+      getSelectedNodesFn:'getSelectedTagList',
+      onSearchDataButtonClickFn:'onLabelSearchDataButtonClick',
+      onEnergyTypeChangeFn:'empty',
+      setFitStepAndGetDataFn:'setLabelTypeAndGetData',
+      getInitialStateFn:'getLabelInitialState',
+      getAllDataFn: 'getAllData',
+      getCustomizedLabelItemsFn: 'getCustomizedLabelItems',
+      getEnergyDataFn: 'labelDataLoad',
+      getChartComponentFn:'getLabelChartComponent',
+      bindStoreListenersFn:'labelBindStoreListeners',
+      unbindStoreListenersFn:'labelUnbindStoreListeners',
+      canShareDataWithFn:'canRankShareDataWith'
     },Rank:{
       searchBarGenFn:'rankSearchBarGen',
       getSelectedNodesFn:'getSelectedList',
       onSearchDataButtonClickFn:'onRankSearchDataButtonClick',
-      onEnegyTypeChangeFn:'onRankEnegyTypeChange',
+      onEnergyTypeChangeFn:'onRankEnergyTypeChange',
       setFitStepAndGetDataFn:'setRankTypeAndGetData',
       getInitialStateFn:'getRankInitialState',
+      getAllDataFn: 'empty',
+      getCustomizedLabelItemsFn: 'empty',
       getEnergyDataFn: 'rankDataLoad',
       getChartComponentFn:'getRankChartComponent',
       bindStoreListenersFn:'rankBindStoreListeners',
@@ -96,13 +130,43 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canRankShareDataWith'
     }
  },
- onEnegyTypeChangeFnStrategy:{
-   onEnegyTypeChange(e, selectedIndex, menuItem){
-     CommodityAction.setRankingECType(menuItem.value);
+ onEnergyTypeChangeFnStrategy:{
+   empty(){},
+   EnergyTypeChange(e, selectedIndex, menuItem){
+     CommodityAction.setEnergyConsumptionType(menuItem.value);
    },
-   onRankEnegyTypeChange(e, selectedIndex, menuItem){
+   onRankEnergyTypeChange(e, selectedIndex, menuItem){
      CommodityAction.setRankingECType(menuItem.value);
-   },
+   }
+ },
+ getAllDataFnStrategy:{
+   empty(){},
+   getAllData(){
+     LabelMenuAction.getAllIndustries();
+     LabelMenuAction.getAllZones();
+     LabelMenuAction.getAllLabels();
+     LabelMenuAction.getCustomerLabels();
+   }
+ },
+ getCustomizedLabelItemsFnStrategy:{
+   empty(){},
+   getCustomizedLabelItems(analysisPanel){
+     var menuItems = [];
+     var customizedStore = LabelMenuStore.getCustomerLabelData();
+     if(!!analysisPanel.hasCustomizedMenuItems()){
+       customizedStore.forEach((item, index) => {
+         menuItems.push({
+          customerizedId: item.Id,
+          text: item.Name,
+          kpiType: item.LabellingType
+        });
+       });
+     }
+     if(menuItems.length === 0){
+       menuItems = this.getNoneMenuItem(false);
+     }
+     this.setState({customerMenuItems: menuItems});
+   }
  },
  initEnergyStoreByBizChartTypeFnStrategy:{
    initEnergyStoreByBizChartType(analysisPanel){
@@ -130,6 +194,19 @@ let ChartStrategyFactor = {
        order: 1,
        range: 3,
        selectedChartType:'column'
+     };
+     return state;
+   },
+   getLabelInitialState(analysisPanel){
+     var selectedLabelItem = analysisPanel.initSlectedLabelItem();
+     let state = {
+       labelType: "industryZone",//industry,customized
+       industyMenuItems: [],
+       customerMenuItems: [],
+       selectedLabelItem: selectedLabelItem,
+       kpiTypeValue: 1,
+       labelDisable: true,
+       kpiTypeDisable: false
      };
      return state;
    }
@@ -216,14 +293,18 @@ let ChartStrategyFactor = {
        return;
      }
      let relativeDateValue = analysisPanel._getRelativeDateValue();
-
-     let chartType = analysisPanel.state.selectedChartType;
-     if(chartType ==='line' || chartType === 'column' || chartType === 'stack'){
-        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
-     }else if(chartType === 'pie'){
-        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+   },
+   onLabelSearchDataButtonClick(analysisPanel){
+     var nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     if( !nodeOptions || nodeOptions.length === 0){
+       analysisPanel.setState({energyData:null});
+       return;
      }
+     var viewOption = analysisPanel.getViewOption();
+     var benchmarkOption = analysisPanel.getBenchmarkOption();
+     var labelingType = analysisPanel.getKpiType();
+     analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
    }
  },
  onSearchBtnItemTouchTapFnStrategy:{
@@ -267,6 +348,7 @@ let ChartStrategyFactor = {
        <div className={'jazz-flat-button'}>
          {searchButton}
          {configBtn}
+         <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
        </div>
    </div>;
   },
@@ -287,25 +369,62 @@ let ChartStrategyFactor = {
   </div>;
 },
   rankSearchBarGen(analysisPanel){
-    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
-
     return <div className={'jazz-alarm-chart-toolbar-container'}>
       <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
-      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
-        <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'92px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
+      <div className={'jazz-full-border-dropdownmenu-ranktype-container'} >
+        <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'140px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
         <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
-  </div>;
+    </div>;
+  },
+  labelSearchBarGen(analysisPanel){
+    var yearPickerStyle = {
+      width: '128px',
+      height: '32px',
+      lineHeight: '32px',
+      border: '1px solid #efefef',
+      margin: '14px 0px 0px 10px',
+      fontSize: '15px',
+      color: '#b3b3b3',
+      textAlign: 'center'
+    };
+    var curYear = (new Date()).getFullYear();
+    var selectYear = (this.state.year || curYear) + '年';
+    var yearProps = {
+      ref: "yearSelector",
+      selectedIndex: ((this.state.year || curYear) - curYear + 10),
+      onYearPickerSelected: this._onYearPickerSelected,
+      style: {
+        border: '1px solid #efefef',
+        margin: '14px 0px 0px 10px'
+      }
+    };
+    var YearSelect = <YearPicker {...yearProps}/>;
+    var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
+    var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
+    return <div className={'jazz-alarm-chart-toolbar-container'}>
+      {YearSelect}
+      <div className={'jazz-full-border-dropdownmenu-month-container'} >
+        <DropDownMenu menuItems={monthItem} ref='monthSelector'></DropDownMenu>
+      </div>
+      {labelBtn}
+      <div className={'jazz-full-border-dropdownmenu-ranktype-container'} >
+        <DropDownMenu menuItems={kpiTypeItem} ref='kpiType'></DropDownMenu>
+      </div>
+      <div className={'jazz-flat-button'}>
+        <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+      </div>
+    </div>;
   }
 },
  getSelectedNodesFnStrategy:{
    getSelectedTagList(){
-     return  AlarmTagStore.getSearchTagList();
+     return AlarmTagStore.getSearchTagList();
    },
    getSelectedCommodityList(){
      return  AlarmTagStore.getSearchTagList();
@@ -326,6 +445,9 @@ let ChartStrategyFactor = {
    rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
      RankAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
    },
+   labelDataLoad(viewOption, tagOptions, benchmarkOption, labelingType){
+     LabelAction.getLabelChartData(viewOption, tagOptions, benchmarkOption, labelingType);
+   }
  },
  getPieEnergyDataFnStrategy:{
    pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate){
@@ -333,8 +455,8 @@ let ChartStrategyFactor = {
    }
  },
  getEnergyRawDataFnStrategy:{
-   getEnergyRawData(timeRanges, step, tagOptions, relativeDate){
-     EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate);
+   getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize){
+     EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize);
    }
  },
  getChartComponentFnStrategy:{
@@ -343,7 +465,8 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
-                         energyRawData: analysisPanel.state.energyRawData};
+                         energyRawData: analysisPanel.state.energyRawData,
+                         chartStrategy: analysisPanel.state.chartStrategy };
        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px', overflow:'hidden'}}>
                       <GridComponent {...properties}></GridComponent>
                     </div>;
@@ -435,6 +558,12 @@ let ChartStrategyFactor = {
      RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
      RankStore.addRankDataLoadedListener(analysisPanel._onRankDataChange);
      RankStore.addRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
+   },
+   labelBindStoreListeners(analysisPanel){
+     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange);
+     LabelStore.addRankDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
+     LabelStore.addRankDataLoadedListener(analysisPanel._onLabelDataChange);
+     LabelStore.addRankDataLoadErrorListener(analysisPanel._onGetLabelDataError);
    }
  },
  unbindStoreListenersFnStrategy:{
@@ -448,9 +577,33 @@ let ChartStrategyFactor = {
      RankStore.removeRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
      RankStore.removeRankDataLoadedListener(analysisPanel._onRankDataChange);
      RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
+   },
+   labelUnbindStoreListeners(analysisPanel){
+     LabelMenuStore.removeRankDataLoadingListener(analysisPanel._onHierNodeChange);
+     LabelStore.removeRankDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
+     LabelStore.removeRankDataLoadedListener(analysisPanel._onLabelDataChange);
+     LabelStore.removeRankDataLoadErrorListener(analysisPanel._onGetLabelDataError);
    }
  },
+ exportChartFnStrategy:{
+   exportChart(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let tagOptions = EnergyStore.getTagOpions();
+     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let viewOption = EnergyStore.getSubmitParams().viewOption;
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
 
+     let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i=0;i<seriesNumber;i++){
+       charTypes.push(analysisPanel.state.selectedChartType);
+     }
+
+     ExportChartAction.getTagsData4Export(tagIds, viewOption, nodeNameAssociation,'能耗分析',charTypes);
+   }
+ },
  getSearchBtn(analysisPanel){
    var searchButton = <ButtonMenu label='查看' onButtonClick={analysisPanel.onSearchDataButtonClick} desktop={true}
      value={analysisPanel.state.selectedChartType} onItemTouchTap={analysisPanel._onSearchBtnItemTouchTap}>
@@ -462,25 +615,41 @@ let ChartStrategyFactor = {
     </ButtonMenu>;
     return searchButton;
   },
+  getLabelBtn(analysisPanel){
+    var industyLabelMenu = analysisPanel.getIndustyLabelMenu();
+    var customizedLabelMenu = analysisPanel.getCustomizedLabelMenu();
+    let labelButton = <ButtonMenu label={this.state.selectedLabelItem.text} style={{marginLeft:'10px'}} desktop={true}
+      disabled={this.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
+      <ExtendableMenuItem primaryText="行业能效标识" value='industryZone'>
+      <Menu>
+        {industyLabelMenu}
+      </Menu>
+      </ExtendableMenuItem>
+      <ExtendableMenuItem primaryText="自定义能效标识" value='customized'>
+      <Menu>
+        {customizedLabelMenu}
+      </Menu>
+      </ExtendableMenuItem>
+    </ButtonMenu>;
+    return labelButton;
+  },
+  getKpiTypeBtn(analysisPanel){
+    let kpiTypeButton  = <DropDownMenu menuItems={kpiTypeItem}
+      ref='kpiType' disabled={this.state.skiTypeDisable}></DropDownMenu>;
+  },
   getConfigBtn(analysisPanel){
+    let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
+                            {primaryText:'冷暖季', value:'hotColdSeason'}];
+    let weatherSubItems = [{primaryText:'温度', value:'temperature'}, {primaryText:'湿度', value:'humidity'}];
     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                  onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
       <MenuItem primaryText="历史对比" value='history'/>
       <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
       <MenuDivider />
       <MenuItem primaryText="数据求和" value='sum'/>
-      <ExtendableMenuItem primaryText="日历背景色" value='background'>
-      <Menu>
-       <MenuItem primaryText="非工作时间" value='noneWorkTime'/>
-       <MenuItem primaryText="冷暖季" value='hotColdSeason'/>
-      </Menu>
-      </ExtendableMenuItem>
-      <ExtendableMenuItem primaryText="天气信息" value='weather'>
-             <Menu>
-               <MenuItem primaryText="温度" value='temperature'/>
-               <MenuItem primaryText="湿度" value='humidity'/>
-             </Menu>
-           </ExtendableMenuItem>
+      <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
+      <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
+
     </ButtonMenu>;
 
     return configButton;

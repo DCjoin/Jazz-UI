@@ -77,15 +77,15 @@ let FolderAction = {
   copyItem:function(sourceItem,destItem,newName){
     Ajax.post('/Dashboard.svc/CopyItem', {
          params: {
-           sourceId:sourceItem.get('Id'),
-           desParentId:destItem.get('Id'),
+           sourceTreeNode:sourceItem.toJSON(),
+           desFolder:destItem.toJSON(),
            newName:newName,
           },
         success: function(newNode){
           AppDispatcher.dispatch({
               type: Action.COPY_ITEM,
               destItem :destItem,
-              newNode:newNode
+              newNode:Immutable.fromJS(newNode)
           });
         },
         error: function(err, res){
@@ -119,8 +119,23 @@ let FolderAction = {
   },
   ModifyFolderReadStatus:function(selectedNode){
     AppDispatcher.dispatch({
-        type: Action.SET_SELECTED_NODE,
+        type: Action.MODIFY_NODE_READ_STATUS,
         selectedNode: selectedNode
+    });
+  },
+  SendFolderCopy:function(sourceTreeNode,userIds){
+    Ajax.post('/Dashboard.svc/SendItemCopy', {
+         params: {
+           sourceTreeNode:sourceTreeNode.toJSON(),
+           userIds:userIds
+          },
+        success: function(userIds){
+          AppDispatcher.dispatch({
+            sourceTreeNode:sourceTreeNode,
+              type: Action.SEND_ITEM,
+              userIds:userIds
+          });
+        },
     });
   },
 };

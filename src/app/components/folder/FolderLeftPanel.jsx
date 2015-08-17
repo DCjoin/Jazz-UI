@@ -10,6 +10,8 @@ import NodeContent from './TreeNodeContent.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
 import CopyView from './operationView/CopyView.jsx';
 import DeleteView from './operationView/DeleteView.jsx';
+import ShareView from './operationView/ShareView.jsx';
+import SendView from './operationView/SendView.jsx';
 
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
@@ -17,108 +19,6 @@ import HierarchyAction from '../../actions/HierarchyAction.jsx';
 
 import Immutable from 'immutable';
 
-//for test
-var testnode={
-  Id : 1,
-  CustomerId : 100001,
-  UserId : 1,
-  Name:"child1",
-  Path:"仪表盘/child1",
-  ChildWidgetCount:5,
-  ChildFolderCount:1,
-  ParentId:-1,
-  Order:1,
-  Type:6,
-  IsSenderCopy:false,
-  HasChildren : true,
-  IsRead:true,
-  Children:[
-  {
-    Id : 2,
-CustomerId: 100001,
-UserId: 1,
-Name : "child1_1",
-Path : "仪表盘/child1/child1_1",
-ChildWidgetCount : 0,
-ChildFolderCount :0,
-ParentId : 1,
-Order :1,
-Type :6,
-IsSenderCopy : false,
-IsRead:false,
-  },{
-    Id : 3,
-      CustomerId : 100001,
-      UserId : 1,
-      Name : "child1_2",
-      Path : "仪表盘/child1/child1_2",
-      ChildWidgetCount : 0,
-      ChildFolderCount : 0,
-      ParentId : 1,
-      Order : 2,
-      Type : 7,
-      WidgetType:1,
-      IsSenderCopy : true,
-      SourceUserName:"User2",
-      IsRead : false,
-
-  },{
-    Id : 4,
-CustomerId : 100001,
-UserId : 1,
-Name : "child1_3",
-Path : "仪表盘/child1/child1_3",
-ChildWidgetCount : 0,
-ChildFolderCount : 0,
-ParentId : 1,
-Order : 3,
-Type :7,
-WidgetType : 4,
-IsSenderCopy : true,
-SourceUserName : "User2",
-IsRead : false,
-  },{
-    Id : 5,
-    CustomerId : 100001,
-    UserId : 1,
-    Name : "child1_4",
-    Path : "仪表盘/child1/child1_4",
-    ChildWidgetCount : 0,
-    ChildFolderCount : 0,
-    ParentId : 1,
-    Order : 4,
-    Type : 7,
-    WidgetType : 3,
-    IsRead : false,
-  },{
-    Id : 6,
-CustomerId : 100001,
-UserId : 1,
-Name : "child1_5",
-Path : "仪表盘/child1/child1_5",
-ChildWidgetCount : 0,
-ChildFolderCount : 0,
-ParentId : 1,
-Order : 5,
-Type : 7,
-WidgetType : 5,
-IsRead : false,
-  },{
-    Id : 7,
-  CustomerId : 100001,
-  UserId : 1,
-  Name : "child1_6",
-  Path : "仪表盘/child1/child1_6",
-  ChildWidgetCount : 0,
-  ChildFolderCount : 0,
-  ParentId : 1,
-  Order : 6,
-  Type :7,
-  WidgetType : 2,
-  IsRead : false,
-  }
-  ]
-  }
 var PanelContainer = React.createClass({
 
   _onFolderTreeChange:function(){
@@ -217,7 +117,8 @@ var PanelContainer = React.createClass({
   },
   _onCopyItem:function(){
     this.setState({
-      allNode:FolderStore.getFolderTree()
+      allNode:FolderStore.getFolderTree(),
+      selectedNode:FolderStore.getSelectedNode()
     })
   },
   componentDidMount: function() {
@@ -272,8 +173,10 @@ var PanelContainer = React.createClass({
 
 
       var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
-      //var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={Immutable.fromJS(testnode)}/>:null);
-      var template=(this.state.templateShow?<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.selectedNode}/>:null);
+    //  var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.selectedNode}/>:null);
+    //  var template=(this.state.templateShow?<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.selectedNode}/>:null);
+    //var template=(this.state.templateShow?<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.selectedNode}/>:null);
+    var template=(this.state.templateShow?<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.selectedNode}/>:null);
 
     return(
       <div className="jazz-folder-leftpanel-container">

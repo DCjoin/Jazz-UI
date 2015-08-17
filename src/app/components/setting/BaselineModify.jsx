@@ -225,7 +225,7 @@ let BaselineModify = React.createClass({
             <div style={{display:'flex',flexFlow:'row'}}>
               <div style={{marginTop:'21px', height:'20px'}}>
               请选择配置年份进行编辑
-            </div>
+              </div>
               {YearSelect}
             </div>
             <div className='jazz-setting-baseline-margin'>

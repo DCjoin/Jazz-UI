@@ -8,10 +8,14 @@ import CommonFuns from '../../util/Util.jsx';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
+import LabelStore from '../../stores/LabelStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
+import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
+
+let MenuItem = require('material-ui/lib/menus/menu-item');
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -21,7 +25,7 @@ let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
       chartTitle:  React.PropTypes.string,
-      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Labelling','Rank'])
+      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Label','Rank'])
     },
     getDefaultProps(){
       return {
@@ -44,7 +48,7 @@ let AnalysisPanel = React.createClass({
         chartStrategy: chartStrategy
       };
 
-      var obj = chartStrategy.getInitialStateFn();
+      var obj = chartStrategy.getInitialStateFn(this);
 
       assign(state, obj);
 
@@ -88,7 +92,8 @@ let AnalysisPanel = React.createClass({
       let endDate = CommonFuns.dateAdd(date, 0, 'days');
       this.refs.relativeDate.setState({selectedIndex: 1});
       this.refs.dateTimeSelector.setDateField(last7Days, endDate);
-
+      this.state.chartStrategy.getAllDataFn();
+      this.state.chartStrategy.getCustomizedLabelItemsFn(me);
       this.state.chartStrategy.bindStoreListenersFn(me);
     },
     componentWillUnmount: function() {
@@ -103,7 +108,7 @@ let AnalysisPanel = React.createClass({
     },
     getEnergyTypeCombo(){
       let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
-      return <DropDownMenu menuItems={types} onChange={this.state.chartStrategy.onEnegyTypeChangeFn}></DropDownMenu>;
+      return <DropDownMenu menuItems={types} onChange={this.state.chartStrategy.onEnergyTypeChangeFn}></DropDownMenu>;
     },
     _onStepChange(step){
       let tagOptions = EnergyStore.getTagOpions(),
@@ -143,6 +148,20 @@ let AnalysisPanel = React.createClass({
 
       this.setState(obj);
     },
+    _onLabelLoadingStatusChange(){
+      let isLoading = LabelStore.getLoadingStatus(),
+          paramsObj = LabelStore.getParamsObj(),
+          tagOption = RankStore.getTagOpions()[0],
+          obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      obj.tagName = tagOption.tagName;
+      obj.dashboardOpenImmediately = false;
+      obj.tagOption = tagOption;
+      obj.energyData = null;
+
+      this.setState(obj);
+    },
     _onEnergyDataChange(isError, errorObj){
       let isLoading = EnergyStore.getLoadingStatus(),
           energyData = EnergyStore.getEnergyData(),
@@ -163,7 +182,22 @@ let AnalysisPanel = React.createClass({
       let isLoading = RankStore.getLoadingStatus(),
           energyData = RankStore.getEnergyData(),
           energyRawData = RankStore.getEnergyRawData(),
-          paramsObj = assign({},EnergyStore.getParamsObj()),
+          paramsObj = assign({},RankStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    energyData: energyData,
+                    energyRawData: energyRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
+      if(isError === true){
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+    },
+    _onLabelDataChange(isError, errorObj){
+      let isLoading = LabelStore.getLoadingStatus(),
+          energyData = LabelStore.getEnergyData(),
+          energyRawData = LabelStore.getEnergyRawData(),
+          paramsObj = assign({},LabelStore.getParamsObj()),
           state = { isLoading: isLoading,
                     energyData: energyData,
                     energyRawData: energyRawData,
@@ -176,6 +210,9 @@ let AnalysisPanel = React.createClass({
     },
     onSearchDataButtonClick(){
       this.state.chartStrategy.onSearchDataButtonClickFn(this);
+    },
+    exportChart(){
+        this.state.chartStrategy.exportChartFn(this);
     },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
@@ -210,6 +247,10 @@ let AnalysisPanel = React.createClass({
       let errorObj = this.errorProcess();
       this._onRankDataChange(true, errorObj);
     },
+    _onGetLabelDataError(){
+      let errorObj = this.errorProcess();
+      this._onLabelDataChange(true, errorObj);
+    },
     errorProcess(){
       let code = EnergyStore.getErrorCode(),
           messages = EnergyStore.getErrorMessage();
@@ -219,7 +260,9 @@ let AnalysisPanel = React.createClass({
           return errorObj;
       }else{
         let errorMsg = CommonFuns.getErrorMessage(code);
-        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg);
+        setTimeout(()=>{
+          GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg);
+        },0);
         return null;
       }
     },
@@ -274,6 +317,274 @@ let AnalysisPanel = React.createClass({
     _onSearchBtnItemTouchTap(e, child){
       //this.setState({selectedChartType:child.props.value});
       this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
+    },
+    _onChangeLabelType(e, child){
+      var curType = this.state.labelType,
+          type = child.props.parent,
+          selectedLabelItem = this.state.selectedLabelItem;
+
+      if(type === 'industryZone'){
+        if(type === curType){
+          if(selectedLabelItem.industryId == child.props.industryId && selectedLabelItem.zoneId == child.props.zoneId){
+            return;
+          }
+        }
+        else
+        {
+          this.setState({labelType: 'industryZone'});
+        }
+        selectedLabelItem.text = (child.props.industryId === -1 ? "请选择能效标识" : child.props.primaryText);
+        selectedLabelItem.industryId = child.props.industryId;
+        selectedLabelItem.zoneId = child.props.zoneId;
+        selectedLabelItem.value = child.props.value;
+        this.changeToIndustyrLabel();
+      }
+      else{
+        if(type === curType) {
+          if(selectedLabelItem.customerizedId === child.props.customerizedId){
+            return;
+          }
+        }
+        else{
+          this.setState({labelType: 'customized'});
+        }
+
+        selectedLabelItem.text = (child.props.customerizedId === -1 ? "请选择能效标识" : child.props.primaryText);
+        selectedLabelItem.customerizedId = child.props.customerizedId;
+
+        this.changeToCustomizedLabel(child.props.kpiType);
+      }
+    },
+    changeToIndustyrLabel(){
+      this.enableKpitypeButton();
+    },
+    changeToCustomizedLabel(kpiType){
+      this.setState({kpiTypeValue: kpiType});
+      this.disableKpitypeButton();
+    },
+    _onHierNodeChange(){
+      this.getIndustyMenuItems();
+      this.enableLabelButton(true);
+    },
+    enableLabelButton(preSelect){
+      if(!this.state.labelDisable && !preSelect){
+        return;
+      }
+      var selectedLabelItem = {};
+      var labelItems = this.state.industyLabelMenuItems;
+      if (labelItems.length > 0 && labelItems.items[0].industryId != -1) {
+        var item = labelItems.items[0];
+        selectedLabelItem.industryId = item.industryId;
+        selectedLabelItem.zoneId = item.zoneId;
+        selectedLabelItem.text = item.text;
+        selectedLabelItem.value = item.value;
+      }
+      else{
+        selectedLabelItem = this.initSlectedLabelItem();
+      }
+      this.setState({
+        selectedLabelItem: selectedLabelItem,
+        labelType: 'industryZone',
+        labelDisable: false
+      });
+      this.enableKpiTypeButton();
+    },
+    disableLabelButton(){
+      this.setState({
+        labelDisable: true
+      });
+      this.setEmptyLabelMenu();
+    },
+    enableKpiTypeButton(){
+      this.setState({kpiTypeDisable: false});
+    },
+    disableKpiTypeButton(){
+      this.setState({kpiTypeDisable: true});
+    },
+    hasIndustyMenuItems: function () {
+      return this.state.industyLabelMenuItems.length > 0;
+    },
+    hasCustomizedMenuItems: function () {
+      return this.state.customerLabelMenuItems.length > 0;
+    },
+    initSlectedLabelItem(){
+      var selectedLabelItem = {};
+      selectedLabelItem.industryId = -1;
+      selectedLabelItem.ZoneId = -1;
+      selectedLabelItem.text = "请选择能效标识";
+      selectedLabelItem.value = null;
+      return selectedLabelItem;
+    },
+    getIndustyLabelMenu(){
+      var labelItems = this.state.industyLabelMenuItems;
+      var labelMenuItems = labelItems.map(function(item) {
+        let props = {
+          value: item.value,
+          primaryText: item.text,
+          industryId: item.industryId,
+          zoneId: item.zoneId,
+          parent: 'industryZone'
+        };
+        return (
+          <MenuItem {...props}/>
+        );
+      });
+      return labelMenuItems;
+    },
+    getCustomizedLabelMenu(){
+      var labelItems = this.state.customerMenuItems;
+      var labelMenuItems = labelItems.map(function(item) {
+        let props = {
+          value: item.customerizedId,
+          primaryText: item.text,
+          customerizedId: item.customerizedId,
+          kpiType: item.kpiType,
+          parent: 'customized'
+        };
+        return (
+          <MenuItem {...props}/>
+        );
+      });
+      return labelMenuItems;
+    },
+    getIndustyMenuItems(){
+      var industryStore = LabelMenuStore.getIndustryData();
+      var labelingsStore = LabelMenuStore.getLabelData();
+      var zoneStore = LabelMenuStore.getZoneData();
+      var hierNode = LabelMenuStore.getHierNode();
+      var industryId, zoneId, parentId, industyMenuItems = [];
+      this.removeIndustyLabelMenuItems();
+      if(!!hierNode){
+        return;
+      }
+      else{
+        industryId = hierNode.industryId;
+        zoneId = hierNode.zoneId;
+        if(hierNode.Type !== 2){
+          return;
+        }
+        this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
+        var industryNode = industryStore.find((item, index)=>{
+          return (item.Id === industryId);
+        });
+        parentId = industryNode.ParentId;
+        if(parentId !== 0) {
+          this.addIndustyMenuItem(labelingsStore, parentId, zoneId, industyMenuItems);
+        }
+        this.addIndustyMenuItem(labelingsStore, 0, zoneId, industyMenuItems);
+      }
+      if(industyMenuItems.length === 0){
+        industyMenuItems = this.getNoneMenuItem(true);
+      }
+      this.setState({industyMenuItems: industyMenuItems});
+    },
+    removeIndustyLabelItems(){
+      this.setState({
+        industyMenuItems: []
+      });
+      this.setEmptyLabelMenu();
+    },
+    setEmptyLabelMenu(){
+      var selectedLabelItem = this.initSlectedLabelItem;
+      this.setState({
+        selectedLabelItem: selectedLabelItem,
+        labelType: 'industryZone'
+      });
+    },
+    getNoneMenuItem: function (isIndustryLabel) {
+      var menuItems = [];
+      if (isIndustryLabel) {
+        menuItems.push({
+          value: 'none',
+          industryId: -1,
+          zoneId: -1,
+          text: "无",
+        });
+      }
+      else {
+        menuItems.push({
+          value: 'none',
+          customerizedId: -1,
+          text: "无"
+        });
+      }
+      return menuItems;
+    },
+    addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems){
+      let labelItem = null;
+      labelItem = labelingsStore.find((item, index)=>{
+        return (item.IndustryId === industryId && item.ZoneId === zoneId);
+      });
+      if(!!labelItem){
+        this.pushIndustryMenuItem(industryId, zoneId, labelItem, industyMenuItems);
+      }
+      labelItem = labelingsStore.find((item, index)=>{
+        return (item.IndustryId === industryId && item.ZoneId === 0);
+      });
+      if(!!labelItem){
+        this.pushIndustryMenuItem(industryId, 0, labelItem, industyMenuItems);
+      }
+    },
+    pushIndustryMenuItem(industryId, zoneId, labelItem, industyMenuItems){
+      var labelMenuItem = {};
+      labelMenuItem.industryId = industryId;
+      labelMenuItem.zoneId = zoneId;
+      labelMenuItem.text = labelItem.ZoneComment + labelItem.IndustryComment;
+      labelMenuItem.value = "" + zoneId + "/" + industryId;
+      industyMenuItems.push(labelMenuItem);
+    },
+    getBenchmarkOption: function () {
+      var labelType = this.state.labelType;
+      var selectedLabelItem = this.state.selectedLabelItem;
+      if (labelType === 'industryZone'){
+        if(selectedLabelItem.industryId === -1){
+          return null;
+        }
+        else{
+          return{
+            IndustryId: selectedLabelItem.industryId,
+            ZoneId: selectedLabelItem.zoneId,
+            benchmarkText: selectedLabelItem.text
+          };
+        }
+      }
+      else if(labelType === 'customized'){
+        if (selectedLabelItem.customerizedId == -1){
+          return null;
+        }
+        else{
+          return{
+            CustomerizedId: selectedLabelItem.customerizedId
+          };
+        }
+      }
+      else {
+        return null;
+      }
+    },
+    getViewOption: function () {
+      var step = 3;//default month
+
+      var year = parseInt(this.refs.yearSelector.getDateValue()),
+          month = this.refs.monthSelector.state.selectedIndex;
+
+      if(month === 0){
+        month = 1;
+        step = 4;//year
+      }
+      var start = new Date(year, month - 1, 1, 0, 0, 0, 0);
+      var end = new Date(year, month - 1, 2, 0, 0, 0, 0);
+      var timeRanges = CommonFuns.getTimeRangesByDate(start, end);
+      //return
+      var viewOption = {
+        IncludeNavigatorData: false,
+        Step: step,
+        TimeRanges: timeRanges
+      };
+      return viewOption;
+    },
+    getKpiType: function () {
+      return this.state.kpiTypeValue;
     },
 });
 

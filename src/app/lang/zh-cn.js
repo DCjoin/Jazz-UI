@@ -505,6 +505,10 @@ I18N.Folder.Copy.Title='复制{0}';
 I18N.Folder.Copy.Label='{0}名称';
 I18N.Folder.Copy.firstActionLabel='复制';
 
+I18N.Folder.Send={};
+I18N.Folder.Send.Success='{0}发送成功';
+I18N.Folder.Send.Error='{0}发送失败，无法发送给用户：{1}。';
+
 I18N.Commodity={};
 I18N.Commodity.Overview = '介质总览';
 
@@ -525,6 +529,16 @@ I18N.Template.Delete.Cancel='放弃';
 I18N.Template.Delete.Title='删除{0}';
 I18N.Template.Delete.FolderContent='删除文件夹"{0}",该文件夹下的所有内容也将被删除';
 I18N.Template.Delete.WidgetContent='删除图表"{0}"';
+I18N.Template.Share={};
+I18N.Template.Share.Title='共享图表';
+I18N.Template.Share.Share='共享';
+I18N.Template.Share.Cancel='放弃';
+I18N.Template.User={};
+I18N.Template.User.Selected='已选{0}人';
+I18N.Template.Send={};
+I18N.Template.Send.Title='发送{0}';
+I18N.Template.Send.Send='发送';
+I18N.Template.Send.Cancel='放弃';
 
 I18N.Rank={};
 I18N.Rank.RankTooltip = '排名:{0}/{1}';

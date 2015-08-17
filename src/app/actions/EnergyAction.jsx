@@ -3,7 +3,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import CommonFuns from '../util/Util.jsx';
 import ActionTypes from '../constants/actionType/Energy.jsx';
-import {DataConverter} from '../util/Util.jsx';
+import {DataConverter, isNumber} from '../util/Util.jsx';
 import Ajax from '../ajax/ajax.jsx';
 
 
@@ -94,15 +94,19 @@ let EnergyAction = {
          }
        });
   },
-  getEnergyRawData(date, step, tagOptions, relativeDate){
+  getEnergyRawData(date, step, tagOptions, relativeDate, pageNum, pageSize){
     var timeRange = date;
-
+    var pageIdx = isNumber(pageNum)? pageNum:1;
     var tagIds = getTagIdsFromTagOptions(tagOptions);
     var submitParams = { tagIds:tagIds,
                          viewOption:{
                            DataOption:{
                              OriginalValue: true,
                              WithoutAdditionalValue: true
+                           },
+                           PagingOrder:{
+                             PageIdx: pageIdx,
+                             PageSize: pageSize || 20
                            },
                            DataUsageType: null,
                            IncludeNavigatorData: false,

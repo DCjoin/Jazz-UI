@@ -78,15 +78,46 @@ var TreeNode = React.createClass({
 
   getInitialState: function () {
     return {
-      collapsed: this.getDefaultCollapsed(),
-      IsSendCopyReaded:false,
+      collapsed: this.getDefaultCollapsed(this.props),
+      IsSendCopyReaded:this.getDefaultReadStatus(this.props),
     };
   },
+  getDefaultReadStatus:function(props){
 
-  getDefaultCollapsedBySelectedNode:function(){
+      var f=function(item){
+        if(item.get('Id')==props.selectedNode.get('Id')){
+          return true;
+        }
+        else{
+          if(!!item.get('Children')){
+            let has=false;
+            item.get('Children').forEach(function(child){
+              if(child!==null){
+                if(f(child)) has=true;
+              }
+
+            });
+            return has;
+          }
+          return false;
+        }
+      };
+      if(props.nodeData.get('IsSenderCopy')){
+        if(!!props.selectedNode){
+          if(props.selectedNode.get('Id')==props.nodeData.get('Id')){
+            return false;
+          }
+          else {
+            return f(props.nodeData);
+          }
+        }
+      }
+      return false;
+  },
+  getDefaultCollapsedBySelectedNode:function(props){
     var that=this;
     var f=function(item){
-      if(item.get('Id')==that.props.selectedNode.get('Id')){
+      if(item.get('Id')==props.selectedNode.get('Id')){
         return true;
       }
       else{
@@ -103,12 +134,12 @@ var TreeNode = React.createClass({
         return false;
       }
     };
-    if(!!this.props.selectedNode){
-      if(this.props.selectedNode.get('Id')==this.props.nodeData.get('Id')){
+    if(!!props.selectedNode){
+      if(props.selectedNode.get('Id')==props.nodeData.get('Id')){
         return false
       }
       else {
-        return f(this.props.nodeData)
+        return f(props.nodeData)
       }
 
     }
@@ -116,38 +147,43 @@ var TreeNode = React.createClass({
       return false
     }
   },
-  getDefaultCollapsed: function () {
+  getDefaultCollapsed: function (props) {
     var levelStatus=false,
-        checkedStatus=!this.getDefaultCollapsedBySelectedNode();
-    if(this.props.collapsedLevel === 0 ||  this.props.collapsedLevel){
-      levelStatus=this.props.level > this.props.collapsedLevel;
+        checkedStatus=!this.getDefaultCollapsedBySelectedNode(props);
+    if(props.collapsedLevel === 0 ||  props.collapsedLevel){
+      levelStatus=props.level > props.collapsedLevel;
     };
     if(checkedStatus){
-      let nodes=this.props.nodeData.get("Children");
+      let nodes=props.nodeData.get("Children");
       let that=this;
       if(!!nodes){
         nodes.forEach(function(node){
-            if(!!that.props.checkedNodes){
-              that.props.checkedNodes.forEach(function(checkedNode){
+            if(!!props.checkedNodes){
+              props.checkedNodes.forEach(function(checkedNode){
                 if(node.get("Id")==checkedNode.get("Id")){
                   checkedStatus=false;
                 }
               });
             }
-        })
-      };
+        });
+      }
     }
-
-
     return(levelStatus && checkedStatus);
   },
-
+  componentWillReceiveProps:function(nextProps){
+    if(nextProps.selectedNode!=this.props.selectedNode){
+      this.setState({
+        collapsed: this.getDefaultCollapsed(nextProps),
+        IsSendCopyReaded:this.getDefaultReadStatus(nextProps),
+      })
+    }
+  },
   handleClickArrow: function (e) {
     e.stopPropagation();
     this.setState({
       collapsed: !this.state.collapsed
     });
-    if(this.props.nodeData.get('IsSendCopy') && !this.props.nodeData.get('IsRead')){
+    if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
       this.setState({
         IsSendCopyReaded:true
       })
