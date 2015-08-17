@@ -79,7 +79,7 @@ let AnalysisPanel = React.createClass({
       return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
         <div style={{margin:'20px 35px'}}>最近7天能耗分析</div>
         <div className={'jazz-alarm-chart-toolbar-container'}>
-            {me.state.chartStrategy.getEnergyTypeComboFn()}
+            {me.state.chartStrategy.getEnergyTypeComboFn(me)}
             {me.state.chartStrategy.searchBarGenFn(me)}
         </div>
         {energyPart}
