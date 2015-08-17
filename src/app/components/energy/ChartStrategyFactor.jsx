@@ -78,7 +78,8 @@ let ChartStrategyFactor = {
       unbindStoreListenersFn:'energyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
       getEnergyRawDataFn:'getEnergyRawData',
-      exportChartFn:'exportChart'
+      exportChartFn:'exportChart',
+      onHierNodeChangeFn:'empty'
     },
     MultiIntervalDistribution:{
 
@@ -93,15 +94,16 @@ let ChartStrategyFactor = {
       initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn:'setUnitEnergyFitStepAndGetData',
       getInitialStateFn:'getUnitEnergyInitialState',
-      getAllDataFn: 'empty',
+      getAllDataFn: 'unitGetAllData',
       getCustomizedLabelItemsFn: 'empty',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn:'unitEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
-      bindStoreListenersFn:'energyBindStoreListeners',
-      unbindStoreListenersFn:'energyUnbindStoreListeners',
+      bindStoreListenersFn:'unitEnergyBindStoreListeners',
+      unbindStoreListenersFn:'unitEnergyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      exportChartFn:'exportChart'
+      exportChartFn:'exportChart',
+      onHierNodeChangeFn:'unitEnergyOnHierNodeChange'
 
     },Label:{
       searchBarGenFn:'labelSearchBarGen',
@@ -164,6 +166,13 @@ let ChartStrategyFactor = {
      analysisPanel.setState({industyMenuItems: industyMenuItems});
      analysisPanel.enableLabelButton(true);
      analysisPanel.refs.kpiType.setState({selectedIndex: analysisPanel.state.kpiTypeValue});
+   },
+   unitEnergyOnHierNodeChange(analysisPanel){
+     var industryData = LabelMenuStore.getIndustryData();
+     var zoneData = LabelMenuStore.getZoneData();
+     var hierNode = LabelMenuStore.getHierNode();
+     var benchmarkData = LabelMenuStore.getBenchmarkData();
+     return CommonFuns.filterBenchmarks(hierNode, industryData, zoneData, benchmarkData);
    }
  },
  onEnegyTypeChangeFnStrategy:{
@@ -179,6 +188,11 @@ let ChartStrategyFactor = {
      LabelMenuAction.getAllZones();
      LabelMenuAction.getAllLabels();
      LabelMenuAction.getCustomerLabels();
+   },
+   unitGetAllData(){
+     LabelMenuAction.getAllIndustries();
+     LabelMenuAction.getAllZones();
+     LabelMenuAction.getAllBenchmarks();
    }
  },
  getCustomizedLabelItemsFnStrategy:{
@@ -226,7 +240,8 @@ let ChartStrategyFactor = {
    empty(){},
    getUnitEnergyInitialState(){
      let state = {
-       unitType: 2
+       unitType: 2,
+       benchmarks: null
      };
       return state;
    },
@@ -618,6 +633,13 @@ let ChartStrategyFactor = {
      EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
+   unitEnergyBindStoreListeners(analysisPanel){
+     EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+   },
    rankBindStoreListeners(analysisPanel){
      RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
      RankStore.addRankDataLoadedListener(analysisPanel._onRankDataChange);
@@ -637,13 +659,20 @@ let ChartStrategyFactor = {
      EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
+   unitEnergyUnbindStoreListeners(analysisPanel){
+     EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+   },
    rankUnbindStoreListeners(analysisPanel){
      RankStore.removeRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
      RankStore.removeRankDataLoadedListener(analysisPanel._onRankDataChange);
      RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    },
    labelUnbindStoreListeners(analysisPanel){
-     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange);
+     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
      LabelStore.removeLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
      LabelStore.removeLabelDataLoadedListener(analysisPanel._onLabelDataChange);
      LabelStore.removeLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);

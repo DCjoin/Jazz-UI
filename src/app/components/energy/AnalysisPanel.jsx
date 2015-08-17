@@ -29,7 +29,7 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Label'
+        bizType:'Unit'
         //bizType:'Energy'
       };
     },
@@ -360,9 +360,7 @@ let AnalysisPanel = React.createClass({
       this.disableKpitypeButton();
     },
     _onHierNodeChange(){
-      var industyMenuItems = this.getIndustyMenuItems();
-      this.setState({industyMenuItems: industyMenuItems});
-      this.enableLabelButton(true);
+      this.state.chartStrategy.onHierNodeChangeFn(this);
     },
     enableLabelButton(preSelect){
       if(!this.state.labelDisable && !preSelect){

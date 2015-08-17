@@ -13,6 +13,8 @@ module.exports = {
     GET_ALL_CUSTOMER_LABELS_ERROR: null,
     GET_LABEL_DATA_LOADING: null,
     GET_LABEL_DATA_SUCCESS: null,
-    GET_LABEL_DATA_ERROR:null
+    GET_LABEL_DATA_ERROR:null,
+    GET_BENCHMARK_DATA_SUCCESS: null,
+    GET_BENCHMARK_DATA_ERROR:null
   })
 };
