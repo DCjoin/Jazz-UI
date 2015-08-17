@@ -23,12 +23,14 @@ let FOLDER_TREE_EVENT = 'foldertree',
     COPY_ITEM_SUCCESS_EVENT='copyitemsuccess',
     COPY_ITEM_ERROR_EVENT='copyitemerror',
     DELETE_ITEM_SUCCESS_EVENT='deleteitemsuccess',
-    SEND_STATUS_EVENT='sendstatus';
+    SEND_STATUS_EVENT='sendstatus',
+    SELECTED_NODE_EVENT='selectednode';
 
 var FolderStore = assign({},PrototypeStore,{
 
   setFolderTree:function(treeNode){
-    _folderTree=Immutable.fromJS(treeNode)
+    _folderTree=Immutable.fromJS(treeNode);
+    _selectedNode=_folderTree;
   },
   getFolderTree:function(){
     return _folderTree
@@ -89,15 +91,16 @@ var FolderStore = assign({},PrototypeStore,{
      children=children.push(_newNode);
      _changedNode=_changedNode.set('Children',children);
      if(_newNode.get('Type')==6){
-       let subFolderCount =  _changedNode.get('SubFolderCount')+1;
-        _changedNode=_changedNode.set('SubFolderCount',subFolderCount);
+       let subFolderCount =  _changedNode.get('ChildFolderCount')+1;
+        _changedNode=_changedNode.set('ChildFolderCount',subFolderCount);
      }
      else {
-       let subWidgetCount  =  _changedNode.get('SubWidgetCount ')+1;
-        _changedNode=_changedNode.set('SubWidgetCount ',subWidgetCount );
+       let subWidgetCount  =  _changedNode.get('ChildWidgetCount ')+1;
+        _changedNode=_changedNode.set('ChildWidgetCount ',subWidgetCount );
      }
    }
    _folderTree=this.modifyTreebyNode(_folderTree);
+  _selectedNode=newNode;
   },
   modifyName:function(newNode){
     var parent;
@@ -333,6 +336,16 @@ var FolderStore = assign({},PrototypeStore,{
   removeSendStatusListener: function(callback) {
       this.removeListener(SEND_STATUS_EVENT, callback);
       this.dispose();
+  },
+  emitSelectedNodeChange: function() {
+          this.emit(SELECTED_NODE_EVENT);
+        },
+  addSelectedNodeListener: function(callback) {
+        this.on(SELECTED_NODE_EVENT, callback);
+        },
+  removeSelectedNodeListener: function(callback) {
+      this.removeListener(SELECTED_NODE_EVENT, callback);
+      this.dispose();
       },
 
 });
@@ -343,10 +356,12 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case FolderAction.GET_FOLDER_TREE:
          FolderStore.setFolderTree(action.treeNode);
+         FolderStore.emitSelectedNodeChange();
          FolderStore.emitFolderTreeChange();
       break;
     case FolderAction.CREATE_FOLDER_OR_WIDGET:
          FolderStore.createFolderOrWidget(action.parentNode,action.newNode);
+         FolderStore.emitSelectedNodeChange();
          FolderStore.emitCreateFolderOrWidgetChange();
       break;
     case FolderAction.MODIFY_NAME_SECCESS:
@@ -359,9 +374,11 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case FolderAction.SET_SELECTED_NODE:
         FolderStore.setSelectedNode(action.selectedNode);
+        FolderStore.emitSelectedNodeChange();
       break;
     case FolderAction.COPY_ITEM:
         FolderStore.copyItem(action.destItem,action.newNode);
+        FolderStore.emitSelectedNodeChange();
         FolderStore.emitCopyItemSuccessChange();
       break;
     case FolderAction.DELETE_ITEM:
