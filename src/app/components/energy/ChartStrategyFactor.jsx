@@ -30,6 +30,7 @@ let MenuDivider = require('material-ui/lib/menus/menu-divider');
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
  {value: 'ThisMonth', text: '本月'}, {value: 'LastMonth', text: '上月'}, {value: 'ThisYear', text: '今年'}, {value: 'LastYear', text: '去年'}];
+ const carbonTypeItem = [{value:'Coal',text:'标煤'},{value:'CO2',text:'二氧化碳'},{value:'Tree',text:'树'}];
  const rankTypeItem = [{value:'TotalRank',text:'总排名'},{value:'RankByPeople',text:'人均排名'},
  {value:'RankByArea', text:'单位面积排名'},{value:'RankByHeatArea',text:'单位供冷面积排名'},
  {value:'RankByCoolArea',text:'单位采暖面积排名'},{value:'RankByRoom',text:'单位客房排名'},
@@ -57,10 +58,26 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'energyBindStoreListeners',
       unbindStoreListenersFn:'energyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      getEnergyRawDataFn:'getEnergyRawData'
+      getEnergyRawDataFn:'getEnergyRawData',
+      onEnegyTypeChangeFn:'onEnegyTypeChange',
     },
     MultiIntervalDistribution:{
 
+    },CarbonUsage:{
+      searchBarGenFn:'energySearchBarGen',
+      getSelectedNodesFn:'getSelectedCommodityList',
+      onSearchDataButtonClickFn:'onCarbonSearchDataButtonClick',
+      onSearchBtnItemTouchTapFn:'onCarbonSearchBtnItemTouchTap',
+      initEnergyStoreByBizChartTypeFn:'initCarbonStoreByBizChartType',
+      setFitStepAndGetDataFn:'setFitStepAndGetData',
+      getInitialStateFn:'getCarbonInitialState',
+      getEnergyDataFn:'carbonDataLoad',
+      getPieEnergyDataFn:'pieCarbonDataLoad',
+      getChartComponentFn:'getCarbonChartComponent',
+      bindStoreListenersFn:'energyBindStoreListeners',
+      unbindStoreListenersFn:'energyUnbindStoreListeners',
+      canShareDataWithFn:'canShareDataWith',
+      getEnergyRawDataFn:'getEnergyRawData'
     },RatioUsage:{
 
     },UnitEnergyUsage:{
@@ -80,9 +97,12 @@ let ChartStrategyFactor = {
     }
  },
  onEnegyTypeChangeFnStrategy:{
+   onEnegyTypeChange(e, selectedIndex, menuItem){
+     CommodityAction.setRankingECType(menuItem.value);
+   },
    onRankEnegyTypeChange(e, selectedIndex, menuItem){
      CommodityAction.setRankingECType(menuItem.value);
-   }
+   },
  },
  initEnergyStoreByBizChartTypeFnStrategy:{
    initEnergyStoreByBizChartType(analysisPanel){
@@ -116,7 +136,7 @@ let ChartStrategyFactor = {
  },
  onSearchDataButtonClickFnStrategy:{
    onSearchDataButtonClick(analysisPanel){
-     analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+     //analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
 
      let dateSelector = analysisPanel.refs.dateTimeSelector,
          dateRange = dateSelector.getDateTime(),
@@ -145,6 +165,35 @@ let ChartStrategyFactor = {
      }else if(chartType === 'rawdata'){
        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
        analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
+     }
+   },
+   onCarbonSearchDataButtonClick(analysisPanel){
+     analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+
+     let dateSelector = analysisPanel.refs.dateTimeSelector,
+         dateRange = dateSelector.getDateTime(),
+         startDate = dateRange.start,
+         endDate = dateRange.end,
+         nodeOptions;
+
+     if(startDate.getTime()>= endDate.getTime()){
+         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+       return;
+     }
+
+     nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     if( !nodeOptions.hierarchyList || nodeOptions.hierarchyList.length === 0 || !nodeOptions.commodityList || nodeOptions.commodityList.length === 0){
+       analysisPanel.setState({energyData:null});
+       return;
+     }
+     let relativeDateValue = analysisPanel._getRelativeDateValue();
+
+     let chartType = analysisPanel.state.selectedChartType;
+     if(chartType ==='line' || chartType === 'column' || chartType === 'stack'){
+        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+     }else if(chartType === 'pie'){
+        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
      }
    },
    onRankSearchDataButtonClick(analysisPanel){
@@ -221,6 +270,22 @@ let ChartStrategyFactor = {
        </div>
    </div>;
   },
+  carbonSearchBarGen(analysisPanel){
+    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
+
+    return <div className={'jazz-alarm-chart-toolbar-container'}>
+      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+        <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+      </div>
+      <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+        <DropDownMenu menuItems={carbonTypeItem} ref='rankType' style={{width:'92px'}} onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>
+      </div>
+      <div className={'jazz-flat-button'}>
+        <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+      </div>
+  </div>;
+},
   rankSearchBarGen(analysisPanel){
     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
@@ -237,9 +302,12 @@ let ChartStrategyFactor = {
       </div>
   </div>;
   }
- },
+},
  getSelectedNodesFnStrategy:{
    getSelectedTagList(){
+     return  AlarmTagStore.getSearchTagList();
+   },
+   getSelectedCommodityList(){
      return  AlarmTagStore.getSearchTagList();
    },
    getSelectedList(){
