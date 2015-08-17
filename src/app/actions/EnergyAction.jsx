@@ -140,6 +140,46 @@ let EnergyAction = {
            });
          }
        });
+  },
+  getUnitEnergyTrendChartData(timeRange, step, tagOptions, unitType, relativeDate){
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
+    var submitParams = { tagIds:tagIds,
+                         benchmarkOption: null,
+                         viewOption:{ DataUsageType: 1,
+                                      IncludeNavigatorData: true,
+                                      Step: step,
+                                      TimeRanges: timeRange,
+                                      DataOption:{
+                                        UnitType: unitType
+                                      }
+                                   }
+                       };
+
+    AppDispatcher.dispatch({
+         type: ActionTypes.GET_ENERGY_DATA_LOADING,
+         submitParams: submitParams,
+         tagOptions: tagOptions,
+         relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/GetEnergyUsageUnitData', {
+         params:submitParams,
+         commonErrorHandling: false,
+         success: function(energyData){
+           AppDispatcher.dispatch({
+               type: ActionTypes.GET_ENERGY_DATA_SUCCESS,
+               energyData: energyData,
+               submitParams: submitParams
+           });
+         },
+         error: function(err, res){
+           AppDispatcher.dispatch({
+               type: ActionTypes.GET_ENERGY_DATA_ERROR,
+               errorText: res.text,
+               submitParams: submitParams
+           });
+         }
+       });
   }
 };
 module.exports = EnergyAction;

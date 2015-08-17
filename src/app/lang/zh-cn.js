@@ -1,42 +1,42 @@
 'use strict';
 
 
-let I18N={};
-I18N.getResourceString = function (resName) {
-    resName = resName.replace(/#/ig, '');
-    var resource = I18N;
-    var nsArray = resName.split('.');
-    for (var i = 0; i < nsArray.length; i++) {
-        resource = resource[nsArray[i]];
-        if (resource === undefined) return undefined;
-    }
-    arguments[0] = resource;
-    return I18N.format.apply(this, arguments);
+let I18N = {};
+I18N.getResourceString = function(resName) {
+  resName = resName.replace(/#/ig, '');
+  var resource = I18N;
+  var nsArray = resName.split('.');
+  for (var i = 0; i < nsArray.length; i++) {
+    resource = resource[nsArray[i]];
+    if (resource === undefined) return undefined;
+  }
+  arguments[0] = resource;
+  return I18N.format.apply(this, arguments);
 };
-I18N.format = function (res) {
-    var regexp,
-        matches,
-        s = res,
-        i;
+I18N.format = function(res) {
+  var regexp,
+    matches,
+    s = res,
+    i;
 
-    i = 1;
-    for (; i < arguments.length; i++) {
-        s = s.replace(new RegExp('\\{' + (i - 1) + '\\}'), arguments[i]);
+  i = 1;
+  for (; i < arguments.length; i++) {
+    s = s.replace(new RegExp('\\{' + (i - 1) + '\\}'), arguments[i]);
+  }
+
+  regexp = /##(\w|\.)+##/ig;
+  matches = s.match(regexp);
+  i = 0;
+  if (matches !== null) {
+    for (; i < matches.length; i++) {
+      s = s.replace(matches[i], I18N.getResourceString(matches[i]));
     }
+  }
 
-    regexp = /##(\w|\.)+##/ig;
-    matches = s.match(regexp);
-    i = 0;
-    if (matches !== null) {
-        for (; i < matches.length; i++) {
-            s = s.replace(matches[i], I18N.getResourceString(matches[i]));
-        }
-    }
-
-    return s.replace(/\{\d+\}/ig,'');
+  return s.replace(/\{\d+\}/ig, '');
 };
 
-I18N.MainMenu={};
+I18N.MainMenu = {};
 I18N.MainMenu.Asset = '我的资产';
 I18N.MainMenu.Alarm = '故障报警';
 I18N.MainMenu.Maintain = '设备维护';
@@ -46,22 +46,22 @@ I18N.MainMenu.User = '用户管理';
 I18N.MainMenu.DeviceTemplate = '台账模板';
 I18N.MainMenu.ParameterTemplate = '参数模板';
 
-I18N.Login={};
-I18N.Login.UserName='用户名';
-I18N.Login.Password='密码';
-I18N.Login.Logout ='注销';
-I18N.Login.Login ='登陆';
+I18N.Login = {};
+I18N.Login.UserName = '用户名';
+I18N.Login.Password = '密码';
+I18N.Login.Logout = '注销';
+I18N.Login.Login = '登陆';
 
-I18N.M212001='用户不存在';
-I18N.M212002='服务提供商无效';
-I18N.M212003='服务提供商不存在';
-I18N.M212004='服务商未生效';
-I18N.M212005='用户未生效';
-I18N.M212006='密码错误';
-I18N.M212007='服务商域名不正确';
+I18N.M212001 = '用户不存在';
+I18N.M212002 = '服务提供商无效';
+I18N.M212003 = '服务提供商不存在';
+I18N.M212004 = '服务商未生效';
+I18N.M212005 = '用户未生效';
+I18N.M212006 = '密码错误';
+I18N.M212007 = '服务商域名不正确';
 
-I18N.Common={};
-I18N.Common.Glossary={};
+I18N.Common = {};
+I18N.Common.Glossary = {};
 I18N.Common.Glossary.HierarchyNode = '层级节点';
 
 I18N.Common.Glossary.MonthName = {};
@@ -118,7 +118,7 @@ I18N.DateTimeFormat.HighFormat.FullDateTime = '%Y年%m月%d日 %H点%M分%S秒';
 I18N.DateTimeFormat.HighFormat.FullDate = '%Y年%m月%d日';
 I18N.DateTimeFormat.HighFormat.FullYear = '全年';
 
-I18N.DateTimeFormat.IntervalFormat={};
+I18N.DateTimeFormat.IntervalFormat = {};
 I18N.DateTimeFormat.IntervalFormat.Second = 'YYYY年MM月DD日 HH点mm分ss秒';
 I18N.DateTimeFormat.IntervalFormat.FullMinute = 'YYYY年MM月DD日 HH点mm分';
 I18N.DateTimeFormat.IntervalFormat.RangeFullMinute = 'YYYY年MM月DD日 HH点mm分';
@@ -153,7 +153,13 @@ I18N.EM.UseMonth = '按月';
 I18N.EM.UseYear = '按年';
 I18N.EM.StepError = '所选数据点不支持{0}的步长显示，换个步长试试。';
 
-I18N.Message={};
+I18N.EM.Ratio = {};
+I18N.EM.Ratio.CaculateValue = '计算值';
+I18N.EM.Ratio.RawValue = '原始值';
+I18N.EM.Ratio.TargetValue = '目标值';
+I18N.EM.Ratio.BaseValue = '基准值';
+
+I18N.Message = {};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';
 I18N.Message.UpdateConcurrency = '该{0}已被修改，马上为您刷新。';
@@ -172,7 +178,8 @@ I18N.Message.M01013 = '该层级节层级超限';
 I18N.Message.M01014 = '该节点已被其他用户修改或删除，层级树将被刷新。';
 I18N.Message.M01015 = '当前层级节点无子节点'; //for energy view single tag to pie chart
 I18N.Message.M01016 = '相关的层级无有效日历，无法获得本年的目标值和基准值。';
-I18N.Message.M01018 = '无法移动到目标节点下，请按照规则拖动层级节点：<br/>组织->组织、客户；<br/>园区->组织、客户；<br/>楼宇->园区、组织、客户。';
+I18N.Message.M01018 =
+  '无法移动到目标节点下，请按照规则拖动层级节点：<br/>组织->组织、客户；<br/>园区->组织、客户；<br/>楼宇->园区、组织、客户。';
 I18N.Message.M01019 = '层级被修改';
 I18N.Message.M01251 = '该层级节点的高级属性已被其他用户修改。界面即将刷新';
 I18N.Message.M01254 = '高级属性的输入项非法，无法保存。';
@@ -221,8 +228,8 @@ I18N.Message.M02407 = '峰谷平电价展示不支持按分钟/小时展示';
 I18N.Message.M02408 = '该节点未设置峰谷时段，无法展示';
 I18N.Message.M02027 = '该异常记录中数据点的步长小于当前支持的最小步长，无法查看。';
 
-I18N.Message.M02601 = '缺少昼夜日历的部分，无法绘图。请设置后再试。';//'{0}所对应的层级节点没有设置昼夜日历，无法查看昼夜比数据';
-I18N.Message.M02602 = '缺少工作日历的部分，无法绘图。请设置后再试。';//'{0}所对应的层级节点没有设置工作日历，无法查看公休比数据';
+I18N.Message.M02601 = '缺少昼夜日历的部分，无法绘图。请设置后再试。'; //'{0}所对应的层级节点没有设置昼夜日历，无法查看昼夜比数据';
+I18N.Message.M02602 = '缺少工作日历的部分，无法绘图。请设置后再试。'; //'{0}所对应的层级节点没有设置工作日历，无法查看公休比数据';
 I18N.Message.M02603 = '缺少总面积的部分，无法绘图。请设置后再试。';
 I18N.Message.M02604 = '缺少供冷面积的部分，无法绘图。请设置后再试。';
 I18N.Message.M02605 = '缺少采暖面积的部分，无法绘图。请设置后再试。';
@@ -271,7 +278,7 @@ I18N.Message.M03052 = '日历的结束日期必须大于等于开始日期。';
 I18N.Message.M03053 = '时间区间重叠，请检查。';
 I18N.Message.M03054 = '该名称已存在';
 I18N.Message.M03057 = '结束时间必须大于开始时间。';
-I18N.Message.M03058 = '日历已被引用，不可删除。';     //--------------
+I18N.Message.M03058 = '日历已被引用，不可删除。'; //--------------
 I18N.Message.M03059 = '二月日期不能为29/30/31。';
 I18N.Message.M03060 = '小月日期不能为31。';
 I18N.Message.M03061 = '至少添加一个采暖季或者供冷季。';
@@ -298,7 +305,7 @@ refresh is needed.
 *******/
 I18N.Message.M04052 = '勾选当前维度节点前，必须确保它的父节点已被勾选。';
 I18N.Message.M04054 = '反勾选当前维度节点前，必须确保它的所有子节点未被勾选。';
-I18N.Message.M04055 = '当前系统维度节点无子节点';   //for energy view single tag to pie chart
+I18N.Message.M04055 = '当前系统维度节点无子节点'; //for energy view single tag to pie chart
 I18N.Message.M04056 = '无法删除该系统维度节点。请先删除该节点下的所有数据点关联关系。';
 /******
 Dashboard Error Code, NOTE that for error of
@@ -347,7 +354,8 @@ I18N.Message.M06195 = '当前区域维度的子节点下不包含与该数据点
 I18N.Message.M06196 = '当前层级节点不包含与该数据点介质单位相同的数据点';
 I18N.Message.M06197 = '当前系统维度不包含与该数据点介质单位相同的数据点';
 I18N.Message.M06198 = '当前区域维度不包含与该数据点介质单位相同的数据点';
-I18N.Message.M06201 = '无法将计算步长修改为“{0}”。本数据点与其他数据点存在引用关系，引用数据点的计算步长必须大于等于被引用数据点的计算步长。';
+I18N.Message.M06201 =
+  '无法将计算步长修改为“{0}”。本数据点与其他数据点存在引用关系，引用数据点的计算步长必须大于等于被引用数据点的计算步长。';
 I18N.Message.M06202 = '对应节点下已存在相同介质的能耗数据点。';
 I18N.Message.M06203 = '该数据点不是能耗数据。';
 
@@ -374,7 +382,7 @@ I18N.Message.M08209 = '当前的维度节点的级次超出最大长度，无法
 I18N.Message.M08210 = '当前的维度节点的父节点已被删除，界面将被刷新。';
 I18N.Message.M08211 = '当前的维度节点已被他人删除，界面将被刷新。';
 I18N.Message.M08212 = '无法删除该区域维度节点。请先删除该节点下的所有子节点。';
-I18N.Message.M08214 = '当前区域维度节点无子节点';   //for energy view single tag to pie chart
+I18N.Message.M08214 = '当前区域维度节点无子节点'; //for energy view single tag to pie chart
 I18N.Message.M08215 = '无法删除该区域维度节点。请先删除该节点下的所有数据点关联关系。';
 
 I18N.Message.M09001 = '数据已被删除，界面将被刷新。';
@@ -482,8 +490,8 @@ I18N.Message.M21705 = '报表名称重复';
 I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
 
-I18N.Folder={};
-I18N.Folder.NewWidget={};
+I18N.Folder = {};
+I18N.Folder.NewWidget = {};
 I18N.Folder.NewWidget.Menu1 = '能耗分析';
 I18N.Folder.NewWidget.Menu2 = '单位指标';
 I18N.Folder.NewWidget.Menu3 = '时段能耗比';
@@ -491,58 +499,57 @@ I18N.Folder.NewWidget.Menu4 = '能效标识';
 I18N.Folder.NewWidget.Menu5 = '集团排名';
 I18N.Folder.NewWidget.DefaultName = '最近7天{0}';
 
-I18N.Folder.NewFolder= '新建文件夹';
-I18N.Folder.FolderName='文件夹';
-I18N.Folder.WidgetName='图表';
+I18N.Folder.NewFolder = '新建文件夹';
+I18N.Folder.FolderName = '文件夹';
+I18N.Folder.WidgetName = '图表';
 
-I18N.Folder.SaveNameError={};
-I18N.Folder.SaveNameError.E032= '名称为“{0}”的{1}已存在，请选取其他名称。';
-I18N.Folder.SaveNameError.E029= '{0}名称不能为空，请重新输入';
-I18N.Folder.SaveNameError.E031= '{0}名称超过最大长度100，请重新输入';
+I18N.Folder.SaveNameError = {};
+I18N.Folder.SaveNameError.E032 = '名称为“{0}”的{1}已存在，请选取其他名称。';
+I18N.Folder.SaveNameError.E029 = '{0}名称不能为空，请重新输入';
+I18N.Folder.SaveNameError.E031 = '{0}名称超过最大长度100，请重新输入';
 
-I18N.Folder.Copy={};
-I18N.Folder.Copy.Title='复制{0}';
-I18N.Folder.Copy.Label='{0}名称';
-I18N.Folder.Copy.firstActionLabel='复制';
+I18N.Folder.Copy = {};
+I18N.Folder.Copy.Title = '复制{0}';
+I18N.Folder.Copy.Label = '{0}名称';
+I18N.Folder.Copy.firstActionLabel = '复制';
 
-I18N.Folder.Send={};
-I18N.Folder.Send.Success='{0}发送成功';
-I18N.Folder.Send.Error='{0}发送失败，无法发送给用户：{1}。';
+I18N.Folder.Send = {};
+I18N.Folder.Send.Success = '{0}发送成功';
+I18N.Folder.Send.Error = '{0}发送失败，无法发送给用户：{1}。';
 
-I18N.Commodity={};
+I18N.Commodity = {};
 I18N.Commodity.Overview = '介质总览';
 
-I18N.Hierarchy={};
+I18N.Hierarchy = {};
 I18N.Hierarchy.RankingButtonName = '请选择层级节点进行排名';
 I18N.Hierarchy.ButtonName = '请选择层级节点';
 I18N.Hierarchy.Confirm = '确定';
 I18N.Hierarchy.Clear = '清空';
 
-I18N.Template={};
-I18N.Template.Copy={};
-I18N.Template.Copy.DestinationFolder='目标文件夹';
-I18N.Template.Copy.Cancel='放弃';
-I18N.Template.Copy.DefaultName='{0}-副本';
-I18N.Template.Delete={};
-I18N.Template.Delete.Delete='删除';
-I18N.Template.Delete.Cancel='放弃';
-I18N.Template.Delete.Title='删除{0}';
-I18N.Template.Delete.FolderContent='删除文件夹"{0}",该文件夹下的所有内容也将被删除';
-I18N.Template.Delete.WidgetContent='删除图表"{0}"';
-I18N.Template.Share={};
-I18N.Template.Share.Title='共享图表';
-I18N.Template.Share.Share='共享';
-I18N.Template.Share.Cancel='放弃';
-I18N.Template.User={};
-I18N.Template.User.Selected='已选{0}人';
-I18N.Template.Send={};
-I18N.Template.Send.Title='发送{0}';
-I18N.Template.Send.Send='发送';
-I18N.Template.Send.Cancel='放弃';
+I18N.Template = {};
+I18N.Template.Copy = {};
+I18N.Template.Copy.DestinationFolder = '目标文件夹';
+I18N.Template.Copy.Cancel = '放弃';
+I18N.Template.Copy.DefaultName = '{0}-副本';
+I18N.Template.Delete = {};
+I18N.Template.Delete.Delete = '删除';
+I18N.Template.Delete.Cancel = '放弃';
+I18N.Template.Delete.Title = '删除{0}';
+I18N.Template.Delete.FolderContent = '删除文件夹"{0}",该文件夹下的所有内容也将被删除';
+I18N.Template.Delete.WidgetContent = '删除图表"{0}"';
+I18N.Template.Share = {};
+I18N.Template.Share.Title = '共享图表';
+I18N.Template.Share.Share = '共享';
+I18N.Template.Share.Cancel = '放弃';
+I18N.Template.User = {};
+I18N.Template.User.Selected = '已选{0}人';
+I18N.Template.Send = {};
+I18N.Template.Send.Title = '发送{0}';
+I18N.Template.Send.Send = '发送';
+I18N.Template.Send.Cancel = '放弃';
 
-I18N.Rank={};
+I18N.Rank = {};
 I18N.Rank.RankTooltip = '排名:{0}/{1}';
-
 
 
 
