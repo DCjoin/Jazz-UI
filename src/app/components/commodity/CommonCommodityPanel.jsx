@@ -89,7 +89,7 @@ var CommonCommodityPanel = React.createClass({
     let header,content;
     //header
 
-    if(this.state.ecType=="Carbon"){
+    if(this.state.ecType=="carbon"){
       header=(
         <div className="header">
           <HierarchyButton hierId={CurrentHierId}
@@ -103,7 +103,7 @@ var CommonCommodityPanel = React.createClass({
                             )
     }
     else{
-      if(this.state.ecType=="Cost"){
+      if(this.state.ecType=="cost"){
         header=(
           <div className="header">
             <HierarchyButton hierId={CurrentHierId}
