@@ -30,10 +30,12 @@ let AnalysisPanel = React.createClass({
     getDefaultProps(){
       return {
         bizType:'Label'
+        //bizType:'Energy'
       };
     },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(this.props.bizType);
+      let map = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'Label'};
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(map[this.props.bizType]);
       let state = {
         isLoading: false,
         energyData: null,
@@ -367,7 +369,7 @@ let AnalysisPanel = React.createClass({
         return;
       }
       var selectedLabelItem = {};
-      var labelItems = this.state.industyLabelMenuItems;
+      var labelItems = this.state.industyMenuItems;
       if (labelItems.length > 0 && labelItems.items[0].industryId != -1) {
         var item = labelItems.items[0];
         selectedLabelItem.industryId = item.industryId;
@@ -417,21 +419,21 @@ let AnalysisPanel = React.createClass({
       var zoneStore = LabelMenuStore.getZoneData();
       var hierNode = LabelMenuStore.getHierNode();
       var industryId, zoneId, parentId, industyMenuItems = [];
-      this.removeIndustyLabelMenuItems();
-      if(!!hierNode){
+      this.removeIndustyMenuItems();
+      if(!hierNode){
         return;
       }
       else{
-        industryId = hierNode.industryId;
-        zoneId = hierNode.zoneId;
+        industryId = hierNode.IndustryId;
+        zoneId = hierNode.ZoneId;
         if(hierNode.Type !== 2){
           return;
         }
         this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
         var industryNode = industryStore.find((item, index)=>{
-          return (item.Id === industryId);
+          return (item.get("Id") === industryId);
         });
-        parentId = industryNode.ParentId;
+        parentId = industryNode.get('ParentId');
         if(parentId !== 0) {
           this.addIndustyMenuItem(labelingsStore, parentId, zoneId, industyMenuItems);
         }
@@ -442,7 +444,7 @@ let AnalysisPanel = React.createClass({
       }
       return industyMenuItems;
     },
-    removeIndustyLabelItems(){
+    removeIndustyMenuItems(){
       this.setState({
         industyMenuItems: []
       });
@@ -479,15 +481,15 @@ let AnalysisPanel = React.createClass({
     addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems){
       let labelItem = null;
       labelItem = labelingsStore.find((item, index)=>{
-        return (item.IndustryId === industryId && item.ZoneId === zoneId);
+        return (item.get('IndustryId') === industryId && item.get('ZoneId') === zoneId);
       });
-      if(!!labelItem){
+      if(labelItem){
         this.pushIndustryMenuItem(industryId, zoneId, labelItem, industyMenuItems);
       }
       labelItem = labelingsStore.find((item, index)=>{
-        return (item.IndustryId === industryId && item.ZoneId === 0);
+        return (item.get('IndustryId') === industryId && item.get('ZoneId') === 0);
       });
-      if(!!labelItem){
+      if(labelItem){
         this.pushIndustryMenuItem(industryId, 0, labelItem, industyMenuItems);
       }
     },
@@ -495,7 +497,7 @@ let AnalysisPanel = React.createClass({
       var labelMenuItem = {};
       labelMenuItem.industryId = industryId;
       labelMenuItem.zoneId = zoneId;
-      labelMenuItem.primaryText = labelItem.ZoneComment + labelItem.IndustryComment;
+      labelMenuItem.primaryText = labelItem.get('ZoneComment') + labelItem.get('IndustryComment');
       labelMenuItem.value = "" + zoneId + "/" + industryId;
       labelMenuItem.parent = 'industryZone';
       industyMenuItems.push(labelMenuItem);
