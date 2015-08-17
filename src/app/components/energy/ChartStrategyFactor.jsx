@@ -424,8 +424,8 @@ let ChartStrategyFactor = {
    }
  },
  getEnergyRawDataFnStrategy:{
-   getEnergyRawData(timeRanges, step, tagOptions, relativeDate){
-     EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate);
+   getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize){
+     EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize);
    }
  },
  getChartComponentFnStrategy:{
@@ -434,7 +434,8 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
-                         energyRawData: analysisPanel.state.energyRawData};
+                         energyRawData: analysisPanel.state.energyRawData,
+                         chartStrategy: analysisPanel.state.chartStrategy };
        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px', overflow:'hidden'}}>
                       <GridComponent {...properties}></GridComponent>
                     </div>;
@@ -607,24 +608,18 @@ let ChartStrategyFactor = {
     return kpiTypeButton;
   },
   getConfigBtn(analysisPanel){
+    let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
+                            {primaryText:'冷暖季', value:'hotColdSeason'}];
+    let weatherSubItems = [{primaryText:'温度', value:'temperature'}, {primaryText:'湿度', value:'humidity'}];
     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                  onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
       <MenuItem primaryText="历史对比" value='history'/>
       <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
       <MenuDivider />
       <MenuItem primaryText="数据求和" value='sum'/>
-      <ExtendableMenuItem primaryText="日历背景色" value='background'>
-      <Menu>
-       <MenuItem primaryText="非工作时间" value='noneWorkTime'/>
-       <MenuItem primaryText="冷暖季" value='hotColdSeason'/>
-      </Menu>
-      </ExtendableMenuItem>
-      <ExtendableMenuItem primaryText="天气信息" value='weather'>
-             <Menu>
-               <MenuItem primaryText="温度" value='temperature'/>
-               <MenuItem primaryText="湿度" value='humidity'/>
-             </Menu>
-           </ExtendableMenuItem>
+      <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
+      <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
+
     </ButtonMenu>;
 
     return configButton;

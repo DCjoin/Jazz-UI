@@ -15,6 +15,8 @@ import SendView from './operationView/SendView.jsx';
 
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
+import MainBizAction from '../../actions/MainBizAction.jsx';
+import MainBizStore from '../../stores/MainBizStore.jsx';
 
 
 import Immutable from 'immutable';
@@ -61,6 +63,7 @@ var PanelContainer = React.createClass({
       isLoading:true
     });
     FolderAction.createWidgetOrFolder(this.state.selectedNode,I18N.Folder.NewFolder,6,window.currentCustomerId);
+    MainBizAction.setBizType(0);
   },
   _onCreateFolderOrWidgetChange:function(){
     this.setState({
@@ -85,6 +88,7 @@ var PanelContainer = React.createClass({
       isLoading:true
     });
     FolderAction.createWidgetOrFolder(this.state.selectedNode,name,7,window.currentCustomerId,widgetType);
+    MainBizAction.setBizType(widgetType);
   },
   _onTemplateTest:function(){
     this.setState({

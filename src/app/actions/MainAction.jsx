@@ -20,5 +20,21 @@ let MainAction = {
         }
     });
   },
+  getAllCommodities(){
+    Ajax.post('/Administration.svc/GetAllCommodity', {
+        params: {},
+        success: function(commodities){
+          AppDispatcher.dispatch({
+              type: Action.GET_ALL_COMMODITY_SUCCESS,
+              commodities: commodities
+          });
+        },
+        error: function(err, res){
+          AppDispatcher.dispatch({
+              type: Action.GET_ALL_COMMODITY_ERROR
+          });
+        }
+    });
+  }
 };
 module.exports = MainAction;
