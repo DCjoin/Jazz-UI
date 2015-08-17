@@ -59,7 +59,7 @@ var LabelMenuStore = assign({},PrototypeStore,{
 LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case Action.HIERNODE_CHANGED:
-      LabelMenuStore.setIndustryData(action.hierNode);
+      LabelMenuStore.setHierMode(action.hierNode);
       LabelMenuStore.emitHierNodeChange();
       break;
     case Action.GET_ALL_INDUSTRIES_SUCCESS:

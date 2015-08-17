@@ -63,7 +63,7 @@ let LabelMenuAction = {
     });
   },
   getCustomerLabels(){
-    Ajax.post('/Administration.svc/GetCustomerLabellings', {
+    Ajax.post('/Customer.svc/GetCustomerLabellings', {
       params: {filter:{CustomerId:window.currentCustomerId}},
       success: function(customerLabelData){
         AppDispatcher.dispatch({
