@@ -18,6 +18,7 @@ import CommodityAction from '../../actions/CommodityAction.jsx';
 
 import LeftPanel from '../folder/FolderLeftPanel.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
+import FolderDetailPanel from '../folder/FolderDetailPanel.jsx';
 
 let Setting = React.createClass({
 
@@ -87,10 +88,11 @@ componentWillUnmount:function(){
                                    container={<RankingContainer checkedCommodity={checkedCommodity} checkedTreeNodes={checkedTreeNodes}/>}/>);
 
     var errorBar=(this.state.errorText!=null?<Snackbar message={this.state.errorText}/>:null);
+    //  <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
     return (
       <div style={{display:'flex', flex:1}}>
         <LeftPanel isShow={!this.state.showRightPanel} onToggle={this._onSwitchButtonClick}/>
-        <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
+        <FolderDetailPanel onToggle={this._onSwitchButtonClick}/>
         {RankingPanel}
         <Snackbar ref='snackbar' message={this.state.errorText}/>
       </div>

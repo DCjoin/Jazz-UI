@@ -79,7 +79,7 @@ let AnalysisPanel = React.createClass({
       return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
         <div style={{margin:'20px 35px'}}>最近7天能耗分析</div>
         <div className={'jazz-alarm-chart-toolbar-container'}>
-            {me.getEnergyTypeCombo()}
+            {me.state.chartStrategy.getEnergyTypeComboFn()}
             {me.state.chartStrategy.searchBarGenFn(me)}
         </div>
         {energyPart}
@@ -88,12 +88,7 @@ let AnalysisPanel = React.createClass({
     },
     componentDidMount: function() {
       let me = this;
-      let date = new Date();
-      date.setHours(0,0,0);
-      let last7Days = CommonFuns.dateAdd(date, -7, 'days');
-      let endDate = CommonFuns.dateAdd(date, 0, 'days');
-      this.refs.relativeDate.setState({selectedIndex: 1});
-      this.refs.dateTimeSelector.setDateField(last7Days, endDate);
+      this.state.chartStrategy.getInitParamFn(me);
       this.state.chartStrategy.getAllDataFn();
       this.state.chartStrategy.getCustomizedLabelItemsFn(me);
       this.state.chartStrategy.bindStoreListenersFn(me);
@@ -365,7 +360,8 @@ let AnalysisPanel = React.createClass({
       this.disableKpitypeButton();
     },
     _onHierNodeChange(){
-      this.getIndustyMenuItems();
+      var industyMenuItems = this.getIndustyMenuItems();
+      this.setState({industyMenuItems: industyMenuItems});
       this.enableLabelButton(true);
     },
     enableLabelButton(preSelect){
@@ -404,10 +400,10 @@ let AnalysisPanel = React.createClass({
       this.setState({kpiTypeDisable: true});
     },
     hasIndustyMenuItems: function () {
-      return this.state.industyLabelMenuItems.length > 0;
+      return this.state.industyMenuItems.length > 0;
     },
     hasCustomizedMenuItems: function () {
-      return this.state.customerLabelMenuItems.length > 0;
+      return this.state.customerMenuItems.length > 0;
     },
     initSlectedLabelItem(){
       var selectedLabelItem = {};
@@ -416,38 +412,6 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem.text = "请选择能效标识";
       selectedLabelItem.value = null;
       return selectedLabelItem;
-    },
-    getIndustyLabelMenu(){
-      var labelItems = this.state.industyLabelMenuItems;
-      var labelMenuItems = labelItems.map(function(item) {
-        let props = {
-          value: item.value,
-          primaryText: item.text,
-          industryId: item.industryId,
-          zoneId: item.zoneId,
-          parent: 'industryZone'
-        };
-        return (
-          <MenuItem {...props}/>
-        );
-      });
-      return labelMenuItems;
-    },
-    getCustomizedLabelMenu(){
-      var labelItems = this.state.customerMenuItems;
-      var labelMenuItems = labelItems.map(function(item) {
-        let props = {
-          value: item.customerizedId,
-          primaryText: item.text,
-          customerizedId: item.customerizedId,
-          kpiType: item.kpiType,
-          parent: 'customized'
-        };
-        return (
-          <MenuItem {...props}/>
-        );
-      });
-      return labelMenuItems;
     },
     getIndustyMenuItems(){
       var industryStore = LabelMenuStore.getIndustryData();
@@ -478,7 +442,7 @@ let AnalysisPanel = React.createClass({
       if(industyMenuItems.length === 0){
         industyMenuItems = this.getNoneMenuItem(true);
       }
-      this.setState({industyMenuItems: industyMenuItems});
+      return industyMenuItems;
     },
     removeIndustyLabelItems(){
       this.setState({
@@ -500,14 +464,16 @@ let AnalysisPanel = React.createClass({
           value: 'none',
           industryId: -1,
           zoneId: -1,
-          text: "无",
+          primaryText: "无",
+          parent: "industryZone"
         });
       }
       else {
         menuItems.push({
           value: 'none',
           customerizedId: -1,
-          text: "无"
+          primaryText: "无",
+          parent: "customized"
         });
       }
       return menuItems;
@@ -531,8 +497,9 @@ let AnalysisPanel = React.createClass({
       var labelMenuItem = {};
       labelMenuItem.industryId = industryId;
       labelMenuItem.zoneId = zoneId;
-      labelMenuItem.text = labelItem.ZoneComment + labelItem.IndustryComment;
+      labelMenuItem.primaryText = labelItem.ZoneComment + labelItem.IndustryComment;
       labelMenuItem.value = "" + zoneId + "/" + industryId;
+      labelMenuItem.parent = 'industryZone';
       industyMenuItems.push(labelMenuItem);
     },
     getBenchmarkOption: function () {
@@ -588,6 +555,9 @@ let AnalysisPanel = React.createClass({
     getKpiType: function () {
       return this.state.kpiTypeValue;
     },
+    onChangeKpiStyle: function(){
+      this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
+    }
 });
 
 module.exports = AnalysisPanel;

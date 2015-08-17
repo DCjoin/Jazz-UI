@@ -24,7 +24,7 @@ import ChartComponentBox from './ChartComponentBox.jsx';
 import GridComponent from './GridComponent.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
-import LabelMenuStore from '../../stores/LabelStore.jsx';
+import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import RankStore from '../../stores/LabelMenuStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
@@ -40,7 +40,7 @@ const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', t
  {value:'RankByArea', text:'单位面积排名'},{value:'RankByHeatArea',text:'单位供冷面积排名'},
  {value:'RankByCoolArea',text:'单位采暖面积排名'},{value:'RankByRoom',text:'单位客房排名'},
  {value:'RankByUsedRoom',text:'单位已用客房排名'},{value:'RankByBed',text:'单位床位排名'}];
- var kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
+ const kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
  {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
  {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
  {value:'UnitBed',text:'单位床位'},{value:'DayNightRatio',text:'昼夜比'},
@@ -60,6 +60,7 @@ let ChartStrategyFactor = {
   strategyConfiguration: {
     Energy: {
       searchBarGenFn:'energySearchBarGen',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn:'getSelectedTagList',
       onSearchDataButtonClickFn:'onSearchDataButtonClick',
       onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
@@ -68,6 +69,7 @@ let ChartStrategyFactor = {
       getInitialStateFn:'empty',
       getAllDataFn: 'empty',
       getCustomizedLabelItemsFn: 'empty',
+      getInitParamFn: 'getInitParam',
       getEnergyDataFn:'energyDataLoad',
       getPieEnergyDataFn:'pieEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
@@ -98,15 +100,18 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canShareDataWith',
       exportChartFn:'exportChart'
 
-    },Labelling:{
+    },Label:{
       searchBarGenFn:'labelSearchBarGen',
+      getEnergyTypeComboFn: 'empty',
       getSelectedNodesFn:'getSelectedTagList',
       onSearchDataButtonClickFn:'onLabelSearchDataButtonClick',
       onEnegyTypeChangeFn:'empty',
+      onHierNodeChangeFn:'onHierNodeChange',
       setFitStepAndGetDataFn:'setLabelTypeAndGetData',
       getInitialStateFn:'getLabelInitialState',
       getAllDataFn: 'getAllData',
       getCustomizedLabelItemsFn: 'getCustomizedLabelItems',
+      getInitParamFn: 'empty',
       getEnergyDataFn: 'labelDataLoad',
       getChartComponentFn:'getLabelChartComponent',
       bindStoreListenersFn:'labelBindStoreListeners',
@@ -114,19 +119,49 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canRankShareDataWith'
     },Rank:{
       searchBarGenFn:'rankSearchBarGen',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn:'getSelectedList',
       onSearchDataButtonClickFn:'onRankSearchDataButtonClick',
       onEnegyTypeChangeFn:'onRankEnegyTypeChange',
+      onHierNodeChangeFn:'empty',
       setFitStepAndGetDataFn:'setRankTypeAndGetData',
       getInitialStateFn:'getRankInitialState',
       getAllDataFn: 'empty',
       getCustomizedLabelItemsFn: 'empty',
+      getInitParamFn: 'getInitParam',
       getEnergyDataFn: 'rankDataLoad',
       getChartComponentFn:'getRankChartComponent',
       bindStoreListenersFn:'rankBindStoreListeners',
       unbindStoreListenersFn:'rankUnbindStoreListeners',
       canShareDataWithFn:'canRankShareDataWith'
     }
+ },
+ getEnergyTypeComboFnStrategy:{
+   empty(){},
+   getEnergyTypeCombo(analysisPanel){
+     let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
+     return <DropDownMenu menuItems={types} onChange={analysisPanel.state.chartStrategy.onEnegyTypeChangeFn}></DropDownMenu>;
+   }
+ },
+ getInitParamFnStrategy:{
+   empty(){},
+   getInitParam(analysisPanel){
+     let date = new Date();
+     date.setHours(0,0,0);
+     let last7Days = CommonFuns.dateAdd(date, -7, 'days');
+     let endDate = CommonFuns.dateAdd(date, 0, 'days');
+     analysisPanel.refs.relativeDate.setState({selectedIndex: 1});
+     analysisPanel.refs.dateTimeSelector.setDateField(last7Days, endDate);
+   }
+ },
+ onHierNodeChangeFnStrategy:{
+   empty(){},
+   onHierNodeChange(analysisPanel){
+     var industyMenuItems = analysisPanel.getIndustyMenuItems();
+     analysisPanel.setState({industyMenuItems: industyMenuItems});
+     analysisPanel.enableLabelButton(true);
+     analysisPanel.refs.kpiType.setState({selectedIndex: analysisPanel.state.kpiTypeValue});
+   }
  },
  onEnegyTypeChangeFnStrategy:{
    empty(){},
@@ -151,16 +186,18 @@ let ChartStrategyFactor = {
      if(!!analysisPanel.hasCustomizedMenuItems()){
        customizedStore.forEach((item, index) => {
          menuItems.push({
-          customerizedId: item.Id,
-          text: item.Name,
-          kpiType: item.LabellingType
-        });
+           value: item.Id,
+           customerizedId: item.Id,
+           primaryText: item.Name,
+           kpiType: item.LabellingType,
+           parent: 'customized'
+         });
        });
      }
      if(menuItems.length === 0){
-       menuItems = this.getNoneMenuItem(false);
+       menuItems = analysisPanel.getNoneMenuItem(false);
      }
-     this.setState({customerMenuItems: menuItems});
+     analysisPanel.setState({customerMenuItems: menuItems});
    }
  },
  initEnergyStoreByBizChartTypeFnStrategy:{
@@ -205,7 +242,7 @@ let ChartStrategyFactor = {
        industyMenuItems: [],
        customerMenuItems: [],
        selectedLabelItem: selectedLabelItem,
-       kpiTypeValue: 1,
+       kpiTypeValue: 0,
        labelDisable: true,
        kpiTypeDisable: false
      };
@@ -300,7 +337,7 @@ let ChartStrategyFactor = {
      }
      var viewOption = analysisPanel.getViewOption();
      var benchmarkOption = analysisPanel.getBenchmarkOption();
-     var labelingType = analysisPanel.getKpiType();
+     var labelingType = analysisPanel.state.kpiTypeValue + 1;
      analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
    }
  },
@@ -401,10 +438,10 @@ let ChartStrategyFactor = {
       textAlign: 'center'
     };
     var curYear = (new Date()).getFullYear();
-    var selectYear = (this.state.year || curYear) + '年';
+    var selectYear = curYear + '年';
     var yearProps = {
       ref: "yearSelector",
-      selectedIndex: ((this.state.year || curYear) - curYear + 10),
+      selectedIndex: 10,
       onYearPickerSelected: this._onYearPickerSelected,
       style: {
         border: '1px solid #efefef',
@@ -567,10 +604,10 @@ let ChartStrategyFactor = {
      RankStore.addRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    },
    labelBindStoreListeners(analysisPanel){
-     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange);
-     LabelStore.addRankDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
-     LabelStore.addRankDataLoadedListener(analysisPanel._onLabelDataChange);
-     LabelStore.addRankDataLoadErrorListener(analysisPanel._onGetLabelDataError);
+     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+     LabelStore.addLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
+     LabelStore.addLabelDataLoadedListener(analysisPanel._onLabelDataChange);
+     LabelStore.addLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
    }
  },
  unbindStoreListenersFnStrategy:{
@@ -586,10 +623,10 @@ let ChartStrategyFactor = {
      RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    },
    labelUnbindStoreListeners(analysisPanel){
-     LabelMenuStore.removeRankDataLoadingListener(analysisPanel._onHierNodeChange);
-     LabelStore.removeRankDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
-     LabelStore.removeRankDataLoadedListener(analysisPanel._onLabelDataChange);
-     LabelStore.removeRankDataLoadErrorListener(analysisPanel._onGetLabelDataError);
+     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange);
+     LabelStore.removeLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
+     LabelStore.removeLabelDataLoadedListener(analysisPanel._onLabelDataChange);
+     LabelStore.removeLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
    }
  },
  exportChartFnStrategy:{
@@ -628,26 +665,27 @@ let ChartStrategyFactor = {
     return searchButton;
   },
   getLabelBtn(analysisPanel){
-    var industyLabelMenu = analysisPanel.getIndustyLabelMenu();
-    var customizedLabelMenu = analysisPanel.getCustomizedLabelMenu();
-    let labelButton = <ButtonMenu label={this.state.selectedLabelItem.text} style={{marginLeft:'10px'}} desktop={true}
-      disabled={this.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
-      <ExtendableMenuItem primaryText="行业能效标识" value='industryZone'>
-      <Menu>
-        {industyLabelMenu}
-      </Menu>
+    var industySubItems = analysisPanel.state.industyMenuItems;
+    var customizedSubItems = analysisPanel.state.customerMenuItems;
+    let labelButton = <ButtonMenu label={analysisPanel.state.selectedLabelItem.text} style={{marginLeft:'10px'}} desktop={true}
+      disabled={analysisPanel.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
+      <ExtendableMenuItem primaryText="行业能效标识" value='industryZone' subItems={industySubItems}>
       </ExtendableMenuItem>
-      <ExtendableMenuItem primaryText="自定义能效标识" value='customized'>
-      <Menu>
-        {customizedLabelMenu}
-      </Menu>
+      <ExtendableMenuItem primaryText="自定义能效标识" value='customized' subItems={customizedSubItems}>
       </ExtendableMenuItem>
     </ButtonMenu>;
     return labelButton;
   },
   getKpiTypeBtn(analysisPanel){
-    let kpiTypeButton  = <DropDownMenu menuItems={kpiTypeItem}
-      ref='kpiType' disabled={this.state.skiTypeDisable}></DropDownMenu>;
+    let kpiTypeButton;
+    if(!analysisPanel.state.kpiTypeDisable){
+      kpiTypeButton = <DropDownMenu menuItems={kpiTypeItem} onChange={analysisPanel.onChangeKpiStyle}
+        ref='kpiType'></DropDownMenu>;
+      }
+    else{
+      kpiTypeButton = <span>{kpiTypeItem[analysisPanel.state.kpiTypeValue].text}</span>;
+    }
+    return kpiTypeButton;
   },
   getConfigBtn(analysisPanel){
     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
