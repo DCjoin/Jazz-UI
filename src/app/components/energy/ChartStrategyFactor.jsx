@@ -94,6 +94,7 @@ let ChartStrategyFactor = {
       getInitialStateFn:'getUnitEnergyInitialState',
       getAllDataFn: 'empty',
       getCustomizedLabelItemsFn: 'empty',
+      getInitParamFn: 'getInitParam',
       getEnergyDataFn:'unitEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
       bindStoreListenersFn:'energyBindStoreListeners',
