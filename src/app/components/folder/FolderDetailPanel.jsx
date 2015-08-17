@@ -102,9 +102,12 @@ var FolderDetailPanel = React.createClass({
                                             </Menu>:null);
   var subtitle=(this.props.nodeData.get('SourceUserName')?I18N.format(I18N.Folder.Detail.SubTitile,this.props.nodeData.get('SourceUserName')):null)
   var content=[];
+  if(this.props.nodeData.get('Children')){
     this.props.nodeData.get('Children').forEach(function(child){
       content.push(<FolderItem nodeData={child}/>)
     })
+  };
+
     return(
       <div className='jazz-folder-detail'>
         <div className='header'>
