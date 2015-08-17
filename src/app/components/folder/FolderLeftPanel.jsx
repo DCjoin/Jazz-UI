@@ -250,12 +250,13 @@ var FolderLeftPanel = React.createClass({
     var panel=(this.state.isShow?(<div style={{display:'flex',flex:1}}><PanelContainer></PanelContainer> </div>)
                     :(<div style={{display:'none'}}><PanelContainer></PanelContainer></div>)
               );
+    var button= <FlatButton   style={buttonStyle} onClick={this._onToggle}>
+              <FontIcon className="icon-taglist-fold" style={iconStyle}/>
+            </FlatButton>;
     return(
       <div style={{display:'flex'}}>
         {panel}
-        <FlatButton   style={buttonStyle} onClick={this._onToggle}>
-          <FontIcon className="icon-taglist-fold" style={iconStyle}/>
-        </FlatButton>
+
       </div>
     )
   }
