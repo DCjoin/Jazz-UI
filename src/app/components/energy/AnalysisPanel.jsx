@@ -29,11 +29,13 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Energy'
+        bizType:'Unit'
+        //bizType:'Energy'
       };
     },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(this.props.bizType);
+      let map = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank'};
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(map[this.props.bizType]);
       let state = {
         isLoading: false,
         energyData: null,
