@@ -86,6 +86,7 @@ let ChartStrategyFactor = {
 
     },UnitEnergyUsage:{
       searchBarGenFn:'unitEnergySearchBarGen',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn:'getSelectedTagList',
       onSearchDataButtonClickFn:'onUnitEnergySearchDataButtonClick',
       onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
