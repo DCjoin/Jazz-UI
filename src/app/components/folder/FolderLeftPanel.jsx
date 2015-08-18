@@ -62,7 +62,8 @@ var PanelContainer = React.createClass({
     this.setState({
       isLoading:true
     });
-    FolderAction.createWidgetOrFolder(this.state.selectedNode,I18N.Folder.NewFolder,6,window.currentCustomerId);
+    var name=FolderStore.getDefaultName(I18N.Folder.NewFolder,this.state.selectedNode,6);
+    FolderAction.createWidgetOrFolder(this.state.selectedNode,name,6,window.currentCustomerId);
   },
   _onCreateFolderOrWidgetChange:function(){
     this.setState({
@@ -83,6 +84,7 @@ var PanelContainer = React.createClass({
     _newWidget[5]=I18N.Folder.NewWidget.Menu5;
 
     let name=I18N.format(I18N.Folder.NewWidget.DefaultName, _newWidget[widgetType]);
+    name=FolderStore.getDefaultName(name,this.state.selectedNode,7);
     this.setState({
       isLoading:true
     });

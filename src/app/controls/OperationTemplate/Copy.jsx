@@ -15,6 +15,7 @@ var Copy = React.createClass({
     onSecondActionTouchTap:React.PropTypes.func,
     onDismiss: React.PropTypes.func,
     errorText:React.PropTypes.string,
+    treeNode:React.PropTypes.object,
   },
   _onFirstActionTouchTap:function(){
     this.refs.dialog.dismiss();
@@ -48,14 +49,10 @@ var Copy = React.createClass({
     console.log("**wyh**");
   },
   getInitialState:function(){
-    var selectedNode=FolderStore.getSelectedNode();
-    if(selectedNode===null){
-      selectedNode=FolderStore.getFolderTree()
-    }
     return{
       labelName:this.props.labelName,
       allNode:FolderStore.getFolderTree(),
-      selectedNode:selectedNode,
+      selectedNode:this.props.treeNode,
       treeShow:false
     };
   },
