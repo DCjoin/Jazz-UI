@@ -28,8 +28,9 @@ var CopyView = React.createClass({
     let Props={
       title:title,//复制文件夹 or 复制图表
       label:label,//文件夹名称 or 图表名称
-      labelName:FolderStore.getCopyLabelName(this.props.copyNode.get('Name'),6),
+      labelName:FolderStore.getCopyLabelName(this.props.copyNode,6),
       firstActionLabel:I18N.Folder.Copy.firstActionLabel,//复制 or 保存
+      treeNode:FolderStore.getParent(this.props.copyNode),
       onFirstActionTouchTap:this._onCopyItem,
       onDismiss:this.props.onDismiss
     }
