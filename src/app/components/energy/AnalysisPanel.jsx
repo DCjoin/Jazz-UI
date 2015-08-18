@@ -574,7 +574,7 @@ let AnalysisPanel = React.createClass({
     onChangeKpiType: function(){
       this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
     },
-    _onConfigBtnItemTouchTap(){
+    _onConfigBtnItemTouchTap(e,item){
       console.log('AnalysisPanel--- _onConfigBtnItemTouchTap');
     }
 });

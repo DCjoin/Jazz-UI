@@ -39,8 +39,8 @@ let ExtendableMenuItem = React.createClass({
               {subMenu}
     </div>;
   },
-  _onSubMenuItemTouchTap(){
-    this.props.onTouchTap(arguments);
+  _onSubMenuItemTouchTap(e, item){
+    this.props.onTouchTap(item);
   },
   _onItemMouseOver(){
     this.itemOverTimeouts.forEach((item)=>{
