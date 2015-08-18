@@ -172,7 +172,8 @@ let ChartStrategyFactor = {
      var zoneData = LabelMenuStore.getZoneData();
      var hierNode = LabelMenuStore.getHierNode();
      var benchmarkData = LabelMenuStore.getBenchmarkData();
-     return CommonFuns.filterBenchmarks(hierNode, industryData, zoneData, benchmarkData);
+     this.setState({benchmarks:CommonFuns.filterBenchmarks(hierNode, industryData, zoneData, benchmarkData)});
+     //return CommonFuns.filterBenchmarks(hierNode, industryData, zoneData, benchmarkData);
    }
  },
  onEnegyTypeChangeFnStrategy:{
@@ -664,7 +665,7 @@ let ChartStrategyFactor = {
      EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
      EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
-     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+     LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
    },
    rankUnbindStoreListeners(analysisPanel){
      RankStore.removeRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
