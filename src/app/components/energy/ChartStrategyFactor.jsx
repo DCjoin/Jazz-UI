@@ -178,7 +178,7 @@ let ChartStrategyFactor = {
      var zoneData = LabelMenuStore.getZoneData();
      var hierNode = LabelMenuStore.getHierNode();
      var benchmarkData = LabelMenuStore.getBenchmarkData();
-     this.setState({benchmarks:CommonFuns.filterBenchmarks(hierNode, industryData, zoneData, benchmarkData)});
+     analysisPanel.setState({benchmarks:CommonFuns.filterBenchmarks(hierNode, industryData, zoneData, benchmarkData)});
      //return CommonFuns.filterBenchmarks(hierNode, industryData, zoneData, benchmarkData);
    }
  },
