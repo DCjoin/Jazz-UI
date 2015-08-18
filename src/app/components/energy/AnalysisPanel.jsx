@@ -16,6 +16,7 @@ import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
+const defaultMap = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'Label'};
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -29,13 +30,13 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        //bizType:'Unit'
-        bizType:'Energy'
+        bizType:'Unit',
+        chartTitle:'最近7天能耗'
+        //bizType:'Energy'
       };
     },
     getInitialState(){
-      let map = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'Label'};
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(map[this.props.bizType]);
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[this.props.bizType]);
       let state = {
         isLoading: false,
         energyData: null,
@@ -53,12 +54,30 @@ let AnalysisPanel = React.createClass({
       var obj = chartStrategy.getInitialStateFn(this);
 
       assign(state, obj);
-
-      if(this.props.chartTitle){
-        state.chartTitle = this.props.chartTitle;
-      }
       return state;
     },
+    // componentWillReceiveProps: function(nextProps) {
+    //   let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[nextProps.bizType]);
+    //   let state = {
+    //     isLoading: false,
+    //     energyData: null,
+    //     energyRawData: null,
+    //     hierName: null,
+    //     submitParams: null,
+    //     step: null,
+    //     dashboardOpenImmediately: false,
+    //     baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
+    //     selectedChartType:'line',
+    //     energyType:'energy',//'one of energy, cost carbon'
+    //     chartStrategy: chartStrategy
+    //   };
+    //
+    //   var obj = chartStrategy.getInitialStateFn(this);
+    //
+    //   assign(state, obj);
+    //
+    //   this.setState(state);
+    // },
     render(){
       let me = this, errorDialog, energyPart = null;
 
@@ -77,7 +96,7 @@ let AnalysisPanel = React.createClass({
       }
 
       return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
-        <div style={{margin:'20px 35px'}}>最近7天能耗分析</div>
+        <div style={{margin:'20px 35px'}}>{me.props.chartTitle}</div>
         <div className={'jazz-alarm-chart-toolbar-container'}>
             {me.state.chartStrategy.getEnergyTypeComboFn(me)}
             {me.state.chartStrategy.searchBarGenFn(me)}
