@@ -90,7 +90,6 @@ let AnalysisPanel = React.createClass({
       let me = this;
       this.state.chartStrategy.getInitParamFn(me);
       this.state.chartStrategy.getAllDataFn();
-      this.state.chartStrategy.getCustomizedLabelItemsFn(me);
       this.state.chartStrategy.bindStoreListenersFn(me);
     },
     componentWillUnmount: function() {
@@ -361,7 +360,11 @@ let AnalysisPanel = React.createClass({
     },
     _onHierNodeChange(){
       var industyMenuItems = this.getIndustyMenuItems();
-      this.setState({industyMenuItems: industyMenuItems});
+      var customerMenuItems = this.getCustomizedLabelItems();
+      this.setState({
+        industyMenuItems: industyMenuItems,
+        customerMenuItems: customerMenuItems
+      });
       this.enableLabelButton(true);
     },
     enableLabelButton(preSelect){
@@ -412,6 +415,25 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem.text = "请选择能效标识";
       selectedLabelItem.value = null;
       return selectedLabelItem;
+    },
+    getCustomizedLabelItems(){
+      var menuItems = [];
+      var customizedStore = LabelMenuStore.getCustomerLabelData();
+      if(!this.hasCustomizedMenuItems()){
+        customizedStore.forEach((item, index) => {
+          menuItems.push({
+            value: item.get('Id'),
+            customerizedId: item.get('Id'),
+            primaryText: item.get('Name'),
+            kpiType: item.get('LabellingType'),
+            parent: 'customized'
+          });
+        });
+      }
+      if(menuItems.length === 0){
+        menuItems = this.getNoneMenuItem(false);
+      }
+      return menuItems;
     },
     getIndustyMenuItems(){
       var industryStore = LabelMenuStore.getIndustryData();

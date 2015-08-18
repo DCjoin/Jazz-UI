@@ -64,7 +64,7 @@ let LabelMenuAction = {
   },
   getCustomerLabels(){
     Ajax.post('/Customer.svc/GetCustomerLabellings', {
-      params: {filter:{CustomerId:window.currentCustomerId}},
+      params: {filter:{CustomerId:parseInt(window.currentCustomerId)}},
       success: function(customerLabelData){
         AppDispatcher.dispatch({
             type: Action.GET_ALL_CUSTOMER_LABELS_SUCCESS,

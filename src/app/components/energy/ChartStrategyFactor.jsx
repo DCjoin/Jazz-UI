@@ -185,13 +185,13 @@ let ChartStrategyFactor = {
    getCustomizedLabelItems(analysisPanel){
      var menuItems = [];
      var customizedStore = LabelMenuStore.getCustomerLabelData();
-     if(!!analysisPanel.hasCustomizedMenuItems()){
+     if(!analysisPanel.hasCustomizedMenuItems()){
        customizedStore.forEach((item, index) => {
          menuItems.push({
-           value: item.Id,
-           customerizedId: item.Id,
-           primaryText: item.Name,
-           kpiType: item.LabellingType,
+           value: item.get('Id'),
+           customerizedId: item.get('Id'),
+           primaryText: item.get('Name'),
+           kpiType: item.get('LabellingType'),
            parent: 'customized'
          });
        });
