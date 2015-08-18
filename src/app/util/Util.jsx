@@ -1,5 +1,6 @@
 'use strict';
 import Momment from 'moment';
+import Immutable from 'immutable';
 import _ from 'lodash';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 const FIXEDTIMES = {
@@ -750,7 +751,7 @@ let CommonFuns = {
 
 	    var ret = [], begin, end;
 	    if (from == 'left') {
-	      for (var i = 0; i < text.length; i++) {
+	      for (let i = 0; i < text.length; i++) {
 	        if (/^[\u4e00-\u9fa5]$/.test(text[i])) {
 	          sum++;
 	        }
@@ -765,7 +766,7 @@ let CommonFuns = {
 	      }
 	    }
 	    else {
-	      for (var i = text.length - 1; i >= 0; i--) {
+	      for (let i = text.length - 1; i >= 0; i--) {
 	        if (/^[\u4e00-\u9fa5]$/.test(text[i])) {
 	          sum++;
 	        }
@@ -935,6 +936,62 @@ let CommonFuns = {
 			nodeNameAssociation.push({Id:tag.tagId, Name:tag.tagName, HierId: tag.hierId, NodeName:hieName, AssociationOption:1, DimensionName:null});
 		}
 		return nodeNameAssociation;
+	},
+	filterBenchmarks(hierNode, allIndustries, allZones, allBenchmarks){
+		let retArr = [];
+		if (!hierNode ||  hierNode.Type != 2){
+			return null;
+		}
+		retArr.push(this.constructMenuItem(-1,-1,'行业基准值'));
+
+		let industryId = hierNode.IndustryId;
+ 		let zoneId = hierNode.ZoneId;
+
+		let targetBenchmark = allBenchmarks.find((benchmark)=>{ if(benchmark.get('IndustryId') === industryId) return benchmark; });
+		let targetIndustry = allIndustries.find((industry)=>{ if(industry.get('Id')===industryId) return industry;});
+		if(targetBenchmark) this.pushBenchmarkItem(industryId, zoneId, targetBenchmark, retArr, allZones);
+
+		// parent industry benchmark
+		let parentId = targetIndustry.get('ParentId');
+		if (parentId !== 0) {
+			 targetBenchmark = allBenchmarks.find((benchmark)=>{ if(benchmark.get('IndustryId') === parentId) return benchmark; });
+			 if(targetBenchmark) this.pushBenchmarkItem(parentId, zoneId, targetBenchmark, retArr, allZones);
+	 }
+	 // all industry benchmark
+	 targetBenchmark = allBenchmarks.find((benchmark)=>{ if(benchmark.get('IndustryId') === 0) return benchmark; });
+	 if(targetBenchmark) this.pushBenchmarkItem(0, zoneId, targetBenchmark, retArr, allZones);
+
+	 return retArr;
+	},
+	pushBenchmarkItem(industryId, zoneId, benchmark, retArr, allZones){
+		 var zoneIds = benchmark.get('ZoneIds'),
+		     hasAllZone = false;
+
+		 for (var i = 0, len = zoneIds.size; i < len; i++) {
+			 if (zoneIds.get(i) === 0) hasAllZone = true;
+			 if (zoneId === zoneIds.get(i) && zoneId !== 0) {
+					 retArr.push(
+								this.constructMenuItem(industryId, zoneId,
+											 benchmark.get('ZoneComments').get(i) + benchmark.get('IndustryComment'))
+							 );
+					 break;
+			 }
+	 }
+
+	 if (hasAllZone) {
+			 // add the current industry all zone
+			 retArr.push(
+					 this.constructMenuItem(industryId, 0,
+						 allZones.find((zone)=>{if(zone.get('Id')===0) return zone;}).get('Comment') + benchmark.get('IndustryComment'))
+					 );
+	 }
+	},
+	constructMenuItem(industryId, zoneId, text){
+		return {
+            industryId: industryId,
+            zoneId: zoneId,
+            primaryText: text
+        };
 	},
 	Regex:{
 		ExcelCell: /[a-z]+\d+/i, //A4,AA66

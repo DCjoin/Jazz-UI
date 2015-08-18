@@ -29,8 +29,8 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Label'
-        //bizType:'Energy'
+        //bizType:'Unit'
+        bizType:'Energy'
       };
     },
     getInitialState(){
@@ -79,7 +79,7 @@ let AnalysisPanel = React.createClass({
       return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
         <div style={{margin:'20px 35px'}}>最近7天能耗分析</div>
         <div className={'jazz-alarm-chart-toolbar-container'}>
-            {me.state.chartStrategy.getEnergyTypeComboFn()}
+            {me.state.chartStrategy.getEnergyTypeComboFn(me)}
             {me.state.chartStrategy.searchBarGenFn(me)}
         </div>
         {energyPart}
@@ -90,7 +90,6 @@ let AnalysisPanel = React.createClass({
       let me = this;
       this.state.chartStrategy.getInitParamFn(me);
       this.state.chartStrategy.getAllDataFn();
-      this.state.chartStrategy.getCustomizedLabelItemsFn(me);
       this.state.chartStrategy.bindStoreListenersFn(me);
     },
     componentWillUnmount: function() {
@@ -353,16 +352,14 @@ let AnalysisPanel = React.createClass({
       }
     },
     changeToIndustyrLabel(){
-      this.enableKpitypeButton();
+      this.enableKpiTypeButton();
     },
     changeToCustomizedLabel(kpiType){
       this.setState({kpiTypeValue: kpiType});
-      this.disableKpitypeButton();
+      this.disableKpiTypeButton();
     },
     _onHierNodeChange(){
-      var industyMenuItems = this.getIndustyMenuItems();
-      this.setState({industyMenuItems: industyMenuItems});
-      this.enableLabelButton(true);
+      this.state.chartStrategy.onHierNodeChangeFn(this);
     },
     enableLabelButton(preSelect){
       if(!this.state.labelDisable && !preSelect){
@@ -412,6 +409,25 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem.text = "请选择能效标识";
       selectedLabelItem.value = null;
       return selectedLabelItem;
+    },
+    getCustomizedMenuItems(){
+      var menuItems = [];
+      var customizedStore = LabelMenuStore.getCustomerLabelData();
+      if(!this.hasCustomizedMenuItems()){
+        customizedStore.forEach((item, index) => {
+          menuItems.push({
+            value: item.get('Id'),
+            customerizedId: item.get('Id'),
+            primaryText: item.get('Name'),
+            kpiType: item.get('LabellingType'),
+            parent: 'customized'
+          });
+        });
+      }
+      if(menuItems.length === 0){
+        menuItems = this.getNoneMenuItem(false);
+      }
+      return menuItems;
     },
     getIndustyMenuItems(){
       var industryStore = LabelMenuStore.getIndustryData();
@@ -555,8 +571,11 @@ let AnalysisPanel = React.createClass({
     getKpiType: function () {
       return this.state.kpiTypeValue;
     },
-    onChangeKpiStyle: function(){
+    onChangeKpiType: function(){
       this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
+    },
+    _onConfigBtnItemTouchTap(e,item){
+      console.log('AnalysisPanel--- _onConfigBtnItemTouchTap');
     }
 });
 

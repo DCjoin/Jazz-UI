@@ -28,7 +28,8 @@ let ExtendableMenuItem = React.createClass({
         return <MenuItem {...item}/>;
       });
       subMenu = <div style={{position:'absolute',overflow:'visible', display:'inline-block'}}>
-                  <Menu onMouseOver={me._onSubMenuMouseOver} onMouseOut={me._onSubMenuMouseOut} style={{left:'2px'}}>{subItems}</Menu>
+                  <Menu onMouseOver={me._onSubMenuMouseOver} onItemTouchTap={me._onSubMenuItemTouchTap}
+                      onMouseOut={me._onSubMenuMouseOut} style={{left:'2px'}} desktop={true}>{subItems}</Menu>
                 </div> ;
     }
     return <div style={{position:'relative'}} onMouseOver={me._onItemMouseOver} onMouseOut={me._onItemMouseOut}>
@@ -37,6 +38,9 @@ let ExtendableMenuItem = React.createClass({
               </div>
               {subMenu}
     </div>;
+  },
+  _onSubMenuItemTouchTap(e, item){
+    this.props.onTouchTap(item);
   },
   _onItemMouseOver(){
     this.itemOverTimeouts.forEach((item)=>{
