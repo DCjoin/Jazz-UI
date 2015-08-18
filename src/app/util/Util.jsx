@@ -790,6 +790,57 @@ let CommonFuns = {
 	    }
 	    else return date && date.getTime && (date >= new Date(2000, 0, 1)) && (date <= new Date());
 		},
+		thousandCommafy: function (number) {
+	    if (!CommonFuns.isNumber(number)) return number;
+
+	    var commafy = function (num) {
+	        var re = /(-?\d+)(\d{3})/;
+	        while (re.test(num)) {
+	            num = num.replace(re, "$1,$2");
+	        }
+	        return num;
+	    };
+
+	    var str = number.toString();
+	    var array = str.split('.');
+	    str = commafy(array[0]);
+	    if (array.length == 2) {
+	        str = str + '.' + array[1];
+	    }
+	    return str;
+		},
+		GetArialStrLen: function (str) {
+	    var lencounter = 0,
+	        ch;
+
+	    for (var i = 0, len = str.length; i < len; i++) {
+	        ch = str[i];
+
+	        if (ch.charCodeAt() > 128) {
+	            lencounter++;
+	            continue;
+	        }
+	        else if (ch == 'f' || ch == 'i' || ch == 'j' || ch == 'l' || ch == 'r' || ch == 'I' || ch == '.' || ch == ':' || ch == ';' || ch == '(' || ch == ')' || ch == '-' || ch == '_' || ch == '*' || ch == '!' || ch == '\'') {
+	            lencounter += 0.3;
+	        }
+	        else if (ch >= '0' && ch <= '9') {
+	            lencounter += 0.6;
+	        }
+	        else if (ch >= 'a' && ch <= 'z') {
+	            lencounter += 0.6;
+	        }
+	        else if (ch == 'W' || ch == 'M') {
+	            lencounter += 1;
+	        }
+	        else if (ch >= 'A' && ch <= 'Z') {
+	            lencounter += 0.7;
+	        }
+	        else {
+	            lencounter++;
+	        }
+	    }
+	    return (Math.round(lencounter * 10) / 10);
+		},
 		GetArialStr(str, requisiteLen) {
 	    var lencounter = 0,
 	        oldLencounter = 0,
@@ -828,6 +879,7 @@ let CommonFuns = {
 	    return str;
 		}
 	},
+
 	formatDateValue: function (time, step) {
       var date = new Date(time),
           ft = I18N.DateTimeFormat.IntervalFormat,

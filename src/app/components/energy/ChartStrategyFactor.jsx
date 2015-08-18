@@ -167,8 +167,10 @@ let ChartStrategyFactor = {
      analysisPanel.setState({
        industyMenuItems: industyMenuItems,
        customerMenuItems: customerMenuItems
+     },()=>{
+       analysisPanel.enableLabelButton(true);
      });
-     analysisPanel.enableLabelButton(true);
+
      analysisPanel.refs.kpiType.setState({selectedIndex: analysisPanel.state.kpiTypeValue});
    },
    unitEnergyOnHierNodeChange(analysisPanel){
@@ -359,7 +361,7 @@ let ChartStrategyFactor = {
      }
      var viewOption = analysisPanel.getViewOption();
      var benchmarkOption = analysisPanel.getBenchmarkOption();
-     var labelingType = analysisPanel.state.kpiTypeValue + 1;
+     var labelingType = analysisPanel.getKpiType();
      analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
    }
  },
@@ -464,7 +466,6 @@ let ChartStrategyFactor = {
     var yearProps = {
       ref: "yearSelector",
       selectedIndex: 10,
-      onYearPickerSelected: this._onYearPickerSelected,
       style: {
         border: '1px solid #efefef',
         margin: '14px 0px 0px 10px'
@@ -605,8 +606,8 @@ let ChartStrategyFactor = {
      let chartCmpObj ={ref:'ChartComponent',
                        bizType:analysisPanel.props.bizType,
                        energyData: analysisPanel.state.energyData,
-                       ctWidth: analysisPanel.refs.chartContainer.getDOMNode().style.width,
-                       ctHeight: analysisPanel.refs.chartContainer.getDOMNode().style.height,
+                       ctWidth: 1600,
+                       ctHeight: 370,
                        energyRawData: analysisPanel.state.energyRawData,
                        onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
                        onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
@@ -676,7 +677,7 @@ let ChartStrategyFactor = {
      RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    },
    labelUnbindStoreListeners(analysisPanel){
-     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange);
+     LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange);
      LabelStore.removeLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
      LabelStore.removeLabelDataLoadedListener(analysisPanel._onLabelDataChange);
      LabelStore.removeLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
