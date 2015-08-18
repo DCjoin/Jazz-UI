@@ -46,7 +46,11 @@ var UserStore = assign({},PrototypeStore,{
   getUserList:function(){
     return _userList;
   },
-
+  resetUserList:function(){
+     _userStatusList=Immutable.List([]);
+        _userList=null;
+        _userIds=[];
+  },
   emitUserStatusChange: function() {
               this.emit(SET_USER_STATUS_EVENT);
   },
@@ -83,6 +87,9 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
   case UserAction.SET_ALL_USERS_STATUS:
       UserStore.setUserStatusByAllCheck(action.status);
       UserStore.emitUserStatusChange();
+      break;
+  case UserAction.RESET_USER_LIST:
+      UserStore.resetUserList();
       break;
     }
   });

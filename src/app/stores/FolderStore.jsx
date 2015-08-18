@@ -100,7 +100,7 @@ var FolderStore = assign({},PrototypeStore,{
      }
    }
    _folderTree=this.modifyTreebyNode(_folderTree);
-  _selectedNode=newNode;
+  _selectedNode=_newNode;
   },
   modifyName:function(newNode){
     var parent;
@@ -129,15 +129,24 @@ var FolderStore = assign({},PrototypeStore,{
   copyItem:function(destItem,newNode){
     var parent=destItem;
     var children;
+    var _newNode=newNode;
     if(parent.get('Children')){
       children=parent.get('Children')
     }
     else {
       children=Immutable.List([])
     }
-      parent=parent.set('Children',children.push(newNode));
+      parent=parent.set('Children',children.push(_newNode));
       _parentId=parent.get('Id');
       _changedNode=parent;
+      if(_newNode.get('Type')==6){
+        let subFolderCount =  _changedNode.get('ChildFolderCount')+1;
+         _changedNode=_changedNode.set('ChildFolderCount',subFolderCount);
+      }
+      else {
+        let subWidgetCount  =  _changedNode.get('ChildWidgetCount ')+1;
+         _changedNode=_changedNode.set('ChildWidgetCount ',subWidgetCount );
+      }
       _folderTree=this.modifyTreebyNode(_folderTree);
       _selectedNode=newNode;
   },
@@ -159,6 +168,14 @@ var FolderStore = assign({},PrototypeStore,{
     parent=parent.set('Children',children.delete(children.findIndex(item=>item.get('Id')==deleteNode.get('Id'))));
     _parentId=parent.get('Id');
     _changedNode=parent;
+    if(_newNode.get('Type')==6){
+      let subFolderCount =  _changedNode.get('ChildFolderCount')-1;
+       _changedNode=_changedNode.set('ChildFolderCount',subFolderCount);
+    }
+    else {
+      let subWidgetCount  =  _changedNode.get('ChildWidgetCount')-1;
+       _changedNode=_changedNode.set('ChildWidgetCount ',subWidgetCount );
+    }
     _folderTree=this.modifyTreebyNode(_folderTree);
   },
   setModifyNameError:function(res,newName,type){
