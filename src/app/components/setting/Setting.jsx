@@ -65,7 +65,7 @@ componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
   FolderStore.addModifyNameErrorListener(this._onModifyNameError);
   FolderStore.addSendStatusListener(this._onSendStatusChange);
-    FolderStore.addSelectedNodeListener(this._onSelectedNodehange);
+  FolderStore.addSelectedNodeListener(this._onSelectedNodehange);
 },
 componentWillUnmount:function(){
   FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);

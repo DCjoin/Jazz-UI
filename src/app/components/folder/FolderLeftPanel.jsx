@@ -63,7 +63,6 @@ var PanelContainer = React.createClass({
       isLoading:true
     });
     FolderAction.createWidgetOrFolder(this.state.selectedNode,I18N.Folder.NewFolder,6,window.currentCustomerId);
-    MainBizAction.setBizType(0);
   },
   _onCreateFolderOrWidgetChange:function(){
     this.setState({
@@ -88,7 +87,6 @@ var PanelContainer = React.createClass({
       isLoading:true
     });
     FolderAction.createWidgetOrFolder(this.state.selectedNode,name,7,window.currentCustomerId,widgetType);
-    MainBizAction.setBizType(widgetType);
   },
   _onTemplateTest:function(){
     this.setState({
@@ -177,10 +175,10 @@ var PanelContainer = React.createClass({
 
 
       var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
-    //  var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.selectedNode}/>:null);
+    var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.selectedNode}/>:null);
     //  var template=(this.state.templateShow?<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.selectedNode}/>:null);
     //var template=(this.state.templateShow?<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.selectedNode}/>:null);
-    var template=(this.state.templateShow?<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.selectedNode}/>:null);
+  //  var template=(this.state.templateShow?<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.selectedNode}/>:null);
 
     return(
       <div className="jazz-folder-leftpanel-container">
