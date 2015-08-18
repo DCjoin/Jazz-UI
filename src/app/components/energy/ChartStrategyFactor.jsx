@@ -163,7 +163,11 @@ let ChartStrategyFactor = {
    empty(){},
    onHierNodeChange(analysisPanel){
      var industyMenuItems = analysisPanel.getIndustyMenuItems();
-     analysisPanel.setState({industyMenuItems: industyMenuItems});
+     var customerMenuItems = analysisPanel.getCustomizedMenuItems();
+     analysisPanel.setState({
+       industyMenuItems: industyMenuItems,
+       customerMenuItems: customerMenuItems
+     });
      analysisPanel.enableLabelButton(true);
      analysisPanel.refs.kpiType.setState({selectedIndex: analysisPanel.state.kpiTypeValue});
    },
@@ -201,13 +205,13 @@ let ChartStrategyFactor = {
    getCustomizedLabelItems(analysisPanel){
      var menuItems = [];
      var customizedStore = LabelMenuStore.getCustomerLabelData();
-     if(!!analysisPanel.hasCustomizedMenuItems()){
+     if(!analysisPanel.hasCustomizedMenuItems()){
        customizedStore.forEach((item, index) => {
          menuItems.push({
-           value: item.Id,
-           customerizedId: item.Id,
-           primaryText: item.Name,
-           kpiType: item.LabellingType,
+           value: item.get('Id'),
+           customerizedId: item.get('Id'),
+           primaryText: item.get('Name'),
+           kpiType: item.get('LabellingType'),
            parent: 'customized'
          });
        });
@@ -477,7 +481,7 @@ let ChartStrategyFactor = {
       </div>
       {labelBtn}
       <div className={'jazz-full-border-dropdownmenu-ranktype-container'} >
-        <DropDownMenu menuItems={kpiTypeItem} ref='kpiType'></DropDownMenu>
+        <DropDownMenu menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
         <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
@@ -647,7 +651,7 @@ let ChartStrategyFactor = {
      RankStore.addRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    },
    labelBindStoreListeners(analysisPanel){
-     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange);
      LabelStore.addLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
      LabelStore.addLabelDataLoadedListener(analysisPanel._onLabelDataChange);
      LabelStore.addLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
@@ -673,7 +677,7 @@ let ChartStrategyFactor = {
      RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    },
    labelUnbindStoreListeners(analysisPanel){
-     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange);
      LabelStore.removeLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
      LabelStore.removeLabelDataLoadedListener(analysisPanel._onLabelDataChange);
      LabelStore.removeLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
