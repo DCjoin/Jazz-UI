@@ -132,8 +132,10 @@ let LabelChartComponent = React.createClass({
     },
     createChart: function () {
       var me = this;
-
-      me._paper = new Highcharts.Renderer(
+      if(me.chartRenderer){
+        me.chartRenderer.destroy();
+      }
+      me.chartRenderer = new Highcharts.Renderer(
         me.refs.jazz_energy_view.getDOMNode(),
         me.state.ctWidth,
         me.state.ctHeight - (me.isDashboard ? 15 : 30)
@@ -190,7 +192,7 @@ let LabelChartComponent = React.createClass({
     },
     initData: function (data, renderer) {
         var me = this,
-            d = data || me.pops.energyData.toJS();
+            d = data || me.props.energyData.toJS();
 
         me.initProperties(d);
         me.caculateProperties();
@@ -202,10 +204,10 @@ let LabelChartComponent = React.createClass({
             labelMap = {};
             //stages = this.stages = [],
 
-        if(showTitle) me.createTitle(me.title, cr);
+        if(showTitle) me.createTitle(title, cr);
 
         me.createArrow(baseX - arrowSpace, baseY, labelsHeight, cr);//y-axis
-        me.createHighLowText("低能源", "高能源", cr);
+        me.createHighLowText("Low energy consumption", "High energy consumption", cr);
 
         var y, tooltipText, labelObj;
         for (var i = 0; i < len; i++) {
@@ -248,11 +250,11 @@ let LabelChartComponent = React.createClass({
     formatTooltipText: function (minValue, maxValue, uom) {
         var str = '';
         if (CommonFuns.isNumber(minValue) && CommonFuns.isNumber(maxValue)) {
-            str = CommonFuns.thousandCommafy(minValue) + uom + ' - ' + CommonFuns.thousandCommafy(maxValue) + uom;
+            str = JazzCommon.thousandCommafy(minValue) + uom + ' - ' + JazzCommon.thousandCommafy(maxValue) + uom;
         } else if (CommonFuns.isNumber(minValue)) {
-            str = '> '+ CommonFuns.thousandCommafy(minValue) + uom;
+            str = '> '+ JazzCommon.thousandCommafy(minValue) + uom;
         } else {
-            str = '<= ' + CommonFuns.thousandCommafy(maxValue) + uom;
+            str = '<= ' + JazzCommon.thousandCommafy(maxValue) + uom;
         }
         return str;
     },
@@ -352,9 +354,9 @@ let LabelChartComponent = React.createClass({
         var me = this,
             basew = tw,
             jh = tjh, jw = tjw,
-            content = CommonFuns.thousandCommafy(value) + uom,
+            content = JazzCommon.thousandCommafy(value) + uom,
             tooltipText = tagName + ': <br/>' + content,
-            tooltipWidth = Math.max(CommonFuns.GetArialStrLen(tagName), CommonFuns.GetArialStrLen(content)) * 12 + 10,
+            tooltipWidth = Math.max(JazzCommon.GetArialStrLen(tagName), JazzCommon.GetArialStrLen(content)) * 12 + 10,
             tooltipX = basex - tooltipWidth;
 
         var label = renderer.label(tooltipText, tooltipX, basey - jh , null, null, null, null, null, 'labeltooltip')
@@ -468,7 +470,7 @@ let LabelChartComponent = React.createClass({
                .add();
     },
     createTitle: function (text, renderer) {
-        var x = parseInt(this.ctWidth / 2) - 80;
+        var x = parseInt(this.state.ctWidth / 2) - 80;
         x = x > 10 ? x : 10;
         renderer.text(text, x, 36)
                .css({

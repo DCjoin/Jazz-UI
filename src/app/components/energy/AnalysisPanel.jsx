@@ -14,8 +14,10 @@ import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
+import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
+const defaultMap = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'Label'};
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -29,13 +31,13 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        //bizType:'Unit'
-        bizType:'Energy'
+        bizType:'Unit',
+        chartTitle:'最近7天能耗'
+        //bizType:'Energy'
       };
     },
     getInitialState(){
-      let map = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'Label'};
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(map[this.props.bizType]);
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[this.props.bizType]);
       let state = {
         isLoading: false,
         energyData: null,
@@ -53,12 +55,30 @@ let AnalysisPanel = React.createClass({
       var obj = chartStrategy.getInitialStateFn(this);
 
       assign(state, obj);
-
-      if(this.props.chartTitle){
-        state.chartTitle = this.props.chartTitle;
-      }
       return state;
     },
+    // componentWillReceiveProps: function(nextProps) {
+    //   let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[nextProps.bizType]);
+    //   let state = {
+    //     isLoading: false,
+    //     energyData: null,
+    //     energyRawData: null,
+    //     hierName: null,
+    //     submitParams: null,
+    //     step: null,
+    //     dashboardOpenImmediately: false,
+    //     baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
+    //     selectedChartType:'line',
+    //     energyType:'energy',//'one of energy, cost carbon'
+    //     chartStrategy: chartStrategy
+    //   };
+    //
+    //   var obj = chartStrategy.getInitialStateFn(this);
+    //
+    //   assign(state, obj);
+    //
+    //   this.setState(state);
+    // },
     render(){
       let me = this, errorDialog, energyPart = null;
 
@@ -77,7 +97,7 @@ let AnalysisPanel = React.createClass({
       }
 
       return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
-        <div style={{margin:'20px 35px'}}>最近7天能耗分析</div>
+        <div style={{margin:'20px 35px'}}>{me.props.chartTitle}</div>
         <div className={'jazz-alarm-chart-toolbar-container'}>
             {me.state.chartStrategy.getEnergyTypeComboFn(me)}
             {me.state.chartStrategy.searchBarGenFn(me)}
@@ -147,7 +167,7 @@ let AnalysisPanel = React.createClass({
     _onLabelLoadingStatusChange(){
       let isLoading = LabelStore.getLoadingStatus(),
           paramsObj = LabelStore.getParamsObj(),
-          tagOption = RankStore.getTagOpions()[0],
+          tagOption = LabelStore.getTagOpions()[0],
           obj = assign({}, paramsObj);
 
       obj.isLoading = isLoading;
@@ -314,14 +334,14 @@ let AnalysisPanel = React.createClass({
       //this.setState({selectedChartType:child.props.value});
       this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
     },
-    _onChangeLabelType(e, child){
+    _onChangeLabelType(mainMenuItem, subMenuItem){
       var curType = this.state.labelType,
-          type = child.props.parent,
+          type = mainMenuItem.value,
           selectedLabelItem = this.state.selectedLabelItem;
 
       if(type === 'industryZone'){
         if(type === curType){
-          if(selectedLabelItem.industryId == child.props.industryId && selectedLabelItem.zoneId == child.props.zoneId){
+          if(selectedLabelItem.industryId == subMenuItem.props.industryId && selectedLabelItem.zoneId == subMenuItem.props.zoneId){
             return;
           }
         }
@@ -329,15 +349,15 @@ let AnalysisPanel = React.createClass({
         {
           this.setState({labelType: 'industryZone'});
         }
-        selectedLabelItem.text = (child.props.industryId === -1 ? "请选择能效标识" : child.props.primaryText);
-        selectedLabelItem.industryId = child.props.industryId;
-        selectedLabelItem.zoneId = child.props.zoneId;
-        selectedLabelItem.value = child.props.value;
+        selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? "请选择能效标识" : subMenuItem.props.primaryText);
+        selectedLabelItem.industryId = subMenuItem.props.industryId;
+        selectedLabelItem.zoneId = subMenuItem.props.zoneId;
+        selectedLabelItem.value = subMenuItem.props.value;
         this.changeToIndustyrLabel();
       }
       else{
         if(type === curType) {
-          if(selectedLabelItem.customerizedId === child.props.customerizedId){
+          if(selectedLabelItem.customerizedId === subMenuItem.props.customerizedId){
             return;
           }
         }
@@ -345,10 +365,10 @@ let AnalysisPanel = React.createClass({
           this.setState({labelType: 'customized'});
         }
 
-        selectedLabelItem.text = (child.props.customerizedId === -1 ? "请选择能效标识" : child.props.primaryText);
-        selectedLabelItem.customerizedId = child.props.customerizedId;
+        selectedLabelItem.text = (subMenuItem.props.customerizedId === -1 ? "请选择能效标识" : subMenuItem.props.primaryText);
+        selectedLabelItem.customerizedId = subMenuItem.props.customerizedId;
 
-        this.changeToCustomizedLabel(child.props.kpiType);
+        this.changeToCustomizedLabel(subMenuItem.props.kpiType);
       }
     },
     changeToIndustyrLabel(){
@@ -367,11 +387,19 @@ let AnalysisPanel = React.createClass({
       }
       var selectedLabelItem = {};
       var labelItems = this.state.industyMenuItems;
-      if (labelItems.length > 0 && labelItems.items[0].industryId != -1) {
-        var item = labelItems.items[0];
+      if (labelItems.length > 0 && labelItems[0].industryId != -1) {
+        var item = labelItems[0];
         selectedLabelItem.industryId = item.industryId;
         selectedLabelItem.zoneId = item.zoneId;
-        selectedLabelItem.text = item.text;
+        var text;
+        var textLen = JazzCommon.GetArialStrLen(item.primaryText);
+        if (textLen > 7) {//114px width and the forn size is 16
+            text = JazzCommon.GetArialStr(item.primaryText, 6);
+        }
+        else{
+          text = item.primaryText;
+        }
+        selectedLabelItem.text = text;
         selectedLabelItem.value = item.value;
       }
       else{
@@ -442,7 +470,7 @@ let AnalysisPanel = React.createClass({
       else{
         industryId = hierNode.IndustryId;
         zoneId = hierNode.ZoneId;
-        if(hierNode.Type !== 2){
+        if(hierNode.Type !== 2 || !CommonFuns.isNumber(industryId)){
           return;
         }
         this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
@@ -522,6 +550,7 @@ let AnalysisPanel = React.createClass({
       var labelType = this.state.labelType;
       var selectedLabelItem = this.state.selectedLabelItem;
       if (labelType === 'industryZone'){
+        /*
         if(selectedLabelItem.industryId === -1){
           return null;
         }
@@ -532,6 +561,12 @@ let AnalysisPanel = React.createClass({
             benchmarkText: selectedLabelItem.text
           };
         }
+        */
+        return{
+          IndustryId: 0,
+          ZoneId: 0,
+          benchmarkText: "Extreme cold region BTelecommunication business hall"
+        };
       }
       else if(labelType === 'customized'){
         if (selectedLabelItem.customerizedId == -1){
@@ -550,7 +585,7 @@ let AnalysisPanel = React.createClass({
     getViewOption: function () {
       var step = 3;//default month
 
-      var year = parseInt(this.refs.yearSelector.getDateValue()),
+      var year = parseInt(this.refs.yearSelector.state.selectedYear),
           month = this.refs.monthSelector.state.selectedIndex;
 
       if(month === 0){
@@ -569,7 +604,7 @@ let AnalysisPanel = React.createClass({
       return viewOption;
     },
     getKpiType: function () {
-      return this.state.kpiTypeValue;
+      return this.state.kpiTypeValue + 1;
     },
     onChangeKpiType: function(){
       this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
