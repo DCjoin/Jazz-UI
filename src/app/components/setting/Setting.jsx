@@ -103,9 +103,8 @@ componentWillUnmount:function(){
     //                                container={<RankingContainer checkedCommodity={checkedCommodity} checkedTreeNodes={checkedTreeNodes}/>}/>);
 
     //var errorBar=(this.state.errorText!=null?<Snackbar message={this.state.errorText}/>:null);
-    //  <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
     let energyTypeMap = {1:'Energy',2:'Unit',3:'Ratio', 4:'Label', 5:'Rank'};
-    let mainPanel, rightPanel;
+    let mainPanel, rightPanel=null;
     let selectedNode = this.state.selectedNode;
 
     if(!selectedNode || this.state.refreshChart){
@@ -121,12 +120,14 @@ componentWillUnmount:function(){
         let title = selectedNode.get('Name');
         let bizType = energyTypeMap[selectedNode.get('WidgetType')];
         mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType}></AnalysisPanel>;
+        rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
       }
     }
     return (
       <div style={{display:'flex', flex:1}}>
         <LeftPanel isShow={!this.state.showRightPanel} onToggle={this._onSwitchButtonClick}/>
         {mainPanel}
+        {rightPanel}
         <Snackbar ref='snackbar' message={this.state.errorText}/>
       </div>
     );
