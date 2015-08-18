@@ -79,7 +79,7 @@ let AnalysisPanel = React.createClass({
       return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
         <div style={{margin:'20px 35px'}}>最近7天能耗分析</div>
         <div className={'jazz-alarm-chart-toolbar-container'}>
-            {me.state.chartStrategy.getEnergyTypeComboFn()}
+            {me.state.chartStrategy.getEnergyTypeComboFn(me)}
             {me.state.chartStrategy.searchBarGenFn(me)}
         </div>
         {energyPart}
@@ -352,20 +352,14 @@ let AnalysisPanel = React.createClass({
       }
     },
     changeToIndustyrLabel(){
-      this.enableKpitypeButton();
+      this.enableKpiTypeButton();
     },
     changeToCustomizedLabel(kpiType){
       this.setState({kpiTypeValue: kpiType});
-      this.disableKpitypeButton();
+      this.disableKpiTypeButton();
     },
     _onHierNodeChange(){
-      var industyMenuItems = this.getIndustyMenuItems();
-      var customerMenuItems = this.getCustomizedLabelItems();
-      this.setState({
-        industyMenuItems: industyMenuItems,
-        customerMenuItems: customerMenuItems
-      });
-      this.enableLabelButton(true);
+      this.state.chartStrategy.onHierNodeChangeFn(this);
     },
     enableLabelButton(preSelect){
       if(!this.state.labelDisable && !preSelect){
@@ -416,7 +410,7 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem.value = null;
       return selectedLabelItem;
     },
-    getCustomizedLabelItems(){
+    getCustomizedMenuItems(){
       var menuItems = [];
       var customizedStore = LabelMenuStore.getCustomerLabelData();
       if(!this.hasCustomizedMenuItems()){
@@ -577,7 +571,7 @@ let AnalysisPanel = React.createClass({
     getKpiType: function () {
       return this.state.kpiTypeValue;
     },
-    onChangeKpiStyle: function(){
+    onChangeKpiType: function(){
       this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
     }
 });

@@ -517,7 +517,21 @@ I18N.Folder.Send = {};
 I18N.Folder.Send.Success = '{0}发送成功';
 I18N.Folder.Send.Error = '{0}发送失败，无法发送给用户：{1}。';
 
-I18N.Commodity = {};
+
+I18N.Folder.Detail={};
+I18N.Folder.Detail.SubTitile='来自{0}';
+I18N.Folder.Detail.Title={};
+I18N.Folder.Detail.Title.Menu1='复制';
+I18N.Folder.Detail.Title.Menu2='发送';
+I18N.Folder.Detail.Title.Menu3='删除';
+I18N.Folder.Detail.WidgetMenu={};
+I18N.Folder.Detail.WidgetMenu.Menu1='复制';
+I18N.Folder.Detail.WidgetMenu.Menu2='发送';
+I18N.Folder.Detail.WidgetMenu.Menu3='共享';
+I18N.Folder.Detail.WidgetMenu.Menu4='导出';
+I18N.Folder.Detail.WidgetMenu.Menu5='删除';
+
+I18N.Commodity={};
 I18N.Commodity.Overview = '介质总览';
 
 I18N.Hierarchy = {};
