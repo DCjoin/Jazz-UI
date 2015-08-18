@@ -340,6 +340,20 @@ let ChartComponentBox = React.createClass({
               chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
             }
           }
+          else if(energyType === 'carbon'){
+            if(chartType ==='line' || chartType ==='column' || chartType === 'stack'){
+              chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
+            }else if(chartType === 'pie'){
+              chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
+            }
+          }
+          if(energyType === 'cost'){
+            if(chartType ==='line' || chartType ==='column' || chartType === 'stack'){
+              chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
+            }else if(chartType === 'pie'){
+              chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
+            }
+          }
           break;
         case 'Unit':
 

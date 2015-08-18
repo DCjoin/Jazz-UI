@@ -81,8 +81,8 @@ let ChartStrategyFactor = {
     },
     MultiIntervalDistribution:{
 
-    },CarbonUsage:{
-      searchBarGenFn:'energySearchBarGen',
+    },Carbon:{
+      searchBarGenFn:'carbonSearchBarGen',
       getSelectedNodesFn:'getSelectedCommodityList',
       onSearchDataButtonClickFn:'onCarbonSearchDataButtonClick',
       onSearchBtnItemTouchTapFn:'onCarbonSearchBtnItemTouchTap',
@@ -95,7 +95,8 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'energyBindStoreListeners',
       unbindStoreListenersFn:'energyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      getEnergyRawDataFn:'getEnergyRawData'
+      onEnergyTypeChangeFn: 'EnergyTypeChange',
+      getEnergyRawDataFn:'empty',
     },RatioUsage:{
 
     },UnitEnergyUsage:{
@@ -184,7 +185,20 @@ let ChartStrategyFactor = {
         EnergyStore.initReaderStrategy('EnergyRawGridReader');
         break;
      }
-   }
+   },
+   initCarbonStoreByBizChartType(analysisPanel){
+     let chartType = analysisPanel.state.selectedChartType;
+     switch (chartType) {
+       case 'line':
+       case 'column':
+       case 'stack':
+         EnergyStore.initReaderStrategy('CarbonTrendReader');
+         break;
+      case 'pie':
+        EnergyStore.initReaderStrategy('CarbonPieReader');
+        break;
+     }
+   },
  },
 
  getInitialStateFnStrategy:{
@@ -354,17 +368,20 @@ let ChartStrategyFactor = {
   },
   carbonSearchBarGen(analysisPanel){
     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
+    var configBtn = ChartStrategyFactor.getConfigBtn(analysisPanel);
 
     return <div className={'jazz-alarm-chart-toolbar-container'}>
       <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
-      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+      <div className={'jazz-flat-button'}>
         <DropDownMenu menuItems={carbonTypeItem} ref='rankType' style={{width:'92px'}} onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
-        <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+        {searchButton}
+        {configBtn}
+        <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
       </div>
   </div>;
 },
@@ -427,7 +444,7 @@ let ChartStrategyFactor = {
      return AlarmTagStore.getSearchTagList();
    },
    getSelectedCommodityList(){
-     return  AlarmTagStore.getSearchTagList();
+     return  CommodityStore.getCommodityList();
    },
    getSelectedList(){
      var selectedList = {};
@@ -442,6 +459,9 @@ let ChartStrategyFactor = {
    energyDataLoad(timeRanges, step, tagOptions, relativeDate){
      EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate);
    },
+   carbonDataLoad(timeRanges, step, tagOptions, relativeDate){
+     CarbonAction.getCarbonTrendChartData(timeRanges, step, tagOptions, relativeDate);
+   },
    rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
      RankAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
    },
@@ -455,6 +475,7 @@ let ChartStrategyFactor = {
    }
  },
  getEnergyRawDataFnStrategy:{
+   empty(){},
    getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize){
      EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize);
    }

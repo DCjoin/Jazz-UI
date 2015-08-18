@@ -52,7 +52,7 @@ let Setting = React.createClass({
   },
   //just for test commoditypanel
 componentWillMount:function(){
-  CommodityAction.setEnergyConsumptionType('Cost');
+  CommodityAction.setEnergyConsumptionType('cost');
 },
 componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);

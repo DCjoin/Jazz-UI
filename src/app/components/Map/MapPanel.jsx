@@ -29,7 +29,7 @@ let MapPanel = React.createClass({
   },
   //just for test commoditypanel
   componentWillMount:function(){
-    CommodityAction.setEnergyConsumptionType('Cost');
+    CommodityAction.setEnergyConsumptionType('cost');
   },
   render(){
     var checkedCommodity={

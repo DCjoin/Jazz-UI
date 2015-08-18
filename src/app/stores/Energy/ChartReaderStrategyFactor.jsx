@@ -27,6 +27,12 @@ let ChartReaderStrategyFactor = {
       getSeriesInternalFn:'getSeriesInternal',
       tagSeriesConstructorFn:'tagSeriesConstructor'
     },
+    CarbonTrendReader:{
+      convertSingleTimeDataFn:'convertSingleTimeData',
+      translateDateFn:'translateDate',
+      getSeriesInternalFn:'getSeriesInternal',
+      tagSeriesConstructorFn:'tagSeriesConstructor'
+    },
     EnergyPieReader:{
       baseReader:'pieReaderBase',
       setItemByTargetFn:'setItemByTarget'
