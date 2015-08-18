@@ -30,8 +30,8 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Label'
-        //bizType:'Energy'
+        //bizType:'Unit'
+        bizType:'Energy'
       };
     },
     getInitialState(){
@@ -589,6 +589,9 @@ let AnalysisPanel = React.createClass({
     },
     onChangeKpiType: function(){
       this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
+    },
+    _onConfigBtnItemTouchTap(e,item){
+      console.log('AnalysisPanel--- _onConfigBtnItemTouchTap');
     }
 });
 

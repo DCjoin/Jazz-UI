@@ -51,7 +51,7 @@ _onSecondActionTouchTap:function(){
             onDismiss:this.props.onDismiss,
             titleStyle:titleStyle
           };
-  let content=(this.props.type==I18N.Folder.FolderName)?I18N.format(I18N.Template.Delete.FolderContent,this.props.name):null;
+  let content=(this.props.type==I18N.Folder.FolderName)?I18N.format(I18N.Template.Delete.FolderContent,this.props.name):I18N.format(I18N.Template.Delete.WidgetContent,this.props.name);
     return(
       <div className='jazz-copytemplate-dialog'>
         <Dialog {...dialogProps}>

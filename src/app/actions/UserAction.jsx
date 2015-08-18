@@ -37,6 +37,11 @@ let UserAction = {
       status:status
   });
   },
+  resetUserList(){
+  AppDispatcher.dispatch({
+      type: Action.RESET_USER_LIST
+  });
+  },
 };
 
 module.exports = UserAction;
