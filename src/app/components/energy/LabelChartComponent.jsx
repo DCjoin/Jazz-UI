@@ -98,8 +98,6 @@ let LabelChartComponent = React.createClass({
         afterChartCreated: React.PropTypes.func,
         energyData: React.PropTypes.object,
         energyRawData: React.PropTypes.object,
-        ctWidth: React.PropTypes.Number,
-        ctHeight: React.PropTypes.Number,
         startTime: React.PropTypes.string,
         endTime: React.PropTypes.string
     },
@@ -111,15 +109,30 @@ let LabelChartComponent = React.createClass({
 
     getInitialState() {
       return {
-        ctHeight: this.props.ctHeight,
-        ctWidth: this.props.ctWidth
+        ctHeight: 1600,
+        ctWidth: 370
       };
     },
     componentWillMount(){
 
     },
     componentDidMount(){
-      this.createChart();
+      var me = this;
+      this.setState({
+        ctHeight: this.refs.jazz_energy_view.getDOMNode().clientHeight,
+        ctWidth: this.refs.jazz_energy_view.getDOMNode().clientWidth
+      },()=>{
+        this.createChart();
+      });
+
+      window.onresize = function(){
+        me.setState({
+          ctHeight: me.refs.jazz_energy_view.getDOMNode().clientHeight,
+          ctWidth: me.refs.jazz_energy_view.getDOMNode().clientWidth
+        },()=>{
+          me.createChart();
+        });
+      };
     },
     componentDidUpdate(){
       this.createChart();
@@ -128,7 +141,7 @@ let LabelChartComponent = React.createClass({
       return !(this.props.energyData.equals(nextProps.energyData));
     },
     render () {
-      return <div className="pop-chart-paper" ref="jazz_energy_view"/>;
+      return <div style={{flex:1}} className="pop-chart-paper" ref="jazz_energy_view"/>;
     },
     createChart: function () {
       var me = this;
@@ -207,7 +220,7 @@ let LabelChartComponent = React.createClass({
         if(showTitle) me.createTitle(title, cr);
 
         me.createArrow(baseX - arrowSpace, baseY, labelsHeight, cr);//y-axis
-        me.createHighLowText("Low energy consumption", "High energy consumption", cr);
+        me.createHighLowText("低能耗", "高能耗", cr);
 
         var y, tooltipText, labelObj;
         for (var i = 0; i < len; i++) {
@@ -455,14 +468,14 @@ let LabelChartComponent = React.createClass({
     },
     createHighLowText: function (ltext, htext, renderer) {
         var me = this;
-        renderer.text(htext, me.baseX, me.baseY + me.labelsHeight + 20)
+        renderer.text(htext, baseX, baseY + labelsHeight + 20)
                 .css({
                     color: '#757575',
                     fontSize: '14px'
                 })
                 .add();
 
-        renderer.text(ltext, me.baseX, me.baseY - 10)
+        renderer.text(ltext, baseX, baseY - 10)
                .css({
                    color: '#757575',
                    fontSize: '14px'

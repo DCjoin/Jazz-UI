@@ -41,7 +41,7 @@ const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', t
  {value:'RankByArea', text:'单位面积排名'},{value:'RankByHeatArea',text:'单位供冷面积排名'},
  {value:'RankByCoolArea',text:'单位采暖面积排名'},{value:'RankByRoom',text:'单位客房排名'},
  {value:'RankByUsedRoom',text:'单位已用客房排名'},{value:'RankByBed',text:'单位床位排名'}];
- const kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
+const kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
  {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
  {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
  {value:'UnitBed',text:'单位床位'},{value:'DayNightRatio',text:'昼夜比'},
@@ -477,12 +477,12 @@ let ChartStrategyFactor = {
     var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
     return <div className={'jazz-alarm-chart-toolbar-container'}>
       {YearSelect}
-      <div className={'jazz-full-border-dropdownmenu-month-container'} >
+      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
         <DropDownMenu menuItems={monthItem} ref='monthSelector'></DropDownMenu>
       </div>
       {labelBtn}
-      <div className={'jazz-full-border-dropdownmenu-ranktype-container'} >
-        <DropDownMenu menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>
+      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+        {kpiTypeBtn}
       </div>
       <div className={'jazz-flat-button'}>
         <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
@@ -607,8 +607,6 @@ let ChartStrategyFactor = {
      let chartCmpObj ={ref:'ChartComponent',
                        bizType:analysisPanel.props.bizType,
                        energyData: analysisPanel.state.energyData,
-                       ctWidth: 1600,
-                       ctHeight: 370,
                        energyRawData: analysisPanel.state.energyRawData,
                        onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
                        onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
@@ -733,12 +731,22 @@ let ChartStrategyFactor = {
   },
   getKpiTypeBtn(analysisPanel){
     let kpiTypeButton;
+    var kpiSpanStyle = {
+      width: '128px',
+      height: '32px',
+      lineHeight: '32px',
+      border: '1px solid #efefef',
+      margin: '14px 0px 0px 10px',
+      fontSize: '15px',
+      color: '#b3b3b3',
+      textAlign: 'center'
+    };
     if(!analysisPanel.state.kpiTypeDisable){
-      kpiTypeButton = <DropDownMenu menuItems={kpiTypeItem} onChange={analysisPanel.onChangeKpiStyle}
-        ref='kpiType'></DropDownMenu>;
+      kpiTypeButton = <DropDownMenu menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
       }
     else{
-      kpiTypeButton = <span>{kpiTypeItem[analysisPanel.state.kpiTypeValue].text}</span>;
+      var kpiTypeText = analysisPanel.getKpiText();
+      kpiTypeButton = <span style={kpiSpanStyle}>{kpiTypeText}</span>;
     }
     return kpiTypeButton;
   },
