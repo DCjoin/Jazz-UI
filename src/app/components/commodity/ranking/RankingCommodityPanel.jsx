@@ -11,6 +11,7 @@ var RankingCommodityPanel = React.createClass({
 
   propTypes: {
     checkedTreeNodes: React.PropTypes.array,
+    ecType:React.PropTypes.string,
     //checkedCommodity:{commodityId:XX,commodityName:XX}
     checkedCommodity: React.PropTypes.object,
   },
@@ -38,7 +39,7 @@ var RankingCommodityPanel = React.createClass({
   },
   getInitialState:function(){
     return{
-      ecType:CommodityStore.getRankingECType(),
+      ecType:this.props.ecType,
       isLoading:false,
       isShow:false,
       commodityList:null,
