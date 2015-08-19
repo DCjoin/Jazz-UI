@@ -69,7 +69,6 @@ let ChartStrategyFactor = {
       setFitStepAndGetDataFn:'setFitStepAndGetData',
       getInitialStateFn:'empty',
       getAllDataFn: 'empty',
-      getCustomizedLabelItemsFn: 'empty',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn:'energyDataLoad',
       getPieEnergyDataFn:'pieEnergyDataLoad',
@@ -79,8 +78,23 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canShareDataWith',
       getEnergyRawDataFn:'getEnergyRawData',
       exportChartFn:'exportChart',
-      onHierNodeChangeFn:'empty',
       onEnegyTypeChangeFn:'onEnergyTypeChange'
+    },
+    Cost: {
+      searchBarGenFn: 'CostSearchBarGen',
+      getEnergyTypeComboFn: 'getCostTypeCombo',
+      getSelectedNodesFn: 'getCostSelectedList',
+      setFitStepAndGetDataFn:'setCostFitStepAndGetData',
+      getInitialStateFn: 'getCostInitialState',
+      getAllDataFn: 'empty',
+      getInitParamFn: 'getInitParam',
+      getEnergyDataFn: 'costDataLoad',
+      getPieEnergyDataFn:'pieCostDataLoad',
+      getChartComponentFn:'getCostChartComponent',
+      bindStoreListenersFn:'costBindStoreListeners',
+      unbindStoreListenersFn:'costUnbindStoreListeners',
+      canShareDataWithFn: 'canShareDataWith',
+      onEnegyTypeChangeFn: 'onEnergyTypeChange'
     },
     MultiIntervalDistribution:{
 
@@ -96,7 +110,6 @@ let ChartStrategyFactor = {
       setFitStepAndGetDataFn:'setUnitEnergyFitStepAndGetData',
       getInitialStateFn:'getUnitEnergyInitialState',
       getAllDataFn: 'unitGetAllData',
-      getCustomizedLabelItemsFn: 'empty',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn:'unitEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
@@ -111,29 +124,27 @@ let ChartStrategyFactor = {
       getEnergyTypeComboFn: 'empty',
       getSelectedNodesFn:'getSelectedTagList',
       onSearchDataButtonClickFn:'onLabelSearchDataButtonClick',
-      onEnegyTypeChangeFn:'empty',
-      onHierNodeChangeFn:'onHierNodeChange',
       setFitStepAndGetDataFn:'setLabelTypeAndGetData',
       getInitialStateFn:'getLabelInitialState',
       getAllDataFn: 'getAllData',
-      getCustomizedLabelItemsFn: 'getCustomizedLabelItems',
       getInitParamFn: 'empty',
       getEnergyDataFn: 'labelDataLoad',
       getChartComponentFn:'getLabelChartComponent',
       bindStoreListenersFn:'labelBindStoreListeners',
       unbindStoreListenersFn:'labelUnbindStoreListeners',
-      canShareDataWithFn:'canRankShareDataWith'
+      canShareDataWithFn:'canRankShareDataWith',
+      onHierNodeChangeFn:'onHierNodeChange',
+      onEnegyTypeChangeFn:'empty'
     },Rank:{
       searchBarGenFn:'rankSearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn:'getSelectedList',
       onSearchDataButtonClickFn:'onRankSearchDataButtonClick',
-      onEnegyTypeChangeFn:'onRankEnegyTypeChange',
+      onEnegyTypeChangeFn:'onEnergyTypeChange',
       onHierNodeChangeFn:'empty',
       setFitStepAndGetDataFn:'setRankTypeAndGetData',
       getInitialStateFn:'getRankInitialState',
       getAllDataFn: 'empty',
-      getCustomizedLabelItemsFn: 'empty',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn: 'rankDataLoad',
       getChartComponentFn:'getRankChartComponent',
@@ -191,9 +202,6 @@ let ChartStrategyFactor = {
      if(analysisPanel.props.onEnergyTypeChange){
        analysisPanel.props.onEnergyTypeChange(menuItem.value);
      }
-   },
-   onRankEnegyTypeChange(analysisPanel, e, selectedIndex, menuItem){
-     CommodityAction.setRankingECType(menuItem.value);
    }
  },
  getAllDataFnStrategy:{
@@ -208,28 +216,6 @@ let ChartStrategyFactor = {
      LabelMenuAction.getAllIndustries();
      LabelMenuAction.getAllZones();
      LabelMenuAction.getAllBenchmarks();
-   }
- },
- getCustomizedLabelItemsFnStrategy:{
-   empty(){},
-   getCustomizedLabelItems(analysisPanel){
-     var menuItems = [];
-     var customizedStore = LabelMenuStore.getCustomerLabelData();
-     if(!analysisPanel.hasCustomizedMenuItems()){
-       customizedStore.forEach((item, index) => {
-         menuItems.push({
-           value: item.get('Id'),
-           customerizedId: item.get('Id'),
-           primaryText: item.get('Name'),
-           kpiType: item.get('LabellingType'),
-           parent: 'customized'
-         });
-       });
-     }
-     if(menuItems.length === 0){
-       menuItems = analysisPanel.getNoneMenuItem(false);
-     }
-     analysisPanel.setState({customerMenuItems: menuItems});
    }
  },
  initEnergyStoreByBizChartTypeFnStrategy:{
@@ -676,7 +662,7 @@ let ChartStrategyFactor = {
      EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
      EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
-     LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+     LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange);
    },
    rankUnbindStoreListeners(analysisPanel){
      RankStore.removeRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
