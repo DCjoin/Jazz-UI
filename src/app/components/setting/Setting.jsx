@@ -127,39 +127,39 @@ render: function () {
         rightPanel = this.getRightPanel(bizType, energyType);
         mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType} energyType={energyType} onEnergyTypeChange={me._onEnergyTypeChanged}></AnalysisPanel>;
       }
-    };
+    }
     var template;
     //for operation template
     if(this.state.templateNode){
       if(this.state.templateNode.get('Type')==6){
         switch(this.state.templateId) {
           case 1:
-              template=<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.templateNode}/>
+              template=<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.templateNode}/>;
             break;
           case 2:
-              template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>
+              template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>;
             break;
           case 3:
-              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>
+              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
             break;
       }
     }
       else {
         switch(this.state.templateId) {
           case 1:
-              template=<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.templateNode}/>
+              template=<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.templateNode}/>;
             break;
           case 2:
-              template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>
+              template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>;
             break;
           case 3:
-              template=<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.templateNode}/>
+              template=<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.templateNode}/>;
             break;
           case 4:
-              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>
+              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
             break;
           case 5:
-              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>
+              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
             break;
       }
     }
@@ -196,10 +196,14 @@ render: function () {
         //return Ratio rightPanel
         break;
       case 'Label':
-        //return label rightPanel
+        rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
         break;
       case 'Rank':
-        //return Rank rightPanel
+        //return Rank rightPanel        
+        rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+                      defaultStatus={this.state.showRightPanel}
+                      container={<RankingContainer ecType={energyType}/>}/>;
+
         break;
     }
     return rightPanel;
