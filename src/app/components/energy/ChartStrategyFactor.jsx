@@ -26,7 +26,7 @@ import GridComponent from './GridComponent.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
-import RankStore from '../../stores/RankStore.jsx';
+import RankStore from '../../stores/LabelMenuStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 
@@ -79,7 +79,8 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canShareDataWith',
       getEnergyRawDataFn:'getEnergyRawData',
       exportChartFn:'exportChart',
-      onHierNodeChangeFn:'empty'
+      onHierNodeChangeFn:'empty',
+      onEnegyTypeChangeFn:'onEnergyTypeChange'
     },
     MultiIntervalDistribution:{
 
@@ -103,8 +104,8 @@ let ChartStrategyFactor = {
       unbindStoreListenersFn:'unitEnergyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
       exportChartFn:'exportChart',
-      onHierNodeChangeFn:'unitEnergyOnHierNodeChange'
-
+      onHierNodeChangeFn:'unitEnergyOnHierNodeChange',
+      onEnegyTypeChangeFn:'onEnergyTypeChange'
     },Label:{
       searchBarGenFn:'labelSearchBarGen',
       getEnergyTypeComboFn: 'empty',
@@ -144,8 +145,8 @@ let ChartStrategyFactor = {
  getEnergyTypeComboFnStrategy:{
    empty(){},
    getEnergyTypeCombo(analysisPanel){
-     let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
-     return <DropDownMenu menuItems={types} style={{width:'92px',marginRight:'10px'}} onChange={analysisPanel.state.chartStrategy.onEnegyTypeChangeFn}></DropDownMenu>;
+     let types = [{text:'能耗',value:'Energy'},{text:'成本',value:'Cost'},{text:'碳排放',value:'Carbon'}];
+     return <DropDownMenu menuItems={types} style={{width:'92px',marginRight:'10px'}} onChange={analysisPanel.state.chartStrategy.onEnegyTypeChangeFn.bind(analysisPanel, analysisPanel)}></DropDownMenu>;
    }
  },
  getInitParamFnStrategy:{
@@ -184,7 +185,12 @@ let ChartStrategyFactor = {
  },
  onEnegyTypeChangeFnStrategy:{
    empty(){},
-   onRankEnegyTypeChange(e, selectedIndex, menuItem){
+   onEnergyTypeChange(analysisPanel, e, selectedIndex, menuItem){
+     if(analysisPanel.props.onEnergyTypeChange){
+       analysisPanel.props.onEnergyTypeChange(menuItem.value);
+     }
+   },
+   onRankEnegyTypeChange(analysisPanel, e, selectedIndex, menuItem){
      CommodityAction.setRankingECType(menuItem.value);
    }
  },

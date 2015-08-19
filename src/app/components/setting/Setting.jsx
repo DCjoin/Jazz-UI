@@ -29,7 +29,8 @@ let Setting = React.createClass({
         showRightPanel: false,
         refreshChart: false,
         errorText:null,
-        selectedNode:null
+        selectedNode:null,
+        selectedEnergyType: null
       };
   },
   _onSwitchButtonClick(){
@@ -60,12 +61,13 @@ let Setting = React.createClass({
       refreshChart: true
     },()=>{me.setState({
                         refreshChart: false,
+                        selectedEnergyType: null,
                         selectedNode:FolderStore.getSelectedNode()
                       });
           });
   },
   _onEnergyTypeChanged(energyType){
-    this.setState({energyType:energyType});
+    this.setState({selectedEnergyType:energyType});
   },
   //just for test commoditypanel
 componentWillMount:function(){
@@ -84,28 +86,7 @@ componentWillUnmount:function(){
   FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
 },
 render: function () {
-
-    // var commoditypanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
-    //                                defaultStatus={this.state.showRightPanel}
-    //                                container={<CommodityContainer/>}/>);
-    // var checkedCommodity={
-    //   commodityId:-1,
-    //   commodityName:'介质总览'
-    // };
-  //如果checkedTreeNodes为一个普通数组，转换成immutable
-    // var checkedTreeNodes=Immutable.fromJS([
-    // {Id:100008,
-    // Name:"园区B"},
-    // {Id:100006,
-    // Name:"组织B"}
-    // ]);
-    //如果checkedTreeNodes为一个普通数组，转换成immutable
-
-    // var RankingPanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
-    //                                defaultStatus={this.state.showRightPanel}
-    //                                container={<RankingContainer checkedCommodity={checkedCommodity} checkedTreeNodes={checkedTreeNodes}/>}/>);
-
-    //var errorBar=(this.state.errorText!=null?<Snackbar message={this.state.errorText}/>:null);
+    let me = this;
     let bizTypeMap = {1:'Energy',2:'Unit',3:'Ratio', 4:'Label', 5:'Rank'};
     let mainPanel, rightPanel=null;
     let selectedNode = this.state.selectedNode;
@@ -121,9 +102,9 @@ render: function () {
         //chart panel
         let title = selectedNode.get('Name');
         let bizType = bizTypeMap[selectedNode.get('WidgetType')];
-        let energyType = CommonFuns.extractEnergyType( selectedNode.get('EnergyType') );
+        let energyType = this.state.selectedEnergyType || CommonFuns.extractEnergyType( selectedNode.get('EnergyType') );
         rightPanel = this.getRightPanel(bizType, energyType);
-        mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType}></AnalysisPanel>;
+        mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType} energyType={energyType} onEnergyTypeChange={me._onEnergyTypeChanged}></AnalysisPanel>;
       }
     }
     return (
@@ -139,14 +120,14 @@ render: function () {
     let rightPanel = null;
     switch (bizType) {
       case 'Energy':
-        if(!energyType || energyType === 'line'){
+        if(!energyType || energyType === 'Energy'){
           rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
         }else{
 
         }
         break;
       case 'Unit':
-        if(!energyType || energyType === 'line'){
+        if(!energyType || energyType === 'Energy'){
           rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
         }else{
 
