@@ -6,19 +6,9 @@ import ActionTypes from '../constants/actionType/Carbon.jsx';
 import {DataConverter} from '../util/Util.jsx';
 import Ajax from '../ajax/ajax.jsx';
 
-
-let getTagIdsFromcommOptions = function(commOptions){
-  let tagIds =[];
-  for(let i=0,len=commOptions.length; i<len; i++){
-    tagIds.push(commOptions[i].tagId);
-  }
-
-  return tagIds;
-};
-
 let CarbonAction = {
   //for select tags from taglist and click search button.
-  getPieCarbonData(date, step, hierId, commIds, destination, viewOption, relativeDate){
+  getPieCarbonData(hierId, commIds, destination, viewOption, relativeDate){
     var timeRange = date;
     var submitParams = {
       commodityIds: commIds,
@@ -33,8 +23,8 @@ let CarbonAction = {
     };
 
     AppDispatcher.dispatch({
-      date: date,
-      step: step,
+      // date: date,
+      // step: step,
       type: ActionTypes.GET_CARBON_DATA_LOADING,
       submitParams: submitParams,
       commOptions: commOptions,
@@ -60,11 +50,8 @@ let CarbonAction = {
        }
      });
   },
-  getCarbonTrendChartData(date, step, hierId, commIds, destination, viewOption, relativeDate){
-    var timeRange = date;
+  getCarbonTrendChartData(hierId, commIds, destination, viewOption, relativeDate){
     var submitParams = {
-      date: date,
-      step: step,
       commodityIds: commIds,
       hierarchyId: hierId,
       destination: destination,
@@ -74,11 +61,11 @@ let CarbonAction = {
     AppDispatcher.dispatch({
        type: ActionTypes.GET_CARBON_DATA_LOADING,
        submitParams: submitParams,
-       commOptions: commOptions,
+       commOptions: viewOption,
        relativeDate: relativeDate
     });
 
-    Ajax.post('/Carbon.svc/GetCarbonUsageData', {
+    Ajax.post('/Energy.svc/GetCarbonUsageData', {
        params:submitParams,
        commonErrorHandling: false,
        success: function(carbonData){

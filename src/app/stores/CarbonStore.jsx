@@ -13,11 +13,12 @@ let _isLoading = false,
     _carbonRawData = null,
     _submitParams = null,
     _paramsObj = null,
-    _tagOptions = null,
+    _commOptions = null,
     _chartTitle = null,
     _relativeDate = null,
     _errorCode = null,
-    _errorMessage = null;
+    _errorMessage = null,
+    _destination = null;
 
 const CARBON_DATA_LOADING_EVENT = 'carbondataloadingevent',
       CARBON_DATA_LOADED_EVENT = 'carbondataloadedevent',
@@ -26,6 +27,12 @@ const CARBON_DATA_LOADING_EVENT = 'carbondataloadingevent',
 let CarbonStore = assign({},PrototypeStore,{
   initReaderStrategy(bizChartType){
     this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType(bizChartType);
+  },
+  setDestination(dest){
+    _destination = dest;
+  },
+  getDestination(dest){
+    return _destination;
   },
   getLoadingStatus(){
     return _isLoading;
@@ -45,8 +52,8 @@ let CarbonStore = assign({},PrototypeStore,{
   getParamsObj(){
     return _paramsObj;
   },
-  getTagOpions(){
-    return _tagOptions;
+  getCommOpions(){
+    return _commOptions;
   },
   getChartTitle(){
     return _chartTitle;
@@ -67,17 +74,17 @@ let CarbonStore = assign({},PrototypeStore,{
     _errorMessage = error.Messages;
   },
 
-  _onDataLoading(params, tagOptions, relativeDate){
+  _onDataLoading(params, commOptions, relativeDate){
     _submitParams = params;
     _isLoading = true;
 
-    _tagOptions = tagOptions;
+    _commOptions = commOptions;
 
     if(relativeDate !== false){
       _relativeDate = relativeDate;
     }
 
-    _paramsObj = {tagIds: params.tagIds,
+    _paramsObj = {commIds: params.commIds,
                startTime: params.viewOption.TimeRanges[0].StartTime,
                endTime: params.viewOption.TimeRanges[0].EndTime,
                step: params.viewOption.Step,
@@ -136,7 +143,7 @@ let CarbonStore = assign({},PrototypeStore,{
 CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case ActionTypes.GET_CARBON_DATA_LOADING:
-        CarbonStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate);
+        CarbonStore._onDataLoading(action.submitParams, action.commOptions, action.relativeDate);
         CarbonStore.emitCarbonDataLoading();
         break;
       case ActionTypes.GET_CARBON_DATA_SUCCESS:

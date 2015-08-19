@@ -36,6 +36,7 @@ _onLoadUserList:function(){
   });
 },
 componentDidMount:function(){
+  UserAction.resetUserList();
   UserStore.addUserListListener(this._onLoadUserList);
   UserAction.getUserList(this.props.userId,window.currentCustomerId);
 },

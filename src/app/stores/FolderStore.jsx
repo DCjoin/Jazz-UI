@@ -51,6 +51,21 @@ var FolderStore = assign({},PrototypeStore,{
       }
     }
   },
+  getParent:function(node){
+    var parent;
+    var f=function(item){
+      if(item.get('Id')==node.get('ParentId')){
+        parent = item;
+      }
+      else {
+        if(item.get('Children')){
+          item.get('Children').forEach(child=>{f(child)})
+        }
+      }
+    };
+    f(_folderTree);
+    return parent
+  },
   modifyTreebyNode:function(node){
     var that=this;
     if(node.get("Id") == _parentId){
@@ -90,31 +105,21 @@ var FolderStore = assign({},PrototypeStore,{
      let children=Immutable.List([]);
      children=children.push(_newNode);
      _changedNode=_changedNode.set('Children',children);
-     if(_newNode.get('Type')==6){
-       let subFolderCount =  _changedNode.get('ChildFolderCount')+1;
-        _changedNode=_changedNode.set('ChildFolderCount',subFolderCount);
-     }
-     else {
-       let subWidgetCount  =  _changedNode.get('ChildWidgetCount ')+1;
-        _changedNode=_changedNode.set('ChildWidgetCount ',subWidgetCount );
-     }
+   }
+   if(_newNode.get('Type')==6){
+     let subFolderCount =  _changedNode.get('ChildFolderCount')+1;
+      _changedNode=_changedNode.set('ChildFolderCount',subFolderCount);
+   }
+   else {
+     let subWidgetCount  =  _changedNode.get('ChildWidgetCount')+1;
+      _changedNode=_changedNode.set('ChildWidgetCount',subWidgetCount );
    }
    _folderTree=this.modifyTreebyNode(_folderTree);
-  _selectedNode=newNode;
+  _selectedNode=_newNode;
   },
   modifyName:function(newNode){
-    var parent;
-    var f=function(item){
-      if(item.get('Id')==newNode.get('ParentId')){
-        parent = item;
-      }
-      else {
-        if(item.get('Children')){
-          item.get('Children').forEach(child=>{f(child)})
-        }
-      }
-    };
-    f(_folderTree);
+    var parent=this.getParent(newNode);
+
     var children=parent.get('Children');
     parent=parent.set('Children',children.update(children.findIndex(item=>item.get('Id')==newNode.get('Id')),(item)=>{
       return newNode;
@@ -129,36 +134,43 @@ var FolderStore = assign({},PrototypeStore,{
   copyItem:function(destItem,newNode){
     var parent=destItem;
     var children;
+    var _newNode=newNode;
     if(parent.get('Children')){
       children=parent.get('Children')
     }
     else {
       children=Immutable.List([])
     }
-      parent=parent.set('Children',children.push(newNode));
+      parent=parent.set('Children',children.push(_newNode));
       _parentId=parent.get('Id');
       _changedNode=parent;
+      if(_newNode.get('Type')==6){
+        let subFolderCount =  _changedNode.get('ChildFolderCount')+1;
+         _changedNode=_changedNode.set('ChildFolderCount',subFolderCount);
+      }
+      else {
+        let subWidgetCount  =  _changedNode.get('ChildWidgetCount')+1;
+         _changedNode=_changedNode.set('ChildWidgetCount',subWidgetCount );
+      }
       _folderTree=this.modifyTreebyNode(_folderTree);
       _selectedNode=newNode;
   },
   deleteItem:function(deleteNode){
     //如果左边选中的是一个widget，在右边执行删除后，左边焦点项下移
-    var parent;
-    var f=function(item){
-      if(item.get('Id')==deleteNode.get('ParentId')){
-        parent = item;
-      }
-      else {
-        if(item.get('Children')){
-          item.get('Children').forEach(child=>{f(child)})
-        }
-      }
-    };
-    f(_folderTree);
+    var parent=this.getParent(deleteNode);
+
     var children=parent.get('Children');
     parent=parent.set('Children',children.delete(children.findIndex(item=>item.get('Id')==deleteNode.get('Id'))));
     _parentId=parent.get('Id');
     _changedNode=parent;
+    if(deleteNode.get('Type')==6){
+      let subFolderCount =  _changedNode.get('ChildFolderCount')-1;
+       _changedNode=_changedNode.set('ChildFolderCount',subFolderCount);
+    }
+    else {
+      let subWidgetCount  =  _changedNode.get('ChildWidgetCount')-1;
+       _changedNode=_changedNode.set('ChildWidgetCount',subWidgetCount );
+    }
     _folderTree=this.modifyTreebyNode(_folderTree);
   },
   setModifyNameError:function(res,newName,type){
@@ -196,32 +208,41 @@ var FolderStore = assign({},PrototypeStore,{
   getSelectedNode:function(){
     return _selectedNode;
   },
-  getCopyLabelName:function(folderName,type){
-    var nameArray=[],index=0;
-    if(_selectedNode===null){
-      _selectedNode=_folderTree;
-    }
-    _selectedNode.get('Children').forEach(function(child){
+  getDefaultName:function(nodeName,parentNode,type){
+    var nameArray=[];
+    parentNode.get('Children').forEach(function(child){
       if(child.get('Type')==type){
-        if(child.get('Name').indexOf(I18N.format(I18N.Template.Copy.DefaultName,folderName))>=0){
+        if(child.get('Name').indexOf(nodeName)>=0){
           nameArray.push(child.get('Name'));
         }
       }
     });
-    if(nameArray){
-      nameArray.forEach(function(name,i){
-        let num=(i+1)+'';
-        if((name.indexOf(num)<0) && (index==0)){
-          index=i+1;
+    var name=nodeName;
+    nameArray.forEach(function(item,i){
+      if(i==0){
+        if(item.indexOf(name)>=0){
+          name=I18N.format(I18N.Template.Copy.DefaultName,nodeName)+(i+1);
         }
-      });
-      if(index==0){index=nameArray.length+1}
-    }
-    else {
-      index=1
-    }
-    return (I18N.format(I18N.Template.Copy.DefaultName,folderName)+index);
+        else {
+          return;
+        }
+      }
+      else {
+        if(item.indexOf(name)>=0){
+          name=I18N.format(I18N.Template.Copy.DefaultName,nodeName)+(i+1);
+        }
+        else {
+          return;
+        }
+      }
+    });
+    return name;
   },
+  getCopyLabelName:function(node,type){
+    var parent=this.getParent(node);
+      return this.getDefaultName(node.get('Name'),parent,type);
+  },
+
   setSendStatus:function(sourceNode,userIds){
     if(userIds.length==0){
       _sendStatus=I18N.format(I18N.Folder.Send.Success,sourceNode.get('Name'))

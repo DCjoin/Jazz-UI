@@ -27,7 +27,7 @@ let LabelAction = {
                        };
 
     AppDispatcher.dispatch({
-         type: Action.GET_Label_DATA_LOADING,
+         type: Action.GET_LABEL_DATA_LOADING,
          submitParams: submitParams,
          tagOptions: tagOptions,
          labelingType: labelingType
