@@ -180,14 +180,14 @@ render: function () {
     switch (bizType) {
       case 'Energy':
         if(!energyType || energyType === 'Energy'){
-          rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
+          rightPanel = <DataSelectPanel  defaultStatus={false} widgetType={bizType}></DataSelectPanel>;
         }else{
 
         }
         break;
       case 'Unit':
         if(!energyType || energyType === 'Energy'){
-          rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
+          rightPanel = <DataSelectPanel  defaultStatus={false}  widgetType={bizType}></DataSelectPanel>;
         }else{
 
         }
