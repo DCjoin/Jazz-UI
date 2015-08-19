@@ -225,24 +225,20 @@ var FolderStore = assign({},PrototypeStore,{
       }
     });
     var name=nodeName;
-    nameArray.forEach(function(item,i){
-      if(i==0){
-        if(item.indexOf(name)>=0){
-          name=I18N.format(I18N.Template.Copy.DefaultName,nodeName)+(i+1);
+    for(var i=1;i<=nameArray.length;i++){
+      var has=false;
+        nameArray.forEach(function(item,i){
+          if(item==name){
+            has=true;
+          }
+        })
+        if(!has){
+          return name;
         }
         else {
-          return;
+          name=I18N.format(I18N.Template.Copy.DefaultName,nodeName)+i;
         }
-      }
-      else {
-        if(item.indexOf(name)>=0){
-          name=I18N.format(I18N.Template.Copy.DefaultName,nodeName)+(i+1);
-        }
-        else {
-          return;
-        }
-      }
-    });
+    }
     return name;
   },
   getCopyLabelName:function(node,type){
@@ -390,7 +386,7 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.CREATE_FOLDER_OR_WIDGET:
          FolderStore.createFolderOrWidget(action.parentNode,action.newNode);
          FolderStore.emitCreateFolderOrWidgetChange();
-         FolderStore.emitSelectedNodeChange();         
+         FolderStore.emitSelectedNodeChange();
       break;
     case FolderAction.MODIFY_NAME_SECCESS:
          FolderStore.modifyName(Immutable.fromJS(action.newNode));
