@@ -34,7 +34,8 @@ var alarmTagOption=null;
 let DataSelectMainPanel=React.createClass({
     mixins:[Navigation,State],
     propTypes: {
-        linkFrom: React.PropTypes.string
+        linkFrom: React.PropTypes.string,
+        widgetType:React.PropTypes.string, //energy,unit,ratio,labelling
     },
     _onHierachyTreeClick:function(node){
       if(node!=this.state.dimParentNode){
@@ -313,7 +314,7 @@ let DataSelectMainPanel=React.createClass({
     componentWillReceiveProps:function(){
       if(this.props.linkFrom=="Alarm"){
           alarmTagOption = EnergyStore.getTagOpions()[0];
-          TagAction.resetTagInfo();
+          TagAction.resetTagInfo(this.props.widgetType);
           TagAction.loadAlarmData(alarmTagOption);
           //set the first tag select status from alarm left panel
           if(AlarmTagStore.getSearchTagList().length!==0){
@@ -326,7 +327,7 @@ let DataSelectMainPanel=React.createClass({
       TagStore.addTagNodeListener(this._onTagNodeChange); //listener for load tag
       TagStore.addNodeLoadingListener(this._onNodeLoadingChange);
       TagStore.addSettingDataListener(this._onSettingDataChange);
-      TagAction.resetTagInfo();
+      TagAction.resetTagInfo(this.props.widgetType);
 
       if(this.props.linkFrom=="Alarm"){
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
@@ -385,7 +386,7 @@ let DataSelectMainPanel=React.createClass({
           hasJumpBtn=(this.state.total==0)?false:true;
 
       if(this.state.tagList){
-       menupaper=<TagMenu tagList={this.state.tagList}/>;
+       menupaper=<TagMenu tagList={this.state.tagList} widgetType={this.props.widgetType}/>;
        pagination=<Pagination previousPage={this._onPrePage}
                                              nextPage={this._onNextPage}
                                              jumpToPage={this.jumpToPage}
@@ -413,6 +414,9 @@ let DataSelectMainPanel=React.createClass({
         )
       }
       var hierId=(this.state.dimParentNode===null)?null:this.state.dimParentNode.Id;
+      var dropDownMenu=(this.props.widgetType=='energy')?
+                            <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
+                            :null;
       return(
         <div className="jazz-dataselectmainpanel" >
 
@@ -440,7 +444,7 @@ let DataSelectMainPanel=React.createClass({
               <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
           </label>
 
-          <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
+          {dropDownMenu}
 
           </div>
 

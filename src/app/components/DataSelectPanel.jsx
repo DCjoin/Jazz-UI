@@ -11,7 +11,8 @@ let DataSelectPanel=React.createClass({
     propTypes: {
       onButtonClick:React.PropTypes.func,
       linkFrom: React.PropTypes.string,
-      defaultStatus:React.PropTypes.bool
+      defaultStatus:React.PropTypes.bool,
+      widgetType:React.PropTypes.string, //energy,unit,ratio,labelling
     },
     _onToggle:function(){
 
@@ -39,10 +40,10 @@ let DataSelectPanel=React.createClass({
     render:function(){
       var mainpanel;
    if(this.state.open) {
-        mainpanel=<div style={{display:'flex',width:'320px'}}> <DataSelectMainPanel linkFrom={this.props.linkFrom}/></div>;
+        mainpanel=<div style={{display:'flex',width:'320px'}}> <DataSelectMainPanel linkFrom={this.props.linkFrom} widgetType={this.props.widgetType}/></div>;
       }
       else{
-        mainpanel=<div style={{display:'none'}}> <DataSelectMainPanel linkFrom={this.props.linkFrom}/></div>;
+        mainpanel=<div style={{display:'none'}}> <DataSelectMainPanel linkFrom={this.props.linkFrom} widgetType={this.props.widgetType}/></div>;
 
       }
     //  if(this.state.open) mainpanel=<DataSelectMainPanel linkFrom={this.props.linkFrom}/>;

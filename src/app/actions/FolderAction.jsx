@@ -118,10 +118,21 @@ let FolderAction = {
     });
   },
   ModifyFolderReadStatus:function(selectedNode){
-    AppDispatcher.dispatch({
-        type: Action.MODIFY_NODE_READ_STATUS,
-        selectedNode: selectedNode
+    Ajax.post('/Dashboard.svc/ModfiyReadingStatus', {
+         params: {
+           readStatus:true,
+           id:selectedNode.get('Id')
+          },
+        success: function(newNode){
+          AppDispatcher.dispatch({
+              type: Action.MODIFY_NODE_READ_STATUS,
+              selectedNode: selectedNode
+          });
+        },
+        error: function(err, res){
+        }
     });
+
   },
   SendFolderCopy:function(sourceTreeNode,userIds){
     Ajax.post('/Dashboard.svc/SendItemCopy', {
@@ -135,6 +146,16 @@ let FolderAction = {
               type: Action.SEND_ITEM,
               userIds:userIds
           });
+        },
+    });
+  },
+  ShareItemCopy:function(sourceTreeNode,userIds){
+    Ajax.post('/CollaborativeWidget.svc/ShareCollaborativeWidget', {
+         params: {
+           widget:sourceTreeNode.toJSON(),
+           userIds:userIds
+          },
+        success: function(userIds){
         },
     });
   },

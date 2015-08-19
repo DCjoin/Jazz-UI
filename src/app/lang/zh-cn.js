@@ -513,6 +513,11 @@ I18N.Folder.Copy.Title = '复制{0}';
 I18N.Folder.Copy.Label = '{0}名称';
 I18N.Folder.Copy.firstActionLabel = '复制';
 
+I18N.Folder.SaveAs = {};
+I18N.Folder.SaveAs.Title = '图表另存为';
+I18N.Folder.SaveAs.Label = '图表名称';
+I18N.Folder.SaveAs.firstActionLabel = '保存';
+
 I18N.Folder.Send = {};
 I18N.Folder.Send.Success = '{0}发送成功';
 I18N.Folder.Send.Error = '{0}发送失败，无法发送给用户：{1}。';
@@ -539,6 +544,10 @@ I18N.Hierarchy.RankingButtonName = '请选择层级节点进行排名';
 I18N.Hierarchy.ButtonName = '请选择层级节点';
 I18N.Hierarchy.Confirm = '确定';
 I18N.Hierarchy.Clear = '清空';
+
+I18N.Tag = {};
+I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
+I18N.Tag.ExceedTooltip = '新增全选的数据点数量超出了可选范围，无法全选，请逐一选择目标数据点';
 
 I18N.Template = {};
 I18N.Template.Copy = {};
