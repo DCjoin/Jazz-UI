@@ -180,14 +180,14 @@ render: function () {
     switch (bizType) {
       case 'Energy':
         if(!energyType || energyType === 'Energy'){
-          rightPanel = <DataSelectPanel defaultStatus={false}></DataSelectPanel>;
+          rightPanel = <DataSelectPanel  defaultStatus={false} widgetType={bizType}></DataSelectPanel>;
         }else{
 
         }
         break;
       case 'Unit':
         if(!energyType || energyType === 'Energy'){
-          rightPanel = <DataSelectPanel defaultStatus={false}></DataSelectPanel>;
+          rightPanel = <DataSelectPanel  defaultStatus={false}  widgetType={bizType}></DataSelectPanel>;
         }else{
 
         }
@@ -196,7 +196,7 @@ render: function () {
         //return Ratio rightPanel
         break;
       case 'Label':
-        rightPanel = <DataSelectPanel defaultStatus={false} widgetType={energyType}></DataSelectPanel>;
+        rightPanel = <DataSelectPanel defaultStatus={false} widgetType={bizType}></DataSelectPanel>;
         break;
       case 'Rank':
         //return Rank rightPanel

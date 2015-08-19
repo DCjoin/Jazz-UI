@@ -2,7 +2,7 @@
 import React from "react";
 import Immutable from 'immutable';
 import assign from "object-assign";
-import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
+import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu} from 'material-ui';
 import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
@@ -41,6 +41,10 @@ let AnalysisPanel = React.createClass({
         //bizType:'Energy'
       };
     },
+    componentWillReceiveProps(nextProps){
+      if(nextProps.energyType)
+        this.setState({energyType: nextProps.energyType});
+    },
     getInitialState(){
       let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[this.props.bizType]);
       let state = {
@@ -53,7 +57,6 @@ let AnalysisPanel = React.createClass({
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
         selectedChartType:'line',
-        energyType:'energy',//'one of energy, cost carbon'
         chartStrategy: chartStrategy
       };
 
@@ -81,12 +84,33 @@ let AnalysisPanel = React.createClass({
         energyPart = this.state.chartStrategy.getChartComponentFn(me);
       }
 
+      var IconButtonElement=<IconButton iconClassName="icon-arrow-down"/>;
+      var iconMenuProps={
+                          iconButtonElement:IconButtonElement,
+                          openDirection:"bottom-right",
+                          desktop: true
+                        };
+      let widgetOptMenu = <IconMenu {...iconMenuProps}>
+                            <MenuItem key={1} primaryText={'另存为'} />
+                            <MenuItem key={2} primaryText={'发送'} />
+                            <MenuItem key={3} primaryText={'共享'} />
+                            <MenuItem key={4} primaryText={'导出'} />
+                            <MenuItem key={5} primaryText={'删除'} />
+                         </IconMenu>;
+
       return <div className={'jazz-energy-panel'}>
         <div className='header'>
           {collapseButton}
           <div className={'description'}>来自UXteam</div>
           <div className={'jazz-alarm-chart-toolbar-container'}>
-              <div className={'title'}>{me.props.chartTitle}</div>
+              <div className={'title'}>
+                <div className={'content'}>
+                  {me.props.chartTitle}
+                </div>
+                <IconButton iconClassName="icon-send" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}
+                  disabled={!this.state.energyData}/>
+                {widgetOptMenu}
+              </div>
               {me.state.chartStrategy.searchBarGenFn(me)}
           </div>
         </div>
@@ -103,6 +127,9 @@ let AnalysisPanel = React.createClass({
     componentWillUnmount: function() {
       let me = this;
       this.state.chartStrategy.unbindStoreListenersFn(me);
+    },
+    _onChart2WidgetClick(){
+
     },
     _onErrorDialogAction(step){
       this.setState({errorObj:null});
