@@ -31,7 +31,14 @@ var FolderItem= React.createClass({
   },
   render:function(){
     var menu,subtitle;
-    var IconButtonElement=<IconButton iconClassName="icon-arrow-down"/>;
+    var iconStyle={
+          fontSize:'12px',
+        },
+        menuStyle={
+          fontSize:'14px',
+          lineHeight:'32px'
+        };
+    var IconButtonElement=<IconButton iconStyle={iconStyle} iconClassName="icon-arrow-down"/>;
                     //props
     var iconMenuProps={
                         iconButtonElement:IconButtonElement,
@@ -39,9 +46,9 @@ var FolderItem= React.createClass({
                       };
     if(this.props.nodeData.get('Type')==6){
       menu=  <IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
-            <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} />
-            <MenuItem key={2} primaryText={I18N.Folder.Detail.Title.Menu2} />
-            <MenuItem key={3} primaryText={I18N.Folder.Detail.Title.Menu3} />
+            <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
+            <MenuItem key={2} primaryText={I18N.Folder.Detail.Title.Menu2} style={menuStyle}/>
+            <MenuItem key={3} primaryText={I18N.Folder.Detail.Title.Menu3} style={menuStyle}/>
             </IconMenu>;
       subtitle=<div style={{display:'flex','flex-direction':'row'}}>
                 <div>{I18N.Folder.FolderName+this.props.nodeData.get('ChildFolderCount')}</div>
@@ -50,11 +57,11 @@ var FolderItem= React.createClass({
     }
     else {
       menu=<IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
-            <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} />
-            <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} />
-            <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} />
-            <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} />
-            <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
+            <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} style={menuStyle}/>
+            <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} style={menuStyle}/>
+            <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} style={menuStyle}/>
+            <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle}/>
+            <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={menuStyle}/>
             </IconMenu>
     };
     return(
@@ -66,7 +73,9 @@ var FolderItem= React.createClass({
           <div className='name'>
             {this.props.nodeData.get('Name')}
           </div>
-          {menu}
+          <div className='select'>
+              {menu}
+          </div>
 
         </div>
         <div className='subtitle'>
@@ -112,14 +121,14 @@ var FolderDetailPanel = React.createClass({
         fontSize:'20px',
       },
       menuStyle={
-        fontSize:'14px'
+        fontSize:'14px',
+        lineHeight:'32px'
       };
   var IconButtonElement=<IconButton iconStyle={iconStyle} iconClassName="icon-arrow-down"/>;
                   //props
   var iconMenuProps={
                       iconButtonElement:IconButtonElement,
                       openDirection:"bottom-right",
-                      menuStyle:menuStyle
                     };
   var subtitle=(this.props.nodeData.get('SourceUserName')?I18N.format(I18N.Folder.Detail.SubTitile,this.props.nodeData.get('SourceUserName')):null)
   var content=[];
@@ -129,9 +138,9 @@ var FolderDetailPanel = React.createClass({
     })
   };
   var icon=(this.props.nodeData.get('Id')!=-1)?<IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
-                                                  <MenuItem ref="Menu1" key={1} primaryText={I18N.Folder.Detail.Title.Menu1} />
-                                                  <MenuItem ref="Menu2" key={2} primaryText={I18N.Folder.Detail.Title.Menu2} />
-                                                  <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.Detail.Title.Menu3} />
+                                                  <MenuItem ref="Menu1" key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
+                                                  <MenuItem ref="Menu2" key={2} primaryText={I18N.Folder.Detail.Title.Menu2} style={menuStyle}/>
+                                                  <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.Detail.Title.Menu3} style={menuStyle}/>
                                                 </IconMenu>
                                                 :null;
 

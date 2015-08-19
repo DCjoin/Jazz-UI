@@ -54,7 +54,7 @@ var TagItem=React.createClass({
    if((this.props.status==false) && (this.props.disable==true)){
      boxDisabledStatus=true
    };
-   var alarmInfo=(this.props.widgetType=='Energy')?(<div className="font">
+   var alarmInfo=(this.props.widgetType=='Energy' or !this.props.widgetType)?(<div className="font">
                                                     {alarm}
                                                     {baseline}
                                                   </div>):null;
