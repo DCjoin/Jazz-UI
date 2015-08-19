@@ -41,6 +41,10 @@ let AnalysisPanel = React.createClass({
         //bizType:'Energy'
       };
     },
+    componentWillReceiveProps(nextProps){
+      if(nextProps.energyType)
+        this.setState({energyType: nextProps.energyType});
+    },
     getInitialState(){
       let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[this.props.bizType]);
       let state = {
@@ -53,7 +57,6 @@ let AnalysisPanel = React.createClass({
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
         selectedChartType:'line',
-        energyType:'energy',//'one of energy, cost carbon'
         chartStrategy: chartStrategy
       };
 

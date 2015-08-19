@@ -67,7 +67,7 @@ let ChartStrategyFactor = {
       onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn:'setFitStepAndGetData',
-      getInitialStateFn:'empty',
+      getInitialStateFn:'getEnergyInitialState',
       getAllDataFn: 'empty',
       getCustomizedLabelItemsFn: 'empty',
       getInitParamFn: 'getInitParam',
@@ -251,18 +251,26 @@ let ChartStrategyFactor = {
 
  getInitialStateFnStrategy:{
    empty(){},
-   getUnitEnergyInitialState(){
+   getEnergyInitialState(analysisPanel){
+    let energyType = analysisPanel.props.energyType || 'energy';
+    return {energyType: energyType};
+   },
+   getUnitEnergyInitialState(analysisPanel){
+     let energyType = analysisPanel.props.energyType || 'energy';
      let state = {
        unitType: 2,
-       benchmarks: null
+       benchmarks: null,
+       energyType: energyType
      };
       return state;
    },
-   getRankInitialState(){
+   getRankInitialState(analysisPanel){
+     let energyType = analysisPanel.props.energyType || 'energy';
      let state = {
        order: 1,
        range: 3,
-       selectedChartType:'column'
+       selectedChartType:'column',
+       energyType: energyType
      };
      return state;
    },
