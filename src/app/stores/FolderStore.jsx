@@ -160,7 +160,8 @@ var FolderStore = assign({},PrototypeStore,{
     var parent=this.getParent(deleteNode);
 
     var children=parent.get('Children');
-    parent=parent.set('Children',children.delete(children.findIndex(item=>item.get('Id')==deleteNode.get('Id'))));
+    var index=children.findIndex(item=>item.get('Id')==deleteNode.get('Id'));
+    parent=parent.set('Children',children.delete(index));
     _parentId=parent.get('Id');
     _changedNode=parent;
     if(deleteNode.get('Type')==6){
@@ -170,6 +171,12 @@ var FolderStore = assign({},PrototypeStore,{
     else {
       let subWidgetCount  =  _changedNode.get('ChildWidgetCount')-1;
        _changedNode=_changedNode.set('ChildWidgetCount',subWidgetCount );
+    }
+    if(index==children.size-1){
+      _selectedNode=children.find((item,i)=>(i==index-1));
+    }
+    else {
+      _selectedNode=children.find((item,i)=>(i==index+1));
     }
     _folderTree=this.modifyTreebyNode(_folderTree);
   },
@@ -382,8 +389,8 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case FolderAction.CREATE_FOLDER_OR_WIDGET:
          FolderStore.createFolderOrWidget(action.parentNode,action.newNode);
-         FolderStore.emitSelectedNodeChange();
          FolderStore.emitCreateFolderOrWidgetChange();
+         FolderStore.emitSelectedNodeChange();         
       break;
     case FolderAction.MODIFY_NAME_SECCESS:
          FolderStore.modifyName(Immutable.fromJS(action.newNode));
@@ -406,6 +413,7 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.DELETE_ITEM:
         FolderStore.deleteItem(action.deleteNode);
         FolderStore.emitDeleteItemSuccessChange();
+         FolderStore.emitSelectedNodeChange();
       break;
     case FolderAction.SEND_ITEM:
         FolderStore.setSendStatus(action.sourceTreeNode,action.userIds);
