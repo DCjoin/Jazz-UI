@@ -301,7 +301,7 @@ let ChartPanel = React.createClass({
           {widgetWd}
           {title}
           <div className={'jazz-alarm-chart-toolbar-container'}>
-            <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+            <div className={'jazz-full-border-dropdownmenu-container'} >
               <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={me._onRelativeDateChange}></DropDownMenu>
             </div>
             <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={this._onDateSelectorChanged}/>

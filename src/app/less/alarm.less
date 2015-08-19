@@ -195,12 +195,17 @@
 }
 .jazz-alarm-chart-toolbar-container{
   display: flex;
-  flex-flow: row;
   align-items: center;
-  height: 60px;
-  margin-left: 10px;
+  height: 46px;
+  margin-left: 30px;
+  justify-content: space-between;
 }
-.jazz-full-border-dropdownmenu-relativedate-container{
+.jazz-alarm-chart-toolbar{
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
+}
+.jazz-full-border-dropdownmenu-container{
   >div{
     border: 1px solid rgb(235, 235, 235);
     >div:first-child
@@ -220,17 +225,6 @@
       }
       svg+div{
         border-top-width: 0px !important;
-      }
-    }
-
-    >div:last-child{
-      left: 0px !important;
-      top: 33px !important;
-      width: 120px !important;
-      div{
-        padding-left: 22px !important;
-        padding-right: auto !important;
-        font-size: 12px !important;
       }
     }
   }

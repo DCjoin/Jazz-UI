@@ -3,8 +3,8 @@ import React from "react";
 import Immutable from 'immutable';
 import assign from "object-assign";
 import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
-
 import CommonFuns from '../../util/Util.jsx';
+import classNames from 'classnames';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
@@ -22,6 +22,11 @@ const defaultMap = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
  {value: 'ThisMonth', text: '本月'}, {value: 'LastMonth', text: '上月'}, {value: 'ThisYear', text: '今年'}, {value: 'LastYear', text: '去年'}];
+const kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
+ {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
+ {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
+ {value:'UnitBed',text:'单位床位'},{value:'DayNightRatio',text:'昼夜比'},
+ {value:'WorkHolidayRatio',text:'公休比'}];
 
 let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
@@ -57,36 +62,16 @@ let AnalysisPanel = React.createClass({
       assign(state, obj);
       return state;
     },
-    // componentWillReceiveProps: function(nextProps) {
-    //   let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[nextProps.bizType]);
-    //   let state = {
-    //     isLoading: false,
-    //     energyData: null,
-    //     energyRawData: null,
-    //     hierName: null,
-    //     submitParams: null,
-    //     step: null,
-    //     dashboardOpenImmediately: false,
-    //     baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
-    //     selectedChartType:'line',
-    //     energyType:'energy',//'one of energy, cost carbon'
-    //     chartStrategy: chartStrategy
-    //   };
-    //
-    //   var obj = chartStrategy.getInitialStateFn(this);
-    //
-    //   assign(state, obj);
-    //
-    //   this.setState(state);
-    // },
     render(){
-      let me = this, errorDialog, energyPart = null;
+      let me = this, errorDialog = null, energyPart = null;
 
       if(me.state.errorObj){
         errorDialog = <ErrorStepDialog {...me.state.errorObj} onErrorDialogAction={me._onErrorDialogAction}></ErrorStepDialog>;
-      }else{
-        errorDialog = <div></div>;
       }
+
+      var collapseButton = <div className="fold-tree-btn" style={{"color":"#939796"}}>
+                              <FontIcon hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-column-fold")} />
+                           </div>;
 
       if(this.state.isLoading){
         energyPart = <div style={{margin:'auto',width:'100px'}}>
@@ -96,11 +81,14 @@ let AnalysisPanel = React.createClass({
         energyPart = this.state.chartStrategy.getChartComponentFn(me);
       }
 
-      return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
-        <div style={{margin:'20px 35px'}}>{me.props.chartTitle}</div>
-        <div className={'jazz-alarm-chart-toolbar-container'}>
-            {me.state.chartStrategy.getEnergyTypeComboFn(me)}
-            {me.state.chartStrategy.searchBarGenFn(me)}
+      return <div className={'jazz-energy-panel'}>
+        <div className='header'>
+          {collapseButton}
+          <div className={'description'}>来自UXteam</div>
+          <div className={'jazz-alarm-chart-toolbar-container'}>
+              <div className={'title'}>{me.props.chartTitle}</div>
+              {me.state.chartStrategy.searchBarGenFn(me)}
+          </div>
         </div>
         {energyPart}
         {errorDialog}
@@ -334,9 +322,9 @@ let AnalysisPanel = React.createClass({
       //this.setState({selectedChartType:child.props.value});
       this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
     },
-    _onChangeLabelType(mainMenuItem, subMenuItem){
+    _onChangeLabelType(subMenuItem, mainMenuItem){
       var curType = this.state.labelType,
-          type = mainMenuItem.value,
+          type = mainMenuItem.props.value,
           selectedLabelItem = this.state.selectedLabelItem;
 
       if(type === 'industryZone'){
@@ -349,7 +337,7 @@ let AnalysisPanel = React.createClass({
         {
           this.setState({labelType: 'industryZone'});
         }
-        selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? "请选择能效标识" : subMenuItem.props.primaryText);
+        selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? "请选择能效标识" : this.getDisplayText(subMenuItem.props.primaryText));
         selectedLabelItem.industryId = subMenuItem.props.industryId;
         selectedLabelItem.zoneId = subMenuItem.props.zoneId;
         selectedLabelItem.value = subMenuItem.props.value;
@@ -365,7 +353,7 @@ let AnalysisPanel = React.createClass({
           this.setState({labelType: 'customized'});
         }
 
-        selectedLabelItem.text = (subMenuItem.props.customerizedId === -1 ? "请选择能效标识" : subMenuItem.props.primaryText);
+        selectedLabelItem.text = (subMenuItem.props.customerizedId === -1 ? "请选择能效标识" : this.getDisplayText(subMenuItem.props.primaryText));
         selectedLabelItem.customerizedId = subMenuItem.props.customerizedId;
 
         this.changeToCustomizedLabel(subMenuItem.props.kpiType);
@@ -375,8 +363,19 @@ let AnalysisPanel = React.createClass({
       this.enableKpiTypeButton();
     },
     changeToCustomizedLabel(kpiType){
-      this.setState({kpiTypeValue: kpiType});
+      this.setState({kpiTypeValue: kpiType - 1});
       this.disableKpiTypeButton();
+    },
+    getKpiText(){
+      var kpiTypeText = "";
+      var kpiType = this.state.kpiTypeValue;
+      if(kpiType === 6){
+        kpiTypeText = "指标原值";
+      }
+      else{
+        kpiTypeText = kpiTypeItem[kpiType].text;
+      }
+      return kpiTypeText;
     },
     _onHierNodeChange(){
       this.state.chartStrategy.onHierNodeChangeFn(this);
@@ -391,15 +390,7 @@ let AnalysisPanel = React.createClass({
         var item = labelItems[0];
         selectedLabelItem.industryId = item.industryId;
         selectedLabelItem.zoneId = item.zoneId;
-        var text;
-        var textLen = JazzCommon.GetArialStrLen(item.primaryText);
-        if (textLen > 7) {//114px width and the forn size is 16
-            text = JazzCommon.GetArialStr(item.primaryText, 6);
-        }
-        else{
-          text = item.primaryText;
-        }
-        selectedLabelItem.text = text;
+        selectedLabelItem.text = this.getDisplayText(item.primaryText);
         selectedLabelItem.value = item.value;
       }
       else{
@@ -411,6 +402,17 @@ let AnalysisPanel = React.createClass({
         labelDisable: false
       });
       this.enableKpiTypeButton();
+    },
+    getDisplayText(primaryText){
+      var text;
+      var textLen = JazzCommon.GetArialStrLen(primaryText);
+      if (textLen > 7) {//114px width and the forn size is 16
+          text = JazzCommon.GetArialStr(primaryText, 6);
+      }
+      else{
+        text = primaryText;
+      }
+      return text;
     },
     disableLabelButton(){
       this.setState({
@@ -447,8 +449,7 @@ let AnalysisPanel = React.createClass({
             value: item.get('Id'),
             customerizedId: item.get('Id'),
             primaryText: item.get('Name'),
-            kpiType: item.get('LabellingType'),
-            parent: 'customized'
+            kpiType: item.get('LabellingType')
           });
         });
       }
@@ -508,16 +509,14 @@ let AnalysisPanel = React.createClass({
           value: 'none',
           industryId: -1,
           zoneId: -1,
-          primaryText: "无",
-          parent: "industryZone"
+          primaryText: "无"
         });
       }
       else {
         menuItems.push({
           value: 'none',
           customerizedId: -1,
-          primaryText: "无",
-          parent: "customized"
+          primaryText: "无"
         });
       }
       return menuItems;
@@ -543,14 +542,12 @@ let AnalysisPanel = React.createClass({
       labelMenuItem.zoneId = zoneId;
       labelMenuItem.primaryText = labelItem.get('ZoneComment') + labelItem.get('IndustryComment');
       labelMenuItem.value = "" + zoneId + "/" + industryId;
-      labelMenuItem.parent = 'industryZone';
       industyMenuItems.push(labelMenuItem);
     },
     getBenchmarkOption: function () {
       var labelType = this.state.labelType;
       var selectedLabelItem = this.state.selectedLabelItem;
       if (labelType === 'industryZone'){
-        /*
         if(selectedLabelItem.industryId === -1){
           return null;
         }
@@ -561,12 +558,6 @@ let AnalysisPanel = React.createClass({
             benchmarkText: selectedLabelItem.text
           };
         }
-        */
-        return{
-          IndustryId: 0,
-          ZoneId: 0,
-          benchmarkText: "Extreme cold region BTelecommunication business hall"
-        };
       }
       else if(labelType === 'customized'){
         if (selectedLabelItem.customerizedId == -1){
