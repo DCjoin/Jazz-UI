@@ -24,6 +24,7 @@ import CopyView from '../folder/operationView/CopyView.jsx';
 import DeleteView from '../folder/operationView/DeleteView.jsx';
 import ShareView from '../folder/operationView/ShareView.jsx';
 import SendView from '../folder/operationView/SendView.jsx';
+import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 
 let Setting = React.createClass({
 
@@ -85,6 +86,56 @@ let Setting = React.createClass({
       templateShow:true
     })
 },
+ getTemplate:function(){
+   var template;
+   //for operation template
+   if(this.state.templateNode){
+     if(this.state.templateNode.get('Type')==6){
+       switch(this.state.templateId) {
+         case 1:
+             template=<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.templateNode}/>;
+           break;
+         case 2:
+             template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>;
+           break;
+         case 3:
+             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
+           break;
+     }
+   }
+     else {
+       switch(this.state.templateId) {
+         case 1:
+             template=<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.templateNode}/>;
+           break;
+         case 2:
+             template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>;
+           break;
+         case 3:
+             template=<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.templateNode}/>;
+           break;
+         case 4:
+             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
+           break;
+         case 5:
+             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
+           break;
+         case 6:
+             template=<SaveAsView onDismiss={this._onTemplateDismiss} saveAsNode={this.state.templateNode}/>;
+           break;
+     }
+   }
+ }
+ return template
+ },
+_onWidgetMenuSelect:function(index){
+  var id=(index==1)?6:index;
+  this.setState({
+    templateNode:this.state.selectedNode,
+    templateId:id,
+    templateShow:true
+  })
+},
   _onEnergyTypeChanged(energyType){
     this.setState({selectedEnergyType:energyType});
   },
@@ -125,46 +176,11 @@ render: function () {
         let bizType = bizTypeMap[selectedNode.get('WidgetType')];
         let energyType = this.state.selectedEnergyType || CommonFuns.extractEnergyType( selectedNode.get('EnergyType') );
         rightPanel = this.getRightPanel(bizType, energyType);
-        mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType} energyType={energyType} onEnergyTypeChange={me._onEnergyTypeChanged}></AnalysisPanel>;
+        mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType} energyType={energyType} onEnergyTypeChange={me._onEnergyTypeChanged} onOperationSelect={this._onWidgetMenuSelect}></AnalysisPanel>;
       }
     }
-    var template;
-    //for operation template
-    if(this.state.templateNode){
-      if(this.state.templateNode.get('Type')==6){
-        switch(this.state.templateId) {
-          case 1:
-              template=<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.templateNode}/>;
-            break;
-          case 2:
-              template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>;
-            break;
-          case 3:
-              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
-            break;
-      }
-    }
-      else {
-        switch(this.state.templateId) {
-          case 1:
-              template=<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.templateNode}/>;
-            break;
-          case 2:
-              template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>;
-            break;
-          case 3:
-              template=<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.templateNode}/>;
-            break;
-          case 4:
-              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
-            break;
-          case 5:
-              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
-            break;
-      }
-    }
-  }
-    let operation=(this.state.templateShow?template:null);
+
+    let operation=(this.state.templateShow?this.getTemplate():null);
     return (
       <div style={{display:'flex', flex:1}}>
         <LeftPanel isShow={!this.state.showRightPanel} onToggle={this._onSwitchButtonClick}/>
@@ -196,10 +212,10 @@ render: function () {
         //return Ratio rightPanel
         break;
       case 'Label':
-        rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
+        rightPanel = <DataSelectPanel defaultStatus={false} widgetType={bizType}></DataSelectPanel>;
         break;
       case 'Rank':
-        //return Rank rightPanel        
+        //return Rank rightPanel
         rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
                       defaultStatus={this.state.showRightPanel}
                       container={<RankingContainer ecType={energyType}/>}/>;

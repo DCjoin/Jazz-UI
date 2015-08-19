@@ -44,7 +44,10 @@ let DataSelectMainPanel=React.createClass({
         alarmType=null;
         React.findDOMNode(this.refs.searchIcon).style.display='block';
         this.refs.searchText.setValue("");
-        this.refs.dropDownMenu.setState({selectedIndex:0})
+        if(this.props.widgetType=='Energy' || this.props.linkFrom=="Alarm"){
+          this.refs.dropDownMenu.setState({selectedIndex:0})
+        }
+
       }
       TagAction.loadData(node.Id,2,1,alarmType,filters);
       TBSettingAction.setHierId(node.Id);
@@ -414,7 +417,7 @@ let DataSelectMainPanel=React.createClass({
         )
       }
       var hierId=(this.state.dimParentNode===null)?null:this.state.dimParentNode.Id;
-      var dropDownMenu=(this.props.widgetType=='Energy')?
+      var dropDownMenu=(this.props.widgetType=='Energy' || this.props.linkFrom=="Alarm")?
                             <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
                             :null;
       return(

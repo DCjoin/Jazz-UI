@@ -31,7 +31,8 @@ let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
       chartTitle:  React.PropTypes.string,
-      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Label','Rank'])
+      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Label','Rank']),
+      onOperationSelect:React.PropTypes.func,
     },
     getDefaultProps(){
       return {
@@ -64,38 +65,9 @@ let AnalysisPanel = React.createClass({
       assign(state, obj);
       return state;
     },
-    getStrategyName(bizType, energyType){
-      let strategyName = null;
-      switch (bizType) {
-        case 'Energy':
-          if(!energyType || energyType === 'Energy'){
-            strategyName = 'Energy';
-          }else if(energyType === 'Cost'){
-            strategyName = 'Cost';
-          }else if(energyType === 'Carbon'){
-            strategyName = 'Carbon';
-          }
-          break;
-        case 'Unit':
-          if(!energyType || energyType === 'Energy'){
-            strategyName = 'UnitEnergyUsage';
-          }else if(energyType === 'Cost'){
-            strategyName = 'UnitCost';
-          }else if(energyType === 'Carbon'){
-            strategyName = 'UnitCarbon';
-          }
-          break;
-        case 'Ratio':
-          strategyName = 'RatioUsage';
-          break;
-        case 'Label':
-          strategyName = 'Label';
-          break;
-        case 'Rank':
-          strategyName = 'Rank';
-          break;
-      }
-      return strategyName;
+    _onTitleMenuSelect:function(e,item){
+      let menuIndex=parseInt(item.key);
+      this.props.onOperationSelect(menuIndex);
     },
     render(){
       let me = this, errorDialog = null, energyPart = null;
@@ -122,7 +94,7 @@ let AnalysisPanel = React.createClass({
                           openDirection:"bottom-right",
                           desktop: true
                         };
-      let widgetOptMenu = <IconMenu {...iconMenuProps}>
+      let widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
                             <MenuItem key={1} primaryText={'另存为'} />
                             <MenuItem key={2} primaryText={'发送'} />
                             <MenuItem key={3} primaryText={'共享'} />
@@ -160,6 +132,39 @@ let AnalysisPanel = React.createClass({
       let me = this;
       this.state.chartStrategy.unbindStoreListenersFn(me);
     },
+    getStrategyName(bizType, energyType){
+      let strategyName = null;
+      switch (bizType) {
+        case 'Energy':
+          if(!energyType || energyType === 'Energy'){
+            strategyName = 'Energy';
+          }else if(energyType === 'Cost'){
+            strategyName = 'Cost';
+          }else if(energyType === 'Carbon'){
+            strategyName = 'Carbon';
+          }
+          break;
+        case 'Unit':
+          if(!energyType || energyType === 'Energy'){
+            strategyName = 'UnitEnergyUsage';
+          }else if(energyType === 'Cost'){
+            strategyName = 'UnitCost';
+          }else if(energyType === 'Carbon'){
+            strategyName = 'UnitCarbon';
+          }
+          break;
+        case 'Ratio':
+          strategyName = 'RatioUsage';
+          break;
+        case 'Label':
+          strategyName = 'Label';
+          break;
+        case 'Rank':
+          strategyName = 'Rank';
+          break;
+      }
+      return strategyName;
+    },  
     _onChart2WidgetClick(){
 
     },
@@ -555,7 +560,7 @@ let AnalysisPanel = React.createClass({
       this.setEmptyLabelMenu();
     },
     setEmptyLabelMenu(){
-      var selectedLabelItem = this.initSlectedLabelItem;
+      var selectedLabelItem = this.initSlectedLabelItem();
       this.setState({
         selectedLabelItem: selectedLabelItem,
         labelType: 'industryZone'
