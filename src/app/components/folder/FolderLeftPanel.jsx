@@ -90,16 +90,6 @@ var PanelContainer = React.createClass({
     });
     FolderAction.createWidgetOrFolder(this.state.selectedNode,name,7,window.currentCustomerId,widgetType);
   },
-  _onTemplateTest:function(){
-    this.setState({
-      templateShow:true
-    })
-  },
-  _onTemplateDismiss:function(){
-    this.setState({
-      templateShow:false
-    })
-  },
   _onSearchClick:function(node){
     this.setState({
       selectedNode:node
@@ -115,7 +105,6 @@ var PanelContainer = React.createClass({
       allNode:null,
       isLoading:true,
       selectedNode:null,
-      templateShow:false,
       buttonDisabled:false
     };
   },
@@ -146,10 +135,6 @@ var PanelContainer = React.createClass({
     FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
 
-    /*
-    HierarchyStore.addHierarchyNodeListener(this._onChange);
-    HierarchyAction.loadall(window.currentCustomerId);
-    */
   },
   componentWillUnmount:function(){
 
@@ -160,7 +145,7 @@ var PanelContainer = React.createClass({
     FolderStore.removeCopyItemSuccessListener(this._onCopyItem);
     FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
-  //  HierarchyStore.removeHierarchyNodeListener(this._onChange);
+
   },
   render:function(){
     //style
@@ -191,10 +176,6 @@ var PanelContainer = React.createClass({
 
 
       var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
-    var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.selectedNode}/>:null);
-    //  var template=(this.state.templateShow?<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.selectedNode}/>:null);
-    //var template=(this.state.templateShow?<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.selectedNode}/>:null);
-    //var template=(this.state.templateShow?<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.selectedNode}/>:null);
 
     return(
       <div className="jazz-folder-leftpanel-container">
@@ -212,7 +193,7 @@ var PanelContainer = React.createClass({
                <MenuItem ref="Menu5" key={5} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={menuIcon}/>
             </IconMenu>
           </div>
-          <IconButton iconClassName="icon-alarm" onClick={this._onTemplateTest}/>
+        
           <div>
 
           </div>
@@ -225,7 +206,6 @@ var PanelContainer = React.createClass({
         <div className="jazz-folder-leftpanel-foldertree">
           {treeContent}
         </div>
-        {template}
       </div>
     )
   }
