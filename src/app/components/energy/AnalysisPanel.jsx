@@ -32,7 +32,8 @@ let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
       chartTitle:  React.PropTypes.string,
-      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Label','Rank'])
+      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Label','Rank']),
+      onOperationSelect:React.PropTypes.func,
     },
     getDefaultProps(){
       return {
@@ -65,6 +66,10 @@ let AnalysisPanel = React.createClass({
       assign(state, obj);
       return state;
     },
+    _onTitleMenuSelect:function(e,item){
+      let menuIndex=parseInt(item.key);
+      this.props.onOperationSelect(menuIndex);
+    },
     render(){
       let me = this, errorDialog = null, energyPart = null;
 
@@ -90,7 +95,7 @@ let AnalysisPanel = React.createClass({
                           openDirection:"bottom-right",
                           desktop: true
                         };
-      let widgetOptMenu = <IconMenu {...iconMenuProps}>
+      let widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
                             <MenuItem key={1} primaryText={'另存为'} />
                             <MenuItem key={2} primaryText={'发送'} />
                             <MenuItem key={3} primaryText={'共享'} />

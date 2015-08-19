@@ -399,8 +399,9 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case FolderAction.COPY_ITEM:
         FolderStore.copyItem(action.destItem,action.newNode);
-        FolderStore.emitSelectedNodeChange();
         FolderStore.emitCopyItemSuccessChange();
+        FolderStore.emitSelectedNodeChange();
+
       break;
     case FolderAction.DELETE_ITEM:
         FolderStore.deleteItem(action.deleteNode);
