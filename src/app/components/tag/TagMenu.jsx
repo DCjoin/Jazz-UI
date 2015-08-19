@@ -13,6 +13,7 @@ var TagMenu=React.createClass({
 
   propTypes: {
       tagList:React.PropTypes.object,
+      widgetType:React.PropTypes.string,
   },
   _onTagStatusChange:function(){
     this.setState({
@@ -20,7 +21,6 @@ var TagMenu=React.createClass({
       allCheckDisable:TagStore.getCheckAllDisabledStatus(),
       checked:TagStore.getCheckAllCheckedStatus(),
       tagTotal:TagStore.getTagTotalStatus(),
-
     })
   },
   _onAllCheck:function(){
@@ -78,9 +78,9 @@ var TagMenu=React.createClass({
         border:'1px solid #efefef'
        };
 
-      var tooltipText="已选择数据点 "+TagStore.getTagTotal()+'/30';
+      var tooltipText=I18N.format(I18N.Tag.Tooltip,TagStore.getTagTotal(),TagStore.getTagSum());
       if(this.state.allCheckDisable){
-        tooltipText+="新增全选的数据点数量超出了可选范围，无法全选，请逐一选择目标数据点"
+        tooltipText+=I18N.Tag.ExceedTooltip
       }
 
 
@@ -95,7 +95,7 @@ var TagMenu=React.createClass({
                           label={nodeData.AlarmStatus}
                           status={tagStatus}
                           disable={that.state.tagTotal}
-                          />;
+                          widgetType={that.props.widgetType}/>;
         nodemenuItems.push(menuItem);
 
       });

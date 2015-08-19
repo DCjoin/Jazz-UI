@@ -94,10 +94,13 @@ let TagAction = {
         hierId:hierId
     });
   },
-  resetTagInfo(){
+  resetTagInfo(widgetType){
+    setTimeout(()=>{
     AppDispatcher.dispatch({
-        type: Action.RESET_TAGINFO
+        type: Action.RESET_TAGINFO,
+        widgetType:widgetType
     });
+      },0);
   },
   setCurrentTagList(tagList){
     AppDispatcher.dispatch({
@@ -111,9 +114,11 @@ let TagAction = {
     });
   },
   clearAlarmSearchTagList(){
+    setTimeout(()=>{
     AppDispatcher.dispatch({
         type: Action.CLEAR_ALARM_SEARCH_TAGLIST,
     });
+      },0);
   }
 };
 
