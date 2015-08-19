@@ -111,7 +111,7 @@ var FolderDetailPanel = React.createClass({
   var iconStyle={
     fontSize:'20px',
   };
-  var IconButtonElement=<IconButton style={iconStyle} iconClassName="icon-arrow-down"/>;
+  var IconButtonElement=<IconButton iconStyle={iconStyle} iconClassName="icon-arrow-down"/>;
                   //props
   var iconMenuProps={
                       iconButtonElement:IconButtonElement,
@@ -124,6 +124,12 @@ var FolderDetailPanel = React.createClass({
       content.push(<FolderItem nodeData={child} onOperationSelect={that._onItemMenuSelect}/>)
     })
   };
+  var icon=(this.props.nodeData.get('Id')!=-1)?<IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
+                                                  <MenuItem ref="Menu1" key={1} primaryText={I18N.Folder.Detail.Title.Menu1} />
+                                                  <MenuItem ref="Menu2" key={2} primaryText={I18N.Folder.Detail.Title.Menu2} />
+                                                  <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.Detail.Title.Menu3} />
+                                                </IconMenu>
+                                                :null;
 
     return(
       <div className='jazz-folder-detail'>
@@ -136,11 +142,7 @@ var FolderDetailPanel = React.createClass({
             <div className='name'>
               {this.props.nodeData.get('Name')}
             </div>
-            <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
-               <MenuItem ref="Menu1" key={1} primaryText={I18N.Folder.Detail.Title.Menu1} />
-               <MenuItem ref="Menu2" key={2} primaryText={I18N.Folder.Detail.Title.Menu2} />
-               <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.Detail.Title.Menu3} />
-            </IconMenu>
+            {icon}
           </div>
         </div>
         <div className='content'>
