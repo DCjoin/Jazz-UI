@@ -4,6 +4,7 @@ import Immutable from 'immutable';
 import assign from "object-assign";
 import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
 import CommonFuns from '../../util/Util.jsx';
+import classNames from 'classnames';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
@@ -61,36 +62,16 @@ let AnalysisPanel = React.createClass({
       assign(state, obj);
       return state;
     },
-    // componentWillReceiveProps: function(nextProps) {
-    //   let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[nextProps.bizType]);
-    //   let state = {
-    //     isLoading: false,
-    //     energyData: null,
-    //     energyRawData: null,
-    //     hierName: null,
-    //     submitParams: null,
-    //     step: null,
-    //     dashboardOpenImmediately: false,
-    //     baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
-    //     selectedChartType:'line',
-    //     energyType:'energy',//'one of energy, cost carbon'
-    //     chartStrategy: chartStrategy
-    //   };
-    //
-    //   var obj = chartStrategy.getInitialStateFn(this);
-    //
-    //   assign(state, obj);
-    //
-    //   this.setState(state);
-    // },
     render(){
-      let me = this, errorDialog, energyPart = null;
+      let me = this, errorDialog = null, energyPart = null;
 
       if(me.state.errorObj){
         errorDialog = <ErrorStepDialog {...me.state.errorObj} onErrorDialogAction={me._onErrorDialogAction}></ErrorStepDialog>;
-      }else{
-        errorDialog = <div></div>;
       }
+
+      var collapseButton = <div className="fold-tree-btn" style={{"color":"#939796"}}>
+                              <FontIcon hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-column-fold")} />
+                           </div>;
 
       if(this.state.isLoading){
         energyPart = <div style={{margin:'auto',width:'100px'}}>
@@ -100,11 +81,14 @@ let AnalysisPanel = React.createClass({
         energyPart = this.state.chartStrategy.getChartComponentFn(me);
       }
 
-      return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
-        <div style={{margin:'20px 35px'}}>{me.props.chartTitle}</div>
-        <div className={'jazz-alarm-chart-toolbar-container'}>
-            {me.state.chartStrategy.getEnergyTypeComboFn(me)}
-            {me.state.chartStrategy.searchBarGenFn(me)}
+      return <div className={'jazz-energy-panel'}>
+        <div className='header'>
+          {collapseButton}
+          <div className={'description'}>来自UXteam</div>
+          <div className={'jazz-alarm-chart-toolbar-container'}>
+              <div className={'title'}>{me.props.chartTitle}</div>
+              {me.state.chartStrategy.searchBarGenFn(me)}
+          </div>
         </div>
         {energyPart}
         {errorDialog}
