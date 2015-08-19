@@ -5,7 +5,7 @@ import assign from "object-assign";
 import Immutable from 'immutable';
 import AlarmSetting from './AlarmSetting.jsx';
 import BaselineModify from './BaselineModify.jsx';
-
+import CommonFuns from '../../util/Util.jsx';
 import CommodityContainer from '../commodity/CommonCommodityPanel.jsx';
 import RankingContainer from '../commodity/ranking/RankingCommodityPanel.jsx';
 import RightPanel from '../../controls/RightPanel.jsx';
@@ -64,6 +64,9 @@ let Setting = React.createClass({
                       });
           });
   },
+  _onEnergyTypeChanged(energyType){
+    this.setState({energyType:energyType});
+  },
   //just for test commoditypanel
 componentWillMount:function(){
   CommodityAction.setEnergyConsumptionType('Cost');
@@ -80,7 +83,7 @@ componentWillUnmount:function(){
   FolderStore.removeSendStatusListener(this._onSendStatusChange);
   FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
 },
-  render: function () {
+render: function () {
 
     // var commoditypanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
     //                                defaultStatus={this.state.showRightPanel}
@@ -103,7 +106,7 @@ componentWillUnmount:function(){
     //                                container={<RankingContainer checkedCommodity={checkedCommodity} checkedTreeNodes={checkedTreeNodes}/>}/>);
 
     //var errorBar=(this.state.errorText!=null?<Snackbar message={this.state.errorText}/>:null);
-    let energyTypeMap = {1:'Energy',2:'Unit',3:'Ratio', 4:'Label', 5:'Rank'};
+    let bizTypeMap = {1:'Energy',2:'Unit',3:'Ratio', 4:'Label', 5:'Rank'};
     let mainPanel, rightPanel=null;
     let selectedNode = this.state.selectedNode;
 
@@ -111,16 +114,16 @@ componentWillUnmount:function(){
       mainPanel = null;
     }else{
       let type = selectedNode.get('Type');
-      let energyType = selectedNode.get('WidgetType');
       if(type === 6){
         //forder
         mainPanel = (this.state.selectedNode?<FolderDetailPanel onToggle={this._onSwitchButtonClick} nodeData={this.state.selectedNode}/>:null);
       }else if(type === 7){
         //chart panel
         let title = selectedNode.get('Name');
-        let bizType = energyTypeMap[selectedNode.get('WidgetType')];
+        let bizType = bizTypeMap[selectedNode.get('WidgetType')];
+        let energyType = CommonFuns.extractEnergyType( selectedNode.get('EnergyType') );
+        rightPanel = this.getRightPanel(bizType, energyType);
         mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType}></AnalysisPanel>;
-        rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
       }
     }
     return (
@@ -131,6 +134,35 @@ componentWillUnmount:function(){
         <Snackbar ref='snackbar' message={this.state.errorText}/>
       </div>
     );
+  },
+  getRightPanel(bizType, energyType){
+    let rightPanel = null;
+    switch (bizType) {
+      case 'Energy':
+        if(!energyType || energyType === 'line'){
+          rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
+        }else{
+
+        }
+        break;
+      case 'Unit':
+        if(!energyType || energyType === 'line'){
+          rightPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
+        }else{
+
+        }
+        break;
+      case 'Ratio':
+        //return Ratio rightPanel
+        break;
+      case 'Label':
+        //return label rightPanel
+        break;
+      case 'Rank':
+        //return Rank rightPanel
+        break;
+    }
+    return rightPanel;
   }
 });
 

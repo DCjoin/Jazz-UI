@@ -1045,6 +1045,34 @@ let CommonFuns = {
             primaryText: text
         };
 	},
+	extractEnergyType(type){
+		let energyType = null;
+		switch (type) {
+			case 'Energy':
+			case 'Carbon':
+			case 'Cost':
+			case 'Ratio':
+			case 'Labelling':
+				energyType = type;
+				break;
+		  case 'UnitEnergy':
+			case 'RankingEnergy':
+				energyType = 'Energy';
+				break;
+			case 'UnitCarbon':
+			case 'RankCarbon':
+				energyType = 'Carbon';
+				break;
+			case 'UnitCost':
+			case 'RankingCost':
+				energyType = 'Cost';
+				break;
+			case 'CostElectric':
+				energyType = 'Cost';
+				break;
+		}
+		return energyType;
+	},
 	Regex:{
 		ExcelCell: /[a-z]+\d+/i, //A4,AA66
 		PositiveInterger : /^\d+$/,
