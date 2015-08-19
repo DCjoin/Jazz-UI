@@ -26,7 +26,7 @@ import GridComponent from './GridComponent.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
-import RankStore from '../../stores/LabelMenuStore.jsx';
+import RankStore from '../../stores/RankStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 
