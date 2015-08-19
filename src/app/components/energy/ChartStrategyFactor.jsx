@@ -446,30 +446,20 @@ let ChartStrategyFactor = {
   rankSearchBarGen(analysisPanel){
     var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
     return <div className={'jazz-alarm-chart-toolbar'}>
+      <div className={'jazz-full-border-dropdownmenu-container'}>
         {chartTypeCmp}
-      <div className={'jazz-full-border-dropdownmenu-container'} >
         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
-      <div className={'jazz-full-border-dropdownmenu-ranktype-container'} >
+      <div className={'jazz-full-border-dropdownmenu-container'} >
         <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'140px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
-        <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+        <RaisedButton style={{marginLeft:'10px'}} label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
     </div>;
   },
   labelSearchBarGen(analysisPanel){
-    var yearPickerStyle = {
-      width: '128px',
-      height: '32px',
-      lineHeight: '32px',
-      border: '1px solid #efefef',
-      margin: '14px 0px 0px 10px',
-      fontSize: '15px',
-      color: '#b3b3b3',
-      textAlign: 'center'
-    };
     var curYear = (new Date()).getFullYear();
     var selectYear = curYear + '年';
     var yearProps = {
@@ -477,23 +467,26 @@ let ChartStrategyFactor = {
       selectedIndex: 10,
       style: {
         border: '1px solid #efefef',
-        margin: '14px 0px 0px 10px'
+        margin: '0px 10px 0px 0px'
       }
     };
     var YearSelect = <YearPicker {...yearProps}/>;
     var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
     var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
     return <div className={'jazz-alarm-chart-toolbar'}>
+      <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
-      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
-        <DropDownMenu menuItems={monthItem} ref='monthSelector'></DropDownMenu>
+      <DropDownMenu menuItems={monthItem} ref='monthSelector'></DropDownMenu>
       </div>
+      <div className={'jazz-full-border-dropdownmenu-container'} >
       {labelBtn}
-      <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+    </div>
+
+      <div className={'jazz-full-border-dropdownmenu-container'} >
         {kpiTypeBtn}
       </div>
       <div className={'jazz-flat-button'}>
-        <RaisedButton label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+        <RaisedButton style={{marginLeft:'10px'}} label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
     </div>;
   }
@@ -744,13 +737,13 @@ let ChartStrategyFactor = {
       height: '32px',
       lineHeight: '32px',
       border: '1px solid #efefef',
-      margin: '14px 0px 0px 10px',
+      margin: '0px 0px 0px 10px',
       fontSize: '15px',
       color: '#b3b3b3',
       textAlign: 'center'
     };
     if(!analysisPanel.state.kpiTypeDisable){
-      kpiTypeButton = <DropDownMenu menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
+      kpiTypeButton = <DropDownMenu style={{marginLeft:'10px'}} menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
       }
     else{
       var kpiTypeText = analysisPanel.getKpiText();
