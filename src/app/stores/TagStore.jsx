@@ -177,7 +177,7 @@ var TagStore = assign({},PrototypeStore,{
     _tagTotal=0;
     _tagList=[];
     baseline_btn_disabled=false;
-    if(widgetType=='labelling'){
+    if(widgetType=='Label'){
       _tagSum=3;
     }
     else {
