@@ -105,6 +105,11 @@ var PanelContainer = React.createClass({
       selectedNode:node
     })
   },
+  _onModifyNameSuccess:function(){
+    this.setState({
+      allNode:FolderStore.getFolderTree(),
+    })
+  },
   getInitialState:function(){
     return{
       allNode:null,
@@ -125,6 +130,11 @@ var PanelContainer = React.createClass({
       selectedNode:FolderStore.getSelectedNode()
     })
   },
+  _onSelectedNodeChange:function(){
+    this.setState({
+      selectedNode:FolderStore.getSelectedNode()
+    })
+  },
   componentDidMount: function() {
 
     FolderStore.addFolderTreeListener(this._onFolderTreeChange);
@@ -133,6 +143,9 @@ var PanelContainer = React.createClass({
 
     FolderStore.addDeleteItemSuccessListener(this._onDeleteItem);
     FolderStore.addCopyItemSuccessListener(this._onCopyItem);
+    FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
+    FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
+
     /*
     HierarchyStore.addHierarchyNodeListener(this._onChange);
     HierarchyAction.loadall(window.currentCustomerId);
@@ -145,7 +158,8 @@ var PanelContainer = React.createClass({
 
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteItem);
     FolderStore.removeCopyItemSuccessListener(this._onCopyItem);
-
+    FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
+    FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
   //  HierarchyStore.removeHierarchyNodeListener(this._onChange);
   },
   render:function(){
@@ -180,7 +194,7 @@ var PanelContainer = React.createClass({
     var template=(this.state.templateShow?<CopyView onDismiss={this._onTemplateDismiss} copyNode={this.state.selectedNode}/>:null);
     //  var template=(this.state.templateShow?<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.selectedNode}/>:null);
     //var template=(this.state.templateShow?<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.selectedNode}/>:null);
-  //  var template=(this.state.templateShow?<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.selectedNode}/>:null);
+    //var template=(this.state.templateShow?<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.selectedNode}/>:null);
 
     return(
       <div className="jazz-folder-leftpanel-container">

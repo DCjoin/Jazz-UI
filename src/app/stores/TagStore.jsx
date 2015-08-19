@@ -19,6 +19,7 @@ var _data = {};
 var _totalTagStatus=[];
 var _hierId=null;
 var _tagTotal=0;
+var _tagSum=0;
 var _tagList=[];
 var _checkall_disable_status=null;
 var _checkall_checked_status=null;
@@ -67,12 +68,12 @@ var TagStore = assign({},PrototypeStore,{
 
    if(selected){
      _tagTotal++;
-     if(_tagTotal==30){
+     if(_tagTotal==_tagSum){
        this.setTagTotalStatus();
      }
    }
    else {
-     if(tagTotal==30){
+     if(tagTotal==_tagSum){
        this.setTagTotalStatus();
      }
      _tagTotal--;
@@ -126,12 +127,12 @@ var TagStore = assign({},PrototypeStore,{
       });
     }
     if(add){
-      if(_tagTotal==30){
+      if(_tagTotal==_tagSum){
         this.setTagTotalStatus();
       }
     }
     else {
-      if(tagTotal==30){
+      if(tagTotal==_tagSum){
         this.setTagTotalStatus();
       }
     }
@@ -164,15 +165,24 @@ var TagStore = assign({},PrototypeStore,{
      this.checkBaselineBtnDisabled();
 },
   getTagTotal:function(){
-    return _tagTotal
+    return _tagTotal;
   },
-  resetTagInfo:function(){
+  getTagSum:function(){
+    return _tagSum
+  },
+  resetTagInfo:function(widgetType){
     _data = {};
     _totalTagStatus=[];
     _hierId=null;
     _tagTotal=0;
     _tagList=[];
     baseline_btn_disabled=false;
+    if(widgetType=='Label'){
+      _tagSum=3;
+    }
+    else {
+      _tagSum=30;
+    }
   },
   setCurrentHierarchyId:function(hierId){
     _hierId=hierId;
@@ -204,7 +214,7 @@ var TagStore = assign({},PrototypeStore,{
    else {
       _checkall_checked_status=false;
    }
-  checkStauts=((length-selectedNum+_tagTotal)>30);
+  checkStauts=((length-selectedNum+_tagTotal)>_tagSum);
 
 if(_checkall_checked_status){
   _checkall_disable_status=false;
@@ -390,7 +400,7 @@ var TagAction = Tag.Action,
             TagStore.emitTagStatusChange();
         break;
       case TagAction.RESET_TAGINFO:
-            TagStore.resetTagInfo();
+            TagStore.resetTagInfo(action.widgetType);
         break;
       case AlarmSettingAction.SET_ALARM_DATA_SUCCESS:
             TagStore.emitSettingData();
