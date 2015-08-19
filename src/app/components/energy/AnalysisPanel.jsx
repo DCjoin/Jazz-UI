@@ -523,7 +523,7 @@ let AnalysisPanel = React.createClass({
       this.setEmptyLabelMenu();
     },
     setEmptyLabelMenu(){
-      var selectedLabelItem = this.initSlectedLabelItem;
+      var selectedLabelItem = this.initSlectedLabelItem();
       this.setState({
         selectedLabelItem: selectedLabelItem,
         labelType: 'industryZone'

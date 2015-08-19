@@ -67,7 +67,7 @@ let ChartStrategyFactor = {
       onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn:'setFitStepAndGetData',
-      getInitialStateFn:'getEnergyInitialState',
+      getInitialStateFn:'empty',
       getAllDataFn: 'empty',
       getCustomizedLabelItemsFn: 'empty',
       getInitParamFn: 'getInitParam',
@@ -165,14 +165,16 @@ let ChartStrategyFactor = {
    onHierNodeChange(analysisPanel){
      var industyMenuItems = analysisPanel.getIndustyMenuItems();
      var customerMenuItems = analysisPanel.getCustomizedMenuItems();
+     var hierNode = LabelMenuStore.getHierNode();
+     if(!industyMenuItems){
+       return;
+     }
      analysisPanel.setState({
        industyMenuItems: industyMenuItems,
        customerMenuItems: customerMenuItems
      },()=>{
        analysisPanel.enableLabelButton(true);
      });
-
-     analysisPanel.refs.kpiType.setState({selectedIndex: analysisPanel.state.kpiTypeValue});
    },
    unitEnergyOnHierNodeChange(analysisPanel){
      var industryData = LabelMenuStore.getIndustryData();
@@ -251,26 +253,18 @@ let ChartStrategyFactor = {
 
  getInitialStateFnStrategy:{
    empty(){},
-   getEnergyInitialState(analysisPanel){
-    let energyType = analysisPanel.props.energyType || 'energy';
-    return {energyType: energyType};
-   },
-   getUnitEnergyInitialState(analysisPanel){
-     let energyType = analysisPanel.props.energyType || 'energy';
+   getUnitEnergyInitialState(){
      let state = {
        unitType: 2,
-       benchmarks: null,
-       energyType: energyType
+       benchmarks: null
      };
       return state;
    },
-   getRankInitialState(analysisPanel){
-     let energyType = analysisPanel.props.energyType || 'energy';
+   getRankInitialState(){
      let state = {
        order: 1,
        range: 3,
-       selectedChartType:'column',
-       energyType: energyType
+       selectedChartType:'column'
      };
      return state;
    },
@@ -475,7 +469,6 @@ let ChartStrategyFactor = {
   },
   labelSearchBarGen(analysisPanel){
     var curYear = (new Date()).getFullYear();
-    var selectYear = curYear + '年';
     var yearProps = {
       ref: "yearSelector",
       selectedIndex: 10,
