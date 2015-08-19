@@ -21,10 +21,12 @@ import CommodityAction from '../../actions/CommodityAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
+import LabelChartComponent from './LabelChartComponent.jsx';
 import GridComponent from './GridComponent.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
+import CarbonStore from '../../stores/CarbonStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
-import LabelMenuStore from '../../stores/LabelStore.jsx';
+import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import RankStore from '../../stores/LabelMenuStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
@@ -36,12 +38,12 @@ let MenuDivider = require('material-ui/lib/menus/menu-divider');
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
  {value: 'ThisMonth', text: '本月'}, {value: 'LastMonth', text: '上月'}, {value: 'ThisYear', text: '今年'}, {value: 'LastYear', text: '去年'}];
- const carbonTypeItem = [{value:'Coal',text:'标煤'},{value:'CO2',text:'二氧化碳'},{value:'Tree',text:'树'}];
+ const carbonTypeItem = [{value:'2',text:'标煤'},{value:'3',text:'二氧化碳'},{value:'4',text:'树'}];
  const rankTypeItem = [{value:'TotalRank',text:'总排名'},{value:'RankByPeople',text:'人均排名'},
  {value:'RankByArea', text:'单位面积排名'},{value:'RankByHeatArea',text:'单位供冷面积排名'},
  {value:'RankByCoolArea',text:'单位采暖面积排名'},{value:'RankByRoom',text:'单位客房排名'},
  {value:'RankByUsedRoom',text:'单位已用客房排名'},{value:'RankByBed',text:'单位床位排名'}];
- var kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
+ const kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
  {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
  {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
  {value:'UnitBed',text:'单位床位'},{value:'DayNightRatio',text:'昼夜比'},
@@ -61,14 +63,16 @@ let ChartStrategyFactor = {
   strategyConfiguration: {
     Energy: {
       searchBarGenFn:'energySearchBarGen',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn:'getSelectedTagList',
       onSearchDataButtonClickFn:'onSearchDataButtonClick',
       onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn:'setFitStepAndGetData',
-      getInitialStateFn:'getEnergyInitialState',
+      getInitialStateFn:'empty',
       getAllDataFn: 'empty',
       getCustomizedLabelItemsFn: 'empty',
+      getInitParamFn: 'getInitParam',
       getEnergyDataFn:'energyDataLoad',
       getPieEnergyDataFn:'pieEnergyDataLoad',
       getChartComponentFn:'getEnergyChartComponent',
@@ -78,16 +82,18 @@ let ChartStrategyFactor = {
       getEnergyRawDataFn:'getEnergyRawData',
       exportChartFn:'exportChart',
       onEnergyTypeChangeFn: 'EnergyTypeChange',
+      onHierNodeChangeFn:'empty'
     },
     MultiIntervalDistribution:{
 
     },Carbon:{
       searchBarGenFn:'carbonSearchBarGen',
-      getSelectedNodesFn:'getSelectedCommodityList',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
+      getSelectedNodesFn:'getSelectedHierCommodityList',
       onSearchDataButtonClickFn:'onCarbonSearchDataButtonClick',
       onSearchBtnItemTouchTapFn:'onCarbonSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn:'initCarbonStoreByBizChartType',
-      setFitStepAndGetDataFn:'setFitStepAndGetData',
+      setFitStepAndGetDataFn:'setCarbonFitStepAndGetData',
       getInitialStateFn:'getCarbonInitialState',
       getEnergyDataFn:'carbonDataLoad',
       getPieEnergyDataFn:'pieCarbonDataLoad',
@@ -100,16 +106,37 @@ let ChartStrategyFactor = {
     },RatioUsage:{
 
     },UnitEnergyUsage:{
-
-    },Labelling:{
+      searchBarGenFn:'unitEnergySearchBarGen',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
+      getSelectedNodesFn:'getSelectedTagList',
+      onSearchDataButtonClickFn:'onUnitEnergySearchDataButtonClick',
+      onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
+      initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
+      setFitStepAndGetDataFn:'setUnitEnergyFitStepAndGetData',
+      getInitialStateFn:'getUnitEnergyInitialState',
+      getAllDataFn: 'unitGetAllData',
+      getCustomizedLabelItemsFn: 'empty',
+      getInitParamFn: 'getInitParam',
+      getEnergyDataFn:'unitEnergyDataLoad',
+      getChartComponentFn:'getEnergyChartComponent',
+      bindStoreListenersFn:'unitEnergyBindStoreListeners',
+      unbindStoreListenersFn:'unitEnergyUnbindStoreListeners',
+      canShareDataWithFn:'canShareDataWith',
+      exportChartFn:'exportChart',
+      onHierNodeChangeFn:'unitEnergyOnHierNodeChange',
+      onEnergyTypeChangeFn: 'empty',
+    },Label:{
       searchBarGenFn:'labelSearchBarGen',
+      getEnergyTypeComboFn: 'empty',
       getSelectedNodesFn:'getSelectedTagList',
       onSearchDataButtonClickFn:'onLabelSearchDataButtonClick',
       onEnergyTypeChangeFn:'empty',
+      onHierNodeChangeFn:'onHierNodeChange',
       setFitStepAndGetDataFn:'setLabelTypeAndGetData',
       getInitialStateFn:'getLabelInitialState',
       getAllDataFn: 'getAllData',
       getCustomizedLabelItemsFn: 'getCustomizedLabelItems',
+      getInitParamFn: 'empty',
       getEnergyDataFn: 'labelDataLoad',
       getChartComponentFn:'getLabelChartComponent',
       bindStoreListenersFn:'labelBindStoreListeners',
@@ -117,13 +144,16 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canRankShareDataWith'
     },Rank:{
       searchBarGenFn:'rankSearchBarGen',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn:'getSelectedList',
       onSearchDataButtonClickFn:'onRankSearchDataButtonClick',
       onEnergyTypeChangeFn:'onRankEnergyTypeChange',
+      onHierNodeChangeFn:'empty',
       setFitStepAndGetDataFn:'setRankTypeAndGetData',
       getInitialStateFn:'getRankInitialState',
       getAllDataFn: 'empty',
       getCustomizedLabelItemsFn: 'empty',
+      getInitParamFn: 'getInitParam',
       getEnergyDataFn: 'rankDataLoad',
       getChartComponentFn:'getRankChartComponent',
       bindStoreListenersFn:'rankBindStoreListeners',
@@ -131,9 +161,49 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canRankShareDataWith'
     }
  },
+ getEnergyTypeComboFnStrategy:{
+   empty(){},
+   getEnergyTypeCombo(analysisPanel){
+     let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
+     return <DropDownMenu menuItems={types} onChange={analysisPanel.state.chartStrategy.onEnergyTypeChangeFn.bind(null, analysisPanel)}></DropDownMenu>;
+   }
+ },
+
+ getInitParamFnStrategy:{
+   empty(){},
+   getInitParam(analysisPanel){
+     let date = new Date();
+     date.setHours(0,0,0);
+     let last7Days = CommonFuns.dateAdd(date, -7, 'days');
+     let endDate = CommonFuns.dateAdd(date, 0, 'days');
+     analysisPanel.refs.relativeDate.setState({selectedIndex: 1});
+     analysisPanel.refs.dateTimeSelector.setDateField(last7Days, endDate);
+   }
+ },
+ onHierNodeChangeFnStrategy:{
+   empty(){},
+   onHierNodeChange(analysisPanel){
+     var industyMenuItems = analysisPanel.getIndustyMenuItems();
+     analysisPanel.setState({industyMenuItems: industyMenuItems});
+     analysisPanel.enableLabelButton(true);
+     analysisPanel.refs.kpiType.setState({selectedIndex: analysisPanel.state.kpiTypeValue});
+   },
+   unitEnergyOnHierNodeChange(analysisPanel){
+     var industryData = LabelMenuStore.getIndustryData();
+     var zoneData = LabelMenuStore.getZoneData();
+     var hierNode = LabelMenuStore.getHierNode();
+     var benchmarkData = LabelMenuStore.getBenchmarkData();
+     return CommonFuns.filterBenchmarks(hierNode, industryData, zoneData, benchmarkData);
+   }
+ },
  onEnergyTypeChangeFnStrategy:{
    empty(){},
-   EnergyTypeChange(e, selectedIndex, menuItem){
+   EnergyTypeChange(panel, e, selectedIndex, menuItem){
+     let menuItemVal = menuItem.value;
+     let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
+     let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
+     if(panel) panel.setState({chartStrategy: chartSttg});
+     //chartSttg.onEnergyTypeChangeFn(e, selectedIndex, menuItem);
      CommodityAction.setEnergyConsumptionType(menuItem.value);
    },
    onRankEnergyTypeChange(e, selectedIndex, menuItem){
@@ -147,6 +217,11 @@ let ChartStrategyFactor = {
      LabelMenuAction.getAllZones();
      LabelMenuAction.getAllLabels();
      LabelMenuAction.getCustomerLabels();
+   },
+   unitGetAllData(){
+     LabelMenuAction.getAllIndustries();
+     LabelMenuAction.getAllZones();
+     LabelMenuAction.getAllBenchmarks();
    }
  },
  getCustomizedLabelItemsFnStrategy:{
@@ -157,16 +232,18 @@ let ChartStrategyFactor = {
      if(!!analysisPanel.hasCustomizedMenuItems()){
        customizedStore.forEach((item, index) => {
          menuItems.push({
-          customerizedId: item.Id,
-          text: item.Name,
-          kpiType: item.LabellingType
-        });
+           value: item.Id,
+           customerizedId: item.Id,
+           primaryText: item.Name,
+           kpiType: item.LabellingType,
+           parent: 'customized'
+         });
        });
      }
      if(menuItems.length === 0){
-       menuItems = this.getNoneMenuItem(false);
+       menuItems = analysisPanel.getNoneMenuItem(false);
      }
-     this.setState({customerMenuItems: menuItems});
+     analysisPanel.setState({customerMenuItems: menuItems});
    }
  },
  initEnergyStoreByBizChartTypeFnStrategy:{
@@ -192,17 +269,24 @@ let ChartStrategyFactor = {
        case 'line':
        case 'column':
        case 'stack':
-         EnergyStore.initReaderStrategy('CarbonTrendReader');
+         CarbonStore.initReaderStrategy('CarbonTrendReader');
          break;
-      case 'pie':
-        EnergyStore.initReaderStrategy('CarbonPieReader');
+       case 'pie':
+        CarbonStore.initReaderStrategy('CarbonPieReader');
         break;
      }
    },
  },
 
  getInitialStateFnStrategy:{
-   getEnergyInitialState(){},
+   empty(){},
+   getUnitEnergyInitialState(){
+     let state = {
+       unitType: 2,
+       benchmarks: null
+     };
+      return state;
+   },
    getRankInitialState(){
      let state = {
        order: 1,
@@ -218,7 +302,7 @@ let ChartStrategyFactor = {
        industyMenuItems: [],
        customerMenuItems: [],
        selectedLabelItem: selectedLabelItem,
-       kpiTypeValue: 1,
+       kpiTypeValue: 0,
        labelDisable: true,
        kpiTypeDisable: false
      };
@@ -264,6 +348,34 @@ let ChartStrategyFactor = {
      let dateSelector = analysisPanel.refs.dateTimeSelector,
          dateRange = dateSelector.getDateTime(),
          startDate = dateRange.start,
+         endDate = dateRange.end;
+
+     if(startDate.getTime()>= endDate.getTime()){
+         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+       return;
+     }
+
+     let hierCommIds = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     if( !hierCommIds.communityIds || hierCommIds.communityIds.length === 0 || !hierCommIds.hierarchyId){
+       analysisPanel.setState({energyData:null});
+       return;
+     }
+     let relativeDateValue = analysisPanel._getRelativeDateValue();
+
+     let chartType = analysisPanel.state.selectedChartType;
+     if(chartType ==='line' || chartType === 'column' || chartType === 'stack'){
+        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierCommIds.hierarchyId, hierCommIds.communityIds, 1, relativeDateValue, analysisPanel);
+     }else if(chartType === 'pie'){
+        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+     }
+   },
+   onUnitEnergySearchDataButtonClick(analysisPanel){
+     analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+
+     let dateSelector = analysisPanel.refs.dateTimeSelector,
+         dateRange = dateSelector.getDateTime(),
+         startDate = dateRange.start,
          endDate = dateRange.end,
          nodeOptions;
 
@@ -273,19 +385,14 @@ let ChartStrategyFactor = {
      }
 
      nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-     if( !nodeOptions.hierarchyList || nodeOptions.hierarchyList.length === 0 || !nodeOptions.commodityList || nodeOptions.commodityList.length === 0){
+     if( !nodeOptions || nodeOptions.length === 0){
        analysisPanel.setState({energyData:null});
        return;
      }
      let relativeDateValue = analysisPanel._getRelativeDateValue();
 
-     let chartType = analysisPanel.state.selectedChartType;
-     if(chartType ==='line' || chartType === 'column' || chartType === 'stack'){
-        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
-     }else if(chartType === 'pie'){
-        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
-     }
+     let unitType = analysisPanel.state.unitType;
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, unitType, relativeDateValue, analysisPanel);
    },
    onRankSearchDataButtonClick(analysisPanel){
      //analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
@@ -317,7 +424,7 @@ let ChartStrategyFactor = {
      }
      var viewOption = analysisPanel.getViewOption();
      var benchmarkOption = analysisPanel.getBenchmarkOption();
-     var labelingType = analysisPanel.getKpiType();
+     var labelingType = analysisPanel.state.kpiTypeValue + 1;
      analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
    }
  },
@@ -342,6 +449,26 @@ let ChartStrategyFactor = {
      }
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
    },
+   setCarbonFitStepAndGetData(startDate, endDate, hierarchyId, commodityIds, destination, relativeDate, analysisPanel){
+     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
+         step = analysisPanel.state.step,
+         limitInterval = CommonFuns.getLimitInterval(timeRanges),
+         stepList = limitInterval.stepList;
+     if( stepList.indexOf(step) == -1){
+       step = limitInterval.display;
+     }
+     analysisPanel.state.chartStrategy.getEnergyDataFn(startDate, endDate, hierarchyId, commodityIds, destination, relativeDate, analysisPanel);
+   },
+   setUnitEnergyFitStepAndGetData(startDate, endDate, tagOptions, unitType, relativeDate, analysisPanel){
+     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
+         step = analysisPanel.state.step,
+         limitInterval = CommonFuns.getLimitInterval(timeRanges),
+         stepList = limitInterval.stepList;
+     if( stepList.indexOf(step) == -1){
+       step = limitInterval.display;
+     }
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, relativeDate);
+   },
    setRankTypeAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
      let rankType = analysisPanel.refs.rankType.state.selectedIndex + 1;
@@ -351,7 +478,7 @@ let ChartStrategyFactor = {
  },
  searchBarGenFnStrategy:{
    energySearchBarGen(analysisPanel){
-     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
+     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie','rawdata']);
      var configBtn = ChartStrategyFactor.getConfigBtn(analysisPanel);
 
      return <div className={'jazz-alarm-chart-toolbar-container'}>
@@ -367,8 +494,12 @@ let ChartStrategyFactor = {
    </div>;
   },
   carbonSearchBarGen(analysisPanel){
-    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
+    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie','rawdata']);
     var configBtn = ChartStrategyFactor.getConfigBtn(analysisPanel);
+    var onCarbonTypeChange = function(e, selectedIndex, menuItem){
+      let value = menuItem.value;
+      //CommodityStore.
+    },
 
     return <div className={'jazz-alarm-chart-toolbar-container'}>
       <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
@@ -376,7 +507,7 @@ let ChartStrategyFactor = {
       </div>
       <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
-        <DropDownMenu menuItems={carbonTypeItem} ref='rankType' style={{width:'92px'}} onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>
+        <DropDownMenu menuItems={carbonTypeItem} ref='rankType' style={{width:'92px'}} onChange={onCarbonTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
         {searchButton}
@@ -385,6 +516,22 @@ let ChartStrategyFactor = {
       </div>
   </div>;
 },
+  unitEnergySearchBarGen(analysisPanel){
+     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column']);
+     var units  = [{text: '单位人口', name:'UnitPopulation', value: 2}, {text:'单位面积',name:'UnitArea', value: 3},{text:'单位供冷面积',name:'UnitColdArea', value: 4},
+                   {text:'单位采暖面积',name:'UnitWarmArea', value: 5},{text:'单位客房',name:'UnitRoom', value: 7},{text:'单位已用客房',name:'UnitUsedRoom', value: 8},
+                   {text:'单位床位',name:'UnitBed', value: 9},{text:'单位已用床位',name:'UnitUsedBed', value: 10}];
+     return <div className={'jazz-alarm-chart-toolbar-container'}>
+       <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
+         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+       </div>
+       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DropDownMenu menuItems={units} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({unitType: menuItem.value});}}></DropDownMenu>
+       <div className={'jazz-flat-button'}>
+         {searchButton}
+       </div>
+   </div>;
+  },
   rankSearchBarGen(analysisPanel){
     return <div className={'jazz-alarm-chart-toolbar-container'}>
       <div className={'jazz-full-border-dropdownmenu-relativedate-container'} >
@@ -411,10 +558,10 @@ let ChartStrategyFactor = {
       textAlign: 'center'
     };
     var curYear = (new Date()).getFullYear();
-    var selectYear = (this.state.year || curYear) + '年';
+    var selectYear = curYear + '年';
     var yearProps = {
       ref: "yearSelector",
-      selectedIndex: ((this.state.year || curYear) - curYear + 10),
+      selectedIndex: 10,
       onYearPickerSelected: this._onYearPickerSelected,
       style: {
         border: '1px solid #efefef',
@@ -443,8 +590,12 @@ let ChartStrategyFactor = {
    getSelectedTagList(){
      return AlarmTagStore.getSearchTagList();
    },
-   getSelectedCommodityList(){
-     return  CommodityStore.getCommodityList();
+   getSelectedHierCommodityList(){
+     let communities = CommodityStore.getCurrentHierIdCommodityStatus();
+     let commIds = communities.toArray();
+     let hierId =  CommodityStore.getCurrentHierarchyId();
+     return {hierarchyId: hierId, communityIds:commIds };
+     //return CommodityStore.getCurrentHierIdCommodityStatus();
    },
    getSelectedList(){
      var selectedList = {};
@@ -459,8 +610,12 @@ let ChartStrategyFactor = {
    energyDataLoad(timeRanges, step, tagOptions, relativeDate){
      EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate);
    },
-   carbonDataLoad(timeRanges, step, tagOptions, relativeDate){
-     CarbonAction.getCarbonTrendChartData(timeRanges, step, tagOptions, relativeDate);
+
+   carbonDataLoad(timeRanges, step, hierId, commIds, dest, viewOptions, relativeDate){
+     CarbonAction.getCarbonTrendChartData(timeRanges, step, hierId, commIds, tagOptions, relativeDate);
+   },
+   unitEnergyDataLoad(timeRanges, step, tagOptions, unitType, relativeDate){
+     EnergyAction.getUnitEnergyTrendChartData(timeRanges, step, tagOptions, unitType, relativeDate);
    },
    rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
      RankAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
@@ -554,7 +709,24 @@ let ChartStrategyFactor = {
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
       return energyPart;
-   }
+   },
+   getLabelChartComponent(analysisPanel){
+     let energyPart;
+     let chartCmpObj ={ref:'ChartComponent',
+                       bizType:analysisPanel.props.bizType,
+                       energyData: analysisPanel.state.energyData,
+                       ctWidth: analysisPanel.refs.chartContainer.getDOMNode().style.width,
+                       ctHeight: analysisPanel.refs.chartContainer.getDOMNode().style.height,
+                       energyRawData: analysisPanel.state.energyRawData,
+                       onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                       onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                     };
+
+      energyPart = <div ref="chartContainer" style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                     <LabelChartComponent ref="chartComponent" {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                   </div>;
+      return energyPart;
+    }
  },
  canShareDataWithFnStrategy:{
    canShareDataWith(curChartType, nextChartType){
@@ -575,16 +747,23 @@ let ChartStrategyFactor = {
      EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
+   unitEnergyBindStoreListeners(analysisPanel){
+     EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+   },
    rankBindStoreListeners(analysisPanel){
      RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
      RankStore.addRankDataLoadedListener(analysisPanel._onRankDataChange);
      RankStore.addRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    },
    labelBindStoreListeners(analysisPanel){
-     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange);
-     LabelStore.addRankDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
-     LabelStore.addRankDataLoadedListener(analysisPanel._onLabelDataChange);
-     LabelStore.addRankDataLoadErrorListener(analysisPanel._onGetLabelDataError);
+     LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+     LabelStore.addLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
+     LabelStore.addLabelDataLoadedListener(analysisPanel._onLabelDataChange);
+     LabelStore.addLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
    }
  },
  unbindStoreListenersFnStrategy:{
@@ -594,16 +773,23 @@ let ChartStrategyFactor = {
      EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
+   unitEnergyUnbindStoreListeners(analysisPanel){
+     EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
+     EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+   },
    rankUnbindStoreListeners(analysisPanel){
      RankStore.removeRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
      RankStore.removeRankDataLoadedListener(analysisPanel._onRankDataChange);
      RankStore.removeRankDataLoadErrorListener(analysisPanel._onGetRankDataError);
    },
    labelUnbindStoreListeners(analysisPanel){
-     LabelMenuStore.removeRankDataLoadingListener(analysisPanel._onHierNodeChange);
-     LabelStore.removeRankDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
-     LabelStore.removeRankDataLoadedListener(analysisPanel._onLabelDataChange);
-     LabelStore.removeRankDataLoadErrorListener(analysisPanel._onGetLabelDataError);
+     LabelMenuStore.removeLabelDataLoadingListener(analysisPanel._onHierNodeChange.bind(analysisPanel,analysisPanel));
+     LabelStore.removeLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
+     LabelStore.removeLabelDataLoadedListener(analysisPanel._onLabelDataChange);
+     LabelStore.removeLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
    }
  },
  exportChartFnStrategy:{
@@ -625,43 +811,51 @@ let ChartStrategyFactor = {
      ExportChartAction.getTagsData4Export(tagIds, viewOption, nodeNameAssociation,'能耗分析',charTypes);
    }
  },
- getSearchBtn(analysisPanel){
+ getSearchBtn(analysisPanel, types){
+   let menuMap = { line:{primaryText:'折线图'},
+                   column:{primaryText:'柱状图'},
+                   stack:{primaryText:'堆积图'},
+                   pie:{primaryText:'饼状图'},
+                   rawdata:{primaryText:'原始数据'}};
+
+   let typeItems = types.map((item)=>{
+     return <MenuItem primaryText={menuMap[item].primaryText} value={item}/>;
+   });
    var searchButton = <ButtonMenu label='查看' onButtonClick={analysisPanel.onSearchDataButtonClick} desktop={true}
      value={analysisPanel.state.selectedChartType} onItemTouchTap={analysisPanel._onSearchBtnItemTouchTap}>
-      <MenuItem primaryText="折线图" value='line'/>
-      <MenuItem primaryText="柱状图"  value='column'/>
-      <MenuItem primaryText="堆积图"  value='stack'/>
-      <MenuItem primaryText="饼状图"  value='pie'/>
-      <MenuItem primaryText="原始数据"  value='rawdata'/>
+      {typeItems}
     </ButtonMenu>;
     return searchButton;
   },
   getLabelBtn(analysisPanel){
-    var industyLabelMenu = analysisPanel.getIndustyLabelMenu();
-    var customizedLabelMenu = analysisPanel.getCustomizedLabelMenu();
-    let labelButton = <ButtonMenu label={this.state.selectedLabelItem.text} style={{marginLeft:'10px'}} desktop={true}
-      disabled={this.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
-      <ExtendableMenuItem primaryText="行业能效标识" value='industryZone'>
-      <Menu>
-        {industyLabelMenu}
-      </Menu>
+    var industySubItems = analysisPanel.state.industyMenuItems;
+    var customizedSubItems = analysisPanel.state.customerMenuItems;
+    let labelButton = <ButtonMenu label={analysisPanel.state.selectedLabelItem.text} style={{marginLeft:'10px'}} desktop={true}
+      disabled={analysisPanel.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
+      <ExtendableMenuItem primaryText="行业能效标识" value='industryZone' subItems={industySubItems}>
       </ExtendableMenuItem>
-      <ExtendableMenuItem primaryText="自定义能效标识" value='customized'>
-      <Menu>
-        {customizedLabelMenu}
-      </Menu>
+      <ExtendableMenuItem primaryText="自定义能效标识" value='customized' subItems={customizedSubItems}>
       </ExtendableMenuItem>
     </ButtonMenu>;
     return labelButton;
   },
   getKpiTypeBtn(analysisPanel){
-    let kpiTypeButton  = <DropDownMenu menuItems={kpiTypeItem}
-      ref='kpiType' disabled={this.state.skiTypeDisable}></DropDownMenu>;
+    let kpiTypeButton;
+    if(!analysisPanel.state.kpiTypeDisable){
+      kpiTypeButton = <DropDownMenu menuItems={kpiTypeItem} onChange={analysisPanel.onChangeKpiStyle}
+        ref='kpiType'></DropDownMenu>;
+      }
+    else{
+      kpiTypeButton = <span>{kpiTypeItem[analysisPanel.state.kpiTypeValue].text}</span>;
+    }
+    return kpiTypeButton;
   },
   getConfigBtn(analysisPanel){
     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
                             {primaryText:'冷暖季', value:'hotColdSeason'}];
-    let weatherSubItems = [{primaryText:'温度', value:'temperature'}, {primaryText:'湿度', value:'humidity'}];
+    let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
+                            {primaryText:'湿度', value:'humidity'}];
+
     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                  onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
       <MenuItem primaryText="历史对比" value='history'/>

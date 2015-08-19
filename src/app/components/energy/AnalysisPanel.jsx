@@ -30,10 +30,12 @@ let AnalysisPanel = React.createClass({
     getDefaultProps(){
       return {
         bizType:'Energy'
+        //bizType:'Energy'
       };
     },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(this.props.bizType);
+      let map = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'Label'};
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(map[this.props.bizType]);
       let state = {
         isLoading: false,
         energyData: null,
@@ -77,7 +79,7 @@ let AnalysisPanel = React.createClass({
       return <div style={{flex:1, display:'flex','flex-direction':'column', backgroundColor:'#fbfbfb'}}>
         <div style={{margin:'20px 35px'}}>最近7天能耗分析</div>
         <div className={'jazz-alarm-chart-toolbar-container'}>
-            {me.getEnergyTypeCombo()}
+            {me.state.chartStrategy.getEnergyTypeComboFn(me)}
             {me.state.chartStrategy.searchBarGenFn(me)}
         </div>
         {energyPart}
@@ -86,12 +88,7 @@ let AnalysisPanel = React.createClass({
     },
     componentDidMount: function() {
       let me = this;
-      let date = new Date();
-      date.setHours(0,0,0);
-      let last7Days = CommonFuns.dateAdd(date, -7, 'days');
-      let endDate = CommonFuns.dateAdd(date, 0, 'days');
-      this.refs.relativeDate.setState({selectedIndex: 1});
-      this.refs.dateTimeSelector.setDateField(last7Days, endDate);
+      this.state.chartStrategy.getInitParamFn(me);
       this.state.chartStrategy.getAllDataFn();
       this.state.chartStrategy.getCustomizedLabelItemsFn(me);
       this.state.chartStrategy.bindStoreListenersFn(me);
@@ -370,15 +367,14 @@ let AnalysisPanel = React.createClass({
       this.disableKpitypeButton();
     },
     _onHierNodeChange(){
-      this.getIndustyMenuItems();
-      this.enableLabelButton(true);
+      this.state.chartStrategy.onHierNodeChangeFn(this);
     },
     enableLabelButton(preSelect){
       if(!this.state.labelDisable && !preSelect){
         return;
       }
       var selectedLabelItem = {};
-      var labelItems = this.state.industyLabelMenuItems;
+      var labelItems = this.state.industyMenuItems;
       if (labelItems.length > 0 && labelItems.items[0].industryId != -1) {
         var item = labelItems.items[0];
         selectedLabelItem.industryId = item.industryId;
@@ -409,10 +405,10 @@ let AnalysisPanel = React.createClass({
       this.setState({kpiTypeDisable: true});
     },
     hasIndustyMenuItems: function () {
-      return this.state.industyLabelMenuItems.length > 0;
+      return this.state.industyMenuItems.length > 0;
     },
     hasCustomizedMenuItems: function () {
-      return this.state.customerLabelMenuItems.length > 0;
+      return this.state.customerMenuItems.length > 0;
     },
     initSlectedLabelItem(){
       var selectedLabelItem = {};
@@ -422,59 +418,27 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem.value = null;
       return selectedLabelItem;
     },
-    getIndustyLabelMenu(){
-      var labelItems = this.state.industyLabelMenuItems;
-      var labelMenuItems = labelItems.map(function(item) {
-        let props = {
-          value: item.value,
-          primaryText: item.text,
-          industryId: item.industryId,
-          zoneId: item.zoneId,
-          parent: 'industryZone'
-        };
-        return (
-          <MenuItem {...props}/>
-        );
-      });
-      return labelMenuItems;
-    },
-    getCustomizedLabelMenu(){
-      var labelItems = this.state.customerMenuItems;
-      var labelMenuItems = labelItems.map(function(item) {
-        let props = {
-          value: item.customerizedId,
-          primaryText: item.text,
-          customerizedId: item.customerizedId,
-          kpiType: item.kpiType,
-          parent: 'customized'
-        };
-        return (
-          <MenuItem {...props}/>
-        );
-      });
-      return labelMenuItems;
-    },
     getIndustyMenuItems(){
       var industryStore = LabelMenuStore.getIndustryData();
       var labelingsStore = LabelMenuStore.getLabelData();
       var zoneStore = LabelMenuStore.getZoneData();
       var hierNode = LabelMenuStore.getHierNode();
       var industryId, zoneId, parentId, industyMenuItems = [];
-      this.removeIndustyLabelMenuItems();
-      if(!!hierNode){
+      this.removeIndustyMenuItems();
+      if(!hierNode){
         return;
       }
       else{
-        industryId = hierNode.industryId;
-        zoneId = hierNode.zoneId;
+        industryId = hierNode.IndustryId;
+        zoneId = hierNode.ZoneId;
         if(hierNode.Type !== 2){
           return;
         }
         this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
         var industryNode = industryStore.find((item, index)=>{
-          return (item.Id === industryId);
+          return (item.get("Id") === industryId);
         });
-        parentId = industryNode.ParentId;
+        parentId = industryNode.get('ParentId');
         if(parentId !== 0) {
           this.addIndustyMenuItem(labelingsStore, parentId, zoneId, industyMenuItems);
         }
@@ -483,9 +447,9 @@ let AnalysisPanel = React.createClass({
       if(industyMenuItems.length === 0){
         industyMenuItems = this.getNoneMenuItem(true);
       }
-      this.setState({industyMenuItems: industyMenuItems});
+      return industyMenuItems;
     },
-    removeIndustyLabelItems(){
+    removeIndustyMenuItems(){
       this.setState({
         industyMenuItems: []
       });
@@ -505,14 +469,16 @@ let AnalysisPanel = React.createClass({
           value: 'none',
           industryId: -1,
           zoneId: -1,
-          text: "无",
+          primaryText: "无",
+          parent: "industryZone"
         });
       }
       else {
         menuItems.push({
           value: 'none',
           customerizedId: -1,
-          text: "无"
+          primaryText: "无",
+          parent: "customized"
         });
       }
       return menuItems;
@@ -520,15 +486,15 @@ let AnalysisPanel = React.createClass({
     addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems){
       let labelItem = null;
       labelItem = labelingsStore.find((item, index)=>{
-        return (item.IndustryId === industryId && item.ZoneId === zoneId);
+        return (item.get('IndustryId') === industryId && item.get('ZoneId') === zoneId);
       });
-      if(!!labelItem){
+      if(labelItem){
         this.pushIndustryMenuItem(industryId, zoneId, labelItem, industyMenuItems);
       }
       labelItem = labelingsStore.find((item, index)=>{
-        return (item.IndustryId === industryId && item.ZoneId === 0);
+        return (item.get('IndustryId') === industryId && item.get('ZoneId') === 0);
       });
-      if(!!labelItem){
+      if(labelItem){
         this.pushIndustryMenuItem(industryId, 0, labelItem, industyMenuItems);
       }
     },
@@ -536,8 +502,9 @@ let AnalysisPanel = React.createClass({
       var labelMenuItem = {};
       labelMenuItem.industryId = industryId;
       labelMenuItem.zoneId = zoneId;
-      labelMenuItem.text = labelItem.ZoneComment + labelItem.IndustryComment;
+      labelMenuItem.primaryText = labelItem.get('ZoneComment') + labelItem.get('IndustryComment');
       labelMenuItem.value = "" + zoneId + "/" + industryId;
+      labelMenuItem.parent = 'industryZone';
       industyMenuItems.push(labelMenuItem);
     },
     getBenchmarkOption: function () {
@@ -593,6 +560,9 @@ let AnalysisPanel = React.createClass({
     getKpiType: function () {
       return this.state.kpiTypeValue;
     },
+    onChangeKpiStyle: function(){
+      this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
+    }
 });
 
 module.exports = AnalysisPanel;

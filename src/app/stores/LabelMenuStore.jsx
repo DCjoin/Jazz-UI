@@ -12,6 +12,7 @@ var _industryData = null;
 var _zoneData = null;
 var _labelData = null;
 var _customerLabelData = null;
+var _benchmarkData = null;
 var HIER_NODE_CHANGE_EVENT = 'hiernodechange';
 
 var LabelMenuStore = assign({},PrototypeStore,{
@@ -20,6 +21,12 @@ var LabelMenuStore = assign({},PrototypeStore,{
   },
   setHierMode(hierNode){
     _hierNode = hierNode;
+  },
+  getBenchmarkData(){
+    return _benchmarkData;
+  },
+  setBenchmarkData(benchmarkData){
+    _benchmarkData = Immutable.fromJS(benchmarkData);
   },
   getIndustryData(){
     return _industryData;
@@ -34,7 +41,7 @@ var LabelMenuStore = assign({},PrototypeStore,{
     _zoneData = Immutable.fromJS(zoneData);
   },
   getLabelData(){
-    return _zoneData;
+    return _labelData;
   },
   setLabelData(labelData){
     _labelData =  Immutable.fromJS(labelData);
@@ -59,7 +66,7 @@ var LabelMenuStore = assign({},PrototypeStore,{
 LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case Action.HIERNODE_CHANGED:
-      LabelMenuStore.setIndustryData(action.hierNode);
+      LabelMenuStore.setHierMode(action.hierNode);
       LabelMenuStore.emitHierNodeChange();
       break;
     case Action.GET_ALL_INDUSTRIES_SUCCESS:
@@ -74,6 +81,8 @@ LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_ALL_CUSTOMER_LABELS_SUCCESS:
       LabelMenuStore.setCustomerLabelData(action.customerLabelData);
       break;
+    case Action.GET_BENCHMARK_DATA_SUCCESS:
+      LabelMenuStore.setBenchmarkData(action.benchmarkData);
   }
 });
 

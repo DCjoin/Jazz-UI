@@ -18,81 +18,84 @@ let getTagIdsFromcommOptions = function(commOptions){
 
 let CarbonAction = {
   //for select tags from taglist and click search button.
-  getPieCarbonData(date, step, commOptions, relativeDate){
+  getPieCarbonData(date, step, hierId, commIds, destination, viewOption, relativeDate){
     var timeRange = date;
-
-    var tagIds = getTagIdsFromcommOptions(commOptions);
-    var submitParams = { tagIds:tagIds,
-                         viewOption:{ DataUsageType: 4,
-                                      IncludeNavigatorData: false,
-                                    //  Step: step,
-                                      TimeRanges: timeRange
-                                   }
-                       };
+    var submitParams = {
+      commodityIds: commIds,
+      hierarchyId: hierId,
+      destination: destination,
+      viewOption: viewOption
+      // viewOption:{
+      //   DataUsageType: 4,
+      //   IncludeNavigatorData: false,
+      //   TimeRanges: timeRange
+      // }
+    };
 
     AppDispatcher.dispatch({
-         type: ActionTypes.GET_CARBON_DATA_LOADING,
-         submitParams: submitParams,
-         commOptions: commOptions,
-         relativeDate: relativeDate
+      date: date,
+      step: step,
+      type: ActionTypes.GET_CARBON_DATA_LOADING,
+      submitParams: submitParams,
+      commOptions: commOptions,
+      relativeDate: relativeDate
     });
 
     Ajax.post('/Energy.svc/AggregateCarbonUsageData', {
-         params:submitParams,
-         commonErrorHandling: false,
-         success: function(carbonData){
-           AppDispatcher.dispatch({
-               type: ActionTypes.GET_CARBON_DATA_SUCCESS,
-               carbonData: carbonData,
-               submitParams: submitParams
-           });
-         },
-         error: function(err, res){
-           AppDispatcher.dispatch({
-               type: ActionTypes.GET_CARBON_DATA_ERROR,
-               errorText: res.text,
-               submitParams: submitParams
-           });
-         }
-       });
+       params:submitParams,
+       commonErrorHandling: false,
+       success: function(carbonData){
+         AppDispatcher.dispatch({
+             type: ActionTypes.GET_CARBON_DATA_SUCCESS,
+             carbonData: carbonData,
+             submitParams: submitParams
+         });
+       },
+       error: function(err, res){
+         AppDispatcher.dispatch({
+             type: ActionTypes.GET_CARBON_DATA_ERROR,
+             errorText: res.text,
+             submitParams: submitParams
+         });
+       }
+     });
   },
-  getCarbonTrendChartData(date, step, commOptions, relativeDate){
+  getCarbonTrendChartData(date, step, hierId, commIds, destination, viewOption, relativeDate){
     var timeRange = date;
-
-    var tagIds = getTagIdsFromcommOptions(commOptions);
-    var submitParams = { tagIds:tagIds,
-                         viewOption:{ DataUsageType: 1,
-                                      IncludeNavigatorData: true,
-                                      Step: step,
-                                      TimeRanges: timeRange
-                                   }
-                       };
+    var submitParams = {
+      date: date,
+      step: step,
+      commodityIds: commIds,
+      hierarchyId: hierId,
+      destination: destination,
+      viewOption: viewOption
+    };
 
     AppDispatcher.dispatch({
-         type: ActionTypes.GET_CARBON_DATA_LOADING,
-         submitParams: submitParams,
-         commOptions: commOptions,
-         relativeDate: relativeDate
+       type: ActionTypes.GET_CARBON_DATA_LOADING,
+       submitParams: submitParams,
+       commOptions: commOptions,
+       relativeDate: relativeDate
     });
 
     Ajax.post('/Carbon.svc/GetCarbonUsageData', {
-         params:submitParams,
-         commonErrorHandling: false,
-         success: function(carbonData){
-           AppDispatcher.dispatch({
-               type: ActionTypes.GET_CARBON_DATA_SUCCESS,
-               carbonData: carbonData,
-               submitParams: submitParams
-           });
-         },
-         error: function(err, res){
-           AppDispatcher.dispatch({
-               type: ActionTypes.GET_CARBON_DATA_ERROR,
-               errorText: res.text,
-               submitParams: submitParams
-           });
-         }
-       });
+       params:submitParams,
+       commonErrorHandling: false,
+       success: function(carbonData){
+         AppDispatcher.dispatch({
+             type: ActionTypes.GET_CARBON_DATA_SUCCESS,
+             carbonData: carbonData,
+             submitParams: submitParams
+         });
+       },
+       error: function(err, res){
+         AppDispatcher.dispatch({
+             type: ActionTypes.GET_CARBON_DATA_ERROR,
+             errorText: res.text,
+             submitParams: submitParams
+         });
+       }
+     });
   }
 };
 module.exports = CarbonAction;

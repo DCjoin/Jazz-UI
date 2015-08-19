@@ -1,5 +1,6 @@
 'use strict';
 import Momment from 'moment';
+import Immutable from 'immutable';
 import _ from 'lodash';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 const FIXEDTIMES = {
@@ -51,6 +52,95 @@ let CommonFuns = {
 	    }
 	  }
 	  return true;
+	},
+	thousandCommafy: function (number) {
+    if (!CommonFuns.isNumber(number)) return number;
+
+    var commafy = function (num) {
+        var re = /(-?\d+)(\d{3})/;
+        while (re.test(num)) {
+            num = num.replace(re, "$1,$2");
+        }
+        return num;
+    };
+
+    var str = number.toString();
+    var array = str.split('.');
+    str = commafy(array[0]);
+    if (array.length == 2) {
+        str = str + '.' + array[1];
+    }
+    return str;
+	},
+	//经过观察发现arial字体下，汉字的宽度是一致的，而1、i、l等字符的宽度大约是汉字的0.4倍，而阿拉伯数字（除了1）的宽度则是汉字的约0.7倍，
+	//小写字母（除了i、l等）的宽度是汉字的约0.7倍，大写字母则是汉字的0.8倍，其他字符也可以得出相应的倍率。
+	GetArialStr: function (str, requisiteLen) {
+    var lencounter = 0,
+        oldLencounter = 0,
+        ch;
+
+    for (var i = 0, len = str.length; i < len; i++) {
+        ch = str[i];
+
+        if (ch.charCodeAt() > 128) {
+            lencounter++;
+        }
+        else if (ch == 'f' || ch == 'i' || ch == 'j' || ch == 'l' || ch == 'r' || ch == 'I' || ch == 't' || ch == '1' || ch == '.' || ch == ':' || ch == ';' || ch == '(' || ch == ')' || ch == '-' || ch == '_' || ch == '*' || ch == '!' || ch == '\'') {
+            lencounter += 0.3;
+        }
+        else if (ch >= '0' && ch <= '9') {
+            lencounter += 0.6;
+        }
+        else if (ch >= 'a' && ch <= 'z') {
+            lencounter += 0.6;
+        }
+        else if (ch >= 'A' && ch <= 'Z') {
+            lencounter += 0.7;
+        }
+        else {
+            lencounter++;
+        }
+
+        if (lencounter <= requisiteLen) {
+            oldLencounter = lencounter;
+        } else {
+            str = str.substring(0, i) + '...';
+            break;
+        }
+    }
+    return str;
+	},
+	GetArialStrLen: function (str) {
+    var lencounter = 0,
+        ch;
+
+    for (var i = 0, len = str.length; i < len; i++) {
+        ch = str[i];
+
+        if (ch.charCodeAt() > 128) {
+            lencounter++;
+            continue;
+        }
+        else if (ch == 'f' || ch == 'i' || ch == 'j' || ch == 'l' || ch == 'r' || ch == 'I' || ch == '.' || ch == ':' || ch == ';' || ch == '(' || ch == ')' || ch == '-' || ch == '_' || ch == '*' || ch == '!' || ch == '\'') {
+            lencounter += 0.3;
+        }
+        else if (ch >= '0' && ch <= '9') {
+            lencounter += 0.6;
+        }
+        else if (ch >= 'a' && ch <= 'z') {
+            lencounter += 0.6;
+        }
+        else if (ch == 'W' || ch == 'M') {
+            lencounter += 1;
+        }
+        else if (ch >= 'A' && ch <= 'Z') {
+            lencounter += 0.7;
+        }
+        else {
+            lencounter++;
+        }
+    }
+    return (Math.round(lencounter * 10) / 10);
 	},
 	applyIf(target, source){
 		var from;
@@ -661,7 +751,7 @@ let CommonFuns = {
 
 	    var ret = [], begin, end;
 	    if (from == 'left') {
-	      for (var i = 0; i < text.length; i++) {
+	      for (let i = 0; i < text.length; i++) {
 	        if (/^[\u4e00-\u9fa5]$/.test(text[i])) {
 	          sum++;
 	        }
@@ -676,7 +766,7 @@ let CommonFuns = {
 	      }
 	    }
 	    else {
-	      for (var i = text.length - 1; i >= 0; i--) {
+	      for (let i = text.length - 1; i >= 0; i--) {
 	        if (/^[\u4e00-\u9fa5]$/.test(text[i])) {
 	          sum++;
 	        }
@@ -846,6 +936,62 @@ let CommonFuns = {
 			nodeNameAssociation.push({Id:tag.tagId, Name:tag.tagName, HierId: tag.hierId, NodeName:hieName, AssociationOption:1, DimensionName:null});
 		}
 		return nodeNameAssociation;
+	},
+	filterBenchmarks(hierNode, allIndustries, allZones, allBenchmarks){
+		let retArr = [];
+		if (!hierNode ||  hierNode.Type != 2){
+			return null;
+		}
+		retArr.push(this.constructMenuItem(-1,-1,'行业基准值'));
+
+		let industryId = hierNode.IndustryId;
+ 		let zoneId = hierNode.ZoneId;
+
+		let targetBenchmark = allBenchmarks.find((benchmark)=>{ if(benchmark.get('IndustryId') === industryId) return benchmark; });
+		let targetIndustry = allIndustries.find((industry)=>{ if(industry.get('Id')===industryId) return industry;});
+		if(targetBenchmark) this.pushBenchmarkItem(industryId, zoneId, targetBenchmark, retArr, allZones);
+
+		// parent industry benchmark
+		let parentId = targetIndustry.get('ParentId');
+		if (parentId !== 0) {
+			 targetBenchmark = allBenchmarks.find((benchmark)=>{ if(benchmark.get('IndustryId') === parentId) return benchmark; });
+			 if(targetBenchmark) this.pushBenchmarkItem(parentId, zoneId, targetBenchmark, retArr, allZones);
+	 }
+	 // all industry benchmark
+	 targetBenchmark = allBenchmarks.find((benchmark)=>{ if(benchmark.get('IndustryId') === 0) return benchmark; });
+	 if(targetBenchmark) this.pushBenchmarkItem(0, zoneId, targetBenchmark, retArr, allZones);
+
+	 return retArr;
+	},
+	pushBenchmarkItem(industryId, zoneId, benchmark, retArr, allZones){
+		 var zoneIds = benchmark.get('ZoneIds'),
+		     hasAllZone = false;
+
+		 for (var i = 0, len = zoneIds.size; i < len; i++) {
+			 if (zoneIds.get(i) === 0) hasAllZone = true;
+			 if (zoneId === zoneIds.get(i) && zoneId !== 0) {
+					 retArr.push(
+								this.constructMenuItem(industryId, zoneId,
+											 benchmark.get('ZoneComments').get(i) + benchmark.get('IndustryComment'))
+							 );
+					 break;
+			 }
+	 }
+
+	 if (hasAllZone) {
+			 // add the current industry all zone
+			 retArr.push(
+					 this.constructMenuItem(industryId, 0,
+						 allZones.find((zone)=>{if(zone.get('Id')===0) return zone;}).get('Comment') + benchmark.get('IndustryComment'))
+					 );
+	 }
+	},
+	constructMenuItem(industryId, zoneId, text){
+		return {
+            industryId: industryId,
+            zoneId: zoneId,
+            primaryText: text
+        };
 	},
 	Regex:{
 		ExcelCell: /[a-z]+\d+/i, //A4,AA66

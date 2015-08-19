@@ -13,6 +13,7 @@ import EnergyStore from '../stores/EnergyStore.jsx';
 import AlarmSettingStore from '../stores/AlarmSettingStore.jsx';
 import Pagination from '../controls/paging/Pagination.jsx';
 import TagMenu from './tag/TagMenu.jsx';
+import LabelMenuAction from '../actions/LabelMenuAction.jsx';
 
 var menuItems = [
    { payload: '1', text: '全部' },
@@ -46,6 +47,7 @@ let DataSelectMainPanel=React.createClass({
       }
       TagAction.loadData(node.Id,2,1,alarmType,filters);
       TBSettingAction.setHierId(node.Id);
+      LabelMenuAction.setHierNode(node);
       page=1;
        this.refs.dimButton.resetButtonName();
        this.setState({

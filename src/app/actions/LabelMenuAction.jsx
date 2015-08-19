@@ -62,8 +62,24 @@ let LabelMenuAction = {
       }
     });
   },
+  getAllBenchmarks(){
+    Ajax.post('/Administration.svc/GetAllBenchmarks', {
+      params: {},
+      success: function(benchmarkData){
+        AppDispatcher.dispatch({
+            type: Action.GET_BENCHMARK_DATA_SUCCESS,
+            benchmarkData: benchmarkData
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+            type: Action.GET_BENCHMARK_DATA_ERROR
+        });
+      }
+    });
+  },
   getCustomerLabels(){
-    Ajax.post('/Administration.svc/GetCustomerLabellings', {
+    Ajax.post('/Customer.svc/GetCustomerLabellings', {
       params: {filter:{CustomerId:window.currentCustomerId}},
       success: function(customerLabelData){
         AppDispatcher.dispatch({

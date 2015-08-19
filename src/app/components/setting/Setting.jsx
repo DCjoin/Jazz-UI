@@ -18,6 +18,7 @@ import CommodityAction from '../../actions/CommodityAction.jsx';
 
 import LeftPanel from '../folder/FolderLeftPanel.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
+import FolderDetailPanel from '../folder/FolderDetailPanel.jsx';
 
 let Setting = React.createClass({
 
@@ -25,7 +26,8 @@ let Setting = React.createClass({
   getInitialState: function() {
       return {
         showRightPanel: false,
-        errorText:null
+        errorText:null,
+        selectedNode:null
       };
   },
   _onSwitchButtonClick(){
@@ -50,6 +52,11 @@ let Setting = React.createClass({
     });
     this.refs.snackbar.show();
   },
+  _onSelectedNodehange:function(){
+    this.setState({
+      selectedNode:FolderStore.getSelectedNode()
+    })
+  },
   //just for test commoditypanel
 componentWillMount:function(){
   CommodityAction.setEnergyConsumptionType('cost');
@@ -58,11 +65,13 @@ componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
   FolderStore.addModifyNameErrorListener(this._onModifyNameError);
   FolderStore.addSendStatusListener(this._onSendStatusChange);
+    FolderStore.addSelectedNodeListener(this._onSelectedNodehange);
 },
 componentWillUnmount:function(){
   FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
   FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
   FolderStore.removeSendStatusListener(this._onSendStatusChange);
+  FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
 },
   render: function () {
 
@@ -87,10 +96,12 @@ componentWillUnmount:function(){
                                    container={<RankingContainer checkedCommodity={checkedCommodity} checkedTreeNodes={checkedTreeNodes}/>}/>);
 
     var errorBar=(this.state.errorText!=null?<Snackbar message={this.state.errorText}/>:null);
+    var folderDetail=(this.state.selectedNode?<FolderDetailPanel onToggle={this._onSwitchButtonClick} nodeData={this.state.selectedNode}/>:null)
+    //  <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
     return (
       <div style={{display:'flex', flex:1}}>
         <LeftPanel isShow={!this.state.showRightPanel} onToggle={this._onSwitchButtonClick}/>
-        <ChartPanel chartTitle='能效分析' isSettingChart={true}></ChartPanel>
+        {folderDetail}
         {RankingPanel}
         <Snackbar ref='snackbar' message={this.state.errorText}/>
       </div>

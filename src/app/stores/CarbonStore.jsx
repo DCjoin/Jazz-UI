@@ -4,33 +4,40 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-
-import ReaderFuncs from './MixedChartReader.jsx';
-import CommonFuns from '../util/Util.jsx';
-
-const CARBON_DATA_LOADING_EVENT = 'carbondataloading',
-      CARBON_DATA_CHANGED_EVENT = 'carbondatachanged',
-      GET_DATA_ERROR_EVENT = 'getcarbondataerror';
+import CommonFuns from './../util/Util.jsx';
+import ActionTypes from './../constants/actionType/Carbon.jsx';
+import ChartReaderStrategyFactor from './Energy/ChartReaderStrategyFactor.jsx';
 
 let _isLoading = false,
     _carbonData = null,
+    _carbonRawData = null,
     _submitParams = null,
     _paramsObj = null,
-    _commOptions = null,
+    _tagOptions = null,
     _chartTitle = null,
     _relativeDate = null,
     _errorCode = null,
     _errorMessage = null;
 
-var CarbonStore = assign({},PrototypeStore,{
+const CARBON_DATA_LOADING_EVENT = 'carbondataloadingevent',
+      CARBON_DATA_LOADED_EVENT = 'carbondataloadedevent',
+      CARBON_DATA_LOAD_ERROR_EVENT = 'carbondataloaderror';
+
+let CarbonStore = assign({},PrototypeStore,{
+  initReaderStrategy(bizChartType){
+    this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType(bizChartType);
+  },
   getLoadingStatus(){
     return _isLoading;
   },
   getCarbonData(){
     return _carbonData;
   },
-  clearCarbonData(){
+  clearCarbonDate(){
     _carbonData = null;
+  },
+  getCarbonRawData(){
+    return _carbonRawData;
   },
   getSubmitParams(){
     return _submitParams;
@@ -38,8 +45,8 @@ var CarbonStore = assign({},PrototypeStore,{
   getParamsObj(){
     return _paramsObj;
   },
-  getCommodityOpions(){
-    return _commOptions;
+  getTagOpions(){
+    return _tagOptions;
   },
   getChartTitle(){
     return _chartTitle;
@@ -60,11 +67,11 @@ var CarbonStore = assign({},PrototypeStore,{
     _errorMessage = error.Messages;
   },
 
-  _onDataLoading(params, commOptions, relativeDate){
+  _onDataLoading(params, tagOptions, relativeDate){
     _submitParams = params;
     _isLoading = true;
 
-    _commOptions = commOptions;
+    _tagOptions = tagOptions;
 
     if(relativeDate !== false){
       _relativeDate = relativeDate;
@@ -90,32 +97,12 @@ var CarbonStore = assign({},PrototypeStore,{
     window.testObj._carbonRawData = _carbonRawData;
     //add this for test team end
 
-    _carbonData = Immutable.fromJS(ReaderFuncs.convert(data, obj));
+    _carbonData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj));
   },
-  /*
-    returns boolean: if only one tag left, then reload data.
-  */
   removeSeriesDataByUid(uid){
-    if(_carbonData){
-      let latestDataList = [];
-      let dataList = _carbonData.toJS().Data;
 
-      for(let i=0,len=dataList.length; i<len; i++){
-        let data = dataList[i];
-        if(data.uid !== uid){
-          latestDataList.push(data);
-        }
-      }
-      if(latestDataList.length === 1){
-        return true;
-      }else if(latestDataList.length > 0){
-        _carbonData = _carbonData.set('Data', latestDataList);
-      }else{
-        _carbonData = null;
-      }
-    }
-    return false;
   },
+  //listners--------------------------------
   addCarbonDataLoadingListener: function(callback) {
     this.on(CARBON_DATA_LOADING_EVENT, callback);
   },
@@ -125,42 +112,42 @@ var CarbonStore = assign({},PrototypeStore,{
   removeCarbonDataLoadingListener: function(callback) {
     this.removeListener(CARBON_DATA_LOADING_EVENT, callback);
   },
-  addCarbonDataChangeListener: function(callback) {
-    this.on(CARBON_DATA_CHANGED_EVENT, callback);
+  addCarbonDataLoadedListener: function(callback) {
+    this.on(CARBON_DATA_LOADED_EVENT, callback);
   },
-  emitCarbonDataChange: function() {
-    this.emit(CARBON_DATA_CHANGED_EVENT);
+  emitCarbonDataLoadedListener: function() {
+    this.emit(CARBON_DATA_LOADED_EVENT);
   },
-  removeCarbonDataChangeListener: function(callback) {
-    this.removeListener(CARBON_DATA_CHANGED_EVENT, callback);
+  removeCarbonDataLoadedListener: function(callback) {
+    this.removeListener(CARBON_DATA_LOADED_EVENT, callback);
   },
-  addGetCarbonDataErrorListener:function(callback) {
-    this.on(GET_DATA_ERROR_EVENT, callback);
+  addCarbonDataLoadErrorListener:function(callback) {
+    this.on(CARBON_DATA_LOAD_ERROR_EVENT, callback);
   },
-  emitGetCarbonDataErrorListener:function(callback) {
-    this.emit(GET_DATA_ERROR_EVENT);
+  emitCarbonDataLoadErrorListener:function(callback) {
+    this.emit(CARBON_DATA_LOAD_ERROR_EVENT);
   },
-  removeGetCarbonDataErrorListener: function(callback) {
-    this.removeListener(GET_DATA_ERROR_EVENT, callback);
+  removeCarbonDataLoadErrorListener: function(callback) {
+    this.removeListener(CARBON_DATA_LOAD_ERROR_EVENT, callback);
   }
 });
 
+
 CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
-      case Action.GET_CARBON_DATA_LOADING:
-        CarbonStore._onDataLoading(action.submitParams, action.commOptions, action.relativeDate, false);
+      case ActionTypes.GET_CARBON_DATA_LOADING:
+        CarbonStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate);
         CarbonStore.emitCarbonDataLoading();
         break;
-      case Action.GET_CARBON_DATA_SUCCESS:
+      case ActionTypes.GET_CARBON_DATA_SUCCESS:
         CarbonStore._onDataChanged(action.carbonData, action.submitParams);
-        CarbonStore.emitCarbonDataChange();
+        CarbonStore.emitCarbonDataLoadedListener();
         break;
-      case Action.GET_CARBON_DATA_ERROR:
+      case ActionTypes.GET_CARBON_DATA_ERROR:
         CarbonStore._onDataChanged(null, action.submitParams);
         CarbonStore._initErrorText(action.errorText);
-        CarbonStore.emitGetCarbonDataErrorListener();
+        CarbonStore.emitCarbonDataLoadErrorListener();
         break;
     }
 });
-
 module.exports = CarbonStore;
