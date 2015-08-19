@@ -17,7 +17,6 @@ import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
-const defaultMap = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'Label'};
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -37,9 +36,8 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Label',
-        chartTitle:'最近7天能效标识'
-        //bizType:'Energy'
+        bizType:'Unit',
+        chartTitle:'最近7天能耗'
       };
     },
     componentWillReceiveProps(nextProps){
@@ -47,7 +45,8 @@ let AnalysisPanel = React.createClass({
         this.setState({energyType: nextProps.energyType});
     },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[this.props.bizType]);
+      let strategyName = this.getStrategyName(this.props.bizType, this.props.energyType);
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(strategyName);
       let state = {
         isLoading: false,
         energyData: null,
@@ -133,6 +132,39 @@ let AnalysisPanel = React.createClass({
       let me = this;
       this.state.chartStrategy.unbindStoreListenersFn(me);
     },
+    getStrategyName(bizType, energyType){
+      let strategyName = null;
+      switch (bizType) {
+        case 'Energy':
+          if(!energyType || energyType === 'Energy'){
+            strategyName = 'Energy';
+          }else if(energyType === 'Cost'){
+            strategyName = 'Cost';
+          }else if(energyType === 'Carbon'){
+            strategyName = 'Carbon';
+          }
+          break;
+        case 'Unit':
+          if(!energyType || energyType === 'Energy'){
+            strategyName = 'UnitEnergyUsage';
+          }else if(energyType === 'Cost'){
+            strategyName = 'UnitCost';
+          }else if(energyType === 'Carbon'){
+            strategyName = 'UnitCarbon';
+          }
+          break;
+        case 'Ratio':
+          strategyName = 'RatioUsage';
+          break;
+        case 'Label':
+          strategyName = 'Label';
+          break;
+        case 'Rank':
+          strategyName = 'Rank';
+          break;
+      }
+      return strategyName;
+    },  
     _onChart2WidgetClick(){
 
     },
