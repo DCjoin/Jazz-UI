@@ -12,7 +12,7 @@ let DataSelectPanel=React.createClass({
       onButtonClick:React.PropTypes.func,
       linkFrom: React.PropTypes.string,
       defaultStatus:React.PropTypes.bool,
-      widgetType:React.PropTypes.string, //energy,unit,ratio,labelling
+      widgetType:React.PropTypes.string, //Energy,Unit,Ratio,Label
     },
     _onToggle:function(){
 

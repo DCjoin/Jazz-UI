@@ -414,7 +414,7 @@ let DataSelectMainPanel=React.createClass({
         )
       }
       var hierId=(this.state.dimParentNode===null)?null:this.state.dimParentNode.Id;
-      var dropDownMenu=(this.props.widgetType=='energy')?
+      var dropDownMenu=(this.props.widgetType=='Energy')?
                             <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
                             :null;
       return(
