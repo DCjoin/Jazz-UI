@@ -2,7 +2,7 @@
 import React from "react";
 import assign from "object-assign";
 import _ from 'lodash';
-import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
+import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu} from 'material-ui';
 
 import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
@@ -525,11 +525,16 @@ let ChartStrategyFactor = {
    getEnergyChartComponent(analysisPanel){
      let energyPart;
      let chartType = analysisPanel.state.selectedChartType;
+     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column','stack','pie','rawdata']);
+
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
                          energyRawData: analysisPanel.state.energyRawData,
                          chartStrategy: analysisPanel.state.chartStrategy };
        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px', overflow:'hidden'}}>
+                      <div style={{display:'flex'}}>
+                         <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+                      </div>
                       <GridComponent {...properties}></GridComponent>
                     </div>;
      }else if(chartType === 'pie'){
@@ -544,6 +549,10 @@ let ChartStrategyFactor = {
                        };
 
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                      <div style={{display:'flex'}}>
+                        <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+                        <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+                      </div>
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }else{
@@ -559,8 +568,9 @@ let ChartStrategyFactor = {
 
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                        <div style={{display:'flex'}}>
+                         <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
                          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-                         <StepSelector stepValue={analysisPanel.state.step}      onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+                         <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
                        </div>
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
@@ -695,8 +705,32 @@ let ChartStrategyFactor = {
      ExportChartAction.getTagsData4Export(tagIds, viewOption, nodeNameAssociation,'能耗分析',charTypes);
    }
  },
+ getChartTypeIconMenu(analysisPanel, types){
+   var IconButtonElement=<IconButton iconClassName="icon-power"/>;
+   var iconMenuProps= {
+                       iconButtonElement:IconButtonElement,
+                       openDirection:"bottom-right",
+                       desktop: true,
+                       onItemTouchTap: analysisPanel._onSearchBtnItemTouchTap
+                     };
+
+   let menuMap = { line: {primaryText:'折线图', icon:<FontIcon className="icon-power" />},
+                   column:{primaryText:'柱状图', icon:<FontIcon className="icon-current" />},
+                   stack:{primaryText:'堆积图', icon:<FontIcon className="icon-customer" />},
+                   pie:{primaryText:'饼状图', icon:<FontIcon className="icon-delete" />},
+                   rawdata:{primaryText:'原始数据', icon:<FontIcon className="icon-device" />}};
+
+   let typeItems = types.map((item)=>{
+     return <MenuItem primaryText={menuMap[item].icon} value={item} />;
+   });
+
+   let widgetOptMenu = <IconMenu {...iconMenuProps}>
+                         {typeItems}
+                      </IconMenu>;
+   return widgetOptMenu;
+ },
  getSearchBtn(analysisPanel, types){
-   let menuMap = { line:{primaryText:'折线图'},
+   let menuMap = { line: {primaryText:'折线图'},
                    column:{primaryText:'柱状图'},
                    stack:{primaryText:'堆积图'},
                    pie:{primaryText:'饼状图'},
