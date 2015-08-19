@@ -109,13 +109,17 @@ var FolderDetailPanel = React.createClass({
                       </div>
                   );
   var iconStyle={
-    fontSize:'20px',
-  };
+        fontSize:'20px',
+      },
+      menuStyle={
+        fontSize:'14px'
+      };
   var IconButtonElement=<IconButton iconStyle={iconStyle} iconClassName="icon-arrow-down"/>;
                   //props
   var iconMenuProps={
                       iconButtonElement:IconButtonElement,
-                      openDirection:"bottom-right"
+                      openDirection:"bottom-right",
+                      menuStyle:menuStyle
                     };
   var subtitle=(this.props.nodeData.get('SourceUserName')?I18N.format(I18N.Folder.Detail.SubTitile,this.props.nodeData.get('SourceUserName')):null)
   var content=[];
@@ -142,7 +146,9 @@ var FolderDetailPanel = React.createClass({
             <div className='name'>
               {this.props.nodeData.get('Name')}
             </div>
-            {icon}
+            <div className='icon'>
+              {icon}
+            </div>
           </div>
         </div>
         <div className='content'>

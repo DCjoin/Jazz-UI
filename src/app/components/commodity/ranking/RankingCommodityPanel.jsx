@@ -54,7 +54,7 @@ var RankingCommodityPanel = React.createClass({
   CommodityStore.addRankingECTypeListener(this._onRankingECTypeChange);
   CommodityStore.addRankingCommodityListListener(this._onRankingCommodityListChange);
 
-  if(this.props.checkedCommodity!==null){
+  if(!!this.props.checkedCommodity){
     CommodityAction.loadRankingCommodityList(this.props.checkedTreeNodes);
     this.setState({
       isShow:true
