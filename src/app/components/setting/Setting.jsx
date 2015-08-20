@@ -126,7 +126,7 @@ let Setting = React.createClass({
      }
    }
  }
- return template
+ return template;
  },
 _onWidgetMenuSelect:function(index){
   var id=(index==1)?6:index;
@@ -134,7 +134,7 @@ _onWidgetMenuSelect:function(index){
     templateNode:this.state.selectedNode,
     templateId:id,
     templateShow:true
-  })
+  });
 },
   _onEnergyTypeChanged(energyType){
     this.setState({selectedEnergyType:energyType});
@@ -218,7 +218,7 @@ render: function () {
         //return Rank rightPanel
         rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
                       defaultStatus={this.state.showRightPanel}
-                      container={<RankingContainer ecType={energyType}/>}/>;
+                      container={<RankingContainer ecType={energyType || 'Energy'}/>}/>;
 
         break;
     }

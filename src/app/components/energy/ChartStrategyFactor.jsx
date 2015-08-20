@@ -86,8 +86,8 @@ let ChartStrategyFactor = {
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
-      getEnergyTypeComboFn: 'getCostTypeCombo',
-      getSelectedNodesFn: 'getCostSelectedList',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
+      getSelectedNodesFn: 'getCostSelectedTagList',
       setFitStepAndGetDataFn:'setCostFitStepAndGetData',
       getInitialStateFn: 'getCostInitialState',
       getAllDataFn: 'empty',
@@ -159,7 +159,7 @@ let ChartStrategyFactor = {
     },Rank:{
       searchBarGenFn:'rankSearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
-      getSelectedNodesFn:'getSelectedList',
+      getSelectedNodesFn:'getRankSelectedTagList',
       onSearchDataButtonClickFn:'onRankSearchDataButtonClick',
       onEnergyTypeChangeFn:'onEnergyTypeChange',
       onHierNodeChangeFn:'empty',
@@ -502,7 +502,25 @@ let ChartStrategyFactor = {
          {configBtn}
          <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
        </div>
-   </div>;
+     </div>;
+   },
+  CostSearchBarGen(analysisPanel){
+    var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
+    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie']);
+    var configBtn = ChartStrategyFactor.getCostConfigBtn(analysisPanel);
+
+    return <div className={'jazz-alarm-chart-toolbar'}>
+      <div className={'jazz-full-border-dropdownmenu-container'} >
+        {chartTypeCmp}
+        <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+      </div>
+      <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <div className={'jazz-flat-button'}>
+        {searchButton}
+        {configBtn}
+        <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
+      </div>
+    </div>;
   },
   carbonSearchBarGen(analysisPanel){
     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie','rawdata']);
@@ -608,7 +626,7 @@ let ChartStrategyFactor = {
      return {hierarchyId: hierId, communityIds:commIds };
      //return CommodityStore.getCurrentHierIdCommodityStatus();
    },
-   getSelectedList(){
+   getRankSelectedTagList(){
      var selectedList = {};
      var hierarchyList = CommodityStore.getRankingTreeList();
      var commodityList = CommodityStore.getRankingCommodity();
@@ -629,10 +647,10 @@ let ChartStrategyFactor = {
      EnergyAction.getUnitEnergyTrendChartData(timeRanges, step, tagOptions, unitType, relativeDate);
    },
    rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
-     RankAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
+     EnergyAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
    },
    labelDataLoad(viewOption, tagOptions, benchmarkOption, labelingType){
-     LabelAction.getLabelChartData(viewOption, tagOptions, benchmarkOption, labelingType);
+     EnergyAction.getLabelChartData(viewOption, tagOptions, benchmarkOption, labelingType);
    }
  },
  getPieEnergyDataFnStrategy:{
@@ -963,6 +981,18 @@ let ChartStrategyFactor = {
       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
       <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
 
+    </ButtonMenu>;
+
+    return configButton;
+  },
+  getCostConfigBtn(analysisPanel){
+    let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
+                            {primaryText:'冷暖季', value:'hotColdSeason'}];
+
+    let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+                                 onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
+      <MenuItem primaryText="峰谷展示" value='touCompare' disabled={analysisPanel.state.touBtnStatus}/>
+      <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
     </ButtonMenu>;
 
     return configButton;
