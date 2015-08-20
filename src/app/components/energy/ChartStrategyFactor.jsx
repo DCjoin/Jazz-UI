@@ -1059,6 +1059,8 @@ let ChartStrategyFactor = {
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
        <ExtendableMenuItem primaryText="行业基准值" value='benchmark' subItems={benchmarks}/>
+       </ButtonMenu>;
+       return configButton;
    },
    getCostAuxiliaryCompareBtn(analysisPanel){
      let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
