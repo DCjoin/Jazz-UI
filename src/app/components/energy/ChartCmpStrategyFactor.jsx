@@ -72,6 +72,9 @@ let ChartCmpStrategyFactor = {
       initNavigatorDataFn:'initNavigatorData',
       getInitialStateFn:'empty'
     },
+    CostTrendComponent:{
+
+    },
     CarbonTrendComponent:{
       convertDataFn:'convertData',
       convertSingleItemFn:'convertSingleItem',
