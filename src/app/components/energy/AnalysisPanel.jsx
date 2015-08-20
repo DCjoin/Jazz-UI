@@ -2,6 +2,7 @@
 import React from "react";
 import Immutable from 'immutable';
 import assign from "object-assign";
+import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu} from 'material-ui';
 import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
@@ -177,7 +178,14 @@ let AnalysisPanel = React.createClass({
     },
     getEnergyTypeCombo(){
       let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
-      return <DropDownMenu menuItems={types} onChange={this.state.chartStrategy.onEnegyTypeChangeFn}></DropDownMenu>;
+      return <DropDownMenu menuItems={types} onChange={this._onEnergyTypeChange}></DropDownMenu>;
+    },
+    _onEnergyTypeChange(e, selectedIndex, menuItem){
+      let menuItemVal = menuItem.value;
+      let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
+      let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
+      this.setState({chartStrategy: chartSttg});
+      chartSttg.onEnergyTypeChangeFn(e, selectedIndex, menuItem);
     },
     _onStepChange(step){
       let tagOptions = EnergyStore.getTagOpions(),
@@ -665,8 +673,33 @@ let AnalysisPanel = React.createClass({
     onChangeKpiType: function(){
       this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
     },
-    _onConfigBtnItemTouchTap(e,item){
-      console.log('AnalysisPanel--- _onConfigBtnItemTouchTap');
+    _onConfigBtnItemTouchTap(menuParam, menuItem){
+      this.state.chartStrategy.handleConfigBtnItemTouchTapFn(this, menuParam, menuItem);
+    },
+    handleBaselineCfg: function(e){
+      let tagOption, tagObj,
+          tagOptions = this.state.chartStrategy.getSelectedNodesFn();//this.getSelectedTagOptions();
+
+      if(tagOptions && tagOptions.length === 1){
+        tagOption = tagOptions[0];
+        let uom = CommonFuns.getUomById(tagOption.uomId);
+        tagObj = {tagId: tagOption.tagId, hierarchyId: tagOption.hierId, uom:uom};
+      }else{
+        return ;
+      }
+
+      let dateSelector = this.refs.dateTimeSelector;
+      let dateRange = dateSelector.getDateTime();
+
+      this.refs.baselineCfg.showDialog(tagObj, dateRange);
+      var year=(new Date()).getFullYear();
+      TBSettingAction.setYear(year);
+    },
+    _initYaxisDialog(){
+      var chartCmp = this.refs.ChartComponent,
+          chartObj = chartCmp.refs.highstock.getPaper();
+
+      return chartObj;
     }
 });
 

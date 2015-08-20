@@ -5,7 +5,7 @@ import mui from 'material-ui';
 import CommonFuns from '../../util/Util.jsx';
 
 let {isNumeric} = CommonFuns;
-let { Dialog, DropDownMenu, FlatButton, TextField, FontIcon } = mui;
+let { Dialog, DropDownMenu, FlatButton, TextField, FontIcon, IconButton } = mui;
 
 var _currentChartObj = null,
     _storedConfig = null;
@@ -63,7 +63,8 @@ let YaxisSelector = React.createClass({
   render: function () {
     var me = this;
     return <div style={{'align-self': 'center'}}>
-        <div className='jazz-energy-yaxis-button' onTouchTap={me._onYaxisClick}> {'Y坐标轴'} </div>
+      <IconButton iconClassName="icon-setting"   onTouchTap={me._onYaxisClick} />
+
         <YaxisDialog yaxisConfig={me.state.yaxisConfig} storedConfig={me.state.storedConfig}
           onDialogSubmit={me._onDialogSubmit} ref='yaxisDialog' onYaxisDialogDismiss={me.onYaxisDialogDismiss}></YaxisDialog>
       </div>;

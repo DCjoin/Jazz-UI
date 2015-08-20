@@ -141,7 +141,7 @@ _onWidgetMenuSelect:function(index){
   },
   //just for test commoditypanel
 componentWillMount:function(){
-  CommodityAction.setEnergyConsumptionType('Cost');
+  CommodityAction.setEnergyConsumptionType('cost');
 },
 componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -198,7 +198,7 @@ render: function () {
         if(!energyType || energyType === 'Energy'){
           rightPanel = <DataSelectPanel  defaultStatus={false} widgetType={bizType}></DataSelectPanel>;
         }else{
-
+          rightPanel = <CommodityContainer></CommodityContainer>;
         }
         break;
       case 'Unit':
