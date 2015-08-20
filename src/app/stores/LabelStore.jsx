@@ -94,25 +94,7 @@ var LabelStore = assign({},PrototypeStore,{
     returns boolean: if only one tag left, then reload data.
   */
   removeSeriesDataByUid(uid){
-    if(_energyData){
-      let latestDataList = [];
-      let dataList = _energyData.toJS().Data;
-
-      for(let i=0,len=dataList.length; i<len; i++){
-        let data = dataList[i];
-        if(data.uid !== uid){
-          latestDataList.push(data);
-        }
-      }
-      if(latestDataList.length === 1){
-        return true;
-      }else if(latestDataList.length > 0){
-        _energyData = _energyData.set('Data', latestDataList);
-      }else{
-        _energyData = null;
-      }
-    }
-    return false;
+    
   },
   addLabelDataLoadingListener: function(callback) {
     this.on(LABEL_DATA_LOADING_EVENT, callback);

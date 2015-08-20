@@ -138,6 +138,15 @@ _onWidgetMenuSelect:function(index){
 },
   _onEnergyTypeChanged(energyType){
     this.setState({selectedEnergyType:energyType});
+
+    let me = this;
+    me.setState({
+      refreshChart: true
+    },()=>{me.setState({
+                        refreshChart: false,
+                        selectedEnergyType: energyType
+                      });
+          });
   },
   //just for test commoditypanel
 componentWillMount:function(){
