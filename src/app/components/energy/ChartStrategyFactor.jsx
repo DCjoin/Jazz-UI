@@ -82,8 +82,9 @@ let ChartStrategyFactor = {
       getEnergyRawDataFn:'getEnergyRawData',
       exportChartFn:'exportChart',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
+      getChartSubToolbarFn:'getEnergySubToolbar',
       getAuxiliaryCompareBtnFn:'getEnergyAuxiliaryCompareBtn',
-     handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap',
+      handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap',
       onHierNodeChangeFn:'empty'
     },
     Cost: {
@@ -176,6 +177,47 @@ let ChartStrategyFactor = {
       unbindStoreListenersFn:'rankUnbindStoreListeners',
       canShareDataWithFn:'canRankShareDataWith'
     }
+ },
+ getChartSubToolbarFnStrategy:{
+   getEnergySubToolbar(chartType, analysisPanel){
+     var toolElement;
+     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column','stack','pie','rawdata']);
+     let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     if(chartType === 'line' || chartType === 'column' || chartType === 'stack'){
+       toolElement =
+           <div style={{display:'flex'}}>
+             <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+             <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+             <div style={{margin:'5px 30px 5px auto'}}>
+               {configBtn}
+               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             </div>
+             <BaselineCfg  ref="baselineCfg"/>
+           </div>;
+     }else if( chartType === 'rawdata'){
+       toolElement =
+           <div style={{display:'flex'}}>
+             <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+             <div style={{margin:'5px 30px 5px auto'}}>
+               {configBtn}
+               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             </div>
+             <BaselineCfg  ref="baselineCfg"/>
+           </div>;
+     }else if(chartType === 'pie'){
+       toolElement =
+           <div style={{display:'flex'}}>
+             <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+             <div style={{margin:'5px 30px 5px auto'}}>
+               {configBtn}
+               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             </div>
+             <BaselineCfg  ref="baselineCfg"/>
+           </div>;
+     }
+     return toolElement;
+   }
  },
  handleConfigBtnItemTouchTapFnStrategy:{
    handleEnergyConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem){
@@ -687,6 +729,7 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column','stack','pie','rawdata']);
      let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     let subToolbar = analysisPanel.state.chartStrategy.getChartSubToolbarFn(chartType, analysisPanel);
 
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
@@ -728,16 +771,7 @@ let ChartStrategyFactor = {
                        };
 
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
-                       <div style={{display:'flex'}}>
-                         <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
-                         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-                         <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
-                         <div style={{margin:'5px 30px 5px auto'}}>
-                           {configBtn}
-                           <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
-                         </div>
-                         <BaselineCfg  ref="baselineCfg"/>
-                       </div>
+                       {subToolbar}
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }
