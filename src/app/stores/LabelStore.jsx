@@ -4,8 +4,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-
-import {Action} from '../constants/actionType/Labeling.jsx';
+import {Action} from '../constants/actionType/Energy.jsx';
 import CommonFuns from '../util/Util.jsx';
 
 const LABEL_DATA_LOADING_EVENT = 'labeldataloading',

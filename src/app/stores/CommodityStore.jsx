@@ -61,8 +61,8 @@ var CommodityStore = assign({},PrototypeStore,{
     _commodityList=[];
     listArray.forEach(function(element){
       let node={
-        commodityId:element.Id,
-        commodityName:element.Comment
+        Id:element.Id,
+        Comment:element.Comment
       };
       _commodityList.push(node);
     });

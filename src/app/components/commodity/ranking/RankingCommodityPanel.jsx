@@ -15,11 +15,6 @@ var RankingCommodityPanel = React.createClass({
     //checkedCommodity:{commodityId:XX,commodityName:XX}
     checkedCommodity: React.PropTypes.object,
   },
-  _onRankingECTypeChange:function(){
-    this.setState({
-      ecType:CommodityStore.getRankingECType(),
-    });
-  },
   _onTreeConfirm:function(){
     this.setState({
       isLoading:true,
@@ -39,19 +34,13 @@ var RankingCommodityPanel = React.createClass({
   },
   getInitialState:function(){
     return{
-      ecType:this.props.ecType,
       isLoading:false,
       isShow:false,
       commodityList:null,
     };
   },
-  componentWillReceiveProps :function(){
-    this.setState({
-      ecType:CommodityStore.getRankingECType()
-    })
-  },
+
   componentDidMount: function() {
-  CommodityStore.addRankingECTypeListener(this._onRankingECTypeChange);
   CommodityStore.addRankingCommodityListListener(this._onRankingCommodityListChange);
 
   if(!!this.props.checkedCommodity){
@@ -63,7 +52,6 @@ var RankingCommodityPanel = React.createClass({
   },
 
   componentWillUnmount: function() {
-  CommodityStore.removeRankingECTypeListener(this._onRankingECTypeChange);
   CommodityStore.removeRankingCommodityListListener(this._onRankingCommodityListChange);
   },
   render:function(){
@@ -71,7 +59,7 @@ var RankingCommodityPanel = React.createClass({
     var content;
     if(this.state.isShow){
       content=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />
-                                        :<CommodityList ecType={this.state.ecType}
+                                        :<CommodityList ecType={this.props.ecType}
                                                         checkedCommodity={this.props.checkedCommodity}
                                                         commdityList={this.state.commodityList}/>);
     };

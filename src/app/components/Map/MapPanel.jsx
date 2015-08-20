@@ -29,7 +29,7 @@ let MapPanel = React.createClass({
   },
   //just for test commoditypanel
   componentWillMount:function(){
-    CommodityAction.setEnergyConsumptionType('Cost');
+    CommodityAction.setEnergyConsumptionType('cost');
   },
   render(){
     var checkedCommodity={
@@ -48,10 +48,13 @@ let MapPanel = React.createClass({
                                    defaultStatus={this.state.showRightPanel}
                                    container={<RankingContainer checkedCommodity={checkedCommodity} checkedTreeNodes={checkedTreeNodes}/>}/>);
     let dataSelectPanel = <DataSelectPanel  defaultStatus={false}></DataSelectPanel>;
+    let commoditypanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
+                                   defaultStatus={this.state.showRightPanel}
+                                   container={<CommodityContainer/>}/>);
 
     return <div style={{display:'flex', flex:1}}>
         {chartPanel}
-        {dataSelectPanel}
+        {commoditypanel}
       </div>;
   }
 

@@ -135,7 +135,7 @@ let MonthPicker = React.createClass({
     };
     datePicker = (<TextField {...inputProps} ref="TextField"/>);
     if(this.state.showMonth){
-    calendar=(<div style={{position:'absolute',"zIndex":99,width:"150px",marginTop:'2px',marginLeft:'53px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}>
+    calendar=(<div style={{position:'absolute',"zIndex":99,width:"150px",marginTop:'2px',marginLeft:'83px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}>
       <CalendarYear
         ref="calendarYear"
         onYearChange={this._onYearChange}

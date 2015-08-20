@@ -5,7 +5,7 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
-import ActionTypes from '../../constants/actionType/Energy.jsx';
+import {Action} from '../../constants/actionType/Energy.jsx';
 import ChartReaderStrategyFactor from './ChartReaderStrategyFactor.jsx';
 
 
@@ -136,15 +136,15 @@ let EnergyStore = assign({},PrototypeStore,{
 
 EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
-      case ActionTypes.GET_ENERGY_DATA_LOADING:
+      case Action.GET_ENERGY_DATA_LOADING:
         EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate);
         EnergyStore.emitEnergyDataLoading();
         break;
-      case ActionTypes.GET_ENERGY_DATA_SUCCESS:
+      case Action.GET_ENERGY_DATA_SUCCESS:
         EnergyStore._onDataChanged(action.energyData, action.submitParams);
         EnergyStore.emitEnergyDataLoadedListener();
         break;
-      case ActionTypes.GET_ENERGY_DATA_ERROR:
+      case Action.GET_ENERGY_DATA_ERROR:
         EnergyStore._onDataChanged(null, action.submitParams);
         EnergyStore._initErrorText(action.errorText);
         EnergyStore.emitEnergyDataLoadErrorListener();

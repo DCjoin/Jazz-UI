@@ -19,7 +19,7 @@ let AlarmHierarchyItem = React.createClass({
 	},
 	getInitialState: function() {
     return {
-			extended: false
+			extended: true
     };
   },
 	render() {
@@ -52,7 +52,7 @@ let AlarmHierarchyItem = React.createClass({
     			<div className={classNames({
 						'jazz-alarm-grid-tr-item':true,
 						'jazz-alarm-grid-tr-item-extended': !!me.state.extended
-						})} onClick={me._onHierarchyItemSelected}>
+						})}>
     				<span>{hierarchy.HierName}</span>
 						<span>
             	<span>{tagCount}</span>

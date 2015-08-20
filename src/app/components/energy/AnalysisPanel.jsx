@@ -37,7 +37,7 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Unit',
+        bizType:'Rank',
         chartTitle:'最近7天能耗'
       };
     },
@@ -178,7 +178,14 @@ let AnalysisPanel = React.createClass({
     },
     getEnergyTypeCombo(){
       let types = [{text:'能耗',value:'energy'},{text:'成本',value:'cost'},{text:'碳排放',value:'carbon'}];
-      return <DropDownMenu menuItems={types} onChange={this.state.chartStrategy.onEnegyTypeChangeFn}></DropDownMenu>;
+      return <DropDownMenu menuItems={types} onChange={this._onEnergyTypeChange}></DropDownMenu>;
+    },
+    _onEnergyTypeChange(e, selectedIndex, menuItem){
+      let menuItemVal = menuItem.value;
+      let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
+      let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
+      this.setState({chartStrategy: chartSttg});
+      chartSttg.onEnergyTypeChangeFn(e, selectedIndex, menuItem);
     },
     _onStepChange(step){
       let tagOptions = EnergyStore.getTagOpions(),

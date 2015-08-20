@@ -105,15 +105,15 @@ var AlarmLeftPanel = React.createClass({
       }else if(this.state.dateType == dateType.MONTH_ALARM){
         dateSelector = ( <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected} ref='monthSelector'/>);
       }else{
-        dateSelector = ( <div className={'jazz-alarm-left-panel-year-dropdownmenu-container'}> <YearPicker ref='yearSelector' style={{width:'300px',height:'32px',lineHeight:'32px'}} onYearPickerSelected={this.onYearPickerSelected}/></div>);
+        dateSelector = ( <div className={'jazz-alarm-left-panel-year-dropdownmenu-container'}> <YearPicker ref='yearSelector' style={{width:'320px',height:'32px',lineHeight:'32px'}} onYearPickerSelected={this.onYearPickerSelected}/></div>);
       }
 
       return (
-        <div style={{width:'300px',display:'flex','flexFlow':'column', 'background-color':'rgb(53, 64, 82)'}}>
+        <div style={{width:'320px',display:'flex','flexFlow':'column', 'background-color':'rgb(53, 64, 82)'}}>
           <div className={'jazz-alarm-left-panel-dropdownmenu-container'}>
-              <DropDownMenu autoWidth={false} style={{width:'300px'}} onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
+              <DropDownMenu autoWidth={false} style={{width:'320px'}} onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
           </div>
-          <div style={{margin:'0px auto 12px auto', height:'32px', flex:'none'}}>
+          <div style={{padding:'0px auto 12px auto', height:'32px', flex:'none'}}>
             {dateSelector}
 
           </div>
