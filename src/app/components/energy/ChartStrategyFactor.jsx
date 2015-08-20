@@ -323,7 +323,7 @@ let ChartStrategyFactor = {
  },
  onSearchDataButtonClickFnStrategy:{
    onSearchDataButtonClick(analysisPanel){
-     //analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+     analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
 
      let dateSelector = analysisPanel.refs.dateTimeSelector,
          dateRange = dateSelector.getDateTime(),
@@ -507,7 +507,7 @@ let ChartStrategyFactor = {
  searchBarGenFnStrategy:{
    energySearchBarGen(analysisPanel){
      var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
-     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie','rawdata']);
+     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
      return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'} >
@@ -987,8 +987,8 @@ let ChartStrategyFactor = {
                       </IconMenu>;
    return widgetOptMenu;
  },
- getSearchBtn(analysisPanel, types){
-   var searchButton = <RaisedButton label='查看' onButtonClick={analysisPanel.onSearchDataButtonClick}/>;
+ getSearchBtn(analysisPanel){
+   var searchButton = <RaisedButton label='查看' onClick={analysisPanel.onSearchDataButtonClick}/>;
     return searchButton;
   },
   getLabelBtn(analysisPanel){
