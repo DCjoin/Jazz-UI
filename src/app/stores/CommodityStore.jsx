@@ -16,6 +16,7 @@ const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
 
 let _energyConsumptionType=null,// Carbon or Cost
     _rankingECType=null,//Energy Carbon or Cost
+    _hierNode=null,
     _currentHierId=null,
     _currentHierName=null,
     _currentDimId=null,
@@ -43,12 +44,19 @@ var CommodityStore = assign({},PrototypeStore,{
     _currentHierId=id;
     _currentHierName=name;
     _currentDimId=null;
+    _hierNode={
+      hierId:id,
+      hierName:name
+    }
   },
   getCurrentHierarchyId:function(){
     return _currentHierId;
   },
   getCurrentHierarchyName:function(){
     return _currentHierName;
+  },
+  getHierNode:function(){
+    return _hierNode
   },
   setCurrentDimId:function(id){
     _currentDimId=id;
@@ -76,6 +84,7 @@ var CommodityStore = assign({},PrototypeStore,{
       _currentHierName=null;
       _currentDimId=null;
       _commodityList=[];
+      _hierTree=null;
   },
   setCommodityStatus:function(id,name,selected){
     var hasCommodity=false;
