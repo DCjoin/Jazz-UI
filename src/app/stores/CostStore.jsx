@@ -7,9 +7,9 @@ import Immutable from 'immutable';
 import {Action} from '../constants/actionType/Energy.jsx';
 import CommonFuns from '../util/Util.jsx';
 
-const RANK_DATA_LOADING_EVENT = 'rankdataloading',
-      RANK_DATA_LOADED_EVENT = 'rankdatachanged',
-      RANK_DATA_LOAD_ERROR_EVENT = 'rankdataloaderror';
+const COST_DATA_LOADING_EVENT = 'costdataloading',
+      COST_DATA_LOADED_EVENT = 'costdatachanged',
+      COST_DATA_LOAD_ERROR_EVENT = 'costdataloaderror';
 
 let _isLoading = false,
     _energyData = null,
@@ -17,13 +17,12 @@ let _isLoading = false,
     _submitParams = null,
     _paramsObj = null,
     _selectedList = null,
-    _rankType = null,
     _chartTitle = null,
     _relativeDate = null,
     _errorCode = null,
     _errorMessage = null;
 
-var RankStore = assign({},PrototypeStore,{
+var CostStore = assign({},PrototypeStore,{
   getLoadingStatus(){
     return _isLoading;
   },
@@ -44,9 +43,6 @@ var RankStore = assign({},PrototypeStore,{
   },
   getSelectedList(){
     return _selectedList;
-  },
-  getRankType(){
-    return _rankType;
   },
   getChartTitle(){
     return _chartTitle;
@@ -76,11 +72,8 @@ var RankStore = assign({},PrototypeStore,{
       _relativeDate = relativeDate;
     }
 
-
-
-    _paramsObj = {hierarchyIds: params.hierarchyIds,
+    _paramsObj = {hierarchyId: params.viewAssociation.HierarchyId,
                commodityIds: params.commodityIds,
-               rankType: params.rankType,
                startTime: params.viewOption.TimeRanges[0].StartTime,
                endTime: params.viewOption.TimeRanges[0].EndTime,
                timeRanges: params.viewOption.TimeRanges};
@@ -147,51 +140,51 @@ var RankStore = assign({},PrototypeStore,{
   */
   removeSeriesDataByUid(uid){
   },
-  addRankDataLoadingListener: function(callback) {
-    this.on(RANK_DATA_LOADING_EVENT, callback);
+  addCostDataLoadingListener: function(callback) {
+    this.on(COST_DATA_LOADING_EVENT, callback);
   },
-  emitRankDataLoading: function() {
-    this.emit(RANK_DATA_LOADING_EVENT);
+  emitCostDataLoading: function() {
+    this.emit(COST_DATA_LOADING_EVENT);
   },
-  removeRankDataLoadingListener: function(callback) {
-    this.removeListener(RANK_DATA_LOADING_EVENT, callback);
+  removeCostDataLoadingListener: function(callback) {
+    this.removeListener(COST_DATA_LOADING_EVENT, callback);
   },
-  addRankDataLoadedListener: function(callback) {
-    this.on(RANK_DATA_LOADED_EVENT, callback);
+  addCostDataLoadedListener: function(callback) {
+    this.on(COST_DATA_LOADED_EVENT, callback);
   },
-  emitRankDataLoaded: function() {
-    this.emit(RANK_DATA_LOADED_EVENT);
+  emitCostDataLoaded: function() {
+    this.emit(COST_DATA_LOADED_EVENT);
   },
-  removeRankDataLoadedListener : function(callback) {
-    this.removeListener(RANK_DATA_LOADED_EVENT, callback);
+  removeCostDataLoadedListener : function(callback) {
+    this.removeListener(COST_DATA_LOADED_EVENT, callback);
   },
-  addRankDataLoadErrorListener: function(callback) {
-    this.on(RANK_DATA_LOAD_ERROR_EVENT, callback);
+  addCostDataLoadErrorListener: function(callback) {
+    this.on(COST_DATA_LOAD_ERROR_EVENT, callback);
   },
-  emitRankDataLoadErrorListener:function() {
-    this.emit(RANK_DATA_LOAD_ERROR_EVENT);
+  emitCostDataLoadErrorListener:function() {
+    this.emit(COST_DATA_LOAD_ERROR_EVENT);
   },
-  removeRankDataLoadErrorListener:function(callback) {
-    this.removeListener(RANK_DATA_LOAD_ERROR_EVENT, callback);
+  removeCostDataLoadErrorListener:function(callback) {
+    this.removeListener(COST_DATA_LOAD_ERROR_EVENT, callback);
   }
 });
 
-RankStore.dispatchToken = AppDispatcher.register(function(action) {
+CostStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
-      case Action.GET_RANK_DATA_LOADING:
-        RankStore._onDataLoading(action.submitParams, action.selectedList, action.relativeDate);
-        RankStore.emitRankDataLoading();
+      case Action.GET_COST_DATA_LOADING:
+        CostStore._onDataLoading(action.submitParams, action.selectedList, action.relativeDate);
+        CostStore.emitRankDataLoading();
         break;
-      case Action.GET_RANK_DATA_SUCCESS:
-        RankStore._onDataChanged(action.energyData, action.submitParams);
-        RankStore.emitRankDataLoaded();
+      case Action.GET_COST_DATA_SUCCESS:
+        CostStore._onDataChanged(action.energyData, action.submitParams);
+        CostStore.emitRankDataLoaded();
         break;
-      case Action.GET_RANK_DATA_ERROR:
-        RankStore._onDataChanged(null, action.submitParams);
-        RankStore._initErrorText(action.errorText);
-        RankStore.emitRankDataLoadErrorListener();
+      case Action.GET_COST_DATA_ERROR:
+        CostStore._onDataChanged(null, action.submitParams);
+        CostStore._initErrorText(action.errorText);
+        CostStore.emitRankDataLoadErrorListener();
         break;
     }
 });
 
-module.exports = RankStore;
+module.exports = CostStore;
