@@ -3,7 +3,7 @@ import React from "react";
 import assign from "object-assign";
 import _ from 'lodash';
 import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu} from 'material-ui';
-
+import BaselineCfg from '../setting/BaselineCfg.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import DateSelector from '../../controls/DateSelector.jsx';
@@ -78,7 +78,9 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canShareDataWith',
       getEnergyRawDataFn:'getEnergyRawData',
       exportChartFn:'exportChart',
-      onEnegyTypeChangeFn:'onEnergyTypeChange'
+      onEnegyTypeChangeFn:'onEnergyTypeChange',
+      getAuxiliaryCompareBtnFn:'getEnergyAuxiliaryCompareBtn',
+      handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -112,13 +114,14 @@ let ChartStrategyFactor = {
       getAllDataFn: 'unitGetAllData',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn:'unitEnergyDataLoad',
-      getChartComponentFn:'getEnergyChartComponent',
+      getChartComponentFn:'getUnitEnergyChartComponent',
       bindStoreListenersFn:'unitEnergyBindStoreListeners',
       unbindStoreListenersFn:'unitEnergyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
       exportChartFn:'exportChart',
       onHierNodeChangeFn:'unitEnergyOnHierNodeChange',
-      onEnegyTypeChangeFn:'onEnergyTypeChange'
+      onEnegyTypeChangeFn:'onEnergyTypeChange',
+      getAuxiliaryCompareBtnFn:'getEnergyAuxiliaryCompareBtn'
     },Label:{
       searchBarGenFn:'labelSearchBarGen',
       getEnergyTypeComboFn: 'empty',
@@ -152,6 +155,22 @@ let ChartStrategyFactor = {
       unbindStoreListenersFn:'rankUnbindStoreListeners',
       canShareDataWithFn:'canRankShareDataWith'
     }
+ },
+ handleConfigBtnItemTouchTapFnStrategy:{
+   handleEnergyConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem){
+     let itemValue = menuItem.props.value;
+     switch (itemValue) {
+       case 'history':
+         console.log('history');
+         break;
+       case 'config':
+         analysisPanel.handleBaselineCfg();
+         break;
+       case 'sum':
+         console.log('sum');
+         break;
+     }
+   }
  },
  getEnergyTypeComboFnStrategy:{
    empty(){},
@@ -402,7 +421,6 @@ let ChartStrategyFactor = {
    energySearchBarGen(analysisPanel){
      var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
      var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie','rawdata']);
-     var configBtn = ChartStrategyFactor.getConfigBtn(analysisPanel);
 
      return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'} >
@@ -412,8 +430,7 @@ let ChartStrategyFactor = {
        <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-flat-button'}>
          {searchButton}
-         {configBtn}
-         <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
+         <RaisedButton label='导出' onClick={analysisPanel.exportChart} style={{marginLeft:'10px'}}></RaisedButton>
        </div>
    </div>;
   },
@@ -526,6 +543,7 @@ let ChartStrategyFactor = {
      let energyPart;
      let chartType = analysisPanel.state.selectedChartType;
      let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column','stack','pie','rawdata']);
+     let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
 
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
@@ -571,12 +589,43 @@ let ChartStrategyFactor = {
                          <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
                          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
                          <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+                         <div style={{margin:'5px 30px 5px auto'}}>
+                           {configBtn}
+                           <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+                         </div>
+                         <BaselineCfg  ref="baselineCfg"/>
                        </div>
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }
 
       return energyPart;
+   },
+   getUnitEnergyChartComponent(analysisPanel){
+     let energyPart;
+     let chartType = analysisPanel.state.selectedChartType;
+     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column']);
+
+     let chartCmpObj ={ref:'ChartComponent',
+                       bizType:analysisPanel.props.bizType,
+                       energyType: analysisPanel.state.energyType,
+                       chartType: analysisPanel.state.selectedChartType,
+                       energyData: analysisPanel.state.energyData,
+                       energyRawData: analysisPanel.state.energyRawData,
+                       onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                       onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                     };
+
+      energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                     <div style={{display:'flex'}}>
+                       <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+                       <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+                       <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+                     </div>
+                     <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                   </div>;
+
+       return energyPart;
    },
    getRankChartComponent(analysisPanel){
      let energyPart;
@@ -621,6 +670,27 @@ let ChartStrategyFactor = {
                    </div>;
       return energyPart;
     }
+ },
+ getAuxiliaryCompareBtnFnStrategy:{
+   getEnergyAuxiliaryCompareBtn(analysisPanel){
+     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
+                             {primaryText:'冷暖季', value:'hotColdSeason'}];
+     let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
+                             {primaryText:'湿度', value:'humidity'}];
+
+     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+                                  onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
+       <MenuItem primaryText="历史对比" value='history'/>
+       <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
+       <MenuDivider />
+       <MenuItem primaryText="数据求和" value='sum'/>
+       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
+       <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
+
+     </ButtonMenu>;
+
+     return configButton;
+   }
  },
  canShareDataWithFnStrategy:{
    canShareDataWith(curChartType, nextChartType){
@@ -730,19 +800,7 @@ let ChartStrategyFactor = {
    return widgetOptMenu;
  },
  getSearchBtn(analysisPanel, types){
-   let menuMap = { line: {primaryText:'折线图'},
-                   column:{primaryText:'柱状图'},
-                   stack:{primaryText:'堆积图'},
-                   pie:{primaryText:'饼状图'},
-                   rawdata:{primaryText:'原始数据'}};
-
-   let typeItems = types.map((item)=>{
-     return <MenuItem primaryText={menuMap[item].primaryText} value={item}/>;
-   });
-   var searchButton = <ButtonMenu label='查看' onButtonClick={analysisPanel.onSearchDataButtonClick} desktop={true}
-     value={analysisPanel.state.selectedChartType} onItemTouchTap={analysisPanel._onSearchBtnItemTouchTap}>
-      {typeItems}
-    </ButtonMenu>;
+   var searchButton = <RaisedButton label='查看' onButtonClick={analysisPanel.onSearchDataButtonClick}/>;
     return searchButton;
   },
   getLabelBtn(analysisPanel){
@@ -777,25 +835,6 @@ let ChartStrategyFactor = {
       kpiTypeButton = <span style={kpiSpanStyle}>{kpiTypeText}</span>;
     }
     return kpiTypeButton;
-  },
-  getConfigBtn(analysisPanel){
-    let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
-                            {primaryText:'冷暖季', value:'hotColdSeason'}];
-    let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
-                            {primaryText:'湿度', value:'humidity'}];
-
-    let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
-                                 onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-      <MenuItem primaryText="历史对比" value='history'/>
-      <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
-      <MenuDivider />
-      <MenuItem primaryText="数据求和" value='sum'/>
-      <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-      <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
-
-    </ButtonMenu>;
-
-    return configButton;
   },
   getStrategyByStoreType: function (storeType) {
     return ChartStrategyFactor.getStrategyByConfig(ChartStrategyFactor.strategyConfiguration[storeType]);
