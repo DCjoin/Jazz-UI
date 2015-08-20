@@ -152,10 +152,10 @@ let EnergyAction = {
       }
     });
   },
-  getUnitEnergyTrendChartData(timeRange, step, tagOptions, unitType, relativeDate){
+  getUnitEnergyTrendChartData(timeRange, step, tagOptions, unitType, relativeDate, benchmarkOption){
     var tagIds = getTagIdsFromTagOptions(tagOptions);
     var submitParams = { tagIds:tagIds,
-                         benchmarkOption: null,
+                         benchmarkOption: benchmarkOption || null,
                          viewOption:{ DataUsageType: 1,
                                       IncludeNavigatorData: true,
                                       Step: step,
