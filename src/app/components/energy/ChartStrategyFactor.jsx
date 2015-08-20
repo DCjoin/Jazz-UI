@@ -119,7 +119,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'carbonBindStoreListeners',
       unbindStoreListenersFn:'carbonUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      onEnergyTypeChangeFn: 'EnergyTypeChange',
+      onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getEnergyRawDataFn:'empty',
     },RatioUsage:{
 
@@ -524,7 +524,7 @@ let ChartStrategyFactor = {
   CostSearchBarGen(analysisPanel){
     var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie']);
-    var configBtn = ChartStrategyFactor.getCostConfigBtn(analysisPanel);
+    var configBtn = ChartStrategyFactor.-(analysisPanel);
 
     return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'} >
@@ -540,12 +540,10 @@ let ChartStrategyFactor = {
     </div>;
   },
   carbonSearchBarGen(analysisPanel){
-    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie','rawdata']);
-    var configBtn = ChartStrategyFactor.getConfigBtn(analysisPanel);
+    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie']);
     var onCarbonTypeChange = function(e, selectedIndex, menuItem){
       let value = menuItem.value;
       CarbonStore.setDestination(parseInt(value));
-      //CommodityStore.
     };
 
     var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
@@ -560,7 +558,6 @@ let ChartStrategyFactor = {
       </div>
       <div className={'jazz-flat-button'}>
         {searchButton}
-        {configBtn}
         <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
       </div>
   </div>;

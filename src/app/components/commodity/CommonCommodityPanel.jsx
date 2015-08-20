@@ -82,13 +82,11 @@ var CommonCommodityPanel = React.createClass({
     CommodityStore.removeEnergyConsumptionTypeListener(this._onEnergyConsumptionTypeChange);
   },
   render:function(){
-
     let CurrentHierId=CommodityStore.getCurrentHierarchyId(),
         CurrentDimId=CommodityStore.getCurrentDimId();
 
     let header,content;
     //header
-
     if(this.state.ecType=="Carbon"){
       header=(
         <div className="header">
