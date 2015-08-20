@@ -9,9 +9,11 @@ var Action = Hierarchy.Action;
 
 let HierarchyAction = {
   loadall(data){
+      setTimeout(()=>{
     AppDispatcher.dispatch({
          type: Action.SET_HIE_NODE_LOAGDING
     });
+      },0);
     Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive?', {
         params: {customerId: data},
         success: function(hierarchyList){

@@ -12,7 +12,8 @@ var TagItem=React.createClass({
       label:React.PropTypes.number,
       nodeData:React.PropTypes.object,
       status:React.PropTypes.bool,
-      disable:React.PropTypes.bool
+      disable:React.PropTypes.bool,
+      widgetType:React.PropTypes.string
       },
   _onClick:function(){
     TagAction.setTagStatusByTag(this.props.nodeData,!this.props.status);
@@ -53,6 +54,10 @@ var TagItem=React.createClass({
    if((this.props.status==false) && (this.props.disable==true)){
      boxDisabledStatus=true
    };
+   var alarmInfo=(this.props.widgetType=='Energy' || !this.props.widgetType)?(<div className="font">
+                                                    {alarm}
+                                                    {baseline}
+                                                  </div>):null;
     return(
       <div className="taglist"  onClick={this._onClick} title={this.props.title}>
         <Checkbox
@@ -66,10 +71,7 @@ var TagItem=React.createClass({
             <div className="title">
             {this.props.title}
             </div>
-            <div className="font">
-              {alarm}
-              {baseline}
-          </div>
+            {alarmInfo}
 
           </div>
 

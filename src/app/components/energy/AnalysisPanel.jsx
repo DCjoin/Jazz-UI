@@ -2,7 +2,7 @@
 import React from "react";
 import Immutable from 'immutable';
 import assign from "object-assign";
-import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress} from 'material-ui';
+import {FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu} from 'material-ui';
 import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
@@ -17,7 +17,6 @@ import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
-const defaultMap = {Energy:'Energy',Unit:'UnitEnergyUsage', Rank:'Rank', Label:'Label'};
 
 const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
  {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
@@ -32,7 +31,8 @@ let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
       chartTitle:  React.PropTypes.string,
-      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Label','Rank'])
+      bizType: React.PropTypes.oneOf(['Energy', 'Unit','Ratio','Label','Rank']),
+      onOperationSelect:React.PropTypes.func,
     },
     getDefaultProps(){
       return {
@@ -40,8 +40,13 @@ let AnalysisPanel = React.createClass({
         chartTitle:'最近7天能耗'
       };
     },
+    componentWillReceiveProps(nextProps){
+      if(nextProps.energyType)
+        this.setState({energyType: nextProps.energyType});
+    },
     getInitialState(){
-      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(defaultMap[this.props.bizType]);
+      let strategyName = this.getStrategyName(this.props.bizType, this.props.energyType);
+      let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(strategyName);
       let state = {
         isLoading: false,
         energyData: null,
@@ -52,14 +57,18 @@ let AnalysisPanel = React.createClass({
         dashboardOpenImmediately: false,
         baselineBtnStatus:TagStore.getBaselineBtnDisabled(),
         selectedChartType:'line',
-        energyType:'energy',//'one of energy, cost carbon'
-        chartStrategy: chartStrategy
+        chartStrategy: chartStrategy,
+        energyType: this.props.energyType || 'Energy',//'one of energy, cost carbon'
       };
 
       var obj = chartStrategy.getInitialStateFn(this);
 
       assign(state, obj);
       return state;
+    },
+    _onTitleMenuSelect:function(e,item){
+      let menuIndex=parseInt(item.key);
+      this.props.onOperationSelect(menuIndex);
     },
     render(){
       let me = this, errorDialog = null, energyPart = null;
@@ -80,12 +89,33 @@ let AnalysisPanel = React.createClass({
         energyPart = this.state.chartStrategy.getChartComponentFn(me);
       }
 
+      var IconButtonElement=<IconButton iconClassName="icon-arrow-down"/>;
+      var iconMenuProps={
+                          iconButtonElement:IconButtonElement,
+                          openDirection:"bottom-right",
+                          desktop: true
+                        };
+      let widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
+                            <MenuItem key={1} primaryText={'另存为'} />
+                            <MenuItem key={2} primaryText={'发送'} />
+                            <MenuItem key={3} primaryText={'共享'} />
+                            <MenuItem key={4} primaryText={'导出'} />
+                            <MenuItem key={5} primaryText={'删除'} />
+                         </IconMenu>;
+
       return <div className={'jazz-energy-panel'}>
         <div className='header'>
           {collapseButton}
           <div className={'description'}>来自UXteam</div>
           <div className={'jazz-alarm-chart-toolbar-container'}>
-              <div className={'title'}>{me.props.chartTitle}</div>
+              <div className={'title'}>
+                <div className={'content'}>
+                  {me.props.chartTitle}
+                </div>
+                <IconButton iconClassName="icon-send" style={{'marginLeft':'2px'}} onClick={this._onChart2WidgetClick}
+                  disabled={!this.state.energyData}/>
+                {widgetOptMenu}
+              </div>
               {me.state.chartStrategy.searchBarGenFn(me)}
           </div>
         </div>
@@ -102,6 +132,42 @@ let AnalysisPanel = React.createClass({
     componentWillUnmount: function() {
       let me = this;
       this.state.chartStrategy.unbindStoreListenersFn(me);
+    },
+    getStrategyName(bizType, energyType){
+      let strategyName = null;
+      switch (bizType) {
+        case 'Energy':
+          if(!energyType || energyType === 'Energy'){
+            strategyName = 'Energy';
+          }else if(energyType === 'Cost'){
+            strategyName = 'Cost';
+          }else if(energyType === 'Carbon'){
+            strategyName = 'Carbon';
+          }
+          break;
+        case 'Unit':
+          if(!energyType || energyType === 'Energy'){
+            strategyName = 'UnitEnergyUsage';
+          }else if(energyType === 'Cost'){
+            strategyName = 'UnitCost';
+          }else if(energyType === 'Carbon'){
+            strategyName = 'UnitCarbon';
+          }
+          break;
+        case 'Ratio':
+          strategyName = 'RatioUsage';
+          break;
+        case 'Label':
+          strategyName = 'Label';
+          break;
+        case 'Rank':
+          strategyName = 'Rank';
+          break;
+      }
+      return strategyName;
+    },
+    _onChart2WidgetClick(){
+
     },
     _onErrorDialogAction(step){
       this.setState({errorObj:null});
@@ -502,7 +568,7 @@ let AnalysisPanel = React.createClass({
       this.setEmptyLabelMenu();
     },
     setEmptyLabelMenu(){
-      var selectedLabelItem = this.initSlectedLabelItem;
+      var selectedLabelItem = this.initSlectedLabelItem();
       this.setState({
         selectedLabelItem: selectedLabelItem,
         labelType: 'industryZone'

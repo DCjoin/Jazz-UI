@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import Immutable from 'immutable';
 import {List,includes} from 'immutable';
+import FolderAction from '../../actions/FolderAction.jsx';
 
 //import AlarmStore from '../../stores/AlarmStore.jsx';
 //import BubbleIcon from '../../components/BubbleIcon.jsx';
@@ -184,6 +185,7 @@ var TreeNode = React.createClass({
       collapsed: !this.state.collapsed
     });
     if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
+      FolderAction.ModifyFolderReadStatus(this.props.nodeData);
       this.setState({
         IsSendCopyReaded:true
       })
