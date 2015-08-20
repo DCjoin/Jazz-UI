@@ -77,14 +77,14 @@ let Setting = React.createClass({
   _onTemplateDismiss:function(){
     this.setState({
       templateShow:false
-    })
+    });
   },
   _onTemplateSelect:function(nodeData,index){
     this.setState({
       templateNode:nodeData,
       templateId:index,
       templateShow:true
-    })
+    });
 },
  getTemplate:function(){
    var template;
