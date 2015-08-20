@@ -81,6 +81,7 @@ let ChartStrategyFactor = {
       getEnergyRawDataFn:'getEnergyRawData',
       exportChartFn:'exportChart',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
+      getChartSubToolbarFn:'getEnergySubToolbar',
       getAuxiliaryCompareBtnFn:'getEnergyAuxiliaryCompareBtn',
       handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap'
     },
@@ -177,6 +178,48 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canRankShareDataWith',
       onEnergyTypeChangeFn:'onEnergyTypeChange'
     }
+ },
+ getChartSubToolbarFnStrategy:{
+   getEnergySubToolbar(analysisPanel){
+     var toolElement;
+     let chartType = analysisPanel.state.selectedChartType;
+     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column','stack','pie','rawdata']);
+     let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     if(chartType === 'line' || chartType === 'column' || chartType === 'stack'){
+       toolElement =
+           <div style={{display:'flex'}}>
+             <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+             <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+             <div style={{margin:'5px 30px 5px auto'}}>
+               {configBtn}
+               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             </div>
+             <BaselineCfg  ref="baselineCfg"/>
+           </div>;
+     }else if( chartType === 'rawdata'){
+       toolElement =
+           <div style={{display:'flex'}}>
+             <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+             <div style={{margin:'5px 30px 5px auto'}}>
+               {configBtn}
+               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             </div>
+             <BaselineCfg  ref="baselineCfg"/>
+           </div>;
+     }else if(chartType === 'pie'){
+       toolElement =
+           <div style={{display:'flex'}}>
+             <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+             <div style={{margin:'5px 30px 5px auto'}}>
+               {configBtn}
+               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             </div>
+             <BaselineCfg  ref="baselineCfg"/>
+           </div>;
+     }
+     return toolElement;
+   }
  },
  handleConfigBtnItemTouchTapFnStrategy:{
    handleEnergyConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem){
@@ -340,7 +383,7 @@ let ChartStrategyFactor = {
  },
  onSearchDataButtonClickFnStrategy:{
    onSearchDataButtonClick(analysisPanel){
-     //analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+     analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
 
      let dateSelector = analysisPanel.refs.dateTimeSelector,
          dateRange = dateSelector.getDateTime(),
@@ -553,7 +596,7 @@ let ChartStrategyFactor = {
  searchBarGenFnStrategy:{
    energySearchBarGen(analysisPanel){
      var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
-     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie','rawdata']);
+     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
      return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'} >
@@ -742,17 +785,14 @@ let ChartStrategyFactor = {
    getEnergyChartComponent(analysisPanel){
      let energyPart;
      let chartType = analysisPanel.state.selectedChartType;
-     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column','stack','pie','rawdata']);
-     let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     let subToolbar = analysisPanel.state.chartStrategy.getChartSubToolbarFn(analysisPanel);
 
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
                          energyRawData: analysisPanel.state.energyRawData,
                          chartStrategy: analysisPanel.state.chartStrategy };
        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px', overflow:'hidden'}}>
-                      <div style={{display:'flex'}}>
-                         <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
-                      </div>
+                      {subToolbar}
                       <GridComponent {...properties}></GridComponent>
                     </div>;
      }else if(chartType === 'pie'){
@@ -767,10 +807,7 @@ let ChartStrategyFactor = {
                        };
 
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
-                      <div style={{display:'flex'}}>
-                        <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
-                        <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
-                      </div>
+                      {subToolbar}
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }else{
@@ -783,22 +820,11 @@ let ChartStrategyFactor = {
                          onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
                          onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
                        };
-
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
-                       <div style={{display:'flex'}}>
-                         <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
-                         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-                         <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
-                         <div style={{margin:'5px 30px 5px auto'}}>
-                           {configBtn}
-                           <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
-                         </div>
-                         <BaselineCfg  ref="baselineCfg"/>
-                       </div>
+                       {subToolbar}
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }
-
       return energyPart;
    },
    getCostChartComponent(analysisPanel){
@@ -1119,8 +1145,8 @@ let ChartStrategyFactor = {
                       </IconMenu>;
    return widgetOptMenu;
  },
- getSearchBtn(analysisPanel, types){
-   var searchButton = <RaisedButton label='查看' onButtonClick={analysisPanel.onSearchDataButtonClick}/>;
+ getSearchBtn(analysisPanel){
+   var searchButton = <RaisedButton label='查看' onClick={analysisPanel.onSearchDataButtonClick}/>;
     return searchButton;
   },
   getLabelBtn(analysisPanel){
