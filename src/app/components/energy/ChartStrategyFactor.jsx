@@ -99,8 +99,8 @@ let ChartStrategyFactor = {
       getEnergyDataFn:'carbonDataLoad',
       getPieEnergyDataFn:'pieCarbonDataLoad',
       getChartComponentFn:'getCarbonChartComponent',
-      bindStoreListenersFn:'energyBindStoreListeners',
-      unbindStoreListenersFn:'energyUnbindStoreListeners',
+      bindStoreListenersFn:'carbonBindStoreListeners',
+      unbindStoreListenersFn:'carbonUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
       onEnergyTypeChangeFn: 'EnergyTypeChange',
       getEnergyRawDataFn:'empty',
@@ -446,6 +446,14 @@ let ChartStrategyFactor = {
      }else{ //if(nextChartType === 'pie'){
        analysisPanel.setState({selectedChartType:nextChartType, energyData:null}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
      }
+   },
+   onCarbonSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel){
+
+     if(analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData){
+       analysisPanel.setState({selectedChartType:nextChartType});
+     }else{ //if(nextChartType === 'pie'){
+       analysisPanel.setState({selectedChartType:nextChartType, energyData:null}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
+     }
    }
  },
  setFitStepAndGetDataFnStrategy:{
@@ -470,7 +478,7 @@ let ChartStrategyFactor = {
      let viewOp = {
         DataUsageType: 4,
         IncludeNavigatorData: true,
-        TimeRanges: [timeRanges],
+        TimeRanges: timeRanges,
         Step: step,
      };
      analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, relativeDate, analysisPanel);
@@ -708,6 +716,45 @@ let ChartStrategyFactor = {
 
       return energyPart;
    },
+   getCarbonChartComponent(analysisPanel){
+     let energyPart;
+     let chartType = analysisPanel.state.selectedChartType;
+     if(chartType === 'pie'){
+       let chartCmpObj ={ref:'ChartComponent',
+                         bizType:analysisPanel.props.bizType,
+                         energyType: analysisPanel.state.energyType,
+                         chartType: analysisPanel.state.selectedChartType,
+                         energyData: analysisPanel.state.energyData,
+                         energyRawData: analysisPanel.state.energyRawData,
+                         onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                         onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                       };
+
+        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                       <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                     </div>;
+     }else{
+       let chartCmpObj ={ref:'ChartComponent',
+                         bizType:analysisPanel.props.bizType,
+                         energyType: analysisPanel.state.energyType,
+                         chartType: analysisPanel.state.selectedChartType,
+                         energyData: analysisPanel.state.energyData,
+                         energyRawData: analysisPanel.state.energyRawData,
+                         onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                         onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                       };
+
+        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                       <div style={{display:'flex'}}>
+                         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+                         <StepSelector stepValue={analysisPanel.state.step}      onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+                       </div>
+                       <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                     </div>;
+     }
+
+      return energyPart;
+   },
    getRankChartComponent(analysisPanel){
      let energyPart;
      var orderCombo = <DropDownMenu menuItems={orderItem} ref='orderCombo' onChange={analysisPanel._onOrderChange}></DropDownMenu>;
@@ -769,6 +816,12 @@ let ChartStrategyFactor = {
      EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
      EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
      EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+     TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+   },
+   carbonBindStoreListeners(analysisPanel){
+     CarbonStore.addCarbonDataLoadingListener(analysisPanel._onLoadingStatusChange);
+     CarbonStore.addCarbonDataLoadedListener(analysisPanel._onEnergyDataChange);
+     CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
    unitEnergyBindStoreListeners(analysisPanel){
