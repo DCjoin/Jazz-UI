@@ -111,6 +111,9 @@ let EnergyAction = {
     var hierarchyNode = selectedList.hierarchyList;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
+    if(commodityIds[0] === -1){
+      commodityIds = [];
+    }
     var submitParams = { commodityIds:commodityIds,
                          viewAssociation:{
                            HierarchyId: hierarchyId
