@@ -9,11 +9,13 @@ import Immutable from 'immutable';
 var CommonCommodityList = React.createClass({
 
   mixins:[Navigation,State],
+  propTypes: {
+    checkedCommodityList: React.PropTypes.object,
+  },
 
   _onCommodityListChange:function(){
     this.setState({
       commdityList:CommodityStore.getCommodityList(),
-      commodityStatus:CommodityStore.getCurrentHierIdCommodityStatus(),
       isLoading:false
     })
   },
@@ -33,7 +35,7 @@ var CommonCommodityList = React.createClass({
   },
   isCommoditySingleItemSelected:function(commodityId){
       let id=commodityId+'';
-      let index=this.state.commodityStatus.indexOf(id);
+      let index=this.state.commodityStatus.findIndex((item)=>item.get('Id')==id);
       if(index>=0){
         return true;
       }
@@ -47,22 +49,28 @@ var CommonCommodityList = React.createClass({
   },
   _onCommodityStatusChange:function(){
     this.setState({
-      commodityStatus:CommodityStore.getCurrentHierIdCommodityStatus()
-    })
+      commodityStatus:CommodityStore.getCommodityStatus()
+    });
   },
   getInitialState:function(){
     return{
       isLoading:false,
       commdityList:[],
-      commodityStatus:CommodityStore.getCurrentHierIdCommodityStatus()
+      commodityStatus:(!!this.props.checkedCommodityList)?this.props.checkedCommodityList:Immutable.List([])
     };
   },
   componentWillReceiveProps:function(){
     this._loadCommodityList();
+    this.setState({
+      commodityStatus:Immutable.List([])
+    })
   },
   componentDidMount: function() {
     CommodityStore.addCommoddityListListener(this._onCommodityListChange);
     CommodityStore.addCommoddityStautsListener(this._onCommodityStatusChange);
+    if(!!this.props.checkedCommodityList){
+      CommodityAction.setDefaultCommodityStatus(this.props.checkedCommodityList)
+    }
     this._loadCommodityList();
   },
 

@@ -93,7 +93,13 @@ let CommodityAction = {
       commodityId:commodityId,
       commodityName:commodityName,
     });
-  }
+  },
+  setDefaultCommodityStatus:function(list){
+    AppDispatcher.dispatch({
+      type: Action.SET_DEFAULT_COMMODITY_STATUS,
+      list:list
+    });
+  },
 };
 
 module.exports = CommodityAction;

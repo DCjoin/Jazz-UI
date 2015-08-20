@@ -53,15 +53,15 @@ let AlarmHierarchyItem = React.createClass({
 		var icon = (
 				<div className="node-content-icon">
 					<div className={classNames({
-						"icon-customer"   : hierarchy == nodeType.Customer,
-						"icon-orgnization": hierarchy == nodeType.Organization,
-						"icon-site"       : hierarchy == nodeType.Site,
-						"icon-building"   : hierarchy == nodeType.Building,
-						"icon-room"       : hierarchy == nodeType.Room,
-						"icon-panel"      : hierarchy == nodeType.Panel && isAsset,
-						"icon-panel-box"  : hierarchy == nodeType.Panel && !isAsset,
-						"icon-device"     : hierarchy == nodeType.Device && isAsset,
-						"icon-device-box" : hierarchy == nodeType.Device && !isAsset,
+						"icon-customer"   : hierarchy.HierarchyType == nodeType.Customer,
+						"icon-orgnization": hierarchy.HierarchyType == nodeType.Organization,
+						"icon-site"       : hierarchy.HierarchyType == nodeType.Site,
+						"icon-building"   : hierarchy.HierarchyType == nodeType.Building,
+						"icon-room"       : hierarchy.HierarchyType == nodeType.Room,
+						"icon-panel"      : hierarchy.HierarchyType == nodeType.Panel && isAsset,
+						"icon-panel-box"  : hierarchy.HierarchyType == nodeType.Panel && !isAsset,
+						"icon-device"     : hierarchy.HierarchyType == nodeType.Device && isAsset,
+						"icon-device-box" : hierarchy.HierarchyType == nodeType.Device && !isAsset,
 					})}/>
 				</div>
 		);
@@ -71,7 +71,7 @@ let AlarmHierarchyItem = React.createClass({
 						'jazz-alarm-grid-tr-title':true,
 						})}>
 						<span>{icon}</span>
-    				<span>{hierarchy.HierName}</span>
+    				<span style={{'margin-left':'10px'}}>{hierarchy.HierName}</span>
 						<span>
             	<span>{tagCount}</span>
 						</span>

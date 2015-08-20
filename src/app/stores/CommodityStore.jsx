@@ -21,7 +21,7 @@ let _energyConsumptionType=null,// Carbon or Cost
     _currentHierName=null,
     _currentDimId=null,
     _commodityList=[],
-    _commodityStatus=[],
+    _commodityStatus=Immutable.List([]),
     _RankingTreeList=[],
     _RankingCommodity=null;
 
@@ -41,6 +41,7 @@ var CommodityStore = assign({},PrototypeStore,{
     return _rankingECType;
   },
   setCurrentHierarchyInfo:function(id,name){
+    this.resetData();
     _currentHierId=id;
     _currentHierName=name;
     _currentDimId=null;
@@ -84,69 +85,46 @@ var CommodityStore = assign({},PrototypeStore,{
       _currentHierName=null;
       _currentDimId=null;
       _commodityList=[];
-      _hierTree=null;
+      _hierNode=null;
+      _commodityStatus=Immutable.List([]);
+  },
+  setDefaultCommodityStatus:function(list){
+    _commodityStatus-list
   },
   setCommodityStatus:function(id,name,selected){
     var hasCommodity=false;
-    if(_commodityStatus){
-      _commodityStatus.forEach(function(element){
-        if((element.hierId==_currentHierId) && (element.dimId==_currentDimId)){
-          hasCommodity=true;
-          if(selected){
-            element.statusList=element.statusList.push(id)
-          }
-          else {
-            let index=element.statusList.indexOf(id);
-            element.statusList=element.statusList.delete(index);
-          }
-        }
-      });
-      if(!hasCommodity){
-        _commodityStatus.push({
-          hierId:_currentHierId,
-          dimId:_currentDimId,
-          statusList:Immutable.List.of(id),
-        });
+      if(selected){
+      _commodityStatus= _commodityStatus.push(Immutable.fromJS(
+        {
+            Id:id,
+            Comment:name
+          })
+      );
+      }
+      else {
+        _commodityStatus=_commodityStatus.delete(_commodityStatus.findIndex(item=>item.get('Id')==id))
       }
 
-    }
-    else {
-      _commodityStatus.push({
-        hierId:_currentHierId,
-        dimId:_currentDimId,
-        statusList:Immutable.List.of(id),
-      });
-    }
+  },
+  getCommonCommodityList:function(){
+    return _commodityStatus.toJSON();
+  },
+  getCommodityStatus:function(){
+    return _commodityStatus;
   },
   removeCommodityStatus:function(node){
-    if(node.commodityId){
-      _commodityStatus.forEach(function(element){
-        if((element.hierId==_currentHierId) && (element.dimId==_currentDimId)){
-            let index=element.statusList.indexOf(node.commodityId);
-            element.statusLists=element.statusList.delete(index);
-          }
-        });
-      }
+
   },
   clearCommodityStatus:function(){
     _commodityStatus=[];
-  },
-  getCurrentHierIdCommodityStatus:function(){
-   var statusList=Immutable.List([]);
-    _commodityStatus.forEach(function(element){
-  if((element.hierId==_currentHierId) && (element.dimId==_currentDimId)){
-    statusList=element.statusList;
-    }
-  });
-  return statusList;
   },
   //for Ranking
   setRankingTreeList:function(treeList){
     _RankingTreeList=[];
     treeList.forEach(function(treeNode){
       _RankingTreeList.push({
-        Id:treeNode.get('Id'),
-        Name:treeNode.get('Name')
+        hierId:treeNode.get('Id'),
+        hierName:treeNode.get('Name')
       });
     });
   },
@@ -155,8 +133,8 @@ var CommodityStore = assign({},PrototypeStore,{
   },
   setRankingCommodity:function(commodityId,commodityName){
     _RankingCommodity={
-      commodityId:commodityId,
-      commodityName:commodityName
+      Id:commodityId,
+      Comment:commodityName
     };
   },
   getRankingCommodity:function(){
@@ -252,6 +230,9 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
       case CommodityAction.SET_COMMODITY_STATUS:
         CommodityStore.setCommodityStatus(action.commodityId,action.commodityName,action.selected);
         CommodityStore.emitCommoddityStauts();
+        break;
+      case CommodityAction.SET_DEFAULT_COMMODITY_STATUS:
+        CommodityStore.setDefaultCommodityStatus(action.list);
         break;
       case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
           CommodityStore.removeCommodityStatus(action.tagNode);
