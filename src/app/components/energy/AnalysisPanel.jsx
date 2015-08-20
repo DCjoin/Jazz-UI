@@ -36,7 +36,7 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Rank',
+        bizType:'Energy',
         chartTitle:'最近7天能耗'
       };
     },

@@ -198,7 +198,8 @@ render: function () {
         if(!energyType || energyType === 'Energy'){
           rightPanel = <DataSelectPanel  defaultStatus={false} widgetType={bizType}></DataSelectPanel>;
         }else{
-          rightPanel = <CommodityContainer></CommodityContainer>;
+          debugger;
+          rightPanel = <CommodityContainer />;
         }
         break;
       case 'Unit':
