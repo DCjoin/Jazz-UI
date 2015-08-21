@@ -189,7 +189,9 @@ let ChartStrategyFactor = {
          timeRanges = paramsObj.timeRanges,
          step = paramsObj.step,
          unitType = EnergyStore.getSubmitParams().viewOption.DataOption.UnitType;
-
+     if(benchmarkOption.IndustryId === -1){
+       benchmarkOption = null;
+     }
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
    }
  },
@@ -1058,7 +1060,7 @@ let ChartStrategyFactor = {
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-       <ExtendableMenuItem primaryText="行业基准值" value='benchmark' subItems={benchmarks}/>
+       <ExtendableMenuItem primaryText="行业基准值" value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
        return configButton;
    },
