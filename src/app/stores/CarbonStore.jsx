@@ -104,7 +104,7 @@ let CarbonStore = assign({},PrototypeStore,{
     window.testObj._carbonRawData = _carbonRawData;
     //add this for test team end
 
-    _carbonData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj));
+    _carbonData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
   removeSeriesDataByUid(uid){
 
