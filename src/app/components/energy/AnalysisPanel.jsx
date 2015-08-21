@@ -10,6 +10,7 @@ import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
+import CarbonStore from '../../stores/CarbonStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
@@ -211,6 +212,19 @@ let AnalysisPanel = React.createClass({
 
       this.setState(obj);
     },
+    _onCarbonLoadingStatusChange(){
+      let isLoading = CarbonStore.getLoadingStatus(),
+          paramsObj = CarbonStore.getParamsObj(),
+          commOption = CarbonStore.getCommOpions(),
+          obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      obj.dashboardOpenImmediately = false;
+      obj.commOption = commOption;
+      obj.energyData = null;
+
+      this.setState(obj);
+    },
     _onRankLoadingStatusChange(){
       let isLoading = RankStore.getLoadingStatus(),
           paramsObj = RankStore.getParamsObj(),
@@ -246,6 +260,22 @@ let AnalysisPanel = React.createClass({
           state = { isLoading: isLoading,
                     energyData: energyData,
                     energyRawData: energyRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
+      if(isError === true){
+        state.step = null;
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+    },
+    _onCarbonDataChange(isError, errorObj){
+      let isLoading = CarbonStore.getLoadingStatus(),
+          carbonData = CarbonStore.getCarbonData(),
+          carbonRawData = CarbonStore.getCarbonRawData(),
+          paramsObj = assign({},EnergyStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    carbonData: carbonData,
+                    carbonRawData: carbonRawData,
                     paramsObj: paramsObj,
                     dashboardOpenImmediately: false};
       if(isError === true){
@@ -318,6 +348,10 @@ let AnalysisPanel = React.createClass({
     _onGetEnergyDataError(){
       let errorObj = this.errorProcess();
       this._onEnergyDataChange(true, errorObj);
+    },
+    _onGetCarbonDataError(){
+      let errorObj = this.errorProcess();
+      this._onCarbonDataChange(true, errorObj);
     },
     _onGetRankDataError(){
       let errorObj = this.errorProcess();
