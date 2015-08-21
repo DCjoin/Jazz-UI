@@ -91,6 +91,7 @@ let ChartStrategyFactor = {
       getSelectedNodesFn: 'getCostSelectedTagList',
       onSearchDataButtonClickFn:'onCostSearchDataButtonClick',
       onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
+      initEnergyStoreByBizChartTypeFn:'initCostStoreByBizChartType',
       setFitStepAndGetDataFn:'setFitStepAndGetData',
       getInitialStateFn: 'getCostInitialState',
       getAllDataFn: 'empty',
@@ -380,6 +381,19 @@ let ChartStrategyFactor = {
         break;
       case 'rawdata':
         EnergyStore.initReaderStrategy('EnergyRawGridReader');
+        break;
+     }
+   },
+   initCostStoreByBizChartType(analysisPanel){
+     let chartType = analysisPanel.state.selectedChartType;
+     switch (chartType) {
+       case 'line':
+       case 'column':
+       case 'stack':
+         EnergyStore.initReaderStrategy('CostTrendReader');
+         break;
+      case 'pie':
+        EnergyStore.initReaderStrategy('CostPieReader');
         break;
      }
    },
