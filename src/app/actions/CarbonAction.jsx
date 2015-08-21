@@ -15,16 +15,9 @@ let CarbonAction = {
       hierarchyId: hierId,
       destination: destination,
       viewOption: viewOption
-      // viewOption:{
-      //   DataUsageType: 4,
-      //   IncludeNavigatorData: false,
-      //   TimeRanges: timeRange
-      // }
     };
 
     AppDispatcher.dispatch({
-      // date: date,
-      // step: step,
       type: ActionTypes.GET_CARBON_DATA_LOADING,
       submitParams: submitParams,
       commOptions: commOptions,

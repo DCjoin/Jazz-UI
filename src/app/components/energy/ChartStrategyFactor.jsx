@@ -560,7 +560,14 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierCommIds.hierarchyId, hierCommIds.communityIds, dest, relativeDateValue, analysisPanel);
      }else if(chartType === 'pie'){
         let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+        let viewOption = {
+           DataUsageType: 4,
+           IncludeNavigatorData: false,
+           TimeRanges: timeRanges,
+           Step: 2
+        };
+        //analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+        analysisPanel.state.chartStrategy.getPieEnergyDataFn(hierId, commIds, destination, viewOption, relativeDate);
      }
    },
    onUnitEnergySearchDataButtonClick(analysisPanel){
@@ -855,6 +862,9 @@ let ChartStrategyFactor = {
    },
    pieCostDataLoad(timeRanges, step, tagOptions, relativeDate){
      EnergyAction.getPieCostData(timeRanges, step, tagOptions, relativeDate);
+   },
+   pieCarbonDataLoad(hierId, commIds, destination, viewOption, relativeDate){
+     CarbonAction.getPieCarbonData(hierId, commIds, destination, viewOption, relativeDate){
    }
  },
  getEnergyRawDataFnStrategy:{
