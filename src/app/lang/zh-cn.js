@@ -159,6 +159,11 @@ I18N.EM.Ratio.RawValue = '原始值';
 I18N.EM.Ratio.TargetValue = '目标值';
 I18N.EM.Ratio.BaseValue = '基准值';
 
+I18N.EM.Total = '总览';
+I18N.EM.Plain = '平时';
+I18N.EM.Valley = '谷时';
+I18N.EM.Peak = '峰时';
+
 I18N.Message = {};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';

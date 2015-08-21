@@ -105,7 +105,53 @@ let EnergyAction = {
       }
     });
   },
-  getCostTrendChartData(date, step, selectedList, relativeDate){
+  getPieCostData(date, step, selectedList, relativeDate){
+    var timeRange = date;
+    var commodityList = selectedList.commodityList;
+    var hierarchyNode = selectedList.hierarchyList;
+    var hierarchyId = hierarchyNode.hierId;
+    var commodityIds = getCommodityIdsFromList(commodityList);
+    if(commodityIds[0] === -1){
+      commodityIds = [];
+    }
+    var submitParams = { commodityIds:commodityIds,
+                         viewAssociation:{
+                           HierarchyId: hierarchyId
+                         },
+                         viewOption:{ DataUsageType: 4,
+                                      IncludeNavigatorData: false,
+                                      //Step: step,
+                                      TimeRanges: timeRange
+                                   }
+                       };
+
+    AppDispatcher.dispatch({
+      type: Action.GET_COST_DATA_LOADING,
+      submitParams: submitParams,
+      selectedList: selectedList,
+      relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/AggregateCostData', {
+      params:submitParams,
+      commonErrorHandling: false,
+      success: function(energyData){
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
+        });
+      }
+    });
+  },
+  getCostPieChartData(date, step, selectedList, relativeDate){
     var timeRange = date;
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyList;

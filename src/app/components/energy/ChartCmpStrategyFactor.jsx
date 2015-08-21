@@ -73,7 +73,12 @@ let ChartCmpStrategyFactor = {
       getInitialStateFn:'empty'
     },
     CostTrendComponent:{
-
+      convertDataFn:'convertData',
+      convertSingleItemFn:'convertSingleItem',
+      mergeConfigFn:'energyChartCmpMergeConfig',
+      initYaxisFn:'initYaxis',
+      initNavigatorDataFn:'initNavigatorData',
+      getInitialStateFn:'empty'
     },
     CarbonTrendComponent:{
     },
