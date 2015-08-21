@@ -12,7 +12,8 @@ const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
       COMMODITY_STATUS_CHANGED_EVENT = 'commoditystatuschanged',
       RANKING_EC_TYPE_CHANGED_EVENT= 'rankingectypechanged',
       GET_RANKING_COMMODITY_LIST_CHANGED_EVENT = 'getrankingcommoditylistchanged',
-      SET_RANKING_COMMODITY_CHANGED_EVENT='setrankingcommoditychanged';
+      SET_RANKING_COMMODITY_CHANGED_EVENT='setrankingcommoditychanged',
+      BUTTON_STATUS_CHANGED_EVENT='buttonstatuschanged';
 
 let _energyConsumptionType=null,// Carbon or Cost
     _rankingECType=null,//Energy Carbon or Cost
@@ -23,7 +24,8 @@ let _energyConsumptionType=null,// Carbon or Cost
     _commodityList=[],
     _commodityStatus=Immutable.List([]),
     _RankingTreeList=[],
-    _RankingCommodity=null;
+    _RankingCommodity=null,
+    _buttonStatus=true;//for cost
 
 var CommodityStore = assign({},PrototypeStore,{
 
@@ -87,9 +89,32 @@ var CommodityStore = assign({},PrototypeStore,{
       _commodityList=[];
       _hierNode=null;
       _commodityStatus=Immutable.List([]);
+      _buttonStatus=true;
+  },
+  setButtonStatus:function(){
+    if(_commodityStatus.size==1){
+      _commodityStatus.forEach(function(item){
+        if(item.get('Id')==1){
+            _buttonStatus=false;
+        }
+        else {
+            _buttonStatus=true;
+        }
+      });    
+
+    }
+    else {
+        _buttonStatus=true;
+    }
+
+   this.emitButtonStatus();
+  },
+  getButtonStatus:function(){
+    return _buttonStatus;
   },
   setDefaultCommodityStatus:function(list){
-    _commodityStatus-list
+    _commodityStatus=list;
+    this.setButtonStatus();
   },
   setCommodityStatus:function(id,name,selected){
     var hasCommodity=false;
@@ -102,9 +127,9 @@ var CommodityStore = assign({},PrototypeStore,{
       );
       }
       else {
-        _commodityStatus=_commodityStatus.delete(_commodityStatus.findIndex(item=>item.get('Id')==id))
+        _commodityStatus=_commodityStatus.delete(_commodityStatus.findIndex(item=>item.get('Id')==id));
       }
-
+      this.setButtonStatus();
   },
   getCommonCommodityList:function(){
     return _commodityStatus.toJSON();
@@ -193,7 +218,17 @@ var CommodityStore = assign({},PrototypeStore,{
   },
   removeRankingCommodityListener: function(callback) {
     this.removeListener(SET_RANKING_COMMODITY_CHANGED_EVENT, callback);
-  },
+ },
+ addButtonStatusListener: function(callback) {
+   this.on(BUTTON_STATUS_CHANGED_EVENT, callback);
+ },
+ emitButtonStatus: function() {
+   this.emit(BUTTON_STATUS_CHANGED_EVENT);
+ },
+ removeButtonStatusListener: function(callback) {
+   this.removeListener(BUTTON_STATUS_CHANGED_EVENT, callback);
+ },
+
 });
 
 let CommodityAction=Commodity.Action,

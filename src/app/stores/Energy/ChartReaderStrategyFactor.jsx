@@ -27,15 +27,29 @@ let ChartReaderStrategyFactor = {
       getSeriesInternalFn:'getSeriesInternal',
       tagSeriesConstructorFn:'tagSeriesConstructor'
     },
+    CostTrendReader:{
+      convertSingleTimeDataFn:'convertSingleTimeData',
+      translateDateFn:'translateDate',
+      getSeriesInternalFn:'getSeriesInternal',
+      tagSeriesConstructorFn:'costTagSeriesConstructor'
+    },
     CarbonTrendReader:{
       convertSingleTimeDataFn:'convertSingleTimeData',
       translateDateFn:'translateDate',
       getSeriesInternalFn:'getSeriesInternal',
-      tagSeriesConstructorFn:'tagSeriesConstructor'
+      tagSeriesConstructorFn:'carbonSeriesConstructor'
     },
     EnergyPieReader:{
       baseReader:'pieReaderBase',
       setItemByTargetFn:'setItemByTarget'
+    },
+    CostPieReader:{
+      baseReader:'pieReaderBase',
+      setItemByTargetFn:'setCostItemByTarget'
+    },
+    CarbonPieReader:{
+      baseReader:'pieReaderBase',
+      setItemByTargetFn:'setCarbonItemByTarget'
     },
     EnergyRawGridReader:{
       convertFn:'rawGridConvert',
@@ -158,6 +172,59 @@ let ChartReaderStrategyFactor = {
       item.name = target.Name;
       item.uid = target.TargetId;
       item.option = {};
+    },
+    setCarbonItemByTarget(item, target){
+        if (target.Type == 13 || target.Type == 14) {
+            if (target.Type == 13) {
+                item.name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
+                item.disableDelete = true;
+            }
+            else if (target.Type == 14) {
+                item.name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
+                item.disableDelete = true;
+            }
+        } else {
+            //item.name = REM.Commodity[target.CommodityId].Comment;
+            item.name = target.CommodityId < 1 ? I18N.EM.Total/*总览*/ : CommonFuns.getCommodityById(target.CommodityId).Comment;
+        }
+
+        item.option = { CommodityId: target.CommodityId };
+        item.uid = target.CommodityId;
+    },
+    setCostItemByTarget(item, target){
+      var name = '';
+      if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
+        if (target.Type === 6) {
+          name = I18N.EM.Plain/*'平时'*/;
+        }
+        else if (target.Type === 7) {
+          name = I18N.EM.Peak/*'峰时'*/;
+        }
+        else {
+          name = I18N.EM.Valley/*'谷时'*/;
+        }
+        item.name = name;
+        item.option = { CommodityId: target.CommodityId };
+        item.uid = target.CommodityId;
+        item.disableDelete = true;
+      }
+      else if (target.Type === 13 || target.Type === 14) {
+        if (target.Type === 13) {
+          item.name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
+          item.disableDelete = true;
+        }
+        else if (target.Type === 14) {
+          item.name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
+          item.disableDelete = true;
+        }
+        item.option = { CommodityId: target.CommodityId };
+        item.uid = target.CommodityId;
+      }
+      else {
+        item.name = target.CommodityId < 1 ? I18N.EM.Total/*总览*/ : CommonFuns.getCommodityById(target.CommodityId).Comment;
+        item.option = { CommodityId: target.CommodityId };
+        item.uid = target.CommodityId;
+      }
     }
   },
   convertSingleTimeDataFnStrategy:{
@@ -317,6 +384,92 @@ let ChartReaderStrategyFactor = {
               break;
       }
       return obj;
+    },
+    carbonSeriesConstructor(target){
+      var obj = {
+          dType: target.Type,
+          name: target.Name,
+          uid: target.TargetId,
+          option: { commodityId: target.CommodityId }
+      };
+      var name = target.Name || '';
+
+      switch (target.Type) {
+          case 11:
+              obj.name = name + I18N.EM.Ratio.CaculateValue;
+              break;
+          case 12:
+              obj.name = name + I18N.EM.Ratio.RawValue;
+              obj.disableDelete = true;
+              break;
+          case 13:
+              obj.name = name /*+ I18N.EM.Ratio.TargetValue*/;
+              obj.disableDelete = true;
+              break;
+          case 14:
+              obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
+              obj.disableDelete = true;
+              break;
+          default:
+              break;
+      }
+      return obj;
+    },
+    costTagSeriesConstructor(target){
+      var name;
+      if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
+          if (target.Type === 6) {
+              name = I18N.EM.Plain/*'平时'*/;
+          }
+          else if (target.Type === 7) {
+              name = I18N.EM.Peak/*'峰时'*/;
+          }
+          else {
+              name = I18N.EM.Valley/*'谷时'*/;
+          }
+          return {
+              uom: CommonFuns.getUomById(1).Code,
+              name: name,
+              disableHide: true,
+              disableDelete: true,
+              uid: target.CommodityId
+          };
+      }
+      else if (target.Type === 13 || target.Type === 14 ) {
+          if (target.Type === 13) {
+              name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
+          }
+          else if (target.Type === 14) {
+              name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
+          }
+          return {
+              uom: CommonFuns.getUomById(1).Code,
+              name: name,
+              disableHide: true,
+              disableDelete: true,
+              uid: target.CommodityId
+          };
+      }
+      else {
+          var disableDelete = false;
+          if (target.CommodityId < 1) {
+              name = I18N.EM.Total/*'总览'*/;
+              disableDelete = true;
+          }
+          else {
+              name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+          }
+
+          var uom = target.UomId < 1 ? '' : CommonFuns.getUomById(target.UomId).Code;
+          return {
+              dType: target.Type,
+              uom: uom,
+              name: name,
+              disableDelete: disableDelete,
+              uid: target.CommodityId,
+              option: { CommodityId: target.CommodityId }
+          };
+      }
     }
   },
   getStrategyByBizChartType (bizChartType) {
