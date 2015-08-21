@@ -3,6 +3,9 @@ import Momment from 'moment';
 import Immutable from 'immutable';
 import _ from 'lodash';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
+
+import HierarchyStore from '../stores/HierarchyStore.jsx';
+import LabelMenuStore from '../stores/LabelMenuStore.jsx';
 const FIXEDTIMES = {
 								millisecond: 1,
 								second: 1000,
@@ -988,6 +991,25 @@ let CommonFuns = {
 			nodeNameAssociation.push({Id:tag.tagId, Name:tag.tagName, HierId: tag.hierId, NodeName:hieName, AssociationOption:1, DimensionName:null});
 		}
 		return nodeNameAssociation;
+	},
+	filterBenchmarksByTagOptions(tagOptions){
+		let hierId = null, commodityId = null, tagOption;
+		for(let i = 0,len = tagOptions.length; i<len; i++){
+			tagOption = tagOptions[i];
+			if(hierId === null){
+				hierId = tagOption.hierId;
+				commodityId = tagOption.commodityId;
+			}else if(hierId === tagOption.hierId &&  commodityId === tagOption.commodityId){
+				continue;
+			}else{
+				return null;
+			}
+		}
+		let selectedHier = HierarchyStore.findHierItem(HierarchyStore.getData(), hierId);
+		var industryData = LabelMenuStore.getIndustryData();
+		var zoneData = LabelMenuStore.getZoneData();
+		var benchmarkData = LabelMenuStore.getBenchmarkData();
+		return this.filterBenchmarks(selectedHier, industryData, zoneData, benchmarkData);
 	},
 	filterBenchmarks(hierNode, allIndustries, allZones, allBenchmarks){
 		let retArr = [];

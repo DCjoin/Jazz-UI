@@ -10,7 +10,7 @@ import CommodityContainer from '../commodity/CommonCommodityPanel.jsx';
 import RankingContainer from '../commodity/ranking/RankingCommodityPanel.jsx';
 import RightPanel from '../../controls/RightPanel.jsx';
 
-import DataSelectPanel from '../DataSelectPanel.jsx';
+import DataSelectMainPanel from '../DataSelectMainPanel.jsx';
 //import ChartPanel from '../alarm/ChartPanel.jsx';
 import AnalysisPanel from '../energy/AnalysisPanel.jsx';
 import ChartAction from '../../actions/ChartAction.jsx';
@@ -204,17 +204,20 @@ render: function () {
     switch (bizType) {
       case 'Energy':
         if(!energyType || energyType === 'Energy'){
-          rightPanel = <DataSelectPanel  defaultStatus={false} widgetType={bizType}></DataSelectPanel>;
+          rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+                                    defaultStatus={this.state.showRightPanel}
+                                    container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         }else{
-          let commoditypanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
-                                         defaultStatus={this.state.showRightPanel}
-                                         container={<CommodityContainer/>}/>);
-          rightPanel = commoditypanel;
+          rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+                                    defaultStatus={this.state.showRightPanel}
+                                    container={<CommodityContainer ecType={energyType}></CommodityContainer>}/>;
         }
         break;
       case 'Unit':
         if(!energyType || energyType === 'Energy'){
-          rightPanel = <DataSelectPanel  defaultStatus={false}  widgetType={bizType}></DataSelectPanel>;
+          rightPanel =  <RightPanel onButtonClick={this._onSwitchButtonClick}
+                                    defaultStatus={this.state.showRightPanel}
+                                    container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         }else{
           let commoditypanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
                                          defaultStatus={this.state.showRightPanel}
@@ -226,7 +229,9 @@ render: function () {
         //return Ratio rightPanel
         break;
       case 'Label':
-        rightPanel = <DataSelectPanel defaultStatus={false} widgetType={bizType}></DataSelectPanel>;
+        rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+                                  defaultStatus={this.state.showRightPanel}
+                                  container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         break;
       case 'Rank':
         //return Rank rightPanel

@@ -9,6 +9,10 @@ import DimButton from '../Dim/DimButton.jsx';
 
 var CommonCommodityPanel = React.createClass({
   mixins:[Navigation,State],
+  propTypes: {
+    ecType:React.PropTypes.string,
+    checkedCommodityList: React.PropTypes.object,
+  },
   _onHierachyTreeClick:function(node){
       if(node!=this.state.dimParentNode){
         CommodityAction.setCurrentHierarchyInfo(node.Id,node.Name);
@@ -16,7 +20,8 @@ var CommonCommodityPanel = React.createClass({
           dimActive:true,
           dimParentNode:node,
           HierarchyShow:false,
-          DimShow:true
+          DimShow:true,
+          checkedCommodityList:null
         });
       }
 
@@ -41,7 +46,8 @@ var CommonCommodityPanel = React.createClass({
     }
     this.setState({
       HierarchyShow:true,
-      DimShow:false
+      DimShow:false,
+      checkedCommodityList:null
     });
   },
   _onDimButtonClick:function(){
@@ -55,31 +61,22 @@ var CommonCommodityPanel = React.createClass({
       DimShow:false
     })
   },
-  _onEnergyConsumptionTypeChange:function(){
-    this.setState({
-      ecType:CommodityStore.getEnergyConsumptionType()
-    });
-  },
   getInitialState:function(){
     return{
-      ecType:CommodityStore.getEnergyConsumptionType(),
       HierarchyShow:false,
       dimActive:false,
       dimParentNode:null,
       DimShow:false,
+      checkedCommodityList:this.props.checkedCommodityList,
     };
   },
-  componentWillReceiveProps :function(){
-    this.setState({
-      ecType:CommodityStore.getEnergyConsumptionType()
-    })
-  },
+
   componentDidMount: function() {
-    CommodityStore.addEnergyConsumptionTypeListener(this._onEnergyConsumptionTypeChange);
+
   },
 
   componentWillUnmount: function() {
-    CommodityStore.removeEnergyConsumptionTypeListener(this._onEnergyConsumptionTypeChange);
+
   },
   render:function(){
     let CurrentHierId=CommodityStore.getCurrentHierarchyId(),
@@ -87,7 +84,7 @@ var CommonCommodityPanel = React.createClass({
 
     let header,content;
     //header
-    if(this.state.ecType=="Carbon"){
+    if(this.props.ecType=="Carbon"){
       header=(
         <div className="header">
           <HierarchyButton hierId={CurrentHierId}
@@ -101,7 +98,7 @@ var CommonCommodityPanel = React.createClass({
                             )
     }
     else{
-      if(this.state.ecType=="Cost"){
+      if(this.props.ecType=="Cost"){
         header=(
           <div className="header">
             <HierarchyButton hierId={CurrentHierId}
@@ -129,7 +126,7 @@ var CommonCommodityPanel = React.createClass({
     }
     //content
     if(CurrentHierId!==null){
-      content=<div style={{display:'flex'}}><CommonCommodityList /></div>
+      content=<div style={{display:'flex'}}><CommonCommodityList checkedCommodityList={this.state.checkedCommodityList}/></div>
     }
     return(
       <div className="jazz-dataselectmainpanel">
