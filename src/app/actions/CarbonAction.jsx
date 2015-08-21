@@ -9,7 +9,6 @@ import Ajax from '../ajax/ajax.jsx';
 let CarbonAction = {
   //for select tags from taglist and click search button.
   getPieCarbonData(hierId, commIds, destination, viewOption, relativeDate){
-    var timeRange = date;
     var submitParams = {
       commodityIds: commIds,
       hierarchyId: hierId,
@@ -20,7 +19,7 @@ let CarbonAction = {
     AppDispatcher.dispatch({
       type: ActionTypes.GET_CARBON_DATA_LOADING,
       submitParams: submitParams,
-      commOptions: commOptions,
+      commOptions: viewOption,
       relativeDate: relativeDate
     });
 

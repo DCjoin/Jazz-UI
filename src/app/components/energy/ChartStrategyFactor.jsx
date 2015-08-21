@@ -581,7 +581,7 @@ let ChartStrategyFactor = {
            Step: 2
         };
         //analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
-        analysisPanel.state.chartStrategy.getPieEnergyDataFn(hierId, commIds, destination, viewOption, relativeDate);
+        analysisPanel.state.chartStrategy.getPieEnergyDataFn(hierCommIds.hierarchyId, hierCommIds.communityIds, dest, viewOption, relativeDateValue, analysisPanel);
      }
    },
    onUnitEnergySearchDataButtonClick(analysisPanel){
@@ -1119,12 +1119,7 @@ let ChartStrategyFactor = {
 
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText="历史对比" value='history'/>
-       <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
-       <MenuDivider />
-       <MenuItem primaryText="数据求和" value='sum'/>
        <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-       <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
 
      </ButtonMenu>;
 
