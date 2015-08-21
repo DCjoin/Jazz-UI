@@ -44,14 +44,14 @@ let ChartReaderStrategyFactor = {
     }
   },
   convertFnStrategy:{
-    convert(data, obj){
+    convert(data, obj, energyStore){
       var timeRanges = obj.timeRanges,
           returnDatas;
 
       if (!timeRanges || timeRanges.length <= 1) {
-          returnDatas = ChartReaderStrategyFactor.convertSingleTimeDataFnStrategy.convertSingleTimeData(data, obj);
+          returnDatas = energyStore.readerStrategy.convertSingleTimeDataFn(data, obj, energyStore);
       } else {
-          returnDatas = ChartReaderStrategyFactor.convertMultiTimeDataFnStrategy.convertMultiTimeData(data, obj);
+          returnDatas = energyStore.readerStrategy.convertMultiTimeDataFn(data, obj, energyStore);
       }
 
       return returnDatas;
@@ -161,7 +161,7 @@ let ChartReaderStrategyFactor = {
     }
   },
   convertSingleTimeDataFnStrategy:{
-    convertSingleTimeData(data, obj){
+    convertSingleTimeData(data, obj, energyStore){
       if (!data) return;
       var start = j2d(obj.start);
       var end = j2d(obj.end);
@@ -186,11 +186,11 @@ let ChartReaderStrategyFactor = {
       if (navigatorData && navigatorData.EnergyData && navigatorData.EnergyData.length > 0) {
           var arr = [];
           if (j2d(navigatorData.EnergyData[0].LocalTime) != earliestTime) {
-              arr.push([ChartReaderStrategyFactor.translateDateFnStrategy.translateDate(earliestTime, null, step), null]);
+              arr.push([energyStore.readerStrategy.translateDateFn(earliestTime, null, step), null]);
           }
           for (var j = 0; j < navigatorData.EnergyData.length; j++) {
               d = navigatorData.EnergyData[j];
-              arr.push([ChartReaderStrategyFactor.translateDateFnStrategy.translateDate(d.LocalTime, null, step), d.DataValue]);
+              arr.push([energyStore.readerStrategy.translateDateFn(d.LocalTime, null, step), d.DataValue]);
           }
           nav = arr;
       } else {
@@ -200,7 +200,7 @@ let ChartReaderStrategyFactor = {
       var calendar = data.Calendars && data.Calendars.length > 0 ? data.Calendars : null;
 
       if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
-          d = ChartReaderStrategyFactor.getSeriesInternalFnStrategy.getSeriesInternal(data.TargetEnergyData, ChartReaderStrategyFactor.tagSeriesConstructorFnStrategy.tagSeriesConstructor, undefined, step, start, end);
+          d = energyStore.readerStrategy.getSeriesInternalFn( energyStore, data.TargetEnergyData, energyStore.readerStrategy.tagSeriesConstructorFn, undefined, step, start, end);
       }
 
       return { Data: d, Navigator: nav, Calendar: calendar };
@@ -250,7 +250,7 @@ let ChartReaderStrategyFactor = {
     }
   },
   getSeriesInternalFnStrategy:{
-    getSeriesInternal(data, seriesConstructorFn, setter, step, start, end){
+    getSeriesInternal(energyStore, data, seriesConstructorFn, setter, step, start, end){
       var ret = [], eData, t, arr, series, obj, uom='null';
       for (var i = 0; i < data.length; i++) {
           arr = [];
@@ -258,7 +258,7 @@ let ChartReaderStrategyFactor = {
           if (series.EnergyData) {
               for (var j = 0; j < series.EnergyData.length; j++) {
                   eData = series.EnergyData[j];
-                  arr.push([ChartReaderStrategyFactor.translateDateFnStrategy.translateDate(eData.LocalTime, null, step), eData.DataValue]);
+                  arr.push([energyStore.readerStrategy.translateDateFn(eData.LocalTime, null, step), eData.DataValue]);
               }
           }
           obj = seriesConstructorFn(series.Target);

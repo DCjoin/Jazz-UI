@@ -98,7 +98,7 @@ let EnergyStore = assign({},PrototypeStore,{
     window.testObj._energyRawData = _energyRawData;
     //add this for test team end
 
-    _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj));
+    _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
   removeSeriesDataByUid(uid){
 
