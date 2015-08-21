@@ -274,8 +274,8 @@ let AnalysisPanel = React.createClass({
           carbonRawData = CarbonStore.getCarbonRawData(),
           paramsObj = assign({},EnergyStore.getParamsObj()),
           state = { isLoading: isLoading,
-                    carbonData: carbonData,
-                    carbonRawData: carbonRawData,
+                    energyData: carbonData,
+                    energyRawData: carbonRawData,
                     paramsObj: paramsObj,
                     dashboardOpenImmediately: false};
       if(isError === true){

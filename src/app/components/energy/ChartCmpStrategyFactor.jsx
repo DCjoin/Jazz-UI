@@ -76,12 +76,6 @@ let ChartCmpStrategyFactor = {
 
     },
     CarbonTrendComponent:{
-      convertDataFn:'convertData',
-      convertSingleItemFn:'convertSingleItem',
-      mergeConfigFn:'energyChartCmpMergeConfig',
-      initYaxisFn:'initYaxis',
-      initNavigatorDataFn:'initNavigatorData',
-      getInitialStateFn:'empty'
     },
     CarbonPieComponent:{
       mergeConfigFn:'pieChartCmpMergeConfig',

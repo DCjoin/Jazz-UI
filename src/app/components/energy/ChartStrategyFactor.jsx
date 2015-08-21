@@ -969,8 +969,9 @@ let ChartStrategyFactor = {
                          onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
                        };
 
+        let paramsObj = CarbonStore.getParamsObj();
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
-                       <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                       <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }else{
        let chartCmpObj ={ref:'ChartComponent',
@@ -983,12 +984,13 @@ let ChartStrategyFactor = {
                          onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
                        };
 
+         let paramsObj = CarbonStore.getParamsObj();
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                        <div style={{display:'flex'}}>
                          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
                          <StepSelector stepValue={analysisPanel.state.step}      onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
                        </div>
-                       <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                       <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }
 
