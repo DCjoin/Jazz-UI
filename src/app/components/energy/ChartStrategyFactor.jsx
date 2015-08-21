@@ -786,8 +786,11 @@ let ChartStrategyFactor = {
      return selectedList;
    },
    getSelectedHierCommodityList(){
-     let communities = CommodityStore.getCurrentHierIdCommodityStatus();
-     let commIds = communities.toArray();
+     let communities = CommodityStore.getCommonCommodityList();
+     let commIds = [];
+     for (var i = 0; i < communities.length; i++) {
+       commIds.push(communities[i].Id);
+     }
      let hierId =  CommodityStore.getCurrentHierarchyId();
      return {hierarchyId: hierId, communityIds:commIds };
      //return CommodityStore.getCurrentHierIdCommodityStatus();
@@ -1153,7 +1156,7 @@ let ChartStrategyFactor = {
      CostStore.removeCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
      CommodityStore.removeTouBtnDisabledListener(analysisPanel._onTouBtnDisabled);
    },
-   
+
    unitEnergyUnbindStoreListeners(analysisPanel){
      EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
      EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
