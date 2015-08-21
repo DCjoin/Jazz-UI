@@ -9,6 +9,7 @@ import _ from 'lodash';
 import Immutable from 'immutable';
 import {List,includes} from 'immutable';
 import FolderAction from '../../actions/FolderAction.jsx';
+import Draggable from 'react-draggable2';
 
 //import AlarmStore from '../../stores/AlarmStore.jsx';
 //import BubbleIcon from '../../components/BubbleIcon.jsx';
@@ -388,14 +389,44 @@ var TreeNode = React.createClass({
       </div>
     );
   },
+  handleStart: function (event, ui) {
+    console.log("handleStart");
+      console.log('Event: ', event);
+      console.log('Position: ', ui.position);
+  },
+
+  handleDrag: function (event, ui) {
+    console.log("handleDrag");
+      console.log('Event: ', event);
+      console.log('Position: ', ui.position);
+  },
+
+  handleStop: function (event, ui) {
+    console.log("handleStop");
+      console.log('Event: ', event);
+      console.log('Position: ', ui.position);
+  },
 
   render: function () {
     var generateNode=((this.props.isFolderOperationTree && this.props.nodeData.get("Type") == nodeType.Widget)?null:this.generateNode());
     return (
+      <Draggable
+
+
+          key={this.props.nodeData.get("Id")}
+
+                 bound="all"
+
+
+             zIndex={100}
+             onStart={this.handleStart}
+             onDrag={this.handleDrag}
+             onStop={this.handleStop}>
       <div key={this.props.nodeData.get("Id")} className="pop-tree-node-container">
         {generateNode}
         {this.generateChildren()}
       </div>
+       </Draggable>
     );
   }
 

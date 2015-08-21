@@ -95,10 +95,11 @@ var PanelContainer = React.createClass({
       selectedNode:node
     })
   },
-  _onModifyNameSuccess:function(){
-    this.setState({
-      allNode:FolderStore.getFolderTree(),
-    })
+  _onModifyName:function(){
+    let me = this;
+    this.setState({isLoading:true}, ()=>{
+        me.setState({isLoading:false, allNode:FolderStore.getFolderTree()});
+    });
   },
   getInitialState:function(){
     return{
@@ -132,7 +133,8 @@ var PanelContainer = React.createClass({
 
     FolderStore.addDeleteItemSuccessListener(this._onDeleteItem);
     FolderStore.addCopyItemSuccessListener(this._onCopyItem);
-    FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
+    FolderStore.addModifyNameSuccessListener(this._onModifyName);
+    FolderStore.addModifyNameErrorListener(this._onModifyName);
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
 
   },
@@ -143,7 +145,8 @@ var PanelContainer = React.createClass({
 
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteItem);
     FolderStore.removeCopyItemSuccessListener(this._onCopyItem);
-    FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
+    FolderStore.removeModifyNameSuccessListener(this._onModifyName);
+    FolderStore.removeModifyNameErrorListener(this._onModifyName);
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
 
   },
@@ -193,7 +196,7 @@ var PanelContainer = React.createClass({
                <MenuItem ref="Menu5" key={5} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={menuIcon}/>
             </IconMenu>
           </div>
-        
+
           <div>
 
           </div>
@@ -244,9 +247,6 @@ var FolderLeftPanel = React.createClass({
     var panel=(this.state.isShow?(<div style={{display:'flex',flex:1}}><PanelContainer></PanelContainer> </div>)
                     :(<div style={{display:'none'}}><PanelContainer></PanelContainer></div>)
               );
-    var button= <FlatButton   style={buttonStyle} onClick={this._onToggle}>
-              <FontIcon className="icon-taglist-fold" style={iconStyle}/>
-            </FlatButton>;
     return(
       <div style={{display:'flex'}}>
         {panel}

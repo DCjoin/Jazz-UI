@@ -26,6 +26,8 @@ import ShareView from '../folder/operationView/ShareView.jsx';
 import SendView from '../folder/operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 
+
+
 let Setting = React.createClass({
 
   mixins:[Navigation,State],
@@ -196,6 +198,7 @@ render: function () {
         {mainPanel}
         {rightPanel}
         {operation}
+
         <Snackbar ref='snackbar' message={this.state.errorText}/>
       </div>
     );

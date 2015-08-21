@@ -9,6 +9,8 @@ import _ from 'lodash';
 import Immutable from 'immutable';
 import TreeNode from './TreeNode.jsx';
 
+import dragula from 'react-dragula';
+
 var Tree = React.createClass({
   mixins: [React.addons.PureRenderMixin,Mixins.ClickAwayable],
   // compatibleJSON data transfer json to a immutableJS
@@ -90,6 +92,7 @@ var Tree = React.createClass({
     }
   },
 
+
   render: function () {
     var dataSource = this.compatibleJSON(this.props.allNode);
     var tree = [];
@@ -130,6 +133,7 @@ var Tree = React.createClass({
     } else {
       drawTree(dataSource, tree, 0);
     }
+
 
     return (
       <div className={classNames(_.set({
