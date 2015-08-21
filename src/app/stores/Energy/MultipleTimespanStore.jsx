@@ -17,6 +17,8 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     if(_relativeList === null || _relativeList.length === 0){
       _relativeList.push({relativeType: rawRelativeType, startDate: startDate, endDate: endDate});
       _relativeList.push({relativeType: rawRelativeType});
+    }else{
+
     }
   },
   getRelativeType(){
