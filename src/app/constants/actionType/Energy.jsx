@@ -14,6 +14,7 @@ module.exports = {
     GET_LABEL_DATA_ERROR: null,
     GET_RANK_DATA_LOADING: null,
     GET_RANK_DATA_SUCCESS: null,
-    GET_RANK_DATA_ERROR: null
+    GET_RANK_DATA_ERROR: null,
+    INIT_MULTITIMESPAN_DATA: null
   })
 };
