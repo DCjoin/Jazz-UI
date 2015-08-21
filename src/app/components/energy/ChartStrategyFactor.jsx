@@ -878,7 +878,7 @@ let ChartStrategyFactor = {
      EnergyAction.getPieCostData(timeRanges, step, tagOptions, relativeDate);
    },
    pieCarbonDataLoad(hierId, commIds, destination, viewOption, relativeDate){
-     CarbonAction.getPieCarbonData(hierId, commIds, destination, viewOption, relativeDate){
+     CarbonAction.getPieCarbonData(hierId, commIds, destination, viewOption, relativeDate);
    }
  },
  getEnergyRawDataFnStrategy:{
