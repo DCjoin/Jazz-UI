@@ -17,13 +17,15 @@ let getTagIdsFromTagOptions = function(tagOptions){
 let getHierarchyIdsFromList = function(hierarchyList){
   let hierarchyIds = [];
   for(let i=0,len=hierarchyList.length; i<len; i++){
-    hierarchyIds.push(hierarchyList[i].hierId);
+    hierarchyIds.push(parseInt(hierarchyList[i].hierId));
   }
   return hierarchyIds;
 };
 let getCommodityIdsFromList = function(commodityList){
   let commodityIds = [];
-  commodityIds.push(commodityList.Id);
+  for(let i=0,len=commodityList.length; i<len; i++){
+    commodityIds.push(parseInt(commodityList[i].Id));
+  }
   return commodityIds;
 };
 
@@ -151,7 +153,7 @@ let EnergyAction = {
       }
     });
   },
-  getCostPieChartData(date, step, selectedList, relativeDate){
+  getCostTrendChartData(date, step, selectedList, relativeDate){
     var timeRange = date;
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyList;

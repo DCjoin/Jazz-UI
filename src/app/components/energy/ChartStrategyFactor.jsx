@@ -103,6 +103,7 @@ let ChartStrategyFactor = {
       unbindStoreListenersFn:'costUnbindStoreListeners',
       canShareDataWithFn: 'canShareDataWith',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
+      getChartSubToolbarFn:'getCarbonSubToolbar',
       getAuxiliaryCompareBtnFn:'getCostAuxiliaryCompareBtn',
       handleConfigBtnItemTouchTapFn:'handleCostConfigBtnItemTouchTap'
     },
@@ -334,8 +335,20 @@ let ChartStrategyFactor = {
  getEnergyTypeComboFnStrategy:{
    empty(){},
    getEnergyTypeCombo(analysisPanel){
+     var index = 0;
+     switch(analysisPanel.state.energyType){
+       case "Energy":
+        index = 0;
+        break;
+       case "Cost":
+        index = 1;
+        break;
+       case "Carbon":
+        index = 2;
+        break;
+     }
      let types = [{text:'能耗',value:'Energy'},{text:'成本',value:'Cost'},{text:'碳排放',value:'Carbon'}];
-     return <DropDownMenu menuItems={types} style={{width:'92px',marginRight:'10px'}} onChange={analysisPanel.state.chartStrategy.onEnergyTypeChangeFn.bind(analysisPanel, analysisPanel)}></DropDownMenu>;
+     return <DropDownMenu selectedIndex={index} menuItems={types} style={{width:'92px',marginRight:'10px'}} onChange={analysisPanel.state.chartStrategy.onEnergyTypeChangeFn.bind(analysisPanel, analysisPanel)}></DropDownMenu>;
    }
  },
  getInitParamFnStrategy:{
@@ -423,11 +436,11 @@ let ChartStrategyFactor = {
        case 'line':
        case 'column':
        case 'stack':
-         EnergyStore.initReaderStrategy('CostTrendReader');
+         CostStore.initReaderStrategy('CostTrendReader');
          break;
-      case 'pie':
-        EnergyStore.initReaderStrategy('CostPieReader');
-        break;
+       case 'pie':
+         CostStore.initReaderStrategy('CostPieReader');
+         break;
      }
    },
    initCarbonStoreByBizChartType(analysisPanel){
@@ -519,7 +532,7 @@ let ChartStrategyFactor = {
      }
    },
    onCostSearchDataButtonClick(analysisPanel){
-     //analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+     analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
 
      let dateSelector = analysisPanel.refs.dateTimeSelector,
          dateRange = dateSelector.getDateTime(),
@@ -1170,7 +1183,7 @@ let ChartStrategyFactor = {
      CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.addCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.addCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
-     CommodityStore.addTouBtnDisabledListener(analysisPanel._onTouBtnDisabled);
+     //CommodityStore.addButtonStatusListener(analysisPanel._onTouBtnDisabled);
    },
    carbonBindStoreListeners(analysisPanel){
      CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
@@ -1214,7 +1227,7 @@ let ChartStrategyFactor = {
      CostStore.removeCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.removeCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.removeCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
-     CommodityStore.removeTouBtnDisabledListener(analysisPanel._onTouBtnDisabled);
+     //CommodityStore.removeButtonStatusListener(analysisPanel._onTouBtnDisabled);
    },
 
    unitEnergyUnbindStoreListeners(analysisPanel){

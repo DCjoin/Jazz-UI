@@ -6,6 +6,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import {Action} from '../constants/actionType/Energy.jsx';
 import CommonFuns from '../util/Util.jsx';
+import ChartReaderStrategyFactor from './Energy/ChartReaderStrategyFactor.jsx';
 
 const COST_DATA_LOADING_EVENT = 'costdataloading',
       COST_DATA_LOADED_EVENT = 'costdatachanged',
@@ -23,6 +24,9 @@ let _isLoading = false,
     _errorMessage = null;
 
 var CostStore = assign({},PrototypeStore,{
+  initReaderStrategy(bizChartType){
+    this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType(bizChartType);
+  },
   getLoadingStatus(){
     return _isLoading;
   },
@@ -84,6 +88,7 @@ var CostStore = assign({},PrototypeStore,{
 
     let obj = {start: params.viewOption.TimeRanges[0].StartTime,
                end: params.viewOption.TimeRanges[0].EndTime,
+               step: params.viewOption.Step,
                timeRanges: params.viewOption.TimeRanges};
 
     //add this for test team start
@@ -91,49 +96,7 @@ var CostStore = assign({},PrototypeStore,{
     window.testObj._energyRawData = _energyRawData;
     //add this for test team end
 
-    _energyData = Immutable.fromJS(this.convert(data, obj));
-  },
-  convert(data, obj){
-    if (!data) return;
-    var series = data.TargetEnergyData;
-    if (!series) return;
-    if (series.length === 0) return null;
-
-    var ret = [];
-
-    var d1 = { option: {} };
-
-
-    var data1 = [], s, list = [], v,
-        uom,
-        uomId = series[0].Target.UomId,
-        uomText = series[0].Target.Uom,
-        commodityId = series[0].Target.CommodityId;
-    if (uomText) {
-        uom = uomText;
-    }
-
-    if (uom == 'null') uom = '';
-    d1.option.uom = uom;
-    var commodityList = _selectedList.commodityList;
-    d1.option.commodity = commodityList.commodityName;
-    for (var i = 0; i < series.length; ++i) {
-        s = series[i];
-        if (s.EnergyData.length > 0) {
-            v = s.EnergyData[0].DataValue;
-            data1.push(v);
-
-            list.push({
-                name: s.Target.Name,
-                val: v
-            });
-        }
-    }
-    d1.data = data1;
-    d1.option.list = list;
-    ret.push(d1);
-
-    return { Data: ret, Navigator: null, Calendar: null };
+    _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
   /*
     returns boolean: if only one tag left, then reload data.
@@ -173,16 +136,16 @@ CostStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case Action.GET_COST_DATA_LOADING:
         CostStore._onDataLoading(action.submitParams, action.selectedList, action.relativeDate);
-        CostStore.emitRankDataLoading();
+        CostStore.emitCostDataLoading();
         break;
       case Action.GET_COST_DATA_SUCCESS:
         CostStore._onDataChanged(action.energyData, action.submitParams);
-        CostStore.emitRankDataLoaded();
+        CostStore.emitCostDataLoaded();
         break;
       case Action.GET_COST_DATA_ERROR:
         CostStore._onDataChanged(null, action.submitParams);
         CostStore._initErrorText(action.errorText);
-        CostStore.emitRankDataLoadErrorListener();
+        CostStore.emitCostDataLoadErrorListener();
         break;
     }
 });

@@ -9,11 +9,13 @@ import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
+import CostStore from '../../stores/CostStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import CarbonStore from '../../stores/CarbonStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
+import CommodityStore from '../../stores/CommodityStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
@@ -213,6 +215,19 @@ let AnalysisPanel = React.createClass({
 
       this.setState(obj);
     },
+    _onCostLoadingStatusChange(){
+      let isLoading = CostStore.getLoadingStatus(),
+          paramsObj = CostStore.getParamsObj(),
+          selectedList = CostStore.getSelectedList(),
+          obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      obj.dashboardOpenImmediately = false;
+      obj.selectedList = selectedList;
+      obj.energyData = null;
+
+      this.setState(obj);
+    },
     _onCarbonLoadingStatusChange(){
       let isLoading = CarbonStore.getLoadingStatus(),
           paramsObj = CarbonStore.getParamsObj(),
@@ -258,6 +273,22 @@ let AnalysisPanel = React.createClass({
           energyData = EnergyStore.getEnergyData(),
           energyRawData = EnergyStore.getEnergyRawData(),
           paramsObj = assign({},EnergyStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    energyData: energyData,
+                    energyRawData: energyRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
+      if(isError === true){
+        state.step = null;
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+    },
+    _onCostDataChange(isError, errorObj){
+      let isLoading = CostStore.getLoadingStatus(),
+          energyData = CostStore.getEnergyData(),
+          energyRawData = CostStore.getEnergyRawData(),
+          paramsObj = assign({},CostStore.getParamsObj()),
           state = { isLoading: isLoading,
                     energyData: energyData,
                     energyRawData: energyRawData,
@@ -350,6 +381,10 @@ let AnalysisPanel = React.createClass({
       let errorObj = this.errorProcess();
       this._onEnergyDataChange(true, errorObj);
     },
+    _onGetCostDataError(){
+      let errorObj = this.errorProcess();
+      this._onCostDataChange(true, errorObj);
+    },
     _onGetCarbonDataError(){
       let errorObj = this.errorProcess();
       this._onCarbonDataChange(true, errorObj);
@@ -423,6 +458,11 @@ let AnalysisPanel = React.createClass({
     _onBaselineBtnDisabled:function(){
       this.setState({
           baselineBtnStatus:TagStore.getBaselineBtnDisabled()
+      });
+    },
+    _onTouBtnDisabled:function(){
+      this.setState({
+          touBtnStatus:CommodityStore.getButtonStatus()
       });
     },
     _onSearchBtnItemTouchTap(e, child){
