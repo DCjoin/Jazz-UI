@@ -28,19 +28,19 @@ let CarbonStore = assign({},PrototypeStore,{
   initReaderStrategy(bizChartType){
     this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType(bizChartType);
   },
+  getLoadingStatus(){
+    return _isLoading;
+  },
   setDestination(dest){
     _destination = dest;
   },
   getDestination(dest){
     return _destination;
   },
-  getLoadingStatus(){
-    return _isLoading;
-  },
   getCarbonData(){
     return _carbonData;
   },
-  clearCarbonDate(){
+  clearCarbonData(){
     _carbonData = null;
   },
   getCarbonRawData(){

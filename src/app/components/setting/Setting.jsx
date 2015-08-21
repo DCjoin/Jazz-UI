@@ -150,7 +150,7 @@ _onWidgetMenuSelect:function(index){
   },
   //just for test commoditypanel
 componentWillMount:function(){
-  CommodityAction.setEnergyConsumptionType('cost');
+  CommodityAction.setEnergyConsumptionType('Carbon');
 },
 componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -169,7 +169,6 @@ render: function () {
     let bizTypeMap = {1:'Energy',2:'Unit',3:'Ratio', 4:'Label', 5:'Rank'};
     let mainPanel, rightPanel=null;
     let selectedNode = this.state.selectedNode;
-
     if(!selectedNode || this.state.refreshChart){
       mainPanel = null;
     }else{
@@ -220,7 +219,10 @@ render: function () {
                                     defaultStatus={this.state.showRightPanel}
                                     container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         }else{
-
+          let commoditypanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
+                                         defaultStatus={this.state.showRightPanel}
+                                         container={<CommodityContainer/>}/>);
+          rightPanel = commoditypanel;
         }
         break;
       case 'Ratio':

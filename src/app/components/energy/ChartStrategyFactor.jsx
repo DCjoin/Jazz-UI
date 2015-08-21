@@ -122,8 +122,10 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'carbonBindStoreListeners',
       unbindStoreListenersFn:'carbonUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      onEnergyTypeChangeFn: 'EnergyTypeChange',
+      onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getEnergyRawDataFn:'empty',
+      getInitParamFn: 'getInitParam',
+      getAllDataFn: 'empty',
     },RatioUsage:{
 
     },UnitEnergyUsage:{
@@ -342,6 +344,10 @@ let ChartStrategyFactor = {
    empty(){},
     onEnergyTypeChange(analysisPanel, e, selectedIndex, menuItem){
       if(analysisPanel.props.onEnergyTypeChange){
+        let menuItemVal = menuItem.value;
+        let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
+        let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
+        if(analysisPanel) analysisPanel.setState({chartStrategy: chartSttg});
         analysisPanel.props.onEnergyTypeChange(menuItem.value);
       }
    }
@@ -405,6 +411,10 @@ let ChartStrategyFactor = {
        benchmarks: null
      };
       return state;
+   },
+   getCarbonInitialState(){
+     let state = {};
+     return state;
    },
    getRankInitialState(){
      let state = {
@@ -674,12 +684,10 @@ let ChartStrategyFactor = {
     </div>;
   },
   carbonSearchBarGen(analysisPanel){
-    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie','rawdata']);
-    var configBtn = ChartStrategyFactor.getConfigBtn(analysisPanel);
+    var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column','stack','pie']);
     var onCarbonTypeChange = function(e, selectedIndex, menuItem){
       let value = menuItem.value;
       CarbonStore.setDestination(parseInt(value));
-      //CommodityStore.
     };
 
     var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
@@ -694,7 +702,6 @@ let ChartStrategyFactor = {
       </div>
       <div className={'jazz-flat-button'}>
         {searchButton}
-        {configBtn}
         <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
       </div>
   </div>;
@@ -1103,10 +1110,9 @@ let ChartStrategyFactor = {
      CommodityStore.addTouBtnDisabledListener(analysisPanel._onTouBtnDisabled);
    },
    carbonBindStoreListeners(analysisPanel){
-     CarbonStore.addCarbonDataLoadingListener(analysisPanel._onLoadingStatusChange);
-     CarbonStore.addCarbonDataLoadedListener(analysisPanel._onEnergyDataChange);
-     CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
-     TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+     CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
+     CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
+     CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
    },
    unitEnergyBindStoreListeners(analysisPanel){
      EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
@@ -1134,12 +1140,20 @@ let ChartStrategyFactor = {
      EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
    },
+
+   carbonUnbindStoreListeners(analysisPanel){
+     CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
+     CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
+     CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+   },
+
    costUnbindStoreListeners(analysisPanel){
      CostStore.removeCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.removeCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.removeCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
      CommodityStore.removeTouBtnDisabledListener(analysisPanel._onTouBtnDisabled);
    },
+   
    unitEnergyUnbindStoreListeners(analysisPanel){
      EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
      EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
