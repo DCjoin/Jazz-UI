@@ -12,6 +12,7 @@ import LabelStore from '../../stores/LabelStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import CarbonStore from '../../stores/CarbonStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
+import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
@@ -706,9 +707,34 @@ let AnalysisPanel = React.createClass({
     onChangeKpiType: function(){
       this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
     },
-    _onConfigBtnItemTouchTap(e,item){
-      console.log('AnalysisPanel--- _onConfigBtnItemTouchTap');
-    }
+    _onConfigBtnItemTouchTap(menuParam, menuItem){
+     this.state.chartStrategy.handleConfigBtnItemTouchTapFn(this, menuParam, menuItem);
+    },
+    handleBaselineCfg: function(e){
+     let tagOption, tagObj,
+         tagOptions = this.state.chartStrategy.getSelectedNodesFn();//this.getSelectedTagOptions();
+
+      if(tagOptions && tagOptions.length === 1){
+        tagOption = tagOptions[0];
+        let uom = CommonFuns.getUomById(tagOption.uomId);
+        tagObj = {tagId: tagOption.tagId, hierarchyId: tagOption.hierId, uom:uom};
+      }else{
+        return ;
+      }
+
+      let dateSelector = this.refs.dateTimeSelector;
+      let dateRange = dateSelector.getDateTime();
+
+      this.refs.baselineCfg.showDialog(tagObj, dateRange);
+      var year=(new Date()).getFullYear();
+      TBSettingAction.setYear(year);
+    },
+    _initYaxisDialog(){
+      var chartCmp = this.refs.ChartComponent,
+          chartObj = chartCmp.refs.highstock.getPaper();
+
+     return chartObj;
+	 }
 });
 
 module.exports = AnalysisPanel;
