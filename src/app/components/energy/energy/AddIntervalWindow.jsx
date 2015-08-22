@@ -8,15 +8,16 @@ let { Dialog, DropDownMenu, FlatButton, TextField,Mixins} = mui;
 let TimespanItem = React.createClass({
   propTypes:{
     title:  React.PropTypes.string,
-    isOranginalDate: React.PropTypes.bool,
+    isOriginalDate: React.PropTypes.bool,
     relativeType: React.PropTypes.oneOf(MultipleTimespanStore.getRelativeType()),
     relativeValue: React.PropTypes.number,
+    compareIndex: React.PropTypes.number, //对比时间编号，原始时间没有此参数
     startDate: React.PropTypes.object,
     endDate: React.PropTypes.object,
     dateDescription: React.PropTypes.string//对比时间段的文字时间
   },
   getDefaultProps(){
-    return {isOranginalDate: false};
+    return {isOriginalDate: false};
   },
   _onDateSelectorChanged(){
 
@@ -38,7 +39,7 @@ let TimespanItem = React.createClass({
     let menuItems = relativeTypes.map((type)=>{
       return {value: type, text: I18N.Common.DateRange[type]};
     });
-    if(this.props.isOranginalDate){
+    if(this.props.isOriginalDate){
       dateEl = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
     }else{
       dateEl = me.getCompareDatePart();

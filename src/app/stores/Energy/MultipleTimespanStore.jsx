@@ -14,12 +14,55 @@ let _relativeType = null,
     _convertedList = null;
 let MultipleTimespanStore = assign({},PrototypeStore,{
   initData(rawRelativeType, startDate, endDate){
-    if(_relativeList === null || _relativeList.length === 0){
-      _relativeList.push({relativeType: rawRelativeType, startDate: startDate, endDate: endDate});
-      _relativeList.push({relativeType: rawRelativeType});
-    }else{
+    let me = this;
+    if(_relativeList === null || _relativeList.length === 0 || _relativeList.length === 1){
+      _relativeList = [];
+      _relativeList.push(me.generateTimespanItem(true, rawRelativeType, null, startDate, endDate, null, null));
+      _relativeList.push(me.generateTimespanItem(false, rawRelativeType, null, null, null, null, 1));
 
+    }else if(this.isOriginalDateChanged(_relativeList, rawRelativeType, startDate, endDate)){
+        let mainItem = _relativeList[0],
+            dateInterval = startDate.getTime() - mainItem.startDate.getTime(),
+            dateSpan = mainItem.endDate.getTime() - mainItem.startDate.getTime();
+        let newRelativeList = [];
+        newRelativeList.push(me.generateTimespanItem(true, rawRelativeType, null, startDate, endDate, null, null));
+
+        _relativeList.forEach((item, index)=>{
+          let startDate = new Date(item.startDate.getTime() + dateInterval),
+              endDate = new Date(startDate.getTime()+dateSpan);
+
+          let newItem = me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, null, index);
+          newRelativeList.push(newItem);
+      });
+      _relativeList = newRelativeList;
     }
+  },
+  generateTimespanItem(isOriginalDate, relativeType, relativeValue, startDate, endDate, dateDescription, compareIndex){
+    let item = { isOriginalDate: isOriginalDate,
+                 relativeType: relativeType,
+                 relativeValue: relativeValue,
+                 startDate: startDate,
+                 endDate: endDate,
+                 dateDescription: dateDescription
+               };
+    if(isOriginalDate){
+      item.title = '原始时间';
+    }else{
+      item.title = '对比时间段' + compareIndex;
+      item.compareIndex = compareIndex;
+    }
+  },
+  isOriginalDateChanged(relativeList, rawRelativeType, startDate, endDate){
+    let mainItem = relativeList[0];
+    let ischanged = false;
+
+    if(mainItem.relativeType !== rawRelativeType){
+      ischanged = true;
+    }else if(rawRelativeType === 'Customerize' &&
+         (mainItem.startDate.getTime() !== startDate.getTime() || mainItem.endDate.getTime() !== endDate.getTime() )){
+           ischanged = true;
+    }
+    return ischanged;
   },
   getRelativeType(){
     return _relativeTypes;
