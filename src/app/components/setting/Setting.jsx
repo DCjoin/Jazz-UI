@@ -219,10 +219,9 @@ render: function () {
                                     defaultStatus={this.state.showRightPanel}
                                     container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         }else{
-          let commoditypanel=(<RightPanel onButtonClick={this._onSwitchButtonClick}
-                                         defaultStatus={this.state.showRightPanel}
-                                         container={<CommodityContainer/>}/>);
-          rightPanel = commoditypanel;
+          rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+                                    defaultStatus={this.state.showRightPanel}
+                                    container={<CommodityContainer ecType={energyType}></CommodityContainer>}/>;
         }
         break;
       case 'Ratio':
