@@ -23,20 +23,30 @@ let TimespanItem = React.createClass({
   _onDateSelectorChanged(){
 
   },
-  wrapDropdownMenu(menuItems, width){
-    return <div className='jazz-energy-container-has-absolute-container'><div className='jazz-full-border-dropdownmenu-container'> <DropDownMenu menuItems={menuItems} style={{width: width}} /> </div></div>;
+  wrapDropdownMenu(menuProps, containerWidth){
+    return <div className='jazz-energy-container-has-absolute-container' style={{width:containerWidth}}>
+            <div className='jazz-full-border-dropdownmenu-container'>
+              <DropDownMenu {...menuProps} />
+            </div>
+          </div>;
   },
   getCompareDatePart(){
-    let me = this;
-    if(this.props.relativeType === MultipleTimespanStore.getCustomerizeType()){
+    let me = this,
+        relativeType = this.props.relativeType;
+    if(relativeType === MultipleTimespanStore.getCustomerizeType()){
       let {startDate, endDate} = this.props;
       return <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
     }else{
-      let availableRelativeValues = MultipleTimespanStore.getAailableRelativeValues();
-      let uom = MultipleTimespanStore.getRelativeUOM();
+      let availableRelativeValues = MultipleTimespanStore.getAvailableRelativeValues(relativeType);
+      let uom = MultipleTimespanStore.getRelativeUOM(relativeType);
       let menuItems = availableRelativeValues.map((value)=>{ return {value: value, text: value}; });
 
-      return <div style={{display:'flex'}}> <div>之前第</div> {me.wrapDropdownMenu(menuItems, '60px')} <span>{uom}</span><span>{this.props.dateDescription}</span></div>;
+      return <div style={{display:'flex'}}>
+                <div style={{margin:'auto 10px'}}>之前第</div>
+                {me.wrapDropdownMenu({menuItems:menuItems, style:{width:'60px'}}, '62px')}
+                <div style={{margin:'auto 10px'}}>{uom}</div>
+                <span>{this.props.dateDescription}</span>
+              </div>;
     }
   },
   render(){
@@ -48,15 +58,18 @@ let TimespanItem = React.createClass({
     }else{
       dateEl = me.getCompareDatePart();
     }
-    return <div>
-            <div>
+
+    let relativeTypeEl = me.wrapDropdownMenu({ menuItems:menuItems,
+                           style:{width:'92px'},
+                           selectedIndex:MultipleTimespanStore.getRelativeTypes().indexOf(me.props.relativeType)
+                         }, '100px');
+    return <div style={{marginTop: '10px'}}>
               <div>{this.props.title}</div>
-              <div style={{display:'flex'}}>
-                {me.wrapDropdownMenu(menuItems,'92px')}
+              <div style={{display:'flex', marginTop:'5px'}}>
+                {relativeTypeEl}
                 <div> {dateEl} </div>
               </div>
-            </div>
-          </div>;
+            </div>;
   }
 });
 
@@ -88,7 +101,7 @@ let AddIntervalWindow = React.createClass({
     let dialog = <Dialog {...me.props} title='历史对比' actions={_buttonActions} contentStyle={{width:'768px'}} modal={true}>
                     <div style={{height:'300px'}}>
                       {timeSpanEls}
-                      <LinkButton  label='添加时间段' labelStyle={{display: 'inline-block'}}/>
+                      <LinkButton  label='添加时间段' labelStyle={{display: 'inline-block', marginTop:'10px'}}/>
                     </div>
                   </Dialog>;
 

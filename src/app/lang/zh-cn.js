@@ -180,6 +180,14 @@ I18N.EM.Plain = '平时';
 I18N.EM.Valley = '谷时';
 I18N.EM.Peak = '峰时';
 
+I18N.EM.EnergyAnalyse = {};
+I18N.EM.EnergyAnalyse.AddIntervalWindow = {};
+I18N.EM.EnergyAnalyse.AddIntervalWindow.Title = '历史数据对比';
+I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePreviousComboLabel = '之前第';
+I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious7Day = '个7天';
+I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day = '个30天';
+I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
+
 I18N.Message = {};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';
