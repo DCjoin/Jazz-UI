@@ -156,6 +156,29 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getUnitEnergySubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick'
+    }, UnitCarbon:{
+      searchBarGenFn:'unitCarbonSearchBarGen',
+      getEnergyTypeComboFn: 'getEnergyTypeCombo',
+      getSelectedNodesFn:'getSelectedHierCommodityList',
+      onSearchDataButtonClickFn:'onUnitCarbonSearchDataButtonClick',
+      onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
+      initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
+      setFitStepAndGetDataFn:'setUnitCarbonFitStepAndGetData',
+      getInitialStateFn:'getUnitEnergyInitialState',
+      getAllDataFn: 'unitGetAllData',
+      getInitParamFn: 'getInitParam',
+      getEnergyDataFn:'unitCarbonDataLoad',
+      getChartComponentFn:'getUnitEnergyChartComponent',
+      bindStoreListenersFn:'unitEnergyBindStoreListeners',
+      unbindStoreListenersFn:'unitEnergyUnbindStoreListeners',
+      canShareDataWithFn:'canShareDataWith',
+      exportChartFn:'exportChart',
+      onHierNodeChangeFn:'empty',
+      onEnergyTypeChangeFn: 'onEnergyTypeChange',
+      getAuxiliaryCompareBtnFn:'getUnitEnergyAuxiliaryCompareBtn',
+      getChartSubToolbarFn:'getUnitEnergySubToolbar',
+      handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
+      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick'
     },Label:{
       searchBarGenFn:'labelSearchBarGen',
       getEnergyTypeComboFn: 'empty',
@@ -200,7 +223,23 @@ let ChartStrategyFactor = {
        benchmarkOption = null;
      }
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
-   }
+   },
+   handleUnitCarbonBenchmarkMenuItemClick(analysisPanel,benchmarkOption){
+     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
+         step = analysisPanel.state.step,
+         limitInterval = CommonFuns.getLimitInterval(timeRanges),
+         stepList = limitInterval.stepList;
+     if( stepList.indexOf(step) == -1){
+       step = limitInterval.display;
+     }
+     let viewOp = {
+        DataUsageType: 4,
+        IncludeNavigatorData: true,
+        TimeRanges: timeRanges,
+        Step: step,
+     };
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, hierId, commIds, dest, viewOptions, false, benchmarkOption);
+   },
  },
  getChartSubToolbarFnStrategy:{
    getEnergySubToolbar(analysisPanel){
@@ -617,6 +656,33 @@ let ChartStrategyFactor = {
      let unitType = analysisPanel.state.unitType;
      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, unitType, relativeDateValue, analysisPanel);
    },
+   onUnitCarbonSearchDataButtonClick(analysisPanel){
+     analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+
+     let dateSelector = analysisPanel.refs.dateTimeSelector,
+         dateRange = dateSelector.getDateTime(),
+         startDate = dateRange.start,
+         endDate = dateRange.end;
+
+     if(startDate.getTime()>= endDate.getTime()){
+         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+       return;
+     }
+
+     let hierCommIds = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     if( !hierCommIds.communityIds || hierCommIds.communityIds.length === 0 || !hierCommIds.hierarchyId){
+       analysisPanel.setState({energyData:null});
+       return;
+     }
+     let relativeDateValue = analysisPanel._getRelativeDateValue();
+
+     let chartType = analysisPanel.state.selectedChartType;
+     let dest = CarbonStore.getDestination();
+     if(!dest) dest = 2;
+
+      let unitType = analysisPanel.state.unitType;
+      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierCommIds.hierarchyId, hierCommIds.communityIds, dest, unitType, relativeDateValue, analysisPanel);
+   },
    onRankSearchDataButtonClick(analysisPanel){
      //analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
 
@@ -706,6 +772,25 @@ let ChartStrategyFactor = {
      }
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, relativeDate);
    },
+   setUnitCarbonFitStepAndGetData(startDate, endDate, hierarchyId, commodityIds, destination, unitType, relativeDate, analysisPanel){
+     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
+         step = analysisPanel.state.step,
+         limitInterval = CommonFuns.getLimitInterval(timeRanges),
+         stepList = limitInterval.stepList;
+     if( stepList.indexOf(step) == -1){
+       step = limitInterval.display;
+     }
+     let viewOp = {
+        DataUsageType: 4,
+        IncludeNavigatorData: true,
+        TimeRanges: timeRanges,
+        Step: step,
+        DataOption: {
+          UnitType: unitType
+        }
+     };
+     analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, relativeDate, analysisPanel);
+   },
    setRankTypeAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
      let rankType = analysisPanel.refs.rankType.state.selectedIndex + 1;
@@ -762,6 +847,26 @@ let ChartStrategyFactor = {
   </div>;
 },
   unitEnergySearchBarGen(analysisPanel){
+     var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
+     var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column']);
+     var units  = [{text: '单位人口', name:'UnitPopulation', value: 2}, {text:'单位面积',name:'UnitArea', value: 3},{text:'单位供冷面积',name:'UnitColdArea', value: 4},
+                   {text:'单位采暖面积',name:'UnitWarmArea', value: 5},{text:'单位客房',name:'UnitRoom', value: 7},{text:'单位已用客房',name:'UnitUsedRoom', value: 8},
+                   {text:'单位床位',name:'UnitBed', value: 9},{text:'单位已用床位',name:'UnitUsedBed', value: 10}];
+     return <div className={'jazz-alarm-chart-toolbar'}>
+       <div className={'jazz-full-border-dropdownmenu-container'}>
+         {chartTypeCmp}
+         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+       </div>
+       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <div className={'jazz-full-border-dropdownmenu-container'} >
+         <DropDownMenu menuItems={units} style={{width:'102px', marginRight:'10px'}} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({unitType: menuItem.value});}}></DropDownMenu>
+       </div>
+       <div className={'jazz-flat-button'}>
+         {searchButton}
+       </div>
+   </div>;
+  },
+  unitCarbonSearchBarGen(analysisPanel){
      var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
      var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column']);
      var units  = [{text: '单位人口', name:'UnitPopulation', value: 2}, {text:'单位面积',name:'UnitArea', value: 3},{text:'单位供冷面积',name:'UnitColdArea', value: 4},
@@ -867,10 +972,13 @@ let ChartStrategyFactor = {
      EnergyAction.getCostTrendChartData(timeRanges, step, tagOptions, relativeDate);
    },
    carbonDataLoad(timeRanges, step, hierId, commIds, dest, viewOptions, relativeDate){
-     CarbonAction.getCarbonTrendChartData(timeRanges, step, hierId, commIds, dest, viewOptions, relativeDate);
+     CarbonAction.getCarbonUsageUnitData(timeRanges, step, hierId, commIds, dest, viewOptions, relativeDate);
    },
    unitEnergyDataLoad(timeRanges, step, tagOptions, unitType, relativeDate, benchmarkOption){
      EnergyAction.getUnitEnergyTrendChartData(timeRanges, step, tagOptions, unitType, relativeDate, benchmarkOption);
+   },
+   unitCarbonDataLoad(timeRanges, step, hierId, commIds, dest, viewOptions, relativeDate, benchmarkOption){
+     CarbonAction.getCarbonUsageUnitData(timeRanges, step, hierId, commIds, dest, viewOptions, relativeDate, benchmarkOption);
    },
    rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
      EnergyAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
