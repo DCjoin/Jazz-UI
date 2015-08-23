@@ -377,7 +377,7 @@ let ChartComponentBox = React.createClass({
       return state;
     },
     shouldComponentUpdate: function(nextProps, nextState) {
-      return !(this.props.energyData.equals(nextProps.energyData) && this.props.chartType === nextProps.chartType);
+      //return !(this.props.energyData.equals(nextProps.energyData) && this.props.chartType === nextProps.chartType);
     },
     initDefaultConfig: function () {
       let cap = function(string) {

@@ -30,6 +30,8 @@ import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
+import AddIntervalWindow from './energy/AddIntervalWindow.jsx';
+import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -69,7 +71,7 @@ let ChartStrategyFactor = {
       onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn:'setFitStepAndGetData',
-      getInitialStateFn:'empty',
+      getInitialStateFn:'getEnergyInitialState',
       getAllDataFn: 'empty',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn:'energyDataLoad',
@@ -298,6 +300,8 @@ let ChartStrategyFactor = {
      switch (itemValue) {
        case 'history':
          console.log('history');
+
+         analysisPanel.setState({showAddIntervalDialog: true});
          break;
        case 'config':
          analysisPanel.handleBaselineCfg();
@@ -447,6 +451,11 @@ let ChartStrategyFactor = {
 
  getInitialStateFnStrategy:{
    empty(){},
+   getEnergyInitialState(){
+     return {
+       showAddIntervalDialog: false
+     };
+   },
    getCostInitialState(){
      let state = {
        touBtnStatus: true
@@ -892,7 +901,13 @@ let ChartStrategyFactor = {
      let energyPart;
      let chartType = analysisPanel.state.selectedChartType;
      let subToolbar = analysisPanel.state.chartStrategy.getChartSubToolbarFn(analysisPanel);
-
+     let historyCompareEl = null;
+     if(chartType !=='rawdata' & analysisPanel.state.showAddIntervalDialog === true){
+       let relativeType = analysisPanel._getRelativeDateValue();
+       let timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
+       MultipleTimespanStore.initData(relativeType, timeRange.start, timeRange.end);
+       historyCompareEl = <AddIntervalWindow openImmediately={true} analysisPanel={analysisPanel}/>;
+     }
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
                          energyRawData: analysisPanel.state.energyRawData,
@@ -914,6 +929,7 @@ let ChartStrategyFactor = {
 
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                       {subToolbar}
+                      {historyCompareEl}
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }else{
@@ -928,6 +944,7 @@ let ChartStrategyFactor = {
                        };
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                        {subToolbar}
+                       {historyCompareEl}
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }

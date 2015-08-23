@@ -1,7 +1,7 @@
 'use strict';
 
-import PopAppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import PrototypeStore from './PrototypeStore.jsx';
+import PopAppDispatcher from '../../dispatcher/AppDispatcher.jsx';
+import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import {Action} from '../../constants/actionType/Energy.jsx';
@@ -9,10 +9,11 @@ import {Action} from '../../constants/actionType/Energy.jsx';
 const _relativeTypes =[ 'Customerize', 'Last7Day', 'Last30Day', 'Last12Month', 'Today', 'Yesterday',
                       'ThisWeek', 'LastWeek', 'ThisMonth', 'LastMonth', 'ThisYear', 'LastYear'];
 
-let _relativeType = null,
-    _relativeList = null,
-    _convertedList = null;
+let _relativeList = null;
 let MultipleTimespanStore = assign({},PrototypeStore,{
+  reset(){
+     _relativeList = null;
+  },
   initData(rawRelativeType, startDate, endDate){
     let me = this;
     if(_relativeList === null || _relativeList.length === 0 || _relativeList.length === 1){
@@ -64,8 +65,14 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     }
     return ischanged;
   },
-  getRelativeType(){
+  getRelativeTypes(){
     return _relativeTypes;
+  },
+  getRelativeItems(){
+    let menuItems = _relativeTypes.map((type)=>{
+      return {value: type, text: I18N.Common.DateRange[type]};
+    });
+    return menuItems;
   },
   getCustomerizeType(){
     return 'Customerize';
@@ -78,9 +85,6 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
   },
   getRelativeList(){
     return _relativeList;
-  },
-  getConvertedList(){
-    return _convertedList;
   }
 });
 MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action) {

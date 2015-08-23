@@ -1,7 +1,7 @@
 import React from 'react';
 import mui from 'material-ui';
 import classSet from 'classnames';
-import MultipleTimespanStore from '../../../stores/MultipleTimespanStore.jsx';
+import MultipleTimespanStore from '../../../stores/energy/MultipleTimespanStore.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
 let { Dialog, DropDownMenu, FlatButton, TextField,Mixins} = mui;
 
@@ -9,7 +9,7 @@ let TimespanItem = React.createClass({
   propTypes:{
     title:  React.PropTypes.string,
     isOriginalDate: React.PropTypes.bool,
-    relativeType: React.PropTypes.oneOf(MultipleTimespanStore.getRelativeType()),
+    relativeType: React.PropTypes.oneOf(MultipleTimespanStore.getRelativeTypes()),
     relativeValue: React.PropTypes.number,
     compareIndex: React.PropTypes.number, //对比时间编号，原始时间没有此参数
     startDate: React.PropTypes.object,
@@ -23,7 +23,7 @@ let TimespanItem = React.createClass({
 
   },
   getCompareDatePart(){
-    if(relativeType === MultipleTimespanStore.getCustomerizeType()){
+    if(this.props.relativeType === MultipleTimespanStore.getCustomerizeType()){
       return <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
     }else{
       let availableRelativeValues = MultipleTimespanStore.getAailableRelativeValues();
@@ -35,10 +35,8 @@ let TimespanItem = React.createClass({
   },
   render(){
     let me = this, dateEl = null;
-    let relativeTypes = MultipleTimespanStore.getRelativeType();
-    let menuItems = relativeTypes.map((type)=>{
-      return {value: type, text: I18N.Common.DateRange[type]};
-    });
+    let menuItems = MultipleTimespanStore.getRelativeItems();
+
     if(this.props.isOriginalDate){
       dateEl = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
     }else{
@@ -57,9 +55,6 @@ let TimespanItem = React.createClass({
 });
 
 let AddIntervalWindow = React.createClass({
-  getInitialState(){
-    return {destroyed: false};
-  },
   _onAction(action){
     if(action === 'draw'){
       if(this.props.onMultipleTimeSubmit){
@@ -68,15 +63,12 @@ let AddIntervalWindow = React.createClass({
     }else{
 
     }
-    this.setState({destroyed: true});
+    analysisPanel.setState({showAddIntervalDialog: false});
   },
   render(){
-    if(this.state.destroyed){
-      return null;
-    }
+    let me = this;
     let relativeList = MultipleTimespanStore.getRelativeList();
     let timeSpanEls = relativeList.map((item)=>{
-
       return <TimespanItem {...item}></TimespanItem>;
     });
 
@@ -88,8 +80,9 @@ let AddIntervalWindow = React.createClass({
           onClick={me._onAction.bind(me, 'cancel')} />];
 
     let dialog = <Dialog
+      {...me.props}
       title='历史对比'
-      actions={standardActions}
+      actions={_buttonActions}
       contentStyle={{width:'768px'}}
       modal={true}>
       {timeSpanEls}
