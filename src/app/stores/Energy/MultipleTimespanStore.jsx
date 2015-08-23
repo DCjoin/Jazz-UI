@@ -52,6 +52,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       item.title = '对比时间段' + compareIndex;
       item.compareIndex = compareIndex;
     }
+    return item;
   },
   isOriginalDateChanged(relativeList, rawRelativeType, startDate, endDate){
     let mainItem = relativeList[0];
