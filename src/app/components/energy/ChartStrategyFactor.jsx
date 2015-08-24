@@ -190,7 +190,7 @@ let ChartStrategyFactor = {
       getAllDataFn: 'unitGetAllData',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn:'unitCarbonDataLoad',
-      getChartComponentFn:'getUnitEnergyChartComponent',
+      getChartComponentFn:'getUnitCarbonChartComponent',
       bindStoreListenersFn:'unitCarbonBindStoreListeners',
       unbindStoreListenersFn:'unitCarbonUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
@@ -201,7 +201,7 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getUnitEnergySubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick'
-    },Label:{
+    }, Label:{
       searchBarGenFn:'labelSearchBarGen',
       getEnergyTypeComboFn: 'empty',
       getSelectedNodesFn:'getSelectedTagList',
@@ -1262,6 +1262,30 @@ let ChartStrategyFactor = {
                        <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }
+
+      return energyPart;
+   },
+   getUnitCarbonChartComponent(analysisPanel){
+     let energyPart;
+     let chartType = analysisPanel.state.selectedChartType;
+     let subToolbar = analysisPanel.state.chartStrategy.getChartSubToolbarFn(analysisPanel);
+
+     let chartCmpObj ={ref:'ChartComponent',
+                       bizType:analysisPanel.props.bizType,
+                       energyType: analysisPanel.state.energyType,
+                       chartType: analysisPanel.state.selectedChartType,
+                       energyData: analysisPanel.state.energyData,
+                       energyRawData: analysisPanel.state.energyRawData,
+                       onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
+                       onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+                     };
+
+       let paramsObj = CarbonStore.getParamsObj();
+      energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
+                    {subToolbar}
+                     <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                   </div>;
+
 
       return energyPart;
    },
