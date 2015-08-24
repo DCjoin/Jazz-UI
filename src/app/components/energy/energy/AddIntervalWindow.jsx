@@ -4,7 +4,9 @@ import classSet from 'classnames';
 import MultipleTimespanStore from '../../../stores/energy/MultipleTimespanStore.jsx';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
-let { Dialog, DropDownMenu, FlatButton, TextField,Mixins} = mui;
+import MultiTimespanAction from '../../../actions/MultiTimespanAction.jsx';
+
+let { Dialog, DropDownMenu, FlatButton, IconButton} = mui;
 
 let TimespanItem = React.createClass({
   propTypes:{
@@ -22,6 +24,9 @@ let TimespanItem = React.createClass({
   },
   _onDateSelectorChanged(){
 
+  },
+  _onCompareItemRemove(){
+    this.props.onCompareItemRemove(this.props.compareIndex);
   },
   wrapDropdownMenu(menuProps, containerWidth){
     return <div className='jazz-energy-container-has-absolute-container' style={{width:containerWidth}}>
@@ -50,13 +55,22 @@ let TimespanItem = React.createClass({
     }
   },
   render(){
-    let me = this, dateEl = null;
-    let menuItems = MultipleTimespanStore.getRelativeItems();
+    let me = this, dateEl = null, store = MultipleTimespanStore;
+    let menuItems;
     let {startDate, endDate} = this.props;
+    let deleteBtn = null;
+    if(!this.props.isOriginalDate && store.getOriginalType() === store.getCustomerizeType()){
+      menuItems = store.getCustomerizeItem();
+    }else{
+      menuItems = store.getRelativeItems();
+    }
+
     if(this.props.isOriginalDate){
       dateEl = <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
     }else{
       dateEl = me.getCompareDatePart();
+      deleteBtn = <IconButton iconClassName='icon-delete' iconStyle={{fontSize:'18px'}} onClick = {me._onCompareItemRemove}
+                    style={{'marginLeft':'10px', padding:'0px', height:'28px', width:'28px'}} />;
     }
 
     let relativeTypeEl = me.wrapDropdownMenu({ menuItems:menuItems,
@@ -68,6 +82,7 @@ let TimespanItem = React.createClass({
               <div style={{display:'flex', marginTop:'5px'}}>
                 {relativeTypeEl}
                 <div> {dateEl} </div>
+                {deleteBtn}
               </div>
             </div>;
   }
@@ -84,11 +99,31 @@ let AddIntervalWindow = React.createClass({
     }
     this.props.analysisPanel.setState({showAddIntervalDialog: false});
   },
+  _onrelativeListChange(){
+    this.setState({relativeList: MultipleTimespanStore.getRelativeList()});
+  },
+  _addNewCompareItem(){
+    MultiTimespanAction.addMultiTimespanData();
+  },
+  _removeCompareItem(compareIndex){
+    MultiTimespanAction.removeMultiTimespanData(compareIndex);
+  },
+  getInitialState(){
+    return {
+      relativeList: MultipleTimespanStore.getRelativeList()
+    };
+  },
+  componentDidMount(){
+    MultipleTimespanStore.addChangeListener(this._onrelativeListChange);
+  },
+  componentWillUnmount(){
+    MultipleTimespanStore.removeChangeListener(this._onrelativeListChange);
+  },
   render(){
     let me = this;
-    let relativeList = MultipleTimespanStore.getRelativeList();
+    let relativeList = me.state.relativeList;
     let timeSpanEls = relativeList.map((item)=>{
-      return <TimespanItem {...item}></TimespanItem>;
+      return <TimespanItem {...item} onCompareItemRemove={me._removeCompareItem}></TimespanItem>;
     });
 
     let _buttonActions = [<FlatButton
@@ -101,7 +136,7 @@ let AddIntervalWindow = React.createClass({
     let dialog = <Dialog {...me.props} title='历史对比' actions={_buttonActions} contentStyle={{width:'768px'}} modal={true}>
                     <div style={{height:'300px'}}>
                       {timeSpanEls}
-                      <LinkButton  label='添加时间段' labelStyle={{display: 'inline-block', marginTop:'10px'}}/>
+                      <LinkButton  label='添加时间段' labelStyle={{display: 'inline-block', marginTop:'10px'}} onClick={me._addNewCompareItem}/>
                     </div>
                   </Dialog>;
 

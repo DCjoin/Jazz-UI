@@ -32,6 +32,7 @@ import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import AddIntervalWindow from './energy/AddIntervalWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
+import MultiTimespanAction from '../../actions/MultiTimespanAction.jsx';
 
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -85,7 +86,8 @@ let ChartStrategyFactor = {
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getChartSubToolbarFn:'getEnergySubToolbar',
       getAuxiliaryCompareBtnFn:'getEnergyAuxiliaryCompareBtn',
-      handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap'
+      handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap',
+      handleStepChangeFn:'handleEnergyStepChange'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -155,7 +157,8 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn:'getUnitEnergyAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitEnergySubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
-      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick'
+      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
+      handleStepChangeFn: 'handleUnitEnergyStepChange'
     }, UnitCarbon:{
       searchBarGenFn:'unitCarbonSearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
@@ -211,6 +214,27 @@ let ChartStrategyFactor = {
       canShareDataWithFn:'canRankShareDataWith',
       onEnergyTypeChangeFn:'onEnergyTypeChange'
     }
+ },
+ handleStepChangeFnStrategy:{
+   handleEnergyStepChange(analysisPanel, step){
+     let tagOptions = EnergyStore.getTagOpions(),
+         paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges;
+
+     analysisPanel.setState({step:step});
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+   },
+   handleUnitEnergyStepChange(analysisPanel, step){
+     let tagOptions = EnergyStore.getTagOpions(),
+         paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         submitParams = EnergyStore.getSubmitParams(),
+         benchmarkOption = submitParams.benchmarkOption,
+         unitType = submitParams.viewOption.DataOption.UnitType;
+
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
+     analysisPanel.setState({step:step});
+   }
  },
  handleBenchmarkMenuItemClickFnStrategy:{
    handleUnitBenchmarkMenuItemClick(analysisPanel,benchmarkOption){
@@ -1013,7 +1037,7 @@ let ChartStrategyFactor = {
      if(chartType !=='rawdata' & analysisPanel.state.showAddIntervalDialog === true){
        let relativeType = analysisPanel._getRelativeDateValue();
        let timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
-       MultipleTimespanStore.initData(relativeType, timeRange.start, timeRange.end);
+       MultiTimespanAction.initMultiTimespanData(relativeType, timeRange.start, timeRange.end);
        historyCompareEl = <AddIntervalWindow openImmediately={true} analysisPanel={analysisPanel}/>;
      }
      if(chartType === 'rawdata'){
