@@ -9,24 +9,29 @@ import {Action} from '../../constants/actionType/Energy.jsx';
 const _relativeTypes =[ 'Customerize', 'Last7Day', 'Last30Day', 'Last12Month', 'Today', 'Yesterday',
                       'ThisWeek', 'LastWeek', 'ThisMonth', 'LastMonth', 'ThisYear', 'LastYear'];
 
-let _relativeList = null;
+let _relativeList = null,
+    _originalType = null,//原始时间的相对时间类型
+    _uomString = null;
+
 let MultipleTimespanStore = assign({},PrototypeStore,{
   reset(){
      _relativeList = null;
   },
-  initData(rawRelativeType, startDate, endDate){
+  initData(originalType, startDate, endDate){
     let me = this;
+    _originalType = originalType;
+
     if(_relativeList === null || _relativeList.length === 0 || _relativeList.length === 1){
       _relativeList = [];
-      _relativeList.push(me.generateTimespanItem(true, rawRelativeType, null, startDate, endDate, null, null));
-      _relativeList.push(me.generateTimespanItem(false, rawRelativeType, null, null, null, null, 1));
+      _relativeList.push(me.generateTimespanItem(true, originalType, null, startDate, endDate, null, null));
+      _relativeList.push(me.generateTimespanItem(false, originalType, null, null, null, null, 1));
 
-    }else if(this.isOriginalDateChanged(_relativeList, rawRelativeType, startDate, endDate)){
+    }else if(this.isOriginalDateChanged(_relativeList, originalType, startDate, endDate)){
         let mainItem = _relativeList[0],
             dateInterval = startDate.getTime() - mainItem.startDate.getTime(),
             dateSpan = mainItem.endDate.getTime() - mainItem.startDate.getTime();
         let newRelativeList = [];
-        newRelativeList.push(me.generateTimespanItem(true, rawRelativeType, null, startDate, endDate, null, null));
+        newRelativeList.push(me.generateTimespanItem(true, originalType, null, startDate, endDate, null, null));
 
         _relativeList.forEach((item, index)=>{
           let startDate = new Date(item.startDate.getTime() + dateInterval),
@@ -52,14 +57,15 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       item.title = '对比时间段' + compareIndex;
       item.compareIndex = compareIndex;
     }
+    return item;
   },
-  isOriginalDateChanged(relativeList, rawRelativeType, startDate, endDate){
+  isOriginalDateChanged(relativeList, originalType, startDate, endDate){
     let mainItem = relativeList[0];
     let ischanged = false;
 
-    if(mainItem.relativeType !== rawRelativeType){
+    if(mainItem.relativeType !== originalType){
       ischanged = true;
-    }else if(rawRelativeType === 'Customerize' &&
+    }else if(originalType === 'Customerize' &&
          (mainItem.startDate.getTime() !== startDate.getTime() || mainItem.endDate.getTime() !== endDate.getTime() )){
            ischanged = true;
     }
@@ -77,14 +83,84 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
   getCustomerizeType(){
     return 'Customerize';
   },
-  getAailableRelativeValues(){
-    return [1,2,3,4,5];
-  },
-  getRelativeUOM(){
-    return '天';
-  },
   getRelativeList(){
     return _relativeList;
+  },
+  getOriginalType(){
+    return _originalType;
+  },
+  getAvailableRelativeValues: function (originalType) {
+    var offsetMenuItems = [];
+    var offsetTopValue = 0;
+    switch (originalType) {
+        case 'Customerize':
+            break;
+        case 'Today':
+        case 'Yesterday':
+            offsetTopValue = 31;
+            break;
+        case 'ThisWeek':
+        case 'LastWeek':
+            offsetTopValue = 10;
+            break;
+        case 'ThisMonth':
+        case 'LastMonth':
+            offsetTopValue = 24;
+            break;
+        case 'Last30Day':
+            offsetTopValue = 24;
+            break;
+        case 'ThisYear':
+        case 'LastYear':
+            offsetTopValue = 10;
+            break;
+        case 'Last12Month':
+            offsetTopValue = 10;
+            break;
+        case 'Last7Day':
+            offsetTopValue = 10;
+            break;
+        default:
+            break;
+      }
+      for(let i = 1; i <= offsetTopValue; i++){
+        offsetMenuItems.push(i);
+      }
+      return offsetMenuItems;
+  },
+  getRelativeUOM(originalType){
+    let uomLabel;
+    switch (originalType) {
+        case 'Customerize':
+          uomLabel = '';
+          break;
+        case 'Today':
+        case 'Yesterday':
+          uomLabel = I18N.EM.Day;
+          break;
+        case 'ThisWeek':
+        case 'LastWeek':
+          uomLabel = I18N.EM.Week;
+          break;
+        case 'ThisMonth':
+        case 'LastMonth':
+          uomLabel = I18N.EM.Month;
+          break;
+        case 'Last30Day':
+          uomLabel = I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day;
+          break;
+        case 'ThisYear':
+        case 'LastYear':
+          uomLabel = I18N.EM.Year;
+          break;
+        case 'Last12Month':
+          uomLabel = I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month;
+          break;
+        case 'Last7Day':
+        uomLabel = I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious7Day;
+        break;
+    }
+    return uomLabel;
   }
 });
 MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action) {
