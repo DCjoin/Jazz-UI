@@ -244,6 +244,46 @@ let EnergyAction = {
       }
     });
   },
+  getRatioTrendChartData(timeRange, step, tagOptions, ratioType, relativeDate, benchmarkOption){
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
+    var submitParams = { tagIds:tagIds,
+                         benchmarkOption: benchmarkOption || null,
+                         viewOption:{ DataUsageType: 1,
+                                      IncludeNavigatorData: true,
+                                      Step: step,
+                                      TimeRanges: timeRange,
+                                      DataOption:{
+                                        RatioType: ratioType
+                                      }
+                                   }
+                       };
+
+    AppDispatcher.dispatch({
+      type: Action.GET_RATIO_DATA_LOADING,
+      submitParams: submitParams,
+      tagOptions: tagOptions,
+      relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/RatioGetTagsData', {
+      params:submitParams,
+      commonErrorHandling: false,
+      success: function(energyData){
+        AppDispatcher.dispatch({
+          type: Action.GET_RATIO_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+          type: Action.GET_RATIO_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
+        });
+      }
+    });
+  },
   getUnitEnergyTrendChartData(timeRange, step, tagOptions, unitType, relativeDate, benchmarkOption){
     var tagIds = getTagIdsFromTagOptions(tagOptions);
     var submitParams = { tagIds:tagIds,

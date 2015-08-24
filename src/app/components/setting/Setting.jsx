@@ -225,7 +225,9 @@ render: function () {
         }
         break;
       case 'Ratio':
-        //return Ratio rightPanel
+        rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+                                  defaultStatus={this.state.showRightPanel}
+                                  container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         break;
       case 'Label':
         rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
