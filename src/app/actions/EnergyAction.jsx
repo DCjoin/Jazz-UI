@@ -17,13 +17,15 @@ let getTagIdsFromTagOptions = function(tagOptions){
 let getHierarchyIdsFromList = function(hierarchyList){
   let hierarchyIds = [];
   for(let i=0,len=hierarchyList.length; i<len; i++){
-    hierarchyIds.push(hierarchyList[i].hierId);
+    hierarchyIds.push(parseInt(hierarchyList[i].hierId));
   }
   return hierarchyIds;
 };
 let getCommodityIdsFromList = function(commodityList){
   let commodityIds = [];
-  commodityIds.push(commodityList.Id);
+  for(let i=0,len=commodityList.length; i<len; i++){
+    commodityIds.push(parseInt(commodityList[i].Id));
+  }
   return commodityIds;
 };
 
@@ -151,7 +153,7 @@ let EnergyAction = {
       }
     });
   },
-  getCostPieChartData(date, step, selectedList, relativeDate){
+  getCostTrendChartData(date, step, selectedList, relativeDate){
     var timeRange = date;
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyList;
@@ -179,6 +181,98 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/GetCostData', {
+      params:submitParams,
+      commonErrorHandling: false,
+      success: function(energyData){
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
+        });
+      }
+    });
+  },
+  getElectricityPieCostData(date, step, selectedList, relativeDate){
+    var timeRange = date;
+    var commodityList = selectedList.commodityList;
+    var hierarchyNode = selectedList.hierarchyList;
+    var hierarchyId = hierarchyNode.hierId;
+    var commodityIds = getCommodityIdsFromList(commodityList);
+    if(commodityIds[0] === -1){
+      commodityIds = [];
+    }
+    var submitParams = { commodityIds:commodityIds,
+                         viewAssociation:{
+                           HierarchyId: hierarchyId
+                         },
+                         viewOption:{ DataUsageType: 3,
+                                      IncludeNavigatorData: false,
+                                      //Step: step,
+                                      TimeRanges: timeRange
+                                   }
+                       };
+
+    AppDispatcher.dispatch({
+      type: Action.GET_COST_DATA_LOADING,
+      submitParams: submitParams,
+      selectedList: selectedList,
+      relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/AggregateElectricityCostData', {
+      params:submitParams,
+      commonErrorHandling: false,
+      success: function(energyData){
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
+        });
+      }
+    });
+  },
+  getElectricityCostTrendChartData(date, step, selectedList, relativeDate){
+    var timeRange = date;
+    var commodityList = selectedList.commodityList;
+    var hierarchyNode = selectedList.hierarchyList;
+    var hierarchyId = hierarchyNode.hierId;
+    var commodityIds = getCommodityIdsFromList(commodityList);
+    if(commodityIds[0] === -1){
+      commodityIds = [];
+    }
+    var submitParams = { commodityIds:commodityIds,
+                         viewAssociation:{
+                           HierarchyId: hierarchyId
+                         },
+                         viewOption:{ DataUsageType: 3,
+                                      IncludeNavigatorData: true,
+                                      Step: step,
+                                      TimeRanges: timeRange
+                                   }
+                       };
+
+    AppDispatcher.dispatch({
+      type: Action.GET_COST_DATA_LOADING,
+      submitParams: submitParams,
+      selectedList: selectedList,
+      relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/GetElectricityCostData', {
       params:submitParams,
       commonErrorHandling: false,
       success: function(energyData){
@@ -238,6 +332,46 @@ let EnergyAction = {
       error: function(err, res){
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
+        });
+      }
+    });
+  },
+  getRatioTrendChartData(timeRange, step, tagOptions, ratioType, relativeDate, benchmarkOption){
+    var tagIds = getTagIdsFromTagOptions(tagOptions);
+    var submitParams = { tagIds:tagIds,
+                         benchmarkOption: benchmarkOption || null,
+                         viewOption:{ DataUsageType: 1,
+                                      IncludeNavigatorData: true,
+                                      Step: step,
+                                      TimeRanges: timeRange,
+                                      DataOption:{
+                                        RatioType: ratioType
+                                      }
+                                   }
+                       };
+
+    AppDispatcher.dispatch({
+      type: Action.GET_RATIO_DATA_LOADING,
+      submitParams: submitParams,
+      tagOptions: tagOptions,
+      relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/RatioGetTagsData', {
+      params:submitParams,
+      commonErrorHandling: false,
+      success: function(energyData){
+        AppDispatcher.dispatch({
+          type: Action.GET_RATIO_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+          type: Action.GET_RATIO_DATA_ERROR,
           errorText: res.text,
           submitParams: submitParams
         });

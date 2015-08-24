@@ -9,11 +9,14 @@ import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
+import CostStore from '../../stores/CostStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
+import RatioStore from '../../stores/RatioStore.jsx';
 import CarbonStore from '../../stores/CarbonStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
+import CommodityStore from '../../stores/CommodityStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
@@ -36,7 +39,9 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Energy',
+        //bizType:'Energy',
+        bizType:'Unit',
+        energyType:'Energy',
         chartTitle:'最近7天能耗'
       };
     },
@@ -207,10 +212,36 @@ let AnalysisPanel = React.createClass({
 
       this.setState(obj);
     },
+    _onCostLoadingStatusChange(){
+      let isLoading = CostStore.getLoadingStatus(),
+          paramsObj = CostStore.getParamsObj(),
+          selectedList = CostStore.getSelectedList(),
+          obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      obj.dashboardOpenImmediately = false;
+      obj.selectedList = selectedList;
+      obj.energyData = null;
+
+      this.setState(obj);
+    },
     _onCarbonLoadingStatusChange(){
       let isLoading = CarbonStore.getLoadingStatus(),
           paramsObj = CarbonStore.getParamsObj(),
           commOption = CarbonStore.getCommOpions(),
+          obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      obj.dashboardOpenImmediately = false;
+      obj.commOption = commOption;
+      obj.energyData = null;
+
+      this.setState(obj);
+    },
+    _onRatioLoadingStatusChange(){
+      let isLoading = RatioStore.getLoadingStatus(),
+          paramsObj = RatioStore.getParamsObj(),
+          commOption = RatioStore.getCommOpions(),
           obj = assign({}, paramsObj);
 
       obj.isLoading = isLoading;
@@ -263,6 +294,22 @@ let AnalysisPanel = React.createClass({
       }
       this.setState(state);
     },
+    _onCostDataChange(isError, errorObj){
+      let isLoading = CostStore.getLoadingStatus(),
+          energyData = CostStore.getEnergyData(),
+          energyRawData = CostStore.getEnergyRawData(),
+          paramsObj = assign({},CostStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    energyData: energyData,
+                    energyRawData: energyRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
+      if(isError === true){
+        state.step = null;
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+    },
     _onCarbonDataChange(isError, errorObj){
       let isLoading = CarbonStore.getLoadingStatus(),
           carbonData = CarbonStore.getCarbonData(),
@@ -271,6 +318,22 @@ let AnalysisPanel = React.createClass({
           state = { isLoading: isLoading,
                     energyData: carbonData,
                     energyRawData: carbonRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
+      if(isError === true){
+        state.step = null;
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+    },
+    _onRatioDataChange(isError, errorObj){
+      let isLoading = RatioStore.getLoadingStatus(),
+          energyData = RatioStore.getEnergyData(),
+          energyRawData = RatioStore.getEnergyRawData(),
+          paramsObj = assign({}, EnergyStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    energyData: energyData,
+                    energyRawData: energyRawData,
                     paramsObj: paramsObj,
                     dashboardOpenImmediately: false};
       if(isError === true){
@@ -344,9 +407,17 @@ let AnalysisPanel = React.createClass({
       let errorObj = this.errorProcess();
       this._onEnergyDataChange(true, errorObj);
     },
+    _onGetCostDataError(){
+      let errorObj = this.errorProcess();
+      this._onCostDataChange(true, errorObj);
+    },
     _onGetCarbonDataError(){
       let errorObj = this.errorProcess();
       this._onCarbonDataChange(true, errorObj);
+    },
+    _onGetRatioDataError(){
+      let errorObj = this.errorProcess();
+      this._onRatioDataChange(true, errorObj);
     },
     _onGetRankDataError(){
       let errorObj = this.errorProcess();
@@ -418,6 +489,20 @@ let AnalysisPanel = React.createClass({
       this.setState({
           baselineBtnStatus:TagStore.getBaselineBtnDisabled()
       });
+    },
+    _onTouBtnDisabled:function(){
+      var touBtnStatus = this.state.touBtnStatus;
+      var newStatus = CommodityStore.getButtonStatus();
+      if(newStatus !== touBtnStatus){
+        this.setState({
+          touBtnStatus: newStatus
+        });
+        if(newStatus && this.state.touBtnSelected){
+          this.setState({
+            touBtnSelected: false
+          });
+        }
+      }
     },
     _onSearchBtnItemTouchTap(e, child){
       //this.setState({selectedChartType:child.props.value});
