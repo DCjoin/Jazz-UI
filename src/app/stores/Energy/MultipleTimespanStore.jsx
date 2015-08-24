@@ -107,8 +107,12 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     });
     return menuItems;
   },
-  getCustomerizeItem(){
-    return [{value: 'Customerize', text: I18N.Common.DateRange.Customerize }];
+  getCompareMenuItems(){
+    if(_originalType === 'Customerize')
+      return [{value: 'Customerize', text: I18N.Common.DateRange.Customerize }];
+    else{
+      return [{value: 'Customerize', text: I18N.Common.DateRange.Customerize },{value: _originalType, text: '相对时间' }];
+    }
   },
   getCustomerizeType(){
     return 'Customerize';
@@ -197,6 +201,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     me._initTempRelativeList();
 
     if(isOriginalDate){
+      _originalType = relativeType;
       if(relativeType === 'Customerize'){
         let mainItem = _tempRelativeList.get(0);
         mainItem.set('relativeType', relativeType);
@@ -209,7 +214,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       }
       _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, relativeType, null, null, null, null, 1));
     }else{
-
+      _tempRelativeList = _tempRelativeList.set(compareIndex, me.generateTimespanItem(false, relativeType, null, null, null, null, compareIndex));
     }
   }
 });

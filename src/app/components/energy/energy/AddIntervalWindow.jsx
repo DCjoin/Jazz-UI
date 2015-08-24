@@ -5,6 +5,7 @@ import MultipleTimespanStore from '../../../stores/energy/MultipleTimespanStore.
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
 import MultiTimespanAction from '../../../actions/MultiTimespanAction.jsx';
+import Immutable from 'immutable';
 
 let { Dialog, DropDownMenu, FlatButton, IconButton} = mui;
 
@@ -59,10 +60,11 @@ let TimespanItem = React.createClass({
     let menuItems;
     let {startDate, endDate} = this.props;
     let deleteBtn = null;
-    if(!this.props.isOriginalDate && store.getOriginalType() === store.getCustomerizeType()){
-      menuItems = store.getCustomerizeItem();
-    }else{
+
+    if(this.props.isOriginalDate){
       menuItems = store.getRelativeItems();
+    }else{
+        menuItems = store.getCompareMenuItems();
     }
 
     if(this.props.isOriginalDate){
@@ -72,10 +74,9 @@ let TimespanItem = React.createClass({
       deleteBtn = <IconButton iconClassName='icon-delete' iconStyle={{fontSize:'18px'}} onClick = {me._onCompareItemRemove}
                     style={{'marginLeft':'10px', padding:'0px', height:'28px', width:'28px'}} />;
     }
-
     let relativeTypeEl = me.wrapDropdownMenu({ menuItems:menuItems,
                            style:{width:'92px'},
-                           selectedIndex: MultipleTimespanStore.getRelativeTypes().indexOf(me.props.relativeType),
+                           selectedIndex: Immutable.List(menuItems).findIndex( (item) => {return item.value === me.props.relativeType;}),
                            onChange: me._onRelativeTypeChange
                          }, '100px');
     return <div style={{marginTop: '10px'}}>
