@@ -11,6 +11,7 @@ import TagStore from '../../stores/TagStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
 import CostStore from '../../stores/CostStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
+import RatioStore from '../../stores/RatioStore.jsx';
 import CarbonStore from '../../stores/CarbonStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
@@ -38,7 +39,9 @@ let AnalysisPanel = React.createClass({
     },
     getDefaultProps(){
       return {
-        bizType:'Energy',
+        //bizType:'Energy',
+        bizType:'Unit',
+        energyType:'Energy',
         chartTitle:'最近7天能耗'
       };
     },
@@ -240,6 +243,19 @@ let AnalysisPanel = React.createClass({
 
       this.setState(obj);
     },
+    _onRatioLoadingStatusChange(){
+      let isLoading = RatioStore.getLoadingStatus(),
+          paramsObj = RatioStore.getParamsObj(),
+          commOption = RatioStore.getCommOpions(),
+          obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      obj.dashboardOpenImmediately = false;
+      obj.commOption = commOption;
+      obj.energyData = null;
+
+      this.setState(obj);
+    },
     _onRankLoadingStatusChange(){
       let isLoading = RankStore.getLoadingStatus(),
           paramsObj = RankStore.getParamsObj(),
@@ -307,6 +323,22 @@ let AnalysisPanel = React.createClass({
           state = { isLoading: isLoading,
                     energyData: carbonData,
                     energyRawData: carbonRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
+      if(isError === true){
+        state.step = null;
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+    },
+    _onRatioDataChange(isError, errorObj){
+      let isLoading = RatioStore.getLoadingStatus(),
+          energyData = RatioStore.getEnergyData(),
+          energyRawData = RatioStore.getEnergyRawData(),
+          paramsObj = assign({}, EnergyStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    energyData: energyData,
+                    energyRawData: energyRawData,
                     paramsObj: paramsObj,
                     dashboardOpenImmediately: false};
       if(isError === true){
@@ -387,6 +419,10 @@ let AnalysisPanel = React.createClass({
     _onGetCarbonDataError(){
       let errorObj = this.errorProcess();
       this._onCarbonDataChange(true, errorObj);
+    },
+    _onGetRatioDataError(){
+      let errorObj = this.errorProcess();
+      this._onRatioDataChange(true, errorObj);
     },
     _onGetRankDataError(){
       let errorObj = this.errorProcess();
