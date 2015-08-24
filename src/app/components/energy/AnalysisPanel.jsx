@@ -460,9 +460,18 @@ let AnalysisPanel = React.createClass({
       });
     },
     _onTouBtnDisabled:function(){
-      this.setState({
-          touBtnStatus:CommodityStore.getButtonStatus()
-      });
+      var touBtnStatus = this.state.touBtnStatus;
+      var newStatus = CommodityStore.getButtonStatus();
+      if(newStatus !== touBtnStatus){
+        this.setState({
+          touBtnStatus: newStatus
+        });
+        if(newStatus && this.state.touBtnSelected){
+          this.setState({
+            touBtnSelected: false
+          });
+        }
+      }
     },
     _onSearchBtnItemTouchTap(e, child){
       //this.setState({selectedChartType:child.props.value});
