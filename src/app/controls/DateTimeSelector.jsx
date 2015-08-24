@@ -10,7 +10,10 @@ const startDateTime = hourPickerData(0, 23);
 const endDateTime = hourPickerData(1, 24);
 
 let DateTimeSelector = React.createClass({
-
+  propTypes:{
+    startDate: React.PropTypes.object,
+    endDate: React.PropTypes.object
+  },
   setDateField(startDate, endDate){
     let startField = this.refs.startDate,
         startTimeField = this.refs.startTime,
@@ -81,10 +84,19 @@ let DateTimeSelector = React.createClass({
     }
     this.setDateField(startDate, endDate);
   },
-  getInitialState: function(){
+  getDefaultProps(){
     return {
       startDate: null,
       endDate: null
+    };
+  },
+  getInitialState: function(){
+    let startDate = this.props.startDate || null;
+    let endDate = this.props.endDate || null;
+
+    return {
+      startDate: startDate,
+      endDate: endDate
     };
   },
   render(){

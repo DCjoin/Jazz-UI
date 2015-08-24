@@ -102,6 +102,22 @@ I18N.Common.Glossary.WeekDay.Friday = '周五';
 I18N.Common.Glossary.WeekDay.Saturday = '周六';
 I18N.Common.Glossary.WeekDay.Sunday = '周日';
 
+I18N.Common.DateRange = {};
+I18N.Common.DateRange.Last7Day = '最近7天';
+I18N.Common.DateRange.Last30Day = '最近30天';
+I18N.Common.DateRange.Last12Month = '最近12月';
+I18N.Common.DateRange.Today = '今天';
+I18N.Common.DateRange.Yesterday = '昨天';
+I18N.Common.DateRange.ThisWeek = '本周';
+I18N.Common.DateRange.LastWeek = '上周';
+I18N.Common.DateRange.ThisMonth = '本月';
+I18N.Common.DateRange.LastMonth = '上月';
+I18N.Common.DateRange.ThisYear = '今年';
+I18N.Common.DateRange.LastYear = '去年';
+I18N.Common.DateRange.Customerize = '自定义';
+I18N.Common.DateRange.CustomerizeTime = '自定义';
+I18N.Common.DateRange.RelativedTime = '相对时间';
+
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
 I18N.DateTimeFormat.HighFormat.Millisecond = '%H点%M分%S秒%L毫秒';
@@ -163,6 +179,14 @@ I18N.EM.Total = '总览';
 I18N.EM.Plain = '平时';
 I18N.EM.Valley = '谷时';
 I18N.EM.Peak = '峰时';
+
+I18N.EM.EnergyAnalyse = {};
+I18N.EM.EnergyAnalyse.AddIntervalWindow = {};
+I18N.EM.EnergyAnalyse.AddIntervalWindow.Title = '历史数据对比';
+I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePreviousComboLabel = '之前第';
+I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious7Day = '个7天';
+I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day = '个30天';
+I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
 
 I18N.Message = {};
 
@@ -528,20 +552,20 @@ I18N.Folder.Send.Success = '{0}发送成功';
 I18N.Folder.Send.Error = '{0}发送失败，无法发送给用户：{1}。';
 
 
-I18N.Folder.Detail={};
-I18N.Folder.Detail.SubTitile='来自{0}';
-I18N.Folder.Detail.Title={};
-I18N.Folder.Detail.Title.Menu1='复制';
-I18N.Folder.Detail.Title.Menu2='发送';
-I18N.Folder.Detail.Title.Menu3='删除';
-I18N.Folder.Detail.WidgetMenu={};
-I18N.Folder.Detail.WidgetMenu.Menu1='复制';
-I18N.Folder.Detail.WidgetMenu.Menu2='发送';
-I18N.Folder.Detail.WidgetMenu.Menu3='共享';
-I18N.Folder.Detail.WidgetMenu.Menu4='导出';
-I18N.Folder.Detail.WidgetMenu.Menu5='删除';
+I18N.Folder.Detail = {};
+I18N.Folder.Detail.SubTitile = '来自{0}';
+I18N.Folder.Detail.Title = {};
+I18N.Folder.Detail.Title.Menu1 = '复制';
+I18N.Folder.Detail.Title.Menu2 = '发送';
+I18N.Folder.Detail.Title.Menu3 = '删除';
+I18N.Folder.Detail.WidgetMenu = {};
+I18N.Folder.Detail.WidgetMenu.Menu1 = '复制';
+I18N.Folder.Detail.WidgetMenu.Menu2 = '发送';
+I18N.Folder.Detail.WidgetMenu.Menu3 = '共享';
+I18N.Folder.Detail.WidgetMenu.Menu4 = '导出';
+I18N.Folder.Detail.WidgetMenu.Menu5 = '删除';
 
-I18N.Commodity={};
+I18N.Commodity = {};
 I18N.Commodity.Overview = '介质总览';
 
 I18N.Hierarchy = {};

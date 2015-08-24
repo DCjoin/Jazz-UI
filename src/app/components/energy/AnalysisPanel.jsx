@@ -18,13 +18,11 @@ import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
+import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
-const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
- {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
- {value: 'ThisMonth', text: '本月'}, {value: 'LastMonth', text: '上月'}, {value: 'ThisYear', text: '今年'}, {value: 'LastYear', text: '去年'}];
 const kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
  {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
  {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
@@ -49,6 +47,7 @@ let AnalysisPanel = React.createClass({
         this.setState({energyType: nextProps.energyType});
     },
     getInitialState(){
+      this.searchDate = MultipleTimespanStore.getRelativeItems();
       let strategyName = this.getStrategyName(this.props.bizType, this.props.energyType);
       let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(strategyName);
       let state = {
@@ -84,12 +83,12 @@ let AnalysisPanel = React.createClass({
       var collapseButton = <div className="fold-tree-btn" style={{"color":"#939796"}}>
                               <FontIcon hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-column-fold")} />
                            </div>;
-
+      let trigger = false;
       if(this.state.isLoading){
         energyPart = <div style={{margin:'auto',width:'100px'}}>
           <CircularProgress  mode="indeterminate" size={2} />
         </div>;
-      }else if(!!this.state.energyData){
+      }else if(!!this.state.energyData || trigger){
         energyPart = this.state.chartStrategy.getChartComponentFn(me);
       }
 
@@ -354,7 +353,7 @@ let AnalysisPanel = React.createClass({
     },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
-          obj = searchDate[relativeDateIndex];
+          obj = this.searchDate[relativeDateIndex];
       return obj.value;
     },
     _setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate){
