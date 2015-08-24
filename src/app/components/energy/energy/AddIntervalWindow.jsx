@@ -23,9 +23,6 @@ let TimespanItem = React.createClass({
   getDefaultProps(){
     return {isOriginalDate: false};
   },
-  _onDateSelectorChanged(){
-
-  },
   _onCompareItemRemove(){
     this.props.onCompareItemRemove(this.props.compareIndex);
   },
@@ -49,9 +46,12 @@ let TimespanItem = React.createClass({
 
       return <div style={{display:'flex'}}>
                 <div style={{margin:'auto 10px'}}>之前第</div>
-                {me.wrapDropdownMenu({menuItems:menuItems, style:{width:'60px'}}, '62px')}
+                {me.wrapDropdownMenu({ menuItems:menuItems,
+                                       style:{width:'60px'},
+                                       onChange: me._onRelativeValueChange
+                                     }, '62px')}
                 <div style={{margin:'auto 10px'}}>{uom}</div>
-                <span>{this.props.dateDescription}</span>
+                <div style={{margin:'auto 10px'}}>{this.props.dateDescription}</div>
               </div>;
     }
   },
@@ -91,6 +91,10 @@ let TimespanItem = React.createClass({
   _onRelativeTypeChange(e, selectedIndex, menuItem){
     let props = this.props;
     MultiTimespanAction.handleRelativeTypeChange(props.isOriginalDate, menuItem.value, props.compareIndex);
+  },
+  _onRelativeValueChange(e, selectedIndex, menuItem){
+    let me = this;
+    MultiTimespanAction.handleRelativeValueChange(menuItem.value, me.props.compareIndex);
   }
 });
 

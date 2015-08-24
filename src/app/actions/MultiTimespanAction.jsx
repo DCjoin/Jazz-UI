@@ -33,6 +33,13 @@ let MultiTimespanAction = {
          relativeType: relativeType,
          compareIndex: compareIndex
     });
+  },
+  handleRelativeValueChange(relativeValue, compareIndex){
+    AppDispatcher.dispatch({
+         type: Action.RELATIVE_VALUE_CHANGE,
+         relativeValue: relativeValue,
+         compareIndex: compareIndex
+    });
   }
 };
 module.exports = MultiTimespanAction;
