@@ -21,5 +21,6 @@ module.exports = {
     INIT_MULTITIMESPAN_DATA: null,
     ADD_MULTITIMESPAN_DATA: null,
     REMOVE_MULTITIMESPAN_DATA: null,
+    RELATIVE_TYPE_CHANGE: null
   })
 };

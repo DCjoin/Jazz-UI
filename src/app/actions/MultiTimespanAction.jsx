@@ -25,6 +25,14 @@ let MultiTimespanAction = {
          type: Action.REMOVE_MULTITIMESPAN_DATA,
          compareIndex: compareIndex
     });
+  },
+  handleRelativeTypeChange(isOriginalDate, relativeType, compareIndex){
+    AppDispatcher.dispatch({
+         type: Action.RELATIVE_TYPE_CHANGE,
+         isOriginalDate: isOriginalDate,
+         relativeType: relativeType,
+         compareIndex: compareIndex
+    });
   }
 };
 module.exports = MultiTimespanAction;

@@ -4,6 +4,7 @@ import PopAppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
+import CommonFuns from '../../util/Util.jsx';
 import {Action} from '../../constants/actionType/Energy.jsx';
 
 const _relativeTypes =[ 'Customerize', 'Last7Day', 'Last30Day', 'Last12Month', 'Today', 'Yesterday',
@@ -190,6 +191,26 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
         break;
     }
     return uomLabel;
+  },
+  handleRelativeTypeChange(isOriginalDate, relativeType, compareIndex){
+    let me = this;
+    me._initTempRelativeList();
+
+    if(isOriginalDate){
+      if(relativeType === 'Customerize'){
+        let mainItem = _tempRelativeList.get(0);
+        mainItem.set('relativeType', relativeType);
+        _tempRelativeList = Immutable.List([]);
+        _tempRelativeList = _tempRelativeList.push(mainItem);
+      }else{
+          let timeregion = CommonFuns.GetDateRegion(relativeType);
+          _tempRelativeList = Immutable.List([]);
+          _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(true, relativeType, null, timeregion.start, timeregion.end, null, null));
+      }
+      _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, relativeType, null, null, null, null, 1));
+    }else{
+
+    }
   }
 });
 MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action) {
@@ -205,6 +226,9 @@ MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action)
         MultipleTimespanStore.removeCompareDate(action.compareIndex);
         MultipleTimespanStore.emitChange();
         break;
+      case Action.RELATIVE_TYPE_CHANGE:
+        MultipleTimespanStore.handleRelativeTypeChange(action.isOriginalDate, action.relativeType, action.compareIndex);
+        MultipleTimespanStore.emitChange();
     }
 });
 

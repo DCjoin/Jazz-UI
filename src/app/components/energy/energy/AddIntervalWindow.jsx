@@ -75,7 +75,8 @@ let TimespanItem = React.createClass({
 
     let relativeTypeEl = me.wrapDropdownMenu({ menuItems:menuItems,
                            style:{width:'92px'},
-                           selectedIndex:MultipleTimespanStore.getRelativeTypes().indexOf(me.props.relativeType)
+                           selectedIndex: MultipleTimespanStore.getRelativeTypes().indexOf(me.props.relativeType),
+                           onChange: me._onRelativeTypeChange
                          }, '100px');
     return <div style={{marginTop: '10px'}}>
               <div>{this.props.title}</div>
@@ -85,6 +86,10 @@ let TimespanItem = React.createClass({
                 {deleteBtn}
               </div>
             </div>;
+  },
+  _onRelativeTypeChange(e, selectedIndex, menuItem){
+    let props = this.props;
+    MultiTimespanAction.handleRelativeTypeChange(props.isOriginalDate, menuItem.value, props.compareIndex);
   }
 });
 
