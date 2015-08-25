@@ -484,9 +484,14 @@ let AnalysisPanel = React.createClass({
           baselineBtnStatus:TagStore.getBaselineBtnDisabled()
       });
     },
+    _onCostBaselineBtnDisabled:function(){
+      this.setState({
+          baselineBtnStatus:CommodityStore.getUCButtonStatus()
+      });
+    },
     _onTouBtnDisabled:function(){
       var touBtnStatus = this.state.touBtnStatus;
-      var newStatus = CommodityStore.getButtonStatus();
+      var newStatus = CommodityStore.getECButtonStatus();
       if(newStatus !== touBtnStatus){
         this.setState({
           touBtnStatus: newStatus
