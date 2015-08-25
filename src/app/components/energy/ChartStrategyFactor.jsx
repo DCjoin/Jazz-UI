@@ -447,7 +447,12 @@ let ChartStrategyFactor = {
       return toolElement;
    },
    getRankSubToolbar(analysisPanel){
+     var energyType = analysisPanel.state.energyType;
      var toolElement;
+     var carbonTypeBtn = null;
+     if(energyType === 'Carbon'){
+       carbonTypeBtn = <DropDownMenu selectedIndex={analysisPanel.state.destination-2} menuItems={carbonTypeItem} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>;
+     }
      var orderItem = [{value:1,text:'降序',name:'Descending'}, {value:2,text:'升序',name:'Ascending'}];
      var rangeItem = [{value:3,text:'前3名'},{value:5,text:'前5名'},{value:10,text:'前10名'},
      {value:20,text:'前20名'},{value:50,text:'前50名'},{value:1000,text:'全部'}];
@@ -461,6 +466,7 @@ let ChartStrategyFactor = {
          </div>
          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
          <div style={{margin:'5px 30px 5px auto'}}>
+           {carbonTypeBtn}
            <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
          </div>
        </div>;
@@ -666,6 +672,7 @@ let ChartStrategyFactor = {
      let state = {
        order: 1,
        range: 3,
+       destination: 2,
        selectedChartType:'column'
      };
      return state;
@@ -1013,8 +1020,10 @@ let ChartStrategyFactor = {
    setRankTypeAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
      let rankType = analysisPanel.refs.rankType.state.selectedIndex + 1;
+     let energyType = analysisPanel.state.energyType;
+     let destination = analysisPanel.state.destination;
 
-     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, rankType, tagOptions, relativeDate);
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, rankType, tagOptions, relativeDate, destination, energyType);
    }
  },
  searchBarGenFnStrategy:{
@@ -1231,8 +1240,16 @@ let ChartStrategyFactor = {
    unitCarbonDataLoad(timeRanges, step, hierId, commIds, dest, viewOptions, relativeDate, benchmarkOption){
      CarbonAction.getCarbonUsageUnitData(timeRanges, step, hierId, commIds, dest, viewOptions, relativeDate, benchmarkOption);
    },
-   rankDataLoad(timeRanges, rankType, tagOptions, relativeDate){
-     EnergyAction.getRankTrendChartData(timeRanges, rankType, tagOptions, relativeDate);
+   rankDataLoad(timeRanges, rankType, tagOptions, relativeDate, destination, energyType){
+     if(energyType === "Energy"){
+       EnergyAction.getEnergyRankChartData(timeRanges, rankType, tagOptions, relativeDate);
+     }
+     else if(energyType === "Carbon"){
+       EnergyAction.getCarbonRankChartData(timeRanges, rankType, tagOptions, relativeDate, destination);
+     }
+     else{
+       EnergyAction.getCostRankChartData(timeRanges, rankType, tagOptions, relativeDate);
+     }
    },
    labelDataLoad(viewOption, tagOptions, benchmarkOption, labelingType){
      EnergyAction.getLabelChartData(viewOption, tagOptions, benchmarkOption, labelingType);
