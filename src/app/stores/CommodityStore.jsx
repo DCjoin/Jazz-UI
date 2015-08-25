@@ -13,7 +13,8 @@ const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
       RANKING_EC_TYPE_CHANGED_EVENT= 'rankingectypechanged',
       GET_RANKING_COMMODITY_LIST_CHANGED_EVENT = 'getrankingcommoditylistchanged',
       SET_RANKING_COMMODITY_CHANGED_EVENT='setrankingcommoditychanged',
-      BUTTON_STATUS_CHANGED_EVENT='buttonstatuschanged';
+      EC_BUTTON_STATUS_CHANGED_EVENT='energycostbuttonstatuschanged',
+      UC_BUTTON_STATUS_CHANGED_EVENT='unitcostbuttonstatuschanged';
 
 let _energyConsumptionType=null,// Carbon or Cost
     _rankingECType=null,//Energy Carbon or Cost
@@ -25,7 +26,8 @@ let _energyConsumptionType=null,// Carbon or Cost
     _commodityStatus=Immutable.List([]),
     _RankingTreeList=[],
     _RankingCommodity=null,
-    _buttonStatus=true;//for cost
+    _buttonStatus_EC=true,//for energy cost
+    _buttonStatus_UC=true;//for unit cost
 
 var CommodityStore = assign({},PrototypeStore,{
 
@@ -89,32 +91,55 @@ var CommodityStore = assign({},PrototypeStore,{
       _commodityList=[];
       _hierNode=null;
       _commodityStatus=Immutable.List([]);
-      _buttonStatus=true;
+      _buttonStatus_EC=true;
+      _buttonStatus_UC=true
   },
-  setButtonStatus:function(){
+  setECButtonStatus:function(){
     if(_commodityStatus.size==1){
       _commodityStatus.forEach(function(item){
         if(item.get('Id')==1){
-            _buttonStatus=false;
+            _buttonStatus_EC=false;
         }
         else {
-            _buttonStatus=true;
+            _buttonStatus_EC=true;
         }
-      });    
+      });
 
     }
     else {
-        _buttonStatus=true;
+        _buttonStatus_EC=true;
     }
 
-   this.emitButtonStatus();
+   this.emitECButtonStatus();
   },
-  getButtonStatus:function(){
-    return _buttonStatus;
+  getECButtonStatus:function(){
+    return _buttonStatus_EC;
+  },
+  setUCButtonStatus:function(){
+    if(_commodityStatus.size==1){
+      _commodityStatus.forEach(function(item){
+        if(item.get('Id')!=-1){
+            _buttonStatus_UC=false;
+        }
+        else {
+            _buttonStatus_UC=true;
+        }
+      });
+
+    }
+    else {
+        _buttonStatus_UC=true;
+    }
+
+   this.emitUCButtonStatus();
+  },
+  getUCButtonStatus:function(){
+    return _buttonStatus_UC;
   },
   setDefaultCommodityStatus:function(list){
     _commodityStatus=list;
-    this.setButtonStatus();
+    this.setECButtonStatus();
+    this.setUCButtonStatus();
   },
   setCommodityStatus:function(id,name,selected){
     var hasCommodity=false;
@@ -129,7 +154,8 @@ var CommodityStore = assign({},PrototypeStore,{
       else {
         _commodityStatus=_commodityStatus.delete(_commodityStatus.findIndex(item=>item.get('Id')==id));
       }
-      this.setButtonStatus();
+      this.setECButtonStatus();
+      this.setUCButtonStatus();
   },
   getCommonCommodityList:function(){
     return _commodityStatus.toJSON();
@@ -219,14 +245,23 @@ var CommodityStore = assign({},PrototypeStore,{
   removeRankingCommodityListener: function(callback) {
     this.removeListener(SET_RANKING_COMMODITY_CHANGED_EVENT, callback);
  },
- addButtonStatusListener: function(callback) {
-   this.on(BUTTON_STATUS_CHANGED_EVENT, callback);
+ addECButtonStatusListener: function(callback) {
+   this.on(EC_BUTTON_STATUS_CHANGED_EVENT, callback);
  },
- emitButtonStatus: function() {
-   this.emit(BUTTON_STATUS_CHANGED_EVENT);
+ emitECButtonStatus: function() {
+   this.emit(EC_BUTTON_STATUS_CHANGED_EVENT);
  },
- removeButtonStatusListener: function(callback) {
-   this.removeListener(BUTTON_STATUS_CHANGED_EVENT, callback);
+ removeECButtonStatusListener: function(callback) {
+   this.removeListener(EC_BUTTON_STATUS_CHANGED_EVENT, callback);
+ },
+ addUCButtonStatusListener: function(callback) {
+   this.on(UC_BUTTON_STATUS_CHANGED_EVENT, callback);
+ },
+ emitUCButtonStatus: function() {
+   this.emit(UC_BUTTON_STATUS_CHANGED_EVENT);
+ },
+ removeUCButtonStatusListener: function(callback) {
+   this.removeListener(UC_BUTTON_STATUS_CHANGED_EVENT, callback);
  },
 
 });
