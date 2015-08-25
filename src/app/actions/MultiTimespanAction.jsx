@@ -40,6 +40,15 @@ let MultiTimespanAction = {
          relativeValue: relativeValue,
          compareIndex: compareIndex
     });
+  },
+  handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate){
+    AppDispatcher.dispatch({
+         type: Action.DATETIME_SELECTOR_CHANGE,
+         isOriginalDate: isOriginalDate,
+         compareIndex: compareIndex,
+         startDate: startDate,
+         endDate: endDate
+    });
   }
 };
 module.exports = MultiTimespanAction;

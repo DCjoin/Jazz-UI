@@ -119,7 +119,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     let ft = I18N.DateTimeFormat.IntervalFormat, str,
         dateFormat= CommonFuns.dateFormat;
 
-    str = dateFormat(startDate, ft.FullDay) + ' 到 ' + dateFormat(startDate, ft.FullDay);
+    str = dateFormat(startDate, ft.FullDay) + ' 到 ' + dateFormat(endDate, ft.FullDay);
     return str;
   },
   _initTempRelativeList(){
@@ -282,6 +282,23 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     let me = this;
     me._initTempRelativeList();
     _tempRelativeList = _tempRelativeList.set(compareIndex, me.generateTimespanItem(false, _originalType, relativeValue, null, null, compareIndex));
+  },
+  handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate){
+    let me = this;
+    me._initTempRelativeList();
+
+    if(isOriginalDate){
+      if(_originalType === 'Customerize'){
+        _tempRelativeList.set( 0, me.generateTimespanItem(true, 'Customerize', null, startDate, endDate, null));
+      }else{
+        _originalType = 'Customerize';
+        _tempRelativeList = Immutable.List([]);
+        _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(true, 'Customerize', null, startDate, endDate, null));
+        _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, 'Customerize', null, null, null, 1));
+      }
+    }else{
+      _tempRelativeList.set( compareIndex, me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, compareIndex));
+    }
   }
 });
 MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action) {
@@ -305,6 +322,9 @@ MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action)
         MultipleTimespanStore.handleRelativeValueChange(action.relativeValue, action.compareIndex);
         MultipleTimespanStore.emitChange();
         break;
+      case Action.DATETIME_SELECTOR_CHANGE:
+        MultipleTimespanStore.handleDateTimeSelectorChange(action.isOriginalDate, action.compareIndex, action.startDate, action.endDate);
+        MultipleTimespanStore.emitChange();
     }
 });
 

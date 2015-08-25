@@ -95,7 +95,16 @@ let TimespanItem = React.createClass({
   _onRelativeValueChange(e, selectedIndex, menuItem){
     let me = this;
     MultiTimespanAction.handleRelativeValueChange(menuItem.value, me.props.compareIndex);
-  }
+  },
+  _onDateSelectorChanged(){
+    let me = this;
+    let {isOriginalDate, compareIndex} = this.props;
+    let dateSelector = this.refs.dateTimeSelector,
+        dateRange = dateSelector.getDateTime(),
+        startDate = dateRange.start,
+        endDate = dateRange.end;
+    MultiTimespanAction.handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate);
+  },
 });
 
 let AddIntervalWindow = React.createClass({
