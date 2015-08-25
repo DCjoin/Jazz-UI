@@ -397,6 +397,12 @@ let AnalysisPanel = React.createClass({
       var order = menuItem.value;
       this.setState({order: order});
     },
+    _onCarbonTypeChange(e, selectedIndex, menuItem){
+      var me = this;
+      me.setState({destination: menuItem.value}, ()=>{
+        me.state.chartStrategy.onSearchDataButtonClickFn(me);
+      });
+    },
     _onGetEnergyDataError(){
       let errorObj = this.errorProcess();
       this._onEnergyDataChange(true, errorObj);
