@@ -59,10 +59,13 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       item.title = '对比时间段' + compareIndex;
       item.compareIndex = compareIndex;
 
-      if(relativeValue !== null){
-        let timeregion = CommonFuns.GetDateRegion(relativeType);
+      if(relativeType !== 'Customerize'){
+        let defaultRelativeValue = relativeValue || 1;
+
+        let timeregion = this.getDateByRelativeTypeAndValue(relativeType, defaultRelativeValue);
         let start = timeregion.start;
         let end = timeregion.end;
+
         let dateDescription = this._getDateDescription(start, end);
 
         item.startDate = start;
@@ -71,6 +74,46 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       }
     }
     return Immutable.fromJS(item);
+  },
+  getDateByRelativeTypeAndValue: function (relativeType, relativeValue) {
+    let mainItem =( _tempRelativeList || _relativeList).get(0),
+        mainStart = mainItem.get('startDate'),
+        marinEnd =  mainItem.get('endDate'),
+        dateAdd = CommonFuns.dateAdd,
+        num = relativeValue,
+        start, end;
+
+    switch (relativeType) {
+        case 'Customerize':
+            break;
+        case 'Today':
+        case 'Yesterday':
+            start = dateAdd(mainStart, -1 * num, 'days');
+            end = dateAdd(marinEnd, -1 * num, 'days');
+            break;
+        case 'ThisWeek':
+        case 'LastWeek':
+        case 'Last7Day':
+            start = dateAdd(mainStart, -7 * num, 'days');
+            end = dateAdd(marinEnd, -7 * num, 'days');
+            break;
+        case 'ThisMonth':
+        case 'LastMonth':
+            start = dateAdd(mainStart, -1 * num, 'months');
+            end = dateAdd(marinEnd, -1 * num, 'months');
+            break;
+        case 'Last30Day':
+            start = dateAdd(mainStart, -30 * num, 'days');
+            end = dateAdd(marinEnd, -30 * num, 'days');
+            break;
+        case 'ThisYear':
+        case 'LastYear':
+        case 'Last12Month':
+            start = dateAdd(mainStart, -12 * num, 'months');
+            end = dateAdd(marinEnd, -12 * num, 'months');
+            break;
+    }
+    return {start:start, end: end};
   },
   _getDateDescription(startDate, endDate){
     let ft = I18N.DateTimeFormat.IntervalFormat, str,
@@ -226,7 +269,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
         _tempRelativeList = Immutable.List([]);
         _tempRelativeList = _tempRelativeList.push(mainItem);
       }else{
-          let timeregion = CommonFuns.GetDateRegion(relativeType);
+          let timeregion = CommonFuns.GetDateRegion(relativeType.toLowerCase());
           _tempRelativeList = Immutable.List([]);
           _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(true, relativeType, null, timeregion.start, timeregion.end, null));
       }
