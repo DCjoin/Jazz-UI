@@ -187,12 +187,7 @@ let AnalysisPanel = React.createClass({
       chartSttg.onEnergyTypeChangeFn(e, selectedIndex, menuItem);
     },
     _onStepChange(step){
-      let tagOptions = EnergyStore.getTagOpions(),
-          paramsObj = EnergyStore.getParamsObj(),
-          timeRanges = paramsObj.timeRanges;
-
-      this.setState({step:step});
-      this.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+      this.state.chartStrategy.handleStepChangeFn(this, step);
     },
     _onDateSelectorChanged(){
       this.refs.relativeDate.setState({selectedIndex:0});
