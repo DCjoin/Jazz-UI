@@ -49,6 +49,17 @@ let MultiTimespanAction = {
          startDate: startDate,
          endDate: endDate
     });
+  },
+  clearMultiTimespan(type){
+    AppDispatcher.dispatch({
+         type: Action.CLEAR_MULTI_TIMESPAN,
+         dateType: type
+    });
+  },
+  convert2Stable(){
+    AppDispatcher.dispatch({
+         type: Action.CONVERT_TEMP_TO_STABLE
+    });
   }
 };
 module.exports = MultiTimespanAction;

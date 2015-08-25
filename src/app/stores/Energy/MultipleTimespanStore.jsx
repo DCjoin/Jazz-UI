@@ -16,8 +16,16 @@ let _relativeList = null,
     _tempRelativeList = null;
 
 let MultipleTimespanStore = assign({},PrototypeStore,{
-  reset(){
-     _relativeList = null;
+  clearMultiTimespan(dateType){
+    if(dateType === 'both'){
+       _relativeList = null;
+       _tempRelativeList = null;
+    }else if( dateType === 'mainDate'){
+      _relativeList = null;
+    }else{
+       _tempRelativeList = null;
+    }
+
   },
   initData(originalType, startDate, endDate){
     let me = this;
@@ -299,6 +307,20 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     }else{
       _tempRelativeList.set( compareIndex, me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, compareIndex));
     }
+  },
+  convert2Stable(){
+    _relativeList = _tempRelativeList;
+    _tempRelativeList = null;
+  },
+  getSubmitTimespans(){
+    let timespans = [];
+    let d2j = CommonFuns.DataConverter.DatetimeToJson();
+    _relativeList.forEach((item, index)=>{
+      if(item.get('startDate') && item.get('endDate')){
+        timespans.push({StartTime:d2j(item.get('startDate')), EndTime:d2j(item.get('endDate'))});
+      }
+    });
+    return timespans;
   }
 });
 MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action) {
@@ -325,6 +347,13 @@ MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action)
       case Action.DATETIME_SELECTOR_CHANGE:
         MultipleTimespanStore.handleDateTimeSelectorChange(action.isOriginalDate, action.compareIndex, action.startDate, action.endDate);
         MultipleTimespanStore.emitChange();
+        break;
+      case Action.CLEAR_MULTI_TIMESPAN:
+        MultipleTimespanStore.clearMultiTimespan(action.dateType);
+        break;
+      case Action.CONVERT_TEMP_TO_STABLE:
+        MultipleTimespanStore.convert2Stable();
+        break;
     }
 });
 

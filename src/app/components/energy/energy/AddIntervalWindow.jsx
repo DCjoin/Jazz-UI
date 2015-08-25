@@ -48,6 +48,7 @@ let TimespanItem = React.createClass({
                 <div style={{margin:'auto 10px'}}>之前第</div>
                 {me.wrapDropdownMenu({ menuItems:menuItems,
                                        style:{width:'60px'},
+                                       selectedIndex: Immutable.List(menuItems).findIndex( (item) => {return item.value === me.props.relativeValue;}),
                                        onChange: me._onRelativeValueChange
                                      }, '62px')}
                 <div style={{margin:'auto 10px'}}>{uom}</div>
@@ -110,11 +111,13 @@ let TimespanItem = React.createClass({
 let AddIntervalWindow = React.createClass({
   _onAction(action){
     if(action === 'draw'){
+      MultiTimespanAction.convert2Stable();
+
       if(this.props.onMultipleTimeSubmit){
         this.props.onMultipleTimeSubmit();
       }
     }else{
-
+      MultiTimespanAction.clearMultiTimespan('temp');
     }
     this.props.analysisPanel.setState({showAddIntervalDialog: false});
   },
