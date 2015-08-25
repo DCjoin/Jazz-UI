@@ -431,7 +431,7 @@ let EnergyAction = {
                        };
 
     AppDispatcher.dispatch({
-      type: Action.GET_ENERGY_DATA_LOADING,
+      type: Action.GET_COST_DATA_LOADING,
       submitParams: submitParams,
       selectedList: selectedList,
       relativeDate: relativeDate
@@ -442,14 +442,14 @@ let EnergyAction = {
       commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
-          type: Action.GET_ENERGY_DATA_SUCCESS,
+          type: Action.GET_COST_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
       error: function(err, res){
         AppDispatcher.dispatch({
-          type: Action.GET_ENERGY_DATA_ERROR,
+          type: Action.GET_COST_DATA_ERROR,
           errorText: res.text,
           submitParams: submitParams
         });

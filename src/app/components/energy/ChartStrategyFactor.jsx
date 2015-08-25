@@ -281,7 +281,7 @@ let ChartStrategyFactor = {
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
    },
    handleUnitCostBenchmarkMenuItemClick(analysisPanel,benchmarkOption){
-     let tagOptions = CostStore.getTagOpions(),
+     let tagOptions = CostStore.getSelectedList(),
          paramsObj = CostStore.getParamsObj(),
          timeRanges = paramsObj.timeRanges,
          step = paramsObj.step,
@@ -1550,7 +1550,7 @@ let ChartStrategyFactor = {
      let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
                              {primaryText:'冷暖季', value:'hotColdSeason'}];
 
-     let tagOptions = CostStore.getTagOpions();
+     let tagOptions = CostStore.getSelectedList();
      let benchmarks = CommonFuns.filterBenchmarksByCostSelectedList(tagOptions);
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
