@@ -8,6 +8,7 @@ let { nodeType } = TreeConstants;
 import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import Draggable from 'react-draggable2';
+import dragula from 'react-dragula';
 
 var TreeNodeContent = React.createClass({
   mixins: [Mixins.ClickAwayable],
@@ -55,6 +56,8 @@ var TreeNodeContent = React.createClass({
       this.refs.textField.focus();
     }
 
+
+
   //  FolderStore.addModifyNameErrorListener(this._onModifyNameError);
     },
     componentWillUnmount:function(){
@@ -72,20 +75,6 @@ var TreeNodeContent = React.createClass({
 
 
       },
-      handleStart: function (event, ui) {
-    console.log('Event: ', event);
-    console.log('Position: ', ui.position);
-},
-
-handleDrag: function (event, ui) {
-    console.log('Event: ', event);
-    console.log('Position: ', ui.position);
-},
-
-handleStop: function (event, ui) {
-    console.log('Event: ', event);
-    console.log('Position: ', ui.position);
-},
     render:function(){
       var type = this.props.nodeData.get("Type");
       var isSenderCopy = this.props.nodeData.get("IsSenderCopy");
@@ -122,13 +111,11 @@ handleStop: function (event, ui) {
 
 
       return(
-
-       <div className="tree-node-content" onClick={this._onClick} onBlur={this._onBlur}>
-         {icon}
-         {text}
-         {isSenderCopyIcon}
-       </div>
-
+           <div className="tree-node-content" onClick={this._onClick} onBlur={this._onBlur}>
+                 {icon}
+                 {text}
+                 {isSenderCopyIcon}
+          </div>
       )
 
     }
