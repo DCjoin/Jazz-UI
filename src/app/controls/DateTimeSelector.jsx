@@ -99,6 +99,11 @@ let DateTimeSelector = React.createClass({
       endDate: endDate
     };
   },
+  componentWillReceiveProps(nextProps){
+    if(nextProps.startDate){
+      this.setState({startDate: nextProps.startDate, endDate: nextProps.endDate});
+    }
+  },
   render(){
     var me = this;
     var dateStyle = {
