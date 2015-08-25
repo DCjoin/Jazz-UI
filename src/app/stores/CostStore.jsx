@@ -45,7 +45,7 @@ var CostStore = assign({},PrototypeStore,{
   getParamsObj(){
     return _paramsObj;
   },
-  getSelectedList(){
+  getTagOpions(){
     return _selectedList;
   },
   getChartTitle(){

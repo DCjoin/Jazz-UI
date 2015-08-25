@@ -24,12 +24,6 @@ import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep,
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
-const kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
- {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
- {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
- {value:'UnitBed',text:'单位床位'},{value:'DayNightRatio',text:'昼夜比'},
- {value:'WorkHolidayRatio',text:'公休比'}];
-
 let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
     propTypes:{
@@ -401,11 +395,11 @@ let AnalysisPanel = React.createClass({
       }
     },
     _onRangeChange(e, selectedIndex, menuItem){
-      var range = parseInt(menuItem.value);
+      var range = menuItem.value;
       this.setState({range: range});
     },
     _onOrderChange(e, selectedIndex, menuItem){
-      var order = selectedIndex + 1;
+      var order = menuItem.value;
       this.setState({order: order});
     },
     _onGetEnergyDataError(){
@@ -554,17 +548,33 @@ let AnalysisPanel = React.createClass({
       this.enableKpiTypeButton();
     },
     changeToCustomizedLabel(kpiType){
-      this.setState({kpiTypeValue: kpiType - 1});
+      this.setState({kpiTypeValue: kpiType});
       this.disableKpiTypeButton();
     },
     getKpiText(){
+      var kpiTypeItem = [
+       {value:1,text:'单位人口',name:'UnitPopulation'},
+       {value:2,text:'单位面积',name:'UnitArea'},
+       {value:3,text:'单位供冷面积',name:'UnitColdArea'},
+       {value:4,text:'单位采暖面积',name:'UnitWarmArea'},
+       {value:8,text:'单位客房',name:'UnitRoom'},
+       {value:9,text:'单位已用客房',name:'UnitUsedRoom'},
+       {value:10,text:'单位床位',name:'UnitBed'},
+       {value:11,text:'单位已用床位',name:'UnitUsedBed'},
+       {value:5,text:'昼夜比',name:'DayNightRatio'},
+       {value:6,text:'公休比',name:'WorkHolidayRatio'}];
       var kpiTypeText = "";
       var kpiType = this.state.kpiTypeValue;
-      if(kpiType === 6){
+      if(kpiType === 7){
         kpiTypeText = "指标原值";
       }
       else{
-        kpiTypeText = kpiTypeItem[kpiType].text;
+        kpiTypeItem.forEach(item => {
+          if(item.value === kpiType){
+            kpiTypeText = item.text;
+            return;
+          }
+        });
       }
       return kpiTypeText;
     },
@@ -786,10 +796,10 @@ let AnalysisPanel = React.createClass({
       return viewOption;
     },
     getKpiType: function () {
-      return this.state.kpiTypeValue + 1;
+      return this.state.kpiTypeValue;
     },
-    onChangeKpiType: function(){
-      this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
+    onChangeKpiType: function(e, selectedIndex, menuItem){
+      this.setState({kpiTypeValue: menuItem.value});
     },
     _onConfigBtnItemTouchTap(menuParam, menuItem){
      this.state.chartStrategy.handleConfigBtnItemTouchTapFn(this, menuParam, menuItem);
