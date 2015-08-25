@@ -1590,7 +1590,7 @@ let ChartStrategyFactor = {
      CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.addCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.addCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
-     CommodityStore.addButtonStatusListener(analysisPanel._onTouBtnDisabled);
+     CommodityStore.addECButtonStatusListener(analysisPanel._onTouBtnDisabled);
    },
    carbonBindStoreListeners(analysisPanel){
      CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
@@ -1612,7 +1612,7 @@ let ChartStrategyFactor = {
      CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.addCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.addCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
-     CommodityStore.addButtonStatusListener(analysisPanel._onBaselineBtnDisabled);
+     CommodityStore.addUCButtonStatusListener(analysisPanel._onCostBaselineBtnDisabled);
    },
    unitCarbonBindStoreListeners(analysisPanel){
      CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
@@ -1654,7 +1654,7 @@ let ChartStrategyFactor = {
      CostStore.removeCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.removeCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.removeCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
-     CommodityStore.removeButtonStatusListener(analysisPanel._onTouBtnDisabled);
+     CommodityStore.removeECButtonStatusListener(analysisPanel._onTouBtnDisabled);
    },
 
    unitEnergyUnbindStoreListeners(analysisPanel){
@@ -1669,7 +1669,7 @@ let ChartStrategyFactor = {
      CostStore.removeCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.removeCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.removeCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
-     CommodityStore.removeButtonStatusListener(analysisPanel._onBaselineBtnDisabled);
+     CommodityStore.removeUCButtonStatusListener(analysisPanel._onCostBaselineBtnDisabled);
    },
 
    unitCarbonUnbindStoreListeners(analysisPanel){
