@@ -99,7 +99,8 @@ let ChartStrategyFactor = {
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getChartSubToolbarFn:'getCostSubToolbar',
       getAuxiliaryCompareBtnFn:'getCostAuxiliaryCompareBtn',
-      handleConfigBtnItemTouchTapFn:'handleCostConfigBtnItemTouchTap'
+      handleConfigBtnItemTouchTapFn:'handleCostConfigBtnItemTouchTap',
+      handleStepChangeFn:'handleCostStepChange'
     },
     MultiIntervalDistribution:{
 
@@ -190,7 +191,8 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn:'getUnitCostAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitEnergySubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
-      handleBenchmarkMenuItemClickFn:'handleUnitCostBenchmarkMenuItemClick'
+      handleBenchmarkMenuItemClickFn:'handleUnitCostBenchmarkMenuItemClick',
+      handleStepChangeFn:'handleUnitCostStepChange'
     }, UnitCarbon:{
       searchBarGenFn:'unitCarbonSearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
@@ -256,11 +258,30 @@ let ChartStrategyFactor = {
      analysisPanel.setState({step:step});
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
    },
+   handleCostStepChange(analysisPanel, step){
+     let tagOptions = CostStore.getSelectedList(),
+         paramsObj = CostStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges;
+
+     analysisPanel.setState({step:step});
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
+   },
    handleUnitEnergyStepChange(analysisPanel, step){
      let tagOptions = EnergyStore.getTagOpions(),
          paramsObj = EnergyStore.getParamsObj(),
          timeRanges = paramsObj.timeRanges,
          submitParams = EnergyStore.getSubmitParams(),
+         benchmarkOption = submitParams.benchmarkOption,
+         unitType = submitParams.viewOption.DataOption.UnitType;
+
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
+     analysisPanel.setState({step:step});
+   },
+   handleUnitCostStepChange(analysisPanel, step){
+     let tagOptions = CostStore.getSelectedList(),
+         paramsObj = CostStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         submitParams = CostStore.getSubmitParams(),
          benchmarkOption = submitParams.benchmarkOption,
          unitType = submitParams.viewOption.DataOption.UnitType;
 
@@ -1149,6 +1170,7 @@ let ChartStrategyFactor = {
   },
   labelSearchBarGen(analysisPanel){
     var curYear = (new Date()).getFullYear();
+    var curMonth = (new Date()).getMonth();
     var yearProps = {
       ref: "yearSelector",
       selectedIndex: 10,
@@ -1167,7 +1189,7 @@ let ChartStrategyFactor = {
     return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
-      <DropDownMenu menuItems={monthItem} ref='monthSelector'></DropDownMenu>
+      <DropDownMenu menuItems={monthItem} selectedIndex={curMonth+1} ref='monthSelector'></DropDownMenu>
       </div>
       <div className={'jazz-full-border-dropdownmenu-container'} >
       {labelBtn}
