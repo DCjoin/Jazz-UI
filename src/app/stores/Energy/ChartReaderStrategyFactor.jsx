@@ -25,7 +25,8 @@ let ChartReaderStrategyFactor = {
       convertSingleTimeDataFn:'convertSingleTimeData',
       translateDateFn:'translateDate',
       getSeriesInternalFn:'getSeriesInternal',
-      tagSeriesConstructorFn:'tagSeriesConstructor'
+      tagSeriesConstructorFn:'tagSeriesConstructor',
+      convertMultiTimeDataFn: 'convertMultiTimeData'
     },
     CostTrendReader:{
       convertSingleTimeDataFn:'convertSingleTimeData',
@@ -274,8 +275,121 @@ let ChartReaderStrategyFactor = {
     }
   },
   convertMultiTimeDataFnStrategy:{
-    convertMultiTimeData(){
+    convertMultiTimeData(data, obj, energyStore){
+      if (!data) return;
+        var start = j2d(obj.start),
+            end =  j2d(obj.end),
+            step = obj.step,
+            nav = null, d,
+            navigatorData = data.NavigatorData;
 
+        if (navigatorData && navigatorData.EnergyData && navigatorData.EnergyData.length > 0) {
+            var navArr = [];
+            for (let j = 0; j < navigatorData.EnergyData.length; j++) {
+                d = navigatorData.EnergyData[j];
+                navArr.push([energyStore.readerStrategy.translateDateFn(d.LocalTime, null, step), d.DataValue]);
+            }
+            nav = navArr;
+        }
+
+        var returndata = [];
+        d = data.TargetEnergyData;
+
+        if (d.length < 1) return;
+        CommonFuns.prepareMultiTimeSpanData(data, step);
+
+        var orgintime;
+        for (var i = 0; i < d.length; ++i) {
+            var timeTable = [];
+            var arr = [];
+            var eData = d[i].EnergyData;
+            var t = d[i].Target;
+            var timeRange = t.TimeSpan;
+            var loopStart = j2d(timeRange.StartTime);
+            var loopEnd = j2d(timeRange.EndTime);
+
+            if (step == 1) {
+                for (let j = 0; j < eData.length; j++) {
+                    orgintime = j2d(eData[j].LocalTime);
+                    arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), eData[j].DataValue]);
+                    if (i > 0) {
+                        if (returndata[0].data[j]) {
+                            timeTable.push({
+                                orig: returndata[0].data[j][0],
+                                offset: arr[j][0] - returndata[0].data[j][0]
+                            });
+                            arr[j][0] = returndata[0].data[j][0];
+                        }
+                        else {
+                            arr.pop();
+                        }
+                    }
+                }
+            } else {
+                var navData = data.NavigatorData.EnergyData;
+                if (!navData) return;
+                var standardStart;
+                if (i === 0) {
+                    standardStart = timeRange.StartTime;
+                    for (let j = 0, len = navData.length; j < len; j++) {
+                        orgintime = j2d(navData[j].LocalTime);
+                        arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), navData[j].DataValue]);
+                    }
+                } else {
+                    var timeSpace =  CommonFuns.firstValueTime(timeRange.StartTime, step) - CommonFuns.firstValueTime(standardStart, step);
+                    var stepSpan = CommonFuns.DateComputer.GetStepSpan(timeSpace, step);
+
+                    var xAxisdate;
+                    for (let j = 0, len = navData.length; j < len; j++) {
+                        orgintime = CommonFuns.DateComputer.AddSevralStep(new Date(j2d(navData[j].LocalTime)), step, -stepSpan) - 0;
+                        xAxisdate = energyStore.readerStrategy.translateDateFn(orgintime, null, step);
+                        arr.push([xAxisdate, navData[j].DataValue]);
+
+                        if (returndata[0].data[j]) {
+                            timeTable.push({
+                                orig: xAxisdate,
+                                offset: timeSpace
+                            });
+                        }
+                    }
+                }
+            }
+
+            var uom = t.UomId < 1 ? '' : CommonFuns.getUomById(t.UomId).Code;
+            if (uom == 'null') uom = '';
+            var obj1 = {
+                start: loopStart,
+                end: loopEnd,
+                timeTable: timeTable,
+                uom: uom,
+                step: obj.step
+            };
+            var dStart = new Date(loopStart);
+            dStart.setMinutes(0, 0, 0);
+            var dEnd = new Date(loopEnd);
+            dEnd.setMinutes(0, 0, 0);
+            var startStr = CommonFuns.dateFormat(dStart, 'YYYY-MM-DD HH:mm');
+            var endStr;
+            if (dEnd.getHours() === 0) {
+                dEnd = CommonFuns.dateAdd(dEnd, -1, 'days');//Ext.Date.add(dEnd, Ext.Date.DAY, -1);
+                endStr =  CommonFuns.dateFormat(dEnd, 'YYYY-MM-DD') + ' 24:00';
+            }
+            else {
+                endStr = CommonFuns.dateFormat(dEnd, 'YYYY-MM-DD HH:mm');
+            }
+            returndata.push({
+                name: startStr + "<br/>" + endStr,
+                uid: timeRange.StartTime,
+                option: obj1,
+                data: arr
+            });
+        }
+
+        if (returndata.length > 1) {
+            returndata[0].disableDelete = true;
+        }
+
+        return { Data: returndata, Navigator: nav, Calendar: null };
     }
   },
   translateDateFnStrategy:{
