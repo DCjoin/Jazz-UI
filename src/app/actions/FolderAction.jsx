@@ -117,7 +117,7 @@ let FolderAction = {
         }
     });
   },
-  ModifyFolderReadStatus:function(selectedNode){
+  modifyFolderReadStatus:function(selectedNode){
     Ajax.post('/Dashboard.svc/ModfiyReadingStatus', {
          params: {
            readStatus:true,
@@ -134,7 +134,7 @@ let FolderAction = {
     });
 
   },
-  SendFolderCopy:function(sourceTreeNode,userIds){
+  sendFolderCopy:function(sourceTreeNode,userIds){
     Ajax.post('/Dashboard.svc/SendItemCopy', {
          params: {
            sourceTreeNode:sourceTreeNode.toJSON(),
@@ -149,13 +149,37 @@ let FolderAction = {
         },
     });
   },
-  ShareItemCopy:function(sourceTreeNode,userIds){
+  shareItemCopy:function(sourceTreeNode,userIds){
     Ajax.post('/CollaborativeWidget.svc/ShareCollaborativeWidget', {
          params: {
            widget:sourceTreeNode.toJSON(),
            userIds:userIds
           },
         success: function(userIds){
+        },
+    });
+  },
+  moveItem:function(sourceNode,parentNode,nextNode){
+    Ajax.post('/Dashboard.svc/MoveItem', {
+         params: {
+           sourceItem:sourceNode,
+           desItem:parentNode,
+           nextItem:nextNode
+          },
+        success: function(newNode){
+          AppDispatcher.dispatch({
+            type: Action.MOVE_ITEM,
+            sourceNode:Immutable.fromJS(sourceNode),
+            parentNode: Immutable.fromJS(parentNode),
+            nextNode:Immutable.fromJS(nextNode),
+            newNode:Immutable.fromJS(newNode)
+          });
+        },
+        error: function(err, res){
+          AppDispatcher.dispatch({
+              type: Action.MOVE_ITEM_ERROR,
+              sourceNode:sourceNode
+          });
         },
     });
   },

@@ -9,6 +9,8 @@ import _ from 'lodash';
 import Immutable from 'immutable';
 import {List,includes} from 'immutable';
 import FolderAction from '../../actions/FolderAction.jsx';
+import Draggable from 'react-draggable2';
+import dragula from 'react-dragula';
 
 //import AlarmStore from '../../stores/AlarmStore.jsx';
 //import BubbleIcon from '../../components/BubbleIcon.jsx';
@@ -57,6 +59,9 @@ var TreeNode = React.createClass({
 
     //for copy opertation
     isFolderOperationTree:React.PropTypes.bool,
+
+    putGragulaContainer: React.PropTypes.func,
+    collapsedNodeId:React.PropTypes.number,
   },
 
   getDefaultProps: function () {
@@ -150,7 +155,8 @@ var TreeNode = React.createClass({
   },
   getDefaultCollapsed: function (props) {
     var levelStatus=false,
-        checkedStatus=!this.getDefaultCollapsedBySelectedNode(props);
+        checkedStatus=!this.getDefaultCollapsedBySelectedNode(props),
+        collapseStatus=!(props.nodeData.get('Id')==props.collapsedNodeId);
     if(props.collapsedLevel === 0 ||  props.collapsedLevel){
       levelStatus=props.level > props.collapsedLevel;
     };
@@ -169,10 +175,10 @@ var TreeNode = React.createClass({
         });
       }
     }
-    return(levelStatus && checkedStatus);
+    return(levelStatus && checkedStatus && collapseStatus);
   },
   componentWillReceiveProps:function(nextProps){
-    if(nextProps.selectedNode!=this.props.selectedNode){
+    if(nextProps.selectedNode!=this.props.selectedNode || nextProps.collapsedNodeId!=this.props.collapsedNodeId){
       this.setState({
         collapsed: this.getDefaultCollapsed(nextProps),
         IsSendCopyReaded:this.getDefaultReadStatus(nextProps),
@@ -185,7 +191,7 @@ var TreeNode = React.createClass({
       collapsed: !this.state.collapsed
     });
     if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
-      FolderAction.ModifyFolderReadStatus(this.props.nodeData);
+      FolderAction.modifyFolderReadStatus(this.props.nodeData);
       this.setState({
         IsSendCopyReaded:true
       })
@@ -327,8 +333,11 @@ var TreeNode = React.createClass({
   },
 
   generateNode: function () {
+    var that=this;
     var { nodeData, treeNodeClass, indent, indentUnit, theme } = this.props;
     var treeNodeProps = {
+      ref:'treenode',
+      id:nodeData.get('Id'),
       className: classNames(_.set({
         "tree-node": true,
         "selected": this.isSelected(this.props), // this.state.selected
@@ -341,14 +350,16 @@ var TreeNode = React.createClass({
     };
 
     return (
-      <div {...treeNodeProps}>
-        {this.generateArrow(nodeData.get("Children") && nodeData.get("Children").size > 0)}
+    <div {...treeNodeProps}>
+       {this.generateArrow(nodeData.get("Children") && nodeData.get("Children").size > 0)}
         {this.props.hasCheckBox ? this.generateCheckbox() : null}
-        <div className="content">
-          {this.props.generateNodeConent ? this.props.generateNodeConent(this.props.nodeData,this.state.IsSendCopyReaded) : this.generateNodeConent(this.props.nodeData)}
-        </div>
+       <div className="content">
+        {this.props.generateNodeConent ? this.props.generateNodeConent(this.props.nodeData,this.state.IsSendCopyReaded) : this.generateNodeConent(this.props.nodeData)}
+       </div>
       </div>
-    );
+
+
+  );
   },
 
   generateChildren: function () {
@@ -359,6 +370,7 @@ var TreeNode = React.createClass({
         var nodeProps = assign({}, this.props, {
           key: childNodeData.get("Id"),
           ref: childNodeData.get("Id"),
+          //ref: 'treechildren',
           theme: this.props.theme,
           nodeOriginPaddingLeft: this.props.nodeOriginPaddingLeft,
           indentUnit: this.props.indentUnit,
@@ -380,7 +392,7 @@ var TreeNode = React.createClass({
       });
     }
     return (
-      <div className={classNames({
+      <div ref='treechildren' className={classNames({
           "tree-children": true,
           "collapse"     : this.state.collapsed
         })}>
@@ -388,17 +400,24 @@ var TreeNode = React.createClass({
       </div>
     );
   },
+  componentDidMount:function(){
+    //for Gragula
+    this.props.putGragulaContainer(React.findDOMNode(this));
+  },
 
   render: function () {
     var generateNode=((this.props.isFolderOperationTree && this.props.nodeData.get("Type") == nodeType.Widget)?null:this.generateNode());
     return (
-      <div key={this.props.nodeData.get("Id")} className="pop-tree-node-container">
+
+      <div id={this.props.nodeData.get('Id')} className="pop-tree-node-container">
         {generateNode}
         {this.generateChildren()}
       </div>
+
     );
   }
 
 });
+
 
 module.exports = TreeNode;
