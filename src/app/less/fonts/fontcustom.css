@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_b6b5787f855aebabe3fe63bf3a7ec971.eot");
-  src: url("./fontcustom_b6b5787f855aebabe3fe63bf3a7ec971.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_b6b5787f855aebabe3fe63bf3a7ec971.woff") format("woff"),
-       url("./fontcustom_b6b5787f855aebabe3fe63bf3a7ec971.ttf") format("truetype"),
-       url("./fontcustom_b6b5787f855aebabe3fe63bf3a7ec971.svg#fontcustom") format("svg");
+  src: url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.eot");
+  src: url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.woff") format("woff"),
+       url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.ttf") format("truetype"),
+       url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_b6b5787f855aebabe3fe63bf3a7ec971.svg#fontcustom") format("svg");
+    src: url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.svg#fontcustom") format("svg");
   }
 }
 
@@ -39,6 +39,7 @@
 .icon-capacity:before,
 .icon-cb-close:before,
 .icon-cb-open:before,
+.icon-checked:before,
 .icon-clean:before,
 .icon-close:before,
 .icon-cloud:before,
@@ -48,6 +49,7 @@
 .icon-delete:before,
 .icon-device:before,
 .icon-device-box:before,
+.icon-dimension-node:before,
 .icon-dust-concentration:before,
 .icon-edit:before,
 .icon-energy-consumption:before,
@@ -87,6 +89,7 @@
 .icon-schneider-en:before,
 .icon-search:before,
 .icon-send:before,
+.icon-set-alarm:before,
 .icon-setalarm:before,
 .icon-setting:before,
 .icon-site:before,
@@ -127,6 +130,7 @@
 .icon-capacity:before { content: "\f134"; }
 .icon-cb-close:before { content: "\f10b"; }
 .icon-cb-open:before { content: "\f10c"; }
+.icon-checked:before { content: "\f150"; }
 .icon-clean:before { content: "\f10d"; }
 .icon-close:before { content: "\f10e"; }
 .icon-cloud:before { content: "\f10f"; }
@@ -136,6 +140,7 @@
 .icon-delete:before { content: "\f112"; }
 .icon-device:before { content: "\f113"; }
 .icon-device-box:before { content: "\f114"; }
+.icon-dimension-node:before { content: "\f151"; }
 .icon-dust-concentration:before { content: "\f136"; }
 .icon-edit:before { content: "\f142"; }
 .icon-energy-consumption:before { content: "\f116"; }
@@ -175,6 +180,7 @@
 .icon-schneider-en:before { content: "\f146"; }
 .icon-search:before { content: "\f12c"; }
 .icon-send:before { content: "\f12d"; }
+.icon-set-alarm:before { content: "\f152"; }
 .icon-setalarm:before { content: "\f12e"; }
 .icon-setting:before { content: "\f12f"; }
 .icon-site:before { content: "\f130"; }
