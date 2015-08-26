@@ -9,24 +9,20 @@ import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
+import CostStore from '../../stores/CostStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import RatioStore from '../../stores/RatioStore.jsx';
 import CarbonStore from '../../stores/CarbonStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
+import CommodityStore from '../../stores/CommodityStore.jsx';
 import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
-
-const kpiTypeItem = [{value:'UnitPopulation',text:'单位人口'},{value:'UnitArea',text:'单位面积'},
- {value:'UnitColdArea',text:'单位供冷面积'},{value:'UnitWarmArea',text:'单位采暖面积'},
- {value:'UnitRoom',text:'单位客房'},{value:'UnitUsedRoom',text:'单位已用客房'},
- {value:'UnitBed',text:'单位床位'},{value:'DayNightRatio',text:'昼夜比'},
- {value:'WorkHolidayRatio',text:'公休比'}];
 
 let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
@@ -191,12 +187,7 @@ let AnalysisPanel = React.createClass({
       chartSttg.onEnergyTypeChangeFn(e, selectedIndex, menuItem);
     },
     _onStepChange(step){
-      let tagOptions = EnergyStore.getTagOpions(),
-          paramsObj = EnergyStore.getParamsObj(),
-          timeRanges = paramsObj.timeRanges;
-
-      this.setState({step:step});
-      this.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+      this.state.chartStrategy.handleStepChangeFn(this, step);
     },
     _onDateSelectorChanged(){
       this.refs.relativeDate.setState({selectedIndex:0});
@@ -211,6 +202,19 @@ let AnalysisPanel = React.createClass({
       obj.tagName = tagOption.tagName;
       obj.dashboardOpenImmediately = false;
       obj.tagOption = tagOption;
+      obj.energyData = null;
+
+      this.setState(obj);
+    },
+    _onCostLoadingStatusChange(){
+      let isLoading = CostStore.getLoadingStatus(),
+          paramsObj = CostStore.getParamsObj(),
+          selectedList = CostStore.getSelectedList(),
+          obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      obj.dashboardOpenImmediately = false;
+      obj.selectedList = selectedList;
       obj.energyData = null;
 
       this.setState(obj);
@@ -273,6 +277,22 @@ let AnalysisPanel = React.createClass({
           energyData = EnergyStore.getEnergyData(),
           energyRawData = EnergyStore.getEnergyRawData(),
           paramsObj = assign({},EnergyStore.getParamsObj()),
+          state = { isLoading: isLoading,
+                    energyData: energyData,
+                    energyRawData: energyRawData,
+                    paramsObj: paramsObj,
+                    dashboardOpenImmediately: false};
+      if(isError === true){
+        state.step = null;
+        state.errorObj = errorObj;
+      }
+      this.setState(state);
+    },
+    _onCostDataChange(isError, errorObj){
+      let isLoading = CostStore.getLoadingStatus(),
+          energyData = CostStore.getEnergyData(),
+          energyRawData = CostStore.getEnergyRawData(),
+          paramsObj = assign({},CostStore.getParamsObj()),
           state = { isLoading: isLoading,
                     energyData: energyData,
                     energyRawData: energyRawData,
@@ -370,16 +390,26 @@ let AnalysisPanel = React.createClass({
       }
     },
     _onRangeChange(e, selectedIndex, menuItem){
-      var range = parseInt(menuItem.value);
+      var range = menuItem.value;
       this.setState({range: range});
     },
     _onOrderChange(e, selectedIndex, menuItem){
-      var order = selectedIndex + 1;
+      var order = menuItem.value;
       this.setState({order: order});
+    },
+    _onCarbonTypeChange(e, selectedIndex, menuItem){
+      var me = this;
+      me.setState({destination: menuItem.value}, ()=>{
+        me.state.chartStrategy.onSearchDataButtonClickFn(me);
+      });
     },
     _onGetEnergyDataError(){
       let errorObj = this.errorProcess();
       this._onEnergyDataChange(true, errorObj);
+    },
+    _onGetCostDataError(){
+      let errorObj = this.errorProcess();
+      this._onCostDataChange(true, errorObj);
     },
     _onGetCarbonDataError(){
       let errorObj = this.errorProcess();
@@ -460,6 +490,25 @@ let AnalysisPanel = React.createClass({
           baselineBtnStatus:TagStore.getBaselineBtnDisabled()
       });
     },
+    _onCostBaselineBtnDisabled:function(){
+      this.setState({
+          baselineBtnStatus:CommodityStore.getUCButtonStatus()
+      });
+    },
+    _onTouBtnDisabled:function(){
+      var touBtnStatus = this.state.touBtnStatus;
+      var newStatus = CommodityStore.getECButtonStatus();
+      if(newStatus !== touBtnStatus){
+        this.setState({
+          touBtnStatus: newStatus
+        });
+        if(newStatus && this.state.touBtnSelected){
+          this.setState({
+            touBtnSelected: false
+          });
+        }
+      }
+    },
     _onSearchBtnItemTouchTap(e, child){
       //this.setState({selectedChartType:child.props.value});
       this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
@@ -505,17 +554,33 @@ let AnalysisPanel = React.createClass({
       this.enableKpiTypeButton();
     },
     changeToCustomizedLabel(kpiType){
-      this.setState({kpiTypeValue: kpiType - 1});
+      this.setState({kpiTypeValue: kpiType});
       this.disableKpiTypeButton();
     },
     getKpiText(){
+      var kpiTypeItem = [
+       {value:1,text:'单位人口',name:'UnitPopulation'},
+       {value:2,text:'单位面积',name:'UnitArea'},
+       {value:3,text:'单位供冷面积',name:'UnitColdArea'},
+       {value:4,text:'单位采暖面积',name:'UnitWarmArea'},
+       {value:8,text:'单位客房',name:'UnitRoom'},
+       {value:9,text:'单位已用客房',name:'UnitUsedRoom'},
+       {value:10,text:'单位床位',name:'UnitBed'},
+       {value:11,text:'单位已用床位',name:'UnitUsedBed'},
+       {value:5,text:'昼夜比',name:'DayNightRatio'},
+       {value:6,text:'公休比',name:'WorkHolidayRatio'}];
       var kpiTypeText = "";
       var kpiType = this.state.kpiTypeValue;
-      if(kpiType === 6){
+      if(kpiType === 7){
         kpiTypeText = "指标原值";
       }
       else{
-        kpiTypeText = kpiTypeItem[kpiType].text;
+        kpiTypeItem.forEach(item => {
+          if(item.value === kpiType){
+            kpiTypeText = item.text;
+            return;
+          }
+        });
       }
       return kpiTypeText;
     },
@@ -737,10 +802,10 @@ let AnalysisPanel = React.createClass({
       return viewOption;
     },
     getKpiType: function () {
-      return this.state.kpiTypeValue + 1;
+      return this.state.kpiTypeValue;
     },
-    onChangeKpiType: function(){
-      this.setState({kpiTypeValue: this.refs.kpiType.state.selectedIndex});
+    onChangeKpiType: function(e, selectedIndex, menuItem){
+      this.setState({kpiTypeValue: menuItem.value});
     },
     _onConfigBtnItemTouchTap(menuParam, menuItem){
      this.state.chartStrategy.handleConfigBtnItemTouchTapFn(this, menuParam, menuItem);

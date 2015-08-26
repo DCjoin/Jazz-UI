@@ -1011,6 +1011,17 @@ let CommonFuns = {
 		var benchmarkData = LabelMenuStore.getBenchmarkData();
 		return this.filterBenchmarks(selectedHier, industryData, zoneData, benchmarkData);
 	},
+	filterBenchmarksByCostSelectedList(selectedList){
+		let hierId = selectedList.hierarchyList.hierId;
+		if(!hierId){
+			return null;
+		}
+		let selectedHier = HierarchyStore.findHierItem(HierarchyStore.getData(), hierId);
+		var industryData = LabelMenuStore.getIndustryData();
+		var zoneData = LabelMenuStore.getZoneData();
+		var benchmarkData = LabelMenuStore.getBenchmarkData();
+		return this.filterBenchmarks(selectedHier, industryData, zoneData, benchmarkData);
+	},
 	filterBenchmarks(hierNode, allIndustries, allZones, allBenchmarks){
 		let retArr = [];
 		if (!hierNode ||  hierNode.Type != 2){
