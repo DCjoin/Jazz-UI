@@ -26,6 +26,9 @@ let getCommodityIdsFromList = function(commodityList){
   for(let i=0,len=commodityList.length; i<len; i++){
     commodityIds.push(parseInt(commodityList[i].Id));
   }
+  if(commodityIds[0] === -1){
+    commodityIds = [];
+  }
   return commodityIds;
 };
 
@@ -38,7 +41,7 @@ let EnergyAction = {
     var submitParams = { tagIds:tagIds,
                          viewOption:{ DataUsageType: 4,
                                       IncludeNavigatorData: false,
-                                    //  Step: step,
+                                      Step: 2,
                                       TimeRanges: timeRange
                                     }
                        };
@@ -49,8 +52,12 @@ let EnergyAction = {
          tagOptions: tagOptions,
          relativeDate: relativeDate
     });
+    let path = '/Energy.svc/AggregateTagsData';
+    if(timeRange.length > 1){
+      path = '/Energy.svc/AggregateTimeSpansData';
+    }
 
-    Ajax.post('/Energy.svc/AggregateTagsData', {
+    Ajax.post(path, {
       params:submitParams,
       commonErrorHandling: false,
       success: function(energyData){
@@ -113,9 +120,6 @@ let EnergyAction = {
     var hierarchyNode = selectedList.hierarchyList;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
-    if(commodityIds[0] === -1){
-      commodityIds = [];
-    }
     var submitParams = { commodityIds:commodityIds,
                          viewAssociation:{
                            HierarchyId: hierarchyId
@@ -159,9 +163,6 @@ let EnergyAction = {
     var hierarchyNode = selectedList.hierarchyList;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
-    if(commodityIds[0] === -1){
-      commodityIds = [];
-    }
     var submitParams = { commodityIds:commodityIds,
                          viewAssociation:{
                            HierarchyId: hierarchyId
@@ -205,9 +206,7 @@ let EnergyAction = {
     var hierarchyNode = selectedList.hierarchyList;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
-    if(commodityIds[0] === -1){
-      commodityIds = [];
-    }
+
     var submitParams = { commodityIds:commodityIds,
                          viewAssociation:{
                            HierarchyId: hierarchyId
@@ -251,9 +250,6 @@ let EnergyAction = {
     var hierarchyNode = selectedList.hierarchyList;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
-    if(commodityIds[0] === -1){
-      commodityIds = [];
-    }
     var submitParams = { commodityIds:commodityIds,
                          viewAssociation:{
                            HierarchyId: hierarchyId
@@ -341,6 +337,7 @@ let EnergyAction = {
   getRatioTrendChartData(timeRange, step, tagOptions, ratioType, relativeDate, benchmarkOption){
     var tagIds = getTagIdsFromTagOptions(tagOptions);
     var submitParams = { tagIds:tagIds,
+                         ratioType:ratioType,
                          benchmarkOption: benchmarkOption || null,
                          viewOption:{ DataUsageType: 1,
                                       IncludeNavigatorData: true,
@@ -418,7 +415,52 @@ let EnergyAction = {
       }
     });
   },
+  getUnitCostTrendChartData(timeRange, step, selectedList, unitType, relativeDate, benchmarkOption){
+    var commodityList = selectedList.commodityList;
+    var hierarchyNode = selectedList.hierarchyList;
+    var hierarchyId = hierarchyNode.hierId;
+    var commodityIds = getCommodityIdsFromList(commodityList);
+    var submitParams = { commodityIds:commodityIds,
+                         viewAssociation:{
+                           HierarchyId: hierarchyId
+                         },
+                         benchmarkOption: benchmarkOption || null,
+                         viewOption:{ DataUsageType: 1,
+                                      IncludeNavigatorData: true,
+                                      Step: step,
+                                      TimeRanges: timeRange,
+                                      DataOption:{
+                                        UnitType: unitType
+                                      }
+                                   }
+                       };
 
+    AppDispatcher.dispatch({
+      type: Action.GET_COST_DATA_LOADING,
+      submitParams: submitParams,
+      selectedList: selectedList,
+      relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/GetCostUnitData', {
+      params:submitParams,
+      commonErrorHandling: false,
+      success: function(energyData){
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
+        });
+      }
+    });
+  },
   getLabelChartData(viewOption, tagOptions, benchmarkOption, labelingType){
     var tagIds = getTagIdsFromTagOptions(tagOptions);
 
@@ -454,11 +496,14 @@ let EnergyAction = {
       }
     });
   },
-  getRankTrendChartData(timeRanges, rankType, selectedList, relativeDate){
+  getEnergyRankChartData(timeRanges, rankType, selectedList, relativeDate){
     var commodityList = selectedList.commodityList;
     var hierarchyList = selectedList.hierarchyList;
     var hierarchyIds = getHierarchyIdsFromList(hierarchyList);
-    var commodityIds = getCommodityIdsFromList(commodityList);
+    var commodityIds = [];
+    if(commodityList.Id !== -1){
+      commodityIds.push(commodityList.Id);
+    }
 
     var submitParams = { hierarchyIds:hierarchyIds,
                          commodityIds:commodityIds,
@@ -492,5 +537,88 @@ let EnergyAction = {
       }
     });
   },
+  getCarbonRankChartData(timeRanges, rankType, selectedList, relativeDate, destination){
+    var commodityList = selectedList.commodityList;
+    var hierarchyList = selectedList.hierarchyList;
+    var hierarchyIds = getHierarchyIdsFromList(hierarchyList);
+    var commodityIds = [];
+    if(commodityList.Id !== -1){
+      commodityIds.push(commodityList.Id);
+    }
+
+    var submitParams = { hierarchyIds:hierarchyIds,
+                         destination: destination,
+                         commodityIds:commodityIds,
+                         rankType: rankType,
+                         viewOption:{TimeRanges: timeRanges}
+                       };
+
+    AppDispatcher.dispatch({
+      type: Action.GET_RANK_DATA_LOADING,
+      submitParams: submitParams,
+      selectedList: selectedList,
+      relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/RankingCarbonData', {
+      params:submitParams,
+      commonErrorHandling: false,
+      success: function(energyData){
+        AppDispatcher.dispatch({
+          type: Action.GET_RANK_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+          type: Action.GET_RANK_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
+        });
+      }
+    });
+  },
+  getCostRankChartData(timeRanges, rankType, selectedList, relativeDate, destination){
+    var commodityList = selectedList.commodityList;
+    var hierarchyList = selectedList.hierarchyList;
+    var hierarchyIds = getHierarchyIdsFromList(hierarchyList);
+    var commodityIds = [];
+    if(commodityList.Id !== -1){
+      commodityIds.push(commodityList.Id);
+    }
+
+    var submitParams = { hierarchyIds:hierarchyIds,
+                         commodityIds:commodityIds,
+                         rankType: rankType,
+                         viewOption:{TimeRanges: timeRanges}
+                       };
+
+    AppDispatcher.dispatch({
+      type: Action.GET_RANK_DATA_LOADING,
+      submitParams: submitParams,
+      selectedList: selectedList,
+      relativeDate: relativeDate
+    });
+
+    Ajax.post('/Energy.svc/RankingCostData', {
+      params:submitParams,
+      commonErrorHandling: false,
+      success: function(energyData){
+        AppDispatcher.dispatch({
+          type: Action.GET_RANK_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
+        });
+      },
+      error: function(err, res){
+        AppDispatcher.dispatch({
+          type: Action.GET_RANK_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
+        });
+      }
+    });
+  }
 };
 module.exports = EnergyAction;

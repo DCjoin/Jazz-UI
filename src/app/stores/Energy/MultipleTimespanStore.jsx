@@ -16,8 +16,16 @@ let _relativeList = null,
     _tempRelativeList = null;
 
 let MultipleTimespanStore = assign({},PrototypeStore,{
-  reset(){
-     _relativeList = null;
+  clearMultiTimespan(dateType){
+    if(dateType === 'both'){
+       _relativeList = null;
+       _tempRelativeList = null;
+    }else if( dateType === 'mainDate'){
+      _relativeList = null;
+    }else{
+       _tempRelativeList = null;
+    }
+
   },
   initData(originalType, startDate, endDate){
     let me = this;
@@ -59,10 +67,14 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       item.title = '对比时间段' + compareIndex;
       item.compareIndex = compareIndex;
 
-      if(relativeValue !== null){
-        let timeregion = CommonFuns.GetDateRegion(relativeType);
+      if(relativeType !== 'Customerize'){
+        let defaultRelativeValue = relativeValue || 1;
+        item.relativeValue = defaultRelativeValue;
+
+        let timeregion = this.getDateByRelativeTypeAndValue(relativeType, defaultRelativeValue);
         let start = timeregion.start;
         let end = timeregion.end;
+
         let dateDescription = this._getDateDescription(start, end);
 
         item.startDate = start;
@@ -72,11 +84,51 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     }
     return Immutable.fromJS(item);
   },
+  getDateByRelativeTypeAndValue: function (relativeType, relativeValue) {
+    let mainItem =( _tempRelativeList || _relativeList).get(0),
+        mainStart = mainItem.get('startDate'),
+        marinEnd =  mainItem.get('endDate'),
+        dateAdd = CommonFuns.dateAdd,
+        num = relativeValue,
+        start, end;
+
+    switch (relativeType) {
+        case 'Customerize':
+            break;
+        case 'Today':
+        case 'Yesterday':
+            start = dateAdd(mainStart, -1 * num, 'days');
+            end = dateAdd(marinEnd, -1 * num, 'days');
+            break;
+        case 'ThisWeek':
+        case 'LastWeek':
+        case 'Last7Day':
+            start = dateAdd(mainStart, -7 * num, 'days');
+            end = dateAdd(marinEnd, -7 * num, 'days');
+            break;
+        case 'ThisMonth':
+        case 'LastMonth':
+            start = dateAdd(mainStart, -1 * num, 'months');
+            end = dateAdd(marinEnd, -1 * num, 'months');
+            break;
+        case 'Last30Day':
+            start = dateAdd(mainStart, -30 * num, 'days');
+            end = dateAdd(marinEnd, -30 * num, 'days');
+            break;
+        case 'ThisYear':
+        case 'LastYear':
+        case 'Last12Month':
+            start = dateAdd(mainStart, -12 * num, 'months');
+            end = dateAdd(marinEnd, -12 * num, 'months');
+            break;
+    }
+    return {start:start, end: end};
+  },
   _getDateDescription(startDate, endDate){
     let ft = I18N.DateTimeFormat.IntervalFormat, str,
         dateFormat= CommonFuns.dateFormat;
 
-    str = dateFormat(startDate, ft.FullDay) + ' 到 ' + dateFormat(startDate, ft.FullDay);
+    str = dateFormat(startDate, ft.FullDay) + ' 到 ' + dateFormat(endDate, ft.FullDay);
     return str;
   },
   _initTempRelativeList(){
@@ -87,7 +139,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
   addNewCompareDate(){
     let me = this;
     me._initTempRelativeList();
-    if(_tempRelativeList.size < 4)
+    if(_tempRelativeList.size < 5)
       _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, _originalType, null, null, null, _tempRelativeList.size));
   },
   removeCompareDate(compareIndex){
@@ -226,7 +278,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
         _tempRelativeList = Immutable.List([]);
         _tempRelativeList = _tempRelativeList.push(mainItem);
       }else{
-          let timeregion = CommonFuns.GetDateRegion(relativeType);
+          let timeregion = CommonFuns.GetDateRegion(relativeType.toLowerCase());
           _tempRelativeList = Immutable.List([]);
           _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(true, relativeType, null, timeregion.start, timeregion.end, null));
       }
@@ -239,6 +291,41 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     let me = this;
     me._initTempRelativeList();
     _tempRelativeList = _tempRelativeList.set(compareIndex, me.generateTimespanItem(false, _originalType, relativeValue, null, null, compareIndex));
+  },
+  handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate){
+    let me = this;
+    me._initTempRelativeList();
+
+    if(isOriginalDate){
+      if(_originalType === 'Customerize'){
+        _tempRelativeList.set( 0, me.generateTimespanItem(true, 'Customerize', null, startDate, endDate, null));
+      }else{
+        _originalType = 'Customerize';
+        _tempRelativeList = Immutable.List([]);
+        _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(true, 'Customerize', null, startDate, endDate, null));
+        _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, 'Customerize', null, null, null, 1));
+      }
+    }else{
+      _tempRelativeList.set( compareIndex, me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, compareIndex));
+    }
+  },
+  convert2Stable(){
+    this._initTempRelativeList();
+    _relativeList = _tempRelativeList;
+    _tempRelativeList = null;
+  },
+  getSubmitTimespans(){
+    if(_relativeList === null){
+      return null;
+    }
+    let timespans = [];
+    let d2j = CommonFuns.DataConverter.DatetimeToJson;
+    _relativeList.forEach((item, index)=>{
+      if(item.get('startDate') && item.get('endDate')){
+        timespans.push({StartTime:d2j(item.get('startDate')), EndTime:d2j(item.get('endDate'))});
+      }
+    });
+    return timespans;
   }
 });
 MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action) {
@@ -261,6 +348,16 @@ MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action)
       case Action.RELATIVE_VALUE_CHANGE:
         MultipleTimespanStore.handleRelativeValueChange(action.relativeValue, action.compareIndex);
         MultipleTimespanStore.emitChange();
+        break;
+      case Action.DATETIME_SELECTOR_CHANGE:
+        MultipleTimespanStore.handleDateTimeSelectorChange(action.isOriginalDate, action.compareIndex, action.startDate, action.endDate);
+        MultipleTimespanStore.emitChange();
+        break;
+      case Action.CLEAR_MULTI_TIMESPAN:
+        MultipleTimespanStore.clearMultiTimespan(action.dateType);
+        break;
+      case Action.CONVERT_TEMP_TO_STABLE:
+        MultipleTimespanStore.convert2Stable();
         break;
     }
 });

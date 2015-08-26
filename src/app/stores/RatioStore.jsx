@@ -161,12 +161,12 @@ RatioStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case Action.GET_RATIO_DATA_SUCCESS:
         RatioStore._onDataChanged(action.energyData, action.submitParams);
-        RatioStore.emitRatioDataChange();
+        RatioStore.emitRatioDataLoadedListener();
         break;
       case Action.GET_RATIO_DATA_ERROR:
         RatioStore._onDataChanged(null, action.submitParams);
         RatioStore._initErrorText(action.errorText);
-        RatioStore.emitGetRatioDataErrorListener();
+        RatioStore.emitRatioDataLoadErrorListener();
         break;
     }
 });

@@ -235,12 +235,12 @@ let AnalysisPanel = React.createClass({
     _onRatioLoadingStatusChange(){
       let isLoading = RatioStore.getLoadingStatus(),
           paramsObj = RatioStore.getParamsObj(),
-          commOption = RatioStore.getCommOpions(),
+          ratioOption = RatioStore.getRatioOpions(),
           obj = assign({}, paramsObj);
 
       obj.isLoading = isLoading;
       obj.dashboardOpenImmediately = false;
-      obj.commOption = commOption;
+      obj.ratioOption = ratioOption;
       obj.energyData = null;
 
       this.setState(obj);
@@ -396,6 +396,12 @@ let AnalysisPanel = React.createClass({
     _onOrderChange(e, selectedIndex, menuItem){
       var order = menuItem.value;
       this.setState({order: order});
+    },
+    _onCarbonTypeChange(e, selectedIndex, menuItem){
+      var me = this;
+      me.setState({destination: menuItem.value}, ()=>{
+        me.state.chartStrategy.onSearchDataButtonClickFn(me);
+      });
     },
     _onGetEnergyDataError(){
       let errorObj = this.errorProcess();

@@ -999,9 +999,9 @@ let CommonFuns = {
 			if(hierId === null){
 				hierId = tagOption.hierId;
 				commodityId = tagOption.commodityId;
-			}else if(hierId === tagOption.hierId &&  commodityId === tagOption.commodityId){
+			} else if( hierId === tagOption.hierId && commodityId === tagOption.commodityId){
 				continue;
-			}else{
+			} else{
 				return null;
 			}
 		}
@@ -1105,6 +1105,232 @@ let CommonFuns = {
 				break;
 		}
 		return energyType;
+	},
+/**
+  * Prepare data for multiple time span chart and grid.
+  * @param {Object} data, the EnergyViewDataDto object.
+  * @param {Number} step, indicates AggregationStep.
+  */
+  prepareMultiTimeSpanData: function (data, step) {
+    if (!data || !data.TargetEnergyData || data.TargetEnergyData.length <= 0)
+        return;
+		var j2d = CommonFuns.DataConverter.JsonToDateTime;
+    var hashtable = [];
+    var maxIntervalLength = 0;
+    for (let i = 0; i < data.TargetEnergyData.length; i++) {
+        var hash = {};
+
+        if (data.TargetEnergyData[i].EnergyData !== null && data.TargetEnergyData[i].EnergyData.length > 0)
+            for (var j = 0; j < data.TargetEnergyData[i].EnergyData.length; j++)
+                hash[data.TargetEnergyData[i].EnergyData[j].LocalTime] = j + 1;
+
+        hashtable[i] = hash;
+
+        var length =j2d(data.TargetEnergyData[i].Target.TimeSpan.EndTime) - j2d(data.TargetEnergyData[i].Target.TimeSpan.StartTime);
+        if (length > maxIntervalLength) maxIntervalLength = length;
+    }
+
+    for (let i = 0; i < data.TargetEnergyData.length; i++) {
+        if (data.TargetEnergyData[i].EnergyData === null)
+            data.TargetEnergyData[i].EnergyData = [];
+
+        var target = data.TargetEnergyData[i].Target,
+            energy = data.TargetEnergyData[i].EnergyData,
+            timeRange = target.TimeSpan;
+
+        //get the first time that there should exist a value
+        var keyTime = this.firstValueTime(timeRange.StartTime, step),
+						index = 0,
+						endTime = (keyTime - 0) + maxIntervalLength;
+
+        //if the data sequence does not contain such a time, insert one
+        while ((keyTime - 0) < endTime) {
+            var timeJson ='/Date(' + (keyTime - 0) + ')/',
+								exists = hashtable[i][timeJson];
+
+            if (!exists)
+                energy.splice(index, 0, { DataQuality: null, DataValue: null, LocalTime: timeJson });
+
+            keyTime = CommonFuns.DateComputer.AddStep(keyTime, step);//JazzCommon.DateComputer.AddStep(keyTime, step);
+            index++;
+        }
+    }
+	},
+	firstValueTime: function (startTime, step) {
+    let ticks = parseInt(startTime.substr(6, startTime.length - 8)),
+				time = new Date(ticks),
+				dp = CommonFuns.DateComputer,
+				fixed = dp.FixedTimes;
+
+		let year = time.getFullYear(),
+				month = time.getMonth(),
+				day = time.getDate(),
+				hour = time.getHours();
+    switch (step) {
+        case 0:
+            return new Date(startTime);
+        case 1: //hourly
+            //if it is a int times of hourly ticks, return it
+            //if not, add hourly ticks until it becomes one
+            while (ticks % fixed.hour !== 0) {
+                ticks += fixed.hour;
+            }
+            return new Date(ticks);
+        case 2: //daily
+            //if it is a int times of daily ticks, return it
+            //if not, add hourly ticks until it becomes one
+            while (ticks % fixed.day !== 0) {
+                ticks += fixed.hour;
+            }
+            return new Date(ticks);
+        case 5: //weekly
+            //if it is a int times of daily ticks, return it
+            //if not, add hourly ticks until it becomes one
+            //ticks -= fixed.day * 3;
+            while (ticks % fixed.week != fixed.day * 4) {
+                ticks += fixed.hour;
+            }
+            return new Date(ticks);
+        case 3: //monthly
+            //if it is the first day, 0 hour of this month, return it
+            //if not, return the first day, 0 hour of the next month
+            if (day == 1 && hour + (time.getTimezoneOffset() / 60) === 0)
+                return new Date(ticks);
+            else {
+                let newTime = new Date(year, month, 1, 0, 0, 0, 0);
+                return dp.AddStep(newTime, 3);
+            }
+						break;
+        case 4: //yearly
+            //if it is the first month, first day, 0 hour of this year, return it
+            //if not, return the first month, first day, 0 hour of the next year
+            if (month === 0 && day === 1 && hour + (time.getTimezoneOffset() / 60) === 0)
+                return new Date(ticks);
+            else {
+                let newTime = new Date(year, month, 1, 0, 0, 0, 0);
+                return dp.AddStep(newTime, 4);
+            }
+    }
+	},
+	DateComputer:{
+		FixedTimes: {
+			 millisecond: 1,
+			 second: 1000,
+			 minute: 60 * 1000,
+			 hour: 3600 * 1000,
+			 day: 24 * 3600 * 1000,
+			 week: 7 * 24 * 3600 * 1000,
+			 month: 31 * 24 * 3600 * 1000,
+			 year: 366 * 24 * 3600 * 1000
+	 },
+		AddStep: function (time, step) {
+	      var ticks = time - 0;
+	      switch (step) {
+	          case 1: //hourly, add one hour, this is a fixed value
+	              return new Date(ticks + this.FixedTimes.hour);
+	          case 2: //daily, add one day, this is a fixed value
+	              return new Date(ticks + this.FixedTimes.day);
+	          case 5: //weekly, add one week, this is a fixed value
+	              return new Date(ticks + this.FixedTimes.week);
+	          case 3: //monthly, add one month, this is not a fixed value, need construct
+	              var year = time.getFullYear(), month = time.getMonth(), totalMonths = year * 12 + month + 1;
+	              let newtime1 = new Date(Math.floor(totalMonths / 12), totalMonths % 12, 1, 0, 0, 0, 0);
+	              return new Date(newtime1 - (newtime1.getTimezoneOffset() * 60000));
+	          case 4: //yearly, add one year, this is not a fixed value, need construct
+	              let newtime = new Date(time.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
+	              return new Date(newtime - (newtime.getTimezoneOffset() * 60000));
+	      }
+	  },
+		firstValueTime: function (startTime, step) {
+        var ticks = parseInt(startTime.substr(6, startTime.length - 8)),
+						time = new Date(ticks),
+						dp = CommonFuns.DateComputer,//JazzCommon.DateComputer,
+						fixed = dp.FixedTimes;
+
+				let year = time.getFullYear(),
+								month = time.getMonth(),
+								day = time.getDate(),
+								hour = time.getHours(),
+								date;
+
+        switch (step) {
+            case 0:
+                return new Date(startTime);
+            case 1: //hourly
+                //if it is a int times of hourly ticks, return it
+                //if not, add hourly ticks until it becomes one
+                while (ticks % fixed.hour !== 0) {
+                    ticks += fixed.hour;
+                }
+                return new Date(ticks);
+            case 2: //daily
+                //if it is a int times of daily ticks, return it
+                //if not, add hourly ticks until it becomes one
+                while (ticks % fixed.day !== 0) {
+                    ticks += fixed.hour;
+                }
+                return new Date(ticks);
+            case 5: //weekly
+                //if it is a int times of daily ticks, return it
+                //if not, add hourly ticks until it becomes one
+                //ticks -= fixed.day * 3;
+                while (ticks % fixed.week != fixed.day * 4) {
+                    ticks += fixed.hour;
+                }
+                return new Date(ticks);
+            case 3: //monthly
+                //if it is the first day, 0 hour of this month, return it
+                //if not, return the first day, 0 hour of the next month
+                if (day == 1 && hour + (time.getTimezoneOffset() / 60) === 0)
+                    date = new Date(ticks);
+                else {
+                    let newTime = new Date(year, month, 1, 0, 0, 0, 0);
+                    date = dp.AddStep(newTime, 3);
+                }
+								return date;
+            case 4: //yearly
+                //if it is the first month, first day, 0 hour of this year, return it
+                //if not, return the first month, first day, 0 hour of the next year
+                if (month === 0 && day === 1 && hour + (time.getTimezoneOffset() / 60) === 0)
+                    return new Date(ticks);
+                else {
+                    let newTime = new Date(year, month, 1, 0, 0, 0, 0);
+                    return dp.AddStep(newTime, 4);
+                }
+        }
+    },
+		GetStepSpan: function (ticks, step) {
+
+        switch (step) {
+            case 1: //hourly, add one hour, this is a fixed value
+                return Math.round(ticks / this.FixedTimes.hour);
+            case 2: //daily, add one day, this is a fixed value
+                return Math.round(ticks / this.FixedTimes.day);
+            case 5: //weekly, add one week, this is a fixed value
+                return Math.round(ticks / this.FixedTimes.week);
+            case 3: //monthly, add one month,
+                return Math.round(ticks / this.FixedTimes.month);
+            case 4: //yearly, add one year,
+                return Math.round(ticks / this.FixedTimes.year);
+        }
+    },
+		// number can be minus
+	 AddSevralStep: function (time, step, number) {
+			 var ticks = time - 0;
+			 switch (step) {
+					 case 1: //hourly, add one hour, this is a fixed value
+							 return new Date(ticks + this.FixedTimes.hour * number);
+					 case 2: //daily, add one day, this is a fixed value
+							 return new Date(ticks + this.FixedTimes.day * number);
+					 case 5: //weekly, add one week, this is a fixed value
+							 return new Date(ticks + this.FixedTimes.week * number);
+					 case 3: //monthly, add one month, this is not a fixed value, need construct
+							 var year = time.getFullYear(), month = time.getMonth(), totalMonths = year * 12 + month + number;
+							 return new Date(Math.floor(totalMonths / 12), totalMonths % 12, 1, 0, 0, 0, 0);
+					 case 4: //yearly, add one year, this is not a fixed value, need construct
+							 return new Date(time.getFullYear() + number, 0, 1, 0, 0, 0, 0);
+			 }
+	 }
 	},
 	Regex:{
 		ExcelCell: /[a-z]+\d+/i, //A4,AA66
