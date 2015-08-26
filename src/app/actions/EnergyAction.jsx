@@ -337,6 +337,7 @@ let EnergyAction = {
   getRatioTrendChartData(timeRange, step, tagOptions, ratioType, relativeDate, benchmarkOption){
     var tagIds = getTagIdsFromTagOptions(tagOptions);
     var submitParams = { tagIds:tagIds,
+                         ratioType:ratioType,
                          benchmarkOption: benchmarkOption || null,
                          viewOption:{ DataUsageType: 1,
                                       IncludeNavigatorData: true,

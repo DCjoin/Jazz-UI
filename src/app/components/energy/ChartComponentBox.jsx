@@ -359,7 +359,7 @@ let ChartComponentBox = React.createClass({
           chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
           break;
         case 'Ratio':
-
+          chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
           break;
         case 'Labelling':
 
