@@ -41,7 +41,7 @@ let EnergyAction = {
     var submitParams = { tagIds:tagIds,
                          viewOption:{ DataUsageType: 4,
                                       IncludeNavigatorData: false,
-                                    //  Step: step,
+                                      Step: 2,
                                       TimeRanges: timeRange
                                     }
                        };
@@ -52,8 +52,12 @@ let EnergyAction = {
          tagOptions: tagOptions,
          relativeDate: relativeDate
     });
+    let path = '/Energy.svc/AggregateTagsData';
+    if(timeRange.length > 1){
+      path = '/Energy.svc/AggregateTimeSpansData';
+    }
 
-    Ajax.post('/Energy.svc/AggregateTagsData', {
+    Ajax.post(path, {
       params:submitParams,
       commonErrorHandling: false,
       success: function(energyData){
