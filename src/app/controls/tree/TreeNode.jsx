@@ -9,7 +9,6 @@ import _ from 'lodash';
 import Immutable from 'immutable';
 import {List,includes} from 'immutable';
 import FolderAction from '../../actions/FolderAction.jsx';
-import Draggable from 'react-draggable2';
 import dragula from 'react-dragula';
 
 //import AlarmStore from '../../stores/AlarmStore.jsx';

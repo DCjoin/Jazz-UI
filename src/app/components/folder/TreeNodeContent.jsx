@@ -7,8 +7,6 @@ import classNames from 'classnames';
 let { nodeType } = TreeConstants;
 import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
-import Draggable from 'react-draggable2';
-import dragula from 'react-dragula';
 
 var TreeNodeContent = React.createClass({
   mixins: [Mixins.ClickAwayable],
@@ -55,14 +53,6 @@ var TreeNodeContent = React.createClass({
         if(this.props.nodeData.get('Id')<-1){
       this.refs.textField.focus();
     }
-
-
-
-  //  FolderStore.addModifyNameErrorListener(this._onModifyNameError);
-    },
-    componentWillUnmount:function(){
-
-  //  FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
     },
     componentClickAway:function(){
       this.setState({
