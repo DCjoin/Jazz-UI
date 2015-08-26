@@ -7,6 +7,8 @@ import classNames from 'classnames';
 let { nodeType } = TreeConstants;
 import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
+import Draggable from 'react-draggable2';
+import dragula from 'react-dragula';
 
 var TreeNodeContent = React.createClass({
   mixins: [Mixins.ClickAwayable],
@@ -24,7 +26,7 @@ var TreeNodeContent = React.createClass({
       }
 
       if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
-        FolderAction.ModifyFolderReadStatus(this.props.nodeData);
+        FolderAction.modifyFolderReadStatus(this.props.nodeData);
         this.setState({
           readStatus:false
         });
@@ -37,11 +39,6 @@ var TreeNodeContent = React.createClass({
       });
     },
 
-    _onModifyNameError:function(){
-      this.setState({
-        text:this.props.nodeData.get("Name"),
-      });
-    },
     getInitialState:function(){
       return{
         isSelect:(this.props.nodeData.get('Id')==this.props.selectedNode.get('Id')),
@@ -49,16 +46,23 @@ var TreeNodeContent = React.createClass({
         readStatus:true
       };
     },
+    componentWillReceiveProps:function(nextProps){
+      this.setState({
+        text:nextProps.nodeData.get("Name"),
+      })
+    },
     componentDidMount:function(){
         if(this.props.nodeData.get('Id')<-1){
       this.refs.textField.focus();
     }
 
-    FolderStore.addModifyNameErrorListener(this._onModifyNameError);
+
+
+  //  FolderStore.addModifyNameErrorListener(this._onModifyNameError);
     },
     componentWillUnmount:function(){
 
-    FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
+  //  FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
     },
     componentClickAway:function(){
       this.setState({
@@ -107,11 +111,11 @@ var TreeNodeContent = React.createClass({
 
 
       return(
-        <div className="tree-node-content" onClick={this._onClick} onBlur={this._onBlur}>
-          {icon}
-          {text}
-          {isSenderCopyIcon}
-        </div>
+           <div className="tree-node-content" onClick={this._onClick} onBlur={this._onBlur}>
+                 {icon}
+                 {text}
+                 {isSenderCopyIcon}
+          </div>
       )
 
     }

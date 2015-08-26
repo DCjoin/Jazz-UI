@@ -13,6 +13,8 @@ module.exports = {
       DELETE_ITEM:null,
       DELETE_ITEM_ERROR:null,
       SEND_ITEM:null,
+      MOVE_ITEM:null,
+      MOVE_ITEM_ERROR:null,
       MODIFY_NODE_READ_STATUS:null
   })
 

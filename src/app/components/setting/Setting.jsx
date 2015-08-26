@@ -57,6 +57,17 @@ let Setting = React.createClass({
     });
     this.refs.snackbar.show();
   },
+  _onMoveItemSuccess:function(){
+    this.setState({
+      errorText:null
+    });
+  },
+  _onMoveItemError:function(){
+    this.setState({
+      errorText:FolderStore.getMoveItemError()
+    });
+    this.refs.snackbar.show();
+  },
   _onSendStatusChange:function(){
     this.setState({
       errorText:FolderStore.getSendStatus()
@@ -157,12 +168,16 @@ componentDidMount:function(){
   FolderStore.addModifyNameErrorListener(this._onModifyNameError);
   FolderStore.addSendStatusListener(this._onSendStatusChange);
   FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
+  FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
+  FolderStore.addMoveItemErrorListener(this._onMoveItemError);
 },
 componentWillUnmount:function(){
   FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
   FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
   FolderStore.removeSendStatusListener(this._onSendStatusChange);
   FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
+  FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
+  FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
 },
 render: function () {
     let me = this;
@@ -195,6 +210,7 @@ render: function () {
         {mainPanel}
         {rightPanel}
         {operation}
+
         <Snackbar ref='snackbar' message={this.state.errorText}/>
       </div>
     );
