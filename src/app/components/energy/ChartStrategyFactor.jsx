@@ -742,12 +742,25 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      if(chartType ==='line' || chartType === 'column' || chartType === 'stack'){
         analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
-     }else if(chartType === 'pie'){
-        let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
-     }else if(chartType === 'rawdata'){
-       let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-       analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
+     }else{
+       let timeRanges;
+       if(nodeOptions.length > 1){
+         MultiTimespanAction.clearMultiTimespan('both');
+         timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+       }else{
+         timeRanges = MultipleTimespanStore.getSubmitTimespans();
+         if(timeRanges === null){
+           timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+         }
+
+         if(chartType === 'pie'){
+            //let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+            analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+         }else if(chartType === 'rawdata'){
+           //let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+           analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
+         }
+       }
      }
    },
    onCostSearchDataButtonClick(analysisPanel){
@@ -981,7 +994,7 @@ let ChartStrategyFactor = {
          timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
        }
      }
-     
+
      let step = analysisPanel.state.step,
          limitInterval = CommonFuns.getLimitInterval(timeRanges),
          stepList = limitInterval.stepList;
