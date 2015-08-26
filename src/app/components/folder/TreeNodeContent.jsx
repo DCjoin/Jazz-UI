@@ -26,7 +26,7 @@ var TreeNodeContent = React.createClass({
       }
 
       if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
-        FolderAction.ModifyFolderReadStatus(this.props.nodeData);
+        FolderAction.modifyFolderReadStatus(this.props.nodeData);
         this.setState({
           readStatus:false
         });

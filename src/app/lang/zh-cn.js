@@ -512,6 +512,7 @@ I18N.Folder.Copy = {};
 I18N.Folder.Copy.Title = '复制{0}';
 I18N.Folder.Copy.Label = '{0}名称';
 I18N.Folder.Copy.firstActionLabel = '复制';
+I18N.Folder.Copy.Error = '该名称已存在';
 
 I18N.Folder.SaveAs = {};
 I18N.Folder.SaveAs.Title = '图表另存为';
@@ -522,6 +523,8 @@ I18N.Folder.Send = {};
 I18N.Folder.Send.Success = '{0}发送成功';
 I18N.Folder.Send.Error = '{0}发送失败，无法发送给用户：{1}。';
 
+I18N.Folder.Drag = {};
+I18N.Folder.Drag.Error = '名称为“{0}”的{1}已存在，无法完成拖拽。';
 
 I18N.Folder.Detail={};
 I18N.Folder.Detail.SubTitile='来自{0}';

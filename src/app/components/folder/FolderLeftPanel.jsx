@@ -125,6 +125,27 @@ var PanelContainer = React.createClass({
       selectedNode:FolderStore.getSelectedNode()
     })
   },
+  _onGragulaNode:function(targetId,sourceId,pass){
+    var targetNode=FolderStore.getNodeById(parseInt(targetId)),
+        sourceNode=FolderStore.getNodeById(parseInt(sourceId)),
+        parentNode=FolderStore.getParent(targetNode);
+    if(!pass){
+      FolderAction.moveItem(sourceNode.toJSON(),targetNode.toJSON(),null)
+    }
+    else {
+      FolderAction.moveItem(sourceNode.toJSON(),parentNode.toJSON(),targetNode.toJSON())
+    }
+    this.setState({
+        isLoading:true,
+    })
+  },
+  _onMoveItemChange:function(){
+    this.setState({
+      isLoading:false,
+      allNode:FolderStore.getFolderTree(),
+      selectedNode:FolderStore.getSelectedNode()
+    });
+  },
   componentDidMount: function() {
 
     FolderStore.addFolderTreeListener(this._onFolderTreeChange);
@@ -136,6 +157,7 @@ var PanelContainer = React.createClass({
     FolderStore.addModifyNameSuccessListener(this._onModifyName);
     FolderStore.addModifyNameErrorListener(this._onModifyName);
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
+    FolderStore.addMoveItemSuccessListener(this._onMoveItemChange);
 
   },
   componentWillUnmount:function(){
@@ -148,6 +170,7 @@ var PanelContainer = React.createClass({
     FolderStore.removeModifyNameSuccessListener(this._onModifyName);
     FolderStore.removeModifyNameErrorListener(this._onModifyName);
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
+    FolderStore.removeMoveItemSuccessListener(this._onMoveItemChange);
 
   },
   render:function(){
@@ -174,7 +197,8 @@ var PanelContainer = React.createClass({
         allDisabled:false,
         generateNodeConent:this.generateNodeConent,
         onSelectNode:this._onSelectNode,
-        selectedNode:this.state.selectedNode
+        selectedNode:this.state.selectedNode,
+        onGragulaNode:this._onGragulaNode
       };
 
 

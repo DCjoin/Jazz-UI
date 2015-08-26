@@ -15,6 +15,29 @@ var CopyView = React.createClass({
   _onCopyItem:function(destNode,newName){
     FolderAction.copyItem(this.props.copyNode,destNode,newName);
   },
+  _onCopyItemError:function(){
+    this.setState({
+      errorText:I18N.Folder.Copy.Error
+    });
+  },
+  _onCopyItemSuccess:function(){
+    this.setState({
+      errorText:null
+    });
+  },
+  componentDidMount:function(){
+    FolderStore.addCopyItemErrorListener(this._onCopyItemError);
+    FolderStore.addCopyItemSuccessListener(this._onCopyItemSuccess);
+  },
+  componentWillUnmount:function(){
+    FolderStore.removeCopyItemErrorListener(this._onCopyItemError);
+    FolderStore.removeCopyItemSuccessListener(this._onCopyItemSuccess);
+  },
+  getInitialState:function(){
+    return{
+      errorText:null
+    }
+  },
   render:function(){
     var title,label;
    if(this.props.copyNode.get('Type')==nodeType.Folder){
@@ -32,8 +55,9 @@ var CopyView = React.createClass({
       firstActionLabel:I18N.Folder.Copy.firstActionLabel,//复制 or 保存
       treeNode:FolderStore.getParent(this.props.copyNode),
       onFirstActionTouchTap:this._onCopyItem,
-      onDismiss:this.props.onDismiss
-    }
+      onDismiss:this.props.onDismiss,
+      errorText:this.state.errorText
+    };
 
     return(
       <Copy {...Props}/>

@@ -191,7 +191,7 @@ var TreeNode = React.createClass({
       collapsed: !this.state.collapsed
     });
     if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
-      FolderAction.ModifyFolderReadStatus(this.props.nodeData);
+      FolderAction.modifyFolderReadStatus(this.props.nodeData);
       this.setState({
         IsSendCopyReaded:true
       })
@@ -409,10 +409,8 @@ var TreeNode = React.createClass({
     var generateNode=((this.props.isFolderOperationTree && this.props.nodeData.get("Type") == nodeType.Widget)?null:this.generateNode());
     return (
 
-      <div key={this.props.nodeData.get("Id")} className="pop-tree-node-container">
-
-            {generateNode}
-
+      <div id={this.props.nodeData.get('Id')} className="pop-tree-node-container">
+        {generateNode}
         {this.generateChildren()}
       </div>
 
@@ -420,20 +418,6 @@ var TreeNode = React.createClass({
   }
 
 });
-function constrain (snap) {
-  function constrainOffset (offset, prev) {
-    var delta = offset - prev;
-    if (Math.abs(delta) >= snap) {
-      return prev + parseInt(delta / snap, 10) * snap;
-    }
-    return prev;
-  }
-  return function (pos) {
-    return {
-      top: constrainOffset(pos.top, pos.prevTop),
-      left: constrainOffset(pos.left, pos.prevLeft)
-    };
-  };
-}
+
 
 module.exports = TreeNode;

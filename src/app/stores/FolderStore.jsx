@@ -24,7 +24,9 @@ let FOLDER_TREE_EVENT = 'foldertree',
     COPY_ITEM_ERROR_EVENT='copyitemerror',
     DELETE_ITEM_SUCCESS_EVENT='deleteitemsuccess',
     SEND_STATUS_EVENT='sendstatus',
-    SELECTED_NODE_EVENT='selectednode';
+    SELECTED_NODE_EVENT='selectednode',
+    MOVE_ITEM_SUCCESS_EVENT='moveitemsuccess',
+    MOVE_ITEM_ERROR_EVENT='moveitemerror';
 
 var FolderStore = assign({},PrototypeStore,{
 
@@ -36,20 +38,22 @@ var FolderStore = assign({},PrototypeStore,{
     return _folderTree
   },
   getNewNode:function(){
-    return _newNode
+    return _newNode;
   },
-  getNodeById:function(parent){
-    var that=this;
-    if(parent.get("Id") == _parentId){
-      return parent;
-    }
-    else{
-      if(parent.Children){
-        parent.Children.forEach(item=>{
-          that.getNodeById(item);
-        });
+  getNodeById:function(id){
+    var node;
+    var f=function(item){
+      if(item.get('Id')==id){
+        node=item;
       }
-    }
+      else {
+        if(item.get('Children')){
+          item.get('Children').forEach(child=>{f(child)})
+        }
+      }
+    };
+    f(_folderTree);
+    return node;
   },
   getParent:function(node){
     var parent;
@@ -64,7 +68,7 @@ var FolderStore = assign({},PrototypeStore,{
       }
     };
     f(_folderTree);
-    return parent
+    return parent;
   },
   modifyTreebyNode:function(node){
     var that=this;
@@ -155,6 +159,27 @@ var FolderStore = assign({},PrototypeStore,{
       _folderTree=this.modifyTreebyNode(_folderTree);
       _selectedNode=newNode;
   },
+  insertItem:function(nextItem,newNode){
+    var parent=this.getParent(nextItem);
+    var children=parent.get('Children');
+    var index=children.indexOf(nextItem);
+    var pre=children.filter((item,i)=>(i<index)),
+        next=children.filter((item,i)=>(i>=index));
+    var temp=pre.push(newNode).concat(next);
+      parent=parent.set('Children',temp);
+      _parentId=parent.get('Id');
+      _changedNode=parent;
+      if(newNode.get('Type')==6){
+        let subFolderCount =  _changedNode.get('ChildFolderCount')+1;
+         _changedNode=_changedNode.set('ChildFolderCount',subFolderCount);
+      }
+      else {
+        let subWidgetCount  =  _changedNode.get('ChildWidgetCount')+1;
+         _changedNode=_changedNode.set('ChildWidgetCount',subWidgetCount );
+      }
+      _folderTree=this.modifyTreebyNode(_folderTree);
+      _selectedNode=newNode;
+  },
   deleteItem:function(deleteNode){
     //如果左边选中的是一个widget，在右边执行删除后，左边焦点项下移
     var parent=this.getParent(deleteNode);
@@ -208,6 +233,18 @@ var FolderStore = assign({},PrototypeStore,{
             break;
     }
     return error;
+  },
+  setMoveItemError:function(node){
+    _errorName=node.get('Name');
+    if(node.get('Type')==6) {
+      _errorType=I18N.Folder.FolderName;
+    }
+    else {
+      _errorType=I18N.Folder.WidgetName;
+    }
+  },
+  getMoveItemError:function(){
+    return I18N.format(I18N.Folder.Drag.Error,_errorName,_errorType);
   },
   setSelectedNode:function(selectedNode){
     _selectedNode=selectedNode;
@@ -276,6 +313,15 @@ var FolderStore = assign({},PrototypeStore,{
   },
   getSendStatus:function(){
     return _sendStatus;
+  },
+  moveItem:function(sourceNode,parentNode,nextNode,newNode){
+    this.deleteItem(sourceNode);
+    if(nextNode==null){
+      this.copyItem(parentNode,newNode);
+    }
+    else {
+      this.insertItem(nextNode,newNode);
+    }
   },
   emitFolderTreeChange: function() {
               this.emit(FOLDER_TREE_EVENT);
@@ -351,6 +397,26 @@ var FolderStore = assign({},PrototypeStore,{
       this.removeListener(DELETE_ITEM_SUCCESS_EVENT, callback);
       this.dispose();
   },
+  emitMoveItemSuccessChange: function() {
+          this.emit(MOVE_ITEM_SUCCESS_EVENT);
+        },
+  addMoveItemSuccessListener: function(callback) {
+        this.on(MOVE_ITEM_SUCCESS_EVENT, callback);
+        },
+  removeMoveItemSuccessListener: function(callback) {
+      this.removeListener(MOVE_ITEM_SUCCESS_EVENT, callback);
+      this.dispose();
+  },
+  emitMoveItemErrorChange: function() {
+          this.emit(MOVE_ITEM_ERROR_EVENT);
+        },
+  addMoveItemErrorListener: function(callback) {
+        this.on(MOVE_ITEM_ERROR_EVENT, callback);
+        },
+  removeMoveItemErrorListener: function(callback) {
+      this.removeListener(MOVE_ITEM_ERROR_EVENT, callback);
+      this.dispose();
+  },
   emitSendStatusChange: function() {
           this.emit(SEND_STATUS_EVENT);
         },
@@ -414,6 +480,18 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.SEND_ITEM:
         FolderStore.setSendStatus(action.sourceTreeNode,action.userIds);
         FolderStore.emitSendStatusChange();
+      break;
+    case FolderAction.MOVE_ITEM:
+        FolderStore.moveItem(action.sourceNode,action.parentNode,action.nextNode,action.newNode);
+        FolderStore.emitMoveItemSuccessChange();
+      break;
+    case FolderAction.MOVE_ITEM_ERROR:
+        FolderStore.setMoveItemError(action.sourceNode);
+        FolderStore.emitMoveItemErrorChange();
+         FolderStore.emitSelectedNodeChange();
+      break;
+    case FolderAction.COPY_ITEM_ERROR:
+        FolderStore.emitCopyItemErrorChange();
       break;
   }
 });

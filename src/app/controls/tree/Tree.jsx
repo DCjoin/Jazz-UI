@@ -11,37 +11,16 @@ import TreeNode from './TreeNode.jsx';
 
 import dragula from 'react-dragula';
 var lastOver=null,
-    timeoutHandel=null;
+    lastContainer=null,
+    timeoutHandel=null,
+    pass=true;
 
 
 var drake=dragula({
-  isContainer: function (el) {
-    return false; // only elements in drake.containers will be taken into account
-  },
-  moves: function (el, source, handle) {
-    console.log("moves");
-    console.log(el);
-    console.log(source);
-    console.log(handle);
-    return true; // elements are always draggable by default
-  },
-  accepts: function (el, target, source, sibling) {
-    console.log("accepts");
-    console.log(el);
-    console.log(target);
-    console.log(source);
-    console.log(sibling);
-    return true; // elements can be dropped in any of the `containers` by default
-  },
-  invalid: function (el, target) { // don't prevent any drags from initiating by default
-    console.log("invalid");
-    return false;
-  },
   direction: 'vertical',         // Y axis is considered when determining where an element would be dropped
   copy: false,                   // elements are moved by default, not copied
   revertOnSpill: false,          // spilling will put the element back where it was dragged from, if this is true
   removeOnSpill: false,          // spilling will `.remove` the element, if this is true
-  mirrorContainer: document.body // set the element that gets mirror elements appended
 });
 
 var Tree = React.createClass({
@@ -89,6 +68,7 @@ var Tree = React.createClass({
     generateNodeConent: React.PropTypes.func,
     //for copy operation
     isFolderOperationTree:React.PropTypes.bool,
+    onGragulaNode:React.PropTypes.func,
   },
   getInitialState:function(){
     return{
@@ -132,52 +112,56 @@ var Tree = React.createClass({
   putGragulaContainer:function(container){
     drake.containers.push(container);
   },
-  _onDrag:function(){
-    console.log("_onDrag");
-  },
+
   _onDrop:function(el, target, source){
-    console.log("_onDrop");
-    console.log(el);
-    console.log(target);
-    console.log(source);
+    this.props.onGragulaNode(target.id,source.id,pass);
     clearTimeout(timeoutHandel);
+    pass=true;
   },
-  _onRemove:function(){
-    console.log("_onRemove");
-  },
+
   _onShadow:function(el, container){
-    console.log("_onShadow");
-    console.log(el);
-    console.log(container);
-    if(lastOver!==null){
-      lastOver.style.backgroundColor='transparent';
+    // console.log("_onShadow");
+    // console.log(el);
+    // console.log(container);
+    if(container.children[0].id==el.id){
+      lastOver=container.children[1];
     }
-    lastOver=container.children[1];
-    lastOver.style.backgroundColor='#f2f2f2';
-    if(timeoutHandel!==null){
+    else {
+      lastOver=container.children[0];
+    }
+    if(lastContainer!=container){
+      pass=false;
+    }
+    else {
+      pass=!pass;
+    }
+  //  console.log("_onShadow_pass"+pass);
+
+    if(pass){
+      el.style.backgroundColor='#f2f2f2';
+      lastOver.style.backgroundColor='transparent';
       clearTimeout(timeoutHandel);
     }
+    else {
+      lastOver.style.backgroundColor='#f2f2f2';
+    }
+    //  console.log(lastOver);
     timeoutHandel=setTimeout(()=>{
-      console.log("_onShadow_setTimeout");
+    //  console.log("_onShadow_setTimeout");
+      pass=true;
     this.setState({
       collapsedNodeId:parseInt(lastOver.id)
     });
-  },1000);
+  },2000000);
+  lastContainer=container;
   },
-  _onOver:function(el, container, source){
 
-    console.log("_onOver");
-    console.log(el);
-    console.log(container);
-    console.log(source);
-  },
   componentDidMount:function(){
     lastOver=null;
-    drake.on('drag',this._onDrag);
+    pass=false;
     drake.on('drop',this._onDrop);
-    drake.on('remove',this._onRemove);
     drake.on('shadow',this._onShadow);
-    drake.on('over',this._onOver);
+
   },
   render: function () {
     var dataSource = this.compatibleJSON(this.props.allNode);
