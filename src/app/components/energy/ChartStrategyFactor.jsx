@@ -1559,7 +1559,7 @@ let ChartStrategyFactor = {
 
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText="历史对比" value='history'/>
+       <MenuItem primaryText="历史对比" value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuDivider />
        <MenuItem primaryText="数据求和" value='sum'/>
