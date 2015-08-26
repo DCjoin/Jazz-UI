@@ -13,30 +13,46 @@ var ViewableDatePicker = React.createClass({
     mixins:[ClickAwayable],
     propTypes: {
         isViewStatus: React.PropTypes.bool,
-        defaultValue: React.PropTypes.object,
+        defaultValue: React.PropTypes.object,//date
+        defaultTime: React.PropTypes.number,
         minDate: React.PropTypes.object,
         maxDate: React.PropTypes.object,
-        dateFormatStr: React.PropTypes.string
+        dateFormatStr: React.PropTypes.string,
+        showTime: React.PropTypes.bool,
+        timeType: React.PropTypes.number
     },
 
     getDefaultProps: function(){
       return {
-        dateFormatStr: "YYYY年MM月DD日"
+        dateFormatStr: "YYYY/MM/DD/",
+        timeType: 0,
+        defaultTime: 0,
+        showTime: false
       };
     },
 
     getInitialState: function() {
         return {
             curDate: this.props.defaultValue,
+            curTime: this.props.defaultTime,
             showCalendar:false
         };
     },
     componentWillReceiveProps: function(nextProps) {
+      if(this.props.defaultValue !== nextProps.defaultValue){
         this.setState({curDate:nextProps.defaultValue});
+      }
+      if(this.props.defaultTime !== nextProps.defaultTime){
+        this.setState({curTime:nextProps.defaultTime});
+      }
     },
     shouldComponentUpdate: function(nextProps, nextState) {
         if(this.props.isViewStatus == nextProps.isViewStatus &&
-            this.state.curDate == nextProps.defaultValue && this.state.curDate == nextState.curDate && this.state.showCalendar == nextState.showCalendar  ){
+            this.state.curDate == nextProps.defaultValue &&
+            this.state.curDate == nextState.curDate &&
+            this.state.curTime == nextProps.defaultTime &&
+            this.state.curTime == nextState.curTime &&
+            this.state.showCalendar == nextState.showCalendar  ){
                 return false;
             }
             return true;
@@ -57,6 +73,12 @@ var ViewableDatePicker = React.createClass({
           this.props.onChange(this, date);
         }
     },
+    _onSelctedTime(time){
+      this.setState({curTime:time});
+      if(this.props.onSelectedTime){
+        this.props.onSelectedTime(this, time);
+      }
+    },
     _handleChange: function(date1, date2){
         if(!!date2){
             this.setState({ curDate: date2 });
@@ -73,6 +95,14 @@ var ViewableDatePicker = React.createClass({
     setValue: function(value){
       this.setState({curDate: value});
     },
+    getTime: function(){
+        if(this.props.showTime){
+            return this.state.curTime;
+        }
+    },
+    setTime: function(value){
+      this.setState({curTime: value});
+    },
     _onFocus(e){
          e.stopPropagation();
          e.preventDefault();
@@ -84,7 +114,10 @@ var ViewableDatePicker = React.createClass({
         //this.setState({showCalendar:false});
     },
     _clearTime:function(){
-      this.setState({curDate:''});
+      this.setState({
+        curDate:'',
+        curTime:this.props.timeType
+      });
     },
     _formatDate(date){
         if(date){
@@ -139,9 +172,14 @@ var ViewableDatePicker = React.createClass({
           datePicker = (<TextField {...inputProps} ref="TextField"/>);
           if(this.state.showCalendar){
           calendar=(<div style={{position:'absolute',"zIndex":99,width:"320px",marginTop:'2px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}><Calendar
+                dateFormatStr={this.props.dateFormatStr}
                 ref="calendar"
                 onSelectedDate={this._onSelectedDate}
+                onSelectedTime={this._onSelectedTime}
                 initialDate={moment(this.state.curDate||new Date()).toDate()}
+                initialTime={this.state.curTime||this.props.timeType}
+                showTime={this.props.showTime}
+                timeType={this.props.timeType}
                 minDate= {minDate}
                 maxDate = {maxDate}
                  /></div>);

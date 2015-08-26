@@ -4,7 +4,7 @@ import React from 'react';
 import {Mixins,Styles,ClearFix,StylePropable,EnhancedButton,FlatButton} from 'material-ui';
 
 
-let MonthButton = React.createClass({
+let ItemButton = React.createClass({
 
   mixins: [StylePropable],
 
@@ -13,7 +13,7 @@ let MonthButton = React.createClass({
   },
 
   propTypes: {
-    month: React.PropTypes.object,
+    item: React.PropTypes.object,
     onTouchTap: React.PropTypes.func,
     selected: React.PropTypes.bool
   },
@@ -34,7 +34,7 @@ let MonthButton = React.createClass({
   },
   render() {
     let {
-      month,
+      item,
       onTouchTap,
       selected
     } = this.props;
@@ -76,7 +76,7 @@ let MonthButton = React.createClass({
       styles.buttonState.transform = 'scale(1)';
     }
 
-    return this.props.month ? (
+    return this.props.item ? (
       <EnhancedButton
         style={styles.root}
         hoverStyle={styles.hover}
@@ -88,7 +88,7 @@ let MonthButton = React.createClass({
         onTouchTap={this._handleTouchTap}
         onKeyboardFocus={this._handleKeyboardFocus}>
         <div style={styles.buttonState} />
-        <span style={styles.label}>{this.props.month.text}</span>
+        <span style={styles.label}>{this.props.item.text}</span>
       </EnhancedButton>
     ) : (
       <span style={styles.root} />
@@ -104,13 +104,13 @@ let MonthButton = React.createClass({
   },
 
   _handleTouchTap(e) {
-    if (this.props.onTouchTap) this.props.onTouchTap(e, this.props.month);
+    if (this.props.onTouchTap) this.props.onTouchTap(e, this.props.item);
   },
 
   _handleKeyboardFocus(e, keyboardFocused) {
-    if (this.props.onKeyboardFocus) this.props.onKeyboardFocus(e, keyboardFocused, this.props.month);
+    if (this.props.onKeyboardFocus) this.props.onKeyboardFocus(e, keyboardFocused, this.props.item);
   },
 
 });
 
-module.exports = MonthButton;
+module.exports = ItemButton;
