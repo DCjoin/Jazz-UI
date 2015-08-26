@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import classNames from 'classnames';
-import {Paper,Menu,Paper,Mixins} from 'material-ui';
+import {Paper,Menu,Mixins} from 'material-ui';
 import {nodeType} from '../../constants/TreeConstants.jsx';
 
 let treeMap=new Array();

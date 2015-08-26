@@ -25,7 +25,8 @@ let ChartReaderStrategyFactor = {
       convertSingleTimeDataFn:'convertSingleTimeData',
       translateDateFn:'translateDate',
       getSeriesInternalFn:'getSeriesInternal',
-      tagSeriesConstructorFn:'tagSeriesConstructor'
+      tagSeriesConstructorFn:'tagSeriesConstructor',
+      convertMultiTimeDataFn: 'convertMultiTimeData'
     },
     CostTrendReader:{
       convertSingleTimeDataFn:'convertSingleTimeData',
@@ -40,8 +41,10 @@ let ChartReaderStrategyFactor = {
       tagSeriesConstructorFn:'carbonSeriesConstructor'
     },
     EnergyPieReader:{
-      baseReader:'pieReaderBase',
-      setItemByTargetFn:'setItemByTarget'
+      setItemByTargetFn:'setItemByTarget',
+      convertSingleTimeDataFn:'convertPieSingleTimeData',
+      convertMultiTimeDataFn:'convertPieMultiTimeData',
+      setItemByTargetFn4MultiplespanFn:'setItemByTarget4MultiTimespanPie'
     },
     CostPieReader:{
       baseReader:'pieReaderBase',
@@ -167,308 +170,521 @@ let ChartReaderStrategyFactor = {
        return result;
     }
   },
+  setItemByTargetFn4MultiplespanFnStrategy:{
+    setItemByTarget4MultiTimespanPie(item, target, idx) {
+        var j2d = CommonFuns.DataConverter.JsonToDateTime,
+            f = CommonFuns.dateFormat,
+            span = target.TimeSpan,
+            start = j2d(span.StartTime),
+            end = j2d(span.EndTime),
+            fs = 'YYYY-MM-DD HH:mm',
+            dateAdd = CommonFuns.dateAdd,
+            startStr = f(new Date(start), fs),
+            endStr = f(new Date(end), fs);
+        if (new Date(end).getHours() === 0) {
+            endStr = f(dateAdd(new Date(end), -1, 'days'), 'YYYY-MM-DD') + ' 24:00';
+        }
+        item.name =  startStr + '<br/>' + endStr;
+        item.option = { start: start, end: end };
+        if (idx === 0) {
+            item.disableDelete = true;
+        }
+    }
+  },
   setItemByTargetFnStrategy:{
     setItemByTarget(item, target){
       item.name = target.Name;
       item.uid = target.TargetId;
       item.option = {};
-    },
-    setCarbonItemByTarget(item, target){
-        if (target.Type == 13 || target.Type == 14) {
-            if (target.Type == 13) {
-                item.name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
-                item.disableDelete = true;
-            }
-            else if (target.Type == 14) {
-                item.name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
-                item.disableDelete = true;
-            }
-        } else {
-            //item.name = REM.Commodity[target.CommodityId].Comment;
-            item.name = target.CommodityId < 1 ? I18N.EM.Total/*总览*/ : CommonFuns.getCommodityById(target.CommodityId).Comment;
-        }
-
-        item.option = { CommodityId: target.CommodityId };
-        item.uid = target.CommodityId;
-    },
-    setCostItemByTarget(item, target){
-      var name = '';
-      if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
-        if (target.Type === 6) {
-          name = I18N.EM.Plain/*'平时'*/;
-        }
-        else if (target.Type === 7) {
-          name = I18N.EM.Peak/*'峰时'*/;
-        }
-        else {
-          name = I18N.EM.Valley/*'谷时'*/;
-        }
-        item.name = name;
-        item.option = { CommodityId: target.CommodityId };
-        item.uid = target.CommodityId;
-        item.disableDelete = true;
+  },
+  setCarbonItemByTarget(item, target){
+      if (target.Type == 13 || target.Type == 14) {
+          if (target.Type == 13) {
+              item.name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
+              item.disableDelete = true;
+          }
+          else if (target.Type == 14) {
+              item.name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
+              item.disableDelete = true;
+          }
+      } else {
+          //item.name = REM.Commodity[target.CommodityId].Comment;
+          item.name = target.CommodityId < 1 ? I18N.EM.Total/*总览*/ : CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
-      else if (target.Type === 13 || target.Type === 14) {
-        if (target.Type === 13) {
-          item.name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
-          item.disableDelete = true;
-        }
-        else if (target.Type === 14) {
-          item.name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
-          item.disableDelete = true;
-        }
-        item.option = { CommodityId: target.CommodityId };
-        item.uid = target.CommodityId;
+
+      item.option = { CommodityId: target.CommodityId };
+      item.uid = target.CommodityId;
+  },
+  setCostItemByTarget(item, target){
+    var name = '';
+    if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
+      if (target.Type === 6) {
+        name = I18N.EM.Plain/*'平时'*/;
+      }
+      else if (target.Type === 7) {
+        name = I18N.EM.Peak/*'峰时'*/;
       }
       else {
-        item.name = target.CommodityId < 1 ? I18N.EM.Total/*总览*/ : CommonFuns.getCommodityById(target.CommodityId).Comment;
-        item.option = { CommodityId: target.CommodityId };
-        item.uid = target.CommodityId;
+        name = I18N.EM.Valley/*'谷时'*/;
       }
+      item.name = name;
+      item.option = { CommodityId: target.CommodityId };
+      item.uid = target.CommodityId;
+      item.disableDelete = true;
     }
-  },
-  convertSingleTimeDataFnStrategy:{
-    convertSingleTimeData(data, obj, energyStore){
-      if (!data) return;
-      var start = j2d(obj.start);
-      var end = j2d(obj.end);
-      var step = obj.step;
-      var nav = null, d, date;
-      var navigatorData = data.NavigatorData;
-      var energyData, localTime;
-      var earliestTime = Number.MAX_VALUE;//2000 年1月1日
+    else if (target.Type === 13 || target.Type === 14) {
+      if (target.Type === 13) {
+        item.name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
+        item.disableDelete = true;
+      }
+      else if (target.Type === 14) {
+        item.name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
+        item.disableDelete = true;
+      }
+      item.option = { CommodityId: target.CommodityId };
+      item.uid = target.CommodityId;
+    }
+    else {
+      item.name = target.CommodityId < 1 ? I18N.EM.Total/*总览*/ : CommonFuns.getCommodityById(target.CommodityId).Comment;
+      item.option = { CommodityId: target.CommodityId };
+      item.uid = target.CommodityId;
+    }
+  }
+},
+convertSingleTimeDataFnStrategy:{
+  convertSingleTimeData(data, obj, energyStore){
+    if (!data) return;
+    var start = j2d(obj.start);
+    var end = j2d(obj.end);
+    var step = obj.step;
+    var nav = null, d, date;
+    var navigatorData = data.NavigatorData;
+    var energyData, localTime;
+    var earliestTime = Number.MAX_VALUE;//2000 年1月1日
 
-      if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
-          for (var i = 0, len = data.TargetEnergyData.length; i < len; i++) {
-              energyData = data.TargetEnergyData[i].EnergyData;
-              if (energyData && energyData.length > 0) {
-                  localTime = j2d(energyData[0].LocalTime);
-                  if ( localTime < earliestTime) {
-                      earliestTime = localTime;
+    if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
+        for (var i = 0, len = data.TargetEnergyData.length; i < len; i++) {
+            energyData = data.TargetEnergyData[i].EnergyData;
+            if (energyData && energyData.length > 0) {
+                localTime = j2d(energyData[0].LocalTime);
+                if ( localTime < earliestTime) {
+                    earliestTime = localTime;
+                }
+            }
+        }
+    }
+
+    if (navigatorData && navigatorData.EnergyData && navigatorData.EnergyData.length > 0) {
+        var arr = [];
+        if (j2d(navigatorData.EnergyData[0].LocalTime) != earliestTime) {
+            arr.push([energyStore.readerStrategy.translateDateFn(earliestTime, null, step), null]);
+        }
+        for (var j = 0; j < navigatorData.EnergyData.length; j++) {
+            d = navigatorData.EnergyData[j];
+            arr.push([energyStore.readerStrategy.translateDateFn(d.LocalTime, null, step), d.DataValue]);
+        }
+        nav = arr;
+    } else {
+        nav = [[earliestTime,null]];
+    }
+
+    var calendar = data.Calendars && data.Calendars.length > 0 ? data.Calendars : null;
+
+    if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
+        d = energyStore.readerStrategy.getSeriesInternalFn( energyStore, data.TargetEnergyData, energyStore.readerStrategy.tagSeriesConstructorFn, undefined, step, start, end);
+    }
+
+    return { Data: d, Navigator: nav, Calendar: calendar };
+  },
+  convertPieSingleTimeData(data, obj){
+    if (!data) return;
+       var d = data.TargetEnergyData,
+           bizDelegator = obj.bizDelegator;
+
+       if (!d) return {};
+
+       var arr = [], uom, t, item;
+       for (var i = 0; i < d.length; ++i) {
+           t = d[i].Target;
+           item = {};
+           this.setItemByTargetFn(item, t, i);
+           if (!item.option) item.option = {};
+           if (t.Uom) {
+               uom = t.Uom;
+           }
+           else {
+               uom = t.UomId < 1 ? '' : CommonFuns.getUomById(t.UomId).Code;
+           }
+           if (uom == 'null') uom = '';
+           item.option.uom = uom;
+           item.y = d[i].EnergyData.length > 0 ? d[i].EnergyData[0].DataValue : 0;
+
+           if (t.Type == 13 || t.Type == 14) {
+               item.disableDelete = true;
+           }
+           if (item.y === null || item.y === 'null') item.y = 0;
+           var seriesState = !bizDelegator ? undefined : bizDelegator.getInitialSeriesState(t, i);
+           if (!!seriesState) {
+               seriesState.applyToSeriesConfig(item);
+           }
+           arr.push(item);
+       }
+
+       return { Data: arr };
+  }
+},
+convertMultiTimeDataFnStrategy:{
+  convertMultiTimeData(data, obj, energyStore){
+    if (!data) return;
+      var start = j2d(obj.start),
+          end =  j2d(obj.end),
+          step = obj.step,
+          nav = null, d,
+          navigatorData = data.NavigatorData;
+
+      if (navigatorData && navigatorData.EnergyData && navigatorData.EnergyData.length > 0) {
+          var navArr = [];
+          for (let j = 0; j < navigatorData.EnergyData.length; j++) {
+              d = navigatorData.EnergyData[j];
+              navArr.push([energyStore.readerStrategy.translateDateFn(d.LocalTime, null, step), d.DataValue]);
+          }
+          nav = navArr;
+      }
+
+      var returndata = [];
+      d = data.TargetEnergyData;
+
+      if (d.length < 1) return;
+      CommonFuns.prepareMultiTimeSpanData(data, step);
+
+      var orgintime;
+      for (var i = 0; i < d.length; ++i) {
+          var timeTable = [];
+          var arr = [];
+          var eData = d[i].EnergyData;
+          var t = d[i].Target;
+          var timeRange = t.TimeSpan;
+          var loopStart = j2d(timeRange.StartTime);
+          var loopEnd = j2d(timeRange.EndTime);
+
+          if (step == 1) {
+              for (let j = 0; j < eData.length; j++) {
+                  orgintime = j2d(eData[j].LocalTime);
+                  arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), eData[j].DataValue]);
+                  if (i > 0) {
+                      if (returndata[0].data[j]) {
+                          timeTable.push({
+                              orig: returndata[0].data[j][0],
+                              offset: arr[j][0] - returndata[0].data[j][0]
+                          });
+                          arr[j][0] = returndata[0].data[j][0];
+                      }
+                      else {
+                          arr.pop();
+                      }
+                  }
+              }
+          } else {
+              var navData = data.NavigatorData.EnergyData;
+              if (!navData) return;
+              var standardStart;
+              if (i === 0) {
+                  standardStart = timeRange.StartTime;
+                  for (let j = 0, len = navData.length; j < len; j++) {
+                      orgintime = j2d(navData[j].LocalTime);
+                      arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), navData[j].DataValue]);
+                  }
+              } else {
+                  var timeSpace =  CommonFuns.firstValueTime(timeRange.StartTime, step) - CommonFuns.firstValueTime(standardStart, step);
+                  var stepSpan = CommonFuns.DateComputer.GetStepSpan(timeSpace, step);
+
+                  var xAxisdate;
+                  for (let j = 0, len = navData.length; j < len; j++) {
+                      orgintime = CommonFuns.DateComputer.AddSevralStep(new Date(j2d(navData[j].LocalTime)), step, -stepSpan) - 0;
+                      xAxisdate = energyStore.readerStrategy.translateDateFn(orgintime, null, step);
+                      arr.push([xAxisdate, navData[j].DataValue]);
+
+                      if (returndata[0].data[j]) {
+                          timeTable.push({
+                              orig: xAxisdate,
+                              offset: timeSpace
+                          });
+                      }
                   }
               }
           }
-      }
 
-      if (navigatorData && navigatorData.EnergyData && navigatorData.EnergyData.length > 0) {
-          var arr = [];
-          if (j2d(navigatorData.EnergyData[0].LocalTime) != earliestTime) {
-              arr.push([energyStore.readerStrategy.translateDateFn(earliestTime, null, step), null]);
-          }
-          for (var j = 0; j < navigatorData.EnergyData.length; j++) {
-              d = navigatorData.EnergyData[j];
-              arr.push([energyStore.readerStrategy.translateDateFn(d.LocalTime, null, step), d.DataValue]);
-          }
-          nav = arr;
-      } else {
-          nav = [[earliestTime,null]];
-      }
-
-      var calendar = data.Calendars && data.Calendars.length > 0 ? data.Calendars : null;
-
-      if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
-          d = energyStore.readerStrategy.getSeriesInternalFn( energyStore, data.TargetEnergyData, energyStore.readerStrategy.tagSeriesConstructorFn, undefined, step, start, end);
-      }
-
-      return { Data: d, Navigator: nav, Calendar: calendar };
-    }
-  },
-  convertMultiTimeDataFnStrategy:{
-    convertMultiTimeData(){
-
-    }
-  },
-  translateDateFnStrategy:{
-    translateDate(val, s, targetStep){
-      var step = targetStep,
-          sign = CommonFuns.isNumber(s)? s : 1,
-          date = moment(CommonFuns.isNumber(val) ? val : j2d(val)),
-          newDate;
-      switch (step) {
-          case 0: //raw
-              //newDate = date;
-              newDate = date.add(-7.5 * sign, 'minutes');
-              break;
-          case 1: //hour add 30mins
-              newDate = date.add(-30 * sign, 'minutes');
-              break;
-          case 2: //day add 12hours
-              newDate = date.add(-12 * sign, 'hours');
-              break;
-          case 3: //month add 15days
-              newDate = date.add(-15 * sign, 'days');
-              break;
-          case 4: //2010年 add 6months
-              newDate = date.add(-6 * sign, 'months');
-              break;
-          case 5: //week add 3days&12hours
-              newDate = date.add(-4 * sign, 'days');
-              newDate = newDate.add(12 * sign, 'hours');
-              break;
-          case 6: //15mins
-              newDate = date.add( -7.5 * sign, 'minutes');
-              break;
-          case 7: //30mins
-              newDate = date.add(-15 * sign, 'minutes');
-              break;
-      }
-
-      return j2d(d2j(newDate._d));
-    }
-  },
-  getSeriesInternalFnStrategy:{
-    getSeriesInternal(energyStore, data, seriesConstructorFn, setter, step, start, end){
-      var ret = [], eData, t, arr, series, obj, uom='null';
-      for (var i = 0; i < data.length; i++) {
-          arr = [];
-          series = data[i];
-          if (series.EnergyData) {
-              for (var j = 0; j < series.EnergyData.length; j++) {
-                  eData = series.EnergyData[j];
-                  arr.push([energyStore.readerStrategy.translateDateFn(eData.LocalTime, null, step), eData.DataValue]);
-              }
-          }
-          obj = seriesConstructorFn(series.Target);
-          if (!obj) continue;
-          if (!obj.option) obj.option = {};
-          t = series.Target;
-          if (t.Uom) {
-              uom = t.Uom;
-          }
+          var uom = t.UomId < 1 ? '' : CommonFuns.getUomById(t.UomId).Code;
           if (uom == 'null') uom = '';
-          obj.option = assign(obj.option, {
-              start: start,
-              end: end,
-              step: step,
-              targetStep: t.Step,
+          var obj1 = {
+              start: loopStart,
+              end: loopEnd,
+              timeTable: timeTable,
               uom: uom,
-              uomId: t.UomId
+              step: obj.step
+          };
+          var dStart = new Date(loopStart);
+          dStart.setMinutes(0, 0, 0);
+          var dEnd = new Date(loopEnd);
+          dEnd.setMinutes(0, 0, 0);
+          var startStr = CommonFuns.dateFormat(dStart, 'YYYY-MM-DD HH:mm');
+          var endStr;
+          if (dEnd.getHours() === 0) {
+              dEnd = CommonFuns.dateAdd(dEnd, -1, 'days');//Ext.Date.add(dEnd, Ext.Date.DAY, -1);
+              endStr =  CommonFuns.dateFormat(dEnd, 'YYYY-MM-DD') + ' 24:00';
+          }
+          else {
+              endStr = CommonFuns.dateFormat(dEnd, 'YYYY-MM-DD HH:mm');
+          }
+          returndata.push({
+              name: startStr + "<br/>" + endStr,
+              uid: timeRange.StartTime,
+              option: obj1,
+              data: arr
           });
-          obj.data = arr;
-          if (setter) {
-              setter(series.Target, obj);
-          }
-
-          ret.push(obj);
       }
-      return ret;
-    }
+
+      if (returndata.length > 1) {
+          returndata[0].disableDelete = true;
+      }
+
+      return { Data: returndata, Navigator: nav, Calendar: null };
   },
-  tagSeriesConstructorFnStrategy:{
-    tagSeriesConstructor(target){
-      var obj = {
-          dType: target.Type,
-          name: target.Name,
-          uid: target.TargetId,
-          option: { commodityId: target.CommodityId }
-      };
-      var name = target.Name || '';
+  convertPieMultiTimeData(data, obj){
+    var timeRanges = obj.timeRanges, returnDatas;
 
-      switch (target.Type) {
-          case 11:
-              obj.name = name + I18N.EM.Ratio.CaculateValue;
-              break;
-          case 12:
-              obj.name = name + I18N.EM.Ratio.RawValue;
-              obj.disableDelete = true;
-              break;
-          case 13:
-              obj.name = name /*+ I18N.EM.Ratio.TargetValue*/;
-              obj.disableDelete = true;
-              break;
-          case 14:
-              obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
-              obj.disableDelete = true;
-              break;
-          default:
-              break;
-      }
-      return obj;
-    },
-    carbonSeriesConstructor(target){
-      var obj = {
-          dType: target.Type,
-          name: target.Name,
-          uid: target.TargetId,
-          option: { commodityId: target.CommodityId }
-      };
-      var name = target.Name || '';
+      if (!timeRanges || timeRanges.length <= 1) {
+          returnDatas = this.callParent(arguments);
+      } else {
+          if (!data) return;
+          var d = data.TargetEnergyData;
+          if (!d) return {};
 
-      switch (target.Type) {
-          case 11:
-              obj.name = name + I18N.EM.Ratio.CaculateValue;
-              break;
-          case 12:
-              obj.name = name + I18N.EM.Ratio.RawValue;
-              obj.disableDelete = true;
-              break;
-          case 13:
-              obj.name = name /*+ I18N.EM.Ratio.TargetValue*/;
-              obj.disableDelete = true;
-              break;
-          case 14:
-              obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
-              obj.disableDelete = true;
-              break;
-          default:
-              break;
+          var arr = [], uom, t, item;
+          for (var j = 0; j < timeRanges.length; j++) {
+              var timeRange = timeRanges[j];
+              t = undefined;
+              for (var i = 0; i < d.length; ++i) {
+                  if (!d[i].Target) continue;
+                  if (timeRange.StartTime == d[i].Target.TimeSpan.StartTime && timeRange.EndTime == d[i].Target.TimeSpan.EndTime) {
+                      t = d[i].Target;
+                      break;
+                  }
+              }
+              item = {};
+              this.setItemByTargetFn4MultiplespanFn(item, t, i);
+              item.uid = timeRange.StartTime + '-' + timeRange.EndTime;
+              if (!item.option) item.option = {};
+              if (t.Uom) {
+                  uom = t.Uom;
+              }
+              else {
+                  uom = t.UomId < 1 ? '' :CommonFuns.getUomById(t.UomId).Code;
+              }
+              if (uom == 'null') uom = '';
+              item.option.uom = uom;
+              item.y = null;
+              item.y = (d[i].EnergyData && d[i].EnergyData.length > 0) ? d[i].EnergyData[0].DataValue : 0;
+              if (item.y === null || item.y === 'null') item.y = 0;
+              arr.push(item);
+          }
+          returnDatas = { Data: arr };
       }
-      return obj;
-    },
-    costTagSeriesConstructor(target){
-      var name;
-      if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
-          if (target.Type === 6) {
-              name = I18N.EM.Plain/*'平时'*/;
-          }
-          else if (target.Type === 7) {
-              name = I18N.EM.Peak/*'峰时'*/;
-          }
-          else {
-              name = I18N.EM.Valley/*'谷时'*/;
-          }
-          return {
-              uom: CommonFuns.getUomById(1).Code,
-              name: name,
-              disableHide: true,
-              disableDelete: true,
-              uid: target.CommodityId
-          };
-      }
-      else if (target.Type === 13 || target.Type === 14 ) {
-          if (target.Type === 13) {
-              name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
-          }
-          else if (target.Type === 14) {
-              name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
-          }
-          return {
-              uom: CommonFuns.getUomById(1).Code,
-              name: name,
-              disableHide: true,
-              disableDelete: true,
-              uid: target.CommodityId
-          };
-      }
-      else {
-          var disableDelete = false;
-          if (target.CommodityId < 1) {
-              name = I18N.EM.Total/*'总览'*/;
-              disableDelete = true;
-          }
-          else {
-              name = CommonFuns.getCommodityById(target.CommodityId).Comment;
-          }
 
-          var uom = target.UomId < 1 ? '' : CommonFuns.getUomById(target.UomId).Code;
-          return {
-              dType: target.Type,
-              uom: uom,
-              name: name,
-              disableDelete: disableDelete,
-              uid: target.CommodityId,
-              option: { CommodityId: target.CommodityId }
-          };
+      return returnDatas;
+  }
+},
+translateDateFnStrategy:{
+  translateDate(val, s, targetStep){
+    var step = targetStep,
+        sign = CommonFuns.isNumber(s)? s : 1,
+        date = moment(CommonFuns.isNumber(val) ? val : j2d(val)),
+        newDate;
+    switch (step) {
+        case 0: //raw
+            //newDate = date;
+            newDate = date.add(-7.5 * sign, 'minutes');
+            break;
+        case 1: //hour add 30mins
+            newDate = date.add(-30 * sign, 'minutes');
+            break;
+        case 2: //day add 12hours
+            newDate = date.add(-12 * sign, 'hours');
+            break;
+        case 3: //month add 15days
+            newDate = date.add(-15 * sign, 'days');
+            break;
+        case 4: //2010年 add 6months
+            newDate = date.add(-6 * sign, 'months');
+            break;
+        case 5: //week add 3days&12hours
+            newDate = date.add(-4 * sign, 'days');
+            newDate = newDate.add(12 * sign, 'hours');
+            break;
+        case 6: //15mins
+            newDate = date.add( -7.5 * sign, 'minutes');
+            break;
+        case 7: //30mins
+            newDate = date.add(-15 * sign, 'minutes');
+            break;
+    }
+
+    return j2d(d2j(newDate._d));
+  }
+},
+getSeriesInternalFnStrategy:{
+  getSeriesInternal(energyStore, data, seriesConstructorFn, setter, step, start, end){
+    var ret = [], eData, t, arr, series, obj, uom='null';
+    for (var i = 0; i < data.length; i++) {
+        arr = [];
+        series = data[i];
+        if (series.EnergyData) {
+            for (var j = 0; j < series.EnergyData.length; j++) {
+                eData = series.EnergyData[j];
+                arr.push([energyStore.readerStrategy.translateDateFn(eData.LocalTime, null, step), eData.DataValue]);
+            }
+        }
+        obj = seriesConstructorFn(series.Target);
+        if (!obj) continue;
+        if (!obj.option) obj.option = {};
+        t = series.Target;
+        if (t.Uom) {
+            uom = t.Uom;
+        }
+        if (uom == 'null') uom = '';
+        obj.option = assign(obj.option, {
+            start: start,
+            end: end,
+            step: step,
+            targetStep: t.Step,
+            uom: uom,
+            uomId: t.UomId
+        });
+        obj.data = arr;
+        if (setter) {
+            setter(series.Target, obj);
+        }
+
+        ret.push(obj);
+    }
+    return ret;
+  }
+},
+tagSeriesConstructorFnStrategy:{
+  tagSeriesConstructor(target){
+    var obj = {
+        dType: target.Type,
+        name: target.Name,
+        uid: target.TargetId,
+        option: { commodityId: target.CommodityId }
+    };
+    var name = target.Name || '';
+
+    switch (target.Type) {
+        case 11:
+            obj.name = name + I18N.EM.Ratio.CaculateValue;
+            break;
+        case 12:
+            obj.name = name + I18N.EM.Ratio.RawValue;
+            obj.disableDelete = true;
+            break;
+        case 13:
+            obj.name = name /*+ I18N.EM.Ratio.TargetValue*/;
+            obj.disableDelete = true;
+            break;
+        case 14:
+            obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
+            obj.disableDelete = true;
+            break;
+        default:
+            break;
+    }
+    return obj;
+  },
+  carbonSeriesConstructor(target){
+    var obj = {
+        dType: target.Type,
+        name: target.Name,
+        uid: target.TargetId,
+        option: { commodityId: target.CommodityId }
+    };
+    var name = target.Name || '';
+
+    switch (target.Type) {
+        case 11:
+            obj.name = name + I18N.EM.Ratio.CaculateValue;
+            break;
+        case 12:
+            obj.name = name + I18N.EM.Ratio.RawValue;
+            obj.disableDelete = true;
+            break;
+        case 13:
+            obj.name = name /*+ I18N.EM.Ratio.TargetValue*/;
+            obj.disableDelete = true;
+            break;
+        case 14:
+            obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
+            obj.disableDelete = true;
+            break;
+        default:
+            break;
+    }
+    return obj;
+  },
+  costTagSeriesConstructor(target){
+    var name;
+    if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
+        if (target.Type === 6) {
+            name = I18N.EM.Plain/*'平时'*/;
+        }
+        else if (target.Type === 7) {
+            name = I18N.EM.Peak/*'峰时'*/;
+        }
+        else {
+            name = I18N.EM.Valley/*'谷时'*/;
+        }
+        return {
+            uom: CommonFuns.getUomById(1).Code,
+            name: name,
+            disableHide: true,
+            disableDelete: true,
+            uid: target.CommodityId
+        };
+    }
+    else if (target.Type === 13 || target.Type === 14 ) {
+        if (target.Type === 13) {
+            name = target.Name/*I18N.Common.Glossary.Target'目标值'*/;
+        }
+        else if (target.Type === 14) {
+            name = target.Name/*I18N.Common.Glossary.Baseline'基准值'*/;
+        }
+        return {
+            uom: CommonFuns.getUomById(1).Code,
+            name: name,
+            disableHide: true,
+            disableDelete: true,
+            uid: target.CommodityId
+        };
+    }
+    else {
+        var disableDelete = false;
+        if (target.CommodityId < 1) {
+            name = I18N.EM.Total/*'总览'*/;
+            disableDelete = true;
+        }
+        else {
+            name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+        }
+
+        var uom = target.UomId < 1 ? '' : CommonFuns.getUomById(target.UomId).Code;
+        return {
+            dType: target.Type,
+            uom: uom,
+            name: name,
+            disableDelete: disableDelete,
+            uid: target.CommodityId,
+            option: { CommodityId: target.CommodityId }
+        };
       }
     }
   },

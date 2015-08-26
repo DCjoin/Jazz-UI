@@ -69,6 +69,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
 
       if(relativeType !== 'Customerize'){
         let defaultRelativeValue = relativeValue || 1;
+        item.relativeValue = defaultRelativeValue;
 
         let timeregion = this.getDateByRelativeTypeAndValue(relativeType, defaultRelativeValue);
         let start = timeregion.start;
@@ -138,7 +139,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
   addNewCompareDate(){
     let me = this;
     me._initTempRelativeList();
-    if(_tempRelativeList.size < 4)
+    if(_tempRelativeList.size < 5)
       _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, _originalType, null, null, null, _tempRelativeList.size));
   },
   removeCompareDate(compareIndex){
@@ -309,12 +310,16 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     }
   },
   convert2Stable(){
+    this._initTempRelativeList();
     _relativeList = _tempRelativeList;
     _tempRelativeList = null;
   },
   getSubmitTimespans(){
+    if(_relativeList === null){
+      return null;
+    }
     let timespans = [];
-    let d2j = CommonFuns.DataConverter.DatetimeToJson();
+    let d2j = CommonFuns.DataConverter.DatetimeToJson;
     _relativeList.forEach((item, index)=>{
       if(item.get('startDate') && item.get('endDate')){
         timespans.push({StartTime:d2j(item.get('startDate')), EndTime:d2j(item.get('endDate'))});
