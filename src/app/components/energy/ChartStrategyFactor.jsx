@@ -747,19 +747,22 @@ let ChartStrategyFactor = {
        if(nodeOptions.length > 1){
          MultiTimespanAction.clearMultiTimespan('both');
          timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-       }else{
-         timeRanges = MultipleTimespanStore.getSubmitTimespans();
-         if(timeRanges === null){
+       }else if(chartType === 'pie'){
+         let timeRanges;
+         if(nodeOptions.length > 1){
+           MultiTimespanAction.clearMultiTimespan('both');
            timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+         }else{
+           timeRanges = MultipleTimespanStore.getSubmitTimespans();
+           if(timeRanges === null){
+             timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+           }
          }
-
-         if(chartType === 'pie'){
-            //let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-            analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
-         }else if(chartType === 'rawdata'){
-           //let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-           analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
-         }
+         analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+       }else if(chartType === 'rawdata'){
+         MultiTimespanAction.clearMultiTimespan('both');
+         let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+         analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
        }
      }
    },
