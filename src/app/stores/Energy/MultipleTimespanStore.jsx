@@ -139,7 +139,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
   addNewCompareDate(){
     let me = this;
     me._initTempRelativeList();
-    if(_tempRelativeList.size < 4)
+    if(_tempRelativeList.size < 5)
       _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, _originalType, null, null, null, _tempRelativeList.size));
   },
   removeCompareDate(compareIndex){
