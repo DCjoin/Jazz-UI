@@ -227,9 +227,8 @@ var Calendar = React.createClass({
         </ClearFix>
       );
     }
-    return (
-      {Calendar}
-    );
+    return Calendar;
+
   },
   _onTimeChange: function(e, time){
     this.setState({selectedTime: time.value});
