@@ -231,12 +231,12 @@ let AnalysisPanel = React.createClass({
     _onRatioLoadingStatusChange(){
       let isLoading = RatioStore.getLoadingStatus(),
           paramsObj = RatioStore.getParamsObj(),
-          commOption = RatioStore.getCommOpions(),
+          ratioOption = RatioStore.getRatioOpions(),
           obj = assign({}, paramsObj);
 
       obj.isLoading = isLoading;
       obj.dashboardOpenImmediately = false;
-      obj.commOption = commOption;
+      obj.ratioOption = ratioOption;
       obj.energyData = null;
 
       this.setState(obj);
