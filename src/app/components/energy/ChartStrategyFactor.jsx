@@ -132,17 +132,17 @@ let ChartStrategyFactor = {
       onSearchBtnItemTouchTapFn:'onSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn:'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn:'setRatioFitStepAndGetData',
-      getInitialStateFn:'getUnitEnergyInitialState',
+      getInitialStateFn:'getRatioInitialState',
       getAllDataFn: 'unitGetAllData',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn:'ratioDataLoad',
-      getChartComponentFn:'getUnitEnergyChartComponent',
+      getChartComponentFn:'getRatioChartComponent',
       bindStoreListenersFn:'ratioBindStoreListeners',
       unbindStoreListenersFn:'ratioUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
       exportChartFn:'exportChart',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
-      getAuxiliaryCompareBtnFn:'getUnitEnergyAuxiliaryCompareBtn',
+      getAuxiliaryCompareBtnFn:'getRatioAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getRatioSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick'
@@ -203,7 +203,7 @@ let ChartStrategyFactor = {
       getAllDataFn: 'unitGetAllData',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn:'unitCarbonDataLoad',
-      getChartComponentFn:'getUnitCarbonChartComponent',
+      getChartComponentFn:'getCarbonChartComponent',
       bindStoreListenersFn:'unitCarbonBindStoreListeners',
       unbindStoreListenersFn:'unitCarbonUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
@@ -446,6 +446,25 @@ let ChartStrategyFactor = {
 
       return toolElement;
    },
+   getRatioSubToolbar(analysisPanel){
+     var toolElement;
+     let chartType = analysisPanel.state.selectedChartType;
+     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column']);
+     let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     toolElement =
+         <div style={{display:'flex'}}>
+           <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+           <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+           <div style={{margin:'5px 30px 5px auto'}}>
+             {configBtn}
+             <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+           </div>
+           <BaselineCfg  ref="baselineCfg"/>
+         </div>;
+
+      return toolElement;
+   },
    getRankSubToolbar(analysisPanel){
      var energyType = analysisPanel.state.energyType;
      var toolElement;
@@ -664,6 +683,13 @@ let ChartStrategyFactor = {
      };
       return state;
    },
+   getRatioInitialState(){
+     let state = {
+       ratioType: 1,
+       benchmarks: null
+     };
+      return state;
+   },
    getCarbonInitialState(){
      let state = {};
      return state;
@@ -811,6 +837,7 @@ let ChartStrategyFactor = {
      }
      let relativeDateValue = analysisPanel._getRelativeDateValue();
      let ratioType = analysisPanel.state.ratioType;
+     if(!ratioType) ratioType = 1;
      let benchmark = null;
 
      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, ratioType, relativeDateValue, benchmark, analysisPanel);
@@ -1433,7 +1460,7 @@ let ChartStrategyFactor = {
 
       return energyPart;
    },
-   getUnitCarbonChartComponent(analysisPanel){
+   getRatioChartComponent(analysisPanel){
      let energyPart;
      let chartType = analysisPanel.state.selectedChartType;
      let subToolbar = analysisPanel.state.chartStrategy.getChartSubToolbarFn(analysisPanel);
@@ -1448,13 +1475,11 @@ let ChartStrategyFactor = {
                        onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
                      };
 
-       let paramsObj = CarbonStore.getParamsObj();
+     let paramsObj = RatioStore.getParamsObj();
       energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                     {subToolbar}
                      <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                    </div>;
-
-
       return energyPart;
    },
    getRankChartComponent(analysisPanel){
@@ -1532,6 +1557,19 @@ let ChartStrategyFactor = {
      </ButtonMenu>;
 
      return configButton;
+   },
+   getRatioAuxiliaryCompareBtn(analysisPanel){
+     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
+                             {primaryText:'冷暖季', value:'hotColdSeason'}];
+
+     let tagOptions = EnergyStore.getTagOpions();
+     //let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
+
+     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+                                  onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
+       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
+       </ButtonMenu>;
+       return configButton;
    },
    getUnitEnergyAuxiliaryCompareBtn(analysisPanel){
      let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
