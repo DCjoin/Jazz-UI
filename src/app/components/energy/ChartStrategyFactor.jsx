@@ -943,8 +943,18 @@ let ChartStrategyFactor = {
  },
  setFitStepAndGetDataFnStrategy:{
    setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
-     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
-         step = analysisPanel.state.step,
+     let timeRanges;
+     if(tagOptions.length > 1){
+       MultiTimespanAction.clearMultiTimespan('both');
+       timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+     }else{
+       timeRanges = MultipleTimespanStore.getSubmitTimespans();
+       if(timeRanges === null){
+         timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+       }
+     }
+     
+     let step = analysisPanel.state.step,
          limitInterval = CommonFuns.getLimitInterval(timeRanges),
          stepList = limitInterval.stepList;
      if( stepList.indexOf(step) == -1){

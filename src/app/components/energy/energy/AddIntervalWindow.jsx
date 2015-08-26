@@ -110,16 +110,14 @@ let TimespanItem = React.createClass({
 
 let AddIntervalWindow = React.createClass({
   _onAction(action){
+    let analysisPanel = this.props.analysisPanel;
     if(action === 'draw'){
       MultiTimespanAction.convert2Stable();
-
-      if(this.props.onMultipleTimeSubmit){
-        this.props.onMultipleTimeSubmit();
-      }
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     }else{
       MultiTimespanAction.clearMultiTimespan('temp');
     }
-    this.props.analysisPanel.setState({showAddIntervalDialog: false});
+    analysisPanel.setState({showAddIntervalDialog: false});
   },
   _onrelativeListChange(){
     this.setState({relativeList: MultipleTimespanStore.getRelativeList()});
