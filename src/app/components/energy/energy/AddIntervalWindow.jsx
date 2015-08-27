@@ -45,14 +45,14 @@ let TimespanItem = React.createClass({
       let menuItems = availableRelativeValues.map((value)=>{ return {value: value, text: value}; });
 
       return <div style={{display:'flex'}}>
-                <div style={{margin:'auto 10px'}}>之前第</div>
+                <div style={{margin:'auto 10px auto 6px'}}>之前第</div>
                 {me.wrapDropdownMenu({ menuItems:menuItems,
                                        style:{width:'60px'},
                                        selectedIndex: Immutable.List(menuItems).findIndex( (item) => {return item.value === me.props.relativeValue;}),
                                        onChange: me._onRelativeValueChange
                                      }, '62px')}
                 <div style={{margin:'auto 10px'}}>{uom}</div>
-                <div style={{margin:'auto 10px'}}>{this.props.dateDescription}</div>
+                <div style={{margin:'auto'}}>{this.props.dateDescription}</div>
               </div>;
     }
   },
@@ -72,8 +72,8 @@ let TimespanItem = React.createClass({
       dateEl = <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
     }else{
       dateEl = me.getCompareDatePart();
-      deleteBtn = <IconButton iconClassName='icon-delete' iconStyle={{fontSize:'18px'}} onClick = {me._onCompareItemRemove}
-                    style={{'marginLeft':'10px', padding:'0px', height:'28px', width:'28px'}} />;
+      deleteBtn = <IconButton iconClassName='icon-delete' iconStyle={{fontSize:'16px'}} onClick = {me._onCompareItemRemove}
+                    style={{'marginLeft':'10px', padding:'0px', height:'28px', width:'28px', lineHeight:'38px'}} />;
     }
     let relativeTypeEl = me.wrapDropdownMenu({ menuItems:menuItems,
                            style:{width:'92px'},
@@ -82,7 +82,7 @@ let TimespanItem = React.createClass({
                          }, '100px');
     return <div style={{marginTop: '10px'}}>
               <div>{this.props.title}</div>
-              <div style={{display:'flex', marginTop:'5px'}}>
+              <div style={{display:'flex', marginTop:'10px'}}>
                 {relativeTypeEl}
                 <div> {dateEl} </div>
                 {deleteBtn}
@@ -151,10 +151,13 @@ let AddIntervalWindow = React.createClass({
           onClick={me._onAction.bind(me, 'draw')} />,
           <FlatButton
           label="放弃"
+          style={{marginLeft:'10px'}}
           onClick={me._onAction.bind(me, 'cancel')} />];
 
-    let dialog = <Dialog {...me.props} title='历史对比' actions={_buttonActions} contentStyle={{width:'768px'}} modal={true}>
-                    <div style={{height:'300px'}}>
+    let titleEl = <div style={{fontSize:'20px', padding:'24px 0 0 50px'}}>{'历史对比'}</div>;
+    let dialog = <Dialog {...me.props} title={titleEl} actions={_buttonActions} modal={true}
+                    contentClassName='jazz-add-interval-dialog'>
+                    <div style={{height:'418px'}}>
                       {timeSpanEls}
                       <LinkButton  label='添加时间段' labelStyle={{display: 'inline-block', marginTop:'10px'}} onClick={me._addNewCompareItem}/>
                     </div>
