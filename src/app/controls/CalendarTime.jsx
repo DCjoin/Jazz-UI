@@ -46,8 +46,15 @@ var CalendarTime = React.createClass({
   },
   _calendarDisplay: function() {
     var selectedDate = this.props.selectedDate;
+    var dateStyle = {
+      textAlign: 'center',
+      border: '1px solid #efefef',
+      height: '60px',
+      lineHeight: '60px',
+      textDecoration: 'underline'
+    };
     return (
-      <div onClick={this.props.showCalendar}>{this._formatDate(this.props.selectedDate)}</div>
+      <div style={dateStyle} onClick={this.props.showCalendar}>{this._formatDate(this.props.selectedDate)}</div>
     );
   },
   _getTimeItems() {

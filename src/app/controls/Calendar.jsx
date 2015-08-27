@@ -243,7 +243,7 @@ var Calendar = React.createClass({
         border: '1px solid #efefef',
         height: '50px',
         lineHeight: '50px',
-        textDecoration: 'underlin'
+        textDecoration: 'underline'
       };
       return (
         <div style={timeStyle} onClick={this._showTimeSelect}>{((selectedTime < 10) ? '0' : '') + selectedTime + ':00'}</div>
