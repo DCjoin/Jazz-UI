@@ -75,19 +75,19 @@ let DateTimeSelector = React.createClass({
     }
     if(startDate.getTime()>= endDate.getTime()){
        if((sd !== null) || (st !== null)){
-         if(this.props.showTime){
-           endDate = dateAdd(startDate, 1, 'hours');
+         if(this.props.showTime === false){
+           endDate = dateAdd(startDate, 1, 'days');
          }
          else {
-           endDate = dateAdd(startDate, 1, 'days');
+           endDate = dateAdd(startDate, 1, 'hours');
          }
        }
        else if((ed !== null) || (et !== null)){
-         if(this.props.showTime){
-           startDate = dateAdd(endDate, -1, 'hours');
+         if(this.props.showTime === false){
+           startDate = dateAdd(endDate, -1, 'days');
          }
          else {
-           startDate = dateAdd(endDate, -1, 'days');
+           startDate = dateAdd(endDate, -1, 'hours');
          }
        }
     }

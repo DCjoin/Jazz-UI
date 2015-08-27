@@ -785,6 +785,7 @@ let ChartStrategyFactor = {
    },
    getLabelInitialState(analysisPanel){
      var selectedLabelItem = analysisPanel.initSlectedLabelItem();
+     var curMonth = (new Date()).getMonth();
      let state = {
        labelType: "industryZone",//industry,customized
        industyMenuItems: [],
@@ -792,7 +793,8 @@ let ChartStrategyFactor = {
        selectedLabelItem: selectedLabelItem,
        kpiTypeValue: 1,
        labelDisable: true,
-       kpiTypeDisable: false
+       kpiTypeDisable: false,
+       month: curMonth+1
      };
      return state;
    }
@@ -1283,7 +1285,6 @@ let ChartStrategyFactor = {
   },
   labelSearchBarGen(analysisPanel){
     var curYear = (new Date()).getFullYear();
-    var curMonth = (new Date()).getMonth();
     var yearProps = {
       ref: "yearSelector",
       selectedIndex: 10,
@@ -1302,7 +1303,7 @@ let ChartStrategyFactor = {
     return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
-      <DropDownMenu menuItems={monthItem} selectedIndex={curMonth+1} ref='monthSelector'></DropDownMenu>
+      <DropDownMenu menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
       </div>
       <div className={'jazz-full-border-dropdownmenu-container'} >
       {labelBtn}

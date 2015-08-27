@@ -403,6 +403,9 @@ let AnalysisPanel = React.createClass({
         me.state.chartStrategy.onSearchDataButtonClickFn(me);
       });
     },
+    _onChangeMonth(e, selectedIndex, menuItem){
+      this.setState({month: selectedIndex});
+    },
     _onGetEnergyDataError(){
       let errorObj = this.errorProcess();
       this._onEnergyDataChange(true, errorObj);
@@ -551,6 +554,9 @@ let AnalysisPanel = React.createClass({
       }
     },
     changeToIndustyrLabel(){
+      if(this.state.kpiTypeValue === 7){
+        this.setState({kpiTypeValue: 1});
+      }
       this.enableKpiTypeButton();
     },
     changeToCustomizedLabel(kpiType){
