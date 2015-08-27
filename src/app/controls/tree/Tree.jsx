@@ -73,6 +73,9 @@ var Tree = React.createClass({
     //for copy operation
     isFolderOperationTree:React.PropTypes.bool,
     onGragulaNode:React.PropTypes.func,
+    // arrow style
+    arrowClass: React.PropTypes.string,
+
   },
   getInitialState:function(){
     return{
@@ -196,7 +199,8 @@ var Tree = React.createClass({
           isFolderOperationTree:this.props.isFolderOperationTree,
 
           putGragulaContainer:this.putGragulaContainer,
-          collapsedNodeId:this.state.collapsedNodeId
+          collapsedNodeId:this.state.collapsedNodeId,
+          arrowClass:this.props.arrowClass
         };
         parentNode.push(<TreeNode {...props}></TreeNode>);
       }

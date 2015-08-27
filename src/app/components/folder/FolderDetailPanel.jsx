@@ -24,6 +24,33 @@ var FolderItem= React.createClass({
   _onItemClick:function(){
     FolderAction.setSelectedNode(this.props.nodeData);
   },
+  getImage:function(){
+    var image;
+    if(this.props.nodeData.get('Type')==6){
+      image=<img src={require('../../less/images/folder.png')}/>
+    }
+    else {
+      switch(this.props.nodeData.get('ChartType')) {
+        case 1:
+            image=<img src={require('../../less/images/line.png')}/>;
+          break;
+        case 2:
+        case 3:
+            image=<img src={require('../../less/images/column.png')}/>;
+          break;
+        case 4:
+            image=<img src={require('../../less/images/pie.png')}/>;
+          break;
+        case 5:
+          image=<img src={require('../../less/images/raw-data.png')}/>;
+          break;
+        case 'Column':
+            image=<img src={require('../../less/images/labeling.png')}/>;
+          break;
+    }
+    }
+    return image
+  },
   getInitialState:function(){
     return{
       isTitleMenuShow:false
@@ -64,10 +91,11 @@ var FolderItem= React.createClass({
             <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={menuStyle}/>
             </IconMenu>
     };
+    var image=this.getImage();
     return(
       <div className='jazz-folder-detail-item'>
         <div className='icon' onClick={this._onItemClick}>
-         <img src={require('../../less/images/chart.png')}/>
+        {image}
         </div>
         <div className='title' title={this.props.nodeData.get('Name')} onClick={this._onTitleMenuClick}>
           <div className='name'>

@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
 import {Navigation, State } from 'react-router';
+import classSet from 'classnames';
 import {CircularProgress,FlatButton,FontIcon,IconButton,IconMenu,Dialog} from 'material-ui';
 import SearchBox from './FolderSearchBox.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
@@ -12,11 +13,11 @@ import CopyView from './operationView/CopyView.jsx';
 import DeleteView from './operationView/DeleteView.jsx';
 import ShareView from './operationView/ShareView.jsx';
 import SendView from './operationView/SendView.jsx';
+import DropdownButton from '../../controls/DropdownButton.jsx';
 
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
-import MainBizAction from '../../actions/MainBizAction.jsx';
-import MainBizStore from '../../stores/MainBizStore.jsx';
+
 
 
 import Immutable from 'immutable';
@@ -73,7 +74,7 @@ var PanelContainer = React.createClass({
     });
 
   },
-  _onNewWidget:function(e, item){
+  _onNewWidget:function(e,item){
     let widgetType=parseInt(item.key);
     let _newWidget=[];
 
@@ -175,22 +176,41 @@ var PanelContainer = React.createClass({
   },
   render:function(){
     //style
-    var menuStyle={
-          marginTop:"35px",
-        },
-        iconStyle={
+    var iconStyle={
           paddingTop:'0px'
+        },
+        itemStyle={
+          fontSize:'14px',
+          color:'#767a7a',
+          paddingLeft:'44px'
+        },
+        buttonStyle = {
+          backgroundColor: 'transparent',
+          height: '32px'
         };
+        var newFolderClasses = {
+          'se-dropdownbutton': true,
+          'btn-container': true,
+          'btn-container-active': !this.state.buttonDisabled
+        };
+
     //icon
-    var IconButtonElement=<IconButton iconClassName="icon-log" disabled={this.state.buttonDisabled}/>,
-        menuIcon=<FontIcon className="icon-language" style={iconStyle}/>;
+    var energyAnalysisIcon=<FontIcon className="icon-energy-analysis" style={iconStyle}/>,
+        unitIndexIcon=<FontIcon className="icon-unit-index" style={iconStyle}/>,
+        timeRationIcon=<FontIcon className="icon-dust-concentration" style={iconStyle}/>,
+        labelingIcon=<FontIcon className="icon-labeling" style={iconStyle}/>,
+        rankingIcon=<FontIcon className="icon-ranking" style={iconStyle}/>;
+
+    var filterOptions=[
+      <MenuItem key={1} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={energyAnalysisIcon}/>,
+      <MenuItem key={2} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={unitIndexIcon}/>,
+      <MenuItem key={3} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={timeRationIcon}/>,
+      <MenuItem key={4} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={labelingIcon}/>,
+      <MenuItem key={5} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={rankingIcon}/>
+    ];
+
     //props
-    var iconMenuProps={
-        iconButtonElement:IconButtonElement,
-        openDirection:"bottom-right",
-        menuStyle:menuStyle
-      },
-      treeProps={
+    var treeProps={
         collapsedLevel:0,
         allNode:this.state.allNode,
         allHasCheckBox:false,
@@ -198,8 +218,17 @@ var PanelContainer = React.createClass({
         generateNodeConent:this.generateNodeConent,
         onSelectNode:this._onSelectNode,
         selectedNode:this.state.selectedNode,
-        onGragulaNode:this._onGragulaNode
-      };
+        onGragulaNode:this._onGragulaNode,
+        arrowClass:'jazz-foldertree-arrow',
+        treeNodeClass:'jazz-foldertree-node'
+      },
+      newWidgetProps = {
+                type: "Add",
+                text:I18N.Folder.WidgetName,
+                menuItems: filterOptions,
+                onItemClick: this._onNewWidget,
+                disabled: this.state.buttonDisabled
+              };
 
 
       var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
@@ -208,19 +237,13 @@ var PanelContainer = React.createClass({
       <div className="jazz-folder-leftpanel-container">
 
         <div className="jazz-folder-leftpanel-header">
-          <div className="newfolder">
-            <IconButton iconClassName="icon-column-fold" onClick={this._onNewFolder} disabled={this.state.buttonDisabled}/>
+          <div className={classSet(newFolderClasses)} style={{margin:'0 30px'}}>
+            <FlatButton disabled={this.state.buttonDisabled} onClick={this._onNewFolder} style={buttonStyle}>
+              <FontIcon className="fa icon-add btn-icon"/>
+              <span className="mui-flat-button-label btn-text">{I18N.Folder.FolderName}</span>
+            </FlatButton>
           </div>
-          <div className="newwidget">
-            <IconMenu {...iconMenuProps} onItemTouchTap={this._onNewWidget}>
-               <MenuItem ref="Menu1" key={1} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={menuIcon}/>
-               <MenuItem ref="Menu2" key={2} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={menuIcon}/>
-               <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={menuIcon}/>
-               <MenuItem ref="Menu4" key={4} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={menuIcon}/>
-               <MenuItem ref="Menu5" key={5} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={menuIcon}/>
-            </IconMenu>
-          </div>
-
+          <DropdownButton {...newWidgetProps}/>
           <div>
 
           </div>
