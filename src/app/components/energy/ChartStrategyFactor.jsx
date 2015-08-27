@@ -1157,7 +1157,6 @@ let ChartStrategyFactor = {
        <DateTimeSelector ref='dateTimeSelector' showTime={true} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-flat-button'}>
          {searchButton}
-         <RaisedButton label='导出' onClick={analysisPanel.exportChart} style={{marginLeft:'10px'}}></RaisedButton>
        </div>
      </div>;
    },
@@ -1173,7 +1172,6 @@ let ChartStrategyFactor = {
       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
-        <RaisedButton label='导出' onClick={analysisPanel.exportChart} style={{marginLeft:'10px'}}></RaisedButton>
       </div>
     </div>;
   },
@@ -1188,7 +1186,6 @@ let ChartStrategyFactor = {
       <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
-        <RaisedButton label='导出' onClick={analysisPanel.exportChart}></RaisedButton>
       </div>
   </div>;
 },
@@ -1868,7 +1865,7 @@ let ChartStrategyFactor = {
      for(let i = 0; i < seriesNumber; i++){
        charTypes.push(analysisPanel.state.selectedChartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
      }
-     
+
      params.charTypes = charTypes;
      ExportChartAction.getTagsData4Export(params, path);
    }
