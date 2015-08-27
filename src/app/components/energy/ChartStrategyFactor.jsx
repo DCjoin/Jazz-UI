@@ -1842,22 +1842,39 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
+     let path;
+     let chartType = analysisPanel.state.selectedChartType;
      let tagOptions = EnergyStore.getTagOpions();
      let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
      let viewOption = EnergyStore.getSubmitParams().viewOption;
-     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+
+     let params = {
+       title: title,
+       tagIds: tagIds,
+       viewOption: viewOption,
+     };
+
+     if(chartType === 'pie'){
+       path = 'API/Energy.svc/AggregateTagsData4Export';
+     }else{
+       path = 'API/Energy.svc/GetTagsData4Export';
+       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+           params.nodeNameAssociation = nodeNameAssociation;
+     }
 
      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
      let charTypes = [];
-     for(let i=0;i<seriesNumber;i++){
-       charTypes.push(analysisPanel.state.selectedChartType);
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(analysisPanel.state.selectedChartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
      }
-
-     ExportChartAction.getTagsData4Export(tagIds, viewOption, nodeNameAssociation,'能耗分析',charTypes);
+     
+     params.charTypes = charTypes;
+     ExportChartAction.getTagsData4Export(params, path);
    }
  },
  getChartTypeIconMenu(analysisPanel, types){
-   var IconButtonElement=<IconButton iconClassName="icon-power"/>;
+   var IconButtonElement = <IconButton iconClassName="icon-power"/>;
    var iconMenuProps= {
                        iconButtonElement:IconButtonElement,
                        openDirection:"bottom-right",
