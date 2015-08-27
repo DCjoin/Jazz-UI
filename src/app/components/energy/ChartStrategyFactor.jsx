@@ -212,7 +212,7 @@ let ChartStrategyFactor = {
       exportChartFn:'exportChart',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getUnitCarbonAuxiliaryCompareBtn',
-      getChartSubToolbarFn:'getUnitEnergySubToolbar',
+      getChartSubToolbarFn:'getUnitCarbonSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick'
     }, Label:{
@@ -422,6 +422,17 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column','stack','pie']);
      let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     let menuItems = [
+       { payload: '1', text: '标煤', value: 2},
+       { payload: '2', text: '二氧化碳', value: 3 },
+       { payload: '3', text: '树', value: 4 },
+    ];
+    let menuItemChange = function(e, selectedIndex, menuItem){
+      CarbonStore.setDestination(menuItem.value);
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      return true;
+    };
+    var carbonDest = <DropDownMenu menuItems={menuItems} onChange={menuItemChange} />
 
      if(chartType === 'line' || chartType === 'column' || chartType === 'stack'){
        toolElement =
@@ -430,6 +441,7 @@ let ChartStrategyFactor = {
              <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{margin:'5px 30px 5px auto'}}>
+               {carbonDest}
                {configBtn}
                <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
              </div>
@@ -459,6 +471,37 @@ let ChartStrategyFactor = {
            <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{margin:'5px 30px 5px auto'}}>
+             {configBtn}
+             <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+           </div>
+           <BaselineCfg  ref="baselineCfg"/>
+         </div>;
+
+      return toolElement;
+   },
+   getUnitCarbonSubToolbar(analysisPanel){
+     var toolElement;
+     let chartType = analysisPanel.state.selectedChartType;
+     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column']);
+     let menuItems = [
+       { payload: '1', text: '标煤', value: 2},
+       { payload: '2', text: '二氧化碳', value: 3 },
+       { payload: '3', text: '树', value: 4 },
+    ];
+    let menuItemChange = function(e, selectedIndex, menuItem){
+      CarbonStore.setDestination(menuItem.value);
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      return true;
+    };
+    var carbonDest = <DropDownMenu menuItems={menuItems} onChange={menuItemChange} />
+     let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     toolElement =
+         <div style={{display:'flex'}}>
+           <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+           <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+           <div style={{margin:'5px 30px 5px auto'}}>
+             {carbonDest}
              {configBtn}
              <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
            </div>
