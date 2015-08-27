@@ -856,7 +856,7 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
      }else if(chartType === 'pie'){
         let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+        analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue, analysisPanel);
      }
    },
    onCarbonSearchDataButtonClick(analysisPanel){
@@ -1154,7 +1154,7 @@ let ChartStrategyFactor = {
          {chartTypeCmp}
          <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
-       <DateTimeSelector ref='dateTimeSelector' showTime={true} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-flat-button'}>
          {searchButton}
        </div>
@@ -1232,7 +1232,7 @@ let ChartStrategyFactor = {
          {chartTypeCmp}
          <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
-       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
          <DropDownMenu menuItems={ratios} style={{width:'102px', marginRight:'10px'}} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({ratioType: menuItem.value});}}></DropDownMenu>
        </div>
@@ -1253,7 +1253,7 @@ let ChartStrategyFactor = {
         {chartTypeCmp}
         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
-      <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-container'} >
         <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'140px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
@@ -1375,8 +1375,8 @@ let ChartStrategyFactor = {
    pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate){
      EnergyAction.getPieEnergyData(timeRanges, step, tagOptions, relativeDate);
    },
-   pieCostDataLoad(timeRanges, step, tagOptions, relativeDate){
-     if(this.state.touBtnSelected){
+   pieCostDataLoad(timeRanges, step, tagOptions, relativeDate, analysisPanel){
+     if(analysisPanel.state.touBtnSelected){
        EnergyAction.getElectricityPieCostData(timeRanges, step, tagOptions, relativeDate);
      }
      else{

@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import moment from 'moment';
 import {Mixins,Styles,ClearFix} from 'material-ui';
 import CalendarMonth from '../../../node_modules/material-ui/lib/date-picker/calendar-month.js';
 import CalendarYear from '../../../node_modules/material-ui/lib/date-picker/calendar-year.js';
@@ -217,11 +218,16 @@ var Calendar = React.createClass({
       );
     }
     else{
+      var height = parseInt((weekCount === 5 ? 268 :
+        weekCount === 6 ? 308 : 228)/6);
       Calendar = (
         <ClearFix style={this.mergeAndPrefix(styles.root)}>
           <div style={styles.calendarContainer}>
-            <CalendarTime selectedTime={this.state.selectedTime} selectedDate={this.state.selectedDate} dateFormatStr={this.props.dateFormatStr} timeType={this.props.timeType}
-              onTimeChange={this._onTimeChange} showCalendar={this._showCalendar}/>
+            <CalendarTime height={height} selectedTime={this.state.selectedTime} dateFormatStr={this.props.dateFormatStr} timeType={this.props.timeType}
+              onTimeChange={this._onTimeChange}/>
+          </div>
+          <div style={styles.timeContainer}>
+            {this._calendarDisplay()}
           </div>
         </ClearFix>
       );
@@ -231,9 +237,29 @@ var Calendar = React.createClass({
   },
   _onTimeChange: function(e, time){
     this.setState({selectedTime: time.value});
+    this._showCalendar();
     if(this.props.onSelectedTime){
       this.props.onSelectedTime(time.value);
     }
+  },
+  _formatDate(date){
+      if(date){
+        return moment(new Date(date)).format(this.props.dateFormatStr);
+      }
+      return '';
+  },
+  _calendarDisplay: function() {
+    var selectedDate = this.state.selectedDate;
+    var dateStyle = {
+      textAlign: 'center',
+      border: '1px solid #efefef',
+      height: '50px',
+      lineHeight: '50px',
+      textDecoration: 'underline'
+    };
+    return (
+      <div style={dateStyle} onClick={this._showCalendar}>{this._formatDate(this.state.selectedDate)}</div>
+    );
   },
   _timeDisplay: function() {
     if(this.props.showTime){
@@ -243,7 +269,7 @@ var Calendar = React.createClass({
         border: '1px solid #efefef',
         height: '50px',
         lineHeight: '50px',
-        textDecoration: 'underlin'
+        textDecoration: 'underline'
       };
       return (
         <div style={timeStyle} onClick={this._showTimeSelect}>{((selectedTime < 10) ? '0' : '') + selectedTime + ':00'}</div>
@@ -272,6 +298,9 @@ var Calendar = React.createClass({
 
   getSelectedDate: function() {
     return this.state.selectedDate;
+  },
+  getSelectedTime: function(){
+    return this.state.selectedTime;
   },
 
   isSelectedDateDisabled: function() {

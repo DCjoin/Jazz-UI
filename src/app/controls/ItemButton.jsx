@@ -14,7 +14,7 @@ let ItemButton = React.createClass({
 
   propTypes: {
     item: React.PropTypes.object,
-    buttonStyle: React.PropTypes.object,
+    height: React.PropTypes.number,
     onTouchTap: React.PropTypes.func,
     selected: React.PropTypes.bool
   },
@@ -47,6 +47,7 @@ let ItemButton = React.createClass({
         position: 'relative',
         float: 'left',
         width: 60,
+        height: this.props.height,
         fontSize: '14px',
         padding: '0px'
       },
