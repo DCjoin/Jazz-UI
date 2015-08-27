@@ -62,8 +62,8 @@ var CommonCommodityList = React.createClass({
   componentWillReceiveProps:function(){
     this._loadCommodityList();
     this.setState({
-      commodityStatus:Immutable.List([])
-    })
+      commodityStatus:CommodityStore.getCommodityStatus()
+    });
   },
   componentDidMount: function() {
     CommodityStore.addCommoddityListListener(this._onCommodityListChange);

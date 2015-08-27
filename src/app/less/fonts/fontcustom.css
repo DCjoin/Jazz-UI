@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.eot");
-  src: url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.woff") format("woff"),
-       url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.ttf") format("truetype"),
-       url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.svg#fontcustom") format("svg");
+  src: url("./fontcustom_db1e10565210174f96ac2a264bf84018.eot");
+  src: url("./fontcustom_db1e10565210174f96ac2a264bf84018.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_db1e10565210174f96ac2a264bf84018.woff") format("woff"),
+       url("./fontcustom_db1e10565210174f96ac2a264bf84018.ttf") format("truetype"),
+       url("./fontcustom_db1e10565210174f96ac2a264bf84018.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_78c79dffb9ecf7d6a6510460adbbe6c2.svg#fontcustom") format("svg");
+    src: url("./fontcustom_db1e10565210174f96ac2a264bf84018.svg#fontcustom") format("svg");
   }
 }
 
@@ -39,10 +39,12 @@
 .icon-capacity:before,
 .icon-cb-close:before,
 .icon-cb-open:before,
+.icon-chart:before,
 .icon-checked:before,
 .icon-clean:before,
 .icon-close:before,
 .icon-cloud:before,
+.icon-column:before,
 .icon-column-fold:before,
 .icon-current:before,
 .icon-customer:before,
@@ -50,11 +52,14 @@
 .icon-device:before,
 .icon-device-box:before,
 .icon-dimension-node:before,
+.icon-double-arrow-right:before,
 .icon-dust-concentration:before,
 .icon-edit:before,
+.icon-energy-analysis:before,
 .icon-energy-consumption:before,
 .icon-export:before,
 .icon-filter:before,
+.icon-folder:before,
 .icon-hierarchy:before,
 .icon-hierarchy-fold:before,
 .icon-hierarchy-unfold:before,
@@ -64,8 +69,10 @@
 .icon-info:before,
 .icon-info-box:before,
 .icon-installation-mode:before,
+.icon-labeling:before,
 .icon-language:before,
 .icon-level:before,
+.icon-line:before,
 .icon-location:before,
 .icon-log:before,
 .icon-mainline:before,
@@ -76,14 +83,18 @@
 .icon-panel:before,
 .icon-panel-box:before,
 .icon-photo:before,
+.icon-pie:before,
 .icon-pole:before,
 .icon-post:before,
 .icon-power:before,
 .icon-qrcode:before,
 .icon-quickview:before,
+.icon-ranking:before,
+.icon-raw-data:before,
 .icon-revised-cn:before,
 .icon-revised-en:before,
 .icon-room:before,
+.icon-save:before,
 .icon-scan:before,
 .icon-schneider-cn:before,
 .icon-schneider-en:before,
@@ -95,8 +106,11 @@
 .icon-site:before,
 .icon-spring-compression:before,
 .icon-spring-tension:before,
+.icon-stack:before,
 .icon-taglist-fold:before,
 .icon-temperature:before,
+.icon-time-ration:before,
+.icon-unit-index:before,
 .icon-user:before,
 .icon-voltage:before,
 .icon-wear-rate:before {
@@ -130,10 +144,12 @@
 .icon-capacity:before { content: "\f134"; }
 .icon-cb-close:before { content: "\f10b"; }
 .icon-cb-open:before { content: "\f10c"; }
+.icon-chart:before { content: "\f153"; }
 .icon-checked:before { content: "\f150"; }
 .icon-clean:before { content: "\f10d"; }
 .icon-close:before { content: "\f10e"; }
 .icon-cloud:before { content: "\f10f"; }
+.icon-column:before { content: "\f154"; }
 .icon-column-fold:before { content: "\f110"; }
 .icon-current:before { content: "\f135"; }
 .icon-customer:before { content: "\f111"; }
@@ -141,11 +157,14 @@
 .icon-device:before { content: "\f113"; }
 .icon-device-box:before { content: "\f114"; }
 .icon-dimension-node:before { content: "\f151"; }
+.icon-double-arrow-right:before { content: "\f155"; }
 .icon-dust-concentration:before { content: "\f136"; }
 .icon-edit:before { content: "\f142"; }
+.icon-energy-analysis:before { content: "\f156"; }
 .icon-energy-consumption:before { content: "\f116"; }
 .icon-export:before { content: "\f117"; }
 .icon-filter:before { content: "\f118"; }
+.icon-folder:before { content: "\f157"; }
 .icon-hierarchy:before { content: "\f143"; }
 .icon-hierarchy-fold:before { content: "\f119"; }
 .icon-hierarchy-unfold:before { content: "\f11a"; }
@@ -155,8 +174,10 @@
 .icon-info:before { content: "\f11d"; }
 .icon-info-box:before { content: "\f11e"; }
 .icon-installation-mode:before { content: "\f14b"; }
+.icon-labeling:before { content: "\f158"; }
 .icon-language:before { content: "\f138"; }
 .icon-level:before { content: "\f139"; }
+.icon-line:before { content: "\f159"; }
 .icon-location:before { content: "\f11f"; }
 .icon-log:before { content: "\f13a"; }
 .icon-mainline:before { content: "\f120"; }
@@ -167,14 +188,18 @@
 .icon-panel:before { content: "\f126"; }
 .icon-panel-box:before { content: "\f127"; }
 .icon-photo:before { content: "\f128"; }
+.icon-pie:before { content: "\f15a"; }
 .icon-pole:before { content: "\f13b"; }
 .icon-post:before { content: "\f144"; }
 .icon-power:before { content: "\f129"; }
 .icon-qrcode:before { content: "\f12a"; }
 .icon-quickview:before { content: "\f13c"; }
+.icon-ranking:before { content: "\f15b"; }
+.icon-raw-data:before { content: "\f15c"; }
 .icon-revised-cn:before { content: "\f14c"; }
 .icon-revised-en:before { content: "\f14d"; }
 .icon-room:before { content: "\f12b"; }
+.icon-save:before { content: "\f15d"; }
 .icon-scan:before { content: "\f13d"; }
 .icon-schneider-cn:before { content: "\f145"; }
 .icon-schneider-en:before { content: "\f146"; }
@@ -186,8 +211,11 @@
 .icon-site:before { content: "\f130"; }
 .icon-spring-compression:before { content: "\f13e"; }
 .icon-spring-tension:before { content: "\f13f"; }
+.icon-stack:before { content: "\f15e"; }
 .icon-taglist-fold:before { content: "\f131"; }
 .icon-temperature:before { content: "\f140"; }
+.icon-time-ration:before { content: "\f15f"; }
+.icon-unit-index:before { content: "\f160"; }
 .icon-user:before { content: "\f132"; }
 .icon-voltage:before { content: "\f14f"; }
 .icon-wear-rate:before { content: "\f141"; }
