@@ -48,7 +48,7 @@ let DateTimeSelector = React.createClass({
         endTime = endField.getTime();
 
     startDate.setHours(startTime, 0, 0, 0);
-    if(startTime === 24){
+    if(endTime === 24){
       endDate = dateAdd(endDate, 1, 'days');
       endDate.setHours(0, 0, 0, 0);
     }
@@ -75,10 +75,20 @@ let DateTimeSelector = React.createClass({
     }
     if(startDate.getTime()>= endDate.getTime()){
        if((sd !== null) || (st !== null)){
-         endDate = dateAdd(startDate, 1, 'hours');
+         if(this.props.showTime){
+           endDate = dateAdd(startDate, 1, 'hours');
+         }
+         else {
+           endDate = dateAdd(startDate, 1, 'days');
+         }
        }
        else if((ed !== null) || (et !== null)){
-         startDate = dateAdd(endDate, -1, 'hours');
+         if(this.props.showTime){
+           startDate = dateAdd(endDate, -1, 'hours');
+         }
+         else {
+           startDate = dateAdd(endDate, -1, 'days');
+         }
        }
     }
     this.setDateField(startDate, endDate);
