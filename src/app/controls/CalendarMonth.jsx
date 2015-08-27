@@ -43,6 +43,7 @@ var CalendarMonth = React.createClass({
   },
 
   _getMonthElements(monthItem, i) {
+
     return monthItem.map((month, j) => {
       return (
         <ItemButton

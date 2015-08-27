@@ -1111,7 +1111,7 @@ let ChartStrategyFactor = {
          {chartTypeCmp}
          <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
-       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' showTime={true} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-flat-button'}>
          {searchButton}
          <RaisedButton label='导出' onClick={analysisPanel.exportChart} style={{marginLeft:'10px'}}></RaisedButton>

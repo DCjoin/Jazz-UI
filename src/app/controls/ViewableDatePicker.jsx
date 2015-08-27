@@ -171,7 +171,7 @@ var ViewableDatePicker = React.createClass({
           }
           datePicker = (<TextField {...inputProps} ref="TextField"/>);
           if(this.state.showCalendar){
-          calendar=(<div style={{position:'absolute',"zIndex":99,width:"320px",marginTop:'2px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}><Calendar
+          calendar=(<div style={{position:'absolute',"zIndex":99,width:"280px",marginTop:'2px',border:'1px solid rgb(235, 235, 235)',"backgroundColor":"white"}}><Calendar
                 dateFormatStr={this.props.dateFormatStr}
                 ref="calendar"
                 onSelectedDate={this._onSelectedDate}

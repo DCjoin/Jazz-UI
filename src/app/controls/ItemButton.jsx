@@ -14,6 +14,7 @@ let ItemButton = React.createClass({
 
   propTypes: {
     item: React.PropTypes.object,
+    buttonStyle: React.PropTypes.object,
     onTouchTap: React.PropTypes.func,
     selected: React.PropTypes.bool
   },

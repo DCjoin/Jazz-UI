@@ -135,9 +135,8 @@ var Calendar = React.createClass({
         float: isLandscape ? 'right' : 'none'
       },
       timeContainer: {
-        width: '280px',
-        overflow: 'hidden',
-        height: '20px'
+        width: isLandscape ? '280px' : '100%',
+        overflow: 'hidden'
       },
       dateDisplay: {
         width: isLandscape ? '280px' : '100%',
@@ -239,8 +238,15 @@ var Calendar = React.createClass({
   _timeDisplay: function() {
     if(this.props.showTime){
       var selectedTime = this.state.selectedTime;
+      var timeStyle = {
+        textAlign: 'center',
+        border: '1px solid #efefef',
+        height: '50px',
+        lineHeight: '50px',
+        textDecoration: 'underlin'
+      };
       return (
-        <div onClick={this._showTimeSelect}>{((selectedTime < 10) ? '0' : '') + selectedTime + ':00'}</div>
+        <div style={timeStyle} onClick={this._showTimeSelect}>{((selectedTime < 10) ? '0' : '') + selectedTime + ':00'}</div>
       );
     }
   },

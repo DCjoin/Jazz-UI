@@ -39,7 +39,7 @@ var CalendarTime = React.createClass({
         <div style={styles}>
           {this._getTimeItems()}
         </div>
-        {this._yearSelector()}
+        {this._calendarDisplay()}
       </div>
 
     );
@@ -71,6 +71,7 @@ var CalendarTime = React.createClass({
         timeSubArray.push({ value: i*4+j, text: (((i*4+j) < 10) ? '0' : '') + (i*4+j) + ':00' });
       }
       timeArray.push(timeSubArray);
+      timeSubArray = [];
     }
     return timeArray;
   },
