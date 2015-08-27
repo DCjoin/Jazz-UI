@@ -163,7 +163,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'unitEnergyBindStoreListeners',
       unbindStoreListenersFn:'unitEnergyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      exportChartFn:'exportChart',
+      exportChartFn:'exportChart4UnitEnergy',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getUnitEnergyAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitEnergySubToolbar',
@@ -1849,7 +1849,7 @@ let ChartStrategyFactor = {
      let params = {
        title: title,
        tagIds: tagIds,
-       viewOption: viewOption,
+       viewOption: viewOption
      };
 
      if(chartType === 'pie'){
@@ -1863,10 +1863,40 @@ let ChartStrategyFactor = {
      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
      let charTypes = [];
      for(let i = 0; i < seriesNumber; i++){
-       charTypes.push(analysisPanel.state.selectedChartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
      }
 
      params.charTypes = charTypes;
+     ExportChartAction.getTagsData4Export(params, path);
+   },
+   exportChart4UnitEnergy(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/GetEnergyUsageUnitData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     let tagOptions = EnergyStore.getTagOpions();
+     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let submitParams = EnergyStore.getSubmitParams();
+     let benchmarkOption = submitParams.benchmarkOption;
+     let viewOption = submitParams.viewOption;
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     let params = {
+       title: title,
+       tagIds: tagIds,
+       viewOption: viewOption,
+       nodeNameAssociation: nodeNameAssociation,
+       benchmarkOption: benchmarkOption
+     };
+
+     let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+
      ExportChartAction.getTagsData4Export(params, path);
    }
  },
