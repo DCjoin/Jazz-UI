@@ -422,11 +422,11 @@ var TBSettingItem = React.createClass({
         <div style={clearStyle}>
           <div style={datePickerAreaStyle}>
             <div className="jazz-setting-basic-datepicker-container">
-              <ViewableDatePicker  ref='startFeild' {...startProps} />
+              <ViewableDatePicker  showTime={false} ref='startFeild' {...startProps} />
             </div>
             <div style={{'margin-left':'10px'}}>到</div>
             <div className="jazz-setting-basic-datepicker-container">
-              <ViewableDatePicker  ref='endFeild' {...endProps} />
+              <ViewableDatePicker  showTime={false} ref='endFeild' {...endProps} />
             </div>
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} className='icon-delete' label="－"  ref="remove"  onClick={this._onRemove} />
           </div>
