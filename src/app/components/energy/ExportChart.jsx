@@ -23,7 +23,7 @@ let ExportChart = React.createClass({
         frame = this.refs.exportIframe.getDOMNode(),
         doc = frame.contentDocument;
 
-    let url = 'API/Energy.svc/GetTagsData4Export',
+    let url = ExportChartStore.getPath(),
         data = ExportChartStore.getExportParamsObj(),
         name;
     let form = createElement('form', {

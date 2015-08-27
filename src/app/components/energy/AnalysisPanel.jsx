@@ -68,7 +68,12 @@ let AnalysisPanel = React.createClass({
     },
     _onTitleMenuSelect:function(e,item){
       let menuIndex=parseInt(item.key);
-      this.props.onOperationSelect(menuIndex);
+
+      if(menuIndex === 4){
+        this.exportChart();
+      }else{
+          this.props.onOperationSelect(menuIndex);
+      }
     },
     render(){
       let me = this, errorDialog = null, energyPart = null;
