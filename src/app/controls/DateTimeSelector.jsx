@@ -6,8 +6,6 @@ import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
 
 let {hourPickerData, dateAdd} = CommonFuns;
 
-const startDateTime = hourPickerData(0, 23);
-const endDateTime = hourPickerData(1, 24);
 
 let DateTimeSelector = React.createClass({
   propTypes:{
@@ -38,7 +36,7 @@ let DateTimeSelector = React.createClass({
       endDate: endDate
     });
     startField.setTime(startTime);
-    endField.setTime(endTime-1);
+    endField.setTime(endTime);
   },
   getDateTime(){
     let startField = this.refs.startDate,
@@ -50,7 +48,7 @@ let DateTimeSelector = React.createClass({
         endTime = endField.getTime();
 
     startDate.setHours(startTime, 0, 0, 0);
-    if(startTime === 24){
+    if(endTime === 24){
       endDate = dateAdd(endDate, 1, 'days');
       endDate.setHours(0, 0, 0, 0);
     }
@@ -77,10 +75,20 @@ let DateTimeSelector = React.createClass({
     }
     if(startDate.getTime()>= endDate.getTime()){
        if((sd !== null) || (st !== null)){
-         endDate = dateAdd(startDate, 1, 'hours');
+         if(this.props.showTime){
+           endDate = dateAdd(startDate, 1, 'hours');
+         }
+         else {
+           endDate = dateAdd(startDate, 1, 'days');
+         }
        }
        else if((ed !== null) || (et !== null)){
-         startDate = dateAdd(endDate, -1, 'hours');
+         if(this.props.showTime){
+           startDate = dateAdd(endDate, -1, 'hours');
+         }
+         else {
+           startDate = dateAdd(endDate, -1, 'days');
+         }
        }
     }
     this.setDateField(startDate, endDate);
@@ -90,14 +98,14 @@ let DateTimeSelector = React.createClass({
       startDate: null,
       endDate: null,
       startTime: 0,
-      endTime: 1
+      endTime: 24
     };
   },
   getInitialState: function(){
     let startDate = this.props.startDate || null;
     let endDate = this.props.endDate || null;
     let startTime = this.props.startTime || 0;
-    let endTime = this.props.endTime || 1;
+    let endTime = this.props.endTime || 24;
     return {
       startDate: startDate,
       endDate: endDate,

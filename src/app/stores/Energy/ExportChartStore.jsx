@@ -7,19 +7,24 @@ import Immutable from 'immutable';
 import ActionTypes from '../../constants/actionType/Energy.jsx';
 
 let _paramsObj = null;
+let _path = null;
 var ExportChartStore = assign({},PrototypeStore,{
-  initExportParams(params){
+  initExportParams(params, path){
     _paramsObj = params;
+    _path = path;
   },
   getExportParamsObj(){
     return _paramsObj;
+  },
+  getPath(){
+    return _path;
   }
 });
 module.exports = ExportChartStore;
 
 ExportChartStore.dispatchToken = PopAppDispatcher.register(function(action) {
   if(action.type === ActionTypes.EXPORT_CHART_ACTION_TYPE){
-    ExportChartStore.initExportParams(action.params);
+    ExportChartStore.initExportParams(action.params, action.path);
     ExportChartStore.emitChange();
   }
 });

@@ -27,7 +27,7 @@ var ViewableDatePicker = React.createClass({
         dateFormatStr: "YYYY/MM/DD/",
         timeType: 0,
         defaultTime: 0,
-        showTime: false
+        showTime: true
       };
     },
 
@@ -73,7 +73,7 @@ var ViewableDatePicker = React.createClass({
           this.props.onChange(this, date);
         }
     },
-    _onSelctedTime(time){
+    _onSelectedTime(time){
       this.setState({curTime:time});
       if(this.props.onSelectedTime){
         this.props.onSelectedTime(this, time);
@@ -96,9 +96,7 @@ var ViewableDatePicker = React.createClass({
       this.setState({curDate: value});
     },
     getTime: function(){
-        if(this.props.showTime){
-            return this.state.curTime;
-        }
+      return this.state.curTime;
     },
     setTime: function(value){
       this.setState({curTime: value});
@@ -177,7 +175,7 @@ var ViewableDatePicker = React.createClass({
                 onSelectedDate={this._onSelectedDate}
                 onSelectedTime={this._onSelectedTime}
                 initialDate={moment(this.state.curDate||new Date()).toDate()}
-                initialTime={this.state.curTime||this.props.timeType}
+                initialTime={this.state.curTime}
                 showTime={this.props.showTime}
                 timeType={this.props.timeType}
                 minDate= {minDate}

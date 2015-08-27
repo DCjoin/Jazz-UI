@@ -358,12 +358,12 @@ var SpecialItem = React.createClass({
         <div>
           <div style={{clear:'both', display:'flex','flex-flow':'row','margin-top':'18px'}}>
               <div className="jazz-setting-basic-datepicker-container">
-            <ViewableDatePicker ref='startDateField' {...startDateProps} />
+            <ViewableDatePicker showTime={false} ref='startDateField' {...startDateProps} />
             </div>
             <DaytimeSelector ref='startTimeField' {...startTimeProps} />
             <div className='jazz-setting-basic-datespan'>到</div>
               <div className="jazz-setting-basic-datepicker-container">
-            <ViewableDatePicker ref='endDateField' {...endDateProps} />
+            <ViewableDatePicker showTime={false} ref='endDateField' {...endDateProps} />
             </div>
             <DaytimeSelector ref='endTimeField' {...endTimeProps} />
             <FlatButton style={flatButtonStyle} labelStyle={{padding:'0'}} className='icon-delete' label="－"  ref="remove"  onClick={this._onRemove} /><br/>

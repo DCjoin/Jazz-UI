@@ -82,7 +82,8 @@ let CarbonAction = {
       commodityIds: commIds,
       hierarchyId: hierId,
       destination: destination,
-      viewOption: viewOption
+      viewOption: viewOption,
+      benchmarkOption: benchmarkOption,
     };
 
     AppDispatcher.dispatch({
