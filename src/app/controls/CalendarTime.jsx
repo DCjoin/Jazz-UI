@@ -1,17 +1,15 @@
 'use strict';
 
 import React from 'react';
-import moment from 'moment';
 import {Mixins,Styles,ClearFix,FlatButton} from 'material-ui';
 import ItemButton from '../controls/ItemButton.jsx';
 
 var CalendarTime = React.createClass({
   propTypes: {
     selectedTime: React.PropTypes.number.isRequired,
-    selectedDate: React.PropTypes.number.isRequired,
     onTimeChange: React.PropTypes.func,
-    showCalendar: React.PropTypes.func,
     timeType: React.PropTypes.number,
+    height: React.PropTypes.number,
     dateFormatStr: React.PropTypes.string
   },
 
@@ -20,12 +18,7 @@ var CalendarTime = React.createClass({
       dateFormatStr: "YYYY/MM/DD"
     };
   },
-  _formatDate(date){
-      if(date){
-        return moment(new Date(date)).format(this.props.dateFormatStr);
-      }
-      return '';
-  },
+
 
   render() {
     let styles = {
@@ -39,24 +32,11 @@ var CalendarTime = React.createClass({
         <div style={styles}>
           {this._getTimeItems()}
         </div>
-        {this._calendarDisplay()}
       </div>
 
     );
   },
-  _calendarDisplay: function() {
-    var selectedDate = this.props.selectedDate;
-    var dateStyle = {
-      textAlign: 'center',
-      border: '1px solid #efefef',
-      height: '60px',
-      lineHeight: '60px',
-      textDecoration: 'underline'
-    };
-    return (
-      <div style={dateStyle} onClick={this.props.showCalendar}>{this._formatDate(this.props.selectedDate)}</div>
-    );
-  },
+
   _getTimeItems() {
     let timeArray = this._getTimeArray();
 
@@ -87,6 +67,7 @@ var CalendarTime = React.createClass({
     return timeItem.map((time, j) => {
       return (
         <ItemButton
+          height={this.props.height}
           key={'time' + i + j}
           ref={'time'+ time.value}
           item={time}

@@ -73,7 +73,7 @@ var ViewableDatePicker = React.createClass({
           this.props.onChange(this, date);
         }
     },
-    _onSelctedTime(time){
+    _onSelectedTime(time){
       this.setState({curTime:time});
       if(this.props.onSelectedTime){
         this.props.onSelectedTime(this, time);
