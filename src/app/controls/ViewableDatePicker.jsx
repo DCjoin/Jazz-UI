@@ -27,7 +27,7 @@ var ViewableDatePicker = React.createClass({
         dateFormatStr: "YYYY/MM/DD/",
         timeType: 0,
         defaultTime: 0,
-        showTime: false
+        showTime: true
       };
     },
 
@@ -96,9 +96,9 @@ var ViewableDatePicker = React.createClass({
       this.setState({curDate: value});
     },
     getTime: function(){
-        if(this.props.showTime){
+        //if(this.props.showTime){
             return this.state.curTime;
-        }
+        //}
     },
     setTime: function(value){
       this.setState({curTime: value});

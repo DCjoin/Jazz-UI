@@ -6,8 +6,6 @@ import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
 
 let {hourPickerData, dateAdd} = CommonFuns;
 
-const startDateTime = hourPickerData(0, 23);
-const endDateTime = hourPickerData(1, 24);
 
 let DateTimeSelector = React.createClass({
   propTypes:{

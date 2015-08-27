@@ -1154,7 +1154,7 @@ let ChartStrategyFactor = {
          {chartTypeCmp}
          <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
-       <DateTimeSelector ref='dateTimeSelector' showTime={true} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-flat-button'}>
          {searchButton}
          <RaisedButton label='导出' onClick={analysisPanel.exportChart} style={{marginLeft:'10px'}}></RaisedButton>
@@ -1235,7 +1235,7 @@ let ChartStrategyFactor = {
          {chartTypeCmp}
          <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
-       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
          <DropDownMenu menuItems={ratios} style={{width:'102px', marginRight:'10px'}} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({ratioType: menuItem.value});}}></DropDownMenu>
        </div>
@@ -1256,7 +1256,7 @@ let ChartStrategyFactor = {
         {chartTypeCmp}
         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
-      <DateSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-container'} >
         <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'140px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
