@@ -653,8 +653,8 @@ let ChartStrategyFactor = {
    getInitParam(analysisPanel){
      let date = new Date();
      date.setHours(0,0,0);
-     let last7Days = CommonFuns.dateAdd(date, -7, 'days');
-     let endDate = CommonFuns.dateAdd(date, 0, 'days');
+     let last7Days = CommonFuns.dateAdd(date, -6, 'days');
+     let endDate = CommonFuns.dateAdd(date, 1, 'days');
      analysisPanel.refs.relativeDate.setState({selectedIndex: 1});
      analysisPanel.refs.dateTimeSelector.setDateField(last7Days, endDate);
    }
@@ -805,6 +805,7 @@ let ChartStrategyFactor = {
        customerMenuItems: [],
        selectedLabelItem: selectedLabelItem,
        kpiTypeValue: 1,
+       kpiTypeIndex: 0,
        labelDisable: true,
        kpiTypeDisable: false,
        month: curMonth+1
@@ -1340,8 +1341,10 @@ let ChartStrategyFactor = {
      var selectedList = {};
      var hierarchyList = CommodityStore.getHierNode();
      var commodityList = CommodityStore.getCommonCommodityList();
+     var dimId = CommodityStore.getCurrentDimId();
      selectedList.hierarchyList = hierarchyList;
      selectedList.commodityList = commodityList;
+     selectedList.dimId = dimId;
      return selectedList;
    },
    getSelectedHierCommodityList(){
@@ -1938,18 +1941,19 @@ let ChartStrategyFactor = {
       textAlign: 'center'
     };
     var kpiTypeItem = [
-     {value:1,text:'单位人口',name:'UnitPopulation'},
-     {value:2,text:'单位面积',name:'UnitArea'},
-     {value:3,text:'单位供冷面积',name:'UnitColdArea'},
-     {value:4,text:'单位采暖面积',name:'UnitWarmArea'},
-     {value:8,text:'单位客房',name:'UnitRoom'},
-     {value:9,text:'单位已用客房',name:'UnitUsedRoom'},
-     {value:10,text:'单位床位',name:'UnitBed'},
-     {value:11,text:'单位已用床位',name:'UnitUsedBed'},
-     {value:5,text:'昼夜比',name:'DayNightRatio'},
-     {value:6,text:'公休比',name:'WorkHolidayRatio'}];
+     {value:1,index:0,text:'单位人口',name:'UnitPopulation'},
+     {value:2,index:1,text:'单位面积',name:'UnitArea'},
+     {value:3,index:2,text:'单位供冷面积',name:'UnitColdArea'},
+     {value:4,index:3,text:'单位采暖面积',name:'UnitWarmArea'},
+     {value:8,index:4,text:'单位客房',name:'UnitRoom'},
+     {value:9,index:5,text:'单位已用客房',name:'UnitUsedRoom'},
+     {value:10,index:6,text:'单位床位',name:'UnitBed'},
+     {value:11,index:7,text:'单位已用床位',name:'UnitUsedBed'},
+     {value:5,index:8,text:'昼夜比',name:'DayNightRatio'},
+     {value:6,index:9,text:'公休比',name:'WorkHolidayRatio'}];
+
     if(!analysisPanel.state.kpiTypeDisable){
-      kpiTypeButton = <DropDownMenu style={{marginLeft:'10px'}} menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
+      kpiTypeButton = <DropDownMenu style={{marginLeft:'10px'}} selectedIndex={analysisPanel.state.kpiTypeIndex} menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
       }
     else{
       var kpiTypeText = analysisPanel.getKpiText();

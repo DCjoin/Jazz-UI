@@ -24,7 +24,7 @@ var RankingHierTreeButton = React.createClass({
   },
   setButtonName:function(checkedTreeNodes){
     var name;
-    if(checkedTreeNodes){
+    if(checkedTreeNodes.length!=0){
       checkedTreeNodes.forEach(function(node,i){
         if(i===0){
           name=node.get('Name');
@@ -35,6 +35,11 @@ var RankingHierTreeButton = React.createClass({
       });
       this.setState({
         buttonName:name
+      });
+    }
+    else {
+      this.setState({
+        buttonName:I18N.Hierarchy.RankingButtonName
       });
     }
 
@@ -63,7 +68,7 @@ var RankingHierTreeButton = React.createClass({
   _onClear:function(){
     this.setState({
       buttonName:I18N.Hierarchy.RankingButtonName
-    })
+    });
   },
   getInitialState: function() {
       return {
@@ -73,12 +78,12 @@ var RankingHierTreeButton = React.createClass({
         display:'none'
       };
     },
-  componentWillReceiveProps: function(nextProps) {
-      if((nextProps.checkedTreeNodes!==null) && (nextProps.checkedTreeNodes!=this.props.checkedTreeNodes)){
-        //let checkedTreeNodes=Immutable.fromJS(nextProps.checkedTreeNodes);
-        this.setButtonName(nextProps.checkedTreeNodes);
-      }
-        },
+  // componentWillReceiveProps: function(nextProps) {
+  //     if((nextProps.checkedTreeNodes!==null) && (nextProps.checkedTreeNodes!=this.props.checkedTreeNodes)){
+  //       //let checkedTreeNodes=Immutable.fromJS(nextProps.checkedTreeNodes);
+  //       this.setButtonName(nextProps.checkedTreeNodes);
+  //     }
+  //       },
   componentDidMount:function(){
     HierarchyStore.addHierarchyNodeListener(this._onChange);
     HierarchyAction.loadall(window.currentCustomerId);
@@ -114,7 +119,7 @@ var RankingHierTreeButton = React.createClass({
             {this.state.buttonName}
           </div>
           <div style={{display:this.state.display}}>
-          <HierView allNode={this.state.hieList} onConfirm={this._onConfirm} onClear={this._onClear} checkedTreeNodes={this.props.checkedTreeNodes}/>
+          <HierView allNode={this.state.hieList} onConfirm={this._onConfirm} checkedTreeNodes={this.props.checkedTreeNodes}/>
           </div>
 
         </div>
