@@ -15,7 +15,7 @@ let DateTimeSelector = React.createClass({
     endTime: React.PropTypes.number,
     showTime: React.PropTypes.bool
   },
-  setDateField(startDate, endDate){
+  setDateField(startDate, endDate, callback){
     let startField = this.refs.startDate,
         endField = this.refs.endDate;
 
@@ -34,6 +34,9 @@ let DateTimeSelector = React.createClass({
     this.setState({
       startDate: startDate,
       endDate: endDate
+    }, ()=>{
+      if(callback)
+        callback();
     });
     startField.setTime(startTime);
     endField.setTime(endTime);
@@ -58,7 +61,7 @@ let DateTimeSelector = React.createClass({
     return {start: startDate, end: endDate};
   },
   _onChangeDateTime: function(sd, st, ed, et){
-    this.props._onDateSelectorChanged();
+
     var startDate = sd, startTime = st, endDate = ed, endTime = et;
     if(sd === null) startDate = this.refs.startDate.getValue();
     if(st === null) startTime = this.refs.startDate.getTime();
@@ -91,7 +94,8 @@ let DateTimeSelector = React.createClass({
          }
        }
     }
-    this.setDateField(startDate, endDate);
+
+    this.setDateField(startDate, endDate, this.props._onDateSelectorChanged);
   },
   getDefaultProps(){
     return {
