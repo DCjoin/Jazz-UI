@@ -23,6 +23,17 @@ import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
+var kpiTypeItem = [
+ {value:1,index:0,text:'单位人口',name:'UnitPopulation'},
+ {value:2,index:1,text:'单位面积',name:'UnitArea'},
+ {value:3,index:2,text:'单位供冷面积',name:'UnitColdArea'},
+ {value:4,index:3,text:'单位采暖面积',name:'UnitWarmArea'},
+ {value:8,index:4,text:'单位客房',name:'UnitRoom'},
+ {value:9,index:5,text:'单位已用客房',name:'UnitUsedRoom'},
+ {value:10,index:6,text:'单位床位',name:'UnitBed'},
+ {value:11,index:7,text:'单位已用床位',name:'UnitUsedBed'},
+ {value:5,index:8,text:'昼夜比',name:'DayNightRatio'},
+ {value:6,index:9,text:'公休比',name:'WorkHolidayRatio'}];
 
 let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
@@ -560,8 +571,22 @@ let AnalysisPanel = React.createClass({
     },
     changeToIndustyrLabel(){
       if(this.state.kpiTypeValue === 7){
-        this.setState({kpiTypeValue: 1});
+        this.setState({
+          kpiTypeValue: 1,
+          kpiTypeIndex: 0
+        });
       }
+      else{
+        for(var i = 0; i < kpiTypeItem.length;i++){
+          if(kpiTypeItem[i].value === this.state.kpiTypeValue){
+            this.setState({
+              kpiTypeIndex: kpiTypeItem[i].index
+            });
+            break;
+          }
+        }
+      }
+
       this.enableKpiTypeButton();
     },
     changeToCustomizedLabel(kpiType){
@@ -569,17 +594,7 @@ let AnalysisPanel = React.createClass({
       this.disableKpiTypeButton();
     },
     getKpiText(){
-      var kpiTypeItem = [
-       {value:1,text:'单位人口',name:'UnitPopulation'},
-       {value:2,text:'单位面积',name:'UnitArea'},
-       {value:3,text:'单位供冷面积',name:'UnitColdArea'},
-       {value:4,text:'单位采暖面积',name:'UnitWarmArea'},
-       {value:8,text:'单位客房',name:'UnitRoom'},
-       {value:9,text:'单位已用客房',name:'UnitUsedRoom'},
-       {value:10,text:'单位床位',name:'UnitBed'},
-       {value:11,text:'单位已用床位',name:'UnitUsedBed'},
-       {value:5,text:'昼夜比',name:'DayNightRatio'},
-       {value:6,text:'公休比',name:'WorkHolidayRatio'}];
+
       var kpiTypeText = "";
       var kpiType = this.state.kpiTypeValue;
       if(kpiType === 7){
@@ -816,7 +831,10 @@ let AnalysisPanel = React.createClass({
       return this.state.kpiTypeValue;
     },
     onChangeKpiType: function(e, selectedIndex, menuItem){
-      this.setState({kpiTypeValue: menuItem.value});
+      this.setState({
+        kpiTypeValue: menuItem.value,
+        kpiTypeIndex: menuItem.index
+      });
     },
     _onConfigBtnItemTouchTap(menuParam, menuItem){
      this.state.chartStrategy.handleConfigBtnItemTouchTapFn(this, menuParam, menuItem);
