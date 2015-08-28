@@ -61,6 +61,8 @@ var TreeNode = React.createClass({
 
     putGragulaContainer: React.PropTypes.func,
     collapsedNodeId:React.PropTypes.number,
+    // arrow style
+    arrowClass: React.PropTypes.string,
   },
 
   getDefaultProps: function () {
@@ -141,15 +143,15 @@ var TreeNode = React.createClass({
     };
     if(!!props.selectedNode){
       if(props.selectedNode.get('Id')==props.nodeData.get('Id')){
-        return false
+        return false;
       }
       else {
-        return f(props.nodeData)
+        return f(props.nodeData);
       }
 
     }
     else {
-      return false
+      return false;
     }
   },
   getDefaultCollapsed: function (props) {
@@ -158,7 +160,7 @@ var TreeNode = React.createClass({
         collapseStatus=!(props.nodeData.get('Id')==props.collapsedNodeId);
     if(props.collapsedLevel === 0 ||  props.collapsedLevel){
       levelStatus=props.level > props.collapsedLevel;
-    };
+    }
     if(checkedStatus){
       let nodes=props.nodeData.get("Children");
       let that=this;
@@ -181,7 +183,7 @@ var TreeNode = React.createClass({
       this.setState({
         collapsed: this.getDefaultCollapsed(nextProps),
         IsSendCopyReaded:this.getDefaultReadStatus(nextProps),
-      })
+      });
     }
   },
   handleClickArrow: function (e) {
@@ -193,7 +195,7 @@ var TreeNode = React.createClass({
       FolderAction.modifyFolderReadStatus(this.props.nodeData);
       this.setState({
         IsSendCopyReaded:true
-      })
+      });
     }
   },
 
@@ -251,8 +253,9 @@ var TreeNode = React.createClass({
   generateArrow: function (hasChild) {
     var nodeData=this.props.nodeData;
     var type = nodeData.get("Type");
+    var { arrowClass} = this.props;
     return (
-      <div className="arrow" onClick={this.handleClickArrow}>
+      <div className={classNames("arrow", arrowClass, true)} onClick={this.handleClickArrow}>
         <div className={classNames({
           "hasChild"  : (hasChild || type == nodeType.Folder),
           "hasNoChild": !(hasChild || type == nodeType.Folder)

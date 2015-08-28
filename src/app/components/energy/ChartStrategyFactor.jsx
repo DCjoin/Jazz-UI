@@ -164,7 +164,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'unitEnergyBindStoreListeners',
       unbindStoreListenersFn:'unitEnergyUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      exportChartFn:'exportChart',
+      exportChartFn:'exportChart4UnitEnergy',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getUnitEnergyAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitEnergySubToolbar',
@@ -190,7 +190,7 @@ let ChartStrategyFactor = {
       exportChartFn:'exportChart',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getUnitCostAuxiliaryCompareBtn',
-      getChartSubToolbarFn:'getUnitEnergySubToolbar',
+      getChartSubToolbarFn:'getUnitCostSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitCostBenchmarkMenuItemClick',
       handleStepChangeFn:'handleUnitCostStepChange'
@@ -410,12 +410,11 @@ let ChartStrategyFactor = {
            <div style={{display:'flex'}}>
              <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
              <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-             <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+             <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{margin:'5px 30px 5px auto'}}>
                {configBtn}
                <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
              </div>
-             <BaselineCfg  ref="baselineCfg"/>
            </div>;
      }else if(chartType === 'pie'){
        toolElement =
@@ -425,7 +424,6 @@ let ChartStrategyFactor = {
                {configBtn}
                <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
              </div>
-             <BaselineCfg  ref="baselineCfg"/>
            </div>;
      }
      return toolElement;
@@ -488,6 +486,24 @@ let ChartStrategyFactor = {
              <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
            </div>
            <BaselineCfg  ref="baselineCfg"/>
+         </div>;
+
+      return toolElement;
+   },
+   getUnitCostSubToolbar(analysisPanel){
+     var toolElement;
+     let chartType = analysisPanel.state.selectedChartType;
+     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column']);
+     let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     toolElement =
+         <div style={{display:'flex'}}>
+           <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+           <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+           <div style={{margin:'5px 30px 5px auto'}}>
+             {configBtn}
+             <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+           </div>
          </div>;
 
       return toolElement;
@@ -782,6 +798,7 @@ let ChartStrategyFactor = {
    },
    getLabelInitialState(analysisPanel){
      var selectedLabelItem = analysisPanel.initSlectedLabelItem();
+     var curMonth = (new Date()).getMonth();
      let state = {
        labelType: "industryZone",//industry,customized
        industyMenuItems: [],
@@ -789,7 +806,8 @@ let ChartStrategyFactor = {
        selectedLabelItem: selectedLabelItem,
        kpiTypeValue: 1,
        labelDisable: true,
-       kpiTypeDisable: false
+       kpiTypeDisable: false,
+       month: curMonth+1
      };
      return state;
    }
@@ -1279,7 +1297,6 @@ let ChartStrategyFactor = {
   },
   labelSearchBarGen(analysisPanel){
     var curYear = (new Date()).getFullYear();
-    var curMonth = (new Date()).getMonth();
     var yearProps = {
       ref: "yearSelector",
       selectedIndex: 10,
@@ -1298,7 +1315,7 @@ let ChartStrategyFactor = {
     return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
-      <DropDownMenu menuItems={monthItem} selectedIndex={curMonth+1} ref='monthSelector'></DropDownMenu>
+      <DropDownMenu menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
       </div>
       <div className={'jazz-full-border-dropdownmenu-container'} >
       {labelBtn}
@@ -1815,7 +1832,7 @@ let ChartStrategyFactor = {
      let params = {
        title: title,
        tagIds: tagIds,
-       viewOption: viewOption,
+       viewOption: viewOption
      };
 
      if(chartType === 'pie'){
@@ -1829,10 +1846,40 @@ let ChartStrategyFactor = {
      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
      let charTypes = [];
      for(let i = 0; i < seriesNumber; i++){
-       charTypes.push(analysisPanel.state.selectedChartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
      }
 
      params.charTypes = charTypes;
+     ExportChartAction.getTagsData4Export(params, path);
+   },
+   exportChart4UnitEnergy(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/GetEnergyUsageUnitData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     let tagOptions = EnergyStore.getTagOpions();
+     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let submitParams = EnergyStore.getSubmitParams();
+     let benchmarkOption = submitParams.benchmarkOption;
+     let viewOption = submitParams.viewOption;
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     let params = {
+       title: title,
+       tagIds: tagIds,
+       viewOption: viewOption,
+       nodeNameAssociation: nodeNameAssociation,
+       benchmarkOption: benchmarkOption
+     };
+
+     let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+
      ExportChartAction.getTagsData4Export(params, path);
    }
  },

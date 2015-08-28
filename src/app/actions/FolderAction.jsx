@@ -97,7 +97,7 @@ let FolderAction = {
     });
 
   },
-  deleteItem:function(node){
+  deleteItem:function(node,isLoadByWidget){
     Ajax.post('/Dashboard.svc/DeleteFolderOrWidgetById', {
          params: {
            id:node.get('Id'),
@@ -106,7 +106,8 @@ let FolderAction = {
         success: function(newNode){
           AppDispatcher.dispatch({
               type: Action.DELETE_ITEM,
-              deleteNode:node
+              deleteNode:node,
+              isLoadByWidget:isLoadByWidget
           });
         },
         error: function(err, res){

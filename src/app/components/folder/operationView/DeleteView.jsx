@@ -11,9 +11,10 @@ var DeleteView = React.createClass({
   propTypes: {
     onDismiss: React.PropTypes.func,
     deleteNode:React.PropTypes.object,
+    isLoadByWidget:React.PropTypes.bool,
   },
   _onDeleteItem:function(){
-  FolderAction.deleteItem(this.props.deleteNode);
+  FolderAction.deleteItem(this.props.deleteNode,this.props.isLoadByWidget);
   },
   render:function(){
     var type=(this.props.deleteNode.get('Type')==nodeType.Folder)?I18N.Folder.FolderName:I18N.Folder.WidgetName;

@@ -274,7 +274,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       _originalType = relativeType;
       if(relativeType === 'Customerize'){
         let mainItem = _tempRelativeList.get(0);
-        mainItem.set('relativeType', relativeType);
+        mainItem = mainItem.set('relativeType', relativeType);
         _tempRelativeList = Immutable.List([]);
         _tempRelativeList = _tempRelativeList.push(mainItem);
       }else{
@@ -293,12 +293,12 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
     _tempRelativeList = _tempRelativeList.set(compareIndex, me.generateTimespanItem(false, _originalType, relativeValue, null, null, compareIndex));
   },
   handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate){
-    let me = this;
+    let me = this, item;
     me._initTempRelativeList();
 
     if(isOriginalDate){
       if(_originalType === 'Customerize'){
-        _tempRelativeList.set( 0, me.generateTimespanItem(true, 'Customerize', null, startDate, endDate, null));
+        _tempRelativeList = _tempRelativeList.set( 0, me.generateTimespanItem(true, 'Customerize', null, startDate, endDate, null));
       }else{
         _originalType = 'Customerize';
         _tempRelativeList = Immutable.List([]);
@@ -306,7 +306,8 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
         _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, 'Customerize', null, null, null, 1));
       }
     }else{
-      _tempRelativeList.set( compareIndex, me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, compareIndex));
+      item = me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, compareIndex);
+      _tempRelativeList = _tempRelativeList.set( compareIndex, item );
     }
   },
   convert2Stable(){

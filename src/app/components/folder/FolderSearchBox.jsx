@@ -68,16 +68,16 @@ var FolderSearchBox = React.createClass({
   },
   render:function(){
     var  searchIconStyle={
-                        fontSize:'20px'
+                        fontSize:'14px'
                         },
         cleanIconStyle={
                         marginTop:'3px',
-                        fontSize:'16px',
+                        fontSize:'14px',
                         display:'none'
                         },
         textFieldStyle={
                         flex:'1',
-                        height:'26px'
+                        height:'24px'
                       };
   var searchPaper;
     if(this.state.showPaper){
@@ -94,7 +94,7 @@ var FolderSearchBox = React.createClass({
     return(
       <div>
         <label className="jazz-folder-leftpanel-searchbox" onBlur={this._onSearchBlur}>
-            <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
+            <FontIcon className="icon-search" color="#ffffff" style={searchIconStyle} ref="searchIcon"/>
             <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearchChange}/>
             <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
         </label>

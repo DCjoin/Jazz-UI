@@ -110,7 +110,7 @@ let Setting = React.createClass({
              template=<SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>;
            break;
          case 3:
-             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
+             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={false}/>;
            break;
      }
    }
@@ -129,18 +129,29 @@ let Setting = React.createClass({
              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
            break;
          case 5:
-             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
+             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={false}/>;
            break;
          case 6:
              template=<SaveAsView onDismiss={this._onTemplateDismiss} saveAsNode={this.state.templateNode}/>;
            break;
+        case 7:
+             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={true}/>;
+            break;
      }
    }
  }
  return template;
  },
 _onWidgetMenuSelect:function(index){
-  var id=(index==1)?6:index;
+  var id=index;
+  if(index==1){
+    id=6
+  }
+  else {
+    if(index==5){
+      id=7
+    }
+  };
   this.setState({
     templateNode:this.state.selectedNode,
     templateId:id,

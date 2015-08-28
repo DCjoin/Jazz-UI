@@ -70,7 +70,7 @@ var TreeNodeContent = React.createClass({
       var isSenderCopy = this.props.nodeData.get("IsSenderCopy");
       var isRead = this.props.nodeData.get("IsRead");
       var icon = (
-      <div className="node-content-icon">
+      <div className="node-content-icon" style={{color:'#ffffff'}}>
         <div className={classNames({
           //add for file operation
           "icon-column-fold" : type == nodeType.Folder,
@@ -79,18 +79,18 @@ var TreeNodeContent = React.createClass({
       </div>
       );
       var textStyle={
-        marginLeft: '6px',
+        marginLeft: '10px',
         fontSize: '14px',
-        color: '#767a7a'
+        color: '#ffffff'
       };
       var text;
       if(this.props.nodeData.get('Id')<-1){
-        text=  <TextField ref="textField" style={textStyle} value={this.state.text} onChange={this._onChanged}/>
+        text= <div className='jazz-foldertree-node-textfield'><TextField ref="textField" style={textStyle} value={this.state.text} onChange={this._onChanged}/></div>
       }
       else {
         text= (!this.state.isSelect?
-                  <div className="node-content-text" title={this.state.text}>{this.state.text}</div>:
-                  <TextField ref="textField" style={textStyle} value={this.state.text} onChange={this._onChanged}/>
+                  <div className="node-content-text" style={{color:'#ffffff'}} title={this.state.text}>{this.state.text}</div>:
+                  <div className='jazz-foldertree-node-textfield'><TextField ref="textField" style={textStyle} value={this.state.text} onChange={this._onChanged}/></div>
               );
       };
 
@@ -101,7 +101,7 @@ var TreeNodeContent = React.createClass({
 
 
       return(
-           <div className="tree-node-content" onClick={this._onClick} onBlur={this._onBlur}>
+           <div className="tree-node-content" onClick={this._onClick} onBlur={this._onBlur} style={{color:'#ffffff'}}>
                  {icon}
                  {text}
                  {isSenderCopyIcon}
