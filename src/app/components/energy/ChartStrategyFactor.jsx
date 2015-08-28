@@ -650,8 +650,8 @@ let ChartStrategyFactor = {
    getInitParam(analysisPanel){
      let date = new Date();
      date.setHours(0,0,0);
-     let last7Days = CommonFuns.dateAdd(date, -7, 'days');
-     let endDate = CommonFuns.dateAdd(date, 0, 'days');
+     let last7Days = CommonFuns.dateAdd(date, -6, 'days');
+     let endDate = CommonFuns.dateAdd(date, 1, 'days');
      analysisPanel.refs.relativeDate.setState({selectedIndex: 1});
      analysisPanel.refs.dateTimeSelector.setDateField(last7Days, endDate);
    }
@@ -1335,8 +1335,10 @@ let ChartStrategyFactor = {
      var selectedList = {};
      var hierarchyList = CommodityStore.getHierNode();
      var commodityList = CommodityStore.getCommonCommodityList();
+     var dimId = CommodityStore.getCurrentDimId();
      selectedList.hierarchyList = hierarchyList;
      selectedList.commodityList = commodityList;
+     selectedList.dimId = dimId;
      return selectedList;
    },
    getSelectedHierCommodityList(){
