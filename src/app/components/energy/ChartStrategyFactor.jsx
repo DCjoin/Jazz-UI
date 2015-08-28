@@ -950,9 +950,8 @@ let ChartStrategyFactor = {
      let relativeDateValue = analysisPanel._getRelativeDateValue();
      let ratioType = analysisPanel.state.ratioType;
      if(!ratioType) ratioType = 1;
-     let benchmark = null;
 
-     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, ratioType, relativeDateValue, benchmark, analysisPanel);
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, ratioType, relativeDateValue, analysisPanel);
    },
    onUnitEnergySearchDataButtonClick(analysisPanel){
      analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
@@ -1634,7 +1633,7 @@ let ChartStrategyFactor = {
      let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
                              {primaryText:'冷暖季', value:'hotColdSeason'}];
 
-     let tagOptions = EnergyStore.getTagOpions();
+     let tagOptions = RatioStore.getRatioOpions();
      let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
