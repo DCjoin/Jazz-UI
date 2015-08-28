@@ -21,7 +21,7 @@ let _energyConsumptionType=null,// Carbon or Cost
     _hierNode=null,
     _currentHierId=null,
     _currentHierName=null,
-    _currentDimId=null,
+    _currentDimNode=null,
     _commodityList=[],
     _commodityStatus=Immutable.List([]),
     _RankingTreeList=[],
@@ -48,7 +48,7 @@ var CommodityStore = assign({},PrototypeStore,{
     this.resetData();
     _currentHierId=id;
     _currentHierName=name;
-    _currentDimId=null;
+    _currentDimNode=null;
     _hierNode={
       hierId:id,
       hierName:name
@@ -63,16 +63,19 @@ var CommodityStore = assign({},PrototypeStore,{
   getHierNode:function(){
     return _hierNode
   },
-  setCurrentDimId:function(id){
-    _currentDimId=id;
+  setCurrentDimInfo:function(node){
+    _currentDimNode={
+      dimId:node.Id,
+      dimName:node.Name
+    };
     _energyConsumptionType=null;
     _commodityList=[];
     _commodityStatus=Immutable.List([]);
     _buttonStatus_EC=true;
     _buttonStatus_UC=true
   },
-  getCurrentDimId:function(){
-    return _currentDimId;
+  getCurrentDimNode:function(){
+    return _currentDimNode;
   },
   setCommodityList:function(list){
     var listArray=list;
@@ -92,7 +95,7 @@ var CommodityStore = assign({},PrototypeStore,{
       _energyConsumptionType=null;
       _currentHierId=null;
       _currentHierName=null;
-      _currentDimId=null;
+      _currentDimNode=null;
       _commodityList=[];
       _hierNode=null;
       _commodityStatus=Immutable.List([]);
@@ -287,8 +290,8 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
       case CommodityAction.SET_CURRENT_HIERARCHY_ID:
         CommodityStore.setCurrentHierarchyInfo(action.hierId,action.hierName);
         break;
-      case CommodityAction.SET_CURRENT_DIM_ID:
-        CommodityStore.setCurrentDimId(action.dimId);
+      case CommodityAction.SET_CURRENT_DIM_INFO:
+        CommodityStore.setCurrentDimInfo(action.dimNode);
         break;
       case CommodityAction.RESET_DATA:
         CommodityStore.resetData();

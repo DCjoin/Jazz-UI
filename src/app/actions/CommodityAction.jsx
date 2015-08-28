@@ -67,10 +67,10 @@ let CommodityAction = {
       hierName:hierName
     });
   },
-  setCurrentDimId:function(dimId){
+  setCurrentDimInfo:function(dimNode){
       AppDispatcher.dispatch({
-        type: Action.SET_CURRENT_DIM_ID,
-        dimId:dimId
+        type: Action.SET_CURRENT_DIM_INFO,
+        dimNode:dimNode
       });
   },
   resetData:function(){
