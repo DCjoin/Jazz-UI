@@ -39,10 +39,10 @@ var CommonCommodityPanel = React.createClass({
   },
   _onDimTreeClick:function(node){
     if(node.Id!==0){
-      CommodityAction.setCurrentDimId(node.Id);
+      CommodityAction.setCurrentDimInfo(node);
     }
     else {
-      CommodityAction.setCurrentDimId(null);
+      CommodityAction.setCurrentDimInfo(null);
     }
     this.setState({
       HierarchyShow:true,
@@ -81,7 +81,7 @@ var CommonCommodityPanel = React.createClass({
   },
   render:function(){
     let CurrentHierId=CommodityStore.getCurrentHierarchyId(),
-        CurrentDimId=CommodityStore.getCurrentDimId();
+        CurrentDimId=!!CommodityStore.getCurrentDimNode()?CommodityStore.getCurrentDimNode().dimId:null;
 
     let header,content;
     //header
