@@ -1050,7 +1050,7 @@ let CommonFuns = {
 		return this.filterBenchmarks(selectedHier, industryData, zoneData, benchmarkData);
 	},
 	filterBenchmarksByCostSelectedList(selectedList){
-		let hierId = selectedList.hierarchyList.hierId;
+		let hierId = selectedList.hierarchyNode.hierId;
 		if(!hierId){
 			return null;
 		}

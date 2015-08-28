@@ -1675,8 +1675,8 @@ let ChartStrategyFactor = {
      let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
                              {primaryText:'冷暖季', value:'hotColdSeason'}];
 
-     let tagOptions = {}, hierarchyList = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
-     tagOptions.hierarchyList = hierarchyList;
+     let tagOptions = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
+     tagOptions.hierarchyNode = hierarchyNode;
      tagOptions.commodityList = commodityList;
      let benchmarks = CommonFuns.filterBenchmarksByCostSelectedList(tagOptions);
 
@@ -1862,7 +1862,7 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
-     let path;
+     let path = 'API/Energy.svc/GetCostData4Export';
      let chartType = analysisPanel.state.selectedChartType;
      let selectedList = CostStore.getSelectedList();
      let commodityList = selectedList.commodityList;
@@ -1871,21 +1871,15 @@ let ChartStrategyFactor = {
      let viewOption = submitParams.viewOption;
      let viewAssociation = submitParams.viewAssociation;
      let title = analysisPanel.props.chartTitle || '能耗分析';
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
 
      let params = {
        title: title,
        commodityIds: commodityIds,
        viewOption: viewOption,
-       viewAssociation: viewAssociation
+       viewAssociation: viewAssociation,
+       nodeNameAssociation:nodeNameAssociation
      };
-
-     if(chartType === 'pie'){
-       path = 'API/Energy.svc/AggregateCostData4Export';
-     }else{
-       path = 'API/Energy.svc/GetCostData4Export';
-       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
-           params.nodeNameAssociation = nodeNameAssociation;
-     }
 
      let seriesNumber = CostStore.getEnergyData().get('Data').size;
      let charTypes = [];
@@ -1944,6 +1938,7 @@ let ChartStrategyFactor = {
        title: title,
        commodityIds: commodityIds,
        viewOption: viewOption,
+       viewAssociation: viewAssociation,
        nodeNameAssociation: nodeNameAssociation,
        benchmarkOption: benchmarkOption
      };
