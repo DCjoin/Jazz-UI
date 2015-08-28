@@ -1027,7 +1027,8 @@ let ChartStrategyFactor = {
      if(!dest) dest = 2;
 
       let unitType = analysisPanel.state.unitType;
-      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierCommIds.hierarchyId, hierCommIds.communityIds, dest, unitType, relativeDateValue, analysisPanel);
+      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierCommIds.hierarchyId,
+        hierCommIds.communityIds, dest, unitType, relativeDateValue, analysisPanel);
    },
    onRankSearchDataButtonClick(analysisPanel){
      //analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
@@ -1128,7 +1129,7 @@ let ChartStrategyFactor = {
      };
      analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, relativeDate, analysisPanel);
    },
-   setRatioFitStepAndGetData(startDate, endDate, tagOptions, ratioType, relativeDate, benchmarkOption, analysisPanel){
+   setRatioFitStepAndGetData(startDate, endDate, tagOptions, ratioType, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
          step = analysisPanel.state.step,
          limitInterval = CommonFuns.getLimitInterval(timeRanges),
@@ -1138,7 +1139,7 @@ let ChartStrategyFactor = {
      }
      if(ratioType==1 && (step==0||step==1))step=2;
      if(ratioType==2 && (step==0||step==1||step==2))step=3;
-     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, relativeDate, benchmarkOption, analysisPanel);
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, relativeDate);
    },
    setUnitEnergyFitStepAndGetData(startDate, endDate, tagOptions, unitType, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
@@ -1150,7 +1151,7 @@ let ChartStrategyFactor = {
      }
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, relativeDate);
    },
-   setUnitCarbonFitStepAndGetData(startDate, endDate, hierarchyId, commodityIds, destination, unitType, relativeDate, benchmarkOption, analysisPanel){
+   setUnitCarbonFitStepAndGetData(startDate, endDate, hierarchyId, commodityIds, destination, unitType, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
          step = analysisPanel.state.step,
          limitInterval = CommonFuns.getLimitInterval(timeRanges),
@@ -1167,7 +1168,7 @@ let ChartStrategyFactor = {
           UnitType: unitType
         }
      };
-     analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, relativeDate, benchmarkOption);
+     analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, relativeDate);
    },
    setRankTypeAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
