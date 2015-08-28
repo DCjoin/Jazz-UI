@@ -65,6 +65,11 @@ var CommodityStore = assign({},PrototypeStore,{
   },
   setCurrentDimId:function(id){
     _currentDimId=id;
+    _energyConsumptionType=null;
+    _commodityList=[];
+    _commodityStatus=Immutable.List([]);
+    _buttonStatus_EC=true;
+    _buttonStatus_UC=true
   },
   getCurrentDimId:function(){
     return _currentDimId;
@@ -143,13 +148,14 @@ var CommodityStore = assign({},PrototypeStore,{
   },
   setCommodityStatus:function(id,name,selected){
     var hasCommodity=false;
+    var item={
+          Id:id,
+          Comment:name
+        };
       if(selected){
-      _commodityStatus= _commodityStatus.push(Immutable.fromJS(
-        {
-            Id:id,
-            Comment:name
-          })
-      );
+        if(_commodityStatus.indexOf(item)<0){
+          _commodityStatus= _commodityStatus.push(Immutable.fromJS(item));
+        }
       }
       else {
         _commodityStatus=_commodityStatus.delete(_commodityStatus.findIndex(item=>item.get('Id')==id));

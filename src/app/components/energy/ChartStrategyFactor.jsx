@@ -188,7 +188,7 @@ let ChartStrategyFactor = {
       exportChartFn:'exportChart',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getUnitCostAuxiliaryCompareBtn',
-      getChartSubToolbarFn:'getUnitEnergySubToolbar',
+      getChartSubToolbarFn:'getUnitCostSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitCostBenchmarkMenuItemClick',
       handleStepChangeFn:'handleUnitCostStepChange'
@@ -407,12 +407,11 @@ let ChartStrategyFactor = {
            <div style={{display:'flex'}}>
              <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
              <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-             <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+             <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{margin:'5px 30px 5px auto'}}>
                {configBtn}
                <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
              </div>
-             <BaselineCfg  ref="baselineCfg"/>
            </div>;
      }else if(chartType === 'pie'){
        toolElement =
@@ -422,7 +421,6 @@ let ChartStrategyFactor = {
                {configBtn}
                <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
              </div>
-             <BaselineCfg  ref="baselineCfg"/>
            </div>;
      }
      return toolElement;
@@ -485,6 +483,24 @@ let ChartStrategyFactor = {
              <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
            </div>
            <BaselineCfg  ref="baselineCfg"/>
+         </div>;
+
+      return toolElement;
+   },
+   getUnitCostSubToolbar(analysisPanel){
+     var toolElement;
+     let chartType = analysisPanel.state.selectedChartType;
+     let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column']);
+     let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+     toolElement =
+         <div style={{display:'flex'}}>
+           <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
+           <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+           <div style={{margin:'5px 30px 5px auto'}}>
+             {configBtn}
+             <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+           </div>
          </div>;
 
       return toolElement;
@@ -779,6 +795,7 @@ let ChartStrategyFactor = {
    },
    getLabelInitialState(analysisPanel){
      var selectedLabelItem = analysisPanel.initSlectedLabelItem();
+     var curMonth = (new Date()).getMonth();
      let state = {
        labelType: "industryZone",//industry,customized
        industyMenuItems: [],
@@ -786,7 +803,8 @@ let ChartStrategyFactor = {
        selectedLabelItem: selectedLabelItem,
        kpiTypeValue: 1,
        labelDisable: true,
-       kpiTypeDisable: false
+       kpiTypeDisable: false,
+       month: curMonth+1
      };
      return state;
    }
@@ -1276,7 +1294,6 @@ let ChartStrategyFactor = {
   },
   labelSearchBarGen(analysisPanel){
     var curYear = (new Date()).getFullYear();
-    var curMonth = (new Date()).getMonth();
     var yearProps = {
       ref: "yearSelector",
       selectedIndex: 10,
@@ -1295,7 +1312,7 @@ let ChartStrategyFactor = {
     return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
-      <DropDownMenu menuItems={monthItem} selectedIndex={curMonth+1} ref='monthSelector'></DropDownMenu>
+      <DropDownMenu menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
       </div>
       <div className={'jazz-full-border-dropdownmenu-container'} >
       {labelBtn}

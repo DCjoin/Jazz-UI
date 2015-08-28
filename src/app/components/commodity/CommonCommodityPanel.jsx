@@ -71,12 +71,13 @@ var CommonCommodityPanel = React.createClass({
     };
   },
 
-  componentDidMount: function() {
-
+  componentWillMount: function() {
+    CommodityStore.resetData();
   },
-
-  componentWillUnmount: function() {
-
+  componentWillReceiveProps:function(){
+    this.setState({
+      checkedCommodityList:CommodityStore.getCommodityStatus()
+    });
   },
   render:function(){
     let CurrentHierId=CommodityStore.getCurrentHierarchyId(),

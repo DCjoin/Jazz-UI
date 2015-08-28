@@ -180,7 +180,7 @@ var FolderStore = assign({},PrototypeStore,{
       _folderTree=this.modifyTreebyNode(_folderTree);
       _selectedNode=newNode;
   },
-  deleteItem:function(deleteNode){
+  deleteItem:function(deleteNode,isLoadByWidget){
     //如果左边选中的是一个widget，在右边执行删除后，左边焦点项下移
     var parent=this.getParent(deleteNode);
 
@@ -197,13 +197,18 @@ var FolderStore = assign({},PrototypeStore,{
       let subWidgetCount  =  _changedNode.get('ChildWidgetCount')-1;
        _changedNode=_changedNode.set('ChildWidgetCount',subWidgetCount );
     }
-    if(index==children.size-1){
-      _selectedNode=children.find((item,i)=>(i==index-1));
-    }
-    else {
-      _selectedNode=children.find((item,i)=>(i==index+1));
-    }
-    _folderTree=this.modifyTreebyNode(_folderTree);
+      _folderTree=this.modifyTreebyNode(_folderTree);
+      if(isLoadByWidget){
+        if(index==children.size-1){
+          _selectedNode=children.find((item,i)=>(i==index-1));
+        }
+        else {
+          _selectedNode=children.find((item,i)=>(i==index+1));
+        }
+         this.emitSelectedNodeChange();
+      }
+
+
   },
   setModifyNameError:function(res,newName,type){
     var errorCode=eval("(" + res + ")");
@@ -473,9 +478,8 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
 
       break;
     case FolderAction.DELETE_ITEM:
-        FolderStore.deleteItem(action.deleteNode);
+        FolderStore.deleteItem(action.deleteNode,action.isLoadByWidget);
         FolderStore.emitDeleteItemSuccessChange();
-         FolderStore.emitSelectedNodeChange();
       break;
     case FolderAction.SEND_ITEM:
         FolderStore.setSendStatus(action.sourceTreeNode,action.userIds);

@@ -37,7 +37,21 @@ let StepSelector = React.createClass({
   },
   getInitialState(){
     let limitInterval = CommonFuns.getLimitInterval(this.props.timeRanges);
+    var stepList = limitInterval.stepList;
+    if(this.props.minStep){
+      stepList = this.getStepList(stepList, this.props.minStep);
+    }
+    limitInterval.stepList = stepList;
     return limitInterval;
+  },
+  getStepList(stepList, minStep){
+    var newStepList = [];
+    for(var i = 0; i < stepList.length; i++){
+      if(stepList[i] >= minStep){
+        newStepList.push(stepList[i]);
+      }
+    }
+    return newStepList;
   },
   render(){
     var me = this;

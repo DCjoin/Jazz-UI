@@ -80,6 +80,7 @@ var CostStore = assign({},PrototypeStore,{
                commodityIds: params.commodityIds,
                startTime: params.viewOption.TimeRanges[0].StartTime,
                endTime: params.viewOption.TimeRanges[0].EndTime,
+               step: params.viewOption.Step,
                timeRanges: params.viewOption.TimeRanges};
   },
   _onDataChanged(data, params){
