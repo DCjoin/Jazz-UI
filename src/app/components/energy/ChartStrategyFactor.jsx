@@ -124,6 +124,7 @@ let ChartStrategyFactor = {
       getAllDataFn: 'empty',
       getChartSubToolbarFn:'getCarbonSubToolbar',
       getAuxiliaryCompareBtnFn:'getCarbonAuxiliaryCompareBtn',
+      handleStepChangeFn:'handleCarbonStepChange',
     },RatioUsage:{
       searchBarGenFn:'ratioUsageSearchBarGen',
       getEnergyTypeComboFn: 'empty',
@@ -145,7 +146,8 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn:'getRatioAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getRatioSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
-      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick'
+      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
+      handleStepChangeFn:'handleRatioStepChange',
     },UnitEnergyUsage:{
       searchBarGenFn:'unitEnergySearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
@@ -213,7 +215,8 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn:'getUnitCarbonAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitCarbonSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
-      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick'
+      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
+      handleStepChangeFn:'handleRatioStepChange',
     }, Label:{
       searchBarGenFn:'labelSearchBarGen',
       getEnergyTypeComboFn: 'empty',
@@ -442,7 +445,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       return true;
     };
-    var carbonDest = <DropDownMenu menuItems={menuItems} onChange={menuItemChange} />
+    var carbonDest = <DropDownMenu menuItems={menuItems} onChange={menuItemChange} style={{display:"inline-block",float:"left", height:36, width:152}} />;
 
      if(chartType === 'line' || chartType === 'column' || chartType === 'stack'){
        toolElement =
@@ -450,7 +453,7 @@ let ChartStrategyFactor = {
              <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
              <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
-             <div style={{margin:'5px 30px 5px auto'}}>
+             <div className={'jazz-full-border-dropdownmenu-container'} style={{margin:'5px 30px 5px auto'}}>
                {carbonDest}
                {configBtn}
                <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
@@ -503,7 +506,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       return true;
     };
-    var carbonDest = <DropDownMenu menuItems={menuItems} onChange={menuItemChange} />
+    var carbonDest = <DropDownMenu menuItems={menuItems} onChange={menuItemChange} style={{display:"inline-block",float:"left",height:36, width:152}} />
      let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
      toolElement =
          <div style={{display:'flex'}}>
@@ -1587,7 +1590,6 @@ let ChartStrategyFactor = {
        <MenuItem primaryText="数据求和" value='sum'/>
        <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
        <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
-
      </ButtonMenu>;
 
      return configButton;
@@ -1601,7 +1603,6 @@ let ChartStrategyFactor = {
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-       //<ExtendableMenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
      </ButtonMenu>;
 
      return configButton;
