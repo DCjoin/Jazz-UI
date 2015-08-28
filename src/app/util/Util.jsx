@@ -982,6 +982,19 @@ let CommonFuns = {
     }
     return tagIds;
   },
+	getViewAssociation(hierarchyId, dimNode){
+		var viewAssociation = {};
+		if(dimNode !== null){
+      viewAssociation = {
+        HierarchyId: hierarchyId,
+        AreaDimensionId: dimNode.dimId
+      };
+    }
+    else{
+      viewAssociation = {HierarchyId: hierarchyId};
+    }
+		return viewAssociation;
+	},
 	getNodeNameAssociationByTagOptions(tagOptions){
 		let nodeNameAssociation = [], tag, hieNameArr, hieName;
 		for(let i=0,len=tagOptions.length; i<len; i++){

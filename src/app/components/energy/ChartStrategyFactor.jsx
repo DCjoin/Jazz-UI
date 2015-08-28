@@ -874,7 +874,7 @@ let ChartStrategyFactor = {
      }
 
      nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-     if( !nodeOptions.hierarchyList || nodeOptions.hierarchyList.length === 0 || !nodeOptions.commodityList || nodeOptions.commodityList.length === 0){
+     if( !nodeOptions.hierarchyNode || !nodeOptions.commodityList || nodeOptions.commodityList.length === 0){
        analysisPanel.setState({energyData:null});
        return;
      }
@@ -990,7 +990,7 @@ let ChartStrategyFactor = {
      }
 
      nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-     if( !nodeOptions.hierarchyList || nodeOptions.hierarchyList.length === 0 || !nodeOptions.commodityList || nodeOptions.commodityList.length === 0){
+     if( !nodeOptions.hierarchyNode || !nodeOptions.commodityList || nodeOptions.commodityList.length === 0){
        analysisPanel.setState({energyData:null});
        return;
      }
@@ -1041,7 +1041,7 @@ let ChartStrategyFactor = {
      }
 
      nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-     if( !nodeOptions.hierarchyList || nodeOptions.hierarchyList.length === 0 || !nodeOptions.commodityList || nodeOptions.commodityList.length === 0){
+     if( !nodeOptions.hierarchyList || nodeOptions.hierarchyList.length === 0 || !nodeOptions.commodityNode){
        analysisPanel.setState({energyData:null});
        return;
      }
@@ -1334,12 +1334,12 @@ let ChartStrategyFactor = {
    },
    getCostSelectedTagList(){
      var selectedList = {};
-     var hierarchyList = CommodityStore.getHierNode();
+     var hierarchyNode = CommodityStore.getHierNode();
      var commodityList = CommodityStore.getCommonCommodityList();
-     var dimId = CommodityStore.getCurrentDimId();
-     selectedList.hierarchyList = hierarchyList;
+     var dimNode = CommodityStore.getCurrentDimNode();
+     selectedList.hierarchyNode = hierarchyNode;
      selectedList.commodityList = commodityList;
-     selectedList.dimId = dimId;
+     selectedList.dimNode = dimNode;
      return selectedList;
    },
    getSelectedHierCommodityList(){
@@ -1355,9 +1355,9 @@ let ChartStrategyFactor = {
    getRankSelectedTagList(){
      var selectedList = {};
      var hierarchyList = CommodityStore.getRankingTreeList();
-     var commodityList = CommodityStore.getRankingCommodity();
+     var commodityNode = CommodityStore.getRankingCommodity();
      selectedList.hierarchyList = hierarchyList;
-     selectedList.commodityList = commodityList;
+     selectedList.commodityNode = commodityNode;
      return selectedList;
    }
  },
@@ -1827,6 +1827,40 @@ let ChartStrategyFactor = {
      let path;
      let chartType = analysisPanel.state.selectedChartType;
      let tagOptions = EnergyStore.getTagOpions();
+     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let viewOption = EnergyStore.getSubmitParams().viewOption;
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+
+     let params = {
+       title: title,
+       tagIds: tagIds,
+       viewOption: viewOption
+     };
+
+     if(chartType === 'pie'){
+       path = 'API/Energy.svc/AggregateTagsData4Export';
+     }else{
+       path = 'API/Energy.svc/GetTagsData4Export';
+       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+           params.nodeNameAssociation = nodeNameAssociation;
+     }
+
+     let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+
+     params.charTypes = charTypes;
+     ExportChartAction.getTagsData4Export(params, path);
+   },
+   exportCostChart(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path;
+     let chartType = analysisPanel.state.selectedChartType;
+     let tagOptions = CostStore.getTagOpions();
      let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
      let viewOption = EnergyStore.getSubmitParams().viewOption;
      let title = analysisPanel.props.chartTitle || '能耗分析';
