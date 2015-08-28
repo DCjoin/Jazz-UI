@@ -995,6 +995,16 @@ let CommonFuns = {
     }
 		return viewAssociation;
 	},
+	getCommodityIdsFromList(commodityList){
+	  let commodityIds = [];
+	  for(let i=0,len=commodityList.length; i<len; i++){
+	    commodityIds.push(parseInt(commodityList[i].Id));
+	  }
+	  if(commodityIds[0] === -1){
+	    commodityIds = [];
+	  }
+	  return commodityIds;
+	},
 	getNodeNameAssociationByTagOptions(tagOptions){
 		let nodeNameAssociation = [], tag, hieNameArr, hieName;
 		for(let i=0,len=tagOptions.length; i<len; i++){
@@ -1002,6 +1012,21 @@ let CommonFuns = {
 			hieNameArr = tag.hierName.split('\\');
 			hieName = hieNameArr[hieNameArr.length-1];
 			nodeNameAssociation.push({Id:tag.tagId, Name:tag.tagName, HierId: tag.hierId, NodeName:hieName, AssociationOption:1, DimensionName:null});
+		}
+		return nodeNameAssociation;
+	},
+	getNodeNameAssociationBySelectedList(selectedList){
+		var nodeNameAssociation = [], dimName = "";
+		var commodityList = selectedList.commodityList;
+		var commodityIds = this.getCommodityIdsFromList(commodityList);
+    var hierarchyNode = selectedList.hierarchyNode;
+		var dimNode = selectedList.dimNode;
+		if(dimNode !== null){
+			dimName = dimNode.dimName;
+		}
+		var hierName = hierarchyNode.hierName;
+		for(var i = 0; i < commodityIds.length; i++){
+			nodeNameAssociation.push({Id:commodityIds[i], NodeName:hierName,AssociationOption:1,DimensionName:dimName});
 		}
 		return nodeNameAssociation;
 	},

@@ -160,7 +160,7 @@ let EnergyAction = {
   getCostTrendChartData(date, step, selectedList, relativeDate){
     var timeRange = date;
     var commodityList = selectedList.commodityList;
-    var hierarchyNode = selectedList.hierarchyList;
+    var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
@@ -204,7 +204,7 @@ let EnergyAction = {
   getElectricityPieCostData(date, step, selectedList, relativeDate){
     var timeRange = date;
     var commodityList = selectedList.commodityList;
-    var hierarchyNode = selectedList.hierarchyList;
+    var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
@@ -248,7 +248,7 @@ let EnergyAction = {
   getElectricityCostTrendChartData(date, step, selectedList, relativeDate){
     var timeRange = date;
     var commodityList = selectedList.commodityList;
-    var hierarchyNode = selectedList.hierarchyList;
+    var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
@@ -418,7 +418,7 @@ let EnergyAction = {
   },
   getUnitCostTrendChartData(timeRange, step, selectedList, unitType, relativeDate, benchmarkOption){
     var commodityList = selectedList.commodityList;
-    var hierarchyNode = selectedList.hierarchyList;
+    var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
     var submitParams = { commodityIds:commodityIds,

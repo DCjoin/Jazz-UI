@@ -95,6 +95,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'costBindStoreListeners',
       unbindStoreListenersFn:'costUnbindStoreListeners',
       canShareDataWithFn: 'canShareDataWith',
+      exportChartFn:'exportCostChart',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getChartSubToolbarFn:'getCostSubToolbar',
       getAuxiliaryCompareBtnFn:'getCostAuxiliaryCompareBtn',
@@ -187,7 +188,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'unitCostBindStoreListeners',
       unbindStoreListenersFn:'unitCostUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      exportChartFn:'exportChart',
+      exportChartFn:'exportChart4UnitCost',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getUnitCostAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitCostSubToolbar',
@@ -1863,31 +1864,34 @@ let ChartStrategyFactor = {
      }
      let path;
      let chartType = analysisPanel.state.selectedChartType;
-     let tagOptions = CostStore.getTagOpions();
-     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
-     let viewOption = EnergyStore.getSubmitParams().viewOption;
+     let selectedList = CostStore.getSelectedList();
+     let commodityList = selectedList.commodityList;
+     let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+     let submitParams = CostStore.getSubmitParams();
+     let viewOption = submitParams.viewOption;
+     let viewAssociation = submitParams.viewAssociation;
      let title = analysisPanel.props.chartTitle || '能耗分析';
 
      let params = {
        title: title,
-       tagIds: tagIds,
-       viewOption: viewOption
+       commodityIds: commodityIds,
+       viewOption: viewOption,
+       viewAssociation: viewAssociation
      };
 
      if(chartType === 'pie'){
-       path = 'API/Energy.svc/AggregateTagsData4Export';
+       path = 'API/Energy.svc/AggregateCostData4Export';
      }else{
-       path = 'API/Energy.svc/GetTagsData4Export';
-       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+       path = 'API/Energy.svc/GetCostData4Export';
+       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
            params.nodeNameAssociation = nodeNameAssociation;
      }
 
-     let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let seriesNumber = CostStore.getEnergyData().get('Data').size;
      let charTypes = [];
      for(let i = 0; i < seriesNumber; i++){
        charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
      }
-
      params.charTypes = charTypes;
      ExportChartAction.getTagsData4Export(params, path);
    },
@@ -1913,6 +1917,38 @@ let ChartStrategyFactor = {
      };
 
      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+
+     ExportChartAction.getTagsData4Export(params, path);
+   },
+   exportChart4UnitCost(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/GetCostUnitData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     let selectedList = CostStore.getSelectedList();
+     let commodityList = selectedList.commodityList;
+     let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+     let submitParams = CostStore.getSubmitParams();
+     let benchmarkOption = submitParams.benchmarkOption;
+     let viewOption = submitParams.viewOption;
+     let viewAssociation = submitParams.viewAssociation;
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+     let params = {
+       title: title,
+       commodityIds: commodityIds,
+       viewOption: viewOption,
+       nodeNameAssociation: nodeNameAssociation,
+       benchmarkOption: benchmarkOption
+     };
+
+     let seriesNumber = CostStore.getEnergyData().get('Data').size;
      let charTypes = [];
      for(let i = 0; i < seriesNumber; i++){
        charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
