@@ -262,13 +262,15 @@ var FolderStore = assign({},PrototypeStore,{
   },
   getDefaultName:function(nodeName,parentNode,type){
     var nameArray=[];
-    parentNode.get('Children').forEach(function(child){
-      if(child.get('Type')==type){
-        if(child.get('Name').indexOf(nodeName)>=0){
-          nameArray.push(child.get('Name'));
+    if(parentNode.get('Children')){
+      parentNode.get('Children').forEach(function(child){
+        if(child.get('Type')==type){
+          if(child.get('Name').indexOf(nodeName)>=0){
+            nameArray.push(child.get('Name'));
+          }
         }
-      }
-    });
+      });
+    }
     var name=nodeName;
     for(var i=1;i<=nameArray.length;i++){
       var has=false;
