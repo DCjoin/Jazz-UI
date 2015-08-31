@@ -122,8 +122,8 @@ var RankStore = assign({},PrototypeStore,{
 
     if (uom == 'null') uom = '';
     d1.option.uom = uom;
-    var commodityList = _selectedList.commodityList;
-    d1.option.commodity = commodityList.commodityName;
+    var commodityNode = _selectedList.commodityNode;
+    d1.option.commodity = commodityNode.Comment;
     for (var i = 0; i < series.length; ++i) {
         s = series[i];
         if (s.EnergyData.length > 0) {

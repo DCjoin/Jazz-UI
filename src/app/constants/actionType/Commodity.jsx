@@ -6,7 +6,7 @@ module.exports = {
         SET_ENERGY_CONSUMPTION_TYPE: null,
         SET_RANKING_EC_TYPE: null,
         SET_CURRENT_HIERARCHY_ID: null,
-        SET_CURRENT_DIM_ID: null,
+        SET_CURRENT_DIM_INFO: null,
         RESET_DATA: null,
         GET_COMMODITY_DATA_SUCCESS:null,
         GET_RANKING_COMMODITY_DATA_SUCCESS:null,

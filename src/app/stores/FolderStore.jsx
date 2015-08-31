@@ -205,8 +205,11 @@ var FolderStore = assign({},PrototypeStore,{
         else {
           _selectedNode=children.find((item,i)=>(i==index+1));
         }
-         this.emitSelectedNodeChange();
+
       }
+    else {
+      _selectedNode=_changedNode
+    }
 
 
   },
@@ -480,6 +483,7 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.DELETE_ITEM:
         FolderStore.deleteItem(action.deleteNode,action.isLoadByWidget);
         FolderStore.emitDeleteItemSuccessChange();
+         FolderStore.emitSelectedNodeChange();
       break;
     case FolderAction.SEND_ITEM:
         FolderStore.setSendStatus(action.sourceTreeNode,action.userIds);

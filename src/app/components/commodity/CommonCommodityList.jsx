@@ -17,11 +17,11 @@ var CommonCommodityList = React.createClass({
     this.setState({
       commdityList:CommodityStore.getCommodityList(),
       isLoading:false
-    })
+    });
   },
   _loadCommodityList:function(){
     var hierId=CommodityStore.getCurrentHierarchyId(),
-        dimId=CommodityStore.getCurrentDimId();
+        dimId=!!CommodityStore.getCurrentDimNode()?CommodityStore.getCurrentDimNode().dimId:null;
 
         if(dimId!==null){
           CommodityAction.loadCommodityList(null,dimId);

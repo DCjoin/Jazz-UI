@@ -342,7 +342,7 @@ var TreeNode = React.createClass({
       id:nodeData.get('Id'),
       className: classNames(_.set({
         "tree-node": true,
-        "selected": this.isSelected(this.props), // this.state.selected
+        "selected": this.props.hasCheckBox?this.isChecked(this.props):this.isSelected(this.props) // this.state.selected
       }), treeNodeClass, true),
       style: {
         paddingLeft: Number(indent * indentUnit) + this.props.nodeOriginPaddingLeft
