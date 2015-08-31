@@ -35,7 +35,7 @@ var FolderStore = assign({},PrototypeStore,{
     _selectedNode=_folderTree;
   },
   getFolderTree:function(){
-    return _folderTree
+    return _folderTree;
   },
   getNewNode:function(){
     return _newNode;
@@ -89,7 +89,7 @@ var FolderStore = assign({},PrototypeStore,{
             }
           });
           if(index!==null){
-            node=node.set('Children',children.update(index,(item)=>{return changedNode}));
+            node=node.set('Children',children.update(index,(item)=>{return changedNode}))
             return node;
           }
       }
@@ -140,10 +140,10 @@ var FolderStore = assign({},PrototypeStore,{
     var children;
     var _newNode=newNode;
     if(parent.get('Children')){
-      children=parent.get('Children')
+      children=parent.get('Children');
     }
     else {
-      children=Immutable.List([])
+      children=Immutable.List([]);
     }
       parent=parent.set('Children',children.push(_newNode));
       _parentId=parent.get('Id');
@@ -208,7 +208,7 @@ var FolderStore = assign({},PrototypeStore,{
 
       }
     else {
-      _selectedNode=_changedNode
+      _selectedNode=_changedNode;
     }
 
 
@@ -278,7 +278,8 @@ var FolderStore = assign({},PrototypeStore,{
           if(item==name){
             has=true;
           }
-        })
+        }
+      )
         if(!has){
           return name;
         }
@@ -294,8 +295,8 @@ var FolderStore = assign({},PrototypeStore,{
   },
 
   setSendStatus:function(sourceNode,userIds){
-    if(userIds.length==0){
-      _sendStatus=I18N.format(I18N.Folder.Send.Success,sourceNode.get('Name'))
+    if(userIds.length===0){
+      _sendStatus=I18N.format(I18N.Folder.Send.Success,sourceNode.get('Name'));
     }
     else {
         let userNames;
@@ -326,7 +327,7 @@ var FolderStore = assign({},PrototypeStore,{
   },
   moveItem:function(sourceNode,parentNode,nextNode,newNode){
     this.deleteItem(sourceNode);
-    if(nextNode==null){
+    if(nextNode===null){
       this.copyItem(parentNode,newNode);
     }
     else {

@@ -90,6 +90,9 @@ var PanelContainer = React.createClass({
       isLoading:true
     });
     FolderAction.createWidgetOrFolder(this.state.selectedNode,name,7,window.currentCustomerId,widgetType);
+    this.setState({
+      buttonDisabled:true
+    })
   },
   _onSearchClick:function(node){
     this.setState({
