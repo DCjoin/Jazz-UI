@@ -421,10 +421,10 @@ let EnergyAction = {
     var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = getCommodityIdsFromList(commodityList);
+    var dimNode = selectedList.dimNode;
+    var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
     var submitParams = { commodityIds:commodityIds,
-                         viewAssociation:{
-                           HierarchyId: hierarchyId
-                         },
+                         viewAssociation:viewAssociation,
                          benchmarkOption: benchmarkOption || null,
                          viewOption:{ DataUsageType: 1,
                                       IncludeNavigatorData: true,
