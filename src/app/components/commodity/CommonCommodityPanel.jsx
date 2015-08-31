@@ -16,6 +16,7 @@ var CommonCommodityPanel = React.createClass({
   _onHierachyTreeClick:function(node){
       if(node!=this.state.dimParentNode){
         CommodityAction.setCurrentHierarchyInfo(node.Id,node.Name);
+        this.refs.dimButton.resetButtonName();
         this.setState({
           dimActive:true,
           dimParentNode:node,
