@@ -82,6 +82,31 @@ let Highstock = React.createClass({
     },
     getPaper() {
         return this._paper;
+    },
+    showCalendar: function (range) {
+      if (!range) return;
+      let chartObj = this.getPaper();
+      if (!chartObj) return;
+      for (var i = 0, len = range.length; i < len; ++i) {
+          chartObj.xAxis[0].addPlotBand(range[i]);
+      }
+    },
+    hideCalendar: function (ids) {
+      let chartObj = this.getPaper();
+        if (!chartObj) return;
+        if (ids) {
+            for (var i = 0; i < ids.length; ++i) {
+                chartObj.xAxis[0].removePlotBand(ids[i]);
+                if (chartObj.xAxis[0].userOptions && chartObj.xAxis[0].userOptions.plotBands) {
+                    var opts = chartObj.xAxis[0].userOptions.plotBands;
+                    opts.forEach((item, index)=>{
+                      if(item && ids[i] == item.id){
+                        opts.splice(index, 1);
+                      }
+                    });
+                }
+            }
+        }
     }
 
 });

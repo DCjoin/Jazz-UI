@@ -527,6 +527,21 @@ translateDateFnStrategy:{
         case 7: //30mins
             newDate = date.add(-15 * sign, 'minutes');
             break;
+        case 8: //2 hours
+            newDate = date.add(-1 * sign, 'hours');
+            break;
+        case 9: //4 hours
+            newDate = date.add(-2 * sign, 'hours');
+            break;
+        case 10: //6 hours
+            newDate = date.add(-3 * sign, 'hours');
+            break;
+        case 11: //8 hours
+            newDate = date.add(-4 * sign, 'hours');
+            break;
+        case 12: //12hours
+            newDate = date.add(-6 * sign, 'hours');
+            break;
     }
 
     return j2d(d2j(newDate._d));
