@@ -252,9 +252,10 @@ var Calendar = React.createClass({
     var selectedDate = this.state.selectedDate;
     var dateStyle = {
       textAlign: 'center',
-      border: '1px solid #efefef',
-      height: '50px',
-      lineHeight: '50px',
+      borderTop: '1px solid #efefef',
+      height: '48px',
+      lineHeight: '48px',
+      marginTop: '6px',
       textDecoration: 'underline'
     };
     return (
@@ -266,9 +267,10 @@ var Calendar = React.createClass({
       var selectedTime = this.state.selectedTime;
       var timeStyle = {
         textAlign: 'center',
-        border: '1px solid #efefef',
-        height: '50px',
-        lineHeight: '50px',
+        borderTop: '1px solid #efefef',
+        height: '48px',
+        lineHeight: '48px',
+        marginTop: '6px',
         textDecoration: 'underline'
       };
       return (
