@@ -10,7 +10,10 @@ import keyMirror from   'keymirror';
 
 let { Route, DefaultRoute, RouteHandler, Link, Navigation, State } = Router;
 
-
+window.REM = {};
+window.REM.popupNotes=function(msg){
+  window.alert(msg);
+};
 
 let JazzApp = React.createClass({
     mixins:[Navigation,State],
