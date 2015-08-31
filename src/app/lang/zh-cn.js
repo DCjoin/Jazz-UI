@@ -118,6 +118,11 @@ I18N.Common.DateRange.Customerize = '自定义';
 I18N.Common.DateRange.CustomerizeTime = '自定义';
 I18N.Common.DateRange.RelativedTime = '相对时间';
 
+I18N.Common.Button = {};
+I18N.Common.Button.Calendar = {};
+I18N.Common.Button.Calendar.ShowHC = '冷暖季';
+I18N.Common.Button.Calendar.ShowHoliday = '非工作时间';
+
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
 I18N.DateTimeFormat.HighFormat.Millisecond = '%H点%M分%S秒%L毫秒';
@@ -187,6 +192,9 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePreviousComboLabel = '之前�
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious7Day = '个7天';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day = '个30天';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
+
+I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
+I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
 
 I18N.Message = {};
 
