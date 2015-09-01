@@ -912,10 +912,7 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
      }else{
        let timeRanges;
-       if(nodeOptions.length > 1){
-         MultiTimespanAction.clearMultiTimespan('both');
-         timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-       }else if(chartType === 'pie'){
+       if(chartType === 'pie'){
          let timeRanges;
          if(nodeOptions.length > 1){
            MultiTimespanAction.clearMultiTimespan('both');
