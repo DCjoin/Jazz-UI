@@ -18,7 +18,7 @@ var lastOver=null,
 
 var drake=dragula({
   moves: function (el, source, handle) {
-    el.style.backgroundColor='#f2f2f2';
+    el.style.backgroundColor='#323c4d';
     return true; // elements are always draggable by default
   },
   direction: 'vertical',         // Y axis is considered when determining where an element would be dropped
@@ -127,9 +127,9 @@ var Tree = React.createClass({
   },
 
   _onShadow:function(el, container){
-    // console.log("_onShadow");
-    // console.log(el);
-    // console.log(container);
+    //  console.log("_onShadow");
+    //  console.log(el);
+    //  console.log(container);
     if(container.children[0].id==el.id){
       lastOver=container.children[1];
     }
@@ -142,24 +142,26 @@ var Tree = React.createClass({
     else {
       pass=!pass;
     }
-  //  console.log("_onShadow_pass"+pass);
+    // console.log(lastOver);
+    // console.log("_onShadow_pass"+pass);
 
     if(pass){
-      el.style.backgroundColor='#f2f2f2';
+      el.style.backgroundColor='#323c4d';
       lastOver.style.backgroundColor='transparent';
       clearTimeout(timeoutHandel);
     }
     else {
-      lastOver.style.backgroundColor='#f2f2f2';
+      lastOver.style.backgroundColor='#323c4d';
     }
-    //  console.log(lastOver);
+    // lastOver.style.backgroundColor='red';
+    //   console.log(lastOver);
     timeoutHandel=setTimeout(()=>{
     //  console.log("_onShadow_setTimeout");
       pass=true;
     this.setState({
       collapsedNodeId:parseInt(lastOver.id)
     });
-  },2000000);
+  },2000);
   lastContainer=container;
   },
 
