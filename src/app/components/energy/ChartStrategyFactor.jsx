@@ -79,7 +79,8 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap',
       handleStepChangeFn:'handleEnergyStepChange',
       handleCalendarChangeFn:'handleCalendarChange',
-      onAnalysisPanelDidUpdateFn:'onAnalysisPanelDidUpdate'
+      onAnalysisPanelDidUpdateFn:'onAnalysisPanelDidUpdate',
+      isCalendarDisabledFn:'isCalendarDisabled'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -255,11 +256,38 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getRankSubToolbar',
     }
  },
+ isCalendarDisabledFnStrategy:{
+   isCalendarDisabled(){
+     let tagOptions = EnergyStore.getTagOpions();
+     if(!tagOptions){
+       return false;
+     }
+     let paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges;
+
+     let disabled = false;
+
+     if(timeRanges.length > 1){
+       disabled = true;
+     }else if(tagOptions.length > 1){
+       let hierId = null;
+       tagOptions.forEach(option=>{
+         if(!hierId){
+           hierId = option.hierId;
+         }else if( hierId !== option.hierId){
+           disabled = true;
+           return;
+         }
+       });
+     }
+     return disabled;
+   }
+ },
  onAnalysisPanelDidUpdateFnStrategy:{
    onAnalysisPanelDidUpdate(analysisPanel){
-     if(false){//不符合日历本景色条件的。
+     if(analysisPanel.state.chartStrategy.isCalendarDisabledFn()){//不符合日历本景色条件的。
 
-     }else{
+     }else if(analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited){
        let paramsObj = EnergyStore.getParamsObj(),
            step = paramsObj.step,
            timeRanges = paramsObj.timeRanges,
@@ -269,6 +297,7 @@ let ChartStrategyFactor = {
            chartObj = chartCmp.refs.highstock;
 
        CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+       analysisPanel.setState({isCalendarInited: true});
      }
    }
  },
@@ -285,6 +314,7 @@ let ChartStrategyFactor = {
         CalendarManager.hideCalendar(chartObj);
         CalendarManager.showCalendar(chartObj, calendarType);
      }
+     analysisPanel.setState({calendarType: CalendarManager.getShowType() });
    }
  },
  handleStepChangeFnStrategy:{
@@ -293,7 +323,7 @@ let ChartStrategyFactor = {
          paramsObj = EnergyStore.getParamsObj(),
          timeRanges = paramsObj.timeRanges;
 
-     analysisPanel.setState({step:step});
+     analysisPanel.setState({step:step, isCalendarInited: false});
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
    },
    handleCostStepChange(analysisPanel, step){
@@ -1142,6 +1172,7 @@ let ChartStrategyFactor = {
      if( stepList.indexOf(step) == -1){
        step = limitInterval.display;
      }
+     analysisPanel.setState({isCalendarInited: false});
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
    },
    setCostFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
@@ -1645,6 +1676,21 @@ let ChartStrategyFactor = {
                              {primaryText:'冷暖季', value:'hotColdSeason'}];
      let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
                              {primaryText:'湿度', value:'humidity'}];
+     let calendarEl;
+     let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
+     if(isCalendarDisabled){
+       calendarEl = <MenuItem primaryText="日历背景色" value='background' disabled={true}/>;
+     }else{
+       let showType = CalendarManager.getShowType();
+       if(!!showType){
+         calendarSubItems.forEach(item=>{
+           if(item.value === showType){
+             item.checked = true;
+           }
+         });
+       }
+       calendarEl = <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>;
+     }
 
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
@@ -1652,7 +1698,7 @@ let ChartStrategyFactor = {
        <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuDivider />
        <MenuItem primaryText="数据求和" value='sum'/>
-       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
+       {calendarEl}
        <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
      </ButtonMenu>;
 
