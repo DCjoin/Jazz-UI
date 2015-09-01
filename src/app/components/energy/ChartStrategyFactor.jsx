@@ -33,6 +33,7 @@ import TagStore from '../../stores/TagStore.jsx';
 import AddIntervalWindow from './energy/AddIntervalWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import MultiTimespanAction from '../../actions/MultiTimespanAction.jsx';
+import CalendarManager from './CalendarManager.jsx';
 
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -76,7 +77,9 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getEnergySubToolbar',
       getAuxiliaryCompareBtnFn:'getEnergyAuxiliaryCompareBtn',
       handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap',
-      handleStepChangeFn:'handleEnergyStepChange'
+      handleStepChangeFn:'handleEnergyStepChange',
+      handleCalendarChangeFn:'handleCalendarChange',
+      onAnalysisPanelDidUpdateFn:'onAnalysisPanelDidUpdate'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -251,6 +254,38 @@ let ChartStrategyFactor = {
       onEnergyTypeChangeFn:'onEnergyTypeChange',
       getChartSubToolbarFn:'getRankSubToolbar',
     }
+ },
+ onAnalysisPanelDidUpdateFnStrategy:{
+   onAnalysisPanelDidUpdate(analysisPanel){
+     if(false){//不符合日历本景色条件的。
+
+     }else{
+       let paramsObj = EnergyStore.getParamsObj(),
+           step = paramsObj.step,
+           timeRanges = paramsObj.timeRanges,
+           as = analysisPanel.state;
+
+       var chartCmp = analysisPanel.refs.ChartComponent,
+           chartObj = chartCmp.refs.highstock;
+
+       CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+     }
+   }
+ },
+ handleCalendarChangeFnStrategy:{
+   handleCalendarChange(calendarType, analysisPanel){
+     var chartCmp = analysisPanel.refs.ChartComponent,
+         chartObj = chartCmp.refs.highstock;
+
+     if(!CalendarManager.getShowType()){
+       CalendarManager.showCalendar(chartObj, calendarType);
+     }else if(CalendarManager.getShowType() === calendarType){
+       CalendarManager.hideCalendar(chartObj);
+     }else{
+        CalendarManager.hideCalendar(chartObj);
+        CalendarManager.showCalendar(chartObj, calendarType);
+     }
+   }
  },
  handleStepChangeFnStrategy:{
    handleEnergyStepChange(analysisPanel, step){
@@ -591,8 +626,6 @@ let ChartStrategyFactor = {
      let itemValue = menuItem.props.value;
      switch (itemValue) {
        case 'history':
-         console.log('history');
-
          analysisPanel.setState({showAddIntervalDialog: true});
          break;
        case 'config':
@@ -601,6 +634,14 @@ let ChartStrategyFactor = {
        case 'sum':
          console.log('sum');
          break;
+       case 'background':{
+         var subMenuValue = menuParam.props.value;
+         if(subMenuValue === 'noneWorkTime' || subMenuValue ==='hotColdSeason'){
+           analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+         }
+         break;
+       }
+
      }
    },
    handleUnitEnergyConfigBtnItemTouchTap(analysisPanel, subMenuItem, firstMenuItem){

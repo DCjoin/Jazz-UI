@@ -154,6 +154,8 @@ I18N.DateTimeFormat.IntervalFormat.MonthDate = 'MM月DD日';
 I18N.DateTimeFormat.IntervalFormat.Year = 'YYYY年';
 I18N.DateTimeFormat.IntervalFormat.FullDateTime = 'YYYY年MM月DD日 HH点mm分ss秒';
 I18N.DateTimeFormat.IntervalFormat.FullDate = 'YYYY年MM月DD日';
+I18N.DateTimeFormat.IntervalFormat.MonthDayHour = 'm月d日H点';
+I18N.DateTimeFormat.IntervalFormat.DayHour = 'd日H点';
 
 I18N.EM = {};
 I18N.EM.Week = '周';
@@ -195,6 +197,27 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
 
 I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
 I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
+
+//workday
+I18N.Setting = {};
+I18N.Setting.Calendar = {};
+I18N.Setting.Calendar.WorkDay = '工作日';
+I18N.Setting.Calendar.Holiday = '非工作日';
+I18N.Setting.Calendar.DefaultWorkDay = '默认工作日：周一至周五';
+I18N.Setting.Calendar.AdditionalDay = '补充日期';
+I18N.Setting.Calendar.ItemType = '日期类型';
+I18N.Setting.Calendar.StartDate = '开始日期';
+I18N.Setting.Calendar.EndDate = '结束日期';
+I18N.Setting.Calendar.Month = '月';
+I18N.Setting.Calendar.StartMonth = '开始月份';
+I18N.Setting.Calendar.EndMonth = '结束月份';
+I18N.Setting.Calendar.Date = '日';
+I18N.Setting.Calendar.SeansonType = '季节类型';
+I18N.Setting.Calendar.MonthDayFromTo = '{0}月{1}日到{2}月{3}日';
+
+I18N.Setting.Calendar.WarmSeason = '采暖季';
+I18N.Setting.Calendar.ColdSeason = '供冷季';
+
 
 I18N.Message = {};
 
