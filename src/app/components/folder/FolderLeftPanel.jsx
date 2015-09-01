@@ -96,9 +96,18 @@ var PanelContainer = React.createClass({
   },
   _onSearchClick:function(node){
     FolderAction.setSelectedNode(node);
-    this.setState({
-      selectedNode:node
-    })
+    if(node.get('Type')==7){
+      this.setState({
+        selectedNode:node,
+        buttonDisabled:true
+      })
+    }
+    else {
+      this.setState({
+        selectedNode:node
+      })
+    }
+
   },
   _onModifyName:function(){
     let me = this;
