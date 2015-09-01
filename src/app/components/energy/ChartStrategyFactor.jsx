@@ -31,6 +31,7 @@ import RankStore from '../../stores/RankStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import AddIntervalWindow from './energy/AddIntervalWindow.jsx';
+import SumWindow from './energy/SumWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import MultiTimespanAction from '../../actions/MultiTimespanAction.jsx';
 
@@ -600,6 +601,8 @@ let ChartStrategyFactor = {
          break;
        case 'sum':
          console.log('sum');
+
+         analysisPanel.setState({showSumDialog: true});
          break;
      }
    },
@@ -760,7 +763,9 @@ let ChartStrategyFactor = {
    empty(){},
    getEnergyInitialState(){
      return {
-       showAddIntervalDialog: false
+       showAddIntervalDialog: false,
+       showSumDialog: false,
+       sumBtnStatus: false
      };
    },
    getCostInitialState(){
@@ -1072,6 +1077,12 @@ let ChartStrategyFactor = {
      }else{ //if(nextChartType === 'pie'){
        analysisPanel.setState({selectedChartType:nextChartType, energyData:null}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
      }
+    //  if(nextChartType === "line" || nextChartType === "column" || nextChartType === "stack"){
+    //    analysisPanel.setState({sumBtnStatus: true});
+    //  }
+    //  else{
+    //    analysisPanel.setState({sumBtnStatus: false});
+    //  }
    },
    onCarbonSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel){
 
@@ -1437,11 +1448,15 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      let subToolbar = analysisPanel.state.chartStrategy.getChartSubToolbarFn(analysisPanel);
      let historyCompareEl = null;
+     let dataSum = null;
      if(chartType !=='rawdata' & analysisPanel.state.showAddIntervalDialog === true){
        let relativeType = analysisPanel._getRelativeDateValue();
        let timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
        MultiTimespanAction.initMultiTimespanData(relativeType, timeRange.start, timeRange.end);
        historyCompareEl = <AddIntervalWindow openImmediately={true} analysisPanel={analysisPanel}/>;
+     }
+     if((chartType ==='line' || chartType ==='colume' || chartType ==='stack') && analysisPanel.state.showSumDialog === true){
+       dataSum = <SumWindow  openImmediately={true} analysisPanel={analysisPanel}></SumWindow>;
      }
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
@@ -1464,6 +1479,7 @@ let ChartStrategyFactor = {
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                        {subToolbar}
                        {historyCompareEl}
+                       {dataSum}
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }
@@ -1610,7 +1626,8 @@ let ChartStrategyFactor = {
        <MenuItem primaryText="历史对比" value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuDivider />
-       <MenuItem primaryText="数据求和" value='sum'/>
+       <MenuItem primaryText="数据求和" value='sum'
+       disabled={analysisPanel.state.sumBtnStatus}/>
        <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
        <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
      </ButtonMenu>;

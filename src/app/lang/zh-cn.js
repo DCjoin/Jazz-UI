@@ -156,6 +156,7 @@ I18N.DateTimeFormat.IntervalFormat.FullDateTime = 'YYYY年MM月DD日 HH点mm分s
 I18N.DateTimeFormat.IntervalFormat.FullDate = 'YYYY年MM月DD日';
 
 I18N.EM = {};
+I18N.EM.To = '到';
 I18N.EM.Week = '周';
 I18N.EM.Raw = '分钟';
 I18N.EM.Hour = '小时';
@@ -164,7 +165,7 @@ I18N.EM.Month = '月';
 I18N.EM.Year = '年';
 I18N.EM.Clock24 = '24点';
 I18N.EM.Clock24InWidget = '24点';
-I18N.EM.Clock24Minute0 = '24点00';
+I18N.EM.Clock24Minute0 = '24点00分';
 
 I18N.EM.UseRaw = '按分钟';
 I18N.EM.UseWeek = '按周';
