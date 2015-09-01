@@ -495,6 +495,7 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.MOVE_ITEM:
         FolderStore.moveItem(action.sourceNode,action.parentNode,action.nextNode,action.newNode);
         FolderStore.emitMoveItemSuccessChange();
+        FolderStore.emitSelectedNodeChange();
       break;
     case FolderAction.MOVE_ITEM_ERROR:
         FolderStore.setMoveItemError(action.sourceNode);
