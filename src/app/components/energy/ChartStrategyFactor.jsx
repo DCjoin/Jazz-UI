@@ -1935,7 +1935,7 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
-     let path = 'API/Energy.svc/GetCarbonData4Export';
+     let path = 'API/Energy.svc/GetCarbonUsageData4Export';
      let chartType = analysisPanel.state.selectedChartType;
      let selectedList = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
      selectedList.hierarchyNode = hierarchyNode;
@@ -1945,19 +1945,20 @@ let ChartStrategyFactor = {
      let viewOption = submitParams.viewOption;
      let viewAssociation = submitParams.viewAssociation;
      let title = analysisPanel.props.chartTitle || '能耗分析';
+     let destination = CarbonStore.getDestination();
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
 
      let params = {
        title: title,
        commodityIds: commodityIds,
-       hierarchyId: hierarchyId,
+       hierarchyId: hierarchyNode.hierId,
        viewOption: viewOption,
        destination: destination,
        viewAssociation: viewAssociation,
        nodeNameAssociation: nodeNameAssociation
      };
 
-     let seriesNumber = CostStore.getEnergyData().get('Data').size;
+     let seriesNumber = CarbonStore.getCarbonData().get('Data').size;
      let charTypes = [];
      for(let i = 0; i < seriesNumber; i++){
        charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
@@ -1987,6 +1988,40 @@ let ChartStrategyFactor = {
      };
 
      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+
+     ExportChartAction.getTagsData4Export(params, path);
+   },
+   exportChart4Ratio(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/RatioGetTagsData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     //let tagOptions = RatioStore.getTagOpions();
+     let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     //let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let submitParams = RatioStore.getSubmitParams();
+     let tagIds = submitParams.tagIds;
+     let ratioType = submitParams.ratioType;
+     let benchmarkOption = submitParams.benchmarkOption;
+     let viewOption = submitParams.viewOption;
+     let title = analysisPanel.props.chartTitle || '时段能耗比';
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     let params = {
+       ratioType: ratioType,
+       title: title,
+       tagIds: tagIds,
+       viewOption: viewOption,
+       nodeNameAssociation: nodeNameAssociation,
+       benchmarkOption: benchmarkOption
+     };
+
+     let seriesNumber = RatioStore.getEnergyData().get('Data').size;
      let charTypes = [];
      for(let i = 0; i < seriesNumber; i++){
        charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
@@ -2034,31 +2069,36 @@ let ChartStrategyFactor = {
      }
      let path = 'API/Energy.svc/GetCarbonUsageUnitData4Export';
      let chartType = analysisPanel.state.selectedChartType;
-     let selectedList = CostStore.getSelectedList();
-     let commodityList = selectedList.commodityList;
+     let selectedList = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
+     selectedList.hierarchyNode = hierarchyNode;
+     selectedList.commodityList = commodityList;
      let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
-     let submitParams = CostStore.getSubmitParams();
-     let benchmarkOption = submitParams.benchmarkOption;
+     let submitParams = CarbonStore.getSubmitParams();
      let viewOption = submitParams.viewOption;
      let viewAssociation = submitParams.viewAssociation;
      let title = analysisPanel.props.chartTitle || '能耗分析';
+     let destination = CarbonStore.getDestination();
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+     let benchmarkOption = submitParams.benchmarkOption;
+     if(benchmarkOption == undefined) benchmarkOption = null;
+
      let params = {
        title: title,
        commodityIds: commodityIds,
+       hierarchyId: hierarchyNode.hierId,
        viewOption: viewOption,
+       destination: destination,
        viewAssociation: viewAssociation,
        nodeNameAssociation: nodeNameAssociation,
        benchmarkOption: benchmarkOption
      };
 
-     let seriesNumber = CostStore.getEnergyData().get('Data').size;
+     let seriesNumber = CarbonStore.getCarbonData().get('Data').size;
      let charTypes = [];
      for(let i = 0; i < seriesNumber; i++){
        charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
      }
      params.charTypes = charTypes;
-
      ExportChartAction.getTagsData4Export(params, path);
    },
  },
