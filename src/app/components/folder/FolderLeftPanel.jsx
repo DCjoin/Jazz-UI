@@ -95,6 +95,7 @@ var PanelContainer = React.createClass({
     })
   },
   _onSearchClick:function(node){
+    FolderAction.setSelectedNode(node);
     this.setState({
       selectedNode:node
     })
