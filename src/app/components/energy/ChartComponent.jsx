@@ -730,6 +730,23 @@ let ChartComponent = React.createClass({
              nowBound = dateAdd(nowBound, 1, 'hours');
              startTime = new Date(startTime);
              break;
+         case 8:
+         case 9:
+         case 10:
+         case 11:
+         case 12:
+             endTime = new Date(endTime);
+             if (endTime.getHours() > 0 && endTime.getHours() < 12) {
+                 endTime = dateAdd(new Date(endTime), 1, 'days');
+             }
+             startTime = new Date(startTime);
+             if (startTime.getHours() !== 0 && startTime.getHours() <= 12) {
+                 startTime.setHours(13);
+                 newConfig.xAxis.min = startTime.getTime();
+             }
+             nowBound.setHours(0);
+             nowBound = dateAdd(nowBound, 1, 'days');
+             break;
      }
      newConfig.xAxis.max = endTime.getTime();
 
