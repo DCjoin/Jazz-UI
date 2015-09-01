@@ -153,7 +153,7 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn:'getRatioAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getRatioSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
-      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
+      handleBenchmarkMenuItemClickFn:'handleRatioBenchmarkMenuItemClick',
       handleStepChangeFn:'handleRatioStepChange',
     },UnitEnergyUsage:{
       searchBarGenFn:'unitEnergySearchBarGen',
@@ -223,7 +223,7 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getUnitCarbonSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
-      handleStepChangeFn:'handleRatioStepChange',
+      handleStepChangeFn:'handleUnitCarbonStepChange',
     }, Label:{
       searchBarGenFn:'labelSearchBarGen',
       getEnergyTypeComboFn: 'empty',
@@ -345,6 +345,20 @@ let ChartStrategyFactor = {
      analysisPanel.setState({step:step});
      analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, analysisPanel);
    },
+   handleRatioStepChange(analysisPanel, step){
+     let paramsObj = RatioStore.getSubmitParams();
+     let tagOptions = RatioStore.getRatioOpions();
+
+     let viewOp = paramsObj.viewOption,
+        timeRanges = viewOp.TimeRanges,
+        benchmarkOption = paramsObj.paramsObj,
+        ratioType = paramsObj.ratioType;
+
+      analysisPanel.setState({step:step});
+      if(ratioType==1 && (step==0||step==1))step=2;
+      if(ratioType==2 && (step==0||step==1||step==2))step=3;
+      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, false, benchmarkOption);
+   },
    handleUnitEnergyStepChange(analysisPanel, step){
      let tagOptions = EnergyStore.getTagOpions(),
          paramsObj = EnergyStore.getParamsObj(),
@@ -410,20 +424,15 @@ let ChartStrategyFactor = {
      analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, benchmarkOption);
    },
    handleRatioBenchmarkMenuItemClick(analysisPanel,benchmarkOption){
-     let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
-         step = analysisPanel.state.step,
-         limitInterval = CommonFuns.getLimitInterval(timeRanges),
-         stepList = limitInterval.stepList;
-     if( stepList.indexOf(step) == -1){
-       step = limitInterval.display;
+     let tagOptions = RatioStore.getRatioOpions(),
+         paramsObj = RatioStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         step = paramsObj.step,
+         ratioType = RatioStore.getSubmitParams().viewOption.DataOption.RatioType;
+     if(benchmarkOption.IndustryId === -1){
+       benchmarkOption = null;
      }
-     let viewOp = {
-        DataUsageType: 4,
-        IncludeNavigatorData: true,
-        TimeRanges: timeRanges,
-        Step: step,
-     };
-     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, hierId, commIds, dest, viewOptions, false, benchmarkOption);
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, false, benchmarkOption);
    },
  },
  getChartSubToolbarFnStrategy:{
