@@ -1889,6 +1889,40 @@ let ChartStrategyFactor = {
      params.charTypes = charTypes;
      ExportChartAction.getTagsData4Export(params, path);
    },
+   exportCarbonChart(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/GetCarbonData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     let selectedList = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
+     selectedList.hierarchyNode = hierarchyNode;
+     selectedList.commodityList = commodityList;
+     let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+     let submitParams = CarbonStore.getSubmitParams();
+     let viewOption = submitParams.viewOption;
+     let viewAssociation = submitParams.viewAssociation;
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+
+     let params = {
+       title: title,
+       commodityIds: commodityIds,
+       hierarchyId: hierarchyId,
+       viewOption: viewOption,
+       destination: destination,
+       viewAssociation: viewAssociation,
+       nodeNameAssociation: nodeNameAssociation
+     };
+
+     let seriesNumber = CostStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+     ExportChartAction.getTagsData4Export(params, path);
+   },
    exportChart4UnitEnergy(analysisPanel){
      if(!analysisPanel.state.energyData){
        return;
