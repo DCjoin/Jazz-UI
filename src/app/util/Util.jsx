@@ -711,6 +711,69 @@ let CommonFuns = {
 
 									break;
 							}
+							case 8: //hour 2010年10月3日0点-1点; 2010年10月3日23点-3日24点
+             	case 9:
+             	case 10:
+             	case 11:
+             	case 12:
+               //hour 20-21,08/08, 2014
+               {
+                   var stepIntervalMap = { '8': 2, '9': 4, '10': 6, '11': 8, '12': 12 };
+                   var addInterval = stepIntervalMap[step + ''];
+
+                   //currentLanguage： 0 中文, 1 英文
+                   if (false && window.currentLanguage == 1) {
+                       str = dateFormat(date, ft.Hour);
+                       newDate = dateAdd(date, addInterval, 'hours');
+                       if (newDate.getHours() === 0){//2010年10月3日23点-3日24点
+                           str += '-' + I18N.EM.Clock24/*'24点'*/ + dateFormat(date, ft.FullHour).substr(2);
+                       }
+                       else {// 2010年10月3日0点-1点
+                           str += '-' + dateFormat(newDate, ft.FullHour);
+                       }
+
+                       if (newDate.getHours() < date.getHours()) {//2010年10月3日23点-3日24点
+                           if (newDate.getHours() === 0) {
+                               str += '-' + I18N.EM.Clock24/*'24点'*/ + dateFormat(date, ft.FullHour).substr(2);
+                           }
+                           else if (newDate.getFullYear() != date.getFullYear()) {
+                               str = dateFormat(date, ft.FullHour) + '-' + dateFormat(newDate, ft.FullHour);
+                           }
+                           else if (newDate.getMonth() != date.getMonth()) {
+                               str = dateFormat(newDate, ft.MonthDayHour) + '-' + dateFormat(newDate, ft.FullHour);
+                           }
+                           else {
+                               str =  dateFormat(newDate, ft.DayHour) + '-' + dateFormat(newDate, ft.FullHour);
+                           }
+                       }
+                       else {
+                           str += '-' + dateFormat(newDate, ft.FullHour);
+                       }
+                   } else {
+                       str = dateFormat(date, ft.FullHour);
+                       newDate = dateAdd(date, addInterval, 'hours');
+
+                       if (newDate.getHours() < date.getHours()) {//2010年10月3日23点-3日24点
+                           if (newDate.getHours() === 0) {
+                               str += '-' + I18N.EM.Clock24/*'24点'*/;
+                           }
+                           else if (newDate.getFullYear() != date.getFullYear()) {
+                               str += '-' + dateFormat(newDate, ft.FullHour);
+                           }
+                           else if (newDate.getMonth() != date.getMonth()) {
+                               str += '-' + dateFormat(newDate, ft.MonthDayHour);
+                           }
+                           else {
+                               str += '-' + dateFormat(newDate, ft.DayHour);
+                           }
+                       }
+                       else {// 2010年10月3日0点-1点
+                           str += '-' + dateFormat(newDate, ft.Hour);
+                       }
+                   }
+
+                   break;
+               }
 			}
 			return str;
 	},

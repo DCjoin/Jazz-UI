@@ -139,6 +139,11 @@ let AnalysisPanel = React.createClass({
         {errorDialog}
       </div>;
     },
+    componentDidUpdate(){
+      if(this.state.chartStrategy.onAnalysisPanelDidUpdateFn){
+        this.state.chartStrategy.onAnalysisPanelDidUpdateFn(this);
+      }
+    },
     componentDidMount: function() {
       let me = this;
       this.state.chartStrategy.getInitParamFn(me);
