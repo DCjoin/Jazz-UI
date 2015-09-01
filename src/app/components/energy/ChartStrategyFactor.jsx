@@ -31,6 +31,7 @@ import RankStore from '../../stores/RankStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import AddIntervalWindow from './energy/AddIntervalWindow.jsx';
+import SumWindow from './energy/SumWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import MultiTimespanAction from '../../actions/MultiTimespanAction.jsx';
 import CalendarManager from './CalendarManager.jsx';
@@ -79,7 +80,8 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn:'handleEnergyConfigBtnItemTouchTap',
       handleStepChangeFn:'handleEnergyStepChange',
       handleCalendarChangeFn:'handleCalendarChange',
-      onAnalysisPanelDidUpdateFn:'onAnalysisPanelDidUpdate'
+      onAnalysisPanelDidUpdateFn:'onAnalysisPanelDidUpdate',
+      isCalendarDisabledFn:'isCalendarDisabled'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -129,6 +131,7 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getCarbonSubToolbar',
       getAuxiliaryCompareBtnFn:'getCarbonAuxiliaryCompareBtn',
       handleStepChangeFn:'handleCarbonStepChange',
+      exportChartFn:'exportCarbonChart',
     },RatioUsage:{
       searchBarGenFn:'ratioUsageSearchBarGen',
       getEnergyTypeComboFn: 'empty',
@@ -145,7 +148,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'ratioBindStoreListeners',
       unbindStoreListenersFn:'ratioUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      exportChartFn:'exportChart',
+      exportChartFn:'exportChart4Ratio',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getRatioAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getRatioSubToolbar',
@@ -214,7 +217,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'unitCarbonBindStoreListeners',
       unbindStoreListenersFn:'unitCarbonUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      exportChartFn:'exportChart',
+      exportChartFn:'exportChart4UnitCarbon',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getUnitCarbonAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitCarbonSubToolbar',
@@ -255,11 +258,38 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getRankSubToolbar',
     }
  },
+ isCalendarDisabledFnStrategy:{
+   isCalendarDisabled(){
+     let tagOptions = EnergyStore.getTagOpions();
+     if(!tagOptions){
+       return false;
+     }
+     let paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges;
+
+     let disabled = false;
+
+     if(timeRanges.length > 1){
+       disabled = true;
+     }else if(tagOptions.length > 1){
+       let hierId = null;
+       tagOptions.forEach(option=>{
+         if(!hierId){
+           hierId = option.hierId;
+         }else if( hierId !== option.hierId){
+           disabled = true;
+           return;
+         }
+       });
+     }
+     return disabled;
+   }
+ },
  onAnalysisPanelDidUpdateFnStrategy:{
    onAnalysisPanelDidUpdate(analysisPanel){
-     if(false){//不符合日历本景色条件的。
+     if(analysisPanel.state.chartStrategy.isCalendarDisabledFn()){//不符合日历本景色条件的。
 
-     }else{
+     }else if(analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited){
        let paramsObj = EnergyStore.getParamsObj(),
            step = paramsObj.step,
            timeRanges = paramsObj.timeRanges,
@@ -269,6 +299,7 @@ let ChartStrategyFactor = {
            chartObj = chartCmp.refs.highstock;
 
        CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+       analysisPanel.setState({isCalendarInited: true});
      }
    }
  },
@@ -285,6 +316,7 @@ let ChartStrategyFactor = {
         CalendarManager.hideCalendar(chartObj);
         CalendarManager.showCalendar(chartObj, calendarType);
      }
+     analysisPanel.setState({calendarType: CalendarManager.getShowType() });
    }
  },
  handleStepChangeFnStrategy:{
@@ -293,7 +325,7 @@ let ChartStrategyFactor = {
          paramsObj = EnergyStore.getParamsObj(),
          timeRanges = paramsObj.timeRanges;
 
-     analysisPanel.setState({step:step});
+     analysisPanel.setState({step:step, isCalendarInited: false});
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
    },
    handleCostStepChange(analysisPanel, step){
@@ -633,6 +665,8 @@ let ChartStrategyFactor = {
          break;
        case 'sum':
          console.log('sum');
+
+         analysisPanel.setState({showSumDialog: true});
          break;
        case 'background':{
          var subMenuValue = menuParam.props.value;
@@ -801,7 +835,9 @@ let ChartStrategyFactor = {
    empty(){},
    getEnergyInitialState(){
      return {
-       showAddIntervalDialog: false
+       showAddIntervalDialog: false,
+       showSumDialog: false,
+       sumBtnStatus: false
      };
    },
    getCostInitialState(){
@@ -882,10 +918,7 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
      }else{
        let timeRanges;
-       if(nodeOptions.length > 1){
-         MultiTimespanAction.clearMultiTimespan('both');
-         timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-       }else if(chartType === 'pie'){
+       if(chartType === 'pie'){
          let timeRanges;
          if(nodeOptions.length > 1){
            MultiTimespanAction.clearMultiTimespan('both');
@@ -1113,6 +1146,12 @@ let ChartStrategyFactor = {
      }else{ //if(nextChartType === 'pie'){
        analysisPanel.setState({selectedChartType:nextChartType, energyData:null}, function(){analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
      }
+    //  if(nextChartType === "line" || nextChartType === "column" || nextChartType === "stack"){
+    //    analysisPanel.setState({sumBtnStatus: true});
+    //  }
+    //  else{
+    //    analysisPanel.setState({sumBtnStatus: false});
+    //  }
    },
    onCarbonSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel){
 
@@ -1142,6 +1181,7 @@ let ChartStrategyFactor = {
      if( stepList.indexOf(step) == -1){
        step = limitInterval.display;
      }
+     analysisPanel.setState({isCalendarInited: false});
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
    },
    setCostFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
@@ -1478,11 +1518,15 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      let subToolbar = analysisPanel.state.chartStrategy.getChartSubToolbarFn(analysisPanel);
      let historyCompareEl = null;
+     let dataSum = null;
      if(chartType !=='rawdata' & analysisPanel.state.showAddIntervalDialog === true){
        let relativeType = analysisPanel._getRelativeDateValue();
        let timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
        MultiTimespanAction.initMultiTimespanData(relativeType, timeRange.start, timeRange.end);
        historyCompareEl = <AddIntervalWindow openImmediately={true} analysisPanel={analysisPanel}/>;
+     }
+     if((chartType ==='line' || chartType ==='colume' || chartType ==='stack') && analysisPanel.state.showSumDialog === true){
+       dataSum = <SumWindow  openImmediately={true} analysisPanel={analysisPanel}></SumWindow>;
      }
      if(chartType === 'rawdata'){
        let properties = {energyData: analysisPanel.state.energyData,
@@ -1505,6 +1549,7 @@ let ChartStrategyFactor = {
         energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                        {subToolbar}
                        {historyCompareEl}
+                       {dataSum}
                        <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
                      </div>;
      }
@@ -1645,13 +1690,30 @@ let ChartStrategyFactor = {
                              {primaryText:'冷暖季', value:'hotColdSeason'}];
      let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
                              {primaryText:'湿度', value:'humidity'}];
+     let calendarEl;
+     let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
+     if(isCalendarDisabled){
+       calendarEl = <MenuItem primaryText="日历背景色" value='background' disabled={true}/>;
+     }else{
+       let showType = CalendarManager.getShowType();
+       if(!!showType){
+         calendarSubItems.forEach(item=>{
+           if(item.value === showType){
+             item.checked = true;
+           }
+         });
+       }
+       calendarEl = <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>;
+     }
 
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText="历史对比" value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuDivider />
-       <MenuItem primaryText="数据求和" value='sum'/>
+       <MenuItem primaryText="数据求和" value='sum'
+       disabled={analysisPanel.state.sumBtnStatus}/>
+       {calendarEl}
        <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
        <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
      </ButtonMenu>;
@@ -1930,6 +1992,41 @@ let ChartStrategyFactor = {
      params.charTypes = charTypes;
      ExportChartAction.getTagsData4Export(params, path);
    },
+   exportCarbonChart(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/GetCarbonUsageData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     let selectedList = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
+     selectedList.hierarchyNode = hierarchyNode;
+     selectedList.commodityList = commodityList;
+     let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+     let submitParams = CarbonStore.getSubmitParams();
+     let viewOption = submitParams.viewOption;
+     let viewAssociation = submitParams.viewAssociation;
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let destination = CarbonStore.getDestination();
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+
+     let params = {
+       title: title,
+       commodityIds: commodityIds,
+       hierarchyId: hierarchyNode.hierId,
+       viewOption: viewOption,
+       destination: destination,
+       viewAssociation: viewAssociation,
+       nodeNameAssociation: nodeNameAssociation
+     };
+
+     let seriesNumber = CarbonStore.getCarbonData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+     ExportChartAction.getTagsData4Export(params, path);
+   },
    exportChart4UnitEnergy(analysisPanel){
      if(!analysisPanel.state.energyData){
        return;
@@ -1952,6 +2049,40 @@ let ChartStrategyFactor = {
      };
 
      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+
+     ExportChartAction.getTagsData4Export(params, path);
+   },
+   exportChart4Ratio(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/RatioGetTagsData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     //let tagOptions = RatioStore.getTagOpions();
+     let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     //let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let submitParams = RatioStore.getSubmitParams();
+     let tagIds = submitParams.tagIds;
+     let ratioType = submitParams.ratioType;
+     let benchmarkOption = submitParams.benchmarkOption;
+     let viewOption = submitParams.viewOption;
+     let title = analysisPanel.props.chartTitle || '时段能耗比';
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     let params = {
+       ratioType: ratioType,
+       title: title,
+       tagIds: tagIds,
+       viewOption: viewOption,
+       nodeNameAssociation: nodeNameAssociation,
+       benchmarkOption: benchmarkOption
+     };
+
+     let seriesNumber = RatioStore.getEnergyData().get('Data').size;
      let charTypes = [];
      for(let i = 0; i < seriesNumber; i++){
        charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
@@ -1992,7 +2123,45 @@ let ChartStrategyFactor = {
      params.charTypes = charTypes;
 
      ExportChartAction.getTagsData4Export(params, path);
-   }
+   },
+   exportChart4UnitCarbon(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/GetCarbonUsageUnitData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     let selectedList = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
+     selectedList.hierarchyNode = hierarchyNode;
+     selectedList.commodityList = commodityList;
+     let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+     let submitParams = CarbonStore.getSubmitParams();
+     let viewOption = submitParams.viewOption;
+     let viewAssociation = submitParams.viewAssociation;
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let destination = CarbonStore.getDestination();
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+     let benchmarkOption = submitParams.benchmarkOption;
+     if(benchmarkOption == undefined) benchmarkOption = null;
+
+     let params = {
+       title: title,
+       commodityIds: commodityIds,
+       hierarchyId: hierarchyNode.hierId,
+       viewOption: viewOption,
+       destination: destination,
+       viewAssociation: viewAssociation,
+       nodeNameAssociation: nodeNameAssociation,
+       benchmarkOption: benchmarkOption
+     };
+
+     let seriesNumber = CarbonStore.getCarbonData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+     ExportChartAction.getTagsData4Export(params, path);
+   },
  },
  getChartTypeIconMenu(analysisPanel, types){
    var IconButtonElement = <IconButton iconClassName="icon-power"/>;
