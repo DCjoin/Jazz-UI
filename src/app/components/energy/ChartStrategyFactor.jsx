@@ -129,6 +129,7 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getCarbonSubToolbar',
       getAuxiliaryCompareBtnFn:'getCarbonAuxiliaryCompareBtn',
       handleStepChangeFn:'handleCarbonStepChange',
+      exportChartFn:'exportCarbonChart',
     },RatioUsage:{
       searchBarGenFn:'ratioUsageSearchBarGen',
       getEnergyTypeComboFn: 'empty',
@@ -145,7 +146,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'ratioBindStoreListeners',
       unbindStoreListenersFn:'ratioUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      exportChartFn:'exportChart',
+      exportChartFn:'exportChart4Ratio',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getRatioAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getRatioSubToolbar',
@@ -214,7 +215,7 @@ let ChartStrategyFactor = {
       bindStoreListenersFn:'unitCarbonBindStoreListeners',
       unbindStoreListenersFn:'unitCarbonUnbindStoreListeners',
       canShareDataWithFn:'canShareDataWith',
-      exportChartFn:'exportChart',
+      exportChartFn:'exportChart4UnitCarbon',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getAuxiliaryCompareBtnFn:'getUnitCarbonAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitCarbonSubToolbar',
@@ -2026,7 +2027,40 @@ let ChartStrategyFactor = {
      params.charTypes = charTypes;
 
      ExportChartAction.getTagsData4Export(params, path);
-   }
+   },
+   exportChart4UnitCarbon(analysisPanel){
+     if(!analysisPanel.state.energyData){
+       return;
+     }
+     let path = 'API/Energy.svc/GetCarbonUsageUnitData4Export';
+     let chartType = analysisPanel.state.selectedChartType;
+     let selectedList = CostStore.getSelectedList();
+     let commodityList = selectedList.commodityList;
+     let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+     let submitParams = CostStore.getSubmitParams();
+     let benchmarkOption = submitParams.benchmarkOption;
+     let viewOption = submitParams.viewOption;
+     let viewAssociation = submitParams.viewAssociation;
+     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+     let params = {
+       title: title,
+       commodityIds: commodityIds,
+       viewOption: viewOption,
+       viewAssociation: viewAssociation,
+       nodeNameAssociation: nodeNameAssociation,
+       benchmarkOption: benchmarkOption
+     };
+
+     let seriesNumber = CostStore.getEnergyData().get('Data').size;
+     let charTypes = [];
+     for(let i = 0; i < seriesNumber; i++){
+       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     }
+     params.charTypes = charTypes;
+
+     ExportChartAction.getTagsData4Export(params, path);
+   },
  },
  getChartTypeIconMenu(analysisPanel, types){
    var IconButtonElement = <IconButton iconClassName="icon-power"/>;

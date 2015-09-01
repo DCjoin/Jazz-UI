@@ -1084,7 +1084,7 @@ let CommonFuns = {
 		var commodityIds = this.getCommodityIdsFromList(commodityList);
     var hierarchyNode = selectedList.hierarchyNode;
 		var dimNode = selectedList.dimNode;
-		if(dimNode !== null){
+		if(dimNode !== null && dimNode != undefined){
 			dimName = dimNode.dimName;
 		}
 		var hierName = hierarchyNode.hierName;
