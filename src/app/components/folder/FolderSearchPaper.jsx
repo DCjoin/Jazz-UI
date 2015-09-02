@@ -115,9 +115,6 @@ let FolderSearch = React.createClass({
         <Paper style={paperStyle}>
             {this.drawNodeType()}
           </Paper>
-
-
-
       )
   }
 });
