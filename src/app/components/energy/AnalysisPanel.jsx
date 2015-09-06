@@ -465,6 +465,11 @@ let AnalysisPanel = React.createClass({
     exportChart(){
         this.state.chartStrategy.exportChartFn(this);
     },
+    save2Dashboard(){
+      if(this.state.chartStrategy.save2DashboardFn){
+        this.state.chartStrategy.save2DashboardFn(this);
+      }
+    },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
           obj = this.searchDate[relativeDateIndex];

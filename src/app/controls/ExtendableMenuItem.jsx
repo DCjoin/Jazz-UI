@@ -20,7 +20,8 @@ let ExtendableMenuItem = React.createClass({
   render(){
     let me = this;
     let subMenu = null;
-    let other = _objectWithoutProperties(this.props, [ 'subItems']);
+    let other = _objectWithoutProperties(this.props, [ 'subItems', 'tooltip']);
+    let tooltipStr = this.props.tooltip || null;
 
     if((this.state.itemMouseOver || this.state.subMenuMouseOver) && this.props.subItems && this.props.subItems.length > 0 ){
       let subItems = this.props.subItems;
@@ -32,7 +33,7 @@ let ExtendableMenuItem = React.createClass({
                       onMouseOut={me._onSubMenuMouseOut} style={{left:'2px'}} desktop={true}>{subItems}</Menu>
                 </div> ;
     }
-    return <div style={{position:'relative'}} onMouseOver={me._onItemMouseOver} onMouseOut={me._onItemMouseOut}>
+    return <div style={{position:'relative'}} onMouseOver={me._onItemMouseOver} onMouseOut={me._onItemMouseOut} title={tooltipStr}>
               <div style={{display:'inline-block', width:'100%'}}>
                 <MenuItem {...other}></MenuItem>
               </div>
