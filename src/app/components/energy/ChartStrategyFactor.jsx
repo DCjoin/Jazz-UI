@@ -81,7 +81,8 @@ let ChartStrategyFactor = {
       handleStepChangeFn:'handleEnergyStepChange',
       handleCalendarChangeFn:'handleCalendarChange',
       onAnalysisPanelDidUpdateFn:'onAnalysisPanelDidUpdate',
-      isCalendarDisabledFn:'isCalendarDisabled'
+      isCalendarDisabledFn:'isCalendarDisabled',
+      handleNavigatorChangeLoadFn:'handleNavigatorChangeLoad'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -257,6 +258,18 @@ let ChartStrategyFactor = {
       onEnergyTypeChangeFn:'onEnergyTypeChange',
       getChartSubToolbarFn:'getRankSubToolbar',
     }
+ },
+ handleNavigatorChangeLoadFnStrategy:{
+   handleNavigatorChangeLoad(analysisPanel){
+     let tagOptions = EnergyStore.getTagOpions(),
+         paramsObj = EnergyStore.getParamsObj(),
+         dateSelector = analysisPanel.refs.dateTimeSelector,
+         dateRange = dateSelector.getDateTime(),
+         startDate = dateRange.start,
+         endDate = dateRange.end;
+
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, null, analysisPanel);
+   }
  },
  isCalendarDisabledFnStrategy:{
    isCalendarDisabled(){
