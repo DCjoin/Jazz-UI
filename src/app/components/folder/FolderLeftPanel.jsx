@@ -95,9 +95,19 @@ var PanelContainer = React.createClass({
     })
   },
   _onSearchClick:function(node){
-    this.setState({
-      selectedNode:node
-    })
+    FolderAction.setSelectedNode(node);
+    if(node.get('Type')==7){
+      this.setState({
+        selectedNode:node,
+        buttonDisabled:true
+      })
+    }
+    else {
+      this.setState({
+        selectedNode:node
+      })
+    }
+
   },
   _onModifyName:function(){
     let me = this;
@@ -125,9 +135,19 @@ var PanelContainer = React.createClass({
     })
   },
   _onSelectedNodeChange:function(){
-    this.setState({
-      selectedNode:FolderStore.getSelectedNode()
-    })
+    var selectedNode=FolderStore.getSelectedNode();
+    if(selectedNode.get('Type')==7){
+      this.setState({
+        selectedNode:FolderStore.getSelectedNode(),
+        buttonDisabled:true
+      })
+    }
+    else {
+      this.setState({
+        selectedNode:FolderStore.getSelectedNode()
+      })
+    }
+
   },
   _onGragulaNode:function(targetId,sourceId,pass){
     var targetNode=FolderStore.getNodeById(parseInt(targetId)),

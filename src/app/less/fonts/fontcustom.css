@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_db1e10565210174f96ac2a264bf84018.eot");
-  src: url("./fontcustom_db1e10565210174f96ac2a264bf84018.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_db1e10565210174f96ac2a264bf84018.woff") format("woff"),
-       url("./fontcustom_db1e10565210174f96ac2a264bf84018.ttf") format("truetype"),
-       url("./fontcustom_db1e10565210174f96ac2a264bf84018.svg#fontcustom") format("svg");
+  src: url("./fontcustom_05ac7b659c74888372dd6aaf0dacc209.eot");
+  src: url("./fontcustom_05ac7b659c74888372dd6aaf0dacc209.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_05ac7b659c74888372dd6aaf0dacc209.woff") format("woff"),
+       url("./fontcustom_05ac7b659c74888372dd6aaf0dacc209.ttf") format("truetype"),
+       url("./fontcustom_05ac7b659c74888372dd6aaf0dacc209.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_db1e10565210174f96ac2a264bf84018.svg#fontcustom") format("svg");
+    src: url("./fontcustom_05ac7b659c74888372dd6aaf0dacc209.svg#fontcustom") format("svg");
   }
 }
 
@@ -40,18 +40,21 @@
 .icon-cb-close:before,
 .icon-cb-open:before,
 .icon-chart:before,
+.icon-check-mark:before,
 .icon-checked:before,
 .icon-clean:before,
 .icon-close:before,
 .icon-cloud:before,
 .icon-column:before,
 .icon-column-fold:before,
+.icon-connected-position:before,
 .icon-current:before,
 .icon-customer:before,
 .icon-delete:before,
 .icon-device:before,
 .icon-device-box:before,
 .icon-dimension-node:before,
+.icon-disconnected-position:before,
 .icon-double-arrow-right:before,
 .icon-dust-concentration:before,
 .icon-edit:before,
@@ -109,6 +112,7 @@
 .icon-stack:before,
 .icon-taglist-fold:before,
 .icon-temperature:before,
+.icon-test-position:before,
 .icon-time-ration:before,
 .icon-unit-index:before,
 .icon-user:before,
@@ -145,18 +149,21 @@
 .icon-cb-close:before { content: "\f10b"; }
 .icon-cb-open:before { content: "\f10c"; }
 .icon-chart:before { content: "\f153"; }
+.icon-check-mark:before { content: "\f161"; }
 .icon-checked:before { content: "\f150"; }
 .icon-clean:before { content: "\f10d"; }
 .icon-close:before { content: "\f10e"; }
 .icon-cloud:before { content: "\f10f"; }
 .icon-column:before { content: "\f154"; }
 .icon-column-fold:before { content: "\f110"; }
+.icon-connected-position:before { content: "\f162"; }
 .icon-current:before { content: "\f135"; }
 .icon-customer:before { content: "\f111"; }
 .icon-delete:before { content: "\f112"; }
 .icon-device:before { content: "\f113"; }
 .icon-device-box:before { content: "\f114"; }
 .icon-dimension-node:before { content: "\f151"; }
+.icon-disconnected-position:before { content: "\f163"; }
 .icon-double-arrow-right:before { content: "\f155"; }
 .icon-dust-concentration:before { content: "\f136"; }
 .icon-edit:before { content: "\f142"; }
@@ -214,6 +221,7 @@
 .icon-stack:before { content: "\f15e"; }
 .icon-taglist-fold:before { content: "\f131"; }
 .icon-temperature:before { content: "\f140"; }
+.icon-test-position:before { content: "\f164"; }
 .icon-time-ration:before { content: "\f15f"; }
 .icon-unit-index:before { content: "\f160"; }
 .icon-user:before { content: "\f132"; }

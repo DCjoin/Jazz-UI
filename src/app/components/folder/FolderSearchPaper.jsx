@@ -71,7 +71,7 @@ let FolderSearch = React.createClass({
 
 
     return(
-        <div className="jazz-search" style={{'margin-left':'16px'}}>
+        <div className="jazz-folder-leftpanel-searchpaper" style={{'margin-left':'16px'}}>
           {folderMenuItems}
           {widgetMenuItems}
           </div>
@@ -105,17 +105,16 @@ let FolderSearch = React.createClass({
                         width:'300px',
                         height:'390px',
                         position:'fixed',
-                        top:'140px',
+                        top:'125px',
                         left:'10px',
                         border:'1px solid #c9c8c8',
                         marginTop:'12px'
 
                       };
     return(
-    <Paper style={paperStyle}>
-        {this.drawNodeType()}
-      </Paper>
-
+        <Paper style={paperStyle}>
+            {this.drawNodeType()}
+          </Paper>
       )
   }
 });
