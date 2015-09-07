@@ -16,6 +16,7 @@ import EnergyAction from '../../actions/EnergyAction.jsx';
 import CarbonAction from '../../actions/CarbonAction.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
+import FolderAction from '../../actions/FolderAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
@@ -82,7 +83,8 @@ let ChartStrategyFactor = {
       handleCalendarChangeFn:'handleCalendarChange',
       onAnalysisPanelDidUpdateFn:'onAnalysisPanelDidUpdate',
       isCalendarDisabledFn:'isCalendarDisabled',
-      handleNavigatorChangeLoadFn:'handleNavigatorChangeLoad'
+      handleNavigatorChangeLoadFn:'handleNavigatorChangeLoad',
+      save2DashboardFn:'save2Dashboard'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -259,6 +261,65 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getRankSubToolbar',
     }
  },
+ save2DashboardFnStrategy:{
+   save2Dashboard(analysisPanel){
+     let chartType = analysisPanel.state.selectedChartType;
+     let originalValue = null;
+     if(chartType === 'rawdata'){
+       originalValue = true;
+     }
+
+     let tagOptions = EnergyStore.getTagOpions();
+     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+     let paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         step = paramsObj.step,
+         widgetTimeRanges;
+
+     //submitParams part
+     let submitParams = {
+                          options: nodeNameAssociation,
+                          tagIds: tagIds
+                        };
+     //time range part
+     if(timeRanges.length === 1){
+       let relativeDate = EnergyStore.getRelativeDate();
+       if( relativeDate !== 'Customerize'){
+         widgetTimeRanges = [{relativeDate:relativeDate}];
+       }else{
+         widgetTimeRanges = timeRanges;
+       }
+     }else{
+       widgetTimeRanges = MultipleTimespanStore.getSave2DashboardTimespans();
+     }
+     // viewOption part
+     let viewOption = {
+                        TimeRanges: widgetTimeRanges,
+                        Step: step
+                      };
+
+     let includeNavigatorData =  !(analysisPanel.state.selectedChartType ==='pie' || analysisPanel.state.selectedChartType ==='rawdata');
+     viewOption.IncludeNavigatorData = includeNavigatorData;
+
+     let bizMap = {Energy: 1, Unit:2 ,Ratio: 3, Label:4, Rank:5};
+     let dataUsageType = bizMap[analysisPanel.props.bizType];
+     viewOption.DataUsageType = dataUsageType;
+
+     submitParams.viewOption = viewOption;
+
+     let config = {type: analysisPanel.state.selectedChartType};
+
+     let params = {submitParams:submitParams, config:config, calendar: analysisPanel.state.calendarType};
+
+     let contentSyntax = {
+       params:params
+     };
+     widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+     FolderAction.updateWidgetDtos(widgetDto);
+   }
+ },
  handleNavigatorChangeLoadFnStrategy:{
    handleNavigatorChangeLoad(analysisPanel){
      let tagOptions = EnergyStore.getTagOpions(),
@@ -268,7 +329,7 @@ let ChartStrategyFactor = {
          startDate = dateRange.start,
          endDate = dateRange.end;
 
-     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, null, analysisPanel);
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, 'Customerize', analysisPanel);
    }
  },
  isCalendarDisabledFnStrategy:{
