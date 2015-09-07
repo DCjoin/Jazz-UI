@@ -35,7 +35,7 @@ var PanelContainer = React.createClass({
   generateNodeConent:function(nodeData,IsSendCopyReaded){
     return(<NodeContent nodeData={nodeData}
                         selectedNode={this.state.selectedNode}
-                        readStatus={IsSendCopyReaded}/>);
+                        />);
   },
   _onChange:function(){
     this.setState({
@@ -170,6 +170,11 @@ var PanelContainer = React.createClass({
       selectedNode:FolderStore.getSelectedNode()
     });
   },
+  _onModfiyReadingStatusChange:function(){
+    this.setState({
+      allNode:FolderStore.getFolderTree()
+    });
+  },
   componentDidMount: function() {
 
     FolderStore.addFolderTreeListener(this._onFolderTreeChange);
@@ -182,6 +187,7 @@ var PanelContainer = React.createClass({
     FolderStore.addModifyNameErrorListener(this._onModifyName);
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
     FolderStore.addMoveItemSuccessListener(this._onMoveItemChange);
+    FolderStore.addModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
 
   },
   componentWillUnmount:function(){
@@ -195,6 +201,7 @@ var PanelContainer = React.createClass({
     FolderStore.removeModifyNameErrorListener(this._onModifyName);
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemChange);
+    FolderStore.removeModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
 
   },
   render:function(){

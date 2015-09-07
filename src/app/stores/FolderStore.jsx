@@ -26,7 +26,8 @@ let FOLDER_TREE_EVENT = 'foldertree',
     SEND_STATUS_EVENT='sendstatus',
     SELECTED_NODE_EVENT='selectednode',
     MOVE_ITEM_SUCCESS_EVENT='moveitemsuccess',
-    MOVE_ITEM_ERROR_EVENT='moveitemerror';
+    MOVE_ITEM_ERROR_EVENT='moveitemerror',
+    MODIFY_READING_STATUS_EVENT='modifyreadingstatus';
 
 var FolderStore = assign({},PrototypeStore,{
 
@@ -334,6 +335,11 @@ var FolderStore = assign({},PrototypeStore,{
       this.insertItem(nextNode,newNode);
     }
   },
+  ModfiyReadingStatus:function(nodeData){
+    _parentId=nodeData.get('Id');
+    _changedNode=nodeData.set('IsRead',true);
+    _folderTree=this.modifyTreebyNode(_folderTree);
+  },
   emitFolderTreeChange: function() {
               this.emit(FOLDER_TREE_EVENT);
               },
@@ -447,7 +453,19 @@ var FolderStore = assign({},PrototypeStore,{
   removeSelectedNodeListener: function(callback) {
       this.removeListener(SELECTED_NODE_EVENT, callback);
       this.dispose();
-      },
+ },
+ emitModfiyReadingStatusChange: function() {
+         this.emit(MODIFY_READING_STATUS_EVENT);
+       },
+ addModfiyReadingStatusListener: function(callback) {
+       this.on(MODIFY_READING_STATUS_EVENT, callback);
+       },
+ removeModfiyReadingStatusListener: function(callback) {
+     this.removeListener(MODIFY_READING_STATUS_EVENT, callback);
+     this.dispose();
+     },
+
+
 
 });
 
@@ -505,6 +523,10 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.COPY_ITEM_ERROR:
         FolderStore.emitCopyItemErrorChange();
       break;
+    case FolderAction.MODIFY_NODE_READ_STATUS:
+        FolderStore.ModfiyReadingStatus(action.selectedNode);
+        FolderStore.emitModfiyReadingStatusChange();
+        break;
   }
 });
 
