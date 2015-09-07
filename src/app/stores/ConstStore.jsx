@@ -69,19 +69,39 @@ var ConstStore = assign({},PrototypeStore,{
   getRankTypeItem(){
     if(!this.rankTypeItem){
       var rankTypeItem = [
-      {value:'TotalRank',text:I18N.EM.Rank.TotalRank},
-      {value:'RankByPeople',text:I18N.EM.Rank.RankByPeople},
-      {value:'RankByArea', text:I18N.EM.Rank.RankByArea},
-      {value:'RankByCoolArea',text:I18N.EM.Rank.RankByCoolArea},
-      {value:'RankByHeatArea',text:I18N.EM.Rank.RankByHeatArea},
-      {value:'RankByRoom',text:I18N.EM.Rank.RankByRoom},
-      {value:'RankByUsedRoom',text:I18N.EM.Rank.RankByUsedRoom},
-      {value:'RankByBed',text:I18N.EM.Rank.RankByBed},
-      {value:'RankByUsedBed',text:I18N.EM.Rank.RankByUsedBed}];
+      {value:1,text:I18N.EM.Rank.TotalRank},
+      {value:2,text:I18N.EM.Rank.RankByPeople},
+      {value:3, text:I18N.EM.Rank.RankByArea},
+      {value:4,text:I18N.EM.Rank.RankByCoolArea},
+      {value:5,text:I18N.EM.Rank.RankByHeatArea},
+      {value:6,text:I18N.EM.Rank.RankByRoom},
+      {value:7,text:I18N.EM.Rank.RankByUsedRoom},
+      {value:8,text:I18N.EM.Rank.RankByBed},
+      {value:9,text:I18N.EM.Rank.RankByUsedBed}];
       this.rankTypeItem = rankTypeItem;
     }
-
     return this.rankTypeItem;
+  },
+  getRangeItem(){
+    if(!this.rangeItem){
+      var rangeItem = [
+        {value:3,index:0,text:I18N.Common.Glossary.Order.Rank3},
+        {value:5,index:1,text:I18N.Common.Glossary.Order.Rank5},
+        {value:10,index:2,text:I18N.Common.Glossary.Order.Rank10},
+        {value:20,index:3,text:I18N.Common.Glossary.Order.Rank20},
+        {value:50,index:4,text:I18N.Common.Glossary.Order.Rank50},
+        {value:1000,index:5,text:I18N.Common.Glossary.Order.All}];
+      this.rangeItem = rangeItem;
+    }
+    return this.rangeItem;
+  },
+  getOrderItem(){
+    if(!this.orderItem){
+      var orderItem = [
+      {value:1,text:I18N.Common.Glossary.Order.Descending,name:'Descending'}, {value:2,text:I18N.Common.Glossary.Order.Ascending,name:'Ascending'}];
+      this.orderItem = orderItem;
+    }
+    return this.orderItem;
   }
 });
 module.exports = ConstStore;

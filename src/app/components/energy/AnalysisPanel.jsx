@@ -477,6 +477,10 @@ let AnalysisPanel = React.createClass({
         dateSelector.setDateField(timeregion.start, timeregion.end);
       }
     },
+    _onRankTypeChange(e, selectedIndex, menuItem){
+      var rankType = menuItem.value;
+      this.setstate({rankType: rankType});
+    },
     _onRangeChange(e, selectedIndex, menuItem){
       var range = menuItem.value;
       this.setState({range: range});
@@ -682,6 +686,18 @@ let AnalysisPanel = React.createClass({
         });
       }
       return kpiTypeText;
+    },
+    getRangeIndex(){
+      var range = this.state.range;
+      var rangeItem = ConstStore.getRangeItem();
+      var rangeIndex;
+      rangeItem.forEach(item => {
+        if(item.value === range){
+          rangeIndex = item.index;
+          return;
+        }
+      });
+      return rangeIndex;
     },
     _onHierNodeChange(){
       this.state.chartStrategy.onHierNodeChangeFn(this);
