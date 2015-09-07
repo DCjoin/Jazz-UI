@@ -184,6 +184,31 @@ let FolderAction = {
         },
     });
   },
+  GetWidgetDtos(widgetIds, selectedNode){
+
+    AppDispatcher.dispatch({
+      type: Action.GET_WIDGETDTOS_LOADING,
+      selectedNode: selectedNode
+    });
+
+    Ajax.post('/Dashboard.svc/GetWidgetDtos', {
+         params: {
+           widgetIds:widgetIds
+          },
+        success: function(widgetDto){
+          AppDispatcher.dispatch({
+            type: Action.GET_WIDGETDTOS_SUCCESS,
+            widgetDto: widgetDto
+          });
+        },
+        error: function(err, res){
+          // AppDispatcher.dispatch({
+          //     type: Action.MOVE_ITEM_ERROR,
+          //     sourceNode:GET_WIDGETDTOS_ERROR
+          // });
+        },
+    });
+  }
 };
 
 module.exports = FolderAction;

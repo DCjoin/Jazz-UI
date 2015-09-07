@@ -76,7 +76,7 @@ let EnergyAction = {
       }
     });
   },
-  getEnergyTrendChartData(date, step, tagOptions, relativeDate){
+  getEnergyTrendChartData(date, step, tagOptions, relativeDate, weatherOption){
     var timeRange = date;
 
     var tagIds = getTagIdsFromTagOptions(tagOptions);
@@ -87,7 +87,9 @@ let EnergyAction = {
                                       TimeRanges: timeRange
                                    }
                        };
-
+    if(weatherOption && weatherOption.IncludeTempValue) submitParams.viewOption.IncludeTempValue = true;
+    if(weatherOption && weatherOption.IncludeHumidityValue) submitParams.viewOption.IncludeHumidityValue = true;
+    
     AppDispatcher.dispatch({
       type: Action.GET_ENERGY_DATA_LOADING,
       submitParams: submitParams,
@@ -480,7 +482,6 @@ let EnergyAction = {
 
     Ajax.post('/Energy.svc/LabelingGetTagsData', {
       params:submitParams,
-      commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
           type: Action.GET_LABEL_DATA_SUCCESS,
@@ -519,7 +520,6 @@ let EnergyAction = {
 
     Ajax.post('/Energy.svc/RankingEnergyUsageData', {
       params:submitParams,
-      commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,
@@ -561,7 +561,6 @@ let EnergyAction = {
 
     Ajax.post('/Energy.svc/RankingCarbonData', {
       params:submitParams,
-      commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,
@@ -602,7 +601,6 @@ let EnergyAction = {
 
     Ajax.post('/Energy.svc/RankingCostData', {
       params:submitParams,
-      commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,
