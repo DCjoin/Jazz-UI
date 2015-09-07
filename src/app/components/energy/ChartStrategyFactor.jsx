@@ -301,20 +301,23 @@ let ChartStrategyFactor = {
    }
  },
  handleWeatherMenuItemClickFnStrategy:{
-   handleWeatherMenuItemClick(analysisPanel, enableTemp, enableHumi){
-     let tagOptions = EnergyStore.getTagOpions(),
-         paramsObj = EnergyStore.getParamsObj(),
-         step = paramsObj.step,
-         weatherOption = {};
+   handleWeatherMenuItemClick(analysisPanel, toggleTemp, toggleHumi){
+     let paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         tagOptions = EnergyStore.getTagOpions(),
+         submitParams = EnergyStore.getSubmitParams(),
+         step = paramsObj.step;
+     let wasTemp = !!submitParams.viewOption.IncludeTempValue,
+         wasHumi = !!submitParams.viewOption.IncludeHumidityValue,
+         weather;
 
-     if(enableTemp === true) weather.enableTemp = true;
-     else if(enableTemp === false) weather.enableTemp = false;
-
-     if(enableHumi === true) weather.enableHumi = true;
-     else if(enableHumi === false) weather.enableHumi = false;
-
-     analysisPanel.setState({weatherOption: weatherOption});
-     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weatherOption);
+     if(toggleTemp === true){
+       weather = {IncludeTempValue: !wasTemp, IncludeHumidityValue: wasHumi};
+     }
+     if(toggleHumi === true){
+       weather = {IncludeTempValue: wasTemp, IncludeHumidityValue: !wasHumi};
+     }
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weather);
    },
  },
  isWeatherDisabledFnStrategy:{
@@ -723,9 +726,19 @@ let ChartStrategyFactor = {
          analysisPanel.setState({showSumDialog: true});
          break;
        case 'background':{
+           var subMenuValue = menuParam.props.value;
+           if(subMenuValue === 'noneWorkTime' || subMenuValue ==='hotColdSeason'){
+             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+           }
+           break;
+         }
+       case 'weather':{
          var subMenuValue = menuParam.props.value;
-         if(subMenuValue === 'noneWorkTime' || subMenuValue ==='hotColdSeason'){
-           analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+         if(subMenuValue === 'temperature'){
+           analysisPanel.state.chartStrategy.handleWeatherMenuItemClickFn(analysisPanel, true, false);
+         }
+         else if(subMenuValue === 'humidity'){
+           analysisPanel.state.chartStrategy.handleWeatherMenuItemClickFn(analysisPanel, false, true);
          }
          break;
        }
@@ -1742,8 +1755,6 @@ let ChartStrategyFactor = {
    getEnergyAuxiliaryCompareBtn(analysisPanel){
      let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
                              {primaryText:'冷暖季', value:'hotColdSeason'}];
-     let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
-                             {primaryText:'湿度', value:'humidity'}];
      let calendarEl;
      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
      if(isCalendarDisabled){
@@ -1759,10 +1770,17 @@ let ChartStrategyFactor = {
        }
        calendarEl = <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>;
      }
+
+      let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
+           {primaryText:'湿度', value:'humidity'}];
+      let submitParams = EnergyStore.getSubmitParams();
+      let viewOp = submitParams.viewOption;
+      if(viewOp && viewOp.IncludeTempValue) weatherSubItems[0].checked = true;
+      if(viewOp && viewOp.IncludeHumidityValue) weatherSubItems[1].checked = true;
      let weatherEl;
      let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn();
      if(isWeatherDisabled === false){
-       weatherEl = <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>;
+       weatherEl = <ExtendableMenuItem primaryText="天气信息" value='weather' subItems={weatherSubItems}/>;
      }else{
        weatherEl = <ExtendableMenuItem primaryText="天气信息" value='weather' disabled={true} tooltip={isWeatherDisabled} />;
      }
@@ -1783,8 +1801,6 @@ let ChartStrategyFactor = {
    getCarbonAuxiliaryCompareBtn(analysisPanel){
      let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
                              {primaryText:'冷暖季', value:'hotColdSeason'}];
-     let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
-                             {primaryText:'湿度', value:'humidity'}];
 
      let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
