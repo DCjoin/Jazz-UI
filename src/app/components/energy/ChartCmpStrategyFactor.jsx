@@ -567,7 +567,7 @@ let ChartCmpStrategyFactor = {
         var list = option.list;
         var total = list.length;
         if (this.x > total - 1) return '';
-        var tooltip = I18N.Rank.RankTooltip;//排名:{0}/{1}
+        var tooltip = I18N.EM.Rank.RankTooltip;//排名:{0}/{1}
         var str = tooltip.
                     replace('{0}', list[this.x].pos).
                         replace('{1}', total);

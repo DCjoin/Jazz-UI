@@ -16,6 +16,7 @@ import EnergyAction from '../../actions/EnergyAction.jsx';
 import CarbonAction from '../../actions/CarbonAction.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
+import FolderAction from '../../actions/FolderAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
@@ -76,7 +77,8 @@ let ChartStrategyFactor = {
       isCalendarDisabledFn:'isCalendarDisabled',
       handleWeatherMenuItemClickFn:'handleWeatherMenuItemClick',
       isWeatherDisabledFn: 'isWeatherDisabled',
-      handleNavigatorChangeLoadFn:'handleNavigatorChangeLoad'
+      handleNavigatorChangeLoadFn:'handleNavigatorChangeLoad',
+      save2DashboardFn:'save2Dashboard'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -253,6 +255,65 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getRankSubToolbar',
     }
  },
+ save2DashboardFnStrategy:{
+   save2Dashboard(analysisPanel){
+     let chartType = analysisPanel.state.selectedChartType;
+     let originalValue = null;
+     if(chartType === 'rawdata'){
+       originalValue = true;
+     }
+
+     let tagOptions = EnergyStore.getTagOpions();
+     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+     let paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         step = paramsObj.step,
+         widgetTimeRanges;
+
+     //submitParams part
+     let submitParams = {
+                          options: nodeNameAssociation,
+                          tagIds: tagIds
+                        };
+     //time range part
+     if(timeRanges.length === 1){
+       let relativeDate = EnergyStore.getRelativeDate();
+       if( relativeDate !== 'Customerize'){
+         widgetTimeRanges = [{relativeDate:relativeDate}];
+       }else{
+         widgetTimeRanges = timeRanges;
+       }
+     }else{
+       widgetTimeRanges = MultipleTimespanStore.getSave2DashboardTimespans();
+     }
+     // viewOption part
+     let viewOption = {
+                        TimeRanges: widgetTimeRanges,
+                        Step: step
+                      };
+
+     let includeNavigatorData =  !(analysisPanel.state.selectedChartType ==='pie' || analysisPanel.state.selectedChartType ==='rawdata');
+     viewOption.IncludeNavigatorData = includeNavigatorData;
+
+     let bizMap = {Energy: 1, Unit:2 ,Ratio: 3, Label:4, Rank:5};
+     let dataUsageType = bizMap[analysisPanel.props.bizType];
+     viewOption.DataUsageType = dataUsageType;
+
+     submitParams.viewOption = viewOption;
+
+     let config = {type: analysisPanel.state.selectedChartType};
+
+     let params = {submitParams:submitParams, config:config, calendar: analysisPanel.state.calendarType};
+
+     let contentSyntax = {
+       params:params
+     };
+     widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+     FolderAction.updateWidgetDtos(widgetDto);
+   }
+ },
  handleNavigatorChangeLoadFnStrategy:{
    handleNavigatorChangeLoad(analysisPanel){
      let tagOptions = EnergyStore.getTagOpions(),
@@ -262,7 +323,7 @@ let ChartStrategyFactor = {
          startDate = dateRange.start,
          endDate = dateRange.end;
 
-     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, null, analysisPanel);
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, 'Customerize', analysisPanel);
    }
  },
  isCalendarDisabledFnStrategy:{
@@ -547,11 +608,7 @@ let ChartStrategyFactor = {
      let chartType = analysisPanel.state.selectedChartType;
      let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column','stack','pie']);
      let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
-     let menuItems = [
-       { payload: '1', text: I18N.Common.CarbonUomType.StandardCoal, value: 2},
-       { payload: '2', text: I18N.Common.CarbonUomType.CO2, value: 3 },
-       { payload: '3', text: I18N.Common.CarbonUomType.Tree, value: 4 },
-    ];
+     let menuItems = ConstStore.getCarbonTypeItem();
     let menuItemChange = function(e, selectedIndex, menuItem){
       CarbonStore.setDestination(menuItem.value);
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
@@ -628,18 +685,14 @@ let ChartStrategyFactor = {
      var toolElement;
      let chartType = analysisPanel.state.selectedChartType;
      let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel,['line','column']);
-     let menuItems = [
-       { payload: '1', text: I18N.Common.CarbonUomType.StandardCoal, value: 2},
-       { payload: '2', text: I18N.Common.CarbonUomType.CO2, value: 3 },
-       { payload: '3', text: I18N.Common.CarbonUomType.Tree, value: 4 },
-    ];
+     let menuItems = ConstStore.getCarbonTypeItem();
     let menuItemChange = function(e, selectedIndex, menuItem){
       CarbonStore.setDestination(menuItem.value);
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       return true;
     };
     var selectedIndex = CarbonStore.getDestination() - 2;
-    var carbonDest = <DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} onChange={menuItemChange} style={{display:"inline-block",float:"left",height:36, width:152}} />
+    var carbonDest = <DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} onChange={menuItemChange} style={{display:"inline-block",float:"left",height:36, width:152}} />;
      let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
      toolElement =
          <div style={{display:'flex'}}>
@@ -682,16 +735,10 @@ let ChartStrategyFactor = {
      if(energyType === 'Carbon'){
        carbonTypeBtn = <DropDownMenu selectedIndex={analysisPanel.state.destination-2} menuItems={ConstStore.getCarbonTypeItem()} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>;
      }
-     var orderItem = [{value:1,text:I18N.Common.Glossary.Order.Descending,name:'Descending'}, {value:2,text:I18N.Common.Glossary.Order.Ascending,name:'Ascending'}];
-     var rangeItem = [
-       {value:3,text:I18N.Common.Glossary.Order.Rank3},
-       {value:5,text:I18N.Common.Glossary.Order.Rank5},
-       {value:10,text:I18N.Common.Glossary.Order.Rank10},
-       {value:20,text:I18N.Common.Glossary.Order.Rank20},
-       {value:50,text:I18N.Common.Glossary.Order.Rank50},
-       {value:1000,text:I18N.Common.Glossary.Order.All}];
-     var orderCombo = <DropDownMenu menuItems={orderItem} ref='orderCombo' onChange={analysisPanel._onOrderChange}></DropDownMenu>;
-     var rangeCombo = <DropDownMenu menuItems={rangeItem} ref='rangeCombo' onChange={analysisPanel._onRangeChange}></DropDownMenu>;
+     var orderItem = ConstStore.getOrderItem();
+     var rangeItem = ConstStore.getRangeItem();
+     var orderCombo = <DropDownMenu menuItems={orderItem} selectedIndex={analysisPanel.state.order - 1} ref='orderCombo' onChange={analysisPanel._onOrderChange}></DropDownMenu>;
+     var rangeCombo = <DropDownMenu menuItems={rangeItem} selectedIndex={analysisPanel.getRangeIndex()} ref='rangeCombo' onChange={analysisPanel._onRangeChange}></DropDownMenu>;
      toolElement =
        <div style={{display:'flex'}}>
          <div style={{margin:'10px 0 0 23px'}}>
@@ -933,6 +980,7 @@ let ChartStrategyFactor = {
    },
    getRankInitialState(){
      let state = {
+       rankType: 1,
        order: 1,
        range: 3,
        destination: 2,
@@ -1319,7 +1367,7 @@ let ChartStrategyFactor = {
    },
    setRankTypeAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-     let rankType = analysisPanel.refs.rankType.state.selectedIndex + 1;
+     let rankType = analysisPanel.state.rankType;
      let energyType = analysisPanel.state.energyType;
      let destination = analysisPanel.state.destination;
 
@@ -1721,7 +1769,7 @@ let ChartStrategyFactor = {
 
       energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                      {subToolbar}
-                     <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                     <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj}/>
                    </div>;
       return energyPart;
    },
@@ -1741,7 +1789,7 @@ let ChartStrategyFactor = {
                          <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
                        </div>
                      </div>;
-                     <LabelChartComponent ref="chartComponent" {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
+                     <LabelChartComponent ref="chartComponent" {...analysisPanel.state.paramsObj} {...chartCmpObj}/>
                    </div>;
       return energyPart;
     }

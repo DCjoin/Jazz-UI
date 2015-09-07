@@ -14,15 +14,21 @@ var CopyView = React.createClass({
   },
   _onCopyItem:function(destNode,newName){
     FolderAction.copyItem(this.props.copyNode,destNode,newName);
+    this.setState({
+      loading:true
+    })
   },
   _onCopyItemError:function(){
     this.setState({
-      errorText:I18N.Folder.Copy.Error
+      errorText:I18N.Folder.Copy.Error,
+      loading:false
     });
   },
   _onCopyItemSuccess:function(){
+    this.props.onDismiss();
     this.setState({
-      errorText:null
+      errorText:null,
+      loading:false
     });
   },
   componentDidMount:function(){
@@ -35,8 +41,9 @@ var CopyView = React.createClass({
   },
   getInitialState:function(){
     return{
-      errorText:null
-    }
+      errorText:null,
+      loading:false
+    };
   },
   render:function(){
     var title,label;
@@ -56,7 +63,8 @@ var CopyView = React.createClass({
       treeNode:FolderStore.getParent(this.props.copyNode),
       onFirstActionTouchTap:this._onCopyItem,
       onDismiss:this.props.onDismiss,
-      errorText:this.state.errorText
+      errorText:this.state.errorText,
+      loading:this.state.loading
     };
 
     return(
