@@ -18,7 +18,7 @@ let _isLoading = false,
     _relativeDate = null,
     _errorCode = null,
     _errorMessage = null,
-    _destination = null;
+    _destination = 2;
 
 const CARBON_DATA_LOADING_EVENT = 'carbondataloadingevent',
       CARBON_DATA_LOADED_EVENT = 'carbondataloadedevent',

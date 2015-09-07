@@ -14018,7 +14018,7 @@ end
 				lineProto = Highcharts.seriesTypes.line.prototype,
 				renderer = this.chart.renderer,
 				isStacking = (series.type === 'column' && series.options.stacking !==
-					null),
+					null && series.options.stacking !== undefined),
 				tipStrMap = {
 					'line': I18N.EM.Legend.ToLine,
 					'column': I18N.EM.Legend.ToColumn,
@@ -14106,7 +14106,8 @@ end
 						stopPropagation(evt);
 						return;
 					}
-					var isStacking = series.options.stacking !== null,
+					var isStacking = (series.options.stacking !== null && series.options.stacking !==
+							undefined),
 						nextType = series.getNextSwitchType(isStacking ? 'stacking' : series.type,
 							legendSwitchList);
 					if (legend.tooltip) {

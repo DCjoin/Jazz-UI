@@ -506,6 +506,10 @@ let ChartComponentBox = React.createClass({
         this.initFlagSeriesData(newConfig, realData);
       }
 
+      if(this.state.chartCmpStrategy.getLegendListFn){
+        this.state.chartCmpStrategy.getLegendListFn(newConfig);
+      }
+
       newConfig.tooltipSidePosition = true;
 
       return newConfig;

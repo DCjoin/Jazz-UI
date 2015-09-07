@@ -248,6 +248,11 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
 I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
 I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
 
+I18N.EM.Legend = {};
+I18N.EM.Legend.ToLine = '切换至折线图显示';
+I18N.EM.Legend.ToColumn = '切换至柱状图显示';
+I18N.EM.Legend.ToStacking = '切换至堆积图显示';
+
 //workday
 I18N.Setting = {};
 I18N.Setting.Calendar = {};

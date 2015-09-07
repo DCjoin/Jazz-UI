@@ -144,6 +144,78 @@ let AnalysisPanel = React.createClass({
       let me = this;
       this.state.chartStrategy.unbindStoreListenersFn(me);
     },
+    _afterChartCreated(chartObj){
+      if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
+          chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
+      }
+    },
+    OnNavigatorChanged: function (obj) {
+      var chart = obj.target.chart,
+          scroller = chart.scroller,
+          min = obj.min,
+          max = obj.max,
+          start = Math.round(min),
+          end = Math.round(max),
+          validator = JazzCommon.IsValidDate,
+          converter = DataConverter.JsonToDateTime,
+          type = 'resize',
+          startTime,
+          endTime;
+
+      if (scroller.grabbedLeft) {
+          startTime = new Date(start);
+          startTime.setMinutes(0, 0, 0);
+          endTime = new Date(end);
+          endTime.setMinutes(0, 0, 0);
+          this.needRollback = true;
+      }
+      else if (scroller.grabbedRight) {
+          endTime = new Date(end);
+          endTime.setMinutes(0, 0, 0);
+
+          startTime = new Date(start);
+          startTime.setMinutes(0, 0, 0);
+          this.needRollback = true;
+      }
+      else {
+          startTime = new Date(start);
+          startTime.setMinutes(0, 0, 0);
+          endTime = new Date(end);
+          endTime.setMinutes(0, 0, 0);
+          type = 'move';
+      }
+
+      if (startTime > endTime) {
+          startTime = new Date(start);
+          startTime.setMinutes(0, 0, 0);
+          endTime = new Date(end);
+          endTime.setMinutes(0, 0, 0);
+      }
+
+      if (startTime.getTime() == endTime.getTime()) {
+          if (scroller.grabbedLeft) {
+              startTime = dateAdd(endTime, -1, 'hours');
+          }
+          else {
+              endTime = dateAdd(startTime, 1, 'hours');
+          }
+      }
+
+      this.dateChanged(chart, startTime, endTime, type);
+    },
+    dateChanged(chart, start, end, type){
+      this.refs.dateTimeSelector.setDateField(start, end);
+      this.refs.relativeDate.setState({selectedIndex:0});
+
+      if (type === 'resize' || chart.navCache === false) {
+        this._onNavigatorChangeLoad();
+      }
+    },
+    _onNavigatorChangeLoad(){
+      if(this.state.chartStrategy.handleNavigatorChangeLoadFn){
+        this.state.chartStrategy.handleNavigatorChangeLoadFn(this);
+      }
+    },
     getStrategyName(bizType, energyType){
       let strategyName = null;
       switch (bizType) {
@@ -382,6 +454,11 @@ let AnalysisPanel = React.createClass({
     },
     exportChart(){
         this.state.chartStrategy.exportChartFn(this);
+    },
+    save2Dashboard(){
+      if(this.state.chartStrategy.save2DashboardFn){
+        this.state.chartStrategy.save2DashboardFn(this);
+      }
     },
     _getRelativeDateValue(){
       let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,

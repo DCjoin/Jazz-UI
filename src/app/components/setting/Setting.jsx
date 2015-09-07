@@ -14,11 +14,13 @@ import DataSelectMainPanel from '../DataSelectMainPanel.jsx';
 //import ChartPanel from '../alarm/ChartPanel.jsx';
 import AnalysisPanel from '../energy/AnalysisPanel.jsx';
 import ChartAction from '../../actions/ChartAction.jsx';
+import FolderAction from '../../actions/FolderAction.jsx';
 //for test commoditypanel
 import CommodityAction from '../../actions/CommodityAction.jsx';
 
 import LeftPanel from '../folder/FolderLeftPanel.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
+import WidgetStore from '../../stores/energy/WidgetStore.jsx';
 import FolderDetailPanel from '../folder/FolderDetailPanel.jsx';
 import CopyView from '../folder/operationView/CopyView.jsx';
 import DeleteView from '../folder/operationView/DeleteView.jsx';
@@ -78,12 +80,18 @@ let Setting = React.createClass({
     let me = this;
     me.setState({
       refreshChart: true
-    },()=>{me.setState({
+    },()=>{
+        let selectedNode = FolderStore.getSelectedNode();
+        let type = selectedNode.get('Type');
+        if(type === 7){
+          FolderAction.GetWidgetDtos([selectedNode.get('Id')], selectedNode);
+        }else{
+          me.setState({
                         refreshChart: false,
                         selectedEnergyType: null,
-                        selectedNode:FolderStore.getSelectedNode()
+                        selectedNode: selectedNode
                       });
-          });
+        }});
   },
   _onTemplateDismiss:function(){
     this.setState({
@@ -181,6 +189,7 @@ componentDidMount:function(){
   FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
   FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
   FolderStore.addMoveItemErrorListener(this._onMoveItemError);
+  WidgetStore.addChangeListener(this._handleWidgetSelectChange);
 },
 componentWillUnmount:function(){
   FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -189,6 +198,16 @@ componentWillUnmount:function(){
   FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
   FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
   FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
+  WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
+},
+_handleWidgetSelectChange(){
+  let widgetDto = WidgetStore.getWidgetDto();
+  this.setState({
+                  refreshChart: false,
+                  selectedEnergyType: null,
+                  selectedNode: WidgetStore.getSelectedNode(),
+                  widgetDto: widgetDto
+                });
 },
 render: function () {
     let me = this;
@@ -210,7 +229,8 @@ render: function () {
         let bizType = bizTypeMap[selectedNode.get('WidgetType')];
         let energyType = this.state.selectedEnergyType || CommonFuns.extractEnergyType( selectedNode.get('EnergyType') );
         rightPanel = this.getRightPanel(bizType, energyType);
-        mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType} energyType={energyType} onEnergyTypeChange={me._onEnergyTypeChanged} onOperationSelect={this._onWidgetMenuSelect}></AnalysisPanel>;
+        mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType} energyType={energyType} widgetDto={me.state.widgetDto}
+          onEnergyTypeChange={me._onEnergyTypeChanged} onOperationSelect={this._onWidgetMenuSelect}></AnalysisPanel>;
       }
     }
 
