@@ -26,11 +26,11 @@ let SearchItem = React.createClass({
 
     return(
       <div className="jazz-searchmenuitem" onClick={this._onClick} title={this.props.nodeData.Path}>
-      <div style={{'font-size':'16px'}}>
-      {icon}
-    </div>
-    <div className='jazz-dimsearch-nodename'>
-    {this.props.nodeData.Name}</div>
+        <div style={{'font-size':'16px'}}>
+          {icon}
+        </div>
+        <div className='jazz-dimsearch-nodename'>
+          {this.props.nodeData.Name}</div>
       </div>
     )
   }
@@ -63,13 +63,8 @@ let FolderSearch = React.createClass({
               <SearchItem nodeData={nodeData} onClick={that.props.onSearchNodeClick}/>
             );
           }
-
-
         }
-
       });
-
-
     return(
         <div className="jazz-folder-leftpanel-searchpaper" style={{'margin-left':'16px'}}>
           {folderMenuItems}
@@ -109,7 +104,6 @@ let FolderSearch = React.createClass({
                         left:'10px',
                         border:'1px solid #c9c8c8',
                         marginTop:'12px'
-
                       };
     return(
         <Paper style={paperStyle}>

@@ -293,29 +293,32 @@ let ChartStrategyFactor = {
    }
  },
  handleWeatherMenuItemClickFnStrategy:{
-   handleWeatherMenuItemClick(analysisPanel, enableTemp, enableHumi){
-     let tagOptions = EnergyStore.getTagOpions(),
-         paramsObj = EnergyStore.getParamsObj(),
-         step = paramsObj.step,
-         weatherOption = {};
+   handleWeatherMenuItemClick(analysisPanel, toggleTemp, toggleHumi){
+     let paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         tagOptions = EnergyStore.getTagOpions(),
+         submitParams = EnergyStore.getSubmitParams(),
+         step = paramsObj.step;
+     let wasTemp = !!submitParams.viewOption.IncludeTempValue,
+         wasHumi = !!submitParams.viewOption.IncludeHumidityValue,
+         weather;
 
-     if(enableTemp === true) weather.enableTemp = true;
-     else if(enableTemp === false) weather.enableTemp = false;
-
-     if(enableHumi === true) weather.enableHumi = true;
-     else if(enableHumi === false) weather.enableHumi = false;
-
-     analysisPanel.setState({weatherOption: weatherOption});
-     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weatherOption);
+     if(toggleTemp === true){
+       weather = {IncludeTempValue: !wasTemp, IncludeHumidityValue: wasHumi};
+     }
+     if(toggleHumi === true){
+       weather = {IncludeTempValue: wasTemp, IncludeHumidityValue: !wasHumi};
+     }
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weather);
    },
  },
  isWeatherDisabledFnStrategy:{
    isWeatherDisabled(){
      let tagOptions = EnergyStore.getTagOpions();
-     if(!tagOptions) return "该功能仅单层级数据点。";
+     if(!tagOptions) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
      let paramsObj = EnergyStore.getParamsObj(),
          step = paramsObj.step;
-     if(step != 1) return "该功能仅支持小时步长。";
+     if(step != 1) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
      return false;
    }
  },
@@ -483,7 +486,7 @@ let ChartStrategyFactor = {
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{margin:'5px 30px 5px auto'}}>
                {configBtn}
-               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+               <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -493,7 +496,7 @@ let ChartStrategyFactor = {
              <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
              <div style={{margin:'5px 30px 5px auto'}}>
                {configBtn}
-               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+               <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -503,7 +506,7 @@ let ChartStrategyFactor = {
              <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
              <div style={{margin:'5px 30px 5px auto'}}>
                {configBtn}
-               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+               <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -524,7 +527,7 @@ let ChartStrategyFactor = {
              <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{margin:'5px 30px 5px auto'}}>
                {configBtn}
-               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
+               <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
              </div>
            </div>;
      }else if(chartType === 'pie'){
@@ -533,7 +536,7 @@ let ChartStrategyFactor = {
              <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
              <div style={{margin:'5px 30px 5px auto'}}>
                {configBtn}
-               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
+               <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
              </div>
            </div>;
      }
@@ -562,7 +565,7 @@ let ChartStrategyFactor = {
              <div className={'jazz-full-border-dropdownmenu-container'} style={{margin:'5px 30px 5px auto'}}>
                {carbonDest}
                {configBtn}
-               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+               <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -573,7 +576,7 @@ let ChartStrategyFactor = {
              <div style={{margin:'5px 30px 5px auto'}}>
                {carbonDest}
                {configBtn}
-               <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+               <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -592,7 +595,7 @@ let ChartStrategyFactor = {
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{margin:'5px 30px 5px auto'}}>
              {configBtn}
-             <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
            </div>
            <BaselineCfg  ref="baselineCfg"/>
          </div>;
@@ -611,7 +614,7 @@ let ChartStrategyFactor = {
            <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{margin:'5px 30px 5px auto'}}>
              {configBtn}
-             <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
            </div>
          </div>;
 
@@ -638,7 +641,7 @@ let ChartStrategyFactor = {
            <div style={{margin:'5px 30px 5px auto'}}>
              {carbonDest}
              {configBtn}
-             <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
            </div>
            <BaselineCfg  ref="baselineCfg"/>
          </div>;
@@ -657,7 +660,7 @@ let ChartStrategyFactor = {
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{margin:'5px 30px 5px auto'}}>
              {configBtn}
-             <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
+             <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
            </div>
            <BaselineCfg  ref="baselineCfg"/>
          </div>;
@@ -684,7 +687,7 @@ let ChartStrategyFactor = {
          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
          <div style={{margin:'5px 30px 5px auto'}}>
            {carbonTypeBtn}
-           <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
+           <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
          </div>
        </div>;
      return toolElement;
@@ -706,9 +709,19 @@ let ChartStrategyFactor = {
          analysisPanel.setState({showSumDialog: true});
          break;
        case 'background':{
+           var subMenuValue = menuParam.props.value;
+           if(subMenuValue === 'noneWorkTime' || subMenuValue ==='hotColdSeason'){
+             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+           }
+           break;
+         }
+       case 'weather':{
          var subMenuValue = menuParam.props.value;
-         if(subMenuValue === 'noneWorkTime' || subMenuValue ==='hotColdSeason'){
-           analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+         if(subMenuValue === 'temperature'){
+           analysisPanel.state.chartStrategy.handleWeatherMenuItemClickFn(analysisPanel, true, false);
+         }
+         else if(subMenuValue === 'humidity'){
+           analysisPanel.state.chartStrategy.handleWeatherMenuItemClickFn(analysisPanel, false, true);
          }
          break;
        }
@@ -942,7 +955,7 @@ let ChartStrategyFactor = {
          nodeOptions;
 
      if(startDate.getTime()>= endDate.getTime()){
-         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
        return;
      }
 
@@ -987,7 +1000,7 @@ let ChartStrategyFactor = {
          nodeOptions;
 
      if(startDate.getTime()>= endDate.getTime()){
-         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
        return;
      }
 
@@ -1015,7 +1028,7 @@ let ChartStrategyFactor = {
          endDate = dateRange.end;
 
      if(startDate.getTime()>= endDate.getTime()){
-         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
        return;
      }
 
@@ -1053,7 +1066,7 @@ let ChartStrategyFactor = {
          nodeOptions;
 
      if(startDate.getTime()>= endDate.getTime()){
-         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
        return;
      }
 
@@ -1078,7 +1091,7 @@ let ChartStrategyFactor = {
          nodeOptions;
 
      if(startDate.getTime()>= endDate.getTime()){
-         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
        return;
      }
 
@@ -1102,7 +1115,7 @@ let ChartStrategyFactor = {
          nodeOptions;
 
      if(startDate.getTime()>= endDate.getTime()){
-         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
        return;
      }
 
@@ -1125,7 +1138,7 @@ let ChartStrategyFactor = {
          endDate = dateRange.end;
 
      if(startDate.getTime()>= endDate.getTime()){
-         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
        return;
      }
 
@@ -1154,7 +1167,7 @@ let ChartStrategyFactor = {
          nodeOptions;
 
      if(startDate.getTime()>= endDate.getTime()){
-         GlobalErrorMessageAction.fireGlobalErrorMessage('请选择正确的时间范围');
+         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
        return;
      }
 
@@ -1384,7 +1397,7 @@ let ChartStrategyFactor = {
   ratioUsageSearchBarGen(analysisPanel){
      var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
      var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column']);
-     var ratios  = [{text: '昼夜比', name:'RationDayNight', value: 1},{text: '工休比', name:'RationWorkday', value: 2}];
+     var ratios  = [{text: I18N.EM.DayNightRatio, name:'RationDayNight', value: 1},{text: I18N.EM.WorkHolidayRatio, name:'RationWorkday', value: 2}];
      return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'}>
          {chartTypeCmp}
@@ -1412,7 +1425,7 @@ let ChartStrategyFactor = {
         <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'140px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
-        <RaisedButton style={{marginLeft:'10px'}} label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+        <RaisedButton style={{marginLeft:'10px'}} label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
     </div>;
   },
@@ -1429,7 +1442,7 @@ let ChartStrategyFactor = {
     var YearSelect = <YearPicker {...yearProps}/>;
     var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
     var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
-    var monthItem =  [{value:13,text:'全年'},{value:1,text:'01'},{value:2,text:'02'},{value:3,text:'03'},
+    var monthItem =  [{value:13,text:I18N.DateTimeFormat.HighFormat.FullYear},{value:1,text:'01'},{value:2,text:'02'},{value:3,text:'03'},
     {value:4,text:'04'},{value:5,text:'05'},{value:6,text:'06'},{value:7,text:'07'},
     {value:8,text:'08'},{value:9,text:'09'},{value:10,text:'10'},
     {value:11,text:'11'},{value:12,text:'12'}];
@@ -1446,7 +1459,7 @@ let ChartStrategyFactor = {
         {kpiTypeBtn}
       </div>
       <div className={'jazz-flat-button'}>
-        <RaisedButton style={{marginLeft:'10px'}} label="查看" onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+        <RaisedButton style={{marginLeft:'10px'}} label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
     </div>;
   }
@@ -1712,7 +1725,7 @@ let ChartStrategyFactor = {
       energyPart = <div ref="chartContainer" style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px'}}>
                      <div style={{display:'flex'}}>
                        <div style={{margin:'5px 30px 5px auto'}}>
-                         <div style={{display:'inline-block', marginLeft:'30px'}}>清空图表</div>
+                         <div style={{display:'inline-block', marginLeft:'30px'}}>{I18N.EM.Tool.ClearChart}</div>
                        </div>
                      </div>;
                      <LabelChartComponent ref="chartComponent" {...analysisPanel.state.paramsObj} {...chartCmpObj}/>
@@ -1722,14 +1735,12 @@ let ChartStrategyFactor = {
  },
  getAuxiliaryCompareBtnFnStrategy:{
    getEnergyAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
-                             {primaryText:'冷暖季', value:'hotColdSeason'}];
-     let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
-                             {primaryText:'湿度', value:'humidity'}];
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'noneWorkTime'},
+                             {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
      let calendarEl;
      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
      if(isCalendarDisabled){
-       calendarEl = <MenuItem primaryText="日历背景色" value='background' disabled={true}/>;
+       calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
      }else{
        let showType = CalendarManager.getShowType();
        if(!!showType){
@@ -1739,107 +1750,111 @@ let ChartStrategyFactor = {
            }
          });
        }
-       calendarEl = <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>;
+       calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
      }
+
+      let weatherSubItems = [ {primaryText:I18N.EM.Tool.Weather.Temperature, value:'temperature'},
+           {primaryText:I18N.EM.Tool.Weather.Humidity, value:'humidity'}];
+      let submitParams = EnergyStore.getSubmitParams();
+      let viewOp = submitParams.viewOption;
+      if(viewOp && viewOp.IncludeTempValue) weatherSubItems[0].checked = true;
+      if(viewOp && viewOp.IncludeHumidityValue) weatherSubItems[1].checked = true;
      let weatherEl;
      let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn();
      if(isWeatherDisabled === false){
-       weatherEl = <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>;
+       weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' subItems={weatherSubItems}/>;
      }else{
-       weatherEl = <ExtendableMenuItem primaryText="天气信息" value='weather' disabled={true} tooltip={isWeatherDisabled} />;
+       weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' disabled={true} tooltip={isWeatherDisabled} />;
      }
-     let configButton = <ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+     let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText="历史对比" value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
-       <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuDivider />
-       <MenuItem primaryText="数据求和" value='sum'
-       disabled={analysisPanel.state.sumBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={analysisPanel.state.sumBtnStatus}/>
        {calendarEl}
-       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
        {weatherEl}
      </ButtonMenu>;
 
      return configButton;
    },
    getCarbonAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
-                             {primaryText:'冷暖季', value:'hotColdSeason'}];
-     let weatherSubItems = [ {primaryText:'温度', value:'temperature'},
-                             {primaryText:'湿度', value:'humidity'}];
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.NoneWorkTime, value:'noneWorkTime'},
+                             {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
 
-     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+     let configButton =<ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
      </ButtonMenu>;
 
      return configButton;
    },
    getRatioAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
-                             {primaryText:'冷暖季', value:'hotColdSeason'}];
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.NoneWorkTime, value:'noneWorkTime'},
+                             {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
 
      let tagOptions = RatioStore.getRatioOpions();
      let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
-     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+     let configButton =<ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-       <ExtendableMenuItem primaryText="行业基准值" value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
        return configButton;
    },
    getUnitEnergyAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
-                             {primaryText:'冷暖季', value:'hotColdSeason'}];
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.NoneWorkTime, value:'noneWorkTime'},
+                             {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
 
      let tagOptions = EnergyStore.getTagOpions();
      let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
-     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+     let configButton =<ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-       <ExtendableMenuItem primaryText="行业基准值" value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
        return configButton;
    },
    getUnitCostAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
-                             {primaryText:'冷暖季', value:'hotColdSeason'}];
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.NoneWorkTime, value:'noneWorkTime'},
+                             {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
 
      let tagOptions = CostStore.getSelectedList();
      let benchmarks = CommonFuns.filterBenchmarksByCostSelectedList(tagOptions);
-     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+     let configButton =<ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-       <ExtendableMenuItem primaryText="行业基准值" value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
        return configButton;
    },
    getUnitCarbonAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
-                             {primaryText:'冷暖季', value:'hotColdSeason'}];
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.NoneWorkTime, value:'noneWorkTime'},
+                             {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
 
      let tagOptions = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
      tagOptions.hierarchyNode = hierarchyNode;
      tagOptions.commodityList = commodityList;
      let benchmarks = CommonFuns.filterBenchmarksByCostSelectedList(tagOptions);
 
-     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+     let configButton =<ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-       <ExtendableMenuItem primaryText="行业基准值" value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
        return configButton;
    },
    getCostAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:'非工作时间', value:'noneWorkTime'},
-                             {primaryText:'冷暖季', value:'hotColdSeason'}];
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.NoneWorkTime, value:'noneWorkTime'},
+                             {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
 
-     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+     let configButton =<ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText="峰谷展示" value='touCompare' checked={analysisPanel.state.touBtnSelected} disabled={analysisPanel.state.touBtnStatus}/>
-       <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
+       <MenuItem primaryText={I18N.EM.ByPeakValley} value='touCompare' checked={analysisPanel.state.touBtnSelected} disabled={analysisPanel.state.touBtnStatus}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
      </ButtonMenu>;
 
      return configButton;
@@ -1978,7 +1993,7 @@ let ChartStrategyFactor = {
      let tagOptions = EnergyStore.getTagOpions();
      let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
      let viewOption = EnergyStore.getSubmitParams().viewOption;
-     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu1;
 
      let params = {
        title: title,
@@ -2015,7 +2030,7 @@ let ChartStrategyFactor = {
      let submitParams = CostStore.getSubmitParams();
      let viewOption = submitParams.viewOption;
      let viewAssociation = submitParams.viewAssociation;
-     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu1;
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
 
      let params = {
@@ -2047,7 +2062,7 @@ let ChartStrategyFactor = {
      let submitParams = CarbonStore.getSubmitParams();
      let viewOption = submitParams.viewOption;
      let viewAssociation = submitParams.viewAssociation;
-     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu1;
      let destination = CarbonStore.getDestination();
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
 
@@ -2080,7 +2095,7 @@ let ChartStrategyFactor = {
      let submitParams = EnergyStore.getSubmitParams();
      let benchmarkOption = submitParams.benchmarkOption;
      let viewOption = submitParams.viewOption;
-     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu1;
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
      let params = {
        title: title,
@@ -2113,7 +2128,7 @@ let ChartStrategyFactor = {
      let ratioType = submitParams.ratioType;
      let benchmarkOption = submitParams.benchmarkOption;
      let viewOption = submitParams.viewOption;
-     let title = analysisPanel.props.chartTitle || '时段能耗比';
+     let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu3;
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
      let params = {
        ratioType: ratioType,
@@ -2146,7 +2161,7 @@ let ChartStrategyFactor = {
      let benchmarkOption = submitParams.benchmarkOption;
      let viewOption = submitParams.viewOption;
      let viewAssociation = submitParams.viewAssociation;
-     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu1;
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
      let params = {
        title: title,
@@ -2179,7 +2194,7 @@ let ChartStrategyFactor = {
      let submitParams = CarbonStore.getSubmitParams();
      let viewOption = submitParams.viewOption;
      let viewAssociation = submitParams.viewAssociation;
-     let title = analysisPanel.props.chartTitle || '能耗分析';
+     let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu1;
      let destination = CarbonStore.getDestination();
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
      let benchmarkOption = submitParams.benchmarkOption;
@@ -2214,11 +2229,11 @@ let ChartStrategyFactor = {
                        onItemTouchTap: analysisPanel._onSearchBtnItemTouchTap
                      };
 
-   let menuMap = { line: {primaryText:'折线图', icon:<FontIcon className="icon-power" />},
-                   column:{primaryText:'柱状图', icon:<FontIcon className="icon-current" />},
-                   stack:{primaryText:'堆积图', icon:<FontIcon className="icon-customer" />},
-                   pie:{primaryText:'饼状图', icon:<FontIcon className="icon-delete" />},
-                   rawdata:{primaryText:'原始数据', icon:<FontIcon className="icon-device" />}};
+   let menuMap = { line: {primaryText:I18N.EM.CharType.Line, icon:<FontIcon className="icon-power" />},
+                   column:{primaryText:I18N.EM.CharType.Bar, icon:<FontIcon className="icon-current" />},
+                   stack:{primaryText:I18N.EM.CharType.Stack, icon:<FontIcon className="icon-customer" />},
+                   pie:{primaryText:I18N.EM.CharType.Pie, icon:<FontIcon className="icon-delete" />},
+                   rawdata:{primaryText:I18N.EM.CharType.RawData, icon:<FontIcon className="icon-device" />}};
 
    let typeItems = types.map((item)=>{
      return <MenuItem primaryText={menuMap[item].icon} value={item} />;
@@ -2230,7 +2245,7 @@ let ChartStrategyFactor = {
    return widgetOptMenu;
  },
  getSearchBtn(analysisPanel){
-   var searchButton = <RaisedButton label='查看' onClick={analysisPanel.onSearchDataButtonClick}/>;
+   var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}/>;
     return searchButton;
   },
   getLabelBtn(analysisPanel){
