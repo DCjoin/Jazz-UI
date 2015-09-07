@@ -21,6 +21,7 @@ import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
 import LabelChartComponent from './LabelChartComponent.jsx';
 import GridComponent from './GridComponent.jsx';
+import ConstStore from '../../stores/ConstStore.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import CostStore from '../../stores/CostStore.jsx';
 import CarbonStore from '../../stores/CarbonStore.jsx';
@@ -39,15 +40,6 @@ import CalendarManager from './CalendarManager.jsx';
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
 let MenuDivider = require('material-ui/lib/menus/menu-divider');
-
-const searchDate = [{value:'Customerize',text:'自定义'},{value: 'Last7Day', text: '最近7天'}, {value: 'Last30Day', text: '最近30天'}, {value: 'Last12Month', text: '最近12月'},
- {value: 'Today', text: '今天'}, {value: 'Yesterday', text: '昨天'}, {value: 'ThisWeek', text: '本周'}, {value: 'LastWeek', text: '上周'},
- {value: 'ThisMonth', text: '本月'}, {value: 'LastMonth', text: '上月'}, {value: 'ThisYear', text: '今年'}, {value: 'LastYear', text: '去年'}];
-const carbonTypeItem = [{value:2,text:'标煤'},{value:3,text:'二氧化碳'},{value:4,text:'树'}];
-const units = [{text: '单位人口', name:'UnitPopulation', value: 2}, {text:'单位面积',name:'UnitArea', value: 3},{text:'单位供冷面积',name:'UnitColdArea', value: 4},
-              {text:'单位采暖面积',name:'UnitWarmArea', value: 5},{text:'单位客房',name:'UnitRoom', value: 7},{text:'单位已用客房',name:'UnitUsedRoom', value: 8},
-              {text:'单位床位',name:'UnitBed', value: 9},{text:'单位已用床位',name:'UnitUsedBed', value: 10}];
-
 
 
 let ChartStrategyFactor = {
@@ -630,11 +622,16 @@ let ChartStrategyFactor = {
      var toolElement;
      var carbonTypeBtn = null;
      if(energyType === 'Carbon'){
-       carbonTypeBtn = <DropDownMenu selectedIndex={analysisPanel.state.destination-2} menuItems={carbonTypeItem} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>;
+       carbonTypeBtn = <DropDownMenu selectedIndex={analysisPanel.state.destination-2} menuItems={ConstStore.getCarbonTypeItem()} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>;
      }
-     var orderItem = [{value:1,text:'降序',name:'Descending'}, {value:2,text:'升序',name:'Ascending'}];
-     var rangeItem = [{value:3,text:'前3名'},{value:5,text:'前5名'},{value:10,text:'前10名'},
-     {value:20,text:'前20名'},{value:50,text:'前50名'},{value:1000,text:'全部'}];
+     var orderItem = [{value:1,text:I18N.Common.Glossary.Order.Descending,name:'Descending'}, {value:2,text:I18N.Common.Glossary.Order.Ascending,name:'Ascending'}];
+     var rangeItem = [
+       {value:3,text:I18N.Common.Glossary.Order.Rank3},
+       {value:5,text:I18N.Common.Glossary.Order.Rank5},
+       {value:10,text:I18N.Common.Glossary.Order.Rank10},
+       {value:20,text:I18N.Common.Glossary.Order.Rank20},
+       {value:50,text:I18N.Common.Glossary.Order.Rank50},
+       {value:1000,text:I18N.Common.Glossary.Order.All}];
      var orderCombo = <DropDownMenu menuItems={orderItem} ref='orderCombo' onChange={analysisPanel._onOrderChange}></DropDownMenu>;
      var rangeCombo = <DropDownMenu menuItems={rangeItem} ref='rangeCombo' onChange={analysisPanel._onRangeChange}></DropDownMenu>;
      toolElement =
@@ -719,7 +716,9 @@ let ChartStrategyFactor = {
         index = 2;
         break;
      }
-     let types = [{text:'能耗',value:'Energy'},{text:'成本',value:'Cost'},{text:'碳排放',value:'Carbon'}];
+     let types = [{text:I18N.EM.KpiModeEM,value:'Energy'},
+     {text:I18N.EM.KpiModeCost,value:'Cost'},
+     {text:I18N.EM.KpiModeCarbon,value:'Carbon'}];
      return <DropDownMenu selectedIndex={index} menuItems={types} style={{width:'92px',marginRight:'10px'}} onChange={analysisPanel.state.chartStrategy.onEnergyTypeChangeFn.bind(analysisPanel, analysisPanel)}></DropDownMenu>;
    }
  },
@@ -1267,7 +1266,7 @@ let ChartStrategyFactor = {
      return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'} >
          {chartTypeCmp}
-         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-flat-button'}>
@@ -1282,7 +1281,7 @@ let ChartStrategyFactor = {
     return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'} >
         {chartTypeCmp}
-        <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
@@ -1297,7 +1296,7 @@ let ChartStrategyFactor = {
     return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'} >
         {chartTypeCmp}
-        <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
@@ -1311,11 +1310,11 @@ let ChartStrategyFactor = {
      return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'}>
          {chartTypeCmp}
-         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
-         <DropDownMenu menuItems={units} style={{width:'102px', marginRight:'10px'}} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({unitType: menuItem.value});}}></DropDownMenu>
+         <DropDownMenu menuItems={ConstStore.getUnits()} style={{width:'102px', marginRight:'10px'}} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({unitType: menuItem.value});}}></DropDownMenu>
        </div>
        <div className={'jazz-flat-button'}>
          {searchButton}
@@ -1347,7 +1346,7 @@ let ChartStrategyFactor = {
      return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'}>
          {chartTypeCmp}
-         <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
@@ -1359,16 +1358,12 @@ let ChartStrategyFactor = {
    </div>;
   },
   rankSearchBarGen(analysisPanel){
-    var rankTypeItem = [{value:'TotalRank',text:'总排名'},{value:'RankByPeople',text:'人均排名'},
-    {value:'RankByArea', text:'单位面积排名'},{value:'RankByCoolArea',text:'单位供冷面积排名'},
-    {value:'RankByHeatArea',text:'单位采暖面积排名'},{value:'RankByRoom',text:'单位客房排名'},
-    {value:'RankByUsedRoom',text:'单位已用客房排名'},{value:'RankByBed',text:'单位床位排名'},
-    {value:'RankByUsedBed',text:'单位已用床位排名'}];
+    var rankTypeItem = ConstStore.getRankTypeItem();
     var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
     return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
         {chartTypeCmp}
-        <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-container'} >
@@ -2088,9 +2083,9 @@ let ChartStrategyFactor = {
     var customizedSubItems = analysisPanel.state.customerMenuItems;
     let labelButton = <ButtonMenu label={analysisPanel.state.selectedLabelItem.text} style={{marginLeft:'10px'}} desktop={true}
       disabled={analysisPanel.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
-      <ExtendableMenuItem primaryText="行业能效标识" value='industryZone' subItems={industySubItems}>
+      <ExtendableMenuItem primaryText={I18N.Setting.Labeling.Label.IndustryLabeling} value='industryZone' subItems={industySubItems}>
       </ExtendableMenuItem>
-      <ExtendableMenuItem primaryText="自定义能效标识" value='customized' subItems={customizedSubItems}>
+      <ExtendableMenuItem primaryText={I18N.Setting.Labeling.Label.CustomizedLabeling} value='customized' subItems={customizedSubItems}>
       </ExtendableMenuItem>
     </ButtonMenu>;
     return labelButton;
@@ -2108,16 +2103,16 @@ let ChartStrategyFactor = {
       textAlign: 'center'
     };
     var kpiTypeItem = [
-     {value:1,index:0,text:'单位人口',name:'UnitPopulation'},
-     {value:2,index:1,text:'单位面积',name:'UnitArea'},
-     {value:3,index:2,text:'单位供冷面积',name:'UnitColdArea'},
-     {value:4,index:3,text:'单位采暖面积',name:'UnitWarmArea'},
-     {value:8,index:4,text:'单位客房',name:'UnitRoom'},
-     {value:9,index:5,text:'单位已用客房',name:'UnitUsedRoom'},
-     {value:10,index:6,text:'单位床位',name:'UnitBed'},
-     {value:11,index:7,text:'单位已用床位',name:'UnitUsedBed'},
-     {value:5,index:8,text:'昼夜比',name:'DayNightRatio'},
-     {value:6,index:9,text:'公休比',name:'WorkHolidayRatio'}];
+     {value:1,index:0,text:I18N.EM.Unit.UnitPopulation,name:'UnitPopulation'},
+     {value:2,index:1,text:I18N.EM.Unit.UnitArea,name:'UnitArea'},
+     {value:3,index:2,text:I18N.EM.Unit.UnitColdArea,name:'UnitColdArea'},
+     {value:4,index:3,text:I18N.EM.Unit.UnitWarmArea,name:'UnitWarmArea'},
+     {value:8,index:4,text:I18N.EM.Unit.UnitRoom,name:'UnitRoom'},
+     {value:9,index:5,text:I18N.EM.Unit.UnitUsedRoom,name:'UnitUsedRoom'},
+     {value:10,index:6,text:I18N.EM.Unit.UnitBed,name:'UnitBed'},
+     {value:11,index:7,text:I18N.EM.Unit.UnitUsedBed,name:'UnitUsedBed'},
+     {value:5,index:8,text:I18N.EM.DayNightRatio,name:'DayNightRatio'},
+     {value:6,index:9,text:I18N.EM.WorkHolidayRatio,name:'WorkHolidayRatio'}];
 
     if(!analysisPanel.state.kpiTypeDisable){
       kpiTypeButton = <DropDownMenu style={{marginLeft:'10px'}} selectedIndex={analysisPanel.state.kpiTypeIndex} menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
