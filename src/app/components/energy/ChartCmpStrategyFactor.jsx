@@ -70,7 +70,8 @@ let ChartCmpStrategyFactor = {
       mergeConfigFn:'energyChartCmpMergeConfig',
       initYaxisFn:'initYaxis',
       initNavigatorDataFn:'initNavigatorData',
-      getInitialStateFn:'empty'
+      getInitialStateFn:'empty',
+      getLegendListFn:'getEnergyLegendList'
     },
     CostTrendComponent:{
       convertDataFn:'convertData',
@@ -109,6 +110,14 @@ let ChartCmpStrategyFactor = {
       initRangeFn:'pieInitRange',
       initNavigatorDataFn:'pieInitNavigatorData',
       getInitialStateFn:'empty'
+    }
+  },
+  getLegendListFnStrategy:{
+    getEnergyLegendList(config){
+      var legendList = [];
+      legendList = ['line', 'column', 'stacking'];
+      config.stackByCommodity = true;
+      config.legendSwitchList = legendList;
     }
   },
   getInitialStateFnStrategy:{

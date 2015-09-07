@@ -15,7 +15,10 @@ module.exports = {
       SEND_ITEM:null,
       MOVE_ITEM:null,
       MOVE_ITEM_ERROR:null,
-      MODIFY_NODE_READ_STATUS:null
+      MODIFY_NODE_READ_STATUS:null,
+      GET_WIDGETDTOS_SUCCESS: null,
+      GET_WIDGETDTOS_ERROR: null,
+      GET_WIDGETDTOS_LOADING: null
   })
 
 };
