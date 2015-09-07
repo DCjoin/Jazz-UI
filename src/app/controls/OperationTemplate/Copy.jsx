@@ -1,7 +1,8 @@
 'use strict';
 import React from "react";
 import {Navigation, State } from 'react-router';
-import {Dialog,FlatButton,TextField,Paper} from 'material-ui';
+import classNames from 'classnames';
+import {Dialog,FlatButton,TextField,Paper,CircularProgress} from 'material-ui';
 import Tree from '../tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 
@@ -16,9 +17,9 @@ var Copy = React.createClass({
     onDismiss: React.PropTypes.func,
     errorText:React.PropTypes.string,
     treeNode:React.PropTypes.object,
+    loading:React.PropTypes.bool,
   },
   _onFirstActionTouchTap:function(){
-    this.refs.dialog.dismiss();
     if(this.props.onFirstActionTouchTap){
       this.props.onFirstActionTouchTap(this.state.selectedNode,this.state.labelName);
     }
@@ -30,9 +31,21 @@ var Copy = React.createClass({
     }
   },
   _onNameChanged:function(e){
-    this.setState({
-      labelName:e.target.value
-    })
+    var value=e.target.value;
+    if(value.length>100){
+      this.setState({
+        errorText:I18N.Folder.Copy.NameLongError,
+        btnDisabled:true
+      });
+    }
+    else {
+      this.setState({
+        labelName:e.target.value,
+        errorText:null,
+        btnDisabled:false
+      });
+    }
+
   },
   _onTreeSelect:function(){
     this.setState({
@@ -53,19 +66,23 @@ var Copy = React.createClass({
       labelName:this.props.labelName,
       allNode:FolderStore.getFolderTree(),
       selectedNode:this.props.treeNode,
-      treeShow:false
+      treeShow:false,
+      errorText:this.props.errorText,
+      btnDisabled:false
     };
   },
-  componentWillReceiveProps:function(){
+  componentWillReceiveProps:function(nextProps){
     var selectedNode=FolderStore.getSelectedNode();
     if(selectedNode===null){
       selectedNode=FolderStore.getFolderTree()
     }
     this.setState({
-      labelName:this.props.labelName,
+      labelName:nextProps.labelName,
       allNode:FolderStore.getFolderTree(),
       selectedNode:selectedNode,
-      treeShow:false
+      treeShow:false,
+      errorText:nextProps.errorText,
+      btnDisabled:false
     });
   },
   render:function(){
@@ -90,6 +107,7 @@ var Copy = React.createClass({
             <FlatButton
               label={this.props.firstActionLabel}
               onTouchTap={this._onFirstActionTouchTap}
+              disabled={this.state.btnDisabled}
             />,
             <FlatButton
               label={I18N.Template.Copy.Cancel}
@@ -122,7 +140,7 @@ var Copy = React.createClass({
                   <div>
                     {this.props.label}
                   </div>
-                  <TextField value={this.state.labelName} onChange={this._onNameChanged} errorText={this.props.errorText}/>
+                  <TextField value={this.state.labelName} onChange={this._onNameChanged} errorText={this.state.errorText}/>
                 </div>
               );
       let icon = (
@@ -144,20 +162,40 @@ var Copy = React.createClass({
     let FolderTree=(this.state.treeShow?<Paper style={paperStyle}><Tree {...treeProps}/></Paper>:null);
 
 
-
-    return(
-      <div className='jazz-copytemplate-dialog'>
-        <Dialog {...dialogProps}>
-          {nameField}
-          {FolderTreeField}
-          <div onBlur={this._onBlur}>
-              {FolderTree}
-          </div>
-
-        </Dialog>
+    if(this.props.loading){
+      return(
+        <div className='jazz-copytemplate-dialog'>
+          <div className={classNames({
+            "disable":this.state.btnDisabled,
+            'able':!this.state.btnDisabled
+          })}>
+          <Dialog {...dialogProps}>
+            <CircularProgress  mode="indeterminate" size={1} />
+          </Dialog>
+        </div>
       </div>
 
-    )
+      )
+    }
+    else {
+      return(
+        <div className='jazz-copytemplate-dialog'>
+          <div className={classNames({
+            "disable":this.state.btnDisabled,
+            'able':!this.state.btnDisabled
+          })}>
+            <Dialog {...dialogProps}>
+              {nameField}
+              {FolderTreeField}
+              {FolderTree}
+            </Dialog>
+          </div>
+        </div>
+
+
+      )
+    }
+
   }
 
 });

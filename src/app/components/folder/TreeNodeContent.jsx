@@ -25,9 +25,6 @@ var TreeNodeContent = React.createClass({
 
       if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
         FolderAction.modifyFolderReadStatus(this.props.nodeData);
-        this.setState({
-          readStatus:false
-        });
       }
 
     },
@@ -96,7 +93,8 @@ var TreeNodeContent = React.createClass({
 
       var isSenderCopyIcon = <div className={classNames({
                                 //add for file operation
-                                "icon-humidity" : (isSenderCopy && !isRead && !this.props.readStatus && this.state.readStatus),
+                                // "icon-humidity" : (isSenderCopy && !isRead && !this.props.readStatus && this.state.readStatus),
+                                "jazz-icon-read" : (isSenderCopy && !isRead)
                               })}/>;
 
 

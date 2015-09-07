@@ -7,6 +7,7 @@ import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
+import ConstStore from '../../stores/ConstStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
 import CostStore from '../../stores/CostStore.jsx';
@@ -23,17 +24,6 @@ import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
-var kpiTypeItem = [
- {value:1,index:0,text:'单位人口',name:'UnitPopulation'},
- {value:2,index:1,text:'单位面积',name:'UnitArea'},
- {value:3,index:2,text:'单位供冷面积',name:'UnitColdArea'},
- {value:4,index:3,text:'单位采暖面积',name:'UnitWarmArea'},
- {value:8,index:4,text:'单位客房',name:'UnitRoom'},
- {value:9,index:5,text:'单位已用客房',name:'UnitUsedRoom'},
- {value:10,index:6,text:'单位床位',name:'UnitBed'},
- {value:11,index:7,text:'单位已用床位',name:'UnitUsedBed'},
- {value:5,index:8,text:'昼夜比',name:'DayNightRatio'},
- {value:6,index:9,text:'公休比',name:'WorkHolidayRatio'}];
 
 let AnalysisPanel = React.createClass({
     mixins:[ChartMixins],
@@ -489,6 +479,10 @@ let AnalysisPanel = React.createClass({
         dateSelector.setDateField(timeregion.start, timeregion.end);
       }
     },
+    _onRankTypeChange(e, selectedIndex, menuItem){
+      var rankType = menuItem.value;
+      this.setstate({rankType: rankType});
+    },
     _onRangeChange(e, selectedIndex, menuItem){
       var range = menuItem.value;
       this.setState({range: range});
@@ -647,13 +641,14 @@ let AnalysisPanel = React.createClass({
           this.setState({labelType: 'customized'});
         }
 
-        selectedLabelItem.text = (subMenuItem.props.customerizedId === -1 ? "请选择能效标识" : this.getDisplayText(subMenuItem.props.primaryText));
+        selectedLabelItem.text = (subMenuItem.props.customerizedId === -1 ? I18N.Setting.Benchmark.Label.SelectLabelling : this.getDisplayText(subMenuItem.props.primaryText));
         selectedLabelItem.customerizedId = subMenuItem.props.customerizedId;
 
         this.changeToCustomizedLabel(subMenuItem.props.kpiType);
       }
     },
     changeToIndustyrLabel(){
+      var kpiTypeItem = ConstStore.getKpiTypeItem();
       if(this.state.kpiTypeValue === 7){
         this.setState({
           kpiTypeValue: 1,
@@ -678,11 +673,11 @@ let AnalysisPanel = React.createClass({
       this.disableKpiTypeButton();
     },
     getKpiText(){
-
+      var kpiTypeItem = ConstStore.getKpiTypeItem();
       var kpiTypeText = "";
       var kpiType = this.state.kpiTypeValue;
       if(kpiType === 7){
-        kpiTypeText = "指标原值";
+        kpiTypeText = I18N.EM.Unit.UnitOriginal;
       }
       else{
         kpiTypeItem.forEach(item => {
@@ -693,6 +688,18 @@ let AnalysisPanel = React.createClass({
         });
       }
       return kpiTypeText;
+    },
+    getRangeIndex(){
+      var range = this.state.range;
+      var rangeItem = ConstStore.getRangeItem();
+      var rangeIndex;
+      rangeItem.forEach(item => {
+        if(item.value === range){
+          rangeIndex = item.index;
+          return;
+        }
+      });
+      return rangeIndex;
     },
     _onHierNodeChange(){
       this.state.chartStrategy.onHierNodeChangeFn(this);
@@ -753,7 +760,7 @@ let AnalysisPanel = React.createClass({
       var selectedLabelItem = {};
       selectedLabelItem.industryId = -1;
       selectedLabelItem.ZoneId = -1;
-      selectedLabelItem.text = "请选择能效标识";
+      selectedLabelItem.text = I18N.Setting.Benchmark.Label.SelectLabelling;
       selectedLabelItem.value = null;
       return selectedLabelItem;
     },
@@ -826,14 +833,14 @@ let AnalysisPanel = React.createClass({
           value: 'none',
           industryId: -1,
           zoneId: -1,
-          primaryText: "无"
+          primaryText: I18N.Setting.Benchmark.Label.None
         });
       }
       else {
         menuItems.push({
           value: 'none',
           customerizedId: -1,
-          primaryText: "无"
+          primaryText: I18N.Setting.Benchmark.Label.None
         });
       }
       return menuItems;
