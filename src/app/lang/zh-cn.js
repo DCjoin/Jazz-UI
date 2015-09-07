@@ -132,6 +132,7 @@ I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = '冷暖季';
 I18N.Common.Button.Calendar.ShowHoliday = '非工作时间';
+I18N.Common.Button.Show = '查看';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = '标煤';
@@ -192,19 +193,26 @@ I18N.EM.UseMonth = '按月';
 I18N.EM.UseYear = '按年';
 I18N.EM.StepError = '所选数据点不支持{0}的步长显示，换个步长试试。';
 
+I18N.EM.Tool={};
 I18N.EM.Tool.ClearChart = '清空图表';
 I18N.EM.Tool.AssistCompare = '辅助对比';
+I18N.EM.Tool.Weather={};
 I18N.EM.Tool.Weather.Temperature = '温度';
 I18N.EM.Tool.Weather.Humidity = '湿度';
-I18N.EM.Tool.Weather.WeatherInfo ='天气信息';
-I18N.EM.Tool.Weather.WeatherInfo ='天气信息';
+I18N.EM.Tool.Calendar={};
+I18N.EM.Tool.Calendar.BackgroundColor ='日历背景色';
+I18N.EM.Tool.Calendar.NoneWorkTime ='非工作时间';
+I18N.EM.Tool.Calendar.HotColdSeason ='冷暖季';
+I18N.EM.Tool.Benchmark = '行业基准值';
+I18N.EM.Tool.BenchmarkSetting = '基准值设置';
+I18N.EM.Tool.DataSum = '数据求和';
+
 I18N.EM.KpiModeEM = '能耗';
 I18N.EM.KpiModeCarbon = '碳排放';
 I18N.EM.KpiModeCost = '成本';
-I18N.EM.Carbon.StandardCoal = '标煤';
-I18N.EM.Carbon.CO2 = '二氧化碳';
-I18N.EM.Carbon.Tree = '树';
-I18N.EM.Error.NeedCorrectTimeRange = '请选择正确的时间范围';
+
+I18N.EM.ErrorNeedValidTimeRange = '请选择正确的时间范围';
+
 
 I18N.EM.Rank = {};
 I18N.EM.Rank.TotalRank = '总排名';
@@ -235,18 +243,19 @@ I18N.EM.Unit.UnitUsedBed = '单位已用床位';
 I18N.EM.DayNightRatio = '昼夜比';
 I18N.EM.WorkHolidayRatio = '工休比';
 
-
-
 I18N.EM.Ratio = {};
 I18N.EM.Ratio.CaculateValue = '计算值';
 I18N.EM.Ratio.RawValue = '原始值';
 I18N.EM.Ratio.TargetValue = '目标值';
 I18N.EM.Ratio.BaseValue = '基准值';
 
+
+
 I18N.EM.Total = '总览';
 I18N.EM.Plain = '平时';
 I18N.EM.Valley = '谷时';
 I18N.EM.Peak = '峰时';
+I18N.EM.ByPeakValley = '峰谷展示';
 
 I18N.EM.EnergyAnalyse = {};
 I18N.EM.EnergyAnalyse.AddIntervalWindow = {};
@@ -260,6 +269,13 @@ I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
 I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
 I18N.EM.WeatherSupportsOnlySingleHierarchy = '该功能仅单层级数据点。';
 I18N.EM.WeatherSupportsOnlyHourlyStep = '该功能仅支持小时步长。';
+
+I18N.EM.CharType={};
+I18N.EM.CharType.Line = '折线图';
+I18N.EM.CharType.Bar = '柱状图';
+I18N.EM.CharType.Stack = '堆积图';
+I18N.EM.CharType.Pie = '饼状图';
+I18N.EM.CharType.RawData = '原始数据';
 
 I18N.EM.Legend = {};
 I18N.EM.Legend.ToLine = '切换至折线图显示';
