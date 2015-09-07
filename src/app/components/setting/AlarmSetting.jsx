@@ -138,10 +138,10 @@ let AlarmSetting = React.createClass({
             <Toggle ref="openAlarm" label="能耗报警" labelPosition="left" onToggle={this.changeToggle} disabled={this.state.disable&&this.state.isDisplay}/>
           </div>
           <div className='jazz-setting-alarm-threshold'>
-            报警敏感度<TextField ref="threshold" defaultValue={this.state.threshold} style={inputStyle}  className="jazz-setting-input" errorText={this.state.errorText} disabled={this.state.disable} onChange={this.changeThreshold}/>%
+            {I18N.Setting.TargetBaseline.AlarmThreshold}<TextField ref="threshold" defaultValue={this.state.threshold} style={inputStyle}  className="jazz-setting-input" errorText={this.state.errorText} disabled={this.state.disable} onChange={this.changeThreshold}/>%
           </div>
           <div className='jazz-setting-alarm-tip'>
-            当数据高于基准值所设敏感度时，显示报警。
+            {I18N.Setting.TargetBaseline.AlarmThresholdTip}
           </div>
           <div className='jazz-setting-alarm-text'>
             对以下时段产生报警

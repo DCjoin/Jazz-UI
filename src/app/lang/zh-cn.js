@@ -118,10 +118,25 @@ I18N.Common.DateRange.Customerize = '自定义';
 I18N.Common.DateRange.CustomerizeTime = '自定义';
 I18N.Common.DateRange.RelativedTime = '相对时间';
 
+I18N.Common.Glossary.Order = {};
+I18N.Common.Glossary.Order.Ascending = '升序';
+I18N.Common.Glossary.Order.Descending = '降序';
+I18N.Common.Glossary.Order.All = '全部';
+I18N.Common.Glossary.Order.Rank3 = '前3名';
+I18N.Common.Glossary.Order.Rank5 = '前5名';
+I18N.Common.Glossary.Order.Rank10 = '前10名';
+I18N.Common.Glossary.Order.Rank20 = '前20名';
+I18N.Common.Glossary.Order.Rank50 = '前50名';
+
 I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = '冷暖季';
 I18N.Common.Button.Calendar.ShowHoliday = '非工作时间';
+
+I18N.Common.CarbonUomType = {};
+I18N.Common.CarbonUomType.StandardCoal = '标煤';
+I18N.Common.CarbonUomType.CO2 = '二氧化碳';
+I18N.Common.CarbonUomType.Tree = '树';
 
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
@@ -177,6 +192,40 @@ I18N.EM.UseMonth = '按月';
 I18N.EM.UseYear = '按年';
 I18N.EM.StepError = '所选数据点不支持{0}的步长显示，换个步长试试。';
 
+I18N.EM.KpiModeEM = '能耗';
+I18N.EM.KpiModeCarbon = '碳排放';
+I18N.EM.KpiModeCost = '成本';
+I18N.EM.Rank = {};
+I18N.EM.Rank.TotalRank = '总排名';
+I18N.EM.Rank.RankByPeople = '人均排名';
+I18N.EM.Rank.RankByArea = '单位面积排名';
+I18N.EM.Rank.RankByHeatArea = '单位采暖面积排名';
+I18N.EM.Rank.RankByCoolArea = '单位供冷面积排名';
+I18N.EM.Rank.RankByRoom = '单位客房排名';
+I18N.EM.Rank.RankByUsedRoom = '单位已用客房排名';
+I18N.EM.Rank.RankByBed = '单位床位排名';
+I18N.EM.Rank.RankByUsedBed = '单位已用床位排名';
+I18N.EM.Rank.HierTitle = '请选择层级节点进行排名';
+I18N.EM.Rank.RankName = '排名';
+I18N.EM.Rank.RankTooltip = '排名:{0}/{1}';
+
+I18N.EM.Unit = {};
+I18N.EM.Unit.UnitOriginal = '指标原值';
+I18N.EM.Unit.UnitPopulationAlias = '人均';
+I18N.EM.Unit.UnitPopulation = '单位人口';
+I18N.EM.Unit.UnitArea = '单位面积';
+I18N.EM.Unit.UnitColdArea = '单位供冷面积';
+I18N.EM.Unit.UnitWarmArea = '单位采暖面积';
+I18N.EM.Unit.UnitRoom = '单位客房';
+I18N.EM.Unit.UnitUsedRoom = '单位已用客房';
+I18N.EM.Unit.UnitBed = '单位床位';
+I18N.EM.Unit.UnitUsedBed = '单位已用床位';
+
+I18N.EM.DayNightRatio = '昼夜比';
+I18N.EM.WorkHolidayRatio = '工休比';
+
+
+
 I18N.EM.Ratio = {};
 I18N.EM.Ratio.CaculateValue = '计算值';
 I18N.EM.Ratio.RawValue = '原始值';
@@ -223,6 +272,28 @@ I18N.Setting.Calendar.MonthDayFromTo = '{0}月{1}日到{2}月{3}日';
 
 I18N.Setting.Calendar.WarmSeason = '采暖季';
 I18N.Setting.Calendar.ColdSeason = '供冷季';
+
+I18N.Setting.Benchmark = {};
+I18N.Setting.Benchmark.Label = {};
+I18N.Setting.Benchmark.Label.None = '无';
+I18N.Setting.Benchmark.Label.SelectLabelling = '请选择能效标识';
+
+I18N.Setting.Labeling = {};
+I18N.Setting.Labeling.Label = {};
+
+I18N.Setting.Labeling.Label.Industry = '行业';
+I18N.Setting.Labeling.Label.ClimateZone = '气候分区';
+I18N.Setting.Labeling.Label.CustomizedLabeling = '自定义能效标识';
+I18N.Setting.Labeling.Label.Labeling = '能效标识';
+I18N.Setting.Labeling.Label.LabelingSetting = '能效标识配置';
+I18N.Setting.Labeling.Label.IndustryLabeling = '行业能效标识';
+I18N.Setting.Labeling.Label.IndustryLabelingSetting = '行业能效标识配置';
+I18N.Setting.Labeling.Label.LabelingGrade = '能效标识级别';
+I18N.Setting.Labeling.Label.DataYear = '数据来源';
+
+I18N.Setting.TargetBaseline = {};
+I18N.Setting.TargetBaseline.AlarmThreshold = '报警敏感度';
+I18N.Setting.TargetBaseline.AlarmThresholdTip = '当数据高于基准值所设的敏感度时，显示报警。';
 
 
 I18N.Message = {};
@@ -640,8 +711,6 @@ I18N.Template.Send.Title = '发送{0}';
 I18N.Template.Send.Send = '发送';
 I18N.Template.Send.Cancel = '放弃';
 
-I18N.Rank = {};
-I18N.Rank.RankTooltip = '排名:{0}/{1}';
 
 
 
