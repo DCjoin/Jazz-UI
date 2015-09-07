@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
 import {Navigation, State } from 'react-router';
+import classNames from 'classnames';
 import {Dialog,FlatButton,TextField,Paper} from 'material-ui';
 import Tree from '../tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
@@ -30,9 +31,21 @@ var Copy = React.createClass({
     }
   },
   _onNameChanged:function(e){
-    this.setState({
-      labelName:e.target.value
-    })
+    var value=e.target.value;
+    if(value.length>100){
+      this.setState({
+        errorText:I18N.Folder.Copy.NameLongError,
+        btnDisabled:true
+      });
+    }
+    else {
+      this.setState({
+        labelName:e.target.value,
+        errorText:null,
+        btnDisabled:false
+      });
+    }
+
   },
   _onTreeSelect:function(){
     this.setState({
@@ -53,7 +66,9 @@ var Copy = React.createClass({
       labelName:this.props.labelName,
       allNode:FolderStore.getFolderTree(),
       selectedNode:this.props.treeNode,
-      treeShow:false
+      treeShow:false,
+      errorText:this.props.errorText,
+      btnDisabled:false
     };
   },
   componentWillReceiveProps:function(){
@@ -65,7 +80,9 @@ var Copy = React.createClass({
       labelName:this.props.labelName,
       allNode:FolderStore.getFolderTree(),
       selectedNode:selectedNode,
-      treeShow:false
+      treeShow:false,
+      errorText:this.props.errorText,
+      btnDisabled:false
     });
   },
   render:function(){
@@ -90,6 +107,7 @@ var Copy = React.createClass({
             <FlatButton
               label={this.props.firstActionLabel}
               onTouchTap={this._onFirstActionTouchTap}
+              disabled={this.state.btnDisabled}
             />,
             <FlatButton
               label={I18N.Template.Copy.Cancel}
@@ -122,7 +140,7 @@ var Copy = React.createClass({
                   <div>
                     {this.props.label}
                   </div>
-                  <TextField value={this.state.labelName} onChange={this._onNameChanged} errorText={this.props.errorText}/>
+                  <TextField value={this.state.labelName} onChange={this._onNameChanged} errorText={this.state.errorText}/>
                 </div>
               );
       let icon = (
@@ -147,15 +165,18 @@ var Copy = React.createClass({
 
     return(
       <div className='jazz-copytemplate-dialog'>
-        <Dialog {...dialogProps}>
-          {nameField}
-          {FolderTreeField}
-          <div onBlur={this._onBlur}>
-              {FolderTree}
-          </div>
-
-        </Dialog>
+        <div className={classNames({
+          "disable":this.state.btnDisabled,
+          'able':!this.state.btnDisabled
+        })}>
+          <Dialog {...dialogProps}>
+            {nameField}
+            {FolderTreeField}
+            {FolderTree}
+          </Dialog>
+        </div>
       </div>
+
 
     )
   }
