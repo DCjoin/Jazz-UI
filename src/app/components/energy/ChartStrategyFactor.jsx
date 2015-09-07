@@ -81,7 +81,9 @@ let ChartStrategyFactor = {
       handleStepChangeFn:'handleEnergyStepChange',
       handleCalendarChangeFn:'handleCalendarChange',
       onAnalysisPanelDidUpdateFn:'onAnalysisPanelDidUpdate',
-      isCalendarDisabledFn:'isCalendarDisabled'
+      isCalendarDisabledFn:'isCalendarDisabled',
+      handleWeatherMenuItemClickFn:'handleWeatherMenuItemClick',
+      isWeatherDisabledFn: 'isWeatherDisabled',
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -285,6 +287,33 @@ let ChartStrategyFactor = {
      return disabled;
    }
  },
+ handleWeatherMenuItemClickFnStrategy:{
+   handleWeatherMenuItemClick(analysisPanel, enableTemp, enableHumi){
+     let tagOptions = EnergyStore.getTagOpions(),
+         paramsObj = EnergyStore.getParamsObj(),
+         step = paramsObj.step,
+         weatherOption = {};
+
+     if(enableTemp === true) weather.enableTemp = true;
+     else if(enableTemp === false) weather.enableTemp = false;
+
+     if(enableHumi === true) weather.enableHumi = true;
+     else if(enableHumi === false) weather.enableHumi = false;
+
+     analysisPanel.setState({weatherOption: weatherOption});
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weatherOption);
+   },
+ },
+ isWeatherDisabledFnStrategy:{
+   isWeatherDisabled(){
+     let tagOptions = EnergyStore.getTagOpions();
+     if(!tagOptions) return "该功能仅单层级数据点。";
+     let paramsObj = EnergyStore.getParamsObj(),
+         step = paramsObj.step;
+     if(step != 1) return "该功能仅支持小时步长。";
+     return false;
+   }
+ },
  onAnalysisPanelDidUpdateFnStrategy:{
    onAnalysisPanelDidUpdate(analysisPanel){
      if(analysisPanel.state.chartStrategy.isCalendarDisabledFn()){//不符合日历本景色条件的。
@@ -384,8 +413,8 @@ let ChartStrategyFactor = {
    handleUnitCarbonStepChange(analysisPanel, step){
      let paramsObj = CarbonStore.getSubmitParams();
      let hierarchyId = paramsObj.hierarchyId, commodityIds=paramsObj.commodityIds,
-        destination = paramsObj.destination, viewOp = paramsObj.viewOption;
-        viewOp.Step = step, benchmarkOption = paramsObj.benchmarkOption;
+        destination = paramsObj.destination, viewOp = paramsObj.viewOption, benchmarkOption = paramsObj.benchmarkOption;
+     viewOp.Step = step;
 
      analysisPanel.setState({step:step});
      analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, benchmarkOption);
@@ -541,6 +570,7 @@ let ChartStrategyFactor = {
            <div style={{display:'flex'}}>
              <div style={{margin:'10px 0 0 23px'}}>{chartTypeIconMenu}</div>
              <div style={{margin:'5px 30px 5px auto'}}>
+               {carbonDest}
                {configBtn}
                <div style={{display:'inline-block', marginLeft:'30px'}}>清空图标</div>
              </div>
@@ -1460,8 +1490,8 @@ let ChartStrategyFactor = {
    }
  },
  getEnergyDataFnStrategy:{
-   energyDataLoad(timeRanges, step, tagOptions, relativeDate){
-     EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate);
+   energyDataLoad(timeRanges, step, tagOptions, relativeDate, weatherOption){
+     EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate, weatherOption);
    },
    costDataLoad(timeRanges, step, tagOptions, relativeDate, analysisPanel){
      if(analysisPanel.state.touBtnSelected){
@@ -1716,8 +1746,14 @@ let ChartStrategyFactor = {
        }
        calendarEl = <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>;
      }
-
-     let configButton =<ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
+     let weatherEl;
+     let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn();
+     if(isWeatherDisabled === false){
+       weatherEl = <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>;
+     }else{
+       weatherEl = <ExtendableMenuItem primaryText="天气信息" value='weather' disabled={true} tooltip={isWeatherDisabled} />;
+     }
+     let configButton = <ButtonMenu label='辅助对比' style={{marginLeft:'10px'}} desktop={true}
                                   onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText="历史对比" value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
        <MenuItem primaryText="基准值设置" value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
@@ -1726,7 +1762,7 @@ let ChartStrategyFactor = {
        disabled={analysisPanel.state.sumBtnStatus}/>
        {calendarEl}
        <ExtendableMenuItem primaryText="日历背景色" value='background' subItems={calendarSubItems}/>
-       <ExtendableMenuItem primaryText="天气信息" value='weather' subItems = {weatherSubItems}/>
+       {weatherEl}
      </ButtonMenu>;
 
      return configButton;

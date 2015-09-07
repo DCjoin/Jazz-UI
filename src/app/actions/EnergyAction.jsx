@@ -76,7 +76,7 @@ let EnergyAction = {
       }
     });
   },
-  getEnergyTrendChartData(date, step, tagOptions, relativeDate){
+  getEnergyTrendChartData(date, step, tagOptions, relativeDate, weatherOption){
     var timeRange = date;
 
     var tagIds = getTagIdsFromTagOptions(tagOptions);
