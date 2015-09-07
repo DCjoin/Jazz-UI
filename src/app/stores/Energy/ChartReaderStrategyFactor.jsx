@@ -611,6 +611,14 @@ tagSeriesConstructorFnStrategy:{
             obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
             obj.disableDelete = true;
             break;
+        case 18:
+            obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
+            obj.disableDelete = true;
+            break;
+        case 19:
+            obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
+            obj.disableDelete = true;
+            break;
         default:
             break;
     }

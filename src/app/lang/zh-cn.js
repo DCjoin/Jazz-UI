@@ -192,9 +192,20 @@ I18N.EM.UseMonth = '按月';
 I18N.EM.UseYear = '按年';
 I18N.EM.StepError = '所选数据点不支持{0}的步长显示，换个步长试试。';
 
+I18N.EM.Tool.ClearChart = '清空图表';
+I18N.EM.Tool.AssistCompare = '辅助对比';
+I18N.EM.Tool.Weather.Temperature = '温度';
+I18N.EM.Tool.Weather.Humidity = '湿度';
+I18N.EM.Tool.Weather.WeatherInfo ='天气信息';
+I18N.EM.Tool.Weather.WeatherInfo ='天气信息';
 I18N.EM.KpiModeEM = '能耗';
 I18N.EM.KpiModeCarbon = '碳排放';
 I18N.EM.KpiModeCost = '成本';
+I18N.EM.Carbon.StandardCoal = '标煤';
+I18N.EM.Carbon.CO2 = '二氧化碳';
+I18N.EM.Carbon.Tree = '树';
+I18N.EM.Error.NeedCorrectTimeRange = '请选择正确的时间范围';
+
 I18N.EM.Rank = {};
 I18N.EM.Rank.TotalRank = '总排名';
 I18N.EM.Rank.RankByPeople = '人均排名';
@@ -247,6 +258,8 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
 
 I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
 I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
+I18N.EM.WeatherSupportsOnlySingleHierarchy = '该功能仅单层级数据点。';
+I18N.EM.WeatherSupportsOnlyHourlyStep = '该功能仅支持小时步长。';
 
 I18N.EM.Legend = {};
 I18N.EM.Legend.ToLine = '切换至折线图显示';
