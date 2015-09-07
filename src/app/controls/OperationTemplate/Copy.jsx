@@ -2,7 +2,7 @@
 import React from "react";
 import {Navigation, State } from 'react-router';
 import classNames from 'classnames';
-import {Dialog,FlatButton,TextField,Paper} from 'material-ui';
+import {Dialog,FlatButton,TextField,Paper,CircularProgress} from 'material-ui';
 import Tree from '../tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 
@@ -17,9 +17,9 @@ var Copy = React.createClass({
     onDismiss: React.PropTypes.func,
     errorText:React.PropTypes.string,
     treeNode:React.PropTypes.object,
+    loading:React.PropTypes.bool,
   },
   _onFirstActionTouchTap:function(){
-    this.refs.dialog.dismiss();
     if(this.props.onFirstActionTouchTap){
       this.props.onFirstActionTouchTap(this.state.selectedNode,this.state.labelName);
     }
@@ -71,17 +71,17 @@ var Copy = React.createClass({
       btnDisabled:false
     };
   },
-  componentWillReceiveProps:function(){
+  componentWillReceiveProps:function(nextProps){
     var selectedNode=FolderStore.getSelectedNode();
     if(selectedNode===null){
       selectedNode=FolderStore.getFolderTree()
     }
     this.setState({
-      labelName:this.props.labelName,
+      labelName:nextProps.labelName,
       allNode:FolderStore.getFolderTree(),
       selectedNode:selectedNode,
       treeShow:false,
-      errorText:this.props.errorText,
+      errorText:nextProps.errorText,
       btnDisabled:false
     });
   },
@@ -162,23 +162,40 @@ var Copy = React.createClass({
     let FolderTree=(this.state.treeShow?<Paper style={paperStyle}><Tree {...treeProps}/></Paper>:null);
 
 
-
-    return(
-      <div className='jazz-copytemplate-dialog'>
-        <div className={classNames({
-          "disable":this.state.btnDisabled,
-          'able':!this.state.btnDisabled
-        })}>
+    if(this.props.loading){
+      return(
+        <div className='jazz-copytemplate-dialog'>
+          <div className={classNames({
+            "disable":this.state.btnDisabled,
+            'able':!this.state.btnDisabled
+          })}>
           <Dialog {...dialogProps}>
-            {nameField}
-            {FolderTreeField}
-            {FolderTree}
+            <CircularProgress  mode="indeterminate" size={1} />
           </Dialog>
         </div>
       </div>
 
+      )
+    }
+    else {
+      return(
+        <div className='jazz-copytemplate-dialog'>
+          <div className={classNames({
+            "disable":this.state.btnDisabled,
+            'able':!this.state.btnDisabled
+          })}>
+            <Dialog {...dialogProps}>
+              {nameField}
+              {FolderTreeField}
+              {FolderTree}
+            </Dialog>
+          </div>
+        </div>
 
-    )
+
+      )
+    }
+
   }
 
 });

@@ -81,6 +81,7 @@ let FolderAction = {
            desFolder:destItem.toJSON(),
            newName:newName,
           },
+          commonErrorHandling: false,
         success: function(newNode){
           AppDispatcher.dispatch({
               type: Action.COPY_ITEM,
@@ -162,7 +163,7 @@ let FolderAction = {
   },
   moveItem:function(sourceNode,parentNode,nextNode){
     Ajax.post('/Dashboard.svc/MoveItem', {
-         params: { 
+         params: {
            sourceItem:sourceNode,
            desItem:parentNode,
            nextItem:nextNode
@@ -185,11 +186,11 @@ let FolderAction = {
     });
   },
   GetWidgetDtos(widgetIds, selectedNode){
-
+      setTimeout(()=>{
     AppDispatcher.dispatch({
       type: Action.GET_WIDGETDTOS_LOADING,
       selectedNode: selectedNode
-    });
+    })},0);
 
     Ajax.post('/Dashboard.svc/GetWidgetDtos', {
          params: {
