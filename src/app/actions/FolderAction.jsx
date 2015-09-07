@@ -162,7 +162,7 @@ let FolderAction = {
   },
   moveItem:function(sourceNode,parentNode,nextNode){
     Ajax.post('/Dashboard.svc/MoveItem', {
-         params: {
+         params: { 
            sourceItem:sourceNode,
            desItem:parentNode,
            nextItem:nextNode

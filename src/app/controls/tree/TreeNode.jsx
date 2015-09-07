@@ -86,41 +86,9 @@ var TreeNode = React.createClass({
   getInitialState: function () {
     return {
       collapsed: this.getDefaultCollapsed(this.props),
-      IsSendCopyReaded:this.getDefaultReadStatus(this.props),
     };
   },
-  getDefaultReadStatus:function(props){
 
-      var f=function(item){
-        if(item.get('Id')==props.selectedNode.get('Id')){
-          return true;
-        }
-        else{
-          if(!!item.get('Children')){
-            let has=false;
-            item.get('Children').forEach(function(child){
-              if(child!==null){
-                if(f(child)) has=true;
-              }
-
-            });
-            return has;
-          }
-          return false;
-        }
-      };
-      if(props.nodeData.get('IsSenderCopy')){
-        if(!!props.selectedNode){
-          if(props.selectedNode.get('Id')==props.nodeData.get('Id')){
-            return false;
-          }
-          else {
-            return f(props.nodeData);
-          }
-        }
-      }
-      return false;
-  },
   getDefaultCollapsedBySelectedNode:function(props){
     var that=this;
     var f=function(item){
@@ -182,7 +150,6 @@ var TreeNode = React.createClass({
     if(nextProps.selectedNode!=this.props.selectedNode || nextProps.collapsedNodeId!=this.props.collapsedNodeId){
       this.setState({
         collapsed: this.getDefaultCollapsed(nextProps),
-        IsSendCopyReaded:this.getDefaultReadStatus(nextProps),
       });
     }
   },
@@ -193,9 +160,6 @@ var TreeNode = React.createClass({
     });
     if(this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')){
       FolderAction.modifyFolderReadStatus(this.props.nodeData);
-      this.setState({
-        IsSendCopyReaded:true
-      });
     }
   },
 
@@ -356,7 +320,7 @@ var TreeNode = React.createClass({
        {this.generateArrow(nodeData.get("Children") && nodeData.get("Children").size > 0)}
         {this.props.hasCheckBox ? this.generateCheckbox() : null}
        <div className="content">
-        {this.props.generateNodeConent ? this.props.generateNodeConent(this.props.nodeData,this.state.IsSendCopyReaded) : this.generateNodeConent(this.props.nodeData)}
+        {this.props.generateNodeConent ? this.props.generateNodeConent(this.props.nodeData) : this.generateNodeConent(this.props.nodeData)}
        </div>
       </div>
 
