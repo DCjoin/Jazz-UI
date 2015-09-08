@@ -205,6 +205,7 @@ I18N.EM.Tool.Calendar.BackgroundColor ='日历背景色';
 I18N.EM.Tool.Calendar.NoneWorkTime ='非工作时间';
 I18N.EM.Tool.Calendar.HotColdSeason ='冷暖季';
 I18N.EM.Tool.Benchmark = '行业基准值';
+I18N.EM.Tool.HistoryCompare = '历史对比';
 I18N.EM.Tool.BenchmarkSetting = '基准值设置';
 I18N.EM.Tool.DataSum = '数据求和';
 
