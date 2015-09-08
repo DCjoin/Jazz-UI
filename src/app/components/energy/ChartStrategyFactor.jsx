@@ -258,10 +258,10 @@ let ChartStrategyFactor = {
  save2DashboardFnStrategy:{
    save2Dashboard(analysisPanel){
      let chartType = analysisPanel.state.selectedChartType;
-     let originalValue = null;
-     if(chartType === 'rawdata'){
-       originalValue = true;
-     }
+    //  let originalValue = null;
+    //  if(chartType === 'rawdata'){
+    //    originalValue = true;
+    //  }
 
      let tagOptions = EnergyStore.getTagOpions();
      let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -300,6 +300,24 @@ let ChartStrategyFactor = {
      let bizMap = {Energy: 1, Unit:2 ,Ratio: 3, Label:4, Rank:5};
      let dataUsageType = bizMap[analysisPanel.props.bizType];
      viewOption.DataUsageType = dataUsageType;
+
+     if(chartType === 'rawdata'){
+       let dataOption = {
+         OriginalValue: true,
+         WithoutAdditionalValue: true
+       };
+       viewOption.DataOption = dataOption;
+
+       let pagingObj = analysisPanel.refs.ChartComponent.getPageObj();
+       let pagingOrder = {
+         PageSize: 20,
+         PageIdx: pagingObj.pageIdx,
+         Order: {Column:1,Type:0},
+         PreviousEndTime: null,
+         Operation: 1
+       };
+       viewOption.PagingOrder = pagingOrder;
+     }
 
      submitParams.viewOption = viewOption;
 
@@ -1491,7 +1509,7 @@ let ChartStrategyFactor = {
       </div>
       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-container'} >
-        <DropDownMenu menuItems={rankTypeItem} selectedIndex={analysisPanel.getRankTypeIndex()} ref='rankType' style={{width:'140px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
+        <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{width:'140px'}} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
         <RaisedButton style={{marginLeft:'10px'}} label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
@@ -1647,9 +1665,10 @@ let ChartStrategyFactor = {
        dataSum = <SumWindow  openImmediately={true} analysisPanel={analysisPanel}></SumWindow>;
      }
      if(chartType === 'rawdata'){
-       let properties = {energyData: analysisPanel.state.energyData,
-                         energyRawData: analysisPanel.state.energyRawData,
-                         chartStrategy: analysisPanel.state.chartStrategy };
+       let properties = { ref:'ChartComponent',
+                          energyData: analysisPanel.state.energyData,
+                          energyRawData: analysisPanel.state.energyRawData,
+                          chartStrategy: analysisPanel.state.chartStrategy };
        energyPart = <div style={{flex:1, display:'flex', 'flex-direction':'column', marginBottom:'20px', overflow:'hidden'}}>
                       {subToolbar}
                       <GridComponent {...properties}></GridComponent>
@@ -1842,7 +1861,6 @@ let ChartStrategyFactor = {
        <MenuDivider />
        <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={analysisPanel.state.sumBtnStatus}/>
        {calendarEl}
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
        {weatherEl}
      </ButtonMenu>;
 
