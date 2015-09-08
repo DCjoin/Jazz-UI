@@ -219,7 +219,7 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn:'getUnitCarbonAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitCarbonSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
-      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
+      handleBenchmarkMenuItemClickFn:'handleUnitCarbonBenchmarkMenuItemClick',
       handleStepChangeFn:'handleUnitCarbonStepChange',
     }, Label:{
       searchBarGenFn:'labelSearchBarGen',
@@ -1339,7 +1339,7 @@ let ChartStrategyFactor = {
        step = limitInterval.display;
      }
      let viewOp = {
-        DataUsageType: 4,
+        DataUsageType: 1,
         IncludeNavigatorData: true,
         TimeRanges: timeRanges,
         Step: step,
