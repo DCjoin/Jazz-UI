@@ -479,7 +479,7 @@ let AnalysisPanel = React.createClass({
     },
     _onRankTypeChange(e, selectedIndex, menuItem){
       var rankType = menuItem.value;
-      this.setstate({rankType: rankType});
+      this.setState({rankType: rankType});
     },
     _onRangeChange(e, selectedIndex, menuItem){
       var range = menuItem.value;
@@ -698,6 +698,18 @@ let AnalysisPanel = React.createClass({
         }
       });
       return rangeIndex;
+    },
+    getRankTypeIndex(){
+      var rankType = this.state.rankType;
+      var rankTypeItem = ConstStore.getRankTypeItem();
+      var rankTypeIndex;
+      rankTypeItem.forEach(item => {
+        if(item.value === rankType){
+          rankTypeIndex = item.index;
+          return;
+        }
+      });
+      return rankTypeIndex;
     },
     _onHierNodeChange(){
       this.state.chartStrategy.onHierNodeChangeFn(this);
