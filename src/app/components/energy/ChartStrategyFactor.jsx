@@ -258,11 +258,6 @@ let ChartStrategyFactor = {
  save2DashboardFnStrategy:{
    save2Dashboard(analysisPanel){
      let chartType = analysisPanel.state.selectedChartType;
-    //  let originalValue = null;
-    //  if(chartType === 'rawdata'){
-    //    originalValue = true;
-    //  }
-
      let tagOptions = EnergyStore.getTagOpions();
      let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
@@ -337,6 +332,7 @@ let ChartStrategyFactor = {
        params:params
      };
      widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+     widgetDto.EnergyType = 'Energy';
      FolderAction.updateWidgetDtos(widgetDto);
    }
  },
