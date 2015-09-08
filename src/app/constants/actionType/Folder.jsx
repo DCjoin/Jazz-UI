@@ -18,7 +18,10 @@ module.exports = {
       MODIFY_NODE_READ_STATUS:null,
       GET_WIDGETDTOS_SUCCESS: null,
       GET_WIDGETDTOS_ERROR: null,
-      GET_WIDGETDTOS_LOADING: null
+      GET_WIDGETDTOS_LOADING: null,
+      UPDATE_WIDGETDTOS_SUCCESS: null,
+      UPDATE_WIDGETDTOS_ERROR: null,
+      UPDATE_WIDGETDTOS_LOADING: null
   })
 
 };

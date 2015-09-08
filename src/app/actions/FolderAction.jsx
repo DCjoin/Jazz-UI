@@ -203,10 +203,28 @@ let FolderAction = {
           });
         },
         error: function(err, res){
-          // AppDispatcher.dispatch({
-          //     type: Action.MOVE_ITEM_ERROR,
-          //     sourceNode:GET_WIDGETDTOS_ERROR
-          // });
+          AppDispatcher.dispatch({
+              type: Action.GET_WIDGETDTOS_ERROR,
+              widgetDto: null
+          });
+        },
+    });
+  },
+  updateWidgetDtos(widgetDto){
+    Ajax.post('/Dashboard.svc/CreateWidget', {
+         params: {
+           widgetDto: widgetDto
+          },
+        success: function(widgetDto){
+          AppDispatcher.dispatch({
+            type: Action.UPDATE_WIDGETDTOS_SUCCESS
+
+          });
+        },
+        error: function(err, res){
+          AppDispatcher.dispatch({
+              type: Action.UPDATE_WIDGETDTOS_ERROR
+          });
         },
     });
   }

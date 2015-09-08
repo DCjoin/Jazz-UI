@@ -327,6 +327,61 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       }
     });
     return timespans;
+  },
+  getSave2DashboardTimespans(){
+    if(_relativeList === null){
+      return null;
+    }
+    let timespans = [];
+    let d2j = CommonFuns.DataConverter.DatetimeToJson;
+
+    _relativeList.forEach((item, index)=>{
+      if(_originalType === 'Customerize'){
+        if(item.get('startDate') && item.get('endDate')){
+          timespans.push({StartTime:d2j(item.get('startDate')), EndTime:d2j(item.get('endDate'))});
+        }
+      }else{
+        if(index === 0){
+          timespans.push({relativeDate:_originalType});
+        }else{
+          if( item.relativeType === 'Customerize'){
+            timespans.push({StartTime:d2j(item.get('startDate')), EndTime:d2j(item.get('endDate'))});
+          }else{
+            let offset, timeType;
+            switch (item.relativeType) {
+                case 'Today':
+                case 'Yesterday':
+                  offset = 24*60*60;
+                  timeType = 0;
+                  break;
+                case 'ThisWeek':
+                case 'LastWeek':
+                case 'Last7Day':
+                  offset = 7*24*60*60;
+                  timeType = 0;
+                  break;
+                case 'ThisMonth':
+                case 'LastMonth':
+                  offset = 1;
+                  timeType = 2;
+                  break;
+                case 'Last30Day':
+                  offset = 30*24*60*60;
+                  timeType = 0;
+                  break;
+                case 'ThisYear':
+                case 'LastYear':
+                case 'Last12Month':
+                  offset = 12;
+                  timeType = 2;
+                  break;
+            }
+            timespans.push({timeType:timeType, offset:offset});
+          }
+        }
+      }
+    });
+    return timespans;
   }
 });
 MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action) {
