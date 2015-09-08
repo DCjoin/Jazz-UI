@@ -197,6 +197,7 @@ I18N.EM.Tool={};
 I18N.EM.Tool.ClearChart = '清空图表';
 I18N.EM.Tool.AssistCompare = '辅助对比';
 I18N.EM.Tool.Weather={};
+I18N.EM.Tool.Weather.WeatherInfo='天气信息';
 I18N.EM.Tool.Weather.Temperature = '温度';
 I18N.EM.Tool.Weather.Humidity = '湿度';
 I18N.EM.Tool.Calendar={};

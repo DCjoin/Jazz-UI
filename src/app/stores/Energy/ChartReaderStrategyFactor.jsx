@@ -612,11 +612,11 @@ tagSeriesConstructorFnStrategy:{
             obj.disableDelete = true;
             break;
         case 18:
-            obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
+            obj.name = I18N.EM.Tool.Weather.Temperature /*+ I18N.EM.Ratio.BaseValue*/;
             obj.disableDelete = true;
             break;
         case 19:
-            obj.name = name /*+ I18N.EM.Ratio.BaseValue*/;
+            obj.name = I18N.EM.Tool.Weather.Humidity /*+ I18N.EM.Ratio.BaseValue*/;
             obj.disableDelete = true;
             break;
         default:
