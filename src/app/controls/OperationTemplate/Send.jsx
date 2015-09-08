@@ -86,9 +86,11 @@ componentWillUnmount:function(){
 
     return(
       <div className='jazz-copytemplate-dialog'>
-        <Dialog {...dialogProps}>
-          {content}
-        </Dialog>
+        <div className='able'>
+          <Dialog {...dialogProps}>
+            {content}
+          </Dialog>
+        </div>
       </div>
     )
   }
