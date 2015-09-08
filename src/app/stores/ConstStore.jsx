@@ -69,15 +69,15 @@ var ConstStore = assign({},PrototypeStore,{
   getRankTypeItem(){
     if(!this.rankTypeItem){
       var rankTypeItem = [
-      {value:1,text:I18N.EM.Rank.TotalRank},
-      {value:2,text:I18N.EM.Rank.RankByPeople},
-      {value:3, text:I18N.EM.Rank.RankByArea},
-      {value:4,text:I18N.EM.Rank.RankByCoolArea},
-      {value:5,text:I18N.EM.Rank.RankByHeatArea},
-      {value:6,text:I18N.EM.Rank.RankByRoom},
-      {value:7,text:I18N.EM.Rank.RankByUsedRoom},
-      {value:8,text:I18N.EM.Rank.RankByBed},
-      {value:9,text:I18N.EM.Rank.RankByUsedBed}];
+      {value:1,index:0,text:I18N.EM.Rank.TotalRank},
+      {value:2,index:1,text:I18N.EM.Rank.RankByPeople},
+      {value:3,index:2,text:I18N.EM.Rank.RankByArea},
+      {value:4,index:3,text:I18N.EM.Rank.RankByCoolArea},
+      {value:5,index:4,text:I18N.EM.Rank.RankByHeatArea},
+      {value:7,index:5,text:I18N.EM.Rank.RankByRoom},
+      {value:8,index:6,text:I18N.EM.Rank.RankByUsedRoom},
+      {value:9,index:7,text:I18N.EM.Rank.RankByBed},
+      {value:10,index:8,text:I18N.EM.Rank.RankByUsedBed}];
       this.rankTypeItem = rankTypeItem;
     }
     return this.rankTypeItem;

@@ -701,6 +701,18 @@ let AnalysisPanel = React.createClass({
       });
       return rangeIndex;
     },
+    getRankTypeIndex(){
+      var rankType = this.state.rankType;
+      var rankTypeItem = ConstStore.getRankTypeItem();
+      var rankTypeIndex;
+      rankTypeItem.forEach(item => {
+        if(item.value === rankType){
+          rankTypeIndex = item.index;
+          return;
+        }
+      });
+      return rankTypeIndex;
+    },
     _onHierNodeChange(){
       this.state.chartStrategy.onHierNodeChangeFn(this);
     },

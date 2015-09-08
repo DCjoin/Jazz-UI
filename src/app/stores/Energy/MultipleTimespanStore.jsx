@@ -348,7 +348,7 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
             timespans.push({StartTime:d2j(item.get('startDate')), EndTime:d2j(item.get('endDate'))});
           }else{
             let offset, timeType;
-            switch (item.relativeType) {
+            switch (item.get('relativeType')) {
                 case 'Today':
                 case 'Yesterday':
                   offset = 24*60*60;
