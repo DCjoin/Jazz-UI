@@ -73,9 +73,11 @@ componentWillUnmount:function(){
   let content=(this.state.users!=null)?<UsersOperation users={this.state.users} type={I18N.Template.Share.Share}/>:null;
     return(
       <div className='jazz-copytemplate-dialog'>
-        <Dialog {...dialogProps}>
-          {content}
-        </Dialog>
+        <div className='able'>
+          <Dialog {...dialogProps}>
+            {content}
+          </Dialog>
+        </div>
       </div>
     )
   }
