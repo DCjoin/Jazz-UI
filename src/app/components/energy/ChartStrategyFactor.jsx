@@ -303,7 +303,15 @@ let ChartStrategyFactor = {
 
      submitParams.viewOption = viewOption;
 
-     let config = {type: analysisPanel.state.selectedChartType};
+     //storeType part
+     let storeType;
+     if(analysisPanel.state.selectedChartType ==='pie'){
+       storeType = 'energy.Distribution';
+     }else{
+       storeType = 'energy.Energy';
+     }
+
+     let config = {type: analysisPanel.state.selectedChartType, storeType: storeType};
 
      let params = {submitParams:submitParams, config:config, calendar: analysisPanel.state.calendarType};
 
@@ -2062,10 +2070,8 @@ let ChartStrategyFactor = {
        viewOption: viewOption
      };
 
-     if(chartType === 'pie'){
-       path = 'API/Energy.svc/AggregateTagsData4Export';
-     }else{
-       path = 'API/Energy.svc/GetTagsData4Export';
+     path = '/Energy.svc/GetTagsData4Export';
+     if(chartType !== 'pie'){
        let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
            params.nodeNameAssociation = nodeNameAssociation;
      }
@@ -2083,7 +2089,7 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
-     let path = 'API/Energy.svc/GetCostData4Export';
+     let path = '/Energy.svc/GetCostData4Export';
      let chartType = analysisPanel.state.selectedChartType;
      let selectedList = CostStore.getSelectedList();
      let commodityList = selectedList.commodityList;
@@ -2114,7 +2120,7 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
-     let path = 'API/Energy.svc/GetCarbonUsageData4Export';
+     let path = '/Energy.svc/GetCarbonUsageData4Export';
      let chartType = analysisPanel.state.selectedChartType;
      let selectedList = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
      selectedList.hierarchyNode = hierarchyNode;
@@ -2149,7 +2155,7 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
-     let path = 'API/Energy.svc/GetEnergyUsageUnitData4Export';
+     let path = '/Energy.svc/GetEnergyUsageUnitData4Export';
      let chartType = analysisPanel.state.selectedChartType;
      let tagOptions = EnergyStore.getTagOpions();
      let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -2179,7 +2185,7 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
-     let path = 'API/Energy.svc/RatioGetTagsData4Export';
+     let path = '/Energy.svc/RatioGetTagsData4Export';
      let chartType = analysisPanel.state.selectedChartType;
      //let tagOptions = RatioStore.getTagOpions();
      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
@@ -2213,7 +2219,7 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
-     let path = 'API/Energy.svc/GetCostUnitData4Export';
+     let path = '/Energy.svc/GetCostUnitData4Export';
      let chartType = analysisPanel.state.selectedChartType;
      let selectedList = CostStore.getSelectedList();
      let commodityList = selectedList.commodityList;
@@ -2246,7 +2252,7 @@ let ChartStrategyFactor = {
      if(!analysisPanel.state.energyData){
        return;
      }
-     let path = 'API/Energy.svc/GetCarbonUsageUnitData4Export';
+     let path = '/Energy.svc/GetCarbonUsageUnitData4Export';
      let chartType = analysisPanel.state.selectedChartType;
      let selectedList = {}, hierarchyNode = CommodityStore.getHierNode(), commodityList = CommodityStore.getCommonCommodityList();
      selectedList.hierarchyNode = hierarchyNode;
