@@ -96,6 +96,9 @@ var PanelContainer = React.createClass({
   },
   _onSearchClick:function(node){
     FolderAction.setSelectedNode(node);
+    if(node.get('IsSenderCopy') && !node.get('IsRead')){
+      FolderAction.modifyFolderReadStatus(node);
+    }
     if(node.get('Type')==7){
       this.setState({
         selectedNode:node,
