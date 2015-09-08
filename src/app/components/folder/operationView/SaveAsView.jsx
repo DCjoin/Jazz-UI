@@ -14,6 +14,36 @@ var SaveAsView = React.createClass({
   },
   _onCopyItem:function(destNode,newName){
     FolderAction.copyItem(this.props.saveAsNode,destNode,newName);
+    this.setState({
+      loading:true
+    })
+  },
+  _onCopyItemError:function(){
+    this.setState({
+      errorText:I18N.Folder.Copy.Error,
+      loading:false
+    });
+  },
+  _onCopyItemSuccess:function(){
+    this.props.onDismiss();
+    this.setState({
+      errorText:null,
+      loading:false
+    });
+  },
+  componentDidMount:function(){
+    FolderStore.addCopyItemErrorListener(this._onCopyItemError);
+    FolderStore.addCopyItemSuccessListener(this._onCopyItemSuccess);
+  },
+  componentWillUnmount:function(){
+    FolderStore.removeCopyItemErrorListener(this._onCopyItemError);
+    FolderStore.removeCopyItemSuccessListener(this._onCopyItemSuccess);
+  },
+  getInitialState:function(){
+    return{
+      errorText:null,
+      loading:false
+    };
   },
   render:function(){
 
@@ -24,7 +54,9 @@ var SaveAsView = React.createClass({
       firstActionLabel:I18N.Folder.SaveAs.firstActionLabel,//复制 or 保存
       treeNode:FolderStore.getParent(this.props.saveAsNode),
       onFirstActionTouchTap:this._onCopyItem,
-      onDismiss:this.props.onDismiss
+      onDismiss:this.props.onDismiss,
+      errorText:this.state.errorText,
+      loading:this.state.loading
     }
 
     return(

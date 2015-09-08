@@ -250,7 +250,9 @@ let AnalysisPanel = React.createClass({
       return strategyName;
     },
     _onChart2WidgetClick(){
-
+      if(this.state.chartStrategy.save2DashboardFn){
+        this.state.chartStrategy.save2DashboardFn(this);
+      }
     },
     _onErrorDialogAction(step){
       this.setState({errorObj:null});
