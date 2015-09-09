@@ -1058,6 +1058,13 @@ let CommonFuns = {
     }
 		return viewAssociation;
 	},
+	getHierarchyIdsFromList(hierarchyList){
+	  let hierarchyIds = [];
+	  for(let i=0,len=hierarchyList.length; i<len; i++){
+	    hierarchyIds.push(parseInt(hierarchyList[i].hierId));
+	  }
+	  return hierarchyIds;
+	},
 	getCommodityIdsFromList(commodityList){
 	  let commodityIds = [];
 	  for(let i=0,len=commodityList.length; i<len; i++){
@@ -1084,7 +1091,7 @@ let CommonFuns = {
 		var commodityIds = this.getCommodityIdsFromList(commodityList);
     var hierarchyNode = selectedList.hierarchyNode;
 		var dimNode = selectedList.dimNode;
-		if(dimNode !== null && dimNode != undefined){
+		if(dimNode !== null){
 			dimName = dimNode.dimName;
 		}
 		var hierName = hierarchyNode.hierName;
