@@ -78,7 +78,8 @@ let ChartStrategyFactor = {
       handleWeatherMenuItemClickFn:'handleWeatherMenuItemClick',
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn:'handleNavigatorChangeLoad',
-      save2DashboardFn:'save2Dashboard'
+      save2DashboardFn:'save2Dashboard',
+      initChartPanelByWidgetDtoFn:'initChartPanelByWidgetDto'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -256,6 +257,35 @@ let ChartStrategyFactor = {
       onEnergyTypeChangeFn:'onEnergyTypeChange',
       getChartSubToolbarFn:'getRankSubToolbar',
     }
+ },
+ initChartPanelByWidgetDtoFnStrategy:{
+   initChartPanelByWidgetDto(analysisPanel){
+     let dateSelector = analysisPanel.refs.dateTimeSelector;
+     let j2d = CommonFuns.DataConverter.JsonToDateTime;
+     let widgetDto = analysisPanel.props.widgetDto,
+         contentSyntax = widgetDto.ContentSyntax,
+         contentObj = JSON.parse(contentSyntax),
+         viewOption = contentObj.viewOption,
+         timeRanges = viewOption.TimeRanges;
+
+      let initPanelDate = function(timeRange){
+        if(timeRange.relativeDate){
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        }else{
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+      if(timeRanges.length !== 1){
+        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
+      }
+         console.log(contentObj);
+   }
  },
  save2DashboardFnStrategy:{
    save2Dashboard(analysisPanel){
