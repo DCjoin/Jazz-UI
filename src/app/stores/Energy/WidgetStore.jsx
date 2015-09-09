@@ -15,11 +15,15 @@ var WidgetStore = assign({},PrototypeStore,{
   convertWidgetDto(widgetDto, selectedNode){
     _loading = false;
     _widgetDto = widgetDto[0];
+    if(_widgetDto && _widgetDto.ContentSyntax){
+        _initPanelByWidgetDto = true;
+    }else{
+        _initPanelByWidgetDto = false;
+    }
   },
   startLoading(selectedNode){
     _selectedNode = selectedNode;
     _loading = true;
-    _initPanelByWidgetDto = true;
   },
   getWidgetDto(){
     return _widgetDto;

@@ -202,11 +202,6 @@ componentWillUnmount:function(){
 },
 _handleWidgetSelectChange(){
   let widgetDto = WidgetStore.getWidgetDto();
-
-  let state = false;
-  if(widgetDto && widgetDto.ContentSyntax){
-    state = true;
-  }
   this.setState({
                   refreshChart: false,
                   selectedEnergyType: null,
@@ -243,6 +238,10 @@ render: function () {
           onEnergyTypeChange: me._onEnergyTypeChanged,
           onOperationSelect: me._onWidgetMenuSelect
         };
+        let widgetInitState = WidgetStore.getInitState();
+        if(widgetInitState){
+          mainPanelProps.widgetInitState = true;
+        }
         mainPanel =<AnalysisPanel {...mainPanelProps}></AnalysisPanel>;
       }
     }
