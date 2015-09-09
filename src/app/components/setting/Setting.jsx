@@ -213,6 +213,17 @@ _handleWidgetSelectChange(){
                   widgetDto: widgetDto
                 });
 },
+getEnergyTypeFromWidgetDto(widgetDto){
+  let energyType = null;
+  if(widgetDto && widgetDto.BizType){
+    let map = { Energy:'Energy',Carbon:'Carbon', Cost:'Cost', Ratio:null, Labelling:null,
+                UnitEnergy:'Energy', UnitCarbon:'Carbon', UnitCost:'Cost',
+                RankingEnergy:'Energy', RankingCost:'Cost', RankCarbon:'Carbon', CostElectric:'Cost'};
+    let bizType = widgetDto.BizType;
+    energyType = map[bizType];
+  }
+  return energyType;
+},
 render: function () {
     let me = this;
     let bizTypeMap = {1:'Energy',2:'Unit',3:'Ratio', 4:'Label', 5:'Rank'};
@@ -229,16 +240,17 @@ render: function () {
                                                                 onOperationSelect={this._onTemplateSelect}/>:null);
       }else if(type === 7){
         //chart panel
+        let widgetDto = me.state.widgetDto;
         let title = selectedNode.get('Name');
         let bizType = bizTypeMap[selectedNode.get('WidgetType')];
-        let energyType = this.state.selectedEnergyType || CommonFuns.extractEnergyType( selectedNode.get('EnergyType') );
+        let energyType = this.state.selectedEnergyType || this.getEnergyTypeFromWidgetDto(widgetDto);
         rightPanel = this.getRightPanel(bizType, energyType);
 
         let mainPanelProps = {
           chartTitle:title,
           bizType: bizType,
           energyType: energyType,
-          widgetDto: me.state.widgetDto,
+          widgetDto: widgetDto,
           onEnergyTypeChange: me._onEnergyTypeChanged,
           onOperationSelect: me._onWidgetMenuSelect
         };
