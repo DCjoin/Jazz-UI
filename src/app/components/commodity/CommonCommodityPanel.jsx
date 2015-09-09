@@ -71,7 +71,7 @@ var CommonCommodityPanel = React.createClass({
       dimActive:false,
       dimParentNode:null,
       DimShow:false,
-      checkedCommodityList:this.props.checkedCommodityList,
+      checkedCommodityList:CommodityStore.getCommodityStatus(),
     };
   },
 

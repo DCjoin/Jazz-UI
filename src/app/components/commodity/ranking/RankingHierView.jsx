@@ -53,6 +53,11 @@ var RankingHierView = React.createClass({
       clearBtnDisabled:disabled
     };
   },
+  // componentDidMount:function(){
+  //   if(this.props.checkedTreeNodes){
+  //     CommodityAction.loadRankingCommodityList(this.props.checkedTreeNodes);
+  //   }
+  // },
   render:function(){
     var props = {
     allNode: this.props.allNode,

@@ -12,7 +12,6 @@ var CommonCommodityList = React.createClass({
   propTypes: {
     checkedCommodityList: React.PropTypes.object,
   },
-
   _onCommodityListChange:function(){
     this.setState({
       commdityList:CommodityStore.getCommodityList(),
@@ -56,7 +55,7 @@ var CommonCommodityList = React.createClass({
     return{
       isLoading:false,
       commdityList:[],
-      commodityStatus:(!!this.props.checkedCommodityList)?this.props.checkedCommodityList:Immutable.List([])
+      commodityStatus:(this.props.checkedCommodityList)?this.props.checkedCommodityList:Immutable.List([])
     };
   },
   componentWillReceiveProps:function(){
