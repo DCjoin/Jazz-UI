@@ -202,6 +202,11 @@ componentWillUnmount:function(){
 },
 _handleWidgetSelectChange(){
   let widgetDto = WidgetStore.getWidgetDto();
+
+  let state = false;
+  if(widgetDto && widgetDto.ContentSyntax){
+    state = true;
+  }
   this.setState({
                   refreshChart: false,
                   selectedEnergyType: null,
@@ -229,8 +234,16 @@ render: function () {
         let bizType = bizTypeMap[selectedNode.get('WidgetType')];
         let energyType = this.state.selectedEnergyType || CommonFuns.extractEnergyType( selectedNode.get('EnergyType') );
         rightPanel = this.getRightPanel(bizType, energyType);
-        mainPanel =<AnalysisPanel chartTitle = {title} bizType={bizType} energyType={energyType} widgetDto={me.state.widgetDto}
-          onEnergyTypeChange={me._onEnergyTypeChanged} onOperationSelect={this._onWidgetMenuSelect}></AnalysisPanel>;
+
+        let mainPanelProps = {
+          chartTitle:title,
+          bizType: bizType,
+          energyType: energyType,
+          widgetDto: me.state.widgetDto,
+          onEnergyTypeChange: me._onEnergyTypeChanged,
+          onOperationSelect: me._onWidgetMenuSelect
+        };
+        mainPanel =<AnalysisPanel {...mainPanelProps}></AnalysisPanel>;
       }
     }
 

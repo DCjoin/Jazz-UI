@@ -10,8 +10,8 @@ import {Action} from '../../constants/actionType/Folder.jsx';
 let _widgetDto = null;
 let _selectedNode = null;
 let _loading = false;
+let _initPanelByWidgetDto = false;
 var WidgetStore = assign({},PrototypeStore,{
-
   convertWidgetDto(widgetDto, selectedNode){
     _loading = false;
     _widgetDto = widgetDto[0];
@@ -19,6 +19,7 @@ var WidgetStore = assign({},PrototypeStore,{
   startLoading(selectedNode){
     _selectedNode = selectedNode;
     _loading = true;
+    _initPanelByWidgetDto = true;
   },
   getWidgetDto(){
     return _widgetDto;
@@ -28,6 +29,12 @@ var WidgetStore = assign({},PrototypeStore,{
   },
   getLoadingStatus(){
     return _loading;
+  },
+  setInitState(state){
+    _initPanelByWidgetDto = state;
+  },
+  getInitState(){
+    return _initPanelByWidgetDto;
   }
 });
 
@@ -44,6 +51,8 @@ WidgetStore.dispatchToken = PopAppDispatcher.register(function(action) {
         WidgetStore.convertWidgetDto(null);
         WidgetStore.emitChange();
         break;
+      case Action.SET_WIDGET_INIT_STATE:
+        WidgetStore.setInitState(action.state);
     }
 });
 module.exports = WidgetStore;
