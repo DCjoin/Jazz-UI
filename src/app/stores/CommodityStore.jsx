@@ -178,7 +178,7 @@ var CommodityStore = assign({},PrototypeStore,{
 
   },
   clearCommodityStatus:function(){
-    _commodityStatus=[];
+    _commodityStatus=Immutable.List([]);
   },
   //for Ranking
   setRankingTreeList:function(treeList){
@@ -192,6 +192,9 @@ var CommodityStore = assign({},PrototypeStore,{
   },
   getRankingTreeList:function(){
     return _RankingTreeList;
+  },
+  clearRankingTreeList:function(){
+    _RankingTreeList=[];
   },
   setRankingCommodity:function(commodityId,commodityName){
     _RankingCommodity={

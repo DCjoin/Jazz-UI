@@ -306,7 +306,13 @@ render: function () {
         break;
     }
     if(lastBizType!=bizType){
-      CommodityStore.resetHierInfo();
+      if(bizType=='Rank'){
+        CommodityStore.clearRankingTreeList();
+      }
+      else {
+          CommodityStore.resetHierInfo();
+      }
+
       lastBizType=bizType
     }
     return rightPanel;
