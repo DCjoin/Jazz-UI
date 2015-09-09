@@ -227,6 +227,12 @@ let FolderAction = {
           });
         },
     });
+  },
+  setWidgetInitState(state){
+    AppDispatcher.dispatch({
+      type: Action.SET_WIDGET_INIT_STATE,
+      state: state
+    });
   }
 };
 

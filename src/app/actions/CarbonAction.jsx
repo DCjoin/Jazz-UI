@@ -93,7 +93,7 @@ let CarbonAction = {
        relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/GetCarbonUsageData', {
+    Ajax.post('/Energy.svc/GetCarbonUsageUnitData', {
        params:submitParams,
        commonErrorHandling: false,
        success: function(carbonData){

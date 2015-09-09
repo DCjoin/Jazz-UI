@@ -14,23 +14,7 @@ let getTagIdsFromTagOptions = function(tagOptions){
   }
   return tagIds;
 };
-let getHierarchyIdsFromList = function(hierarchyList){
-  let hierarchyIds = [];
-  for(let i=0,len=hierarchyList.length; i<len; i++){
-    hierarchyIds.push(parseInt(hierarchyList[i].hierId));
-  }
-  return hierarchyIds;
-};
-let getCommodityIdsFromList = function(commodityList){
-  let commodityIds = [];
-  for(let i=0,len=commodityList.length; i<len; i++){
-    commodityIds.push(parseInt(commodityList[i].Id));
-  }
-  if(commodityIds[0] === -1){
-    commodityIds = [];
-  }
-  return commodityIds;
-};
+
 
 let EnergyAction = {
  //for select tags from taglist and click search button.
@@ -87,9 +71,7 @@ let EnergyAction = {
                                       TimeRanges: timeRange
                                    }
                        };
-    if(weatherOption && weatherOption.IncludeTempValue) submitParams.viewOption.IncludeTempValue = true;
-    if(weatherOption && weatherOption.IncludeHumidityValue) submitParams.viewOption.IncludeHumidityValue = true;
-    
+
     AppDispatcher.dispatch({
       type: Action.GET_ENERGY_DATA_LOADING,
       submitParams: submitParams,
@@ -121,7 +103,7 @@ let EnergyAction = {
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
-    var commodityIds = getCommodityIdsFromList(commodityList);
+    var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
     var submitParams = { commodityIds:commodityIds,
@@ -164,7 +146,7 @@ let EnergyAction = {
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
-    var commodityIds = getCommodityIdsFromList(commodityList);
+    var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
 
@@ -208,7 +190,7 @@ let EnergyAction = {
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
-    var commodityIds = getCommodityIdsFromList(commodityList);
+    var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
 
@@ -252,7 +234,7 @@ let EnergyAction = {
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
-    var commodityIds = getCommodityIdsFromList(commodityList);
+    var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
     var submitParams = { commodityIds:commodityIds,
@@ -422,7 +404,7 @@ let EnergyAction = {
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
-    var commodityIds = getCommodityIdsFromList(commodityList);
+    var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
     var submitParams = { commodityIds:commodityIds,
@@ -501,7 +483,7 @@ let EnergyAction = {
   getEnergyRankChartData(timeRanges, rankType, selectedList, relativeDate){
     var commodityNode = selectedList.commodityNode;
     var hierarchyList = selectedList.hierarchyList;
-    var hierarchyIds = getHierarchyIdsFromList(hierarchyList);
+    var hierarchyIds = CommonFuns.getHierarchyIdsFromList(hierarchyList);
     var commodityIds = [];
     commodityIds.push(commodityNode.Id);
 
@@ -539,7 +521,7 @@ let EnergyAction = {
   getCarbonRankChartData(timeRanges, rankType, selectedList, relativeDate, destination){
     var commodityNode = selectedList.commodityNode;
     var hierarchyList = selectedList.hierarchyList;
-    var hierarchyIds = getHierarchyIdsFromList(hierarchyList);
+    var hierarchyIds = CommonFuns.getHierarchyIdsFromList(hierarchyList);
     var commodityIds = [];
     if(commodityNode.Id !== -1){
       commodityIds.push(commodityNode.Id);
@@ -580,7 +562,7 @@ let EnergyAction = {
   getCostRankChartData(timeRanges, rankType, selectedList, relativeDate, destination){
     var commodityNode = selectedList.commodityNode;
     var hierarchyList = selectedList.hierarchyList;
-    var hierarchyIds = getHierarchyIdsFromList(hierarchyList);
+    var hierarchyIds = CommonFuns.getHierarchyIdsFromList(hierarchyList);
     var commodityIds = [];
     if(commodityNode.Id !== -1){
       commodityIds.push(commodityNode.Id);
