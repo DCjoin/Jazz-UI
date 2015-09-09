@@ -77,6 +77,17 @@ var CommonCommodityPanel = React.createClass({
 
   componentWillMount: function() {
     CommodityStore.resetData();
+    let hierNode=CommodityStore.getHierNode();
+    if(!!hierNode){
+      let node={
+        Id:hierNode.hierId,
+        Name:hierNode.hierName
+      };
+      this.setState({
+        dimParentNode:node,
+        dimActive:true,
+      });
+    }
   },
   componentWillReceiveProps:function(){
     this.setState({

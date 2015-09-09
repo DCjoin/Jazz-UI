@@ -14,6 +14,8 @@ import AlarmSettingStore from '../stores/AlarmSettingStore.jsx';
 import Pagination from '../controls/paging/Pagination.jsx';
 import TagMenu from './tag/TagMenu.jsx';
 import LabelMenuAction from '../actions/LabelMenuAction.jsx';
+import CommodityAction from '../actions/CommodityAction.jsx';
+import CommodityStore from '../stores/CommodityStore.jsx';
 
 var menuItems = [
    { payload: '1', text: '全部' },
@@ -44,6 +46,9 @@ let DataSelectMainPanel=React.createClass({
         alarmType=null;
         React.findDOMNode(this.refs.searchIcon).style.display='block';
         this.refs.searchText.setValue("");
+        if(this.props.widgetType){
+          CommodityAction.setCurrentHierarchyInfo(node.Id,node.Name);
+        }
         if(this.props.widgetType=='Energy' || this.props.linkFrom=="Alarm"){
           this.refs.dropDownMenu.setState({selectedIndex:0})
         }
@@ -65,7 +70,7 @@ let DataSelectMainPanel=React.createClass({
     },
     _onDimTreeClick:function(node){
       page=1;
-      if(node.Id!=0){
+      if(node.Id!==0){
         TagAction.loadData(node.Id,6,1,alarmType,filters);
         this.setState({
           tagId:node.Id,
@@ -311,7 +316,20 @@ let DataSelectMainPanel=React.createClass({
           };
           this.setState({
             dimParentNode:node
-          })
+          });
+          }
+      if(this.props.widgetType){
+            let hierNode=CommodityStore.getHierNode();
+            if(!!hierNode){
+              let node={
+                Id:hierNode.hierId,
+                Name:hierNode.hierName
+              };
+              this.setState({
+                dimParentNode:node,
+                dimActive:true,
+              });
+            }
           }
       },
     componentWillReceiveProps:function(){
@@ -325,6 +343,7 @@ let DataSelectMainPanel=React.createClass({
           }
 
           }
+
       },
     componentDidMount: function() {
       TagStore.addTagNodeListener(this._onTagNodeChange); //listener for load tag

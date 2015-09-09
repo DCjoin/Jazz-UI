@@ -17,6 +17,7 @@ import ChartAction from '../../actions/ChartAction.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 //for test commoditypanel
 import CommodityAction from '../../actions/CommodityAction.jsx';
+import CommodityStore from '../../stores/CommodityStore.jsx';
 
 import LeftPanel from '../folder/FolderLeftPanel.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
@@ -27,6 +28,8 @@ import DeleteView from '../folder/operationView/DeleteView.jsx';
 import ShareView from '../folder/operationView/ShareView.jsx';
 import SendView from '../folder/operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
+
+let lastBizType=null;
 
 let Setting = React.createClass({
 
@@ -180,7 +183,8 @@ _onWidgetMenuSelect:function(index){
   },
   //just for test commoditypanel
 componentWillMount:function(){
-  CommodityAction.setEnergyConsumptionType('Carbon');
+  // CommodityAction.setEnergyConsumptionType('Carbon');
+  lastBizType=null;
 },
 componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -288,6 +292,10 @@ render: function () {
                       container={<RankingContainer ecType={energyType || 'Energy'}/>}/>;
 
         break;
+    }
+    if(lastBizType!=bizType){
+      CommodityStore.resetHierInfo();
+      lastBizType=bizType
     }
     return rightPanel;
   }
