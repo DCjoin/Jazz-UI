@@ -14,6 +14,7 @@ import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx
 import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
 import EnergyAction from '../../actions/EnergyAction.jsx';
 import CarbonAction from '../../actions/CarbonAction.jsx';
+import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
@@ -277,6 +278,18 @@ let ChartStrategyFactor = {
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
       };
+      let convertWidgetOptions2TagOption = function(WidgetOptions){
+        let tagOptions = [];
+        WidgetOptions.forEach(item=>{
+          tagOptions.push({
+              hierId: item.HierId,
+              hierName: item.NodeName,
+              tagId: item.TargetId,
+              tagName: item.TargetName
+          });
+        });
+        return tagOptions;
+      };
 
       //init timeRange
       let timeRange = timeRanges[0];
@@ -284,7 +297,13 @@ let ChartStrategyFactor = {
       if(timeRanges.length !== 1){
         MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
       }
-         console.log(contentObj);
+
+      //init selected tags
+      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      tagOptions.forEach(item=>{
+        setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
+      });
+      setTimeout(()=>{analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
    }
  },
  save2DashboardFnStrategy:{
@@ -2120,6 +2139,7 @@ let ChartStrategyFactor = {
      EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
      EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+     MultiTimespanAction.clearMultiTimespan('both');
    },
    carbonUnbindStoreListeners(analysisPanel){
      CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
