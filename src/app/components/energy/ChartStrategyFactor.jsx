@@ -1945,7 +1945,7 @@ let ChartStrategyFactor = {
  },
  getAuxiliaryCompareBtnFnStrategy:{
    getEnergyAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'noneWorkTime'},
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.NoneWorkTime, value:'noneWorkTime'},
                              {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
      let calendarEl;
      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
