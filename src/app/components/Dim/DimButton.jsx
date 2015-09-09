@@ -63,6 +63,10 @@ let DimButton=React.createClass({
     },
     componentDidMount: function() {
       DimStore.addChangeListener(this._onChange);
+      if(this.props.parentNode){
+        this.resetButtonName();
+        DimAction.loadall(this.props.parentNode.Id);
+      }
 
      },
     componentWillUnmount: function() {

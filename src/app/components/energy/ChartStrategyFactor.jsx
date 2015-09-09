@@ -103,7 +103,9 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getCostSubToolbar',
       getAuxiliaryCompareBtnFn:'getCostAuxiliaryCompareBtn',
       handleConfigBtnItemTouchTapFn:'handleCostConfigBtnItemTouchTap',
-      handleStepChangeFn:'handleCostStepChange'
+      handleStepChangeFn:'handleCostStepChange',
+      handleNavigatorChangeLoadFn:'handleCostNavigatorChangeLoad',
+      save2DashboardFn:'saveCost2Dashboard'
     },
     MultiIntervalDistribution:{
 
@@ -220,7 +222,7 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn:'getUnitCarbonAuxiliaryCompareBtn',
       getChartSubToolbarFn:'getUnitCarbonSubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
-      handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
+      handleBenchmarkMenuItemClickFn:'handleUnitCarbonBenchmarkMenuItemClick',
       handleStepChangeFn:'handleUnitCarbonStepChange',
     }, Label:{
       searchBarGenFn:'labelSearchBarGen',
@@ -364,12 +366,87 @@ let ChartStrategyFactor = {
      widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
      widgetDto.EnergyType = 'Energy';
      FolderAction.updateWidgetDtos(widgetDto);
+   },
+   saveCost2Dashboard(analysisPanel){
+     let chartType = analysisPanel.state.selectedChartType;
+     let selectedList = CostStore.getSelectedList();
+     var commodityList = selectedList.commodityList;
+     var hierarchyNode = selectedList.hierarchyNode;
+     var hierarchyId = hierarchyNode.hierId;
+     var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+     var dimNode = selectedList.dimNode;
+     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+     let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+     let paramsObj = CostStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         step = paramsObj.step,
+         widgetTimeRanges;
+
+
+     //submitParams part
+     let submitParams = {
+                          options: nodeNameAssociation,
+                          viewAssociation: viewAssociation,
+                          commodityIds: commodityIds
+                        };
+     //time range part
+     if(timeRanges.length === 1){
+       let relativeDate = CostStore.getRelativeDate();
+       if( relativeDate !== 'Customerize'){
+         widgetTimeRanges = [{relativeDate:relativeDate}];
+       }else{
+         widgetTimeRanges = timeRanges;
+       }
+     }
+     // viewOption part
+     let viewOption = {
+                        TimeRanges: widgetTimeRanges,
+                        Step: step
+                      };
+
+     let includeNavigatorData = (analysisPanel.state.selectedChartType !=='pie');
+     viewOption.IncludeNavigatorData = includeNavigatorData;
+
+     let bizMap = {Energy: 1, Unit:2 ,Ratio: 3, Label:4, Rank:5};
+     let dataUsageType = bizMap[analysisPanel.props.bizType];
+     viewOption.DataUsageType = dataUsageType;
+
+     submitParams.viewOption = viewOption;
+
+     //storeType part
+     let storeType;
+     if(analysisPanel.state.selectedChartType ==='pie'){
+       storeType = 'energy.CostUsageDistribution';
+     }else{
+       storeType = 'energy.CostUsage';
+     }
+
+     let config = {type: analysisPanel.state.selectedChartType, storeType: storeType};
+
+     let params = {submitParams:submitParams, config:config, calendar:null};
+
+     let contentSyntax = {
+       params:params
+     };
+     widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+     FolderAction.updateWidgetDtos(widgetDto);
    }
  },
  handleNavigatorChangeLoadFnStrategy:{
    handleNavigatorChangeLoad(analysisPanel){
      let tagOptions = EnergyStore.getTagOpions(),
          paramsObj = EnergyStore.getParamsObj(),
+         dateSelector = analysisPanel.refs.dateTimeSelector,
+         dateRange = dateSelector.getDateTime(),
+         startDate = dateRange.start,
+         endDate = dateRange.end;
+
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, 'Customerize', analysisPanel);
+   },
+   handleCostNavigatorChangeLoad(analysisPanel){
+     let tagOptions = CostStore.getSelectedList(),
+         paramsObj = CostStore.getParamsObj(),
          dateSelector = analysisPanel.refs.dateTimeSelector,
          dateRange = dateSelector.getDateTime(),
          startDate = dateRange.start,
@@ -1369,7 +1446,7 @@ let ChartStrategyFactor = {
        step = limitInterval.display;
      }
      let viewOp = {
-        DataUsageType: 4,
+        DataUsageType: 1,
         IncludeNavigatorData: true,
         TimeRanges: timeRanges,
         Step: step,

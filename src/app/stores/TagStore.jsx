@@ -247,6 +247,23 @@ else{
   getBaselineBtnDisabled:function(){
     return baseline_btn_disabled;
   },
+  // getNodeByHierId:function(hierId){
+  //   var node=null;
+  //   var f=function(item){
+  //     if(item.Id==hierId){
+  //       node=item;
+  //     }
+  //     else {
+  //       if(item.Children){
+  //         item.Children.forEach(function(child){
+  //           f(child);
+  //         });
+  //       }
+  //     }
+  //   };
+  //   f(_data);
+  //   return node;
+  // },
   getData(){
     return _data;
   },
