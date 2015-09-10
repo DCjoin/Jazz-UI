@@ -28,6 +28,7 @@ import DeleteView from '../folder/operationView/DeleteView.jsx';
 import ShareView from '../folder/operationView/ShareView.jsx';
 import SendView from '../folder/operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
+import ExportChartAction from '../../actions/ExportChartAction.jsx';
 
 let lastBizType=null;
 
@@ -59,6 +60,17 @@ let Setting = React.createClass({
   _onModifyNameError:function(){
     this.setState({
       errorText:FolderStore.GetModifyNameError()
+    });
+    this.refs.snackbar.show();
+  },
+  _onExportWidgetSuccess:function(){
+    this.setState({
+      errorText:null
+    });
+  },
+  _onExportWidgetError:function(){
+    this.setState({
+      errorText:I18N.Folder.Export.Error
     });
     this.refs.snackbar.show();
   },
@@ -108,6 +120,10 @@ let Setting = React.createClass({
       templateShow:true
     });
 },
+_onCreateFolderOrWidget:function(){
+  var node=CommodityStore.getDefaultNode();
+  CommodityAction.setCurrentHierarchyInfo(node.Id,node.Name);
+},
  getTemplate:function(){
    var template;
    //for operation template
@@ -137,7 +153,11 @@ let Setting = React.createClass({
              template=<ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.templateNode}/>;
            break;
          case 4:
-             template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode}/>;
+            let path = '/Dashboard.svc/ExportWidget';
+            let params= {
+                        widgetId:this.state.templateNode.get('Id')
+                      }
+            ExportChartAction.getTagsData4Export(params,path);
            break;
          case 5:
              template=<DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={false}/>;
@@ -181,7 +201,8 @@ _onWidgetMenuSelect:function(index){
                       });
           });
   },
-  //just for test commoditypanel
+
+
 componentWillMount:function(){
   // CommodityAction.setEnergyConsumptionType('Carbon');
   lastBizType=null;
@@ -190,18 +211,24 @@ componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
   FolderStore.addModifyNameErrorListener(this._onModifyNameError);
   FolderStore.addSendStatusListener(this._onSendStatusChange);
+  FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidget);
   FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
   FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
   FolderStore.addMoveItemErrorListener(this._onMoveItemError);
+  FolderStore.addExportWidgetErrorListener(this._onExportWidgetError);
+  FolderStore.addExportWidgetSuccessListener(this._onExportWidgetSuccess);
   WidgetStore.addChangeListener(this._handleWidgetSelectChange);
 },
 componentWillUnmount:function(){
   FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
   FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
   FolderStore.removeSendStatusListener(this._onSendStatusChange);
+  FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidget);
   FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
   FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
   FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
+  FolderStore.removeExportWidgetErrorListener(this._onExportWidgetError);
+  FolderStore.removeExportWidgetSuccessListener(this._onExportWidgetSuccess);
   WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
 },
 _handleWidgetSelectChange(){

@@ -28,16 +28,16 @@ var TagItem=React.createClass({
         boxDisabledStatus=false;
     switch(this.props.label){
       case 0:
-        alarm=<div className="disable">基准值未配置,</div>;
-        baseline=<div className="disable">报警未配置</div>;
+        alarm=<div className="disable">{I18N.Tag.AlarmStatus1},</div>;
+        baseline=<div className="disable">{I18N.Tag.AlarmStatus3}</div>;
         break;
       case 1:
-        alarm=<div className="able">基准值已配置,</div>;
-        baseline=<div className="disable">报警未配置</div>;
+        alarm=<div className="able">{I18N.Tag.AlarmStatus2},</div>;
+        baseline=<div className="disable">{I18N.Tag.AlarmStatus3}</div>;
         break;
       case 2:
-        alarm=<div className="able">基准值已配置,</div>;
-        baseline=<div className="able">报警已配置</div>;
+        alarm=<div className="able">{I18N.Tag.AlarmStatus2},</div>;
+        baseline=<div className="able">{I18N.Tag.AlarmStatus4}</div>;
         break;
     };
     var boxStyle={

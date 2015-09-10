@@ -2,7 +2,7 @@
 
 import React from 'react';
 import mui from 'material-ui';
-import {Mixins} from 'material-ui';
+import {Mixins,TextField} from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import _ from 'lodash';
@@ -218,7 +218,7 @@ var Tree = React.createClass({
     }
 
 
-
+    var test=<TextField value='string'/>;
     return (
       <div className={classNames(_.set({
         "pop-tree-view": true
