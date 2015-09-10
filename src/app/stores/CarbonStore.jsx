@@ -25,7 +25,7 @@ let _isLoading = false,
 
 const CARBON_DATA_LOADING_EVENT = 'carbondataloadingevent',
       CARBON_DATA_LOADED_EVENT = 'carbondataloadedevent',
-      CARBON_DATA_LOAD_ERROR_EVENT = 'carbondataloaderror';
+      CARBON_DATA_LOAD_ERROR_EVENT = 'carbondataloaderror',
       CARBON_DATA_LOAD_ERRORS_EVENT = 'costdataloaderrors';
 
 let CarbonStore = assign({},PrototypeStore,{
@@ -160,7 +160,7 @@ let CarbonStore = assign({},PrototypeStore,{
   },
   removeCarbonDataLoadErrorListener: function(callback) {
     this.removeListener(CARBON_DATA_LOAD_ERROR_EVENT, callback);
-  }
+  },
   addCarbonDataLoadErrorsListener:function(callback) {
     this.on(CARBON_DATA_LOAD_ERRORS_EVENT, callback);
   },

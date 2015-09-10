@@ -2199,6 +2199,7 @@ let ChartStrategyFactor = {
      CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
      CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
      CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+     CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
    },
    ratioBindStoreListeners(analysisPanel){
      RatioStore.addRatioDataLoadingListener(analysisPanel._onRatioLoadingStatusChange);
@@ -2222,6 +2223,7 @@ let ChartStrategyFactor = {
      CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
      CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
      CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+     CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
    },
    rankBindStoreListeners(analysisPanel){
      RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
@@ -2247,6 +2249,7 @@ let ChartStrategyFactor = {
      CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
      CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
      CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+     CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
    },
 
     ratioUnbindStoreListeners(analysisPanel){
@@ -2283,6 +2286,7 @@ let ChartStrategyFactor = {
      CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
      CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
      CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+     CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
    },
 
    rankUnbindStoreListeners(analysisPanel){
