@@ -10,7 +10,8 @@ import ChartReaderStrategyFactor from './Energy/ChartReaderStrategyFactor.jsx';
 
 const COST_DATA_LOADING_EVENT = 'costdataloading',
       COST_DATA_LOADED_EVENT = 'costdatachanged',
-      COST_DATA_LOAD_ERROR_EVENT = 'costdataloaderror';
+      COST_DATA_LOAD_ERROR_EVENT = 'costdataloaderror',
+      COST_DATA_LOAD_ERRORS_EVENT = 'costdataloaderrors';
 
 let _isLoading = false,
     _energyData = null,
@@ -21,7 +22,9 @@ let _isLoading = false,
     _chartTitle = null,
     _relativeDate = null,
     _errorCode = null,
-    _errorMessage = null;
+    _errorMessage = null,
+    _errorCodes = [],
+    _errorParams = [];
 
 var CostStore = assign({},PrototypeStore,{
   initReaderStrategy(bizChartType){
@@ -57,14 +60,35 @@ var CostStore = assign({},PrototypeStore,{
   getErrorMessage(){
     return _errorMessage;
   },
+  getErrorParams(){
+    return _errorParams;
+  },
   getErrorCode(){
     return _errorCode;
+  },
+  getErrorCodes(){
+    return _errorCodes;
   },
   _initErrorText(errorText){
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
     _errorCode = errorCode;
     _errorMessage = error.Messages;
+  },
+  _checkErrors(data){
+    if(!data) return;
+    var errors = data.Errors;
+    var error, errorCode;
+    _errorCodes = [];
+    _errorParams = [];
+    if(errors && errors.length > 0) {
+      for(var i = 0, len = errors.length; i < len; i++){
+        error = errors[i];
+        errorCode = CommonFuns.processErrorCode(error.ErrorCode).errorCode;
+        _errorCodes.push(errorCode);
+        _errorParams.push(error.Params);
+      }
+    }
   },
   //only one tagOptions if click tag in alarm list
   _onDataLoading(params, selectedList, relativeDate){
@@ -130,6 +154,15 @@ var CostStore = assign({},PrototypeStore,{
   },
   removeCostDataLoadErrorListener:function(callback) {
     this.removeListener(COST_DATA_LOAD_ERROR_EVENT, callback);
+  },
+  addCostDataLoadErrorsListener: function(callback) {
+    this.on(COST_DATA_LOAD_ERRORS_EVENT, callback);
+  },
+  emitCostDataLoadErrorsListener:function() {
+    this.emit(COST_DATA_LOAD_ERRORS_EVENT);
+  },
+  removeCostDataLoadErrorsListener:function(callback) {
+    this.removeListener(COST_DATA_LOAD_ERRORS_EVENT, callback);
   }
 });
 
@@ -142,6 +175,8 @@ CostStore.dispatchToken = AppDispatcher.register(function(action) {
       case Action.GET_COST_DATA_SUCCESS:
         CostStore._onDataChanged(action.energyData, action.submitParams);
         CostStore.emitCostDataLoaded();
+        CostStore._checkErrors(action.energyData);
+        CostStore.emitCostDataLoadErrorsListener();
         break;
       case Action.GET_COST_DATA_ERROR:
         CostStore._onDataChanged(null, action.submitParams);

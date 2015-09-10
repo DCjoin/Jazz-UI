@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 
-import {Dialog, FlatButton} from 'material-ui';
+import {Dialog, Snackbar, FlatButton} from 'material-ui';
 
 let GlobalErrorMessageDialog = React.createClass({
   getInitialState(){
@@ -20,19 +20,15 @@ let GlobalErrorMessageDialog = React.createClass({
     this.refs.errorMessageDialog.dismiss();
   },
   render(){
-    var _buttonActions = [
-            <FlatButton
-            label="确定"
-            secondary={true}
-            onClick={this._hide} />
-        ];
+    let me = this;
+    var snackbar = <Snackbar
+      message={me.state.errorMessage}
+      action="确定"
+      onActionTouchTap={me._hide}
+      onDismiss={me._onDismiss}
+      ref='errorMessageDialog' />;
 
-    var dialog = <Dialog title="Error Message" openImmediately={this.state.isShowed} actions={_buttonActions} modal={false}
-                      ref='errorMessageDialog' contentStyle={{width:'500px', color:'#464949'}}> 
-      <div> {this.state.errorMessage}</div>
-    </Dialog>;
-
-    return  <div>{dialog} </div>;
+    return  <div>{snackbar} </div>;
   },
   componentDidUpdate(){
     if(this.state.isShowed){
