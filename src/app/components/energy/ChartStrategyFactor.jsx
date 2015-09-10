@@ -302,6 +302,10 @@ let ChartStrategyFactor = {
 
       //init selected tags
       let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      let lastTagOption = tagOptions[tagOptions.length-1];
+
+      CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+
       tagOptions.forEach(item=>{
         setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
       });
@@ -346,6 +350,10 @@ let ChartStrategyFactor = {
 
       //init selected tags
       let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      let lastTagOption = tagOptions[tagOptions.length-1];
+
+      CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+      
       tagOptions.forEach(item=>{
         setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
       });
