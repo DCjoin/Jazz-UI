@@ -179,7 +179,8 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitEnergyStepChange',
-      save2DashboardFn: 'saveUnit2Dashboard'
+      save2DashboardFn: 'saveUnit2Dashboard',
+      initChartPanelByWidgetDtoFn: 'initUnitChartPanelByWidgetDto'
     },UnitCost:{
       searchBarGenFn:'unitEnergySearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
@@ -312,8 +313,10 @@ let ChartStrategyFactor = {
      let widgetDto = analysisPanel.props.widgetDto,
          contentSyntax = widgetDto.ContentSyntax,
          contentObj = JSON.parse(contentSyntax),
+         benchmarkOption = contentObj.benchmarkOption,
          viewOption = contentObj.viewOption,
-         timeRanges = viewOption.TimeRanges;
+         timeRanges = viewOption.TimeRanges,
+         unitType = viewOption.DataOption.UnitType;
 
       let initPanelDate = function(timeRange){
         if(timeRange.relativeDate){
@@ -340,16 +343,23 @@ let ChartStrategyFactor = {
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
-      if(timeRanges.length !== 1){
-        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
-      }
 
       //init selected tags
       let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
       tagOptions.forEach(item=>{
         setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
       });
-      setTimeout(()=>{analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
+      let bo = null;
+      if(benchmarkOption && benchmarkOption.IndustryId !== null){
+        bo = benchmarkOption;
+      }
+
+      setTimeout(()=>{
+        analysisPanel.setState({unitType: unitType, benchmarkOption: bo},()=>{
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
+          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+        });
+      });
    }
  },
  save2DashboardFnStrategy:{
@@ -748,6 +758,7 @@ let ChartStrategyFactor = {
        benchmarkOption = null;
      }
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
+     analysisPanel.setState({benchmarkOption:benchmarkOption});
    },
    handleUnitCostBenchmarkMenuItemClick(analysisPanel,benchmarkOption){
      let tagOptions = CostStore.getSelectedList(),
@@ -1211,7 +1222,8 @@ let ChartStrategyFactor = {
    getUnitEnergyInitialState(){
      let state = {
        unitType: 2,
-       benchmarks: null
+       benchmarks: null,
+       benchmarkOption: null
      };
       return state;
    },
@@ -1397,7 +1409,8 @@ let ChartStrategyFactor = {
          dateRange = dateSelector.getDateTime(),
          startDate = dateRange.start,
          endDate = dateRange.end,
-         nodeOptions;
+         nodeOptions,
+         benchmarkOption = analysisPanel.state.benchmarkOption;
 
      if(startDate.getTime()>= endDate.getTime()){
          GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
@@ -1405,14 +1418,34 @@ let ChartStrategyFactor = {
      }
 
      nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+     let clearBmflag = false;
      if( !nodeOptions || nodeOptions.length === 0){
        analysisPanel.setState({energyData:null});
        return;
+     }else{
+       if(analysisPanel.state.benchmarkOption !== null){
+         let hierId = null;
+
+         nodeOptions.forEach(item => {
+           if(hierId === null){
+             hierId = item.hierId;
+           }else if (hierId !== item.hierId){
+             clearBmflag = true;
+             return;
+           }
+         });
+         if(clearBmflag){
+           benchmarkOption = null;
+         }
+       }
      }
      let relativeDateValue = analysisPanel._getRelativeDateValue();
 
      let unitType = analysisPanel.state.unitType;
-     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, unitType, relativeDateValue, analysisPanel);
+     analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, unitType, relativeDateValue, analysisPanel, benchmarkOption);
+     if(clearBmflag){
+       analysisPanel.setState({benchmarkOption: null});
+     }
    },
    onUnitCostSearchDataButtonClick(analysisPanel){
      analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
@@ -1584,7 +1617,7 @@ let ChartStrategyFactor = {
      if(ratioType==2 && (step==0||step==1||step==2))step=3;
      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, relativeDate);
    },
-   setUnitEnergyFitStepAndGetData(startDate, endDate, tagOptions, unitType, relativeDate, analysisPanel){
+   setUnitEnergyFitStepAndGetData(startDate, endDate, tagOptions, unitType, relativeDate, analysisPanel, benchmarkOption){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
          step = analysisPanel.state.step,
          limitInterval = CommonFuns.getLimitInterval(timeRanges),
@@ -1592,7 +1625,7 @@ let ChartStrategyFactor = {
      if( stepList.indexOf(step) == -1){
        step = limitInterval.display;
      }
-     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, relativeDate);
+     analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, relativeDate, benchmarkOption);
    },
    setUnitCarbonFitStepAndGetData(startDate, endDate, hierarchyId, commodityIds, destination, unitType, relativeDate, analysisPanel){
      let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
@@ -1678,7 +1711,7 @@ let ChartStrategyFactor = {
        </div>
        <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
-         <DropDownMenu menuItems={ConstStore.getUnits()} style={{width:'102px', marginRight:'10px'}} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({unitType: menuItem.value});}}></DropDownMenu>
+         <DropDownMenu ref='unitTypeCombo' menuItems={ConstStore.getUnits()} style={{width:'102px', marginRight:'10px'}} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({unitType: menuItem.value});}}></DropDownMenu>
        </div>
        <div className={'jazz-flat-button'}>
          {searchButton}
@@ -2199,6 +2232,7 @@ let ChartStrategyFactor = {
      CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
      CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
      CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+     CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
    },
    ratioBindStoreListeners(analysisPanel){
      RatioStore.addRatioDataLoadingListener(analysisPanel._onRatioLoadingStatusChange);
@@ -2222,6 +2256,7 @@ let ChartStrategyFactor = {
      CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
      CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
      CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+     CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
    },
    rankBindStoreListeners(analysisPanel){
      RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
@@ -2247,6 +2282,7 @@ let ChartStrategyFactor = {
      CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
      CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
      CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+     CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
    },
 
     ratioUnbindStoreListeners(analysisPanel){
@@ -2283,6 +2319,7 @@ let ChartStrategyFactor = {
      CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
      CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
      CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
+     CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
    },
 
    rankUnbindStoreListeners(analysisPanel){
