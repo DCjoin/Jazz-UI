@@ -501,35 +501,35 @@ let AnalysisPanel = React.createClass({
       this.setState({month: selectedIndex});
     },
     _onGetEnergyDataError(){
-      let errorObj = this.errorProcess();
+      let errorObj = this.errorProcess(EnergyStore);
       this._onEnergyDataChange(true, errorObj);
     },
     _onGetCostDataError(){
-      let errorObj = this.errorProcess();
+      let errorObj = this.errorProcess(CostStore);
       this._onCostDataChange(true, errorObj);
     },
     _onGetCarbonDataError(){
-      let errorObj = this.errorProcess();
+      let errorObj = this.errorProcess(CarbonStore);
       this._onCarbonDataChange(true, errorObj);
     },
     _onGetRatioDataError(){
-      let errorObj = this.errorProcess();
+      let errorObj = this.errorProcess(RatioStore);
       this._onRatioDataChange(true, errorObj);
     },
     _onGetRankDataError(){
-      let errorObj = this.errorProcess();
+      let errorObj = this.errorProcess(RankStore);
       this._onRankDataChange(true, errorObj);
     },
     _onGetLabelDataError(){
-      let errorObj = this.errorProcess();
+      let errorObj = this.errorProcess(LabelStore);
       this._onLabelDataChange(true, errorObj);
     },
-    errorProcess(){
+    errorProcess(EnergyStore){
       let code = EnergyStore.getErrorCode(),
           messages = EnergyStore.getErrorMessage();
 
       if (code.toString() == '02004') {
-          let errorObj = this.showStepError(messages[0]);
+          let errorObj = this.showStepError(messages[0], EnergyStore);
           return errorObj;
       }else{
         let errorMsg = CommonFuns.getErrorMessage(code);
@@ -539,7 +539,7 @@ let AnalysisPanel = React.createClass({
         return null;
       }
     },
-    showStepError(step){
+    showStepError(step, EnergyStore){
       let btns = [], msg = [], map = { Hour: 1, Day: 2, Week: 5, Month: 3, Year: 4 },
           paramsObj = EnergyStore.getParamsObj(),
           timeRanges = paramsObj.timeRanges,
