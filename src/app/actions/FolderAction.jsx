@@ -233,6 +233,23 @@ let FolderAction = {
       type: Action.SET_WIDGET_INIT_STATE,
       state: state
     });
+  },
+  exportWidget(widgetId){
+    Ajax.post('/Dashboard.svc/ExportWidget', {
+         params: {
+           widgetId: widgetId
+          },
+        success: function(widgetDto){
+          AppDispatcher.dispatch({
+              type: Action.EXPORT_WIDGET_SUCCESS
+          });
+        },
+        error: function(err, res){
+          AppDispatcher.dispatch({
+              type: Action.EXPORT_WIDGET_ERROR
+          });
+        },
+    });
   }
 };
 

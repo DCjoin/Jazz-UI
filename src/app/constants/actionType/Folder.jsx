@@ -22,7 +22,9 @@ module.exports = {
       UPDATE_WIDGETDTOS_SUCCESS: null,
       UPDATE_WIDGETDTOS_ERROR: null,
       UPDATE_WIDGETDTOS_LOADING: null,
-      SET_WIDGET_INIT_STATE: null
+      SET_WIDGET_INIT_STATE: null,
+      EXPORT_WIDGET_ERROR:null,
+      EXPORT_WIDGET_SUCCESS:null
   })
 
 };

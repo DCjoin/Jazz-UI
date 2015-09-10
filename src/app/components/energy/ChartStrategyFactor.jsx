@@ -178,7 +178,8 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn:'getUnitEnergySubToolbar',
       handleConfigBtnItemTouchTapFn:'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn:'handleUnitBenchmarkMenuItemClick',
-      handleStepChangeFn: 'handleUnitEnergyStepChange'
+      handleStepChangeFn: 'handleUnitEnergyStepChange',
+      save2DashboardFn: 'saveUnit2Dashboard'
     },UnitCost:{
       searchBarGenFn:'unitEnergySearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
@@ -304,6 +305,51 @@ let ChartStrategyFactor = {
         setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
       });
       setTimeout(()=>{analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
+   },
+   initUnitChartPanelByWidgetDto(analysisPanel){
+     let dateSelector = analysisPanel.refs.dateTimeSelector;
+     let j2d = CommonFuns.DataConverter.JsonToDateTime;
+     let widgetDto = analysisPanel.props.widgetDto,
+         contentSyntax = widgetDto.ContentSyntax,
+         contentObj = JSON.parse(contentSyntax),
+         viewOption = contentObj.viewOption,
+         timeRanges = viewOption.TimeRanges;
+
+      let initPanelDate = function(timeRange){
+        if(timeRange.relativeDate){
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        }else{
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+      let convertWidgetOptions2TagOption = function(WidgetOptions){
+        let tagOptions = [];
+        WidgetOptions.forEach(item=>{
+          tagOptions.push({
+              hierId: item.HierId,
+              hierName: item.NodeName,
+              tagId: item.TargetId,
+              tagName: item.TargetName
+          });
+        });
+        return tagOptions;
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+      if(timeRanges.length !== 1){
+        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
+      }
+
+      //init selected tags
+      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      tagOptions.forEach(item=>{
+        setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
+      });
+      setTimeout(()=>{analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
    }
  },
  save2DashboardFnStrategy:{
@@ -383,7 +429,61 @@ let ChartStrategyFactor = {
        params:params
      };
      widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-     widgetDto.EnergyType = 'Energy';
+     FolderAction.updateWidgetDtos(widgetDto);
+   },
+   saveUnit2Dashboard(analysisPanel){
+     let chartType = analysisPanel.state.selectedChartType;
+     let tagOptions = EnergyStore.getTagOpions();
+     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+     let submitParams1 = EnergyStore.getSubmitParams(),
+         benchmarkOption = submitParams1.benchmarkOption || null,
+         unitType = submitParams1.viewOption.DataOption.UnitType;
+
+     let paramsObj = EnergyStore.getParamsObj(),
+         timeRanges = paramsObj.timeRanges,
+         step = paramsObj.step,
+         widgetTimeRanges;
+
+     //submitParams part
+     let submitParams = {
+                          options: nodeNameAssociation,
+                          tagIds: tagIds,
+                          benchmarkOption: benchmarkOption
+
+                        };
+     //time range part
+     let relativeDate = EnergyStore.getRelativeDate();
+     if( relativeDate !== 'Customerize'){
+       widgetTimeRanges = [{relativeDate:relativeDate}];
+     }else{
+       widgetTimeRanges = timeRanges;
+     }
+
+     // viewOption part
+     let viewOption = {
+                        TimeRanges: widgetTimeRanges,
+                        DataOption:{ UnitType: unitType},
+                        Step: step,
+                        IncludeNavigatorData: true
+                      };
+
+     let bizMap = {Energy: 1, Unit:2 ,Ratio: 3, Label:4, Rank:5};
+     let dataUsageType = bizMap[analysisPanel.props.bizType];
+     viewOption.DataUsageType = dataUsageType;
+
+     submitParams.viewOption = viewOption;
+
+     //storeType part
+     let config = {type: analysisPanel.state.selectedChartType, storeType: 'energy.UnitEnergyUsage'};
+
+     let params = {submitParams:submitParams, config:config, calendar: analysisPanel.state.calendarType};
+
+     let contentSyntax = {
+       params:params
+     };
+     widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
      FolderAction.updateWidgetDtos(widgetDto);
    },
    saveCost2Dashboard(analysisPanel){
