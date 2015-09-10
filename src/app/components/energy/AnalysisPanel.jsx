@@ -37,7 +37,8 @@ let AnalysisPanel = React.createClass({
         //bizType:'Energy',
         bizType:'Unit',
         energyType:'Energy',
-        chartTitle:'最近7天能耗'
+        chartTitle:'最近7天能耗',
+        widgetInitState: false
       };
     },
     componentWillReceiveProps(nextProps){
@@ -139,10 +140,18 @@ let AnalysisPanel = React.createClass({
       this.state.chartStrategy.getInitParamFn(me);
       this.state.chartStrategy.getAllDataFn();
       this.state.chartStrategy.bindStoreListenersFn(me);
+      if(this.props.widgetInitState){
+        this._initChartPanelByWidgetDto();
+      }
     },
     componentWillUnmount: function() {
       let me = this;
       this.state.chartStrategy.unbindStoreListenersFn(me);
+    },
+    _initChartPanelByWidgetDto(){
+      if(this.state.chartStrategy.initChartPanelByWidgetDtoFn){
+        this.state.chartStrategy.initChartPanelByWidgetDtoFn(this);
+      }
     },
     _afterChartCreated(chartObj){
       if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
@@ -470,6 +479,19 @@ let AnalysisPanel = React.createClass({
     _setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate){
       this.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, relativeDate. this);
     },
+    _setRelativeDateByValue(value){
+      let relativeDateMenuItems = ConstStore.getSearchDate();
+      let menuIndex = -1;
+      relativeDateMenuItems.forEach((item, index)=>{
+        if(item.value === value){
+          menuIndex = index;
+        }
+      });
+      if(menuIndex !== -1){
+        this.refs.relativeDate.setState({selectedIndex: menuIndex});
+        this._onRelativeDateChange(null, menuIndex, relativeDateMenuItems[menuIndex]);
+      }
+    },
     _onRelativeDateChange(e, selectedIndex, menuItem){
       let value = menuItem.value,
           dateSelector = this.refs.dateTimeSelector;
@@ -481,7 +503,7 @@ let AnalysisPanel = React.createClass({
     },
     _onRankTypeChange(e, selectedIndex, menuItem){
       var rankType = menuItem.value;
-      this.setState({rankType: rankType});
+      this.setstate({rankType: rankType});
     },
     _onRangeChange(e, selectedIndex, menuItem){
       var range = menuItem.value;
@@ -700,18 +722,6 @@ let AnalysisPanel = React.createClass({
         }
       });
       return rangeIndex;
-    },
-    getRankTypeIndex(){
-      var rankType = this.state.rankType;
-      var rankTypeItem = ConstStore.getRankTypeItem();
-      var rankTypeIndex;
-      rankTypeItem.forEach(item => {
-        if(item.value === rankType){
-          rankTypeIndex = item.index;
-          return;
-        }
-      });
-      return rankTypeIndex;
     },
     _onHierNodeChange(){
       this.state.chartStrategy.onHierNodeChangeFn(this);

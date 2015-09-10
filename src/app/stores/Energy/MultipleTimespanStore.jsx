@@ -344,35 +344,36 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
         if(index === 0){
           timespans.push({relativeDate:_originalType});
         }else{
-          if( item.relativeType === 'Customerize'){
+          if( item.get('relativeType') === 'Customerize'){
             timespans.push({StartTime:d2j(item.get('startDate')), EndTime:d2j(item.get('endDate'))});
           }else{
+            let relativeValue = item.get('relativeValue');
             let offset, timeType;
             switch (item.get('relativeType')) {
                 case 'Today':
                 case 'Yesterday':
-                  offset = 24*60*60;
+                  offset = relativeValue * 24*60*60;
                   timeType = 0;
                   break;
                 case 'ThisWeek':
                 case 'LastWeek':
                 case 'Last7Day':
-                  offset = 7*24*60*60;
+                  offset = relativeValue * 7*24*60*60;
                   timeType = 0;
                   break;
                 case 'ThisMonth':
                 case 'LastMonth':
-                  offset = 1;
+                  offset = relativeValue;
                   timeType = 2;
                   break;
                 case 'Last30Day':
-                  offset = 30*24*60*60;
+                  offset = relativeValue * 30*24*60*60;
                   timeType = 0;
                   break;
                 case 'ThisYear':
                 case 'LastYear':
                 case 'Last12Month':
-                  offset = 12;
+                  offset = relativeValue * 12;
                   timeType = 2;
                   break;
             }
@@ -382,6 +383,59 @@ let MultipleTimespanStore = assign({},PrototypeStore,{
       }
     });
     return timespans;
+  },
+  initDataByWidgetTimeRanges(timeRanges){
+    let j2d = CommonFuns.DataConverter.JsonToDateTime;
+    let me = this;
+    this.clearMultiTimespan('both');
+    timeRanges.forEach((item, index)=>{
+      if(index === 0){
+        _relativeList = Immutable.List([]);
+        if(item.relativeDate){
+            _originalType = item.relativeDate;
+            var timeregion = CommonFuns.GetDateRegion(item.relativeDate.toLowerCase());
+            _relativeList = _relativeList.push(me.generateTimespanItem(true, item.relativeDate, null, timeregion.start, timeregion.end, null));
+        }else{
+            _originalType = 'Customerize';
+            _relativeList = _relativeList.push(me.generateTimespanItem(true, 'Customerize', null,j2d(item.StartTime, false), j2d(item.EndTime, false), null));
+        }
+      }else{
+        if(item.offset){
+          let offset = parseInt(item.offset);
+          let relativeValue = me.getRelativeValue(offset, _originalType);
+          _relativeList = _relativeList.push(me.generateTimespanItem(false, _originalType, relativeValue, null, null, index));
+        }else{
+          _relativeList = _relativeList.push(me.generateTimespanItem(false, 'Customerize', null, j2d(item.StartTime, false), j2d(item.EndTime, false), index));
+        }
+      }
+    });
+  },
+  getRelativeValue(offset, relativeType){
+    let relativeValue;
+    switch (relativeType) {
+        case 'Today':
+        case 'Yesterday':
+          relativeValue = offset/(24*60*60);
+          break;
+        case 'ThisWeek':
+        case 'LastWeek':
+        case 'Last7Day':
+          relativeValue = offset/(7*24*60*60);
+          break;
+        case 'ThisMonth':
+        case 'LastMonth':
+          relativeValue = offset;
+          break;
+        case 'Last30Day':
+          relativeValue = offset/(30*24*60*60);
+          break;
+        case 'ThisYear':
+        case 'LastYear':
+        case 'Last12Month':
+          relativeValue = offset / 12;
+          break;
+    }
+    return relativeValue;
   }
 });
 MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action) {

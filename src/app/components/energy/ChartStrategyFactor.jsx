@@ -14,6 +14,7 @@ import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx
 import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
 import EnergyAction from '../../actions/EnergyAction.jsx';
 import CarbonAction from '../../actions/CarbonAction.jsx';
+import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
@@ -78,7 +79,8 @@ let ChartStrategyFactor = {
       handleWeatherMenuItemClickFn:'handleWeatherMenuItemClick',
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn:'handleNavigatorChangeLoad',
-      save2DashboardFn:'save2Dashboard'
+      save2DashboardFn:'save2Dashboard',
+      initChartPanelByWidgetDtoFn:'initChartPanelByWidgetDto'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -256,6 +258,53 @@ let ChartStrategyFactor = {
       onEnergyTypeChangeFn:'onEnergyTypeChange',
       getChartSubToolbarFn:'getRankSubToolbar',
     }
+ },
+ initChartPanelByWidgetDtoFnStrategy:{
+   initChartPanelByWidgetDto(analysisPanel){
+     let dateSelector = analysisPanel.refs.dateTimeSelector;
+     let j2d = CommonFuns.DataConverter.JsonToDateTime;
+     let widgetDto = analysisPanel.props.widgetDto,
+         contentSyntax = widgetDto.ContentSyntax,
+         contentObj = JSON.parse(contentSyntax),
+         viewOption = contentObj.viewOption,
+         timeRanges = viewOption.TimeRanges;
+
+      let initPanelDate = function(timeRange){
+        if(timeRange.relativeDate){
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        }else{
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+      let convertWidgetOptions2TagOption = function(WidgetOptions){
+        let tagOptions = [];
+        WidgetOptions.forEach(item=>{
+          tagOptions.push({
+              hierId: item.HierId,
+              hierName: item.NodeName,
+              tagId: item.TargetId,
+              tagName: item.TargetName
+          });
+        });
+        return tagOptions;
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+      if(timeRanges.length !== 1){
+        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
+      }
+
+      //init selected tags
+      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      tagOptions.forEach(item=>{
+        setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
+      });
+      setTimeout(()=>{analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
+   }
  },
  save2DashboardFnStrategy:{
    save2Dashboard(analysisPanel){
@@ -1896,7 +1945,7 @@ let ChartStrategyFactor = {
  },
  getAuxiliaryCompareBtnFnStrategy:{
    getEnergyAuxiliaryCompareBtn(analysisPanel){
-     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'noneWorkTime'},
+     let calendarSubItems = [{ primaryText:I18N.EM.Tool.Calendar.NoneWorkTime, value:'noneWorkTime'},
                              {primaryText:I18N.EM.Tool.Calendar.HotColdSeason, value:'hotColdSeason'}];
      let calendarEl;
      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
@@ -2090,6 +2139,7 @@ let ChartStrategyFactor = {
      EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
      EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+     MultiTimespanAction.clearMultiTimespan('both');
    },
    carbonUnbindStoreListeners(analysisPanel){
      CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);

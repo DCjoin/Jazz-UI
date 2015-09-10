@@ -17,6 +17,7 @@ import ChartAction from '../../actions/ChartAction.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 //for test commoditypanel
 import CommodityAction from '../../actions/CommodityAction.jsx';
+import CommodityStore from '../../stores/CommodityStore.jsx';
 
 import LeftPanel from '../folder/FolderLeftPanel.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
@@ -27,6 +28,8 @@ import DeleteView from '../folder/operationView/DeleteView.jsx';
 import ShareView from '../folder/operationView/ShareView.jsx';
 import SendView from '../folder/operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
+
+let lastBizType=null;
 
 let Setting = React.createClass({
 
@@ -180,7 +183,8 @@ _onWidgetMenuSelect:function(index){
   },
   //just for test commoditypanel
 componentWillMount:function(){
-  CommodityAction.setEnergyConsumptionType('Carbon');
+  // CommodityAction.setEnergyConsumptionType('Carbon');
+  lastBizType=null;
 },
 componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -202,17 +206,23 @@ componentWillUnmount:function(){
 },
 _handleWidgetSelectChange(){
   let widgetDto = WidgetStore.getWidgetDto();
-
-  let state = false;
-  if(widgetDto && widgetDto.ContentSyntax){
-    state = true;
-  }
   this.setState({
                   refreshChart: false,
                   selectedEnergyType: null,
                   selectedNode: WidgetStore.getSelectedNode(),
                   widgetDto: widgetDto
                 });
+},
+getEnergyTypeFromWidgetDto(widgetDto){
+  let energyType = null;
+  if(widgetDto && widgetDto.BizType){
+    let map = { Energy:'Energy',Carbon:'Carbon', Cost:'Cost', Ratio:null, Labelling:null,
+                UnitEnergy:'Energy', UnitCarbon:'Carbon', UnitCost:'Cost',
+                RankingEnergy:'Energy', RankingCost:'Cost', RankCarbon:'Carbon', CostElectric:'Cost'};
+    let bizType = widgetDto.BizType;
+    energyType = map[bizType];
+  }
+  return energyType;
 },
 render: function () {
     let me = this;
@@ -230,19 +240,24 @@ render: function () {
                                                                 onOperationSelect={this._onTemplateSelect}/>:null);
       }else if(type === 7){
         //chart panel
+        let widgetDto = me.state.widgetDto;
         let title = selectedNode.get('Name');
         let bizType = bizTypeMap[selectedNode.get('WidgetType')];
-        let energyType = this.state.selectedEnergyType || CommonFuns.extractEnergyType( selectedNode.get('EnergyType') );
+        let energyType = this.state.selectedEnergyType || this.getEnergyTypeFromWidgetDto(widgetDto);
         rightPanel = this.getRightPanel(bizType, energyType);
 
         let mainPanelProps = {
           chartTitle:title,
           bizType: bizType,
           energyType: energyType,
-          widgetDto: me.state.widgetDto,
+          widgetDto: widgetDto,
           onEnergyTypeChange: me._onEnergyTypeChanged,
           onOperationSelect: me._onWidgetMenuSelect
         };
+        let widgetInitState = WidgetStore.getInitState();
+        if(widgetInitState){
+          mainPanelProps.widgetInitState = true;
+        }
         mainPanel =<AnalysisPanel {...mainPanelProps}></AnalysisPanel>;
       }
     }
@@ -301,6 +316,16 @@ render: function () {
                       container={<RankingContainer ecType={energyType || 'Energy'}/>}/>;
 
         break;
+    }
+    if(lastBizType!=bizType){
+      if(bizType=='Rank'){
+        CommodityStore.clearRankingTreeList();
+      }
+      else {
+          CommodityStore.resetHierInfo();
+      }
+
+      lastBizType=bizType
     }
     return rightPanel;
   }

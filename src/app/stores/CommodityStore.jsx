@@ -91,16 +91,18 @@ var CommodityStore = assign({},PrototypeStore,{
   getCommodityList:function(){
     return _commodityList;
   },
+  resetHierInfo:function(){
+    _hierNode=null;
+    _currentHierId=null;
+    _currentHierName=null;
+  },
   resetData:function(){
       _energyConsumptionType=null;
-      _currentHierId=null;
-      _currentHierName=null;
       _currentDimNode=null;
       _commodityList=[];
-      _hierNode=null;
       _commodityStatus=Immutable.List([]);
       _buttonStatus_EC=true;
-      _buttonStatus_UC=true
+      _buttonStatus_UC=true;
   },
   setECButtonStatus:function(){
     if(_commodityStatus.size==1){
@@ -176,7 +178,7 @@ var CommodityStore = assign({},PrototypeStore,{
 
   },
   clearCommodityStatus:function(){
-    _commodityStatus=[];
+    _commodityStatus=Immutable.List([]);
   },
   //for Ranking
   setRankingTreeList:function(treeList){
@@ -190,6 +192,9 @@ var CommodityStore = assign({},PrototypeStore,{
   },
   getRankingTreeList:function(){
     return _RankingTreeList;
+  },
+  clearRankingTreeList:function(){
+    _RankingTreeList=[];
   },
   setRankingCommodity:function(commodityId,commodityName){
     _RankingCommodity={

@@ -12,8 +12,7 @@ var RankingHierTreeButton = React.createClass({
   mixins: [Mixins.ClickAwayable],
   propTypes: {
     checkedTreeNodes:React.PropTypes.array,
-    onConfirm:React.PropTypes.func,
-    onButtonClick:React.PropTypes.func
+    onConfirm:React.PropTypes.func
   },
   _onChange(){
     var data=HierarchyStore.getData();
@@ -24,7 +23,7 @@ var RankingHierTreeButton = React.createClass({
   },
   setButtonName:function(checkedTreeNodes){
     var name;
-    if(checkedTreeNodes.length!=0){
+    if(checkedTreeNodes.size!=0){
       checkedTreeNodes.forEach(function(node,i){
         if(i===0){
           name=node.get('Name');
@@ -45,8 +44,6 @@ var RankingHierTreeButton = React.createClass({
 
   },
   _onShowPaper:function(){
-    this.props.onButtonClick();
-
     if(this.state.display=='none'){
     this.setState({
       display:'block'
