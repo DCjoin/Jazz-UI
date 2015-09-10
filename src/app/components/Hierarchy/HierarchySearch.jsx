@@ -6,12 +6,7 @@ import {nodeType} from '../../constants/TreeConstants.jsx';
 
 let treeMap=new Array();
 var itemUnit=48;
-var nodetypename=[
-                  "客户",
-                  "组织",
-                  "园区",
-                  "楼宇"
-]
+
 let SearchItem = React.createClass({
   propTypes: {
       nodeData: React.PropTypes.object.isRequired,
@@ -63,6 +58,12 @@ let HierarchySearch = React.createClass({
     var payloadNo=0;
     var nodelength=0;
     var lastpayloadNo=0;
+    var nodetypename=[
+                      I18N.Hierarchy.Menu1,
+                      I18N.Hierarchy.Menu2,
+                      I18N.Hierarchy.Menu3,
+                      I18N.Hierarchy.Menu4
+    ]
 
     nodetype.length=0;
     nodemenu.length=0;

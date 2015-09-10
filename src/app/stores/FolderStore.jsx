@@ -27,7 +27,9 @@ let FOLDER_TREE_EVENT = 'foldertree',
     SELECTED_NODE_EVENT='selectednode',
     MOVE_ITEM_SUCCESS_EVENT='moveitemsuccess',
     MOVE_ITEM_ERROR_EVENT='moveitemerror',
-    MODIFY_READING_STATUS_EVENT='modifyreadingstatus';
+    MODIFY_READING_STATUS_EVENT='modifyreadingstatus',
+    EXPORT_WIDGET_ERROR_EVENT='exportwidgeterror',
+    EXPORT_WIDGET_SUCCESS_EVENT='exportwidgetsuccess';
 
 var FolderStore = assign({},PrototypeStore,{
 
@@ -463,10 +465,27 @@ var FolderStore = assign({},PrototypeStore,{
  removeModfiyReadingStatusListener: function(callback) {
      this.removeListener(MODIFY_READING_STATUS_EVENT, callback);
      this.dispose();
-     },
-
-
-
+  },
+  emitExportWidgetErrorChange: function() {
+          this.emit(EXPORT_WIDGET_ERROR_EVENT);
+        },
+  addExportWidgetErrorListener: function(callback) {
+        this.on(EXPORT_WIDGET_ERROR_EVENT, callback);
+        },
+  removeExportWidgetErrorListener: function(callback) {
+      this.removeListener(EXPORT_WIDGET_ERROR_EVENT, callback);
+      this.dispose();
+  },
+  emitExportWidgetSuccessChange: function() {
+          this.emit(EXPORT_WIDGET_SUCCESS_EVENT);
+        },
+  addExportWidgetSuccessListener: function(callback) {
+        this.on(EXPORT_WIDGET_SUCCESS_EVENT, callback);
+        },
+  removeExportWidgetSuccessListener: function(callback) {
+      this.removeListener(EXPORT_WIDGET_SUCCESS_EVENT, callback);
+      this.dispose();
+      },
 });
 
 var FolderAction = Folder.Action;
@@ -526,6 +545,12 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.MODIFY_NODE_READ_STATUS:
         FolderStore.ModfiyReadingStatus(action.selectedNode);
         FolderStore.emitModfiyReadingStatusChange();
+        break;
+    case FolderAction.EXPORT_WIDGET_ERROR:
+        FolderStore.emitExportWidgetErrorChange();
+        break;
+    case FolderAction.EXPORT_WIDGET_SUCCESS:
+        FolderStore.emitExportWidgetSuccessChange();
         break;
   }
 });

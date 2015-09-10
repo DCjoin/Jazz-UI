@@ -5,6 +5,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Commodity from '../constants/actionType/Commodity.jsx';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
+import Folder from '../constants/actionType/Folder.jsx';
 import Immutable from 'immutable';
 
 const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
@@ -19,6 +20,7 @@ const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
 let _energyConsumptionType=null,// Carbon or Cost
     _rankingECType=null,//Energy Carbon or Cost
     _hierNode=null,
+    _defaultHierNode=null,
     _currentHierId=null,
     _currentHierName=null,
     _currentDimNode=null,
@@ -52,7 +54,7 @@ var CommodityStore = assign({},PrototypeStore,{
     _hierNode={
       hierId:id,
       hierName:name
-    }
+    };
   },
   getCurrentHierarchyId:function(){
     return _currentHierId;
@@ -61,7 +63,16 @@ var CommodityStore = assign({},PrototypeStore,{
     return _currentHierName;
   },
   getHierNode:function(){
-    return _hierNode
+    return _hierNode;
+  },
+  setDefaultNode:function(){
+    _defaultHierNode={
+      Id:_hierNode.hierId,
+      Name:_hierNode.hierName
+    };
+  },
+  getDefaultNode:function(){
+    return _defaultHierNode;
   },
   setCurrentDimInfo:function(node){
     _currentDimNode={
@@ -72,7 +83,7 @@ var CommodityStore = assign({},PrototypeStore,{
     _commodityList=[];
     _commodityStatus=Immutable.List([]);
     _buttonStatus_EC=true;
-    _buttonStatus_UC=true
+    _buttonStatus_UC=true;
   },
   getCurrentDimNode:function(){
     return _currentDimNode;
@@ -281,7 +292,8 @@ var CommodityStore = assign({},PrototypeStore,{
 });
 
 let CommodityAction=Commodity.Action,
-    AlarmTagAction = AlarmTag.Action;
+    AlarmTagAction = AlarmTag.Action,
+    FolderAction=Folder.Action;
 CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case CommodityAction.SET_ENERGY_CONSUMPTION_TYPE:
@@ -329,6 +341,9 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
       case CommodityAction.SET_RANKING_COMMODITY:
           CommodityStore.setRankingCommodity(action.commodityId,action.commodityName);
           CommodityStore.emitRankingCommodity();
+      break;
+      case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
+          CommodityStore.setDefaultNode();
       break;
 
 

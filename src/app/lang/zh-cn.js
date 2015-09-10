@@ -681,7 +681,7 @@ I18N.Folder.Copy.Title = '复制{0}';
 I18N.Folder.Copy.Label = '{0}名称';
 I18N.Folder.Copy.firstActionLabel = '复制';
 I18N.Folder.Copy.Error = '该名称已存在';
-I18N.Folder.Copy.NameLongError = '该名称已超过100个字符';
+I18N.Folder.Copy.NameLongError = '无法输入超过100个字符';
 
 I18N.Folder.SaveAs = {};
 I18N.Folder.SaveAs.Title = '图表另存为';
@@ -694,6 +694,9 @@ I18N.Folder.Send.Error = '{0}发送失败，无法发送给用户：{1}。';
 
 I18N.Folder.Drag = {};
 I18N.Folder.Drag.Error = '名称为“{0}”的{1}已存在，无法完成拖拽。';
+
+I18N.Folder.Export = {};
+I18N.Folder.Export.Error = '图表内容为空，无法导出';
 
 I18N.Folder.Detail = {};
 I18N.Folder.Detail.SubTitile = '来自{0}';
@@ -716,10 +719,29 @@ I18N.Hierarchy.RankingButtonName = '请选择层级节点进行排名';
 I18N.Hierarchy.ButtonName = '请选择层级节点';
 I18N.Hierarchy.Confirm = '确定';
 I18N.Hierarchy.Clear = '清空';
+I18N.Hierarchy.Menu1='客户';
+I18N.Hierarchy.Menu2='组织';
+I18N.Hierarchy.Menu3='园区';
+I18N.Hierarchy.Menu4='楼宇';
+
+I18N.Dim = {};
+I18N.Dim.AllButtonName = '全部维度';
+I18N.Dim.ButtonName = '维度节点';
+
+I18N.ALarm ={};
+I18N.ALarm.Menu1='全部';
+I18N.ALarm.Menu2='报警已配置';
+I18N.ALarm.Menu3='基准值已配置';
+I18N.ALarm.Menu4='未配置';
+
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
 I18N.Tag.ExceedTooltip = '新增全选的数据点数量超出了可选范围，无法全选，请逐一选择目标数据点';
+I18N.Tag.AlarmStatus1 ='基准值未配置';
+I18N.Tag.AlarmStatus2 ='基准值已配置';
+I18N.Tag.AlarmStatus3 ='报警未配置';
+I18N.Tag.AlarmStatus4 ='报警已配置';
 
 I18N.Template = {};
 I18N.Template.Copy = {};

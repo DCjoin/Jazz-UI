@@ -27,7 +27,7 @@ let DimButton=React.createClass({
       var tree={};
     //  tree.Id=this.props.parentNode.Id;
       tree.Id=0;
-      tree.Name="全部维度";
+      tree.Name=I18N.Dim.AllButtonName;
       tree.Children=data;
       this.setState({
         dimList:tree,
@@ -38,7 +38,7 @@ let DimButton=React.createClass({
   },
   resetButtonName:function(){
     this.setState({
-      buttonName:"全部维度",
+      buttonName:I18N.Dim.AllButtonName,
       selectedNode:null
     });
   },
@@ -56,7 +56,7 @@ let DimButton=React.createClass({
           open: false,
           dimList:null,
           selectedNode:null,
-          buttonName:"维度节点"
+          buttonName:I18N.Dim.ButtonName
         };
 
 

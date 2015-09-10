@@ -7,7 +7,7 @@ import Immutable from 'immutable';
 import {Action} from '../constants/actionType/Alarm.jsx';
 
 let _errorMessage = '';
-var GlobalErrorMessageDialogStore = assign({},PrototypeStore,{
+var GlobalErrorMessageStore = assign({},PrototypeStore,{
   getErrorMessage(){
     return _errorMessage;
   },
@@ -15,13 +15,13 @@ var GlobalErrorMessageDialogStore = assign({},PrototypeStore,{
     _errorMessage =  msg;
   }
 });
-GlobalErrorMessageDialogStore.dispatchToken = AppDispatcher.register(function(action) {
+GlobalErrorMessageStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case Action.GLOBAL_ERROR_MESSAGE_CHANGED:
-      GlobalErrorMessageDialogStore.setErrorMessage(action.errorMessage);
-      GlobalErrorMessageDialogStore.emitChange();
+      GlobalErrorMessageStore.setErrorMessage(action.errorMessage);
+      GlobalErrorMessageStore.emitChange();
       break;
   }
 });
 
-module.exports = GlobalErrorMessageDialogStore;
+module.exports = GlobalErrorMessageStore;
