@@ -1883,7 +1883,7 @@ let ChartStrategyFactor = {
        MultiTimespanAction.initMultiTimespanData(relativeType, timeRange.start, timeRange.end);
        historyCompareEl = <AddIntervalWindow openImmediately={true} analysisPanel={analysisPanel}/>;
      }
-     if((chartType ==='line' || chartType ==='colume' || chartType ==='stack') && analysisPanel.state.showSumDialog === true){
+     if((chartType ==='line' || chartType ==='column' || chartType ==='stack') && analysisPanel.state.showSumDialog === true){
        dataSum = <SumWindow  openImmediately={true} analysisPanel={analysisPanel}></SumWindow>;
      }
      if(chartType === 'rawdata'){
