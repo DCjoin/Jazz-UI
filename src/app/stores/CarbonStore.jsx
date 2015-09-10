@@ -18,11 +18,15 @@ let _isLoading = false,
     _relativeDate = null,
     _errorCode = null,
     _errorMessage = null,
-    _destination = 2;
+    _destination = 2,
+    _errorCodes = [],
+    _errorParams = [];
+
 
 const CARBON_DATA_LOADING_EVENT = 'carbondataloadingevent',
       CARBON_DATA_LOADED_EVENT = 'carbondataloadedevent',
-      CARBON_DATA_LOAD_ERROR_EVENT = 'carbondataloaderror';
+      CARBON_DATA_LOAD_ERROR_EVENT = 'carbondataloaderror',
+      CARBON_DATA_LOAD_ERRORS_EVENT = 'costdataloaderrors';
 
 let CarbonStore = assign({},PrototypeStore,{
   initReaderStrategy(bizChartType){
@@ -64,8 +68,14 @@ let CarbonStore = assign({},PrototypeStore,{
   getErrorMessage(){
     return _errorMessage;
   },
+  getErrorParams(){
+    return _errorParams;
+  },
   getErrorCode(){
     return _errorCode;
+  },
+  getErrorCodes(){
+    return _errorCodes;
   },
   _initErrorText(errorText){
     let error = JSON.parse(errorText).error;
@@ -73,7 +83,21 @@ let CarbonStore = assign({},PrototypeStore,{
     _errorCode = errorCode;
     _errorMessage = error.Messages;
   },
-
+  _checkErrors(data){
+    if(!data) return;
+    var errors = data.Errors;
+    var error, errorCode;
+    _errorCodes = [];
+    _errorParams = [];
+    if(errors && errors.length > 0) {
+      for(var i = 0, len = errors.length; i < len; i++){
+        error = errors[i];
+        errorCode = CommonFuns.processErrorCode(error.ErrorCode).errorCode;
+        _errorCodes.push(errorCode);
+        _errorParams.push(error.Params);
+      }
+    }
+  },
   _onDataLoading(params, commOptions, relativeDate){
     _submitParams = params;
     _isLoading = true;
@@ -136,6 +160,15 @@ let CarbonStore = assign({},PrototypeStore,{
   },
   removeCarbonDataLoadErrorListener: function(callback) {
     this.removeListener(CARBON_DATA_LOAD_ERROR_EVENT, callback);
+  },
+  addCarbonDataLoadErrorsListener:function(callback) {
+    this.on(CARBON_DATA_LOAD_ERRORS_EVENT, callback);
+  },
+  emitCarbonDataLoadErrorsListener:function(callback) {
+    this.emit(CARBON_DATA_LOAD_ERRORS_EVENT);
+  },
+  removeCarbonDataLoadErrorsListener: function(callback) {
+    this.removeListener(CARBON_DATA_LOAD_ERRORS_EVENT, callback);
   }
 });
 
@@ -149,6 +182,8 @@ CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
       case ActionTypes.GET_CARBON_DATA_SUCCESS:
         CarbonStore._onDataChanged(action.carbonData, action.submitParams);
         CarbonStore.emitCarbonDataLoadedListener();
+        CarbonStore._checkErrors(action.energyData);
+        CarbonStore.emitCarbonDataLoadErrorsListener();
         break;
       case ActionTypes.GET_CARBON_DATA_ERROR:
         CarbonStore._onDataChanged(null, action.submitParams);
