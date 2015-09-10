@@ -303,6 +303,10 @@ let ChartStrategyFactor = {
 
       //init selected tags
       let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      let lastTagOption = tagOptions[tagOptions.length-1];
+
+      CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+
       tagOptions.forEach(item=>{
         setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
       });
@@ -389,6 +393,10 @@ let ChartStrategyFactor = {
 
       //init selected tags
       let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      let lastTagOption = tagOptions[tagOptions.length-1];
+
+      CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+
       tagOptions.forEach(item=>{
         setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
       });
@@ -2457,17 +2465,16 @@ let ChartStrategyFactor = {
      };
 
      path = '/Energy.svc/GetTagsData4Export';
-     if(chartType !== 'pie'){
-       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
-           params.nodeNameAssociation = nodeNameAssociation;
-     }
+     let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+     params.nodeNameAssociation = nodeNameAssociation;
 
-     let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
      let charTypes = [];
-     for(let i = 0; i < seriesNumber; i++){
-       charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+     if(chartType !== 'rawdata'){
+       let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+       for(let i = 0; i < seriesNumber; i++){
+         charTypes.push(chartType);//暂且全部用chartType，以后可以修改每个series type之后要做更改
+       }
      }
-
      params.charTypes = charTypes;
      ExportChartAction.getTagsData4Export(params, path);
    },
