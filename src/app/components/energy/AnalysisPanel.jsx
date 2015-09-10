@@ -503,7 +503,7 @@ let AnalysisPanel = React.createClass({
     },
     _onRankTypeChange(e, selectedIndex, menuItem){
       var rankType = menuItem.value;
-      this.setstate({rankType: rankType});
+      this.setState({rankType: rankType});
     },
     _onRangeChange(e, selectedIndex, menuItem){
       var range = menuItem.value;
