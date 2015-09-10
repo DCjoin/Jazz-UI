@@ -33,15 +33,26 @@ let ExportChart = React.createClass({
            }, {
                display: 'none'
            }, doc.body);
+if(url.indexOf('/Dashboard.svc/ExportWidget')>=0){
 
+     createElement('input', {
+         type: 'hidden',
+         name:'widgetId',
+         value: data.widgetId,
+     }, null, form);
+
+}
+else {
+  for (name in data) {
+     createElement('input', {
+         type: 'hidden',
+         name: name,
+         value: JSON.stringify(data[name])
+     }, null, form);
+  }
+}
      // add the data
-     for (name in data) {
-        createElement('input', {
-            type: 'hidden',
-            name: name,
-            value: JSON.stringify(data[name])
-        }, null, form);
-     }
+
 
      // submit
      form.submit();

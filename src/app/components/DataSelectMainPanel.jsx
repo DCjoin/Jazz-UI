@@ -17,13 +17,7 @@ import LabelMenuAction from '../actions/LabelMenuAction.jsx';
 import CommodityAction from '../actions/CommodityAction.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
 
-var menuItems = [
-   { payload: '1', text: '全部' },
-   { payload: '2', text: '报警已配置' },
-   { payload: '3', text: '基准值已配置' },
-   { payload: '4', text: '未配置' },
 
-];
 var alarmType=null;//alarmType:0:neither 1:baseline 2:both null:all
 var filters=null;
 var tagStatus=[];
@@ -387,6 +381,13 @@ let DataSelectMainPanel=React.createClass({
      })
    },
     render:function(){
+      var menuItems = [
+         { payload: '1', text: I18N.ALarm.Menu1 },
+         { payload: '2', text: I18N.ALarm.Menu2 },
+         { payload: '3', text: I18N.ALarm.Menu3 },
+         { payload: '4', text: I18N.ALarm.Menu4 },
+
+      ];
 
       var buttonStyle = {
                height:'48px',

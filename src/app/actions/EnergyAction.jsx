@@ -464,6 +464,7 @@ let EnergyAction = {
 
     Ajax.post('/Energy.svc/LabelingGetTagsData', {
       params:submitParams,
+      commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
           type: Action.GET_LABEL_DATA_SUCCESS,
@@ -473,7 +474,7 @@ let EnergyAction = {
       },
       error: function(err, res){
         AppDispatcher.dispatch({
-          type: Action.GET_LABEl_DATA_ERROR,
+          type: Action.GET_LABEL_DATA_ERROR,
           errorText: res.text,
           submitParams: submitParams
         });
@@ -502,6 +503,7 @@ let EnergyAction = {
 
     Ajax.post('/Energy.svc/RankingEnergyUsageData', {
       params:submitParams,
+      commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,
@@ -543,6 +545,7 @@ let EnergyAction = {
 
     Ajax.post('/Energy.svc/RankingCarbonData', {
       params:submitParams,
+      commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,
@@ -583,6 +586,7 @@ let EnergyAction = {
 
     Ajax.post('/Energy.svc/RankingCostData', {
       params:submitParams,
+      commonErrorHandling: false,
       success: function(energyData){
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,

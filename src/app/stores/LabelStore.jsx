@@ -94,7 +94,7 @@ var LabelStore = assign({},PrototypeStore,{
     returns boolean: if only one tag left, then reload data.
   */
   removeSeriesDataByUid(uid){
-    
+
   },
   addLabelDataLoadingListener: function(callback) {
     this.on(LABEL_DATA_LOADING_EVENT, callback);
@@ -138,7 +138,7 @@ LabelStore.dispatchToken = AppDispatcher.register(function(action) {
       case Action.GET_LABEL_DATA_ERROR:
         LabelStore._onDataChanged(null, action.submitParams);
         LabelStore._initErrorText(action.errorText);
-        LabelStore.emitRankDataLoadErrorListener();
+        LabelStore.emitLabelDataLoadErrorListener();
         break;
     }
 });
