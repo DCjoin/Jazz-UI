@@ -530,6 +530,10 @@ let AnalysisPanel = React.createClass({
       let errorObj = this.errorProcess(CostStore);
       this._onCostDataChange(true, errorObj);
     },
+    _onGetCostDataErrors(){
+      let errorObj = this.errorsProcess(CostStore);
+      this._onCostDataChange(false, errorObj);
+    },
     _onGetCarbonDataError(){
       let errorObj = this.errorProcess(CarbonStore);
       this._onCarbonDataChange(true, errorObj);
@@ -560,6 +564,18 @@ let AnalysisPanel = React.createClass({
         },0);
         return null;
       }
+    },
+    errorsProcess(EnergyStore){
+      let codes = EnergyStore.getErrorCodes();
+      var errorMsg, textArray = [];
+      for(var i = 0; i < codes.length; i++){
+        errorMsg = CommonFuns.getErrorMessage(codes[i]);
+        textArray.push(errorMsg);
+      }
+      setTimeout(()=>{
+        GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
+      },0);
+      return null;
     },
     showStepError(step, EnergyStore){
       let btns = [], msg = [], map = { Hour: 1, Day: 2, Week: 5, Month: 3, Year: 4 },

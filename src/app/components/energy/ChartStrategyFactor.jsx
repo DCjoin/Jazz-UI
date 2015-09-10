@@ -2225,6 +2225,7 @@ let ChartStrategyFactor = {
      CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.addCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.addCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
+     CostStore.addCostDataLoadErrorsListener(analysisPanel._onGetCostDataErrors);
      CommodityStore.addECButtonStatusListener(analysisPanel._onTouBtnDisabled);
    },
    carbonBindStoreListeners(analysisPanel){
@@ -2247,6 +2248,7 @@ let ChartStrategyFactor = {
      CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.addCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.addCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
+     CostStore.addCostDataLoadErrorsListener(analysisPanel._onGetCostDataErrors);
      CommodityStore.addUCButtonStatusListener(analysisPanel._onCostBaselineBtnDisabled);
    },
    unitCarbonBindStoreListeners(analysisPanel){
@@ -2290,6 +2292,7 @@ let ChartStrategyFactor = {
      CostStore.removeCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.removeCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.removeCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
+     CostStore.removeCostDataLoadErrorsListener(analysisPanel._onGetCostDataErrors);
      CommodityStore.removeECButtonStatusListener(analysisPanel._onTouBtnDisabled);
    },
 
@@ -2305,6 +2308,7 @@ let ChartStrategyFactor = {
      CostStore.removeCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
      CostStore.removeCostDataLoadedListener(analysisPanel._onCostDataChange);
      CostStore.removeCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
+     CostStore.removeCostDataLoadErrorsListener(analysisPanel._onGetCostDataErrors);
      CommodityStore.removeUCButtonStatusListener(analysisPanel._onCostBaselineBtnDisabled);
    },
 
