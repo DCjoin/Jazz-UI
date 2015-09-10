@@ -1320,6 +1320,17 @@ let CommonFuns = {
             }
     }
 	},
+	setSelectedIndexByValue(combo, value){
+		let menuItems = combo.props.menuItems;
+		let valueIndex = 0;
+		menuItems.forEach((item, index)=>{
+			if(item.value === value){
+				valueIndex = index;
+				return valueIndex;
+			}
+		});
+		combo.setState({selectedIndex: valueIndex});
+	},
 	DateComputer:{
 		FixedTimes: {
 			 millisecond: 1,
@@ -1440,6 +1451,7 @@ let CommonFuns = {
 			 }
 	 }
 	},
+
 	Regex:{
 		ExcelCell: /[a-z]+\d+/i, //A4,AA66
 		PositiveInterger : /^\d+$/,
