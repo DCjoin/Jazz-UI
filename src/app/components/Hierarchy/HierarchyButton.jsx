@@ -85,6 +85,7 @@ let HierarchyButton=React.createClass({
         HierarchyStore.removeNodeLoadingListener(this._onNodeLoadingChange);
 
       },
+<<<<<<< HEAD
   componentWillReceiveProps: function(nextProps) {
     if(nextProps.hierId!==null){
       this.selectHierItem(nextProps.hierId,false);
@@ -95,6 +96,18 @@ let HierarchyButton=React.createClass({
           });
         }
       },
+=======
+  // componentWillReceiveProps: function(nextProps) {
+  //   if(nextProps.hierId!==null){
+  //     this.selectHierItem(nextProps.hierId,false);
+  //   }
+  //       if(!nextProps.show){
+  //         this.setState({
+  //           open:false
+  //         });
+  //       }
+  //     },
+>>>>>>> parent of e0f8a75... for pull
   componentClickAway:function(){
     if(this.props.show){
       if(this.props.handleClickAwa){

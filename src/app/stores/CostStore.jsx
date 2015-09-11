@@ -176,7 +176,10 @@ CostStore.dispatchToken = AppDispatcher.register(function(action) {
         CostStore._onDataChanged(action.energyData, action.submitParams);
         CostStore.emitCostDataLoaded();
         CostStore._checkErrors(action.energyData);
+<<<<<<< HEAD
         CostStore.emitCostDataLoadErrorsListener();
+=======
+>>>>>>> parent of e0f8a75... for pull
         break;
       case Action.GET_COST_DATA_ERROR:
         CostStore._onDataChanged(null, action.submitParams);
