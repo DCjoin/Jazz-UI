@@ -71,6 +71,8 @@ let EnergyAction = {
                                       TimeRanges: timeRange
                                    }
                        };
+    if(weatherOption && weatherOption.IncludeTempValue) submitParams.viewOption.IncludeTempValue = true;
+    if(weatherOption && weatherOption.IncludeHumidityValue) submitParams.viewOption.IncludeHumidityValue = true;
 
     AppDispatcher.dispatch({
       type: Action.GET_ENERGY_DATA_LOADING,
