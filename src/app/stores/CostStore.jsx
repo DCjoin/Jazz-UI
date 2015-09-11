@@ -88,6 +88,7 @@ var CostStore = assign({},PrototypeStore,{
         _errorCodes.push(errorCode);
         _errorParams.push(error.Params);
       }
+      this.emitCostDataLoadErrorsListener();
     }
   },
   //only one tagOptions if click tag in alarm list
@@ -176,7 +177,6 @@ CostStore.dispatchToken = AppDispatcher.register(function(action) {
         CostStore._onDataChanged(action.energyData, action.submitParams);
         CostStore.emitCostDataLoaded();
         CostStore._checkErrors(action.energyData);
-        CostStore.emitCostDataLoadErrorsListener();
         break;
       case Action.GET_COST_DATA_ERROR:
         CostStore._onDataChanged(null, action.submitParams);
