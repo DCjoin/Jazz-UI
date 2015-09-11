@@ -112,17 +112,32 @@ let DataSelectMainPanel=React.createClass({
     },
     _onAlarmTagNodeChange:function(){
       var data=TagStore.getData();
-      var alarmTag=EnergyStore.getTagOpions()[0];
-      var node={
-        Id:alarmTag.hierId,
-        Name:alarmTag.hierName
-      };
+      var node,tagId;
+      if(this.props.widgetType){
+        let hierNode=CommodityStore.getHierNode();
+        if(!!hierNode){
+          node={
+            Id:hierNode.hierId,
+            Name:hierNode.hierName
+          };
+          tagId=hierNode.hierId
+        }
+      }
+      else {
+        var alarmTag=EnergyStore.getTagOpions()[0];
+        node={
+          Id:alarmTag.hierId,
+          Name:alarmTag.hierName
+        };
+        tagId=alarmTag.hierId
+      }
+
       page=data.pageIndex;
        this.refs.dimButton.resetButtonName();
       this.setState({
         tagList:data.GetPageTagDataResult,
         total:data.totalCount,
-        tagId:alarmTag.hierId,
+        tagId:tagId,
         dimParentNode:node,
         optionType:2,
         dimActive:true,
@@ -203,12 +218,12 @@ let DataSelectMainPanel=React.createClass({
           "value": [value],
           "field": "Name"
         }
-        ]
+      ];
       }
       else{
           React.findDOMNode(this.refs.cleanIcon).style.display='none';
-        filters=null
-      };
+          filters=null;
+      }
       page=1;
       TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
 
@@ -236,7 +251,7 @@ let DataSelectMainPanel=React.createClass({
     _onCheckSelect:function(checkFlag){
       this.setState({
         allCheckDisable:checkFlag
-      })
+      });
     },
     _onClearTagList:function(){
       tagStatus.length=0;
@@ -246,28 +261,6 @@ let DataSelectMainPanel=React.createClass({
         allChecked:false,
         allCheckDisable:false
       });
-    },
-    _onSearchTagListChange:function(){
-      var searchTagList=AlarmTagStore.getSearchTagList();
-      this.state.tagList.forEach(function(nodeData,i){
-        var tagFlag=false;
-        searchTagList.forEach(function(tagData){
-          if(tagData.tagId==nodeData.Id){
-            tagFlag=true;
-            if(tagStatus[page][i]==false){
-              tagStatus[page][i]=true;
-              selectTotal++;
-            }
-          }
-        });
-        if(!tagFlag){
-          tagStatus[page][i]=false;
-          selectTotal--
-        }
-      });
-    this.setState({
-      searchTagListChanged:true
-    });
     },
     _onNodeLoadingChange:function(){
       this.setState({
@@ -312,19 +305,7 @@ let DataSelectMainPanel=React.createClass({
             dimParentNode:node
           });
           }
-      if(this.props.widgetType){
-            let hierNode=CommodityStore.getHierNode();
-            if(!!hierNode){
-              let node={
-                Id:hierNode.hierId,
-                Name:hierNode.hierName
-              };
-              this.setState({
-                dimParentNode:node,
-                dimActive:true,
-              });
-            }
-          }
+
       },
     componentWillReceiveProps:function(){
       if(this.props.linkFrom=="Alarm"){
@@ -348,6 +329,7 @@ let DataSelectMainPanel=React.createClass({
       if(this.props.linkFrom=="Alarm"){
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
         TagAction.loadAlarmData(alarmTagOption);
+
         //set the first tag select status from alarm left panel
         if(AlarmTagStore.getSearchTagList().length!==0){
             TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
@@ -358,6 +340,26 @@ let DataSelectMainPanel=React.createClass({
       else {
         TagAction.clearAlarmSearchTagList();
       }
+      if(this.props.widgetType){
+            let hierNode=CommodityStore.getHierNode();
+            if(!!hierNode){
+              let node={
+                Id:hierNode.hierId,
+                Name:hierNode.hierName
+              };
+              this.setState({
+                dimParentNode:node,
+                dimActive:true,
+              });
+              let tagId=TagStore.getCurrentHierIdTagStatus().last();
+              let data={
+                hierId:hierNode.hierId,
+                tagId:tagId
+              };
+              TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
+              TagAction.loadAlarmData(data);
+            }
+          }
      },
     componentWillUnmount: function() {
 
@@ -373,12 +375,12 @@ let DataSelectMainPanel=React.createClass({
    handleHierClickAway:function(){
      this.setState({
        HierarchyShow:false
-     })
+     });
    },
    handleDimClickAway:function(){
      this.setState({
        DimShow:false
-     })
+     });
    },
     render:function(){
       var menuItems = [

@@ -25,6 +25,9 @@ let HierarchyButton=React.createClass({
       hieList:data,
         isLoading:HierarchyStore.getNodeLoading()
     });
+    if(this.props.hierId!==null && this.state.buttonName==I18N.Hierarchy.ButtonName){
+      this.selectHierItem(this.props.hierId, false);
+    }
   },
   _onNodeLoadingChange:function(){
     this.setState({
@@ -72,10 +75,13 @@ let HierarchyButton=React.createClass({
         isLoading:false
       };
     },
+  componentWillMount:function(){
+      HierarchyAction.loadall(window.currentCustomerId);
+  },
   componentDidMount: function() {
       HierarchyStore.addHierarchyNodeListener(this._onChange);
       HierarchyStore.addNodeLoadingListener(this._onNodeLoadingChange);
-      HierarchyAction.loadall(window.currentCustomerId);
+
       if(this.props.hierId!==null){
         this.selectHierItem(this.props.hierId,false);
       }
@@ -85,9 +91,8 @@ let HierarchyButton=React.createClass({
         HierarchyStore.removeNodeLoadingListener(this._onNodeLoadingChange);
 
       },
-<<<<<<< HEAD
   componentWillReceiveProps: function(nextProps) {
-    if(nextProps.hierId!==null){
+    if(nextProps.hierId!==null && nextProps.hierId!=this.props.hierId){
       this.selectHierItem(nextProps.hierId,false);
     }
         if(!nextProps.show){
@@ -96,18 +101,6 @@ let HierarchyButton=React.createClass({
           });
         }
       },
-=======
-  // componentWillReceiveProps: function(nextProps) {
-  //   if(nextProps.hierId!==null){
-  //     this.selectHierItem(nextProps.hierId,false);
-  //   }
-  //       if(!nextProps.show){
-  //         this.setState({
-  //           open:false
-  //         });
-  //       }
-  //     },
->>>>>>> parent of e0f8a75... for pull
   componentClickAway:function(){
     if(this.props.show){
       if(this.props.handleClickAwa){
