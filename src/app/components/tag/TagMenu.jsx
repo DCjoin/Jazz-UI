@@ -39,7 +39,7 @@ var TagMenu=React.createClass({
       toolTipShow:false,
     };
   },
-  /*
+
   componentWillReceiveProps:function(){
     this.setState({
       tagStatus:TagStore.getCurrentHierIdTagStatus(),
@@ -47,9 +47,9 @@ var TagMenu=React.createClass({
       tagTotal:TagStore.getTagTotalStatus(),
       checked:TagStore.getCheckAllCheckedStatus(),
       toolTipShow:false,
-    })
+    });
   },
-  */
+
   componentDidMount: function() {
     TagStore.addTagStatusListener(this._onTagStatusChange);
 

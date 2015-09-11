@@ -122,7 +122,13 @@ let Setting = React.createClass({
 },
 _onCreateFolderOrWidget:function(){
   var node=CommodityStore.getDefaultNode();
+  var newNode=FolderStore.getNewNode();
   CommodityAction.setCurrentHierarchyInfo(node.Id,node.Name);
+    if(newNode.WidgetType==5){
+      CommodityStore.clearRankingTreeList();
+    }
+
+
 },
  getTemplate:function(){
    var template;
@@ -344,16 +350,16 @@ render: function () {
 
         break;
     }
-    if(lastBizType!=bizType){
-      if(bizType=='Rank'){
-        CommodityStore.clearRankingTreeList();
-      }
-      else {
-          CommodityStore.resetHierInfo();
-      }
-
-      lastBizType=bizType
-    }
+    // if(lastBizType!=bizType){
+    //   if(bizType=='Rank'){
+    //     CommodityStore.clearRankingTreeList();
+    //   }
+    //   else {
+    //       CommodityStore.resetHierInfo();
+    //   }
+    //
+    //   lastBizType=bizType
+    // }
     return rightPanel;
   }
 });

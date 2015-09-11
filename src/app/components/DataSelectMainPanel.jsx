@@ -247,28 +247,6 @@ let DataSelectMainPanel=React.createClass({
         allCheckDisable:false
       });
     },
-    _onSearchTagListChange:function(){
-      var searchTagList=AlarmTagStore.getSearchTagList();
-      this.state.tagList.forEach(function(nodeData,i){
-        var tagFlag=false;
-        searchTagList.forEach(function(tagData){
-          if(tagData.tagId==nodeData.Id){
-            tagFlag=true;
-            if(tagStatus[page][i]==false){
-              tagStatus[page][i]=true;
-              selectTotal++;
-            }
-          }
-        });
-        if(!tagFlag){
-          tagStatus[page][i]=false;
-          selectTotal--
-        }
-      });
-    this.setState({
-      searchTagListChanged:true
-    });
-    },
     _onNodeLoadingChange:function(){
       this.setState({
         isLoading:TagStore.getNodeLoading(),
