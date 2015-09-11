@@ -230,9 +230,12 @@ var CommodityStore = assign({},PrototypeStore,{
       return tagOptions;
     };
     let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-    let lastTagOption = tagOptions[tagOptions.length-1];
+    if(tagOptions.length>0){
+      let lastTagOption = tagOptions[tagOptions.length-1];
 
-    this.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+      this.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+    }
+
 
   },
   addEnergyConsumptionTypeListener: function(callback) {
