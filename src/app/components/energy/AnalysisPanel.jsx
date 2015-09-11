@@ -538,6 +538,10 @@ let AnalysisPanel = React.createClass({
       let errorObj = this.errorProcess(CarbonStore);
       this._onCarbonDataChange(true, errorObj);
     },
+    _onGetCarbonDataErrors(){
+      let errorObj = this.errorProcess(CarbonStore);
+      this._onCarbonDataChange(true, errorObj);
+    },
     _onGetRatioDataError(){
       let errorObj = this.errorProcess(RatioStore);
       this._onRatioDataChange(true, errorObj);
