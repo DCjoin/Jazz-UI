@@ -302,14 +302,14 @@ let ChartStrategyFactor = {
       }
 
       //init selected tags
-      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      let lastTagOption = tagOptions[tagOptions.length-1];
-
-      CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
-
-      tagOptions.forEach(item=>{
-        setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
-      });
+      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      // let lastTagOption = tagOptions[tagOptions.length-1];
+      //
+      // CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+      //
+      // tagOptions.forEach(item=>{
+      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
+      // });
       setTimeout(()=>{analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
    },
    initCostChartPanelByWidgetDto(analysisPanel){
@@ -348,10 +348,10 @@ let ChartStrategyFactor = {
       initPanelDate(timeRange);
 
       //init selected tags
-      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      tagOptions.forEach(item=>{
-        setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
-      });
+      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      // tagOptions.forEach(item=>{
+      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
+      // });
       setTimeout(()=>{analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);});
    },
    initUnitChartPanelByWidgetDto(analysisPanel){
@@ -392,14 +392,14 @@ let ChartStrategyFactor = {
       initPanelDate(timeRange);
 
       //init selected tags
-      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      let lastTagOption = tagOptions[tagOptions.length-1];
-
-      CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
-
-      tagOptions.forEach(item=>{
-        setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
-      });
+      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      // let lastTagOption = tagOptions[tagOptions.length-1];
+      //
+      // CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+      //
+      // tagOptions.forEach(item=>{
+      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
+      // });
       let bo = null;
       if(benchmarkOption && benchmarkOption.IndustryId !== null){
         bo = benchmarkOption;

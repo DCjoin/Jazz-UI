@@ -290,19 +290,7 @@ let DataSelectMainPanel=React.createClass({
             dimParentNode:node
           });
           }
-      if(this.props.widgetType){
-            let hierNode=CommodityStore.getHierNode();
-            if(!!hierNode){
-              let node={
-                Id:hierNode.hierId,
-                Name:hierNode.hierName
-              };
-              this.setState({
-                dimParentNode:node,
-                dimActive:true,
-              });
-            }
-          }
+
       },
     componentWillReceiveProps:function(){
       if(this.props.linkFrom=="Alarm"){
@@ -336,6 +324,19 @@ let DataSelectMainPanel=React.createClass({
       else {
         TagAction.clearAlarmSearchTagList();
       }
+      if(this.props.widgetType){
+            let hierNode=CommodityStore.getHierNode();
+            if(!!hierNode){
+              let node={
+                Id:hierNode.hierId,
+                Name:hierNode.hierName
+              };
+              this.setState({
+                dimParentNode:node,
+                dimActive:true,
+              });
+            }
+          }
      },
     componentWillUnmount: function() {
 
