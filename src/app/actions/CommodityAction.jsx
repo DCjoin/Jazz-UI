@@ -61,13 +61,18 @@ let CommodityAction = {
     });
   },
   setCurrentHierarchyInfo:function(hierId,hierName){
-    setTimeout(()=>{
+    // setTimeout(()=>{
+    // AppDispatcher.dispatch({
+    //   type: Action.SET_CURRENT_HIERARCHY_ID,
+    //   hierId:hierId,
+    //   hierName:hierName
+    // });
+    //   },0);
     AppDispatcher.dispatch({
       type: Action.SET_CURRENT_HIERARCHY_ID,
       hierId:hierId,
       hierName:hierName
     });
-      },0);
   },
   setCurrentDimInfo:function(dimNode){
       AppDispatcher.dispatch({

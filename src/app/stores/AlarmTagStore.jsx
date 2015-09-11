@@ -6,6 +6,7 @@ import assign from 'object-assign';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import Tag from '../constants/actionType/Tag.jsx';
 import Commodity from '../constants/actionType/Commodity.jsx';
+import Folder from '../constants/actionType/Folder.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
 
 let searchTagList=[];
@@ -13,6 +14,7 @@ let interData=null;
 let AlarmTagAction=AlarmTag.Action;
 let TagAction=Tag.Action;
 let CommodityAction=Commodity.Action;
+let FolderAction=Folder.Action;
 /*
  if change checked state of the tags from the tag list,than it is true;
  when select item of alarm list, set it false in AlarmList.jsx
@@ -133,6 +135,25 @@ var AlarmTagStore = assign({},PrototypeStore,{
   setInterData(iaData){
     interData=iaData;
   },
+  doWidgetDtos:function(widgetDto){
+    let that=this;
+    let convertWidgetOptions2TagOption = function(WidgetOptions){
+      let tagOptions = [];
+      WidgetOptions.forEach(item=>{
+        tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+        });
+      });
+      return tagOptions;
+    };
+    let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+    tagOptions.forEach(item=>{
+      that.addSearchTagList(item);
+    });
+  },
   addInterDataListener: function(callback) {
     this.on(INTER_DATA_CHANGED_EVENT, callback);
   },
@@ -201,6 +222,9 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
       case CommodityAction.SET_COMMODITY_STATUS:
           AlarmTagStore.CommodityDataChange(action.commodityId,action.commodityName,action.selected);
+        break;
+      case FolderAction.GET_WIDGETDTOS_SUCCESS:
+          AlarmTagStore.doWidgetDtos(action.widgetDto[0]);
         break;
     }
 });
