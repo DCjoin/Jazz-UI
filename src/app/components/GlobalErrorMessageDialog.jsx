@@ -23,8 +23,6 @@ let GlobalErrorMessageDialog = React.createClass({
     let me = this;
     var snackbar = <Snackbar
       message={me.state.errorMessage}
-      action="确定"
-      onActionTouchTap={me._hide}
       onDismiss={me._onDismiss}
       ref='errorMessageDialog' />;
 
