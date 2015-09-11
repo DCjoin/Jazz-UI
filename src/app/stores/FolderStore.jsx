@@ -41,9 +41,6 @@ var FolderStore = assign({},PrototypeStore,{
   getFolderTree:function(){
     return _folderTree;
   },
-  getNewNode:function(){
-    return _newNode;
-  },
   getNodeById:function(id){
     var node;
     var f=function(item){
