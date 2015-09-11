@@ -11,6 +11,7 @@ let _folderTree=Immutable.fromJS(),
     _parentId=null,
     _changedNode=Immutable.fromJS(),
     _newNode=null,
+    _newCreateNode=null,
     _modifyNameErrorCode=null,
     _errorName=null,
     _errorType=null,
@@ -103,6 +104,7 @@ var FolderStore = assign({},PrototypeStore,{
   _parentId=parentNode.get('Id');
   _changedNode=parentNode;
   _newNode=Immutable.fromJS(newNode);
+  _newCreateNode=newNode;
 
    if(_changedNode.get('Children')){
      let children=_changedNode.get('Children').push(_newNode);
@@ -123,6 +125,9 @@ var FolderStore = assign({},PrototypeStore,{
    }
    _folderTree=this.modifyTreebyNode(_folderTree);
   _selectedNode=_newNode;
+  },
+  getNewNode:function(){
+    return _newCreateNode;
   },
   modifyName:function(newNode){
     var parent=this.getParent(newNode);
