@@ -85,16 +85,16 @@ let HierarchyButton=React.createClass({
         HierarchyStore.removeNodeLoadingListener(this._onNodeLoadingChange);
 
       },
-  componentWillReceiveProps: function(nextProps) {
-    if(nextProps.hierId!==null){
-      this.selectHierItem(nextProps.hierId,false);
-    }
-        if(!nextProps.show){
-          this.setState({
-            open:false
-          });
-        }
-      },
+  // componentWillReceiveProps: function(nextProps) {
+  //   if(nextProps.hierId!==null){
+  //     this.selectHierItem(nextProps.hierId,false);
+  //   }
+  //       if(!nextProps.show){
+  //         this.setState({
+  //           open:false
+  //         });
+  //       }
+  //     },
   componentClickAway:function(){
     if(this.props.show){
       if(this.props.handleClickAwa){
