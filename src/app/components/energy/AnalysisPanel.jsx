@@ -527,67 +527,57 @@ let AnalysisPanel = React.createClass({
       this.refs.relativeDate.setState({
         selectedIndex: menuIndex
       });
-    },
-    _onChangeMonth(e, selectedIndex, menuItem){
-      this.setState({month: selectedIndex});
-    },
-    _onGetEnergyDataError(){
-      let errorObj = this.errorProcess(EnergyStore);
-      this._onEnergyDataChange(true, errorObj);
-    },
-    _onGetCostDataError(){
-      let errorObj = this.errorProcess(CostStore);
-      this._onCostDataChange(true, errorObj);
-    },
-    _onGetCostDataErrors(){
-      let errorObj = this.errorsProcess(CostStore);
-      this._onCostDataChange(false, errorObj);
-    },
-    _onGetCarbonDataError(){
-      let errorObj = this.errorProcess(CarbonStore);
-      this._onCarbonDataChange(true, errorObj);
-    },
-    _onGetCarbonDataErrors(){
-      let errorObj = this.errorProcess(CarbonStore);
-      this._onCarbonDataChange(true, errorObj);
-    },
-    _onGetRatioDataError(){
-      let errorObj = this.errorProcess(RatioStore);
-      this._onRatioDataChange(true, errorObj);
-    },
-    _onGetRankDataError(){
-      let errorObj = this.errorProcess(RankStore);
-      this._onRankDataChange(true, errorObj);
-    },
-    _onGetLabelDataError(){
-      let errorObj = this.errorProcess(LabelStore);
-      this._onLabelDataChange(true, errorObj);
-    },
-    errorProcess(EnergyStore){
-      let code = EnergyStore.getErrorCode(),
-          messages = EnergyStore.getErrorMessage();
+    }
+  },
+  _onChangeMonth(e, selectedIndex, menuItem) {
+    this.setState({
+      month: selectedIndex
+    });
+  },
+  _onGetEnergyDataError() {
+    let errorObj = this.errorProcess(EnergyStore);
+    this._onEnergyDataChange(true, errorObj);
+  },
+  _onGetCostDataError() {
+    let errorObj = this.errorProcess(CostStore);
+    this._onCostDataChange(true, errorObj);
+  },
+  _onGetCostDataErrors() {
+    let errorObj = this.errorsProcess(CostStore);
+    this._onCostDataChange(false, errorObj);
+  },
+  _onGetCarbonDataError() {
+    let errorObj = this.errorProcess(CarbonStore);
+    this._onCarbonDataChange(true, errorObj);
+  },
+  _onGetCarbonDataErrors() {
+    let errorObj = this.errorProcess(CarbonStore);
+    this._onCarbonDataChange(true, errorObj);
+  },
+  _onGetRatioDataError() {
+    let errorObj = this.errorProcess(RatioStore);
+    this._onRatioDataChange(true, errorObj);
+  },
+  _onGetRankDataError() {
+    let errorObj = this.errorProcess(RankStore);
+    this._onRankDataChange(true, errorObj);
+  },
+  _onGetLabelDataError() {
+    let errorObj = this.errorProcess(LabelStore);
+    this._onLabelDataChange(true, errorObj);
+  },
+  errorProcess(EnergyStore) {
+    let code = EnergyStore.getErrorCode(),
+      messages = EnergyStore.getErrorMessage();
 
-      if (code.toString() == '02004') {
-          let errorObj = this.showStepError(messages[0], EnergyStore);
-          return errorObj;
-      }else{
-        let errorMsg = CommonFuns.getErrorMessage(code);
-        setTimeout(()=>{
-          GlobalErrorMessageAction.fireGlobalErrorMessage(code, errorMsg);
-        },0);
-        return null;
-      }
-    },
-    errorsProcess(EnergyStore){
-      let codes = EnergyStore.getErrorCodes();
-      var errorMsg, textArray = [];
-      for(var i = 0; i < codes.length; i++){
-        errorMsg = CommonFuns.getErrorMessage(codes[i]);
-        textArray.push(errorMsg);
-      }
-      setTimeout(()=>{
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', textArray.join('<br/>'));
-      },0);
+    if (code.toString() == '02004') {
+      let errorObj = this.showStepError(messages[0], EnergyStore);
+      return errorObj;
+    } else {
+      let errorMsg = CommonFuns.getErrorMessage(code);
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(code, errorMsg);
+      }, 0);
       return null;
     }
   },
@@ -600,7 +590,7 @@ let AnalysisPanel = React.createClass({
       textArray.push(errorMsg);
     }
     setTimeout(() => {
-      GlobalErrorMessageAction.fireGlobalErrorMessage("", textArray.join('<br/>'));
+      GlobalErrorMessageAction.fireGlobalErrorMessage('', textArray.join('<br/>'));
     }, 0);
     return null;
   },
