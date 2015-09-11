@@ -216,6 +216,25 @@ var CommodityStore = assign({},PrototypeStore,{
   getRankingCommodity:function(){
     return _RankingCommodity;
   },
+  doWidgetDtos:function(widgetDto){
+    let convertWidgetOptions2TagOption = function(WidgetOptions){
+      let tagOptions = [];
+      WidgetOptions.forEach(item=>{
+        tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+        });
+      });
+      return tagOptions;
+    };
+    let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+    let lastTagOption = tagOptions[tagOptions.length-1];
+
+    this.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+
+  },
   addEnergyConsumptionTypeListener: function(callback) {
     this.on(ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT, callback);
   },
@@ -344,6 +363,9 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
       case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
           CommodityStore.setDefaultNode();
+      break;
+      case FolderAction.GET_WIDGETDTOS_SUCCESS:
+          CommodityStore.doWidgetDtos(action.widgetDto[0]);
       break;
 
 

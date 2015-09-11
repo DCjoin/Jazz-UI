@@ -76,6 +76,7 @@ let DimButton=React.createClass({
 
     componentWillReceiveProps: function(nextProps) {
         if((nextProps.parentNode) && (nextProps.parentNode!=this.props.parentNode)){
+          this.resetButtonName();
           DimAction.loadall(nextProps.parentNode.Id);
           this.setState({
             dimList:null,

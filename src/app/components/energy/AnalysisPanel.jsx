@@ -527,89 +527,67 @@ let AnalysisPanel = React.createClass({
       this.refs.relativeDate.setState({
         selectedIndex: menuIndex
       });
-      this._onRelativeDateChange(null, menuIndex, relativeDateMenuItems[menuIndex]);
-    }
-  },
-  _onRelativeDateChange(e, selectedIndex, menuItem) {
-    let value = menuItem.value,
-      dateSelector = this.refs.dateTimeSelector;
+    },
+    _onChangeMonth(e, selectedIndex, menuItem){
+      this.setState({month: selectedIndex});
+    },
+    _onGetEnergyDataError(){
+      let errorObj = this.errorProcess(EnergyStore);
+      this._onEnergyDataChange(true, errorObj);
+    },
+    _onGetCostDataError(){
+      let errorObj = this.errorProcess(CostStore);
+      this._onCostDataChange(true, errorObj);
+    },
+    _onGetCostDataErrors(){
+      let errorObj = this.errorsProcess(CostStore);
+      this._onCostDataChange(false, errorObj);
+    },
+    _onGetCarbonDataError(){
+      let errorObj = this.errorProcess(CarbonStore);
+      this._onCarbonDataChange(true, errorObj);
+    },
+    _onGetCarbonDataErrors(){
+      let errorObj = this.errorProcess(CarbonStore);
+      this._onCarbonDataChange(true, errorObj);
+    },
+    _onGetRatioDataError(){
+      let errorObj = this.errorProcess(RatioStore);
+      this._onRatioDataChange(true, errorObj);
+    },
+    _onGetRankDataError(){
+      let errorObj = this.errorProcess(RankStore);
+      this._onRankDataChange(true, errorObj);
+    },
+    _onGetLabelDataError(){
+      let errorObj = this.errorProcess(LabelStore);
+      this._onLabelDataChange(true, errorObj);
+    },
+    errorProcess(EnergyStore){
+      let code = EnergyStore.getErrorCode(),
+          messages = EnergyStore.getErrorMessage();
 
-    if (value && value !== 'Customerize') {
-      var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
-      dateSelector.setDateField(timeregion.start, timeregion.end);
-    }
-  },
-  _onRankTypeChange(e, selectedIndex, menuItem) {
-    var rankType = menuItem.value;
-    this.setState({
-      rankType: rankType
-    });
-  },
-  _onRangeChange(e, selectedIndex, menuItem) {
-    var range = menuItem.value;
-    this.setState({
-      range: range
-    });
-  },
-  _onOrderChange(e, selectedIndex, menuItem) {
-    var order = menuItem.value;
-    this.setState({
-      order: order
-    });
-  },
-  _onCarbonTypeChange(e, selectedIndex, menuItem) {
-    var me = this;
-    me.setState({
-      destination: menuItem.value
-    }, () => {
-      me.state.chartStrategy.onSearchDataButtonClickFn(me);
-    });
-  },
-  _onChangeMonth(e, selectedIndex, menuItem) {
-    this.setState({
-      month: selectedIndex
-    });
-  },
-  _onGetEnergyDataError() {
-    let errorObj = this.errorProcess(EnergyStore);
-    this._onEnergyDataChange(true, errorObj);
-  },
-  _onGetCostDataError() {
-    let errorObj = this.errorProcess(CostStore);
-    this._onCostDataChange(true, errorObj);
-  },
-  _onGetCostDataErrors() {
-    let errorObj = this.errorsProcess(CostStore);
-    this._onCostDataChange(false, errorObj);
-  },
-  _onGetCarbonDataError() {
-    let errorObj = this.errorProcess(CarbonStore);
-    this._onCarbonDataChange(true, errorObj);
-  },
-  _onGetRatioDataError() {
-    let errorObj = this.errorProcess(RatioStore);
-    this._onRatioDataChange(true, errorObj);
-  },
-  _onGetRankDataError() {
-    let errorObj = this.errorProcess(RankStore);
-    this._onRankDataChange(true, errorObj);
-  },
-  _onGetLabelDataError() {
-    let errorObj = this.errorProcess(LabelStore);
-    this._onLabelDataChange(true, errorObj);
-  },
-  errorProcess(EnergyStore) {
-    let code = EnergyStore.getErrorCode(),
-      messages = EnergyStore.getErrorMessage();
-
-    if (code.toString() == '02004') {
-      let errorObj = this.showStepError(messages[0], EnergyStore);
-      return errorObj;
-    } else {
-      let errorMsg = CommonFuns.getErrorMessage(code);
-      setTimeout(() => {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(code, errorMsg);
-      }, 0);
+      if (code.toString() == '02004') {
+          let errorObj = this.showStepError(messages[0], EnergyStore);
+          return errorObj;
+      }else{
+        let errorMsg = CommonFuns.getErrorMessage(code);
+        setTimeout(()=>{
+          GlobalErrorMessageAction.fireGlobalErrorMessage(code, errorMsg);
+        },0);
+        return null;
+      }
+    },
+    errorsProcess(EnergyStore){
+      let codes = EnergyStore.getErrorCodes();
+      var errorMsg, textArray = [];
+      for(var i = 0; i < codes.length; i++){
+        errorMsg = CommonFuns.getErrorMessage(codes[i]);
+        textArray.push(errorMsg);
+      }
+      setTimeout(()=>{
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', textArray.join('<br/>'));
+      },0);
       return null;
     }
   },
