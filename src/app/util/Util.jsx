@@ -192,7 +192,7 @@ let CommonFuns = {
   },
   popupErrorMessage: function(message, context, fns, errorCode) {
     //window.alert(message);
-    GlobalErrorMessageAction.fireGlobalErrorMessage(message);
+    GlobalErrorMessageAction.fireGlobalErrorMessage(errorCode, message);
   },
   ErrorHandler: function(context, errorCode, errorMessages) {
     if (context.commonErrorHandling === false) return;
@@ -1040,11 +1040,14 @@ let CommonFuns = {
     return commodityIds;
   },
   getNodeNameAssociationByTagOptions(tagOptions) {
-    let nodeNameAssociation = [], tag, hieNameArr, hieName;
+    let nodeNameAssociation = [], tag, hieNameArr,
+      hieName = '';
     for (let i = 0, len = tagOptions.length; i < len; i++) {
       tag = tagOptions[i];
-      hieNameArr = tag.hierName.split('\\');
-      hieName = hieNameArr[hieNameArr.length - 1];
+      if (tag.hierName) {
+        hieNameArr = tag.hierName.split('\\');
+        hieName = hieNameArr[hieNameArr.length - 1];
+      }
       nodeNameAssociation.push({
         Id: tag.tagId,
         Name: tag.tagName,
