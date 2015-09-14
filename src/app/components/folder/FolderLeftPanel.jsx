@@ -22,7 +22,7 @@ import HierarchyAction from '../../actions/HierarchyAction.jsx';
 
 import Immutable from 'immutable';
 
-var PanelContainer = React.createClass({
+var FolderLeftPanel = React.createClass({
 
   _onFolderTreeChange:function(){
     this.setState({
@@ -289,48 +289,6 @@ var PanelContainer = React.createClass({
         <div className="jazz-folder-leftpanel-foldertree">
           {treeContent}
         </div>
-      </div>
-    )
-  }
-});
-var FolderLeftPanel = React.createClass({
-  propTypes: {
-    isShow:React.PropTypes.bool,
-    onToggle:React.PropTypes.func,
-},
-  _onToggle:function(){
-    this.props.onToggle();
-    this.setState({
-        isShow:!this.state.isShow
-    })
-  },
-  getInitialState: function() {
-      return {
-        isShow: this.props.isShow
-      };
-    },
-  componentWillReceiveProps:function(nextProps){
-      this.setState({
-        isShow: nextProps.isShow
-      })
-    },
-  render:function(){
-    var buttonStyle = {
-      minWidth:'36px',
-      width:'36px',
-      height:'36px',
-      margin:'300px -36px 0 0 ',
-    },
-    iconStyle={
-      fontSize:'36px'
-    };
-    var panel=(this.state.isShow?(<div style={{display:'flex',flex:1,width:'320px'}}><PanelContainer></PanelContainer> </div>)
-                    :(<div style={{display:'none'}}><PanelContainer></PanelContainer></div>)
-              );
-    return(
-      <div style={{display:'flex'}}>
-        {panel}
-
       </div>
     )
   }
