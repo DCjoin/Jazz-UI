@@ -172,6 +172,7 @@ var TagStore = assign({},PrototypeStore,{
     return _tagSum
   },
   resetTagInfo:function(widgetType){
+    console.log('resetTagInfo');
     _data = {};
     _totalTagStatus=[];
     _hierId=null;
@@ -281,6 +282,7 @@ else{
       this.setCurrentTagList(data.GetPageTagDataResult);
   },
   doWidgetDtos:function(widgetDto){
+    this.resetTagInfo(widgetDto.WidgetType);
     let that=this;
     let convertWidgetOptions2TagOption = function(WidgetOptions){
       let tagOptions = [];
@@ -295,8 +297,11 @@ else{
       return tagOptions;
     };
     let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+    console.log('tagOptions');
+    console.log(tagOptions);
     tagOptions.forEach(item=>{
       that.setTagStatusById(item.hierId,item.tagId);
+      _tagTotal++;
     });
     if(_tagTotal==_tagSum){
       this.setTagTotalStatus();

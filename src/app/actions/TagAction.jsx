@@ -97,6 +97,7 @@ let TagAction = {
     });
   },
   resetTagInfo(widgetType){
+    console.log('resetTagInfo');
     setTimeout(()=>{
     AppDispatcher.dispatch({
         type: Action.RESET_TAGINFO,

@@ -305,6 +305,12 @@ let DataSelectMainPanel=React.createClass({
             dimParentNode:node
           });
           }
+          console.log('componentWillMount');
+          if(!this.props.widgetType){
+            TagAction.resetTagInfo(this.props.widgetType);
+          }
+
+
 
       },
     componentWillReceiveProps:function(){
@@ -324,7 +330,7 @@ let DataSelectMainPanel=React.createClass({
       TagStore.addTagNodeListener(this._onTagNodeChange); //listener for load tag
       TagStore.addNodeLoadingListener(this._onNodeLoadingChange);
       TagStore.addSettingDataListener(this._onSettingDataChange);
-      TagAction.resetTagInfo(this.props.widgetType);
+
 
       if(this.props.linkFrom=="Alarm"){
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
@@ -366,7 +372,7 @@ let DataSelectMainPanel=React.createClass({
        TagStore.removeTagNodeListener(this._onTagNodeChange);
        TagStore.removeNodeLoadingListener(this._onNodeLoadingChange);
        TagStore.removeSettingDataListener(this._onSettingDataChange);
-       if(this.props.linkFrom=="Alarm"){
+       if(this.props.linkFrom=="Alarm" || this.props.widgetType){
          TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
 
        }
