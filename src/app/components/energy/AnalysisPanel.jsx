@@ -152,7 +152,7 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.getAllDataFn();
     this.state.chartStrategy.bindStoreListenersFn(me);
     if (this.props.widgetInitState) {
-      this._initChartPanelByWidgetDto();
+      window.setTimeout(me._initChartPanelByWidgetDto, 0);
     }
   },
   componentWillUnmount: function() {
