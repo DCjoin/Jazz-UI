@@ -324,11 +324,11 @@ var FolderLeftPanel = React.createClass({
     iconStyle={
       fontSize:'36px'
     };
-    var panel=(this.state.isShow?(<div style={{display:'flex',flex:1}}><PanelContainer></PanelContainer> </div>)
+    var panel=(this.state.isShow?(<div style={{display:'flex',flex:1,width:'320px'}}><PanelContainer></PanelContainer> </div>)
                     :(<div style={{display:'none'}}><PanelContainer></PanelContainer></div>)
               );
     return(
-      <div style={{display:'flex',width:'320px'}}>
+      <div style={{display:'flex'}}>
         {panel}
 
       </div>
