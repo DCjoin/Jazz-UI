@@ -318,7 +318,17 @@ let ChartStrategyFactor = {
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
-        timeRanges = viewOption.TimeRanges;
+        timeRanges = viewOption.TimeRanges,
+        chartType = widgetDto.ChartType;
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+        Stack: 'stack',
+        Pie: 'pie',
+        DataTable: 'rawdata',
+        original: 'rawdata'
+      };
 
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
@@ -334,11 +344,8 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      //init selected tags is done in the other part
-
-      setTimeout(() => {
-        analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
-      });
+      analysisPanel.state.selectedChartType = typeMap[chartType];
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
     initUnitChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
