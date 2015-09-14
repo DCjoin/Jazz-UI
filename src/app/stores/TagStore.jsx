@@ -6,6 +6,7 @@ import Immutable from 'immutable';
 import Tag from '../constants/actionType/Tag.jsx';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import AlarmSetting from '../constants/actionType/Setting.jsx';
+import Folder from '../constants/actionType/Folder.jsx';
 
 let LOAD_TAG_NODE_EVENT = 'loadtagnode';
 let LOAD_ALARM_TAG_NODE_EVENT = 'loadalarmtagnode';
@@ -171,6 +172,7 @@ var TagStore = assign({},PrototypeStore,{
     return _tagSum
   },
   resetTagInfo:function(widgetType){
+    console.log('resetTagInfo');
     _data = {};
     _totalTagStatus=[];
     _hierId=null;
@@ -279,6 +281,33 @@ else{
       _isLoading=false;
       this.setCurrentTagList(data.GetPageTagDataResult);
   },
+  doWidgetDtos:function(widgetDto){
+    this.resetTagInfo(widgetDto.WidgetType);
+    let that=this;
+    let convertWidgetOptions2TagOption = function(WidgetOptions){
+      let tagOptions = [];
+      WidgetOptions.forEach(item=>{
+        tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+        });
+      });
+      return tagOptions;
+    };
+    let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+    console.log('tagOptions');
+    console.log(tagOptions);
+    tagOptions.forEach(item=>{
+      that.setTagStatusById(item.hierId,item.tagId);
+      _tagTotal++;
+    });
+    if(_tagTotal==_tagSum){
+      this.setTagTotalStatus();
+    }
+    this.emitTagStatusChange();
+  },
   emitTagNodeChange: function() {
         this.emit(LOAD_TAG_NODE_EVENT);
       },
@@ -378,7 +407,8 @@ else{
 });
 var TagAction = Tag.Action,
     AlarmTagAction = AlarmTag.Action,
-    AlarmSettingAction=AlarmSetting.Action;
+    AlarmSettingAction=AlarmSetting.Action,
+    FolderAction=Folder.Action;
     TagStore.dispatchToken = AppDispatcher.register(function(action) {
     switch(action.type) {
       case TagAction.LOAD_TAG_NODE:
@@ -421,6 +451,9 @@ var TagAction = Tag.Action,
         break;
       case AlarmSettingAction.SET_ALARM_DATA_SUCCESS:
             TagStore.emitSettingData();
+          break;
+      case FolderAction.GET_WIDGETDTOS_SUCCESS:
+          TagStore.doWidgetDtos(action.widgetDto[0]);
           break;
 
 

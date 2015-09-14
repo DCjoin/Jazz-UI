@@ -82,13 +82,15 @@ var TagMenu=React.createClass({
       if(this.state.allCheckDisable){
         tooltipText+=I18N.Tag.ExceedTooltip
       }
-
+      console.log(this.state.tagStatus.toJSON());
 
     this.props.tagList.forEach(function(nodeData,i){
       var tagStatus=false;
       if(that.state.tagStatus.includes(nodeData.Id)){
         tagStatus=true;
-      };
+      }
+      console.log(nodeData);
+      console.log(tagStatus);
         menuItem=<TagItem style={buttonStyle}
                           nodeData={nodeData}
                           title={nodeData.Name}

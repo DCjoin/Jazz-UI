@@ -24,6 +24,8 @@ var TagItem=React.createClass({
     };
   },
   render:function(){
+    console.log(this.props.nodeData);
+    console.log(this.props.status);
     var alarm,baseline,checkBox,
         boxDisabledStatus=false;
     switch(this.props.label){

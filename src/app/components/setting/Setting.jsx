@@ -123,7 +123,10 @@ let Setting = React.createClass({
 _onCreateFolderOrWidget:function(){
   var node=CommodityStore.getDefaultNode();
   var newNode=FolderStore.getNewNode();
-  CommodityAction.setCurrentHierarchyInfo(node.Id,node.Name);
+  if(node){
+      CommodityAction.setCurrentHierarchyInfo(node.Id,node.Name);
+  }
+
     if(newNode.WidgetType==5){
       CommodityStore.clearRankingTreeList();
     }

@@ -45,9 +45,11 @@ let TagAction = {
     });
   },
   loadAlarmData(ioData){
-    AppDispatcher.dispatch({
-         type: Action.SET_NODE_LOAGDING
-    });
+    setTimeout(()=>{
+      AppDispatcher.dispatch({
+           type: Action.SET_NODE_LOAGDING
+      });
+    },0);
     Ajax.post('/Tag.svc/GetPageTagData', {
          params: {
            hierarchyId:ioData.hierId,
@@ -95,6 +97,7 @@ let TagAction = {
     });
   },
   resetTagInfo(widgetType){
+    console.log('resetTagInfo');
     setTimeout(()=>{
     AppDispatcher.dispatch({
         type: Action.RESET_TAGINFO,
