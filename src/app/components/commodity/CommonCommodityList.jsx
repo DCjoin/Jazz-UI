@@ -96,7 +96,9 @@ var CommonCommodityList = React.createClass({
         fontSize:'16px',
         color:'#464949'
       };
-    var list=[
+    var list=[];
+    if(this.state.commdityList.length!==0){
+      list.push(
         <Checkbox label={I18N.Commodity.Overview}
                   value={-1}
                   name={I18N.Commodity.Overview}
@@ -105,7 +107,9 @@ var CommonCommodityList = React.createClass({
                   style={style}
                   iconStyle={iconStyle}
                   labelStyle={labelStyle}/>
-    ];
+      );
+    }
+
     this.state.commdityList.forEach(function(element){
       status=that.isCommoditySingleItemSelected(element.Id);
       list.push(
