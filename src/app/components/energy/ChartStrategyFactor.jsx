@@ -2231,7 +2231,6 @@ let ChartStrategyFactor = {
       if(!clearWeatherflag){
         weather = analysisPanel.state.weatherOption;
       }
-
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate, weather);
     },
     setCostFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel) {
