@@ -330,7 +330,17 @@ let ChartStrategyFactor = {
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
-        timeRanges = viewOption.TimeRanges;
+        timeRanges = viewOption.TimeRanges,
+        chartType = widgetDto.ChartType;
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+        Stack: 'stack',
+        Pie: 'pie',
+        DataTable: 'rawdata',
+        original: 'rawdata'
+      };
 
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
@@ -341,31 +351,13 @@ let ChartStrategyFactor = {
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
       };
-      let convertWidgetOptions2TagOption = function(WidgetOptions) {
-        let tagOptions = [];
-        WidgetOptions.forEach(item => {
-          tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-          });
-        });
-        return tagOptions;
-      };
 
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      //init selected tags
-      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      // tagOptions.forEach(item=>{
-      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
-      // });
-      setTimeout(() => {
-        analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
-      });
+      analysisPanel.state.selectedChartType = typeMap[chartType];
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
     initUnitChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
