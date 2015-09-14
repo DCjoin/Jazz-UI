@@ -135,6 +135,7 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn: 'getCarbonAuxiliaryCompareBtn',
       handleStepChangeFn: 'handleCarbonStepChange',
       exportChartFn: 'exportCarbonChart',
+      save2DashboardFn: 'saveCarbon2Dashboard',
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -707,11 +708,175 @@ let ChartStrategyFactor = {
       viewOption.DataUsageType = dataUsageType;
 
       submitParams.viewOption = viewOption;
+      submitParams.destination = submitParams1.submitParams;
 
       //storeType part
       let config = {
         type: analysisPanel.state.selectedChartType,
         storeType: 'energy.UnitCostUsage'
+      };
+
+      let params = {
+        submitParams: submitParams,
+        config: config,
+        calendar: null
+      };
+
+      let contentSyntax = {
+        params: params
+      };
+      widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      FolderAction.updateWidgetDtos(widgetDto);
+    },
+    saveCarbon2Dashboard(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      let selectedList = {},
+        hierarchyNode = CommodityStore.getHierNode(),
+        commodityList = CommodityStore.getCommonCommodityList();
+      selectedList.hierarchyNode = hierarchyNode;
+      selectedList.commodityList = commodityList;
+      let hierarchyId = hierarchyNode.hierId;
+      let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+      let dimNode = selectedList.dimNode;
+      let viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
+      let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+      let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+      let submitParams1 = CarbonStore.getSubmitParams(),
+        benchmarkOption = submitParams1.benchmarkOption || null,
+        viewOption1 = submitParams1.viewOption,
+        step = viewOption1.step,
+        timeRanges = viewOption1.timeRanges,
+        unitType = viewOption1.DataOption.UnitType,
+        widgetTimeRanges;
+
+      //submitParams part
+      let submitParams = {
+        options: nodeNameAssociation,
+        viewAssociation: viewAssociation,
+        commodityIds: commodityIds
+      };
+      //time range part
+      if (timeRanges.length === 1) {
+        let relativeDate = CostStore.getRelativeDate();
+        if (relativeDate !== 'Customerize') {
+          widgetTimeRanges = [{
+            relativeDate: relativeDate
+          }];
+        } else {
+          widgetTimeRanges = timeRanges;
+        }
+      }
+      // viewOption part
+      let viewOption = {
+        TimeRanges: widgetTimeRanges,
+        Step: step
+      };
+
+      let includeNavigatorData = (analysisPanel.state.selectedChartType !== 'pie');
+      viewOption.IncludeNavigatorData = includeNavigatorData;
+
+      let bizMap = {
+        Energy: 1,
+        Unit: 2,
+        Ratio: 3,
+        Label: 4,
+        Rank: 5
+      };
+      let dataUsageType = bizMap[analysisPanel.props.bizType];
+      viewOption.DataUsageType = dataUsageType;
+
+      submitParams.viewOption = viewOption;
+      submitParams.destination = submitParams1.submitParams;
+
+      //storeType part
+      let storeType;
+      if (analysisPanel.state.selectedChartType === 'pie') {
+        storeType = 'energy.CarbonUsageDistribution';
+      } else {
+        storeType = 'energy.CarbonUsage';
+      }
+
+      let config = {
+        type: analysisPanel.state.selectedChartType,
+        storeType: storeType
+      };
+
+      let params = {
+        submitParams: submitParams,
+        config: config,
+        calendar: null
+      };
+
+      let contentSyntax = {
+        params: params
+      };
+      widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      FolderAction.updateWidgetDtos(widgetDto);
+    },
+    saveUnitCarbonDashboard(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      let selectedList = {},
+        hierarchyNode = CommodityStore.getHierNode(),
+        commodityList = CommodityStore.getCommonCommodityList();
+      selectedList.hierarchyNode = hierarchyNode;
+      selectedList.commodityList = commodityList;
+      let hierarchyId = hierarchyNode.hierId;
+      let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
+      let dimNode = selectedList.dimNode;
+      let viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
+      let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
+      let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+      let submitParams1 = CarbonStore.getSubmitParams(),
+        benchmarkOption = submitParams1.benchmarkOption || null,
+        viewOption1 = submitParams1.viewOption,
+        step = viewOption1.step,
+        timeRanges = viewOption1.timeRanges,
+        unitType = viewOption1.DataOption.UnitType,
+        widgetTimeRanges;
+
+      //submitParams part
+      let submitParams = {
+        options: nodeNameAssociation,
+        viewAssociation: viewAssociation,
+        commodityIds: commodityIds,
+        benchmarkOption: benchmarkOption
+      };
+      //time range part
+      let relativeDate = CarbonStore.getRelativeDate();
+      if (relativeDate !== 'Customerize') {
+        widgetTimeRanges = [{
+          relativeDate: relativeDate
+        }];
+      } else {
+        widgetTimeRanges = timeRanges;
+      }
+
+      // viewOption part
+      let viewOption = {
+        TimeRanges: widgetTimeRanges,
+        DataOption: {
+          UnitType: unitType
+        },
+        Step: step,
+        IncludeNavigatorData: true
+      };
+
+      let bizMap = {
+        Energy: 1,
+        Unit: 2,
+        Ratio: 3,
+        Label: 4,
+        Rank: 5
+      };
+      let dataUsageType = bizMap[analysisPanel.props.bizType];
+      viewOption.DataUsageType = dataUsageType;
+
+      submitParams.viewOption = viewOption;
+
+      //storeType part
+      let config = {
+        type: analysisPanel.state.selectedChartType,
+        storeType: 'energy.UnitCarbonUsage'
       };
 
       let params = {
