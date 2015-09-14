@@ -1,103 +1,123 @@
 'use strict';
 import React from "react";
-import {Table} from 'material-ui';
+import { Table } from 'material-ui';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
-import {getUomById, getCommodityById} from '../../util/Util.jsx';
+import { getUomById, getCommodityById } from '../../util/Util.jsx';
 import Pagination from '../../controls/paging/Pagination.jsx';
 
 let GridComponent = React.createClass({
 
-  propTypes:{
+  propTypes: {
     energyData: React.PropTypes.object,
     energyRawData: React.PropTypes.object,
-    chartStrategy:  React.PropTypes.object
+    chartStrategy: React.PropTypes.object
   },
-  getInitialState(){
+  getInitialState() {
     return {
       fixedHeader: true,
       stripedRows: true,
       showRowHover: true,
       displayRowCheckbox: false,
-      displaySelectAll:false,
+      displaySelectAll: false,
       selectable: false,
       height: '500px'
     };
   },
-  getFormatEnergyData(energyData){
+  getFormatEnergyData(energyData) {
     let dataArray = energyData;
     let firstItems = dataArray[0].items;
     let gridData = [], row;
-    for(let i = 0,len=firstItems.length; i<len;i++){
+    for (let i = 0, len = firstItems.length; i < len; i++) {
       row = {};
-      row.localTime = {content:firstItems[i].localTime};
-      for(let k = 0; k<dataArray.length;k++){
-        row[dataArray[k].TargetId + ''] = {content:dataArray[k].items[i].value};
+      row.localTime = {
+        content: firstItems[i].localTime
+      };
+      for (let k = 0; k < dataArray.length; k++) {
+        row[dataArray[k].TargetId + ''] = {
+          content: dataArray[k].items[i].value
+        };
       }
       gridData.push(row);
     }
     return gridData;
   },
-  getHeaderCols(energyData){
+  getHeaderCols(energyData) {
     let dataArray = energyData;
 
     let headerCols = {
       localTime: {
-        content: <div style={{marginLeft:'10px'}}>{'时间'}</div>
+        content: <div style={{
+          marginLeft: '10px'
+        }}>{'时间'}</div>
       }
     };
-    for(let i=0;i<dataArray.length;i++){
-      var tagOption = this.getTagInfo(dataArray[i].TargetId);
-      headerCols[dataArray[i].TargetId + ''] =this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.commodityAndUomName);//{content: dataArray[i].Name};
+    for (let i = 0; i < dataArray.length; i++) {
+      var tagOption = this.getTagInfo(dataArray[i]);
+      headerCols[dataArray[i].TargetId + ''] = this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.commodityAndUomName); //{content: dataArray[i].Name};
     }
     return headerCols;
   },
-  getTagInfo(tagId){
-    var tagOptions = EnergyStore.getTagOpions(),
-        option, hieName, uom, uomName, commodity, commodityName, commodityAndUomName;
+  getTagInfo(target) {
+    var tagId = target.TargetId,
+      tagOptions = EnergyStore.getTagOpions(),
+      option, hieName, uom, uomName, commodity, commodityName, commodityAndUomName;
 
-    for(let i=0; i<tagOptions.length;i++){
+    for (let i = 0; i < tagOptions.length; i++) {
       option = tagOptions[i];
-      if(option.tagId === tagId){
+      if (option.tagId === tagId) {
         hieName = option.hierName.split('\\');
-        hieName = hieName[hieName.length-1];
-        uom = getUomById(option.uomId);
+        hieName = hieName[hieName.length - 1];
+        uom = getUomById(target.UomId);
         uomName = uom.Code;
-        commodity = getCommodityById(option.commodityId);
+        commodity = getCommodityById(target.CommodityId);
         commodityName = commodity.Comment;
         commodityAndUomName = commodityName + '/' + uomName;
-        return { hieName:hieName, tagName:option.tagName, commodityAndUomName: commodityAndUomName};
+        return {
+          hieName: hieName,
+          tagName: option.tagName,
+          commodityAndUomName: commodityAndUomName
+        };
       }
     }
   },
-  getTagColumnContent(hieName, tagName, uom){
-    var tagColumn = {  content: <div style={{height:'120px', borderLeft:'1px solid #e0e0e0'}}>
+  getTagColumnContent(hieName, tagName, uom) {
+    var tagColumn = {
+      content: <div style={{
+        height: '120px',
+        borderLeft: '1px solid #e0e0e0'
+      }}>
                                   <div className={'jazz-energy-gridcomponent-header-item'}> {hieName} </div>
                                   <div className={'jazz-energy-gridcomponent-header-item'}> {tagName} </div>
-                                  <div className={'jazz-energy-gridcomponent-header-item'} style={{ borderBottom:'0px'}}> {uom} </div>
+                                  <div className={'jazz-energy-gridcomponent-header-item'} style={{
+        borderBottom: '0px'
+      }}> {uom} </div>
                                </div>
-                    };
+    };
     return tagColumn;
   },
-  getColOrder(energyData){
-      let dataArray = energyData;
-      let colOrder = ['localTime'];
-      for(let i=0;i<dataArray.length;i++){
-        colOrder.push(dataArray[i].TargetId + '');
-      }
-      return colOrder;
+  getColOrder(energyData) {
+    let dataArray = energyData;
+    let colOrder = ['localTime'];
+    for (let i = 0; i < dataArray.length; i++) {
+      colOrder.push(dataArray[i].TargetId + '');
+    }
+    return colOrder;
   },
-  getPageIndex(){
+  getPageIndex() {
     let pageOrder = EnergyStore.getSubmitParams().viewOption.PagingOrder;
     return pageOrder.PageIdx;
   },
-  getPageObj(){
+  getPageObj() {
     let pageIdx = this.getPageIndex();
     let totalCount = this.props.energyRawData.TotalCount;
-    let pageSize = Math.ceil(totalCount/20);
+    let pageSize = Math.ceil(totalCount / 20);
 
-    return {pageSize: pageSize, pageIdx: pageIdx};
+    return {
+      pageSize: pageSize,
+      pageIdx: pageIdx
+    };
   },
-  render(){
+  render() {
     let me = this;
     let energyData = this.props.energyData.toJS();
     let rowData = this.getFormatEnergyData(energyData);
@@ -116,45 +136,45 @@ let GridComponent = React.createClass({
 
     // Table component
     return <div className='jazz-energy-gridcomponent-wrap'><Table
-        headerColumns={headerCols}
-        columnOrder={colOrder}
-        rowData={rowData}
-        fixedHeader={this.state.fixedHeader}
-        stripedRows={this.state.stripedRows}
-        showRowHover={this.state.showRowHover}
-        selectable={this.state.selectable}
-        displayRowCheckbox = {this.state.displayRowCheckbox}
-        displaySelectAll = {this.state.displaySelectAll}
-        />
+      headerColumns={headerCols}
+      columnOrder={colOrder}
+      rowData={rowData}
+      fixedHeader={this.state.fixedHeader}
+      stripedRows={this.state.stripedRows}
+      showRowHover={this.state.showRowHover}
+      selectable={this.state.selectable}
+      displayRowCheckbox = {this.state.displayRowCheckbox}
+      displaySelectAll = {this.state.displaySelectAll}
+      />
       <Pagination {...pagingPropTypes}></Pagination>
     </div>;
   },
-  _previousPage(){
+  _previousPage() {
     let pageIdx = this.getPageIndex() - 1;
-    pageIdx = pageIdx < 1 ? 1: pageIdx;
+    pageIdx = pageIdx < 1 ? 1 : pageIdx;
 
     let tagOptions = EnergyStore.getTagOpions(),
-        relativeDate = EnergyStore.getRelativeDate(),
-        paramsObj = EnergyStore.getParamsObj(),
-        timeRanges = paramsObj.timeRanges;
+      relativeDate = EnergyStore.getRelativeDate(),
+      paramsObj = EnergyStore.getParamsObj(),
+      timeRanges = paramsObj.timeRanges;
 
     this.props.chartStrategy.getEnergyRawDataFn(timeRanges, 0, tagOptions, relativeDate, pageIdx);
   },
-  _nextPage(){
+  _nextPage() {
     let pageIdx = this.getPageIndex() + 1;
     let tagOptions = EnergyStore.getTagOpions(),
-    relativeDate = EnergyStore.getRelativeDate(),
-        paramsObj = EnergyStore.getParamsObj(),
-        timeRanges = paramsObj.timeRanges;
+      relativeDate = EnergyStore.getRelativeDate(),
+      paramsObj = EnergyStore.getParamsObj(),
+      timeRanges = paramsObj.timeRanges;
 
     this.props.chartStrategy.getEnergyRawDataFn(timeRanges, 0, tagOptions, relativeDate, pageIdx);
   },
-  _jumpToPage(pageNum){
+  _jumpToPage(pageNum) {
     let pageIdx = pageNum < 1 ? 1 : pageNum;
     let tagOptions = EnergyStore.getTagOpions(),
-    relativeDate = EnergyStore.getRelativeDate(),
-        paramsObj = EnergyStore.getParamsObj(),
-        timeRanges = paramsObj.timeRanges;
+      relativeDate = EnergyStore.getRelativeDate(),
+      paramsObj = EnergyStore.getParamsObj(),
+      timeRanges = paramsObj.timeRanges;
 
     this.props.chartStrategy.getEnergyRawDataFn(timeRanges, 0, tagOptions, relativeDate, pageIdx);
   }
