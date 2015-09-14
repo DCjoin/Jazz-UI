@@ -1061,6 +1061,7 @@ let ChartStrategyFactor = {
           IncludeHumidityValue: !wasHumi
         };
       }
+      analysisPanel.setState({weatherOption: weather});
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weather);
     },
   },
@@ -1863,7 +1864,7 @@ let ChartStrategyFactor = {
         dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
         endDate = dateRange.end,
-        weatherOption = analysisPanel.state.weatherOption,
+        clearWeatherflag = false,
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
@@ -1872,7 +1873,6 @@ let ChartStrategyFactor = {
       }
 
       nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-      let clearWeatherflag = false;
       if (!nodeOptions || nodeOptions.length === 0) {
         analysisPanel.setState({
           energyData: null
@@ -1890,9 +1890,6 @@ let ChartStrategyFactor = {
               return;
             }
           });
-          if (clearWeatherflag) {
-            weatherOption = null;
-          }
         }
       }
 
@@ -2210,8 +2207,8 @@ let ChartStrategyFactor = {
     }
   },
   setFitStepAndGetDataFnStrategy: {
-    setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel) {
-      let timeRanges;
+    setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel, clearWeatherflag) {
+      let timeRanges, weather;
       if (tagOptions.length > 1) {
         MultiTimespanAction.clearMultiTimespan('both');
         timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
@@ -2231,7 +2228,11 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         isCalendarInited: false
       });
-      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate);
+      if(!clearWeatherflag){
+        weather = analysisPanel.state.weatherOption;
+      }
+
+      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, relativeDate, weather);
     },
     setCostFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel) {
       let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate),
