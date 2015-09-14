@@ -527,7 +527,43 @@ let AnalysisPanel = React.createClass({
       this.refs.relativeDate.setState({
         selectedIndex: menuIndex
       });
+      this._onRelativeDateChange(null, menuIndex, relativeDateMenuItems[menuIndex]);
     }
+  },
+  _onRelativeDateChange(e, selectedIndex, menuItem) {
+    let value = menuItem.value,
+      dateSelector = this.refs.dateTimeSelector;
+
+    if (value && value !== 'Customerize') {
+      var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
+      dateSelector.setDateField(timeregion.start, timeregion.end);
+    }
+  },
+  _onRankTypeChange(e, selectedIndex, menuItem) {
+    var rankType = menuItem.value;
+    this.setState({
+      rankType: rankType
+    });
+  },
+  _onRangeChange(e, selectedIndex, menuItem) {
+    var range = menuItem.value;
+    this.setState({
+      range: range
+    });
+  },
+  _onOrderChange(e, selectedIndex, menuItem) {
+    var order = menuItem.value;
+    this.setState({
+      order: order
+    });
+  },
+  _onCarbonTypeChange(e, selectedIndex, menuItem) {
+    var me = this;
+    me.setState({
+      destination: menuItem.value
+    }, () => {
+      me.state.chartStrategy.onSearchDataButtonClickFn(me);
+    });
   },
   _onChangeMonth(e, selectedIndex, menuItem) {
     this.setState({

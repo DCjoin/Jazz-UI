@@ -84,7 +84,7 @@ var FolderLeftPanel = React.createClass({
     _newWidget[4]=I18N.Folder.NewWidget.Menu4;
     _newWidget[5]=I18N.Folder.NewWidget.Menu5;
 
-    let name=I18N.format(I18N.Folder.NewWidget.DefaultName, _newWidget[widgetType]);
+    let name=_newWidget[widgetType];
     name=FolderStore.getDefaultName(name,this.state.selectedNode,7);
     this.setState({
       isLoading:true
@@ -190,6 +190,7 @@ var FolderLeftPanel = React.createClass({
     FolderStore.addModifyNameErrorListener(this._onModifyName);
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
     FolderStore.addMoveItemSuccessListener(this._onMoveItemChange);
+    FolderStore.addMoveItemErrorListener(this._onMoveItemChange);
     FolderStore.addModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
 
   },
@@ -204,6 +205,7 @@ var FolderLeftPanel = React.createClass({
     FolderStore.removeModifyNameErrorListener(this._onModifyName);
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemChange);
+    FolderStore.removeMoveItemErrorListener(this._onMoveItemChange);
     FolderStore.removeModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
 
   },

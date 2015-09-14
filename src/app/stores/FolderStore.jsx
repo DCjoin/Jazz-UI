@@ -248,13 +248,14 @@ var FolderStore = assign({},PrototypeStore,{
     return error;
   },
   setMoveItemError:function(node){
-    _errorName=node.get('Name');
-    if(node.get('Type')==6) {
+    _errorName=node.Name;
+    if(node.Type==6) {
       _errorType=I18N.Folder.FolderName;
     }
     else {
       _errorType=I18N.Folder.WidgetName;
     }
+    _selectedNode=Immutable.fromJS(node);
   },
   getMoveItemError:function(){
     return I18N.format(I18N.Folder.Drag.Error,_errorName,_errorType);
