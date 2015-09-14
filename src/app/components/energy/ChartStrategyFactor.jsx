@@ -160,6 +160,7 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn: 'handleRatioBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleRatioStepChange',
+      save2DashboardFn: 'saveRatio2Dashboard',
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -234,6 +235,7 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn: 'handleUnitCarbonBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCarbonStepChange',
+      save2DashboardFn: 'saveUnitCarbon2Dashboard',
     },
     Label: {
       searchBarGenFn: 'labelSearchBarGen',
@@ -478,6 +480,101 @@ let ChartStrategyFactor = {
         storeType = 'energy.Distribution';
       } else {
         storeType = 'energy.Energy';
+      }
+
+      let config = {
+        type: analysisPanel.state.selectedChartType,
+        storeType: storeType
+      };
+
+      let params = {
+        submitParams: submitParams,
+        config: config,
+        calendar: analysisPanel.state.calendarType
+      };
+
+      let contentSyntax = {
+        params: params
+      };
+      widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      FolderAction.updateWidgetDtos(widgetDto);
+    },
+    saveRatio2Dashboard(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      let tagOptions = RatioStore.getRatioOpions();
+      let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
+      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+      let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+      let submitParams1 = EnergyStore.getParamsObj(),
+        timeRanges = submitParams1.viewOption.timeRanges,
+        step = submitParams1.viewOption.step,
+        ratioType = submitParams1.ratioType,
+        widgetTimeRanges;
+
+      //submitParams part
+      let submitParams = {
+        options: nodeNameAssociation,
+        tagIds: tagIds,
+        ratioType: ratioType,
+      };
+      //time range part
+      let relativeDate = RatioStore.getRelativeDate();
+      if (relativeDate !== 'Customerize') {
+        widgetTimeRanges = [{
+          relativeDate: relativeDate
+        }];
+      } else {
+        widgetTimeRanges = timeRanges;
+      }
+      // viewOption part
+      let viewOption = {
+        TimeRanges: widgetTimeRanges,
+        Step: step
+      };
+
+      let includeNavigatorData = !(analysisPanel.state.selectedChartType === 'pie' || analysisPanel.state.selectedChartType === 'rawdata');
+      viewOption.IncludeNavigatorData = includeNavigatorData;
+
+      let bizMap = {
+        Energy: 1,
+        Unit: 2,
+        Ratio: 3,
+        Label: 4,
+        Rank: 5
+      };
+      let dataUsageType = bizMap[analysisPanel.props.bizType];
+      viewOption.DataUsageType = dataUsageType;
+
+      if (chartType === 'rawdata') {
+        let dataOption = {
+          RatioType: ratioType,
+          OriginalValue: true,
+          WithoutAdditionalValue: true
+        };
+        viewOption.DataOption = dataOption;
+
+        let pagingObj = analysisPanel.refs.ChartComponent.getPageObj();
+        let pagingOrder = {
+          PageSize: 20,
+          PageIdx: pagingObj.pageIdx,
+          Order: {
+            Column: 1,
+            Type: 0
+          },
+          PreviousEndTime: null,
+          Operation: 1
+        };
+        viewOption.PagingOrder = pagingOrder;
+      }
+
+      submitParams.viewOption = viewOption;
+
+      //storeType part
+      let storeType;
+      if (analysisPanel.state.selectedChartType === 'pie') {
+        storeType = 'energy.RatioDistribution';
+      } else {
+        storeType = 'energy.Ratio';
       }
 
       let config = {
@@ -813,7 +910,7 @@ let ChartStrategyFactor = {
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       FolderAction.updateWidgetDtos(widgetDto);
     },
-    saveUnitCarbonDashboard(analysisPanel) {
+    saveUnitCarbon2Dashboard(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = {},
         hierarchyNode = CommodityStore.getHierNode(),
