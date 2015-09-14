@@ -328,7 +328,7 @@ var FolderLeftPanel = React.createClass({
                     :(<div style={{display:'none'}}><PanelContainer></PanelContainer></div>)
               );
     return(
-      <div style={{display:'flex'}}>
+      <div style={{display:'flex',width:'320px'}}>
         {panel}
 
       </div>
