@@ -298,18 +298,6 @@ let ChartStrategyFactor = {
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
       };
-      let convertWidgetOptions2TagOption = function(WidgetOptions) {
-        let tagOptions = [];
-        WidgetOptions.forEach(item => {
-          tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-          });
-        });
-        return tagOptions;
-      };
 
       //init timeRange
       let timeRange = timeRanges[0];
@@ -341,28 +329,13 @@ let ChartStrategyFactor = {
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
       };
-      let convertWidgetOptions2TagOption = function(WidgetOptions) {
-        let tagOptions = [];
-        WidgetOptions.forEach(item => {
-          tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-          });
-        });
-        return tagOptions;
-      };
 
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      //init selected tags
-      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      // tagOptions.forEach(item=>{
-      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
-      // });
+      //init selected tags is done in the other part
+
       setTimeout(() => {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
@@ -376,7 +349,17 @@ let ChartStrategyFactor = {
         benchmarkOption = contentObj.benchmarkOption,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
-        unitType = viewOption.DataOption.UnitType;
+        unitType = viewOption.DataOption.UnitType,
+        chartType = widgetDto.ChartType;
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+        Stack: 'stack',
+        Pie: 'pie',
+        DataTable: 'rawdata',
+        original: 'rawdata'
+      };
 
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
@@ -387,32 +370,11 @@ let ChartStrategyFactor = {
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
       };
-      let convertWidgetOptions2TagOption = function(WidgetOptions) {
-        let tagOptions = [];
-        WidgetOptions.forEach(item => {
-          tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-          });
-        });
-        return tagOptions;
-      };
-
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      //init selected tags
-      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      // let lastTagOption = tagOptions[tagOptions.length-1];
-      //
-      // CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
-      //
-      // tagOptions.forEach(item=>{
-      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
-      // });
+      //init selected tags is done in the other part
       let bo = null;
       if (benchmarkOption && benchmarkOption.IndustryId !== null) {
         bo = benchmarkOption;
@@ -421,7 +383,8 @@ let ChartStrategyFactor = {
       setTimeout(() => {
         analysisPanel.setState({
           unitType: unitType,
-          benchmarkOption: bo
+          benchmarkOption: bo,
+          selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
