@@ -1633,7 +1633,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1680,7 +1680,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1710,7 +1710,7 @@ let ChartStrategyFactor = {
         endDate = dateRange.end;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1751,7 +1751,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1780,7 +1780,7 @@ let ChartStrategyFactor = {
         benchmarkOption = analysisPanel.state.benchmarkOption;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1828,7 +1828,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1853,7 +1853,7 @@ let ChartStrategyFactor = {
         endDate = dateRange.end;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1885,7 +1885,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
