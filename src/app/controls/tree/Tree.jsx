@@ -158,9 +158,12 @@ var Tree = React.createClass({
     timeoutHandel=setTimeout(()=>{
     //  console.log("_onShadow_setTimeout");
       pass=true;
-    this.setState({
-      collapsedNodeId:parseInt(lastOver.id)
-    });
+      if(lastOver){
+        this.setState({
+          collapsedNodeId:parseInt(lastOver.id)
+        });
+      }
+
   },2000);
   lastContainer=container;
   },
