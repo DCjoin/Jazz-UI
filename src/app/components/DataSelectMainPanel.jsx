@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {IconButton,DropDownMenu,DatePicker,FlatButton,FontIcon,Menu,Checkbox,TextField,CircularProgress} from 'material-ui';
+import { IconButton, DropDownMenu, DatePicker, FlatButton, FontIcon, Menu, Checkbox, TextField, CircularProgress } from 'material-ui';
 import classnames from 'classnames';
 import HierarchyButton from './Hierarchy/HierarchyButton.jsx';
 import DimButton from './Dim/DimButton.jsx';
@@ -18,455 +18,479 @@ import CommodityAction from '../actions/CommodityAction.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
 
 
-var alarmType=null;//alarmType:0:neither 1:baseline 2:both null:all
-var filters=null;
-var tagStatus=[];
-var selectTotal=0;
-var page=0;
-var alarmTagOption=null;
+var alarmType = null; //alarmType:0:neither 1:baseline 2:both null:all
+var filters = null;
+var tagStatus = [];
+var selectTotal = 0;
+var page = 0;
+var alarmTagOption = null;
 
 
 
-let DataSelectMainPanel=React.createClass({
-    mixins:[Navigation,State],
-    propTypes: {
-        linkFrom: React.PropTypes.string,
-        widgetType:React.PropTypes.string, //energy,unit,ratio,labelling
-    },
-    _onHierachyTreeClick:function(node){
-      if(node!=this.state.dimParentNode){
-        TagAction.setCurrentHierarchyId(node.Id);
-        filters=null;
-        alarmType=null;
-        React.findDOMNode(this.refs.searchIcon).style.display='block';
-        this.refs.searchText.setValue("");
-        if(this.props.widgetType){
-          CommodityAction.setCurrentHierarchyInfo(node.Id,node.Name);
-        }
-        if(this.props.widgetType=='Energy' || this.props.linkFrom=="Alarm"){
-          this.refs.dropDownMenu.setState({selectedIndex:0})
-        }
-
-      }
-      TagAction.loadData(node.Id,2,1,alarmType,filters);
-      TBSettingAction.setHierId(node.Id);
-      LabelMenuAction.setHierNode(node);
-      page=1;
-       this.refs.dimButton.resetButtonName();
-       this.setState({
-         dimActive:true,
-         dimParentNode:node,
-         tagId:node.Id,
-         optionType:2,
-         HierarchyShow:false,
-         DimShow:true
-       });
-    },
-    _onDimTreeClick:function(node){
-      page=1;
-      if(node.Id!==0){
-        TagAction.loadData(node.Id,6,1,alarmType,filters);
-        this.setState({
-          tagId:node.Id,
-          optionType:6,
-          HierarchyShow:true,
-          DimShow:false
-         })
-      }
-      else {
-        let id=TagStore.getCurrentHierarchyId();
-        TagAction.loadData(id,2,1,alarmType,filters);
-        this.setState({
-          tagId:id,
-          optionType:2,
-          HierarchyShow:true,
-          DimShow:false
-         })
-      }
-
-    },
-    _onHierarchButtonClick:function(){
-      React.findDOMNode(this.refs.searchIcon).style.display='block';
+let DataSelectMainPanel = React.createClass({
+  mixins: [Navigation, State],
+  propTypes: {
+    linkFrom: React.PropTypes.string,
+    widgetType: React.PropTypes.string, //energy,unit,ratio,labelling
+  },
+  _onHierachyTreeClick: function(node) {
+    if (node != this.state.dimParentNode) {
+      TagAction.setCurrentHierarchyId(node.Id);
+      filters = null;
+      alarmType = null;
+      React.findDOMNode(this.refs.searchIcon).style.display = 'block';
       this.refs.searchText.setValue("");
-      this.setState({
-        HierarchyShow:true,
-        DimShow:false
-      });
-    },
-    _onDimButtonClick:function(){
-      React.findDOMNode(this.refs.searchIcon).style.display='block';
-      this.refs.searchText.setValue("");
-      this.setState({
-        HierarchyShow:false,
-        DimShow:true
-      })
-    },
-
-    _onTagNodeChange:function(){
-      var data=TagStore.getData();
-      this.setState({
-        tagList:data.GetTagsByFilterResult,
-        total:data.total,
-        isLoading:TagStore.getNodeLoading(),
-      })
-    },
-    _onAlarmTagNodeChange:function(){
-      var data=TagStore.getData();
-      var node,tagId;
-      if(this.props.widgetType){
-        let hierNode=CommodityStore.getHierNode();
-        if(!!hierNode){
-          node={
-            Id:hierNode.hierId,
-            Name:hierNode.hierName
-          };
-          tagId=hierNode.hierId
-        }
+      if (this.props.widgetType) {
+        CommodityAction.setCurrentHierarchyInfo(node.Id, node.Name);
       }
-      else {
-        var alarmTag=EnergyStore.getTagOpions()[0];
-        node={
-          Id:alarmTag.hierId,
-          Name:alarmTag.hierName
+      if (this.props.widgetType == 'Energy' || this.props.linkFrom == "Alarm") {
+        this.refs.dropDownMenu.setState({
+          selectedIndex: 0
+        })
+      }
+
+    }
+    TagAction.loadData(node.Id, 2, 1, alarmType, filters);
+    TBSettingAction.setHierId(node.Id);
+    LabelMenuAction.setHierNode(node);
+    page = 1;
+    this.refs.dimButton.resetButtonName();
+    this.setState({
+      dimActive: true,
+      dimParentNode: node,
+      tagId: node.Id,
+      optionType: 2,
+      HierarchyShow: false,
+      DimShow: true
+    });
+  },
+  _onDimTreeClick: function(node) {
+    page = 1;
+    if (node.Id !== 0) {
+      TagAction.loadData(node.Id, 6, 1, alarmType, filters);
+      this.setState({
+        tagId: node.Id,
+        optionType: 6,
+        HierarchyShow: true,
+        DimShow: false
+      })
+    } else {
+      let id = TagStore.getCurrentHierarchyId();
+      TagAction.loadData(id, 2, 1, alarmType, filters);
+      this.setState({
+        tagId: id,
+        optionType: 2,
+        HierarchyShow: true,
+        DimShow: false
+      })
+    }
+
+  },
+  _onHierarchButtonClick: function() {
+    React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+    this.refs.searchText.setValue("");
+    this.setState({
+      HierarchyShow: true,
+      DimShow: false
+    });
+  },
+  _onDimButtonClick: function() {
+    React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+    this.refs.searchText.setValue("");
+    this.setState({
+      HierarchyShow: false,
+      DimShow: true
+    })
+  },
+
+  _onTagNodeChange: function() {
+    var data = TagStore.getData();
+    this.setState({
+      tagList: data.GetTagsByFilterResult,
+      total: data.total,
+      isLoading: TagStore.getNodeLoading(),
+    })
+  },
+  _onAlarmTagNodeChange: function() {
+    var data = TagStore.getData();
+    var node, tagId;
+    if (this.props.widgetType) {
+      let hierNode = CommodityStore.getHierNode();
+      if (!!hierNode) {
+        node = {
+          Id: hierNode.hierId,
+          Name: hierNode.hierName
         };
-        tagId=alarmTag.hierId
+        tagId = hierNode.hierId
       }
+    } else {
+      var alarmTag = EnergyStore.getTagOpions()[0];
+      node = {
+        Id: alarmTag.hierId,
+        Name: alarmTag.hierName
+      };
+      tagId = alarmTag.hierId
+    }
 
-      page=data.pageIndex;
-       this.refs.dimButton.resetButtonName();
-      this.setState({
-        tagList:data.GetPageTagDataResult,
-        total:data.totalCount,
-        tagId:tagId,
-        dimParentNode:node,
-        optionType:2,
-        dimActive:true,
-        isLoading:TagStore.getNodeLoading(),
-      })
-    },
+    page = data.pageIndex;
+    this.refs.dimButton.resetButtonName();
+    this.setState({
+      tagList: data.GetPageTagDataResult,
+      total: data.totalCount,
+      tagId: tagId,
+      dimParentNode: node,
+      optionType: 2,
+      dimActive: true,
+      isLoading: TagStore.getNodeLoading(),
+    })
+  },
 
 
-    _onPrePage:function(){
-     if(page>1){
-       page=page-1;
-       TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
-      }
-    },
-    _onNextPage:function(){
-      if(20*page<this.state.total){
-                  page=page+1;
-                  TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
+  _onPrePage: function() {
+    if (page > 1) {
+      page = page - 1;
+      TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+    }
+  },
+  _onNextPage: function() {
+    if (20 * page < this.state.total) {
+      page = page + 1;
+      TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
 
-                        }
-    },
-    jumpToPage:function(targetPage){
-      page=targetPage;
-      TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
-    },
-    _onAlarmFilter:function(e, selectedIndex, menuItem){
-      switch(selectedIndex)
-      {
+    }
+  },
+  jumpToPage: function(targetPage) {
+    page = targetPage;
+    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+  },
+  _onAlarmFilter: function(e, selectedIndex, menuItem) {
+    switch (selectedIndex) {
       case 0:this.setState({
-            dropdownmenuStyle:{
-              width:'77px',
-              height:'46px',
+          dropdownmenuStyle: {
+            width: '77px',
+            height: '46px',
 
-              float:'right',
-              paddingLeft:'0'
-            }
-              });
-            break;
-      case 1:this.setState({
-            dropdownmenuStyle:{
-              width:'122px',
-              height:'46px',
-              float:'right'
-            }
-              });
-            break;
-      case 2:this.setState({
-            dropdownmenuStyle:{
-              width:'137px',
-              height:'46px',
-              float:'right'
-            }
-              });
-            break;
-      case 3:
-      this.setState({
-            dropdownmenuStyle:{
-              width:'92px',
-              height:'46px',
-              float:'right'
-            }
-              });
-            break;
+            float: 'right',
+            paddingLeft: '0'
           }
-      alarmType=3-selectedIndex;
-      if(alarmType==3) alarmType=null;
-      page=1;
-      TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
+        });
+        break;
+      case 1:this.setState({
+          dropdownmenuStyle: {
+            width: '122px',
+            height: '46px',
+            float: 'right'
+          }
+        });
+        break;
+      case 2:this.setState({
+          dropdownmenuStyle: {
+            width: '137px',
+            height: '46px',
+            float: 'right'
+          }
+        });
+        break;
+      case 3:
+        this.setState({
+          dropdownmenuStyle: {
+            width: '92px',
+            height: '46px',
+            float: 'right'
+          }
+        });
+        break;
+    }
+    alarmType = 3 - selectedIndex;
+    if (alarmType == 3)
+      alarmType = null;
+    page = 1;
+    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
 
-      },
-    _onSearch:function(e){
-      var value= e.target.value;
-      if(value){
-        React.findDOMNode(this.refs.cleanIcon).style.display='block';
-        filters=[
+  },
+  _onSearch: function(e) {
+    var value = e.target.value;
+    if (value) {
+      React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+      filters = [
         {
           "type": "string",
           "value": [value],
           "field": "Name"
         }
       ];
+    } else {
+      React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+      filters = null;
+    }
+    page = 1;
+    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+
+  },
+  _onSearchClick: function() {
+    React.findDOMNode(this.refs.searchIcon).style.display = 'none';
+  },
+  _onSearchBlur: function(e) {
+    if (!e.target.value) {
+      React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+    }
+  },
+  _onCleanButtonClick: function() {
+    React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+    this.refs.searchText.setValue("");
+    filters = null;
+    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+  },
+  _onSelectFull: function(fullFlag) {
+    this.setState({
+      checkAbled: fullFlag
+    })
+
+  },
+  _onCheckSelect: function(checkFlag) {
+    this.setState({
+      allCheckDisable: checkFlag
+    });
+  },
+  _onClearTagList: function() {
+    tagStatus.length = 0;
+    tagStatus[page] = new Array();
+
+    this.setState({
+      allChecked: false,
+      allCheckDisable: false
+    });
+  },
+  _onNodeLoadingChange: function() {
+    this.setState({
+      isLoading: TagStore.getNodeLoading(),
+    });
+  },
+  _onSettingDataChange: function() {
+    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+  },
+  getInitialState: function() {
+    return {
+      isLoading: false,
+      dimActive: false,
+      dimNode: null,
+      dimParentNode: null,
+      HierarchyShow: false,
+      DimShow: false,
+      tagList: null,
+      allChecked: false,
+      tagId: null,
+      optionType: null,
+      total: 0,
+      checkAbled: false,
+      allCheckDisable: false,
+      searchTagListChanged: false,
+      dropdownmenuStyle: {
+        width: '77px',
+        height: '46px',
+        float: 'right'
       }
-      else{
-          React.findDOMNode(this.refs.cleanIcon).style.display='none';
-          filters=null;
+    };
+  },
+  componentWillMount: function() {
+    //linkFrom="Alarm"时，读取初始tag状态
+    if (this.props.linkFrom == "Alarm") {
+      alarmTagOption = EnergyStore.getTagOpions()[0];
+      let node = {
+        Id: alarmTagOption.hierId,
+        Name: alarmTagOption.hierName
+      };
+      this.setState({
+        dimParentNode: node
+      });
+    }
+    console.log('componentWillMount');
+    if (!this.props.widgetType) {
+      TagAction.resetTagInfo(this.props.widgetType);
+    }
+
+
+
+  },
+  componentWillReceiveProps: function() {
+    if (this.props.linkFrom == "Alarm") {
+      alarmTagOption = EnergyStore.getTagOpions()[0];
+      TagAction.resetTagInfo(this.props.widgetType);
+      TagAction.loadAlarmData(alarmTagOption);
+      //set the first tag select status from alarm left panel
+      if (AlarmTagStore.getSearchTagList().length !== 0) {
+        TagAction.setTagStatusById(alarmTagOption.hierId, alarmTagOption.tagId);
       }
-      page=1;
-      TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
 
-    },
-    _onSearchClick:function(){
-      React.findDOMNode(this.refs.searchIcon).style.display='none';
-    },
-    _onSearchBlur:function(e){
-      if(!e.target.value){
-          React.findDOMNode(this.refs.searchIcon).style.display='block';
+    }
+
+  },
+  componentDidMount: function() {
+    TagStore.addTagNodeListener(this._onTagNodeChange); //listener for load tag
+    TagStore.addNodeLoadingListener(this._onNodeLoadingChange);
+    TagStore.addSettingDataListener(this._onSettingDataChange);
+
+
+    if (this.props.linkFrom == "Alarm") {
+      TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
+      TagAction.loadAlarmData(alarmTagOption);
+
+      //set the first tag select status from alarm left panel
+      if (AlarmTagStore.getSearchTagList().length !== 0) {
+        TagAction.setTagStatusById(alarmTagOption.hierId, alarmTagOption.tagId);
       }
-    },
-    _onCleanButtonClick:function(){
-      React.findDOMNode(this.refs.cleanIcon).style.display='none';
-      this.refs.searchText.setValue("");
-      filters=null;
-      TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
-    },
-    _onSelectFull:function(fullFlag){
-      this.setState({
-        checkAbled:fullFlag
-      })
-
-    },
-    _onCheckSelect:function(checkFlag){
-      this.setState({
-        allCheckDisable:checkFlag
-      });
-    },
-    _onClearTagList:function(){
-      tagStatus.length=0;
-      tagStatus[page]=new Array();
-
-      this.setState({
-        allChecked:false,
-        allCheckDisable:false
-      });
-    },
-    _onNodeLoadingChange:function(){
-      this.setState({
-        isLoading:TagStore.getNodeLoading(),
-      });
-    },
-    _onSettingDataChange:function(){
-      TagAction.loadData(this.state.tagId,this.state.optionType,page,alarmType,filters);
-    },
-    getInitialState: function() {
-          return {
-            isLoading:false,
-            dimActive:false,
-            dimNode:null,
-            dimParentNode:null,
-            HierarchyShow:false,
-            DimShow:false,
-            tagList:null,
-            allChecked:false,
-            tagId:null,
-            optionType:null,
-            total:0,
-            checkAbled:false,
-            allCheckDisable:false,
-            searchTagListChanged:false,
-            dropdownmenuStyle:{
-              width:'77px',
-              height:'46px',
-              float:'right'
-            }
-          };
-        },
-    componentWillMount:function(){
-      //linkFrom="Alarm"时，读取初始tag状态
-      if(this.props.linkFrom=="Alarm"){
-          alarmTagOption = EnergyStore.getTagOpions()[0];
-          let node={
-            Id:alarmTagOption.hierId,
-            Name:alarmTagOption.hierName
-          };
-          this.setState({
-            dimParentNode:node
-          });
-          }
-          console.log('componentWillMount');
-          if(!this.props.widgetType){
-            TagAction.resetTagInfo(this.props.widgetType);
-          }
 
 
-
-      },
-    componentWillReceiveProps:function(){
-      if(this.props.linkFrom=="Alarm"){
-          alarmTagOption = EnergyStore.getTagOpions()[0];
-          TagAction.resetTagInfo(this.props.widgetType);
-          TagAction.loadAlarmData(alarmTagOption);
-          //set the first tag select status from alarm left panel
-          if(AlarmTagStore.getSearchTagList().length!==0){
-              TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
-          }
-
-          }
-
-      },
-    componentDidMount: function() {
-      TagStore.addTagNodeListener(this._onTagNodeChange); //listener for load tag
-      TagStore.addNodeLoadingListener(this._onNodeLoadingChange);
-      TagStore.addSettingDataListener(this._onSettingDataChange);
-
-
-      if(this.props.linkFrom=="Alarm"){
+    } else {
+      // TagAction.clearAlarmSearchTagList();
+    }
+    if (this.props.widgetType) {
+      let hierNode = CommodityStore.getHierNode();
+      if (!!hierNode) {
+        let node = {
+          Id: hierNode.hierId,
+          Name: hierNode.hierName
+        };
+        this.setState({
+          dimParentNode: node,
+          dimActive: true,
+        });
+        let tagId = TagStore.getCurrentHierIdTagStatus().last();
+        let data = {
+          hierId: hierNode.hierId,
+          tagId: tagId
+        };
         TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
-        TagAction.loadAlarmData(alarmTagOption);
-
-        //set the first tag select status from alarm left panel
-        if(AlarmTagStore.getSearchTagList().length!==0){
-            TagAction.setTagStatusById(alarmTagOption.hierId,alarmTagOption.tagId);
-        }
-
-
+        TagAction.loadAlarmData(data);
       }
-      else {
-        TagAction.clearAlarmSearchTagList();
-      }
-      if(this.props.widgetType){
-            let hierNode=CommodityStore.getHierNode();
-            if(!!hierNode){
-              let node={
-                Id:hierNode.hierId,
-                Name:hierNode.hierName
-              };
-              this.setState({
-                dimParentNode:node,
-                dimActive:true,
-              });
-              let tagId=TagStore.getCurrentHierIdTagStatus().last();
-              let data={
-                hierId:hierNode.hierId,
-                tagId:tagId
-              };
-              TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
-              TagAction.loadAlarmData(data);
-            }
-          }
-     },
-    componentWillUnmount: function() {
+    }
+  },
+  componentWillUnmount: function() {
 
-       TagStore.removeTagNodeListener(this._onTagNodeChange);
-       TagStore.removeNodeLoadingListener(this._onNodeLoadingChange);
-       TagStore.removeSettingDataListener(this._onSettingDataChange);
-       if(this.props.linkFrom=="Alarm" || this.props.widgetType){
-         TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
+    TagStore.removeTagNodeListener(this._onTagNodeChange);
+    TagStore.removeNodeLoadingListener(this._onNodeLoadingChange);
+    TagStore.removeSettingDataListener(this._onSettingDataChange);
+    if (this.props.linkFrom == "Alarm" || this.props.widgetType) {
+      TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
 
-       }
-
+    }
+    TagAction.clearAlarmSearchTagList();
+  },
+  handleHierClickAway: function() {
+    this.setState({
+      HierarchyShow: false
+    });
+  },
+  handleDimClickAway: function() {
+    this.setState({
+      DimShow: false
+    });
+  },
+  render: function() {
+    var menuItems = [
+      {
+        payload: '1',
+        text: I18N.ALarm.Menu1
       },
-   handleHierClickAway:function(){
-     this.setState({
-       HierarchyShow:false
-     });
-   },
-   handleDimClickAway:function(){
-     this.setState({
-       DimShow:false
-     });
-   },
-    render:function(){
-      var menuItems = [
-         { payload: '1', text: I18N.ALarm.Menu1 },
-         { payload: '2', text: I18N.ALarm.Menu2 },
-         { payload: '3', text: I18N.ALarm.Menu3 },
-         { payload: '4', text: I18N.ALarm.Menu4 },
+      {
+        payload: '2',
+        text: I18N.ALarm.Menu2
+      },
+      {
+        payload: '3',
+        text: I18N.ALarm.Menu3
+      },
+      {
+        payload: '4',
+        text: I18N.ALarm.Menu4
+      },
 
-      ];
+    ];
 
-      var buttonStyle = {
-               height:'48px',
-           },
-           searchIconStyle={
-             fontSize:'20px'
-           },
-           cleanIconStyle={
-             marginTop:'3px',
-             fontSize:'16px',
-             display:'none'
-           },
-           textFieldStyle={
-             flex:'1',
-             height:'26px'
-           };
-      var menupaper,pagination,
-          totalPageNum=parseInt((this.state.total+19)/20),
-          hasJumpBtn=(this.state.total==0)?false:true;
+    var buttonStyle = {
+        height: '48px',
+      },
+      searchIconStyle = {
+        fontSize: '20px'
+      },
+      cleanIconStyle = {
+        marginTop: '3px',
+        fontSize: '16px',
+        display: 'none'
+      },
+      textFieldStyle = {
+        flex: '1',
+        height: '26px'
+      };
+    var menupaper, pagination,
+      totalPageNum = parseInt((this.state.total + 19) / 20),
+      hasJumpBtn = (this.state.total == 0) ? false : true;
 
-      if(this.state.tagList){
-       menupaper=<TagMenu tagList={this.state.tagList} widgetType={this.props.widgetType}/>;
-       pagination=<Pagination previousPage={this._onPrePage}
-                                             nextPage={this._onNextPage}
-                                             jumpToPage={this.jumpToPage}
-                                             curPageNum={page}
-                                             totalPageNum={totalPageNum}
-                                             hasJumpBtn={hasJumpBtn}/>;
-      }
-      var content;
-      if(this.state.isLoading){
-        content=(  <div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center',marginTop:'160px'}}>
+    if (this.state.tagList) {
+      menupaper = <TagMenu tagList={this.state.tagList} widgetType={this.props.widgetType}/>;
+      pagination = <Pagination previousPage={this._onPrePage}
+      nextPage={this._onNextPage}
+      jumpToPage={this.jumpToPage}
+      curPageNum={page}
+      totalPageNum={totalPageNum}
+      hasJumpBtn={hasJumpBtn}/>;
+    }
+    var content;
+    if (this.state.isLoading) {
+      content = (  <div style={{
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '160px'
+      }}>
             <CircularProgress  mode="indeterminate" size={1} />
           </div>
-        )
-      }
-      else{
-        content=(
-          <div style={{display:'flex','flex-direction':'column',flex:1,overflow:'hidden'}}>
+      )
+    } else {
+      content = (
+        <div style={{
+          display: 'flex',
+          'flex-direction': 'column',
+          flex: 1,
+          overflow: 'hidden'
+        }}>
             {menupaper}
-            <div style={{'min-height':'52px'}}>
+            <div style={{
+          'min-height': '52px'
+        }}>
               {pagination}
             </div>
 
           </div>
 
-        )
-      }
-      var hierId=(this.state.dimParentNode===null)?null:this.state.dimParentNode.Id;
-      var dropDownMenu=(this.props.widgetType=='Energy' || this.props.linkFrom=="Alarm")?
-                            <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
-                            :null;
-      return(
-        <div className="jazz-dataselectmainpanel" >
+      )
+    }
+    var hierId = (this.state.dimParentNode === null) ? null : this.state.dimParentNode.Id;
+    var dropDownMenu = (this.props.widgetType == 'Energy' || this.props.linkFrom == "Alarm") ?
+      <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
+      : null;
+    return (
+      <div className="jazz-dataselectmainpanel" >
 
           <div  className="header">
             <HierarchyButton hierId={hierId}
-                              onTreeClick={this._onHierachyTreeClick}
-                              onButtonClick={this._onHierarchButtonClick}
-                              show={this.state.HierarchyShow}
-                              handleClickAway={this.handleHierClickAway}/>
+      onTreeClick={this._onHierachyTreeClick}
+      onButtonClick={this._onHierarchButtonClick}
+      show={this.state.HierarchyShow}
+      handleClickAway={this.handleHierClickAway}/>
 
-            <div style={{color:'#ffffff'}}>-</div>
+            <div style={{
+        color: '#ffffff'
+      }}>-</div>
 
          <DimButton ref={'dimButton'}
-                    active={this.state.dimActive}
-                    onTreeClick={this._onDimTreeClick}
-                    parentNode={this.state.dimParentNode}
-                    onButtonClick={this._onDimButtonClick}
-                    show={this.state.DimShow}
-                    handleClickAway={this.handleDimClickAway}/>
+      active={this.state.dimActive}
+      onTreeClick={this._onDimTreeClick}
+      parentNode={this.state.dimParentNode}
+      onButtonClick={this._onDimButtonClick}
+      show={this.state.DimShow}
+      handleClickAway={this.handleDimClickAway}/>
           </div>
           <div  className="filter">
             <label className="search" onBlur={this._onSearchBlur}>
@@ -485,8 +509,8 @@ let DataSelectMainPanel=React.createClass({
 
 
       )
-    }
-  });
+  }
+});
 
 
-  module.exports = DataSelectMainPanel;
+module.exports = DataSelectMainPanel;
