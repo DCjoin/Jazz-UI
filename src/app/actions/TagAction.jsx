@@ -97,13 +97,12 @@ let TagAction = {
     });
   },
   resetTagInfo(widgetType){
-    console.log('resetTagInfo');
-    setTimeout(()=>{
+
     AppDispatcher.dispatch({
         type: Action.RESET_TAGINFO,
         widgetType:widgetType
     });
-      },0);
+
   },
   setCurrentTagList(tagList){
     AppDispatcher.dispatch({

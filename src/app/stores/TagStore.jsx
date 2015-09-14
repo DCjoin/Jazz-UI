@@ -172,7 +172,6 @@ var TagStore = assign({},PrototypeStore,{
     return _tagSum
   },
   resetTagInfo:function(widgetType){
-    console.log('resetTagInfo');
     _data = {};
     _totalTagStatus=[];
     _hierId=null;
@@ -297,8 +296,7 @@ else{
       return tagOptions;
     };
     let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-    console.log('tagOptions');
-    console.log(tagOptions);
+
     tagOptions.forEach(item=>{
       that.setTagStatusById(item.hierId,item.tagId);
       _tagTotal++;
@@ -442,6 +440,10 @@ var TagAction = Tag.Action,
             TagStore.removeTagStatusByTagId(action.tagNode.tagId);
             TagStore.emitTagStatusChange();
         break;
+      // case AlarmTagAction.ADD_SEARCH_TAGLIST_CHANGED:
+      //       TagStore.removeTagStatusByTagId(action.tagNode.tagId);
+      //       TagStore.emitTagStatusChange();
+      //   break;
       case AlarmTagAction.CLEAR_SEARCH_TAGLIST:
             TagStore.clearTagStatus();
             TagStore.emitTagStatusChange();

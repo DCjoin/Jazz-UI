@@ -304,7 +304,7 @@ let DataSelectMainPanel = React.createClass({
         dimParentNode: node
       });
     }
-    console.log('componentWillMount');
+
     if (!this.props.widgetType) {
       TagAction.resetTagInfo(this.props.widgetType);
     }
@@ -341,8 +341,6 @@ let DataSelectMainPanel = React.createClass({
       }
 
 
-    } else {
-      // TagAction.clearAlarmSearchTagList();
     }
     if (this.props.widgetType) {
       let hierNode = CommodityStore.getHierNode();
@@ -374,7 +372,10 @@ let DataSelectMainPanel = React.createClass({
       TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
 
     }
-    TagAction.clearAlarmSearchTagList();
+    if(this.props.linkFrom != "Alarm"){
+      TagAction.clearAlarmSearchTagList();
+    }
+
   },
   handleHierClickAway: function() {
     this.setState({
