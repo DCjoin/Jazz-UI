@@ -1672,7 +1672,8 @@ let ChartStrategyFactor = {
       return {
         showAddIntervalDialog: false,
         showSumDialog: false,
-        sumBtnStatus: false
+        sumBtnStatus: false,
+        weatherOption: null,
       };
     },
     getCostInitialState() {
@@ -1736,6 +1737,7 @@ let ChartStrategyFactor = {
         dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
         endDate = dateRange.end,
+        weatherOption = analysisPanel.state.weatherOption,
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
@@ -1744,12 +1746,30 @@ let ChartStrategyFactor = {
       }
 
       nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+      let clearWeatherflag = false;
       if (!nodeOptions || nodeOptions.length === 0) {
         analysisPanel.setState({
           energyData: null
         });
         return;
+      }else {
+        if (analysisPanel.state.weatherOption !== null) {
+          let hierId = null;
+
+          nodeOptions.forEach(item => {
+            if (hierId === null) {
+              hierId = item.hierId;
+            } else if (hierId !== item.hierId) {
+              clearWeatherflag = true;
+              return;
+            }
+          });
+          if (clearWeatherflag) {
+            weatherOption = null;
+          }
+        }
       }
+
       let relativeDateValue = analysisPanel._getRelativeDateValue();
 
       let chartType = analysisPanel.state.selectedChartType;
@@ -1774,6 +1794,12 @@ let ChartStrategyFactor = {
           let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
           analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
         }
+      }
+
+      if (clearWeatherflag) {
+        analysisPanel.setState({
+          weatherOption: null
+        });
       }
     },
     onCostSearchDataButtonClick(analysisPanel) {
