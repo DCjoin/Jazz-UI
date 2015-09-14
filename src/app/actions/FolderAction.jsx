@@ -168,6 +168,7 @@ let FolderAction = {
            desItem:parentNode,
            nextItem:nextNode
           },
+          commonErrorHandling:false,
         success: function(newNode){
           AppDispatcher.dispatch({
             type: Action.MOVE_ITEM,
