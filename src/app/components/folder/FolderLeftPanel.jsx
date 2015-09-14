@@ -22,7 +22,7 @@ import HierarchyAction from '../../actions/HierarchyAction.jsx';
 
 import Immutable from 'immutable';
 
-var PanelContainer = React.createClass({
+var FolderLeftPanel = React.createClass({
 
   _onFolderTreeChange:function(){
     this.setState({
@@ -84,7 +84,7 @@ var PanelContainer = React.createClass({
     _newWidget[4]=I18N.Folder.NewWidget.Menu4;
     _newWidget[5]=I18N.Folder.NewWidget.Menu5;
 
-    let name=I18N.format(I18N.Folder.NewWidget.DefaultName, _newWidget[widgetType]);
+    let name=_newWidget[widgetType];
     name=FolderStore.getDefaultName(name,this.state.selectedNode,7);
     this.setState({
       isLoading:true
@@ -190,6 +190,7 @@ var PanelContainer = React.createClass({
     FolderStore.addModifyNameErrorListener(this._onModifyName);
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
     FolderStore.addMoveItemSuccessListener(this._onMoveItemChange);
+    FolderStore.addMoveItemErrorListener(this._onMoveItemChange);
     FolderStore.addModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
 
   },
@@ -204,6 +205,7 @@ var PanelContainer = React.createClass({
     FolderStore.removeModifyNameErrorListener(this._onModifyName);
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemChange);
+    FolderStore.removeMoveItemErrorListener(this._onMoveItemChange);
     FolderStore.removeModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
 
   },
@@ -289,48 +291,6 @@ var PanelContainer = React.createClass({
         <div className="jazz-folder-leftpanel-foldertree">
           {treeContent}
         </div>
-      </div>
-    )
-  }
-});
-var FolderLeftPanel = React.createClass({
-  propTypes: {
-    isShow:React.PropTypes.bool,
-    onToggle:React.PropTypes.func,
-},
-  _onToggle:function(){
-    this.props.onToggle();
-    this.setState({
-        isShow:!this.state.isShow
-    })
-  },
-  getInitialState: function() {
-      return {
-        isShow: this.props.isShow
-      };
-    },
-  componentWillReceiveProps:function(nextProps){
-      this.setState({
-        isShow: nextProps.isShow
-      })
-    },
-  render:function(){
-    var buttonStyle = {
-      minWidth:'36px',
-      width:'36px',
-      height:'36px',
-      margin:'300px -36px 0 0 ',
-    },
-    iconStyle={
-      fontSize:'36px'
-    };
-    var panel=(this.state.isShow?(<div style={{display:'flex',flex:1,width:'320px'}}><PanelContainer></PanelContainer> </div>)
-                    :(<div style={{display:'none'}}><PanelContainer></PanelContainer></div>)
-              );
-    return(
-      <div style={{display:'flex'}}>
-        {panel}
-
       </div>
     )
   }

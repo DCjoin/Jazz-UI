@@ -299,9 +299,10 @@ render: function () {
     }
 
     let operation=(this.state.templateShow?this.getTemplate():null);
+    let leftPanel=(!this.state.showRightPanel)?<div style={{display:'flex'}}><LeftPanel/></div>:<div style={{display:'none'}}><LeftPanel/></div>;
     return (
       <div style={{display:'flex', flex:1}}>
-        <LeftPanel isShow={!this.state.showRightPanel} onToggle={this._onSwitchButtonClick}/>
+        {leftPanel}
         {mainPanel}
         {rightPanel}
         {operation}
