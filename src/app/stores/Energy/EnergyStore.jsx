@@ -3,95 +3,100 @@
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
+import _ from 'lodash';
 import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
-import {Action} from '../../constants/actionType/Energy.jsx';
+import { Action } from '../../constants/actionType/Energy.jsx';
 import ChartReaderStrategyFactor from './ChartReaderStrategyFactor.jsx';
 
 
 let _isLoading = false,
-    _energyData = null,
-    _energyRawData = null,
-    _submitParams = null,
-    _paramsObj = null,
-    _tagOptions = null,
-    _chartTitle = null,
-    _relativeDate = null,
-    _errorCode = null,
-    _errorMessage = null;
+  _energyData = null,
+  _energyRawData = null,
+  _submitParams = null,
+  _paramsObj = null,
+  _tagOptions = null,
+  _chartTitle = null,
+  _relativeDate = null,
+  _errorCode = null,
+  _errorMessage = null;
 
 const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
-      ENERGY_DATA_LOADED_EVENT = 'energydataloadedevent',
-      ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror';
+  ENERGY_DATA_LOADED_EVENT = 'energydataloadedevent',
+  ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror';
 
-let EnergyStore = assign({},PrototypeStore,{
-  initReaderStrategy(bizChartType){
+let EnergyStore = assign({}, PrototypeStore, {
+  initReaderStrategy(bizChartType) {
     this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType(bizChartType);
   },
-  getLoadingStatus(){
+  getLoadingStatus() {
     return _isLoading;
   },
-  getEnergyData(){
+  getEnergyData() {
     return _energyData;
   },
-  clearEnergyDate(){
+  clearEnergyDate() {
     _energyData = null;
   },
-  getEnergyRawData(){
+  getEnergyRawData() {
     return _energyRawData;
   },
-  getSubmitParams(){
+  getSubmitParams() {
     return _submitParams;
   },
-  getParamsObj(){
+  getParamsObj() {
     return _paramsObj;
   },
-  getTagOpions(){
+  getTagOpions() {
     return _tagOptions;
   },
-  getChartTitle(){
+  getChartTitle() {
     return _chartTitle;
   },
-  getRelativeDate(){
+  getRelativeDate() {
     return _relativeDate;
   },
-  getErrorMessage(){
+  getErrorMessage() {
     return _errorMessage;
   },
-  getErrorCode(){
+  getErrorCode() {
     return _errorCode;
   },
-  _initErrorText(errorText){
+  _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
     _errorCode = errorCode;
     _errorMessage = error.Messages;
   },
 
-  _onDataLoading(params, tagOptions, relativeDate){
+  _onDataLoading(params, tagOptions, relativeDate) {
     _submitParams = params;
     _isLoading = true;
 
-    _tagOptions = tagOptions;
+    _tagOptions = _.cloneDeep(tagOptions);
 
-    if(relativeDate !== false){
+    if (relativeDate !== false) {
       _relativeDate = relativeDate;
     }
 
-    _paramsObj = {tagIds: params.tagIds,
-               startTime: params.viewOption.TimeRanges[0].StartTime,
-               endTime: params.viewOption.TimeRanges[0].EndTime,
-               step: params.viewOption.Step,
-               timeRanges: params.viewOption.TimeRanges};
+    _paramsObj = {
+      tagIds: params.tagIds,
+      startTime: params.viewOption.TimeRanges[0].StartTime,
+      endTime: params.viewOption.TimeRanges[0].EndTime,
+      step: params.viewOption.Step,
+      timeRanges: params.viewOption.TimeRanges
+    };
   },
-  _onDataChanged(data, params){
+  _onDataChanged(data, params) {
     _isLoading = false;
     _energyRawData = data;
 
-    let obj = {start: params.viewOption.TimeRanges[0].StartTime,
-               end: params.viewOption.TimeRanges[0].EndTime,
-               step: params.viewOption.Step,
-               timeRanges: params.viewOption.TimeRanges};
+    let obj = {
+      start: params.viewOption.TimeRanges[0].StartTime,
+      end: params.viewOption.TimeRanges[0].EndTime,
+      step: params.viewOption.Step,
+      timeRanges: params.viewOption.TimeRanges
+    };
 
     //add this for test team start
     window.testObj = window.testObj || {};
@@ -100,9 +105,7 @@ let EnergyStore = assign({},PrototypeStore,{
 
     _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
-  removeSeriesDataByUid(uid){
-
-  },
+  removeSeriesDataByUid(uid) {},
   //listners--------------------------------
   addEnergyDataLoadingListener: function(callback) {
     this.on(ENERGY_DATA_LOADING_EVENT, callback);
@@ -122,10 +125,10 @@ let EnergyStore = assign({},PrototypeStore,{
   removeEnergyDataLoadedListener: function(callback) {
     this.removeListener(ENERGY_DATA_LOADED_EVENT, callback);
   },
-  addEnergyDataLoadErrorListener:function(callback) {
+  addEnergyDataLoadErrorListener: function(callback) {
     this.on(ENERGY_DATA_LOAD_ERROR_EVENT, callback);
   },
-  emitEnergyDataLoadErrorListener:function(callback) {
+  emitEnergyDataLoadErrorListener: function(callback) {
     this.emit(ENERGY_DATA_LOAD_ERROR_EVENT);
   },
   removeEnergyDataLoadErrorListener: function(callback) {
@@ -135,20 +138,20 @@ let EnergyStore = assign({},PrototypeStore,{
 
 
 EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
-    switch(action.type) {
-      case Action.GET_ENERGY_DATA_LOADING:
-        EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate);
-        EnergyStore.emitEnergyDataLoading();
-        break;
-      case Action.GET_ENERGY_DATA_SUCCESS:
-        EnergyStore._onDataChanged(action.energyData, action.submitParams);
-        EnergyStore.emitEnergyDataLoadedListener();
-        break;
-      case Action.GET_ENERGY_DATA_ERROR:
-        EnergyStore._onDataChanged(null, action.submitParams);
-        EnergyStore._initErrorText(action.errorText);
-        EnergyStore.emitEnergyDataLoadErrorListener();
-        break;
-    }
+  switch (action.type) {
+    case Action.GET_ENERGY_DATA_LOADING:
+      EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate);
+      EnergyStore.emitEnergyDataLoading();
+      break;
+    case Action.GET_ENERGY_DATA_SUCCESS:
+      EnergyStore._onDataChanged(action.energyData, action.submitParams);
+      EnergyStore.emitEnergyDataLoadedListener();
+      break;
+    case Action.GET_ENERGY_DATA_ERROR:
+      EnergyStore._onDataChanged(null, action.submitParams);
+      EnergyStore._initErrorText(action.errorText);
+      EnergyStore.emitEnergyDataLoadErrorListener();
+      break;
+  }
 });
 module.exports = EnergyStore;
