@@ -1070,7 +1070,7 @@ let ChartStrategyFactor = {
       if (!tagOptions) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       let paramsObj = EnergyStore.getParamsObj(),
         step = paramsObj.step;
-      if (step != 1) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
+      if (step != 1) return I18N.EM.WeatherSupportsOnlyHourlyStep;
       return false;
     }
   },

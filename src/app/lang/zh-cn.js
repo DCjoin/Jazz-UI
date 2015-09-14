@@ -269,7 +269,7 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
 
 I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
 I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
-I18N.EM.WeatherSupportsOnlySingleHierarchy = '该功能仅单层级数据点。';
+I18N.EM.WeatherSupportsOnlySingleHierarchy = '该功能仅支持单层级数据点。';
 I18N.EM.WeatherSupportsOnlyHourlyStep = '该功能仅支持小时步长。';
 
 I18N.EM.CharType={};
@@ -416,6 +416,8 @@ I18N.Message.M02508 = '缺少供冷面积属性的部分无法绘图。请设置
 I18N.Message.M02509 = '该能效标识已被删除，请重新选择以查看。';
 I18N.Message.M02510 = '该能效标识无数据，请重新选择以查看。';
 I18N.Message.M02701 = '所选层级部分删除，无法排名。';
+I18N.Message.M02809 = '该功能仅支持单层级数据点。';
+I18N.Message.M02810 = '该功能仅支持小时步长。';
 
 /******
  * Carbon
