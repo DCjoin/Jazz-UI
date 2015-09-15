@@ -486,7 +486,7 @@ let ChartPanel = React.createClass({
       return errorObj;
     } else {
       let errorMsg = CommonFuns.getErrorMessage(code);
-      GlobalErrorMessageAction.fireGlobalErrorMessage(code, errorMsg);
+      GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code);
       return null;
     }
   },

@@ -19,6 +19,8 @@ var GlobalErrorMessageStore = assign({}, PrototypeStore, {
     return _errorCode;
   },
   setErrorCode(code) {
+    if (typeof code == 'number')
+      code = code + '';
     _errorCode = code;
   }
 });
