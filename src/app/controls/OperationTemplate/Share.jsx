@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
 import { Navigation, State } from 'react-router';
+import classNames from 'classnames';
 import { Dialog, FlatButton, TextField, Paper } from 'material-ui';
 import UserAction from '../../actions/UserAction.jsx';
 import UserStore from '../../stores/UserStore.jsx';
