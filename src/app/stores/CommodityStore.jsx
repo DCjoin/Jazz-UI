@@ -221,10 +221,10 @@ var CommodityStore = assign({},PrototypeStore,{
     this.resetData();
     this.resetHierInfo();
     if(widgetDto.WidgetType=='Ranking'){
-
+      
     }
     else {
-      if(widgetDto.BizType=='Energy'){
+      if(widgetDto.WidgetType=='Labelling' || widgetDto.WidgetType=='Ratio' || widgetDto.BizType=='Energy'){
         let convertWidgetOptions2TagOption = function(WidgetOptions){
           let tagOptions = [];
           WidgetOptions.forEach(item=>{
