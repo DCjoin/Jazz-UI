@@ -27,7 +27,7 @@ var _checkall_checked_status=null;
 var _isLoading=false;
 var _tagTotalStatus=false;
 var baseline_btn_disabled=false;
-
+var weath_bth_disabled= false;
 
 var TagStore = assign({},PrototypeStore,{
   setTagTotalStatus:function(){
