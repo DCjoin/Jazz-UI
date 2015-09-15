@@ -12,24 +12,52 @@ var RankingHierTreeButton = React.createClass({
   mixins: [Mixins.ClickAwayable],
   propTypes: {
     checkedTreeNodes:React.PropTypes.array,
-    onConfirm:React.PropTypes.func
+    onConfirm:React.PropTypes.func,
+    onLoad:React.PropTypes.func,
   },
   _onChange(){
     var data=HierarchyStore.getData();
+    this.props.onLoad(false);
     this.setState({
       hieList:data,
       isLoading:false
     });
+    if(this.props.checkedTreeNodes){
+      //let checkedTreeNodes=Immutable.fromJS(this.props.checkedTreeNodes);
+      this.setButtonName(this.props.checkedTreeNodes);
+    }
+  },
+  _findNameById:function(id){
+    var name;
+    var f=function(item){
+      if(item.Id==id){
+        name=item.Name;
+      }
+      else {
+        if(item.Children){
+            item.Children.forEach(child=>{
+              f(child);
+            });
+        }
+      }
+    };
+    f(this.state.hieList);
+    return name;
   },
   setButtonName:function(checkedTreeNodes){
     var name;
-    if(checkedTreeNodes.size!=0){
+    var that=this;
+    if(checkedTreeNodes.size!==0){
       checkedTreeNodes.forEach(function(node,i){
+        let nodeName=node.get('Name');
+        if(nodeName===null){
+          nodeName=that._findNameById(node.get('Id'));
+        }
         if(i===0){
-          name=node.get('Name');
+          name=nodeName;
         }
         else {
-          name+=','+node.get('Name');
+          name+=','+nodeName;
         }
       });
       this.setState({
@@ -71,7 +99,7 @@ var RankingHierTreeButton = React.createClass({
       return {
         open: false,
         hieList:null,
-        buttonName:I18N.Hierarchy.RankingButtonName,
+        buttonName:(!!this.props.checkedTreeNodes)?'':I18N.Hierarchy.RankingButtonName,
         display:'none'
       };
     },
@@ -84,12 +112,7 @@ var RankingHierTreeButton = React.createClass({
   componentDidMount:function(){
     HierarchyStore.addHierarchyNodeListener(this._onChange);
     HierarchyAction.loadall(window.currentCustomerId);
-
-    if(this.props.checkedTreeNodes){
-      //let checkedTreeNodes=Immutable.fromJS(this.props.checkedTreeNodes);
-      this.setButtonName(this.props.checkedTreeNodes);
-    }
-
+    this.props.onLoad(true);
     this.setState({
       isLoading:true,
       hieList:null,

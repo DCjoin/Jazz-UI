@@ -212,14 +212,15 @@ let FolderAction = {
     });
   },
   updateWidgetDtos(widgetDto){
+    let originWidgetDto=widgetDto;
     Ajax.post('/Dashboard.svc/CreateWidget', {
          params: {
            widgetDto: widgetDto
           },
         success: function(widgetDto){
           AppDispatcher.dispatch({
-            type: Action.UPDATE_WIDGETDTOS_SUCCESS
-
+            type: Action.UPDATE_WIDGETDTOS_SUCCESS,
+            widgetDto:originWidgetDto
           });
         },
         error: function(err, res){

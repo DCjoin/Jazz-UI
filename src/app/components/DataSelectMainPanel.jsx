@@ -43,6 +43,9 @@ let DataSelectMainPanel = React.createClass({
       if (this.props.widgetType) {
         CommodityAction.setCurrentHierarchyInfo(node.Id, node.Name);
       }
+      if(this.props.widgetType=='Label'){
+        LabelMenuAction.setHierNode(node);
+      }
       if (this.props.widgetType == 'Energy' || this.props.linkFrom == "Alarm") {
         this.refs.dropDownMenu.setState({
           selectedIndex: 0
