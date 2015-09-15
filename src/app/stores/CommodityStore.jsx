@@ -241,7 +241,7 @@ var CommodityStore = assign({}, PrototypeStore, {
         }
       }
     } else {
-      if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy') {
+      if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
         let convertWidgetOptions2TagOption = function(WidgetOptions) {
           let tagOptions = [];
           WidgetOptions.forEach(item => {
