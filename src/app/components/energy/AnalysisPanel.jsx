@@ -38,7 +38,8 @@ let AnalysisPanel = React.createClass({
       bizType: 'Unit',
       energyType: 'Energy',
       chartTitle: '最近7天能耗',
-      widgetInitState: false
+      widgetInitState: false,
+      sourceUserName: null
     };
   },
   componentWillReceiveProps(nextProps) {
@@ -118,11 +119,16 @@ let AnalysisPanel = React.createClass({
                             <MenuItem key={4} primaryText={'导出'} />
                             <MenuItem key={5} primaryText={'删除'} />
                          </IconMenu>;
-
+    let sourceUserNameEl = null;
+    if (me.props.sourceUserName) {
+      sourceUserNameEl = <div className={'description'}>{me.props.sourceUserName}</div>;
+    } else {
+      sourceUserNameEl = <div className={'description'}></div>;
+    }
     return <div className={'jazz-energy-panel'}>
         <div className='header'>
           {collapseButton}
-          <div className={'description'}>来自UXteam</div>
+          {sourceUserNameEl}
           <div className={'jazz-alarm-chart-toolbar-container'}>
               <div className={'title'}>
                 <div className={'content'}>
