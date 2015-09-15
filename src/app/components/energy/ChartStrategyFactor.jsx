@@ -439,43 +439,41 @@ let ChartStrategyFactor = {
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
+        labelingType = contentObj.benchmarkOption,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
         step = viewOption.Step;
 
       let initPanelDate = function(timeRange) {
-        if (timeRange.relativeDate) {
-          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
-        } else {
-          let start = j2d(timeRange.StartTime, false);
-          let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
-        }
-      };
-      let convertWidgetOptions2TagOption = function(WidgetOptions) {
-        let tagOptions = [];
-        WidgetOptions.forEach(item => {
-          tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-          });
+        let start = j2d(timeRange.StartTime, false);
+        let end = j2d(timeRange.EndTime, false);
+        var year = start.getFullYear();
+        var month = start.getMonth();
+        var monthIndex;
+        analysisPanel.refs.yearSelector.setState({
+          selectedYear: year
         });
-        return tagOptions;
+        if (step === 4) {
+          monthIndex = 0;
+        } else {
+          monthIndex = month + 1;
+        }
+        analysisPanel.refs.monthSelector.setState({
+          selectedIndex: monthIndex
+        });
       };
+      analysisPanel.setBenchmarkOption(benchmarkOption, labelingType);
 
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
-      if (timeRanges.length !== 1) {
-        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
-      }
 
       //init selected tags is done in the other part
 
-      analysisPanel.state.selectedChartType = typeMap[chartType];
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      analysisPanel.state.selectedChartType = "column";
+
+      var nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+      analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
     },
   },
   save2DashboardFnStrategy: {
@@ -1878,7 +1876,6 @@ let ChartStrategyFactor = {
     onHierNodeChange(analysisPanel) {
       var industyMenuItems = analysisPanel.getIndustyMenuItems();
       var customerMenuItems = analysisPanel.getCustomizedMenuItems();
-      var hierNode = LabelMenuStore.getHierNode();
       if (!industyMenuItems) {
         return;
       }
@@ -2666,37 +2663,34 @@ let ChartStrategyFactor = {
       }, {
         value: 3,
         text: '03'
-      },
-        {
-          value: 4,
-          text: '04'
-        }, {
-          value: 5,
-          text: '05'
-        }, {
-          value: 6,
-          text: '06'
-        }, {
-          value: 7,
-          text: '07'
-        },
-        {
-          value: 8,
-          text: '08'
-        }, {
-          value: 9,
-          text: '09'
-        }, {
-          value: 10,
-          text: '10'
-        },
-        {
-          value: 11,
-          text: '11'
-        }, {
-          value: 12,
-          text: '12'
-        }];
+      }, {
+        value: 4,
+        text: '04'
+      }, {
+        value: 5,
+        text: '05'
+      }, {
+        value: 6,
+        text: '06'
+      }, {
+        value: 7,
+        text: '07'
+      }, {
+        value: 8,
+        text: '08'
+      }, {
+        value: 9,
+        text: '09'
+      }, {
+        value: 10,
+        text: '10'
+      }, {
+        value: 11,
+        text: '11'
+      }, {
+        value: 12,
+        text: '12'
+      }];
       return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
@@ -3693,67 +3687,7 @@ let ChartStrategyFactor = {
       color: '#b3b3b3',
       textAlign: 'center'
     };
-    var kpiTypeItem = [
-      {
-        value: 1,
-        index: 0,
-        text: I18N.EM.Unit.UnitPopulation,
-        name: 'UnitPopulation'
-      },
-      {
-        value: 2,
-        index: 1,
-        text: I18N.EM.Unit.UnitArea,
-        name: 'UnitArea'
-      },
-      {
-        value: 3,
-        index: 2,
-        text: I18N.EM.Unit.UnitColdArea,
-        name: 'UnitColdArea'
-      },
-      {
-        value: 4,
-        index: 3,
-        text: I18N.EM.Unit.UnitWarmArea,
-        name: 'UnitWarmArea'
-      },
-      {
-        value: 8,
-        index: 4,
-        text: I18N.EM.Unit.UnitRoom,
-        name: 'UnitRoom'
-      },
-      {
-        value: 9,
-        index: 5,
-        text: I18N.EM.Unit.UnitUsedRoom,
-        name: 'UnitUsedRoom'
-      },
-      {
-        value: 10,
-        index: 6,
-        text: I18N.EM.Unit.UnitBed,
-        name: 'UnitBed'
-      },
-      {
-        value: 11,
-        index: 7,
-        text: I18N.EM.Unit.UnitUsedBed,
-        name: 'UnitUsedBed'
-      },
-      {
-        value: 5,
-        index: 8,
-        text: I18N.EM.DayNightRatio,
-        name: 'DayNightRatio'
-      },
-      {
-        value: 6,
-        index: 9,
-        text: I18N.EM.WorkHolidayRatio,
-        name: 'WorkHolidayRatio'
-      }];
+    var kpiTypeItem = ConstStore.getKpiTypeItem();
 
     if (!analysisPanel.state.kpiTypeDisable) {
       kpiTypeButton = <DropDownMenu style={{
