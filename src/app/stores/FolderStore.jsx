@@ -139,6 +139,7 @@ var FolderStore = assign({},PrototypeStore,{
     _modifyNameErrorCode=null;
     _errorName=null;
     _errorType=null;
+    _selectedNode=newNode
   },
   copyItem:function(destItem,newNode){
     var parent=destItem;
@@ -508,6 +509,7 @@ FolderStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.MODIFY_NAME_SECCESS:
          FolderStore.modifyName(Immutable.fromJS(action.newNode));
          FolderStore.emitModifyNameSuccessChange();
+         FolderStore.emitSelectedNodeChange();
       break;
     case FolderAction.MODIFY_NAME_ERROR:
          FolderStore.setModifyNameError(action.res.text,action.newName,action.stype);
