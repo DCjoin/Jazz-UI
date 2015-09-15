@@ -192,7 +192,7 @@ let CommonFuns = {
   },
   popupErrorMessage: function(message, context, fns, errorCode) {
     //window.alert(message);
-    GlobalErrorMessageAction.fireGlobalErrorMessage(errorCode, message);
+    GlobalErrorMessageAction.fireGlobalErrorMessage(message, errorCode);
   },
   ErrorHandler: function(context, errorCode, errorMessages) {
     if (context.commonErrorHandling === false) return;

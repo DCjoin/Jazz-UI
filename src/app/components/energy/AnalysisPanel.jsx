@@ -606,13 +606,13 @@ let AnalysisPanel = React.createClass({
     let code = EnergyStore.getErrorCode(),
       messages = EnergyStore.getErrorMessage();
 
-    if (code.toString() == '02004') {
+    if (code == '02004'.toString()) {
       let errorObj = this.showStepError(messages[0], EnergyStore);
       return errorObj;
     } else {
       let errorMsg = CommonFuns.getErrorMessage(code);
       setTimeout(() => {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(code, errorMsg);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code);
       }, 0);
       return null;
     }
@@ -626,7 +626,7 @@ let AnalysisPanel = React.createClass({
       textArray.push(errorMsg);
     }
     setTimeout(() => {
-      GlobalErrorMessageAction.fireGlobalErrorMessage('', textArray.join('<br/>'));
+      GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
     }, 0);
     return null;
   },

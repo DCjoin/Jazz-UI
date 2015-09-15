@@ -213,7 +213,9 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn: 'getUnitCostSubToolbar',
       handleConfigBtnItemTouchTapFn: 'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn: 'handleUnitCostBenchmarkMenuItemClick',
-      handleStepChangeFn: 'handleUnitCostStepChange'
+      handleStepChangeFn: 'handleUnitCostStepChange',
+      save2DashboardFn: 'saveUnitCost2Dashboard',
+      initChartPanelByWidgetDtoFn: 'initUnitCostChartPanelByWidgetDto'
     },
     UnitCarbon: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -255,7 +257,9 @@ let ChartStrategyFactor = {
       unbindStoreListenersFn: 'labelUnbindStoreListeners',
       canShareDataWithFn: 'canRankShareDataWith',
       onEnergyTypeChangeFn: 'empty',
-      onHierNodeChangeFn: 'onHierNodeChange'
+      onHierNodeChangeFn: 'onHierNodeChange',
+      save2DashboardFn: 'saveLabel2Dashboard',
+      initChartPanelByWidgetDtoFn: 'initLabelChartPanelByWidgetDto'
     },
     Rank: {
       searchBarGenFn: 'rankSearchBarGen',
@@ -273,6 +277,8 @@ let ChartStrategyFactor = {
       canShareDataWithFn: 'canRankShareDataWith',
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getChartSubToolbarFn: 'getRankSubToolbar',
+      save2DashboardFn: 'saveRank2Dashboard',
+      initChartPanelByWidgetDtoFn: 'initRankChartPanelByWidgetDto'
     }
   },
   initChartPanelByWidgetDtoFnStrategy: {
@@ -303,6 +309,18 @@ let ChartStrategyFactor = {
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
+      };
+      let convertWidgetOptions2TagOption = function(WidgetOptions) {
+        let tagOptions = [];
+        WidgetOptions.forEach(item => {
+          tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+          });
+        });
+        return tagOptions;
       };
 
       //init timeRange
@@ -362,17 +380,7 @@ let ChartStrategyFactor = {
         benchmarkOption = contentObj.benchmarkOption,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
-        unitType = viewOption.DataOption.UnitType,
-        chartType = widgetDto.ChartType;
-
-      let typeMap = {
-        Line: 'line',
-        Column: 'column',
-        Stack: 'stack',
-        Pie: 'pie',
-        DataTable: 'rawdata',
-        original: 'rawdata'
-      };
+        unitType = viewOption.DataOption.UnitType;
 
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
@@ -383,11 +391,32 @@ let ChartStrategyFactor = {
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
       };
+      let convertWidgetOptions2TagOption = function(WidgetOptions) {
+        let tagOptions = [];
+        WidgetOptions.forEach(item => {
+          tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+          });
+        });
+        return tagOptions;
+      };
+
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      //init selected tags is done in the other part
+      //init selected tags
+      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      // let lastTagOption = tagOptions[tagOptions.length-1];
+      //
+      // CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+      //
+      // tagOptions.forEach(item=>{
+      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
+      // });
       let bo = null;
       if (benchmarkOption && benchmarkOption.IndustryId !== null) {
         bo = benchmarkOption;
@@ -396,8 +425,7 @@ let ChartStrategyFactor = {
       setTimeout(() => {
         analysisPanel.setState({
           unitType: unitType,
-          benchmarkOption: bo,
-          selectedChartType: typeMap[chartType]
+          benchmarkOption: bo
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
@@ -672,14 +700,11 @@ let ChartStrategyFactor = {
     saveCost2Dashboard(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
-      var commodityList = selectedList.commodityList;
-      var hierarchyNode = selectedList.hierarchyNode;
-      var hierarchyId = hierarchyNode.hierId;
-      var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
-      var dimNode = selectedList.dimNode;
-      var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+      let submitParams1 = CostStore.getSubmitParams();
+      var commodityIds = submitParams1.commodityIds;
+      var viewAssociation = submitParams1.viewAssociation;
       let paramsObj = CostStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges,
         step = paramsObj.step,
@@ -693,16 +718,16 @@ let ChartStrategyFactor = {
         commodityIds: commodityIds
       };
       //time range part
-      if (timeRanges.length === 1) {
-        let relativeDate = CostStore.getRelativeDate();
-        if (relativeDate !== 'Customerize') {
-          widgetTimeRanges = [{
-            relativeDate: relativeDate
-          }];
-        } else {
-          widgetTimeRanges = timeRanges;
-        }
+
+      let relativeDate = CostStore.getRelativeDate();
+      if (relativeDate !== 'Customerize') {
+        widgetTimeRanges = [{
+          relativeDate: relativeDate
+        }];
+      } else {
+        widgetTimeRanges = timeRanges;
       }
+
       // viewOption part
       let viewOption = {
         TimeRanges: widgetTimeRanges,
@@ -752,17 +777,13 @@ let ChartStrategyFactor = {
     saveUnitCost2Dashboard(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
-      var commodityList = selectedList.commodityList;
-      var hierarchyNode = selectedList.hierarchyNode;
-      var hierarchyId = hierarchyNode.hierId;
-      var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
-      var dimNode = selectedList.dimNode;
-      var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
-      let submitParams1 = CostStore.getSubmitParams(),
-        benchmarkOption = submitParams1.benchmarkOption || null,
-        unitType = submitParams1.viewOption.DataOption.UnitType;
+      let submitParams1 = CostStore.getSubmitParams();
+      var commodityIds = submitParams1.commodityIds;
+      var viewAssociation = submitParams1.viewAssociation;
+      var benchmarkOption = submitParams1.benchmarkOption || null;
+      var unitType = submitParams1.viewOption.DataOption.UnitType;
 
       let paramsObj = CostStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges,
@@ -808,7 +829,6 @@ let ChartStrategyFactor = {
       viewOption.DataUsageType = dataUsageType;
 
       submitParams.viewOption = viewOption;
-      submitParams.destination = submitParams1.submitParams;
 
       //storeType part
       let config = {
@@ -991,6 +1011,109 @@ let ChartStrategyFactor = {
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       FolderAction.updateWidgetDtos(widgetDto);
     },
+    saveLabel2Dashboard(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      let tagOptions = LabelStore.getTagOpions();
+      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+      let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+      let submitParams1 = LabelStore.getSubmitParams();
+      var tagIds = submitParams1.tagIds;
+      var labelingType = submitParams1.labelingType;
+      var viewOption = submitParams1.viewOption;
+      var benchmarkOption = submitParams1.benchmarkOption;
+
+
+      //submitParams part
+      let submitParams = {
+        tagIds: tagIds,
+        options: nodeNameAssociation,
+        labelingType: labelingType,
+        viewOption: viewOption,
+        benchmarkOption: benchmarkOption
+      };
+
+      let config = {
+        type: 'labeling',
+        storeType: 'energy.Labeling'
+      };
+
+      let params = {
+        submitParams: submitParams,
+        config: config,
+        calendar: null
+      };
+
+      let contentSyntax = {
+        params: params
+      };
+      widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      FolderAction.updateWidgetDtos(widgetDto);
+    },
+    saveRank2Dashboard(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+      let submitParams1 = RankStore.getSubmitParams();
+      var commodityIds = submitParams1.commodityIds;
+      var hierarchyIds = submitParams1.hierarchyIds;
+      var rankType = submitParams1.rankType;
+      let paramsObj = CostStore.getParamsObj(),
+        timeRanges = paramsObj.timeRanges,
+        widgetTimeRanges;
+
+      //submitParams part
+      let submitParams = {
+        options: null,
+        commodityIds: commodityIds,
+        hierarchyIds: hierarchyIds,
+        rankType: rankType
+      };
+
+      //time range part
+      let relativeDate = CostStore.getRelativeDate();
+      if (relativeDate !== 'Customerize') {
+        widgetTimeRanges = [{
+          relativeDate: relativeDate
+        }];
+      } else {
+        widgetTimeRanges = timeRanges;
+      }
+
+      // viewOption part
+      let viewOption = {
+        TimeRanges: widgetTimeRanges
+      };
+      submitParams.viewOption = viewOption;
+
+      var energyType = analysisPanel.state.analysisPanel;
+      var api = '';
+
+      if (energyType === "Energy") {
+        api = 'RankingEnergyUsageData';
+      } else if (energyType === "Carbon") {
+        api = 'RankingCarbonData';
+        submitParams.destination = submitParams1.destination;
+      } else {
+        api = 'RankingCostData';
+      }
+      submitParams.api = api;
+
+      let config = {
+        type: 'column',
+        storeType: 'energy.RankUsage'
+      };
+
+      let params = {
+        submitParams: submitParams,
+        config: config,
+        calendar: null
+      };
+
+      let contentSyntax = {
+        params: params
+      };
+      widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      FolderAction.updateWidgetDtos(widgetDto);
+    }
   },
   handleNavigatorChangeLoadFnStrategy: {
     handleNavigatorChangeLoad(analysisPanel) {
@@ -1876,7 +1999,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1943,7 +2066,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -1973,7 +2096,7 @@ let ChartStrategyFactor = {
         endDate = dateRange.end;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -2014,7 +2137,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -2043,7 +2166,7 @@ let ChartStrategyFactor = {
         benchmarkOption = analysisPanel.state.benchmarkOption;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -2091,7 +2214,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -2116,7 +2239,7 @@ let ChartStrategyFactor = {
         endDate = dateRange.end;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -2148,7 +2271,7 @@ let ChartStrategyFactor = {
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage('', I18N.EM.ErrorNeedValidTimeRange);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
         return;
       }
 
@@ -3255,9 +3378,8 @@ let ChartStrategyFactor = {
       let path = '/Energy.svc/GetCostData4Export';
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
-      let commodityList = selectedList.commodityList;
-      let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
       let submitParams = CostStore.getSubmitParams();
+      let commodityIds = submitParams.commodityIds;
       let viewOption = submitParams.viewOption;
       let viewAssociation = submitParams.viewAssociation;
       let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu1;
@@ -3387,9 +3509,8 @@ let ChartStrategyFactor = {
       let path = '/Energy.svc/GetCostUnitData4Export';
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
-      let commodityList = selectedList.commodityList;
-      let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
       let submitParams = CostStore.getSubmitParams();
+      let commodityIds = submitParams.commodityIds;
       let benchmarkOption = submitParams.benchmarkOption;
       let viewOption = submitParams.viewOption;
       let viewAssociation = submitParams.viewAssociation;
