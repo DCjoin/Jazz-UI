@@ -431,7 +431,52 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       });
-    }
+    },
+    initLabelChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        benchmarkOption = contentObj.benchmarkOption,
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges,
+        step = viewOption.Step;
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+      let convertWidgetOptions2TagOption = function(WidgetOptions) {
+        let tagOptions = [];
+        WidgetOptions.forEach(item => {
+          tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+          });
+        });
+        return tagOptions;
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+      if (timeRanges.length !== 1) {
+        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
+      }
+
+      //init selected tags is done in the other part
+
+      analysisPanel.state.selectedChartType = typeMap[chartType];
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+    },
   },
   save2DashboardFnStrategy: {
     save2Dashboard(analysisPanel) {
@@ -1056,7 +1101,7 @@ let ChartStrategyFactor = {
       var commodityIds = submitParams1.commodityIds;
       var hierarchyIds = submitParams1.hierarchyIds;
       var rankType = submitParams1.rankType;
-      let paramsObj = CostStore.getParamsObj(),
+      let paramsObj = RankStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges,
         widgetTimeRanges;
 
@@ -1069,7 +1114,7 @@ let ChartStrategyFactor = {
       };
 
       //time range part
-      let relativeDate = CostStore.getRelativeDate();
+      let relativeDate = RankStore.getRelativeDate();
       if (relativeDate !== 'Customerize') {
         widgetTimeRanges = [{
           relativeDate: relativeDate
