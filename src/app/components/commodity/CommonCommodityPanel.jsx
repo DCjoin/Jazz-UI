@@ -11,7 +11,6 @@ var CommonCommodityPanel = React.createClass({
   mixins:[Navigation,State],
   propTypes: {
     ecType:React.PropTypes.string,
-    checkedCommodityList: React.PropTypes.object,
   },
   _onHierachyTreeClick:function(node){
       if(node!=this.state.dimParentNode){
@@ -76,7 +75,6 @@ var CommonCommodityPanel = React.createClass({
   },
 
   componentWillMount: function() {
-    CommodityStore.resetData();
     let hierNode=CommodityStore.getHierNode();
     if(!!hierNode){
       let node={
