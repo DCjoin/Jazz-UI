@@ -4,6 +4,7 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import {Checkbox} from 'material-ui';
 import classnames from 'classnames';
 import TagAction from '../../actions/TagAction.jsx';
+import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
 
 var TagItem=React.createClass({
   mixins:[Navigation,State],
@@ -17,6 +18,7 @@ var TagItem=React.createClass({
       },
   _onClick:function(){
     TagAction.setTagStatusByTag(this.props.nodeData,!this.props.status);
+    LabelMenuAction.setHierNode(this.props.nodeData);
   },
   getInitialState: function() {
     return {

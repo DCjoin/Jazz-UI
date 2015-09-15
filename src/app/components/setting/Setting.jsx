@@ -30,7 +30,7 @@ import SendView from '../folder/operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 
-let lastBizType=null;
+let lastEnergyType=null;
 
 let Setting = React.createClass({
 
@@ -214,7 +214,7 @@ _onWidgetMenuSelect:function(index){
 
 componentWillMount:function(){
   // CommodityAction.setEnergyConsumptionType('Carbon');
-  lastBizType=null;
+  lastEnergyType=null;
 },
 componentDidMount:function(){
   FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -354,16 +354,17 @@ render: function () {
 
         break;
     }
-    // if(lastBizType!=bizType){
-    //   if(bizType=='Rank'){
-    //     CommodityStore.clearRankingTreeList();
-    //   }
-    //   else {
-    //       CommodityStore.resetHierInfo();
-    //   }
-    //
-    //   lastBizType=bizType
-    // }
+    if(bizType=='Rank'){
+        if(lastEnergyType!==null && lastEnergyType!=energyType){
+          CommodityStore.clearRankingCommodity()
+        }
+        else {
+          lastEnergyType=energyType
+        }
+      }
+      else {
+        lastEnergyType=null
+      }
     return rightPanel;
   }
 });

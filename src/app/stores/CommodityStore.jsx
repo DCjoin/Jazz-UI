@@ -65,11 +65,14 @@ var CommodityStore = assign({},PrototypeStore,{
   getHierNode:function(){
     return _hierNode;
   },
-  setDefaultNode:function(){
-    _defaultHierNode={
-      Id:_hierNode.hierId,
-      Name:_hierNode.hierName
-    };
+  setDefaultNode:function(widgetDto){
+    if(widgetDto.WidgetType!='Ranking'){
+      _defaultHierNode={
+        Id:_hierNode.hierId,
+        Name:_hierNode.hierName
+      };
+    }
+
   },
   getDefaultNode:function(){
     return _defaultHierNode;
@@ -213,6 +216,9 @@ var CommodityStore = assign({},PrototypeStore,{
       Comment:commodityName
     };
   },
+  clearRankingCommodity:function(){
+    _RankingCommodity=null;
+  },
   getRankingCommodity:function(){
     return _RankingCommodity;
   },
@@ -221,7 +227,24 @@ var CommodityStore = assign({},PrototypeStore,{
     this.resetData();
     this.resetHierInfo();
     if(widgetDto.WidgetType=='Ranking'){
-      
+      let contentSyntax = widgetDto.ContentSyntax;
+      let contentObj = JSON.parse(contentSyntax);
+      let hierarchyIds=contentObj.hierarchyIds;
+      let commodityIds=contentObj.commodityIds;
+      if(!!hierarchyIds){
+        _RankingTreeList=[];
+        hierarchyIds.forEach(id=>{
+          _RankingTreeList.push({
+            hierId:id,
+            hierName:null
+          });
+        });
+        _RankingCommodity={
+          Id:commodityIds[0],
+          Comment:null
+        };
+      }
+
     }
     else {
       if(widgetDto.WidgetType=='Labelling' || widgetDto.WidgetType=='Ratio' || widgetDto.BizType=='Energy'){
@@ -398,7 +421,7 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
           CommodityStore.emitRankingCommodity();
       break;
       case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
-          CommodityStore.setDefaultNode();
+          CommodityStore.setDefaultNode(action.widgetDto);
       break;
       case FolderAction.GET_WIDGETDTOS_SUCCESS:
           CommodityStore.doWidgetDtos(action.widgetDto[0]);
