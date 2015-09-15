@@ -66,25 +66,14 @@ let ChartCmpStrategyFactor = {
       getInitialStateFn: 'empty',
       getLegendListFn: 'getEnergyLegendList'
     },
-    CostTrendComponent: {
+    UnitTrendComponent: {
       convertDataFn: 'convertData',
       convertSingleItemFn: 'convertSingleItem',
       mergeConfigFn: 'energyChartCmpMergeConfig',
       initYaxisFn: 'initYaxis',
       initNavigatorDataFn: 'initNavigatorData',
       getInitialStateFn: 'empty',
-      getLegendListFn: 'getCostLegendList'
-    },
-    CarbonTrendComponent: {
-    },
-    CarbonPieComponent: {
-      mergeConfigFn: 'pieChartCmpMergeConfig',
-      convertDataFn: 'pieConvertData',
-      convertSingleItemFn: 'pieConvertSingleItem',
-      initYaxisFn: 'empty',
-      initRangeFn: 'pieInitRange',
-      initNavigatorDataFn: 'pieInitNavigatorData',
-      getInitialStateFn: 'empty'
+      getLegendListFn: 'getUnitLegendList'
     },
     RankTrendComponent: {
       mergeConfigFn: 'rankChartCmpMergeConfig',
@@ -113,7 +102,7 @@ let ChartCmpStrategyFactor = {
       config.stackByCommodity = true;
       config.legendSwitchList = legendList;
     },
-    getCostLegendList(config) {
+    getUnitLegendList(config) {
       var legendList = [];
       legendList = ['line', 'column'];
       config.stackByCommodity = true;
