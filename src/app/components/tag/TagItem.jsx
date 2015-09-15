@@ -18,7 +18,6 @@ var TagItem=React.createClass({
       },
   _onClick:function(){
     TagAction.setTagStatusByTag(this.props.nodeData,!this.props.status);
-    LabelMenuAction.setHierNode(this.props.nodeData);
   },
   getInitialState: function() {
     return {
