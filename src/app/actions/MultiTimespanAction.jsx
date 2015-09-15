@@ -51,10 +51,12 @@ let MultiTimespanAction = {
     });
   },
   clearMultiTimespan(type){
+      setTimeout(()=>{
     AppDispatcher.dispatch({
          type: Action.CLEAR_MULTI_TIMESPAN,
          dateType: type
     });
+  },0);
   },
   convert2Stable(){
     AppDispatcher.dispatch({

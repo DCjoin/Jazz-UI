@@ -33,7 +33,7 @@ var CommonCommodityList = React.createClass({
         });
   },
   isCommoditySingleItemSelected:function(commodityId){
-      let id=commodityId+'';
+      let id=commodityId;
       let index=this.state.commodityStatus.findIndex((item)=>item.get('Id')==id);
       if(index>=0){
         return true;
@@ -67,9 +67,7 @@ var CommonCommodityList = React.createClass({
   componentDidMount: function() {
     CommodityStore.addCommoddityListListener(this._onCommodityListChange);
     CommodityStore.addCommoddityStautsListener(this._onCommodityStatusChange);
-    if(!!this.props.checkedCommodityList){
-      CommodityAction.setDefaultCommodityStatus(this.props.checkedCommodityList)
-    }
+
     this._loadCommodityList();
   },
 

@@ -217,25 +217,56 @@ var CommodityStore = assign({},PrototypeStore,{
     return _RankingCommodity;
   },
   doWidgetDtos:function(widgetDto){
+    var that=this;
     this.resetData();
     this.resetHierInfo();
-    let convertWidgetOptions2TagOption = function(WidgetOptions){
-      let tagOptions = [];
-      WidgetOptions.forEach(item=>{
-        tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-        });
-      });
-      return tagOptions;
-    };
-    let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-    if(tagOptions.length>0){
-      let lastTagOption = tagOptions[tagOptions.length-1];
+    if(widgetDto.WidgetType=='Ranking'){
 
-      this.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+    }
+    else {
+      if(widgetDto.BizType=='Energy'){
+        let convertWidgetOptions2TagOption = function(WidgetOptions){
+          let tagOptions = [];
+          WidgetOptions.forEach(item=>{
+            tagOptions.push({
+                hierId: item.HierId,
+                hierName: item.NodeName,
+                tagId: item.TargetId,
+                tagName: item.TargetName
+            });
+          });
+          return tagOptions;
+        };
+        let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+        if(tagOptions.length>0){
+          let lastTagOption = tagOptions[tagOptions.length-1];
+
+          this.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+        }
+      }
+      else {
+        let contentSyntax = widgetDto.ContentSyntax;
+        let contentObj = JSON.parse(contentSyntax);
+        if(contentObj!==null){
+          let viewAssociation=contentObj.viewAssociation;
+          if(viewAssociation.HierarchyId!==null){
+            this.setCurrentHierarchyInfo(viewAssociation.HierarchyId,null);
+            if(viewAssociation.AreaDimensionId!==null){
+              let node={
+                Id:viewAssociation.AreaDimensionId,
+                Name:null
+              };
+              this.setCurrentDimInfo(node);
+            }
+          }
+          if(contentObj.commodityIds.length!=0){
+            contentObj.commodityIds.forEach(item=>{
+              that.setCommodityStatus(item,null,true)
+            })
+          }
+        }
+
+      }
     }
 
 
