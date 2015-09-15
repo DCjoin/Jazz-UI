@@ -3577,35 +3577,36 @@ let ChartStrategyFactor = {
     },
   },
   getChartTypeIconMenu(analysisPanel, types) {
-    var IconButtonElement = <IconButton iconClassName="icon-power"/>;
-    var iconMenuProps = {
+    let menuMap = {
+      line: {
+        primaryText: I18N.EM.CharType.Line,
+        icon: <FontIcon className="icon-line" />
+      },
+      column: {
+        primaryText: I18N.EM.CharType.Bar,
+        icon: <FontIcon className="icon-column" />
+      },
+      stack: {
+        primaryText: I18N.EM.CharType.Stack,
+        icon: <FontIcon className="icon-stack" />
+      },
+      pie: {
+        primaryText: I18N.EM.CharType.Pie,
+        icon: <FontIcon className="icon-pie" />
+      },
+      rawdata: {
+        primaryText: I18N.EM.CharType.RawData,
+        icon: <FontIcon className="icon-raw-data" />
+      }
+    };
+    let chartType = analysisPanel.state.selectedChartType || 'line';
+    let mainIcon = menuMap[chartType].icon;
+    let IconButtonElement = mainIcon;
+    let iconMenuProps = {
       iconButtonElement: IconButtonElement,
       openDirection: "bottom-right",
       desktop: true,
       onItemTouchTap: analysisPanel._onSearchBtnItemTouchTap
-    };
-
-    let menuMap = {
-      line: {
-        primaryText: I18N.EM.CharType.Line,
-        icon: <FontIcon className="icon-power" />
-      },
-      column: {
-        primaryText: I18N.EM.CharType.Bar,
-        icon: <FontIcon className="icon-current" />
-      },
-      stack: {
-        primaryText: I18N.EM.CharType.Stack,
-        icon: <FontIcon className="icon-customer" />
-      },
-      pie: {
-        primaryText: I18N.EM.CharType.Pie,
-        icon: <FontIcon className="icon-delete" />
-      },
-      rawdata: {
-        primaryText: I18N.EM.CharType.RawData,
-        icon: <FontIcon className="icon-device" />
-      }
     };
 
     let typeItems = types.map((item) => {
