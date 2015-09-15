@@ -217,6 +217,8 @@ var CommodityStore = assign({},PrototypeStore,{
     return _RankingCommodity;
   },
   doWidgetDtos:function(widgetDto){
+    this.resetData();
+    this.resetHierInfo();
     let convertWidgetOptions2TagOption = function(WidgetOptions){
       let tagOptions = [];
       WidgetOptions.forEach(item=>{
