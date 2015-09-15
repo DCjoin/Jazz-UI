@@ -6,6 +6,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 
 import {Action} from '../constants/actionType/Labeling.jsx';
+import Folder from '../constants/actionType/Folder.jsx';
 
 var _hierNode = null;
 var _industryData = null;
@@ -52,6 +53,30 @@ var LabelMenuStore = assign({},PrototypeStore,{
   setCustomerLabelData(customerLabelData){
     _customerLabelData = Immutable.fromJS(customerLabelData);
   },
+  doWidgetDtos:function(widgetDto){
+    if(widgetDto.WidgetType=='Labelling'){
+      let convertWidgetOptions2TagOption = function(WidgetOptions){
+        let tagOptions = [];
+        WidgetOptions.forEach(item=>{
+          tagOptions.push({
+              hierId: item.HierId,
+              hierName: item.NodeName,
+              tagId: item.TargetId,
+              tagName: item.TargetName
+          });
+        });
+        return tagOptions;
+      };
+      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      if(tagOptions.length>0){
+        let lastTagOption = tagOptions[tagOptions.length-1];
+
+        //this.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+        this.setHierMode(lastTagOption);
+
+      }
+    }
+  },
   addHierNodeChangeListener: function(callback) {
     this.on(HIER_NODE_CHANGE_EVENT, callback);
   },
@@ -62,7 +87,7 @@ var LabelMenuStore = assign({},PrototypeStore,{
     this.removeListener(HIER_NODE_CHANGE_EVENT, callback);
   },
 });
-
+let FolderAction=Folder.Action;
 LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     case Action.HIERNODE_CHANGED:
@@ -83,6 +108,11 @@ LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.GET_BENCHMARK_DATA_SUCCESS:
       LabelMenuStore.setBenchmarkData(action.benchmarkData);
+      break;
+    case FolderAction.GET_WIDGETDTOS_SUCCESS:
+          LabelMenuStore.doWidgetDtos(action.widgetDto[0]);
+          LabelMenuStore.emitHierNodeChange();
+      break;
   }
 });
 

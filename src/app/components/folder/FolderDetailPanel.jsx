@@ -83,11 +83,15 @@ var FolderItem= React.createClass({
               </div>
     }
     else {
+      let disable=false;
+      if(this.props.nodeData.get('WidgetType')==4 || this.props.nodeData.get('WidgetType')==5){
+        disable=true
+      }
       menu=<IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
             <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} style={menuStyle}/>
             <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} style={menuStyle}/>
             <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} style={menuStyle}/>
-            <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle}/>
+            <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle} disabled={disable}/>
             <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={menuStyle}/>
             </IconMenu>
     };
