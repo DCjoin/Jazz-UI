@@ -332,6 +332,20 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
         _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, 'Customerize', null, null, null, 1));
       }
     } else {
+      //当第一次修改自定义时间的时候，默认将另一个修改为相应的数值
+      let oldItem = _tempRelativeList.get(compareIndex);
+      if (oldItem.get(startDate)) {
+
+      } else {
+        let mainRange = this.getMainDateRange();
+        let mainInteval = mainRange[1].getTime() - mainRange[0].getTime();
+        if (endDate.getTime() - startDate.getTime() === 3600000) {
+          //选中的是开始时间，则将结束时间推后与主时间段相同的时间间隔
+          endDate = new Date(startDate.getTime() + mainInteval);
+        } else {
+          startDate = new Date(endDate.getTime() - mainInteval);
+        }
+      }
       item = me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, compareIndex);
       _tempRelativeList = _tempRelativeList.set(compareIndex, item);
     }
