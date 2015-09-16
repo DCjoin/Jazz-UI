@@ -264,21 +264,28 @@ var CommodityStore = assign({}, PrototypeStore, {
         let contentSyntax = widgetDto.ContentSyntax;
         let contentObj = JSON.parse(contentSyntax);
         if (contentObj !== null) {
-          let viewAssociation = contentObj.viewAssociation;
-          if (viewAssociation.HierarchyId !== null) {
-            this.setCurrentHierarchyInfo(viewAssociation.HierarchyId, null);
-            if (viewAssociation.AreaDimensionId !== null) {
-              let node = {
-                Id: viewAssociation.AreaDimensionId,
-                Name: null
-              };
-              this.setCurrentDimInfo(node);
+          if (widgetDto.BizType == 'Cost') {
+            let viewAssociation = contentObj.viewAssociation;
+            if (viewAssociation.HierarchyId !== null) {
+              this.setCurrentHierarchyInfo(viewAssociation.HierarchyId, null);
+              if (viewAssociation.AreaDimensionId !== null) {
+                let node = {
+                  Id: viewAssociation.AreaDimensionId,
+                  Name: null
+                };
+                this.setCurrentDimInfo(node);
+              }
+            }
+          } else {
+            if (contentObj.hierarchyId !== null) {
+              this.setCurrentHierarchyInfo(contentObj.hierarchyId, null);
             }
           }
-          if (contentObj.commodityIds.length != 0) {
+
+          if (contentObj.commodityIds.length !== 0) {
             contentObj.commodityIds.forEach(item => {
-              that.setCommodityStatus(item, null, true)
-            })
+              that.setCommodityStatus(item, null, true);
+            });
           }
         }
 
