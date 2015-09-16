@@ -1013,7 +1013,7 @@ let CommonFuns = {
   },
   getViewAssociation(hierarchyId, dimNode) {
     var viewAssociation = {};
-    if (dimNode !== null) {
+    if (dimNode !== null && dimNode !== undefined) {
       viewAssociation = {
         HierarchyId: hierarchyId,
         AreaDimensionId: dimNode.dimId

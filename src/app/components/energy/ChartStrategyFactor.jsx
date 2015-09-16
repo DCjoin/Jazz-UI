@@ -907,9 +907,8 @@ let ChartStrategyFactor = {
       let submitParams1 = CarbonStore.getSubmitParams(),
         benchmarkOption = submitParams1.benchmarkOption || null,
         viewOption1 = submitParams1.viewOption,
-        step = viewOption1.step,
-        timeRanges = viewOption1.timeRanges,
-        unitType = viewOption1.DataOption.UnitType,
+        step = viewOption1.Step,
+        timeRanges = viewOption1.TimeRanges,
         widgetTimeRanges;
 
       //submitParams part
@@ -948,8 +947,9 @@ let ChartStrategyFactor = {
       let dataUsageType = bizMap[analysisPanel.props.bizType];
       viewOption.DataUsageType = dataUsageType;
 
+      submitParams.hierarchyId = hierarchyId;
       submitParams.viewOption = viewOption;
-      submitParams.destination = submitParams1.submitParams;
+      submitParams.destination = submitParams1.destination;
 
       //storeType part
       let storeType;
@@ -992,8 +992,8 @@ let ChartStrategyFactor = {
       let submitParams1 = CarbonStore.getSubmitParams(),
         benchmarkOption = submitParams1.benchmarkOption || null,
         viewOption1 = submitParams1.viewOption,
-        step = viewOption1.step,
-        timeRanges = viewOption1.timeRanges,
+        step = viewOption1.Step,
+        timeRanges = viewOption1.TimeRanges,
         unitType = viewOption1.DataOption.UnitType,
         widgetTimeRanges;
 
@@ -1034,6 +1034,8 @@ let ChartStrategyFactor = {
       let dataUsageType = bizMap[analysisPanel.props.bizType];
       viewOption.DataUsageType = dataUsageType;
 
+      submitParams.hierarchyId = hierarchyId;
+      submitParams.destination = submitParams1.destination;
       submitParams.viewOption = viewOption;
 
       //storeType part
