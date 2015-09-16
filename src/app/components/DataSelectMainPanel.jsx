@@ -122,7 +122,7 @@ let DataSelectMainPanel = React.createClass({
           Id: hierNode.hierId,
           Name: hierNode.hierName
         };
-        tagId = hierNode.hierId
+        tagId = hierNode.hierId;
       }
     } else {
       var alarmTag = EnergyStore.getTagOpions()[0];
@@ -130,7 +130,7 @@ let DataSelectMainPanel = React.createClass({
         Id: alarmTag.hierId,
         Name: alarmTag.hierName
       };
-      tagId = alarmTag.hierId
+      tagId = alarmTag.hierId;
     }
 
     page = data.pageIndex;
@@ -143,7 +143,7 @@ let DataSelectMainPanel = React.createClass({
       optionType: 2,
       dimActive: true,
       isLoading: TagStore.getNodeLoading(),
-    })
+    });
   },
 
 
