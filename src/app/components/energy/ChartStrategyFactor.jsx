@@ -1397,7 +1397,7 @@ let ChartStrategyFactor = {
     }
   },
   isCalendarDisabledFnStrategy: {
-    isCalendarDisabled() {
+    isCalendarDisabled(analysisPanel) {
       let tagOptions = EnergyStore.getTagOpions();
       if (!tagOptions) {
         return false;
@@ -1419,6 +1419,9 @@ let ChartStrategyFactor = {
             return;
           }
         });
+      }
+      if (analysisPanel.state.selectedChartType === 'pie' || analysisPanel.state.selectedChartType === 'rawdata') {
+        disabled = true;
       }
       return disabled;
     }
@@ -1464,7 +1467,7 @@ let ChartStrategyFactor = {
   },
   onAnalysisPanelDidUpdateFnStrategy: {
     onAnalysisPanelDidUpdate(analysisPanel) {
-      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn()) { //不符合日历本景色条件的。
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel)) { //不符合日历本景色条件的。
 
       } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
         let paramsObj = EnergyStore.getParamsObj(),
@@ -3297,7 +3300,7 @@ let ChartStrategyFactor = {
           value: 'hotColdSeason'
         }];
       let calendarEl;
-      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
+      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel);
       if (isCalendarDisabled) {
         calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
       } else {
@@ -3399,7 +3402,7 @@ let ChartStrategyFactor = {
         }];
 
       let calendarEl;
-      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
+      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel);
       if (isCalendarDisabled) {
         calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
       } else {
