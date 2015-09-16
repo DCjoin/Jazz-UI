@@ -32,6 +32,7 @@ import ExportChartAction from '../../actions/ExportChartAction.jsx';
 
 
 let lastEnergyType = null;
+let lastBizType = null;
 
 
 let Setting = React.createClass({
@@ -392,15 +393,31 @@ let Setting = React.createClass({
 
         break;
     }
+
     if (bizType == 'Rank') {
+      if (lastBizType != bizType) {
+        lastEnergyType = null
+      }
       if (lastEnergyType !== null && lastEnergyType != energyType) {
         CommodityStore.clearRankingCommodity()
       } else {
         lastEnergyType = energyType
       }
     } else {
-      lastEnergyType = null
+      if (lastBizType == bizType) {
+        if (lastEnergyType !== null && lastEnergyType != energyType) {
+          CommodityStore.clearCommodityStatus()
+        } else {
+          lastEnergyType = energyType
+        }
+      } else {
+        lastBizType = bizType;
+        lastEnergyType = null
+      }
+
     }
+    ;
+
     return rightPanel;
   }
 });

@@ -1020,9 +1020,8 @@ let ChartStrategyFactor = {
       let submitParams1 = CarbonStore.getSubmitParams(),
         benchmarkOption = submitParams1.benchmarkOption || null,
         viewOption1 = submitParams1.viewOption,
-        step = viewOption1.step,
-        timeRanges = viewOption1.timeRanges,
-        unitType = viewOption1.DataOption.UnitType,
+        step = viewOption1.Step,
+        timeRanges = viewOption1.TimeRanges,
         widgetTimeRanges;
 
       //submitParams part
@@ -1033,7 +1032,7 @@ let ChartStrategyFactor = {
       };
       //time range part
       if (timeRanges.length === 1) {
-        let relativeDate = CostStore.getRelativeDate();
+        let relativeDate = CarbonStore.getRelativeDate();
         if (relativeDate !== 'Customerize') {
           widgetTimeRanges = [{
             relativeDate: relativeDate
@@ -1061,8 +1060,9 @@ let ChartStrategyFactor = {
       let dataUsageType = bizMap[analysisPanel.props.bizType];
       viewOption.DataUsageType = dataUsageType;
 
+      submitParams.hierarchyId = hierarchyId;
       submitParams.viewOption = viewOption;
-      submitParams.destination = submitParams1.submitParams;
+      submitParams.destination = submitParams1.destination;
 
       //storeType part
       let storeType;
@@ -1105,8 +1105,8 @@ let ChartStrategyFactor = {
       let submitParams1 = CarbonStore.getSubmitParams(),
         benchmarkOption = submitParams1.benchmarkOption || null,
         viewOption1 = submitParams1.viewOption,
-        step = viewOption1.step,
-        timeRanges = viewOption1.timeRanges,
+        step = viewOption1.Step,
+        timeRanges = viewOption1.TimeRanges,
         unitType = viewOption1.DataOption.UnitType,
         widgetTimeRanges;
 
@@ -1147,6 +1147,8 @@ let ChartStrategyFactor = {
       let dataUsageType = bizMap[analysisPanel.props.bizType];
       viewOption.DataUsageType = dataUsageType;
 
+      submitParams.hierarchyId = hierarchyId;
+      submitParams.destination = submitParams1.destination;
       submitParams.viewOption = viewOption;
 
       //storeType part
@@ -2149,14 +2151,46 @@ let ChartStrategyFactor = {
     }
   },
   onSearchDataButtonClickFnStrategy: {
-    onSearchDataButtonClick(analysisPanel) {
+    onSearchDataButtonClick(analysisPanel, invokeFromMultiTime) { //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
       analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
-
-      let dateSelector = analysisPanel.refs.dateTimeSelector,
-        dateRange = dateSelector.getDateTime(),
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
-        endDate = dateRange.end,
-        clearWeatherflag = false,
+        endDate = dateRange.end;
+      // deal with multi time submit
+      if (!!invokeFromMultiTime) {
+        let multiRelativeType = MultipleTimespanStore.getOriginalType();
+        let relativeDateValue = analysisPanel._getRelativeDateValue();
+
+        if (multiRelativeType === 'Customerize') {
+          let multiDateRange = MultipleTimespanStore.getMainDateRange();
+          if (multiDateRange[0].getTime() !== startDate.getTime() || multiDateRange[1].getTime() !== endDate.getTime()) {
+            dateSelector.setDateField(multiDateRange[0], multiDateRange[1]);
+          }
+          if (relativeDateValue !== 'Customerize') {
+            analysisPanel._setRelativeDateByValue(multiRelativeType);
+          }
+        } else {
+
+          if (relativeDateValue !== multiRelativeType) {
+            analysisPanel._setRelativeDateByValue(multiRelativeType);
+          }
+        }
+      } else {
+        let timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        if (timeRanges !== null) {
+          let multiRelativeType = MultipleTimespanStore.getOriginalType();
+          let relativeDateValue = analysisPanel._getRelativeDateValue();
+          if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
+
+          } else {
+            MultipleTimespanStore.initData(relativeDateValue, startDate, endDate);
+          }
+        }
+      }
+
+
+      let clearWeatherflag = false,
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
