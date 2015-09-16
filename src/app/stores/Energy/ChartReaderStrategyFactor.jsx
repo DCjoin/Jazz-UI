@@ -689,58 +689,117 @@ let ChartReaderStrategyFactor = {
       return obj;
     },
     costTagSeriesConstructor(target) {
-      var name;
-      if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
-        if (target.Type === 6) {
-          name = I18N.EM.Plain /*'平时'*/ ;
-        } else if (target.Type === 7) {
-          name = I18N.EM.Peak /*'峰时'*/ ;
-        } else {
-          name = I18N.EM.Valley /*'谷时'*/ ;
+      var obj = {
+        dType: target.Type,
+        name: target.Name,
+        uid: target.CommodityId,
+        option: {
+          commodityId: target.CommodityId
         }
-        return {
-          uom: CommonFuns.getUomById(1).Code,
-          name: name,
-          disableHide: true,
-          disableDelete: true,
-          uid: target.CommodityId
-        };
-      } else if (target.Type === 13 || target.Type === 14) {
-        if (target.Type === 13) {
-          name = target.Name /*I18N.Common.Glossary.Target'目标值'*/ ;
-        } else if (target.Type === 14) {
-          name = target.Name /*I18N.Common.Glossary.Baseline'基准值'*/ ;
-        }
-        return {
-          uom: CommonFuns.getUomById(1).Code,
-          name: name,
-          disableHide: true,
-          disableDelete: true,
-          uid: target.CommodityId
-        };
+      };
+      var name = target.Name || '';
+      if (target.CommodityId < 1) {
+        obj.name = I18N.EM.Total /*'总览'*/ ;
+        obj.disableDelete = true;
       } else {
-        var disableDelete = false;
-        if (target.CommodityId < 1) {
-          name = I18N.EM.Total /*'总览'*/ ;
-          disableDelete = true;
-        } else {
-          name = CommonFuns.getCommodityById(target.CommodityId).Comment;
-        }
-
-        var uom = target.UomId < 1 ? '' : CommonFuns.getUomById(target.UomId).Code;
-        return {
-          dType: target.Type,
-          uom: uom,
-          name: name,
-          disableDelete: disableDelete,
-          uid: target.CommodityId,
-          option: {
-            CommodityId: target.CommodityId
-          }
-        };
+        obj.name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
+      switch (target.Type) {
+        case 6:
+          obj.name = I18N.EM.Plain /*'平时'*/ ;
+          obj.disableHide = true;
+          obj.disableDelete = true;
+          //obj.uom = CommonFuns.getUomById(1).Code;
+          break;
+        case 7:
+          name = I18N.EM.Peak /*'峰时'*/ ;
+          obj.disableHide = true;
+          obj.disableDelete = true;
+          //obj.uom = CommonFuns.getUomById(1).Code;
+          break;
+        case 8:
+          name = I18N.EM.Valley /*'谷时'*/ ;
+          obj.disableHide = true;
+          obj.disableDelete = true;
+          //obj.uom = CommonFuns.getUomById(1).Code;
+          break;
+        case 11:
+          obj.name = obj.name + I18N.EM.Ratio.CaculateValue;
+          break;
+        case 12:
+          obj.name = obj.name + I18N.EM.Ratio.RawValue;
+          obj.disableDelete = true;
+          break;
+        case 13:
+          obj.name = obj.name + name /*+ I18N.EM.Ratio.TargetValue*/ ;
+          obj.disableDelete = true;
+          break;
+        case 14:
+          obj.name = obj.name + name /*+ I18N.EM.Ratio.BaseValue*/ ;
+          obj.disableDelete = true;
+          break;
+        case 15:
+          obj.name = name /*+ I18N.EM.Ratio.BaseValue*/ ;
+          obj.uid = 'benchmark';
+          break;
+        default: break;
+      }
+      return obj;
     }
   },
+
+  //   if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
+  //     if (target.Type === 6) {
+  //       name = I18N.EM.Plain /*'平时'*/ ;
+  //     } else if (target.Type === 7) {
+  //       name = I18N.EM.Peak /*'峰时'*/ ;
+  //     } else {
+  //       name = I18N.EM.Valley /*'谷时'*/ ;
+  //     }
+  //     return {
+  //       uom: CommonFuns.getUomById(1).Code,
+  //       name: name,
+  //       disableHide: true,
+  //       disableDelete: true,
+  //       uid: target.CommodityId
+  //     };
+  //   } else if (target.Type === 13 || target.Type === 14) {
+  //     if (target.Type === 13) {
+  //       name = target.Name /*I18N.Common.Glossary.Target'目标值'*/ ;
+  //     } else if (target.Type === 14) {
+  //       name = target.Name /*I18N.Common.Glossary.Baseline'基准值'*/ ;
+  //     }
+  //     return {
+  //       uom: CommonFuns.getUomById(1).Code,
+  //       name: name,
+  //       disableHide: true,
+  //       disableDelete: true,
+  //       uid: target.CommodityId
+  //     };
+  //   } else {
+  //     var disableDelete = false;
+  //     if (target.CommodityId < 1) {
+  //       name = I18N.EM.Total /*'总览'*/ ;
+  //       disableDelete = true;
+  //     } else {
+  //       name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+  //     }
+  //
+  //     var uom = target.UomId < 1 ? '' : CommonFuns.getUomById(target.UomId).Code;
+  //     return {
+  //       dType: target.Type,
+  //       uom: uom,
+  //       name: name,
+  //       disableDelete: disableDelete,
+  //       uid: target.CommodityId,
+  //       option: {
+  //         CommodityId: target.CommodityId
+  //       }
+  //     };
+  //   }
+  // }
+
+  // },
   getStrategyByBizChartType(bizChartType) {
     return ChartReaderStrategyFactor.getStrategyByConfig(ChartReaderStrategyFactor.strategyConfiguration[bizChartType]);
   },
