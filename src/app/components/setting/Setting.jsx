@@ -18,6 +18,7 @@ import FolderAction from '../../actions/FolderAction.jsx';
 //for test commoditypanel
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
+import TagStore from '../../stores/TagStore.jsx';
 
 import LeftPanel from '../folder/FolderLeftPanel.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
@@ -117,6 +118,9 @@ let Setting = React.createClass({
         });
       }
     });
+    lastEnergyType = null;
+    lastBizType = null;
+
   },
   _onTemplateDismiss: function() {
     this.setState({
@@ -226,6 +230,7 @@ let Setting = React.createClass({
   componentWillMount: function() {
     // CommodityAction.setEnergyConsumptionType('Carbon');
     lastEnergyType = null;
+    lastBizType = null;
   },
   componentDidMount: function() {
     FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -393,31 +398,32 @@ let Setting = React.createClass({
 
         break;
     }
-
-    if (bizType == 'Rank') {
-      if (lastBizType != bizType) {
-        lastEnergyType = null
-      }
-      if (lastEnergyType !== null && lastEnergyType != energyType) {
-        CommodityStore.clearRankingCommodity()
-      } else {
-        lastEnergyType = energyType
-      }
-    } else {
-      if (lastBizType == bizType) {
+    if (lastBizType !== null) {
+      if (bizType == 'Rank') {
         if (lastEnergyType !== null && lastEnergyType != energyType) {
-          CommodityStore.clearCommodityStatus()
-        } else {
-          lastEnergyType = energyType
+          CommodityStore.clearRankingCommodity()
         }
       } else {
-        lastBizType = bizType;
-        lastEnergyType = null
+        if (lastEnergyType !== null && lastEnergyType != energyType) {
+          if (energyType == 'Energy') {
+            TagStore.clearTagStatus()
+          } else {
+            CommodityStore.clearCommodityStatus()
+          }
+        }
       }
-
     }
-    ;
-
+    lastBizType = bizType;
+    lastEnergyType = energyType
+    // if (bizType == 'Rank') {
+    //   if (lastEnergyType !== null && lastEnergyType != energyType) {
+    //     CommodityStore.clearRankingCommodity()
+    //   } else {
+    //     lastEnergyType = energyType
+    //   }
+    // } else {
+    //   lastEnergyType = null
+    // }
     return rightPanel;
   }
 });
