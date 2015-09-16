@@ -22,6 +22,8 @@ import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
+import CalendarManager from './CalendarManager.jsx';
+import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
@@ -1061,6 +1063,32 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem: selectedLabelItem,
       labelType: 'industryZone'
     });
+  },
+  getCalenderBgBtnEl: function(){
+    let calendarSubItems = [{
+      primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
+      value: 'noneWorkTime'
+    },
+      {
+        primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
+        value: 'hotColdSeason'
+      }];
+    let calendarEl;
+    let isCalendarDisabled = this.state.chartStrategy.isCalendarDisabledFn();
+    if (isCalendarDisabled) {
+      calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
+    } else {
+      let showType = CalendarManager.getShowType();
+      if (!!showType) {
+        calendarSubItems.forEach(item => {
+          if (item.value === showType) {
+            item.checked = true;
+          }
+        });
+      }
+      calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
+    }
+    return calendarEl;
   },
   getNoneMenuItem: function(isIndustryLabel) {
     var menuItems = [];

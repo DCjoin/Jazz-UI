@@ -107,12 +107,13 @@ let CarbonStore = assign({},PrototypeStore,{
     if(relativeDate !== false){
       _relativeDate = relativeDate;
     }
-
-    _paramsObj = {commIds: params.commIds,
-               startTime: params.viewOption.TimeRanges[0].StartTime,
-               endTime: params.viewOption.TimeRanges[0].EndTime,
-               step: params.viewOption.Step,
-               timeRanges: params.viewOption.TimeRanges};
+    _paramsObj = {
+      hierId: params.hierarchyId,
+      commIds: params.communityIds,
+     startTime: params.viewOption.TimeRanges[0].StartTime,
+     endTime: params.viewOption.TimeRanges[0].EndTime,
+     step: params.viewOption.Step,
+     timeRanges: params.viewOption.TimeRanges};
   },
   _onDataChanged(data, params){
     _isLoading = false;
