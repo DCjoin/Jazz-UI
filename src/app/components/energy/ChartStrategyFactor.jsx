@@ -136,6 +136,7 @@ let ChartStrategyFactor = {
       handleStepChangeFn: 'handleCarbonStepChange',
       exportChartFn: 'exportCarbonChart',
       save2DashboardFn: 'saveCarbon2Dashboard',
+      initChartPanelByWidgetDtoFn: 'initCarbonChartPanelByWidgetDto'
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -350,6 +351,42 @@ let ChartStrategyFactor = {
         Column: 'column',
         Stack: 'stack',
         Pie: 'pie'
+      };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+
+      analysisPanel.state.selectedChartType = typeMap[chartType];
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+    },
+    initCarbonChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges,
+        chartType = widgetDto.ChartType;
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+        Stack: 'stack',
+        Pie: 'pie',
+        DataTable: 'rawdata',
+        original: 'rawdata'
       };
 
       let initPanelDate = function(timeRange) {
@@ -1013,8 +1050,6 @@ let ChartStrategyFactor = {
       selectedList.commodityList = commodityList;
       let hierarchyId = hierarchyNode.hierId;
       let commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
-      let dimNode = selectedList.dimNode;
-      let viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
       let submitParams1 = CarbonStore.getSubmitParams(),
@@ -1027,7 +1062,7 @@ let ChartStrategyFactor = {
       //submitParams part
       let submitParams = {
         options: nodeNameAssociation,
-        viewAssociation: viewAssociation,
+        hierarchyId: hierarchyId,
         commodityIds: commodityIds
       };
       //time range part
@@ -1113,7 +1148,7 @@ let ChartStrategyFactor = {
       //submitParams part
       let submitParams = {
         options: nodeNameAssociation,
-        viewAssociation: viewAssociation,
+        hierarchyId: hierarchyId,
         commodityIds: commodityIds,
         benchmarkOption: benchmarkOption
       };
@@ -1134,7 +1169,7 @@ let ChartStrategyFactor = {
           UnitType: unitType
         },
         Step: step,
-        IncludeNavigatorData: true
+        IncludeNavigatorData: true,
       };
 
       let bizMap = {
