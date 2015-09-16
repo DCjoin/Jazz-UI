@@ -38,7 +38,8 @@ let AnalysisPanel = React.createClass({
       bizType: 'Unit',
       energyType: 'Energy',
       chartTitle: '最近7天能耗',
-      widgetInitState: false
+      widgetInitState: false,
+      sourceUserName: null
     };
   },
   componentWillReceiveProps(nextProps) {
@@ -118,11 +119,16 @@ let AnalysisPanel = React.createClass({
                             <MenuItem key={4} primaryText={'导出'} />
                             <MenuItem key={5} primaryText={'删除'} />
                          </IconMenu>;
-
+    let sourceUserNameEl = null;
+    if (me.props.sourceUserName) {
+      sourceUserNameEl = <div className={'description'}>{me.props.sourceUserName}</div>;
+    } else {
+      sourceUserNameEl = <div className={'description'}></div>;
+    }
     return <div className={'jazz-energy-panel'}>
         <div className='header'>
           {collapseButton}
-          <div className={'description'}>来自UXteam</div>
+          {sourceUserNameEl}
           <div className={'jazz-alarm-chart-toolbar-container'}>
               <div className={'title'}>
                 <div className={'content'}>
@@ -606,13 +612,13 @@ let AnalysisPanel = React.createClass({
     let code = EnergyStore.getErrorCode(),
       messages = EnergyStore.getErrorMessage();
 
-    if (code.toString() == '02004') {
+    if (code == '02004'.toString()) {
       let errorObj = this.showStepError(messages[0], EnergyStore);
       return errorObj;
     } else {
       let errorMsg = CommonFuns.getErrorMessage(code);
       setTimeout(() => {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(code, errorMsg);
+        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code);
       }, 0);
       return null;
     }
@@ -626,7 +632,7 @@ let AnalysisPanel = React.createClass({
       textArray.push(errorMsg);
     }
     setTimeout(() => {
-      GlobalErrorMessageAction.fireGlobalErrorMessage('', textArray.join('<br/>'));
+      GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
     }, 0);
     return null;
   },
@@ -718,11 +724,12 @@ let AnalysisPanel = React.createClass({
   _onChangeLabelType(subMenuItem, mainMenuItem) {
     var curType = this.state.labelType,
       type = mainMenuItem.props.value,
-      selectedLabelItem = this.state.selectedLabelItem;
+      selectedLabelItem = this.state.selectedLabelItem,
+      kpiTypeValue = this.state.kpiTypeValue;
 
     if (type === 'industryZone') {
       if (type === curType) {
-        if (selectedLabelItem.industryId == subMenuItem.props.industryId && selectedLabelItem.zoneId == subMenuItem.props.zoneId) {
+        if (selectedLabelItem.industryId === subMenuItem.props.industryId && selectedLabelItem.zoneId === subMenuItem.props.zoneId) {
           return;
         }
       } else {
@@ -734,7 +741,10 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem.industryId = subMenuItem.props.industryId;
       selectedLabelItem.zoneId = subMenuItem.props.zoneId;
       selectedLabelItem.value = subMenuItem.props.value;
-      this.changeToIndustyrLabel();
+      this.setState({
+        selectedLabelItem: selectedLabelItem
+      });
+      this.changeToIndustyLabel(kpiTypeValue);
     } else {
       if (type === curType) {
         if (selectedLabelItem.customerizedId === subMenuItem.props.customerizedId) {
@@ -748,21 +758,86 @@ let AnalysisPanel = React.createClass({
 
       selectedLabelItem.text = (subMenuItem.props.customerizedId === -1 ? I18N.Setting.Benchmark.Label.SelectLabelling : this.getDisplayText(subMenuItem.props.primaryText));
       selectedLabelItem.customerizedId = subMenuItem.props.customerizedId;
+      this.setState({
+        selectedLabelItem: selectedLabelItem
+      });
 
       this.changeToCustomizedLabel(subMenuItem.props.kpiType);
     }
   },
-  changeToIndustyrLabel() {
+  setBenchmarkOption(benchmarkOption, labelingType) {
+    var curType = this.state.labelType;
+    var type = '', i;
+    var selectedLabelItem = this.state.selectedLabelItem;
+    var industyMenuItems = this.state.industyMenuItems;
+    var customerMenuItems = this.state.customerMenuItems;
+    if (benchmarkOption.IndustryId !== null) {
+      type = 'industryZone';
+    } else if (benchmarkOption.CustomerizedId !== null) {
+      type = 'customized';
+    }
+
+    if (type === 'industryZone') {
+      if (type === curType) {
+        if (selectedLabelItem.industryId === benchmarkOption.IndustryId && selectedLabelItem.zoneId == benchmarkOption.ZoneId) {
+          return;
+        }
+      } else {
+        this.setState({
+          labelType: 'industryZone',
+          labelDisable: false
+        });
+      }
+      for (i = 0; i < industyMenuItems.length; i++) {
+        if (industyMenuItems[i].industryId === benchmarkOption.IndustryId) {
+          selectedLabelItem.text = benchmarkOption.benchmarkText;
+          selectedLabelItem.industryId = industyMenuItems[i].IndustryId;
+          selectedLabelItem.zoneId = industyMenuItems[i].ZoneId;
+          selectedLabelItem.value = industyMenuItems[i].value;
+          this.setState({
+            selectedLabelItem: selectedLabelItem
+          });
+          this.changeToIndustyLabel(labelingType);
+          break;
+        }
+      }
+    } else {
+      if (type === curType) {
+        if (selectedLabelItem.customerizedId === benchmarkOption.CustomerizedId) {
+          return;
+        }
+      } else {
+        this.setState({
+          labelType: 'customized',
+          labelDisable: false
+        });
+      }
+      for (i = 0; i < customerMenuItems.length; i++) {
+        if (customerMenuItems[i].customerizedId === benchmarkOption.CustomerizedId) {
+          selectedLabelItem.text = customerMenuItems[i].primaryText;
+          selectedLabelItem.customerizedId = customerMenuItems[i].customerizedId;
+          selectedLabelItem.value = customerMenuItems[i].value;
+          this.setState({
+            selectedLabelItem: selectedLabelItem
+          });
+          this.changeToCustomizedLabel(labelingType);
+          break;
+        }
+      }
+    }
+  },
+  changeToIndustyLabel(kpiTypeValue) {
     var kpiTypeItem = ConstStore.getKpiTypeItem();
-    if (this.state.kpiTypeValue === 7) {
+    if (kpiTypeValue === 7) {
       this.setState({
         kpiTypeValue: 1,
         kpiTypeIndex: 0
       });
     } else {
       for (var i = 0; i < kpiTypeItem.length; i++) {
-        if (kpiTypeItem[i].value === this.state.kpiTypeValue) {
+        if (kpiTypeItem[i].value === kpiTypeValue) {
           this.setState({
+            kpiTypeValue: kpiTypeValue,
             kpiTypeIndex: kpiTypeItem[i].index
           });
           break;

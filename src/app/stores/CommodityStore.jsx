@@ -6,236 +6,283 @@ import assign from 'object-assign';
 import Commodity from '../constants/actionType/Commodity.jsx';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
+import LabelMenuAction from '../actions/LabelMenuAction.jsx';
 import Immutable from 'immutable';
 
 const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
-      COMMODITY_LIST_CHANGED_EVENT = 'commoditylistchanged',
-      COMMODITY_STATUS_CHANGED_EVENT = 'commoditystatuschanged',
-      RANKING_EC_TYPE_CHANGED_EVENT= 'rankingectypechanged',
-      GET_RANKING_COMMODITY_LIST_CHANGED_EVENT = 'getrankingcommoditylistchanged',
-      SET_RANKING_COMMODITY_CHANGED_EVENT='setrankingcommoditychanged',
-      EC_BUTTON_STATUS_CHANGED_EVENT='energycostbuttonstatuschanged',
-      UC_BUTTON_STATUS_CHANGED_EVENT='unitcostbuttonstatuschanged';
+  COMMODITY_LIST_CHANGED_EVENT = 'commoditylistchanged',
+  COMMODITY_STATUS_CHANGED_EVENT = 'commoditystatuschanged',
+  RANKING_EC_TYPE_CHANGED_EVENT = 'rankingectypechanged',
+  GET_RANKING_COMMODITY_LIST_CHANGED_EVENT = 'getrankingcommoditylistchanged',
+  SET_RANKING_COMMODITY_CHANGED_EVENT = 'setrankingcommoditychanged',
+  EC_BUTTON_STATUS_CHANGED_EVENT = 'energycostbuttonstatuschanged',
+  UC_BUTTON_STATUS_CHANGED_EVENT = 'unitcostbuttonstatuschanged';
 
-let _energyConsumptionType=null,// Carbon or Cost
-    _rankingECType=null,//Energy Carbon or Cost
-    _hierNode=null,
-    _defaultHierNode=null,
-    _currentHierId=null,
-    _currentHierName=null,
-    _currentDimNode=null,
-    _commodityList=[],
-    _commodityStatus=Immutable.List([]),
-    _RankingTreeList=[],
-    _RankingCommodity=null,
-    _buttonStatus_EC=true,//for energy cost
-    _buttonStatus_UC=true;//for unit cost
+let _energyConsumptionType = null, // Carbon or Cost
+  _rankingECType = null, //Energy Carbon or Cost
+  _hierNode = null,
+  _defaultHierNode = null,
+  _currentHierId = null,
+  _currentHierName = null,
+  _currentDimNode = null,
+  _commodityList = [],
+  _commodityStatus = Immutable.List([]),
+  _RankingTreeList = [],
+  _RankingCommodity = null,
+  _buttonStatus_EC = true, //for energy cost
+  _buttonStatus_UC = true; //for unit cost
 
-var CommodityStore = assign({},PrototypeStore,{
+var CommodityStore = assign({}, PrototypeStore, {
 
-  setEnergyConsumptionType:function(type){
-    _energyConsumptionType=type;
+  setEnergyConsumptionType: function(type) {
+    _energyConsumptionType = type;
   },
-  getEnergyConsumptionType:function(){
+  getEnergyConsumptionType: function() {
     return _energyConsumptionType;
   },
 
-  setRankingECType:function(type){
-    _rankingECType=type;
+  setRankingECType: function(type) {
+    _rankingECType = type;
   },
-  getRankingECType:function(){
+  getRankingECType: function() {
     return _rankingECType;
   },
-  setCurrentHierarchyInfo:function(id,name){
+  setCurrentHierarchyInfo: function(id, name) {
     this.resetData();
-    _currentHierId=id;
-    _currentHierName=name;
-    _currentDimNode=null;
-    _hierNode={
-      hierId:id,
-      hierName:name
+    _currentHierId = id;
+    _currentHierName = name;
+    _currentDimNode = null;
+    _hierNode = {
+      hierId: id,
+      hierName: name
     };
   },
-  getCurrentHierarchyId:function(){
+  getCurrentHierarchyId: function() {
     return _currentHierId;
   },
-  getCurrentHierarchyName:function(){
+  getCurrentHierarchyName: function() {
     return _currentHierName;
   },
-  getHierNode:function(){
+  getHierNode: function() {
     return _hierNode;
   },
-  setDefaultNode:function(){
-    _defaultHierNode={
-      Id:_hierNode.hierId,
-      Name:_hierNode.hierName
-    };
+  setDefaultNode: function(widgetDto) {
+    if (widgetDto.WidgetType != 'Ranking') {
+      _defaultHierNode = {
+        Id: _hierNode.hierId,
+        Name: _hierNode.hierName
+      };
+    }
+
   },
-  getDefaultNode:function(){
+  getDefaultNode: function() {
     return _defaultHierNode;
   },
-  setCurrentDimInfo:function(node){
-    _currentDimNode={
-      dimId:node.Id,
-      dimName:node.Name
+  setCurrentDimInfo: function(node) {
+    _currentDimNode = {
+      dimId: node.Id,
+      dimName: node.Name
     };
-    _energyConsumptionType=null;
-    _commodityList=[];
-    _commodityStatus=Immutable.List([]);
-    _buttonStatus_EC=true;
-    _buttonStatus_UC=true;
+    _energyConsumptionType = null;
+    _commodityList = [];
+    _commodityStatus = Immutable.List([]);
+    _buttonStatus_EC = true;
+    _buttonStatus_UC = true;
   },
-  getCurrentDimNode:function(){
+  getCurrentDimNode: function() {
     return _currentDimNode;
   },
-  setCommodityList:function(list){
-    var listArray=list;
-    _commodityList=[];
-    listArray.forEach(function(element){
-      let node={
-        Id:element.Id,
-        Comment:element.Comment
+  setCommodityList: function(list) {
+    var listArray = list;
+    _commodityList = [];
+    listArray.forEach(function(element) {
+      let node = {
+        Id: element.Id,
+        Comment: element.Comment
       };
       _commodityList.push(node);
     });
   },
-  getCommodityList:function(){
+  getCommodityList: function() {
     return _commodityList;
   },
-  resetHierInfo:function(){
-    _hierNode=null;
-    _currentHierId=null;
-    _currentHierName=null;
+  resetHierInfo: function() {
+    _hierNode = null;
+    _currentHierId = null;
+    _currentHierName = null;
   },
-  resetData:function(){
-      _energyConsumptionType=null;
-      _currentDimNode=null;
-      _commodityList=[];
-      _commodityStatus=Immutable.List([]);
-      _buttonStatus_EC=true;
-      _buttonStatus_UC=true;
+  resetData: function() {
+    _energyConsumptionType = null;
+    _currentDimNode = null;
+    _commodityList = [];
+    _commodityStatus = Immutable.List([]);
+    _buttonStatus_EC = true;
+    _buttonStatus_UC = true;
   },
-  setECButtonStatus:function(){
-    if(_commodityStatus.size==1){
-      _commodityStatus.forEach(function(item){
-        if(item.get('Id')==1){
-            _buttonStatus_EC=false;
-        }
-        else {
-            _buttonStatus_EC=true;
+  setECButtonStatus: function() {
+    if (_commodityStatus.size == 1) {
+      _commodityStatus.forEach(function(item) {
+        if (item.get('Id') == 1) {
+          _buttonStatus_EC = false;
+        } else {
+          _buttonStatus_EC = true;
         }
       });
 
-    }
-    else {
-        _buttonStatus_EC=true;
+    } else {
+      _buttonStatus_EC = true;
     }
 
-   this.emitECButtonStatus();
+    this.emitECButtonStatus();
   },
-  getECButtonStatus:function(){
+  getECButtonStatus: function() {
     return _buttonStatus_EC;
   },
-  setUCButtonStatus:function(){
-    if(_commodityStatus.size==1){
-      _commodityStatus.forEach(function(item){
-        if(item.get('Id')!=-1){
-            _buttonStatus_UC=false;
-        }
-        else {
-            _buttonStatus_UC=true;
+  setUCButtonStatus: function() {
+    if (_commodityStatus.size == 1) {
+      _commodityStatus.forEach(function(item) {
+        if (item.get('Id') != -1) {
+          _buttonStatus_UC = false;
+        } else {
+          _buttonStatus_UC = true;
         }
       });
 
-    }
-    else {
-        _buttonStatus_UC=true;
+    } else {
+      _buttonStatus_UC = true;
     }
 
-   this.emitUCButtonStatus();
+    this.emitUCButtonStatus();
   },
-  getUCButtonStatus:function(){
+  getUCButtonStatus: function() {
     return _buttonStatus_UC;
   },
-  setDefaultCommodityStatus:function(list){
-    _commodityStatus=list;
+  setDefaultCommodityStatus: function(list) {
+    _commodityStatus = list;
     this.setECButtonStatus();
     this.setUCButtonStatus();
   },
-  setCommodityStatus:function(id,name,selected){
-    var hasCommodity=false;
-    var item={
-          Id:id,
-          Comment:name
-        };
-      if(selected){
-        if(_commodityStatus.indexOf(item)<0){
-          _commodityStatus= _commodityStatus.push(Immutable.fromJS(item));
-        }
+  setCommodityStatus: function(id, name, selected) {
+    var hasCommodity = false;
+    var item = {
+      Id: id,
+      Comment: name
+    };
+    if (selected) {
+      if (_commodityStatus.indexOf(item) < 0) {
+        _commodityStatus = _commodityStatus.push(Immutable.fromJS(item));
       }
-      else {
-        _commodityStatus=_commodityStatus.delete(_commodityStatus.findIndex(item=>item.get('Id')==id));
-      }
-      this.setECButtonStatus();
-      this.setUCButtonStatus();
+    } else {
+      _commodityStatus = _commodityStatus.delete(_commodityStatus.findIndex(item => item.get('Id') == id));
+    }
+    this.setECButtonStatus();
+    this.setUCButtonStatus();
   },
-  getCommonCommodityList:function(){
+  getCommonCommodityList: function() {
     return _commodityStatus.toJSON();
   },
-  getCommodityStatus:function(){
+  getCommodityStatus: function() {
     return _commodityStatus;
   },
-  removeCommodityStatus:function(node){
-
-  },
-  clearCommodityStatus:function(){
-    _commodityStatus=Immutable.List([]);
+  removeCommodityStatus: function(node) {},
+  clearCommodityStatus: function() {
+    _commodityStatus = Immutable.List([]);
   },
   //for Ranking
-  setRankingTreeList:function(treeList){
-    _RankingTreeList=[];
-    treeList.forEach(function(treeNode){
+  setRankingTreeList: function(treeList) {
+    _RankingTreeList = [];
+    treeList.forEach(function(treeNode) {
       _RankingTreeList.push({
-        hierId:treeNode.get('Id'),
-        hierName:treeNode.get('Name')
+        hierId: treeNode.get('Id'),
+        hierName: treeNode.get('Name')
       });
     });
   },
-  getRankingTreeList:function(){
+  getRankingTreeList: function() {
     return _RankingTreeList;
   },
-  clearRankingTreeList:function(){
-    _RankingTreeList=[];
+  clearRankingTreeList: function() {
+    _RankingTreeList = [];
   },
-  setRankingCommodity:function(commodityId,commodityName){
-    _RankingCommodity={
-      Id:commodityId,
-      Comment:commodityName
+  setRankingCommodity: function(commodityId, commodityName) {
+    _RankingCommodity = {
+      Id: commodityId,
+      Comment: commodityName
     };
   },
-  getRankingCommodity:function(){
+  clearRankingCommodity: function() {
+    _RankingCommodity = null;
+  },
+  getRankingCommodity: function() {
     return _RankingCommodity;
   },
-  doWidgetDtos:function(widgetDto){
+  doWidgetDtos: function(widgetDto) {
+    var that = this;
     this.resetData();
     this.resetHierInfo();
-    let convertWidgetOptions2TagOption = function(WidgetOptions){
-      let tagOptions = [];
-      WidgetOptions.forEach(item=>{
-        tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-        });
-      });
-      return tagOptions;
-    };
-    let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-    if(tagOptions.length>0){
-      let lastTagOption = tagOptions[tagOptions.length-1];
+    if (widgetDto.WidgetType == 'Ranking') {
+      let contentSyntax = widgetDto.ContentSyntax;
+      let contentObj = JSON.parse(contentSyntax);
+      if (!!contentObj) {
+        let hierarchyIds = contentObj.hierarchyIds;
+        let commodityIds = contentObj.commodityIds;
+        if (!!hierarchyIds) {
+          _RankingTreeList = [];
+          hierarchyIds.forEach(id => {
+            _RankingTreeList.push({
+              hierId: id,
+              hierName: null
+            });
+          });
+          _RankingCommodity = {
+            Id: commodityIds[0],
+            Comment: null
+          };
+        }
+      }
+    } else {
+      if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
+        let convertWidgetOptions2TagOption = function(WidgetOptions) {
+          let tagOptions = [];
+          WidgetOptions.forEach(item => {
+            tagOptions.push({
+              hierId: item.HierId,
+              hierName: item.NodeName,
+              tagId: item.TargetId,
+              tagName: item.TargetName
+            });
+          });
+          return tagOptions;
+        };
+        let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+        if (tagOptions.length > 0) {
+          let lastTagOption = tagOptions[tagOptions.length - 1];
 
-      this.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
+          this.setCurrentHierarchyInfo(lastTagOption.hierId, lastTagOption.hierName);
+        }
+      } else {
+        let contentSyntax = widgetDto.ContentSyntax;
+        let contentObj = JSON.parse(contentSyntax);
+        if (contentObj !== null) {
+          let viewAssociation = contentObj.viewAssociation;
+          if (viewAssociation.HierarchyId !== null) {
+            this.setCurrentHierarchyInfo(viewAssociation.HierarchyId, null);
+            if (viewAssociation.AreaDimensionId !== null) {
+              let node = {
+                Id: viewAssociation.AreaDimensionId,
+                Name: null
+              };
+              this.setCurrentDimInfo(node);
+            }
+          }
+          if (contentObj.commodityIds.length != 0) {
+            contentObj.commodityIds.forEach(item => {
+              that.setCommodityStatus(item, null, true)
+            })
+          }
+        }
+
+      }
     }
 
 
@@ -293,87 +340,87 @@ var CommodityStore = assign({},PrototypeStore,{
   },
   removeRankingCommodityListener: function(callback) {
     this.removeListener(SET_RANKING_COMMODITY_CHANGED_EVENT, callback);
- },
- addECButtonStatusListener: function(callback) {
-   this.on(EC_BUTTON_STATUS_CHANGED_EVENT, callback);
- },
- emitECButtonStatus: function() {
-   this.emit(EC_BUTTON_STATUS_CHANGED_EVENT);
- },
- removeECButtonStatusListener: function(callback) {
-   this.removeListener(EC_BUTTON_STATUS_CHANGED_EVENT, callback);
- },
- addUCButtonStatusListener: function(callback) {
-   this.on(UC_BUTTON_STATUS_CHANGED_EVENT, callback);
- },
- emitUCButtonStatus: function() {
-   this.emit(UC_BUTTON_STATUS_CHANGED_EVENT);
- },
- removeUCButtonStatusListener: function(callback) {
-   this.removeListener(UC_BUTTON_STATUS_CHANGED_EVENT, callback);
- },
+  },
+  addECButtonStatusListener: function(callback) {
+    this.on(EC_BUTTON_STATUS_CHANGED_EVENT, callback);
+  },
+  emitECButtonStatus: function() {
+    this.emit(EC_BUTTON_STATUS_CHANGED_EVENT);
+  },
+  removeECButtonStatusListener: function(callback) {
+    this.removeListener(EC_BUTTON_STATUS_CHANGED_EVENT, callback);
+  },
+  addUCButtonStatusListener: function(callback) {
+    this.on(UC_BUTTON_STATUS_CHANGED_EVENT, callback);
+  },
+  emitUCButtonStatus: function() {
+    this.emit(UC_BUTTON_STATUS_CHANGED_EVENT);
+  },
+  removeUCButtonStatusListener: function(callback) {
+    this.removeListener(UC_BUTTON_STATUS_CHANGED_EVENT, callback);
+  },
 
 });
 
-let CommodityAction=Commodity.Action,
-    AlarmTagAction = AlarmTag.Action,
-    FolderAction=Folder.Action;
+let CommodityAction = Commodity.Action,
+  AlarmTagAction = AlarmTag.Action,
+  FolderAction = Folder.Action;
 CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
-    switch(action.type) {
-      case CommodityAction.SET_ENERGY_CONSUMPTION_TYPE:
-        CommodityStore.setEnergyConsumptionType(action.typeData);
-        CommodityStore.emitEnergyConsumptionType();
-        break;
-      case CommodityAction.SET_RANKING_EC_TYPE:
-        CommodityStore.setRankingECType(action.typeData);
-        CommodityStore.emitRankingECType();
-        break;
-      case CommodityAction.SET_CURRENT_HIERARCHY_ID:
-        CommodityStore.setCurrentHierarchyInfo(action.hierId,action.hierName);
-        break;
-      case CommodityAction.SET_CURRENT_DIM_INFO:
-        CommodityStore.setCurrentDimInfo(action.dimNode);
-        break;
-      case CommodityAction.RESET_DATA:
-        CommodityStore.resetData();
-        break;
-      case CommodityAction.GET_COMMODITY_DATA_SUCCESS:
-        CommodityStore.setCommodityList(action.CommodityList);
-        CommodityStore.emitCommoddityList();
-        break;
-      case CommodityAction.GET_RANKING_COMMODITY_DATA_SUCCESS:
-        CommodityStore.setCommodityList(action.CommodityList);
-        //for ranking
-        CommodityStore.setRankingTreeList(action.treeList);
-        CommodityStore.emitRankingCommodityList();
-        break;
-      case CommodityAction.SET_COMMODITY_STATUS:
-        CommodityStore.setCommodityStatus(action.commodityId,action.commodityName,action.selected);
-        CommodityStore.emitCommoddityStauts();
-        break;
-      case CommodityAction.SET_DEFAULT_COMMODITY_STATUS:
-        CommodityStore.setDefaultCommodityStatus(action.list);
-        break;
-      case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
-          CommodityStore.removeCommodityStatus(action.tagNode);
-          CommodityStore.emitCommoddityStauts();
+  switch (action.type) {
+    case CommodityAction.SET_ENERGY_CONSUMPTION_TYPE:
+      CommodityStore.setEnergyConsumptionType(action.typeData);
+      CommodityStore.emitEnergyConsumptionType();
       break;
-      case AlarmTagAction.CLEAR_SEARCH_TAGLIST:
-          CommodityStore.clearCommodityStatus();
-          CommodityStore.emitCommoddityStauts();
+    case CommodityAction.SET_RANKING_EC_TYPE:
+      CommodityStore.setRankingECType(action.typeData);
+      CommodityStore.emitRankingECType();
       break;
-      case CommodityAction.SET_RANKING_COMMODITY:
-          CommodityStore.setRankingCommodity(action.commodityId,action.commodityName);
-          CommodityStore.emitRankingCommodity();
+    case CommodityAction.SET_CURRENT_HIERARCHY_ID:
+      CommodityStore.setCurrentHierarchyInfo(action.hierId, action.hierName);
       break;
-      case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
-          CommodityStore.setDefaultNode();
+    case CommodityAction.SET_CURRENT_DIM_INFO:
+      CommodityStore.setCurrentDimInfo(action.dimNode);
       break;
-      case FolderAction.GET_WIDGETDTOS_SUCCESS:
-          CommodityStore.doWidgetDtos(action.widgetDto[0]);
+    case CommodityAction.RESET_DATA:
+      CommodityStore.resetData();
+      break;
+    case CommodityAction.GET_COMMODITY_DATA_SUCCESS:
+      CommodityStore.setCommodityList(action.CommodityList);
+      CommodityStore.emitCommoddityList();
+      break;
+    case CommodityAction.GET_RANKING_COMMODITY_DATA_SUCCESS:
+      CommodityStore.setCommodityList(action.CommodityList);
+      //for ranking
+      CommodityStore.setRankingTreeList(action.treeList);
+      CommodityStore.emitRankingCommodityList();
+      break;
+    case CommodityAction.SET_COMMODITY_STATUS:
+      CommodityStore.setCommodityStatus(action.commodityId, action.commodityName, action.selected);
+      CommodityStore.emitCommoddityStauts();
+      break;
+    case CommodityAction.SET_DEFAULT_COMMODITY_STATUS:
+      CommodityStore.setDefaultCommodityStatus(action.list);
+      break;
+    case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
+      CommodityStore.removeCommodityStatus(action.tagNode);
+      CommodityStore.emitCommoddityStauts();
+      break;
+    case AlarmTagAction.CLEAR_SEARCH_TAGLIST:
+      CommodityStore.clearCommodityStatus();
+      CommodityStore.emitCommoddityStauts();
+      break;
+    case CommodityAction.SET_RANKING_COMMODITY:
+      CommodityStore.setRankingCommodity(action.commodityId, action.commodityName);
+      CommodityStore.emitRankingCommodity();
+      break;
+    case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
+      CommodityStore.setDefaultNode(action.widgetDto);
+      break;
+    case FolderAction.GET_WIDGETDTOS_SUCCESS:
+      CommodityStore.doWidgetDtos(action.widgetDto[0]);
       break;
 
 
-    }
+  }
 });
 module.exports = CommodityStore;

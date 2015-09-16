@@ -4,6 +4,7 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import {Checkbox} from 'material-ui';
 import classnames from 'classnames';
 import TagAction from '../../actions/TagAction.jsx';
+import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
 
 var TagItem=React.createClass({
   mixins:[Navigation,State],

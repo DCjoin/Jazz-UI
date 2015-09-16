@@ -192,7 +192,7 @@ let CommonFuns = {
   },
   popupErrorMessage: function(message, context, fns, errorCode) {
     //window.alert(message);
-    GlobalErrorMessageAction.fireGlobalErrorMessage(errorCode, message);
+    GlobalErrorMessageAction.fireGlobalErrorMessage(message, errorCode);
   },
   ErrorHandler: function(context, errorCode, errorMessages) {
     if (context.commonErrorHandling === false) return;
@@ -1066,7 +1066,7 @@ let CommonFuns = {
     var commodityIds = this.getCommodityIdsFromList(commodityList);
     var hierarchyNode = selectedList.hierarchyNode;
     var dimNode = selectedList.dimNode;
-    if (dimNode !== null) {
+    if (dimNode !== null && dimNode !== undefined) {
       dimName = dimNode.dimName;
     }
     var hierName = hierarchyNode.hierName;
@@ -1116,7 +1116,7 @@ let CommonFuns = {
     if (!hierNode || hierNode.Type != 2) {
       return null;
     }
-    retArr.push(this.constructMenuItem(-1, -1, '行业基准值'));
+    retArr.push(this.constructMenuItem(-1, -1, I18N.Setting.Benchmark.Label.None));
 
     let industryId = hierNode.IndustryId;
     let zoneId = hierNode.ZoneId;

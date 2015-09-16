@@ -13,17 +13,19 @@ var RankingCommodityPanel = React.createClass({
   propTypes: {
     ecType:React.PropTypes.string,
     //checkedCommodity:{commodityId:XX,commodityName:XX}
-    checkedCommodity: React.PropTypes.object,
+
   },
   _onTreeConfirm:function(){
+    CommodityStore.clearRankingCommodity();
     this.setState({
-      isLoading:true,
+      isCommodityLoading:true,
       isShow:true,
+      checkedCommodity:CommodityStore.getRankingCommodity(),
     });
   },
   _onRankingCommodityListChange:function(){
     this.setState({
-      isLoading:false,
+      isCommodityLoading:false,
       commodityList:CommodityStore.getCommodityList()
     });
   },
@@ -40,14 +42,25 @@ var RankingCommodityPanel = React.createClass({
     });
     return treeNode;
   },
+  _onTreeLoad:function(status){
+    this.setState({
+      isTreeLoading:status
+    });
+  },
   getInitialState:function(){
     return{
-      isLoading:false,
+      isCommodityLoading:false,
+      isTreeLoading:false,
       commodityList:Immutable.List([]),
-      checkedTreeNodes:this._getTreeNode()
+      checkedTreeNodes:this._getTreeNode(),
+      checkedCommodity:CommodityStore.getRankingCommodity(),
     };
   },
-
+ componentWillReceiveProps:function(){
+   this.setState({
+     checkedCommodity:CommodityStore.getRankingCommodity(),
+   });
+ },
   componentDidMount: function() {
   CommodityStore.addRankingCommodityListListener(this._onRankingCommodityListChange);
 
@@ -66,15 +79,16 @@ var RankingCommodityPanel = React.createClass({
 
     var content;
 
-      content=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />
+      content=((this.state.isCommodityLoading || this.state.isTreeLoading)?<CircularProgress  mode="indeterminate" size={1} />
                                         :<CommodityList ecType={this.props.ecType}
-                                                        checkedCommodity={this.props.checkedCommodity}
-                                                        commdityList={this.state.commodityList}/>);
+                                                        checkedCommodity={this.state.checkedCommodity}
+                                                        commdityList={this.state.commodityList}
+                                                        />);
 
     return(
       <div className="jazz-dataselectmainpanel">
         <div className="header">
-            <HierTreeButton checkedTreeNodes={this.state.checkedTreeNodes} onConfirm={this._onTreeConfirm} />
+            <HierTreeButton checkedTreeNodes={this.state.checkedTreeNodes} onConfirm={this._onTreeConfirm} onLoad={this._onTreeLoad}/>
         </div>
         {content}
       </div>
