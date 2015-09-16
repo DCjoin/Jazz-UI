@@ -2030,14 +2030,46 @@ let ChartStrategyFactor = {
     }
   },
   onSearchDataButtonClickFnStrategy: {
-    onSearchDataButtonClick(analysisPanel) {
+    onSearchDataButtonClick(analysisPanel, invokeFromMultiTime) { //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
       analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
-
-      let dateSelector = analysisPanel.refs.dateTimeSelector,
-        dateRange = dateSelector.getDateTime(),
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
-        endDate = dateRange.end,
-        clearWeatherflag = false,
+        endDate = dateRange.end;
+      // deal with multi time submit
+      if (!!invokeFromMultiTime) {
+        let multiRelativeType = MultipleTimespanStore.getOriginalType();
+        let relativeDateValue = analysisPanel._getRelativeDateValue();
+
+        if (multiRelativeType === 'Customerize') {
+          let multiDateRange = MultipleTimespanStore.getMainDateRange();
+          if (multiDateRange[0].getTime() !== startDate.getTime() || multiDateRange[1].getTime() !== endDate.getTime()) {
+            dateSelector.setDateField(multiDateRange[0], multiDateRange[1]);
+          }
+          if (relativeDateValue !== 'Customerize') {
+            analysisPanel._setRelativeDateByValue(multiRelativeType);
+          }
+        } else {
+
+          if (relativeDateValue !== multiRelativeType) {
+            analysisPanel._setRelativeDateByValue(multiRelativeType);
+          }
+        }
+      } else {
+        let timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        if (timeRanges !== null) {
+          let multiRelativeType = MultipleTimespanStore.getOriginalType();
+          let relativeDateValue = analysisPanel._getRelativeDateValue();
+          if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
+
+          } else {
+            MultipleTimespanStore.initData(relativeDateValue, startDate, endDate);
+          }
+        }
+      }
+
+
+      let clearWeatherflag = false,
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {
