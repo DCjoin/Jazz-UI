@@ -31,7 +31,7 @@ import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 
 
-let lastEnergyType=null;
+let lastEnergyType = null;
 
 
 let Setting = React.createClass({
@@ -90,6 +90,12 @@ let Setting = React.createClass({
   _onSendStatusChange: function() {
     this.setState({
       errorText: FolderStore.getSendStatus()
+    });
+    this.refs.snackbar.show();
+  },
+  _onShareStatusChange: function() {
+    this.setState({
+      errorText: FolderStore.getShareStatus()
     });
     this.refs.snackbar.show();
   },
@@ -216,66 +222,67 @@ let Setting = React.createClass({
     });
   },
 
-componentWillMount:function(){
-  // CommodityAction.setEnergyConsumptionType('Carbon');
-  lastEnergyType=null;
-},
-componentDidMount:function(){
-  FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
-  FolderStore.addModifyNameErrorListener(this._onModifyNameError);
-  FolderStore.addSendStatusListener(this._onSendStatusChange);
-  FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidget);
-  FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
-  FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
-  FolderStore.addMoveItemErrorListener(this._onMoveItemError);
-  FolderStore.addExportWidgetErrorListener(this._onExportWidgetError);
-  FolderStore.addExportWidgetSuccessListener(this._onExportWidgetSuccess);
-  WidgetStore.addChangeListener(this._handleWidgetSelectChange);
-},
-componentWillUnmount:function(){
-  FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
-  FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
-  FolderStore.removeSendStatusListener(this._onSendStatusChange);
-  FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidget);
-  FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
-  FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
-  FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
-  FolderStore.removeExportWidgetErrorListener(this._onExportWidgetError);
-  FolderStore.removeExportWidgetSuccessListener(this._onExportWidgetSuccess);
-  WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
-},
-_handleWidgetSelectChange(){
-  let widgetDto = WidgetStore.getWidgetDto();
-  this.setState({
-                  refreshChart: false,
-                  selectedEnergyType: null,
-                  selectedNode: WidgetStore.getSelectedNode(),
-                  widgetDto: widgetDto
-                });
-},
-getEnergyTypeFromWidgetDto(widgetDto) {
-  let energyType = null;
-  if (widgetDto && widgetDto.BizType) {
-    let map = {
-      Energy: 'Energy',
-      Carbon: 'Carbon',
-      Cost: 'Cost',
-      Ratio: null,
-      Labelling: null,
-      UnitEnergy: 'Energy',
-      UnitCarbon: 'Carbon',
-      UnitCost: 'Cost',
-      RankingEnergy: 'Energy',
-      RankingCost: 'Cost',
-      RankCarbon: 'Carbon',
-      CostElectric: 'Cost'
-    };
-    let bizType = widgetDto.BizType;
-    energyType = map[bizType];
-  }
-  return energyType;
-},
-render: function () {
+  componentWillMount: function() {
+    // CommodityAction.setEnergyConsumptionType('Carbon');
+    lastEnergyType = null;
+  },
+  componentDidMount: function() {
+    FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
+    FolderStore.addModifyNameErrorListener(this._onModifyNameError);
+    FolderStore.addSendStatusListener(this._onSendStatusChange);
+    FolderStore.addShareStatusListener(this._onShareStatusChange);
+    FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidget);
+    FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
+    FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
+    FolderStore.addMoveItemErrorListener(this._onMoveItemError);
+    FolderStore.addExportWidgetErrorListener(this._onExportWidgetError);
+    FolderStore.addExportWidgetSuccessListener(this._onExportWidgetSuccess);
+    WidgetStore.addChangeListener(this._handleWidgetSelectChange);
+  },
+  componentWillUnmount: function() {
+    FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
+    FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
+    FolderStore.removeSendStatusListener(this._onSendStatusChange);
+    FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidget);
+    FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
+    FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
+    FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
+    FolderStore.removeExportWidgetErrorListener(this._onExportWidgetError);
+    FolderStore.removeExportWidgetSuccessListener(this._onExportWidgetSuccess);
+    WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
+  },
+  _handleWidgetSelectChange() {
+    let widgetDto = WidgetStore.getWidgetDto();
+    this.setState({
+      refreshChart: false,
+      selectedEnergyType: null,
+      selectedNode: WidgetStore.getSelectedNode(),
+      widgetDto: widgetDto
+    });
+  },
+  getEnergyTypeFromWidgetDto(widgetDto) {
+    let energyType = null;
+    if (widgetDto && widgetDto.BizType) {
+      let map = {
+        Energy: 'Energy',
+        Carbon: 'Carbon',
+        Cost: 'Cost',
+        Ratio: null,
+        Labelling: null,
+        UnitEnergy: 'Energy',
+        UnitCarbon: 'Carbon',
+        UnitCost: 'Cost',
+        RankingEnergy: 'Energy',
+        RankingCost: 'Cost',
+        RankCarbon: 'Carbon',
+        CostElectric: 'Cost'
+      };
+      let bizType = widgetDto.BizType;
+      energyType = map[bizType];
+    }
+    return energyType;
+  },
+  render: function() {
     let me = this;
     let bizTypeMap = {
       1: 'Energy',
@@ -385,17 +392,15 @@ render: function () {
 
         break;
     }
-    if(bizType=='Rank'){
-        if(lastEnergyType!==null && lastEnergyType!=energyType){
-          CommodityStore.clearRankingCommodity()
-        }
-        else {
-          lastEnergyType=energyType
-        }
+    if (bizType == 'Rank') {
+      if (lastEnergyType !== null && lastEnergyType != energyType) {
+        CommodityStore.clearRankingCommodity()
+      } else {
+        lastEnergyType = energyType
       }
-      else {
-        lastEnergyType=null
-      }
+    } else {
+      lastEnergyType = null
+    }
     return rightPanel;
   }
 });

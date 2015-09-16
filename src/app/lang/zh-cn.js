@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 
 let I18N = {};
@@ -193,17 +193,17 @@ I18N.EM.UseMonth = '按月';
 I18N.EM.UseYear = '按年';
 I18N.EM.StepError = '所选数据点不支持{0}的步长显示，换个步长试试。';
 
-I18N.EM.Tool={};
+I18N.EM.Tool = {};
 I18N.EM.Tool.ClearChart = '清空图表';
 I18N.EM.Tool.AssistCompare = '辅助对比';
-I18N.EM.Tool.Weather={};
-I18N.EM.Tool.Weather.WeatherInfo='天气信息';
+I18N.EM.Tool.Weather = {};
+I18N.EM.Tool.Weather.WeatherInfo = '天气信息';
 I18N.EM.Tool.Weather.Temperature = '温度';
 I18N.EM.Tool.Weather.Humidity = '湿度';
-I18N.EM.Tool.Calendar={};
-I18N.EM.Tool.Calendar.BackgroundColor ='日历背景色';
-I18N.EM.Tool.Calendar.NoneWorkTime ='非工作时间';
-I18N.EM.Tool.Calendar.HotColdSeason ='冷暖季';
+I18N.EM.Tool.Calendar = {};
+I18N.EM.Tool.Calendar.BackgroundColor = '日历背景色';
+I18N.EM.Tool.Calendar.NoneWorkTime = '非工作时间';
+I18N.EM.Tool.Calendar.HotColdSeason = '冷暖季';
 I18N.EM.Tool.Benchmark = '行业基准值';
 I18N.EM.Tool.HistoryCompare = '历史对比';
 I18N.EM.Tool.BenchmarkSetting = '基准值设置';
@@ -272,7 +272,7 @@ I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段
 I18N.EM.WeatherSupportsOnlySingleHierarchy = '该功能仅支持单层级数据点。';
 I18N.EM.WeatherSupportsOnlyHourlyStep = '该功能仅支持小时步长。';
 
-I18N.EM.CharType={};
+I18N.EM.CharType = {};
 I18N.EM.CharType.Line = '折线图';
 I18N.EM.CharType.Bar = '柱状图';
 I18N.EM.CharType.Stack = '堆积图';
@@ -346,8 +346,7 @@ I18N.Message.M01013 = '该层级节层级超限';
 I18N.Message.M01014 = '该节点已被其他用户修改或删除，层级树将被刷新。';
 I18N.Message.M01015 = '当前层级节点无子节点'; //for energy view single tag to pie chart
 I18N.Message.M01016 = '相关的层级无有效日历，无法获得本年的目标值和基准值。';
-I18N.Message.M01018 =
-  '无法移动到目标节点下，请按照规则拖动层级节点：<br/>组织->组织、客户；<br/>园区->组织、客户；<br/>楼宇->园区、组织、客户。';
+I18N.Message.M01018 = '无法移动到目标节点下，请按照规则拖动层级节点：<br/>组织->组织、客户；<br/>园区->组织、客户；<br/>楼宇->园区、组织、客户。';
 I18N.Message.M01019 = '层级被修改';
 I18N.Message.M01251 = '该层级节点的高级属性已被其他用户修改。界面即将刷新';
 I18N.Message.M01254 = '高级属性的输入项非法，无法保存。';
@@ -524,8 +523,7 @@ I18N.Message.M06195 = '当前区域维度的子节点下不包含与该数据点
 I18N.Message.M06196 = '当前层级节点不包含与该数据点介质单位相同的数据点';
 I18N.Message.M06197 = '当前系统维度不包含与该数据点介质单位相同的数据点';
 I18N.Message.M06198 = '当前区域维度不包含与该数据点介质单位相同的数据点';
-I18N.Message.M06201 =
-  '无法将计算步长修改为“{0}”。本数据点与其他数据点存在引用关系，引用数据点的计算步长必须大于等于被引用数据点的计算步长。';
+I18N.Message.M06201 = '无法将计算步长修改为“{0}”。本数据点与其他数据点存在引用关系，引用数据点的计算步长必须大于等于被引用数据点的计算步长。';
 I18N.Message.M06202 = '对应节点下已存在相同介质的能耗数据点。';
 I18N.Message.M06203 = '该数据点不是能耗数据。';
 
@@ -694,6 +692,10 @@ I18N.Folder.Send = {};
 I18N.Folder.Send.Success = '{0}发送成功';
 I18N.Folder.Send.Error = '{0}发送失败，无法发送给用户：{1}。';
 
+I18N.Folder.Share = {};
+I18N.Folder.Share.Success = '{0}共享成功';
+I18N.Folder.Share.Error = '{0}共享失败，无法共享给用户：{1}。';
+
 I18N.Folder.Drag = {};
 I18N.Folder.Drag.Error = '名称为“{0}”的{1}已存在，无法完成拖拽。';
 
@@ -721,29 +723,29 @@ I18N.Hierarchy.RankingButtonName = '请选择层级节点进行排名';
 I18N.Hierarchy.ButtonName = '请选择层级节点';
 I18N.Hierarchy.Confirm = '确定';
 I18N.Hierarchy.Clear = '清空';
-I18N.Hierarchy.Menu1='客户';
-I18N.Hierarchy.Menu2='组织';
-I18N.Hierarchy.Menu3='园区';
-I18N.Hierarchy.Menu4='楼宇';
+I18N.Hierarchy.Menu1 = '客户';
+I18N.Hierarchy.Menu2 = '组织';
+I18N.Hierarchy.Menu3 = '园区';
+I18N.Hierarchy.Menu4 = '楼宇';
 
 I18N.Dim = {};
 I18N.Dim.AllButtonName = '全部维度';
 I18N.Dim.ButtonName = '维度节点';
 
-I18N.ALarm ={};
-I18N.ALarm.Menu1='全部';
-I18N.ALarm.Menu2='报警已配置';
-I18N.ALarm.Menu3='基准值已配置';
-I18N.ALarm.Menu4='未配置';
+I18N.ALarm = {};
+I18N.ALarm.Menu1 = '全部';
+I18N.ALarm.Menu2 = '报警已配置';
+I18N.ALarm.Menu3 = '基准值已配置';
+I18N.ALarm.Menu4 = '未配置';
 
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
 I18N.Tag.ExceedTooltip = '新增全选的数据点数量超出了可选范围，无法全选，请逐一选择目标数据点';
-I18N.Tag.AlarmStatus1 ='基准值未配置';
-I18N.Tag.AlarmStatus2 ='基准值已配置';
-I18N.Tag.AlarmStatus3 ='报警未配置';
-I18N.Tag.AlarmStatus4 ='报警已配置';
+I18N.Tag.AlarmStatus1 = '基准值未配置';
+I18N.Tag.AlarmStatus2 = '基准值已配置';
+I18N.Tag.AlarmStatus3 = '报警未配置';
+I18N.Tag.AlarmStatus4 = '报警已配置';
 
 I18N.Template = {};
 I18N.Template.Copy = {};

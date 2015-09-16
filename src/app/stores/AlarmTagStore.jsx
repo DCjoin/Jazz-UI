@@ -9,12 +9,12 @@ import Commodity from '../constants/actionType/Commodity.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
 
-let searchTagList=[];
-let interData=null;
-let AlarmTagAction=AlarmTag.Action;
-let TagAction=Tag.Action;
-let CommodityAction=Commodity.Action;
-let FolderAction=Folder.Action;
+let searchTagList = [];
+let interData = null;
+let AlarmTagAction = AlarmTag.Action;
+let TagAction = Tag.Action;
+let CommodityAction = Commodity.Action;
+let FolderAction = Folder.Action;
 /*
  if change checked state of the tags from the tag list,than it is true;
  when select item of alarm list, set it false in AlarmList.jsx
@@ -22,137 +22,137 @@ let FolderAction=Folder.Action;
 let _useTaglistSelect = false;
 
 const INTER_DATA_CHANGED_EVENT = 'interdatachanged',
-      CLEAR_DATA_CHANGED_EVENT = 'cleardatachanged';
+  CLEAR_DATA_CHANGED_EVENT = 'cleardatachanged';
 
-var AlarmTagStore = assign({},PrototypeStore,{
+var AlarmTagStore = assign({}, PrototypeStore, {
 
-  getSearchTagList(){
+  getSearchTagList() {
     return searchTagList;
   },
-  setUseTagListSelect(useTaglistSelect){
+  setUseTagListSelect(useTaglistSelect) {
     _useTaglistSelect = useTaglistSelect;
   },
-  getUseTaglistSelect(){
+  getUseTaglistSelect() {
     return _useTaglistSelect;
   },
-  addSearchTagList(tagNode){
-    var flag=false;
+  addSearchTagList(tagNode) {
+    var flag = false;
     AlarmTagStore.setUseTagListSelect(true);
 
-    searchTagList.forEach(function(nodeData,i){
+    searchTagList.forEach(function(nodeData, i) {
 
-      if(tagNode.tagId==nodeData.tagId){
-        flag=true;
+      if (tagNode.tagId == nodeData.tagId) {
+        flag = true;
       }
     });
-      if(!flag){
-        searchTagList.push(tagNode);
-      }
+    if (!flag) {
+      searchTagList.push(tagNode);
+    }
 
-    },
-  removeSearchTagList(tagNode){
+  },
+  removeSearchTagList(tagNode) {
 
     AlarmTagStore.setUseTagListSelect(true);
-    searchTagList.forEach(function(nodeData,i){
-    if(tagNode.tagId==nodeData.tagId){
-      searchTagList.splice(i,1);
-    }
+    searchTagList.forEach(function(nodeData, i) {
+      if (tagNode.tagId == nodeData.tagId) {
+        searchTagList.splice(i, 1);
+      }
     });
 
   },
-  searchTagChange(tagNode,selected){
+  searchTagChange(tagNode, selected) {
 
-    let tagData={
-      hierId:tagNode.HierarchyId,
-      hierName:tagNode.HierarchyName,
-      tagId:tagNode.Id,
-      tagName:tagNode.Name,
+    let tagData = {
+      hierId: tagNode.HierarchyId,
+      hierName: tagNode.HierarchyName,
+      tagId: tagNode.Id,
+      tagName: tagNode.Name,
       uomId: tagNode.UomId,
-      commodityId:tagNode.CommodityId,
-      commodityName:tagNode.Comment,
+      commodityId: tagNode.CommodityId,
+      commodityName: tagNode.Comment,
     };
 
-    if(selected){
+    if (selected) {
       this.addSearchTagList(tagData);
-    }
-    else{
+    } else {
       this.removeSearchTagList(tagData);
     }
   },
-  searchTagListChange(tagList,selected){
+  searchTagListChange(tagList, selected) {
 
-    var that=this;
-    tagList.forEach(function(tagNode){
-      let tagData={
-        hierId:tagNode.HierarchyId,
-        hierName:tagNode.HierarchyName,
-        tagId:tagNode.Id,
-        tagName:tagNode.Name,
+    var that = this;
+    tagList.forEach(function(tagNode) {
+      let tagData = {
+        hierId: tagNode.HierarchyId,
+        hierName: tagNode.HierarchyName,
+        tagId: tagNode.Id,
+        tagName: tagNode.Name,
         uomId: tagNode.UomId,
-        commodityId:tagNode.CommodityId,
-        commodityName:tagNode.Comment,
+        commodityId: tagNode.CommodityId,
+        commodityName: tagNode.Comment,
       };
-      if(selected){
+      if (selected) {
         that.addSearchTagList(tagData);
-      }
-      else{
+      } else {
         that.removeSearchTagList(tagData);
       }
     })
 
   },
-  CommodityDataChange(commodityId,commodityName,selected){
-
-      if(selected){
-        let commodityData={
-          hierId:CommodityStore.getCurrentHierarchyId(),
-          hierName:CommodityStore.getCurrentHierarchyName(),
-          commodityId:commodityId,
-          commodityName:commodityName
-        };
-        searchTagList.push(commodityData);
-      }
-      else{
-        searchTagList.forEach(function(nodeData,i){
-          if(nodeData.commodityId){
-            if(commodityId==nodeData.commodityId){
-              searchTagList.splice(i,1);
-            }
-          }
-
-        });
-      }
-
-
-  },
-  clearSearchTagList(){
+  // CommodityDataChange(commodityId,commodityName,selected){
+  //
+  //     if(selected){
+  //       let commodityData={
+  //         hierId:CommodityStore.getCurrentHierarchyId(),
+  //         hierName:CommodityStore.getCurrentHierarchyName(),
+  //         commodityId:commodityId,
+  //         commodityName:commodityName
+  //       };
+  //       searchTagList.push(commodityData);
+  //     }
+  //     else{
+  //       searchTagList.forEach(function(nodeData,i){
+  //         if(nodeData.commodityId){
+  //           if(commodityId==nodeData.commodityId){
+  //             searchTagList.splice(i,1);
+  //           }
+  //         }
+  //
+  //       });
+  //     }
+  //
+  //
+  // },
+  clearSearchTagList() {
     AlarmTagStore.setUseTagListSelect(true);
-    searchTagList.length=0;
+    searchTagList.length = 0;
   },
-  getInterData(){
+  getInterData() {
     return interData;
   },
-  setInterData(iaData){
-    interData=iaData;
+  setInterData(iaData) {
+    interData = iaData;
   },
-  doWidgetDtos:function(widgetDto){
-    let that=this;
-    let convertWidgetOptions2TagOption = function(WidgetOptions){
-      let tagOptions = [];
-      WidgetOptions.forEach(item=>{
-        tagOptions.push({
+  doWidgetDtos: function(widgetDto) {
+    let that = this;
+    if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
+      let convertWidgetOptions2TagOption = function(WidgetOptions) {
+        let tagOptions = [];
+        WidgetOptions.forEach(item => {
+          tagOptions.push({
             hierId: item.HierId,
             hierName: item.NodeName,
             tagId: item.TargetId,
             tagName: item.TargetName
+          });
         });
+        return tagOptions;
+      };
+      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      tagOptions.forEach(item => {
+        that.addSearchTagList(item);
       });
-      return tagOptions;
-    };
-    let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-    tagOptions.forEach(item=>{
-      that.addSearchTagList(item);
-    });
+    }
   },
   addInterDataListener: function(callback) {
     this.on(INTER_DATA_CHANGED_EVENT, callback);
@@ -192,41 +192,41 @@ var AlarmTagStore = assign({},PrototypeStore,{
   },
 });
 AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
-    switch(action.type) {
+  switch (action.type) {
 
-      case AlarmTagAction.ADD_SEARCH_TAGLIST_CHANGED:
-        AlarmTagStore.addSearchTagList(action.tagNode);
-        AlarmTagStore.emitAddSearchTagList();
-        break;
+    case AlarmTagAction.ADD_SEARCH_TAGLIST_CHANGED:
+      AlarmTagStore.addSearchTagList(action.tagNode);
+      AlarmTagStore.emitAddSearchTagList();
+      break;
 
-      case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
-        AlarmTagStore.removeSearchTagList(action.tagNode);
-        AlarmTagStore.emitRemoveSearchTagList();
-        break;
-      case AlarmTagAction.INTER_DATA_CHANGED:
-        AlarmTagStore.setInterData(action.tagNode);
-        AlarmTagStore.emitInterData();
-        break;
-      case AlarmTagAction.CLEAR_SEARCH_TAGLIST:
-        AlarmTagStore.clearSearchTagList();
-        AlarmTagStore.emitClearData();
-        break;
-      case TagAction.SET_TAGSTATUS_TAG:
-        AlarmTagStore.searchTagChange(action.node,action.selected);
-        break;
-      case TagAction.SET_TAGSTATUS_TAGLIST:
-          AlarmTagStore.searchTagListChange(action.tagList,action.add);
-        break;
-      case TagAction.CLEAR_ALARM_SEARCH_TAGLIST:
-          AlarmTagStore.clearSearchTagList();
-        break;
-      case CommodityAction.SET_COMMODITY_STATUS:
-          AlarmTagStore.CommodityDataChange(action.commodityId,action.commodityName,action.selected);
-        break;
-      case FolderAction.GET_WIDGETDTOS_SUCCESS:
-          AlarmTagStore.doWidgetDtos(action.widgetDto[0]);
-        break;
-    }
+    case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
+      AlarmTagStore.removeSearchTagList(action.tagNode);
+      AlarmTagStore.emitRemoveSearchTagList();
+      break;
+    case AlarmTagAction.INTER_DATA_CHANGED:
+      AlarmTagStore.setInterData(action.tagNode);
+      AlarmTagStore.emitInterData();
+      break;
+    case AlarmTagAction.CLEAR_SEARCH_TAGLIST:
+      AlarmTagStore.clearSearchTagList();
+      AlarmTagStore.emitClearData();
+      break;
+    case TagAction.SET_TAGSTATUS_TAG:
+      AlarmTagStore.searchTagChange(action.node, action.selected);
+      break;
+    case TagAction.SET_TAGSTATUS_TAGLIST:
+      AlarmTagStore.searchTagListChange(action.tagList, action.add);
+      break;
+    case TagAction.CLEAR_ALARM_SEARCH_TAGLIST:
+      AlarmTagStore.clearSearchTagList();
+      break;
+    // case CommodityAction.SET_COMMODITY_STATUS:
+    //     AlarmTagStore.CommodityDataChange(action.commodityId,action.commodityName,action.selected);
+    //   break;
+    case FolderAction.GET_WIDGETDTOS_SUCCESS:
+      AlarmTagStore.doWidgetDtos(action.widgetDto[0]);
+      break;
+  }
 });
 
 module.exports = AlarmTagStore;
