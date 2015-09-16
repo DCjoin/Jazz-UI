@@ -732,17 +732,16 @@ let AnalysisPanel = React.createClass({
         if (selectedLabelItem.industryId === subMenuItem.props.industryId && selectedLabelItem.zoneId === subMenuItem.props.zoneId) {
           return;
         }
-      } else {
-        this.setState({
-          labelType: 'industryZone'
-        });
       }
-      selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? "请选择能效标识" : this.getDisplayText(subMenuItem.props.primaryText));
+      selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? "请选择能效标识" : subMenuItem.props.primaryText);
       selectedLabelItem.industryId = subMenuItem.props.industryId;
       selectedLabelItem.zoneId = subMenuItem.props.zoneId;
       selectedLabelItem.value = subMenuItem.props.value;
       this.setState({
-        selectedLabelItem: selectedLabelItem
+        selectedLabelItem: selectedLabelItem,
+        labelType: 'industryZone'
+      }, () => {
+        this.setBenchmarkOption();
       });
       this.changeToIndustyLabel(kpiTypeValue);
     } else {
@@ -750,22 +749,21 @@ let AnalysisPanel = React.createClass({
         if (selectedLabelItem.customerizedId === subMenuItem.props.customerizedId) {
           return;
         }
-      } else {
-        this.setState({
-          labelType: 'customized'
-        });
       }
 
-      selectedLabelItem.text = (subMenuItem.props.customerizedId === -1 ? I18N.Setting.Benchmark.Label.SelectLabelling : this.getDisplayText(subMenuItem.props.primaryText));
+      selectedLabelItem.text = (subMenuItem.props.customerizedId === -1 ? I18N.Setting.Benchmark.Label.SelectLabelling : subMenuItem.props.primaryText);
       selectedLabelItem.customerizedId = subMenuItem.props.customerizedId;
       this.setState({
-        selectedLabelItem: selectedLabelItem
+        selectedLabelItem: selectedLabelItem,
+        labelType: 'customized'
+      }, () => {
+        this.setBenchmarkOption();
       });
 
       this.changeToCustomizedLabel(subMenuItem.props.kpiType);
     }
   },
-  setBenchmarkOption(benchmarkOption, labelingType) {
+  setIndustyLable(benchmarkOption, labelingType) {
     var curType = this.state.labelType;
     var type = '', i;
     var selectedLabelItem = this.state.selectedLabelItem;
@@ -782,20 +780,17 @@ let AnalysisPanel = React.createClass({
         if (selectedLabelItem.industryId === benchmarkOption.IndustryId && selectedLabelItem.zoneId == benchmarkOption.ZoneId) {
           return;
         }
-      } else {
-        this.setState({
-          labelType: 'industryZone',
-          labelDisable: false
-        });
       }
       for (i = 0; i < industyMenuItems.length; i++) {
-        if (industyMenuItems[i].industryId === benchmarkOption.IndustryId) {
-          selectedLabelItem.text = benchmarkOption.benchmarkText;
+        if (industyMenuItems[i].industryId === benchmarkOption.IndustryId && industyMenuItems[i].zoneId === benchmarkOption.ZoneId) {
+          selectedLabelItem.text = industyMenuItems[i].primaryText;
           selectedLabelItem.industryId = industyMenuItems[i].IndustryId;
           selectedLabelItem.zoneId = industyMenuItems[i].ZoneId;
           selectedLabelItem.value = industyMenuItems[i].value;
           this.setState({
-            selectedLabelItem: selectedLabelItem
+            selectedLabelItem: selectedLabelItem,
+            labelType: 'industryZone',
+            labelDisable: false
           });
           this.changeToIndustyLabel(labelingType);
           break;
@@ -806,11 +801,6 @@ let AnalysisPanel = React.createClass({
         if (selectedLabelItem.customerizedId === benchmarkOption.CustomerizedId) {
           return;
         }
-      } else {
-        this.setState({
-          labelType: 'customized',
-          labelDisable: false
-        });
       }
       for (i = 0; i < customerMenuItems.length; i++) {
         if (customerMenuItems[i].customerizedId === benchmarkOption.CustomerizedId) {
@@ -818,7 +808,9 @@ let AnalysisPanel = React.createClass({
           selectedLabelItem.customerizedId = customerMenuItems[i].customerizedId;
           selectedLabelItem.value = customerMenuItems[i].value;
           this.setState({
-            selectedLabelItem: selectedLabelItem
+            selectedLabelItem: selectedLabelItem,
+            labelType: 'customized',
+            labelDisable: false
           });
           this.changeToCustomizedLabel(labelingType);
           break;
@@ -884,6 +876,26 @@ let AnalysisPanel = React.createClass({
   _onHierNodeChange() {
     this.state.chartStrategy.onHierNodeChangeFn(this);
   },
+  _onHierNodesChange() {
+    var industryStore = LabelMenuStore.getIndustryData();
+    var labelingsStore = LabelMenuStore.getLabelData();
+    var zoneStore = LabelMenuStore.getZoneData();
+    var customizedStore = LabelMenuStore.getCustomerLabelData();
+    if (industryStore === null || labelingsStore === null || zoneStore === null || customizedStore === null) {
+      return;
+    }
+    var industyMenuItems = this.getIndustyMenuItems4MultiMode();
+    var customerMenuItems = this.getCustomizedMenuItems();
+    if (!industyMenuItems) {
+      return;
+    }
+    this.setState({
+      industyMenuItems: industyMenuItems,
+      customerMenuItems: customerMenuItems
+    }, () => {
+      this.setIndustyLable(this.state.benchmarkOption, this.state.kpiTypeValue);
+    });
+  },
   enableLabelButton(preSelect) {
     if (!this.state.labelDisable && !preSelect) {
       return;
@@ -894,7 +906,7 @@ let AnalysisPanel = React.createClass({
       var item = labelItems[0];
       selectedLabelItem.industryId = item.industryId;
       selectedLabelItem.zoneId = item.zoneId;
-      selectedLabelItem.text = this.getDisplayText(item.primaryText);
+      selectedLabelItem.text = item.primaryText;
       selectedLabelItem.value = item.value;
     } else {
       selectedLabelItem = this.initSlectedLabelItem();
@@ -947,7 +959,7 @@ let AnalysisPanel = React.createClass({
     return selectedLabelItem;
   },
   getCustomizedMenuItems() {
-    var menuItems = [];
+    var menuItems = this.state.customerMenuItems;
     var customizedStore = LabelMenuStore.getCustomerLabelData();
     if (!this.hasCustomizedMenuItems()) {
       customizedStore.forEach((item, index) => {
@@ -964,14 +976,54 @@ let AnalysisPanel = React.createClass({
     }
     return menuItems;
   },
+  removeRedundance: function(items) {
+    var map = {}, id, item;
+    for (var i = 0; i < items.length; i++) {
+      item = items[i];
+      id = item.industryId + '_' + item.zoneId;
+      if (map[id]) {
+        items.splice(i, 1);
+        i = i - 1;
+      } else {
+        map[id] = id;
+      }
+    }
+  },
+  getIndustyMenuItems4MultiMode() {
+    var hierNodes = LabelMenuStore.getHierNodes();
+    var industryStore = LabelMenuStore.getIndustryData();
+    var labelingsStore = LabelMenuStore.getLabelData();
+    var zoneStore = LabelMenuStore.getZoneData();
+    var hierNode, industryId, zoneId, parentId,
+      industyMenuItems = [];
+    for (var i = 0; i < hierNodes.length; i++) {
+      hierNode = hierNodes[i];
+      industryId = hierNode.IndustryId;
+      zoneId = hierNode.ZoneId;
+      if (!industryId) continue;
+      this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
+      var industryNode = industryStore.find((item, index) => {
+        return (item.get("Id") === industryId);
+      });
+      parentId = industryNode.get('ParentId');
+      if (parentId !== 0) {
+        this.addIndustyMenuItem(labelingsStore, parentId, zoneId, industyMenuItems);
+      }
+      this.addIndustyMenuItem(labelingsStore, 0, zoneId, industyMenuItems);
+    }
+    this.removeRedundance(industyMenuItems);
+    if (industyMenuItems.length === 0) {
+      industyMenuItems = this.getNoneMenuItem(true);
+    }
+    return industyMenuItems;
+  },
   getIndustyMenuItems() {
     var industryStore = LabelMenuStore.getIndustryData();
     var labelingsStore = LabelMenuStore.getLabelData();
     var zoneStore = LabelMenuStore.getZoneData();
     var hierNode = LabelMenuStore.getHierNode();
     var industryId, zoneId, parentId,
-      industyMenuItems = [];
-    this.removeIndustyMenuItems();
+      industyMenuItems = this.state.industyMenuItems;
     if (!hierNode) {
       return;
     } else {
@@ -989,17 +1041,12 @@ let AnalysisPanel = React.createClass({
         this.addIndustyMenuItem(labelingsStore, parentId, zoneId, industyMenuItems);
       }
       this.addIndustyMenuItem(labelingsStore, 0, zoneId, industyMenuItems);
+      this.removeRedundance(industyMenuItems);
     }
     if (industyMenuItems.length === 0) {
       industyMenuItems = this.getNoneMenuItem(true);
     }
     return industyMenuItems;
-  },
-  removeIndustyMenuItems() {
-    this.setState({
-      industyMenuItems: []
-    });
-    this.setEmptyLabelMenu();
   },
   setEmptyLabelMenu() {
     var selectedLabelItem = this.initSlectedLabelItem();
@@ -1049,14 +1096,15 @@ let AnalysisPanel = React.createClass({
     labelMenuItem.value = "" + zoneId + "/" + industryId;
     industyMenuItems.push(labelMenuItem);
   },
-  getBenchmarkOption: function() {
+  setBenchmarkOption: function() {
     var labelType = this.state.labelType;
     var selectedLabelItem = this.state.selectedLabelItem;
+    var benchmarkOption;
     if (labelType === 'industryZone') {
       if (selectedLabelItem.industryId === -1) {
-        return null;
+        benchmarkOption = null;
       } else {
-        return {
+        benchmarkOption = {
           IndustryId: selectedLabelItem.industryId,
           ZoneId: selectedLabelItem.zoneId,
           benchmarkText: selectedLabelItem.text
@@ -1064,15 +1112,18 @@ let AnalysisPanel = React.createClass({
       }
     } else if (labelType === 'customized') {
       if (selectedLabelItem.customerizedId == -1) {
-        return null;
+        benchmarkOption = null;
       } else {
-        return {
+        benchmarkOption = {
           CustomerizedId: selectedLabelItem.customerizedId
         };
       }
     } else {
-      return null;
+      benchmarkOption = null;
     }
+    this.setState({
+      benchmarkOption: benchmarkOption
+    });
   },
   getViewOption: function() {
     var step = 3; //default month
@@ -1094,6 +1145,9 @@ let AnalysisPanel = React.createClass({
       TimeRanges: timeRanges
     };
     return viewOption;
+  },
+  getBenchmarkOption: function() {
+    return this.state.benchmarkOption;
   },
   getKpiType: function() {
     return this.state.kpiTypeValue;

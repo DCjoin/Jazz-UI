@@ -291,27 +291,29 @@ var TagStore = assign({}, PrototypeStore, {
   doWidgetDtos: function(widgetDto) {
     this.resetTagInfo(widgetDto.WidgetType);
     let that = this;
-    let convertWidgetOptions2TagOption = function(WidgetOptions) {
-      let tagOptions = [];
-      WidgetOptions.forEach(item => {
-        tagOptions.push({
-          hierId: item.HierId,
-          hierName: item.NodeName,
-          tagId: item.TargetId,
-          tagName: item.TargetName
+    if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
+      let convertWidgetOptions2TagOption = function(WidgetOptions) {
+        let tagOptions = [];
+        WidgetOptions.forEach(item => {
+          tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+          });
         });
-      });
-      return tagOptions;
-    };
-    let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+        return tagOptions;
+      };
+      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
 
-    tagOptions.forEach(item => {
-      that.setTagStatusById(item.hierId, item.tagId);
-    });
-    if (_tagTotal == _tagSum) {
-      this.setTagTotalStatus();
+      tagOptions.forEach(item => {
+        that.setTagStatusById(item.hierId, item.tagId);
+      });
+      if (_tagTotal == _tagSum) {
+        this.setTagTotalStatus();
+      }
+      this.emitTagStatusChange();
     }
-    this.emitTagStatusChange();
   },
   emitTagNodeChange: function() {
     this.emit(LOAD_TAG_NODE_EVENT);
