@@ -3369,9 +3369,7 @@ let ChartStrategyFactor = {
   },
   getAuxiliaryCompareBtnFnStrategy: {
     getEnergyAuxiliaryCompareBtn(analysisPanel) {
-
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
-
       let weatherSubItems = [{
         primaryText: I18N.EM.Tool.Weather.Temperature,
         value: 'temperature'
@@ -3433,9 +3431,7 @@ let ChartStrategyFactor = {
       return configButton;
     },
     getUnitEnergyAuxiliaryCompareBtn(analysisPanel) {
-
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
-
       let tagOptions = EnergyStore.getTagOpions();
       let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 

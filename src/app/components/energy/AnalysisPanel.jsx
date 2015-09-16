@@ -1075,7 +1075,7 @@ let AnalysisPanel = React.createClass({
         value: 'hotColdSeason'
       }];
     let calendarEl;
-    let isCalendarDisabled = this.state.chartStrategy.isCalendarDisabledFn();
+    let isCalendarDisabled = this.state.chartStrategy.isCalendarDisabledFn(this);
     if (isCalendarDisabled) {
       calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
     } else {
