@@ -408,14 +408,6 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
     case CommodityAction.SET_DEFAULT_COMMODITY_STATUS:
       CommodityStore.setDefaultCommodityStatus(action.list);
       break;
-    case AlarmTagAction.REMOVE_SEARCH_TAGLIST_CHANGED:
-      CommodityStore.removeCommodityStatus(action.tagNode);
-      CommodityStore.emitCommoddityStauts();
-      break;
-    case AlarmTagAction.CLEAR_SEARCH_TAGLIST:
-      CommodityStore.clearCommodityStatus();
-      CommodityStore.emitCommoddityStauts();
-      break;
     case CommodityAction.SET_RANKING_COMMODITY:
       CommodityStore.setRankingCommodity(action.commodityId, action.commodityName);
       CommodityStore.emitRankingCommodity();
