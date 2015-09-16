@@ -291,8 +291,16 @@ var CommodityStore = assign({}, PrototypeStore, {
 
       }
     }
+    this.setECButtonStatus();
+    this.setUCButtonStatus();
 
+  },
+  createFolderOrWidget: function() {
+    var node = this.getDefaultNode();
 
+    if (node) {
+      this.setCurrentHierarchyInfo(node.Id, node.Name);
+    }
   },
   addEnergyConsumptionTypeListener: function(callback) {
     this.on(ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT, callback);
@@ -418,6 +426,10 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.GET_WIDGETDTOS_SUCCESS:
       CommodityStore.doWidgetDtos(action.widgetDto[0]);
       break;
+    case FolderAction.CREATE_FOLDER_OR_WIDGET:
+      CommodityStore.createFolderOrWidget();
+      break;
+
 
 
   }
