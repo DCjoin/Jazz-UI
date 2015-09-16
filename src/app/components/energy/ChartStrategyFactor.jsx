@@ -1415,7 +1415,7 @@ let ChartStrategyFactor = {
     }
   },
   isCalendarDisabledFnStrategy: {
-    isCalendarDisabled() {
+    isCalendarDisabled(analysisPanel) {
       let tagOptions = EnergyStore.getTagOpions();
       if (!tagOptions) {
         return false;
@@ -1437,6 +1437,9 @@ let ChartStrategyFactor = {
             return;
           }
         });
+      }
+      if (analysisPanel.state.selectedChartType === 'pie' || analysisPanel.state.selectedChartType === 'rawdata') {
+        disabled = true;
       }
       return disabled;
     },
@@ -1488,7 +1491,7 @@ let ChartStrategyFactor = {
   },
   onAnalysisPanelDidUpdateFnStrategy: {
     onAnalysisPanelDidUpdate(analysisPanel) {
-      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn()) { //不符合日历本景色条件的。
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel)) { //不符合日历本景色条件的。
 
       } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
         let paramsObj = EnergyStore.getParamsObj(),
@@ -1496,13 +1499,15 @@ let ChartStrategyFactor = {
           timeRanges = paramsObj.timeRanges,
           as = analysisPanel.state;
 
-        var chartCmp = analysisPanel.refs.ChartComponent,
-          chartObj = chartCmp.refs.highstock;
+        if (analysisPanel.refs.ChartComponent) {
+          var chartCmp = analysisPanel.refs.ChartComponent,
+            chartObj = chartCmp.refs.highstock;
 
-        CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
-        analysisPanel.setState({
-          isCalendarInited: true
-        });
+          CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+          analysisPanel.setState({
+            isCalendarInited: true
+          });
+        }
       }
     },
     onCarbonAnalysisPanelDidUpdate(analysisPanel) {
@@ -3364,7 +3369,34 @@ let ChartStrategyFactor = {
   },
   getAuxiliaryCompareBtnFnStrategy: {
     getEnergyAuxiliaryCompareBtn(analysisPanel) {
+<<<<<<< HEAD
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
+=======
+      let calendarSubItems = [{
+        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
+        value: 'noneWorkTime'
+      },
+        {
+          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
+          value: 'hotColdSeason'
+        }];
+      let calendarEl;
+      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel);
+      if (isCalendarDisabled) {
+        calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
+      } else {
+        let showType = CalendarManager.getShowType();
+        if (!!showType) {
+          calendarSubItems.forEach(item => {
+            if (item.value === showType) {
+              item.checked = true;
+            }
+          });
+        }
+        calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
+      }
+
+>>>>>>> 8da072459f04017264da29cfac4a51919a3853af
       let weatherSubItems = [{
         primaryText: I18N.EM.Tool.Weather.Temperature,
         value: 'temperature'
@@ -3426,7 +3458,34 @@ let ChartStrategyFactor = {
       return configButton;
     },
     getUnitEnergyAuxiliaryCompareBtn(analysisPanel) {
+<<<<<<< HEAD
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
+=======
+      let calendarSubItems = [{
+        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
+        value: 'noneWorkTime'
+      },
+        {
+          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
+          value: 'hotColdSeason'
+        }];
+
+      let calendarEl;
+      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel);
+      if (isCalendarDisabled) {
+        calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
+      } else {
+        let showType = CalendarManager.getShowType();
+        if (!!showType) {
+          calendarSubItems.forEach(item => {
+            if (item.value === showType) {
+              item.checked = true;
+            }
+          });
+        }
+        calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
+      }
+>>>>>>> 8da072459f04017264da29cfac4a51919a3853af
       let tagOptions = EnergyStore.getTagOpions();
       let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
