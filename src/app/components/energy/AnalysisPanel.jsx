@@ -769,6 +769,7 @@ let AnalysisPanel = React.createClass({
     var selectedLabelItem = this.state.selectedLabelItem;
     var industyMenuItems = this.state.industyMenuItems;
     var customerMenuItems = this.state.customerMenuItems;
+
     if (benchmarkOption.IndustryId !== null) {
       type = 'industryZone';
     } else if (benchmarkOption.CustomerizedId !== null) {
@@ -881,7 +882,8 @@ let AnalysisPanel = React.createClass({
     var labelingsStore = LabelMenuStore.getLabelData();
     var zoneStore = LabelMenuStore.getZoneData();
     var customizedStore = LabelMenuStore.getCustomerLabelData();
-    if (industryStore === null || labelingsStore === null || zoneStore === null || customizedStore === null) {
+    var hierNodes = LabelMenuStore.getHierNodes();
+    if (industryStore === null || labelingsStore === null || zoneStore === null || customizedStore === null || hierNodes.length === 0) {
       return;
     }
     var industyMenuItems = this.getIndustyMenuItems4MultiMode();
@@ -915,6 +917,8 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem: selectedLabelItem,
       labelType: 'industryZone',
       labelDisable: false
+    }, () => {
+      this.setBenchmarkOption();
     });
     this.enableKpiTypeButton();
   },
@@ -1031,6 +1035,9 @@ let AnalysisPanel = React.createClass({
       zoneId = hierNode.ZoneId;
       if (hierNode.Type !== 2 || !CommonFuns.isNumber(industryId)) {
         return;
+      }
+      if (industyMenuItems.length === 1 && industyMenuItems[0].primaryText == I18N.Setting.Benchmark.Label.None) {
+        industyMenuItems = [];
       }
       this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
       var industryNode = industryStore.find((item, index) => {

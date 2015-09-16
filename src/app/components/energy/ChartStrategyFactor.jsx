@@ -367,6 +367,7 @@ let ChartStrategyFactor = {
       initPanelDate(timeRange);
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
+      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
     initUnitChartPanelByWidgetDto(analysisPanel) {
@@ -488,7 +489,8 @@ let ChartStrategyFactor = {
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
         step = viewOption.Step;
-
+      if (benchmarkOption === null)
+        return;
       let initPanelDate = function(timeRange) {
         let start = j2d(timeRange.StartTime, false);
         let end = j2d(timeRange.EndTime, false);
