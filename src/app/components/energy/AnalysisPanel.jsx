@@ -406,7 +406,8 @@ let AnalysisPanel = React.createClass({
         energyData: energyData,
         energyRawData: energyRawData,
         paramsObj: paramsObj,
-        dashboardOpenImmediately: false
+        dashboardOpenImmediately: false,
+        isCalendarInited: false
       };
     if (isError === true) {
       state.step = null;
