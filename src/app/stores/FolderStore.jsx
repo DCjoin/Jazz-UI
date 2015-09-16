@@ -553,7 +553,6 @@ var FolderStore = assign({}, PrototypeStore, {
         FolderStore.copyItem(action.destItem, action.newNode);
         FolderStore.emitCopyItemSuccessChange();
         FolderStore.emitSelectedNodeChange();
-
         break;
       case FolderAction.DELETE_ITEM:
         FolderStore.deleteItem(action.deleteNode, action.isLoadByWidget);
