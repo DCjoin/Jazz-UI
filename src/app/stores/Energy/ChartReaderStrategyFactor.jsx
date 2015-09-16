@@ -739,7 +739,7 @@ let ChartReaderStrategyFactor = {
           obj.disableDelete = true;
           break;
         case 15:
-          obj.name = name /*+ I18N.EM.Ratio.BaseValue*/ ;
+          obj.name = name;
           obj.uid = 'benchmark';
           break;
         default: break;

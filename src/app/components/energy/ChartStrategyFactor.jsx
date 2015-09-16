@@ -2100,7 +2100,7 @@ let ChartStrategyFactor = {
             analysisPanel.onSearchDataButtonClick();
           });
           break;
-        case 'background':{
+        case 'background': {
           var subMenuValue = menuParam.props.value;
           if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -3369,34 +3369,9 @@ let ChartStrategyFactor = {
   },
   getAuxiliaryCompareBtnFnStrategy: {
     getEnergyAuxiliaryCompareBtn(analysisPanel) {
-<<<<<<< HEAD
-      let calendarEl = analysisPanel.getCalenderBgBtnEl();
-=======
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-      let calendarEl;
-      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel);
-      if (isCalendarDisabled) {
-        calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-      } else {
-        let showType = CalendarManager.getShowType();
-        if (!!showType) {
-          calendarSubItems.forEach(item => {
-            if (item.value === showType) {
-              item.checked = true;
-            }
-          });
-        }
-        calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-      }
 
->>>>>>> 8da072459f04017264da29cfac4a51919a3853af
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
+
       let weatherSubItems = [{
         primaryText: I18N.EM.Tool.Weather.Temperature,
         value: 'temperature'
@@ -3458,34 +3433,9 @@ let ChartStrategyFactor = {
       return configButton;
     },
     getUnitEnergyAuxiliaryCompareBtn(analysisPanel) {
-<<<<<<< HEAD
-      let calendarEl = analysisPanel.getCalenderBgBtnEl();
-=======
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
 
-      let calendarEl;
-      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel);
-      if (isCalendarDisabled) {
-        calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-      } else {
-        let showType = CalendarManager.getShowType();
-        if (!!showType) {
-          calendarSubItems.forEach(item => {
-            if (item.value === showType) {
-              item.checked = true;
-            }
-          });
-        }
-        calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-      }
->>>>>>> 8da072459f04017264da29cfac4a51919a3853af
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
+
       let tagOptions = EnergyStore.getTagOpions();
       let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
