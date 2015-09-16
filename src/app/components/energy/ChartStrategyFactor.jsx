@@ -350,9 +350,7 @@ let ChartStrategyFactor = {
         Line: 'line',
         Column: 'column',
         Stack: 'stack',
-        Pie: 'pie',
-        DataTable: 'rawdata',
-        original: 'rawdata'
+        Pie: 'pie'
       };
 
       let initPanelDate = function(timeRange) {
@@ -469,6 +467,53 @@ let ChartStrategyFactor = {
         });
       });
     },
+    initUnitCostChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        benchmarkOption = contentObj.benchmarkOption,
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges,
+        unitType = viewOption.DataOption.UnitType,
+        chartType = widgetDto.ChartType;
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+      };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+
+      let bo = null;
+      if (benchmarkOption && benchmarkOption.IndustryId !== null) {
+        bo = benchmarkOption;
+      }
+
+      setTimeout(() => {
+        analysisPanel.setState({
+          unitType: unitType,
+          benchmarkOption: bo,
+          selectedChartType: typeMap[chartType]
+        }, () => {
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
+          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+        });
+      });
+    },
     initLabelChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -537,9 +582,48 @@ let ChartStrategyFactor = {
       //init selected tags is done in the other part
 
       analysisPanel.state.selectedChartType = "column";
-
       var nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
       analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
+    },
+    initRankChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        rankType = contentObj.rankType,
+        diagramConfig = contentObj.diagramConfig,
+        range = diagramConfig.rangeCode,
+        order = diagramConfig.orderCode,
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges;
+
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+
+      analysisPanel.state.selectedChartType = "column";
+      setTimeout(() => {
+        analysisPanel.setState({
+          rankType: rankType,
+          order: order,
+          range: range
+        }, () => {
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.rankType, rankType);
+          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+        });
+      });
     }
   },
   save2DashboardFnStrategy: {
@@ -1210,10 +1294,15 @@ let ChartStrategyFactor = {
         type: 'column',
         storeType: 'energy.RankUsage'
       };
-
+      let diagramConfig = {
+        rangeCode: analysisPanel.state.range,
+        orderCode: analysisPanel.state.order,
+        minPosition: 0
+      };
       let params = {
         submitParams: submitParams,
         config: config,
+        diagramConfig: diagramConfig,
         calendar: null
       };
 
@@ -2097,14 +2186,46 @@ let ChartStrategyFactor = {
     }
   },
   onSearchDataButtonClickFnStrategy: {
-    onSearchDataButtonClick(analysisPanel) {
+    onSearchDataButtonClick(analysisPanel, invokeFromMultiTime) { //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
       analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
-
-      let dateSelector = analysisPanel.refs.dateTimeSelector,
-        dateRange = dateSelector.getDateTime(),
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
-        endDate = dateRange.end,
-        clearWeatherflag = false,
+        endDate = dateRange.end;
+      // deal with multi time submit
+      if (!!invokeFromMultiTime) {
+        let multiRelativeType = MultipleTimespanStore.getOriginalType();
+        let relativeDateValue = analysisPanel._getRelativeDateValue();
+
+        if (multiRelativeType === 'Customerize') {
+          let multiDateRange = MultipleTimespanStore.getMainDateRange();
+          if (multiDateRange[0].getTime() !== startDate.getTime() || multiDateRange[1].getTime() !== endDate.getTime()) {
+            dateSelector.setDateField(multiDateRange[0], multiDateRange[1]);
+          }
+          if (relativeDateValue !== 'Customerize') {
+            analysisPanel._setRelativeDateByValue(multiRelativeType);
+          }
+        } else {
+
+          if (relativeDateValue !== multiRelativeType) {
+            analysisPanel._setRelativeDateByValue(multiRelativeType);
+          }
+        }
+      } else {
+        let timeRanges = MultipleTimespanStore.getSubmitTimespans();
+        if (timeRanges !== null) {
+          let multiRelativeType = MultipleTimespanStore.getOriginalType();
+          let relativeDateValue = analysisPanel._getRelativeDateValue();
+          if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
+
+          } else {
+            MultipleTimespanStore.initData(relativeDateValue, startDate, endDate);
+          }
+        }
+      }
+
+
+      let clearWeatherflag = false,
         nodeOptions;
 
       if (startDate.getTime() >= endDate.getTime()) {

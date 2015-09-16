@@ -2,14 +2,14 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import CommonFuns from '../util/Util.jsx';
-import {Action} from '../constants/actionType/Energy.jsx';
-import {DataConverter, isNumber} from '../util/Util.jsx';
+import { Action } from '../constants/actionType/Energy.jsx';
+import { DataConverter, isNumber } from '../util/Util.jsx';
 import Ajax from '../ajax/ajax.jsx';
 
 
-let getTagIdsFromTagOptions = function(tagOptions){
+let getTagIdsFromTagOptions = function(tagOptions) {
   let tagIds = [];
-  for(let i=0,len=tagOptions.length; i<len; i++){
+  for (let i = 0, len = tagOptions.length; i < len; i++) {
     tagIds.push(tagOptions[i].tagId);
   }
   return tagIds;
@@ -17,62 +17,68 @@ let getTagIdsFromTagOptions = function(tagOptions){
 
 
 let EnergyAction = {
- //for select tags from taglist and click search button.
-  getPieEnergyData(date, step, tagOptions, relativeDate){
+  //for select tags from taglist and click search button.
+  getPieEnergyData(date, step, tagOptions, relativeDate) {
     var timeRange = date;
 
     var tagIds = getTagIdsFromTagOptions(tagOptions);
-    var submitParams = { tagIds:tagIds,
-                         viewOption:{ DataUsageType: 4,
-                                      IncludeNavigatorData: false,
-                                      Step: 2,
-                                      TimeRanges: timeRange
-                                    }
-                       };
+    var submitParams = {
+      tagIds: tagIds,
+      viewOption: {
+        DataUsageType: 4,
+        IncludeNavigatorData: false,
+        Step: 2,
+        TimeRanges: timeRange
+      }
+    };
 
     AppDispatcher.dispatch({
-         type: Action.GET_ENERGY_DATA_LOADING,
-         submitParams: submitParams,
-         tagOptions: tagOptions,
-         relativeDate: relativeDate
+      type: Action.GET_ENERGY_DATA_LOADING,
+      submitParams: submitParams,
+      tagOptions: tagOptions,
+      relativeDate: relativeDate
     });
     let path = '/Energy.svc/AggregateTagsData';
-    if(timeRange.length > 1){
+    if (timeRange.length > 1) {
       path = '/Energy.svc/AggregateTimeSpansData';
     }
 
     Ajax.post(path, {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
-           type: Action.GET_ENERGY_DATA_SUCCESS,
-           energyData: energyData,
-           submitParams: submitParams
+          type: Action.GET_ENERGY_DATA_SUCCESS,
+          energyData: energyData,
+          submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
-           type: Action.GET_ENERGY_DATA_ERROR,
-           errorText: res.text,
-           submitParams: submitParams
+          type: Action.GET_ENERGY_DATA_ERROR,
+          errorText: res.text,
+          submitParams: submitParams
         });
       }
     });
   },
-  getEnergyTrendChartData(date, step, tagOptions, relativeDate, weatherOption){
+  getEnergyTrendChartData(date, step, tagOptions, relativeDate, weatherOption) {
     var timeRange = date;
 
     var tagIds = getTagIdsFromTagOptions(tagOptions);
-    var submitParams = { tagIds:tagIds,
-                         viewOption:{ DataUsageType: 1,
-                                      IncludeNavigatorData: true,
-                                      Step: step,
-                                      TimeRanges: timeRange
-                                   }
-                       };
-    if(weatherOption && weatherOption.IncludeTempValue) submitParams.viewOption.IncludeTempValue = true;
-    if(weatherOption && weatherOption.IncludeHumidityValue) submitParams.viewOption.IncludeHumidityValue = true;
+    var submitParams = {
+      tagIds: tagIds,
+      viewOption: {
+        DataUsageType: 1,
+        IncludeNavigatorData: true,
+        Step: step,
+        TimeRanges: timeRange
+      }
+    };
+    if (weatherOption && weatherOption.IncludeTempValue)
+      submitParams.viewOption.IncludeTempValue = true;
+    if (weatherOption && weatherOption.IncludeHumidityValue)
+      submitParams.viewOption.IncludeHumidityValue = true;
 
     AppDispatcher.dispatch({
       type: Action.GET_ENERGY_DATA_LOADING,
@@ -82,16 +88,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/GetTagsData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_ERROR,
           errorText: res.text,
@@ -100,7 +106,7 @@ let EnergyAction = {
       }
     });
   },
-  getPieCostData(date, step, selectedList, relativeDate){
+  getPieCostData(date, step, selectedList, relativeDate) {
     var timeRange = date;
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
@@ -108,14 +114,16 @@ let EnergyAction = {
     var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
-    var submitParams = { commodityIds:commodityIds,
-                         viewAssociation:viewAssociation,
-                         viewOption:{ DataUsageType: 4,
-                                      IncludeNavigatorData: false,
-                                      //Step: step,
-                                      TimeRanges: timeRange
-                                   }
-                       };
+    var submitParams = {
+      commodityIds: commodityIds,
+      viewAssociation: viewAssociation,
+      viewOption: {
+        DataUsageType: 4,
+        IncludeNavigatorData: false,
+        //Step: step,
+        TimeRanges: timeRange
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_COST_DATA_LOADING,
@@ -125,16 +133,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/AggregateCostData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_ERROR,
           errorText: res.text,
@@ -143,7 +151,7 @@ let EnergyAction = {
       }
     });
   },
-  getCostTrendChartData(date, step, selectedList, relativeDate){
+  getCostTrendChartData(date, step, selectedList, relativeDate) {
     var timeRange = date;
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
@@ -152,14 +160,16 @@ let EnergyAction = {
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
 
-    var submitParams = { commodityIds:commodityIds,
-                         viewAssociation:viewAssociation,
-                         viewOption:{ DataUsageType: 1,
-                                      IncludeNavigatorData: true,
-                                      Step: step,
-                                      TimeRanges: timeRange
-                                   }
-                       };
+    var submitParams = {
+      commodityIds: commodityIds,
+      viewAssociation: viewAssociation,
+      viewOption: {
+        DataUsageType: 1,
+        IncludeNavigatorData: true,
+        Step: step,
+        TimeRanges: timeRange
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_COST_DATA_LOADING,
@@ -169,16 +179,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/GetCostData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_ERROR,
           errorText: res.text,
@@ -187,7 +197,7 @@ let EnergyAction = {
       }
     });
   },
-  getElectricityPieCostData(date, step, selectedList, relativeDate){
+  getElectricityPieCostData(date, step, selectedList, relativeDate) {
     var timeRange = date;
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
@@ -196,14 +206,16 @@ let EnergyAction = {
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
 
-    var submitParams = { commodityIds:commodityIds,
-                         viewAssociation:viewAssociation,
-                         viewOption:{ DataUsageType: 3,
-                                      IncludeNavigatorData: false,
-                                      //Step: step,
-                                      TimeRanges: timeRange
-                                   }
-                       };
+    var submitParams = {
+      commodityIds: commodityIds,
+      viewAssociation: viewAssociation,
+      viewOption: {
+        DataUsageType: 3,
+        IncludeNavigatorData: false,
+        //Step: step,
+        TimeRanges: timeRange
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_COST_DATA_LOADING,
@@ -213,16 +225,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/AggregateElectricityCostData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_ERROR,
           errorText: res.text,
@@ -231,7 +243,7 @@ let EnergyAction = {
       }
     });
   },
-  getElectricityCostTrendChartData(date, step, selectedList, relativeDate){
+  getElectricityCostTrendChartData(date, step, selectedList, relativeDate) {
     var timeRange = date;
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
@@ -239,14 +251,16 @@ let EnergyAction = {
     var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
-    var submitParams = { commodityIds:commodityIds,
-                         viewAssociation:viewAssociation,
-                         viewOption:{ DataUsageType: 3,
-                                      IncludeNavigatorData: true,
-                                      Step: step,
-                                      TimeRanges: timeRange
-                                   }
-                       };
+    var submitParams = {
+      commodityIds: commodityIds,
+      viewAssociation: viewAssociation,
+      viewOption: {
+        DataUsageType: 3,
+        IncludeNavigatorData: true,
+        Step: step,
+        TimeRanges: timeRange
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_COST_DATA_LOADING,
@@ -256,16 +270,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/GetElectricityCostData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_ERROR,
           errorText: res.text,
@@ -274,26 +288,27 @@ let EnergyAction = {
       }
     });
   },
-  getEnergyRawData(date, step, tagOptions, relativeDate, pageNum, pageSize){
+  getEnergyRawData(date, step, tagOptions, relativeDate, pageNum, pageSize) {
     var timeRange = date;
-    var pageIdx = isNumber(pageNum)? pageNum:1;
+    var pageIdx = isNumber(pageNum) ? pageNum : 1;
     var tagIds = getTagIdsFromTagOptions(tagOptions);
-    var submitParams = { tagIds:tagIds,
-                         viewOption:{
-                           DataOption:{
-                             OriginalValue: true,
-                             WithoutAdditionalValue: true
-                           },
-                           PagingOrder:{
-                             PageIdx: pageIdx,
-                             PageSize: pageSize || 20
-                           },
-                           DataUsageType: null,
-                           IncludeNavigatorData: false,
-                           Step: step,
-                           TimeRanges: timeRange
-                          }
-                       };
+    var submitParams = {
+      tagIds: tagIds,
+      viewOption: {
+        DataOption: {
+          OriginalValue: true,
+          WithoutAdditionalValue: true
+        },
+        PagingOrder: {
+          PageIdx: pageIdx,
+          PageSize: pageSize || 20
+        },
+        DataUsageType: null,
+        IncludeNavigatorData: false,
+        Step: step,
+        TimeRanges: timeRange
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_ENERGY_DATA_LOADING,
@@ -303,16 +318,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/GetTagsData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_ERROR,
           errorText: res.text,
@@ -321,20 +336,22 @@ let EnergyAction = {
       }
     });
   },
-  getRatioTrendChartData(timeRange, step, tagOptions, ratioType, relativeDate, benchmarkOption){
+  getRatioTrendChartData(timeRange, step, tagOptions, ratioType, relativeDate, benchmarkOption) {
     var tagIds = getTagIdsFromTagOptions(tagOptions);
-    var submitParams = { tagIds:tagIds,
-                         ratioType:ratioType,
-                         benchmarkOption: benchmarkOption || null,
-                         viewOption:{ DataUsageType: 1,
-                                      IncludeNavigatorData: true,
-                                      Step: step,
-                                      TimeRanges: timeRange,
-                                      DataOption:{
-                                        RatioType: ratioType
-                                      }
-                                   }
-                       };
+    var submitParams = {
+      tagIds: tagIds,
+      ratioType: ratioType,
+      benchmarkOption: benchmarkOption || null,
+      viewOption: {
+        DataUsageType: 1,
+        IncludeNavigatorData: true,
+        Step: step,
+        TimeRanges: timeRange,
+        DataOption: {
+          RatioType: ratioType
+        }
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_RATIO_DATA_LOADING,
@@ -344,16 +361,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/RatioGetTagsData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_RATIO_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_RATIO_DATA_ERROR,
           errorText: res.text,
@@ -362,19 +379,21 @@ let EnergyAction = {
       }
     });
   },
-  getUnitEnergyTrendChartData(timeRange, step, tagOptions, unitType, relativeDate, benchmarkOption){
+  getUnitEnergyTrendChartData(timeRange, step, tagOptions, unitType, relativeDate, benchmarkOption) {
     var tagIds = getTagIdsFromTagOptions(tagOptions);
-    var submitParams = { tagIds:tagIds,
-                         benchmarkOption: benchmarkOption || null,
-                         viewOption:{ DataUsageType: 1,
-                                      IncludeNavigatorData: true,
-                                      Step: step,
-                                      TimeRanges: timeRange,
-                                      DataOption:{
-                                        UnitType: unitType
-                                      }
-                                   }
-                       };
+    var submitParams = {
+      tagIds: tagIds,
+      benchmarkOption: benchmarkOption || null,
+      viewOption: {
+        DataUsageType: 1,
+        IncludeNavigatorData: true,
+        Step: step,
+        TimeRanges: timeRange,
+        DataOption: {
+          UnitType: unitType
+        }
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_ENERGY_DATA_LOADING,
@@ -384,16 +403,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/GetEnergyUsageUnitData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_ENERGY_DATA_ERROR,
           errorText: res.text,
@@ -402,25 +421,27 @@ let EnergyAction = {
       }
     });
   },
-  getUnitCostTrendChartData(timeRange, step, selectedList, unitType, relativeDate, benchmarkOption){
+  getUnitCostTrendChartData(timeRange, step, selectedList, unitType, relativeDate, benchmarkOption) {
     var commodityList = selectedList.commodityList;
     var hierarchyNode = selectedList.hierarchyNode;
     var hierarchyId = hierarchyNode.hierId;
     var commodityIds = CommonFuns.getCommodityIdsFromList(commodityList);
     var dimNode = selectedList.dimNode;
     var viewAssociation = CommonFuns.getViewAssociation(hierarchyId, dimNode);
-    var submitParams = { commodityIds:commodityIds,
-                         viewAssociation:viewAssociation,
-                         benchmarkOption: benchmarkOption || null,
-                         viewOption:{ DataUsageType: 1,
-                                      IncludeNavigatorData: true,
-                                      Step: step,
-                                      TimeRanges: timeRange,
-                                      DataOption:{
-                                        UnitType: unitType
-                                      }
-                                   }
-                       };
+    var submitParams = {
+      commodityIds: commodityIds,
+      viewAssociation: viewAssociation,
+      benchmarkOption: benchmarkOption || null,
+      viewOption: {
+        DataUsageType: 1,
+        IncludeNavigatorData: true,
+        Step: step,
+        TimeRanges: timeRange,
+        DataOption: {
+          UnitType: unitType
+        }
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_COST_DATA_LOADING,
@@ -430,16 +451,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/GetCostUnitData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_COST_DATA_ERROR,
           errorText: res.text,
@@ -448,14 +469,15 @@ let EnergyAction = {
       }
     });
   },
-  getLabelChartData(viewOption, tagOptions, benchmarkOption, labelingType){
+  getLabelChartData(viewOption, tagOptions, benchmarkOption, labelingType) {
     var tagIds = getTagIdsFromTagOptions(tagOptions);
 
-    var submitParams = { tagIds:tagIds,
-                         viewOption:viewOption,
-                         benchmarkOption: benchmarkOption,
-                         labelingType: labelingType
-                       };
+    var submitParams = {
+      tagIds: tagIds,
+      viewOption: viewOption,
+      benchmarkOption: benchmarkOption,
+      labelingType: labelingType
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_LABEL_DATA_LOADING,
@@ -465,16 +487,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/LabelingGetTagsData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_LABEL_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_LABEL_DATA_ERROR,
           errorText: res.text,
@@ -483,18 +505,21 @@ let EnergyAction = {
       }
     });
   },
-  getEnergyRankChartData(timeRanges, rankType, selectedList, relativeDate){
+  getEnergyRankChartData(timeRanges, rankType, selectedList, relativeDate) {
     var commodityNode = selectedList.commodityNode;
     var hierarchyList = selectedList.hierarchyList;
     var hierarchyIds = CommonFuns.getHierarchyIdsFromList(hierarchyList);
     var commodityIds = [];
     commodityIds.push(commodityNode.Id);
 
-    var submitParams = { hierarchyIds:hierarchyIds,
-                         commodityIds:commodityIds,
-                         rankType: rankType,
-                         viewOption:{TimeRanges: timeRanges}
-                       };
+    var submitParams = {
+      hierarchyIds: hierarchyIds,
+      commodityIds: commodityIds,
+      rankType: rankType,
+      viewOption: {
+        TimeRanges: timeRanges
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_RANK_DATA_LOADING,
@@ -504,16 +529,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/RankingEnergyUsageData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_ERROR,
           errorText: res.text,
@@ -522,21 +547,23 @@ let EnergyAction = {
       }
     });
   },
-  getCarbonRankChartData(timeRanges, rankType, selectedList, relativeDate, destination){
+  getCarbonRankChartData(timeRanges, rankType, selectedList, relativeDate, destination) {
     var commodityNode = selectedList.commodityNode;
     var hierarchyList = selectedList.hierarchyList;
     var hierarchyIds = CommonFuns.getHierarchyIdsFromList(hierarchyList);
     var commodityIds = [];
-    if(commodityNode.Id !== -1){
-      commodityIds.push(commodityNode.Id);
-    }
+    commodityIds.push(commodityNode.Id);
 
-    var submitParams = { hierarchyIds:hierarchyIds,
-                         destination: destination,
-                         commodityIds:commodityIds,
-                         rankType: rankType,
-                         viewOption:{TimeRanges: timeRanges}
-                       };
+
+    var submitParams = {
+      hierarchyIds: hierarchyIds,
+      destination: destination,
+      commodityIds: commodityIds,
+      rankType: rankType,
+      viewOption: {
+        TimeRanges: timeRanges
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_RANK_DATA_LOADING,
@@ -546,16 +573,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/RankingCarbonData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_ERROR,
           errorText: res.text,
@@ -564,20 +591,22 @@ let EnergyAction = {
       }
     });
   },
-  getCostRankChartData(timeRanges, rankType, selectedList, relativeDate, destination){
+  getCostRankChartData(timeRanges, rankType, selectedList, relativeDate, destination) {
     var commodityNode = selectedList.commodityNode;
     var hierarchyList = selectedList.hierarchyList;
     var hierarchyIds = CommonFuns.getHierarchyIdsFromList(hierarchyList);
     var commodityIds = [];
-    if(commodityNode.Id !== -1){
-      commodityIds.push(commodityNode.Id);
-    }
+    commodityIds.push(commodityNode.Id);
 
-    var submitParams = { hierarchyIds:hierarchyIds,
-                         commodityIds:commodityIds,
-                         rankType: rankType,
-                         viewOption:{TimeRanges: timeRanges}
-                       };
+
+    var submitParams = {
+      hierarchyIds: hierarchyIds,
+      commodityIds: commodityIds,
+      rankType: rankType,
+      viewOption: {
+        TimeRanges: timeRanges
+      }
+    };
 
     AppDispatcher.dispatch({
       type: Action.GET_RANK_DATA_LOADING,
@@ -587,16 +616,16 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy.svc/RankingCostData', {
-      params:submitParams,
+      params: submitParams,
       commonErrorHandling: false,
-      success: function(energyData){
+      success: function(energyData) {
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_SUCCESS,
           energyData: energyData,
           submitParams: submitParams
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
           type: Action.GET_RANK_DATA_ERROR,
           errorText: res.text,
