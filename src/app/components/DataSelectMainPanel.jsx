@@ -359,8 +359,14 @@ let DataSelectMainPanel = React.createClass({
           hierId: hierNode.hierId,
           tagId: tagId
         };
-        TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
-        TagAction.loadAlarmData(data);
+        if (!!tagId) {
+          TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
+          TagAction.loadAlarmData(data);
+        } else {
+          page = 1;
+          TagAction.loadData(hierNode.hierId, 2, 1, null, null);
+        }
+
       }
     }
   },
@@ -373,7 +379,7 @@ let DataSelectMainPanel = React.createClass({
       TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
 
     }
-    if(this.props.linkFrom != "Alarm"){
+    if (this.props.linkFrom != "Alarm") {
       TagAction.clearAlarmSearchTagList();
     }
 
