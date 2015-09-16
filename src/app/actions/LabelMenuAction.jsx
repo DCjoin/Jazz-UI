@@ -2,94 +2,121 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 
 import CommonFuns from '../util/Util.jsx';
-import {Action} from '../constants/actionType/Labeling.jsx';
-import {DataConverter} from '../util/Util.jsx';
+import { Action } from '../constants/actionType/Labeling.jsx';
+import { DataConverter } from '../util/Util.jsx';
 import Ajax from '../ajax/ajax.jsx';
 
 
 let LabelMenuAction = {
-  setHierNode(hierNode){
+  setHierNode(hierNode) {
     AppDispatcher.dispatch({
-        type: Action.HIERNODE_CHANGED,
-        hierNode: hierNode
+      type: Action.HIERNODE_CHANGED,
+      hierNode: hierNode
     });
   },
-  getAllIndustries(){
+  getHierNodes(hierIds) {
+    Ajax.post('/Hierarchy.svc/GetHierarchyByIds', {
+      params: {
+        ids: hierIds
+      },
+      success: function(hierNodes) {
+        AppDispatcher.dispatch({
+          type: Action.GET_HIERNODES_BY_ID_SUCCESS,
+          hierNodes: hierNodes
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_HIERNODES_BY_ID_ERROR
+        });
+      }
+    });
+  },
+  getAllIndustries() {
     Ajax.post('/Administration.svc/GetAllIndustries', {
-      params: {includeRoot:true,onlyLeaf:false},
-      success: function(industryData){
+      params: {
+        includeRoot: true,
+        onlyLeaf: false
+      },
+      success: function(industryData) {
         AppDispatcher.dispatch({
-            type: Action.GET_ALL_INDUSTRIES_SUCCESS,
-            industryData: industryData
+          type: Action.GET_ALL_INDUSTRIES_SUCCESS,
+          industryData: industryData
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
-            type: Action.GET_ALL_INDUSTRIES_ERROR
+          type: Action.GET_ALL_INDUSTRIES_ERROR
         });
       }
     });
   },
-  getAllZones(){
+  getAllZones() {
     Ajax.post('/Administration.svc/GetAllZones', {
-      params: {includeRoot:true},
-      success: function(zoneData){
+      params: {
+        includeRoot: true
+      },
+      success: function(zoneData) {
         AppDispatcher.dispatch({
-            type: Action.GET_ALL_ZONES_SUCCESS,
-            zoneData: zoneData
+          type: Action.GET_ALL_ZONES_SUCCESS,
+          zoneData: zoneData
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
-            type: Action.GET_ALL_ZONES_ERROR
+          type: Action.GET_ALL_ZONES_ERROR
         });
       }
     });
   },
-  getAllLabels(){
+  getAllLabels() {
     Ajax.post('/Administration.svc/GetAllLabelings', {
       params: {},
-      success: function(labelData){
+      success: function(labelData) {
         AppDispatcher.dispatch({
-            type: Action.GET_ALL_LABELS_SUCCESS,
-            labelData: labelData
+          type: Action.GET_ALL_LABELS_SUCCESS,
+          labelData: labelData
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
-            type: Action.GET_ALL_LABELS_ERROR
+          type: Action.GET_ALL_LABELS_ERROR
         });
       }
     });
   },
-  getAllBenchmarks(){
+  getAllBenchmarks() {
     Ajax.post('/Administration.svc/GetAllBenchmarks', {
       params: {},
-      success: function(benchmarkData){
+      success: function(benchmarkData) {
         AppDispatcher.dispatch({
-            type: Action.GET_BENCHMARK_DATA_SUCCESS,
-            benchmarkData: benchmarkData
+          type: Action.GET_BENCHMARK_DATA_SUCCESS,
+          benchmarkData: benchmarkData
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
-            type: Action.GET_BENCHMARK_DATA_ERROR
+          type: Action.GET_BENCHMARK_DATA_ERROR
         });
       }
     });
   },
-  getCustomerLabels(){
+  getCustomerLabels() {
     Ajax.post('/Customer.svc/GetCustomerLabellings', {
-      params: {filter:{CustomerId:parseInt(window.currentCustomerId)}},
-      success: function(customerLabelData){
+      params: {
+        filter: {
+          CustomerId: parseInt(window.currentCustomerId)
+        }
+      },
+      success: function(customerLabelData) {
         AppDispatcher.dispatch({
-            type: Action.GET_ALL_CUSTOMER_LABELS_SUCCESS,
-            customerLabelData: customerLabelData
+          type: Action.GET_ALL_CUSTOMER_LABELS_SUCCESS,
+          customerLabelData: customerLabelData
         });
       },
-      error: function(err, res){
+      error: function(err, res) {
         AppDispatcher.dispatch({
-            type: Action.GET_ALL_CUSTOMER_LABELS_ERROR
+          type: Action.GET_ALL_CUSTOMER_LABELS_ERROR
         });
       }
     });
