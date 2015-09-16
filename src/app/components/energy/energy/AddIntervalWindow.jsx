@@ -157,7 +157,7 @@ let AddIntervalWindow = React.createClass({
     let analysisPanel = this.props.analysisPanel;
     if (action === 'draw') {
       MultiTimespanAction.convert2Stable();
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel, true);
     } else {
       MultiTimespanAction.clearMultiTimespan('temp');
     }
