@@ -1,6 +1,7 @@
 'use strict';
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/Folder.jsx';
+import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
 let FolderAction = {
@@ -223,6 +224,7 @@ let FolderAction = {
         widgetDto: widgetDto
       },
       success: function(widgetDto) {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
         AppDispatcher.dispatch({
           type: Action.UPDATE_WIDGETDTOS_SUCCESS,
           widgetDto: originWidgetDto

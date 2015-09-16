@@ -323,6 +323,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -376,6 +377,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -414,6 +416,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -442,6 +445,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -511,6 +515,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -558,6 +563,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -673,6 +679,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
