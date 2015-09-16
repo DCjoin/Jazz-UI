@@ -439,7 +439,7 @@ let ChartStrategyFactor = {
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
-        labelingType = contentObj.benchmarkOption,
+        labelingType = contentObj.labelingType,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
         step = viewOption.Step;
@@ -462,7 +462,36 @@ let ChartStrategyFactor = {
           selectedIndex: monthIndex
         });
       };
-      analysisPanel.setBenchmarkOption(benchmarkOption, labelingType);
+      let convertWidgetOptions2TagOption = function(WidgetOptions) {
+        let tagOptions = [];
+        WidgetOptions.forEach(item => {
+          tagOptions.push({
+            hierId: item.HierId,
+            hierName: item.NodeName,
+            tagId: item.TargetId,
+            tagName: item.TargetName
+          });
+        });
+        return tagOptions;
+      };
+      let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+      var map = {}, hierId, i,
+        hierIds = [];
+      for (i = 0; i < tagOptions.length; i++) {
+        hierId = tagOptions[i].hierId;
+        if (!map[hierId]) {
+          map[hierId] = hierId;
+        }
+      }
+      for (i in map) {
+        hierIds.push(map[i]);
+      }
+      LabelMenuAction.getHierNodes(hierIds);
+      analysisPanel.setState({
+        benchmarkOption: benchmarkOption,
+        kpiTypeValue: labelingType
+      });
+
 
       //init timeRange
       let timeRange = timeRanges[0];
@@ -474,7 +503,7 @@ let ChartStrategyFactor = {
 
       var nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
       analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
-    },
+    }
   },
   save2DashboardFnStrategy: {
     save2Dashboard(analysisPanel) {
@@ -907,9 +936,8 @@ let ChartStrategyFactor = {
       let submitParams1 = CarbonStore.getSubmitParams(),
         benchmarkOption = submitParams1.benchmarkOption || null,
         viewOption1 = submitParams1.viewOption,
-        step = viewOption1.step,
-        timeRanges = viewOption1.timeRanges,
-        unitType = viewOption1.DataOption.UnitType,
+        step = viewOption1.Step,
+        timeRanges = viewOption1.TimeRanges,
         widgetTimeRanges;
 
       //submitParams part
@@ -920,7 +948,7 @@ let ChartStrategyFactor = {
       };
       //time range part
       if (timeRanges.length === 1) {
-        let relativeDate = CostStore.getRelativeDate();
+        let relativeDate = CarbonStore.getRelativeDate();
         if (relativeDate !== 'Customerize') {
           widgetTimeRanges = [{
             relativeDate: relativeDate
@@ -948,8 +976,9 @@ let ChartStrategyFactor = {
       let dataUsageType = bizMap[analysisPanel.props.bizType];
       viewOption.DataUsageType = dataUsageType;
 
+      submitParams.hierarchyId = hierarchyId;
       submitParams.viewOption = viewOption;
-      submitParams.destination = submitParams1.submitParams;
+      submitParams.destination = submitParams1.destination;
 
       //storeType part
       let storeType;
@@ -992,8 +1021,8 @@ let ChartStrategyFactor = {
       let submitParams1 = CarbonStore.getSubmitParams(),
         benchmarkOption = submitParams1.benchmarkOption || null,
         viewOption1 = submitParams1.viewOption,
-        step = viewOption1.step,
-        timeRanges = viewOption1.timeRanges,
+        step = viewOption1.Step,
+        timeRanges = viewOption1.TimeRanges,
         unitType = viewOption1.DataOption.UnitType,
         widgetTimeRanges;
 
@@ -1034,6 +1063,8 @@ let ChartStrategyFactor = {
       let dataUsageType = bizMap[analysisPanel.props.bizType];
       viewOption.DataUsageType = dataUsageType;
 
+      submitParams.hierarchyId = hierarchyId;
+      submitParams.destination = submitParams1.destination;
       submitParams.viewOption = viewOption;
 
       //storeType part
@@ -1331,9 +1362,9 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         step: step
       });
-      if (ratioType == 1 && (step == 0 || step == 1))
+      if (ratioType === 1 && (step === 0 || step === 1))
         step = 2;
-      if (ratioType == 2 && (step == 0 || step == 1 || step == 2))
+      if (ratioType === 2 && (step === 0 || step === 1 || step === 2))
         step = 3;
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, false, benchmarkOption);
     },
@@ -2024,7 +2055,8 @@ let ChartStrategyFactor = {
         kpiTypeIndex: 0,
         labelDisable: true,
         kpiTypeDisable: false,
-        month: curMonth + 1
+        month: curMonth + 1,
+        benchmarkOption: null
       };
       return state;
     }
@@ -3339,6 +3371,11 @@ let ChartStrategyFactor = {
     },
     labelBindStoreListeners(analysisPanel) {
       LabelMenuStore.addHierNodeChangeListener(analysisPanel._onHierNodeChange);
+      LabelMenuStore.addHierNodesChangeListener(analysisPanel._onHierNodesChange);
+      LabelMenuStore.addIndustryDataChangeListener(analysisPanel._onHierNodesChange);
+      LabelMenuStore.addZoneDataChangeListener(analysisPanel._onHierNodesChange);
+      LabelMenuStore.addLabelDataChangeListener(analysisPanel._onHierNodesChange);
+      LabelMenuStore.addCustomerDataChangeListener(analysisPanel._onHierNodesChange);
       LabelStore.addLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
       LabelStore.addLabelDataLoadedListener(analysisPanel._onLabelDataChange);
       LabelStore.addLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
@@ -3405,6 +3442,11 @@ let ChartStrategyFactor = {
     },
     labelUnbindStoreListeners(analysisPanel) {
       LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange);
+      LabelMenuStore.removeHierNodesChangeListener(analysisPanel._onHierNodesChange);
+      LabelMenuStore.removeIndustryDataChangeListener(analysisPanel._onHierNodesChange);
+      LabelMenuStore.removeZoneDataChangeListener(analysisPanel._onHierNodesChange);
+      LabelMenuStore.removeLabelDataChangeListener(analysisPanel._onHierNodesChange);
+      LabelMenuStore.removeCustomerDataChangeListener(analysisPanel._onHierNodesChange);
       LabelStore.removeLabelDataLoadingListener(analysisPanel._onLabelLoadingStatusChange);
       LabelStore.removeLabelDataLoadedListener(analysisPanel._onLabelDataChange);
       LabelStore.removeLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
@@ -3697,7 +3739,9 @@ let ChartStrategyFactor = {
     var industySubItems = analysisPanel.state.industyMenuItems;
     var customizedSubItems = analysisPanel.state.customerMenuItems;
     let labelButton = <ButtonMenu label={analysisPanel.state.selectedLabelItem.text} style={{
-      marginLeft: '10px'
+      marginLeft: '10px',
+      fontSize: '14px',
+      width: '140px'
     }} desktop={true}
     disabled={analysisPanel.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
       <ExtendableMenuItem primaryText={I18N.Setting.Labeling.Label.IndustryLabeling} value='industryZone' subItems={industySubItems}>

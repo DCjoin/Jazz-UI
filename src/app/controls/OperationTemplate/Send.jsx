@@ -97,7 +97,7 @@ var Send = React.createClass({
     if (this.state.isLoading) {
       content = <CircularProgress  mode="indeterminate" size={1} />
     } else {
-      content = (this.state.users != null) ? <UsersOperation users={this.state.users} type={I18N.Template.Share.Share}/> : null;
+      content = (this.state.users != null) ? <UsersOperation users={this.state.users} type={I18N.Template.Send.Send}/> : null;
     }
 
     return (
