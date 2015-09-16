@@ -948,7 +948,7 @@ let ChartStrategyFactor = {
       };
       //time range part
       if (timeRanges.length === 1) {
-        let relativeDate = CostStore.getRelativeDate();
+        let relativeDate = CarbonStore.getRelativeDate();
         if (relativeDate !== 'Customerize') {
           widgetTimeRanges = [{
             relativeDate: relativeDate
