@@ -122,7 +122,7 @@ let DataSelectMainPanel = React.createClass({
           Id: hierNode.hierId,
           Name: hierNode.hierName
         };
-        tagId = hierNode.hierId
+        tagId = hierNode.hierId;
       }
     } else {
       var alarmTag = EnergyStore.getTagOpions()[0];
@@ -130,7 +130,7 @@ let DataSelectMainPanel = React.createClass({
         Id: alarmTag.hierId,
         Name: alarmTag.hierName
       };
-      tagId = alarmTag.hierId
+      tagId = alarmTag.hierId;
     }
 
     page = data.pageIndex;
@@ -143,7 +143,7 @@ let DataSelectMainPanel = React.createClass({
       optionType: 2,
       dimActive: true,
       isLoading: TagStore.getNodeLoading(),
-    })
+    });
   },
 
 
@@ -359,8 +359,14 @@ let DataSelectMainPanel = React.createClass({
           hierId: hierNode.hierId,
           tagId: tagId
         };
-        TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
-        TagAction.loadAlarmData(data);
+        if (!!tagId) {
+          TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
+          TagAction.loadAlarmData(data);
+        } else {
+          page = 1;
+          TagAction.loadData(hierNode.hierId, 2, 1, null, null);
+        }
+
       }
     }
   },
@@ -373,7 +379,7 @@ let DataSelectMainPanel = React.createClass({
       TagStore.removeAlarmTagNodeListener(this._onAlarmTagNodeChange);
 
     }
-    if(this.props.linkFrom != "Alarm"){
+    if (this.props.linkFrom != "Alarm") {
       TagAction.clearAlarmSearchTagList();
     }
 
