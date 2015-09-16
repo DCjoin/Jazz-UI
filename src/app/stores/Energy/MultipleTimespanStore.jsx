@@ -142,9 +142,10 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
   },
   _getDateDescription(startDate, endDate) {
     let ft = I18N.DateTimeFormat.IntervalFormat, str,
-      dateFormat = CommonFuns.dateFormat;
-
-    str = dateFormat(startDate, ft.FullDay) + ' 到 ' + dateFormat(endDate, ft.FullDay);
+      dateAdd = CommonFuns.dateAdd,
+      dateFormat = CommonFuns.dateFormat,
+      tempEnd = dateAdd(endDate, -1, 'days');
+    str = dateFormat(startDate, ft.FullDay) + ' 到 ' + dateFormat(tempEnd, ft.FullDay);
     return str;
   },
   _initTempRelativeList() {

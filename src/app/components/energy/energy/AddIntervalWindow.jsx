@@ -193,7 +193,7 @@ let AddIntervalWindow = React.createClass({
     let timeSpanEls = relativeList.map((item) => {
       return <TimespanItem {...item} onCompareItemRemove={me._removeCompareItem}></TimespanItem>;
     });
-
+    let isAddBtnDisabled = relativeList.length >= 5;
     let _buttonActions = [<FlatButton
     label="绘制"
     onClick={me._onAction.bind(me, 'draw')} />,
@@ -217,7 +217,7 @@ let AddIntervalWindow = React.createClass({
                       <LinkButton  label='添加时间段' labelStyle={{
       display: 'inline-block',
       marginTop: '10px'
-    }} onClick={me._addNewCompareItem}/>
+    }} onClick={me._addNewCompareItem} disabled={isAddBtnDisabled}/>
                     </div>
                   </Dialog>;
 
