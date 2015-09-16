@@ -107,7 +107,10 @@ let ChartStrategyFactor = {
       handleStepChangeFn: 'handleCostStepChange',
       handleNavigatorChangeLoadFn: 'handleCostNavigatorChangeLoad',
       save2DashboardFn: 'saveCost2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initCostChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initCostChartPanelByWidgetDto',
+      isCalendarDisabledFn: 'isCostCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onCostAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
     },
     MultiIntervalDistribution: {
 
@@ -136,7 +139,11 @@ let ChartStrategyFactor = {
       handleStepChangeFn: 'handleCarbonStepChange',
       exportChartFn: 'exportCarbonChart',
       save2DashboardFn: 'saveCarbon2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initCarbonChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initCarbonChartPanelByWidgetDto',
+      isCalendarDisabledFn: 'isCarbonCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onCarbonAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
+      handleConfigBtnItemTouchTapFn: 'handleCarbonConfigBtnItemTouchTap',
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -162,6 +169,9 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleRatioBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleRatioStepChange',
       save2DashboardFn: 'saveRatio2Dashboard',
+      isCalendarDisabledFn: 'isCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -216,7 +226,10 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleUnitCostBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCostStepChange',
       save2DashboardFn: 'saveUnitCost2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initUnitCostChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initUnitCostChartPanelByWidgetDto',
+      isCalendarDisabledFn: 'isCostCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onCostAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
     },
     UnitCarbon: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -242,7 +255,10 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleUnitCarbonBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCarbonStepChange',
       save2DashboardFn: 'saveUnitCarbon2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initUnitCarbonChartPanelByWidgetDto',      
+      initChartPanelByWidgetDtoFn: 'initUnitCarbonChartPanelByWidgetDto',
+      isCalendarDisabledFn: 'isCarbonCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onCarbonAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
     },
     Label: {
       searchBarGenFn: 'labelSearchBarGen',
@@ -1414,7 +1430,13 @@ let ChartStrategyFactor = {
         });
       }
       return disabled;
-    }
+    },
+    isCarbonCalendarDisabled() {
+      return false;
+    },
+    isCostCalendarDisabled() {
+      return false;
+    },
   },
   handleWeatherMenuItemClickFnStrategy: {
     handleWeatherMenuItemClick(analysisPanel, toggleTemp, toggleHumi) {
@@ -1473,7 +1495,43 @@ let ChartStrategyFactor = {
           isCalendarInited: true
         });
       }
-    }
+    },
+    onCarbonAnalysisPanelDidUpdate(analysisPanel) {
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn()) { //不符合日历本景色条件的。
+
+      } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
+        let paramsObj = CarbonStore.getParamsObj(),
+          step = paramsObj.step,
+          timeRanges = paramsObj.timeRanges,
+          as = analysisPanel.state;
+
+        var chartCmp = analysisPanel.refs.ChartComponent,
+          chartObj = chartCmp.refs.highstock;
+
+        CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+        analysisPanel.setState({
+          isCalendarInited: true
+        });
+      }
+    },
+    onCostAnalysisPanelDidUpdate(analysisPanel) {
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn()) { //不符合日历本景色条件的。
+
+      } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
+        let paramsObj = CostStore.getParamsObj(),
+          step = paramsObj.step,
+          timeRanges = paramsObj.timeRanges,
+          as = analysisPanel.state;
+
+        var chartCmp = analysisPanel.refs.ChartComponent,
+          chartObj = chartCmp.refs.highstock;
+
+        CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+        analysisPanel.setState({
+          isCalendarInited: true
+        });
+      }
+    },
   },
   handleCalendarChangeFnStrategy: {
     handleCalendarChange(calendarType, analysisPanel) {
@@ -2028,11 +2086,27 @@ let ChartStrategyFactor = {
             analysisPanel.onSearchDataButtonClick();
           });
           break;
-        case 'background':
-          console.log('background');
+        case 'background':{
+          var subMenuValue = menuParam.props.value;
+          if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
+            analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+          }
           break;
+          }
       }
-    }
+    },
+    handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
+      let itemValue = menuItem.props.value;
+      switch (itemValue) {
+        case 'background':{
+          var subMenuValue = menuParam.props.value;
+          if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
+            analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+          }
+          break;
+          }
+      }
+    },
   },
   getEnergyTypeComboFnStrategy: {
     empty() {},
@@ -3281,30 +3355,7 @@ let ChartStrategyFactor = {
   },
   getAuxiliaryCompareBtnFnStrategy: {
     getEnergyAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-      let calendarEl;
-      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
-      if (isCalendarDisabled) {
-        calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-      } else {
-        let showType = CalendarManager.getShowType();
-        if (!!showType) {
-          calendarSubItems.forEach(item => {
-            if (item.value === showType) {
-              item.checked = true;
-            }
-          });
-        }
-        calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-      }
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let weatherSubItems = [{
         primaryText: I18N.EM.Tool.Weather.Temperature,
         value: 'temperature'
@@ -3341,34 +3392,18 @@ let ChartStrategyFactor = {
       return configButton;
     },
     getCarbonAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
      </ButtonMenu>;
 
       return configButton;
     },
     getRatioAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let tagOptions = RatioStore.getRatioOpions();
       let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
@@ -3376,36 +3411,13 @@ let ChartStrategyFactor = {
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
       return configButton;
     },
     getUnitEnergyAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
-      let calendarEl;
-      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
-      if (isCalendarDisabled) {
-        calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-      } else {
-        let showType = CalendarManager.getShowType();
-        if (!!showType) {
-          calendarSubItems.forEach(item => {
-            if (item.value === showType) {
-              item.checked = true;
-            }
-          });
-        }
-        calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-      }
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let tagOptions = EnergyStore.getTagOpions();
       let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
@@ -3419,36 +3431,20 @@ let ChartStrategyFactor = {
       return configButton;
     },
     getUnitCostAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let tagOptions = CostStore.getSelectedList();
       let benchmarks = CommonFuns.filterBenchmarksByCostSelectedList(tagOptions);
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
       return configButton;
     },
     getUnitCarbonAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let tagOptions = {},
         hierarchyNode = CommodityStore.getHierNode(),
         commodityList = CommodityStore.getCommonCommodityList();
@@ -3460,27 +3456,19 @@ let ChartStrategyFactor = {
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
       return configButton;
     },
     getCostAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText={I18N.EM.ByPeakValley} value='touCompare' checked={analysisPanel.state.touBtnSelected} disabled={analysisPanel.state.touBtnStatus}/>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
      </ButtonMenu>;
 
       return configButton;
