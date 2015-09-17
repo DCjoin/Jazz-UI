@@ -80,8 +80,7 @@ let ChartStrategyFactor = {
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn: 'handleNavigatorChangeLoad',
       save2DashboardFn: 'save2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
-      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -337,7 +336,6 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
-
     initCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -627,47 +625,6 @@ let ChartStrategyFactor = {
         });
       });
     }
-  },
-  initAlarmChartPanelByWidgetDtoFnStrategy: {
-    initAlarmChartPanelByWidgetDto(analysisPanel) {
-      let dateSelector = analysisPanel.refs.dateTimeSelector;
-      let j2d = CommonFuns.DataConverter.JsonToDateTime;
-      let widgetDto = analysisPanel.props.widgetDto,
-        timeRanges = widgetDto.timeRange;
-
-      // let typeMap = {
-        //   Line: 'line',
-        //   Column: 'column',
-        //   Stack: 'stack',
-        //   Pie: 'pie',
-        //   DataTable: 'rawdata',
-        //   original: 'rawdata'
-        // };
-
-      let initPanelDate = function(timeRange) {
-        if (timeRange.relativeDate) {
-          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
-        } else {
-          let start = timeRange.StartTime;
-          let end = timeRange.EndTime;
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
-        }
-      };
-      //init timeRange
-      let timeRange = timeRanges[0];
-      initPanelDate(timeRange);
-      if (timeRanges.length !== 1) {
-        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
-      }
-
-      //init selected tags is done in the other part
-
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel.setState({
-        step: widgetDto.step
-      });
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
-    },
   },
   save2DashboardFnStrategy: {
     save2Dashboard(analysisPanel) {
@@ -2717,7 +2674,7 @@ let ChartStrategyFactor = {
   },
   searchBarGenFnStrategy: {
     energySearchBarGen(analysisPanel) {
-      var chartTypeCmp = analysisPanel.props.isFromAlarm ? null : analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
+      var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
       return <div className={'jazz-alarm-chart-toolbar'}>

@@ -39,8 +39,7 @@ let AnalysisPanel = React.createClass({
       energyType: 'Energy',
       chartTitle: '最近7天能耗',
       widgetInitState: false,
-      sourceUserName: null,
-      isFromAlarm: false
+      sourceUserName: null
     };
   },
   componentWillReceiveProps(nextProps) {
@@ -113,14 +112,13 @@ let AnalysisPanel = React.createClass({
       openDirection: "bottom-right",
       desktop: true
     };
-    let widgetOptMenu = this.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
+    let widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
                             <MenuItem key={1} primaryText={'另存为'} />
                             <MenuItem key={2} primaryText={'发送'} />
                             <MenuItem key={3} primaryText={'共享'} />
                             <MenuItem key={4} primaryText={'导出'} />
                             <MenuItem key={5} primaryText={'删除'} />
                          </IconMenu>;
-
     let sourceUserNameEl = null;
     if (me.props.sourceUserName) {
       sourceUserNameEl = <div className={'description'}>{me.props.sourceUserName}</div>;
@@ -159,21 +157,13 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.getInitParamFn(me);
     this.state.chartStrategy.getAllDataFn();
     this.state.chartStrategy.bindStoreListenersFn(me);
-    if (this.props.isFromAlarm) {
-      window.setTimeout(me._initAlarmChartPanelByWidgetDto, 0);
-    } else {
-      if (this.props.widgetInitState) {
-        window.setTimeout(me._initChartPanelByWidgetDto, 0);
-      }
+    if (this.props.widgetInitState) {
+      window.setTimeout(me._initChartPanelByWidgetDto, 0);
     }
-
   },
   componentWillUnmount: function() {
     let me = this;
     this.state.chartStrategy.unbindStoreListenersFn(me);
-  },
-  _initAlarmChartPanelByWidgetDto() {
-    this.state.chartStrategy.initAlarmChartPanelByWidgetDtoFn(this);
   },
   _initChartPanelByWidgetDto() {
     if (this.state.chartStrategy.initChartPanelByWidgetDtoFn) {
