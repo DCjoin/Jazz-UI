@@ -1584,6 +1584,7 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         step: step
       });
+      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
     },
     handleCarbonStepChange(analysisPanel, step) {
