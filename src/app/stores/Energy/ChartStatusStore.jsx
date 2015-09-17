@@ -33,7 +33,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
 
 ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
   switch (action.type) {
-    case Action.SET_WIDGET_INIT_STATE:
+    case Action.SET_WIDGETDTO:
       ChartStatusStore.setWidgetDto(action.widgetDto);
       break;
   }

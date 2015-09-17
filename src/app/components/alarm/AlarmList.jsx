@@ -17,6 +17,9 @@ let AlarmList = React.createClass({
       loadingStatus: false
     };
   },
+  propTypes: {
+    onItemClick: React.PropTypes.func,
+  },
   _onChange() {
     this.setState({
       hierarchies: AlarmStore.getHierarchyList(),
@@ -30,7 +33,9 @@ let AlarmList = React.createClass({
     AlarmTagAction.clearSearchTagList();
     AlarmTagAction.addSearchTagList(tagOption[0]);
 
-    AlarmAction.getAlarmTagData(date, step, tagOption);
+    //  AlarmAction.getAlarmTagData(date, step, tagOption);
+    AlarmAction.setOption(tagOption);
+    this.props.onItemClick(date, step, tagOption);
 
     this.setState({
       selectedTag: tagOption[0]

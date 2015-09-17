@@ -85,6 +85,7 @@ let ChartStrategyFactor = {
       save2DashboardFn: 'save2Dashboard',
       initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
       clearChartDataFn: 'clearChartData',
+      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto',
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -216,7 +217,7 @@ let ChartStrategyFactor = {
       getSelectedNodesFn: 'getCostSelectedTagList',
       onSearchDataButtonClickFn: 'onUnitCostSearchDataButtonClick',
       onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
-      initEnergyStoreByBizChartTypeFn: 'initCostStoreByBizChartType',
+      initEnergyStoreByBizChartTypeFn: 'initUnitCostStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitEnergyFitStepAndGetData',
       getInitialStateFn: 'getUnitEnergyInitialState',
       getAllDataFn: 'unitGetAllData',
@@ -367,6 +368,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       ChartStatusAction.setWidgetDto(widgetDto);
     },
+
     initCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -630,8 +632,8 @@ let ChartStrategyFactor = {
         } else {
           monthIndex = month + 1;
         }
-        analysisPanel.refs.monthSelector.setState({
-          selectedIndex: monthIndex
+        analysisPanel.setState({
+          month: monthIndex
         });
       };
       let convertWidgetOptions2TagOption = function(WidgetOptions) {
@@ -717,6 +719,47 @@ let ChartStrategyFactor = {
       });
     }
   },
+  initAlarmChartPanelByWidgetDtoFnStrategy: {
+    initAlarmChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        timeRanges = widgetDto.timeRange;
+
+      // let typeMap = {
+        //   Line: 'line',
+        //   Column: 'column',
+        //   Stack: 'stack',
+        //   Pie: 'pie',
+        //   DataTable: 'rawdata',
+        //   original: 'rawdata'
+        // };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          let start = timeRange.StartTime;
+          let end = timeRange.EndTime;
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+      if (timeRanges.length !== 1) {
+        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
+      }
+
+      //init selected tags is done in the other part
+
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.setState({
+        step: widgetDto.step
+      });
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+    },
+  },
   save2DashboardFnStrategy: {
     save2Dashboard(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -753,7 +796,7 @@ let ChartStrategyFactor = {
         Step: step
       };
 
-      let includeNavigatorData = !(analysisPanel.state.selectedChartType === 'pie' || analysisPanel.state.selectedChartType === 'rawdata');
+      let includeNavigatorData = !(chartType === 'pie' || chartType === 'rawdata');
       viewOption.IncludeNavigatorData = includeNavigatorData;
 
       let bizMap = {
@@ -785,20 +828,21 @@ let ChartStrategyFactor = {
           Operation: 1
         };
         viewOption.PagingOrder = pagingOrder;
+        chartType = 'original';
       }
 
       submitParams.viewOption = viewOption;
 
       //storeType part
       let storeType;
-      if (analysisPanel.state.selectedChartType === 'pie') {
+      if (chartType === 'pie') {
         storeType = 'energy.Distribution';
       } else {
         storeType = 'energy.Energy';
       }
 
       let config = {
-        type: analysisPanel.state.selectedChartType,
+        type: chartType,
         storeType: storeType
       };
 
@@ -1083,7 +1127,7 @@ let ChartStrategyFactor = {
 
       };
       //time range part
-      let relativeDate = EnergyStore.getRelativeDate();
+      let relativeDate = CostStore.getRelativeDate();
       if (relativeDate !== 'Customerize') {
         widgetTimeRanges = [{
           relativeDate: relativeDate
@@ -1368,7 +1412,7 @@ let ChartStrategyFactor = {
       };
       submitParams.viewOption = viewOption;
 
-      var energyType = analysisPanel.state.analysisPanel;
+      var energyType = analysisPanel.state.energyType;
       var api = '';
 
       if (energyType === "Energy") {
@@ -1597,6 +1641,7 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         step: step
       });
+      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
     },
     handleCarbonStepChange(analysisPanel, step) {
@@ -2258,6 +2303,10 @@ let ChartStrategyFactor = {
           break;
       }
     },
+    initUnitCostStoreByBizChartType(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      CostStore.initReaderStrategy('UnitCostTrendReader');
+    },
     initCarbonStoreByBizChartType(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
       switch (chartType) {
@@ -2829,7 +2878,7 @@ let ChartStrategyFactor = {
   },
   searchBarGenFnStrategy: {
     energySearchBarGen(analysisPanel) {
-      var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
+      var chartTypeCmp = analysisPanel.props.isFromAlarm ? null : analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
       return <div className={'jazz-alarm-chart-toolbar'}>
@@ -2994,46 +3043,7 @@ let ChartStrategyFactor = {
       var YearSelect = <YearPicker {...yearProps}/>;
       var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
       var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
-      var monthItem = [{
-        value: 13,
-        text: I18N.DateTimeFormat.HighFormat.FullYear
-      }, {
-        value: 1,
-        text: '01'
-      }, {
-        value: 2,
-        text: '02'
-      }, {
-        value: 3,
-        text: '03'
-      }, {
-        value: 4,
-        text: '04'
-      }, {
-        value: 5,
-        text: '05'
-      }, {
-        value: 6,
-        text: '06'
-      }, {
-        value: 7,
-        text: '07'
-      }, {
-        value: 8,
-        text: '08'
-      }, {
-        value: 9,
-        text: '09'
-      }, {
-        value: 10,
-        text: '10'
-      }, {
-        value: 11,
-        text: '11'
-      }, {
-        value: 12,
-        text: '12'
-      }];
+      var monthItem = ConstStore.getLabelMonth();
       return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
