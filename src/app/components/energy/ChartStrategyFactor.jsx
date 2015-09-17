@@ -365,9 +365,7 @@ let ChartStrategyFactor = {
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
-        dest = contentObj.destination,
         chartType = widgetDto.ChartType;
-      CarbonStore.setDestination(dest);
 
       let typeMap = {
         Line: 'line',
@@ -392,6 +390,7 @@ let ChartStrategyFactor = {
       initPanelDate(timeRange);
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
+      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
@@ -431,7 +430,6 @@ let ChartStrategyFactor = {
       initPanelDate(timeRange);
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
-      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
     initUnitChartPanelByWidgetDto(analysisPanel) {
@@ -587,7 +585,8 @@ let ChartStrategyFactor = {
         analysisPanel.setState({
           unitType: unitType,
           benchmarkOption: bo,
-          selectedChartType: typeMap[chartType]
+          selectedChartType: typeMap[chartType],
+          baselineBtnStatus: CommodityStore.getUCButtonStatus()
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
@@ -2051,8 +2050,6 @@ let ChartStrategyFactor = {
           analysisPanel.handleBaselineCfg();
           break;
         case 'sum':
-          console.log('sum');
-
           analysisPanel.setState({
             showSumDialog: true
           });
@@ -2689,12 +2686,15 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       }
-    //  if(nextChartType === "line" || nextChartType === "column" || nextChartType === "stack"){
-    //    analysisPanel.setState({sumBtnStatus: true});
-    //  }
-    //  else{
-    //    analysisPanel.setState({sumBtnStatus: false});
-    //  }
+      if (nextChartType === "line" || nextChartType === "column" || nextChartType === "stack") {
+        analysisPanel.setState({
+          sumBtnStatus: false
+        });
+      } else {
+        analysisPanel.setState({
+          sumBtnStatus: true
+        });
+      }
     },
     onCarbonSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
 
