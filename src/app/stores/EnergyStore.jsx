@@ -5,113 +5,117 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
-import {dateType} from '../constants/AlarmConstants.jsx';
-import {Action} from '../constants/actionType/Alarm.jsx';
+import { dateType } from '../constants/AlarmConstants.jsx';
+import { Action } from '../constants/actionType/Alarm.jsx';
 import ReaderFuncs from './MixedChartReader.jsx';
 import CommonFuns from '../util/Util.jsx';
 
 const TAG_DATA_LOADING_EVENT = 'tagdataloading',
-      TAG_DATA_CHANGED_EVENT = 'tagdatachanged',
-      GET_DATA_ERROR_EVENT = 'gettagdataerror';
+  TAG_DATA_CHANGED_EVENT = 'tagdatachanged',
+  GET_DATA_ERROR_EVENT = 'gettagdataerror';
 
 let _isLoading = false,
-    _isAlarmLoading = false,
-    _energyData = null,
-    _energyRawData = null,
-    _submitParams = null,
-    _paramsObj = null,
-    _tagOptions = null,
-    _chartTitle = null,
-    _relativeDate = null,
-    _errorCode = null,
-    _errorMessage = null;
+  _isAlarmLoading = false,
+  _energyData = null,
+  _energyRawData = null,
+  _submitParams = null,
+  _paramsObj = null,
+  _tagOptions = null,
+  _chartTitle = null,
+  _relativeDate = null,
+  _errorCode = null,
+  _errorMessage = null;
 
-var EnergyStore = assign({},PrototypeStore,{
-  getLoadingStatus(){
+var EnergyStore = assign({}, PrototypeStore, {
+  getLoadingStatus() {
     return _isLoading;
   },
-  getAlarmLoadingStatus(){
+  getAlarmLoadingStatus() {
     return _isAlarmLoading;
   },
-  getEnergyData(){
+  getEnergyData() {
     return _energyData;
   },
-  clearEnergyDate(){
+  clearEnergyDate() {
     _energyData = null;
   },
-  getEnergyRawData(){
+  getEnergyRawData() {
     return _energyRawData;
   },
-  getSubmitParams(){
+  getSubmitParams() {
     return _submitParams;
   },
-  getParamsObj(){
+  getParamsObj() {
     return _paramsObj;
   },
-  getTagOpions(){
+  getTagOpions() {
     return _tagOptions;
   },
-  getChartTitle(){
+  getChartTitle() {
     return _chartTitle;
   },
-  getRelativeDate(){
+  getRelativeDate() {
     return _relativeDate;
   },
-  getErrorMessage(){
+  getErrorMessage() {
     return _errorMessage;
   },
-  getErrorCode(){
+  getErrorCode() {
     return _errorCode;
   },
-  _initErrorText(errorText){
+  _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
     _errorCode = errorCode;
     _errorMessage = error.Messages;
   },
   //only one tagOptions if click tag in alarm list
-  _onDataLoading(params, tagOptions, relativeDate, isAlarmLoading){
+  _onDataLoading(params, tagOptions, relativeDate, isAlarmLoading) {
     _submitParams = params;
     _isLoading = true;
     _isAlarmLoading = false;
 
     _tagOptions = tagOptions;
 
-    if(relativeDate !== false){
+    if (relativeDate !== false) {
       _relativeDate = relativeDate;
     }
 
-    if(isAlarmLoading){
+    if (isAlarmLoading) {
       _isAlarmLoading = true;
       let tagName = _tagOptions[0].tagName;
       let step = _submitParams.viewOption.Step;
 
-      var uom='';
-      if(step ==1) {
+      var uom = '';
+      if (step == 1) {
         uom = '小时';
-      }else if(step ==2){
+      } else if (step == 2) {
         uom = '日';
-      }else if(step == 3){
+      } else if (step == 3) {
         uom = '月';
       }
       _chartTitle = tagName + uom + '能耗报警';
     }
 
-    _paramsObj = {tagIds: params.tagIds,
-               startTime: params.viewOption.TimeRanges[0].StartTime,
-               endTime: params.viewOption.TimeRanges[0].EndTime,
-               step: params.viewOption.Step,
-               timeRanges: params.viewOption.TimeRanges};
+    _paramsObj = {
+      tagIds: params.tagIds,
+      startTime: params.viewOption.TimeRanges[0].StartTime,
+      endTime: params.viewOption.TimeRanges[0].EndTime,
+      step: params.viewOption.Step,
+      timeRanges: params.viewOption.TimeRanges
+    };
   },
-  _onDataChanged(data, params){
+  _onDataChanged(data, params) {
     _isLoading = false;
     _isAlarmLoading = false;
     _energyRawData = data;
 
-    let obj = {start: params.viewOption.TimeRanges[0].StartTime,
-               end: params.viewOption.TimeRanges[0].EndTime,
-               step: params.viewOption.Step,
-               timeRanges: params.viewOption.TimeRanges};
+    let obj = {
+      start: params.viewOption.TimeRanges[0].StartTime,
+      end: params.viewOption.TimeRanges[0].EndTime,
+      step: params.viewOption.Step,
+      timeRanges: params.viewOption.TimeRanges
+    };
 
     //add this for test team start
     window.testObj = window.testObj || {};
@@ -123,26 +127,29 @@ var EnergyStore = assign({},PrototypeStore,{
   /*
     returns boolean: if only one tag left, then reload data.
   */
-  removeSeriesDataByUid(uid){
-    if(_energyData){
+  removeSeriesDataByUid(uid) {
+    if (_energyData) {
       let latestDataList = [];
       let dataList = _energyData.toJS().Data;
 
-      for(let i=0,len=dataList.length; i<len; i++){
+      for (let i = 0, len = dataList.length; i < len; i++) {
         let data = dataList[i];
-        if(data.uid !== uid){
+        if (data.uid !== uid) {
           latestDataList.push(data);
         }
       }
-      if(latestDataList.length === 1){
+      if (latestDataList.length === 1) {
         return true;
-      }else if(latestDataList.length > 0){
+      } else if (latestDataList.length > 0) {
         _energyData = _energyData.set('Data', latestDataList);
-      }else{
+      } else {
         _energyData = null;
       }
     }
     return false;
+  },
+  setOption: function(tagOptions) {
+    _tagOptions = tagOptions;
   },
   addTagDataLoadingListener: function(callback) {
     this.on(TAG_DATA_LOADING_EVENT, callback);
@@ -162,10 +169,10 @@ var EnergyStore = assign({},PrototypeStore,{
   removeTagDataChangeListener: function(callback) {
     this.removeListener(TAG_DATA_CHANGED_EVENT, callback);
   },
-  addGetTagDataErrorListener:function(callback) {
+  addGetTagDataErrorListener: function(callback) {
     this.on(GET_DATA_ERROR_EVENT, callback);
   },
-  emitGetTagDataErrorListener:function(callback) {
+  emitGetTagDataErrorListener: function(callback) {
     this.emit(GET_DATA_ERROR_EVENT);
   },
   removeGetTagDataErrorListener: function(callback) {
@@ -174,25 +181,28 @@ var EnergyStore = assign({},PrototypeStore,{
 });
 
 EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
-    switch(action.type) {
-      case Action.GET_ALARM_TAG_DATA_LOADING:
+  switch (action.type) {
+    case Action.GET_ALARM_TAG_DATA_LOADING:
       EnergyStore._onDataLoading(action.submitParams, action.tagOptions, null, true);
       EnergyStore.emitTagDataLoading();
-        break;
-      case Action.GET_TAG_DATA_LOADING:
-        EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate, false);
-        EnergyStore.emitTagDataLoading();
-        break;
-      case Action.GET_TAG_DATA_SUCCESS:
-        EnergyStore._onDataChanged(action.energyData, action.submitParams);
-        EnergyStore.emitTagDataChange();
-        break;
-      case Action.GET_TAG_DATA_ERROR:
-        EnergyStore._onDataChanged(null, action.submitParams);
-        EnergyStore._initErrorText(action.errorText);
-        EnergyStore.emitGetTagDataErrorListener();
-        break;
-    }
+      break;
+    case Action.GET_TAG_DATA_LOADING:
+      EnergyStore._onDataLoading(action.submitParams, action.tagOptions, action.relativeDate, false);
+      EnergyStore.emitTagDataLoading();
+      break;
+    case Action.GET_TAG_DATA_SUCCESS:
+      EnergyStore._onDataChanged(action.energyData, action.submitParams);
+      EnergyStore.emitTagDataChange();
+      break;
+    case Action.GET_TAG_DATA_ERROR:
+      EnergyStore._onDataChanged(null, action.submitParams);
+      EnergyStore._initErrorText(action.errorText);
+      EnergyStore.emitGetTagDataErrorListener();
+      break;
+    case Action.SET_OPTION:
+      EnergyStore.setOption(action.tagOptions);
+      break;
+  }
 });
 
 module.exports = EnergyStore;

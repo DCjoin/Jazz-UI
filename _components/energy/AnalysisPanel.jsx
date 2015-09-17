@@ -22,8 +22,6 @@ import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
-import CalendarManager from './CalendarManager.jsx';
-import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
@@ -41,8 +39,7 @@ let AnalysisPanel = React.createClass({
       energyType: 'Energy',
       chartTitle: '最近7天能耗',
       widgetInitState: false,
-      sourceUserName: null,
-      isFromAlarm: false
+      sourceUserName: null
     };
   },
   componentWillReceiveProps(nextProps) {
@@ -115,14 +112,13 @@ let AnalysisPanel = React.createClass({
       openDirection: "bottom-right",
       desktop: true
     };
-    let widgetOptMenu = this.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
+    let widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
                             <MenuItem key={1} primaryText={'另存为'} />
                             <MenuItem key={2} primaryText={'发送'} />
                             <MenuItem key={3} primaryText={'共享'} />
                             <MenuItem key={4} primaryText={'导出'} />
                             <MenuItem key={5} primaryText={'删除'} />
                          </IconMenu>;
-
     let sourceUserNameEl = null;
     if (me.props.sourceUserName) {
       sourceUserNameEl = <div className={'description'}>{me.props.sourceUserName}</div>;
@@ -161,21 +157,13 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.getInitParamFn(me);
     this.state.chartStrategy.getAllDataFn();
     this.state.chartStrategy.bindStoreListenersFn(me);
-    if (this.props.isFromAlarm) {
-      window.setTimeout(me._initAlarmChartPanelByWidgetDto, 0);
-    } else {
-      if (this.props.widgetInitState) {
-        window.setTimeout(me._initChartPanelByWidgetDto, 0);
-      }
+    if (this.props.widgetInitState) {
+      window.setTimeout(me._initChartPanelByWidgetDto, 0);
     }
-
   },
   componentWillUnmount: function() {
     let me = this;
     this.state.chartStrategy.unbindStoreListenersFn(me);
-  },
-  _initAlarmChartPanelByWidgetDto() {
-    this.state.chartStrategy.initAlarmChartPanelByWidgetDtoFn(this);
   },
   _initChartPanelByWidgetDto() {
     if (this.state.chartStrategy.initChartPanelByWidgetDtoFn) {
@@ -418,8 +406,7 @@ let AnalysisPanel = React.createClass({
         energyData: energyData,
         energyRawData: energyRawData,
         paramsObj: paramsObj,
-        dashboardOpenImmediately: false,
-        isCalendarInited: false
+        dashboardOpenImmediately: false
       };
     if (isError === true) {
       state.step = null;
@@ -719,15 +706,11 @@ let AnalysisPanel = React.createClass({
   _onTouBtnDisabled: function() {
     var touBtnStatus = this.state.touBtnStatus;
     var newStatus = CommodityStore.getECButtonStatus();
-    if (!newStatus && this.state.step > 1) {
+    if (newStatus !== touBtnStatus) {
       this.setState({
-        touBtnStatus: false
+        touBtnStatus: newStatus
       });
-    } else {
-      this.setState({
-        touBtnStatus: true
-      });
-      if (this.state.touBtnSelected) {
+      if (newStatus && this.state.touBtnSelected) {
         this.setState({
           touBtnSelected: false
         });
@@ -786,7 +769,6 @@ let AnalysisPanel = React.createClass({
     var selectedLabelItem = this.state.selectedLabelItem;
     var industyMenuItems = this.state.industyMenuItems;
     var customerMenuItems = this.state.customerMenuItems;
-
     if (benchmarkOption.IndustryId !== null) {
       type = 'industryZone';
     } else if (benchmarkOption.CustomerizedId !== null) {
@@ -899,8 +881,7 @@ let AnalysisPanel = React.createClass({
     var labelingsStore = LabelMenuStore.getLabelData();
     var zoneStore = LabelMenuStore.getZoneData();
     var customizedStore = LabelMenuStore.getCustomerLabelData();
-    var hierNodes = LabelMenuStore.getHierNodes();
-    if (industryStore === null || labelingsStore === null || zoneStore === null || customizedStore === null || hierNodes.length === 0) {
+    if (industryStore === null || labelingsStore === null || zoneStore === null || customizedStore === null) {
       return;
     }
     var industyMenuItems = this.getIndustyMenuItems4MultiMode();
@@ -934,8 +915,6 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem: selectedLabelItem,
       labelType: 'industryZone',
       labelDisable: false
-    }, () => {
-      this.setBenchmarkOption();
     });
     this.enableKpiTypeButton();
   },
@@ -1053,9 +1032,6 @@ let AnalysisPanel = React.createClass({
       if (hierNode.Type !== 2 || !CommonFuns.isNumber(industryId)) {
         return;
       }
-      if (industyMenuItems.length === 1 && industyMenuItems[0].primaryText == I18N.Setting.Benchmark.Label.None) {
-        industyMenuItems = [];
-      }
       this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
       var industryNode = industryStore.find((item, index) => {
         return (item.get("Id") === industryId);
@@ -1078,32 +1054,6 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem: selectedLabelItem,
       labelType: 'industryZone'
     });
-  },
-  getCalenderBgBtnEl: function() {
-    let calendarSubItems = [{
-      primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-      value: 'noneWorkTime'
-    },
-      {
-        primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-        value: 'hotColdSeason'
-      }];
-    let calendarEl;
-    let isCalendarDisabled = this.state.chartStrategy.isCalendarDisabledFn(this);
-    if (isCalendarDisabled) {
-      calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-    } else {
-      let showType = CalendarManager.getShowType();
-      if (!!showType) {
-        calendarSubItems.forEach(item => {
-          if (item.value === showType) {
-            item.checked = true;
-          }
-        });
-      }
-      calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-    }
-    return calendarEl;
   },
   getNoneMenuItem: function(isIndustryLabel) {
     var menuItems = [];
