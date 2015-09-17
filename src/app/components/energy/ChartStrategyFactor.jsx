@@ -1074,7 +1074,7 @@ let ChartStrategyFactor = {
 
       };
       //time range part
-      let relativeDate = EnergyStore.getRelativeDate();
+      let relativeDate = CostStore.getRelativeDate();
       if (relativeDate !== 'Customerize') {
         widgetTimeRanges = [{
           relativeDate: relativeDate
