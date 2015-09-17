@@ -2048,8 +2048,6 @@ let ChartStrategyFactor = {
           analysisPanel.handleBaselineCfg();
           break;
         case 'sum':
-          console.log('sum');
-
           analysisPanel.setState({
             showSumDialog: true
           });
@@ -2686,12 +2684,15 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       }
-    //  if(nextChartType === "line" || nextChartType === "column" || nextChartType === "stack"){
-    //    analysisPanel.setState({sumBtnStatus: true});
-    //  }
-    //  else{
-    //    analysisPanel.setState({sumBtnStatus: false});
-    //  }
+      if (nextChartType === "line" || nextChartType === "column" || nextChartType === "stack") {
+        analysisPanel.setState({
+          sumBtnStatus: false
+        });
+      } else {
+        analysisPanel.setState({
+          sumBtnStatus: true
+        });
+      }
     },
     onCarbonSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
 
