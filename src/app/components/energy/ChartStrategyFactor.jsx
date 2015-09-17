@@ -1359,7 +1359,7 @@ let ChartStrategyFactor = {
       };
       submitParams.viewOption = viewOption;
 
-      var energyType = analysisPanel.state.analysisPanel;
+      var energyType = analysisPanel.state.energyType;
       var api = '';
 
       if (energyType === "Energy") {
