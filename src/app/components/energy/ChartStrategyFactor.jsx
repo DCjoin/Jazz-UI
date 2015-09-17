@@ -247,7 +247,7 @@ let ChartStrategyFactor = {
       getSelectedNodesFn: 'getSelectedHierCommodityList',
       onSearchDataButtonClickFn: 'onUnitCarbonSearchDataButtonClick',
       onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
-      initEnergyStoreByBizChartTypeFn: 'initCarbonStoreByBizChartType',
+      initEnergyStoreByBizChartTypeFn: 'initUnitCarbonStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitCarbonFitStepAndGetData',
       getInitialStateFn: 'getUnitEnergyInitialState',
       getAllDataFn: 'unitGetAllData',
@@ -2319,6 +2319,10 @@ let ChartStrategyFactor = {
           CarbonStore.initReaderStrategy('CarbonPieReader');
           break;
       }
+    },
+    initUnitCarbonStoreByBizChartType(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      CostStore.initReaderStrategy('UnitCarbonTrendReader');
     },
   },
 

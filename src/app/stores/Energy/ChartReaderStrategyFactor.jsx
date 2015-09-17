@@ -46,6 +46,12 @@ let ChartReaderStrategyFactor = {
       getSeriesInternalFn: 'getSeriesInternal',
       tagSeriesConstructorFn: 'carbonSeriesConstructor'
     },
+    UnitCarbonTrendReader: {
+      convertSingleTimeDataFn: 'convertSingleTimeData',
+      translateDateFn: 'translateDate',
+      getSeriesInternalFn: 'getSeriesInternal',
+      tagSeriesConstructorFn: 'unitCarbonSeriesConstructor'
+    },
     EnergyPieReader: {
       setItemByTargetFn: 'setItemByTarget',
       convertSingleTimeDataFn: 'convertPieSingleTimeData',
@@ -674,6 +680,53 @@ let ChartReaderStrategyFactor = {
       return obj;
     },
     carbonSeriesConstructor(target) {
+      if (!target) return null;
+      var name,
+        disableDelete = false,
+        tt = target.Type,
+        uid = target.CommodityId,
+        graySerie = false;
+
+      if (target.CommodityId < 1) {
+        name = I18N.EM.Total /*'总览'*/ ;
+        disableDelete = true;
+      } else if (tt == 15) {
+        name = target.Name;
+        uid = 'benchmark';
+      } else {
+        name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+      }
+
+      switch (tt) {
+        case 11:
+          name = name;
+          break;
+        case 12:
+          name = name;
+          graySerie = true;
+          disableDelete = true;
+          break;
+        case 13:
+          name = name + I18N.EM.Ratio.TargetValue;
+          disableDelete = true;
+          break;
+        case 14:
+          name = name + I18N.EM.Ratio.BaseValue;
+          disableDelete = true;
+          break;
+      }
+      return {
+        name: name,
+        uid: uid,
+        dType: tt,
+        disableDelete: disableDelete,
+        option: {
+          CommodityId: target.CommodityId
+        },
+        graySerie: graySerie
+      };
+    },
+    unitCarbonSeriesConstructor(target) {
       if (!target) return null;
       var name,
         disableDelete = false,

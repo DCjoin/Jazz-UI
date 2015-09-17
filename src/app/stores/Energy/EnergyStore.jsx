@@ -74,7 +74,7 @@ let EnergyStore = assign({}, PrototypeStore, {
       _relativeDate = null,
       _errorCode = null,
       _errorMessage = null;
-  }
+  },
   _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
