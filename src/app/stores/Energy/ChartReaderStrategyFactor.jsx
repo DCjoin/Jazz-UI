@@ -34,6 +34,12 @@ let ChartReaderStrategyFactor = {
       getSeriesInternalFn: 'getSeriesInternal',
       tagSeriesConstructorFn: 'costTagSeriesConstructor'
     },
+    UnitCostTrendReader: {
+      convertSingleTimeDataFn: 'convertSingleTimeData',
+      translateDateFn: 'translateDate',
+      getSeriesInternalFn: 'getSeriesInternal',
+      tagSeriesConstructorFn: 'unitCostTagSeriesConstructor'
+    },
     CarbonTrendReader: {
       convertSingleTimeDataFn: 'convertSingleTimeData',
       translateDateFn: 'translateDate',
@@ -246,8 +252,7 @@ let ChartReaderStrategyFactor = {
       var name = '',
         disableDelete = false,
         uid = target.CommodityId,
-        tt = target.Type,
-        graySerie = false;
+        tt = target.Type;
 
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
@@ -257,49 +262,23 @@ let ChartReaderStrategyFactor = {
       }
 
       switch (tt) {
-        case 6:
-          name = I18N.EM.Plain /*'平时'*/ ;
-          disableDelete = true;
-          break;
-        case 7:
-          name = I18N.EM.Peak /*'峰时'*/ ;
-          disableDelete = true;
-          break;
-        case 8:
-          name = I18N.EM.Valley /*'谷时'*/ ;
-          disableDelete = true;
-          break;
-        case 11:
-          name = name + I18N.EM.Ratio.CaculateValue;
-          break;
-        case 12:
-          name = name + I18N.EM.Ratio.RawValue;
-          graySerie = true;
-          disableDelete = true;
-          break;
         case 13:
-          name = name + I18N.EM.Ratio.TargetValue;
+          name = I18N.EM.Ratio.TargetValue;
           disableDelete = true;
           break;
         case 14:
-          name = name + I18N.EM.Ratio.BaseValue;
+          name = I18N.EM.Ratio.BaseValue;
           disableDelete = true;
-          break;
-        case 15:
-          name = name;
-          uid = 'benchmark';
           break;
         default:
           break;
       }
       item.name = name;
       item.uid = uid;
-      item.dType = tt;
       item.disableDelete = disableDelete;
       item.option = {
         CommodityId: target.CommodityId
       };
-      item.graySerie = graySerie;
     }
   },
   convertSingleTimeDataFnStrategy: {
@@ -745,6 +724,62 @@ let ChartReaderStrategyFactor = {
       if (!target) return null;
       var name,
         disableDelete = false,
+        disableHide = false,
+        tt = target.Type,
+        uid = target.CommodityId;
+
+      if (target.CommodityId < 1) {
+        name = I18N.EM.Total /*'总览'*/ ;
+        disableDelete = true;
+      } else {
+        name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+      }
+      switch (tt) {
+        case 6:
+          name = I18N.EM.Plain /*'平时'*/ ;
+          disableDelete = true;
+          disableHide = true;
+          break;
+        case 7:
+          name = I18N.EM.Peak /*'峰时'*/ ;
+          disableDelete = true;
+          disableHide = true;
+          break;
+        case 8:
+          name = I18N.EM.Valley /*'谷时'*/ ;
+          disableDelete = true;
+          disableHide = true;
+          break;
+        case 13:
+          name = I18N.EM.Ratio.TargetValue;
+          disableDelete = true;
+          disableHide = true;
+          disableDelete = true;
+          break;
+        case 14:
+          name = I18N.EM.Ratio.BaseValue;
+          disableDelete = true;
+          disableHide = true;
+          disableDelete = true;
+          break;
+        default:
+          break;
+      }
+      return {
+        name: name,
+        uid: uid,
+        dType: tt,
+        disableDelete: disableDelete,
+        disableHide: disableHide,
+        option: {
+          CommodityId: target.CommodityId
+        }
+      };
+    },
+    unitCostTagSeriesConstructor(target) {
+      if (!target) return null;
+      var name,
+        disableDelete = false,
         tt = target.Type,
         uid = target.CommodityId,
         graySerie = false;
@@ -757,18 +792,6 @@ let ChartReaderStrategyFactor = {
         name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
       switch (tt) {
-        case 6:
-          name = I18N.EM.Plain /*'平时'*/ ;
-          disableDelete = true;
-          break;
-        case 7:
-          name = I18N.EM.Peak /*'峰时'*/ ;
-          disableDelete = true;
-          break;
-        case 8:
-          name = I18N.EM.Valley /*'谷时'*/ ;
-          disableDelete = true;
-          break;
         case 11:
           name = name + I18N.EM.Ratio.CaculateValue;
           break;
@@ -778,11 +801,11 @@ let ChartReaderStrategyFactor = {
           disableDelete = true;
           break;
         case 13:
-          name = name + I18N.EM.Ratio.TargetValue;
+          name = I18N.EM.Ratio.TargetValue;
           disableDelete = true;
           break;
         case 14:
-          name = name + I18N.EM.Ratio.BaseValue;
+          name = I18N.EM.Ratio.BaseValue;
           disableDelete = true;
           break;
         case 15:
@@ -797,10 +820,10 @@ let ChartReaderStrategyFactor = {
         uid: uid,
         dType: tt,
         disableDelete: disableDelete,
+        graySerie: graySerie,
         option: {
           CommodityId: target.CommodityId
-        },
-        graySerie: graySerie
+        }
       };
     }
   },

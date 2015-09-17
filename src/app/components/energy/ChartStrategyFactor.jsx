@@ -210,7 +210,7 @@ let ChartStrategyFactor = {
       getSelectedNodesFn: 'getCostSelectedTagList',
       onSearchDataButtonClickFn: 'onUnitCostSearchDataButtonClick',
       onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
-      initEnergyStoreByBizChartTypeFn: 'initCostStoreByBizChartType',
+      initEnergyStoreByBizChartTypeFn: 'initUnitCostStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitEnergyFitStepAndGetData',
       getInitialStateFn: 'getUnitEnergyInitialState',
       getAllDataFn: 'unitGetAllData',
@@ -2249,6 +2249,10 @@ let ChartStrategyFactor = {
         case 'pie': CostStore.initReaderStrategy('CostPieReader');
           break;
       }
+    },
+    initUnitCostStoreByBizChartType(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      CostStore.initReaderStrategy('UnitCostTrendReader');
     },
     initCarbonStoreByBizChartType(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
