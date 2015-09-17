@@ -268,7 +268,7 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day = '30 days';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '30 months';
 
 I18N.EM.CannotShowCalendarByStep = 'The current step size does not support display of {0} background color';
-I18N.EM.CannotShowCalendarByTimeRange = 'Can't see calendar background? Try another time period';
+I18N.EM.CannotShowCalendarByTimeRange = 'Can\'t see calendar background? Try another time period';
 I18N.EM.WeatherSupportsOnlySingleHierarchy = 'This function only supports single-level data points.';
 I18N.EM.WeatherSupportsOnlyHourlyStep = 'This function only supports hourly step size.';
 
