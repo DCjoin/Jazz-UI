@@ -18,6 +18,7 @@ import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
+import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
@@ -33,6 +34,7 @@ import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
+import ChartStatusStore from '../../stores/energy/ChartStatusStore.jsx';
 import AddIntervalWindow from './energy/AddIntervalWindow.jsx';
 import SumWindow from './energy/SumWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
@@ -353,6 +355,7 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      ChartStatusAction.setWidgetDto(widgetDto);
     },
     initCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
