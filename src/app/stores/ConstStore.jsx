@@ -299,6 +299,53 @@ var ConstStore = assign({}, PrototypeStore, {
       this.orderItem = orderItem;
     }
     return this.orderItem;
-  }
+  },
+  getLabelMonth() {
+    if (!this.labelMonthItem) {
+      var labelMonthItem = [{
+        value: 13,
+        text: I18N.DateTimeFormat.HighFormat.FullYear
+      }, {
+        value: 1,
+        text: '01'
+      }, {
+        value: 2,
+        text: '02'
+      }, {
+        value: 3,
+        text: '03'
+      }, {
+        value: 4,
+        text: '04'
+      }, {
+        value: 5,
+        text: '05'
+      }, {
+        value: 6,
+        text: '06'
+      }, {
+        value: 7,
+        text: '07'
+      }, {
+        value: 8,
+        text: '08'
+      }, {
+        value: 9,
+        text: '09'
+      }, {
+        value: 10,
+        text: '10'
+      }, {
+        value: 11,
+        text: '11'
+      }, {
+        value: 12,
+        text: '12'
+      }];
+
+      this.labelMonthItem = labelMonthItem;
+    }
+    return this.labelMonthItem;
+  },
 });
 module.exports = ConstStore;

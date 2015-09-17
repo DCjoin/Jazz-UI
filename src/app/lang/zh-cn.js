@@ -670,6 +670,7 @@ I18N.Folder.NewWidget.DefaultName = '最近7天{0}';
 I18N.Folder.NewFolder = '新建文件夹';
 I18N.Folder.FolderName = '文件夹';
 I18N.Folder.WidgetName = '图表';
+I18N.Folder.WidgetSaveSuccess = '图标保存成功';
 
 I18N.Folder.SaveNameError = {};
 I18N.Folder.SaveNameError.E032 = '名称为“{0}”的{1}已存在，请选取其他名称。';
@@ -768,7 +769,6 @@ I18N.Template.Send = {};
 I18N.Template.Send.Title = '发送{0}';
 I18N.Template.Send.Send = '发送';
 I18N.Template.Send.Cancel = '放弃';
-
 
 
 

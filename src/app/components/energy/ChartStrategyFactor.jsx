@@ -18,6 +18,7 @@ import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
+import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
 import ChartComponentBox from './ChartComponentBox.jsx';
@@ -33,6 +34,7 @@ import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
 import RankStore from '../../stores/RankStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
+import ChartStatusStore from '../../stores/energy/ChartStatusStore.jsx';
 import AddIntervalWindow from './energy/AddIntervalWindow.jsx';
 import SumWindow from './energy/SumWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
@@ -108,7 +110,10 @@ let ChartStrategyFactor = {
       handleStepChangeFn: 'handleCostStepChange',
       handleNavigatorChangeLoadFn: 'handleCostNavigatorChangeLoad',
       save2DashboardFn: 'saveCost2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initCostChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initCostChartPanelByWidgetDto',
+      isCalendarDisabledFn: 'isCostCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onCostAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
     },
     MultiIntervalDistribution: {
 
@@ -137,7 +142,11 @@ let ChartStrategyFactor = {
       handleStepChangeFn: 'handleCarbonStepChange',
       exportChartFn: 'exportCarbonChart',
       save2DashboardFn: 'saveCarbon2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initCarbonChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initCarbonChartPanelByWidgetDto',
+      isCalendarDisabledFn: 'isCarbonCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onCarbonAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
+      handleConfigBtnItemTouchTapFn: 'handleCarbonConfigBtnItemTouchTap',
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -163,6 +172,9 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleRatioBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleRatioStepChange',
       save2DashboardFn: 'saveRatio2Dashboard',
+      isCalendarDisabledFn: 'isCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -199,7 +211,7 @@ let ChartStrategyFactor = {
       getSelectedNodesFn: 'getCostSelectedTagList',
       onSearchDataButtonClickFn: 'onUnitCostSearchDataButtonClick',
       onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
-      initEnergyStoreByBizChartTypeFn: 'initCostStoreByBizChartType',
+      initEnergyStoreByBizChartTypeFn: 'initUnitCostStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitEnergyFitStepAndGetData',
       getInitialStateFn: 'getUnitEnergyInitialState',
       getAllDataFn: 'unitGetAllData',
@@ -217,7 +229,10 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleUnitCostBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCostStepChange',
       save2DashboardFn: 'saveUnitCost2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initUnitCostChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initUnitCostChartPanelByWidgetDto',
+      isCalendarDisabledFn: 'isCostCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onCostAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
     },
     UnitCarbon: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -243,6 +258,10 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleUnitCarbonBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCarbonStepChange',
       save2DashboardFn: 'saveUnitCarbon2Dashboard',
+      initChartPanelByWidgetDtoFn: 'initUnitCarbonChartPanelByWidgetDto',
+      isCalendarDisabledFn: 'isCarbonCalendarDisabled',
+      onAnalysisPanelDidUpdateFn: 'onCarbonAnalysisPanelDidUpdate',
+      handleCalendarChangeFn: 'handleCalendarChange',
     },
     Label: {
       searchBarGenFn: 'labelSearchBarGen',
@@ -307,6 +326,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -336,6 +356,7 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      ChartStatusAction.setWidgetDto(widgetDto);
     },
 
     initCostChartPanelByWidgetDto(analysisPanel) {
@@ -359,6 +380,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -370,6 +392,7 @@ let ChartStrategyFactor = {
       initPanelDate(timeRange);
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
+      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
@@ -380,7 +403,9 @@ let ChartStrategyFactor = {
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
+        dest = contentObj.destination,
         chartType = widgetDto.ChartType;
+      CarbonStore.setDestination(dest);
 
       let typeMap = {
         Line: 'line',
@@ -395,6 +420,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -423,6 +449,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -469,7 +496,7 @@ let ChartStrategyFactor = {
         });
       });
     },
-    initUnitCostChartPanelByWidgetDto(analysisPanel) {
+    initUnitCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
@@ -479,7 +506,9 @@ let ChartStrategyFactor = {
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
         unitType = viewOption.DataOption.UnitType,
+        dest = contentObj.destination,
         chartType = widgetDto.ChartType;
+      CarbonStore.setDestination(dest);
 
       let typeMap = {
         Line: 'line',
@@ -490,6 +519,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -516,6 +546,55 @@ let ChartStrategyFactor = {
         });
       });
     },
+    initUnitCostChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        benchmarkOption = contentObj.benchmarkOption,
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges,
+        unitType = viewOption.DataOption.UnitType,
+        chartType = widgetDto.ChartType;
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+      };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+
+      let bo = null;
+      if (benchmarkOption && benchmarkOption.IndustryId !== null) {
+        bo = benchmarkOption;
+      }
+
+      setTimeout(() => {
+        analysisPanel.setState({
+          unitType: unitType,
+          benchmarkOption: bo,
+          selectedChartType: typeMap[chartType],
+          baselineBtnStatus: CommodityStore.getUCButtonStatus()
+        }, () => {
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
+          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+        });
+      });
+    },
     initLabelChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -527,7 +606,8 @@ let ChartStrategyFactor = {
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
         step = viewOption.Step;
-
+      if (benchmarkOption === null)
+        return;
       let initPanelDate = function(timeRange) {
         let start = j2d(timeRange.StartTime, false);
         let end = j2d(timeRange.EndTime, false);
@@ -542,8 +622,8 @@ let ChartStrategyFactor = {
         } else {
           monthIndex = month + 1;
         }
-        analysisPanel.refs.monthSelector.setState({
-          selectedIndex: monthIndex
+        analysisPanel.setState({
+          month: monthIndex
         });
       };
       let convertWidgetOptions2TagOption = function(WidgetOptions) {
@@ -605,6 +685,7 @@ let ChartStrategyFactor = {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
         } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
@@ -705,7 +786,7 @@ let ChartStrategyFactor = {
         Step: step
       };
 
-      let includeNavigatorData = !(analysisPanel.state.selectedChartType === 'pie' || analysisPanel.state.selectedChartType === 'rawdata');
+      let includeNavigatorData = !(chartType === 'pie' || chartType === 'rawdata');
       viewOption.IncludeNavigatorData = includeNavigatorData;
 
       let bizMap = {
@@ -737,20 +818,21 @@ let ChartStrategyFactor = {
           Operation: 1
         };
         viewOption.PagingOrder = pagingOrder;
+        chartType = 'original';
       }
 
       submitParams.viewOption = viewOption;
 
       //storeType part
       let storeType;
-      if (analysisPanel.state.selectedChartType === 'pie') {
+      if (chartType === 'pie') {
         storeType = 'energy.Distribution';
       } else {
         storeType = 'energy.Energy';
       }
 
       let config = {
-        type: analysisPanel.state.selectedChartType,
+        type: chartType,
         storeType: storeType
       };
 
@@ -1035,7 +1117,7 @@ let ChartStrategyFactor = {
 
       };
       //time range part
-      let relativeDate = EnergyStore.getRelativeDate();
+      let relativeDate = CostStore.getRelativeDate();
       if (relativeDate !== 'Customerize') {
         widgetTimeRanges = [{
           relativeDate: relativeDate
@@ -1320,7 +1402,7 @@ let ChartStrategyFactor = {
       };
       submitParams.viewOption = viewOption;
 
-      var energyType = analysisPanel.state.analysisPanel;
+      var energyType = analysisPanel.state.energyType;
       var api = '';
 
       if (energyType === "Energy") {
@@ -1379,7 +1461,7 @@ let ChartStrategyFactor = {
     }
   },
   isCalendarDisabledFnStrategy: {
-    isCalendarDisabled() {
+    isCalendarDisabled(analysisPanel) {
       let tagOptions = EnergyStore.getTagOpions();
       if (!tagOptions) {
         return false;
@@ -1402,8 +1484,17 @@ let ChartStrategyFactor = {
           }
         });
       }
+      if (analysisPanel.state.selectedChartType === 'pie' || analysisPanel.state.selectedChartType === 'rawdata') {
+        disabled = true;
+      }
       return disabled;
-    }
+    },
+    isCarbonCalendarDisabled() {
+      return false;
+    },
+    isCostCalendarDisabled() {
+      return false;
+    },
   },
   handleWeatherMenuItemClickFnStrategy: {
     handleWeatherMenuItemClick(analysisPanel, toggleTemp, toggleHumi) {
@@ -1446,10 +1537,30 @@ let ChartStrategyFactor = {
   },
   onAnalysisPanelDidUpdateFnStrategy: {
     onAnalysisPanelDidUpdate(analysisPanel) {
-      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn()) { //不符合日历本景色条件的。
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel)) { //不符合日历本景色条件的。
 
       } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
         let paramsObj = EnergyStore.getParamsObj(),
+          step = paramsObj.step,
+          timeRanges = paramsObj.timeRanges,
+          as = analysisPanel.state;
+
+        if (analysisPanel.refs.ChartComponent) {
+          var chartCmp = analysisPanel.refs.ChartComponent,
+            chartObj = chartCmp.refs.highstock;
+
+          CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+          analysisPanel.setState({
+            isCalendarInited: true
+          });
+        }
+      }
+    },
+    onCarbonAnalysisPanelDidUpdate(analysisPanel) {
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn()) { //不符合日历本景色条件的。
+
+      } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
+        let paramsObj = CarbonStore.getParamsObj(),
           step = paramsObj.step,
           timeRanges = paramsObj.timeRanges,
           as = analysisPanel.state;
@@ -1462,7 +1573,25 @@ let ChartStrategyFactor = {
           isCalendarInited: true
         });
       }
-    }
+    },
+    onCostAnalysisPanelDidUpdate(analysisPanel) {
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn()) { //不符合日历本景色条件的。
+
+      } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
+        let paramsObj = CostStore.getParamsObj(),
+          step = paramsObj.step,
+          timeRanges = paramsObj.timeRanges,
+          as = analysisPanel.state;
+
+        var chartCmp = analysisPanel.refs.ChartComponent,
+          chartObj = chartCmp.refs.highstock;
+
+        CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+        analysisPanel.setState({
+          isCalendarInited: true
+        });
+      }
+    },
   },
   handleCalendarChangeFnStrategy: {
     handleCalendarChange(calendarType, analysisPanel) {
@@ -1502,6 +1631,7 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         step: step
       });
+      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
     },
     handleCarbonStepChange(analysisPanel, step) {
@@ -1965,8 +2095,6 @@ let ChartStrategyFactor = {
           analysisPanel.handleBaselineCfg();
           break;
         case 'sum':
-          console.log('sum');
-
           analysisPanel.setState({
             showSumDialog: true
           });
@@ -2017,11 +2145,27 @@ let ChartStrategyFactor = {
             analysisPanel.onSearchDataButtonClick();
           });
           break;
-        case 'background':
-          console.log('background');
+        case 'background': {
+          var subMenuValue = menuParam.props.value;
+          if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
+            analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+          }
           break;
+          }
       }
-    }
+    },
+    handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
+      let itemValue = menuItem.props.value;
+      switch (itemValue) {
+        case 'background':{
+          var subMenuValue = menuParam.props.value;
+          if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
+            analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
+          }
+          break;
+          }
+      }
+    },
   },
   getEnergyTypeComboFnStrategy: {
     empty() {},
@@ -2148,6 +2292,10 @@ let ChartStrategyFactor = {
         case 'pie': CostStore.initReaderStrategy('CostPieReader');
           break;
       }
+    },
+    initUnitCostStoreByBizChartType(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      CostStore.initReaderStrategy('UnitCostTrendReader');
     },
     initCarbonStoreByBizChartType(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -2587,12 +2735,15 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       }
-    //  if(nextChartType === "line" || nextChartType === "column" || nextChartType === "stack"){
-    //    analysisPanel.setState({sumBtnStatus: true});
-    //  }
-    //  else{
-    //    analysisPanel.setState({sumBtnStatus: false});
-    //  }
+      if (nextChartType === "line" || nextChartType === "column" || nextChartType === "stack") {
+        analysisPanel.setState({
+          sumBtnStatus: false
+        });
+      } else {
+        analysisPanel.setState({
+          sumBtnStatus: true
+        });
+      }
     },
     onCarbonSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
 
@@ -2882,46 +3033,7 @@ let ChartStrategyFactor = {
       var YearSelect = <YearPicker {...yearProps}/>;
       var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
       var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
-      var monthItem = [{
-        value: 13,
-        text: I18N.DateTimeFormat.HighFormat.FullYear
-      }, {
-        value: 1,
-        text: '01'
-      }, {
-        value: 2,
-        text: '02'
-      }, {
-        value: 3,
-        text: '03'
-      }, {
-        value: 4,
-        text: '04'
-      }, {
-        value: 5,
-        text: '05'
-      }, {
-        value: 6,
-        text: '06'
-      }, {
-        value: 7,
-        text: '07'
-      }, {
-        value: 8,
-        text: '08'
-      }, {
-        value: 9,
-        text: '09'
-      }, {
-        value: 10,
-        text: '10'
-      }, {
-        value: 11,
-        text: '11'
-      }, {
-        value: 12,
-        text: '12'
-      }];
+      var monthItem = ConstStore.getLabelMonth();
       return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
@@ -3270,30 +3382,7 @@ let ChartStrategyFactor = {
   },
   getAuxiliaryCompareBtnFnStrategy: {
     getEnergyAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-      let calendarEl;
-      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
-      if (isCalendarDisabled) {
-        calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-      } else {
-        let showType = CalendarManager.getShowType();
-        if (!!showType) {
-          calendarSubItems.forEach(item => {
-            if (item.value === showType) {
-              item.checked = true;
-            }
-          });
-        }
-        calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-      }
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let weatherSubItems = [{
         primaryText: I18N.EM.Tool.Weather.Temperature,
         value: 'temperature'
@@ -3330,34 +3419,18 @@ let ChartStrategyFactor = {
       return configButton;
     },
     getCarbonAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
      </ButtonMenu>;
 
       return configButton;
     },
     getRatioAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let tagOptions = RatioStore.getRatioOpions();
       let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
@@ -3365,36 +3438,13 @@ let ChartStrategyFactor = {
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
       return configButton;
     },
     getUnitEnergyAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
-      let calendarEl;
-      let isCalendarDisabled = analysisPanel.state.chartStrategy.isCalendarDisabledFn();
-      if (isCalendarDisabled) {
-        calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
-      } else {
-        let showType = CalendarManager.getShowType();
-        if (!!showType) {
-          calendarSubItems.forEach(item => {
-            if (item.value === showType) {
-              item.checked = true;
-            }
-          });
-        }
-        calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
-      }
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let tagOptions = EnergyStore.getTagOpions();
       let benchmarks = CommonFuns.filterBenchmarksByTagOptions(tagOptions);
 
@@ -3408,36 +3458,20 @@ let ChartStrategyFactor = {
       return configButton;
     },
     getUnitCostAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let tagOptions = CostStore.getSelectedList();
       let benchmarks = CommonFuns.filterBenchmarksByCostSelectedList(tagOptions);
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
       return configButton;
     },
     getUnitCarbonAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let tagOptions = {},
         hierarchyNode = CommodityStore.getHierNode(),
         commodityList = CommodityStore.getCommonCommodityList();
@@ -3449,27 +3483,19 @@ let ChartStrategyFactor = {
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
       return configButton;
     },
     getCostAuxiliaryCompareBtn(analysisPanel) {
-      let calendarSubItems = [{
-        primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-        value: 'noneWorkTime'
-      },
-        {
-          primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-          value: 'hotColdSeason'
-        }];
-
+      let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText={I18N.EM.ByPeakValley} value='touCompare' checked={analysisPanel.state.touBtnSelected} disabled={analysisPanel.state.touBtnStatus}/>
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>
+       {calendarEl}
      </ButtonMenu>;
 
       return configButton;

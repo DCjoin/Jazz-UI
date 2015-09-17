@@ -22,6 +22,8 @@ import ErrorStepDialog from '../alarm/ErrorStepDialog.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
+import CalendarManager from './CalendarManager.jsx';
+import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
@@ -416,7 +418,8 @@ let AnalysisPanel = React.createClass({
         energyData: energyData,
         energyRawData: energyRawData,
         paramsObj: paramsObj,
-        dashboardOpenImmediately: false
+        dashboardOpenImmediately: false,
+        isCalendarInited: false
       };
     if (isError === true) {
       state.step = null;
@@ -716,11 +719,15 @@ let AnalysisPanel = React.createClass({
   _onTouBtnDisabled: function() {
     var touBtnStatus = this.state.touBtnStatus;
     var newStatus = CommodityStore.getECButtonStatus();
-    if (newStatus !== touBtnStatus) {
+    if (!newStatus && this.state.step > 1) {
       this.setState({
-        touBtnStatus: newStatus
+        touBtnStatus: false
       });
-      if (newStatus && this.state.touBtnSelected) {
+    } else {
+      this.setState({
+        touBtnStatus: true
+      });
+      if (this.state.touBtnSelected) {
         this.setState({
           touBtnSelected: false
         });
@@ -779,6 +786,7 @@ let AnalysisPanel = React.createClass({
     var selectedLabelItem = this.state.selectedLabelItem;
     var industyMenuItems = this.state.industyMenuItems;
     var customerMenuItems = this.state.customerMenuItems;
+
     if (benchmarkOption.IndustryId !== null) {
       type = 'industryZone';
     } else if (benchmarkOption.CustomerizedId !== null) {
@@ -891,7 +899,8 @@ let AnalysisPanel = React.createClass({
     var labelingsStore = LabelMenuStore.getLabelData();
     var zoneStore = LabelMenuStore.getZoneData();
     var customizedStore = LabelMenuStore.getCustomerLabelData();
-    if (industryStore === null || labelingsStore === null || zoneStore === null || customizedStore === null) {
+    var hierNodes = LabelMenuStore.getHierNodes();
+    if (industryStore === null || labelingsStore === null || zoneStore === null || customizedStore === null || hierNodes.length === 0) {
       return;
     }
     var industyMenuItems = this.getIndustyMenuItems4MultiMode();
@@ -925,6 +934,8 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem: selectedLabelItem,
       labelType: 'industryZone',
       labelDisable: false
+    }, () => {
+      this.setBenchmarkOption();
     });
     this.enableKpiTypeButton();
   },
@@ -1042,6 +1053,9 @@ let AnalysisPanel = React.createClass({
       if (hierNode.Type !== 2 || !CommonFuns.isNumber(industryId)) {
         return;
       }
+      if (industyMenuItems.length === 1 && industyMenuItems[0].primaryText == I18N.Setting.Benchmark.Label.None) {
+        industyMenuItems = [];
+      }
       this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
       var industryNode = industryStore.find((item, index) => {
         return (item.get("Id") === industryId);
@@ -1064,6 +1078,32 @@ let AnalysisPanel = React.createClass({
       selectedLabelItem: selectedLabelItem,
       labelType: 'industryZone'
     });
+  },
+  getCalenderBgBtnEl: function() {
+    let calendarSubItems = [{
+      primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
+      value: 'noneWorkTime'
+    },
+      {
+        primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
+        value: 'hotColdSeason'
+      }];
+    let calendarEl;
+    let isCalendarDisabled = this.state.chartStrategy.isCalendarDisabledFn(this);
+    if (isCalendarDisabled) {
+      calendarEl = <MenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' disabled={true}/>;
+    } else {
+      let showType = CalendarManager.getShowType();
+      if (!!showType) {
+        calendarSubItems.forEach(item => {
+          if (item.value === showType) {
+            item.checked = true;
+          }
+        });
+      }
+      calendarEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Calendar.BackgroundColor} value='background' subItems={calendarSubItems}/>;
+    }
+    return calendarEl;
   },
   getNoneMenuItem: function(isIndustryLabel) {
     var menuItems = [];

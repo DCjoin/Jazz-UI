@@ -1,11 +1,10 @@
 'use strict';
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-
 import CommonFuns from '../util/Util.jsx';
 import { Action } from '../constants/actionType/Energy.jsx';
-import { DataConverter, isNumber } from '../util/Util.jsx';
 import Ajax from '../ajax/ajax.jsx';
 
+let {DataConverter, isNumber} = CommonFuns;
 
 let getTagIdsFromTagOptions = function(tagOptions) {
   let tagIds = [];
