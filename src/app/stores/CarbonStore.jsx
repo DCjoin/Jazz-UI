@@ -77,6 +77,21 @@ let CarbonStore = assign({},PrototypeStore,{
   getErrorCodes(){
     return _errorCodes;
   },
+  clearCarbonStore(){
+    _isLoading = false,
+    _carbonData = null,
+    _carbonRawData = null,
+    _submitParams = null,
+    _paramsObj = null,
+    _commOptions = null,
+    _chartTitle = null,
+    _relativeDate = null,
+    _errorCode = null,
+    _errorMessage = null,
+    _destination = 2,
+    _errorCodes = [],
+    _errorParams = [];
+  },
   _initErrorText(errorText){
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;

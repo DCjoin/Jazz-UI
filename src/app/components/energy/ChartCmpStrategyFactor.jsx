@@ -220,7 +220,8 @@ let ChartCmpStrategyFactor = {
       var startTime = timeRange[0],
         endTime = timeRange[1],
         nowBound = timeRange[2];
-      if (newConfig.navigator.enabled && data.Navigator) {
+
+      if (data.Navigator) {
         var navData = data.Navigator,
           numStartTime = startTime.getTime(),
           numEndTime = endTime.getTime(),
@@ -258,6 +259,8 @@ let ChartCmpStrategyFactor = {
             enabled: false
           }
         };
+        newConfig.navigator.enabled = true;
+        newConfig.scrollbar.enabled = true;
 
         if (newConfig.series.length > 0) {
           if (newConfig.series[0].data.length === 0) {
