@@ -743,7 +743,7 @@ let ChartStrategyFactor = {
         Step: step
       };
 
-      let includeNavigatorData = !(analysisPanel.state.selectedChartType === 'pie' || analysisPanel.state.selectedChartType === 'rawdata');
+      let includeNavigatorData = !(chartType === 'pie' || chartType === 'rawdata');
       viewOption.IncludeNavigatorData = includeNavigatorData;
 
       let bizMap = {
@@ -775,20 +775,21 @@ let ChartStrategyFactor = {
           Operation: 1
         };
         viewOption.PagingOrder = pagingOrder;
+        chartType = 'original';
       }
 
       submitParams.viewOption = viewOption;
 
       //storeType part
       let storeType;
-      if (analysisPanel.state.selectedChartType === 'pie') {
+      if (chartType === 'pie') {
         storeType = 'energy.Distribution';
       } else {
         storeType = 'energy.Energy';
       }
 
       let config = {
-        type: analysisPanel.state.selectedChartType,
+        type: chartType,
         storeType: storeType
       };
 

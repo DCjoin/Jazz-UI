@@ -12,7 +12,7 @@ let ChartStatusAction = {
   },
   setWidgetDto(widgetDto) {
     AppDispatcher.dispatch({
-      type: Action.SET_WIDGET_INIT_STATE,
+      type: Action.SET_WIDGETDTO,
       widgetDto: widgetDto
     });
   },
