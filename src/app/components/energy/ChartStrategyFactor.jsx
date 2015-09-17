@@ -3661,6 +3661,10 @@ let ChartStrategyFactor = {
       analysisPanel.state.energyRawData = null;
       //CommodityStore.resetHierInfo();
       TagStore.clearTagStatus();
+      EnergyStore.clearEnergyStore();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.weatherOption = null;
       analysisPanel.forceUpdate();
     },
     clearCarbonChartData(analysisPanel){
@@ -3669,13 +3673,20 @@ let ChartStrategyFactor = {
       //CommodityStore.resetHierInfo();
       CommodityStore.clearCommodityStatus()
       CarbonStore.clearCarbonStore();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.destination = 2;
+      analysisPanel.state.step = null;
       analysisPanel.forceUpdate();
     },
     clearCostChartData(analysisPanel){
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
       //CommodityStore.resetHierInfo();
+      CostStore.clearCostStore();
       CommodityStore.clearCommodityStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.touBtnSelected = false;
       analysisPanel.forceUpdate();
     },
     clearUnitChartData(analysisPanel){
@@ -3683,13 +3694,22 @@ let ChartStrategyFactor = {
       analysisPanel.state.energyRawData = null;
       //CommodityStore.resetHierInfo();
       TagStore.clearTagStatus();
+      EnergyStore.clearEnergyStore();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.benchmarkOption	= null;
       analysisPanel.forceUpdate();
     },
     clearUnitCostChartData(analysisPanel){
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
       //CommodityStore.resetHierInfo();
+      CostStore.clearCostStore();
       CommodityStore.clearCommodityStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.touBtnSelected = false;
+      analysisPanel.state.benchmarkOption	= null;
       analysisPanel.forceUpdate();
     },
     clearUnitCarbonChartData(analysisPanel){
@@ -3697,6 +3717,9 @@ let ChartStrategyFactor = {
       analysisPanel.state.energyRawData = null;
       //CommodityStore.resetHierInfo();
       CommodityStore.clearCommodityStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.destination = 2;
+      analysisPanel.state.benchmarkOption	= null;
       analysisPanel.forceUpdate();
     },
     clearRatioChartData(analysisPanel){
@@ -3704,6 +3727,9 @@ let ChartStrategyFactor = {
       analysisPanel.state.energyRawData = null;
       //CommodityStore.resetHierInfo();
       TagStore.clearTagStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.benchmarkOption	= null;
       analysisPanel.forceUpdate();
     },
     clearRankingChartData(analysisPanel){
@@ -3712,6 +3738,9 @@ let ChartStrategyFactor = {
       CommodityStore.clearRankingTreeList();
       CommodityStore.clearCommodityStatus();
       TagStore.clearTagStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.benchmarkOption	= null;
       analysisPanel.forceUpdate();
     },
   },
