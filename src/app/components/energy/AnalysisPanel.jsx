@@ -709,11 +709,15 @@ let AnalysisPanel = React.createClass({
   _onTouBtnDisabled: function() {
     var touBtnStatus = this.state.touBtnStatus;
     var newStatus = CommodityStore.getECButtonStatus();
-    if (newStatus !== touBtnStatus) {
+    if (!newStatus && this.state.step > 1) {
       this.setState({
-        touBtnStatus: newStatus
+        touBtnStatus: false
       });
-      if (newStatus && this.state.touBtnSelected) {
+    } else {
+      this.setState({
+        touBtnStatus: true
+      });
+      if (this.state.touBtnSelected) {
         this.setState({
           touBtnSelected: false
         });
@@ -1065,7 +1069,7 @@ let AnalysisPanel = React.createClass({
       labelType: 'industryZone'
     });
   },
-  getCalenderBgBtnEl: function(){
+  getCalenderBgBtnEl: function() {
     let calendarSubItems = [{
       primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
       value: 'noneWorkTime'
