@@ -181,8 +181,8 @@ I18N.EM.Hour = 'hour';
 I18N.EM.Day = 'day';
 I18N.EM.Month = 'month';
 I18N.EM.Year = 'year';
-I18N.EM.Clock24 = '24 o'clock';
-I18N.EM.Clock24InWidget = '24 o'clock';
+I18N.EM.Clock24 = '24 o\'clock';
+I18N.EM.Clock24InWidget = '24 o\'clock';
 I18N.EM.Clock24Minute0 = '24:00:00';
 
 I18N.EM.UseRaw = 'By minute';
