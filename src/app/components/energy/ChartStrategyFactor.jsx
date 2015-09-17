@@ -1415,7 +1415,7 @@ let ChartStrategyFactor = {
     }
   },
   isCalendarDisabledFnStrategy: {
-    isCalendarDisabled() {
+    isCalendarDisabled(analysisPanel) {
       let tagOptions = EnergyStore.getTagOpions();
       if (!tagOptions) {
         return false;
@@ -1437,6 +1437,9 @@ let ChartStrategyFactor = {
             return;
           }
         });
+      }
+      if (analysisPanel.state.selectedChartType === 'pie' || analysisPanel.state.selectedChartType === 'rawdata') {
+        disabled = true;
       }
       return disabled;
     },
@@ -1488,7 +1491,7 @@ let ChartStrategyFactor = {
   },
   onAnalysisPanelDidUpdateFnStrategy: {
     onAnalysisPanelDidUpdate(analysisPanel) {
-      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn()) { //不符合日历本景色条件的。
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel)) { //不符合日历本景色条件的。
 
       } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
         let paramsObj = EnergyStore.getParamsObj(),
@@ -1496,13 +1499,15 @@ let ChartStrategyFactor = {
           timeRanges = paramsObj.timeRanges,
           as = analysisPanel.state;
 
-        var chartCmp = analysisPanel.refs.ChartComponent,
-          chartObj = chartCmp.refs.highstock;
+        if (analysisPanel.refs.ChartComponent) {
+          var chartCmp = analysisPanel.refs.ChartComponent,
+            chartObj = chartCmp.refs.highstock;
 
-        CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
-        analysisPanel.setState({
-          isCalendarInited: true
-        });
+          CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+          analysisPanel.setState({
+            isCalendarInited: true
+          });
+        }
       }
     },
     onCarbonAnalysisPanelDidUpdate(analysisPanel) {
@@ -2095,7 +2100,7 @@ let ChartStrategyFactor = {
             analysisPanel.onSearchDataButtonClick();
           });
           break;
-        case 'background':{
+        case 'background': {
           var subMenuValue = menuParam.props.value;
           if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
