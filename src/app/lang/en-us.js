@@ -181,8 +181,8 @@ I18N.EM.Hour = 'hour';
 I18N.EM.Day = 'day';
 I18N.EM.Month = 'month';
 I18N.EM.Year = 'year';
-I18N.EM.Clock24 = '24 o'clock';
-I18N.EM.Clock24InWidget = '24 o'clock';
+I18N.EM.Clock24 = '24 o\'clock';
+I18N.EM.Clock24InWidget = '24 o\'clock';
 I18N.EM.Clock24Minute0 = '24:00:00';
 
 I18N.EM.UseRaw = 'By minute';
@@ -197,13 +197,13 @@ I18N.EM.Tool={};
 I18N.EM.Tool.ClearChart = 'Clear chart';
 I18N.EM.Tool.AssistCompare = 'Supporting comparison';
 I18N.EM.Tool.Weather={};
-I18N.EM.Tool.Weather.WeatherInfo='天气信息';
+I18N.EM.Tool.Weather.WeatherInfo='Weather';
 I18N.EM.Tool.Weather.Temperature = 'Temperature';
 I18N.EM.Tool.Weather.Humidity = 'Humidity';
 I18N.EM.Tool.Calendar={};
-I18N.EM.Tool.Calendar.BackgroundColor ='日历背景色';
-I18N.EM.Tool.Calendar.NoneWorkTime ='非工作时间';
-I18N.EM.Tool.Calendar.HotColdSeason ='冷暖季';
+I18N.EM.Tool.Calendar.BackgroundColor ='Show Calendar';
+I18N.EM.Tool.Calendar.NoneWorkTime ='Non-Work Time';
+I18N.EM.Tool.Calendar.HotColdSeason ='HC seasons';
 I18N.EM.Tool.Benchmark = 'Industry benchmark values';
 I18N.EM.Tool.HistoryCompare = 'History comparison';
 I18N.EM.Tool.BenchmarkSetting = 'Benchmark value setup';
@@ -347,7 +347,7 @@ I18N.Message.M01014 = 'The node has been modified or deleted by other users, and
 I18N.Message.M01015 = 'The hierarchical nodes do not include child node.'; //for energy view single tag to pie chart
 I18N.Message.M01016 = 'Relevant hierarchy does not have a valid calendar, and the target value and the benchmark value for this year can not be obtained.';
 I18N.Message.M01018 =
-  '无法移动到目标节点下，请按照规则拖动层级节点：<br/>组织->组织、客户；<br/>园区->组织、客户；<br/>楼宇->园区、组织、客户。';
+  'Cannot move to target, please drag according rule:<br/>Org->Org,Customer;<br/>Site->Site,Customer;<br/>Building->Site,Org,Customer.';
 I18N.Message.M01019 = 'The hierarchy was modified';
 I18N.Message.M01251 = 'Advanced attributes of the hierarchy node have been modified by other users. Interface will be refreshed.';
 I18N.Message.M01254 = 'Entries of advanced attributes are illegal, and can not be saved.';
@@ -392,8 +392,8 @@ I18N.Message.M02205 = 'Day - night ratio (key energy efficiency indicator) can n
 I18N.Message.M02301 = 'This hierarchical node does not exist.';
 I18N.Message.M02023 = 'The selected data points are of different media, and it\'s impossible to draw a pie chart!';
 I18N.Message.M02009 = 'You can not view data since you have no data access or the access right has been modified.';
-I18N.Message.M02407 = 'Peak,valley,normal price can not be shown by minute,hour.';
-I18N.Message.M02408 = 'This node have no peak,valley periods, so it can not be displayed.';
+I18N.Message.M02407 = 'Peak/valley/normal price can not be shown by minute / hour.';
+I18N.Message.M02408 = 'This node have no peak/valley periods, so it can not be displayed.';
 I18N.Message.M02027 = 'The step size of the data point in the anomaly record is less than the smallest step size supported, so it can not be accessed.';
 
 I18N.Message.M02601 = 'The day and night calendar is missing, and chart can not be drawn. Please set it up and try again.'; //'{0}所对应的层级节点没有设置昼夜日历，无法查看昼夜比数据';
@@ -446,8 +446,8 @@ I18N.Message.M03052 = 'Calendar end date must be greater than or equal to the st
 I18N.Message.M03053 = 'Time periods are overlapped. Please check it.';
 I18N.Message.M03054 = 'The name already exists.';
 I18N.Message.M03057 = 'Time periods are overlapped. Please check it.';
-I18N.Message.M03058 = 'Calendar has been cited, and can not be deleted.';
-I18N.Message.M03059 = 'Dates in February can not be 29,30,31.';
+I18N.Message.M03058 = 'Calendar has been cited, and can not be deleted.'; //--------------
+I18N.Message.M03059 = 'Dates in February can not be 29/30/31.';
 I18N.Message.M03060 = 'Date in Satsuki can not be 31.';
 I18N.Message.M03061 = 'Add at least one heating season or cooling season.';
 I18N.Message.M03062 = 'Heating season and cooling season can not fall in the same month.';
@@ -473,9 +473,14 @@ refresh is needed.
 *******/
 I18N.Message.M04052 = 'Before checking the current dimension node, make ensure its parent node has been checked.';
 I18N.Message.M04054 = 'Before unchecking the current dimension node, make ensure that all of its child nodes are not checked.';
-I18N.Message.M04055 = 'The current system dimension node has no child node.';
+I18N.Message.M04055 = 'The current system dimension node has no child node.'; //for energy view single tag to pie chart
 I18N.Message.M04056 = 'Unable to delete the system dimension node. Please delete all the data point associations under this node.';
-
+/******
+Dashboard Error Code, NOTE that for error of
+05002
+refresh is needed.
+05011 should refresh hierarchy tree
+*******/
 I18N.Message.M05001 = 'The name already exists.';
 I18N.Message.M05011 = 'The hierarchical nodes corresponding to this dashboard have been deleted, and the interface will be refreshed immediately.';
 I18N.Message.M05013 = 'Number of dashboard of this hierarchy node has reached the upper limit.Please delete some content to continue.';
@@ -488,6 +493,9 @@ I18N.Message.M05023 = '{0}{1}';
 I18N.Message.M05023_Sub0 = 'The following user Id have been deleted: {0}.';
 I18N.Message.M05023_Sub1 = 'Unable to share with these people: {0}.';
 
+/******
+Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
+*******/
 
 I18N.Message.M06100 = 'Data point has been deleted and can not be loaded.';
 I18N.Message.M06104 = 'The name already exists.';
@@ -504,7 +512,7 @@ I18N.Message.M06160 = 'The media and unit of the physical data points does not m
 I18N.Message.M06161 = 'The media and unit of the virtual data points does not match,and it can not be saved.';
 I18N.Message.M06164 = 'The calculation step size of virtual data points is illegal and can not be saved.';
 I18N.Message.M06174 = 'Type of the  physical data points is illegal and can not be saved.';
-I18N.Message.M06182 = '{0} {1} are being referenced, so it can not be deleted. Please cancel all references and try again. <br/> referenced objects: {2}';
+I18N.Message.M06182 = '{0} "{1}" are being referenced, so it can not be deleted. Please cancel all references and try again. <br/> referenced objects: {2}';
 I18N.Message.M06183 = 'The data point has expired. The data point may have been modified or deleted by others. Interface will be refreshed.';
 I18N.Message.M06186 = 'The corresponding data point already has energy consumption data points of the same media.  ';
 I18N.Message.M06192 = 'The calculation step size of day-night ratio data point must be greater than or equal to one day.';
@@ -515,7 +523,7 @@ I18N.Message.M06196 = 'The current hierarchy node does not include data points t
 I18N.Message.M06197 = 'The current system dimension does not include data points that shares the same media with this data point. ';
 I18N.Message.M06198 = 'The current regional dimension does not include data points that shares the same media with this data point. ';
 I18N.Message.M06201 =
-  '无法将计算步长修改为“{0}”。本数据点与其他数据点存在引用关系，引用数据点的计算步长必须大于等于被引用数据点的计算步长。';
+  'Cannot change Calculation step to "{0}". This tag is refereced by other tags, reference Tag calculation step must be larger or equal to referenced tag';
 I18N.Message.M06202 = 'The corresponding data point already has energy consumption data points of the same media.  ';
 I18N.Message.M06203 = 'This data point is not energy consumption data.';
 
@@ -528,13 +536,21 @@ I18N.Message.M07010 = 'The name already exists.';
 I18N.Message.M07011 = 'The role has bound a user and can not be deleted.';
 I18N.Message.M07021 = 'Hierarchical node does not exist or has been deleted, and the interface will be refreshed.';
 
+/*
+AreaDimensionNodeNameDuplicate = 208,
+AreaDimensionNodeLevelOverLimitation = 209,
+AreaDimensionNodeHasNoParent = 210,
+AreaDimensionNodeHasBeenDeleted = 211,
+AreaDimensionNodeHasChildren = 212,
+AreaDimensionNodeHasBeenModified = 213,
+*/
 I18N.Message.M08200 = 'Hierarchical node associated with the dimension node has been deleted, and the interface will be refreshed.';
 I18N.Message.M08208 = 'Duplicate name';
 I18N.Message.M08209 = 'Level of the current dimension node exceeds the maximum length, and can not be saved.';
 I18N.Message.M08210 = 'The parent node of the current dimension node has been deleted, and the interface will be refreshed.';
 I18N.Message.M08211 = 'The current dimensions node has been deleted by others, and the interface will be refreshed.';
 I18N.Message.M08212 = 'Unable to delete this regional dimension node. Please delete all child nodes under this node.';
-I18N.Message.M08214 = 'The current regional dimension node has no child nodes.';
+I18N.Message.M08214 = 'The current regional dimension node has no child nodes.'; //for energy view single tag to pie chart
 I18N.Message.M08215 = 'Unable to delete this regional dimension node. Please delete all data point associations under this node.';
 
 I18N.Message.M09001 = 'Data has been deleted, and the interface will be refreshed.';
@@ -543,12 +559,13 @@ I18N.Message.M09107 = 'Data has been modified by others, click "OK" to reload da
 I18N.Message.M09112 = 'The corresponding data points have been deleted. The interface will be refreshed immediately.';
 I18N.Message.M09113 = 'Please set calculation rules before doing the calculation.';
 I18N.Message.M09114 = 'Value exceeds the legal range, and it can not be saved. The range of valid values ​​is -999999999.999999 ~ 999,999,999.999999.';
-I18N.Message.M09155 = I18N.format(I18N.Message.UpdateConcurrency, '计算值');
+I18N.Message.M09155 = I18N.format(I18N.Message.UpdateConcurrency, 'Calc Value');
 I18N.Message.M09157 = 'The corresponding data points have been deleted. The interface will be refreshed immediately.';
 I18N.Message.M09158 = 'Data points are not associated to the hierarchical tree and dimension tree. Please associate data points first.';
 I18N.Message.M09159 = 'The calendar attribute of the hierarchical tree associated is empty. Please set the calendar for the hierarchical tree first.';
 I18N.Message.M09160 = 'The calendar attribute of the hierarchical tree associated for this year is empty. Please set the calendar attribute for this year for the hierarchical tree first.';
 
+//Cost concurrency error
 I18N.Message.M10007 = 'Peak/valley/normal price can not be shown by hour  ';
 I18N.Message.M10015 = 'Data of the same hierarchical node already exists,and the interface will be refreshed';
 I18N.Message.M10019 = 'Demand cost Tag is invalid data';
@@ -702,29 +719,29 @@ I18N.Hierarchy.RankingButtonName = 'Please select the hierarchy nodes for rankin
 I18N.Hierarchy.ButtonName = 'Please select the hierarchy node';
 I18N.Hierarchy.Confirm = 'Ok';
 I18N.Hierarchy.Clear = 'Clear';
-I18N.Hierarchy.Menu1='客户';
-I18N.Hierarchy.Menu2='组织';
-I18N.Hierarchy.Menu3='园区';
-I18N.Hierarchy.Menu4='楼宇';
+I18N.Hierarchy.Menu1='Customer';
+I18N.Hierarchy.Menu2='Organization';
+I18N.Hierarchy.Menu3='Site';
+I18N.Hierarchy.Menu4='Building';
 
 I18N.Dim = {};
 I18N.Dim.AllButtonName = 'All dimensions';
 I18N.Dim.ButtonName = 'Dimension node';
 
 I18N.ALarm ={};
-I18N.ALarm.Menu1='全部';
-I18N.ALarm.Menu2='报警已配置';
-I18N.ALarm.Menu3='基准值已配置';
-I18N.ALarm.Menu4='未配置';
+I18N.ALarm.Menu1='Whole';
+I18N.ALarm.Menu2='Alarm Configed';
+I18N.ALarm.Menu3='Baseline Configed';
+I18N.ALarm.Menu4='UnConfiged';
 
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = 'Data point {0} / {1} has been selected ';
 I18N.Tag.ExceedTooltip = 'Number of added data points is beyond the range. You can not select all. Please select the target data points one by one.';
-I18N.Tag.AlarmStatus1 ='基准值未配置';
-I18N.Tag.AlarmStatus2 ='基准值已配置';
-I18N.Tag.AlarmStatus3 ='报警未配置';
-I18N.Tag.AlarmStatus4 ='报警已配置';
+I18N.Tag.AlarmStatus1 ='Baseline UnConfiged';
+I18N.Tag.AlarmStatus2 ='Baseline Configed';
+I18N.Tag.AlarmStatus3 ='Alarm UnConfiged';
+I18N.Tag.AlarmStatus4 ='Alarm Configed';
 
 I18N.Template = {};
 I18N.Template.Copy = {};
