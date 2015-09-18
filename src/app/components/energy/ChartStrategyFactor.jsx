@@ -323,6 +323,14 @@ let ChartStrategyFactor = {
         timeRanges = viewOption.TimeRanges,
         chartType = widgetDto.ChartType;
 
+      let wasTemp = !!viewOption.IncludeTempValue,
+        wasHumi = !!viewOption.IncludeHumidityValue,
+        weather = {
+          IncludeTempValue: wasTemp,
+          IncludeHumidityValue: wasHumi
+        };
+      analysisPanel.setState({weatherOption: weather});
+
       let typeMap = {
         Line: 'line',
         Column: 'column',
@@ -2333,7 +2341,7 @@ let ChartStrategyFactor = {
         case 'stack':
           CarbonStore.initReaderStrategy('CarbonTrendReader');
           break;
-        case 'pie': 
+        case 'pie':
 		  CarbonStore.initReaderStrategy('CarbonPieReader');
           break;
       }
