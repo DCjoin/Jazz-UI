@@ -289,7 +289,7 @@ let ChartStrategyFactor = {
       onHierNodeChangeFn: 'onHierNodeChange',
       save2DashboardFn: 'saveLabel2Dashboard',
       initChartPanelByWidgetDtoFn: 'initLabelChartPanelByWidgetDto',
-      clearChartDataFn: 'clearLabelChartData',
+      clearChartDataFn: 'clearLabelChartData'
     },
     Rank: {
       searchBarGenFn: 'rankSearchBarGen',
@@ -309,7 +309,7 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn: 'getRankSubToolbar',
       save2DashboardFn: 'saveRank2Dashboard',
       initChartPanelByWidgetDtoFn: 'initRankChartPanelByWidgetDto',
-      clearChartDataFn: 'clearRankChartData',
+      clearChartDataFn: 'clearRankChartData'
     }
   },
   initChartPanelByWidgetDtoFnStrategy: {
@@ -2354,7 +2354,8 @@ let ChartStrategyFactor = {
       let state = {
         unitType: 2,
         benchmarks: null,
-        benchmarkOption: null
+        benchmarkOption: null,
+        unitBaselineBtnStatus: true
       };
       return state;
     },
@@ -3569,7 +3570,7 @@ let ChartStrategyFactor = {
       CostStore.addCostDataLoadedListener(analysisPanel._onCostDataChange);
       CostStore.addCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
       CostStore.addCostDataLoadErrorsListener(analysisPanel._onGetCostDataErrors);
-      CommodityStore.addUCButtonStatusListener(analysisPanel._onCostBaselineBtnDisabled);
+      CommodityStore.addUCButtonStatusListener(analysisPanel._onUnitCostBaselineBtnDisabled);
     },
     unitCarbonBindStoreListeners(analysisPanel) {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
@@ -3638,7 +3639,7 @@ let ChartStrategyFactor = {
       CostStore.removeCostDataLoadedListener(analysisPanel._onCostDataChange);
       CostStore.removeCostDataLoadErrorListener(analysisPanel._onGetCostDataError);
       CostStore.removeCostDataLoadErrorsListener(analysisPanel._onGetCostDataErrors);
-      CommodityStore.removeUCButtonStatusListener(analysisPanel._onCostBaselineBtnDisabled);
+      CommodityStore.removeUCButtonStatusListener(analysisPanel._onUnitCostBaselineBtnDisabled);
     },
 
     unitCarbonUnbindStoreListeners(analysisPanel) {
@@ -3669,10 +3670,10 @@ let ChartStrategyFactor = {
     clearChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      //CommodityStore.resetHierInfo();
       TagStore.clearTagStatus();
       EnergyStore.clearEnergyStore();
       analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.sumBtnStatus = false;
       analysisPanel.state.step = null;
       analysisPanel.state.weatherOption = null;
       analysisPanel.forceUpdate();
@@ -3680,8 +3681,7 @@ let ChartStrategyFactor = {
     clearCarbonChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      //CommodityStore.resetHierInfo();
-      CommodityStore.clearCommodityStatus()
+      CommodityStore.clearCommodityStatus();
       CarbonStore.clearCarbonStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.destination = 2;
@@ -3691,18 +3691,16 @@ let ChartStrategyFactor = {
     clearCostChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      //CommodityStore.resetHierInfo();
-      CostStore.clearCostStore();
       CommodityStore.clearCommodityStatus();
+      CostStore.clearCostStore();
       analysisPanel.state.selectedChartType = 'line';
+      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.step = null;
-      analysisPanel.state.touBtnSelected = false;
       analysisPanel.forceUpdate();
     },
     clearUnitChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      //CommodityStore.resetHierInfo();
       TagStore.clearTagStatus();
       EnergyStore.clearEnergyStore();
       analysisPanel.state.selectedChartType = 'line';
@@ -3713,19 +3711,17 @@ let ChartStrategyFactor = {
     clearUnitCostChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      //CommodityStore.resetHierInfo();
-      CostStore.clearCostStore();
       CommodityStore.clearCommodityStatus();
+      CostStore.clearCostStore();
       analysisPanel.state.selectedChartType = 'line';
+      analysisPanel._onUnitCostBaselineBtnDisabled();
       analysisPanel.state.step = null;
-      analysisPanel.state.touBtnSelected = false;
       analysisPanel.state.benchmarkOption = null;
       analysisPanel.forceUpdate();
     },
     clearUnitCarbonChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      //CommodityStore.resetHierInfo();
       CommodityStore.clearCommodityStatus();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.destination = 2;
@@ -3735,22 +3731,28 @@ let ChartStrategyFactor = {
     clearRatioChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      //CommodityStore.resetHierInfo();
       TagStore.clearTagStatus();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
       analysisPanel.forceUpdate();
     },
-    clearRankingChartData(analysisPanel) {
+    clearLabelChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      CommodityStore.clearRankingTreeList();
+      TagStore.clearTagStatus();
+      LabelStore.clearLabelStore();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.weatherOption = null;
+      analysisPanel.forceUpdate();
+    },
+    clearRankChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
       CommodityStore.clearCommodityStatus();
       TagStore.clearTagStatus();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel.state.step = null;
-      analysisPanel.state.benchmarkOption = null;
+      RankStore.clearRankStore();
+      analysisPanel.state.selectedChartType = 'column';
       analysisPanel.forceUpdate();
     },
   },

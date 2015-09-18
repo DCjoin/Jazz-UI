@@ -69,19 +69,19 @@ var CostStore = assign({}, PrototypeStore, {
   getErrorCodes() {
     return _errorCodes;
   },
-  clearCostStore(){
-    _isLoading = false,
-      _energyData = null,
-      _energyRawData = null,
-      _submitParams = null,
-      _paramsObj = null,
-      _selectedList = null,
-      _chartTitle = null,
-      _relativeDate = null,
-      _errorCode = null,
-      _errorMessage = null,
-      _errorCodes = [],
-      _errorParams = [];
+  clearCostStore() {
+    _isLoading = false;
+    _energyData = null;
+    _energyRawData = null;
+    _submitParams = null;
+    _paramsObj = null;
+    _selectedList = null;
+    _chartTitle = null;
+    _relativeDate = null;
+    _errorCode = null;
+    _errorMessage = null;
+    _errorCodes = [];
+    _errorParams = [];
   },
   _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
