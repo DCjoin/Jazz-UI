@@ -739,7 +739,8 @@ let ChartCmpStrategyFactor = {
           data: item.data,
           option: item.option,
           uid: item.uid,
-          id: item.uid + '' + item.dType,
+          dType: item.dType,
+          id: 'Id' + item.uid + 'Type' + item.dType,
           seriesKey: item.seriesKey,
           graySerie: item.hasOwnProperty('graySerie') ? item.graySerie : (item.hasOwnProperty('visible') ? !item.visible : false)
         };

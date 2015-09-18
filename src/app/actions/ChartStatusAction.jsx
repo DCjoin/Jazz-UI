@@ -10,10 +10,12 @@ let ChartStatusAction = {
   modifySingleStatus() {
     //
   },
-  setWidgetDto(widgetDto) {
+  setWidgetDto(widgetDto, bizType, energyType) {
     AppDispatcher.dispatch({
       type: Action.SET_WIDGETDTO,
-      widgetDto: widgetDto
+      widgetDto: widgetDto,
+      bizType: bizType,
+      energyType: energyType
     });
   },
   // onEnergyDataLoaded(energyData) {
