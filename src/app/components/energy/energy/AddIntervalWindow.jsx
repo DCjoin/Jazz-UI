@@ -42,6 +42,8 @@ let TimespanItem = React.createClass({
       relativeType = this.props.relativeType;
     if (relativeType === MultipleTimespanStore.getCustomerizeType()) {
       let {startDate, endDate} = this.props;
+      // startDate = (!!startDate) ? startDate : new Date();
+      // endDate = (!!endDate) ? endDate : new Date();
       return <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/>;
     } else {
       let availableRelativeValues = MultipleTimespanStore.getAvailableRelativeValues(relativeType);

@@ -15,6 +15,7 @@ let _isInitedByWidget = false;
 let _bizType = null;
 let _energyType = null;
 let _seriesStatus = null;
+let _chartType = null;
 
 let ChartStatusStore = assign({}, PrototypeStore, {
   initStatus() {
@@ -32,29 +33,14 @@ let ChartStatusStore = assign({}, PrototypeStore, {
           let status = {
             id: me.getIdByTarget(target)
           };
-          if (i < seriesLength) {
+          if (i < seriesLength) { //如果有对应的状态，则保存；如果没有，则统一在assignStatus方法中添加状态
             let serie = widgetSeriesArr[i];
             status.ChartType = serie.ChartType;
             status.IsDisplay = serie.IsDisplay;
             status.SeriesType = serie.SeriesType;
-          } else {
-            status.ChartType = this.getNumByChartType(this.getChartTypeFromWidgetChartType(_widgetDto.ChartType) || 'line');
-            status.IsDisplay = true;
-            status.SeriesType = target.Type;
+
+            _seriesStatus.push(status);
           }
-          _seriesStatus.push(status);
-        }
-      } else {
-        let targetEnergyData = _energyData.TargetEnergyData;
-        for (let i = 0, len = targetEnergyData.length; i < len; i++) {
-          let target = targetEnergyData[i].Target;
-          let status = {
-            id: me.getIdByTarget(target),
-            IsDisplay: true,
-            SeriesType: target.Type
-          };
-          status.ChartType = this.getNumByChartType('line');
-          _seriesStatus.push(status);
         }
       }
     }
@@ -69,17 +55,17 @@ let ChartStatusStore = assign({}, PrototypeStore, {
           } else {
             item[name] = value;
           }
-
           return;
         }
       });
     }
   },
-  setWidgetDto(widgetDto, bizType, energyType) {
+  setWidgetDto(widgetDto, bizType, energyType, chartType) {
     _widgetDto = widgetDto;
     _isInitedByWidget = false;
     _bizType = bizType;
     _energyType = energyType;
+    _chartType = chartType;
   },
   //此方法在获取energy data的store中调用
   onEnergyDataLoaded(energyData, submitParams) {
@@ -146,6 +132,13 @@ let ChartStatusStore = assign({}, PrototypeStore, {
             item.type = chartTypeMap[map[item.id].ChartType];
             item.stacking = undefined;
           }
+        } else if (item.id) {
+          _seriesStatus.push({
+            id: item.id,
+            IsDisplay: true,
+            SeriesType: item.dType,
+            ChartType: item.type
+          });
         }
       });
     }
@@ -168,7 +161,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
 ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.SET_WIDGETDTO:
-      ChartStatusStore.setWidgetDto(action.widgetDto, action.bizType, action.energyType);
+      ChartStatusStore.setWidgetDto(action.widgetDto, action.bizType, action.energyType, action.chartType);
       break;
     case Action.MODIFY_SINGLE_STATUS:
       ChartStatusStore.modifySingleStatus(action.id, action.name, action.value);
