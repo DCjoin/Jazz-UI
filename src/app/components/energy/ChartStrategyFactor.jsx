@@ -85,7 +85,8 @@ let ChartStrategyFactor = {
       save2DashboardFn: 'save2Dashboard',
       initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
       clearChartDataFn: 'clearChartData',
-      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto',
+      getWidgetOptMenuFn: 'getWidgetOptMenu',
+      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -117,6 +118,7 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onCostAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearCostChartData',
+      getWidgetOptMenuFn: 'getWidgetOptMenu'
     },
     MultiIntervalDistribution: {
 
@@ -151,6 +153,7 @@ let ChartStrategyFactor = {
       handleCalendarChangeFn: 'handleCalendarChange',
       handleConfigBtnItemTouchTapFn: 'handleCarbonConfigBtnItemTouchTap',
       clearChartDataFn: 'clearCarbonChartData',
+      getWidgetOptMenuFn: 'getWidgetOptMenu'
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -180,6 +183,7 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearRatioChartData',
+      getWidgetOptMenuFn: 'getWidgetOptMenu'
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -210,6 +214,7 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onAnalysisPanelDidUpdate',
       isCalendarDisabledFn: 'isCalendarDisabled',
       clearChartDataFn: 'clearUnitChartData',
+      getWidgetOptMenuFn: 'getWidgetOptMenu'
     },
     UnitCost: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -240,6 +245,7 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onCostAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearUnitCostChartData',
+      getWidgetOptMenuFn: 'getWidgetOptMenu'
     },
     UnitCarbon: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -270,6 +276,7 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onCarbonAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearUnitCarbonChartData',
+      getWidgetOptMenuFn: 'getWidgetOptMenu'
     },
     Label: {
       searchBarGenFn: 'labelSearchBarGen',
@@ -289,7 +296,8 @@ let ChartStrategyFactor = {
       onHierNodeChangeFn: 'onHierNodeChange',
       save2DashboardFn: 'saveLabel2Dashboard',
       initChartPanelByWidgetDtoFn: 'initLabelChartPanelByWidgetDto',
-      clearChartDataFn: 'clearLabelChartData'
+      clearChartDataFn: 'clearLabelChartData',
+      getWidgetOptMenuFn: 'getLabelWidgetOptMenu'
     },
     Rank: {
       searchBarGenFn: 'rankSearchBarGen',
@@ -309,7 +317,41 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn: 'getRankSubToolbar',
       save2DashboardFn: 'saveRank2Dashboard',
       initChartPanelByWidgetDtoFn: 'initRankChartPanelByWidgetDto',
-      clearChartDataFn: 'clearRankChartData'
+      clearChartDataFn: 'clearRankChartData',
+      getWidgetOptMenuFn: 'getLabelWidgetOptMenu'
+    }
+  },
+  getWidgetOptMenuFnStrategy: {
+    getWidgetOptMenu(analysisPanel) {
+      var IconButtonElement = <IconButton iconClassName="icon-arrow-down"/>;
+      var iconMenuProps = {
+        iconButtonElement: IconButtonElement,
+        openDirection: "bottom-right",
+        desktop: true
+      };
+      let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+                              <MenuItem key={1} primaryText={'另存为'} />
+                              <MenuItem key={2} primaryText={'发送'} />
+                              <MenuItem key={3} primaryText={'共享'} />
+                              <MenuItem key={4} primaryText={'导出'} />
+                              <MenuItem key={5} primaryText={'删除'} />
+                           </IconMenu>;
+      return widgetOptMenu;
+    },
+    getLabelWidgetOptMenu(analysisPanel) {
+      var IconButtonElement = <IconButton iconClassName="icon-arrow-down"/>;
+      var iconMenuProps = {
+        iconButtonElement: IconButtonElement,
+        openDirection: "bottom-right",
+        desktop: true
+      };
+      let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+                              <MenuItem key={1} primaryText={'另存为'} />
+                              <MenuItem key={2} primaryText={'发送'} />
+                              <MenuItem key={3} primaryText={'共享'} />
+                              <MenuItem key={5} primaryText={'删除'} />
+                           </IconMenu>;
+      return widgetOptMenu;
     }
   },
   initChartPanelByWidgetDtoFnStrategy: {
@@ -472,6 +514,7 @@ let ChartStrategyFactor = {
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
         viewOption = contentObj.viewOption,
+        step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
         unitType = viewOption.DataOption.UnitType;
 
@@ -501,6 +544,7 @@ let ChartStrategyFactor = {
 
       setTimeout(() => {
         analysisPanel.setState({
+          step: step,
           unitType: unitType,
           benchmarkOption: bo
         }, () => {
