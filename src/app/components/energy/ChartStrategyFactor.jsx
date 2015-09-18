@@ -859,6 +859,8 @@ let ChartStrategyFactor = {
         };
         viewOption.PagingOrder = pagingOrder;
         chartType = 'original';
+      } else {
+        widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       }
 
       submitParams.viewOption = viewOption;
