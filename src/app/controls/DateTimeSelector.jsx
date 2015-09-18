@@ -29,17 +29,19 @@ let DateTimeSelector = React.createClass({
       endTime = 24;
     }
 
-    startField.setValue(startDate);
-    endField.setValue(endDate);
+    //startField.setValue(startDate);
+    //endField.setValue(endDate);
     this.setState({
       startDate: startDate,
-      endDate: endDate
+      endDate: endDate,
+      startTime: startTime,
+      endTime: endTime
     }, () => {
       if (callback)
         callback();
     });
-    startField.setTime(startTime);
-    endField.setTime(endTime);
+  //startField.setTime(startTime);
+  //endField.setTime(endTime);
   },
   getDateTime() {
     let startField = this.refs.startDate,
