@@ -334,7 +334,7 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
     } else {
       //当第一次修改自定义时间的时候，默认将另一个修改为相应的数值
       let oldItem = _tempRelativeList.get(compareIndex);
-      if (oldItem.get(startDate)) {
+      if (oldItem.get('startDate')) {
 
       } else {
         let mainRange = this.getMainDateRange();
