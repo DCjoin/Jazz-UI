@@ -25,6 +25,11 @@ let ChartStatusAction = {
       chartType: chartType
     });
   },
+  clearStatus() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_STATUS
+    });
+  }
   // onEnergyDataLoaded(energyData) {
   //   AppDispatcher.dispatch({
   //     type: Action.CHART_STATUS_ENERGYDATA_LOADED,

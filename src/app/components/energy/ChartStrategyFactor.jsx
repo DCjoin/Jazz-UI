@@ -841,6 +841,8 @@ let ChartStrategyFactor = {
         };
         viewOption.PagingOrder = pagingOrder;
         chartType = 'original';
+      } else {
+        widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       }
 
       submitParams.viewOption = viewOption;
@@ -2792,6 +2794,7 @@ let ChartStrategyFactor = {
   },
   onSearchBtnItemTouchTapFnStrategy: {
     onSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
+      ChartStatusAction.clearStatus();
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
         analysisPanel.setState({
           selectedChartType: nextChartType

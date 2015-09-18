@@ -18,6 +18,9 @@ let _seriesStatus = null;
 let _chartType = null;
 
 let ChartStatusStore = assign({}, PrototypeStore, {
+  clearStatus() {
+    _seriesStatus = [];
+  },
   initStatus() {
     let me = this;
     _seriesStatus = [];
@@ -81,7 +84,11 @@ let ChartStatusStore = assign({}, PrototypeStore, {
   },
   getIdByTarget(target) {
     if (_bizType === 'Energy' && _energyType === 'Energy') {
-      return 'Id' + target.TargetId + 'Type' + target.Type;
+      if (_submitParams.viewOption.TimeRanges.length > 1) {
+        return 'Id' + target.TimeSpan.StartTime + 'Type' + undefined;
+      } else {
+        return 'Id' + target.TargetId + 'Type' + target.Type;
+      }
     }
     return '1';
   },
@@ -121,27 +128,27 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       _seriesStatus.forEach((item, index) => {
         map[item.id] = item;
       });
-
-      series.forEach((item, index) => {
-        if (item.id && map[item.id]) {
-          item.visible = map[item.id].IsDisplay;
-          if (map[item.id].ChartType === '4') {
-            item.type = 'column';
-            item.stacking = 'normal';
-          } else {
-            item.type = chartTypeMap[map[item.id].ChartType];
-            item.stacking = undefined;
-          }
-        } else if (item.id) {
-          _seriesStatus.push({
-            id: item.id,
-            IsDisplay: true,
-            SeriesType: item.dType,
-            ChartType: item.type
-          });
-        }
-      });
     }
+    series.forEach((item, index) => {
+      if (item.id && map[item.id]) {
+        item.visible = map[item.id].IsDisplay;
+        if (map[item.id].ChartType === '4' || map[item.id].ChartType === 4) {
+          item.type = 'column';
+          item.stacking = 'normal';
+        } else {
+          item.type = chartTypeMap[map[item.id].ChartType];
+          item.stacking = undefined;
+        }
+      } else if (item.id) {
+        _seriesStatus.push({
+          id: item.id,
+          IsDisplay: true,
+          SeriesType: item.dType,
+          ChartType: item.type
+        });
+      }
+    });
+
   },
   getWidgetSaveStatus() {
     let status = [];
@@ -166,6 +173,8 @@ ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
     case Action.MODIFY_SINGLE_STATUS:
       ChartStatusStore.modifySingleStatus(action.id, action.name, action.value);
       break;
+    case Action.CLEAR_STATUS:
+      ChartStatusStore.clearStatus();
   }
 });
 
