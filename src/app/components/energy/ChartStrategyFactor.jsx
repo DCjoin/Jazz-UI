@@ -177,7 +177,7 @@ let ChartStrategyFactor = {
       handleStepChangeFn: 'handleRatioStepChange',
       save2DashboardFn: 'saveRatio2Dashboard',
       isCalendarDisabledFn: 'isCalendarDisabled',
-      onAnalysisPanelDidUpdateFn: 'onAnalysisPanelDidUpdate',
+      onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearRatioChartData',
     },
@@ -879,7 +879,7 @@ let ChartStrategyFactor = {
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
-      let submitParams1 = EnergyStore.getParamsObj(),
+      let submitParams1 = RatioStore.getSubmitParams(),
         timeRanges = submitParams1.viewOption.timeRanges,
         step = submitParams1.viewOption.step,
         ratioType = submitParams1.ratioType,
@@ -1571,6 +1571,26 @@ let ChartStrategyFactor = {
 
       } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
         let paramsObj = EnergyStore.getParamsObj(),
+          step = paramsObj.step,
+          timeRanges = paramsObj.timeRanges,
+          as = analysisPanel.state;
+
+        if (analysisPanel.refs.ChartComponent) {
+          var chartCmp = analysisPanel.refs.ChartComponent,
+            chartObj = chartCmp.refs.highstock;
+
+          CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+          analysisPanel.setState({
+            isCalendarInited: true
+          });
+        }
+      }
+    },
+    onRatioAnalysisPanelDidUpdate(analysisPanel) {
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel)) { //不符合日历本景色条件的。
+
+      } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
+        let paramsObj = RatioStore.getParamsObj(),
           step = paramsObj.step,
           timeRanges = paramsObj.timeRanges,
           as = analysisPanel.state;
