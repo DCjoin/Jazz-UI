@@ -3219,7 +3219,7 @@ let ChartStrategyFactor = {
           display: 'flex',
           'flex-direction': 'column',
           marginBottom: '20px'
-        }}>
+        }} className='jazz-energy-content'>
                        {subToolbar}
                        {historyCompareEl}
                        {dataSum}
