@@ -323,6 +323,16 @@ let ChartStrategyFactor = {
         timeRanges = viewOption.TimeRanges,
         chartType = widgetDto.ChartType;
 
+      let wasTemp = !!viewOption.IncludeTempValue,
+        wasHumi = !!viewOption.IncludeHumidityValue,
+        weather = {
+          IncludeTempValue: wasTemp,
+          IncludeHumidityValue: wasHumi
+        };
+      analysisPanel.setState({
+        weatherOption: weather
+      });
+
       let typeMap = {
         Line: 'line',
         Column: 'column',
