@@ -29,8 +29,6 @@ let DateTimeSelector = React.createClass({
       endTime = 24;
     }
 
-    //startField.setValue(startDate);
-    //endField.setValue(endDate);
     this.setState({
       startDate: startDate,
       endDate: endDate,
@@ -40,8 +38,7 @@ let DateTimeSelector = React.createClass({
       if (callback)
         callback();
     });
-  //startField.setTime(startTime);
-  //endField.setTime(endTime);
+
   },
   getDateTime() {
     let startField = this.refs.startDate,
