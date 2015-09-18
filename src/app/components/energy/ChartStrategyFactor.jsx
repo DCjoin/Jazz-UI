@@ -157,7 +157,7 @@ let ChartStrategyFactor = {
       getEnergyTypeComboFn: 'empty',
       getSelectedNodesFn: 'getSelectedTagList',
       onSearchDataButtonClickFn: 'onRatioSearchDataButtonClick',
-      onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
+      onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn: 'setRatioFitStepAndGetData',
       getInitialStateFn: 'getRatioInitialState',
@@ -829,9 +829,6 @@ let ChartStrategyFactor = {
         };
         viewOption.PagingOrder = pagingOrder;
         chartType = 'original';
-      } else {
-        //assign status
-        widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       }
 
       submitParams.viewOption = viewOption;
@@ -1079,10 +1076,15 @@ let ChartStrategyFactor = {
       viewOption.DataUsageType = dataUsageType;
 
       submitParams.viewOption = viewOption;
+      if (analysisPanel.state.touBtnSelected) {
+        submitParams.isElec = true;
+      }
 
       //storeType part
       let storeType;
-      if (analysisPanel.state.selectedChartType === 'pie') {
+      if (analysisPanel.state.touBtnSelected) {
+        storeType = 'energy.CostElectricityUsage';
+      } else if (analysisPanel.state.selectedChartType === 'pie') {
         storeType = 'energy.CostUsageDistribution';
       } else {
         storeType = 'energy.CostUsage';
@@ -2348,7 +2350,7 @@ let ChartStrategyFactor = {
     },
     getCostInitialState() {
       let state = {
-        touBtnStatus: true,
+        touBtnStatus: CommodityStore.getECButtonStatus(),
         touBtnSelected: false
       };
       return state;
@@ -2358,7 +2360,7 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
-        unitBaselineBtnStatus: true
+        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus()
       };
       return state;
     },
@@ -3222,7 +3224,7 @@ let ChartStrategyFactor = {
           display: 'flex',
           'flex-direction': 'column',
           marginBottom: '20px'
-        }} className='jazz-energy-content'>
+        }}>
                        {subToolbar}
                        {historyCompareEl}
                        {dataSum}
