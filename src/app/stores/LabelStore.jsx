@@ -56,6 +56,18 @@ var LabelStore = assign({}, PrototypeStore, {
   getErrorCode() {
     return _errorCode;
   },
+  clearLabelStore() {
+    _isLoading = false;
+    _energyData = null;
+    _energyRawData = null;
+    _submitParams = null;
+    _paramsObj = null;
+    _tagOptions = null;
+    _labelingType = null;
+    _chartTitle = null;
+    _errorCode = null;
+    _errorMessage = null;
+  },
   _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
