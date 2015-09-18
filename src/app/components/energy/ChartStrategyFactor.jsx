@@ -320,7 +320,9 @@ let ChartStrategyFactor = {
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
+        step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
+        sumBtnStatus = false,
         chartType = widgetDto.ChartType;
 
       let wasTemp = !!viewOption.IncludeTempValue,
@@ -342,6 +344,9 @@ let ChartStrategyFactor = {
         original: 'rawdata'
       };
 
+      if (typeMap[chartType] === "rawdata" || typeMap[chartType] === "pie") {
+        sumBtnStatus = true;
+      }
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
@@ -351,18 +356,6 @@ let ChartStrategyFactor = {
           let end = j2d(timeRange.EndTime, false);
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
-      };
-      let convertWidgetOptions2TagOption = function(WidgetOptions) {
-        let tagOptions = [];
-        WidgetOptions.forEach(item => {
-          tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-          });
-        });
-        return tagOptions;
       };
 
       //init timeRange
@@ -374,8 +367,13 @@ let ChartStrategyFactor = {
 
       //init selected tags is done in the other part
 
-      analysisPanel.state.selectedChartType = typeMap[chartType];
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      analysisPanel.setState({
+        selectedChartType: typeMap[chartType],
+        sumBtnStatus: sumBtnStatus,
+        step: step
+      }, () => {
+        analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      });
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
     },
 
@@ -388,6 +386,7 @@ let ChartStrategyFactor = {
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
+        step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
         chartType = widgetDto.ChartType;
 
@@ -417,8 +416,8 @@ let ChartStrategyFactor = {
         touBtnSelected = true;
       }
 
-
       analysisPanel.setState({
+        step: step,
         selectedChartType: typeMap[chartType],
         touBtnStatus: CommodityStore.getECButtonStatus(),
         touBtnSelected: touBtnSelected
@@ -486,32 +485,13 @@ let ChartStrategyFactor = {
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
         }
       };
-      let convertWidgetOptions2TagOption = function(WidgetOptions) {
-        let tagOptions = [];
-        WidgetOptions.forEach(item => {
-          tagOptions.push({
-            hierId: item.HierId,
-            hierName: item.NodeName,
-            tagId: item.TargetId,
-            tagName: item.TargetName
-          });
-        });
-        return tagOptions;
-      };
+
 
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      //init selected tags
-      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      // let lastTagOption = tagOptions[tagOptions.length-1];
-      //
-      // CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
-      //
-      // tagOptions.forEach(item=>{
-      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
-      // });
+
       let bo = null;
       if (benchmarkOption && benchmarkOption.IndustryId !== null) {
         bo = benchmarkOption;
@@ -585,6 +565,7 @@ let ChartStrategyFactor = {
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
         viewOption = contentObj.viewOption,
+        step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
         unitType = viewOption.DataOption.UnitType,
         chartType = widgetDto.ChartType;
@@ -616,6 +597,7 @@ let ChartStrategyFactor = {
 
       setTimeout(() => {
         analysisPanel.setState({
+          step: step,
           unitType: unitType,
           benchmarkOption: bo,
           selectedChartType: typeMap[chartType],

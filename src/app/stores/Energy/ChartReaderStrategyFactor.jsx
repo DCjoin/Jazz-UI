@@ -660,11 +660,11 @@ let ChartReaderStrategyFactor = {
           obj.disableDelete = true;
           break;
         case 13:
-          obj.name = name + I18N.EM.Ratio.TargetValue;
+          obj.name = I18N.EM.Ratio.TargetValue;
           obj.disableDelete = true;
           break;
         case 14:
-          obj.name = name + I18N.EM.Ratio.BaseValue;
+          obj.name = I18N.EM.Ratio.BaseValue;
           obj.disableDelete = true;
           break;
         case 18:
