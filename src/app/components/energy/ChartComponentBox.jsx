@@ -12,6 +12,7 @@ import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 import ChartCmpStrategyFactor from './ChartCmpStrategyFactor.jsx';
+import ChartStatusStore from '../../stores/energy/ChartStatusStore.jsx';
 
 let {Dialog, FlatButton, Checkbox} = mui;
 let yAxisOffset = 70;
@@ -516,6 +517,8 @@ let ChartComponentBox = React.createClass({
     if (this.state.chartCmpStrategy.getLegendListFn) {
       this.state.chartCmpStrategy.getLegendListFn(newConfig);
     }
+
+    ChartStatusStore.assignStatus(newConfig);
 
     newConfig.tooltipSidePosition = true;
 

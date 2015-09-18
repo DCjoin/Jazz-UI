@@ -116,8 +116,8 @@ let EnergyStore = assign({}, PrototypeStore, {
     window.testObj._energyRawData = _energyRawData;
     //add this for test team end
 
+    ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
-    ChartStatusStore.onEnergyDataLoaded(data);
   },
   removeSeriesDataByUid(uid) {},
   //listners--------------------------------

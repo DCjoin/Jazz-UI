@@ -366,7 +366,7 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
-      ChartStatusAction.setWidgetDto(widgetDto);
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType);
     },
 
     initCostChartPanelByWidgetDto(analysisPanel) {
