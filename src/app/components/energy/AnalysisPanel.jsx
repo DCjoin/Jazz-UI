@@ -109,19 +109,7 @@ let AnalysisPanel = React.createClass({
       energyPart = this.state.chartStrategy.getChartComponentFn(me);
     }
 
-    var IconButtonElement = <IconButton iconClassName="icon-arrow-down"/>;
-    var iconMenuProps = {
-      iconButtonElement: IconButtonElement,
-      openDirection: "bottom-right",
-      desktop: true
-    };
-    let widgetOptMenu = this.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
-                            <MenuItem key={1} primaryText={'另存为'} />
-                            <MenuItem key={2} primaryText={'发送'} />
-                            <MenuItem key={3} primaryText={'共享'} />
-                            <MenuItem key={4} primaryText={'导出'} />
-                            <MenuItem key={5} primaryText={'删除'} />
-                         </IconMenu>;
+    let widgetOptMenu = this.state.chartStrategy.getWidgetOptMenuFn(me);
 
     let sourceUserNameEl = null;
     if (me.props.sourceUserName) {
