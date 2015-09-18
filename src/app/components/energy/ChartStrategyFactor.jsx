@@ -249,7 +249,7 @@ let ChartStrategyFactor = {
       onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initUnitCarbonStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitCarbonFitStepAndGetData',
-      getInitialStateFn: 'getUnitEnergyInitialState',
+      getInitialStateFn: 'getUnitCarbonInitialState',
       getAllDataFn: 'unitGetAllData',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn: 'unitCarbonDataLoad',
@@ -767,6 +767,7 @@ let ChartStrategyFactor = {
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+      let submitParams1 = EnergyStore.getSubmitParams();
       let paramsObj = EnergyStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges,
         step = paramsObj.step,
@@ -799,6 +800,12 @@ let ChartStrategyFactor = {
       let includeNavigatorData = !(chartType === 'pie' || chartType === 'rawdata');
       viewOption.IncludeNavigatorData = includeNavigatorData;
 
+      if(submitParams1 && submitParams1.viewOption){
+        let vo = submitParams1.viewOption;
+        if(vo.IncludeTempValue) viewOption.IncludeTempValue = vo.IncludeTempValue;
+        if(vo.IncludeHumidityValue) viewOption.IncludeTempValue = vo.IncludeHumidityValue;
+      }
+
       let bizMap = {
         Energy: 1,
         Unit: 2,
@@ -829,6 +836,9 @@ let ChartStrategyFactor = {
         };
         viewOption.PagingOrder = pagingOrder;
         chartType = 'original';
+      } else {
+        //assign status
+        widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       }
 
       submitParams.viewOption = viewOption;
@@ -2323,7 +2333,8 @@ let ChartStrategyFactor = {
         case 'stack':
           CarbonStore.initReaderStrategy('CarbonTrendReader');
           break;
-        case 'pie': CarbonStore.initReaderStrategy('CarbonPieReader');
+        case 'pie': 
+		  CarbonStore.initReaderStrategy('CarbonPieReader');
           break;
       }
     },
@@ -2367,7 +2378,18 @@ let ChartStrategyFactor = {
       return state;
     },
     getCarbonInitialState() {
-      let state = {};
+      let state = {
+        destination: 2,
+      };
+      return state;
+    },
+    getUnitCarbonInitialState() {
+      let state = {
+        destination: 2,
+        unitType: 2,
+        benchmarks: null,
+        benchmarkOption: null,
+      };
       return state;
     },
     getRankInitialState() {
@@ -3706,6 +3728,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
+      analysisPanel.state.benchmarks = null;
       analysisPanel.forceUpdate();
     },
     clearUnitCostChartData(analysisPanel) {
@@ -3717,6 +3740,7 @@ let ChartStrategyFactor = {
       analysisPanel._onUnitCostBaselineBtnDisabled();
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
+      analysisPanel.state.benchmarks = null;
       analysisPanel.forceUpdate();
     },
     clearUnitCarbonChartData(analysisPanel) {
@@ -3726,6 +3750,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.destination = 2;
       analysisPanel.state.benchmarkOption = null;
+      analysisPanel.state.benchmarks = null;
       analysisPanel.forceUpdate();
     },
     clearRatioChartData(analysisPanel) {
@@ -3735,6 +3760,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
+      analysisPanel.state.benchmarks = null;
       analysisPanel.forceUpdate();
     },
     clearLabelChartData(analysisPanel) {
