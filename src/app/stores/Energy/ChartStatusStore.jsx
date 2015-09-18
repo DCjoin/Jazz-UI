@@ -59,8 +59,21 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       }
     }
   },
-  modifySingleStatus(name, value, index) {
-    //
+  modifySingleStatus(id, name, value) {
+    if (_seriesStatus && _seriesStatus.length > 0) {
+      let me = this;
+      _seriesStatus.forEach(item => {
+        if (item.id === id) {
+          if (name === 'ChartType') {
+            item[name] = me.getNumByChartType(value);
+          } else {
+            item[name] = value;
+          }
+
+          return;
+        }
+      });
+    }
   },
   setWidgetDto(widgetDto, bizType, energyType) {
     _widgetDto = widgetDto;
@@ -102,6 +115,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       line: 1,
       column: 2,
       stack: 4,
+      stacking: 4,
       pie: 8,
       rawdata: 16,
       original: 16
@@ -125,10 +139,29 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       series.forEach((item, index) => {
         if (item.id && map[item.id]) {
           item.visible = map[item.id].IsDisplay;
-          item.type = chartTypeMap[map[item.id].ChartType];
+          if (map[item.id].ChartType === '4') {
+            item.type = 'column';
+            item.stacking = 'normal';
+          } else {
+            item.type = chartTypeMap[map[item.id].ChartType];
+            item.stacking = undefined;
+          }
         }
       });
     }
+  },
+  getWidgetSaveStatus() {
+    let status = [];
+    if (_seriesStatus && _seriesStatus.length > 0) {
+      _seriesStatus.forEach((item, index) => {
+        status.push({
+          IsDisplay: item.IsDisplay,
+          ChartType: item.ChartType,
+          SeriesType: item.SeriesType
+        });
+      });
+    }
+    return status;
   }
 });
 
@@ -136,6 +169,9 @@ ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.SET_WIDGETDTO:
       ChartStatusStore.setWidgetDto(action.widgetDto, action.bizType, action.energyType);
+      break;
+    case Action.MODIFY_SINGLE_STATUS:
+      ChartStatusStore.modifySingleStatus(action.id, action.name, action.value);
       break;
   }
 });
