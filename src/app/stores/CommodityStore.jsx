@@ -6,6 +6,7 @@ import assign from 'object-assign';
 import Commodity from '../constants/actionType/Commodity.jsx';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
+import Hierarchy from '../constants/actionType/Hierarchy.jsx';
 import LabelMenuAction from '../actions/LabelMenuAction.jsx';
 import Immutable from 'immutable';
 
@@ -21,6 +22,7 @@ const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
 let _energyConsumptionType = null, // Carbon or Cost
   _rankingECType = null, //Energy Carbon or Cost
   _hierNode = null,
+  _hierTree = null,
   _defaultHierNode = null,
   _currentHierId = null,
   _currentHierName = null,
@@ -138,21 +140,43 @@ var CommodityStore = assign({}, PrototypeStore, {
   getECButtonStatus: function() {
     return _buttonStatus_EC;
   },
-  setUCButtonStatus: function() {
-    if (_commodityStatus.size == 1) {
-      _commodityStatus.forEach(function(item) {
-        if (item.get('Id') != -1) {
-          _buttonStatus_UC = false;
-        } else {
-          _buttonStatus_UC = true;
+  findNodeTypeById: function(id) {
+    var type;
+    var f = function(item) {
+      if (item.Id == id) {
+        type = item.Type;
+      } else {
+        if (item.Children) {
+          item.Children.forEach(child => {
+            f(child);
+          });
         }
-      });
+      }
+    };
+    f(_hierTree);
+    return type;
+  },
+  setUCButtonStatus: function() {
+    var me = this;
 
-    } else {
+    if (_hierTree !== null) {
       _buttonStatus_UC = true;
-    }
+      if (me.findNodeTypeById(_currentHierId) == 2) {
+        if (_commodityStatus.size == 1) {
+          _commodityStatus.forEach(function(item) {
+            if (item.get('Id') != -1) {
+              _buttonStatus_UC = false;
+            }
+          });
 
-    this.emitUCButtonStatus();
+        }
+      }
+      this.emitUCButtonStatus();
+    }
+  },
+  onHierarchyDataLoaded: function(data) {
+    _hierTree = data;
+    this.setUCButtonStatus();
   },
   getUCButtonStatus: function() {
     return _buttonStatus_UC;
@@ -264,7 +288,7 @@ var CommodityStore = assign({}, PrototypeStore, {
         let contentSyntax = widgetDto.ContentSyntax;
         let contentObj = JSON.parse(contentSyntax);
         if (contentObj !== null) {
-          if (widgetDto.BizType == 'Cost') {
+          if (widgetDto.BizType == 'Cost' || widgetDto.BizType == 'UnitCost') {
             let viewAssociation = contentObj.viewAssociation;
             if (viewAssociation.HierarchyId !== null) {
               this.setCurrentHierarchyInfo(viewAssociation.HierarchyId, null);
@@ -379,7 +403,8 @@ var CommodityStore = assign({}, PrototypeStore, {
 
 let CommodityAction = Commodity.Action,
   AlarmTagAction = AlarmTag.Action,
-  FolderAction = Folder.Action;
+  FolderAction = Folder.Action,
+  HierarchyAction = Hierarchy.Action;
 CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case CommodityAction.SET_ENERGY_CONSUMPTION_TYPE:
@@ -429,7 +454,9 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.CREATE_FOLDER_OR_WIDGET:
       CommodityStore.createFolderOrWidget();
       break;
-
+    case HierarchyAction.LOAD_HIE_NODE:
+      CommodityStore.onHierarchyDataLoaded(action.hierarchyList);
+      break;
 
 
   }
