@@ -89,6 +89,8 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       } else {
         return 'Id' + target.TargetId + 'Type' + target.Type;
       }
+    } else if (_bizType === 'Unit' && _energyType === 'Energy') {
+      return 'Id' + target.TargetId + 'Type' + target.Type;
     }
     return '1';
   },
