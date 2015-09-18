@@ -29,7 +29,9 @@ import DeleteView from '../folder/operationView/DeleteView.jsx';
 import ShareView from '../folder/operationView/ShareView.jsx';
 import SendView from '../folder/operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
+import ExportView from '../folder/operationView/ExportView.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
+import ExportChartStore from '../../stores/Energy/ExportChartStore.jsx';
 
 
 let lastEnergyType = null;
@@ -67,17 +69,18 @@ let Setting = React.createClass({
     });
     this.refs.snackbar.show();
   },
-  _onExportWidgetSuccess: function() {
-    this.setState({
-      errorText: null
-    });
-  },
-  _onExportWidgetError: function() {
-    this.setState({
-      errorText: I18N.Folder.Export.Error
-    });
-    this.refs.snackbar.show();
-  },
+  // _onExportWidgetSuccess: function() {
+  //   this.setState({
+  //     errorText: null,
+  //     templateShow: false
+  //   });
+  // },
+  // _onExportWidgetError: function() {
+  //   this.setState({
+  //     errorText: I18N.Folder.Export.Error
+  //   });
+  //   this.refs.snackbar.show();
+  // },
   _onMoveItemSuccess: function() {
     this.setState({
       errorText: null
@@ -149,6 +152,7 @@ let Setting = React.createClass({
   },
   getTemplate: function() {
     var template;
+    var me = this;
     //for operation template
     if (this.state.templateNode) {
       if (this.state.templateNode.get('Type') == 6) {
@@ -178,8 +182,10 @@ let Setting = React.createClass({
             let path = '/Dashboard.svc/ExportWidget';
             let params = {
               widgetId: this.state.templateNode.get('Id')
-            }
-            ExportChartAction.getTagsData4Export(params, path);
+            };
+            template = <ExportView onDismiss={this._onTemplateDismiss} params={params} path={path}/>;
+            //ExportChartAction.getTagsData4Export(params, path);
+
             break;
           case 5:
             template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={false}/>;
@@ -241,8 +247,6 @@ let Setting = React.createClass({
     FolderStore.addSelectedNodeListener(this._onSelectedNodeChange);
     FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.addMoveItemErrorListener(this._onMoveItemError);
-    FolderStore.addExportWidgetErrorListener(this._onExportWidgetError);
-    FolderStore.addExportWidgetSuccessListener(this._onExportWidgetSuccess);
     WidgetStore.addChangeListener(this._handleWidgetSelectChange);
   },
   componentWillUnmount: function() {
@@ -253,8 +257,6 @@ let Setting = React.createClass({
     FolderStore.removeSelectedNodeListener(this._onSelectedNodeChange);
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
-    FolderStore.removeExportWidgetErrorListener(this._onExportWidgetError);
-    FolderStore.removeExportWidgetSuccessListener(this._onExportWidgetSuccess);
     WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
   },
   _handleWidgetSelectChange() {
