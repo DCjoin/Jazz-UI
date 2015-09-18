@@ -4,7 +4,8 @@ module.exports = {
   Action: keyMirror({
     SET_WIDGETDTO: null,
     CHART_STATUS_ENERGYDATA_LOADED: null,
-    MODIFY_SINGLE_STATUS: null
+    MODIFY_SINGLE_STATUS: null,
+    CLEAR_STATUS: null
   })
 
 };

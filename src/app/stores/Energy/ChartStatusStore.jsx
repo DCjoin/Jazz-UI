@@ -18,6 +18,9 @@ let _seriesStatus = null;
 let _chartType = null;
 
 let ChartStatusStore = assign({}, PrototypeStore, {
+  clearStatus() {
+    _seriesStatus = [];
+  },
   initStatus() {
     let me = this;
     _seriesStatus = [];
@@ -166,6 +169,8 @@ ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
     case Action.MODIFY_SINGLE_STATUS:
       ChartStatusStore.modifySingleStatus(action.id, action.name, action.value);
       break;
+    case Action.CLEAR_STATUS:
+      ChartStatusStore.clearStatus();
   }
 });
 
