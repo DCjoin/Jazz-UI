@@ -124,6 +124,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     };
     let series = newConfig.series;
     let map = {};
+    _seriesStatus = _seriesStatus || [];
     if (_seriesStatus && _seriesStatus.length > 0) {
       _seriesStatus.forEach((item, index) => {
         map[item.id] = item;
