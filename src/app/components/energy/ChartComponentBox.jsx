@@ -13,6 +13,7 @@ import AlarmAction from '../../actions/AlarmAction.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 import ChartCmpStrategyFactor from './ChartCmpStrategyFactor.jsx';
 import ChartStatusStore from '../../stores/energy/ChartStatusStore.jsx';
+import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 
 let {Dialog, FlatButton, Checkbox} = mui;
 let yAxisOffset = 70;
@@ -430,7 +431,8 @@ let ChartComponentBox = React.createClass({
       onDeleteAllButtonClick: that._onDeleteAllButtonClick,
       onIgnoreAlarmEvent: that.onIgnoreAlarmEvent,
       afterChartCreated: that._afterChartCreated,
-      onLegendItemClick: that._onLegendItemClick
+      onLegendItemClick: that._onLegendItemClick,
+      onSwitchChartTypeButtonClick: that._onSwitchChartTypeButtonClick
     };
     return <div style={{
         display: 'flex',
@@ -457,9 +459,14 @@ let ChartComponentBox = React.createClass({
       if (flagSerie) {
         flagSerie.setVisible();
       }
-
+      let options = seriesItem.options;
+      ChartStatusAction.modifySingleStatus(options.id, 'IsDisplay', seriesItem.visible);
     //this.hideOrDestroyOtherCommentPanel(true);//隐藏所有的comment panel
     }
+  },
+  _onSwitchChartTypeButtonClick(nextType, seriesItem) {
+    console.log(nextType, seriesItem);
+    ChartStatusAction.modifySingleStatus(seriesItem.options.id, 'ChartType', nextType);
   },
   _afterChartCreated(chartObj) {
     if (this.props.afterChartCreated) {
