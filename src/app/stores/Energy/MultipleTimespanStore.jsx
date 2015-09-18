@@ -89,12 +89,18 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
   },
   getMainDateRange() {
     let dateRange;
-    if (_relativeList === null || _relativeList.size === 0) {
-      dateRange = null;
+    if (_tempRelativeList === null || _tempRelativeList.size === 0) {
+      if (_relativeList === null || _relativeList.size === 0) {
+        dateRange = null;
+      } else {
+        let mainItem = _relativeList.get(0);
+        dateRange = [mainItem.get('startDate'), mainItem.get('endDate')];
+      }
     } else {
-      let mainItem = _relativeList.get(0);
+      let mainItem = _tempRelativeList.get(0);
       dateRange = [mainItem.get('startDate'), mainItem.get('endDate')];
     }
+
     return dateRange;
   },
   getDateByRelativeTypeAndValue: function(relativeType, relativeValue) {
