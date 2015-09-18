@@ -157,7 +157,7 @@ let ChartStrategyFactor = {
       getEnergyTypeComboFn: 'empty',
       getSelectedNodesFn: 'getSelectedTagList',
       onSearchDataButtonClickFn: 'onRatioSearchDataButtonClick',
-      onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
+      onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn: 'setRatioFitStepAndGetData',
       getInitialStateFn: 'getRatioInitialState',
@@ -249,7 +249,7 @@ let ChartStrategyFactor = {
       onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initUnitCarbonStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitCarbonFitStepAndGetData',
-      getInitialStateFn: 'getUnitEnergyInitialState',
+      getInitialStateFn: 'getUnitCarbonInitialState',
       getAllDataFn: 'unitGetAllData',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn: 'unitCarbonDataLoad',
@@ -323,6 +323,16 @@ let ChartStrategyFactor = {
         timeRanges = viewOption.TimeRanges,
         chartType = widgetDto.ChartType;
 
+      let wasTemp = !!viewOption.IncludeTempValue,
+        wasHumi = !!viewOption.IncludeHumidityValue,
+        weather = {
+          IncludeTempValue: wasTemp,
+          IncludeHumidityValue: wasHumi
+        };
+      analysisPanel.setState({
+        weatherOption: weather
+      });
+
       let typeMap = {
         Line: 'line',
         Column: 'column',
@@ -373,6 +383,8 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        bizType = widgetDto.BizType,
+        touBtnSelected = false,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
@@ -401,9 +413,18 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      analysisPanel.state.selectedChartType = typeMap[chartType];
-      analysisPanel._onTouBtnDisabled();
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      if (bizType == 'CostElectric') {
+        touBtnSelected = true;
+      }
+
+
+      analysisPanel.setState({
+        selectedChartType: typeMap[chartType],
+        touBtnStatus: CommodityStore.getECButtonStatus(),
+        touBtnSelected: touBtnSelected
+      }, () => {
+        analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      });
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -767,6 +788,7 @@ let ChartStrategyFactor = {
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
+      let submitParams1 = EnergyStore.getSubmitParams();
       let paramsObj = EnergyStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges,
         step = paramsObj.step,
@@ -799,6 +821,14 @@ let ChartStrategyFactor = {
       let includeNavigatorData = !(chartType === 'pie' || chartType === 'rawdata');
       viewOption.IncludeNavigatorData = includeNavigatorData;
 
+      if (submitParams1 && submitParams1.viewOption) {
+        let vo = submitParams1.viewOption;
+        if (vo.IncludeTempValue)
+          viewOption.IncludeTempValue = vo.IncludeTempValue;
+        if (vo.IncludeHumidityValue)
+          viewOption.IncludeTempValue = vo.IncludeHumidityValue;
+      }
+
       let bizMap = {
         Energy: 1,
         Unit: 2,
@@ -829,9 +859,6 @@ let ChartStrategyFactor = {
         };
         viewOption.PagingOrder = pagingOrder;
         chartType = 'original';
-      } else {
-        //assign status
-        widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       }
 
       submitParams.viewOption = viewOption;
@@ -1079,10 +1106,15 @@ let ChartStrategyFactor = {
       viewOption.DataUsageType = dataUsageType;
 
       submitParams.viewOption = viewOption;
+      if (analysisPanel.state.touBtnSelected) {
+        submitParams.isElec = true;
+      }
 
       //storeType part
       let storeType;
-      if (analysisPanel.state.selectedChartType === 'pie') {
+      if (analysisPanel.state.touBtnSelected) {
+        storeType = 'energy.CostElectricityUsage';
+      } else if (analysisPanel.state.selectedChartType === 'pie') {
         storeType = 'energy.CostUsageDistribution';
       } else {
         storeType = 'energy.CostUsage';
@@ -2348,7 +2380,7 @@ let ChartStrategyFactor = {
     },
     getCostInitialState() {
       let state = {
-        touBtnStatus: true,
+        touBtnStatus: CommodityStore.getECButtonStatus(),
         touBtnSelected: false
       };
       return state;
@@ -2358,7 +2390,7 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
-        unitBaselineBtnStatus: true
+        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus()
       };
       return state;
     },
@@ -2370,7 +2402,18 @@ let ChartStrategyFactor = {
       return state;
     },
     getCarbonInitialState() {
-      let state = {};
+      let state = {
+        destination: 2,
+      };
+      return state;
+    },
+    getUnitCarbonInitialState() {
+      let state = {
+        destination: 2,
+        unitType: 2,
+        benchmarks: null,
+        benchmarkOption: null,
+      };
       return state;
     },
     getRankInitialState() {
@@ -3222,7 +3265,7 @@ let ChartStrategyFactor = {
           display: 'flex',
           'flex-direction': 'column',
           marginBottom: '20px'
-        }} className='jazz-energy-content'>
+        }}>
                        {subToolbar}
                        {historyCompareEl}
                        {dataSum}
@@ -3709,6 +3752,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
+      analysisPanel.state.benchmarks = null;
       analysisPanel.forceUpdate();
     },
     clearUnitCostChartData(analysisPanel) {
@@ -3720,6 +3764,7 @@ let ChartStrategyFactor = {
       analysisPanel._onUnitCostBaselineBtnDisabled();
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
+      analysisPanel.state.benchmarks = null;
       analysisPanel.forceUpdate();
     },
     clearUnitCarbonChartData(analysisPanel) {
@@ -3729,6 +3774,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.destination = 2;
       analysisPanel.state.benchmarkOption = null;
+      analysisPanel.state.benchmarks = null;
       analysisPanel.forceUpdate();
     },
     clearRatioChartData(analysisPanel) {
@@ -3738,6 +3784,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
+      analysisPanel.state.benchmarks = null;
       analysisPanel.forceUpdate();
     },
     clearLabelChartData(analysisPanel) {
