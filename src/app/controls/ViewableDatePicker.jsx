@@ -99,10 +99,12 @@ var ViewableDatePicker = React.createClass({
   },
 
   getValue: function() {
-    if (this.refs.TextField) {
+    if (this.state.curDate) {
       var d = new Date(this.state.curDate);
       var m = moment(d).add(d.getTimezoneOffset() * -1 / 60, 'h');
       return m.toDate();
+    } else {
+      return null;
     }
   },
   setValue: function(value) {
