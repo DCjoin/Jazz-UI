@@ -157,7 +157,7 @@ let ChartStrategyFactor = {
       getEnergyTypeComboFn: 'empty',
       getSelectedNodesFn: 'getSelectedTagList',
       onSearchDataButtonClickFn: 'onRatioSearchDataButtonClick',
-      onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
+      onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn: 'setRatioFitStepAndGetData',
       getInitialStateFn: 'getRatioInitialState',
@@ -177,7 +177,7 @@ let ChartStrategyFactor = {
       handleStepChangeFn: 'handleRatioStepChange',
       save2DashboardFn: 'saveRatio2Dashboard',
       isCalendarDisabledFn: 'isCalendarDisabled',
-      onAnalysisPanelDidUpdateFn: 'onAnalysisPanelDidUpdate',
+      onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearRatioChartData',
     },
@@ -323,6 +323,16 @@ let ChartStrategyFactor = {
         timeRanges = viewOption.TimeRanges,
         chartType = widgetDto.ChartType;
 
+      let wasTemp = !!viewOption.IncludeTempValue,
+        wasHumi = !!viewOption.IncludeHumidityValue,
+        weather = {
+          IncludeTempValue: wasTemp,
+          IncludeHumidityValue: wasHumi
+        };
+      analysisPanel.setState({
+        weatherOption: weather
+      });
+
       let typeMap = {
         Line: 'line',
         Column: 'column',
@@ -366,13 +376,15 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
-      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType);
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
     },
 
     initCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        bizType = widgetDto.BizType,
+        touBtnSelected = false,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
@@ -401,9 +413,18 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      analysisPanel.state.selectedChartType = typeMap[chartType];
-      analysisPanel._onTouBtnDisabled();
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      if (bizType == 'CostElectric') {
+        touBtnSelected = true;
+      }
+
+
+      analysisPanel.setState({
+        selectedChartType: typeMap[chartType],
+        touBtnStatus: CommodityStore.getECButtonStatus(),
+        touBtnSelected: touBtnSelected
+      }, () => {
+        analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      });
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -800,10 +821,12 @@ let ChartStrategyFactor = {
       let includeNavigatorData = !(chartType === 'pie' || chartType === 'rawdata');
       viewOption.IncludeNavigatorData = includeNavigatorData;
 
-      if(submitParams1 && submitParams1.viewOption){
+      if (submitParams1 && submitParams1.viewOption) {
         let vo = submitParams1.viewOption;
-        if(vo.IncludeTempValue) viewOption.IncludeTempValue = vo.IncludeTempValue;
-        if(vo.IncludeHumidityValue) viewOption.IncludeTempValue = vo.IncludeHumidityValue;
+        if (vo.IncludeTempValue)
+          viewOption.IncludeTempValue = vo.IncludeTempValue;
+        if (vo.IncludeHumidityValue)
+          viewOption.IncludeTempValue = vo.IncludeHumidityValue;
       }
 
       let bizMap = {
@@ -836,9 +859,6 @@ let ChartStrategyFactor = {
         };
         viewOption.PagingOrder = pagingOrder;
         chartType = 'original';
-      } else {
-        //assign status
-        widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       }
 
       submitParams.viewOption = viewOption;
@@ -874,7 +894,7 @@ let ChartStrategyFactor = {
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
-      let submitParams1 = EnergyStore.getParamsObj(),
+      let submitParams1 = RatioStore.getSubmitParams(),
         timeRanges = submitParams1.viewOption.timeRanges,
         step = submitParams1.viewOption.step,
         ratioType = submitParams1.ratioType,
@@ -1086,10 +1106,15 @@ let ChartStrategyFactor = {
       viewOption.DataUsageType = dataUsageType;
 
       submitParams.viewOption = viewOption;
+      if (analysisPanel.state.touBtnSelected) {
+        submitParams.isElec = true;
+      }
 
       //storeType part
       let storeType;
-      if (analysisPanel.state.selectedChartType === 'pie') {
+      if (analysisPanel.state.touBtnSelected) {
+        storeType = 'energy.CostElectricityUsage';
+      } else if (analysisPanel.state.selectedChartType === 'pie') {
         storeType = 'energy.CostUsageDistribution';
       } else {
         storeType = 'energy.CostUsage';
@@ -1561,6 +1586,26 @@ let ChartStrategyFactor = {
 
       } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
         let paramsObj = EnergyStore.getParamsObj(),
+          step = paramsObj.step,
+          timeRanges = paramsObj.timeRanges,
+          as = analysisPanel.state;
+
+        if (analysisPanel.refs.ChartComponent) {
+          var chartCmp = analysisPanel.refs.ChartComponent,
+            chartObj = chartCmp.refs.highstock;
+
+          CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+          analysisPanel.setState({
+            isCalendarInited: true
+          });
+        }
+      }
+    },
+    onRatioAnalysisPanelDidUpdate(analysisPanel) {
+      if (analysisPanel.state.chartStrategy.isCalendarDisabledFn(analysisPanel)) { //不符合日历本景色条件的。
+
+      } else if (analysisPanel.state.energyRawData && !analysisPanel.state.isCalendarInited) {
+        let paramsObj = RatioStore.getParamsObj(),
           step = paramsObj.step,
           timeRanges = paramsObj.timeRanges,
           as = analysisPanel.state;
@@ -2333,8 +2378,7 @@ let ChartStrategyFactor = {
         case 'stack':
           CarbonStore.initReaderStrategy('CarbonTrendReader');
           break;
-        case 'pie': 
-		  CarbonStore.initReaderStrategy('CarbonPieReader');
+        case 'pie': CarbonStore.initReaderStrategy('CarbonPieReader');
           break;
       }
     },
@@ -2356,7 +2400,7 @@ let ChartStrategyFactor = {
     },
     getCostInitialState() {
       let state = {
-        touBtnStatus: true,
+        touBtnStatus: CommodityStore.getECButtonStatus(),
         touBtnSelected: false
       };
       return state;
@@ -2366,7 +2410,7 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
-        unitBaselineBtnStatus: true
+        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus()
       };
       return state;
     },
@@ -3241,7 +3285,7 @@ let ChartStrategyFactor = {
           display: 'flex',
           'flex-direction': 'column',
           marginBottom: '20px'
-        }} className='jazz-energy-content'>
+        }}>
                        {subToolbar}
                        {historyCompareEl}
                        {dataSum}
