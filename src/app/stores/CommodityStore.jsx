@@ -288,7 +288,7 @@ var CommodityStore = assign({}, PrototypeStore, {
         let contentSyntax = widgetDto.ContentSyntax;
         let contentObj = JSON.parse(contentSyntax);
         if (contentObj !== null) {
-          if (widgetDto.BizType == 'Cost' || widgetDto.BizType == 'UnitCost') {
+          if (widgetDto.BizType.indexOf('Cost') >= 0) {
             let viewAssociation = contentObj.viewAssociation;
             if (viewAssociation.HierarchyId !== null) {
               this.setCurrentHierarchyInfo(viewAssociation.HierarchyId, null);
