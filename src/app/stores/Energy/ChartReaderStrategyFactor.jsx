@@ -34,11 +34,23 @@ let ChartReaderStrategyFactor = {
       getSeriesInternalFn: 'getSeriesInternal',
       tagSeriesConstructorFn: 'costTagSeriesConstructor'
     },
+    UnitCostTrendReader: {
+      convertSingleTimeDataFn: 'convertSingleTimeData',
+      translateDateFn: 'translateDate',
+      getSeriesInternalFn: 'getSeriesInternal',
+      tagSeriesConstructorFn: 'unitCostTagSeriesConstructor'
+    },
     CarbonTrendReader: {
       convertSingleTimeDataFn: 'convertSingleTimeData',
       translateDateFn: 'translateDate',
       getSeriesInternalFn: 'getSeriesInternal',
       tagSeriesConstructorFn: 'carbonSeriesConstructor'
+    },
+    UnitCarbonTrendReader: {
+      convertSingleTimeDataFn: 'convertSingleTimeData',
+      translateDateFn: 'translateDate',
+      getSeriesInternalFn: 'getSeriesInternal',
+      tagSeriesConstructorFn: 'unitCarbonSeriesConstructor'
     },
     EnergyPieReader: {
       setItemByTargetFn: 'setItemByTarget',
@@ -210,27 +222,30 @@ let ChartReaderStrategyFactor = {
       item.option = {};
     },
     setCarbonItemByTarget(item, target) {
-      var name = '', disableDelete = false, uid = target.CommodityId,  tt = target.Type, graySerie = false;
+      var name = '',
+        disableDelete = false,
+        uid = target.CommodityId,
+        tt = target.Type,
+        graySerie = false;
       if (target.CommodityId < 1) {
-          name = I18N.EM.Total/*'总览'*/;
-          disableDelete = true;
+        name = I18N.EM.Total /*'总览'*/ ;
+        disableDelete = true;
       } else if (tt == 15) {
-          name = target.Name;
-          uid = 'benchmark';
-      }
-      else {
-          name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+        name = target.Name;
+        uid = 'benchmark';
+      } else {
+        name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
       if (tt === 13) {
-        item.name = name + I18N.EM.Ratio.TargetValue ;
+        item.name = name + I18N.EM.Ratio.TargetValue;
         item.disableDelete = true;
       } else if (target.Type === 14) {
-        item.name = name + I18N.EM.Ratio.BaseValue ;
+        item.name = name + I18N.EM.Ratio.BaseValue;
         item.disableDelete = true;
-      }else if (target.Type === 11) {
+      } else if (target.Type === 11) {
         item.name = name + I18N.EM.Ratio.CaculateValue /*I18N.Common.Glossary.Baseline'基准值'*/ ;
         item.disableDelete = true;
-      }else if (target.Type === 12) {
+      } else if (target.Type === 12) {
         item.name = name + I18N.EM.Ratio.RawValue /*I18N.Common.Glossary.Baseline'基准值'*/ ;
         item.disableDelete = true;
       }
@@ -240,55 +255,35 @@ let ChartReaderStrategyFactor = {
       item.uid = target.CommodityId;
     },
     setCostItemByTarget(item, target) {
-      var name = '', disableDelete = false, uid = target.CommodityId,  tt = target.Type, graySerie = false ;
+      var name = '',
+        disableDelete = false,
+        uid = target.CommodityId,
+        tt = target.Type;
+
       if (target.CommodityId < 1) {
-          name = I18N.EM.Total/*'总览'*/;
-          disableDelete = true;
-      } else if (tt == 15) {
-          name = target.Name;
-          uid = 'benchmark';
-      }
-      else {
-          name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+        name = I18N.EM.Total /*'总览'*/ ;
+        disableDelete = true;
+      } else {
+        name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
 
-      if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
-        if (target.Type === 6) {
-          name = I18N.EM.Plain /*'平时'*/ ;
-        } else if (target.Type === 7) {
-          name = I18N.EM.Peak /*'峰时'*/ ;
-        } else {
-          name = I18N.EM.Valley /*'谷时'*/ ;
-        }
-        item.name = name;
-        item.option = {
-          CommodityId: target.CommodityId
-        };
-        item.uid = target.CommodityId;
-        item.disableDelete = true;
+      switch (tt) {
+        case 13:
+          name = I18N.EM.Ratio.TargetValue;
+          disableDelete = true;
+          break;
+        case 14:
+          name = I18N.EM.Ratio.BaseValue;
+          disableDelete = true;
+          break;
+        default:
+          break;
       }
-      var uom = target.UomId < 1 ? '' : CommonFuns.getUomById(target.UomId).Code;
-      if (target.Type === 11) {
-          name = name + I18N.EM.Ratio.CaculateValue;
-      } else if (target.Type === 12) {
-          name = name + I18N.EM.Ratio.RawValue;
-          graySerie = true;
-          disableDelete = true;
-      } else if (target.Type === 14) {
-          name = name + I18N.EM.Ratio.BaseValue;
-          disableDelete = true;
-      } else if (target.Type === 14) {
-          name = name + I18N.EM.Ratio.BaseValue;
-          disableDelete = true;
-      }
-      return {
-          name: name,
-          uom: uom,
-          uid: uid,
-          dType: tt,
-          disableDelete: disableDelete,
-          option: { CommodityId: target.CommodityId },
-          graySerie: graySerie
+      item.name = name;
+      item.uid = uid;
+      item.disableDelete = disableDelete;
+      item.option = {
+        CommodityId: target.CommodityId
       };
     }
   },
@@ -665,19 +660,19 @@ let ChartReaderStrategyFactor = {
           obj.disableDelete = true;
           break;
         case 13:
-          obj.name = name + I18N.EM.Ratio.TargetValue ;
+          obj.name = name + I18N.EM.Ratio.TargetValue;
           obj.disableDelete = true;
           break;
         case 14:
-          obj.name = name + I18N.EM.Ratio.BaseValue ;
+          obj.name = name + I18N.EM.Ratio.BaseValue;
           obj.disableDelete = true;
           break;
         case 18:
-          obj.name = I18N.EM.Tool.Weather.Temperature /*+ I18N.EM.Ratio.BaseValue*/ ;
+          obj.name = I18N.EM.Tool.Weather.Temperature;
           obj.disableDelete = true;
           break;
         case 19:
-          obj.name = I18N.EM.Tool.Weather.Humidity /*+ I18N.EM.Ratio.BaseValue*/ ;
+          obj.name = I18N.EM.Tool.Weather.Humidity;
           obj.disableDelete = true;
           break;
         default: break;
@@ -687,161 +682,205 @@ let ChartReaderStrategyFactor = {
     carbonSeriesConstructor(target) {
       if (!target) return null;
       var name,
-          disableDelete = false,
-          tt = target.Type,
-          uid = target.CommodityId,
-          graySerie = false;
+        disableDelete = false,
+        tt = target.Type,
+        uid = target.CommodityId,
+        graySerie = false;
 
       if (target.CommodityId < 1) {
-          name = I18N.EM.Total/*'总览'*/;
-          disableDelete = true;
+        name = I18N.EM.Total /*'总览'*/ ;
+        disableDelete = true;
       } else if (tt == 15) {
-          name = target.Name;
-          uid = 'benchmark';
-      }
-      else {
-          name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+        name = target.Name;
+        uid = 'benchmark';
+      } else {
+        name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
 
       switch (tt) {
-          case 11:
-              name = name + I18N.EM.Ratio.CaculateValue;
-              break;
-          case 12:
-              name = name + I18N.EM.Ratio.RawValue;
-              graySerie = true;
-              disableDelete = true;
-              break;
-          case 13:
-              name = name + I18N.EM.Ratio.TargetValue;
-              disableDelete = true;
-              break;
-          case 14:
-              name = name + I18N.EM.Ratio.BaseValue;
-              disableDelete = true;
-              break;
+        case 11:
+          name = name;
+          break;
+        case 12:
+          name = name;
+          graySerie = true;
+          disableDelete = true;
+          break;
+        case 13:
+          name = name + I18N.EM.Ratio.TargetValue;
+          disableDelete = true;
+          break;
+        case 14:
+          name = name + I18N.EM.Ratio.BaseValue;
+          disableDelete = true;
+          break;
       }
       return {
-          name: name,
-          uid: uid,
-          dType: tt,
-          disableDelete: disableDelete,
-          option: { CommodityId: target.CommodityId },
-          graySerie: graySerie
+        name: name,
+        uid: uid,
+        dType: tt,
+        disableDelete: disableDelete,
+        option: {
+          CommodityId: target.CommodityId
+        },
+        graySerie: graySerie
+      };
+    },
+    unitCarbonSeriesConstructor(target) {
+      if (!target) return null;
+      var name,
+        disableDelete = false,
+        tt = target.Type,
+        uid = target.CommodityId,
+        graySerie = false;
+
+      if (target.CommodityId < 1) {
+        name = I18N.EM.Total /*'总览'*/ ;
+        disableDelete = true;
+      } else if (tt == 15) {
+        name = target.Name;
+        uid = 'benchmark';
+      } else {
+        name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+      }
+
+      switch (tt) {
+        case 11:
+          name = name + I18N.EM.Ratio.CaculateValue;
+          break;
+        case 12:
+          name = name + I18N.EM.Ratio.RawValue;
+          graySerie = true;
+          disableDelete = true;
+          break;
+        case 13:
+          name = name + I18N.EM.Ratio.TargetValue;
+          disableDelete = true;
+          break;
+        case 14:
+          name = name + I18N.EM.Ratio.BaseValue;
+          disableDelete = true;
+          break;
+      }
+      return {
+        name: name,
+        uid: uid,
+        dType: tt,
+        disableDelete: disableDelete,
+        option: {
+          CommodityId: target.CommodityId
+        },
+        graySerie: graySerie
       };
     },
     costTagSeriesConstructor(target) {
-      var obj = {
-        dType: target.Type,
-        name: target.Name,
-        uid: target.CommodityId,
-        option: {
-          commodityId: target.CommodityId
-        }
-      };
-      var name = target.Name || '';
+      if (!target) return null;
+      var name,
+        disableDelete = false,
+        disableHide = false,
+        tt = target.Type,
+        uid = target.CommodityId;
+
       if (target.CommodityId < 1) {
-        obj.name = I18N.EM.Total /*'总览'*/ ;
-        obj.disableDelete = true;
+        name = I18N.EM.Total /*'总览'*/ ;
+        disableDelete = true;
       } else {
-        obj.name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+        name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
-      switch (target.Type) {
+      switch (tt) {
         case 6:
-          obj.name = I18N.EM.Plain /*'平时'*/ ;
-          obj.disableHide = true;
-          obj.disableDelete = true;
-          //obj.uom = CommonFuns.getUomById(1).Code;
+          name = I18N.EM.Plain /*'平时'*/ ;
+          disableDelete = true;
+          disableHide = true;
           break;
         case 7:
           name = I18N.EM.Peak /*'峰时'*/ ;
-          obj.disableHide = true;
-          obj.disableDelete = true;
-          //obj.uom = CommonFuns.getUomById(1).Code;
+          disableDelete = true;
+          disableHide = true;
           break;
         case 8:
           name = I18N.EM.Valley /*'谷时'*/ ;
-          obj.disableHide = true;
-          obj.disableDelete = true;
-          //obj.uom = CommonFuns.getUomById(1).Code;
-          break;
-        case 11:
-          obj.name = obj.name + I18N.EM.Ratio.CaculateValue;
-          break;
-        case 12:
-          obj.name = obj.name + I18N.EM.Ratio.RawValue;
-          obj.disableDelete = true;
+          disableDelete = true;
+          disableHide = true;
           break;
         case 13:
-          obj.name = obj.name + name /*+ I18N.EM.Ratio.TargetValue*/ ;
-          obj.disableDelete = true;
+          name = I18N.EM.Ratio.TargetValue;
+          disableDelete = true;
+          disableHide = true;
+          disableDelete = true;
           break;
         case 14:
-          obj.name = obj.name + name /*+ I18N.EM.Ratio.BaseValue*/ ;
-          obj.disableDelete = true;
+          name = I18N.EM.Ratio.BaseValue;
+          disableDelete = true;
+          disableHide = true;
+          disableDelete = true;
+          break;
+        default:
+          break;
+      }
+      return {
+        name: name,
+        uid: uid,
+        dType: tt,
+        disableDelete: disableDelete,
+        disableHide: disableHide,
+        option: {
+          CommodityId: target.CommodityId
+        }
+      };
+    },
+    unitCostTagSeriesConstructor(target) {
+      if (!target) return null;
+      var name,
+        disableDelete = false,
+        tt = target.Type,
+        uid = target.CommodityId,
+        graySerie = false;
+
+
+      if (target.CommodityId < 1) {
+        name = I18N.EM.Total /*'总览'*/ ;
+        disableDelete = true;
+      } else {
+        name = CommonFuns.getCommodityById(target.CommodityId).Comment;
+      }
+      switch (tt) {
+        case 11:
+          name = name + I18N.EM.Ratio.CaculateValue;
+          break;
+        case 12:
+          name = name + I18N.EM.Ratio.RawValue;
+          graySerie = true;
+          disableDelete = true;
+          break;
+        case 13:
+          name = I18N.EM.Ratio.TargetValue;
+          disableDelete = true;
+          break;
+        case 14:
+          name = I18N.EM.Ratio.BaseValue;
+          disableDelete = true;
           break;
         case 15:
-          obj.name = name;
-          obj.uid = 'benchmark';
+          name = name;
+          uid = 'benchmark';
           break;
-        default: break;
+        default:
+          break;
       }
-      return obj;
+      return {
+        name: name,
+        uid: uid,
+        dType: tt,
+        disableDelete: disableDelete,
+        graySerie: graySerie,
+        option: {
+          CommodityId: target.CommodityId
+        }
+      };
     }
   },
 
-  //   if (target.Type === 6 || target.Type === 7 || target.Type === 8) {
-  //     if (target.Type === 6) {
-  //       name = I18N.EM.Plain /*'平时'*/ ;
-  //     } else if (target.Type === 7) {
-  //       name = I18N.EM.Peak /*'峰时'*/ ;
-  //     } else {
-  //       name = I18N.EM.Valley /*'谷时'*/ ;
-  //     }
-  //     return {
-  //       uom: CommonFuns.getUomById(1).Code,
-  //       name: name,
-  //       disableHide: true,
-  //       disableDelete: true,
-  //       uid: target.CommodityId
-  //     };
-  //   } else if (target.Type === 13 || target.Type === 14) {
-  //     if (target.Type === 13) {
-  //       name = target.Name /*I18N.Common.Glossary.Target'目标值'*/ ;
-  //     } else if (target.Type === 14) {
-  //       name = target.Name /*I18N.Common.Glossary.Baseline'基准值'*/ ;
-  //     }
-  //     return {
-  //       uom: CommonFuns.getUomById(1).Code,
-  //       name: name,
-  //       disableHide: true,
-  //       disableDelete: true,
-  //       uid: target.CommodityId
-  //     };
-  //   } else {
-  //     var disableDelete = false;
-  //     if (target.CommodityId < 1) {
-  //       name = I18N.EM.Total /*'总览'*/ ;
-  //       disableDelete = true;
-  //     } else {
-  //       name = CommonFuns.getCommodityById(target.CommodityId).Comment;
-  //     }
-  //
-  //     var uom = target.UomId < 1 ? '' : CommonFuns.getUomById(target.UomId).Code;
-  //     return {
-  //       dType: target.Type,
-  //       uom: uom,
-  //       name: name,
-  //       disableDelete: disableDelete,
-  //       uid: target.CommodityId,
-  //       option: {
-  //         CommodityId: target.CommodityId
-  //       }
-  //     };
-  //   }
-  // }
-
-  // },
   getStrategyByBizChartType(bizChartType) {
     return ChartReaderStrategyFactor.getStrategyByConfig(ChartReaderStrategyFactor.strategyConfiguration[bizChartType]);
   },

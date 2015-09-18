@@ -18,6 +18,7 @@ import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import CommodityAction from '../../actions/CommodityAction.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
+import ChartAction from '../../actions/ChartAction.jsx';
 import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 import StepSelector from './StepSelector.jsx';
@@ -82,14 +83,16 @@ let ChartStrategyFactor = {
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn: 'handleNavigatorChangeLoad',
       save2DashboardFn: 'save2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
+      clearChartDataFn: 'clearChartData',
+      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto',
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn: 'getCostSelectedTagList',
       onSearchDataButtonClickFn: 'onCostSearchDataButtonClick',
-      onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
+      onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initCostStoreByBizChartType',
       setFitStepAndGetDataFn: 'setCostFitStepAndGetData',
       getInitialStateFn: 'getCostInitialState',
@@ -113,6 +116,7 @@ let ChartStrategyFactor = {
       isCalendarDisabledFn: 'isCostCalendarDisabled',
       onAnalysisPanelDidUpdateFn: 'onCostAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
+      clearChartDataFn: 'clearCostChartData',
     },
     MultiIntervalDistribution: {
 
@@ -122,7 +126,7 @@ let ChartStrategyFactor = {
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn: 'getSelectedHierCommodityList',
       onSearchDataButtonClickFn: 'onCarbonSearchDataButtonClick',
-      onSearchBtnItemTouchTapFn: 'onCarbonSearchBtnItemTouchTap',
+      onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initCarbonStoreByBizChartType',
       setFitStepAndGetDataFn: 'setCarbonFitStepAndGetData',
       getInitialStateFn: 'getCarbonInitialState',
@@ -146,6 +150,7 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onCarbonAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       handleConfigBtnItemTouchTapFn: 'handleCarbonConfigBtnItemTouchTap',
+      clearChartDataFn: 'clearCarbonChartData',
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -174,13 +179,14 @@ let ChartStrategyFactor = {
       isCalendarDisabledFn: 'isCalendarDisabled',
       onAnalysisPanelDidUpdateFn: 'onAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
+      clearChartDataFn: 'clearRatioChartData',
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn: 'getSelectedTagList',
       onSearchDataButtonClickFn: 'onUnitEnergySearchDataButtonClick',
-      onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
+      onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initEnergyStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitEnergyFitStepAndGetData',
       getInitialStateFn: 'getUnitEnergyInitialState',
@@ -202,15 +208,16 @@ let ChartStrategyFactor = {
       initChartPanelByWidgetDtoFn: 'initUnitChartPanelByWidgetDto',
       handleCalendarChangeFn: 'handleCalendarChange',
       onAnalysisPanelDidUpdateFn: 'onAnalysisPanelDidUpdate',
-      isCalendarDisabledFn: 'isCalendarDisabled'
+      isCalendarDisabledFn: 'isCalendarDisabled',
+      clearChartDataFn: 'clearUnitChartData',
     },
     UnitCost: {
       searchBarGenFn: 'unitEnergySearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn: 'getCostSelectedTagList',
       onSearchDataButtonClickFn: 'onUnitCostSearchDataButtonClick',
-      onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
-      initEnergyStoreByBizChartTypeFn: 'initCostStoreByBizChartType',
+      onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
+      initEnergyStoreByBizChartTypeFn: 'initUnitCostStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitEnergyFitStepAndGetData',
       getInitialStateFn: 'getUnitEnergyInitialState',
       getAllDataFn: 'unitGetAllData',
@@ -232,14 +239,15 @@ let ChartStrategyFactor = {
       isCalendarDisabledFn: 'isCostCalendarDisabled',
       onAnalysisPanelDidUpdateFn: 'onCostAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
+      clearChartDataFn: 'clearUnitCostChartData',
     },
     UnitCarbon: {
       searchBarGenFn: 'unitEnergySearchBarGen',
       getEnergyTypeComboFn: 'getEnergyTypeCombo',
       getSelectedNodesFn: 'getSelectedHierCommodityList',
       onSearchDataButtonClickFn: 'onUnitCarbonSearchDataButtonClick',
-      onSearchBtnItemTouchTapFn: 'onSearchBtnItemTouchTap',
-      initEnergyStoreByBizChartTypeFn: 'initCarbonStoreByBizChartType',
+      onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
+      initEnergyStoreByBizChartTypeFn: 'initUnitCarbonStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitCarbonFitStepAndGetData',
       getInitialStateFn: 'getUnitEnergyInitialState',
       getAllDataFn: 'unitGetAllData',
@@ -261,6 +269,7 @@ let ChartStrategyFactor = {
       isCalendarDisabledFn: 'isCarbonCalendarDisabled',
       onAnalysisPanelDidUpdateFn: 'onCarbonAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
+      clearChartDataFn: 'clearUnitCarbonChartData',
     },
     Label: {
       searchBarGenFn: 'labelSearchBarGen',
@@ -279,7 +288,8 @@ let ChartStrategyFactor = {
       onEnergyTypeChangeFn: 'empty',
       onHierNodeChangeFn: 'onHierNodeChange',
       save2DashboardFn: 'saveLabel2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initLabelChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initLabelChartPanelByWidgetDto',
+      clearChartDataFn: 'clearLabelChartData',
     },
     Rank: {
       searchBarGenFn: 'rankSearchBarGen',
@@ -298,7 +308,8 @@ let ChartStrategyFactor = {
       onEnergyTypeChangeFn: 'onEnergyTypeChange',
       getChartSubToolbarFn: 'getRankSubToolbar',
       save2DashboardFn: 'saveRank2Dashboard',
-      initChartPanelByWidgetDtoFn: 'initRankChartPanelByWidgetDto'
+      initChartPanelByWidgetDtoFn: 'initRankChartPanelByWidgetDto',
+      clearChartDataFn: 'clearRankChartData',
     }
   },
   initChartPanelByWidgetDtoFnStrategy: {
@@ -357,6 +368,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType);
     },
+
     initCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -620,8 +632,8 @@ let ChartStrategyFactor = {
         } else {
           monthIndex = month + 1;
         }
-        analysisPanel.refs.monthSelector.setState({
-          selectedIndex: monthIndex
+        analysisPanel.setState({
+          month: monthIndex
         });
       };
       let convertWidgetOptions2TagOption = function(WidgetOptions) {
@@ -706,6 +718,47 @@ let ChartStrategyFactor = {
         });
       });
     }
+  },
+  initAlarmChartPanelByWidgetDtoFnStrategy: {
+    initAlarmChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        timeRanges = widgetDto.timeRange;
+
+      // let typeMap = {
+        //   Line: 'line',
+        //   Column: 'column',
+        //   Stack: 'stack',
+        //   Pie: 'pie',
+        //   DataTable: 'rawdata',
+        //   original: 'rawdata'
+        // };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          let start = timeRange.StartTime;
+          let end = timeRange.EndTime;
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+      if (timeRanges.length !== 1) {
+        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
+      }
+
+      //init selected tags is done in the other part
+
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.setState({
+        step: widgetDto.step
+      });
+      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+    },
   },
   save2DashboardFnStrategy: {
     save2Dashboard(analysisPanel) {
@@ -1074,7 +1127,7 @@ let ChartStrategyFactor = {
 
       };
       //time range part
-      let relativeDate = EnergyStore.getRelativeDate();
+      let relativeDate = CostStore.getRelativeDate();
       if (relativeDate !== 'Customerize') {
         widgetTimeRanges = [{
           relativeDate: relativeDate
@@ -1359,7 +1412,7 @@ let ChartStrategyFactor = {
       };
       submitParams.viewOption = viewOption;
 
-      var energyType = analysisPanel.state.analysisPanel;
+      var energyType = analysisPanel.state.energyType;
       var api = '';
 
       if (energyType === "Energy") {
@@ -1588,6 +1641,7 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         step: step
       });
+      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
     },
     handleCarbonStepChange(analysisPanel, step) {
@@ -1713,7 +1767,8 @@ let ChartStrategyFactor = {
   },
   getChartSubToolbarFnStrategy: {
     getEnergySubToolbar(analysisPanel) {
-      var toolElement;
+      var toolElement,
+        clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column', 'stack', 'pie', 'rawdata']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
@@ -1733,7 +1788,7 @@ let ChartStrategyFactor = {
                <div style={{
           display: 'inline-block',
           marginLeft: '30px'
-        }}>{I18N.EM.Tool.ClearChart}</div>
+        }}>{clearChartBtnEl}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -1751,7 +1806,7 @@ let ChartStrategyFactor = {
                <div style={{
           display: 'inline-block',
           marginLeft: '30px'
-        }}>{I18N.EM.Tool.ClearChart}</div>
+        }}>{clearChartBtnEl}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -1769,7 +1824,7 @@ let ChartStrategyFactor = {
                <div style={{
           display: 'inline-block',
           marginLeft: '30px'
-        }}>{I18N.EM.Tool.ClearChart}</div>
+        }}>{clearChartBtnEl}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -1777,7 +1832,8 @@ let ChartStrategyFactor = {
       return toolElement;
     },
     getCostSubToolbar(analysisPanel) {
-      var toolElement;
+      var toolElement,
+        clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column', 'stack', 'pie']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
@@ -1798,7 +1854,7 @@ let ChartStrategyFactor = {
                <div style={{
           display: 'inline-block',
           marginLeft: '30px'
-        }}>{I18N.EM.Tool.ClearChart}</div>
+        }}>{clearChartBtnEl}</div>
              </div>
            </div>;
       } else if (chartType === 'pie') {
@@ -1815,14 +1871,15 @@ let ChartStrategyFactor = {
                <div style={{
           display: 'inline-block',
           marginLeft: '30px'
-        }}>{I18N.EM.Tool.ClearChart}</div>
+        }}>{clearChartBtnEl}</div>
              </div>
            </div>;
       }
       return toolElement;
     },
     getCarbonSubToolbar(analysisPanel) {
-      var toolElement;
+      var toolElement,
+        clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column', 'stack', 'pie']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
@@ -1857,7 +1914,7 @@ let ChartStrategyFactor = {
                <div style={{
           display: 'inline-block',
           marginLeft: '30px'
-        }}>{I18N.EM.Tool.ClearChart}</div>
+        }}>{clearChartBtnEl}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -1876,7 +1933,7 @@ let ChartStrategyFactor = {
                <div style={{
           display: 'inline-block',
           marginLeft: '30px'
-        }}>{I18N.EM.Tool.ClearChart}</div>
+        }}>{clearChartBtnEl}</div>
              </div>
              <BaselineCfg  ref="baselineCfg"/>
            </div>;
@@ -1884,7 +1941,8 @@ let ChartStrategyFactor = {
       return toolElement;
     },
     getUnitEnergySubToolbar(analysisPanel) {
-      var toolElement;
+      var toolElement,
+        clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
@@ -1903,7 +1961,7 @@ let ChartStrategyFactor = {
              <div style={{
         display: 'inline-block',
         marginLeft: '30px'
-      }}>{I18N.EM.Tool.ClearChart}</div>
+      }}>{clearChartBtnEl}</div>
            </div>
            <BaselineCfg  ref="baselineCfg"/>
          </div>;
@@ -1911,7 +1969,8 @@ let ChartStrategyFactor = {
       return toolElement;
     },
     getUnitCostSubToolbar(analysisPanel) {
-      var toolElement;
+      var toolElement,
+        clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
@@ -1930,14 +1989,15 @@ let ChartStrategyFactor = {
              <div style={{
         display: 'inline-block',
         marginLeft: '30px'
-      }}>{I18N.EM.Tool.ClearChart}</div>
+      }}>{clearChartBtnEl}</div>
            </div>
          </div>;
 
       return toolElement;
     },
     getUnitCarbonSubToolbar(analysisPanel) {
-      var toolElement;
+      var toolElement,
+        clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let menuItems = ConstStore.getCarbonTypeItem();
@@ -1970,7 +2030,7 @@ let ChartStrategyFactor = {
              <div style={{
         display: 'inline-block',
         marginLeft: '30px'
-      }}>{I18N.EM.Tool.ClearChart}</div>
+      }}>{clearChartBtnEl}</div>
            </div>
            <BaselineCfg  ref="baselineCfg"/>
          </div>;
@@ -1978,7 +2038,8 @@ let ChartStrategyFactor = {
       return toolElement;
     },
     getRatioSubToolbar(analysisPanel) {
-      var toolElement;
+      var toolElement,
+        clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
@@ -1997,7 +2058,7 @@ let ChartStrategyFactor = {
              <div style={{
         display: 'inline-block',
         marginLeft: '30px'
-      }}>{I18N.EM.Tool.ClearChart}</div>
+      }}>{clearChartBtnEl}</div>
            </div>
            <BaselineCfg  ref="baselineCfg"/>
          </div>;
@@ -2006,7 +2067,8 @@ let ChartStrategyFactor = {
     },
     getRankSubToolbar(analysisPanel) {
       var energyType = analysisPanel.state.energyType;
-      var toolElement;
+      var toolElement,
+        clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       var carbonTypeBtn = null;
       if (energyType === 'Carbon') {
         carbonTypeBtn = <DropDownMenu selectedIndex={analysisPanel.state.destination - 2} menuItems={ConstStore.getCarbonTypeItem()} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>;
@@ -2032,7 +2094,7 @@ let ChartStrategyFactor = {
            <div style={{
         display: 'inline-block',
         marginLeft: '30px'
-      }}>{I18N.EM.Tool.ClearChart}</div>
+      }}>{clearChartBtnEl}</div>
          </div>
        </div>;
       return toolElement;
@@ -2249,6 +2311,10 @@ let ChartStrategyFactor = {
           break;
       }
     },
+    initUnitCostStoreByBizChartType(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      CostStore.initReaderStrategy('UnitCostTrendReader');
+    },
     initCarbonStoreByBizChartType(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
       switch (chartType) {
@@ -2257,10 +2323,13 @@ let ChartStrategyFactor = {
         case 'stack':
           CarbonStore.initReaderStrategy('CarbonTrendReader');
           break;
-        case 'pie':
-          CarbonStore.initReaderStrategy('CarbonPieReader');
+        case 'pie': CarbonStore.initReaderStrategy('CarbonPieReader');
           break;
       }
+    },
+    initUnitCarbonStoreByBizChartType(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      CostStore.initReaderStrategy('UnitCarbonTrendReader');
     },
   },
 
@@ -2674,7 +2743,6 @@ let ChartStrategyFactor = {
   },
   onSearchBtnItemTouchTapFnStrategy: {
     onSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
-
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
         analysisPanel.setState({
           selectedChartType: nextChartType
@@ -2697,8 +2765,7 @@ let ChartStrategyFactor = {
         });
       }
     },
-    onCarbonSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
-
+    onCostSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
         analysisPanel.setState({
           selectedChartType: nextChartType
@@ -2820,7 +2887,7 @@ let ChartStrategyFactor = {
   },
   searchBarGenFnStrategy: {
     energySearchBarGen(analysisPanel) {
-      var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
+      var chartTypeCmp = analysisPanel.props.isFromAlarm ? null : analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
       return <div className={'jazz-alarm-chart-toolbar'}>
@@ -2985,46 +3052,7 @@ let ChartStrategyFactor = {
       var YearSelect = <YearPicker {...yearProps}/>;
       var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
       var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
-      var monthItem = [{
-        value: 13,
-        text: I18N.DateTimeFormat.HighFormat.FullYear
-      }, {
-        value: 1,
-        text: '01'
-      }, {
-        value: 2,
-        text: '02'
-      }, {
-        value: 3,
-        text: '03'
-      }, {
-        value: 4,
-        text: '04'
-      }, {
-        value: 5,
-        text: '05'
-      }, {
-        value: 6,
-        text: '06'
-      }, {
-        value: 7,
-        text: '07'
-      }, {
-        value: 8,
-        text: '08'
-      }, {
-        value: 9,
-        text: '09'
-      }, {
-        value: 10,
-        text: '10'
-      }, {
-        value: 11,
-        text: '11'
-      }, {
-        value: 12,
-        text: '12'
-      }];
+      var monthItem = ConstStore.getLabelMonth();
       return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
@@ -3338,6 +3366,7 @@ let ChartStrategyFactor = {
       return energyPart;
     },
     getLabelChartComponent(analysisPanel) {
+      let clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       let energyPart;
       let chartCmpObj = {
         ref: 'ChartComponent',
@@ -3363,7 +3392,7 @@ let ChartStrategyFactor = {
                          <div style={{
         display: 'inline-block',
         marginLeft: '30px'
-      }}>{I18N.EM.Tool.ClearChart}</div>
+      }}>{clearChartBtnEl}</div>
                        </div>
                      </div>;
                      <LabelChartComponent ref="chartComponent" {...analysisPanel.state.paramsObj} {...chartCmpObj}/>
@@ -3635,6 +3664,95 @@ let ChartStrategyFactor = {
       LabelStore.removeLabelDataLoadedListener(analysisPanel._onLabelDataChange);
       LabelStore.removeLabelDataLoadErrorListener(analysisPanel._onGetLabelDataError);
     }
+  },
+  clearChartDataFnStrategy: {
+    clearChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
+      //CommodityStore.resetHierInfo();
+      TagStore.clearTagStatus();
+      EnergyStore.clearEnergyStore();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.weatherOption = null;
+      analysisPanel.forceUpdate();
+    },
+    clearCarbonChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
+      //CommodityStore.resetHierInfo();
+      CommodityStore.clearCommodityStatus()
+      CarbonStore.clearCarbonStore();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.destination = 2;
+      analysisPanel.state.step = null;
+      analysisPanel.forceUpdate();
+    },
+    clearCostChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
+      //CommodityStore.resetHierInfo();
+      CostStore.clearCostStore();
+      CommodityStore.clearCommodityStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.touBtnSelected = false;
+      analysisPanel.forceUpdate();
+    },
+    clearUnitChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
+      //CommodityStore.resetHierInfo();
+      TagStore.clearTagStatus();
+      EnergyStore.clearEnergyStore();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.benchmarkOption = null;
+      analysisPanel.forceUpdate();
+    },
+    clearUnitCostChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
+      //CommodityStore.resetHierInfo();
+      CostStore.clearCostStore();
+      CommodityStore.clearCommodityStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.touBtnSelected = false;
+      analysisPanel.state.benchmarkOption = null;
+      analysisPanel.forceUpdate();
+    },
+    clearUnitCarbonChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
+      //CommodityStore.resetHierInfo();
+      CommodityStore.clearCommodityStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.destination = 2;
+      analysisPanel.state.benchmarkOption = null;
+      analysisPanel.forceUpdate();
+    },
+    clearRatioChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
+      //CommodityStore.resetHierInfo();
+      TagStore.clearTagStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.benchmarkOption = null;
+      analysisPanel.forceUpdate();
+    },
+    clearRankingChartData(analysisPanel) {
+      analysisPanel.state.energyData = null;
+      analysisPanel.state.energyRawData = null;
+      CommodityStore.clearRankingTreeList();
+      CommodityStore.clearCommodityStatus();
+      TagStore.clearTagStatus();
+      analysisPanel.state.selectedChartType = 'line';
+      analysisPanel.state.step = null;
+      analysisPanel.state.benchmarkOption = null;
+      analysisPanel.forceUpdate();
+    },
   },
   exportChartFnStrategy: {
     exportChart(analysisPanel) {
@@ -3914,6 +4032,10 @@ let ChartStrategyFactor = {
                          {typeItems}
                       </IconMenu>;
     return widgetOptMenu;
+  },
+  getClearChartBtn(analysisPanel) {
+    var btn = <RaisedButton label={I18N.EM.Tool.ClearChart} onClick={analysisPanel.state.chartStrategy.clearChartDataFn.bind(analysisPanel, analysisPanel)}/>;
+    return btn;
   },
   getSearchBtn(analysisPanel) {
     var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}/>;
