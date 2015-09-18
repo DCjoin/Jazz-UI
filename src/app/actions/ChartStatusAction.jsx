@@ -7,8 +7,14 @@ let ChartStatusAction = {
   initStatus() {
     //
   },
-  modifySingleStatus() {
+  modifySingleStatus(id, name, value) {
     //
+    AppDispatcher.dispatch({
+      type: Action.MODIFY_SINGLE_STATUS,
+      id: id,
+      name: name,
+      value: value
+    });
   },
   setWidgetDto(widgetDto, bizType, energyType) {
     AppDispatcher.dispatch({
