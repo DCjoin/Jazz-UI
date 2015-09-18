@@ -89,12 +89,18 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
   },
   getMainDateRange() {
     let dateRange;
-    if (_relativeList === null || _relativeList.size === 0) {
-      dateRange = null;
+    if (_tempRelativeList === null || _tempRelativeList.size === 0) {
+      if (_relativeList === null || _relativeList.size === 0) {
+        dateRange = null;
+      } else {
+        let mainItem = _relativeList.get(0);
+        dateRange = [mainItem.get('startDate'), mainItem.get('endDate')];
+      }
     } else {
-      let mainItem = _relativeList.get(0);
+      let mainItem = _tempRelativeList.get(0);
       dateRange = [mainItem.get('startDate'), mainItem.get('endDate')];
     }
+
     return dateRange;
   },
   getDateByRelativeTypeAndValue: function(relativeType, relativeValue) {
@@ -334,7 +340,7 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
     } else {
       //当第一次修改自定义时间的时候，默认将另一个修改为相应的数值
       let oldItem = _tempRelativeList.get(compareIndex);
-      if (oldItem.get(startDate)) {
+      if (oldItem.get('startDate')) {
 
       } else {
         let mainRange = this.getMainDateRange();
