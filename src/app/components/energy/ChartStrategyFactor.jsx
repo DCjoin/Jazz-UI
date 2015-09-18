@@ -329,7 +329,9 @@ let ChartStrategyFactor = {
           IncludeTempValue: wasTemp,
           IncludeHumidityValue: wasHumi
         };
-      analysisPanel.setState({weatherOption: weather});
+      analysisPanel.setState({
+        weatherOption: weather
+      });
 
       let typeMap = {
         Line: 'line',
@@ -374,13 +376,15 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
-      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType);
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
     },
 
     initCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        bizType = widgetDto.BizType,
+        touBtnSelected = false,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
@@ -409,9 +413,18 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      analysisPanel.state.selectedChartType = typeMap[chartType];
-      analysisPanel._onTouBtnDisabled();
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      if (bizType == 'CostElectric') {
+        touBtnSelected = true;
+      }
+
+
+      analysisPanel.setState({
+        selectedChartType: typeMap[chartType],
+        touBtnStatus: CommodityStore.getECButtonStatus(),
+        touBtnSelected: touBtnSelected
+      }, () => {
+        analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      });
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -808,10 +821,12 @@ let ChartStrategyFactor = {
       let includeNavigatorData = !(chartType === 'pie' || chartType === 'rawdata');
       viewOption.IncludeNavigatorData = includeNavigatorData;
 
-      if(submitParams1 && submitParams1.viewOption){
+      if (submitParams1 && submitParams1.viewOption) {
         let vo = submitParams1.viewOption;
-        if(vo.IncludeTempValue) viewOption.IncludeTempValue = vo.IncludeTempValue;
-        if(vo.IncludeHumidityValue) viewOption.IncludeTempValue = vo.IncludeHumidityValue;
+        if (vo.IncludeTempValue)
+          viewOption.IncludeTempValue = vo.IncludeTempValue;
+        if (vo.IncludeHumidityValue)
+          viewOption.IncludeTempValue = vo.IncludeHumidityValue;
       }
 
       let bizMap = {
@@ -2363,8 +2378,7 @@ let ChartStrategyFactor = {
         case 'stack':
           CarbonStore.initReaderStrategy('CarbonTrendReader');
           break;
-        case 'pie':
-		  CarbonStore.initReaderStrategy('CarbonPieReader');
+        case 'pie': CarbonStore.initReaderStrategy('CarbonPieReader');
           break;
       }
     },
