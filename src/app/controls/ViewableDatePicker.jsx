@@ -44,7 +44,7 @@ var ViewableDatePicker = React.createClass({
         curDate: nextProps.defaultValue
       });
     }
-    if (this.props.defaultTime !== nextProps.defaultTime || this.state.curTime !== nextProps.defaultTime) {
+    if (this.props.defaultTime !== nextProps.defaultTime) {
       this.setState({
         curTime: nextProps.defaultTime
       });
