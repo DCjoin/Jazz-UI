@@ -53,7 +53,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
             IsDisplay: true,
             SeriesType: target.Type
           };
-          status.ChartType = this.getNumByChartType(this.getChartTypeFromWidgetChartType(_widgetDto.ChartType) || 'line');
+          status.ChartType = this.getNumByChartType('line');
           _seriesStatus.push(status);
         }
       }
@@ -109,9 +109,26 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     return map[chartType];
   },
   assignStatus(newConfig) {
-    //
+    let chartTypeMap = {
+      1: 'line',
+      2: 'column',
+      4: 'stack',
+      8: 'pie'
+    };
     let series = newConfig.series;
+    let map = {};
+    if (_seriesStatus && _seriesStatus.length > 0) {
+      _seriesStatus.forEach((item, index) => {
+        map[item.id] = item;
+      });
 
+      series.forEach((item, index) => {
+        if (item.id && map[item.id]) {
+          item.visible = map[item.id].IsDisplay;
+          item.type = chartTypeMap[map[item.id].ChartType];
+        }
+      });
+    }
   }
 });
 
