@@ -487,9 +487,9 @@ let ChartReaderStrategyFactor = {
         });
       }
 
-      if (returndata.length > 1) {
-        returndata[0].disableDelete = true;
-      }
+      //if (returndata.length > 1) {
+      returndata[0].enableDelete = false;
+      //}
 
       return {
         Data: returndata,
