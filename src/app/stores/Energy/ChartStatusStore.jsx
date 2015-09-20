@@ -7,7 +7,6 @@ import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/ChartStatus.jsx';
 
-let _chartSeriesStatus = null;
 let _energyData = null;
 let _submitParams = null;
 let _widgetDto = null;
@@ -80,7 +79,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     }
   },
   getSeriesStatus() {
-    return _chartSeriesStatus;
+    return _seriesStatus;
   },
   getIdByTarget(target) {
     if (_bizType === 'Energy' && _energyType === 'Energy') {
@@ -117,6 +116,15 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     };
     return map[chartType];
   },
+  getChartTypeByNum(num) {
+    let chartTypeMap = {
+      1: 'line',
+      2: 'column',
+      4: 'stack',
+      8: 'pie'
+    };
+    return chartTypeMap[num];
+  },
   assignStatus(newConfig) {
     let chartTypeMap = {
       1: 'line',
@@ -124,6 +132,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       4: 'stack',
       8: 'pie'
     };
+    let me = this;
     let series = newConfig.series;
     let map = {};
     _seriesStatus = _seriesStatus || [];
@@ -147,7 +156,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
           id: item.id,
           IsDisplay: true,
           SeriesType: item.dType,
-          ChartType: item.type
+          ChartType: me.getNumByChartType(item.type)
         });
       }
     });
