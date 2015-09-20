@@ -180,6 +180,7 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearRatioChartData',
+      initChartPanelByWidgetDtoFn: 'initRatioChartPanelByWidgetDto',
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -465,7 +466,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
-    initUnitChartPanelByWidgetDto(analysisPanel) {
+    initRatioChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
@@ -503,15 +504,6 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      //init selected tags
-      // let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      // let lastTagOption = tagOptions[tagOptions.length-1];
-      //
-      // CommodityAction.setCurrentHierarchyInfo(lastTagOption.hierId,lastTagOption.hierName);
-      //
-      // tagOptions.forEach(item=>{
-      //   setTimeout(()=>{AlarmTagAction.addSearchTagList(item);});
-      // });
       let bo = null;
       if (benchmarkOption && benchmarkOption.IndustryId !== null) {
         bo = benchmarkOption;
@@ -521,6 +513,56 @@ let ChartStrategyFactor = {
         analysisPanel.setState({
           unitType: unitType,
           benchmarkOption: bo
+        }, () => {
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
+          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+        });
+      });
+    },
+    initUnitChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        benchmarkOption = contentObj.benchmarkOption,
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges,
+        unitType = viewOption.DataOption.UnitType,
+        dest = contentObj.destination,
+        chartType = widgetDto.ChartType;
+      CarbonStore.setDestination(dest);
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+      };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+
+      let bo = null;
+      if (benchmarkOption && benchmarkOption.IndustryId !== null) {
+        bo = benchmarkOption;
+      }
+
+      setTimeout(() => {
+        analysisPanel.setState({
+          unitType: unitType,
+          benchmarkOption: bo,
+          selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
