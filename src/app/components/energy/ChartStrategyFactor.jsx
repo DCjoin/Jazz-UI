@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
 import assign from "object-assign";
+import Immutable from 'immutable';
 import _ from 'lodash';
 import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu } from 'material-ui';
 import BaselineCfg from '../setting/BaselineCfg.jsx';
@@ -41,6 +42,8 @@ import SumWindow from './energy/SumWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import MultiTimespanAction from '../../actions/MultiTimespanAction.jsx';
 import CalendarManager from './CalendarManager.jsx';
+import WidgetSaveWindow from './WidgetSaveWindow.jsx';
+import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -87,7 +90,8 @@ let ChartStrategyFactor = {
       initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
       clearChartDataFn: 'clearChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto'
+      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto',
+      getWidgetSaveWindowFn: 'getAlarmWidgetSaveWindow'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -2037,7 +2041,8 @@ let ChartStrategyFactor = {
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       let ratioType = analysisPanel.state.ratioType;
       let minStep = 2; //HOUR 1, DAY 2, Week 5, Month 3, Year 4
-      if(ratioType == 2) minStep = 5;
+      if (ratioType == 2)
+        minStep = 5;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
@@ -2244,8 +2249,7 @@ let ChartStrategyFactor = {
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
-      let ratioType =
-      toolElement = <div style={{
+      let ratioType = toolElement = <div style={{
         display: 'flex'
       }}>
            <div style={{
@@ -4281,6 +4285,13 @@ let ChartStrategyFactor = {
       params.charTypes = charTypes;
       ExportChartAction.getTagsData4Export(params, path);
     },
+  },
+  getWidgetSaveWindowFnStrategy: {
+    getAlarmWidgetSaveWindow: function(analysisPanel) {
+      let widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={analysisPanel.onWidgetSaveWindowDismiss} chartTitle={analysisPanel.props.chartTitle}
+      tagOption={analysisPanel.state.tagOption} contentSyntax={analysisPanel.state.contentSyntax}></WidgetSaveWindow>;
+      return widgetWd
+    }
   },
   getChartTypeIconMenu(analysisPanel, types) {
     let menuMap = {

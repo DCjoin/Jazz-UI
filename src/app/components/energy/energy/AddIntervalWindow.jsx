@@ -149,8 +149,9 @@ let TimespanItem = React.createClass({
     let dateSelector = this.refs.dateTimeSelector,
       dateRange = dateSelector.getDateTime(),
       startDate = dateRange.start,
-      endDate = dateRange.end;
-    MultiTimespanAction.handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate);
+      endDate = dateRange.end,
+      _isStart = dateSelector.getTimeType();
+    MultiTimespanAction.handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate, _isStart);
   },
 });
 
