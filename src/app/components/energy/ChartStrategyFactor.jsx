@@ -183,7 +183,8 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearRatioChartData',
-      getWidgetOptMenuFn: 'getWidgetOptMenu'
+      initChartPanelByWidgetDtoFn: 'initRatioChartPanelByWidgetDto',
+      getWidgetOptMenuFn: 'getWidgetOptMenu',
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -506,7 +507,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
-    initUnitChartPanelByWidgetDto(analysisPanel) {
+    initRatioChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
@@ -516,7 +517,7 @@ let ChartStrategyFactor = {
         viewOption = contentObj.viewOption,
         step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
-        unitType = viewOption.DataOption.UnitType;
+        ratioType = viewOption.DataOption.RatioType;
 
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
@@ -534,7 +535,6 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-
       let bo = null;
       if (benchmarkOption && benchmarkOption.IndustryId !== null) {
         bo = benchmarkOption;
@@ -545,8 +545,58 @@ let ChartStrategyFactor = {
       setTimeout(() => {
         analysisPanel.setState({
           step: step,
-          unitType: unitType,
+          ratioType: RatioType,
           benchmarkOption: bo
+        }, () => {
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.ratioTypeCombo, unitType);
+          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+        });
+      });
+    },
+    initUnitChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        benchmarkOption = contentObj.benchmarkOption,
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges,
+        unitType = viewOption.DataOption.UnitType,
+        dest = contentObj.destination,
+        chartType = widgetDto.ChartType;
+      CarbonStore.setDestination(dest);
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+      };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+
+      let bo = null;
+      if (benchmarkOption && benchmarkOption.IndustryId !== null) {
+        bo = benchmarkOption;
+      }
+
+      setTimeout(() => {
+        analysisPanel.setState({
+          unitType: unitType,
+          benchmarkOption: bo,
+          selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
@@ -3103,7 +3153,7 @@ let ChartStrategyFactor = {
        </div>
        <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
-         <DropDownMenu menuItems={ratios} style={{
+         <DropDownMenu ref='ratioTypeCombo' menuItems={ratios} style={{
           width: '102px',
           marginRight: '10px'
         }} onChange={(e, selectedIndex, menuItem) => {

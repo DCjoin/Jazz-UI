@@ -52,7 +52,7 @@ let SumWindow = React.createClass({
           end = moment(endDate).format(I18N.DateTimeFormat.IntervalFormat.FullDay) + ' ' + I18N.EM.Clock24Minute0;
       }
       else{
-        end = moment(endTime).format(I18N.DateTimeFormat.IntervalFormat.FullMinute);
+        end = moment(endDate).format(I18N.DateTimeFormat.IntervalFormat.FullMinute);
       }
       var label = start + ' ' + I18N.EM.To + ' ' + end;
       return label;
