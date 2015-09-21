@@ -310,11 +310,13 @@ let ChartComponentBox = React.createClass({
     step: React.PropTypes.number,
     startTime: React.PropTypes.string,
     endTime: React.PropTypes.string,
-    chartType: React.PropTypes.string
+    chartType: React.PropTypes.string,
+    chartTooltipHasTotal: React.PropTypes.bool
   },
   getDefaultProps() {
     return {
-      chartType: 'line'
+      chartType: 'line',
+      chartTooltipHasTotal: false
     };
   },
   componentWillMount() {
@@ -438,9 +440,9 @@ let ChartComponentBox = React.createClass({
         display: 'flex',
         flex: 1
       }}>
-                <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
-                {dialog}
-             </div>;
+          <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
+          {dialog}
+       </div>;
   },
   _onLegendItemClick(obj) {
     var event = obj.event,
@@ -528,6 +530,9 @@ let ChartComponentBox = React.createClass({
     ChartStatusStore.assignStatus(newConfig);
 
     newConfig.tooltipSidePosition = true;
+    if (this.props.chartTooltipHasTotal) {
+      newConfig.chartTooltipHasTotal = true;
+    }
 
     return newConfig;
 

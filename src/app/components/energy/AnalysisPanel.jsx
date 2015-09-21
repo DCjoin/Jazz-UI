@@ -109,19 +109,7 @@ let AnalysisPanel = React.createClass({
       energyPart = this.state.chartStrategy.getChartComponentFn(me);
     }
 
-    var IconButtonElement = <IconButton iconClassName="icon-arrow-down"/>;
-    var iconMenuProps = {
-      iconButtonElement: IconButtonElement,
-      openDirection: "bottom-right",
-      desktop: true
-    };
-    let widgetOptMenu = this.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
-                            <MenuItem key={1} primaryText={'另存为'} />
-                            <MenuItem key={2} primaryText={'发送'} />
-                            <MenuItem key={3} primaryText={'共享'} />
-                            <MenuItem key={4} primaryText={'导出'} />
-                            <MenuItem key={5} primaryText={'删除'} />
-                         </IconMenu>;
+    let widgetOptMenu = this.state.chartStrategy.getWidgetOptMenuFn(me);
 
     let sourceUserNameEl = null;
     if (me.props.sourceUserName) {
@@ -1239,6 +1227,24 @@ let AnalysisPanel = React.createClass({
       chartObj = chartCmp.refs.highstock.getPaper();
 
     return chartObj;
+  },
+  getChartTooltiphasTotal(data) {
+    let hasTotal = true;
+    if (data.TargetEnergyData && data.TargetEnergyData.length > 1) {
+      var targetEnergyData = data.TargetEnergyData,
+        targetP, targetN;
+
+      for (var i = 0, len = targetEnergyData.length; i < len - 1; i++) {
+        targetP = targetEnergyData[i].Target;
+        targetN = targetEnergyData[i + 1].Target;
+
+        if (targetP.CommodityId != targetN.CommodityId || targetP.Uom != targetN.Uom || targetN.Type == 13 || targetN.Type == 12 || targetN.Type == 14) {
+          hasTotal = false;
+          break;
+        }
+      }
+    }
+    return hasTotal;
   }
 });
 

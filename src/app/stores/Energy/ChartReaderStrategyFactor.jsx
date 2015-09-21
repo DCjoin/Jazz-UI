@@ -481,15 +481,15 @@ let ChartReaderStrategyFactor = {
         }
         returndata.push({
           name: startStr + "<br/>" + endStr,
-          uid: timeRange.StartTime,
+          uid: timeRange.StartTime + timeRange.EndTime,
           option: obj1,
           data: arr
         });
       }
 
-      if (returndata.length > 1) {
-        returndata[0].disableDelete = true;
-      }
+      //if (returndata.length > 1) {
+      returndata[0].enableDelete = false;
+      //}
 
       return {
         Data: returndata,
@@ -660,11 +660,11 @@ let ChartReaderStrategyFactor = {
           obj.disableDelete = true;
           break;
         case 13:
-          obj.name = name + I18N.EM.Ratio.TargetValue;
+          obj.name = I18N.EM.Ratio.TargetValue;
           obj.disableDelete = true;
           break;
         case 14:
-          obj.name = name + I18N.EM.Ratio.BaseValue;
+          obj.name = I18N.EM.Ratio.BaseValue;
           obj.disableDelete = true;
           break;
         case 18:

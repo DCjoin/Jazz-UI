@@ -9,6 +9,7 @@ import {dateType} from '../constants/AlarmConstants.jsx';
 import {Action} from '../constants/actionType/Energy.jsx';
 import ReaderFuncs from './MixedChartReader.jsx';
 import CommonFuns from '../util/Util.jsx';
+import ChartStatusStore from './energy/ChartStatusStore.jsx'
 
 const RATIO_DATA_LOADING_EVENT = 'ratiodataloadingevent',
       RATIO_DATA_LOADED_EVENT = 'ratiodataloadedevent',
@@ -97,6 +98,7 @@ var RatioStore = assign({},PrototypeStore,{
     window.testObj._energyRawData = _energyRawData;
     //add this for test team end
 
+    ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _energyData = Immutable.fromJS(ReaderFuncs.convert(data, obj));
   },
   /*

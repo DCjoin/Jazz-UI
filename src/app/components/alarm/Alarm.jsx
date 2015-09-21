@@ -28,6 +28,7 @@ let Alarm = React.createClass({
     }
   },
   _onItemClick: function(date, step, tagOption) {
+    let me = this;
     let dateArray = AlarmAction.getDateByStep(date, step);
     let timeRange = [{
       StartTime: dateArray[0],
@@ -47,12 +48,18 @@ let Alarm = React.createClass({
     }
     var _chartTitle = tagName + uom + '能耗报警';
     this.setState({
-      widgetDto: {
-        timeRange: timeRange,
-        step: step
-      },
-      title: _chartTitle
+      refreshAnalysisPanel: true
+    }, () => {
+      me.setState({
+        widgetDto: {
+          timeRange: timeRange,
+          step: step
+        },
+        title: _chartTitle,
+        refreshAnalysisPanel: false
+      });
     });
+
     if (!this.state.showDataSelectPanelButton) {
       this.setState({
         showDataSelectPanelButton: true
@@ -65,6 +72,7 @@ let Alarm = React.createClass({
       showDataSelectPanelButton: false,
       widgetDto: null,
       title: null,
+      refreshAnalysisPanel: false
     };
   },
   render() {
@@ -84,15 +92,19 @@ let Alarm = React.createClass({
       dataSelectPanel = <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm" defaultStatus={false}></DataSelectPanel>;
     }
     if (me.state.title) {
-      let mainPanelProps = {
-        chartTitle: me.state.title,
-        bizType: 'Energy',
-        energyType: 'Energy',
-        widgetDto: me.state.widgetDto,
-        isFromAlarm: true
-      };
+      if (me.state.refreshAnalysisPanel) {
+        mainPanel = null;
+      } else {
+        let mainPanelProps = {
+          chartTitle: me.state.title,
+          bizType: 'Energy',
+          energyType: 'Energy',
+          widgetDto: me.state.widgetDto,
+          isFromAlarm: true
+        };
 
-      mainPanel = <AnalysisPanel {...mainPanelProps}></AnalysisPanel>;
+        mainPanel = <AnalysisPanel {...mainPanelProps}></AnalysisPanel>;
+      }
     }
 
     return (
