@@ -371,8 +371,8 @@ let ChartPanel = React.createClass({
         <MenuItem primaryText="数据求和" value='sum'/>
         <ExtendableMenuItem primaryText="日历背景色" value='background'>
           <Menu>
-            <MenuItem primaryText="非工作时间" value='noneWorkTime'/>
-            <MenuItem primaryText="冷暖季" value='hotColdSeason'/>
+            <MenuItem primaryText="非工作时间" value='work'/>
+            <MenuItem primaryText="冷暖季" value='hc'/>
           </Menu>
         </ExtendableMenuItem>
         <ExtendableMenuItem primaryText="天气信息" value='weather'>

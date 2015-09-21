@@ -1075,11 +1075,11 @@ let AnalysisPanel = React.createClass({
   getCalenderBgBtnEl: function() {
     let calendarSubItems = [{
       primaryText: I18N.EM.Tool.Calendar.NoneWorkTime,
-      value: 'noneWorkTime'
+      value: 'work'
     },
       {
         primaryText: I18N.EM.Tool.Calendar.HotColdSeason,
-        value: 'hotColdSeason'
+        value: 'hc'
       }];
     let calendarEl;
     let isCalendarDisabled = this.state.chartStrategy.isCalendarDisabledFn(this);

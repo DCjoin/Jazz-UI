@@ -78,6 +78,10 @@ let JazzApp = React.createClass({
         isLangLoaded: true
       }, () => {
         var url = window.location.toLocaleString();
+        let subUrl = url.split('#');
+        if (subUrl.length === 2 && subUrl[1].indexOf('main/') > -1) {
+          return;
+        }
         if (url.indexOf('menutype=energy') > -1) {
           me.replaceWith('setting', {
             lang: lang
