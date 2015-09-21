@@ -571,6 +571,7 @@ let ChartStrategyFactor = {
         benchmarkOption = contentObj.benchmarkOption,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
+        step = viewOption.Step,
         unitType = viewOption.DataOption.UnitType,
         dest = contentObj.destination,
         chartType = widgetDto.ChartType;
@@ -605,6 +606,7 @@ let ChartStrategyFactor = {
         analysisPanel.setState({
           unitType: unitType,
           benchmarkOption: bo,
+          step: step,
           selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
@@ -2464,7 +2466,7 @@ let ChartStrategyFactor = {
     },
     initUnitCarbonStoreByBizChartType(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
-      CostStore.initReaderStrategy('UnitCarbonTrendReader');
+      CarbonStore.initReaderStrategy('UnitCarbonTrendReader');
     },
   },
 
@@ -3980,10 +3982,28 @@ let ChartStrategyFactor = {
         nodeNameAssociation: nodeNameAssociation
       };
 
-      let seriesNumber = CostStore.getEnergyData().get('Data').size;
       let charTypes = [];
+
+      let seriesNumber = CostStore.getEnergyData().get('Data').size;
+      let seriesStatusArray = ChartStatusStore.getSeriesStatus();
+      let sslength = seriesStatusArray.length;
       for (let i = 0; i < seriesNumber; i++) {
-        charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
+        let curChartType;
+        if (i < sslength) {
+          let serie = seriesStatusArray[i];
+          if (serie) {
+            if (serie.IsDisplay) {
+              curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
+            } else {
+              curChartType = null;
+            }
+          } else {
+            curChartType = chartType;
+          }
+        } else {
+          curChartType = chartType;
+        }
+        charTypes.push(curChartType);
       }
       params.charTypes = charTypes;
       ExportChartAction.getTagsData4Export(params, path);
@@ -4129,10 +4149,27 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = CostStore.getEnergyData().get('Data').size;
+      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
       let charTypes = [];
+      let seriesStatusArray = ChartStatusStore.getSeriesStatus();
+      let sslength = seriesStatusArray.length;
       for (let i = 0; i < seriesNumber; i++) {
-        charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
+        let curChartType;
+        if (i < sslength) {
+          let serie = seriesStatusArray[i];
+          if (serie) {
+            if (serie.IsDisplay) {
+              curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
+            } else {
+              curChartType = null;
+            }
+          } else {
+            curChartType = chartType;
+          }
+        } else {
+          curChartType = chartType;
+        }
+        charTypes.push(curChartType);
       }
       params.charTypes = charTypes;
 

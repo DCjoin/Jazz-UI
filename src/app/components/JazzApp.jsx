@@ -10,11 +10,6 @@ import keyMirror from 'keymirror';
 
 let {Route, DefaultRoute, RouteHandler, Link, Navigation, State} = Router;
 
-window.REM = {};
-window.REM.popupNotes = function(msg) {
-  window.alert(msg);
-};
-
 let JazzApp = React.createClass({
   mixins: [Navigation, State],
   childContextTypes: {
@@ -79,39 +74,32 @@ let JazzApp = React.createClass({
     var me = this;
     var afterLoadLang = function(b) {
       window.I18N = b;
-      var url = window.location.toLocaleString();
-      if (url.indexOf('menutype=energy') > -1) {
-        me.replaceWith('setting', {
-          lang: lang
-        });
-      // me.replaceWith('map', {
-      //   lang: lang
-      // });
-      } else {
-        me.replaceWith('alarm', {
-          lang: lang
-        });
-      // me.replaceWith('map', {
-      //   lang: lang
-      // });
-      }
-      me._setHighchartConfig();
-    //me.transitionTo('main',{lang:lang});
+      me.setState({
+        isLangLoaded: true
+      }, () => {
+        var url = window.location.toLocaleString();
+        if (url.indexOf('menutype=energy') > -1) {
+          me.replaceWith('setting', {
+            lang: lang
+          });
+        } else {
+          me.replaceWith('alarm', {
+            lang: lang
+          });
+        }
+        me._setHighchartConfig();
+      });
     };
 
     if (!lang) {
       lang = window.navigator.language.toLowerCase();
-      //this.setState({shouldRender : true});
       this.replaceWith('app', {
         lang: lang
       });
     }
-    //afterLoadLang(I18N);
-
-    //return;
 
     if (lang.toLowerCase() == 'en-us') {
-      require(['../lang/zh-cn.js'], afterLoadLang); //should be changed when support english
+      require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
     } else {
       require(['../lang/zh-cn.js'], afterLoadLang);
     }
@@ -131,22 +119,22 @@ let JazzApp = React.createClass({
   },
   getInitialState: function() {
     return {
-      shouldRender: false,
-      loading: false
+      loading: false,
+      isLangLoaded: false
     };
   },
   render: function() {
-    // if(!this.state.shouldRender){
-    //     return (<div><RouteHandler {...this.props} ajax={this.state.ajaxCommon}  /></div>);
-    // }
     var loading = null;
     if (this.state.loading) {
       loading = ''; //(<AjaxDialog ref="ajax" />);
     }
-
+    let mainPanel = null;
+    if (this.state.isLangLoaded) {
+      mainPanel = <RouteHandler {...this.props} showLoading={this._showLoading} hideLoading={this._hideLoading} showError={this._showError} />;
+    }
     return (
       <div className="jazz-app">
-              <RouteHandler {...this.props} showLoading={this._showLoading} hideLoading={this._hideLoading} showError={this._showError} />
+              {mainPanel}
               {loading}
               <GlobalErrorMessageDialog ref='globalErrorMessageDialog'/>
           </div>
