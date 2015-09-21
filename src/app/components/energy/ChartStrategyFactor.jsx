@@ -506,6 +506,8 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
     },
     initRatioChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -517,7 +519,13 @@ let ChartStrategyFactor = {
         viewOption = contentObj.viewOption,
         step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
+        chartType = widgetDto.ChartType,
         ratioType = viewOption.DataOption.RatioType;
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+      };
 
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
@@ -530,7 +538,6 @@ let ChartStrategyFactor = {
         }
       };
 
-
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
@@ -540,18 +547,19 @@ let ChartStrategyFactor = {
         bo = benchmarkOption;
       }
 
-      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
-
       setTimeout(() => {
         analysisPanel.setState({
           step: step,
-          ratioType: RatioType,
-          benchmarkOption: bo
+          ratioType: ratioType,
+          benchmarkOption: bo,
+          selectedChartType: typeMap[chartType]
         }, () => {
-          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.ratioTypeCombo, unitType);
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.ratioTypeCombo, ratioType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       });
+
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
     },
     initUnitChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -652,6 +660,8 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       });
+
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
     },
     initUnitCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -975,9 +985,10 @@ let ChartStrategyFactor = {
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
       let submitParams1 = RatioStore.getSubmitParams(),
-        timeRanges = submitParams1.viewOption.timeRanges,
-        step = submitParams1.viewOption.step,
+        timeRanges = submitParams1.viewOption.TimeRanges,
+        step = submitParams1.viewOption.Step,
         ratioType = submitParams1.ratioType,
+        benchmarkOption = submitParams1.benchmarkOption || null,
         widgetTimeRanges;
 
       //submitParams part
@@ -1014,29 +1025,8 @@ let ChartStrategyFactor = {
       let dataUsageType = bizMap[analysisPanel.props.bizType];
       viewOption.DataUsageType = dataUsageType;
 
-      if (chartType === 'rawdata') {
-        let dataOption = {
-          RatioType: ratioType,
-          OriginalValue: true,
-          WithoutAdditionalValue: true
-        };
-        viewOption.DataOption = dataOption;
-
-        let pagingObj = analysisPanel.refs.ChartComponent.getPageObj();
-        let pagingOrder = {
-          PageSize: 20,
-          PageIdx: pagingObj.pageIdx,
-          Order: {
-            Column: 1,
-            Type: 0
-          },
-          PreviousEndTime: null,
-          Operation: 1
-        };
-        viewOption.PagingOrder = pagingOrder;
-      }
-
       submitParams.viewOption = viewOption;
+      submitParams.benchmarkOption = benchmarkOption;
 
       //storeType part
       let storeType;
@@ -1061,6 +1051,7 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       FolderAction.updateWidgetDtos(widgetDto);
     },
     saveUnit2Dashboard(analysisPanel) {
@@ -2917,6 +2908,7 @@ let ChartStrategyFactor = {
       }
     },
     onCostSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
+      ChartStatusAction.clearStatus();
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
         analysisPanel.setState({
           selectedChartType: nextChartType
@@ -2929,7 +2921,7 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       }
-    }
+    },
   },
   setFitStepAndGetDataFnStrategy: {
     setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel, clearWeatherflag) {
