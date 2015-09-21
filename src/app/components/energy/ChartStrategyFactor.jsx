@@ -3362,7 +3362,8 @@ let ChartStrategyFactor = {
           energyData: analysisPanel.state.energyData,
           energyRawData: analysisPanel.state.energyRawData,
           onDeleteButtonClick: analysisPanel._onDeleteButtonClick,
-          onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick
+          onDeleteAllButtonClick: analysisPanel._onDeleteAllButtonClick,
+          chartTooltipHasTotal: analysisPanel.getChartTooltiphasTotal(analysisPanel.state.energyRawData)
         };
         energyPart = <div style={{
           flex: 1,
