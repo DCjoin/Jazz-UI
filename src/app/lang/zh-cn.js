@@ -46,6 +46,11 @@ I18N.MainMenu.User = '用户管理';
 I18N.MainMenu.DeviceTemplate = '台账模板';
 I18N.MainMenu.ParameterTemplate = '参数模板';
 
+I18N.MainMenu.Map = '地图';
+I18N.MainMenu.Alarm = '报警';
+I18N.MainMenu.Energy = '能源';
+I18N.MainMenu.report = '报告';
+
 I18N.Login = {};
 I18N.Login.UserName = '用户名';
 I18N.Login.Password = '密码';
