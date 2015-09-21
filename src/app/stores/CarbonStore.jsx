@@ -6,7 +6,8 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import CommonFuns from './../util/Util.jsx';
 import ActionTypes from './../constants/actionType/Carbon.jsx';
-import ChartReaderStrategyFactor from './energy/ChartReaderStrategyFactor.jsx';
+import ChartReaderStrategyFactor from './Energy/ChartReaderStrategyFactor.jsx';
+import ChartStatusStore from './energy/ChartStatusStore.jsx'
 
 let _isLoading = false,
   _carbonData = null,
@@ -147,6 +148,7 @@ let CarbonStore = assign({}, PrototypeStore, {
     window.testObj._carbonRawData = _carbonRawData;
     //add this for test team end
 
+    ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _carbonData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
   removeSeriesDataByUid(uid) {},
