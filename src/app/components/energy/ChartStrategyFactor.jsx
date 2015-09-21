@@ -183,7 +183,8 @@ let ChartStrategyFactor = {
       onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearRatioChartData',
-      getWidgetOptMenuFn: 'getWidgetOptMenu'
+      initChartPanelByWidgetDtoFn: 'initRatioChartPanelByWidgetDto',
+      getWidgetOptMenuFn: 'getWidgetOptMenu',
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -506,7 +507,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = typeMap[chartType];
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
-    initUnitChartPanelByWidgetDto(analysisPanel) {
+    initRatioChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
@@ -516,7 +517,7 @@ let ChartStrategyFactor = {
         viewOption = contentObj.viewOption,
         step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
-        unitType = viewOption.DataOption.UnitType;
+        ratioType = viewOption.DataOption.RatioType;
 
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
@@ -534,6 +535,57 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
+      let bo = null;
+      if (benchmarkOption && benchmarkOption.IndustryId !== null) {
+        bo = benchmarkOption;
+      }
+
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+
+      setTimeout(() => {
+        analysisPanel.setState({
+          step: step,
+          ratioType: RatioType,
+          benchmarkOption: bo
+        }, () => {
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.ratioTypeCombo, unitType);
+          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+        });
+      });
+    },
+    initUnitChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        benchmarkOption = contentObj.benchmarkOption,
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges,
+        unitType = viewOption.DataOption.UnitType,
+        dest = contentObj.destination,
+        chartType = widgetDto.ChartType;
+      CarbonStore.setDestination(dest);
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+      };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
 
       let bo = null;
       if (benchmarkOption && benchmarkOption.IndustryId !== null) {
@@ -542,9 +594,9 @@ let ChartStrategyFactor = {
 
       setTimeout(() => {
         analysisPanel.setState({
-          step: step,
           unitType: unitType,
-          benchmarkOption: bo
+          benchmarkOption: bo,
+          selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
@@ -1081,6 +1133,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+
+      widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
+
       FolderAction.updateWidgetDtos(widgetDto);
     },
     saveCost2Dashboard(analysisPanel) {
@@ -3098,7 +3153,7 @@ let ChartStrategyFactor = {
        </div>
        <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
-         <DropDownMenu menuItems={ratios} style={{
+         <DropDownMenu ref='ratioTypeCombo' menuItems={ratios} style={{
           width: '102px',
           marginRight: '10px'
         }} onChange={(e, selectedIndex, menuItem) => {
@@ -3880,8 +3935,25 @@ let ChartStrategyFactor = {
       let charTypes = [];
       if (chartType !== 'rawdata') {
         let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+        let seriesStatusArray = ChartStatusStore.getSeriesStatus();
+        let sslength = seriesStatusArray.length;
         for (let i = 0; i < seriesNumber; i++) {
-          charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
+          let curChartType;
+          if (i < sslength) {
+            let serie = seriesStatusArray[i];
+            if (serie) {
+              if (serie.IsDisplay) {
+                curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
+              } else {
+                curChartType = null;
+              }
+            } else {
+              curChartType = chartType;
+            }
+          } else {
+            curChartType = chartType;
+          }
+          charTypes.push(curChartType);
         }
       }
       params.charTypes = charTypes;
@@ -3977,8 +4049,25 @@ let ChartStrategyFactor = {
 
       let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
       let charTypes = [];
+      let seriesStatusArray = ChartStatusStore.getSeriesStatus();
+      let sslength = seriesStatusArray.length;
       for (let i = 0; i < seriesNumber; i++) {
-        charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
+        let curChartType;
+        if (i < sslength) {
+          let serie = seriesStatusArray[i];
+          if (serie) {
+            if (serie.IsDisplay) {
+              curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
+            } else {
+              curChartType = null;
+            }
+          } else {
+            curChartType = chartType;
+          }
+        } else {
+          curChartType = chartType;
+        }
+        charTypes.push(curChartType);
       }
       params.charTypes = charTypes;
 

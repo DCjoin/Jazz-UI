@@ -7,7 +7,6 @@ import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/ChartStatus.jsx';
 
-let _chartSeriesStatus = null;
 let _energyData = null;
 let _submitParams = null;
 let _widgetDto = null;
@@ -80,15 +79,17 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     }
   },
   getSeriesStatus() {
-    return _chartSeriesStatus;
+    return _seriesStatus;
   },
   getIdByTarget(target) {
     if (_bizType === 'Energy' && _energyType === 'Energy') {
       if (_submitParams.viewOption.TimeRanges.length > 1) {
-        return 'Id' + target.TimeSpan.StartTime + 'Type' + undefined;
+        return 'Id' + target.TimeSpan.StartTime + target.TimeSpan.EndTime + 'Type' + undefined;
       } else {
         return 'Id' + target.TargetId + 'Type' + target.Type;
       }
+    } else if (_bizType === 'Unit' && _energyType === 'Energy') {
+      return 'Id' + target.TargetId + 'Type' + target.Type;
     }
     return '1';
   },
@@ -115,6 +116,15 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     };
     return map[chartType];
   },
+  getChartTypeByNum(num) {
+    let chartTypeMap = {
+      1: 'line',
+      2: 'column',
+      4: 'stack',
+      8: 'pie'
+    };
+    return chartTypeMap[num];
+  },
   assignStatus(newConfig) {
     let chartTypeMap = {
       1: 'line',
@@ -122,8 +132,10 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       4: 'stack',
       8: 'pie'
     };
+    let me = this;
     let series = newConfig.series;
     let map = {};
+    _seriesStatus = _seriesStatus || [];
     if (_seriesStatus && _seriesStatus.length > 0) {
       _seriesStatus.forEach((item, index) => {
         map[item.id] = item;
@@ -144,7 +156,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
           id: item.id,
           IsDisplay: true,
           SeriesType: item.dType,
-          ChartType: item.type
+          ChartType: me.getNumByChartType(item.type)
         });
       }
     });
