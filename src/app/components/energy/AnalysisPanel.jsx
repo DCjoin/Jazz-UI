@@ -1227,6 +1227,24 @@ let AnalysisPanel = React.createClass({
       chartObj = chartCmp.refs.highstock.getPaper();
 
     return chartObj;
+  },
+  getChartTooltiphasTotal(data) {
+    let hasTotal = true;
+    if (data.TargetEnergyData && data.TargetEnergyData.length > 1) {
+      var targetEnergyData = data.TargetEnergyData,
+        targetP, targetN;
+
+      for (var i = 0, len = targetEnergyData.length; i < len - 1; i++) {
+        targetP = targetEnergyData[i].Target;
+        targetN = targetEnergyData[i + 1].Target;
+
+        if (targetP.CommodityId != targetN.CommodityId || targetP.Uom != targetN.Uom || targetN.Type == 13 || targetN.Type == 12 || targetN.Type == 14) {
+          hasTotal = false;
+          break;
+        }
+      }
+    }
+    return hasTotal;
   }
 });
 
