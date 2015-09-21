@@ -6,7 +6,7 @@ import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
 
 let {hourPickerData, dateAdd} = CommonFuns;
 
-
+let _isStart = null;
 let DateTimeSelector = React.createClass({
   propTypes: {
     startDate: React.PropTypes.object,
@@ -61,21 +61,31 @@ let DateTimeSelector = React.createClass({
       end: endDate
     };
   },
+  getTimeType() {
+    return _isStart;
+  },
   _onChangeDateTime: function(sd, st, ed, et) {
     var multiDate = false;
     var startDate = sd,
       startTime = st,
       endDate = ed,
       endTime = et;
-    if (sd === null)
+    if (sd === null) {
       startDate = this.refs.startDate.getValue();
-    if (st === null)
+      _isStart = true;
+    }
+    if (st === null) {
       startTime = this.refs.startDate.getTime();
-    if (ed === null)
+      _isStart = true;
+    }
+    if (ed === null) {
       endDate = this.refs.endDate.getValue();
-    if (et === null)
+      _isStart = false;
+    }
+    if (et === null) {
       endTime = this.refs.endDate.getTime();
-
+      _isStart = false;
+    }
     if (startDate === null) {
       startDate = new Date();
       multiDate = true;

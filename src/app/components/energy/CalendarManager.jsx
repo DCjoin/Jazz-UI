@@ -5,7 +5,7 @@ import CommonFuns from '../../util/Util.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 
 let CalendarManager = {
-  items: ['noneWorkTime', 'hotColdSeason'],
+  items: ['work', 'hc'],
   init(type, step, data, cmp, timeRange) {
     this.data = data;
     this.calendarIds = [];
@@ -56,11 +56,11 @@ let CalendarManager = {
           }
         }
         if (clearCalendar) {
-          var calendarType = ['noneWorkTime', 'hotColdSeason'];
+          var calendarType = ['work', 'hc'];
           var type = '';
-          if (this.calendarShowType == 'noneWorkTime') {
+          if (this.calendarShowType == 'work') {
             type = I18N.Common.Button.Calendar.ShowHoliday;
-          } else if (this.calendarShowType == 'hotColdSeason') {
+          } else if (this.calendarShowType == 'hc') {
             type = I18N.Common.Button.Calendar.ShowHC;
           }
           if (type) {

@@ -10,63 +10,77 @@ let {dateAdd} = CommonFuns;
 let {Dialog, Table, FlatButton} = mui;
 
 let SumWindow = React.createClass({
-  propTypes:{
+  propTypes: {
     analysisPanel: React.PropTypes.object
   },
-  getInitialState(){
+  getInitialState() {
     return {
       fixedHeader: true,
       stripedRows: true,
       showRowHover: true,
       displayRowCheckbox: false,
-      displaySelectAll:false,
+      displaySelectAll: false,
       selectable: false,
       height: '500px'
     };
   },
-  isMultiInterval: function(){
+  isMultiInterval: function() {
     var paramsObj = EnergyStore.getSubmitParams(),
-        timeRanges = paramsObj.viewOption.TimeRanges;
+      timeRanges = paramsObj.viewOption.TimeRanges;
     return timeRanges.length > 1;
   },
-  getTimeRange: function(){
+  getTimeRange: function() {
     let analysisPanel = this.props.analysisPanel;
     var timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
     return timeRange;
   },
-  buildGridTitle: function(){
-    if(this.isMultiInterval()){
+  getSumTimeRange: function(xAxis) {
+    var min = xAxis.min,
+      max = xAxis.max,
+      start = Math.round(min),
+      end = Math.round(max);
+
+    var startTime, endTime;
+
+    startTime = new Date(start);
+    startTime.setMinutes(0, 0, 0);
+    endTime = new Date(end);
+    endTime.setMinutes(0, 0, 0);
+
+    return [startTime.getTime(), endTime.getTime()];
+  },
+  buildGridTitle: function() {
+    if (this.isMultiInterval()) {
       var tagOption = EnergyStore.getTagOpions()[0];
       var tagName = tagOption.tagName;
       return tagName;
-    }
-    else{
+    } else {
       let analysisPanel = this.props.analysisPanel;
       var timeRange = this.getTimeRange();
       var startDate = timeRange.start;
       var endDate = timeRange.end;
       var end;
       var start = moment(startDate).format(I18N.DateTimeFormat.IntervalFormat.FullMinute);
-      if(endDate.getHours() === 0) {
-          endDate = dateAdd(endDate, -1, 'days');
-          end = moment(endDate).format(I18N.DateTimeFormat.IntervalFormat.FullDay) + ' ' + I18N.EM.Clock24Minute0;
-      }
-      else{
+      if (endDate.getHours() === 0) {
+        endDate = dateAdd(endDate, -1, 'days');
+        end = moment(endDate).format(I18N.DateTimeFormat.IntervalFormat.FullDay) + ' ' + I18N.EM.Clock24Minute0;
+      } else {
         end = moment(endDate).format(I18N.DateTimeFormat.IntervalFormat.FullMinute);
       }
       var label = start + ' ' + I18N.EM.To + ' ' + end;
       return label;
     }
   },
-  buildData: function () {
+  buildData: function() {
     var data = [];
     var highstock = this.props.analysisPanel.refs.ChartComponent.refs.highstock;
-    if(highstock){
+    if (highstock) {
       var chartObj = highstock._paper,
-          series = chartObj.series,
-          serie, uom = '', isAllNull,
-          decimalDigits, serieDecimalDigits,
-          timeRange = this.getTimeRange();
+        series = chartObj.series,
+        serie,
+        uom = '', isAllNull,
+        decimalDigits, serieDecimalDigits,
+        timeRange = this.getSumTimeRange(chartObj.xAxis[0]);
 
       var item, total, processedXData, xData;
       for (var i = 0, len = series.length; i < len; i++) {
@@ -75,7 +89,7 @@ let SumWindow = React.createClass({
         if (serie.legendItem) {
           item = {};
           item.name = serie.userOptions.fullName || serie.name;
-          if(!!this.isMultiInterval) {
+          if (!!this.isMultiInterval) {
             item.name = item.name.replace('<br/>', ' ' + I18N.EM.To + ' ');
           }
           if (serie.options.option.uom) {
@@ -85,28 +99,27 @@ let SumWindow = React.createClass({
           processedXData = serie.processedXData;
           isAllNull = true;
           decimalDigits = 0;
-          if(processedXData && processedXData.length > 0){
+          if (processedXData && processedXData.length > 0) {
             total = 0;
-            for(var j = 0, dataLen = processedXData.length; j < dataLen; j++){
+            for (var j = 0, dataLen = processedXData.length; j < dataLen; j++) {
               xData = processedXData[j];
-              if(CommonFuns.isNumber(serie.processedYData[j]) && xData >= timeRange.start.getTime() && xData <= timeRange.end.getTime()){
+              if (CommonFuns.isNumber(serie.processedYData[j]) && xData >= timeRange[0] && xData <= timeRange[1]) {
                 total += serie.processedYData[j];
                 isAllNull = false;
 
                 serieDecimalDigits = CommonFuns.getDecimalDigits(serie.processedYData[j]);
-                if(serieDecimalDigits > 0 && serieDecimalDigits > decimalDigits){
+                if (serieDecimalDigits > 0 && serieDecimalDigits > decimalDigits) {
                   decimalDigits = serieDecimalDigits;
                 }
               }
             }
-            if (isAllNull){
+            if (isAllNull) {
               item.sum = '';
-            }
-            else{
-              if(decimalDigits > 0){
+            } else {
+              if (decimalDigits > 0) {
                 total = CommonFuns.toFixed(total, decimalDigits);
               }
-                //total = cmp.dataLabelFormatter.call({ value: total }, false);
+              //total = cmp.dataLabelFormatter.call({ value: total }, false);
               item.sum = total + uom;
             }
           }
@@ -116,70 +129,86 @@ let SumWindow = React.createClass({
     }
     return data;
   },
-  getRowData(){
+  getRowData() {
     var data = this.buildData();
     let rowData = [], row;
-    for(var i = 0; i < data.length; i++){
+    for (var i = 0; i < data.length; i++) {
       row = {};
-      row.name = {content:data[i].name};
-      row.sum = {content:data[i].sum};
+      row.name = {
+        content: data[i].name
+      };
+      row.sum = {
+        content: data[i].sum
+      };
       rowData.push(row);
     }
     return rowData;
   },
-  getColOrder(energyData){
-      let colOrder = ['name', 'sum'];
-      return colOrder;
+  getColOrder(energyData) {
+    let colOrder = ['name', 'sum'];
+    return colOrder;
   },
-  getHeaderCols(){
+  getHeaderCols() {
     let headerCols = {};
-    if(this.isMultiInterval()){
+    if (this.isMultiInterval()) {
       headerCols.name = {
-        content: <div style={{marginLeft:'10px'}}>{'时间段'}</div>
+        content: <div style={{
+          marginLeft: '10px'
+        }}>{'时间段'}</div>
+      };
+    } else {
+      headerCols.name = {
+        content: <div style={{
+          marginLeft: '10px'
+        }}>{'数据点'}</div>
       };
     }
-    else{
-      headerCols.name = {
-        content: <div style={{marginLeft:'10px'}}>{'数据点'}</div>
-      };
-    }
-    headerCols.sum = {content: '总计'};
+    headerCols.sum = {
+      content: '总计'
+    };
     return headerCols;
   },
-  _onAction(action){
+  _onAction(action) {
     let analysisPanel = this.props.analysisPanel;
-    if(action === 'ok'){
+    if (action === 'ok') {
 
     }
-    analysisPanel.setState({showSumDialog: false});
+    analysisPanel.setState({
+      showSumDialog: false
+    });
   },
-  render(){
+  render() {
     let me = this;
     let rowData = this.getRowData();
     let headerCols = this.getHeaderCols();
     let colOrder = this.getColOrder();
 
     var sumTable = <div className='jazz-energy-gridcomponent-wrap'><Table
-        headerColumns={headerCols}
-        columnOrder={colOrder}
-        rowData={rowData}
-        fixedHeader={this.state.fixedHeader}
-        stripedRows={this.state.stripedRows}
-        showRowHover={this.state.showRowHover}
-        selectable={this.state.selectable}
-        displayRowCheckbox = {this.state.displayRowCheckbox}
-        displaySelectAll = {this.state.displaySelectAll}
-        />
+    headerColumns={headerCols}
+    columnOrder={colOrder}
+    rowData={rowData}
+    fixedHeader={this.state.fixedHeader}
+    stripedRows={this.state.stripedRows}
+    showRowHover={this.state.showRowHover}
+    selectable={this.state.selectable}
+    displayRowCheckbox = {this.state.displayRowCheckbox}
+    displaySelectAll = {this.state.displaySelectAll}
+    />
     </div>;
     let _buttonActions = [
-          <FlatButton
-          label="好"
-          onClick={me._onAction.bind(me, 'ok')} />];
-    let titleEl = <div style={{fontSize:'20px', padding:'24px 0 0 50px'}}>{'数据求和'}</div>;
+      <FlatButton
+      label="好"
+      onClick={me._onAction.bind(me, 'ok')} />];
+    let titleEl = <div style={{
+      fontSize: '20px',
+      padding: '24px 0 0 50px'
+    }}>{'数据求和'}</div>;
     let label = this.buildGridTitle();
     let dialog = <Dialog {...me.props} title={titleEl} actions={_buttonActions} modal={true}
-                    contentClassName='jazz-add-interval-dialog'>
-                    <div style={{height:'418px'}}>
+    contentClassName='jazz-add-interval-dialog'>
+                    <div style={{
+      height: '418px'
+    }}>
                       <div>{label}</div>
                       {sumTable}
                     </div>
