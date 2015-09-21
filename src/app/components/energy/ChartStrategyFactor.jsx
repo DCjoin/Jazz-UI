@@ -467,6 +467,7 @@ let ChartStrategyFactor = {
       }, () => {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -702,6 +703,7 @@ let ChartStrategyFactor = {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
+        ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
       });
     },
     initLabelChartPanelByWidgetDto(analysisPanel) {
@@ -1193,6 +1195,8 @@ let ChartStrategyFactor = {
         submitParams.isElec = true;
       }
 
+      widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
+
       //storeType part
       let storeType;
       if (analysisPanel.state.touBtnSelected) {
@@ -1275,6 +1279,8 @@ let ChartStrategyFactor = {
       viewOption.DataUsageType = dataUsageType;
 
       submitParams.viewOption = viewOption;
+
+      widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
 
       //storeType part
       let config = {
@@ -2917,6 +2923,7 @@ let ChartStrategyFactor = {
       }
     },
     onCostSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
+      ChartStatusAction.clearStatus();
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
         analysisPanel.setState({
           selectedChartType: nextChartType

@@ -31,7 +31,7 @@ import SendView from '../folder/operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 import ExportView from '../folder/operationView/ExportView.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
-import ExportChartStore from '../../stores/Energy/ExportChartStore.jsx';
+import ExportChartStore from '../../stores/energy/ExportChartStore.jsx';
 
 
 let lastEnergyType = null;
