@@ -92,7 +92,14 @@ let JazzApp = React.createClass({
     };
 
     if (!lang) {
-      lang = window.navigator.language.toLowerCase();
+      var url = window.location.toLocaleString();
+      if (url.indexOf('langNum=0') > -1) { //Chinese
+        lang = 'zh-cn';
+      } else if (url.indexOf('langNum=1') > -1) {
+        lang = 'en-us';
+      } else {
+        lang = window.navigator.language.toLowerCase();
+      }
       this.replaceWith('app', {
         lang: lang
       });
