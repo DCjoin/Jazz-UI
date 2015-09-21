@@ -2458,7 +2458,7 @@ let ChartStrategyFactor = {
     },
     initUnitCarbonStoreByBizChartType(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
-      CostStore.initReaderStrategy('UnitCarbonTrendReader');
+      CarbonStore.initReaderStrategy('UnitCarbonTrendReader');
     },
   },
 

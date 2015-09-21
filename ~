@@ -1,4 +1,5 @@
 for pull
+
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # On branch master
@@ -6,5 +7,6 @@ for pull
 #
 # Changes to be committed:
 #	modified:   src/app/components/energy/ChartStrategyFactor.jsx
-#	modified:   src/app/lang/zh-cn.js
+#	modified:   src/app/stores/CarbonStore.jsx
+#	modified:   src/app/stores/RatioStore.jsx
 #
