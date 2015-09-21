@@ -571,6 +571,7 @@ let ChartStrategyFactor = {
         benchmarkOption = contentObj.benchmarkOption,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
+        step = viewOption.Step,
         unitType = viewOption.DataOption.UnitType,
         dest = contentObj.destination,
         chartType = widgetDto.ChartType;
@@ -605,6 +606,7 @@ let ChartStrategyFactor = {
         analysisPanel.setState({
           unitType: unitType,
           benchmarkOption: bo,
+          step: step,
           selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);

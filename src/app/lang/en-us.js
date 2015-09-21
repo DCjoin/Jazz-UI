@@ -1,4 +1,5 @@
-﻿'use strict';
+
+'use strict';
 
 
 let I18N = {};
@@ -45,6 +46,11 @@ I18N.MainMenu.Customer = 'Customer management';
 I18N.MainMenu.User = 'User management';
 I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter Template';
+
+I18N.MainMenu.Map = 'Map';
+I18N.MainMenu.Alarm = 'Alarm';
+I18N.MainMenu.Energy = 'Energy';
+I18N.MainMenu.report = 'Report';
 
 I18N.Login = {};
 I18N.Login.UserName = 'Username';
@@ -193,17 +199,17 @@ I18N.EM.UseMonth = 'By month';
 I18N.EM.UseYear = 'By year';
 I18N.EM.StepError = 'The data point selected does not support {0} step size; try another step size.';
 
-I18N.EM.Tool={};
+I18N.EM.Tool = {};
 I18N.EM.Tool.ClearChart = 'Clear chart';
 I18N.EM.Tool.AssistCompare = 'Supporting comparison';
-I18N.EM.Tool.Weather={};
-I18N.EM.Tool.Weather.WeatherInfo='Weather';
+I18N.EM.Tool.Weather = {};
+I18N.EM.Tool.Weather.WeatherInfo = 'Weather';
 I18N.EM.Tool.Weather.Temperature = 'Temperature';
 I18N.EM.Tool.Weather.Humidity = 'Humidity';
-I18N.EM.Tool.Calendar={};
-I18N.EM.Tool.Calendar.BackgroundColor ='Show Calendar';
-I18N.EM.Tool.Calendar.NoneWorkTime ='Non-Work Time';
-I18N.EM.Tool.Calendar.HotColdSeason ='HC seasons';
+I18N.EM.Tool.Calendar = {};
+I18N.EM.Tool.Calendar.BackgroundColor = 'Show Calendar';
+I18N.EM.Tool.Calendar.NoneWorkTime = 'Non-Work Time';
+I18N.EM.Tool.Calendar.HotColdSeason = 'HC seasons';
 I18N.EM.Tool.Benchmark = 'Industry benchmark values';
 I18N.EM.Tool.HistoryCompare = 'History comparison';
 I18N.EM.Tool.BenchmarkSetting = 'Benchmark value setup';
@@ -272,7 +278,7 @@ I18N.EM.CannotShowCalendarByTimeRange = 'Can\'t see calendar background? Try ano
 I18N.EM.WeatherSupportsOnlySingleHierarchy = 'This function only supports single-level data points.';
 I18N.EM.WeatherSupportsOnlyHourlyStep = 'This function only supports hourly step size.';
 
-I18N.EM.CharType={};
+I18N.EM.CharType = {};
 I18N.EM.CharType.Line = 'Line';
 I18N.EM.CharType.Bar = 'Column';
 I18N.EM.CharType.Stack = 'Stacked chart';
@@ -346,8 +352,7 @@ I18N.Message.M01013 = 'The nodes of the hierarchy exceed limit.';
 I18N.Message.M01014 = 'The node has been modified or deleted by other users, and the hierarchical tree will be refreshed.';
 I18N.Message.M01015 = 'The hierarchical nodes do not include child node.'; //for energy view single tag to pie chart
 I18N.Message.M01016 = 'Relevant hierarchy does not have a valid calendar, and the target value and the benchmark value for this year can not be obtained.';
-I18N.Message.M01018 =
-  'Cannot move to target, please drag according rule:<br/>Org->Org,Customer;<br/>Site->Site,Customer;<br/>Building->Site,Org,Customer.';
+I18N.Message.M01018 = 'Cannot move to target, please drag according rule:<br/>Org->Org,Customer;<br/>Site->Site,Customer;<br/>Building->Site,Org,Customer.';
 I18N.Message.M01019 = 'The hierarchy was modified';
 I18N.Message.M01251 = 'Advanced attributes of the hierarchy node have been modified by other users. Interface will be refreshed.';
 I18N.Message.M01254 = 'Entries of advanced attributes are illegal, and can not be saved.';
@@ -522,8 +527,7 @@ I18N.Message.M06195 = 'The child nodes of the current regional dimension does no
 I18N.Message.M06196 = 'The current hierarchy node does not include data points that shares the same media unit with this data point. ';
 I18N.Message.M06197 = 'The current system dimension does not include data points that shares the same media with this data point. ';
 I18N.Message.M06198 = 'The current regional dimension does not include data points that shares the same media with this data point. ';
-I18N.Message.M06201 =
-  'Cannot change Calculation step to "{0}". This tag is refereced by other tags, reference Tag calculation step must be larger or equal to referenced tag';
+I18N.Message.M06201 = 'Cannot change Calculation step to "{0}". This tag is refereced by other tags, reference Tag calculation step must be larger or equal to referenced tag';
 I18N.Message.M06202 = 'The corresponding data point already has energy consumption data points of the same media.  ';
 I18N.Message.M06203 = 'This data point is not energy consumption data.';
 
@@ -719,29 +723,29 @@ I18N.Hierarchy.RankingButtonName = 'Please select the hierarchy nodes for rankin
 I18N.Hierarchy.ButtonName = 'Please select the hierarchy node';
 I18N.Hierarchy.Confirm = 'Ok';
 I18N.Hierarchy.Clear = 'Clear';
-I18N.Hierarchy.Menu1='Customer';
-I18N.Hierarchy.Menu2='Organization';
-I18N.Hierarchy.Menu3='Site';
-I18N.Hierarchy.Menu4='Building';
+I18N.Hierarchy.Menu1 = 'Customer';
+I18N.Hierarchy.Menu2 = 'Organization';
+I18N.Hierarchy.Menu3 = 'Site';
+I18N.Hierarchy.Menu4 = 'Building';
 
 I18N.Dim = {};
 I18N.Dim.AllButtonName = 'All dimensions';
 I18N.Dim.ButtonName = 'Dimension node';
 
-I18N.ALarm ={};
-I18N.ALarm.Menu1='Whole';
-I18N.ALarm.Menu2='Alarm Configed';
-I18N.ALarm.Menu3='Baseline Configed';
-I18N.ALarm.Menu4='UnConfiged';
+I18N.ALarm = {};
+I18N.ALarm.Menu1 = 'Whole';
+I18N.ALarm.Menu2 = 'Alarm Configed';
+I18N.ALarm.Menu3 = 'Baseline Configed';
+I18N.ALarm.Menu4 = 'UnConfiged';
 
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = 'Data point {0} / {1} has been selected ';
 I18N.Tag.ExceedTooltip = 'Number of added data points is beyond the range. You can not select all. Please select the target data points one by one.';
-I18N.Tag.AlarmStatus1 ='Baseline UnConfiged';
-I18N.Tag.AlarmStatus2 ='Baseline Configed';
-I18N.Tag.AlarmStatus3 ='Alarm UnConfiged';
-I18N.Tag.AlarmStatus4 ='Alarm Configed';
+I18N.Tag.AlarmStatus1 = 'Baseline UnConfiged';
+I18N.Tag.AlarmStatus2 = 'Baseline Configed';
+I18N.Tag.AlarmStatus3 = 'Alarm UnConfiged';
+I18N.Tag.AlarmStatus4 = 'Alarm Configed';
 
 I18N.Template = {};
 I18N.Template.Copy = {};
@@ -764,7 +768,6 @@ I18N.Template.Send = {};
 I18N.Template.Send.Title = 'Send {0}';
 I18N.Template.Send.Send = 'Send';
 I18N.Template.Send.Cancel = 'Drop';
-
 
 
 
