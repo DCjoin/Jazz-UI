@@ -84,6 +84,7 @@ let GridComponent = React.createClass({
     var tagColumn = {
       content: <div style={{
         height: '120px',
+        minHeight: '120px',
         borderLeft: '1px solid #e0e0e0'
       }}>
                                   <div className={'jazz-energy-gridcomponent-header-item'}> {hieName} </div>

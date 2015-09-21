@@ -365,6 +365,10 @@ let DataSelectMainPanel = React.createClass({
         } else {
           page = 1;
           TagAction.loadData(hierNode.hierId, 2, 1, null, null);
+          this.setState({
+            tagId: hierNode.hierId,
+            optionType: 2
+          })
         }
 
       }

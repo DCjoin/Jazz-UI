@@ -7,7 +7,6 @@ import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/ChartStatus.jsx';
 
-let _chartSeriesStatus = null;
 let _energyData = null;
 let _submitParams = null;
 let _widgetDto = null;
@@ -18,6 +17,9 @@ let _seriesStatus = null;
 let _chartType = null;
 
 let ChartStatusStore = assign({}, PrototypeStore, {
+  clearStatus() {
+    _seriesStatus = [];
+  },
   initStatus() {
     let me = this;
     _seriesStatus = [];
@@ -77,10 +79,16 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     }
   },
   getSeriesStatus() {
-    return _chartSeriesStatus;
+    return _seriesStatus;
   },
   getIdByTarget(target) {
     if (_bizType === 'Energy' && _energyType === 'Energy') {
+      if (_submitParams.viewOption.TimeRanges.length > 1) {
+        return 'Id' + target.TimeSpan.StartTime + 'Type' + undefined;
+      } else {
+        return 'Id' + target.TargetId + 'Type' + target.Type;
+      }
+    } else if (_bizType === 'Unit' && _energyType === 'Energy') {
       return 'Id' + target.TargetId + 'Type' + target.Type;
     }
     return '1';
@@ -108,6 +116,15 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     };
     return map[chartType];
   },
+  getChartTypeByNum(num) {
+    let chartTypeMap = {
+      1: 'line',
+      2: 'column',
+      4: 'stack',
+      8: 'pie'
+    };
+    return chartTypeMap[num];
+  },
   assignStatus(newConfig) {
     let chartTypeMap = {
       1: 'line',
@@ -115,33 +132,35 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       4: 'stack',
       8: 'pie'
     };
+    let me = this;
     let series = newConfig.series;
     let map = {};
+    _seriesStatus = _seriesStatus || [];
     if (_seriesStatus && _seriesStatus.length > 0) {
       _seriesStatus.forEach((item, index) => {
         map[item.id] = item;
       });
-
-      series.forEach((item, index) => {
-        if (item.id && map[item.id]) {
-          item.visible = map[item.id].IsDisplay;
-          if (map[item.id].ChartType === '4') {
-            item.type = 'column';
-            item.stacking = 'normal';
-          } else {
-            item.type = chartTypeMap[map[item.id].ChartType];
-            item.stacking = undefined;
-          }
-        } else if (item.id) {
-          _seriesStatus.push({
-            id: item.id,
-            IsDisplay: true,
-            SeriesType: item.dType,
-            ChartType: item.type
-          });
-        }
-      });
     }
+    series.forEach((item, index) => {
+      if (item.id && map[item.id]) {
+        item.visible = map[item.id].IsDisplay;
+        if (map[item.id].ChartType === '4' || map[item.id].ChartType === 4) {
+          item.type = 'column';
+          item.stacking = 'normal';
+        } else {
+          item.type = chartTypeMap[map[item.id].ChartType];
+          item.stacking = undefined;
+        }
+      } else if (item.id) {
+        _seriesStatus.push({
+          id: item.id,
+          IsDisplay: true,
+          SeriesType: item.dType,
+          ChartType: me.getNumByChartType(item.type)
+        });
+      }
+    });
+
   },
   getWidgetSaveStatus() {
     let status = [];
@@ -166,6 +185,8 @@ ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
     case Action.MODIFY_SINGLE_STATUS:
       ChartStatusStore.modifySingleStatus(action.id, action.name, action.value);
       break;
+    case Action.CLEAR_STATUS:
+      ChartStatusStore.clearStatus();
   }
 });
 

@@ -66,6 +66,7 @@ let JazzApp = React.createClass({
         w.forEach(function(n) {
           ret.weekdays.push(wk[n]);
         });
+        ret.thousandsSep = ',';
         return ret;
       })()
     });
