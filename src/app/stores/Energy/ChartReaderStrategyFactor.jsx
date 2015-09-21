@@ -481,15 +481,15 @@ let ChartReaderStrategyFactor = {
         }
         returndata.push({
           name: startStr + "<br/>" + endStr,
-          uid: timeRange.StartTime,
+          uid: timeRange.StartTime + timeRange.EndTime,
           option: obj1,
           data: arr
         });
       }
 
-      if (returndata.length > 1) {
-        returndata[0].disableDelete = true;
-      }
+      //if (returndata.length > 1) {
+      returndata[0].enableDelete = false;
+      //}
 
       return {
         Data: returndata,

@@ -84,7 +84,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
   getIdByTarget(target) {
     if (_bizType === 'Energy' && _energyType === 'Energy') {
       if (_submitParams.viewOption.TimeRanges.length > 1) {
-        return 'Id' + target.TimeSpan.StartTime + 'Type' + undefined;
+        return 'Id' + target.TimeSpan.StartTime + target.TimeSpan.EndTime + 'Type' + undefined;
       } else {
         return 'Id' + target.TargetId + 'Type' + target.Type;
       }

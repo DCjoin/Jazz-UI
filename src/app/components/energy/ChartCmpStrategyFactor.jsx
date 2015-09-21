@@ -731,7 +731,7 @@ let ChartCmpStrategyFactor = {
         if (n.indexOf('<br') < 0) { //hack for multi-timespan compare
           n = JazzCommon.GetArialStr(n, 23); //greater than 23 then truncate with ...
         }
-        let enableDelete = true;
+        let enableDelete = ((typeof item.enableDelete) === 'boolean') ? item.enableDelete : true;
         if (item.dType == 13 || item.dType == 14 || item.dType == 15) {
           enableDelete = false;
         }
