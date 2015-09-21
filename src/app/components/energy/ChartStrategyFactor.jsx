@@ -83,6 +83,7 @@ let ChartStrategyFactor = {
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn: 'handleNavigatorChangeLoad',
       save2DashboardFn: 'save2Dashboard',
+      save2DashboardForAlarmFn: 'save2DashboardForAlarm',
       initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
       clearChartDataFn: 'clearChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
@@ -872,6 +873,66 @@ let ChartStrategyFactor = {
       });
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
+  },
+  save2DashboardForAlarmFnStrategy: {
+    save2DashboardForAlarm(analysisPanel) {
+      let tagOptions = EnergyStore.getTagOpions(), options,
+        relativeDate = EnergyStore.getRelativeDate();
+
+      if (tagOptions) {
+        if (isArray(tagOptions)) {
+          options = [];
+          for (let i = 0, len = tagOptions.length; i < len; i++) {
+            let tag = tagOptions[i];
+            options.push({
+              Id: tag.tagId,
+              Name: tag.tagName,
+              HierId: tag.hierId,
+              NodeName: tag.hierName
+            });
+          }
+        } else {
+          options = [{
+            Id: tagOptions.tagId,
+            Name: tagOptions.tagName,
+            HierId: tagOptions.hierId,
+            NodeName: tagOptions.hierName
+          }];
+        }
+      }
+      let submitParams = EnergyStore.getSubmitParams();
+      if (relativeDate !== 'Customerize' && relativeDate !== null) {
+        let immutableSubmitParams = Immutable.fromJS(submitParams);
+        let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption', 'TimeRanges'], [{
+          relativeDate: relativeDate
+        }]);
+        submitParams = immutableSubmitParamsClone.toJS();
+      }
+      var contentSyntax = {
+        xtype: 'widgetcontainer',
+        params: {
+          submitParams: {
+            options: options,
+            tagIds: submitParams.tagIds,
+            interval: [],
+            viewOption: submitParams.viewOption
+          },
+          config: {
+            type: "line",
+            xtype: "mixedtrendchartcomponent",
+            reader: "mixedchartreader",
+            storeType: "energy.Energy",
+            searcherType: "analysissearcher",
+            widgetStyler: "widgetchartstyler",
+            maxWidgetStyler: "maxchartstyler"
+          }
+        }
+      };
+      analysisPanel.setState({
+        dashboardOpenImmediately: true,
+        contentSyntax: JSON.stringify(contentSyntax)
+      });
+    }
   },
   save2DashboardFnStrategy: {
     save2Dashboard(analysisPanel) {

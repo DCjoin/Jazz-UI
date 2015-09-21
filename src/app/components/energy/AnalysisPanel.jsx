@@ -274,9 +274,14 @@ let AnalysisPanel = React.createClass({
     return strategyName;
   },
   _onChart2WidgetClick() {
-    if (this.state.chartStrategy.save2DashboardFn) {
-      this.state.chartStrategy.save2DashboardFn(this);
+    if (!!this.props.isFromAlarm) {
+      this.state.chartStrategy.save2DashboardForAlarmFn(this);
+    } else {
+      if (this.state.chartStrategy.save2DashboardFn) {
+        this.state.chartStrategy.save2DashboardFn(this);
+      }
     }
+
   },
   _onErrorDialogAction(step) {
     this.setState({
