@@ -392,6 +392,7 @@ Energy Error Code
 I18N.Message.M02004 = '聚合粒度非法';
 I18N.Message.M02007 = '开始时间不能大于结束时间';
 I18N.Message.M02008 = '介质不同，不能绘制饼图。';
+I18N.Message.M02011 = '只能选择Ptag';
 I18N.Message.M02013 = '该数据点已被删除，无法加载。';
 I18N.Message.M02020 = '导出图表失败，请点击“查看数据”后再重试。';
 I18N.Message.M02021 = '导出EXCEL失败，请点击“查看数据”后再重试。';
