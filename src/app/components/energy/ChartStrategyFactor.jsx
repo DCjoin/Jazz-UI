@@ -467,6 +467,7 @@ let ChartStrategyFactor = {
       }, () => {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -714,6 +715,7 @@ let ChartStrategyFactor = {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
+        ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
       });
     },
     initLabelChartPanelByWidgetDto(analysisPanel) {
@@ -1186,6 +1188,8 @@ let ChartStrategyFactor = {
         submitParams.isElec = true;
       }
 
+      widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
+
       //storeType part
       let storeType;
       if (analysisPanel.state.touBtnSelected) {
@@ -1268,6 +1272,8 @@ let ChartStrategyFactor = {
       viewOption.DataUsageType = dataUsageType;
 
       submitParams.viewOption = viewOption;
+
+      widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
 
       //storeType part
       let config = {
@@ -2460,7 +2466,7 @@ let ChartStrategyFactor = {
     },
     initUnitCarbonStoreByBizChartType(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
-      CostStore.initReaderStrategy('UnitCarbonTrendReader');
+      CarbonStore.initReaderStrategy('UnitCarbonTrendReader');
     },
   },
 
@@ -3976,10 +3982,28 @@ let ChartStrategyFactor = {
         nodeNameAssociation: nodeNameAssociation
       };
 
-      let seriesNumber = CostStore.getEnergyData().get('Data').size;
       let charTypes = [];
+
+      let seriesNumber = CostStore.getEnergyData().get('Data').size;
+      let seriesStatusArray = ChartStatusStore.getSeriesStatus();
+      let sslength = seriesStatusArray.length;
       for (let i = 0; i < seriesNumber; i++) {
-        charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
+        let curChartType;
+        if (i < sslength) {
+          let serie = seriesStatusArray[i];
+          if (serie) {
+            if (serie.IsDisplay) {
+              curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
+            } else {
+              curChartType = null;
+            }
+          } else {
+            curChartType = chartType;
+          }
+        } else {
+          curChartType = chartType;
+        }
+        charTypes.push(curChartType);
       }
       params.charTypes = charTypes;
       ExportChartAction.getTagsData4Export(params, path);
@@ -4125,10 +4149,27 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = CostStore.getEnergyData().get('Data').size;
+      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
       let charTypes = [];
+      let seriesStatusArray = ChartStatusStore.getSeriesStatus();
+      let sslength = seriesStatusArray.length;
       for (let i = 0; i < seriesNumber; i++) {
-        charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
+        let curChartType;
+        if (i < sslength) {
+          let serie = seriesStatusArray[i];
+          if (serie) {
+            if (serie.IsDisplay) {
+              curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
+            } else {
+              curChartType = null;
+            }
+          } else {
+            curChartType = chartType;
+          }
+        } else {
+          curChartType = chartType;
+        }
+        charTypes.push(curChartType);
       }
       params.charTypes = charTypes;
 
