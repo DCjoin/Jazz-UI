@@ -24,6 +24,7 @@ import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 import CalendarManager from './CalendarManager.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
+import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
@@ -1245,6 +1246,32 @@ let AnalysisPanel = React.createClass({
       }
     }
     return hasTotal;
+  },
+  _onDeleteButtonClick(obj) {
+    if ((this.props.bizType === 'Energy' || this.props.bizType === 'Unit') && this.props.energyType === 'Energy') {
+      let uid = obj.uid,
+        needReload = EnergyStore.removeSeriesDataByUid(uid);
+
+      AlarmTagAction.removeSearchTagList({
+        tagId: uid
+      });
+
+      if (needReload) {
+        let tagOptions = this.state.chartStrategy.getSelectedNodesFn(),
+          paramsObj = EnergyStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges,
+          step = paramsObj.step;
+
+        this.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+      } else {
+        let energyData = EnergyStore.getEnergyData();
+        this.setState({
+          energyData: energyData
+        });
+      }
+    } else if (this.props.bizType === 'Energy' && this.props.energyType === 'Cost') {
+
+    }
   }
 });
 
