@@ -213,7 +213,7 @@ let defaultConfig = {
     fontFamily: 'Microsoft YaHei'
   },
   legend: {
-    deleteAllButtonText: '全部清除',
+    deleteAllButtonText: '',
     enabled: true,
     layout: 'vertical',
     verticalAlign: 'top',

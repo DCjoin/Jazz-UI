@@ -521,6 +521,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
@@ -569,9 +570,14 @@ let ChartStrategyFactor = {
         MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
       }
 
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
       //init selected tags is done in the other part
       analysisPanel.setState({
         selectedChartType: typeMap[chartType],
+        yaxisConfig: yaxisConfig,
         sumBtnStatus: sumBtnStatus,
         step: step,
         weatherBtnStatus: TagStore.getWeatherBtnDisabled()
@@ -587,6 +593,7 @@ let ChartStrategyFactor = {
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
         bizType = widgetDto.BizType,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         touBtnSelected = false,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
@@ -620,9 +627,14 @@ let ChartStrategyFactor = {
       if (bizType == 'CostElectric') {
         touBtnSelected = true;
       }
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
 
       analysisPanel.setState({
         step: step,
+        yaxisConfig: yaxisConfig,
         selectedChartType: typeMap[chartType],
         touBtnStatus: CommodityStore.getECButtonStatus(),
         touBtnSelected: touBtnSelected
@@ -731,6 +743,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
@@ -738,9 +751,7 @@ let ChartStrategyFactor = {
         timeRanges = viewOption.TimeRanges,
         step = viewOption.Step,
         unitType = viewOption.DataOption.UnitType,
-        dest = contentObj.destination,
         chartType = widgetDto.ChartType;
-      CarbonStore.setDestination(dest);
 
       let typeMap = {
         Line: 'line',
@@ -766,12 +777,17 @@ let ChartStrategyFactor = {
       if (benchmarkOption && benchmarkOption.IndustryId !== null) {
         bo = benchmarkOption;
       }
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
 
       setTimeout(() => {
         analysisPanel.setState({
           unitType: unitType,
           benchmarkOption: bo,
           step: step,
+          yaxisConfig: yaxisConfig,
           selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
@@ -838,6 +854,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
@@ -872,9 +889,15 @@ let ChartStrategyFactor = {
         bo = benchmarkOption;
       }
 
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
+
       setTimeout(() => {
         analysisPanel.setState({
           step: step,
+          yaxisConfig: yaxisConfig,
           unitType: unitType,
           benchmarkOption: bo,
           selectedChartType: typeMap[chartType],
@@ -963,6 +986,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         rankType = contentObj.rankType,
@@ -988,10 +1012,16 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
+
       analysisPanel.state.selectedChartType = "column";
       setTimeout(() => {
         analysisPanel.setState({
           rankType: rankType,
+          yaxisConfig: yaxisConfig,
           order: order,
           range: range
         }, () => {
@@ -1194,7 +1224,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType
       };
-
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
       let contentSyntax = {
         params: params
       };
@@ -1276,6 +1308,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1349,6 +1384,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1436,7 +1474,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType,
       };
-
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
       let contentSyntax = {
         params: params
       };
@@ -1512,6 +1552,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType,
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1595,6 +1638,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType,
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1675,6 +1721,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType,
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1783,6 +1832,9 @@ let ChartStrategyFactor = {
         diagramConfig: diagramConfig,
         calendar: null
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -2153,7 +2205,7 @@ let ChartStrategyFactor = {
              <div style={{
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
           margin: '5px 30px 5px auto'
@@ -2219,7 +2271,7 @@ let ChartStrategyFactor = {
              <div style={{
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
              <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
           margin: '5px 30px 5px auto'
@@ -2278,7 +2330,7 @@ let ChartStrategyFactor = {
              <div style={{
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div className={'jazz-full-border-dropdownmenu-container'} style={{
           margin: '5px 30px 5px auto'
@@ -2326,7 +2378,7 @@ let ChartStrategyFactor = {
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2354,7 +2406,7 @@ let ChartStrategyFactor = {
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
            <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2394,7 +2446,7 @@ let ChartStrategyFactor = {
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2430,7 +2482,7 @@ let ChartStrategyFactor = {
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
            <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2467,7 +2519,7 @@ let ChartStrategyFactor = {
            {orderCombo}
            {rangeCombo}
          </div>
-         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
          <div style={{
         margin: '5px 30px 5px auto'
       }}>
@@ -3814,14 +3866,25 @@ let ChartStrategyFactor = {
       } else {
         weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' disabled={true} tooltip={isWeatherDisabled} />;
       }
+
+      let sumBtnStatus = analysisPanel.state.sumBtnStatus;
+      if (analysisPanel.state.selectedChartType === 'rawdata' || analysisPanel.state.selectedChartType === 'pie') {
+        sumBtnStatus = true;
+      }
+
+      let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
+      if (submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
+        baselineBtnStatus = true;
+      }
+
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
-       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>
        <MenuDivider />
-       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={analysisPanel.state.sumBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={sumBtnStatus}/>
        {calendarEl}
        {weatherEl}
      </ButtonMenu>;
@@ -4188,7 +4251,7 @@ let ChartStrategyFactor = {
               if (serie.IsDisplay) {
                 curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
               } else {
-                curChartType = null;
+                curChartType = 'null';
               }
             } else {
               curChartType = chartType;
@@ -4237,7 +4300,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
@@ -4320,7 +4383,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
@@ -4403,7 +4466,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
