@@ -410,6 +410,7 @@ let ChartReaderStrategyFactor = {
         var timeRange = t.TimeSpan;
         var loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -1, 'days');
         var loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -1, 'days');
+        step = d[i].Target.Step;
 
         if (step == 1) {
           for (let j = 0; j < eData.length; j++) {
