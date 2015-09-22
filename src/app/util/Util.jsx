@@ -1240,7 +1240,7 @@ let CommonFuns = {
         timeRange = target.TimeSpan;
 
       //get the first time that there should exist a value
-      var keyTime = this.firstValueTime(timeRange.StartTime, step),
+      var keyTime = this.DateComputer.firstValueTime(timeRange.StartTime, step),
         index = 0,
         endTime = (keyTime - 0) + maxIntervalLength;
 
@@ -1259,60 +1259,6 @@ let CommonFuns = {
         keyTime = CommonFuns.DateComputer.AddStep(keyTime, step); //JazzCommon.DateComputer.AddStep(keyTime, step);
         index++;
       }
-    }
-  },
-  firstValueTime: function(startTime, step) {
-    let ticks = parseInt(startTime.substr(6, startTime.length - 8)),
-      time = new Date(ticks),
-      dp = CommonFuns.DateComputer,
-      fixed = dp.FixedTimes;
-
-    let year = time.getFullYear(),
-      month = time.getMonth(),
-      day = time.getDate(),
-      hour = time.getHours();
-    switch (step) {
-      case 0:
-        return new Date(startTime);
-      case 1: //hourly
-        //if it is a int times of hourly ticks, return it
-        //if not, add hourly ticks until it becomes one
-        while (ticks % fixed.hour !== 0) {
-          ticks += fixed.minute;
-        }
-        return new Date(ticks);
-      case 2: //daily
-        //if it is a int times of daily ticks, return it
-        //if not, add hourly ticks until it becomes one
-        while (ticks % fixed.day !== 0) {
-          ticks += fixed.hour;
-        }
-        return new Date(ticks);
-      case 5: //weekly
-        //if it is a int times of daily ticks, return it
-        //if not, add hourly ticks until it becomes one
-        //ticks -= fixed.day * 3;
-        while (ticks % fixed.week != fixed.day * 4) {
-          ticks += fixed.hour;
-        }
-        return new Date(ticks);
-      case 3: //monthly
-        //if it is the first day, 0 hour of this month, return it
-        //if not, return the first day, 0 hour of the next month
-        if (day == 1 && hour + (time.getTimezoneOffset() / 60) === 0)
-          return new Date(ticks); else {
-          let newTime = new Date(year, month, 1, 0, 0, 0, 0);
-          return dp.AddStep(newTime, 3);
-        }
-        break;
-      case 4: //yearly
-        //if it is the first month, first day, 0 hour of this year, return it
-        //if not, return the first month, first day, 0 hour of the next year
-        if (month === 0 && day === 1 && hour + (time.getTimezoneOffset() / 60) === 0)
-          return new Date(ticks); else {
-          let newTime = new Date(year, month, 1, 0, 0, 0, 0);
-          return dp.AddStep(newTime, 4);
-        }
     }
   },
   setSelectedIndexByValue(combo, value) {
