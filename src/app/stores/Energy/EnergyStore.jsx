@@ -63,17 +63,17 @@ let EnergyStore = assign({}, PrototypeStore, {
   getErrorCode() {
     return _errorCode;
   },
-  clearEnergyStore(){
+  clearEnergyStore() {
     _isLoading = false,
-      _energyData = null,
-      _energyRawData = null,
-      _submitParams = null,
-      _paramsObj = null,
-      _tagOptions = null,
-      _chartTitle = null,
-      _relativeDate = null,
-      _errorCode = null,
-      _errorMessage = null;
+    _energyData = null,
+    _energyRawData = null,
+    _submitParams = null,
+    _paramsObj = null,
+    _tagOptions = null,
+    _chartTitle = null,
+    _relativeDate = null,
+    _errorCode = null,
+    _errorMessage = null;
   },
   _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
@@ -119,7 +119,27 @@ let EnergyStore = assign({}, PrototypeStore, {
     ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
-  removeSeriesDataByUid(uid) {},
+  removeSeriesDataByUid(uid) {
+    if (_energyData) {
+      let latestDataList = [];
+      let dataList = _energyData.toJS().Data;
+
+      for (let i = 0, len = dataList.length; i < len; i++) {
+        let data = dataList[i];
+        if (data.uid !== uid) {
+          latestDataList.push(data);
+        }
+      }
+      if (latestDataList.length === 1) {
+        return true;
+      } else if (latestDataList.length > 0) {
+        _energyData = _energyData.set('Data', latestDataList);
+      } else {
+        _energyData = null;
+      }
+    }
+    return false;
+  },
   //listners--------------------------------
   addEnergyDataLoadingListener: function(callback) {
     this.on(ENERGY_DATA_LOADING_EVENT, callback);
