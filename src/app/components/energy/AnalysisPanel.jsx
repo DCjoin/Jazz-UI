@@ -82,7 +82,10 @@ let AnalysisPanel = React.createClass({
 
     if (menuIndex === 4) {
       this.exportChart();
-    } else {
+    } else if(menuIndex === 1 || menuIndex === 2){
+      this.save2Dashboard();
+      this.props.onOperationSelect(menuIndex);
+    }else {
       this.props.onOperationSelect(menuIndex);
     }
   },
