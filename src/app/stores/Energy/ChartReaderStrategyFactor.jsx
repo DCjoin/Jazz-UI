@@ -257,6 +257,7 @@ let ChartReaderStrategyFactor = {
     setCostItemByTarget(item, target) {
       var name = '',
         disableDelete = false,
+        disableHide = false,
         uid = target.CommodityId,
         tt = target.Type;
 
@@ -268,6 +269,21 @@ let ChartReaderStrategyFactor = {
       }
 
       switch (tt) {
+        case 6:
+          name = I18N.EM.Plain /*'平时'*/ ;
+          disableDelete = true;
+          disableHide = true;
+          break;
+        case 7:
+          name = I18N.EM.Peak /*'峰时'*/ ;
+          disableDelete = true;
+          disableHide = true;
+          break;
+        case 8:
+          name = I18N.EM.Valley /*'谷时'*/ ;
+          disableDelete = true;
+          disableHide = true;
+          break;
         case 13:
           name = I18N.EM.Ratio.TargetValue;
           disableDelete = true;
@@ -282,6 +298,7 @@ let ChartReaderStrategyFactor = {
       item.name = name;
       item.uid = uid;
       item.disableDelete = disableDelete;
+      item.disableHide = disableHide;
       item.option = {
         CommodityId: target.CommodityId
       };
@@ -410,6 +427,7 @@ let ChartReaderStrategyFactor = {
         var timeRange = t.TimeSpan;
         var loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -1, 'days');
         var loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -1, 'days');
+        step = d[i].Target.Step;
 
         if (step == 1) {
           for (let j = 0; j < eData.length; j++) {

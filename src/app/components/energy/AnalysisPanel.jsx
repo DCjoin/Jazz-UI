@@ -24,6 +24,7 @@ import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 import CalendarManager from './CalendarManager.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
+import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -63,6 +64,7 @@ let AnalysisPanel = React.createClass({
       hierName: null,
       submitParams: null,
       step: null,
+      yaxisConfig: null,
       dashboardOpenImmediately: false,
       baselineBtnStatus: TagStore.getBaselineBtnDisabled(),
       selectedChartType: 'line',
@@ -182,6 +184,7 @@ let AnalysisPanel = React.createClass({
   componentWillUnmount: function() {
     let me = this;
     this.state.chartStrategy.unbindStoreListenersFn(me);
+    this.state.chartStrategy.resetYaxisSelectorFn();
   },
   onWidgetSaveWindowDismiss: function() {
     this.setState({
@@ -195,6 +198,14 @@ let AnalysisPanel = React.createClass({
     if (this.state.chartStrategy.initChartPanelByWidgetDtoFn) {
       this.state.chartStrategy.initChartPanelByWidgetDtoFn(this);
     }
+  },
+  _onYaxisSelectorDialogSubmit(config) {
+    this.setState({
+      yaxisConfig: config
+    });
+  },
+  getYaxisConfig() {
+    return this.state.yaxisConfig;
   },
   _afterChartCreated(chartObj) {
     if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
@@ -674,7 +685,10 @@ let AnalysisPanel = React.createClass({
     let code = EnergyStore.getErrorCode(),
       messages = EnergyStore.getErrorMessage();
 
-    if (code == '02004'.toString()) {
+    if(!code){
+      return ;
+    }
+    else if (code == '02004'.toString()) {
       let errorObj = this.showStepError(messages[0], EnergyStore);
       return errorObj;
     } else {
@@ -1306,6 +1320,9 @@ let AnalysisPanel = React.createClass({
       }
     }
     return hasTotal;
+  },
+  _onDeleteButtonClick(obj) {
+    this.state.chartStrategy.onDeleteButtonClickFn(this, obj);
   }
 });
 

@@ -732,7 +732,7 @@ let ChartCmpStrategyFactor = {
           n = JazzCommon.GetArialStr(n, 23); //greater than 23 then truncate with ...
         }
         let enableDelete = ((typeof item.enableDelete) === 'boolean') ? item.enableDelete : true;
-        if (item.dType == 13 || item.dType == 14 || item.dType == 15) {
+        if (item.dType == 12 || item.dType == 13 || item.dType == 14 || item.dType == 15) {
           enableDelete = false;
         }
         var s = {
