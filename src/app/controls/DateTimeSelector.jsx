@@ -120,8 +120,11 @@ let DateTimeSelector = React.createClass({
         }
       }
     }
-
-    this.setDateField(startDate, endDate, this.props._onDateSelectorChanged);
+    if ((sd !== null) || (ed !== null)) {
+      this.setDateField(startDate, endDate, this.props._onDateSelectorChanged);
+    }
+    if ((st !== null) || (et !== null))
+      this.setDateField(startDate, endDate);
   },
   getDefaultProps() {
     return {
