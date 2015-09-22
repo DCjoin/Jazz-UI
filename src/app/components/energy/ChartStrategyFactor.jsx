@@ -163,7 +163,8 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleCarbonConfigBtnItemTouchTap',
       clearChartDataFn: 'clearCarbonChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onCarbonDeleteButtonClick'
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -195,7 +196,8 @@ let ChartStrategyFactor = {
       clearChartDataFn: 'clearRatioChartData',
       initChartPanelByWidgetDtoFn: 'initRatioChartPanelByWidgetDto',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onRatioDeleteButtonClick'
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -292,7 +294,8 @@ let ChartStrategyFactor = {
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearUnitCarbonChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onUnitCarbonDeleteButtonClick'
     },
     Label: {
       searchBarGenFn: 'labelSearchBarGen',
@@ -362,6 +365,27 @@ let ChartStrategyFactor = {
         });
       }
     },
+    onCarbonDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = CarbonStore.removeSeriesDataByUid(uid);
+
+      CommodityAction.setCommoditySelectStatus(uid, null, false);
+
+      if (needReload) {
+        let paramsObj = CarbonStore.getSubmitParams();
+        let hierarchyId = paramsObj.hierarchyId,
+          commodityIds = paramsObj.commodityIds,
+          destination = paramsObj.destination,
+          viewOp = paramsObj.viewOption;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, analysisPanel);
+      } else {
+        let energyData = CarbonStore.getCarbonData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
     onCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         needReload = CostStore.removeSeriesDataByUid(uid);
@@ -377,6 +401,32 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
       } else {
         let energyData = CostStore.getEnergyData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
+    onRatioDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = RatioStore.removeSeriesDataByUid(uid);
+
+      AlarmTagAction.removeSearchTagList({
+        tagId: uid
+      });
+
+      if (needReload) {
+        let paramsObj = RatioStore.getSubmitParams();
+        let tagOptions = RatioStore.getRatioOpions();
+
+        let viewOp = paramsObj.viewOption,
+          timeRanges = viewOp.TimeRanges,
+          benchmarkOption = paramsObj.paramsObj,
+          ratioType = paramsObj.ratioType,
+          step = viewOp.Step;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, false, benchmarkOption);
+      } else {
+        let energyData = RatioStore.getEnergyData();
         analysisPanel.setState({
           energyData: energyData
         });
@@ -400,6 +450,27 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
       } else {
         let energyData = CostStore.getEnergyData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
+    onUnitCarbonDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = CarbonStore.removeSeriesDataByUid(uid);
+      CommodityAction.setCommoditySelectStatus(uid, null, false);
+
+      if (needReload) {
+        let paramsObj = CarbonStore.getSubmitParams();
+        let hierarchyId = paramsObj.hierarchyId,
+          commodityIds = paramsObj.commodityIds,
+          destination = paramsObj.destination,
+          viewOp = paramsObj.viewOption,
+          benchmarkOption = paramsObj.benchmarkOption;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, benchmarkOption);
+      } else {
+        let energyData = CarbonStore.getCarbonData();
         analysisPanel.setState({
           energyData: energyData
         });
