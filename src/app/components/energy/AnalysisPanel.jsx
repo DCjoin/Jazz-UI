@@ -682,7 +682,10 @@ let AnalysisPanel = React.createClass({
     let code = EnergyStore.getErrorCode(),
       messages = EnergyStore.getErrorMessage();
 
-    if (code == '02004'.toString()) {
+    if(!code){
+      return ;
+    }
+    else if (code == '02004'.toString()) {
       let errorObj = this.showStepError(messages[0], EnergyStore);
       return errorObj;
     } else {
