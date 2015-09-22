@@ -164,6 +164,9 @@ var TagStore = assign({}, PrototypeStore, {
     });
     return tagStatus;
   },
+  getTotalTagStatus: function() {
+    return _totalTagStatus;
+  },
   removeTagStatusByTagId: function(tagId) {
     _totalTagStatus.forEach(function(tagNode) {
       let index = tagNode.tagStatus.indexOf(tagId);

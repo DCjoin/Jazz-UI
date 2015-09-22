@@ -404,8 +404,8 @@ let ChartComponentBox = React.createClass({
       ids,
       ignorePoints = [];
     if (isBatchIgnore) {
-      ids = factory.getContinuousPointids(point, ignorePoints, this.props.step);
-
+      let step = point.series.options.option.step;
+      ids = factory.getContinuousPointids(point, ignorePoints, step);
     } else {
       ids = point.alarmId;
       ignorePoints.push(point);
@@ -617,6 +617,7 @@ let ChartComponentBox = React.createClass({
         // get and push comment flag series
         if (item.EnergyAssociatedData && item.EnergyAssociatedData.Comments && item.EnergyAssociatedData.Comments.length > 0) {
           serieObj = factory.createCommentSeriesByTargetEnergyDataItem(item, this.props.step, convertedData[i].id, xaxisMap);
+          serieObj.option.step = item.Target.Step;
           serieObj.visible = !convertedData[i].graySerie;
           serieObj.zIndex = 11;
           flagSeries.push(serieObj);
@@ -629,6 +630,7 @@ let ChartComponentBox = React.createClass({
           serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, convertedData[i].id, xaxisMap, this.props.step);
           serieObj.visible = !convertedData[i].graySerie;
           serieObj.zIndex = 11; //default 10
+          serieObj.option.step = item.Target.Step;
           alarmSeries.push(serieObj);
         }
       }
