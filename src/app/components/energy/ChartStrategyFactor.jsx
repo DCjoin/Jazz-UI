@@ -92,7 +92,8 @@ let ChartStrategyFactor = {
       getWidgetOptMenuFn: 'getWidgetOptMenu',
       initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto',
       getWidgetSaveWindowFn: 'getAlarmWidgetSaveWindow',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onDeleteButtonClick'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -125,7 +126,8 @@ let ChartStrategyFactor = {
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearCostChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onCostDeleteButtonClick'
     },
     MultiIntervalDistribution: {
 
@@ -257,7 +259,8 @@ let ChartStrategyFactor = {
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearUnitCostChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onUnitCostDeleteButtonClick'
     },
     UnitCarbon: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -335,6 +338,73 @@ let ChartStrategyFactor = {
       getWidgetOptMenuFn: 'getLabelWidgetOptMenu',
       resetYaxisSelectorFn: 'resetYaxisSelector'
     }
+  },
+  onDeleteButtonClickFnStrategy: {
+    onDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = EnergyStore.removeSeriesDataByUid(uid);
+
+      AlarmTagAction.removeSearchTagList({
+        tagId: uid
+      });
+
+      if (needReload) {
+        let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
+          paramsObj = EnergyStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges,
+          step = paramsObj.step;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+      } else {
+        let energyData = EnergyStore.getEnergyData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
+    onCostDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = CostStore.removeSeriesDataByUid(uid);
+
+      CommodityAction.setCommoditySelectStatus(uid, null, false);
+
+      if (needReload) {
+        let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
+          paramsObj = CostStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges,
+          step = paramsObj.step;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
+      } else {
+        let energyData = CostStore.getEnergyData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
+    onUnitCostDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = CostStore.removeSeriesDataByUid(uid);
+
+      CommodityAction.setCommoditySelectStatus(uid, null, false);
+
+      if (needReload) {
+        let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
+          paramsObj = CostStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges,
+          step = paramsObj.step,
+          submitParams = EnergyStore.getSubmitParams(),
+          benchmarkOption = submitParams.benchmarkOption,
+          unitType = submitParams.viewOption.DataOption.UnitType;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
+      } else {
+        let energyData = CostStore.getEnergyData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
   },
   resetYaxisSelectorFnStrategy: {
     empty() {},
@@ -1857,7 +1927,6 @@ let ChartStrategyFactor = {
         step: step,
         isCalendarInited: false
       });
-      analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
     },
     handleCarbonStepChange(analysisPanel, step) {
@@ -3211,24 +3280,6 @@ let ChartStrategyFactor = {
        </div>
    </div>;
     },
-    /*
-    unitCarbonSearchBarGen(analysisPanel){
-       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
-       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel,['line','column']);
-       return <div className={'jazz-alarm-chart-toolbar'}>
-         <div className={'jazz-full-border-dropdownmenu-container'}>
-           {chartTypeCmp}
-           <DropDownMenu menuItems={searchDate} ref='relativeDate' style={{width:'92px'}} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
-         </div>
-         <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
-         <div className={'jazz-full-border-dropdownmenu-container'} >
-           <DropDownMenu menuItems={units} style={{width:'102px', marginRight:'10px'}} onChange={(e, selectedIndex, menuItem)=>{analysisPanel.setState({unitType: menuItem.value});}}></DropDownMenu>
-         </div>
-         <div className={'jazz-flat-button'}>
-           {searchButton}
-         </div>
-     </div>;
-    },*/
     ratioUsageSearchBarGen(analysisPanel) {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel, ['line', 'column']);
@@ -3924,7 +3975,7 @@ let ChartStrategyFactor = {
     clearChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      TagStore.clearTagStatus();
+      AlarmTagAction.clearSearchTagList();
       EnergyStore.clearEnergyStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.sumBtnStatus = false;
@@ -3955,7 +4006,7 @@ let ChartStrategyFactor = {
     clearUnitChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      TagStore.clearTagStatus();
+      AlarmTagAction.clearSearchTagList();
       EnergyStore.clearEnergyStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
@@ -3988,7 +4039,7 @@ let ChartStrategyFactor = {
     clearRatioChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      TagStore.clearTagStatus();
+      AlarmTagAction.clearSearchTagList();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
@@ -3998,7 +4049,7 @@ let ChartStrategyFactor = {
     clearLabelChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      TagStore.clearTagStatus();
+      AlarmTagAction.clearSearchTagList();
       LabelStore.clearLabelStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.weatherOption = null;
@@ -4007,8 +4058,9 @@ let ChartStrategyFactor = {
     clearRankChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      CommodityStore.clearCommodityStatus();
-      TagStore.clearTagStatus();
+      CommodityStore.resetData();
+      CommodityStore.clearRankingCommodity();
+      AlarmTagStore.clearSearchTagList();
       RankStore.clearRankStore();
       analysisPanel.state.selectedChartType = 'column';
       analysisPanel.forceUpdate();
