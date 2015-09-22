@@ -7,6 +7,7 @@ import assign from "object-assign";
 import LeftPanel from './AlarmLeftPanel.jsx';
 import ChartPanel from './ChartPanel.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
+import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import DataSelectPanel from '../DataSelectPanel.jsx';
 
 import EnergyStore from '../../stores/EnergyStore.jsx';
@@ -123,6 +124,7 @@ let Alarm = React.createClass({
   },
   componentWillUnmount: function() {
     EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
+    AlarmTagAction.clearSearchTagList();
   }
 });
 

@@ -2058,10 +2058,6 @@ let ChartStrategyFactor = {
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column', 'stack', 'pie']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
-      let ratioType = analysisPanel.state.ratioType;
-      let minStep = 2; //HOUR 1, DAY 2, Week 5, Month 3, Year 4
-      if (ratioType == 2)
-        minStep = 5;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
@@ -2071,7 +2067,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
-             <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+             <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
           margin: '5px 30px 5px auto'
         }}>
@@ -2268,14 +2264,21 @@ let ChartStrategyFactor = {
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
-      let ratioType = toolElement = <div style={{
+
+      let ratioType = analysisPanel.state.ratioType;
+      let minStep = 2; //HOUR 1, DAY 2, Week 5, Month 3, Year 4
+      if (ratioType == 2) {
+        minStep = 5;
+      }
+
+      toolElement = <div style={{
         display: 'flex'
       }}>
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
            <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
-           <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+           <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
       }}>
@@ -2566,12 +2569,14 @@ let ChartStrategyFactor = {
         showSumDialog: false,
         sumBtnStatus: false,
         weatherOption: null,
+        calendarType: "",
       };
     },
     getCostInitialState() {
       let state = {
         touBtnStatus: CommodityStore.getECButtonStatus(),
-        touBtnSelected: false
+        touBtnSelected: false,
+        calendarType: "",
       };
       return state;
     },
@@ -2580,20 +2585,23 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
-        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus()
+        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus(),
+        calendarType: "",
       };
       return state;
     },
     getRatioInitialState() {
       let state = {
         ratioType: 1,
-        benchmarks: null
+        benchmarks: null,
+        calendarType: "",
       };
       return state;
     },
     getCarbonInitialState() {
       let state = {
         destination: 2,
+        calendarType: "",
       };
       return state;
     },
@@ -2603,6 +2611,7 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
+        calendarType: "",
       };
       return state;
     },
