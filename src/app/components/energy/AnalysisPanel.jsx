@@ -108,6 +108,16 @@ let AnalysisPanel = React.createClass({
         </div>;
     } else if (!!this.state.energyData || trigger) {
       energyPart = this.state.chartStrategy.getChartComponentFn(me);
+
+      let chartCmp = me.refs.ChartComponent;
+      if(chartCmp){
+        let chartObj = chartCmp.refs.highstock;
+        if(!!this.state.calendarType){
+          CalendarManager.showCalendar(chartObj, this.state.calendarType);
+        }else{
+          CalendarManager.hideCalendar(chartObj);
+        }
+      }
     }
 
     let widgetOptMenu = this.state.chartStrategy.getWidgetOptMenuFn(me);
@@ -186,6 +196,35 @@ let AnalysisPanel = React.createClass({
   _afterChartCreated(chartObj) {
     if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
       chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
+    }
+  },
+  setCalendarTypeFromWidget(widgetDto){
+    if(widgetDto && widgetDto.WidgetStatus && widgetDto.WidgetStatus !== ""){
+      let wss = JSON.parse(widgetDto.WidgetStatus);
+      let calcType = "";
+      for(var i=0, len=wss.length; i< len; i++){
+        if(wss[i].WidgetStatusKey === "calendar"){
+          if(wss[i].WidgetStatusValue === "hc"){
+            calcType = "hc";
+            break;
+          }
+          else if(wss[i].WidgetStatusValue === "work"){
+            calcType = "work";
+            break;
+          }
+        }
+      }
+
+      CalendarManager.calendarShowType = calcType;
+      this.setState({calendarType: calcType});
+      // let me = this;
+      // if (me.state.chartStrategy.handleCalendarChangeFn) {
+      //   let chartCmp = me.refs.ChartComponent;
+      //   if(chartCmp){
+      //     let chartObj = chartCmp.refs.highstock;
+      //     CalendarManager.showCalendar(chartObj, calendarType);
+      //   }
+      // }
     }
   },
   OnNavigatorChanged: function(obj) {
