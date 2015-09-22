@@ -1128,7 +1128,9 @@ let ChartStrategyFactor = {
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       if (!!analysisPanel.props.isFromAlarm) {
-
+        widgetDto.DashboardId = destNode.get('Id');
+        widgetDto.Name = analysisPanel.props.chartTitle;
+        FolderAction.WidgetSave(widgetDto, window.currentCustomerId);
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
@@ -1865,11 +1867,11 @@ let ChartStrategyFactor = {
           as = analysisPanel.state;
 
         var chartCmp = analysisPanel.refs.ChartComponent;
-        if(!!chartCmp){
-            var chartObj = chartCmp.refs.highstock;
-            if(!!chartObj){
-              CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
-            }
+        if (!!chartCmp) {
+          var chartObj = chartCmp.refs.highstock;
+          if (!!chartObj) {
+            CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+          }
         }
 
         analysisPanel.setState({

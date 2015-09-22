@@ -2,7 +2,7 @@
 'use strict';
 import React from "react";
 import { Navigation, State } from 'react-router';
-import { Dialog, FlatButton } from 'material-ui';
+import { Dialog, FlatButton, CircularProgress } from 'material-ui';
 import Copy from '../../controls/OperationTemplate/Copy.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
@@ -32,19 +32,30 @@ var WidgetSaveWindow = React.createClass({
       loading: false
     });
   },
+  _onFolderTreeLoad: function() {
+    this.setState({
+      treeLoading: false
+    });
+  },
   componentDidMount: function() {
     FolderStore.addWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.addWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
     FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
+    FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
+    this.setState({
+      treeLoading: true
+    });
   },
   componentWillUnmount: function() {
     FolderStore.removeWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.removeWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
+    FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
   },
   getInitialState: function() {
     return {
       errorText: null,
-      loading: false
+      loading: false,
+      treeLoading: true
     };
   },
   render: function() {
@@ -61,10 +72,16 @@ var WidgetSaveWindow = React.createClass({
       errorText: this.state.errorText,
       loading: this.state.loading
     };
+    if (this.state.treeLoading) {
+      return (
+        <CircularProgress  mode="indeterminate" size={1} />
+        )
+    } else {
+      return (
+        <Copy {...Props}/>
+        )
+    }
 
-    return (
-      <Copy {...Props}/>
-      )
   }
 });
 module.exports = WidgetSaveWindow;

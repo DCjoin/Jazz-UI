@@ -261,11 +261,12 @@ let FolderAction = {
       },
     });
   },
-  WidgetSave(widgetDto) {
+  WidgetSave(widgetDto, customerId) {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard.svc/CreateWidget', {
       params: {
-        widgetDto: widgetDto
+        widgetDto: widgetDto,
+        customerId: customerId
       },
       success: function(widgetDto) {
         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
