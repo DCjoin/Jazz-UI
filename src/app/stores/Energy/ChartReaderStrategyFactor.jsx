@@ -396,6 +396,7 @@ let ChartReaderStrategyFactor = {
   },
   convertMultiTimeDataFnStrategy: {
     convertMultiTimeData(data, obj, energyStore) {
+      var stepStyle = ['minutes', 'hours', 'days', 'months', 'years']
       if (!data) return;
       var start = j2d(obj.start),
         end = j2d(obj.end),
@@ -425,9 +426,29 @@ let ChartReaderStrategyFactor = {
         var eData = d[i].EnergyData;
         var t = d[i].Target;
         var timeRange = t.TimeSpan;
-        var loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -1, 'days');
-        var loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -1, 'days');
         step = d[i].Target.Step;
+        var loopStart;
+        var loopEnd;
+        if (step < 5) {
+          loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -1, stepStyle[step]);
+          loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -1, stepStyle[step]);
+        } else {
+          switch (step) {
+            case 5:
+              loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -7, 'days');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -7, 'days');
+              break;
+            case 6:
+              loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -15, 'minutes');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -15, 'minutes');
+              break;
+            case 7:
+              loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -30, 'minutes');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -30, 'minutes');
+              break;
+          }
+        }
+
 
         if (step == 1) {
           for (let j = 0; j < eData.length; j++) {

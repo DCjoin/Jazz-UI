@@ -260,7 +260,27 @@ let FolderAction = {
         });
       },
     });
-  }
+  },
+  WidgetSave(widgetDto, customerId) {
+    let originWidgetDto = widgetDto;
+    Ajax.post('/Dashboard.svc/CreateWidget', {
+      params: {
+        widgetDto: widgetDto,
+        customerId: customerId
+      },
+      success: function(widgetDto) {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
+        AppDispatcher.dispatch({
+          type: Action.ALARM_WIDGET_SAVE_SUCCESS,
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.ALARM_WIDGET_SAVE_ERROR
+        });
+      },
+    });
+  },
 };
 
 module.exports = FolderAction;

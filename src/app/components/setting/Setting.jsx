@@ -333,7 +333,8 @@ let Setting = React.createClass({
           energyType: energyType,
           widgetDto: widgetDto,
           onEnergyTypeChange: me._onEnergyTypeChanged,
-          onOperationSelect: me._onWidgetMenuSelect
+          onOperationSelect: me._onWidgetMenuSelect,
+          onCollapseButtonClick: me._onSwitchButtonClick
         };
         let widgetInitState = WidgetStore.getInitState();
         if (widgetInitState) {

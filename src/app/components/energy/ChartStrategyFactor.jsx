@@ -163,7 +163,8 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleCarbonConfigBtnItemTouchTap',
       clearChartDataFn: 'clearCarbonChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onCarbonDeleteButtonClick'
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -195,7 +196,8 @@ let ChartStrategyFactor = {
       clearChartDataFn: 'clearRatioChartData',
       initChartPanelByWidgetDtoFn: 'initRatioChartPanelByWidgetDto',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onRatioDeleteButtonClick'
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -292,7 +294,8 @@ let ChartStrategyFactor = {
       handleCalendarChangeFn: 'handleCalendarChange',
       clearChartDataFn: 'clearUnitCarbonChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onUnitCarbonDeleteButtonClick'
     },
     Label: {
       searchBarGenFn: 'labelSearchBarGen',
@@ -362,6 +365,27 @@ let ChartStrategyFactor = {
         });
       }
     },
+    onCarbonDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = CarbonStore.removeSeriesDataByUid(uid);
+
+      CommodityAction.setCommoditySelectStatus(uid, null, false);
+
+      if (needReload) {
+        let paramsObj = CarbonStore.getSubmitParams();
+        let hierarchyId = paramsObj.hierarchyId,
+          commodityIds = paramsObj.commodityIds,
+          destination = paramsObj.destination,
+          viewOp = paramsObj.viewOption;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, analysisPanel);
+      } else {
+        let energyData = CarbonStore.getCarbonData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
     onCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         needReload = CostStore.removeSeriesDataByUid(uid);
@@ -377,6 +401,32 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
       } else {
         let energyData = CostStore.getEnergyData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
+    onRatioDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = RatioStore.removeSeriesDataByUid(uid);
+
+      AlarmTagAction.removeSearchTagList({
+        tagId: uid
+      });
+
+      if (needReload) {
+        let paramsObj = RatioStore.getSubmitParams();
+        let tagOptions = RatioStore.getRatioOpions();
+
+        let viewOp = paramsObj.viewOption,
+          timeRanges = viewOp.TimeRanges,
+          benchmarkOption = paramsObj.paramsObj,
+          ratioType = paramsObj.ratioType,
+          step = viewOp.Step;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, false, benchmarkOption);
+      } else {
+        let energyData = RatioStore.getEnergyData();
         analysisPanel.setState({
           energyData: energyData
         });
@@ -400,6 +450,27 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
       } else {
         let energyData = CostStore.getEnergyData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
+    onUnitCarbonDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid,
+        needReload = CarbonStore.removeSeriesDataByUid(uid);
+      CommodityAction.setCommoditySelectStatus(uid, null, false);
+
+      if (needReload) {
+        let paramsObj = CarbonStore.getSubmitParams();
+        let hierarchyId = paramsObj.hierarchyId,
+          commodityIds = paramsObj.commodityIds,
+          destination = paramsObj.destination,
+          viewOp = paramsObj.viewOption,
+          benchmarkOption = paramsObj.benchmarkOption;
+
+        analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, benchmarkOption);
+      } else {
+        let energyData = CarbonStore.getCarbonData();
         analysisPanel.setState({
           energyData: energyData
         });
@@ -993,66 +1064,65 @@ let ChartStrategyFactor = {
   },
   save2DashboardForAlarmFnStrategy: {
     save2DashboardForAlarm(analysisPanel) {
-      let tagOptions = EnergyStore.getTagOpions(), options,
-        relativeDate = EnergyStore.getRelativeDate();
-
-      if (tagOptions) {
-        if (isArray(tagOptions)) {
-          options = [];
-          for (let i = 0, len = tagOptions.length; i < len; i++) {
-            let tag = tagOptions[i];
-            options.push({
-              Id: tag.tagId,
-              Name: tag.tagName,
-              HierId: tag.hierId,
-              NodeName: tag.hierName
-            });
-          }
-        } else {
-          options = [{
-            Id: tagOptions.tagId,
-            Name: tagOptions.tagName,
-            HierId: tagOptions.hierId,
-            NodeName: tagOptions.hierName
-          }];
-        }
-      }
-      let submitParams = EnergyStore.getSubmitParams();
-      if (relativeDate !== 'Customerize' && relativeDate !== null) {
-        let immutableSubmitParams = Immutable.fromJS(submitParams);
-        let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption', 'TimeRanges'], [{
-          relativeDate: relativeDate
-        }]);
-        submitParams = immutableSubmitParamsClone.toJS();
-      }
-      var contentSyntax = {
-        xtype: 'widgetcontainer',
-        params: {
-          submitParams: {
-            options: options,
-            tagIds: submitParams.tagIds,
-            interval: [],
-            viewOption: submitParams.viewOption
-          },
-          config: {
-            type: "line",
-            xtype: "mixedtrendchartcomponent",
-            reader: "mixedchartreader",
-            storeType: "energy.Energy",
-            searcherType: "analysissearcher",
-            widgetStyler: "widgetchartstyler",
-            maxWidgetStyler: "maxchartstyler"
-          }
-        }
-      };
+      // let tagOptions = EnergyStore.getTagOpions(), options,
+      //   relativeDate = EnergyStore.getRelativeDate();
+      //
+      // if (tagOptions) {
+      //   if (isArray(tagOptions)) {
+      //     options = [];
+      //     for (let i = 0, len = tagOptions.length; i < len; i++) {
+      //       let tag = tagOptions[i];
+      //       options.push({
+      //         Id: tag.tagId,
+      //         Name: tag.tagName,
+      //         HierId: tag.hierId,
+      //         NodeName: tag.hierName
+      //       });
+      //     }
+      //   } else {
+      //     options = [{
+      //       Id: tagOptions.tagId,
+      //       Name: tagOptions.tagName,
+      //       HierId: tagOptions.hierId,
+      //       NodeName: tagOptions.hierName
+      //     }];
+      //   }
+      // }
+      // let submitParams = EnergyStore.getSubmitParams();
+      // if (relativeDate !== 'Customerize' && relativeDate !== null) {
+      //   let immutableSubmitParams = Immutable.fromJS(submitParams);
+      //   let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption', 'TimeRanges'], [{
+      //     relativeDate: relativeDate
+      //   }]);
+      //   submitParams = immutableSubmitParamsClone.toJS();
+      // }
+      // var contentSyntax = {
+      //   xtype: 'widgetcontainer',
+      //   params: {
+      //     submitParams: {
+      //       options: options,
+      //       tagIds: submitParams.tagIds,
+      //       interval: [],
+      //       viewOption: submitParams.viewOption
+      //     },
+      //     config: {
+      //       type: "line",
+      //       xtype: "mixedtrendchartcomponent",
+      //       reader: "mixedchartreader",
+      //       storeType: "energy.Energy",
+      //       searcherType: "analysissearcher",
+      //       widgetStyler: "widgetchartstyler",
+      //       maxWidgetStyler: "maxchartstyler"
+      //     }
+      //   }
+      // };
       analysisPanel.setState({
         dashboardOpenImmediately: true,
-        contentSyntax: JSON.stringify(contentSyntax)
       });
     }
   },
   save2DashboardFnStrategy: {
-    save2Dashboard(analysisPanel) {
+    save2Dashboard(analysisPanel, destNode) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = EnergyStore.getTagOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -1160,7 +1230,14 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      if (!!analysisPanel.props.isFromAlarm) {
+        widgetDto.DashboardId = destNode.get('Id');
+        widgetDto.Name = analysisPanel.props.chartTitle;
+        FolderAction.WidgetSave(widgetDto, window.currentCustomerId);
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+
     },
     saveRatio2Dashboard(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -3786,14 +3863,25 @@ let ChartStrategyFactor = {
       } else {
         weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' disabled={true} tooltip={isWeatherDisabled} />;
       }
+
+      let sumBtnStatus = analysisPanel.state.sumBtnStatus;
+      if (analysisPanel.state.selectedChartType === 'rawdata' || analysisPanel.state.selectedChartType === 'pie') {
+        sumBtnStatus = true;
+      }
+
+      let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
+      if (submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
+        baselineBtnStatus = true;
+      }
+
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
-       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>
        <MenuDivider />
-       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={analysisPanel.state.sumBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={sumBtnStatus}/>
        {calendarEl}
        {weatherEl}
      </ButtonMenu>;
@@ -4429,8 +4517,8 @@ let ChartStrategyFactor = {
   },
   getWidgetSaveWindowFnStrategy: {
     getAlarmWidgetSaveWindow: function(analysisPanel) {
-      let widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={analysisPanel.onWidgetSaveWindowDismiss} chartTitle={analysisPanel.props.chartTitle}
-      tagOption={analysisPanel.state.tagOption} contentSyntax={analysisPanel.state.contentSyntax}></WidgetSaveWindow>;
+      let widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onDismiss={analysisPanel.onWidgetSaveWindowDismiss} chartTitle={analysisPanel.props.chartTitle}
+      onSave={analysisPanel.onWidgetSaveWindow}></WidgetSaveWindow>;
       return widgetWd
     }
   },
