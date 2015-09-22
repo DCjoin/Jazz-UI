@@ -795,7 +795,6 @@ let ChartReaderStrategyFactor = {
       if (!target) return null;
       var name,
         disableDelete = false,
-        disableHide = false,
         tt = target.Type,
         uid = target.CommodityId;
 
@@ -809,28 +808,21 @@ let ChartReaderStrategyFactor = {
         case 6:
           name = I18N.EM.Plain /*'平时'*/ ;
           disableDelete = true;
-          disableHide = true;
           break;
         case 7:
           name = I18N.EM.Peak /*'峰时'*/ ;
           disableDelete = true;
-          disableHide = true;
           break;
         case 8:
           name = I18N.EM.Valley /*'谷时'*/ ;
           disableDelete = true;
-          disableHide = true;
           break;
         case 13:
           name = I18N.EM.Ratio.TargetValue;
           disableDelete = true;
-          disableHide = true;
-          disableDelete = true;
           break;
         case 14:
           name = I18N.EM.Ratio.BaseValue;
-          disableDelete = true;
-          disableHide = true;
           disableDelete = true;
           break;
         default:
@@ -841,7 +833,6 @@ let ChartReaderStrategyFactor = {
         uid: uid,
         dType: tt,
         disableDelete: disableDelete,
-        disableHide: disableHide,
         option: {
           CommodityId: target.CommodityId
         }
