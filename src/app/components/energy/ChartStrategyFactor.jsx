@@ -1864,10 +1864,14 @@ let ChartStrategyFactor = {
           timeRanges = paramsObj.timeRanges,
           as = analysisPanel.state;
 
-        var chartCmp = analysisPanel.refs.ChartComponent,
-          chartObj = chartCmp.refs.highstock;
+        var chartCmp = analysisPanel.refs.ChartComponent;
+        if(!!chartCmp){
+            var chartObj = chartCmp.refs.highstock;
+            if(!!chartObj){
+              CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+            }
+        }
 
-        CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
         analysisPanel.setState({
           isCalendarInited: true
         });
@@ -3990,7 +3994,7 @@ let ChartStrategyFactor = {
     clearCarbonChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      CommodityStore.clearCommodityStatus();
+      CommodityAction.clearCommodity();
       CarbonStore.clearCarbonStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.destination = 2;
@@ -4000,7 +4004,7 @@ let ChartStrategyFactor = {
     clearCostChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      CommodityStore.clearCommodityStatus();
+      CommodityAction.clearCommodity();
       CostStore.clearCostStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel._onTouBtnDisabled();
@@ -4021,7 +4025,7 @@ let ChartStrategyFactor = {
     clearUnitCostChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      CommodityStore.clearCommodityStatus();
+      CommodityAction.clearCommodity();
       CostStore.clearCostStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel._onUnitCostBaselineBtnDisabled();
@@ -4033,7 +4037,7 @@ let ChartStrategyFactor = {
     clearUnitCarbonChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      CommodityStore.clearCommodityStatus();
+      CommodityAction.clearCommodity();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.destination = 2;
       analysisPanel.state.benchmarkOption = null;
@@ -4062,8 +4066,7 @@ let ChartStrategyFactor = {
     clearRankChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      CommodityStore.resetData();
-      CommodityStore.clearRankingCommodity();
+      CommodityAction.clearRankingCommodity();
       AlarmTagStore.clearSearchTagList();
       RankStore.clearRankStore();
       analysisPanel.state.selectedChartType = 'column';
