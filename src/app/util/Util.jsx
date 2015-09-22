@@ -1357,6 +1357,21 @@ let CommonFuns = {
         case 4: //yearly, add one year, this is not a fixed value, need construct
           let newtime = new Date(time.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
           return new Date(newtime - (newtime.getTimezoneOffset() * 60000));
+        case 6:
+          return new Date(ticks + this.FixedTimes.minute * 15);
+        case 7:
+          return new Date(ticks + this.FixedTimes.minute * 30);
+        case 8:
+          return new Date(ticks + this.FixedTimes.hour * 2);
+        case 9:
+          return new Date(ticks + this.FixedTimes.hour * 4);
+        case 10:
+          return new Date(ticks + this.FixedTimes.hour * 6);
+        case 11:
+          return new Date(ticks + this.FixedTimes.hour * 8);
+        case 12:
+          return new Date(ticks + this.FixedTimes.hour * 12);
+
       }
     },
     firstValueTime: function(startTime, step) {
@@ -1413,6 +1428,53 @@ let CommonFuns = {
             let newTime = new Date(year, month, 1, 0, 0, 0, 0);
             return dp.AddStep(newTime, 4);
           }
+          break;
+        case 6: //15minutes
+          while (ticks % (fixed.minute * 15) !== 0) {
+            ticks += fixed.minute;
+          }
+          return new Date(ticks);
+        case 7: //30minutes
+          while (ticks % (fixed.minute * 30) !== 0) {
+            ticks += fixed.minute;
+          }
+          return new Date(ticks);
+        case 8: //2hourly
+          //if it is a int times of hourly ticks, return it
+          //if not, add hourly ticks until it becomes one
+          while (ticks % (fixed.hour * 2) !== 0) {
+            ticks += fixed.minute;
+          }
+          return new Date(ticks);
+        case 9: //4hourly
+          //if it is a int times of hourly ticks, return it
+          //if not, add hourly ticks until it becomes one
+          while (ticks % (fixed.hour * 4) !== 0) {
+            ticks += fixed.minute;
+          }
+          return new Date(ticks);
+        case 10: //hourly
+          //if it is a int times of hourly ticks, return it
+          //if not, add hourly ticks until it becomes one
+          while (ticks % (fixed.hour * 6) !== 0) {
+            ticks += fixed.minute;
+          }
+          return new Date(ticks);
+        case 11: //hourly
+          //if it is a int times of hourly ticks, return it
+          //if not, add hourly ticks until it becomes one
+          while (ticks % (fixed.hour * 8) !== 0) {
+            ticks += fixed.minute;
+          }
+          return new Date(ticks);
+        case 12: //hourly
+          //if it is a int times of hourly ticks, return it
+          //if not, add hourly ticks until it becomes one
+          while (ticks % (fixed.hour * 12) !== 0) {
+            ticks += fixed.minute;
+          }
+          return new Date(ticks);
+
       }
     },
     GetStepSpan: function(ticks, step) {
@@ -1428,6 +1490,20 @@ let CommonFuns = {
           return Math.round(ticks / this.FixedTimes.month);
         case 4: //yearly, add one year,
           return Math.round(ticks / this.FixedTimes.year);
+        case 6:
+          return Math.round(ticks / (this.FixedTimes.minute * 15));
+        case 7:
+          return Math.round(ticks / (this.FixedTimes.minute * 30));
+        case 8:
+          return Math.round(ticks / (this.FixedTimes.hour * 2));
+        case 9:
+          return Math.round(ticks / (this.FixedTimes.hour * 4));
+        case 10:
+          return Math.round(ticks / (this.FixedTimes.hour * 6));
+        case 11:
+          return Math.round(ticks / (this.FixedTimes.hour * 8));
+        case 12:
+          return Math.round(ticks / (this.FixedTimes.hour * 12));
       }
     },
     // number can be minus
@@ -1447,6 +1523,22 @@ let CommonFuns = {
           return new Date(Math.floor(totalMonths / 12), totalMonths % 12, 1, 0, 0, 0, 0);
         case 4: //yearly, add one year, this is not a fixed value, need construct
           return new Date(time.getFullYear() + number, 0, 1, 0, 0, 0, 0);
+        case 6:
+          return new Date(ticks + this.FixedTimes.minute * 15 * number);
+        case 7:
+          return new Date(ticks + this.FixedTimes.minute * 30 * number);
+        case 8:
+          return new Date(ticks + this.FixedTimes.hour * 2 * number);
+        case 9:
+          return new Date(ticks + this.FixedTimes.hour * 4 * number);
+        case 10:
+          return new Date(ticks + this.FixedTimes.hour * 6 * number);
+        case 11:
+          return new Date(ticks + this.FixedTimes.hour * 8 * number);
+        case 12:
+          return new Date(ticks + this.FixedTimes.hour * 12 * number);
+        default:
+          return new Date(ticks);
       }
     }
   },
