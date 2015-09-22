@@ -261,12 +261,12 @@ var TagStore = assign({}, PrototypeStore, {
     this.emitBaselineBtnDisabledChange();
   },
   checkWeatherBtnDisabled: function() {
-    if (_tagTotal > 1) {
-      baseline_btn_disabled = true;
+    if (_totalTagStatus.length > 1) {
+      weather_btn_disabled = true;
     } else {
-      baseline_btn_disabled = false;
+      weather_btn_disabled = false;
     }
-    this.emitBaselineBtnDisabledChange();
+    this.emitWeatherBtnDisabledChange();
   },
   getBaselineBtnDisabled: function() {
     return baseline_btn_disabled;

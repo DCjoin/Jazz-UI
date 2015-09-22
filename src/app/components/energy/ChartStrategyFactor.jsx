@@ -573,7 +573,8 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         selectedChartType: typeMap[chartType],
         sumBtnStatus: sumBtnStatus,
-        step: step
+        step: step,
+        weatherBtnStatus: TagStore.getWeatherBtnDisabled()
       }, () => {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
@@ -1884,6 +1885,8 @@ let ChartStrategyFactor = {
       let paramsObj = EnergyStore.getParamsObj(),
         step = paramsObj.step;
       if (step != 1) return I18N.EM.WeatherSupportsOnlyHourlyStep;
+      let disabled = TagStore.getWeatherBtnDisabled();
+      if(disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       return false;
     }
   },
@@ -3926,6 +3929,8 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+      TagStore.addWeatherBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
     },
     costBindStoreListeners(analysisPanel) {
       CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
@@ -3938,7 +3943,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     ratioBindStoreListeners(analysisPanel) {
       RatioStore.addRatioDataLoadingListener(analysisPanel._onRatioLoadingStatusChange);
@@ -3962,7 +3967,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     rankBindStoreListeners(analysisPanel) {
       RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
@@ -3987,6 +3992,8 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
     },
@@ -3994,7 +4001,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     ratioUnbindStoreListeners(analysisPanel) {
@@ -4032,7 +4039,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     rankUnbindStoreListeners(analysisPanel) {
