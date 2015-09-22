@@ -878,66 +878,65 @@ let ChartStrategyFactor = {
   },
   save2DashboardForAlarmFnStrategy: {
     save2DashboardForAlarm(analysisPanel) {
-      let tagOptions = EnergyStore.getTagOpions(), options,
-        relativeDate = EnergyStore.getRelativeDate();
-
-      if (tagOptions) {
-        if (isArray(tagOptions)) {
-          options = [];
-          for (let i = 0, len = tagOptions.length; i < len; i++) {
-            let tag = tagOptions[i];
-            options.push({
-              Id: tag.tagId,
-              Name: tag.tagName,
-              HierId: tag.hierId,
-              NodeName: tag.hierName
-            });
-          }
-        } else {
-          options = [{
-            Id: tagOptions.tagId,
-            Name: tagOptions.tagName,
-            HierId: tagOptions.hierId,
-            NodeName: tagOptions.hierName
-          }];
-        }
-      }
-      let submitParams = EnergyStore.getSubmitParams();
-      if (relativeDate !== 'Customerize' && relativeDate !== null) {
-        let immutableSubmitParams = Immutable.fromJS(submitParams);
-        let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption', 'TimeRanges'], [{
-          relativeDate: relativeDate
-        }]);
-        submitParams = immutableSubmitParamsClone.toJS();
-      }
-      var contentSyntax = {
-        xtype: 'widgetcontainer',
-        params: {
-          submitParams: {
-            options: options,
-            tagIds: submitParams.tagIds,
-            interval: [],
-            viewOption: submitParams.viewOption
-          },
-          config: {
-            type: "line",
-            xtype: "mixedtrendchartcomponent",
-            reader: "mixedchartreader",
-            storeType: "energy.Energy",
-            searcherType: "analysissearcher",
-            widgetStyler: "widgetchartstyler",
-            maxWidgetStyler: "maxchartstyler"
-          }
-        }
-      };
+      // let tagOptions = EnergyStore.getTagOpions(), options,
+      //   relativeDate = EnergyStore.getRelativeDate();
+      //
+      // if (tagOptions) {
+      //   if (isArray(tagOptions)) {
+      //     options = [];
+      //     for (let i = 0, len = tagOptions.length; i < len; i++) {
+      //       let tag = tagOptions[i];
+      //       options.push({
+      //         Id: tag.tagId,
+      //         Name: tag.tagName,
+      //         HierId: tag.hierId,
+      //         NodeName: tag.hierName
+      //       });
+      //     }
+      //   } else {
+      //     options = [{
+      //       Id: tagOptions.tagId,
+      //       Name: tagOptions.tagName,
+      //       HierId: tagOptions.hierId,
+      //       NodeName: tagOptions.hierName
+      //     }];
+      //   }
+      // }
+      // let submitParams = EnergyStore.getSubmitParams();
+      // if (relativeDate !== 'Customerize' && relativeDate !== null) {
+      //   let immutableSubmitParams = Immutable.fromJS(submitParams);
+      //   let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption', 'TimeRanges'], [{
+      //     relativeDate: relativeDate
+      //   }]);
+      //   submitParams = immutableSubmitParamsClone.toJS();
+      // }
+      // var contentSyntax = {
+      //   xtype: 'widgetcontainer',
+      //   params: {
+      //     submitParams: {
+      //       options: options,
+      //       tagIds: submitParams.tagIds,
+      //       interval: [],
+      //       viewOption: submitParams.viewOption
+      //     },
+      //     config: {
+      //       type: "line",
+      //       xtype: "mixedtrendchartcomponent",
+      //       reader: "mixedchartreader",
+      //       storeType: "energy.Energy",
+      //       searcherType: "analysissearcher",
+      //       widgetStyler: "widgetchartstyler",
+      //       maxWidgetStyler: "maxchartstyler"
+      //     }
+      //   }
+      // };
       analysisPanel.setState({
         dashboardOpenImmediately: true,
-        contentSyntax: JSON.stringify(contentSyntax)
       });
     }
   },
   save2DashboardFnStrategy: {
-    save2Dashboard(analysisPanel) {
+    save2Dashboard(analysisPanel, destNode) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = EnergyStore.getTagOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -1043,7 +1042,12 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      if (!!analysisPanel.props.isFromAlarm) {
+
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+
     },
     saveRatio2Dashboard(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -4292,8 +4296,8 @@ let ChartStrategyFactor = {
   },
   getWidgetSaveWindowFnStrategy: {
     getAlarmWidgetSaveWindow: function(analysisPanel) {
-      let widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={analysisPanel.onWidgetSaveWindowDismiss} chartTitle={analysisPanel.props.chartTitle}
-      tagOption={analysisPanel.state.tagOption} contentSyntax={analysisPanel.state.contentSyntax}></WidgetSaveWindow>;
+      let widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onDismiss={analysisPanel.onWidgetSaveWindowDismiss} chartTitle={analysisPanel.props.chartTitle}
+      onSave={analysisPanel.onWidgetSaveWindow}></WidgetSaveWindow>;
       return widgetWd
     }
   },

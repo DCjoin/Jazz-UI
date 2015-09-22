@@ -208,7 +208,6 @@ var CommodityStore = assign({}, PrototypeStore, {
   getCommodityStatus: function() {
     return _commodityStatus;
   },
-  removeCommodityStatus: function(node) {},
   clearCommodityStatus: function() {
     _commodityStatus = Immutable.List([]);
   },

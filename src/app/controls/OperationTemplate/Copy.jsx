@@ -1,146 +1,147 @@
 'use strict';
 import React from "react";
-import {Navigation, State } from 'react-router';
+import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
-import {Dialog,FlatButton,TextField,Paper,CircularProgress} from 'material-ui';
+import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
 import Tree from './assets/CopyDestTree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 
 var Copy = React.createClass({
   propTypes: {
-    title:React.PropTypes.string,//复制文件夹 or 图表另存为
-    label:React.PropTypes.string,//文件夹名称 or 图表名称
-    labelName:React.PropTypes.string,
-    firstActionLabel:React.PropTypes.string,//复制 or 保存
-    onFirstActionTouchTap:React.PropTypes.func,
-    onSecondActionTouchTap:React.PropTypes.func,
+    title: React.PropTypes.string, //复制文件夹 or 图表另存为
+    label: React.PropTypes.string, //文件夹名称 or 图表名称
+    labelName: React.PropTypes.string,
+    firstActionLabel: React.PropTypes.string, //复制 or 保存
+    onFirstActionTouchTap: React.PropTypes.func,
+    onSecondActionTouchTap: React.PropTypes.func,
     onDismiss: React.PropTypes.func,
-    errorText:React.PropTypes.string,
-    treeNode:React.PropTypes.object,
-    loading:React.PropTypes.bool,
+    errorText: React.PropTypes.string,
+    treeNode: React.PropTypes.object,
+    loading: React.PropTypes.bool,
   },
-  _onFirstActionTouchTap:function(){
-    if(this.props.onFirstActionTouchTap){
-      this.props.onFirstActionTouchTap(this.state.selectedNode,this.state.labelName);
+  _onFirstActionTouchTap: function() {
+    if (this.props.onFirstActionTouchTap) {
+      this.props.onFirstActionTouchTap(this.state.selectedNode, this.state.labelName);
     }
   },
-  _onSecondActionTouchTap:function(){
+  _onSecondActionTouchTap: function() {
     this.refs.dialog.dismiss();
-    if(this.props.onSecondActionTouchTap){
+    if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
   },
-  _onNameChanged:function(e){
-    var value=e.target.value;
-    if(value.length>100){
+  _onNameChanged: function(e) {
+    var value = e.target.value;
+    if (value.length > 100) {
       this.setState({
-        errorText:I18N.Folder.Copy.NameLongError,
-        btnDisabled:true
+        errorText: I18N.Folder.Copy.NameLongError,
+        btnDisabled: true
       });
-    }
-    else {
+    } else {
       this.setState({
-        labelName:e.target.value,
-        errorText:null,
-        btnDisabled:false
+        labelName: e.target.value,
+        errorText: null,
+        btnDisabled: false
       });
     }
 
   },
-  _onTreeSelect:function(){
+  _onTreeSelect: function() {
     this.setState({
-      treeShow:true
+      treeShow: true
     })
   },
-  _onTreeHide:function(){
+  _onTreeHide: function() {
     this.setState({
-      treeShow:false
+      treeShow: false
     })
   },
-  _onSelectNode:function(node){
+  _onSelectNode: function(node) {
     this.setState({
-      selectedNode:node,
-      treeShow:false
+      selectedNode: node,
+      treeShow: false
     });
   },
-  getInitialState:function(){
-    return{
-      labelName:this.props.labelName,
-      allNode:FolderStore.getFolderTree(),
-      selectedNode:this.props.treeNode,
-      treeShow:false,
-      errorText:this.props.errorText,
-      btnDisabled:false
+  getInitialState: function() {
+    return {
+      labelName: this.props.labelName,
+      allNode: FolderStore.getFolderTree(),
+      selectedNode: (!!this.props.treeNode ? this.props.treeNode : FolderStore.getFolderTree()),
+      treeShow: false,
+      errorText: this.props.errorText,
+      btnDisabled: false
     };
   },
-  componentWillReceiveProps:function(nextProps){
-    var selectedNode=FolderStore.getSelectedNode();
-    if(selectedNode===null){
-      selectedNode=FolderStore.getFolderTree()
+  componentWillReceiveProps: function(nextProps) {
+    var selectedNode = FolderStore.getSelectedNode();
+    if (selectedNode === null) {
+      selectedNode = FolderStore.getFolderTree()
     }
     this.setState({
-      labelName:nextProps.labelName,
-      allNode:FolderStore.getFolderTree(),
-      selectedNode:selectedNode,
-      treeShow:false,
-      errorText:nextProps.errorText,
-      btnDisabled:false
+      labelName: nextProps.labelName,
+      allNode: FolderStore.getFolderTree(),
+      selectedNode: selectedNode,
+      treeShow: false,
+      errorText: nextProps.errorText,
+      btnDisabled: false
     });
   },
-  render:function(){
-      //style
-      let titleStyle={
-            fontSize:'20px',
-            color:'#464949',
-            marginLeft:'26px'
-          };
+  render: function() {
+    //style
+    let titleStyle = {
+      fontSize: '20px',
+      color: '#464949',
+      marginLeft: '26px'
+    };
 
-      let actions = [
-            <FlatButton
-              label={this.props.firstActionLabel}
-              onTouchTap={this._onFirstActionTouchTap}
-              disabled={this.state.btnDisabled}
-            />,
-            <FlatButton
-              label={I18N.Template.Copy.Cancel}
-              onTouchTap={this._onSecondActionTouchTap}
-            />
-            ];
-      //props
-      let treeProps={
-        show:this.state.treeShow,
-        onTreeClickAway:this._onTreeHide,
-        allNode:this.state.allNode,
-        onSelectNode:this._onSelectNode,
-        selectedNode:this.state.selectedNode,
+    let actions = [
+      <FlatButton
+      label={this.props.firstActionLabel}
+      onTouchTap={this._onFirstActionTouchTap}
+      disabled={this.state.btnDisabled}
+      />,
+      <FlatButton
+      label={I18N.Template.Copy.Cancel}
+      onTouchTap={this._onSecondActionTouchTap}
+      />
+    ];
+    //props
+    let treeProps = {
+        show: this.state.treeShow,
+        onTreeClickAway: this._onTreeHide,
+        allNode: this.state.allNode,
+        onSelectNode: this._onSelectNode,
+        selectedNode: this.state.selectedNode,
 
       },
-      dialogProps={
-        ref:'dialog',
-        title:this.props.title,
-        actions:actions,
-        modal:true,
-        openImmediately:true,
-        onDismiss:this.props.onDismiss,
-        titleStyle:titleStyle
+      dialogProps = {
+        ref: 'dialog',
+        title: this.props.title,
+        actions: actions,
+        modal: true,
+        openImmediately: true,
+        onDismiss: this.props.onDismiss,
+        titleStyle: titleStyle
       };
 
-      //component
-      let nameField=(
-                <div>
+    //component
+    let nameField = (
+    <div>
                   <div>
                     {this.props.label}
                   </div>
                   <TextField value={this.state.labelName} onChange={this._onNameChanged} errorText={this.state.errorText}/>
                 </div>
-              );
-      let icon = (
-                <div className="icon">
+    );
+    let icon = (
+    <div className="icon">
                   <div className="icon-arrow-down"/>
                 </div>
-                );
-      let FolderTreeField=(
-                <div style={{'margin-top':'20px'}}>
+    );
+    let FolderTreeField = (
+    <div style={{
+      'margin-top': '20px'
+    }}>
                     <div>
                       {I18N.Template.Copy.DestinationFolder}
                     </div>
@@ -150,31 +151,30 @@ var Copy = React.createClass({
                     </div>
                   </div>
     );
-    let FolderTree=(this.state.treeShow?<Tree {...treeProps}/>:null);
+    let FolderTree = (this.state.treeShow ? <Tree {...treeProps}/> : null);
 
 
-    if(this.props.loading){
-      return(
+    if (this.props.loading) {
+      return (
         <div className='jazz-copytemplate-dialog'>
           <div className={classNames({
-            "disable":this.state.btnDisabled,
-            'able':!this.state.btnDisabled
-          })}>
+          "disable": this.state.btnDisabled,
+          'able': !this.state.btnDisabled
+        })}>
           <Dialog {...dialogProps}>
             <CircularProgress  mode="indeterminate" size={1} />
           </Dialog>
         </div>
       </div>
 
-      )
-    }
-    else {
-      return(
+        )
+    } else {
+      return (
         <div className='jazz-copytemplate-dialog'>
           <div className={classNames({
-            "disable":this.state.btnDisabled,
-            'able':!this.state.btnDisabled
-          })}>
+          "disable": this.state.btnDisabled,
+          'able': !this.state.btnDisabled
+        })}>
             <Dialog {...dialogProps}>
               {nameField}
               {FolderTreeField}
@@ -184,7 +184,7 @@ var Copy = React.createClass({
         </div>
 
 
-      )
+        )
     }
 
   }

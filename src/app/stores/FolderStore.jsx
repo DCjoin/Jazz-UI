@@ -32,7 +32,9 @@ let FOLDER_TREE_EVENT = 'foldertree',
   MODIFY_READING_STATUS_EVENT = 'modifyreadingstatus',
   EXPORT_WIDGET_ERROR_EVENT = 'exportwidgeterror',
   EXPORT_WIDGET_SUCCESS_EVENT = 'exportwidgetsuccess',
-  SHARE_STATUS_EVENT = 'sharestatus';
+  SHARE_STATUS_EVENT = 'sharestatus',
+  SAVE_ALARM_WIDGET_SUCCESS_EVENT = 'savealarmwidgetsuccess',
+  SAVE_ALARM_WIDGET_ERROR_EVENT = 'savealarmwidgeterror';
 
 var FolderStore = assign({}, PrototypeStore, {
 
@@ -520,6 +522,27 @@ var FolderStore = assign({}, PrototypeStore, {
       this.removeListener(EXPORT_WIDGET_SUCCESS_EVENT, callback);
       this.dispose();
     },
+    emitWidgetSaveSuccessChange: function() {
+      this.emit(SAVE_ALARM_WIDGET_SUCCESS_EVENT);
+    },
+    addWidgetSaveSuccessListener: function(callback) {
+      this.on(SAVE_ALARM_WIDGET_SUCCESS_EVENT, callback);
+    },
+    removeWidgetSaveSuccessListener: function(callback) {
+      this.removeListener(SAVE_ALARM_WIDGET_SUCCESS_EVENT, callback);
+      this.dispose();
+    },
+    emitWidgetSaveErrorChange: function() {
+      this.emit(SAVE_ALARM_WIDGET_ERROR_EVENT);
+    },
+    addWidgetSaveErrorListener: function(callback) {
+      this.on(SAVE_ALARM_WIDGET_ERROR_EVENT, callback);
+    },
+    removeWidgetSaveErrorListener: function(callback) {
+      this.removeListener(SAVE_ALARM_WIDGET_ERROR_EVENT, callback);
+      this.dispose();
+    },
+
   });
 
   var FolderAction = Folder.Action;
@@ -589,6 +612,12 @@ var FolderStore = assign({}, PrototypeStore, {
         break;
       case FolderAction.EXPORT_WIDGET_SUCCESS:
         FolderStore.emitExportWidgetSuccessChange();
+        break;
+      case FolderAction.ALARM_WIDGET_SAVE_ERROR:
+        FolderStore.emitWidgetSaveErrorChange();
+        break;
+      case FolderAction.ALARM_WIDGET_SAVE_SUCCESS:
+        FolderStore.emitWidgetSaveSuccessChange();
         break;
     }
   });

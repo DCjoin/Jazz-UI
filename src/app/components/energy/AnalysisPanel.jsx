@@ -84,6 +84,9 @@ let AnalysisPanel = React.createClass({
       this.props.onOperationSelect(menuIndex);
     }
   },
+  onWidgetSaveWindow: function(destNode) {
+    this.state.chartStrategy.save2DashboardFn(this, destNode);
+  },
   render() {
     let me = this,
       errorDialog = null,
@@ -95,7 +98,7 @@ let AnalysisPanel = React.createClass({
 
     var collapseButton = <div className="fold-tree-btn" style={{
       "color": "#939796"
-    }}>
+    }} onClick={this.props.onCollapseButtonClick}>
                               <FontIcon hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-column-fold")} />
                            </div>;
     let trigger = false;
@@ -110,11 +113,11 @@ let AnalysisPanel = React.createClass({
       energyPart = this.state.chartStrategy.getChartComponentFn(me);
 
       let chartCmp = me.refs.ChartComponent;
-      if(chartCmp){
+      if (chartCmp) {
         let chartObj = chartCmp.refs.highstock;
-        if(!!this.state.calendarType){
+        if (!!this.state.calendarType) {
           CalendarManager.showCalendar(chartObj, this.state.calendarType);
-        }else{
+        } else {
           CalendarManager.hideCalendar(chartObj);
         }
       }
@@ -198,17 +201,16 @@ let AnalysisPanel = React.createClass({
       chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
     }
   },
-  setCalendarTypeFromWidget(widgetDto){
-    if(widgetDto && widgetDto.WidgetStatus && widgetDto.WidgetStatus !== ""){
+  setCalendarTypeFromWidget(widgetDto) {
+    if (widgetDto && widgetDto.WidgetStatus && widgetDto.WidgetStatus !== "") {
       let wss = JSON.parse(widgetDto.WidgetStatus);
       let calcType = "";
-      for(var i=0, len=wss.length; i< len; i++){
-        if(wss[i].WidgetStatusKey === "calendar"){
-          if(wss[i].WidgetStatusValue === "hc"){
+      for (var i = 0, len = wss.length; i < len; i++) {
+        if (wss[i].WidgetStatusKey === "calendar") {
+          if (wss[i].WidgetStatusValue === "hc") {
             calcType = "hc";
             break;
-          }
-          else if(wss[i].WidgetStatusValue === "work"){
+          } else if (wss[i].WidgetStatusValue === "work") {
             calcType = "work";
             break;
           }
@@ -216,15 +218,17 @@ let AnalysisPanel = React.createClass({
       }
 
       CalendarManager.calendarShowType = calcType;
-      this.setState({calendarType: calcType});
-      // let me = this;
-      // if (me.state.chartStrategy.handleCalendarChangeFn) {
-      //   let chartCmp = me.refs.ChartComponent;
-      //   if(chartCmp){
-      //     let chartObj = chartCmp.refs.highstock;
-      //     CalendarManager.showCalendar(chartObj, calendarType);
-      //   }
-      // }
+      this.setState({
+        calendarType: calcType
+      });
+    // let me = this;
+    // if (me.state.chartStrategy.handleCalendarChangeFn) {
+    //   let chartCmp = me.refs.ChartComponent;
+    //   if(chartCmp){
+    //     let chartObj = chartCmp.refs.highstock;
+    //     CalendarManager.showCalendar(chartObj, calendarType);
+    //   }
+    // }
     }
   },
   OnNavigatorChanged: function(obj) {
