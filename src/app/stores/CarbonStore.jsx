@@ -151,7 +151,27 @@ let CarbonStore = assign({}, PrototypeStore, {
     ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _carbonData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
-  removeSeriesDataByUid(uid) {},
+  removeSeriesDataByUid(uid) {    
+    if(_carbonData){
+      let latestDataList = [];
+      let dataList = _carbonData.toJS().Data;
+
+      for(let i=0,len=dataList.length; i<len; i++){
+        let data = dataList[i];
+        if(data.uid !== uid){
+          latestDataList.push(data);
+        }
+      }
+      if(latestDataList.length === 1){
+        return true;
+      }else if(latestDataList.length > 0){
+        _carbonData = _carbonData.set('Data', latestDataList);
+      }else{
+        _carbonData = null;
+      }
+    }
+    return false;
+  },
   //listners--------------------------------
   addCarbonDataLoadingListener: function(callback) {
     this.on(CARBON_DATA_LOADING_EVENT, callback);
