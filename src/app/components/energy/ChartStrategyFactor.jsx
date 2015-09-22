@@ -3924,7 +3924,7 @@ let ChartStrategyFactor = {
     clearChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      TagStore.clearTagStatus();
+      AlarmTagStore.clearSearchTagList();
       EnergyStore.clearEnergyStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.sumBtnStatus = false;
@@ -3955,7 +3955,7 @@ let ChartStrategyFactor = {
     clearUnitChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      TagStore.clearTagStatus();
+      AlarmTagStore.clearSearchTagList();
       EnergyStore.clearEnergyStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
@@ -3988,7 +3988,7 @@ let ChartStrategyFactor = {
     clearRatioChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      TagStore.clearTagStatus();
+      AlarmTagStore.clearSearchTagList();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.step = null;
       analysisPanel.state.benchmarkOption = null;
@@ -3998,7 +3998,7 @@ let ChartStrategyFactor = {
     clearLabelChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      TagStore.clearTagStatus();
+      AlarmTagStore.clearSearchTagList();
       LabelStore.clearLabelStore();
       analysisPanel.state.selectedChartType = 'line';
       analysisPanel.state.weatherOption = null;
@@ -4007,8 +4007,9 @@ let ChartStrategyFactor = {
     clearRankChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
       analysisPanel.state.energyRawData = null;
-      CommodityStore.clearCommodityStatus();
-      TagStore.clearTagStatus();
+      CommodityStore.resetData();
+      CommodityStore.clearRankingCommodity();
+      AlarmTagStore.clearSearchTagList();
       RankStore.clearRankStore();
       analysisPanel.state.selectedChartType = 'column';
       analysisPanel.forceUpdate();
