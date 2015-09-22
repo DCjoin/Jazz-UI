@@ -844,15 +844,6 @@ let ChartStrategyFactor = {
       let widgetDto = analysisPanel.props.widgetDto,
         timeRanges = widgetDto.timeRange;
 
-      // let typeMap = {
-        //   Line: 'line',
-        //   Column: 'column',
-        //   Stack: 'stack',
-        //   Pie: 'pie',
-        //   DataTable: 'rawdata',
-        //   original: 'rawdata'
-        // };
-
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
@@ -860,14 +851,14 @@ let ChartStrategyFactor = {
           let start = timeRange.StartTime;
           let end = timeRange.EndTime;
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          analysisPanel.refs.relativeDate.setState({
+            selectedIndex: 0
+          });
         }
       };
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
-      if (timeRanges.length !== 1) {
-        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
-      }
 
       //init selected tags is done in the other part
 
