@@ -731,8 +731,12 @@ let ChartCmpStrategyFactor = {
         if (n.indexOf('<br') < 0) { //hack for multi-timespan compare
           n = JazzCommon.GetArialStr(n, 23); //greater than 23 then truncate with ...
         }
-        let enableDelete = ((typeof item.enableDelete) === 'boolean') ? item.enableDelete : true;
-        if (item.dType == 12 || item.dType == 13 || item.dType == 14 || item.dType == 15) {
+        let enableDelete = true;
+        if ((typeof item.enableDelete) === 'boolean') {
+          enableDelete = item.enableDelete;
+        } else if ((typeof item.disableDelete) === 'boolean') {
+          enableDelete = !item.disableDelete;
+        } else if (item.dType == 12 || item.dType == 13 || item.dType == 14 || item.dType == 15) {
           enableDelete = false;
         }
         var s = {
