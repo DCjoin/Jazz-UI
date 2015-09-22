@@ -8,6 +8,7 @@ import { Action } from '../constants/actionType/Alarm.jsx';
 
 let _errorMessage = '';
 let _errorCode = '';
+let CLEAR_GLOBAL_ERROR_MESSAGE = 'clearglobalerror';
 var GlobalErrorMessageStore = assign({}, PrototypeStore, {
   getErrorMessage() {
     return _errorMessage;
@@ -22,7 +23,21 @@ var GlobalErrorMessageStore = assign({}, PrototypeStore, {
     if (typeof code == 'number')
       code = code + '';
     _errorCode = code;
-  }
+  },
+  ClearGlobalError: function() {
+    _errorMessage = '';
+    _errorCode = '';
+  },
+  emitClearGlobalErrorChange: function() {
+    this.emit(CLEAR_GLOBAL_ERROR_MESSAGE);
+  },
+  addClearGlobalErrorListener: function(callback) {
+    this.on(CLEAR_GLOBAL_ERROR_MESSAGE, callback);
+  },
+  removeClearGlobalErrorListener: function(callback) {
+    this.removeListener(CLEAR_GLOBAL_ERROR_MESSAGE, callback);
+    this.dispose();
+  },
 });
 GlobalErrorMessageStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -30,6 +45,10 @@ GlobalErrorMessageStore.dispatchToken = AppDispatcher.register(function(action) 
       GlobalErrorMessageStore.setErrorMessage(action.errorMessage);
       GlobalErrorMessageStore.setErrorCode(action.errorCode);
       GlobalErrorMessageStore.emitChange();
+      break;
+    case Action.CLEAR_GLOBAL_ERROR_MESSAGE:
+      GlobalErrorMessageStore.ClearGlobalError();
+      GlobalErrorMessageStore.emitClearGlobalErrorChange();
       break;
   }
 });

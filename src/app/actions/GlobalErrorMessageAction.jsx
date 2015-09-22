@@ -9,6 +9,11 @@ let GlobalErrorMessageAction = {
       errorMessage: errorMessage,
       errorCode: errorCode
     });
-  }
+  },
+  ClearGlobalErrorMessage() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_GLOBAL_ERROR_MESSAGE,
+    });
+  },
 };
 module.exports = GlobalErrorMessageAction;
