@@ -89,6 +89,9 @@ let AnalysisPanel = React.createClass({
       this.props.onOperationSelect(menuIndex);
     }
   },
+  onWidgetSaveWindow: function(destNode) {
+    this.state.chartStrategy.save2DashboardFn(this, destNode);
+  },
   render() {
     let me = this,
       errorDialog = null,
@@ -100,7 +103,7 @@ let AnalysisPanel = React.createClass({
 
     var collapseButton = <div className="fold-tree-btn" style={{
       "color": "#939796"
-    }}>
+    }} onClick={this.props.onCollapseButtonClick}>
                               <FontIcon hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-column-fold")} />
                            </div>;
     let trigger = false;

@@ -25,7 +25,9 @@ module.exports = {
     UPDATE_WIDGETDTOS_LOADING: null,
     SET_WIDGET_INIT_STATE: null,
     EXPORT_WIDGET_ERROR: null,
-    EXPORT_WIDGET_SUCCESS: null
+    EXPORT_WIDGET_SUCCESS: null,
+    ALARM_WIDGET_SAVE_SUCCESS: null,
+    ALARM_WIDGET_SAVE_ERROR: null,
   })
 
 };

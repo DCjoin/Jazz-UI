@@ -54,7 +54,7 @@ let Alarm = React.createClass({
       me.setState({
         widgetDto: {
           timeRange: timeRange,
-          step: step
+          step: step,
         },
         title: _chartTitle,
         refreshAnalysisPanel: false
@@ -101,7 +101,7 @@ let Alarm = React.createClass({
           bizType: 'Energy',
           energyType: 'Energy',
           widgetDto: me.state.widgetDto,
-          isFromAlarm: true
+          isFromAlarm: true,
         };
 
         mainPanel = <AnalysisPanel {...mainPanelProps}></AnalysisPanel>;

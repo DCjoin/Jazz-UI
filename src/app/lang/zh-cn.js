@@ -344,6 +344,9 @@ I18N.Setting.User.BusinessPerson = '业务人员';
 I18N.Setting.User.Sales = '销售人员';
 I18N.Setting.User.ServerManager = '服务商管理员';
 
+I18N.Common.Label = {};
+I18N.Common.Label.UnknownError = '抱歉，发生未知错误。';
+
 I18N.Message = {};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';
@@ -703,7 +706,7 @@ I18N.Folder.Copy.Error = '该名称已存在';
 I18N.Folder.Copy.NameLongError = '无法输入超过100个字符';
 
 I18N.Folder.SaveAs = {};
-I18N.Folder.SaveAs.Title = '图表另存为';
+I18N.Folder.SaveAs.Title = '复制图表';
 I18N.Folder.SaveAs.Label = '图表名称';
 I18N.Folder.SaveAs.firstActionLabel = '保存';
 
@@ -757,6 +760,10 @@ I18N.ALarm.Menu2 = '报警已配置';
 I18N.ALarm.Menu3 = '基准值已配置';
 I18N.ALarm.Menu4 = '未配置';
 
+I18N.ALarm.Save = {};
+I18N.ALarm.Save.Title = '添加至仪表盘';
+I18N.ALarm.Save.Label = '图表名称';
+I18N.ALarm.Save.Save = '保存';
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
