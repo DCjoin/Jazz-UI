@@ -344,6 +344,9 @@ I18N.Setting.User.BusinessPerson = '业务人员';
 I18N.Setting.User.Sales = '销售人员';
 I18N.Setting.User.ServerManager = '服务商管理员';
 
+I18N.Common.Label = {};
+I18N.Common.Label.UnknownError = '抱歉，发生未知错误。';
+
 I18N.Message = {};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';
