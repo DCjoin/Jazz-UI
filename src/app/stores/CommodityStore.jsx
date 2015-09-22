@@ -17,7 +17,8 @@ const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
   GET_RANKING_COMMODITY_LIST_CHANGED_EVENT = 'getrankingcommoditylistchanged',
   SET_RANKING_COMMODITY_CHANGED_EVENT = 'setrankingcommoditychanged',
   EC_BUTTON_STATUS_CHANGED_EVENT = 'energycostbuttonstatuschanged',
-  UC_BUTTON_STATUS_CHANGED_EVENT = 'unitcostbuttonstatuschanged';
+  UC_BUTTON_STATUS_CHANGED_EVENT = 'unitcostbuttonstatuschanged',
+  RANKING_COMMODITY_STATUS_CHANGED_EVENT = 'rankingcommoditystatus';
 
 let _energyConsumptionType = null, // Carbon or Cost
   _rankingECType = null, //Energy Carbon or Cost
@@ -210,6 +211,8 @@ var CommodityStore = assign({}, PrototypeStore, {
   },
   clearCommodityStatus: function() {
     _commodityStatus = Immutable.List([]);
+    this.setECButtonStatus();
+    this.setUCButtonStatus();
   },
   //for Ranking
   setRankingTreeList: function(treeList) {
@@ -397,6 +400,15 @@ var CommodityStore = assign({}, PrototypeStore, {
   removeUCButtonStatusListener: function(callback) {
     this.removeListener(UC_BUTTON_STATUS_CHANGED_EVENT, callback);
   },
+  addRankingCommodityStatusListener: function(callback) {
+    this.on(RANKING_COMMODITY_STATUS_CHANGED_EVENT, callback);
+  },
+  emitRankingCommodityStatus: function() {
+    this.emit(RANKING_COMMODITY_STATUS_CHANGED_EVENT);
+  },
+  removeRankingCommodityStatusListener: function(callback) {
+    this.removeListener(RANKING_COMMODITY_STATUS_CHANGED_EVENT, callback);
+  },
 
 });
 
@@ -427,12 +439,21 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
       CommodityStore.setCommodityList(action.CommodityList);
       CommodityStore.emitCommoddityList();
       break;
+    case CommodityAction.CLEAR_COMMODITY:
+      CommodityStore.clearCommodityStatus();
+      CommodityStore.emitCommoddityStauts();
+      break;
     case CommodityAction.GET_RANKING_COMMODITY_DATA_SUCCESS:
       CommodityStore.setCommodityList(action.CommodityList);
       //for ranking
       CommodityStore.setRankingTreeList(action.treeList);
       CommodityStore.emitRankingCommodityList();
       break;
+    case CommodityAction.CLEAR_RANKING_COMMODITY:
+      CommodityStore.clearRankingCommodity(action.CommodityList);
+      CommodityStore.emitRankingCommodityStatus();
+      break;
+
     case CommodityAction.SET_COMMODITY_STATUS:
       CommodityStore.setCommodityStatus(action.commodityId, action.commodityName, action.selected);
       CommodityStore.emitCommoddityStauts();
