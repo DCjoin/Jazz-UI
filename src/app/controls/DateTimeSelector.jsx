@@ -72,18 +72,22 @@ let DateTimeSelector = React.createClass({
       endTime = et;
     if (sd === null) {
       startDate = this.refs.startDate.getValue();
+    } else {
       _isStart = true;
     }
     if (st === null) {
       startTime = this.refs.startDate.getTime();
+    } else {
       _isStart = true;
     }
     if (ed === null) {
       endDate = this.refs.endDate.getValue();
+    } else {
       _isStart = false;
     }
     if (et === null) {
       endTime = this.refs.endDate.getTime();
+    } else {
       _isStart = false;
     }
     if (startDate === null) {

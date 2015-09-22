@@ -2,7 +2,7 @@
 
 import React from 'react';
 import mui from 'material-ui';
-import {Mixins,TextField} from 'material-ui';
+import { Mixins, TextField } from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import _ from 'lodash';
@@ -10,28 +10,28 @@ import Immutable from 'immutable';
 import TreeNode from './TreeNode.jsx';
 
 import dragula from 'react-dragula';
-var lastOver=null,
-    lastContainer=null,
-    timeoutHandel=null,
-    pass=true;
+var lastOver = null,
+  lastContainer = null,
+  timeoutHandel = null,
+  pass = true;
 
 
-var drake=dragula({
-  moves: function (el, source, handle) {
-    el.style.backgroundColor='#323c4d';
+var drake = dragula({
+  moves: function(el, source, handle) {
+    el.style.backgroundColor = '#323c4d';
     return true; // elements are always draggable by default
   },
-  direction: 'vertical',         // Y axis is considered when determining where an element would be dropped
-  copy: false,                   // elements are moved by default, not copied
-  revertOnSpill: false,          // spilling will put the element back where it was dragged from, if this is true
-  removeOnSpill: false,          // spilling will `.remove` the element, if this is true
+  direction: 'vertical', // Y axis is considered when determining where an element would be dropped
+  copy: false, // elements are moved by default, not copied
+  revertOnSpill: false, // spilling will put the element back where it was dragged from, if this is true
+  removeOnSpill: false, // spilling will `.remove` the element, if this is true
 });
 
 var Tree = React.createClass({
-  mixins: [React.addons.PureRenderMixin,Mixins.ClickAwayable],
+  mixins: [React.addons.PureRenderMixin, Mixins.ClickAwayable],
   // compatibleJSON data transfer json to a immutableJS
-  compatibleJSON: function (data) {
-    if(data && data.toJSON) {
+  compatibleJSON: function(data) {
+    if (data && data.toJSON) {
       return data;
     } else {
       return Immutable.fromJS(data);
@@ -71,18 +71,18 @@ var Tree = React.createClass({
     onSelectNode: React.PropTypes.func.isRequired,
     generateNodeConent: React.PropTypes.func,
     //for copy operation
-    isFolderOperationTree:React.PropTypes.bool,
-    onGragulaNode:React.PropTypes.func,
+    isFolderOperationTree: React.PropTypes.bool,
+    onGragulaNode: React.PropTypes.func,
     // arrow style
     arrowClass: React.PropTypes.string,
 
   },
-  getInitialState:function(){
-    return{
-      collapsedNodeId:null
+  getInitialState: function() {
+    return {
+      collapsedNodeId: null
     };
   },
-  getDefaultProps: function () {
+  getDefaultProps: function() {
     return {
       indent: 0,
       indentUnit: 20,
@@ -92,90 +92,69 @@ var Tree = React.createClass({
       treeNodeClass: "",
       enabledChangeDataPrivilege: false,
       disabled: false,
-      onSelectNode: function () {},
+      onSelectNode: function() {},
       generateNodeConent: null
     };
   },
-  onSelectNode: function (node, event) {
-    if(!this.props.disable){
+  onSelectNode: function(node, event) {
+    if (!this.props.disable) {
       this.props.onSelectNode(node, event);
     }
   },
 
-  collapseAll: function () {
+  collapseAll: function() {
     var nodes = this.refs;
     for (var key in nodes) {
       nodes[key].collapseAll(nodes[key].refs);
     }
   },
 
-  unfoldAll: function () {
+  unfoldAll: function() {
     var nodes = this.refs;
     for (var key in nodes) {
       nodes[key].unfoldAll(nodes[key].refs);
     }
   },
 
-  putGragulaContainer:function(container){
+  putGragulaContainer: function(container) {
     drake.containers.push(container);
   },
 
-  _onDrop:function(el, target, source){
-    this.props.onGragulaNode(target.id,source.id,pass);
+  _onDrop: function(el, target, source) {
+    var pre = false;
+    if (target.children[1].id == el.id) {
+      pre = true;
+    }
+    this.props.onGragulaNode(target.id, source.id, pre);
     clearTimeout(timeoutHandel);
-    pass=true;
+
   },
 
-  _onShadow:function(el, container){
-    //  console.log("_onShadow");
-    //  console.log(el);
-    //  console.log(container);
-    if(container.children[0].id==el.id){
-      lastOver=container.children[1];
+  _onShadow: function(el, container) {
+    if (container.children[0].id == el.id) {
+      lastOver = container.children[1];
+    } else {
+      lastOver = container.children[0];
     }
-    else {
-      lastOver=container.children[0];
-    }
-    if(lastContainer!=container){
-      pass=false;
-    }
-    else {
-      pass=!pass;
-    }
-    // console.log(lastOver);
-    // console.log("_onShadow_pass"+pass);
+    clearTimeout(timeoutHandel);
+    timeoutHandel = setTimeout(() => {
 
-    if(pass){
-      el.style.backgroundColor='#323c4d';
-      lastOver.style.backgroundColor='transparent';
-      clearTimeout(timeoutHandel);
-    }
-    else {
-      lastOver.style.backgroundColor='#323c4d';
-    }
-    // lastOver.style.backgroundColor='red';
-    //   console.log(lastOver);
-    timeoutHandel=setTimeout(()=>{
-    //  console.log("_onShadow_setTimeout");
-      pass=true;
-      if(lastOver){
+      if (lastOver) {
         this.setState({
-          collapsedNodeId:parseInt(lastOver.id)
+          collapsedNodeId: parseInt(lastOver.id)
         });
       }
-
-  },2000);
-  lastContainer=container;
+    }, 2000);
   },
 
-  componentDidMount:function(){
-    lastOver=null;
-    pass=false;
-    drake.on('drop',this._onDrop);
-    drake.on('shadow',this._onShadow);
+  componentDidMount: function() {
+    lastOver = null;
+    pass = false;
+    drake.on('drop', this._onDrop);
+    drake.on('shadow', this._onShadow);
 
   },
-  render: function () {
+  render: function() {
     var dataSource = this.compatibleJSON(this.props.allNode);
     var tree = [];
     var drawTree = (dataSource, parentNode, parentIndent) => {
@@ -201,11 +180,11 @@ var Tree = React.createClass({
           checkedNodes: this.compatibleJSON(this.props.checkedNodes),
           onSelectNode: this.onSelectNode,
           generateNodeConent: this.props.generateNodeConent,
-          isFolderOperationTree:this.props.isFolderOperationTree,
+          isFolderOperationTree: this.props.isFolderOperationTree,
 
-          putGragulaContainer:this.putGragulaContainer,
-          collapsedNodeId:this.state.collapsedNodeId,
-          arrowClass:this.props.arrowClass
+          putGragulaContainer: this.putGragulaContainer,
+          collapsedNodeId: this.state.collapsedNodeId,
+          arrowClass: this.props.arrowClass
         };
         parentNode.push(<TreeNode {...props}></TreeNode>);
       }
@@ -213,7 +192,7 @@ var Tree = React.createClass({
 
     // began to draw tree
     if (Immutable.List.isList(dataSource)) {
-      dataSource.forEach(function (node) {
+      dataSource.forEach(function(node) {
         drawTree(node, tree, 0);
       });
     } else {
@@ -221,14 +200,14 @@ var Tree = React.createClass({
     }
 
 
-    var test=<TextField value='string'/>;
+    var test = <TextField value='string'/>;
     return (
       <div className={classNames(_.set({
         "pop-tree-view": true
       }, this.props.treeClass, true))}>
         {tree}
       </div>
-    );
+      );
   }
 
 });

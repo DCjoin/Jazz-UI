@@ -26,6 +26,7 @@ import CalendarManager from './CalendarManager.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 
+
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
 let AnalysisPanel = React.createClass({
@@ -108,6 +109,16 @@ let AnalysisPanel = React.createClass({
         </div>;
     } else if (!!this.state.energyData || trigger) {
       energyPart = this.state.chartStrategy.getChartComponentFn(me);
+
+      let chartCmp = me.refs.ChartComponent;
+      if(chartCmp){
+        let chartObj = chartCmp.refs.highstock;
+        if(!!this.state.calendarType){
+          CalendarManager.showCalendar(chartObj, this.state.calendarType);
+        }else{
+          CalendarManager.hideCalendar(chartObj);
+        }
+      }
     }
 
     let widgetOptMenu = this.state.chartStrategy.getWidgetOptMenuFn(me);
@@ -117,6 +128,12 @@ let AnalysisPanel = React.createClass({
       sourceUserNameEl = <div className={'description'}>{me.props.sourceUserName}</div>;
     } else {
       sourceUserNameEl = <div className={'description'}></div>;
+    }
+    let widgetWd;
+    if (me.state.dashboardOpenImmediately) {
+      widgetWd = this.state.chartStrategy.getWidgetSaveWindowFn(me);
+    } else {
+      widgetWd = null;
     }
     return <div className={'jazz-energy-panel'}>
         <div className='header'>
@@ -132,6 +149,7 @@ let AnalysisPanel = React.createClass({
       }} onClick={this._onChart2WidgetClick}
       disabled={!this.state.energyData}/>
                 {widgetOptMenu}
+                {widgetWd}
               </div>
               {me.state.chartStrategy.searchBarGenFn(me)}
           </div>
@@ -163,6 +181,11 @@ let AnalysisPanel = React.createClass({
     let me = this;
     this.state.chartStrategy.unbindStoreListenersFn(me);
   },
+  onWidgetSaveWindowDismiss: function() {
+    this.setState({
+      dashboardOpenImmediately: false
+    });
+  },
   _initAlarmChartPanelByWidgetDto() {
     this.state.chartStrategy.initAlarmChartPanelByWidgetDtoFn(this);
   },
@@ -174,6 +197,35 @@ let AnalysisPanel = React.createClass({
   _afterChartCreated(chartObj) {
     if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
       chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
+    }
+  },
+  setCalendarTypeFromWidget(widgetDto){
+    if(widgetDto && widgetDto.WidgetStatus && widgetDto.WidgetStatus !== ""){
+      let wss = JSON.parse(widgetDto.WidgetStatus);
+      let calcType = "";
+      for(var i=0, len=wss.length; i< len; i++){
+        if(wss[i].WidgetStatusKey === "calendar"){
+          if(wss[i].WidgetStatusValue === "hc"){
+            calcType = "hc";
+            break;
+          }
+          else if(wss[i].WidgetStatusValue === "work"){
+            calcType = "work";
+            break;
+          }
+        }
+      }
+
+      CalendarManager.calendarShowType = calcType;
+      this.setState({calendarType: calcType});
+      // let me = this;
+      // if (me.state.chartStrategy.handleCalendarChangeFn) {
+      //   let chartCmp = me.refs.ChartComponent;
+      //   if(chartCmp){
+      //     let chartObj = chartCmp.refs.highstock;
+      //     CalendarManager.showCalendar(chartObj, calendarType);
+      //   }
+      // }
     }
   },
   OnNavigatorChanged: function(obj) {
@@ -275,9 +327,14 @@ let AnalysisPanel = React.createClass({
     return strategyName;
   },
   _onChart2WidgetClick() {
-    if (this.state.chartStrategy.save2DashboardFn) {
-      this.state.chartStrategy.save2DashboardFn(this);
+    if (!!this.props.isFromAlarm) {
+      this.state.chartStrategy.save2DashboardForAlarmFn(this);
+    } else {
+      if (this.state.chartStrategy.save2DashboardFn) {
+        this.state.chartStrategy.save2DashboardFn(this);
+      }
     }
+
   },
   _onErrorDialogAction(step) {
     this.setState({

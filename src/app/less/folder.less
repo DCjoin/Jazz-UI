@@ -68,13 +68,21 @@
     background-color: #f4f4f4;
   }
   .name{
+    width:125px;
     font-size:14px;
     color:#767a7a;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .type{
+    width:90px;
     font-size:14px;
     color:#abafae;
-    margin-left:10px
+    margin-left:10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 .jazz-folder-allusers{
@@ -94,6 +102,12 @@
     flex:1;
     overflow:auto
   }
+  .name{
+    width:125px
+  }
+  .positon{
+    width:90px
+  }
 }
 .jazz-folder-selectedusers{
   height:357px;
@@ -106,21 +120,30 @@
     min-height:36px;
     background-color: #f4f4f4;
     font-size:14px;
-    color:#abafae
+    color:#abafae;
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    padding-left:10px;
+    .name{
+      width:125px;
+    }
+    .positon{
+      width:90px
+    }
   }
   .content{
     flex:1;
     overflow:auto
   }
-  .icon{
 
-  }
 }
 .jazz-folder-selectedusers-useritem{
   min-height:32px;
   display: flex;
   flex-direction: row;
   align-items:center;
+  padding-left:10px;
   &:hover{
     background-color: #f4f4f4;
   }
@@ -133,11 +156,19 @@
   .name{
     font-size:14px;
     color:#767a7a;
+    width:125px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .type{
     font-size:14px;
     color:#abafae;
-    margin-left:10px
+    margin-left:10px;
+    width:90px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 .jazz-folder-user{

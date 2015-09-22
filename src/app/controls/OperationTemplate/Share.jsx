@@ -2,7 +2,7 @@
 import React from "react";
 import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
-import { Dialog, FlatButton, TextField, Paper } from 'material-ui';
+import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
 import UserAction from '../../actions/UserAction.jsx';
 import UserStore from '../../stores/UserStore.jsx';
 import UsersOperation from './assets/UsersOperation.jsx';
@@ -17,7 +17,8 @@ var Share = React.createClass({
   getInitialState: function() {
     return {
       users: null,
-      btnDisabled: true
+      btnDisabled: true,
+      isLoading: false,
     };
   },
   _onUserStatus: function() {
@@ -46,7 +47,8 @@ var Share = React.createClass({
   },
   _onLoadUserList: function() {
     this.setState({
-      users: UserStore.getUserList()
+      users: UserStore.getUserList(),
+      isLoading: false
     });
   },
   componentDidMount: function() {
@@ -54,6 +56,9 @@ var Share = React.createClass({
     UserStore.addUserListListener(this._onLoadUserList);
     UserStore.addUserStatusListener(this._onUserStatus);
     UserAction.getUserList(this.props.userId, window.currentCustomerId);
+    this.setState({
+      isLoading: true
+    })
   },
   componentWillUnmount: function() {
     UserStore.removeUserListListener(this._onLoadUserList);
@@ -87,7 +92,12 @@ var Share = React.createClass({
       onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
-    let content = (this.state.users != null) ? <UsersOperation users={this.state.users} type={I18N.Template.Share.Share}/> : null;
+    let content;
+    if (this.state.isLoading) {
+      content = <CircularProgress  mode="indeterminate" size={1} />
+    } else {
+      content = (this.state.users != null) ? <UsersOperation users={this.state.users} type={I18N.Template.Send.Send}/> : null;
+    }
     return (
       <div className='jazz-copytemplate-dialog'>
         <div className={classNames({

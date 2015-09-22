@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
 import assign from "object-assign";
+import Immutable from 'immutable';
 import _ from 'lodash';
 import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu } from 'material-ui';
 import BaselineCfg from '../setting/BaselineCfg.jsx';
@@ -41,6 +42,8 @@ import SumWindow from './energy/SumWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import MultiTimespanAction from '../../actions/MultiTimespanAction.jsx';
 import CalendarManager from './CalendarManager.jsx';
+import WidgetSaveWindow from './WidgetSaveWindow.jsx';
+import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -83,10 +86,12 @@ let ChartStrategyFactor = {
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn: 'handleNavigatorChangeLoad',
       save2DashboardFn: 'save2Dashboard',
+      save2DashboardForAlarmFn: 'save2DashboardForAlarm',
       initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
       clearChartDataFn: 'clearChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto'
+      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto',
+      getWidgetSaveWindowFn: 'getAlarmWidgetSaveWindow'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -409,7 +414,6 @@ let ChartStrategyFactor = {
       }
 
       //init selected tags is done in the other part
-
       analysisPanel.setState({
         selectedChartType: typeMap[chartType],
         sumBtnStatus: sumBtnStatus,
@@ -418,6 +422,7 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
 
     initCostChartPanelByWidgetDto(analysisPanel) {
@@ -468,6 +473,7 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -509,6 +515,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
 
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initRatioChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -561,6 +568,7 @@ let ChartStrategyFactor = {
       });
 
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initUnitChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -613,6 +621,8 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       });
+
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initUnitCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -665,6 +675,7 @@ let ChartStrategyFactor = {
       });
 
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initUnitCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -717,6 +728,7 @@ let ChartStrategyFactor = {
         });
         ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
       });
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initLabelChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -839,15 +851,6 @@ let ChartStrategyFactor = {
       let widgetDto = analysisPanel.props.widgetDto,
         timeRanges = widgetDto.timeRange;
 
-      // let typeMap = {
-        //   Line: 'line',
-        //   Column: 'column',
-        //   Stack: 'stack',
-        //   Pie: 'pie',
-        //   DataTable: 'rawdata',
-        //   original: 'rawdata'
-        // };
-
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
           analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
@@ -855,14 +858,14 @@ let ChartStrategyFactor = {
           let start = timeRange.StartTime;
           let end = timeRange.EndTime;
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          analysisPanel.refs.relativeDate.setState({
+            selectedIndex: 0
+          });
         }
       };
       //init timeRange
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
-      if (timeRanges.length !== 1) {
-        MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
-      }
 
       //init selected tags is done in the other part
 
@@ -872,6 +875,66 @@ let ChartStrategyFactor = {
       });
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
+  },
+  save2DashboardForAlarmFnStrategy: {
+    save2DashboardForAlarm(analysisPanel) {
+      let tagOptions = EnergyStore.getTagOpions(), options,
+        relativeDate = EnergyStore.getRelativeDate();
+
+      if (tagOptions) {
+        if (isArray(tagOptions)) {
+          options = [];
+          for (let i = 0, len = tagOptions.length; i < len; i++) {
+            let tag = tagOptions[i];
+            options.push({
+              Id: tag.tagId,
+              Name: tag.tagName,
+              HierId: tag.hierId,
+              NodeName: tag.hierName
+            });
+          }
+        } else {
+          options = [{
+            Id: tagOptions.tagId,
+            Name: tagOptions.tagName,
+            HierId: tagOptions.hierId,
+            NodeName: tagOptions.hierName
+          }];
+        }
+      }
+      let submitParams = EnergyStore.getSubmitParams();
+      if (relativeDate !== 'Customerize' && relativeDate !== null) {
+        let immutableSubmitParams = Immutable.fromJS(submitParams);
+        let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption', 'TimeRanges'], [{
+          relativeDate: relativeDate
+        }]);
+        submitParams = immutableSubmitParamsClone.toJS();
+      }
+      var contentSyntax = {
+        xtype: 'widgetcontainer',
+        params: {
+          submitParams: {
+            options: options,
+            tagIds: submitParams.tagIds,
+            interval: [],
+            viewOption: submitParams.viewOption
+          },
+          config: {
+            type: "line",
+            xtype: "mixedtrendchartcomponent",
+            reader: "mixedchartreader",
+            storeType: "energy.Energy",
+            searcherType: "analysissearcher",
+            widgetStyler: "widgetchartstyler",
+            maxWidgetStyler: "maxchartstyler"
+          }
+        }
+      };
+      analysisPanel.setState({
+        dashboardOpenImmediately: true,
+        contentSyntax: JSON.stringify(contentSyntax)
+      });
+    }
   },
   save2DashboardFnStrategy: {
     save2Dashboard(analysisPanel) {
@@ -1776,7 +1839,8 @@ let ChartStrategyFactor = {
         timeRanges = paramsObj.timeRanges;
 
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
       analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
@@ -1790,7 +1854,8 @@ let ChartStrategyFactor = {
       viewOp.Step = step;
 
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
       analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, analysisPanel);
     },
@@ -1804,7 +1869,8 @@ let ChartStrategyFactor = {
         ratioType = paramsObj.ratioType;
 
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
       if (ratioType === 1 && (step === 0 || step === 1))
         step = 2;
@@ -1822,7 +1888,8 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
     },
     handleUnitCostStepChange(analysisPanel, step) {
@@ -1835,7 +1902,8 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
     },
     handleUnitCarbonStepChange(analysisPanel, step) {
@@ -1848,7 +1916,8 @@ let ChartStrategyFactor = {
       viewOp.Step = step;
 
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
       analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, benchmarkOption);
     },
@@ -1976,7 +2045,8 @@ let ChartStrategyFactor = {
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       let ratioType = analysisPanel.state.ratioType;
       let minStep = 2; //HOUR 1, DAY 2, Week 5, Month 3, Year 4
-      if(ratioType == 2) minStep = 5;
+      if (ratioType == 2)
+        minStep = 5;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
@@ -2183,8 +2253,7 @@ let ChartStrategyFactor = {
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
-      let ratioType =
-      toolElement = <div style={{
+      let ratioType = toolElement = <div style={{
         display: 'flex'
       }}>
            <div style={{
@@ -2482,12 +2551,14 @@ let ChartStrategyFactor = {
         showSumDialog: false,
         sumBtnStatus: false,
         weatherOption: null,
+        calendarType: "",
       };
     },
     getCostInitialState() {
       let state = {
         touBtnStatus: CommodityStore.getECButtonStatus(),
-        touBtnSelected: false
+        touBtnSelected: false,
+        calendarType: "",
       };
       return state;
     },
@@ -2496,20 +2567,23 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
-        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus()
+        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus(),
+        calendarType: "",
       };
       return state;
     },
     getRatioInitialState() {
       let state = {
         ratioType: 1,
-        benchmarks: null
+        benchmarks: null,
+        calendarType: "",
       };
       return state;
     },
     getCarbonInitialState() {
       let state = {
         destination: 2,
+        calendarType: "",
       };
       return state;
     },
@@ -2519,6 +2593,7 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
+        calendarType: "",
       };
       return state;
     },
@@ -4220,6 +4295,13 @@ let ChartStrategyFactor = {
       params.charTypes = charTypes;
       ExportChartAction.getTagsData4Export(params, path);
     },
+  },
+  getWidgetSaveWindowFnStrategy: {
+    getAlarmWidgetSaveWindow: function(analysisPanel) {
+      let widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={analysisPanel.onWidgetSaveWindowDismiss} chartTitle={analysisPanel.props.chartTitle}
+      tagOption={analysisPanel.state.tagOption} contentSyntax={analysisPanel.state.contentSyntax}></WidgetSaveWindow>;
+      return widgetWd
+    }
   },
   getChartTypeIconMenu(analysisPanel, types) {
     let menuMap = {
