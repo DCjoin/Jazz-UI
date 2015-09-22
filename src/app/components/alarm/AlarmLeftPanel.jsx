@@ -117,7 +117,7 @@ var AlarmLeftPanel = React.createClass({
     };
     if (this.state.dateType == dateType.DAY_ALARM) {
       date.setDate(date.getDate() - 1);
-      date.setMinutes(0, 0, 0, 0);
+      date.setHours(0, 0, 0, 0);
       dateSelector = ( <div className='jazz-alarm-datepicker'><ViewableDatePicker {...dateProps} ref='daySelector'/></div>);
     } else if (this.state.dateType == dateType.MONTH_ALARM) {
       dateSelector = ( <MonthPicker onMonthPickerSelected={this.onMonthPickerSelected} ref='monthSelector'/>);

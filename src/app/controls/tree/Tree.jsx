@@ -11,13 +11,15 @@ import TreeNode from './TreeNode.jsx';
 
 import dragula from 'react-dragula';
 var lastOver = null,
-  lastContainer = null,
+  drag = null,
   timeoutHandel = null,
   pass = true;
 
 
 var drake = dragula({
   moves: function(el, source, handle) {
+    console.log('moves');
+    drag = true;
     el.style.backgroundColor = '#323c4d';
     return true; // elements are always draggable by default
   },
@@ -121,12 +123,17 @@ var Tree = React.createClass({
   },
 
   _onDrop: function(el, target, source) {
-    var pre = false;
-    if (target.children[1].id == el.id) {
-      pre = true;
+
+    if (drag) {
+      drag = false;
+      var pre = false;
+      if (target.children[1].id == el.id) {
+        pre = true;
+      }
+      this.props.onGragulaNode(target.id, source.id, pre);
+      clearTimeout(timeoutHandel);
     }
-    this.props.onGragulaNode(target.id, source.id, pre);
-    clearTimeout(timeoutHandel);
+
 
   },
 
