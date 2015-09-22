@@ -115,6 +115,17 @@ let JazzApp = React.createClass({
       require(['../lang/zh-cn.js'], afterLoadLang);
     }
     GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
+    GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
+  },
+  _onClearGlobalError: function() {
+    let errorMessage = GlobalErrorMessageStore.getErrorMessage();
+    let errorCode = GlobalErrorMessageStore.getErrorCode();
+    this.refs.globalErrorMessageDialog.setState({
+      isShowed: false,
+      errorMessage: errorMessage,
+      errorCode: errorCode
+    });
+    this.refs.globalErrorMessageDialog._hide();
   },
   _onErrorMessageChanged() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();
@@ -127,6 +138,7 @@ let JazzApp = React.createClass({
   },
   componentWillUnmount() {
     GlobalErrorMessageStore.removeChangeListener(this._onErrorMessageChanged);
+    GlobalErrorMessageStore.removeClearGlobalErrorListener(this._onClearGlobalError);
   },
   getInitialState: function() {
     return {

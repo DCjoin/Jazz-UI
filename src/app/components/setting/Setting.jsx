@@ -20,6 +20,7 @@ import CommodityAction from '../../actions/CommodityAction.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 
+
 import LeftPanel from '../folder/FolderLeftPanel.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import WidgetStore from '../../stores/energy/WidgetStore.jsx';
@@ -237,6 +238,7 @@ let Setting = React.createClass({
     // CommodityAction.setEnergyConsumptionType('Carbon');
     lastEnergyType = null;
     lastBizType = null;
+
   },
   componentDidMount: function() {
     FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -258,6 +260,10 @@ let Setting = React.createClass({
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
     WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
+    this.setState({
+      errorText: null
+    });
+    this.refs.snackbar.dismiss();
   },
   _handleWidgetSelectChange() {
     let widgetDto = WidgetStore.getWidgetDto();

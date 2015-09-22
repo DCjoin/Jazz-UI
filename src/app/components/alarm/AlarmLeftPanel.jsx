@@ -99,6 +99,9 @@ var AlarmLeftPanel = React.createClass({
       dateType: dateType.DAY_ALARM
     };
   },
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.dateType != this.state.dateType;
+  },
   render: function() {
 
     let dateSelector,
