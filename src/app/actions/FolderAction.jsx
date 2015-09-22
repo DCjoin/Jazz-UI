@@ -166,11 +166,12 @@ let FolderAction = {
       },
     });
   },
-  moveItem: function(sourceNode, parentNode, nextNode) {
+  moveItem: function(sourceNode, parentNode, previousNode, nextNode) {
     Ajax.post('/Dashboard.svc/MoveItem', {
       params: {
         sourceItem: sourceNode,
         desItem: parentNode,
+        previousItem: previousNode,
         nextItem: nextNode
       },
       commonErrorHandling: false,

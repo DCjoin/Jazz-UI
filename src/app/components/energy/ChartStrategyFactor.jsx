@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
 import assign from "object-assign";
+import Immutable from 'immutable';
 import _ from 'lodash';
 import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu } from 'material-ui';
 import BaselineCfg from '../setting/BaselineCfg.jsx';
@@ -41,6 +42,8 @@ import SumWindow from './energy/SumWindow.jsx';
 import MultipleTimespanStore from '../../stores/energy/MultipleTimespanStore.jsx';
 import MultiTimespanAction from '../../actions/MultiTimespanAction.jsx';
 import CalendarManager from './CalendarManager.jsx';
+import WidgetSaveWindow from './WidgetSaveWindow.jsx';
+import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -83,10 +86,12 @@ let ChartStrategyFactor = {
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn: 'handleNavigatorChangeLoad',
       save2DashboardFn: 'save2Dashboard',
+      save2DashboardForAlarmFn: 'save2DashboardForAlarm',
       initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
       clearChartDataFn: 'clearChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto'
+      initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto',
+      getWidgetSaveWindowFn: 'getAlarmWidgetSaveWindow'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -873,6 +878,66 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
   },
+  save2DashboardForAlarmFnStrategy: {
+    save2DashboardForAlarm(analysisPanel) {
+      let tagOptions = EnergyStore.getTagOpions(), options,
+        relativeDate = EnergyStore.getRelativeDate();
+
+      if (tagOptions) {
+        if (isArray(tagOptions)) {
+          options = [];
+          for (let i = 0, len = tagOptions.length; i < len; i++) {
+            let tag = tagOptions[i];
+            options.push({
+              Id: tag.tagId,
+              Name: tag.tagName,
+              HierId: tag.hierId,
+              NodeName: tag.hierName
+            });
+          }
+        } else {
+          options = [{
+            Id: tagOptions.tagId,
+            Name: tagOptions.tagName,
+            HierId: tagOptions.hierId,
+            NodeName: tagOptions.hierName
+          }];
+        }
+      }
+      let submitParams = EnergyStore.getSubmitParams();
+      if (relativeDate !== 'Customerize' && relativeDate !== null) {
+        let immutableSubmitParams = Immutable.fromJS(submitParams);
+        let immutableSubmitParamsClone = immutableSubmitParams.setIn(['viewOption', 'TimeRanges'], [{
+          relativeDate: relativeDate
+        }]);
+        submitParams = immutableSubmitParamsClone.toJS();
+      }
+      var contentSyntax = {
+        xtype: 'widgetcontainer',
+        params: {
+          submitParams: {
+            options: options,
+            tagIds: submitParams.tagIds,
+            interval: [],
+            viewOption: submitParams.viewOption
+          },
+          config: {
+            type: "line",
+            xtype: "mixedtrendchartcomponent",
+            reader: "mixedchartreader",
+            storeType: "energy.Energy",
+            searcherType: "analysissearcher",
+            widgetStyler: "widgetchartstyler",
+            maxWidgetStyler: "maxchartstyler"
+          }
+        }
+      };
+      analysisPanel.setState({
+        dashboardOpenImmediately: true,
+        contentSyntax: JSON.stringify(contentSyntax)
+      });
+    }
+  },
   save2DashboardFnStrategy: {
     save2Dashboard(analysisPanel) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -1037,7 +1102,7 @@ let ChartStrategyFactor = {
       if (analysisPanel.state.selectedChartType === 'pie') {
         storeType = 'energy.RatioDistribution';
       } else {
-        storeType = 'energy.Ratio';
+        storeType = 'energy.RatioUsage';
       }
 
       let config = {
@@ -1208,7 +1273,7 @@ let ChartStrategyFactor = {
       let params = {
         submitParams: submitParams,
         config: config,
-        calendar: null
+        calendar: analysisPanel.state.calendarType,
       };
 
       let contentSyntax = {
@@ -1284,7 +1349,7 @@ let ChartStrategyFactor = {
       let params = {
         submitParams: submitParams,
         config: config,
-        calendar: null
+        calendar: analysisPanel.state.calendarType,
       };
 
       let contentSyntax = {
@@ -1367,7 +1432,7 @@ let ChartStrategyFactor = {
       let params = {
         submitParams: submitParams,
         config: config,
-        calendar: null
+        calendar: analysisPanel.state.calendarType,
       };
 
       let contentSyntax = {
@@ -1447,7 +1512,7 @@ let ChartStrategyFactor = {
       let params = {
         submitParams: submitParams,
         config: config,
-        calendar: null
+        calendar: analysisPanel.state.calendarType,
       };
 
       let contentSyntax = {
@@ -1974,6 +2039,10 @@ let ChartStrategyFactor = {
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column', 'stack', 'pie']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
+      let ratioType = analysisPanel.state.ratioType;
+      let minStep = 2; //HOUR 1, DAY 2, Week 5, Month 3, Year 4
+      if (ratioType == 2)
+        minStep = 5;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
@@ -1983,7 +2052,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-             <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+             <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
           margin: '5px 30px 5px auto'
         }}>
@@ -2180,14 +2249,14 @@ let ChartStrategyFactor = {
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
-      toolElement = <div style={{
+      let ratioType = toolElement = <div style={{
         display: 'flex'
       }}>
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
            <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog}/>
-           <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+           <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
       }}>
@@ -2256,7 +2325,7 @@ let ChartStrategyFactor = {
           break;
         case 'background':{
           var subMenuValue = menuParam.props.value;
-          if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
+          if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
           }
           break;
@@ -2277,7 +2346,7 @@ let ChartStrategyFactor = {
       let firstMenuItemValue = firstMenuItem.props.value;
       if (firstMenuItemValue === 'background') {
         var subMenuValue = subMenuItem.props.value;
-        if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
+        if (subMenuValue === 'work' || subMenuValue === 'hc') {
           analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
         }
       } else if (firstMenuItemValue === 'benchmark') {
@@ -2302,7 +2371,7 @@ let ChartStrategyFactor = {
           break;
         case 'background': {
           var subMenuValue = menuParam.props.value;
-          if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
+          if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
           }
           break;
@@ -2314,7 +2383,7 @@ let ChartStrategyFactor = {
       switch (itemValue) {
         case 'background':{
           var subMenuValue = menuParam.props.value;
-          if (subMenuValue === 'noneWorkTime' || subMenuValue === 'hotColdSeason') {
+          if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
           }
           break;
@@ -4216,6 +4285,13 @@ let ChartStrategyFactor = {
       params.charTypes = charTypes;
       ExportChartAction.getTagsData4Export(params, path);
     },
+  },
+  getWidgetSaveWindowFnStrategy: {
+    getAlarmWidgetSaveWindow: function(analysisPanel) {
+      let widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onWidgetSaveWindowDismiss={analysisPanel.onWidgetSaveWindowDismiss} chartTitle={analysisPanel.props.chartTitle}
+      tagOption={analysisPanel.state.tagOption} contentSyntax={analysisPanel.state.contentSyntax}></WidgetSaveWindow>;
+      return widgetWd
+    }
   },
   getChartTypeIconMenu(analysisPanel, types) {
     let menuMap = {

@@ -324,7 +324,7 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
     me._initTempRelativeList();
     _tempRelativeList = _tempRelativeList.set(compareIndex, me.generateTimespanItem(false, _originalType, relativeValue, null, null, compareIndex));
   },
-  handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate) {
+  handleDateTimeSelectorChange(isOriginalDate, compareIndex, startDate, endDate, isStart) {
     let me = this, item;
     me._initTempRelativeList();
 
@@ -345,8 +345,13 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
       } else {
         let mainRange = this.getMainDateRange();
         let mainInteval = mainRange[1].getTime() - mainRange[0].getTime();
-        if (endDate.getTime() - startDate.getTime() === 3600000) {
-          //选中的是开始时间，则将结束时间推后与主时间段相同的时间间隔
+        // if (endDate.getTime() - startDate.getTime() === 3600000) {
+        //   //选中的是开始时间，则将结束时间推后与主时间段相同的时间间隔
+        //   endDate = new Date(startDate.getTime() + mainInteval);
+        // } else {
+        //   startDate = new Date(endDate.getTime() - mainInteval);
+        // }
+        if (isStart) {
           endDate = new Date(startDate.getTime() + mainInteval);
         } else {
           startDate = new Date(endDate.getTime() - mainInteval);
@@ -520,7 +525,7 @@ MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action)
       MultipleTimespanStore.emitChange();
       break;
     case Action.DATETIME_SELECTOR_CHANGE:
-      MultipleTimespanStore.handleDateTimeSelectorChange(action.isOriginalDate, action.compareIndex, action.startDate, action.endDate);
+      MultipleTimespanStore.handleDateTimeSelectorChange(action.isOriginalDate, action.compareIndex, action.startDate, action.endDate, action.isStart);
       MultipleTimespanStore.emitChange();
       break;
     case Action.CLEAR_MULTI_TIMESPAN:

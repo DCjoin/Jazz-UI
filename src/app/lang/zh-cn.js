@@ -331,6 +331,18 @@ I18N.Setting.TargetBaseline = {};
 I18N.Setting.TargetBaseline.AlarmThreshold = '报警敏感度';
 I18N.Setting.TargetBaseline.AlarmThresholdTip = '当数据高于基准值所设的敏感度时，显示报警。';
 
+I18N.Setting.User = {};
+I18N.Setting.User.EnergyConsultant = '能源工程顾问';
+I18N.Setting.User.Technicist = '技术人员';
+I18N.Setting.User.CustomerManager = '客户管理员';
+I18N.Setting.User.PlatformManager = '平台管理员';
+I18N.Setting.User.EnergyManager = '能源经理';
+I18N.Setting.User.EnergyEngineer = '能源工程师';
+I18N.Setting.User.DeptManager = '部门经理';
+I18N.Setting.User.Manager = '管理层';
+I18N.Setting.User.BusinessPerson = '业务人员';
+I18N.Setting.User.Sales = '销售人员';
+I18N.Setting.User.ServerManager = '服务商管理员';
 
 I18N.Message = {};
 
@@ -380,6 +392,7 @@ Energy Error Code
 I18N.Message.M02004 = '聚合粒度非法';
 I18N.Message.M02007 = '开始时间不能大于结束时间';
 I18N.Message.M02008 = '介质不同，不能绘制饼图。';
+I18N.Message.M02011 = '计算数据V类型的数据点不支持原始数据查看功能';
 I18N.Message.M02013 = '该数据点已被删除，无法加载。';
 I18N.Message.M02020 = '导出图表失败，请点击“查看数据”后再重试。';
 I18N.Message.M02021 = '导出EXCEL失败，请点击“查看数据”后再重试。';
@@ -769,6 +782,9 @@ I18N.Template.Share.Title = '共享图表';
 I18N.Template.Share.Share = '共享';
 I18N.Template.Share.Cancel = '放弃';
 I18N.Template.User = {};
+I18N.Template.User.Alluser = '全部人员';
+I18N.Template.User.Name = '姓名';
+I18N.Template.User.Position = '职务';
 I18N.Template.User.Selected = '已选{0}人';
 I18N.Template.Send = {};
 I18N.Template.Send.Title = '发送{0}';
