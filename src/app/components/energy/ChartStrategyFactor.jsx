@@ -2560,12 +2560,14 @@ let ChartStrategyFactor = {
         showSumDialog: false,
         sumBtnStatus: false,
         weatherOption: null,
+        calendarType: "",
       };
     },
     getCostInitialState() {
       let state = {
         touBtnStatus: CommodityStore.getECButtonStatus(),
-        touBtnSelected: false
+        touBtnSelected: false,
+        calendarType: "",
       };
       return state;
     },
@@ -2574,20 +2576,23 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
-        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus()
+        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus(),
+        calendarType: "",
       };
       return state;
     },
     getRatioInitialState() {
       let state = {
         ratioType: 1,
-        benchmarks: null
+        benchmarks: null,
+        calendarType: "",
       };
       return state;
     },
     getCarbonInitialState() {
       let state = {
         destination: 2,
+        calendarType: "",
       };
       return state;
     },
@@ -2597,6 +2602,7 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
+        calendarType: "",
       };
       return state;
     },
