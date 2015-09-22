@@ -1,8 +1,8 @@
 'use strict';
 import React from "react";
-import {Navigation, State } from 'react-router';
+import { Navigation, State } from 'react-router';
 import classSet from 'classnames';
-import {CircularProgress,FlatButton,FontIcon,IconButton,IconMenu,Dialog} from 'material-ui';
+import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu, Dialog } from 'material-ui';
 import SearchBox from './FolderSearchBox.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
@@ -24,158 +24,165 @@ import Immutable from 'immutable';
 
 var FolderLeftPanel = React.createClass({
 
-  _onFolderTreeChange:function(){
+  _onFolderTreeChange: function() {
     this.setState({
-      allNode:FolderStore.getFolderTree(),
-      selectedNode:FolderStore.getSelectedNode(),
-      isLoading:false
+      allNode: FolderStore.getFolderTree(),
+      selectedNode: FolderStore.getSelectedNode(),
+      isLoading: false
     });
   },
 
-  generateNodeConent:function(nodeData,IsSendCopyReaded){
-    return(<NodeContent nodeData={nodeData}
-                        selectedNode={this.state.selectedNode}
-                        />);
+  generateNodeConent: function(nodeData, IsSendCopyReaded) {
+    return (<NodeContent nodeData={nodeData}
+      selectedNode={this.state.selectedNode}
+      />);
   },
-  _onChange:function(){
+  _onChange: function() {
     this.setState({
-    //  allNode:FolderStore.getFolderTree(),
-      allNode:HierarchyStore.getData(),
-      isLoading:false
+      //  allNode:FolderStore.getFolderTree(),
+      allNode: HierarchyStore.getData(),
+      isLoading: false
     });
   },
-  _onSelectNode:function(nodeData){
+  _onSelectNode: function(nodeData) {
     FolderAction.setSelectedNode(nodeData);
-    if(nodeData.get('Type')==7){
+    if (nodeData.get('Type') == 7) {
       this.setState({
-        selectedNode:nodeData,
-        buttonDisabled:true,
+        selectedNode: nodeData,
+        buttonDisabled: true,
+      })
+    } else {
+      this.setState({
+        selectedNode: nodeData,
+        buttonDisabled: false,
       })
     }
-    else {
-      this.setState({
-        selectedNode:nodeData,
-        buttonDisabled:false,
-      })
-    }
   },
-  _onNewFolder:function(){
+  _onNewFolder: function() {
     this.setState({
-      isLoading:true
+      isLoading: true
     });
-    var name=FolderStore.getDefaultName(I18N.Folder.NewFolder,this.state.selectedNode,6);
-    FolderAction.createWidgetOrFolder(this.state.selectedNode,name,6,window.currentCustomerId);
+    var name = FolderStore.getDefaultName(I18N.Folder.NewFolder, this.state.selectedNode, 6);
+    FolderAction.createWidgetOrFolder(this.state.selectedNode, name, 6, window.currentCustomerId);
   },
-  _onCreateFolderOrWidgetChange:function(){
+  _onCreateFolderOrWidgetChange: function() {
     this.setState({
-      isLoading:false,
-      allNode:FolderStore.getFolderTree(),
-      selectedNode:FolderStore.getSelectedNode()
+      isLoading: false,
+      allNode: FolderStore.getFolderTree(),
+      selectedNode: FolderStore.getSelectedNode()
     });
 
   },
-  _onNewWidget:function(e,item){
-    let widgetType=parseInt(item.key);
-    let _newWidget=[];
+  _onNewWidget: function(e, item) {
+    let widgetType = parseInt(item.key);
+    let _newWidget = [];
 
-    _newWidget[1]=I18N.Folder.NewWidget.Menu1;
-    _newWidget[2]=I18N.Folder.NewWidget.Menu2;
-    _newWidget[3]=I18N.Folder.NewWidget.Menu3;
-    _newWidget[4]=I18N.Folder.NewWidget.Menu4;
-    _newWidget[5]=I18N.Folder.NewWidget.Menu5;
+    _newWidget[1] = I18N.Folder.NewWidget.Menu1;
+    _newWidget[2] = I18N.Folder.NewWidget.Menu2;
+    _newWidget[3] = I18N.Folder.NewWidget.Menu3;
+    _newWidget[4] = I18N.Folder.NewWidget.Menu4;
+    _newWidget[5] = I18N.Folder.NewWidget.Menu5;
 
-    let name=_newWidget[widgetType];
-    name=FolderStore.getDefaultName(name,this.state.selectedNode,7);
+    let name = _newWidget[widgetType];
+    name = FolderStore.getDefaultName(name, this.state.selectedNode, 7);
     this.setState({
-      isLoading:true
+      isLoading: true
     });
-    FolderAction.createWidgetOrFolder(this.state.selectedNode,name,7,window.currentCustomerId,widgetType);
+    FolderAction.createWidgetOrFolder(this.state.selectedNode, name, 7, window.currentCustomerId, widgetType);
     this.setState({
-      buttonDisabled:true
+      buttonDisabled: true
     })
   },
-  _onSearchClick:function(node){
+  _onSearchClick: function(node) {
     FolderAction.setSelectedNode(node);
-    if(node.get('IsSenderCopy') && !node.get('IsRead')){
+    if (node.get('IsSenderCopy') && !node.get('IsRead')) {
       FolderAction.modifyFolderReadStatus(node);
     }
-    if(node.get('Type')==7){
+    if (node.get('Type') == 7) {
       this.setState({
-        selectedNode:node,
-        buttonDisabled:true
+        selectedNode: node,
+        buttonDisabled: true
       })
-    }
-    else {
+    } else {
       this.setState({
-        selectedNode:node
+        selectedNode: node
       })
     }
 
   },
-  _onModifyName:function(){
+  _onModifyName: function() {
     let me = this;
-    this.setState({isLoading:true}, ()=>{
-        me.setState({isLoading:false, allNode:FolderStore.getFolderTree()});
+    this.setState({
+      isLoading: true
+    }, () => {
+      me.setState({
+        isLoading: false,
+        allNode: FolderStore.getFolderTree()
+      });
     });
   },
-  getInitialState:function(){
-    return{
-      allNode:null,
-      isLoading:true,
-      selectedNode:null,
-      buttonDisabled:false
+  getInitialState: function() {
+    return {
+      allNode: null,
+      isLoading: true,
+      selectedNode: null,
+      buttonDisabled: false
     };
   },
-  _onDeleteItem:function(){
+  _onDeleteItem: function() {
     this.setState({
-      allNode:FolderStore.getFolderTree()
+      allNode: FolderStore.getFolderTree()
     })
   },
-  _onCopyItem:function(){
+  _onCopyItem: function() {
     this.setState({
-      allNode:FolderStore.getFolderTree(),
-      selectedNode:FolderStore.getSelectedNode()
+      allNode: FolderStore.getFolderTree(),
+      selectedNode: FolderStore.getSelectedNode()
     })
   },
-  _onSelectedNodeChange:function(){
-    var selectedNode=FolderStore.getSelectedNode();
-    if(selectedNode.get('Type')==7){
+  _onSelectedNodeChange: function() {
+    var selectedNode = FolderStore.getSelectedNode();
+    if (selectedNode.get('Type') == 7) {
       this.setState({
-        selectedNode:FolderStore.getSelectedNode(),
-        buttonDisabled:true
+        selectedNode: FolderStore.getSelectedNode(),
+        buttonDisabled: true
       })
-    }
-    else {
+    } else {
       this.setState({
-        selectedNode:FolderStore.getSelectedNode()
+        selectedNode: FolderStore.getSelectedNode()
       })
     }
 
   },
-  _onGragulaNode:function(targetId,sourceId,pass){
-    var targetNode=FolderStore.getNodeById(parseInt(targetId)),
-        sourceNode=FolderStore.getNodeById(parseInt(sourceId)),
-        parentNode=FolderStore.getParent(targetNode);
-    if(!pass){
-      FolderAction.moveItem(sourceNode.toJSON(),targetNode.toJSON(),null)
-    }
-    else {
-      FolderAction.moveItem(sourceNode.toJSON(),parentNode.toJSON(),targetNode.toJSON())
+  _onGragulaNode: function(targetId, sourceId, pre) {
+    var targetNode = FolderStore.getNodeById(parseInt(targetId)),
+      sourceNode = FolderStore.getNodeById(parseInt(sourceId)),
+      parentNode = FolderStore.getParent(targetNode);
+    // if(!pass){
+    //   FolderAction.moveItem(sourceNode.toJSON(),targetNode.toJSON(),null)
+    // }
+    // else {
+    //   FolderAction.moveItem(sourceNode.toJSON(),parentNode.toJSON(),targetNode.toJSON())
+    // // }
+    if (pre) {
+      FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), targetNode.toJSON(), null)
+    } else {
+      FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), null, targetNode.toJSON())
     }
     this.setState({
-        isLoading:true,
+      isLoading: true,
     })
   },
-  _onMoveItemChange:function(){
+  _onMoveItemChange: function() {
     this.setState({
-      isLoading:false,
-      allNode:FolderStore.getFolderTree(),
-      selectedNode:FolderStore.getSelectedNode()
+      isLoading: false,
+      allNode: FolderStore.getFolderTree(),
+      selectedNode: FolderStore.getSelectedNode()
     });
   },
-  _onModfiyReadingStatusChange:function(){
+  _onModfiyReadingStatusChange: function() {
     this.setState({
-      allNode:FolderStore.getFolderTree()
+      allNode: FolderStore.getFolderTree()
     });
   },
   componentDidMount: function() {
@@ -194,7 +201,7 @@ var FolderLeftPanel = React.createClass({
     FolderStore.addModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
 
   },
-  componentWillUnmount:function(){
+  componentWillUnmount: function() {
 
     FolderStore.removeFolderTreeListener(this._onFolderTreeChange);
     FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
@@ -209,34 +216,34 @@ var FolderLeftPanel = React.createClass({
     FolderStore.removeModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
 
   },
-  render:function(){
+  render: function() {
     //style
-    var iconStyle={
-          paddingTop:'0px'
-        },
-        itemStyle={
-          fontSize:'14px',
-          color:'#767a7a',
-          paddingLeft:'44px'
-        },
-        buttonStyle = {
-          backgroundColor: 'transparent',
-          height: '32px'
-        };
-        var newFolderClasses = {
-          'se-dropdownbutton': true,
-          'btn-container': true,
-          'btn-container-active': !this.state.buttonDisabled
-        };
+    var iconStyle = {
+        paddingTop: '0px'
+      },
+      itemStyle = {
+        fontSize: '14px',
+        color: '#767a7a',
+        paddingLeft: '44px'
+      },
+      buttonStyle = {
+        backgroundColor: 'transparent',
+        height: '32px'
+      };
+    var newFolderClasses = {
+      'se-dropdownbutton': true,
+      'btn-container': true,
+      'btn-container-active': !this.state.buttonDisabled
+    };
 
     //icon
-    var energyAnalysisIcon=<FontIcon className="icon-energy-analysis" style={iconStyle}/>,
-        unitIndexIcon=<FontIcon className="icon-unit-index" style={iconStyle}/>,
-        timeRationIcon=<FontIcon className="icon-dust-concentration" style={iconStyle}/>,
-        labelingIcon=<FontIcon className="icon-labeling" style={iconStyle}/>,
-        rankingIcon=<FontIcon className="icon-ranking" style={iconStyle}/>;
+    var energyAnalysisIcon = <FontIcon className="icon-energy-analysis" style={iconStyle}/>,
+      unitIndexIcon = <FontIcon className="icon-unit-index" style={iconStyle}/>,
+      timeRationIcon = <FontIcon className="icon-dust-concentration" style={iconStyle}/>,
+      labelingIcon = <FontIcon className="icon-labeling" style={iconStyle}/>,
+      rankingIcon = <FontIcon className="icon-ranking" style={iconStyle}/>;
 
-    var filterOptions=[
+    var filterOptions = [
       <MenuItem key={1} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={energyAnalysisIcon}/>,
       <MenuItem key={2} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={unitIndexIcon}/>,
       <MenuItem key={3} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={timeRationIcon}/>,
@@ -245,34 +252,36 @@ var FolderLeftPanel = React.createClass({
     ];
 
     //props
-    var treeProps={
-        collapsedLevel:0,
-        allNode:this.state.allNode,
-        allHasCheckBox:false,
-        allDisabled:false,
-        generateNodeConent:this.generateNodeConent,
-        onSelectNode:this._onSelectNode,
-        selectedNode:this.state.selectedNode,
-        onGragulaNode:this._onGragulaNode,
-        arrowClass:'jazz-foldertree-arrow',
-        treeNodeClass:'jazz-foldertree-node'
+    var treeProps = {
+        collapsedLevel: 0,
+        allNode: this.state.allNode,
+        allHasCheckBox: false,
+        allDisabled: false,
+        generateNodeConent: this.generateNodeConent,
+        onSelectNode: this._onSelectNode,
+        selectedNode: this.state.selectedNode,
+        onGragulaNode: this._onGragulaNode,
+        arrowClass: 'jazz-foldertree-arrow',
+        treeNodeClass: 'jazz-foldertree-node'
       },
       newWidgetProps = {
-                type: "Add",
-                text:I18N.Folder.WidgetName,
-                menuItems: filterOptions,
-                onItemClick: this._onNewWidget,
-                disabled: this.state.buttonDisabled
-              };
+        type: "Add",
+        text: I18N.Folder.WidgetName,
+        menuItems: filterOptions,
+        onItemClick: this._onNewWidget,
+        disabled: this.state.buttonDisabled
+      };
 
 
-      var treeContent=(this.state.isLoading?<CircularProgress  mode="indeterminate" size={1} />:<Tree {...treeProps}/>);
+    var treeContent = (this.state.isLoading ? <CircularProgress  mode="indeterminate" size={1} /> : <Tree {...treeProps}/>);
 
-    return(
+    return (
       <div className="jazz-folder-leftpanel-container">
 
         <div className="jazz-folder-leftpanel-header">
-          <div className={classSet(newFolderClasses)} style={{margin:'0 30px'}}>
+          <div className={classSet(newFolderClasses)} style={{
+        margin: '0 30px'
+      }}>
             <FlatButton disabled={this.state.buttonDisabled} onClick={this._onNewFolder} style={buttonStyle}>
               <FontIcon className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.Folder.FolderName}</span>
@@ -292,7 +301,7 @@ var FolderLeftPanel = React.createClass({
           {treeContent}
         </div>
       </div>
-    )
+      )
   }
 });
 

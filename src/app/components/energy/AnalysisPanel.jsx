@@ -25,6 +25,7 @@ import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep
 import CalendarManager from './CalendarManager.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 
+
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
 let AnalysisPanel = React.createClass({
@@ -127,6 +128,12 @@ let AnalysisPanel = React.createClass({
     } else {
       sourceUserNameEl = <div className={'description'}></div>;
     }
+    let widgetWd;
+    if (me.state.dashboardOpenImmediately) {
+      widgetWd = this.state.chartStrategy.getWidgetSaveWindowFn(me);
+    } else {
+      widgetWd = null;
+    }
     return <div className={'jazz-energy-panel'}>
         <div className='header'>
           {collapseButton}
@@ -141,6 +148,7 @@ let AnalysisPanel = React.createClass({
       }} onClick={this._onChart2WidgetClick}
       disabled={!this.state.energyData}/>
                 {widgetOptMenu}
+                {widgetWd}
               </div>
               {me.state.chartStrategy.searchBarGenFn(me)}
           </div>
@@ -171,6 +179,11 @@ let AnalysisPanel = React.createClass({
   componentWillUnmount: function() {
     let me = this;
     this.state.chartStrategy.unbindStoreListenersFn(me);
+  },
+  onWidgetSaveWindowDismiss: function() {
+    this.setState({
+      dashboardOpenImmediately: false
+    });
   },
   _initAlarmChartPanelByWidgetDto() {
     this.state.chartStrategy.initAlarmChartPanelByWidgetDtoFn(this);
@@ -313,9 +326,14 @@ let AnalysisPanel = React.createClass({
     return strategyName;
   },
   _onChart2WidgetClick() {
-    if (this.state.chartStrategy.save2DashboardFn) {
-      this.state.chartStrategy.save2DashboardFn(this);
+    if (!!this.props.isFromAlarm) {
+      this.state.chartStrategy.save2DashboardForAlarmFn(this);
+    } else {
+      if (this.state.chartStrategy.save2DashboardFn) {
+        this.state.chartStrategy.save2DashboardFn(this);
+      }
     }
+
   },
   _onErrorDialogAction(step) {
     this.setState({

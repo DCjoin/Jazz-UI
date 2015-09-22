@@ -1278,7 +1278,7 @@ let CommonFuns = {
         //if it is a int times of hourly ticks, return it
         //if not, add hourly ticks until it becomes one
         while (ticks % fixed.hour !== 0) {
-          ticks += fixed.hour;
+          ticks += fixed.minute;
         }
         return new Date(ticks);
       case 2: //daily
