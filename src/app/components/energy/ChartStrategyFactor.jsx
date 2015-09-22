@@ -3811,14 +3811,25 @@ let ChartStrategyFactor = {
       } else {
         weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' disabled={true} tooltip={isWeatherDisabled} />;
       }
+
+      let sumBtnStatus = analysisPanel.state.sumBtnStatus;
+      if (analysisPanel.state.selectedChartType === 'rawdata' || analysisPanel.state.selectedChartType === 'pie') {
+        sumBtnStatus = true;
+      }
+
+      let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
+      if (submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
+        baselineBtnStatus = true;
+      }
+
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
-       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>
        <MenuDivider />
-       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={analysisPanel.state.sumBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={sumBtnStatus}/>
        {calendarEl}
        {weatherEl}
      </ButtonMenu>;
