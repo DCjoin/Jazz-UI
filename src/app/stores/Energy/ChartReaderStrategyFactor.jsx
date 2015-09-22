@@ -439,7 +439,7 @@ let ChartReaderStrategyFactor = {
               arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), navData[j].DataValue]);
             }
           } else {
-            var timeSpace = CommonFuns.firstValueTime(timeRange.StartTime, step) - CommonFuns.firstValueTime(standardStart, step);
+            var timeSpace = CommonFuns.DateComputer.firstValueTime(timeRange.StartTime, step) - CommonFuns.DateComputer.firstValueTime(standardStart, step);
             var stepSpan = CommonFuns.DateComputer.GetStepSpan(timeSpace, step);
 
             var xAxisdate;
