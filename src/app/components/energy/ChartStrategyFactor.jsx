@@ -4192,7 +4192,7 @@ let ChartStrategyFactor = {
               if (serie.IsDisplay) {
                 curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
               } else {
-                curChartType = null;
+                curChartType = 'null';
               }
             } else {
               curChartType = chartType;
@@ -4241,7 +4241,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
@@ -4324,7 +4324,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
@@ -4407,7 +4407,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
