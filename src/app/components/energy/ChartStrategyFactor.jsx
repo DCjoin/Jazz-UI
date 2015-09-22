@@ -409,7 +409,6 @@ let ChartStrategyFactor = {
       }
 
       //init selected tags is done in the other part
-
       analysisPanel.setState({
         selectedChartType: typeMap[chartType],
         sumBtnStatus: sumBtnStatus,
@@ -418,6 +417,7 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
 
     initCostChartPanelByWidgetDto(analysisPanel) {
@@ -468,6 +468,7 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -509,6 +510,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
 
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initRatioChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -561,6 +563,7 @@ let ChartStrategyFactor = {
       });
 
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initUnitChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -613,6 +616,8 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       });
+
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initUnitCarbonChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -665,6 +670,7 @@ let ChartStrategyFactor = {
       });
 
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initUnitCostChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -717,6 +723,7 @@ let ChartStrategyFactor = {
         });
         ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
       });
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initLabelChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;

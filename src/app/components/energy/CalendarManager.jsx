@@ -42,7 +42,7 @@ let CalendarManager = {
     if (this.step && this.step != step) {
       if (this.calendarShowType !== '') {
         var clearCalendar;
-        if (this.calendarShowType == 'hotColdSeason') {
+        if (this.calendarShowType == 'hc') {
           if (step == 4) { //hc is not supported by year
             clearCalendar = true;
           } else {
@@ -138,7 +138,7 @@ let CalendarManager = {
   getTimeRange: function(step, type, range) {
     var ret;
     if (!range) return [];
-    if (type == 'hotColdSeason') {
+    if (type == 'hc') {
       if (step != 4) {
         ret = range.filter((item) => {
           return item.CalendarType == 4 || item.CalendarType == 5;
