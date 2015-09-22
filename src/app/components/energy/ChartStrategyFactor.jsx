@@ -1848,7 +1848,8 @@ let ChartStrategyFactor = {
         timeRanges = paramsObj.timeRanges;
 
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
       analysisPanel._onTouBtnDisabled();
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
@@ -1862,7 +1863,8 @@ let ChartStrategyFactor = {
       viewOp.Step = step;
 
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
       analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, analysisPanel);
     },
@@ -1876,7 +1878,8 @@ let ChartStrategyFactor = {
         ratioType = paramsObj.ratioType;
 
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
       if (ratioType === 1 && (step === 0 || step === 1))
         step = 2;
@@ -1894,7 +1897,8 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
     },
     handleUnitCostStepChange(analysisPanel, step) {
@@ -1907,7 +1911,8 @@ let ChartStrategyFactor = {
 
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
     },
     handleUnitCarbonStepChange(analysisPanel, step) {
@@ -1920,7 +1925,8 @@ let ChartStrategyFactor = {
       viewOp.Step = step;
 
       analysisPanel.setState({
-        step: step
+        step: step,
+        isCalendarInited: false
       });
       analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, benchmarkOption);
     },
