@@ -1965,8 +1965,8 @@ let ChartStrategyFactor = {
         step = paramsObj.step;
       if (step != 1) return I18N.EM.WeatherSupportsOnlyHourlyStep;
 
-      let errors =  EnergyStore.getErrorCodes();
-      if(!!errors && errors.length && errors[0] + '' === '02810'){
+      let errors = EnergyStore.getErrorCodes();
+      if (!!errors && errors.length && errors[0] + '' === '02810') {
         analysisPanel.state.weatherOption = null;
         return I18N.Message.M02810;
       }
@@ -4169,6 +4169,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.step = null;
       analysisPanel.state.weatherOption = null;
       analysisPanel.forceUpdate();
+      MultipleTimespanStore.clearMultiTimespan('both');
     },
     clearCarbonChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
