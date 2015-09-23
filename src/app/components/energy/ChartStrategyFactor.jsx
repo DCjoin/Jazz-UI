@@ -3870,7 +3870,7 @@ let ChartStrategyFactor = {
       }
 
       let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
-      if (submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
+      if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
         baselineBtnStatus = true;
       }
 
