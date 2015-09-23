@@ -1004,6 +1004,25 @@ let CommonFuns = {
     }
     return str;
   },
+  getYaxisConfig(statusArray) {
+    //loop for yaxisConfig
+    var yaxisConfig = [];
+    for (var i = 0, len = statusArray.length; i < len; i++) {
+      var item = statusArray[i];
+      var yaxis = {};
+      if (item.WidgetStatusKey.indexOf('yaxisConfig-uom') >= 0) {
+        yaxis.uom = item.WidgetStatusValue;
+        var minmax = statusArray[i + 1].WidgetStatusValue;
+        var idx = minmax.indexOf('-');
+        var min = minmax.substring(0, idx);
+        var max = minmax.substring(idx + 1);
+        yaxis.val = [Number(min), Number(max)];
+        ++i;
+        yaxisConfig.push(yaxis);
+      }
+    }
+    return yaxisConfig;
+  },
   getTagIdsFromTagOptions(tagOptions) {
     let tagIds = [];
     for (let i = 0, len = tagOptions.length; i < len; i++) {

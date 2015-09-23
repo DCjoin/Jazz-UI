@@ -521,6 +521,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
@@ -569,11 +570,17 @@ let ChartStrategyFactor = {
         MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
       }
 
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
       //init selected tags is done in the other part
       analysisPanel.setState({
         selectedChartType: typeMap[chartType],
+        yaxisConfig: yaxisConfig,
         sumBtnStatus: sumBtnStatus,
-        step: step
+        step: step,
+        weatherBtnStatus: TagStore.getWeatherBtnDisabled()
       }, () => {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
@@ -586,6 +593,7 @@ let ChartStrategyFactor = {
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
         bizType = widgetDto.BizType,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         touBtnSelected = false,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
@@ -619,9 +627,14 @@ let ChartStrategyFactor = {
       if (bizType == 'CostElectric') {
         touBtnSelected = true;
       }
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
 
       analysisPanel.setState({
         step: step,
+        yaxisConfig: yaxisConfig,
         selectedChartType: typeMap[chartType],
         touBtnStatus: CommodityStore.getECButtonStatus(),
         touBtnSelected: touBtnSelected
@@ -730,6 +743,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
@@ -737,9 +751,7 @@ let ChartStrategyFactor = {
         timeRanges = viewOption.TimeRanges,
         step = viewOption.Step,
         unitType = viewOption.DataOption.UnitType,
-        dest = contentObj.destination,
         chartType = widgetDto.ChartType;
-      CarbonStore.setDestination(dest);
 
       let typeMap = {
         Line: 'line',
@@ -765,12 +777,17 @@ let ChartStrategyFactor = {
       if (benchmarkOption && benchmarkOption.IndustryId !== null) {
         bo = benchmarkOption;
       }
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
 
       setTimeout(() => {
         analysisPanel.setState({
           unitType: unitType,
           benchmarkOption: bo,
           step: step,
+          yaxisConfig: yaxisConfig,
           selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
@@ -837,6 +854,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
@@ -871,9 +889,15 @@ let ChartStrategyFactor = {
         bo = benchmarkOption;
       }
 
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
+
       setTimeout(() => {
         analysisPanel.setState({
           step: step,
+          yaxisConfig: yaxisConfig,
           unitType: unitType,
           benchmarkOption: bo,
           selectedChartType: typeMap[chartType],
@@ -962,6 +986,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         rankType = contentObj.rankType,
@@ -987,10 +1012,16 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
+
       analysisPanel.state.selectedChartType = "column";
       setTimeout(() => {
         analysisPanel.setState({
           rankType: rankType,
+          yaxisConfig: yaxisConfig,
           order: order,
           range: range
         }, () => {
@@ -1193,7 +1224,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType
       };
-
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
       let contentSyntax = {
         params: params
       };
@@ -1275,6 +1308,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1348,6 +1384,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1435,7 +1474,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType,
       };
-
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
       let contentSyntax = {
         params: params
       };
@@ -1511,6 +1552,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType,
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1594,6 +1638,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType,
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1674,6 +1721,9 @@ let ChartStrategyFactor = {
         config: config,
         calendar: analysisPanel.state.calendarType,
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1782,6 +1832,9 @@ let ChartStrategyFactor = {
         diagramConfig: diagramConfig,
         calendar: null
       };
+      if (analysisPanel.state.yaxisConfig !== null) {
+        params.yaxisConfig = analysisPanel.state.yaxisConfig;
+      }
 
       let contentSyntax = {
         params: params
@@ -1884,6 +1937,8 @@ let ChartStrategyFactor = {
       let paramsObj = EnergyStore.getParamsObj(),
         step = paramsObj.step;
       if (step != 1) return I18N.EM.WeatherSupportsOnlyHourlyStep;
+      let disabled = TagStore.getWeatherBtnDisabled();
+      if (disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       return false;
     }
   },
@@ -2150,7 +2205,7 @@ let ChartStrategyFactor = {
              <div style={{
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
           margin: '5px 30px 5px auto'
@@ -2216,7 +2271,7 @@ let ChartStrategyFactor = {
              <div style={{
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
              <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
           margin: '5px 30px 5px auto'
@@ -2275,7 +2330,7 @@ let ChartStrategyFactor = {
              <div style={{
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div className={'jazz-full-border-dropdownmenu-container'} style={{
           margin: '5px 30px 5px auto'
@@ -2323,7 +2378,7 @@ let ChartStrategyFactor = {
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2351,7 +2406,7 @@ let ChartStrategyFactor = {
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
            <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2391,7 +2446,7 @@ let ChartStrategyFactor = {
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2427,7 +2482,7 @@ let ChartStrategyFactor = {
            <div style={{
         margin: '10px 0 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
            <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2464,7 +2519,7 @@ let ChartStrategyFactor = {
            {orderCombo}
            {rangeCombo}
          </div>
-         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit}/>
+         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
          <div style={{
         margin: '5px 30px 5px auto'
       }}>
@@ -3811,14 +3866,25 @@ let ChartStrategyFactor = {
       } else {
         weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' disabled={true} tooltip={isWeatherDisabled} />;
       }
+
+      let sumBtnStatus = analysisPanel.state.sumBtnStatus;
+      if (analysisPanel.state.selectedChartType === 'rawdata' || analysisPanel.state.selectedChartType === 'pie') {
+        sumBtnStatus = true;
+      }
+
+      let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
+      if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.tagIds.length > 1) {
+        baselineBtnStatus = true;
+      }
+
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={analysisPanel.state.baselineBtnStatus}/>
-       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={analysisPanel.state.baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>
        <MenuDivider />
-       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={analysisPanel.state.sumBtnStatus}/>
+       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={sumBtnStatus}/>
        {calendarEl}
        {weatherEl}
      </ButtonMenu>;
@@ -3925,7 +3991,9 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+      TagStore.addWeatherBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
     },
     costBindStoreListeners(analysisPanel) {
       CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
@@ -3938,7 +4006,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+    //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     ratioBindStoreListeners(analysisPanel) {
       RatioStore.addRatioDataLoadingListener(analysisPanel._onRatioLoadingStatusChange);
@@ -3949,6 +4017,7 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
     },
     unitCostBindStoreListeners(analysisPanel) {
@@ -3962,7 +4031,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+    //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     rankBindStoreListeners(analysisPanel) {
       RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
@@ -3986,7 +4055,9 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
     },
@@ -3994,7 +4065,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+    //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     ratioUnbindStoreListeners(analysisPanel) {
@@ -4015,6 +4086,7 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange);
       CalendarManager.hideCalendar();
@@ -4032,7 +4104,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+    //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     rankUnbindStoreListeners(analysisPanel) {
@@ -4181,7 +4253,7 @@ let ChartStrategyFactor = {
               if (serie.IsDisplay) {
                 curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
               } else {
-                curChartType = null;
+                curChartType = 'null';
               }
             } else {
               curChartType = chartType;
@@ -4230,7 +4302,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
@@ -4313,7 +4385,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
@@ -4396,7 +4468,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;

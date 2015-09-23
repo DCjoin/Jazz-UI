@@ -67,6 +67,7 @@ let AnalysisPanel = React.createClass({
       yaxisConfig: null,
       dashboardOpenImmediately: false,
       baselineBtnStatus: TagStore.getBaselineBtnDisabled(),
+      weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
       selectedChartType: 'line',
       chartStrategy: chartStrategy,
       energyType: this.props.energyType || 'Energy', //'one of energy, cost carbon'
@@ -82,10 +83,10 @@ let AnalysisPanel = React.createClass({
 
     if (menuIndex === 4) {
       this.exportChart();
-    } else if(menuIndex === 1 || menuIndex === 2){
+    } else if (menuIndex === 1 || menuIndex === 2) {
       this.save2Dashboard();
       this.props.onOperationSelect(menuIndex);
-    }else {
+    } else {
       this.props.onOperationSelect(menuIndex);
     }
   },
@@ -656,6 +657,10 @@ let AnalysisPanel = React.createClass({
     let errorObj = this.errorProcess(EnergyStore);
     this._onEnergyDataChange(true, errorObj);
   },
+  _onGetEnergyDataErrors() {
+    let errorObj = this.errorsProcess(EnergyStore);
+    this._onEnergyDataChange(false, errorObj);
+  },
   _onGetCostDataError() {
     let errorObj = this.errorProcess(CostStore);
     this._onCostDataChange(true, errorObj);
@@ -686,12 +691,12 @@ let AnalysisPanel = React.createClass({
   },
   errorProcess(EnergyStore) {
     let code = EnergyStore.getErrorCode(),
+      codes = EnergyStore.getErrorCodes(),
       messages = EnergyStore.getErrorMessage();
 
-    if(!code){
-      return ;
-    }
-    else if (code == '02004'.toString()) {
+    if (!code) {
+      return;
+    } else if (code == '02004'.toString()) {
       let errorObj = this.showStepError(messages[0], EnergyStore);
       return errorObj;
     } else {
@@ -775,6 +780,11 @@ let AnalysisPanel = React.createClass({
   _onBaselineBtnDisabled: function() {
     this.setState({
       baselineBtnStatus: TagStore.getBaselineBtnDisabled()
+    });
+  },
+  _onWeatherBtnDisabled: function() {
+    this.setState({
+      weatherBtnStatus: TagStore.getWeatherBtnDisabled()
     });
   },
   _onUnitCostBaselineBtnDisabled: function() {

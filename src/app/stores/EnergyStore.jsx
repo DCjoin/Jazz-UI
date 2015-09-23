@@ -12,7 +12,8 @@ import CommonFuns from '../util/Util.jsx';
 
 const TAG_DATA_LOADING_EVENT = 'tagdataloading',
   TAG_DATA_CHANGED_EVENT = 'tagdatachanged',
-  GET_DATA_ERROR_EVENT = 'gettagdataerror';
+  GET_DATA_ERROR_EVENT = 'gettagdataerror',
+  GET_DATA_ERRORS_EVENT = 'gettagdataerrors';
 
 let _isLoading = false,
   _isAlarmLoading = false,
@@ -24,6 +25,8 @@ let _isLoading = false,
   _chartTitle = null,
   _relativeDate = null,
   _errorCode = null,
+  _errorCodes = [],
+  _errorParams = [],
   _errorMessage = null;
 
 var EnergyStore = assign({}, PrototypeStore, {
@@ -63,11 +66,29 @@ var EnergyStore = assign({}, PrototypeStore, {
   getErrorCode() {
     return _errorCode;
   },
+  getErrorCodes() {
+    return _errorCodes;
+  },
   _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
     _errorCode = errorCode;
     _errorMessage = error.Messages;
+  },
+  _checkErrors(data) {
+    if (!data) return;
+    var errors = data.Errors;
+    var error, errorCode;
+    _errorCodes = [];
+    _errorParams = [];
+    if (errors && errors.length > 0) {
+      for (var i = 0, len = errors.length; i < len; i++) {
+        error = errors[i];
+        errorCode = CommonFuns.processErrorCode(error.ErrorCode).errorCode;
+        _errorCodes.push(errorCode);
+        _errorParams.push(error.Params);
+      }
+    }
   },
   //only one tagOptions if click tag in alarm list
   _onDataLoading(params, tagOptions, relativeDate, isAlarmLoading) {
@@ -177,6 +198,16 @@ var EnergyStore = assign({}, PrototypeStore, {
   },
   removeGetTagDataErrorListener: function(callback) {
     this.removeListener(GET_DATA_ERROR_EVENT, callback);
+  },
+
+  addGetTagDataErrorsListener: function(callback) {
+    this.on(GET_DATA_ERRORS_EVENT, callback);
+  },
+  emitGetTagDataErrorsListener: function(callback) {
+    this.emit(GET_DATA_ERRORS_EVENT);
+  },
+  removeGetTagDataErrorsListener: function(callback) {
+    this.removeListener(GET_DATA_ERRORS_EVENT, callback);
   }
 });
 
