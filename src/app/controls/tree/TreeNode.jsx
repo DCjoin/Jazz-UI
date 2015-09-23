@@ -312,10 +312,8 @@ var TreeNode = React.createClass({
         paddingLeft: Number(indent * indentUnit) + this.props.nodeOriginPaddingLeft
       },
       title: nodeData.get("Name"),
-      onCLick: this.handleClickNode
+      onClick: this.handleClickNode
     };
-
-
 
     return (
       <div {...treeNodeProps}>
