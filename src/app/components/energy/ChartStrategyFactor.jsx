@@ -1236,11 +1236,12 @@ let ChartStrategyFactor = {
         widgetDto.Name = analysisPanel.props.chartTitle;
         FolderAction.WidgetSave(widgetDto, window.currentCustomerId);
       } else {
-        FolderAction.updateWidgetDtos(widgetDto);
+        //for this situation destNode is menuIndex
+        FolderAction.updateWidgetDtos(widgetDto, destNode);
       }
 
     },
-    saveRatio2Dashboard(analysisPanel) {
+    saveRatio2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = RatioStore.getRatioOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -1317,9 +1318,9 @@ let ChartStrategyFactor = {
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveUnit2Dashboard(analysisPanel) {
+    saveUnit2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = EnergyStore.getTagOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -1395,9 +1396,9 @@ let ChartStrategyFactor = {
 
       widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
 
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveCost2Dashboard(analysisPanel) {
+    saveCost2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
@@ -1481,9 +1482,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveUnitCost2Dashboard(analysisPanel) {
+    saveUnitCost2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
@@ -1560,9 +1561,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveCarbon2Dashboard(analysisPanel) {
+    saveCarbon2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = {},
         hierarchyNode = CommodityStore.getHierNode(),
@@ -1646,9 +1647,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveUnitCarbon2Dashboard(analysisPanel) {
+    saveUnitCarbon2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = {},
         hierarchyNode = CommodityStore.getHierNode(),
@@ -1729,9 +1730,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveLabel2Dashboard(analysisPanel) {
+    saveLabel2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = LabelStore.getTagOpions();
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
@@ -1767,9 +1768,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveRank2Dashboard(analysisPanel) {
+    saveRank2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
       let submitParams1 = RankStore.getSubmitParams();
@@ -1840,7 +1841,7 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     }
   },
   handleNavigatorChangeLoadFnStrategy: {

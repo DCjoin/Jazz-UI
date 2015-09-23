@@ -84,7 +84,7 @@ let AnalysisPanel = React.createClass({
     if (menuIndex === 4) {
       this.exportChart();
     } else if (menuIndex === 1 || menuIndex === 2) {
-      this.save2Dashboard();
+      this.save2Dashboard(menuIndex);
       this.props.onOperationSelect(menuIndex);
     } else {
       this.props.onOperationSelect(menuIndex);
@@ -585,9 +585,9 @@ let AnalysisPanel = React.createClass({
   exportChart() {
     this.state.chartStrategy.exportChartFn(this);
   },
-  save2Dashboard() {
+  save2Dashboard(menuIndex) {
     if (this.state.chartStrategy.save2DashboardFn) {
-      this.state.chartStrategy.save2DashboardFn(this);
+      this.state.chartStrategy.save2DashboardFn(this, menuIndex);
     }
   },
   _getRelativeDateValue() {
