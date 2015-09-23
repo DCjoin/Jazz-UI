@@ -12,6 +12,8 @@ import DataSelectPanel from '../DataSelectPanel.jsx';
 
 import EnergyStore from '../../stores/EnergyStore.jsx';
 import AnalysisPanel from '../energy/AnalysisPanel.jsx';
+import RightPanel from '../../controls/RightPanel.jsx';
+import DataSelectMainPanel from '../DataSelectMainPanel.jsx';
 
 let Alarm = React.createClass({
   mixins: [Navigation, State],
@@ -93,7 +95,9 @@ let Alarm = React.createClass({
     }
 
     if (this.state.showDataSelectPanelButton) {
-      dataSelectPanel = <DataSelectPanel onButtonClick={this._onSwitchButtonClick} linkFrom="Alarm" defaultStatus={false}></DataSelectPanel>;
+      dataSelectPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+      defaultStatus={!this.state.showLeftPanel}
+      container={<DataSelectMainPanel linkFrom='Alarm'></DataSelectMainPanel>}/>;
     }
     if (me.state.title) {
       if (me.state.refreshAnalysisPanel) {
@@ -105,6 +109,7 @@ let Alarm = React.createClass({
           energyType: 'Energy',
           widgetDto: me.state.widgetDto,
           isFromAlarm: true,
+          onCollapseButtonClick: this._onSwitchButtonClick
         };
 
         mainPanel = <AnalysisPanel {...mainPanelProps}></AnalysisPanel>;
