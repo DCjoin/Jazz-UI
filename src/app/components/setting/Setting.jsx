@@ -70,6 +70,17 @@ let Setting = React.createClass({
     });
     this.refs.snackbar.show();
   },
+  _onWidgetSaveError: function() {
+    this.setState({
+      errorText: I18N.ALarm.Save.Error
+    });
+    this.refs.snackbar.show();
+  },
+  _onWidgetSaveSuccess: function() {
+    this.setState({
+      errorText: null
+    });
+  },
   // _onExportWidgetSuccess: function() {
   //   this.setState({
   //     errorText: null,
@@ -250,6 +261,8 @@ let Setting = React.createClass({
     FolderStore.addMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.addMoveItemErrorListener(this._onMoveItemError);
     WidgetStore.addChangeListener(this._handleWidgetSelectChange);
+    FolderStore.addWidgetSaveErrorListener(this._onWidgetSaveError);
+    FolderStore.addWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
   },
   componentWillUnmount: function() {
     FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -260,6 +273,8 @@ let Setting = React.createClass({
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemSuccess);
     FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
     WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
+    FolderStore.removeWidgetSaveErrorListener(this._onWidgetSaveError);
+    FolderStore.removeWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
     this.setState({
       errorText: null
     });
