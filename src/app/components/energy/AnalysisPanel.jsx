@@ -84,7 +84,7 @@ let AnalysisPanel = React.createClass({
     if (menuIndex === 4) {
       this.exportChart();
     } else if (menuIndex === 1 || menuIndex === 2) {
-      this.save2Dashboard();
+      this.save2Dashboard(menuIndex);
       this.props.onOperationSelect(menuIndex);
     } else {
       this.props.onOperationSelect(menuIndex);
@@ -480,7 +480,7 @@ let AnalysisPanel = React.createClass({
     if (isError === true) {
       state.step = null;
       state.errorObj = errorObj;
-      if(!!args && args.length && args[0] === ''){
+      if (!!args && args.length && args[0] === '') {
 
       }
     }
@@ -580,9 +580,9 @@ let AnalysisPanel = React.createClass({
   exportChart() {
     this.state.chartStrategy.exportChartFn(this);
   },
-  save2Dashboard() {
+  save2Dashboard(menuIndex) {
     if (this.state.chartStrategy.save2DashboardFn) {
-      this.state.chartStrategy.save2DashboardFn(this);
+      this.state.chartStrategy.save2DashboardFn(this, menuIndex);
     }
   },
   _getRelativeDateValue() {
@@ -709,9 +709,9 @@ let AnalysisPanel = React.createClass({
     for (var i = 0; i < codes.length; i++) {
       errorMsg = CommonFuns.getErrorMessage(codes[i]);
       textArray.push(errorMsg);
-      // if((codes[0] + '') === '02810'){
-      //   this.state.
-      // }
+    // if((codes[0] + '') === '02810'){
+    //   this.state.
+    // }
     }
     setTimeout(() => {
       GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
@@ -1295,7 +1295,16 @@ let AnalysisPanel = React.createClass({
 
     if (tagOptions && tagOptions.length === 1) {
       tagOption = tagOptions[0];
-      let uom = CommonFuns.getUomById(tagOption.uomId);
+      let uomId = tagOption.uomId;
+      if (uomId === undefined) {
+        let energyRawData = EnergyStore.getEnergyRawData();
+        if (energyRawData && energyRawData.TargetEnergyData.length > 0) {
+          uomId = energyRawData.TargetEnergyData[0].Target.UomId;
+        } else {
+          return;
+        }
+      }
+      let uom = CommonFuns.getUomById(uomId);
       tagObj = {
         tagId: tagOption.tagId,
         hierarchyId: tagOption.hierId,
