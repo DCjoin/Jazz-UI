@@ -76,6 +76,9 @@ let Alarm = React.createClass({
       refreshAnalysisPanel: false
     };
   },
+  componentWillMount: function() {
+    document.title = I18N.Title.Alarm;
+  },
   render() {
     var LeftPanelField, dataSelectPanel, mainPanel;
     var me = this;

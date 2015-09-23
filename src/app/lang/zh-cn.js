@@ -800,6 +800,10 @@ I18N.Template.Send.Title = '发送{0}';
 I18N.Template.Send.Send = '发送';
 I18N.Template.Send.Cancel = '放弃';
 
+I18N.Title = {};
+I18N.Title.Alarm = '报警';
+I18N.Title.Energy = '能源';
+
 
 
 module.exports = I18N;

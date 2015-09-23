@@ -249,7 +249,7 @@ let Setting = React.createClass({
     // CommodityAction.setEnergyConsumptionType('Carbon');
     lastEnergyType = null;
     lastBizType = null;
-
+    document.title = I18N.Title.Energy;
   },
   componentDidMount: function() {
     FolderStore.addModifyNameSuccessListener(this._onModifyNameSuccess);

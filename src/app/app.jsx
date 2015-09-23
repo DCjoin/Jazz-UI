@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Router  from 'react-router';
+import Router from 'react-router';
 import injectTapEventPlugin from "react-tap-event-plugin";
 
 import JazzApp from './components/JazzApp.jsx';
@@ -10,14 +10,14 @@ import MainApp from './components/MainApp.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
-import {getCookie} from './util/Util.jsx';
-import {Styles} from 'material-ui';
+import { getCookie } from './util/Util.jsx';
+import { Styles } from 'material-ui';
 let {ThemeManager} = Styles;
 
 var theme = new ThemeManager();
 import './less/main.less';
 
-let { Route, DefaultRoute, Redirect, RouteHandler, Link,Navigation,State } = Router;
+let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Router;
 
 injectTapEventPlugin();
 
@@ -25,7 +25,7 @@ window.currentUserId = getCookie('currentUserId');
 window.currentCustomerId = getCookie('currentCustomerId');
 
 var routes = (
-    <Route name="app" path="/:lang?" handler={JazzApp}>
+<Route name="app" path="/:lang?" handler={JazzApp}>
       <Route name="main" path="main" handler={MainApp}>
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}>
@@ -37,8 +37,8 @@ var routes = (
 );
 
 Router.run(routes, Router.HashLocation, (Root, state) => {
-    var muiTheme=theme.getCurrentTheme();
-    muiTheme.contentFontFamily='LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
-    React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));
+  var muiTheme = theme.getCurrentTheme();
+  muiTheme.contentFontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
+  React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));
 
 });
