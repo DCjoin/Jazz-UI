@@ -218,14 +218,17 @@ let FolderAction = {
       },
     });
   },
-  updateWidgetDtos(widgetDto) {
+  updateWidgetDtos(widgetDto, menuIndex) {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard.svc/CreateWidget', {
       params: {
         widgetDto: widgetDto
       },
       success: function(widgetDto) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
+        if (!menuIndex) {
+          GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
+        }
+
         AppDispatcher.dispatch({
           type: Action.UPDATE_WIDGETDTOS_SUCCESS,
           widgetDto: originWidgetDto
