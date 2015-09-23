@@ -3994,7 +3994,6 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       TagStore.addWeatherBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
-      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
     },
     costBindStoreListeners(analysisPanel) {
       CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
@@ -4059,7 +4058,6 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
-      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
     },
