@@ -20,10 +20,11 @@ let MultiTimespanAction = {
       type: Action.ADD_MULTITIMESPAN_DATA
     });
   },
-  removeMultiTimespanData(compareIndex) {
+  removeMultiTimespanData(compareIndex, confirm) {
     AppDispatcher.dispatch({
       type: Action.REMOVE_MULTITIMESPAN_DATA,
-      compareIndex: compareIndex
+      compareIndex: compareIndex,
+      confirm: confirm
     });
   },
   handleRelativeTypeChange(isOriginalDate, relativeType, compareIndex) {

@@ -166,6 +166,18 @@ let EnergyStore = assign({}, PrototypeStore, {
     }
     return false;
   },
+  getMultiTimespanIndex(uid) {
+    if (_submitParams && _energyData && _submitParams.viewOption.TimeRanges.length > 1) {
+      let dataList = _energyData.toJS().Data;
+      for (let i = 0, len = dataList.length; i < len; i++) {
+        let data = dataList[i];
+        if (data.uid === uid) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  },
   //listners--------------------------------
   addEnergyDataLoadingListener: function(callback) {
     this.on(ENERGY_DATA_LOADING_EVENT, callback);

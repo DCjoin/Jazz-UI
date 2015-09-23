@@ -344,19 +344,28 @@ let ChartStrategyFactor = {
   },
   onDeleteButtonClickFnStrategy: {
     onDeleteButtonClick(analysisPanel, obj) {
-      let uid = obj.uid,
-        needReload = EnergyStore.removeSeriesDataByUid(uid);
+      let uid = obj.uid;
 
-      AlarmTagAction.removeSearchTagList({
-        tagId: uid
-      });
+      let multiTimespanIndex = EnergyStore.getMultiTimespanIndex(uid);
+
+      if (multiTimespanIndex !== -1) {
+        MultiTimespanAction.removeMultiTimespanData(multiTimespanIndex, true);
+      } else {
+        AlarmTagAction.removeSearchTagList({
+          tagId: uid
+        });
+      }
+
+      let needReload = EnergyStore.removeSeriesDataByUid(uid);
 
       if (needReload) {
         let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
           paramsObj = EnergyStore.getParamsObj(),
           timeRanges = paramsObj.timeRanges,
           step = paramsObj.step;
-
+        if (multiTimespanIndex !== -1) {
+          timeRanges = [timeRanges[0]];
+        }
         analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
       } else {
         let energyData = EnergyStore.getEnergyData();

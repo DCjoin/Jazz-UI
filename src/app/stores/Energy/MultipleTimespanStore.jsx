@@ -165,7 +165,7 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
     if (_tempRelativeList.size < 5)
       _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, _originalType, null, null, null, _tempRelativeList.size));
   },
-  removeCompareDate(compareIndex) {
+  removeCompareDate(compareIndex, confirm) {
     let me = this;
     me._initTempRelativeList();
 
@@ -178,6 +178,9 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
       //item.title = '对比时间段' + index;
       }
     });
+    if (!!confirm) {
+      this.convert2Stable();
+    }
   },
   isOriginalDateChanged(relativeList, originalType, startDate, endDate) {
     let mainItem = relativeList.get(0);
@@ -513,7 +516,7 @@ MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action)
       MultipleTimespanStore.emitChange();
       break;
     case Action.REMOVE_MULTITIMESPAN_DATA:
-      MultipleTimespanStore.removeCompareDate(action.compareIndex);
+      MultipleTimespanStore.removeCompareDate(action.compareIndex, action.confirm);
       MultipleTimespanStore.emitChange();
       break;
     case Action.RELATIVE_TYPE_CHANGE:
