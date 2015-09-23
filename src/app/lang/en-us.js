@@ -381,6 +381,7 @@ Energy Error Code
 I18N.Message.M02004 = 'Polymer granularity illegal';
 I18N.Message.M02007 = 'Start time can not be earlier than the end time';
 I18N.Message.M02008 = 'You can not draw a pie chart since the media is different.';
+I18N.Message.M02011 = 'Viewing Raw Data is not supported for virtual tag.';
 I18N.Message.M02013 = 'This data point has been deleted and can not be loaded.';
 I18N.Message.M02020 = 'Chart export  failed. Please click "View Data" and try again.';
 I18N.Message.M02021 = 'EXCEL export  failed. Please click "View Data" and try again.';
