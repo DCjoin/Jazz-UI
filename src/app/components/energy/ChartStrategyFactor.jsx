@@ -3988,6 +3988,7 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
     },
     costBindStoreListeners(analysisPanel) {
@@ -4012,6 +4013,7 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
     },
     unitCostBindStoreListeners(analysisPanel) {
@@ -4049,6 +4051,7 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
@@ -4078,6 +4081,7 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange);
       CalendarManager.hideCalendar();
