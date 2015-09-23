@@ -789,10 +789,13 @@ let AnalysisPanel = React.createClass({
     });
   },
   _onWeatherBtnDisabled: function() {
-    this.setState({
-      weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
-      weatherOption: null,
-    });
+    let me = this;
+    setTimeout(()=>{
+      me.setState({
+        weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
+        weatherOption: null,
+      })
+    }, 0);
   },
   _onUnitCostBaselineBtnDisabled: function() {
     this.setState({
