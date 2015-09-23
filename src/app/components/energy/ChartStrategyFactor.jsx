@@ -579,7 +579,8 @@ let ChartStrategyFactor = {
         selectedChartType: typeMap[chartType],
         yaxisConfig: yaxisConfig,
         sumBtnStatus: sumBtnStatus,
-        step: step
+        step: step,
+        weatherBtnStatus: TagStore.getWeatherBtnDisabled()
       }, () => {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
@@ -1936,6 +1937,8 @@ let ChartStrategyFactor = {
       let paramsObj = EnergyStore.getParamsObj(),
         step = paramsObj.step;
       if (step != 1) return I18N.EM.WeatherSupportsOnlyHourlyStep;
+      let disabled = TagStore.getWeatherBtnDisabled();
+      if(disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       return false;
     }
   },
@@ -3870,7 +3873,7 @@ let ChartStrategyFactor = {
       }
 
       let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
-      if (submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
+      if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
         baselineBtnStatus = true;
       }
 
@@ -3990,6 +3993,8 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
       EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+      TagStore.addWeatherBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
     },
     costBindStoreListeners(analysisPanel) {
       CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
@@ -4002,7 +4007,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     ratioBindStoreListeners(analysisPanel) {
       RatioStore.addRatioDataLoadingListener(analysisPanel._onRatioLoadingStatusChange);
@@ -4027,7 +4032,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     rankBindStoreListeners(analysisPanel) {
       RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
@@ -4053,6 +4058,8 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
       EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
+      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
     },
@@ -4060,7 +4067,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     ratioUnbindStoreListeners(analysisPanel) {
@@ -4099,7 +4106,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     rankUnbindStoreListeners(analysisPanel) {
@@ -4248,7 +4255,7 @@ let ChartStrategyFactor = {
               if (serie.IsDisplay) {
                 curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
               } else {
-                curChartType = null;
+                curChartType = 'null';
               }
             } else {
               curChartType = chartType;
@@ -4297,7 +4304,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
@@ -4380,7 +4387,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;
@@ -4463,7 +4470,7 @@ let ChartStrategyFactor = {
             if (serie.IsDisplay) {
               curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
             } else {
-              curChartType = null;
+              curChartType = 'null';
             }
           } else {
             curChartType = chartType;

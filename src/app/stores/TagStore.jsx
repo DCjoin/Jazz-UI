@@ -15,6 +15,7 @@ let TAG_STATUS_EVENT = 'tagstatus';
 let CHECKALL_STATUS_EVENT = 'checkallstatus';
 let NODE_LOADING_EVENT = 'nodeloading';
 let BASELINE_BTN_DISABLED_EVENT = 'baselinebtndisabled';
+let WEATHER_BTN_DISABLED_EVENT = 'weatherbtndisabled';
 let DATA_CHANGED_EVENT = "datachanged";
 var _data = {};
 var _totalTagStatus = [];
@@ -27,7 +28,7 @@ var _checkall_checked_status = null;
 var _isLoading = false;
 var _tagTotalStatus = false;
 var baseline_btn_disabled = false;
-
+var weather_btn_disabled = false;
 
 var TagStore = assign({}, PrototypeStore, {
   setTagTotalStatus: function() {
@@ -80,6 +81,7 @@ var TagStore = assign({}, PrototypeStore, {
     ;
     this.checkAllStatus();
     this.checkBaselineBtnDisabled();
+    this.checkWeatherBtnDisabled();
   },
   setTagStatusById: function(hierId, tagId) {
     _tagTotal++;
@@ -151,7 +153,7 @@ var TagStore = assign({}, PrototypeStore, {
       }
     }
     this.checkBaselineBtnDisabled();
-
+    this.checkWeatherBtnDisabled();
   },
   getCurrentHierIdTagStatus: function() {
     var tagStatus = Immutable.List([]);
@@ -174,12 +176,13 @@ var TagStore = assign({}, PrototypeStore, {
       }
     });
     this.checkBaselineBtnDisabled();
-
+    this.checkWeatherBtnDisabled();
   },
   clearTagStatus: function() {
     _tagTotal = 0;
     _totalTagStatus = [];
     this.checkBaselineBtnDisabled();
+    this.checkWeatherBtnDisabled();
   },
   getTagTotal: function() {
     return _tagTotal;
@@ -194,6 +197,7 @@ var TagStore = assign({}, PrototypeStore, {
     _tagTotal = 0;
     _tagList = [];
     baseline_btn_disabled = false;
+    weather_btn_disabled = false;
     if (widgetType == 'Label') {
       _tagSum = 3;
     } else {
@@ -256,8 +260,19 @@ var TagStore = assign({}, PrototypeStore, {
     }
     this.emitBaselineBtnDisabledChange();
   },
+  checkWeatherBtnDisabled: function() {
+    if (_totalTagStatus.length > 1) {
+      weather_btn_disabled = true;
+    } else {
+      weather_btn_disabled = false;
+    }
+    this.emitWeatherBtnDisabledChange();
+  },
   getBaselineBtnDisabled: function() {
     return baseline_btn_disabled;
+  },
+  getWeatherBtnDisabled: function(){
+    return weather_btn_disabled;
   },
   // getNodeByHierId:function(hierId){
   //   var node=null;
@@ -393,13 +408,23 @@ var TagStore = assign({}, PrototypeStore, {
   emitBaselineBtnDisabledChange: function() {
     this.emit(BASELINE_BTN_DISABLED_EVENT);
   },
+  emitWeatherBtnDisabledChange: function() {
+    this.emit(WEATHER_BTN_DISABLED_EVENT);
+  },
 
   addBaselineBtnDisabledListener: function(callback) {
     this.on(BASELINE_BTN_DISABLED_EVENT, callback);
   },
+  addWeatherBtnDisabledListener: function(callback) {
+    this.on(WEATHER_BTN_DISABLED_EVENT, callback);
+  },
 
   removeBaselineBtnDisabledListener: function(callback) {
     this.removeListener(BASELINE_BTN_DISABLED_EVENT, callback);
+    this.dispose();
+  },
+  removeWeatherBtnDisabledListener: function(callback) {
+    this.removeListener(WEATHER_BTN_DISABLED_EVENT, callback);
     this.dispose();
   },
 
