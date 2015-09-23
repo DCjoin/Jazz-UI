@@ -2,7 +2,7 @@
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
-import ChartStatusStore from '../energy/ChartStatusStore.jsx'
+import ChartStatusStore from '../energy/ChartStatusStore.jsx';
 import assign from 'object-assign';
 import _ from 'lodash';
 import Immutable from 'immutable';
@@ -20,14 +20,15 @@ let _isLoading = false,
   _chartTitle = null,
   _relativeDate = null,
   _errorCode = null,
+  _errorMessage = null,
   _errorCodes = [],
-  _errorParams = [],
-  _errorMessage = null;
+  _errorParams = [];
 
 const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
   ENERGY_DATA_LOADED_EVENT = 'energydataloadedevent',
   ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror',
   ENERGY_DATA_LOAD_ERRORS_EVENT = 'energydataloaderrors';
+
 
 let EnergyStore = assign({}, PrototypeStore, {
   initReaderStrategy(bizChartType) {
@@ -63,11 +64,11 @@ let EnergyStore = assign({}, PrototypeStore, {
   getErrorMessage() {
     return _errorMessage;
   },
-  getErrorCode() {
-    return _errorCode;
-  },
   getErrorParams() {
     return _errorParams;
+  },
+  getErrorCode() {
+    return _errorCode;
   },
   getErrorCodes() {
     return _errorCodes;
@@ -209,7 +210,7 @@ let EnergyStore = assign({}, PrototypeStore, {
   addEnergyDataLoadErrorsListener: function(callback) {
     this.on(ENERGY_DATA_LOAD_ERRORS_EVENT, callback);
   },
-  emitEnergyDataLoadErrorsListener: function(callback) {
+  emitEnergyDataLoadErrorsListener: function() {
     this.emit(ENERGY_DATA_LOAD_ERRORS_EVENT);
   },
   removeEnergyDataLoadErrorsListener: function(callback) {

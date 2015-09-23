@@ -183,7 +183,7 @@ let SumWindow = React.createClass({
     let headerCols = this.getHeaderCols();
     let colOrder = this.getColOrder();
 
-    var sumTable = <div className='jazz-energy-gridcomponent-wrap'><Table
+    var sumTable = <div className='jazz-energy-sumcomponent-wrap'><Table
     headerColumns={headerCols}
     columnOrder={colOrder}
     rowData={rowData}

@@ -32,9 +32,10 @@ var FolderLeftPanel = React.createClass({
     });
   },
 
-  generateNodeConent: function(nodeData, IsSendCopyReaded) {
+  generateNodeConent: function(nodeData, panel) {
     return (<NodeContent nodeData={nodeData}
       selectedNode={this.state.selectedNode}
+      panel={panel}
       />);
   },
   _onChange: function() {

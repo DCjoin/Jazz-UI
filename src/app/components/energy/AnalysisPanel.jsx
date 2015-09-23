@@ -83,10 +83,10 @@ let AnalysisPanel = React.createClass({
 
     if (menuIndex === 4) {
       this.exportChart();
-    } else if(menuIndex === 1 || menuIndex === 2){
+    } else if (menuIndex === 1 || menuIndex === 2) {
       this.save2Dashboard();
       this.props.onOperationSelect(menuIndex);
-    }else {
+    } else {
       this.props.onOperationSelect(menuIndex);
     }
   },
@@ -472,7 +472,7 @@ let AnalysisPanel = React.createClass({
 
     this.setState(obj);
   },
-  _onEnergyDataChange(isError, errorObj) {
+  _onEnergyDataChange(isError, errorObj, args) {
     let isLoading = EnergyStore.getLoadingStatus(),
       energyData = EnergyStore.getEnergyData(),
       energyRawData = EnergyStore.getEnergyRawData(),
@@ -488,6 +488,9 @@ let AnalysisPanel = React.createClass({
     if (isError === true) {
       state.step = null;
       state.errorObj = errorObj;
+      if(!!args && args.length && args[0] === ''){
+
+      }
     }
     this.setState(state);
   },
@@ -657,9 +660,9 @@ let AnalysisPanel = React.createClass({
     let errorObj = this.errorProcess(EnergyStore);
     this._onEnergyDataChange(true, errorObj);
   },
-  _onGetTagDataErrors(){
-    let errorObj = this.errorProcess(EnergyStore);
-    this._onEnergyDataChange(true, errorObj);
+  _onGetEnergyDataErrors() {
+    let errorObj = this.errorsProcess(EnergyStore);
+    this._onEnergyDataChange(false, errorObj);
   },
   _onGetCostDataError() {
     let errorObj = this.errorProcess(CostStore);
@@ -674,7 +677,7 @@ let AnalysisPanel = React.createClass({
     this._onCarbonDataChange(true, errorObj);
   },
   _onGetCarbonDataErrors() {
-    let errorObj = this.errorProcess(CarbonStore);
+    let errorObj = this.errorsProcess(CarbonStore);
     this._onCarbonDataChange(true, errorObj);
   },
   _onGetRatioDataError() {
@@ -694,18 +697,9 @@ let AnalysisPanel = React.createClass({
       codes = EnergyStore.getErrorCodes(),
       messages = EnergyStore.getErrorMessage();
 
-    if(codes && codes.length && codes[0] == '02810'){
-      let errorMsg = CommonFuns.getErrorMessage(codes[0]);
-      setTimeout(() => {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, codes[0]);
-      }, 0);
-      return null;
-    }
-
-    if(!code){
-      return ;
-    }
-    else if (code == '02004'.toString()) {
+    if (!code) {
+      return;
+    } else if (code == '02004'.toString()) {
       let errorObj = this.showStepError(messages[0], EnergyStore);
       return errorObj;
     } else {
@@ -723,6 +717,9 @@ let AnalysisPanel = React.createClass({
     for (var i = 0; i < codes.length; i++) {
       errorMsg = CommonFuns.getErrorMessage(codes[i]);
       textArray.push(errorMsg);
+      // if((codes[0] + '') === '02810'){
+      //   this.state.
+      // }
     }
     setTimeout(() => {
       GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
@@ -791,9 +788,10 @@ let AnalysisPanel = React.createClass({
       baselineBtnStatus: TagStore.getBaselineBtnDisabled()
     });
   },
-  _onWeatherBtnDisabled: function(){
+  _onWeatherBtnDisabled: function() {
     this.setState({
-      weatherBtnStatus: TagStore.getWeatherBtnDisabled()
+      weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
+      weatherOption: null,
     });
   },
   _onUnitCostBaselineBtnDisabled: function() {
