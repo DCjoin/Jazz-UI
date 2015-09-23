@@ -155,6 +155,8 @@ let EnergyStore = assign({}, PrototypeStore, {
         let data = dataList[i];
         if (data.uid !== uid) {
           latestDataList.push(data);
+        } else {
+          this.removeMappingTimespan(i);
         }
       }
       if (latestDataList.length === 1) {
@@ -166,6 +168,23 @@ let EnergyStore = assign({}, PrototypeStore, {
       }
     }
     return false;
+  },
+  removeMappingTimespan(index) {
+    if (_paramsObj && _paramsObj.timeRanges.length > 1) {
+      _paramsObj.timeRanges.splice(index, 1);
+    }
+  },
+  getMultiTimespanIndex(uid) {
+    if (_submitParams && _energyData && _submitParams.viewOption.TimeRanges.length > 1) {
+      let dataList = _energyData.toJS().Data;
+      for (let i = 0, len = dataList.length; i < len; i++) {
+        let data = dataList[i];
+        if (data.uid === uid) {
+          return i;
+        }
+      }
+    }
+    return -1;
   },
   //listners--------------------------------
   addEnergyDataLoadingListener: function(callback) {

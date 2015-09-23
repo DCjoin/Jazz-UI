@@ -472,7 +472,7 @@ let AnalysisPanel = React.createClass({
 
     this.setState(obj);
   },
-  _onEnergyDataChange(isError, errorObj) {
+  _onEnergyDataChange(isError, errorObj, args) {
     let isLoading = EnergyStore.getLoadingStatus(),
       energyData = EnergyStore.getEnergyData(),
       energyRawData = EnergyStore.getEnergyRawData(),
@@ -488,6 +488,9 @@ let AnalysisPanel = React.createClass({
     if (isError === true) {
       state.step = null;
       state.errorObj = errorObj;
+      if (!!args && args.length && args[0] === '') {
+
+      }
     }
     this.setState(state);
   },
@@ -674,7 +677,7 @@ let AnalysisPanel = React.createClass({
     this._onCarbonDataChange(true, errorObj);
   },
   _onGetCarbonDataErrors() {
-    let errorObj = this.errorProcess(CarbonStore);
+    let errorObj = this.errorsProcess(CarbonStore);
     this._onCarbonDataChange(true, errorObj);
   },
   _onGetRatioDataError() {
@@ -714,6 +717,9 @@ let AnalysisPanel = React.createClass({
     for (var i = 0; i < codes.length; i++) {
       errorMsg = CommonFuns.getErrorMessage(codes[i]);
       textArray.push(errorMsg);
+    // if((codes[0] + '') === '02810'){
+    //   this.state.
+    // }
     }
     setTimeout(() => {
       GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
@@ -783,9 +789,13 @@ let AnalysisPanel = React.createClass({
     });
   },
   _onWeatherBtnDisabled: function() {
-    this.setState({
-      weatherBtnStatus: TagStore.getWeatherBtnDisabled()
-    });
+    let me = this;
+    setTimeout(()=>{
+      me.setState({
+        weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
+        weatherOption: null,
+      })
+    }, 0);
   },
   _onUnitCostBaselineBtnDisabled: function() {
     this.setState({
@@ -1293,7 +1303,16 @@ let AnalysisPanel = React.createClass({
 
     if (tagOptions && tagOptions.length === 1) {
       tagOption = tagOptions[0];
-      let uom = CommonFuns.getUomById(tagOption.uomId);
+      let uomId = tagOption.uomId;
+      if (uomId === undefined) {
+        let energyRawData = EnergyStore.getEnergyRawData();
+        if (energyRawData && energyRawData.TargetEnergyData.length > 0) {
+          uomId = energyRawData.TargetEnergyData[0].Target.UomId;
+        } else {
+          return;
+        }
+      }
+      let uom = CommonFuns.getUomById(uomId);
       tagObj = {
         tagId: tagOption.tagId,
         hierarchyId: tagOption.hierId,

@@ -382,6 +382,9 @@ let ChartComponentBox = React.createClass({
   shouldComponentUpdate: function(nextProps, nextState) {
     return !(this.props.energyData.equals(nextProps.energyData) && this.props.chartType === nextProps.chartType);
   },
+  getDataLabelFormatterFn() {
+    return dataLabelFormatter;
+  },
   initDefaultConfig: function() {
     let cap = function(string) {
       return string.charAt(0).toUpperCase() + string.substr(1);

@@ -229,7 +229,6 @@ let ChartReaderStrategyFactor = {
         graySerie = false;
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
-        disableDelete = true;
       } else if (tt == 15) {
         name = target.Name;
         uid = 'benchmark';
@@ -263,7 +262,6 @@ let ChartReaderStrategyFactor = {
 
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
-        disableDelete = true;
       } else {
         name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
@@ -728,7 +726,6 @@ let ChartReaderStrategyFactor = {
 
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
-        disableDelete = true;
       } else if (tt == 15) {
         name = target.Name;
         uid = 'benchmark';
@@ -775,7 +772,6 @@ let ChartReaderStrategyFactor = {
 
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
-        disableDelete = true;
       } else if (tt == 15) {
         name = target.Name;
         uid = 'benchmark';
@@ -821,7 +817,6 @@ let ChartReaderStrategyFactor = {
 
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
-        disableDelete = true;
       } else {
         name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
@@ -870,7 +865,6 @@ let ChartReaderStrategyFactor = {
 
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
-        disableDelete = true;
       } else {
         name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
