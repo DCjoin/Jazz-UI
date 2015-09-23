@@ -376,9 +376,13 @@ let ChartStrategyFactor = {
     },
     onCarbonDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
-        needReload = CarbonStore.removeSeriesDataByUid(uid);
+        commodityId = uid,
+        needReload = CostStore.removeSeriesDataByUid(uid);
+      if (uid === 0) {
+        commodityId = -1;
+      }
 
-      CommodityAction.setCommoditySelectStatus(uid, null, false);
+      CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
         let paramsObj = CarbonStore.getSubmitParams();
@@ -397,9 +401,13 @@ let ChartStrategyFactor = {
     },
     onCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
+        commodityId = uid,
         needReload = CostStore.removeSeriesDataByUid(uid);
+      if (uid === 0) {
+        commodityId = -1;
+      }
 
-      CommodityAction.setCommoditySelectStatus(uid, null, false);
+      CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
         let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
@@ -443,9 +451,13 @@ let ChartStrategyFactor = {
     },
     onUnitCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
+        commodityId = uid,
         needReload = CostStore.removeSeriesDataByUid(uid);
+      if (uid === 0) {
+        commodityId = -1;
+      }
 
-      CommodityAction.setCommoditySelectStatus(uid, null, false);
+      CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
         let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
@@ -466,8 +478,13 @@ let ChartStrategyFactor = {
     },
     onUnitCarbonDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
-        needReload = CarbonStore.removeSeriesDataByUid(uid);
-      CommodityAction.setCommoditySelectStatus(uid, null, false);
+        commodityId = uid,
+        needReload = CostStore.removeSeriesDataByUid(uid);
+      if (uid === 0) {
+        commodityId = -1;
+      }
+
+      CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
         let paramsObj = CarbonStore.getSubmitParams();
@@ -484,7 +501,7 @@ let ChartStrategyFactor = {
           energyData: energyData
         });
       }
-    },
+    }
   },
   resetYaxisSelectorFnStrategy: {
     empty() {},
@@ -1954,7 +1971,7 @@ let ChartStrategyFactor = {
       }
 
       let disabled = TagStore.getWeatherBtnDisabled();
-      if(disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
+      if (disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       return false;
     }
   },
