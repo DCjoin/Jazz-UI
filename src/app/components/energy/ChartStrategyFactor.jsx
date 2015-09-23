@@ -1938,7 +1938,7 @@ let ChartStrategyFactor = {
         step = paramsObj.step;
       if (step != 1) return I18N.EM.WeatherSupportsOnlyHourlyStep;
       let disabled = TagStore.getWeatherBtnDisabled();
-      if(disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
+      if (disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       return false;
     }
   },
@@ -3873,7 +3873,7 @@ let ChartStrategyFactor = {
       }
 
       let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
-      if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
+      if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.tagIds.length > 1) {
         baselineBtnStatus = true;
       }
 
@@ -4006,7 +4006,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+    //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     ratioBindStoreListeners(analysisPanel) {
       RatioStore.addRatioDataLoadingListener(analysisPanel._onRatioLoadingStatusChange);
@@ -4030,7 +4030,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+    //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     rankBindStoreListeners(analysisPanel) {
       RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
@@ -4064,7 +4064,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+    //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     ratioUnbindStoreListeners(analysisPanel) {
@@ -4102,7 +4102,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+    //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     rankUnbindStoreListeners(analysisPanel) {
