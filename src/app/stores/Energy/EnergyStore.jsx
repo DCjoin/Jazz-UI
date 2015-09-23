@@ -20,14 +20,15 @@ let _isLoading = false,
   _chartTitle = null,
   _relativeDate = null,
   _errorCode = null,
+  _errorMessage = null,
   _errorCodes = [],
-  _errorParams = [],
-  _errorMessage = null;
+  _errorParams = [];
 
 const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
   ENERGY_DATA_LOADED_EVENT = 'energydataloadedevent',
   ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror',
   ENERGY_DATA_LOAD_ERRORS_EVENT = 'energydataloaderrors';
+
 
 let EnergyStore = assign({}, PrototypeStore, {
   initReaderStrategy(bizChartType) {
@@ -63,11 +64,11 @@ let EnergyStore = assign({}, PrototypeStore, {
   getErrorMessage() {
     return _errorMessage;
   },
-  getErrorCode() {
-    return _errorCode;
-  },
   getErrorParams() {
     return _errorParams;
+  },
+  getErrorCode() {
+    return _errorCode;
   },
   getErrorCodes() {
     return _errorCodes;
@@ -86,12 +87,6 @@ let EnergyStore = assign({}, PrototypeStore, {
     _errorCodes = [];
     _errorParams = [];
   },
-  _initErrorText(errorText) {
-    let error = JSON.parse(errorText).error;
-    let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
-    _errorCode = errorCode;
-    _errorMessage = error.Messages;
-  },
   _checkErrors(data) {
     if (!data) return;
     var errors = data.Errors;
@@ -107,6 +102,12 @@ let EnergyStore = assign({}, PrototypeStore, {
       }
       this.emitEnergyDataLoadErrorsListener();
     }
+  },
+  _initErrorText(errorText) {
+    let error = JSON.parse(errorText).error;
+    let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
+    _errorCode = errorCode;
+    _errorMessage = error.Messages;
   },
   _onDataLoading(params, tagOptions, relativeDate) {
     _submitParams = params;
@@ -197,7 +198,7 @@ let EnergyStore = assign({}, PrototypeStore, {
   addEnergyDataLoadErrorsListener: function(callback) {
     this.on(ENERGY_DATA_LOAD_ERRORS_EVENT, callback);
   },
-  emitEnergyDataLoadErrorsListener: function(callback) {
+  emitEnergyDataLoadErrorsListener: function() {
     this.emit(ENERGY_DATA_LOAD_ERRORS_EVENT);
   },
   removeEnergyDataLoadErrorsListener: function(callback) {

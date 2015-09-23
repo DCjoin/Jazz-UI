@@ -83,10 +83,10 @@ let AnalysisPanel = React.createClass({
 
     if (menuIndex === 4) {
       this.exportChart();
-    } else if(menuIndex === 1 || menuIndex === 2){
+    } else if (menuIndex === 1 || menuIndex === 2) {
       this.save2Dashboard();
       this.props.onOperationSelect(menuIndex);
-    }else {
+    } else {
       this.props.onOperationSelect(menuIndex);
     }
   },
@@ -660,9 +660,9 @@ let AnalysisPanel = React.createClass({
     let errorObj = this.errorProcess(EnergyStore);
     this._onEnergyDataChange(true, errorObj);
   },
-  _onGetTagDataErrors(){
+  _onGetEnergyDataErrors() {
     let errorObj = this.errorsProcess(EnergyStore);
-    this._onEnergyDataChange(true, errorObj);
+    this._onEnergyDataChange(false, errorObj);
   },
   _onGetCostDataError() {
     let errorObj = this.errorProcess(CostStore);
@@ -697,18 +697,9 @@ let AnalysisPanel = React.createClass({
       codes = EnergyStore.getErrorCodes(),
       messages = EnergyStore.getErrorMessage();
 
-    if(codes && codes.length && codes[0] == '02810'){
-      let errorMsg = CommonFuns.getErrorMessage(codes[0]);
-      setTimeout(() => {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, codes[0]);
-      }, 0);
-      return null;
-    }
-
-    if(!code){
-      return ;
-    }
-    else if (code == '02004'.toString()) {
+    if (!code) {
+      return;
+    } else if (code == '02004'.toString()) {
       let errorObj = this.showStepError(messages[0], EnergyStore);
       return errorObj;
     } else {
@@ -794,7 +785,7 @@ let AnalysisPanel = React.createClass({
       baselineBtnStatus: TagStore.getBaselineBtnDisabled()
     });
   },
-  _onWeatherBtnDisabled: function(){
+  _onWeatherBtnDisabled: function() {
     this.setState({
       weatherBtnStatus: TagStore.getWeatherBtnDisabled()
     });

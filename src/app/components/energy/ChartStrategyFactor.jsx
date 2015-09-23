@@ -3873,7 +3873,7 @@ let ChartStrategyFactor = {
       }
 
       let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
-      if (submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
+      if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.tagIds.length > 1) {
         baselineBtnStatus = true;
       }
 
@@ -3991,9 +3991,9 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       TagStore.addWeatherBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
-      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
     },
     costBindStoreListeners(analysisPanel) {
       CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
@@ -4017,6 +4017,7 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
     },
     unitCostBindStoreListeners(analysisPanel) {
@@ -4054,9 +4055,9 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
-      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
     },
@@ -4085,6 +4086,7 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange);
       CalendarManager.hideCalendar();
