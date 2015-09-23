@@ -20,11 +20,14 @@ let _isLoading = false,
   _chartTitle = null,
   _relativeDate = null,
   _errorCode = null,
+  _errorCodes = [],
+  _errorParams = [],
   _errorMessage = null;
 
 const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
   ENERGY_DATA_LOADED_EVENT = 'energydataloadedevent',
-  ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror';
+  ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror',
+  ENERGY_DATA_LOAD_ERRORS_EVENT = 'energydataloaderrors';
 
 let EnergyStore = assign({}, PrototypeStore, {
   initReaderStrategy(bizChartType) {
@@ -63,17 +66,25 @@ let EnergyStore = assign({}, PrototypeStore, {
   getErrorCode() {
     return _errorCode;
   },
+  getErrorParams() {
+    return _errorParams;
+  },
+  getErrorCodes() {
+    return _errorCodes;
+  },
   clearEnergyStore() {
-    _isLoading = false,
-    _energyData = null,
-    _energyRawData = null,
-    _submitParams = null,
-    _paramsObj = null,
-    _tagOptions = null,
-    _chartTitle = null,
-    _relativeDate = null,
-    _errorCode = null,
+    _isLoading = false;
+    _energyData = null;
+    _energyRawData = null;
+    _submitParams = null;
+    _paramsObj = null;
+    _tagOptions = null;
+    _chartTitle = null;
+    _relativeDate = null;
+    _errorCode = null;
     _errorMessage = null;
+    _errorCodes = [];
+    _errorParams = [];
   },
   _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
@@ -81,7 +92,22 @@ let EnergyStore = assign({}, PrototypeStore, {
     _errorCode = errorCode;
     _errorMessage = error.Messages;
   },
-
+  _checkErrors(data) {
+    if (!data) return;
+    var errors = data.Errors;
+    var error, errorCode;
+    _errorCodes = [];
+    _errorParams = [];
+    if (errors && errors.length > 0) {
+      for (var i = 0, len = errors.length; i < len; i++) {
+        error = errors[i];
+        errorCode = CommonFuns.processErrorCode(error.ErrorCode).errorCode;
+        _errorCodes.push(errorCode);
+        _errorParams.push(error.Params);
+      }
+      this.emitEnergyDataLoadErrorsListener();
+    }
+  },
   _onDataLoading(params, tagOptions, relativeDate) {
     _submitParams = params;
     _isLoading = true;
@@ -167,6 +193,15 @@ let EnergyStore = assign({}, PrototypeStore, {
   },
   removeEnergyDataLoadErrorListener: function(callback) {
     this.removeListener(ENERGY_DATA_LOAD_ERROR_EVENT, callback);
+  },
+  addEnergyDataLoadErrorsListener: function(callback) {
+    this.on(ENERGY_DATA_LOAD_ERRORS_EVENT, callback);
+  },
+  emitEnergyDataLoadErrorsListener: function(callback) {
+    this.emit(ENERGY_DATA_LOAD_ERRORS_EVENT);
+  },
+  removeEnergyDataLoadErrorsListener: function(callback) {
+    this.removeListener(ENERGY_DATA_LOAD_ERRORS_EVENT, callback);
   }
 });
 
@@ -180,6 +215,7 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_ENERGY_DATA_SUCCESS:
       EnergyStore._onDataChanged(action.energyData, action.submitParams);
       EnergyStore.emitEnergyDataLoadedListener();
+      EnergyStore._checkErrors(action.energyData);
       break;
     case Action.GET_ENERGY_DATA_ERROR:
       EnergyStore._onDataChanged(null, action.submitParams);

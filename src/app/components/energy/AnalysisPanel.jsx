@@ -67,6 +67,7 @@ let AnalysisPanel = React.createClass({
       yaxisConfig: null,
       dashboardOpenImmediately: false,
       baselineBtnStatus: TagStore.getBaselineBtnDisabled(),
+      weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
       selectedChartType: 'line',
       chartStrategy: chartStrategy,
       energyType: this.props.energyType || 'Energy', //'one of energy, cost carbon'
@@ -656,6 +657,10 @@ let AnalysisPanel = React.createClass({
     let errorObj = this.errorProcess(EnergyStore);
     this._onEnergyDataChange(true, errorObj);
   },
+  _onGetTagDataErrors(){
+    let errorObj = this.errorProcess(EnergyStore);
+    this._onEnergyDataChange(true, errorObj);
+  },
   _onGetCostDataError() {
     let errorObj = this.errorProcess(CostStore);
     this._onCostDataChange(true, errorObj);
@@ -686,7 +691,16 @@ let AnalysisPanel = React.createClass({
   },
   errorProcess(EnergyStore) {
     let code = EnergyStore.getErrorCode(),
+      codes = EnergyStore.getErrorCodes(),
       messages = EnergyStore.getErrorMessage();
+
+    if(codes && codes.length && codes[0] == '02810'){
+      let errorMsg = CommonFuns.getErrorMessage(codes[0]);
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, codes[0]);
+      }, 0);
+      return null;
+    }
 
     if(!code){
       return ;
@@ -775,6 +789,11 @@ let AnalysisPanel = React.createClass({
   _onBaselineBtnDisabled: function() {
     this.setState({
       baselineBtnStatus: TagStore.getBaselineBtnDisabled()
+    });
+  },
+  _onWeatherBtnDisabled: function(){
+    this.setState({
+      weatherBtnStatus: TagStore.getWeatherBtnDisabled()
     });
   },
   _onUnitCostBaselineBtnDisabled: function() {
