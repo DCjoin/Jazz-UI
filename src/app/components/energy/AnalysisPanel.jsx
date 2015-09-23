@@ -472,7 +472,7 @@ let AnalysisPanel = React.createClass({
 
     this.setState(obj);
   },
-  _onEnergyDataChange(isError, errorObj) {
+  _onEnergyDataChange(isError, errorObj, args) {
     let isLoading = EnergyStore.getLoadingStatus(),
       energyData = EnergyStore.getEnergyData(),
       energyRawData = EnergyStore.getEnergyRawData(),
@@ -488,6 +488,9 @@ let AnalysisPanel = React.createClass({
     if (isError === true) {
       state.step = null;
       state.errorObj = errorObj;
+      if(!!args && args.length && args[0] === ''){
+
+      }
     }
     this.setState(state);
   },
@@ -658,7 +661,7 @@ let AnalysisPanel = React.createClass({
     this._onEnergyDataChange(true, errorObj);
   },
   _onGetTagDataErrors(){
-    let errorObj = this.errorProcess(EnergyStore);
+    let errorObj = this.errorsProcess(EnergyStore);
     this._onEnergyDataChange(true, errorObj);
   },
   _onGetCostDataError() {
@@ -674,7 +677,7 @@ let AnalysisPanel = React.createClass({
     this._onCarbonDataChange(true, errorObj);
   },
   _onGetCarbonDataErrors() {
-    let errorObj = this.errorProcess(CarbonStore);
+    let errorObj = this.errorsProcess(CarbonStore);
     this._onCarbonDataChange(true, errorObj);
   },
   _onGetRatioDataError() {
