@@ -236,14 +236,6 @@ let AnalysisPanel = React.createClass({
       this.setState({
         calendarType: calcType
       });
-    // let me = this;
-    // if (me.state.chartStrategy.handleCalendarChangeFn) {
-    //   let chartCmp = me.refs.ChartComponent;
-    //   if(chartCmp){
-    //     let chartObj = chartCmp.refs.highstock;
-    //     CalendarManager.showCalendar(chartObj, calendarType);
-    //   }
-    // }
     }
   },
   OnNavigatorChanged: function(obj) {

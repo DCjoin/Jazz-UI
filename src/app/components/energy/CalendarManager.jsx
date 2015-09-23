@@ -39,7 +39,7 @@ let CalendarManager = {
     this.disableItems = disableItems;
   },
   checkStep: function(step, data) {
-    if (this.step && this.step != step) {
+    if (this.step != step) {
       if (this.calendarShowType !== '') {
         var clearCalendar;
         if (this.calendarShowType == 'hc') {
