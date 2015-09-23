@@ -2,7 +2,7 @@
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
-import ChartStatusStore from '../energy/ChartStatusStore.jsx'
+import ChartStatusStore from '../energy/ChartStatusStore.jsx';
 import assign from 'object-assign';
 import _ from 'lodash';
 import Immutable from 'immutable';
@@ -86,22 +86,6 @@ let EnergyStore = assign({}, PrototypeStore, {
     _errorMessage = null;
     _errorCodes = [];
     _errorParams = [];
-  },
-  _checkErrors(data) {
-    if (!data) return;
-    var errors = data.Errors;
-    var error, errorCode;
-    _errorCodes = [];
-    _errorParams = [];
-    if (errors && errors.length > 0) {
-      for (var i = 0, len = errors.length; i < len; i++) {
-        error = errors[i];
-        errorCode = CommonFuns.processErrorCode(error.ErrorCode).errorCode;
-        _errorCodes.push(errorCode);
-        _errorParams.push(error.Params);
-      }
-      this.emitEnergyDataLoadErrorsListener();
-    }
   },
   _initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
