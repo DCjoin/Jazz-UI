@@ -717,6 +717,9 @@ let AnalysisPanel = React.createClass({
     for (var i = 0; i < codes.length; i++) {
       errorMsg = CommonFuns.getErrorMessage(codes[i]);
       textArray.push(errorMsg);
+      // if((codes[0] + '') === '02810'){
+      //   this.state.
+      // }
     }
     setTimeout(() => {
       GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
@@ -787,7 +790,8 @@ let AnalysisPanel = React.createClass({
   },
   _onWeatherBtnDisabled: function() {
     this.setState({
-      weatherBtnStatus: TagStore.getWeatherBtnDisabled()
+      weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
+      weatherOption: null,
     });
   },
   _onUnitCostBaselineBtnDisabled: function() {

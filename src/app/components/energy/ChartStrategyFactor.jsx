@@ -1931,7 +1931,12 @@ let ChartStrategyFactor = {
     },
   },
   isWeatherDisabledFnStrategy: {
-    isWeatherDisabled() {
+    isWeatherDisabled(analysisPanel) {
+      let errors =  EnergyStore.getErrorCodes();
+      if(!!errors && errors.length && errors[0] + '' === '02810'){
+        analysisPanel.state.weatherOption = null;
+        return I18N.Message.M02810;
+      }
       let tagOptions = EnergyStore.getTagOpions();
       if (!tagOptions) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       let paramsObj = EnergyStore.getParamsObj(),
@@ -2921,7 +2926,7 @@ let ChartStrategyFactor = {
 
       let chartType = analysisPanel.state.selectedChartType;
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
-        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel, clearWeatherflag);
       } else {
         let timeRanges;
         if (chartType === 'pie') {
@@ -3860,7 +3865,7 @@ let ChartStrategyFactor = {
       if (viewOp && viewOp.IncludeHumidityValue)
         weatherSubItems[1].checked = true;
       let weatherEl;
-      let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn();
+      let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn(analysisPanel);
       if (isWeatherDisabled === false) {
         weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' subItems={weatherSubItems}/>;
       } else {

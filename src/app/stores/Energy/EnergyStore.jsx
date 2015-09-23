@@ -93,6 +93,22 @@ let EnergyStore = assign({}, PrototypeStore, {
     _errorCode = errorCode;
     _errorMessage = error.Messages;
   },
+  _checkErrors(data) {
+    if (!data) return;
+    var errors = data.Errors;
+    var error, errorCode;
+    _errorCodes = [];
+    _errorParams = [];
+    if (errors && errors.length > 0) {
+      for (var i = 0, len = errors.length; i < len; i++) {
+        error = errors[i];
+        errorCode = CommonFuns.processErrorCode(error.ErrorCode).errorCode;
+        _errorCodes.push(errorCode);
+        _errorParams.push(error.Params);
+      }
+      this.emitEnergyDataLoadErrorsListener();
+    }
+  },
   _onDataLoading(params, tagOptions, relativeDate) {
     _submitParams = params;
     _isLoading = true;
