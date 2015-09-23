@@ -535,45 +535,71 @@ let ChartCmpStrategyFactor = {
       var commonTooltipFormatter;
       if (chartComponentBox.props.timeRanges.length > 1) {
         commonTooltipFormatter = function() {
-          var op = this.points[0].series.options.option,
-            start = op.start,
-            end = op.end, uom,
-            step = op.targetStep || op.step,
-            decimalDigits, serieDecimalDigits;
-          //var str = formatDateByStep(this.x, start, end, step);
-          //str += '<br/>';
-          var str = '';
-          var total = 0;
-          decimalDigits = 0;
-          for (var i = 0; i < this.points.length; ++i) {
-            var point = this.points[i],
-              series = point.series,
-              name = series.name,
-              color = series.color;
+          var getStr = function(p) {
+            var series = p.series,
+              opt = series.options.option,
+              uom = opt.uom,
+              start = opt.start,
+              end = opt.end,
+              step = opt.targetStep || opt.step;
 
-            uom = series.options.option.uom;
-            str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
-              color, name, dataLabelFormatter.call({
-                value: point.y
-              }, false), uom);
-            if (isNumber(point.y)) {
-              total += point.y;
-
-              serieDecimalDigits = getDecimalDigits(point.y);
-              if (serieDecimalDigits > 0 && serieDecimalDigits > decimalDigits) {
-                decimalDigits = serieDecimalDigits;
+            var newtime = p.x;
+            if (opt.timeTable.length !== 0) {
+              for (var j = 0; j < opt.timeTable.length; ++j) {
+                var offsetObj = opt.timeTable[j];
+                if (offsetObj.orig == p.x) {
+                  newtime = p.x + offsetObj.offset;
+                }
               }
             }
+            newtime = CommonFuns.formatDateByStep(newtime, start, end, step);
+
+            return I18N.format(
+              '<span style="color:{0}">{1}</span>: <b>{2}{3}</b>',
+              p.series.color, newtime, chartComponentBox.getDataLabelFormatterFn().call({
+                value: p.y
+              }, false), uom);
+          };
+
+          let tagName = chartComponentBox.props.energyRawData.TargetEnergyData[0].Target.Name;
+          var str = tagName + '<br/>';
+
+          let series = this.points[0].series;
+          let isStack = (chartComponentBox.props.chartType === 'stack');
+          if (isStack) {
+            var getTotalValue = function(points) {
+                var total = 0, point;
+                for (var i = 0, len = points.length; i < len; i++) {
+                  point = points[i];
+
+                  if (CommonFuns.isNumber(point.y)) {
+                    total += point.y;
+                  }
+                }
+                return total;
+              },
+              getPercent = function(value, total) {
+                var pv = 0;
+                if (CommonFuns.isNumber(value) && total !== 0) {
+                  pv = value / total;
+                  pv = pv * 100;
+                  pv = pv.toFixed(1);
+                }
+                return ', ' + pv + '%';
+              };
+            var total = getTotalValue(this.points);
+
+            for (let i = 0; i < this.points.length; ++i) {
+              var point = this.points[i];
+              var percentValue = getPercent(point.y, total);
+              str += getStr(point) + ' ' + percentValue + '<br/>';
+            }
+          } else {
+            for (let i = 0; i < this.points.length; ++i) {
+              str += getStr(this.points[i]) + '<br/>';
+            }
           }
-          if (decimalDigits > 0) {
-            total = toFixed(total, decimalDigits);
-          }
-          total = dataLabelFormatter.call({
-            value: total
-          }, false);
-          if (this.points.length > 1 && this.points[0].series.chart.userOptions.chartTooltipHasTotal) {
-            str += '总计：<b>' + total + uom + '</b>';
-          }
+
           return str;
         };
       } else {
@@ -583,21 +609,48 @@ let ChartCmpStrategyFactor = {
             end = op.end, uom,
             step = op.targetStep || op.step,
             decimalDigits, serieDecimalDigits;
+
+          var getPercent = function(value, total) {
+            var pv = 0;
+            if (CommonFuns.isNumber(value) && total !== 0) {
+              pv = value / total;
+              pv = pv * 100;
+              pv = pv.toFixed(1);
+            }
+            return ', ' + pv + '%';
+          };
+
           var str = formatDateByStep(this.x, start, end, step);
           str += '<br/>';
           var total = 0;
           decimalDigits = 0;
-          for (var i = 0; i < this.points.length; ++i) {
-            var point = this.points[i],
+          let isStack = (chartComponentBox.props.chartType === 'stack');
+          let stackTotal = 0;
+          if (isStack) {
+            for (let i = 0; i < this.points.length; ++i) {
+              let point = this.points[i];
+              stackTotal += point.y;
+            }
+          }
+          for (let i = 0; i < this.points.length; ++i) {
+            let point = this.points[i],
               series = point.series,
               name = series.name,
               color = series.color;
 
             uom = series.options.option.uom;
-            str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
-              color, name, dataLabelFormatter.call({
-                value: point.y
-              }, false), uom);
+            if (isStack) {
+              str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b>{4}</span><br/>',
+                color, name, dataLabelFormatter.call({
+                  value: point.y
+                }, false), uom, getPercent(point.y, stackTotal));
+            } else {
+              str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
+                color, name, dataLabelFormatter.call({
+                  value: point.y
+                }, false), uom);
+            }
+
             if (isNumber(point.y)) {
               total += point.y;
 
