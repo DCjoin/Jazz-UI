@@ -70,7 +70,7 @@ var CommodityStore = assign({}, PrototypeStore, {
     return _hierNode;
   },
   setDefaultNode: function(widgetDto) {
-    if (widgetDto.WidgetType != 5) {
+    if (widgetDto.WidgetType != 'Ranking') {
       _defaultHierNode = {
         Id: _hierNode.hierId,
         Name: _hierNode.hierName
