@@ -19,12 +19,11 @@ var WidgetSaveWindow = React.createClass({
       loading: true
     });
   },
-  // _onWidgetSaveError: function() {
-  //   this.setState({
-  //     errorText: I18N.Folder.Copy.Error,
-  //     loading: false
-  //   });
-  // },
+  _onWidgetSaveError: function() {
+    this.setState({
+      loading: false
+    });
+  },
   _onWidgetSaveSuccess: function() {
     this.props.onDismiss();
     this.setState({
@@ -38,7 +37,7 @@ var WidgetSaveWindow = React.createClass({
     });
   },
   componentDidMount: function() {
-    // FolderStore.addWidgetSaveErrorListener(this._onWidgetSaveError);
+    FolderStore.addWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.addWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
     FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
     FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
@@ -47,7 +46,7 @@ var WidgetSaveWindow = React.createClass({
     });
   },
   componentWillUnmount: function() {
-    // FolderStore.removeWidgetSaveErrorListener(this._onWidgetSaveError);
+    FolderStore.removeWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.removeWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
     FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
   },
@@ -72,15 +71,15 @@ var WidgetSaveWindow = React.createClass({
       errorText: this.state.errorText,
       loading: this.state.loading
     };
-    if (this.state.treeLoading) {
-      return (
-        <CircularProgress  mode="indeterminate" size={1} />
-        )
-    } else {
-      return (
-        <Copy {...Props}/>
-        )
-    }
+    // if (this.state.treeLoading) {
+    //   return (
+    //     <CircularProgress  mode="indeterminate" size={1} />
+    //     )
+    // } else {
+    return (
+      <Copy {...Props}/>
+      )
+      //  }
 
   }
 });

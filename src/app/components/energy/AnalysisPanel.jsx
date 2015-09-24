@@ -236,14 +236,6 @@ let AnalysisPanel = React.createClass({
       this.setState({
         calendarType: calcType
       });
-    // let me = this;
-    // if (me.state.chartStrategy.handleCalendarChangeFn) {
-    //   let chartCmp = me.refs.ChartComponent;
-    //   if(chartCmp){
-    //     let chartObj = chartCmp.refs.highstock;
-    //     CalendarManager.showCalendar(chartObj, calendarType);
-    //   }
-    // }
     }
   },
   OnNavigatorChanged: function(obj) {
@@ -694,7 +686,6 @@ let AnalysisPanel = React.createClass({
   },
   errorProcess(EnergyStore) {
     let code = EnergyStore.getErrorCode(),
-      codes = EnergyStore.getErrorCodes(),
       messages = EnergyStore.getErrorMessage();
 
     if (!code) {
@@ -714,16 +705,15 @@ let AnalysisPanel = React.createClass({
     let codes = EnergyStore.getErrorCodes();
     var errorMsg,
       textArray = [];
-    for (var i = 0; i < codes.length; i++) {
-      errorMsg = CommonFuns.getErrorMessage(codes[i]);
-      textArray.push(errorMsg);
-    // if((codes[0] + '') === '02810'){
-    //   this.state.
-    // }
+    if (!!codes && codes.length) {
+      for (var i = 0; i < codes.length; i++) {
+        errorMsg = CommonFuns.getErrorMessage(codes[i]);
+        textArray.push(errorMsg);
+      }
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
+      }, 0);
     }
-    setTimeout(() => {
-      GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
-    }, 0);
     return null;
   },
   showStepError(step, EnergyStore) {
@@ -790,7 +780,7 @@ let AnalysisPanel = React.createClass({
   },
   _onWeatherBtnDisabled: function() {
     let me = this;
-    setTimeout(()=>{
+    setTimeout(() => {
       me.setState({
         weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
         weatherOption: null,
