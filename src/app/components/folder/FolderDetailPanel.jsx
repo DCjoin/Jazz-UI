@@ -59,6 +59,7 @@ var FolderItem = React.createClass({
     var menu, subtitle;
     var iconStyle = {
         fontSize: '12px',
+        color: '#464949'
       },
       menuStyle = {
         fontSize: '14px',
@@ -161,7 +162,7 @@ var FolderDetailPanel = React.createClass({
                       </div>
     );
     var iconStyle = {
-        fontSize: '20px',
+        fontSize: '16px',
       },
       menuStyle = {
         fontSize: '14px',

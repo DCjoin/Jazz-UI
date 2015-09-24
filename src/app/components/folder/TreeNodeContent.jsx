@@ -73,8 +73,8 @@ var TreeNodeContent = React.createClass({
     }}>
         <div className={classNames({
       //add for file operation
-      "icon-column-fold": type == nodeType.Folder,
-      "icon-image": type == nodeType.Widget
+      "icon-folder": type == nodeType.Folder,
+      "icon-chart": type == nodeType.Widget
     })}/>
       </div>
     );
