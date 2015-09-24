@@ -7,7 +7,6 @@ import Commodity from '../constants/actionType/Commodity.jsx';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
 import Hierarchy from '../constants/actionType/Hierarchy.jsx';
-import LabelMenuAction from '../actions/LabelMenuAction.jsx';
 import Immutable from 'immutable';
 
 const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',

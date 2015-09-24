@@ -6,6 +6,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import { Action } from '../constants/actionType/Labeling.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
+//import CommodityStore from './CommodityStore.jsx';
 
 
 var _hierNode = null;
@@ -151,9 +152,9 @@ LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
       LabelMenuStore.setHierNodes(action.hierNodes);
       LabelMenuStore.emitHierNodesChange();
       break;
-    case FolderAction.CREATE_FOLDER_OR_WIDGET:
-
-      break;
+  // case FolderAction.CREATE_FOLDER_OR_WIDGET:
+  //   LabelMenuStore.setHierNode(CommodityStore.getHierNode());
+  //   break;
   }
 });
 

@@ -191,6 +191,11 @@ let AnalysisPanel = React.createClass({
         window.setTimeout(me._initChartPanelByWidgetDto, 0);
       }
     }
+    // if (this.props.bizType === 'Label') {
+    //   if (LabelMenuStore.getHierNode()) {
+    //     this.state.chartStrategy.onHierNodeChangeFn(this);
+    //   }
+    // }
 
   },
   componentWillUnmount: function() {
