@@ -706,16 +706,15 @@ let AnalysisPanel = React.createClass({
     let codes = EnergyStore.getErrorCodes();
     var errorMsg,
       textArray = [];
-    for (var i = 0; i < codes.length; i++) {
-      errorMsg = CommonFuns.getErrorMessage(codes[i]);
-      textArray.push(errorMsg);
-    // if((codes[0] + '') === '02810'){
-    //   this.state.
-    // }
+    if(!!codes && codes.length){
+      for (var i = 0; i < codes.length; i++) {
+        errorMsg = CommonFuns.getErrorMessage(codes[i]);
+        textArray.push(errorMsg);
+      }
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
+      }, 0);
     }
-    setTimeout(() => {
-      GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
-    }, 0);
     return null;
   },
   showStepError(step, EnergyStore) {
