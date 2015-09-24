@@ -2279,7 +2279,7 @@ let ChartStrategyFactor = {
           display: 'flex'
         }}>
              <div style={{
-          margin: '10px 0 0 23px'
+          margin: '10px 0 0 30px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
           margin: '5px 30px 0px auto'
@@ -3728,7 +3728,10 @@ let ChartStrategyFactor = {
           overflow: 'hidden'
         }}>
                       {subToolbar}
-                      <GridComponent {...properties}></GridComponent>
+
+                        <GridComponent {...properties}></GridComponent>
+
+
                     </div>;
       } else {
         let chartCmpObj = {
