@@ -245,7 +245,7 @@ var CommodityStore = assign({}, PrototypeStore, {
   doWidgetDtos: function(widgetDto) {
     var that = this;
     this.resetData();
-    this.resetHierInfo();
+
     if (widgetDto.WidgetType == 'Ranking') {
       let contentSyntax = widgetDto.ContentSyntax;
       let contentObj = JSON.parse(contentSyntax);
@@ -282,6 +282,7 @@ var CommodityStore = assign({}, PrototypeStore, {
         };
         let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
         if (tagOptions.length > 0) {
+          this.resetHierInfo();
           let lastTagOption = tagOptions[tagOptions.length - 1];
 
           this.setCurrentHierarchyInfo(lastTagOption.hierId, lastTagOption.hierName);
@@ -290,6 +291,7 @@ var CommodityStore = assign({}, PrototypeStore, {
         let contentSyntax = widgetDto.ContentSyntax;
         let contentObj = JSON.parse(contentSyntax);
         if (contentObj !== null) {
+          this.resetHierInfo();
           if (widgetDto.BizType.indexOf('Cost') >= 0) {
             let viewAssociation = contentObj.viewAssociation;
             if (viewAssociation.HierarchyId !== null) {

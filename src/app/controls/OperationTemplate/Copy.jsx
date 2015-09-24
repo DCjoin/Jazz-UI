@@ -130,7 +130,9 @@ var Copy = React.createClass({
                   <div>
                     {this.props.label}
                   </div>
-                  <TextField value={this.state.labelName} onChange={this._onNameChanged} errorText={this.state.errorText}/>
+                  <TextField style={{
+      width: '390px'
+    }} value={this.state.labelName} onChange={this._onNameChanged} errorText={this.state.errorText}/>
                 </div>
     );
     let icon = (

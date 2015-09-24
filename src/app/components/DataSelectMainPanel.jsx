@@ -423,7 +423,9 @@ let DataSelectMainPanel = React.createClass({
         height: '48px',
       },
       searchIconStyle = {
-        fontSize: '20px'
+        fontSize: '16px',
+        marginLeft: '5px',
+        marginTop: '3px'
       },
       cleanIconStyle = {
         marginTop: '3px',
@@ -469,7 +471,8 @@ let DataSelectMainPanel = React.createClass({
         }}>
             {menupaper}
             <div style={{
-          'min-height': '52px'
+          'min-height': '52px',
+          'padding-right': '10px'
         }}>
               {pagination}
             </div>

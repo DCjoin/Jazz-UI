@@ -148,12 +148,20 @@ let AnalysisPanel = React.createClass({
           {collapseButton}
           {sourceUserNameEl}
           <div className={'jazz-alarm-chart-toolbar-container'}>
-              <div className={'title'}>
+              <div className={'title'} style={{
+        display: 'flex',
+        alignItems: 'center'
+      }}>
                 <div className={'content'}>
                   {me.props.chartTitle}
                 </div>
-                <IconButton iconClassName="icon-send" style={{
-        'marginLeft': '2px'
+                <IconButton iconClassName="icon-save" iconStyle={{
+        fontSize: '16px'
+      }} style={{
+        padding: '0px',
+        height: '18px',
+        width: '18px',
+        marginLeft: '10px'
       }} onClick={this._onChart2WidgetClick}
       disabled={!this.state.energyData}/>
                 {widgetOptMenu}
