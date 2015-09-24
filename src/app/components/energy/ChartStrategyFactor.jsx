@@ -3397,7 +3397,7 @@ let ChartStrategyFactor = {
       return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'} >
          {chartTypeCmp}
-         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
+         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' className='jazz-alrm-chart-dropdownmenu' style={{
           width: '92px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
