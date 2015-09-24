@@ -40,7 +40,7 @@ let GlobalErrorMessageDialog = React.createClass({
       output = snackbar;
     }
 
-    return <div>{output} </div>;
+    return <div className='jazz-error-div'>{output} </div>;
   },
   componentDidUpdate() {
     if (this.state.isShowed) {
