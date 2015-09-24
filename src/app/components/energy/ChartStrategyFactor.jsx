@@ -3550,7 +3550,10 @@ let ChartStrategyFactor = {
       <div className={'jazz-flat-button'}>
         <RaisedButton style={{
           marginLeft: '10px'
-        }} label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+        }} label={I18N.Common.Button.Show}  backgroundColor='#1ca8dd' labelStyle={{
+          color: 'white',
+          fontWeight: '100'
+        }} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
     </div>;
     },
@@ -3586,7 +3589,10 @@ let ChartStrategyFactor = {
       <div className={'jazz-flat-button'}>
         <RaisedButton style={{
           marginLeft: '10px'
-        }} label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
+        }} label={I18N.Common.Button.Show}  backgroundColor='#1ca8dd' labelStyle={{
+          color: 'white',
+          fontWeight: '100'
+        }} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
     </div>;
     }
