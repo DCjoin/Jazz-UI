@@ -2377,12 +2377,7 @@ let ChartStrategyFactor = {
         return true;
       };
       var selectedIndex = CarbonStore.getDestination() - 2;
-      var carbonDest = <DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} onChange={menuItemChange} style={{
-        display: "inline-block",
-        float: "left",
-        height: 36,
-        width: 152
-      }} />;
+      var carbonDest = <DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} onChange={menuItemChange} className='jazz-energy-carbon-dest'/>;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
@@ -2397,7 +2392,7 @@ let ChartStrategyFactor = {
           margin: '10px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
-             <div className={'jazz-full-border-dropdownmenu-container'} style={{
+             <div style={{
           margin: '5px 30px 0px auto'
         }}>
                {carbonDest}
