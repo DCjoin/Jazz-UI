@@ -224,14 +224,14 @@ let FolderAction = {
       params: {
         widgetDto: widgetDto
       },
-      success: function(widgetDto) {
+      success: function(Dto) {
         if (!menuIndex) {
           GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
         }
 
         AppDispatcher.dispatch({
           type: Action.UPDATE_WIDGETDTOS_SUCCESS,
-          widgetDto: originWidgetDto
+          widgetDto: Dto
         });
       },
       error: function(err, res) {

@@ -2253,13 +2253,18 @@ let ChartStrategyFactor = {
         toolElement = <div style={{
           display: 'flex'
         }}>
-             <div style={{
-          margin: '10px 0 0 23px'
+        <div style={{
+          marginLeft: '10px'
+        }}>
+         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+       </div>
+        <div style={{
+          margin: '10px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2277,7 +2282,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2295,7 +2300,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2319,13 +2324,18 @@ let ChartStrategyFactor = {
         toolElement = <div style={{
           display: 'flex'
         }}>
-             <div style={{
-          margin: '10px 0 0 23px'
+        <div style={{
+          marginLeft: '10px'
+        }}>
+          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+        </div>
+        <div style={{
+          margin: '10px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
              <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2342,7 +2352,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2378,13 +2388,17 @@ let ChartStrategyFactor = {
         toolElement = <div style={{
           display: 'flex'
         }}>
-             <div style={{
-          margin: '10px 0 0 23px'
+        <div style={{
+          marginLeft: '10px'
+        }}>
+          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+        </div>
+        <div style={{
+          margin: '10px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div className={'jazz-full-border-dropdownmenu-container'} style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {carbonDest}
                {configBtn}
@@ -2403,7 +2417,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {carbonDest}
                {configBtn}
@@ -2426,13 +2440,18 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-           <div style={{
-        margin: '10px 0 0 23px'
+      <div style={{
+        marginLeft: '10px'
+      }}>
+      <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
+      <div style={{
+        margin: '10px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
              {configBtn}
              <div style={{
@@ -2454,13 +2473,18 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-           <div style={{
-        margin: '10px 0 0 23px'
+      <div style={{
+        marginLeft: '10px'
+      }}>
+      <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
+      <div style={{
+        margin: '10px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
            <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
              {configBtn}
              <div style={{
@@ -2494,13 +2518,18 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-           <div style={{
-        margin: '10px 0 0 23px'
+      <div style={{
+        marginLeft: '10px'
+      }}>
+      <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
+      <div style={{
+        margin: '10px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
              {carbonDest}
              {configBtn}
@@ -2530,13 +2559,18 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-           <div style={{
-        margin: '10px 0 0 23px'
+      <div style={{
+        marginLeft: '10px'
+      }}>
+        <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
+      <div style={{
+        margin: '10px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
            <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
              {configBtn}
              <div style={{
@@ -2564,15 +2598,20 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
+      <div style={{
+        marginLeft: '10px'
+      }}>
+      <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
          <div style={{
-        margin: '10px 0 0 23px'
+        margin: '10px 20px 0 23px'
       }}>
            {orderCombo}
            {rangeCombo}
          </div>
-         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
          <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
            {carbonTypeBtn}
            <div style={{
@@ -3454,7 +3493,7 @@ let ChartStrategyFactor = {
        <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
          <DropDownMenu ref='unitTypeCombo' menuItems={ConstStore.getUnits()} style={{
-          width: '102px',
+          width: '130px',
           marginRight: '10px'
         }} onChange={(e, selectedIndex, menuItem) => {
           analysisPanel.setState({
@@ -3515,7 +3554,7 @@ let ChartStrategyFactor = {
       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-container'} >
         <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{
-          width: '140px'
+          width: '158px'
         }} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
@@ -3531,6 +3570,7 @@ let ChartStrategyFactor = {
         ref: "yearSelector",
         selectedIndex: 10,
         style: {
+          width: '82px',
           border: '1px solid #efefef',
           margin: '0px 10px 0px 0px'
         }
@@ -3542,9 +3582,11 @@ let ChartStrategyFactor = {
       return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
-      <DropDownMenu menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
+      <DropDownMenu style={{
+          width: '82px'
+        }} menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
       </div>
-      <div className={'jazz-full-border-dropdownmenu-container'} >
+      <div>
       {labelBtn}
     </div>
 
@@ -3705,7 +3747,8 @@ let ChartStrategyFactor = {
           flex: 1,
           display: 'flex',
           'flex-direction': 'column',
-          marginBottom: '20px'
+          marginBottom: '20px',
+          marginLeft: '9px'
         }}>
                        {subToolbar}
                        {historyCompareEl}
@@ -3735,7 +3778,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                      {subToolbar}
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
@@ -3764,7 +3808,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                      {subToolbar}
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
@@ -3793,7 +3838,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                     {subToolbar}
                      <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
@@ -3823,7 +3869,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                     {subToolbar}
                      <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
@@ -3851,7 +3898,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                      {subToolbar}
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj}/>
@@ -3874,20 +3922,21 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                      <div style={{
         display: 'flex'
       }}>
                        <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
                          <div style={{
         display: 'inline-block',
         marginLeft: '30px'
       }}>{clearChartBtnEl}</div>
                        </div>
-                     </div>;
+                     </div>
                      <LabelChartComponent ref="chartComponent" {...analysisPanel.state.paramsObj} {...chartCmpObj}/>
                    </div>;
       return energyPart;
@@ -3928,7 +3977,7 @@ let ChartStrategyFactor = {
         baselineBtnStatus = true;
       }
 
-      let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
+      let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
@@ -3940,7 +3989,7 @@ let ChartStrategyFactor = {
        {weatherEl}
      </ButtonMenu>;
 
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getCarbonAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -3951,7 +4000,7 @@ let ChartStrategyFactor = {
        {calendarEl}
      </ButtonMenu>;
 
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getRatioAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -3965,7 +4014,7 @@ let ChartStrategyFactor = {
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getUnitEnergyAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -3979,7 +4028,7 @@ let ChartStrategyFactor = {
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getUnitCostAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -3992,7 +4041,7 @@ let ChartStrategyFactor = {
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getUnitCarbonAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -4010,7 +4059,7 @@ let ChartStrategyFactor = {
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getCostAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -4022,7 +4071,7 @@ let ChartStrategyFactor = {
        {calendarEl}
      </ButtonMenu>;
 
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     }
   },
   canShareDataWithFnStrategy: {
@@ -4584,26 +4633,34 @@ let ChartStrategyFactor = {
     }
   },
   getChartTypeIconMenu(analysisPanel, types) {
+    let iconStyle = {
+        fontSize: '16px'
+      },
+      style = {
+        padding: '0px',
+        height: '18px',
+        width: '18px'
+      };
     let menuMap = {
       line: {
         primaryText: I18N.EM.CharType.Line,
-        icon: <FontIcon className="icon-line" />
+        icon: <FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />
       },
       column: {
         primaryText: I18N.EM.CharType.Bar,
-        icon: <FontIcon className="icon-column" />
+        icon: <FontIcon className="icon-column" iconStyle ={iconStyle} style = {style}  />
       },
       stack: {
         primaryText: I18N.EM.CharType.Stack,
-        icon: <FontIcon className="icon-stack" />
+        icon: <FontIcon className="icon-stack" iconStyle ={iconStyle} style = {style} />
       },
       pie: {
         primaryText: I18N.EM.CharType.Pie,
-        icon: <FontIcon className="icon-pie" />
+        icon: <FontIcon className="icon-pie" iconStyle ={iconStyle} style = {style} />
       },
       rawdata: {
         primaryText: I18N.EM.CharType.RawData,
-        icon: <FontIcon className="icon-raw-data" />
+        icon: <FontIcon className="icon-raw-data" iconStyle ={iconStyle} style = {style} />
       }
     };
     let chartType = analysisPanel.state.selectedChartType || 'line';
@@ -4620,14 +4677,17 @@ let ChartStrategyFactor = {
       return <MenuItem primaryText={menuMap[item].icon} value={item} />;
     });
 
-    let widgetOptMenu = <IconMenu {...iconMenuProps}>
+    let widgetOptMenu = <IconMenu {...iconMenuProps} menuStyle={{
+      height: '20px',
+      width: '20px'
+    }} width='10px'>
                          {typeItems}
                       </IconMenu>;
     return widgetOptMenu;
   },
   getClearChartBtn(analysisPanel) {
     var btn = <RaisedButton label={I18N.EM.Tool.ClearChart} onClick={analysisPanel.state.chartStrategy.clearChartDataFn.bind(analysisPanel, analysisPanel)}/>;
-    return btn;
+    return <div className='jazz-no-background-button-container'>{btn}</div>;
   },
   getSearchBtn(analysisPanel) {
     var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick} backgroundColor='#1ca8dd' labelStyle={{
@@ -4641,8 +4701,7 @@ let ChartStrategyFactor = {
     var customizedSubItems = analysisPanel.state.customerMenuItems;
     let labelButton = <ButtonMenu label={analysisPanel.state.selectedLabelItem.text} style={{
       marginLeft: '10px',
-      fontSize: '14px',
-      width: '140px'
+      fontSize: '14px'
     }} desktop={true}
     disabled={analysisPanel.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
       <ExtendableMenuItem primaryText={I18N.Setting.Labeling.Label.IndustryLabeling} value='industryZone' subItems={industySubItems}>
@@ -4655,20 +4714,23 @@ let ChartStrategyFactor = {
   getKpiTypeBtn(analysisPanel) {
     let kpiTypeButton;
     var kpiSpanStyle = {
-      width: '128px',
+      width: '130px',
       height: '32px',
       lineHeight: '32px',
       border: '1px solid #efefef',
       margin: '0px 0px 0px 10px',
       fontSize: '15px',
       color: '#b3b3b3',
-      textAlign: 'center'
+      textAlign: 'left',
+      paddingLeft: '15px',
+      display: 'block'
     };
     var kpiTypeItem = ConstStore.getKpiTypeItem();
 
     if (!analysisPanel.state.kpiTypeDisable) {
       kpiTypeButton = <DropDownMenu style={{
-        marginLeft: '10px'
+        marginLeft: '10px',
+        width: '130px'
       }} selectedIndex={analysisPanel.state.kpiTypeIndex} menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
     } else {
       var kpiTypeText = analysisPanel.getKpiText();

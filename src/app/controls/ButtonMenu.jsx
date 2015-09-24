@@ -1,11 +1,29 @@
 'use strict';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _extends = Object.assign || function(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+function _objectWithoutProperties(obj, keys) {
+  var target = {};
+  for (var i in obj) {
+    if (keys.indexOf(i) >= 0) continue;
+    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+    target[i] = obj[i];
+  }
+  return target;
+}
 
 import React from "react";
-import {Mixins, RaisedButton, FontIcon} from 'material-ui';
+import { Mixins, RaisedButton, FontIcon } from 'material-ui';
 let ReactTransitionGroup = React.addons.TransitionGroup;
 let Events = require('material-ui/lib/utils/events');
 let Menu = require('material-ui/lib/menus/menu');
@@ -100,9 +118,17 @@ var ButtonMenu = React.createClass({
     var mergedRootStyles = this.mergeAndPrefix(styles.root, style);
     var mergedMenuStyles = this.mergeStyles(styles.menu, menuStyle);
 
-    var menuButton = <RaisedButton label={this.props.label} onClick={this._onButtonClick} disabled={this.props.disabled}>
-                      <FontIcon className="icon-arrow-down" style={{ fontSize:'10px', marginRight:'10px', marginLeft:'-5px'}}
-                        hoverColor='yellow' onClick={this._onDropdownIconClick}/>
+    var menuButton = <RaisedButton style={{
+      maxWidth: '140px',
+      height: '32px',
+      marginBottom: '5px'
+    }} label={this.props.label} onClick={this._onButtonClick} disabled={this.props.disabled}>
+                      <FontIcon className="icon-arrow-down" style={{
+      fontSize: '10px',
+      marginRight: '10px',
+      marginLeft: '-5px'
+    }}
+    hoverColor='yellow' onClick={this._onDropdownIconClick}/>
                     </RaisedButton>;
 
     var menu = open ? React.createElement(
@@ -111,7 +137,8 @@ var ButtonMenu = React.createClass({
         initiallyKeyboardFocused: this.state.menuInitiallyKeyboardFocused,
         onEscKeyDown: this.close,
         onItemTouchTap: this._handleItemTouchTap,
-        style: mergedMenuStyles }),
+        style: mergedMenuStyles
+      }),
       this.props.children
     ) : null;
 
@@ -123,7 +150,8 @@ var ButtonMenu = React.createClass({
         onMouseOver: onMouseOver,
         onMouseUp: onMouseUp,
         onTouchTap: onTouchTap,
-        style: mergedRootStyles },
+        style: mergedRootStyles
+      },
       menuButton,
       React.createElement(
         ReactTransitionGroup,
@@ -132,14 +160,14 @@ var ButtonMenu = React.createClass({
       )
     );
   },
-  _onButtonClick(){
-    if(this.props.onButtonClick){
-       this.props.onButtonClick();
-     }else{
-       this._onDropdownIconClick();
-     }
+  _onButtonClick() {
+    if (this.props.onButtonClick) {
+      this.props.onButtonClick();
+    } else {
+      this._onDropdownIconClick();
+    }
   },
-  _onDropdownIconClick(){
+  _onDropdownIconClick() {
     this.open(false);
     return false;
   },
@@ -147,8 +175,9 @@ var ButtonMenu = React.createClass({
     var _this2 = this;
 
     if (this.state.open) {
-      this.setState({ open: false }, function () {
-      });
+      this.setState({
+        open: false
+      }, function() {});
     }
   },
 
@@ -165,10 +194,10 @@ var ButtonMenu = React.createClass({
     var _this3 = this;
 
     if (this.props.closeOnItemTouchTap) {
-      (function () {
+      (function() {
         var isKeyboard = Events.isKeyboard(e);
 
-        _this3._timeout = setTimeout(function () {
+        _this3._timeout = setTimeout(function() {
           _this3.close(isKeyboard);
         }, _this3.props.touchTapCloseDelay);
       })();
