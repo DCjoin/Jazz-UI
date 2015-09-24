@@ -711,7 +711,7 @@ let AnalysisPanel = React.createClass({
         textArray.push(errorMsg);
       }
       setTimeout(() => {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
+        GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('\n'));
       }, 0);
     }
     return null;
