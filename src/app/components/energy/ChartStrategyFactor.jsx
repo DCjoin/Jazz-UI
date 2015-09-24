@@ -377,7 +377,7 @@ let ChartStrategyFactor = {
     onCarbonDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         commodityId = uid,
-        needReload = CostStore.removeSeriesDataByUid(uid);
+        needReload = CarbonStore.removeSeriesDataByUid(uid);
       if (uid === 0) {
         commodityId = -1;
       }
@@ -452,7 +452,7 @@ let ChartStrategyFactor = {
     onUnitCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         commodityId = uid,
-        needReload = CostStore.removeSeriesDataByUid(uid);
+        needReload = CarbonStore.removeSeriesDataByUid(uid);
       if (uid === 0) {
         commodityId = -1;
       }
