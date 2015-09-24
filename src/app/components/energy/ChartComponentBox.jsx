@@ -441,7 +441,8 @@ let ChartComponentBox = React.createClass({
     };
     return <div style={{
         display: 'flex',
-        flex: 1
+        flex: 1,
+        marginLeft: '10px'
       }}>
           <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
           {dialog}

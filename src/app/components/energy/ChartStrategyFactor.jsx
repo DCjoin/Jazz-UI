@@ -3697,7 +3697,8 @@ let ChartStrategyFactor = {
           flex: 1,
           display: 'flex',
           'flex-direction': 'column',
-          marginBottom: '20px'
+          marginBottom: '20px',
+          marginLeft: '9px'
         }}>
                        {subToolbar}
                        {historyCompareEl}
@@ -3727,7 +3728,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                      {subToolbar}
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
@@ -3756,7 +3758,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                      {subToolbar}
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
@@ -3785,7 +3788,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                     {subToolbar}
                      <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
@@ -3815,7 +3819,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                     {subToolbar}
                      <ChartComponentBox {...paramsObj} {...chartCmpObj} afterChartCreated={analysisPanel._afterChartCreated}/>
@@ -3843,7 +3848,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                      {subToolbar}
                      <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj}/>
@@ -3866,7 +3872,8 @@ let ChartStrategyFactor = {
         flex: 1,
         display: 'flex',
         'flex-direction': 'column',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        marginLeft: '9px'
       }}>
                      <div style={{
         display: 'flex'
@@ -4576,26 +4583,34 @@ let ChartStrategyFactor = {
     }
   },
   getChartTypeIconMenu(analysisPanel, types) {
+    let iconStyle = {
+        fontSize: '16px'
+      },
+      style = {
+        padding: '0px',
+        height: '18px',
+        width: '18px'
+      };
     let menuMap = {
       line: {
         primaryText: I18N.EM.CharType.Line,
-        icon: <FontIcon className="icon-line" />
+        icon: <FontIcon className="icon-line" iconStyle ={iconStyle} style = {style} />
       },
       column: {
         primaryText: I18N.EM.CharType.Bar,
-        icon: <FontIcon className="icon-column" />
+        icon: <FontIcon className="icon-column" iconStyle ={iconStyle} style = {style}  />
       },
       stack: {
         primaryText: I18N.EM.CharType.Stack,
-        icon: <FontIcon className="icon-stack" />
+        icon: <FontIcon className="icon-stack" iconStyle ={iconStyle} style = {style} />
       },
       pie: {
         primaryText: I18N.EM.CharType.Pie,
-        icon: <FontIcon className="icon-pie" />
+        icon: <FontIcon className="icon-pie" iconStyle ={iconStyle} style = {style} />
       },
       rawdata: {
         primaryText: I18N.EM.CharType.RawData,
-        icon: <FontIcon className="icon-raw-data" />
+        icon: <FontIcon className="icon-raw-data" iconStyle ={iconStyle} style = {style} />
       }
     };
     let chartType = analysisPanel.state.selectedChartType || 'line';
@@ -4612,7 +4627,10 @@ let ChartStrategyFactor = {
       return <MenuItem primaryText={menuMap[item].icon} value={item} />;
     });
 
-    let widgetOptMenu = <IconMenu {...iconMenuProps}>
+    let widgetOptMenu = <IconMenu {...iconMenuProps} menuStyle={{
+      height: '20px',
+      width: '20px'
+    }} width='10px'>
                          {typeItems}
                       </IconMenu>;
     return widgetOptMenu;
