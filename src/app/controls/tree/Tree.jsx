@@ -15,13 +15,23 @@ var lastOver = null,
   timeoutHandel = null,
   pass = true;
 
+var EditNode = null;
 
 var drake = dragula({
   moves: function(el, source, handle) {
-    console.log('moves');
     drag = true;
     el.style.backgroundColor = '#323c4d';
     return true; // elements are always draggable by default
+  },
+  invalid: function(el, target) {
+    var id = parseInt(el.id);
+    if (!!EditNode) {
+      if (id == EditNode.get('Id')) {
+        return true;
+      }
+    }
+    return false;
+
   },
   direction: 'vertical', // Y axis is considered when determining where an element would be dropped
   copy: false, // elements are moved by default, not copied
@@ -153,7 +163,15 @@ var Tree = React.createClass({
       }
     }, 2000);
   },
+  setEditNode: function(nodeData) {
+    EditNode = nodeData;
+  },
+  generateNodeConent: function(nodeData) {
+    if (!!this.props.generateNodeConent) {
+      return (this.props.generateNodeConent(nodeData, this));
+    }
 
+  },
   componentDidMount: function() {
     lastOver = null;
     pass = false;
@@ -186,7 +204,7 @@ var Tree = React.createClass({
           selectedNode: this.compatibleJSON(this.props.selectedNode),
           checkedNodes: this.compatibleJSON(this.props.checkedNodes),
           onSelectNode: this.onSelectNode,
-          generateNodeConent: this.props.generateNodeConent,
+          generateNodeConent: (!!this.props.generateNodeConent) ? this.generateNodeConent : null,
           isFolderOperationTree: this.props.isFolderOperationTree,
 
           putGragulaContainer: this.putGragulaContainer,

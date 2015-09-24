@@ -381,6 +381,7 @@ Energy Error Code
 I18N.Message.M02004 = 'Polymer granularity illegal';
 I18N.Message.M02007 = 'Start time can not be earlier than the end time';
 I18N.Message.M02008 = 'You can not draw a pie chart since the media is different.';
+I18N.Message.M02011 = 'Viewing Raw Data is not supported for virtual tag.';
 I18N.Message.M02013 = 'This data point has been deleted and can not be loaded.';
 I18N.Message.M02020 = 'Chart export  failed. Please click "View Data" and try again.';
 I18N.Message.M02021 = 'EXCEL export  failed. Please click "View Data" and try again.';
@@ -420,6 +421,14 @@ I18N.Message.M02507 = 'The heating area attribute is missing, and chart can not 
 I18N.Message.M02508 = 'The cooling area attribute is missing, and chart can not be drawn. Please set it up and try again.';
 I18N.Message.M02509 = 'The energy-efficiency label has been deleted. Please select again for access.';
 I18N.Message.M02510 = 'This energy-efficiency label has no related data. Please select again for access.';
+I18N.Message.M02511 = 'The room attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02512 = 'The used room attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02513 = 'The bed attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02514 = 'The used bed attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02515 = 'The room attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02516 = 'The used room attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02517 = 'The bed attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02518 = 'The used bed attribute is missing, and chart can not be drawn. Please set it up and try again.';
 I18N.Message.M02701 = 'Part of the hierarchy selected has been deletion,and can not be ranked.';
 
 /******
@@ -768,6 +777,10 @@ I18N.Template.Send = {};
 I18N.Template.Send.Title = 'Send {0}';
 I18N.Template.Send.Send = 'Send';
 I18N.Template.Send.Cancel = 'Drop';
+
+I18N.Title = {};
+I18N.Title.Alarm = 'Jazz-Alarm';
+I18N.Title.Energy = 'Jazz-Energy';
 
 
 

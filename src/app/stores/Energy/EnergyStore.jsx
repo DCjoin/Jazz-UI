@@ -2,7 +2,7 @@
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
-import ChartStatusStore from '../energy/ChartStatusStore.jsx'
+import ChartStatusStore from '../energy/ChartStatusStore.jsx';
 import assign from 'object-assign';
 import _ from 'lodash';
 import Immutable from 'immutable';
@@ -20,14 +20,15 @@ let _isLoading = false,
   _chartTitle = null,
   _relativeDate = null,
   _errorCode = null,
+  _errorMessage = null,
   _errorCodes = [],
-  _errorParams = [],
-  _errorMessage = null;
+  _errorParams = [];
 
 const ENERGY_DATA_LOADING_EVENT = 'energydataloadingevent',
   ENERGY_DATA_LOADED_EVENT = 'energydataloadedevent',
   ENERGY_DATA_LOAD_ERROR_EVENT = 'energydataloaderror',
   ENERGY_DATA_LOAD_ERRORS_EVENT = 'energydataloaderrors';
+
 
 let EnergyStore = assign({}, PrototypeStore, {
   initReaderStrategy(bizChartType) {
@@ -63,11 +64,11 @@ let EnergyStore = assign({}, PrototypeStore, {
   getErrorMessage() {
     return _errorMessage;
   },
-  getErrorCode() {
-    return _errorCode;
-  },
   getErrorParams() {
     return _errorParams;
+  },
+  getErrorCode() {
+    return _errorCode;
   },
   getErrorCodes() {
     return _errorCodes;
@@ -154,6 +155,8 @@ let EnergyStore = assign({}, PrototypeStore, {
         let data = dataList[i];
         if (data.uid !== uid) {
           latestDataList.push(data);
+        } else {
+          this.removeMappingTimespan(i);
         }
       }
       if (latestDataList.length === 1) {
@@ -165,6 +168,23 @@ let EnergyStore = assign({}, PrototypeStore, {
       }
     }
     return false;
+  },
+  removeMappingTimespan(index) {
+    if (_paramsObj && _paramsObj.timeRanges.length > 1) {
+      _paramsObj.timeRanges.splice(index, 1);
+    }
+  },
+  getMultiTimespanIndex(uid) {
+    if (_submitParams && _energyData && _submitParams.viewOption.TimeRanges.length > 1) {
+      let dataList = _energyData.toJS().Data;
+      for (let i = 0, len = dataList.length; i < len; i++) {
+        let data = dataList[i];
+        if (data.uid === uid) {
+          return i;
+        }
+      }
+    }
+    return -1;
   },
   //listners--------------------------------
   addEnergyDataLoadingListener: function(callback) {
@@ -197,7 +217,7 @@ let EnergyStore = assign({}, PrototypeStore, {
   addEnergyDataLoadErrorsListener: function(callback) {
     this.on(ENERGY_DATA_LOAD_ERRORS_EVENT, callback);
   },
-  emitEnergyDataLoadErrorsListener: function(callback) {
+  emitEnergyDataLoadErrorsListener: function() {
     this.emit(ENERGY_DATA_LOAD_ERRORS_EVENT);
   },
   removeEnergyDataLoadErrorsListener: function(callback) {

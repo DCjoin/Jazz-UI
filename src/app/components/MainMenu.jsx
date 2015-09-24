@@ -5,6 +5,7 @@ import { Link, Navigation, State, RouteHandler } from 'react-router';
 import lang from '../lang/lang.jsx';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 var f = lang.f;
+var title;
 
 var MainMenu = React.createClass({
   mixins: [Navigation, State],
@@ -16,6 +17,7 @@ var MainMenu = React.createClass({
 
     var params = this.getParams();
     var links = this.props.items.map(item => {
+
       if (item.disabled) {
         return (<span>{item.title}</span>);
       }

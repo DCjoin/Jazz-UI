@@ -262,7 +262,17 @@ var TagStore = assign({}, PrototypeStore, {
   },
   checkWeatherBtnDisabled: function() {
     if (_totalTagStatus.length > 1) {
-      weather_btn_disabled = true;
+      let validHierCount = 0;
+      _totalTagStatus.forEach(item => {
+        if(item.tagStatus && item.tagStatus.size > 0){
+          ++validHierCount;
+        }
+      });
+      if(validHierCount < 2){
+        weather_btn_disabled = false;
+      } else {
+        weather_btn_disabled = true;
+      }
     } else {
       weather_btn_disabled = false;
     }

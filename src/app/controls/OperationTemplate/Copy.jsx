@@ -73,14 +73,14 @@ var Copy = React.createClass({
     };
   },
   componentWillReceiveProps: function(nextProps) {
-    var selectedNode = FolderStore.getSelectedNode();
-    if (selectedNode === null) {
-      selectedNode = FolderStore.getFolderTree()
-    }
+    // var selectedNode = FolderStore.getSelectedNode();
+    // if (selectedNode === null) {
+    //   selectedNode = FolderStore.getFolderTree()
+    // }
     this.setState({
       labelName: nextProps.labelName,
       allNode: FolderStore.getFolderTree(),
-      selectedNode: selectedNode,
+      selectedNode: (!!nextProps.treeNode ? nextProps.treeNode : FolderStore.getFolderTree()),
       treeShow: false,
       errorText: nextProps.errorText,
       btnDisabled: false
@@ -130,7 +130,9 @@ var Copy = React.createClass({
                   <div>
                     {this.props.label}
                   </div>
-                  <TextField value={this.state.labelName} onChange={this._onNameChanged} errorText={this.state.errorText}/>
+                  <TextField style={{
+      width: '390px'
+    }} value={this.state.labelName} onChange={this._onNameChanged} errorText={this.state.errorText}/>
                 </div>
     );
     let icon = (

@@ -21,7 +21,6 @@ var WidgetSaveWindow = React.createClass({
   },
   _onWidgetSaveError: function() {
     this.setState({
-      errorText: I18N.Folder.Copy.Error,
       loading: false
     });
   },
@@ -72,15 +71,15 @@ var WidgetSaveWindow = React.createClass({
       errorText: this.state.errorText,
       loading: this.state.loading
     };
-    if (this.state.treeLoading) {
-      return (
-        <CircularProgress  mode="indeterminate" size={1} />
-        )
-    } else {
-      return (
-        <Copy {...Props}/>
-        )
-    }
+    // if (this.state.treeLoading) {
+    //   return (
+    //     <CircularProgress  mode="indeterminate" size={1} />
+    //     )
+    // } else {
+    return (
+      <Copy {...Props}/>
+      )
+      //  }
 
   }
 });

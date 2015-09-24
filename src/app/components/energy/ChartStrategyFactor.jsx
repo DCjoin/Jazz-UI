@@ -344,19 +344,29 @@ let ChartStrategyFactor = {
   },
   onDeleteButtonClickFnStrategy: {
     onDeleteButtonClick(analysisPanel, obj) {
-      let uid = obj.uid,
-        needReload = EnergyStore.removeSeriesDataByUid(uid);
+      let uid = obj.uid;
 
-      AlarmTagAction.removeSearchTagList({
-        tagId: uid
-      });
+      let multiTimespanIndex = EnergyStore.getMultiTimespanIndex(uid);
+
+      if (multiTimespanIndex !== -1) {
+        MultiTimespanAction.removeMultiTimespanData(multiTimespanIndex, true);
+      } else {
+        AlarmTagAction.removeSearchTagList({
+          tagId: uid
+        });
+      }
+
+      let needReload = EnergyStore.removeSeriesDataByUid(uid);
 
       if (needReload) {
         let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
           paramsObj = EnergyStore.getParamsObj(),
           timeRanges = paramsObj.timeRanges,
           step = paramsObj.step;
-
+        if (multiTimespanIndex !== -1) {
+          timeRanges = [timeRanges[0]];
+          MultiTimespanAction.clearMultiTimespan('both');
+        }
         analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
       } else {
         let energyData = EnergyStore.getEnergyData();
@@ -367,9 +377,13 @@ let ChartStrategyFactor = {
     },
     onCarbonDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
-        needReload = CarbonStore.removeSeriesDataByUid(uid);
+        commodityId = uid,
+        needReload = CostStore.removeSeriesDataByUid(uid);
+      if (uid === 0) {
+        commodityId = -1;
+      }
 
-      CommodityAction.setCommoditySelectStatus(uid, null, false);
+      CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
         let paramsObj = CarbonStore.getSubmitParams();
@@ -388,9 +402,13 @@ let ChartStrategyFactor = {
     },
     onCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
+        commodityId = uid,
         needReload = CostStore.removeSeriesDataByUid(uid);
+      if (uid === 0) {
+        commodityId = -1;
+      }
 
-      CommodityAction.setCommoditySelectStatus(uid, null, false);
+      CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
         let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
@@ -434,9 +452,13 @@ let ChartStrategyFactor = {
     },
     onUnitCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
+        commodityId = uid,
         needReload = CostStore.removeSeriesDataByUid(uid);
+      if (uid === 0) {
+        commodityId = -1;
+      }
 
-      CommodityAction.setCommoditySelectStatus(uid, null, false);
+      CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
         let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
@@ -457,8 +479,13 @@ let ChartStrategyFactor = {
     },
     onUnitCarbonDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
-        needReload = CarbonStore.removeSeriesDataByUid(uid);
-      CommodityAction.setCommoditySelectStatus(uid, null, false);
+        commodityId = uid,
+        needReload = CostStore.removeSeriesDataByUid(uid);
+      if (uid === 0) {
+        commodityId = -1;
+      }
+
+      CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
         let paramsObj = CarbonStore.getSubmitParams();
@@ -475,7 +502,7 @@ let ChartStrategyFactor = {
           energyData: energyData
         });
       }
-    },
+    }
   },
   resetYaxisSelectorFnStrategy: {
     empty() {},
@@ -485,14 +512,22 @@ let ChartStrategyFactor = {
   },
   getWidgetOptMenuFnStrategy: {
     getWidgetOptMenu(analysisPanel) {
-      var IconButtonElement = <IconButton iconClassName="icon-arrow-down"/>;
+      var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
+        fontSize: '16px'
+      }} style={{
+        padding: '0px',
+        height: '18px',
+        width: '18px',
+        marginLeft: '10px',
+        marginTop: '5px'
+      }}/>;
       var iconMenuProps = {
         iconButtonElement: IconButtonElement,
         openDirection: "bottom-right",
         desktop: true
       };
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
-                              <MenuItem key={1} primaryText={'另存为'} />
+                              <MenuItem key={1} primaryText={'复制'} />
                               <MenuItem key={2} primaryText={'发送'} />
                               <MenuItem key={3} primaryText={'共享'} />
                               <MenuItem key={4} primaryText={'导出'} />
@@ -508,7 +543,7 @@ let ChartStrategyFactor = {
         desktop: true
       };
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
-                              <MenuItem key={1} primaryText={'另存为'} />
+                              <MenuItem key={1} primaryText={'复制'} />
                               <MenuItem key={2} primaryText={'发送'} />
                               <MenuItem key={3} primaryText={'共享'} />
                               <MenuItem key={5} primaryText={'删除'} />
@@ -1236,11 +1271,12 @@ let ChartStrategyFactor = {
         widgetDto.Name = analysisPanel.props.chartTitle;
         FolderAction.WidgetSave(widgetDto, window.currentCustomerId);
       } else {
-        FolderAction.updateWidgetDtos(widgetDto);
+        //for this situation destNode is menuIndex
+        FolderAction.updateWidgetDtos(widgetDto, destNode);
       }
 
     },
-    saveRatio2Dashboard(analysisPanel) {
+    saveRatio2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = RatioStore.getRatioOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -1317,9 +1353,9 @@ let ChartStrategyFactor = {
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveUnit2Dashboard(analysisPanel) {
+    saveUnit2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = EnergyStore.getTagOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -1395,9 +1431,9 @@ let ChartStrategyFactor = {
 
       widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
 
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveCost2Dashboard(analysisPanel) {
+    saveCost2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
@@ -1481,9 +1517,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveUnitCost2Dashboard(analysisPanel) {
+    saveUnitCost2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
@@ -1560,9 +1596,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveCarbon2Dashboard(analysisPanel) {
+    saveCarbon2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = {},
         hierarchyNode = CommodityStore.getHierNode(),
@@ -1646,9 +1682,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveUnitCarbon2Dashboard(analysisPanel) {
+    saveUnitCarbon2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = {},
         hierarchyNode = CommodityStore.getHierNode(),
@@ -1729,9 +1765,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveLabel2Dashboard(analysisPanel) {
+    saveLabel2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = LabelStore.getTagOpions();
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
@@ -1767,9 +1803,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
-    saveRank2Dashboard(analysisPanel) {
+    saveRank2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
       let widgetDto = _.cloneDeep(analysisPanel.props.widgetDto);
       let submitParams1 = RankStore.getSubmitParams();
@@ -1840,7 +1876,7 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto);
+      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     }
   },
   handleNavigatorChangeLoadFnStrategy: {
@@ -1931,14 +1967,21 @@ let ChartStrategyFactor = {
     },
   },
   isWeatherDisabledFnStrategy: {
-    isWeatherDisabled() {
+    isWeatherDisabled(analysisPanel) {
       let tagOptions = EnergyStore.getTagOpions();
       if (!tagOptions) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       let paramsObj = EnergyStore.getParamsObj(),
         step = paramsObj.step;
       if (step != 1) return I18N.EM.WeatherSupportsOnlyHourlyStep;
+
+      let errors = EnergyStore.getErrorCodes();
+      if (!!errors && errors.length && errors[0] + '' === '02810') {
+        analysisPanel.state.weatherOption = null;
+        return I18N.Message.M02810;
+      }
+
       let disabled = TagStore.getWeatherBtnDisabled();
-      if(disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
+      if (disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       return false;
     }
   },
@@ -2876,7 +2919,7 @@ let ChartStrategyFactor = {
         }
       } else {
         let timeRanges = MultipleTimespanStore.getSubmitTimespans();
-        if (timeRanges !== null) {
+        if (timeRanges !== null && timeRanges.length !== 1) {
           let multiRelativeType = MultipleTimespanStore.getOriginalType();
           let relativeDateValue = analysisPanel._getRelativeDateValue();
           if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
@@ -2921,7 +2964,7 @@ let ChartStrategyFactor = {
 
       let chartType = analysisPanel.state.selectedChartType;
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
-        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel);
+        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel, clearWeatherflag);
       } else {
         let timeRanges;
         if (chartType === 'pie') {
@@ -3860,7 +3903,7 @@ let ChartStrategyFactor = {
       if (viewOp && viewOp.IncludeHumidityValue)
         weatherSubItems[1].checked = true;
       let weatherEl;
-      let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn();
+      let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn(analysisPanel);
       if (isWeatherDisabled === false) {
         weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' subItems={weatherSubItems}/>;
       } else {
@@ -3873,7 +3916,7 @@ let ChartStrategyFactor = {
       }
 
       let baselineBtnStatus = analysisPanel.state.baselineBtnStatus;
-      if (submitParams.viewOption.TimeRanges.length > 1 || submitParams.tagIds.length > 1) {
+      if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.tagIds.length > 1) {
         baselineBtnStatus = true;
       }
 
@@ -3991,9 +4034,9 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       TagStore.addWeatherBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
-      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
     },
     costBindStoreListeners(analysisPanel) {
       CostStore.addCostDataLoadingListener(analysisPanel._onCostLoadingStatusChange);
@@ -4006,7 +4049,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     ratioBindStoreListeners(analysisPanel) {
       RatioStore.addRatioDataLoadingListener(analysisPanel._onRatioLoadingStatusChange);
@@ -4017,6 +4060,7 @@ let ChartStrategyFactor = {
       EnergyStore.addEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.addEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.addEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.addEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.addBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
     },
     unitCostBindStoreListeners(analysisPanel) {
@@ -4030,7 +4074,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      //CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
     rankBindStoreListeners(analysisPanel) {
       RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
@@ -4054,9 +4098,9 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
-      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetTagDataErrors);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
     },
@@ -4064,7 +4108,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     ratioUnbindStoreListeners(analysisPanel) {
@@ -4085,6 +4129,7 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadingListener(analysisPanel._onLoadingStatusChange);
       EnergyStore.removeEnergyDataLoadedListener(analysisPanel._onEnergyDataChange);
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
+      EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
       LabelMenuStore.removeHierNodeChangeListener(analysisPanel._onHierNodeChange);
       CalendarManager.hideCalendar();
@@ -4102,7 +4147,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadingListener(analysisPanel._onCarbonLoadingStatusChange);
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
-      //CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
     },
 
     rankUnbindStoreListeners(analysisPanel) {
@@ -4133,6 +4178,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.step = null;
       analysisPanel.state.weatherOption = null;
       analysisPanel.forceUpdate();
+      MultipleTimespanStore.clearMultiTimespan('both');
     },
     clearCarbonChartData(analysisPanel) {
       analysisPanel.state.energyData = null;
@@ -4576,7 +4622,10 @@ let ChartStrategyFactor = {
     return btn;
   },
   getSearchBtn(analysisPanel) {
-    var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}/>;
+    var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick} backgroundColor='#1ca8dd' labelStyle={{
+      color: 'white',
+      fontWeight: '100'
+    }}/>;
     return searchButton;
   },
   getLabelBtn(analysisPanel) {

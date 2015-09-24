@@ -123,7 +123,9 @@ let TimespanItem = React.createClass({
         marginTop: '10px',
         height: '67px'
       }}>
-              <div>{this.props.title}</div>
+              <div style={{
+        color: '#abafae'
+      }}>{this.props.title}</div>
               <div style={{
         display: 'flex',
         marginTop: '10px',
