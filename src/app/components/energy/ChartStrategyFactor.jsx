@@ -2548,13 +2548,20 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-         <div style={{
-        margin: '10px 0 0 23px'
+           <div style={{
+        margin: '0px 0 0 23px'
+      }}>
+           <YaxisSelector  initYaxisDialog={analysisPanel._initYaxisDialog}
+      onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+            </div>
+           <div style={{
+        margin: '10px 0 0 0px'
       }}>
            {orderCombo}
            {rangeCombo}
-         </div>
-         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+           </div>
+
+
          <div style={{
         margin: '5px 30px 5px auto'
       }}>
@@ -3438,7 +3445,7 @@ let ChartStrategyFactor = {
        <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
          <DropDownMenu ref='unitTypeCombo' menuItems={ConstStore.getUnits()} style={{
-          width: '102px',
+          width: '130px',
           marginRight: '10px'
         }} onChange={(e, selectedIndex, menuItem) => {
           analysisPanel.setState({
@@ -3499,7 +3506,7 @@ let ChartStrategyFactor = {
       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-container'} >
         <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{
-          width: '140px'
+          width: '158px'
         }} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
@@ -3515,6 +3522,7 @@ let ChartStrategyFactor = {
         ref: "yearSelector",
         selectedIndex: 10,
         style: {
+          width: '82px',
           border: '1px solid #efefef',
           margin: '0px 10px 0px 0px'
         }
@@ -3526,9 +3534,11 @@ let ChartStrategyFactor = {
       return <div className={'jazz-alarm-chart-toolbar'}>
       <div className={'jazz-full-border-dropdownmenu-container'}>
       {YearSelect}
-      <DropDownMenu menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
+      <DropDownMenu style={{
+          width: '82px'
+        }} menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
       </div>
-      <div className={'jazz-full-border-dropdownmenu-container'} >
+      <div>
       {labelBtn}
     </div>
 
@@ -3871,7 +3881,7 @@ let ChartStrategyFactor = {
         marginLeft: '30px'
       }}>{clearChartBtnEl}</div>
                        </div>
-                     </div>;
+                     </div>
                      <LabelChartComponent ref="chartComponent" {...analysisPanel.state.paramsObj} {...chartCmpObj}/>
                    </div>;
       return energyPart;
@@ -4622,8 +4632,7 @@ let ChartStrategyFactor = {
     var customizedSubItems = analysisPanel.state.customerMenuItems;
     let labelButton = <ButtonMenu label={analysisPanel.state.selectedLabelItem.text} style={{
       marginLeft: '10px',
-      fontSize: '14px',
-      width: '140px'
+      fontSize: '14px'
     }} desktop={true}
     disabled={analysisPanel.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
       <ExtendableMenuItem primaryText={I18N.Setting.Labeling.Label.IndustryLabeling} value='industryZone' subItems={industySubItems}>
@@ -4636,20 +4645,23 @@ let ChartStrategyFactor = {
   getKpiTypeBtn(analysisPanel) {
     let kpiTypeButton;
     var kpiSpanStyle = {
-      width: '128px',
+      width: '130px',
       height: '32px',
       lineHeight: '32px',
       border: '1px solid #efefef',
       margin: '0px 0px 0px 10px',
       fontSize: '15px',
       color: '#b3b3b3',
-      textAlign: 'center'
+      textAlign: 'left',
+      paddingLeft: '15px',
+      display: 'block'
     };
     var kpiTypeItem = ConstStore.getKpiTypeItem();
 
     if (!analysisPanel.state.kpiTypeDisable) {
       kpiTypeButton = <DropDownMenu style={{
-        marginLeft: '10px'
+        marginLeft: '10px',
+        width: '130px'
       }} selectedIndex={analysisPanel.state.kpiTypeIndex} menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
     } else {
       var kpiTypeText = analysisPanel.getKpiText();
