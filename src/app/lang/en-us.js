@@ -421,6 +421,14 @@ I18N.Message.M02507 = 'The heating area attribute is missing, and chart can not 
 I18N.Message.M02508 = 'The cooling area attribute is missing, and chart can not be drawn. Please set it up and try again.';
 I18N.Message.M02509 = 'The energy-efficiency label has been deleted. Please select again for access.';
 I18N.Message.M02510 = 'This energy-efficiency label has no related data. Please select again for access.';
+I18N.Message.M02511 = 'The room attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02512 = 'The used room attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02513 = 'The bed attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02514 = 'The used bed attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02515 = 'The room attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02516 = 'The used room attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02517 = 'The bed attribute is missing, and chart can not be drawn. Please set it up and try again.';
+I18N.Message.M02518 = 'The used bed attribute is missing, and chart can not be drawn. Please set it up and try again.';
 I18N.Message.M02701 = 'Part of the hierarchy selected has been deletion,and can not be ranked.';
 
 /******

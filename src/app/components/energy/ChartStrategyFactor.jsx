@@ -365,6 +365,7 @@ let ChartStrategyFactor = {
           step = paramsObj.step;
         if (multiTimespanIndex !== -1) {
           timeRanges = [timeRanges[0]];
+          MultiTimespanAction.clearMultiTimespan('both');
         }
         analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
       } else {
@@ -377,7 +378,7 @@ let ChartStrategyFactor = {
     onCarbonDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         commodityId = uid,
-        needReload = CostStore.removeSeriesDataByUid(uid);
+        needReload = CarbonStore.removeSeriesDataByUid(uid);
       if (uid === 0) {
         commodityId = -1;
       }
@@ -452,7 +453,7 @@ let ChartStrategyFactor = {
     onUnitCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         commodityId = uid,
-        needReload = CostStore.removeSeriesDataByUid(uid);
+        needReload = CarbonStore.removeSeriesDataByUid(uid);
       if (uid === 0) {
         commodityId = -1;
       }
@@ -2910,7 +2911,7 @@ let ChartStrategyFactor = {
         }
       } else {
         let timeRanges = MultipleTimespanStore.getSubmitTimespans();
-        if (timeRanges !== null) {
+        if (timeRanges !== null && timeRanges.length !== 1) {
           let multiRelativeType = MultipleTimespanStore.getOriginalType();
           let relativeDateValue = analysisPanel._getRelativeDateValue();
           if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
@@ -4491,7 +4492,7 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+      let seriesNumber = CostStore.getEnergyData().get('Data').size;
       let charTypes = [];
       let seriesStatusArray = ChartStatusStore.getSeriesStatus();
       let sslength = seriesStatusArray.length;
