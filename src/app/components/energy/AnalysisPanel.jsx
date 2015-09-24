@@ -140,21 +140,21 @@ let AnalysisPanel = React.createClass({
           {sourceUserNameEl}
           <div className={'jazz-alarm-chart-toolbar-container'}>
               <div className={'title'} style={{
-        display: 'flex',
-        alignItems: 'center'
-      }}>
+      display: 'flex',
+      alignItems: 'center'
+    }}>
                 <div className={'content'}>
                   {me.props.chartTitle}
                 </div>
                 <IconButton iconClassName="icon-save" iconStyle={{
-        fontSize: '16px'
-      }} style={{
-        padding: '0px',
-        height: '18px',
-        width: '18px',
-        marginLeft: '10px'
-      }} onClick={this._onChart2WidgetClick}
-      disabled={!this.state.energyData}/>
+      fontSize: '16px'
+    }} style={{
+      padding: '0px',
+      height: '18px',
+      width: '18px',
+      marginLeft: '10px'
+    }} onClick={this._onChart2WidgetClick}
+    disabled={!this.state.energyData}/>
                 {widgetOptMenu}
                 {widgetWd}
               </div>
@@ -165,16 +165,16 @@ let AnalysisPanel = React.createClass({
         {errorDialog}
       </div>;
 
-      let chartCmp = me.refs.ChartComponent;
-      if (chartCmp) {
-        let chartObj = chartCmp.refs.highstock;
-        if (!!this.state.calendarType) {
-          CalendarManager.showCalendar(chartObj, this.state.calendarType);
-        } else {
-          CalendarManager.hideCalendar(chartObj);
-        }
+    let chartCmp = me.refs.ChartComponent;
+    if (chartCmp) {
+      let chartObj = chartCmp.refs.highstock;
+      if (!!this.state.calendarType) {
+        CalendarManager.showCalendar(chartObj, this.state.calendarType);
+      } else {
+        CalendarManager.hideCalendar(chartObj);
       }
-      return panel;
+    }
+    return panel;
   },
   componentDidUpdate() {
     if (this.state.chartStrategy.onAnalysisPanelDidUpdateFn) {
@@ -206,6 +206,7 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.resetYaxisSelectorFn();
     if (this.props.bizType === 'Label') {
       LabelMenuStore.clearHierNodes();
+      LabelMenuStore.clearHierNode();
     }
   },
   onWidgetSaveWindowDismiss: function() {

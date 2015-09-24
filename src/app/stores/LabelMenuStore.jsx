@@ -36,6 +36,9 @@ var LabelMenuStore = assign({}, PrototypeStore, {
   setHierNodes(hierNodes) {
     _hierNodes = hierNodes;
   },
+  clearHierNode() {
+    _hierNode = null;
+  },
   clearHierNodes() {
     _hierNodes = [];
   },
