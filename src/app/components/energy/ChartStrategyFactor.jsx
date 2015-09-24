@@ -2503,12 +2503,7 @@ let ChartStrategyFactor = {
         return true;
       };
       var selectedIndex = CarbonStore.getDestination() - 2;
-      var carbonDest = <DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} onChange={menuItemChange} style={{
-        display: "inline-block",
-        float: "left",
-        height: 36,
-        width: 152
-      }} />;
+      var carbonDest = <DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} onChange={menuItemChange} className='jazz-energy-carbon-dest'/>;
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex'
