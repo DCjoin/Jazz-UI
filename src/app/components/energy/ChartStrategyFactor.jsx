@@ -2264,7 +2264,7 @@ let ChartStrategyFactor = {
 
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2282,7 +2282,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2300,7 +2300,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2335,7 +2335,7 @@ let ChartStrategyFactor = {
 
              <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2352,7 +2352,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {configBtn}
                <div style={{
@@ -2398,7 +2398,7 @@ let ChartStrategyFactor = {
         }}>{chartTypeIconMenu}</div>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div className={'jazz-full-border-dropdownmenu-container'} style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {carbonDest}
                {configBtn}
@@ -2417,7 +2417,7 @@ let ChartStrategyFactor = {
           margin: '10px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
-          margin: '5px 30px 5px auto'
+          margin: '5px 30px 0px auto'
         }}>
                {carbonDest}
                {configBtn}
@@ -2451,7 +2451,7 @@ let ChartStrategyFactor = {
 
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
              {configBtn}
              <div style={{
@@ -2484,7 +2484,7 @@ let ChartStrategyFactor = {
 
            <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
              {configBtn}
              <div style={{
@@ -2529,7 +2529,7 @@ let ChartStrategyFactor = {
 
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
              {carbonDest}
              {configBtn}
@@ -2570,7 +2570,7 @@ let ChartStrategyFactor = {
 
            <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
              {configBtn}
              <div style={{
@@ -2611,7 +2611,7 @@ let ChartStrategyFactor = {
          </div>
 
          <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
            {carbonTypeBtn}
            <div style={{
@@ -3926,7 +3926,7 @@ let ChartStrategyFactor = {
         display: 'flex'
       }}>
                        <div style={{
-        margin: '5px 30px 5px auto'
+        margin: '5px 30px 0px auto'
       }}>
                          <div style={{
         display: 'inline-block',
@@ -4684,7 +4684,7 @@ let ChartStrategyFactor = {
   },
   getClearChartBtn(analysisPanel) {
     var btn = <RaisedButton label={I18N.EM.Tool.ClearChart} onClick={analysisPanel.state.chartStrategy.clearChartDataFn.bind(analysisPanel, analysisPanel)}/>;
-    return btn;
+    return <div className='jazz-no-background-button-container'>{btn}</div>;
   },
   getSearchBtn(analysisPanel) {
     var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick} backgroundColor='#1ca8dd' labelStyle={{
