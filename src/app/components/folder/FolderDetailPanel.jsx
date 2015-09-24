@@ -23,6 +23,10 @@ var FolderItem = React.createClass({
   },
   _onItemClick: function() {
     FolderAction.setSelectedNode(this.props.nodeData);
+    if (this.props.nodeData.get('IsSenderCopy') && !this.props.nodeData.get('IsRead')) {
+      FolderAction.modifyFolderReadStatus(this.props.nodeData);
+    }
+
   },
   getImage: function() {
     var image;
