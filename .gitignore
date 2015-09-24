@@ -50,3 +50,4 @@ node_modules/
 
 # Publish folder
 build/
+src/app/lang/zh-cnenu.js
