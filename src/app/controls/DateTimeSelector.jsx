@@ -234,8 +234,7 @@ let DateTimeSelector = React.createClass({
     return <div style={{
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#fbfbfb'
+        alignItems: 'center'
       }}>
       <div className={'jazz-full-border-datepicker-container'}>
         <ViewableDatePicker ref="startDate" {...startDateProps}/>

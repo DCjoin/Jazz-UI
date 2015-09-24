@@ -378,7 +378,7 @@ let ChartStrategyFactor = {
     onCarbonDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         commodityId = uid,
-        needReload = CarbonStore.removeSeriesDataByUid(uid);
+        needReload = CostStore.removeSeriesDataByUid(uid);
       if (uid === 0) {
         commodityId = -1;
       }
@@ -461,7 +461,7 @@ let ChartStrategyFactor = {
     onUnitCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         commodityId = uid,
-        needReload = CarbonStore.removeSeriesDataByUid(uid);
+        needReload = CostStore.removeSeriesDataByUid(uid);
       if (uid === 0) {
         commodityId = -1;
       }
@@ -520,14 +520,22 @@ let ChartStrategyFactor = {
   },
   getWidgetOptMenuFnStrategy: {
     getWidgetOptMenu(analysisPanel) {
-      var IconButtonElement = <IconButton iconClassName="icon-arrow-down"/>;
+      var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
+        fontSize: '16px'
+      }} style={{
+        padding: '0px',
+        height: '18px',
+        width: '18px',
+        marginLeft: '10px',
+        marginTop: '5px'
+      }}/>;
       var iconMenuProps = {
         iconButtonElement: IconButtonElement,
         openDirection: "bottom-right",
         desktop: true
       };
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
-                              <MenuItem key={1} primaryText={'另存为'} />
+                              <MenuItem key={1} primaryText={'复制'} />
                               <MenuItem key={2} primaryText={'发送'} />
                               <MenuItem key={3} primaryText={'共享'} />
                               <MenuItem key={4} primaryText={'导出'} />
@@ -543,7 +551,7 @@ let ChartStrategyFactor = {
         desktop: true
       };
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
-                              <MenuItem key={1} primaryText={'另存为'} />
+                              <MenuItem key={1} primaryText={'复制'} />
                               <MenuItem key={2} primaryText={'发送'} />
                               <MenuItem key={3} primaryText={'共享'} />
                               <MenuItem key={5} primaryText={'删除'} />
@@ -4500,7 +4508,7 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = CostStore.getEnergyData().get('Data').size;
+      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
       let charTypes = [];
       let seriesStatusArray = ChartStatusStore.getSeriesStatus();
       let sslength = seriesStatusArray.length;
@@ -4622,7 +4630,10 @@ let ChartStrategyFactor = {
     return btn;
   },
   getSearchBtn(analysisPanel) {
-    var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}/>;
+    var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick} backgroundColor='#1ca8dd' labelStyle={{
+      color: 'white',
+      fontWeight: '100'
+    }}/>;
     return searchButton;
   },
   getLabelBtn(analysisPanel) {

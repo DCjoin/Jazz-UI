@@ -274,7 +274,10 @@ var FolderLeftPanel = React.createClass({
       };
 
 
-    var treeContent = (this.state.isLoading ? <CircularProgress  mode="indeterminate" size={1} /> : <Tree {...treeProps}/>);
+    var treeContent = (this.state.isLoading ? <div style={{
+      'text-align': 'center',
+      'margin-top': '400px'
+    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <Tree {...treeProps}/>);
 
     return (
       <div className="jazz-folder-leftpanel-container">
@@ -284,7 +287,7 @@ var FolderLeftPanel = React.createClass({
         margin: '0 30px'
       }}>
             <FlatButton disabled={this.state.buttonDisabled} onClick={this._onNewFolder} style={buttonStyle}>
-              <FontIcon className="fa icon-add btn-icon"/>
+              <FontIcon  className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.Folder.FolderName}</span>
             </FlatButton>
           </div>
