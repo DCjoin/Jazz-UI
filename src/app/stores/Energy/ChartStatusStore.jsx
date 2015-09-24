@@ -154,11 +154,15 @@ let ChartStatusStore = assign({}, PrototypeStore, {
           item.stacking = undefined;
         }
       } else if (item.id) {
+        let chartType = item.type;
+        if (chartType === 'column' && item.stacking === 'normal') {
+          chartType = 'stack';
+        }
         _seriesStatus.push({
           id: item.id,
           IsDisplay: true,
           SeriesType: item.dType,
-          ChartType: me.getNumByChartType(item.type)
+          ChartType: me.getNumByChartType(chartType)
         });
       }
     });
