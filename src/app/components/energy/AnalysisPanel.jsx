@@ -488,7 +488,7 @@ let AnalysisPanel = React.createClass({
     if (isError === true) {
       state.step = null;
       state.errorObj = errorObj;
-      if(!!args && args.length && args[0] === ''){
+      if (!!args && args.length && args[0] === '') {
 
       }
     }
@@ -694,7 +694,6 @@ let AnalysisPanel = React.createClass({
   },
   errorProcess(EnergyStore) {
     let code = EnergyStore.getErrorCode(),
-      codes = EnergyStore.getErrorCodes(),
       messages = EnergyStore.getErrorMessage();
 
     if (!code) {
@@ -717,9 +716,9 @@ let AnalysisPanel = React.createClass({
     for (var i = 0; i < codes.length; i++) {
       errorMsg = CommonFuns.getErrorMessage(codes[i]);
       textArray.push(errorMsg);
-      // if((codes[0] + '') === '02810'){
-      //   this.state.
-      // }
+    // if((codes[0] + '') === '02810'){
+    //   this.state.
+    // }
     }
     setTimeout(() => {
       GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
