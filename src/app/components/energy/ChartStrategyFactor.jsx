@@ -378,7 +378,7 @@ let ChartStrategyFactor = {
     onCarbonDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         commodityId = uid,
-        needReload = CarbonStore.removeSeriesDataByUid(uid);
+        needReload = CostStore.removeSeriesDataByUid(uid);
       if (uid === 0) {
         commodityId = -1;
       }
@@ -453,7 +453,7 @@ let ChartStrategyFactor = {
     onUnitCostDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid,
         commodityId = uid,
-        needReload = CarbonStore.removeSeriesDataByUid(uid);
+        needReload = CostStore.removeSeriesDataByUid(uid);
       if (uid === 0) {
         commodityId = -1;
       }
@@ -512,7 +512,15 @@ let ChartStrategyFactor = {
   },
   getWidgetOptMenuFnStrategy: {
     getWidgetOptMenu(analysisPanel) {
-      var IconButtonElement = <IconButton iconClassName="icon-arrow-down"/>;
+      var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
+        fontSize: '16px'
+      }} style={{
+        padding: '0px',
+        height: '18px',
+        width: '18px',
+        marginLeft: '10px',
+        marginTop: '5px'
+      }}/>;
       var iconMenuProps = {
         iconButtonElement: IconButtonElement,
         openDirection: "bottom-right",
@@ -4492,7 +4500,7 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = CostStore.getEnergyData().get('Data').size;
+      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
       let charTypes = [];
       let seriesStatusArray = ChartStatusStore.getSeriesStatus();
       let sslength = seriesStatusArray.length;
@@ -4614,7 +4622,10 @@ let ChartStrategyFactor = {
     return btn;
   },
   getSearchBtn(analysisPanel) {
-    var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick}/>;
+    var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick} backgroundColor='#1ca8dd' labelStyle={{
+      color: 'white',
+      fontWeight: '100'
+    }}/>;
     return searchButton;
   },
   getLabelBtn(analysisPanel) {
