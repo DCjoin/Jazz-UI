@@ -19,7 +19,6 @@ var EditNode = null;
 
 var drake = dragula({
   moves: function(el, source, handle) {
-    console.log('moves');
     drag = true;
     el.style.backgroundColor = '#323c4d';
     return true; // elements are always draggable by default
