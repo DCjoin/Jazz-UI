@@ -686,7 +686,6 @@ let AnalysisPanel = React.createClass({
   },
   errorProcess(EnergyStore) {
     let code = EnergyStore.getErrorCode(),
-      codes = EnergyStore.getErrorCodes(),
       messages = EnergyStore.getErrorMessage();
 
     if (!code) {
@@ -706,7 +705,7 @@ let AnalysisPanel = React.createClass({
     let codes = EnergyStore.getErrorCodes();
     var errorMsg,
       textArray = [];
-    if(!!codes && codes.length){
+    if (!!codes && codes.length) {
       for (var i = 0; i < codes.length; i++) {
         errorMsg = CommonFuns.getErrorMessage(codes[i]);
         textArray.push(errorMsg);
@@ -781,7 +780,7 @@ let AnalysisPanel = React.createClass({
   },
   _onWeatherBtnDisabled: function() {
     let me = this;
-    setTimeout(()=>{
+    setTimeout(() => {
       me.setState({
         weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
         weatherOption: null,
