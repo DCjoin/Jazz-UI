@@ -386,13 +386,21 @@ let ChartStrategyFactor = {
       CommodityAction.setCommoditySelectStatus(commodityId, null, false);
 
       if (needReload) {
+        let hierCommIds = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+        if (!hierCommIds.communityIds || hierCommIds.communityIds.length === 0 || !hierCommIds.hierarchyId) {
+          analysisPanel.setState({
+            energyData: null
+          });
+          return;
+        }
+
         let paramsObj = CarbonStore.getSubmitParams();
         let hierarchyId = paramsObj.hierarchyId,
           commodityIds = paramsObj.commodityIds,
           destination = paramsObj.destination,
           viewOp = paramsObj.viewOption;
 
-        analysisPanel.state.chartStrategy.getEnergyDataFn(hierarchyId, commodityIds, destination, viewOp, false, analysisPanel);
+        analysisPanel.state.chartStrategy.getEnergyDataFn(hierCommIds.hierarchyId, hierCommIds.communityIds, destination, viewOp, false, analysisPanel);
       } else {
         let energyData = CarbonStore.getCarbonData();
         analysisPanel.setState({
