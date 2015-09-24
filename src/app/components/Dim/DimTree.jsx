@@ -1,17 +1,17 @@
 'use strict';
 import React from "react";
 import classNames from 'classnames';
-import {Paper,FontIcon,TextField} from 'material-ui';
-import { Link,Navigation,State,RouteHandler } from 'react-router';
+import { Paper, FontIcon, TextField } from 'material-ui';
+import { Link, Navigation, State, RouteHandler } from 'react-router';
 import assign from 'object-assign';
 
-import {nodeType} from '../../constants/TreeConstants.jsx';
+import { nodeType } from '../../constants/TreeConstants.jsx';
 import Search from './DimSearch.jsx'
 
 
 var TreeNode = React.createClass({
 
-  mixins:[Navigation,State],
+  mixins: [Navigation, State],
 
   propTypes: {
     selected: React.PropTypes.bool,
@@ -32,15 +32,16 @@ var TreeNode = React.createClass({
       selected: false,
     };
   },
-  componentWillMount:function(){
-    if(this.props.indent==0){
+  componentWillMount: function() {
+    if (this.props.indent == 0) {
       this.setState({
         collapsed: false,
       });
       return;
-    };
+    }
+    ;
 
-    if(this.props.selectedNode.HierarchyId==this.props.id){
+    if (this.props.selectedNode.HierarchyId == this.props.id) {
       this.setState({
         collapsed: false,
       });
@@ -48,38 +49,38 @@ var TreeNode = React.createClass({
     }
 
   },
-  handleClickArrow: function(e){
+  handleClickArrow: function(e) {
     e.stopPropagation();
     this.setState({
       collapsed: !this.state.collapsed
     });
   },
 
-  handleClickNode: function(){
+  handleClickNode: function() {
     //var node = assign({}, this.props);
     //HierarchyActionCreator.selectNode(node);
     this.props.onSelectedNode(this.props.nodeData);
   },
 
-  operateCollapse: function (nodes, callbackName) {
+  operateCollapse: function(nodes, callbackName) {
 
-    for(var key in nodes){
-      if(typeof nodes[key][callbackName] == "function"){
+    for (var key in nodes) {
+      if (typeof nodes[key][callbackName] == "function") {
         nodes[key][callbackName](nodes[key].refs);
       }
     }
   },
 
-  collapseAll: function (nodes) {
+  collapseAll: function(nodes) {
 
     this.setState({
       collapsed: true
-    }, function () {
+    }, function() {
       this.operateCollapse(nodes, "collapseAll");
     });
   },
 
-  unfoldAll: function (nodes) {
+  unfoldAll: function(nodes) {
 
     this.setState({
       collapsed: false
@@ -88,36 +89,36 @@ var TreeNode = React.createClass({
     });
   },
 
-  generateArrow: function (hasChild) {
+  generateArrow: function(hasChild) {
     return (
       <div className="arrow" onClick={this.handleClickArrow}>
         <div className={classNames({
-          "hasChild": hasChild,
-          "hasNoChild": !hasChild
-          })}>
+        "hasChild": hasChild,
+        "hasNoChild": !hasChild
+      })}>
           <div className={classNames({
-            "icon-hierarchy-unfold": !this.state.collapsed,
-            "icon-hierarchy-fold": this.state.collapsed,
-          })} />
+        "icon-hierarchy-unfold": !this.state.collapsed,
+        "icon-hierarchy-fold": this.state.collapsed,
+      })} />
         </div>
       </div>
-    );
+      );
   },
 
 
 
-  generateNodeConent: function (nodeData) {
+  generateNodeConent: function(nodeData) {
 
     var icon;
-    if(nodeData.Id!=0){
-      icon=(
+    if (nodeData.Id != 0) {
+      icon = (
         <div className="node-content-icon">
           <div className="icon-hierarchy"></div>
         </div>
       );
     }
     var text = (
-      <div className="node-content-text" title={nodeData.Name}>{nodeData.Name}</div>
+    <div className="node-content-text" title={nodeData.Name}>{nodeData.Name}</div>
     );
 
     return (
@@ -125,53 +126,53 @@ var TreeNode = React.createClass({
         {icon}
         {text}
       </div>
-    );
+      );
   },
 
-  generateNode: function (nodeData) {
+  generateNode: function(nodeData) {
     var indentStyle = {
       "padding-left": Number(this.props.indent * this.props.indentUnit)
     };
 
     return (
       <div className={classNames({
-          "tree-node": true,
-          "selected": (this.props.selectedNode && this.props.selectedNode.Id == nodeData.Id)
-        })} onClick={this.handleClickNode} style={indentStyle}>
+        "tree-node": true,
+        "selected": (this.props.selectedNode && this.props.selectedNode.Id == nodeData.Id)
+      })} onClick={this.handleClickNode} style={indentStyle}>
         {this.generateArrow(nodeData.Children && nodeData.Children.length > 0)}
         <div className="content">
           {this.generateNodeConent(nodeData)}
         </div>
 
       </div>
-    );
+      );
   },
 
-  generateChildren: function (nodeData) {
+  generateChildren: function(nodeData) {
     var children = null;
-    if(Array.isArray(nodeData.Children)){
+    if (Array.isArray(nodeData.Children)) {
       children = nodeData.Children.map(childNodeData => {
         var nodeProps = assign({}, this.props, {
           nodeData: childNodeData,
           selectedNode: this.props.selectedNode,
           onSelectedNode: this.props.onSelectedNode,
           indent: this.props.indent + 1,
-          id:childNodeData.Id,
+          id: childNodeData.Id,
           ref: childNodeData.Id
         });
         return (
           <TreeNode {...nodeProps}/>
-        );
+          );
       });
     }
     return (
       <div className={classNames({
-          "tree-children": true,
-          "collapse": this.state.collapsed
-        })}>
+        "tree-children": true,
+        "collapse": this.state.collapsed
+      })}>
         {children}
       </div>
-    );
+      );
   },
 
   render: function() {
@@ -181,204 +182,212 @@ var TreeNode = React.createClass({
         {this.generateNode(this.props.nodeData)}
         {this.generateChildren(this.props.nodeData)}
       </div>
-    );
+      );
   }
 
 });
 
 var TreeView = React.createClass({
-    mixins:[Navigation,State],
-    propTypes: {
-        allNode: React.PropTypes.object.isRequired,
-        onTreeClick:React.PropTypes.func.isRequired,
-        selectedNode:React.PropTypes.object
-    },
-    _onSelectNode(node){
-        this.setState({selectedNode:node});
-        this.props.onTreeClick(node);
-    },
+  mixins: [Navigation, State],
+  propTypes: {
+    allNode: React.PropTypes.object.isRequired,
+    onTreeClick: React.PropTypes.func.isRequired,
+    selectedNode: React.PropTypes.object
+  },
+  _onSelectNode(node) {
+    this.setState({
+      selectedNode: node
+    });
+    this.props.onTreeClick(node);
+  },
 
-    collapseAll: function () {
+  collapseAll: function() {
 
-      var nodes = this.refs;
+    var nodes = this.refs;
 
-      for(var key in nodes){
-        nodes[key].collapseAll(nodes[key].refs);
-      }
-    },
+    for (var key in nodes) {
+      nodes[key].collapseAll(nodes[key].refs);
+    }
+  },
 
-    unfoldAll: function () {
+  unfoldAll: function() {
 
-      var nodes = this.refs;
-      for(var key in nodes){
-        nodes[key].unfoldAll(nodes[key].refs);
-      }
-    },
+    var nodes = this.refs;
+    for (var key in nodes) {
+      nodes[key].unfoldAll(nodes[key].refs);
+    }
+  },
 
-    getInitialState: function() {
-      return {
-        selectedNode: this.props.selectedNode,
-      };
-    },
+  getInitialState: function() {
+    return {
+      selectedNode: this.props.selectedNode,
+    };
+  },
 
-    componentWillReceiveProps: function(nextProps) {
-        this.setState({selectedNode:nextProps.selectedNode});
-    },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      selectedNode: nextProps.selectedNode
+    });
+  },
 
-    render: function() {
-        var dataSource = this.props.allNode;
-        var tree = [];
-        // var code =  '';
-        // if(this.state.selectedNode){
-        //     code = this.state.selectedNode.Code;
-        // }
-        // if(!code && this.props.selectedNode){
-        //     code = this.props.selectedNode.Code;
-        // }
-        // if(this.props.status == formStatus.ADD) code = '';
-        var drawTree = (dataSource, parentNode, parentIndent) => {
-          if(dataSource !== null){
+  render: function() {
+    var dataSource = this.props.allNode;
+    var tree = [];
+    // var code =  '';
+    // if(this.state.selectedNode){
+    //     code = this.state.selectedNode.Code;
+    // }
+    // if(!code && this.props.selectedNode){
+    //     code = this.props.selectedNode.Code;
+    // }
+    // if(this.props.status == formStatus.ADD) code = '';
+    var drawTree = (dataSource, parentNode, parentIndent) => {
+      if (dataSource !== null) {
 
 
-            // node properties, map response data to props
-            var props = {
-              indent: parentIndent || 0,
-              nodeData: dataSource,
-              selectedNode: this.state.selectedNode || this.props.selectedNode,
-              onSelectedNode: this._onSelectNode,
-              ref: dataSource.Id
-            };
-            parentNode.push(
-              <TreeNode {...props}></TreeNode>
-            );
-          }
+        // node properties, map response data to props
+        var props = {
+          indent: parentIndent || 0,
+          nodeData: dataSource,
+          selectedNode: this.state.selectedNode || this.props.selectedNode,
+          onSelectedNode: this._onSelectNode,
+          ref: dataSource.Id
         };
+        parentNode.push(
+          <TreeNode {...props}></TreeNode>
+        );
+      }
+    };
 
-        // began to draw tree
-        if(Array.isArray(dataSource)){
+    // began to draw tree
+    if (Array.isArray(dataSource)) {
 
-          dataSource.forEach(function(node){
-            drawTree(node, tree, 0);
-          });
-        } else {
-          drawTree(dataSource, tree, 0);
-        }
+      dataSource.forEach(function(node) {
+        drawTree(node, tree, 0);
+      });
+    } else {
+      drawTree(dataSource, tree, 0);
+    }
 
-        return (
-          <div className="pop-tree-view">
+    return (
+      <div className="pop-tree-view">
             {tree}
           </div>
-        );
-    }
+      );
+  }
 
 });
 
-let DimTree=React.createClass({
-  mixins:[Navigation,State],
+let DimTree = React.createClass({
+  mixins: [Navigation, State],
   propTypes: {
-      allNode: React.PropTypes.object.isRequired,
-      onTreeClick:React.PropTypes.func.isRequired,
-      selectedNode:React.PropTypes.object
+    allNode: React.PropTypes.object.isRequired,
+    onTreeClick: React.PropTypes.func.isRequired,
+    selectedNode: React.PropTypes.object
   },
   getInitialState: function() {
-      return {
-        initialTree:true,
-        searchList:false,
-        searchTree:false,
-        searchValue:null,
-        selectedNode:null
-      };
-    },
+    return {
+      initialTree: true,
+      searchList: false,
+      searchTree: false,
+      searchValue: null,
+      selectedNode: null
+    };
+  },
 
-   _onSearchChange:function(e){
+  _onSearchChange: function(e) {
 
-     var value= e.target.value;
+    var value = e.target.value;
 
-     if(value){
-       React.findDOMNode(this.refs.cleanIcon).style.display='block';
-       this.setState({
-         initialTree:false,
-         searchList:true,
-         searchTree:false,
-         searchValue:value
-       })
-     }
-     else{
-       React.findDOMNode(this.refs.cleanIcon).style.display='none';
-       this.setState({
-       initialTree:true,
-       searchList:false,
-       searchTree:false
-     })
-     }
-   },
-   _onSearchClick:function(){
-     React.findDOMNode(this.refs.searchIcon).style.display='none';
-   },
-   _onSearchBlur:function(e){
-     if(!e.target.value){
-         React.findDOMNode(this.refs.searchIcon).style.display='block';
-     }
-   },
-   _onCleanButtonClick:function(){
-     React.findDOMNode(this.refs.cleanIcon).style.display='none';
-     this.refs.searchText.setValue("");
-     this.setState({
-       initialTree:true,
-       searchList:false,
-       searchTree:false
-     });
-   },
-  render:function(){
+    if (value) {
+      React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+      this.setState({
+        initialTree: false,
+        searchList: true,
+        searchTree: false,
+        searchValue: value
+      })
+    } else {
+      React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+      this.setState({
+        initialTree: true,
+        searchList: false,
+        searchTree: false
+      })
+    }
+  },
+  _onSearchClick: function() {
+    React.findDOMNode(this.refs.searchIcon).style.display = 'none';
+  },
+  _onSearchBlur: function(e) {
+    if (!e.target.value) {
+      React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+    }
+  },
+  _onCleanButtonClick: function() {
+    React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+    this.refs.searchText.setValue("");
+    this.setState({
+      initialTree: true,
+      searchList: false,
+      searchTree: false
+    });
+  },
+  render: function() {
 
     var tree;
     var searchfield;
     var searchtree;
-    if(this.state.initialTree) {
-                    tree=<TreeView  allNode={this.props.allNode}
-                                    selectedNode={this.props.selectedNode}
-                                    onTreeClick={this.props.onTreeClick} />
-                              };
-    if(this.state.searchList){
-      searchfield=<Search
-                    allNode={this.props.allNode}
-                    searchValue={this.state.searchValue}
-                    onSearchNodeClick={this.props.onTreeClick}/>
+    if (this.state.initialTree) {
+      tree = <TreeView  allNode={this.props.allNode}
+      selectedNode={this.props.selectedNode}
+      onTreeClick={this.props.onTreeClick} />
+    }
+    ;
+    if (this.state.searchList) {
+      searchfield = <Search
+      allNode={this.props.allNode}
+      searchValue={this.state.searchValue}
+      onSearchNodeClick={this.props.onTreeClick}/>
 
-    };
-    if(this.state.searchTree) {
-      searchtree=<TreeView  allNode={this.props.allNode}
-                            selectedNode={this.state.selectedNode}
-                            onTreeClick={this.props.onTreeClick} />
-                              };
+    }
+    ;
+    if (this.state.searchTree) {
+      searchtree = <TreeView  allNode={this.props.allNode}
+      selectedNode={this.state.selectedNode}
+      onTreeClick={this.props.onTreeClick} />
+    }
+    ;
 
     var paperStyle = {
-                      backgroundColor: '#ffffff',
-                      zIndex: '100',
-                      width:'300px',
-                      height:'390px',
-                      position:'fixed',
-                      right:'10px',
-                      border:'1px solid #c9c8c8',
-                      marginTop:'12px'
+        backgroundColor: '#ffffff',
+        zIndex: '100',
+        width: '300px',
+        height: '390px',
+        position: 'fixed',
+        right: '10px',
+        border: '1px solid #c9c8c8',
+        marginTop: '12px'
 
-                    },
-                    searchIconStyle={
-                      fontSize:'20px'
-                    },
-                    cleanIconStyle={
-                      marginTop:'3px',
-                      fontSize:'16px',
-                      display:'none'
-                    },
-                    textFieldStyle={
-                      flex:'1',
-                      height:'26px'
-                    };
+      },
+      searchIconStyle = {
+        fontSize: '16px',
+        marginLeft: '5px',
+        marginTop: '2px'
+      },
+      cleanIconStyle = {
+        marginTop: '3px',
+        fontSize: '16px',
+        display: 'none'
+      },
+      textFieldStyle = {
+        flex: '1',
+        height: '26px'
+      };
 
-    return(
+    return (
 
-        <Paper style={paperStyle}>
+      <Paper style={paperStyle}>
 
             <label className="tree_search">
               <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
@@ -393,8 +402,8 @@ let DimTree=React.createClass({
 
         </Paper>
 
-    )
+      )
   }
 });
 
-module.exports=DimTree;
+module.exports = DimTree;
