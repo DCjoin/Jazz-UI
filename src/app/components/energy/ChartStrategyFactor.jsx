@@ -2253,10 +2253,15 @@ let ChartStrategyFactor = {
         toolElement = <div style={{
           display: 'flex'
         }}>
-             <div style={{
-          margin: '10px 0 0 23px'
+        <div style={{
+          marginLeft: '10px'
+        }}>
+         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+       </div>
+        <div style={{
+          margin: '10px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
           margin: '5px 30px 5px auto'
@@ -2319,10 +2324,15 @@ let ChartStrategyFactor = {
         toolElement = <div style={{
           display: 'flex'
         }}>
-             <div style={{
-          margin: '10px 0 0 23px'
+        <div style={{
+          marginLeft: '10px'
+        }}>
+          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+        </div>
+        <div style={{
+          margin: '10px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
              <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
           margin: '5px 30px 5px auto'
@@ -2378,10 +2388,14 @@ let ChartStrategyFactor = {
         toolElement = <div style={{
           display: 'flex'
         }}>
-             <div style={{
-          margin: '10px 0 0 23px'
+        <div style={{
+          marginLeft: '10px'
+        }}>
+          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+        </div>
+        <div style={{
+          margin: '10px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div className={'jazz-full-border-dropdownmenu-container'} style={{
           margin: '5px 30px 5px auto'
@@ -2426,10 +2440,15 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-           <div style={{
-        margin: '10px 0 0 23px'
+      <div style={{
+        marginLeft: '10px'
+      }}>
+      <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
+      <div style={{
+        margin: '10px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2454,10 +2473,15 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-           <div style={{
-        margin: '10px 0 0 23px'
+      <div style={{
+        marginLeft: '10px'
+      }}>
+      <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
+      <div style={{
+        margin: '10px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
            <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2494,10 +2518,15 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-           <div style={{
-        margin: '10px 0 0 23px'
+      <div style={{
+        marginLeft: '10px'
+      }}>
+      <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
+      <div style={{
+        margin: '10px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2530,10 +2559,15 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
-           <div style={{
-        margin: '10px 0 0 23px'
+      <div style={{
+        marginLeft: '10px'
+      }}>
+        <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
+      <div style={{
+        margin: '10px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
-           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
            <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
            <div style={{
         margin: '5px 30px 5px auto'
@@ -2564,13 +2598,18 @@ let ChartStrategyFactor = {
       toolElement = <div style={{
         display: 'flex'
       }}>
+      <div style={{
+        marginLeft: '10px'
+      }}>
+      <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+      </div>
          <div style={{
-        margin: '10px 0 0 23px'
+        margin: '10px 20px 0 23px'
       }}>
            {orderCombo}
            {rangeCombo}
          </div>
-         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
+
          <div style={{
         margin: '5px 30px 5px auto'
       }}>
@@ -3935,7 +3974,7 @@ let ChartStrategyFactor = {
         baselineBtnStatus = true;
       }
 
-      let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
+      let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} className='jazz-AuxiliaryCompareBtn' style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
