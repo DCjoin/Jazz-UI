@@ -205,15 +205,25 @@ var FolderStore = assign({}, PrototypeStore, {
       _changedNode = _changedNode.set('ChildWidgetCount', subWidgetCount);
     }
     _folderTree = this.modifyTreebyNode(_folderTree);
-    if (isLoadByWidget) {
+    // if (isLoadByWidget) {
+    //   if (index == children.size - 1) {
+    //     _selectedNode = children.find((item, i) => (i == index - 1));
+    //   } else {
+    //     _selectedNode = children.find((item, i) => (i == index + 1));
+    //   }
+    //
+    // } else {
+    //   _selectedNode = _changedNode;
+    // }
+    if (children.size == 1) {
+      _selectedNode = _changedNode;
+    } else {
       if (index == children.size - 1) {
         _selectedNode = children.find((item, i) => (i == index - 1));
       } else {
         _selectedNode = children.find((item, i) => (i == index + 1));
       }
 
-    } else {
-      _selectedNode = _changedNode;
     }
 
 
