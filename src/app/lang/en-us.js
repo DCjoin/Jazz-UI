@@ -544,8 +544,7 @@ I18N.Message.M06195 = 'The child nodes of the current regional dimension does no
 I18N.Message.M06196 = 'The current hierarchy node does not include tags that shares the same media unit with this tag. ';
 I18N.Message.M06197 = 'The current system dimension does not include tags that shares the same media with this tag. ';
 I18N.Message.M06198 = 'The current regional dimension does not include tags that shares the same media with this tag. ';
-I18N.Message.M06201 = 'Cannot modity the caculated interval to“{0}”。This tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.
-';
+I18N.Message.M06201 = 'Cannot modity the caculated interval to“{0}”。This tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
 I18N.Message.M06202 = 'The corresponding tag already has energy consumption tags of the same media.  ';
 I18N.Message.M06203 = 'This tag is not an energy consumption tag.';
 
@@ -611,8 +610,8 @@ I18N.Message.M12003 = 'Incorrect password ';
 I18N.Message.M12006 = 'Default platform administrator account cannot be deleted.';
 I18N.Message.M12008 = 'The user has been deleted. The page will be refreshed.';
 I18N.Message.M12009 = 'You cannot delete your own account.';
-I18N.Message.M12010 = 'You cannot modify someone else's password.';
-I18N.Message.M12011 = 'You cannot modify someone else's data.';
+I18N.Message.M12010 = 'You cannot modify someone else\'s password.';
+I18N.Message.M12011 = 'You cannot modify someone else\'s data.';
 I18N.Message.M12050 = 'Image file is too large, upload failed. Please upload again.';
 I18N.Message.M12051 = 'Please upload jpg / png / gif / bmp images';
 I18N.Message.M12052 = 'Feedback message was not sent successfully.';
