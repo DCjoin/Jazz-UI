@@ -85,7 +85,7 @@ var DaytimeSelector = React.createClass({
       }
       ddmProps.selectedIndex = index;
 
-      var ddm = <DropDownMenu ref="DropDownMenu" style={this.props.style}
+      var ddm = <DropDownMenu ref="DropDownMenu" style={this.props.style} className="jazz-setting-daytimeSelector"
         {...ddmProps} />;
       return ddm;
     }
