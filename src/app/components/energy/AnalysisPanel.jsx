@@ -117,16 +117,6 @@ let AnalysisPanel = React.createClass({
         </div>;
     } else if (!!this.state.energyData || trigger) {
       energyPart = this.state.chartStrategy.getChartComponentFn(me);
-
-      let chartCmp = me.refs.ChartComponent;
-      if (chartCmp) {
-        let chartObj = chartCmp.refs.highstock;
-        if (!!this.state.calendarType) {
-          CalendarManager.showCalendar(chartObj, this.state.calendarType);
-        } else {
-          CalendarManager.hideCalendar(chartObj);
-        }
-      }
     }
 
     let widgetOptMenu = this.state.chartStrategy.getWidgetOptMenuFn(me);
@@ -143,7 +133,8 @@ let AnalysisPanel = React.createClass({
     } else {
       widgetWd = null;
     }
-    return <div className={'jazz-energy-panel'}>
+
+    let panel = <div className={'jazz-energy-panel'}>
         <div className='header'>
           {collapseButton}
           {sourceUserNameEl}
@@ -173,6 +164,17 @@ let AnalysisPanel = React.createClass({
         {energyPart}
         {errorDialog}
       </div>;
+
+      let chartCmp = me.refs.ChartComponent;
+      if (chartCmp) {
+        let chartObj = chartCmp.refs.highstock;
+        if (!!this.state.calendarType) {
+          CalendarManager.showCalendar(chartObj, this.state.calendarType);
+        } else {
+          CalendarManager.hideCalendar(chartObj);
+        }
+      }
+      return panel;
   },
   componentDidUpdate() {
     if (this.state.chartStrategy.onAnalysisPanelDidUpdateFn) {
