@@ -514,6 +514,7 @@ I18N.Message.M05017 = '所有小组件的仪表盘的Id不完全一致。';
 I18N.Message.M05023 = '{0}{1}';
 I18N.Message.M05023_Sub0 = '以下用户Id已被删除：{0}。';
 I18N.Message.M05023_Sub1 = '无法分享给这些人：{0}。';
+I18N.Message.M05032 = '该名称已存在';
 
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
@@ -764,6 +765,7 @@ I18N.ALarm.Save = {};
 I18N.ALarm.Save.Title = '添加至仪表盘';
 I18N.ALarm.Save.Label = '图表名称';
 I18N.ALarm.Save.Save = '保存';
+I18N.ALarm.Save.Error = '已存在';
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
@@ -797,6 +799,10 @@ I18N.Template.Send = {};
 I18N.Template.Send.Title = '发送{0}';
 I18N.Template.Send.Send = '发送';
 I18N.Template.Send.Cancel = '放弃';
+
+I18N.Title = {};
+I18N.Title.Alarm = '报警';
+I18N.Title.Energy = '能源';
 
 
 

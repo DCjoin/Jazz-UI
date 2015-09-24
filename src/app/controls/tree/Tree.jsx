@@ -19,7 +19,6 @@ var EditNode = null;
 
 var drake = dragula({
   moves: function(el, source, handle) {
-    console.log('moves');
     drag = true;
     el.style.backgroundColor = '#323c4d';
     return true; // elements are always draggable by default
@@ -168,7 +167,10 @@ var Tree = React.createClass({
     EditNode = nodeData;
   },
   generateNodeConent: function(nodeData) {
-    return (this.props.generateNodeConent(nodeData, this));
+    if (!!this.props.generateNodeConent) {
+      return (this.props.generateNodeConent(nodeData, this));
+    }
+
   },
   componentDidMount: function() {
     lastOver = null;
@@ -202,7 +204,7 @@ var Tree = React.createClass({
           selectedNode: this.compatibleJSON(this.props.selectedNode),
           checkedNodes: this.compatibleJSON(this.props.checkedNodes),
           onSelectNode: this.onSelectNode,
-          generateNodeConent: this.generateNodeConent,
+          generateNodeConent: (!!this.props.generateNodeConent) ? this.generateNodeConent : null,
           isFolderOperationTree: this.props.isFolderOperationTree,
 
           putGragulaContainer: this.putGragulaContainer,

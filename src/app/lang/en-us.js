@@ -770,6 +770,10 @@ I18N.Template.Send.Title = 'Send {0}';
 I18N.Template.Send.Send = 'Send';
 I18N.Template.Send.Cancel = 'Drop';
 
+I18N.Title = {};
+I18N.Title.Alarm = 'Jazz-Alarm';
+I18N.Title.Energy = 'Jazz-Energy';
+
 
 
 module.exports = I18N;

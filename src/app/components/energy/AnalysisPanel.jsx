@@ -84,7 +84,7 @@ let AnalysisPanel = React.createClass({
     if (menuIndex === 4) {
       this.exportChart();
     } else if (menuIndex === 1 || menuIndex === 2) {
-      this.save2Dashboard();
+      this.save2Dashboard(menuIndex);
       this.props.onOperationSelect(menuIndex);
     } else {
       this.props.onOperationSelect(menuIndex);
@@ -236,14 +236,6 @@ let AnalysisPanel = React.createClass({
       this.setState({
         calendarType: calcType
       });
-    // let me = this;
-    // if (me.state.chartStrategy.handleCalendarChangeFn) {
-    //   let chartCmp = me.refs.ChartComponent;
-    //   if(chartCmp){
-    //     let chartObj = chartCmp.refs.highstock;
-    //     CalendarManager.showCalendar(chartObj, calendarType);
-    //   }
-    // }
     }
   },
   OnNavigatorChanged: function(obj) {
@@ -588,9 +580,9 @@ let AnalysisPanel = React.createClass({
   exportChart() {
     this.state.chartStrategy.exportChartFn(this);
   },
-  save2Dashboard() {
+  save2Dashboard(menuIndex) {
     if (this.state.chartStrategy.save2DashboardFn) {
-      this.state.chartStrategy.save2DashboardFn(this);
+      this.state.chartStrategy.save2DashboardFn(this, menuIndex);
     }
   },
   _getRelativeDateValue() {
@@ -713,16 +705,15 @@ let AnalysisPanel = React.createClass({
     let codes = EnergyStore.getErrorCodes();
     var errorMsg,
       textArray = [];
-    for (var i = 0; i < codes.length; i++) {
-      errorMsg = CommonFuns.getErrorMessage(codes[i]);
-      textArray.push(errorMsg);
-    // if((codes[0] + '') === '02810'){
-    //   this.state.
-    // }
+    if (!!codes && codes.length) {
+      for (var i = 0; i < codes.length; i++) {
+        errorMsg = CommonFuns.getErrorMessage(codes[i]);
+        textArray.push(errorMsg);
+      }
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
+      }, 0);
     }
-    setTimeout(() => {
-      GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('<br/>'));
-    }, 0);
     return null;
   },
   showStepError(step, EnergyStore) {
@@ -788,10 +779,13 @@ let AnalysisPanel = React.createClass({
     });
   },
   _onWeatherBtnDisabled: function() {
-    this.setState({
-      weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
-      weatherOption: null,
-    });
+    let me = this;
+    setTimeout(() => {
+      me.setState({
+        weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
+        weatherOption: null,
+      })
+    }, 0);
   },
   _onUnitCostBaselineBtnDisabled: function() {
     this.setState({
@@ -1299,7 +1293,16 @@ let AnalysisPanel = React.createClass({
 
     if (tagOptions && tagOptions.length === 1) {
       tagOption = tagOptions[0];
-      let uom = CommonFuns.getUomById(tagOption.uomId);
+      let uomId = tagOption.uomId;
+      if (uomId === undefined) {
+        let energyRawData = EnergyStore.getEnergyRawData();
+        if (energyRawData && energyRawData.TargetEnergyData.length > 0) {
+          uomId = energyRawData.TargetEnergyData[0].Target.UomId;
+        } else {
+          return;
+        }
+      }
+      let uom = CommonFuns.getUomById(uomId);
       tagObj = {
         tagId: tagOption.tagId,
         hierarchyId: tagOption.hierId,
