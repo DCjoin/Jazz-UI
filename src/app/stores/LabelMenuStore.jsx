@@ -4,9 +4,9 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-
 import { Action } from '../constants/actionType/Labeling.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
+
 
 var _hierNode = null;
 var _hierNodes = [];
@@ -120,6 +120,8 @@ var LabelMenuStore = assign({}, PrototypeStore, {
     this.removeListener(CUSTOMER_DATA_CHANGE_EVENT, callback);
   }
 });
+
+var FolderAction = Folder.Action;
 LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.HIERNODE_CHANGED:
@@ -148,6 +150,9 @@ LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_HIERNODES_BY_ID_SUCCESS:
       LabelMenuStore.setHierNodes(action.hierNodes);
       LabelMenuStore.emitHierNodesChange();
+      break;
+    case FolderAction.CREATE_FOLDER_OR_WIDGET:
+
       break;
   }
 });
