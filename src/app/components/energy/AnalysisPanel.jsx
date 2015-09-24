@@ -191,17 +191,20 @@ let AnalysisPanel = React.createClass({
         window.setTimeout(me._initChartPanelByWidgetDto, 0);
       }
     }
-    // if (this.props.bizType === 'Label') {
-    //   if (LabelMenuStore.getHierNode()) {
-    //     this.state.chartStrategy.onHierNodeChangeFn(this);
-    //   }
-    // }
+    if (this.props.bizType === 'Label') {
+      if (LabelMenuStore.getHierNode()) {
+        this.state.chartStrategy.onHierNodeChangeFn(this);
+      }
+    }
 
   },
   componentWillUnmount: function() {
     let me = this;
     this.state.chartStrategy.unbindStoreListenersFn(me);
     this.state.chartStrategy.resetYaxisSelectorFn();
+    if (this.props.bizType === 'Label') {
+      LabelMenuStore.clearHierNodes();
+    }
   },
   onWidgetSaveWindowDismiss: function() {
     this.setState({
@@ -876,51 +879,55 @@ let AnalysisPanel = React.createClass({
     var industyMenuItems = this.state.industyMenuItems;
     var customerMenuItems = this.state.customerMenuItems;
 
-    if (benchmarkOption.IndustryId !== null) {
-      type = 'industryZone';
-    } else if (benchmarkOption.CustomerizedId !== null) {
-      type = 'customized';
-    }
-
-    if (type === 'industryZone') {
-      if (type === curType) {
-        if (selectedLabelItem.industryId === benchmarkOption.IndustryId && selectedLabelItem.zoneId == benchmarkOption.ZoneId) {
-          return;
-        }
-      }
-      for (i = 0; i < industyMenuItems.length; i++) {
-        if (industyMenuItems[i].industryId === benchmarkOption.IndustryId && industyMenuItems[i].zoneId === benchmarkOption.ZoneId) {
-          selectedLabelItem.text = industyMenuItems[i].primaryText;
-          selectedLabelItem.industryId = industyMenuItems[i].IndustryId;
-          selectedLabelItem.zoneId = industyMenuItems[i].ZoneId;
-          selectedLabelItem.value = industyMenuItems[i].value;
-          this.setState({
-            selectedLabelItem: selectedLabelItem,
-            labelType: 'industryZone',
-            labelDisable: false
-          });
-          this.changeToIndustyLabel(labelingType);
-          break;
-        }
-      }
+    if (benchmarkOption === null) {
+      this.enableLabelButton(true);
     } else {
-      if (type === curType) {
-        if (selectedLabelItem.customerizedId === benchmarkOption.CustomerizedId) {
-          return;
-        }
+      if (benchmarkOption.IndustryId !== null) {
+        type = 'industryZone';
+      } else if (benchmarkOption.CustomerizedId !== null) {
+        type = 'customized';
       }
-      for (i = 0; i < customerMenuItems.length; i++) {
-        if (customerMenuItems[i].customerizedId === benchmarkOption.CustomerizedId) {
-          selectedLabelItem.text = customerMenuItems[i].primaryText;
-          selectedLabelItem.customerizedId = customerMenuItems[i].customerizedId;
-          selectedLabelItem.value = customerMenuItems[i].value;
-          this.setState({
-            selectedLabelItem: selectedLabelItem,
-            labelType: 'customized',
-            labelDisable: false
-          });
-          this.changeToCustomizedLabel(labelingType);
-          break;
+
+      if (type === 'industryZone') {
+        if (type === curType) {
+          if (selectedLabelItem.industryId === benchmarkOption.IndustryId && selectedLabelItem.zoneId == benchmarkOption.ZoneId) {
+            return;
+          }
+        }
+        for (i = 0; i < industyMenuItems.length; i++) {
+          if (industyMenuItems[i].industryId === benchmarkOption.IndustryId && industyMenuItems[i].zoneId === benchmarkOption.ZoneId) {
+            selectedLabelItem.text = industyMenuItems[i].primaryText;
+            selectedLabelItem.industryId = industyMenuItems[i].IndustryId;
+            selectedLabelItem.zoneId = industyMenuItems[i].ZoneId;
+            selectedLabelItem.value = industyMenuItems[i].value;
+            this.setState({
+              selectedLabelItem: selectedLabelItem,
+              labelType: 'industryZone',
+              labelDisable: false
+            });
+            this.changeToIndustyLabel(labelingType);
+            break;
+          }
+        }
+      } else {
+        if (type === curType) {
+          if (selectedLabelItem.customerizedId === benchmarkOption.CustomerizedId) {
+            return;
+          }
+        }
+        for (i = 0; i < customerMenuItems.length; i++) {
+          if (customerMenuItems[i].customerizedId === benchmarkOption.CustomerizedId) {
+            selectedLabelItem.text = customerMenuItems[i].primaryText;
+            selectedLabelItem.customerizedId = customerMenuItems[i].customerizedId;
+            selectedLabelItem.value = customerMenuItems[i].value;
+            this.setState({
+              selectedLabelItem: selectedLabelItem,
+              labelType: 'customized',
+              labelDisable: false
+            });
+            this.changeToCustomizedLabel(labelingType);
+            break;
+          }
         }
       }
     }
