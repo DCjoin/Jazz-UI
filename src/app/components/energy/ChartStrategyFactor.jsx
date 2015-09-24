@@ -3974,7 +3974,7 @@ let ChartStrategyFactor = {
         baselineBtnStatus = true;
       }
 
-      let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} className='jazz-AuxiliaryCompareBtn' style={{
+      let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
@@ -3986,7 +3986,7 @@ let ChartStrategyFactor = {
        {weatherEl}
      </ButtonMenu>;
 
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getCarbonAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -3997,7 +3997,7 @@ let ChartStrategyFactor = {
        {calendarEl}
      </ButtonMenu>;
 
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getRatioAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -4011,7 +4011,7 @@ let ChartStrategyFactor = {
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getUnitEnergyAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -4025,7 +4025,7 @@ let ChartStrategyFactor = {
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
        </ButtonMenu>;
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getUnitCostAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -4038,7 +4038,7 @@ let ChartStrategyFactor = {
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getUnitCarbonAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -4056,7 +4056,7 @@ let ChartStrategyFactor = {
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
        </ButtonMenu>;
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
     getCostAuxiliaryCompareBtn(analysisPanel) {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
@@ -4068,7 +4068,7 @@ let ChartStrategyFactor = {
        {calendarEl}
      </ButtonMenu>;
 
-      return configButton;
+      return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     }
   },
   canShareDataWithFnStrategy: {
