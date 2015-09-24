@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 
 let I18N = {};
@@ -544,7 +544,9 @@ I18N.Message.M06195 = 'The child nodes of the current regional dimension does no
 I18N.Message.M06196 = 'The current hierarchy node does not include tags that shares the same media unit with this tag. ';
 I18N.Message.M06197 = 'The current system dimension does not include tags that shares the same media with this tag. ';
 I18N.Message.M06198 = 'The current regional dimension does not include tags that shares the same media with this tag. ';
-I18N.Message.M06201 = 'Cannot modity the caculated interval to“{0}”。This tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
+
+I18N.Message.M06201 = 'Cannot modity the caculated interval to"{0}"。This tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
+
 I18N.Message.M06202 = 'The corresponding tag already has energy consumption tags of the same media.  ';
 I18N.Message.M06203 = 'This tag is not an energy consumption tag.';
 
@@ -797,6 +799,10 @@ I18N.Template.Send = {};
 I18N.Template.Send.Title = 'Send {0}';
 I18N.Template.Send.Send = 'Send';
 I18N.Template.Send.Cancel = 'Quit';
+
+I18N.Title = {};
+I18N.Title.Alarm = 'Alarm';
+I18N.Title.Energy = 'Energy';
 
 
 
