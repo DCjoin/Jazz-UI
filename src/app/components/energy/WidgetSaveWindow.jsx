@@ -14,9 +14,10 @@ var WidgetSaveWindow = React.createClass({
     onSave: React.PropTypes.func,
   },
   _onWidgetSave: function(destNode, newName) {
-    this.props.onSave(destNode);
+    this.props.onSave(destNode, newName);
     this.setState({
-      loading: true
+      loading: true,
+      title: newName
     });
   },
   _onWidgetSaveError: function() {
@@ -54,7 +55,8 @@ var WidgetSaveWindow = React.createClass({
     return {
       errorText: null,
       loading: false,
-      treeLoading: true
+      treeLoading: true,
+      title: (!!this.props.chartTitle) ? this.props.chartTitle : null
     };
   },
   render: function() {
@@ -64,7 +66,7 @@ var WidgetSaveWindow = React.createClass({
     let Props = {
       title: title, //复制文件夹 or 复制图表
       label: label, //文件夹名称 or 图表名称
-      labelName: this.props.chartTitle,
+      labelName: this.state.title,
       firstActionLabel: I18N.ALarm.Save.Save, //复制 or 保存
       onFirstActionTouchTap: this._onWidgetSave,
       onDismiss: this.props.onDismiss,

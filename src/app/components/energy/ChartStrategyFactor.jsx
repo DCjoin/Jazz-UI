@@ -229,7 +229,8 @@ let ChartStrategyFactor = {
       isCalendarDisabledFn: 'isCalendarDisabled',
       clearChartDataFn: 'clearUnitChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      onDeleteButtonClickFn: 'onUnitDeleteButtonClick'
     },
     UnitCost: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -368,6 +369,33 @@ let ChartStrategyFactor = {
           MultiTimespanAction.clearMultiTimespan('both');
         }
         analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+      } else {
+        let energyData = EnergyStore.getEnergyData();
+        analysisPanel.setState({
+          energyData: energyData
+        });
+      }
+    },
+    onUnitDeleteButtonClick(analysisPanel, obj) {
+      let uid = obj.uid;
+
+      AlarmTagAction.removeSearchTagList({
+        tagId: uid
+      });
+
+      EnergyStore.removeSeriesDataByUid(uid);
+      let needReload = EnergyStore.getEnergyData().toJS().Data.length === 2;
+
+      if (needReload) {
+        let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
+          submitParams = EnergyStore.getSubmitParams(),
+          paramsObj = EnergyStore.getParamsObj(),
+          timeRanges = paramsObj.timeRanges,
+          step = paramsObj.step,
+          unitType = submitParams.viewOption.DataOption.UnitType,
+          benchmarkOption = submitParams.benchmarkOption;
+
+          analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
       } else {
         let energyData = EnergyStore.getEnergyData();
         analysisPanel.setState({
@@ -1166,7 +1194,7 @@ let ChartStrategyFactor = {
     }
   },
   save2DashboardFnStrategy: {
-    save2Dashboard(analysisPanel, destNode) {
+    save2Dashboard(analysisPanel, destNode, newName) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = EnergyStore.getTagOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -1276,7 +1304,7 @@ let ChartStrategyFactor = {
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       if (!!analysisPanel.props.isFromAlarm) {
         widgetDto.DashboardId = destNode.get('Id');
-        widgetDto.Name = analysisPanel.props.chartTitle;
+        widgetDto.Name = newName;
         FolderAction.WidgetSave(widgetDto, window.currentCustomerId);
       } else {
         //for this situation destNode is menuIndex
