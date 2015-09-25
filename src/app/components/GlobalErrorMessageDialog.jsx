@@ -27,7 +27,9 @@ let GlobalErrorMessageDialog = React.createClass({
     var _buttonActions = [
       <FlatButton label="确定" secondary={true} onClick={this._hide} />
     ];
-    var snackbar = <Snackbar message={this.state.errorMessage} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
+    var snackbar = <Snackbar style={{
+      maxWidth: 'none'
+    }} message={this.state.errorMessage} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
     var dialog = <Dialog title="Error Message" openImmediately={this.state.isShowed} actions={_buttonActions} modal={false} ref='errorMessageDialog' contentStyle={{
       width: '500px',
       color: '#464949'
@@ -40,7 +42,7 @@ let GlobalErrorMessageDialog = React.createClass({
       output = snackbar;
     }
 
-    return <div className='jazz-error-div'>{output} </div>;
+    return <div>{output} </div>;
   },
   componentDidUpdate() {
     if (this.state.isShowed) {
