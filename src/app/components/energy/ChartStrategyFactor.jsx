@@ -395,7 +395,7 @@ let ChartStrategyFactor = {
           unitType = submitParams.viewOption.DataOption.UnitType,
           benchmarkOption = submitParams.benchmarkOption;
 
-          analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
+        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, unitType, false, benchmarkOption);
       } else {
         let energyData = EnergyStore.getEnergyData();
         analysisPanel.setState({
@@ -3464,7 +3464,7 @@ let ChartStrategyFactor = {
           width: '92px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
-       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' endLeft='-50px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-flat-button'}>
          {searchButton}
        </div>
@@ -3481,7 +3481,7 @@ let ChartStrategyFactor = {
           width: '92px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
-      <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' endLeft='-50px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
       </div>
@@ -3498,7 +3498,7 @@ let ChartStrategyFactor = {
           width: '92px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
-      <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' endLeft='-50px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
       </div>

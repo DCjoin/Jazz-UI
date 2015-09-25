@@ -223,6 +223,7 @@ let DateTimeSelector = React.createClass({
       defaultTime: this.state.endTime,
       showTime: this.props.showTime,
       timeType: 1,
+      left: this.props.endLeft,
       style: dateStyle,
       onChange: function(e, v) {
         me._onChangeDateTime(null, null, v, null);

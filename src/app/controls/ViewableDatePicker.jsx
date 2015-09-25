@@ -193,6 +193,7 @@ var ViewableDatePicker = React.createClass({
         calendar = (<div style={{
           position: 'absolute',
           "zIndex": 99,
+          left: this.props.left || '0',
           width: "280px",
           marginTop: '2px',
           border: '1px solid rgb(235, 235, 235)',
