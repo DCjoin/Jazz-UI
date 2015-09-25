@@ -7,7 +7,6 @@ import Commodity from '../constants/actionType/Commodity.jsx';
 import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
 import Hierarchy from '../constants/actionType/Hierarchy.jsx';
-import LabelMenuAction from '../actions/LabelMenuAction.jsx';
 import Immutable from 'immutable';
 
 const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
@@ -70,7 +69,7 @@ var CommodityStore = assign({}, PrototypeStore, {
     return _hierNode;
   },
   setDefaultNode: function(widgetDto) {
-    if (widgetDto.WidgetType != 5) {
+    if (widgetDto.WidgetType != 'Ranking') {
       _defaultHierNode = {
         Id: _hierNode.hierId,
         Name: _hierNode.hierName

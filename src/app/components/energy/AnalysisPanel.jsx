@@ -117,16 +117,6 @@ let AnalysisPanel = React.createClass({
         </div>;
     } else if (!!this.state.energyData || trigger) {
       energyPart = this.state.chartStrategy.getChartComponentFn(me);
-
-      let chartCmp = me.refs.ChartComponent;
-      if (chartCmp) {
-        let chartObj = chartCmp.refs.highstock;
-        if (!!this.state.calendarType) {
-          CalendarManager.showCalendar(chartObj, this.state.calendarType);
-        } else {
-          CalendarManager.hideCalendar(chartObj);
-        }
-      }
     }
 
     let widgetOptMenu = this.state.chartStrategy.getWidgetOptMenuFn(me);
@@ -143,27 +133,28 @@ let AnalysisPanel = React.createClass({
     } else {
       widgetWd = null;
     }
-    return <div className={'jazz-energy-panel'}>
+
+    let panel = <div className={'jazz-energy-panel'}>
         <div className='header'>
           {collapseButton}
           {sourceUserNameEl}
           <div className={'jazz-alarm-chart-toolbar-container'}>
               <div className={'title'} style={{
-        display: 'flex',
-        alignItems: 'center'
-      }}>
+      display: 'flex',
+      alignItems: 'center'
+    }}>
                 <div className={'content'}>
                   {me.props.chartTitle}
                 </div>
                 <IconButton iconClassName="icon-save" iconStyle={{
-        fontSize: '16px'
-      }} style={{
-        padding: '0px',
-        height: '18px',
-        width: '18px',
-        marginLeft: '10px'
-      }} onClick={this._onChart2WidgetClick}
-      disabled={!this.state.energyData}/>
+      fontSize: '16px'
+    }} style={{
+      padding: '0px',
+      height: '18px',
+      width: '18px',
+      marginLeft: '10px'
+    }} onClick={this._onChart2WidgetClick}
+    disabled={!this.state.energyData}/>
                 {widgetOptMenu}
                 {widgetWd}
               </div>
@@ -173,6 +164,17 @@ let AnalysisPanel = React.createClass({
         {energyPart}
         {errorDialog}
       </div>;
+
+    let chartCmp = me.refs.ChartComponent;
+    if (chartCmp) {
+      let chartObj = chartCmp.refs.highstock;
+      if (!!this.state.calendarType) {
+        CalendarManager.showCalendar(chartObj, this.state.calendarType);
+      } else {
+        CalendarManager.hideCalendar(chartObj);
+      }
+    }
+    return panel;
   },
   componentDidUpdate() {
     if (this.state.chartStrategy.onAnalysisPanelDidUpdateFn) {
@@ -191,12 +193,21 @@ let AnalysisPanel = React.createClass({
         window.setTimeout(me._initChartPanelByWidgetDto, 0);
       }
     }
+    if (this.props.bizType === 'Label') {
+      if (LabelMenuStore.getHierNode()) {
+        this.state.chartStrategy.onHierNodeChangeFn(this);
+      }
+    }
 
   },
   componentWillUnmount: function() {
     let me = this;
     this.state.chartStrategy.unbindStoreListenersFn(me);
     this.state.chartStrategy.resetYaxisSelectorFn();
+    if (this.props.bizType === 'Label') {
+      LabelMenuStore.clearHierNodes();
+      LabelMenuStore.clearHierNode();
+    }
   },
   onWidgetSaveWindowDismiss: function() {
     this.setState({
@@ -871,51 +882,55 @@ let AnalysisPanel = React.createClass({
     var industyMenuItems = this.state.industyMenuItems;
     var customerMenuItems = this.state.customerMenuItems;
 
-    if (benchmarkOption.IndustryId !== null) {
-      type = 'industryZone';
-    } else if (benchmarkOption.CustomerizedId !== null) {
-      type = 'customized';
-    }
-
-    if (type === 'industryZone') {
-      if (type === curType) {
-        if (selectedLabelItem.industryId === benchmarkOption.IndustryId && selectedLabelItem.zoneId == benchmarkOption.ZoneId) {
-          return;
-        }
-      }
-      for (i = 0; i < industyMenuItems.length; i++) {
-        if (industyMenuItems[i].industryId === benchmarkOption.IndustryId && industyMenuItems[i].zoneId === benchmarkOption.ZoneId) {
-          selectedLabelItem.text = industyMenuItems[i].primaryText;
-          selectedLabelItem.industryId = industyMenuItems[i].IndustryId;
-          selectedLabelItem.zoneId = industyMenuItems[i].ZoneId;
-          selectedLabelItem.value = industyMenuItems[i].value;
-          this.setState({
-            selectedLabelItem: selectedLabelItem,
-            labelType: 'industryZone',
-            labelDisable: false
-          });
-          this.changeToIndustyLabel(labelingType);
-          break;
-        }
-      }
+    if (benchmarkOption === null) {
+      this.enableLabelButton(true);
     } else {
-      if (type === curType) {
-        if (selectedLabelItem.customerizedId === benchmarkOption.CustomerizedId) {
-          return;
-        }
+      if (benchmarkOption.IndustryId !== null) {
+        type = 'industryZone';
+      } else if (benchmarkOption.CustomerizedId !== null) {
+        type = 'customized';
       }
-      for (i = 0; i < customerMenuItems.length; i++) {
-        if (customerMenuItems[i].customerizedId === benchmarkOption.CustomerizedId) {
-          selectedLabelItem.text = customerMenuItems[i].primaryText;
-          selectedLabelItem.customerizedId = customerMenuItems[i].customerizedId;
-          selectedLabelItem.value = customerMenuItems[i].value;
-          this.setState({
-            selectedLabelItem: selectedLabelItem,
-            labelType: 'customized',
-            labelDisable: false
-          });
-          this.changeToCustomizedLabel(labelingType);
-          break;
+
+      if (type === 'industryZone') {
+        if (type === curType) {
+          if (selectedLabelItem.industryId === benchmarkOption.IndustryId && selectedLabelItem.zoneId == benchmarkOption.ZoneId) {
+            return;
+          }
+        }
+        for (i = 0; i < industyMenuItems.length; i++) {
+          if (industyMenuItems[i].industryId === benchmarkOption.IndustryId && industyMenuItems[i].zoneId === benchmarkOption.ZoneId) {
+            selectedLabelItem.text = industyMenuItems[i].primaryText;
+            selectedLabelItem.industryId = industyMenuItems[i].IndustryId;
+            selectedLabelItem.zoneId = industyMenuItems[i].ZoneId;
+            selectedLabelItem.value = industyMenuItems[i].value;
+            this.setState({
+              selectedLabelItem: selectedLabelItem,
+              labelType: 'industryZone',
+              labelDisable: false
+            });
+            this.changeToIndustyLabel(labelingType);
+            break;
+          }
+        }
+      } else {
+        if (type === curType) {
+          if (selectedLabelItem.customerizedId === benchmarkOption.CustomerizedId) {
+            return;
+          }
+        }
+        for (i = 0; i < customerMenuItems.length; i++) {
+          if (customerMenuItems[i].customerizedId === benchmarkOption.CustomerizedId) {
+            selectedLabelItem.text = customerMenuItems[i].primaryText;
+            selectedLabelItem.customerizedId = customerMenuItems[i].customerizedId;
+            selectedLabelItem.value = customerMenuItems[i].value;
+            this.setState({
+              selectedLabelItem: selectedLabelItem,
+              labelType: 'customized',
+              labelDisable: false
+            });
+            this.changeToCustomizedLabel(labelingType);
+            break;
+          }
         }
       }
     }
