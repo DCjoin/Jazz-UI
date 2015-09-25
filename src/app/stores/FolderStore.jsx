@@ -191,39 +191,39 @@ var FolderStore = assign({}, PrototypeStore, {
     deleteItem: function(deleteNode, isLoadByWidget) {
       //如果左边选中的是一个widget，在右边执行删除后，左边焦点项下移
       var parent = this.getParent(deleteNode);
-    var children = parent.get('Children');
-    var index = children.findIndex(item => item.get('Id') == deleteNode.get('Id'));
-    parent = parent.set('Children', children.delete(index));
-    _parentId = parent.get('Id');
-    _changedNode = parent;
-    if (deleteNode.get('Type') == 6) {
-      let subFolderCount = _changedNode.get('ChildFolderCount') - 1;
-      _changedNode = _changedNode.set('ChildFolderCount', subFolderCount);
-    } else {
-      let subWidgetCount = _changedNode.get('ChildWidgetCount') - 1;
-      _changedNode = _changedNode.set('ChildWidgetCount', subWidgetCount);
-    }
-    _folderTree = this.modifyTreebyNode(_folderTree);
-    // if (isLoadByWidget) {
-    //   if (index == children.size - 1) {
-    //     _selectedNode = children.find((item, i) => (i == index - 1));
-    //   } else {
-    //     _selectedNode = children.find((item, i) => (i == index + 1));
-    //   }
-    //
-    // } else {
-    //   _selectedNode = _changedNode;
-    // }
-    if (children.size == 1) {
-      _selectedNode = _changedNode;
-    } else {
-      if (index == children.size - 1) {
+      var children = parent.get('Children');
+      var index = children.findIndex(item => item.get('Id') == deleteNode.get('Id'));
+      parent = parent.set('Children', children.delete(index));
+      _parentId = parent.get('Id');
+      _changedNode = parent;
+      if (deleteNode.get('Type') == 6) {
+        let subFolderCount = _changedNode.get('ChildFolderCount') - 1;
+        _changedNode = _changedNode.set('ChildFolderCount', subFolderCount);
+      } else {
+        let subWidgetCount = _changedNode.get('ChildWidgetCount') - 1;
+        _changedNode = _changedNode.set('ChildWidgetCount', subWidgetCount);
+      }
+      _folderTree = this.modifyTreebyNode(_folderTree);
+      // if (isLoadByWidget) {
+      //   if (index == children.size - 1) {
+      //     _selectedNode = children.find((item, i) => (i == index - 1));
+      //   } else {
+      //     _selectedNode = children.find((item, i) => (i == index + 1));
+      //   }
+      //
+      // } else {
+      //   _selectedNode = _changedNode;
+      // }
+      if (children.size == 1) {
+        _selectedNode = _changedNode;
+      } else {
+        if (index == children.size - 1) {
           _selectedNode = children.find((item, i) => (i == index - 1));
         } else {
           _selectedNode = children.find((item, i) => (i == index + 1));
         }
 
-    }
+      }
 
 
     },
@@ -363,6 +363,12 @@ var FolderStore = assign({}, PrototypeStore, {
     },
     getSendStatus: function() {
       return _sendStatus;
+    },
+    updateWidgetDtosSuccess: function(widgetDto) {
+      _changedNode = Immutable.fromJS(widgetDto);
+      _parentId = widgetDto.Id;
+      _folderTree = this.modifyTreebyNode(_folderTree);
+      _selectedNode = _changedNode;
     },
     moveItem: function(sourceNode, parentNode, nextNode, newNode) {
       this.deleteItem(sourceNode);
@@ -627,6 +633,11 @@ var FolderStore = assign({}, PrototypeStore, {
         break;
       case FolderAction.ALARM_WIDGET_SAVE_SUCCESS:
         FolderStore.emitWidgetSaveSuccessChange();
+        break;
+      case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
+        FolderStore.updateWidgetDtosSuccess(action.widgetDto);
+        FolderStore.emitFolderTreeChange();
+        FolderStore.emitSelectedNodeChange();
         break;
     }
   });
