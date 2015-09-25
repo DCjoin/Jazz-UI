@@ -36,6 +36,9 @@ let AnalysisPanel = React.createClass({
     bizType: React.PropTypes.oneOf(['Energy', 'Unit', 'Ratio', 'Label', 'Rank']),
     onOperationSelect: React.PropTypes.func,
   },
+  contextTypes: {
+    router: React.PropTypes.func
+  },
   getDefaultProps() {
     return {
       //bizType:'Energy',
@@ -1239,9 +1242,15 @@ let AnalysisPanel = React.createClass({
   },
   pushIndustryMenuItem(industryId, zoneId, labelItem, industyMenuItems) {
     var labelMenuItem = {};
+    var industryText = '';
+    if (this.context.router.getCurrentParams().lang === 'zh-cn') {
+      industryText = labelItem.get('ZoneComment') + labelItem.get('IndustryComment');
+    } else {
+      industryText = labelItem.get('ZoneComment') + ' ' + labelItem.get('IndustryComment');
+    }
     labelMenuItem.industryId = industryId;
     labelMenuItem.zoneId = zoneId;
-    labelMenuItem.primaryText = labelItem.get('ZoneComment') + labelItem.get('IndustryComment');
+    labelMenuItem.primaryText = industryText;
     labelMenuItem.value = "" + zoneId + "/" + industryId;
     industyMenuItems.push(labelMenuItem);
   },
