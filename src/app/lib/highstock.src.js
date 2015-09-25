@@ -19206,11 +19206,23 @@ end
 					}
 					//rem add start
 					if (item) {
-						item.chart.trigger(strLegendItemClick, {
-							event: event,
-							seriesItem: item,
-							enableHide: item.options.enableHide
-						});
+						var triggerTemp;
+						if (item.chart) {
+							//	triggerTemp = item.chart.trigger;
+							item.chart.trigger(strLegendItemClick, {
+								event: event,
+								seriesItem: item,
+								enableHide: item.options.enableHide
+							});
+						} else {
+							//	triggerTemp = item.series.chart.trigger;
+							item.series.chart.trigger(strLegendItemClick, {
+								event: event,
+								seriesItem: item,
+								enableHide: item.options.enableHide
+							});
+						}
+
 					}
 					//rem add end
 				});
