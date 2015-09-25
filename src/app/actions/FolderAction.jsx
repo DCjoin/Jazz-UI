@@ -180,6 +180,7 @@ let FolderAction = {
           type: Action.MOVE_ITEM,
           sourceNode: Immutable.fromJS(sourceNode),
           parentNode: Immutable.fromJS(parentNode),
+          previousNode: Immutable.fromJS(previousNode),
           nextNode: Immutable.fromJS(nextNode),
           newNode: Immutable.fromJS(newNode)
         });

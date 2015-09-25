@@ -168,12 +168,18 @@ var FolderStore = assign({}, PrototypeStore, {
       _folderTree = this.modifyTreebyNode(_folderTree);
       _selectedNode = newNode;
     },
-    insertItem: function(nextItem, newNode) {
-      var parent = this.getParent(nextItem);
+    insertItem: function(preItem, nextItem, newNode) {
+      var parent = (!!preItem) ? this.getParent(preItem) : this.getParent(nextItem);
       var children = parent.get('Children');
-      var index = children.indexOf(nextItem);
-      var pre = children.filter((item, i) => (i < index)),
+      var index = (!!preItem) ? children.indexOf(preItem) : children.indexOf(nextItem);
+      var pre, next;
+      if (!!preItem) {
+        pre = children.filter((item, i) => (i <= index));
+        next = children.filter((item, i) => (i > index));
+      } else {
+        pre = children.filter((item, i) => (i < index));
         next = children.filter((item, i) => (i >= index));
+      }
       var temp = pre.push(newNode).concat(next);
       parent = parent.set('Children', temp);
       _parentId = parent.get('Id');
@@ -370,13 +376,14 @@ var FolderStore = assign({}, PrototypeStore, {
       _folderTree = this.modifyTreebyNode(_folderTree);
       _selectedNode = _changedNode;
     },
-    moveItem: function(sourceNode, parentNode, nextNode, newNode) {
+    moveItem: function(sourceNode, parentNode, preNode, nextNode, newNode) {
       this.deleteItem(sourceNode);
-      if (nextNode === null) {
-        this.copyItem(parentNode, newNode);
-      } else {
-        this.insertItem(nextNode, newNode);
-      }
+      // if (nextNode === null) {
+      //   this.copyItem(parentNode, newNode);
+      // } else {
+      //   this.insertItem(nextNode, newNode);
+      // }
+      this.insertItem(preNode, nextNode, newNode);
     },
     ModfiyReadingStatus: function(nodeData) {
       _parentId = nodeData.get('Id');
@@ -606,7 +613,7 @@ var FolderStore = assign({}, PrototypeStore, {
         FolderStore.emitShareStatusChange();
         break;
       case FolderAction.MOVE_ITEM:
-        FolderStore.moveItem(action.sourceNode, action.parentNode, action.nextNode, action.newNode);
+        FolderStore.moveItem(action.sourceNode, action.parentNode, action.previousNode, action.nextNode, action.newNode);
         FolderStore.emitMoveItemSuccessChange();
         FolderStore.emitSelectedNodeChange();
         break;
