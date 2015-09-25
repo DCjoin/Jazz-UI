@@ -37,7 +37,7 @@ var TreeNodeContent = React.createClass({
 
   getInitialState: function() {
     return {
-      isSelect: (this.props.nodeData.get('Id') == this.props.selectedNode.get('Id')),
+      isSelect: null,
       text: this.props.nodeData.get("Name"),
       readStatus: true
     };

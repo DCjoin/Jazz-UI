@@ -90,8 +90,8 @@ let AnalysisPanel = React.createClass({
       this.props.onOperationSelect(menuIndex);
     }
   },
-  onWidgetSaveWindow: function(destNode) {
-    this.state.chartStrategy.save2DashboardFn(this, destNode);
+  onWidgetSaveWindow: function(destNode, newName) {
+    this.state.chartStrategy.save2DashboardFn(this, destNode, newName);
   },
   render() {
     let me = this,

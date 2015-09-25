@@ -8,6 +8,7 @@ import AlarmTag from '../constants/actionType/AlarmTag.jsx';
 import Folder from '../constants/actionType/Folder.jsx';
 import Hierarchy from '../constants/actionType/Hierarchy.jsx';
 import Immutable from 'immutable';
+import HierarchyStore from './HierarchyStore.jsx';
 
 const ENERGY_CONSUMPTION_TYPE_CHANGED_EVENT = 'energyconsumptiontypechanged',
   COMMODITY_LIST_CHANGED_EVENT = 'commoditylistchanged',
@@ -24,6 +25,7 @@ let _energyConsumptionType = null, // Carbon or Cost
   _hierNode = null,
   _hierTree = null,
   _defaultHierNode = null,
+  _defaultHierNode_Label = null,
   _currentHierId = null,
   _currentHierName = null,
   _currentDimNode = null,
@@ -74,11 +76,15 @@ var CommodityStore = assign({}, PrototypeStore, {
         Id: _hierNode.hierId,
         Name: _hierNode.hierName
       };
+      _defaultHierNode_Label = HierarchyStore.getHierNodeById(_hierNode.hierId);
     }
 
   },
   getDefaultNode: function() {
     return _defaultHierNode;
+  },
+  getDefaultNodeForLabel: function() {
+    return _defaultHierNode_Label;
   },
   setCurrentDimInfo: function(node) {
     _currentDimNode = {

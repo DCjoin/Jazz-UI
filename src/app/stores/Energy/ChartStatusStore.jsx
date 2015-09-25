@@ -55,7 +55,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
           if (name === 'ChartType') {
             item[name] = me.getNumByChartType(value);
           } else {
-            item[name] = value;
+            item.IsDisplay = value;
           }
           return;
         }
@@ -141,10 +141,19 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     if (_seriesStatus && _seriesStatus.length > 0) {
       _seriesStatus.forEach((item, index) => {
         map[item.id] = item;
+        var flag = false;
+        series.forEach((series_item) => {
+          if (series_item.id == item.id) {
+            flag = true;
+          }
+        });
+        if (!flag) {
+          _seriesStatus.splice(index, 1);
+        }
       });
     }
-    if(series && series[0]){
-      if(series[0].type === 'pie'){
+    if (series && series[0]) {
+      if (series[0].type === 'pie') {
         series = series[0].data;
       }
     }
