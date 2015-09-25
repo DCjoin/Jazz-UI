@@ -180,6 +180,7 @@ let FolderAction = {
           type: Action.MOVE_ITEM,
           sourceNode: Immutable.fromJS(sourceNode),
           parentNode: Immutable.fromJS(parentNode),
+          previousNode: Immutable.fromJS(previousNode),
           nextNode: Immutable.fromJS(nextNode),
           newNode: Immutable.fromJS(newNode)
         });
@@ -224,14 +225,14 @@ let FolderAction = {
       params: {
         widgetDto: widgetDto
       },
-      success: function(widgetDto) {
+      success: function(Dto) {
         if (!menuIndex) {
           GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
         }
 
         AppDispatcher.dispatch({
           type: Action.UPDATE_WIDGETDTOS_SUCCESS,
-          widgetDto: originWidgetDto
+          widgetDto: Dto
         });
       },
       error: function(err, res) {

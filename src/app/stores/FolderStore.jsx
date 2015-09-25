@@ -168,12 +168,18 @@ var FolderStore = assign({}, PrototypeStore, {
       _folderTree = this.modifyTreebyNode(_folderTree);
       _selectedNode = newNode;
     },
-    insertItem: function(nextItem, newNode) {
-      var parent = this.getParent(nextItem);
+    insertItem: function(preItem, nextItem, newNode) {
+      var parent = (!!preItem) ? this.getParent(preItem) : this.getParent(nextItem);
       var children = parent.get('Children');
-      var index = children.indexOf(nextItem);
-      var pre = children.filter((item, i) => (i < index)),
+      var index = (!!preItem) ? children.indexOf(preItem) : children.indexOf(nextItem);
+      var pre, next;
+      if (!!preItem) {
+        pre = children.filter((item, i) => (i <= index));
+        next = children.filter((item, i) => (i > index));
+      } else {
+        pre = children.filter((item, i) => (i < index));
         next = children.filter((item, i) => (i >= index));
+      }
       var temp = pre.push(newNode).concat(next);
       parent = parent.set('Children', temp);
       _parentId = parent.get('Id');
@@ -191,39 +197,39 @@ var FolderStore = assign({}, PrototypeStore, {
     deleteItem: function(deleteNode, isLoadByWidget) {
       //如果左边选中的是一个widget，在右边执行删除后，左边焦点项下移
       var parent = this.getParent(deleteNode);
-    var children = parent.get('Children');
-    var index = children.findIndex(item => item.get('Id') == deleteNode.get('Id'));
-    parent = parent.set('Children', children.delete(index));
-    _parentId = parent.get('Id');
-    _changedNode = parent;
-    if (deleteNode.get('Type') == 6) {
-      let subFolderCount = _changedNode.get('ChildFolderCount') - 1;
-      _changedNode = _changedNode.set('ChildFolderCount', subFolderCount);
-    } else {
-      let subWidgetCount = _changedNode.get('ChildWidgetCount') - 1;
-      _changedNode = _changedNode.set('ChildWidgetCount', subWidgetCount);
-    }
-    _folderTree = this.modifyTreebyNode(_folderTree);
-    // if (isLoadByWidget) {
-    //   if (index == children.size - 1) {
-    //     _selectedNode = children.find((item, i) => (i == index - 1));
-    //   } else {
-    //     _selectedNode = children.find((item, i) => (i == index + 1));
-    //   }
-    //
-    // } else {
-    //   _selectedNode = _changedNode;
-    // }
-    if (children.size == 1) {
-      _selectedNode = _changedNode;
-    } else {
-      if (index == children.size - 1) {
+      var children = parent.get('Children');
+      var index = children.findIndex(item => item.get('Id') == deleteNode.get('Id'));
+      parent = parent.set('Children', children.delete(index));
+      _parentId = parent.get('Id');
+      _changedNode = parent;
+      if (deleteNode.get('Type') == 6) {
+        let subFolderCount = _changedNode.get('ChildFolderCount') - 1;
+        _changedNode = _changedNode.set('ChildFolderCount', subFolderCount);
+      } else {
+        let subWidgetCount = _changedNode.get('ChildWidgetCount') - 1;
+        _changedNode = _changedNode.set('ChildWidgetCount', subWidgetCount);
+      }
+      _folderTree = this.modifyTreebyNode(_folderTree);
+      // if (isLoadByWidget) {
+      //   if (index == children.size - 1) {
+      //     _selectedNode = children.find((item, i) => (i == index - 1));
+      //   } else {
+      //     _selectedNode = children.find((item, i) => (i == index + 1));
+      //   }
+      //
+      // } else {
+      //   _selectedNode = _changedNode;
+      // }
+      if (children.size == 1) {
+        _selectedNode = _changedNode;
+      } else {
+        if (index == children.size - 1) {
           _selectedNode = children.find((item, i) => (i == index - 1));
         } else {
           _selectedNode = children.find((item, i) => (i == index + 1));
         }
 
-    }
+      }
 
 
     },
@@ -364,13 +370,20 @@ var FolderStore = assign({}, PrototypeStore, {
     getSendStatus: function() {
       return _sendStatus;
     },
-    moveItem: function(sourceNode, parentNode, nextNode, newNode) {
+    updateWidgetDtosSuccess: function(widgetDto) {
+      _changedNode = Immutable.fromJS(widgetDto);
+      _parentId = widgetDto.Id;
+      _folderTree = this.modifyTreebyNode(_folderTree);
+      _selectedNode = _changedNode;
+    },
+    moveItem: function(sourceNode, parentNode, preNode, nextNode, newNode) {
       this.deleteItem(sourceNode);
-      if (nextNode === null) {
-        this.copyItem(parentNode, newNode);
-      } else {
-        this.insertItem(nextNode, newNode);
-      }
+      // if (nextNode === null) {
+      //   this.copyItem(parentNode, newNode);
+      // } else {
+      //   this.insertItem(nextNode, newNode);
+      // }
+      this.insertItem(preNode, nextNode, newNode);
     },
     ModfiyReadingStatus: function(nodeData) {
       _parentId = nodeData.get('Id');
@@ -600,7 +613,7 @@ var FolderStore = assign({}, PrototypeStore, {
         FolderStore.emitShareStatusChange();
         break;
       case FolderAction.MOVE_ITEM:
-        FolderStore.moveItem(action.sourceNode, action.parentNode, action.nextNode, action.newNode);
+        FolderStore.moveItem(action.sourceNode, action.parentNode, action.previousNode, action.nextNode, action.newNode);
         FolderStore.emitMoveItemSuccessChange();
         FolderStore.emitSelectedNodeChange();
         break;
@@ -627,6 +640,11 @@ var FolderStore = assign({}, PrototypeStore, {
         break;
       case FolderAction.ALARM_WIDGET_SAVE_SUCCESS:
         FolderStore.emitWidgetSaveSuccessChange();
+        break;
+      case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
+        FolderStore.updateWidgetDtosSuccess(action.widgetDto);
+        FolderStore.emitFolderTreeChange();
+        FolderStore.emitSelectedNodeChange();
         break;
     }
   });
