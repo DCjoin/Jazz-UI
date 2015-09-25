@@ -456,11 +456,11 @@ let ChartComponentBox = React.createClass({
       flagSerie,
       factory = EnergyCommentFactory;
 
-      if(this.props.chartType ==='pie' || this.props.chartType ==='stack'){
-        let options = seriesItem.options;
-        ChartStatusAction.modifySingleStatus(options.id, 'IsDisplay', seriesItem.visible);
-        return;
-      }
+    if (this.props.chartType === 'pie' || this.props.chartType === 'stack') {
+      let options = seriesItem.options;
+      ChartStatusAction.modifySingleStatus(options.id, 'IsDisplay', seriesItem.visible);
+      return;
+    }
 
     if (enableHide) {
       flagSerie = factory.getFlagSeriesByOnSeriesId(seriesItem.options.id, seriesItem.chart.series, 'comment');
@@ -505,7 +505,8 @@ let ChartComponentBox = React.createClass({
   },
   _initChartObj() {
     var data = this.props.energyData.toJS();
-    var newConfig = assign({}, defaultConfig,
+    var cloneConfig = _.cloneDeep(defaultConfig);
+    var newConfig = assign({}, cloneConfig,
       {
         animation: true,
         title: {
