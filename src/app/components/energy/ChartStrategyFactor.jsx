@@ -1166,7 +1166,7 @@ let ChartStrategyFactor = {
     }
   },
   save2DashboardFnStrategy: {
-    save2Dashboard(analysisPanel, destNode) {
+    save2Dashboard(analysisPanel, destNode, newName) {
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = EnergyStore.getTagOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -1276,7 +1276,7 @@ let ChartStrategyFactor = {
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       if (!!analysisPanel.props.isFromAlarm) {
         widgetDto.DashboardId = destNode.get('Id');
-        widgetDto.Name = analysisPanel.props.chartTitle;
+        widgetDto.Name = newName;
         FolderAction.WidgetSave(widgetDto, window.currentCustomerId);
       } else {
         //for this situation destNode is menuIndex
