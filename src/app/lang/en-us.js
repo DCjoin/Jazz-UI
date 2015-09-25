@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 
 let I18N = {};
@@ -435,6 +435,14 @@ I18N.Message.M02507 = 'The heating area attribute is missing, and chart cannot b
 I18N.Message.M02508 = 'The cooling area attribute is missing, and chart cannot be drawn. Please try again after setting.';
 I18N.Message.M02509 = 'The energy labeling has been deleted. Please select again.';
 I18N.Message.M02510 = 'This energy labeling has no data. Please select again.';
+I18N.Message.M02511 = 'Can not draw chart because missing room property, please set it and try again.';
+I18N.Message.M02512 = 'Can not draw chart because missing used room property, please set it and try again.';
+I18N.Message.M02513 = 'Can not draw chart because missing bed property, please set it and try again.';
+I18N.Message.M02514 = 'Can not draw chart because missing used bed property, please set it and try again.';
+I18N.Message.M02515 = 'Can not draw chart because missing room property, please set it and try again.';
+I18N.Message.M02516 = 'Can not draw chart because missing used room property, please set it and try again.';
+I18N.Message.M02517 = 'Can not draw chart because missing bed property, please set it and try again.';
+I18N.Message.M02518 = 'Can not draw chart because missing used bed property, please set it and try again.';
 I18N.Message.M02701 = 'Some of the selected hierarchy has been deleted,and cannot be ranked.';
 I18N.Message.M02809 = 'The area of the selected tag does not support the weather function.';
 I18N.Message.M02810 = 'The area of the selected tag does not support the weather function.';
@@ -514,6 +522,7 @@ I18N.Message.M05017 = 'The ID of dashboards for all widgets are not exactly the 
 I18N.Message.M05023 = '{0}{1}';
 I18N.Message.M05023_Sub0 = 'The following user ID have been deleted: {0}.';
 I18N.Message.M05023_Sub1 = 'Unable to share with these people: {0}.';
+I18N.Message.M05032 = 'Same room existed';
 
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
@@ -544,7 +553,7 @@ I18N.Message.M06195 = 'The child nodes of the current regional dimension does no
 I18N.Message.M06196 = 'The current hierarchy node does not include tags that shares the same media unit with this tag. ';
 I18N.Message.M06197 = 'The current system dimension does not include tags that shares the same media with this tag. ';
 I18N.Message.M06198 = 'The current regional dimension does not include tags that shares the same media with this tag. ';
-I18N.Message.M06201 = 'Cannot modity the caculated interval to"{0}"。This tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
+I18N.Message.M06201 = 'Cannot modity the caculated interval to“{0}”。This tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
 I18N.Message.M06202 = 'The corresponding tag already has energy consumption tags of the same media.  ';
 I18N.Message.M06203 = 'This tag is not an energy consumption tag.';
 
@@ -764,6 +773,7 @@ I18N.ALarm.Save = {};
 I18N.ALarm.Save.Title = 'Add to dashboard';
 I18N.ALarm.Save.Label = 'Chart name';
 I18N.ALarm.Save.Save = 'Save';
+I18N.ALarm.Save.Error = 'Existed';
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = 'Tag {0} / {1} has been selected ';

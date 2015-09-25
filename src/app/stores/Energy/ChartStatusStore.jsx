@@ -143,6 +143,11 @@ let ChartStatusStore = assign({}, PrototypeStore, {
         map[item.id] = item;
       });
     }
+    if(series && series[0]){
+      if(series[0].type === 'pie'){
+        series = series[0].data;
+      }
+    }
     series.forEach((item, index) => {
       if (item.id && map[item.id]) {
         item.visible = map[item.id].IsDisplay;
