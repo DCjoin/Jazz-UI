@@ -55,7 +55,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
           if (name === 'ChartType') {
             item[name] = me.getNumByChartType(value);
           } else {
-            item[name] = value;
+            item.IsDisplay = value;
           }
           return;
         }

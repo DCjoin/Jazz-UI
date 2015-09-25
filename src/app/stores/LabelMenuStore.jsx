@@ -151,9 +151,6 @@ LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
       LabelMenuStore.setHierNodes(action.hierNodes);
       LabelMenuStore.emitHierNodesChange();
       break;
-    case FolderAction.CREATE_FOLDER_OR_WIDGET:
-
-      break;
   }
 });
 

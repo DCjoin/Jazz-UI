@@ -197,7 +197,7 @@ let FolderAction = {
       AppDispatcher.dispatch({
         type: Action.GET_WIDGETDTOS_LOADING,
         selectedNode: selectedNode
-      })
+      });
     }, 0);
 
     Ajax.post('/Dashboard.svc/GetWidgetDtos', {
