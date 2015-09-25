@@ -456,6 +456,12 @@ let ChartComponentBox = React.createClass({
       flagSerie,
       factory = EnergyCommentFactory;
 
+      if(this.props.chartType ==='pie' || this.props.chartType ==='stack'){
+        let options = seriesItem.options;
+        ChartStatusAction.modifySingleStatus(options.id, 'IsDisplay', seriesItem.visible);
+        return;
+      }
+
     if (enableHide) {
       flagSerie = factory.getFlagSeriesByOnSeriesId(seriesItem.options.id, seriesItem.chart.series, 'comment');
       if (flagSerie) {

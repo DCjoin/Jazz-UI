@@ -219,6 +219,7 @@ let ChartReaderStrategyFactor = {
     setItemByTarget(item, target) {
       item.name = target.Name;
       item.uid = target.TargetId;
+      item.dType = target.Type;
       item.option = {};
     },
     setCarbonItemByTarget(item, target) {
