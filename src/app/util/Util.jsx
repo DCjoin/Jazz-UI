@@ -597,7 +597,7 @@ let CommonFuns = {
         //hour 20-21,08/08, 2014
         {
         //currentLanguage： 0 中文, 1 英文
-        if (false && window.currentLanguage == 1) {
+        if (window.currentLanguage == 1) {
           str = dateFormat(date, ft.Hour);
           newDate = dateAdd(date, 1, 'hours');
           if (newDate.getHours() < date.getHours()) { //2010年10月3日23点-3日24点
@@ -640,7 +640,7 @@ let CommonFuns = {
         newDate = dateAdd(date, 6, 'days');
         //因为week显示时，中英文格式差距较大，所以分开处理
         //currentLanguage： 0 中文, 1 英文
-        if (false && window.currentLanguage == 1) {
+        if (window.currentLanguage == 1) {
           if (newDate.getFullYear() > date.getFullYear()) {
             //12/29,2010-1/5,2011
             str = dateFormat(date, ft.FullDay);

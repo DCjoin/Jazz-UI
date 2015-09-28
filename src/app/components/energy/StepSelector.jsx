@@ -18,12 +18,12 @@ let StepItem = React.createClass({
 
 });
 
-const ALLSTEPITEMS = [ {val: 'minute', text: '分钟', step: 0},
-                       {val: 'hour', text: '小时', step: 1},
-                       {val: 'day', text: '天', step: 2},
-                       {val: 'week', text: '周', step: 5},
-                       {val: 'month', text: '月', step: 3},
-                       {val: 'year', text: '年', step: 4}
+const ALLSTEPITEMS = [ {val: 'minute', text: I18N.EM.Raw, step: 0},
+                       {val: 'hour', text: I18N.EM.Hour, step: 1},
+                       {val: 'day', text: I18N.EM.Day, step: 2},
+                       {val: 'week', text: I18N.EM.Week, step: 5},
+                       {val: 'month', text: I18N.EM.Month, step: 3},
+                       {val: 'year', text: I18N.EM.Year, step: 4}
                      ];
 
 let StepSelector = React.createClass({
