@@ -18,13 +18,25 @@ let StepItem = React.createClass({
 
 });
 
-const ALLSTEPITEMS = [ {val: 'minute', text: I18N.EM.Raw, step: 0},
-                       {val: 'hour', text: I18N.EM.Hour, step: 1},
-                       {val: 'day', text: I18N.EM.Day, step: 2},
-                       {val: 'week', text: I18N.EM.Week, step: 5},
-                       {val: 'month', text: I18N.EM.Month, step: 3},
-                       {val: 'year', text: I18N.EM.Year, step: 4}
-                     ];
+var ALLSTEPITEMS = null;
+
+function loadStepItems(){
+    ALLSTEPITEMS = [ {val: 'minute', text: I18N.EM.Raw, step: 0},
+                           {val: 'hour', text: I18N.EM.Hour, step: 1},
+                           {val: 'day', text: I18N.EM.Day, step: 2},
+                           {val: 'week', text: I18N.EM.Week, step: 5},
+                           {val: 'month', text: I18N.EM.Month, step: 3},
+                           {val: 'year', text: I18N.EM.Year, step: 4}
+                         ];
+
+}
+
+function getStepItems() {
+    if(!ALLSTEPITEMS){
+        loadStepItems();
+    }
+    return ALLSTEPITEMS;
+}
 
 let StepSelector = React.createClass({
   _onStepChange(step){
@@ -33,7 +45,7 @@ let StepSelector = React.createClass({
     }
   },
   getDefaultProps(){
-    return {stepItems: ALLSTEPITEMS, timeRanges:[]};
+    return {stepItems: getStepItems(), timeRanges:[]};
   },
   getInitialState(){
     let limitInterval = CommonFuns.getLimitInterval(this.props.timeRanges);
@@ -61,10 +73,10 @@ let StepSelector = React.createClass({
 
     let stepList = this.state.stepList,
         stepElementList = [],
-        stepItem;
+        stepItem,allItems = getStepItems();
 
-    for(let i = 0, len = ALLSTEPITEMS.length; i<len; i++){
-        stepItem = ALLSTEPITEMS[i];
+    for(let i = 0, len = allItems.length; i<len; i++){
+        stepItem = allItems[i];
         if(stepList.indexOf(stepItem.step)> -1){
           let obj = assign({},stepItem);
           if(selectedStep === stepItem.step){
