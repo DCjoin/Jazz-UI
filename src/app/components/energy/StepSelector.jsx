@@ -45,7 +45,7 @@ let StepSelector = React.createClass({
     }
   },
   getDefaultProps(){
-    return {stepItems: getStepItems(), timeRanges:[]};
+    return { timeRanges:[]};
   },
   getInitialState(){
     let limitInterval = CommonFuns.getLimitInterval(this.props.timeRanges);
