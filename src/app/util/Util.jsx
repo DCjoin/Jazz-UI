@@ -715,7 +715,7 @@ let CommonFuns = {
         var addInterval = stepIntervalMap[step + ''];
 
         //currentLanguage： 0 中文, 1 英文
-        if (false && window.currentLanguage == 1) {
+        if (window.currentLanguage == 1) {
           str = dateFormat(date, ft.Hour);
           newDate = dateAdd(date, addInterval, 'hours');
           if (newDate.getHours() === 0) { //2010年10月3日23点-3日24点
