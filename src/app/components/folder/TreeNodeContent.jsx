@@ -45,7 +45,7 @@ var TreeNodeContent = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     this.setState({
       text: nextProps.nodeData.get("Name"),
-    })
+    });
   },
   componentDidMount: function() {
     if (this.props.nodeData.get('Id') < -1) {
@@ -59,6 +59,7 @@ var TreeNodeContent = React.createClass({
 
     if (this.props.nodeData.get("Name") != this.state.text) {
       FolderAction.modifyFolderName(this.props.nodeData, this.state.text);
+      this.props.panel.setEditNode(null);
     }
 
 
