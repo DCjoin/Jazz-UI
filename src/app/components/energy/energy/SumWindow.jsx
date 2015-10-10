@@ -207,7 +207,9 @@ let SumWindow = React.createClass({
     let dialog = <Dialog {...me.props} title={titleEl} actions={_buttonActions} modal={true}
     contentClassName='jazz-add-interval-dialog'>
                     <div style={{
-      height: '418px'
+      height: '418px',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
                       <div>{label}</div>
                       {sumTable}
