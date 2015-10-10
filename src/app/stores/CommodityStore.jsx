@@ -72,11 +72,17 @@ var CommodityStore = assign({}, PrototypeStore, {
   },
   setDefaultNode: function(widgetDto) {
     if (widgetDto.WidgetType != 'Ranking') {
-      _defaultHierNode = {
-        Id: _hierNode.hierId,
-        Name: _hierNode.hierName
-      };
-      _defaultHierNode_Label = HierarchyStore.getHierNodeById(_hierNode.hierId);
+      if (_hierNode === null) {
+        _defaultHierNode = null;
+        _defaultHierNode_Label = HierarchyStore.getHierNodeById(null);
+      } else {
+        _defaultHierNode = {
+          Id: _hierNode.hierId,
+          Name: _hierNode.hierName
+        };
+        _defaultHierNode_Label = HierarchyStore.getHierNodeById(_hierNode.hierId);
+      }
+
     }
 
   },
