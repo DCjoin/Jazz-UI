@@ -138,6 +138,11 @@ let ChartStatusStore = assign({}, PrototypeStore, {
     };
     let me = this;
     let series = newConfig.series;
+    if (series && series[0]) {
+      if (series[0].type === 'pie') {
+        series = series[0].data;
+      }
+    }
     let map = {};
     _seriesStatus = _seriesStatus || [];
     if (_seriesStatus && _seriesStatus.length > 0) {
@@ -154,11 +159,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
         }
       });
     }
-    if (series && series[0]) {
-      if (series[0].type === 'pie') {
-        series = series[0].data;
-      }
-    }
+
     series.forEach((item, index) => {
       if (item.id && map[item.id]) {
         item.visible = map[item.id].IsDisplay;
