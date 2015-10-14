@@ -10,6 +10,7 @@ import MainApp from './components/MainApp.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
+import Mail from './components/mail/Mail.jsx';
 import { getCookie } from './util/Util.jsx';
 import { Styles } from 'material-ui';
 let {ThemeManager} = Styles;
@@ -30,7 +31,7 @@ var routes = (
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}>
         </Route>
-        <Route name="setting" path="setting" handler={Setting}>
+        <Route name="setting" path="setting" handler={Mail}>
         </Route>
       </Route>
    </Route>
