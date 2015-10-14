@@ -3,6 +3,7 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 
 import assign from "object-assign";
+import Immutable from 'immutable';
 
 import LeftPanel from './AlarmLeftPanel.jsx';
 import ChartPanel from './ChartPanel.jsx';
@@ -14,6 +15,8 @@ import EnergyStore from '../../stores/EnergyStore.jsx';
 import AnalysisPanel from '../energy/AnalysisPanel.jsx';
 import RightPanel from '../../controls/RightPanel.jsx';
 import DataSelectMainPanel from '../DataSelectMainPanel.jsx';
+import FolderAction from '../../actions/FolderAction.jsx';
+import FolderStore from '../../stores/FolderStore.jsx';
 
 let Alarm = React.createClass({
   mixins: [Navigation, State],
@@ -129,6 +132,9 @@ let Alarm = React.createClass({
   },
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
+    if (FolderStore.getFolderTree() == Immutable.fromJS()) {
+      FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
+    }
   },
   componentWillUnmount: function() {
     EnergyStore.removeTagDataLoadingListener(this._onLoadingStatusChange);
