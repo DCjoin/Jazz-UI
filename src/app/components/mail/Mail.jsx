@@ -9,7 +9,6 @@ import Content from './MailContent.jsx';
 let Mail = React.createClass({
   render: function() {
     var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
-
     return (
       <div className='jazz-main'>
             <MainMenu logoUrl={logoUrl} />

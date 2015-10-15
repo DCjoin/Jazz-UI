@@ -814,6 +814,7 @@ I18N.Title.Energy = '能源';
 
 I18N.Mail = {};
 I18N.Mail.SendButton = '发送平台邮件通知';
+I18N.Mail.Reciever = '收件人';
 
 
 

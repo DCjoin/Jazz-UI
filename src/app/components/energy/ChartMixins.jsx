@@ -2,9 +2,9 @@
 import React from "react";
 import assign from "object-assign";
 
-let ChartMixins ={
-  childContextTypes:{
-      muiTheme: React.PropTypes.object.isRequired
+let ChartMixins = {
+  childContextTypes: {
+    muiTheme: React.PropTypes.object.isRequired
   },
   contextTypes: {
     muiTheme: React.PropTypes.object
@@ -14,9 +14,9 @@ let ChartMixins ={
     childContext.spacing = assign({}, childContext.spacing);
     childContext.spacing.desktopToolbarHeight = 32;
     childContext.spacing.desktopSubheaderHeight = 32;
-    childContext.component.tableRow.stripeColor = '#fbfbfb';
+    childContext.tableRow.stripeColor = '#fbfbfb';
     return {
-        muiTheme: childContext
+      muiTheme: childContext
     };
   },
 };

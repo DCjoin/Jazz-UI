@@ -13,9 +13,10 @@ import Setting from './components/setting/Setting.jsx';
 import Mail from './components/mail/Mail.jsx';
 import { getCookie } from './util/Util.jsx';
 import { Styles } from 'material-ui';
-let {ThemeManager} = Styles;
-
-var theme = new ThemeManager();
+let {ThemeManager, LightRawTheme} = Styles;
+import AppTheme from './AppTheme.jsx';
+//
+// var theme = new ThemeManager();
 import './less/main.less';
 
 let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Router;
@@ -31,15 +32,17 @@ var routes = (
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}>
         </Route>
-        <Route name="setting" path="setting" handler={Mail}>
+        <Route name="setting" path="setting" handler={Setting}>
         </Route>
       </Route>
    </Route>
 );
 
 Router.run(routes, Router.HashLocation, (Root, state) => {
-  var muiTheme = theme.getCurrentTheme();
-  muiTheme.contentFontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
+  //var muiTheme = ThemeManager.getMuiTheme(LightRawTheme);
+  var muiTheme = ThemeManager.getMuiTheme(AppTheme.rawTheme);
+  muiTheme = AppTheme.setComponentThemes(muiTheme);
+  muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
   React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));
 
 });
