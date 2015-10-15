@@ -14,7 +14,7 @@ let MailField = React.createClass({
             {I18N.Mail.Reciever}
           </div>
           <div className='content'>
-            <input/>
+            <TextField multiLine={true} rowsMax={5}/>
           </div>
         </div>
         </div>
