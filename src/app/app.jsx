@@ -41,7 +41,7 @@ var routes = (
 Router.run(routes, Router.HashLocation, (Root, state) => {
   //var muiTheme = ThemeManager.getMuiTheme(LightRawTheme);
   var muiTheme = ThemeManager.getMuiTheme(AppTheme.rawTheme);
-  muiTheme = AppTheme.setComponentThemes(muiTheme);
+  //muiTheme = AppTheme.setComponentThemes(muiTheme);
   muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
   React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));
 
