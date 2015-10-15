@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 
 let I18N = {};
@@ -811,6 +811,10 @@ I18N.Template.Send.Cancel = '放弃';
 I18N.Title = {};
 I18N.Title.Alarm = '报警';
 I18N.Title.Energy = '能源';
+
+I18N.Mail = {};
+I18N.Mail.SendButton = '发送平台邮件通知';
+I18N.Mail.Reciever = '收件人';
 
 
 

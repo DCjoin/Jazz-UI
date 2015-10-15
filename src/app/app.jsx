@@ -10,11 +10,13 @@ import MainApp from './components/MainApp.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
+import Mail from './components/mail/Mail.jsx';
 import { getCookie } from './util/Util.jsx';
 import { Styles } from 'material-ui';
-let {ThemeManager} = Styles;
-
-var theme = new ThemeManager();
+let {ThemeManager, LightRawTheme} = Styles;
+import AppTheme from './AppTheme.jsx';
+//
+// var theme = new ThemeManager();
 import './less/main.less';
 
 let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Router;
@@ -37,8 +39,10 @@ var routes = (
 );
 
 Router.run(routes, Router.HashLocation, (Root, state) => {
-  var muiTheme = theme.getCurrentTheme();
-  muiTheme.contentFontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
+  //var muiTheme = ThemeManager.getMuiTheme(LightRawTheme);
+  var muiTheme = ThemeManager.getMuiTheme(AppTheme.rawTheme);
+  muiTheme = AppTheme.setComponentThemes(muiTheme);
+  muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
   React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));
 
 });

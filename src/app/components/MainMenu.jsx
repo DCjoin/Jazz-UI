@@ -16,13 +16,16 @@ var MainMenu = React.createClass({
   render: function() {
 
     var params = this.getParams();
-    var links = this.props.items.map(item => {
+    var links;
+    if (!!this.props.items) {
+      links = this.props.items.map(item => {
 
-      if (item.disabled) {
-        return (<span>{item.title}</span>);
-      }
-      return (<Link to={item.name} params={params} onClick={this._onClick}>{item.title}</Link>);
-    });
+        if (item.disabled) {
+          return (<span>{item.title}</span>);
+        }
+        return (<Link to={item.name} params={params} onClick={this._onClick}>{item.title}</Link>);
+      });
+    }
 
     return (
       <div className="jazz-mainmenu">
