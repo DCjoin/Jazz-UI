@@ -4,35 +4,123 @@
   flex-direction: column;
   .header{
     height:72px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .sendBtn{
+      width:74%;
+      >button{
+         color:#767a7a !important;
+        font-size: 14px;
+        border:1px solid #ececec !important;
+        background-color: transparent !important;
+        &:hover{
+          color:#1ca8dd !important;
+          background-color:transparent !important;
+        }
+      }
+
+    }
   }
-  .content{
+  >.content{
     flex:1;
+    width:74%;
+    justify-content: center;
+    padding:25px 168px;
     display: flex;
     flex-direction: row;
     border-top: 1px solid #ececec;
-
+    background-color: #fbfbfb;
   }
 }
 .jazz-mailfield{
   display: flex;
-  width:200px;
+  width:652px;
+  min-width:652px;
   flex-direction: column;
-  background-color: #fbfbfb;
 }
 .jazz-mailfield-reciever{
-  margin:20px;
   display: flex;
   flex-direction: row;
-  .title{
-
+  .recievertitle{
+    color:#abafae;
+    font-size: 14px;
+    width:52px;
+    min-width:52px;
   }
-  .content{
-    border:1px solid gray;
+  .recievercontent{
+    display: flex;
+    flex-flow: row wrap;
+    border: 1px solid #ececec;
+    background-color: #ffffff;
+    width: 600px;
   }
 }
+.jazz-mailfield-recieveritem{
+  border: 1px solid #ececec;
+  display: flex;
+  align-item:center;
+}
 .jazz-mailuser{
-  margin:20px;
-  border: 1px solid gray;
-  width:350px;
-  height:700px;
+  margin-left:10px;
+  width:360px;
+  height:450px;
+  border:1px solid #ececec;
+  >div:nth-child(1){
+    >div:nth-child(1){
+      div{
+        height:30px !important;
+      }
+    }
+  }
+}
+.jazz-mailuserfield{
+  height:420px;
+  overflow: auto;
+}
+.jazz-mailfield-template{
+  margin-top:12px;
+  display: flex;
+  flex-direction: row;
+  .templatetitle{
+    color:#abafae;
+    font-size: 14px;
+    width:52px;
+    min-width:52px;
+  }
+  .templatecontent{
+  }
+}
+.jazz-platformuser-groupselect{
+  color:#abafae;
+  font-size: 14px;
+  width:62px;
+  display: none;
+  margin-left: 10px;
+  &:hover{
+    color:#1ca8dd
+  }
+
+}
+.jazz-platformuser-user{
+
+    margin-left: 6px;
+    font-size: 14px;
+    color: #767a7a;
+    max-width:140px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+}
+.jazz-platformuser-position{
+
+    margin-left: 6px;
+    font-size: 14px;
+    color: #767a7a;
+    max-width:92px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
 }

@@ -815,6 +815,10 @@ I18N.Title.Energy = '能源';
 I18N.Mail = {};
 I18N.Mail.SendButton = '发送平台邮件通知';
 I18N.Mail.Reciever = '收件人';
+I18N.Mail.Template = '模板';
+I18N.Mail.Contactor = '服务商联系人';
+I18N.Mail.User = '平台用户';
+I18N.Mail.SelectAll = '选择全组';
 
 
 
