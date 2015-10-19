@@ -12,6 +12,8 @@ let MailUsers = React.createClass({
 
   _handleContactorTabActive: function() {
     this.refs.providers.reset();
+    React.findDOMNode(this.refs.tab1).style.opacity = '1';
+    React.findDOMNode(this.refs.tab2).style.opacity = '0.5';
     if (MailStore.getServiceProviders() === null) {
       MailAction.GetServiceProviders();
       this.setState({
@@ -27,6 +29,8 @@ let MailUsers = React.createClass({
   },
   _handlePlatformUserTabActive: function() {
     this.refs.users.reset();
+    React.findDOMNode(this.refs.tab1).style.opacity = '0.5';
+    React.findDOMNode(this.refs.tab2).style.opacity = '1';
     if (MailStore.getPlatFormUserGroupDto() === null) {
       MailAction.GetPlatFormUserGroupDto();
       this.setState({
@@ -55,21 +59,24 @@ let MailUsers = React.createClass({
   componentDidMount: function() {
     MailStore.addMailUsersListener(this._onMailUsersChanged);
     MailAction.GetServiceProviders();
+    React.findDOMNode(this.refs.tab1).style.opacity = '1';
+    React.findDOMNode(this.refs.tab2).style.opacity = '0.5';
   },
   componentWillUnmount: function() {
     MailStore.removeMailUsersListener(this._onMailUsersChanged);
   },
   render: function() {
-    var inkBarStyle = {
+    var itemStyle = {
       height: '30px',
+      backgroundColor: '#efefef'
     };
     return (
       <div className='jazz-mailuser'>
-        <Tabs tabItemContainerStyle={inkBarStyle}>
-          <Tab label={I18N.Mail.Contactor} onActive={this._handleContactorTabActive}>
+        <Tabs tabItemContainerStyle={itemStyle}>
+          <Tab ref='tab1' label={I18N.Mail.Contactor} onActive={this._handleContactorTabActive}>
             <Providers ref='providers' users={this.state.users} isLoading={this.state.isLoading}/>
           </Tab>
-          <Tab label={I18N.Mail.User} onActive={this._handlePlatformUserTabActive}>
+          <Tab ref='tab2' label={I18N.Mail.User} onActive={this._handlePlatformUserTabActive}>
             <PlatformUser ref="users" users={this.state.users} isLoading={this.state.isLoading}/>
           </Tab>
         </Tabs>

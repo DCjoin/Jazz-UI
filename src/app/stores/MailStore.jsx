@@ -66,9 +66,16 @@ var MailStore = assign({}, PrototypeStore, {
   },
   addReceivers: function(receivers) {
     var that = this;
-    receivers.forEach(receiver => {
-      that.addReceiver(receiver);
-    });
+    var f = function(item) {
+      if (!item.get('Children')) {
+        that.addReceiver(item);
+      } else {
+        item.get('Children').forEach(child => {
+          f(child)
+        })
+      }
+    };
+    f(receivers)
   },
   removeReceiver: function(receiver) {
     var index = _receivers.findIndex(item => item.get('Id') == receiver.get('Id'));

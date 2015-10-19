@@ -11,7 +11,7 @@ let GropNodeContent = React.createClass({
     nodeData: React.PropTypes.object,
   },
   _onClick: function() {
-    MailAction.AddReceivers(this.props.nodeData.get('Children'));
+    MailAction.AddReceivers(this.props.nodeData);
   },
   _onMouserOver: function() {
     React.findDOMNode(this.refs.groupselect).style.display = 'block';

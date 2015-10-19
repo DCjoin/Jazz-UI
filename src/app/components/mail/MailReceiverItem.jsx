@@ -14,12 +14,15 @@ let MailReceiverItem = React.createClass({
   },
   render: function() {
     var cleanIconStyle = {
-      margin: '0px 10px',
+      marginLeft: '10px',
+      marginRight: '7.5px',
       fontSize: '16px',
     };
     return (
       <div className='jazz-mailfield-recieveritem'>
-          <div className='node-content-text'>
+          <div className='node-content-text' style={{
+        'margin-left': '7.5px'
+      }}>
             {this.props.nodeData.get('Name')}
           </div>
           <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
