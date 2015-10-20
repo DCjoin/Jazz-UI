@@ -20,10 +20,13 @@ let MailContent = React.createClass({
           </div>
 
         </div>
-        <div className='content'>
-          <MailField/>
-          <Users/>
-        </div>
+          <div className='content'>
+            <div className='field'>
+              <MailField/>
+              <Users/>
+            </div>
+          </div>
+
         </div>
       );
   },

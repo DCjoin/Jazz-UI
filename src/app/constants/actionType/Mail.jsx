@@ -12,6 +12,10 @@ module.exports = {
     GET_TEMPLATE_LIST_SUCCESS: null,
     REMOVE_TEMPLATE: null,
     SET_DIALOG: null,
+    SET_SUBJECT: null,
+    SET_CONTENT: null,
+    SET_NEW_TEMPLATE: null,
+    SET_MSG_NOTICE: null,
   })
 
 };

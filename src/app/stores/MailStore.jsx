@@ -13,7 +13,12 @@ let _mailUsers = null,
   _templateList = [],
   _template = null,
   _dialogInfo = null,
-  _dialogType = null;
+  _dialogType = null,
+  _subject = null,
+  _content = null,
+  _saveNewTemplate = false,
+  _newTemplateName = null,
+  _msgNoticeFlag = false;
 
 let MAIL_USERS_EVENT = 'mailusers',
   MAIL_VIEW_EVENT = 'mailview',
@@ -106,6 +111,8 @@ var MailStore = assign({}, PrototypeStore, {
   },
   setTemplate: function(template) {
     _template = template;
+    _subject = template.templatelTitle;
+    _content = template.templateContent;
   },
   removeTemplate: function(template) {
     var index = _templateList.indexOf(template);
@@ -114,7 +121,9 @@ var MailStore = assign({}, PrototypeStore, {
   getMailView: function() {
     return {
       receivers: _receivers,
-      template: _template
+      template: _template,
+      subject: _subject,
+      content: _content
     };
   },
   setDialog: function(dialogType, info) {
@@ -126,6 +135,39 @@ var MailStore = assign({}, PrototypeStore, {
   },
   getDialogType: function() {
     return _dialogType;
+  },
+  setSubject: function(subject) {
+    _subject = subject;
+    if (_template === null) {
+      _template = {
+        templateContent: null,
+        templateId: -1,
+        templateName: I18N.Mail.UserDefined,
+        templateNewFlag: 0,
+        templatelTitle: null
+      };
+      this.emitMailViewChange();
+    }
+  },
+  setContent: function(content) {
+    _content = content;
+    if (_template === null) {
+      _template = {
+        templateContent: null,
+        templateId: -1,
+        templateName: I18N.Mail.UserDefined,
+        templateNewFlag: 0,
+        templatelTitle: null
+      };
+      this.emitMailViewChange();
+    }
+  },
+  setNewTemplate: function(flag, name) {
+    _saveNewTemplate = flag;
+    _newTemplateName = name;
+  },
+  setMsgNoticee: function(flag) {
+    _msgNoticeFlag = flag;
   },
   emitMailUsersChange: function() {
     this.emit(MAIL_USERS_EVENT);
@@ -208,6 +250,18 @@ MailStore.dispatchToken = AppDispatcher.register(function(action) {
     case MailAction.SET_DIALOG:
       MailStore.setDialog(action.dialogType, action.info);
       MailStore.emitShowDialogChange();
+      break;
+    case MailAction.SET_SUBJECT:
+      MailStore.setSubject(action.subject);
+      break;
+    case MailAction.SET_CONTENT:
+      MailStore.setContent(action.content);
+      break;
+    case MailAction.SET_NEW_TEMPLATE:
+      MailStore.setNewTemplate(action.flag, action.newTemplateName);
+      break;
+    case MailAction.SET_MSG_NOTICE:
+      MailStore.setMsgNoticee(action.flag);
       break;
   }
 });

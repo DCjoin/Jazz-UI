@@ -821,6 +821,10 @@ I18N.Mail.User = '平台用户';
 I18N.Mail.SelectAll = '选择全组';
 I18N.Mail.UserDefined = '自定义';
 I18N.Mail.Delete = '模板“{0}”将被删除';
+I18N.Mail.Subject = '主题';
+I18N.Mail.Content = '正文';
+I18N.Mail.SaveNewTemplate = '将此邮件保存为新模板';
+I18N.Mail.Message = '同时发送短信通知';
 
 
 

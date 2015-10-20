@@ -100,7 +100,31 @@ let MailAction = {
       info: info
     });
   },
-
+  setSubject: function(subject) {
+    AppDispatcher.dispatch({
+      type: Action.SET_SUBJECT,
+      subject: subject
+    });
+  },
+  setContent: function(content) {
+    AppDispatcher.dispatch({
+      type: Action.SET_CONTENT,
+      content: content
+    });
+  },
+  setNewTemplate: function(flag, newTemplateName) {
+    AppDispatcher.dispatch({
+      type: Action.SET_NEW_TEMPLATE,
+      flag: flag,
+      newTemplateName: newTemplateName
+    });
+  },
+  setMsgNotice: function(flag) {
+    AppDispatcher.dispatch({
+      type: Action.SET_MSG_NOTICE,
+      flag: flag
+    });
+  },
 };
 
 module.exports = MailAction;

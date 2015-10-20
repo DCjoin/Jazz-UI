@@ -19,18 +19,20 @@
           background-color:transparent !important;
         }
       }
-
     }
   }
   >.content{
     flex:1;
-    width:74%;
-    justify-content: center;
-    padding:25px 168px;
-    display: flex;
-    flex-direction: row;
+
     border-top: 1px solid #ececec;
     background-color: #fbfbfb;
+    .field{
+      width:74%;
+      justify-content: center;
+      margin:0 auto;
+      display: flex;
+      flex-direction: row;
+    }
   }
 }
 .jazz-mailfield{
@@ -42,6 +44,8 @@
 .jazz-mailfield-reciever{
   display: flex;
   flex-direction: row;
+  min-height:30px;
+  margin-top:12px;
   .recievertitle{
     margin-top:7px;
     color:#abafae;
@@ -94,6 +98,7 @@
   margin-top:12px;
   display: flex;
   flex-direction: row;
+  min-height: 30px;
   .templatetitle{
     color:#abafae;
     font-size: 14px;
@@ -161,4 +166,44 @@
 &:hover{
   background-color: #e6e7e8;
 }
+}
+.jazz-mailfield-subject{
+  display: flex;
+  flex-direction: row;
+  margin-top:12px;
+  .subjecttitle{
+    margin-top:7px;
+    color:#abafae;
+    font-size: 14px;
+    width:52px;
+    min-width:52px;
+  }
+}
+.jazz-mailfield-content{
+  display: flex;
+  flex-direction: row;
+  margin-top:12px;
+  .contenttitle{
+    margin-top:7px;
+    color:#abafae;
+    font-size: 14px;
+    width:52px;
+    min-width:52px;
+  }
+  .contentcontent{
+    border: 1px solid #ececec;
+    background-color: #ffffff;
+    width: 600px;
+    height: 214px;
+    padding: 0 10px;
+    overflow: auto;
+    font-size: 14px;
+  }
+}
+.jazz-mailfield-newTemplate{
+  margin-left:52px;
+  margin-top:12px;
+}
+.jazz-newTemplate{
+  display: flex;
 }
