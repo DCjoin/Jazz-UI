@@ -5,11 +5,14 @@ import { TextField, CircularProgress } from 'material-ui';
 import Immutable from 'immutable';
 import MailStore from '../../stores/MailStore.jsx';
 import ReceiverItem from './MailReceiverItem.jsx';
+import TemplateField from './MailTemplateField.jsx';
 
 let MailField = React.createClass({
   _onMailViewChanged: function() {
+    var mailView = MailStore.getMailView();
     this.setState({
-      receivers: MailStore.getReceivers()
+      receivers: mailView.receivers,
+      template: mailView.template
     });
   },
   componentDidMount: function() {
@@ -20,7 +23,8 @@ let MailField = React.createClass({
   },
   getInitialState: function() {
     return {
-      receivers: Immutable.List([])
+      receivers: Immutable.List([]),
+      template: null
     };
   },
   render: function() {
@@ -50,6 +54,7 @@ let MailField = React.createClass({
           <div className='templatetitle'>
             {I18N.Mail.Template}
           </div>
+          <TemplateField template={this.state.template}/>
         </div>
         </div>
       );

@@ -819,6 +819,8 @@ I18N.Mail.Template = '模板';
 I18N.Mail.Contactor = '服务商联系人';
 I18N.Mail.User = '平台用户';
 I18N.Mail.SelectAll = '选择全组';
+I18N.Mail.UserDefined = '自定义';
+I18N.Mail.Delete = '模板“{0}”将被删除';
 
 
 

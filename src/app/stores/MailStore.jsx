@@ -9,10 +9,16 @@ import Mail from '../constants/actionType/Mail.jsx';
 let _mailUsers = null,
   _platFormUserGroupDto = null,
   _serviceProviders = null,
-  _receivers = Immutable.List([]);
+  _receivers = Immutable.List([]),
+  _templateList = [],
+  _template = null,
+  _dialogInfo = null,
+  _dialogType = null;
 
 let MAIL_USERS_EVENT = 'mailusers',
-  MAIL_VIEW_EVENT = 'mailview';
+  MAIL_VIEW_EVENT = 'mailview',
+  TEMPLATE_LIST_EVENT = 'templatelist',
+  SHOW_DIALOG_EVENT = 'showdialog';
 
 var MailStore = assign({}, PrototypeStore, {
   setPlatFormUserGroupDto: function(groupDto) {
@@ -71,11 +77,11 @@ var MailStore = assign({}, PrototypeStore, {
         that.addReceiver(item);
       } else {
         item.get('Children').forEach(child => {
-          f(child)
-        })
+          f(child);
+        });
       }
     };
-    f(receivers)
+    f(receivers);
   },
   removeReceiver: function(receiver) {
     var index = _receivers.findIndex(item => item.get('Id') == receiver.get('Id'));
@@ -83,6 +89,43 @@ var MailStore = assign({}, PrototypeStore, {
   },
   getReceivers: function() {
     return _receivers;
+  },
+  setTemplateList: function(templateList) {
+    _templateList = templateList;
+    _templateList.push({
+      templateContent: null,
+      templateId: -1,
+      templateName: I18N.Mail.UserDefined,
+      templateNewFlag: 0,
+      templatelTitle: null
+    }
+    );
+  },
+  getTemplateList: function() {
+    return _templateList;
+  },
+  setTemplate: function(template) {
+    _template = template;
+  },
+  removeTemplate: function(template) {
+    var index = _templateList.indexOf(template);
+    _templateList.splice(index, 1);
+  },
+  getMailView: function() {
+    return {
+      receivers: _receivers,
+      template: _template
+    };
+  },
+  setDialog: function(dialogType, info) {
+    _dialogInfo = info;
+    _dialogType = dialogType;
+  },
+  getDialogInfo: function() {
+    return _dialogInfo;
+  },
+  getDialogType: function() {
+    return _dialogType;
   },
   emitMailUsersChange: function() {
     this.emit(MAIL_USERS_EVENT);
@@ -102,6 +145,26 @@ var MailStore = assign({}, PrototypeStore, {
   },
   removeMailViewListener: function(callback) {
     this.removeListener(MAIL_VIEW_EVENT, callback);
+    this.dispose();
+  },
+  emitTemplateListChange: function() {
+    this.emit(TEMPLATE_LIST_EVENT);
+  },
+  addTemplateListListener: function(callback) {
+    this.on(TEMPLATE_LIST_EVENT, callback);
+  },
+  removeTemplateListListener: function(callback) {
+    this.removeListener(TEMPLATE_LIST_EVENT, callback);
+    this.dispose();
+  },
+  emitShowDialogChange: function() {
+    this.emit(SHOW_DIALOG_EVENT);
+  },
+  addShowDialogListener: function(callback) {
+    this.on(SHOW_DIALOG_EVENT, callback);
+  },
+  removeShowDialogListener: function(callback) {
+    this.removeListener(SHOW_DIALOG_EVENT, callback);
     this.dispose();
   },
 });
@@ -129,6 +192,22 @@ MailStore.dispatchToken = AppDispatcher.register(function(action) {
     case MailAction.REMOVE_RECEIVER:
       MailStore.removeReceiver(action.receiver);
       MailStore.emitMailViewChange();
+      break;
+    case MailAction.SET_TEMPLATE:
+      MailStore.setTemplate(action.template);
+      MailStore.emitMailViewChange();
+      break;
+    case MailAction.REMOVE_TEMPLATE:
+      MailStore.removeTemplate(action.template);
+      MailStore.emitTemplateListChange();
+      break;
+    case MailAction.GET_TEMPLATE_LIST_SUCCESS:
+      MailStore.setTemplateList(action.templateList);
+      MailStore.emitTemplateListChange();
+      break;
+    case MailAction.SET_DIALOG:
+      MailStore.setDialog(action.dialogType, action.info);
+      MailStore.emitShowDialogChange();
       break;
   }
 });

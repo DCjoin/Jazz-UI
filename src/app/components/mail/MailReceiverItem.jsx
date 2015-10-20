@@ -10,7 +10,10 @@ let MailReceiverItem = React.createClass({
     nodeData: React.PropTypes.object,
   },
   _onCleanButtonClick: function() {
-    MailAction.RemoveReceiver(this.props.nodeData);
+    MailAction.removeReceiver(this.props.nodeData);
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return nextProps.nodeData.get('Id') !== this.props.nodeData.get('Id');
   },
   render: function() {
     var cleanIconStyle = {
