@@ -2,6 +2,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/Mail.jsx';
 import Ajax from '../ajax/ajax.jsx';
+import MailStore from '../stores/MailStore.jsx';
 
 
 let MailAction = {
@@ -33,6 +34,46 @@ let MailAction = {
       },
       error: function(err, res) {
         console.log(err, res);
+      }
+    });
+  },
+  sendEamilOrMessage: function(withoutTitle) {
+    var viewParam = MailStore.getMailView();
+    if (viewParam.template === null) {
+      viewParam.template = {
+        templateName: null,
+        templateNewFlag: null
+      };
+    }
+    var template = {
+      templateName: viewParam.template.templateName,
+      templatelTitle: viewParam.subject,
+      templateContent: viewParam.content,
+      templateNewFlag: viewParam.template.templateNewFlag
+    };
+    Ajax.post('/Notification.svc/sendEamilOrMessage', {
+      params: {
+        emailDto: {
+          template: template,
+          recipientsInfo: viewParam.receivers,
+          newTemplateName: viewParam.newTemplateName,
+          saveTemplateFlag: viewParam.saveNewTemplate,
+          sendMessageFlag: viewParam.msgNoticeFlag,
+          sendMessageWithoutTitle: withoutTitle
+        }
+
+      },
+      commonErrorHandling: false,
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.SEND_MAIL_SUCCESS,
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.SEND_MAIL_ERROR,
+          res: res
+        });
       }
     });
   },
@@ -93,7 +134,7 @@ let MailAction = {
   },
   setDialog: function(dialogType, info) {
     //dialogType
-    //0：delete 1:send 2:send without title
+    //'0'：delete '1':send success errorcode:send error
     AppDispatcher.dispatch({
       type: Action.SET_DIALOG,
       dialogType: dialogType,
@@ -123,6 +164,17 @@ let MailAction = {
     AppDispatcher.dispatch({
       type: Action.SET_MSG_NOTICE,
       flag: flag
+    });
+  },
+  setSendError: function(errorCode) {
+    AppDispatcher.dispatch({
+      type: Action.SET_ERROR_CODE,
+      errorCode: errorCode
+    });
+  },
+  resetSendInfo: function() {
+    AppDispatcher.dispatch({
+      type: Action.RESET_SEND_INFO,
     });
   },
 };

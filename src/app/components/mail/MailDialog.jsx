@@ -4,6 +4,7 @@ import React from 'react';
 import { FlatButton, CircularProgress } from 'material-ui';
 import MailStore from '../../stores/MailStore.jsx';
 import Delete from './dialog/DeleteView.jsx';
+import Send from './dialog/SendView.jsx';
 
 
 let MailDialog = React.createClass({
@@ -27,17 +28,20 @@ let MailDialog = React.createClass({
   },
   getInitialState: function() {
     return {
-      dialogType: 0,
+      dialogType: '-1',
       paperShow: false
     };
   },
   render: function() {
     var content;
     switch (this.state.dialogType) {
-      case 1:
+      case '-1':
+        break;
+      case '0':
         content = <Delete onDismiss={this._onDismiss}/>;
         break;
-      case 2:
+      default:
+        content = <Send type={this.state.dialogType} onDismiss={this._onDismiss}/>;
         break;
     }
 

@@ -825,6 +825,21 @@ I18N.Mail.Subject = '主题';
 I18N.Mail.Content = '正文';
 I18N.Mail.SaveNewTemplate = '将此邮件保存为新模板';
 I18N.Mail.Message = '同时发送短信通知';
+I18N.Mail.TemplateHintText = '请输入模板名称';
+I18N.Mail.Error = {};
+I18N.Mail.Error.E090 = '请填写收件人后再发送';
+I18N.Mail.Error.E091 = '请选择模板';
+I18N.Mail.Error.E094 = '请填写模板名称';
+I18N.Mail.Error.E095 = '该名称已存在';
+I18N.Mail.Send = {};
+I18N.Mail.Send.Title = '发送平台邮件';
+I18N.Mail.Send.Ok = '好';
+I18N.Mail.Send.Send = '发送';
+I18N.Mail.Send.Cancel = '放弃';
+I18N.Mail.Send.Success = '平台邮件已发送成功';
+I18N.Mail.Send.E03092 = '您的邮件没有填写主题。您确定继续发送？';
+I18N.Mail.Send.E03099 = '邮件发送失败，请重试。';
+I18N.Mail.Send.E03099 = '邮件发送失败，请重试。';
 
 
 

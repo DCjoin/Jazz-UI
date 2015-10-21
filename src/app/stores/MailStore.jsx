@@ -18,12 +18,18 @@ let _mailUsers = null,
   _content = null,
   _saveNewTemplate = false,
   _newTemplateName = null,
-  _msgNoticeFlag = false;
+  _msgNoticeFlag = false,
+  _errorCode = {
+    receiver: null,
+    template: null,
+    newtemplate: null
+  };
 
 let MAIL_USERS_EVENT = 'mailusers',
   MAIL_VIEW_EVENT = 'mailview',
   TEMPLATE_LIST_EVENT = 'templatelist',
-  SHOW_DIALOG_EVENT = 'showdialog';
+  SHOW_DIALOG_EVENT = 'showdialog',
+  SEND_ERROR_EVENT = 'senderror';
 
 var MailStore = assign({}, PrototypeStore, {
   setPlatFormUserGroupDto: function(groupDto) {
@@ -66,20 +72,32 @@ var MailStore = assign({}, PrototypeStore, {
   getServiceProviders: function() {
     return _serviceProviders;
   },
-  addReceiver: function(receiver) {
+  addReceiver: function(receiver, fromAddReceivers) {
+    var that = this;
     if (_receivers.size === 0) {
       _receivers = _receivers.push(receiver);
     } else {
       if (_receivers.indexOf(receiver) == -1) {
         _receivers = _receivers.push(receiver);
+      } else {
+        let index = _receivers.indexOf(receiver);
+        _receivers = _receivers.delete(index);
+        _receivers = _receivers.push(receiver);
       }
     }
+    if (!fromAddReceivers) {
+      if (_errorCode.receiver !== null) {
+        _errorCode.receiver = null;
+        that.emitSendErrorChange();
+      }
+    }
+
   },
   addReceivers: function(receivers) {
     var that = this;
     var f = function(item) {
       if (!item.get('Children')) {
-        that.addReceiver(item);
+        that.addReceiver(item, true);
       } else {
         item.get('Children').forEach(child => {
           f(child);
@@ -87,6 +105,10 @@ var MailStore = assign({}, PrototypeStore, {
       }
     };
     f(receivers);
+    if (_errorCode.receiver !== null) {
+      _errorCode.receiver = null;
+      that.emitSendErrorChange();
+    }
   },
   removeReceiver: function(receiver) {
     var index = _receivers.findIndex(item => item.get('Id') == receiver.get('Id'));
@@ -113,6 +135,10 @@ var MailStore = assign({}, PrototypeStore, {
     _template = template;
     _subject = template.templatelTitle;
     _content = template.templateContent;
+    if (_errorCode.template !== null) {
+      _errorCode.template = null;
+      this.emitSendErrorChange();
+    }
   },
   removeTemplate: function(template) {
     var index = _templateList.indexOf(template);
@@ -123,7 +149,10 @@ var MailStore = assign({}, PrototypeStore, {
       receivers: _receivers,
       template: _template,
       subject: _subject,
-      content: _content
+      content: _content,
+      saveNewTemplate: _saveNewTemplate,
+      newTemplateName: _newTemplateName,
+      msgNoticeFlag: _msgNoticeFlag
     };
   },
   setDialog: function(dialogType, info) {
@@ -169,6 +198,59 @@ var MailStore = assign({}, PrototypeStore, {
   setMsgNoticee: function(flag) {
     _msgNoticeFlag = flag;
   },
+  setErrorText: function(res) {
+    var error = eval("(" + res + ")").error.Code;
+    var length = error.length;
+    var errorCode = error.substring(length - 5, length);
+    switch (errorCode) {
+      case "03090":
+        _errorCode.receiver = I18N.Mail.Error.E090;
+        break;
+      case "03091":
+        _errorCode.template = I18N.Mail.Error.E091;
+        break;
+      case "03094":
+        _errorCode.newtemplate = I18N.Mail.Error.E094;
+        break;
+      case "03095":
+        _errorCode.newtemplate = I18N.Mail.Error.E095;
+        break;
+      default:
+        this.setDialog(errorCode, null);
+        this.emitShowDialogChange();
+    }
+  },
+  setErrorTextSuccess: function() {
+    _errorCode = {
+      receiver: null,
+      template: null,
+      newtemplate: null
+    };
+  },
+  GetSendError: function() {
+    return _errorCode;
+  },
+  setErrorCode: function(errorCode) {
+    _errorCode = errorCode;
+  },
+  resetSendInfo: function() {
+    _templateList = [];
+    _receivers = Immutable.List([]);
+    _template = null;
+    _dialogInfo = null;
+    _dialogType = null;
+    _subject = null;
+    _content = null;
+    _saveNewTemplate = false;
+    _newTemplateName = null;
+    _msgNoticeFlag = false;
+    _errorCode = {
+      receiver: null,
+      template: null,
+      newtemplate: null
+    };
+
+  },
   emitMailUsersChange: function() {
     this.emit(MAIL_USERS_EVENT);
   },
@@ -207,6 +289,16 @@ var MailStore = assign({}, PrototypeStore, {
   },
   removeShowDialogListener: function(callback) {
     this.removeListener(SHOW_DIALOG_EVENT, callback);
+    this.dispose();
+  },
+  emitSendErrorChange: function() {
+    this.emit(SEND_ERROR_EVENT);
+  },
+  addSendErroListener: function(callback) {
+    this.on(SEND_ERROR_EVENT, callback);
+  },
+  removeSendErroListener: function(callback) {
+    this.removeListener(SEND_ERROR_EVENT, callback);
     this.dispose();
   },
 });
@@ -262,6 +354,28 @@ MailStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case MailAction.SET_MSG_NOTICE:
       MailStore.setMsgNoticee(action.flag);
+      break;
+    case MailAction.SEND_MAIL_ERROR:
+      MailStore.setErrorText(action.res.text);
+      MailStore.emitSendErrorChange();
+      break;
+    case MailAction.SEND_MAIL_SUCCESS:
+      MailStore.setErrorCode({
+        receiver: null,
+        template: null,
+        newtemplate: null
+      });
+      MailStore.emitSendErrorChange();
+      MailStore.setDialog('1', null);
+      MailStore.emitShowDialogChange();
+      break;
+    case MailAction.SET_ERROR_CODE:
+      MailStore.setErrorCode(action.errorCode);
+      MailStore.emitSendErrorChange();
+      break;
+    case MailAction.RESET_SEND_INFO:
+      MailStore.resetSendInfo();
+      MailStore.emitMailViewChange();
       break;
   }
 });

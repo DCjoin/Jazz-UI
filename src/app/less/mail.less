@@ -160,7 +160,8 @@
 .jazz-templateitem{
   color:#464949;
   font-size: 14px;
-  line-height: 20px;
+  height: 20px;
+  padding:2.5px 10px;
   display: flex;
   align-item:center;
 &:hover{
@@ -206,4 +207,15 @@
 }
 .jazz-newTemplate{
   display: flex;
+  >div:nth-child(2){
+    hr{
+      border-width:0px !important;
+      border-color:transparent !important;
+    }
+  }
+}
+.jazz-mailfield-error{
+  color:red;
+  font-size: 10px;
+  margin-left:54px;
 }

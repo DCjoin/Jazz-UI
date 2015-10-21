@@ -3,9 +3,14 @@
 import React from 'react';
 import { Checkbox, TextField } from 'material-ui';
 import MailAction from '../../actions/MailAction.jsx';
+import MailStore from '../../stores/MailStore.jsx';
 
 let MailSaveNewTemplate = React.createClass({
+  propTypes: {
+    errorText: React.PropTypes.string,
+  },
   _onCheck: function() {
+
     var checked = this.refs.checkbox.isChecked();
 
     this.setState({
@@ -16,6 +21,11 @@ let MailSaveNewTemplate = React.createClass({
     MailAction.setNewTemplate(checked, null);
   },
   _onTextChanged: function(e) {
+    var sendError = MailStore.GetSendError();
+    if (sendError.newtemplate !== null) {
+      sendError.newtemplate = null;
+      MailAction.setSendError(sendError);
+    }
     this.setState({
       text: e.target.value
     });
@@ -31,7 +41,8 @@ let MailSaveNewTemplate = React.createClass({
   },
   render: function() {
     var boxStyle = {
-        width: '189px'
+        width: '189px',
+        margin: '6px 0'
       },
       iconStyle = {
         width: '24px',
@@ -55,6 +66,12 @@ let MailSaveNewTemplate = React.createClass({
       },
       underlineFocusStyle = {
         borderColor: 'transparent'
+      },
+      hintStyle = {
+        bottom: '1px'
+      },
+      errorStyle = {
+        marginTop: '8px'
       };
     var textProps = {
       style: textStyle,
@@ -62,7 +79,11 @@ let MailSaveNewTemplate = React.createClass({
       underlineFocusStyle: underlineFocusStyle,
       value: this.state.text,
       onChange: this._onTextChanged,
-      onBlur: this._onTextBlur
+      onBlur: this._onTextBlur,
+      hintText: I18N.Mail.TemplateHintText,
+      hintStyle: hintStyle,
+      errorText: this.props.errorText,
+      errorStyle: errorStyle
     };
     var text = (this.state.show) ? <TextField {...textProps}/> : null;
     return (
@@ -74,6 +95,7 @@ let MailSaveNewTemplate = React.createClass({
       labelStyle={labelStyle}
       label={I18N.Mail.SaveNewTemplate}
       onCheck={this._onCheck}/>
+
       {text}
       </div>
       );

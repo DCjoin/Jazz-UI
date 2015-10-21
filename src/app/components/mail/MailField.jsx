@@ -19,6 +19,11 @@ let MailField = React.createClass({
       content: mailView.content
     });
   },
+  _onSendErrorChanged: function() {
+    this.setState({
+      errorText: MailStore.GetSendError()
+    });
+  },
   _onSubjectChanged: function(e) {
     this.setState({
       subject: e.target.value
@@ -41,16 +46,19 @@ let MailField = React.createClass({
   },
   componentDidMount: function() {
     MailStore.addMailViewListener(this._onMailViewChanged);
+    MailStore.addSendErroListener(this._onSendErrorChanged);
   },
   componentWillUnmount: function() {
     MailStore.removeMailViewListener(this._onMailViewChanged);
+    MailStore.removeSendErroListener(this._onSendErrorChanged);
   },
   getInitialState: function() {
     return {
       receivers: Immutable.List([]),
       template: null,
       subject: null,
-      content: null
+      content: null,
+      errorText: MailStore.GetSendError()
     };
   },
   render: function() {
@@ -89,6 +97,7 @@ let MailField = React.createClass({
         onBlur: this._onSubjectBlur
       },
       contentProps = {
+        ref: 'content',
         underlineStyle: underlineStyle,
         underlineFocusStyle: underlineFocusStyle,
         value: this.state.content,
@@ -114,11 +123,17 @@ let MailField = React.createClass({
             {receiverField}
           </div>
         </div>
+        <div className='jazz-mailfield-error'>
+          {this.state.errorText.receiver}
+        </div>
         <div className='jazz-mailfield-template'>
           <div className='templatetitle'>
             {I18N.Mail.Template}
           </div>
           <TemplateField template={this.state.template}/>
+        </div>
+        <div className='jazz-mailfield-error'>
+          {this.state.errorText.template}
         </div>
         <div className='jazz-mailfield-subject'>
           <div className='subjecttitle'>
@@ -135,7 +150,7 @@ let MailField = React.createClass({
           </div>
         </div>
         <div className='jazz-mailfield-newTemplate'>
-          <SaveNewTemplate/>
+          <SaveNewTemplate errorText={this.state.errorText.newtemplate}/>
         </div>
         <div className='jazz-mailfield-newTemplate'>
           <Checkbox

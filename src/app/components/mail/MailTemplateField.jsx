@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { FontIcon, Mixins } from 'material-ui';
+import { FontIcon, Mixins, Paper } from 'material-ui';
 import MailStore from '../../stores/MailStore.jsx';
 import MailAction from '../../actions/MailAction.jsx';
 let TemplateItem = React.createClass({
@@ -9,8 +9,7 @@ let TemplateItem = React.createClass({
     value: React.PropTypes.object,
   },
   _onCleanButtonClick: function(e) {
-    e.stopPropagation();
-    MailAction.setDialog(1, this.props.value);
+    MailAction.setDialog('0', this.props.value);
   },
   _onItemClick: function() {
     this.props.onItemClick();
@@ -85,11 +84,19 @@ let TemplateList = React.createClass({
     var menuItems = [];
     this.state.list.forEach(list => {
       menuItems.push(<TemplateItem value={list} onItemClick={this.props.onItemClick}/>)
-    })
+    });
+    var paperStyle = {
+      backgroundColor: '#ffffff',
+      zIndex: '100',
+      width: '300px',
+      height: '390px',
+      position: 'absolute',
+      border: '1px solid #c9c8c8'
+    };
     return (
-      <div>
+      <Paper style={paperStyle}>
           {menuItems}
-        </div>
+        </Paper>
 
 
       )
