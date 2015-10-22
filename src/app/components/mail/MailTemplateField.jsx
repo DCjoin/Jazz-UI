@@ -9,6 +9,8 @@ let TemplateItem = React.createClass({
     value: React.PropTypes.object,
   },
   _onCleanButtonClick: function(e) {
+    e.stopPropagation();
+    this.props.onItemClick();
     MailAction.setDialog('0', this.props.value);
   },
   _onItemClick: function() {
@@ -88,10 +90,11 @@ let TemplateList = React.createClass({
     var paperStyle = {
       backgroundColor: '#ffffff',
       zIndex: '100',
-      width: '300px',
-      height: '390px',
+      maxWidth: '360px',
+      maxHeight: '192px',
       position: 'absolute',
-      border: '1px solid #c9c8c8'
+      border: '1px solid #c9c8c8',
+      overflow: 'auto'
     };
     return (
       <Paper style={paperStyle}>

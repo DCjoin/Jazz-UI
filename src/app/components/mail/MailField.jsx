@@ -16,7 +16,8 @@ let MailField = React.createClass({
       receivers: mailView.receivers,
       template: mailView.template,
       subject: mailView.subject,
-      content: mailView.content
+      content: mailView.content,
+      msgFlagClear: !mailView.msgNoticeFlag
     });
   },
   _onSendErrorChanged: function() {
@@ -58,7 +59,8 @@ let MailField = React.createClass({
       template: null,
       subject: null,
       content: null,
-      errorText: MailStore.GetSendError()
+      errorText: MailStore.GetSendError(),
+      msgFlagClear: false
     };
   },
   render: function() {
@@ -85,7 +87,7 @@ let MailField = React.createClass({
       },
       labelStyle = {
         fontSize: '14px',
-        color: '#464949',
+        color: '#abafae',
         width: '155px'
       };
     var subjectProps = {
@@ -100,7 +102,7 @@ let MailField = React.createClass({
         ref: 'content',
         underlineStyle: underlineStyle,
         underlineFocusStyle: underlineFocusStyle,
-        value: this.state.content,
+        value: this.state.content === null ? '' : this.state.content,
         onChange: this._onContentChanged,
         onBlur: this._onContentBlur,
         multiLine: true,
@@ -150,7 +152,7 @@ let MailField = React.createClass({
           </div>
         </div>
         <div className='jazz-mailfield-newTemplate'>
-          <SaveNewTemplate errorText={this.state.errorText.newtemplate}/>
+          <SaveNewTemplate errorText={this.state.errorText.newtemplate} clear={this.state.msgFlagClear}/>
         </div>
         <div className='jazz-mailfield-newTemplate'>
           <Checkbox

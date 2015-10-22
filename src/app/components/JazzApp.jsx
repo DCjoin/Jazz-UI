@@ -82,8 +82,12 @@ let JazzApp = React.createClass({
         if (subUrl.length === 2 && subUrl[1].indexOf('main/') > -1) {
           return;
         }
-        if (url.indexOf('menutype=energy') > -1) {
-          me.replaceWith('setting', {
+        if (url.indexOf('menutype=mail') > -1) {
+          me.replaceWith('mail', {
+            lang: lang
+          });
+        } else if (url.indexOf('menutype=energy') > -1) {
+          me.replaceWith('mail', {
             lang: lang
           });
         } else {
@@ -91,6 +95,8 @@ let JazzApp = React.createClass({
             lang: lang
           });
         }
+
+
         me._setHighchartConfig();
       });
     };
@@ -107,11 +113,10 @@ let JazzApp = React.createClass({
         lang = window.navigator.language.toLowerCase();
       }
       //currentLanguage： 0 中文, 1 英文
-      if(lang === 'zh-cn'){
-          window.currentLanguage = 0;
-      }
-      else{
-          window.currentLanguage = 1;
+      if (lang === 'zh-cn') {
+        window.currentLanguage = 0;
+      } else {
+        window.currentLanguage = 1;
       }
       this.replaceWith('app', {
         lang: lang
