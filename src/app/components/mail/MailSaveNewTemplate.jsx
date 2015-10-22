@@ -50,11 +50,12 @@ let MailSaveNewTemplate = React.createClass({
   render: function() {
     var boxStyle = {
         width: '189px',
-        margin: '6px 0'
+        margin: '4px 0'
       },
       iconStyle = {
-        width: '24px',
-        marginRight: '10px'
+        height: '16px',
+        width: '16px',
+        margin: '2px 10px 0 0',
       },
       labelStyle = {
         fontSize: '14px',
@@ -66,7 +67,7 @@ let MailSaveNewTemplate = React.createClass({
         backgroundColor: '#ffffff',
         flex: '1',
         fontSize: '14px',
-        height: '30px',
+        height: '28px',
         padding: '0 10px'
       },
       underlineStyle = {
