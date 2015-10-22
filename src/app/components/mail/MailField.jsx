@@ -17,7 +17,8 @@ let MailField = React.createClass({
       template: mailView.template,
       subject: mailView.subject,
       content: mailView.content,
-      msgFlagClear: !mailView.msgNoticeFlag
+      saveTemplateFlagClear: !mailView.saveNewTemplate,
+      msgFlagClear: mailView.msgNoticeFlag
     });
   },
   _onSendErrorChanged: function() {
@@ -60,16 +61,16 @@ let MailField = React.createClass({
       subject: null,
       content: null,
       errorText: MailStore.GetSendError(),
-      msgFlagClear: false
+      msgFlagClear: false,
+      saveTemplateFlagClear: false
     };
   },
   render: function() {
     var subjectStyle = {
         border: '1px solid #ececec',
         backgroundColor: '#ffffff',
-        width: '600px',
         fontSize: '14px',
-        height: '30px',
+        height: '28px',
         padding: '0 10px'
       },
       underlineStyle = {
@@ -82,8 +83,9 @@ let MailField = React.createClass({
         width: '189px'
       },
       iconStyle = {
-        width: '24px',
-        marginRight: '10px'
+        height: '16px',
+        width: '16px',
+        margin: '2px 10px 0 0',
       },
       labelStyle = {
         fontSize: '14px',
@@ -95,6 +97,7 @@ let MailField = React.createClass({
         underlineStyle: underlineStyle,
         underlineFocusStyle: underlineFocusStyle,
         value: this.state.subject,
+        fullWidth: true,
         onChange: this._onSubjectChanged,
         onBlur: this._onSubjectBlur
       },
@@ -152,7 +155,7 @@ let MailField = React.createClass({
           </div>
         </div>
         <div className='jazz-mailfield-newTemplate'>
-          <SaveNewTemplate errorText={this.state.errorText.newtemplate} clear={this.state.msgFlagClear}/>
+          <SaveNewTemplate errorText={this.state.errorText.newtemplate} clear={this.state.saveTemplateFlagClear}/>
         </div>
         <div className='jazz-mailfield-newTemplate'>
           <Checkbox
@@ -161,7 +164,9 @@ let MailField = React.createClass({
       iconStyle={iconStyle}
       labelStyle={labelStyle}
       label={I18N.Mail.Message}
-      onCheck={this._onMessageCheck}/>
+      onCheck={this._onMessageCheck}
+      defaultChecked={this.state.msgFlagClear}/>
+
         </div>
         </div>
       );
