@@ -3,37 +3,220 @@
   display: flex;
   flex-direction: column;
   .header{
-    height:50px;
-  }
-  .content{
-    flex:1;
+    height:72px;
     display: flex;
-    flex-direction: row;
-    border-top: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    .sendBtn{
+      width:74%;
+      >button{
+         color:#767a7a !important;
+        font-size: 14px;
+        border:1px solid #ececec !important;
+        background-color: transparent !important;
+        &:hover{
+          color:#1ca8dd !important;
+          background-color:transparent !important;
+        }
+      }
+    }
+  }
+  >.content{
+    flex:1;
 
+    border-top: 1px solid #ececec;
+    background-color: #fbfbfb;
+    .field{
+      width:74%;
+      justify-content: center;
+      margin:0 auto;
+      display: flex;
+      flex-direction: row;
+    }
   }
 }
 .jazz-mailfield{
   display: flex;
-  width:200px;
+  width:652px;
+  min-width:652px;
   flex-direction: column;
 }
 .jazz-mailfield-reciever{
-  margin:20px;
   display: flex;
   flex-direction: row;
-  .title{
+  min-height:30px;
+  margin-top:12px;
+  .recievertitle{
+    margin-top:7px;
+    color:#abafae;
+    font-size: 14px;
+    width:52px;
+    min-width:52px;
+  }
+  .recievercontent{
+    display: flex;
+    flex-flow: row wrap;
+    border: 1px solid #ececec;
+    background-color: #ffffff;
+    width: 600px;
+    padding: 2.5px 7.5px;
+    max-height: 140px;
+    min-height:25px;
+    overflow: auto;
 
   }
-  .content{
-    overflow: auto;
-    border:1px solid gray;
-    max-height: 100px;
-  }
+}
+.jazz-mailfield-recieveritem{
+  border: 1px solid #ececec;
+  display: flex;
+  align-item:center;
+  height:20px;
+  margin: 2.5px;
+  color:#464949;
+  font-size: 14px;
 }
 .jazz-mailuser{
-  margin:20px;
-  border: 1px solid gray;
-  width:350px;
-  height:700px;
+  margin-left:10px;
+  width:360px;
+  height:450px;
+  border:1px solid #ececec;
+  margin-top:12px;
+  >div:nth-child(1){
+    >div:nth-child(1){
+      div{
+        height:30px !important;
+        color:#464949 !important;
+        opacity:0.5
+      }
+    }
+  }
+}
+.jazz-mailuserfield{
+  height:420px;
+  overflow: auto;
+}
+.jazz-mailfield-template{
+  margin-top:12px;
+  display: flex;
+  flex-direction: row;
+  min-height: 30px;
+  .templatetitle{
+    color:#abafae;
+    font-size: 14px;
+    width:52px;
+    min-width:52px;
+    margin-top:7px;
+  }
+}
+.jazz-templatefield{
+  .title{
+    border: 1px solid #ececec;
+    background-color: #ffffff;
+    width: 600px;
+    min-height:30px;
+    display: flex;
+    align-items: center;
+    .content{
+      font-size: 14px;
+      color:#464949;
+      line-height: 20px;
+      margin-left:10px;
+      width:554px;
+    }
+  }
+}
+.jazz-platformuser-groupselect{
+  color:#abafae;
+  font-size: 14px;
+  width:62px;
+  display: none;
+  margin-left: 10px;
+  &:hover{
+    color:#1ca8dd
+  }
+
+}
+.jazz-platformuser-user{
+
+    margin-left: 6px;
+    font-size: 14px;
+    color: #767a7a;
+    max-width:140px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+}
+.jazz-platformuser-position{
+
+    margin-left: 6px;
+    font-size: 14px;
+    color: #767a7a;
+    max-width:92px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+}
+.jazz-templateitem{
+  color:#464949;
+  font-size: 14px;
+  height: 32px;
+  padding:2.5px 10px;
+  display: flex;
+  align-item:center;
+&:hover{
+  background-color: #e6e7e8;
+}
+}
+.jazz-mailfield-subject{
+  display: flex;
+  flex-direction: row;
+  margin-top:12px;
+  .subjecttitle{
+    margin-top:7px;
+    color:#abafae;
+    font-size: 14px;
+    width:52px;
+    min-width:52px;
+  }
+}
+.jazz-mailfield-content{
+  display: flex;
+  flex-direction: row;
+  margin-top:12px;
+  .contenttitle{
+    margin-top:7px;
+    color:#abafae;
+    font-size: 14px;
+    width:52px;
+    min-width:52px;
+  }
+  .contentcontent{
+    border: 1px solid #ececec;
+    background-color: #ffffff;
+    width: 600px;
+    height: 214px;
+    padding: 0 10px;
+    overflow: auto;
+    font-size: 14px;
+  }
+}
+.jazz-mailfield-newTemplate{
+  margin-left:52px;
+  margin-top:12px;
+}
+.jazz-newTemplate{
+  display: flex;
+  >div:nth-child(2){
+    hr{
+      border-width:0px !important;
+      border-color:transparent !important;
+    }
+  }
+}
+.jazz-mailfield-error{
+  color:red;
+  font-size: 10px;
+  margin-left:54px;
 }
