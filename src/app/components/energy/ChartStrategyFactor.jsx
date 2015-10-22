@@ -3464,7 +3464,7 @@ let ChartStrategyFactor = {
           width: '92px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
-       <DateTimeSelector ref='dateTimeSelector' endLeft='-50px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-flat-button'}>
          {searchButton}
        </div>
@@ -3481,7 +3481,7 @@ let ChartStrategyFactor = {
           width: '92px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
-      <DateTimeSelector ref='dateTimeSelector' endLeft='-50px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
       </div>
@@ -3498,7 +3498,7 @@ let ChartStrategyFactor = {
           width: '92px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
-      <DateTimeSelector ref='dateTimeSelector' endLeft='-50px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
       </div>
