@@ -362,9 +362,12 @@ MailStore.dispatchToken = AppDispatcher.register(function(action) {
       MailStore.setMsgNoticee(action.flag);
       break;
     case MailAction.SEND_MAIL_ERROR:
+      MailStore.setDialog('-1', null);
+      MailStore.emitShowDialogChange();
       MailStore.setErrorText(action.res.text);
       MailStore.emitSendErrorChange();
       MailStore.emitMailViewChange();
+
       break;
     case MailAction.SEND_MAIL_SUCCESS:
       MailStore.setErrorCode({

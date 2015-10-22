@@ -4,6 +4,7 @@ import { Action } from '../constants/actionType/Mail.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import MailStore from '../stores/MailStore.jsx';
 
+let timeoutHandle = null;
 
 let MailAction = {
   GetServiceProviders() {
@@ -65,17 +66,25 @@ let MailAction = {
       },
       commonErrorHandling: false,
       success: function() {
+        clearTimeout(timeoutHandle);
         AppDispatcher.dispatch({
           type: Action.SEND_MAIL_SUCCESS,
         });
       },
       error: function(err, res) {
+        clearTimeout(timeoutHandle);
         AppDispatcher.dispatch({
           type: Action.SEND_MAIL_ERROR,
           res: res
         });
       }
     });
+    timeoutHandle = setTimeout(() => {
+      AppDispatcher.dispatch({
+        type: Action.SET_DIALOG,
+        dialogType: 'loading',
+      });
+    }, 2000);
   },
   addReceiver: function(receiver) {
     AppDispatcher.dispatch({

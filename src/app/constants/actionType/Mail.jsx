@@ -19,7 +19,8 @@ module.exports = {
     SEND_MAIL_SUCCESS: null,
     SEND_MAIL_ERROR: null,
     SET_ERROR_CODE: null,
-    RESET_SEND_INFO: null
+    RESET_SEND_INFO: null,
+    SEND_MAIL_LOADING: null
   })
 
 };

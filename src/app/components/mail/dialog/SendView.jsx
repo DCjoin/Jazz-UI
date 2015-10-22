@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import { Navigation, State } from 'react-router';
-import { Dialog, FlatButton, TextField, Paper } from 'material-ui';
+import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
 import MailAction from '../../../actions/MailAction.jsx';
 
 var Send = React.createClass({
@@ -58,11 +58,20 @@ var Send = React.createClass({
       onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
+    var content = this.props.content;
+    if (this.props.loading) {
+      content = <div style={{
+        'margin-left': '300px'
+      }}>
+      <CircularProgress  mode="indeterminate" size={1} />
+      </div>;
+      dialogProps.actions = [];
+    }
     return (
       <div className='jazz-copytemplate-dialog'>
         <div className='able'>
           <Dialog {...dialogProps}>
-            {this.props.content}
+            {content}
           </Dialog>
         </div>
       </div>
@@ -99,6 +108,9 @@ var SendView = React.createClass({
         break;
       case '03099':
         content = <Send firstActionLabel={I18N.Mail.Send.Ok} content={I18N.Mail.Send.E03099} onDismiss={this.props.onDismiss}/>;
+        break;
+      case 'loading':
+        content = <Send loading={true} onDismiss={this.props.onDismiss}/>;
         break;
     }
     return content;

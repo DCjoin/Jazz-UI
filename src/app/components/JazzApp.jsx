@@ -87,7 +87,7 @@ let JazzApp = React.createClass({
             lang: lang
           });
         } else if (url.indexOf('menutype=energy') > -1) {
-          me.replaceWith('setting', {
+          me.replaceWith('mail', {
             lang: lang
           });
         } else {
