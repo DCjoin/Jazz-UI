@@ -2,6 +2,7 @@
 
 import React from 'react';
 import mui from 'material-ui';
+import assign from 'object-assign';
 import classSet from 'classnames';
 import util from '../util/util.jsx';
 import moment from 'moment';
@@ -171,7 +172,9 @@ var ViewableDatePicker = React.createClass({
         defaultValue: this.state.curDate,
         value: v,
         onChange: this._onChange,
-        style: this.props.style
+        style: assign({
+          width: 430
+        }, this.props.style)
       };
       if (this.state.curDate) {
         inputProps.className = "jazz-viewableTextField-noempty";
@@ -194,7 +197,7 @@ var ViewableDatePicker = React.createClass({
           position: 'absolute',
           "zIndex": 99,
           left: this.props.left || '0',
-          width: "280px",
+          width: "315px",
           marginTop: '2px',
           border: '1px solid rgb(235, 235, 235)',
           "backgroundColor": "white"
