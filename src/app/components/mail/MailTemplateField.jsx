@@ -28,8 +28,8 @@ let TemplateItem = React.createClass({
     };
     if (this.props.value.templateNewFlag === 0) {
       return (
-        <div className='jazz-templateitem' onClick={this._onItemClick}>
-            <div className='node-content-text' style={{
+        <div className='jazz-templateitem' onClick={this._onItemClick} title={this.props.value.templateName}>
+            <div style={{
           'margin-left': '7.5px'
         }}>
               {this.props.value.templateName}
@@ -40,8 +40,8 @@ let TemplateItem = React.createClass({
         )
     } else {
       return (
-        <div className='jazz-templateitem' onClick={this._onItemClick}>
-            <div className='node-content-text' style={{
+        <div className='jazz-templateitem' onClick={this._onItemClick} title={this.props.value.templateName}>
+            <div style={{
           'margin-left': '7.5px'
         }}>
               {this.props.value.templateName}
@@ -94,7 +94,8 @@ let TemplateList = React.createClass({
       maxHeight: '192px',
       position: 'absolute',
       border: '1px solid #c9c8c8',
-      overflow: 'auto'
+      overflowY: 'auto',
+      overflowX: 'hidden'
     };
     return (
       <Paper style={paperStyle}>

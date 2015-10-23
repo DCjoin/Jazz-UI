@@ -1,10 +1,11 @@
 'use strict';
 
 import React from 'react';
-import { FlatButton, CircularProgress } from 'material-ui';
+import { FlatButton, Dialog } from 'material-ui';
 import MailField from './MailField.jsx';
 import Users from './MailUsers.jsx';
 import MailAction from '../../actions/MailAction.jsx';
+import MailStore from '../../stores/MailStore.jsx';
 
 
 let MailContent = React.createClass({
@@ -12,10 +13,18 @@ let MailContent = React.createClass({
     MailAction.sendEamilOrMessage(false);
   },
   render: function() {
-    // var sendBtnStyle = {
-    //   marginLeft: '168px',
-    //   marginTop: '18px'
-    // };
+    let titleStyle = {
+        fontSize: '20px',
+        color: '#464949',
+        marginLeft: '26px'
+      },
+      dialogProps = {
+        ref: 'dialog',
+        title: I18N.Mail.Send.Title,
+        modal: true,
+        openImmediately: true,
+        titleStyle: titleStyle
+      };
     return (
       <div className='jazz-mail'>
         <div className='header'>

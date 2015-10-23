@@ -143,6 +143,12 @@ var MailStore = assign({}, PrototypeStore, {
   removeTemplate: function(template) {
     var index = _templateList.indexOf(template);
     _templateList.splice(index, 1);
+    if (template == _template) {
+      _template = null;
+      _subject = null;
+      _content = null;
+      this.emitMailViewChange();
+    }
   },
   getMailView: function() {
     return {
@@ -356,8 +362,12 @@ MailStore.dispatchToken = AppDispatcher.register(function(action) {
       MailStore.setMsgNoticee(action.flag);
       break;
     case MailAction.SEND_MAIL_ERROR:
+      MailStore.setDialog('-1', null);
+      MailStore.emitShowDialogChange();
       MailStore.setErrorText(action.res.text);
       MailStore.emitSendErrorChange();
+      MailStore.emitMailViewChange();
+
       break;
     case MailAction.SEND_MAIL_SUCCESS:
       MailStore.setErrorCode({

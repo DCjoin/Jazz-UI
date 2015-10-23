@@ -12,7 +12,7 @@ import TreeNode from './TreeNode.jsx';
 import dragula from 'react-dragula';
 var lastOver = null,
   drag = null,
-  timeoutHandel = null,
+  timeoutHandle = null,
   pass = true;
 
 var EditNode = null;
@@ -141,7 +141,7 @@ var Tree = React.createClass({
         pre = true;
       }
       this.props.onGragulaNode(target.id, source.id, pre);
-      clearTimeout(timeoutHandel);
+      clearTimeout(timeoutHandle);
     }
 
 
@@ -153,8 +153,8 @@ var Tree = React.createClass({
     } else {
       lastOver = container.children[0];
     }
-    clearTimeout(timeoutHandel);
-    timeoutHandel = setTimeout(() => {
+    clearTimeout(timeoutHandle);
+    timeoutHandle = setTimeout(() => {
 
       if (lastOver) {
         this.setState({
