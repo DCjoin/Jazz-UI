@@ -15,6 +15,7 @@ import { getCookie } from './util/Util.jsx';
 import { Styles } from 'material-ui';
 let {ThemeManager, LightRawTheme} = Styles;
 import AppTheme from './AppTheme.jsx';
+import Test from './components/energy/test/Test.jsx';
 //
 // var theme = new ThemeManager();
 import './less/main.less';

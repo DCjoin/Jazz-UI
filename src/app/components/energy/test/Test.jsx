@@ -1,11 +1,11 @@
 'use strict';
 import React from "react";
 import { Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowColumn } from 'material-ui';
-import EnergyStore from '../../stores/energy/EnergyStore.jsx';
-import { getUomById, getCommodityById } from '../../util/Util.jsx';
-import Pagination from '../../controls/paging/Pagination.jsx';
+//import EnergyStore from '../../stores/energy/EnergyStore.jsx';
+//import { getUomById, getCommodityById } from '../../util/Util.jsx';
+//import Pagination from '../../controls/paging/Pagination.jsx';
 
-let GridComponent = React.createClass({
+let Test = React.createClass({
 
   propTypes: {
     energyData: React.PropTypes.object,
@@ -28,46 +28,18 @@ let GridComponent = React.createClass({
     let firstItems = dataArray[0].items;
     let gridData = [], row;
     for (let i = 0, len = firstItems.length; i < len; i++) {
-      row = [
-        <TableRowColumn style={{
-          'padding-right': '0px'
-        }}>
-          {firstItems[i].localTime}
-        </TableRowColumn>
-      ];
-      // row.localTime = {
-      //   content: firstItems[i].localTime
-      // };
+      row = {};
+      row.localTime = {
+        content: firstItems[i].localTime
+      };
       for (let k = 0; k < dataArray.length; k++) {
-        // row[dataArray[k].TargetId + ''] = {
-        //   content: dataArray[k].items[i].value
-        // };
-        row.push(
-          <TableRowColumn style={{
-            'padding-left': '60px',
-            'padding-right': '0',
-            'font-size': '#14px',
-            color: '#464949'
-          }}>
-            {dataArray[k].items[i].value}
-          </TableRowColumn>
-        )
+        row[dataArray[k].TargetId + ''] = {
+          content: dataArray[k].items[i].value
+        };
       }
-      gridData.push(<TableRow>
-        {row}
-      </TableRow>);
+      gridData.push(row);
     }
-    return (
-      <TableBody displayRowCheckbox={false} style={{
-        'padding-right': '0',
-        'padding-left': '0',
-        'background-color': '#fbfbfb'
-      }}>
-            showRowHover={this.state.showRowHover}
-            stripedRows={this.state.stripedRows}>
-        {gridData}
-      </TableBody>
-      );
+    return gridData;
   },
   getHeaderCols(energyData) {
     let dataArray = energyData;
@@ -80,24 +52,32 @@ let GridComponent = React.createClass({
     //   }
     // };
     let headerCols = [
-      <TableHeaderColumn style={{
-        'font-size': '14px',
-        color: '#abafae'
-      }}>{I18N.RawData.Time}</TableHeaderColumn>
+      <TableHeaderColumn>{I18N.RawData.Time}</TableHeaderColumn>
     ];
 
-    for (let i = 0; i < dataArray.length; i++) {
-      var tagOption = this.getTagInfo(dataArray[i]);
-      headerCols.push(<TableHeaderColumn style={{
+    for (let i = 0; i < 2; i++) {
+      //var tagOption = this.getTagInfo(dataArray[i]);
+      // headerCols.push(
+      //   <TableHeaderColumn>
+      //     <TableRow>
+      //       <TableRowColumn>'A'</TableRowColumn>
+      //     </TableRow>
+      //     <TableRow>
+      //       <TableRowColumn>'B'</TableRowColumn>
+      //     </TableRow>
+      //     <TableRow>
+      //       <TableRowColumn>'C'</TableRowColumn>
+      //     </TableRow>
+      //   </TableHeaderColumn>
+      // )
+      headerCols.push(<TableHeaderColumn  style={{
         'padding-right': '0',
         'padding-left': '0'
-      }}>{this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.commodityAndUomName)}</TableHeaderColumn>)
+      }}>{this.getTagColumnContent('A', 'B', 'C')}</TableHeaderColumn>)
     //headerCols[dataArray[i].TargetId + ''] = this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.commodityAndUomName); //{content: dataArray[i].Name};
     }
     return (
-      <TableHeader displaySelectAll={false} style={{
-        'background-color': '#fbfbfb'
-      }}>
+      <TableHeader displaySelectAll={false}>
          <TableRow>
            {headerCols}
          </TableRow>
@@ -130,8 +110,8 @@ let GridComponent = React.createClass({
   getTagColumnContent(hieName, tagName, uom) {
     var tagColumn = {
       content: <div style={{
-        height: '107px',
-        minHeight: '107px',
+        height: '120px',
+        minHeight: '120px',
         borderLeft: '1px solid #e0e0e0'
       }}>
                                   <div className={'jazz-energy-gridcomponent-header-item'}> {hieName} </div>
@@ -143,14 +123,14 @@ let GridComponent = React.createClass({
     };
     return tagColumn;
   },
-  // getColOrder(energyData) {
-  //   let dataArray = energyData;
-  //   let colOrder = ['localTime'];
-  //   for (let i = 0; i < dataArray.length; i++) {
-  //     colOrder.push(dataArray[i].TargetId + '');
-  //   }
-  //   return colOrder;
-  // },
+  getColOrder(energyData) {
+    let dataArray = energyData;
+    let colOrder = ['localTime'];
+    for (let i = 0; i < dataArray.length; i++) {
+      colOrder.push(dataArray[i].TargetId + '');
+    }
+    return colOrder;
+  },
   getPageIndex() {
     let pageOrder = EnergyStore.getSubmitParams().viewOption.PagingOrder;
     return pageOrder.PageIdx;
@@ -167,20 +147,20 @@ let GridComponent = React.createClass({
   },
   render() {
     let me = this;
-    let energyData = this.props.energyData.toJS();
-    let bodyCols = this.getFormatEnergyData(energyData);
-    let headerCols = this.getHeaderCols(energyData);
+    // let energyData = this.props.energyData.toJS();
+    // let rowData = this.getFormatEnergyData(energyData);
+    let headerCols = this.getHeaderCols();
     // let colOrder = this.getColOrder(energyData);
-    let pageObj = this.getPageObj(this.props.energyRawData);
-
-    let pagingPropTypes = {
-      curPageNum: pageObj.pageIdx,
-      totalPageNum: pageObj.pageSize,
-      previousPage: me._previousPage,
-      nextPage: me._nextPage,
-      jumpToPage: me._jumpToPage,
-      hasJumpBtn: true
-    };
+    // let pageObj = this.getPageObj(this.props.energyRawData);
+    //
+    // let pagingPropTypes = {
+    //   curPageNum: pageObj.pageIdx,
+    //   totalPageNum: pageObj.pageSize,
+    //   previousPage: me._previousPage,
+    //   nextPage: me._nextPage,
+    //   jumpToPage: me._jumpToPage,
+    //   hasJumpBtn: true
+    // };
 
     // Table component
     return <div className='jazz-energy-gridcomponent-wrap' style={{
@@ -192,9 +172,49 @@ let GridComponent = React.createClass({
       selectable={this.state.selectable}
       >
       {headerCols}
-      {bodyCols}
+            <TableBody
+      deselectOnClickaway={this.state.deselectOnClickaway}
+      showRowHover={this.state.showRowHover}
+      stripedRows={this.state.stripedRows}>
+              <TableRow selected={true}>
+                  <TableRowColumn>1</TableRowColumn>
+                  <TableRowColumn>John Smith</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>2</TableRowColumn>
+                  <TableRowColumn>Randal White</TableRowColumn>
+                  <TableRowColumn>Unemployed</TableRowColumn>
+                </TableRow>
+                <TableRow selected={true}>
+                  <TableRowColumn>3</TableRowColumn>
+                  <TableRowColumn>Stephanie Sanders</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>4</TableRowColumn>
+                  <TableRowColumn>Steve Brown</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>5</TableRowColumn>
+                  <TableRowColumn>Joyce Whitten</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>6</TableRowColumn>
+                  <TableRowColumn>Samuel Roberts</TableRowColumn>
+                  <TableRowColumn>Unemployed</TableRowColumn>
+                </TableRow>
+                <TableRow>
+                  <TableRowColumn>7</TableRowColumn>
+                  <TableRowColumn>Adam Moore</TableRowColumn>
+                  <TableRowColumn>Employed</TableRowColumn>
+                </TableRow>
+              </TableBody>
+
     </Table>
-      <Pagination {...pagingPropTypes}></Pagination>
+
     </div>;
   },
   _previousPage() {
@@ -227,4 +247,4 @@ let GridComponent = React.createClass({
     this.props.chartStrategy.getEnergyRawDataFn(timeRanges, 0, tagOptions, relativeDate, pageIdx);
   }
 });
-module.exports = GridComponent;
+module.exports = Test;
