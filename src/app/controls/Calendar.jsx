@@ -122,8 +122,8 @@ var Calendar = React.createClass({
       },
       calendarContainer: {
         width: isLandscape ? '280px' : '100%',
-        height: weekCount === 5 ? '268px' :
-          weekCount === 6 ? '308px' : '228px',
+        height: weekCount === 5 ? '300px' :
+          weekCount === 6 ? '340px' : '228px',
         float: isLandscape ? 'right' : 'none',
         transition: Transitions.easeOut('150ms', 'height')
       },
@@ -131,8 +131,8 @@ var Calendar = React.createClass({
         width: '280px',
         overflow: 'hidden',
         height: yearCount < 6 ? yearCount * 56 + 10 :
-          weekCount === 5 ? '268px' :
-            weekCount === 6 ? '308px' : '228px',
+          weekCount === 5 ? '300px' :
+            weekCount === 6 ? '340px' : '228px',
         float: isLandscape ? 'right' : 'none'
       },
       timeContainer: {
@@ -155,7 +155,7 @@ var Calendar = React.createClass({
       weekTitleDay: {
         listStyle: 'none',
         float: 'left',
-        width: '32px',
+        width: '37px',
         textAlign: 'center',
         margin: '0 2px'
       }
