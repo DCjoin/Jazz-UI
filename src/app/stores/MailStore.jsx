@@ -36,6 +36,7 @@ var MailStore = assign({}, PrototypeStore, {
     var f = function(item) {
       if (!!item.TotalUserCount) {
         item.Name = item.Name + '(' + item.TotalUserCount + ')';
+        item.Id = '101' + item.Id;
         item.Children.forEach(child => {
           f(child);
         });
