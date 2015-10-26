@@ -94,6 +94,7 @@ let Providers = React.createClass({
       onSelectNode: this._onSelectNode,
       selectedNode: this.state.selectedNode,
       generateNodeConent: this.generateNodeConent,
+      treeNodeClass: 'jazz-copy-tree'
     };
     var style = {
       display: 'flex',
