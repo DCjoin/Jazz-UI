@@ -844,5 +844,10 @@ I18N.Mail.Send.E03099 = '邮件发送失败，请重试。';
 I18N.RawData = {};
 I18N.RawData.Time = '时间';
 
+I18N.SumWindow = {};
+I18N.SumWindow.TimeSpan = '时间段';
+I18N.SumWindow.Data = '数据点';
+I18N.SumWindow.Sum = '总计';
+
 
 module.exports = I18N;
