@@ -7,7 +7,7 @@ import EnergyStore from '../../../stores/energy/EnergyStore.jsx';
 import Immutable from 'immutable';
 let {dateAdd} = CommonFuns;
 
-let {Dialog, Table, FlatButton} = mui;
+let {Dialog, FlatButton, Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowColumn} = mui;
 
 let SumWindow = React.createClass({
   propTypes: {
@@ -129,44 +129,67 @@ let SumWindow = React.createClass({
     }
     return data;
   },
-  getRowData() {
+  getBodyCols() {
     var data = this.buildData();
-    let rowData = [], row;
+    let rowData = [],
+      row = [];
     for (var i = 0; i < data.length; i++) {
-      row = {};
-      row.name = {
-        content: data[i].name
-      };
-      row.sum = {
-        content: data[i].sum
-      };
-      rowData.push(row);
+      row = [
+        <TableRowColumn style={{
+          'padding-left': '60px',
+          'padding-right': '0px'
+        }}>{data[i].name}</TableRowColumn>,
+        <TableRowColumn style={{
+          'padding-left': '45px',
+          'padding-right': '0',
+          'font-size': '#14px',
+          color: '#464949'
+        }}>{data[i].sum}</TableRowColumn>
+      ];
+      rowData.push(<TableRow>
+        {row}
+      </TableRow>);
     }
-    return rowData;
-  },
-  getColOrder(energyData) {
-    let colOrder = ['name', 'sum'];
-    return colOrder;
+    return (
+      <TableBody displayRowCheckbox={false} style={{
+        'background-color': '#fbfbfb'
+      }}>
+            showRowHover={this.state.showRowHover}
+            stripedRows={this.state.stripedRows}>
+        {rowData}
+      </TableBody>
+      );
   },
   getHeaderCols() {
-    let headerCols = {};
+    let headerCols = [];
     if (this.isMultiInterval()) {
-      headerCols.name = {
-        content: <div style={{
-          marginLeft: '10px'
-        }}>{'时间段'}</div>
-      };
+      headerCols.push(<TableHeaderColumn style={{
+        'padding-right': '0',
+        'padding-left': '0',
+        'font-size': '14px',
+        'color': '#abafae'
+      }}>{I18N.SumWindow.TimeSpan}</TableHeaderColumn>);
     } else {
-      headerCols.name = {
-        content: <div style={{
-          marginLeft: '10px'
-        }}>{'数据点'}</div>
-      };
+      headerCols.push(<TableHeaderColumn style={{
+        'padding-right': '0',
+        'padding-left': '0',
+        'font-size': '14px',
+        'color': '#abafae'
+      }}>{I18N.SumWindow.Data}</TableHeaderColumn>);
     }
-    headerCols.sum = {
-      content: '总计'
-    };
-    return headerCols;
+    headerCols.push(<TableHeaderColumn style={{
+      'font-size': '14px',
+      'color': '#abafae'
+    }}>{I18N.SumWindow.Sum}</TableHeaderColumn>);
+    return (
+      <TableHeader displaySelectAll={false} style={{
+        'background-color': '#fbfbfb'
+      }}>
+         <TableRow>
+           {headerCols}
+         </TableRow>
+      </TableHeader>
+      );
   },
   _onAction(action) {
     let analysisPanel = this.props.analysisPanel;
@@ -179,21 +202,16 @@ let SumWindow = React.createClass({
   },
   render() {
     let me = this;
-    let rowData = this.getRowData();
+    let bodyCols = this.getBodyCols();
     let headerCols = this.getHeaderCols();
-    let colOrder = this.getColOrder();
 
     var sumTable = <div className='jazz-energy-sumcomponent-wrap'><Table
-    headerColumns={headerCols}
-    columnOrder={colOrder}
-    rowData={rowData}
     fixedHeader={this.state.fixedHeader}
-    stripedRows={this.state.stripedRows}
-    showRowHover={this.state.showRowHover}
     selectable={this.state.selectable}
-    displayRowCheckbox = {this.state.displayRowCheckbox}
-    displaySelectAll = {this.state.displaySelectAll}
-    />
+    >
+    {headerCols}
+    {bodyCols}
+  </Table>
     </div>;
     let _buttonActions = [
       <FlatButton
