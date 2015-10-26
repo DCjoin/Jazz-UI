@@ -61,7 +61,8 @@ let GridComponent = React.createClass({
       <TableBody displayRowCheckbox={false} style={{
         'padding-right': '0',
         'padding-left': '0',
-        'background-color': '#fbfbfb'
+        'background-color': '#fbfbfb',
+        'border-top': '1px solid #e0e0e0'
       }}>
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}>

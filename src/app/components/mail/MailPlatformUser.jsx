@@ -10,7 +10,8 @@ let GropNodeContent = React.createClass({
   propTypes: {
     nodeData: React.PropTypes.object,
   },
-  _onClick: function() {
+  _onClick: function(e) {
+    e.stopPropagation();
     MailAction.addReceivers(this.props.nodeData);
   },
   _onMouserOver: function() {

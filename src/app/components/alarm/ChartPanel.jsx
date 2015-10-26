@@ -361,7 +361,7 @@ let ChartPanel = React.createClass({
          <MenuItem primaryText="饼状图"  value='pie'/>
          <MenuItem primaryText="原始数据"  value='rawdata'/>
       </ButtonMenu>;
-    let configButton = <ButtonMenu label='辅助对比' style={{
+    let configButton = <ButtonMenu label='辅助分析' style={{
       marginLeft: '10px'
     }} desktop={true}
     onItemTouchTap={this._onConfigBtnItemTouchTap}>
