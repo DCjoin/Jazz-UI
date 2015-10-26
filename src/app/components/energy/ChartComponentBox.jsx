@@ -639,11 +639,20 @@ let ChartComponentBox = React.createClass({
       if (true) { //will check privilidge for alarm
         //get and push alarm flag series
         if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
-          serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, convertedData[i].id, xaxisMap, this.props.step);
-          serieObj.visible = !convertedData[i].graySerie;
-          serieObj.zIndex = 11; //default 10
-          serieObj.option.step = item.Target.Step;
-          alarmSeries.push(serieObj);
+          var index = null;
+          for (var j = 0; j < convertedData.length; j++) {
+            if (convertedData[j].name == item.Target.Name) {
+              index = convertedData[j].id;
+              break;
+            }
+          }
+          if (index !== null) {
+            serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, index, xaxisMap, this.props.step);
+            serieObj.visible = !convertedData[i].graySerie;
+            serieObj.zIndex = 11; //default 10
+            serieObj.option.step = item.Target.Step;
+            alarmSeries.push(serieObj);
+          }
         }
       }
 
