@@ -125,7 +125,7 @@ let CarbonStore = assign({}, PrototypeStore, {
     }
     _paramsObj = {
       hierId: params.hierarchyId,
-      commIds: params.communityIds,
+      commIds: params.commodityIds,
       startTime: params.viewOption.TimeRanges[0].StartTime,
       endTime: params.viewOption.TimeRanges[0].EndTime,
       step: params.viewOption.Step,
@@ -151,22 +151,22 @@ let CarbonStore = assign({}, PrototypeStore, {
     ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _carbonData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
-  removeSeriesDataByUid(uid) {    
-    if(_carbonData){
+  removeSeriesDataByUid(uid) {
+    if (_carbonData) {
       let latestDataList = [];
       let dataList = _carbonData.toJS().Data;
 
-      for(let i=0,len=dataList.length; i<len; i++){
+      for (let i = 0, len = dataList.length; i < len; i++) {
         let data = dataList[i];
-        if(data.uid !== uid){
+        if (data.uid !== uid) {
           latestDataList.push(data);
         }
       }
-      if(latestDataList.length === 1){
+      if (latestDataList.length === 1) {
         return true;
-      }else if(latestDataList.length > 0){
+      } else if (latestDataList.length > 0) {
         _carbonData = _carbonData.set('Data', latestDataList);
-      }else{
+      } else {
         _carbonData = null;
       }
     }
