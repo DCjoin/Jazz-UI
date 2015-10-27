@@ -713,6 +713,7 @@ let CommonFuns = {
           '12': 12
         };
         var addInterval = stepIntervalMap[step + ''];
+        date = new Date(time - addInterval / 2 * 60 * 60 * 1000);
 
         //currentLanguage： 0 中文, 1 英文
         if (window.currentLanguage == 1) {

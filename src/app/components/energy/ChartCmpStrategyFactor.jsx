@@ -993,6 +993,27 @@ let ChartCmpStrategyFactor = {
           case 5: //week add 3days&12hours
             range = 7 * 24 * 3600000;
             break;
+          case 6: //15mins
+            range = 3600000 / 4;
+            break;
+          case 7: //30mins
+            range = 3600000 / 2;
+            break;
+          case 8: //2 hours
+            range = 3600000 * 2;
+            break;
+          case 9: //4 hours
+            range = 3600000 * 4;
+            break;
+          case 10: //6 hours
+            range = 3600000 * 6;
+            break;
+          case 11: //8 hours
+            range = 3600000 * 8;
+            break;
+          case 12: //12hours
+            range = 3600000 * 12;
+            break;
         }
         if (_.isArray(d)) {
           var currentTime = (new Date()).getTime();

@@ -638,15 +638,16 @@ let ChartReaderStrategyFactor = {
   },
   getSeriesInternalFnStrategy: {
     getSeriesInternal(energyStore, data, seriesConstructorFn, setter, step, start, end) {
-      var ret = [], eData, t, arr, series, obj,
+      var ret = [], eData, t, arr, series, obj, eStep,
         uom = 'null';
       for (var i = 0; i < data.length; i++) {
         arr = [];
         series = data[i];
+        eStep = series.Target.Step;
         if (series.EnergyData) {
           for (var j = 0; j < series.EnergyData.length; j++) {
             eData = series.EnergyData[j];
-            arr.push([energyStore.readerStrategy.translateDateFn(eData.LocalTime, null, step), eData.DataValue]);
+            arr.push([energyStore.readerStrategy.translateDateFn(eData.LocalTime, null, eStep), eData.DataValue]);
           }
         }
         obj = seriesConstructorFn(series.Target);

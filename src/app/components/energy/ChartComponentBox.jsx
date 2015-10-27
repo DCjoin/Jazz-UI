@@ -649,7 +649,7 @@ let ChartComponentBox = React.createClass({
             }
           }
           if (index !== null) {
-            serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, index, xaxisMap, this.props.step);
+            serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, index, xaxisMap, item.Target.Step);
             serieObj.visible = !indexData.graySerie;
             serieObj.zIndex = 11; //default 10
             serieObj.option.step = item.Target.Step;
