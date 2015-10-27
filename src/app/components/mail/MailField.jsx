@@ -17,7 +17,7 @@ let MailField = React.createClass({
       template: mailView.template,
       subject: mailView.subject,
       content: mailView.content,
-      saveTemplateFlagClear: !mailView.saveNewTemplate,
+      saveTemplateFlagClear: mailView.saveNewTemplate,
       msgFlagClear: mailView.msgNoticeFlag
     });
   },
@@ -165,8 +165,7 @@ let MailField = React.createClass({
       labelStyle={labelStyle}
       label={I18N.Mail.Message}
       onCheck={this._onMessageCheck}
-      defaultChecked={this.state.msgFlagClear}/>
-
+      checked={this.state.msgFlagClear}/>
         </div>
         </div>
       );

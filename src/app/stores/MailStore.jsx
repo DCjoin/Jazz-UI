@@ -16,7 +16,7 @@ let _mailUsers = null,
   _dialogType = null,
   _subject = null,
   _content = null,
-  _saveNewTemplate = true,
+  _saveNewTemplate = false,
   _newTemplateName = null,
   _msgNoticeFlag = false,
   _errorCode = {
@@ -248,7 +248,7 @@ var MailStore = assign({}, PrototypeStore, {
     _dialogType = null;
     _subject = null;
     _content = null;
-    _saveNewTemplate = true;
+    _saveNewTemplate = false;
     _newTemplateName = null;
     _msgNoticeFlag = false;
     _errorCode = {
@@ -257,6 +257,12 @@ var MailStore = assign({}, PrototypeStore, {
       newtemplate: null
     };
 
+  },
+  getSaveNewTemplateFlag: function() {
+    return _saveNewTemplate;
+  },
+  getNewTemplateName: function() {
+    return _newTemplateName;
   },
   emitMailUsersChange: function() {
     this.emit(MAIL_USERS_EVENT);
@@ -361,6 +367,7 @@ MailStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case MailAction.SET_MSG_NOTICE:
       MailStore.setMsgNoticee(action.flag);
+      MailStore.emitMailViewChange();
       break;
     case MailAction.SEND_MAIL_ERROR:
       MailStore.setDialog('-1', null);
