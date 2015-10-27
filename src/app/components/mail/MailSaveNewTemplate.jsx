@@ -8,7 +8,6 @@ import MailStore from '../../stores/MailStore.jsx';
 let MailSaveNewTemplate = React.createClass({
   propTypes: {
     errorText: React.PropTypes.string,
-    clear: React.PropTypes.bool,
   },
   _onCheck: function() {
     var checked = this.refs.checkbox.isChecked();
@@ -33,13 +32,10 @@ let MailSaveNewTemplate = React.createClass({
     MailAction.setNewTemplate(this.state.show, this.state.text);
   },
   componentWillReceiveProps: function(nextProps) {
-    if (nextProps.clear) {
-      this.refs.checkbox.setChecked(false);
-      this.setState({
-        show: false,
-        text: null
-      });
-    }
+    this.setState({
+      show: MailStore.getSaveNewTemplateFlag(),
+      text: MailStore.getNewTemplateName()
+    });
   },
   getInitialState: function() {
     return {
@@ -103,7 +99,9 @@ let MailSaveNewTemplate = React.createClass({
       iconStyle={iconStyle}
       labelStyle={labelStyle}
       label={I18N.Mail.SaveNewTemplate}
-      onCheck={this._onCheck}/>
+      onCheck={this._onCheck}
+      checked={this.state.show}/>
+
 
       {text}
       </div>

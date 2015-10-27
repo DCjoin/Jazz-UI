@@ -258,6 +258,12 @@ var MailStore = assign({}, PrototypeStore, {
     };
 
   },
+  getSaveNewTemplateFlag: function() {
+    return _saveNewTemplate;
+  },
+  getNewTemplateName: function() {
+    return _newTemplateName;
+  },
   emitMailUsersChange: function() {
     this.emit(MAIL_USERS_EVENT);
   },
@@ -361,6 +367,7 @@ MailStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case MailAction.SET_MSG_NOTICE:
       MailStore.setMsgNoticee(action.flag);
+      MailStore.emitMailViewChange();
       break;
     case MailAction.SEND_MAIL_ERROR:
       MailStore.setDialog('-1', null);
