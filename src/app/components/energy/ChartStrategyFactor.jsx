@@ -415,7 +415,7 @@ let ChartStrategyFactor = {
 
       if (needReload) {
         let hierCommIds = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-        if (!hierCommIds.communityIds || hierCommIds.communityIds.length === 0 || !hierCommIds.hierarchyId) {
+        if (!hierCommIds.commodityIds || hierCommIds.commodityIds.length === 0 || !hierCommIds.hierarchyId) {
           analysisPanel.setState({
             energyData: null
           });
@@ -428,7 +428,7 @@ let ChartStrategyFactor = {
           destination = paramsObj.destination,
           viewOp = paramsObj.viewOption;
 
-        analysisPanel.state.chartStrategy.getEnergyDataFn(hierCommIds.hierarchyId, hierCommIds.communityIds, destination, viewOp, false, analysisPanel);
+        analysisPanel.state.chartStrategy.getEnergyDataFn(hierCommIds.hierarchyId, hierCommIds.commodityIds, destination, viewOp, false, analysisPanel);
       } else {
         let energyData = CarbonStore.getCarbonData();
         analysisPanel.setState({
@@ -2129,7 +2129,7 @@ let ChartStrategyFactor = {
   },
   handleStepChangeFnStrategy: {
     handleEnergyStepChange(analysisPanel, step) {
-      let tagOptions = EnergyStore.getTagOpions(),
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
         paramsObj = EnergyStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges;
 
@@ -2140,7 +2140,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
     },
     handleCostStepChange(analysisPanel, step) {
-      let tagOptions = CostStore.getSelectedList(),
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
         paramsObj = CostStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges;
 
@@ -2152,8 +2152,9 @@ let ChartStrategyFactor = {
     },
     handleCarbonStepChange(analysisPanel, step) {
       let paramsObj = CarbonStore.getSubmitParams();
-      let hierarchyId = paramsObj.hierarchyId,
-        commodityIds = paramsObj.commodityIds,
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+      let hierarchyId = tagOptions.hierarchyId,
+        commodityIds = tagOptions.commodityIds,
         destination = paramsObj.destination,
         viewOp = paramsObj.viewOption;
       viewOp.Step = step;
@@ -2166,7 +2167,7 @@ let ChartStrategyFactor = {
     },
     handleRatioStepChange(analysisPanel, step) {
       let paramsObj = RatioStore.getSubmitParams();
-      let tagOptions = RatioStore.getRatioOpions();
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
 
       let viewOp = paramsObj.viewOption,
         timeRanges = viewOp.TimeRanges,
@@ -2184,7 +2185,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, false, benchmarkOption);
     },
     handleUnitEnergyStepChange(analysisPanel, step) {
-      let tagOptions = EnergyStore.getTagOpions(),
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
         paramsObj = EnergyStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges,
         submitParams = EnergyStore.getSubmitParams(),
@@ -2198,7 +2199,7 @@ let ChartStrategyFactor = {
       });
     },
     handleUnitCostStepChange(analysisPanel, step) {
-      let tagOptions = CostStore.getSelectedList(),
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
         paramsObj = CostStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges,
         submitParams = CostStore.getSubmitParams(),
@@ -2213,8 +2214,9 @@ let ChartStrategyFactor = {
     },
     handleUnitCarbonStepChange(analysisPanel, step) {
       let paramsObj = CarbonStore.getSubmitParams();
-      let hierarchyId = paramsObj.hierarchyId,
-        commodityIds = paramsObj.commodityIds,
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+      let hierarchyId = tagOptions.hierarchyId,
+        commodityIds = tagOptions.commodityIds,
         destination = paramsObj.destination,
         viewOp = paramsObj.viewOption,
         benchmarkOption = paramsObj.benchmarkOption;
@@ -3108,7 +3110,7 @@ let ChartStrategyFactor = {
       }
 
       let hierCommIds = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-      if (!hierCommIds.communityIds || hierCommIds.communityIds.length === 0 || !hierCommIds.hierarchyId) {
+      if (!hierCommIds.commodityIds || hierCommIds.commodityIds.length === 0 || !hierCommIds.hierarchyId) {
         analysisPanel.setState({
           energyData: null
         });
@@ -3121,7 +3123,7 @@ let ChartStrategyFactor = {
       if (!dest)
         dest = 2;
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
-        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierCommIds.hierarchyId, hierCommIds.communityIds, dest, relativeDateValue, analysisPanel);
+        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierCommIds.hierarchyId, hierCommIds.commodityIds, dest, relativeDateValue, analysisPanel);
       } else if (chartType === 'pie') {
         let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
         let viewOption = {
@@ -3131,7 +3133,7 @@ let ChartStrategyFactor = {
           Step: 2
         };
         //analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
-        analysisPanel.state.chartStrategy.getPieEnergyDataFn(hierCommIds.hierarchyId, hierCommIds.communityIds, dest, viewOption, relativeDateValue, analysisPanel);
+        analysisPanel.state.chartStrategy.getPieEnergyDataFn(hierCommIds.hierarchyId, hierCommIds.commodityIds, dest, viewOption, relativeDateValue, analysisPanel);
       }
     },
     onRatioSearchDataButtonClick(analysisPanel) {
@@ -3251,7 +3253,7 @@ let ChartStrategyFactor = {
       }
 
       let hierCommIds = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-      if (!hierCommIds.communityIds || hierCommIds.communityIds.length === 0 || !hierCommIds.hierarchyId) {
+      if (!hierCommIds.commodityIds || hierCommIds.commodityIds.length === 0 || !hierCommIds.hierarchyId) {
         analysisPanel.setState({
           energyData: null
         });
@@ -3266,7 +3268,7 @@ let ChartStrategyFactor = {
 
       let unitType = analysisPanel.state.unitType;
       analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierCommIds.hierarchyId,
-        hierCommIds.communityIds, dest, unitType, relativeDateValue, analysisPanel);
+        hierCommIds.commodityIds, dest, unitType, relativeDateValue, analysisPanel);
     },
     onRankSearchDataButtonClick(analysisPanel) {
       //analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
@@ -3654,7 +3656,7 @@ let ChartStrategyFactor = {
       let hierId = CommodityStore.getCurrentHierarchyId();
       return {
         hierarchyId: hierId,
-        communityIds: commIds
+        commodityIds: commIds
       };
     //return CommodityStore.getCurrentHierIdCommodityStatus();
     },
