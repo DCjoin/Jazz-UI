@@ -345,8 +345,9 @@ let DataSelectMainPanel = React.createClass({
     }
     if (this.props.widgetType) {
       let hierNode = CommodityStore.getHierNode();
+      let node;
       if (!!hierNode) {
-        let node = {
+        node = {
           Id: hierNode.hierId,
           Name: hierNode.hierName
         };
