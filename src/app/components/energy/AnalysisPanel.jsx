@@ -806,7 +806,7 @@ let AnalysisPanel = React.createClass({
       me.setState({
         weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
         weatherOption: null,
-      })
+      });
     }, 0);
   },
   _onUnitCostBaselineBtnDisabled: function() {
@@ -817,7 +817,11 @@ let AnalysisPanel = React.createClass({
   _onTouBtnDisabled: function() {
     var touBtnStatus = this.state.touBtnStatus;
     var newStatus = CommodityStore.getECButtonStatus();
-    if (!newStatus && this.state.step > 1) {
+    if (!newStatus && this.state.step === null) {
+      this.setState({
+        touBtnStatus: false
+      });
+    } else if (!newStatus && this.state.step !== null && this.state.step > 1) {
       this.setState({
         touBtnStatus: false
       });
