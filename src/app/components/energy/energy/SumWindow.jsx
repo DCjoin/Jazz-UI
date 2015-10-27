@@ -136,13 +136,13 @@ let SumWindow = React.createClass({
     for (var i = 0; i < data.length; i++) {
       row = [
         <TableRowColumn style={{
-          'padding-left': '60px',
-          'padding-right': '0px'
+          paddingLeft: '60px',
+          paddingRight: '0px'
         }}>{data[i].name}</TableRowColumn>,
         <TableRowColumn style={{
-          'padding-left': '45px',
-          'padding-right': '0',
-          'font-size': '#14px',
+          paddingLeft: '45px',
+          paddingRight: '0px',
+          fontSize: '14px',
           color: '#464949'
         }}>{data[i].sum}</TableRowColumn>
       ];
@@ -152,7 +152,7 @@ let SumWindow = React.createClass({
     }
     return (
       <TableBody displayRowCheckbox={false} style={{
-        'background-color': '#fbfbfb'
+        backgroundColor: '#fbfbfb'
       }}>
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}>
@@ -164,26 +164,26 @@ let SumWindow = React.createClass({
     let headerCols = [];
     if (this.isMultiInterval()) {
       headerCols.push(<TableHeaderColumn style={{
-        'padding-right': '0',
-        'padding-left': '0',
-        'font-size': '14px',
-        'color': '#abafae'
+        paddingRight: '0px',
+        paddingLeft: '0px',
+        fontSize: '14px',
+        color: '#abafae'
       }}>{I18N.SumWindow.TimeSpan}</TableHeaderColumn>);
     } else {
       headerCols.push(<TableHeaderColumn style={{
-        'padding-right': '0',
-        'padding-left': '0',
-        'font-size': '14px',
-        'color': '#abafae'
+        paddingRight: '0px',
+        paddingLeft: '0px',
+        fontSize: '14px',
+        color: '#abafae'
       }}>{I18N.SumWindow.Data}</TableHeaderColumn>);
     }
     headerCols.push(<TableHeaderColumn style={{
-      'font-size': '14px',
-      'color': '#abafae'
+      fontSize: '14px',
+      color: '#abafae'
     }}>{I18N.SumWindow.Sum}</TableHeaderColumn>);
     return (
       <TableHeader displaySelectAll={false} style={{
-        'background-color': '#fbfbfb'
+        backgroundColor: '#fbfbfb'
       }}>
          <TableRow>
            {headerCols}
