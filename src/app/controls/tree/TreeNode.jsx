@@ -147,9 +147,12 @@ var TreeNode = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.selectedNode != this.props.selectedNode || nextProps.collapsedNodeId != this.props.collapsedNodeId) {
-      this.setState({
-        collapsed: this.getDefaultCollapsed(nextProps),
-      });
+      if (this.state.collapsed) {
+        this.setState({
+          collapsed: this.getDefaultCollapsed(nextProps),
+        });
+      }
+
     }
   },
   handleClickArrow: function(e) {

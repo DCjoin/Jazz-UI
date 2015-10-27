@@ -10,7 +10,12 @@ let MailAction = {
   GetServiceProviders() {
     Ajax.post('/ServiceProvider.svc/GetServiceProviders', {
       params: {
-        dto: {}
+        dto: {
+          StatusFilter: {
+            ExcludeStatus: false
+          },
+          Statuses: [1]
+        }
       },
       success: function(Providers) {
         AppDispatcher.dispatch({

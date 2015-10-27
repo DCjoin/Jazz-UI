@@ -24,7 +24,9 @@ let GropNodeContent = React.createClass({
 
     return (
       <div className='tree-node-content' onMouseOver={this._onMouserOver} onMouseOut={this._onMouserOut}>
-          <div className='node-content-text'>
+          <div className='node-content-text' style={{
+        'max-width': '200px'
+      }}>
             {this.props.nodeData.get('Name')}
           </div>
           <div className='jazz-platformuser-groupselect' ref='groupselect' onClick={this._onClick}>
@@ -111,6 +113,7 @@ let PlatformUser = React.createClass({
       onSelectNode: this._onSelectNode,
       selectedNode: this.state.selectedNode,
       generateNodeConent: this.generateNodeConent,
+      treeNodeClass: 'jazz-copy-tree'
     };
     var style = {
       display: 'flex',

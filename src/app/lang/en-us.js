@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 
 let I18N = {};
@@ -811,6 +811,9 @@ I18N.Template.Send.Cancel = 'Quit';
 I18N.Title = {};
 I18N.Title.Alarm = 'Alarm';
 I18N.Title.Energy = 'Energy';
+
+I18N.RawData = {};
+I18N.RawData.Time = 'Time';
 
 
 

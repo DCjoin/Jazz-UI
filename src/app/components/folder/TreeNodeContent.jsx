@@ -21,6 +21,8 @@ var TreeNodeContent = React.createClass({
       this.setState({
         isSelect: true,
       });
+    //  this.props.panel.setEditNode(this.props.nodeData);
+    } else if (this.state.isSelect) {
       this.props.panel.setEditNode(this.props.nodeData);
     }
 
@@ -34,7 +36,6 @@ var TreeNodeContent = React.createClass({
       text: e.target.value
     });
   },
-
   getInitialState: function() {
     return {
       isSelect: null,
