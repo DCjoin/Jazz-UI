@@ -12,9 +12,9 @@ let MailAction = {
       params: {
         dto: {
           StatusFilter: {
-            ExcludeStatus: false
-          },
-          Statuses: [1]
+            ExcludeStatus: false,
+            Statuses: [1]
+          }
         }
       },
       success: function(Providers) {
