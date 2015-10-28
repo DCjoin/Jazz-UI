@@ -175,7 +175,7 @@ var TagStore = assign({}, PrototypeStore, {
         _tagTotal--;
       }
     });
-    if (_tagTotal < _tagSum) {
+    if (_tagTotalStatus && _tagTotal < _tagSum) {
       this.setTagTotalStatus();
     }
     this.checkAllStatus();
@@ -185,6 +185,10 @@ var TagStore = assign({}, PrototypeStore, {
   clearTagStatus: function() {
     _tagTotal = 0;
     _totalTagStatus = [];
+    this.checkAllStatus();
+    if (_tagTotalStatus) {
+      this.setTagTotalStatus();
+    }
     this.checkBaselineBtnDisabled();
     this.checkWeatherBtnDisabled();
   },
