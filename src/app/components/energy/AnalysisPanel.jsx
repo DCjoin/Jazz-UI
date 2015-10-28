@@ -1088,6 +1088,9 @@ let AnalysisPanel = React.createClass({
   getCustomizedMenuItems() {
     var menuItems = this.state.customerMenuItems;
     var customizedStore = LabelMenuStore.getCustomerLabelData();
+    if (customizedStore === null) {
+      return;
+    }
     if (!this.hasCustomizedMenuItems()) {
       customizedStore.forEach((item, index) => {
         menuItems.push({
