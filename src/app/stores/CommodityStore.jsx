@@ -86,6 +86,9 @@ var CommodityStore = assign({}, PrototypeStore, {
     }
 
   },
+  setDefaultNodeForLabel: function(node) {
+    _defaultHierNode_Label = node;
+  },
   getDefaultNode: function() {
     return _defaultHierNode;
   },
@@ -441,6 +444,7 @@ CommodityStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case CommodityAction.SET_CURRENT_HIERARCHY_ID:
       CommodityStore.setCurrentHierarchyInfo(action.hierId, action.hierName);
+      CommodityStore.setDefaultNodeForLabel(action.node);
       break;
     case CommodityAction.SET_CURRENT_DIM_INFO:
       CommodityStore.setCurrentDimInfo(action.dimNode);

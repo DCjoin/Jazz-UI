@@ -60,7 +60,7 @@ let CommodityAction = {
       typeData: typeData
     });
   },
-  setCurrentHierarchyInfo: function(hierId, hierName) {
+  setCurrentHierarchyInfo: function(node) {
     // setTimeout(()=>{
     // AppDispatcher.dispatch({
     //   type: Action.SET_CURRENT_HIERARCHY_ID,
@@ -70,8 +70,9 @@ let CommodityAction = {
     //   },0);
     AppDispatcher.dispatch({
       type: Action.SET_CURRENT_HIERARCHY_ID,
-      hierId: hierId,
-      hierName: hierName
+      hierId: node.Id,
+      hierName: node.Name,
+      node: node
     });
   },
   setCurrentDimInfo: function(dimNode) {

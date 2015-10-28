@@ -41,7 +41,7 @@ let DataSelectMainPanel = React.createClass({
       React.findDOMNode(this.refs.searchIcon).style.display = 'block';
       this.refs.searchText.setValue("");
       if (this.props.widgetType) {
-        CommodityAction.setCurrentHierarchyInfo(node.Id, node.Name);
+        CommodityAction.setCurrentHierarchyInfo(node);
       }
 
       if (this.props.widgetType == 'Energy' || this.props.linkFrom == "Alarm") {
