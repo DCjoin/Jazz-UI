@@ -7,8 +7,6 @@ import TagItem from './TagItem.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import TagAction from '../../actions/TagAction.jsx';
 
-let pageX = 0,
-  pageY = 0;
 
 var TagMenu = React.createClass({
 
@@ -22,7 +20,7 @@ var TagMenu = React.createClass({
       allCheckDisable: TagStore.getCheckAllDisabledStatus(),
       checked: TagStore.getCheckAllCheckedStatus(),
       tagTotal: TagStore.getTagTotalStatus(),
-    })
+    });
   },
   _onAllCheck: function() {
     var checked = this.refs.checkall.isChecked();
@@ -64,20 +62,8 @@ var TagMenu = React.createClass({
     let nodemenuItems = [];
     let menuItem = null;
     var buttonStyle = {
-        height: '25px',
-      },
-      tooltipStyle = {
-        display: 'flex',
-        position: 'absolute',
-        left: pageX,
-        top: pageY,
-        backgroundColor: '#ffffff',
-        zIndex: '200',
-        maxWidth: '200px',
-        color: '#464949',
-        fontSize: '14px',
-        border: '1px solid #efefef'
-      };
+      height: '25px',
+    };
 
     var tooltipText = I18N.format(I18N.Tag.Tooltip, TagStore.getTagTotal(), TagStore.getTagSum());
     if (this.state.allCheckDisable) {
@@ -137,7 +123,6 @@ var TagMenu = React.createClass({
           全选
         </div>
       </div>
-      {tooltip}
       <div style={{
         'overflow': 'auto',
         display: 'flex',

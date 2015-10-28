@@ -30,17 +30,19 @@ let MailField = React.createClass({
     this.setState({
       subject: e.target.value
     });
+    MailAction.setSubject(e.target.value);
   },
   _onSubjectBlur: function(e) {
-    MailAction.setSubject(e.target.value);
+    //  MailAction.setSubject(e.target.value);
   },
   _onContentChanged: function(e) {
     this.setState({
       content: e.target.value
     });
+    MailAction.setContent(e.target.value);
   },
   _onContentBlur: function(e) {
-    MailAction.setContent(e.target.value);
+    //  MailAction.setContent(e.target.value);
   },
   _onMessageCheck: function() {
     var checked = this.refs.checkbox.isChecked();
@@ -99,7 +101,7 @@ let MailField = React.createClass({
         value: this.state.subject,
         fullWidth: true,
         onChange: this._onSubjectChanged,
-        onBlur: this._onSubjectBlur
+      //onBlur: this._onSubjectBlur
       },
       contentProps = {
         ref: 'content',
@@ -107,7 +109,7 @@ let MailField = React.createClass({
         underlineFocusStyle: underlineFocusStyle,
         value: this.state.content === null ? '' : this.state.content,
         onChange: this._onContentChanged,
-        onBlur: this._onContentBlur,
+        //  onBlur: this._onContentBlur,
         multiLine: true,
         fullWidth: true
       };

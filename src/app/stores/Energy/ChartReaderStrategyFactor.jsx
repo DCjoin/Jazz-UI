@@ -395,7 +395,7 @@ let ChartReaderStrategyFactor = {
   },
   convertMultiTimeDataFnStrategy: {
     convertMultiTimeData(data, obj, energyStore) {
-      var stepStyle = ['minutes', 'hours', 'days', 'months', 'years']
+      var stepStyle = ['minutes', 'hours', 'days', 'months', 'years'];
       if (!data) return;
       var start = j2d(obj.start),
         end = j2d(obj.end),
@@ -445,6 +445,27 @@ let ChartReaderStrategyFactor = {
               loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -30, 'minutes');
               loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -30, 'minutes');
               break;
+            case 8: //2 hours
+              loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -2, 'hours');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -2, 'hours');
+              break;
+            case 9: //4 hours
+              loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -4, 'hours');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -4, 'hours');
+              break;
+            case 10: //6 hours
+              loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -6, 'hours');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -6, 'hours');
+              break;
+            case 11: //8 hours
+              loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -8, 'hours');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -8, 'hours');
+              break;
+            case 12: //12hours
+              loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -12, 'hours');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -1, 'hours');
+              break;
+
           }
         }
 
@@ -638,15 +659,16 @@ let ChartReaderStrategyFactor = {
   },
   getSeriesInternalFnStrategy: {
     getSeriesInternal(energyStore, data, seriesConstructorFn, setter, step, start, end) {
-      var ret = [], eData, t, arr, series, obj,
+      var ret = [], eData, t, arr, series, obj, eStep,
         uom = 'null';
       for (var i = 0; i < data.length; i++) {
         arr = [];
         series = data[i];
+        eStep = series.Target.Step;
         if (series.EnergyData) {
           for (var j = 0; j < series.EnergyData.length; j++) {
             eData = series.EnergyData[j];
-            arr.push([energyStore.readerStrategy.translateDateFn(eData.LocalTime, null, step), eData.DataValue]);
+            arr.push([energyStore.readerStrategy.translateDateFn(eData.LocalTime, null, eStep), eData.DataValue]);
           }
         }
         obj = seriesConstructorFn(series.Target);

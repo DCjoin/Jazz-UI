@@ -62,7 +62,8 @@ let DataSelectMainPanel = React.createClass({
       tagId: node.Id,
       optionType: 2,
       HierarchyShow: false,
-      DimShow: true
+      DimShow: true,
+      isLoading: true
     });
   },
   _onDimTreeClick: function(node) {
@@ -73,8 +74,9 @@ let DataSelectMainPanel = React.createClass({
         tagId: node.Id,
         optionType: 6,
         HierarchyShow: true,
-        DimShow: false
-      })
+        DimShow: false,
+        isLoading: true
+      });
     } else {
       let id = TagStore.getCurrentHierarchyId();
       TagAction.loadData(id, 2, 1, alarmType, filters);
@@ -82,8 +84,9 @@ let DataSelectMainPanel = React.createClass({
         tagId: id,
         optionType: 2,
         HierarchyShow: true,
-        DimShow: false
-      })
+        DimShow: false,
+        isLoading: true
+      });
     }
 
   },
@@ -109,8 +112,8 @@ let DataSelectMainPanel = React.createClass({
     this.setState({
       tagList: data.GetTagsByFilterResult,
       total: data.total,
-      isLoading: TagStore.getNodeLoading(),
-    })
+      isLoading: false,
+    });
   },
   _onAlarmTagNodeChange: function() {
     var data = TagStore.getData();
@@ -142,7 +145,7 @@ let DataSelectMainPanel = React.createClass({
       dimParentNode: node,
       optionType: 2,
       dimActive: true,
-      isLoading: TagStore.getNodeLoading(),
+      isLoading: false,
     });
   },
 
@@ -318,6 +321,9 @@ let DataSelectMainPanel = React.createClass({
       alarmTagOption = EnergyStore.getTagOpions()[0];
       TagAction.resetTagInfo(this.props.widgetType);
       TagAction.loadAlarmData(alarmTagOption);
+      this.setState({
+        isLoading: true
+      });
       //set the first tag select status from alarm left panel
       if (AlarmTagStore.getSearchTagList().length !== 0) {
         TagAction.setTagStatusById(alarmTagOption.hierId, alarmTagOption.tagId);
@@ -335,6 +341,9 @@ let DataSelectMainPanel = React.createClass({
     if (this.props.linkFrom == "Alarm") {
       TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
       TagAction.loadAlarmData(alarmTagOption);
+      this.setState({
+        isLoading: true
+      })
 
       //set the first tag select status from alarm left panel
       if (AlarmTagStore.getSearchTagList().length !== 0) {
@@ -363,12 +372,16 @@ let DataSelectMainPanel = React.createClass({
         if (!!tagId) {
           TagStore.addAlarmTagNodeListener(this._onAlarmTagNodeChange);
           TagAction.loadAlarmData(data);
+          this.setState({
+            isLoading: true
+          })
         } else {
           page = 1;
           TagAction.loadData(hierNode.hierId, 2, 1, null, null);
           this.setState({
             tagId: hierNode.hierId,
-            optionType: 2
+            optionType: 2,
+            isLoading: true
           })
         }
 

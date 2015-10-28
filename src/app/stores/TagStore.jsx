@@ -52,7 +52,7 @@ var TagStore = assign({}, PrototypeStore, {
       if (tagNode.hierId == _hierId) {
         hasHierId = true;
         if (selected) {
-          tagNode.tagStatus = tagNode.tagStatus.push(node.Id)
+          tagNode.tagStatus = tagNode.tagStatus.push(node.Id);
         } else {
           let index = tagNode.tagStatus.indexOf(node.Id);
           tagNode.tagStatus = tagNode.tagStatus.delete(index);
@@ -64,7 +64,7 @@ var TagStore = assign({}, PrototypeStore, {
       _totalTagStatus.push({
         hierId: _hierId,
         tagStatus: Immutable.List.of(node.Id),
-      })
+      });
     }
 
     if (selected) {
@@ -78,7 +78,7 @@ var TagStore = assign({}, PrototypeStore, {
       }
       _tagTotal--;
     }
-    ;
+
     this.checkAllStatus();
     this.checkBaselineBtnDisabled();
     this.checkWeatherBtnDisabled();
@@ -175,12 +175,20 @@ var TagStore = assign({}, PrototypeStore, {
         _tagTotal--;
       }
     });
+    if (_tagTotalStatus && _tagTotal < _tagSum) {
+      this.setTagTotalStatus();
+    }
+    this.checkAllStatus();
     this.checkBaselineBtnDisabled();
     this.checkWeatherBtnDisabled();
   },
   clearTagStatus: function() {
     _tagTotal = 0;
     _totalTagStatus = [];
+    this.checkAllStatus();
+    if (_tagTotalStatus) {
+      this.setTagTotalStatus();
+    }
     this.checkBaselineBtnDisabled();
     this.checkWeatherBtnDisabled();
   },
@@ -264,11 +272,11 @@ var TagStore = assign({}, PrototypeStore, {
     if (_totalTagStatus.length > 1) {
       let validHierCount = 0;
       _totalTagStatus.forEach(item => {
-        if(item.tagStatus && item.tagStatus.size > 0){
+        if (item.tagStatus && item.tagStatus.size > 0) {
           ++validHierCount;
         }
       });
-      if(validHierCount < 2){
+      if (validHierCount < 2) {
         weather_btn_disabled = false;
       } else {
         weather_btn_disabled = true;
@@ -281,7 +289,7 @@ var TagStore = assign({}, PrototypeStore, {
   getBaselineBtnDisabled: function() {
     return baseline_btn_disabled;
   },
-  getWeatherBtnDisabled: function(){
+  getWeatherBtnDisabled: function() {
     return weather_btn_disabled;
   },
   // getNodeByHierId:function(hierId){

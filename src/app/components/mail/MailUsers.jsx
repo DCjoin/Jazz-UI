@@ -23,7 +23,7 @@ let MailUsers = React.createClass({
     } else {
       this.setState({
         isLoading: false,
-        users: MailStore.getMailUsers()
+        users: MailStore.getMailUsers(),
       });
     }
   },
@@ -40,7 +40,7 @@ let MailUsers = React.createClass({
     } else {
       this.setState({
         isLoading: false,
-        users: MailStore.getMailUsers()
+        users: MailStore.getMailUsers(),
       });
     }
   },
@@ -50,20 +50,39 @@ let MailUsers = React.createClass({
       users: MailStore.getMailUsers()
     });
   },
+  _onSendSuccessChanged: function() {
+    this.setState({
+      tabsValue: 'tab1',
+      users: null
+    });
+    MailAction.GetServiceProviders();
+    React.findDOMNode(this.refs.tab1).style.opacity = '1';
+    React.findDOMNode(this.refs.tab2).style.opacity = '0.5';
+    this.refs.providers.reset();
+    this.refs.users.reset();
+  },
+  _handleTabsChange: function(value, e, tab) {
+    this.setState({
+      tabsValue: value
+    });
+  },
   getInitialState: function() {
     return {
       users: null,
-      isLoading: true
+      isLoading: true,
+      tabsValue: null
     };
   },
   componentDidMount: function() {
     MailStore.addMailUsersListener(this._onMailUsersChanged);
+    MailStore.addSendSuccessListener(this._onSendSuccessChanged);
     MailAction.GetServiceProviders();
     React.findDOMNode(this.refs.tab1).style.opacity = '1';
     React.findDOMNode(this.refs.tab2).style.opacity = '0.5';
   },
   componentWillUnmount: function() {
     MailStore.removeMailUsersListener(this._onMailUsersChanged);
+    MailStore.removeSendSuccessListener(this._onSendSuccessChanged);
   },
   render: function() {
     var itemStyle = {
@@ -72,11 +91,14 @@ let MailUsers = React.createClass({
     };
     return (
       <div className='jazz-mailuser'>
-        <Tabs tabItemContainerStyle={itemStyle}>
-          <Tab ref='tab1' label={I18N.Mail.Contactor} onActive={this._handleContactorTabActive}>
+        <Tabs tabItemContainerStyle={itemStyle} valueLink={{
+        value: this.state.tabsValue,
+        requestChange: this._handleTabsChange.bind(this)
+      }}>
+          <Tab ref='tab1' value='tab1' label={I18N.Mail.Contactor} onActive={this._handleContactorTabActive}>
             <Providers ref='providers' users={this.state.users} isLoading={this.state.isLoading}/>
           </Tab>
-          <Tab ref='tab2' label={I18N.Mail.User} onActive={this._handlePlatformUserTabActive}>
+          <Tab ref='tab2' value='tab2' label={I18N.Mail.User} onActive={this._handlePlatformUserTabActive}>
             <PlatformUser ref="users" users={this.state.users} isLoading={this.state.isLoading}/>
           </Tab>
         </Tabs>
