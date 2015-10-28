@@ -839,7 +839,7 @@ I18N.Mail.Send.Cancel = '放弃';
 I18N.Mail.Send.Success = '平台邮件已发送成功';
 I18N.Mail.Send.E03092 = '您的邮件没有填写主题。您确定继续发送？';
 I18N.Mail.Send.E03099 = '邮件发送失败，请重试。';
-I18N.Mail.Send.E03099 = '邮件发送失败，请重试。';
+
 
 I18N.RawData = {};
 I18N.RawData.Time = '时间';
