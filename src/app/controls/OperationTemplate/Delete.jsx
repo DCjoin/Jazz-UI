@@ -61,7 +61,10 @@ var Delete = React.createClass({
       <div className='jazz-copytemplate-dialog'>
         <div className='able'>
           <Dialog {...dialogProps}>
-            {content}
+            <div>
+              {content}
+            </div>
+
           </Dialog>
         </div>
       </div>
