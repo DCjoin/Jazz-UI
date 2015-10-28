@@ -3462,8 +3462,8 @@ let ChartStrategyFactor = {
       return <div className={'jazz-alarm-chart-toolbar'}>
        <div className={'jazz-full-border-dropdownmenu-container'} >
          {chartTypeCmp}
-         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' className='jazz-alrm-chart-dropdownmenu' style={{
-          width: '92px'
+         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate'style={{
+          width: '112px',
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
@@ -3480,7 +3480,7 @@ let ChartStrategyFactor = {
       <div className={'jazz-full-border-dropdownmenu-container'} >
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '92px'
+          width: '112px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
@@ -3497,7 +3497,7 @@ let ChartStrategyFactor = {
       <div className={'jazz-full-border-dropdownmenu-container'} >
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '92px'
+          width: '112px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
@@ -3513,7 +3513,7 @@ let ChartStrategyFactor = {
        <div className={'jazz-full-border-dropdownmenu-container'}>
          {chartTypeCmp}
          <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '92px'
+          width: '112px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
@@ -3548,7 +3548,7 @@ let ChartStrategyFactor = {
        <div className={'jazz-full-border-dropdownmenu-container'}>
          {chartTypeCmp}
          <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '92px'
+          width: '112px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
@@ -3574,7 +3574,7 @@ let ChartStrategyFactor = {
       <div className={'jazz-full-border-dropdownmenu-container'}>
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '92px'
+          width: '112px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
