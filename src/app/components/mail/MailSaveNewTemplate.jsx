@@ -19,18 +19,20 @@ let MailSaveNewTemplate = React.createClass({
     MailAction.setNewTemplate(checked, null);
   },
   _onTextChanged: function(e) {
+    MailAction.setNewTemplate(this.state.show, e.target.value);
+    this.setState({
+      text: e.target.value
+    });
     var sendError = MailStore.GetSendError();
     if (sendError.newtemplate !== null) {
       sendError.newtemplate = null;
       MailAction.setSendError(sendError);
     }
-    this.setState({
-      text: e.target.value
-    });
+
   },
-  _onTextBlur: function(e) {
-    MailAction.setNewTemplate(this.state.show, this.state.text);
-  },
+  // _onTextBlur: function(e) {
+  //   MailAction.setNewTemplate(this.state.show, this.state.text);
+  // },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
       show: MailStore.getSaveNewTemplateFlag(),
@@ -84,7 +86,7 @@ let MailSaveNewTemplate = React.createClass({
       underlineFocusStyle: underlineFocusStyle,
       value: this.state.text,
       onChange: this._onTextChanged,
-      onBlur: this._onTextBlur,
+      //  onBlur: this._onTextBlur,
       hintText: I18N.Mail.TemplateHintText,
       hintStyle: hintStyle,
       errorText: this.props.errorText,
