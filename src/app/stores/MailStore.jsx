@@ -29,7 +29,8 @@ let MAIL_USERS_EVENT = 'mailusers',
   MAIL_VIEW_EVENT = 'mailview',
   TEMPLATE_LIST_EVENT = 'templatelist',
   SHOW_DIALOG_EVENT = 'showdialog',
-  SEND_ERROR_EVENT = 'senderror';
+  SEND_ERROR_EVENT = 'senderror',
+  SEND_SUCCESS_EVENT = 'sendsuccess';
 
 var MailStore = assign({}, PrototypeStore, {
   setPlatFormUserGroupDto: function(groupDto) {
@@ -314,6 +315,16 @@ var MailStore = assign({}, PrototypeStore, {
     this.removeListener(SEND_ERROR_EVENT, callback);
     this.dispose();
   },
+  emitSendSuccessChange: function() {
+    this.emit(SEND_SUCCESS_EVENT);
+  },
+  addSendSuccessListener: function(callback) {
+    this.on(SEND_SUCCESS_EVENT, callback);
+  },
+  removeSendSuccessListener: function(callback) {
+    this.removeListener(SEND_SUCCESS_EVENT, callback);
+    this.dispose();
+  },
 });
 
 var MailAction = Mail.Action;
@@ -386,6 +397,7 @@ MailStore.dispatchToken = AppDispatcher.register(function(action) {
       MailStore.emitSendErrorChange();
       MailStore.setDialog('1', null);
       MailStore.emitShowDialogChange();
+      MailStore.emitSendSuccessChange();
       break;
     case MailAction.SET_ERROR_CODE:
       MailStore.setErrorCode(action.errorCode);
