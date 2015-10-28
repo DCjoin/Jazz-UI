@@ -42,7 +42,11 @@ let TemplateItem = React.createClass({
       return (
         <div className='jazz-templateitem' onClick={this._onItemClick} title={this.props.value.templateName}>
             <div style={{
-          'margin-left': '7.5px'
+          'margin-left': '7.5px',
+          'max-width': '282px',
+          overflow: 'hidden',
+          'white-space': 'nowrap',
+          'text-overflow': 'ellipsis',
         }}>
               {this.props.value.templateName}
             </div>
