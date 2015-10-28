@@ -74,7 +74,7 @@ var CommodityStore = assign({}, PrototypeStore, {
     if (widgetDto.WidgetType != 'Ranking') {
       if (_hierNode === null) {
         _defaultHierNode = null;
-        _defaultHierNode_Label = HierarchyStore.getHierNodeById(null);
+        _defaultHierNode_Label = null;
       } else {
         _defaultHierNode = {
           Id: _hierNode.hierId,
@@ -94,7 +94,7 @@ var CommodityStore = assign({}, PrototypeStore, {
   },
   getDefaultNodeForLabel: function() {
     if (_hierNode === null) {
-      _defaultHierNode_Label = HierarchyStore.getHierNodeById(null);
+      _defaultHierNode_Label = null;
     } else {
       _defaultHierNode_Label = HierarchyStore.getHierNodeById(_hierNode.hierId);
     }
