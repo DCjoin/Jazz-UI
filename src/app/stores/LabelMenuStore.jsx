@@ -161,6 +161,9 @@ LabelMenuStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.CREATE_FOLDER_OR_WIDGET:
       LabelMenuStore.setHierNode(CommodityStore.getDefaultNodeForLabel());
       break;
+    case FolderAction.GET_WIDGETDTOS_SUCCESS:
+      LabelMenuStore.setHierNode(CommodityStore.getDefaultNodeForLabel());
+      break;
   }
 });
 
