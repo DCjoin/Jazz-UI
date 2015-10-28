@@ -3460,13 +3460,21 @@ let ChartStrategyFactor = {
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
       return <div className={'jazz-alarm-chart-toolbar'}>
-       <div className={'jazz-full-border-dropdownmenu-container'} >
+       <div className={'jazz-full-border-dropdownmenu-container'} style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          height: '38px',
+          marginTop: '-4px'
+        }}>
          {chartTypeCmp}
          <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate'style={{
           width: '112px',
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
+
        <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+
        <div className={'jazz-flat-button'}>
          {searchButton}
        </div>
@@ -3477,7 +3485,13 @@ let ChartStrategyFactor = {
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
       return <div className={'jazz-alarm-chart-toolbar'}>
-      <div className={'jazz-full-border-dropdownmenu-container'} >
+      <div className={'jazz-full-border-dropdownmenu-container'} style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          height: '38px',
+          marginTop: '-4px'
+        }}>
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
           width: '112px'
@@ -3494,7 +3508,13 @@ let ChartStrategyFactor = {
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel, ['line', 'column', 'stack', 'pie']);
 
       return <div className={'jazz-alarm-chart-toolbar'}>
-      <div className={'jazz-full-border-dropdownmenu-container'} >
+      <div className={'jazz-full-border-dropdownmenu-container'} style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          height: '38px',
+          marginTop: '-4px'
+        }}>
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
           width: '112px'
@@ -3510,7 +3530,13 @@ let ChartStrategyFactor = {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel, ['line', 'column']);
       return <div className={'jazz-alarm-chart-toolbar'}>
-       <div className={'jazz-full-border-dropdownmenu-container'}>
+       <div className={'jazz-full-border-dropdownmenu-container'} style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          height: '38px',
+          marginTop: '-4px'
+        }}>
          {chartTypeCmp}
          <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
           width: '112px'
@@ -3545,7 +3571,13 @@ let ChartStrategyFactor = {
         value: 2
       }];
       return <div className={'jazz-alarm-chart-toolbar'}>
-       <div className={'jazz-full-border-dropdownmenu-container'}>
+       <div className={'jazz-full-border-dropdownmenu-container'} style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          height: '38px',
+          marginTop: '-4px'
+        }}>
          {chartTypeCmp}
          <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
           width: '112px'
@@ -3571,7 +3603,13 @@ let ChartStrategyFactor = {
       var rankTypeItem = ConstStore.getRankTypeItem();
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       return <div className={'jazz-alarm-chart-toolbar'}>
-      <div className={'jazz-full-border-dropdownmenu-container'}>
+      <div className={'jazz-full-border-dropdownmenu-container'} style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          height: '38px',
+          marginTop: '-4px'
+        }}>
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
           width: '112px'
