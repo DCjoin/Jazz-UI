@@ -166,11 +166,19 @@ var TBSettingItem = React.createClass({
       error: ''
     });
     var curTbsItem = tbsItems[this.props.index];
-    return (
-      this.validateTbSettingItem(tbsItems) &&
-      this.validateSpecialItems(curTbsItem) &&
-      this.validateValue()
-    );
+    if (this.refs.NormalRadio.isChecked()) {
+      return (
+        this.validateTbSettingItem(tbsItems) &&
+        this.validateSpecialItems(curTbsItem)
+      );
+    } else {
+      return (
+        this.validateTbSettingItem(tbsItems) &&
+        this.validateSpecialItems(curTbsItem) &&
+        this.validateValue()
+      );
+    }
+
   },
 
   validateTbSettingItem: function(tbsItems) {
