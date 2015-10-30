@@ -317,7 +317,7 @@ let AnalysisPanel = React.createClass({
       selectedIndex: 0
     });
 
-    if (type === 'resize' || chart.navCache === false) {
+    if (type === 'resize' || this.refs.ChartComponent.navCache === false) {
       this._onNavigatorChangeLoad();
     }
   },
