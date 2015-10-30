@@ -15,7 +15,8 @@ import { getCookie } from './util/Util.jsx';
 import { Styles } from 'material-ui';
 let {ThemeManager, LightRawTheme} = Styles;
 import AppTheme from './AppTheme.jsx';
-//
+
+import Test from './components/setting/Test.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -32,7 +33,7 @@ var routes = (
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}>
         </Route>
-        <Route name="setting" path="setting" handler={Setting}>
+        <Route name="setting" path="setting" handler={Test}>
         </Route>
       </Route>
       <Route name="mail" path="mail" handler={Mail}>

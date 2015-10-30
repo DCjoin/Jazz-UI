@@ -14,20 +14,7 @@ import { dateType } from '../../constants/AlarmConstants.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 
-var menuItems = [
-  {
-    type: dateType.DAY_ALARM,
-    text: '查看日报警列表'
-  },
-  {
-    type: dateType.MONTH_ALARM,
-    text: '查看月报警列表'
-  },
-  {
-    type: dateType.YEAR_ALARM,
-    text: '查看年报警列表'
-  }
-];
+
 const MONTHSTEP = 3,
   DAYSTEP = 2,
   HOURSTEP = 1;
@@ -103,7 +90,20 @@ var AlarmLeftPanel = React.createClass({
     return nextState.dateType != this.state.dateType;
   },
   render: function() {
-
+    var menuItems = [
+      {
+        type: dateType.DAY_ALARM,
+        text: I18N.ALarm.List.Daily
+      },
+      {
+        type: dateType.MONTH_ALARM,
+        text: I18N.ALarm.List.Month
+      },
+      {
+        type: dateType.YEAR_ALARM,
+        text: I18N.ALarm.List.Year
+      }
+    ];
     let dateSelector,
       date = new Date();
     var dateProps = {
