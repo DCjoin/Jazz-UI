@@ -69,6 +69,7 @@ let DataSelectMainPanel = React.createClass({
   _onDimTreeClick: function(node) {
     page = 1;
     if (node.Id !== 0) {
+      TagAction.setCurrentDimentionInfo(node.Id, node.Name);
       TagAction.loadData(node.Id, 6, 1, alarmType, filters);
       this.setState({
         tagId: node.Id,
@@ -78,6 +79,7 @@ let DataSelectMainPanel = React.createClass({
         isLoading: true
       });
     } else {
+      TagAction.setCurrentDimentionInfo(null, null);
       let id = TagStore.getCurrentHierarchyId();
       TagAction.loadData(id, 2, 1, alarmType, filters);
       this.setState({

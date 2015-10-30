@@ -1059,7 +1059,7 @@ let CommonFuns = {
     }
     return commodityIds;
   },
-  getNodeNameAssociationByTagOptions(tagOptions) {
+  getNodeNameAssociationByTagOptions(tagOptions, dimInfo) {
     let nodeNameAssociation = [], tag, hieNameArr,
       hieName = '';
     for (let i = 0, len = tagOptions.length; i < len; i++) {
@@ -1068,14 +1068,28 @@ let CommonFuns = {
         hieNameArr = tag.hierName.split('\\');
         hieName = hieNameArr[hieNameArr.length - 1];
       }
-      nodeNameAssociation.push({
-        Id: tag.tagId,
-        Name: tag.tagName,
-        HierId: tag.hierId,
-        NodeName: hieName,
-        AssociationOption: 1,
-        DimensionName: null
-      });
+      if (i == len - 1) {
+        nodeNameAssociation.push({
+          Id: tag.tagId,
+          Name: tag.tagName,
+          HierId: tag.hierId,
+          NodeName: hieName,
+          AssociationOption: 1,
+          DimensionName: dimInfo.dimName,
+          DimensionId: dimInfo.dimId
+        });
+      } else {
+        nodeNameAssociation.push({
+          Id: tag.tagId,
+          Name: tag.tagName,
+          HierId: tag.hierId,
+          NodeName: hieName,
+          AssociationOption: 1,
+          DimensionName: null,
+          DimensionId: null
+        });
+      }
+
     }
     return nodeNameAssociation;
   },
