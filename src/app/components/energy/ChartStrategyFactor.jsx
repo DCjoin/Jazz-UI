@@ -240,7 +240,7 @@ let ChartStrategyFactor = {
       onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
       initEnergyStoreByBizChartTypeFn: 'initUnitCostStoreByBizChartType',
       setFitStepAndGetDataFn: 'setUnitEnergyFitStepAndGetData',
-      getInitialStateFn: 'getUnitEnergyInitialState',
+      getInitialStateFn: 'getUnitCostInitialState',
       getAllDataFn: 'unitGetAllData',
       getInitParamFn: 'getInitParam',
       getEnergyDataFn: 'unitCostDataLoad',
@@ -666,6 +666,7 @@ let ChartStrategyFactor = {
         bizType = widgetDto.BizType,
         WidgetStatusArray = widgetDto.WidgetStatusArray,
         touBtnSelected = false,
+        touBtnStatus = true,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
@@ -695,9 +696,19 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
+      var newStatus = CommodityStore.getECButtonStatus();
+      if (!newStatus && step === null) {
+        touBtnStatus = false;
+      } else if (!newStatus && step !== null && step > 1) {
+        touBtnStatus = false;
+      } else {
+        touBtnStatus = true;
+      }
+
       if (bizType == 'CostElectric') {
         touBtnSelected = true;
       }
+
       let yaxisConfig = null;
       if (WidgetStatusArray) {
         yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
@@ -707,7 +718,7 @@ let ChartStrategyFactor = {
         step: step,
         yaxisConfig: yaxisConfig,
         selectedChartType: typeMap[chartType],
-        touBtnStatus: CommodityStore.getECButtonStatus(),
+        touBtnStatus: touBtnStatus,
         touBtnSelected: touBtnSelected
       }, () => {
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
@@ -2893,15 +2904,24 @@ let ChartStrategyFactor = {
         calendarType: "",
       };
     },
+    getUnitEnergyInitialState() {
+      let state = {
+        unitType: 2,
+        benchmarks: null,
+        benchmarkOption: null,
+        calendarType: "",
+      };
+      return state;
+    },
     getCostInitialState() {
       let state = {
-        touBtnStatus: CommodityStore.getECButtonStatus(),
+        touBtnStatus: true,
         touBtnSelected: false,
         calendarType: "",
       };
       return state;
     },
-    getUnitEnergyInitialState() {
+    getUnitCostInitialState() {
       let state = {
         unitType: 2,
         benchmarks: null,
@@ -2932,6 +2952,7 @@ let ChartStrategyFactor = {
         unitType: 2,
         benchmarks: null,
         benchmarkOption: null,
+        unitBaselineBtnStatus: CommodityStore.getUCButtonStatus(),
         calendarType: "",
       };
       return state;
@@ -3410,9 +3431,9 @@ let ChartStrategyFactor = {
       if (stepList.indexOf(step) == -1) {
         step = limitInterval.display;
       }
-      if (ratioType == 1 && (step == 0 || step == 1))
+      if (ratioType === 1 && (step === 0 || step === 1))
         step = 2;
-      if (ratioType == 2 && (step == 0 || step == 1 || step == 2))
+      if (ratioType === 2 && (step === 0 || step === 1 || step === 2))
         step = 3;
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, relativeDate);
     },
@@ -4112,7 +4133,7 @@ let ChartStrategyFactor = {
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        {calendarEl}
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.unitBaselineBtnStatus}/>
        </ButtonMenu>;
       return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
@@ -4130,7 +4151,7 @@ let ChartStrategyFactor = {
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        {calendarEl}
-       <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.baselineBtnStatus}/>
+       <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.unitBaselineBtnStatus}/>
        </ButtonMenu>;
       return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },
@@ -4205,6 +4226,7 @@ let ChartStrategyFactor = {
       CarbonStore.addCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.addCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
       CarbonStore.addCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      CommodityStore.addUCButtonStatusListener(analysisPanel._onUnitCostBaselineBtnDisabled);
     },
     rankBindStoreListeners(analysisPanel) {
       RankStore.addRankDataLoadingListener(analysisPanel._onRankLoadingStatusChange);
@@ -4278,6 +4300,7 @@ let ChartStrategyFactor = {
       CarbonStore.removeCarbonDataLoadedListener(analysisPanel._onCarbonDataChange);
       CarbonStore.removeCarbonDataLoadErrorListener(analysisPanel._onGetCarbonDataError);
       CarbonStore.removeCarbonDataLoadErrorsListener(analysisPanel._onGetCarbonDataErrors);
+      CommodityStore.removeUCButtonStatusListener(analysisPanel._onUnitCostBaselineBtnDisabled);
     },
 
     rankUnbindStoreListeners(analysisPanel) {
@@ -4299,97 +4322,89 @@ let ChartStrategyFactor = {
   },
   clearChartDataFnStrategy: {
     clearChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       AlarmTagAction.clearSearchTagList();
       EnergyStore.clearEnergyStore();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel.state.sumBtnStatus = false;
-      analysisPanel.state.step = null;
-      analysisPanel.state.weatherOption = null;
-      analysisPanel.forceUpdate();
       MultipleTimespanStore.clearMultiTimespan('both');
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null,
+        weatherOption: null
+      });
     },
     clearCarbonChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       CommodityAction.clearCommodity();
       CarbonStore.clearCarbonStore();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel.state.destination = 2;
-      analysisPanel.state.step = null;
-      analysisPanel.forceUpdate();
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null,
+        destination: 2
+      });
     },
     clearCostChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       CommodityAction.clearCommodity();
       CostStore.clearCostStore();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel._onTouBtnDisabled();
-      analysisPanel.state.step = null;
-      analysisPanel.forceUpdate();
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null
+      });
     },
     clearUnitChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       AlarmTagAction.clearSearchTagList();
       EnergyStore.clearEnergyStore();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel.state.step = null;
-      analysisPanel.state.benchmarkOption = null;
-      analysisPanel.state.benchmarks = null;
-      analysisPanel.forceUpdate();
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null,
+        benchmarkOption: null,
+        benchmarks: null
+      });
     },
     clearUnitCostChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       CommodityAction.clearCommodity();
       CostStore.clearCostStore();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel._onUnitCostBaselineBtnDisabled();
-      analysisPanel.state.step = null;
-      analysisPanel.state.benchmarkOption = null;
-      analysisPanel.state.benchmarks = null;
-      analysisPanel.forceUpdate();
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null,
+        benchmarkOption: null,
+        benchmarks: null
+      });
     },
     clearUnitCarbonChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       CommodityAction.clearCommodity();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel.state.destination = 2;
-      analysisPanel.state.benchmarkOption = null;
-      analysisPanel.state.benchmarks = null;
-      analysisPanel.forceUpdate();
+      CarbonStore.clearCarbonStore();
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null,
+        benchmarkOption: null,
+        benchmarks: null,
+        destination: 2
+      });
     },
     clearRatioChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       AlarmTagAction.clearSearchTagList();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel.state.step = null;
-      analysisPanel.state.benchmarkOption = null;
-      analysisPanel.state.benchmarks = null;
-      analysisPanel.forceUpdate();
+      EnergyStore.clearEnergyStore();
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null,
+        benchmarkOption: null,
+        benchmarks: null
+      });
+
     },
     clearLabelChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       AlarmTagAction.clearSearchTagList();
       LabelStore.clearLabelStore();
-      analysisPanel.state.selectedChartType = 'line';
-      analysisPanel.state.weatherOption = null;
-      analysisPanel.forceUpdate();
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null
+      });
     },
     clearRankChartData(analysisPanel) {
-      analysisPanel.state.energyData = null;
-      analysisPanel.state.energyRawData = null;
       CommodityAction.clearRankingCommodity();
-      AlarmTagStore.clearSearchTagList();
       RankStore.clearRankStore();
-      analysisPanel.state.selectedChartType = 'column';
-      analysisPanel.forceUpdate();
+      analysisPanel.setState({
+        energyData: null,
+        energyRawData: null
+      });
     },
   },
   exportChartFnStrategy: {
@@ -4697,7 +4712,7 @@ let ChartStrategyFactor = {
       let destination = CarbonStore.getDestination();
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationBySelectedList(selectedList);
       let benchmarkOption = submitParams.benchmarkOption;
-      if (benchmarkOption == undefined)
+      if (benchmarkOption === undefined)
         benchmarkOption = null;
 
       let params = {
@@ -4724,7 +4739,7 @@ let ChartStrategyFactor = {
     getAlarmWidgetSaveWindow: function(analysisPanel) {
       let widgetWd = <WidgetSaveWindow ref={'saveChartDialog'}  onDismiss={analysisPanel.onWidgetSaveWindowDismiss} chartTitle={analysisPanel.props.chartTitle}
       onSave={analysisPanel.onWidgetSaveWindow}></WidgetSaveWindow>;
-      return widgetWd
+      return widgetWd;
     }
   },
   getChartTypeIconMenu(analysisPanel, types) {
