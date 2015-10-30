@@ -47,13 +47,16 @@ let GridComponent = React.createClass({
             'padding-left': '60px',
             'padding-right': '0',
             'font-size': '#14px',
-            color: '#464949'
+            color: '#464949',
+            height: '40px'
           }}>
             {dataArray[k].items[i].value}
           </TableRowColumn>
         )
       }
-      gridData.push(<TableRow>
+      gridData.push(<TableRow style={{
+        height: '40px'
+      }}>
         {row}
       </TableRow>);
     }
@@ -167,21 +170,21 @@ let GridComponent = React.createClass({
     };
   },
   render() {
-    // let me = this;
-    // let energyData = this.props.energyData.toJS();
-    // let bodyCols = this.getFormatEnergyData(energyData);
-    // let headerCols = this.getHeaderCols(energyData);
-    // // let colOrder = this.getColOrder(energyData);
-    // let pageObj = this.getPageObj(this.props.energyRawData);
-    //
-    // let pagingPropTypes = {
-    //   curPageNum: pageObj.pageIdx,
-    //   totalPageNum: pageObj.pageSize,
-    //   previousPage: me._previousPage,
-    //   nextPage: me._nextPage,
-    //   jumpToPage: me._jumpToPage,
-    //   hasJumpBtn: true
-    // };
+    let me = this;
+    let energyData = this.props.energyData.toJS();
+    let bodyCols = this.getFormatEnergyData(energyData);
+    let headerCols = this.getHeaderCols(energyData);
+    // let colOrder = this.getColOrder(energyData);
+    let pageObj = this.getPageObj(this.props.energyRawData);
+
+    let pagingPropTypes = {
+      curPageNum: pageObj.pageIdx,
+      totalPageNum: pageObj.pageSize,
+      previousPage: me._previousPage,
+      nextPage: me._nextPage,
+      jumpToPage: me._jumpToPage,
+      hasJumpBtn: true
+    };
 
     // Table component
     return <div className='jazz-energy-gridcomponent-wrap' style={{
@@ -190,80 +193,12 @@ let GridComponent = React.createClass({
       <Table
       height={this.state.height}
       fixedHeader={this.state.fixedHeader}
-      fixedFooter={this.state.fixedFooter}
-      selectable={this.state.selectable}
-      multiSelectable={this.state.multiSelectable}
-      onRowSelection={this._onRowSelection}>
-        <TableHeader enableSelectAll={this.state.enableSelectAll}>
-          <TableRow>
-            <TableHeaderColumn colSpan="3" tooltip='Super Header' style={{
-        textAlign: 'center'
-      }}>
-              Super Header
-            </TableHeaderColumn>
-          </TableRow>
-          <TableRow>
-            <TableHeaderColumn tooltip='The ID'>ID</TableHeaderColumn>
-            <TableHeaderColumn tooltip='The Name'>Name</TableHeaderColumn>
-            <TableHeaderColumn tooltip='The Status'>Status</TableHeaderColumn>
-          </TableRow>
-        </TableHeader>
-        <TableBody
-      deselectOnClickaway={this.state.deselectOnClickaway}
-      showRowHover={this.state.showRowHover}
-      stripedRows={this.state.stripedRows}>
-        <TableRow selected={true}>
-            <TableRowColumn>1</TableRowColumn>
-            <TableRowColumn>John Smith</TableRowColumn>
-            <TableRowColumn>Employed</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn>2</TableRowColumn>
-            <TableRowColumn>Randal White</TableRowColumn>
-            <TableRowColumn>Unemployed</TableRowColumn>
-          </TableRow>
-          <TableRow selected={true}>
-            <TableRowColumn>3</TableRowColumn>
-            <TableRowColumn>Stephanie Sanders</TableRowColumn>
-            <TableRowColumn>Employed</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn>4</TableRowColumn>
-            <TableRowColumn>Steve Brown</TableRowColumn>
-            <TableRowColumn>Employed</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn>5</TableRowColumn>
-            <TableRowColumn>Joyce Whitten</TableRowColumn>
-            <TableRowColumn>Employed</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn>6</TableRowColumn>
-            <TableRowColumn>Samuel Roberts</TableRowColumn>
-            <TableRowColumn>Unemployed</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn>7</TableRowColumn>
-            <TableRowColumn>Adam Moore</TableRowColumn>
-            <TableRowColumn>Employed</TableRowColumn>
-          </TableRow>
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableRowColumn>ID</TableRowColumn>
-            <TableRowColumn>Name</TableRowColumn>
-            <TableRowColumn>Status</TableRowColumn>
-          </TableRow>
-          <TableRow>
-            <TableRowColumn colSpan="3" style={{
-        textAlign: 'center'
-      }}>
-              Super Footer
-            </TableRowColumn>
-          </TableRow>
-        </TableFooter>
+      selectable={this.state.selectable}>
+      {headerCols}
+      {bodyCols}
       </Table>
-    
+      <Pagination {...pagingPropTypes}></Pagination>
+
     </div>;
   },
   _previousPage() {
