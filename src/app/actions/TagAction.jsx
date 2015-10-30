@@ -121,6 +121,13 @@ let TagAction = {
         type: Action.CLEAR_ALARM_SEARCH_TAGLIST,
       });
     }, 0);
+  },
+  setCurrentDimentionInfo(id, name) {
+    AppDispatcher.dispatch({
+      type: Action.SET_CURRENT_DIMENTION,
+      id: id,
+      name: name
+    });
   }
 };
 

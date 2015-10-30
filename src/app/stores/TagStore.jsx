@@ -20,6 +20,8 @@ let DATA_CHANGED_EVENT = "datachanged";
 var _data = {};
 var _totalTagStatus = [];
 var _hierId = null;
+var _dimId = null;
+var _dimName = null;
 var _tagTotal = 0;
 var _tagSum = 0;
 var _tagList = [];
@@ -202,6 +204,8 @@ var TagStore = assign({}, PrototypeStore, {
     _data = {};
     _totalTagStatus = [];
     _hierId = null;
+    _dimId = null;
+    _dimName = null;
     _tagTotal = 0;
     _tagList = [];
     baseline_btn_disabled = false;
@@ -215,6 +219,8 @@ var TagStore = assign({}, PrototypeStore, {
   },
   setCurrentHierarchyId: function(hierId) {
     _hierId = hierId;
+    _dimId = null;
+    _dimName = null;
   },
   setCurrentTagList: function(tagList) {
     _tagList = tagList;
@@ -351,6 +357,16 @@ var TagStore = assign({}, PrototypeStore, {
       }
       this.emitTagStatusChange();
     }
+  },
+  setCurrentDimInfo: function(id, name) {
+    _dimId = id;
+    _dimName = name;
+  },
+  getCurrentDimInfo: function() {
+    return {
+      dimId: _dimId,
+      dimName: _dimName
+    };
   },
   emitTagNodeChange: function() {
     this.emit(LOAD_TAG_NODE_EVENT);
@@ -513,7 +529,9 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case FolderAction.GET_WIDGETDTOS_SUCCESS:
       TagStore.doWidgetDtos(action.widgetDto[0]);
       break;
-
+    case TagAction.SET_CURRENT_DIMENTION:
+      TagStore.setCurrentDimInfo(action.id, action.name);
+      break;
 
 
   }
