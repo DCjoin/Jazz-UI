@@ -368,7 +368,12 @@ let ChartStrategyFactor = {
           timeRanges = [timeRanges[0]];
           MultiTimespanAction.clearMultiTimespan('both');
         }
-        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+        var chartType = analysisPanel.state.selectedChartType;
+        if (chartType == 'line' || chartType == 'column' || chartType == 'stack') {
+          analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+        } else if (chartType == 'pie') {
+          analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, tagOptions, false);
+        }
       } else {
         let energyData = EnergyStore.getEnergyData();
         analysisPanel.setState({
