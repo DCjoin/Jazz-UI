@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 
 let I18N = {};
@@ -86,18 +86,18 @@ I18N.Common.Glossary.MonthName.October = 'October';
 I18N.Common.Glossary.MonthName.November = 'November';
 I18N.Common.Glossary.MonthName.December = 'December';
 
-I18N.Common.Glossary.ShortMonth.January = 'January';
-I18N.Common.Glossary.ShortMonth.February = 'February';
-I18N.Common.Glossary.ShortMonth.March = 'March';
-I18N.Common.Glossary.ShortMonth.April = 'April';
+I18N.Common.Glossary.ShortMonth.January = 'Jan.';
+I18N.Common.Glossary.ShortMonth.February = 'Feb.';
+I18N.Common.Glossary.ShortMonth.March = 'Mar.';
+I18N.Common.Glossary.ShortMonth.April = 'Apr.';
 I18N.Common.Glossary.ShortMonth.May = 'May';
-I18N.Common.Glossary.ShortMonth.June = 'June';
-I18N.Common.Glossary.ShortMonth.July = 'July';
-I18N.Common.Glossary.ShortMonth.August = 'August';
-I18N.Common.Glossary.ShortMonth.September = 'September';
-I18N.Common.Glossary.ShortMonth.October = 'October';
-I18N.Common.Glossary.ShortMonth.November = 'November';
-I18N.Common.Glossary.ShortMonth.December = 'December';
+I18N.Common.Glossary.ShortMonth.June = 'Jun.';
+I18N.Common.Glossary.ShortMonth.July = 'Jul.';
+I18N.Common.Glossary.ShortMonth.August = 'Aug.';
+I18N.Common.Glossary.ShortMonth.September = 'Sept.';
+I18N.Common.Glossary.ShortMonth.October = 'Oct.';
+I18N.Common.Glossary.ShortMonth.November = 'Nov.';
+I18N.Common.Glossary.ShortMonth.December = 'Dec.';
 
 I18N.Common.Glossary.WeekDay.Monday = 'Monday';
 I18N.Common.Glossary.WeekDay.Tuesday = 'Tuesday';

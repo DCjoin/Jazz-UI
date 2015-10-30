@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {Mixins,Styles,ClearFix,FlatButton} from 'material-ui';
+import { Mixins, Styles, ClearFix, FlatButton } from 'material-ui';
 import ItemButton from '../controls/ItemButton.jsx';
 
 var CalendarMonth = React.createClass({
@@ -21,16 +21,52 @@ var CalendarMonth = React.createClass({
       <div style={styles}>
         {this._getMonthItems()}
       </div>
-    );
+      );
   },
   _getMonthItems() {
     let monthArray = [
-     [{text:"一月", value:1}, {text:"二月", value:2}],
-     [{text:"三月", value:3}, {text:"四月", value:4}],
-     [{text:"五月", value:5}, {text:"六月", value:6}],
-     [{text:"七月", value:7}, {text:"八月", value:8}],
-     [{text:"九月", value:9}, {text:"十月", value:10}],
-     [{text:"十一月", value:11}, {text:"十二月", value:12}]
+      [{
+        text: I18N.Common.Glossary.MonthName.January,
+        value: 1
+      }, {
+        text: I18N.Common.Glossary.MonthName.February,
+        value: 2
+      }],
+      [{
+        text: I18N.Common.Glossary.MonthName.March,
+        value: 3
+      }, {
+        text: I18N.Common.Glossary.MonthName.April,
+        value: 4
+      }],
+      [{
+        text: I18N.Common.Glossary.MonthName.May,
+        value: 5
+      }, {
+        text: I18N.Common.Glossary.MonthName.June,
+        value: 6
+      }],
+      [{
+        text: I18N.Common.Glossary.MonthName.July,
+        value: 7
+      }, {
+        text: I18N.Common.Glossary.MonthName.August,
+        value: 8
+      }],
+      [{
+        text: I18N.Common.Glossary.MonthName.September,
+        value: 9
+      }, {
+        text: I18N.Common.Glossary.MonthName.October,
+        value: 10
+      }],
+      [{
+        text: I18N.Common.Glossary.MonthName.November,
+        value: 11
+      }, {
+        text: I18N.Common.Glossary.MonthName.December,
+        value: 12
+      }]
     ];
 
     return monthArray.map((monthItem, i) => {
@@ -38,7 +74,7 @@ var CalendarMonth = React.createClass({
         <ClearFix key={i}>
           {this._getMonthElements(monthItem, i)}
         </ClearFix>
-      );
+        );
     }, this);
   },
 
@@ -47,13 +83,13 @@ var CalendarMonth = React.createClass({
     return monthItem.map((month, j) => {
       return (
         <ItemButton
-          height={32}
-          key={'month' + i + j}
-          ref={'month'+ month.value}
-          item={month}
-          selected={this.props.selectedMonth === month.value}
-          onTouchTap={this._onMonthTouchTap}/>
-      );
+        height={32}
+        key={'month' + i + j}
+        ref={'month' + month.value}
+        item={month}
+        selected={this.props.selectedMonth === month.value}
+        onTouchTap={this._onMonthTouchTap}/>
+        );
     }, this);
   },
 
