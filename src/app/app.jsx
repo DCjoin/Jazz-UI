@@ -4,6 +4,7 @@ import React from 'react';
 
 import Router from 'react-router';
 import injectTapEventPlugin from "react-tap-event-plugin";
+import * as polyfill from 'babel/polyfill';
 
 import JazzApp from './components/JazzApp.jsx';
 import MainApp from './components/MainApp.jsx';
