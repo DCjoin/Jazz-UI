@@ -775,6 +775,11 @@ I18N.ALarm.Save.Label = '图表名称';
 I18N.ALarm.Save.Save = '保存';
 I18N.ALarm.Save.Error = '已存在';
 
+I18N.ALarm.List = {};
+I18N.ALarm.List.Daily = '查看日报警列表';
+I18N.ALarm.List.Month = '查看月报警列表';
+I18N.ALarm.List.Year = '查看年报警列表';
+
 I18N.Tag = {};
 I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
 I18N.Tag.ExceedTooltip = '新增全选的数据点数量超出了可选范围，无法全选，请逐一选择目标数据点';

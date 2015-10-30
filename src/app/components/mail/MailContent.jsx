@@ -10,7 +10,12 @@ import MailStore from '../../stores/MailStore.jsx';
 
 let MailContent = React.createClass({
   _onSendBtnClick: function() {
-    MailAction.sendEamilOrMessage(false);
+    var _errorCode = MailStore.GetSendError();
+    if (_errorCode.receiver === null && _errorCode.template === null && _errorCode.newtemplate === null) {
+
+      MailAction.sendEamilOrMessage(false);
+    }
+
   },
   render: function() {
     let titleStyle = {

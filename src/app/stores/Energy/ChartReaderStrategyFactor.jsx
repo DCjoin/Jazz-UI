@@ -463,7 +463,7 @@ let ChartReaderStrategyFactor = {
               break;
             case 12: //12hours
               loopStart = CommonFuns.dateAdd(j2d(timeRange.StartTime, false), -12, 'hours');
-              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -1, 'hours');
+              loopEnd = CommonFuns.dateAdd(j2d(timeRange.EndTime, false), -12, 'hours');
               break;
 
           }
@@ -524,7 +524,8 @@ let ChartReaderStrategyFactor = {
           end: loopEnd.getTime(),
           timeTable: timeTable,
           uom: uom,
-          step: obj.step
+          step: obj.step,
+          targetStep: t.Step
         };
         var dStart = loopStart;
         dStart.setMinutes(0, 0, 0);
