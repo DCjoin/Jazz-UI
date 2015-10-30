@@ -136,7 +136,7 @@ var MailStore = assign({}, PrototypeStore, {
   setTemplate: function(template) {
     _template = template;
     _subject = template.templatelTitle;
-    _content = template.templateContent;
+    _content = template.templateContent + '\n';
     if (_errorCode.template !== null) {
       _errorCode.template = null;
       this.emitSendErrorChange();

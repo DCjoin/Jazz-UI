@@ -107,7 +107,7 @@ let MailField = React.createClass({
         ref: 'content',
         underlineStyle: underlineStyle,
         underlineFocusStyle: underlineFocusStyle,
-        value: this.state.content === null ? '' : this.state.content + '\n',
+        value: this.state.content === null ? '' : this.state.content,
         onChange: this._onContentChanged,
         //  onBlur: this._onContentBlur,
         multiLine: true,
