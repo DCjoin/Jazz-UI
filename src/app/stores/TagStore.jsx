@@ -206,6 +206,7 @@ var TagStore = assign({}, PrototypeStore, {
     _tagList = [];
     baseline_btn_disabled = false;
     weather_btn_disabled = false;
+    _tagTotalStatus = false;
     if (widgetType == 'Label') {
       _tagSum = 3;
     } else {
