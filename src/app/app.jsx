@@ -33,7 +33,7 @@ var routes = (
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}>
         </Route>
-        <Route name="setting" path="setting" handler={Test}>
+        <Route name="setting" path="setting" handler={Setting}>
         </Route>
       </Route>
       <Route name="mail" path="mail" handler={Mail}>
