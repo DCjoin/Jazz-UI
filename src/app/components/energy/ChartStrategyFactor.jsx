@@ -93,7 +93,8 @@ let ChartStrategyFactor = {
       initAlarmChartPanelByWidgetDtoFn: 'initAlarmChartPanelByWidgetDto',
       getWidgetSaveWindowFn: 'getAlarmWidgetSaveWindow',
       resetYaxisSelectorFn: 'resetYaxisSelector',
-      onDeleteButtonClickFn: 'onDeleteButtonClick'
+      onDeleteButtonClickFn: 'onDeleteButtonClick',
+      resetCalendarTypeFn: 'resetCalendarType'
     },
     Cost: {
       searchBarGenFn: 'CostSearchBarGen',
@@ -127,7 +128,8 @@ let ChartStrategyFactor = {
       clearChartDataFn: 'clearCostChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
       resetYaxisSelectorFn: 'resetYaxisSelector',
-      onDeleteButtonClickFn: 'onCostDeleteButtonClick'
+      onDeleteButtonClickFn: 'onCostDeleteButtonClick',
+      resetCalendarTypeFn: 'resetCalendarType'
     },
     MultiIntervalDistribution: {
 
@@ -164,7 +166,8 @@ let ChartStrategyFactor = {
       clearChartDataFn: 'clearCarbonChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
       resetYaxisSelectorFn: 'resetYaxisSelector',
-      onDeleteButtonClickFn: 'onCarbonDeleteButtonClick'
+      onDeleteButtonClickFn: 'onCarbonDeleteButtonClick',
+      resetCalendarTypeFn: 'resetCalendarType'
     },
     RatioUsage: {
       searchBarGenFn: 'ratioUsageSearchBarGen',
@@ -197,7 +200,8 @@ let ChartStrategyFactor = {
       initChartPanelByWidgetDtoFn: 'initRatioChartPanelByWidgetDto',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
       resetYaxisSelectorFn: 'resetYaxisSelector',
-      onDeleteButtonClickFn: 'onRatioDeleteButtonClick'
+      onDeleteButtonClickFn: 'onRatioDeleteButtonClick',
+      resetCalendarTypeFn: 'resetCalendarType'
     },
     UnitEnergyUsage: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -230,7 +234,8 @@ let ChartStrategyFactor = {
       clearChartDataFn: 'clearUnitChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
       resetYaxisSelectorFn: 'resetYaxisSelector',
-      onDeleteButtonClickFn: 'onUnitDeleteButtonClick'
+      onDeleteButtonClickFn: 'onUnitDeleteButtonClick',
+      resetCalendarTypeFn: 'resetCalendarType'
     },
     UnitCost: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -263,7 +268,8 @@ let ChartStrategyFactor = {
       clearChartDataFn: 'clearUnitCostChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
       resetYaxisSelectorFn: 'resetYaxisSelector',
-      onDeleteButtonClickFn: 'onUnitCostDeleteButtonClick'
+      onDeleteButtonClickFn: 'onUnitCostDeleteButtonClick',
+      resetCalendarTypeFn: 'resetCalendarType'
     },
     UnitCarbon: {
       searchBarGenFn: 'unitEnergySearchBarGen',
@@ -296,7 +302,8 @@ let ChartStrategyFactor = {
       clearChartDataFn: 'clearUnitCarbonChartData',
       getWidgetOptMenuFn: 'getWidgetOptMenu',
       resetYaxisSelectorFn: 'resetYaxisSelector',
-      onDeleteButtonClickFn: 'onUnitCarbonDeleteButtonClick'
+      onDeleteButtonClickFn: 'onUnitCarbonDeleteButtonClick',
+      resetCalendarTypeFn: 'resetCalendarType'
     },
     Label: {
       searchBarGenFn: 'labelSearchBarGen',
@@ -318,7 +325,8 @@ let ChartStrategyFactor = {
       initChartPanelByWidgetDtoFn: 'initLabelChartPanelByWidgetDto',
       clearChartDataFn: 'clearLabelChartData',
       getWidgetOptMenuFn: 'getLabelWidgetOptMenu',
-      resetYaxisSelectorFn: 'empty'
+      resetYaxisSelectorFn: 'empty',
+      resetCalendarTypeFn: 'empty'
     },
     Rank: {
       searchBarGenFn: 'rankSearchBarGen',
@@ -340,7 +348,8 @@ let ChartStrategyFactor = {
       initChartPanelByWidgetDtoFn: 'initRankChartPanelByWidgetDto',
       clearChartDataFn: 'clearRankChartData',
       getWidgetOptMenuFn: 'getLabelWidgetOptMenu',
-      resetYaxisSelectorFn: 'resetYaxisSelector'
+      resetYaxisSelectorFn: 'resetYaxisSelector',
+      resetCalendarTypeFn: 'empty'
     }
   },
   onDeleteButtonClickFnStrategy: {
@@ -549,6 +558,12 @@ let ChartStrategyFactor = {
     empty() {},
     resetYaxisSelector() {
       YaxisSelector.reset();
+    }
+  },
+  resetCalendarTypeFnStrategy: {
+    empty() {},
+    resetCalendarType() {
+      CalendarManager.resetShowType();
     }
   },
   getWidgetOptMenuFnStrategy: {
