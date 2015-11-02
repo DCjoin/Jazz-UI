@@ -26,45 +26,45 @@ var CalendarMonth = React.createClass({
   _getMonthItems() {
     let monthArray = [
       [{
-        text: I18N.Common.Glossary.MonthName.January,
+        text: I18N.Common.Glossary.ShortMonth.January,
         value: 1
       }, {
-        text: I18N.Common.Glossary.MonthName.February,
+        text: I18N.Common.Glossary.ShortMonth.February,
         value: 2
       }],
       [{
-        text: I18N.Common.Glossary.MonthName.March,
+        text: I18N.Common.Glossary.ShortMonth.March,
         value: 3
       }, {
-        text: I18N.Common.Glossary.MonthName.April,
+        text: I18N.Common.Glossary.ShortMonth.April,
         value: 4
       }],
       [{
-        text: I18N.Common.Glossary.MonthName.May,
+        text: I18N.Common.Glossary.ShortMonth.May,
         value: 5
       }, {
-        text: I18N.Common.Glossary.MonthName.June,
+        text: I18N.Common.Glossary.ShortMonth.June,
         value: 6
       }],
       [{
-        text: I18N.Common.Glossary.MonthName.July,
+        text: I18N.Common.Glossary.ShortMonth.July,
         value: 7
       }, {
-        text: I18N.Common.Glossary.MonthName.August,
+        text: I18N.Common.Glossary.ShortMonth.August,
         value: 8
       }],
       [{
-        text: I18N.Common.Glossary.MonthName.September,
+        text: I18N.Common.Glossary.ShortMonth.September,
         value: 9
       }, {
-        text: I18N.Common.Glossary.MonthName.October,
+        text: I18N.Common.Glossary.ShortMonth.October,
         value: 10
       }],
       [{
-        text: I18N.Common.Glossary.MonthName.November,
+        text: I18N.Common.Glossary.ShortMonth.November,
         value: 11
       }, {
-        text: I18N.Common.Glossary.MonthName.December,
+        text: I18N.Common.Glossary.ShortMonth.December,
         value: 12
       }]
     ];
