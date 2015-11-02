@@ -39,6 +39,8 @@ let DataSelectMainPanel = React.createClass({
       filters = null;
       alarmType = null;
       React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+      TagAction.setCurrentDimentionInfo(null, null);
+      CommodityAction.setCurrentDimInfo(null);
       this.refs.searchText.setValue("");
       if (this.props.widgetType) {
         CommodityAction.setCurrentHierarchyInfo(node);
@@ -413,6 +415,8 @@ let DataSelectMainPanel = React.createClass({
     if (this.props.linkFrom != "Alarm") {
       TagAction.clearAlarmSearchTagList();
     }
+    TagAction.setCurrentDimentionInfo(null, null);
+    CommodityAction.setCurrentDimInfo(null);
 
   },
   handleHierClickAway: function() {

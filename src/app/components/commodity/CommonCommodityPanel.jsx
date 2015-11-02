@@ -6,6 +6,7 @@ import CommodityAction from '../../actions/CommodityAction.jsx';
 import CommonCommodityList from './CommonCommodityList.jsx';
 import HierarchyButton from '../Hierarchy/HierarchyButton.jsx';
 import DimButton from '../Dim/DimButton.jsx';
+import TagAction from '../../actions/TagAction.jsx';
 
 var CommonCommodityPanel = React.createClass({
   mixins: [Navigation, State],
@@ -98,6 +99,10 @@ var CommonCommodityPanel = React.createClass({
     this.setState({
       checkedCommodityList: CommodityStore.getCommodityStatus()
     });
+  },
+  componentWillUnmount: function() {
+    TagAction.setCurrentDimentionInfo(null, null);
+    CommodityAction.setCurrentDimInfo(null);
   },
   render: function() {
     let CurrentHierId = CommodityStore.getCurrentHierarchyId(),
