@@ -333,6 +333,7 @@ var TagStore = assign({}, PrototypeStore, {
   },
   doWidgetDtos: function(widgetDto) {
     this.resetTagInfo(widgetDto.WidgetType);
+    this.setCurrentDimInfo(null, null);
     let that = this;
     if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
       let convertWidgetOptions2TagOption = function(WidgetOptions) {

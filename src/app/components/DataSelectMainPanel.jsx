@@ -415,8 +415,8 @@ let DataSelectMainPanel = React.createClass({
     if (this.props.linkFrom != "Alarm") {
       TagAction.clearAlarmSearchTagList();
     }
-    TagAction.setCurrentDimentionInfo(null, null);
-    CommodityAction.setCurrentDimInfo(null);
+    // TagAction.setCurrentDimentionInfo(null, null);
+    // CommodityAction.setCurrentDimInfo(null);
 
   },
   handleHierClickAway: function() {
