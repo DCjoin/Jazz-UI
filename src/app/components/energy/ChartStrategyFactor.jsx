@@ -4439,7 +4439,7 @@ let ChartStrategyFactor = {
 
       let charTypes = [];
       if (chartType !== 'rawdata') {
-        let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+        let seriesNumber = EnergyStore.getEnergyData().toJS().Data.length;
         let seriesStatusArray = ChartStatusStore.getSeriesStatus();
         let sslength = seriesStatusArray.length;
         for (let i = 0; i < seriesNumber; i++) {
@@ -4488,7 +4488,7 @@ let ChartStrategyFactor = {
 
       let charTypes = [];
 
-      let seriesNumber = CostStore.getEnergyData().get('Data').size;
+      let seriesNumber = CostStore.getEnergyData().toJS().Data.length;
       let seriesStatusArray = ChartStatusStore.getSeriesStatus();
       let sslength = seriesStatusArray.length;
       for (let i = 0; i < seriesNumber; i++) {
@@ -4541,7 +4541,7 @@ let ChartStrategyFactor = {
         nodeNameAssociation: nodeNameAssociation
       };
 
-      let seriesNumber = CarbonStore.getCarbonData().get('Data').size;
+      let seriesNumber = CarbonStore.getCarbonData().toJS().Data.length;
       let charTypes = [];
       // for (let i = 0; i < seriesNumber; i++) {
       //   charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
@@ -4595,7 +4595,7 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = EnergyStore.getEnergyData().get('Data').size;
+      let seriesNumber = EnergyStore.getEnergyData().toJS().Data.length;
       let charTypes = [];
       let seriesStatusArray = ChartStatusStore.getSeriesStatus();
       let sslength = seriesStatusArray.length;
@@ -4649,7 +4649,7 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = RatioStore.getEnergyData().get('Data').size;
+      let seriesNumber = RatioStore.getEnergyData().toJS().Data.length;
       let charTypes = [];
       for (let i = 0; i < seriesNumber; i++) {
         charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
@@ -4681,7 +4681,7 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = CostStore.getEnergyData().get('Data').size;
+      let seriesNumber = CostStore.getEnergyData().toJS().Data.length;
       let charTypes = [];
       let seriesStatusArray = ChartStatusStore.getSeriesStatus();
       let sslength = seriesStatusArray.length;
@@ -4740,7 +4740,7 @@ let ChartStrategyFactor = {
         benchmarkOption: benchmarkOption
       };
 
-      let seriesNumber = CarbonStore.getCarbonData().get('Data').size;
+      let seriesNumber = CarbonStore.getCarbonData().toJS().Data.length;
       let charTypes = [];
       for (let i = 0; i < seriesNumber; i++) {
         charTypes.push(chartType); //暂且全部用chartType，以后可以修改每个series type之后要做更改
