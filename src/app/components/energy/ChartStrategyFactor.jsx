@@ -4426,7 +4426,10 @@ let ChartStrategyFactor = {
       };
 
       path = '/Energy.svc/GetTagsData4Export';
-      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions, {
+        dimName: null,
+        dimId: null
+      });
       params.nodeNameAssociation = nodeNameAssociation;
 
       let charTypes = [];
@@ -4575,7 +4578,10 @@ let ChartStrategyFactor = {
       let benchmarkOption = submitParams.benchmarkOption;
       let viewOption = submitParams.viewOption;
       let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu1;
-      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions, {
+        dimName: null,
+        dimId: null
+      });
       let params = {
         title: title,
         tagIds: tagIds,
@@ -4625,7 +4631,10 @@ let ChartStrategyFactor = {
       let benchmarkOption = submitParams.benchmarkOption;
       let viewOption = submitParams.viewOption;
       let title = analysisPanel.props.chartTitle || I18N.Folder.NewWidget.Menu3;
-      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions);
+      let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions, {
+        dimName: null,
+        dimId: null
+      });
       let params = {
         ratioType: ratioType,
         title: title,
