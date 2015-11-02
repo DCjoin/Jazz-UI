@@ -24,7 +24,8 @@ var CommonCommodityPanel = React.createClass({
         dimParentNode: node,
         HierarchyShow: false,
         DimShow: true,
-        checkedCommodityList: null
+        checkedCommodityList: null,
+        dimId: null
       });
     }
 
@@ -38,7 +39,7 @@ var CommonCommodityPanel = React.createClass({
   handleHierClickAway: function() {
     this.setState({
       HierarchyShow: false
-    })
+    });
   },
   _onDimTreeClick: function(node) {
     if (node.Id !== 0) {
@@ -49,19 +50,20 @@ var CommonCommodityPanel = React.createClass({
     this.setState({
       HierarchyShow: true,
       DimShow: false,
-      checkedCommodityList: null
+      checkedCommodityList: null,
+      dimId: node.Id
     });
   },
   _onDimButtonClick: function() {
     this.setState({
       HierarchyShow: false,
       DimShow: true
-    })
+    });
   },
   handleDimClickAway: function() {
     this.setState({
       DimShow: false
-    })
+    });
   },
   getInitialState: function() {
     return {
@@ -75,6 +77,12 @@ var CommonCommodityPanel = React.createClass({
 
   componentWillMount: function() {
     let hierNode = CommodityStore.getHierNode();
+    let dimNode = CommodityStore.getCurrentDimNode();
+    if (!!dimNode) {
+      this.setState({
+        dimId: dimNode.dimId
+      });
+    }
     if (!!hierNode) {
       let node = {
         Id: hierNode.hierId,
@@ -129,7 +137,8 @@ var CommonCommodityPanel = React.createClass({
           parentNode={this.state.dimParentNode}
           onButtonClick={this._onDimButtonClick}
           show={this.state.DimShow}
-          handleClickAway={this.handleDimClickAway}/>
+          handleClickAway={this.handleDimClickAway}
+          dimId={this.state.dimId}/>
           </div>
 
         )

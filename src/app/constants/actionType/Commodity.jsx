@@ -14,7 +14,8 @@ module.exports = {
     SET_DEFAULT_COMMODITY_STATUS: null,
     SET_RANKING_COMMODITY: null,
     CLEAR_COMMODITY: null,
-    CLEAR_RANKING_COMMODITY: null
+    CLEAR_RANKING_COMMODITY: null,
+    SET_CURRENT_DIMENTION: null
   })
 
 };

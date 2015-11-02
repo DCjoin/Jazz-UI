@@ -101,10 +101,15 @@ var CommodityStore = assign({}, PrototypeStore, {
     return _defaultHierNode_Label;
   },
   setCurrentDimInfo: function(node) {
-    _currentDimNode = {
-      dimId: node.Id,
-      dimName: node.Name
-    };
+    if (node === null) {
+      _currentDimNode = null;
+    } else {
+      _currentDimNode = {
+        dimId: node.Id,
+        dimName: node.Name
+      };
+    }
+
     _energyConsumptionType = null;
     _commodityList = [];
     _commodityStatus = Immutable.List([]);
@@ -132,6 +137,7 @@ var CommodityStore = assign({}, PrototypeStore, {
     _hierNode = null;
     _currentHierId = null;
     _currentHierName = null;
+    _currentDimNode = null;
   },
   resetData: function() {
     _energyConsumptionType = null;
@@ -293,6 +299,8 @@ var CommodityStore = assign({}, PrototypeStore, {
             tagOptions.push({
               hierId: item.HierId,
               hierName: item.NodeName,
+              dimId: item.DimensionId,
+              dimName: item.DimensionName,
               tagId: item.TargetId,
               tagName: item.TargetName
             });
@@ -305,6 +313,10 @@ var CommodityStore = assign({}, PrototypeStore, {
           let lastTagOption = tagOptions[tagOptions.length - 1];
 
           this.setCurrentHierarchyInfo(lastTagOption.hierId, lastTagOption.hierName);
+          this.setCurrentDimInfo({
+            Id: lastTagOption.dimId,
+            Name: lastTagOption.dimName
+          });
         }
       } else {
         let contentSyntax = widgetDto.ContentSyntax;

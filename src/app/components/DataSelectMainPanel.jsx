@@ -63,16 +63,19 @@ let DataSelectMainPanel = React.createClass({
       optionType: 2,
       HierarchyShow: false,
       DimShow: true,
-      isLoading: true
+      isLoading: true,
+      dimId: null
     });
   },
   _onDimTreeClick: function(node) {
     page = 1;
     if (node.Id !== 0) {
       TagAction.setCurrentDimentionInfo(node.Id, node.Name);
+      CommodityAction.setCurrentDimInfo(node);
       TagAction.loadData(node.Id, 6, 1, alarmType, filters);
       this.setState({
         tagId: node.Id,
+        dimId: node.Id,
         optionType: 6,
         HierarchyShow: true,
         DimShow: false,
@@ -80,10 +83,12 @@ let DataSelectMainPanel = React.createClass({
       });
     } else {
       TagAction.setCurrentDimentionInfo(null, null);
+      CommodityAction.setCurrentDimInfo(null);
       let id = TagStore.getCurrentHierarchyId();
       TagAction.loadData(id, 2, 1, alarmType, filters);
       this.setState({
         tagId: id,
+        dimId: null,
         optionType: 2,
         HierarchyShow: true,
         DimShow: false,
@@ -106,7 +111,7 @@ let DataSelectMainPanel = React.createClass({
     this.setState({
       HierarchyShow: false,
       DimShow: true
-    })
+    });
   },
 
   _onTagNodeChange: function() {
@@ -279,7 +284,7 @@ let DataSelectMainPanel = React.createClass({
     return {
       isLoading: false,
       dimActive: false,
-      dimNode: null,
+      dimId: null,
       dimParentNode: null,
       HierarchyShow: false,
       DimShow: false,
@@ -345,7 +350,7 @@ let DataSelectMainPanel = React.createClass({
       TagAction.loadAlarmData(alarmTagOption);
       this.setState({
         isLoading: true
-      })
+      });
 
       //set the first tag select status from alarm left panel
       if (AlarmTagStore.getSearchTagList().length !== 0) {
@@ -356,7 +361,13 @@ let DataSelectMainPanel = React.createClass({
     }
     if (this.props.widgetType) {
       let hierNode = CommodityStore.getHierNode();
+      let dimNode = CommodityStore.getCurrentDimNode();
       let node;
+      if (!!dimNode) {
+        this.setState({
+          dimId: dimNode.dimId
+        });
+      }
       if (!!hierNode) {
         node = {
           Id: hierNode.hierId,
@@ -376,7 +387,7 @@ let DataSelectMainPanel = React.createClass({
           TagAction.loadAlarmData(data);
           this.setState({
             isLoading: true
-          })
+          });
         } else {
           page = 1;
           TagAction.loadData(hierNode.hierId, 2, 1, null, null);
@@ -384,7 +395,7 @@ let DataSelectMainPanel = React.createClass({
             tagId: hierNode.hierId,
             optionType: 2,
             isLoading: true
-          })
+          });
         }
 
       }
@@ -521,7 +532,8 @@ let DataSelectMainPanel = React.createClass({
       parentNode={this.state.dimParentNode}
       onButtonClick={this._onDimButtonClick}
       show={this.state.DimShow}
-      handleClickAway={this.handleDimClickAway}/>
+      handleClickAway={this.handleDimClickAway}
+      dimId={this.state.dimId}/>
           </div>
           <div  className="filter">
             <label className="search" onBlur={this._onSearchBlur}>

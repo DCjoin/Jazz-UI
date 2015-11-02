@@ -117,7 +117,7 @@ let CommodityAction = {
     AppDispatcher.dispatch({
       type: Action.CLEAR_RANKING_COMMODITY,
     });
-  }
+  },
 };
 
 module.exports = CommodityAction;
