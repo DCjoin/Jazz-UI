@@ -132,10 +132,17 @@ let Setting = React.createClass({
           selectedNode: selectedNode
         });
       }
+      if (!!this.state.templateNode) {
+        if (selectedNode.get('Id') == this.state.templateNode.get('Id')) {
+          this.setState({
+            templateNode: selectedNode
+          });
+        }
+      }
+
     });
     lastEnergyType = null;
     lastBizType = null;
-
   },
   _onTemplateDismiss: function() {
     this.setState({
