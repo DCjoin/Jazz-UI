@@ -338,8 +338,8 @@ var TreeNode = React.createClass({
       children = nodeData.get("Children").map(childNodeData => {
         var nodeProps = assign({}, this.props, {
           key: childNodeData.get("Id"),
-          ref: childNodeData.get("Id"),
-          //ref: 'treechildren',
+          //ref: childNodeData.get("Id"),
+          ref: 'treechildren',
           theme: this.props.theme,
           nodeOriginPaddingLeft: this.props.nodeOriginPaddingLeft,
           indentUnit: this.props.indentUnit,
@@ -371,7 +371,10 @@ var TreeNode = React.createClass({
   },
   componentDidMount: function() {
     //for Gragula
-    this.props.putGragulaContainer(React.findDOMNode(this));
+    if (this.props.nodeData.get('Id') != -1) {
+      this.props.putGragulaContainer(React.findDOMNode(this));
+    }
+
   },
 
   render: function() {

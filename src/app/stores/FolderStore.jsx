@@ -644,7 +644,7 @@ var FolderStore = assign({}, PrototypeStore, {
       case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
         FolderStore.updateWidgetDtosSuccess(action.widgetDto);
         FolderStore.emitFolderTreeChange();
-        FolderStore.emitSelectedNodeChange();
+        //FolderStore.emitSelectedNodeChange();
         break;
     }
   });
