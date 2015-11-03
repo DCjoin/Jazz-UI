@@ -764,6 +764,7 @@ I18N.Dim.AllButtonName = '全部维度';
 I18N.Dim.ButtonName = '维度节点';
 
 I18N.ALarm = {};
+I18N.ALarm.Alarm = '能耗报警';
 I18N.ALarm.Menu1 = '全部';
 I18N.ALarm.Menu2 = '报警已配置';
 I18N.ALarm.Menu3 = '基准值已配置';
@@ -779,6 +780,11 @@ I18N.ALarm.List = {};
 I18N.ALarm.List.Daily = '查看日报警列表';
 I18N.ALarm.List.Month = '查看月报警列表';
 I18N.ALarm.List.Year = '查看年报警列表';
+
+I18N.ALarm.Uom = {};
+I18N.ALarm.Uom.Hour = '小时';
+I18N.ALarm.Uom.Day = '日';
+I18N.ALarm.Uom.Month = '月';
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
@@ -871,6 +877,7 @@ I18N.Baseline.Error = {};
 I18N.Baseline.Error.Cal = '该数据点所关联层级节点在所选年份未引用任何日历模板。请引用后再设置，保证设置内容可被计算';
 I18N.Baseline.Error.TbnameError = '必填项';
 I18N.Baseline.Error.TbnameValidError = '允许汉字，英文字母，数字，下划线和空格';
+I18N.Baseline.Error.Calc = '所选数据的时间跨度大于一个月，无法计算，请重新选择数据';
 I18N.Baseline.BaselineModify = {};
 I18N.Baseline.BaselineModify.Month = {};
 I18N.Baseline.BaselineModify.Month.Jan = '一';
@@ -889,5 +896,31 @@ I18N.Baseline.BaselineModify.Uom = '千瓦时';
 I18N.Baseline.BaselineModify.YearSelect = '请选择配置年份进行编辑';
 I18N.Baseline.BaselineModify.YearBaseline = '年基准值';
 I18N.Baseline.BaselineModify.YearValue = '年度';
+I18N.Baseline.BaselineModify.MonthBaseline = '月基准值';
+I18N.Baseline.Calc = {};
+I18N.Baseline.Calc.MonthBaseline = '月基准值';
+
+I18N.MultipleTimespan = {};
+I18N.MultipleTimespan.Before = '之前第';
+I18N.MultipleTimespan.Button = {};
+I18N.MultipleTimespan.Button.Draw = '绘制';
+I18N.MultipleTimespan.Button.Cancel = '放弃';
+I18N.MultipleTimespan.Title = '历史对比';
+I18N.MultipleTimespan.Add = '添加时间段';
+I18N.MultipleTimespan.RelativeDate = '相对时间';
+I18N.MultipleTimespan.OriginalDate = '原始时间';
+I18N.MultipleTimespan.CamparedDate = '对比时间段';
+I18N.MultipleTimespan.To = '到';
+
+I18N.Paging = {};
+I18N.Paging.Error = {};
+I18N.Paging.Error.Pre = '只能输入1到';
+I18N.Paging.Error.Next = '之间的正整数';
+I18N.Paging.JumpTo = '跳转到第';
+I18N.Paging.Page = '页';
+I18N.Paging.Jump = '跳转';
+I18N.Paging.Button = {};
+I18N.Paging.Button.PrePage = '上一页';
+I18N.Paging.Button.NextPage = '下一页';
 
 module.exports = I18N;

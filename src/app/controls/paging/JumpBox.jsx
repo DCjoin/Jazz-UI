@@ -4,8 +4,8 @@ import React from 'react';
 import mui from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
-import {Regex} from '../../util/Util.jsx';
-let { FlatButton, TextField, Mixins } = mui;
+import { Regex } from '../../util/Util.jsx';
+let {FlatButton, TextField, Mixins} = mui;
 
 var JumpBox = React.createClass({
   mixins: [Mixins.ClickAwayable, React.addons.PureRenderMixin],
@@ -22,26 +22,26 @@ var JumpBox = React.createClass({
     };
   },
 
-  componentDidMount: function () {
+  componentDidMount: function() {
     this.refs.pageNumField.focus();
   },
 
-  jumpToPage: function () {
+  jumpToPage: function() {
     var targetPage = Number(this.refs.pageNumField.getValue());
-    if(Regex.PositiveInterger.test(targetPage)){
+    if (Regex.PositiveInterger.test(targetPage)) {
       this.props.jumpToPage(targetPage);
     }
   },
 
-  componentClickAway: function () {
+  componentClickAway: function() {
     this.props.handleClickAway();
   },
 
-  inputOnChange: function (e) {
+  inputOnChange: function(e) {
     var value = e.target.value;
-    if(!this.validInput(value)){
+    if (!this.validInput(value)) {
       this.setState({
-        errorText: "只能输入1到" + this.props.totalPageNum + "之间的正整数",
+        errorText: I18N.Paging.Error.Pre + this.props.totalPageNum + I18N.Paging.Error.Next,
       });
     } else {
       this.setState({
@@ -50,18 +50,20 @@ var JumpBox = React.createClass({
     }
   },
 
-  validInput: function (value) {
+  validInput: function(value) {
     var validation = false;
-    if(Regex.PositiveInterger.test(value)){
+    if (Regex.PositiveInterger.test(value)) {
       validation = value > 0 && value <= this.props.totalPageNum;
     }
     return validation;
   },
 
-  render: function () {
+  render: function() {
     var inputTextFieldProps = {
       ref: "pageNumField",
-      style: {width: "48px"},
+      style: {
+        width: "48px"
+      },
       onChange: this.inputOnChange,
       errorText: this.state.errorText,
       errorStyle: {
@@ -70,19 +72,19 @@ var JumpBox = React.createClass({
       }
     };
     var inputTextField = (
-      <TextField {...inputTextFieldProps}/>
+    <TextField {...inputTextFieldProps}/>
     );
 
     return (
       <div className="page-jump-box">
         <div className="jump-input">
-          <div className="jump-text">跳转到第</div>
+          <div className="jump-text">{I18N.Paging.JumpTo}</div>
           {inputTextField}
-          <div className="jump-text">页</div>
-          <FlatButton mini={true} label="跳转" onClick={this.jumpToPage}/>
+          <div className="jump-text">{I18N.Paging.Page}</div>
+          <FlatButton mini={true} label={I18N.Paging.Jump} onClick={this.jumpToPage}/>
         </div>
       </div>
-    );
+      );
   }
 });
 

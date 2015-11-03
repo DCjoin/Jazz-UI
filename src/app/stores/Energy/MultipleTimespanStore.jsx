@@ -67,9 +67,9 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
       dateDescription: null
     };
     if (isOriginalDate) {
-      item.title = '原始时间';
+      item.title = I18N.MultipleTimespan.OriginalDate;
     } else {
-      item.title = '对比时间段' + compareIndex;
+      item.title = I18N.MultipleTimespan.CamparedDate + compareIndex;
       item.compareIndex = compareIndex;
 
       if (relativeType !== 'Customerize') {
@@ -153,7 +153,7 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
       dateAdd = CommonFuns.dateAdd,
       dateFormat = CommonFuns.dateFormat,
       tempEnd = dateAdd(endDate, -1, 'days');
-    str = dateFormat(startDate, ft.FullDay) + ' 到 ' + dateFormat(tempEnd, ft.FullDay);
+    str = dateFormat(startDate, ft.FullDay) + I18N.MultipleTimespan.To + dateFormat(tempEnd, ft.FullDay);
     return str;
   },
   _initTempRelativeList() {
@@ -175,7 +175,7 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
     _tempRelativeList.forEach((item, index) => {
       if (index !== 0) {
         _tempRelativeList = _tempRelativeList.setIn([index, 'compareIndex'], index);
-        _tempRelativeList = _tempRelativeList.setIn([index, 'title'], '对比时间段' + index);
+        _tempRelativeList = _tempRelativeList.setIn([index, 'title'], I18N.MultipleTimespan.CamparedDate + index);
       //item.compareIndex = index;
       //item.title = '对比时间段' + index;
       }
@@ -219,7 +219,7 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
         text: I18N.Common.DateRange.Customerize
       }, {
         value: _originalType,
-        text: '相对时间'
+        text: I18N.MultipleTimespan.RelativeDate
       }];
     }
   },

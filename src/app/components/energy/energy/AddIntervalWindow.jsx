@@ -60,7 +60,7 @@ let TimespanItem = React.createClass({
         }}>
                 <div style={{
           margin: 'auto 10px auto 6px'
-        }}>之前第</div>
+        }}>{I18N.MultipleTimespan.Before}</div>
                 {me.wrapDropdownMenu({
           menuItems: menuItems,
           style: {
@@ -200,10 +200,10 @@ let AddIntervalWindow = React.createClass({
     });
     let isAddBtnDisabled = relativeList.length >= 5;
     let _buttonActions = [<FlatButton
-    label="绘制"
+    label={I18N.MultipleTimespan.Button.Draw}
     onClick={me._onAction.bind(me, 'draw')} />,
       <FlatButton
-      label="放弃"
+      label={I18N.MultipleTimespan.Button.Cancel}
       style={{
         marginLeft: '10px'
       }}
@@ -212,14 +212,14 @@ let AddIntervalWindow = React.createClass({
     let titleEl = <div style={{
       fontSize: '20px',
       padding: '24px 0 0 50px'
-    }}>{'历史对比'}</div>;
+    }}>{I18N.MultipleTimespan.Title}</div>;
     let dialog = <Dialog {...me.props} title={titleEl} actions={_buttonActions} modal={true}
     contentClassName='jazz-add-interval-dialog'>
                     <div style={{
       height: '418px'
     }}>
                       {timeSpanEls}
-                      <LinkButton  label='添加时间段' labelStyle={{
+                      <LinkButton  label={I18N.MultipleTimespan.Add} labelStyle={{
       display: 'inline-block',
       marginTop: '10px'
     }} onClick={me._addNewCompareItem} disabled={isAddBtnDisabled}/>

@@ -66,7 +66,7 @@ var CalcSetting = React.createClass({
       return <div style={{
           color: 'red',
           fontSize: 12
-        }}>所选数据的时间跨度大于一个月，无法计算，请重新选择数据</div>;
+        }}>{I18N.Baseline.Error.Calc}</div>;
     }
     var items = this.props.items || [],
       rows = [];

@@ -275,7 +275,7 @@ let BaselineModify = React.createClass({
         }} hidden={!this.state.yearIsModify}></span>
             </div>
             <div className='jazz-setting-baseline-margin'>
-              月基准值
+              {I18N.Baseline.BaselineModify.MonthBaseline}
             </div>
             <div>
               {monthItems}
@@ -283,11 +283,11 @@ let BaselineModify = React.createClass({
           </div>
           <div>
             <div hidden={!this.state.disable}>
-              <RaisedButton label="编辑" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleEdit}/>
+              <RaisedButton label={I18N.Baseline.Button.Edit} style={buttonStyle} labelStyle={labelStyle} onClick={this.handleEdit}/>
             </div>
             <div hidden={this.state.disable}>
-              <RaisedButton label="保存" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleSave}/>
-              <RaisedButton label="放弃" style={buttonStyle} labelStyle={labelStyle} onClick={this.handleCancel}/>
+              <RaisedButton label={I18N.Baseline.Button.Save} style={buttonStyle} labelStyle={labelStyle} onClick={this.handleSave}/>
+              <RaisedButton label={I18N.Baseline.Button.Cancel} style={buttonStyle} labelStyle={labelStyle} onClick={this.handleCancel}/>
             </div>
           </div>
       </div>

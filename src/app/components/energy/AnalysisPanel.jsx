@@ -194,9 +194,9 @@ let AnalysisPanel = React.createClass({
     if (this.props.isFromAlarm) {
       var leftSelectedTagId = AlarmStore.getSelectedAlarmTag();
       var tagId = this.props.widgetDto.tagId;
-      // if (leftSelectedTagId === tagId) {
-      window.setTimeout(me._initAlarmChartPanelByWidgetDto, 0);
-      // }
+      if (leftSelectedTagId === tagId) {
+        window.setTimeout(me._initAlarmChartPanelByWidgetDto, 0);
+      }
 
     } else {
       var leftSelectedId = FolderStore.getSelectedNode().get('Id');
