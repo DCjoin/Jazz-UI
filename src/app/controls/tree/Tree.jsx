@@ -30,8 +30,6 @@ var drake = dragula({
         return true;
       }
     }
-    console.log('invalid');
-    console.log(el);
     if (parseInt(target.id) === -1) {
       return true;
     }
@@ -138,9 +136,6 @@ var Tree = React.createClass({
   },
 
   _onDrop: function(el, target, source) {
-    console.log('_onDrop');
-    console.log(source);
-    console.log(target);
 
     if (drag) {
       drag = false;

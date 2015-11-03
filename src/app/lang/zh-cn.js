@@ -854,5 +854,8 @@ I18N.SumWindow.TimeSpan = '时间段';
 I18N.SumWindow.Data = '数据点';
 I18N.SumWindow.Sum = '总计';
 
+I18N.Baseline = {};
+I18N.Baseline.Time = '时间';
+
 
 module.exports = I18N;
