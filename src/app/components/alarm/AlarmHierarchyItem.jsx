@@ -15,7 +15,7 @@ let AlarmHierarchyItem = React.createClass({
 
   },
   _onTagItemSelected(tagOption) {
-    AlarmAction.setSelectedAlarmTag(tagOption.tagId);
+    AlarmAction.setSelectedAlarmTag(tagOption[0].tagId);
     if (this.props.onTagItemClick) {
       this.props.onTagItemClick(tagOption);
     }

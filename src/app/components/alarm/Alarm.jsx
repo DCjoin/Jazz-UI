@@ -43,6 +43,7 @@ let Alarm = React.createClass({
     let _tagOptions = tagOption;
 
     let tagName = _tagOptions[0].tagName;
+    let tagId = _tagOptions[0].tagId;
 
     var uom = '';
     if (step == 1) {
@@ -60,6 +61,7 @@ let Alarm = React.createClass({
         widgetDto: {
           timeRange: timeRange,
           step: step,
+          tagId: tagId
         },
         title: _chartTitle,
         refreshAnalysisPanel: false

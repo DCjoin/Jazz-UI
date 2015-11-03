@@ -25,7 +25,7 @@ var AlarmStore = assign({}, PrototypeStore, {
     }
   },
   setSelectedAlarmTag: function(tagId) {
-    _tagId = null;
+    _tagId = tagId;
   },
   getSelectedAlarmTag: function() {
     return _tagId;
