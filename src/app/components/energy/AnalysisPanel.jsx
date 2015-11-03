@@ -45,7 +45,7 @@ let AnalysisPanel = React.createClass({
       //bizType:'Energy',
       bizType: 'Unit',
       energyType: 'Energy',
-      chartTitle: '最近7天能耗',
+      chartTitle: '最近7天能耗分析',
       widgetInitState: false,
       sourceUserName: null,
       isFromAlarm: false
@@ -858,7 +858,7 @@ let AnalysisPanel = React.createClass({
           return;
         }
       }
-      selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? "请选择能效标识" : subMenuItem.props.primaryText);
+      selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? I18N.Setting.Benchmark.Label.SelectLabelling : subMenuItem.props.primaryText);
       selectedLabelItem.industryId = subMenuItem.props.industryId;
       selectedLabelItem.zoneId = subMenuItem.props.zoneId;
       selectedLabelItem.value = subMenuItem.props.value;
