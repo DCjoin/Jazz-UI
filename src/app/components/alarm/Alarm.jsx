@@ -43,16 +43,17 @@ let Alarm = React.createClass({
     let _tagOptions = tagOption;
 
     let tagName = _tagOptions[0].tagName;
+    let tagId = _tagOptions[0].tagId;
 
     var uom = '';
     if (step == 1) {
-      uom = '小时';
+      uom = I18N.ALarm.Uom.Hour;
     } else if (step == 2) {
-      uom = '日';
+      uom = I18N.ALarm.Uom.Day;
     } else if (step == 3) {
-      uom = '月';
+      uom = I18N.ALarm.Uom.Month;
     }
-    var _chartTitle = tagName + uom + '能耗报警';
+    var _chartTitle = tagName + uom + I18N.ALarm.Alarm;
     this.setState({
       refreshAnalysisPanel: true
     }, () => {
@@ -60,6 +61,7 @@ let Alarm = React.createClass({
         widgetDto: {
           timeRange: timeRange,
           step: step,
+          tagId: tagId
         },
         title: _chartTitle,
         refreshAnalysisPanel: false

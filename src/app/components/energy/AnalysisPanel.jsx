@@ -9,6 +9,7 @@ import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import ConstStore from '../../stores/ConstStore.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
+import AlarmStore from '../../stores/AlarmStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
 import CostStore from '../../stores/CostStore.jsx';
@@ -191,7 +192,12 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.getAllDataFn();
     this.state.chartStrategy.bindStoreListenersFn(me);
     if (this.props.isFromAlarm) {
-      window.setTimeout(me._initAlarmChartPanelByWidgetDto, 0);
+      var leftSelectedTagId = AlarmStore.getSelectedAlarmTag();
+      var tagId = this.props.widgetDto.tagId;
+      if (leftSelectedTagId === tagId) {
+        window.setTimeout(me._initAlarmChartPanelByWidgetDto, 0);
+      }
+
     } else {
       var leftSelectedId = FolderStore.getSelectedNode().get('Id');
       var widgetId = this.props.widgetDto.Id;

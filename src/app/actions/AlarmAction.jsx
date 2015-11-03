@@ -207,7 +207,13 @@ let AlarmAction = {
       },
       error: function(err, res) {}
     });
-  }
+  },
+  setSelectedAlarmTag(tagId) {
+    AppDispatcher.dispatch({
+      type: Action.SET_SELECTED_ALARM_TAG,
+      tagId: tagId
+    });
+  },
 };
 
 module.exports = AlarmAction;

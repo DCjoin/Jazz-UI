@@ -22,7 +22,7 @@ var Pagination = React.createClass({
   getDefaultProps: function() {
     return {
       hasJumpBtn: false,
-      jumpToPage: function () {}
+      jumpToPage: function() {}
     };
   },
 
@@ -32,47 +32,48 @@ var Pagination = React.createClass({
     };
   },
 
-  jumpToPage: function (targetPage) {
-    if(targetPage > 0 && targetPage <= this.props.totalPageNum){
+  jumpToPage: function(targetPage) {
+    if (targetPage > 0 && targetPage <= this.props.totalPageNum) {
       this.props.jumpToPage(targetPage);
       this.dismissJumpBox();
     }
   },
 
-  showJumpBox: function () {
+  showJumpBox: function() {
     this.setState({
       showBox: !this.state.showBox
     });
   },
 
-  dismissJumpBox: function () {
+  dismissJumpBox: function() {
     this.setState({
       showBox: false
     });
   },
 
-  render: function(){
+  render: function() {
     var prePageBtn = null;
-    if(this.props.curPageNum > 1){
+    if (this.props.curPageNum > 1) {
       prePageBtn = (
-        <div className="pre-btn" onClick={this.props.previousPage}>上一页</div>
+        <div className="pre-btn" onClick={this.props.previousPage}>{I18N.Paging.Button.PrePage}</div>
       );
     }
     var nextPageBtn = null;
-    if(this.props.curPageNum < this.props.totalPageNum){
+    if (this.props.curPageNum < this.props.totalPageNum) {
       nextPageBtn = (
-        <div className="next-btn" onClick={this.props.nextPage}>下一页</div>
+        <div className="next-btn" onClick={this.props.nextPage}>{I18N.Paging.Button.NextPage}</div>
       );
-    };
-    var page=((this.props.totalPageNum==0)?0:this.props.curPageNum);
+    }
+    ;
+    var page = ((this.props.totalPageNum == 0) ? 0 : this.props.curPageNum);
     var pageNum = (
-      <div className="page-num">{page}/{this.props.totalPageNum}页</div>
+    <div className="page-num">{page}/{this.props.totalPageNum}{I18N.Paging.Page}</div>
     );
 
     var jumpBtn = null;
-    if(this.props.hasJumpBtn){
+    if (this.props.hasJumpBtn) {
       var jumpBox = null;
-      if(this.state.showBox){
+      if (this.state.showBox) {
         var jumpBoxProps = {
           handleClickAway: this.dismissJumpBox,
           jumpToPage: this.jumpToPage,
@@ -83,11 +84,11 @@ var Pagination = React.createClass({
         );
       }
       jumpBtn = (
-       <div className="page-jump">
-         <div className="jump-btn" onClick={this.showJumpBox}>跳转</div>
+        <div className="page-jump">
+         <div className="jump-btn" onClick={this.showJumpBox}>{I18N.Paging.Jump}</div>
          {jumpBox}
        </div>
-     );
+      );
     }
 
     return (
@@ -97,7 +98,7 @@ var Pagination = React.createClass({
         {nextPageBtn}
         {jumpBtn}
       </div>
-    );
+      );
   }
 });
 

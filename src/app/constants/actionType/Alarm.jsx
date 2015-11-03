@@ -17,6 +17,7 @@ module.exports = {
     SAVE_TO_DASHBOARD_SUCESS: null,
     SAVE_TO_DASHBOARD_ERROR: null,
     SET_OPTION: null,
+    SET_SELECTED_ALARM_TAG: null,
   })
 
 };

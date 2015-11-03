@@ -232,16 +232,16 @@ let BaselineCfg = React.createClass({
     var firstTabStyles = this.mergeAndPrefix(tabStyle, this.state.firstTabStyle);
     return (
       <div>
-        <Dialog title="基准值配置" ref="cfgDialog" {...dialogProps}>
+        <Dialog title={I18N.Baseline.Basic} ref="cfgDialog" {...dialogProps}>
           <div className="jazz-tabs">
             <Tabs {...tabsProps}>
-              <Tab label="基准值配置" style={firstTabStyles} onActive={this._tab0Active}>
+              <Tab label={I18N.Baseline.Basic} style={firstTabStyles} onActive={this._tab0Active}>
                 <BaselineBasic  ref="baselineBasic" {...basicProps} />
               </Tab>
-              <Tab label="计算值修正" style={tabStyle}  onActive={this._tab1Active}>
+              <Tab label={I18N.Baseline.Modify} style={tabStyle}  onActive={this._tab1Active}>
                 <BaselineModify  ref="baselineModify" tbId={this.state.tbId} shouldLoad= {this.state.activeTabIndex === 1}/>
               </Tab>
-              <Tab label="报警设置"  style={tabStyle}  onActive={this._tab2Active}>
+              <Tab label={I18N.Baseline.AlarmSetting}  style={tabStyle}  onActive={this._tab2Active}>
                 <AlarmSetting  ref="alarmSetting" tbId={this.state.tbId} shouldLoad= {this.state.activeTabIndex === 2}/>
               </Tab>
             </Tabs>
