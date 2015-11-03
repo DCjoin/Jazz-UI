@@ -775,6 +775,10 @@ I18N.ALarm.Save.Title = 'Add to dashboard';
 I18N.ALarm.Save.Label = 'Chart name';
 I18N.ALarm.Save.Save = 'Save';
 I18N.ALarm.Save.Error = 'Existed';
+I18N.ALarm.List = {};
+I18N.ALarm.List.Daily = 'Daily alarm list';
+I18N.ALarm.List.Month = 'Weekly alarm list';
+I18N.ALarm.List.Year = 'Yearly alarm list';
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = 'Tag {0} / {1} has been selected ';
