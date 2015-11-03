@@ -132,17 +132,25 @@ let Setting = React.createClass({
           selectedNode: selectedNode
         });
       }
-      if (!!this.state.templateNode) {
-        if (selectedNode.get('Id') == this.state.templateNode.get('Id')) {
-          this.setState({
-            templateNode: selectedNode
-          });
-        }
-      }
+      // if (!!this.state.templateNode) {
+      //   if (selectedNode.get('Id') == this.state.templateNode.get('Id')) {
+      //     this.setState({
+      //       templateNode: selectedNode
+      //     });
+      //   }
+      // }
 
     });
     lastEnergyType = null;
     lastBizType = null;
+  },
+  _onFolderTreeChanged: function() {
+    let selectedNode = FolderStore.getSelectedNode();
+    if (selectedNode != this.state.selectedNode) {
+      this.setState({
+        selectedNode: selectedNode
+      });
+    }
   },
   _onTemplateDismiss: function() {
     this.setState({
@@ -270,6 +278,7 @@ let Setting = React.createClass({
     WidgetStore.addChangeListener(this._handleWidgetSelectChange);
     FolderStore.addWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.addWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
+    FolderStore.addFolderTreeListener(this._onFolderTreeChanged);
   },
   componentWillUnmount: function() {
     FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -282,6 +291,7 @@ let Setting = React.createClass({
     WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
     FolderStore.removeWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.removeWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
+    FolderStore.removeFolderTreeListener(this._onFolderTreeChanged);
     this.setState({
       errorText: null
     });
