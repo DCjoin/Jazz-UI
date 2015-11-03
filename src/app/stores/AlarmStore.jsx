@@ -5,23 +5,30 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 
-import {dateType} from '../constants/AlarmConstants.jsx';
-import {Action} from '../constants/actionType/Alarm.jsx';
+import { dateType } from '../constants/AlarmConstants.jsx';
+import { Action } from '../constants/actionType/Alarm.jsx';
 
-let _hierarchyList = null;
+let _hierarchyList = null,
+  _tagId = null;
 
 let CHANGE_ALAMLIST_EVENT = 'changealarmlist';
-var AlarmStore = assign({},PrototypeStore,{
+var AlarmStore = assign({}, PrototypeStore, {
 
-  getHierarchyList(){
+  getHierarchyList() {
     return _hierarchyList;
   },
-  convertAlarmList(alarmList){
-    if(!alarmList || alarmList.length===0){
+  convertAlarmList(alarmList) {
+    if (!alarmList || alarmList.length === 0) {
       _hierarchyList = null;
-    }else{
+    } else {
       _hierarchyList = alarmList;
     }
+  },
+  setSelectedAlarmTag: function(tagId) {
+    _tagId = null;
+  },
+  getSelectedAlarmTag: function() {
+    return _tagId;
   },
   emitAlarmlistChange: function() {
     this.emit(CHANGE_ALAMLIST_EVENT);
@@ -43,16 +50,19 @@ var AlarmStore = assign({},PrototypeStore,{
 });
 
 AlarmStore.dispatchToken = PopAppDispatcher.register(function(action) {
-    switch(action.type) {
-      case Action.DATALIST_CHANGED:
-        AlarmStore.convertAlarmList(action.alarmList);
-        AlarmStore.emitAlarmlistChange();
-        break;
-      case Action.GET_HIERARCHY_LIST_ERROR:
-        AlarmStore.convertAlarmList([]);
-        AlarmStore.emitAlarmlistChange();
-        break;
-    }
+  switch (action.type) {
+    case Action.DATALIST_CHANGED:
+      AlarmStore.convertAlarmList(action.alarmList);
+      AlarmStore.emitAlarmlistChange();
+      break;
+    case Action.GET_HIERARCHY_LIST_ERROR:
+      AlarmStore.convertAlarmList([]);
+      AlarmStore.emitAlarmlistChange();
+      break;
+    case Action.SET_SELECTED_ALARM_TAG:
+      AlarmStore.setSelectedAlarmTag(action.tagId);
+      break;
+  }
 });
 
 module.exports = AlarmStore;
