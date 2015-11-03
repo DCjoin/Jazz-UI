@@ -200,7 +200,7 @@ I18N.EM.StepError = 'Selected tag does not support {0} interval. Please change t
 
 I18N.EM.Tool = {};
 I18N.EM.Tool.ClearChart = 'Clear chart';
-I18N.EM.Tool.AssistCompare = 'Supporting comparison';
+I18N.EM.Tool.AssistCompare = 'Analysis supporting';
 I18N.EM.Tool.Weather = {};
 I18N.EM.Tool.Weather.WeatherInfo = 'Weather';
 I18N.EM.Tool.Weather.Temperature = 'Temperature';
@@ -417,8 +417,8 @@ I18N.Message.M02407 = 'Electricity price in peak/valley/normal period cannot be 
 I18N.Message.M02408 = 'This node is not configured with peak/valley period and thus cannot be displayed.';
 I18N.Message.M02027 = 'Can not view data because the step in record is smaller than supported minimum step.';
 
-I18N.Message.M02601 = 'The day and night calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0}所对应的层级节点没有设置昼夜日历，无法查看昼夜比数据';
-I18N.Message.M02602 = 'The working calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0}所对应的层级节点没有设置工作日历，无法查看公休比数据';
+I18N.Message.M02601 = 'The day and night calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0}所对应的层级节点没有设置昼夜日历，无法查看昼夜比数�?;
+I18N.Message.M02602 = 'The working calendar is missing, and chart cannot be drawn. Please try again after setting.'; //'{0}所对应的层级节点没有设置工作日历，无法查看公休比数�?;
 I18N.Message.M02603 = 'The total area is missing, and chart cannot be drawn. Please try again after setting.';
 I18N.Message.M02604 = 'The cooling area is missing, and chart cannot be drawn. Please try again after setting.';
 I18N.Message.M02605 = 'The heating area is missing, and chart cannot be drawn. Please try again after setting.';
@@ -554,7 +554,7 @@ I18N.Message.M06195 = 'The child nodes of the current regional dimension does no
 I18N.Message.M06196 = 'The current hierarchy node does not include tags that shares the same media unit with this tag. ';
 I18N.Message.M06197 = 'The current system dimension does not include tags that shares the same media with this tag. ';
 I18N.Message.M06198 = 'The current regional dimension does not include tags that shares the same media with this tag. ';
-I18N.Message.M06201 = 'Cannot modity the caculated interval to“{0}”。This tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
+I18N.Message.M06201 = 'Cannot modity the caculated interval to��{0}��, This  tag has been referred to by other tags. Newly calculated interval must be smaller or equal to the calculated interval of the tag referred to.';
 I18N.Message.M06202 = 'The corresponding tag already has energy consumption tags of the same media.  ';
 I18N.Message.M06203 = 'This tag is not an energy consumption tag.';
 
@@ -590,7 +590,7 @@ I18N.Message.M09107 = 'Data has been modified by others, click "OK" to reload da
 I18N.Message.M09112 = 'The corresponding tags have been deleted. The page will be refreshed immediately.';
 I18N.Message.M09113 = 'Please set calculation rules before doing the calculation.';
 I18N.Message.M09114 = 'Value exceeds the legal range, and it cannot be saved. The range of valid values ​​is -999999999.999999 ~ 999,999,999.999999.';
-I18N.Message.M09155 = I18N.format(I18N.Message.UpdateConcurrency, '计算值');
+I18N.Message.M09155 = I18N.format(I18N.Message.UpdateConcurrency,'����ֵ');
 I18N.Message.M09157 = 'The corresponding tags have been deleted. The page will be refreshed immediately.';
 I18N.Message.M09158 = 'Tags are not associated to the hierarchy tree and dimension tree. Please associate tags first.';
 I18N.Message.M09159 = 'The calendar attribute of the hierarchy tree associated is empty. Please set the calendar for the hierarchy tree first.';
@@ -775,6 +775,15 @@ I18N.ALarm.Save.Title = 'Add to dashboard';
 I18N.ALarm.Save.Label = 'Chart name';
 I18N.ALarm.Save.Save = 'Save';
 I18N.ALarm.Save.Error = 'Existed';
+I18N.ALarm.List = {};
+I18N.ALarm.List.Daily = 'Daily alarm list';
+I18N.ALarm.List.Month = 'Weekly alarm list';
+I18N.ALarm.List.Year = 'Yearly alarm list';
+
+I18N.ALarm.List = {};
+I18N.ALarm.List.Daily = 'Daily alarm list';
+I18N.ALarm.List.Month = 'Weekly alarm list';
+I18N.ALarm.List.Year = 'Yearly alarm list';
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = 'Tag {0} / {1} has been selected ';

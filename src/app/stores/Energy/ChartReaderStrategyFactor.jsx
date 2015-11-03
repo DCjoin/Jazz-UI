@@ -469,24 +469,7 @@ let ChartReaderStrategyFactor = {
           }
         }
 
-
-        if (step == 1) {
-          for (let j = 0; j < eData.length; j++) {
-            orgintime = j2d(eData[j].LocalTime);
-            arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), eData[j].DataValue]);
-            if (i > 0) {
-              if (returndata[0].data[j]) {
-                timeTable.push({
-                  orig: returndata[0].data[j][0],
-                  offset: arr[j][0] - returndata[0].data[j][0]
-                });
-                arr[j][0] = returndata[0].data[j][0];
-              } else {
-                arr.pop();
-              }
-            }
-          }
-        } else {
+        if (step === 2 || step === 3 || step === 4 || step === 5) {
           var navData = data.NavigatorData.EnergyData;
           if (!navData) return;
           var standardStart;
@@ -511,6 +494,22 @@ let ChartReaderStrategyFactor = {
                   orig: xAxisdate,
                   offset: timeSpace
                 });
+              }
+            }
+          }
+        } else {
+          for (let j = 0; j < eData.length; j++) {
+            orgintime = j2d(eData[j].LocalTime);
+            arr.push([energyStore.readerStrategy.translateDateFn(orgintime, null, step), eData[j].DataValue]);
+            if (i > 0) {
+              if (returndata[0].data[j]) {
+                timeTable.push({
+                  orig: returndata[0].data[j][0],
+                  offset: arr[j][0] - returndata[0].data[j][0]
+                });
+                arr[j][0] = returndata[0].data[j][0];
+              } else {
+                arr.pop();
               }
             }
           }
