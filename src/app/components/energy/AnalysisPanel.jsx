@@ -207,6 +207,7 @@ let AnalysisPanel = React.createClass({
     let me = this;
     this.state.chartStrategy.unbindStoreListenersFn(me);
     this.state.chartStrategy.resetYaxisSelectorFn();
+    this.state.chartStrategy.resetCalendarTypeFn();
     if (this.props.bizType === 'Label') {
       LabelMenuStore.clearHierNodes();
       LabelMenuStore.clearHierNode();

@@ -19,29 +19,29 @@ DateTime.getFullMonth = function(d) {
   var month = d.getMonth();
   switch (month) {
     case 0:
-      return '一月';
+      return I18N.Common.Glossary.MonthName.January;
     case 1:
-      return '二月';
+      return I18N.Common.Glossary.MonthName.February;
     case 2:
-      return '三月';
+      return I18N.Common.Glossary.MonthName.March;
     case 3:
-      return '四月';
+      return I18N.Common.Glossary.MonthName.April;
     case 4:
-      return '五月';
+      return I18N.Common.Glossary.MonthName.May;
     case 5:
-      return '六月';
+      return I18N.Common.Glossary.MonthName.June;
     case 6:
-      return '七月';
+      return I18N.Common.Glossary.MonthName.July;
     case 7:
-      return '八月';
+      return I18N.Common.Glossary.MonthName.August;
     case 8:
-      return '九月';
+      return I18N.Common.Glossary.MonthName.September;
     case 9:
-      return '十月';
+      return I18N.Common.Glossary.MonthName.October;
     case 10:
-      return '十一月';
+      return I18N.Common.Glossary.MonthName.November;
     case 11:
-      return '十二月';
+      return I18N.Common.Glossary.MonthName.December;
   }
 };
 
@@ -183,13 +183,13 @@ var Calendar = React.createClass({
             <ClearFix
         elementType="ul"
         style={styles.weekTitle}>
-              <li style={styles.weekTitleDay}>日</li>
-              <li style={styles.weekTitleDay}>一</li>
-              <li style={styles.weekTitleDay}>二</li>
-              <li style={styles.weekTitleDay}>三</li>
-              <li style={styles.weekTitleDay}>四</li>
-              <li style={styles.weekTitleDay}>五</li>
-              <li style={styles.weekTitleDay}>六</li>
+              <li style={styles.weekTitleDay}>{I18N.Common.Glossary.WeekDay.Sunday}</li>
+              <li style={styles.weekTitleDay}>{I18N.Common.Glossary.WeekDay.Monday}</li>
+              <li style={styles.weekTitleDay}>{I18N.Common.Glossary.WeekDay.Tuesday}</li>
+              <li style={styles.weekTitleDay}>{I18N.Common.Glossary.WeekDay.Wednesday}</li>
+              <li style={styles.weekTitleDay}>{I18N.Common.Glossary.WeekDay.Thursday}</li>
+              <li style={styles.weekTitleDay}>{I18N.Common.Glossary.WeekDay.Friday}</li>
+              <li style={styles.weekTitleDay}>{I18N.Common.Glossary.WeekDay.Saturday}</li>
             </ClearFix>
 
             <SlideInTransitionGroup

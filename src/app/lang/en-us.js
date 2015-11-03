@@ -99,13 +99,13 @@ I18N.Common.Glossary.ShortMonth.October = 'Oct.';
 I18N.Common.Glossary.ShortMonth.November = 'Nov.';
 I18N.Common.Glossary.ShortMonth.December = 'Dec.';
 
-I18N.Common.Glossary.WeekDay.Monday = 'Monday';
-I18N.Common.Glossary.WeekDay.Tuesday = 'Tuesday';
-I18N.Common.Glossary.WeekDay.Wednesday = 'Wednesday';
-I18N.Common.Glossary.WeekDay.Thursday = 'Thursday';
-I18N.Common.Glossary.WeekDay.Friday = 'Friday';
-I18N.Common.Glossary.WeekDay.Saturday = 'Saturdays';
-I18N.Common.Glossary.WeekDay.Sunday = 'Sunday';
+I18N.Common.Glossary.WeekDay.Monday = 'Mon.';
+I18N.Common.Glossary.WeekDay.Tuesday = 'Tue.';
+I18N.Common.Glossary.WeekDay.Wednesday = 'Wed.';
+I18N.Common.Glossary.WeekDay.Thursday = 'Thur.';
+I18N.Common.Glossary.WeekDay.Friday = 'Fri.';
+I18N.Common.Glossary.WeekDay.Saturday = 'Sat.';
+I18N.Common.Glossary.WeekDay.Sunday = 'Sun.';
 
 I18N.Common.DateRange = {};
 I18N.Common.DateRange.Last7Day = 'Last 7 Days';

@@ -34,6 +34,9 @@ let CalendarManager = {
   getShowType: function() {
     return this.calendarShowType;
   },
+  resetShowType: function() {
+    this.calendarShowType = '';
+  },
   setItemsStatus(enableItems, disableItems) {
     this.enableItems = enableItems;
     this.disableItems = disableItems;

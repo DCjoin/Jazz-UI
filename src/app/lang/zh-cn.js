@@ -99,13 +99,13 @@ I18N.Common.Glossary.ShortMonth.October = '十月';
 I18N.Common.Glossary.ShortMonth.November = '十一月';
 I18N.Common.Glossary.ShortMonth.December = '十二月';
 
-I18N.Common.Glossary.WeekDay.Monday = '周一';
-I18N.Common.Glossary.WeekDay.Tuesday = '周二';
-I18N.Common.Glossary.WeekDay.Wednesday = '周三';
-I18N.Common.Glossary.WeekDay.Thursday = '周四';
-I18N.Common.Glossary.WeekDay.Friday = '周五';
-I18N.Common.Glossary.WeekDay.Saturday = '周六';
-I18N.Common.Glossary.WeekDay.Sunday = '周日';
+I18N.Common.Glossary.WeekDay.Monday = '一';
+I18N.Common.Glossary.WeekDay.Tuesday = '二';
+I18N.Common.Glossary.WeekDay.Wednesday = '三';
+I18N.Common.Glossary.WeekDay.Thursday = '四';
+I18N.Common.Glossary.WeekDay.Friday = '五';
+I18N.Common.Glossary.WeekDay.Saturday = '六';
+I18N.Common.Glossary.WeekDay.Sunday = '日';
 
 I18N.Common.DateRange = {};
 I18N.Common.DateRange.Last7Day = '最近7天';
