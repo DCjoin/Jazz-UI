@@ -4,6 +4,8 @@ import PopAppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
+import Momment from 'moment';
+import _ from 'lodash';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/Energy.jsx';
 
@@ -368,6 +370,28 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
     this._initTempRelativeList();
     _relativeList = _tempRelativeList;
     _tempRelativeList = null;
+  },
+  convertMultiTimespansByNavigator: function(startTime, endTime) {
+    let startspan, endspan;
+    let relativeList = _relativeList.toJS();
+    relativeList.forEach((item, index) => {
+      if (item.startDate && item.endDate) {
+        if (index === 0) {
+          startspan = startTime - item.startDate;
+          endspan = endTime - item.endDate;
+          item.startDate = startTime;
+          item.endDate = endTime;
+        } else {
+          let startDate = new Momment(item.startDate);
+          let endDate = new Momment(item.endDate);
+          startDate = startDate.add(startspan, 'ms');
+          endDate = endDate.add(endspan, 'ms');
+          item.startDate = startDate._d;
+          item.endDate = endDate._d;
+        }
+      }
+    });
+    _relativeList = Immutable.fromJS(relativeList);
   },
   getSubmitTimespans() {
     if (_relativeList === null) {

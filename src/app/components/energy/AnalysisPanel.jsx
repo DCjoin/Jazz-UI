@@ -318,7 +318,9 @@ let AnalysisPanel = React.createClass({
     });
 
     if (type === 'resize' || this.refs.ChartComponent.navCache === false) {
+      MultipleTimespanStore.convertMultiTimespansByNavigator(start, end);
       this._onNavigatorChangeLoad();
+
     }
   },
   _onNavigatorChangeLoad() {
