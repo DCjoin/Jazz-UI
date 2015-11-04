@@ -785,6 +785,7 @@ I18N.ALarm.Uom = {};
 I18N.ALarm.Uom.Hour = '小时';
 I18N.ALarm.Uom.Day = '日';
 I18N.ALarm.Uom.Month = '月';
+I18N.ALarm.Uom.Year = '年';
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
