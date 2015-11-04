@@ -81,17 +81,21 @@ let BaselineCfg = React.createClass({
   },
 
   _onTabChanged: function(value, e, tab) {
-    // this.setState({
-    //   firstTabStyle: {
-    //     color: '#767a7a'
-    //   }
-    // });
-    // //  tab.getDOMNode().style.color='#1ca8dd';
-    //
-    // if (lastTab) {
-    //   //  lastTab.getDOMNode().style.color = '#767a7a';
-    // }
-    // lastTab = tab;
+
+    if (!!tab) {
+      this.setState({
+        firstTabStyle: {
+          color: '#767a7a'
+        }
+      });
+      tab.getDOMNode().style.color = '#1ca8dd';
+
+      if (lastTab) {
+        lastTab.getDOMNode().style.color = '#767a7a';
+      }
+      lastTab = tab;
+    }
+
 
   },
   _onDismiss: function() {
@@ -208,7 +212,7 @@ let BaselineCfg = React.createClass({
     var tabsProps = {
         tabItemContainerStyle: {
           backgroundColor: 'transparent',
-          borderBottom: '1px solid #e4e7e6',
+          // borderBottom: '1px solid #e4e7e6',
           height: '28px',
           //    color: 'red',
           width: '330px'
@@ -217,6 +221,9 @@ let BaselineCfg = React.createClass({
           width: '790px',
           paddingLeft: '30px',
         //  color: 'red'
+        },
+        contentContainerStyle: {
+          borderTop: '1px solid #ececec'
         },
         onChange: this._onTabChanged
       },
