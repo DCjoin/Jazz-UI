@@ -320,6 +320,7 @@ let AnalysisPanel = React.createClass({
     }
 
     this.dateChanged(chart, startTime, endTime, type);
+    MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
   },
   dateChanged(chart, start, end, type) {
     this.refs.dateTimeSelector.setDateField(start, end);
@@ -328,7 +329,6 @@ let AnalysisPanel = React.createClass({
     });
 
     if (type === 'resize' || this.refs.ChartComponent.navCache === false) {
-      MultipleTimespanStore.convertMultiTimespansByNavigator(start, end);
       this._onNavigatorChangeLoad();
 
     }

@@ -210,13 +210,13 @@ let BaselineCfg = React.createClass({
           backgroundColor: 'transparent',
           borderBottom: '1px solid #e4e7e6',
           height: '28px',
-          color: 'red',
+          //    color: 'red',
+          width: '330px'
         },
-        tabWidth: 110,
         style: {
           width: '790px',
           paddingLeft: '30px',
-          color: 'red'
+        //  color: 'red'
         },
         onChange: this._onTabChanged
       },
@@ -227,7 +227,7 @@ let BaselineCfg = React.createClass({
         height: '18px',
         color: '#767a7a',
         fontWeight: 'bold',
-        fontFamily: 'Microsoft YaHei'
+        fontFamily: 'Microsoft YaHei',
       };
     var firstTabStyles = this.mergeAndPrefix(tabStyle, this.state.firstTabStyle);
     return (
