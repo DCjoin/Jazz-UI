@@ -32,22 +32,43 @@ var TreeNode = React.createClass({
       selected: false,
     };
   },
+  getCollapsedStatus: function(props) {
+    var status = true;
+    var f = function(item) {
+      if (item.Id == props.selectedNode.Id) {
+        status = false;
+      } else {
+        if (item.Children) {
+          item.Children.forEach(child => {
+            f(child);
+          });
+        }
+      }
+    };
+    if (!!props.selectedNode) {
+      f(props.nodeData);
+    }
+
+    return status;
+  },
   componentWillMount: function() {
     if (this.props.indent == 0) {
       this.setState({
         collapsed: false,
       });
-      return;
-    }
-    ;
-
-    if (this.props.selectedNode.HierarchyId == this.props.id) {
+    } else {
       this.setState({
-        collapsed: false,
+        collapsed: this.getCollapsedStatus(this.props)
       });
-      return;
     }
 
+
+
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      collapsed: this.getCollapsedStatus(nextProps)
+    });
   },
   handleClickArrow: function(e) {
     e.stopPropagation();
@@ -332,6 +353,13 @@ let DimTree = React.createClass({
       searchList: false,
       searchTree: false
     });
+  },
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedNode) {
+      this.setState({
+        selectedNode: nextProps.selectedNode
+      })
+    }
   },
   render: function() {
 

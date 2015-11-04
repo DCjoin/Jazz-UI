@@ -32,32 +32,43 @@ var TreeNode = React.createClass({
       selected: false,
     };
   },
-  componentWillMount: function() {
-    if (this.props.indent === 0) {
-      this.setState({
-        collapsed: false,
-      });
-      return;
-    }
-
-    if (this.props.selectedNode.ParentId == this.props.id) {
-      this.setState({
-        collapsed: false,
-      });
-      return;
-    }
-    var that = this;
-    if (this.props.nodeData.Children) {
-      this.props.nodeData.Children.forEach(function(nodeData, i) {
-        if (nodeData.Id == that.props.selectedNode.ParentId) {
-          that.setState({
-            collapsed: false,
-          })
+  getCollapsedStatus: function(props) {
+    var status = true;
+    var f = function(item) {
+      if (item.Id == props.selectedNode.Id) {
+        status = false;
+      } else {
+        if (item.Children) {
+          item.Children.forEach(child => {
+            f(child);
+          });
         }
-      })
+      }
+    };
+    if (!!props.selectedNode) {
+      f(props.nodeData);
     }
-    ;
 
+    return status;
+  },
+  componentWillMount: function() {
+    if (this.props.indent == 0) {
+      this.setState({
+        collapsed: false,
+      });
+    } else {
+      this.setState({
+        collapsed: this.getCollapsedStatus(this.props)
+      });
+    }
+
+
+
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      collapsed: this.getCollapsedStatus(nextProps)
+    });
   },
   handleClickArrow: function(e) {
     e.stopPropagation();

@@ -81,17 +81,21 @@ let BaselineCfg = React.createClass({
   },
 
   _onTabChanged: function(value, e, tab) {
-    // this.setState({
-    //   firstTabStyle: {
-    //     color: '#767a7a'
-    //   }
-    // });
-    // //  tab.getDOMNode().style.color='#1ca8dd';
-    //
-    // if (lastTab) {
-    //   //  lastTab.getDOMNode().style.color = '#767a7a';
-    // }
-    // lastTab = tab;
+
+    if (!!tab) {
+      this.setState({
+        firstTabStyle: {
+          color: '#767a7a'
+        }
+      });
+      tab.getDOMNode().style.color = '#1ca8dd';
+
+      if (lastTab) {
+        lastTab.getDOMNode().style.color = '#767a7a';
+      }
+      lastTab = tab;
+    }
+
 
   },
   _onDismiss: function() {
@@ -208,15 +212,18 @@ let BaselineCfg = React.createClass({
     var tabsProps = {
         tabItemContainerStyle: {
           backgroundColor: 'transparent',
-          borderBottom: '1px solid #e4e7e6',
+          // borderBottom: '1px solid #e4e7e6',
           height: '28px',
-          color: 'red',
+          //    color: 'red',
+          width: '330px'
         },
-        tabWidth: 110,
         style: {
           width: '790px',
           paddingLeft: '30px',
-          color: 'red'
+        //  color: 'red'
+        },
+        contentContainerStyle: {
+          borderTop: '1px solid #ececec'
         },
         onChange: this._onTabChanged
       },
@@ -227,7 +234,7 @@ let BaselineCfg = React.createClass({
         height: '18px',
         color: '#767a7a',
         fontWeight: 'bold',
-        fontFamily: 'Microsoft YaHei'
+        fontFamily: 'Microsoft YaHei',
       };
     var firstTabStyles = this.mergeAndPrefix(tabStyle, this.state.firstTabStyle);
     return (
