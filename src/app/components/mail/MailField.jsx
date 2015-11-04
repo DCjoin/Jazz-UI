@@ -111,7 +111,8 @@ let MailField = React.createClass({
         onChange: this._onContentChanged,
         //  onBlur: this._onContentBlur,
         multiLine: true,
-        fullWidth: true
+        fullWidth: true,
+        rowsMax: 9
       };
     var receiverField = [];
     if (this.state.receivers.size > 0) {
@@ -126,7 +127,7 @@ let MailField = React.createClass({
           <div className='recievertitle'>
             {I18N.Mail.Reciever}
           </div>
-          <div className='recievercontent'>
+          <div ref='receiver' className='recievercontent'>
             {receiverField}
           </div>
         </div>
