@@ -318,22 +318,23 @@ let AnalysisPanel = React.createClass({
         endTime = dateAdd(startTime, 1, 'hours');
       }
     }
-
-    MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
-
+    var timeRanges = EnergyStore.getParamsObj().timeRanges;
+    if (timeRanges.length > 1) {
+      MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
+    }
     this.dateChanged(chart, startTime, endTime, type);
-    MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
   },
   dateChanged(chart, start, end, type) {
     this.refs.dateTimeSelector.setDateField(start, end);
     this.refs.relativeDate.setState({
       selectedIndex: 0
     });
+    var timeRanges = EnergyStore.getParamsObj().timeRanges;
 
     if (type === 'resize' || this.refs.ChartComponent.navCache === false) {
       this._onNavigatorChangeLoad();
-
     }
+
   },
   _onNavigatorChangeLoad() {
     if (this.state.chartStrategy.handleNavigatorChangeLoadFn) {
@@ -392,13 +393,13 @@ let AnalysisPanel = React.createClass({
   },
   getEnergyTypeCombo() {
     let types = [{
-      text: '能耗',
+      text: I18N.EM.KpiModeEM,
       value: 'energy'
     }, {
-      text: '成本',
+      text: I18N.EM.KpiModeCost,
       value: 'cost'
     }, {
-      text: '碳排放',
+      text: I18N.EM.KpiModeCarbon,
       value: 'carbon'
     }];
     return <DropDownMenu menuItems={types} onChange={this._onEnergyTypeChange}></DropDownMenu>;
