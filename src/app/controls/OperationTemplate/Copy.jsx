@@ -78,7 +78,6 @@ var Copy = React.createClass({
     //   selectedNode = FolderStore.getFolderTree()
     // }
     this.setState({
-      labelName: nextProps.labelName,
       allNode: FolderStore.getFolderTree(),
       selectedNode: (!!nextProps.treeNode ? nextProps.treeNode : FolderStore.getFolderTree()),
       treeShow: false,

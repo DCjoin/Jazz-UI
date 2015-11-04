@@ -101,8 +101,8 @@ var CommonCommodityPanel = React.createClass({
     });
   },
   componentWillUnmount: function() {
-    TagAction.setCurrentDimentionInfo(null, null);
-    CommodityAction.setCurrentDimInfo(null);
+    // TagAction.setCurrentDimentionInfo(null, null);
+    // CommodityAction.setCurrentDimInfo(null);
   },
   render: function() {
     let CurrentHierId = CommodityStore.getCurrentHierarchyId(),
