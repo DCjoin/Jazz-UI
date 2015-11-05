@@ -765,7 +765,7 @@ I18N.Dim.AllButtonName = 'All dimensions';
 I18N.Dim.ButtonName = 'Dimension node';
 
 I18N.ALarm = {};
-I18N.ALarm.Alarm = 'Energy Alarm';
+I18N.ALarm.Alarm = ' Energy Alarm';
 I18N.ALarm.Menu1 = 'All';
 I18N.ALarm.Menu2 = 'Alarm set';
 I18N.ALarm.Menu3 = 'Baseline set';
@@ -783,9 +783,9 @@ I18N.ALarm.List.Year = 'Yearly alarm list';
 
 I18N.ALarm.Uom = {};
 I18N.ALarm.Uom.Hour = 'Hour';
-I18N.ALarm.Uom.Day = 'Daily';
-I18N.ALarm.Uom.Month = 'Monthly';
-I18N.ALarm.Uom.Year = 'Yearly';
+I18N.ALarm.Uom.Day = ' Daily';
+I18N.ALarm.Uom.Month = ' Monthly';
+I18N.ALarm.Uom.Year = ' Yearly';
 
 I18N.Tag = {};
 I18N.Tag.Tooltip = 'Tag {0} / {1} has been selected ';
