@@ -389,6 +389,8 @@ let AnalysisPanel = React.createClass({
     });
     if (step !== 'cancel') {
       this._onStepChange(step);
+    } else {
+      this.state.chartStrategy.onSearchDataButtonClickFn(this);
     }
   },
   getEnergyTypeCombo() {
