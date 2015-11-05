@@ -72,9 +72,12 @@ let MailField = React.createClass({
     };
   },
   componentDidUpdate: function(prevProps, prevState) {
-    var RecieverHeight = React.findDOMNode(this.refs.reciever).offsetHeight;
-    var contentHeight = 255 - RecieverHeight;
-    this.refs.content.getDOMNode().querySelector('div').querySelector('div').querySelectorAll('textarea')[1].style.height = contentHeight + 'px';
+    if (this.state.content === null) {
+      var RecieverHeight = React.findDOMNode(this.refs.reciever).offsetHeight;
+      var contentHeight = 255 - RecieverHeight;
+      this.refs.content.getDOMNode().querySelector('div').querySelector('div').querySelectorAll('textarea')[1].style.height = contentHeight + 'px';
+    }
+
   },
   render: function() {
     var subjectStyle = {
