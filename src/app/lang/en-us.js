@@ -922,8 +922,8 @@ I18N.Paging.JumpTo = 'Jump to';
 I18N.Paging.Page = 'Page';
 I18N.Paging.Jump = 'Jump';
 I18N.Paging.Button = {};
-I18N.Paging.Button.PrePage = 'Next Page';
-I18N.Paging.Button.NextPage = 'Pre Page';
+I18N.Paging.Button.PrePage = 'Pre Page';
+I18N.Paging.Button.NextPage = 'Next Page';
 
 
 module.exports = I18N;
