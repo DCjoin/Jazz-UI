@@ -286,8 +286,14 @@ let ChartCmpStrategyFactor = {
       let converter = DataConverter,
         j2d = converter.JsonToDateTime,
         endTime = j2d(cmpBox.props.endTime, true),
-        startTime = j2d(cmpBox.props.startTime, true),
-        step = cmpBox.props.step || 2;
+        startTime = j2d(cmpBox.props.startTime, true);
+      var step;
+
+      if (CommonFuns.isNumeric(cmpBox.props.step)) {
+        step = cmpBox.props.step;
+      } else {
+        step = 2;
+      }
 
       newConfig.series = realData;
       if (realData && realData.length > 1) {

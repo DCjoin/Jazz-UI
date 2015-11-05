@@ -583,11 +583,11 @@ let ChartStrategyFactor = {
         desktop: true
       };
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
-                              <MenuItem key={1} primaryText={'复制'} />
-                              <MenuItem key={2} primaryText={'发送'} />
-                              <MenuItem key={3} primaryText={'共享'} />
-                              <MenuItem key={4} primaryText={'导出'} />
-                              <MenuItem key={5} primaryText={'删除'} />
+                              <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} />
+                              <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} />
+                              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} />
+                              <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} />
+                              <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
                            </IconMenu>;
       return widgetOptMenu;
     },

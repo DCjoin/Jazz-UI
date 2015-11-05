@@ -68,6 +68,9 @@ I18N.M212007 = '服务商域名不正确';
 I18N.Common = {};
 I18N.Common.Glossary = {};
 I18N.Common.Glossary.HierarchyNode = '层级节点';
+I18N.Common.Glossary.Max = '最大值';
+I18N.Common.Glossary.Min = '最小值';
+I18N.Common.Glossary.Auto = '自动';
 
 I18N.Common.Glossary.MonthName = {};
 I18N.Common.Glossary.ShortMonth = {};
@@ -138,6 +141,9 @@ I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = '冷暖季';
 I18N.Common.Button.Calendar.ShowHoliday = '非工作时间';
 I18N.Common.Button.Show = '查看';
+I18N.Common.Button.Save = '保存';
+I18N.Common.Button.Cancel = '放弃';
+I18N.Common.Button.ClearAll = '全部清空';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = '标煤';
@@ -271,6 +277,10 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePreviousComboLabel = '之前�
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious7Day = '个7天';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day = '个30天';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
+I18N.EM.YAxisSetting = 'Y坐标轴设置';
+I18N.EM.YAxisSettingTags = '相关数据点';
+I18N.EM.YAxisTitle = 'Y坐标轴';
+I18N.EM.YAxisMinMaxValidation = '最大值应大于最小值';
 
 I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
 I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
@@ -346,6 +356,8 @@ I18N.Setting.User.ServerManager = '服务商管理员';
 
 I18N.Common.Label = {};
 I18N.Common.Label.UnknownError = '抱歉，发生未知错误。';
+I18N.Common.Label.MandatoryEmptyError = '必填项。';
+I18N.Common.Label.MandatoryNumberError = '必填为数字。';
 
 I18N.Message = {};
 

@@ -187,11 +187,11 @@ var YaxisDialog = React.createClass({
   render() {
     var _buttonActions = [
       <FlatButton
-      label="保存"
+      label={I18N.Common.Button.Save}
       secondary={true}
       onClick={this._onDialogSubmit} />,
       <FlatButton
-      label="放弃"
+      label={I18N.Common.Button.Cancel}
       primary={true}
       onClick={this._onDialogCancel} style={{
         marginRight: '420px'
@@ -201,7 +201,7 @@ var YaxisDialog = React.createClass({
         marginRight: '20px'
       }} onClick={this._onRemoveAllClick}>
                <FontIcon className="fa fa-trash-o"/>
-               <span>{'全部清除'}</span>
+               <span>{I18N.Common.Button.ClearAll}</span>
             </FlatButton>
     ];
 
@@ -228,14 +228,14 @@ var YaxisDialog = React.createClass({
         <div style={{
         fontSize: '14px',
         marginBottom: '18px'
-      }}> {'Y坐标轴' + i} </div>
+      }}> {I18N.EM.YAxisTitle + i} </div>
         <div style={{
         marginBottom: '40px'
       }}>
           <span style={{
         width: '100px',
         display: 'inline-block'
-      }}>{'相关数据点:'}</span>
+      }}>{I18N.EM.YAxisSettingTags}</span>
           <span style={{
         'word-break': 'break-all'
       }}> {yaxisConfig[key].join(',')}</span></div>
@@ -249,7 +249,7 @@ var YaxisDialog = React.createClass({
       fontSize: '20px',
       fontWeight: 'bold',
       padding: '24px 0 0 50px'
-    }}>{'Y坐标轴设置'}</h3>;
+    }}>{I18N.EM.YAxisSetting}</h3>;
     var dialog = <Dialog title={_titleElement} actions={_buttonActions}
     modal={true} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
       <div className={'jazz-energy-yaxis-container'} style={{
@@ -311,24 +311,24 @@ var YaxisDialog = React.createClass({
         //flag = false;
         continue;
       } else if (maxValue === '') {
-        maxField.setErrorText('必填项。');
+        maxField.setErrorText(I18N.Common.Label.MandatoryEmptyError);
         flag = false;
       } else if (minValue === '') {
-        minField.setErrorText('必填项。');
+        minField.setErrorText(I18N.Common.Label.MandatoryEmptyError);
         flag = false;
       }
 
       if (!isNumeric(maxValue)) {
-        maxField.setErrorText('必填为数字。');
+        maxField.setErrorText(I18N.Common.Label.MandatoryNumberError);
         flag = false;
       }
       if (!isNumeric(minValue)) {
-        minField.setErrorText('必填为数字。');
+        minField.setErrorText(I18N.Common.Label.MandatoryNumberError);
         flag = false;
       }
 
       if (flag && (parseFloat(minValue) >= parseFloat(maxValue))) {
-        maxField.setErrorText('最大值要大于最小值。');
+        maxField.setErrorText(I18N.EM.YAxisMinMaxValidation);
         flag = false;
       }
     }
@@ -354,14 +354,14 @@ var MaxMinPair = React.createClass({
          <div> <span style={{
         width: '100px',
         display: 'inline-block'
-      }}>{'最大值:'}</span>
-               <TextField hintText="自动" onChange={this._onMaxFieldChange} ref={this.props.uom + '_max'} value={this.state.maxValue}/>
+      }}>{I18N.Common.Glossary.Max}</span>
+               <TextField hintText={I18N.Common.Glossary.Auto} onChange={this._onMaxFieldChange} ref={this.props.uom + '_max'} value={this.state.maxValue}/>
                <span>{this.props.uom}</span></div>
          <div> <span style={{
         width: '100px',
         display: 'inline-block'
-      }}>{'最小值:'}</span>
-               <TextField hintText="自动" onChange={this._onMinFieldChange}ref={this.props.uom + '_min'} value={this.state.minValue}/>
+      }}>{I18N.Common.Glossary.Min}</span>
+               <TextField hintText={I18N.Common.Glossary.Auto} onChange={this._onMinFieldChange}ref={this.props.uom + '_min'} value={this.state.minValue}/>
                <span>{this.props.uom}</span></div>
        </div>;
   },

@@ -46,7 +46,7 @@ let AnalysisPanel = React.createClass({
       //bizType:'Energy',
       bizType: 'Unit',
       energyType: 'Energy',
-      chartTitle: '最近7天能耗',
+      chartTitle: '最近7天能耗分析',
       widgetInitState: false,
       sourceUserName: null,
       isFromAlarm: false
@@ -318,20 +318,23 @@ let AnalysisPanel = React.createClass({
         endTime = dateAdd(startTime, 1, 'hours');
       }
     }
-
+    var timeRanges = EnergyStore.getParamsObj().timeRanges;
+    if (timeRanges.length > 1) {
+      MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
+    }
     this.dateChanged(chart, startTime, endTime, type);
-    MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
   },
   dateChanged(chart, start, end, type) {
     this.refs.dateTimeSelector.setDateField(start, end);
     this.refs.relativeDate.setState({
       selectedIndex: 0
     });
+    var timeRanges = EnergyStore.getParamsObj().timeRanges;
 
     if (type === 'resize' || this.refs.ChartComponent.navCache === false) {
       this._onNavigatorChangeLoad();
-
     }
+
   },
   _onNavigatorChangeLoad() {
     if (this.state.chartStrategy.handleNavigatorChangeLoadFn) {
@@ -390,13 +393,13 @@ let AnalysisPanel = React.createClass({
   },
   getEnergyTypeCombo() {
     let types = [{
-      text: '能耗',
+      text: I18N.EM.KpiModeEM,
       value: 'energy'
     }, {
-      text: '成本',
+      text: I18N.EM.KpiModeCost,
       value: 'cost'
     }, {
-      text: '碳排放',
+      text: I18N.EM.KpiModeCarbon,
       value: 'carbon'
     }];
     return <DropDownMenu menuItems={types} onChange={this._onEnergyTypeChange}></DropDownMenu>;
@@ -864,7 +867,7 @@ let AnalysisPanel = React.createClass({
           return;
         }
       }
-      selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? "请选择能效标识" : subMenuItem.props.primaryText);
+      selectedLabelItem.text = (subMenuItem.props.industryId === -1 ? I18N.Setting.Benchmark.Label.SelectLabelling : subMenuItem.props.primaryText);
       selectedLabelItem.industryId = subMenuItem.props.industryId;
       selectedLabelItem.zoneId = subMenuItem.props.zoneId;
       selectedLabelItem.value = subMenuItem.props.value;

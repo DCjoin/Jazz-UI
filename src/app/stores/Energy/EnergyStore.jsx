@@ -146,6 +146,23 @@ let EnergyStore = assign({}, PrototypeStore, {
     ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
+  changeMultipleTimeRanges(timeRanges) {
+    _paramsObj.startTime = timeRanges[0].StartTime;
+    _paramsObj.endTime = timeRanges[0].EndTime;
+    _paramsObj.timeRanges = timeRanges;
+    let obj = {
+      start: timeRanges[0].StartTime,
+      end: timeRanges[0].EndTime,
+      step: _submitParams.viewOption.Step,
+      timeRanges: timeRanges
+    };
+    for (var i = 0; i < timeRanges.length; i++) {
+      var data = _energyRawData.TargetEnergyData[i];
+      data.Target.TimeSpan = timeRanges[i];
+    }
+    _energyData = Immutable.fromJS(this.readerStrategy.convertFn(_energyRawData, obj, this));
+  },
+
   removeSeriesDataByUid(uid) {
     if (_energyData) {
       let latestDataList = [];
