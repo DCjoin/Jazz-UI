@@ -146,9 +146,15 @@ let AnalysisPanel = React.createClass({
           <div className={'jazz-alarm-chart-toolbar-container'}>
               <div className={'title'} style={{
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      minWidth: '70px'
     }}>
-                <div className={'content'}>
+                <div className={'content'} title={me.props.chartTitle} style={{
+      minWidth: '70px'
+    }}>
                   {me.props.chartTitle}
                 </div>
                 <IconButton iconClassName="icon-save" iconStyle={{
