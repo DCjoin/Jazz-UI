@@ -4483,7 +4483,12 @@ let ChartStrategyFactor = {
       if (!analysisPanel.state.energyData) {
         return;
       }
-      let path = '/Energy.svc/GetCostData4Export';
+      var path;
+      if (analysisPanel.state.touBtnSelected) {
+        path = '/Energy.svc/GetElectricityCostData4Export';
+      } else {
+        path = '/Energy.svc/GetCostData4Export';
+      }
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
       let submitParams = CostStore.getSubmitParams();
@@ -4495,11 +4500,13 @@ let ChartStrategyFactor = {
 
       let params = {
         title: title,
-        commodityIds: commodityIds,
         viewOption: viewOption,
         viewAssociation: viewAssociation,
         nodeNameAssociation: nodeNameAssociation
       };
+      if (!analysisPanel.state.touBtnSelected) {
+        params.commodityIds = commodityIds;
+      }
 
       let charTypes = [];
 
