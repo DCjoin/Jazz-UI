@@ -8,9 +8,10 @@ import MailStore from '../../stores/MailStore.jsx';
 import ReceiverItem from './MailReceiverItem.jsx';
 import TemplateField from './MailTemplateField.jsx';
 import SaveNewTemplate from './MailSaveNewTemplate.jsx';
-
+let initRow;
 let MailField = React.createClass({
   _onMailViewChanged: function() {
+    initRow = 0;
     var mailView = MailStore.getMailView();
     this.setState({
       receivers: mailView.receivers,
@@ -48,6 +49,9 @@ let MailField = React.createClass({
     var checked = this.refs.checkbox.isChecked();
     MailAction.setMsgNotice(checked);
   },
+  componentWillMount: function() {
+    initRow = 9;
+  },
   componentDidMount: function() {
     MailStore.addMailViewListener(this._onMailViewChanged);
     MailStore.addSendErroListener(this._onSendErrorChanged);
@@ -66,6 +70,11 @@ let MailField = React.createClass({
       msgFlagClear: false,
       saveTemplateFlagClear: false
     };
+  },
+  componentDidUpdate: function(prevProps, prevState) {
+    var RecieverHeight = React.findDOMNode(this.refs.reciever).offsetHeight;
+    var contentHeight = 255 - RecieverHeight;
+    this.refs.content.getDOMNode().querySelector('div').querySelector('div').querySelectorAll('textarea')[1].style.height = contentHeight + 'px';
   },
   render: function() {
     var subjectStyle = {
@@ -104,7 +113,7 @@ let MailField = React.createClass({
       //onBlur: this._onSubjectBlur
       },
       contentProps = {
-        ref: 'content',
+        ref: 'incontent',
         underlineStyle: underlineStyle,
         underlineFocusStyle: underlineFocusStyle,
         value: this.state.content === null ? '' : this.state.content,
@@ -112,7 +121,7 @@ let MailField = React.createClass({
         //  onBlur: this._onContentBlur,
         multiLine: true,
         fullWidth: true,
-        rowsMax: 9
+        rows: initRow
       };
     var receiverField = [];
     if (this.state.receivers.size > 0) {
@@ -127,7 +136,7 @@ let MailField = React.createClass({
           <div className='recievertitle'>
             {I18N.Mail.Reciever}
           </div>
-          <div ref='receiver' className='recievercontent'>
+          <div ref='reciever' className='recievercontent'>
             {receiverField}
           </div>
         </div>
@@ -153,7 +162,7 @@ let MailField = React.createClass({
           <div className='contenttitle'>
             {I18N.Mail.Content}
           </div>
-          <div className='contentcontent'>
+          <div ref='content' className='contentcontent'>
             <TextField {...contentProps}/>
           </div>
         </div>
