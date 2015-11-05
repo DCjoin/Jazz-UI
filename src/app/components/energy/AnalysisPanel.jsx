@@ -147,9 +147,6 @@ let AnalysisPanel = React.createClass({
               <div className={'title'} style={{
       display: 'flex',
       alignItems: 'center',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
       minWidth: '70px'
     }}>
                 <div className={'content'} title={me.props.chartTitle} style={{
