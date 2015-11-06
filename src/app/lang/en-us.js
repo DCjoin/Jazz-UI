@@ -787,6 +787,12 @@ I18N.ALarm.Uom.Day = ' Daily';
 I18N.ALarm.Uom.Month = ' Monthly';
 I18N.ALarm.Uom.Year = ' Yearly';
 
+I18N.ALarm.IgnoreWindow = {};
+I18N.ALarm.IgnoreWindow.Title = 'Clear this Alarm?';
+I18N.ALarm.IgnoreWindow.content = 'Clear continuous alarms behind this one';
+I18N.ALarm.IgnoreWindow.Ignore = 'Clear';
+I18N.ALarm.IgnoreWindow.Quit = 'Cancel';
+
 I18N.Tag = {};
 I18N.Tag.Tooltip = 'Tag {0} / {1} has been selected ';
 I18N.Tag.ExceedTooltip = 'Number of added tags is beyond the range. You cannot select all. Please select the target tags one by one.';

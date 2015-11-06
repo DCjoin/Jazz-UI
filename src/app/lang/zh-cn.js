@@ -799,6 +799,12 @@ I18N.ALarm.Uom.Day = '日';
 I18N.ALarm.Uom.Month = '月';
 I18N.ALarm.Uom.Year = '年';
 
+I18N.ALarm.IgnoreWindow = {};
+I18N.ALarm.IgnoreWindow.Title = '忽略该点报警吗';
+I18N.ALarm.IgnoreWindow.content = '忽略该点后的连续报警';
+I18N.ALarm.IgnoreWindow.Ignore = '忽略';
+I18N.ALarm.IgnoreWindow.Quit = '放弃';
+
 I18N.Tag = {};
 I18N.Tag.Tooltip = '已选择数据点{0}/{1}';
 I18N.Tag.ExceedTooltip = '新增全选的数据点数量超出了可选范围，无法全选，请逐一选择目标数据点';
