@@ -13,6 +13,7 @@ import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import TBSettingItems from './TBSettingItems.jsx';
 import CalDetail from './CalDetail.jsx';
+import CommodityStore from '../../stores/CommodityStore.jsx';
 
 var BaselineBasic = React.createClass({
   mixins: [Navigation, State],
@@ -56,7 +57,7 @@ var BaselineBasic = React.createClass({
   },
 
   componentDidMount: function() {
-    var hierId = TagStore.getCurrentHierarchyId();
+    var hierId = CommodityStore.getCurrentHierarchyId();
     TBSettingStore.addCalDetailListener(this._onChange);
     TBSettingStore.addCalDetailLoadingListener(this._onCalDetailLoadingChange);
     TBSettingAction.calDetailData(hierId);
@@ -75,7 +76,7 @@ var BaselineBasic = React.createClass({
         isViewStatus: nextProps.isViewStatus
       });
     }
-    var hierId = TagStore.getCurrentHierarchyId();
+    var hierId = CommodityStore.getCurrentHierarchyId();
     TBSettingAction.calDetailData(hierId);
   },
 
