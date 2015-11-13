@@ -203,7 +203,6 @@ var TagStore = assign({}, PrototypeStore, {
   resetTagInfo: function(widgetType) {
     _data = {};
     _totalTagStatus = [];
-    _hierId = null;
     _dimId = null;
     _dimName = null;
     _tagTotal = 0;

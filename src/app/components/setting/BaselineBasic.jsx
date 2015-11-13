@@ -57,7 +57,7 @@ var BaselineBasic = React.createClass({
   },
 
   componentDidMount: function() {
-    var hierId = CommodityStore.getCurrentHierarchyId();
+    var hierId = TagStore.getCurrentHierarchyId();
     TBSettingStore.addCalDetailListener(this._onChange);
     TBSettingStore.addCalDetailLoadingListener(this._onCalDetailLoadingChange);
     TBSettingAction.calDetailData(hierId);
@@ -76,7 +76,7 @@ var BaselineBasic = React.createClass({
         isViewStatus: nextProps.isViewStatus
       });
     }
-    var hierId = CommodityStore.getCurrentHierarchyId();
+    var hierId = TagStore.getCurrentHierarchyId();
     TBSettingAction.calDetailData(hierId);
   },
 
