@@ -17,6 +17,7 @@ import RightPanel from '../../controls/RightPanel.jsx';
 import DataSelectMainPanel from '../DataSelectMainPanel.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
+import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 
 let Alarm = React.createClass({
   mixins: [Navigation, State],
@@ -87,7 +88,15 @@ let Alarm = React.createClass({
     document.title = I18N.Title.Alarm;
   },
   render() {
-    var LeftPanelField, dataSelectPanel, mainPanel;
+    var LeftPanelField, dataSelectPanel,
+      mainPanel = (<div style={{
+        'margin-top': '-16px',
+        'background-color': '#ffffff',
+        flex: 1
+      }}>
+      <OrigamiPanel/>
+    </div>);
+
     var me = this;
     if (this.state.showLeftPanel) {
       LeftPanelField = <div style={{
@@ -106,7 +115,13 @@ let Alarm = React.createClass({
     }
     if (me.state.title) {
       if (me.state.refreshAnalysisPanel) {
-        mainPanel = null;
+        mainPanel = <div style={{
+          'margin-top': '-16px',
+          'background-color': '#ffffff',
+          flex: 1
+        }}>
+          <OrigamiPanel/>
+        </div>;
       } else {
         let mainPanelProps = {
           chartTitle: me.state.title,

@@ -27,7 +27,7 @@ import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep
 import CalendarManager from './CalendarManager.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
-
+import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
@@ -141,6 +141,7 @@ let AnalysisPanel = React.createClass({
 
     let panel = <div className={'jazz-energy-panel'}>
         <div className='header'>
+        <OrigamiPanel/>
           {collapseButton}
           {sourceUserNameEl}
           <div className={'jazz-alarm-chart-toolbar-container'}>

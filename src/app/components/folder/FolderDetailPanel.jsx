@@ -6,6 +6,7 @@ import { CircularProgress, FontIcon, IconMenu, IconButton } from 'material-ui';
 let MenuItem = require('material-ui/lib/menus/menu-item');
 let Menu = require('material-ui/lib/menus/menu');
 import FolderAction from '../../actions/FolderAction.jsx';
+import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 
 var FolderItem = React.createClass({
   propTypes: {
@@ -195,7 +196,9 @@ var FolderDetailPanel = React.createClass({
 
     return (
       <div className='jazz-folder-detail'>
+
         <div className='header'>
+          <OrigamiPanel />
           {collapseButton}
           <div className='subtitle'>
             {subtitle}
