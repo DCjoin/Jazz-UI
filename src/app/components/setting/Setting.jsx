@@ -33,6 +33,7 @@ import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 import ExportView from '../folder/operationView/ExportView.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import ExportChartStore from '../../stores/energy/ExportChartStore.jsx';
+import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 
 
 let lastEnergyType = null;
@@ -45,6 +46,7 @@ let Setting = React.createClass({
   getInitialState: function() {
     return {
       showRightPanel: false,
+      showLeftPanel: true,
       refreshChart: false,
       errorText: null,
       selectedNode: null,
@@ -54,9 +56,38 @@ let Setting = React.createClass({
       selectedEnergyType: null
     };
   },
-  _onSwitchButtonClick() {
+  _onLeftSwitchButtonClick() {
+    var leftShow, rightShow;
+    leftShow = !this.state.showLeftPanel;
+    if (this.state.showLeftPanel) {
+      rightShow = this.state.showRightPanel;
+    } else {
+      if (this.state.showRightPanel) {
+        rightShow = false;
+      } else {
+        rightShow = this.state.showRightPanel;
+      }
+    }
     this.setState({
-      showRightPanel: !this.state.showRightPanel
+      showLeftPanel: leftShow,
+      showRightPanel: rightShow
+    }, ChartAction.redrawChart);
+  },
+  _onRightSwitchButtonClick() {
+    var leftShow, rightShow;
+    rightShow = !this.state.showRightPanel;
+    if (this.state.showRightPanel) {
+      leftShow = this.state.showLeftPanel;
+    } else {
+      if (this.state.showLeftPanel) {
+        leftShow = false;
+      } else {
+        leftShow = this.state.showLeftPanel;
+      }
+    }
+    this.setState({
+      showLeftPanel: leftShow,
+      showRightPanel: rightShow
     }, ChartAction.redrawChart);
   },
   _onModifyNameSuccess: function() {
@@ -345,15 +376,21 @@ let Setting = React.createClass({
       5: 'Rank'
     };
     let mainPanel,
-      rightPanel = null;
+      rightPanel;
     let selectedNode = this.state.selectedNode;
     if (!selectedNode || this.state.refreshChart) {
-      mainPanel = null;
+      mainPanel = (<div style={{
+        'margin-top': '-16px',
+        'background-color': '#ffffff',
+        flex: 1
+      }}>
+      <OrigamiPanel/>
+    </div>);
     } else {
       let type = selectedNode.get('Type');
       if (type === 6) {
         //forder
-        mainPanel = (this.state.selectedNode ? <FolderDetailPanel onToggle={this._onSwitchButtonClick}
+        mainPanel = (this.state.selectedNode ? <FolderDetailPanel onToggle={this._onLeftSwitchButtonClick}
         nodeData={this.state.selectedNode}
         onOperationSelect={this._onTemplateSelect}/> : null);
       } else if (type === 7) {
@@ -373,7 +410,7 @@ let Setting = React.createClass({
           widgetDto: widgetDto,
           onEnergyTypeChange: me._onEnergyTypeChanged,
           onOperationSelect: me._onWidgetMenuSelect,
-          onCollapseButtonClick: me._onSwitchButtonClick
+          onCollapseButtonClick: me._onLeftSwitchButtonClick
         };
         let widgetInitState = WidgetStore.getInitState();
         if (widgetInitState) {
@@ -384,7 +421,7 @@ let Setting = React.createClass({
     }
 
     let operation = (this.state.templateShow ? this.getTemplate() : null);
-    let leftPanel = (!this.state.showRightPanel) ? <div style={{
+    let leftPanel = (this.state.showLeftPanel) ? <div style={{
       display: 'flex'
     }}><LeftPanel/></div> : <div style={{
       display: 'none'
@@ -408,39 +445,39 @@ let Setting = React.createClass({
     switch (bizType) {
       case 'Energy':
         if (!energyType || energyType === 'Energy') {
-          rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+          rightPanel = <RightPanel onButtonClick={this._onRightSwitchButtonClick}
           defaultStatus={this.state.showRightPanel}
           container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         } else {
-          rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+          rightPanel = <RightPanel onButtonClick={this._onRightSwitchButtonClick}
           defaultStatus={this.state.showRightPanel}
           container={<CommodityContainer ecType={energyType}></CommodityContainer>}/>;
         }
         break;
       case 'Unit':
         if (!energyType || energyType === 'Energy') {
-          rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+          rightPanel = <RightPanel onButtonClick={this._onRightSwitchButtonClick}
           defaultStatus={this.state.showRightPanel}
           container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         } else {
-          rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+          rightPanel = <RightPanel onButtonClick={this._onRightSwitchButtonClick}
           defaultStatus={this.state.showRightPanel}
           container={<CommodityContainer ecType={energyType}></CommodityContainer>}/>;
         }
         break;
       case 'Ratio':
-        rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+        rightPanel = <RightPanel onButtonClick={this._onRightSwitchButtonClick}
         defaultStatus={this.state.showRightPanel}
         container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         break;
       case 'Label':
-        rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+        rightPanel = <RightPanel onButtonClick={this._onRightSwitchButtonClick}
         defaultStatus={this.state.showRightPanel}
         container={<DataSelectMainPanel widgetType={bizType}></DataSelectMainPanel>}/>;
         break;
       case 'Rank':
         //return Rank rightPanel
-        rightPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
+        rightPanel = <RightPanel onButtonClick={this._onRightSwitchButtonClick}
         defaultStatus={this.state.showRightPanel}
         container={<RankingContainer ecType={energyType || 'Energy'}/>}/>;
 
