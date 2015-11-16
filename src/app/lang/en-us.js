@@ -49,7 +49,7 @@ I18N.MainMenu.ParameterTemplate = 'Parameter template';
 I18N.MainMenu.Map = 'Map';
 I18N.MainMenu.Alarm = 'Alarm';
 I18N.MainMenu.Energy = 'Energy';
-I18N.MainMenu.report = 'Report';
+I18N.MainMenu.Report = 'Report';
 
 I18N.Login = {};
 I18N.Login.UserName = 'User name';

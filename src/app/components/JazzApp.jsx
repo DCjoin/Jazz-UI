@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Router from 'react-router';
-import MainMenu from './MainMenu.jsx';
 import GlobalErrorMessageDialog from './GlobalErrorMessageDialog.jsx';
 import GlobalErrorMessageStore from '../stores/GlobalErrorMessageStore.jsx';
 
@@ -90,8 +89,12 @@ let JazzApp = React.createClass({
           me.replaceWith('setting', {
             lang: lang
           });
-        } else {
+        } else if (url.indexOf('menutype=alarm') > -1) {
           me.replaceWith('alarm', {
+            lang: lang
+          });
+        } else if (url.indexOf('menutype=map') > -1) {
+          me.replaceWith('map', {
             lang: lang
           });
         }

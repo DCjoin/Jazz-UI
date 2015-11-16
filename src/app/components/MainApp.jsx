@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import MainMenu from './MainMenu.jsx';
+import MainAppBar from './MainAppBar.jsx';
 import lang from '../lang/lang.jsx';
 import keyMirror from 'keymirror';
 import { LeftNav } from 'material-ui';
@@ -27,8 +27,7 @@ let MainApp = React.createClass({
     var menuItems = [
       {
         name: 'map',
-        title: I18N.MainMenu.Map,
-        disabled: true
+        title: I18N.MainMenu.Map
       },
       {
         name: 'alarm',
@@ -40,8 +39,17 @@ let MainApp = React.createClass({
       },
       {
         name: 'report',
-        title: I18N.MainMenu.report,
-        disabled: true
+        title: I18N.MainMenu.Report,
+        children: [
+          {
+            name: 'daily_report',
+            title: I18N.MainMenu.DailyReport
+          },
+          {
+            name: 'template',
+            title: I18N.MainMenu.Template
+          }
+        ]
       }
     ];
 
@@ -49,7 +57,7 @@ let MainApp = React.createClass({
 
     return (
       <div className='jazz-main'>
-            <MainMenu items={menuItems} logoUrl={logoUrl} />
+            <MainAppBar items={menuItems} logoUrl={logoUrl} />
             <RouteHandler {...this.props} />
             <NetworkChecker></NetworkChecker>
             <ExportChart></ExportChart>

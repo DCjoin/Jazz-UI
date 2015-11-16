@@ -186,33 +186,111 @@ span {
 
     width:100%;
     font-size:14px;
+    display: flex;
     .jazz-menu{
-        // Old is 640px, add logout link
-        width:680px;
+        flex:1;
+        justify-content: center;
+        // height:80px;
         height:81px;
         margin:auto;
+        display:flex;
     }
-    a {
-        display:inline-block;
-        line-height:65px;
+    &-level {
+        &-main {
+            display: flex;
+            position: relative;
+            & .jazz-mainmenu-main {
+              &.active{
+                background-color:@menuActive;
+                flex-direction: column;
+                line-height: normal;
+                width: 120px;
+                text-align: center;
+                padding: 22px 0 0;
+              }
+
+              &.active .jazz-mainmenu-main-title {
+                margin-top: 5px;
+                font-size: 10px;
+              }
+            }
+        }
+
+        &-sub {
+            position: absolute;
+            z-index: 1;
+            top: 6px;
+
+            display: none;
+            flex-direction: column;
+
+            border: 1px #eaebed solid;
+
+            &.open {
+                display: flex;
+            }
+        }
+    }
+    &-main {
+        display:flex;
+        flex-direction: row;
+        // line-height:64px
+        line-height: 65px;
         color: white;
         text-decoration:none;
         padding:0 22px;
+        //.pointer;
+        &-bubble{
+            display: flex;
+            align-items: center;
+            margin-top: -16px;
+            margin-left: 10px;
+        }
+        &-nodecontentbubble{
+
+        }
         &:active{
-            background-color:@menuActive
+            background-color:@menuActive;
         }
         &.active{
-            background-color:@menuActive
+
+            background-color:@menuActive;
+        }
+
+        &.active &-title {
+
+                font-size: 12px;
+
+                display: flex;
+
+                margin-top: -42px;
+
+                justify-content: center;
+
         }
     }
-    span{
-      display:inline-block;
-      line-height:65px;
-      color: white;
-      opacity:0.39;
-      text-decoration:none;
-      padding:0 22px;
+
+    &-sub {
+        display:flex;
+        line-height:50px;
+        background-color: white;
+        color: #000;
+        text-decoration:none;
+        padding:0 30px 0 10px;
     }
+    // a {
+    //     display:inline-block;
+    //     line-height:65px;
+    //     color: white;
+    //     text-decoration:none;
+    //     padding:0 22px;
+    //     &:active{
+    //         background-color:@menuActive
+    //     }
+    //     &.active{
+    //         background-color:@menuActive
+    //     }
+    // }
     .jazz-logo{
         position: absolute;
 

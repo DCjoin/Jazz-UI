@@ -92,6 +92,7 @@ let Alarm = React.createClass({
       mainPanel = (<div style={{
         'margin-top': '-16px',
         'background-color': '#ffffff',
+        position: 'relative',
         flex: 1
       }}>
       <OrigamiPanel/>
@@ -118,6 +119,7 @@ let Alarm = React.createClass({
         mainPanel = <div style={{
           'margin-top': '-16px',
           'background-color': '#ffffff',
+          position: 'relative',
           flex: 1
         }}>
           <OrigamiPanel/>

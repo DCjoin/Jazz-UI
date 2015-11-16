@@ -49,7 +49,9 @@ I18N.MainMenu.ParameterTemplate = '参数模板';
 I18N.MainMenu.Map = '地图';
 I18N.MainMenu.Alarm = '报警';
 I18N.MainMenu.Energy = '能源';
-I18N.MainMenu.report = '报告';
+I18N.MainMenu.Report = '报告';
+I18N.MainMenu.DailyReport = '日常报表';
+I18N.MainMenu.Template = '模板管理';
 
 I18N.Login = {};
 I18N.Login.UserName = '用户名';

@@ -3,11 +3,14 @@
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
 import lang from '../lang/lang.jsx';
+import ButtonMenu from '../controls/ButtonMenu.jsx';
+import MainMenu from '../controls/MainMenu.jsx';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
+let MenuItem = require('material-ui/lib/menus/menu-item');
 var f = lang.f;
 var title;
 
-var MainMenu = React.createClass({
+var MainAppBar = React.createClass({
   mixins: [Navigation, State],
   _onChange: function() {},
   _onClick: function() {
@@ -16,16 +19,6 @@ var MainMenu = React.createClass({
   render: function() {
 
     var params = this.getParams();
-    var links;
-    if (!!this.props.items) {
-      links = this.props.items.map(item => {
-
-        if (item.disabled) {
-          return (<span>{item.title}</span>);
-        }
-        return (<Link to={item.name} params={params} onClick={this._onClick}>{item.title}</Link>);
-      });
-    }
 
     return (
       <div className="jazz-mainmenu">
@@ -35,8 +28,7 @@ var MainMenu = React.createClass({
       }}></div>
                 </div>
                 <div className="jazz-menu">
-                    {links}
-
+                    <MainMenu items={this.props.items} params={params}  onClick={this._onClick}/>
                 </div>
             </div>
 
@@ -45,4 +37,4 @@ var MainMenu = React.createClass({
 
 });
 
-module.exports = MainMenu;
+module.exports = MainAppBar;
