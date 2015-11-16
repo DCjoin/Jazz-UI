@@ -6,6 +6,7 @@ import { CircularProgress, FontIcon, IconMenu, IconButton } from 'material-ui';
 let MenuItem = require('material-ui/lib/menus/menu-item');
 let Menu = require('material-ui/lib/menus/menu');
 import FolderAction from '../../actions/FolderAction.jsx';
+import FolderStore from '../../stores/FolderStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 
 var FolderItem = React.createClass({
@@ -152,6 +153,10 @@ var FolderDetailPanel = React.createClass({
   _onItemMenuSelect: function(node, index) {
     this.props.onOperationSelect(node, index);
   },
+  _onBackBtnClick: function() {
+    var parentNode = FolderStore.getNodeById(this.props.nodeData.get('ParentId'));
+    FolderAction.setSelectedNode(parentNode);
+  },
   getInitialState: function() {
     return {
       isTitleMenuShow: false
@@ -193,6 +198,9 @@ var FolderDetailPanel = React.createClass({
                                                   <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.Detail.Title.Menu3} style={menuStyle}/>
                                                 </IconMenu>
       : null;
+    var BackBtn = (this.props.nodeData.get('Id') != -1) ?
+      <FontIcon hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>
+      : null;
 
     return (
       <div className='jazz-folder-detail'>
@@ -200,6 +208,7 @@ var FolderDetailPanel = React.createClass({
         <div className='header'>
           <OrigamiPanel />
           {collapseButton}
+          {BackBtn}
           <div className='subtitle'>
             {subtitle}
           </div>
