@@ -58,14 +58,14 @@ var SubMainMenu = React.createClass({
           <a className={classnames({
         "jazz-mainmenu-main": true,
         "active": isActive
-      })} onClick={this._showSubMenu}>
-            <div>{activeTitle}</div>
+      })} onMouseOver={this._showSubMenu}>
             <div className="jazz-mainmenu-main-title">{node.title}</div>
           </a>
-
           <Menu
       style={{
-        left: 0
+        left: 0,
+        top: 65,
+        padding: 0
       }}
       ref="menuItems"
       autoWidth={false}
