@@ -15,10 +15,20 @@ var ReportLeftPanel = React.createClass({
     };
   },
   _onNewReport: function() {},
+  _onChange() {
+    this.setState({
+      reportList: ReportStore.getReportList(),
+      isLoading: false
+    });
+  },
   componentDidMount: function() {
     ReportAction.getReportListByCustomerId(window.currentCustomerId);
+    ReportStore.addReportlistChangeListener(this._onChange);
   },
-  componentWillUnmount: function() {},
+  componentWillUnmount: function() {
+    ReportStore.removeReportlistChangeListener(this._onChange);
+  },
+
   render: function() {
     //style
     var buttonStyle = {
@@ -38,11 +48,10 @@ var ReportLeftPanel = React.createClass({
     var reportContent = (this.state.isLoading ? <div style={{
       'text-align': 'center',
       'margin-top': '400px'
-    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList'   onItemClick={this.props.onItemClick}></ReportList>);
+    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList'   onItemClick={this.props.onItemClick} reportList={this.state.reportList}></ReportList>);
 
     return (
       <div className="jazz-report-leftpanel-container">
-
         <div className="jazz-report-leftpanel-header">
           <div style={{
         margin: '0 30px'

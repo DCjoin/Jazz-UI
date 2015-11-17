@@ -11,13 +11,14 @@ let ReportList = React.createClass({
     if (this.props.onItemClick) {
       this.props.onItemClick(reportOption);
     }
+    ReportAction.setSelectedReportItem(reportOption.id);
     this.setState({
       selectedReport: reportOption
     });
   },
   getInitialState: function() {
     return {
-      reportList: ReportStore.getReportList()
+      reportList: this.props.reportList
     };
   },
   render() {
