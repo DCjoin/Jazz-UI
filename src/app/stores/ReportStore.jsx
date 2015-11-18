@@ -6,7 +6,7 @@ import assign from 'object-assign';
 import { Action } from '../constants/actionType/Report.jsx';
 
 let _reportList = null,
-  _reportId = null;
+  _reportItem = null;
 
 let CHANGE_REPORT_LIST_EVENT = 'changealarmlist';
 var ReportStore = assign({}, PrototypeStore, {
@@ -20,11 +20,11 @@ var ReportStore = assign({}, PrototypeStore, {
       _reportList = reportList;
     }
   },
-  setSelectedReportItem: function(reportId) {
-    _reportId = reportId;
+  setSelectedReportItem: function(reportItem) {
+    _reportItem = reportItem;
   },
   getSelectedReportItem: function() {
-    return _reportId;
+    return _reportItem;
   },
   emitReportlistChange: function() {
     this.emit(CHANGE_REPORT_LIST_EVENT);
@@ -48,7 +48,7 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.emitReportlistChange();
       break;
     case Action.SET_SELECTED_REPORT_ITEM:
-      ReportStore.setSelectedReportItem(action.id);
+      ReportStore.setSelectedReportItem(action.reportItem);
       break;
   }
 });

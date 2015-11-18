@@ -21,10 +21,10 @@ let ReportAction = {
       }
     });
   },
-  setSelectedReportItem(reportId) {
+  setSelectedReportItem(reportItem) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_REPORT_ITEM,
-      tagId: reportId
+      reportItem: reportItem
     });
   }
 };

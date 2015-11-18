@@ -7,14 +7,14 @@ import classNames from 'classnames';
 let ReportItem = React.createClass({
   _onItemSelected() {
     if (this.props.onItemClick) {
-      var reportOption = {
+      var reportItem = {
         id: this.props.id,
         templateId: this.props.templateId,
         name: this.props.name,
         user: this.props.user,
         data: this.props.data
       };
-      this.props.onItemClick(reportOption);
+      this.props.onItemClick(reportItem);
     }
   },
 

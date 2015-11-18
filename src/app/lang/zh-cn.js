@@ -944,4 +944,10 @@ I18N.Paging.Button = {};
 I18N.Paging.Button.PrePage = '上一页';
 I18N.Paging.Button.NextPage = '下一页';
 
+I18N.Report = {};
+I18N.Report.Sort = {};
+I18N.Report.Sort.ReportName = '按报表名称排序';
+I18N.Report.Sort.UserName = '按用户名称排序';
+I18N.Report.Name = '报表';
+
 module.exports = I18N;

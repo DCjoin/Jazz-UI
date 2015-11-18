@@ -58,7 +58,7 @@ var ReportLeftPanel = React.createClass({
       }}>
             <FlatButton onClick={this._onNewReport} style={buttonStyle}>
               <FontIcon  className="fa icon-add btn-icon"/>
-              <span className="mui-flat-button-label btn-text">{I18N.Report.Add}</span>
+              <span className="mui-flat-button-label btn-text">{I18N.Report.Name}</span>
             </FlatButton>
           </div>
           <div>

@@ -1,19 +1,16 @@
 'use strict';
 
 import React from 'react';
-import ReportItem from './AlarmTagItem.jsx';
-import ReportAction from '../../actions/AlarmAction.jsx';
-import ReportStore from '../../stores/AlarmAction.jsx';
+import ReportItem from './ReportItem.jsx';
+import ReportAction from '../../actions/ReportAction.jsx';
+import ReportStore from '../../stores/ReportStore.jsx';
 
 
 let ReportList = React.createClass({
-  _onReportItemSelected(reportOption) {
-    if (this.props.onItemClick) {
-      this.props.onItemClick(reportOption);
-    }
-    ReportAction.setSelectedReportItem(reportOption.id);
+  _onReportItemSelected(reportItem) {
+    ReportAction.setSelectedReportItem(reportItem);
     this.setState({
-      selectedReport: reportOption
+      selectedReport: reportItem
     });
   },
   getInitialState: function() {
