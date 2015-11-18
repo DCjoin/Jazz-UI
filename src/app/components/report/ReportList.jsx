@@ -14,8 +14,12 @@ let ReportList = React.createClass({
     });
   },
   getInitialState: function() {
+    var reportList = this.props.reportList;
+    var selectedReport = reportList.length === 0 ? null : reportList[0];
+
     return {
-      reportList: this.props.reportList
+      reportList: reportList,
+      selectedReport: selectedReport
     };
   },
   render() {
