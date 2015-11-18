@@ -22,7 +22,7 @@ let ReportItem = React.createClass({
     var me = this;
     let isSeleted = false;
     if (this.props.selectedReport) {
-      isSeleted = (this.props.id === this.props.selectedTag.id);
+      isSeleted = (this.props.id === this.props.selectedReport.Id);
     }
 
     return (
@@ -32,9 +32,9 @@ let ReportItem = React.createClass({
           'jazz-report-grid-tr-item-selected': !!isSeleted
         }
       )} onClick={me._onItemSelected}>
-      <div>{me.props.name}</div>
-      <div>{me.props.user}</div>
-    </div>
+        <span>{me.props.name}</span>
+        <span>{me.props.user}</span>
+      </div>
       );
   }
 });

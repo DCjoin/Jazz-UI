@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
 import { CircularProgress, FlatButton, FontIcon, DropDownMenu } from 'material-ui';
+import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportList from './ReportList.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
@@ -35,6 +36,11 @@ var ReportLeftPanel = React.createClass({
       backgroundColor: 'transparent',
       height: '32px'
     };
+    var newFolderClasses = {
+      'se-dropdownbutton': true,
+      'btn-container': true,
+      'btn-container-active': true
+    };
     var sortItems = [{
       value: 0,
       text: I18N.Report.Sort.ReportName
@@ -53,7 +59,7 @@ var ReportLeftPanel = React.createClass({
     return (
       <div className="jazz-report-leftpanel-container">
         <div className="jazz-report-leftpanel-header">
-          <div style={{
+          <div className={classSet(newFolderClasses)} style={{
         margin: '0 30px'
       }}>
             <FlatButton onClick={this._onNewReport} style={buttonStyle}>
