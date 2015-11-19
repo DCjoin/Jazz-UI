@@ -152,6 +152,14 @@ I18N.Common.CarbonUomType.StandardCoal = '标煤';
 I18N.Common.CarbonUomType.CO2 = '二氧化碳';
 I18N.Common.CarbonUomType.Tree = '树';
 
+I18N.Common.AggregationStep = {};
+I18N.Common.AggregationStep.Minute = '分钟';
+I18N.Common.AggregationStep.Hourly = '每小时';
+I18N.Common.AggregationStep.Daily = '每天';
+I18N.Common.AggregationStep.Weekly = '每周';
+I18N.Common.AggregationStep.Monthly = '每月';
+I18N.Common.AggregationStep.Yearly = '每年';
+
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
 I18N.DateTimeFormat.HighFormat.Millisecond = '%H点%M分%S秒%L毫秒';
@@ -300,6 +308,77 @@ I18N.EM.Legend = {};
 I18N.EM.Legend.ToLine = '切换至折线图显示';
 I18N.EM.Legend.ToColumn = '切换至柱状图显示';
 I18N.EM.Legend.ToStacking = '切换至堆积图显示';
+
+I18N.EM.Labeling = {};
+I18N.EM.Labeling.LowEnergy = '低能耗';
+I18N.EM.Labeling.HighEnergy = '高能耗';
+I18N.EM.Labeling.ViewLabeling = '能效标识查看';
+I18N.EM.Labeling.NonBuilding = '该节点为非楼宇节点，请重新选择节点';
+I18N.EM.Labeling.NonData = '该时间段没有能效标记数据。';
+I18N.EM.Labeling.DifferentCommodity = '所选数据点不是同一介质，请重新选择';
+I18N.EM.Labeling.SelectHieForSys = '选择楼宇节点以配置区域维度';
+
+I18N.EM.Report = {};
+I18N.EM.Report.Select = '请选择';
+I18N.EM.Report.Creator = '创建者';
+I18N.EM.Report.CreateTime = '创建时间';
+I18N.EM.Report.Name = '名称';
+I18N.EM.Report.Report = '报表';
+I18N.EM.Report.ReportSort = '按报表名称排序';
+I18N.EM.Report.UserSort = '按用户名称排序';
+I18N.EM.Report.Add = '添加';
+I18N.EM.Report.Delete = '删除';
+I18N.EM.Report.Template = '报表模板';
+I18N.EM.Report.TemplateTitle = '报表模板文件导入';
+I18N.EM.Report.TemplateFileName = '模板文件';
+I18N.EM.Report.SelectTemplate = '选择模板';
+I18N.EM.Report.ReportName = '报表名称';
+I18N.EM.Report.Data = '报表数据';
+I18N.EM.Report.DataType = '数据类型';
+I18N.EM.Report.DataSource = '数据源';
+I18N.EM.Report.TimeRange = '时间范围';
+I18N.EM.Report.Step = '步长';
+I18N.EM.Report.NumberRule = '取数规则';
+I18N.EM.Report.AllTime = '全部';
+I18N.EM.Report.Hourly = '整点值';
+I18N.EM.Report.Daily = '零点值';
+I18N.EM.Report.ExistTemplate = '已上传模板';
+I18N.EM.Report.UploadTemplate = '上传新模板';
+I18N.EM.Report.DownloadTemplate = '下载查看';
+I18N.EM.Report.EditTag = '编辑数据点';
+I18N.EM.Report.SelectTag = '选择数据点';
+I18N.EM.Report.ViewTag = '查看已选数据点';
+I18N.EM.Report.Upload = '上传';
+I18N.EM.Report.Reupload = '重新上传';
+I18N.EM.Report.ViewTag = '查看数据点';
+I18N.EM.Report.Order = '时间点排列顺序';
+I18N.EM.Report.OrderAsc = '顺序排列';
+I18N.EM.Report.OrderDesc = '倒序排列';
+I18N.EM.Report.TargetSheet = '目标Sheet';
+I18N.EM.Report.StartCell = '起始单元格';
+I18N.EM.Report.Layout = '布局方向';
+I18N.EM.Report.ReportTypeEnergy = '能效数据';
+I18N.EM.Report.Original = '原始数据';
+I18N.EM.Report.TagShouldNotBeEmpty = '请选择至少1个数据点';
+
+I18N.EM.Report.NonReportCriteria = '请至少包含一组报表数据';
+I18N.EM.Report.WrongExcelFile = '模板格式不对，只能是xls或者xlsx后缀的文件';
+I18N.EM.Report.TemplateHasBeenRefed = '报表模板"{0}"正在被引用，无法删除。请取消所有引用后再试。';
+I18N.EM.Report.RefObject = '引用对象：';
+I18N.EM.Report.UploadingTemplate = '文件{0}正在导入。';
+I18N.EM.Report.DeleteMessage = '删除报表模板“{0}”吗？';
+I18N.EM.Report.DuplicatedName = '该文件已存在，请更改名称后重新上传';
+I18N.EM.Report.NeedUploadTemplate = '请上传新模板';
+I18N.EM.Report.StepError = '所选数据点不支持"{0}"步长，请选择{1}步长。';
+I18N.EM.Report.StepError2 = '所选数据点不支持"{0}"步长且在该时间范围内没有支持的步长，请修改所选数据点或时间范围。 ';
+I18N.EM.Report.ExportFormat = '报表导出格式';
+I18N.EM.Report.ExportTagName = '导出数据点名称';
+I18N.EM.Report.ExportTimeLabel = '导出时间标签';
+I18N.EM.Report.ExportStepError = '存在数据点不支持的步长，请检查';
+I18N.EM.Report.ExportTagUnassociated = '数据点已被解关联';
+
+I18N.EM.Export = {};
+I18N.EM.Export.Preview = '导出图片预览';
 
 //workday
 I18N.Setting = {};
@@ -944,10 +1023,6 @@ I18N.Paging.Button = {};
 I18N.Paging.Button.PrePage = '上一页';
 I18N.Paging.Button.NextPage = '下一页';
 
-I18N.Report = {};
-I18N.Report.Sort = {};
-I18N.Report.Sort.ReportName = '按报表名称排序';
-I18N.Report.Sort.UserName = '按用户名称排序';
-I18N.Report.Name = '报表';
+
 
 module.exports = I18N;

@@ -24,10 +24,10 @@ var ReportLeftPanel = React.createClass({
   },
   componentDidMount: function() {
     ReportAction.getReportListByCustomerId(window.currentCustomerId);
-    ReportStore.addReportlistChangeListener(this._onChange);
+    ReportStore.addReportListChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
-    ReportStore.removeReportlistChangeListener(this._onChange);
+    ReportStore.removeReportListChangeListener(this._onChange);
   },
 
   render: function() {
@@ -42,19 +42,18 @@ var ReportLeftPanel = React.createClass({
       'btn-container-active': true
     };
     var sortItems = [{
-      value: 0,
-      text: I18N.Report.Sort.ReportName
+      payload: 0,
+      text: I18N.EM.Report.ReportSort
     }, {
-      value: 1,
-      text: I18N.Report.Sort.UserName
+      payload: 1,
+      text: I18N.EM.Report.UserSort
     }];
-
 
 
     var reportContent = (this.state.isLoading ? <div style={{
       'text-align': 'center',
       'margin-top': '400px'
-    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList'   onItemClick={this.props.onItemClick} reportList={this.state.reportList}></ReportList>);
+    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList'   onItemClick={this.props.onItemClick} reportList={this.state.reportList} reportItem={this.state.reportItem}></ReportList>);
 
     return (
       <div className="jazz-report-leftpanel-container">
@@ -64,7 +63,7 @@ var ReportLeftPanel = React.createClass({
       }}>
             <FlatButton onClick={this._onNewReport} style={buttonStyle}>
               <FontIcon  className="fa icon-add btn-icon"/>
-              <span className="mui-flat-button-label btn-text">{I18N.Report.Name}</span>
+              <span className="mui-flat-button-label btn-text">{I18N.EM.Report.Report}</span>
             </FlatButton>
           </div>
           <div>
@@ -73,7 +72,7 @@ var ReportLeftPanel = React.createClass({
         </div>
 
         <div className="jazz-report-leftpanel-sort">
-          <DropDownMenu onChange={this._onSortChange}  menuItems={sortItems}></DropDownMenu>
+          <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>
         </div>
 
         <div className="jazz-report-leftpanel-reportlist">

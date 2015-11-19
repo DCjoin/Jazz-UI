@@ -14,14 +14,11 @@ let ReportList = React.createClass({
     });
   },
   getInitialState: function() {
-    var reportList = this.props.reportList;
-    var selectedReport = reportList.length === 0 ? null : reportList[0];
-
     return {
-      reportList: reportList,
-      selectedReport: selectedReport
+
     };
   },
+  componentDidMount: function() {},
   render() {
     let me = this;
     let reportList = this.props.reportList;
@@ -30,12 +27,13 @@ let ReportList = React.createClass({
     reportItems = reportList.map(function(item) {
       let props = {
         id: item.Id,
-        templateId: item.TemplateIdId,
+        templateId: item.TemplateId,
         name: item.Name,
         user: item.CreateUser,
         data: item.CriteriaList,
+        version: item.Version,
         onItemClick: me._onReportItemSelected,
-        selectedReport: me.state.selectedReport
+        selectedReport: me.state.selectedReport || me.props.reportItem
       };
       return (
         <ReportItem {...props}></ReportItem>

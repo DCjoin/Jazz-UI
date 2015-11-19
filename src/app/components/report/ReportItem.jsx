@@ -12,7 +12,8 @@ let ReportItem = React.createClass({
         templateId: this.props.templateId,
         name: this.props.name,
         user: this.props.user,
-        data: this.props.data
+        data: this.props.data,
+        version: this.props.verson
       };
       this.props.onItemClick(reportItem);
     }
@@ -22,7 +23,7 @@ let ReportItem = React.createClass({
     var me = this;
     let isSeleted = false;
     if (this.props.selectedReport) {
-      isSeleted = (this.props.id === this.props.selectedReport.Id);
+      isSeleted = (this.props.id === this.props.selectedReport.id);
     }
 
     return (
