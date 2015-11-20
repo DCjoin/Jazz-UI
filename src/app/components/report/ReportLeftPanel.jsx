@@ -17,10 +17,24 @@ var ReportLeftPanel = React.createClass({
   },
   _onNewReport: function() {},
   _onChange() {
+    var reportList = ReportStore.getReportList();
+    var reportItem = null;
+    if (reportList !== null && reportList.length !== 0) {
+      reportItem = {
+        id: reportList[0].Id,
+        templateId: reportList[0].TemplateId,
+        name: reportList[0].Name,
+        createUseruser: reportList[0].CreateUser,
+        data: reportList[0].CriteriaList,
+        version: reportList[0].Version
+      };
+    }
     this.setState({
       reportList: ReportStore.getReportList(),
+      reportItem: reportItem,
       isLoading: false
     });
+
   },
   componentDidMount: function() {
     ReportAction.getReportListByCustomerId(window.currentCustomerId);

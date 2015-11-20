@@ -11,7 +11,7 @@ let ReportItem = React.createClass({
         id: this.props.id,
         templateId: this.props.templateId,
         name: this.props.name,
-        user: this.props.user,
+        createUser: this.props.createUser,
         data: this.props.data,
         version: this.props.verson
       };
@@ -34,7 +34,7 @@ let ReportItem = React.createClass({
         }
       )} onClick={me._onItemSelected}>
         <span>{me.props.name}</span>
-        <span>{me.props.user}</span>
+        <span>{me.props.createUser}</span>
       </div>
       );
   }

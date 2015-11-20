@@ -24,8 +24,7 @@ var ReportRightPanel = React.createClass({
     var reportItem = ReportStore.getSelectedReportItem();
     this.setState({
       reportItem: reportItem,
-      isLoading: false,
-      templateValue: reportItem.templateId
+      isLoading: false
     });
   },
   _onChangeTemplate(e, newSelection) {
@@ -65,7 +64,7 @@ var ReportRightPanel = React.createClass({
     var templateList = this.props.templateList;
     var sheetNames = [];
     for (var i = 0; i < templateList.length; i++) {
-      if (this.state.templateValue === templateList[i].Id) {
+      if (this.state.reportItem.templateId === templateList[i].Id) {
         sheetNames = templateList[i].SheetNames;
       }
     }
@@ -108,7 +107,7 @@ var ReportRightPanel = React.createClass({
 
 
       if (me.state.disabled) {
-        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disable} value={me.state.templateValue} floatingLabelText={I18N.EM.Report.Template} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}></SelectField>);
+        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disable} value={reportItem.templateId} floatingLabelText={I18N.EM.Report.Template} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}></SelectField>);
       } else {
         var downloadButton = null,
           uploadButton = null;
@@ -126,7 +125,7 @@ var ReportRightPanel = React.createClass({
             display: 'flex',
             'flex-direction': 'row'
           }}>
-              <SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={me.state.templateValue} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}>
+              <SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.templateId} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}>
               </SelectField>
               {downloadButton}
             </div>
@@ -149,14 +148,14 @@ var ReportRightPanel = React.createClass({
         <FlatButton label={I18N.EM.Report.Add} />
       </div>);
       }
-      var reportData = reportItem.data.map(function(item, i) {
+      var dataLength = reportItem.data.length;
+      var reportData = reportItem.data.map(function(item) {
         var sheetNames = me.getSheetNames();
         let props = {
           disabled: me.state.disabled,
           reportData: item,
-          reportItem: reportItem,
           sheetNames: sheetNames,
-          index: i + 1
+          index: dataLength - item.Index
         };
         return (
           <ReportDataItem {...props}></ReportDataItem>
@@ -168,12 +167,14 @@ var ReportRightPanel = React.createClass({
             {expandButton}
             {reportTitle}
           </div>
-          <div className="jazz-report-rightpanel-template">
-            {reportTemplate}
-          </div>
-          {addReportButton}
-          <div className="jazz-report-rightpanel-data">
-            {reportData}
+          <div className="jazz-report-rightpanel-body">
+            <div className="jazz-report-rightpanel-template">
+              {reportTemplate}
+            </div>
+            {addReportButton}
+            <div className="jazz-report-rightpanel-data">
+              {reportData}
+            </div>
           </div>
       </div>
       );

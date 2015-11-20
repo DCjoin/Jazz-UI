@@ -3,25 +3,32 @@
 import React from 'react';
 import classNames from 'classnames';
 import ConstStore from '../../stores/ConstStore.jsx';
+import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
-import { FlatButton, FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, DropDownMenu } from 'material-ui';
+import { FlatButton, FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox } from 'material-ui';
 
 
 let ReportDataItem = React.createClass({
   getInitialState: function() {
     var reportData = this.props.reportData;
     var timeOrder = this.dataToDisplay(reportData.ExportTimeOrder);
+    var j2d = CommonFuns.DataConverter.JsonToDateTime;
     return {
       index: this.props.index,
       disabled: this.props.disabled,
-      reportItem: this.props.reportItem,
       sheetNames: this.props.sheetNames,
+      startTime: j2d(reportData.DataStartTime, false),
+      endTime: j2d(reportData.DataEndTime, false),
       reportType: reportData.ReportType,
       dateType: reportData.DateType,
       step: reportData.ExportStep,
       numberRule: reportData.NumberRule,
-      targetSheet: reportData.TargetSheet,
       timeOrder: timeOrder,
+      targetSheet: reportData.TargetSheet,
+      isExportTagName: reportData.IsExportTagName,
+      isExportTimestamp: reportData.IsExportTimestamp,
+      startCell: reportData.StartCell,
+      exportLayoutDirection: reportData.ExportLayoutDirection,
       showStep: true
     };
   },
@@ -55,39 +62,96 @@ let ReportDataItem = React.createClass({
     }
     return sheetItems;
   },
+  changeDirection(value) {
+    this.setState({
+      exportLayoutDirection: value
+    });
+  },
+  changeTimeValue(value) {
+    var result = '';
+    switch (value) {
+      case 0: result = 'last7day';
+        break;
+      case 9: result = 'last30day';
+        break;
+      case 10: result = 'last12month';
+        break;
+      case 1: result = 'today';
+        break;
+      case 2: result = 'yesterday';
+        break;
+      case 3: result = 'thisweek';
+        break;
+      case 4: result = 'lastweek';
+        break;
+      case 5: result = 'thismonth';
+        break;
+      case 6: result = 'lastmonth';
+        break;
+      case 7: result = 'thisyear';
+        break;
+      case 8: result = 'lastyear';
+        break;
+    }
+    return result;
+  },
+  _onDateTypeChange(name, e) {
+    var value = e.target.value;
+    var dateSelector = this.refs.dateTimeSelector;
+
+    if (value !== 11) {
+      var dateType = this.changeTimeValue(value);
+      var timeregion = CommonFuns.GetDateRegion(dateType);
+      dateSelector.setDateField(timeregion.start, timeregion.end);
+    }
+    this._handleSelectValueChange(name, e);
+  },
   _handleSelectValueChange(name, e) {
     let change = {};
     change[name] = e.target.value;
     this.setState(change);
   },
+  _handleCheckboxCheck(name, e, check) {
+    let change = {};
+    change[name] = check;
+    this.setState(change);
+  },
+  _onDateSelectorChanged() {
+    this.setState({
+      dateType: 11
+    });
+  },
   componentWillReceiveProps(nextProps) {
     let newState = {};
 
+    var reportData = nextProps.reportData;
+    var j2d = CommonFuns.DataConverter.JsonToDateTime;
+    var timeOrder = this.dataToDisplay(reportData.ExportTimeOrder);
+    newState.startTime = j2d(reportData.DataStartTime, false);
+    newState.endTime = j2d(reportData.DataEndTime, false);
+    newState.reportType = reportData.ReportType;
+    newState.dateType = reportData.DateType;
+    newState.step = reportData.ExportStep;
+    newState.numberRule = reportData.NumberRule;
+    newState.timeOrder = timeOrder;
+    newState.targetSheet = reportData.TargetSheet;
+    newState.isExportTagName = reportData.IsExportTagName;
+    newState.isExportTimestamp = reportData.IsExportTimestamp;
+    newState.startCell = reportData.StartCell;
+    newState.exportLayoutDirection = reportData.ExportLayoutDirection;
 
-    if (nextProps.hasOwnProperty('reportData')) {
-      var reportData = nextProps.reportData;
-      var timeOrder = this.dataToDisplay(reportData.ExportTimeOrder);
-      newState.reportType = reportData.ReportType;
-      newState.dateType = reportData.DateType;
-      newState.step = reportData.ExportStep;
-      newState.numberRule = reportData.NumberRule;
-      newState.timeOrder = timeOrder;
-      newState.targetSheet = reportData.TargetSheet;
-    }
-    if (nextProps.hasOwnProperty('disabled')) {
-      newState.disabled = nextProps.disabled;
-    }
-    if (nextProps.hasOwnProperty('reportItem')) {
-      newState.reportItem = nextProps.reportItem;
-    }
-    if (nextProps.hasOwnProperty('index')) {
-      newState.index = nextProps.index;
-    }
-    if (nextProps.hasOwnProperty('sheetNames')) {
-      newState.sheetNames = nextProps.sheetNames;
-    }
+    newState.disabled = nextProps.disabled;
+    newState.index = nextProps.index;
+    newState.sheetNames = nextProps.sheetNames;
+
+    var dateSelector = this.refs.dateTimeSelector;
+    dateSelector.setDateField(newState.startTime, newState.endTime);
 
     this.setState(newState);
+  },
+  componentDidMount: function() {
+    var dateSelector = this.refs.dateTimeSelector;
+    dateSelector.setDateField(this.state.startTime, this.state.endTime);
   },
   render() {
     var me = this;
@@ -206,7 +270,6 @@ let ReportDataItem = React.createClass({
       diplayCom = <SelectField ref='numberRule' menuItems={numberRuleItems} disabled={me.state.disabled} value={me.state.numberRule} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.NumberRule} onChange={me._handleSelectValueChange.bind(null, 'numberRule')}>
       </SelectField>;
     }
-
     return (
       <div style={{
         display: 'flex',
@@ -233,8 +296,8 @@ let ReportDataItem = React.createClass({
         display: 'flex',
         'flex-direction': 'row'
       }}>
-            <SelectField menuItems={dateTypeItems} ref='dateType' disabled={me.state.disabled} value={me.state.dateType} onChange={me._handleSelectValueChange.bind(null, 'dateType')}></SelectField>
-            <DateTimeSelector ref='dateTimeSelector' showTime={false}/>
+            <SelectField menuItems={dateTypeItems} ref='dateType' disabled={me.state.disabled} value={me.state.dateType} onChange={me._onDateTypeChange.bind(null, 'dateType')}></SelectField>
+            <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged} showTime={true}/>
           </div>
         </div>
         <div className='jazz-report-data-container'>
@@ -242,22 +305,45 @@ let ReportDataItem = React.createClass({
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.Order}</span>
-          <RadioButtonGroup valueSelected={me.state.timeOrder}>
-            <RadioButton
-      value='orderAsc'
-      disabled={me.state.disabled}
-      label={I18N.EM.Report.OrderAsc} />
-            <RadioButton
-      value='orderDesc'
-      disabled={me.state.disabled}
-      label={I18N.EM.Report.OrderDesc}/>
-          </RadioButtonGroup>
+          <div className='jazz-report-data-radiobutton'>
+            <RadioButtonGroup valueSelected={me.state.timeOrder}>
+              <RadioButton value='orderAsc' disabled={me.state.disabled} label={I18N.EM.Report.OrderAsc} />
+              <RadioButton value='orderDesc' disabled={me.state.disabled} label={I18N.EM.Report.OrderDesc} />
+            </RadioButtonGroup>
+          </div>
         </div>
         <div className='jazz-report-data-container'>
           <SelectField ref='targetSheet' menuItems={me.getSheetItems()} disabled={me.state.disabled} value={me.state.targetSheet} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.TargetSheet} onChange={me._handleSelectValueChange.bind(null, 'targetSheet')}>
           </SelectField>
         </div>
         <div className='jazz-report-data-container'>
+          <span>{I18N.EM.Report.ExportFormat}</span>
+          <div className='jazz-report-data-checkbox'>
+            <Checkbox disabled={me.state.disabled} checked={me.state.isExportTagName} label={I18N.EM.Report.ExportTagName} onCheck={me._handleCheckboxCheck.bind(null, 'isExportTagName')}/>
+            <Checkbox disabled={me.state.disabled} checked={me.state.isExportTimestamp} label={I18N.EM.Report.ExportTimeLabel} onCheck={me._handleCheckboxCheck.bind(null, 'isExportTimestamp')}/>
+          </div>
+        </div>
+        <div className='jazz-report-data-container'>
+          <TextField ref='startCell' floatingLabelText={I18N.EM.Report.StartCell} value={me.state.startCell} disabled={me.state.disabled}></TextField>
+        </div>
+        <div className='jazz-report-data-container'>
+          <span>{I18N.EM.Report.Layout}</span>
+          <div className='jazz-report-data-direction'>
+            <div onClick={me.changeDirection.bind(null, 0)} className={classNames(
+        {
+          'jazz-report-data-direction-time': me.state.exportLayoutDirection !== 0 && !me.state.disabled,
+          'jazz-report-data-direction-time-selected': me.state.exportLayoutDirection === 0,
+          'jazz-report-data-direction-time-disabled': me.state.disabled
+        }
+      )}></div>
+          <div onClick={me.changeDirection.bind(null, 1)} className={classNames(
+        {
+          'jazz-report-data-direction-tag': me.state.exportLayoutDirection !== 1 && !me.state.disabled,
+          'jazz-report-data-direction-tag-selected': me.state.exportLayoutDirection === 1,
+          'jazz-report-data-direction-tag-disabled': me.state.disabled
+        }
+      )}></div>
+          </div>
         </div>
       </div>
       );

@@ -34,7 +34,69 @@
 .jazz-report-grid-tr-item-selected{
   background-color:#2d3645 !important;
 }
+.jazz-report-rightpanel-container{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.jazz-report-rightpanel-body{
+  overflow: auto;
+  flex: 1;
+}
 .jazz-report-data-container{
   display: flex;
   flex-direction: column;
+}
+.jazz-report-data-radiobutton{
+  >div{
+    display: flex;
+    flex-direction: row;
+    >div{
+      width: 150px !important;
+    }
+  }
+}
+.jazz-report-data-checkbox{
+  display: flex;
+  flex-direction: row;
+  >div{
+    width: 200px !important;
+  }
+}
+.jazz-report-data-direction{
+  display: flex;
+  flex-direction: row;
+}
+.jazz-report-data-direction-time{
+  background: url(./images/report-layout.png) no-repeat 0 0;
+  height: 113px;
+  width: 110px;
+  margin-right: 10px;
+}
+.jazz-report-data-direction-time-selected{
+  background: url(./images/report-layout.png) no-repeat 0 -226px;
+  height: 113px;
+  width: 110px;
+  margin-right: 10px;
+}
+.jazz-report-data-direction-time-disabled{
+  background: url(./images/report-layout.png) no-repeat 0 -339px;
+  height: 113px;
+  width: 110px;
+  margin-right: 10px;
+}
+.jazz-report-data-direction-tag{
+  background: url(./images/report-layout.png) no-repeat -110px 0;
+  height: 113px;
+  width: 110px;
+}
+.jazz-report-data-direction-tag-selected{
+  background: url(./images/report-layout.png) no-repeat -110px -226px;
+  height: 113px;
+  width: 110px;
+}
+.jazz-report-data-direction-tag-disabled{
+  background: url(./images/report-layout.png) no-repeat -110px -339px;
+  height: 113px;
+  width: 110px;
 }

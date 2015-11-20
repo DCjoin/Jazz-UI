@@ -29,7 +29,7 @@ let ReportList = React.createClass({
         id: item.Id,
         templateId: item.TemplateId,
         name: item.Name,
-        user: item.CreateUser,
+        createUser: item.CreateUser,
         data: item.CriteriaList,
         version: item.Version,
         onItemClick: me._onReportItemSelected,

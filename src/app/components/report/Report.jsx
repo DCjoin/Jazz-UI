@@ -40,6 +40,7 @@ let Report = React.createClass({
       'margin-top': '-16px',
       'background-color': '#ffffff',
       position: 'relative',
+      display: 'flex',
       flex: 1
     }}>
           <RightPanel templateList={this.state.templateList}></RightPanel>
