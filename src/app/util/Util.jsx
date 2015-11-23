@@ -473,6 +473,60 @@ let CommonFuns = {
     }
     return region;
   },
+  GetDate: function(datestr) {
+    var now = Momment();
+    var date;
+    var energyDate;
+    switch (datestr) {
+      case 'today':
+        date = now.format("YYYY" + I18N.Map.Date.Year + 'M' + I18N.Map.Date.Month + 'D' + I18N.Map.Date.Day);
+        energyDate = I18N.Map.Date.Today + I18N.EM.KpiModeEM + ' ' + date;
+        date = I18N.Map.Date.Today + ' ' + date;
+        break;
+      case 'yesterday':
+        date = now.subtract(1, 'days').format("YYYY" + I18N.Map.Date.Year + 'M' + I18N.Map.Date.Month + 'D' + I18N.Map.Date.Day);
+        energyDate = I18N.Map.Date.Yesterday + I18N.EM.KpiModeEM + ' ' + date;
+        date = I18N.Map.Date.Yesterday + ' ' + date;
+        break;
+      case 'thismonth':
+        date = now.format("YYYY" + I18N.Map.Date.Year + 'M' + I18N.Map.Date.Month);
+        if (date[date.length - 1] === '/') {
+          date = date.slice(0, date.length - 1);
+        }
+        energyDate = I18N.Map.Date.ThisMonth + I18N.EM.KpiModeEM + ' ' + date;
+        date = I18N.Map.Date.ThisMonth + ' ' + date;
+        break;
+      case 'lastmonth':
+        date = now.subtract(1, 'months').format("YYYY" + I18N.Map.Date.Year + 'M' + I18N.Map.Date.Month);
+        if (date[date.length - 1] === '/') {
+          date = date.slice(0, date.length - 1);
+        }
+        energyDate = I18N.Map.Date.LastMonth + I18N.EM.KpiModeEM + ' ' + date;
+        date = I18N.Map.Date.LastMonth + ' ' + date;
+        break;
+      case 'thisyear':
+        date = now.format("YYYY" + I18N.Map.Date.Year);
+        if (date[date.length - 1] === '/') {
+          date = date.slice(0, date.length - 1);
+        }
+        energyDate = I18N.Map.Date.ThisYear + I18N.EM.KpiModeEM + ' ' + date;
+        date = I18N.Map.Date.ThisYear + ' ' + date;
+        break;
+      case 'lastyear':
+        date = now.subtract(1, 'years').format("YYYY" + I18N.Map.Date.Year);
+        if (date[date.length - 1] === '/') {
+          date = date.slice(0, date.length - 1);
+        }
+        energyDate = I18N.Map.Date.LastYear + I18N.EM.KpiModeEM + ' ' + date;
+        date = I18N.Map.Date.LastYear + ' ' + date;
+        break;
+    }
+
+    return {
+      date: date,
+      energyDate: energyDate
+    };
+  },
   getInterval: function(start, end) {
     if (end < start) return;
     var ft = FIXEDTIMES;
@@ -794,6 +848,53 @@ let CommonFuns = {
       result = s / temp;
     }
     return result.toFixed(len);
+  },
+  convertUom: function(value, uom) {
+    var convert = function(valueStr, uom, index) {
+      if (valueStr.length > 6 && index <= 2) {
+        valueStr = valueStr.slice(0, value.length - 3);
+        newUom = unit[index] + uom;
+        convert(valueStr, newUom, index + 1);
+      }
+    };
+    var valueStr = value + '';
+    var length = valueStr.length;
+    if (valueStr.indexOf('.', 0) > -1) {
+      valueStr = valueStr.substring(0, valueStr.indexOf('.', 0));
+    }
+    var newUom = uom;
+    var unit = ['K', 'M', 'G'];
+    if (uom == 'KWH') {
+      convert(valueStr, 'WH', 1);
+    } else {
+      convert(valueStr, uom, 0);
+    }
+    return newUom;
+  },
+  convertDataByUom: function(value, uom) {
+    var convert = function(value, index) {
+      if (value.length > 6 && index <= 2) {
+        newValue = value.slice(0, value.length - 3);
+        convert(newValue, index + 1);
+      }
+    };
+    var valueStr = value + '';
+    var length = valueStr.length;
+    if (valueStr.indexOf('.', 0) > -1) {
+      valueStr = valueStr.substring(0, valueStr.indexOf('.', 0));
+    }
+
+    var newValue = valueStr;
+    var unit = ['K', 'M', 'G'];
+    if (uom == 'KWH') {
+      convert(valueStr, 1);
+    } else {
+      convert(valueStr, 0);
+    }
+    if (newValue.length > 3) {
+      newValue = newValue.slice(0, newValue.length - 3) + ',' + newValue.slice(newValue.length - 3, newValue.length);
+    }
+    return newValue;
   },
   JazzCommon: {
     TrimText(text, maxlength, from) {

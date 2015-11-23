@@ -950,4 +950,35 @@ I18N.Report.Sort.ReportName = '按报表名称排序';
 I18N.Report.Sort.UserName = '按用户名称排序';
 I18N.Report.Name = '报表';
 
+I18N.Map = {};
+I18N.Map.Date = {};
+I18N.Map.Date.Year = '年';
+I18N.Map.Date.Month = '月';
+I18N.Map.Date.Day = '日';
+I18N.Map.Date.Today = '今日';
+I18N.Map.Date.Yesterday = '昨日';
+I18N.Map.Date.ThisMonth = '本月';
+I18N.Map.Date.LastMonth = '上月';
+I18N.Map.Date.ThisYear = '今年';
+I18N.Map.Date.LastYear = '去年';
+
+I18N.Map.EnergyInfo = {};
+I18N.Map.EnergyInfo.CarbonEmission = 'CO2排放总量';
+I18N.Map.EnergyInfo.Cost = '成本总量';
+I18N.Map.EnergyInfo.Electricity = '用电总量';
+I18N.Map.EnergyInfo.Water = '用水总量';
+I18N.Map.EnergyInfo.Gas = '天然气总量';
+I18N.Map.EnergyInfo.SoftWater = '软水总量';
+I18N.Map.EnergyInfo.Petrol = '汽油总量';
+I18N.Map.EnergyInfo.LowPressureSteam = '低压蒸汽总量';
+I18N.Map.EnergyInfo.DieselOi = '柴油总量';
+I18N.Map.EnergyInfo.Heat = '热量总量';
+I18N.Map.EnergyInfo.CoolQ = '冷量总量';
+I18N.Map.EnergyInfo.Coal = '煤总量';
+I18N.Map.EnergyInfo.CoalOil = '煤油总量';
+I18N.Map.EnergyInfo.NonMessage = '暂无能耗信息，请持续关注';
+
+I18N.Map.EnergyInfo.TargetValue = {};
+I18N.Map.EnergyInfo.TargetValue.Qualified = '达到目标值';
+I18N.Map.EnergyInfo.TargetValue.NotQualified = '未达到目标值';
 module.exports = I18N;

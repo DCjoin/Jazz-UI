@@ -931,5 +931,17 @@ I18N.Paging.Button = {};
 I18N.Paging.Button.PrePage = 'Pre Page';
 I18N.Paging.Button.NextPage = 'Next Page';
 
+I18N.Map = {};
+I18N.Map.Date = {};
+I18N.Map.Date.Year = '/';
+I18N.Map.Date.Month = '/';
+I18N.Map.Date.Day = '';
+I18N.Map.Date.Today = 'Today';
+I18N.Map.Date.Yesterday = 'Yesterday';
+I18N.Map.Date.ThisMonth = 'This Month ';
+I18N.Map.Date.LastMonth = 'Last Month ';
+I18N.Map.Date.ThisYear = 'This Year ';
+I18N.Map.Date.LastYear = 'Last Year ';
+
 
 module.exports = I18N;
