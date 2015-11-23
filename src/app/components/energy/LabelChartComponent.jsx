@@ -264,7 +264,7 @@ let LabelChartComponent = React.createClass({
     if (showTitle) me.createTitle(title, cr);
 
     me.createArrow(baseX - arrowSpace, baseY, labelsHeight, cr); //y-axis
-    me.createHighLowText("低能耗", "高能耗", cr);
+    me.createHighLowText(I18N.EM.Labeling.LowEnergy, I18N.EM.Labeling.HighEnergy, cr);
 
     var y, tooltipText, labelObj;
     for (var i = 0; i < len; i++) {

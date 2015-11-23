@@ -11,8 +11,9 @@ let ReportItem = React.createClass({
         id: this.props.id,
         templateId: this.props.templateId,
         name: this.props.name,
-        user: this.props.user,
-        data: this.props.data
+        createUser: this.props.createUser,
+        data: this.props.data,
+        version: this.props.verson
       };
       this.props.onItemClick(reportItem);
     }
@@ -22,7 +23,7 @@ let ReportItem = React.createClass({
     var me = this;
     let isSeleted = false;
     if (this.props.selectedReport) {
-      isSeleted = (this.props.id === this.props.selectedReport.Id);
+      isSeleted = (this.props.id === this.props.selectedReport.id);
     }
 
     return (
@@ -33,7 +34,7 @@ let ReportItem = React.createClass({
         }
       )} onClick={me._onItemSelected}>
         <span>{me.props.name}</span>
-        <span>{me.props.user}</span>
+        <span>{me.props.createUser}</span>
       </div>
       );
   }

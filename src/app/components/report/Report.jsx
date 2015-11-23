@@ -5,7 +5,9 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import assign from "object-assign";
 
 import LeftPanel from './ReportLeftPanel.jsx';
-//import rightPanel from './ReportRightPanel.jsx';
+import RightPanel from './ReportRightPanel.jsx';
+import ReportStore from '../../stores/ReportStore.jsx';
+import ReportAction from '../../actions/ReportAction.jsx';
 
 
 let Report = React.createClass({
@@ -15,23 +17,34 @@ let Report = React.createClass({
 
     };
   },
-  componentWillMount: function() {},
+  _onChange() {
+    this.setState({
+      templateList: ReportStore.getTemplateList()
+    });
+  },
+  componentDidMount: function() {
+    ReportAction.getTemplateListByCustomerId(window.currentCustomerId);
+    ReportStore.addTemplateListChangeListener(this._onChange);
+  },
+  componentWillMount: function() {
+    ReportStore.removeTemplateListChangeListener(this._onChange);
+  },
   render() {
     var LeftPanelField, mainPanel;
     var me = this;
-
     LeftPanelField = <div style={{
       display: 'flex'
     }}> <LeftPanel onItemClick={this._onItemClick}></LeftPanel></div> ;
 
-    // mainPanel = <div style={{
-    //   'margin-top': '-16px',
-    //   'background-color': '#ffffff',
-    //   position: 'relative',
-    //   flex: 1
-    // }}>
-    //       <rightPanel></rightPanel>
-    //     </div>;
+    mainPanel = <div style={{
+      'margin-top': '-16px',
+      'background-color': '#ffffff',
+      position: 'relative',
+      display: 'flex',
+      flex: 1
+    }}>
+          <RightPanel templateList={this.state.templateList}></RightPanel>
+        </div>;
 
     return (
       <div style={{
@@ -39,11 +52,10 @@ let Report = React.createClass({
         flex: 1
       }}>
           {LeftPanelField}
+          {mainPanel}
         </div>
       );
   },
-  componentDidMount: function() {},
-  componentWillUnmount: function() {}
 });
 
 module.exports = Report;

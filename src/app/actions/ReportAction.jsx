@@ -21,6 +21,24 @@ let ReportAction = {
       }
     });
   },
+  getTemplateListByCustomerId(customerId) {
+    Ajax.post('/DataReport.svc/GetExportTemplateByCustomerId', {
+      params: {
+        customerId: customerId
+      },
+      success: function(templateList) {
+        AppDispatcher.dispatch({
+          type: Action.GET_TEMPLATE_LIST_SUCCESS,
+          templateList: templateList
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_TEMPLATE_LIST_ERROR
+        });
+      }
+    });
+  },
   setSelectedReportItem(reportItem) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_REPORT_ITEM,

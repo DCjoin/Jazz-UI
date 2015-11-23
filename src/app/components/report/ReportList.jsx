@@ -14,33 +14,32 @@ let ReportList = React.createClass({
     });
   },
   getInitialState: function() {
-    var reportList = this.props.reportList;
-    var selectedReport = reportList.length === 0 ? null : reportList[0];
-
     return {
-      reportList: reportList,
-      selectedReport: selectedReport
+
     };
   },
+  componentDidMount: function() {},
   render() {
     let me = this;
     let reportList = this.props.reportList;
     let reportItems = null;
-
-    reportItems = reportList.map(function(item) {
-      let props = {
-        id: item.Id,
-        templateId: item.TemplateIdId,
-        name: item.Name,
-        user: item.CreateUser,
-        data: item.CriteriaList,
-        onItemClick: me._onReportItemSelected,
-        selectedReport: me.state.selectedReport
-      };
-      return (
-        <ReportItem {...props}></ReportItem>
-        );
-    });
+    if (reportList && reportList.size !== 0) {
+      reportItems = reportList.map(function(item) {
+        let props = {
+          id: item.get('Id'),
+          templateId: item.get('TemplateId'),
+          name: item.get('Name'),
+          createUser: item.get('CreateUser'),
+          data: item.get('CriteriaList'),
+          version: item.get('Version'),
+          onItemClick: me._onReportItemSelected,
+          selectedReport: me.state.selectedReport || me.props.reportItem
+        };
+        return (
+          <ReportItem {...props}></ReportItem>
+          );
+      });
+    }
 
     return (
       <div>
