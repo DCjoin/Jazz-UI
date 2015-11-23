@@ -19,14 +19,14 @@ var ReportLeftPanel = React.createClass({
   _onChange() {
     var reportList = ReportStore.getReportList();
     var reportItem = null;
-    if (reportList !== null && reportList.length !== 0) {
+    if (reportList !== null && reportList.size !== 0) {
       reportItem = {
-        id: reportList[0].Id,
-        templateId: reportList[0].TemplateId,
-        name: reportList[0].Name,
-        createUseruser: reportList[0].CreateUser,
-        data: reportList[0].CriteriaList,
-        version: reportList[0].Version
+        id: reportList.get(0).get('Id'),
+        templateId: reportList.get(0).get('TemplateId'),
+        name: reportList.get(0).get('Name'),
+        createUser: reportList.get(0).get('CreateUser'),
+        data: reportList.get(0).get('CriteriaList'),
+        version: reportList.get(0).get('Version')
       };
     }
     this.setState({

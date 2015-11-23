@@ -11,26 +11,38 @@ import { FlatButton, FontIcon, SelectField, TextField, RadioButton, RadioButtonG
 let ReportDataItem = React.createClass({
   getInitialState: function() {
     var reportData = this.props.reportData;
-    var timeOrder = this.dataToDisplay(reportData.ExportTimeOrder);
+    var timeOrder = this.dataToDisplay(reportData.get('ExportTimeOrder'));
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
     return {
       index: this.props.index,
       disabled: this.props.disabled,
       sheetNames: this.props.sheetNames,
-      startTime: j2d(reportData.DataStartTime, false),
-      endTime: j2d(reportData.DataEndTime, false),
-      reportType: reportData.ReportType,
-      dateType: reportData.DateType,
-      step: reportData.ExportStep,
-      numberRule: reportData.NumberRule,
+      startTime: reportData.get('DataStartTime') !== null ? j2d(reportData.get('DataStartTime'), false) : null,
+      endTime: reportData.get('DataEndTime') !== null ? j2d(reportData.get('DataEndTime'), false) : null,
+      reportType: reportData.get('ReportType'),
+      dateType: reportData.get('DateType'),
+      step: reportData.get('ExportStep'),
+      numberRule: reportData.get('NumberRule'),
       timeOrder: timeOrder,
-      targetSheet: reportData.TargetSheet,
-      isExportTagName: reportData.IsExportTagName,
-      isExportTimestamp: reportData.IsExportTimestamp,
-      startCell: reportData.StartCell,
-      exportLayoutDirection: reportData.ExportLayoutDirection,
+      targetSheet: reportData.get('TargetSheet'),
+      isExportTagName: reportData.get('IsExportTagName'),
+      isExportTimestamp: reportData.get('IsExportTimestamp'),
+      startCell: reportData.get('StartCell'),
+      exportLayoutDirection: reportData.get('ExportLayoutDirection'),
       showStep: true
     };
+  },
+  getDisplayDate(time) {
+    var hour = time.getHours();
+    if (hour === 0) {
+      time = CommonFuns.dateAdd(time, -1, 'days');
+      hour = 24;
+    }
+    var year = time.getFullYear();
+    var month = time.getMonth() + 1;
+    var day = time.getDate();
+
+    return year + '/' + month + '/' + day + ' ' + hour + ':00';
   },
   dataToDisplay: function(data) {
     var display;
@@ -51,12 +63,12 @@ let ReportDataItem = React.createClass({
     return data;
   },
   getSheetItems: function() {
-    var sheetNames = this.props.sheetNames;
+    var sheetNames = this.state.sheetNames;
     var sheetItems = [];
-    for (var i = 0; i < sheetNames.length; i++) {
+    for (var i = 0; i < sheetNames.size; i++) {
       var obj = {
-        payload: sheetNames[i],
-        text: sheetNames[i]
+        payload: sheetNames.get(i),
+        text: sheetNames.get(i)
       };
       sheetItems.push(obj);
     }
@@ -126,32 +138,49 @@ let ReportDataItem = React.createClass({
 
     var reportData = nextProps.reportData;
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
-    var timeOrder = this.dataToDisplay(reportData.ExportTimeOrder);
-    newState.startTime = j2d(reportData.DataStartTime, false);
-    newState.endTime = j2d(reportData.DataEndTime, false);
-    newState.reportType = reportData.ReportType;
-    newState.dateType = reportData.DateType;
-    newState.step = reportData.ExportStep;
-    newState.numberRule = reportData.NumberRule;
+    var timeOrder = this.dataToDisplay(reportData.get('ExportTimeOrder'));
+    newState.startTime = reportData.get('DataStartTime') !== null ? j2d(reportData.get('DataStartTime'), false) : null;
+    newState.endTime = reportData.get('DataEndTime') !== null ? j2d(reportData.get('DataEndTime'), false) : null;
+    newState.reportType = reportData.get('ReportType');
+    newState.dateType = reportData.get('DateType');
+    newState.step = reportData.get('ExportStep');
+    newState.numberRule = reportData.get('NumberRule');
     newState.timeOrder = timeOrder;
-    newState.targetSheet = reportData.TargetSheet;
-    newState.isExportTagName = reportData.IsExportTagName;
-    newState.isExportTimestamp = reportData.IsExportTimestamp;
-    newState.startCell = reportData.StartCell;
-    newState.exportLayoutDirection = reportData.ExportLayoutDirection;
+    newState.targetSheet = reportData.get('TargetSheet');
+    newState.isExportTagName = reportData.get('IsExportTagName');
+    newState.isExportTimestamp = reportData.get('IsExportTimestamp');
+    newState.startCell = reportData.get('StartCell');
+    newState.exportLayoutDirection = reportData.get('ExportLayoutDirection');
 
     newState.disabled = nextProps.disabled;
     newState.index = nextProps.index;
     newState.sheetNames = nextProps.sheetNames;
 
-    var dateSelector = this.refs.dateTimeSelector;
-    dateSelector.setDateField(newState.startTime, newState.endTime);
-
     this.setState(newState);
   },
+  componentDidUpdate: function() {
+    if (!this.state.disabled) {
+      var dateSelector = this.refs.dateTimeSelector;
+      if (this.state.dateType !== 11) {
+        var dateType = this.changeTimeValue(this.state.dateType);
+        var timeregion = CommonFuns.GetDateRegion(dateType);
+        dateSelector.setDateField(timeregion.start, timeregion.end);
+      } else {
+        dateSelector.setDateField(this.state.startTime, this.state.endTime);
+      }
+    }
+  },
   componentDidMount: function() {
-    var dateSelector = this.refs.dateTimeSelector;
-    dateSelector.setDateField(this.state.startTime, this.state.endTime);
+    if (!this.state.disabled) {
+      var dateSelector = this.refs.dateTimeSelector;
+      if (this.state.dateType !== 11) {
+        var dateType = this.changeTimeValue(this.state.dateType);
+        var timeregion = CommonFuns.GetDateRegion(dateType);
+        dateSelector.setDateField(timeregion.start, timeregion.end);
+      } else {
+        dateSelector.setDateField(this.state.startTime, this.state.endTime);
+      }
+    }
   },
   render() {
     var me = this;
@@ -253,14 +282,19 @@ let ReportDataItem = React.createClass({
       }
     ];
     var deleteButton = null,
+      dateTimeSelector = null,
       dataSourceButton = null;
     if (!me.state.disabled) {
       deleteButton = <FlatButton label={I18N.EM.Report.Delete} />;
       dataSourceButton = <FlatButton label={I18N.EM.Report.EditTag} style={{
         width: '120px'
       }} />;
+      dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged} showTime={true}/>;
     } else {
-      dataSourceButton = <FlatButton label={I18N.EM.Report.ViewTag} />;
+      dataSourceButton = <FlatButton label={I18N.EM.Report.ViewTag} style={{
+        width: '120px'
+      }} />;
+      dateTimeSelector = <span>{me.getDisplayDate(me.state.startTime) + '-' + me.getDisplayDate(me.state.endTime)}</span>;
     }
     var diplayCom = null;
     if (me.state.showStep) {
@@ -297,7 +331,7 @@ let ReportDataItem = React.createClass({
         'flex-direction': 'row'
       }}>
             <SelectField menuItems={dateTypeItems} ref='dateType' disabled={me.state.disabled} value={me.state.dateType} onChange={me._onDateTypeChange.bind(null, 'dateType')}></SelectField>
-            <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged} showTime={true}/>
+            {dateTimeSelector}
           </div>
         </div>
         <div className='jazz-report-data-container'>

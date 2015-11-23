@@ -13,7 +13,7 @@ var ReportRightPanel = React.createClass({
   getInitialState: function() {
     return {
       isLoading: true,
-      disabled: false,
+      disabled: true,
       reportItem: ReportStore.getSelectedReportItem(),
       showDownloadButton: true,
       showUploadButton: false,
@@ -24,7 +24,8 @@ var ReportRightPanel = React.createClass({
     var reportItem = ReportStore.getSelectedReportItem();
     this.setState({
       reportItem: reportItem,
-      isLoading: false
+      isLoading: false,
+      disabled: true
     });
   },
   _onChangeTemplate(e, newSelection) {
@@ -51,21 +52,61 @@ var ReportRightPanel = React.createClass({
   getTemplateItems: function() {
     var templateItems = [];
     var templateList = this.props.templateList;
-    templateList.map(function(item) {
-      var obj = {
-        payload: item.Id,
-        text: item.Name
-      };
-      templateItems.push(obj);
-    });
+    if (templateList && templateList.size !== 0) {
+      templateList.map(function(item) {
+        var obj = {
+          payload: item.get('Id'),
+          text: item.get('Name')
+        };
+        templateItems.push(obj);
+      });
+    }
     return templateItems;
+  },
+  editReport: function() {
+    this.setState({
+      disabled: false
+    });
+  },
+  cancelEditReport: function() {
+    var reportItem = ReportStore.getSelectedReportItem();
+    this.setState({
+      reportItem: reportItem,
+      disabled: true
+    });
+  },
+  addReportData: function() {
+    var reportItem = this.state.reportItem;
+    var reportData = reportItem.get('data');
+    var newReportData = {
+      DataStartTime: null,
+      DataEndTime: null,
+      DateType: 0,
+      ExportLayoutDirection: 0,
+      ExportStep: null,
+      ExportTimeOrder: 0,
+      IsExportTagName: false,
+      IsExportTimestamp: false,
+      NumberRule: null,
+      ReportType: null,
+      StartCell: null,
+      TagsList: [],
+      TargetSheet: null
+    };
+    reportData.unshift(newReportData);
+    for (var i = 0; i < reportData.size; i++) {
+      reportData.get(i).set('Index', i);
+    }
+    this.setState({
+      reportItem: reportItem
+    });
   },
   getSheetNames: function() {
     var templateList = this.props.templateList;
     var sheetNames = [];
-    for (var i = 0; i < templateList.length; i++) {
-      if (this.state.reportItem.templateId === templateList[i].Id) {
-        sheetNames = templateList[i].SheetNames;
+    for (var i = 0; i < templateList.size; i++) {
+      if (this.state.reportItem.get('templateId') === templateList.get(i).get('Id')) {
+        sheetNames = templateList.get(i).get('SheetNames');
       }
     }
     return sheetNames;
@@ -98,17 +139,24 @@ var ReportRightPanel = React.createClass({
           color: '#abafae'
         };
       var reportItem = me.state.reportItem;
-      var addReportButton = null;
-      var expandButton = (<FlatButton style={buttonStyle} onClick={this._onToggle}>
+      var addReportDataButton = null;
+      var expandButton = (<FlatButton style={buttonStyle} onClick={me._onToggle}>
         <FontIcon className="icon-taglist-fold" style={iconStyle}/>
       </FlatButton>);
-      var reportTitle = (<TextField ref='templateTitle' floatingLabelText={I18N.EM.Report.ReportName} value={reportItem.name} disabled={me.state.disabled}></TextField>);
+      var reportTitle = (<TextField ref='templateTitle' floatingLabelText={I18N.EM.Report.ReportName} value={reportItem.get('name')} disabled={me.state.disabled}></TextField>);
       var reportTemplate;
 
-
+      var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me.editReport} />;
+      var exportButton = <FlatButton label={I18N.EM.Report.Export} />;
+      var deleteButton = <FlatButton label={I18N.EM.Report.Delete} />;
+      var saveButton = <FlatButton label={I18N.EM.Report.Save} />;
+      var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me.cancelEditReport} />;
+      var buttonArea = null;
       if (me.state.disabled) {
-        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disable} value={reportItem.templateId} floatingLabelText={I18N.EM.Report.Template} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}></SelectField>);
+        buttonArea = <div>{editButton}{exportButton}{deleteButton}</div>;
+        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} floatingLabelText={I18N.EM.Report.Template} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}></SelectField>);
       } else {
+        buttonArea = <div>{saveButton}{cancelButton}</div>;
         var downloadButton = null,
           uploadButton = null;
         if (me.state.showDownloadButton) {
@@ -125,7 +173,7 @@ var ReportRightPanel = React.createClass({
             display: 'flex',
             'flex-direction': 'row'
           }}>
-              <SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.templateId} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}>
+              <SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}>
               </SelectField>
               {downloadButton}
             </div>
@@ -140,27 +188,28 @@ var ReportRightPanel = React.createClass({
             </div>
           </div>
         );
-        addReportButton = (<div className="jazz-report-rightpanel-add" style={{
+        addReportDataButton = (<div className="jazz-report-rightpanel-add" style={{
           display: 'flex',
           'flex-direction': 'row'
         }}>
         <span>{I18N.EM.Report.Data}</span>
-        <FlatButton label={I18N.EM.Report.Add} />
+        <FlatButton label={I18N.EM.Report.Add} onClick={me.addReportData} />
       </div>);
       }
-      var dataLength = reportItem.data.length;
-      var reportData = reportItem.data.map(function(item) {
+      var dataLength = reportItem.get('data').size;
+      var reportData = reportItem.get('data').map(function(item) {
         var sheetNames = me.getSheetNames();
         let props = {
           disabled: me.state.disabled,
           reportData: item,
           sheetNames: sheetNames,
-          index: dataLength - item.Index
+          index: dataLength - item.get('Index')
         };
         return (
           <ReportDataItem {...props}></ReportDataItem>
           );
       });
+
       displayedDom = (
         <div className="jazz-report-rightpanel-container">
           <div className="jazz-report-rightpanel-header">
@@ -171,12 +220,15 @@ var ReportRightPanel = React.createClass({
             <div className="jazz-report-rightpanel-template">
               {reportTemplate}
             </div>
-            {addReportButton}
+            {addReportDataButton}
             <div className="jazz-report-rightpanel-data">
               {reportData}
             </div>
           </div>
-      </div>
+          <div className="jazz-report-rightpanel-footer">
+            {buttonArea}
+          </div>
+        </div>
       );
     }
     return displayedDom;

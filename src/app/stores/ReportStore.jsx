@@ -3,6 +3,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
+import Immutable from 'immutable';
 import { Action } from '../constants/actionType/Report.jsx';
 
 let _reportList = null,
@@ -20,7 +21,7 @@ var ReportStore = assign({}, PrototypeStore, {
     if (!reportList || reportList.length === 0) {
       _reportList = null;
     } else {
-      _reportList = reportList;
+      _reportList = Immutable.fromJS(reportList);
     }
   },
   getTemplateList() {
@@ -30,11 +31,11 @@ var ReportStore = assign({}, PrototypeStore, {
     if (!templateList || templateList.length === 0) {
       _templateList = null;
     } else {
-      _templateList = templateList;
+      _templateList = Immutable.fromJS(templateList);
     }
   },
   setSelectedReportItem: function(reportItem) {
-    _reportItem = reportItem;
+    _reportItem = Immutable.fromJS(reportItem);
   },
   getSelectedReportItem: function() {
     return _reportItem;
