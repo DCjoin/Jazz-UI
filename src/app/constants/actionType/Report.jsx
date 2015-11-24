@@ -9,7 +9,9 @@ module.exports = {
     GET_TEMPLATE_LIST_SUCCESS: null,
     GET_TEMPLATE_LIST_ERROR: null,
     SAVE_REPORT_SUCCESS: null,
-    SAVE_REPORT_ERROR: null
+    SAVE_REPORT_ERROR: null,
+    DELETE_REPORT_SUCCESS: null,
+    DELETE_REPORT_ERROR: null
   })
 
 };

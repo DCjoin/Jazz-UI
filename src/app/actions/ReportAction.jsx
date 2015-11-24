@@ -62,6 +62,24 @@ let ReportAction = {
         });
       }
     });
+  },
+  deleteReportById(id) {
+    Ajax.post('/DataReport.svc/DeleteReportById', {
+      params: {
+        id: id
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_REPORT_SUCCESS,
+          id: id
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_REPORT_ERROR
+        });
+      }
+    });
   }
 };
 module.exports = ReportAction;

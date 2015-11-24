@@ -48,7 +48,7 @@ let ReportDataItem = React.createClass({
     }
     return data;
   },
-  getSheetItems: function() {
+  _getSheetItems: function() {
     var sheetNames = this.props.sheetNames;
     if (sheetNames !== null && sheetNames.size !== 0) {
       return sheetNames.map((item, i) => {
@@ -89,18 +89,18 @@ let ReportDataItem = React.createClass({
     }
     return result;
   },
-  updateReportData(name, value) {
+  _updateReportData(name, value) {
     if (this.props.updateReportData) {
       this.props.updateReportData(name, value, this.props.index);
     }
   },
-  deleteReportData() {
+  _deleteReportData() {
     if (this.props.deleteReportData) {
       this.props.deleteReportData(this.props.index);
     }
   },
   _onDirectionChange(value) {
-    this.updateReportData('ExportLayoutDirection', value);
+    this._updateReportData('ExportLayoutDirection', value);
   },
   _onDateTypeChange(name, e) {
     var value = e.target.value;
@@ -128,29 +128,29 @@ let ReportDataItem = React.createClass({
   },
 
   _handleSelectValueChange(name, e) {
-    this.updateReportData(name, e.target.value);
+    this._updateReportData(name, e.target.value);
   },
   _handleCheckboxCheck(name, e, check) {
-    this.updateReportData(name, check);
+    this._updateReportData(name, check);
   },
   _onStartCellChange() {
     var value = this.refs.startCell.getValue();
-    this.updateReportData('StartCell', value);
+    this._updateReportData('StartCell', value);
   },
   _onDateSelectorChanged() {
-    this.updateReportData('DateType', 11);
+    this._updateReportData('DateType', 11);
     var timeRange = this.refs.dateTimeSelector.getDateTime();
     var d2j = CommonFuns.DataConverter.DatetimeToJson;
     var startTime = d2j(timeRange.start);
     var endTime = d2j(timeRange.end);
-    this.updateReportData('DataStartTime', startTime);
-    this.updateReportData('DataEndTime', endTime);
+    this._updateReportData('DataStartTime', startTime);
+    this._updateReportData('DataEndTime', endTime);
   },
   _onTimeOrderChange(name, e, selected) {
     var value = this.displayToData(selected);
-    this.updateReportData(name, value);
+    this._updateReportData(name, value);
   },
-  getTimeRange() {
+  _displayTimeRange() {
     var str = '';
     if (this.props.dateType !== 11) {
       var dateType = this.changeTimeValue(this.props.dateType);
@@ -293,7 +293,7 @@ let ReportDataItem = React.createClass({
       dateTimeSelector = null,
       dataSourceButton = null;
     if (!me.props.disabled) {
-      deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me.deleteReportData} />;
+      deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._deleteReportData} />;
       dataSourceButton = <FlatButton label={I18N.EM.Report.EditTag} style={{
         width: '120px'
       }} />;
@@ -302,7 +302,7 @@ let ReportDataItem = React.createClass({
       dataSourceButton = <FlatButton label={I18N.EM.Report.ViewTag} style={{
         width: '120px'
       }} />;
-      dateTimeSelector = <span>{me.getTimeRange()}</span>;
+      dateTimeSelector = <span>{me._displayTimeRange()}</span>;
     }
     var diplayCom = null;
     if (me.props.showStep) {
@@ -355,7 +355,7 @@ let ReportDataItem = React.createClass({
           </div>
         </div>
         <div className='jazz-report-data-container'>
-          <SelectField ref='targetSheet' menuItems={me.getSheetItems()} disabled={me.props.disabled} value={me.props.targetSheet} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.TargetSheet} onChange={me._handleSelectValueChange.bind(null, 'TargetSheet')}>
+          <SelectField ref='targetSheet' menuItems={me._getSheetItems()} disabled={me.props.disabled} value={me.props.targetSheet} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.TargetSheet} onChange={me._handleSelectValueChange.bind(null, 'TargetSheet')}>
           </SelectField>
         </div>
         <div className='jazz-report-data-container'>
