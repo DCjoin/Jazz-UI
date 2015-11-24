@@ -14,8 +14,7 @@ let ReportDataItem = React.createClass({
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
     return time !== null ? j2d(time, false) : null;
   },
-  getDisplayDate(jsonTime) {
-    var time = this.getRealTime(jsonTime);
+  getDisplayDate(time) {
     if (time !== null) {
       var hour = time.getHours();
       if (hour === 0) {
@@ -150,6 +149,19 @@ let ReportDataItem = React.createClass({
   _onTimeOrderChange(name, e, selected) {
     var value = this.displayToData(selected);
     this.updateReportData(name, value);
+  },
+  getTimeRange() {
+    var str = '';
+    if (this.props.dateType !== 11) {
+      var dateType = this.changeTimeValue(this.props.dateType);
+      var timeregion = CommonFuns.GetDateRegion(dateType);
+      str = this.getDisplayDate(timeregion.start) + '-' + this.getDisplayDate(timeregion.end);
+    } else {
+      var startTime = this.getRealTime(this.props.startTime);
+      var endTime = this.getRealTime(this.props.endTime);
+      str = this.getDisplayDate(startTime) + '-' + this.getDisplayDate(endTime);
+    }
+    return str;
   },
   componentDidUpdate: function() {
     if (!this.props.disabled) {
@@ -290,7 +302,7 @@ let ReportDataItem = React.createClass({
       dataSourceButton = <FlatButton label={I18N.EM.Report.ViewTag} style={{
         width: '120px'
       }} />;
-      dateTimeSelector = <span>{me.getDisplayDate(me.props.startTime) + '-' + me.getDisplayDate(me.props.endTime)}</span>;
+      dateTimeSelector = <span>{me.getTimeRange()}</span>;
     }
     var diplayCom = null;
     if (me.props.showStep) {

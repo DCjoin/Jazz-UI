@@ -18,20 +18,8 @@ var ReportLeftPanel = React.createClass({
   _onNewReport: function() {},
   _onChange() {
     var reportList = ReportStore.getReportList();
-    var reportItem = null;
-    if (reportList !== null && reportList.size !== 0) {
-      reportItem = {
-        id: reportList.getIn([0, 'Id']),
-        templateId: reportList.getIn([0, 'TemplateId']),
-        name: reportList.getIn([0, 'Name']),
-        createUser: reportList.getIn([0, 'CreateUser']),
-        data: reportList.getIn([0, 'CriteriaList']),
-        version: reportList.getIn([0, 'Version'])
-      };
-    }
     this.setState({
       reportList: ReportStore.getReportList(),
-      reportItem: reportItem,
       isLoading: false
     });
 
@@ -67,7 +55,7 @@ var ReportLeftPanel = React.createClass({
     var reportContent = (this.state.isLoading ? <div style={{
       'text-align': 'center',
       'margin-top': '400px'
-    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList'   onItemClick={this.props.onItemClick} reportList={this.state.reportList} reportItem={this.state.reportItem}></ReportList>);
+    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList'   onItemClick={this.props.onItemClick} reportList={this.state.reportList}></ReportList>);
 
     return (
       <div className="jazz-report-leftpanel-container">

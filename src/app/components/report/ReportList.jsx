@@ -14,8 +14,20 @@ let ReportList = React.createClass({
     });
   },
   getInitialState: function() {
+    let reportList = this.props.reportList;
+    var reportItem;
+    if (reportList !== null && reportList.size !== 0) {
+      reportItem = {
+        id: reportList.getIn([0, 'Id']),
+        templateId: reportList.getIn([0, 'TemplateId']),
+        name: reportList.getIn([0, 'Name']),
+        createUser: reportList.getIn([0, 'CreateUser']),
+        data: reportList.getIn([0, 'CriteriaList']),
+        version: reportList.getIn([0, 'Version'])
+      };
+    }
     return {
-
+      selectedReport: reportItem
     };
   },
   componentDidMount: function() {},
@@ -33,7 +45,7 @@ let ReportList = React.createClass({
           data: item.get('CriteriaList'),
           version: item.get('Version'),
           onItemClick: me._onReportItemSelected,
-          selectedReport: me.state.selectedReport || me.props.reportItem
+          selectedReport: me.state.selectedReport
         };
         return (
           <ReportItem {...props}></ReportItem>

@@ -72,6 +72,53 @@ var ReportRightPanel = React.createClass({
       }).toJS();
     }
   },
+  _endsWith(str, pattern) {
+    var d = str.length - pattern.length;
+    return d >= 0 && str.lastIndexOf(pattern) === d;
+  },
+  _handleFileSelect(event) {
+    var that = this;
+    var file = event.target.files[0];
+    var fileName = file.name;
+
+    if (!that._endsWith(fileName.toLowerCase(), '.xlsx') && !that._endsWith(fileName.toLowerCase(), '.xls')) {
+      window.alert("文件类型非法，请重新选择模版文件。");
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(data) {
+      var fileContent = data.target.result;
+      fileContent = fileContent.split('base64,')[1];
+      var params = {
+        Name: file.name,
+        Content: fileContent
+      };
+      ReportAction.upload(params);
+    // that.setState({	loadingStatus:1});
+    // that._handleDialogDismiss();
+    };
+    reader.readAsDataURL(file);
+  },
+  downloadTemplate: function() {
+    var templateId = this.state.reportItem.get('templateId');
+    var fr = document.createElement('iframe');
+    fr.style.display = 'none';
+    fr.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
+    var handler = function() {
+      document.body.removeChild(fr);
+    };
+    if (fr.attachEvent) {
+      fr.attachEvent("onload", function() {
+        handler();
+      });
+    } else {
+      fr.onload = function() {
+        handler();
+      };
+    }
+    document.body.appendChild(fr);
+  },
   editReport: function() {
     this.setState({
       disabled: false
@@ -212,10 +259,17 @@ var ReportRightPanel = React.createClass({
         var downloadButton = null,
           uploadButton = null;
         if (me.state.showDownloadButton) {
-          downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} />);
+          downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={me.downloadTemplate} />);
         }
         if (me.state.showUploadButton) {
-          uploadButton = (<FlatButton label={I18N.EM.Report.Upload} />);
+          var fileInputStyle = {
+            opacity: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            display: 'none'
+          };
+          uploadButton = (<input text={I18N.EM.Report.Upload} type="file" id="fileInput" ref="fileInput" onChange={this._handleFileSelect} style={fileInputStyle} />);
         }
         reportTemplate = (
           <div>
@@ -236,7 +290,10 @@ var ReportRightPanel = React.createClass({
               <RadioButton onCheck={me._onChangeTemplate} style={{
             width: '150px'
           }} checked={me.state.checkedValue === "newTemplate"} value="newTemplate" label={I18N.EM.Report.UploadTemplate}/>
-              {uploadButton}
+              <label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
+                {I18N.EM.Report.Upload}
+                {uploadButton}
+              </label>
             </div>
           </div>
         );
