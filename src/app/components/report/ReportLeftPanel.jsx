@@ -30,27 +30,18 @@ var ReportLeftPanel = React.createClass({
     });
   },
   _onChange() {
-    var reportList = ReportStore.getReportList();
     this.setState({
       reportList: ReportStore.getReportList(),
       isLoading: false,
       disableAddButton: false
     });
   },
-  _onChangeSelectedReport: function() {
-    var reportItem = ReportStore.getSelectedReportItem();
-    this.setState({
-      reportItem: reportItem
-    });
-  },
   componentDidMount: function() {
     ReportAction.getReportListByCustomerId(parseInt(window.currentCustomerId));
     ReportStore.addReportListChangeListener(this._onChange);
-    ReportStore.addReportItemChangeListener(this._onChangeSelectedReport);
   },
   componentWillUnmount: function() {
     ReportStore.removeReportListChangeListener(this._onChange);
-    ReportStore.removeReportItemChangeListener(this._onChangeSelectedReport);
   },
 
   render: function() {

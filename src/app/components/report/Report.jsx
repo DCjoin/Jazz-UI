@@ -17,18 +17,8 @@ let Report = React.createClass({
 
     };
   },
-  _onChange() {
-    this.setState({
-      templateList: ReportStore.getTemplateList()
-    });
-  },
-  componentDidMount: function() {
-    ReportAction.getTemplateListByCustomerId(window.currentCustomerId);
-    ReportStore.addTemplateListChangeListener(this._onChange);
-  },
-  componentWillMount: function() {
-    ReportStore.removeTemplateListChangeListener(this._onChange);
-  },
+  componentDidMount: function() {},
+  componentWillMount: function() {},
   render() {
     var LeftPanelField, mainPanel;
     var me = this;
@@ -43,7 +33,7 @@ let Report = React.createClass({
       display: 'flex',
       flex: 1
     }}>
-          <RightPanel templateList={this.state.templateList}></RightPanel>
+          <RightPanel></RightPanel>
         </div>;
 
     return (

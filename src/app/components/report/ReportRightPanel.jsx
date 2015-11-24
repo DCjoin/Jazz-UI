@@ -18,7 +18,8 @@ var ReportRightPanel = React.createClass({
       reportItem: ReportStore.getSelectedReportItem(),
       showDownloadButton: true,
       checkedValue: 'uploadedTemplate',
-      showDeleteDialog: false
+      showDeleteDialog: false,
+      templateList: ReportStore.getTemplateList()
     };
   },
   _onChange() {
@@ -66,7 +67,7 @@ var ReportRightPanel = React.createClass({
     });
   },
   _getTemplateItems: function() {
-    var templateList = this.props.templateList;
+    var templateList = this.state.templateList;
     if (templateList && templateList.size !== 0) {
       return templateList.map(function(item) {
         return {
@@ -204,7 +205,7 @@ var ReportRightPanel = React.createClass({
       reportItem: reportItem
     });
   },
-  addReportData: function() {
+  _addReportData: function() {
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
     var newReportData = {
@@ -244,8 +245,13 @@ var ReportRightPanel = React.createClass({
       reportItem: reportItem
     });
   },
+  _onChangeTemplate: function() {
+    this.setState({
+      templateList: ReportStore.getTemplateList()
+    });
+  },
   _getSheetNames: function() {
-    var templateList = this.props.templateList;
+    var templateList = this.state.templateList;
     if (this.state.reportItem.get('templateId') === null) {
       return null;
     }
@@ -260,10 +266,13 @@ var ReportRightPanel = React.createClass({
     }
   },
   componentDidMount: function() {
+    ReportAction.getTemplateListByCustomerId(window.currentCustomerId);
     ReportStore.addReportItemChangeListener(this._onChange);
+    ReportStore.addTemplateListChangeListener(this._onChangeTemplate);
   },
   componentWillUnmount: function() {
     ReportStore.removeReportItemChangeListener(this._onChange);
+    ReportStore.removeTemplateListChangeListener(this._onChangeTemplate);
   },
 
   render: function() {
@@ -350,7 +359,7 @@ var ReportRightPanel = React.createClass({
           'flex-direction': 'row'
         }}>
         <span>{I18N.EM.Report.Data}</span>
-        <FlatButton label={I18N.EM.Report.Add} onClick={me.addReportData} />
+        <FlatButton label={I18N.EM.Report.Add} onClick={me._addReportData} />
       </div>);
       }
       var dataLength = reportItem.get('data').size;

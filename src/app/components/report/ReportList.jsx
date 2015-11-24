@@ -9,13 +9,24 @@ import ReportStore from '../../stores/ReportStore.jsx';
 let ReportList = React.createClass({
   getInitialState: function() {
     return {
+      reportItem: ReportStore.getSelectedReportItem()
     };
+  },
+  _onChange: function() {
+    var reportItem = ReportStore.getSelectedReportItem();
+    this.setState({
+      reportItem: reportItem
+    });
   },
   _onReportItemSelected(reportItem) {
     ReportAction.setSelectedReportItem(reportItem);
   },
-  componentDidMount: function() {},
-  componentWillUnmount: function() {},
+  componentDidMount: function() {
+    ReportStore.addReportItemChangeListener(this._onChange);
+  },
+  componentWillUnmount: function() {
+    ReportStore.removeReportItemChangeListener(this._onChange);
+  },
   render() {
     let me = this;
     let reportList = this.props.reportList;
@@ -30,7 +41,7 @@ let ReportList = React.createClass({
           data: item.get('CriteriaList'),
           version: item.get('Version'),
           onItemClick: me._onReportItemSelected,
-          selectedReport: me.props.reportItem
+          selectedReport: me.state.reportItem
         };
         return (
           <ReportItem {...props}></ReportItem>
