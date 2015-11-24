@@ -185,9 +185,7 @@ let MapPanel = React.createClass({
       I18N.Map.EnergyInfo.Coal,
       I18N.Map.EnergyInfo.CoalOil];
     var Qualify = [I18N.Map.EnergyInfo.TargetValue.Qualified, I18N.Map.EnergyInfo.TargetValue.NotQualified];
-    //url(BuildingPicture.aspx?pictureId=100201&usedInMap=true)
-    //var imgUrl = marker.imageId == null ? "" : Path.APIBasePath + "/picture/" + marker.imageId;
-    var imgUrl = marker.imageId == null ? "" : 'BuildingPicture.aspx?pictureId=' + marker.imageId + '&usedInMap=true';
+    var imgUrl = marker.imageId == null ? "../../less/images/defaultBuilding.png" : 'BuildingPicture.aspx?pictureId=' + marker.imageId + '&usedInMap=true';
     var bgColor;
     if (marker.dataValues[0].IsQualified === null) {
       bgColor = 'blue';
@@ -209,8 +207,8 @@ let MapPanel = React.createClass({
         let valueStr = CommonFuns.convertDataByUom(value.EnergyDataValue, value.EnergyDataUom);
         let uom = CommonFuns.convertUom(value.EnergyDataValue, value.EnergyDataUom);
         content = "<div class='firstline'>" +
-          "<div>" + preTitle + EnergyInfo[value.EnergyDataType] + "</div>" +
-          "<div>" + valueStr + uom + "</div>" +
+          "<div>" + preTitle + EnergyInfo[value.EnergyDataType + 2] + "</div>" +
+          "<div>" + valueStr + " " + uom + "</div>" +
           "</div>";
       }
       if (value.Ranking !== null) {
@@ -221,7 +219,7 @@ let MapPanel = React.createClass({
         let valueStr = CommonFuns.convertDataByUom(value.TargetDataValue, value.TargetDataUom);
         let uom = CommonFuns.convertUom(value.TargetDataValue, value.TargetDataUom);
         content += "<div class='thirdline " + color + "'>" +
-          Qualify[value.IsQualified] + "(" + valueStr + " " + uom + ")" +
+          Qualify[value.IsQualified + 0] + "(" + valueStr + " " + uom + ")" +
           "</div>";
       }
       if (content !== null) {
