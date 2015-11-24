@@ -17,19 +17,23 @@ var ReportRightPanel = React.createClass({
       disabled: true,
       reportItem: ReportStore.getSelectedReportItem(),
       showDownloadButton: true,
-      showUploadButton: false,
       checkedValue: 'uploadedTemplate',
       showDeleteDialog: false
     };
   },
   _onChange() {
     var reportItem = ReportStore.getSelectedReportItem();
-    this.setState({
+    var obj = {
       reportItem: reportItem,
       isLoading: false,
-      disabled: true,
       showDeleteDialog: false
-    });
+    };
+    if (reportItem.get('id') === 0) {
+      obj.disabled = false;
+    } else {
+      obj.disabled = true;
+    }
+    this.setState(obj);
   },
   _onTemplateTypeChange(e, newSelection) {
     this.setState({
@@ -37,13 +41,11 @@ var ReportRightPanel = React.createClass({
     });
     if (newSelection === 'uploadedTemplate') {
       this.setState({
-        showDownloadButton: true,
-        showUploadButton: false
+        showDownloadButton: true
       });
     } else if (newSelection === 'newTemplate') {
       this.setState({
-        showDownloadButton: false,
-        showUploadButton: true
+        showDownloadButton: false
       });
     }
   },
@@ -125,11 +127,18 @@ var ReportRightPanel = React.createClass({
     });
   },
   _cancelEditReport: function() {
-    var reportItem = ReportStore.getSelectedReportItem();
-    this.setState({
-      reportItem: reportItem,
-      disabled: true
-    });
+    if (this.state.reportItem.get('id') !== 0) {
+      var reportItem = ReportStore.getSelectedReportItem();
+      this.setState({
+        reportItem: reportItem,
+        disabled: true
+      });
+    } else {
+      ReportAction.setDefaultReportItem();
+      this.setState({
+        disabled: true
+      });
+    }
   },
   _saveReport: function() {
     var reportItem = this.state.reportItem;
@@ -183,9 +192,6 @@ var ReportRightPanel = React.createClass({
   _deleteReport: function() {
     var id = this.state.reportItem.get('id');
     ReportAction.deleteReportById(id);
-    this.setState({
-
-    })
   },
   _updateReportData: function(name, value, displayIndex) {
     var reportItem = this.state.reportItem;
@@ -240,6 +246,9 @@ var ReportRightPanel = React.createClass({
   },
   _getSheetNames: function() {
     var templateList = this.props.templateList;
+    if (this.state.reportItem.get('templateId') === null) {
+      return null;
+    }
     if (templateList !== null && templateList.size !== 0) {
       return templateList.find((item) => {
         if (this.state.reportItem.get('templateId') === item.get('Id')) {
@@ -301,7 +310,7 @@ var ReportRightPanel = React.createClass({
         if (me.state.showDownloadButton) {
           downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={me._downloadTemplate} />);
         }
-        if (me.state.showUploadButton) {
+        if (!me.state.showDownloadButton) {
           var fileInputStyle = {
             opacity: 0,
             position: "absolute",
@@ -309,7 +318,9 @@ var ReportRightPanel = React.createClass({
             left: 0,
             display: 'none'
           };
-          uploadButton = (<input text={I18N.EM.Report.Upload} type="file" id="fileInput" ref="fileInput" onChange={this._handleFileSelect} style={fileInputStyle} />);
+          uploadButton = (<label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
+            {I18N.EM.Report.Upload}
+            <input text={I18N.EM.Report.Upload} type="file" id="fileInput" ref="fileInput" onChange={this._handleFileSelect} style={fileInputStyle} /></label>);
         }
         reportTemplate = (
           <div>
@@ -330,10 +341,7 @@ var ReportRightPanel = React.createClass({
               <RadioButton onCheck={me._onTemplateTypeChange} style={{
             width: '150px'
           }} checked={me.state.checkedValue === "newTemplate"} value="newTemplate" label={I18N.EM.Report.UploadTemplate}/>
-              <label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
-                {I18N.EM.Report.Upload}
-                {uploadButton}
-              </label>
+              {uploadButton}
             </div>
           </div>
         );

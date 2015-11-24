@@ -11,7 +11,8 @@ module.exports = {
     SAVE_REPORT_SUCCESS: null,
     SAVE_REPORT_ERROR: null,
     DELETE_REPORT_SUCCESS: null,
-    DELETE_REPORT_ERROR: null
+    DELETE_REPORT_ERROR: null,
+    SET_DEFAULT_REPORT_ITEM: null
   })
 
 };

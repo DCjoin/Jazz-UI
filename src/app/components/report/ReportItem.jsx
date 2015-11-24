@@ -23,7 +23,7 @@ let ReportItem = React.createClass({
     var me = this;
     let isSeleted = false;
     if (this.props.selectedReport) {
-      isSeleted = (this.props.id === this.props.selectedReport.id);
+      isSeleted = (this.props.id === this.props.selectedReport.get('id'));
     }
 
     return (

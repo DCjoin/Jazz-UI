@@ -45,6 +45,11 @@ let ReportAction = {
       reportItem: reportItem
     });
   },
+  setDefaultReportItem() {
+    AppDispatcher.dispatch({
+      type: Action.SET_DEFAULT_REPORT_ITEM
+    });
+  },
   saveCustomerReport(data) {
     Ajax.post('/DataReport.svc/SaveCustomerReport', {
       params: {

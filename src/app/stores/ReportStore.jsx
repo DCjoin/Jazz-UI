@@ -143,6 +143,10 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.emitReportItemChange();
       ReportStore.emitReportListChange();
       break;
+    case Action.SET_DEFAULT_REPORT_ITEM:
+      ReportStore.defalutSelectFirstReport();
+      ReportStore.emitReportItemChange();
+      break;
   }
 });
 
