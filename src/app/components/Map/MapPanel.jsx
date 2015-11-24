@@ -202,7 +202,6 @@ let MapPanel = React.createClass({
     // var uom = CommonFuns.convertUom(2245531, 'COM');
     marker.dataValues.forEach(value => {
       let content = null;
-      console.log(value.EnergyDataValue);
       if (value.EnergyDataValue !== null) {
         let valueStr = CommonFuns.convertDataByUom(value.EnergyDataValue, value.EnergyDataUom);
         let uom = CommonFuns.convertUom(value.EnergyDataValue, value.EnergyDataUom);
