@@ -37,6 +37,23 @@ var ReportStore = assign({}, PrototypeStore, {
   setSelectedReportItem: function(reportItem) {
     _reportItem = Immutable.fromJS(reportItem);
   },
+  updateReportItem: function(curReport) {
+    var reportItem = {
+      id: curReport.Id,
+      templateId: curReport.TemplateId,
+      name: curReport.Name,
+      createUser: curReport.CreateUser,
+      data: curReport.CriteriaList,
+      version: curReport.Version
+    };
+    ReportStore.setSelectedReportItem(reportItem);
+    var index = _reportList.findIndex((item) => {
+      if (item.get('Id') === curReport.Id) {
+        return true;
+      }
+    });
+    _reportList = _reportList.set(index, Immutable.fromJS(curReport));
+  },
   getSelectedReportItem: function() {
     return _reportItem;
   },
@@ -76,6 +93,8 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       if (action.reportList !== null && action.reportList.length !== 0) {
         var reportItem = {
           id: action.reportList[0].Id,
+          createUser: action.reportList[0].CreateUser,
+          version: action.reportList[0].Version,
           templateId: action.reportList[0].TemplateId,
           name: action.reportList[0].Name,
           user: action.reportList[0].CreateUser,
@@ -102,6 +121,10 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.setTemplateList([]);
       ReportStore.emitTemplateListChange();
       break;
+    case Action.SAVE_REPORT_SUCCESS:
+      ReportStore.updateReportItem(action.curReport);
+      ReportStore.emitReportItemChange();
+      ReportStore.emitReportListChange();
   }
 });
 

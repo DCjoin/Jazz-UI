@@ -5,6 +5,7 @@ import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportDataItem from './ReportDataItem.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
+import Immutable from 'immutable';
 
 
 var ReportRightPanel = React.createClass({
@@ -44,24 +45,32 @@ var ReportRightPanel = React.createClass({
       });
     }
   },
-  _handleSelectValueChange(name, e) {
-    let change = {};
-    change[name] = e.target.value;
-    this.setState(change);
+  _onSelectedTemplateChange(e) {
+    var value = e.target.value;
+    var reportItem = this.state.reportItem;
+    reportItem = reportItem.set('templateId', value);
+    this.setState({
+      reportItem: reportItem
+    });
+  },
+  _onNameChange() {
+    var value = this.refs.reportTitle.getValue();
+    var reportItem = this.state.reportItem;
+    reportItem = reportItem.set('name', value);
+    this.setState({
+      reportItem: reportItem
+    });
   },
   getTemplateItems: function() {
-    var templateItems = [];
     var templateList = this.props.templateList;
     if (templateList && templateList.size !== 0) {
-      templateList.map(function(item) {
-        var obj = {
+      return templateList.map(function(item) {
+        return {
           payload: item.get('Id'),
           text: item.get('Name')
         };
-        templateItems.push(obj);
-      });
+      }).toJS();
     }
-    return templateItems;
   },
   editReport: function() {
     this.setState({
@@ -73,6 +82,33 @@ var ReportRightPanel = React.createClass({
     this.setState({
       reportItem: reportItem,
       disabled: true
+    });
+  },
+  saveReport: function() {
+    var reportItem = this.state.reportItem;
+    var sendData = {
+      CreateUser: reportItem.get('createUser'),
+      CriteriaList: reportItem.get('data').toJS(),
+      CustomerId: parseInt(window.currentCustomerId),
+      Id: reportItem.get('id'),
+      Name: reportItem.get('name'),
+      TemplateId: reportItem.get('templateId'),
+      Version: reportItem.get('version')
+    };
+    ReportAction.saveCustomerReport(sendData);
+    this.setState({
+      disabled: true
+    });
+  },
+  updateReportData: function(name, value, displayIndex) {
+    var reportItem = this.state.reportItem;
+    var reportData = reportItem.get('data');
+    var length = reportData.size;
+    var index = length - displayIndex;
+    reportData = reportData.setIn([index, name], value);
+    reportItem = reportItem.set('data', reportData);
+    this.setState({
+      reportItem: reportItem
     });
   },
   addReportData: function() {
@@ -93,23 +129,39 @@ var ReportRightPanel = React.createClass({
       TagsList: [],
       TargetSheet: null
     };
-    reportData.unshift(newReportData);
-    for (var i = 0; i < reportData.size; i++) {
-      reportData.get(i).set('Index', i);
-    }
+    reportData = reportData.unshift(Immutable.fromJS(newReportData));
+    reportData = reportData.map((item, i) => {
+      return item.set('Index', i);
+    });
+    reportItem = reportItem.set('data', reportData);
+    this.setState({
+      reportItem: reportItem
+    });
+  },
+  deleteReportData: function(index) {
+    var reportItem = this.state.reportItem;
+    var reportData = reportItem.get('data');
+    var length = reportData.size;
+    reportData = reportData.delete(length - index);
+    reportData = reportData.map((item, i) => {
+      return item.set('Index', i);
+    });
+    reportItem = reportItem.set('data', reportData);
     this.setState({
       reportItem: reportItem
     });
   },
   getSheetNames: function() {
     var templateList = this.props.templateList;
-    var sheetNames = [];
-    for (var i = 0; i < templateList.size; i++) {
-      if (this.state.reportItem.get('templateId') === templateList.get(i).get('Id')) {
-        sheetNames = templateList.get(i).get('SheetNames');
-      }
+    if (templateList !== null && templateList.size !== 0) {
+      return templateList.find((item) => {
+        if (this.state.reportItem.get('templateId') === item.get('Id')) {
+          return true;
+        }
+      }).get('SheetNames');
+    } else {
+      return null;
     }
-    return sheetNames;
   },
   componentDidMount: function() {
     ReportStore.addReportItemChangeListener(this._onChange);
@@ -143,18 +195,18 @@ var ReportRightPanel = React.createClass({
       var expandButton = (<FlatButton style={buttonStyle} onClick={me._onToggle}>
         <FontIcon className="icon-taglist-fold" style={iconStyle}/>
       </FlatButton>);
-      var reportTitle = (<TextField ref='templateTitle' floatingLabelText={I18N.EM.Report.ReportName} value={reportItem.get('name')} disabled={me.state.disabled}></TextField>);
+      var reportTitle = (<TextField ref='reportTitle' floatingLabelText={I18N.EM.Report.ReportName} onChange={me._onNameChange} value={reportItem.get('name')} disabled={me.state.disabled}></TextField>);
       var reportTemplate;
 
       var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me.editReport} />;
       var exportButton = <FlatButton label={I18N.EM.Report.Export} />;
       var deleteButton = <FlatButton label={I18N.EM.Report.Delete} />;
-      var saveButton = <FlatButton label={I18N.EM.Report.Save} />;
+      var saveButton = <FlatButton label={I18N.EM.Report.Save} onClick={me.saveReport} />;
       var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me.cancelEditReport} />;
       var buttonArea = null;
       if (me.state.disabled) {
         buttonArea = <div>{editButton}{exportButton}{deleteButton}</div>;
-        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} floatingLabelText={I18N.EM.Report.Template} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}></SelectField>);
+        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} floatingLabelText={I18N.EM.Report.Template}></SelectField>);
       } else {
         buttonArea = <div>{saveButton}{cancelButton}</div>;
         var downloadButton = null,
@@ -173,7 +225,7 @@ var ReportRightPanel = React.createClass({
             display: 'flex',
             'flex-direction': 'row'
           }}>
-              <SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}>
+              <SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} onChange={me._onSelectedTemplateChange}>
               </SelectField>
               {downloadButton}
             </div>
@@ -201,8 +253,22 @@ var ReportRightPanel = React.createClass({
         var sheetNames = me.getSheetNames();
         let props = {
           disabled: me.state.disabled,
-          reportData: item,
+          startTime: item.get('DataStartTime'),
+          endTime: item.get('DataEndTime'),
+          reportType: item.get('ReportType'),
+          dateType: item.get('DateType'),
+          step: item.get('ExportStep'),
+          numberRule: item.get('NumberRule'),
+          timeOrder: item.get('ExportTimeOrder'),
+          targetSheet: item.get('TargetSheet'),
+          isExportTagName: item.get('IsExportTagName'),
+          isExportTimestamp: item.get('IsExportTimestamp'),
+          startCell: item.get('StartCell'),
+          exportLayoutDirection: item.get('ExportLayoutDirection'),
           sheetNames: sheetNames,
+          updateReportData: me.updateReportData,
+          deleteReportData: me.deleteReportData,
+          showStep: item.get('ReportType') === 0 ? true : false,
           index: dataLength - item.get('Index')
         };
         return (

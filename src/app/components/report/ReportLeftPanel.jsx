@@ -21,12 +21,12 @@ var ReportLeftPanel = React.createClass({
     var reportItem = null;
     if (reportList !== null && reportList.size !== 0) {
       reportItem = {
-        id: reportList.get(0).get('Id'),
-        templateId: reportList.get(0).get('TemplateId'),
-        name: reportList.get(0).get('Name'),
-        createUser: reportList.get(0).get('CreateUser'),
-        data: reportList.get(0).get('CriteriaList'),
-        version: reportList.get(0).get('Version')
+        id: reportList.getIn([0, 'Id']),
+        templateId: reportList.getIn([0, 'TemplateId']),
+        name: reportList.getIn([0, 'Name']),
+        createUser: reportList.getIn([0, 'CreateUser']),
+        data: reportList.getIn([0, 'CriteriaList']),
+        version: reportList.getIn([0, 'Version'])
       };
     }
     this.setState({
@@ -37,7 +37,7 @@ var ReportLeftPanel = React.createClass({
 
   },
   componentDidMount: function() {
-    ReportAction.getReportListByCustomerId(window.currentCustomerId);
+    ReportAction.getReportListByCustomerId(parseInt(window.currentCustomerId));
     ReportStore.addReportListChangeListener(this._onChange);
   },
   componentWillUnmount: function() {

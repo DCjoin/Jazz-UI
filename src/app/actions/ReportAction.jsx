@@ -44,6 +44,24 @@ let ReportAction = {
       type: Action.SET_SELECTED_REPORT_ITEM,
       reportItem: reportItem
     });
+  },
+  saveCustomerReport(data) {
+    Ajax.post('/DataReport.svc/SaveCustomerReport', {
+      params: {
+        dto: data
+      },
+      success: function(curReport) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_REPORT_SUCCESS,
+          curReport: curReport
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_REPORT_ERROR
+        });
+      }
+    });
   }
 };
 module.exports = ReportAction;
