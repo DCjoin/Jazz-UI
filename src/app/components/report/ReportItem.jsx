@@ -13,7 +13,7 @@ let ReportItem = React.createClass({
         name: this.props.name,
         createUser: this.props.createUser,
         data: this.props.data,
-        version: this.props.verson
+        version: this.props.version
       };
       this.props.onItemClick(reportItem);
     }

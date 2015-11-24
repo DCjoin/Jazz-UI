@@ -37,6 +37,45 @@ var ReportStore = assign({}, PrototypeStore, {
   setSelectedReportItem: function(reportItem) {
     _reportItem = Immutable.fromJS(reportItem);
   },
+  defalutSelectFirstReport: function() {
+    var reportItem = null;
+    if (_reportList !== null && _reportList.size !== 0) {
+      reportItem = {
+        id: _reportList.getIn([0, 'Id']),
+        createUser: _reportList.getIn([0, 'CreateUser']),
+        version: _reportList.getIn([0, 'Version']),
+        templateId: _reportList.getIn([0, 'TemplateId']),
+        name: _reportList.getIn([0, 'Name']),
+        data: _reportList.getIn([0, 'CriteriaList'])
+      };
+    }
+    _reportItem = Immutable.fromJS(reportItem);
+  },
+  updateReportItem: function(curReport) {
+    var reportItem = {
+      id: curReport.Id,
+      templateId: curReport.TemplateId,
+      name: curReport.Name,
+      createUser: curReport.CreateUser,
+      data: curReport.CriteriaList,
+      version: curReport.Version
+    };
+    ReportStore.setSelectedReportItem(reportItem);
+    var index = _reportList.findIndex((item) => {
+      if (item.get('Id') === curReport.Id) {
+        return true;
+      }
+    });
+    _reportList = _reportList.set(index, Immutable.fromJS(curReport));
+  },
+  deleteReportbyId: function(id) {
+    var index = _reportList.findIndex((item) => {
+      if (item.get('Id') === id) {
+        return true;
+      }
+    });
+    _reportList = _reportList.delete(index);
+  },
   getSelectedReportItem: function() {
     return _reportItem;
   },
@@ -73,17 +112,8 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_REPORT_LIST_SUCCESS:
       ReportStore.setReportList(action.reportList);
-      if (action.reportList !== null && action.reportList.length !== 0) {
-        var reportItem = {
-          id: action.reportList[0].Id,
-          templateId: action.reportList[0].TemplateId,
-          name: action.reportList[0].Name,
-          user: action.reportList[0].CreateUser,
-          data: action.reportList[0].CriteriaList
-        };
-        ReportStore.setSelectedReportItem(reportItem);
-        ReportStore.emitReportItemChange();
-      }
+      ReportStore.defalutSelectFirstReport();
+      ReportStore.emitReportItemChange();
       ReportStore.emitReportListChange();
       break;
     case Action.GET_REPORT_LIST_ERROR:
@@ -101,6 +131,17 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_REPORT_LIST_ERROR:
       ReportStore.setTemplateList([]);
       ReportStore.emitTemplateListChange();
+      break;
+    case Action.SAVE_REPORT_SUCCESS:
+      ReportStore.updateReportItem(action.curReport);
+      ReportStore.emitReportItemChange();
+      ReportStore.emitReportListChange();
+      break;
+    case Action.DELETE_REPORT_SUCCESS:
+      ReportStore.deleteReportbyId(action.id);
+      ReportStore.defalutSelectFirstReport();
+      ReportStore.emitReportItemChange();
+      ReportStore.emitReportListChange();
       break;
   }
 });

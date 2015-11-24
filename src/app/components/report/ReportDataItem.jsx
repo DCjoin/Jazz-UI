@@ -6,43 +6,29 @@ import ConstStore from '../../stores/ConstStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import { FlatButton, FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox } from 'material-ui';
+import Immutable from 'immutable';
 
 
 let ReportDataItem = React.createClass({
-  getInitialState: function() {
-    var reportData = this.props.reportData;
-    var timeOrder = this.dataToDisplay(reportData.get('ExportTimeOrder'));
+  getRealTime(time) {
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
-    return {
-      index: this.props.index,
-      disabled: this.props.disabled,
-      sheetNames: this.props.sheetNames,
-      startTime: reportData.get('DataStartTime') !== null ? j2d(reportData.get('DataStartTime'), false) : null,
-      endTime: reportData.get('DataEndTime') !== null ? j2d(reportData.get('DataEndTime'), false) : null,
-      reportType: reportData.get('ReportType'),
-      dateType: reportData.get('DateType'),
-      step: reportData.get('ExportStep'),
-      numberRule: reportData.get('NumberRule'),
-      timeOrder: timeOrder,
-      targetSheet: reportData.get('TargetSheet'),
-      isExportTagName: reportData.get('IsExportTagName'),
-      isExportTimestamp: reportData.get('IsExportTimestamp'),
-      startCell: reportData.get('StartCell'),
-      exportLayoutDirection: reportData.get('ExportLayoutDirection'),
-      showStep: true
-    };
+    return time !== null ? j2d(time, false) : null;
   },
   getDisplayDate(time) {
-    var hour = time.getHours();
-    if (hour === 0) {
-      time = CommonFuns.dateAdd(time, -1, 'days');
-      hour = 24;
-    }
-    var year = time.getFullYear();
-    var month = time.getMonth() + 1;
-    var day = time.getDate();
+    if (time !== null) {
+      var hour = time.getHours();
+      if (hour === 0) {
+        time = CommonFuns.dateAdd(time, -1, 'days');
+        hour = 24;
+      }
+      var year = time.getFullYear();
+      var month = time.getMonth() + 1;
+      var day = time.getDate();
 
-    return year + '/' + month + '/' + day + ' ' + hour + ':00';
+      return year + '/' + month + '/' + day + ' ' + hour + ':00';
+    } else {
+      return '';
+    }
   },
   dataToDisplay: function(data) {
     var display;
@@ -62,22 +48,18 @@ let ReportDataItem = React.createClass({
     }
     return data;
   },
-  getSheetItems: function() {
-    var sheetNames = this.state.sheetNames;
-    var sheetItems = [];
-    for (var i = 0; i < sheetNames.size; i++) {
-      var obj = {
-        payload: sheetNames.get(i),
-        text: sheetNames.get(i)
-      };
-      sheetItems.push(obj);
+  _getSheetItems: function() {
+    var sheetNames = this.props.sheetNames;
+    if (sheetNames !== null && sheetNames.size !== 0) {
+      return sheetNames.map((item, i) => {
+        return {
+          payload: item,
+          text: item
+        };
+      }).toJS();
+    } else {
+      return [];
     }
-    return sheetItems;
-  },
-  changeDirection(value) {
-    this.setState({
-      exportLayoutDirection: value
-    });
   },
   changeTimeValue(value) {
     var result = '';
@@ -107,6 +89,19 @@ let ReportDataItem = React.createClass({
     }
     return result;
   },
+  _updateReportData(name, value) {
+    if (this.props.updateReportData) {
+      this.props.updateReportData(name, value, this.props.index);
+    }
+  },
+  _deleteReportData() {
+    if (this.props.deleteReportData) {
+      this.props.deleteReportData(this.props.index);
+    }
+  },
+  _onDirectionChange(value) {
+    this._updateReportData('ExportLayoutDirection', value);
+  },
   _onDateTypeChange(name, e) {
     var value = e.target.value;
     var dateSelector = this.refs.dateTimeSelector;
@@ -118,73 +113,86 @@ let ReportDataItem = React.createClass({
     }
     this._handleSelectValueChange(name, e);
   },
+  _onReprtTypeChange(name, e) {
+    var value = e.target.value;
+    if (value === 0) {
+      this.setState({
+        showStep: true
+      });
+    } else if (value === 1) {
+      this.setState({
+        showStep: false
+      });
+    }
+    this._handleSelectValueChange(name, e);
+  },
+
   _handleSelectValueChange(name, e) {
-    let change = {};
-    change[name] = e.target.value;
-    this.setState(change);
+    this._updateReportData(name, e.target.value);
   },
   _handleCheckboxCheck(name, e, check) {
-    let change = {};
-    change[name] = check;
-    this.setState(change);
+    this._updateReportData(name, check);
+  },
+  _onStartCellChange() {
+    var value = this.refs.startCell.getValue();
+    this._updateReportData('StartCell', value);
   },
   _onDateSelectorChanged() {
-    this.setState({
-      dateType: 11
-    });
+    this._updateReportData('DateType', 11);
+    var timeRange = this.refs.dateTimeSelector.getDateTime();
+    var d2j = CommonFuns.DataConverter.DatetimeToJson;
+    var startTime = d2j(timeRange.start);
+    var endTime = d2j(timeRange.end);
+    this._updateReportData('DataStartTime', startTime);
+    this._updateReportData('DataEndTime', endTime);
   },
-  componentWillReceiveProps(nextProps) {
-    let newState = {};
-
-    var reportData = nextProps.reportData;
-    var j2d = CommonFuns.DataConverter.JsonToDateTime;
-    var timeOrder = this.dataToDisplay(reportData.get('ExportTimeOrder'));
-    newState.startTime = reportData.get('DataStartTime') !== null ? j2d(reportData.get('DataStartTime'), false) : null;
-    newState.endTime = reportData.get('DataEndTime') !== null ? j2d(reportData.get('DataEndTime'), false) : null;
-    newState.reportType = reportData.get('ReportType');
-    newState.dateType = reportData.get('DateType');
-    newState.step = reportData.get('ExportStep');
-    newState.numberRule = reportData.get('NumberRule');
-    newState.timeOrder = timeOrder;
-    newState.targetSheet = reportData.get('TargetSheet');
-    newState.isExportTagName = reportData.get('IsExportTagName');
-    newState.isExportTimestamp = reportData.get('IsExportTimestamp');
-    newState.startCell = reportData.get('StartCell');
-    newState.exportLayoutDirection = reportData.get('ExportLayoutDirection');
-
-    newState.disabled = nextProps.disabled;
-    newState.index = nextProps.index;
-    newState.sheetNames = nextProps.sheetNames;
-
-    this.setState(newState);
+  _onTimeOrderChange(name, e, selected) {
+    var value = this.displayToData(selected);
+    this._updateReportData(name, value);
+  },
+  _displayTimeRange() {
+    var str = '';
+    if (this.props.dateType !== 11) {
+      var dateType = this.changeTimeValue(this.props.dateType);
+      var timeregion = CommonFuns.GetDateRegion(dateType);
+      str = this.getDisplayDate(timeregion.start) + '-' + this.getDisplayDate(timeregion.end);
+    } else {
+      var startTime = this.getRealTime(this.props.startTime);
+      var endTime = this.getRealTime(this.props.endTime);
+      str = this.getDisplayDate(startTime) + '-' + this.getDisplayDate(endTime);
+    }
+    return str;
   },
   componentDidUpdate: function() {
-    if (!this.state.disabled) {
+    if (!this.props.disabled) {
       var dateSelector = this.refs.dateTimeSelector;
-      if (this.state.dateType !== 11) {
-        var dateType = this.changeTimeValue(this.state.dateType);
+      if (this.props.dateType !== 11) {
+        var dateType = this.changeTimeValue(this.props.dateType);
         var timeregion = CommonFuns.GetDateRegion(dateType);
         dateSelector.setDateField(timeregion.start, timeregion.end);
       } else {
-        dateSelector.setDateField(this.state.startTime, this.state.endTime);
+        var startTime = this.getRealTime(this.props.startTime);
+        var endTime = this.getRealTime(this.props.endTime);
+        dateSelector.setDateField(startTime, endTime);
       }
     }
   },
   componentDidMount: function() {
-    if (!this.state.disabled) {
+    if (!this.props.disabled) {
       var dateSelector = this.refs.dateTimeSelector;
-      if (this.state.dateType !== 11) {
-        var dateType = this.changeTimeValue(this.state.dateType);
+      if (this.props.dateType !== 11) {
+        var dateType = this.changeTimeValue(this.props.dateType);
         var timeregion = CommonFuns.GetDateRegion(dateType);
         dateSelector.setDateField(timeregion.start, timeregion.end);
       } else {
-        dateSelector.setDateField(this.state.startTime, this.state.endTime);
+        var startTime = this.getRealTime(this.props.startTime);
+        var endTime = this.getRealTime(this.props.endTime);
+        dateSelector.setDateField(startTime, endTime);
       }
     }
   },
   render() {
     var me = this;
-    var index = me.state.index;
     var typeItems = [{
       payload: 0,
       text: I18N.EM.Report.ReportTypeEnergy
@@ -284,8 +292,8 @@ let ReportDataItem = React.createClass({
     var deleteButton = null,
       dateTimeSelector = null,
       dataSourceButton = null;
-    if (!me.state.disabled) {
-      deleteButton = <FlatButton label={I18N.EM.Report.Delete} />;
+    if (!me.props.disabled) {
+      deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._deleteReportData} />;
       dataSourceButton = <FlatButton label={I18N.EM.Report.EditTag} style={{
         width: '120px'
       }} />;
@@ -294,14 +302,14 @@ let ReportDataItem = React.createClass({
       dataSourceButton = <FlatButton label={I18N.EM.Report.ViewTag} style={{
         width: '120px'
       }} />;
-      dateTimeSelector = <span>{me.getDisplayDate(me.state.startTime) + '-' + me.getDisplayDate(me.state.endTime)}</span>;
+      dateTimeSelector = <span>{me._displayTimeRange()}</span>;
     }
     var diplayCom = null;
-    if (me.state.showStep) {
-      diplayCom = <SelectField ref='step' menuItems={stepItems} disabled={me.state.disabled} value={me.state.step} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.Step} onChange={me._handleSelectValueChange.bind(null, 'step')}>
+    if (me.props.showStep) {
+      diplayCom = <SelectField ref='step' menuItems={stepItems} disabled={me.props.disabled} value={me.props.step} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.Step} onChange={me._handleSelectValueChange.bind(null, 'ExportStep')}>
       </SelectField>;
     } else {
-      diplayCom = <SelectField ref='numberRule' menuItems={numberRuleItems} disabled={me.state.disabled} value={me.state.numberRule} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.NumberRule} onChange={me._handleSelectValueChange.bind(null, 'numberRule')}>
+      diplayCom = <SelectField ref='numberRule' menuItems={numberRuleItems} disabled={me.props.disabled} value={me.props.numberRule} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.NumberRule} onChange={me._handleSelectValueChange.bind(null, 'NumberRule')}>
       </SelectField>;
     }
     return (
@@ -313,11 +321,11 @@ let ReportDataItem = React.createClass({
         display: 'flex',
         'flex-direction': 'row'
       }}>
-          <span>{I18N.EM.Report.Data + index}</span>
+          <span>{I18N.EM.Report.Data + me.props.index}</span>
           {deleteButton}
         </div>
         <div className='jazz-report-data-container'>
-          <SelectField ref='reportType' menuItems={typeItems} disabled={me.state.disabled} value={me.state.reportType} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.DataType} onChange={me._handleSelectValueChange.bind(null, 'reportType')}>
+          <SelectField ref='reportType' menuItems={typeItems} disabled={me.props.disabled} value={me.props.reportType} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.DataType} onChange={me._onReprtTypeChange.bind(null, 'ReportType')}>
           </SelectField>
         </div>
         <div className='jazz-report-data-container'>
@@ -330,7 +338,7 @@ let ReportDataItem = React.createClass({
         display: 'flex',
         'flex-direction': 'row'
       }}>
-            <SelectField menuItems={dateTypeItems} ref='dateType' disabled={me.state.disabled} value={me.state.dateType} onChange={me._onDateTypeChange.bind(null, 'dateType')}></SelectField>
+            <SelectField menuItems={dateTypeItems} ref='dateType' disabled={me.props.disabled} value={me.props.dateType} onChange={me._onDateTypeChange.bind(null, 'DateType')}></SelectField>
             {dateTimeSelector}
           </div>
         </div>
@@ -340,41 +348,41 @@ let ReportDataItem = React.createClass({
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.Order}</span>
           <div className='jazz-report-data-radiobutton'>
-            <RadioButtonGroup valueSelected={me.state.timeOrder}>
-              <RadioButton value='orderAsc' disabled={me.state.disabled} label={I18N.EM.Report.OrderAsc} />
-              <RadioButton value='orderDesc' disabled={me.state.disabled} label={I18N.EM.Report.OrderDesc} />
+            <RadioButtonGroup name='timeOrder' valueSelected={me.dataToDisplay(me.props.timeOrder)} onChange={me._onTimeOrderChange.bind(null, 'ExportTimeOrder')}>
+              <RadioButton value='orderAsc' disabled={me.props.disabled} label={I18N.EM.Report.OrderAsc} />
+              <RadioButton value='orderDesc' disabled={me.props.disabled} label={I18N.EM.Report.OrderDesc} />
             </RadioButtonGroup>
           </div>
         </div>
         <div className='jazz-report-data-container'>
-          <SelectField ref='targetSheet' menuItems={me.getSheetItems()} disabled={me.state.disabled} value={me.state.targetSheet} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.TargetSheet} onChange={me._handleSelectValueChange.bind(null, 'targetSheet')}>
+          <SelectField ref='targetSheet' menuItems={me._getSheetItems()} disabled={me.props.disabled} value={me.props.targetSheet} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.TargetSheet} onChange={me._handleSelectValueChange.bind(null, 'TargetSheet')}>
           </SelectField>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.ExportFormat}</span>
           <div className='jazz-report-data-checkbox'>
-            <Checkbox disabled={me.state.disabled} checked={me.state.isExportTagName} label={I18N.EM.Report.ExportTagName} onCheck={me._handleCheckboxCheck.bind(null, 'isExportTagName')}/>
-            <Checkbox disabled={me.state.disabled} checked={me.state.isExportTimestamp} label={I18N.EM.Report.ExportTimeLabel} onCheck={me._handleCheckboxCheck.bind(null, 'isExportTimestamp')}/>
+            <Checkbox disabled={me.props.disabled} checked={me.props.isExportTagName} label={I18N.EM.Report.ExportTagName} onCheck={me._handleCheckboxCheck.bind(null, 'IsExportTagName')}/>
+            <Checkbox disabled={me.props.disabled} checked={me.props.isExportTimestamp} label={I18N.EM.Report.ExportTimeLabel} onCheck={me._handleCheckboxCheck.bind(null, 'IsExportTimestamp')}/>
           </div>
         </div>
         <div className='jazz-report-data-container'>
-          <TextField ref='startCell' floatingLabelText={I18N.EM.Report.StartCell} value={me.state.startCell} disabled={me.state.disabled}></TextField>
+          <TextField ref='startCell' floatingLabelText={I18N.EM.Report.StartCell} value={me.props.startCell} disabled={me.props.disabled} onChange={me._onStartCellChange}></TextField>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.Layout}</span>
           <div className='jazz-report-data-direction'>
-            <div onClick={me.changeDirection.bind(null, 0)} className={classNames(
+            <div onClick={me._onDirectionChange.bind(null, 0)} className={classNames(
         {
-          'jazz-report-data-direction-time': me.state.exportLayoutDirection !== 0 && !me.state.disabled,
-          'jazz-report-data-direction-time-selected': me.state.exportLayoutDirection === 0,
-          'jazz-report-data-direction-time-disabled': me.state.disabled
+          'jazz-report-data-direction-time': me.props.exportLayoutDirection !== 0 && !me.props.disabled,
+          'jazz-report-data-direction-time-selected': me.props.exportLayoutDirection === 0,
+          'jazz-report-data-direction-time-disabled': me.props.disabled
         }
       )}></div>
-          <div onClick={me.changeDirection.bind(null, 1)} className={classNames(
+          <div onClick={me._onDirectionChange.bind(null, 1)} className={classNames(
         {
-          'jazz-report-data-direction-tag': me.state.exportLayoutDirection !== 1 && !me.state.disabled,
-          'jazz-report-data-direction-tag-selected': me.state.exportLayoutDirection === 1,
-          'jazz-report-data-direction-tag-disabled': me.state.disabled
+          'jazz-report-data-direction-tag': me.props.exportLayoutDirection !== 1 && !me.props.disabled,
+          'jazz-report-data-direction-tag-selected': me.props.exportLayoutDirection === 1,
+          'jazz-report-data-direction-tag-disabled': me.props.disabled
         }
       )}></div>
           </div>

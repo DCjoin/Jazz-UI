@@ -44,6 +44,42 @@ let ReportAction = {
       type: Action.SET_SELECTED_REPORT_ITEM,
       reportItem: reportItem
     });
+  },
+  saveCustomerReport(data) {
+    Ajax.post('/DataReport.svc/SaveCustomerReport', {
+      params: {
+        dto: data
+      },
+      success: function(curReport) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_REPORT_SUCCESS,
+          curReport: curReport
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_REPORT_ERROR
+        });
+      }
+    });
+  },
+  deleteReportById(id) {
+    Ajax.post('/DataReport.svc/DeleteReportById', {
+      params: {
+        id: id
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_REPORT_SUCCESS,
+          id: id
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_REPORT_ERROR
+        });
+      }
+    });
   }
 };
 module.exports = ReportAction;

@@ -1,10 +1,11 @@
 'use strict';
 import React from "react";
-import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton } from 'material-ui';
+import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton, Dialog } from 'material-ui';
 import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportDataItem from './ReportDataItem.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
+import Immutable from 'immutable';
 
 
 var ReportRightPanel = React.createClass({
@@ -17,7 +18,8 @@ var ReportRightPanel = React.createClass({
       reportItem: ReportStore.getSelectedReportItem(),
       showDownloadButton: true,
       showUploadButton: false,
-      checkedValue: 'uploadedTemplate'
+      checkedValue: 'uploadedTemplate',
+      showDeleteDialog: false
     };
   },
   _onChange() {
@@ -25,10 +27,11 @@ var ReportRightPanel = React.createClass({
     this.setState({
       reportItem: reportItem,
       isLoading: false,
-      disabled: true
+      disabled: true,
+      showDeleteDialog: false
     });
   },
-  _onChangeTemplate(e, newSelection) {
+  _onTemplateTypeChange(e, newSelection) {
     this.setState({
       checkedValue: newSelection
     });
@@ -44,35 +47,155 @@ var ReportRightPanel = React.createClass({
       });
     }
   },
-  _handleSelectValueChange(name, e) {
-    let change = {};
-    change[name] = e.target.value;
-    this.setState(change);
+  _onExistTemplateChange(e) {
+    var value = e.target.value;
+    var reportItem = this.state.reportItem;
+    reportItem = reportItem.set('templateId', value);
+    this.setState({
+      reportItem: reportItem
+    });
   },
-  getTemplateItems: function() {
-    var templateItems = [];
+  _onNameChange() {
+    var value = this.refs.reportTitle.getValue();
+    var reportItem = this.state.reportItem;
+    reportItem = reportItem.set('name', value);
+    this.setState({
+      reportItem: reportItem
+    });
+  },
+  _getTemplateItems: function() {
     var templateList = this.props.templateList;
     if (templateList && templateList.size !== 0) {
-      templateList.map(function(item) {
-        var obj = {
+      return templateList.map(function(item) {
+        return {
           payload: item.get('Id'),
           text: item.get('Name')
         };
-        templateItems.push(obj);
-      });
+      }).toJS();
     }
-    return templateItems;
   },
-  editReport: function() {
+  _endsWith(str, pattern) {
+    var d = str.length - pattern.length;
+    return d >= 0 && str.lastIndexOf(pattern) === d;
+  },
+  _handleFileSelect(event) {
+    var that = this;
+    var file = event.target.files[0];
+    var fileName = file.name;
+
+    if (!that._endsWith(fileName.toLowerCase(), '.xlsx') && !that._endsWith(fileName.toLowerCase(), '.xls')) {
+      window.alert("文件类型非法，请重新选择模版文件。");
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function(data) {
+      var fileContent = data.target.result;
+      fileContent = fileContent.split('base64,')[1];
+      var params = {
+        Name: file.name,
+        Content: fileContent
+      };
+      ReportAction.upload(params);
+    };
+    reader.readAsDataURL(file);
+  },
+  _downloadTemplate: function() {
+    var templateId = this.state.reportItem.get('templateId');
+    var fr = document.createElement('iframe');
+    fr.style.display = 'none';
+    fr.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
+    var handler = function() {
+      document.body.removeChild(fr);
+    };
+    if (fr.attachEvent) {
+      fr.attachEvent("onload", function() {
+        handler();
+      });
+    } else {
+      fr.onload = function() {
+        handler();
+      };
+    }
+    document.body.appendChild(fr);
+  },
+  _editReport: function() {
     this.setState({
       disabled: false
     });
   },
-  cancelEditReport: function() {
+  _cancelEditReport: function() {
     var reportItem = ReportStore.getSelectedReportItem();
     this.setState({
       reportItem: reportItem,
       disabled: true
+    });
+  },
+  _saveReport: function() {
+    var reportItem = this.state.reportItem;
+    var sendData = {
+      CreateUser: reportItem.get('createUser'),
+      CriteriaList: reportItem.get('data').toJS(),
+      CustomerId: parseInt(window.currentCustomerId),
+      Id: reportItem.get('id'),
+      Name: reportItem.get('name'),
+      TemplateId: reportItem.get('templateId'),
+      Version: reportItem.get('version')
+    };
+    ReportAction.saveCustomerReport(sendData);
+    this.setState({
+      disabled: true
+    });
+  },
+  _handleDialogDismiss() {
+    this.setState({
+      showDeleteDialog: false
+    });
+  },
+  _showDeleteDialog() {
+    this.setState({
+      showDeleteDialog: true
+    });
+  },
+  _renderDeleteDialog() {
+    if (!this.state.showDeleteDialog) {
+      return null;
+    }
+    var dialogActions = [
+      <FlatButton
+      label="删除"
+      onClick={this._deleteReport} />,
+
+      <FlatButton
+      label="放弃"
+      onClick={this._handleDialogDismiss} />
+    ];
+
+    return (<Dialog
+      ref="deleteDialog"
+      title="删除报表"
+      openImmediately={true}
+      actions={dialogActions}
+      modal={true}>
+        {'确定删除 "' + this.state.reportItem.get('name') + ' "吗？'}
+      </Dialog>);
+  },
+  _deleteReport: function() {
+    var id = this.state.reportItem.get('id');
+    ReportAction.deleteReportById(id);
+    this.setState({
+
+    })
+  },
+  _updateReportData: function(name, value, displayIndex) {
+    var reportItem = this.state.reportItem;
+    var reportData = reportItem.get('data');
+    var length = reportData.size;
+    var index = length - displayIndex;
+    reportData = reportData.setIn([index, name], value);
+    reportItem = reportItem.set('data', reportData);
+    this.setState({
+      reportItem: reportItem
     });
   },
   addReportData: function() {
@@ -93,23 +216,39 @@ var ReportRightPanel = React.createClass({
       TagsList: [],
       TargetSheet: null
     };
-    reportData.unshift(newReportData);
-    for (var i = 0; i < reportData.size; i++) {
-      reportData.get(i).set('Index', i);
-    }
+    reportData = reportData.unshift(Immutable.fromJS(newReportData));
+    reportData = reportData.map((item, i) => {
+      return item.set('Index', i);
+    });
+    reportItem = reportItem.set('data', reportData);
     this.setState({
       reportItem: reportItem
     });
   },
-  getSheetNames: function() {
+  _deleteReportData: function(index) {
+    var reportItem = this.state.reportItem;
+    var reportData = reportItem.get('data');
+    var length = reportData.size;
+    reportData = reportData.delete(length - index);
+    reportData = reportData.map((item, i) => {
+      return item.set('Index', i);
+    });
+    reportItem = reportItem.set('data', reportData);
+    this.setState({
+      reportItem: reportItem
+    });
+  },
+  _getSheetNames: function() {
     var templateList = this.props.templateList;
-    var sheetNames = [];
-    for (var i = 0; i < templateList.size; i++) {
-      if (this.state.reportItem.get('templateId') === templateList.get(i).get('Id')) {
-        sheetNames = templateList.get(i).get('SheetNames');
-      }
+    if (templateList !== null && templateList.size !== 0) {
+      return templateList.find((item) => {
+        if (this.state.reportItem.get('templateId') === item.get('Id')) {
+          return true;
+        }
+      }).get('SheetNames');
+    } else {
+      return null;
     }
-    return sheetNames;
   },
   componentDidMount: function() {
     ReportStore.addReportItemChangeListener(this._onChange);
@@ -143,37 +282,44 @@ var ReportRightPanel = React.createClass({
       var expandButton = (<FlatButton style={buttonStyle} onClick={me._onToggle}>
         <FontIcon className="icon-taglist-fold" style={iconStyle}/>
       </FlatButton>);
-      var reportTitle = (<TextField ref='templateTitle' floatingLabelText={I18N.EM.Report.ReportName} value={reportItem.get('name')} disabled={me.state.disabled}></TextField>);
+      var reportTitle = (<TextField ref='reportTitle' floatingLabelText={I18N.EM.Report.ReportName} onChange={me._onNameChange} value={reportItem.get('name')} disabled={me.state.disabled}></TextField>);
       var reportTemplate;
 
-      var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me.editReport} />;
+      var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me._editReport} />;
       var exportButton = <FlatButton label={I18N.EM.Report.Export} />;
-      var deleteButton = <FlatButton label={I18N.EM.Report.Delete} />;
-      var saveButton = <FlatButton label={I18N.EM.Report.Save} />;
-      var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me.cancelEditReport} />;
+      var deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} />;
+      var saveButton = <FlatButton label={I18N.EM.Report.Save} onClick={me._saveReport} />;
+      var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me._cancelEditReport} />;
       var buttonArea = null;
       if (me.state.disabled) {
         buttonArea = <div>{editButton}{exportButton}{deleteButton}</div>;
-        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} floatingLabelText={I18N.EM.Report.Template} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}></SelectField>);
+        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me._getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} floatingLabelText={I18N.EM.Report.Template}></SelectField>);
       } else {
         buttonArea = <div>{saveButton}{cancelButton}</div>;
         var downloadButton = null,
           uploadButton = null;
         if (me.state.showDownloadButton) {
-          downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} />);
+          downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={me._downloadTemplate} />);
         }
         if (me.state.showUploadButton) {
-          uploadButton = (<FlatButton label={I18N.EM.Report.Upload} />);
+          var fileInputStyle = {
+            opacity: 0,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            display: 'none'
+          };
+          uploadButton = (<input text={I18N.EM.Report.Upload} type="file" id="fileInput" ref="fileInput" onChange={this._handleFileSelect} style={fileInputStyle} />);
         }
         reportTemplate = (
           <div>
             <span>{I18N.EM.Report.Template}</span>
-            <RadioButton onCheck={me._onChangeTemplate} checked={me.state.checkedValue === "uploadedTemplate"} value="uploadedTemplate" label={I18N.EM.Report.ExistTemplate} />
+            <RadioButton onCheck={me._onTemplateTypeChange} checked={me.state.checkedValue === "uploadedTemplate"} value="uploadedTemplate" label={I18N.EM.Report.ExistTemplate} />
             <div style={{
             display: 'flex',
             'flex-direction': 'row'
           }}>
-              <SelectField ref='reportTemplate' menuItems={me.getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} onChange={me._handleSelectValueChange.bind(null, 'templateValue')}>
+              <SelectField ref='reportTemplate' menuItems={me._getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} onChange={me._onExistTemplateChange}>
               </SelectField>
               {downloadButton}
             </div>
@@ -181,10 +327,13 @@ var ReportRightPanel = React.createClass({
             display: 'flex',
             'flex-direction': 'row'
           }}>
-              <RadioButton onCheck={me._onChangeTemplate} style={{
+              <RadioButton onCheck={me._onTemplateTypeChange} style={{
             width: '150px'
           }} checked={me.state.checkedValue === "newTemplate"} value="newTemplate" label={I18N.EM.Report.UploadTemplate}/>
-              {uploadButton}
+              <label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
+                {I18N.EM.Report.Upload}
+                {uploadButton}
+              </label>
             </div>
           </div>
         );
@@ -197,19 +346,33 @@ var ReportRightPanel = React.createClass({
       </div>);
       }
       var dataLength = reportItem.get('data').size;
+      var sheetNames = me._getSheetNames();
       var reportData = reportItem.get('data').map(function(item) {
-        var sheetNames = me.getSheetNames();
         let props = {
           disabled: me.state.disabled,
-          reportData: item,
+          startTime: item.get('DataStartTime'),
+          endTime: item.get('DataEndTime'),
+          reportType: item.get('ReportType'),
+          dateType: item.get('DateType'),
+          step: item.get('ExportStep'),
+          numberRule: item.get('NumberRule'),
+          timeOrder: item.get('ExportTimeOrder'),
+          targetSheet: item.get('TargetSheet'),
+          isExportTagName: item.get('IsExportTagName'),
+          isExportTimestamp: item.get('IsExportTimestamp'),
+          startCell: item.get('StartCell'),
+          exportLayoutDirection: item.get('ExportLayoutDirection'),
           sheetNames: sheetNames,
+          updateReportData: me._updateReportData,
+          deleteReportData: me._deleteReportData,
+          showStep: item.get('ReportType') === 0 ? true : false,
           index: dataLength - item.get('Index')
         };
         return (
           <ReportDataItem {...props}></ReportDataItem>
           );
       });
-
+      var deleteDialog = me._renderDeleteDialog();
       displayedDom = (
         <div className="jazz-report-rightpanel-container">
           <div className="jazz-report-rightpanel-header">
@@ -228,6 +391,7 @@ var ReportRightPanel = React.createClass({
           <div className="jazz-report-rightpanel-footer">
             {buttonArea}
           </div>
+          {deleteDialog}
         </div>
       );
     }
