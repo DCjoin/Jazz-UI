@@ -124,7 +124,7 @@ var ReportRightPanel = React.createClass({
     var iframe = createElement('iframe', null, {
       display: 'none'
     }, document.body);
-    var handler = function() {
+    iframe.onload = function() {
       var json = iframe.contentDocument.body.innerHTML;
       var obj = JSON.parse(json);
       var reportItem = me.state.reportItem;
@@ -149,15 +149,6 @@ var ReportRightPanel = React.createClass({
         }
       }
     };
-    if (iframe.attachEvent) {
-      iframe.attachEvent("onload", function() {
-        handler();
-      });
-    } else {
-      iframe.onload = function() {
-        handler();
-      };
-    }
 
     var form = createElement('form', {
       method: 'post',
@@ -200,32 +191,23 @@ var ReportRightPanel = React.createClass({
   },
   _downloadTemplate: function() {
     var templateId = this.state.reportItem.get('templateId');
-    var fr = document.createElement('iframe');
-    fr.style.display = 'none';
-    fr.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
-    var handler = function() {
-      document.body.removeChild(fr);
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = 'TagImportExcel.aspx?Type=ReportTemplate&Id=' + templateId;
+    iframe.onload = function() {
+      document.body.removeChild(iframe);
     };
-    if (fr.attachEvent) {
-      fr.attachEvent("onload", function() {
-        handler();
-      });
-    } else {
-      fr.onload = function() {
-        handler();
-      };
-    }
-    document.body.appendChild(fr);
+    document.body.appendChild(iframe);
   },
   _exportTemplate: function() {
     var reportItem = this.state.reportItem;
     var id = reportItem.get('id');
-    var fr = document.createElement('iframe');
-    fr.style.display = 'none';
-    fr.src = 'TagImportExcel.aspx?Type=Report&Id=' + id;
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = 'TagImportExcel.aspx?Type=Report&Id=' + id;
 
-    var handler = function() {
-      var json = JSON.parse(fr.contentDocument.body.innerHTML);
+    iframe.onload = function() {
+      var json = JSON.parse(iframe.contentDocument.body.innerHTML);
       if (json) {
         var code = json.UploadResponse.ErrorCode;
         var msg;
@@ -243,16 +225,7 @@ var ReportRightPanel = React.createClass({
         }
       }
     };
-    if (fr.attachEvent) {
-      fr.attachEvent("onload", function() {
-        handler();
-      });
-    } else {
-      fr.onload = function() {
-        handler();
-      };
-    }
-    document.body.appendChild(fr);
+    document.body.appendChild(iframe);
   },
   _editReport: function() {
     this.setState({
