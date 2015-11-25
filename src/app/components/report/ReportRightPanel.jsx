@@ -2,9 +2,11 @@
 import React from "react";
 import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton, Dialog } from 'material-ui';
 import classSet from 'classnames';
+import CommonFuns from '../../util/Util.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportDataItem from './ReportDataItem.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
+import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import Immutable from 'immutable';
 
 
@@ -19,7 +21,9 @@ var ReportRightPanel = React.createClass({
       showDownloadButton: true,
       checkedValue: 'uploadedTemplate',
       showDeleteDialog: false,
-      templateList: ReportStore.getTemplateList()
+      showUploadDialog: false,
+      templateList: ReportStore.getTemplateList(),
+      fileName: ''
     };
   },
   _onChange() {
@@ -27,7 +31,9 @@ var ReportRightPanel = React.createClass({
     var obj = {
       reportItem: reportItem,
       isLoading: false,
-      showDeleteDialog: false
+      showDeleteDialog: false,
+      sheetNames: this._getSheetNamesByTemplateId(reportItem.get('templateId')),
+      fileName: ''
     };
     if (reportItem.get('id') === 0) {
       obj.disabled = false;
@@ -35,6 +41,23 @@ var ReportRightPanel = React.createClass({
       obj.disabled = true;
     }
     this.setState(obj);
+  },
+  _onChangeTemplate: function() {
+    this.setState({
+      templateList: ReportStore.getTemplateList()
+    });
+  },
+  _getSheetNamesByTemplateId: function(templateId) {
+    var templateList = this.state.templateList;
+    var sheetNames = null;
+    if (templateList !== null && templateList.size !== 0 && templateId !== null) {
+      sheetNames = templateList.find((item) => {
+        if (templateId === item.get('Id')) {
+          return true;
+        }
+      }).get('SheetNames');
+    }
+    return sheetNames;
   },
   _onTemplateTypeChange(e, newSelection) {
     this.setState({
@@ -54,8 +77,10 @@ var ReportRightPanel = React.createClass({
     var value = e.target.value;
     var reportItem = this.state.reportItem;
     reportItem = reportItem.set('templateId', value);
+    var sheetNames = this._getSheetNamesByTemplateId(value);
     this.setState({
-      reportItem: reportItem
+      reportItem: reportItem,
+      sheetNames: sheetNames
     });
   },
   _onNameChange() {
@@ -82,39 +107,81 @@ var ReportRightPanel = React.createClass({
     return d >= 0 && str.lastIndexOf(pattern) === d;
   },
   _handleFileSelect(event) {
+    var me = this;
     var file = event.target.files[0];
     var fileName = file.name;
 
-    if (!this._endsWith(fileName.toLowerCase(), '.xlsx') && !this._endsWith(fileName.toLowerCase(), '.xls')) {
+    if (!me._endsWith(fileName.toLowerCase(), '.xlsx') && !me._endsWith(fileName.toLowerCase(), '.xls')) {
       window.alert("文件类型非法，请重新选择模版文件。");
       return;
     }
-
-    var iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    var form = document.createElement('form');
-    form.action = 'TagImportExcel.aspx?Type=ReportTemplate';
-    form.method = 'post';
-    form.enctype = 'multipart/form-data';
-    form.name = 'inputForm';
-    form.target = '_self';
+    var createElement = window.Highcharts.createElement,
+      discardElement = window.Highcharts.discardElement;
+    var iframe = createElement('iframe', null, {
+      display: 'none'
+    }, document.body);
+    iframe.onload = function() {
+      var json = iframe.contentDocument.body.innerHTML;
+      var obj = JSON.parse(json);
+      var reportItem = me.state.reportItem;
+      if (obj.success === true) {
+        reportItem = reportItem.set('templateId', obj.TemplateId);
+        me.setState({
+          reportItem: reportItem,
+          sheetNames: Immutable.fromJS(obj.SheetList),
+          showUploadDialog: false
+        });
+      } else {
+        me.setState({
+          showUploadDialog: false,
+          fileName: ''
+        });
+        var errorCode = obj.UploadResponse.ErrorCode, errorMessage;
+        if (errorCode === -1) {
+          errorMessage = I18N.EM.Report.DuplicatedName;
+        }
+        if (errorMessage) {
+          CommonFuns.popupErrorMessage(errorMessage);
+        }
+      }
+    };
+    var form = createElement('form', {
+      method: 'post',
+      action: 'TagImportExcel.aspx?Type=ReportTemplate',
+      target: '_self',
+      enctype: 'multipart/form-data',
+      name: 'inputForm'
+    }, {
+      display: 'none'
+    }, iframe.contentDocument.body);
     var input = this.refs.fileInput.getDOMNode();
     input.name = 'templateFile';
-    var customerInput = document.createElement('input');
-    customerInput.type = 'hidden';
-    customerInput.name = 'CustomerId';
-    customerInput.value = parseInt(window.currentCustomerId);
-    document.body.appendChild(iframe);
     form.appendChild(input);
-    form.appendChild(customerInput);
-    iframe.contentDocument.body.appendChild(form);
-    iframe.onload = function() {
-      var json = iframe.contentDocument.body;
-      var obj = JSON.parse(json);
-    // obj.SheetNames;
-    };
+    var customerInput = createElement('input', {
+      type: 'hidden',
+      name: 'CustomerId',
+      value: parseInt(window.currentCustomerId)
+    }, null, form);
+
     form.submit();
-  // window.discardElement(form);
+
+    discardElement(form);
+    me.setState({
+      fileName: fileName,
+      showUploadDialog: true
+    });
+  },
+  _renderUploadDialog() {
+    if (!this.state.showUploadDialog) {
+      return null;
+    }
+    return (<Dialog
+      ref="uploadDialog"
+      title="上传报表"
+      openImmediately={true}
+      modal={true}>
+        {'文件' + this.state.fileName + '正在导入'}
+      </Dialog>);
   },
   _downloadTemplate: function() {
     var templateId = this.state.reportItem.get('templateId');
@@ -258,26 +325,7 @@ var ReportRightPanel = React.createClass({
       reportItem: reportItem
     });
   },
-  _onChangeTemplate: function() {
-    this.setState({
-      templateList: ReportStore.getTemplateList()
-    });
-  },
-  _getSheetNames: function() {
-    var templateList = this.state.templateList;
-    if (this.state.reportItem.get('templateId') === null) {
-      return null;
-    }
-    if (templateList !== null && templateList.size !== 0) {
-      return templateList.find((item) => {
-        if (this.state.reportItem.get('templateId') === item.get('Id')) {
-          return true;
-        }
-      }).get('SheetNames');
-    } else {
-      return null;
-    }
-  },
+
   componentDidMount: function() {
     ReportAction.getTemplateListByCustomerId(window.currentCustomerId);
     ReportStore.addReportItemChangeListener(this._onChange);
@@ -341,7 +389,8 @@ var ReportRightPanel = React.createClass({
             display: 'none'
           };
           uploadButton = (<label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
-            {I18N.EM.Report.Upload}
+            <span>{me.state.fileName}</span>
+            {me.state.fileName === '' ? I18N.EM.Report.Upload : I18N.EM.Report.Reupload}
             <input text={I18N.EM.Report.Upload} type="file" id="fileInput" ref="fileInput" onChange={this._handleFileSelect} style={fileInputStyle} /></label>);
         }
         reportTemplate = (
@@ -376,7 +425,6 @@ var ReportRightPanel = React.createClass({
       </div>);
       }
       var dataLength = reportItem.get('data').size;
-      var sheetNames = me._getSheetNames();
       var reportData = reportItem.get('data').map(function(item) {
         let props = {
           disabled: me.state.disabled,
@@ -392,7 +440,7 @@ var ReportRightPanel = React.createClass({
           isExportTimestamp: item.get('IsExportTimestamp'),
           startCell: item.get('StartCell'),
           exportLayoutDirection: item.get('ExportLayoutDirection'),
-          sheetNames: sheetNames,
+          sheetNames: me.state.sheetNames,
           updateReportData: me._updateReportData,
           deleteReportData: me._deleteReportData,
           showStep: item.get('ReportType') === 0 ? true : false,
@@ -403,6 +451,7 @@ var ReportRightPanel = React.createClass({
           );
       });
       var deleteDialog = me._renderDeleteDialog();
+      var uploadDialog = me._renderUploadDialog();
       displayedDom = (
         <div className="jazz-report-rightpanel-container">
           <div className="jazz-report-rightpanel-header">
@@ -422,6 +471,7 @@ var ReportRightPanel = React.createClass({
             {buttonArea}
           </div>
           {deleteDialog}
+          {uploadDialog}
         </div>
       );
     }

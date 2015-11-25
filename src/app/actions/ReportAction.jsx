@@ -62,9 +62,7 @@ let ReportAction = {
         });
       },
       error: function(err, res) {
-        AppDispatcher.dispatch({
-          type: Action.SAVE_REPORT_ERROR
-        });
+        console.log(err, res);
       }
     });
   },
@@ -80,9 +78,7 @@ let ReportAction = {
         });
       },
       error: function(err, res) {
-        AppDispatcher.dispatch({
-          type: Action.DELETE_REPORT_ERROR
-        });
+        console.log(err, res);
       }
     });
   }
