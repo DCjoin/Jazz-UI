@@ -183,7 +183,6 @@ var ReportRightPanel = React.createClass({
     }
     return (<Dialog
       ref="uploadDialog"
-      title="上传报表"
       openImmediately={true}
       modal={true}>
         {'文件' + this.state.fileName + '正在导入'}
@@ -281,17 +280,16 @@ var ReportRightPanel = React.createClass({
     }
     var dialogActions = [
       <FlatButton
-      label="删除"
+      label={I18N.EM.Report.Delete}
       onClick={this._deleteReport} />,
 
       <FlatButton
-      label="放弃"
+      label={I18N.EM.Report.Cancel}
       onClick={this._handleDialogDismiss} />
     ];
 
     return (<Dialog
       ref="deleteDialog"
-      title="删除报表"
       openImmediately={true}
       actions={dialogActions}
       modal={true}>
@@ -302,11 +300,10 @@ var ReportRightPanel = React.createClass({
     var id = this.state.reportItem.get('id');
     ReportAction.deleteReportById(id);
   },
-  _updateReportData: function(name, value, displayIndex) {
+  _updateReportData: function(name, value, index) {
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
     var length = reportData.size;
-    var index = length - displayIndex;
     reportData = reportData.setIn([index, name], value);
     reportItem = reportItem.set('data', reportData);
     this.setState({
@@ -344,7 +341,7 @@ var ReportRightPanel = React.createClass({
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
     var length = reportData.size;
-    reportData = reportData.delete(length - index);
+    reportData = reportData.delete(index);
     reportData = reportData.map((item, i) => {
       return item.set('Index', i);
     });
@@ -472,7 +469,11 @@ var ReportRightPanel = React.createClass({
           updateReportData: me._updateReportData,
           deleteReportData: me._deleteReportData,
           showStep: item.get('ReportType') === 0 ? true : false,
-          index: dataLength - item.get('Index')
+          index: item.get('Index'),
+          dataLength: dataLength,
+          id: item.get('Id'),
+          tagsList: item.get('TagsList'),
+          addReport: reportItem.get('id') === 0 ? true : false
         };
         return (
           <ReportDataItem {...props}></ReportDataItem>
