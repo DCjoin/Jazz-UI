@@ -82,26 +82,39 @@ var ReportRightPanel = React.createClass({
     return d >= 0 && str.lastIndexOf(pattern) === d;
   },
   _handleFileSelect(event) {
-    var that = this;
     var file = event.target.files[0];
     var fileName = file.name;
 
-    if (!that._endsWith(fileName.toLowerCase(), '.xlsx') && !that._endsWith(fileName.toLowerCase(), '.xls')) {
+    if (!this._endsWith(fileName.toLowerCase(), '.xlsx') && !this._endsWith(fileName.toLowerCase(), '.xls')) {
       window.alert("文件类型非法，请重新选择模版文件。");
       return;
     }
 
-    var reader = new FileReader();
-    reader.onload = function(data) {
-      var fileContent = data.target.result;
-      fileContent = fileContent.split('base64,')[1];
-      var params = {
-        Name: file.name,
-        Content: fileContent
-      };
-      ReportAction.upload(params);
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    var form = document.createElement('form');
+    form.action = 'TagImportExcel.aspx?Type=ReportTemplate';
+    form.method = 'post';
+    form.enctype = 'multipart/form-data';
+    form.name = 'inputForm';
+    form.target = '_self';
+    var input = this.refs.fileInput.getDOMNode();
+    input.name = 'templateFile';
+    var customerInput = document.createElement('input');
+    customerInput.type = 'hidden';
+    customerInput.name = 'CustomerId';
+    customerInput.value = parseInt(window.currentCustomerId);
+    document.body.appendChild(iframe);
+    form.appendChild(input);
+    form.appendChild(customerInput);
+    iframe.contentDocument.body.appendChild(form);
+    iframe.onload = function() {
+      var json = iframe.contentDocument.body;
+      var obj = JSON.parse(json);
+    // obj.SheetNames;
     };
-    reader.readAsDataURL(file);
+    form.submit();
+  // window.discardElement(form);
   },
   _downloadTemplate: function() {
     var templateId = this.state.reportItem.get('templateId');
