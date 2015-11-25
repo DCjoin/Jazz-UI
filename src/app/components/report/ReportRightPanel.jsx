@@ -117,10 +117,14 @@ var ReportRightPanel = React.createClass({
     }
     var createElement = window.Highcharts.createElement,
       discardElement = window.Highcharts.discardElement;
+
+
     var iframe = createElement('iframe', null, {
       display: 'none'
     }, document.body);
     iframe.onload = function() {
+      var label = me.refs.fileInputLabel.getDOMNode();
+      label.appendChild(input);
       var json = iframe.contentDocument.body.innerHTML;
       var obj = JSON.parse(json);
       var reportItem = me.state.reportItem;
@@ -145,6 +149,7 @@ var ReportRightPanel = React.createClass({
         }
       }
     };
+
     var form = createElement('form', {
       method: 'post',
       action: 'TagImportExcel.aspx?Type=ReportTemplate',
@@ -154,9 +159,11 @@ var ReportRightPanel = React.createClass({
     }, {
       display: 'none'
     }, iframe.contentDocument.body);
+
     var input = this.refs.fileInput.getDOMNode();
     input.name = 'templateFile';
     form.appendChild(input);
+
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
@@ -164,7 +171,6 @@ var ReportRightPanel = React.createClass({
     }, null, form);
 
     form.submit();
-
     discardElement(form);
     me.setState({
       fileName: fileName,
@@ -391,7 +397,7 @@ var ReportRightPanel = React.createClass({
           uploadButton = (<label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
             <span>{me.state.fileName}</span>
             {me.state.fileName === '' ? I18N.EM.Report.Upload : I18N.EM.Report.Reupload}
-            <input text={I18N.EM.Report.Upload} type="file" id="fileInput" ref="fileInput" onChange={this._handleFileSelect} style={fileInputStyle} /></label>);
+            <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/></label>);
         }
         reportTemplate = (
           <div>
