@@ -34,6 +34,7 @@ var ReportRightPanel = React.createClass({
       showDeleteDialog: false,
       sheetNames: this._getSheetNamesByTemplateId(reportItem.get('templateId')),
       checkedValue: 'uploadedTemplate',
+      showDownloadButton: true,
       fileName: ''
     };
     if (reportItem.get('id') === 0) {
@@ -123,7 +124,7 @@ var ReportRightPanel = React.createClass({
     var iframe = createElement('iframe', null, {
       display: 'none'
     }, document.body);
-    iframe.onload = function() {
+    var handler = function() {
       var json = iframe.contentDocument.body.innerHTML;
       var obj = JSON.parse(json);
       var reportItem = me.state.reportItem;
@@ -148,6 +149,15 @@ var ReportRightPanel = React.createClass({
         }
       }
     };
+    if (iframe.attachEvent) {
+      iframe.attachEvent("onload", function() {
+        handler();
+      });
+    } else {
+      iframe.onload = function() {
+        handler();
+      };
+    }
 
     var form = createElement('form', {
       method: 'post',
@@ -207,7 +217,43 @@ var ReportRightPanel = React.createClass({
     }
     document.body.appendChild(fr);
   },
-  _exportTemplate: function() {},
+  _exportTemplate: function() {
+    var reportItem = this.state.reportItem;
+    var id = reportItem.get('id');
+    var fr = document.createElement('iframe');
+    fr.style.display = 'none';
+    fr.src = 'TagImportExcel.aspx?Type=Report&Id=' + id;
+
+    var handler = function() {
+      var json = JSON.parse(fr.contentDocument.body.innerHTML);
+      if (json) {
+        var code = json.UploadResponse.ErrorCode;
+        var msg;
+        if (code == -1) {
+          msg = I18N.Message.M02013;
+        } else if (code == -2) {
+          msg = I18N.format(I18N.Message.M21707, reportItem.get('name'));
+        } else if (code == -3) {
+          msg = I18N.format(I18N.EM.Report.ExportStepError);
+        } else if (code == -4) {
+          msg = I18N.format(I18N.EM.Report.ExportTagUnassociated);
+        }
+        if (msg) {
+          CommonFuns.popupErrorMessage(msg);
+        }
+      }
+    };
+    if (fr.attachEvent) {
+      fr.attachEvent("onload", function() {
+        handler();
+      });
+    } else {
+      fr.onload = function() {
+        handler();
+      };
+    }
+    document.body.appendChild(fr);
+  },
   _editReport: function() {
     this.setState({
       disabled: false
@@ -220,6 +266,7 @@ var ReportRightPanel = React.createClass({
         reportItem: reportItem,
         disabled: true,
         checkedValue: 'uploadedTemplate',
+        showDownloadButton: true,
         fileName: ''
       });
     } else {
@@ -373,7 +420,7 @@ var ReportRightPanel = React.createClass({
       var reportTemplate;
 
       var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me._editReport} />;
-      var exportButton = <FlatButton label={I18N.EM.Report.Export} />;
+      var exportButton = <FlatButton label={I18N.EM.Report.Export} onClick={me._exportTemplate} />;
       var deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} />;
       var saveButton = <FlatButton label={I18N.EM.Report.Save} onClick={me._saveReport} />;
       var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me._cancelEditReport} />;
@@ -397,8 +444,8 @@ var ReportRightPanel = React.createClass({
             display: 'none'
           };
           uploadButton = (<label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
-            <span>{me.state.fileName}</span>
-            {me.state.fileName === '' ? I18N.EM.Report.Upload : I18N.EM.Report.Reupload}
+            <span>{me.state.showUploadDialog ? '' : me.state.fileName}</span>
+            {(me.state.fileName === '' || me.state.showUploadDialog) ? I18N.EM.Report.Upload : I18N.EM.Report.Reupload}
             <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/></label>);
         }
         reportTemplate = (
