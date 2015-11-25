@@ -33,6 +33,7 @@ var ReportRightPanel = React.createClass({
       isLoading: false,
       showDeleteDialog: false,
       sheetNames: this._getSheetNamesByTemplateId(reportItem.get('templateId')),
+      checkedValue: 'uploadedTemplate',
       fileName: ''
     };
     if (reportItem.get('id') === 0) {
@@ -123,8 +124,6 @@ var ReportRightPanel = React.createClass({
       display: 'none'
     }, document.body);
     iframe.onload = function() {
-      var label = me.refs.fileInputLabel.getDOMNode();
-      label.appendChild(input);
       var json = iframe.contentDocument.body.innerHTML;
       var obj = JSON.parse(json);
       var reportItem = me.state.reportItem;
@@ -161,9 +160,7 @@ var ReportRightPanel = React.createClass({
     }, iframe.contentDocument.body);
 
     var input = this.refs.fileInput.getDOMNode();
-    input.name = 'templateFile';
     form.appendChild(input);
-
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
@@ -172,6 +169,8 @@ var ReportRightPanel = React.createClass({
 
     form.submit();
     discardElement(form);
+    var label = me.refs.fileInputLabel.getDOMNode();
+    label.appendChild(input);
     me.setState({
       fileName: fileName,
       showUploadDialog: true
@@ -208,6 +207,7 @@ var ReportRightPanel = React.createClass({
     }
     document.body.appendChild(fr);
   },
+  _exportTemplate: function() {},
   _editReport: function() {
     this.setState({
       disabled: false
@@ -218,12 +218,14 @@ var ReportRightPanel = React.createClass({
       var reportItem = ReportStore.getSelectedReportItem();
       this.setState({
         reportItem: reportItem,
-        disabled: true
+        disabled: true,
+        checkedValue: 'uploadedTemplate',
+        fileName: ''
       });
     } else {
       ReportAction.setDefaultReportItem();
       this.setState({
-        disabled: true
+        disabled: true,
       });
     }
   },
