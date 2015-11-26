@@ -81,6 +81,58 @@ let ReportAction = {
         console.log(err, res);
       }
     });
+  },
+  getTagData(nodeId, option, page, filters) {
+    Ajax.post('/Tag.svc/GetTagsByFilter?', {
+      params: {
+        filter: {
+          Association: {
+            AssociationId: nodeId,
+            AssociationOption: option
+          },
+          CustomerId: parseInt(window.currentCustomerId),
+          IncludeAssociationName: true
+        },
+        filters: filters,
+        limit: 20,
+        page: page,
+        size: 20,
+        start: 20 * (page - 1)
+      },
+      success: function(tagData) {
+        AppDispatcher.dispatch({
+          type: Action.GET_REPORT_TAG_DATA_SUCCESS,
+          tagData: tagData
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getSelectedTagData(ids) {
+    Ajax.post('/Tag.svc/GetTagsByFilter?', {
+      params: {
+        filter: {
+          Ids: ids,
+          CustomerId: parseInt(window.currentCustomerId),
+          IncludeAssociationName: true
+        },
+        limit: 20,
+        page: 1,
+        size: 0,
+        start: 0
+      },
+      success: function(tagData) {
+        AppDispatcher.dispatch({
+          type: Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS,
+          tagData: tagData
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
   }
 };
 module.exports = ReportAction;

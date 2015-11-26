@@ -138,6 +138,11 @@ I18N.Common.Glossary.Order.Rank10 = '前10名';
 I18N.Common.Glossary.Order.Rank20 = '前20名';
 I18N.Common.Glossary.Order.Rank50 = '前50名';
 
+I18N.Common.Glossary.Name = '名称';
+I18N.Common.Glossary.Code = '编码';
+I18N.Common.Glossary.Commodity = '介质';
+
+
 I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = '冷暖季';

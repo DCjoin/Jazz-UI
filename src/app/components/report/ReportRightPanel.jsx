@@ -472,7 +472,7 @@ var ReportRightPanel = React.createClass({
           index: item.get('Index'),
           dataLength: dataLength,
           id: item.get('Id'),
-          tagsList: item.get('TagsList'),
+          tagList: item.get('TagsList'),
           addReport: reportItem.get('id') === 0 ? true : false
         };
         return (

@@ -5,9 +5,9 @@ import classNames from 'classnames';
 import ConstStore from '../../stores/ConstStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
+import TagSelectWindow from './TagSelectWindow.jsx';
 import { FlatButton, FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox, Dialog } from 'material-ui';
 import Immutable from 'immutable';
-
 
 let ReportDataItem = React.createClass({
   getInitialState: function() {
@@ -191,14 +191,21 @@ let ReportDataItem = React.createClass({
       label={I18N.EM.Report.Cancel}
       onClick={this._handleDialogDismiss} />
     ];
+    var tagWindow = <TagSelectWindow selectedTagList={this.props.tagList}></TagSelectWindow>;
 
     return (<Dialog
       ref="tagSelectDialog"
       title={I18N.EM.Report.SelectTag}
       openImmediately={true}
       actions={dialogActions}
-      modal={true}>
-
+      modal={true}
+      >
+      <div style={{
+        height: '500px',
+        width: '700px'
+      }}>
+        {tagWindow}
+      </div>
       </Dialog>);
   },
   componentDidUpdate: function() {
@@ -230,7 +237,6 @@ let ReportDataItem = React.createClass({
     }
   },
   render() {
-    var me = this;
     var typeItems = [{
       payload: 0,
       text: I18N.EM.Report.ReportTypeEnergy
@@ -238,95 +244,73 @@ let ReportDataItem = React.createClass({
       payload: 1,
       text: I18N.EM.Report.Original
     }];
-    var dateTypeItems = [
-      {
-        payload: 11,
-        text: I18N.Common.DateRange.Customerize
-      },
-      {
-        payload: 0,
-        text: I18N.Common.DateRange.Last7Day
-      },
-      {
-        payload: 9,
-        text: I18N.Common.DateRange.Last30Day
-      },
-      {
-        payload: 10,
-        text: I18N.Common.DateRange.Last12Month
-      },
-      {
-        payload: 1,
-        text: I18N.Common.DateRange.Today
-      },
-      {
-        payload: 2,
-        text: I18N.Common.DateRange.Yesterday
-      },
-      {
-        payload: 3,
-        text: I18N.Common.DateRange.ThisWeek
-      },
-      {
-        payload: 4,
-        text: I18N.Common.DateRange.LastWeek
-      },
-      {
-        payload: 5,
-        text: I18N.Common.DateRange.ThisMonth
-      },
-      {
-        payload: 6,
-        text: I18N.Common.DateRange.LastMonth
-      },
-      {
-        payload: 7,
-        text: I18N.Common.DateRange.ThisYear
-      },
-      {
-        payload: 8,
-        text: I18N.Common.DateRange.LastYear
-      }];
-    var stepItems = [
-      {
-        payload: 0,
-        text: I18N.Common.AggregationStep.Minute
-      },
-      {
-        payload: 1,
-        text: I18N.Common.AggregationStep.Hourly
-      },
-      {
-        payload: 2,
-        text: I18N.Common.AggregationStep.Daily
-      },
-      {
-        payload: 5,
-        text: I18N.Common.AggregationStep.Weekly
-      },
-      {
-        payload: 3,
-        text: I18N.Common.AggregationStep.Monthly
-      },
-      {
-        payload: 4,
-        text: I18N.Common.AggregationStep.Yearly
-      }
-    ];
-    var numberRuleItems = [
-      {
-        payload: 0,
-        text: I18N.EM.Report.AllTime
-      },
-      {
-        payload: 1,
-        text: I18N.EM.Report.Hourly
-      },
-      {
-        payload: 2,
-        text: I18N.EM.Report.Daily
-      }
-    ];
+    var dateTypeItems = [{
+      payload: 11,
+      text: I18N.Common.DateRange.Customerize
+    }, {
+      payload: 0,
+      text: I18N.Common.DateRange.Last7Day
+    }, {
+      payload: 9,
+      text: I18N.Common.DateRange.Last30Day
+    }, {
+      payload: 10,
+      text: I18N.Common.DateRange.Last12Month
+    }, {
+      payload: 1,
+      text: I18N.Common.DateRange.Today
+    }, {
+      payload: 2,
+      text: I18N.Common.DateRange.Yesterday
+    }, {
+      payload: 3,
+      text: I18N.Common.DateRange.ThisWeek
+    }, {
+      payload: 4,
+      text: I18N.Common.DateRange.LastWeek
+    }, {
+      payload: 5,
+      text: I18N.Common.DateRange.ThisMonth
+    }, {
+      payload: 6,
+      text: I18N.Common.DateRange.LastMonth
+    }, {
+      payload: 7,
+      text: I18N.Common.DateRange.ThisYear
+    }, {
+      payload: 8,
+      text: I18N.Common.DateRange.LastYear
+    }];
+    var stepItems = [{
+      payload: 0,
+      text: I18N.Common.AggregationStep.Minute
+    }, {
+      payload: 1,
+      text: I18N.Common.AggregationStep.Hourly
+    }, {
+      payload: 2,
+      text: I18N.Common.AggregationStep.Daily
+    }, {
+      payload: 5,
+      text: I18N.Common.AggregationStep.Weekly
+    }, {
+      payload: 3,
+      text: I18N.Common.AggregationStep.Monthly
+    }, {
+      payload: 4,
+      text: I18N.Common.AggregationStep.Yearly
+    }];
+    var numberRuleItems = [{
+      payload: 0,
+      text: I18N.EM.Report.AllTime
+    }, {
+      payload: 1,
+      text: I18N.EM.Report.Hourly
+    }, {
+      payload: 2,
+      text: I18N.EM.Report.Daily
+    }];
+    var me = this;
     var deleteButton = null,
       dateTimeSelector = null,
       dataSourceButton = null;
