@@ -12,24 +12,46 @@ var ReportLeftPanel = React.createClass({
 
   getInitialState: function() {
     return {
-      isLoading: true
+      isLoading: true,
+      disableAddButton: false
     };
   },
-  _onNewReport: function() {},
+  _addNewReport: function() {
+    var newReportItem = {
+      id: 0,
+      templateId: null,
+      name: null,
+      createUser: null,
+      data: []
+    };
+    ReportAction.setSelectedReportItem(newReportItem);
+  },
+  _onChangeReportItem() {
+    var reportItem = ReportStore.getSelectedReportItem();
+    if (reportItem.get('id') !== 0) {
+      this.setState({
+        disableAddButton: false
+      });
+    } else {
+      this.setState({
+        disableAddButton: true
+      });
+    }
+  },
   _onChange() {
-    var reportList = ReportStore.getReportList();
     this.setState({
       reportList: ReportStore.getReportList(),
       isLoading: false
     });
-
   },
   componentDidMount: function() {
     ReportAction.getReportListByCustomerId(parseInt(window.currentCustomerId));
     ReportStore.addReportListChangeListener(this._onChange);
+    ReportStore.addReportItemChangeListener(this._onChangeReportItem);
   },
   componentWillUnmount: function() {
     ReportStore.removeReportListChangeListener(this._onChange);
+    ReportStore.removeReportItemChangeListener(this._onChangeReportItem);
   },
 
   render: function() {
@@ -55,7 +77,7 @@ var ReportLeftPanel = React.createClass({
     var reportContent = (this.state.isLoading ? <div style={{
       'text-align': 'center',
       'margin-top': '400px'
-    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList'   onItemClick={this.props.onItemClick} reportList={this.state.reportList}></ReportList>);
+    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList'   onItemClick={this.props.onItemClick} reportList={this.state.reportList} reportItem={this.state.reportItem}></ReportList>);
 
     return (
       <div className="jazz-report-leftpanel-container">
@@ -63,7 +85,7 @@ var ReportLeftPanel = React.createClass({
           <div className={classSet(newFolderClasses)} style={{
         margin: '0 30px'
       }}>
-            <FlatButton onClick={this._onNewReport} style={buttonStyle}>
+            <FlatButton onClick={this._addNewReport} style={buttonStyle} disabled={this.state.disableAddButton}>
               <FontIcon  className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.EM.Report.Report}</span>
             </FlatButton>

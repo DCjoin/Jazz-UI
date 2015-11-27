@@ -45,6 +45,11 @@ let ReportAction = {
       reportItem: reportItem
     });
   },
+  setDefaultReportItem() {
+    AppDispatcher.dispatch({
+      type: Action.SET_DEFAULT_REPORT_ITEM
+    });
+  },
   saveCustomerReport(data) {
     Ajax.post('/DataReport.svc/SaveCustomerReport', {
       params: {
@@ -57,9 +62,7 @@ let ReportAction = {
         });
       },
       error: function(err, res) {
-        AppDispatcher.dispatch({
-          type: Action.SAVE_REPORT_ERROR
-        });
+        console.log(err, res);
       }
     });
   },
@@ -75,9 +78,59 @@ let ReportAction = {
         });
       },
       error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getTagData(nodeId, option, page, filters) {
+    Ajax.post('/Tag.svc/GetTagsByFilter?', {
+      params: {
+        filter: {
+          Association: {
+            AssociationId: nodeId,
+            AssociationOption: option
+          },
+          CustomerId: parseInt(window.currentCustomerId),
+          IncludeAssociationName: true
+        },
+        filters: filters,
+        limit: 20,
+        page: page,
+        size: 20,
+        start: 20 * (page - 1)
+      },
+      success: function(tagData) {
         AppDispatcher.dispatch({
-          type: Action.DELETE_REPORT_ERROR
+          type: Action.GET_REPORT_TAG_DATA_SUCCESS,
+          tagData: tagData
         });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getSelectedTagData(ids) {
+    Ajax.post('/Tag.svc/GetTagsByFilter?', {
+      params: {
+        filter: {
+          Ids: ids,
+          CustomerId: parseInt(window.currentCustomerId),
+          IncludeAssociationName: true
+        },
+        limit: 20,
+        page: 1,
+        size: 0,
+        start: 0
+      },
+      success: function(tagData) {
+        AppDispatcher.dispatch({
+          type: Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS,
+          tagData: tagData
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
       }
     });
   }

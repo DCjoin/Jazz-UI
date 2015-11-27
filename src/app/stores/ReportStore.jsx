@@ -8,11 +8,16 @@ import { Action } from '../constants/actionType/Report.jsx';
 
 let _reportList = null,
   _templateList = null,
+  _tagList = [],
+  _selectedTagList = [],
+  _totalPage = 0,
   _reportItem = null;
 
 let CHANGE_REPORT_LIST_EVENT = 'changereportlist';
 let CHANGE_TEMPLATE_LIST_EVENT = 'changetemplatelist';
 var CHANGE_SELECTED_REPORT_ITEM = 'changereportitem';
+var CHANGE_TAG_LIST_EVENT = 'changetaglist';
+var CHANGE_SELECTED_TAG_LIST_EVENT = 'changeselectedtaglist';
 var ReportStore = assign({}, PrototypeStore, {
   getReportList() {
     return _reportList;
@@ -33,6 +38,22 @@ var ReportStore = assign({}, PrototypeStore, {
     } else {
       _templateList = Immutable.fromJS(templateList);
     }
+  },
+  getTagList() {
+    return _tagList;
+  },
+  getTagTotalPage() {
+    return _totalPage;
+  },
+  getSelectedTagList() {
+    return _selectedTagList;
+  },
+  setTagData(tagData) {
+    _totalPage = tagData.total;
+    _tagList = Immutable.fromJS(tagData.GetTagsByFilterResult);
+  },
+  setSelctedTagData(tagData) {
+    _selectedTagList = Immutable.fromJS(tagData.GetTagsByFilterResult);
   },
   setSelectedReportItem: function(reportItem) {
     _reportItem = Immutable.fromJS(reportItem);
@@ -97,6 +118,24 @@ var ReportStore = assign({}, PrototypeStore, {
   removeTemplateListChangeListener: function(callback) {
     this.removeListener(CHANGE_TEMPLATE_LIST_EVENT, callback);
   },
+  emitTagListChange: function() {
+    this.emit(CHANGE_TAG_LIST_EVENT);
+  },
+  addTagListChangeListener: function(callback) {
+    this.on(CHANGE_TAG_LIST_EVENT, callback);
+  },
+  removeTagListChangeListener: function(callback) {
+    this.removeListener(CHANGE_TAG_LIST_EVENT, callback);
+  },
+  emitSelectedTagListChange: function() {
+    this.emit(CHANGE_SELECTED_TAG_LIST_EVENT);
+  },
+  addSelectedTagListChangeListener: function(callback) {
+    this.on(CHANGE_SELECTED_TAG_LIST_EVENT, callback);
+  },
+  removeSelectedTagListChangeListener: function(callback) {
+    this.removeListener(CHANGE_SELECTED_TAG_LIST_EVENT, callback);
+  },
   emitReportItemChange: function() {
     this.emit(CHANGE_SELECTED_REPORT_ITEM);
   },
@@ -142,6 +181,18 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.defalutSelectFirstReport();
       ReportStore.emitReportItemChange();
       ReportStore.emitReportListChange();
+      break;
+    case Action.SET_DEFAULT_REPORT_ITEM:
+      ReportStore.defalutSelectFirstReport();
+      ReportStore.emitReportItemChange();
+      break;
+    case Action.GET_REPORT_TAG_DATA_SUCCESS:
+      ReportStore.setTagData(action.tagData);
+      ReportStore.emitTagListChange();
+      break;
+    case Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS:
+      ReportStore.setSelctedTagData(action.tagData);
+      ReportStore.emitSelectedTagListChange();
       break;
   }
 });

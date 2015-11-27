@@ -138,6 +138,11 @@ I18N.Common.Glossary.Order.Rank10 = '前10名';
 I18N.Common.Glossary.Order.Rank20 = '前20名';
 I18N.Common.Glossary.Order.Rank50 = '前50名';
 
+I18N.Common.Glossary.Name = '名称';
+I18N.Common.Glossary.Code = '编码';
+I18N.Common.Glossary.Commodity = '介质';
+
+
 I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = '冷暖季';
@@ -328,6 +333,7 @@ I18N.EM.Report.ReportSort = '按报表名称排序';
 I18N.EM.Report.UserSort = '按用户名称排序';
 I18N.EM.Report.Add = '添加';
 I18N.EM.Report.Delete = '删除';
+I18N.EM.Report.Confirm = '确定';
 I18N.EM.Report.Edit = '编辑';
 I18N.EM.Report.Export = '导出';
 I18N.EM.Report.Cancel = '放弃';
@@ -351,10 +357,9 @@ I18N.EM.Report.UploadTemplate = '上传新模板';
 I18N.EM.Report.DownloadTemplate = '下载查看';
 I18N.EM.Report.EditTag = '编辑数据点';
 I18N.EM.Report.SelectTag = '选择数据点';
-I18N.EM.Report.ViewTag = '查看已选数据点';
+I18N.EM.Report.ViewTag = '查看数据点';
 I18N.EM.Report.Upload = '上传';
 I18N.EM.Report.Reupload = '重新上传';
-I18N.EM.Report.ViewTag = '查看数据点';
 I18N.EM.Report.Order = '时间点排列顺序';
 I18N.EM.Report.OrderAsc = '顺序排列';
 I18N.EM.Report.OrderDesc = '倒序排列';
