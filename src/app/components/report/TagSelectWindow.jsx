@@ -19,7 +19,8 @@ let TagSelectWindow = React.createClass({
   getInitialState: function() {
     return {
       isLeftLoading: null,
-      isRightLoading: true
+      isRightLoading: true,
+      checkAll: false
     };
   },
   _getTagIds: function(tagList) {
@@ -139,6 +140,40 @@ let TagSelectWindow = React.createClass({
       totalPageNum={totalPageNum}
       hasJumpBtn={hasJumpBtn}/>;
     }
+    var leftTagListHeader = <div style={{
+      display: 'flex',
+      'flex-direction': 'row'
+    }}>
+        <div style={{
+      width: '40px'
+    }}></div>
+        <div style={{
+      width: '100px'
+    }}>{I18N.Common.Glossary.Name}</div>
+        <div style={{
+      width: '100px'
+    }}>{I18N.Common.Glossary.Code}</div>
+        <div style={{
+      width: '100px'
+    }}>{I18N.Common.Glossary.Commodity}</div>
+      </div>;
+    var rightTagListHeader = <div style={{
+      display: 'flex',
+      'flex-direction': 'row'
+    }}>
+          <div style={{
+      width: '40px'
+    }}></div>
+          <div style={{
+      width: '100px'
+    }}>{I18N.Common.Glossary.Name}</div>
+          <div style={{
+      width: '100px'
+    }}>{I18N.Common.Glossary.Code}</div>
+          <div style={{
+      width: '100px'
+    }}>{I18N.Common.Glossary.Commodity}</div>
+        </div>;
 
     leftPanelField = (<div className='jazz-report-taglist-container'>
       <div className="jazz-dataselectmainpanel" >
@@ -149,12 +184,14 @@ let TagSelectWindow = React.createClass({
           <SearchBar onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
         </div>
       </div>
+      {leftTagListHeader}
       <div className='jazz-report-taglist'>
         <TagList tagList={this.state.tagList} selectedTagList={this.state.selectedTagList} isLoading={this.state.isLeftLoading} leftPanel={true}></TagList>
       </div>
       {pagination}
     </div>);
     rightPanel = <div className='jazz-report-taglist-container'>
+      {rightTagListHeader}
       <div className='jazz-report-taglist'>
           <TagList tagList={this.state.selectedTagList} isLoading={this.state.isRightLoading} leftPanel={false}></TagList>
         </div></div>;

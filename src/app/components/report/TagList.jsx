@@ -72,29 +72,8 @@ let TagList = React.createClass({
           {tagItems}
         </div>;
     }
-    var checkAllButton = null;
-    if (this.props.leftPanel) {
-      checkAllButton = <Checkbox checked={this.state.checked} onCheck={this._onCheckAll}/>;
-    }
     return (
       <div>
-        <div style={{
-        display: 'flex',
-        'flex-direction': 'row'
-      }}>
-          <div style={{
-        width: '40px'
-      }}>{checkAllButton}</div>
-          <div style={{
-        width: '100px'
-      }}>{I18N.Common.Glossary.Name}</div>
-          <div style={{
-        width: '100px'
-      }}>{I18N.Common.Glossary.Code}</div>
-          <div style={{
-        width: '100px'
-      }}>{I18N.Common.Glossary.Commodity}</div>
-        </div>
         {displayDom}
       </div>
       );
