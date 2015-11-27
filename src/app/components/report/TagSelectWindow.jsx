@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
-import { Route, DefaultRoute, RouteHandler, Link, Navigation, State, Checkbox } from 'react-router';
+import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
+import { Checkbox } from 'material-ui';
 
 import assign from "object-assign";
 
@@ -146,7 +147,7 @@ let TagSelectWindow = React.createClass({
     }}>
         <div style={{
       width: '40px'
-    }}></div>
+    }}><Checkbox checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
         <div style={{
       width: '100px'
     }}>{I18N.Common.Glossary.Name}</div>
