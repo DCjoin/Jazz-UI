@@ -1060,4 +1060,12 @@ I18N.Map.EnergyInfo.NonMessage = '暂无能耗信息，请持续关注';
 I18N.Map.EnergyInfo.TargetValue = {};
 I18N.Map.EnergyInfo.TargetValue.Qualified = '达到目标值';
 I18N.Map.EnergyInfo.TargetValue.NotQualified = '未达到目标值';
+
+I18N.Platform = {};
+I18N.Platform.Title = '"云能效"管理平台';
+I18N.Platform.Config = '平台配置';
+I18N.Platform.SP = '服务商管理员';
+I18N.Platform.InEnglish = 'In English';
+
+
 module.exports = I18N;

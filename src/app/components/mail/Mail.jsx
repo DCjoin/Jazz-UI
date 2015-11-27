@@ -12,7 +12,6 @@ let Mail = React.createClass({
     var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
     return (
       <div className='jazz-main'>
-            <MainAppBar logoUrl={logoUrl} />
             <Content/>
             <Dialog/>
             <NetworkChecker></NetworkChecker>

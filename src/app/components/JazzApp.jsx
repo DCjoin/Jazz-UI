@@ -4,6 +4,7 @@ import React from 'react';
 import Router from 'react-router';
 import GlobalErrorMessageDialog from './GlobalErrorMessageDialog.jsx';
 import GlobalErrorMessageStore from '../stores/GlobalErrorMessageStore.jsx';
+import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 
 import keyMirror from 'keymirror';
 
@@ -11,12 +12,17 @@ let {Route, DefaultRoute, RouteHandler, Link, Navigation, State} = Router;
 
 let JazzApp = React.createClass({
   mixins: [Navigation, State],
+  contextTypes: {
+    router: React.PropTypes.func
+  },
   childContextTypes: {
-    muiTheme: React.PropTypes.object.isRequired
+    getLessVar: React.PropTypes.func,
+    muiTheme: React.PropTypes.object.isRequired,
   },
   getChildContext() {
     return {
-      muiTheme: this.props.muiTheme
+      muiTheme: this.props.muiTheme,
+      getLessVar: this.props.getLessVar,
     };
   },
   _showLoading: function(argument) {
@@ -82,7 +88,7 @@ let JazzApp = React.createClass({
           return;
         }
         if (url.indexOf('menutype=mail') > -1) {
-          me.replaceWith('mail', {
+          me.replaceWith('config', {
             lang: lang
           });
         } else if (url.indexOf('menutype=energy') > -1) {
@@ -133,6 +139,7 @@ let JazzApp = React.createClass({
     }
     GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
+    CurrentUserAction.getUser(window.currentUserId);
   },
   _onClearGlobalError: function() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();
@@ -153,6 +160,7 @@ let JazzApp = React.createClass({
       errorCode: errorCode
     });
   },
+
   componentWillUnmount() {
     GlobalErrorMessageStore.removeChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.removeClearGlobalErrorListener(this._onClearGlobalError);
