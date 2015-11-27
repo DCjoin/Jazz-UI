@@ -10,7 +10,6 @@ import ReportStore from '../../stores/ReportStore.jsx';
 let TagList = React.createClass({
   getInitialState: function() {
     return {
-      checked: false
     };
   },
   _getCheckStatus: function(id) {
@@ -19,6 +18,9 @@ let TagList = React.createClass({
     } else {
       var tagItem = null;
       var selectedTagList = this.props.selectedTagList;
+      if (selectedTagList === null) {
+        return false;
+      }
       tagItem = selectedTagList.find((item) => {
         if (id === item.get('Id')) {
           return true;
@@ -31,7 +33,12 @@ let TagList = React.createClass({
       }
     }
   },
-
+  _onTagItemSelected: function(id) {
+    this.props.onTagItemSelected(id);
+  },
+  _onTagItemUnselected: function(id) {
+    this.props.onTagItemUnselected(id);
+  },
 
   componentDidMount: function() {},
   componentWillUnmount: function() {},
@@ -43,16 +50,18 @@ let TagList = React.createClass({
     let tagList = me.props.tagList;
     let tagItems = null;
     if (tagList && tagList.size !== 0) {
-      tagItems = tagList.map(function(item) {
+      tagItems = tagList.map(function(item, i) {
         let props = {
           id: item.get('Id'),
           name: item.get('Name'),
           code: item.get('Code'),
           commodityId: item.get('CommodityId'),
+          disabled: me.props.disabled,
           checked: me._getCheckStatus(item.get('Id')),
-          onItemUnselected: me._onTagItemUnselected,
-          onItemSelected: me._onTagItemSelected,
-          leftPanel: me.props.leftPanel
+          onTagItemUnselected: me._onTagItemUnselected,
+          onTagItemSelected: me._onTagItemSelected,
+          leftPanel: me.props.leftPanel,
+          index: i
         };
         return (
           <TagItem {...props}></TagItem>

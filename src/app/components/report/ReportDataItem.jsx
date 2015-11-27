@@ -151,6 +151,11 @@ let ReportDataItem = React.createClass({
     this._updateReportData('DataStartTime', startTime);
     this._updateReportData('DataEndTime', endTime);
   },
+  _onTagDataChange() {
+    var tagList = this.refs.tagListWindow._getSelectedTagList();
+    this._handleDialogDismiss();
+    this._updateReportData('TagsList', tagList);
+  },
   _onTimeOrderChange(name, e, selected) {
     var value = this.displayToData(selected);
     this._updateReportData(name, value);
@@ -185,13 +190,13 @@ let ReportDataItem = React.createClass({
     var dialogActions = [
       <FlatButton disabled={this.props.disabled}
       label={I18N.EM.Report.Confirm}
-      onClick={this._selectTags} />,
+      onClick={this._onTagDataChange} />,
 
       <FlatButton
       label={I18N.EM.Report.Cancel}
       onClick={this._handleDialogDismiss} />
     ];
-    var tagWindow = <TagSelectWindow selectedTagList={this.props.tagList}></TagSelectWindow>;
+    var tagWindow = <TagSelectWindow ref='tagListWindow' disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
 
     return (<Dialog
       ref="tagSelectDialog"
