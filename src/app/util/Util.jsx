@@ -18,6 +18,9 @@ const FIXEDTIMES = {
 };
 
 let CommonFuns = {
+  isEmptyStr(str) {
+    return str === undefined || str === null || str.toString().trim() === '';
+  },
   isSuccess: function(data) {
     return data && data.error.Code == '0'; // && module.exports.getResResult(data);
   },

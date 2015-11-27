@@ -943,5 +943,6 @@ I18N.Map.Date.LastMonth = 'Last Month ';
 I18N.Map.Date.ThisYear = 'This Year ';
 I18N.Map.Date.LastYear = 'Last Year ';
 
-
+I18N.Platform = {};
+I18N.Platform.Title = 'EnergyMost';
 module.exports = I18N;

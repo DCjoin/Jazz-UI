@@ -18,8 +18,9 @@ import { getCookie } from './util/Util.jsx';
 import { Styles } from 'material-ui';
 let {ThemeManager, LightRawTheme} = Styles;
 import AppTheme from './AppTheme.jsx';
-
+import main from './less/main.less';
 import Test from './components/setting/Test.jsx';
+import PlatformApp from './components/platform/PlatformApp.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -30,6 +31,9 @@ injectTapEventPlugin();
 window.currentUserId = getCookie('currentUserId');
 window.currentCustomerId = getCookie('currentCustomerId');
 
+function getLessVar(name) {
+  return main["@" + name];
+}
 var routes = (
 <Route name="app" path="/:lang?" handler={JazzApp}>
       <Route name="main" path="main" handler={MainApp}>
@@ -39,7 +43,10 @@ var routes = (
         <Route name="daily_report" path="report" handler={Report}></Route>
         <Route name="template" path="template" handler={Alarm}></Route>
       </Route>
-
+      <Route name="platform" path="platform" handler={PlatformApp}>
+        <Route name='config' path='config' handler={Mail}></Route>
+        <Route name="mail" path="mail" handler={Mail}></Route>
+      </Route>
 
 
    </Route>
@@ -50,6 +57,6 @@ Router.run(routes, Router.HashLocation, (Root, state) => {
   var muiTheme = ThemeManager.getMuiTheme(AppTheme.rawTheme);
   //muiTheme = AppTheme.setComponentThemes(muiTheme);
   muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
-  React.render(<Root {...state} muiTheme={muiTheme} />, document.getElementById('emopapp'));
+  React.render(<Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>, document.getElementById('emopapp'));
 
 });
