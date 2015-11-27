@@ -592,7 +592,15 @@ let ChartStrategyFactor = {
       return widgetOptMenu;
     },
     getLabelWidgetOptMenu(analysisPanel) {
-      var IconButtonElement = <IconButton iconClassName="icon-arrow-down"/>;
+      var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
+        fontSize: '16px'
+      }} style={{
+        padding: '0px',
+        height: '18px',
+        width: '18px',
+        marginLeft: '10px',
+        marginTop: '5px'
+      }}/>;
       var iconMenuProps = {
         iconButtonElement: IconButtonElement,
         openDirection: "bottom-right",
@@ -3688,7 +3696,13 @@ let ChartStrategyFactor = {
       var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
       var monthItem = ConstStore.getLabelMonth();
       return <div className={'jazz-alarm-chart-toolbar'}>
-      <div className={'jazz-full-border-dropdownmenu-container'}>
+      <div className={'jazz-full-border-dropdownmenu-container'} style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          height: '38px',
+          marginTop: '-4px'
+        }}>
       {YearSelect}
       <DropDownMenu style={{
           width: '82px'
