@@ -1,6 +1,6 @@
 'use strict';
 import React from "react";
-import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
+import { Route, DefaultRoute, RouteHandler, Link, Navigation, State, Checkbox } from 'react-router';
 
 import assign from "object-assign";
 
@@ -120,7 +120,7 @@ let TagSelectWindow = React.createClass({
     ReportStore.addTagListChangeListener(this._onTagListChange);
     ReportStore.addSelectedTagListChangeListener(this._onSelectedTagListChange);
   },
-  componentWillMount: function() {
+  componentWillUnmount: function() {
     ReportStore.removeTagListChangeListener(this._onTagListChange);
     ReportStore.removeSelectedTagListChangeListener(this._onSelectedTagListChange);
   },
@@ -139,10 +139,8 @@ let TagSelectWindow = React.createClass({
       totalPageNum={totalPageNum}
       hasJumpBtn={hasJumpBtn}/>;
     }
-    leftPanelField = (<div style={{
-      display: 'flex',
-      'flex-direction': 'column'
-    }}>
+
+    leftPanelField = (<div className='jazz-report-taglist-container'>
       <div className="jazz-dataselectmainpanel" >
         <div className="header">
           <Header onHierachyTreeClick={this._onHierachyTreeClick} onDimTreeClick={this._onDimTreeClick}/>
@@ -151,17 +149,15 @@ let TagSelectWindow = React.createClass({
           <SearchBar onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
         </div>
       </div>
-      <div>
+      <div className='jazz-report-taglist'>
         <TagList tagList={this.state.tagList} selectedTagList={this.state.selectedTagList} isLoading={this.state.isLeftLoading} leftPanel={true}></TagList>
-        {pagination}
       </div>
+      {pagination}
     </div>);
-    rightPanel = <div style={{
-      display: 'flex',
-      flex: 1
-    }}>
+    rightPanel = <div className='jazz-report-taglist-container'>
+      <div className='jazz-report-taglist'>
           <TagList tagList={this.state.selectedTagList} isLoading={this.state.isRightLoading} leftPanel={false}></TagList>
-        </div>;
+        </div></div>;
 
     return (
       <div style={{

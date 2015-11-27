@@ -18,7 +18,7 @@ let Report = React.createClass({
     };
   },
   componentDidMount: function() {},
-  componentWillMount: function() {},
+  componentWillUnMount: function() {},
   render() {
     var LeftPanelField, mainPanel;
     var me = this;
