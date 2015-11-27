@@ -468,7 +468,7 @@ var ReportRightPanel = React.createClass({
           sheetNames: me.state.sheetNames,
           updateReportData: me._updateReportData,
           deleteReportData: me._deleteReportData,
-          showStep: item.get('ReportType') === 0 ? true : false,
+          showStep: item.get('ReportType') === 1 ? false : true,
           index: item.get('Index'),
           dataLength: dataLength,
           id: item.get('Id'),
