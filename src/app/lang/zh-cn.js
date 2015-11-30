@@ -112,6 +112,18 @@ I18N.Common.Glossary.WeekDay.Friday = '五';
 I18N.Common.Glossary.WeekDay.Saturday = '六';
 I18N.Common.Glossary.WeekDay.Sunday = '日';
 
+I18N.Common.Label = {};
+I18N.Common.Label.TimeConflict = '时间段冲突。';
+I18N.Common.Label.DuplicatedName = '该名称已存在';
+I18N.Common.Label.TimeZoneConflict = '时间区间重叠';
+I18N.Common.Label.TimeOverlap = '时间区间重叠，请检查。';
+I18N.Common.Label.CommoEmptyText = '请选择';
+I18N.Common.Label.MandatoryEmptyError = '必填项。';
+I18N.Common.Label.OverValueError = '该输入项的最大值是 999999999。';
+I18N.Common.Label.UnspecifyCommodity = '不指定##Common.Glossary.Commodity##';
+I18N.Common.Label.UnknownError = '抱歉，发生未知错误。';
+I18N.Common.Label.MandatoryNumberError = '必填为数字。';
+
 I18N.Common.DateRange = {};
 I18N.Common.DateRange.Last7Day = '最近7天';
 I18N.Common.DateRange.Last30Day = '最近30天';
@@ -443,11 +455,6 @@ I18N.Setting.User.Manager = '管理层';
 I18N.Setting.User.BusinessPerson = '业务人员';
 I18N.Setting.User.Sales = '销售人员';
 I18N.Setting.User.ServerManager = '服务商管理员';
-
-I18N.Common.Label = {};
-I18N.Common.Label.UnknownError = '抱歉，发生未知错误。';
-I18N.Common.Label.MandatoryEmptyError = '必填项。';
-I18N.Common.Label.MandatoryNumberError = '必填为数字。';
 
 I18N.Message = {};
 

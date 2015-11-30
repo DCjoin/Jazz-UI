@@ -12,9 +12,15 @@ let TagItem = React.createClass({
 
     };
   },
-  _onTagItemSelected: function() {
-    if (this.props.onTagItemSelected) {
-      this.props.onTagItemSelected(this.props.id);
+  _onTagItemChecked: function(e, checked) {
+    if (checked) {
+      if (this.props.onTagItemSelected) {
+        this.props.onTagItemSelected(this.props.id);
+      }
+    } else {
+      if (this.props.onTagItemUnselected) {
+        this.props.onTagItemUnselected(this.props.id);
+      }
     }
   },
   _onTagItemUnselected: function() {
@@ -30,15 +36,21 @@ let TagItem = React.createClass({
       fontSize: '16px'
     };
     var checkBox = null,
-      deleteButton = null;
+      deleteButton = null,
+      displayIndex = null;
     if (this.props.leftPanel) {
       checkBox = <div style={{
         width: '40px'
-      }}><Checkbox checked={me.props.checked} onCheck={me._onTagItemSelected}></Checkbox></div>;
+      }}><Checkbox checked={me.props.checked} onCheck={me._onTagItemChecked} disabled={me.props.disabled}></Checkbox></div>;
     } else {
-      deleteButton = <div style={{
-        width: '100px'
-      }}><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onTagItemUnselected} style={cleanIconStyle}></FontIcon></div>;
+      if (!me.props.disabled) {
+        deleteButton = <div style={{
+          width: '20px'
+        }}><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onTagItemUnselected} style={cleanIconStyle}></FontIcon></div>;
+      }
+      displayIndex = <div style={{
+        width: '40px'
+      }}>{me.props.index + 1}</div>;
     }
 
     return (
@@ -47,14 +59,15 @@ let TagItem = React.createClass({
         'flex-direction': 'row'
       }}>
         {checkBox}
+        {displayIndex}
         <div style={{
-        width: '100px'
+        width: '110px'
       }}>{me.props.name}</div>
         <div style={{
-        width: '100px'
+        width: '110px'
       }}>{me.props.code}</div>
         <div style={{
-        width: '100px'
+        width: '60px'
       }}>{CommonFuns.getCommodityById(me.props.commodityId).Comment}</div>
         {deleteButton}
       </div>

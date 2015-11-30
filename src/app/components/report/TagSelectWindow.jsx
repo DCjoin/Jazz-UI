@@ -21,13 +21,36 @@ let TagSelectWindow = React.createClass({
     return {
       isLeftLoading: null,
       isRightLoading: true,
-      checkAll: false
+      checkAll: false,
+      checkAllDisabled: true,
+      total: 0,
+      tagList: Immutable.fromJS([])
     };
+  },
+  _getSelectedTagList() {
+    return this.state.selectedTagList.map((item, i) => {
+      return {
+        TagId: item.get('Id'),
+        TagIndex: i
+      };
+    });
   },
   _getTagIds: function(tagList) {
     return tagList.map((item) => {
       return item.get('TagId');
     }).toJS();
+  },
+  _onCheckAll: function(e, checked) {
+    var obj = {};
+    obj.checkAll = checked;
+    if (this.state.tagList.size !== 0) {
+      if (checked) {
+        obj.selectedTagList = this.state.tagList;
+      } else {
+        obj.selectedTagList = Immutable.fromJS([]);
+      }
+    }
+    this.setState(obj);
   },
   _onTagListChange: function() {
     this.setState({
@@ -42,6 +65,41 @@ let TagSelectWindow = React.createClass({
       selectedTagList: selectedTagList,
       isRightLoading: false
     });
+  },
+  _onTagItemSelected: function(id) {
+    var addTag = this.state.tagList.find((item) => {
+      if (id === item.get('Id')) {
+        return true;
+      }
+    });
+    var obj = {};
+    var selectedTagList = this.state.selectedTagList;
+    if (addTag) {
+      selectedTagList = selectedTagList.push(addTag);
+      obj.selectedTagList = selectedTagList;
+      if (selectedTagList.size === this.state.tagList.size) {
+        obj.checkAll = true;
+      }
+      this.setState(obj);
+    }
+  },
+  _onTagItemUnselected: function(id) {
+    var selectedTagList = this.state.selectedTagList;
+    var deleteTagIndex = selectedTagList.findIndex((item) => {
+      if (id === item.get('Id')) {
+        return true;
+      }
+    });
+    var obj = {};
+    if (deleteTagIndex !== -1) {
+      selectedTagList = selectedTagList.delete(deleteTagIndex);
+      obj.selectedTagList = selectedTagList;
+      if (selectedTagList.size < this.state.tagList.size) {
+        obj.checkAll = false;
+      }
+      this.setState(obj);
+    }
+
   },
   _onHierachyTreeClick: function(node) {
     filters = null;
@@ -147,15 +205,15 @@ let TagSelectWindow = React.createClass({
     }}>
         <div style={{
       width: '40px'
-    }}><Checkbox checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
+    }}><Checkbox disabled={this.props.disabled} checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
         <div style={{
-      width: '100px'
+      width: '110px'
     }}>{I18N.Common.Glossary.Name}</div>
         <div style={{
-      width: '100px'
+      width: '110px'
     }}>{I18N.Common.Glossary.Code}</div>
         <div style={{
-      width: '100px'
+      width: '60px'
     }}>{I18N.Common.Glossary.Commodity}</div>
       </div>;
     var rightTagListHeader = <div style={{
@@ -166,14 +224,17 @@ let TagSelectWindow = React.createClass({
       width: '40px'
     }}></div>
           <div style={{
-      width: '100px'
+      width: '110px'
     }}>{I18N.Common.Glossary.Name}</div>
           <div style={{
-      width: '100px'
+      width: '110px'
     }}>{I18N.Common.Glossary.Code}</div>
           <div style={{
-      width: '100px'
+      width: '60px'
     }}>{I18N.Common.Glossary.Commodity}</div>
+    <div style={{
+      width: '20px'
+    }}></div>
         </div>;
 
     leftPanelField = (<div className='jazz-report-taglist-container'>
@@ -187,14 +248,14 @@ let TagSelectWindow = React.createClass({
       </div>
       {leftTagListHeader}
       <div className='jazz-report-taglist'>
-        <TagList tagList={this.state.tagList} selectedTagList={this.state.selectedTagList} isLoading={this.state.isLeftLoading} leftPanel={true}></TagList>
+        <TagList tagList={this.state.tagList} selectedTagList={this.state.selectedTagList} isLoading={this.state.isLeftLoading} disabled={this.props.disabled} leftPanel={true} onTagItemSelected={this._onTagItemSelected} onTagItemUnselected={this._onTagItemUnselected}></TagList>
       </div>
       {pagination}
     </div>);
     rightPanel = <div className='jazz-report-taglist-container'>
       {rightTagListHeader}
       <div className='jazz-report-taglist'>
-          <TagList tagList={this.state.selectedTagList} isLoading={this.state.isRightLoading} leftPanel={false}></TagList>
+          <TagList tagList={this.state.selectedTagList} isLoading={this.state.isRightLoading}  disabled={this.props.disabled} leftPanel={false} onTagItemUnselected={this._onTagItemUnselected}></TagList>
         </div></div>;
 
     return (

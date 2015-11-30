@@ -11,8 +11,30 @@ import Immutable from 'immutable';
 
 let ReportDataItem = React.createClass({
   getInitialState: function() {
+    var stepItems = [{
+      payload: 0,
+      text: I18N.Common.AggregationStep.Minute
+    }, {
+      payload: 1,
+      text: I18N.Common.AggregationStep.Hourly
+    }, {
+      payload: 2,
+      text: I18N.Common.AggregationStep.Daily
+    }, {
+      payload: 5,
+      text: I18N.Common.AggregationStep.Weekly
+    }, {
+      payload: 3,
+      text: I18N.Common.AggregationStep.Monthly
+    }, {
+      payload: 4,
+      text: I18N.Common.AggregationStep.Yearly
+    }];
     return {
-      showTagSelectDialog: false
+      showTagSelectDialog: false,
+      stepItems: stepItems,
+      step: this.props.step,
+      emptyErrorText: ''
     };
   },
   getRealTime(time) {
@@ -117,6 +139,55 @@ let ReportDataItem = React.createClass({
       dateSelector.setDateField(timeregion.start, timeregion.end);
     }
     this._handleSelectValueChange(name, e);
+    this._handleStepDisabled(value);
+  },
+  _getDateTypeStep: function(dateType) {
+    var step = [];
+    //0-Minute,1-Hourly,2-Daily,3-Monthly,4-Yearly,5-Weekly
+    switch (dateType) {
+      case 1: //Today
+      case 2: //Yesterday
+        step = [0, 1, 2]; //can raw & hour & day
+        break;
+      case 3: //ThisWeek
+      case 4: //LastWeek
+        step = [0, 1, 2, 5]; //can raw & hour & day & week
+        break;
+      case 5: //ThisMonth
+      case 6: //LastMonth
+        step = [0, 1, 2, 5, 3]; //can raw & hour & day & week & month
+        break;
+      case 7: //ThisYear
+      case 8: //LastYear
+        step = [1, 2, 5, 3, 4]; //can hour & day & week & month & year
+        break;
+    }
+    return step;
+  },
+  _handleStepDisabled(dateType) {
+    var stepItems = this.state.stepItems;
+    var list;
+    if ((dateType === 0) || (dateType === 9) || (dateType === 10) || (dateType === 11)) {
+      var newDateType = this.changeTimeValue(dateType);
+      var timeregion = CommonFuns.GetDateRegion(newDateType);
+      list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
+    } else {
+      list = this._getDateTypeStep(dateType);
+    }
+    var order = [0, 1, 2, 5, 3, 4];
+    for (var i = 0; i < order.length; i++) {
+      if (list.indexOf(order[i]) === -1) {
+        stepItems[i].disabled = true;
+      } else {
+        stepItems[i].disabled = false;
+      }
+    }
+    this.setState({
+      stepItems: stepItems,
+      step: null,
+      emptyErrorText: I18N.Common.Label.MandatoryEmptyError
+    });
+    this._updateReportData('ExportStep', null);
   },
   _onReprtTypeChange(name, e) {
     var value = e.target.value;
@@ -131,7 +202,19 @@ let ReportDataItem = React.createClass({
     }
     this._handleSelectValueChange(name, e);
   },
-
+  _handleStepChange(e) {
+    var step = e.target.value;
+    this.setState({
+      step: step,
+      emptyErrorText: e.target.value ? '' : I18N.Common.Label.MandatoryEmptyError
+    });
+    this._updateReportData('ExportStep', step);
+  },
+  _handleEmptyErrorInputChange(e) {
+    this.setState({
+      emptyErrorText: e.target.value ? '' : I18N.Common.Label.MandatoryEmptyError
+    });
+  },
   _handleSelectValueChange(name, e) {
     this._updateReportData(name, e.target.value);
   },
@@ -150,6 +233,11 @@ let ReportDataItem = React.createClass({
     var endTime = d2j(timeRange.end);
     this._updateReportData('DataStartTime', startTime);
     this._updateReportData('DataEndTime', endTime);
+  },
+  _onTagDataChange() {
+    var tagList = this.refs.tagListWindow._getSelectedTagList();
+    this._handleDialogDismiss();
+    this._updateReportData('TagsList', tagList);
   },
   _onTimeOrderChange(name, e, selected) {
     var value = this.displayToData(selected);
@@ -185,13 +273,13 @@ let ReportDataItem = React.createClass({
     var dialogActions = [
       <FlatButton disabled={this.props.disabled}
       label={I18N.EM.Report.Confirm}
-      onClick={this._selectTags} />,
+      onClick={this._onTagDataChange} />,
 
       <FlatButton
       label={I18N.EM.Report.Cancel}
       onClick={this._handleDialogDismiss} />
     ];
-    var tagWindow = <TagSelectWindow selectedTagList={this.props.tagList}></TagSelectWindow>;
+    var tagWindow = <TagSelectWindow ref='tagListWindow' disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
 
     return (<Dialog
       ref="tagSelectDialog"
@@ -223,6 +311,11 @@ let ReportDataItem = React.createClass({
         dateSelector.setDateField(startTime, endTime);
       }
     }
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      step: nextProps.step
+    });
   },
   componentDidMount: function() {
     if (!this.props.disabled) {
@@ -283,25 +376,6 @@ let ReportDataItem = React.createClass({
       payload: 8,
       text: I18N.Common.DateRange.LastYear
     }];
-    var stepItems = [{
-      payload: 0,
-      text: I18N.Common.AggregationStep.Minute
-    }, {
-      payload: 1,
-      text: I18N.Common.AggregationStep.Hourly
-    }, {
-      payload: 2,
-      text: I18N.Common.AggregationStep.Daily
-    }, {
-      payload: 5,
-      text: I18N.Common.AggregationStep.Weekly
-    }, {
-      payload: 3,
-      text: I18N.Common.AggregationStep.Monthly
-    }, {
-      payload: 4,
-      text: I18N.Common.AggregationStep.Yearly
-    }];
     var numberRuleItems = [{
       payload: 0,
       text: I18N.EM.Report.AllTime
@@ -330,7 +404,7 @@ let ReportDataItem = React.createClass({
     }
     var diplayCom = null;
     if (me.props.showStep) {
-      diplayCom = <SelectField ref='step' menuItems={stepItems} disabled={me.props.disabled} value={me.props.step} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.Step} onChange={me._handleSelectValueChange.bind(null, 'ExportStep')}>
+      diplayCom = <SelectField ref='step' menuItems={me.state.stepItems} disabled={me.props.disabled} value={me.state.step} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.Step} onChange={me._handleStepChange} errorText={this.state.emptyErrorText}>
       </SelectField>;
     } else {
       diplayCom = <SelectField ref='numberRule' menuItems={numberRuleItems} disabled={me.props.disabled} value={me.props.numberRule} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.NumberRule} onChange={me._handleSelectValueChange.bind(null, 'NumberRule')}>
