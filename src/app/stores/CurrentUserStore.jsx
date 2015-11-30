@@ -7,10 +7,12 @@ import { List, updater, update, Map } from 'immutable';
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
 
 let _currentUser = null,
-  _error = null;
+  _error = null,
+  _currentPrivilege = null;
 let CURRENT_USER_EVENT = 'currentuser',
   PASSWORD_ERROR_EVENT = 'passworderror',
-  PASSWORD_SUCCESS_EVENT = 'passwordsuccess';
+  PASSWORD_SUCCESS_EVENT = 'passwordsuccess',
+  CURRENT_PRIVILEGE_EVENT = 'currentprivilege';
 
 var CurrentUserStore = assign({}, PrototypeStore, {
 
@@ -42,8 +44,52 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       I18N.Setting.User.ServerManager
     ]);
   },
+  getCommonPrivilegeList: function() {
+    return ([
+      I18N.Privilege.Common.DashboardView,
+      I18N.Privilege.Common.DashboardManagement,
+      I18N.Privilege.Common.PersonalInfoManagement,
+      I18N.Privilege.Common.MapView
+    ]);
+  },
+  getRolePrivilegeList: function() {
+    var array = [],
+      role = [];
+
+    role = [I18N.Privilege.Role.DashboardSharing,
+      I18N.Privilege.Role.EnergyUsage,
+      I18N.Privilege.Role.CarbonEmission,
+      I18N.Privilege.Role.EnergyCost,
+      I18N.Privilege.Role.UnitIndicator,
+      I18N.Privilege.Role.RatioIndicator,
+      I18N.Privilege.Role.LabelingIndicator,
+      I18N.Privilege.Role.CorporateRanking,
+      I18N.Privilege.Role.EnergyExport,
+      I18N.Privilege.Role.ReportView,
+      I18N.Privilege.Role.ReportManagement,
+      I18N.Privilege.Role.EnergyAlarm,
+      I18N.Privilege.Role.ChartRemarking,
+      I18N.Privilege.Role.SPManagement,
+      I18N.Privilege.Role.HierarchyManagement,
+      I18N.Privilege.Role.TagManagement,
+      I18N.Privilege.Role.KPIConfiguration,
+      I18N.Privilege.Role.TagMapping,
+      I18N.Privilege.Role.CustomerInfoView,
+      I18N.Privilege.Role.CustomerInfoManagement,
+      I18N.Privilege.Role.CustomLabeling];
+    role.forEach((item, index) => {
+      array[1200 + index] = item;
+    });
+    return array;
+  },
   setPasswordSuccess: function() {
     _error = null;
+  },
+  setCurrentPrivilege: function(role) {
+    _currentPrivilege = role.PrivilegeCodes;
+  },
+  getCurrentPrivilege: function() {
+    return _currentPrivilege;
   },
   emitCurrentUserChange: function() {
     this.emit(CURRENT_USER_EVENT);
@@ -54,6 +100,17 @@ var CurrentUserStore = assign({}, PrototypeStore, {
 
   removeCurrentUserListener: function(callback) {
     this.removeListener(CURRENT_USER_EVENT, callback);
+    this.dispose();
+  },
+  emitCurrentrivilegeChange: function() {
+    this.emit(CURRENT_PRIVILEGE_EVENT);
+  },
+  addCurrentrivilegeListener: function(callback) {
+    this.on(CURRENT_PRIVILEGE_EVENT, callback);
+  },
+
+  removeCurrentrivilegeListener: function(callback) {
+    this.removeListener(CURRENT_PRIVILEGE_EVENT, callback);
     this.dispose();
   },
   emitPasswordErrorChange: function() {
@@ -95,7 +152,11 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case CurrentUserAction.PASSWORD_SUCCESS:
       CurrentUserStore.setPasswordSuccess();
-      CurrentUserStore.emitPasswordErrorChange();
+      CurrentUserStore.emitPasswordSuccessChange();
+      break;
+    case CurrentUserAction.GET_ROLE:
+      CurrentUserStore.setCurrentPrivilege(action.role);
+      CurrentUserStore.emitCurrentrivilegeChange();
       break;
   }
 });
