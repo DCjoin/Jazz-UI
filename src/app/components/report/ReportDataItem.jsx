@@ -33,7 +33,6 @@ let ReportDataItem = React.createClass({
     return {
       showTagSelectDialog: false,
       stepItems: stepItems,
-      step: this.props.step,
       emptyErrorText: ''
     };
   },
@@ -116,9 +115,9 @@ let ReportDataItem = React.createClass({
     }
     return result;
   },
-  _updateReportData(name, value) {
+  _updateReportData(name, value, stepValue) {
     if (this.props.updateReportData) {
-      this.props.updateReportData(name, value, this.props.index);
+      this.props.updateReportData(name, value, this.props.index, stepValue);
     }
   },
   _deleteReportData() {
@@ -129,7 +128,7 @@ let ReportDataItem = React.createClass({
   _onDirectionChange(value) {
     this._updateReportData('ExportLayoutDirection', value);
   },
-  _onDateTypeChange(name, e) {
+  _onDateTypeChange(e) {
     var value = e.target.value;
     var dateSelector = this.refs.dateTimeSelector;
 
@@ -138,7 +137,6 @@ let ReportDataItem = React.createClass({
       var timeregion = CommonFuns.GetDateRegion(dateType);
       dateSelector.setDateField(timeregion.start, timeregion.end);
     }
-    this._handleSelectValueChange(name, e);
     this._handleStepDisabled(value);
   },
   _getDateTypeStep: function(dateType) {
@@ -182,12 +180,25 @@ let ReportDataItem = React.createClass({
         stepItems[i].disabled = false;
       }
     }
+    var stepValue = null;
+    for (i = 0; i < stepItems.length; i++) {
+      if (stepItems[i].payload === this.props.step && !stepItems[i].disabled) {
+        stepValue = this.props.step;
+        break;
+      }
+    }
+    if (stepValue === null) {
+      for (i = 0; i < stepItems.length; i++) {
+        if (!stepItems[i].disabled) {
+          stepValue = stepItems[i].payload;
+          break;
+        }
+      }
+    }
+    this._updateReportData('DateType', dateType, stepValue);
     this.setState({
-      stepItems: stepItems,
-      step: null,
-      emptyErrorText: I18N.Common.Label.MandatoryEmptyError
+      stepItems: stepItems
     });
-    this._updateReportData('ExportStep', null);
   },
   _onReprtTypeChange(name, e) {
     var value = e.target.value;
@@ -201,19 +212,6 @@ let ReportDataItem = React.createClass({
       });
     }
     this._handleSelectValueChange(name, e);
-  },
-  _handleStepChange(e) {
-    var step = e.target.value;
-    this.setState({
-      step: step,
-      emptyErrorText: e.target.value ? '' : I18N.Common.Label.MandatoryEmptyError
-    });
-    this._updateReportData('ExportStep', step);
-  },
-  _handleEmptyErrorInputChange(e) {
-    this.setState({
-      emptyErrorText: e.target.value ? '' : I18N.Common.Label.MandatoryEmptyError
-    });
   },
   _handleSelectValueChange(name, e) {
     this._updateReportData(name, e.target.value);
@@ -312,11 +310,6 @@ let ReportDataItem = React.createClass({
       }
     }
   },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      step: nextProps.step
-    });
-  },
   componentDidMount: function() {
     if (!this.props.disabled) {
       var dateSelector = this.refs.dateTimeSelector;
@@ -404,7 +397,7 @@ let ReportDataItem = React.createClass({
     }
     var diplayCom = null;
     if (me.props.showStep) {
-      diplayCom = <SelectField ref='step' menuItems={me.state.stepItems} disabled={me.props.disabled} value={me.state.step} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.Step} onChange={me._handleStepChange} errorText={this.state.emptyErrorText}>
+      diplayCom = <SelectField ref='step' menuItems={me.state.stepItems} disabled={me.props.disabled} value={me.props.step} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.Step} onChange={me._handleSelectValueChange.bind(null, 'ExportStep')} errorText={this.state.emptyErrorText}>
       </SelectField>;
     } else {
       diplayCom = <SelectField ref='numberRule' menuItems={numberRuleItems} disabled={me.props.disabled} value={me.props.numberRule} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.NumberRule} onChange={me._handleSelectValueChange.bind(null, 'NumberRule')}>
@@ -438,7 +431,7 @@ let ReportDataItem = React.createClass({
         display: 'flex',
         'flex-direction': 'row'
       }}>
-            <SelectField menuItems={dateTypeItems} ref='dateType' disabled={me.props.disabled} value={me.props.dateType} onChange={me._onDateTypeChange.bind(null, 'DateType')}></SelectField>
+            <SelectField menuItems={dateTypeItems} ref='dateType' disabled={me.props.disabled} value={me.props.dateType} onChange={me._onDateTypeChange}></SelectField>
             {dateTimeSelector}
           </div>
         </div>
