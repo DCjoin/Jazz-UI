@@ -192,7 +192,24 @@ var TreeNode = React.createClass({
     }
     return checked;
   },
+  isLastChecked: function(props = this.props) {
+    var checked = false;
+    let {checkedNodes, nodeData} = props, node;
 
+    if (checkedNodes.size > 0) {
+      checkedNodes = checkedNodes.toJS();
+      node = checkedNodes[checkedNodes.length - 1];
+      checked = node.Id == nodeData.get("Id");
+    }
+
+    // if (checkedNodes && checkedNodes.forEach) {
+    //   checkedNodes.forEach(node => {
+    //     if (node.get("Id") == nodeData.get("Id"))
+    //       checked = true;
+    //   });
+    // }
+    return checked;
+  },
   operateCollapse: function(nodes, callbackName) {
     for (var key in nodes) {
       if (typeof nodes[key][callbackName] == "function") {
@@ -309,7 +326,7 @@ var TreeNode = React.createClass({
       id: nodeData.get('Id'),
       className: classNames(_.set({
         "tree-node": true,
-        "selected": this.props.hasCheckBox ? this.isChecked(this.props) : this.isSelected(this.props) // this.state.selected
+        "selected": this.props.hasCheckBox ? this.isLastChecked(this.props) : this.isSelected(this.props) // this.state.selected
       }), treeNodeClass, true),
       style: {
         paddingLeft: Number(indent * indentUnit) + this.props.nodeOriginPaddingLeft

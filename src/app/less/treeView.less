@@ -1,7 +1,18 @@
 .pop-tree-view {
-
+  width: 100%;
 }
+.pop-tree-node-checkbox {
 
+  // .mui-enhanced-switch .mui-enhanced-switch-wrap .mui-touch-ripple {
+  //     width: 125%;
+  //     height: 125%;
+  //     top: -3px;
+  //     left: -3px;
+  // }
+  // .mui-checkbox .mui-checkbox-icon {
+  //     margin-right: 0;
+  // }
+}
 .pop-tree-node-container {
   > .tree-node {
     cursor: pointer;
@@ -10,17 +21,9 @@
     align-items: center;
     justify-content: space-between;
     height: 32px;
-    padding-right: 14px;
-    &.selected {
-      background-color: #eaebec;
-    }
-    &:hover {
-      background-color: #eaebec;
-    }
     > .arrow {
       cursor: pointer;
-      width: 20px;
-      margin:0 0 0 16px;
+      width: 12px;
       > .hasChild {
         display: block;
       }
@@ -28,85 +31,102 @@
         display: none;
       }
     }
-    > .chevron {
-      width: 20px;
-    }
     > .content {
       flex: 1;
+      display: flex;
     }
   }
   > .tree-children {
     &.collapse {
-      display: none
+      display: none;
     }
   }
 }
-
-
-.pop-child-container-collapsed{
+.pop-child-container-collapsed {
   display: none;
 }
-
-.pop-arrow{
+.pop-arrow {
   float: left;
   width: 20px;
   min-height: 10px;
-  line-height:40px;
+  line-height: 40px;
 }
-.pop-has-child{
+.pop-has-child {
   display: block;
 }
-.pop-no-child{
+.pop-no-child {
   display: none;
 }
-.pop-tree-arrow{
+.pop-tree-arrow {
   .pop-arrow;
   background-color: yellow;
 }
-.tree-arrow-collapsed{
+.tree-arrow-collapsed {
   .pop-arrow;
   background-color: white;
 }
-
-.pop-icon{
+.pop-icon {
   float: left;
   width: 20%;
   min-height: 10px;
 }
-
-.pop-node{
+.pop-node {
   float: left;
   width: 90%;
   min-height: 10px;
-  line-height:40px;
+  line-height: 40px;
 }
-.pop-node-checkbox{
-  float: left;
-
-  min-height: 10px;
+.pop-tree-node-checkbox {
+  padding-left: 16px;
 }
-.pop-selected{
+.pop-selected {
   background-color: #bbb;
 }
-
-.pop-clear{
+.pop-clear {
   clear: both;
+}
+.tree-node-content-no-privilege {
+  color: gray;
 }
 .tree-node-content {
   display: flex;
+  flex-basis: 100%;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-start;
   > .node-content-icon {
-    margin-left: 6px;
+    margin-left: 8px;
+    min-width: 14px;
+    .pop-tree-node-checkbox + .content & {
+      margin-left: 0;
+    }
   }
   > .node-content-text {
-    margin-left: 6px;
+    margin-left: 8px;
     font-size: 14px;
-    color: #767a7a;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    .hiddenEllipsis;
   }
+}
 
+.tree-node-tooltip {
+  position: absolute;
+  cursor: default;
+
+  z-index: 999;
+
+  width: 280px;
+  height: 68px;
+  padding: 10px;
+
+  background-color: @bgcGray;
+  border: solid 1px @bgcGray;
+  color: @schneiderBlack;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  &>div:last-of-type {
+    font-size: 12px;
+  }
 }
