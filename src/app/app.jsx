@@ -19,6 +19,7 @@ import { Styles } from 'material-ui';
 let {ThemeManager, LightRawTheme} = Styles;
 import AppTheme from './AppTheme.jsx';
 import main from './less/main.less';
+import Platform from './components/platform/Platform.jsx';
 import Test from './components/setting/Test.jsx';
 import PlatformApp from './components/platform/PlatformApp.jsx';
 // var theme = new ThemeManager();
@@ -44,7 +45,7 @@ var routes = (
         <Route name="template" path="template" handler={Alarm}></Route>
       </Route>
       <Route name="platform" path="platform" handler={PlatformApp}>
-        <Route name='config' path='config' handler={Mail}></Route>
+        <Route name='config' path='config' handler={Platform}></Route>
         <Route name="mail" path="mail" handler={Mail}></Route>
       </Route>
 

@@ -945,4 +945,6 @@ I18N.Map.Date.LastYear = 'Last Year ';
 
 I18N.Platform = {};
 I18N.Platform.Title = 'EnergyMost';
+I18N.Platform.InEnglish = '中文版';
+I18N.Platform.Config = 'Platform Configuration';
 module.exports = I18N;

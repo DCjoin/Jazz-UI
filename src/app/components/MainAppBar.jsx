@@ -16,6 +16,7 @@ import CustomFlatButton from '../controls/FlatButton.jsx';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
+import LanguageAction from '../actions/LanguageAction.jsx';
 import Regex from '../constants/Regex.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -254,7 +255,13 @@ var MainAppBar = React.createClass({
           </div>
     </SideNav>);
   },
-  _onLangSwitch: function() {},
+  _onLangSwitch: function() {
+    LanguageAction.switchLanguage();
+  },
+  _onMailLoaded: function() {
+    var params = this.getParams();
+    this.transitionTo('mail', params);
+  },
   _getEditPasswordDialog: function(customError) {
     var MAX_LENGTH_ERROR = I18N.Platform.MaxLengthError;
     var {oldPassword, newPassword, confirmNewPassword} = this.state.tempData,
@@ -524,6 +531,16 @@ var MainAppBar = React.createClass({
       backgroundImage: 'url(' + this.props.logoUrl + ')'
     }}></div> : null;
     var title = (!!this.props.title) ? <div className='jazz-title'>{this.props.title}</div> : null;
+    var mail = (!!this.props.title) ? (      <div className="jazz-mainmenu-user" style={{
+      display: 'flex'
+    }}>
+          <FlatButton label='平台邮件' labelStyle={langLabelStyle} onClick={this._onMailLoaded} style={{
+      backgroundColor: 'transparent',
+      color: 'white',
+      lineHeight: '16px'
+    }} linkButton={true}>
+          </FlatButton>
+        </div>) : null;
     return (
       <div className="jazz-mainmenu">
                 <div className="jazz-logo">
@@ -533,6 +550,7 @@ var MainAppBar = React.createClass({
                 <div className="jazz-menu">
                     <MainMenu items={this.props.items} params={params}  onClick={this._onClick}/>
                       <div className="jazz-mainmenu-info">
+                        {mail}
       <div className="jazz-mainmenu-user" style={{
         display: 'flex'
       }}>

@@ -4,6 +4,7 @@ import React from 'react';
 import Router from 'react-router';
 import GlobalErrorMessageDialog from './GlobalErrorMessageDialog.jsx';
 import GlobalErrorMessageStore from '../stores/GlobalErrorMessageStore.jsx';
+import LanguageStore from '../stores/LanguageStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 
 import keyMirror from 'keymirror';
@@ -71,6 +72,54 @@ let JazzApp = React.createClass({
       })()
     });
   },
+  _onLanguageSwitch: function() {
+    var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
+    var me = this;
+    var afterLoadLang = function(b) {
+      window.I18N = b;
+      me.setState({
+        isLangLoaded: true
+      }, () => {
+        var url = window.location.toLocaleString();
+        let subUrl = url.split('#');
+        if (subUrl.length === 2 && subUrl[1].indexOf('main/') > -1) {
+          return;
+        }
+        if (url.indexOf('menutype=mail') > -1) {
+          if (url.indexOf('config') > -1) {
+            me.replaceWith('config', {
+              lang: lang
+            });
+          } else {
+            me.replaceWith('mail', {
+              lang: lang
+            });
+          }
+
+        } else if (url.indexOf('menutype=energy') > -1) {
+          me.replaceWith('setting', {
+            lang: lang
+          });
+        } else if (url.indexOf('menutype=alarm') > -1) {
+          me.replaceWith('alarm', {
+            lang: lang
+          });
+        } else if (url.indexOf('menutype=map') > -1) {
+          me.replaceWith('map', {
+            lang: lang
+          });
+        }
+
+
+        me._setHighchartConfig();
+      });
+    };
+    if (lang == 'en-us') {
+      require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
+    } else {
+      require(['../lang/zh-cn.js'], afterLoadLang);
+    }
+  },
   componentDidMount: function() {
     var params = this.getParams();
     var lang = params.lang;
@@ -110,27 +159,27 @@ let JazzApp = React.createClass({
       });
     };
 
-    if (!lang) {
-      var url = window.location.toLocaleString();
-      //currentLanguage： 0 中文, 1 英文
-      if (url.indexOf('langNum=0') > -1) { //Chinese
-        lang = 'zh-cn';
 
-      } else if (url.indexOf('langNum=1') > -1) {
-        lang = 'en-us';
-      } else {
-        lang = window.navigator.language.toLowerCase();
-      }
-      //currentLanguage： 0 中文, 1 英文
-      if (lang === 'zh-cn') {
-        window.currentLanguage = 0;
-      } else {
-        window.currentLanguage = 1;
-      }
-      this.replaceWith('app', {
-        lang: lang
-      });
+    var url = window.location.toLocaleString();
+    //currentLanguage： 0 中文, 1 英文
+    if (url.indexOf('langNum=0') > -1) { //Chinese
+      lang = 'zh-cn';
+
+    } else if (url.indexOf('langNum=1') > -1) {
+      lang = 'en-us';
+    } else {
+      lang = window.navigator.language.toLowerCase();
     }
+    //currentLanguage： 0 中文, 1 英文
+    if (lang === 'zh-cn') {
+      window.currentLanguage = 0;
+    } else {
+      window.currentLanguage = 1;
+    }
+    this.replaceWith('app', {
+      lang: lang
+    });
+
 
     if (lang.toLowerCase() == 'en-us') {
       require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
@@ -141,6 +190,7 @@ let JazzApp = React.createClass({
     GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
     CurrentUserAction.getUser(window.currentUserId);
     CurrentUserAction.getRoles(window.currentUserId);
+    LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
   },
   _onClearGlobalError: function() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();
@@ -165,6 +215,7 @@ let JazzApp = React.createClass({
   componentWillUnmount() {
     GlobalErrorMessageStore.removeChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.removeClearGlobalErrorListener(this._onClearGlobalError);
+    LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
   },
   getInitialState: function() {
     return {

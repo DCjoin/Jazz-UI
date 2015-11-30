@@ -34,6 +34,7 @@ let CurrentUserAction = {
       success: function(list) {
         AppDispatcher.dispatch({
           type: Action.GET_ROLE,
+          userId: userId,
           role: list[0]
         });
       },
@@ -41,6 +42,8 @@ let CurrentUserAction = {
         console.log(err, res);
       }
     });
+
+
   },
   resetPassword: function(passwordDto) {
     Ajax.post('/User.svc/ResetPassword', {
