@@ -300,11 +300,14 @@ var ReportRightPanel = React.createClass({
     var id = this.state.reportItem.get('id');
     ReportAction.deleteReportById(id);
   },
-  _updateReportData: function(name, value, index) {
+  _updateReportData: function(name, value, index, stepValue) {
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
     var length = reportData.size;
     reportData = reportData.setIn([index, name], value);
+    if (name === 'DateType') {
+      reportData = reportData.setIn([index, 'ExportStep'], stepValue);
+    }
     reportItem = reportItem.set('data', reportData);
     this.setState({
       reportItem: reportItem
