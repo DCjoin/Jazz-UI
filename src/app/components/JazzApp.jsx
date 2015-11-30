@@ -140,6 +140,7 @@ let JazzApp = React.createClass({
     GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
     CurrentUserAction.getUser(window.currentUserId);
+    CurrentUserAction.getRoles(window.currentUserId);
   },
   _onClearGlobalError: function() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();

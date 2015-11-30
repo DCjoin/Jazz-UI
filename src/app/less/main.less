@@ -545,6 +545,7 @@ input:focus{
         transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
     }
 }
+
 .jazz-mainmenu-info{
 
     color:white;
@@ -572,4 +573,81 @@ input:focus{
     overflow-y: auto !important;
     overflow-x: hidden !important;
   }
+}
+.pop-viewableTextField{
+  .pop-viewableTextField-focus,.pop-viewableTextField-noempty{
+    label{
+        transform: scale(0.75) translate(0, -30px) !important;
+        font-size: 20px;
+    }
+  }
+}
+
+.pop-viewableTextField{
+    label{
+        transform: scale(1) translate(0, 0) !important;
+        top:34px !important;
+
+        &+input{
+            padding-top: 26px !important;
+            margin-top: 0  !important;
+        }
+    }
+    input::-ms-clear {
+        display: none;
+    }
+    display:inline-block;
+    >div{
+        // hr{
+        //     bottom:0px !important;
+        // }
+        > hr:first-of-type {
+            // border-bottom: none !important;
+        }
+        >div{
+            >div.pop-viewableTextField-floatmode{
+                // bottom:5px !important;
+                position:relative !important;
+
+            }
+        }
+    }
+
+    .pop-viewable-title{
+        font-size:14px;
+        color: @propTitle;
+        margin-bottom:6px;
+    }
+    .pop-viewable-value{
+        font-size:16px;
+        color: @propValue;
+        word-break: break-all;
+    }
+}
+
+.pop-viewableSelectField {
+    .pop-viewable-title{
+        font-size:14px;
+        color: @propTitle;
+        margin-bottom:6px;
+    }
+    .pop-viewable-value{
+        font-size:16px;
+        color: @propValue;
+        word-break: break-all;
+    }
+
+    &-ddm {
+      &>div:nth-child(2) {
+        max-height: 300px;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+      }
+    }
+}
+.hiddenEllipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break:keep-all;
 }

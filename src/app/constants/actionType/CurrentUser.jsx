@@ -5,7 +5,7 @@ module.exports = {
   Action: keyMirror({
     GET_USER: null,
     PASSWORD_ERROR: null,
-    PASSWORD_SUCCESS: null,
+    GET_ROLE: null,
     RESET_USER_LIST: null
   })
 };

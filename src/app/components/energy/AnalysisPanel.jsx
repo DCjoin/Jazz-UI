@@ -9,6 +9,7 @@ import ChartStrategyFactor from './ChartStrategyFactor.jsx';
 import ChartMixins from './ChartMixins.jsx';
 import ConstStore from '../../stores/ConstStore.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
+import FolderAction from '../../actions/FolderAction.jsx';
 import AlarmStore from '../../stores/AlarmStore.jsx';
 import TagStore from '../../stores/TagStore.jsx';
 import LabelStore from '../../stores/LabelStore.jsx';
@@ -98,6 +99,10 @@ let AnalysisPanel = React.createClass({
   onWidgetSaveWindow: function(destNode, newName) {
     this.state.chartStrategy.save2DashboardFn(this, destNode, newName);
   },
+  _onBackBtnClick: function() {
+    var parentNode = FolderStore.getParent(FolderStore.getNodeById(this.props.widgetDto.Id));
+    FolderAction.setSelectedNode(parentNode);
+  },
   render() {
     let me = this,
       errorDialog = null,
@@ -138,11 +143,20 @@ let AnalysisPanel = React.createClass({
     } else {
       widgetWd = null;
     }
-
+    let BackBtn = <FontIcon style={{
+      'margin-left': '10px'
+    }} hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>;
     let panel = <div className={'jazz-energy-panel'}>
         <div className='header'>
         <OrigamiPanel/>
+        <div style={{
+      display: 'flex',
+      'flex-direction': 'row'
+    }}>
           {collapseButton}
+
+            {BackBtn}</div>
+
           {sourceUserNameEl}
           <div className={'jazz-alarm-chart-toolbar-container'}>
               <div className={'title'} style={{
