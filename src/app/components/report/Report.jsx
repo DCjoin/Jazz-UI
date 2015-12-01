@@ -24,7 +24,7 @@ let Report = React.createClass({
     var me = this;
     LeftPanelField = <div style={{
       display: 'flex'
-    }}> <LeftPanel onItemClick={this._onItemClick}></LeftPanel></div> ;
+    }}> <LeftPanel></LeftPanel></div> ;
 
     mainPanel = <div style={{
       'margin-top': '-16px',

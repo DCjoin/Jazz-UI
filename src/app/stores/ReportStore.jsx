@@ -163,7 +163,7 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.setSelectedReportItem(action.reportItem);
       ReportStore.emitReportItemChange();
       break;
-    case Action.GET_TEMPLATE_LIST_SUCCESS:
+    case Action.GET_REPORT_TEMPLATE_LIST_SUCCESS:
       ReportStore.setTemplateList(action.templateList);
       ReportStore.emitTemplateListChange();
       break;
