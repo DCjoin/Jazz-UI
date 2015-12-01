@@ -33,8 +33,12 @@ let ReportItem = React.createClass({
           'jazz-report-grid-tr-item-selected': !!isSeleted
         }
       )} onClick={me._onItemSelected}>
-        <span>{me.props.name}</span>
-        <span>{me.props.createUser}</span>
+        <div style={{
+        color: '#ffffff'
+      }}>{me.props.name}</div>
+        <div style={{
+        color: '#adb0b8'
+      }}>{me.props.createUser}</div>
       </div>
       );
   }
