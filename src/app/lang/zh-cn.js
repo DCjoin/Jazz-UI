@@ -1112,6 +1112,8 @@ I18N.Platform.Password.Confirm = '完成';
 I18N.Platform.Password.Cancel = '放弃';
 I18N.Platform.Password.Title = '修改密码';
 
+I18N.Platform.ServiceProvider = '服务商';
+
 I18N.Privilege = {};
 I18N.Privilege.Common = {};
 I18N.Privilege.Common.Common = '公共权限';

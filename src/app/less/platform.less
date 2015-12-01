@@ -25,3 +25,46 @@
     margin-bottom: 15px;
     color: #464949;
 }
+
+  .jazz-serviceprovider-sortbar{
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    min-height:38px;
+    height:38px;
+    border-bottom: 1px solid #434d5e;
+    background-color: rgb(53, 64, 82);
+    >div:nth-child(1){
+      width:135px !important;
+      >div:nth-child(2){
+        left:-65px;
+      }
+    }
+  }
+  .jazz-serviceprovider-sortbar-icon{
+    margin-left: -10px;
+    font-size:8px;
+    color:#ffffff;
+  }
+  .jazz-provider-item{
+    min-height:58px;
+    height:58px;
+    border-bottom: 1px solid #434d5e;
+    background-color: rgb(53, 64, 82);
+    .providername{
+      font-size: 14px;
+      color:#ffffff
+    }
+    .providerinfo{
+      font-size: 14px;
+      color:#adb0b8
+    }
+    &:hover{
+      background-color: #2d3645;
+    }
+  }
+  .jazz-provider-list{
+   overflow: auto;
+   flex:1;
+   background-color: rgb(53, 64, 82);
+  }
