@@ -3,10 +3,12 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/Report.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let ReportAction = {
-  getReportListByCustomerId(customerId) {
+  getReportListByCustomerId(customerId, sortBy, order) {
     Ajax.post('/DataReport.svc/GetExportByCustomerId', {
       params: {
-        customerId: customerId
+        customerId: customerId,
+        sortBy: sortBy,
+        order: order
       },
       success: function(reportList) {
         AppDispatcher.dispatch({
@@ -21,20 +23,22 @@ let ReportAction = {
       }
     });
   },
-  getTemplateListByCustomerId(customerId) {
+  getTemplateListByCustomerId(customerId, sortBy, order) {
     Ajax.post('/DataReport.svc/GetExportTemplateByCustomerId', {
       params: {
-        customerId: customerId
+        customerId: customerId,
+        sortBy: sortBy,
+        order: order
       },
       success: function(templateList) {
         AppDispatcher.dispatch({
-          type: Action.GET_TEMPLATE_LIST_SUCCESS,
+          type: Action.GET_REPORT_TEMPLATE_LIST_SUCCESS,
           templateList: templateList
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
-          type: Action.GET_TEMPLATE_LIST_ERROR
+          type: Action.GET_REPORT_TEMPLATE_LIST_ERROR
         });
       }
     });

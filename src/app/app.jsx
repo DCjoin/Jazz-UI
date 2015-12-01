@@ -14,6 +14,7 @@ import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
 import Mail from './components/mail/Mail.jsx';
 import Report from './components/report/Report.jsx';
+import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import { Styles } from 'material-ui';
 let {ThemeManager, LightRawTheme} = Styles;
@@ -41,7 +42,7 @@ var routes = (
         <Route name="alarm" path="alarm" handler={Alarm}></Route>
         <Route name="setting" path="setting" handler={Setting}></Route>
         <Route name="daily_report" path="report" handler={Report}></Route>
-        <Route name="template" path="template" handler={Alarm}></Route>
+        <Route name="template" path="template" handler={Template}></Route>
       </Route>
       <Route name="platform" path="platform" handler={PlatformApp}>
         <Route name='config' path='config' handler={Mail}></Route>
