@@ -4,20 +4,44 @@ import React from 'react';
 
 import MainAppBar from '../MainAppBar.jsx';
 import NetworkChecker from '../../controls/NetworkChecker.jsx';
+import LeftPanel from './ServiceProviderList.jsx';
+import PlatformAction from '../../actions/PlatformAction.jsx';
+import PlatformStore from '../../stores/PlatformStore.jsx';
 
 let Platform = React.createClass({
+  _onChangeSortBy: function(type) {
+    if (type == 'customername@asc') {
+      PlatformAction.getServiceProviders('Name', 0);
+    } else {
+      PlatformAction.getServiceProviders('StartDate', 1);
+    }
+  },
+  _onProviderListChanged: function() {
+    this.setState({
+      providerList: PlatformStore.getProviderList()
+    });
+  },
+  componentDidMount: function() {
+    PlatformStore.addProviderListChangeListener(this._onProviderListChanged);
+  },
+  componentWillUnmount: function() {
+    PlatformStore.removeProviderListChangeListener(this._onProviderListChanged);
+  },
+  getInitialState: function() {
+    return {
+      providerList: PlatformStore.getProviderList()
+    };
+  },
   render: function() {
-    var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
+
     return (
-      <div className='jazz-content'>
-    <div style={{
-        height: '100px',
-        width: '500px',
-        border: '1px solid black'
-      }}>Platform</div>
-            <NetworkChecker></NetworkChecker>
-        </div>
-      );
+      <div style={{
+        display: 'flex',
+        flex: 1
+      }}>
+      <LeftPanel changeSortBy={this._onChangeSortBy} providerList={this.state.providerList}/>
+      </div>
+      )
   },
 });
 module.exports = Platform;

@@ -52,9 +52,9 @@ let MapPanel = React.createClass({
       bgColor = 'blue';
     } else {
       if (marker.dataValues[0].IsQualified) {
-        bgColor = 'red';
-      } else {
         bgColor = 'green';
+      } else {
+        bgColor = 'red';
       }
     }
 
@@ -191,9 +191,9 @@ let MapPanel = React.createClass({
       bgColor = 'blue';
     } else {
       if (marker.dataValues[0].IsQualified) {
-        bgColor = 'red';
-      } else {
         bgColor = 'green';
+      } else {
+        bgColor = 'red';
       }
     }
     var energyInfoContent = null;
