@@ -12,6 +12,28 @@
   height: 32px;
   background-color: #86ccff;
 }
+.jazz-report-leftpanel-sort{
+  background-color: rgb(53, 64, 82);
+  height: 40px;
+  min-height: 40px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  display: flex;
+  >div{
+    div:first-of-type{
+      div:nth-of-type(3){
+        color: #ffffff !important;
+      }
+      >svg{
+        right: 25px !important;
+      }
+      div: nth-of-type(4){
+        border-top: 0 !important;
+      }
+    }
+  }
+}
 .jazz-report-leftpanel-reportlist{
   overflow: auto;
   flex:1;
@@ -122,14 +144,16 @@
   overflow: auto;
   flex: 1;
 }
-.jazz-template-grid-tr-item{
+.jazz-template-grid-item{
   padding: 5px 43px;
   cursor: pointer;
   background-color: rgb(53, 64, 82);
   border-top:1px solid #434d5e;
   color: #ffffff;
   font-size: 14px;
+  display: flex;
+  flex-direction: row;
 }
-.jazz-report-grid-tr-item:hover{
+.jazz-template-grid-item:hover{
   background-color: #2d3645;
 }
