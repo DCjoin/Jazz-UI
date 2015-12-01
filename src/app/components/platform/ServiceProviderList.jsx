@@ -48,11 +48,11 @@ let ServiceProviderList = React.createClass({
       menuItems: [
         {
           type: 'customername@asc',
-          label: '按客户名称排列'
+          label: I18N.Platform.ServiceProvider.CustomerName
         },
         {
           type: 'starttime@desc',
-          label: '按最近的运营时间排列'
+          label: I18N.Platform.ServiceProvider.StartTime
         },
       ],
       valueMember: "type",
@@ -82,7 +82,7 @@ let ServiceProviderList = React.createClass({
       }}>
             <FlatButton disabled={this.state.buttonDisabled} onClick={this._onAddServiceProvider} style={buttonStyle}>
               <FontIcon  className="fa icon-add btn-icon"/>
-              <span className="mui-flat-button-label btn-text">{I18N.Platform.ServiceProvider}</span>
+              <span className="mui-flat-button-label btn-text">{I18N.Platform.ServiceProvider.SP}</span>
             </FlatButton>
           </div>
         </div>
