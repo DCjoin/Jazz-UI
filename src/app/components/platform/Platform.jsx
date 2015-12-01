@@ -4,19 +4,20 @@ import React from 'react';
 
 import MainAppBar from '../MainAppBar.jsx';
 import NetworkChecker from '../../controls/NetworkChecker.jsx';
-import Content from './MailContent.jsx';
-import Dialog from './MailDialog.jsx';
 
-let Mail = React.createClass({
+let Platform = React.createClass({
   render: function() {
     var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
     return (
       <div className='jazz-content'>
-            <Content/>
-            <Dialog/>
+    <div style={{
+        height: '100px',
+        width: '500px',
+        border: '1px solid black'
+      }}>Platform</div>
             <NetworkChecker></NetworkChecker>
         </div>
       );
   },
 });
-module.exports = Mail;
+module.exports = Platform;
