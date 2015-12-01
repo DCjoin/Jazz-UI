@@ -132,6 +132,7 @@ let JazzApp = React.createClass({
         isLangLoaded: true
       }, () => {
         var url = window.location.toLocaleString();
+        console.log('url=' + url);
         let subUrl = url.split('#');
         if (subUrl.length === 2 && subUrl[1].indexOf('main/') > -1) {
           return;

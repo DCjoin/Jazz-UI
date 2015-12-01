@@ -45,6 +45,33 @@ body{
 @gray : gray;
 @black : black;
 
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+// ::-webkit-scrollbar-track-piece{background-color: #eee;margin: -2px;}
+
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    visibility:visible;
+}
+
+::-webkit-scrollbar-thumb:active{
+    visibility:visible;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  // visibility: hidden;
+  background-color: #A6AAA9;
+  // background-color: transparent;
+}
 ul{
     padding:0;
     margin:0;

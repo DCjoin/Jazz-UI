@@ -15,10 +15,13 @@ let Platform = React.createClass({
     } else {
       PlatformAction.getServiceProviders('StartDate', 1);
     }
+    this.setState({
+      sortBy: type
+    });
   },
   _onProviderListChanged: function() {
     this.setState({
-      providerList: PlatformStore.getProviderList()
+      providerList: PlatformStore.getProviderList(),
     });
   },
   componentDidMount: function() {
@@ -29,7 +32,8 @@ let Platform = React.createClass({
   },
   getInitialState: function() {
     return {
-      providerList: PlatformStore.getProviderList()
+      providerList: PlatformStore.getProviderList(),
+      sortBy: 'customername@asc'
     };
   },
   render: function() {
@@ -39,7 +43,7 @@ let Platform = React.createClass({
         display: 'flex',
         flex: 1
       }}>
-      <LeftPanel changeSortBy={this._onChangeSortBy} providerList={this.state.providerList}/>
+      <LeftPanel sortBy={this.state.sortBy} changeSortBy={this._onChangeSortBy} providerList={this.state.providerList}/>
       </div>
       )
   },

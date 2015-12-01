@@ -1115,7 +1115,14 @@ I18N.Platform.Password.Confirm = '完成';
 I18N.Platform.Password.Cancel = '放弃';
 I18N.Platform.Password.Title = '修改密码';
 
-I18N.Platform.ServiceProvider = '服务商';
+I18N.Platform.ServiceProvider = {};
+I18N.Platform.ServiceProvider.SP = '服务商';
+I18N.Platform.ServiceProvider.CustomerName = '按服务商名称排序';
+I18N.Platform.ServiceProvider.StartTime = '按最近的运营时间排序';
+I18N.Platform.ServiceProvider.NormalStatus = '正常';
+I18N.Platform.ServiceProvider.PauseStatus = '暂停';
+I18N.Platform.ServiceProvider.OperationTime = '运营时间';
+I18N.Platform.ServiceProvider.Status = '状态';
 
 I18N.Privilege = {};
 I18N.Privilege.Common = {};
