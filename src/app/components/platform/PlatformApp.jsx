@@ -5,9 +5,13 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import MainAppBar from '../MainAppBar.jsx';
 import assign from 'object-assign';
 import NetworkChecker from '../../controls/NetworkChecker.jsx';
+import PlatformAction from '../../actions/PlatformAction.jsx';
 
 let PlatformApp = React.createClass({
   mixins: [Navigation, State],
+  componentDidMount: function() {
+    PlatformAction.getServiceProviders('Name', 0);
+  },
   render: function() {
     var menuItems = [
       {
