@@ -6,9 +6,11 @@ let ReportAction = {
   getReportListByCustomerId(customerId, sortBy, order) {
     Ajax.post('/DataReport.svc/GetExportByCustomerId', {
       params: {
-        customerId: customerId,
-        sortBy: sortBy,
-        order: order
+        dto: {
+          customerId: customerId,
+          sortBy: sortBy,
+          order: order
+        }
       },
       success: function(reportList) {
         AppDispatcher.dispatch({
@@ -26,9 +28,11 @@ let ReportAction = {
   getTemplateListByCustomerId(customerId, sortBy, order) {
     Ajax.post('/DataReport.svc/GetExportTemplateByCustomerId', {
       params: {
-        customerId: customerId,
-        sortBy: sortBy,
-        order: order
+        dto: {
+          customerId: customerId,
+          sortBy: sortBy,
+          order: order
+        }
       },
       success: function(templateList) {
         AppDispatcher.dispatch({
