@@ -24,7 +24,10 @@ let TemplateList = React.createClass({
           name: item.get('Name'),
           createUser: item.get('CreateUser'),
           createTime: item.get('CreateTime'),
-          isActive: item.get('IsActive')
+          email: item.get('Email'),
+          roleName: item.get('RoleName'),
+          telephone: item.get('Telephone'),
+          isReference: item.get('IsReference')
         };
         return (
           <TemplateItem {...props}></TemplateItem>

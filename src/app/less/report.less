@@ -134,27 +134,115 @@
 }
 .jazz-template-container{
   display: flex;
-  flex-direction: column;
   flex: 1;
+  overflow: scroll;
+  background-color: #fbfbfb;
+  .jazz-template-center{
+    min-width: 1024px;
+    width: 74%;
+    margin: 0 auto;
+  }
+  .jazz-template-user-info {
+    >a{
+      color:  @schneiderGray;
+      margin-right: 6px;
+      font-size: 14px;
+      text-decoration: none;
+      position: relative;
+      &:hover > ul{
+          display:block;
+      }
+    }
+
+    ul{
+      border: 1px solid @schneiderGray;
+      list-style-type: none;
+      display: none;
+      background-color: #fbfbfb;
+      opacity: 1;
+      padding: 10px;
+      position: absolute;
+      z-index: 99;
+      li{
+          margin-bottom: 8px;
+          color: black;
+      }
+    }
+  }
 }
 .jazz-template-header{
   display: flex;
   flex-direction: row;
 }
-.jazz-template-templatelist{
-  overflow: auto;
-  flex: 1;
+
+.jazz-template-list{
+  margin-top: 25px;
+  &:first-child{
+    border-top:1px solid #eee;
+  }
 }
-.jazz-template-grid-item{
-  padding: 5px 43px;
-  cursor: pointer;
-  background-color: rgb(53, 64, 82);
-  border-top:1px solid #434d5e;
-  color: #ffffff;
-  font-size: 14px;
+.jazz-template-item{
+  height:50px;
+  border-bottom:1px solid #eee;
+  width: 100%;
   display: flex;
   flex-direction: row;
-}
-.jazz-template-grid-item:hover{
-  background-color: #2d3645;
+  padding:5px;
+  &:hover{
+    background-color: #ececec;
+  }
+
+  &-right{
+    display: flex;
+    flex: 3;
+    flex-direction: column;
+    justify-content: center;
+
+    &-name{
+      font-size: 14px;
+      color: @schneiderBlack;
+
+      &:hover{
+        color: @schneiderBlue;
+      }
+    }
+    &-user{
+      margin-top:10px;
+      font-size:12px;
+      color: @schneiderGray;
+      &-info{
+        > a{
+          font-size:12px !important;
+        }
+      }
+    }
+  }
+  &-middle{
+    display: flex;
+    flex: 1;
+    align-items: center;
+  }
+  &-left{
+    display: flex;
+    flex: 2;
+    align-items: center;
+    justify-content: flex-end;
+
+    &-action{
+      display: flex;
+      font-size: 14px;
+      color: @schneiderBlack;
+      &:hover{
+        color:@schneiderBlue;
+      }
+    }
+
+    &-action-warning{
+       > a{
+         &:hover{
+           color:@warningRed;
+         }
+       }
+    }
+  }
 }

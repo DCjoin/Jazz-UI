@@ -355,7 +355,7 @@ var ReportRightPanel = React.createClass({
   },
 
   componentDidMount: function() {
-    ReportAction.getTemplateListByCustomerId(window.currentCustomerId, 'Name', 'asc');
+    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
     ReportStore.addReportItemChangeListener(this._onChange);
     ReportStore.addTemplateListChangeListener(this._onChangeTemplate);
   },

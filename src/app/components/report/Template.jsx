@@ -183,8 +183,10 @@ var Template = React.createClass({
             <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>
           </div>
         </div>
-        <div className="jazz-template-templatelist">
-          {templateContent}
+        <div className="jazz-template-center">
+          <div className="jazz-template-list">
+            {templateContent}
+          </div>
         </div>
         {uploadDialog}
       </div>
