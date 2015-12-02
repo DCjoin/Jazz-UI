@@ -378,7 +378,7 @@ var ReportRightPanel = React.createClass({
           width: '36px',
           height: '36px',
           verticalAlign: 'middle',
-          margin: '10px 0 0 -36px',
+          margin: '10px 0 0 30px',
         },
         iconStyle = {
           fontSize: '36px',
@@ -386,9 +386,11 @@ var ReportRightPanel = React.createClass({
         };
       var reportItem = me.state.reportItem;
       var addReportDataButton = null;
-      var expandButton = (<FlatButton style={buttonStyle} onClick={me._onToggle}>
-        <FontIcon className="icon-taglist-fold" style={iconStyle}/>
-      </FlatButton>);
+      var collapseButton = <div className="fold-tree-btn" style={{
+        "color": "#939796"
+      }} onClick={this.props.onCollapseButtonClick}>
+                              <FontIcon hoverColor="#6b6b6b" color="#939796" className={classSet("icon", "icon-column-fold")} />
+                           </div>;
       var reportTitle = (<TextField ref='reportTitle' floatingLabelText={I18N.EM.Report.ReportName} onChange={me._onNameChange} value={reportItem.get('name')} disabled={me.state.disabled}></TextField>);
       var reportTemplate;
 
@@ -487,7 +489,7 @@ var ReportRightPanel = React.createClass({
       displayedDom = (
         <div className="jazz-report-rightpanel-container">
           <div className="jazz-report-rightpanel-header">
-            {expandButton}
+            {collapseButton}
             {reportTitle}
           </div>
           <div className="jazz-report-rightpanel-body">

@@ -14,17 +14,26 @@ let Report = React.createClass({
   mixins: [Navigation, State],
   getInitialState: function() {
     return {
-
+      showLeftPanel: true
     };
+  },
+  _onLeftSwitchButtonClick() {
+    var leftShow;
+    leftShow = !this.state.showLeftPanel;
+    this.setState({
+      showLeftPanel: leftShow
+    });
   },
   componentDidMount: function() {},
   componentWillUnMount: function() {},
   render() {
     var LeftPanelField, mainPanel;
     var me = this;
-    LeftPanelField = <div style={{
+    LeftPanelField = (this.state.showLeftPanel) ? <div style={{
       display: 'flex'
-    }}> <LeftPanel></LeftPanel></div> ;
+    }}> <LeftPanel/></div> : <div style={{
+      display: 'none'
+    }}><LeftPanel/></div>;
 
     mainPanel = <div style={{
       'margin-top': '-16px',
@@ -33,7 +42,7 @@ let Report = React.createClass({
       display: 'flex',
       flex: 1
     }}>
-          <RightPanel></RightPanel>
+          <RightPanel onCollapseButtonClick={me._onLeftSwitchButtonClick}></RightPanel>
         </div>;
 
     return (
