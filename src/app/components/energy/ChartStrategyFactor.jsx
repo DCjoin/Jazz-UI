@@ -583,7 +583,7 @@ let ChartStrategyFactor = {
         desktop: true
       };
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
-                              <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} />
+                              <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={!analysisPanel.state.energyData}/>
                               <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} />
                               <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} />
                               <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} />
@@ -607,10 +607,10 @@ let ChartStrategyFactor = {
         desktop: true
       };
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
-                              <MenuItem key={1} primaryText={'复制'} />
-                              <MenuItem key={2} primaryText={'发送'} />
-                              <MenuItem key={3} primaryText={'共享'} />
-                              <MenuItem key={5} primaryText={'删除'} />
+                              <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={!analysisPanel.state.energyData}/>
+                              <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} />
+                              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} />
+                              <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
                            </IconMenu>;
       return widgetOptMenu;
     }
@@ -1353,7 +1353,12 @@ let ChartStrategyFactor = {
         FolderAction.WidgetSave(widgetDto, window.currentCustomerId);
       } else {
         //for this situation destNode is menuIndex
-        FolderAction.updateWidgetDtos(widgetDto, destNode);
+        if (!!destNode) {
+          return widgetDto
+        } else {
+          FolderAction.updateWidgetDtos(widgetDto);
+        }
+
       }
 
     },
@@ -1434,7 +1439,12 @@ let ChartStrategyFactor = {
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
-      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
+      if (!!menuIndex) {
+        return widgetDto
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+
     },
     saveUnit2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -1511,8 +1521,12 @@ let ChartStrategyFactor = {
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
 
       widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
-
-      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
+      if (!!menuIndex) {
+        return widgetDto
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+    //FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
     saveCost2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -1598,7 +1612,12 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
+      if (!!menuIndex) {
+        return widgetDto
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+    //FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
     saveUnitCost2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -1677,7 +1696,13 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
+
+      if (!!menuIndex) {
+        return widgetDto
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+    //FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
     saveCarbon2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -1763,7 +1788,13 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
+
+      if (!!menuIndex) {
+        return widgetDto
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+    //  FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
     saveUnitCarbon2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -1846,7 +1877,12 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
+      if (!!menuIndex) {
+        return widgetDto
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+    //FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
     saveLabel2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -1884,7 +1920,12 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
+      if (!!menuIndex) {
+        return widgetDto
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+    //FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     },
     saveRank2Dashboard(analysisPanel, menuIndex) {
       let chartType = analysisPanel.state.selectedChartType;
@@ -1957,7 +1998,12 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-      FolderAction.updateWidgetDtos(widgetDto, menuIndex);
+      if (!!menuIndex) {
+        return widgetDto
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+    //FolderAction.updateWidgetDtos(widgetDto, menuIndex);
     }
   },
   handleNavigatorChangeLoadFnStrategy: {

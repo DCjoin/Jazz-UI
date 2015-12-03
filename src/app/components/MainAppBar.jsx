@@ -218,13 +218,6 @@ var MainAppBar = React.createClass({
                     </li>
                 </ul>
             </div>
-            <div className="sidebar-bottom-action" >
-                <CustomFlatButton className="pop-userprofile-logout" label={I18N.Platform.User.Logout} primary={true} onClick={this._showLogout} style={{
-        color: '#abafae',
-        height: '48px',
-        width: '100%'
-      }} />
-            </div>
         </SideNav>);
   },
   _getAboutNav: function() {
@@ -409,12 +402,15 @@ var MainAppBar = React.createClass({
 
       titleSelectedIndex = 0,
       titleItems = CurrentUserStore.getUserTitle().map((title, index) => {
-        if (index == user.Title) {
-          titleSelectedIndex = index;
+        if (index != 3) {
+          if (index == user.Title) {
+            titleSelectedIndex = index;
+          }
+          return {
+            text: title
+          };
         }
-        return {
-          text: title
-        };
+
       }),
       titleProps = {
         ref: "title",

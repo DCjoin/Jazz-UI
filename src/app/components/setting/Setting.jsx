@@ -53,6 +53,7 @@ let Setting = React.createClass({
       templateShow: false,
       templateNode: null,
       templateId: null,
+      templateWidgetDto: null,
       selectedEnergyType: null
     };
   },
@@ -256,7 +257,7 @@ let Setting = React.createClass({
             template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={false}/>;
             break;
           case 6:
-            template = <SaveAsView onDismiss={this._onTemplateDismiss} saveAsNode={this.state.templateNode}/>;
+            template = <SaveAsView onDismiss={this._onTemplateDismiss} saveAsNode={this.state.templateNode} widgetDto={this.state.templateWidgetDto}/>;
             break;
           case 7:
             template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={true}/>;
@@ -266,10 +267,13 @@ let Setting = React.createClass({
     }
     return template;
   },
-  _onWidgetMenuSelect: function(index) {
+  _onWidgetMenuSelect: function(index, widgetDto) {
     var id = index;
     if (index == 1) {
-      id = 6
+      id = 6;
+      this.setState({
+        templateWidgetDto: widgetDto
+      })
     } else {
       if (index == 5) {
         id = 7

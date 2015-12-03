@@ -285,6 +285,30 @@ let FolderAction = {
       },
     });
   },
+  SaveAsItem(sourceTreeNode, desFolder, newName, widgetDto) {
+    let originWidgetDto = widgetDto;
+    Ajax.post('/Dashboard.svc/SaveAsItem', {
+      params: {
+        sourceTreeNode: sourceTreeNode,
+        desFolder: desFolder,
+        newName: newName,
+        widgetDto: widgetDto,
+      },
+      success: function(newNode) {
+        AppDispatcher.dispatch({
+          type: Action.COPY_ITEM,
+          destItem: desFolder,
+          newNode: Immutable.fromJS(newNode)
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.COPY_ITEM_ERROR,
+          res: res
+        });
+      },
+    });
+  },
 };
 
 module.exports = FolderAction;
