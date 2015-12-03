@@ -19,6 +19,7 @@ var ReportRightPanel = React.createClass({
     return {
       isLoading: true,
       disabled: true,
+      saveDisabled: false,
       reportItem: ReportStore.getSelectedReportItem(),
       showDownloadButton: true,
       checkedValue: 'uploadedTemplate',
@@ -28,19 +29,42 @@ var ReportRightPanel = React.createClass({
       fileName: ''
     };
   },
+  _clearAllErrorText() {
+    this.refs.reportTitleId.clearErrorText();
+    var dataLength = this.state.reportItem.get('data').size;
+    for (var i = 0; i < dataLength; i++) {
+      this.refs['reportData' + (i + 1)]._clearErrorText();
+    }
+  },
+  _isValid() {
+    var isValid = this.refs.reportTitleId.isValid();
+    var dataLength = this.state.reportItem.get('data').size;
+    if (dataLength === 0) {
+      return false;
+    }
+    for (var i = 0; i < dataLength; i++) {
+      isValid = isValid && this.refs['reportData' + (i + 1)]._isValid();
+    }
+    return isValid;
+  },
   _onChange() {
+    if (this.refs.reportTitleId) {
+      this._clearAllErrorText();
+    }
     var reportItem = ReportStore.getSelectedReportItem();
+    var templateId = reportItem.get('templateId') || this.state.templateList.getIn([0, 'Id']);
     var obj = {
       reportItem: reportItem,
       isLoading: false,
       showDeleteDialog: false,
-      sheetNames: this._getSheetNamesByTemplateId(reportItem.get('templateId')),
+      sheetNames: this._getSheetNamesByTemplateId(templateId),
       checkedValue: 'uploadedTemplate',
       showDownloadButton: true,
       fileName: ''
     };
     if (reportItem.get('id') === 0) {
       obj.disabled = false;
+      obj.saveDisabled = true;
     } else {
       obj.disabled = true;
     }
@@ -81,16 +105,26 @@ var ReportRightPanel = React.createClass({
     var reportItem = this.state.reportItem;
     reportItem = reportItem.set('templateId', value);
     var sheetNames = this._getSheetNamesByTemplateId(value);
+    var me = this;
     this.setState({
       reportItem: reportItem,
       sheetNames: sheetNames
+    }, () => {
+      this.setState({
+        saveDisabled: !me._isValid()
+      });
     });
   },
   _onNameChange(value) {
+    var me = this;
     var reportItem = this.state.reportItem;
     reportItem = reportItem.set('name', value);
     this.setState({
       reportItem: reportItem
+    }, () => {
+      this.setState({
+        saveDisabled: !me._isValid()
+      });
     });
   },
   _getTemplateItems: function() {
@@ -134,6 +168,10 @@ var ReportRightPanel = React.createClass({
           reportItem: reportItem,
           sheetNames: Immutable.fromJS(obj.SheetList),
           showUploadDialog: false
+        }, () => {
+          this.setState({
+            saveDisabled: !me._isValid()
+          });
         });
       } else {
         me.setState({
@@ -228,10 +266,12 @@ var ReportRightPanel = React.createClass({
   },
   _editReport: function() {
     this.setState({
-      disabled: false
+      disabled: false,
+      saveDisabled: false
     });
   },
   _cancelEditReport: function() {
+    this._clearAllErrorText();
     if (this.state.reportItem.get('id') !== 0) {
       var reportItem = ReportStore.getSelectedReportItem();
       this.setState({
@@ -249,6 +289,7 @@ var ReportRightPanel = React.createClass({
     }
   },
   _saveReport: function() {
+    this._clearAllErrorText();
     var reportItem = this.state.reportItem;
     var sendData = {
       CreateUser: reportItem.get('createUser'),
@@ -301,6 +342,7 @@ var ReportRightPanel = React.createClass({
     ReportAction.deleteReportById(id);
   },
   _updateReportData: function(name, value, index, stepValue) {
+    var me = this;
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
     var length = reportData.size;
@@ -311,25 +353,30 @@ var ReportRightPanel = React.createClass({
     reportItem = reportItem.set('data', reportData);
     this.setState({
       reportItem: reportItem
+    }, () => {
+      this.setState({
+        saveDisabled: !me._isValid()
+      });
     });
   },
   _addReportData: function() {
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
+    var sheetNames = this.state.sheetNames.toJS();
     var newReportData = {
       DataStartTime: null,
       DataEndTime: null,
       DateType: 0,
       ExportLayoutDirection: 0,
-      ExportStep: null,
+      ExportStep: 0,
       ExportTimeOrder: 0,
       IsExportTagName: false,
       IsExportTimestamp: false,
-      NumberRule: null,
-      ReportType: null,
-      StartCell: null,
+      NumberRule: 0,
+      ReportType: 0,
+      StartCell: '',
       TagsList: [],
-      TargetSheet: null
+      TargetSheet: sheetNames[0]
     };
     reportData = reportData.unshift(Immutable.fromJS(newReportData));
     reportData = reportData.map((item, i) => {
@@ -337,7 +384,8 @@ var ReportRightPanel = React.createClass({
     });
     reportItem = reportItem.set('data', reportData);
     this.setState({
-      reportItem: reportItem
+      reportItem: reportItem,
+      saveDisabled: true
     });
   },
   _deleteReportData: function(index) {
@@ -386,6 +434,7 @@ var ReportRightPanel = React.createClass({
         };
       var reportItem = me.state.reportItem;
       var titleProps = {
+        ref: 'reportTitleId',
         isViewStatus: me.state.disabled,
         didChanged: me._onNameChange,
         defaultValue: reportItem.get('name'),
@@ -404,7 +453,7 @@ var ReportRightPanel = React.createClass({
       var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me._editReport} />;
       var exportButton = <FlatButton label={I18N.EM.Report.Export} onClick={me._exportTemplate} />;
       var deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} />;
-      var saveButton = <FlatButton label={I18N.EM.Report.Save} onClick={me._saveReport} />;
+      var saveButton = <FlatButton label={I18N.EM.Report.Save} onClick={me._saveReport} disabled={me.state.saveDisabled} />;
       var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me._cancelEditReport} />;
       var buttonArea = null;
       if (me.state.disabled) {
@@ -423,7 +472,7 @@ var ReportRightPanel = React.createClass({
           uploadButton = null;
         var templateEditProps = {
           isViewStatus: me.state.disabled,
-          defaultValue: reportItem.get('templateId'),
+          defaultValue: reportItem.get('templateId') || this.state.templateList.getIn([0, 'Id']),
           dataItems: me._getTemplateItems(),
           textField: 'text',
           title: '',
@@ -473,8 +522,9 @@ var ReportRightPanel = React.createClass({
       </div>);
       }
       var dataLength = reportItem.get('data').size;
-      var reportData = reportItem.get('data').map(function(item) {
+      var reportData = reportItem.get('data').map(function(item, index) {
         let props = {
+          ref: 'reportData' + (index + 1),
           disabled: me.state.disabled,
           startTime: item.get('DataStartTime'),
           endTime: item.get('DataEndTime'),
@@ -492,11 +542,12 @@ var ReportRightPanel = React.createClass({
           updateReportData: me._updateReportData,
           deleteReportData: me._deleteReportData,
           showStep: item.get('ReportType') === 1 ? false : true,
-          index: item.get('Index'),
+          index: index,
           dataLength: dataLength,
           id: item.get('Id'),
           tagList: item.get('TagsList'),
-          addReport: reportItem.get('id') === 0 ? true : false
+          addReport: reportItem.get('id') === 0 ? true : false,
+          showBackground: (index % 2) === 0 ? true : false
         };
         return (
           <ReportDataItem {...props}></ReportDataItem>

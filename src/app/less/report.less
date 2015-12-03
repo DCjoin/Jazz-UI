@@ -94,12 +94,19 @@
     }
   }
 }
+.jazz-report-data-content{
+  display: flex;
+  flex-direction: column;
+  width: 96%;
+  margin: 0 auto;
+  &-background{
+    background-color: #f4f4f4;
+  }
+}
 .jazz-report-data-delete{
   padding: 25px 0px 15px 0px;
   display: flex;
   flex-direction: row;
-  width: 96%;
-  margin: 0 auto;
   border-top: 1px solid #ececec;
   >div{
     padding-top: 5px;
@@ -108,7 +115,16 @@
 .jazz-report-data-container{
   display: flex;
   flex-direction: column;
-  padding: 15px 30px;
+  padding: 15px 0px;
+}
+.jazz-data-tag-select-window{
+  >div{
+    div:first-of-type{
+      >div{
+        max-width: 900px !important;
+      }
+    }
+  }
 }
 .jazz-report-data-radiobutton{
   >div{
@@ -167,10 +183,70 @@
    display: flex;
    flex-direction: column;
    flex: 1;
+   border: 1px solid #d9d9d9;
+   .jazz-report-taglist-tagselect{
+     width: 400px;
+     display: flex;
+     flex-direction: column;
+     .header{
+       min-height:32px;
+       width:100%;
+       background-color: #efefef;
+       display:flex;
+       flex-flow:row nowrap;
+       align-items:center
+       .hierName{
+         color: #000!important;
+       }
+     }
+     .filter{
+       display:flex;
+       flex-flow: row nowrap;
+       margin-top: 0px;
+       border-color:#e4e7e9 transparent;
+       background-color: #fbfbfb;
+       width:100%;
+       min-height:46px;
+       .search{
+         flex:1;
+         display:flex;
+         flex-flow:row nowrap;
+         min-height:26px;
+         border:1px solid #e4e7e6;
+         margin:9px 0px 9px 10px;
+         .input{
+           >hr{
+             border-bottom-color:transparent !important;
+           }
+         }
+       }
+       .dropdownmenu{
+         margin-top: -4px;
+         >div:first-of-type{
+
+           div:nth-child(3){
+             padding-left:10px !important
+           }
+           svg{
+             right:10px !important;
+           }
+           div:nth-child(5){
+             border-top-width: 0px !important;
+           }
+         }
+         div:nth-child(2){
+           z-index:10 !important;
+           min-width:140px;
+           right:0
+         }
+       }
+     }
+   }
 }
 .jazz-report-taglist{
   overflow: auto;
   flex: 1;
+  margin-left: 10px;
 }
 .jazz-template-container{
   display: flex;

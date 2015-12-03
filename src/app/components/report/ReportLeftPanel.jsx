@@ -20,8 +20,8 @@ var ReportLeftPanel = React.createClass({
     var newReportItem = {
       id: 0,
       templateId: null,
-      name: null,
-      createUser: null,
+      name: '',
+      createUser: '',
       data: []
     };
     ReportAction.setSelectedReportItem(newReportItem);

@@ -176,6 +176,11 @@ let TagSelectWindow = React.createClass({
     if (selectedTaglist && selectedTaglist.size !== 0) {
       var selectedTagIds = this._getTagIds(selectedTaglist);
       ReportAction.getSelectedTagData(selectedTagIds);
+    } else if (selectedTaglist.size === 0) {
+      this.setState({
+        selectedTagList: Immutable.fromJS([]),
+        isRightLoading: false
+      });
     }
     ReportStore.addTagListChangeListener(this._onTagListChange);
     ReportStore.addSelectedTagListChangeListener(this._onSelectedTagListChange);
@@ -201,10 +206,11 @@ let TagSelectWindow = React.createClass({
     }
     var leftTagListHeader = <div style={{
       display: 'flex',
-      'flex-direction': 'row'
+      'flex-direction': 'row',
+      marginLeft: '7px'
     }}>
         <div style={{
-      width: '40px'
+      width: '30px'
     }}><Checkbox disabled={this.props.disabled} checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
         <div style={{
       width: '110px'
@@ -238,11 +244,11 @@ let TagSelectWindow = React.createClass({
         </div>;
 
     leftPanelField = (<div className='jazz-report-taglist-container'>
-      <div className="jazz-dataselectmainpanel" >
+      <div className="jazz-report-taglist-tagselect" >
         <div className="header">
           <Header onHierachyTreeClick={this._onHierachyTreeClick} onDimTreeClick={this._onDimTreeClick}/>
         </div>
-        <div>
+        <div className='filter'>
           <SearchBar onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
         </div>
       </div>

@@ -4,6 +4,7 @@ import React from 'react';
 import classNames from 'classnames';
 import ConstStore from '../../stores/ConstStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
+import Regex from '../../constants/Regex.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
@@ -38,6 +39,22 @@ let ReportDataItem = React.createClass({
       stepItems: Immutable.fromJS(stepItems),
       emptyErrorText: ''
     };
+  },
+  _clearErrorText() {
+    this.refs.startCellId.clearErrorText();
+  },
+  _isValid() {
+    var isValid;
+    if (this.props.tagList.size === 0) {
+      return false;
+    }
+    if (this.refs.stepId) {
+      isValid = this.refs.stepId.isValid();
+    } else if (this.refs.numberRuleId) {
+      isValid = this.refs.numberRuleId.isValid();
+    }
+    isValid = isValid && this.refs.reportTypeId.isValid() && this.refs.dateTypeId.isValid() && this.refs.targetSheetId.isValid() && this.refs.startCellId.isValid();
+    return isValid;
   },
   getRealTime(time) {
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
@@ -227,7 +244,7 @@ let ReportDataItem = React.createClass({
     this._updateReportData(name, check);
   },
   _onStartCellChange() {
-    var value = this.refs.startCell.getValue();
+    var value = this.refs.startCellId.getValue();
     this._updateReportData('StartCell', value);
   },
   _onDateSelectorChanged() {
@@ -286,7 +303,7 @@ let ReportDataItem = React.createClass({
     ];
     var tagWindow = <TagSelectWindow ref='tagListWindow' disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
 
-    return (<Dialog
+    return (<div className='jazz-data-tag-select-window'><Dialog
       ref="tagSelectDialog"
       title={I18N.EM.Report.SelectTag}
       openImmediately={true}
@@ -294,14 +311,13 @@ let ReportDataItem = React.createClass({
       modal={true}
       >
       <div style={{
-        height: '500px',
-        width: '700px',
         flex: 1,
-        display: 'flex'
+        display: 'flex',
+        height: '500px'
       }}>
         {tagWindow}
       </div>
-      </Dialog>);
+    </Dialog></div>);
   },
   componentDidUpdate: function() {
     if (!this.props.disabled) {
@@ -412,6 +428,7 @@ let ReportDataItem = React.createClass({
     var diplayCom = null;
     if (me.props.showStep) {
       var stepProps = {
+        ref: 'stepId',
         dataItems: me.state.stepItems.toJS(),
         isViewStatus: me.props.disabled,
         defaultValue: me.props.step,
@@ -422,6 +439,7 @@ let ReportDataItem = React.createClass({
       diplayCom = <ViewableDropDownMenu {...stepProps}></ViewableDropDownMenu>;
     } else {
       var numberRuleProps = {
+        ref: 'numberRuleId',
         dataItems: numberRuleItems,
         isViewStatus: me.props.disabled,
         defaultValue: me.props.numberRule,
@@ -434,6 +452,7 @@ let ReportDataItem = React.createClass({
     var tagDialog = me._renderTagSelectDialog();
     var displayIndex = me.props.dataLength - me.props.index;
     var reportTypeProps = {
+      ref: 'reportTypeId',
       dataItems: typeItems,
       isViewStatus: me.props.disabled,
       defaultValue: me.props.reportType,
@@ -442,6 +461,7 @@ let ReportDataItem = React.createClass({
       didChanged: me._onReprtTypeChange
     };
     var dateTypeProps = {
+      ref: 'dateTypeId',
       dataItems: dateTypeItems,
       isViewStatus: me.props.disabled,
       defaultValue: me.props.dateType,
@@ -450,6 +470,7 @@ let ReportDataItem = React.createClass({
       didChanged: me._onDateTypeChange
     };
     var targetSheetProps = {
+      ref: 'targetSheetId',
       dataItems: me._getSheetItems(),
       isViewStatus: me.props.disabled,
       defaultValue: me.props.targetSheet,
@@ -458,21 +479,24 @@ let ReportDataItem = React.createClass({
       didChanged: me._handleSelectValueChange.bind(null, 'TargetSheet')
     };
     var startCellProps = {
+      ref: 'startCellId',
       isViewStatus: me.props.disabled,
       didChanged: me._onStartCellChange,
       defaultValue: me.props.startCell,
       title: I18N.EM.Report.StartCell,
-      isRequired: true
+      isRequired: true,
+      regex: Regex.ExcelCell,
+      errorMessage: I18N.Common.Label.ExcelColumnError
     };
+
     return (
-      <div style={{
-        display: 'flex',
-        'flex-direction': 'column'
-      }}>
-        <div className='jazz-report-data-delete' style={{
-        display: 'flex',
-        'flex-direction': 'row'
-      }}>
+      <div className={classNames(
+        {
+          'jazz-report-data-content': true,
+          'jazz-report-data-content-background': this.props.showBackground
+        }
+      )}>
+        <div className='jazz-report-data-delete'>
           <div>{I18N.EM.Report.Data + displayIndex}</div>
           {deleteButton}
         </div>

@@ -22,6 +22,18 @@ var ViewableDropDownMenu = React.createClass({
       errorText: ""
     };
   },
+  isValid: function() {
+    var index = this.props.dataItems.findIndex((item) => {
+      if (item.payload === this.props.defaultValue) {
+        return true;
+      }
+    });
+    if (index !== -1) {
+      return true;
+    } else {
+      return false;
+    }
+  },
 
   _handleChange: function(e, index, object) {
     var payload = object.payload;

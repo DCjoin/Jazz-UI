@@ -123,6 +123,7 @@ I18N.Common.Label.OverValueError = '该输入项的最大值是 999999999。';
 I18N.Common.Label.UnspecifyCommodity = '不指定##Common.Glossary.Commodity##';
 I18N.Common.Label.UnknownError = '抱歉，发生未知错误。';
 I18N.Common.Label.MandatoryNumberError = '必填为数字。';
+I18N.Common.Label.ExcelColumnError = '请按照Excel单元格名称填写，如C1，AB23';
 
 I18N.Common.DateRange = {};
 I18N.Common.DateRange.Last7Day = '最近7天';
@@ -799,6 +800,7 @@ I18N.Message.M21707 = '报表"{0}"已被删除，马上为您刷新';
 I18N.Message.M21705 = '报表名称重复';
 I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
+I18N.Message.M21802 = '所选数据点包含计量数据V类型的数据点，不支持原始数据功能，请重新选择。';
 
 I18N.Folder = {};
 I18N.Folder.NewWidget = {};

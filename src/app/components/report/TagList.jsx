@@ -18,7 +18,7 @@ let TagList = React.createClass({
     } else {
       var tagItem = null;
       var selectedTagList = this.props.selectedTagList;
-      if (selectedTagList === null) {
+      if (selectedTagList === null || selectedTagList.size === 0) {
         return false;
       }
       tagItem = selectedTagList.find((item) => {
