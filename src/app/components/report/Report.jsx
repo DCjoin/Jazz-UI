@@ -27,11 +27,11 @@ let Report = React.createClass({
   componentDidMount: function() {},
   componentWillUnMount: function() {},
   render() {
-    var LeftPanelField, mainPanel;
+    var mainPanel;
     var me = this;
-    LeftPanelField = (this.state.showLeftPanel) ? <div style={{
+    let LeftPanelField = (this.state.showLeftPanel) ? <div style={{
       display: 'flex'
-    }}> <LeftPanel/></div> : <div style={{
+    }}><LeftPanel/></div> : <div style={{
       display: 'none'
     }}><LeftPanel/></div>;
 

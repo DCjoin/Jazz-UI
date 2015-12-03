@@ -401,25 +401,26 @@ var MainAppBar = React.createClass({
       ],
 
       titleSelectedIndex = 0,
-      titleItems = CurrentUserStore.getUserTitle().map((title, index) => {
-        if (index != 3) {
-          if (index == user.Title) {
-            titleSelectedIndex = index;
-          }
-          return {
-            text: title
-          };
+      titleItems = [];
+    CurrentUserStore.getUserTitle().forEach((title, index) => {
+      if (index != 3) {
+        if (index == user.Title) {
+          titleSelectedIndex = index;
         }
-
-      }),
-      titleProps = {
-        ref: "title",
-        isViewStatus: false,
-        title: I18N.Platform.User.Position,
-        selectedIndex: titleSelectedIndex,
-        textField: "text",
-        dataItems: titleItems
-      };
+        titleItems.push({
+          payload: index,
+          text: title
+        })
+      }
+    });
+    var titleProps = {
+      ref: "title",
+      isViewStatus: false,
+      title: I18N.Platform.User.Position,
+      selectedIndex: titleSelectedIndex,
+      textField: "text",
+      dataItems: titleItems
+    };
     return (<Dialog actions={actions} openImmediately={true} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
       <ul className="pop-userprofile-edit">
           <li>

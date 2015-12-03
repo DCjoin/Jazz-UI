@@ -5,10 +5,13 @@ import classNames from 'classnames';
 import ConstStore from '../../stores/ConstStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
+import ViewableTextField from '../../controls/ViewableTextField.jsx';
+import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import TagSelectWindow from './TagSelectWindow.jsx';
 import { FlatButton, FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox, Dialog } from 'material-ui';
 import Immutable from 'immutable';
 
+var dateTypeChanged = false;
 let ReportDataItem = React.createClass({
   getInitialState: function() {
     var stepItems = [{
@@ -32,7 +35,7 @@ let ReportDataItem = React.createClass({
     }];
     return {
       showTagSelectDialog: false,
-      stepItems: stepItems,
+      stepItems: Immutable.fromJS(stepItems),
       emptyErrorText: ''
     };
   },
@@ -128,8 +131,8 @@ let ReportDataItem = React.createClass({
   _onDirectionChange(value) {
     this._updateReportData('ExportLayoutDirection', value);
   },
-  _onDateTypeChange(e) {
-    var value = e.target.value;
+  _onDateTypeChange(value) {
+    dateTypeChanged = true;
     var dateSelector = this.refs.dateTimeSelector;
 
     if (value !== 11) {
@@ -165,9 +168,14 @@ let ReportDataItem = React.createClass({
   _handleStepDisabled(dateType) {
     var stepItems = this.state.stepItems;
     var list;
-    if ((dateType === 0) || (dateType === 9) || (dateType === 10) || (dateType === 11)) {
+    var timeregion;
+    if ((dateType === 0) || (dateType === 9) || (dateType === 10)) {
       var newDateType = this.changeTimeValue(dateType);
-      var timeregion = CommonFuns.GetDateRegion(newDateType);
+      timeregion = CommonFuns.GetDateRegion(newDateType);
+      list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
+    } else if (dateType === 11) {
+      var dateSelector = this.refs.dateTimeSelector;
+      timeregion = dateSelector.getDateTime();
       list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
     } else {
       list = this._getDateTypeStep(dateType);
@@ -175,22 +183,22 @@ let ReportDataItem = React.createClass({
     var order = [0, 1, 2, 5, 3, 4];
     for (var i = 0; i < order.length; i++) {
       if (list.indexOf(order[i]) === -1) {
-        stepItems[i].disabled = true;
+        stepItems = stepItems.setIn([i, 'disabled'], true);
       } else {
-        stepItems[i].disabled = false;
+        stepItems = stepItems.setIn([i, 'disabled'], false);
       }
     }
     var stepValue = null;
-    for (i = 0; i < stepItems.length; i++) {
-      if (stepItems[i].payload === this.props.step && !stepItems[i].disabled) {
+    for (i = 0; i < stepItems.size; i++) {
+      if (stepItems.getIn([i, 'payload']) === this.props.step && !stepItems.getIn([i, 'disabled'])) {
         stepValue = this.props.step;
         break;
       }
     }
     if (stepValue === null) {
-      for (i = 0; i < stepItems.length; i++) {
-        if (!stepItems[i].disabled) {
-          stepValue = stepItems[i].payload;
+      for (i = 0; i < stepItems.size; i++) {
+        if (!stepItems.getIn([i, 'disabled'])) {
+          stepValue = stepItems.getIn([i, 'payload']);
           break;
         }
       }
@@ -200,8 +208,7 @@ let ReportDataItem = React.createClass({
       stepItems: stepItems
     });
   },
-  _onReprtTypeChange(name, e) {
-    var value = e.target.value;
+  _onReprtTypeChange(value) {
     if (value === 0) {
       this.setState({
         showStep: true
@@ -211,10 +218,10 @@ let ReportDataItem = React.createClass({
         showStep: false
       });
     }
-    this._handleSelectValueChange(name, e);
+    this._handleSelectValueChange('ReportType', value);
   },
-  _handleSelectValueChange(name, e) {
-    this._updateReportData(name, e.target.value);
+  _handleSelectValueChange(name, value) {
+    this._updateReportData(name, value);
   },
   _handleCheckboxCheck(name, e, check) {
     this._updateReportData(name, check);
@@ -304,9 +311,13 @@ let ReportDataItem = React.createClass({
         var timeregion = CommonFuns.GetDateRegion(dateType);
         dateSelector.setDateField(timeregion.start, timeregion.end);
       } else {
-        var startTime = this.getRealTime(this.props.startTime);
-        var endTime = this.getRealTime(this.props.endTime);
-        dateSelector.setDateField(startTime, endTime);
+        if (dateTypeChanged) {
+          dateTypeChanged = false;
+        } else {
+          var startTime = this.getRealTime(this.props.startTime);
+          var endTime = this.getRealTime(this.props.endTime);
+          dateSelector.setDateField(startTime, endTime);
+        }
       }
     }
   },
@@ -393,33 +404,80 @@ let ReportDataItem = React.createClass({
       dataSourceButton = <FlatButton onClick={me._showTagsDialog} label={I18N.EM.Report.ViewTag} style={{
         width: '120px'
       }} />;
-      dateTimeSelector = <span>{me._displayTimeRange()}</span>;
+      dateTimeSelector = <div style={{
+        marginLeft: '100px',
+        paddingTop: '6px'
+      }}>{me._displayTimeRange()}</div>;
     }
     var diplayCom = null;
     if (me.props.showStep) {
-      diplayCom = <SelectField ref='step' menuItems={me.state.stepItems} disabled={me.props.disabled} value={me.props.step} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.Step} onChange={me._handleSelectValueChange.bind(null, 'ExportStep')} errorText={this.state.emptyErrorText}>
-      </SelectField>;
+      var stepProps = {
+        dataItems: me.state.stepItems.toJS(),
+        isViewStatus: me.props.disabled,
+        defaultValue: me.props.step,
+        title: I18N.EM.Report.Step,
+        textField: 'text',
+        didChanged: me._handleSelectValueChange.bind(null, 'ExportStep')
+      };
+      diplayCom = <ViewableDropDownMenu {...stepProps}></ViewableDropDownMenu>;
     } else {
-      diplayCom = <SelectField ref='numberRule' menuItems={numberRuleItems} disabled={me.props.disabled} value={me.props.numberRule} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.NumberRule} onChange={me._handleSelectValueChange.bind(null, 'NumberRule')}>
-      </SelectField>;
+      var numberRuleProps = {
+        dataItems: numberRuleItems,
+        isViewStatus: me.props.disabled,
+        defaultValue: me.props.numberRule,
+        title: I18N.EM.Report.NumberRule,
+        textField: 'text',
+        didChanged: me._handleSelectValueChange.bind(null, 'NumberRule')
+      };
+      diplayCom = <ViewableDropDownMenu {...numberRuleProps}></ViewableDropDownMenu>;
     }
     var tagDialog = me._renderTagSelectDialog();
     var displayIndex = me.props.dataLength - me.props.index;
+    var reportTypeProps = {
+      dataItems: typeItems,
+      isViewStatus: me.props.disabled,
+      defaultValue: me.props.reportType,
+      title: I18N.EM.Report.DataType,
+      textField: 'text',
+      didChanged: me._onReprtTypeChange
+    };
+    var dateTypeProps = {
+      dataItems: dateTypeItems,
+      isViewStatus: me.props.disabled,
+      defaultValue: me.props.dateType,
+      title: '',
+      textField: 'text',
+      didChanged: me._onDateTypeChange
+    };
+    var targetSheetProps = {
+      dataItems: me._getSheetItems(),
+      isViewStatus: me.props.disabled,
+      defaultValue: me.props.targetSheet,
+      title: I18N.EM.Report.TargetSheet,
+      textField: 'text',
+      didChanged: me._handleSelectValueChange.bind(null, 'TargetSheet')
+    };
+    var startCellProps = {
+      isViewStatus: me.props.disabled,
+      didChanged: me._onStartCellChange,
+      defaultValue: me.props.startCell,
+      title: I18N.EM.Report.StartCell,
+      isRequired: true
+    };
     return (
       <div style={{
         display: 'flex',
         'flex-direction': 'column'
       }}>
-        <div style={{
+        <div className='jazz-report-data-delete' style={{
         display: 'flex',
         'flex-direction': 'row'
       }}>
-          <span>{I18N.EM.Report.Data + displayIndex}</span>
+          <div>{I18N.EM.Report.Data + displayIndex}</div>
           {deleteButton}
         </div>
         <div className='jazz-report-data-container'>
-          <SelectField ref='reportType' menuItems={typeItems} disabled={me.props.disabled} value={me.props.reportType} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.DataType} onChange={me._onReprtTypeChange.bind(null, 'ReportType')}>
-          </SelectField>
+          <ViewableDropDownMenu {...reportTypeProps}></ViewableDropDownMenu>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.DataSource}</span>
@@ -431,7 +489,7 @@ let ReportDataItem = React.createClass({
         display: 'flex',
         'flex-direction': 'row'
       }}>
-            <SelectField menuItems={dateTypeItems} ref='dateType' disabled={me.props.disabled} value={me.props.dateType} onChange={me._onDateTypeChange}></SelectField>
+            <ViewableDropDownMenu  {...dateTypeProps}></ViewableDropDownMenu>
             {dateTimeSelector}
           </div>
         </div>
@@ -448,8 +506,7 @@ let ReportDataItem = React.createClass({
           </div>
         </div>
         <div className='jazz-report-data-container'>
-          <SelectField ref='targetSheet' menuItems={me._getSheetItems()} disabled={me.props.disabled} value={me.props.targetSheet} hintText={I18N.EM.Report.Select} floatingLabelText={I18N.EM.Report.TargetSheet} onChange={me._handleSelectValueChange.bind(null, 'TargetSheet')}>
-          </SelectField>
+          <ViewableDropDownMenu  {...targetSheetProps}></ViewableDropDownMenu>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.ExportFormat}</span>
@@ -459,7 +516,7 @@ let ReportDataItem = React.createClass({
           </div>
         </div>
         <div className='jazz-report-data-container'>
-          <TextField ref='startCell' floatingLabelText={I18N.EM.Report.StartCell} value={me.props.startCell} disabled={me.props.disabled} onChange={me._onStartCellChange}></TextField>
+          <ViewableTextField {...startCellProps}></ViewableTextField>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.Layout}</span>

@@ -3,6 +3,8 @@ import React from "react";
 import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton, Dialog } from 'material-ui';
 import classSet from 'classnames';
 import CommonFuns from '../../util/Util.jsx';
+import ViewableTextField from '../../controls/ViewableTextField.jsx';
+import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportDataItem from './ReportDataItem.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
@@ -75,8 +77,7 @@ var ReportRightPanel = React.createClass({
       });
     }
   },
-  _onExistTemplateChange(e) {
-    var value = e.target.value;
+  _onExistTemplateChange(value) {
     var reportItem = this.state.reportItem;
     reportItem = reportItem.set('templateId', value);
     var sheetNames = this._getSheetNamesByTemplateId(value);
@@ -85,8 +86,7 @@ var ReportRightPanel = React.createClass({
       sheetNames: sheetNames
     });
   },
-  _onNameChange() {
-    var value = this.refs.reportTitle.getValue();
+  _onNameChange(value) {
     var reportItem = this.state.reportItem;
     reportItem = reportItem.set('name', value);
     this.setState({
@@ -355,7 +355,7 @@ var ReportRightPanel = React.createClass({
   },
 
   componentDidMount: function() {
-    ReportAction.getTemplateListByCustomerId(window.currentCustomerId, 'Name', 'asc');
+    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
     ReportStore.addReportItemChangeListener(this._onChange);
     ReportStore.addTemplateListChangeListener(this._onChangeTemplate);
   },
@@ -385,13 +385,20 @@ var ReportRightPanel = React.createClass({
           color: '#abafae'
         };
       var reportItem = me.state.reportItem;
+      var titleProps = {
+        isViewStatus: me.state.disabled,
+        didChanged: me._onNameChange,
+        defaultValue: reportItem.get('name'),
+        title: I18N.EM.Report.ReportName,
+        isRequired: true
+      };
       var addReportDataButton = null;
       var collapseButton = <div className="fold-tree-btn" style={{
         "color": "#939796"
       }} onClick={this.props.onCollapseButtonClick}>
                               <FontIcon hoverColor="#6b6b6b" color="#939796" className={classSet("icon", "icon-column-fold")} />
                            </div>;
-      var reportTitle = (<TextField ref='reportTitle' floatingLabelText={I18N.EM.Report.ReportName} onChange={me._onNameChange} value={reportItem.get('name')} disabled={me.state.disabled}></TextField>);
+      var reportTitle = (<div className='jazz-report-rightpanel-title'><ViewableTextField {...titleProps}></ViewableTextField></div>);
       var reportTemplate;
 
       var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me._editReport} />;
@@ -401,12 +408,27 @@ var ReportRightPanel = React.createClass({
       var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me._cancelEditReport} />;
       var buttonArea = null;
       if (me.state.disabled) {
+        var templateProps = {
+          isViewStatus: me.state.disabled,
+          defaultValue: reportItem.get('templateId'),
+          dataItems: me._getTemplateItems(),
+          textField: 'text',
+          title: I18N.EM.Report.Template
+        };
         buttonArea = <div>{editButton}{exportButton}{deleteButton}</div>;
-        reportTemplate = (<SelectField ref='reportTemplate' menuItems={me._getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} floatingLabelText={I18N.EM.Report.Template}></SelectField>);
+        reportTemplate = (<ViewableDropDownMenu {...templateProps}></ViewableDropDownMenu>);
       } else {
         buttonArea = <div>{saveButton}{cancelButton}</div>;
         var downloadButton = null,
           uploadButton = null;
+        var templateEditProps = {
+          isViewStatus: me.state.disabled,
+          defaultValue: reportItem.get('templateId'),
+          dataItems: me._getTemplateItems(),
+          textField: 'text',
+          title: '',
+          didChanged: me._onExistTemplateChange
+        };
         if (me.state.showDownloadButton) {
           downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={me._downloadTemplate} />);
         }
@@ -418,21 +440,20 @@ var ReportRightPanel = React.createClass({
             left: 0,
             display: 'none'
           };
-          uploadButton = (<label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
+          uploadButton = (<label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
             <span>{me.state.showUploadDialog ? '' : me.state.fileName}</span>
             {(me.state.fileName === '' || me.state.showUploadDialog) ? I18N.EM.Report.Upload : I18N.EM.Report.Reupload}
             <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/></label>);
         }
         reportTemplate = (
           <div>
-            <span>{I18N.EM.Report.Template}</span>
+            <div className='jazz-report-rightpanel-template-title'>{I18N.EM.Report.Template}</div>
             <RadioButton onCheck={me._onTemplateTypeChange} checked={me.state.checkedValue === "uploadedTemplate"} value="uploadedTemplate" label={I18N.EM.Report.ExistTemplate} />
             <div style={{
             display: 'flex',
             'flex-direction': 'row'
           }}>
-              <SelectField ref='reportTemplate' menuItems={me._getTemplateItems()} disabled={me.state.disabled} value={reportItem.get('templateId')} onChange={me._onExistTemplateChange}>
-              </SelectField>
+              <ViewableDropDownMenu  {...templateEditProps}></ViewableDropDownMenu>
               {downloadButton}
             </div>
             <div style={{
@@ -446,11 +467,8 @@ var ReportRightPanel = React.createClass({
             </div>
           </div>
         );
-        addReportDataButton = (<div className="jazz-report-rightpanel-add" style={{
-          display: 'flex',
-          'flex-direction': 'row'
-        }}>
-        <span>{I18N.EM.Report.Data}</span>
+        addReportDataButton = (<div className="jazz-report-rightpanel-add" >
+        <div>{I18N.EM.Report.Data}</div>
         <FlatButton label={I18N.EM.Report.Add} onClick={me._addReportData} />
       </div>);
       }

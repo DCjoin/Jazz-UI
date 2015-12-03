@@ -3,7 +3,7 @@
 import React from 'react';
 import CommonFuns from '../../util/Util.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
-import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton, Dialog } from 'material-ui';
+import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
 import classNames from 'classnames';
 
 
@@ -13,13 +13,11 @@ let TemplateItem = React.createClass({
       showDeleteDialog: false
     };
   },
-  _getDisplayText() {
+  _getDisplayTime() {
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
     var createTime = j2d(this.props.createTime, true);
-    var createUser = this.props.createUser;
     var time = CommonFuns.formatChinaDate(createTime, true);
-    var str = createUser + ' 创建于' + time;
-    return str;
+    return time;
   },
   _handleDialogDismiss() {
     this.setState({
@@ -76,18 +74,34 @@ let TemplateItem = React.createClass({
 
   render() {
     var me = this;
-    var displayStr = me._getDisplayText();
+    var displayTime = me._getDisplayTime();
     var deleteButton = null;
     if (me.state.showDeleteButton) {
-      deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} />;
+      deleteButton = <div className="jazz-template-item-left-action">
+          <FlatButton label={I18N.EM.Report.Delete} onClick={me.deleteTemplateById}></FlatButton>
+        </div>;
     }
     return (
-      <div className='jazz-template-grid-item' onMouseOver={me._showDeleteButton.bind(null, true)} onMouseOut={me._showDeleteButton.bind(null, false)}>
-      <div className='jazz-template-grid-item-left'>
-        <div className='jazz-template-grid-item-name' onClick={me._downloadTemplate}>{me.props.name}</div>
-        <div>{displayStr}</div>
+      <div className='jazz-template-item' onMouseLeave={me._showDeleteButton.bind(null, false)} onMouseEnter={me._showDeleteButton.bind(null, true)}>
+      <div className='jazz-template-item-right'>
+        <div className='jazz-template-item-right-name' onClick={me._downloadTemplate}>{me.props.name}</div>
+        <div className="jazz-template-item-right-user">
+          <div className="jazz-template-user-info jazz-template-item-right-user-info">
+            <a href={'mailto:' + me.props.email}>
+              <span>{me.props.createUser}</span>
+              <ul>
+                <li>{me.props.roleName}</li>
+                <li>{me.props.telephone}</li>
+                <li>{me.props.email}</li>
+              </ul>
+            </a>
+            <span>创建于{displayTime}</span>
+          </div>
+        </div>
       </div>
-      <div className='jazz-template-grid-item-right'>
+      <div className="jazz-template-item-middle">
+      </div>
+      <div className='jazz-template-item-left'>
         {deleteButton}
       </div>
     </div>
