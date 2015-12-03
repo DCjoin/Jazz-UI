@@ -413,6 +413,7 @@ var MainAppBar = React.createClass({
           titleSelectedIndex = index;
         }
         return {
+          payload: index,
           text: title
         };
       }),

@@ -21,6 +21,8 @@
   justify-content: space-around;
   display: flex;
   >div{
+    height: 40px !important;
+    width: 192px !important;
     div:first-of-type{
       div:nth-of-type(3){
         color: #ffffff !important;
@@ -61,14 +63,52 @@
 .jazz-report-rightpanel-header{
   display: flex;
   flex-direction: column;
+  .jazz-report-rightpanel-title{
+    padding: 12px 30px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ececec;
+
+  }
 }
 .jazz-report-rightpanel-body{
   overflow: auto;
   flex: 1;
+  .jazz-report-rightpanel-template{
+    padding: 25px 0px;
+    width: 96%;
+    margin: 0 auto;
+    &-title{
+
+    }
+  }
+  .jazz-report-rightpanel-add{
+    padding: 25px 0px;
+    display: flex;
+    flex-direction: row;
+    width: 96%;
+    margin: 0 auto;
+    border-top: 1px solid #ececec;
+    >div{
+      padding-top: 5px;
+    }
+  }
+}
+.jazz-report-data-delete{
+  padding: 25px 0px 15px 0px;
+  display: flex;
+  flex-direction: row;
+  width: 96%;
+  margin: 0 auto;
+  border-top: 1px solid #ececec;
+  >div{
+    padding-top: 5px;
+  }
 }
 .jazz-report-data-container{
   display: flex;
   flex-direction: column;
+  padding: 15px 30px;
 }
 .jazz-report-data-radiobutton{
   >div{
