@@ -218,13 +218,6 @@ var MainAppBar = React.createClass({
                     </li>
                 </ul>
             </div>
-            <div className="sidebar-bottom-action" >
-                <CustomFlatButton className="pop-userprofile-logout" label={I18N.Platform.User.Logout} primary={true} onClick={this._showLogout} style={{
-        color: '#abafae',
-        height: '48px',
-        width: '100%'
-      }} />
-            </div>
         </SideNav>);
   },
   _getAboutNav: function() {
@@ -408,23 +401,26 @@ var MainAppBar = React.createClass({
       ],
 
       titleSelectedIndex = 0,
-      titleItems = CurrentUserStore.getUserTitle().map((title, index) => {
+      titleItems = [];
+    CurrentUserStore.getUserTitle().forEach((title, index) => {
+      if (index != 3) {
         if (index == user.Title) {
           titleSelectedIndex = index;
         }
-        return {
+        titleItems.push({
           payload: index,
           text: title
-        };
-      }),
-      titleProps = {
-        ref: "title",
-        isViewStatus: false,
-        title: I18N.Platform.User.Position,
-        selectedIndex: titleSelectedIndex,
-        textField: "text",
-        dataItems: titleItems
-      };
+        })
+      }
+    });
+    var titleProps = {
+      ref: "title",
+      isViewStatus: false,
+      title: I18N.Platform.User.Position,
+      selectedIndex: titleSelectedIndex,
+      textField: "text",
+      dataItems: titleItems
+    };
     return (<Dialog actions={actions} openImmediately={true} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
       <ul className="pop-userprofile-edit">
           <li>

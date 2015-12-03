@@ -89,11 +89,18 @@ let AnalysisPanel = React.createClass({
 
     if (menuIndex === 4) {
       this.exportChart();
-    } else if (menuIndex === 1 || menuIndex === 2) {
-      this.save2Dashboard(menuIndex);
-      this.props.onOperationSelect(menuIndex);
     } else {
-      this.props.onOperationSelect(menuIndex);
+      if (menuIndex === 1) {
+        let widgetDto = this.state.chartStrategy.save2DashboardFn(this, menuIndex);
+        this.props.onOperationSelect(menuIndex, widgetDto);
+      } else {
+        if (menuIndex === 2) {
+          this.state.chartStrategy.save2DashboardFn(this);
+        }
+        this.props.onOperationSelect(menuIndex);
+
+      }
+
     }
   },
   onWidgetSaveWindow: function(destNode, newName) {

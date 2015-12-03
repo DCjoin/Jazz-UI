@@ -102,7 +102,7 @@ var FolderItem = React.createClass({
               </IconMenu>
       } else {
         menu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
-              <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} style={menuStyle}/>
+              <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
               <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} style={menuStyle}/>
               <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} style={menuStyle}/>
               <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle}/>
