@@ -207,7 +207,10 @@ let TagSelectWindow = React.createClass({
     var leftTagListHeader = <div style={{
       display: 'flex',
       'flex-direction': 'row',
-      marginLeft: '7px'
+      paddingLeft: '7px',
+      backgroundColor: '#fbfbfb',
+      height: '30px',
+      'line-height': '30px'
     }}>
         <div style={{
       width: '30px'
@@ -218,16 +221,18 @@ let TagSelectWindow = React.createClass({
         <div style={{
       width: '110px'
     }}>{I18N.Common.Glossary.Code}</div>
-        <div style={{
-      width: '60px'
-    }}>{I18N.Common.Glossary.Commodity}</div>
+        <div>{I18N.Common.Glossary.Commodity}</div>
       </div>;
     var rightTagListHeader = <div style={{
       display: 'flex',
-      'flex-direction': 'row'
+      'flex-direction': 'row',
+      paddingLeft: '7px',
+      backgroundColor: '#efefef',
+      height: '30px',
+      'line-height': '30px'
     }}>
           <div style={{
-      width: '40px'
+      width: '51px'
     }}></div>
           <div style={{
       width: '110px'
@@ -236,14 +241,12 @@ let TagSelectWindow = React.createClass({
       width: '110px'
     }}>{I18N.Common.Glossary.Code}</div>
           <div style={{
-      width: '60px'
+      width: '70px'
     }}>{I18N.Common.Glossary.Commodity}</div>
-    <div style={{
-      width: '20px'
-    }}></div>
+    <div></div>
         </div>;
 
-    leftPanelField = (<div className='jazz-report-taglist-container'>
+    leftPanelField = (<div className='jazz-report-taglist-container-left'>
       <div className="jazz-report-taglist-tagselect" >
         <div className="header">
           <Header onHierachyTreeClick={this._onHierachyTreeClick} onDimTreeClick={this._onDimTreeClick}/>
@@ -258,7 +261,7 @@ let TagSelectWindow = React.createClass({
       </div>
       {pagination}
     </div>);
-    rightPanel = <div className='jazz-report-taglist-container'>
+    rightPanel = <div className='jazz-report-taglist-container-right'>
       {rightTagListHeader}
       <div className='jazz-report-taglist'>
           <TagList tagList={this.state.selectedTagList} isLoading={this.state.isRightLoading}  disabled={this.props.disabled} leftPanel={false} onTagItemUnselected={this._onTagItemUnselected}></TagList>
@@ -267,7 +270,7 @@ let TagSelectWindow = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1
+        'flex-direction': 'row'
       }}>
           {leftPanelField}
           {rightPanel}

@@ -90,6 +90,22 @@ let ReportAction = {
       }
     });
   },
+  deleteTemplateById(id) {
+    Ajax.post('/DataReport.svc/DeleteTemplateById', {
+      params: {
+        id: id
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_TEMPLATE_SUCCESS,
+          id: id
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   getTagData(nodeId, option, page, filters) {
     Ajax.post('/Tag.svc/GetTagsByFilter?', {
       params: {

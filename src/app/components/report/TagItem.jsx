@@ -39,36 +39,26 @@ let TagItem = React.createClass({
       deleteButton = null,
       displayIndex = null;
     if (this.props.leftPanel) {
-      checkBox = <div style={{
-        width: '40px'
-      }}><Checkbox checked={me.props.checked} onCheck={me._onTagItemChecked} disabled={me.props.disabled}></Checkbox></div>;
+      checkBox = <div><Checkbox checked={me.props.checked} onCheck={me._onTagItemChecked} disabled={me.props.disabled}></Checkbox></div>;
     } else {
       if (!me.props.disabled) {
-        deleteButton = <div style={{
-          width: '20px'
-        }}><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onTagItemUnselected} style={cleanIconStyle}></FontIcon></div>;
+        deleteButton = <div><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onTagItemUnselected} style={cleanIconStyle}></FontIcon></div>;
       }
-      displayIndex = <div style={{
-        width: '40px'
-      }}>{me.props.index + 1}</div>;
+      displayIndex = <div>{me.props.index + 1}</div>;
     }
 
     return (
-      <div style={{
-        display: 'flex',
-        'flex-direction': 'row'
-      }}>
+      <div className={classNames(
+        {
+          'jazz-report-tag-item-left': me.props.leftPanel,
+          'jazz-report-tag-item-right': !me.props.leftPanel
+        }
+      )}>
         {checkBox}
         {displayIndex}
-        <div style={{
-        width: '110px'
-      }}>{me.props.name}</div>
-        <div style={{
-        width: '110px'
-      }}>{me.props.code}</div>
-        <div style={{
-        width: '60px'
-      }}>{CommonFuns.getCommodityById(me.props.commodityId).Comment}</div>
+        <div>{me.props.name}</div>
+        <div>{me.props.code}</div>
+        <div>{CommonFuns.getCommodityById(me.props.commodityId).Comment}</div>
         {deleteButton}
       </div>
       );

@@ -1,8 +1,9 @@
 'use strict';
 import React from "react";
-import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton, Dialog } from 'material-ui';
+import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog } from 'material-ui';
 import classSet from 'classnames';
 import CommonFuns from '../../util/Util.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
@@ -449,11 +450,13 @@ var ReportRightPanel = React.createClass({
                            </div>;
       var reportTitle = (<div className='jazz-report-rightpanel-title'><ViewableTextField {...titleProps}></ViewableTextField></div>);
       var reportTemplate;
-
-      var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me._editReport} />;
-      var exportButton = <FlatButton label={I18N.EM.Report.Export} onClick={me._exportTemplate} />;
-      var deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} />;
-      var saveButton = <FlatButton label={I18N.EM.Report.Save} onClick={me._saveReport} disabled={me.state.saveDisabled} />;
+      var saveButtonStyle = {
+        borderRight: '1px solid #ececec'
+      };
+      var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me._editReport}  secondary={true} style={saveButtonStyle} />;
+      var exportButton = <FlatButton label={I18N.EM.Report.Export} onClick={me._exportTemplate}  secondary={true} style={saveButtonStyle} />;
+      var deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} primary={true} />;
+      var saveButton = <FlatButton style={saveButtonStyle} secondary={true} label={I18N.EM.Report.Save} onClick={me._saveReport} disabled={me.state.saveDisabled} />;
       var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me._cancelEditReport} />;
       var buttonArea = null;
       if (me.state.disabled) {
@@ -464,10 +467,36 @@ var ReportRightPanel = React.createClass({
           textField: 'text',
           title: I18N.EM.Report.Template
         };
-        buttonArea = <div>{editButton}{exportButton}{deleteButton}</div>;
+        buttonArea = <div className='jazz-report-rightpanel-footer-content'>
+          <div className='jazz-report-rightpanel-footer-btn'><div style={{
+          float: 'left',
+          height: '100%'
+        }}>{editButton}</div>
+          <div style={{
+          float: 'left',
+          height: '100%'
+        }}>{exportButton}</div>
+          <div style={{
+          float: 'right',
+          height: '100%'
+        }}>{deleteButton}</div>
+          <div style={{
+          clear: 'both'
+        }}></div></div></div>;
         reportTemplate = (<ViewableDropDownMenu {...templateProps}></ViewableDropDownMenu>);
       } else {
-        buttonArea = <div>{saveButton}{cancelButton}</div>;
+        buttonArea = <div className='jazz-report-rightpanel-footer-content'>
+          <div className='jazz-report-rightpanel-footer-btn'><div style={{
+          float: 'left',
+          height: '100%'
+        }}>{saveButton}</div>
+          <div style={{
+          float: 'left',
+          height: '100%'
+        }}>{cancelButton}</div>
+          <div style={{
+          clear: 'both'
+        }}></div></div></div>;
         var downloadButton = null,
           uploadButton = null;
         var templateEditProps = {
@@ -479,7 +508,7 @@ var ReportRightPanel = React.createClass({
           didChanged: me._onExistTemplateChange
         };
         if (me.state.showDownloadButton) {
-          downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={me._downloadTemplate} />);
+          downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={me._downloadTemplate} secondary={true} />);
         }
         if (!me.state.showDownloadButton) {
           var fileInputStyle = {
@@ -489,10 +518,10 @@ var ReportRightPanel = React.createClass({
             left: 0,
             display: 'none'
           };
-          uploadButton = (<label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
+          uploadButton = (<div className='jazz-report-rightpanel-template-upload-button'><label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
             <span>{me.state.showUploadDialog ? '' : me.state.fileName}</span>
             {(me.state.fileName === '' || me.state.showUploadDialog) ? I18N.EM.Report.Upload : I18N.EM.Report.Reupload}
-            <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/></label>);
+            <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/></label></div>);
         }
         reportTemplate = (
           <div>

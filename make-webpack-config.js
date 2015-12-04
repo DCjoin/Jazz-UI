@@ -3,6 +3,7 @@ module.exports = function(options) {
   var path = require("path");
   var webpack = require("webpack");
   var ExtractTextPlugin = require("extract-text-webpack-plugin");
+  var extractLessModule = require("./extract-less-webpack-module.js");
   var fs = require('fs');
   var modulePath = "node_modules";
   var appRoot = path.join(__dirname, "src", "app");
@@ -90,6 +91,7 @@ module.exports = function(options) {
 
 
   plugins.push(new ExtractTextPlugin("main.css" + (options.publish ? "?[contenthash]" : "")));
+  plugins.push(extractLessModule.getWebpackPlugin());
 
   if (options.publish) {
     plugins.push(
@@ -143,6 +145,12 @@ module.exports = function(options) {
         colors: true,
         exclude: excludeFromStats
       }
+    },
+
+    lessLoader: {
+      lessPlugins: [
+        extractLessModule.getLessPlugin()
+      ]
     }
   };
 };

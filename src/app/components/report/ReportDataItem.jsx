@@ -9,7 +9,8 @@ import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import TagSelectWindow from './TagSelectWindow.jsx';
-import { FlatButton, FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox, Dialog } from 'material-ui';
+import { FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox, Dialog } from 'material-ui';
+import FlatButton from '../../controls/FlatButton.jsx';
 import Immutable from 'immutable';
 
 var dateTypeChanged = false;
@@ -313,7 +314,7 @@ let ReportDataItem = React.createClass({
       <div style={{
         flex: 1,
         display: 'flex',
-        height: '500px'
+        height: '350px'
       }}>
         {tagWindow}
       </div>
@@ -411,15 +412,13 @@ let ReportDataItem = React.createClass({
       dateTimeSelector = null,
       dataSourceButton = null;
     if (!me.props.disabled) {
-      deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._deleteReportData} />;
-      dataSourceButton = <FlatButton label={me.props.addReport ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={me._showTagsDialog} style={{
-        width: '120px'
-      }} />;
+      deleteButton = <div className='jazz-report-data-delete-button'><FlatButton secondary={true} label={I18N.EM.Report.Delete} onClick={me._deleteReportData} style={{
+        background: 'transparent'
+      }} /></div>;
+      dataSourceButton = <div className='jazz-report-data-datasource-button'><FlatButton secondary={true} label={me.props.addReport ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={me._showTagsDialog}/></div>;
       dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged} showTime={true}/>;
     } else {
-      dataSourceButton = <FlatButton onClick={me._showTagsDialog} label={I18N.EM.Report.ViewTag} style={{
-        width: '120px'
-      }} />;
+      dataSourceButton = <div className='jazz-report-data-datasource-button'><FlatButton secondary={true} onClick={me._showTagsDialog} label={I18N.EM.Report.ViewTag}/></div>;
       dateTimeSelector = <div style={{
         marginLeft: '100px',
         paddingTop: '6px'

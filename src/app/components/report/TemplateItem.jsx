@@ -3,14 +3,16 @@
 import React from 'react';
 import CommonFuns from '../../util/Util.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
-import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
+import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
+import FlatButton from '../../controls/FlatButton.jsx';
 import classNames from 'classnames';
 
 
 let TemplateItem = React.createClass({
   getInitialState: function() {
     return {
-      showDeleteDialog: false
+      showDeleteDialog: false,
+      showDeleteButton: false
     };
   },
   _getDisplayTime() {
@@ -54,12 +56,14 @@ let TemplateItem = React.createClass({
       openImmediately={true}
       actions={dialogActions}
       modal={true}>
-        {'确定删除 "' + this.props.name + ' "吗？'}
+        {'确定删除报表模板 "' + this.props.name + ' "吗？'}
       </Dialog>);
   },
-  _deleteTemolate: function() {
+
+  _deleteTemplate: function() {
     var id = this.props.id;
     ReportAction.deleteTemplateById(id);
+    this._handleDialogDismiss();
   },
   _downloadTemplate: function() {
     var templateId = this.props.id;
@@ -76,10 +80,15 @@ let TemplateItem = React.createClass({
     var me = this;
     var displayTime = me._getDisplayTime();
     var deleteButton = null;
+    var deleteDialog = me._renderDeleteDialog();
     if (me.state.showDeleteButton) {
-      deleteButton = <div className="jazz-template-item-left-action">
-          <FlatButton label={I18N.EM.Report.Delete} onClick={me.deleteTemplateById}></FlatButton>
+      if (!me.props.isReference) {
+        deleteButton = <div className="jazz-template-item-left-action">
+          <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} rippleColor={'transparent'}></FlatButton>
         </div>;
+      } else {
+        deleteButton = <div className="jazz-template-item-left-action"><div className='jazz-template-item-text'>{I18N.EM.Report.Reference}</div></div>;
+      }
     }
     return (
       <div className='jazz-template-item' onMouseLeave={me._showDeleteButton.bind(null, false)} onMouseEnter={me._showDeleteButton.bind(null, true)}>
@@ -104,6 +113,7 @@ let TemplateItem = React.createClass({
       <div className='jazz-template-item-left'>
         {deleteButton}
       </div>
+      {deleteDialog}
     </div>
       );
   }

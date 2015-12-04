@@ -56,11 +56,22 @@ var routes = (
 
 Router.run(routes, Router.HashLocation, (Root, state) => {
   //var muiTheme = ThemeManager.getMuiTheme(LightRawTheme);
-  var muiTheme = ThemeManager.getMuiTheme(AppTheme.rawTheme);
+  //var muiTheme = ThemeManager.getMuiTheme(AppTheme.rawTheme);
+  //muiTheme = AppTheme.setComponentThemes(muiTheme);
+
+  // React.render(<Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>, document.getElementById('emopapp'));
+
+  var muiTheme = ThemeManager.getMuiTheme(AppTheme);
+  muiTheme.textField.focusColor = '#1ca8dd';
+  muiTheme.checkbox.labelColor = "#767a7a";
+  muiTheme.checkbox.labelDisabledColor = "#abafae";
   muiTheme.flatButton.disabledTextColor = '#c2c5c4';
   muiTheme.flatButton.textColor = '#1ca8dd';
   muiTheme.flatButton.primaryTextColor = '#ff4081';
   muiTheme.flatButton.secondaryTextColor = '#1ca8dd';
+  muiTheme.snackbar.backgroundColor = "#323232";
+  muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
+
   muiTheme.linkbutton = {
 
     labelStyle: {
@@ -72,8 +83,6 @@ Router.run(routes, Router.HashLocation, (Root, state) => {
     disableColor: "#abafae"
 
   };
-  //muiTheme = AppTheme.setComponentThemes(muiTheme);
-  muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
   React.render(<Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>, document.getElementById('emopapp'));
 
 });

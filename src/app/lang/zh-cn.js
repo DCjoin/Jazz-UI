@@ -353,6 +353,7 @@ I18N.EM.Report.Edit = '编辑';
 I18N.EM.Report.Export = '导出';
 I18N.EM.Report.Cancel = '放弃';
 I18N.EM.Report.Save = '保存';
+I18N.EM.Report.Reference = '被引用';
 I18N.EM.Report.Template = '报表模板';
 I18N.EM.Report.TemplateTitle = '报表模板文件导入';
 I18N.EM.Report.TemplateFileName = '模板文件';
