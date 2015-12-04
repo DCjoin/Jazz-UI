@@ -89,13 +89,21 @@ var ReportStore = assign({}, PrototypeStore, {
     });
     _reportList = _reportList.set(index, Immutable.fromJS(curReport));
   },
-  deleteReportbyId: function(id) {
+  deleteReportById: function(id) {
     var index = _reportList.findIndex((item) => {
       if (item.get('Id') === id) {
         return true;
       }
     });
     _reportList = _reportList.delete(index);
+  },
+  deleteTemplateById: function(id) {
+    var index = _templateList.findIndex((item) => {
+      if (item.get('Id') === id) {
+        return true;
+      }
+    });
+    _templateList = _templateList.delete(index);
   },
   getSelectedReportItem: function() {
     return _reportItem;
@@ -167,7 +175,7 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.setTemplateList(action.templateList);
       ReportStore.emitTemplateListChange();
       break;
-    case Action.GET_REPORT_LIST_ERROR:
+    case Action.GET_REPORT_TEMPLATE_LIST_ERROR:
       ReportStore.setTemplateList([]);
       ReportStore.emitTemplateListChange();
       break;
@@ -177,10 +185,14 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.emitReportListChange();
       break;
     case Action.DELETE_REPORT_SUCCESS:
-      ReportStore.deleteReportbyId(action.id);
+      ReportStore.deleteReportById(action.id);
       ReportStore.defalutSelectFirstReport();
       ReportStore.emitReportItemChange();
       ReportStore.emitReportListChange();
+      break;
+    case Action.DELETE_TEMPLATE_SUCCESS:
+      ReportStore.deleteTemplateById(action.id);
+      ReportStore.emitTemplateListChange();
       break;
     case Action.SET_DEFAULT_REPORT_ITEM:
       ReportStore.defalutSelectFirstReport();

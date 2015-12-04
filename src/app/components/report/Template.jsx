@@ -2,6 +2,7 @@
 import React from "react";
 import CommonFuns from '../../util/Util.jsx';
 import { CircularProgress, FlatButton, FontIcon, DropDownMenu, Dialog } from 'material-ui';
+import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
 import TemplateList from './TemplateList.jsx';
@@ -172,22 +173,34 @@ var Template = React.createClass({
 
     return (
       <div className="jazz-template-container">
-        <div className="jazz-template-header">
-          <div className='jazz-template-add'>
-            <label ref="fileInputLabel" className="pop-booktemplates-upload-label" htmlFor="fileInput">
-              {I18N.EM.Report.UploadTem}
-              <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/>
-            </label>
-          </div>
-          <div className="jazz-template-sort">
-            <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>
+        <div className='jazz-template-topbar'>
+          <div className="jazz-template-header">
+            <div className="jazz-template-topbar-left">
+              <div className="jazz-template-action">
+                <div className='jazz-template-upload-button'>
+                  <label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
+                    {I18N.EM.Report.UploadTem}
+                    <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/>
+                  </label>
+                </div>
+              </div>
+              <div className="jazz-template-action">
+                <div className="jazz-template-sort">
+                  <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>
+                </div>
+              </div>
+            </div>
+            <div className="jazz-template-topbar-right"></div>
           </div>
         </div>
-        <div className="jazz-template-center">
+        <div className="jazz-template-content">
+          <div className="jazz-template-center">
           <div className="jazz-template-list">
             {templateContent}
           </div>
         </div>
+
+      </div>
         {uploadDialog}
       </div>
       );
