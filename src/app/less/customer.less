@@ -1,0 +1,65 @@
+@import './manage.less';
+.customer-background-logo {
+    background: linear-gradient(to right, #46b8ef, #4daff8);
+}
+
+.pop-customer {
+    &-no-customer-tip {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    &-sort-bar {
+        display: flex;
+        align-items: center;
+        &-icon {
+            margin-left: -40px;
+        }
+    }
+    &-list-item {
+        &-name {
+            .hiddenEllipsis;
+        }
+        &-time {
+            margin-top: 5px;
+            color: @schneiderGray;
+        }
+    }
+    &-detail {
+        // Error Span Start
+        &-code-input {
+            &.edit>div {
+                bottom: -30px!important;
+            }
+        }
+        // Error Span End
+        &-content {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 45px;
+            &-left {
+                &-item {
+                    padding-top: 50px;
+                    &:first-child {
+                        padding-top: 0;
+                    }
+                    & .info-value {
+                        .f16;
+                        color: @detail-value-black;
+                        padding-top: 4px;
+                    }
+                }
+            }
+            &-right {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+        }
+        & .pop-admins {
+            padding-top: 50px;
+        }
+    }
+}

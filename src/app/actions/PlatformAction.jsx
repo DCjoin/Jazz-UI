@@ -28,6 +28,12 @@ let PlatformAction = {
       }
     });
   },
+  setSelectedProvider: function(provider) {
+    AppDispatcher.dispatch({
+      type: Action.SET_SELECT_PROVIDER,
+      provider: provider
+    });
+  },
 };
 
 module.exports = PlatformAction;

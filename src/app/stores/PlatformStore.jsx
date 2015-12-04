@@ -12,17 +12,29 @@ let PlatformAction = Platform.Action;
  if change checked state of the tags from the tag list,than it is true;
  when select item of alarm list, set it false in AlarmList.jsx
 */
-let _providerList = null;
+let _providerList = null,
+  _selectedProvider = null;
 
-const PROVIDER_LIST_EVENT = 'providerlist';
+const PROVIDER_LIST_EVENT = 'providerlist',
+  SELECT_PROVIDER_EVENT = 'selectprovider';
 
 var PlatformStore = assign({}, PrototypeStore, {
 
   setProviderList(list) {
     _providerList = list;
+    if (list.length > 0) {
+      _selectedProvider = list[0];
+      this.emitSelectProviderChange();
+    }
   },
   getProviderList() {
     return _providerList;
+  },
+  setSelectProvider(provider) {
+    _selectedProvider = provider;
+  },
+  getSelectProvider() {
+    return _selectedProvider;
   },
   addProviderListChangeListener: function(callback) {
     this.on(PROVIDER_LIST_EVENT, callback);
@@ -33,6 +45,15 @@ var PlatformStore = assign({}, PrototypeStore, {
   removeProviderListChangeListener: function(callback) {
     this.removeListener(PROVIDER_LIST_EVENT, callback);
   },
+  addSelectProviderChangeListener: function(callback) {
+    this.on(SELECT_PROVIDER_EVENT, callback);
+  },
+  emitSelectProviderChange: function() {
+    this.emit(SELECT_PROVIDER_EVENT);
+  },
+  removeSelectProviderChangeListener: function(callback) {
+    this.removeListener(SELECT_PROVIDER_EVENT, callback);
+  },
 });
 PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -40,6 +61,10 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
     case PlatformAction.GET_PROVIDER:
       PlatformStore.setProviderList(action.list);
       PlatformStore.emitProviderListChange();
+      break;
+    case PlatformAction.SET_SELECT_PROVIDER:
+      PlatformStore.setSelectProvider(action.provider);
+      PlatformStore.emitSelectProviderChange();
       break;
   }
 });

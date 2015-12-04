@@ -57,6 +57,21 @@ var routes = (
 Router.run(routes, Router.HashLocation, (Root, state) => {
   //var muiTheme = ThemeManager.getMuiTheme(LightRawTheme);
   var muiTheme = ThemeManager.getMuiTheme(AppTheme.rawTheme);
+  muiTheme.flatButton.disabledTextColor = '#c2c5c4';
+  muiTheme.flatButton.textColor = '#1ca8dd';
+  muiTheme.flatButton.primaryTextColor = '#ff4081';
+  muiTheme.flatButton.secondaryTextColor = '#1ca8dd';
+  muiTheme.linkbutton = {
+
+    labelStyle: {
+      color: "#767a7a",
+      cursor: "pointer",
+      opacity: 0.9 //must have this, for right color #1ca8dd
+    },
+    hoverColor: "#1ca8dd",
+    disableColor: "#abafae"
+
+  };
   //muiTheme = AppTheme.setComponentThemes(muiTheme);
   muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
   React.render(<Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>, document.getElementById('emopapp'));

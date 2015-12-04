@@ -35,4 +35,6 @@ Regex.PasswordMinLength = 8;
 Regex.PasswordMaxLength = 100;
 Regex.EarliesTime = 949334400000;
 
+Regex.UrlRule = /(((^https?)):\/\/([\-\w]+\.)+\w{2,3}(\/[%\-\w]+(\.\w{2,})?)*(([\w\-\.\?\\\/+@&#;`~=%!]*)(\.\w{2,})?)*\/?)/i;
+
 module.exports = Regex;

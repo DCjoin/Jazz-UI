@@ -19,7 +19,7 @@ var AppTheme = {
       accent1Color: '#1ca8dd',
       accent2Color: Colors.pinkA400,
       accent3Color: Colors.pinkA100,
-      textColor: Colors.darkBlack,
+      textColor: '#767a7a',
       alternateTextColor: Colors.white,
       canvasColor: Colors.white,
       borderColor: Colors.grey300,

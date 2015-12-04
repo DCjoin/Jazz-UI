@@ -13,23 +13,22 @@ let ServiceProviderList = React.createClass({
   getDefaultProps: function() {
     return {
       sortBy: "customername@asc",
-      providerList: null
+      providerList: null,
+      selectProvider: null
     };
   },
   getInitialState: function() {
     return {
-      buttonDisabled: false
-
+      buttonDisabled: false,
     };
   },
   render: function() {
     var that = this;
     var providers = that.props.providerList;
     var providerItems = [];
-    if (providers != null) {
+    if (providers !== null) {
       providers.forEach(provider => {
-
-        providerItems.push(<ProviderItem provider={provider}/>)
+        providerItems.push(<ProviderItem provider={provider} selectItem={this.props.selectProvider}/>)
 
       });
     }
@@ -80,7 +79,7 @@ let ServiceProviderList = React.createClass({
           <div className={classSet(newFolderClasses)} style={{
         margin: '0 30px'
       }}>
-            <FlatButton disabled={this.state.buttonDisabled} onClick={this._onAddServiceProvider} style={buttonStyle}>
+            <FlatButton disabled={this.state.buttonDisabled} onClick={this.props.onAddServiceProvider} style={buttonStyle}>
               <FontIcon  className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.Platform.ServiceProvider.SP}</span>
             </FlatButton>

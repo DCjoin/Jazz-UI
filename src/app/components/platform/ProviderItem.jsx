@@ -2,11 +2,17 @@
 
 import React from 'react';
 import { DataConverter } from '../../util/Util.jsx';
+import classNames from 'classnames';
 import moment from 'moment';
+import PlatformAction from '../../actions/PlatformAction.jsx';
 
 let ProviderItem = React.createClass({
   propTypes: {
     provider: React.PropTypes.object,
+    selectItem: React.PropTypes.object,
+  },
+  _onClick: function() {
+    PlatformAction.setSelectedProvider(this.props.provider);
   },
   render: function() {
     var j2d = DataConverter.JsonToDateTime,
@@ -15,7 +21,10 @@ let ProviderItem = React.createClass({
     var date = startTime.format("YYYY" + I18N.Map.Date.Year + 'M' + I18N.Map.Date.Month + 'D' + I18N.Map.Date.Day);
     var info = I18N.Platform.ServiceProvider.OperationTime + ':' + date + ' ' + I18N.Platform.ServiceProvider.Status + ':' + status[this.props.provider.Status];
     return (
-      <div className='jazz-provider-item'>
+      <div className={classNames({
+        "jazz-provider-item": true,
+        "isSelected": this.props.selectItem === this.props.provider
+      })} onClick={this._onClick}>
         <div className='providername'>
           {this.props.provider.Name}
         </div>
