@@ -3,7 +3,8 @@
 import React from 'react';
 import CommonFuns from '../../util/Util.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
-import { CircularProgress, FlatButton, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
+import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
+import FlatButton from '../../controls/FlatButton.jsx';
 import classNames from 'classnames';
 
 

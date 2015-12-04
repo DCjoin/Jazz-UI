@@ -93,6 +93,52 @@
       padding-top: 5px;
     }
   }
+  .jazz-report-rightpanel-data{
+    display: flex;
+    flex-direction: column;
+  }
+}
+.jazz-report-rightpanel-footer{
+  height:56px;
+  background-color:white;
+  position: fixed;
+  z-index:5;
+  bottom:0;
+  opacity:0.9;
+  left:320px;
+  right:10px;
+
+  &.transition {
+  	.transition(all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms);
+  }
+  border-top: 1px solid #ececec;
+
+	&-content {
+		height:100%;
+	    button{
+	      height: 100%;
+	      border: 1px solid #ececec;
+	      span{
+	          padding: 0 54px !important;
+	      }
+	    }
+	}
+
+	&-content &-btn {
+
+		height: 100%;
+		button{
+	    height: 100%;
+	    border: 1px solid #ececec;
+	    span{
+	       padding: 0 54px !important;
+	    }
+		}
+	}
+
+	&-hide {
+		display: none;
+	}
 }
 .jazz-report-data-content{
   display: flex;
@@ -102,14 +148,34 @@
   &-background{
     background-color: #f4f4f4;
   }
+  .jazz-report-data-delete-button{
+    > button{
+     border: none !important;
+     background-color: transparent!important;
+     &:hover{
+       color:@schneiderBlue!important;
+     }
+    }
+  }
+  .jazz-report-data-datasource-button{
+     > button{
+      border: none !important;
+      background-color: transparent!important;
+      margin-left: -16px!important;
+      &:hover{
+        color:@schneiderBlue!important;
+      }
+     }
+  }
 }
 .jazz-report-data-delete{
   padding: 25px 0px 15px 0px;
   display: flex;
   flex-direction: row;
   border-top: 1px solid #ececec;
-  >div{
-    padding-top: 5px;
+  >div:nth-of-type(1){
+    padding-top: 7px;
+    height: 36px;
   }
 }
 .jazz-report-data-container{
