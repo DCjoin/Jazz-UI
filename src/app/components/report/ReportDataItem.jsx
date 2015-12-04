@@ -313,7 +313,7 @@ let ReportDataItem = React.createClass({
       <div style={{
         flex: 1,
         display: 'flex',
-        height: '500px'
+        height: '350px'
       }}>
         {tagWindow}
       </div>

@@ -179,13 +179,17 @@
   height: 113px;
   width: 110px;
 }
-.jazz-report-taglist-container{
+.jazz-report-taglist-container-left{
    display: flex;
+   width: 380px;
    flex-direction: column;
    flex: 1;
    border: 1px solid #d9d9d9;
+   margin-right: 45px;
+   margin-left: 20px;
+
    .jazz-report-taglist-tagselect{
-     width: 400px;
+     width: 380px;
      display: flex;
      flex-direction: column;
      .header{
@@ -194,9 +198,10 @@
        background-color: #efefef;
        display:flex;
        flex-flow:row nowrap;
-       align-items:center
-       .hierName{
-         color: #000!important;
+       align-items:center;
+       div{
+         color:#000000!important;
+         margin-top: 0px;
        }
      }
      .filter{
@@ -213,7 +218,7 @@
          flex-flow:row nowrap;
          min-height:26px;
          border:1px solid #e4e7e6;
-         margin:9px 0px 9px 10px;
+         margin:9px 10px 9px 10px;
          .input{
            >hr{
              border-bottom-color:transparent !important;
@@ -243,10 +248,57 @@
      }
    }
 }
+.jazz-report-taglist-container-right{
+  display: flex;
+  width: 380px;
+  flex-direction: column;
+  flex: 1;
+  border: 1px solid #d9d9d9;
+}
+.jazz-report-tag-item-left{
+  display: flex;
+  flex-direction: row;
+  height:30px;
+  line-height: 30px;
+  padding-left: 7px;
+  div:nth-of-type(1){
+    width: 30px;
+  }
+  div:nth-of-type(2){
+    width: 110px;
+  }
+  div:nth-of-type(3){
+    width: 110px;
+  }
+}
+.jazz-report-tag-item-left:hover{
+  background-color: #f5f5f5;
+}
+.jazz-report-tag-item-right{
+  display: flex;
+  flex-direction: row;
+  height:30px;
+  padding-left: 7px;
+  line-height: 30px;
+  div:nth-of-type(1){
+    width: 51px;
+  }
+  div:nth-of-type(2){
+    width: 110px;
+  }
+  div:nth-of-type(3){
+    width: 110px;
+  }
+  div:nth-of-type(4){
+    width: 70px;
+  }
+}
+.jazz-report-tag-item-right:hover{
+  background-color: #f5f5f5;
+}
 .jazz-report-taglist{
   overflow: auto;
   flex: 1;
-  margin-left: 10px;
 }
 .jazz-template-container{
   display: flex;
