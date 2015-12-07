@@ -9,7 +9,6 @@ import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu, Dialog, D
 import ProviderItem from './ProviderItem.jsx';
 
 let ServiceProviderList = React.createClass({
-  _onAddServiceProvider: function() {},
   getDefaultProps: function() {
     return {
       sortBy: "customername@asc",
@@ -29,10 +28,8 @@ let ServiceProviderList = React.createClass({
     if (providers !== null) {
       providers.forEach(provider => {
         providerItems.push(<ProviderItem provider={provider} selectItem={this.props.selectProvider}/>)
-
       });
     }
-    ;
     var newFolderClasses = {
       'se-dropdownbutton': true,
       'btn-container': true,

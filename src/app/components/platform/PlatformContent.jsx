@@ -31,7 +31,9 @@ let PlatformContent = React.createClass({
     }
     return m.format('YYYY/MM/DD');
   },
-  _handleSaveUser: function() {},
+  _handleSaveUser: function() {
+    PlatformAction.modifyServiceProvider(this.props.provider);
+  },
   _renderHeader: function(isView) {
     var providerNameProps = {
       isViewStatus: isView,
@@ -39,11 +41,10 @@ let PlatformContent = React.createClass({
       defaultValue: this.props.provider.Name,
       isRequired: true,
       didChanged: value => {
-        // CustomerActionCreator.merge({
-        //   value,
-        //   path: "Name"
-        // })
-        console.log(title + '' + value);
+        PlatformAction.mergeProvider({
+          value: value,
+          path: "Name"
+        });
       }
     };
     return (
@@ -62,10 +63,10 @@ let PlatformContent = React.createClass({
         defaultValue: UserName || "",
         isRequired: true,
         didChanged: value => {
-          // CustomerActionCreator.merge({
-          //   value,
-          //   path: "Code"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "UserName"
+          })
         }
       },
       providerDomainProps = {
@@ -74,10 +75,10 @@ let PlatformContent = React.createClass({
         defaultValue: Domain || "",
         isRequired: true,
         didChanged: value => {
-          // CustomerActionCreator.merge({
-          //   value,
-          //   path: "Address"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "Domain"
+          })
         }
       },
       providerAddressProps = {
@@ -87,10 +88,10 @@ let PlatformContent = React.createClass({
         isRequired: true,
         maxLen: -1,
         didChanged: value => {
-          // CustomerActionCreator.merge({
-          //   value,
-          //   path: "Address"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "Address"
+          })
         }
       },
       providerTelephoneProps = {
@@ -101,10 +102,10 @@ let PlatformContent = React.createClass({
         // regex: Regex.TelephoneRule,
         // errorMessage: "允许数字和中划线，但中划线不能连续出现或做为开头和结尾",
         didChanged: value => {
-          // UserActionCreator.mergeUser({
-          //   value,
-          //   path: "Telephone"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "Telephone"
+          })
         }
       },
       providerEmailProps = {
@@ -116,10 +117,10 @@ let PlatformContent = React.createClass({
         errorMessage: "请按照\"user@example.com\"的格式输入",
         maxLen: 254,
         didChanged: value => {
-          // UserActionCreator.mergeUser({
-          //   value,
-          //   path: "Email"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "Email"
+          })
         }
       },
       providerBackToUrlProps = {
@@ -129,10 +130,10 @@ let PlatformContent = React.createClass({
         regex: Regex.UrlRule,
         errorMessage: "请填写地址，登录失败后页面会自动跳转至所填网址",
         didChanged: value => {
-          // UserActionCreator.mergeUser({
-          //   value,
-          //   path: "Email"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "LoginUrl"
+          })
         }
       },
       providerLogOutUrlProps = {
@@ -142,10 +143,10 @@ let PlatformContent = React.createClass({
         regex: Regex.UrlRule,
         errorMessage: "请填写地址，退出系统时会自动跳转至所填网址",
         didChanged: value => {
-          // UserActionCreator.mergeUser({
-          //   value,
-          //   path: "Email"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "LogOutUrl"
+          })
         }
       },
       providerStartTimeProps = {
@@ -156,10 +157,10 @@ let PlatformContent = React.createClass({
         regex: Regex.CommonTextNotNullRule,
         errorMessage: "请输入客户地址",
         didChanged: value => {
-          // CustomerActionCreator.merge({
-          //   value,
-          //   path: "StartTime"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "StartDate"
+          })
         }
       },
       providerCommentProps = {
@@ -168,10 +169,10 @@ let PlatformContent = React.createClass({
         defaultValue: Comment || "",
         multiLine: true,
         didChanged: value => {
-          // UserActionCreator.mergeUser({
-          //   value,
-          //   path: "Comment"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "Comment"
+          })
         }
       },
       titleItems = [{
@@ -189,21 +190,21 @@ let PlatformContent = React.createClass({
         textField: "text",
         dataItems: titleItems,
         didChanged: value => {
-          // UserActionCreator.mergeUser({
-          //   value,
-          //   path: "Comment"
-          // })
+          PlatformAction.mergeProvider({
+            value: value,
+            path: "Stauts"
+          })
         }
       },
       providerCalStatusProps = {
-        checked: CalcStatus,
+        checked: CalcStatus || false,
         disabled: isView,
         label: '能与能效标识大数据计算',
-        onCheck: value => {
-          // UserActionCreator.mergeUser({
-          //   value,
-          //   path: "Comment"
-          // })
+        onCheck: (event, checked) => {
+          PlatformAction.mergeProvider({
+            value: checked,
+            path: "CalcStatus"
+          })
         }
       };
     return (
@@ -266,7 +267,20 @@ let PlatformContent = React.createClass({
   },
   _renderFooter: function(isView) {
     var that = this;
-    var sendPasswordButton = null;
+    var sendPasswordButton = null,
+      saveButtonDisabled = true;
+    var {Name, UserName, Domain, Address, Telephone, Email, StartDate} = this.props.provider;
+    if (
+      Name && Name.length < 200 &&
+      UserName && UserName.length < 200 &&
+      Domain && Domain.length < 200 &&
+      Address &&
+      Telephone &&
+      Email &&
+      StartDate
+    ) {
+      saveButtonDisabled = false;
+    }
     if (isView) {
       sendPasswordButton = (
         <FlatButton secondary={true}  label="发送邮件" style={{
@@ -279,7 +293,7 @@ let PlatformContent = React.createClass({
       <FormBottomBar
       transition={true}
       customButton={sendPasswordButton}
-      enableSave={false}
+      enableSave={!saveButtonDisabled}
       status={this.props.formStatus}
       onSave={this._handleSaveUser}
       onDelete={function() {

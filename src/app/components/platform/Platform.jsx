@@ -42,6 +42,10 @@ let Platform = React.createClass({
     });
   },
   _onAddServiceProvider: function() {
+    PlatformAction.setSelectedProvider({
+      CalcStatus: true,
+      Status: 1
+    });
     this.setState({
       status: formStatus.ADD,
     });
