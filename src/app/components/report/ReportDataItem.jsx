@@ -35,6 +35,7 @@ let ReportDataItem = React.createClass({
       payload: 4,
       text: I18N.Common.AggregationStep.Yearly
     }];
+    stepItems = this._getDisabledStepItems(this.props.dateType, Immutable.fromJS(stepItems));
     return {
       showTagSelectDialog: false,
       stepItems: Immutable.fromJS(stepItems),
@@ -108,34 +109,6 @@ let ReportDataItem = React.createClass({
       return [];
     }
   },
-  changeTimeValue(value) {
-    var result = '';
-    switch (value) {
-      case 0: result = 'last7day';
-        break;
-      case 9: result = 'last30day';
-        break;
-      case 10: result = 'last12month';
-        break;
-      case 1: result = 'today';
-        break;
-      case 2: result = 'yesterday';
-        break;
-      case 3: result = 'thisweek';
-        break;
-      case 4: result = 'lastweek';
-        break;
-      case 5: result = 'thismonth';
-        break;
-      case 6: result = 'lastmonth';
-        break;
-      case 7: result = 'thisyear';
-        break;
-      case 8: result = 'lastyear';
-        break;
-    }
-    return result;
-  },
   _updateReportData(name, value, stepValue) {
     if (this.props.updateReportData) {
       this.props.updateReportData(name, value, this.props.index, stepValue);
@@ -154,7 +127,7 @@ let ReportDataItem = React.createClass({
     var dateSelector = this.refs.dateTimeSelector;
 
     if (value !== 11) {
-      var dateType = this.changeTimeValue(value);
+      var dateType = CommonFuns.GetStrDateType(value);
       var timeregion = CommonFuns.GetDateRegion(dateType);
       dateSelector.setDateField(timeregion.start, timeregion.end);
     }
@@ -183,12 +156,11 @@ let ReportDataItem = React.createClass({
     }
     return step;
   },
-  _handleStepDisabled(dateType) {
-    var stepItems = this.state.stepItems;
+  _getDisabledStepItems(dateType, stepItems) {
     var list;
     var timeregion;
     if ((dateType === 0) || (dateType === 9) || (dateType === 10)) {
-      var newDateType = this.changeTimeValue(dateType);
+      var newDateType = CommonFuns.GetStrDateType(dateType);
       timeregion = CommonFuns.GetDateRegion(newDateType);
       list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
     } else if (dateType === 11) {
@@ -206,8 +178,12 @@ let ReportDataItem = React.createClass({
         stepItems = stepItems.setIn([i, 'disabled'], false);
       }
     }
+    return stepItems;
+  },
+  _handleStepDisabled(dateType) {
+    var stepItems = this._getDisabledStepItems(dateType, this.state.stepItems);
     var stepValue = null;
-    for (i = 0; i < stepItems.size; i++) {
+    for (var i = 0; i < stepItems.size; i++) {
       if (stepItems.getIn([i, 'payload']) === this.props.step && !stepItems.getIn([i, 'disabled'])) {
         stepValue = this.props.step;
         break;
@@ -222,6 +198,7 @@ let ReportDataItem = React.createClass({
       }
     }
     this._updateReportData('DateType', dateType, stepValue);
+
     this.setState({
       stepItems: stepItems
     });
@@ -269,7 +246,7 @@ let ReportDataItem = React.createClass({
   _displayTimeRange() {
     var str = '';
     if (this.props.dateType !== 11) {
-      var dateType = this.changeTimeValue(this.props.dateType);
+      var dateType = CommonFuns.GetStrDateType(this.props.dateType);
       var timeregion = CommonFuns.GetDateRegion(dateType);
       str = this.getDisplayDate(timeregion.start) + '-' + this.getDisplayDate(timeregion.end);
     } else {
@@ -324,7 +301,7 @@ let ReportDataItem = React.createClass({
     if (!this.props.disabled) {
       var dateSelector = this.refs.dateTimeSelector;
       if (this.props.dateType !== 11) {
-        var dateType = this.changeTimeValue(this.props.dateType);
+        var dateType = CommonFuns.GetStrDateType(this.props.dateType);
         var timeregion = CommonFuns.GetDateRegion(dateType);
         dateSelector.setDateField(timeregion.start, timeregion.end);
       } else {
@@ -342,7 +319,7 @@ let ReportDataItem = React.createClass({
     if (!this.props.disabled) {
       var dateSelector = this.refs.dateTimeSelector;
       if (this.props.dateType !== 11) {
-        var dateType = this.changeTimeValue(this.props.dateType);
+        var dateType = CommonFuns.GetStrDateType(this.props.dateType);
         var timeregion = CommonFuns.GetDateRegion(dateType);
         dateSelector.setDateField(timeregion.start, timeregion.end);
       } else {

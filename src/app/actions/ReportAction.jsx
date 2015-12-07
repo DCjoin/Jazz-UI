@@ -70,7 +70,11 @@ let ReportAction = {
         });
       },
       error: function(err, res) {
-        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.SAVE_REPORT_ERROR,
+          errorText: res.text,
+          errorReport: data
+        });
       }
     });
   },
