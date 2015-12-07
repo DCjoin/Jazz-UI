@@ -23,7 +23,7 @@ let ProviderItem = React.createClass({
     return (
       <div className={classNames({
         "jazz-provider-item": true,
-        "isSelected": this.props.selectItem === this.props.provider
+        "isSelected": this.props.selectItem.Id === this.props.provider.Id
       })} onClick={this._onClick}>
         <div className='providername'>
           {this.props.provider.Name}

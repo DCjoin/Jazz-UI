@@ -28,10 +28,37 @@ let PlatformAction = {
       }
     });
   },
+  modifyServiceProvider: function(provider) {
+    Ajax.post('/ServiceProvider.svc/ModifyServiceProvider', {
+      params: {
+        dto: provider
+      },
+      success: function(item) {
+        AppDispatcher.dispatch({
+          type: Action.MODIFY_SUCCESS,
+          provider: item
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   setSelectedProvider: function(provider) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECT_PROVIDER,
       provider: provider
+    });
+  },
+  mergeProvider: function(data) {
+    AppDispatcher.dispatch({
+      type: Action.MERGE_PROVIDER,
+      data: data
+    });
+  },
+  cancelSave: function() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE,
     });
   },
 };
