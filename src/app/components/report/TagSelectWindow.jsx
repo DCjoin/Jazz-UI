@@ -29,10 +29,10 @@ let TagSelectWindow = React.createClass({
   },
   _getSelectedTagList() {
     return this.state.selectedTagList.map((item, i) => {
-      return {
+      return Immutable.fromJS({
         TagId: item.get('Id'),
         TagIndex: i
-      };
+      });
     });
   },
   _getTagIds: function(tagList) {

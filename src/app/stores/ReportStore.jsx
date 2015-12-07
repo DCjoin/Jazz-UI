@@ -4,10 +4,14 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
+import CommonFuns from '../util/Util.jsx';
 import { Action } from '../constants/actionType/Report.jsx';
 
 let _reportList = null,
   _templateList = null,
+  _errorCode = null,
+  _errorMessage = null,
+  _errorReport = null,
   _tagList = [],
   _selectedTagList = [],
   _totalPage = 0,
@@ -18,6 +22,7 @@ let CHANGE_TEMPLATE_LIST_EVENT = 'changetemplatelist';
 var CHANGE_SELECTED_REPORT_ITEM = 'changereportitem';
 var CHANGE_TAG_LIST_EVENT = 'changetaglist';
 var CHANGE_SELECTED_TAG_LIST_EVENT = 'changeselectedtaglist';
+var REPORT_DATA_SAVE_ERROR_EVENT = 'reportdatasaveerror';
 var ReportStore = assign({}, PrototypeStore, {
   getReportList() {
     return _reportList;
@@ -47,6 +52,22 @@ var ReportStore = assign({}, PrototypeStore, {
   },
   getSelectedTagList() {
     return _selectedTagList;
+  },
+  _initErrorText(errorText, errorReport) {
+    let error = JSON.parse(errorText).error;
+    let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
+    _errorCode = errorCode;
+    _errorMessage = error.Messages;
+    _errorReport = errorReport;
+  },
+  getErrorMessage() {
+    return _errorMessage;
+  },
+  getErrorCode() {
+    return _errorCode;
+  },
+  getErrorReport() {
+    return _errorReport;
   },
   setTagData(tagData) {
     _totalPage = tagData.total;
@@ -87,7 +108,11 @@ var ReportStore = assign({}, PrototypeStore, {
         return true;
       }
     });
-    _reportList = _reportList.set(index, Immutable.fromJS(curReport));
+    if (index === -1) {
+      _reportList = _reportList.unshift(Immutable.fromJS(curReport));
+    } else {
+      _reportList = _reportList.set(index, Immutable.fromJS(curReport));
+    }
   },
   deleteReportById: function(id) {
     var index = _reportList.findIndex((item) => {
@@ -152,7 +177,16 @@ var ReportStore = assign({}, PrototypeStore, {
   },
   removeReportItemChangeListener: function(callback) {
     this.removeListener(CHANGE_SELECTED_REPORT_ITEM, callback);
-  }
+  },
+  emitSaveReportErrorListener: function(callback) {
+    this.emit(REPORT_DATA_SAVE_ERROR_EVENT);
+  },
+  removeSaveReportErrorListener: function(callback) {
+    this.removeListener(REPORT_DATA_SAVE_ERROR_EVENT, callback);
+  },
+  addSaveReportErrorListener: function(callback) {
+    this.on(REPORT_DATA_SAVE_ERROR_EVENT, callback);
+  },
 });
 
 ReportStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -183,6 +217,10 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.updateReportItem(action.curReport);
       ReportStore.emitReportItemChange();
       ReportStore.emitReportListChange();
+      break;
+    case Action.SAVE_REPORT_ERROR:
+      ReportStore._initErrorText(action.errorText, action.errorReport);
+      ReportStore.emitSaveReportErrorListener();
       break;
     case Action.DELETE_REPORT_SUCCESS:
       ReportStore.deleteReportById(action.id);

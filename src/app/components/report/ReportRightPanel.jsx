@@ -48,12 +48,68 @@ var ReportRightPanel = React.createClass({
     }
     return isValid;
   },
+  _onErrorHandle() {
+    let code = ReportStore.getErrorCode(),
+      message = ReportStore.getErrorMessage(),
+      errorReport = ReportStore.getErrorReport();
+
+    if (!code) {
+      return;
+    } else if (code == '21708'.toString()) {
+      this.stepErrorHandle(message, errorReport);
+
+    } else {
+      let errorMsg = CommonFuns.getErrorMessage(code);
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code);
+      }, 0);
+      return null;
+    }
+  },
+  stepErrorHandle(message, data) {
+    var index = parseInt(message[0]);
+    var errorMessage;
+    var reportData = data.CriteriaList[index];
+    var j2d = CommonFuns.DataConverter.JsonToDateTime;
+    var list;
+    if (reportData.DateType !== 11) {
+      var dateType = CommonFuns.GetStrDateType(reportData.DateType);
+      var timeregion = CommonFuns.GetDateRegion(dateType);
+      list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
+    } else {
+      var startTime = j2d(reportData.DataStartTime, false);
+      var endTime = j2d(reportData.DataEndTime, false);
+      list = CommonFuns.getInterval(startTime, endTime).stepList;
+    }
+    var map = {
+      'Hourly': 1,
+      'Daily': 2,
+      'Weekly': 3,
+      'Monthly': 4,
+      'Yearly': 5
+    };
+    var stepList = [I18N.EM.Raw, I18N.EM.Hour, I18N.EM.Day, I18N.EM.Month, I18N.EM.Year, I18N.EM.Week];
+    var curStep = stepList[reportData.ExportStep];
+    var start = map[message[1]];
+    var ret = [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] >= start) {
+        ret.push(stepList[list[i]]);
+      }
+    }
+    if (ret.length > 0) {
+      errorMessage = I18N.format(I18N.EM.Report.StepError, curStep, ret.join(','));
+    } else {
+      errorMessage = I18N.format(I18N.EM.Report.StepError2, curStep);
+    }
+    CommonFuns.popupErrorMessage(errorMessage);
+  },
   _onChange() {
     if (this.refs.reportTitleId) {
       this._clearAllErrorText();
     }
     var reportItem = ReportStore.getSelectedReportItem();
-    var templateId = reportItem.get('templateId') || this.state.templateList.getIn([0, 'Id']);
+    var templateId = reportItem.get('templateId');
     var obj = {
       reportItem: reportItem,
       isLoading: false,
@@ -277,15 +333,10 @@ var ReportRightPanel = React.createClass({
       var reportItem = ReportStore.getSelectedReportItem();
       this.setState({
         reportItem: reportItem,
-        disabled: true,
         checkedValue: 'uploadedTemplate',
         showDownloadButton: true,
-        fileName: ''
-      });
-    } else {
-      ReportAction.setDefaultReportItem();
-      this.setState({
         disabled: true,
+        fileName: ''
       });
     }
   },
@@ -302,9 +353,6 @@ var ReportRightPanel = React.createClass({
       Version: reportItem.get('version')
     };
     ReportAction.saveCustomerReport(sendData);
-    this.setState({
-      disabled: true
-    });
   },
   _handleDialogDismiss() {
     this.setState({
@@ -350,6 +398,13 @@ var ReportRightPanel = React.createClass({
     reportData = reportData.setIn([index, name], value);
     if (name === 'DateType') {
       reportData = reportData.setIn([index, 'ExportStep'], stepValue);
+      var dateType = CommonFuns.GetStrDateType(value);
+      var timeRange = CommonFuns.GetDateRegion(dateType);
+      var d2j = CommonFuns.DataConverter.DatetimeToJson;
+      var startTime = d2j(timeRange.start);
+      var endTime = d2j(timeRange.end);
+      reportData = reportData.setIn([index, 'DataStartTime'], startTime);
+      reportData = reportData.setIn([index, 'DataEndTime'], endTime);
     }
     reportItem = reportItem.set('data', reportData);
     this.setState({
@@ -363,10 +418,16 @@ var ReportRightPanel = React.createClass({
   _addReportData: function() {
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
-    var sheetNames = this.state.sheetNames.toJS();
+    var imSheetNames = this.state.sheetNames;
+    var sheetNames = imSheetNames !== null ? imSheetNames.toJS() : null;
+    var dateType = CommonFuns.GetStrDateType(0);
+    var timeRange = CommonFuns.GetDateRegion(dateType);
+    var d2j = CommonFuns.DataConverter.DatetimeToJson;
+    var startTime = d2j(timeRange.start);
+    var endTime = d2j(timeRange.end);
     var newReportData = {
-      DataStartTime: null,
-      DataEndTime: null,
+      DataStartTime: startTime,
+      DataEndTime: endTime,
       DateType: 0,
       ExportLayoutDirection: 0,
       ExportStep: 0,
@@ -377,7 +438,7 @@ var ReportRightPanel = React.createClass({
       ReportType: 0,
       StartCell: '',
       TagsList: [],
-      TargetSheet: sheetNames[0]
+      TargetSheet: sheetNames
     };
     reportData = reportData.unshift(Immutable.fromJS(newReportData));
     reportData = reportData.map((item, i) => {
@@ -407,10 +468,12 @@ var ReportRightPanel = React.createClass({
     ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
     ReportStore.addReportItemChangeListener(this._onChange);
     ReportStore.addTemplateListChangeListener(this._onChangeTemplate);
+    ReportStore.addSaveReportErrorListener(this._onErrorHandle);
   },
   componentWillUnmount: function() {
     ReportStore.removeReportItemChangeListener(this._onChange);
     ReportStore.removeTemplateListChangeListener(this._onChangeTemplate);
+    ReportStore.removeSaveReportErrorListener(this._onErrorHandle);
   },
 
   render: function() {
@@ -501,7 +564,7 @@ var ReportRightPanel = React.createClass({
           uploadButton = null;
         var templateEditProps = {
           isViewStatus: me.state.disabled,
-          defaultValue: reportItem.get('templateId') || this.state.templateList.getIn([0, 'Id']),
+          defaultValue: reportItem.get('templateId'),
           dataItems: me._getTemplateItems(),
           textField: 'text',
           title: '',

@@ -394,6 +394,34 @@ let CommonFuns = {
       EndTime: d2j(endTime)
     }];
   },
+  GetStrDateType: function(value) {
+    var result = '';
+    switch (value) {
+      case 0: result = 'last7day';
+        break;
+      case 9: result = 'last30day';
+        break;
+      case 10: result = 'last12month';
+        break;
+      case 1: result = 'today';
+        break;
+      case 2: result = 'yesterday';
+        break;
+      case 3: result = 'thisweek';
+        break;
+      case 4: result = 'lastweek';
+        break;
+      case 5: result = 'thismonth';
+        break;
+      case 6: result = 'lastmonth';
+        break;
+      case 7: result = 'thisyear';
+        break;
+      case 8: result = 'lastyear';
+        break;
+    }
+    return result;
+  },
   GetDateRegion: function(datestr) {
     var region = {};
     var now = new Date();
