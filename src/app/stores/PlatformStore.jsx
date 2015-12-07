@@ -16,30 +16,48 @@ let PlatformAction = Platform.Action;
 */
 let _providerList = [],
   _selectedProvider = null,
-  _currentProvider = null;
+  _currentProvider = null,
+  _column = null,
+  _sort = null,
+  _error = null;
 
 const PROVIDER_LIST_EVENT = 'providerlist',
-  SELECT_PROVIDER_EVENT = 'selectprovider';
+  SELECT_PROVIDER_EVENT = 'selectprovider',
+  ERROR_EVENT = 'error',
+  SEND_EMAIL_EVENT = 'sendemail';
 
 var PlatformStore = assign({}, PrototypeStore, {
 
   setProviderList(list) {
     _providerList = list;
     if (list.length > 0) {
-      _selectedProvider = list[0];
-      _currentProvider = Immutable.fromJS(list[0]);
-      this.emitSelectProviderChange();
+      if (_selectedProvider === null) {
+        _selectedProvider = list[0];
+        _currentProvider = Immutable.fromJS(list[0]);
+        this.emitSelectProviderChange();
+      } else {
+        _providerList.forEach(item => {
+          if (item.Id == _selectedProvider.Id) {
+            _selectedProvider = item;
+            _currentProvider = Immutable.fromJS(list[0]);
+          }
+        });
+      }
     }
   },
   getProviderList() {
     return _providerList;
   },
   setSelectProvider(provider) {
-    _selectedProvider = provider;
+    //_currentProvider = Immutable.fromJS(provider);
     if (provider === null) {
-      _currentProvider = Immutable.fromJS({});
+      _currentProvider = Immutable.fromJS({
+        CalcStatus: true,
+        Status: 1
+      });
     } else {
       _currentProvider = Immutable.fromJS(provider);
+      _selectedProvider = provider;
     }
 
   },
@@ -58,22 +76,43 @@ var PlatformStore = assign({}, PrototypeStore, {
     } else {
       _currentProvider = _currentProvider.set(data.path, data.value);
     }
+    if (data.path == 'UserName' && _error !== null) {
+      _error = null;
+      this.emitErrorChange();
+    }
 
   },
   resetProvider: function() {
     _currentProvider = Immutable.fromJS(_selectedProvider);
   },
   modifyProvider: function(provider) {
-    var flag = false;
     _providerList.forEach(item => {
       if (item.Id == provider.Id) {
         item = provider;
-        flag = true;
       }
     });
-    if (!flag) {
-      _providerList.push(provider);
-    }
+
+  },
+  setError: function(res) {
+    var errorCode = eval("(" + res + ")");
+    _error = errorCode.error.Code;
+  },
+  getError: function() {
+    return _error;
+  },
+  deleteProvider: function(dto) {
+    _providerList.forEach((item, index) => {
+      if (item.Id == dto.Id) {
+        if (index == _providerList.length - 1) {
+          _selectedProvider = _providerList[index - 1];
+          _currentProvider = Immutable.fromJS(_selectedProvider);
+        } else {
+          _selectedProvider = _providerList[index + 1];
+          _currentProvider = Immutable.fromJS(_selectedProvider);
+        }
+
+      }
+    });
   },
   addProviderListChangeListener: function(callback) {
     this.on(PROVIDER_LIST_EVENT, callback);
@@ -93,6 +132,24 @@ var PlatformStore = assign({}, PrototypeStore, {
   removeSelectProviderChangeListener: function(callback) {
     this.removeListener(SELECT_PROVIDER_EVENT, callback);
   },
+  addErrorChangeListener: function(callback) {
+    this.on(ERROR_EVENT, callback);
+  },
+  emitErrorChange: function() {
+    this.emit(ERROR_EVENT);
+  },
+  removeErrorListener: function(callback) {
+    this.removeListener(ERROR_EVENT, callback);
+  },
+  addSendEmailListener: function(callback) {
+    this.on(SEND_EMAIL_EVENT, callback);
+  },
+  emitSendEmailChange: function() {
+    this.emit(SEND_EMAIL_EVENT);
+  },
+  removeSendEmailListener: function(callback) {
+    this.removeListener(SEND_EMAIL_EVENT, callback);
+  },
 });
 PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -111,11 +168,24 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case PlatformAction.CANCEL_SAVE:
       PlatformStore.resetProvider();
-      PlatformStore.emitSelectProviderChange();
+      PlatformStore.emitProviderListChange();
       break;
     case PlatformAction.MODIFY_SUCCESS:
       PlatformStore.modifyProvider(action.provider);
       PlatformStore.emitProviderListChange();
+      break;
+    case PlatformAction.CREATE_SUCCESS:
+      PlatformStore.setSelectProvider(action.item);
+      break;
+    case PlatformAction.MODIFY_ERROR:
+      PlatformStore.setError(action.res.text);
+      PlatformStore.emitErrorChange();
+      break;
+    case PlatformAction.DELETE_SUCCESS:
+      PlatformStore.deleteProvider(action.dto);
+      break;
+    case PlatformAction.SEND_EMAIL_SUCCESS:
+      PlatformStore.emitSendEmailChange();
       break;
 
   }

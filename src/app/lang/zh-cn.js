@@ -1126,6 +1126,13 @@ I18N.Platform.ServiceProvider.NormalStatus = '正常';
 I18N.Platform.ServiceProvider.PauseStatus = '暂停';
 I18N.Platform.ServiceProvider.OperationTime = '运营时间';
 I18N.Platform.ServiceProvider.Status = '状态';
+I18N.Platform.ServiceProvider.DeleteContent = '删除服务商“{0}”，该服务商下所有的公共数据、客户数据，以及间接关联的信息也将被删除。';
+
+I18N.Platform.ServiceProvider.SendEmail = '发送邮件';
+I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
+I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
+I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
+
 
 I18N.Privilege = {};
 I18N.Privilege.Common = {};

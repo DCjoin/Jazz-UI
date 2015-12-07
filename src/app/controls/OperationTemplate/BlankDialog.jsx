@@ -1,14 +1,16 @@
 'use strict';
 import React from "react";
 import { Navigation, State } from 'react-router';
-import { Dialog, FlatButton, TextField, Paper } from 'material-ui';
+import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
 
-var Delete = React.createClass({
+var BlankDialog = React.createClass({
   propTypes: {
-    type: React.PropTypes.string, //文件夹 or 图表
-    name: React.PropTypes.string,
+    title: React.PropTypes.string,
+    firstActionLabel: React.PropTypes.string,
+    secondActionLabel: React.PropTypes.string,
     onFirstActionTouchTap: React.PropTypes.func,
     onSecondActionTouchTap: React.PropTypes.func,
+    content: React.PropTypes.string,
     onDismiss: React.PropTypes.func,
   },
 
@@ -32,49 +34,48 @@ var Delete = React.createClass({
       marginLeft: '26px'
     };
 
-    let actions = [
+    let actions = (!this.props.secondActionLabel) ? [
       <FlatButton
-      label={I18N.Template.Delete.Delete}
+      label={this.props.firstActionLabel}
+      onTouchTap={this._onFirstActionTouchTap}
+      />
+    ] : [
+      <FlatButton
+      label={this.props.firstActionLabel}
       onTouchTap={this._onFirstActionTouchTap}
       />,
       <FlatButton
-      label={I18N.Template.Delete.Cancel}
+      label={this.props.secondActionLabel}
       onTouchTap={this._onSecondActionTouchTap}
       />
     ];
     let dialogProps = {
       ref: 'dialog',
-      title: I18N.format(I18N.Template.Delete.Title, this.props.type),
+      title: this.props.title,
       actions: actions,
       modal: true,
       openImmediately: true,
       onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
-    let content;
-    if (this.props.type == I18N.Mail.Template) {
-      content = I18N.format(I18N.Mail.Delete, this.props.name);
-    } else if (this.props.type == I18N.Platform.ServiceProvider.SP) {
-      content = I18N.format(I18N.Platform.ServiceProvider.DeleteContent, this.props.name);
-    } else {
-      content = (this.props.type == I18N.Folder.FolderName) ? I18N.format(I18N.Template.Delete.FolderContent, this.props.name) : I18N.format(I18N.Template.Delete.WidgetContent, this.props.name);
+    var content = this.props.content;
+    if (this.props.loading) {
+      content = <div style={{
+        'margin-left': '300px'
+      }}>
+      <CircularProgress  mode="indeterminate" size={1} />
+      </div>;
+      dialogProps.actions = [];
     }
     return (
       <div className='jazz-copytemplate-dialog'>
         <div className='able'>
           <Dialog {...dialogProps}>
-            <div style={{
-        'word-wrap': 'break-word',
-        'word-break': 'break-all'
-      }}>
-              {content}
-            </div>
-
+            {content}
           </Dialog>
         </div>
       </div>
       )
   }
 });
-
-module.exports = Delete;
+module.exports = BlankDialog;
