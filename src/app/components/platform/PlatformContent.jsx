@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu, Dialog, DropDownMenu, Checkbox } from 'material-ui';
+import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu, DropDownMenu, Checkbox } from 'material-ui';
 import classnames from "classnames";
 import moment from 'moment';
 import Regex from '../../constants/Regex.jsx';
@@ -14,12 +14,39 @@ import ViewableDatePicker from '../../controls/ViewableDatePickerByStatus.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
+import Delete from '../../controls/OperationTemplate/Delete.jsx';
+import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 
+const DIALOG_TYPE = {
+  DELETE: "cancel",
+  SEND_EMAIL: "send_email",
+  ERROR: 'error'
+};
 
 let PlatformContent = React.createClass({
-  //mixins: [ViewableTextFieldUtil],
+  mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
+  },
+  _onError: function() {
+    var error = PlatformStore.getError();
+    error = error.substring(error.length - 5, error.length);
+    if (error === null) {
+      this.setState({
+        providerIdError: null
+      });
+    } else {
+      if (error.indexOf('002') > -1) {
+        this.setState({
+          providerIdError: I18N.Message.M14002
+        });
+      } else {
+        this.setState({
+          dialogType: DIALOG_TYPE.ERROR
+        });
+      }
+    }
+
   },
   _getDateInput: function(time) {
     if (!time) {
@@ -32,7 +59,22 @@ let PlatformContent = React.createClass({
     return m.format('YYYY/MM/DD');
   },
   _handleSaveUser: function() {
-    PlatformAction.modifyServiceProvider(this.props.provider);
+    if (!!this.props.provider.Id) {
+      PlatformAction.modifyServiceProvider(this.props.provider);
+    } else {
+      PlatformAction.createServiceProvider(this.props.provider);
+    }
+  },
+  _handleCancel: function() {
+    PlatformAction.cancelSave();
+  },
+  _handleSendEmail: function() {
+    PlatformAction.sendInitPassword(this.props.provider.Id);
+  },
+  _onSendEmailSuccess: function() {
+    this.setState({
+      dialogType: DIALOG_TYPE.SEND_EMAIL
+    });
   },
   _renderHeader: function(isView) {
     var providerNameProps = {
@@ -55,11 +97,12 @@ let PlatformContent = React.createClass({
       </div>
       )
   },
-  _renderInfo: function(isView) {
-    var {UserName, Domain, Address, Telephone, Email, StartDate, LoginUrl, LogOutUrl, Comment, Stauts, CalcStatus} = this.props.provider;
+  _renderInfo: function(isView, isAdd) {
+    var {UserName, Domain, Address, Telephone, Email, StartDate, LoginUrl, LogOutUrl, Comment, Status, CalcStatus} = this.props.provider;
     var providerCodeProps = {
-        isViewStatus: isView,
+        isViewStatus: (isAdd) ? isView : true,
         title: "服务商ID",
+        errorText: this.state.providerIdError,
         defaultValue: UserName || "",
         isRequired: true,
         didChanged: value => {
@@ -150,7 +193,7 @@ let PlatformContent = React.createClass({
         }
       },
       providerStartTimeProps = {
-        isViewStatus: isView,
+        isViewStatus: (isAdd) ? isView : true,
         title: "运营时间",
         defaultValue: this._getDateInput(StartDate),
         isRequired: true,
@@ -186,7 +229,7 @@ let PlatformContent = React.createClass({
       providerStatusProps = {
         isViewStatus: isView,
         title: '运营状态',
-        selectedIndex: Stauts,
+        selectedIndex: Status,
         textField: "text",
         dataItems: titleItems,
         didChanged: value => {
@@ -286,7 +329,9 @@ let PlatformContent = React.createClass({
         <FlatButton secondary={true}  label="发送邮件" style={{
           borderRight: '1px solid #ececec',
           color: '#abafae'
-        }} onClick={that.props._handleResetPassword}/>
+        }} onClick={
+        that._handleSendEmail
+        }/>
       );
     }
     return (
@@ -298,21 +343,103 @@ let PlatformContent = React.createClass({
       onSave={this._handleSaveUser}
       onDelete={function() {
         that.setState({
-          dialogStatus: true
+          dialogType: DIALOG_TYPE.DELETE
         });
       }}
-      onCancel={this.props.handleCancel}
+      onCancel={this._handleCancel}
       onEdit={ () => {
-        //  that.clearErrorTextBatchViewbaleTextFiled();
+        that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()
       }}/>
       );
   },
-  componentDidMount: function() {},
-  componentWillUnmount: function() {},
+  _getDeleteDialog: function() {
+    var that = this;
+    var _onDeleteProvider = function() {
+      var dto = {
+        Id: that.props.provider.Id,
+        Version: that.props.provider.Version
+      }
+      PlatformAction.deleteServiceProvider(dto)
+    };
+    var _onCancel = function() {
+      that.setState({
+        dialogType: ''
+      })
+    };
+    var props = {
+      type: I18N.Platform.ServiceProvider.SP,
+      name: this.props.provider.Name,
+      onFirstActionTouchTap: _onDeleteProvider,
+      onSecondActionTouchTap: _onCancel,
+      onDismiss: _onCancel,
+    }
+    return (
+      <Delete {...props}></Delete>
+      )
+  },
+  _getSendEmailDialog: function() {
+    var _onConfirm = function() {
+      that.setState({
+        dialogType: ''
+      })
+    };
+    var props = {
+      title: I18N.Platform.ServiceProvider.SendEmail,
+      firstActionLabel: I18N.Mail.Send.Ok,
+      content: I18N.Platform.ServiceProvider.SendEmailSuccess,
+      onDismiss: _onConfirm,
+      onFirstActionTouchTap: _onConfirm
+    };
+
+    return (
+      <Dialog {...props}/>
+      )
+  },
+  _getErrorDialog: function() {
+    var that = this;
+    var _onConfirm = function() {
+      that.setState({
+        dialogType: ''
+      })
+      PlatformAction.getServiceProviders();
+    };
+    var error = PlatformStore.getError();
+    error = error.substring(error.length - 5, error.length);
+    var content = (error.indexOf('001') > -1) ? I18N.Platform.ServiceProvider.Error001 : I18N.Platform.ServiceProvider.Error003;
+    var props = {
+      title: I18N.Platform.ServiceProvider.SendEmail,
+      firstActionLabel: I18N.Mail.Send.Ok,
+      content: content,
+      onDismiss: _onConfirm,
+      onFirstActionTouchTap: _onConfirm
+    };
+
+    return (
+      <Dialog {...props}/>
+      )
+  },
+  componentWillMount: function() {
+    this.initBatchViewbaleTextFiled();
+  },
+  componentDidMount: function() {
+    PlatformStore.addErrorChangeListener(this._onError);
+    PlatformStore.addSendEmailListener(this._onSendEmailSuccess);
+  },
+  componentWillUnmount: function() {
+    PlatformStore.removeErrorListener(this._onError);
+    PlatformStore.removeSendEmailListener(this._onSendEmailSuccess);
+  },
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.provider.Id != this.props.provider.Id) {
+      this.clearErrorTextBatchViewbaleTextFiled();
+    }
+  },
 
   getInitialState: function() {
     return {
+      providerIdError: '',
+      dialogType: ''
     };
   },
   render: function() {
@@ -329,7 +456,21 @@ let PlatformContent = React.createClass({
     );
     var header = this._renderHeader(isView);
     var footer = this._renderFooter(isView);
-    var content = this._renderInfo(isView);
+    var content = this._renderInfo(isView, isAdd);
+    var dialog;
+    switch (this.state.dialogType) {
+      case DIALOG_TYPE.DELETE:
+        dialog = this._getDeleteDialog();
+        break;
+      case DIALOG_TYPE.SEND_EMAIL:
+        dialog = this._getSendEmailDialog();
+        break;
+      case DIALOG_TYPE.ERROR:
+        dialog = this._getErrorDialog();
+        break;
+
+
+    }
     return (
       <div style={{
         flex: 1,
@@ -347,6 +488,7 @@ let PlatformContent = React.createClass({
 
       {content}
       {footer}
+      {dialog}
     </div>
     </div>
       )

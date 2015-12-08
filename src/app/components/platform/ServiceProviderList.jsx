@@ -16,11 +16,6 @@ let ServiceProviderList = React.createClass({
       selectProvider: null
     };
   },
-  getInitialState: function() {
-    return {
-      buttonDisabled: false,
-    };
-  },
   render: function() {
     var that = this;
     var providers = that.props.providerList;
@@ -33,7 +28,7 @@ let ServiceProviderList = React.createClass({
     var newFolderClasses = {
       'se-dropdownbutton': true,
       'btn-container': true,
-      'btn-container-active': !this.state.buttonDisabled
+      'btn-container-active': !this.props.addBtnDisabled
     };
     var buttonStyle = {
       backgroundColor: 'transparent',
@@ -76,7 +71,7 @@ let ServiceProviderList = React.createClass({
           <div className={classSet(newFolderClasses)} style={{
         margin: '0 30px'
       }}>
-            <FlatButton disabled={this.state.buttonDisabled} onClick={this.props.onAddServiceProvider} style={buttonStyle}>
+            <FlatButton disabled={this.props.addBtnDisabled} onClick={this.props.onAddServiceProvider} style={buttonStyle}>
               <FontIcon  className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.Platform.ServiceProvider.SP}</span>
             </FlatButton>

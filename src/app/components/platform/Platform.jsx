@@ -24,11 +24,15 @@ let Platform = React.createClass({
   _onProviderListChanged: function() {
     this.setState({
       providerList: PlatformStore.getProviderList(),
+      selectProvider: PlatformStore.getSelectProvider(),
+      status: formStatus.VIEW,
+      addBtnDisabled: false
     });
   },
   _onSelectProviderChanged: function() {
     this.setState({
-      selectProvider: PlatformStore.getSelectProvider()
+      selectProvider: PlatformStore.getSelectProvider(),
+      addBtnDisabled: false,
     });
   },
   _onToggleList: function() {
@@ -42,12 +46,10 @@ let Platform = React.createClass({
     });
   },
   _onAddServiceProvider: function() {
-    PlatformAction.setSelectedProvider({
-      CalcStatus: true,
-      Status: 1
-    });
+    PlatformAction.setSelectedProvider(null);
     this.setState({
       status: formStatus.ADD,
+      addBtnDisabled: true
     });
   },
   _handleCancel: function() {
@@ -69,7 +71,8 @@ let Platform = React.createClass({
       sortBy: 'customername@asc',
       selectProvider: PlatformStore.getSelectProvider(),
       status: formStatus.VIEW,
-      leftPanelShow: true
+      leftPanelShow: true,
+      addBtnDisabled: false
     };
   },
   render: function() {
@@ -78,7 +81,8 @@ let Platform = React.createClass({
         changeSortBy: this._onChangeSortBy,
         providerList: this.state.providerList,
         selectProvider: this.state.selectProvider,
-        onAddServiceProvider: this._onAddServiceProvider
+        onAddServiceProvider: this._onAddServiceProvider,
+        addBtnDisabled: this.state.addBtnDisabled
       },
       contentProps = {
         provider: this.state.selectProvider,

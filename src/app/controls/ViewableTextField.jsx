@@ -25,6 +25,7 @@ var ViewableTextField = React.createClass({
     didFocus: React.PropTypes.func,
     defaultValue: React.PropTypes.string,
     errorMessage: React.PropTypes.string,
+    errorText: React.PropTypes.string,
     hintText: React.PropTypes.string,
     title: React.PropTypes.string,
     afterValue: React.PropTypes.object
@@ -75,12 +76,18 @@ var ViewableTextField = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      value: nextProps.defaultValue
+      value: nextProps.defaultValue,
     });
+    if (!!nextProps.errorText) {
+      this.setState({
+        errorText: nextProps.errorText,
+      });
+    }
+
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    if (this.props.isViewStatus === nextProps.isViewStatus && this.state.defaultValue === nextProps.defaultValue && this.state.value === nextState.value) {
+    if (this.props.isViewStatus === nextProps.isViewStatus && this.props.errorText === nextProps.errorText && this.state.defaultValue === nextProps.defaultValue && this.state.value === nextState.value) {
       return false;
     }
     return true;
