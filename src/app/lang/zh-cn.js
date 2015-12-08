@@ -1165,6 +1165,10 @@ I18N.Privilege.Role.CustomerInfoView = '客户信息查看';
 I18N.Privilege.Role.CustomerInfoManagement = '客户信息管理';
 I18N.Privilege.Role.CustomLabeling = '自定义能效标识';
 
+I18N.Remark = {};
+I18N.Remark.Label = '备注';
+I18N.Remark.DefaultText = '单击此处添加备注';
+
 
 
 module.exports = I18N;

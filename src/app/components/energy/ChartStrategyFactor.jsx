@@ -3,7 +3,7 @@ import React from "react";
 import assign from "object-assign";
 import Immutable from 'immutable';
 import _ from 'lodash';
-import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu } from 'material-ui';
+import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu, TextField } from 'material-ui';
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
@@ -3921,7 +3921,7 @@ let ChartStrategyFactor = {
           flex: 1,
           display: 'flex',
           'flex-direction': 'column',
-          marginBottom: '20px',
+          marginBottom: '0px',
           marginLeft: '9px'
         }}>
                        {subToolbar}

@@ -2,7 +2,7 @@
 import React from "react";
 import Immutable from 'immutable';
 import assign from "object-assign";
-import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu } from 'material-ui';
+import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu, TextField } from 'material-ui';
 import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
 import ChartStrategyFactor from './ChartStrategyFactor.jsx';
@@ -77,6 +77,8 @@ let AnalysisPanel = React.createClass({
       selectedChartType: 'line',
       chartStrategy: chartStrategy,
       energyType: this.props.energyType || 'Energy', //'one of energy, cost carbon'
+      remarkText: '',
+      remarkDisplay: false
     };
 
     var obj = chartStrategy.getInitialStateFn(this);
@@ -153,6 +155,12 @@ let AnalysisPanel = React.createClass({
     let BackBtn = <FontIcon style={{
       'margin-left': '10px'
     }} hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>;
+    var remarkTextArea = null;
+    if (this.state.remarkDisplay) {
+      remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} hintStyle={{
+        color: '#abafae'
+      }} multiLine={true} ></TextField></div>;
+    }
     let panel = <div className={'jazz-energy-panel'}>
         <div className='header'>
         <OrigamiPanel/>
@@ -193,6 +201,15 @@ let AnalysisPanel = React.createClass({
         </div>
         {energyPart}
         {errorDialog}
+        <div className={classNames(
+      {
+        'jazz-energy-remark-container': true,
+        'jazz-energy-remark-text-display': this.state.remarkDisplay
+      }
+    )}>
+        <div className='jazz-energy-remark-button'><RaisedButton label={I18N.Remark.Label} onClick={this.showRemark}></RaisedButton></div>
+        {remarkTextArea}
+       </div>
       </div>;
 
     let chartCmp = me.refs.ChartComponent;
@@ -1426,6 +1443,11 @@ let AnalysisPanel = React.createClass({
   },
   _onDeleteButtonClick(obj) {
     this.state.chartStrategy.onDeleteButtonClickFn(this, obj);
+  },
+  showRemark() {
+    this.setState({
+      remarkDisplay: !this.state.remarkDisplay
+    });
   }
 });
 
