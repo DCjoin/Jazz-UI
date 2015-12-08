@@ -464,6 +464,34 @@ let ReportDataItem = React.createClass({
       regex: Regex.ExcelCell,
       errorMessage: I18N.Common.Label.ExcelColumnError
     };
+    var orderAscRadioButton = null,
+      orderDescRadioButton = null;
+    if ((me.props.disabled && me.props.timeOrder === 0) || !me.props.disabled) {
+      orderAscRadioButton = <RadioButton value='orderAsc' disabled={me.props.disabled} label={I18N.EM.Report.OrderAsc} checked={me.props.timeOrder === 0} onCheck={me._onTimeOrderChange.bind(null, 'ExportTimeOrder')} />;
+    }
+    if ((me.props.disabled && me.props.timeOrder === 1) || !me.props.disabled) {
+      orderDescRadioButton = <RadioButton value='orderDesc' disabled={me.props.disabled} label={I18N.EM.Report.OrderDesc}  checked={me.props.timeOrder === 1} onCheck={me._onTimeOrderChange.bind(null, 'ExportTimeOrder')} />;
+    }
+    var directTime = null,
+      directTag = null;
+    if ((me.props.disabled && me.props.exportLayoutDirection === 0) || !me.props.disabled) {
+      directTime = <div onClick={me._onDirectionChange.bind(null, 0)} className={classNames(
+        {
+          'jazz-report-data-direction-time': me.props.exportLayoutDirection !== 0 && !me.props.disabled,
+          'jazz-report-data-direction-time-selected': me.props.exportLayoutDirection === 0,
+          'jazz-report-data-direction-time-disabled': me.props.disabled
+        }
+      )}></div>;
+    }
+    if ((me.props.disabled && me.props.exportLayoutDirection === 1) || !me.props.disabled) {
+      directTag = <div onClick={me._onDirectionChange.bind(null, 1)} className={classNames(
+        {
+          'jazz-report-data-direction-tag': me.props.exportLayoutDirection !== 1 && !me.props.disabled,
+          'jazz-report-data-direction-tag-selected': me.props.exportLayoutDirection === 1,
+          'jazz-report-data-direction-tag-disabled': me.props.disabled
+        }
+      )}></div>;
+    }
 
     return (
       <div className={classNames(
@@ -499,10 +527,8 @@ let ReportDataItem = React.createClass({
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.Order}</span>
           <div className='jazz-report-data-radiobutton'>
-            <RadioButtonGroup name='timeOrder' valueSelected={me.dataToDisplay(me.props.timeOrder)} onChange={me._onTimeOrderChange.bind(null, 'ExportTimeOrder')}>
-              <RadioButton value='orderAsc' disabled={me.props.disabled} label={I18N.EM.Report.OrderAsc} />
-              <RadioButton value='orderDesc' disabled={me.props.disabled} label={I18N.EM.Report.OrderDesc} />
-            </RadioButtonGroup>
+            {orderAscRadioButton}
+            {orderDescRadioButton}
           </div>
         </div>
         <div className='jazz-report-data-container'>
@@ -521,20 +547,8 @@ let ReportDataItem = React.createClass({
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.Layout}</span>
           <div className='jazz-report-data-direction'>
-            <div onClick={me._onDirectionChange.bind(null, 0)} className={classNames(
-        {
-          'jazz-report-data-direction-time': me.props.exportLayoutDirection !== 0 && !me.props.disabled,
-          'jazz-report-data-direction-time-selected': me.props.exportLayoutDirection === 0,
-          'jazz-report-data-direction-time-disabled': me.props.disabled
-        }
-      )}></div>
-          <div onClick={me._onDirectionChange.bind(null, 1)} className={classNames(
-        {
-          'jazz-report-data-direction-tag': me.props.exportLayoutDirection !== 1 && !me.props.disabled,
-          'jazz-report-data-direction-tag-selected': me.props.exportLayoutDirection === 1,
-          'jazz-report-data-direction-tag-disabled': me.props.disabled
-        }
-      )}></div>
+            {directTime}
+            {directTag}
           </div>
         </div>
         {tagDialog}

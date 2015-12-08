@@ -101,7 +101,6 @@
 .jazz-report-rightpanel-footer{
   height:56px;
   background-color:white;
-  position: fixed;
   z-index:5;
   bottom:0;
   opacity:0.9;
@@ -195,12 +194,10 @@
   }
 }
 .jazz-report-data-radiobutton{
+  display: flex;
+  flex-direction: row;
   >div{
-    display: flex;
-    flex-direction: row;
-    >div{
-      width: 150px !important;
-    }
+    width: 150px !important;
   }
 }
 .jazz-report-data-checkbox{

@@ -338,6 +338,8 @@ var ReportRightPanel = React.createClass({
         disabled: true,
         fileName: ''
       });
+    } else {
+      ReportAction.setDefaultReportItem();
     }
   },
   _saveReport: function() {
