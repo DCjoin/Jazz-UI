@@ -17,6 +17,9 @@ let MailContent = React.createClass({
     }
 
   },
+  componentWillUnmount: function() {
+    MailStore.resetSendInfo();
+  },
   render: function() {
     let titleStyle = {
         fontSize: '20px',

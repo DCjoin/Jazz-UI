@@ -31,8 +31,11 @@ var SubMainMenu = React.createClass({
   },
 
   _onMenuItemClick: function(e, index, payload) {
+
     this.transitionTo(payload.name, this.props.params);
     this._dismissSubMain();
+
+
   },
 
   componentClickAway: function() {

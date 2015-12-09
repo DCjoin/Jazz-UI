@@ -8,6 +8,9 @@ import Content from './MailContent.jsx';
 import Dialog from './MailDialog.jsx';
 
 let Mail = React.createClass({
+  componentWillUnmount: function() {
+    console.log();
+  },
   render: function() {
     var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
     return (
