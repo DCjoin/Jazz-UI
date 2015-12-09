@@ -122,6 +122,7 @@ var ReportRightPanel = React.createClass({
     if (reportItem.get('id') === 0) {
       obj.disabled = false;
       obj.saveDisabled = true;
+      obj.showDownloadButton = false;
     } else {
       obj.disabled = true;
     }
@@ -165,6 +166,7 @@ var ReportRightPanel = React.createClass({
     var me = this;
     this.setState({
       reportItem: reportItem,
+      showDownloadButton: true,
       sheetNames: sheetNames
     }, () => {
       this.setState({
@@ -392,7 +394,7 @@ var ReportRightPanel = React.createClass({
     var id = this.state.reportItem.get('id');
     ReportAction.deleteReportById(id);
   },
-  _updateReportData: function(name, value, index, stepValue) {
+  _updateReportData: function(name, value, index, stepValue, startTime, endTime) {
     var me = this;
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
@@ -400,11 +402,6 @@ var ReportRightPanel = React.createClass({
     reportData = reportData.setIn([index, name], value);
     if (name === 'DateType') {
       reportData = reportData.setIn([index, 'ExportStep'], stepValue);
-      var dateType = CommonFuns.GetStrDateType(value);
-      var timeRange = CommonFuns.GetDateRegion(dateType);
-      var d2j = CommonFuns.DataConverter.DatetimeToJson;
-      var startTime = d2j(timeRange.start);
-      var endTime = d2j(timeRange.end);
       reportData = reportData.setIn([index, 'DataStartTime'], startTime);
       reportData = reportData.setIn([index, 'DataEndTime'], endTime);
     }

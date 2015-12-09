@@ -98,6 +98,7 @@
   flex:1;
   display:flex;
   flex-direction:column;
+  justify-content:space-between;
   background-color:#fbfbfb;
   margin-top:-16px;
   .header{
@@ -123,13 +124,6 @@
         text-overflow: ellipsis;
       }
     }
-  }
-  >div:nth-of-type(2){
-   >div:nth-of-type(2){
-     >div:nth-of-type(1){
-       overflow:auto !important
-     }
-   }
   }
 }
 .jazz-energy-container-has-absolute-container{
@@ -256,6 +250,11 @@
   overflow-y: auto;
   overflow-x: hidden;
   >div{
+    >div:nth-of-type(2){
+      >textarea:nth-of-type(2){
+        color: #767a7a!important;
+      }
+    }
     width:99% !important;
     padding-left: 5px;
     >hr:nth-of-type(1){

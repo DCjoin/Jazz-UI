@@ -157,7 +157,7 @@ let AnalysisPanel = React.createClass({
     }} hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>;
     var remarkTextArea = null;
     if (this.state.remarkDisplay) {
-      remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} hintStyle={{
+      remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
         color: '#abafae'
       }} multiLine={true} ></TextField></div>;
     }
@@ -263,6 +263,11 @@ let AnalysisPanel = React.createClass({
       LabelMenuStore.clearHierNodes();
       LabelMenuStore.clearHierNode();
     }
+  },
+  getRemarck: function(e) {
+    this.setState({
+      remarkText: e.target.value
+    });
   },
   onWidgetSaveWindowDismiss: function() {
     this.setState({

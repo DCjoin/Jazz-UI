@@ -35,7 +35,7 @@ let ReportDataItem = React.createClass({
       payload: 4,
       text: I18N.Common.AggregationStep.Yearly
     }];
-    stepItems = this._getDisabledStepItems(this.props.dateType, Immutable.fromJS(stepItems));
+    stepItems = this._getDisabledStepItems(this.props.dateType, Immutable.fromJS(stepItems), true);
     return {
       showTagSelectDialog: false,
       stepItems: Immutable.fromJS(stepItems),
@@ -109,9 +109,9 @@ let ReportDataItem = React.createClass({
       return [];
     }
   },
-  _updateReportData(name, value, stepValue) {
+  _updateReportData(name, value, stepValue, startTime, endTime) {
     if (this.props.updateReportData) {
-      this.props.updateReportData(name, value, this.props.index, stepValue);
+      this.props.updateReportData(name, value, this.props.index, stepValue, startTime, endTime);
     }
   },
   _deleteReportData() {
@@ -156,7 +156,7 @@ let ReportDataItem = React.createClass({
     }
     return step;
   },
-  _getDisabledStepItems(dateType, stepItems) {
+  _getDisabledStepItems(dateType, stepItems, init) {
     var list;
     var timeregion;
     if ((dateType === 0) || (dateType === 9) || (dateType === 10)) {
@@ -164,9 +164,17 @@ let ReportDataItem = React.createClass({
       timeregion = CommonFuns.GetDateRegion(newDateType);
       list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
     } else if (dateType === 11) {
-      var dateSelector = this.refs.dateTimeSelector;
-      timeregion = dateSelector.getDateTime();
-      list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
+      if (!init) {
+        var dateSelector = this.refs.dateTimeSelector;
+        timeregion = dateSelector.getDateTime();
+        list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
+      } else {
+        var start = this.getRealTime(this.props.startTime);
+        var end = this.getRealTime(this.props.startTime);
+        list = CommonFuns.getInterval(start, end).stepList;
+      }
+
+
     } else {
       list = this._getDateTypeStep(dateType);
     }
@@ -181,8 +189,10 @@ let ReportDataItem = React.createClass({
     return stepItems;
   },
   _handleStepDisabled(dateType) {
-    var stepItems = this._getDisabledStepItems(dateType, this.state.stepItems);
+    var stepItems = this._getDisabledStepItems(dateType, this.state.stepItems, false);
     var stepValue = null;
+    var timeRange, startTime, endTime;
+    var d2j = CommonFuns.DataConverter.DatetimeToJson;
     for (var i = 0; i < stepItems.size; i++) {
       if (stepItems.getIn([i, 'payload']) === this.props.step && !stepItems.getIn([i, 'disabled'])) {
         stepValue = this.props.step;
@@ -197,7 +207,18 @@ let ReportDataItem = React.createClass({
         }
       }
     }
-    this._updateReportData('DateType', dateType, stepValue);
+    if (dateType === 11) {
+      timeRange = this.refs.dateTimeSelector.getDateTime();
+      startTime = d2j(timeRange.start);
+      endTime = d2j(timeRange.end);
+    } else {
+      var newDateType = CommonFuns.GetStrDateType(dateType);
+      timeRange = CommonFuns.GetDateRegion(newDateType);
+      startTime = d2j(timeRange.start);
+      endTime = d2j(timeRange.end);
+    }
+
+    this._updateReportData('DateType', dateType, stepValue, startTime, endTime);
 
     this.setState({
       stepItems: stepItems
@@ -226,13 +247,7 @@ let ReportDataItem = React.createClass({
     this._updateReportData('StartCell', value);
   },
   _onDateSelectorChanged() {
-    this._updateReportData('DateType', 11);
-    var timeRange = this.refs.dateTimeSelector.getDateTime();
-    var d2j = CommonFuns.DataConverter.DatetimeToJson;
-    var startTime = d2j(timeRange.start);
-    var endTime = d2j(timeRange.end);
-    this._updateReportData('DataStartTime', startTime);
-    this._updateReportData('DataEndTime', endTime);
+    this._handleStepDisabled(11);
   },
   _onTagDataChange() {
     var tagList = this.refs.tagListWindow._getSelectedTagList();
