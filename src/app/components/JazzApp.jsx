@@ -85,7 +85,7 @@ let JazzApp = React.createClass({
         if (subUrl.length === 2 && subUrl[1].indexOf('main/') > -1) {
           return;
         }
-        if (url.indexOf('menutype=mail') > -1) {
+        if (url.indexOf('menutype=platform') > -1) {
           if (url.indexOf('config') > -1) {
             me.replaceWith('config', {
               lang: lang
@@ -137,7 +137,7 @@ let JazzApp = React.createClass({
         if (subUrl.length === 2 && subUrl[1].indexOf('main/') > -1) {
           return;
         }
-        if (url.indexOf('menutype=mail') > -1) {
+        if (url.indexOf('menutype=platform') > -1) {
           me.replaceWith('config', {
             lang: lang
           });
