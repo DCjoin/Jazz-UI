@@ -88,13 +88,13 @@ var ReportRightPanel = React.createClass({
       'Monthly': 4,
       'Yearly': 5
     };
-    var stepList = [I18N.EM.Raw, I18N.EM.Hour, I18N.EM.Day, I18N.EM.Month, I18N.EM.Year, I18N.EM.Week];
+    var stepList = [I18N.Common.AggregationStep.Minute, I18N.Common.AggregationStep.Hourly, I18N.Common.AggregationStep.Daily, I18N.Common.AggregationStep.Monthly, I18N.Common.AggregationStep.Yearly, I18N.Common.AggregationStep.Weekly];
     var curStep = stepList[reportData.ExportStep];
     var start = map[message[1]];
     var ret = [];
     for (var i = 0; i < list.length; i++) {
       if (list[i] >= start) {
-        ret.push(stepList[list[i]]);
+        ret.push('"' + stepList[list[i]] + '"');
       }
     }
     if (ret.length > 0) {
@@ -338,6 +338,8 @@ var ReportRightPanel = React.createClass({
         disabled: true,
         fileName: ''
       });
+    } else {
+      ReportAction.setDefaultReportItem();
     }
   },
   _saveReport: function() {

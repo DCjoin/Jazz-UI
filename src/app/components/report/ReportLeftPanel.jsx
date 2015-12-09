@@ -67,7 +67,7 @@ var ReportLeftPanel = React.createClass({
     var newReportClasses = {
       'se-dropdownbutton': true,
       'btn-container': true,
-      'btn-container-active': true
+      'btn-container-active': !this.state.disableAddButton
     };
     var sortItems = [{
       payload: 'Name',
@@ -90,7 +90,7 @@ var ReportLeftPanel = React.createClass({
         margin: '0 30px'
       }}>
             <FlatButton onClick={this._addNewReport} style={buttonStyle} disabled={this.state.disableAddButton}>
-              <FontIcon  className="fa icon-add btn-icon"/>
+              <FontIcon className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.EM.Report.Report}</span>
             </FlatButton>
           </div>
