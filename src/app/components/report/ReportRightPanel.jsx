@@ -129,19 +129,26 @@ var ReportRightPanel = React.createClass({
     this.setState(obj);
   },
   _onChangeTemplate: function() {
+    var templateList = ReportStore.getTemplateList();
+    var templateItems = this._getTemplateItems(templateList);
     this.setState({
-      templateList: ReportStore.getTemplateList()
+      templateList: templateList,
+      templateItems: templateItems
     });
   },
   _getSheetNamesByTemplateId: function(templateId) {
     var templateList = this.state.templateList;
     var sheetNames = null;
+    var template = null;
     if (templateList !== null && templateList.size !== 0 && templateId !== null) {
-      sheetNames = templateList.find((item) => {
+      template = templateList.find((item) => {
         if (templateId === item.get('Id')) {
           return true;
         }
-      }).get('SheetNames');
+      });
+      if (template) {
+        sheetNames = template.get('SheetNames');
+      }
     }
     return sheetNames;
   },
@@ -186,8 +193,7 @@ var ReportRightPanel = React.createClass({
       });
     });
   },
-  _getTemplateItems: function() {
-    var templateList = this.state.templateList;
+  _getTemplateItems: function(templateList) {
     if (templateList && templateList.size !== 0) {
       return templateList.map(function(item) {
         return {
@@ -223,12 +229,13 @@ var ReportRightPanel = React.createClass({
       var reportItem = me.state.reportItem;
       if (obj.success === true) {
         reportItem = reportItem.set('templateId', obj.TemplateId);
+        ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), me.state.sortBy, 'asc');
         me.setState({
           reportItem: reportItem,
           sheetNames: Immutable.fromJS(obj.SheetList),
           showUploadDialog: false
         }, () => {
-          this.setState({
+          me.setState({
             saveDisabled: !me._isValid()
           });
         });
@@ -525,7 +532,7 @@ var ReportRightPanel = React.createClass({
         var templateProps = {
           isViewStatus: me.state.disabled,
           defaultValue: reportItem.get('templateId'),
-          dataItems: me._getTemplateItems(),
+          dataItems: me.state.templateItems,
           textField: 'text',
           title: I18N.EM.Report.Template
         };
@@ -564,7 +571,7 @@ var ReportRightPanel = React.createClass({
         var templateEditProps = {
           isViewStatus: me.state.disabled,
           defaultValue: reportItem.get('templateId'),
-          dataItems: me._getTemplateItems(),
+          dataItems: me.state.templateItems,
           textField: 'text',
           title: '',
           didChanged: me._onExistTemplateChange

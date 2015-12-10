@@ -161,6 +161,18 @@ let AnalysisPanel = React.createClass({
         color: '#abafae'
       }} multiLine={true} ></TextField></div>;
     }
+    var remarkDiv = null;
+    if (!this.props.isFromAlarm) {
+      remarkDiv = <div className={classNames(
+        {
+          'jazz-energy-remark-container': true,
+          'jazz-energy-remark-text-display': this.state.remarkDisplay
+        }
+      )}>
+      <div className='jazz-energy-remark-button'><RaisedButton label={I18N.Remark.Label} onClick={this.showRemark}></RaisedButton></div>
+      {remarkTextArea}
+    </div>;
+    }
     let panel = <div className={'jazz-energy-panel'}>
         <div className='header'>
         <OrigamiPanel/>
@@ -201,15 +213,7 @@ let AnalysisPanel = React.createClass({
         </div>
         {energyPart}
         {errorDialog}
-        <div className={classNames(
-      {
-        'jazz-energy-remark-container': true,
-        'jazz-energy-remark-text-display': this.state.remarkDisplay
-      }
-    )}>
-        <div className='jazz-energy-remark-button'><RaisedButton label={I18N.Remark.Label} onClick={this.showRemark}></RaisedButton></div>
-        {remarkTextArea}
-       </div>
+        {remarkDiv}
       </div>;
 
     let chartCmp = me.refs.ChartComponent;

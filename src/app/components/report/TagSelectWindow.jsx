@@ -216,12 +216,9 @@ let TagSelectWindow = React.createClass({
       width: '30px'
     }}><Checkbox disabled={this.props.disabled} checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
         <div style={{
-      width: '110px'
+      width: '150px'
     }}>{I18N.Common.Glossary.Name}</div>
-        <div style={{
-      width: '110px'
-    }}>{I18N.Common.Glossary.Code}</div>
-        <div>{I18N.Common.Glossary.Commodity}</div>
+        <div>{I18N.Common.Glossary.Code}</div>
       </div>;
     var rightTagListHeader = <div style={{
       display: 'flex',
@@ -232,18 +229,13 @@ let TagSelectWindow = React.createClass({
       'line-height': '30px'
     }}>
           <div style={{
-      width: '51px'
+      width: '30px'
     }}></div>
           <div style={{
-      width: '110px'
+      width: '150px'
     }}>{I18N.Common.Glossary.Name}</div>
-          <div style={{
-      width: '110px'
-    }}>{I18N.Common.Glossary.Code}</div>
-          <div style={{
-      width: '70px'
-    }}>{I18N.Common.Glossary.Commodity}</div>
-    <div></div>
+          <div>{I18N.Common.Glossary.Code}</div>
+          <div></div>
         </div>;
 
     leftPanelField = (<div className='jazz-report-taglist-container-left'>
@@ -270,7 +262,8 @@ let TagSelectWindow = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        'flex-direction': 'row'
+        'flex-direction': 'row',
+        flex: 1
       }}>
           {leftPanelField}
           {rightPanel}
