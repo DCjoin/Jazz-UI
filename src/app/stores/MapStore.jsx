@@ -9,13 +9,15 @@ var _ = {
 };
 
 let DATE_MENU_EVENT = 'datemanu',
-  MAP_INFO_EVENT = 'mapinfo';
+  MAP_INFO_EVENT = 'mapinfo',
+  BUILDING_INFO_EVENT = 'buildinginfo';
 let _dateMenu = [],
   _selectDate = null,
   _selectedDateType = null,
   relativeDateType = [1, 2, 5, 6, 7, 8],
   _dateType = ['today', 'yesterday', 'thismonth', 'lastmonth', 'thisyear', 'lastyear'],
-  _markers = null;
+  _markers = null,
+  _buildingInfo;
 var MapStore = assign({}, PrototypeStore, {
   setPureMenu: function() {
     _dateMenu = [];
@@ -56,6 +58,19 @@ var MapStore = assign({}, PrototypeStore, {
     }
 
   },
+  setBuildingInfo: function(info) {
+    _buildingInfo = {
+      id: info.Id,
+      name: info.Name,
+      lat: info.Latitude,
+      lon: info.Longitude,
+      dataValues: info.DataValues,
+      imageId: info.PictureId,
+    };
+  },
+  getBuildingInfo: function() {
+    return _buildingInfo;
+  },
   getSelectedDateType: function() {
     return _selectedDateType;
   },
@@ -88,6 +103,16 @@ var MapStore = assign({}, PrototypeStore, {
     this.removeListener(MAP_INFO_EVENT, callback);
     this.dispose();
   },
+  emitBuildingInfoChange: function() {
+    this.emit(BUILDING_INFO_EVENT);
+  },
+  addBuildingInfoListener: function(callback) {
+    this.on(BUILDING_INFO_EVENT, callback);
+  },
+  removeBuildingInfoListener: function(callback) {
+    this.removeListener(BUILDING_INFO_EVENT, callback);
+    this.dispose();
+  },
 });
 var MapAction = Map.Action;
 
@@ -100,6 +125,10 @@ MapStore.dispatchToken = AppDispatcher.register(function(action) {
     case MapAction.SET_MAP_LIST:
       MapStore.setMapInfo(action.mapList);
       MapStore.emitMapInfoChange();
+      break;
+    case MapAction.SET_MAP_BUILDING:
+      MapStore.setBuildingInfo(action.buildInfo);
+      MapStore.emitBuildingInfoChange();
       break;
   }
 });

@@ -434,6 +434,10 @@ let PlatformContent = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.provider.Id != this.props.provider.Id) {
       this.clearErrorTextBatchViewbaleTextFiled();
+      this.setState({
+        providerIdError: '',
+      })
+
     }
   },
 

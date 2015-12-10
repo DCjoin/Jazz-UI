@@ -27,12 +27,13 @@ let MapPanel = React.createClass({
   mixins: [Navigation, State],
   getInitialState: function() {
     return {
-      isloading: false,
+      //  isloading: false,
       markers: null,
       popup: {
         "show": false,
         "id": -1
-      }
+      },
+      item: null
     };
   },
   _map: null,
@@ -48,15 +49,15 @@ let MapPanel = React.createClass({
   _genIconHtml(id, hover) {
     var marker = this.state.markers[id];
     var bgColor;
-    if (marker.dataValues[0].IsQualified === null) {
-      bgColor = 'blue';
-    } else {
-      if (marker.dataValues[0].IsQualified) {
-        bgColor = 'green';
-      } else {
-        bgColor = 'red';
-      }
-    }
+    // if (marker.dataValues[0].IsQualified === null) {
+    //   bgColor = 'blue';
+    // } else {
+    //   if (marker.dataValues[0].IsQualified) {
+    //     bgColor = 'green';
+    //   } else {
+    //     bgColor = 'red';
+    //   }
+    // }
 
     var hoverStyle = "";
     if (hover) {
@@ -64,7 +65,7 @@ let MapPanel = React.createClass({
     }
 
     var div = document.createElement("div");
-    div.className = "bubble-icon " + bgColor + " " + hoverStyle;
+    div.className = "bubble-icon " + 'blue' + " " + hoverStyle;
     return div;
   },
   _addMarkers: function() {
@@ -99,6 +100,8 @@ let MapPanel = React.createClass({
           target.setTop(true);
           var id = target.getExtData()["id"];
           var html = this._genIconHtml(id, true);
+          var marker = this.state.markers[id];
+          MapAction.GetMapBuildingByBuildingId(marker.id);
           target.setContent(html);
           this.setState({
             "popup": {
@@ -106,7 +109,8 @@ let MapPanel = React.createClass({
               "id": id
             }
           });
-        // this._showEnergyCost(id);
+          // this._showEnergyCost(id);
+
         }.bind(this));
         this._poiEventHandler.push(handler);
 
@@ -120,7 +124,8 @@ let MapPanel = React.createClass({
             "popup": {
               "show": false,
               "id": -1
-            }
+            },
+            item: null
           });
         }.bind(this));
         this._poiEventHandler.push(handler);
@@ -156,20 +161,20 @@ let MapPanel = React.createClass({
       "markers": markers
     });
     this._addMarkers();
-    this.setState({
-      isloading: false
-    });
+    // this.setState({
+    //   isloading: false
+    // });
 
   },
   _onDateChanged: function(dateId) {
     MapAction.getMapBuildingsByCustomerId(dateId);
-    this.setState({
-      isloading: true
-    });
+  // this.setState({
+  //   isloading: true
+  // });
   },
-  _createPopupUI: function() {
-    var id = this.state.popup.id;
-    var marker = this.state.markers[id];
+  _createPopupUI: function(marker) {
+    // var id = this.state.popup.id;
+    // var marker = this.state.markers[id];
     var RelativeDateType = ['', I18N.Map.Date.Today, I18N.Map.Date.Yesterday, '', '', I18N.Map.Date.ThisMonth, I18N.Map.Date.LastMonth, I18N.Map.Date.ThisYear, I18N.Map.Date.LastYear];
     var EnergyInfo = [I18N.Map.EnergyInfo.CarbonEmission,
       I18N.Map.EnergyInfo.Cost, '',
@@ -185,7 +190,7 @@ let MapPanel = React.createClass({
       I18N.Map.EnergyInfo.Coal,
       I18N.Map.EnergyInfo.CoalOil];
     var Qualify = [I18N.Map.EnergyInfo.TargetValue.Qualified, I18N.Map.EnergyInfo.TargetValue.NotQualified];
-    var imgUrl = marker.imageId == null ? "../../less/images/defaultBuilding.png" : 'BuildingPicture.aspx?pictureId=' + marker.imageId + '&usedInMap=true';
+    var imgUrl = marker.imageId == null ? require("../../less/images/defaultBuilding.png") : 'BuildingPicture.aspx?pictureId=' + marker.imageId + '&usedInMap=true';
     var bgColor;
     if (marker.dataValues[0].IsQualified === null) {
       bgColor = 'blue';
@@ -240,16 +245,18 @@ let MapPanel = React.createClass({
       if (!this.state.popup.show) {
         this._map.clearInfoWindow();
       } else {
-        var id = this.state.popup.id;
-        var marker = this.state.markers[id];
-        var position = this._determinePopupPosition(marker);
-        this._popupWindow = new AMap.InfoWindow({
-          content: this._createPopupUI(),
-          offset: position,
-          isCustom: true
-        });
-        this._popupWindow.open(this._map, new AMap.LngLat(marker.lon, marker.lat));
+        if (this.state.item !== null) {
+          var marker = this.state.item;
+          var position = this._determinePopupPosition(marker);
+          this._popupWindow = new AMap.InfoWindow({
+            content: this._createPopupUI(marker),
+            offset: position,
+            isCustom: true
+          });
+          this._popupWindow.open(this._map, new AMap.LngLat(marker.lon, marker.lat));
+        }
       }
+
     }
   },
   _determinePopupPosition(marker) {
@@ -280,18 +287,33 @@ let MapPanel = React.createClass({
     }
     return new AMap.Pixel(x, y);
   },
+  _onBuildingInfoChanged: function() {
+    this.setState({
+      item: MapStore.getBuildingInfo()
+    });
+  // var marker = MapStore.getBuildingInfo();
+  // var position = this._determinePopupPosition(marker);
+  // this._popupWindow = new AMap.InfoWindow({
+  //   content: this._createPopupUI(maker),
+  //   offset: position,
+  //   isCustom: true
+  // });
+  // this._popupWindow.open(this._map, new AMap.LngLat(marker.lon, marker.lat));
+  },
   componentDidUpdate: function() {
     this._showPopup();
   },
   componentDidMount: function() {
     MapStore.addMapInfoListener(this._onMapInfoChanged);
+    MapStore.addBuildingInfoListener(this._onBuildingInfoChanged);
     MapAction.getMapBuildingsByCustomerId(5);
-    this.setState({
-      isloading: true
-    });
+  // this.setState({
+  //   isloading: true
+  // });
   },
   componentWillUnmount: function() {
     MapStore.removeMapInfoListener(this._onMapInfoChanged);
+    MapStore.removeBuildingInfoListener(this._onBuildingInfoChanged);
     if (this._map) {
       this._clearMap();
       this._map.destroy();
@@ -311,16 +333,16 @@ let MapPanel = React.createClass({
       alignItems: 'center',
       justifyContent: 'center'
     };
-    var content = (this.state.isloading ? <Paper style={paperStyle}><CircularProgress  mode="indeterminate" size={1} /></Paper> : null);
+    //var content = (this.state.isloading ? <Paper style={paperStyle}><CircularProgress  mode="indeterminate" size={1} /></Paper> : null);
     return (
       <div style={{
         "flex": "1",
         "display": "flex",
-        'flex-direction': 'column'
+        'flex-direction': 'column',
+        'margin-top': '-16px'
       }}>
     <div className='map-timepickerbar'><DatePicker onMenuItemClick={this._onDateChanged}/></div>
     <div style={styleMap} id="_map"></div>
-    {content}
   </div>
       )
 

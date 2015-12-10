@@ -9,6 +9,7 @@ import Ajax from '../ajax/ajax.jsx';
 const MONTHSTEP = 3,
   DAYSTEP = 2,
   HOURSTEP = 1;
+let _relativeDateType = null;
 
 let MapAction = {
   setSelectedDate(dateId) {
@@ -18,6 +19,7 @@ let MapAction = {
     });
   },
   getMapBuildingsByCustomerId: function(relativeDateType) {
+    _relativeDateType = relativeDateType;
     Ajax.post('/Energy.svc/GetMapBuildingsByCustomerId', {
       params: {
         baseTime: DataConverter.DatetimeToJson(new Date()),
@@ -28,6 +30,22 @@ let MapAction = {
         AppDispatcher.dispatch({
           type: Action.SET_MAP_LIST,
           mapList: mapList
+        });
+      },
+      error: function(err, res) {}
+    });
+  },
+  GetMapBuildingByBuildingId: function(buildingId) {
+    Ajax.post('/Energy.svc/GetMapBuildingByBuildingId', {
+      params: {
+        baseTime: DataConverter.DatetimeToJson(new Date()),
+        buildingId: buildingId,
+        relativeDateType: _relativeDateType
+      },
+      success: function(buildInfo) {
+        AppDispatcher.dispatch({
+          type: Action.SET_MAP_BUILDING,
+          buildInfo: buildInfo
         });
       },
       error: function(err, res) {}
