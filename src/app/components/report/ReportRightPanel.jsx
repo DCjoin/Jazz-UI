@@ -109,22 +109,31 @@ var ReportRightPanel = React.createClass({
       this._clearAllErrorText();
     }
     var reportItem = ReportStore.getSelectedReportItem();
-    var templateId = reportItem.get('templateId');
-    var obj = {
-      reportItem: reportItem,
-      isLoading: false,
-      showDeleteDialog: false,
-      sheetNames: this._getSheetNamesByTemplateId(templateId),
-      checkedValue: 'uploadedTemplate',
-      showDownloadButton: true,
-      fileName: ''
-    };
-    if (reportItem.get('id') === 0) {
-      obj.disabled = false;
-      obj.saveDisabled = true;
-      obj.showDownloadButton = false;
+    var obj;
+    if (reportItem !== null) {
+      var templateId = reportItem.get('templateId');
+      obj = {
+        reportItem: reportItem,
+        isLoading: false,
+        showDeleteDialog: false,
+        sheetNames: this._getSheetNamesByTemplateId(templateId),
+        checkedValue: 'uploadedTemplate',
+        showDownloadButton: true,
+        fileName: ''
+      };
+      if (reportItem.get('id') === 0) {
+        obj.disabled = false;
+        obj.saveDisabled = true;
+        obj.showDownloadButton = false;
+      } else {
+        obj.disabled = true;
+      }
     } else {
-      obj.disabled = true;
+      obj = {
+        reportItem: reportItem,
+        isLoading: false,
+        showDeleteDialog: false
+      };
     }
     this.setState(obj);
   },
@@ -485,12 +494,13 @@ var ReportRightPanel = React.createClass({
   render: function() {
     var me = this;
     let displayedDom = null;
+    var reportItem = me.state.reportItem;
     if (me.state.isLoading) {
       displayedDom = (<div className='jazz-report-loading'><div style={{
         margin: 'auto',
         width: '100px'
       }}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
-    } else {
+    } else if (reportItem !== null) {
       var buttonStyle = {
           minWidth: '36px',
           width: '36px',
@@ -502,7 +512,6 @@ var ReportRightPanel = React.createClass({
           fontSize: '36px',
           color: '#abafae'
         };
-      var reportItem = me.state.reportItem;
       var titleProps = {
         ref: 'reportTitleId',
         isViewStatus: me.state.disabled,
