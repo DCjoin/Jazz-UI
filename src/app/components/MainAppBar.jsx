@@ -3,6 +3,7 @@
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
 import { Menu, Mixins, IconButton, FlatButton, FontIcon, TextField, Dialog } from 'material-ui';
+import classnames from "classnames";
 import { assign, get, set } from "lodash/object";
 import { isObject } from "lodash/lang";
 import lang from '../lang/lang.jsx';
@@ -18,6 +19,8 @@ import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import LanguageAction from '../actions/LanguageAction.jsx';
 import Regex from '../constants/Regex.jsx';
+import MailConfirmDialog from '../controls/OperationTemplate/BlankDialog.jsx';
+import MailStore from '../stores/MailStore.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 var f = lang.f;
@@ -32,7 +35,8 @@ const SIDE_BAR_TYPE = {
 const DIALOG_TYPE = {
   LOGOUT: "logout",
   MODIIFY_PASSWORD: "modiify_password",
-  MODIIFY_INFO: "modiify_info"
+  MODIIFY_INFO: "modiify_info",
+  MAIL_CONFIRM: "mail_confirm"
 };
 
 const MODIFY_TYPE = {
@@ -254,6 +258,28 @@ var MainAppBar = React.createClass({
   _onMailLoaded: function() {
     var params = this.getParams();
     this.transitionTo('mail', params);
+    this.setState({
+      configSelected: false
+    })
+  },
+  _onConfigLoaded: function() {
+    var params = this.getParams();
+    this.transitionTo('config', params);
+    this.setState({
+      configSelected: true
+    })
+  },
+  _onConfigClick: function() {
+    var mailInfo = MailStore.getMailView();
+    var {receivers, template, subject, content, saveNewTemplate, newTemplateName, msgNoticeFlag} = mailInfo;
+    if (receivers.size != 0 || template !== null || subject !== null
+      || content !== null || saveNewTemplate == true || newTemplateName !== null || msgNoticeFlag == true) {
+      this.setState({
+        dialogType: DIALOG_TYPE.MAIL_CONFIRM,
+      })
+    } else {
+      this._onConfigLoaded();
+    }
   },
   _getEditPasswordDialog: function(customError) {
     var MAX_LENGTH_ERROR = I18N.Platform.MaxLengthError;
@@ -443,6 +469,26 @@ var MainAppBar = React.createClass({
       </ul>
   </Dialog>);
   },
+  _getMailConfigDialog: function() {
+    var that = this;
+    var onClose = function() {
+      that.setState({
+        dialogType: "",
+      })
+    };
+    var props = {
+      title: I18N.Mail.LeaveTitle,
+      content: I18N.Mail.LeaveContent,
+      firstActionLabel: I18N.Mail.LeaveConfirm,
+      secondActionLabel: I18N.Mail.LeaveCancel,
+      onFirstActionTouchTap: this._onConfigLoaded,
+      onSecondActionTouchTap: onClose,
+      onDismiss: onClose
+    }
+    return (
+      <MailConfirmDialog {...props}/>
+      )
+  },
   _getLogoutDialog: function() {
     var actions = [
       <CustomFlatButton
@@ -465,7 +511,8 @@ var MainAppBar = React.createClass({
       sidebarType: "",
       dialogType: "",
       editType: "",
-      tempData: {}
+      tempData: {},
+      configSelected: true,
     };
   },
   componentDidMount: function() {
@@ -510,6 +557,10 @@ var MainAppBar = React.createClass({
       case DIALOG_TYPE.MODIIFY_INFO:
         dialog = this._getEditUserDialog();
         break;
+      case DIALOG_TYPE.MAIL_CONFIRM:
+        dialog = this._getMailConfigDialog();
+        break;
+
     }
 
     var nameLableStyle = {
@@ -523,11 +574,18 @@ var MainAppBar = React.createClass({
       },
       langLabelStyle = {
         paddingRight: '10px',
+      },
+      configStyle = {
+        cursor: 'pointer'
       };
     var logo = (!!this.props.logoUrl) ? <div className='jazz_logo_img' style={{
       backgroundImage: 'url(' + this.props.logoUrl + ')'
     }}></div> : null;
     var title = (!!this.props.title) ? <div className='jazz-title'>{this.props.title}</div> : null;
+    var mainmenu = (this.props.items[0].name == 'config') ? <div className="jazz-menu"><div className={classnames({
+      "jazz-mainmenu-main": true,
+      "active": this.state.configSelected
+    })} style={configStyle} onClick={this._onConfigClick}>{this.props.items[0].title}</div></div> : <MainMenu items={this.props.items} params={params}  onClick={this._onClick}/>;
     var mail = (!!this.props.title) ? (      <div className="jazz-mainmenu-user" style={{
       display: 'flex'
     }}>
@@ -545,7 +603,7 @@ var MainAppBar = React.createClass({
                   {title}
                 </div>
                 <div className="jazz-menu">
-                    <MainMenu items={this.props.items} params={params}  onClick={this._onClick}/>
+                    {mainmenu}
                       <div className="jazz-mainmenu-info">
                         {mail}
       <div className="jazz-mainmenu-user" style={{

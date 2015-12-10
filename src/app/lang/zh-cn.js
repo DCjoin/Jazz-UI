@@ -972,6 +972,10 @@ I18N.Mail.Send.Cancel = '放弃';
 I18N.Mail.Send.Success = '平台邮件已发送成功';
 I18N.Mail.Send.E03092 = '您的邮件没有填写主题。您确定继续发送？';
 I18N.Mail.Send.E03099 = '邮件发送失败，请重试。';
+I18N.Mail.LeaveTitle = '离开提示';
+I18N.Mail.LeaveContent = '邮件正在编辑，离开此页面，当前邮件内容将会被清空，是否离开？';
+I18N.Mail.LeaveConfirm = '离开';
+I18N.Mail.LeaveCancel = '放弃';
 
 
 I18N.RawData = {};

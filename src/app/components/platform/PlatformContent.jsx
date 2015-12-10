@@ -1,10 +1,11 @@
 'use strict';
 
 import React from 'react';
-import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu, DropDownMenu, Checkbox } from 'material-ui';
+import { CircularProgress, FontIcon, IconButton, IconMenu, DropDownMenu, Checkbox } from 'material-ui';
 import classnames from "classnames";
 import moment from 'moment';
 import Regex from '../../constants/Regex.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
 import PlatformAction from '../../actions/PlatformAction.jsx';
 import PlatformStore from '../../stores/PlatformStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
@@ -433,6 +434,10 @@ let PlatformContent = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.provider.Id != this.props.provider.Id) {
       this.clearErrorTextBatchViewbaleTextFiled();
+      this.setState({
+        providerIdError: '',
+      })
+
     }
   },
 
