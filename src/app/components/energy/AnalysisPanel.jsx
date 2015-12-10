@@ -157,9 +157,21 @@ let AnalysisPanel = React.createClass({
     }} hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>;
     var remarkTextArea = null;
     if (this.state.remarkDisplay) {
-      remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} hintStyle={{
+      remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
         color: '#abafae'
       }} multiLine={true} ></TextField></div>;
+    }
+    var remarkDiv = null;
+    if (!this.props.isFromAlarm) {
+      remarkDiv = <div className={classNames(
+        {
+          'jazz-energy-remark-container': true,
+          'jazz-energy-remark-text-display': this.state.remarkDisplay
+        }
+      )}>
+      <div className='jazz-energy-remark-button'><RaisedButton label={I18N.Remark.Label} onClick={this.showRemark}></RaisedButton></div>
+      {remarkTextArea}
+    </div>;
     }
     let panel = <div className={'jazz-energy-panel'}>
         <div className='header'>
@@ -201,15 +213,7 @@ let AnalysisPanel = React.createClass({
         </div>
         {energyPart}
         {errorDialog}
-        <div className={classNames(
-      {
-        'jazz-energy-remark-container': true,
-        'jazz-energy-remark-text-display': this.state.remarkDisplay
-      }
-    )}>
-        <div className='jazz-energy-remark-button'><RaisedButton label={I18N.Remark.Label} onClick={this.showRemark}></RaisedButton></div>
-        {remarkTextArea}
-       </div>
+        {remarkDiv}
       </div>;
 
     let chartCmp = me.refs.ChartComponent;
@@ -263,6 +267,11 @@ let AnalysisPanel = React.createClass({
       LabelMenuStore.clearHierNodes();
       LabelMenuStore.clearHierNode();
     }
+  },
+  getRemarck: function(e) {
+    this.setState({
+      remarkText: e.target.value
+    });
   },
   onWidgetSaveWindowDismiss: function() {
     this.setState({

@@ -28,7 +28,7 @@ var ReportLeftPanel = React.createClass({
   },
   _onChangeReportItem() {
     var reportItem = ReportStore.getSelectedReportItem();
-    if (reportItem.get('id') !== 0) {
+    if (reportItem !== null && reportItem.get('id') !== 0) {
       this.setState({
         disableAddButton: false
       });

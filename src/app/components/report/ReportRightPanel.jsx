@@ -109,38 +109,55 @@ var ReportRightPanel = React.createClass({
       this._clearAllErrorText();
     }
     var reportItem = ReportStore.getSelectedReportItem();
-    var templateId = reportItem.get('templateId');
-    var obj = {
-      reportItem: reportItem,
-      isLoading: false,
-      showDeleteDialog: false,
-      sheetNames: this._getSheetNamesByTemplateId(templateId),
-      checkedValue: 'uploadedTemplate',
-      showDownloadButton: true,
-      fileName: ''
-    };
-    if (reportItem.get('id') === 0) {
-      obj.disabled = false;
-      obj.saveDisabled = true;
+    var obj;
+    if (reportItem !== null) {
+      var templateId = reportItem.get('templateId');
+      obj = {
+        reportItem: reportItem,
+        isLoading: false,
+        showDeleteDialog: false,
+        sheetNames: this._getSheetNamesByTemplateId(templateId),
+        checkedValue: 'uploadedTemplate',
+        showDownloadButton: true,
+        fileName: ''
+      };
+      if (reportItem.get('id') === 0) {
+        obj.disabled = false;
+        obj.saveDisabled = true;
+        obj.showDownloadButton = false;
+      } else {
+        obj.disabled = true;
+      }
     } else {
-      obj.disabled = true;
+      obj = {
+        reportItem: reportItem,
+        isLoading: false,
+        showDeleteDialog: false
+      };
     }
     this.setState(obj);
   },
   _onChangeTemplate: function() {
+    var templateList = ReportStore.getTemplateList();
+    var templateItems = this._getTemplateItems(templateList);
     this.setState({
-      templateList: ReportStore.getTemplateList()
+      templateList: templateList,
+      templateItems: templateItems
     });
   },
   _getSheetNamesByTemplateId: function(templateId) {
     var templateList = this.state.templateList;
     var sheetNames = null;
+    var template = null;
     if (templateList !== null && templateList.size !== 0 && templateId !== null) {
-      sheetNames = templateList.find((item) => {
+      template = templateList.find((item) => {
         if (templateId === item.get('Id')) {
           return true;
         }
-      }).get('SheetNames');
+      });
+      if (template) {
+        sheetNames = template.get('SheetNames');
+      }
     }
     return sheetNames;
   },
@@ -165,6 +182,7 @@ var ReportRightPanel = React.createClass({
     var me = this;
     this.setState({
       reportItem: reportItem,
+      showDownloadButton: true,
       sheetNames: sheetNames
     }, () => {
       this.setState({
@@ -184,8 +202,7 @@ var ReportRightPanel = React.createClass({
       });
     });
   },
-  _getTemplateItems: function() {
-    var templateList = this.state.templateList;
+  _getTemplateItems: function(templateList) {
     if (templateList && templateList.size !== 0) {
       return templateList.map(function(item) {
         return {
@@ -221,12 +238,13 @@ var ReportRightPanel = React.createClass({
       var reportItem = me.state.reportItem;
       if (obj.success === true) {
         reportItem = reportItem.set('templateId', obj.TemplateId);
+        ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), me.state.sortBy, 'asc');
         me.setState({
           reportItem: reportItem,
           sheetNames: Immutable.fromJS(obj.SheetList),
           showUploadDialog: false
         }, () => {
-          this.setState({
+          me.setState({
             saveDisabled: !me._isValid()
           });
         });
@@ -392,7 +410,7 @@ var ReportRightPanel = React.createClass({
     var id = this.state.reportItem.get('id');
     ReportAction.deleteReportById(id);
   },
-  _updateReportData: function(name, value, index, stepValue) {
+  _updateReportData: function(name, value, index, stepValue, startTime, endTime) {
     var me = this;
     var reportItem = this.state.reportItem;
     var reportData = reportItem.get('data');
@@ -400,11 +418,6 @@ var ReportRightPanel = React.createClass({
     reportData = reportData.setIn([index, name], value);
     if (name === 'DateType') {
       reportData = reportData.setIn([index, 'ExportStep'], stepValue);
-      var dateType = CommonFuns.GetStrDateType(value);
-      var timeRange = CommonFuns.GetDateRegion(dateType);
-      var d2j = CommonFuns.DataConverter.DatetimeToJson;
-      var startTime = d2j(timeRange.start);
-      var endTime = d2j(timeRange.end);
       reportData = reportData.setIn([index, 'DataStartTime'], startTime);
       reportData = reportData.setIn([index, 'DataEndTime'], endTime);
     }
@@ -481,12 +494,13 @@ var ReportRightPanel = React.createClass({
   render: function() {
     var me = this;
     let displayedDom = null;
+    var reportItem = me.state.reportItem;
     if (me.state.isLoading) {
       displayedDom = (<div className='jazz-report-loading'><div style={{
         margin: 'auto',
         width: '100px'
       }}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
-    } else {
+    } else if (reportItem !== null) {
       var buttonStyle = {
           minWidth: '36px',
           width: '36px',
@@ -498,7 +512,6 @@ var ReportRightPanel = React.createClass({
           fontSize: '36px',
           color: '#abafae'
         };
-      var reportItem = me.state.reportItem;
       var titleProps = {
         ref: 'reportTitleId',
         isViewStatus: me.state.disabled,
@@ -528,7 +541,7 @@ var ReportRightPanel = React.createClass({
         var templateProps = {
           isViewStatus: me.state.disabled,
           defaultValue: reportItem.get('templateId'),
-          dataItems: me._getTemplateItems(),
+          dataItems: me.state.templateItems,
           textField: 'text',
           title: I18N.EM.Report.Template
         };
@@ -567,7 +580,7 @@ var ReportRightPanel = React.createClass({
         var templateEditProps = {
           isViewStatus: me.state.disabled,
           defaultValue: reportItem.get('templateId'),
-          dataItems: me._getTemplateItems(),
+          dataItems: me.state.templateItems,
           textField: 'text',
           title: '',
           didChanged: me._onExistTemplateChange

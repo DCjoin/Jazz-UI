@@ -627,7 +627,13 @@ let ChartStrategyFactor = {
         step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
         sumBtnStatus = false,
-        chartType = widgetDto.ChartType;
+        chartType = widgetDto.ChartType,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
 
       let wasTemp = !!viewOption.IncludeTempValue,
         wasHumi = !!viewOption.IncludeHumidityValue,
@@ -675,6 +681,8 @@ let ChartStrategyFactor = {
       }
       //init selected tags is done in the other part
       analysisPanel.setState({
+        remarkText: remarkText,
+        remarkDisplay: remarkDisplay,
         selectedChartType: typeMap[chartType],
         yaxisConfig: yaxisConfig,
         sumBtnStatus: sumBtnStatus,
@@ -700,7 +708,13 @@ let ChartStrategyFactor = {
         viewOption = contentObj.viewOption,
         step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
-        chartType = widgetDto.ChartType;
+        chartType = widgetDto.ChartType,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
 
       let typeMap = {
         Line: 'line',
@@ -743,6 +757,8 @@ let ChartStrategyFactor = {
       }
 
       analysisPanel.setState({
+        remarkText: remarkText,
+        remarkDisplay: remarkDisplay,
         step: step,
         yaxisConfig: yaxisConfig,
         selectedChartType: typeMap[chartType],
@@ -758,12 +774,20 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         viewOption = contentObj.viewOption,
+        step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
         dest = contentObj.destination,
-        chartType = widgetDto.ChartType;
+        chartType = widgetDto.ChartType,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
       if (!!dest) {
         CarbonStore.setDestination(dest);
       }
@@ -793,8 +817,20 @@ let ChartStrategyFactor = {
       let timeRange = timeRanges[0];
       initPanelDate(timeRange);
 
-      analysisPanel.state.selectedChartType = typeMap[chartType];
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
+
+      analysisPanel.setState({
+        remarkText: remarkText,
+        remarkDisplay: remarkDisplay,
+        step: step,
+        yaxisConfig: yaxisConfig,
+        selectedChartType: typeMap[chartType]
+      }, () => {
+        analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+      });
 
       ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
       analysisPanel.setCalendarTypeFromWidget(widgetDto);
@@ -803,6 +839,7 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
@@ -810,61 +847,13 @@ let ChartStrategyFactor = {
         step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
         chartType = widgetDto.ChartType,
-        ratioType = viewOption.DataOption.RatioType;
+        ratioType = viewOption.DataOption.RatioType,
+        remarkText = widgetDto.Comment;
 
-      let typeMap = {
-        Line: 'line',
-        Column: 'column',
-      };
-
-      let initPanelDate = function(timeRange) {
-        if (timeRange.relativeDate) {
-          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
-        } else {
-          analysisPanel._setRelativeDateByValue('Customerize');
-          let start = j2d(timeRange.StartTime, false);
-          let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
-        }
-      };
-
-      //init timeRange
-      let timeRange = timeRanges[0];
-      initPanelDate(timeRange);
-
-      let bo = null;
-      if (benchmarkOption && benchmarkOption.IndustryId !== null) {
-        bo = benchmarkOption;
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
       }
-
-      setTimeout(() => {
-        analysisPanel.setState({
-          step: step,
-          ratioType: ratioType,
-          benchmarkOption: bo,
-          selectedChartType: typeMap[chartType]
-        }, () => {
-          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.ratioTypeCombo, ratioType);
-          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
-        });
-      });
-
-      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
-      analysisPanel.setCalendarTypeFromWidget(widgetDto);
-    },
-    initUnitChartPanelByWidgetDto(analysisPanel) {
-      let dateSelector = analysisPanel.refs.dateTimeSelector;
-      let j2d = CommonFuns.DataConverter.JsonToDateTime;
-      let widgetDto = analysisPanel.props.widgetDto,
-        WidgetStatusArray = widgetDto.WidgetStatusArray,
-        contentSyntax = widgetDto.ContentSyntax,
-        contentObj = JSON.parse(contentSyntax),
-        benchmarkOption = contentObj.benchmarkOption,
-        viewOption = contentObj.viewOption,
-        timeRanges = viewOption.TimeRanges,
-        step = viewOption.Step,
-        unitType = viewOption.DataOption.UnitType,
-        chartType = widgetDto.ChartType;
 
       let typeMap = {
         Line: 'line',
@@ -897,6 +886,75 @@ let ChartStrategyFactor = {
 
       setTimeout(() => {
         analysisPanel.setState({
+          remarkText: remarkText,
+          remarkDisplay: remarkDisplay,
+          step: step,
+          yaxisConfig: yaxisConfig,
+          ratioType: ratioType,
+          benchmarkOption: bo,
+          selectedChartType: typeMap[chartType]
+        }, () => {
+          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.ratioTypeCombo, ratioType);
+          analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
+        });
+      });
+
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
+      analysisPanel.setCalendarTypeFromWidget(widgetDto);
+    },
+    initUnitChartPanelByWidgetDto(analysisPanel) {
+      let dateSelector = analysisPanel.refs.dateTimeSelector;
+      let j2d = CommonFuns.DataConverter.JsonToDateTime;
+      let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
+        contentSyntax = widgetDto.ContentSyntax,
+        contentObj = JSON.parse(contentSyntax),
+        benchmarkOption = contentObj.benchmarkOption,
+        viewOption = contentObj.viewOption,
+        timeRanges = viewOption.TimeRanges,
+        step = viewOption.Step,
+        unitType = viewOption.DataOption.UnitType,
+        chartType = widgetDto.ChartType,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
+
+      let typeMap = {
+        Line: 'line',
+        Column: 'column',
+      };
+
+      let initPanelDate = function(timeRange) {
+        if (timeRange.relativeDate) {
+          analysisPanel._setRelativeDateByValue(timeRange.relativeDate);
+        } else {
+          analysisPanel._setRelativeDateByValue('Customerize');
+          let start = j2d(timeRange.StartTime, false);
+          let end = j2d(timeRange.EndTime, false);
+          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+        }
+      };
+
+      //init timeRange
+      let timeRange = timeRanges[0];
+      initPanelDate(timeRange);
+
+      let bo = null;
+      if (benchmarkOption && benchmarkOption.IndustryId !== null) {
+        bo = benchmarkOption;
+      }
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
+
+      setTimeout(() => {
+        analysisPanel.setState({
+          remarkText: remarkText,
+          remarkDisplay: remarkDisplay,
           unitType: unitType,
           benchmarkOption: bo,
           step: step,
@@ -914,14 +972,22 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
+        WidgetStatusArray = widgetDto.WidgetStatusArray,
         contentSyntax = widgetDto.ContentSyntax,
         contentObj = JSON.parse(contentSyntax),
         benchmarkOption = contentObj.benchmarkOption,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
+        step = viewOption.Step,
         unitType = viewOption.DataOption.UnitType,
         dest = contentObj.destination,
-        chartType = widgetDto.ChartType;
+        chartType = widgetDto.ChartType,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
       if (!!dest) {
         CarbonStore.setDestination(dest);
       }
@@ -952,10 +1018,19 @@ let ChartStrategyFactor = {
         bo = benchmarkOption;
       }
 
+      let yaxisConfig = null;
+      if (WidgetStatusArray) {
+        yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+      }
+
       setTimeout(() => {
         analysisPanel.setState({
+          remarkText: remarkText,
+          remarkDisplay: remarkDisplay,
           unitType: unitType,
           benchmarkOption: bo,
+          step: step,
+          yaxisConfig: yaxisConfig,
           selectedChartType: typeMap[chartType]
         }, () => {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
@@ -978,7 +1053,13 @@ let ChartStrategyFactor = {
         step = viewOption.Step,
         timeRanges = viewOption.TimeRanges,
         unitType = viewOption.DataOption.UnitType,
-        chartType = widgetDto.ChartType;
+        chartType = widgetDto.ChartType,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
 
       let typeMap = {
         Line: 'line',
@@ -1012,6 +1093,8 @@ let ChartStrategyFactor = {
 
       setTimeout(() => {
         analysisPanel.setState({
+          remarkText: remarkText,
+          remarkDisplay: remarkDisplay,
           step: step,
           yaxisConfig: yaxisConfig,
           unitType: unitType,
@@ -1036,7 +1119,13 @@ let ChartStrategyFactor = {
         labelingType = contentObj.labelingType,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
-        step = viewOption.Step;
+        step = viewOption.Step,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
       if (benchmarkOption === null)
         return;
       let initPanelDate = function(timeRange) {
@@ -1094,9 +1183,14 @@ let ChartStrategyFactor = {
 
       //init selected tags is done in the other part
 
-      analysisPanel.state.selectedChartType = "column";
       var nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-      analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
+      analysisPanel.setState({
+        remarkText: remarkText,
+        remarkDisplay: remarkDisplay,
+        selectedChartType: "column"
+      }, () => {
+        analysisPanel.state.chartStrategy.getEnergyDataFn(viewOption, nodeOptions, benchmarkOption, labelingType);
+      });
     },
     initRankChartPanelByWidgetDto(analysisPanel) {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
@@ -1110,7 +1204,13 @@ let ChartStrategyFactor = {
         range = diagramConfig.rangeCode,
         order = diagramConfig.orderCode,
         viewOption = contentObj.viewOption,
-        timeRanges = viewOption.TimeRanges;
+        timeRanges = viewOption.TimeRanges,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
 
 
       let initPanelDate = function(timeRange) {
@@ -1136,6 +1236,8 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = "column";
       setTimeout(() => {
         analysisPanel.setState({
+          remarkText: remarkText,
+          remarkDisplay: remarkDisplay,
           rankType: rankType,
           yaxisConfig: yaxisConfig,
           order: order,
@@ -1152,7 +1254,13 @@ let ChartStrategyFactor = {
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let j2d = CommonFuns.DataConverter.JsonToDateTime;
       let widgetDto = analysisPanel.props.widgetDto,
-        timeRanges = widgetDto.timeRange;
+        timeRanges = widgetDto.timeRange,
+        remarkText = widgetDto.Comment;
+
+      var remarkDisplay = false;
+      if (remarkText !== '' && remarkText !== null) {
+        remarkDisplay = true;
+      }
 
       let initPanelDate = function(timeRange) {
         if (timeRange.relativeDate) {
@@ -1172,11 +1280,14 @@ let ChartStrategyFactor = {
 
       //init selected tags is done in the other part
 
-      analysisPanel.state.selectedChartType = 'line';
       analysisPanel.setState({
-        step: widgetDto.step
+        remarkText: remarkText,
+        remarkDisplay: remarkDisplay,
+        step: widgetDto.step,
+        selectedChartType: 'line'
+      }, () => {
+        analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
       });
-      analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
     },
   },
   save2DashboardForAlarmFnStrategy: {
@@ -1347,6 +1458,7 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!analysisPanel.props.isFromAlarm) {
         widgetDto.DashboardId = destNode.get('Id');
         widgetDto.Name = newName;
@@ -1354,7 +1466,7 @@ let ChartStrategyFactor = {
       } else {
         //for this situation destNode is menuIndex
         if (!!destNode) {
-          return widgetDto
+          return widgetDto;
         } else {
           FolderAction.updateWidgetDtos(widgetDto);
         }
@@ -1438,9 +1550,10 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      widgetDto.Comment = analysisPanel.state.remarkText;
       widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       if (!!menuIndex) {
-        return widgetDto
+        return widgetDto;
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
@@ -1519,10 +1632,10 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-
+      widgetDto.Comment = analysisPanel.state.remarkText;
       widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       if (!!menuIndex) {
-        return widgetDto
+        return widgetDto;
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
@@ -1612,8 +1725,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!menuIndex) {
-        return widgetDto
+        return widgetDto;
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
@@ -1696,9 +1810,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-
+      widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!menuIndex) {
-        return widgetDto
+        return widgetDto;
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
@@ -1788,9 +1902,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
-
+      widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!menuIndex) {
-        return widgetDto
+        return widgetDto;
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
@@ -1877,8 +1991,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!menuIndex) {
-        return widgetDto
+        return widgetDto;
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
@@ -1920,8 +2035,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!menuIndex) {
-        return widgetDto
+        return widgetDto;
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
@@ -1998,8 +2114,9 @@ let ChartStrategyFactor = {
         params: params
       };
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
+      widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!menuIndex) {
-        return widgetDto
+        return widgetDto;
       } else {
         FolderAction.updateWidgetDtos(widgetDto);
       }
