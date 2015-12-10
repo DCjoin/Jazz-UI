@@ -153,7 +153,7 @@ I18N.Common.Glossary.Order.Rank50 = '前50名';
 
 I18N.Common.Glossary.Name = '名称';
 I18N.Common.Glossary.Code = '编码';
-I18N.Common.Glossary.Commodity = '介质';
+I18N.Common.Glossary.Index = '序号';
 
 
 I18N.Common.Button = {};

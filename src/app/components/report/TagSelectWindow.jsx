@@ -216,7 +216,7 @@ let TagSelectWindow = React.createClass({
       width: '30px'
     }}><Checkbox disabled={this.props.disabled} checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
         <div style={{
-      width: '150px'
+      width: '155px'
     }}>{I18N.Common.Glossary.Name}</div>
         <div>{I18N.Common.Glossary.Code}</div>
       </div>;
@@ -230,9 +230,9 @@ let TagSelectWindow = React.createClass({
     }}>
           <div style={{
       width: '30px'
-    }}></div>
+    }}>{I18N.Common.Glossary.Index}</div>
           <div style={{
-      width: '150px'
+      width: '155px'
     }}>{I18N.Common.Glossary.Name}</div>
           <div>{I18N.Common.Glossary.Code}</div>
           <div></div>

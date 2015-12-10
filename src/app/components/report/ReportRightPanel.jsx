@@ -280,6 +280,11 @@ var ReportRightPanel = React.createClass({
       name: 'CustomerId',
       value: parseInt(window.currentCustomerId)
     }, null, form);
+    var activeInput = createElement('input', {
+      type: 'hidden',
+      name: 'IsActive',
+      value: 1
+    }, null, form);
 
     form.submit();
     discardElement(form);
