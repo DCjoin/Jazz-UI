@@ -2214,18 +2214,19 @@ let ChartStrategyFactor = {
     isWeatherDisabled(analysisPanel) {
       let tagOptions = EnergyStore.getTagOpions();
       if (!tagOptions) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
+
+      let disabled = TagStore.getWeatherBtnDisabled();
+      if (disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
+
       let paramsObj = EnergyStore.getParamsObj(),
         step = paramsObj.step;
-      if (step != 1) return I18N.EM.WeatherSupportsOnlyHourlyStep;
+      if (step === 0) return I18N.EM.WeatherSupportsNotMinuteStep;
 
       let errors = EnergyStore.getErrorCodes();
       if (!!errors && errors.length && errors[0] + '' === '02810') {
         analysisPanel.state.weatherOption = null;
         return I18N.Message.M02810;
       }
-
-      let disabled = TagStore.getWeatherBtnDisabled();
-      if (disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       return false;
     }
   },

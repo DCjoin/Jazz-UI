@@ -211,8 +211,9 @@ let AnalysisPanel = React.createClass({
           </div>
         </div>
         {energyPart}
-        {errorDialog}
         {remarkDiv}
+        {errorDialog}
+
       </div>;
 
     let chartCmp = me.refs.ChartComponent;

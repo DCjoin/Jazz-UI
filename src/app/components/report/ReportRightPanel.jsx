@@ -131,8 +131,7 @@ var ReportRightPanel = React.createClass({
     } else {
       obj = {
         reportItem: reportItem,
-        isLoading: false,
-        showDeleteDialog: false
+        isLoading: false
       };
     }
     this.setState(obj);
