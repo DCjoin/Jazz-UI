@@ -212,11 +212,9 @@ let TagSelectWindow = React.createClass({
       height: '30px',
       'line-height': '30px'
     }}>
+        <div className='jazz-report-tag-checkbox'><Checkbox disabled={this.props.disabled} checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
         <div style={{
-      width: '30px'
-    }}><Checkbox disabled={this.props.disabled} checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
-        <div style={{
-      width: '155px'
+      width: '150px'
     }}>{I18N.Common.Glossary.Name}</div>
         <div>{I18N.Common.Glossary.Code}</div>
       </div>;
@@ -229,35 +227,54 @@ let TagSelectWindow = React.createClass({
       'line-height': '30px'
     }}>
           <div style={{
-      width: '30px'
+      width: '45px'
     }}>{I18N.Common.Glossary.Index}</div>
           <div style={{
-      width: '155px'
+      width: '150px'
     }}>{I18N.Common.Glossary.Name}</div>
           <div>{I18N.Common.Glossary.Code}</div>
           <div></div>
         </div>;
 
-    leftPanelField = (<div className='jazz-report-taglist-container-left'>
-      <div className="jazz-report-taglist-tagselect" >
-        <div className="header">
-          <Header onHierachyTreeClick={this._onHierachyTreeClick} onDimTreeClick={this._onDimTreeClick}/>
+    leftPanelField = (<div style={{
+      flex: 1,
+      display: 'flex',
+      'flex-direction': 'column',
+      marginLeft: '20px',
+      marginRight: '45px'
+    }}>
+      <div style={{
+      marginLeft: '10px',
+      marginBottom: '10px'
+    }}>{I18N.EM.Report.AllTag}</div>
+      <div className='jazz-report-taglist-container-left'>
+        <div className="jazz-report-taglist-tagselect" >
+          <div className="header">
+            <Header onHierachyTreeClick={this._onHierachyTreeClick} onDimTreeClick={this._onDimTreeClick}/>
+          </div>
+          <div className='filter'>
+            <SearchBar onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
+          </div>
         </div>
-        <div className='filter'>
-          <SearchBar onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
+        {leftTagListHeader}
+        <div className='jazz-report-taglist'>
+          <TagList tagList={this.state.tagList} selectedTagList={this.state.selectedTagList} isLoading={this.state.isLeftLoading} disabled={this.props.disabled} leftPanel={true} onTagItemSelected={this._onTagItemSelected} onTagItemUnselected={this._onTagItemUnselected}></TagList>
         </div>
-      </div>
-      {leftTagListHeader}
-      <div className='jazz-report-taglist'>
-        <TagList tagList={this.state.tagList} selectedTagList={this.state.selectedTagList} isLoading={this.state.isLeftLoading} disabled={this.props.disabled} leftPanel={true} onTagItemSelected={this._onTagItemSelected} onTagItemUnselected={this._onTagItemUnselected}></TagList>
-      </div>
-      {pagination}
-    </div>);
-    rightPanel = <div className='jazz-report-taglist-container-right'>
+        {pagination}
+      </div></div>);
+    rightPanel = <div style={{
+      flex: 1,
+      display: 'flex',
+      'flex-direction': 'column',
+      marginRight: '23px'
+    }}><div style={{
+      marginLeft: '10px',
+      marginBottom: '10px'
+    }}>{I18N.EM.Report.SelectTag}</div><div className='jazz-report-taglist-container-right'>
       {rightTagListHeader}
       <div className='jazz-report-taglist'>
           <TagList tagList={this.state.selectedTagList} isLoading={this.state.isRightLoading}  disabled={this.props.disabled} leftPanel={false} onTagItemUnselected={this._onTagItemUnselected}></TagList>
-        </div></div>;
+        </div></div></div>;
 
     return (
       <div style={{
