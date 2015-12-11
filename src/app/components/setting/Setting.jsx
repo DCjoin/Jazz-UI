@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import { SvgIcon, IconButton, DropDownMenu, TextField, Dialog, FlatButton, Overlay, Snackbar } from 'material-ui';
+import { SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, Overlay, Snackbar } from 'material-ui';
 import assign from "object-assign";
 import Immutable from 'immutable';
 import AlarmSetting from './AlarmSetting.jsx';
@@ -34,10 +34,16 @@ import ExportView from '../folder/operationView/ExportView.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
 import ExportChartStore from '../../stores/energy/ExportChartStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
+import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 
 
 let lastEnergyType = null;
 let lastBizType = null;
+let nextEnergyType = null;
+const DIALOG_TYPE = {
+  SWITCH_WIDGET: "switchwidget",
+  SWITCH_EC: 'switchec'
+};
 
 
 let Setting = React.createClass({
@@ -54,7 +60,8 @@ let Setting = React.createClass({
       templateNode: null,
       templateId: null,
       templateWidgetDto: null,
-      selectedEnergyType: null
+      selectedEnergyType: null,
+      dialogType: null
     };
   },
   _onLeftSwitchButtonClick() {
@@ -287,21 +294,33 @@ let Setting = React.createClass({
     });
   },
   _onEnergyTypeChanged(energyType) {
-    this.setState({
+    var that = this;
+    that.setState({
       selectedEnergyType: energyType
     });
 
-    let me = this;
-    me.setState({
+    that.setState({
       refreshChart: true
     }, () => {
-      me.setState({
+      that.setState({
         refreshChart: false,
         selectedEnergyType: energyType
       });
     });
-  },
+    // if (energyType != this.state.selectedEnergyType) {
+    //   nextEnergyType = energyType;
+    //   this.setState({
+    //     dialogType: DIALOG_TYPE.SWITCH_EC
+    //   })
+    // }
 
+
+  },
+  _onDialogChanged: function() {
+    this.setState({
+      dialogType: FolderStore.getDisplayDialog(),
+    })
+  },
   componentWillMount: function() {
     // CommodityAction.setEnergyConsumptionType('Carbon');
     lastEnergyType = null;
@@ -321,6 +340,7 @@ let Setting = React.createClass({
     FolderStore.addWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.addWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
     FolderStore.addFolderTreeListener(this._onFolderTreeChanged);
+    FolderStore.addDialogListener(this._onDialogChanged);
   },
   componentWillUnmount: function() {
     FolderStore.removeModifyNameSuccessListener(this._onModifyNameSuccess);
@@ -334,6 +354,7 @@ let Setting = React.createClass({
     FolderStore.removeWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.removeWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
     FolderStore.removeFolderTreeListener(this._onFolderTreeChanged);
+    FolderStore.removeDialogListener(this._onDialogChanged);
     this.setState({
       errorText: null
     });
@@ -370,8 +391,74 @@ let Setting = React.createClass({
     }
     return energyType;
   },
+  _getSwitchECDialog: function() {
+    var that = this;
+    var _onConfirm = function() {
+      that.setState({
+        selectedEnergyType: nextEnergyType
+      });
+
+      that.setState({
+        refreshChart: true
+      }, () => {
+        that.setState({
+          refreshChart: false
+        });
+      });
+    };
+    var _onCancel = function() {
+      that.setState({
+        dialogType: ''
+      })
+    };
+    var props = {
+      title: I18N.Folder.Widget.SwitchLeave,
+      firstActionLabel: I18N.Folder.Widget.SwitchButton,
+      secondActionLabel: I18N.Folder.Widget.LeaveCancel,
+      content: I18N.Folder.Widget.SwitchContent,
+      onFirstActionTouchTap: _onConfirm,
+      onSecondActionTouchTap: _onCancel,
+      onDismiss: _onCancel,
+    }
+    return (
+      <Dialog {...props}/>
+      )
+  },
+  _getSwitchWidgetDialog: function() {
+    var that = this;
+    var _onConfirm = function() {
+      FolderAction.deleteItem(that.state.selectedNode, true);
+    };
+    var _onCancel = function() {
+      that.setState({
+        dialogType: ''
+      })
+    };
+    var props = {
+      title: I18N.Folder.Widget.Leave,
+      firstActionLabel: I18N.Folder.Widget.LeaveButton,
+      secondActionLabel: I18N.Folder.Widget.LeaveCancel,
+      content: I18N.Folder.Widget.LeaveContent,
+      onFirstActionTouchTap: _onConfirm,
+      onSecondActionTouchTap: _onCancel,
+      onDismiss: _onCancel,
+    }
+    return (
+      <Dialog {...props}/>
+      )
+  },
   render: function() {
     let me = this;
+    var dialog;
+    switch (this.state.dialogType) {
+      case DIALOG_TYPE.SWITCH_WIDGET:
+        dialog = this._getSwitchWidgetDialog();
+        break;
+      case DIALOG_TYPE.SWITCH_EC:
+        dialog = this._getSwitchECDialog();
+        break;
+    }
+
     let bizTypeMap = {
       1: 'Energy',
       2: 'Unit',
@@ -430,6 +517,7 @@ let Setting = React.createClass({
     }}><LeftPanel/></div> : <div style={{
       display: 'none'
     }}><LeftPanel/></div>;
+
     return (
       <div style={{
         display: 'flex',
@@ -439,7 +527,7 @@ let Setting = React.createClass({
         {mainPanel}
         {rightPanel}
         {operation}
-
+        {dialog}
         <Snackbar ref='snackbar' message={this.state.errorText}/>
       </div>
       );

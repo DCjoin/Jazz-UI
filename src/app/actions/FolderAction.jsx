@@ -309,6 +309,12 @@ let FolderAction = {
       },
     });
   },
+  setDisplayDialog: function(dialogType) {
+    AppDispatcher.dispatch({
+      type: Action.DISPLAY_DIALOG,
+      dialogType: dialogType
+    });
+  },
 };
 
 module.exports = FolderAction;
