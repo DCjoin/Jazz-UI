@@ -88,9 +88,12 @@ var PlatformStore = assign({}, PrototypeStore, {
   modifyProvider: function(provider) {
     _providerList.forEach(item => {
       if (item.Id == provider.Id) {
-        item = provider;
+        item.Version = provider.Version;
       }
     });
+    this.setSelectProvider(provider);
+    this.emitSelectProviderChange();
+
 
   },
   setError: function(res) {
