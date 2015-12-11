@@ -313,7 +313,7 @@ I18N.EM.YAxisMinMaxValidation = '最大值应大于最小值';
 I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
 I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
 I18N.EM.WeatherSupportsOnlySingleHierarchy = '该功能仅支持单层级数据点。';
-I18N.EM.WeatherSupportsOnlyHourlyStep = '该功能仅支持小时步长。';
+I18N.EM.WeatherSupportsNotMinuteStep = '该功能不支持分钟步长。';
 
 I18N.EM.CharType = {};
 I18N.EM.CharType.Line = '折线图';

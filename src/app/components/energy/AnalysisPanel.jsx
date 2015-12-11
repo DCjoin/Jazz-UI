@@ -212,13 +212,8 @@ let AnalysisPanel = React.createClass({
               {me.state.chartStrategy.searchBarGenFn(me)}
           </div>
         </div>
-        <div style={{
-      flex: 1,
-      display: 'flex',
-      'flex-direction': 'column'
-    }}>{energyPart}
-  {remarkDiv}</div>
-
+        {energyPart}
+        {remarkDiv}
         {errorDialog}
 
       </div>;
