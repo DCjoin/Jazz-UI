@@ -186,9 +186,9 @@
 }
 .jazz-data-tag-select-window{
   >div{
-    div:first-of-type{
+    >div:first-of-type{
       >div{
-        max-width: 900px !important;
+        max-width: 900px!important;
       }
     }
   }
@@ -250,14 +250,18 @@
    flex-direction: column;
    flex: 1;
    border: 1px solid #d9d9d9;
-   margin-right: 45px;
-   margin-left: 20px;
+   overflow: hidden;
+   .jazz-report-tag-checkbox{
+     width: 45px;
+     >div{
+       padding-top: 3px;
+     }
+   }
 
    .jazz-report-taglist-tagselect{
      width: 380px;
      display: flex;
      flex-direction: column;
-     margin-top:16px;
      div{
        color:#000000 !important;
      }
@@ -323,6 +327,7 @@
   flex-direction: column;
   flex: 1;
   border: 1px solid #d9d9d9;
+  overflow: hidden;
 }
 .jazz-report-tag-item-left{
   display: flex;
@@ -330,11 +335,25 @@
   height:30px;
   line-height: 30px;
   padding-left: 7px;
-  div:nth-of-type(1){
-    width: 30px;
+  >div:nth-of-type(1){
+    width: 45px;
+    >div{
+      padding-top: 3px;
+    }
   }
-  div:nth-of-type(2){
-    width: 155px;
+  >div:nth-of-type(2){
+    width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+  }
+  >div:nth-of-type(3){
+    width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
   }
 }
 .jazz-report-tag-item-left:hover{
@@ -346,14 +365,22 @@
   height:30px;
   padding-left: 7px;
   line-height: 30px;
-  div:nth-of-type(1){
-    width: 30px;
+  >div:nth-of-type(1){
+    width: 45px;
   }
-  div:nth-of-type(2){
-    width: 155px;
+  >div:nth-of-type(2){
+    width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
   }
-  div:nth-of-type(3){
-    width: 155px;
+  >div:nth-of-type(3){
+    width: 150px;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
   }
 }
 .jazz-report-tag-item-right:hover{

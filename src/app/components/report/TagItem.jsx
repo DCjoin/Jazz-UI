@@ -32,7 +32,6 @@ let TagItem = React.createClass({
   render() {
     var me = this;
     var cleanIconStyle = {
-      marginTop: '3px',
       fontSize: '16px'
     };
     var checkBox = null,
@@ -56,9 +55,8 @@ let TagItem = React.createClass({
       )}>
         {checkBox}
         {displayIndex}
-        <div>{me.props.name}</div>
-        <div>{me.props.code}</div>
-        <div>{CommonFuns.getCommodityById(me.props.commodityId).Comment}</div>
+        <div title={me.props.name}>{me.props.name}</div>
+        <div title={me.props.code}>{me.props.code}</div>
         {deleteButton}
       </div>
       );
