@@ -294,25 +294,25 @@ let Setting = React.createClass({
     });
   },
   _onEnergyTypeChanged(energyType) {
-    var that = this;
-    that.setState({
-      selectedEnergyType: energyType
-    });
-
-    that.setState({
-      refreshChart: true
-    }, () => {
-      that.setState({
-        refreshChart: false,
-        selectedEnergyType: energyType
-      });
-    });
-    // if (energyType != this.state.selectedEnergyType) {
-    //   nextEnergyType = energyType;
-    //   this.setState({
-    //     dialogType: DIALOG_TYPE.SWITCH_EC
-    //   })
-    // }
+    // var that = this;
+    // that.setState({
+    //   selectedEnergyType: energyType
+    // });
+    //
+    // that.setState({
+    //   refreshChart: true
+    // }, () => {
+    //   that.setState({
+    //     refreshChart: false,
+    //     selectedEnergyType: energyType
+    //   });
+    // });
+    if (energyType != this.state.selectedEnergyType) {
+      nextEnergyType = energyType;
+      this.setState({
+        dialogType: DIALOG_TYPE.SWITCH_EC
+      })
+    }
 
 
   },
@@ -402,9 +402,11 @@ let Setting = React.createClass({
         refreshChart: true
       }, () => {
         that.setState({
-          refreshChart: false
+          refreshChart: false,
+          selectedEnergyType: nextEnergyType
         });
       });
+    //EnergyAction.setEnergyType(nextEnergyType);
     };
     var _onCancel = function() {
       that.setState({
