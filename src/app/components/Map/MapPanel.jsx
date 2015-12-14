@@ -191,16 +191,16 @@ let MapPanel = React.createClass({
       I18N.Map.EnergyInfo.CoalOil];
     var Qualify = [I18N.Map.EnergyInfo.TargetValue.Qualified, I18N.Map.EnergyInfo.TargetValue.NotQualified];
     var imgUrl = marker.imageId == null ? require("../../less/images/defaultBuilding.png") : 'BuildingPicture.aspx?pictureId=' + marker.imageId + '&usedInMap=true';
-    var bgColor;
-    if (marker.dataValues[0].IsQualified === null) {
-      bgColor = 'blue';
-    } else {
-      if (marker.dataValues[0].IsQualified) {
-        bgColor = 'green';
-      } else {
-        bgColor = 'red';
-      }
-    }
+    var bgColor = 'blue';
+    // if (marker.dataValues[0].IsQualified === null) {
+    //   bgColor = 'blue';
+    // } else {
+    //   if (marker.dataValues[0].IsQualified) {
+    //     bgColor = 'green';
+    //   } else {
+    //     bgColor = 'red';
+    //   }
+    // }
     var energyInfoContent = null;
     var preTitle = RelativeDateType[MapStore.getSelectedDateType()];
     // var value = CommonFuns.convertDataByUom(2245531, 'COM');
