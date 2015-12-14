@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 
 let I18N = {};
@@ -50,6 +50,8 @@ I18N.MainMenu.Map = 'Map';
 I18N.MainMenu.Alarm = 'Alarm';
 I18N.MainMenu.Energy = 'Energy';
 I18N.MainMenu.Report = 'Report';
+I18N.MainMenu.DailyReport = 'Daily report';
+I18N.MainMenu.Template = 'Template management';
 
 I18N.Login = {};
 I18N.Login.UserName = 'User name';
@@ -58,7 +60,7 @@ I18N.Login.Logout = 'Log out';
 I18N.Login.Login = 'Login';
 
 I18N.M212001 = 'User does not exist';
-I18N.M212002 = 'Invalid service provider ';
+I18N.M212002 = 'Service provider is invalid';
 I18N.M212003 = 'Service provider does not exist';
 I18N.M212004 = 'Service provider is invalid';
 I18N.M212005 = 'User is invalid';
@@ -68,6 +70,9 @@ I18N.M212007 = 'Incorrect service provider domain name';
 I18N.Common = {};
 I18N.Common.Glossary = {};
 I18N.Common.Glossary.HierarchyNode = 'Hierarchy node';
+I18N.Common.Glossary.Max = 'Max';
+I18N.Common.Glossary.Min = 'Min';
+I18N.Common.Glossary.Auto = 'Auto';
 
 I18N.Common.Glossary.MonthName = {};
 I18N.Common.Glossary.ShortMonth = {};
@@ -133,6 +138,11 @@ I18N.Common.Glossary.Order.Rank10 = 'Top 10';
 I18N.Common.Glossary.Order.Rank20 = 'Top 20';
 I18N.Common.Glossary.Order.Rank50 = 'Top 50';
 
+I18N.Common.Glossary.Name = 'Name';
+I18N.Common.Glossary.Code = 'Code';
+I18N.Common.Glossary.Index = 'Index';
+
+
 I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = 'HC seasons';
@@ -143,6 +153,14 @@ I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = 'Standard coal';
 I18N.Common.CarbonUomType.CO2 = 'Carbon dioxide';
 I18N.Common.CarbonUomType.Tree = 'Tree';
+
+I18N.Common.AggregationStep = {};
+I18N.Common.AggregationStep.Minute = 'Minute';
+I18N.Common.AggregationStep.Hourly = 'Hour';
+I18N.Common.AggregationStep.Daily = 'Daily';
+I18N.Common.AggregationStep.Weekly = 'Weekly';
+I18N.Common.AggregationStep.Monthly = 'Monthly';
+I18N.Common.AggregationStep.Yearly = 'Yearly';
 
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
@@ -288,6 +306,90 @@ I18N.EM.Legend = {};
 I18N.EM.Legend.ToLine = 'Switch to line';
 I18N.EM.Legend.ToColumn = 'Switch to column';
 I18N.EM.Legend.ToStacking = 'Switch to stack';
+
+I18N.EM.Labeling = {};
+I18N.EM.Labeling.LowEnergy = 'Low';
+I18N.EM.Labeling.HighEnergy = 'High';
+I18N.EM.Labeling.ViewLabeling = 'Labelling view';
+I18N.EM.Labeling.NonBuilding = 'This node is not building, please choose other nodes';
+I18N.EM.Labeling.NonData = 'No energy data in this time range.';
+I18N.EM.Labeling.DifferentCommodity = 'Chosen tags are not same commodity, please choose again';
+I18N.EM.Labeling.SelectHieForSys = 'Choose Building to config area dimension';
+
+I18N.EM.Report = {};
+I18N.EM.Report.Select = 'Mandatory';
+I18N.EM.Report.Creator = 'Creator';
+I18N.EM.Report.CreateTime = 'Create time';
+I18N.EM.Report.Name = 'Name';
+I18N.EM.Report.Report = 'Report';
+I18N.EM.Report.ReportSort = 'Sort according report name';
+I18N.EM.Report.UserSort = 'Sort according user name';
+I18N.EM.Report.NameSort = 'Sort according template name';
+I18N.EM.Report.TimeSort = 'Sort according create time';
+I18N.EM.Report.Add = 'Add';
+I18N.EM.Report.Delete = 'Delete';
+I18N.EM.Report.Confirm = 'OK';
+I18N.EM.Report.Edit = 'Edit';
+I18N.EM.Report.Export = 'Export';
+I18N.EM.Report.Cancel = 'Cancel';
+I18N.EM.Report.Save = 'Save';
+I18N.EM.Report.Reference = 'Referenced';
+I18N.EM.Report.Template = 'Report template';
+I18N.EM.Report.TemplateTitle = 'Template import';
+I18N.EM.Report.TemplateFileName = 'Template';
+I18N.EM.Report.SelectTemplate = 'Choose template';
+I18N.EM.Report.ReportName = 'Report name';
+I18N.EM.Report.Data = 'Report data';
+I18N.EM.Report.DataType = 'Data type';
+I18N.EM.Report.DataSource = 'Data source';
+I18N.EM.Report.TimeRange = 'Time range';
+I18N.EM.Report.Step = 'Step';
+I18N.EM.Report.NumberRule = 'Data rule';
+I18N.EM.Report.AllTime = 'Whole';
+I18N.EM.Report.Hourly = 'Integral point value';
+I18N.EM.Report.Daily = 'Zero clock value';
+I18N.EM.Report.ExistTemplate = 'Template uploaded';
+I18N.EM.Report.UploadTemplate = 'Upload a new template';
+I18N.EM.Report.DownloadTemplate = 'Download and view';
+I18N.EM.Report.EditTag = 'Edit a tag';
+I18N.EM.Report.SelectTag = 'Select a tag';
+I18N.EM.Report.ViewTag = 'View tag';
+I18N.EM.Report.AllTag = 'All tag';
+I18N.EM.Report.SelectTag = 'Select tag';
+I18N.EM.Report.Upload = 'Upload';
+I18N.EM.Report.UploadTem = 'Upload template';
+I18N.EM.Report.Reupload = 'Upload it again';
+I18N.EM.Report.Order = 'Sequence of time points';
+I18N.EM.Report.OrderAsc = 'Positive sequence';
+I18N.EM.Report.OrderDesc = 'Inverted sequence';
+I18N.EM.Report.TargetSheet = 'Target Sheet';
+I18N.EM.Report.StartCell = 'Initial cell';
+I18N.EM.Report.Layout = 'Layout direction';
+I18N.EM.Report.ReportTypeEnergy = 'Data of energy efficiency';
+I18N.EM.Report.Original = 'Original value';
+I18N.EM.Report.ReportTypeCarbon = 'Data of carbon emission';
+I18N.EM.Report.ReportTypeCost = 'Cost data';
+I18N.EM.Report.TagSelectionTitle = 'Select a tag';
+I18N.EM.Report.TagShouldNotBeEmpty = 'Please select at least one tag';
+
+I18N.EM.Report.NonReportCriteria = 'Include at least one set of report data';
+I18N.EM.Report.WrongExcelFile = 'Template format is wrong. Only xls or xlsx files are supprted.';
+I18N.EM.Report.TemplateHasBeenRefed = 'Report template {0} can not be deleted because it is used now. Please retry it after remove all associations.';
+I18N.EM.Report.RefObject = 'Referred Object:';
+I18N.EM.Report.UploadingTemplate = 'Importing file {0}.';
+I18N.EM.Report.DeleteMessage = 'Delete report template {0}?';
+I18N.EM.Report.DuplicatedName = 'File is existed. Please rename and upload it again.';
+I18N.EM.Report.NeedUploadTemplate = 'Please upload new template.';
+I18N.EM.Report.StepError = 'Select tag does not support step {0}, please select step {1}.';
+I18N.EM.Report.StepError2 = 'Selected tag does not support step {0} and has no supported step in current time range. Please modify tag or time range.';
+I18N.EM.Report.ExportFormat = 'Report Export Format';
+I18N.EM.Report.ExportTagName = 'Export Data Name';
+I18N.EM.Report.ExportTimeLabel = 'Export Time Label';
+I18N.EM.Report.ExportStepError = 'There is unsupported step, please check it.';
+I18N.EM.Report.ExportTagUnassociated = 'Data is unassociated.';
+
+I18N.EM.Export = {};
+I18N.EM.Export.Preview = 'Preview export picture';
 
 //workday
 I18N.Setting = {};
@@ -747,6 +849,15 @@ I18N.Folder.Detail.WidgetMenu.Menu3 = 'Share';
 I18N.Folder.Detail.WidgetMenu.Menu4 = 'Export';
 I18N.Folder.Detail.WidgetMenu.Menu5 = 'Delete';
 
+I18N.Folder.Widget = {};
+I18N.Folder.Widget.Leave = 'Leave tip';
+I18N.Folder.Widget.LeaveContent = 'Chart will be cleared if you leave. Leave?';
+I18N.Folder.Widget.LeaveButton = 'Leave';
+I18N.Folder.Widget.LeaveCancel = 'Cancel';
+I18N.Folder.Widget.SwitchLeave = 'Switch tip';
+I18N.Folder.Widget.SwitchContent = 'Switch energy type,Chart will be cleared if you leave. Leave?';
+I18N.Folder.Widget.SwitchButton = 'OK';
+
 I18N.Commodity = {};
 I18N.Commodity.Overview = 'Media Overview';
 
@@ -857,6 +968,10 @@ I18N.Mail.Send.Cancel = 'Cancel';
 I18N.Mail.Send.Success = 'Notification is sent successfully';
 I18N.Mail.Send.E03092 = 'You mail does not have subject, would you like to send anyway?';
 I18N.Mail.Send.E03099 = 'Mail send fail, please try again.';
+I18N.Mail.LeaveTitle = 'Leave tip';
+I18N.Mail.LeaveContent = 'Mail is editing, mail will be cleared if you leave this page. Continue?';
+I18N.Mail.LeaveConfirm = 'Leave';
+I18N.Mail.LeaveCancel = 'Cancel';
 
 
 I18N.RawData = {};
@@ -943,8 +1058,116 @@ I18N.Map.Date.LastMonth = 'Last Month ';
 I18N.Map.Date.ThisYear = 'This Year ';
 I18N.Map.Date.LastYear = 'Last Year ';
 
+I18N.Map.EnergyInfo = {};
+I18N.Map.EnergyInfo.CarbonEmission = 'total co2 emission';
+I18N.Map.EnergyInfo.Cost = 'Total cost';
+I18N.Map.EnergyInfo.Electricity = 'Total power usage';
+I18N.Map.EnergyInfo.Water = 'Total water';
+I18N.Map.EnergyInfo.Gas = 'Total gas';
+I18N.Map.EnergyInfo.SoftWater = 'Total soft water';
+I18N.Map.EnergyInfo.Petrol = 'Total petrol';
+I18N.Map.EnergyInfo.LowPressureSteam = 'Total L-P steam';
+I18N.Map.EnergyInfo.DieselOi = 'Total diesel';
+I18N.Map.EnergyInfo.Heat = 'Total heat';
+I18N.Map.EnergyInfo.CoolQ = 'Total cooling';
+I18N.Map.EnergyInfo.Coal = 'Total coal';
+I18N.Map.EnergyInfo.CoalOil = 'Total kerosene';
+I18N.Map.EnergyInfo.NonMessage = 'No energy consumption information, please continue to focus';
+
+I18N.Map.EnergyInfo.TargetValue = {};
+I18N.Map.EnergyInfo.TargetValue.Qualified = 'Reach the target value';
+I18N.Map.EnergyInfo.TargetValue.NotQualified = 'Not reach the target value';
+
 I18N.Platform = {};
 I18N.Platform.Title = 'EnergyMost';
-I18N.Platform.InEnglish = '中文版';
-I18N.Platform.Config = 'Platform Configuration';
+I18N.Platform.Config = 'Platform configuration';
+I18N.Platform.SP = 'Service provider administrator';
+I18N.Platform.InEnglish = 'In English';
+I18N.Platform.MaxLengthError = 'Please input less than 200 character';
+I18N.Platform.User = {};
+I18N.Platform.User.Name = 'User Name';
+I18N.Platform.User.ShowName = 'Real name';
+I18N.Platform.User.ResetPassword = 'Reset password';
+I18N.Platform.User.RealName = 'Real name';
+I18N.Platform.User.Edit = 'Edut';
+I18N.Platform.User.EditPersonalInfo = 'Edit personal information';
+I18N.Platform.User.Position = 'Title';
+I18N.Platform.User.Role = 'Role';
+I18N.Platform.User.ServerManager = 'SP Initial Admin';
+I18N.Platform.User.ShowFuncAuth = 'Show role detail';
+I18N.Platform.User.Telephone = 'Telephone';
+I18N.Platform.User.Email = 'Mail address';
+I18N.Platform.User.EmailError = 'Mail format is not correct';
+I18N.Platform.User.Logout = 'Logout';
+I18N.Platform.About = {};
+I18N.Platform.About.Title = 'About';
+I18N.Platform.About.QrCode = 'EnergyMost mobile QR code';
+I18N.Platform.About.ipadQrCode = 'iPad client';
+I18N.Platform.About.WeChatQrCode = 'Wechat public number';
+I18N.Platform.About.ContactUs = 'Contact us';
+I18N.Platform.Password = {};
+I18N.Platform.Password.OldPassword = 'Original Password';
+I18N.Platform.Password.NewPassword = 'New Password';
+I18N.Platform.Password.confirmNewPassword = 'Confirm new password';
+I18N.Platform.Password.Error01 = 'Please input original password';
+I18N.Platform.Password.Error02 = 'Please input new password';
+I18N.Platform.Password.Error03 = 'Password is not same';
+I18N.Platform.Password.Error04 = 'Original password not correct';
+I18N.Platform.Password.Confirm = 'OK';
+I18N.Platform.Password.Cancel = 'Cancel';
+I18N.Platform.Password.Title = 'Modify password';
+
+I18N.Platform.ServiceProvider = {};
+I18N.Platform.ServiceProvider.SP = 'Service Provider';
+I18N.Platform.ServiceProvider.CustomerName = 'Sort according SP Name';
+I18N.Platform.ServiceProvider.StartTime = 'Sort according create time';
+I18N.Platform.ServiceProvider.NormalStatus = 'Normal';
+I18N.Platform.ServiceProvider.PauseStatus = 'Pause';
+I18N.Platform.ServiceProvider.OperationTime = 'Operation time';
+I18N.Platform.ServiceProvider.Status = 'Status';
+I18N.Platform.ServiceProvider.DeleteContent = 'Delete SP “{0}”，All public data, customer data and associate data will be deleted.';
+
+I18N.Platform.ServiceProvider.SendEmail = 'Send mail';
+I18N.Platform.ServiceProvider.SendEmailSuccess = 'Mail send successfully';
+I18N.Platform.ServiceProvider.Error001 = 'SP is modified by other user';
+I18N.Platform.ServiceProvider.Error003 = 'SP is deleted by other user';
+
+
+I18N.Privilege = {};
+I18N.Privilege.Common = {};
+I18N.Privilege.Common.Common = 'Common role';
+I18N.Privilege.Common.DashboardView = 'folder and widget view';
+I18N.Privilege.Common.DashboardManagement = 'folder and widget  edit';
+I18N.Privilege.Common.PersonalInfoManagement = 'personal info management';
+I18N.Privilege.Common.MapView = 'Map view';
+I18N.Privilege.Role = {};
+I18N.Privilege.Role.Role = 'role';
+I18N.Privilege.Role.DashboardSharing = 'folder and widget share';
+I18N.Privilege.Role.EnergyUsage = 'energy analyse function';
+I18N.Privilege.Role.CarbonEmission = 'Carbon function';
+I18N.Privilege.Role.EnergyCost = 'Cost function';
+I18N.Privilege.Role.UnitIndicator = 'Unit function';
+I18N.Privilege.Role.RatioIndicator = 'Ratio function';
+I18N.Privilege.Role.LabelingIndicator = 'Labelling function';
+I18N.Privilege.Role.CorporateRanking = 'Ranking function';
+I18N.Privilege.Role.EnergyExport = 'Data export';
+I18N.Privilege.Role.ReportView = 'Report export and view';
+I18N.Privilege.Role.ReportManagement = 'Report management';
+I18N.Privilege.Role.EnergyAlarm = 'Energy alarm';
+I18N.Privilege.Role.ChartRemarking = 'Chart remarking';
+I18N.Privilege.Role.SPManagement = 'EnergyMost SP management';
+I18N.Privilege.Role.HierarchyManagement = 'Hierarchy management';
+I18N.Privilege.Role.TagManagement = 'Tags management';
+I18N.Privilege.Role.KPIConfiguration = 'Key performance indicator tags management';
+I18N.Privilege.Role.TagMapping = 'Association';
+I18N.Privilege.Role.CustomerInfoView = 'View customer information';
+I18N.Privilege.Role.CustomerInfoManagement = 'Manage customer information';
+I18N.Privilege.Role.CustomLabeling = 'Customized labeling';
+
+I18N.Remark = {};
+I18N.Remark.Label = 'Comment';
+I18N.Remark.DefaultText = 'Click here to add comment';
+
+
+
 module.exports = I18N;
