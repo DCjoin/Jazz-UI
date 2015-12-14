@@ -21,12 +21,45 @@ import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 
 let Alarm = React.createClass({
   mixins: [Navigation, State],
-
-  _onSwitchButtonClick() {
+  _onLeftSwitchButtonClick() {
+    var leftShow, rightShow;
+    leftShow = !this.state.showLeftPanel;
+    if (this.state.showLeftPanel) {
+      rightShow = this.state.showRightPanel;
+    } else {
+      if (this.state.showRightPanel) {
+        rightShow = false;
+      } else {
+        rightShow = this.state.showRightPanel;
+      }
+    }
     this.setState({
-      showLeftPanel: !this.state.showLeftPanel
+      showLeftPanel: leftShow,
+      showRightPanel: rightShow
     });
   },
+  _onRightSwitchButtonClick() {
+    var leftShow, rightShow;
+    rightShow = !this.state.showRightPanel;
+    if (this.state.showRightPanel) {
+      leftShow = this.state.showLeftPanel;
+    } else {
+      if (this.state.showLeftPanel) {
+        leftShow = false;
+      } else {
+        leftShow = this.state.showLeftPanel;
+      }
+    }
+    this.setState({
+      showLeftPanel: leftShow,
+      showRightPanel: rightShow
+    });
+  },
+  // _onSwitchButtonClick() {
+  //   this.setState({
+  //     showLeftPanel: !this.state.showLeftPanel
+  //   });
+  // },
   _onLoadingStatusChange() {
     if (!this.state.showDataSelectPanelButton) {
       this.setState({
@@ -78,6 +111,7 @@ let Alarm = React.createClass({
   getInitialState: function() {
     return {
       showLeftPanel: true,
+      showRightPanel: false,
       showDataSelectPanelButton: false,
       widgetDto: null,
       title: null,
@@ -110,8 +144,8 @@ let Alarm = React.createClass({
     }
 
     if (this.state.showDataSelectPanelButton) {
-      dataSelectPanel = <RightPanel onButtonClick={this._onSwitchButtonClick}
-      defaultStatus={!this.state.showLeftPanel}
+      dataSelectPanel = <RightPanel onButtonClick={this._onRightSwitchButtonClick}
+      defaultStatus={this.state.showRightPanel}
       container={<DataSelectMainPanel linkFrom='Alarm'></DataSelectMainPanel>}/>;
     }
     if (me.state.title) {
@@ -131,7 +165,7 @@ let Alarm = React.createClass({
           energyType: 'Energy',
           widgetDto: me.state.widgetDto,
           isFromAlarm: true,
-          onCollapseButtonClick: this._onSwitchButtonClick
+          onCollapseButtonClick: this._onLeftSwitchButtonClick
         };
 
         mainPanel = <AnalysisPanel {...mainPanelProps}></AnalysisPanel>;
