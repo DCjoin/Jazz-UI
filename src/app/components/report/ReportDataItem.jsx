@@ -62,10 +62,10 @@ let ReportDataItem = React.createClass({
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
     return time !== null ? j2d(time, false) : null;
   },
-  getDisplayDate(time) {
+  getDisplayDate(time, isEndTime) {
     if (time !== null) {
       var hour = time.getHours();
-      if (hour === 0) {
+      if (hour === 0 && isEndTime) {
         time = CommonFuns.dateAdd(time, -1, 'days');
         hour = 24;
       }
@@ -263,11 +263,11 @@ let ReportDataItem = React.createClass({
     if (this.props.dateType !== 11) {
       var dateType = CommonFuns.GetStrDateType(this.props.dateType);
       var timeregion = CommonFuns.GetDateRegion(dateType);
-      str = this.getDisplayDate(timeregion.start) + '-' + this.getDisplayDate(timeregion.end);
+      str = this.getDisplayDate(timeregion.start, false) + '-' + this.getDisplayDate(timeregion.end, true);
     } else {
       var startTime = this.getRealTime(this.props.startTime);
       var endTime = this.getRealTime(this.props.endTime);
-      str = this.getDisplayDate(startTime) + '-' + this.getDisplayDate(endTime);
+      str = this.getDisplayDate(startTime, false) + '-' + this.getDisplayDate(endTime, true);
     }
     return str;
   },

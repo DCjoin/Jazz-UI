@@ -55,7 +55,6 @@ let TagList = React.createClass({
           id: item.get('Id'),
           name: item.get('Name'),
           code: item.get('Code'),
-          commodityId: item.get('CommodityId'),
           disabled: me.props.disabled,
           checked: me._getCheckStatus(item.get('Id')),
           onTagItemUnselected: me._onTagItemUnselected,

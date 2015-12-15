@@ -1399,7 +1399,7 @@ let ChartStrategyFactor = {
         if (vo.IncludeTempValue)
           viewOption.IncludeTempValue = vo.IncludeTempValue;
         if (vo.IncludeHumidityValue)
-          viewOption.IncludeTempValue = vo.IncludeHumidityValue;
+          viewOption.IncludeHumidityValue = vo.IncludeHumidityValue;
       }
 
       let bizMap = {

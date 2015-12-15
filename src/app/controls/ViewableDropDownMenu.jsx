@@ -41,6 +41,11 @@ var ViewableDropDownMenu = React.createClass({
   },
 
   _compareArray: function(data1, data2) {
+    if ((data1 === undefined) && (data2 !== undefined) || (data1 !== undefined) && (data2 === undefined)) {
+      return false;
+    } else if (data1 === undefined && (data2 === undefined)) {
+      return true;
+    }
     if (data1.length !== data2.length) {
       return false;
     }
@@ -85,6 +90,9 @@ var ViewableDropDownMenu = React.createClass({
   render: function() {
     var dropDownMenu;
     var text = this.props.textField;
+    if (this.props.dataItems === undefined) {
+      return null;
+    }
     var menuItems = this.props.dataItems.map((item, id) => {
       return {
         payload: item.payload,
@@ -136,7 +144,11 @@ var ViewableDropDownMenu = React.createClass({
             return true;
           }
         });
-        value = this.props.dataItems[index][text];
+        if (index !== -1) {
+          value = this.props.dataItems[index][text];
+        } else {
+          value = null;
+        }
       } else if (this.props.dataItems.length > 0) {
         value = this.props.dataItems[0][text];
       }

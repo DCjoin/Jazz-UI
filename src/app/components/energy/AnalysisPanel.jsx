@@ -166,6 +166,8 @@ let AnalysisPanel = React.createClass({
       remarkDiv = <div className={classNames(
         {
           'jazz-energy-remark-container': true,
+          'jazz-energy-remark-text-hidden': !this.state.remarkDisplay,
+          'jazz-energy-remark-text-display': this.state.remarkDisplay
         }
       )}>
       <div className='jazz-energy-remark-button'><RaisedButton label={I18N.Remark.Label} onClick={this.showRemark}></RaisedButton></div>
