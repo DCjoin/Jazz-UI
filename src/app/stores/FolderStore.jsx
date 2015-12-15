@@ -395,10 +395,11 @@ var FolderStore = assign({}, PrototypeStore, {
       _changedNode = nodeData.set('IsRead', true);
       _folderTree = this.modifyTreebyNode(_folderTree);
     },
-    setDisplayDialog: function(type, node) {
+    setDisplayDialog: function(type, node, contentInfo) {
       _dialogInfo = {
         type: type,
-        node: node
+        node: node,
+        contentInfo: contentInfo
       };
     },
     getDisplayDialog: function() {
@@ -672,7 +673,7 @@ var FolderStore = assign({}, PrototypeStore, {
         //FolderStore.emitSelectedNodeChange();
         break;
       case FolderAction.DISPLAY_DIALOG:
-        FolderStore.setDisplayDialog(action.dialogType, action.nodeData);
+        FolderStore.setDisplayDialog(action.dialogType, action.nodeData, action.contentInfo);
         FolderStore.emitDialogChange();
         break;
     }
