@@ -729,11 +729,11 @@ let ChartReaderStrategyFactor = {
           break;
         case 18:
           obj.name = I18N.EM.Tool.Weather.Temperature;
-          obj.disableDelete = true;
+          //obj.disableDelete = true;
           break;
         case 19:
           obj.name = I18N.EM.Tool.Weather.Humidity;
-          obj.disableDelete = true;
+          //obj.disableDelete = true;
           break;
         default: break;
       }
