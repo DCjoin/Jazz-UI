@@ -61,7 +61,7 @@ let Setting = React.createClass({
       templateId: null,
       templateWidgetDto: null,
       selectedEnergyType: null,
-      dialogType: null
+      dialogType: null,
     };
   },
   _onLeftSwitchButtonClick() {
@@ -318,7 +318,7 @@ let Setting = React.createClass({
   },
   _onDialogChanged: function() {
     this.setState({
-      dialogType: FolderStore.getDisplayDialog(),
+      dialogType: FolderStore.getDisplayDialog().type,
     })
   },
   componentWillMount: function() {
@@ -429,7 +429,8 @@ let Setting = React.createClass({
   _getSwitchWidgetDialog: function() {
     var that = this;
     var _onConfirm = function() {
-      FolderAction.deleteItem(that.state.selectedNode, true);
+      FolderAction.deleteItem(that.state.selectedNode, false);
+      FolderAction.setSelectedNode(FolderStore.getDisplayDialog().node);
     };
     var _onCancel = function() {
       that.setState({

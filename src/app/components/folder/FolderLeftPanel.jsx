@@ -50,9 +50,9 @@ var FolderLeftPanel = React.createClass({
     });
   },
   _onSelectNode: function(nodeData) {
-    var lastSelectedNode = FolderStore.getSelectedNode()
-    if (lastSelectedNode.get('Type')==7 && lastSelectedNode.get('ChartType') === null && lastSelectedNode.get('Id') != nodeData.get('Id')) {
-      FolderAction.setDisplayDialog(DIALOG_TYPE.SWITCH_WIDGET);
+    var lastSelectedNode = FolderStore.getSelectedNode();
+    if (lastSelectedNode.get('Type') == 7 && lastSelectedNode.get('ChartType') === null && lastSelectedNode.get('Id') != nodeData.get('Id')) {
+      FolderAction.setDisplayDialog(DIALOG_TYPE.SWITCH_WIDGET, nodeData);
     } else {
       FolderAction.setSelectedNode(nodeData);
       if (nodeData.get('Type') == 7) {
@@ -105,20 +105,26 @@ var FolderLeftPanel = React.createClass({
     })
   },
   _onSearchClick: function(node) {
-    FolderAction.setSelectedNode(node);
-    if (node.get('IsSenderCopy') && !node.get('IsRead')) {
-      FolderAction.modifyFolderReadStatus(node);
-    }
-    if (node.get('Type') == 7) {
-      this.setState({
-        selectedNode: node,
-        buttonDisabled: true
-      })
+    var lastSelectedNode = FolderStore.getSelectedNode();
+    if (lastSelectedNode.get('Type') == 7 && lastSelectedNode.get('ChartType') === null && lastSelectedNode.get('Id') != node.get('Id')) {
+      FolderAction.setDisplayDialog(DIALOG_TYPE.SWITCH_WIDGET, node);
     } else {
-      this.setState({
-        selectedNode: node
-      })
+      FolderAction.setSelectedNode(node);
+      if (node.get('IsSenderCopy') && !node.get('IsRead')) {
+        FolderAction.modifyFolderReadStatus(node);
+      }
+      if (node.get('Type') == 7) {
+        this.setState({
+          selectedNode: node,
+          buttonDisabled: true
+        })
+      } else {
+        this.setState({
+          selectedNode: node
+        })
+      }
     }
+
 
   },
   _onModifyName: function() {

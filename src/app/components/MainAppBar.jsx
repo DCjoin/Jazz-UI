@@ -21,10 +21,13 @@ import LanguageAction from '../actions/LanguageAction.jsx';
 import Regex from '../constants/Regex.jsx';
 import MailConfirmDialog from '../controls/OperationTemplate/BlankDialog.jsx';
 import MailStore from '../stores/MailStore.jsx';
+import FolderAction from '../actions/FolderAction.jsx';
+import FolderStore from '../stores/FolderStore.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 var f = lang.f;
 const MAX_LENGTH = 200;
+let lastLink = null;
 
 
 const SIDE_BAR_TYPE = {
@@ -109,8 +112,18 @@ var MainAppBar = React.createClass({
     this._onClose();
   },
   // ************* Action End *************
-  _onClick: function() {
+  _onClick: function(event) {
     GlobalErrorMessageAction.ClearGlobalErrorMessage();
+    if (lastLink === null || lastLink == I18N.MainMenu.Energy) {
+      let selectedWidget = FolderStore.getSelectedNode();
+      if (selectedWidget !== null) {
+        if (selectedWidget.get('Type') == 7 && selectedWidget.get('ChartType') === null) {
+          FolderAction.deleteItem(selectedWidget, true);
+        }
+      }
+
+    }
+    lastLink = event.target.textContent;
   },
   _onRefresh: function() {
     this.forceUpdate();
