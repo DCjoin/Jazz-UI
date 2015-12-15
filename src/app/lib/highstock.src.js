@@ -11261,7 +11261,8 @@
 						var clickchart = item.chart || item.series.chart;
 						if (clickchart) {
 							fireEvent(clickchart, 'deleteButtonClick', {
-								uid: item.options ? item.options.uid : item.uid
+								uid: item.options ? item.options.uid : item.uid,
+								id: item.options ? item.options.id : item.id
 							});
 							if (evt.preventDefault) {
 								evt.preventDefault();
@@ -11288,7 +11289,8 @@
 						var clickchart = item.chart || item.series.chart;
 						if (clickchart) {
 							fireEvent(clickchart, 'deleteButtonClick', {
-								uid: item.options ? item.options.uid : item.uid
+								uid: item.options ? item.options.uid : item.uid,
+								id: item.options ? item.options.id : item.id
 							});
 							if (evt.preventDefault) {
 								evt.preventDefault();
