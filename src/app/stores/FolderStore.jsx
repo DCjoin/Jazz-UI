@@ -17,7 +17,8 @@ let _folderTree = Immutable.fromJS(),
   _errorType = null,
   _selectedNode = null,
   _sendStatus = null,
-  _shareStatus = null;
+  _shareStatus = null,
+  _dialogType = null;
 let FOLDER_TREE_EVENT = 'foldertree',
   CREATE_FOLDER_EVENT = 'createfolder',
   MODIFY_NAME_ERROR_EVENT = 'modifynameerror',
@@ -34,7 +35,8 @@ let FOLDER_TREE_EVENT = 'foldertree',
   EXPORT_WIDGET_SUCCESS_EVENT = 'exportwidgetsuccess',
   SHARE_STATUS_EVENT = 'sharestatus',
   SAVE_ALARM_WIDGET_SUCCESS_EVENT = 'savealarmwidgetsuccess',
-  SAVE_ALARM_WIDGET_ERROR_EVENT = 'savealarmwidgeterror';
+  SAVE_ALARM_WIDGET_ERROR_EVENT = 'savealarmwidgeterror',
+  DIALOG_EVENT = 'dialog';
 
 var FolderStore = assign({}, PrototypeStore, {
 
@@ -390,6 +392,12 @@ var FolderStore = assign({}, PrototypeStore, {
       _changedNode = nodeData.set('IsRead', true);
       _folderTree = this.modifyTreebyNode(_folderTree);
     },
+    setDisplayDialog: function(type) {
+      _dialogType = type;
+    },
+    getDisplayDialog: function() {
+      return _dialogType
+    },
     emitFolderTreeChange: function() {
       this.emit(FOLDER_TREE_EVENT);
     },
@@ -399,6 +407,17 @@ var FolderStore = assign({}, PrototypeStore, {
 
     removeFolderTreeListener: function(callback) {
       this.removeListener(FOLDER_TREE_EVENT, callback);
+      this.dispose();
+    },
+    emitDialogChange: function() {
+      this.emit(DIALOG_EVENT);
+    },
+    addDialogListener: function(callback) {
+      this.on(DIALOG_EVENT, callback);
+    },
+
+    removeDialogListener: function(callback) {
+      this.removeListener(DIALOG_EVENT, callback);
       this.dispose();
     },
     emitCreateFolderOrWidgetChange: function() {
@@ -645,6 +664,10 @@ var FolderStore = assign({}, PrototypeStore, {
         FolderStore.updateWidgetDtosSuccess(action.widgetDto);
         FolderStore.emitFolderTreeChange();
         //FolderStore.emitSelectedNodeChange();
+        break;
+      case FolderAction.DISPLAY_DIALOG:
+        FolderStore.setDisplayDialog(action.dialogType);
+        FolderStore.emitDialogChange();
         break;
     }
   });

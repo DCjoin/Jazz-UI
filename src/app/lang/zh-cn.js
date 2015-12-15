@@ -863,6 +863,15 @@ I18N.Folder.Detail.WidgetMenu.Menu3 = '共享';
 I18N.Folder.Detail.WidgetMenu.Menu4 = '导出';
 I18N.Folder.Detail.WidgetMenu.Menu5 = '删除';
 
+I18N.Folder.Widget = {};
+I18N.Folder.Widget.Leave = '离开提示';
+I18N.Folder.Widget.LeaveContent = '图表操作未保存，继续离开将清空图表并删除。是否离开？';
+I18N.Folder.Widget.LeaveButton = '离开';
+I18N.Folder.Widget.LeaveCancel = '放弃';
+I18N.Folder.Widget.SwitchLeave = '切换提示';
+I18N.Folder.Widget.SwitchContent = '切换能源查看类型，当前图表将会被清空，是否继续？';
+I18N.Folder.Widget.SwitchButton = '继续';
+
 I18N.Commodity = {};
 I18N.Commodity.Overview = '介质总览';
 
@@ -1138,6 +1147,7 @@ I18N.Platform.ServiceProvider.SendEmail = '发送邮件';
 I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
 I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
+I18N.Platform.ServiceProvider.ErrorNotice = '错误提示';
 
 
 I18N.Privilege = {};

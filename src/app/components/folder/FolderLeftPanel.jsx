@@ -21,6 +21,10 @@ import HierarchyAction from '../../actions/HierarchyAction.jsx';
 
 
 import Immutable from 'immutable';
+const DIALOG_TYPE = {
+  SWITCH_WIDGET: "switchwidget",
+  SWITCH_EC: 'switchec'
+};
 
 var FolderLeftPanel = React.createClass({
 
@@ -46,18 +50,24 @@ var FolderLeftPanel = React.createClass({
     });
   },
   _onSelectNode: function(nodeData) {
-    FolderAction.setSelectedNode(nodeData);
-    if (nodeData.get('Type') == 7) {
-      this.setState({
-        selectedNode: nodeData,
-        buttonDisabled: true,
-      })
+    var lastSelectedNode = FolderStore.getSelectedNode()
+    if (lastSelectedNode.get('Type')==7 && lastSelectedNode.get('ChartType') === null && lastSelectedNode.get('Id') != nodeData.get('Id')) {
+      FolderAction.setDisplayDialog(DIALOG_TYPE.SWITCH_WIDGET);
     } else {
-      this.setState({
-        selectedNode: nodeData,
-        buttonDisabled: false,
-      })
+      FolderAction.setSelectedNode(nodeData);
+      if (nodeData.get('Type') == 7) {
+        this.setState({
+          selectedNode: nodeData,
+          buttonDisabled: true,
+        })
+      } else {
+        this.setState({
+          selectedNode: nodeData,
+          buttonDisabled: false,
+        })
+      }
     }
+
   },
   _onNewFolder: function() {
     this.setState({

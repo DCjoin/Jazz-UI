@@ -409,7 +409,7 @@ let PlatformContent = React.createClass({
     error = error.substring(error.length - 5, error.length);
     var content = (error.indexOf('001') > -1) ? I18N.Platform.ServiceProvider.Error001 : I18N.Platform.ServiceProvider.Error003;
     var props = {
-      title: I18N.Platform.ServiceProvider.SendEmail,
+      title: I18N.Platform.ServiceProvider.ErrorNotice,
       firstActionLabel: I18N.Mail.Send.Ok,
       content: content,
       onDismiss: _onConfirm,

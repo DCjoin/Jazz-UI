@@ -152,7 +152,7 @@ let AnalysisPanel = React.createClass({
     } else {
       widgetWd = null;
     }
-    let BackBtn = <FontIcon style={{
+    let BackBtn = (this.props.isFromAlarm) ? null : <FontIcon style={{
       'margin-left': '10px'
     }} hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>;
     var remarkTextArea = null;
@@ -864,9 +864,12 @@ let AnalysisPanel = React.createClass({
     };
   },
   _onBaselineBtnDisabled: function() {
-    this.setState({
-      baselineBtnStatus: TagStore.getBaselineBtnDisabled()
-    });
+    if (TagStore.getBaselineBtnDisabled() != this.state.baselineBtnStatus) {
+      this.setState({
+        baselineBtnStatus: TagStore.getBaselineBtnDisabled()
+      });
+    }
+
   },
   _onWeatherBtnDisabled: function() {
     let me = this;
@@ -885,24 +888,27 @@ let AnalysisPanel = React.createClass({
   _onTouBtnDisabled: function() {
     var touBtnStatus = this.state.touBtnStatus;
     var newStatus = CommodityStore.getECButtonStatus();
-    if (!newStatus && this.state.step === null) {
-      this.setState({
-        touBtnStatus: false
-      });
-    } else if (!newStatus && this.state.step !== null && this.state.step > 1) {
-      this.setState({
-        touBtnStatus: false
-      });
-    } else {
-      this.setState({
-        touBtnStatus: true
-      });
-      if (this.state.touBtnSelected) {
+    if (newStatus != touBtnStatus) {
+      if (!newStatus && this.state.step === null) {
         this.setState({
-          touBtnSelected: false
+          touBtnStatus: false
         });
+      } else if (!newStatus && this.state.step !== null && this.state.step > 1) {
+        this.setState({
+          touBtnStatus: false
+        });
+      } else {
+        this.setState({
+          touBtnStatus: true
+        });
+        if (this.state.touBtnSelected) {
+          this.setState({
+            touBtnSelected: false
+          });
+        }
       }
     }
+
   },
   _onSearchBtnItemTouchTap(e, child) {
     //this.setState({selectedChartType:child.props.value});

@@ -28,6 +28,7 @@ module.exports = {
     EXPORT_WIDGET_SUCCESS: null,
     ALARM_WIDGET_SAVE_SUCCESS: null,
     ALARM_WIDGET_SAVE_ERROR: null,
+    DISPLAY_DIALOG: null,
   })
 
 };
