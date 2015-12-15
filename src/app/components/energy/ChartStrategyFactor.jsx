@@ -356,39 +356,65 @@ let ChartStrategyFactor = {
   onDeleteButtonClickFnStrategy: {
     onDeleteButtonClick(analysisPanel, obj) {
       let uid = obj.uid;
-
-      let multiTimespanIndex = EnergyStore.getMultiTimespanIndex(uid);
-
-      if (multiTimespanIndex !== -1) {
-        MultiTimespanAction.removeMultiTimespanData(multiTimespanIndex, true);
-      } else {
-        AlarmTagAction.removeSearchTagList({
-          tagId: uid
-        });
-      }
-
-      let needReload = EnergyStore.removeSeriesDataByUid(uid);
-
-      if (needReload) {
-        let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
-          paramsObj = EnergyStore.getParamsObj(),
-          timeRanges = paramsObj.timeRanges,
-          step = paramsObj.step;
-        if (multiTimespanIndex !== -1) {
-          timeRanges = [timeRanges[0]];
-          MultiTimespanAction.clearMultiTimespan('both');
-        }
-        var chartType = analysisPanel.state.selectedChartType;
-        if (chartType == 'line' || chartType == 'column' || chartType == 'stack') {
-          analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
-        } else if (chartType == 'pie') {
-          analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, tagOptions, false);
-        }
-      } else {
-        let energyData = EnergyStore.getEnergyData();
+      let id = obj.id;
+      var index = id.indexOf('Type');
+      var type = parseInt(id.slice(index + 4));
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
+        paramsObj = EnergyStore.getParamsObj(),
+        timeRanges = paramsObj.timeRanges,
+        submitParams = EnergyStore.getSubmitParams(),
+        step = paramsObj.step;
+      let wasTemp = !!submitParams.viewOption.IncludeTempValue,
+        wasHumi = !!submitParams.viewOption.IncludeHumidityValue,
+        weather;
+      if (type === 18) {
+        weather = {
+          IncludeTempValue: false,
+          IncludeHumidityValue: wasHumi
+        };
         analysisPanel.setState({
-          energyData: energyData
+          weatherOption: weather
         });
+        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weather);
+      } else if (type === 19) {
+        weather = {
+          IncludeTempValue: wasTemp,
+          IncludeHumidityValue: false
+        };
+        analysisPanel.setState({
+          weatherOption: weather
+        });
+        analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weather);
+      } else {
+        let multiTimespanIndex = EnergyStore.getMultiTimespanIndex(uid);
+
+        if (multiTimespanIndex !== -1) {
+          MultiTimespanAction.removeMultiTimespanData(multiTimespanIndex, true);
+        } else {
+          AlarmTagAction.removeSearchTagList({
+            tagId: uid
+          });
+        }
+
+        let needReload = EnergyStore.removeSeriesDataByUid(uid);
+
+        if (needReload) {
+          if (multiTimespanIndex !== -1) {
+            timeRanges = [timeRanges[0]];
+            MultiTimespanAction.clearMultiTimespan('both');
+          }
+          var chartType = analysisPanel.state.selectedChartType;
+          if (chartType == 'line' || chartType == 'column' || chartType == 'stack') {
+            analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+          } else if (chartType == 'pie') {
+            analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, tagOptions, false);
+          }
+        } else {
+          let energyData = EnergyStore.getEnergyData();
+          analysisPanel.setState({
+            energyData: energyData
+          });
+        }
       }
     },
     onUnitDeleteButtonClick(analysisPanel, obj) {
@@ -2860,6 +2886,7 @@ let ChartStrategyFactor = {
   handleConfigBtnItemTouchTapFnStrategy: {
     handleEnergyConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
       let itemValue = menuItem.props.value;
+      var subMenuValue;
       switch (itemValue) {
         case 'history':
           analysisPanel.setState({
@@ -2875,14 +2902,14 @@ let ChartStrategyFactor = {
           });
           break;
         case 'background':{
-          var subMenuValue = menuParam.props.value;
+          subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
           }
           break;
           }
         case 'weather': {
-          var subMenuValue = menuParam.props.value;
+          subMenuValue = menuParam.props.value;
           if (subMenuValue === 'temperature') {
             analysisPanel.state.chartStrategy.handleWeatherMenuItemClickFn(analysisPanel, true, false);
           } else if (subMenuValue === 'humidity') {
