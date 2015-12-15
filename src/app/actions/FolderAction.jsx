@@ -309,10 +309,11 @@ let FolderAction = {
       },
     });
   },
-  setDisplayDialog: function(dialogType) {
+  setDisplayDialog: function(dialogType, nodeData) {
     AppDispatcher.dispatch({
       type: Action.DISPLAY_DIALOG,
-      dialogType: dialogType
+      dialogType: dialogType,
+      nodeData: nodeData
     });
   },
 };

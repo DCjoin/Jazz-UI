@@ -18,7 +18,7 @@ let _folderTree = Immutable.fromJS(),
   _selectedNode = null,
   _sendStatus = null,
   _shareStatus = null,
-  _dialogType = null;
+  _dialogInfo = null;
 let FOLDER_TREE_EVENT = 'foldertree',
   CREATE_FOLDER_EVENT = 'createfolder',
   MODIFY_NAME_ERROR_EVENT = 'modifynameerror',
@@ -222,16 +222,19 @@ var FolderStore = assign({}, PrototypeStore, {
       // } else {
       //   _selectedNode = _changedNode;
       // }
-      if (children.size == 1) {
-        _selectedNode = _changedNode;
-      } else {
-        if (index == children.size - 1) {
-          _selectedNode = children.find((item, i) => (i == index - 1));
+      if (isLoadByWidget) {
+        if (children.size == 1) {
+          _selectedNode = _changedNode;
         } else {
-          _selectedNode = children.find((item, i) => (i == index + 1));
-        }
+          if (index == children.size - 1) {
+            _selectedNode = children.find((item, i) => (i == index - 1));
+          } else {
+            _selectedNode = children.find((item, i) => (i == index + 1));
+          }
 
+        }
       }
+
 
 
     },
@@ -392,11 +395,14 @@ var FolderStore = assign({}, PrototypeStore, {
       _changedNode = nodeData.set('IsRead', true);
       _folderTree = this.modifyTreebyNode(_folderTree);
     },
-    setDisplayDialog: function(type) {
-      _dialogType = type;
+    setDisplayDialog: function(type, node) {
+      _dialogInfo = {
+        type: type,
+        node: node
+      };
     },
     getDisplayDialog: function() {
-      return _dialogType
+      return _dialogInfo;
     },
     emitFolderTreeChange: function() {
       this.emit(FOLDER_TREE_EVENT);
@@ -666,7 +672,7 @@ var FolderStore = assign({}, PrototypeStore, {
         //FolderStore.emitSelectedNodeChange();
         break;
       case FolderAction.DISPLAY_DIALOG:
-        FolderStore.setDisplayDialog(action.dialogType);
+        FolderStore.setDisplayDialog(action.dialogType, action.nodeData);
         FolderStore.emitDialogChange();
         break;
     }
