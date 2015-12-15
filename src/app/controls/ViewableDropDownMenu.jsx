@@ -41,6 +41,11 @@ var ViewableDropDownMenu = React.createClass({
   },
 
   _compareArray: function(data1, data2) {
+    if ((data1 === undefined) && (data2 !== undefined) || (data1 !== undefined) && (data2 === undefined)) {
+      return false;
+    } else if (data1 === undefined && (data2 === undefined)) {
+      return true;
+    }
     if (data1.length !== data2.length) {
       return false;
     }
