@@ -20,6 +20,7 @@ let TemplateList = React.createClass({
     if (templateList && templateList.size !== 0) {
       templateItems = templateList.map(function(item) {
         let props = {
+          key: item.get('Id'),
           id: item.get('Id'),
           name: item.get('Name'),
           createUser: item.get('CreateUser'),

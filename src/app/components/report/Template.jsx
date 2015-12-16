@@ -106,6 +106,11 @@ var Template = React.createClass({
     form.submit();
     discardElement(form);
     var label = me.refs.fileInputLabel.getDOMNode();
+    var tempForm = document.createElement('form');
+    document.body.appendChild(tempForm);
+    tempForm.appendChild(input);
+    tempForm.reset();
+    document.body.removeChild(tempForm);
     label.appendChild(input);
     me.setState({
       fileName: fileName,
