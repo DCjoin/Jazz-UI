@@ -55,7 +55,7 @@ let Setting = React.createClass({
       showRightPanel: false,
       showLeftPanel: true,
       refreshChart: false,
-      errorText: null,
+      errorText: '',
       selectedNode: null,
       templateShow: false,
       templateNode: null,
