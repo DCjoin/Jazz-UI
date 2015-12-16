@@ -167,8 +167,8 @@ var Template = React.createClass({
       display: 'none'
     };
     var templateContent = (this.state.isLoading ? <div style={{
-      'text-align': 'center',
-      'margin-top': '400px'
+      textAlign: 'center',
+      marginTop: '400px'
     }}><CircularProgress  mode="indeterminate" size={1} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList}></TemplateList>);
 
     return (

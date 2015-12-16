@@ -79,8 +79,8 @@ var ReportLeftPanel = React.createClass({
 
 
     var reportContent = (this.state.isLoading ? <div style={{
-      'text-align': 'center',
-      'margin-top': '400px'
+      textAlign: 'center',
+      marginTop: '400px'
     }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList' reportList={this.state.reportList} reportItem={this.state.reportItem}></ReportList>);
 
     return (

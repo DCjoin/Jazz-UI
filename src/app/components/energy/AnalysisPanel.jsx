@@ -676,7 +676,16 @@ let AnalysisPanel = React.createClass({
     this.setState(state);
   },
   onSearchDataButtonClick() {
-    this.state.chartStrategy.onSearchDataButtonClickFn(this);
+    var dateSelector = this.refs.dateTimeSelector;
+    var dateRange = dateSelector.getDateTime(),
+      startDate = dateRange.start,
+      endDate = dateRange.end;
+    if (this.state.selectedChartType == 'rawdata' && (endDate - startDate > 604800000)) {
+      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
+    } else {
+      this.state.chartStrategy.onSearchDataButtonClickFn(this);
+    }
+
   },
   exportChart() {
     this.state.chartStrategy.exportChartFn(this);
@@ -703,15 +712,19 @@ let AnalysisPanel = React.createClass({
       }
     });
     if (menuIndex !== -1) {
-      this.refs.relativeDate.setState({
-        selectedIndex: menuIndex
-      });
+      if (this.refs.relativeDate) {
+        this.refs.relativeDate.setState({
+          selectedIndex: menuIndex
+        });
+      }
       this._onRelativeDateChange(null, menuIndex, relativeDateMenuItems[menuIndex]);
     }
   },
   _onRelativeDateChange(e, selectedIndex, menuItem) {
     let value = menuItem.value,
       dateSelector = this.refs.dateTimeSelector;
+
+
     if (this.state.selectedChartType == 'rawdata' && value != 'Customerize' && value != 'Last7Day') {
       FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
     } else {
