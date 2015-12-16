@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker,RaisedButton,CircularProgress } from 'material-ui';
+import { SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker, RaisedButton, CircularProgress } from 'material-ui';
 import assign from "object-assign";
 import classNames from 'classnames';
 import YearPicker from '../../controls/YearPicker.jsx';
@@ -33,17 +33,17 @@ var NormalSetting = React.createClass({
 
   componentDidMount: function() {
     var workdays = this._extractWorkItems(),
-    nonWorkdays = this._extractNonWorkItems();
+      nonWorkdays = this._extractNonWorkItems();
     this.setState({
       workdays: workdays,
       nonWorkdays: nonWorkdays
     });
   },
 
-  componentWillReceiveProps: function(nextProps){
-    if(nextProps){
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps) {
       var workdays = this._extractWorkItems(nextProps),
-      nonWorkdays = this._extractNonWorkItems(nextProps);
+        nonWorkdays = this._extractNonWorkItems(nextProps);
       this.setState({
         workdays: workdays,
         nonWorkdays: nonWorkdays
@@ -51,31 +51,35 @@ var NormalSetting = React.createClass({
     }
   },
 
-  _composeEndTime: function(items){
+  _composeEndTime: function(items) {
     for (var i = 0; i < items.length; i++) {
-      if(i == items.length - 1){
+      if (i == items.length - 1) {
         items[i].EndTime = 1440;
-      }else{
-        items[i].EndTime = items[i+1].StartTime;
+      } else {
+        items[i].EndTime = items[i + 1].StartTime;
       }
     }
     return items;
   },
 
-  _extractWorkItems: function(props){
+  _extractWorkItems: function(props) {
     var items;
-    if(props) items = props.items;
-    else items = this.props.items;
+    if (props)
+      items = props.items;
+    else
+      items = this.props.items;
 
-    var workdays=[], newWorkdays=[];
-    if(!items) items = [];
+    var workdays = [],
+      newWorkdays = [];
+    if (!items)
+      items = [];
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
-      if(item.DayType==0){
+      if (item.DayType == 0) {
         workdays.push(item);
       }
     }
-    if(workdays.length == 0){
+    if (workdays.length == 0) {
       workdays.push({
         StartTime: 0,
         DayType: 0,
@@ -85,20 +89,23 @@ var NormalSetting = React.createClass({
     return this._composeEndTime(workdays);
   },
 
-  _extractNonWorkItems: function(props){
+  _extractNonWorkItems: function(props) {
     var items;
-    if(props) items = props.items;
-    else items = this.props.items;
+    if (props)
+      items = props.items;
+    else
+      items = this.props.items;
 
     var nonWorkdays = [];
-    if(!items) items = [];
+    if (!items)
+      items = [];
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
-      if(item.DayType == 1){
+      if (item.DayType == 1) {
         nonWorkdays.push(item);
       }
     }
-    if(nonWorkdays.length == 0){
+    if (nonWorkdays.length == 0) {
       nonWorkdays.push({
         StartTime: 0,
         DayType: 0,
@@ -108,7 +115,7 @@ var NormalSetting = React.createClass({
     return this._composeEndTime(nonWorkdays);
   },
 
-  getValue: function () {
+  getValue: function() {
     var workdays = this.refs.workdayValues.getValue(),
       nonWorkdays = this.refs.nonWorkdayValues.getValue(),
       set = [];
@@ -123,38 +130,46 @@ var NormalSetting = React.createClass({
     return set;
   },
 
-  render: function () {
-    if(!this.props.isDisplay){
+  render: function() {
+    if (!this.props.isDisplay) {
       return <div></div>;
     }
 
     var workProps = {
-      tag: this.props.tag,
-      items: this.state.workdays,
-      isViewStatus: this.props.isViewStatus
-    },
-    nonWorkdayProps = {
-      tag: this.props.tag,
-      items: this.state.nonWorkdays,
-      isViewStatus: this.props.isViewStatus
-    };
+        tag: this.props.tag,
+        items: this.state.workdays,
+        isViewStatus: this.props.isViewStatus
+      },
+      nonWorkdayProps = {
+        tag: this.props.tag,
+        items: this.state.nonWorkdays,
+        isViewStatus: this.props.isViewStatus
+      };
 
     var style = {
       marginLeft: "35px"
     };
     return (
       <div style={style}>
-        <div style={{'margin-top':'10px'}}>小时基准值</div>
-        <div style={{color:'#abafae','margin-top':'18px'}}>工作日</div>
+        <div style={{
+        marginTop: '10px'
+      }}>小时基准值</div>
+        <div style={{
+        color: '#abafae',
+        'margin-top': '18px'
+      }}>工作日</div>
         <div>
           <DaytimeRangeValues ref="workdayValues" {...workProps} />
         </div>
-        <div style={{color:'#abafae','margin-top':'18px'}}>非工作日</div>
+        <div style={{
+        color: '#abafae',
+        marginTop: '18px'
+      }}>非工作日</div>
         <div>
           <DaytimeRangeValues ref="nonWorkdayValues" {...nonWorkdayProps} />
         </div>
       </div>
-    );
+      );
   }
 });
 

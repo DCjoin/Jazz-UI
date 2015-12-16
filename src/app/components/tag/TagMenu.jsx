@@ -11,7 +11,7 @@ import TagAction from '../../actions/TagAction.jsx';
 var TagMenu = React.createClass({
 
   propTypes: {
-    tagList: React.PropTypes.object,
+    tagList: React.PropTypes.array,
     widgetType: React.PropTypes.string,
   },
   _onTagStatusChange: function() {
@@ -78,7 +78,8 @@ var TagMenu = React.createClass({
       }
 
 
-      menuItem = (<TagItem style={buttonStyle}
+      menuItem = (<TagItem key={i}
+      style={buttonStyle}
       nodeData={nodeData}
       title={nodeData.Name}
       label={nodeData.AlarmStatus}
@@ -105,7 +106,7 @@ var TagMenu = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         flex: 1,
         overflow: 'hidden'
       }}>
@@ -126,7 +127,7 @@ var TagMenu = React.createClass({
       <div style={{
         'overflow': 'auto',
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         flex: '1'
       }}>
         {nodemenuItems}

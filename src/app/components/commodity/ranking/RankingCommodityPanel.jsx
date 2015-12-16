@@ -56,7 +56,7 @@ var RankingCommodityPanel = React.createClass({
     return {
       isCommodityLoading: false,
       isTreeLoading: false,
-      commodityList: Immutable.List([]),
+      commodityList: [],
       checkedTreeNodes: this._getTreeNode(),
       checkedCommodity: CommodityStore.getRankingCommodity(),
     };

@@ -30,7 +30,7 @@ let TemplateItem = React.createClass({
       return (
         <div className='jazz-templateitem' onClick={this._onItemClick} title={this.props.value.templateName}>
             <div style={{
-          'margin-left': '7.5px'
+          marginLeft: '7.5px'
         }}>
               {this.props.value.templateName}
             </div>
@@ -42,11 +42,11 @@ let TemplateItem = React.createClass({
       return (
         <div className='jazz-templateitem' onClick={this._onItemClick} title={this.props.value.templateName}>
             <div style={{
-          'margin-left': '7.5px',
-          'max-width': '282px',
+          marginLeft: '7.5px',
+          maxWidth: '282px',
           overflow: 'hidden',
-          'white-space': 'nowrap',
-          'text-overflow': 'ellipsis',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
         }}>
               {this.props.value.templateName}
             </div>

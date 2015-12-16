@@ -258,7 +258,7 @@ let PlatformContent = React.createClass({
         </div>
 
           <div className="pop-user-detail-content-item" style={{
-        'flex-direction': 'row'
+        flexDirection: 'row'
       }}>
             <ViewableTextField {...providerDomainProps} />
             <div className={classnames({
@@ -480,7 +480,7 @@ let PlatformContent = React.createClass({
       <div style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column'
+        flexDirection: 'column'
       }} className='jazz-content'>
       <div className="pop-framework-right-actionbar">
           <div className="pop-framework-right-actionbar-top">

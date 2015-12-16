@@ -30,7 +30,7 @@ let GridComponent = React.createClass({
     for (let i = 0, len = firstItems.length; i < len; i++) {
       row = [
         <TableRowColumn style={{
-          'padding-right': '0px'
+          paddingRight: '0px'
         }}>
           {firstItems[i].localTime}
         </TableRowColumn>
@@ -44,9 +44,9 @@ let GridComponent = React.createClass({
         // };
         row.push(
           <TableRowColumn style={{
-            'padding-left': '60px',
-            'padding-right': '0',
-            'font-size': '#14px',
+            paddingLeft: '60px',
+            paddingRight: '0',
+            fontSize: '#14px',
             color: '#464949',
             height: '40px'
           }}>
@@ -62,10 +62,10 @@ let GridComponent = React.createClass({
     }
     return (
       <TableBody displayRowCheckbox={false} style={{
-        'padding-right': '0',
-        'padding-left': '0',
-        'background-color': '#fbfbfb',
-        'border-top': '1px solid #e0e0e0'
+        paddingRight: '0',
+        paddingLeft: '0',
+        backgroundColor: '#fbfbfb',
+        borderTop: '1px solid #e0e0e0'
       }}>
             showRowHover={this.state.showRowHover}
             stripedRows={this.state.stripedRows}>
@@ -85,7 +85,7 @@ let GridComponent = React.createClass({
     // };
     let headerCols = [
       <TableHeaderColumn style={{
-        'font-size': '14px',
+        fontSize: '14px',
         color: '#abafae'
       }}>{I18N.RawData.Time}</TableHeaderColumn>
     ];
@@ -93,14 +93,14 @@ let GridComponent = React.createClass({
     for (let i = 0; i < dataArray.length; i++) {
       var tagOption = this.getTagInfo(dataArray[i]);
       headerCols.push(<TableHeaderColumn style={{
-        'padding-right': '0',
-        'padding-left': '0'
+        paddingRight: '0',
+        paddingLeft: '0'
       }}>{this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.commodityAndUomName)}</TableHeaderColumn>)
     //headerCols[dataArray[i].TargetId + ''] = this.getTagColumnContent(tagOption.hieName, tagOption.tagName, tagOption.commodityAndUomName); //{content: dataArray[i].Name};
     }
     return (
       <TableHeader displaySelectAll={false} style={{
-        'background-color': '#fbfbfb'
+        backgroundColor: '#fbfbfb'
       }}>
          <TableRow>
            {headerCols}

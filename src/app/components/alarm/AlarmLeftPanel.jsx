@@ -133,8 +133,8 @@ var AlarmLeftPanel = React.createClass({
       <div style={{
         width: '320px',
         display: 'flex',
-        'flexFlow': 'column',
-        'background-color': 'rgb(53, 64, 82)'
+        flexFlow: 'column',
+        backgroundColor: 'rgb(53, 64, 82)'
       }}>
           <div className={'jazz-alarm-left-panel-dropdownmenu-container'}>
               <DropDownMenu autoWidth={false} style={{

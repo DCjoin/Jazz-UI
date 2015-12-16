@@ -27,12 +27,12 @@ var FolderSearchBox = React.createClass({
       this.setState({
         showPaper: true,
         searchValue: value
-      })
+      });
     } else {
       React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
       this.setState({
         showPaper: false,
-      })
+      });
     }
   },
   _onCleanButtonClick: function() {
@@ -40,7 +40,7 @@ var FolderSearchBox = React.createClass({
     this.refs.searchText.setValue("");
     this.setState({
       showPaper: false
-    })
+    });
   },
   _onSearchBlur: function(e) {
     if (!e.target.value) {
@@ -52,12 +52,12 @@ var FolderSearchBox = React.createClass({
     this.refs.searchText.setValue(node.Name);
     this.setState({
       showPaper: false,
-    })
+    });
   },
   _handleClickAway: function() {
     this.setState({
       showPaper: false
-    })
+    });
   },
   getInitialState: function() {
     return {

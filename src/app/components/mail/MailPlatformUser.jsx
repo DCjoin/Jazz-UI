@@ -25,7 +25,7 @@ let GropNodeContent = React.createClass({
     return (
       <div className='tree-node-content' onMouseOver={this._onMouserOver} onMouseOut={this._onMouserOut}>
           <div className='node-content-text' style={{
-        'max-width': '200px'
+        maxWidth: '200px'
       }}>
             {this.props.nodeData.get('Name')}
           </div>

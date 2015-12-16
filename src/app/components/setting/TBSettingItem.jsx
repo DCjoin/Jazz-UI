@@ -332,7 +332,7 @@ var TBSettingItem = React.createClass({
           <div style={clearStyle}>
             <div style={datePickerAreaStyle}>
               <span style={{
-          'font-size': '14px',
+          fontSize: '14px',
           color: '#b3b3b3',
           border: '1px solid #efefef',
           padding: '10px'
@@ -341,7 +341,7 @@ var TBSettingItem = React.createClass({
           margin: '0 10px'
         }}>到</span>
               <span style={{
-          'font-size': '14px',
+          fontSize: '14px',
           color: '#b3b3b3',
           border: '1px solid #efefef',
           padding: '10px'
@@ -466,7 +466,7 @@ var TBSettingItem = React.createClass({
               <ViewableDatePicker  showTime={false} ref='startFeild' {...startProps} />
             </div>
             <div style={{
-        'margin-left': '10px'
+        marginLeft: '10px'
       }}>到</div>
             <div className="jazz-setting-basic-datepicker-container">
               <ViewableDatePicker  showTime={false} ref='endFeild' {...endProps} />

@@ -54,7 +54,7 @@ var TreeNode = React.createClass({
     // selected node when nodeData.Id == a node.Id in selectedNode
     selectedNode: React.PropTypes.object,
     // checked node when nodeData.Id == a node.Id in checkedNodes
-    checkedNodes: React.PropTypes.array,
+    checkedNodes: React.PropTypes.object,
 
     //for copy opertation
     isFolderOperationTree: React.PropTypes.bool,
@@ -323,6 +323,7 @@ var TreeNode = React.createClass({
     var {nodeData, treeNodeClass, indent, indentUnit, theme} = this.props;
     var treeNodeProps = {
       ref: 'treenode',
+      key: nodeData.get('Id'),
       id: nodeData.get('Id'),
       className: classNames(_.set({
         "tree-node": true,
@@ -378,7 +379,7 @@ var TreeNode = React.createClass({
       });
     }
     return (
-      <div ref='treechildren' className={classNames({
+      <div key='treechildren' ref='treechildren' className={classNames({
         "tree-children": true,
         "collapse": this.state.collapsed
       })}>
@@ -398,7 +399,7 @@ var TreeNode = React.createClass({
     var generateNode = ((this.props.isFolderOperationTree && this.props.nodeData.get("Type") == nodeType.Widget) ? null : this.generateNode());
     return (
 
-      <div id={this.props.nodeData.get('Id')} className="pop-tree-node-container">
+      <div key={this.props.nodeData.get('Id')} id={this.props.nodeData.get('Id')} className="pop-tree-node-container">
         {generateNode}
         {this.generateChildren()}
       </div>

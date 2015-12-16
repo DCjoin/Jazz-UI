@@ -152,7 +152,7 @@ var TreeNode = React.createClass({
 
   generateNode: function(nodeData) {
     var indentStyle = {
-      "padding-left": Number(this.props.indent * this.props.indentUnit)
+      paddingLeft: Number(this.props.indent * this.props.indentUnit)
     };
 
     return (

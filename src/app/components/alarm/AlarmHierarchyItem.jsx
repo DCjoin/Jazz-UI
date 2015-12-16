@@ -73,7 +73,7 @@ let AlarmHierarchyItem = React.createClass({
       })}>
 						<span>{icon}</span>
     				<span style={{
-        'margin-left': '10px'
+        marginLeft: '10px'
       }}>{hierarchy.HierName}</span>
 						<span>
             	<span>{tagCount}</span>

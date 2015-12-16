@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker,RaisedButton,CircularProgress } from 'material-ui';
+import { SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker, RaisedButton, CircularProgress } from 'material-ui';
 import assign from "object-assign";
 import classNames from 'classnames';
 import YearPicker from '../../controls/YearPicker.jsx';
@@ -13,14 +13,16 @@ import TagStore from '../../stores/TagStore.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import TBSettingItem from './TBSettingItem.jsx';
 
-var mergeDateTime = function(date, time){
+var mergeDateTime = function(date, time) {
   var d = new Date(date);
-  if(time) d = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(time/60), time % 60);
-  else d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  if (time)
+    d = new Date(d.getFullYear(), d.getMonth(), d.getDate(), Math.floor(time / 60), time % 60);
+  else
+    d = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   return d;
 }
 
-var datetimeTojson = function(date, time){
+var datetimeTojson = function(date, time) {
   var d = mergeDateTime(date, time);
   return CommonFuns.DataConverter.DatetimeToJson(d);
 };
@@ -40,21 +42,21 @@ var TBSettingItems = React.createClass({
     };
   },
 
-  getInitialState: function(){
+  getInitialState: function() {
     return {
       items: this.props.items || []
     }
   },
 
-  componentWillReceiveProps: function(nextProps){
-    if(nextProps){
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps) {
       this.setState({
         items: nextProps.items,
       });
     }
   },
 
-  tryGetValue: function(){
+  tryGetValue: function() {
     var val = this.getValue(),
       len = this.state.items.length,
       valid = true;
@@ -64,44 +66,53 @@ var TBSettingItems = React.createClass({
     return [valid, val];
   },
 
-  getValue: function(){
-    var arr = [], len = this.state.items.length;
+  getValue: function() {
+    var arr = [],
+      len = this.state.items.length;
     for (var i = 0; i < len; i++) {
       arr.push(this.refs['item' + i].getValue());
     }
     return arr;
   },
 
-  setValue: function(items){
-    this.setState({items: items});
+  setValue: function(items) {
+    this.setState({
+      items: items
+    });
   },
 
   _setSetting: function(nextProps) {
     var items = [];
-    if(nextProps){
+    if (nextProps) {
       items = nextProps.items;
     }
-    this.setState({ items: items });
+    this.setState({
+      items: items
+    });
   },
 
-  _getFreshItems: function(){
+  _getFreshItems: function() {
     var items = this.getValue();
     return items;
   },
 
-  _removeSetting: function (src, index) {
-    var oldItems = this._getFreshItems(), newItems= [];
+  _removeSetting: function(src, index) {
+    var oldItems = this._getFreshItems(),
+      newItems = [];
     for (var i = 0; i < oldItems.length; i++) {
-      if(i != index){
+      if (i != index) {
         newItems.push(oldItems[i]);
       }
     }
-    this.setState({items: newItems});
+    this.setState({
+      items: newItems
+    });
   },
 
-  _onSettingItemDateChange: function(childVal, idx){
-    var valid = true, vals = this.getValue();
-    if(vals && vals[idx]){
+  _onSettingItemDateChange: function(childVal, idx) {
+    var valid = true,
+      vals = this.getValue();
+    if (vals && vals[idx]) {
       vals[idx] = childVal;
     }
     for (var i = 0; i < vals.length; i++) {
@@ -109,14 +120,15 @@ var TBSettingItems = React.createClass({
     }
   },
 
-  _addSetting: function(){
-    var arr = this.getValue(), newArr = [];
+  _addSetting: function() {
+    var arr = this.getValue(),
+      newArr = [];
     var item = {
       TbSetting: {
         StartTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year, 0, 1)),
         EndTime: CommonFuns.DataConverter.DatetimeToJson(new Date(this.props.year + 1, 0, 1)),
-        //StartTime: null,
-        //EndTime: null
+      //StartTime: null,
+      //EndTime: null
       },
       NormalDates: [],
       SpecialDates: [],
@@ -126,7 +138,9 @@ var TBSettingItems = React.createClass({
     for (var i = 0; i < arr.length; i++) {
       newArr.push(arr[i]);
     }
-    this.setState({items: newArr});
+    this.setState({
+      items: newArr
+    });
   },
 
   render: function() {
@@ -147,41 +161,45 @@ var TBSettingItems = React.createClass({
         isViewStatus: me.props.isViewStatus,
         onRemove: me._removeSetting,
         onSettingItemDateChange: me._onSettingItemDateChange,
-        dateRange:  me.props.dateRange,
+        dateRange: me.props.dateRange,
       };
 
-      if(item.TbSetting && item.TbSetting.StartTime){
+      if (item.TbSetting && item.TbSetting.StartTime) {
         drvProps.start = item.TbSetting.StartTime;
       }
-      if(item.TbSetting && item.TbSetting.EndTime){
+      if (item.TbSetting && item.TbSetting.EndTime) {
         drvProps.end = item.TbSetting.EndTime;
       }
       return (<TBSettingItem {...drvProps} />);
     };
 
-    var addBtnCtrl, title = <span>时段设置</span>;
-    if(this.props.isViewStatus){
-      if(this.props.items.length == 0) title = null;
-    }else{
+    var addBtnCtrl,
+      title = <span>时段设置</span>;
+    if (this.props.isViewStatus) {
+      if (this.props.items.length == 0)
+        title = null;
+    } else {
       var addBtnProps = {
-        style:{
+        style: {
           padding: '0',
           minWidth: '20px',
-          width:'30px',
+          width: '30px',
           height: '20px',
-          verticalAlign:'middle',
-          lineHeight:'20px'
+          verticalAlign: 'middle',
+          lineHeight: '20px'
         },
-        labelStyle:{
-          padding:'0'
+        labelStyle: {
+          padding: '0'
         },
         label: "+",
         onClick: this._addSetting,
         disabled: this.props.isViewStatus,
       };
-      addBtnCtrl =  <FlatButton {...addBtnProps} />
+      addBtnCtrl = <FlatButton {...addBtnProps} />
     }
-    return (<div style={{'margin-top':'15px'}}>
+    return (<div style={{
+        marginTop: '15px'
+      }}>
         <div>{title}{addBtnCtrl}</div>
         <div>{this.state.items.map(createItem)}</div>
       </div>);
