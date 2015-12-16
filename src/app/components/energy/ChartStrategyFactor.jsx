@@ -2371,7 +2371,7 @@ let ChartStrategyFactor = {
         step: step,
         isCalendarInited: false
       });
-      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false);
+      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel.state.weatherOption);
     },
     handleCostStepChange(analysisPanel, step) {
       let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
