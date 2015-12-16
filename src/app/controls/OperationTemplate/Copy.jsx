@@ -141,7 +141,7 @@ var Copy = React.createClass({
     );
     let FolderTreeField = (
     <div style={{
-      'margin-top': '20px'
+      marginTop: '20px'
     }}>
                     <div>
                       {I18N.Template.Copy.DestinationFolder}

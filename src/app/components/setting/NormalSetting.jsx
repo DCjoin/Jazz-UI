@@ -156,7 +156,7 @@ var NormalSetting = React.createClass({
       }}>小时基准值</div>
         <div style={{
         color: '#abafae',
-        'margin-top': '18px'
+        marginTop: '18px'
       }}>工作日</div>
         <div>
           <DaytimeRangeValues ref="workdayValues" {...workProps} />

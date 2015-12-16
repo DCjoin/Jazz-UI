@@ -273,7 +273,7 @@ var SpecialItem = React.createClass({
         startDate = jsonToFormDate(me.state.start),
         endDate = jsonToFormDate(me.state.end);
 
-      if (et == 0) {
+      if (et === 0) {
         et = 1440;
         endDate = toFormEndDate(endDate);
       }
@@ -286,12 +286,12 @@ var SpecialItem = React.createClass({
       var style = {
         padding: '2px 10px',
         border: '1px solid #efefef',
-        'margin-right': '10px',
+        marginRight: '10px',
         color: '#b3b3b3'
       };
 
       return (<div style={{
-          'margin-top': '10px'
+          marginTop: '10px'
         }}>
           <span style={style}>{startDateStr}</span>
           <span style={style}>{startTimeStr}</span>

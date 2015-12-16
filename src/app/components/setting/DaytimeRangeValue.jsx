@@ -112,7 +112,7 @@ var DaytimeRangeValue = React.createClass({
 
       return (
         <div style={{
-          'margin-top': '10px'
+          marginTop: '10px'
         }}>
           <span style={style}>{startStr}</span>
           <span style={{
