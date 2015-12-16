@@ -78,7 +78,7 @@ var Tree = React.createClass({
     // must have "Id" parameter for every nodeData
     selectedNode: React.PropTypes.object,
     // must have "Id" parameter for every nodeData
-    checkedNodes: React.PropTypes.array,
+    checkedNodes: React.PropTypes.object,
     // must have "Id" parameter for every nodeData
     allNode: React.PropTypes.object.isRequired,
 
@@ -189,6 +189,7 @@ var Tree = React.createClass({
       if (dataSource !== null) {
         var props = {
           ref: dataSource.get("Id"),
+          key: dataSource.get("Id"),
           treeNodeClass: this.props.treeNodeClass,
           nodeOriginPaddingLeft: this.props.nodeOriginPaddingLeft,
           indentUnit: this.props.indentUnit,

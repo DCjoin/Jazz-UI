@@ -291,8 +291,8 @@ var FolderLeftPanel = React.createClass({
 
 
     var treeContent = (this.state.isLoading ? <div style={{
-      'text-align': 'center',
-      'margin-top': '400px'
+      textAlign: 'center',
+      marginTop: '400px'
     }}><CircularProgress  mode="indeterminate" size={1} /></div> : <Tree {...treeProps}/>);
 
     return (

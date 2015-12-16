@@ -12,7 +12,7 @@ let SearchItem = React.createClass({
     onClick: React.PropTypes.func.isRequired
   },
   _onClick: function() {
-    this.props.onClick(this.props.nodeData)
+    this.props.onClick(this.props.nodeData);
   },
   render: function() {
     var name = this.props.nodeData.Name;
@@ -27,7 +27,7 @@ let SearchItem = React.createClass({
     return (
       <div className="jazz-searchmenuitem" onClick={this._onClick} title={this.props.nodeData.Path}>
         <div style={{
-        'font-size': '16px'
+        fontSize: '16px'
       }}>
           {icon}
         </div>

@@ -296,7 +296,7 @@ let DataSelectMainPanel = React.createClass({
       dimParentNode: null,
       HierarchyShow: false,
       DimShow: false,
-      tagList: null,
+      tagList: [],
       allChecked: false,
       tagId: null,
       optionType: null,
@@ -502,7 +502,7 @@ let DataSelectMainPanel = React.createClass({
       content = (
         <div style={{
           display: 'flex',
-          'flex-direction': 'column',
+          flexDirection: 'column',
           flex: 1,
           overflow: 'hidden'
         }}>

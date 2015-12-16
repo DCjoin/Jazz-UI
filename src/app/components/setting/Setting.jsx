@@ -497,8 +497,8 @@ let Setting = React.createClass({
     let selectedNode = this.state.selectedNode;
     if (!selectedNode || this.state.refreshChart) {
       mainPanel = (<div style={{
-        'margin-top': '-16px',
-        'background-color': '#ffffff',
+        marginTop: '-16px',
+        backgroundColor: '#ffffff',
         flex: 1
       }}>
       <OrigamiPanel/>

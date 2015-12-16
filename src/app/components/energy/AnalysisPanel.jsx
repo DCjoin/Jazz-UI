@@ -162,7 +162,7 @@ let AnalysisPanel = React.createClass({
       widgetWd = null;
     }
     let BackBtn = (this.props.isFromAlarm) ? null : <FontIcon style={{
-      'margin-left': '10px'
+      marginLeft: '10px'
     }} hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>;
     var remarkTextArea = null;
     if (this.state.remarkDisplay) {

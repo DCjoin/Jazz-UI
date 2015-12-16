@@ -111,7 +111,7 @@ var CalcSetting = React.createClass({
     if (!this.props.isViewStatus) {
       reCalcCtrl = <a href="javascript:void(0)" onClick={this._onCalcClick}  style={{
         color: '#1ca8dd',
-        'margin-left': '27px'
+        marginLeft: '27px'
       }}>重新计算</a>;
     }
 

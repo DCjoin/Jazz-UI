@@ -61,7 +61,7 @@ var Send = React.createClass({
     var content = this.props.content;
     if (this.props.loading) {
       content = <div style={{
-        'margin-left': '300px'
+        marginLeft: '300px'
       }}>
       <CircularProgress  mode="indeterminate" size={1} />
       </div>;

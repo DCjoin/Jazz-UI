@@ -338,8 +338,8 @@ let MapPanel = React.createClass({
       <div style={{
         "flex": "1",
         "display": "flex",
-        'flex-direction': 'column',
-        'margin-top': '-16px'
+        flexDirection: 'column',
+        marginTop: '-16px'
       }}>
     <div className='map-timepickerbar'><DatePicker onMenuItemClick={this._onDateChanged}/></div>
     <div style={styleMap} id="_map"></div>

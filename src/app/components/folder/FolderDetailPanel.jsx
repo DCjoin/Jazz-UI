@@ -85,11 +85,11 @@ var FolderItem = React.createClass({
             </IconMenu>;
       subtitle = <div style={{
         display: 'flex',
-        'flex-direction': 'row'
+        flexDirection: 'row'
       }}>
                 <div>{I18N.Folder.FolderName + this.props.nodeData.get('ChildFolderCount')}</div>
                 <div style={{
-        'margin-left': '5px'
+        marginLeft: '5px'
       }}>{I18N.Folder.WidgetName + this.props.nodeData.get('ChildWidgetCount')}</div>
               </div>
     } else {
@@ -188,7 +188,7 @@ var FolderDetailPanel = React.createClass({
     var content = [];
     if (this.props.nodeData.get('Children')) {
       this.props.nodeData.get('Children').forEach(function(child) {
-        content.push(<FolderItem nodeData={child} onOperationSelect={that._onItemMenuSelect}/>)
+        content.push(<FolderItem key={child.get('Id')} nodeData={child} onOperationSelect={that._onItemMenuSelect}/>)
       })
     }
     ;

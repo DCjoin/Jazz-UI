@@ -24,7 +24,7 @@ let MailReceiverItem = React.createClass({
     return (
       <div className='jazz-mailfield-recieveritem'>
           <div className='node-content-text' style={{
-        'margin-left': '7.5px'
+        marginLeft: '7.5px'
       }}>
             {this.props.nodeData.get('Name')}
           </div>

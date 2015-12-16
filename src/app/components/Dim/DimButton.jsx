@@ -10,7 +10,7 @@ let DimButton = React.createClass({
   mixins: [Mixins.ClickAwayable],
   propTypes: {
     active: React.PropTypes.bool,
-    parentNode: React.PropTypes.object.isRequired,
+    parentNode: React.PropTypes.object,
     onButtonClick: React.PropTypes.func.isRequired,
     show: React.PropTypes.bool,
     onTreeClick: React.PropTypes.func.isRequired,
