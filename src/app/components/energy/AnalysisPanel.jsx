@@ -32,6 +32,8 @@ import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
+let lastRelativeDate = 'Customerize';
+
 let AnalysisPanel = React.createClass({
   mixins: [ChartMixins],
   propTypes: {
@@ -667,7 +669,16 @@ let AnalysisPanel = React.createClass({
     this.setState(state);
   },
   onSearchDataButtonClick() {
-    this.state.chartStrategy.onSearchDataButtonClickFn(this);
+    var dateSelector = this.refs.dateTimeSelector;
+    var dateRange = dateSelector.getDateTime(),
+      startDate = dateRange.start,
+      endDate = dateRange.end;
+    if (this.state.selectedChartType == 'rawdata' && (endDate - startDate > 604800000)) {
+      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
+    } else {
+      this.state.chartStrategy.onSearchDataButtonClickFn(this);
+    }
+
   },
   exportChart() {
     this.state.chartStrategy.exportChartFn(this);
@@ -704,9 +715,14 @@ let AnalysisPanel = React.createClass({
     let value = menuItem.value,
       dateSelector = this.refs.dateTimeSelector;
 
-    if (value && value !== 'Customerize') {
-      var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
-      dateSelector.setDateField(timeregion.start, timeregion.end);
+
+    if (this.state.selectedChartType == 'rawdata' && value != 'Customerize' && value != 'Last7Day') {
+      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
+    } else {
+      if (value && value !== 'Customerize') {
+        var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
+        dateSelector.setDateField(timeregion.start, timeregion.end);
+      }
     }
   },
   _onRankTypeChange(e, selectedIndex, menuItem) {
@@ -914,7 +930,21 @@ let AnalysisPanel = React.createClass({
   },
   _onSearchBtnItemTouchTap(e, child) {
     //this.setState({selectedChartType:child.props.value});
-    this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
+    var _relativeDate = this._getRelativeDateValue();
+    // var paramsObj = EnergyStore.getParamsObj(),
+    //   startDate = DataConverter.JsonToDateTime(paramsObj.startTime, false),
+    //   endDate = DataConverter.JsonToDateTime(paramsObj.endTime, false);
+    let dateSelector = this.refs.dateTimeSelector;
+    let dateRange = dateSelector.getDateTime(),
+      startDate = dateRange.start,
+      endDate = dateRange.end;
+
+    if (child.props.value == 'rawdata' && endDate - startDate > 604800000) {
+      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
+    } else {
+      this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
+    }
+
   },
   _onChangeLabelType(subMenuItem, mainMenuItem) {
     var curType = this.state.labelType,
