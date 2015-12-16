@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 
 let I18N = {};
@@ -1089,7 +1089,7 @@ I18N.Platform.User.Name = 'User Name';
 I18N.Platform.User.ShowName = 'Real name';
 I18N.Platform.User.ResetPassword = 'Reset password';
 I18N.Platform.User.RealName = 'Real name';
-I18N.Platform.User.Edit = 'Edut';
+I18N.Platform.User.Edit = 'Edit';
 I18N.Platform.User.EditPersonalInfo = 'Edit personal information';
 I18N.Platform.User.Position = 'Title';
 I18N.Platform.User.Role = 'Role';
