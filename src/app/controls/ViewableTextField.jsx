@@ -4,7 +4,7 @@ import React from 'react';
 import mui from 'material-ui';
 import _isString from 'lodash/lang/isString';
 import assign from 'object-assign';
-import util from '../util/util.jsx';
+import util from '../util/Util.jsx';
 let {TextField} = mui;
 var _ = {
   isString: _isString

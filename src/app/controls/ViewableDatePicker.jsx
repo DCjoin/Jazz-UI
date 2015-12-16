@@ -4,7 +4,7 @@ import React from 'react';
 import mui from 'material-ui';
 import assign from 'object-assign';
 import classSet from 'classnames';
-import util from '../util/util.jsx';
+import util from '../util/Util.jsx';
 import moment from 'moment';
 //import Calendar from '../../../node_modules/material-ui/lib/date-picker/calendar.js';
 import Calendar from '../controls/Calendar.jsx';
