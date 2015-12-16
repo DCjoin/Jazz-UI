@@ -883,9 +883,14 @@ let CommonFuns = {
   convertUom: function(value, uom) {
     var convert = function(valueStr, uom, index) {
       if (valueStr.length > 6 && index <= 2) {
-        valueStr = valueStr.slice(0, value.length - 3);
-        newUom = unit[index] + uom;
-        convert(valueStr, newUom, index + 1);
+        valueStr = valueStr.slice(0, valueStr.length - 3);
+        if (uom == 'WH') {
+          newUom = ' ' + unit[index] + uom;
+        } else {
+          newUom = unit[index] + ' ' + uom;
+        }
+
+        convert(valueStr, uom, index + 1);
       }
     };
     var valueStr = value + '';

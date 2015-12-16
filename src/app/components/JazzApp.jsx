@@ -171,17 +171,18 @@ let JazzApp = React.createClass({
       } else {
         lang = window.navigator.language.toLowerCase();
       }
-      //currentLanguage： 0 中文, 1 英文
-      if (lang === 'zh-cn') {
-        window.currentLanguage = 0;
-      } else {
-        window.currentLanguage = 1;
-      }
+
       this.replaceWith('app', {
         lang: lang
       });
     }
-
+    //currentLanguage： 0 中文, 1 英文
+    if (lang === 'zh-cn') {
+      window.currentLanguage = 0;
+    } else {
+      window.currentLanguage = 1;
+    }
+    console.log('window.currentLanguage=' + window.currentLanguage);
 
 
     if (lang.toLowerCase() == 'en-us') {
