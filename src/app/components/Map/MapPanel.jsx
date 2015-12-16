@@ -218,14 +218,14 @@ let MapPanel = React.createClass({
       if (value.Ranking !== null) {
         content += "<div class='secondline'>" + I18N.Folder.NewWidget.Menu5 + ' ' + value.Ranking + '/' + value.TotalCount + "</div>";
       }
-      if (value.IsQualified !== null) {
-        let color = (value.IsQualified) ? 'red' : 'green';
-        let valueStr = CommonFuns.convertDataByUom(value.TargetDataValue, value.TargetDataUom);
-        let uom = CommonFuns.convertUom(value.TargetDataValue, value.TargetDataUom);
-        content += "<div class='thirdline " + color + "'>" +
-          Qualify[value.IsQualified + 0] + "(" + valueStr + " " + uom + ")" +
-          "</div>";
-      }
+      // if (value.IsQualified !== null) {
+      //   let color = (value.IsQualified) ? 'red' : 'green';
+      //   let valueStr = CommonFuns.convertDataByUom(value.TargetDataValue, value.TargetDataUom);
+      //   let uom = CommonFuns.convertUom(value.TargetDataValue, value.TargetDataUom);
+      //   content += "<div class='thirdline " + color + "'>" +
+      //     Qualify[value.IsQualified + 0] + "(" + valueStr + " " + uom + ")" +
+      //     "</div>";
+      // }
       if (content !== null) {
         energyInfoContent = (energyInfoContent === null) ? "<div class='map-energyinfo-content'>" + content + "</div>" : energyInfoContent + "<div class='map-energyinfo-content'>" + content + "</div>";
       }
