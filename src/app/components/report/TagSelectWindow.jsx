@@ -41,22 +41,60 @@ let TagSelectWindow = React.createClass({
     }).toJS();
   },
   _onCheckAll: function(e, checked) {
-    var obj = {};
-    obj.checkAll = checked;
-    if (this.state.tagList.size !== 0) {
+    var index, i;
+    var tagList = this.state.tagList;
+    var selectedTagList = this.state.selectedTagList;
+    if (tagList.size !== 0) {
       if (checked) {
-        obj.selectedTagList = this.state.tagList;
+        for (i = 0; i < tagList.size; i++) {
+          index = selectedTagList.findIndex((item) => {
+            if (tagList.getIn([i, 'Id']) === item.get('Id')) {
+              return true;
+            }
+          });
+          if (index === -1) {
+            selectedTagList = selectedTagList.push(tagList.get(i));
+          }
+        }
       } else {
-        obj.selectedTagList = Immutable.fromJS([]);
+        for (i = 0; i < tagList.size; i++) {
+          index = selectedTagList.findIndex((item) => {
+            if (tagList.getIn([i, 'Id']) === item.get('Id')) {
+              return true;
+            }
+          });
+          if (index !== -1) {
+            selectedTagList = selectedTagList.delete(index);
+          }
+        }
       }
     }
-    this.setState(obj);
+    this.setState({
+      checkAll: checked,
+      selectedTagList: selectedTagList
+    });
   },
   _onTagListChange: function() {
+    var checkAll = true;
+    var tagList = ReportStore.getTagList();
+    var selectedTagList = this.state.selectedTagList;
+    var index;
+    for (var i = 0; i < tagList.size; i++) {
+      index = selectedTagList.findIndex((item) => {
+        if (tagList.getIn([i, 'Id']) === item.get('Id')) {
+          return true;
+        }
+      });
+      if (index === -1) {
+        checkAll = false;
+        break;
+      }
+    }
     this.setState({
       tagList: ReportStore.getTagList(),
       total: ReportStore.getTagTotalPage(),
-      isLeftLoading: false
+      isLeftLoading: false,
+      checkAll: checkAll
     });
   },
   _onSelectedTagListChange: function() {
