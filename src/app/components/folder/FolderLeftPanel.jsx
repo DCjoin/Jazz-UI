@@ -166,7 +166,8 @@ var FolderLeftPanel = React.createClass({
       })
     } else {
       this.setState({
-        selectedNode: FolderStore.getSelectedNode()
+        selectedNode: FolderStore.getSelectedNode(),
+        buttonDisabled: false
       })
     }
 

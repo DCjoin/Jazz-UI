@@ -898,7 +898,7 @@ let CommonFuns = {
     if (valueStr.indexOf('.', 0) > -1) {
       valueStr = valueStr.substring(0, valueStr.indexOf('.', 0));
     }
-    var newUom = uom;
+    var newUom = ' ' + uom;
     var unit = ['K', 'M', 'G'];
     if (uom == 'KWH') {
       convert(valueStr, 'WH', 1);
