@@ -52,6 +52,7 @@ let TemplateItem = React.createClass({
     ];
 
     return (<Dialog
+      key={this.props.id}
       ref="deleteDialog"
       openImmediately={true}
       actions={dialogActions}
