@@ -3210,105 +3210,113 @@ let ChartStrategyFactor = {
     }
   },
   onSearchDataButtonClickFnStrategy: {
-    onSearchDataButtonClick(analysisPanel, invokeFromMultiTime) { //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
-      analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+    onSearchDataButtonClick(analysisPanel, invokeFromMultiTime) {
+      //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
         endDate = dateRange.end;
-      // deal with multi time submit
-      if (!!invokeFromMultiTime) {
-        let multiRelativeType = MultipleTimespanStore.getOriginalType();
-        let relativeDateValue = analysisPanel._getRelativeDateValue();
-
-        if (multiRelativeType === 'Customerize') {
-          let multiDateRange = MultipleTimespanStore.getMainDateRange();
-          if (multiDateRange[0].getTime() !== startDate.getTime() || multiDateRange[1].getTime() !== endDate.getTime()) {
-            dateSelector.setDateField(multiDateRange[0], multiDateRange[1]);
-          }
-          if (relativeDateValue !== 'Customerize') {
-            analysisPanel._setRelativeDateByValue(multiRelativeType);
-          }
-        } else {
-
-          if (relativeDateValue !== multiRelativeType) {
-            analysisPanel._setRelativeDateByValue(multiRelativeType);
-          }
-        }
+      if (analysisPanel.state.selectedChartType == 'rawdata' && (endDate - startDate > 604800000)) {
+        FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
       } else {
-        let timeRanges = MultipleTimespanStore.getSubmitTimespans();
-        if (timeRanges !== null && timeRanges.length !== 1) {
+        analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
+
+        // deal with multi time submit
+        if (!!invokeFromMultiTime) {
           let multiRelativeType = MultipleTimespanStore.getOriginalType();
           let relativeDateValue = analysisPanel._getRelativeDateValue();
-          if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
 
+          if (multiRelativeType === 'Customerize') {
+            let multiDateRange = MultipleTimespanStore.getMainDateRange();
+            if (multiDateRange[0].getTime() !== startDate.getTime() || multiDateRange[1].getTime() !== endDate.getTime()) {
+              dateSelector.setDateField(multiDateRange[0], multiDateRange[1]);
+            }
+            if (relativeDateValue !== 'Customerize') {
+              analysisPanel._setRelativeDateByValue(multiRelativeType);
+            }
           } else {
-            MultipleTimespanStore.initData(relativeDateValue, startDate, endDate);
+
+            if (relativeDateValue !== multiRelativeType) {
+              analysisPanel._setRelativeDateByValue(multiRelativeType);
+            }
+          }
+        } else {
+          let timeRanges = MultipleTimespanStore.getSubmitTimespans();
+          if (timeRanges !== null && timeRanges.length !== 1) {
+            let multiRelativeType = MultipleTimespanStore.getOriginalType();
+            let relativeDateValue = analysisPanel._getRelativeDateValue();
+            if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
+
+            } else {
+              MultipleTimespanStore.initData(relativeDateValue, startDate, endDate);
+            }
           }
         }
-      }
 
 
-      let clearWeatherflag = false,
-        nodeOptions;
+        let clearWeatherflag = false,
+          nodeOptions;
 
-      if (startDate.getTime() >= endDate.getTime()) {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
-        return;
-      }
+        if (startDate.getTime() >= endDate.getTime()) {
+          GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+          return;
+        }
 
-      nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
-      if (!nodeOptions || nodeOptions.length === 0) {
-        analysisPanel.setState({
-          energyData: null
-        });
-        return;
-      } else {
-        if (analysisPanel.state.weatherOption !== null) {
-          let hierId = null;
+        nodeOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+        if (!nodeOptions || nodeOptions.length === 0) {
+          analysisPanel.setState({
+            energyData: null
+          });
+          return;
+        } else {
+          if (analysisPanel.state.weatherOption !== null) {
+            let hierId = null;
 
-          nodeOptions.forEach(item => {
-            if (hierId === null) {
-              hierId = item.hierId;
-            } else if (hierId !== item.hierId) {
-              clearWeatherflag = true;
-              return;
+            nodeOptions.forEach(item => {
+              if (hierId === null) {
+                hierId = item.hierId;
+              } else if (hierId !== item.hierId) {
+                clearWeatherflag = true;
+                return;
+              }
+            });
+          }
+        }
+
+        let relativeDateValue = analysisPanel._getRelativeDateValue();
+
+        let chartType = analysisPanel.state.selectedChartType;
+        if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
+          analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel, clearWeatherflag);
+        } else {
+          let timeRanges;
+          if (chartType === 'pie') {
+            let timeRanges;
+            if (nodeOptions.length > 1) {
+              MultiTimespanAction.clearMultiTimespan('both');
+              timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+            } else {
+              timeRanges = MultipleTimespanStore.getSubmitTimespans();
+              if (timeRanges === null) {
+                timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+              }
             }
+            analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
+          } else if (chartType === 'rawdata') {
+            MultiTimespanAction.clearMultiTimespan('both');
+            let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+            analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
+          }
+        }
+
+        if (clearWeatherflag) {
+          analysisPanel.setState({
+            weatherOption: null
           });
         }
       }
 
-      let relativeDateValue = analysisPanel._getRelativeDateValue();
 
-      let chartType = analysisPanel.state.selectedChartType;
-      if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
-        analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, relativeDateValue, analysisPanel, clearWeatherflag);
-      } else {
-        let timeRanges;
-        if (chartType === 'pie') {
-          let timeRanges;
-          if (nodeOptions.length > 1) {
-            MultiTimespanAction.clearMultiTimespan('both');
-            timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-          } else {
-            timeRanges = MultipleTimespanStore.getSubmitTimespans();
-            if (timeRanges === null) {
-              timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-            }
-          }
-          analysisPanel.state.chartStrategy.getPieEnergyDataFn(timeRanges, 2, nodeOptions, relativeDateValue);
-        } else if (chartType === 'rawdata') {
-          MultiTimespanAction.clearMultiTimespan('both');
-          let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
-          analysisPanel.state.chartStrategy.getEnergyRawDataFn(timeRanges, 0, nodeOptions, relativeDateValue);
-        }
-      }
-
-      if (clearWeatherflag) {
-        analysisPanel.setState({
-          weatherOption: null
-        });
-      }
     },
     onCostSearchDataButtonClick(analysisPanel) {
       analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
