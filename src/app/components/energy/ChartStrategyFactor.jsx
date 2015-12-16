@@ -613,9 +613,9 @@ let ChartStrategyFactor = {
       let buttonDisabled = (!analysisPanel.state.energyData || !selectedWidget.get('ChartType'));
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
                               <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
-                              <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} />
-                              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} />
-                              <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} />
+                              <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
+                              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} disabled={buttonDisabled}/>
+                              <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} disabled={buttonDisabled}/>
                               <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
                            </IconMenu>;
       return widgetOptMenu;
@@ -639,8 +639,8 @@ let ChartStrategyFactor = {
       let buttonDisabled = (!analysisPanel.state.energyData || !selectedWidget.get('ChartType'));
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
                               <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
-                              <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} />
-                              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} />
+                              <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
+                              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} disabled={buttonDisabled}/>
                               <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
                            </IconMenu>;
       return widgetOptMenu;
