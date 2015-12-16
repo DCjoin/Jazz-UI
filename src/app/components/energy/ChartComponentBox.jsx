@@ -219,6 +219,10 @@ let defaultConfig = {
     verticalAlign: 'top',
     y: 40,
     x: -25,
+    useHTML: true,
+    labelFormatter: function() {
+      return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name + '">' + this.name + '</div>';
+    },
     itemStyle: {
       cursor: 'default',
       color: '#3b3b3b',
