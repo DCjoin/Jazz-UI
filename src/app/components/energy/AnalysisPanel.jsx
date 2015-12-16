@@ -188,7 +188,7 @@ let AnalysisPanel = React.createClass({
         <OrigamiPanel/>
         <div style={{
       display: 'flex',
-      'flex-direction': 'row'
+      flexDirection: 'row'
     }}>
           {collapseButton}
 

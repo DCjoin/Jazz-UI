@@ -508,8 +508,8 @@ let DataSelectMainPanel = React.createClass({
         }}>
             {menupaper}
             <div style={{
-          'min-height': '52px',
-          'padding-right': '10px'
+          minHeight: '52px',
+          paddingRight: '10px'
         }}>
               {pagination}
             </div>
