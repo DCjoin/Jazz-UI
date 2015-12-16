@@ -114,6 +114,7 @@ let JazzApp = React.createClass({
         me._setHighchartConfig();
       });
     };
+    this._onClearGlobalError();
     if (lang == 'en-us') {
       require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
     } else {
