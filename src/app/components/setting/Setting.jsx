@@ -42,7 +42,8 @@ let lastBizType = null;
 let nextEnergyType = null;
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
-  SWITCH_EC: 'switchec'
+  SWITCH_EC: 'switchec',
+  ERROR_NOTICE: 'errornotice'
 };
 
 
@@ -450,6 +451,24 @@ let Setting = React.createClass({
       <Dialog {...props}/>
       )
   },
+  _getErrorNoticeDialog: function() {
+    var that = this;
+    var _onCancel = function() {
+      that.setState({
+        dialogType: ''
+      })
+    };
+    var props = {
+      title: I18N.Platform.ServiceProvider.ErrorNotice,
+      firstActionLabel: I18N.Mail.Send.Ok,
+      content: FolderStore.getDisplayDialog().contentInfo,
+      onFirstActionTouchTap: _onCancel,
+      onDismiss: _onCancel,
+    }
+    return (
+      <Dialog {...props}/>
+      )
+  },
   render: function() {
     let me = this;
     var dialog;
@@ -460,6 +479,10 @@ let Setting = React.createClass({
       case DIALOG_TYPE.SWITCH_EC:
         dialog = this._getSwitchECDialog();
         break;
+      case DIALOG_TYPE.ERROR_NOTICE:
+        dialog = this._getErrorNoticeDialog();
+        break;
+
     }
 
     let bizTypeMap = {

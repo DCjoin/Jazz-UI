@@ -17,7 +17,7 @@ let NODE_LOADING_EVENT = 'nodeloading';
 let BASELINE_BTN_DISABLED_EVENT = 'baselinebtndisabled';
 let WEATHER_BTN_DISABLED_EVENT = 'weatherbtndisabled';
 let DATA_CHANGED_EVENT = "datachanged";
-var _data = {};
+var _data = [];
 var _totalTagStatus = [];
 var _hierId = null;
 var _dimId = null;
@@ -201,7 +201,7 @@ var TagStore = assign({}, PrototypeStore, {
     return _tagSum;
   },
   resetTagInfo: function(widgetType) {
-    _data = {};
+    _data = [];
     _totalTagStatus = [];
     _dimId = null;
     _dimName = null;

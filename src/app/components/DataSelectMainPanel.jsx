@@ -16,6 +16,7 @@ import TagMenu from './tag/TagMenu.jsx';
 import LabelMenuAction from '../actions/LabelMenuAction.jsx';
 import CommodityAction from '../actions/CommodityAction.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
+import FolderAction from '../actions/FolderAction.jsx';
 
 
 var alarmType = null; //alarmType:0:neither 1:baseline 2:both null:all
@@ -223,21 +224,26 @@ let DataSelectMainPanel = React.createClass({
   },
   _onSearch: function(e) {
     var value = e.target.value;
-    if (value) {
-      React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
-      filters = [
-        {
-          "type": "string",
-          "value": [value],
-          "field": "Name"
-        }
-      ];
+    if (TagStore.getData().length === 0) {
+      FolderAction.setDisplayDialog('errornotice', null, I18N.Tag.SelectError);
     } else {
-      React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
-      filters = null;
+      if (value) {
+        React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+        filters = [
+          {
+            "type": "string",
+            "value": [value],
+            "field": "Name"
+          }
+        ];
+      } else {
+        React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+        filters = null;
+      }
+      page = 1;
+      TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
     }
-    page = 1;
-    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+
 
   },
   _onSearchClick: function() {

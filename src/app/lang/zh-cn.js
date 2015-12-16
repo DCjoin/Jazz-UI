@@ -926,6 +926,7 @@ I18N.Tag.AlarmStatus1 = '基准值未配置';
 I18N.Tag.AlarmStatus2 = '基准值已配置';
 I18N.Tag.AlarmStatus3 = '报警未配置';
 I18N.Tag.AlarmStatus4 = '报警已配置';
+I18N.Tag.SelectError = '请选择层级节点-维度节点。';
 
 I18N.Template = {};
 I18N.Template.Copy = {};
