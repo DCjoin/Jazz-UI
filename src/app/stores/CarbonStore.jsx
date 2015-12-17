@@ -222,7 +222,6 @@ CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
       CarbonStore._onDataChanged(action.carbonData, action.submitParams);
       CarbonStore.emitCarbonDataLoadedListener();
       CarbonStore._checkErrors(action.energyData);
-      CarbonStore.emitCarbonDataLoadErrorsListener();
       break;
     case ActionTypes.GET_CARBON_DATA_ERROR:
       CarbonStore._onDataChanged(null, action.submitParams);

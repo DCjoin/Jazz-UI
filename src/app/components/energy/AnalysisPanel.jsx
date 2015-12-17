@@ -495,9 +495,7 @@ let AnalysisPanel = React.createClass({
     let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
     let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
     this.setState({
-      chartStrategy: chartSttg,
-      remarkDisplay: false,
-      remarkText: ''
+      chartStrategy: chartSttg
     });
     chartSttg.onEnergyTypeChangeFn(e, selectedIndex, menuItem);
   },
@@ -527,7 +525,7 @@ let AnalysisPanel = React.createClass({
     var _onCancel = function() {
       that.setState({
         dialogType: ''
-      })
+      });
     };
     var props = {
       title: I18N.Folder.Widget.SwitchLeave,
@@ -537,10 +535,10 @@ let AnalysisPanel = React.createClass({
       onFirstActionTouchTap: _onConfirm,
       onSecondActionTouchTap: _onCancel,
       onDismiss: _onCancel,
-    }
+    };
     return (
       <EnergyDialog {...props}/>
-      )
+      );
   },
   _onStepChange(step) {
     this.state.chartStrategy.handleStepChangeFn(this, step);
