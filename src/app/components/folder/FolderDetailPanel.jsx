@@ -148,7 +148,7 @@ var FolderDetailPanel = React.createClass({
   },
   _onTitleMenuSelect: function(e, item) {
     let menuIndex = parseInt(item.key);
-    this.props.onOperationSelect(this.props.nodeData, menuIndex);
+    this.props.onOperationSelect(this.props.nodeData, menuIndex, true);
   },
   _onItemMenuSelect: function(node, index) {
     this.props.onOperationSelect(node, index);

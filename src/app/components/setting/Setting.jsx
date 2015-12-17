@@ -40,6 +40,7 @@ import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 let lastEnergyType = null;
 let lastBizType = null;
 let nextEnergyType = null;
+let isDelete = false;
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
   SWITCH_EC: 'switchec',
@@ -204,7 +205,12 @@ let Setting = React.createClass({
       templateShow: false
     });
   },
-  _onTemplateSelect: function(nodeData, index) {
+  _onTemplateSelect: function(nodeData, index, flag) {
+    if (!!flag) {
+      isDelete = flag;
+    } else {
+      isDelete = false;
+    }
     this.setState({
       templateNode: nodeData,
       templateId: index,
@@ -238,7 +244,7 @@ let Setting = React.createClass({
             template = <SendView onDismiss={this._onTemplateDismiss} sendNode={this.state.templateNode}/>;
             break;
           case 3:
-            template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={false}/>;
+            template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={this.state.templateNode} isLoadByWidget={isDelete}/>;
             break;
         }
       } else {
