@@ -295,25 +295,25 @@ let Setting = React.createClass({
     });
   },
   _onEnergyTypeChanged(energyType) {
-    // var that = this;
-    // that.setState({
-    //   selectedEnergyType: energyType
-    // });
-    //
-    // that.setState({
-    //   refreshChart: true
-    // }, () => {
-    //   that.setState({
-    //     refreshChart: false,
-    //     selectedEnergyType: energyType
-    //   });
-    // });
-    if (energyType != this.state.selectedEnergyType) {
-      nextEnergyType = energyType;
-      this.setState({
-        dialogType: DIALOG_TYPE.SWITCH_EC
-      })
-    }
+    var that = this;
+    that.setState({
+      selectedEnergyType: energyType
+    });
+
+    that.setState({
+      refreshChart: true
+    }, () => {
+      that.setState({
+        refreshChart: false,
+        selectedEnergyType: energyType
+      });
+    });
+    // if (energyType != this.state.selectedEnergyType) {
+    //   nextEnergyType = energyType;
+    //   this.setState({
+    //     dialogType: DIALOG_TYPE.SWITCH_EC
+    //   })
+    // }
 
 
   },
@@ -392,41 +392,7 @@ let Setting = React.createClass({
     }
     return energyType;
   },
-  _getSwitchECDialog: function() {
-    var that = this;
-    var _onConfirm = function() {
-      that.setState({
-        selectedEnergyType: nextEnergyType
-      });
 
-      that.setState({
-        refreshChart: true
-      }, () => {
-        that.setState({
-          refreshChart: false,
-          selectedEnergyType: nextEnergyType
-        });
-      });
-    //EnergyAction.setEnergyType(nextEnergyType);
-    };
-    var _onCancel = function() {
-      that.setState({
-        dialogType: ''
-      })
-    };
-    var props = {
-      title: I18N.Folder.Widget.SwitchLeave,
-      firstActionLabel: I18N.Folder.Widget.SwitchButton,
-      secondActionLabel: I18N.Folder.Widget.LeaveCancel,
-      content: I18N.Folder.Widget.SwitchContent,
-      onFirstActionTouchTap: _onConfirm,
-      onSecondActionTouchTap: _onCancel,
-      onDismiss: _onCancel,
-    }
-    return (
-      <Dialog {...props}/>
-      )
-  },
   _getSwitchWidgetDialog: function() {
     var that = this;
     var _onConfirm = function() {
@@ -475,9 +441,6 @@ let Setting = React.createClass({
     switch (this.state.dialogType) {
       case DIALOG_TYPE.SWITCH_WIDGET:
         dialog = this._getSwitchWidgetDialog();
-        break;
-      case DIALOG_TYPE.SWITCH_EC:
-        dialog = this._getSwitchECDialog();
         break;
       case DIALOG_TYPE.ERROR_NOTICE:
         dialog = this._getErrorNoticeDialog();

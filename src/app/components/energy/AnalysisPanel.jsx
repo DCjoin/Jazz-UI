@@ -29,8 +29,15 @@ import CalendarManager from './CalendarManager.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
+import EnergyDialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
+
+const DIALOG_TYPE = {
+  SWITCH_WIDGET: "switchwidget",
+  SWITCH_EC: 'switchec',
+  ERROR_NOTICE: 'errornotice'
+};
 
 let lastRelativeDate = 'Customerize';
 
@@ -80,7 +87,8 @@ let AnalysisPanel = React.createClass({
       chartStrategy: chartStrategy,
       energyType: this.props.energyType || 'Energy', //'one of energy, cost carbon'
       remarkText: '',
-      remarkDisplay: false
+      remarkDisplay: false,
+      dialogType: ''
     };
 
     var obj = chartStrategy.getInitialStateFn(this);
@@ -121,10 +129,21 @@ let AnalysisPanel = React.createClass({
 
 
   },
+  _onDialogChanged: function() {
+    this.setState({
+      dialogType: FolderStore.getDisplayDialog().type
+    });
+  },
   render() {
     let me = this,
       errorDialog = null,
       energyPart = null;
+    var dialog;
+    switch (this.state.dialogType) {
+      case DIALOG_TYPE.SWITCH_EC:
+        dialog = this._getSwitchECDialog();
+        break;
+    }
 
     if (me.state.errorObj) {
       errorDialog = <ErrorStepDialog {...me.state.errorObj} onErrorDialogAction={me._onErrorDialogAction}></ErrorStepDialog>;
@@ -224,6 +243,7 @@ let AnalysisPanel = React.createClass({
         {energyPart}
         {remarkDiv}
         {errorDialog}
+        {dialog}
 
       </div>;
 
@@ -267,6 +287,7 @@ let AnalysisPanel = React.createClass({
         this.state.chartStrategy.onHierNodeChangeFn(this);
       }
     }
+    FolderStore.addDialogListener(this._onDialogChanged);
 
   },
   componentWillUnmount: function() {
@@ -278,6 +299,7 @@ let AnalysisPanel = React.createClass({
       LabelMenuStore.clearHierNodes();
       LabelMenuStore.clearHierNode();
     }
+    FolderStore.removeDialogListener(this._onDialogChanged);
   },
   getRemarck: function(e) {
     this.setState({
@@ -476,6 +498,47 @@ let AnalysisPanel = React.createClass({
       chartStrategy: chartSttg
     });
     chartSttg.onEnergyTypeChangeFn(e, selectedIndex, menuItem);
+  },
+  _getSwitchECDialog: function() {
+    var that = this;
+    var _onConfirm = function() {
+      // that.setState({
+      //   selectedEnergyType: FolderStore.getDisplayDialog().nodeData
+      // });
+      //
+      // that.setState({
+      //   refreshChart: true
+      // }, () => {
+      //   that.setState({
+      //     refreshChart: false,
+      //     selectedEnergyType: FolderStore.getDisplayDialog().nodeData
+      //   });
+      // });
+      let capMenuItemVal = FolderStore.getDisplayDialog().node;
+      let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
+      that.setState({
+        chartStrategy: chartSttg
+      });
+      that.props.onEnergyTypeChange(capMenuItemVal);
+    //EnergyAction.setEnergyType(nextEnergyType);
+    };
+    var _onCancel = function() {
+      that.setState({
+        dialogType: ''
+      })
+    };
+    var props = {
+      title: I18N.Folder.Widget.SwitchLeave,
+      firstActionLabel: I18N.Folder.Widget.SwitchButton,
+      secondActionLabel: I18N.Folder.Widget.LeaveCancel,
+      content: I18N.Folder.Widget.SwitchContent,
+      onFirstActionTouchTap: _onConfirm,
+      onSecondActionTouchTap: _onCancel,
+      onDismiss: _onCancel,
+    }
+    return (
+      <EnergyDialog {...props}/>
+      )
   },
   _onStepChange(step) {
     this.state.chartStrategy.handleStepChangeFn(this, step);
@@ -891,11 +954,10 @@ let AnalysisPanel = React.createClass({
     };
   },
   _onBaselineBtnDisabled: function() {
-    if (TagStore.getBaselineBtnDisabled() != this.state.baselineBtnStatus) {
-      this.setState({
-        baselineBtnStatus: TagStore.getBaselineBtnDisabled()
-      });
-    }
+    this.setState({
+      baselineBtnStatus: TagStore.getBaselineBtnDisabled()
+    });
+
 
   },
   _onWeatherBtnDisabled: function() {
@@ -911,30 +973,30 @@ let AnalysisPanel = React.createClass({
     this.setState({
       unitBaselineBtnStatus: CommodityStore.getUCButtonStatus()
     });
+
   },
   _onTouBtnDisabled: function() {
     var touBtnStatus = this.state.touBtnStatus;
     var newStatus = CommodityStore.getECButtonStatus();
-    if (newStatus != touBtnStatus) {
-      if (!newStatus && this.state.step === null) {
+    if (!newStatus && this.state.step === null) {
+      this.setState({
+        touBtnStatus: false
+      });
+    } else if (!newStatus && this.state.step !== null && this.state.step > 1) {
+      this.setState({
+        touBtnStatus: false
+      });
+    } else {
+      this.setState({
+        touBtnStatus: true
+      });
+      if (this.state.touBtnSelected) {
         this.setState({
-          touBtnStatus: false
+          touBtnSelected: false
         });
-      } else if (!newStatus && this.state.step !== null && this.state.step > 1) {
-        this.setState({
-          touBtnStatus: false
-        });
-      } else {
-        this.setState({
-          touBtnStatus: true
-        });
-        if (this.state.touBtnSelected) {
-          this.setState({
-            touBtnSelected: false
-          });
-        }
       }
     }
+
 
   },
   _onSearchBtnItemTouchTap(e, child) {
