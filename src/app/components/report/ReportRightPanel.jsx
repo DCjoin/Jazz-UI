@@ -221,7 +221,7 @@ var ReportRightPanel = React.createClass({
     var fileName = file.name;
 
     if (!me._endsWith(fileName.toLowerCase(), '.xlsx') && !me._endsWith(fileName.toLowerCase(), '.xls')) {
-      window.alert("文件类型非法，请重新选择模版文件。");
+      CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile);
       return;
     }
     var createElement = window.Highcharts.createElement,
@@ -616,14 +616,14 @@ var ReportRightPanel = React.createClass({
             <RadioButton onCheck={me._onTemplateTypeChange} checked={me.state.checkedValue === "uploadedTemplate"} value="uploadedTemplate" label={I18N.EM.Report.ExistTemplate} />
             <div style={{
             display: 'flex',
-            'flex-direction': 'row'
+            flexDirection: 'row'
           }}>
               <ViewableDropDownMenu  {...templateEditProps}></ViewableDropDownMenu>
               {downloadButton}
             </div>
             <div style={{
             display: 'flex',
-            'flex-direction': 'row'
+            flexDirection: 'row'
           }}>
               <RadioButton onCheck={me._onTemplateTypeChange} style={{
             width: '150px'
@@ -640,6 +640,7 @@ var ReportRightPanel = React.createClass({
       var dataLength = reportItem.get('data').size;
       var reportData = reportItem.get('data').map(function(item, index) {
         let props = {
+          key: index,
           ref: 'reportData' + (index + 1),
           disabled: me.state.disabled,
           startTime: item.get('DataStartTime'),

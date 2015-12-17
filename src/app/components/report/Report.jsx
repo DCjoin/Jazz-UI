@@ -36,8 +36,8 @@ let Report = React.createClass({
     }}><LeftPanel/></div>;
 
     mainPanel = <div style={{
-      'margin-top': '-16px',
-      'background-color': '#ffffff',
+      marginTop: '-16px',
+      backgroundColor: '#ffffff',
       position: 'relative',
       display: 'flex',
       flex: 1

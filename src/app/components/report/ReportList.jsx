@@ -34,6 +34,7 @@ let ReportList = React.createClass({
     if (reportList && reportList.size !== 0) {
       reportItems = reportList.map(function(item) {
         let props = {
+          key: item.get('Id'),
           id: item.get('Id'),
           templateId: item.get('TemplateId'),
           name: item.get('Name'),

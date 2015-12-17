@@ -46,7 +46,7 @@ var Template = React.createClass({
     var fileName = file.name;
 
     if (!me._endsWith(fileName.toLowerCase(), '.xlsx') && !me._endsWith(fileName.toLowerCase(), '.xls')) {
-      window.alert("文件类型非法，请重新选择模版文件。");
+      CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile);
       return;
     }
     var createElement = window.Highcharts.createElement,

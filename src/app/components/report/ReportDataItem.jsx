@@ -344,6 +344,7 @@ let ReportDataItem = React.createClass({
       }
     }
   },
+  componentWillUnmount: function() {},
   render() {
     var typeItems = [{
       payload: 0,
@@ -530,7 +531,7 @@ let ReportDataItem = React.createClass({
           <span>{I18N.EM.Report.TimeRange}</span>
           <div style={{
         display: 'flex',
-        'flex-direction': 'row'
+        flexDirection: 'row'
       }}>
             <ViewableDropDownMenu  {...dateTypeProps}></ViewableDropDownMenu>
             {dateTimeSelector}

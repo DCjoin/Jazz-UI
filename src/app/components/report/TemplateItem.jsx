@@ -11,7 +11,6 @@ import classNames from 'classnames';
 let TemplateItem = React.createClass({
   getInitialState: function() {
     return {
-      showDeleteDialog: false,
       showDeleteButton: false
     };
   },
@@ -21,50 +20,15 @@ let TemplateItem = React.createClass({
     var time = CommonFuns.formatChinaDate(createTime, true);
     return time;
   },
-  _handleDialogDismiss() {
-    this.setState({
-      showDeleteDialog: false,
-      showDeleteButton: false
-    });
-  },
   _showDeleteDialog() {
-    this.setState({
-      showDeleteDialog: true
-    });
+    if (this.props.showDeleteDialog) {
+      this.props.showDeleteDialog(this.props.id, this.props.name);
+    }
   },
   _showDeleteButton(value) {
     this.setState({
       showDeleteButton: value
     });
-  },
-  _renderDeleteDialog() {
-    if (!this.state.showDeleteDialog) {
-      return null;
-    }
-    var dialogActions = [
-      <FlatButton
-      label={I18N.EM.Report.Delete}
-      onClick={this._deleteTemplate} />,
-
-      <FlatButton
-      label={I18N.EM.Report.Cancel}
-      onClick={this._handleDialogDismiss} />
-    ];
-
-    return (<Dialog
-      key={this.props.id}
-      ref="deleteDialog"
-      openImmediately={true}
-      actions={dialogActions}
-      modal={true}>
-        {'确定删除报表模板 "' + this.props.name + ' "吗？'}
-      </Dialog>);
-  },
-
-  _deleteTemplate: function() {
-    var id = this.props.id;
-    ReportAction.deleteTemplateById(id);
-    this._handleDialogDismiss();
   },
   _downloadTemplate: function() {
     var templateId = this.props.id;
@@ -81,7 +45,6 @@ let TemplateItem = React.createClass({
     var me = this;
     var displayTime = me._getDisplayTime();
     var deleteButton = null;
-    var deleteDialog = me._renderDeleteDialog();
     if (me.state.showDeleteButton) {
       if (!me.props.isReference) {
         deleteButton = <div className="jazz-template-item-left-action">
@@ -114,7 +77,6 @@ let TemplateItem = React.createClass({
       <div className='jazz-template-item-left'>
         {deleteButton}
       </div>
-      {deleteDialog}
     </div>
       );
   }

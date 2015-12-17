@@ -328,7 +328,7 @@ let ChartPanel = React.createClass({
       energyPart = <div style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         marginBottom: '20px'
       }}>
                         <div style={{
@@ -387,7 +387,7 @@ let ChartPanel = React.createClass({
       <div style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         backgroundColor: '#fbfbfb'
       }}>
           {widgetWd}

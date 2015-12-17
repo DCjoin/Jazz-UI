@@ -244,7 +244,7 @@ let TagSelectWindow = React.createClass({
     }
     var leftTagListHeader = <div style={{
       display: 'flex',
-      'flex-direction': 'row',
+      flexDirection: 'row',
       paddingLeft: '7px',
       backgroundColor: '#fbfbfb',
       height: '30px',
@@ -258,7 +258,7 @@ let TagSelectWindow = React.createClass({
       </div>;
     var rightTagListHeader = <div style={{
       display: 'flex',
-      'flex-direction': 'row',
+      flexDirection: 'row',
       paddingLeft: '7px',
       backgroundColor: '#efefef',
       height: '30px',
@@ -277,7 +277,7 @@ let TagSelectWindow = React.createClass({
     leftPanelField = (<div style={{
       flex: 1,
       display: 'flex',
-      'flex-direction': 'column',
+      flexDirection: 'column',
       marginLeft: '20px',
       marginRight: '45px'
     }}>
@@ -303,7 +303,7 @@ let TagSelectWindow = React.createClass({
     rightPanel = <div style={{
       flex: 1,
       display: 'flex',
-      'flex-direction': 'column',
+      flexDirection: 'column',
       marginRight: '23px'
     }}><div style={{
       marginLeft: '10px',
@@ -317,7 +317,7 @@ let TagSelectWindow = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        'flex-direction': 'row',
+        flexDirection: 'row',
         flex: 1
       }}>
           {leftPanelField}
