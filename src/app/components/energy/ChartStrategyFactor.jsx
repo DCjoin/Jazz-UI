@@ -2366,12 +2366,18 @@ let ChartStrategyFactor = {
       let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
         paramsObj = EnergyStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges;
-
+      var weatherOption = analysisPanel.state.weatherOption;
+      if (step === 0) {
+        weatherOption.IncludeTempValue = false;
+        weatherOption.IncludeHumidityValue = false;
+      }
       analysisPanel.setState({
         step: step,
-        isCalendarInited: false
+        isCalendarInited: false,
+        weatherOption: weatherOption
       });
-      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel.state.weatherOption);
+
+      analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weatherOption);
     },
     handleCostStepChange(analysisPanel, step) {
       let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
