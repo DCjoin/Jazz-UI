@@ -4052,7 +4052,7 @@ let ChartStrategyFactor = {
         energyPart = <div style={{
           flex: 1,
           display: 'flex',
-          'flex-direction': 'column',
+          flexDirection: 'column',
           marginBottom: '20px',
           overflow: 'hidden'
         }}>
@@ -4078,7 +4078,7 @@ let ChartStrategyFactor = {
         energyPart = <div style={{
           flex: 1,
           display: 'flex',
-          'flex-direction': 'column',
+          flexDirection: 'column',
           marginBottom: '0px',
           marginLeft: '9px'
         }}>
@@ -4109,7 +4109,7 @@ let ChartStrategyFactor = {
       energyPart = <div style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         marginBottom: '20px',
         marginLeft: '9px'
       }}>
@@ -4139,7 +4139,7 @@ let ChartStrategyFactor = {
       energyPart = <div style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         marginBottom: '20px',
         marginLeft: '9px'
       }}>
@@ -4169,7 +4169,7 @@ let ChartStrategyFactor = {
       energyPart = <div style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         marginBottom: '20px',
         marginLeft: '9px'
       }}>
@@ -4200,7 +4200,7 @@ let ChartStrategyFactor = {
       energyPart = <div style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         marginBottom: '20px',
         marginLeft: '9px'
       }}>
@@ -4229,7 +4229,7 @@ let ChartStrategyFactor = {
       energyPart = <div style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         marginBottom: '20px',
         marginLeft: '9px'
       }}>
@@ -4253,7 +4253,7 @@ let ChartStrategyFactor = {
       energyPart = <div ref="chartContainer" style={{
         flex: 1,
         display: 'flex',
-        'flex-direction': 'column',
+        flexDirection: 'column',
         marginBottom: '20px',
         marginLeft: '9px'
       }}>
