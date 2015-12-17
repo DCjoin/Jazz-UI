@@ -404,11 +404,11 @@ var FolderStore = assign({}, PrototypeStore, {
         contentInfo: contentInfo
       };
     },
-    swtichWidget: function() {
+    switchWidget: function() {
       var id = _selectedNode.get('ParentId');
       this.deleteItem(_selectedNode, false);
       if (!!_dialogInfo.node) {
-        _selectedNode = _dialogInfo.node;
+        _selectedNode = this.getNodeById(_dialogInfo.node.get('Id')) ;
       } else {
         _selectedNode = this.getNodeById(id);
       }
@@ -689,7 +689,7 @@ var FolderStore = assign({}, PrototypeStore, {
         FolderStore.emitDialogChange();
         break;
       case FolderAction.SWTICH_WIDGET:
-        FolderStore.swtichWidget();
+        FolderStore.switchWidget();
         FolderStore.emitSelectedNodeChange();
         FolderStore.emitFolderTreeChange();
         break;
