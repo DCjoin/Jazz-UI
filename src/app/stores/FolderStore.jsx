@@ -407,7 +407,12 @@ var FolderStore = assign({}, PrototypeStore, {
     swtichWidget: function() {
       var id = _selectedNode.get('ParentId');
       this.deleteItem(_selectedNode, false);
-      _selectedNode = this.getNodeById(id);
+      if (!!_dialogInfo.node) {
+        _selectedNode = _dialogInfo.node;
+      } else {
+        _selectedNode = this.getNodeById(id);
+      }
+
     },
     getDisplayDialog: function() {
       return _dialogInfo;
