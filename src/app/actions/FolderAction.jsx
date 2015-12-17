@@ -317,6 +317,12 @@ let FolderAction = {
       contentInfo: contentInfo
     });
   },
+  swtichWidget: function() {
+    AppDispatcher.dispatch({
+      type: Action.SWTICH_WIDGET
+    });
+
+  },
 };
 
 module.exports = FolderAction;

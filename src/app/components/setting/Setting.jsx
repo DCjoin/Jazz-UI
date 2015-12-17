@@ -396,8 +396,7 @@ let Setting = React.createClass({
   _getSwitchWidgetDialog: function() {
     var that = this;
     var _onConfirm = function() {
-      FolderAction.deleteItem(that.state.selectedNode, false);
-      FolderAction.setSelectedNode(FolderStore.getDisplayDialog().node);
+      FolderAction.swtichWidget();
     };
     var _onCancel = function() {
       that.setState({
