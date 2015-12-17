@@ -29,6 +29,7 @@ module.exports = {
     ALARM_WIDGET_SAVE_SUCCESS: null,
     ALARM_WIDGET_SAVE_ERROR: null,
     DISPLAY_DIALOG: null,
+    SWTICH_WIDGET: null
   })
 
 };

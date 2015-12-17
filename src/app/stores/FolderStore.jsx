@@ -402,6 +402,11 @@ var FolderStore = assign({}, PrototypeStore, {
         contentInfo: contentInfo
       };
     },
+    swtichWidget: function() {
+      var id = _selectedNode.get('ParentId');
+      this.deleteItem(_selectedNode, false);
+      _selectedNode = this.getNodeById(id);
+    },
     getDisplayDialog: function() {
       return _dialogInfo;
     },
@@ -675,6 +680,11 @@ var FolderStore = assign({}, PrototypeStore, {
       case FolderAction.DISPLAY_DIALOG:
         FolderStore.setDisplayDialog(action.dialogType, action.nodeData, action.contentInfo);
         FolderStore.emitDialogChange();
+        break;
+      case FolderAction.SWTICH_WIDGET:
+        FolderStore.swtichWidget();
+        FolderStore.emitSelectedNodeChange();
+        FolderStore.emitFolderTreeChange();
         break;
     }
   });
