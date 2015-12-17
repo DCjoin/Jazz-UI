@@ -494,7 +494,9 @@ let AnalysisPanel = React.createClass({
     let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
     let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
     this.setState({
-      chartStrategy: chartSttg
+      chartStrategy: chartSttg,
+      remarkDisplay: false,
+      remarkText: ''
     });
     chartSttg.onEnergyTypeChangeFn(e, selectedIndex, menuItem);
   },
