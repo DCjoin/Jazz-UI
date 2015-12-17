@@ -233,6 +233,8 @@ var FolderStore = assign({}, PrototypeStore, {
           }
 
         }
+      } else {
+        _selectedNode = this.getNodeById(_selectedNode.get('Id'));
       }
 
 
