@@ -595,10 +595,14 @@ var MainAppBar = React.createClass({
       backgroundImage: 'url(' + this.props.logoUrl + ')'
     }}></div> : null;
     var title = (!!this.props.title) ? <div className='jazz-title'>{this.props.title}</div> : null;
-    var mainmenu = (this.props.items[0].name == 'config') ? <div className="jazz-menu"><div className={classnames({
-      "jazz-mainmenu-main": true,
-      "active": this.state.configSelected
-    })} style={configStyle} onClick={this._onConfigClick}>{this.props.items[0].title}</div></div> : <MainMenu items={this.props.items} params={params}  onClick={this._onClick}/>;
+    var mainmenu;
+    if (!!this.props.items) {
+      mainmenu = (this.props.items[0].name == 'config') ? <div className="jazz-menu"><div className={classnames({
+        "jazz-mainmenu-main": true,
+        "active": this.state.configSelected
+      })} style={configStyle} onClick={this._onConfigClick}>{this.props.items[0].title}</div></div> : <MainMenu items={this.props.items} params={params}  onClick={this._onClick}/>;
+    }
+    ;
     var mail = (!!this.props.title) ? (      <div className="jazz-mainmenu-user" style={{
       display: 'flex'
     }}>
