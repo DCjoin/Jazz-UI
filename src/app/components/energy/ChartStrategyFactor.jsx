@@ -4573,7 +4573,9 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         energyData: null,
         energyRawData: null,
-        weatherOption: null
+        weatherOption: null,
+        remarkText: '',
+        remarkDisplay: false
       });
     },
     clearCarbonChartData(analysisPanel) {
@@ -4582,7 +4584,9 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         energyData: null,
         energyRawData: null,
-        destination: 2
+        destination: 2,
+        remarkText: '',
+        remarkDisplay: false
       });
     },
     clearCostChartData(analysisPanel) {
@@ -4590,7 +4594,9 @@ let ChartStrategyFactor = {
       CostStore.clearCostStore();
       analysisPanel.setState({
         energyData: null,
-        energyRawData: null
+        energyRawData: null,
+        remarkText: '',
+        remarkDisplay: false
       });
     },
     clearUnitChartData(analysisPanel) {
@@ -4600,7 +4606,9 @@ let ChartStrategyFactor = {
         energyData: null,
         energyRawData: null,
         benchmarkOption: null,
-        benchmarks: null
+        benchmarks: null,
+        remarkText: '',
+        remarkDisplay: false
       });
     },
     clearUnitCostChartData(analysisPanel) {
@@ -4610,7 +4618,9 @@ let ChartStrategyFactor = {
         energyData: null,
         energyRawData: null,
         benchmarkOption: null,
-        benchmarks: null
+        benchmarks: null,
+        remarkText: '',
+        remarkDisplay: false
       });
     },
     clearUnitCarbonChartData(analysisPanel) {
@@ -4621,7 +4631,9 @@ let ChartStrategyFactor = {
         energyRawData: null,
         benchmarkOption: null,
         benchmarks: null,
-        destination: 2
+        destination: 2,
+        remarkText: '',
+        remarkDisplay: false
       });
     },
     clearRatioChartData(analysisPanel) {
@@ -4631,7 +4643,9 @@ let ChartStrategyFactor = {
         energyData: null,
         energyRawData: null,
         benchmarkOption: null,
-        benchmarks: null
+        benchmarks: null,
+        remarkText: '',
+        remarkDisplay: false
       });
 
     },
@@ -4640,7 +4654,9 @@ let ChartStrategyFactor = {
       LabelStore.clearLabelStore();
       analysisPanel.setState({
         energyData: null,
-        energyRawData: null
+        energyRawData: null,
+        remarkText: '',
+        remarkDisplay: false
       });
     },
     clearRankChartData(analysisPanel) {
@@ -4648,7 +4664,9 @@ let ChartStrategyFactor = {
       RankStore.clearRankStore();
       analysisPanel.setState({
         energyData: null,
-        energyRawData: null
+        energyRawData: null,
+        remarkText: '',
+        remarkDisplay: false
       });
     },
   },

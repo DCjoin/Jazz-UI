@@ -42,6 +42,7 @@ let TemplateList = React.createClass({
 
     return (<Dialog
       key={this.state.id}
+      title={I18N.EM.Report.DeleteTemplate}
       ref="deleteDialog"
       openImmediately={true}
       actions={dialogActions}
