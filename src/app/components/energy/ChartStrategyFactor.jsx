@@ -3051,11 +3051,12 @@ let ChartStrategyFactor = {
       if (analysisPanel.props.onEnergyTypeChange) {
         let menuItemVal = menuItem.value;
         let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
-        let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
-        if (analysisPanel) analysisPanel.setState({
-            chartStrategy: chartSttg
-          });
-        analysisPanel.props.onEnergyTypeChange(menuItem.value);
+        // let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
+        // if (analysisPanel) analysisPanel.setState({
+        //     chartStrategy: chartSttg
+        //   });
+        // analysisPanel.props.onEnergyTypeChange(menuItem.value);
+        FolderAction.setDisplayDialog('switchec', menuItemVal)
       }
     }
   },
