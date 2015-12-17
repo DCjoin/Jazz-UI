@@ -122,7 +122,7 @@ let AnalysisPanel = React.createClass({
     var parentNode = FolderStore.getParent(FolderStore.getNodeById(this.props.widgetDto.Id));
     var lastSelectedNode = FolderStore.getSelectedNode();
     if (lastSelectedNode.get('Type') == 7 && lastSelectedNode.get('ChartType') === null) {
-      FolderAction.setDisplayDialog('switchwidget', parentNode);
+      FolderAction.setDisplayDialog('switchwidget');
     } else {
       FolderAction.setSelectedNode(parentNode);
     }

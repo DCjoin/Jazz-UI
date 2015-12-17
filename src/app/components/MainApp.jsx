@@ -12,6 +12,7 @@ import AllCommodityStore from '../stores/AllCommodityStore.jsx';
 import MainAction from '../actions/MainAction.jsx';
 import NetworkChecker from '../controls/NetworkChecker.jsx';
 import ExportChart from './energy/ExportChart.jsx';
+import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 
 let MainApp = React.createClass({
   mixins: [Navigation, State],
@@ -22,36 +23,66 @@ let MainApp = React.createClass({
   _onAllCommoditiesChange() {
     window.allCommodities = AllCommodityStore.getAllCommodities();
   },
+  _onCurrentrivilegeChanged: function() {
+    this.setState({
+      rivilege: CurrentUserStore.getCurrentPrivilege()
+    });
+  },
+  getInitialState: function() {
+    return {
+      rivilege: CurrentUserStore.getCurrentPrivilege()
+    };
+  },
 
   render: function() {
-    var menuItems = [
-      {
-        name: 'map',
-        title: I18N.MainMenu.Map
-      },
-      {
-        name: 'alarm',
-        title: I18N.MainMenu.Alarm
-      },
-      {
-        name: 'setting',
-        title: I18N.MainMenu.Energy
-      },
-      {
-        name: 'report',
-        title: I18N.MainMenu.Report,
-        children: [
+    var menuItems;
+    if (this.state.rivilege !== null) {
+      if (this.state.rivilege.indexOf('1221') > -1) {
+        menuItems = [
           {
-            name: 'daily_report',
-            title: I18N.MainMenu.DailyReport
+            name: 'map',
+            title: I18N.MainMenu.Map
           },
           {
-            name: 'template',
-            title: I18N.MainMenu.Template
+            name: 'alarm',
+            title: I18N.MainMenu.Alarm
+          },
+          {
+            name: 'setting',
+            title: I18N.MainMenu.Energy
           }
-        ]
+        ];
+      } else {
+        menuItems = [
+          {
+            name: 'map',
+            title: I18N.MainMenu.Map
+          },
+          {
+            name: 'setting',
+            title: I18N.MainMenu.Energy
+          }
+        ];
       }
-    ];
+      if (this.state.rivilege.indexOf('1218') > -1 || this.state.rivilege.indexOf('1219') > -1) {
+        menuItems.push(
+          {
+            name: 'report',
+            title: I18N.MainMenu.Report,
+            children: [
+              {
+                name: 'daily_report',
+                title: I18N.MainMenu.DailyReport
+              },
+              {
+                name: 'template',
+                title: I18N.MainMenu.Template
+              }
+            ]
+          }
+        );
+      }
+    }
 
     var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
 
@@ -69,10 +100,12 @@ let MainApp = React.createClass({
     AllCommodityStore.addChangeListener(this._onAllCommoditiesChange);
     MainAction.getAllUoms();
     MainAction.getAllCommodities();
+    CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
   componentWillUnmount: function() {
     UOMStore.removeChangeListener(this._onAllUOMSChange);
     AllCommodityStore.removeChangeListener(this._onAllCommoditiesChange);
+    CurrentUserStore.removeCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   }
 });
 
