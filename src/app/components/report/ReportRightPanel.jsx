@@ -540,9 +540,9 @@ var ReportRightPanel = React.createClass({
       var saveButtonStyle = {
         borderRight: '1px solid #ececec'
       };
-      var editButton = <FlatButton label={I18N.EM.Report.Edit} onClick={me._editReport}  secondary={true} style={saveButtonStyle} />;
+      var editButton = (me.props.onlyRead ? null : <FlatButton label={I18N.EM.Report.Edit} onClick={me._editReport}  secondary={true} style={saveButtonStyle} />);
       var exportButton = <FlatButton label={I18N.EM.Report.Export} onClick={me._exportTemplate}  secondary={true} style={saveButtonStyle} />;
-      var deleteButton = <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} primary={true} />;
+      var deleteButton = (me.props.onlyRead ? null : <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} primary={true} />);
       var saveButton = <FlatButton style={saveButtonStyle} secondary={true} label={I18N.EM.Report.Save} onClick={me._saveReport} disabled={me.state.saveDisabled} />;
       var cancelButton = <FlatButton label={I18N.EM.Report.Cancel} onClick={me._cancelEditReport} />;
       var buttonArea = null;

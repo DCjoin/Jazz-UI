@@ -157,6 +157,7 @@ let ChartStrategyFactor = {
       getChartSubToolbarFn: 'getCarbonSubToolbar',
       getAuxiliaryCompareBtnFn: 'getCarbonAuxiliaryCompareBtn',
       handleStepChangeFn: 'handleCarbonStepChange',
+      handleNavigatorChangeLoadFn: 'handleCarbonNavigatorChangeLoad',
       exportChartFn: 'exportCarbonChart',
       save2DashboardFn: 'saveCarbon2Dashboard',
       initChartPanelByWidgetDtoFn: 'initCarbonChartPanelByWidgetDto',
@@ -193,6 +194,7 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn: 'handleRatioBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleRatioStepChange',
+      handleNavigatorChangeLoadFn: 'handleRatioNavigatorChangeLoad',
       save2DashboardFn: 'saveRatio2Dashboard',
       isCalendarDisabledFn: 'isCalendarDisabled',
       onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
@@ -227,6 +229,7 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn: 'handleUnitBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitEnergyStepChange',
+      handleNavigatorChangeLoadFn: 'handleUnitEnergyNavigatorChangeLoad',
       save2DashboardFn: 'saveUnit2Dashboard',
       initChartPanelByWidgetDtoFn: 'initUnitChartPanelByWidgetDto',
       handleCalendarChangeFn: 'handleCalendarChange',
@@ -261,6 +264,7 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn: 'handleUnitCostBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCostStepChange',
+      handleNavigatorChangeLoadFn: 'handleUnitCostNavigatorChangeLoad',
       save2DashboardFn: 'saveUnitCost2Dashboard',
       initChartPanelByWidgetDtoFn: 'initUnitCostChartPanelByWidgetDto',
       isCalendarDisabledFn: 'isCostCalendarDisabled',
@@ -295,6 +299,7 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleUnitEnergyConfigBtnItemTouchTap',
       handleBenchmarkMenuItemClickFn: 'handleUnitCarbonBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCarbonStepChange',
+      handleNavigatorChangeLoadFn: 'handleUnitCarbonNavigatorChangeLoad',
       save2DashboardFn: 'saveUnitCarbon2Dashboard',
       initChartPanelByWidgetDtoFn: 'initUnitCarbonChartPanelByWidgetDto',
       isCalendarDisabledFn: 'isCarbonCalendarDisabled',
@@ -2157,7 +2162,6 @@ let ChartStrategyFactor = {
   handleNavigatorChangeLoadFnStrategy: {
     handleNavigatorChangeLoad(analysisPanel) {
       let tagOptions = EnergyStore.getTagOpions(),
-        paramsObj = EnergyStore.getParamsObj(),
         dateSelector = analysisPanel.refs.dateTimeSelector,
         dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
@@ -2167,7 +2171,15 @@ let ChartStrategyFactor = {
     },
     handleCostNavigatorChangeLoad(analysisPanel) {
       let tagOptions = CostStore.getSelectedList(),
-        paramsObj = CostStore.getParamsObj(),
+        dateSelector = analysisPanel.refs.dateTimeSelector,
+        dateRange = dateSelector.getDateTime(),
+        startDate = dateRange.start,
+        endDate = dateRange.end;
+
+      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, 'Customerize', analysisPanel);
+    },
+    handleCarbonNavigatorChangeLoad(analysisPanel) {
+      let tagOptions = CostStore.getSelectedList(),
         dateSelector = analysisPanel.refs.dateTimeSelector,
         dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
@@ -2243,20 +2255,22 @@ let ChartStrategyFactor = {
   },
   isWeatherDisabledFnStrategy: {
     isWeatherDisabled(analysisPanel) {
-      let tagOptions = EnergyStore.getTagOpions();
-      if (!tagOptions) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
-
       let disabled = TagStore.getWeatherBtnDisabled();
-      if (disabled) return I18N.EM.WeatherSupportsOnlySingleHierarchy;
-
+      if (disabled) {
+        return I18N.EM.WeatherSupportsOnlySingleHierarchy;
+      }
       let paramsObj = EnergyStore.getParamsObj(),
+        timeRanges = paramsObj.timeRanges,
         step = paramsObj.step;
-      if (step === 0) return I18N.EM.WeatherSupportsNotMinuteStep;
-
+      if (timeRanges.length !== 1) {
+        return I18N.EM.WeatherSupportsNotMultiTime;
+      }
+      if (step === 0) {
+        return I18N.EM.WeatherSupportsNotMinuteStep;
+      }
       let errors = EnergyStore.getErrorCodes();
-      if (!!errors && errors.length && errors[0] + '' === '02810') {
+      if (!!errors && errors.length && (errors[0] + '' === '02810' || errors[0] + '' === '02809')) {
         analysisPanel.state.weatherOption = null;
-        return I18N.Message.M02810;
       }
       return false;
     }
@@ -2368,8 +2382,7 @@ let ChartStrategyFactor = {
         timeRanges = paramsObj.timeRanges;
       var weatherOption = analysisPanel.state.weatherOption;
       if (step === 0) {
-        weatherOption.IncludeTempValue = false;
-        weatherOption.IncludeHumidityValue = false;
+        weatherOption = null;
       }
       analysisPanel.setState({
         step: step,
@@ -3219,6 +3232,7 @@ let ChartStrategyFactor = {
   onSearchDataButtonClickFnStrategy: {
     onSearchDataButtonClick(analysisPanel, invokeFromMultiTime) {
       //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
+      let clearWeatherflag = false;
       let dateSelector = analysisPanel.refs.dateTimeSelector;
       let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
@@ -3230,6 +3244,9 @@ let ChartStrategyFactor = {
 
         // deal with multi time submit
         if (!!invokeFromMultiTime) {
+          if (analysisPanel.state.weatherOption !== null) {
+            clearWeatherflag = true;
+          }
           let multiRelativeType = MultipleTimespanStore.getOriginalType();
           let relativeDateValue = analysisPanel._getRelativeDateValue();
 
@@ -3261,8 +3278,8 @@ let ChartStrategyFactor = {
         }
 
 
-        let clearWeatherflag = false,
-          nodeOptions;
+
+        var nodeOptions;
 
         if (startDate.getTime() >= endDate.getTime()) {
           GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
@@ -4292,7 +4309,7 @@ let ChartStrategyFactor = {
           primaryText: I18N.EM.Tool.Weather.Humidity,
           value: 'humidity'
         }];
-      let submitParams = EnergyStore.getSubmitParams();
+      var submitParams = EnergyStore.getSubmitParams();
       let viewOp = submitParams.viewOption;
       if (viewOp && viewOp.IncludeTempValue)
         weatherSubItems[0].checked = true;
@@ -4300,6 +4317,15 @@ let ChartStrategyFactor = {
         weatherSubItems[1].checked = true;
       let weatherEl;
       let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn(analysisPanel);
+      let errors = EnergyStore.getErrorCodes();
+      if (!!errors && errors.length && (errors[0] + '' === '02810' || errors[0] + '' === '02809')) {
+        if (weatherSubItems[0].checked) {
+          weatherSubItems[0].checked = false;
+        }
+        if (weatherSubItems[1].checked) {
+          weatherSubItems[1].checked = false;
+        }
+      }
       if (isWeatherDisabled === false) {
         weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' subItems={weatherSubItems}/>;
       } else {

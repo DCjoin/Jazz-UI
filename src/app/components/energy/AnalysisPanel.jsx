@@ -962,10 +962,14 @@ let AnalysisPanel = React.createClass({
   },
   _onWeatherBtnDisabled: function() {
     let me = this;
+    var weatherOption = this.state.weatherOption;
+    if (TagStore.getWeatherBtnDisabled()) {
+      weatherOption = null;
+    }
     setTimeout(() => {
       me.setState({
         weatherBtnStatus: TagStore.getWeatherBtnDisabled(),
-        weatherOption: null,
+        weatherOption: weatherOption,
       });
     }, 0);
   },
