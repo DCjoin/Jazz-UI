@@ -237,7 +237,7 @@ let PlatformContent = React.createClass({
         didChanged: value => {
           PlatformAction.mergeProvider({
             value: value,
-            path: "Stauts"
+            path: "Status"
           })
         }
       },
