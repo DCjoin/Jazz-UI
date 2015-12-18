@@ -302,6 +302,9 @@ let Setting = React.createClass({
   },
   _onEnergyTypeChanged(energyType) {
     var that = this;
+    var widgetDto = that.state.widgetDto;
+    widgetDto.remarkText = '';
+    widgetDto.remarkDisplay = false;
     that.setState({
       selectedEnergyType: energyType
     });
@@ -311,7 +314,8 @@ let Setting = React.createClass({
     }, () => {
       that.setState({
         refreshChart: false,
-        selectedEnergyType: energyType
+        selectedEnergyType: energyType,
+        widgetDto: widgetDto
       });
     });
     // if (energyType != this.state.selectedEnergyType) {
