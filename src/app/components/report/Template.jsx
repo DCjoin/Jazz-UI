@@ -7,6 +7,7 @@ import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
 import TemplateList from './TemplateList.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
+import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 
 var Template = React.createClass({
@@ -138,9 +139,11 @@ var Template = React.createClass({
   componentDidMount: function() {
     ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
     ReportStore.addTemplateListChangeListener(this._onChange);
+    CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
   componentWillUnmount: function() {
     ReportStore.removeTemplateListChangeListener(this._onChange);
+    CurrentUserStore.removeCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
 
   render: function() {

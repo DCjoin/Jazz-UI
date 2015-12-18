@@ -2255,33 +2255,22 @@ let ChartStrategyFactor = {
   },
   isWeatherDisabledFnStrategy: {
     isWeatherDisabled(analysisPanel) {
-      let tagOptions = EnergyStore.getTagOpions();
-      if (!tagOptions) {
-        analysisPanel.state.weatherOption = null;
-        return I18N.EM.WeatherSupportsOnlySingleHierarchy;
-      }
-
       let disabled = TagStore.getWeatherBtnDisabled();
       if (disabled) {
-        analysisPanel.state.weatherOption = null;
         return I18N.EM.WeatherSupportsOnlySingleHierarchy;
       }
       let paramsObj = EnergyStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges,
         step = paramsObj.step;
       if (timeRanges.length !== 1) {
-        analysisPanel.state.weatherOption = null;
-        return I18N.EM.WeatherSupportsOnlySingleHierarchy;
+        return I18N.EM.WeatherSupportsNotMultiTime;
       }
       if (step === 0) {
-        analysisPanel.state.weatherOption = null;
         return I18N.EM.WeatherSupportsNotMinuteStep;
       }
-
       let errors = EnergyStore.getErrorCodes();
-      if (!!errors && errors.length && errors[0] + '' === '02810') {
+      if (!!errors && errors.length && (errors[0] + '' === '02810' || errors[0] + '' === '02809')) {
         analysisPanel.state.weatherOption = null;
-        return I18N.Message.M02810;
       }
       return false;
     }
@@ -4320,7 +4309,7 @@ let ChartStrategyFactor = {
           primaryText: I18N.EM.Tool.Weather.Humidity,
           value: 'humidity'
         }];
-      let submitParams = EnergyStore.getSubmitParams();
+      var submitParams = EnergyStore.getSubmitParams();
       let viewOp = submitParams.viewOption;
       if (viewOp && viewOp.IncludeTempValue)
         weatherSubItems[0].checked = true;
@@ -4328,6 +4317,15 @@ let ChartStrategyFactor = {
         weatherSubItems[1].checked = true;
       let weatherEl;
       let isWeatherDisabled = analysisPanel.state.chartStrategy.isWeatherDisabledFn(analysisPanel);
+      let errors = EnergyStore.getErrorCodes();
+      if (!!errors && errors.length && (errors[0] + '' === '02810' || errors[0] + '' === '02809')) {
+        if (weatherSubItems[0].checked) {
+          weatherSubItems[0].checked = false;
+        }
+        if (weatherSubItems[1].checked) {
+          weatherSubItems[1].checked = false;
+        }
+      }
       if (isWeatherDisabled === false) {
         weatherEl = <ExtendableMenuItem primaryText={I18N.EM.Tool.Weather.WeatherInfo} value='weather' subItems={weatherSubItems}/>;
       } else {
