@@ -39,7 +39,7 @@ var PlatformStore = assign({}, PrototypeStore, {
         _providerList.forEach(item => {
           if (item.Id == _selectedProvider.Id) {
             _selectedProvider = item;
-            _currentProvider = Immutable.fromJS(list[0]);
+            _currentProvider = Immutable.fromJS(_selectedProvider);
           }
         });
       }

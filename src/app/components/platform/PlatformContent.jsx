@@ -31,12 +31,13 @@ let PlatformContent = React.createClass({
   },
   _onError: function() {
     var error = PlatformStore.getError();
-    error = error.substring(error.length - 5, error.length);
+
     if (error === null) {
       this.setState({
         providerIdError: null
       });
     } else {
+      error = error.substring(error.length - 5, error.length);
       if (error.indexOf('002') > -1) {
         this.setState({
           providerIdError: I18N.Message.M14002
