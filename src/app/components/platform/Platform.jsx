@@ -30,9 +30,10 @@ let Platform = React.createClass({
     });
   },
   _onSelectProviderChanged: function() {
+    var disabled = (this.state.status != formStatus.VIEW) ? true : false;
     this.setState({
       selectProvider: PlatformStore.getSelectProvider(),
-      addBtnDisabled: false,
+      addBtnDisabled: disabled,
     });
   },
   _onToggleList: function() {
