@@ -82,19 +82,19 @@ var ReportLeftPanel = React.createClass({
       textAlign: 'center',
       marginTop: '400px'
     }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList' reportList={this.state.reportList} reportItem={this.state.reportItem}></ReportList>);
-
+    var headerDom = (this.props.onlyRead ? null : <div className="jazz-report-leftpanel-header">
+      <div className={classSet(newReportClasses)} style={{
+      margin: '0 30px'
+    }}>
+        <FlatButton onClick={this._addNewReport} style={buttonStyle} disabled={this.state.disableAddButton}>
+          <FontIcon className="fa icon-add btn-icon"/>
+          <span className="mui-flat-button-label btn-text">{I18N.EM.Report.Report}</span>
+        </FlatButton>
+      </div>
+    </div>);
     return (
       <div className="jazz-report-leftpanel-container">
-        <div className="jazz-report-leftpanel-header">
-          <div className={classSet(newReportClasses)} style={{
-        margin: '0 30px'
-      }}>
-            <FlatButton onClick={this._addNewReport} style={buttonStyle} disabled={this.state.disableAddButton}>
-              <FontIcon className="fa icon-add btn-icon"/>
-              <span className="mui-flat-button-label btn-text">{I18N.EM.Report.Report}</span>
-            </FlatButton>
-          </div>
-        </div>
+        {headerDom}
         <div className="jazz-report-leftpanel-sort">
           <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>
         </div>

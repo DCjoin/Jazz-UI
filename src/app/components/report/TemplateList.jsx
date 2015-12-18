@@ -74,7 +74,8 @@ let TemplateList = React.createClass({
           roleName: item.get('RoleName'),
           telephone: item.get('Telephone'),
           isReference: item.get('IsReference'),
-          showDeleteDialog: me._showDeleteDialog
+          showDeleteDialog: me._showDeleteDialog,
+          onlyRead: me.props.onlyRead
         };
         return (
           <TemplateItem {...props}></TemplateItem>

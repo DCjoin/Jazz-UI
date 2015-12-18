@@ -14,8 +14,11 @@ var Template = React.createClass({
 
 
   getInitialState: function() {
+    var rivilege = CurrentUserStore.getCurrentPrivilege();
+    var onlyRead = this._getOnlyRead(rivilege);
     return {
       isLoading: true,
+      onlyRead: onlyRead,
       showUploadDialog: false,
       sortBy: 'Name',
       fileName: ''
@@ -36,6 +39,22 @@ var Template = React.createClass({
       templateList: ReportStore.getTemplateList(),
       isLoading: false
     });
+  },
+  _onCurrentrivilegeChanged: function() {
+    var rivilege = CurrentUserStore.getCurrentPrivilege();
+    var onlyRead = this._getOnlyRead(rivilege);
+    this.setState({
+      onlyRead: onlyRead
+    });
+  },
+  _getOnlyRead(rivilege) {
+    var onlyRead = false;
+    if (rivilege !== null) {
+      if ((rivilege.indexOf('1218') > -1) && (rivilege.indexOf('1219') === -1)) {
+        onlyRead = true;
+      }
+    }
+    return onlyRead;
   },
   _endsWith(str, pattern) {
     var d = str.length - pattern.length;
@@ -177,21 +196,21 @@ var Template = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList}></TemplateList>);
-
+    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead}></TemplateList>);
+    var uploadDom = (this.state.onlyRead ? null : <div className="jazz-template-action">
+      <div className='jazz-template-upload-button'>
+        <label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
+          {I18N.EM.Report.UploadTem}
+          <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/>
+        </label>
+      </div>
+    </div>);
     return (
       <div className="jazz-template-container">
         <div className='jazz-template-topbar'>
           <div className="jazz-template-header">
             <div className="jazz-template-topbar-left">
-              <div className="jazz-template-action">
-                <div className='jazz-template-upload-button'>
-                  <label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
-                    {I18N.EM.Report.UploadTem}
-                    <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/>
-                  </label>
-                </div>
-              </div>
+              {uploadDom}
               <div className="jazz-template-action">
                 <div className="jazz-template-sort">
                   <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>

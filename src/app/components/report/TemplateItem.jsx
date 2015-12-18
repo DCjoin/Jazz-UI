@@ -45,7 +45,7 @@ let TemplateItem = React.createClass({
     var me = this;
     var displayTime = me._getDisplayTime();
     var deleteButton = null;
-    if (me.state.showDeleteButton) {
+    if (me.state.showDeleteButton && !me.props.onlyRead) {
       if (!me.props.isReference) {
         deleteButton = <div className="jazz-template-item-left-action">
           <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} rippleColor={'transparent'}></FlatButton>
