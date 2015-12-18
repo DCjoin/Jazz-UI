@@ -402,9 +402,8 @@ let AnalysisPanel = React.createClass({
         endTime = dateAdd(startTime, 1, 'hours');
       }
     }
-    var timeRanges = EnergyStore.getParamsObj().timeRanges;
-    if (timeRanges.length > 1) {
-      MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
+    if (this.state.chartStrategy.handleNavigatorChangeMultiTimeFn) {
+      this.state.handleNavigatorChangeMultiTimeFn(startTime.endTime);
     }
     this.dateChanged(chart, startTime, endTime, type);
   },
@@ -413,7 +412,6 @@ let AnalysisPanel = React.createClass({
     this.refs.relativeDate.setState({
       selectedIndex: 0
     });
-    var timeRanges = EnergyStore.getParamsObj().timeRanges;
 
     if (type === 'resize' || this.refs.ChartComponent.navCache === false) {
       this._onNavigatorChangeLoad();

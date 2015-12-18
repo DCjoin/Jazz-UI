@@ -86,6 +86,7 @@ let ChartStrategyFactor = {
       handleWeatherMenuItemClickFn: 'handleWeatherMenuItemClick',
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn: 'handleNavigatorChangeLoad',
+      handleNavigatorChangeMultiTimeFn: 'handleNavigatorChangeMultiTime',
       save2DashboardFn: 'save2Dashboard',
       save2DashboardForAlarmFn: 'save2DashboardForAlarm',
       initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
@@ -356,6 +357,14 @@ let ChartStrategyFactor = {
       getWidgetOptMenuFn: 'getLabelWidgetOptMenu',
       resetYaxisSelectorFn: 'resetYaxisSelector',
       resetCalendarTypeFn: 'empty'
+    }
+  },
+  handleNavigatorChangeMultiTimeFnStrategy: {
+    handleNavigatorChangeMultiTime(startTime, endTime) {
+      var timeRanges = EnergyStore.getParamsObj().timeRanges;
+      if (timeRanges.length > 1) {
+        MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
+      }
     }
   },
   onDeleteButtonClickFnStrategy: {
@@ -2179,13 +2188,66 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, 'Customerize', analysisPanel);
     },
     handleCarbonNavigatorChangeLoad(analysisPanel) {
+      let paramsObj = CarbonStore.getSubmitParams();
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+      let hierarchyId = tagOptions.hierarchyId,
+        commodityIds = tagOptions.commodityIds,
+        destination = paramsObj.destination,
+        dateSelector = analysisPanel.refs.dateTimeSelector,
+        dateRange = dateSelector.getDateTime(),
+        startDate = dateRange.start,
+        endDate = dateRange.end;
+      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierarchyId, commodityIds, destination, 'Customerize', analysisPanel);
+    },
+    handleUnitEnergyNavigatorChangeLoad(analysisPanel) {
+      let tagOptions = EnergyStore.getTagOpions(),
+        dateSelector = analysisPanel.refs.dateTimeSelector,
+        dateRange = dateSelector.getDateTime(),
+        startDate = dateRange.start,
+        endDate = dateRange.end,
+        submitParams = EnergyStore.getSubmitParams(),
+        unitType = submitParams.viewOption.DataOption.UnitType,
+        benchmarkOption = submitParams.benchmarkOption;
+
+      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, unitType, 'Customerize', analysisPanel, benchmarkOption);
+    },
+    handleUnitCostNavigatorChangeLoad(analysisPanel) {
       let tagOptions = CostStore.getSelectedList(),
+        dateSelector = analysisPanel.refs.dateTimeSelector,
+        dateRange = dateSelector.getDateTime(),
+        startDate = dateRange.start,
+        endDate = dateRange.end,
+        submitParams = CostStore.getSubmitParams(),
+        unitType = submitParams.viewOption.DataOption.UnitType,
+        benchmarkOption = submitParams.benchmarkOption;
+
+      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, unitType, 'Customerize', analysisPanel, benchmarkOption);
+    },
+    handleUnitCarbonNavigatorChangeLoad(analysisPanel) {
+      let paramsObj = CarbonStore.getSubmitParams();
+      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+      let hierarchyId = tagOptions.hierarchyId,
+        commodityIds = tagOptions.commodityIds,
+        destination = paramsObj.destination,
+        dateSelector = analysisPanel.refs.dateTimeSelector,
+        dateRange = dateSelector.getDateTime(),
+        startDate = dateRange.start,
+        endDate = dateRange.end,
+        unitType = paramsObj.viewOption.DataOption.UnitType,
+        benchmarkOption = paramsObj.benchmarkOption;
+
+      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, hierarchyId, commodityIds, destination, unitType, 'Customerize', analysisPanel, benchmarkOption);
+    },
+    handleRatioNavigatorChangeLoad(analysisPanel) {
+      let paramsObj = RatioStore.getSubmitParams();
+      let tagOptions = RatioStore.getRatioOpions();
+      let ratioType = paramsObj.ratioType,
         dateSelector = analysisPanel.refs.dateTimeSelector,
         dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
         endDate = dateRange.end;
 
-      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, 'Customerize', analysisPanel);
+      analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, ratioType, 'Customerize', analysisPanel);
     }
   },
   isCalendarDisabledFnStrategy: {
@@ -2377,7 +2439,7 @@ let ChartStrategyFactor = {
   },
   handleStepChangeFnStrategy: {
     handleEnergyStepChange(analysisPanel, step) {
-      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
+      let tagOptions = EnergyStore.getTagOpions(),
         paramsObj = EnergyStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges;
       var weatherOption = analysisPanel.state.weatherOption;
@@ -2393,7 +2455,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, weatherOption);
     },
     handleCostStepChange(analysisPanel, step) {
-      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
+      let tagOptions = CostStore.getSelectedList(),
         paramsObj = CostStore.getParamsObj(),
         timeRanges = paramsObj.timeRanges;
 
@@ -2420,7 +2482,7 @@ let ChartStrategyFactor = {
     },
     handleRatioStepChange(analysisPanel, step) {
       let paramsObj = RatioStore.getSubmitParams();
-      let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
+      let tagOptions = RatioStore.getRatioOpions();
 
       let viewOp = paramsObj.viewOption,
         timeRanges = viewOp.TimeRanges,
