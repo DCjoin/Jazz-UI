@@ -287,13 +287,12 @@ let Setting = React.createClass({
       id = 6;
       this.setState({
         templateWidgetDto: widgetDto
-      })
+      });
     } else {
       if (index == 5) {
-        id = 7
+        id = 7;
       }
     }
-    ;
     this.setState({
       templateNode: this.state.selectedNode,
       templateId: id,
@@ -303,8 +302,7 @@ let Setting = React.createClass({
   _onEnergyTypeChanged(energyType) {
     var that = this;
     var widgetDto = that.state.widgetDto;
-    widgetDto.remarkText = '';
-    widgetDto.remarkDisplay = false;
+    widgetDto.Comment = '';
     that.setState({
       selectedEnergyType: energyType
     });
@@ -330,7 +328,7 @@ let Setting = React.createClass({
   _onDialogChanged: function() {
     this.setState({
       dialogType: FolderStore.getDisplayDialog().type,
-    })
+    });
   },
   componentWillMount: function() {
     // CommodityAction.setEnergyConsumptionType('Carbon');
