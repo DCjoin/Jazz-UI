@@ -161,6 +161,7 @@ let MapPanel = React.createClass({
       "markers": markers
     });
     this._addMarkers();
+    this._map.setFitView();
     // this.setState({
     //   isloading: false
     // });
