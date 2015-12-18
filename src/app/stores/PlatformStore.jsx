@@ -86,11 +86,13 @@ var PlatformStore = assign({}, PrototypeStore, {
     _currentProvider = Immutable.fromJS(_selectedProvider);
   },
   modifyProvider: function(provider) {
-    _providerList.forEach(item => {
+    var index;
+    _providerList.forEach((item, i) => {
       if (item.Id == provider.Id) {
-        item.Version = provider.Version;
+        index = i;
       }
     });
+    _providerList[index] = provider;
     this.setSelectProvider(provider);
     this.emitSelectProviderChange();
 
