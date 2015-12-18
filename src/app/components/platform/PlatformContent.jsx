@@ -173,7 +173,7 @@ let PlatformContent = React.createClass({
         title: "登录失败返回页面",
         defaultValue: LoginUrl || "",
         regex: Regex.UrlRule,
-        errorMessage: "请填写地址，登录失败后页面会自动跳转至所填网址",
+        errorMessage: "请填写网址，登录失败后页面会自动跳转至所填网址",
         didChanged: value => {
           PlatformAction.mergeProvider({
             value: value,
@@ -186,7 +186,7 @@ let PlatformContent = React.createClass({
         title: "退出页面",
         defaultValue: LogOutUrl || "",
         regex: Regex.UrlRule,
-        errorMessage: "请填写地址，退出系统时会自动跳转至所填网址",
+        errorMessage: "请填写网址，退出系统时会自动跳转至所填网址",
         didChanged: value => {
           PlatformAction.mergeProvider({
             value: value,
