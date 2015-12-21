@@ -911,6 +911,7 @@ I18N.Tag.AlarmStatus1 = 'Baseline not set';
 I18N.Tag.AlarmStatus2 = 'Baseline set';
 I18N.Tag.AlarmStatus3 = 'Alarm not set';
 I18N.Tag.AlarmStatus4 = 'Alarm set';
+I18N.Tag.SelectError = 'Please choose hierarchy node-dimension node';
 
 I18N.Template = {};
 I18N.Template.Copy = {};

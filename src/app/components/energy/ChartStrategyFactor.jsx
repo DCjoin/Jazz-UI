@@ -1010,7 +1010,7 @@ let ChartStrategyFactor = {
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       });
-
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
       analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initUnitCarbonChartPanelByWidgetDto(analysisPanel) {
@@ -1150,8 +1150,8 @@ let ChartStrategyFactor = {
           CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
-        ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
       });
+      ChartStatusAction.setWidgetDto(widgetDto, analysisPanel.props.bizType, analysisPanel.props.energyType, analysisPanel.state.selectedChartType);
       analysisPanel.setCalendarTypeFromWidget(widgetDto);
     },
     initLabelChartPanelByWidgetDto(analysisPanel) {
@@ -1216,9 +1216,18 @@ let ChartStrategyFactor = {
         hierIds.push(map[i]);
       }
       LabelMenuAction.getHierNodes(hierIds);
+      var kpiTypeItem = ConstStore.getKpiTypeItem();
+      var kpiTypeIndex;
+      kpiTypeItem.forEach(item => {
+        if (item.value === labelingType) {
+          kpiTypeIndex = item.index;
+          return;
+        }
+      });
       analysisPanel.setState({
         benchmarkOption: benchmarkOption,
-        kpiTypeValue: labelingType
+        kpiTypeValue: labelingType,
+        kpiTypeIndex: kpiTypeIndex
       });
 
 
@@ -1946,6 +1955,7 @@ let ChartStrategyFactor = {
       let contentSyntax = {
         params: params
       };
+      widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!menuIndex) {
@@ -2035,6 +2045,7 @@ let ChartStrategyFactor = {
       let contentSyntax = {
         params: params
       };
+      widgetDto.WidgetSeriesArray = ChartStatusStore.getWidgetSaveStatus();
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       widgetDto.Comment = analysisPanel.state.remarkText;
       if (!!menuIndex) {
@@ -3123,6 +3134,7 @@ let ChartStrategyFactor = {
   onEnergyTypeChangeFnStrategy: {
     empty() {},
     onEnergyTypeChange(analysisPanel, e, selectedIndex, menuItem) {
+      ChartStatusAction.clearStatus();
       if (analysisPanel.props.onEnergyTypeChange) {
         let menuItemVal = menuItem.value;
         let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
@@ -3131,7 +3143,7 @@ let ChartStrategyFactor = {
         //     chartStrategy: chartSttg
         //   });
         // analysisPanel.props.onEnergyTypeChange(menuItem.value);
-        FolderAction.setDisplayDialog('switchec', menuItemVal)
+        FolderAction.setDisplayDialog('switchec', menuItemVal);
       }
     }
   },
