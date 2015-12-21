@@ -8,6 +8,7 @@ import Immutable from 'immutable';
 import DatePicker from './DatePicker.jsx';
 import MapAction from '../../actions/MapAction.jsx';
 import MapStore from '../../stores/MapStore.jsx';
+import LanguageStore from '../../stores/LanguageStore.jsx';
 const ZOOM_LEVEL = 17;
 
 const POPUP_POSITION_RIGHT_TOP_X = 130;
@@ -301,12 +302,17 @@ let MapPanel = React.createClass({
   // });
   // this._popupWindow.open(this._map, new AMap.LngLat(marker.lon, marker.lat));
   },
+  _onLanguageSwitch: function() {
+    var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
+    this._map.setLang(lang);
+  },
   componentDidUpdate: function() {
     this._showPopup();
   },
   componentDidMount: function() {
     MapStore.addMapInfoListener(this._onMapInfoChanged);
     MapStore.addBuildingInfoListener(this._onBuildingInfoChanged);
+    LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
     MapAction.getMapBuildingsByCustomerId(5);
   // this.setState({
   //   isloading: true
@@ -315,6 +321,7 @@ let MapPanel = React.createClass({
   componentWillUnmount: function() {
     MapStore.removeMapInfoListener(this._onMapInfoChanged);
     MapStore.removeBuildingInfoListener(this._onBuildingInfoChanged);
+    LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
     if (this._map) {
       this._clearMap();
       this._map.destroy();
