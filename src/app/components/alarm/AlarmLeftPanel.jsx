@@ -87,7 +87,7 @@ var AlarmLeftPanel = React.createClass({
     };
   },
   shouldComponentUpdate(nextProps, nextState) {
-    return nextState.dateType != this.state.dateType;
+    return (nextState.dateType != this.state.dateType || nextProps.lang != this.props.lang);
   },
   render: function() {
     var menuItems = [

@@ -350,7 +350,7 @@ let MapPanel = React.createClass({
         flexDirection: 'column',
         marginTop: '-16px'
       }}>
-    <div className='map-timepickerbar'><DatePicker onMenuItemClick={this._onDateChanged}/></div>
+    <div className='map-timepickerbar'><DatePicker lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onMenuItemClick={this._onDateChanged}/></div>
     <div style={styleMap} id="_map"></div>
   </div>
       )

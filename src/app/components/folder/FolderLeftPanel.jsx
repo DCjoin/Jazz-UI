@@ -2,7 +2,7 @@
 import React from "react";
 import { Navigation, State } from 'react-router';
 import classSet from 'classnames';
-import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu, Dialog } from 'material-ui';
+import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu } from 'material-ui';
 import SearchBox from './FolderSearchBox.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
@@ -17,14 +17,19 @@ import DropdownButton from '../../controls/DropdownButton.jsx';
 
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
+import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 
 
 
 import Immutable from 'immutable';
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
-  SWITCH_EC: 'switchec'
+  SWITCH_EC: 'switchec',
+  SWITCH_WIDGET_BY_DRAG: 'switchwidgetbydrag'
 };
+var targetNode, pre,
+  sourceNode ,
+  parentNode;
 
 var FolderLeftPanel = React.createClass({
 
@@ -143,7 +148,8 @@ var FolderLeftPanel = React.createClass({
       allNode: null,
       isLoading: true,
       selectedNode: null,
-      buttonDisabled: false
+      buttonDisabled: false,
+      dialogType: ''
     };
   },
   _onDeleteItem: function() {
@@ -172,16 +178,7 @@ var FolderLeftPanel = React.createClass({
     }
 
   },
-  _onGragulaNode: function(targetId, sourceId, pre) {
-    var targetNode = FolderStore.getNodeById(parseInt(targetId)),
-      sourceNode = FolderStore.getNodeById(parseInt(sourceId)),
-      parentNode = FolderStore.getParent(targetNode);
-    // if(!pass){
-    //   FolderAction.moveItem(sourceNode.toJSON(),targetNode.toJSON(),null)
-    // }
-    // else {
-    //   FolderAction.moveItem(sourceNode.toJSON(),parentNode.toJSON(),targetNode.toJSON())
-    // // }
+  didDrag: function() {
     if (pre) {
       FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), targetNode.toJSON(), null)
     } else {
@@ -190,6 +187,25 @@ var FolderLeftPanel = React.createClass({
     this.setState({
       isLoading: true,
     })
+  },
+  _onGragulaNode: function(targetId, sourceId, pre) {
+    targetNode = FolderStore.getNodeById(parseInt(targetId));
+    sourceNode = FolderStore.getNodeById(parseInt(sourceId));
+    parentNode = FolderStore.getParent(targetNode);
+    pre = pre;
+    // if(!pass){
+    //   FolderAction.moveItem(sourceNode.toJSON(),targetNode.toJSON(),null)
+    // }
+    // else {
+    //   FolderAction.moveItem(sourceNode.toJSON(),parentNode.toJSON(),targetNode.toJSON())
+    // // }
+    var lastSelectedNode = FolderStore.getSelectedNode();
+    if (lastSelectedNode.get('Type') == 7 && lastSelectedNode.get('ChartType') === null) {
+      FolderAction.setDisplayDialog(DIALOG_TYPE.SWITCH_WIDGET_BY_DRAG);
+    } else {
+      this.didDrag()
+    }
+
   },
   _onMoveItemChange: function() {
     this.setState({
@@ -202,6 +218,35 @@ var FolderLeftPanel = React.createClass({
     this.setState({
       allNode: FolderStore.getFolderTree()
     });
+  },
+  _onDialogChanged: function() {
+    this.setState({
+      dialogType: FolderStore.getDisplayDialog().type,
+    });
+  },
+  _getSwitchWidgetDialog: function() {
+    var that = this;
+    var _onConfirm = function() {
+      FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
+      that.didDrag();
+    };
+    var _onCancel = function() {
+      that.setState({
+        dialogType: ''
+      });
+    };
+    var props = {
+      title: I18N.Folder.Widget.Leave,
+      firstActionLabel: I18N.Folder.Widget.LeaveButton,
+      secondActionLabel: I18N.Folder.Widget.LeaveCancel,
+      content: I18N.Folder.Widget.LeaveContent,
+      onFirstActionTouchTap: _onConfirm,
+      onSecondActionTouchTap: _onCancel,
+      onDismiss: _onCancel,
+    }
+    return (
+      <Dialog {...props}/>
+      )
   },
   componentDidMount: function() {
 
@@ -217,6 +262,7 @@ var FolderLeftPanel = React.createClass({
     FolderStore.addMoveItemSuccessListener(this._onMoveItemChange);
     FolderStore.addMoveItemErrorListener(this._onMoveItemChange);
     FolderStore.addModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
+    FolderStore.addDialogListener(this._onDialogChanged);
 
   },
   componentWillUnmount: function() {
@@ -232,6 +278,7 @@ var FolderLeftPanel = React.createClass({
     FolderStore.removeMoveItemSuccessListener(this._onMoveItemChange);
     FolderStore.removeMoveItemErrorListener(this._onMoveItemChange);
     FolderStore.removeModfiyReadingStatusListener(this._onModfiyReadingStatusChange);
+    FolderStore.removeDialogListener(this._onDialogChanged);
 
   },
   render: function() {
@@ -296,8 +343,15 @@ var FolderLeftPanel = React.createClass({
       marginTop: '400px'
     }}><CircularProgress  mode="indeterminate" size={1} /></div> : <Tree {...treeProps}/>);
 
+    var dialog;
+    switch (this.state.dialogType) {
+      case DIALOG_TYPE.SWITCH_WIDGET_BY_DRAG:
+        dialog = this._getSwitchWidgetDialog();
+        break;
+    }
     return (
       <div className="jazz-folder-leftpanel-container">
+        {dialog}
 
         <div className="jazz-folder-leftpanel-header">
           <div className={classSet(newFolderClasses)} style={{
@@ -321,6 +375,7 @@ var FolderLeftPanel = React.createClass({
         <div className="jazz-folder-leftpanel-foldertree">
           {treeContent}
         </div>
+
       </div>
       )
   }

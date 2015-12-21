@@ -7,6 +7,7 @@ import { Paper, FlatButton, FontIcon, Mixins } from 'material-ui';
 import CommonFuns from '../../util/Util.jsx';
 import MapAction from '../../actions/MapAction.jsx';
 import MapStore from '../../stores/MapStore.jsx';
+import LanguageStore from '../../stores/LanguageStore.jsx';
 
 let DatePicker = React.createClass({
   mixins: [Navigation, State, Mixins.ClickAwayable],
@@ -54,10 +55,19 @@ let DatePicker = React.createClass({
   },
   componentDidMount: function() {
     MapStore.addDateMenuListener(this._onDateMenuChanged);
+    //LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
     MapAction.setSelectedDate(5); //this month
+  },
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.lang !== this.props.lang) {
+      MapAction.setSelectedDate(MapStore.getSelectedDateType()); //this month
+
+    }
+
   },
   componentWillUnmount: function() {
     MapStore.removeDateMenuListener(this._onDateMenuChanged);
+  //LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
   },
   componentClickAway: function() {
     if (this.state.isDateMenuShow) {
