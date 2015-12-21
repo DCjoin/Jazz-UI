@@ -221,7 +221,7 @@ let defaultConfig = {
     x: -25,
     useHTML: true,
     labelFormatter: function() {
-      return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name + '">' + this.name + '</div>';
+      return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name.replace('<br/>', '&#10;') + '">' + this.name + '</div>';
     },
     itemStyle: {
       cursor: 'default',
