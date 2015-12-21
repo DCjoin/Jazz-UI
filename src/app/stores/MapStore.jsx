@@ -3,6 +3,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import CommonFuns from '../util/Util.jsx';
 import Map from '../constants/actionType/Map.jsx';
+import Language from '../constants/actionType/Language.jsx';
 import _get from 'lodash/object/get';
 var _ = {
   get: _get
@@ -115,6 +116,7 @@ var MapStore = assign({}, PrototypeStore, {
   },
 });
 var MapAction = Map.Action;
+
 
 MapStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
