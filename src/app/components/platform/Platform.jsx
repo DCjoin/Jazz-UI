@@ -30,10 +30,15 @@ let Platform = React.createClass({
     });
   },
   _onSelectProviderChanged: function() {
-    var disabled = (this.state.status != formStatus.VIEW) ? true : false;
     this.setState({
       selectProvider: PlatformStore.getSelectProvider(),
-      addBtnDisabled: disabled,
+      addBtnDisabled: false,
+      status: formStatus.VIEW,
+    });
+  },
+  _onMergeProviderChanged: function() {
+    this.setState({
+      selectProvider: PlatformStore.getSelectProvider(),
     });
   },
   _onToggleList: function() {
@@ -61,10 +66,13 @@ let Platform = React.createClass({
   componentDidMount: function() {
     PlatformStore.addProviderListChangeListener(this._onProviderListChanged);
     PlatformStore.addSelectProviderChangeListener(this._onSelectProviderChanged);
+    PlatformStore.addMergeProviderChangeListener(this._onMergeProviderChanged);
+
   },
   componentWillUnmount: function() {
     PlatformStore.removeProviderListChangeListener(this._onProviderListChanged);
     PlatformStore.removeSelectProviderChangeListener(this._onSelectProviderChanged);
+    PlatformStore.removeMergeProviderChangeListener(this._onMergeProviderChanged);
   },
   getInitialState: function() {
     return {

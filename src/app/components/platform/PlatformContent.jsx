@@ -381,6 +381,7 @@ let PlatformContent = React.createClass({
       )
   },
   _getSendEmailDialog: function() {
+    var that = this;
     var _onConfirm = function() {
       that.setState({
         dialogType: ''

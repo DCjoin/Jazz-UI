@@ -24,7 +24,8 @@ let _providerList = [],
 const PROVIDER_LIST_EVENT = 'providerlist',
   SELECT_PROVIDER_EVENT = 'selectprovider',
   ERROR_EVENT = 'error',
-  SEND_EMAIL_EVENT = 'sendemail';
+  SEND_EMAIL_EVENT = 'sendemail',
+  MERGE_PROVIDER_EVENT = 'mergerprovider';
 
 var PlatformStore = assign({}, PrototypeStore, {
 
@@ -128,6 +129,15 @@ var PlatformStore = assign({}, PrototypeStore, {
   removeProviderListChangeListener: function(callback) {
     this.removeListener(PROVIDER_LIST_EVENT, callback);
   },
+  addMergeProviderChangeListener: function(callback) {
+    this.on(MERGE_PROVIDER_EVENT, callback);
+  },
+  emitMergeProviderListChange: function() {
+    this.emit(MERGE_PROVIDER_EVENT);
+  },
+  removeMergeProviderListChangeListener: function(callback) {
+    this.removeListener(MERGE_PROVIDER_EVENT, callback);
+  },
   addSelectProviderChangeListener: function(callback) {
     this.on(SELECT_PROVIDER_EVENT, callback);
   },
@@ -169,7 +179,7 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case PlatformAction.MERGE_PROVIDER:
       PlatformStore.mergeProvider(action.data);
-      PlatformStore.emitSelectProviderChange();
+      PlatformStore.emitMergeProviderListChange();
       break;
     case PlatformAction.CANCEL_SAVE:
       PlatformStore.resetProvider();
@@ -181,6 +191,7 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case PlatformAction.CREATE_SUCCESS:
       PlatformStore.setSelectProvider(action.item);
+      PlatformStore.emitProviderListChange();
       break;
     case PlatformAction.MODIFY_ERROR:
       PlatformStore.setError(action.res.text);
