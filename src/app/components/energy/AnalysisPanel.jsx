@@ -737,16 +737,7 @@ let AnalysisPanel = React.createClass({
     this.setState(state);
   },
   onSearchDataButtonClick() {
-    var dateSelector = this.refs.dateTimeSelector;
-    var dateRange = dateSelector.getDateTime(),
-      startDate = dateRange.start,
-      endDate = dateRange.end;
-    if (this.state.selectedChartType == 'rawdata' && (endDate - startDate > 604800000)) {
-      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
-    } else {
-      this.state.chartStrategy.onSearchDataButtonClickFn(this);
-    }
-
+    this.state.chartStrategy.onSearchDataButtonClickFn(this);
   },
   exportChart() {
     this.state.chartStrategy.exportChartFn(this);
