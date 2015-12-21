@@ -177,7 +177,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
         }
         _seriesStatus.push({
           id: item.id,
-          IsDisplay: true,
+          IsDisplay: item.visible,
           SeriesType: item.dType,
           ChartType: me.getNumByChartType(chartType)
         });

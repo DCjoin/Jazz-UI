@@ -3133,7 +3133,6 @@ let ChartStrategyFactor = {
   onEnergyTypeChangeFnStrategy: {
     empty() {},
     onEnergyTypeChange(analysisPanel, e, selectedIndex, menuItem) {
-      ChartStatusAction.clearStatus();
       if (analysisPanel.props.onEnergyTypeChange) {
         let menuItemVal = menuItem.value;
         let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
