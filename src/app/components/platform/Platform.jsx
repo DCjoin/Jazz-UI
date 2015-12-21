@@ -72,7 +72,7 @@ let Platform = React.createClass({
   componentWillUnmount: function() {
     PlatformStore.removeProviderListChangeListener(this._onProviderListChanged);
     PlatformStore.removeSelectProviderChangeListener(this._onSelectProviderChanged);
-    PlatformStore.removeMergeProviderChangeListener(this._onMergeProviderChanged);
+    PlatformStore.removeMergeProviderListChangeListener(this._onMergeProviderChanged);
   },
   getInitialState: function() {
     return {
