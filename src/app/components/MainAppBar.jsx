@@ -444,7 +444,12 @@ var MainAppBar = React.createClass({
     CurrentUserStore.getUserTitle().forEach((title, index) => {
       if (index != 3) {
         if (index == user.Title) {
-          titleSelectedIndex = index - 1;
+          if (index < 3) {
+            titleSelectedIndex = index ;
+          } else {
+            titleSelectedIndex = index - 1;
+          }
+
         }
         titleItems.push({
           payload: index,
