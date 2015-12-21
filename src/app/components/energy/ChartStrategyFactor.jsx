@@ -1179,15 +1179,14 @@ let ChartStrategyFactor = {
         var year = start.getFullYear();
         var month = start.getMonth();
         var monthIndex;
-        analysisPanel.refs.yearSelector.setState({
-          selectedYear: year
-        });
+        let date = new Date();
         if (step === 4) {
           monthIndex = 0;
         } else {
           monthIndex = month + 1;
         }
         analysisPanel.setState({
+          selectedYear: year - date.getFullYear() + 10,
           month: monthIndex
         });
       };
@@ -3298,7 +3297,8 @@ let ChartStrategyFactor = {
         labelDisable: true,
         kpiTypeDisable: false,
         month: curMonth + 1,
-        benchmarkOption: null
+        benchmarkOption: null,
+        selectedYear: 10
       };
       return state;
     }
@@ -3983,10 +3983,9 @@ let ChartStrategyFactor = {
     </div>;
     },
     labelSearchBarGen(analysisPanel) {
-      var curYear = (new Date()).getFullYear();
       var yearProps = {
         ref: "yearSelector",
-        selectedIndex: 10,
+        selectedIndex: analysisPanel.state.selectedYear,
         style: {
           width: '82px',
           border: '1px solid #efefef',
