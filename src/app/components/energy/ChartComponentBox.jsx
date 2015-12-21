@@ -543,6 +543,8 @@ let ChartComponentBox = React.createClass({
       this.state.chartCmpStrategy.getLegendListFn(newConfig);
     }
 
+    this.initSeriesVisibility(newConfig.series);
+
     ChartStatusStore.assignStatus(newConfig);
 
     newConfig.tooltipSidePosition = true;
@@ -552,6 +554,17 @@ let ChartComponentBox = React.createClass({
 
     return newConfig;
 
+  },
+  initSeriesVisibility: function(series) {
+    var serie;
+    if (series && series.length > 0) {
+      for (var i = 0; i < series.length; i++) {
+        serie = series[i];
+        if (!!serie.graySerie) {
+          serie.visible = false;
+        }
+      }
+    }
   },
   mergeConfig: function(defaultConfig) {
     this.state.chartCmpStrategy.mergeConfigFn(defaultConfig, this);

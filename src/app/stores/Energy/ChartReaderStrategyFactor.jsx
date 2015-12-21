@@ -707,7 +707,8 @@ let ChartReaderStrategyFactor = {
         uid: target.TargetId,
         option: {
           commodityId: target.CommodityId
-        }
+        },
+        graySerie: false
       };
       var name = target.Name || '';
 
@@ -717,6 +718,7 @@ let ChartReaderStrategyFactor = {
           break;
         case 12:
           obj.name = name + I18N.EM.Ratio.RawValue;
+          obj.graySerie = true;
           obj.disableDelete = true;
           break;
         case 13:
@@ -744,34 +746,24 @@ let ChartReaderStrategyFactor = {
       var name,
         disableDelete = false,
         tt = target.Type,
-        uid = target.CommodityId,
-        graySerie = false;
+        uid = target.CommodityId;
 
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
-      } else if (tt == 15) {
-        name = target.Name;
-        uid = 'benchmark';
       } else {
         name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
 
       switch (tt) {
-        case 11:
-          name = name;
-          break;
-        case 12:
-          name = name;
-          graySerie = true;
-          disableDelete = true;
-          break;
         case 13:
-          name = name + I18N.EM.Ratio.TargetValue;
+          name = I18N.EM.Ratio.TargetValue;
           disableDelete = true;
           break;
         case 14:
-          name = name + I18N.EM.Ratio.BaseValue;
+          name = I18N.EM.Ratio.BaseValue;
           disableDelete = true;
+          break;
+        default:
           break;
       }
       return {
@@ -781,8 +773,7 @@ let ChartReaderStrategyFactor = {
         disableDelete: disableDelete,
         option: {
           CommodityId: target.CommodityId
-        },
-        graySerie: graySerie
+        }
       };
     },
     unitCarbonSeriesConstructor(target) {
@@ -818,6 +809,8 @@ let ChartReaderStrategyFactor = {
         case 14:
           name = name + I18N.EM.Ratio.BaseValue;
           disableDelete = true;
+          break;
+        default:
           break;
       }
       return {

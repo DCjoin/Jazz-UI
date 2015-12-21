@@ -32,6 +32,7 @@ import SendView from '../folder/operationView/SendView.jsx';
 import SaveAsView from '../folder/operationView/SaveAsView.jsx';
 import ExportView from '../folder/operationView/ExportView.jsx';
 import ExportChartAction from '../../actions/ExportChartAction.jsx';
+import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 import ExportChartStore from '../../stores/energy/ExportChartStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
@@ -303,6 +304,8 @@ let Setting = React.createClass({
     var that = this;
     var widgetDto = that.state.widgetDto;
     widgetDto.Comment = '';
+    widgetDto.WidgetSeriesArray = [];
+    ChartStatusAction.clearStatus();
     that.setState({
       selectedEnergyType: energyType
     });
