@@ -178,7 +178,7 @@ let ChartStrategyFactor = {
       getSelectedNodesFn: 'getSelectedTagList',
       onSearchDataButtonClickFn: 'onRatioSearchDataButtonClick',
       onSearchBtnItemTouchTapFn: 'onCostSearchBtnItemTouchTap',
-      initEnergyStoreByBizChartTypeFn: 'initEnergyStoreByBizChartType',
+      initEnergyStoreByBizChartTypeFn: 'initRatioStoreByBizChartType',
       setFitStepAndGetDataFn: 'setRatioFitStepAndGetData',
       getInitialStateFn: 'getRatioInitialState',
       getAllDataFn: 'unitGetAllData',
@@ -3172,6 +3172,14 @@ let ChartStrategyFactor = {
           EnergyStore.initReaderStrategy('EnergyPieReader');
           break;
         case 'rawdata': EnergyStore.initReaderStrategy('EnergyRawGridReader');
+          break;
+      }
+    },
+    initRatioStoreByBizChartType(analysisPanel) {
+      let chartType = analysisPanel.state.selectedChartType;
+      switch (chartType) {
+        case 'line':
+        case 'column': RatioStore.initReaderStrategy('EnergyTrendReader');
           break;
       }
     },

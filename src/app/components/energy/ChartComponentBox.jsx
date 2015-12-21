@@ -562,6 +562,8 @@ let ChartComponentBox = React.createClass({
         serie = series[i];
         if (!!serie.graySerie) {
           serie.visible = false;
+        } else {
+          serie.visible = true;
         }
       }
     }
