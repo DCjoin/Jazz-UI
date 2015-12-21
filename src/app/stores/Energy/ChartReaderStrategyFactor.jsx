@@ -226,38 +226,36 @@ let ChartReaderStrategyFactor = {
       var name = '',
         disableDelete = false,
         uid = target.CommodityId,
-        tt = target.Type,
-        graySerie = false;
+        tt = target.Type;
+
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
-      } else if (tt == 15) {
-        name = target.Name;
-        uid = 'benchmark';
       } else {
         name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
-      if (tt === 13) {
-        item.name = name + I18N.EM.Ratio.TargetValue;
-        item.disableDelete = true;
-      } else if (target.Type === 14) {
-        item.name = name + I18N.EM.Ratio.BaseValue;
-        item.disableDelete = true;
-      } else if (target.Type === 11) {
-        item.name = name + I18N.EM.Ratio.CaculateValue /*I18N.Common.Glossary.Baseline'基准值'*/ ;
-        item.disableDelete = true;
-      } else if (target.Type === 12) {
-        item.name = name + I18N.EM.Ratio.RawValue /*I18N.Common.Glossary.Baseline'基准值'*/ ;
-        item.disableDelete = true;
+
+      switch (tt) {
+        case 13:
+          name = I18N.EM.Ratio.TargetValue;
+          disableDelete = true;
+          break;
+        case 14:
+          name = I18N.EM.Ratio.BaseValue;
+          disableDelete = true;
+          break;
+        default:
+          break;
       }
+      item.name = name;
+      item.uid = uid;
+      item.disableDelete = disableDelete;
       item.option = {
         CommodityId: target.CommodityId
       };
-      item.uid = target.CommodityId;
     },
     setCostItemByTarget(item, target) {
       var name = '',
         disableDelete = false,
-        disableHide = false,
         uid = target.CommodityId,
         tt = target.Type;
 
@@ -271,17 +269,14 @@ let ChartReaderStrategyFactor = {
         case 6:
           name = I18N.EM.Plain /*'平时'*/ ;
           disableDelete = true;
-          disableHide = true;
           break;
         case 7:
           name = I18N.EM.Peak /*'峰时'*/ ;
           disableDelete = true;
-          disableHide = true;
           break;
         case 8:
           name = I18N.EM.Valley /*'谷时'*/ ;
           disableDelete = true;
-          disableHide = true;
           break;
         case 13:
           name = I18N.EM.Ratio.TargetValue;
@@ -297,7 +292,6 @@ let ChartReaderStrategyFactor = {
       item.name = name;
       item.uid = uid;
       item.disableDelete = disableDelete;
-      item.disableHide = disableHide;
       item.option = {
         CommodityId: target.CommodityId
       };
@@ -803,11 +797,11 @@ let ChartReaderStrategyFactor = {
           disableDelete = true;
           break;
         case 13:
-          name = name + I18N.EM.Ratio.TargetValue;
+          name = I18N.EM.Ratio.TargetValue;
           disableDelete = true;
           break;
         case 14:
-          name = name + I18N.EM.Ratio.BaseValue;
+          name = I18N.EM.Ratio.BaseValue;
           disableDelete = true;
           break;
         default:
@@ -881,6 +875,9 @@ let ChartReaderStrategyFactor = {
 
       if (target.CommodityId < 1) {
         name = I18N.EM.Total /*'总览'*/ ;
+      } else if (tt == 15) {
+        name = target.Name;
+        uid = 'benchmark';
       } else {
         name = CommonFuns.getCommodityById(target.CommodityId).Comment;
       }
@@ -900,10 +897,6 @@ let ChartReaderStrategyFactor = {
         case 14:
           name = I18N.EM.Ratio.BaseValue;
           disableDelete = true;
-          break;
-        case 15:
-          name = name;
-          uid = 'benchmark';
           break;
         default:
           break;
