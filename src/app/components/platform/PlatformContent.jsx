@@ -313,18 +313,38 @@ let PlatformContent = React.createClass({
   _renderFooter: function(isView) {
     var that = this;
     var sendPasswordButton = null,
-      saveButtonDisabled = true;
-    var {Name, UserName, Domain, Address, Telephone, Email, StartDate} = this.props.provider;
-    if (
-      Name && Name.length < 200 &&
-      UserName && UserName.length < 200 &&
-      Domain && Domain.length < 200 &&
-      Address &&
-      Telephone &&
-      Email &&
-      StartDate
-    ) {
       saveButtonDisabled = false;
+    var {Name, UserName, Domain, Address, Telephone, Email, StartDate, LoginUrl, LogOutUrl} = this.props.provider;
+    // if (
+    //   Name && Name.length < 200 &&
+    //   UserName && UserName.length < 200 &&
+    //   Domain && Domain.length < 200 &&
+    //   Address &&
+    //   Telephone &&
+    //   Email &&
+    //   StartDate
+    // ) {
+    //   saveButtonDisabled = false;
+    // }
+    if (
+      !Name ||
+      Name.length > 200 ||
+      !UserName ||
+      UserName.length > 200 ||
+      !Domain ||
+      Domain.length > 200 ||
+      !Address ||
+      !Telephone ||
+      !Email || !Regex.Email.test(Email) ||
+      !StartDate
+    ) {
+      saveButtonDisabled = true;
+    }
+    if (!!LoginUrl && !Regex.UrlRule.test(LoginUrl)) {
+      saveButtonDisabled = true;
+    }
+    if (!!LogOutUrl && !Regex.UrlRule.test(LogOutUrl)) {
+      saveButtonDisabled = true;
     }
     if (isView) {
       sendPasswordButton = (

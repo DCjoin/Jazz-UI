@@ -28,7 +28,7 @@ var ViewableTextField = React.createClass({
     errorText: React.PropTypes.string,
     hintText: React.PropTypes.string,
     title: React.PropTypes.string,
-    afterValue: React.PropTypes.object
+    afterValue: React.PropTypes.object,
   },
 
   contextTypes: {

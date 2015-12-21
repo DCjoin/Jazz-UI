@@ -9,6 +9,7 @@ import DatePicker from './DatePicker.jsx';
 import MapAction from '../../actions/MapAction.jsx';
 import MapStore from '../../stores/MapStore.jsx';
 import LanguageStore from '../../stores/LanguageStore.jsx';
+
 const ZOOM_LEVEL = 17;
 
 const POPUP_POSITION_RIGHT_TOP_X = 130;
@@ -162,7 +163,7 @@ let MapPanel = React.createClass({
       "markers": markers
     });
     this._addMarkers();
-    //this._map.setFitView();
+    this._map.setFitView();
     // this.setState({
     //   isloading: false
     // });
