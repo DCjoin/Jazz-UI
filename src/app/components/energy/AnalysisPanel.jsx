@@ -777,7 +777,8 @@ let AnalysisPanel = React.createClass({
       dateSelector = this.refs.dateTimeSelector;
 
 
-    if (this.state.selectedChartType == 'rawdata' && value != 'Customerize' && value != 'Last7Day') {
+    if (this.state.selectedChartType == 'rawdata' && value != 'Customerize' && value != 'Last7Day' && value != 'Today'
+      && value != 'Yesterday' && value != 'ThisWeek' && value != 'LastWeek') {
       FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
     } else {
       if (value && value !== 'Customerize') {
