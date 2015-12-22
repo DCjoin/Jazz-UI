@@ -846,6 +846,7 @@ let ChartCmpStrategyFactor = {
         }
         var s = {
           name: n,
+          originalName: item.name,
           enableDelete: enableDelete,
           enableHide: !!!item.disableHide,
           data: item.data,
