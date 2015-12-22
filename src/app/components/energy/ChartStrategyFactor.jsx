@@ -2474,9 +2474,8 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         step: step,
         isCalendarInited: false
-      }, () => {
-        analysisPanel._onTouBtnDisabled();
       });
+      analysisPanel._onTouBtnDisabled(step);
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
     },
     handleCarbonStepChange(analysisPanel, step) {

@@ -674,6 +674,7 @@ let AnalysisPanel = React.createClass({
       state.errorObj = errorObj;
     }
     this.setState(state);
+    this._onTouBtnDisabled(paramsObj.step);
   },
   _onCarbonDataChange(isError, errorObj) {
     let isLoading = CarbonStore.getLoadingStatus(),
@@ -785,9 +786,7 @@ let AnalysisPanel = React.createClass({
     let value = menuItem.value,
       dateSelector = this.refs.dateTimeSelector;
 
-
-    if (this.state.selectedChartType == 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today'
-      && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
+    if (this.state.selectedChartType == 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
       FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
     } else {
       if (value && value !== 'Customerize') {
@@ -978,7 +977,7 @@ let AnalysisPanel = React.createClass({
     });
 
   },
-  _onTouBtnDisabled: function() {
+  _onTouBtnDisabled: function(step) {
     var touBtnStatus = this.state.touBtnStatus;
     var newStatus = CommodityStore.getECButtonStatus();
     var touBtnSelected = this.state.touBtnSelected;
@@ -992,7 +991,7 @@ let AnalysisPanel = React.createClass({
         touBtnSelected: touBtnSelected
       });
     }
-    if (this.state.step !== null && this.state.step <= 1 || this.state.step === null) {
+    if (step !== null && step <= 1 || step === null) {
       if (touBtnSelected) {
         touBtnSelected = false;
       }
@@ -1002,7 +1001,7 @@ let AnalysisPanel = React.createClass({
         touBtnSelected: touBtnSelected
       });
     }
-    if (!newStatus && this.state.step !== null && this.state.step > 1) {
+    if (!newStatus && step !== null && step > 1) {
       this.setState({
         touBtnStatus: false,
         touBtnTooltip: ''
