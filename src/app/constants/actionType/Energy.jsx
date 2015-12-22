@@ -1,7 +1,7 @@
 import keyMirror from 'keymirror';
 
 module.exports = {
-  Action:keyMirror({
+  Action: keyMirror({
     GET_ENERGY_DATA_LOADING: null,
     GET_ENERGY_DATA_SUCCESS: null,
     GET_ENERGY_DATA_ERROR: null,
@@ -25,6 +25,8 @@ module.exports = {
     RELATIVE_VALUE_CHANGE: null,
     DATETIME_SELECTOR_CHANGE: null,
     CLEAR_MULTI_TIMESPAN: null,
-    CONVERT_TEMP_TO_STABLE: null
+    CONVERT_TEMP_TO_STABLE: null,
+    SET_ENERGY_TIME_RANGE: null,
+    SET_COST_TIME_RANGE: null
   })
 };

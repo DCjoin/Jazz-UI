@@ -86,7 +86,7 @@ let ChartStrategyFactor = {
       handleWeatherMenuItemClickFn: 'handleWeatherMenuItemClick',
       isWeatherDisabledFn: 'isWeatherDisabled',
       handleNavigatorChangeLoadFn: 'handleNavigatorChangeLoad',
-      handleNavigatorChangeMultiTimeFn: 'handleNavigatorChangeMultiTime',
+      handleNavigatorChangeTimeFn: 'handleNavigatorChangeTime',
       save2DashboardFn: 'save2Dashboard',
       save2DashboardForAlarmFn: 'save2DashboardForAlarm',
       initChartPanelByWidgetDtoFn: 'initChartPanelByWidgetDto',
@@ -122,6 +122,7 @@ let ChartStrategyFactor = {
       handleConfigBtnItemTouchTapFn: 'handleCostConfigBtnItemTouchTap',
       handleStepChangeFn: 'handleCostStepChange',
       handleNavigatorChangeLoadFn: 'handleCostNavigatorChangeLoad',
+      handleNavigatorChangeTimeFn: 'handleCostNavigatorChangeTime',
       save2DashboardFn: 'saveCost2Dashboard',
       initChartPanelByWidgetDtoFn: 'initCostChartPanelByWidgetDto',
       isCalendarDisabledFn: 'isCostCalendarDisabled',
@@ -159,6 +160,7 @@ let ChartStrategyFactor = {
       getAuxiliaryCompareBtnFn: 'getCarbonAuxiliaryCompareBtn',
       handleStepChangeFn: 'handleCarbonStepChange',
       handleNavigatorChangeLoadFn: 'handleCarbonNavigatorChangeLoad',
+      handleNavigatorChangeTimeFn: 'handleCarbonNavigatorChangeTime',
       exportChartFn: 'exportCarbonChart',
       save2DashboardFn: 'saveCarbon2Dashboard',
       initChartPanelByWidgetDtoFn: 'initCarbonChartPanelByWidgetDto',
@@ -231,6 +233,7 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleUnitBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitEnergyStepChange',
       handleNavigatorChangeLoadFn: 'handleUnitEnergyNavigatorChangeLoad',
+      handleNavigatorChangeTimeFn: 'handleNavigatorChangeTime',
       save2DashboardFn: 'saveUnit2Dashboard',
       initChartPanelByWidgetDtoFn: 'initUnitChartPanelByWidgetDto',
       handleCalendarChangeFn: 'handleCalendarChange',
@@ -266,6 +269,7 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleUnitCostBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCostStepChange',
       handleNavigatorChangeLoadFn: 'handleUnitCostNavigatorChangeLoad',
+      handleNavigatorChangeTimeFn: 'handleCostNavigatorChangeTime',
       save2DashboardFn: 'saveUnitCost2Dashboard',
       initChartPanelByWidgetDtoFn: 'initUnitCostChartPanelByWidgetDto',
       isCalendarDisabledFn: 'isCostCalendarDisabled',
@@ -301,6 +305,7 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleUnitCarbonBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleUnitCarbonStepChange',
       handleNavigatorChangeLoadFn: 'handleUnitCarbonNavigatorChangeLoad',
+      handleNavigatorChangeTimeFn: 'handleCarbonNavigatorChangeTime',
       save2DashboardFn: 'saveUnitCarbon2Dashboard',
       initChartPanelByWidgetDtoFn: 'initUnitCarbonChartPanelByWidgetDto',
       isCalendarDisabledFn: 'isCarbonCalendarDisabled',
@@ -359,12 +364,20 @@ let ChartStrategyFactor = {
       resetCalendarTypeFn: 'empty'
     }
   },
-  handleNavigatorChangeMultiTimeFnStrategy: {
-    handleNavigatorChangeMultiTime(startTime, endTime) {
+  handleNavigatorChangeTimeFnStrategy: {
+    handleNavigatorChangeTime(startTime, endTime) {
       var timeRanges = EnergyStore.getParamsObj().timeRanges;
       if (timeRanges.length > 1) {
         MultipleTimespanStore.convertMultiTimespansByNavigator(startTime, endTime);
+      } else {
+        EnergyAction.setTimeRangeByNavigator(startTime, endTime);
       }
+    },
+    handleCostNavigatorChangeTime(startTime, endTime) {
+      EnergyAction.setCostTimeRangeByNavigator(startTime, endTime);
+    },
+    handleCarbonNavigatorChangeTime(startTime, endTime) {
+      CarbonAction.setCarbonTimeRangeByNavigator(startTime, endTime);
     }
   },
   onDeleteButtonClickFnStrategy: {

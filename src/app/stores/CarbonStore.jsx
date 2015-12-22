@@ -79,18 +79,18 @@ let CarbonStore = assign({}, PrototypeStore, {
     return _errorCodes;
   },
   clearCarbonStore() {
-    _isLoading = false,
-    _carbonData = null,
-    _carbonRawData = null,
-    _submitParams = null,
-    _paramsObj = null,
-    _commOptions = null,
-    _chartTitle = null,
-    _relativeDate = null,
-    _errorCode = null,
-    _errorMessage = null,
-    _destination = 2,
-    _errorCodes = [],
+    _isLoading = false;
+    _carbonData = null;
+    _carbonRawData = null;
+    _submitParams = null;
+    _paramsObj = null;
+    _commOptions = null;
+    _chartTitle = null;
+    _relativeDate = null;
+    _errorCode = null;
+    _errorMessage = null;
+    _destination = 2;
+    _errorCodes = [];
     _errorParams = [];
   },
   _initErrorText(errorText) {
@@ -150,6 +150,11 @@ let CarbonStore = assign({}, PrototypeStore, {
 
     ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _carbonData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
+  },
+  _onChangeTimeRange(startTime, endTime) {
+    let timeRanges = CommonFuns.getTimeRangesByDate(startTime, endTime);
+    _submitParams.viewOption.TimeRanges = timeRanges;
+    _relativeDate = 'Customerize';
   },
   removeSeriesDataByUid(uid) {
     if (_carbonData) {
@@ -227,6 +232,9 @@ CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
       CarbonStore._onDataChanged(null, action.submitParams);
       CarbonStore._initErrorText(action.errorText);
       CarbonStore.emitCarbonDataLoadErrorListener();
+      break;
+    case ActionTypes.SET_CARBON_TIME_RANGE:
+      CarbonStore._onChangeTimeRange(action.startTime, action.endTime);
       break;
   }
 });
