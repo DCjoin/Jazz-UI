@@ -1256,6 +1256,7 @@ let ChartStrategyFactor = {
         diagramConfig = contentObj.diagramConfig,
         range = diagramConfig.rangeCode,
         order = diagramConfig.orderCode,
+        destination = contentObj.destination,
         viewOption = contentObj.viewOption,
         timeRanges = viewOption.TimeRanges,
         remarkText = widgetDto.Comment;
@@ -1289,6 +1290,7 @@ let ChartStrategyFactor = {
       analysisPanel.state.selectedChartType = "column";
       setTimeout(() => {
         analysisPanel.setState({
+          destination: destination,
           remarkText: remarkText,
           remarkDisplay: remarkDisplay,
           rankType: rankType,
@@ -2472,6 +2474,8 @@ let ChartStrategyFactor = {
       analysisPanel.setState({
         step: step,
         isCalendarInited: false
+      }, () => {
+        analysisPanel._onTouBtnDisabled();
       });
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, false, analysisPanel);
     },
@@ -3241,6 +3245,7 @@ let ChartStrategyFactor = {
       let state = {
         touBtnStatus: true,
         touBtnSelected: false,
+        touBtnTooltip: '',
         calendarType: "",
       };
       return state;
@@ -4512,7 +4517,7 @@ let ChartStrategyFactor = {
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
-       <MenuItem primaryText={I18N.EM.ByPeakValley} value='touCompare' checked={analysisPanel.state.touBtnSelected} disabled={analysisPanel.state.touBtnStatus}/>
+        <ExtendableMenuItem primaryText={I18N.EM.ByPeakValley} value='touCompare' disabled={analysisPanel.state.touBtnStatus} tooltip={analysisPanel.state.touBtnTooltip} checked={analysisPanel.state.touBtnSelected} />
        {calendarEl}
      </ButtonMenu>;
 

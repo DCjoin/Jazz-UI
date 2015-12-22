@@ -24,7 +24,7 @@ let ErrorStepDialog = React.createClass({
   },
   _onAction(code) {
     if (this.props.onErrorDialogAction) {
-      this.props.onErrorDialogAction(code);
+      this.props.onErrorDialogAction(code, this.props.stepBtnList);
     }
     this.setState({
       destroyed: true

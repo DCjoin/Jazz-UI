@@ -241,9 +241,9 @@ let AnalysisPanel = React.createClass({
           </div>
         </div>
         {energyPart}
-        {remarkDiv}
         {errorDialog}
         {dialog}
+        {remarkDiv}
 
       </div>;
 
@@ -465,14 +465,20 @@ let AnalysisPanel = React.createClass({
     }
 
   },
-  _onErrorDialogAction(step) {
+  _onErrorDialogAction(step, stepBtnList) {
     this.setState({
       errorObj: null
     });
     if (step !== 'cancel') {
       this._onStepChange(step);
     } else {
-      this.state.chartStrategy.onSearchDataButtonClickFn(this);
+      if (stepBtnList.length === 0) {
+        this.setState({
+          energyData: null
+        });
+      } else {
+        this.state.chartStrategy.onSearchDataButtonClickFn(this);
+      }
     }
   },
   getEnergyTypeCombo() {
@@ -777,8 +783,8 @@ let AnalysisPanel = React.createClass({
       dateSelector = this.refs.dateTimeSelector;
 
 
-    if (this.state.selectedChartType == 'rawdata' && value != 'Customerize' && value != 'Last7Day' && value != 'Today'
-      && value != 'Yesterday' && value != 'ThisWeek' && value != 'LastWeek') {
+    if (this.state.selectedChartType == 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today'
+      && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
       FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
     } else {
       if (value && value !== 'Customerize') {
@@ -972,26 +978,33 @@ let AnalysisPanel = React.createClass({
   _onTouBtnDisabled: function() {
     var touBtnStatus = this.state.touBtnStatus;
     var newStatus = CommodityStore.getECButtonStatus();
-    if (!newStatus && this.state.step === null) {
-      this.setState({
-        touBtnStatus: false
-      });
-    } else if (!newStatus && this.state.step !== null && this.state.step > 1) {
-      this.setState({
-        touBtnStatus: false
-      });
-    } else {
-      this.setState({
-        touBtnStatus: true
-      });
-      if (this.state.touBtnSelected) {
-        this.setState({
-          touBtnSelected: false
-        });
+    var touBtnSelected = this.state.touBtnSelected;
+    if (newStatus) {
+      if (touBtnSelected) {
+        touBtnSelected = false;
       }
+      this.setState({
+        touBtnStatus: true,
+        touBtnTooltip: I18N.EM.TouSupportsOnlyElec,
+        touBtnSelected: touBtnSelected
+      });
     }
-
-
+    if (this.state.step !== null && this.state.step <= 1 || this.state.step === null) {
+      if (touBtnSelected) {
+        touBtnSelected = false;
+      }
+      this.setState({
+        touBtnStatus: true,
+        touBtnTooltip: I18N.EM.TouSupportsMoreThanHourStep,
+        touBtnSelected: touBtnSelected
+      });
+    }
+    if (!newStatus && this.state.step !== null && this.state.step > 1) {
+      this.setState({
+        touBtnStatus: false,
+        touBtnTooltip: ''
+      });
+    }
   },
   _onSearchBtnItemTouchTap(e, child) {
     //this.setState({selectedChartType:child.props.value});
