@@ -328,6 +328,9 @@ let MapPanel = React.createClass({
       this._map.destroy();
     }
   },
+  componentWillMount: function() {
+    document.title = I18N.MainMenu.Map;
+  },
   render() {
     var styleMap = {
       "width": '100%',

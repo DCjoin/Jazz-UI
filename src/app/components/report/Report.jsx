@@ -50,6 +50,9 @@ let Report = React.createClass({
   componentWillUnMount: function() {
     CurrentUserStore.removeCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
+  componentWillMount: function() {
+    document.title = I18N.MainMenu.Report;
+  },
   render() {
     var mainPanel;
     var me = this;
