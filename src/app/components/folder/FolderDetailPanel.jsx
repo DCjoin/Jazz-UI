@@ -199,7 +199,19 @@ var FolderDetailPanel = React.createClass({
                                                 </IconMenu>
       : null;
     var BackBtn = (this.props.nodeData.get('Id') != -1) ?
-      <FontIcon hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>
+
+      <div style={{
+        height: '30px',
+        width: '30px',
+        border: '1px solid #ececec',
+        marginRight: '10px'
+      }}>
+      <FontIcon style={{
+        fontSize: '16px',
+        margin: '5px 0 0 6px',
+      }} className={classNames("icon", "icon-return")} onClick={this._onBackBtnClick}/>
+    </div>
+
       : null;
 
     return (
@@ -208,11 +220,11 @@ var FolderDetailPanel = React.createClass({
         <div className='header'>
           <OrigamiPanel />
           {collapseButton}
-          {BackBtn}
           <div className='subtitle'>
             {subtitle}
           </div>
           <div className='title' title={this.props.nodeData.get('Name')} onClick={this._onTitleMenuClick}>
+            {BackBtn}
             <div className='name'>
               {this.props.nodeData.get('Name')}
             </div>
