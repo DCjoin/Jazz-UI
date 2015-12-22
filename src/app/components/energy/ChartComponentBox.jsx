@@ -221,7 +221,7 @@ let defaultConfig = {
     x: -25,
     useHTML: true,
     labelFormatter: function() {
-      return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name + '">' + this.name + '</div>';
+      return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name.replace('<br/>', '&#10;') + '">' + this.name + '</div>';
     },
     itemStyle: {
       cursor: 'default',
@@ -562,6 +562,8 @@ let ChartComponentBox = React.createClass({
         serie = series[i];
         if (!!serie.graySerie) {
           serie.visible = false;
+        } else {
+          serie.visible = true;
         }
       }
     }
