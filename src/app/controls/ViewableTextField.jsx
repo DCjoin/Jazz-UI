@@ -97,7 +97,7 @@ var ViewableTextField = React.createClass({
   _getError: function(value = this.state.value) {
     if (this.props.isRequired) {
       if (util.isEmptyStr(value)) {
-        return '不能为空';
+        return I18N.Common.Label.MandatoryEmptyError;
       }
     } else {
       if (!value) {

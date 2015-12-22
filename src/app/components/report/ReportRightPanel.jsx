@@ -626,7 +626,7 @@ var ReportRightPanel = React.createClass({
             flexDirection: 'row'
           }}>
               <RadioButton onCheck={me._onTemplateTypeChange} style={{
-            width: '150px'
+            width: '250px'
           }} checked={me.state.checkedValue === "newTemplate"} value="newTemplate" label={I18N.EM.Report.UploadTemplate}/>
               {uploadButton}
             </div>
