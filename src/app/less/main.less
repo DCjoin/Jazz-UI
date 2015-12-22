@@ -598,14 +598,31 @@ input:focus{
 }
 .pop-userprofile-edit{
     list-style-type: none;
-
+    &>div:nth-child(2) {
+      max-height: 250px;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
 }
-.pop-userprofile-edit .pop-viewableDropDownMenu-ddm {
-
-  &>div:nth-child(2) {
+.pop-viewableDropDownMenu-ddm {
+  &>div:nth-of-type(1){
+    >div:nth-of-type(3){
+        max-width: 400px !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+  }
+  &>div:nth-of-type(2) {
     max-height: 250px;
     overflow-y: auto !important;
     overflow-x: hidden !important;
+    >div{
+      max-width: 430px !important;
+      overflow: hidden !important;
+      white-space: nowrap !important;
+      text-overflow: ellipsis !important;
+    }
   }
 }
 .pop-viewableTextField{
