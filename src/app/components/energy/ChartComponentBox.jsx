@@ -661,7 +661,11 @@ let ChartComponentBox = React.createClass({
           var index = null;
           var indexData = null;
           for (var j = 0; j < convertedData.length; j++) {
-            if (convertedData[j].name == item.Target.Name) {
+            console.log('**wyh****');
+            console.log(convertedData[j].name);
+            console.log(item.Target.Name);
+            console.log('**wyh****');
+            if (convertedData[j].originalName == item.Target.Name) {
               index = convertedData[j].id;
               indexData = convertedData[j];
               break;
