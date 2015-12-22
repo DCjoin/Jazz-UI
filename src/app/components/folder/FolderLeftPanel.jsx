@@ -232,8 +232,19 @@ var FolderLeftPanel = React.createClass({
     };
     var _onCancel = function() {
       that.setState({
-        dialogType: ''
+        isLoading: true
+      }, () => {
+        that.setState({
+          isLoading: false,
+          allNode: FolderStore.getFolderTree(),
+          dialogType: '',
+        });
       });
+    // that.setState({
+    //
+    //   isloading: true
+    // });
+    // that._onFolderTreeChange();
     };
     var props = {
       title: I18N.Folder.Widget.Leave,

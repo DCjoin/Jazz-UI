@@ -180,9 +180,17 @@ let AnalysisPanel = React.createClass({
     } else {
       widgetWd = null;
     }
-    let BackBtn = (this.props.isFromAlarm) ? null : <FontIcon style={{
-      marginLeft: '10px'
-    }} hoverColor="#6b6b6b" color="#939796" className={classNames("icon", "icon-import")} onClick={this._onBackBtnClick}/>;
+    let BackBtn = (this.props.isFromAlarm) ? null : <div style={{
+      height: '30px',
+      width: '30px',
+      border: '1px solid #ececec',
+      marginRight: '10px'
+    }}>
+          <FontIcon style={{
+      fontSize: '16px',
+      margin: '5px 0 0 6px',
+    }} className={classNames("icon", "icon-return")} onClick={this._onBackBtnClick}/>
+        </div>;
     var remarkTextArea = null;
     if (this.state.remarkDisplay) {
       remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
@@ -205,21 +213,16 @@ let AnalysisPanel = React.createClass({
     let panel = <div className={'jazz-energy-panel'}>
         <div className='header'>
         <OrigamiPanel/>
-        <div style={{
-      display: 'flex',
-      flexDirection: 'row'
-    }}>
           {collapseButton}
-
-            {BackBtn}</div>
-
           {sourceUserNameEl}
           <div className={'jazz-alarm-chart-toolbar-container'}>
               <div className={'title'} style={{
       display: 'flex',
       alignItems: 'center',
-      minWidth: '70px'
+      minWidth: '70px',
+      marginTop: '30px'
     }}>
+    {BackBtn}
                 <div className={'content'} title={me.props.chartTitle} style={{
       minWidth: '70px'
     }}>
