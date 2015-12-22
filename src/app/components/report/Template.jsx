@@ -150,7 +150,11 @@ var Template = React.createClass({
   },
   _onSortChange(e) {
     var sortBy = e.target.value;
-    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), sortBy, 'asc');
+    var order = 'asc';
+    if (sortBy === 'CreateTime') {
+      order = 'desc';
+    }
+    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), sortBy, order);
     this.setState({
       sortBy: sortBy
     });
