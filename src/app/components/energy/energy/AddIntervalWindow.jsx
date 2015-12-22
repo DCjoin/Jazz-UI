@@ -214,7 +214,9 @@ let AddIntervalWindow = React.createClass({
       padding: '24px 0 0 50px'
     }}>{I18N.MultipleTimespan.Title}</div>;
     let dialog = <Dialog {...me.props} title={titleEl} actions={_buttonActions} modal={true}
-    contentClassName='jazz-add-interval-dialog'>
+    contentClassName='jazz-add-interval-dialog' style={{
+      overflow: 'auto'
+    }}>
                     <div style={{
       height: '418px'
     }}>
