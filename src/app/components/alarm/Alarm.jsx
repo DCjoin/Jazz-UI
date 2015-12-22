@@ -121,6 +121,12 @@ let Alarm = React.createClass({
   componentWillMount: function() {
     document.title = I18N.Title.Alarm;
   },
+  componentDidUpdate: function() {
+    if (window.lastLanguage != window.currentLanguage) {
+      document.title = I18N.Title.Alarm;
+      window.lastLanguage = window.currentLanguage;
+    }
+  },
   render() {
     var LeftPanelField, dataSelectPanel,
       mainPanel = (<div style={{

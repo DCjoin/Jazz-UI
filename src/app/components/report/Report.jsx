@@ -53,6 +53,12 @@ let Report = React.createClass({
   componentWillMount: function() {
     document.title = I18N.MainMenu.Report;
   },
+  componentDidUpdate: function() {
+    if (window.lastLanguage != window.currentLanguage) {
+      document.title = I18N.MainMenu.Report;
+      window.lastLanguage = window.currentLanguage;
+    }
+  },
   render() {
     var mainPanel;
     var me = this;

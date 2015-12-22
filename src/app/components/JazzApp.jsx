@@ -183,7 +183,7 @@ let JazzApp = React.createClass({
     } else {
       window.currentLanguage = 1;
     }
-    console.log('window.currentLanguage=' + window.currentLanguage);
+    window.lastLanguage = window.currentLanguage;
 
 
     if (lang.toLowerCase() == 'en-us') {

@@ -333,6 +333,12 @@ let Setting = React.createClass({
       dialogType: FolderStore.getDisplayDialog().type,
     });
   },
+  componentDidUpdate: function() {
+    if (window.lastLanguage != window.currentLanguage) {
+      document.title = I18N.Title.Energy;
+      window.lastLanguage = window.currentLanguage;
+    }
+  },
   componentWillMount: function() {
     // CommodityAction.setEnergyConsumptionType('Carbon');
     lastEnergyType = null;

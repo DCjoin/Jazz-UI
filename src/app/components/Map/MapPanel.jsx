@@ -309,6 +309,10 @@ let MapPanel = React.createClass({
   },
   componentDidUpdate: function() {
     this._showPopup();
+    if (window.lastLanguage != window.currentLanguage) {
+      document.title = I18N.MainMenu.Map;
+      window.lastLanguage = window.currentLanguage;
+    }
   },
   componentDidMount: function() {
     MapStore.addMapInfoListener(this._onMapInfoChanged);
