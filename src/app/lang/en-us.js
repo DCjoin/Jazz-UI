@@ -51,7 +51,7 @@ I18N.MainMenu.Alarm = 'Alarm';
 I18N.MainMenu.Energy = 'Energy';
 I18N.MainMenu.Report = 'Report';
 I18N.MainMenu.DailyReport = 'Daily report';
-I18N.MainMenu.Template = 'Template management';
+I18N.MainMenu.Template = 'Template';
 
 I18N.Login = {};
 I18N.Login.UserName = 'User name';
@@ -322,10 +322,10 @@ I18N.EM.Report.Creator = 'Creator';
 I18N.EM.Report.CreateTime = 'Create time';
 I18N.EM.Report.Name = 'Name';
 I18N.EM.Report.Report = 'Report';
-I18N.EM.Report.ReportSort = 'Sort according report name';
-I18N.EM.Report.UserSort = 'Sort according user name';
-I18N.EM.Report.NameSort = 'Sort according template name';
-I18N.EM.Report.TimeSort = 'Sort according create time';
+I18N.EM.Report.ReportSort = 'Sort by report name';
+I18N.EM.Report.UserSort = 'Sort by user name';
+I18N.EM.Report.NameSort = 'Sort by template name';
+I18N.EM.Report.TimeSort = 'Sort by create time';
 I18N.EM.Report.Add = 'Add';
 I18N.EM.Report.Delete = 'Delete';
 I18N.EM.Report.Confirm = 'OK';
@@ -449,6 +449,8 @@ I18N.Setting.User.ServerManager = 'SP Manager';
 
 I18N.Common.Label = {};
 I18N.Common.Label.UnknownError = 'Sorry, unknown error.';
+I18N.Common.Label.MandatoryEmptyError = 'Required';
+I18N.Common.Label.ExcelColumnError = 'Please fill in the cell name as C1，AB23';
 
 I18N.Message = {};
 
