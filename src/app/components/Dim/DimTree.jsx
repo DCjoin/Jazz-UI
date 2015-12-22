@@ -392,10 +392,10 @@ let DimTree = React.createClass({
         zIndex: '100',
         width: '300px',
         height: '390px',
-        position: 'absolute',
+        position: 'fixed',
         // right: '10px',
         border: '1px solid #c9c8c8',
-        marginTop: '12px',
+        marginTop: '2px',
         marginLeft: '-45px'
       },
       searchIconStyle = {

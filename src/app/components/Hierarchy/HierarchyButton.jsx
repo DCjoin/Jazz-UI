@@ -128,7 +128,7 @@ let HierarchyButton = React.createClass({
         zIndex: '100',
         width: '300px',
         height: '390px',
-        position: 'absolute',
+        position: 'fixed',
         border: '1px solid #c9c8c8',
         margin: '12px 10px'
       };
