@@ -16,7 +16,7 @@ var FolderSearchBox = React.createClass({
     if (this.refs.searchText.getValue()) {
       this.setState({
         showPaper: true,
-      })
+      });
     }
   },
   _onSearchChange: function(e) {
