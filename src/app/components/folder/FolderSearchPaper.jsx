@@ -104,7 +104,7 @@ let FolderSearch = React.createClass({
       top: '125px',
       left: '10px',
       border: '1px solid #c9c8c8',
-      marginTop: '12px'
+      marginTop: '25px'
     };
     return (
       <Paper style={paperStyle}>
