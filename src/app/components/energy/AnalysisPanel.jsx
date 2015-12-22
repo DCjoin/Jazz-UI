@@ -406,7 +406,7 @@ let AnalysisPanel = React.createClass({
       }
     }
     if (this.state.chartStrategy.handleNavigatorChangeMultiTimeFn) {
-      this.state.handleNavigatorChangeMultiTimeFn(startTime.endTime);
+      this.state.chartStrategy.handleNavigatorChangeMultiTimeFn(startTime, endTime);
     }
     this.dateChanged(chart, startTime, endTime, type);
   },
