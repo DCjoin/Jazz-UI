@@ -1312,6 +1312,10 @@ let AnalysisPanel = React.createClass({
     var zoneStore = LabelMenuStore.getZoneData();
     var hierNode, industryId, zoneId, parentId,
       industyMenuItems = [];
+
+    if (industryStore === null || labelingsStore === null || zoneStore === null || hierNodes.length === 0) {
+      return;
+    }
     for (var i = 0; i < hierNodes.length; i++) {
       hierNode = hierNodes[i];
       industryId = hierNode.IndustryId;
@@ -1340,28 +1344,29 @@ let AnalysisPanel = React.createClass({
     var hierNode = LabelMenuStore.getHierNode();
     var industryId, zoneId, parentId,
       industyMenuItems = this.state.industyMenuItems;
-    if (!hierNode) {
+    if (industryStore === null || labelingsStore === null || zoneStore === null || !hierNode) {
       return;
-    } else {
-      industryId = hierNode.IndustryId;
-      zoneId = hierNode.ZoneId;
-      if (hierNode.Type !== 2 || !CommonFuns.isNumber(industryId)) {
-        return;
-      }
-      if (industyMenuItems.length === 1 && industyMenuItems[0].primaryText == I18N.Setting.Benchmark.Label.None) {
-        industyMenuItems = [];
-      }
-      this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
-      var industryNode = industryStore.find((item, index) => {
-        return (item.get("Id") === industryId);
-      });
-      parentId = industryNode.get('ParentId');
-      if (parentId !== 0) {
-        this.addIndustyMenuItem(labelingsStore, parentId, zoneId, industyMenuItems);
-      }
-      this.addIndustyMenuItem(labelingsStore, 0, zoneId, industyMenuItems);
-      this.removeRedundance(industyMenuItems);
     }
+
+    industryId = hierNode.IndustryId;
+    zoneId = hierNode.ZoneId;
+    if (hierNode.Type !== 2 || !CommonFuns.isNumber(industryId)) {
+      return;
+    }
+    if (industyMenuItems.length === 1 && industyMenuItems[0].primaryText == I18N.Setting.Benchmark.Label.None) {
+      industyMenuItems = [];
+    }
+    this.addIndustyMenuItem(labelingsStore, industryId, zoneId, industyMenuItems);
+    var industryNode = industryStore.find((item, index) => {
+      return (item.get("Id") === industryId);
+    });
+    parentId = industryNode.get('ParentId');
+    if (parentId !== 0) {
+      this.addIndustyMenuItem(labelingsStore, parentId, zoneId, industyMenuItems);
+    }
+    this.addIndustyMenuItem(labelingsStore, 0, zoneId, industyMenuItems);
+    this.removeRedundance(industyMenuItems);
+
     if (industyMenuItems.length === 0) {
       industyMenuItems = this.getNoneMenuItem(true);
     }

@@ -722,7 +722,9 @@ let ChartStrategyFactor = {
           analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          if (analysisPanel.refs.dateTimeSelector) {
+            analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          }
         }
       };
 
@@ -788,7 +790,9 @@ let ChartStrategyFactor = {
           analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          if (analysisPanel.refs.dateTimeSelector) {
+            analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          }
         }
       };
 
@@ -867,7 +871,9 @@ let ChartStrategyFactor = {
           analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          if (analysisPanel.refs.dateTimeSelector) {
+            analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          }
         }
       };
 
@@ -925,7 +931,9 @@ let ChartStrategyFactor = {
           analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          if (analysisPanel.refs.dateTimeSelector) {
+            analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          }
         }
       };
 
@@ -992,7 +1000,9 @@ let ChartStrategyFactor = {
           analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          if (analysisPanel.refs.dateTimeSelector) {
+            analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          }
         }
       };
 
@@ -1063,7 +1073,9 @@ let ChartStrategyFactor = {
           analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          if (analysisPanel.refs.dateTimeSelector) {
+            analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          }
         }
       };
 
@@ -1131,7 +1143,9 @@ let ChartStrategyFactor = {
           analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          if (analysisPanel.refs.dateTimeSelector) {
+            analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          }
         }
       };
 
@@ -1287,7 +1301,9 @@ let ChartStrategyFactor = {
           analysisPanel._setRelativeDateByValue('Customerize');
           let start = j2d(timeRange.StartTime, false);
           let end = j2d(timeRange.EndTime, false);
-          analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          if (analysisPanel.refs.dateTimeSelector) {
+            analysisPanel.refs.dateTimeSelector.setDateField(start, end);
+          }
         }
       };
 
