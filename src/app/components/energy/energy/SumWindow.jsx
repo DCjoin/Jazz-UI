@@ -220,7 +220,7 @@ let SumWindow = React.createClass({
     let titleEl = <div style={{
       fontSize: '20px',
       padding: '24px 0 0 50px'
-    }}>{'数据求和'}</div>;
+    }}>{I18N.EM.EnergyAnalyse.SumData}</div>;
     let label = this.buildGridTitle();
     let dialog = <Dialog {...me.props} title={titleEl} actions={_buttonActions} modal={true}
     contentClassName='jazz-add-interval-dialog'>

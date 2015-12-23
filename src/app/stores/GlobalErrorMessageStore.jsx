@@ -8,6 +8,7 @@ import { Action } from '../constants/actionType/Alarm.jsx';
 
 let _errorMessage = '';
 let _errorCode = '';
+let _dialogShow = false;
 let CLEAR_GLOBAL_ERROR_MESSAGE = 'clearglobalerror';
 var GlobalErrorMessageStore = assign({}, PrototypeStore, {
   getErrorMessage() {
@@ -24,9 +25,16 @@ var GlobalErrorMessageStore = assign({}, PrototypeStore, {
       code = code + '';
     _errorCode = code;
   },
+  setDialogShow(dialogShow) {
+    _dialogShow = dialogShow;
+  },
+  getDialogShow(dialogShow) {
+    return _dialogShow;
+  },
   ClearGlobalError: function() {
     _errorMessage = '';
     _errorCode = '';
+    _dialogShow = false;
   },
   emitClearGlobalErrorChange: function() {
     this.emit(CLEAR_GLOBAL_ERROR_MESSAGE);
@@ -44,6 +52,7 @@ GlobalErrorMessageStore.dispatchToken = AppDispatcher.register(function(action) 
     case Action.GLOBAL_ERROR_MESSAGE_CHANGED:
       GlobalErrorMessageStore.setErrorMessage(action.errorMessage);
       GlobalErrorMessageStore.setErrorCode(action.errorCode);
+      GlobalErrorMessageStore.setDialogShow(action.dialogShow);
       GlobalErrorMessageStore.emitChange();
       break;
     case Action.CLEAR_GLOBAL_ERROR_MESSAGE:

@@ -102,7 +102,7 @@ var ReportRightPanel = React.createClass({
     } else {
       errorMessage = I18N.format(I18N.EM.Report.StepError2, curStep);
     }
-    CommonFuns.popupErrorMessage(errorMessage);
+    CommonFuns.popupErrorMessage(errorMessage, '', true);
   },
   _onChange() {
     if (this.refs.reportTitleId) {
@@ -221,7 +221,7 @@ var ReportRightPanel = React.createClass({
     var fileName = file.name;
 
     if (!me._endsWith(fileName.toLowerCase(), '.xlsx') && !me._endsWith(fileName.toLowerCase(), '.xls')) {
-      CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile);
+      CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
       return;
     }
     var createElement = window.Highcharts.createElement,
@@ -257,7 +257,7 @@ var ReportRightPanel = React.createClass({
           errorMessage = I18N.EM.Report.DuplicatedName;
         }
         if (errorMessage) {
-          CommonFuns.popupErrorMessage(errorMessage);
+          CommonFuns.popupErrorMessage(errorMessage, '', true);
         }
       }
     };
@@ -663,8 +663,7 @@ var ReportRightPanel = React.createClass({
           dataLength: dataLength,
           id: item.get('Id'),
           tagList: item.get('TagsList'),
-          addReport: reportItem.get('id') === 0 ? true : false,
-          showBackground: (index % 2) === 0 ? true : false
+          addReport: reportItem.get('id') === 0 ? true : false
         };
         return (
           <ReportDataItem {...props}></ReportDataItem>

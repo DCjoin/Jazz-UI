@@ -238,7 +238,7 @@ var YaxisDialog = React.createClass({
       }}>{I18N.EM.YAxisSettingTags}</span>
           <span style={{
         'word-break': 'break-all'
-      }}> {yaxisConfig[key].join(',')}</span></div>
+      }}> {yaxisConfig[key].join(',').replace(/<br\s*\/?>/g, '~')}</span></div>
         <MaxMinPair ref={uom + '_pair'} uom = {uom} defaultValues={defaultValues}></MaxMinPair>
       </div>;
 

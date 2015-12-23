@@ -442,7 +442,6 @@ let ReportDataItem = React.createClass({
       diplayCom = <ViewableDropDownMenu {...numberRuleProps}></ViewableDropDownMenu>;
     }
     var tagDialog = me._renderTagSelectDialog();
-    var displayIndex = me.props.dataLength - me.props.index;
     var reportTypeProps = {
       ref: 'reportTypeId',
       dataItems: typeItems,
@@ -510,14 +509,9 @@ let ReportDataItem = React.createClass({
     }
 
     return (
-      <div className={classNames(
-        {
-          'jazz-report-data-content': true,
-          'jazz-report-data-content-background': this.props.showBackground
-        }
-      )}>
+      <div className='jazz-report-data-content'>
         <div className='jazz-report-data-delete'>
-          <div>{I18N.EM.Report.Data + displayIndex}</div>
+          <div>{I18N.EM.Report.Data}</div>
           {deleteButton}
         </div>
         <div className='jazz-report-data-container'>
