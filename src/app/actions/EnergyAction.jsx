@@ -632,6 +632,20 @@ let EnergyAction = {
         });
       }
     });
+  },
+  setTimeRangeByNavigator(startTime, endTime) {
+    AppDispatcher.dispatch({
+      type: Action.SET_ENERGY_TIME_RANGE,
+      startTime: startTime,
+      endTime: endTime
+    });
+  },
+  setCostTimeRangeByNavigator(startTime, endTime) {
+    AppDispatcher.dispatch({
+      type: Action.SET_COST_TIME_RANGE,
+      startTime: startTime,
+      endTime: endTime
+    });
   }
 };
 module.exports = EnergyAction;

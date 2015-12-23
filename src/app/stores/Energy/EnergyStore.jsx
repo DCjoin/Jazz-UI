@@ -146,6 +146,13 @@ let EnergyStore = assign({}, PrototypeStore, {
     ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
+  _onChangeTimeRange(startTime, endTime) {
+    let timeRanges = CommonFuns.getTimeRangesByDate(startTime, endTime);
+    _paramsObj.timeRanges = timeRanges;
+    _paramsObj.startTime = startTime;
+    _paramsObj.endTime = endTime;
+    _relativeDate = 'Customerize';
+  },
   changeMultipleTimeRanges(timeRanges) {
     _paramsObj.startTime = timeRanges[0].StartTime;
     _paramsObj.endTime = timeRanges[0].EndTime;
@@ -258,6 +265,9 @@ EnergyStore.dispatchToken = AppDispatcher.register(function(action) {
       EnergyStore._onDataChanged(null, action.submitParams);
       EnergyStore._initErrorText(action.errorText);
       EnergyStore.emitEnergyDataLoadErrorListener();
+      break;
+    case Action.SET_ENERGY_TIME_RANGE:
+      EnergyStore._onChangeTimeRange(action.startTime, action.endTime);
       break;
   }
 });

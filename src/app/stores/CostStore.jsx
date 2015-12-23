@@ -144,6 +144,13 @@ var CostStore = assign({}, PrototypeStore, {
     ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
   },
+  _onChangeTimeRange(startTime, endTime) {
+    let timeRanges = CommonFuns.getTimeRangesByDate(startTime, endTime);
+    _paramsObj.timeRanges = timeRanges;
+    _paramsObj.startTime = startTime;
+    _paramsObj.endTime = endTime;
+    _relativeDate = 'Customerize';
+  },
   /*
     returns boolean: if only one tag left, then reload data.
   */
@@ -221,6 +228,9 @@ CostStore.dispatchToken = AppDispatcher.register(function(action) {
       CostStore._onDataChanged(null, action.submitParams);
       CostStore._initErrorText(action.errorText);
       CostStore.emitCostDataLoadErrorListener();
+      break;
+    case Action.SET_COST_TIME_RANGE:
+      CostStore._onChangeTimeRange(action.startTime, action.endTime);
       break;
   }
 });
