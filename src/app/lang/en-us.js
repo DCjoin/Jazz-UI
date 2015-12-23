@@ -148,6 +148,9 @@ I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = 'HC seasons';
 I18N.Common.Button.Calendar.ShowHoliday = 'Non-work time';
 I18N.Common.Button.Show = 'View';
+I18N.Common.Button.Save = 'Save';
+I18N.Common.Button.Cancel = 'Cancel';
+I18N.Common.Button.ClearAll = 'Clear all';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = 'Standard coal';
@@ -289,11 +292,17 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePreviousComboLabel = 'Last';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious7Day = '7 days';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day = '30 days';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '30 months';
+I18N.EM.YAxisSetting = 'Y-Axis setting';
+I18N.EM.YAxisSettingTags = 'Tags';
+I18N.EM.YAxisTitle = 'Y-Axis';
+I18N.EM.YAxisMinMaxValidation = 'Max value must larger than Min value';
 
 I18N.EM.CannotShowCalendarByStep = 'The current interval does not support display of {0} background color.';
 I18N.EM.CannotShowCalendarByTimeRange = 'No calendar background is seen? Change to another time and try.';
 I18N.EM.WeatherSupportsOnlySingleHierarchy = 'This function only supports single-building tags.';
 I18N.EM.WeatherSupportsOnlyHourlyStep = 'This function only supports hourly interval.';
+I18N.EM.WeatherSupportsNotMinuteStep = 'This function cannot support minute step';
+I18N.EM.WeatherSupportsNotMultiTime = 'This function cannot support mulitiple timespan';
 
 I18N.EM.CharType = {};
 I18N.EM.CharType.Line = 'Line';
@@ -845,7 +854,7 @@ I18N.Folder.Detail.Title.Menu1 = 'Copy';
 I18N.Folder.Detail.Title.Menu2 = 'Send';
 I18N.Folder.Detail.Title.Menu3 = 'Delete';
 I18N.Folder.Detail.WidgetMenu = {};
-I18N.Folder.Detail.WidgetMenu.Menu1 = 'Copy';
+I18N.Folder.Detail.WidgetMenu.Menu1 = 'Save as';
 I18N.Folder.Detail.WidgetMenu.Menu2 = 'Send';
 I18N.Folder.Detail.WidgetMenu.Menu3 = 'Share';
 I18N.Folder.Detail.WidgetMenu.Menu4 = 'Export';
