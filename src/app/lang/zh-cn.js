@@ -1062,6 +1062,7 @@ I18N.Baseline.TBSettingItem = {};
 I18N.Baseline.TBSettingItem.Error = '时间段冲突， 请重新选择时段';
 I18N.Baseline.TBSettingItem.CalcRadio = '计算所选数据平均值为基准数据';
 I18N.Baseline.TBSettingItem.NormalRadio = '手动设置基准值';
+I18N.Baseline.TBSettingItem.TimeSpanSetting = '时段设置';
 
 I18N.Baseline.Calc.workdaytitle = '公休日日历 ：';
 I18N.Baseline.Calc.workdaycontent = '默认工作日 : 周一至周五';

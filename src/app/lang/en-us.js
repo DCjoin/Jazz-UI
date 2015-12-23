@@ -1042,6 +1042,7 @@ I18N.Baseline.TBSettingItem = {};
 I18N.Baseline.TBSettingItem.Error = 'Conflict with existed timespan, please select again';
 I18N.Baseline.TBSettingItem.CalcRadio = 'Calculate selected average data value as baseline value';
 I18N.Baseline.TBSettingItem.NormalRadio = 'Set baseline manually';
+I18N.Baseline.TBSettingItem.TimeSpanSetting = 'TimeSpan setting';
 
 I18N.Baseline.Calc = {};
 I18N.Baseline.Calc.MonthBaseline = 'Monthly';
