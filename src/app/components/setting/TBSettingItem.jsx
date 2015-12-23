@@ -192,7 +192,7 @@ var TBSettingItem = React.createClass({
         var valid = (tmpSetting.EndTime <= curSetting.StartTime ||
           tmpSetting.StartTime >= curSetting.EndTime);
         if (!valid) {
-          error = '时间段冲突， 请重新选择时段';
+          error = I18N.Baseline.TBSettingItem.Error;
           break;
         }
       }
@@ -314,14 +314,14 @@ var TBSettingItem = React.createClass({
         avgProps.isDisplay = true;
         middleCtrl = <div style={clearStyle}>
           <RadioButton name='CalcRadio' key='CalcRadio' ref='CalcRadio' value="CalcRadio"
-        label="计算所选数据平均值为基准数据" disabled="true" checked="true"  />
+        label={I18N.Baseline.TBSettingItem.CalcRadio} disabled="true" checked="true"  />
           <CalcSetting ref="CalcSettingCtrl" {...avgProps} />
         </div>
       } else {
         normalProps.isDisplay = true;
         middleCtrl = <div className="jazz-setting-basic-clear">
           <RadioButton name='NormalRadio' key='NormalRadio' ref='NormalRadio' value="NormalRadio"
-        label="手动设置基准值" disabled="true" checked="true" />
+        label={I18N.Baseline.TBSettingItem.NormalRadio} disabled="true" checked="true" />
           <NormalSetting ref="NormalSettingCtrl" {...normalProps} />
         </div>
       }
@@ -483,13 +483,13 @@ var TBSettingItem = React.createClass({
             <RadioButton name='NormalRadio' ref='NormalRadio' value="NormalRadio" style={{
         zIndex: 0
       }}
-      label="手动设置基准值" onCheck={this._onNormalCheck} checked={this.state.radio == 'NormalRadio'} />
+      label={I18N.Baseline.TBSettingItem.NormalRadio} onCheck={this._onNormalCheck} checked={this.state.radio == 'NormalRadio'} />
             <NormalSetting ref="NormalSettingCtrl" {...normalProps} isDisplay={this.state.radio == "NormalRadio"} />
 
             <RadioButton name='CalcRadio' ref='CalcRadio' value="CalcRadio" style={{
         zIndex: 0
       }}
-      label="计算所选数据平均值为基准数据" onCheck={this._onCalcCheck} checked={this.state.radio == 'CalcRadio'}  />
+      label={I18N.Baseline.TBSettingItem.CalcRadio} onCheck={this._onCalcCheck} checked={this.state.radio == 'CalcRadio'}  />
             <CalcSetting ref="CalcSettingCtrl" {...avgProps} isDisplay={this.state.radio == "CalcRadio"}  />
           </div>
         </div>

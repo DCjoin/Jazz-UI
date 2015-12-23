@@ -3,7 +3,8 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/CurrentUser.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
-var UserTypeName = null;
+var UserTypeName = null,
+  UserType = null;
 let CurrentUserAction = {
   getUser: function(userId) {
     Ajax.post('/User.svc/GetUsersByFilter', {
@@ -14,6 +15,7 @@ let CurrentUserAction = {
       },
       success: function(userList) {
         UserTypeName = userList[0].UserTypeName;
+        UserType = userList[0].UserType;
         AppDispatcher.dispatch({
           type: Action.GET_USER,
           userInfo: userList[0]
@@ -35,7 +37,8 @@ let CurrentUserAction = {
         AppDispatcher.dispatch({
           type: Action.GET_ROLE,
           userId: userId,
-          role: list[0]
+          role: list[0],
+          userType: UserType
         });
       },
       error: function(err, res) {

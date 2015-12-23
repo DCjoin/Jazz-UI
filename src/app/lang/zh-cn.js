@@ -289,7 +289,7 @@ I18N.EM.Ratio.CaculateValue = '计算值';
 I18N.EM.Ratio.RawValue = '原始值';
 I18N.EM.Ratio.TargetValue = '目标值';
 I18N.EM.Ratio.BaseValue = '基准值';
-I18N.EM.Ratio.Error = '时间范围小于1周';
+I18N.EM.Ratio.Error = '查看公休比请选择不小于一周的时间范围';
 
 
 
@@ -419,6 +419,7 @@ I18N.EM.Export.Preview = '导出图片预览';
 //workday
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
+I18N.Setting.Calendar.Time = '时间';
 I18N.Setting.Calendar.WorkDay = '工作日';
 I18N.Setting.Calendar.Holiday = '非工作日';
 I18N.Setting.Calendar.DefaultWorkDay = '默认工作日：周一至周五';
@@ -935,6 +936,7 @@ I18N.Tag.AlarmStatus2 = '基准值已配置';
 I18N.Tag.AlarmStatus3 = '报警未配置';
 I18N.Tag.AlarmStatus4 = '报警已配置';
 I18N.Tag.SelectError = '请选择层级节点-维度节点。';
+I18N.Tag.SelectAll = '全选';
 
 I18N.Template = {};
 I18N.Template.Copy = {};
@@ -1045,6 +1047,13 @@ I18N.Baseline.BaselineModify.YearValue = '年度';
 I18N.Baseline.BaselineModify.MonthBaseline = '月基准值';
 I18N.Baseline.Calc = {};
 I18N.Baseline.Calc.MonthBaseline = '月基准值';
+I18N.Baseline.TBSettingItem = {};
+I18N.Baseline.TBSettingItem.Error = '时间段冲突， 请重新选择时段';
+I18N.Baseline.TBSettingItem.CalcRadio = '计算所选数据平均值为基准数据';
+I18N.Baseline.TBSettingItem.NormalRadio = '手动设置基准值';
+I18N.Baseline.Calc = {};
+I18N.Baseline.Calc.workdaytitle = '公休日日历 ：';
+I18N.Baseline.Calc.workdaycontent = '默认工作日 : 周一至周五';
 
 I18N.MultipleTimespan = {};
 I18N.MultipleTimespan.Before = '之前第';
