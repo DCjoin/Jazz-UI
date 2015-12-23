@@ -1143,7 +1143,7 @@ I18N.Platform.ServiceProvider.SendEmail = 'Send mail';
 I18N.Platform.ServiceProvider.SendEmailSuccess = 'Mail send successfully';
 I18N.Platform.ServiceProvider.Error001 = 'SP is modified by other user';
 I18N.Platform.ServiceProvider.Error003 = 'SP is deleted by other user';
-
+I18N.Platform.ServiceProvider.ErrorNotice = 'Error message';
 
 I18N.Privilege = {};
 I18N.Privilege.Common = {};
@@ -1175,6 +1175,7 @@ I18N.Privilege.Role.TagMapping = 'Association';
 I18N.Privilege.Role.CustomerInfoView = 'View customer information';
 I18N.Privilege.Role.CustomerInfoManagement = 'Manage customer information';
 I18N.Privilege.Role.CustomLabeling = 'Customized labeling';
+
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
