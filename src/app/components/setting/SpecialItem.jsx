@@ -297,7 +297,7 @@ var SpecialItem = React.createClass({
           <span style={style}>{startTimeStr}</span>
           <span style={{
           marginRight: '10px'
-        }} >到</span>
+        }} >{I18N.EM.To}</span>
           <span style={style}>{endDateStr}</span>
           <span style={style}>{endTimeStr}</span>
           <div style={{

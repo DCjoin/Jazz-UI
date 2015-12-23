@@ -1035,6 +1035,8 @@ I18N.Baseline.Error.TbnameError = '必填项';
 I18N.Baseline.Error.TbnameValidError = '允许汉字，英文字母，数字，下划线和空格';
 I18N.Baseline.Error.Calc = '所选数据的时间跨度大于一个月，无法计算，请重新选择数据';
 I18N.Baseline.Error.SpecialError = '补充日期冲突， 请重新选择时段';
+I18N.Baseline.Error.SpecialOtherError = '补充日期非法， 请重新选择时段';
+I18N.Baseline.Error.TbSettingError = '与已添加时段冲突，请重新选择时段';
 I18N.Baseline.BaselineModify = {};
 I18N.Baseline.BaselineModify.Month = {};
 I18N.Baseline.BaselineModify.Month.Jan = '一';
@@ -1185,6 +1187,22 @@ I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
 I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
 I18N.Platform.ServiceProvider.ErrorNotice = '错误提示';
+
+I18N.Platform.ServiceProvider.SPName = '服务商名称';
+I18N.Platform.ServiceProvider.SPID = '服务商ID';
+I18N.Platform.ServiceProvider.SPDomain = '服务商子域名';
+I18N.Platform.ServiceProvider.Address = '地址';
+I18N.Platform.ServiceProvider.Telephone = '电话';
+I18N.Platform.ServiceProvider.Email = '电子邮箱';
+I18N.Platform.ServiceProvider.EmailError = '请按照\"user@example.com\"的格式输入';
+I18N.Platform.ServiceProvider.LoginUrl = '登录失败返回页面';
+I18N.Platform.ServiceProvider.LoginUrlError = '请填写网址，登录失败后页面会自动跳转至所填网址';
+I18N.Platform.ServiceProvider.LogOutUrl = '退出页面';
+I18N.Platform.ServiceProvider.LogOutUrlError = '请填写网址，退出系统时会自动跳转至所填网址';
+I18N.Platform.ServiceProvider.StartDate = '运营时间';
+I18N.Platform.ServiceProvider.Comment = '备注';
+I18N.Platform.ServiceProvider.Status = '运营状态';
+I18N.Platform.ServiceProvider.CalcStatus = '能与能效标识大数据计算';
 
 
 I18N.Privilege = {};

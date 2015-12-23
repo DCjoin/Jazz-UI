@@ -467,7 +467,7 @@ var TBSettingItem = React.createClass({
             </div>
             <div style={{
         marginLeft: '10px'
-      }}>到</div>
+      }}>{I18N.EM.To}</div>
             <div className="jazz-setting-basic-datepicker-container">
               <ViewableDatePicker  showTime={false} ref='endFeild' {...endProps} />
             </div>
