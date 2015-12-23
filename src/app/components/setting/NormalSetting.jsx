@@ -153,18 +153,18 @@ var NormalSetting = React.createClass({
       <div style={style}>
         <div style={{
         marginTop: '10px'
-      }}>小时基准值</div>
+      }}>{I18N.Baseline.NormalSetting.Baseline}</div>
         <div style={{
         color: '#abafae',
         marginTop: '18px'
-      }}>工作日</div>
+      }}>{I18N.Setting.Calendar.WorkDay}</div>
         <div>
           <DaytimeRangeValues ref="workdayValues" {...workProps} />
         </div>
         <div style={{
         color: '#abafae',
         marginTop: '18px'
-      }}>非工作日</div>
+      }}>{I18N.Setting.Calendar.Holiday}</div>
         <div>
           <DaytimeRangeValues ref="nonWorkdayValues" {...nonWorkdayProps} />
         </div>

@@ -474,6 +474,12 @@ I18N.Setting.User.BusinessPerson = '业务人员';
 I18N.Setting.User.Sales = '销售人员';
 I18N.Setting.User.ServerManager = '服务商管理员';
 
+I18N.Setting.NodeBtn = {};
+I18N.Setting.NodeBtn.Saving = '正在保存...';
+I18N.Setting.NodeBtn.Save = '保存';
+I18N.Setting.NodeBtn.Deleting = '正在删除...';
+I18N.Setting.NodeBtn.Delete = '删除';
+
 I18N.Message = {};
 
 I18N.Message.DeletionConcurrency = '该{0}已不存在，马上为您刷新。';
@@ -1028,6 +1034,7 @@ I18N.Baseline.Error.Cal = '该数据点所关联层级节点在所选年份未�
 I18N.Baseline.Error.TbnameError = '必填项';
 I18N.Baseline.Error.TbnameValidError = '允许汉字，英文字母，数字，下划线和空格';
 I18N.Baseline.Error.Calc = '所选数据的时间跨度大于一个月，无法计算，请重新选择数据';
+I18N.Baseline.Error.SpecialError = '补充日期冲突， 请重新选择时段';
 I18N.Baseline.BaselineModify = {};
 I18N.Baseline.BaselineModify.Month = {};
 I18N.Baseline.BaselineModify.Month.Jan = '一';
@@ -1053,9 +1060,19 @@ I18N.Baseline.TBSettingItem = {};
 I18N.Baseline.TBSettingItem.Error = '时间段冲突， 请重新选择时段';
 I18N.Baseline.TBSettingItem.CalcRadio = '计算所选数据平均值为基准数据';
 I18N.Baseline.TBSettingItem.NormalRadio = '手动设置基准值';
-I18N.Baseline.Calc = {};
+
 I18N.Baseline.Calc.workdaytitle = '公休日日历 ：';
 I18N.Baseline.Calc.workdaycontent = '默认工作日 : 周一至周五';
+I18N.Baseline.Cal = {};
+I18N.Baseline.Cal.Date = '{0}月{1}日至{2}月{3}日';
+I18N.Baseline.Cal.workday = '工作日 :';
+I18N.Baseline.Cal.Holiday = '休息日 :';
+I18N.Baseline.Cal.Worktimetitle = '工作时间日历：';
+I18N.Baseline.Cal.Worktimecontent = '工作时间以外均为非工作时间';
+I18N.Baseline.Cal.Worktime = '工作时间 :';
+I18N.Baseline.NormalSetting = {};
+I18N.Baseline.NormalSetting.Baseline = '小时基准值';
+
 
 I18N.MultipleTimespan = {};
 I18N.MultipleTimespan.Before = '之前第';

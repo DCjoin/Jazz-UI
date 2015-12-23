@@ -196,7 +196,7 @@ var SpecialSetting = React.createClass({
     return (<div style={style}>
         <div style={{
         marginTop: '18px'
-      }}><span>补充日期</span>{addBtnCtrl}</div>
+      }}><span>{I18N.Setting.Calendar.AdditionalDay}</span>{addBtnCtrl}</div>
         <div style={{
         color: '#b3b3b3'
       }}>{this.state.items.map(createItem)}</div>

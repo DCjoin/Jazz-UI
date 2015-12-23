@@ -34,14 +34,15 @@ var CalDetail = React.createClass({
       workCal.push(
         <div className="workdaycontent">{I18N.Baseline.Calc.workdaycontent}</div>
       );
+      var date = I18N.format(I18N.Baseline.Cal.Date, item.StartFirstPart, item.StartSecondPart, item.EndFirstPart, item.EndSecondPart);
       this.state.calendar.Items.forEach(function(item) {
         if (item.Type == 0) {
           workDay.push(
-            <div>{item.StartFirstPart}月{item.StartSecondPart}日至{item.EndFirstPart}月{item.EndSecondPart}日</div>
+            <div>{date}</div>
           )
         } else {
           offDay.push(
-            <div>{item.StartFirstPart}月{item.StartSecondPart}日至{item.EndFirstPart}月{item.EndSecondPart}日</div>
+            <div>{date}</div>
           )
         }
 
@@ -49,7 +50,7 @@ var CalDetail = React.createClass({
       if (workDay.length != 0) {
         workCal.push(
           <div className="workday">
-                 <div>工作日 :</div>
+                 <div>{I18N.Baseline.Cal.workday}</div>
                  <div className="font">{workDay}</div>
                </div>
         )
@@ -58,7 +59,7 @@ var CalDetail = React.createClass({
       if (offDay.length != 0) {
         workCal.push(
           <div className="workday">
-                 <div>休息日 :</div>
+                 <div>{I18N.Baseline.Cal.Holiday}</div>
                  <div className="font">{offDay}</div>
                </div>
         )
@@ -66,10 +67,10 @@ var CalDetail = React.createClass({
     }
     if (this.state.workTimeCalendar) {
       workCal.push(
-        <div className="worktimetitle">工作时间日历：{this.state.workTimeCalendarName}</div>
+        <div className="worktimetitle">{I18N.Baseline.Cal.Worktimetitle + this.state.workTimeCalendarName}</div>
       );
       workCal.push(
-        <div className="worktimecontent">工作时间以外均为非工作时间</div>
+        <div className="worktimecontent">{I18N.Baseline.Cal.Worktimecontent}</div>
       );
       this.state.workTimeCalendar.Items.forEach(function(item) {
         let StartFirstPart = (item.StartFirstPart < 10) ? ('0' + item.StartFirstPart) : (item.StartFirstPart);
@@ -83,7 +84,7 @@ var CalDetail = React.createClass({
       if (workTime.length != 0) {
         workCal.push(
           <div className="worktime">
-                  <div>工作时间 :</div>
+                  <div>{I18N.Baseline.Cal.Worktime}</div>
                   <div className="time">
                     {workTime}
                   </div>

@@ -339,7 +339,7 @@ var TBSettingItem = React.createClass({
         }}>{startDateStr}</span>
               <span style={{
           margin: '0 10px'
-        }}>到</span>
+        }}>{I18N.EM.To}</span>
               <span style={{
           fontSize: '14px',
           color: '#b3b3b3',
