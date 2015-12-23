@@ -306,6 +306,7 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePreviousComboLabel = '之前�
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious7Day = '个7天';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day = '个30天';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '个12月';
+I18N.EM.EnergyAnalyse.SumData = '数据求和';
 I18N.EM.YAxisSetting = 'Y坐标轴设置';
 I18N.EM.YAxisSettingTags = '相关数据点';
 I18N.EM.YAxisTitle = 'Y坐标轴';
