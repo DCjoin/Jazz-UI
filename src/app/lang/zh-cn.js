@@ -289,6 +289,7 @@ I18N.EM.Ratio.CaculateValue = '计算值';
 I18N.EM.Ratio.RawValue = '原始值';
 I18N.EM.Ratio.TargetValue = '目标值';
 I18N.EM.Ratio.BaseValue = '基准值';
+I18N.EM.Ratio.Error = '时间范围小于1周';
 
 
 
