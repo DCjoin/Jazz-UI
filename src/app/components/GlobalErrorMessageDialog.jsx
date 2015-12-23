@@ -8,7 +8,8 @@ let GlobalErrorMessageDialog = React.createClass({
     return {
       isShowed: false,
       errorMessage: '',
-      errorCode: ''
+      errorCode: '',
+      dialogShow: false
     };
   },
   _onDismiss() {
@@ -23,9 +24,10 @@ let GlobalErrorMessageDialog = React.createClass({
     this.refs.errorMessageDialog.dismiss();
   },
   render() {
+    var errorCodeArr = ['21802', '1'];
     var output = null;
     var _buttonActions = [
-      <FlatButton label="确定" secondary={true} onClick={this._hide} />
+      <FlatButton label={'确定'} secondary={true} onClick={this._hide} />
     ];
     var snackbar = <Snackbar style={{
       maxWidth: 'none'
@@ -36,7 +38,7 @@ let GlobalErrorMessageDialog = React.createClass({
     }}>
       <div> {this.state.errorMessage}</div>
     </Dialog>;
-    if (this.state.errorCode == '1') {
+    if (errorCodeArr.indexOf(this.state.errorCode) !== -1 || this.state.dialogShow) {
       output = dialog;
     } else {
       output = snackbar;

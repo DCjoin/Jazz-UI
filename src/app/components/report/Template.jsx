@@ -66,7 +66,7 @@ var Template = React.createClass({
     var fileName = file.name;
 
     if (!me._endsWith(fileName.toLowerCase(), '.xlsx') && !me._endsWith(fileName.toLowerCase(), '.xls')) {
-      CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile);
+      CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
       return;
     }
     var createElement = window.Highcharts.createElement,
@@ -95,7 +95,7 @@ var Template = React.createClass({
           errorMessage = I18N.EM.Report.DuplicatedName;
         }
         if (errorMessage) {
-          CommonFuns.popupErrorMessage(errorMessage);
+          CommonFuns.popupErrorMessage(errorMessage, '', true);
         }
       }
     };

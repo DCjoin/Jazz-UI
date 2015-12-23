@@ -193,9 +193,9 @@ let CommonFuns = {
       errorCode: errorModelNCode
     };
   },
-  popupErrorMessage: function(message, context, fns, errorCode) {
+  popupErrorMessage: function(message, errorCode, dialogShow) {
     //window.alert(message);
-    GlobalErrorMessageAction.fireGlobalErrorMessage(message, errorCode);
+    GlobalErrorMessageAction.fireGlobalErrorMessage(message, errorCode, dialogShow);
   },
   ErrorHandler: function(context, errorCode, errorMessages) {
     if (context.commonErrorHandling === false) return;
@@ -208,10 +208,10 @@ let CommonFuns = {
       errorType = error.errorType; // 02、05输入错误，06并发错误;
 
     if (errorType === undefined) {
-      CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorCode), context, undefined, errorCode);
+      CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorCode), errorCode);
       return;
     }
-    CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorModelNCode), context, undefined, errorCode);
+    CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorModelNCode), errorCode);
 
   },
   base64ToBackgroundImageUrl: function(base64Data) {

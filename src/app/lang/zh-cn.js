@@ -160,6 +160,7 @@ I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = '冷暖季';
 I18N.Common.Button.Calendar.ShowHoliday = '非工作时间';
+I18N.Common.Button.Confirm = '确定';
 I18N.Common.Button.Show = '查看';
 I18N.Common.Button.Save = '保存';
 I18N.Common.Button.Cancel = '放弃';

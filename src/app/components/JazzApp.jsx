@@ -200,20 +200,24 @@ let JazzApp = React.createClass({
   _onClearGlobalError: function() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();
     let errorCode = GlobalErrorMessageStore.getErrorCode();
+    let dialogShow = GlobalErrorMessageStore.getDialogShow();
     this.refs.globalErrorMessageDialog.setState({
       isShowed: false,
       errorMessage: errorMessage,
-      errorCode: errorCode
+      errorCode: errorCode,
+      dialogShow: dialogShow
     });
     this.refs.globalErrorMessageDialog._hide();
   },
   _onErrorMessageChanged() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();
     let errorCode = GlobalErrorMessageStore.getErrorCode();
+    let dialogShow = GlobalErrorMessageStore.getDialogShow();
     this.refs.globalErrorMessageDialog.setState({
       isShowed: true,
       errorMessage: errorMessage,
-      errorCode: errorCode
+      errorCode: errorCode,
+      dialogShow: dialogShow
     });
   },
 
