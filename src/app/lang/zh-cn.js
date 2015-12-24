@@ -1058,6 +1058,7 @@ I18N.Baseline.BaselineModify.YearSelect = '请选择配置年份进行编辑';
 I18N.Baseline.BaselineModify.YearBaseline = '年基准值';
 I18N.Baseline.BaselineModify.YearValue = '年度';
 I18N.Baseline.BaselineModify.MonthBaseline = '月基准值';
+I18N.Baseline.BaselineBasic.AlarmText = '对以下时段产生报警';
 I18N.Baseline.Calc = {};
 I18N.Baseline.Calc.MonthBaseline = '月基准值';
 I18N.Baseline.TBSettingItem = {};
