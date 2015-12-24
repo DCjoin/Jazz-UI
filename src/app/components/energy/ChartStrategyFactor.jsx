@@ -2371,6 +2371,9 @@ let ChartStrategyFactor = {
       if (step === 0) {
         return I18N.EM.WeatherSupportsNotMinuteStep;
       }
+      if (analysisPanel.state.selectedChartType === 'pie') {
+        return I18N.EM.WeatherSupportsNotPie;
+      }
       let errors = EnergyStore.getErrorCodes();
       if (!!errors && errors.length && (errors[0] + '' === '02810' || errors[0] + '' === '02809')) {
         analysisPanel.state.weatherOption = null;
