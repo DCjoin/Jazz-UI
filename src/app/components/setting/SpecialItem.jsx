@@ -134,7 +134,7 @@ var SpecialItem = React.createClass({
     if (special.StartTime >= special.EndTime) {
       valid = false;
       this.setState({
-        specialError: valid ? '' : '补充日期非法， 请重新选择时段'
+        specialError: valid ? '' : I18N.Baseline.Error.SpecialOtherError
       });
     }
     return valid && this._validateValue(val) != '';
@@ -147,7 +147,7 @@ var SpecialItem = React.createClass({
       val = specials[this.props.index],
       valid = jsonToFormDate(tbSetting.EndTime) >= jsonToFormDate(val.EndTime) && jsonToFormDate(tbSetting.StartTime) <= jsonToFormDate(val.EndTime);
     this.setState({
-      tbSettingError: valid ? '' : '与已添加时段冲突，请重新选择时段'
+      tbSettingError: valid ? '' : I18N.Baseline.Error.TbSettingError
     });
     return valid;
   },
@@ -163,7 +163,7 @@ var SpecialItem = React.createClass({
       }
     }
     this.setState({
-      specialError: valid ? '' : '补充日期冲突， 请重新选择时段'
+      specialError: valid ? '' : I18N.Baseline.Error.SpecialError
     });
     return valid;
   },
@@ -193,7 +193,7 @@ var SpecialItem = React.createClass({
     var value = extractNumber(val);
     if (val != value) this.refs.valueField.setValue(value);
     this.setState({
-      valueError: (value == '' ? '必填项' : '')
+      valueError: (value == '' ? I18N.Baseline.Error.TbnameError : '')
     });
     return value;
   },
@@ -297,7 +297,7 @@ var SpecialItem = React.createClass({
           <span style={style}>{startTimeStr}</span>
           <span style={{
           marginRight: '10px'
-        }} >到</span>
+        }} >{I18N.EM.To}</span>
           <span style={style}>{endDateStr}</span>
           <span style={style}>{endTimeStr}</span>
           <div style={{
@@ -419,7 +419,7 @@ var SpecialItem = React.createClass({
             <ViewableDatePicker showTime={false} ref='startDateField' {...startDateProps} />
             </div>
             <DaytimeSelector ref='startTimeField' {...startTimeProps} />
-            <div className='jazz-setting-basic-datespan'>到</div>
+            <div className='jazz-setting-basic-datespan'>{I18N.EM.To}</div>
               <div className="jazz-setting-basic-datepicker-container">
             <ViewableDatePicker showTime={false} ref='endDateField' {...endDateProps} />
             </div>

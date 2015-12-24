@@ -120,9 +120,9 @@ var CalcSetting = React.createClass({
         <div className="jazz-setting-basic-calcsetting">
           <table >
             <tr>
-              <td>时间</td>
-              <td>工作日</td>
-              <td>非工作日</td>
+              <td>{I18N.Setting.Calendar.Time}</td>
+              <td>{I18N.Setting.Calendar.WorkDay}</td>
+              <td>{I18N.Setting.Calendar.Holiday}</td>
             </tr>
             {rows}
           </table>

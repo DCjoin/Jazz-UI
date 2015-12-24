@@ -121,7 +121,7 @@ var TagMenu = React.createClass({
       title={tooltipText}
       />
         <div>
-          全选
+          {I18N.Tag.SelectAll}
         </div>
       </div>
       <div style={{

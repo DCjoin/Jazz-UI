@@ -205,7 +205,7 @@ let MapPanel = React.createClass({
     //   }
     // }
     var energyInfoContent = null;
-    var preTitle = RelativeDateType[MapStore.getSelectedDateType()];
+    var preTitle = window.currentLanguage == 1 ? '' : RelativeDateType[MapStore.getSelectedDateType()];
     // var value = CommonFuns.convertDataByUom(2245531, 'COM');
     // var uom = CommonFuns.convertUom(2245531, 'COM');
     marker.dataValues.forEach(value => {
@@ -215,7 +215,7 @@ let MapPanel = React.createClass({
         let uom = CommonFuns.convertUom(value.EnergyDataValue, value.EnergyDataUom);
         content = "<div class='firstline'>" +
           "<div>" + preTitle + EnergyInfo[value.EnergyDataType + 2] + "</div>" +
-          "<div>" + valueStr + uom + "</div>" +
+          "<div class='font'>" + valueStr + uom + "</div>" +
           "</div>";
       }
       if (value.Ranking !== null) {

@@ -290,7 +290,7 @@ I18N.EM.Ratio.CaculateValue = '计算值';
 I18N.EM.Ratio.RawValue = '原始值';
 I18N.EM.Ratio.TargetValue = '目标值';
 I18N.EM.Ratio.BaseValue = '基准值';
-I18N.EM.Ratio.Error = '时间范围小于1周';
+I18N.EM.Ratio.Error = '查看公休比请选择不小于一周的时间范围';
 
 
 
@@ -421,6 +421,7 @@ I18N.EM.Export.Preview = '导出图片预览';
 //workday
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
+I18N.Setting.Calendar.Time = '时间';
 I18N.Setting.Calendar.WorkDay = '工作日';
 I18N.Setting.Calendar.Holiday = '非工作日';
 I18N.Setting.Calendar.DefaultWorkDay = '默认工作日：周一至周五';
@@ -472,6 +473,12 @@ I18N.Setting.User.Manager = '管理层';
 I18N.Setting.User.BusinessPerson = '业务人员';
 I18N.Setting.User.Sales = '销售人员';
 I18N.Setting.User.ServerManager = '服务商管理员';
+
+I18N.Setting.NodeBtn = {};
+I18N.Setting.NodeBtn.Saving = '正在保存...';
+I18N.Setting.NodeBtn.Save = '保存';
+I18N.Setting.NodeBtn.Deleting = '正在删除...';
+I18N.Setting.NodeBtn.Delete = '删除';
 
 I18N.Message = {};
 
@@ -937,6 +944,7 @@ I18N.Tag.AlarmStatus2 = '基准值已配置';
 I18N.Tag.AlarmStatus3 = '报警未配置';
 I18N.Tag.AlarmStatus4 = '报警已配置';
 I18N.Tag.SelectError = '请选择层级节点-维度节点。';
+I18N.Tag.SelectAll = '全选';
 
 I18N.Template = {};
 I18N.Template.Copy = {};
@@ -1026,6 +1034,9 @@ I18N.Baseline.Error.Cal = '该数据点所关联层级节点在所选年份未�
 I18N.Baseline.Error.TbnameError = '必填项';
 I18N.Baseline.Error.TbnameValidError = '允许汉字，英文字母，数字，下划线和空格';
 I18N.Baseline.Error.Calc = '所选数据的时间跨度大于一个月，无法计算，请重新选择数据';
+I18N.Baseline.Error.SpecialError = '补充日期冲突， 请重新选择时段';
+I18N.Baseline.Error.SpecialOtherError = '补充日期非法， 请重新选择时段';
+I18N.Baseline.Error.TbSettingError = '与已添加时段冲突，请重新选择时段';
 I18N.Baseline.BaselineModify = {};
 I18N.Baseline.BaselineModify.Month = {};
 I18N.Baseline.BaselineModify.Month.Jan = '一';
@@ -1047,6 +1058,24 @@ I18N.Baseline.BaselineModify.YearValue = '年度';
 I18N.Baseline.BaselineModify.MonthBaseline = '月基准值';
 I18N.Baseline.Calc = {};
 I18N.Baseline.Calc.MonthBaseline = '月基准值';
+I18N.Baseline.TBSettingItem = {};
+I18N.Baseline.TBSettingItem.Error = '时间段冲突， 请重新选择时段';
+I18N.Baseline.TBSettingItem.CalcRadio = '计算所选数据平均值为基准数据';
+I18N.Baseline.TBSettingItem.NormalRadio = '手动设置基准值';
+I18N.Baseline.TBSettingItem.TimeSpanSetting = '时段设置';
+
+I18N.Baseline.Calc.workdaytitle = '公休日日历 ：';
+I18N.Baseline.Calc.workdaycontent = '默认工作日 : 周一至周五';
+I18N.Baseline.Cal = {};
+I18N.Baseline.Cal.Date = '{0}月{1}日至{2}月{3}日';
+I18N.Baseline.Cal.workday = '工作日 :';
+I18N.Baseline.Cal.Holiday = '休息日 :';
+I18N.Baseline.Cal.Worktimetitle = '工作时间日历：';
+I18N.Baseline.Cal.Worktimecontent = '工作时间以外均为非工作时间';
+I18N.Baseline.Cal.Worktime = '工作时间 :';
+I18N.Baseline.NormalSetting = {};
+I18N.Baseline.NormalSetting.Baseline = '小时基准值';
+
 
 I18N.MultipleTimespan = {};
 I18N.MultipleTimespan.Before = '之前第';
@@ -1159,6 +1188,22 @@ I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
 I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
 I18N.Platform.ServiceProvider.ErrorNotice = '错误提示';
+
+I18N.Platform.ServiceProvider.SPName = '服务商名称';
+I18N.Platform.ServiceProvider.SPID = '服务商ID';
+I18N.Platform.ServiceProvider.SPDomain = '服务商子域名';
+I18N.Platform.ServiceProvider.Address = '地址';
+I18N.Platform.ServiceProvider.Telephone = '电话';
+I18N.Platform.ServiceProvider.Email = '电子邮箱';
+I18N.Platform.ServiceProvider.EmailError = '请按照\"user@example.com\"的格式输入';
+I18N.Platform.ServiceProvider.LoginUrl = '登录失败返回页面';
+I18N.Platform.ServiceProvider.LoginUrlError = '请填写网址，登录失败后页面会自动跳转至所填网址';
+I18N.Platform.ServiceProvider.LogOutUrl = '退出页面';
+I18N.Platform.ServiceProvider.LogOutUrlError = '请填写网址，退出系统时会自动跳转至所填网址';
+I18N.Platform.ServiceProvider.StartDate = '运营时间';
+I18N.Platform.ServiceProvider.Comment = '备注';
+I18N.Platform.ServiceProvider.Status = '运营状态';
+I18N.Platform.ServiceProvider.CalcStatus = '能与能效标识大数据计算';
 
 
 I18N.Privilege = {};

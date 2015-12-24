@@ -81,7 +81,7 @@ let PlatformContent = React.createClass({
   _renderHeader: function(isView) {
     var providerNameProps = {
       isViewStatus: isView,
-      title: "服务商名称",
+      title: I18N.Platform.ServiceProvider.SPName,
       defaultValue: this.props.provider.Name,
       isRequired: true,
       didChanged: value => {
@@ -103,7 +103,7 @@ let PlatformContent = React.createClass({
     var {UserName, Domain, Address, Telephone, Email, StartDate, LoginUrl, LogOutUrl, Comment, Status, CalcStatus} = this.props.provider;
     var providerCodeProps = {
         isViewStatus: (isAdd) ? isView : true,
-        title: "服务商ID",
+        title: I18N.Platform.ServiceProvider.SPID,
         errorText: this.state.providerIdError,
         defaultValue: UserName || "",
         isRequired: true,
@@ -116,7 +116,7 @@ let PlatformContent = React.createClass({
       },
       providerDomainProps = {
         isViewStatus: isView,
-        title: "服务商子域名",
+        title: I18N.Platform.ServiceProvider.SPDomain,
         defaultValue: Domain || "",
         isRequired: true,
         didChanged: value => {
@@ -128,7 +128,7 @@ let PlatformContent = React.createClass({
       },
       providerAddressProps = {
         isViewStatus: isView,
-        title: "地址",
+        title: I18N.Platform.ServiceProvider.Address,
         defaultValue: Address || "",
         isRequired: true,
         maxLen: -1,
@@ -141,7 +141,7 @@ let PlatformContent = React.createClass({
       },
       providerTelephoneProps = {
         isViewStatus: isView,
-        title: "电话",
+        title: I18N.Platform.ServiceProvider.Telephone,
         defaultValue: Telephone || "",
         isRequired: true,
         // regex: Regex.TelephoneRule,
@@ -155,11 +155,11 @@ let PlatformContent = React.createClass({
       },
       providerEmailProps = {
         isViewStatus: isView,
-        title: "电子邮箱",
+        title: I18N.Platform.ServiceProvider.Email,
         defaultValue: Email || "",
         isRequired: true,
         regex: Regex.Email,
-        errorMessage: "请按照\"user@example.com\"的格式输入",
+        errorMessage: I18N.Platform.ServiceProvider.EmailError,
         maxLen: 254,
         didChanged: value => {
           PlatformAction.mergeProvider({
@@ -170,10 +170,10 @@ let PlatformContent = React.createClass({
       },
       providerBackToUrlProps = {
         isViewStatus: isView,
-        title: "登录失败返回页面",
+        title: I18N.Platform.ServiceProvider.LoginUrl,
         defaultValue: LoginUrl || "",
         regex: Regex.UrlRule,
-        errorMessage: "请填写网址，登录失败后页面会自动跳转至所填网址",
+        errorMessage: I18N.Platform.ServiceProvider.LoginUrlError,
         didChanged: value => {
           PlatformAction.mergeProvider({
             value: value,
@@ -183,10 +183,10 @@ let PlatformContent = React.createClass({
       },
       providerLogOutUrlProps = {
         isViewStatus: isView,
-        title: "退出页面",
+        title: I18N.Platform.ServiceProvider.LogOutUrl,
         defaultValue: LogOutUrl || "",
         regex: Regex.UrlRule,
-        errorMessage: "请填写网址，退出系统时会自动跳转至所填网址",
+        errorMessage: I18N.Platform.ServiceProvider.LogOutUrlError,
         didChanged: value => {
           PlatformAction.mergeProvider({
             value: value,
@@ -196,11 +196,11 @@ let PlatformContent = React.createClass({
       },
       providerStartTimeProps = {
         isViewStatus: (isAdd) ? isView : true,
-        title: "运营时间",
+        title: I18N.Platform.ServiceProvider.StartDate,
         defaultValue: this._getDateInput(StartDate),
         isRequired: true,
-        regex: Regex.CommonTextNotNullRule,
-        errorMessage: "请输入客户地址",
+        // regex: Regex.CommonTextNotNullRule,
+        // errorMessage: "请输入客户地址",
         didChanged: value => {
           PlatformAction.mergeProvider({
             value: value,
@@ -210,7 +210,7 @@ let PlatformContent = React.createClass({
       },
       providerCommentProps = {
         isViewStatus: isView,
-        title: "备注",
+        title: I18N.Platform.ServiceProvider.Comment,
         defaultValue: Comment || "",
         multiLine: true,
         didChanged: value => {
@@ -222,15 +222,15 @@ let PlatformContent = React.createClass({
       },
       titleItems = [{
         payload: 0,
-        text: '暂停'
+        text: I18N.Platform.ServiceProvider.PauseStatus
       },
         {
           payload: 1,
-          text: '正常'
+          text: I18N.Platform.ServiceProvider.NormalStatus
         }],
       providerStatusProps = {
         isViewStatus: isView,
-        title: '运营状态',
+        title: I18N.Platform.ServiceProvider.Status,
         selectedIndex: Status,
         textField: "text",
         dataItems: titleItems,
@@ -244,7 +244,7 @@ let PlatformContent = React.createClass({
       providerCalStatusProps = {
         checked: CalcStatus || false,
         disabled: isView,
-        label: '能与能效标识大数据计算',
+        label: I18N.Platform.ServiceProvider.CalcStatus,
         onCheck: (event, checked) => {
           PlatformAction.mergeProvider({
             value: checked,
@@ -348,7 +348,7 @@ let PlatformContent = React.createClass({
     }
     if (isView) {
       sendPasswordButton = (
-        <FlatButton secondary={true}  label="发送邮件" style={{
+        <FlatButton secondary={true}  label={I18N.Platform.ServiceProvider.SendEmail} style={{
           borderRight: '1px solid #ececec',
           color: '#abafae'
         }} onClick={

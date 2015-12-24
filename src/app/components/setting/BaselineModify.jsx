@@ -267,7 +267,7 @@ let BaselineModify = React.createClass({
           flexFlow: 'row',
           alignItems: 'center'
         }}>
-              {I18N.Baseline.BaselineModify.YearValue}<TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} defalutValue={null} errorText={this.state.errorText} disabled={this.state.disable} onChange={this.yearValueChange}/>千瓦时
+              {I18N.Baseline.BaselineModify.YearValue}<TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} defalutValue={null} errorText={this.state.errorText} disabled={this.state.disable} onChange={this.yearValueChange}/>{I18N.Baseline.BaselineModify.Uom}
               <span className="icon-revised-cn" style={{
           marginLeft: '5px',
           color: 'red',

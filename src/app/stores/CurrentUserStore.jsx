@@ -87,8 +87,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   setPasswordSuccess: function() {
     _error = null;
   },
-  setCurrentPrivilege: function(role, useId) {
-    if (useId == 100001 || useId == 1) {
+  setCurrentPrivilege: function(role, useId, userType) {
+    if (useId == 100001 || useId == 1 || userType == -1) {
       _currentPrivilege = [];
       for (var i = 1200; i <= 1221; i++) {
         var index = i + '';
@@ -167,7 +167,7 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
       CurrentUserStore.emitPasswordSuccessChange();
       break;
     case CurrentUserAction.GET_ROLE:
-      CurrentUserStore.setCurrentPrivilege(action.role, action.userId);
+      CurrentUserStore.setCurrentPrivilege(action.role, action.userId, action.userType);
       CurrentUserStore.emitCurrentrivilegeChange();
       break;
   }

@@ -117,7 +117,7 @@ var DaytimeRangeValue = React.createClass({
           <span style={style}>{startStr}</span>
           <span style={{
           margin: '0 10px'
-        }}>到</span>
+        }}>{I18N.EM.To}</span>
           <span style={style}>{endStr}</span>
           <span style={{
           padding: '2px 10px',
@@ -166,7 +166,7 @@ var DaytimeRangeValue = React.createClass({
           <div style={startStyle}>{startStr}</div>
           <div style={{
           margin: '0 10px'
-        }}>到</div>
+        }}>{I18N.EM.To}</div>
           <DaytimeSelector {...endProps} ref='endFeild' />
           <TextField {...valProps} ref='valueField'/>
           <div style={{

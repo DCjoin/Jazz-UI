@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import {SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker,RaisedButton,CircularProgress } from 'material-ui';
+import { SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker, RaisedButton, CircularProgress } from 'material-ui';
 import assign from "object-assign";
 import classNames from 'classnames';
 import YearPicker from '../../controls/YearPicker.jsx';
@@ -15,89 +15,90 @@ import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 var CalDetail = React.createClass({
 
   getInitialState: function() {
-        return {
-          calendar:this.props.calendar,
-          workTimeCalendar:this.props.workTimeCalendar,
-          calendarName:this.props.calendarName,
-          workTimeCalendarName:this.props.workTimeCalendarName
-        };
-      },
-  render:function(){
-    var workCal=[],
-        workDay=[],
-        offDay=[],
-        workTime=[];
-        if(this.state.calendar){
-          workCal.push(
-            <div className="workdaytitle">公休日日历 ：{this.state.calendarName}</div>
-          );
-          workCal.push(
-            <div className="workdaycontent">默认工作日 : 周一至周五</div>
-          );
-          this.state.calendar.Items.forEach(function(item){
-            if(item.Type==0){
-              workDay.push(
-                <div>{item.StartFirstPart}月{item.StartSecondPart}日至{item.EndFirstPart}月{item.EndSecondPart}日</div>
-              )
-            }
-            else{
-              offDay.push(
-                  <div>{item.StartFirstPart}月{item.StartSecondPart}日至{item.EndFirstPart}月{item.EndSecondPart}日</div>
-              )
-            }
+    return {
+      calendar: this.props.calendar,
+      workTimeCalendar: this.props.workTimeCalendar,
+      calendarName: this.props.calendarName,
+      workTimeCalendarName: this.props.workTimeCalendarName
+    };
+  },
+  render: function() {
+    var workCal = [],
+      workDay = [],
+      offDay = [],
+      workTime = [];
+    if (this.state.calendar) {
+      workCal.push(
+        <div className="workdaytitle">{I18N.Baseline.Calc.workdaytitle + this.state.calendarName}</div>
+      );
+      workCal.push(
+        <div className="workdaycontent">{I18N.Baseline.Calc.workdaycontent}</div>
+      );
+      var date = I18N.format(I18N.Baseline.Cal.Date, item.StartFirstPart, item.StartSecondPart, item.EndFirstPart, item.EndSecondPart);
+      this.state.calendar.Items.forEach(function(item) {
+        if (item.Type == 0) {
+          workDay.push(
+            <div>{date}</div>
+          )
+        } else {
+          offDay.push(
+            <div>{date}</div>
+          )
+        }
 
-          });
-         if(workDay.length!=0){
-             workCal.push(
-               <div className="workday">
-                 <div>工作日 :</div>
+      });
+      if (workDay.length != 0) {
+        workCal.push(
+          <div className="workday">
+                 <div>{I18N.Baseline.Cal.workday}</div>
                  <div className="font">{workDay}</div>
                </div>
-             )
-         };
-         if(offDay.length!=0){
-           workCal.push(
-             <div className="workday">
-                 <div>休息日 :</div>
+        )
+      }
+      ;
+      if (offDay.length != 0) {
+        workCal.push(
+          <div className="workday">
+                 <div>{I18N.Baseline.Cal.Holiday}</div>
                  <div className="font">{offDay}</div>
                </div>
-           )
-         }
-        }
-        if(this.state.workTimeCalendar){
-          workCal.push(
-            <div className="worktimetitle">工作时间日历：{this.state.workTimeCalendarName}</div>
-          );
-          workCal.push(
-            <div className="worktimecontent">工作时间以外均为非工作时间</div>
-          );
-          this.state.workTimeCalendar.Items.forEach(function(item){
-            let StartFirstPart=(item.StartFirstPart<10)?('0'+item.StartFirstPart):(item.StartFirstPart);
-            let StartSecondPart=(item.StartSecondPart<10)?('0'+item.StartSecondPart):(item.StartSecondPart);
-            let EndFirstPart=(item.EndFirstPart<10)?('0'+item.EndFirstPart):(item.EndFirstPart);
-            let EndSecondPart=(item.EndSecondPart<10)?('0'+item.EndSecondPart):(item.EndSecondPart);
-            workTime.push(
-              <div className="timecontent">{StartFirstPart}:{StartSecondPart}-{EndFirstPart}:{EndSecondPart}</div>
-            )
-          });
-          if(workTime.length!=0){
-              workCal.push(
-                <div className="worktime">
-                  <div>工作时间 :</div>
+        )
+      }
+    }
+    if (this.state.workTimeCalendar) {
+      workCal.push(
+        <div className="worktimetitle">{I18N.Baseline.Cal.Worktimetitle + this.state.workTimeCalendarName}</div>
+      );
+      workCal.push(
+        <div className="worktimecontent">{I18N.Baseline.Cal.Worktimecontent}</div>
+      );
+      this.state.workTimeCalendar.Items.forEach(function(item) {
+        let StartFirstPart = (item.StartFirstPart < 10) ? ('0' + item.StartFirstPart) : (item.StartFirstPart);
+        let StartSecondPart = (item.StartSecondPart < 10) ? ('0' + item.StartSecondPart) : (item.StartSecondPart);
+        let EndFirstPart = (item.EndFirstPart < 10) ? ('0' + item.EndFirstPart) : (item.EndFirstPart);
+        let EndSecondPart = (item.EndSecondPart < 10) ? ('0' + item.EndSecondPart) : (item.EndSecondPart);
+        workTime.push(
+          <div className="timecontent">{StartFirstPart}:{StartSecondPart}-{EndFirstPart}:{EndSecondPart}</div>
+        )
+      });
+      if (workTime.length != 0) {
+        workCal.push(
+          <div className="worktime">
+                  <div>{I18N.Baseline.Cal.Worktime}</div>
                   <div className="time">
                     {workTime}
                   </div>
                 </div>
-              );
-          }
-        }
+        );
+      }
+    }
 
-    return(
+    return (
       <div className="jazz-setting-basic-caldetail">
     {workCal}
 
     </div>
-    )
+      )
   }
 });
 

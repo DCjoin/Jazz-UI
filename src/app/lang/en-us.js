@@ -454,7 +454,11 @@ I18N.Setting.User.Manager = 'Managers';
 I18N.Setting.User.BusinessPerson = 'Business Person';
 I18N.Setting.User.Sales = 'Sales';
 I18N.Setting.User.ServerManager = 'SP Manager';
-
+I18N.Setting.NodeBtn = {};
+I18N.Setting.NodeBtn.Saving = 'Saving...';
+I18N.Setting.NodeBtn.Save = 'Save';
+I18N.Setting.NodeBtn.Deleting = 'Deleting...';
+I18N.Setting.NodeBtn.Delete = 'Delete';
 
 I18N.Common.Label = {};
 I18N.Common.Label.UnknownError = 'Sorry, unknown error.';
@@ -854,7 +858,7 @@ I18N.Folder.Detail.Title.Menu1 = 'Copy';
 I18N.Folder.Detail.Title.Menu2 = 'Send';
 I18N.Folder.Detail.Title.Menu3 = 'Delete';
 I18N.Folder.Detail.WidgetMenu = {};
-I18N.Folder.Detail.WidgetMenu.Menu1 = 'Save as';
+I18N.Folder.Detail.WidgetMenu.Menu1 = 'Save As';
 I18N.Folder.Detail.WidgetMenu.Menu2 = 'Send';
 I18N.Folder.Detail.WidgetMenu.Menu3 = 'Share';
 I18N.Folder.Detail.WidgetMenu.Menu4 = 'Export';
@@ -923,6 +927,7 @@ I18N.Tag.AlarmStatus2 = 'Baseline set';
 I18N.Tag.AlarmStatus3 = 'Alarm not set';
 I18N.Tag.AlarmStatus4 = 'Alarm set';
 I18N.Tag.SelectError = 'Please choose hierarchy node-dimension node';
+I18N.Tag.SelectAll = 'Select all'
 
 I18N.Template = {};
 I18N.Template.Copy = {};
@@ -1012,6 +1017,8 @@ I18N.Baseline.Error.Cal = 'This tag belonged hierarchy does not reference any ca
 I18N.Baseline.Error.TbnameError = 'Mandatory fields';
 I18N.Baseline.Error.TbnameValidError = 'Allowed characters: Chinese, English, Number, Underline and Blank Splace';
 I18N.Baseline.Error.Calc = 'Selected duration more than one month, can not calculate, please select data again';
+I18N.Baseline.Error.SpecialOtherError = 'Supplementary date illegal, please other timespan';
+I18N.Baseline.Error.TbSettingError = 'Conflict with existed timespan, please select again';
 I18N.Baseline.BaselineModify = {};
 I18N.Baseline.BaselineModify.Month = {};
 I18N.Baseline.BaselineModify.Month.Jan = 'Jan';
@@ -1031,9 +1038,25 @@ I18N.Baseline.BaselineModify.YearSelect = 'Plase select configed year to edit';
 I18N.Baseline.BaselineModify.YearBaseline = 'Year Baseline';
 I18N.Baseline.BaselineModify.YearValue = 'Yearly';
 I18N.Baseline.BaselineModify.MonthBaseline = 'Month Baseline';
+I18N.Baseline.TBSettingItem = {};
+I18N.Baseline.TBSettingItem.Error = 'Conflict with existed timespan, please select again';
+I18N.Baseline.TBSettingItem.CalcRadio = 'Calculate selected average data value as baseline value';
+I18N.Baseline.TBSettingItem.NormalRadio = 'Set baseline manually';
+I18N.Baseline.TBSettingItem.TimeSpanSetting = 'TimeSpan setting';
+
 I18N.Baseline.Calc = {};
 I18N.Baseline.Calc.MonthBaseline = 'Monthly';
-
+I18N.Baseline.Calc.workdaytitle = 'Work-nonwork calendar';
+I18N.Baseline.Calc.workdaycontent = 'Default work day: Mon-Fri';
+I18N.Baseline.Cal = {};
+I18N.Baseline.Cal.Date = '{0} month {1} day to {2} month {3} day';
+I18N.Baseline.Cal.workday = 'Work day';
+I18N.Baseline.Cal.Holiday = 'Holiday:';
+I18N.Baseline.Cal.Worktimetitle = 'Workday calendar';
+I18N.Baseline.Cal.Worktimecontent = 'Non-Working time except working time.';
+I18N.Baseline.Cal.Worktime = 'Work time';
+I18N.Baseline.NormalSetting = {};
+I18N.Baseline.NormalSetting.Baseline = 'Hourly baseline';
 
 I18N.MultipleTimespan = {};
 I18N.MultipleTimespan.Before = 'Previous';
@@ -1071,7 +1094,7 @@ I18N.Map.Date.ThisYear = 'This Year ';
 I18N.Map.Date.LastYear = 'Last Year ';
 
 I18N.Map.EnergyInfo = {};
-I18N.Map.EnergyInfo.CarbonEmission = 'total co2 emission';
+I18N.Map.EnergyInfo.CarbonEmission = 'Total co2 emission';
 I18N.Map.EnergyInfo.Cost = 'Total cost';
 I18N.Map.EnergyInfo.Electricity = 'Total power usage';
 I18N.Map.EnergyInfo.Water = 'Total water';
@@ -1084,7 +1107,7 @@ I18N.Map.EnergyInfo.Heat = 'Total heat';
 I18N.Map.EnergyInfo.CoolQ = 'Total cooling';
 I18N.Map.EnergyInfo.Coal = 'Total coal';
 I18N.Map.EnergyInfo.CoalOil = 'Total kerosene';
-I18N.Map.EnergyInfo.NonMessage = 'No energy consumption information, please continue to focus';
+I18N.Map.EnergyInfo.NonMessage = 'No energy information, please continue to focus';
 
 I18N.Map.EnergyInfo.TargetValue = {};
 I18N.Map.EnergyInfo.TargetValue.Qualified = 'Reach the target value';
@@ -1144,6 +1167,22 @@ I18N.Platform.ServiceProvider.SendEmailSuccess = 'Mail send successfully';
 I18N.Platform.ServiceProvider.Error001 = 'SP is modified by other user';
 I18N.Platform.ServiceProvider.Error003 = 'SP is deleted by other user';
 I18N.Platform.ServiceProvider.ErrorNotice = 'Error message';
+
+I18N.Platform.ServiceProvider.SPName = '服务商名称';
+I18N.Platform.ServiceProvider.SPID = '服务商ID';
+I18N.Platform.ServiceProvider.SPDomain = '服务商子域名';
+I18N.Platform.ServiceProvider.Address = '地址';
+I18N.Platform.ServiceProvider.Telephone = '电话';
+I18N.Platform.ServiceProvider.Email = '电子邮箱';
+I18N.Platform.ServiceProvider.EmailError = '请按照\"user@example.com\"的格式输入';
+I18N.Platform.ServiceProvider.LoginUrl = '登录失败返回页面';
+I18N.Platform.ServiceProvider.LoginUrlError = '请填写网址，登录失败后页面会自动跳转至所填网址';
+I18N.Platform.ServiceProvider.LogOutUrl = '退出页面';
+I18N.Platform.ServiceProvider.LogOutUrlError = '请填写网址，退出系统时会自动跳转至所填网址';
+I18N.Platform.ServiceProvider.StartDate = '运营时间';
+I18N.Platform.ServiceProvider.Comment = '备注';
+I18N.Platform.ServiceProvider.Status = '运营状态';
+I18N.Platform.ServiceProvider.CalcStatus = '能与能效标识大数据计算';
 
 I18N.Privilege = {};
 I18N.Privilege.Common = {};
