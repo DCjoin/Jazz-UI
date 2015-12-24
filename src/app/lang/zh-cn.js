@@ -976,6 +976,7 @@ I18N.Title.Alarm = '报警';
 I18N.Title.Energy = '能源';
 
 I18N.Mail = {};
+I18N.Mail.Mail = '平台邮件';
 I18N.Mail.SendButton = '发送平台邮件';
 I18N.Mail.Reciever = '收件人';
 I18N.Mail.Template = '模板';
@@ -1203,7 +1204,7 @@ I18N.Platform.ServiceProvider.LogOutUrlError = '请填写网址，退出系统�
 I18N.Platform.ServiceProvider.StartDate = '运营时间';
 I18N.Platform.ServiceProvider.Comment = '备注';
 I18N.Platform.ServiceProvider.Status = '运营状态';
-I18N.Platform.ServiceProvider.CalcStatus = '能与能效标识大数据计算';
+I18N.Platform.ServiceProvider.CalcStatus = '惨与能效标识大数据计算';
 
 
 I18N.Privilege = {};

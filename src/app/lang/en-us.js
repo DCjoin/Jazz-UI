@@ -959,6 +959,7 @@ I18N.Title.Alarm = 'Alarm';
 I18N.Title.Energy = 'Energy';
 
 I18N.Mail = {};
+I18N.Mail.Mail = 'Platform Notification';
 I18N.Mail.SendButton = 'Send platform notification';
 I18N.Mail.Reciever = 'Reciever';
 I18N.Mail.Template = 'Template';

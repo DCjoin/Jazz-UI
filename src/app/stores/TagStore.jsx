@@ -330,10 +330,39 @@ var TagStore = assign({}, PrototypeStore, {
     _isLoading = false;
     this.setCurrentTagList(data.GetPageTagDataResult);
   },
+  // doWidgetDtos: function(widgetDto) {
+  //   this.resetTagInfo(widgetDto.WidgetType);
+  //   this.setCurrentDimInfo(null, null);
+  //   let that = this;
+  //   if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
+  //     let convertWidgetOptions2TagOption = function(WidgetOptions) {
+  //       let tagOptions = [];
+  //       WidgetOptions.forEach(item => {
+  //         tagOptions.push({
+  //           hierId: item.HierId,
+  //           hierName: item.NodeName,
+  //           tagId: item.TargetId,
+  //           tagName: item.TargetName
+  //         });
+  //       });
+  //       return tagOptions;
+  //     };
+  //     let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
+  //
+  //     tagOptions.forEach(item => {
+  //       that.setTagStatusById(item.hierId, item.tagId);
+  //     });
+  //     if (_tagTotal == _tagSum) {
+  //       this.setTagTotalStatus();
+  //     }
+  //     this.emitTagStatusChange();
+  //   }
+  // },
   doWidgetDtos: function(widgetDto) {
+    var that = this;
     this.resetTagInfo(widgetDto.WidgetType);
     this.setCurrentDimInfo(null, null);
-    let that = this;
+
     if (widgetDto.WidgetType == 'Labelling' || widgetDto.WidgetType == 'Ratio' || widgetDto.BizType == 'Energy' || widgetDto.BizType == 'UnitEnergy') {
       let convertWidgetOptions2TagOption = function(WidgetOptions) {
         let tagOptions = [];
@@ -341,6 +370,8 @@ var TagStore = assign({}, PrototypeStore, {
           tagOptions.push({
             hierId: item.HierId,
             hierName: item.NodeName,
+            dimId: item.DimensionId,
+            dimName: item.DimensionName,
             tagId: item.TargetId,
             tagName: item.TargetName
           });
@@ -349,14 +380,52 @@ var TagStore = assign({}, PrototypeStore, {
       };
       let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
 
-      tagOptions.forEach(item => {
-        that.setTagStatusById(item.hierId, item.tagId);
-      });
-      if (_tagTotal == _tagSum) {
-        this.setTagTotalStatus();
+
+
+      if (tagOptions.length > 0) {
+        _hierId = null;
+        tagOptions.forEach(item => {
+          that.setTagStatusById(item.hierId, item.tagId);
+        });
+        let lastTagOption = tagOptions[tagOptions.length - 1];
+
+        //this.setCurrentHierarchyInfo(lastTagOption.hierId, lastTagOption.hierName);
+        this.setCurrentDimInfo({
+          Id: lastTagOption.dimId,
+          Name: lastTagOption.dimName
+        });
+        if (_tagTotal == _tagSum) {
+          this.setTagTotalStatus();
+        }
+        this.emitTagStatusChange();
       }
-      this.emitTagStatusChange();
+    } else {
+      let contentSyntax = widgetDto.ContentSyntax;
+      let contentObj = JSON.parse(contentSyntax);
+      if (contentObj !== null) {
+        _hierId = null;
+        if (widgetDto.BizType.indexOf('Cost') >= 0) {
+          let viewAssociation = contentObj.viewAssociation;
+          if (viewAssociation.HierarchyId !== null) {
+            this.setCurrentHierarchyId(viewAssociation.HierarchyId);
+            if (viewAssociation.AreaDimensionId !== null) {
+              let node = {
+                Id: viewAssociation.AreaDimensionId,
+                Name: null
+              };
+              this.setCurrentDimInfo(node);
+            }
+          }
+        } else {
+          if (contentObj.hierarchyId !== null) {
+            this.setCurrentHierarchyId(contentObj.hierarchyId);
+          }
+        }
+
+      }
+
     }
+
   },
   setCurrentDimInfo: function(id, name) {
     _dimId = id;
