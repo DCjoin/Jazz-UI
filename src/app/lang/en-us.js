@@ -1094,7 +1094,7 @@ I18N.Map.Date.ThisYear = 'This Year ';
 I18N.Map.Date.LastYear = 'Last Year ';
 
 I18N.Map.EnergyInfo = {};
-I18N.Map.EnergyInfo.CarbonEmission = 'total co2 emission';
+I18N.Map.EnergyInfo.CarbonEmission = 'Total co2 emission';
 I18N.Map.EnergyInfo.Cost = 'Total cost';
 I18N.Map.EnergyInfo.Electricity = 'Total power usage';
 I18N.Map.EnergyInfo.Water = 'Total water';
@@ -1107,7 +1107,7 @@ I18N.Map.EnergyInfo.Heat = 'Total heat';
 I18N.Map.EnergyInfo.CoolQ = 'Total cooling';
 I18N.Map.EnergyInfo.Coal = 'Total coal';
 I18N.Map.EnergyInfo.CoalOil = 'Total kerosene';
-I18N.Map.EnergyInfo.NonMessage = 'No energy consumption information, please continue to focus';
+I18N.Map.EnergyInfo.NonMessage = 'No energy information, please continue to focus';
 
 I18N.Map.EnergyInfo.TargetValue = {};
 I18N.Map.EnergyInfo.TargetValue.Qualified = 'Reach the target value';
