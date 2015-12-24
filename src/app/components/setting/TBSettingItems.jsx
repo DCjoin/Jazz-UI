@@ -174,7 +174,7 @@ var TBSettingItems = React.createClass({
     };
 
     var addBtnCtrl,
-      title = <span>时段设置</span>;
+      title = <span>{I18N.Baseline.TBSettingItem.TimeSpanSetting}</span>;
     if (this.props.isViewStatus) {
       if (this.props.items.length == 0)
         title = null;
