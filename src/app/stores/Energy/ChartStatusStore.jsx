@@ -6,6 +6,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/ChartStatus.jsx';
+import Folder from '../../constants/actionType/Folder.jsx';
 
 let _energyData = null;
 let _submitParams = null;
@@ -201,6 +202,7 @@ let ChartStatusStore = assign({}, PrototypeStore, {
 });
 
 ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
+  var FolderAction = Folder.Action;
   switch (action.type) {
     case Action.SET_WIDGETDTO:
       ChartStatusStore.setWidgetDto(action.widgetDto, action.bizType, action.energyType, action.chartType);
@@ -210,6 +212,10 @@ ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
       break;
     case Action.CLEAR_STATUS:
       ChartStatusStore.clearStatus();
+      break;
+    case FolderAction.CREATE_FOLDER_OR_WIDGET:
+      ChartStatusStore.clearStatus();
+      break;
   }
 });
 

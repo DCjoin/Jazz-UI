@@ -317,6 +317,7 @@ I18N.EM.CannotShowCalendarByStep = '当前步长不支持显示{0}背景色';
 I18N.EM.CannotShowCalendarByTimeRange = '看不到日历背景？换个时间段试试';
 I18N.EM.WeatherSupportsOnlySingleHierarchy = '该功能仅支持单层级数据点。';
 I18N.EM.WeatherSupportsNotMinuteStep = '该功能不支持分钟步长。';
+I18N.EM.WeatherSupportsNotPie = '该功能不支持饼图';
 I18N.EM.WeatherSupportsNotMultiTime = '该功能不支持多时间段。';
 I18N.EM.TouSupportsMoreThanHourStep = '该功能仅支持大于小时的步长。';
 I18N.EM.TouSupportsOnlyElec = '该功能仅支持"电"介质。';
