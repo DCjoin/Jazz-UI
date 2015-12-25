@@ -215,7 +215,10 @@ let MapPanel = React.createClass({
         let uom = CommonFuns.convertUom(value.EnergyDataValue, value.EnergyDataUom);
         content = "<div class='firstline'>" +
           "<div>" + preTitle + EnergyInfo[value.EnergyDataType + 2] + "</div>" +
-          "<div class='font'>" + valueStr + uom + "</div>" +
+          "<div class='value'>" +
+          "<div>" + valueStr + "</div>" +
+          "<div class='font'>" + uom + "</div>" +
+          "</div>" +
           "</div>";
       }
       if (value.Ranking !== null) {

@@ -86,8 +86,8 @@ let DatePicker = React.createClass({
       padding: '8px 0',
       position: 'absolute',
       // right: '10px',
-      left: (document.body.offsetWidth - 220) / 2,
-      top: '129px',
+      left: (document.body.offsetWidth - 220) / 2 + 10,
+      top: '110px',
       border: '1px solid #c9c8c8',
     };
     if (this.state.isDateMenuShow) {
@@ -96,10 +96,15 @@ let DatePicker = React.createClass({
       </Paper>
     }
     return (
-      <div>
+      <div className='datepicker'>
 
-          <FlatButton label={this.state.dateSelected} onTouchTap={this._onDateMenuClick}>
-            <FontIcon className="icon-arrow-down" />
+          <FlatButton label={this.state.dateSelected}  labelStyle={{
+        color: '#767a7a'
+      }} onTouchTap={this._onDateMenuClick}>
+            <FontIcon className="icon-arrow-down" hoverColor='#1ca8dd' style={{
+        fontSize: '12px',
+        marginLeft: '-6px'
+      }}/>
           </FlatButton>
         {dropdownmenu}
       </div>

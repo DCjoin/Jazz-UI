@@ -138,7 +138,12 @@ var AlarmLeftPanel = React.createClass({
       }}>
           <div className={'jazz-alarm-left-panel-dropdownmenu-container'}>
               <DropDownMenu autoWidth={false} style={{
-        width: '320px'
+        width: '320px',
+        height: '32px'
+      }} labelStyle={{
+        marginTop: '-10px'
+      }} iconStyle={{
+        marginTop: '-10px'
       }} onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
           </div>
           <div style={{

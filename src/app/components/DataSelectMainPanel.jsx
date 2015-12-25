@@ -521,7 +521,9 @@ let DataSelectMainPanel = React.createClass({
     var hierId = (this.state.dimParentNode === null) ? null : this.state.dimParentNode.Id;
     var dropDownMenu = (this.props.widgetType == 'Energy' || this.props.linkFrom == "Alarm") ?
       <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
-      : null;
+      : <div style={{
+        width: '20px'
+      }}/>;
     return (
       <div className="jazz-dataselectmainpanel" >
 
