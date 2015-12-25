@@ -132,6 +132,13 @@ var RatioStore = assign({}, PrototypeStore, {
     }
     return false;
   },
+  _onChangeTimeRange(startTime, endTime) {
+    let timeRanges = CommonFuns.getTimeRangesByDate(startTime, endTime);
+    _paramsObj.timeRanges = timeRanges;
+    _paramsObj.startTime = startTime;
+    _paramsObj.endTime = endTime;
+    _relativeDate = 'Customerize';
+  },
   addRatioDataLoadingListener: function(callback) {
     this.on(RATIO_DATA_LOADING_EVENT, callback);
   },
@@ -176,6 +183,9 @@ RatioStore.dispatchToken = AppDispatcher.register(function(action) {
       RatioStore._onDataChanged(null, action.submitParams);
       RatioStore._initErrorText(action.errorText);
       RatioStore.emitRatioDataLoadErrorListener();
+      break;
+    case Action.SET_COST_TIME_RANGE:
+      RatioStore._onChangeTimeRange(action.startTime, action.endTime);
       break;
   }
 });

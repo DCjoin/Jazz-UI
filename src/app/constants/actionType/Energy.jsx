@@ -27,6 +27,7 @@ module.exports = {
     CLEAR_MULTI_TIMESPAN: null,
     CONVERT_TEMP_TO_STABLE: null,
     SET_ENERGY_TIME_RANGE: null,
-    SET_COST_TIME_RANGE: null
+    SET_COST_TIME_RANGE: null,
+    SET_RATIO_TIME_RANGE: null
   })
 };

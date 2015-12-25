@@ -198,6 +198,7 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleRatioBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleRatioStepChange',
       handleNavigatorChangeLoadFn: 'handleRatioNavigatorChangeLoad',
+      handleNavigatorChangeTimeFn: 'handleRatioNavigatorChangeTime',
       save2DashboardFn: 'saveRatio2Dashboard',
       isCalendarDisabledFn: 'isCalendarDisabled',
       onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
@@ -378,6 +379,9 @@ let ChartStrategyFactor = {
     },
     handleCarbonNavigatorChangeTime(startTime, endTime) {
       CarbonAction.setCarbonTimeRangeByNavigator(startTime, endTime);
+    },
+    handleRatioNavigatorChangeTime(startTime, endTime) {
+      EnergyAction.setRatioTimeRangeByNavigator(startTime, endTime);
     }
   },
   onDeleteButtonClickFnStrategy: {
