@@ -455,8 +455,7 @@ let ChartStrategyFactor = {
         tagId: uid
       });
 
-      EnergyStore.removeSeriesDataByUid(uid);
-      let needReload = EnergyStore.getEnergyData().toJS().Data.length === 2;
+      let needReload = EnergyStore.removeSeriesDataByUid(uid);
 
       if (needReload) {
         let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn(),
@@ -542,7 +541,7 @@ let ChartStrategyFactor = {
 
       if (needReload) {
         let paramsObj = RatioStore.getSubmitParams();
-        let tagOptions = RatioStore.getRatioOpions();
+        let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
 
         let viewOp = paramsObj.viewOption,
           timeRanges = viewOp.TimeRanges,
