@@ -296,6 +296,7 @@ I18N.EM.YAxisSetting = 'Y-Axis setting';
 I18N.EM.YAxisSettingTags = 'Tags';
 I18N.EM.YAxisTitle = 'Y-Axis';
 I18N.EM.YAxisMinMaxValidation = 'Max value must larger than Min value';
+I18N.EM.EnergyAnalyse.SumData = 'Data sum';
 
 I18N.EM.CannotShowCalendarByStep = 'The current interval does not support display of {0} background color.';
 I18N.EM.CannotShowCalendarByTimeRange = 'No calendar background is seen? Change to another time and try.';
