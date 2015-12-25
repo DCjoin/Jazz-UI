@@ -68,7 +68,7 @@ let TemplateItem = React.createClass({
                 <li>{me.props.email}</li>
               </ul>
             </a>
-            <span>创建于{displayTime}</span>
+            <span>{I18N.EM.Report.UploadAt + displayTime}</span>
           </div>
         </div>
       </div>
