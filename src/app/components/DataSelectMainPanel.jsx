@@ -537,6 +537,7 @@ let DataSelectMainPanel = React.createClass({
       }}>-</div>
 
          <DimButton ref={'dimButton'}
+      lang={window.currentLanguage}
       active={this.state.dimActive}
       onTreeClick={this._onDimTreeClick}
       parentNode={this.state.dimParentNode}

@@ -136,7 +136,9 @@ var CommonCommodityPanel = React.createClass({
             color: '#ffffff'
           }}>-</div>
 
-            <DimButton ref={'dimButton'}
+            <DimButton
+          lang={window.currentLanguage}
+          ref={'dimButton'}
           active={this.state.dimActive}
           onTreeClick={this._onDimTreeClick}
           parentNode={this.state.dimParentNode}
