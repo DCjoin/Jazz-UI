@@ -201,6 +201,7 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       PlatformStore.deleteProvider(action.dto);
       break;
     case PlatformAction.SEND_EMAIL_SUCCESS:
+      PlatformStore.modifyProvider(action.provider);
       PlatformStore.emitSendEmailChange();
       break;
 
