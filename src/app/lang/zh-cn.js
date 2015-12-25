@@ -1206,7 +1206,7 @@ I18N.Platform.ServiceProvider.LogOutUrlError = '请填写网址，退出系统�
 I18N.Platform.ServiceProvider.StartDate = '运营时间';
 I18N.Platform.ServiceProvider.Comment = '备注';
 I18N.Platform.ServiceProvider.Status = '运营状态';
-I18N.Platform.ServiceProvider.CalcStatus = '惨与能效标识大数据计算';
+I18N.Platform.ServiceProvider.CalcStatus = '参与能效标识大数据计算';
 
 
 I18N.Privilege = {};
