@@ -3860,7 +3860,9 @@ let ChartStrategyFactor = {
       var chartTypeCmp = analysisPanel.props.isFromAlarm ? null : analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
-      return <div className={'jazz-alarm-chart-toolbar'}>
+      return <div className={'jazz-alarm-chart-toolbar'} style={{
+          marginTop: '30px'
+        }}>
        <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
           alignItems: 'center',
@@ -3885,7 +3887,9 @@ let ChartStrategyFactor = {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
 
-      return <div className={'jazz-alarm-chart-toolbar'}>
+      return <div className={'jazz-alarm-chart-toolbar'} style={{
+          marginTop: '30px'
+        }}>
       <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
           alignItems: 'center',
@@ -3908,7 +3912,9 @@ let ChartStrategyFactor = {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel, ['line', 'column', 'stack', 'pie']);
 
-      return <div className={'jazz-alarm-chart-toolbar'}>
+      return <div className={'jazz-alarm-chart-toolbar'} style={{
+          marginTop: '30px'
+        }}>
       <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
           alignItems: 'center',
@@ -3930,7 +3936,9 @@ let ChartStrategyFactor = {
     unitEnergySearchBarGen(analysisPanel) {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel, ['line', 'column']);
-      return <div className={'jazz-alarm-chart-toolbar'}>
+      return <div className={'jazz-alarm-chart-toolbar'} style={{
+          marginTop: '30px'
+        }}>
        <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
           alignItems: 'center',
@@ -3971,7 +3979,9 @@ let ChartStrategyFactor = {
         name: 'RationWorkday',
         value: 2
       }];
-      return <div className={'jazz-alarm-chart-toolbar'}>
+      return <div className={'jazz-alarm-chart-toolbar'} style={{
+          marginTop: '30px'
+        }}>
        <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
           alignItems: 'center',
@@ -4003,7 +4013,9 @@ let ChartStrategyFactor = {
     rankSearchBarGen(analysisPanel) {
       var rankTypeItem = ConstStore.getRankTypeItem();
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
-      return <div className={'jazz-alarm-chart-toolbar'}>
+      return <div className={'jazz-alarm-chart-toolbar'} style={{
+          marginTop: '30px'
+        }}>
       <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
           alignItems: 'center',
@@ -4046,7 +4058,9 @@ let ChartStrategyFactor = {
       var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
       var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
       var monthItem = ConstStore.getLabelMonth();
-      return <div className={'jazz-alarm-chart-toolbar'}>
+      return <div className={'jazz-alarm-chart-toolbar'} style={{
+          marginTop: '30px'
+        }}>
       <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
           alignItems: 'center',

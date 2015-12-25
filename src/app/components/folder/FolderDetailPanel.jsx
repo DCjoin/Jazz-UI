@@ -204,7 +204,8 @@ var FolderDetailPanel = React.createClass({
         height: '30px',
         width: '30px',
         border: '1px solid #ececec',
-        marginRight: '10px'
+        marginRight: '10px',
+        marginTop: '-3px'
       }}>
       <FontIcon style={{
         fontSize: '16px',
@@ -223,8 +224,9 @@ var FolderDetailPanel = React.createClass({
           <div className='subtitle'>
             {subtitle}
           </div>
+
           <div className='title' title={this.props.nodeData.get('Name')} onClick={this._onTitleMenuClick}>
-            {BackBtn}
+{BackBtn}
             <div className='name'>
               {this.props.nodeData.get('Name')}
             </div>
