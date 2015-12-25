@@ -3559,7 +3559,7 @@ let ChartStrategyFactor = {
       let ratioType = analysisPanel.state.ratioType;
       if (!ratioType)
         ratioType = 1;
-      if (ratioType == 2 && endDate - startDate < 604800000) {
+      if (ratioType == 2 && endDate - startDate <= 604800000) {
         FolderAction.setDisplayDialog('errornotice', null, I18N.EM.Ratio.Error);
       } else {
         analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, ratioType, relativeDateValue, analysisPanel);
