@@ -223,7 +223,7 @@ I18N.EM.Month = '月';
 I18N.EM.Year = '年';
 I18N.EM.Clock24 = '24点';
 I18N.EM.Clock24InWidget = '24点';
-I18N.EM.Clock24Minute0 = '24点00分';
+I18N.EM.Clock24Minute0 = '24点00';
 
 I18N.EM.UseRaw = '按分钟';
 I18N.EM.UseWeek = '按周';
@@ -290,7 +290,7 @@ I18N.EM.Ratio.CaculateValue = '计算值';
 I18N.EM.Ratio.RawValue = '原始值';
 I18N.EM.Ratio.TargetValue = '目标值';
 I18N.EM.Ratio.BaseValue = '基准值';
-I18N.EM.Ratio.Error = '查看公休比请选择不小于一周的时间范围';
+I18N.EM.Ratio.Error = '查看工休比请选择不小于一周的时间范围';
 
 
 
