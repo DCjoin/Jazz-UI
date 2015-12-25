@@ -646,6 +646,13 @@ let EnergyAction = {
       startTime: startTime,
       endTime: endTime
     });
+  },
+  setRatioTimeRangeByNavigator(startTime, endTime) {
+    AppDispatcher.dispatch({
+      type: Action.SET_RATIO_TIME_RANGE,
+      startTime: startTime,
+      endTime: endTime
+    });
   }
 };
 module.exports = EnergyAction;

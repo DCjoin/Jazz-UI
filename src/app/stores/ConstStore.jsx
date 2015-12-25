@@ -5,59 +5,59 @@ import assign from 'object-assign';
 
 var ConstStore = assign({}, PrototypeStore, {
   getSearchDate() {
-    if (!this.searchDate) {
-      var searchDate = [
-        {
-          value: 'Customerize',
-          text: I18N.Common.DateRange.Customerize
-        },
-        {
-          value: 'Last7Day',
-          text: I18N.Common.DateRange.Last7Day
-        },
-        {
-          value: 'Last30Day',
-          text: I18N.Common.DateRange.Last30Day
-        },
-        {
-          value: 'Last12Month',
-          text: I18N.Common.DateRange.Last12Month
-        },
-        {
-          value: 'Today',
-          text: I18N.Common.DateRange.Today
-        },
-        {
-          value: 'Yesterday',
-          text: I18N.Common.DateRange.Yesterday
-        },
-        {
-          value: 'ThisWeek',
-          text: I18N.Common.DateRange.ThisWeek
-        },
-        {
-          value: 'LastWeek',
-          text: I18N.Common.DateRange.LastWeek
-        },
-        {
-          value: 'ThisMonth',
-          text: I18N.Common.DateRange.ThisMonth
-        },
-        {
-          value: 'LastMonth',
-          text: I18N.Common.DateRange.LastMonth
-        },
-        {
-          value: 'ThisYear',
-          text: I18N.Common.DateRange.ThisYear
-        },
-        {
-          value: 'LastYear',
-          text: I18N.Common.DateRange.LastYear
-        }];
 
-      this.searchDate = searchDate;
-    }
+    var searchDate = [
+      {
+        value: 'Customerize',
+        text: I18N.Common.DateRange.Customerize
+      },
+      {
+        value: 'Last7Day',
+        text: I18N.Common.DateRange.Last7Day
+      },
+      {
+        value: 'Last30Day',
+        text: I18N.Common.DateRange.Last30Day
+      },
+      {
+        value: 'Last12Month',
+        text: I18N.Common.DateRange.Last12Month
+      },
+      {
+        value: 'Today',
+        text: I18N.Common.DateRange.Today
+      },
+      {
+        value: 'Yesterday',
+        text: I18N.Common.DateRange.Yesterday
+      },
+      {
+        value: 'ThisWeek',
+        text: I18N.Common.DateRange.ThisWeek
+      },
+      {
+        value: 'LastWeek',
+        text: I18N.Common.DateRange.LastWeek
+      },
+      {
+        value: 'ThisMonth',
+        text: I18N.Common.DateRange.ThisMonth
+      },
+      {
+        value: 'LastMonth',
+        text: I18N.Common.DateRange.LastMonth
+      },
+      {
+        value: 'ThisYear',
+        text: I18N.Common.DateRange.ThisYear
+      },
+      {
+        value: 'LastYear',
+        text: I18N.Common.DateRange.LastYear
+      }];
+
+    this.searchDate = searchDate;
+
     return this.searchDate;
   },
   getCarbonTypeItem() {

@@ -96,8 +96,6 @@ var PlatformStore = assign({}, PrototypeStore, {
     _providerList[index] = provider;
     this.setSelectProvider(provider);
     this.emitSelectProviderChange();
-
-
   },
   setError: function(res) {
     var errorCode = eval("(" + res + ")");
@@ -201,6 +199,7 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       PlatformStore.deleteProvider(action.dto);
       break;
     case PlatformAction.SEND_EMAIL_SUCCESS:
+      PlatformStore.modifyProvider(action.provider);
       PlatformStore.emitSendEmailChange();
       break;
 

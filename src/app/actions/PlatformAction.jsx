@@ -101,6 +101,7 @@ let PlatformAction = {
       success: function(item) {
         AppDispatcher.dispatch({
           type: Action.SEND_EMAIL_SUCCESS,
+          provider: item
         });
       },
       error: function(err, res) {

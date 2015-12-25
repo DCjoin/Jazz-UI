@@ -198,6 +198,7 @@ let ChartStrategyFactor = {
       handleBenchmarkMenuItemClickFn: 'handleRatioBenchmarkMenuItemClick',
       handleStepChangeFn: 'handleRatioStepChange',
       handleNavigatorChangeLoadFn: 'handleRatioNavigatorChangeLoad',
+      handleNavigatorChangeTimeFn: 'handleRatioNavigatorChangeTime',
       save2DashboardFn: 'saveRatio2Dashboard',
       isCalendarDisabledFn: 'isCalendarDisabled',
       onAnalysisPanelDidUpdateFn: 'onRatioAnalysisPanelDidUpdate',
@@ -378,6 +379,9 @@ let ChartStrategyFactor = {
     },
     handleCarbonNavigatorChangeTime(startTime, endTime) {
       CarbonAction.setCarbonTimeRangeByNavigator(startTime, endTime);
+    },
+    handleRatioNavigatorChangeTime(startTime, endTime) {
+      EnergyAction.setRatioTimeRangeByNavigator(startTime, endTime);
     }
   },
   onDeleteButtonClickFnStrategy: {
@@ -3554,7 +3558,7 @@ let ChartStrategyFactor = {
       let ratioType = analysisPanel.state.ratioType;
       if (!ratioType)
         ratioType = 1;
-      if (ratioType == 2 && endDate - startDate < 604800000) {
+      if (ratioType == 2 && endDate - startDate <= 604800000) {
         FolderAction.setDisplayDialog('errornotice', null, I18N.EM.Ratio.Error);
       } else {
         analysisPanel.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, nodeOptions, ratioType, relativeDateValue, analysisPanel);

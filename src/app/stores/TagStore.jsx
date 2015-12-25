@@ -390,10 +390,7 @@ var TagStore = assign({}, PrototypeStore, {
         let lastTagOption = tagOptions[tagOptions.length - 1];
 
         //this.setCurrentHierarchyInfo(lastTagOption.hierId, lastTagOption.hierName);
-        this.setCurrentDimInfo({
-          Id: lastTagOption.dimId,
-          Name: lastTagOption.dimName
-        });
+        this.setCurrentDimInfo(lastTagOption.dimId, lastTagOption.dimName);
         if (_tagTotal == _tagSum) {
           this.setTagTotalStatus();
         }
@@ -409,11 +406,11 @@ var TagStore = assign({}, PrototypeStore, {
           if (viewAssociation.HierarchyId !== null) {
             this.setCurrentHierarchyId(viewAssociation.HierarchyId);
             if (viewAssociation.AreaDimensionId !== null) {
-              let node = {
-                Id: viewAssociation.AreaDimensionId,
-                Name: null
-              };
-              this.setCurrentDimInfo(node);
+              // let node = {
+              //   Id: viewAssociation.AreaDimensionId,
+              //   Name: null
+              // };
+              this.setCurrentDimInfo(viewAssociation.AreaDimensionId, null);
             }
           }
         } else {
