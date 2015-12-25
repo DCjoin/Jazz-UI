@@ -611,7 +611,7 @@ var MainAppBar = React.createClass({
     var mail = (!!this.props.title) ? (      <div className="jazz-mainmenu-user" style={{
       display: 'flex'
     }}>
-          <FlatButton label='平台邮件' labelStyle={langLabelStyle} onClick={this._onMailLoaded} style={{
+          <FlatButton label={I18N.Mail.Mail} labelStyle={langLabelStyle} onClick={this._onMailLoaded} style={{
       backgroundColor: 'transparent',
       color: 'white',
       lineHeight: '16px'
@@ -624,7 +624,7 @@ var MainAppBar = React.createClass({
                   {logo}
                   {title}
                 </div>
-                <div className="jazz-menu">
+              
                     {mainmenu}
                       <div className="jazz-mainmenu-info">
                         {mail}
@@ -663,7 +663,7 @@ var MainAppBar = React.createClass({
       </div>
 
   </div>
-                </div>
+
                 {leftNav}
                 {dialog}
             </div>

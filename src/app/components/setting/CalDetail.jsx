@@ -34,8 +34,9 @@ var CalDetail = React.createClass({
       workCal.push(
         <div className="workdaycontent">{I18N.Baseline.Calc.workdaycontent}</div>
       );
-      var date = I18N.format(I18N.Baseline.Cal.Date, item.StartFirstPart, item.StartSecondPart, item.EndFirstPart, item.EndSecondPart);
+
       this.state.calendar.Items.forEach(function(item) {
+        var date = I18N.format(I18N.Baseline.Cal.Date, item.StartFirstPart, item.StartSecondPart, item.EndFirstPart, item.EndSecondPart);
         if (item.Type == 0) {
           workDay.push(
             <div>{date}</div>
