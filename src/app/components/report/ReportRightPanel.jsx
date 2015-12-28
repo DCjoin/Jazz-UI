@@ -139,9 +139,15 @@ var ReportRightPanel = React.createClass({
   _onChangeTemplate: function() {
     var templateList = ReportStore.getTemplateList();
     var templateItems = this._getTemplateItems(templateList);
+    var reportItem = this.state.reportItem;
+    var sheetNames = this.state.sheetNames || null;
+    if (reportItem !== null && sheetNames === null) {
+      sheetNames = this._getSheetNamesByTemplateId(reportItem.get('templateId'));
+    }
     this.setState({
       templateList: templateList,
-      templateItems: templateItems
+      templateItems: templateItems,
+      sheetNames: sheetNames
     });
   },
   _getSheetNamesByTemplateId: function(templateId) {
@@ -462,7 +468,7 @@ var ReportRightPanel = React.createClass({
       ReportType: 0,
       StartCell: '',
       TagsList: [],
-      TargetSheet: sheetNames
+      TargetSheet: sheetNames !== null ? sheetNames[0] : null
     };
     reportData = reportData.unshift(Immutable.fromJS(newReportData));
     reportData = reportData.map((item, i) => {
