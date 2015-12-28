@@ -184,7 +184,7 @@ RatioStore.dispatchToken = AppDispatcher.register(function(action) {
       RatioStore._initErrorText(action.errorText);
       RatioStore.emitRatioDataLoadErrorListener();
       break;
-    case Action.SET_COST_TIME_RANGE:
+    case Action.SET_RATIO_TIME_RANGE:
       RatioStore._onChangeTimeRange(action.startTime, action.endTime);
       break;
   }
