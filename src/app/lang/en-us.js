@@ -1040,6 +1040,7 @@ I18N.Baseline.BaselineModify.YearSelect = 'Plase select configed year to edit';
 I18N.Baseline.BaselineModify.YearBaseline = 'Year Baseline';
 I18N.Baseline.BaselineModify.YearValue = 'Yearly';
 I18N.Baseline.BaselineModify.MonthBaseline = 'Month Baseline';
+I18N.Baseline.BaselineBasic.AlarmText = 'This Steps will alarm';
 I18N.Baseline.TBSettingItem = {};
 I18N.Baseline.TBSettingItem.Error = 'Conflict with existed timespan, please select again';
 I18N.Baseline.TBSettingItem.CalcRadio = 'Calculate selected average data value as baseline value';
@@ -1048,7 +1049,7 @@ I18N.Baseline.TBSettingItem.TimeSpanSetting = 'TimeSpan setting';
 
 I18N.Baseline.Calc = {};
 I18N.Baseline.Calc.MonthBaseline = 'Monthly';
-I18N.Baseline.Calc.workdaytitle = 'Work-nonwork calendar';
+I18N.Baseline.Calc.workdaytitle = 'Work-nonwork calendar:';
 I18N.Baseline.Calc.workdaycontent = 'Default work day: Mon-Fri';
 I18N.Baseline.Cal = {};
 I18N.Baseline.Cal.Date = '{0} month {1} day to {2} month {3} day';
