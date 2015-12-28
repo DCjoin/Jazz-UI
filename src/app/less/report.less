@@ -60,6 +60,7 @@
   flex-direction: column;
   flex: 1;
 }
+
 .jazz-report-rightpanel-header{
   display: flex;
   flex-direction: column;
@@ -68,6 +69,11 @@
     display: flex;
     flex-direction: column;
     border-bottom: 1px solid #ececec;
+    .pop-viewable-value{
+      >span{
+        font-size: 22px!important;
+      }
+    }
 
   }
 }
@@ -79,7 +85,7 @@
     width: 96%;
     margin: 0 auto;
     &-title{
-
+      margin-bottom: 10px;
     }
   }
   .jazz-report-rightpanel-add{
@@ -145,6 +151,8 @@
   width: 96%;
   margin: 0 auto;
   margin-bottom: 15px;
+  margin-left: 20px;
+  padding-left: 10px;
   background-color: #f4f4f4;
   .jazz-report-data-delete-button{
     > button{
@@ -165,23 +173,38 @@
         color:@schneiderBlue!important;
         background-color: '#e1fcff'!important;
       }
+      >div{
+        >span{
+          font-size:16px!important;
+        }
+      }
      }
   }
 }
 .jazz-report-data-delete{
-  padding: 25px 0px 15px 0px;
+  padding: 10px 0px 15px 0px;
   display: flex;
   flex-direction: row;
   border-top: 1px solid #ececec;
   >div:nth-of-type(1){
     padding-top: 7px;
-    height: 36px;
+    height: 16px;
+    padding-bottom:10px;
   }
 }
 .jazz-report-data-container{
   display: flex;
   flex-direction: column;
   padding: 15px 0px;
+  >span{
+    font-size: 14px!important;
+    color: #abafae!important;
+    margin-bottom: 6px!important;
+  }
+  .pop-viewableTextField-noempty label{
+    color: #abafae!important;
+    font-size:18px!important;
+  }
 }
 .jazz-data-tag-select-window{
   >div{
@@ -195,6 +218,7 @@
 .jazz-report-data-radiobutton{
   display: flex;
   flex-direction: row;
+  margin-top: 4px;
   >div{
     width: 240px !important;
   }
@@ -202,6 +226,7 @@
 .jazz-report-data-checkbox{
   display: flex;
   flex-direction: row;
+  margin-top: 4px;
   >div{
     width: 240px !important;
   }
@@ -209,6 +234,7 @@
 .jazz-report-data-direction{
   display: flex;
   flex-direction: row;
+  margin-top: 4px;
 }
 .jazz-report-data-direction-time{
   background: url(./images/report-layout.png) no-repeat 0 0;
@@ -622,4 +648,8 @@
        }
     }
   }
+}
+.report-right-btn {
+  padding-left: 30px;
+  padding-top: 14px;
 }

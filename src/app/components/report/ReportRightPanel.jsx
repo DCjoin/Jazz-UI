@@ -530,7 +530,7 @@ var ReportRightPanel = React.createClass({
         isRequired: true
       };
       var addReportDataButton = null;
-      var collapseButton = <div className="fold-tree-btn" style={{
+      var collapseButton = <div className="report-right-btn" style={{
         "color": "#939796"
       }} onClick={this.props.onCollapseButtonClick}>
                               <FontIcon hoverColor="#6b6b6b" color="#939796" className={classSet("icon", "icon-column-fold")} />
