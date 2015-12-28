@@ -155,7 +155,8 @@ let MapPanel = React.createClass({
         that._map.addControl(toolBar);
         toolBar.show();
       });
-
+      var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
+      this._map.setLang(lang);
     // this._moveToCurrent(this.props);
     }
     var markers = MapStore.getMarkers();
