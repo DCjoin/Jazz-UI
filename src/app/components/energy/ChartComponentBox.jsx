@@ -556,6 +556,11 @@ let ChartComponentBox = React.createClass({
 
   },
   initSeriesVisibility: function(series) {
+    if (series && series[0]) {
+      if (series[0].type === 'pie') {
+        series = series[0].data;
+      }
+    }
     var serie;
     if (series && series.length > 0) {
       for (var i = 0; i < series.length; i++) {
