@@ -141,13 +141,16 @@ var ReportRightPanel = React.createClass({
     var templateItems = this._getTemplateItems(templateList);
     var reportItem = this.state.reportItem;
     var sheetNames = this.state.sheetNames || null;
-    if (reportItem !== null && sheetNames === null) {
-      sheetNames = this._getSheetNamesByTemplateId(reportItem.get('templateId'));
-    }
+
     this.setState({
       templateList: templateList,
-      templateItems: templateItems,
-      sheetNames: sheetNames
+      templateItems: templateItems
+    }, () => {
+      if (reportItem !== null && sheetNames === null) {
+        this.setState({
+          sheetNames: this._getSheetNamesByTemplateId(reportItem.get('templateId'))
+        });
+      }
     });
   },
   _getSheetNamesByTemplateId: function(templateId) {
