@@ -204,7 +204,7 @@ var Checkboxes = React.createClass({
   },
   render: function() {
     let checkWidth = {
-      width: '60px'
+      width: '80px'
     };
     return (
       <div className="jazz-setting-alarm-checkbox">
