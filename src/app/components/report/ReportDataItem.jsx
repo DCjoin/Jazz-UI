@@ -320,7 +320,7 @@ let ReportDataItem = React.createClass({
     </Dialog></div>);
   },
   componentWillReceiveProps: function(nextProps) {
-    if (nextProps.dateType !== this.props.dateType && nextProps.id !== this.props.id) {
+    if (nextProps.id !== this.props.id) {
       var start = this.getRealTime(nextProps.startTime);
       var end = this.getRealTime(nextProps.endTime);
       var stepItems = this._getDisabledStepItems(nextProps.dateType, this.state.stepItems, start, end);
