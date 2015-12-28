@@ -138,11 +138,17 @@ let GridComponent = React.createClass({
         minHeight: '107px',
         borderLeft: '1px solid #e0e0e0'
       }}>
-                                  <div className={'jazz-energy-gridcomponent-header-item'}> {hieName} </div>
-                                  <div className={'jazz-energy-gridcomponent-header-item'}> {tagName} </div>
+                                  <div className={'jazz-energy-gridcomponent-header-item'} title={
+      hieName
+      }> {hieName} </div>
+                                  <div className={'jazz-energy-gridcomponent-header-item'} title={
+      tagName
+      }> {tagName} </div>
                                   <div className={'jazz-energy-gridcomponent-header-item'} style={{
         borderBottom: '0px'
-      }}> {uom} </div>
+      }} title={
+      uom
+      }> {uom} </div>
                                </div>
     };
     return tagColumn;

@@ -142,11 +142,11 @@ let Alarm = React.createClass({
     if (this.state.showLeftPanel) {
       LeftPanelField = <div style={{
         display: 'flex'
-      }}> <LeftPanel lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onItemClick={this._onItemClick}></LeftPanel> </div> ;
+      }}><LeftPanel lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onItemClick={this._onItemClick}></LeftPanel></div> ;
     } else {
       LeftPanelField = <div style={{
         display: 'none'
-      }}> <LeftPanel lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onItemClick={this._onItemClick}></LeftPanel> </div> ;
+      }}><LeftPanel lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onItemClick={this._onItemClick}></LeftPanel></div> ;
     }
 
     if (this.state.showDataSelectPanelButton) {
@@ -170,7 +170,7 @@ let Alarm = React.createClass({
           bizType: 'Energy',
           energyType: 'Energy',
           widgetDto: me.state.widgetDto,
-          isFromAlarm: true,
+          //isFromAlarm: true,
           onCollapseButtonClick: this._onLeftSwitchButtonClick
         };
 
