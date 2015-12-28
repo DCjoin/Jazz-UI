@@ -128,7 +128,8 @@ let Alarm = React.createClass({
     }
   },
   render() {
-    var LeftPanelField, dataSelectPanel,
+    var LeftPanelField,
+      dataSelectPanel = null,
       mainPanel = (<div style={{
         marginTop: '-16px',
         backgroundColor: '#ffffff',
@@ -170,7 +171,7 @@ let Alarm = React.createClass({
           bizType: 'Energy',
           energyType: 'Energy',
           widgetDto: me.state.widgetDto,
-          //isFromAlarm: true,
+          isFromAlarm: true,
           onCollapseButtonClick: this._onLeftSwitchButtonClick
         };
 
