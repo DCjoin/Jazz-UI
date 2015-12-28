@@ -18,6 +18,7 @@ import DataSelectMainPanel from '../DataSelectMainPanel.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
+import ChartAction from '../../actions/ChartAction.jsx';
 
 let Alarm = React.createClass({
   mixins: [Navigation, State],
@@ -36,7 +37,7 @@ let Alarm = React.createClass({
     this.setState({
       showLeftPanel: leftShow,
       showRightPanel: rightShow
-    });
+    }, ChartAction.redrawChart);
   },
   _onRightSwitchButtonClick() {
     var leftShow, rightShow;
@@ -53,7 +54,7 @@ let Alarm = React.createClass({
     this.setState({
       showLeftPanel: leftShow,
       showRightPanel: rightShow
-    });
+    }, ChartAction.redrawChart);
   },
   // _onSwitchButtonClick() {
   //   this.setState({
@@ -143,11 +144,11 @@ let Alarm = React.createClass({
     if (this.state.showLeftPanel) {
       LeftPanelField = <div style={{
         display: 'flex'
-      }}><LeftPanel lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onItemClick={this._onItemClick}></LeftPanel></div> ;
+      }}><LeftPanel lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onItemClick={this._onItemClick}/></div> ;
     } else {
       LeftPanelField = <div style={{
         display: 'none'
-      }}><LeftPanel lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onItemClick={this._onItemClick}></LeftPanel></div> ;
+      }}><LeftPanel lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onItemClick={this._onItemClick}/></div> ;
     }
 
     if (this.state.showDataSelectPanelButton) {
