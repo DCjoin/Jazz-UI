@@ -308,7 +308,7 @@ let TagSelectWindow = React.createClass({
     }}><div style={{
       marginLeft: '10px',
       marginBottom: '10px'
-    }}>{I18N.EM.Report.SelectTag}</div><div className='jazz-report-taglist-container-right'>
+    }}>{I18N.EM.Report.SelectedTag}</div><div className='jazz-report-taglist-container-right'>
       {rightTagListHeader}
       <div className='jazz-report-taglist'>
           <TagList tagList={this.state.selectedTagList} isLoading={this.state.isRightLoading}  disabled={this.props.disabled} leftPanel={false} onTagItemUnselected={this._onTagItemUnselected}></TagList>

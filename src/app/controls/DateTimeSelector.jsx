@@ -240,7 +240,7 @@ let DateTimeSelector = React.createClass({
       <div className={'jazz-full-border-datepicker-container'}>
         <ViewableDatePicker ref="startDate" {...startDateProps}/>
       </div>
-      <span> {'到'} </span>
+      <span> {I18N.EM.To} </span>
       <div className={'jazz-full-border-datepicker-container'}>
         <ViewableDatePicker ref="endDate" {...endDateProps}/>
       </div>

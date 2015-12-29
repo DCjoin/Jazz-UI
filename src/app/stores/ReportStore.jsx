@@ -7,13 +7,13 @@ import Immutable from 'immutable';
 import CommonFuns from '../util/Util.jsx';
 import { Action } from '../constants/actionType/Report.jsx';
 
-let _reportList = null,
-  _templateList = null,
+let _reportList = Immutable.fromJS([]),
+  _templateList = Immutable.fromJS([]),
   _errorCode = null,
   _errorMessage = null,
   _errorReport = null,
-  _tagList = [],
-  _selectedTagList = [],
+  _tagList = Immutable.fromJS([]),
+  _selectedTagList = Immutable.fromJS([]),
   _totalPage = 0,
   _reportItem = null;
 
@@ -28,9 +28,7 @@ var ReportStore = assign({}, PrototypeStore, {
     return _reportList;
   },
   setReportList(reportList) {
-    if (!reportList || reportList.length === 0) {
-      _reportList = null;
-    } else {
+    if (reportList) {
       _reportList = Immutable.fromJS(reportList);
     }
   },
@@ -38,9 +36,7 @@ var ReportStore = assign({}, PrototypeStore, {
     return _templateList;
   },
   setTemplateList(templateList) {
-    if (!templateList || templateList.length === 0) {
-      _templateList = null;
-    } else {
+    if (templateList) {
       _templateList = Immutable.fromJS(templateList);
     }
   },
@@ -81,7 +77,7 @@ var ReportStore = assign({}, PrototypeStore, {
   },
   defalutSelectFirstReport: function() {
     var reportItem = null;
-    if (_reportList !== null && _reportList.size !== 0) {
+    if (_reportList.size !== 0) {
       reportItem = {
         id: _reportList.getIn([0, 'Id']),
         createUser: _reportList.getIn([0, 'CreateUser']),
@@ -94,6 +90,7 @@ var ReportStore = assign({}, PrototypeStore, {
     _reportItem = Immutable.fromJS(reportItem);
   },
   updateReportItem: function(curReport) {
+    var index;
     var reportItem = {
       id: curReport.Id,
       templateId: curReport.TemplateId,
@@ -103,12 +100,14 @@ var ReportStore = assign({}, PrototypeStore, {
       version: curReport.Version
     };
     ReportStore.setSelectedReportItem(reportItem);
-    var index = _reportList.findIndex((item) => {
-      if (item.get('Id') === curReport.Id) {
-        return true;
-      }
-    });
-    if (index === -1) {
+    if (_reportList.size !== 0) {
+      index = _reportList.findIndex((item) => {
+        if (item.get('Id') === curReport.Id) {
+          return true;
+        }
+      });
+    }
+    if (index === -1 || _reportList.size === 0) {
       _reportList = _reportList.unshift(Immutable.fromJS(curReport));
     } else {
       _reportList = _reportList.set(index, Immutable.fromJS(curReport));
