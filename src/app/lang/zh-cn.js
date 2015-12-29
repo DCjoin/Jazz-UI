@@ -210,8 +210,8 @@ I18N.DateTimeFormat.IntervalFormat.MonthDate = 'MM月DD日';
 I18N.DateTimeFormat.IntervalFormat.Year = 'YYYY年';
 I18N.DateTimeFormat.IntervalFormat.FullDateTime = 'YYYY年MM月DD日 HH点mm分ss秒';
 I18N.DateTimeFormat.IntervalFormat.FullDate = 'YYYY年MM月DD日';
-I18N.DateTimeFormat.IntervalFormat.MonthDayHour = 'm月d日H点';
-I18N.DateTimeFormat.IntervalFormat.DayHour = 'd日H点';
+I18N.DateTimeFormat.IntervalFormat.MonthDayHour = 'MM月DD日HH点';
+I18N.DateTimeFormat.IntervalFormat.DayHour = 'DD日HH点';
 
 I18N.EM = {};
 I18N.EM.To = '到';
