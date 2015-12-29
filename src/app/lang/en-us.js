@@ -312,6 +312,9 @@ I18N.EM.CharType.Stack = 'Stack';
 I18N.EM.CharType.Pie = 'Pie';
 I18N.EM.CharType.RawData = 'Raw data';
 
+I18N.EM.RawData = {};
+I18N.EM.RawData.Error = 'Raw data only support with 7 days';
+
 I18N.EM.Legend = {};
 I18N.EM.Legend.ToLine = 'Switch to line';
 I18N.EM.Legend.ToColumn = 'Switch to column';
@@ -1089,15 +1092,15 @@ I18N.Map.Date = {};
 I18N.Map.Date.Year = '/';
 I18N.Map.Date.Month = '/';
 I18N.Map.Date.Day = '';
-I18N.Map.Date.Today = 'Today ';
-I18N.Map.Date.Yesterday = 'Yesterday ';
+I18N.Map.Date.Today = 'Today';
+I18N.Map.Date.Yesterday = 'Yesterday';
 I18N.Map.Date.ThisMonth = 'This Month ';
 I18N.Map.Date.LastMonth = 'Last Month ';
 I18N.Map.Date.ThisYear = 'This Year ';
 I18N.Map.Date.LastYear = 'Last Year ';
 
 I18N.Map.EnergyInfo = {};
-I18N.Map.EnergyInfo.CarbonEmission = 'Total CO2';
+I18N.Map.EnergyInfo.CarbonEmission = 'Total co2 emission';
 I18N.Map.EnergyInfo.Cost = 'Total cost';
 I18N.Map.EnergyInfo.Electricity = 'Total power usage';
 I18N.Map.EnergyInfo.Water = 'Total water';
