@@ -77,6 +77,7 @@ let JazzApp = React.createClass({
     var me = this;
     var afterLoadLang = function(b) {
       window.I18N = b;
+      me._setHighchartConfig();
       me.setState({
         isLangLoaded: true
       }, () => {
@@ -111,7 +112,7 @@ let JazzApp = React.createClass({
         }
 
 
-        me._setHighchartConfig();
+
       });
     };
     this._onClearGlobalError();
@@ -129,6 +130,7 @@ let JazzApp = React.createClass({
     var me = this;
     var afterLoadLang = function(b) {
       window.I18N = b;
+      me._setHighchartConfig();
       me.setState({
         isLangLoaded: true
       }, () => {
@@ -157,7 +159,7 @@ let JazzApp = React.createClass({
         }
 
 
-        me._setHighchartConfig();
+
       });
     };
 
