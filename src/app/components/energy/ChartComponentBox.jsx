@@ -193,9 +193,9 @@ let defaultConfig = {
           var chart = this.chart;
           var step = chart.options.navigator.step;
           if (step == 4) {
-            return dateFormat(new Date(v), 'YYYY年');
+            return dateFormat(new Date(v), 'YYYY');
           } else {
-            return dateFormat(new Date(v), 'YYYY年MM月');
+            return dateFormat(new Date(v), 'YYYY/MM');
           }
         }
       }

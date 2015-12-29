@@ -332,6 +332,7 @@ I18N.EM.Labeling.NonBuilding = 'This node is not building, please choose other n
 I18N.EM.Labeling.NonData = 'No energy data in this time range.';
 I18N.EM.Labeling.DifferentCommodity = 'Chosen tags are not same commodity, please choose again';
 I18N.EM.Labeling.SelectHieForSys = 'Choose Building to config area dimension';
+I18N.Common.Label = {};
 I18N.Common.Label.TimeConflict = 'Time conflict.';
 I18N.Common.Label.DuplicatedName = 'Name already existed';
 I18N.Common.Label.TimeZoneConflict = 'Timezone conflict';
