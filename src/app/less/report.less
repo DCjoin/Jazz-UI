@@ -78,11 +78,11 @@
   }
 }
 .jazz-report-rightpanel-body{
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
   .jazz-report-rightpanel-template{
-    padding: 25px 0px;
-    width: 96%;
+    padding: 25px 30px;
     margin: 0 auto;
     &-title{
       margin-bottom: 10px;
@@ -148,10 +148,7 @@
 .jazz-report-data-content{
   display: flex;
   flex-direction: column;
-  width: 96%;
-  margin: 0 auto;
-  margin-bottom: 15px;
-  margin-left: 20px;
+  margin: 0 20px 15px 20px;
   padding-left: 10px;
   background-color: #f4f4f4;
   .jazz-report-data-delete-button{
