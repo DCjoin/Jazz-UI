@@ -47,7 +47,7 @@ let TemplateList = React.createClass({
       openImmediately={true}
       actions={dialogActions}
       modal={true}>
-        {'确定删除报表模板 "' + this.state.name + ' "吗？'}
+        {I18N.format(I18N.EM.Report.DeleteTemplateMessage, this.state.name)}
       </Dialog>);
   },
   _deleteTemplate: function() {

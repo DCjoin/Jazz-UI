@@ -145,7 +145,7 @@ var Template = React.createClass({
       ref="uploadDialog"
       openImmediately={true}
       modal={true}>
-        {'文件' + this.state.fileName + '正在导入'}
+        {I18N.format(I18N.EM.Report.UploadingTemplate, this.state.fileName)}
       </Dialog>);
   },
   _onSortChange(e) {

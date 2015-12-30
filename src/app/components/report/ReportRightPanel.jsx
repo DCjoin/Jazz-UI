@@ -316,7 +316,7 @@ var ReportRightPanel = React.createClass({
       ref="uploadDialog"
       openImmediately={true}
       modal={true}>
-        {'文件' + this.state.fileName + '正在导入'}
+        {I18N.format(I18N.EM.Report.UploadingTemplate, this.state.fileName)}
       </Dialog>);
   },
   _downloadTemplate: function() {
@@ -421,7 +421,7 @@ var ReportRightPanel = React.createClass({
       openImmediately={true}
       actions={dialogActions}
       modal={true}>
-        {'确定删除 "' + this.state.reportItem.get('name') + ' "吗？'}
+        {I18N.format(I18N.EM.Report.DeleteReportMessage, this.state.reportItem.get('name'))}
       </Dialog>);
   },
   _deleteReport: function() {
