@@ -4,6 +4,7 @@ import React from "react";
 import { Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowColumn, TableFooter } from 'material-ui';
 import Item from '../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../controls/SelectablePanel.jsx';
+import Panel from '../../controls/MainContentPanel.jsx';
 
 
 var Test = React.createClass({
@@ -38,6 +39,11 @@ var Test = React.createClass({
       ]}
       sortBy={'customername@asc'}
       contentItems={items}/>
+    <Panel>
+      <div>
+        XXXX
+      </div>
+    </Panel>
     </div>
       )
   }

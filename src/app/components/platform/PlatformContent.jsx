@@ -475,7 +475,7 @@ let PlatformContent = React.createClass({
       isEdit = this.props.formStatus === formStatus.EDIT,
       isAdd = this.props.formStatus === formStatus.ADD;
     var collapseButton = (
-    <div className="fold-tree-btn" style={{
+    <div className="fold-btn pop-framework-right-actionbar-top-fold-btn" style={{
       "color": "#939796"
     }}>
   				<FontIcon className={classnames("icon", "icon-column-fold")} onClick={this.props._toggleList}/>
