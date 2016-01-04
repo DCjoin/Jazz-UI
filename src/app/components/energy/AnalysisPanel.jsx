@@ -206,7 +206,11 @@ let AnalysisPanel = React.createClass({
           'jazz-energy-remark-text-display': this.state.remarkDisplay
         }
       )}>
+      <div style={{
+        textAlign: 'center'
+      }}>
       <div className='jazz-energy-remark-button'><RaisedButton label={I18N.Remark.Label} onClick={this.showRemark}></RaisedButton></div>
+      </div>
       {remarkTextArea}
     </div>;
     }
