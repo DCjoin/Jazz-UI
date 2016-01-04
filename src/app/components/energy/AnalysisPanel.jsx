@@ -193,9 +193,7 @@ let AnalysisPanel = React.createClass({
         </div>;
     var remarkTextArea = null;
     if (this.state.remarkDisplay) {
-      remarkTextArea = <div className='jazz-energy-remark-text'><TextField style={{
-        overflow: 'hidden'
-      }} hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
+      remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
         color: '#abafae'
       }} multiLine={true} ></TextField></div>;
     }
