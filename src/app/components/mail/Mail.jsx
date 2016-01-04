@@ -14,7 +14,10 @@ let Mail = React.createClass({
   render: function() {
     var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
     return (
-      <div className='jazz-content'>
+      <div className='jazz-content' style={{
+        flex: 1,
+        backgroundColor: '#fbfbfb'
+      }}>
             <Content/>
             <Dialog/>
             <NetworkChecker></NetworkChecker>

@@ -35,7 +35,9 @@ let MailContent = React.createClass({
       };
     return (
       <div className='jazz-mail'>
-        <div className='header'>
+        <div className='header' style={{
+        backgroundColor: '#ffffff'
+      }}>
           <div className='sendBtn'>
             <FlatButton label={I18N.Mail.SendButton} onClick={this._onSendBtnClick}/>
           </div>
