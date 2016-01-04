@@ -1,12 +1,13 @@
 'use strict';
 
 import React from 'react';
+import classNames from 'classnames';
 
 let SelectableItem = React.createClass({
   propTypes: {
     index: React.PropTypes.number,
     //the first line
-    Label: React.PropTypes.string,
+    label: React.PropTypes.string,
     //the second line
     text: React.PropTypes.string,
     selectedIndex: React.PropTypes.number,
@@ -22,7 +23,7 @@ let SelectableItem = React.createClass({
         "isSelected": this.props.index == this.props.selectedIndex,
       })} onClick={this.onClick}>
         <div className='label'>
-          {this.props.Label}
+          {this.props.label}
         </div>
         <div className='text'>
           {this.props.text}
