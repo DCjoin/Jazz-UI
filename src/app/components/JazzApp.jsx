@@ -148,6 +148,10 @@ let JazzApp = React.createClass({
           me.replaceWith('config', {
             lang: lang
           });
+        } else if (url.indexOf('menutype=service') > -1) {
+          me.replaceWith('workday', {
+            lang: lang
+          });
         } else if (url.indexOf('menutype=energy') > -1) {
           me.replaceWith('setting', {
             lang: lang

@@ -62,8 +62,8 @@ var SubMainMenu = React.createClass({
         "jazz-mainmenu-main": true,
         "active": isActive
       })} onClick={this._showSubMenu}>
-            <div>{activeTitle}</div>
-            <div className="jazz-mainmenu-main-title">{node.title}</div>
+            <div>{node.title}</div>
+            <div className="jazz-mainmenu-main-title">{activeTitle}</div>
           </a>
           <Menu
       style={{
