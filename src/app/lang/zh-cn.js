@@ -41,8 +41,6 @@ I18N.MainMenu.Asset = '我的资产';
 I18N.MainMenu.Alarm = '故障报警';
 I18N.MainMenu.Maintain = '设备维护';
 I18N.MainMenu.Setting = '设置';
-I18N.MainMenu.Customer = '客户管理';
-I18N.MainMenu.User = '用户管理';
 I18N.MainMenu.DeviceTemplate = '台账模板';
 I18N.MainMenu.ParameterTemplate = '参数模板';
 
@@ -52,6 +50,21 @@ I18N.MainMenu.Energy = '能源';
 I18N.MainMenu.Report = '报告';
 I18N.MainMenu.DailyReport = '日常报表';
 I18N.MainMenu.Template = '模板管理';
+
+I18N.MainMenu.Calendar = '日历配置';
+I18N.MainMenu.WorkdaySetting = '工休日';
+I18N.MainMenu.WorktimeSetting = '工作时间';
+I18N.MainMenu.ColdwarmSetting = '冷暖季';
+I18N.MainMenu.DaynightSetting = '昼夜时间';
+I18N.MainMenu.EnergyConvert = '能耗换算';
+I18N.MainMenu.Price = '价格';
+I18N.MainMenu.Carbon = '碳排放';
+I18N.MainMenu.EnergySubline = '能效辅助线';
+I18N.MainMenu.IndustryBenchmark = '行业对标';
+I18N.MainMenu.Labelling = '能效标识';
+I18N.MainMenu.Customer = '客户管理';
+I18N.MainMenu.User = '用户管理';
+I18N.MainMenu.Privilege = '功能权限角色';
 
 I18N.Login = {};
 I18N.Login.UserName = '用户名';
@@ -482,6 +495,39 @@ I18N.Setting.NodeBtn.Saving = '正在保存...';
 I18N.Setting.NodeBtn.Save = '保存';
 I18N.Setting.NodeBtn.Deleting = '正在删除...';
 I18N.Setting.NodeBtn.Delete = '删除';
+
+
+//customer
+I18N.Setting.CustomerManagement = {};
+I18N.Setting.CustomerManagement.CustomerManagement = '客户管理';
+I18N.Setting.CustomerManagement.Logo = 'Logo';
+I18N.Setting.CustomerManagement.LogoUpload = '上传本地图片';
+I18N.Setting.CustomerManagement.LogoUploadInfo = '请上传小于420px * 90px，800KB的图片文件。仅支持png、gif格式文件。';
+I18N.Setting.CustomerManagement.Address = '地址';
+I18N.Setting.CustomerManagement.Principal = '负责人';
+I18N.Setting.CustomerManagement.Telephone = '负责人电话';
+I18N.Setting.CustomerManagement.Email = '负责人电子邮箱';
+I18N.Setting.CustomerManagement.OperationStartTime = '运营时间';
+I18N.Setting.CustomerManagement.Administrator = '客户管理员';
+I18N.Setting.CustomerManagement.NoAdministrator = '未选择';
+
+I18N.Setting.UserManagement = {};
+I18N.Setting.UserManagement.UserManagement = '用户管理';
+I18N.Setting.UserManagement.UserInfoManagement = '用户信息管理';
+I18N.Setting.UserManagement.ViewFunction = '查看权限详细';
+I18N.Setting.UserManagement.UserName = '用户名';
+I18N.Setting.UserManagement.RealName = '显示名称';
+I18N.Setting.UserManagement.Title = '职务';
+I18N.Setting.UserManagement.TitlePlatformAdmin = '平台管理员';
+I18N.Setting.UserManagement.Telephone = '电话';
+I18N.Setting.UserManagement.Email = '电子邮箱';
+I18N.Setting.UserManagement.Comment = '描述';
+I18N.Setting.UserManagement.CreatePasswrod = '发送邮件';
+I18N.Setting.UserManagement.MailSent = '邮件已发送。';
+I18N.Setting.UserManagement.MembershipCustomer = '所属客户';
+I18N.Setting.UserManagement.AllCustomers = '全部客户';
+I18N.Setting.UserManagement.Privilege = '功能权限';
+
 
 I18N.Message = {};
 
