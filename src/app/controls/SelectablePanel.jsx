@@ -8,8 +8,8 @@ let SelectablePanel = React.createClass({
   propTypes: {
     addBtnLabel: React.PropTypes.string,
     onAddBtnClick: React.PropTypes.object,
-    filterBtnLabel: React.PropTypes.string,
-    onFilterBtnClick: React.PropTypes.object,
+    // filterBtnLabel: React.PropTypes.string,
+    // onFilterBtnClick: React.PropTypes.object,
     sortItems: React.PropTypes.object,
     sortBy: React.PropTypes.string,
     changeSortBy: React.PropTypes.object,
@@ -54,14 +54,14 @@ let SelectablePanel = React.createClass({
       }
     };
 
-    if (!!this.props.filterBtnLabel) {
-      filter = <div className={classNames(addBtnClasses)}>
-                  <FlatButton disabled={!this.props.isViewStatus}  onClick={this.props.onFilterBtnClick} style={buttonStyle}>
-                    <FontIcon  className="fa icon-filter btn-icon"/>
-                    <span className="mui-flat-button-label btn-text">{this.props.filterBtnLabel}</span>
-                  </FlatButton>
-                </div>
-    }
+    // if (!!this.props.filterBtnLabel) {
+    //   filter = <div className={classNames(addBtnClasses)}>
+    //               <FlatButton disabled={!this.props.isViewStatus}  onClick={this.props.onFilterBtnClick} style={buttonStyle}>
+    //                 <FontIcon  className="fa icon-filter btn-icon"/>
+    //                 <span className="mui-flat-button-label btn-text">{this.props.filterBtnLabel}</span>
+    //               </FlatButton>
+    //             </div>
+    // }
 
     if (!!this.props.sortBy) {
       sort = <div className="jazz-serviceprovider-sortbar">
@@ -81,7 +81,6 @@ let SelectablePanel = React.createClass({
               <span className="mui-flat-button-label btn-text">{this.props.addBtnLabel}</span>
             </FlatButton>
           </div>
-          {filter}
         </div>
         {sort}
         <div className="jazz-provider-list">

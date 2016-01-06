@@ -24,7 +24,6 @@ var Test = React.createClass({
         flex: 1
       }}>
       <SelectablePanel addBtnLabel='用户'
-      filterBtnLabel='筛选'
       isViewStatus={true}
       isLoading={false}
       sortItems={[

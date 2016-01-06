@@ -14,7 +14,7 @@ let MainContentPanel = React.createClass({
     <div className="fold-btn pop-framework-right-actionbar-top-fold-btn" style={{
       "color": "#939796"
     }}>
-        <FontIcon className={classNames("icon", "icon-column-fold")} onClick={this.collapseHierarchy}/>
+        <FontIcon className={classNames("icon", "icon-column-fold")} onClick={this.props.onToggle}/>
       </div>
     );
     return (
