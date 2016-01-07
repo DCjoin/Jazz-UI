@@ -12,124 +12,133 @@ import ViewableSelectField from '../../controls/ViewableSelectField.jsx';
 import LinkButton from '../../controls/LinkButton.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 
-import UserActionCreator from '../../actions/UserActionCreator.jsx';
+import UserAction from '../../actions/UserAction.jsx';
 
 import _isObject from "lodash/lang/isObject";
 import _get from 'lodash/object/get';
 
-var _ = {isObject:_isObject,get:_get};
+var _ = {
+  isObject: _isObject,
+  get: _get
+};
 
 var UserFilter = React.createClass({
 
-	_bindChangeFilter: function(paths, isClear) {
-		if( isClear ) {
-			return this._mergeFilterObj.bind(this, paths, "");
-		}
-		return this._mergeFilterObj.bind(this, paths);
-	},
+  _bindChangeFilter: function(paths, isClear) {
+    if (isClear) {
+      return this._mergeFilterObj.bind(this, paths, "");
+    }
+    return this._mergeFilterObj.bind(this, paths);
+  },
 
-	_mergeFilterObj: function( paths, event, value="" ) {
-		if( !_.isObject( event ) ) {
-			value = event;
-		} else {
-			value = _.get( event, "target.value" );
-			if( _.isObject( value ) ) {
-				value = _.get( value,  "value.CustomerId");
-			}
-		}
-		UserActionCreator.mergeFilterObj({
-			path: paths,
-			value: value
-		});
-	},
+  _mergeFilterObj: function(paths, event, value = "") {
+    if (!_.isObject(event)) {
+      value = event;
+    } else {
+      value = _.get(event, "target.value");
+      if (_.isObject(value)) {
+        value = _.get(value, "value.CustomerId");
+      }
+    }
+    UserAction.mergeFilterObj({
+      path: paths,
+      value: value
+    });
+  },
 
-	_getCustomerList: function() {
-		let customerList = [/*{
+  _getCustomerList: function() {
+    let customerList = [ /*{
 			CustomerId: 0,
 			Text: ""
-		},*/{
-			CustomerId: -1,
-			Text: "无客户"
-		},{
-			CustomerId: -2,
-			Text: "全部客户"
-		}];
+		},*/ {
+      CustomerId: -1,
+      Text: "无客户"
+    }, {
+      CustomerId: -2,
+      Text: "全部客户"
+    }];
 
-		this.props.customers.forEach( customer => {
-			customerList.push({
-				CustomerId: customer.get("CustomerId"),
-				Text: customer.get("CustomerName")
-			});
-		});
+    this.props.customers.forEach(customer => {
+      customerList.push({
+        CustomerId: customer.get("Id"),
+        Text: customer.get("Name")
+      });
+    });
 
-		return customerList;
-	},
+    return customerList;
+  },
 
-	close: function() {
-		if( this.refs.pop_user_filter_side_nav ) {
-			this.refs.pop_user_filter_side_nav.closeNav();
-		}
-	},
+  close: function() {
+    if (this.refs.pop_user_filter_side_nav) {
+      this.refs.pop_user_filter_side_nav.closeNav();
+    }
+  },
 
-	getInitialState: function() {
-		return {
-			inited: false,
-			showNav: false,
-			valueCode: 0
-		}
-	},
+  getInitialState: function() {
+    return {
+      inited: false,
+      showNav: false,
+      valueCode: 0
+    };
+  },
 
-	componentDidMount: function() {
-		this.setState({
-			inited: true
-		});
-	},
+  componentDidMount: function() {
+    this.setState({
+      inited: true
+    });
+  },
 
-	_renderRoleRadio: function() {
-		var radioList = [(<RadioButton key={"role-radio-key-all"} style={{paddingTop: "20px"}} value="" label="全部" />)];
+  _renderRoleRadio: function() {
+    var radioList = [(<RadioButton key={"role-radio-key-all"} style={{
+      paddingTop: "20px"
+    }} value="" label="全部" />)];
 
-		this.props.userRoleList.forEach( role => {
-			radioList.push(
-		    	<RadioButton key={"role-radio-key-" + role.get("Id")} style={{paddingTop: "20px"}} value={role.get("Id") + ""} label={role.get("Name")}/>
-			);
-		} );
+    this.props.userRoleList.forEach(role => {
+      radioList.push(
+        <RadioButton key={"role-radio-key-" + role.get("Id")} style={{
+          paddingTop: "20px"
+        }} value={role.get("Id") + ""} label={role.get("Name")}/>
+      );
+    });
 
-		return (
-			<RadioButtonGroup onChange={this._bindChangeFilter("role")} name="pop_user_filter_role_radio_group" defaultSelected={this.props.filterObj.get("role")}>
+    return (
+      <RadioButtonGroup onChange={this._bindChangeFilter("role")} name="pop_user_filter_role_radio_group" defaultSelected={this.props.filterObj.get("role")}>
 		    	{radioList}
 			</RadioButtonGroup>
-		);
-	},
+      );
+  },
 
-	render: function() {
-		var that = this,
-			selectedIndex = -1,
-			selectedCusomer = that.props.filterObj.get("selectedCusomer", "");
+  render: function() {
+    var that = this,
+      selectedIndex = -1,
+      selectedCusomer = that.props.filterObj.get("selectedCusomer", "");
 
-		if( selectedCusomer < 0 ) {
-			selectedIndex = -1 * selectedCusomer;
-		} else if( selectedCusomer > 0 ) {
-			selectedIndex = this.props.customers.findIndex( cus => { return cus.get("CustomerId") == selectedCusomer }) + 2;
-		}
-		/*
+    if (selectedCusomer < 0) {
+      selectedIndex = -1 * selectedCusomer;
+    } else if (selectedCusomer > 0) {
+      selectedIndex = this.props.customers.findIndex(cus => {
+          return cus.get("Id") == selectedCusomer
+          }) + 2;
+      }
+      /*
 
-								<ViewableSelectField
-											needChange={true}
-											style={{
-												width:256,
-												zIndex:3}}
-											menuItemStyle={{
-												"overflow": "hidden",
-												"textOverflow": "ellipsis",
-												"width":184}}
-											autoWidth={true}
-											textField={"text"}
-											dataItems={this._getCustomerList()}
-											didChanged={this._bindChangeFilter("selectedCusomer")} />
-		*/
+      						<ViewableSelectField
+      									needChange={true}
+      									style={{
+      										width:256,
+      										zIndex:3}}
+      									menuItemStyle={{
+      										"overflow": "hidden",
+      										"textOverflow": "ellipsis",
+      										"width":184}}
+      									autoWidth={true}
+      									textField={"text"}
+      									dataItems={this._getCustomerList()}
+      									didChanged={this._bindChangeFilter("selectedCusomer")} />
+      */
 
-		return (
-			<SideNav open={true} ref="pop_user_filter_side_nav" onClose={this.props.onClose}>
+      return (
+        <SideNav open={true} ref="pop_user_filter_side_nav" onClose={this.props.onClose}>
 				<div className="pop-user-filter-side-nav-wrapper">
 					<div className="pop-user-filter-side-nav-header sidebar-title">用户筛选</div>
 					<div className="sidebar-content pop-user-filter-side-nav-content">
@@ -161,21 +170,23 @@ var UserFilter = React.createClass({
 							</div>
 							<div className="pop-user-filter-side-nav-content-item-input pop-viewableSelectField">
 								<SelectField
-									style={{
-										width:256,
-										zIndex:3}}
-									menuItemStyle={{
-										"overflow": "hidden",
-										"textOverflow": "ellipsis",
-										"width":184}}
-									autoWidth={true}
-									className={'pop-viewableSelectField-ddm'}
-									value={selectedCusomer}
-									hintText={"客户名称"}
-									valueMember={"CustomerId"}
-									displayMember={"Text"}
-									menuItems={this._getCustomerList()}
-									onChange={this._bindChangeFilter("selectedCusomer")} />
+        style={{
+          width: 256,
+          zIndex: 3
+        }}
+        menuItemStyle={{
+          "overflow": "hidden",
+          "textOverflow": "ellipsis",
+          "width": 184
+        }}
+        autoWidth={true}
+        className={'pop-viewableSelectField-ddm'}
+        value={selectedCusomer}
+        hintText={"客户名称"}
+        valueMember={"CustomerId"}
+        displayMember={"Text"}
+        menuItems={this._getCustomerList()}
+        onChange={this._bindChangeFilter("selectedCusomer")} />
 							</div>
 						</div>
 
@@ -188,13 +199,19 @@ var UserFilter = React.createClass({
 
 					</div>
 					<div className="sidebar-bottom-action">
-						<FlatButton label="筛&nbsp;&nbsp;&nbsp;&nbsp;选" onClick={this.props.handleFilter} labelStyle={{color: "#00BCD4"}} style={{color:'#abafae',height:'48px',width:'100%'}} />
+						<FlatButton label="筛&nbsp;&nbsp;&nbsp;&nbsp;选" onClick={this.props.handleFilter} labelStyle={{
+          color: "#00BCD4"
+        }} style={{
+          color: '#abafae',
+          height: '48px',
+          width: '100%'
+        }} />
 					</div>
 				</div>
 			</SideNav>
-		);
-	}
+        );
+    }
 
-});
+  });
 
-module.exports = UserFilter;
+  module.exports = UserFilter;

@@ -97,6 +97,16 @@ let UserAction = {
       type: Action.RESET_FILTER,
     });
   },
+  resetFilterObj() {
+    AppDispatcher.dispatch({
+      type: Action.RESET_FILTER_OBJ
+    });
+  },
+  setFilterObj() {
+    AppDispatcher.dispatch({
+      type: Action.SET_FILTER_OBJ
+    });
+  },
   mergeFilterObj(data) {
     AppDispatcher.dispatch({
       type: Action.MERGE_FILTER_OBJ,

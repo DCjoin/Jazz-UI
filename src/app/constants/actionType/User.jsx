@@ -11,6 +11,8 @@ module.exports = {
     GET_ALL_ROLES_LIST: null,
     GET_ALL_USERS_LIST: null,
     RESET_FILTER: null,
-    MERGE_FILTER_OBJ: null
+    MERGE_FILTER_OBJ: null,
+    SET_FILTER_OBJ: null,
+    RESET_FILTER_OBJ: null
   })
 };

@@ -8,7 +8,7 @@ import UserStore from '../../stores/UserStore.jsx';
 import UserAction from '../../actions/UserAction.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import UserList from './UserList.jsx';
-//import UserFilter from './UserFilter.jsx';
+import UserFilter from './UserFilter.jsx';
 
 var User = React.createClass({
   getInitialState: function() {
@@ -16,17 +16,17 @@ var User = React.createClass({
       formStatus: formStatus.VIEW,
       showFilter: false,
       infoTab: true,
-      allCustomers: [],
+      //allCustomers: [],
       allRoles: [],
       selectedUserId: null,
       isLoading: false,
     };
   },
-  _onAllCostomersListChange: function() {
-    this.setState({
-      allCustomers: UserStore.getAllCostomers(),
-    });
-  },
+  // _onAllCostomersListChange: function() {
+  //   this.setState({
+  //     allCustomers: UserStore.getAllCostomers(),
+  //   });
+  // },
   _onAllRolesListChange: function() {
     this.setState({
       allRoles: UserStore.getAllRoles(),
@@ -84,11 +84,27 @@ var User = React.createClass({
     });
   //this._setViewStatus();
   },
+  _handleFilter() {
+    UserAction.setFilterObj();
+    if (this.refs.pop_user_filter_side_nav) {
+      this.refs.pop_user_filter_side_nav.close();
+    }
+    this.setState({
+      formStatus: formStatus.VIEW,
+      infoTab: true
+    });
+  },
+  _handleCloseFilterSideNav: function() {
+    UserAction.resetFilterObj();
+    this.setState({
+      showFilter: false
+    });
+  },
   _resetFilter() {
     UserAction.resetFilter();
   },
   componentDidMount: function() {
-    UserStore.addAllCostomersListListener(this._onAllCostomersListChange);
+    //UserStore.addAllCostomersListListener(this._onAllCostomersListChange);
     UserStore.addAllRolesListListener(this._onAllRolesListChange);
     //UserStore.addAllUsersListListener(this._onAllUsersListChange);
     UserStore.addChangeListener(this._onChange);
@@ -100,7 +116,7 @@ var User = React.createClass({
   //UserAction.getAllUsers();
   },
   componentWillUnmount: function() {
-    UserStore.removeAllCostomersListListener(this._onAllCostomersListChange);
+    //UserStore.removeAllCostomersListListener(this._onAllCostomersListChange);
     UserStore.removeAllRolesListListener(this._onAllRolesListChange);
     //  UserStore.removeAllUsersListListener(this._onAllUsersListChange);
     UserStore.removeChangeListener(this._onChange);
@@ -118,11 +134,18 @@ var User = React.createClass({
         setAddStatus: that._setAddStatus,
         resetFilter: that._resetFilter,
         handleShowFilterSideNav: that._handleShowFilterSideNav
+      },
+      filterProps = {
+        customers: UserStore.getAllCostomers(),
+        userRoleList: UserStore.getAllRoles(),
+        handleFilter: that._handleFilter,
+        onClose: that._handleCloseFilterSideNav,
+        filterObj: UserStore.getFilterObj()
       };
     var filterPanel = null;
-    // if (this.state.showFilter) {
-    //   filterPanel = <UserFilter ref="pop_user_filter_side_nav" {...filterProps}/>;
-    // }
+    if (this.state.showFilter) {
+      filterPanel = <UserFilter ref="pop_user_filter_side_nav" {...filterProps}/>;
+    }
     if (this.state.isLoading) {
       return (
         <div style={{

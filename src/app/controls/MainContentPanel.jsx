@@ -21,7 +21,8 @@ let MainContentPanel = React.createClass({
       <div style={{
         flex: 1,
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        position: 'relative'
       }} className='jazz-content'>
       <div className="pop-framework-right-actionbar">
           <div className="pop-framework-right-actionbar-top">

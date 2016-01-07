@@ -97,6 +97,10 @@ let JazzApp = React.createClass({
             });
           }
 
+        } else if (url.indexOf('menutype=service') > -1) {
+          me.replaceWith('workday', {
+            lang: lang
+          });
         } else if (url.indexOf('menutype=energy') > -1) {
           me.replaceWith('setting', {
             lang: lang
@@ -142,6 +146,10 @@ let JazzApp = React.createClass({
         }
         if (url.indexOf('menutype=platform') > -1) {
           me.replaceWith('config', {
+            lang: lang
+          });
+        } else if (url.indexOf('menutype=service') > -1) {
+          me.replaceWith('workday', {
             lang: lang
           });
         } else if (url.indexOf('menutype=energy') > -1) {

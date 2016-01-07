@@ -24,7 +24,8 @@ let TagSelectWindow = React.createClass({
       checkAll: false,
       checkAllDisabled: true,
       total: 0,
-      tagList: Immutable.fromJS([])
+      tagList: Immutable.fromJS([]),
+      selectedTagList: Immutable.fromJS([])
     };
   },
   _getSelectedTagList() {

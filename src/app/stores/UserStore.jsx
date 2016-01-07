@@ -3,6 +3,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
+import { dataStatus } from '../constants/DataStatus.jsx';
 import _trim from 'lodash/string/trim';
 import _isEmpty from 'lodash/lang/isEmpty';
 import _isEqual from 'lodash/lang/isEqual';
@@ -27,6 +28,7 @@ let _userStatusList = Immutable.List([]),
   _userList = null,
   _userIds = [],
   _allCustomersList = [],
+  _allCustomers = [],
   _allRolesList = [],
   _allUsersList = emptyList();
 let SET_USER_STATUS_EVENT = 'setuserstatus',
@@ -78,33 +80,42 @@ var UserStore = assign({}, PrototypeStore, {
   },
   //for user-manage
   setAllCostomers: function(customersList) {
-    _allCustomersList = [];
+    _allCustomersList = customersList;
+    _allCustomers = [];
     customersList.forEach(
       customer => {
-        _allCustomersList[customer.Id] = customer.Name;
+        _allCustomers[customer.Id] = customer.Name;
       }
     );
   //  _allCustomersList = customersList;
   },
   getAllCostomers: function() {
-    return _allCustomersList;
+    return Immutable.fromJS(_allCustomersList);
   },
   setAllRoles: function(rolesList) {
     _allRolesList = rolesList;
   },
   getAllRoles: function() {
-    return _allRolesList;
+    return Immutable.fromJS(_allRolesList);
   },
   setAllUsers: function(usersList) {
     usersList.forEach(user => {
       if (user.CustomerIds.length == 1 && user.CustomerIds[0] == 0) {
         user.HasWholeCustomer = true;
+        user.Customers = [];
+        _allCustomersList.forEach(customer => {
+          user.Customers.push({
+            CustomerName: customer.Name,
+            CustomerId: customer.Id,
+          });
+        });
       } else {
         user.HasWholeCustomer = false;
         user.Customers = [];
         user.CustomerIds.forEach(customerId => {
           user.Customers.push({
-            CustomerName: _allCustomersList[customerId]
+            CustomerName: _allCustomers[customerId],
+            CustomerId: customerId,
           });
         });
       }
@@ -207,8 +218,11 @@ var UserStore = assign({}, PrototypeStore, {
     setFilterObj: function() {
       _filterObj = _updatingFilterObj;
     },
-    mergeFilterObj: function() {
+    mergeFilterObj: function(data) {
       _updatingFilterObj = this.merge(_updatingFilterObj, data);
+    },
+    resetFilterObj: function() {
+      _updatingFilterObj = _filterObj;
     },
     addChangeListener(callback) {
       this.on(CHANGE_EVENT, callback);
@@ -304,7 +318,7 @@ var UserStore = assign({}, PrototypeStore, {
         UserStore.emitChange(_allUsersList.getIn([0, "Id"]));
         break;
       case UserAction.MERGE_FILTER_OBJ:
-        UserStore.mergeFilterObj(action.usersList);
+        UserStore.mergeFilterObj(action.data);
         UserStore.emitChange();
         break;
       case UserAction.RESET_FILTER:
@@ -315,6 +329,18 @@ var UserStore = assign({}, PrototypeStore, {
         } else {
           UserStore.emitChange();
         }
+        break;
+      case UserAction.SET_FILTER_OBJ:
+        UserStore.setFilterObj();
+        if (UserStore.getFilterUsers().size > 0) {
+          UserStore.emitChange(UserStore.getFilterUsers().first().get("Id"));
+        } else {
+          UserStore.emitChange();
+        }
+        break;
+      case UserAction.RESET_FILTER_OBJ:
+        UserStore.resetFilterObj();
+        UserStore.emitChange();
         break;
     }
 
