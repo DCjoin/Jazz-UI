@@ -14,14 +14,15 @@ let MainContentPanel = React.createClass({
     <div className="fold-btn pop-framework-right-actionbar-top-fold-btn" style={{
       "color": "#939796"
     }}>
-        <FontIcon className={classNames("icon", "icon-column-fold")} onClick={this.collapseHierarchy}/>
+        <FontIcon className={classNames("icon", "icon-column-fold")} onClick={this.props.onToggle}/>
       </div>
     );
     return (
       <div style={{
         flex: 1,
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        position: 'relative'
       }} className='jazz-content'>
       <div className="pop-framework-right-actionbar">
           <div className="pop-framework-right-actionbar-top">
