@@ -80,19 +80,23 @@ let TagSelectWindow = React.createClass({
     var tagList = ReportStore.getTagList();
     var selectedTagList = this.state.selectedTagList;
     var index;
-    for (var i = 0; i < tagList.size; i++) {
-      index = selectedTagList.findIndex((item) => {
-        if (tagList.getIn([i, 'Id']) === item.get('Id')) {
-          return true;
+    if (selectedTagList.size === 0) {
+      checkAll = false;
+    } else {
+      for (var i = 0; i < tagList.size; i++) {
+        index = selectedTagList.findIndex((item) => {
+          if (tagList.getIn([i, 'Id']) === item.get('Id')) {
+            return true;
+          }
+        });
+        if (index === -1) {
+          checkAll = false;
+          break;
         }
-      });
-      if (index === -1) {
-        checkAll = false;
-        break;
       }
     }
     this.setState({
-      tagList: ReportStore.getTagList(),
+      tagList: tagList,
       total: ReportStore.getTagTotalPage(),
       isLeftLoading: false,
       checkAll: checkAll
@@ -100,9 +104,28 @@ let TagSelectWindow = React.createClass({
   },
   _onSelectedTagListChange: function() {
     var selectedTagList = ReportStore.getSelectedTagList();
+    var tagList = this.state.tagList;
+    var index;
+    var checkAll = true;
+    if (tagList.size === 0) {
+      checkAll = false;
+    } else {
+      for (var i = 0; i < tagList.size; i++) {
+        index = selectedTagList.findIndex((item) => {
+          if (tagList.getIn([i, 'Id']) === item.get('Id')) {
+            return true;
+          }
+        });
+        if (index === -1) {
+          checkAll = false;
+          break;
+        }
+      }
+    }
     this.setState({
       selectedTagList: selectedTagList,
-      isRightLoading: false
+      isRightLoading: false,
+      checkAll: checkAll
     });
   },
   _onTagItemSelected: function(id) {
