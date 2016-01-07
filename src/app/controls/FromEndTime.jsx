@@ -30,12 +30,14 @@ var FromEndTime = React.createClass({
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     if (this.props.isViewStatus === nextProps.isViewStatus &&
-      this.props.errorText == nextProps.errorText &&
-      this.props.startTime == nextProps.startTime &&
-      this.props.endTime == nextProps.endTime) {
+      this.props.errorText === nextProps.errorText &&
+      this.props.startTime === nextProps.startTime &&
+      this.props.endTime === nextProps.endTime &&
+      this.state.startTime === nextState.startTime &&
+      this.state.endTime === nextState.endTime &&
+      this.state.errorText === nextState.errorText) {
       return false;
     }
-
     return true;
   },
   getValue: function() {
@@ -98,24 +100,28 @@ var FromEndTime = React.createClass({
   _onTimeChange: function(name, value) {
     var startTime = this.state.startTime;
     var endTime = this.state.endTime;
-    if (name === 'statrTime') {
+    if (name === 'startTime') {
       if (endTime === -1) {
         return;
       }
       if (value >= endTime) {
-        this.setState({
-          endTime: value + 30
-        });
+        endTime = value + 30;
       }
+      this.setState({
+        startTime: value,
+        endTime: endTime
+      });
     } else if (name === 'endTime') {
       if (startTime === -1) {
         return;
       }
       if (value <= startTime) {
-        this.setState({
-          startTime: value - 30
-        });
+        startTime = value - 30;
       }
+      this.setState({
+        startTime: startTime,
+        endTime: value
+      });
     }
   },
   clearInvalide: function() {

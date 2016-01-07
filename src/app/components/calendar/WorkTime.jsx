@@ -50,6 +50,11 @@ var WorkTime = React.createClass({
       selectedData: selectedData
     });
   },
+  _onEdit: function() {
+    this.setState({
+      formStatus: formStatus.EDIT
+    });
+  },
   _renderHeader: function(isView) {
     var me = this;
     let selectedData = me.state.selectedData;
