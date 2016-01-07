@@ -28,18 +28,6 @@ var FromEndTime = React.createClass({
       endTime: this.props.endTime
     };
   },
-  shouldComponentUpdate: function(nextProps, nextState) {
-    if (this.props.isViewStatus === nextProps.isViewStatus &&
-      this.props.errorText === nextProps.errorText &&
-      this.props.startTime === nextProps.startTime &&
-      this.props.endTime === nextProps.endTime &&
-      this.state.startTime === nextState.startTime &&
-      this.state.endTime === nextState.endTime &&
-      this.state.errorText === nextState.errorText) {
-      return false;
-    }
-    return true;
-  },
   getValue: function() {
     return [this.state.startTime, this.state.endTime];
   },
@@ -128,6 +116,25 @@ var FromEndTime = React.createClass({
     this.setState({
       errorText: ''
     });
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      errorText: nextProps.errorText,
+      startTime: nextProps.startTime,
+      endTime: nextProps.endTime
+    });
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if (this.props.isViewStatus === nextProps.isViewStatus &&
+      this.props.errorText === nextProps.errorText &&
+      this.props.startTime === nextProps.startTime &&
+      this.props.endTime === nextProps.endTime &&
+      this.state.startTime === nextState.startTime &&
+      this.state.endTime === nextState.endTime &&
+      this.state.errorText === nextState.errorText) {
+      return false;
+    }
+    return true;
   },
   render: function() {
     var me = this;

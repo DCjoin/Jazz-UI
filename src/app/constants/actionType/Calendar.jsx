@@ -2,8 +2,10 @@ import keyMirror from 'keymirror';
 
 module.exports = {
   Action: keyMirror({
-    GET_REPORT_LIST_SUCCESS: null,
-    GET_REPORT_LIST_ERROR: null,
+    GET_WORKTIME_LIST_SUCCESS: null,
+    GET_WORKTIME_LIST_ERROR: null,
+    SET_SELECTED_WORKTIME: null,
+    CANCEL_SAVE_WORKTIME: null,
 
   })
 };

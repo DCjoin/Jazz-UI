@@ -3,24 +3,35 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/Calendar.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let CalendarAction = {
-  getWorktimeDataByType() {
+  getWorktimeListByType() {
 
     Ajax.post('/Administration.svc/GetCalendarsByType', {
       params: {
         type: 1
       },
-      success: function(worktimeData) {
+      success: function(worktimeList) {
         AppDispatcher.dispatch({
-          type: Action.GET_WORKTIME_DATA_SUCCESS,
-          worktimeData: worktimeData
+          type: Action.GET_WORKTIME_LIST_SUCCESS,
+          worktimeList: worktimeList
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
-          type: Action.GET_WORKTIME_DATA_ERROR
+          type: Action.GET_WORKTIME_LIST_ERROR
         });
       }
     });
   },
+  setSelectedWorktimeIndex(index) {
+    AppDispatcher.dispatch({
+      type: Action.SET_SELECTED_WORKTIME,
+      index: index
+    });
+  },
+  cancelSave() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_WORKTIME
+    });
+  }
 };
 module.exports = CalendarAction;

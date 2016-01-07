@@ -22,38 +22,37 @@ var WorkTime = React.createClass({
       saveDisabled: false
     };
   },
-  _onDataChange: function() {
-    var worktimeData = CalendarStore.getWorktimeData();
+  _onWorktimeListChange: function() {
+    var worktimeList = CalendarStore.getWorktimeList();
+    this.setState({
+      worktimeList: worktimeList,
+      isLeftLoading: false
+    });
+  },
+  _onSelectedItemChange: function() {
+    var worktimeList = this.state.worktimeList;
     var selectedIndex = CalendarStore.getSelectedWorktimeIndex();
     var selectedData = null;
     if (selectedIndex !== null) {
-      selectedData = worktimeData.get(selectedIndex);
+      selectedData = worktimeList.get(selectedIndex);
     }
     this.setState({
-      worktimeData: worktimeData,
-      isLeftLoading: false,
       isRightLoading: false,
+      formStatus: formStatus.VIEW,
       selectedIndex: selectedIndex,
       selectedData: selectedData
     });
   },
-  _onSelectedItemChange: function() {
-    var worktimeData = this.state.worktimeData;
-    var selectedIndex = CalendarStore.getSelectedWorktimeIndex();
-    var selectedData = null;
-    if (selectedIndex !== null) {
-      selectedData = worktimeData.get(selectedIndex);
-    }
-    this.setState({
-      isRightLoading: false,
-      selectedIndex: selectedIndex,
-      selectedData: selectedData
-    });
+  _onItemClick: function(index) {
+    CalendarAction.setSelectedWorktimeIndex(index);
   },
   _onEdit: function() {
     this.setState({
       formStatus: formStatus.EDIT
     });
+  },
+  _onCancel: function() {
+    CalendarAction.cancelSave();
   },
   _renderHeader: function(isView) {
     var me = this;
@@ -82,7 +81,7 @@ var WorkTime = React.createClass({
     if (!isView) {
       addWorktimeDataButton = (<div className="jazz-calendar-add">
       <div>{I18N.Setting.Calendar.WorkTime}</div>
-      <FlatButton label={I18N.Setting.Calendar.AddWorkTime} onClick={me._addWorkTimeItem} />
+      <FlatButton label={I18N.Setting.Calendar.AddWorkTime} onClick={me._addWorkTimeData} />
       </div>);
     }
     var worktimeGroup = <FromEndTimeGroup items={selectedData.get('Items')} isViewStatus={isView} onDeleteWorktime={me._onDeleteWorktime}></FromEndTimeGroup>;
@@ -102,13 +101,13 @@ var WorkTime = React.createClass({
   },
 
   componentDidMount: function() {
-    CalendarAction.getWorktimeDataByType();
-    CalendarStore.addWorktimeDataChangeListener(this._onDataChange);
-    CalendarStore.addSelectedWorktimeDataChangeListener(this._onSelectedItemChange);
+    CalendarAction.getWorktimeListByType();
+    CalendarStore.addWorktimeListChangeListener(this._onWorktimeListChange);
+    CalendarStore.addSelectedWorktimeChangeListener(this._onSelectedItemChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeWorktimeDataChangeListener(this._onDataChange);
-    CalendarStore.removeSelectedWorktimeDataChangeListener(this._onSelectedItemChange);
+    CalendarStore.removeWorktimeListChangeListener(this._onWorktimeListChange);
+    CalendarStore.removeSelectedWorktimeChangeListener(this._onSelectedItemChange);
   },
 
 
@@ -119,13 +118,14 @@ var WorkTime = React.createClass({
       isAdd = this.state.formStatus === formStatus.ADD;
     let displayedDom = null;
     let items = [];
-    var worktimeData = me.state.worktimeData;
-    if (worktimeData && worktimeData.size !== 0) {
-      items = worktimeData.map(function(item, i) {
+    var worktimeList = me.state.worktimeList;
+    if (worktimeList && worktimeList.size !== 0) {
+      items = worktimeList.map(function(item, i) {
         let props = {
           index: i,
           label: item.get('Name'),
-          selectedIndex: me.state.selectedIndex
+          selectedIndex: me.state.selectedIndex,
+          onItemClick: me._onItemClick
         };
         return (
           <Item {...props}/>
