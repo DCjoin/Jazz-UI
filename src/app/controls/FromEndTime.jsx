@@ -43,6 +43,14 @@ var FromEndTime = React.createClass({
       endTime: end
     });
   },
+  isValid: function() {
+    var startTime = this.state.startTime;
+    var endTime = this.state.endTime;
+    if ((startTime !== -1) && (endTime !== -1)) {
+      return true;
+    }
+    return false;
+  },
   _getDateTimeItems: function() {
     var step = 30,
       dataList = [],
@@ -98,6 +106,9 @@ var FromEndTime = React.createClass({
       this.setState({
         startTime: value,
         endTime: endTime
+      }, () => {
+        var data = this.getValue();
+        this.props.onTimeChange(this.props.index, data);
       });
     } else if (name === 'endTime') {
       if (startTime === -1) {
@@ -109,6 +120,9 @@ var FromEndTime = React.createClass({
       this.setState({
         startTime: startTime,
         endTime: value
+      }, () => {
+        var data = this.getValue();
+        this.props.onTimeChange(this.props.index, data);
       });
     }
   },
