@@ -1,0 +1,166 @@
+'use strict';
+
+import React from "react";
+import { CircularProgress } from 'material-ui';
+import Item from '../../controls/SelectableItem.jsx';
+import SelectablePanel from '../../controls/SelectablePanel.jsx';
+import Panel from '../../controls/MainContentPanel.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
+import ViewableTextField from '../../controls/ViewableTextField.jsx';
+import FormBottomBar from '../../controls/FormBottomBar.jsx';
+import CalendarAction from '../../actions/CalendarAction.jsx';
+import CalendarStore from '../../stores/CalendarStore.jsx';
+import FromEndTimeGroup from './FromEndTimeGroup.jsx';
+import { formStatus } from '../../constants/FormStatus.jsx';
+
+var WorkTime = React.createClass({
+  getInitialState: function() {
+    return {
+      isLeftLoading: true,
+      isRightLoading: true,
+      formStatus: formStatus.VIEW,
+      saveDisabled: false
+    };
+  },
+  _onDataChange: function() {
+    var worktimeData = CalendarStore.getWorktimeData();
+    var selectedIndex = CalendarStore.getSelectedWorktimeIndex();
+    var selectedData = null;
+    if (selectedIndex !== null) {
+      selectedData = worktimeData.get(selectedIndex);
+    }
+    this.setState({
+      worktimeData: worktimeData,
+      isLeftLoading: false,
+      isRightLoading: false,
+      selectedIndex: selectedIndex,
+      selectedData: selectedData
+    });
+  },
+  _onSelectedItemChange: function() {
+    var worktimeData = this.state.worktimeData;
+    var selectedIndex = CalendarStore.getSelectedWorktimeIndex();
+    var selectedData = null;
+    if (selectedIndex !== null) {
+      selectedData = worktimeData.get(selectedIndex);
+    }
+    this.setState({
+      isRightLoading: false,
+      selectedIndex: selectedIndex,
+      selectedData: selectedData
+    });
+  },
+  _renderHeader: function(isView) {
+    var me = this;
+    let selectedData = me.state.selectedData;
+    var titleProps = {
+      ref: 'worktimeTitleId',
+      isViewStatus: isView,
+      didChanged: me._onNameChange,
+      defaultValue: selectedData.get('Name'),
+      title: I18N.Common.Glossary.Name,
+      isRequired: true
+    };
+    return (
+      <div className="jazz-calendar-header">
+        <div className='jazz-calendar-title'>
+          <ViewableTextField {...titleProps}></ViewableTextField>
+        </div>
+      </div>
+      );
+  },
+  _renderContent: function(isView) {
+    var me = this;
+    let selectedData = me.state.selectedData;
+    var workTimeText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkTime}</div>);
+    var addWorktimeDataButton = null;
+    if (!isView) {
+      addWorktimeDataButton = (<div className="jazz-calendar-add">
+      <div>{I18N.Setting.Calendar.WorkTime}</div>
+      <FlatButton label={I18N.Setting.Calendar.AddWorkTime} onClick={me._addWorkTimeItem} />
+      </div>);
+    }
+    var worktimeGroup = <FromEndTimeGroup items={selectedData.get('Items')} isViewStatus={isView} onDeleteWorktime={me._onDeleteWorktime}></FromEndTimeGroup>;
+    return (
+      <div className={"jazz-calendar-content"}>
+        {workTimeText}
+        {addWorktimeDataButton}
+        {worktimeGroup}
+      </div>
+      );
+  },
+  _renderFooter: function() {
+    var me = this;
+    return (
+      <FormBottomBar isShow={true} allowDelete={true} allowEdit={true} enableSave={me.state.saveDisabled} ref="actionBar" status={me.state.formStatus} onSave={this._onSave} onEdit={this._onEdit} onDelete={this._onDelete} onCancel={this._onCancel} />
+      );
+  },
+
+  componentDidMount: function() {
+    CalendarAction.getWorktimeDataByType();
+    CalendarStore.addWorktimeDataChangeListener(this._onDataChange);
+    CalendarStore.addSelectedWorktimeDataChangeListener(this._onSelectedItemChange);
+  },
+  componentWillUnmount: function() {
+    CalendarStore.removeWorktimeDataChangeListener(this._onDataChange);
+    CalendarStore.removeSelectedWorktimeDataChangeListener(this._onSelectedItemChange);
+  },
+
+
+  render: function() {
+    let me = this,
+      isView = this.state.formStatus === formStatus.VIEW,
+      isEdit = this.state.formStatus === formStatus.EDIT,
+      isAdd = this.state.formStatus === formStatus.ADD;
+    let displayedDom = null;
+    let items = [];
+    var worktimeData = me.state.worktimeData;
+    if (worktimeData && worktimeData.size !== 0) {
+      items = worktimeData.map(function(item, i) {
+        let props = {
+          index: i,
+          label: item.get('Name'),
+          selectedIndex: me.state.selectedIndex
+        };
+        return (
+          <Item {...props}/>
+          );
+      });
+    }
+    let selectedData = me.state.selectedData;
+    if (me.state.isRightLoading) {
+      displayedDom = (<div className='jazz-calendar-loading'><div style={{
+        margin: 'auto',
+        width: '100px'
+      }}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
+    } else if (selectedData !== null) {
+      var header = me._renderHeader(isView);
+      var content = me._renderContent(isView);
+      var footer = me._renderFooter();
+      displayedDom = (
+        <div className="jazz-calendar-container">
+          {header}
+          {content}
+          {footer}
+        </div>
+      );
+    }
+
+    return (
+      <div style={{
+        display: 'flex',
+        flex: 1
+      }}>
+        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorkdaySetting}
+      isViewStatus={isView}
+      isLoading={this.state.isLeftLoading}
+      contentItems={items}/>
+        <Panel>
+          {displayedDom}
+        </Panel>
+    </div>
+      );
+  }
+});
+
+module.exports = WorkTime;

@@ -43,8 +43,8 @@ var FromEndTime = React.createClass({
   },
   setValue: function(itemData) {
     this.setState({
-      startTime: itemData.StartFirstPart * 60 + itemData.StartSecondPart,
-      endTime: itemData.EndFirstPart * 60 + itemData.EndSecondPart
+      startTime: itemData.get('StartFirstPart') * 60 + itemData.get('StartSecondPart'),
+      endTime: itemData.get('EndFirstPart') * 60 + itemData.get('EndSecondPart')
     });
   },
   setTimeValue: function(start, end) {

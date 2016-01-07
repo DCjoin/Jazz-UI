@@ -439,6 +439,7 @@ I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = '时间';
 
 //workday
+I18N.Setting.Calendar.WorkdaySetting = '工休日';
 I18N.Setting.Calendar.WorkDay = '工作日';
 I18N.Setting.Calendar.Holiday = '非工作日';
 I18N.Setting.Calendar.DefaultWorkDay = '默认工作日：周一至周五';
@@ -454,15 +455,17 @@ I18N.Setting.Calendar.SeansonType = '季节类型';
 I18N.Setting.Calendar.MonthDayFromTo = '{0}月{1}日到{2}月{3}日';
 
 //worktime
+I18N.Setting.Calendar.WorktimeSetting = '工作时间';
 I18N.Setting.Calendar.WorkTime = '工作时间';
 I18N.Setting.Calendar.RestTime = '休息时间';
 I18N.Setting.Calendar.DefaultWorkTime = '工作时间以外均为非工作时间';
-I18N.Setting.Calendar.AddWorkTime = '添加工作时间';
+I18N.Setting.Calendar.AddWorkTime = '添加';
 I18N.Setting.Calendar.StartTime = '开始时间';
 I18N.Setting.Calendar.EndTime = '结束时间';
 I18N.Setting.Calendar.To = '到';
 
 //cold/warm
+I18N.Setting.Calendar.ColdwarmSetting = '冷暖季';
 I18N.Setting.Calendar.WarmSeason = '采暖季';
 I18N.Setting.Calendar.ColdSeason = '供冷季';
 I18N.Setting.Calendar.AddWarmSeason = '添加采暖季';
@@ -470,6 +473,7 @@ I18N.Setting.Calendar.AddColdSeason = '添加供冷季';
 I18N.Setting.Calendar.WarmColdDeclaration = '采暖季与供冷季之间不能少于7天，且不能存在于同一月份。';
 
 //day/night
+I18N.Setting.Calendar.DaynightSetting = '昼夜时间';
 I18N.Setting.Calendar.Day = '白昼时间';
 I18N.Setting.Calendar.Night = '黑夜时间';
 I18N.Setting.Calendar.DefaultDayNight = '白昼时间以外均为黑夜时间';
