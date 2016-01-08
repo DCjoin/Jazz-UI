@@ -45,7 +45,7 @@ var routes = (
       <Route name="main" path="main" handler={MainApp}>
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}></Route>
-        <Route name="setting" path="setting" handler={User}></Route>
+        <Route name="setting" path="setting" handler={Setting}></Route>
         <Route name="daily_report" path="report" handler={Report}></Route>
         <Route name="template" path="template" handler={Template}></Route>
       </Route>

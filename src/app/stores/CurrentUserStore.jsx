@@ -103,6 +103,22 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   getCurrentPrivilege: function() {
     return _currentPrivilege;
   },
+  getCurrentPrivilegeByUser: function(user, userRoleList) {
+    var privilege = [];
+    if (user.Id == 100001 || user.Id == 1 || user.userType == -1) {
+      for (var i = 1200; i <= 1221; i++) {
+        var index = i + '';
+        privilege.push(index);
+      }
+    } else {
+      userRoleList.forEach(role => {
+        if (role.Id == user.UserType) {
+          privilege = role.PrivilegeCodes;
+        }
+      });
+    }
+    return privilege;
+  },
   emitCurrentUserChange: function() {
     this.emit(CURRENT_USER_EVENT);
   },

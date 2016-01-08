@@ -30,15 +30,21 @@ let _userStatusList = Immutable.List([]),
   _allCustomersList = [],
   _allCustomers = [],
   _allRolesList = [],
-  _allUsersList = emptyList();
+  _allUsersList = emptyList(),
+  _selectedId = null;
 let SET_USER_STATUS_EVENT = 'setuserstatus',
   SET_USER_LIST_EVENT = 'setuserlist',
   SET_ALL_COSTOMERS_LIST_EVENT = 'setallcostomerslist',
   SET_ALL_ROLES_LIST_EVENT = 'setallroleslist',
   SET_ALL_USERS_LIST_EVENT = 'seralluserslist',
-  CHANGE_EVENT = 'change';
+  CHANGE_EVENT = 'change',
+  CHANGE_CUSTOMER_PERMISSION_EVENT = 'changecustomerpermission';
 var _filterObj = emptyMap();
 var _updatingFilterObj = emptyMap();
+var _persistedUser = emptyMap();
+var _updatingUser = emptyMap();
+var _userCustomers = emptyMap();
+var _updatingUserCustomers = emptyMap();
 
 var UserStore = assign({}, PrototypeStore, {
   setUserStatus: function(user, status) {
@@ -121,9 +127,42 @@ var UserStore = assign({}, PrototypeStore, {
       }
     });
     _allUsersList = Immutable.fromJS(usersList);
+  //this.setUserCustomers(usersList[0].Customers);
+  },
+  getUser: function(Id, view) {
+
+    if (_updatingUser.get("Id") != Id) {
+      _updatingUser = emptyMap();
+      if (_allUsersList && _allUsersList.size > 0) {
+        var filterUser = _allUsersList.filter(item => item.get("Id") == Id);
+
+        if (filterUser.size > 0) {
+          _persistedUser = _updatingUser = filterUser.first();
+        }
+      }
+    }
+    if (view) {
+      return _persistedUser;
+    } else {
+      return _updatingUser;
+    }
+  },
+  getPersistedUser: function() {
+    return _persistedUser;
+  },
+  getUpdatingUser: function() {
+    return _updatingUser;
+  },
+  setUser: function(user) {
+    _updatingUser = _persistedUser = Immutable.fromJS(user);
   },
   getAllUsers: function() {
     return _allUsersList;
+  },
+  setCurrentSelectedId: function(id) {
+    _selectedId = id;
+    var filterUser = _allUsersList.filter(item => item.get("Id") == id);
+  //this.setUserCustomers(filterUser.get('Customers').toJS());
   },
   getFilterUsers: function() {
     var {realName, displayName, selectedCusomer, role} = _filterObj.toJS();
@@ -180,6 +219,19 @@ var UserStore = assign({}, PrototypeStore, {
         return true;
       });
     },
+    setCustomerDataPrivilege(dataPrivilege) {
+      var findIndex = -1;
+      this.getUpdatingUserCustomers().every((customer, index) => {
+        if (dataPrivilege.CustomerId === customer.get("CustomerId")) {
+          findIndex = index;
+        }
+        return findIndex === -1;
+      });
+      if (findIndex !== -1) {
+        this.setUpdateUserCustomers(this.getUpdatingUserCustomers().setIn([findIndex, "dataPrivilege"], Immutable.fromJS(dataPrivilege)));
+      }
+    // this.getUserCustomer(dataPrivilege.CustomerId).set("dataPrivilege", dataPrivilege);
+    },
     merge: function(plainObj, data) {
 
       if (_.isEmpty(data)) {
@@ -210,6 +262,43 @@ var UserStore = assign({}, PrototypeStore, {
       }
       return plainObj;
 
+    },
+    mergeUser: function(data) {
+      _updatingUser = this.merge(_updatingUser, data);
+    },
+    // Customers
+    getUserCustomers() {
+      return _userCustomers;
+    },
+    getUpdatingUserCustomers() {
+      return _updatingUserCustomers;
+    },
+
+    setUserCustomers(userCustomers) {
+      var customers = [];
+      if (!!userCustomers.WholeSystem) {
+        userCustomers.Privileges.forEach(privilege => {
+          var pri = privilege;
+          pri.Privileged = true;
+          pri.WholeCustomer = true;
+          customers.push(pri);
+        });
+      } else {
+        customers = userCustomers.Privileges;
+      }
+      _userCustomers = _updatingUserCustomers = Immutable.fromJS(customers);
+    },
+
+    setUpdateUserCustomers(userCustomers) {
+      _updatingUserCustomers = Immutable.fromJS(userCustomers);
+    },
+    getUserCustomer(customerId, view) {
+      return this.getUpdatingUserCustomers().find(customer => {
+          return customerId === customer.get("CustomerId");
+        }) || {};
+    },
+    mergeCustomer: function(data) {
+      _updatingUserCustomers = this.merge(_updatingUserCustomers, data);
     },
     getFilterObj: function() {
       return _updatingFilterObj;
@@ -285,6 +374,17 @@ var UserStore = assign({}, PrototypeStore, {
       this.removeListener(SET_ALL_USERS_LIST_EVENT, callback);
       this.dispose();
     },
+    addChangeCustomerPermissionListener(callback) {
+      this.on(CHANGE_CUSTOMER_PERMISSION_EVENT, callback);
+    },
+
+    removeChangCustomerPermissionListener(callback) {
+      this.removeListener(CHANGE_CUSTOMER_PERMISSION_EVENT, callback);
+    },
+
+    emitChangeCustomerPermission() {
+      this.emit(CHANGE_CUSTOMER_PERMISSION_EVENT);
+    },
   });
   var UserAction = User.Action;
 
@@ -341,6 +441,28 @@ var UserStore = assign({}, PrototypeStore, {
       case UserAction.RESET_FILTER_OBJ:
         UserStore.resetFilterObj();
         UserStore.emitChange();
+        break;
+      case UserAction.SET_CURRENT_SELECTED_ID:
+        UserStore.setCurrentSelectedId(action.id);
+        break;
+      case UserAction.MERGE_USER_CUSTOMER:
+        UserStore.mergeCustomer(action.data);
+        UserStore.emitChange();
+        break;
+      case UserAction.GET_CUSTOMER_BY_USER:
+        UserStore.setUserCustomers(action.data);
+        UserStore.emitChange();
+        break;
+      case UserAction.GET_CUSTOMER_PERMISSION_BY_USER:
+        if (action.data) {
+          UserStore.setCustomerDataPrivilege(action.data);
+        } else {
+          UserStore.setCustomerDataPrivilege({
+            CustomerId: action.customerId,
+            Children: []
+          });
+        }
+        UserStore.emitChangeCustomerPermission();
         break;
     }
 

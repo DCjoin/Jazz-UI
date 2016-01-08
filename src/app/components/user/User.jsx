@@ -9,6 +9,7 @@ import UserAction from '../../actions/UserAction.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import UserList from './UserList.jsx';
 import UserFilter from './UserFilter.jsx';
+import UserDetail from './UserDetail.jsx';
 
 var User = React.createClass({
   getInitialState: function() {
@@ -75,8 +76,17 @@ var User = React.createClass({
       formStatus: formStatus.ADD
     });
   },
+  _setEditStatus: function() {
+    this.setState({
+      formStatus: formStatus.EDIT
+    });
+  },
   _handlerTouchTap: function(selectedId) {
     this._setViewStatus(selectedId);
+    if (this.state.selectedUserId != selectedId) {
+      UserAction.setCurrentSelectedId(selectedId);
+    }
+
   },
   _handleShowFilterSideNav: function() {
     this.setState({
@@ -100,8 +110,65 @@ var User = React.createClass({
       showFilter: false
     });
   },
+  _handleSaveUser: function(infoTab, infoData, roleData) {
+    // if (infoTab) {
+    //   if (infoData.Id) {
+    //     UserAction.updateUserInfo(infoData, CurrentUserCustomerStore.getCurrentUser().SpId);
+    //   } else {
+    //     UserAction.createUserInfo(infoData, CurrentUserCustomerStore.getCurrentUser().SpId);
+    //   }
+    // } else {
+    //   UserAction.saveCustomerByUser(roleData, CurrentUserCustomerStore.getCurrentUser().SpId);
+    // }
+    //ajaxing = true;
+  },
+  _handleDeleteUser(userId) {
+    UserAction.deleteUser(UserStore.getUser(get(this.props, "params.userId")).toJS());
+    this.setState({
+      formStatus: formStatus.VIEW
+    });
+  },
+  _handlerCancel: function() {
+    UserAction.reset();
+    this._setViewStatus();
+  },
   _resetFilter() {
     UserAction.resetFilter();
+  },
+  _switchTab(event) {
+    if (event.target.getAttribute("data-tab-index") == 1) {
+      if (this.state.infoTab) {
+        return;
+      }
+      this.setState({
+        infoTab: true,
+        formStatus: formStatus.VIEW
+      });
+    } else {
+      if (!this.state.infoTab) {
+        return;
+      }
+
+      this.setState({
+        infoTab: false,
+        formStatus: formStatus.VIEW
+      });
+      UserAction.getCustomerByUser(this.state.selectedUserId);
+    }
+  },
+  _getUserCustomerPermission(customerId, isView) {
+    // if( isView ) {
+    // 	UserActionCreator.getUserCustomerPermission(this.props.params.userId, customerId);
+    // } else {
+    UserAction.getUserCustomerPermission(this.state.selectedUserId, customerId);
+  // }
+  },
+
+  _toggleList() {
+    var {closedList} = this.state;
+    this.setState({
+      closedList: !closedList
+    });
   },
   componentDidMount: function() {
     //UserStore.addAllCostomersListListener(this._onAllCostomersListChange);
@@ -135,6 +202,29 @@ var User = React.createClass({
         resetFilter: that._resetFilter,
         handleShowFilterSideNav: that._handleShowFilterSideNav
       },
+      detailProps = {
+        closedList: that.state.closedList,
+        formStatus: that.state.formStatus,
+        selectedId: selectedId,
+        customers: isView ? UserStore.getUserCustomers() : UserStore.getUpdatingUserCustomers(),
+        // loadingStatus				: this.state.loadingStatus,
+
+        ref: "pop_user_detail",
+
+        user: UserStore.getUser(selectedId, isView),
+        userRoleList: that.state.allRoles,
+        infoTab: that.state.infoTab,
+        setEditStatus: that._setEditStatus,
+        _handleResetPassword: function() {
+          //UserAction.resetPassword(selectedId);
+        },
+        handleSaveUser: that._handleSaveUser,
+        _handleDeleteUser: that._handleDeleteUser,
+        handleCancel: that._handlerCancel,
+        _handlerSwitchTab: that._switchTab,
+        _getUserCustomerPermission: that._getUserCustomerPermission,
+        _toggleList: this._toggleList
+      },
       filterProps = {
         customers: UserStore.getAllCostomers(),
         userRoleList: UserStore.getAllRoles(),
@@ -164,9 +254,10 @@ var User = React.createClass({
           "pop-manage-list-wrapper": true,
           "closed": this.state.closedList
         })}>
-          <UserList {...listProps} />
+          <UserList {...listProps}/>
           { filterPanel }
         </div>
+        <UserDetail {...detailProps} />
         </div>
         );
     }

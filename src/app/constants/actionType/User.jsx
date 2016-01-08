@@ -13,6 +13,10 @@ module.exports = {
     RESET_FILTER: null,
     MERGE_FILTER_OBJ: null,
     SET_FILTER_OBJ: null,
-    RESET_FILTER_OBJ: null
+    RESET_FILTER_OBJ: null,
+    SET_CURRENT_SELECTED_ID: null,
+    MERGE_USER_CUSTOMER: null,
+    GET_CUSTOMER_BY_USER: null,
+    GET_CUSTOMER_PERMISSION_BY_USER: null
   })
 };
