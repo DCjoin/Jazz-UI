@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Mixins, Styles, ClearFix, FlatButton } from 'material-ui';
+import { Mixins, Styles, ClearFix, FlatButton, FontIcon } from 'material-ui';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
 
 var FromEndTime = React.createClass({
@@ -28,23 +28,13 @@ var FromEndTime = React.createClass({
       endTime: this.props.endTime
     };
   },
-  shouldComponentUpdate: function(nextProps, nextState) {
-    if (this.props.isViewStatus === nextProps.isViewStatus &&
-      this.props.errorText == nextProps.errorText &&
-      this.props.startTime == nextProps.startTime &&
-      this.props.endTime == nextProps.endTime) {
-      return false;
-    }
-
-    return true;
-  },
   getValue: function() {
     return [this.state.startTime, this.state.endTime];
   },
   setValue: function(itemData) {
     this.setState({
-      startTime: itemData.StartFirstPart * 60 + itemData.StartSecondPart,
-      endTime: itemData.EndFirstPart * 60 + itemData.EndSecondPart
+      startTime: itemData.get('StartFirstPart') * 60 + itemData.get('StartSecondPart'),
+      endTime: itemData.get('EndFirstPart') * 60 + itemData.get('EndSecondPart')
     });
   },
   setTimeValue: function(start, end) {
@@ -52,6 +42,14 @@ var FromEndTime = React.createClass({
       startTime: start,
       endTime: end
     });
+  },
+  isValid: function() {
+    var startTime = this.state.startTime;
+    var endTime = this.state.endTime;
+    if ((startTime !== -1) && (endTime !== -1)) {
+      return true;
+    }
+    return false;
   },
   _getDateTimeItems: function() {
     var step = 30,
@@ -98,30 +96,56 @@ var FromEndTime = React.createClass({
   _onTimeChange: function(name, value) {
     var startTime = this.state.startTime;
     var endTime = this.state.endTime;
-    if (name === 'statrTime') {
-      if (endTime === -1) {
-        return;
+    if (name === 'startTime') {
+      if ((endTime !== -1) && (value >= endTime)) {
+        endTime = value + 30;
       }
-      if (value >= endTime) {
-        this.setState({
-          endTime: value + 30
-        });
-      }
+      this.setState({
+        startTime: value,
+        endTime: endTime
+      }, () => {
+        var data = this.getValue();
+        this.props.onTimeChange(this.props.index, data);
+      });
     } else if (name === 'endTime') {
-      if (startTime === -1) {
-        return;
+      if ((startTime !== -1) && (value <= startTime)) {
+        startTime = value - 30;
       }
-      if (value <= startTime) {
-        this.setState({
-          startTime: value - 30
-        });
-      }
+      this.setState({
+        startTime: startTime,
+        endTime: value
+      }, () => {
+        var data = this.getValue();
+        this.props.onTimeChange(this.props.index, data);
+      });
     }
   },
   clearInvalide: function() {
     this.setState({
       errorText: ''
     });
+  },
+  _onDeleteWorktimeData: function() {
+    this.props.onDeleteWorktimeData(this.props.index);
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      errorText: nextProps.errorText,
+      startTime: nextProps.startTime,
+      endTime: nextProps.endTime
+    });
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    if (this.props.isViewStatus === nextProps.isViewStatus &&
+      this.props.errorText === nextProps.errorText &&
+      this.props.startTime === nextProps.startTime &&
+      this.props.endTime === nextProps.endTime &&
+      this.state.startTime === nextState.startTime &&
+      this.state.endTime === nextState.endTime &&
+      this.state.errorText === nextState.errorText) {
+      return false;
+    }
+    return true;
   },
   render: function() {
     var me = this;
@@ -145,12 +169,20 @@ var FromEndTime = React.createClass({
       textField: 'text',
       didChanged: me._onTimeChange.bind(null, 'endTime')
     };
+    var cleanIconStyle = {
+      fontSize: '16px'
+    };
+    var deleteButton = null;
+    if (!me.props.isViewStatus && me.props.hasDeleteButton) {
+      deleteButton = <div><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onDeleteWorktimeData} style={cleanIconStyle}></FontIcon></div>;
+    }
     return (
       <div className="jazz-fromendtime">
         <div className='jazz-fromendtime-content'>
           <ViewableDropDownMenu {...startTimeProps}></ViewableDropDownMenu>
           <span> {'-'} </span>
           <ViewableDropDownMenu {...endTimeProps}></ViewableDropDownMenu>
+          {deleteButton}
         </div>
         <div className="jazz-fromendtime-error">{me.state.errorText}</div>
       </div>

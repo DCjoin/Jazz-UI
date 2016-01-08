@@ -48,7 +48,7 @@ let TemplateItem = React.createClass({
     if (me.state.showDeleteButton && !me.props.onlyRead) {
       if (!me.props.isReference) {
         deleteButton = <div className="jazz-template-item-left-action">
-          <FlatButton label={I18N.EM.Report.Delete} onClick={me._showDeleteDialog} rippleColor={'transparent'}></FlatButton>
+          <FlatButton label={I18N.Common.Button.Delete} onClick={me._showDeleteDialog} rippleColor={'transparent'}></FlatButton>
         </div>;
       } else {
         deleteButton = <div className="jazz-template-item-left-action"><div className='jazz-template-item-text'>{I18N.EM.Report.Reference}</div></div>;

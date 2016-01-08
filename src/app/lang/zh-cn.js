@@ -173,11 +173,23 @@ I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = '冷暖季';
 I18N.Common.Button.Calendar.ShowHoliday = '非工作时间';
-I18N.Common.Button.Confirm = '确定';
 I18N.Common.Button.Show = '查看';
+I18N.Common.Button.Add = '添加';
+I18N.Common.Button.Comparation = '比较';
+I18N.Common.Button.Confirm = '确定';
 I18N.Common.Button.Save = '保存';
+I18N.Common.Button.SaveExport = '保存并导出';
+I18N.Common.Button.ReportExport = '导出';
 I18N.Common.Button.Cancel = '放弃';
+I18N.Common.Button.Cancel2 = '取消';
+I18N.Common.Button.Delete = '删除';
+I18N.Common.Button.Edit = '编辑';
+I18N.Common.Button.Exit = '退出';
+I18N.Common.Button.Clear = '清空';
 I18N.Common.Button.ClearAll = '全部清空';
+I18N.Common.Button.Send = '发送';
+I18N.Common.Button.GoOn = '继续';
+I18N.Common.Button.Confirmed = '已确认';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = '标煤';
@@ -370,13 +382,6 @@ I18N.EM.Report.UserSort = '按用户名称排序';
 I18N.EM.Report.NameSort = '按模板名称排序';
 I18N.EM.Report.TimeSort = '按上传时间排序';
 I18N.EM.Report.UploadAt = '上传于';
-I18N.EM.Report.Add = '添加';
-I18N.EM.Report.Delete = '删除';
-I18N.EM.Report.Confirm = '确定';
-I18N.EM.Report.Edit = '编辑';
-I18N.EM.Report.Export = '导出';
-I18N.EM.Report.Cancel = '放弃';
-I18N.EM.Report.Save = '保存';
 I18N.EM.Report.Reference = '已引用';
 I18N.EM.Report.DeleteTemplate = '删除模板';
 I18N.EM.Report.Template = '报表模板';
@@ -437,8 +442,10 @@ I18N.EM.Export.Preview = '导出图片预览';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = '时间';
+I18N.Setting.Calendar.DeleteMessage = '确定删除“{0}”吗？';
 
 //workday
+I18N.Setting.Calendar.WorkdaySetting = '工休日';
 I18N.Setting.Calendar.WorkDay = '工作日';
 I18N.Setting.Calendar.Holiday = '非工作日';
 I18N.Setting.Calendar.DefaultWorkDay = '默认工作日：周一至周五';
@@ -454,15 +461,17 @@ I18N.Setting.Calendar.SeansonType = '季节类型';
 I18N.Setting.Calendar.MonthDayFromTo = '{0}月{1}日到{2}月{3}日';
 
 //worktime
+I18N.Setting.Calendar.WorktimeSetting = '工作时间';
 I18N.Setting.Calendar.WorkTime = '工作时间';
 I18N.Setting.Calendar.RestTime = '休息时间';
 I18N.Setting.Calendar.DefaultWorkTime = '工作时间以外均为非工作时间';
-I18N.Setting.Calendar.AddWorkTime = '添加工作时间';
+I18N.Setting.Calendar.AddWorkTime = '添加';
 I18N.Setting.Calendar.StartTime = '开始时间';
 I18N.Setting.Calendar.EndTime = '结束时间';
 I18N.Setting.Calendar.To = '到';
 
 //cold/warm
+I18N.Setting.Calendar.ColdwarmSetting = '冷暖季';
 I18N.Setting.Calendar.WarmSeason = '采暖季';
 I18N.Setting.Calendar.ColdSeason = '供冷季';
 I18N.Setting.Calendar.AddWarmSeason = '添加采暖季';
@@ -470,6 +479,7 @@ I18N.Setting.Calendar.AddColdSeason = '添加供冷季';
 I18N.Setting.Calendar.WarmColdDeclaration = '采暖季与供冷季之间不能少于7天，且不能存在于同一月份。';
 
 //day/night
+I18N.Setting.Calendar.DaynightSetting = '昼夜时间';
 I18N.Setting.Calendar.Day = '白昼时间';
 I18N.Setting.Calendar.Night = '黑夜时间';
 I18N.Setting.Calendar.DefaultDayNight = '白昼时间以外均为黑夜时间';
