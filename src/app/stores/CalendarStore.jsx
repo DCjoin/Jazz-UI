@@ -23,6 +23,9 @@ var CalendarStore = assign({}, PrototypeStore, {
       _selectedWorktimeIndex = 0;
     }
   },
+  mergeWorktime(worktime) {
+    _worktimeList = _worktimeList.set(_selectedWorktimeIndex, Immutable.fromJS(worktime));
+  },
   getSelectedWorktimeIndex() {
     return _selectedWorktimeIndex;
   },
@@ -67,7 +70,11 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.CANCEL_SAVE_WORKTIME:
       CalendarStore.emitSelectedWorktimeChange();
       break;
-
+    case Action.MODIFT_WORKTIME_SUCCESS:
+      CalendarStore.mergeWorktime(action.worktime);
+      CalendarStore.emitWorktimeListChange();
+      CalendarStore.emitSelectedWorktimeChange();
+      break;
   }
 });
 

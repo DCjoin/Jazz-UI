@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import { CircularProgress } from 'material-ui';
+import { CircularProgress, Dialog } from 'material-ui';
 import Item from '../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../controls/SelectablePanel.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
@@ -59,6 +59,34 @@ var WorkTime = React.createClass({
     this._clearAllErrorText();
     CalendarAction.cancelSave();
   },
+  _onSave: function() {
+    this._clearAllErrorText();
+    var selectedData = this.state.selectedData.toJS();
+    CalendarAction.modifyWorktime(selectedData);
+  },
+  _onDelete: function() {},
+  _renderDeleteDialog() {
+    if (!this.state.showDeleteDialog) {
+      return null;
+    }
+    var dialogActions = [
+      <FlatButton
+      label={I18N.Common.Button.Delete}
+      onClick={this._deleteReport} />,
+
+      <FlatButton
+      label={I18N.Common.Button.Cancel}
+      onClick={this._handleDialogDismiss} />
+    ];
+
+    return (<Dialog
+      ref="deleteDialog"
+      openImmediately={true}
+      actions={dialogActions}
+      modal={true}>
+        {I18N.format(I18N.EM.Report.DeleteReportMessage, this.state.reportItem.get('name'))}
+      </Dialog>);
+  },
   _clearAllErrorText() {
     this.refs.worktimeTitleId.clearErrorText();
     this.refs.worktimeGroup.clearErrorText();
@@ -83,6 +111,15 @@ var WorkTime = React.createClass({
     this.setState({
       selectedData: selectedData,
       enableSave: false
+    });
+  },
+  _deleteWorktimeData: function(index) {
+    var selectedData = this.state.selectedData;
+    var items = selectedData.get('Items');
+    items = items.delete(index);
+    selectedData = selectedData.set('Items', items);
+    this.setState({
+      selectedData: selectedData
     });
   },
   _onTimeChange(index, value) {
@@ -131,7 +168,7 @@ var WorkTime = React.createClass({
       <FlatButton label={I18N.Setting.Calendar.AddWorkTime} onClick={me._addWorkTimeData} />
       </div>);
     }
-    var worktimeGroup = <FromEndTimeGroup ref='worktimeGroup' items={selectedData.get('Items')} isViewStatus={isView} onDeleteWorktime={me._onDeleteWorktime} onTimeChange={me._onTimeChange}></FromEndTimeGroup>;
+    var worktimeGroup = <FromEndTimeGroup ref='worktimeGroup' items={selectedData.get('Items')} isViewStatus={isView} onDeleteWorktimeData={me._deleteWorktimeData} onTimeChange={me._onTimeChange}></FromEndTimeGroup>;
     return (
       <div className={"jazz-calendar-content"}>
         {workTimeText}

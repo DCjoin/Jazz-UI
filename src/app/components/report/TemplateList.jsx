@@ -32,11 +32,11 @@ let TemplateList = React.createClass({
     }
     var dialogActions = [
       <FlatButton
-      label={I18N.EM.Report.Delete}
+      label={I18N.Common.Button.Delete}
       onClick={this._deleteTemplate} />,
 
       <FlatButton
-      label={I18N.EM.Report.Cancel}
+      label={I18N.Common.Button.Cancel}
       onClick={this._handleDialogDismiss} />
     ];
 

@@ -44,6 +44,9 @@ var FromEndTimeGroup = React.createClass({
     var timeData = this.getTimeData(data);
     this.props.onTimeChange(index, timeData);
   },
+  _onDeleteWorktimeData: function(index) {
+    this.props.onDeleteWorktimeData(index);
+  },
   clearErrorText: function() {
     var errorTextArr = this.initErrorTextArr();
     this.setState({
@@ -131,15 +134,17 @@ var FromEndTimeGroup = React.createClass({
       workTimeItems = items.map(function(item, i) {
         let props = {
           index: i,
+          key: item.get('Id'),
+          id: item.get('Id'),
+          type: item.get('Type'),
           ref: 'worktime' + (i + 1),
           isViewStatus: me.props.isViewStatus,
           hasDeleteButton: i === (items.size - 1) ? false : true,
           errorText: me.state.errorTextArr[i],
           startTime: item.get('StartFirstPart') === -1 ? -1 : item.get('StartFirstPart') * 60 + item.get('StartSecondPart'),
           endTime: item.get('EndFirstPart') === -1 ? -1 : item.get('EndFirstPart') * 60 + item.get('EndSecondPart'),
-          id: item.get('Id'),
-          type: item.get('Type'),
-          onTimeChange: me._onTimeChange
+          onTimeChange: me._onTimeChange,
+          onDeleteWorktimeData: me._onDeleteWorktimeData
         };
         return (
           <FromEndTime {...props}></FromEndTime>

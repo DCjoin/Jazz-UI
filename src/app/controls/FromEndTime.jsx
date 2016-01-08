@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Mixins, Styles, ClearFix, FlatButton } from 'material-ui';
+import { Mixins, Styles, ClearFix, FlatButton, FontIcon } from 'material-ui';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
 
 var FromEndTime = React.createClass({
@@ -97,10 +97,7 @@ var FromEndTime = React.createClass({
     var startTime = this.state.startTime;
     var endTime = this.state.endTime;
     if (name === 'startTime') {
-      if (endTime === -1) {
-        return;
-      }
-      if (value >= endTime) {
+      if ((endTime !== -1) && (value >= endTime)) {
         endTime = value + 30;
       }
       this.setState({
@@ -111,10 +108,7 @@ var FromEndTime = React.createClass({
         this.props.onTimeChange(this.props.index, data);
       });
     } else if (name === 'endTime') {
-      if (startTime === -1) {
-        return;
-      }
-      if (value <= startTime) {
+      if ((startTime !== -1) && (value <= startTime)) {
         startTime = value - 30;
       }
       this.setState({
@@ -130,6 +124,9 @@ var FromEndTime = React.createClass({
     this.setState({
       errorText: ''
     });
+  },
+  _onDeleteWorktimeData: function() {
+    this.props.onDeleteWorktimeData(this.props.index);
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
@@ -172,12 +169,20 @@ var FromEndTime = React.createClass({
       textField: 'text',
       didChanged: me._onTimeChange.bind(null, 'endTime')
     };
+    var cleanIconStyle = {
+      fontSize: '16px'
+    };
+    var deleteButton = null;
+    if (!me.props.isViewStatus) {
+      deleteButton = <div><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onDeleteWorktimeData} style={cleanIconStyle}></FontIcon></div>;
+    }
     return (
       <div className="jazz-fromendtime">
         <div className='jazz-fromendtime-content'>
           <ViewableDropDownMenu {...startTimeProps}></ViewableDropDownMenu>
           <span> {'-'} </span>
           <ViewableDropDownMenu {...endTimeProps}></ViewableDropDownMenu>
+          {deleteButton}
         </div>
         <div className="jazz-fromendtime-error">{me.state.errorText}</div>
       </div>

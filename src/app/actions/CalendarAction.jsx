@@ -4,7 +4,6 @@ import { Action } from '../constants/actionType/Calendar.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let CalendarAction = {
   getWorktimeListByType() {
-
     Ajax.post('/Administration.svc/GetCalendarsByType', {
       params: {
         type: 1
@@ -31,6 +30,22 @@ let CalendarAction = {
   cancelSave() {
     AppDispatcher.dispatch({
       type: Action.CANCEL_SAVE_WORKTIME
+    });
+  },
+  modifyWorktime(data) {
+    Ajax.post('/Administration.svc/ModifyCalendar', {
+      params: {
+        dto: data
+      },
+      success: function(worktime) {
+        AppDispatcher.dispatch({
+          type: Action.MODIFT_WORKTIME_SUCCESS,
+          worktime: worktime
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
     });
   }
 };

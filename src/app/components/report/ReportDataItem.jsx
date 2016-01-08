@@ -294,11 +294,11 @@ let ReportDataItem = React.createClass({
     }
     var dialogActions = [
       <FlatButton disabled={this.props.disabled}
-      label={I18N.EM.Report.Confirm}
+      label={I18N.Common.Button.Confirm}
       onClick={this._onTagDataChange} />,
 
       <FlatButton
-      label={I18N.EM.Report.Cancel}
+      label={I18N.Common.Button.Cancel}
       onClick={this._handleDialogDismiss} />
     ];
     var tagWindow = <TagSelectWindow ref='tagListWindow' disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
@@ -422,7 +422,7 @@ let ReportDataItem = React.createClass({
       dateTimeSelector = null,
       dataSourceButton = null;
     if (!me.props.disabled) {
-      deleteButton = <div className='jazz-report-data-delete-button'><FlatButton secondary={true} label={I18N.EM.Report.Delete} onClick={me._deleteReportData} style={{
+      deleteButton = <div className='jazz-report-data-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._deleteReportData} style={{
         background: 'transparent'
       }} /></div>;
       dataSourceButton = <div className='jazz-report-data-datasource-button'><FlatButton secondary={true} label={me.props.addReport ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={me._showTagsDialog}/></div>;
