@@ -2,13 +2,13 @@ import keyMirror from 'keymirror';
 
 module.exports = {
   Action: keyMirror({
-    GET_WORKTIME_LIST_SUCCESS: null,
-    GET_WORKTIME_LIST_ERROR: null,
-    SET_SELECTED_WORKTIME: null,
-    CANCEL_SAVE_WORKTIME: null,
-    MODIFT_WORKTIME_SUCCESS: null,
-    DELETE_WORKTIME_SUCCESS: null,
-    CREATE_WORKTIME_SUCCESS: null
+    GET_CALENDAR_LIST_SUCCESS: null,
+    GET_CALENDAR_LIST_ERROR: null,
+    SET_SELECTED_CALENDAR: null,
+    CANCEL_SAVE_CALENDAR: null,
+    MODIFT_CALENDAR_SUCCESS: null,
+    DELETE_CALENDAR_SUCCESS: null,
+    CREATE_CALENDAR_SUCCESS: null
 
   })
 };

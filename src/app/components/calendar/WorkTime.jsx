@@ -151,12 +151,17 @@ var WorkTime = React.createClass({
     });
   },
   _deleteWorktimeData: function(index) {
+    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     items = items.delete(index);
     selectedData = selectedData.set('Items', items);
     this.setState({
       selectedData: selectedData
+    }, () => {
+      this.setState({
+        enableSave: me._isValid()
+      });
     });
   },
   _onTimeChange(index, value) {
@@ -235,12 +240,12 @@ var WorkTime = React.createClass({
 
   componentDidMount: function() {
     CalendarAction.getCalendarListByType(calendarType);
-    CalendarStore.addCalendarListChangeListener(this._onWorktimeListChange);
-    CalendarStore.addSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarStore.addWorktimeListChangeListener(this._onWorktimeListChange);
+    CalendarStore.addSelectedWorktimeChangeListener(this._onSelectedItemChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeCalendarListChangeListener(this._onWorktimeListChange);
-    CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarStore.removeWorktimeListChangeListener(this._onWorktimeListChange);
+    CalendarStore.removeSelectedWorktimeChangeListener(this._onSelectedItemChange);
   },
 
 
