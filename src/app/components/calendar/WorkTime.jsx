@@ -121,7 +121,7 @@ var WorkTime = React.createClass({
     this.setState({
       selectedData: Immutable.fromJS(worktime),
       enableSave: false,
-      formStatus: formStatus.EDIT
+      formStatus: formStatus.Add
     });
   },
   _clearAllErrorText() {
