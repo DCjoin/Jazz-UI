@@ -113,6 +113,55 @@ let UserAction = {
       data: data
     });
   },
+  setCurrentSelectedId(id) {
+    AppDispatcher.dispatch({
+      type: Action.SET_CURRENT_SELECTED_ID,
+      id: id
+    });
+  },
+  mergeCustomer(data) {
+    AppDispatcher.dispatch({
+      type: Action.MERGE_USER_CUSTOMER,
+      data: data
+    });
+  },
+  getCustomerByUser(userId) {
+    Ajax.post('/AccessControl.svc/GetDataPrivilege', {
+      params: {
+        filter: {
+          UserId: userId,
+          PrivilegeType: 0
+        }
+      },
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_CUSTOMER_BY_USER,
+          data: data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getUserCustomerPermission: function(userId, customerId) {
+    Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive?', {
+      params: {
+        customerId: customerId
+      },
+      success: function(data) {
+
+        AppDispatcher.dispatch({
+          type: Action.GET_CUSTOMER_PERMISSION_BY_USER,
+          data: data,
+          customerId
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 };
 
 module.exports = UserAction;
