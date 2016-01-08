@@ -20,7 +20,8 @@ var WorkTime = React.createClass({
       isLeftLoading: true,
       isRightLoading: true,
       formStatus: formStatus.VIEW,
-      enableSave: true
+      enableSave: true,
+      showDeleteDialog: false
     };
   },
   _onWorktimeListChange: function() {
@@ -42,6 +43,7 @@ var WorkTime = React.createClass({
     }
     this.setState({
       isRightLoading: false,
+      showDeleteDialog: false,
       formStatus: formStatus.VIEW,
       selectedIndex: selectedIndex,
       selectedData: selectedData
@@ -64,7 +66,16 @@ var WorkTime = React.createClass({
     var selectedData = this.state.selectedData.toJS();
     CalendarAction.modifyWorktime(selectedData);
   },
-  _onDelete: function() {},
+  _onDelete: function() {
+    this.setState({
+      showDeleteDialog: true
+    });
+  },
+  _handleDialogDismiss() {
+    this.setState({
+      showDeleteDialog: false
+    });
+  },
   _renderDeleteDialog() {
     if (!this.state.showDeleteDialog) {
       return null;
@@ -72,7 +83,7 @@ var WorkTime = React.createClass({
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
-      onClick={this._deleteReport} />,
+      onClick={this._deleteWorktime} />,
 
       <FlatButton
       label={I18N.Common.Button.Cancel}
@@ -84,8 +95,12 @@ var WorkTime = React.createClass({
       openImmediately={true}
       actions={dialogActions}
       modal={true}>
-        {I18N.format(I18N.EM.Report.DeleteReportMessage, this.state.reportItem.get('name'))}
+        {I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}
       </Dialog>);
+  },
+  _deleteWorktime() {
+    var selectedData = this.state.selectedData;
+    CalendarAction.deleteWorktimeById(selectedData.get('Id'), selectedData.get('Version'));
   },
   _clearAllErrorText() {
     this.refs.worktimeTitleId.clearErrorText();
@@ -234,7 +249,7 @@ var WorkTime = React.createClass({
         </div>
       );
     }
-
+    var deleteDialog = me._renderDeleteDialog();
     return (
       <div style={{
         display: 'flex',
@@ -247,6 +262,7 @@ var WorkTime = React.createClass({
         <Panel>
           {displayedDom}
         </Panel>
+        {deleteDialog}
     </div>
       );
   }

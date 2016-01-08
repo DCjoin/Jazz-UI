@@ -8,7 +8,8 @@ import CommonFuns from '../util/Util.jsx';
 import { Action } from '../constants/actionType/Calendar.jsx';
 
 let _worktimeList = Immutable.fromJS([]),
-  _selectedWorktimeIndex = null;
+  _selectedWorktimeIndex = null,
+  _addWorktime = null;
 let CHANGE_WORKTIME_EVENT = 'changeworktime';
 let CHANGE_SELECTED_WORKTIME_EVENT = 'changeselectedworktime';
 var CalendarStore = assign({}, PrototypeStore, {
@@ -19,12 +20,23 @@ var CalendarStore = assign({}, PrototypeStore, {
     if (worktimeList) {
       _worktimeList = Immutable.fromJS(worktimeList);
     }
-    if (worktimeList.size !== 0 && _selectedWorktimeIndex === null) {
+    if (_worktimeList.size !== 0 && _selectedWorktimeIndex === null) {
       _selectedWorktimeIndex = 0;
     }
   },
   mergeWorktime(worktime) {
     _worktimeList = _worktimeList.set(_selectedWorktimeIndex, Immutable.fromJS(worktime));
+  },
+  deleteWorktime() {
+    _worktimeList = _worktimeList.delete(_selectedWorktimeIndex);
+    var length = _worktimeList.size;
+    if (length !== 0) {
+      if (_selectedWorktimeIndex === length) {
+        _selectedWorktimeIndex = length - 1;
+      }
+    } else {
+      _selectedWorktimeIndex = null;
+    }
   },
   getSelectedWorktimeIndex() {
     return _selectedWorktimeIndex;
@@ -72,6 +84,11 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.MODIFT_WORKTIME_SUCCESS:
       CalendarStore.mergeWorktime(action.worktime);
+      CalendarStore.emitWorktimeListChange();
+      CalendarStore.emitSelectedWorktimeChange();
+      break;
+    case Action.DELETE_WORKTIME_SUCCESS:
+      CalendarStore.deleteWorktime();
       CalendarStore.emitWorktimeListChange();
       CalendarStore.emitSelectedWorktimeChange();
       break;

@@ -47,6 +47,24 @@ let CalendarAction = {
         console.log(err, res);
       }
     });
+  },
+  deleteWorktimeById(id, version) {
+    Ajax.post('/Administration.svc/DeleteCalendar', {
+      params: {
+        dto: {
+          Id: id,
+          Version: version
+        }
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_WORKTIME_SUCCESS
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
   }
 };
 module.exports = CalendarAction;
