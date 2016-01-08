@@ -26,11 +26,11 @@ var FromEndTimeGroup = React.createClass({
       EndFirstPart = -1,
       EndSecondPart = -1;
     if (startTime !== -1) {
-      StartFirstPart = parseInt(startTime / 60);
+      StartFirstPart = Math.floor(startTime / 60);
       StartSecondPart = startTime % 60;
     }
     if (endTime !== -1) {
-      EndFirstPart = parseInt(endTime / 60);
+      EndFirstPart = Math.floor(endTime / 60);
       EndSecondPart = endTime % 60;
     }
     return {
@@ -61,6 +61,7 @@ var FromEndTimeGroup = React.createClass({
   validateGroup: function() {
     var length = this.props.items.size;
     var currentItem, compItem, i, j;
+    var isValid = true;
     var errorTextArr = this.initErrorTextArr();
     for (i = 0; i < length; i++) {
       currentItem = this.refs['worktime' + (i + 1)];
@@ -71,12 +72,14 @@ var FromEndTimeGroup = React.createClass({
         if (this.checkOverLap(currentItem, compItem)) {
           errorTextArr[i] = I18N.Common.Label.TimeConflict;
           errorTextArr[j] = I18N.Common.Label.TimeConflict;
-          this.setState({
-            errorTextArr: errorTextArr
-          });
+          isValid = false;
         }
       }
     }
+    this.setState({
+      errorTextArr: errorTextArr
+    });
+    return isValid;
   },
   checkOverLap(item, comItem) {
     var value = item.getValue(),

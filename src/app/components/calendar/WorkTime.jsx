@@ -31,6 +31,9 @@ var WorkTime = React.createClass({
     });
   },
   _onSelectedItemChange: function() {
+    if (this.refs.worktimeTitleId) {
+      this._clearAllErrorText();
+    }
     var worktimeList = this.state.worktimeList;
     var selectedIndex = CalendarStore.getSelectedWorktimeIndex();
     var selectedData = null;
@@ -53,6 +56,7 @@ var WorkTime = React.createClass({
     });
   },
   _onCancel: function() {
+    this._clearAllErrorText();
     CalendarAction.cancelSave();
   },
   _clearAllErrorText() {
@@ -87,7 +91,7 @@ var WorkTime = React.createClass({
     items = items.setIn([index, 'StartFirstPart'], value.StartFirstPart);
     items = items.setIn([index, 'StartSecondPart'], value.StartSecondPart);
     items = items.setIn([index, 'EndFirstPart'], value.EndFirstPart);
-    items = items.setIn([index, 'EndFirstPart'], value.EndFirstPart);
+    items = items.setIn([index, 'EndSecondPart'], value.EndSecondPart);
     selectedData = selectedData.set('Items', items);
     this.setState({
       selectedData: selectedData
