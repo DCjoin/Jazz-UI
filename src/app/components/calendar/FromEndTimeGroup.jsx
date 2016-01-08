@@ -139,7 +139,7 @@ var FromEndTimeGroup = React.createClass({
           type: item.get('Type'),
           ref: 'worktime' + (i + 1),
           isViewStatus: me.props.isViewStatus,
-          hasDeleteButton: i === (items.size - 1) ? false : true,
+          hasDeleteButton: items.size === 1 ? false : true,
           errorText: me.state.errorTextArr[i],
           startTime: item.get('StartFirstPart') === -1 ? -1 : item.get('StartFirstPart') * 60 + item.get('StartSecondPart'),
           endTime: item.get('EndFirstPart') === -1 ? -1 : item.get('EndFirstPart') * 60 + item.get('EndSecondPart'),
