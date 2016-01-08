@@ -7,7 +7,8 @@ module.exports = {
     SET_SELECTED_WORKTIME: null,
     CANCEL_SAVE_WORKTIME: null,
     MODIFT_WORKTIME_SUCCESS: null,
-    DELETE_WORKTIME_SUCCESS: null
+    DELETE_WORKTIME_SUCCESS: null,
+    CREATE_WORKTIME_SUCCESS: null
 
   })
 };

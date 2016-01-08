@@ -3,44 +3,49 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/Calendar.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let CalendarAction = {
-  getWorktimeListByType() {
+  getCalendarListByType(type) {
     Ajax.post('/Administration.svc/GetCalendarsByType', {
       params: {
-        type: 1
+        type: type
       },
-      success: function(worktimeList) {
+      success: function(calendarList) {
         AppDispatcher.dispatch({
           type: Action.GET_WORKTIME_LIST_SUCCESS,
-          worktimeList: worktimeList
+          calendarList: calendarList,
+          calendarType: type
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
-          type: Action.GET_WORKTIME_LIST_ERROR
+          type: Action.GET_WORKTIME_LIST_ERROR,
+          calendarType: type
         });
       }
     });
   },
-  setSelectedWorktimeIndex(index) {
+  setSelectedCalendarIndex(index, type) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_WORKTIME,
-      index: index
+      index: index,
+      calendarType: type
     });
   },
-  cancelSave() {
+  cancelSaveCalendar(type) {
     AppDispatcher.dispatch({
-      type: Action.CANCEL_SAVE_WORKTIME
+      type: Action.CANCEL_SAVE_WORKTIME,
+      calendarType: type
     });
   },
-  modifyWorktime(data) {
+  modifyCalendar(data, type) {
     Ajax.post('/Administration.svc/ModifyCalendar', {
       params: {
         dto: data
       },
-      success: function(worktime) {
+      success: function(calendar) {
         AppDispatcher.dispatch({
           type: Action.MODIFT_WORKTIME_SUCCESS,
-          worktime: worktime
+          calendar: calendar,
+          calendarType: type
         });
       },
       error: function(err, res) {
@@ -48,7 +53,7 @@ let CalendarAction = {
       }
     });
   },
-  deleteWorktimeById(id, version) {
+  deleteCalendarById(id, version, type) {
     Ajax.post('/Administration.svc/DeleteCalendar', {
       params: {
         dto: {
@@ -58,8 +63,28 @@ let CalendarAction = {
       },
       success: function() {
         AppDispatcher.dispatch({
-          type: Action.DELETE_WORKTIME_SUCCESS
+          type: Action.DELETE_WORKTIME_SUCCESS,
+          calendarType: type
         });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  createCalendar(data, type) {
+    var me = this;
+    Ajax.post('/Administration.svc/CreateCalendar', {
+      params: {
+        dto: data
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.CREATE_WORKTIME_SUCCESS,
+          calendar: calendar,
+          calendarType: type
+        });
+        me.getCalendarListByType();
       },
       error: function(err, res) {
         console.log(err, res);

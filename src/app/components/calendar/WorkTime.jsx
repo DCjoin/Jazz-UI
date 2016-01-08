@@ -14,6 +14,7 @@ import FromEndTimeGroup from './FromEndTimeGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Immutable from 'immutable';
 
+var calendarType = 1;
 var WorkTime = React.createClass({
   getInitialState: function() {
     return {
@@ -25,7 +26,7 @@ var WorkTime = React.createClass({
     };
   },
   _onWorktimeListChange: function() {
-    var worktimeList = CalendarStore.getWorktimeList();
+    var worktimeList = CalendarStore.getCalendarList(calendarType);
     this.setState({
       worktimeList: worktimeList,
       isLeftLoading: false
@@ -36,11 +37,8 @@ var WorkTime = React.createClass({
       this._clearAllErrorText();
     }
     var worktimeList = this.state.worktimeList;
-    var selectedIndex = CalendarStore.getSelectedWorktimeIndex();
-    var selectedData = null;
-    if (selectedIndex !== null) {
-      selectedData = worktimeList.get(selectedIndex);
-    }
+    var selectedIndex = CalendarStore.getSelectedCalendarIndex(calendarType);
+    var selectedData = CalendarStore.getSelectedCalendar(calendarType);
     this.setState({
       isRightLoading: false,
       showDeleteDialog: false,
@@ -50,7 +48,7 @@ var WorkTime = React.createClass({
     });
   },
   _onItemClick: function(index) {
-    CalendarAction.setSelectedWorktimeIndex(index);
+    CalendarAction.setSelectedCalendarIndex(index, calendarType);
   },
   _onEdit: function() {
     this.setState({
@@ -59,12 +57,16 @@ var WorkTime = React.createClass({
   },
   _onCancel: function() {
     this._clearAllErrorText();
-    CalendarAction.cancelSave();
+    CalendarAction.cancelSaveCalendar(calendarType);
   },
   _onSave: function() {
     this._clearAllErrorText();
     var selectedData = this.state.selectedData.toJS();
-    CalendarAction.modifyWorktime(selectedData);
+    if (selectedData.Id === null) {
+      CalendarAction.createCalendar(selectedData, calendarType);
+    } else {
+      CalendarAction.modifyCalendar(selectedData, calendarType);
+    }
   },
   _onDelete: function() {
     this.setState({
@@ -100,7 +102,27 @@ var WorkTime = React.createClass({
   },
   _deleteWorktime() {
     var selectedData = this.state.selectedData;
-    CalendarAction.deleteWorktimeById(selectedData.get('Id'), selectedData.get('Version'));
+    CalendarAction.deleteCalendarById(selectedData.get('Id'), selectedData.get('Version'), calendarType);
+  },
+  _addWorktime() {
+    var worktime = {
+      Name: '',
+      Type: 1,
+      Version: null,
+      Id: null,
+      Items: [{
+        Type: 2,
+        StartFirstPart: -1,
+        StartSecondPart: -1,
+        EndFirstPart: -1,
+        EndSecondPart: -1,
+      }]
+    };
+    this.setState({
+      selectedData: Immutable.fromJS(worktime),
+      enableSave: false,
+      formStatus: formStatus.EDIT
+    });
   },
   _clearAllErrorText() {
     this.refs.worktimeTitleId.clearErrorText();
@@ -153,6 +175,18 @@ var WorkTime = React.createClass({
       });
     });
   },
+  _onNameChange(value) {
+    var me = this;
+    var selectedData = me.state.selectedData;
+    selectedData = selectedData.set('Name', value);
+    me.setState({
+      selectedData: selectedData
+    }, () => {
+      this.setState({
+        enableSave: me._isValid()
+      });
+    });
+  },
   _renderHeader: function(isView) {
     var me = this;
     let selectedData = me.state.selectedData;
@@ -200,13 +234,13 @@ var WorkTime = React.createClass({
   },
 
   componentDidMount: function() {
-    CalendarAction.getWorktimeListByType();
-    CalendarStore.addWorktimeListChangeListener(this._onWorktimeListChange);
-    CalendarStore.addSelectedWorktimeChangeListener(this._onSelectedItemChange);
+    CalendarAction.getCalendarListByType(calendarType);
+    CalendarStore.addCalendarListChangeListener(this._onWorktimeListChange);
+    CalendarStore.addSelectedCalendarChangeListener(this._onSelectedItemChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeWorktimeListChangeListener(this._onWorktimeListChange);
-    CalendarStore.removeSelectedWorktimeChangeListener(this._onSelectedItemChange);
+    CalendarStore.removeCalendarListChangeListener(this._onWorktimeListChange);
+    CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
   },
 
 
@@ -258,7 +292,7 @@ var WorkTime = React.createClass({
         <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorkdaySetting}
       isViewStatus={isView}
       isLoading={this.state.isLeftLoading}
-      contentItems={items}/>
+      contentItems={items} onAddBtnClick={me._addWorktime}/>
         <Panel>
           {displayedDom}
         </Panel>

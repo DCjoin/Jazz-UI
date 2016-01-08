@@ -173,7 +173,7 @@ var FromEndTime = React.createClass({
       fontSize: '16px'
     };
     var deleteButton = null;
-    if (!me.props.isViewStatus) {
+    if (!me.props.isViewStatus && me.props.hasDeleteButton) {
       deleteButton = <div><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onDeleteWorktimeData} style={cleanIconStyle}></FontIcon></div>;
     }
     return (

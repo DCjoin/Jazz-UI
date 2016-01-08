@@ -9,57 +9,101 @@ import { Action } from '../constants/actionType/Calendar.jsx';
 
 let _worktimeList = Immutable.fromJS([]),
   _selectedWorktimeIndex = null,
-  _addWorktime = null;
+  _selectedWorktime = null;
 let CHANGE_WORKTIME_EVENT = 'changeworktime';
 let CHANGE_SELECTED_WORKTIME_EVENT = 'changeselectedworktime';
 var CalendarStore = assign({}, PrototypeStore, {
-  getWorktimeList() {
-    return _worktimeList;
-  },
-  setWorktimeList(worktimeList) {
-    if (worktimeList) {
-      _worktimeList = Immutable.fromJS(worktimeList);
-    }
-    if (_worktimeList.size !== 0 && _selectedWorktimeIndex === null) {
-      _selectedWorktimeIndex = 0;
+  getCalendarList(type) {
+    switch (type) {
+      case 1: return _worktimeList;
     }
   },
-  mergeWorktime(worktime) {
-    _worktimeList = _worktimeList.set(_selectedWorktimeIndex, Immutable.fromJS(worktime));
-  },
-  deleteWorktime() {
-    _worktimeList = _worktimeList.delete(_selectedWorktimeIndex);
-    var length = _worktimeList.size;
-    if (length !== 0) {
-      if (_selectedWorktimeIndex === length) {
-        _selectedWorktimeIndex = length - 1;
-      }
-    } else {
-      _selectedWorktimeIndex = null;
+  setCalendarList(calendarList, type) {
+    switch (type) {
+      case 1: if (calendarList) {
+          _worktimeList = Immutable.fromJS(calendarList);
+        }
+        if (_worktimeList.size !== 0) {
+          if (_selectedWorktimeIndex === null) {
+            _selectedWorktimeIndex = 0;
+            _selectedWorktime = _worktimeList.get(0);
+          } else {
+            var index = _worktimeList.findIndex((item) => {
+              if (item.get('Id') === _selectedWorktime.get('Id')) {
+                return true;
+              }
+            });
+            if (_selectedWorktimeIndex !== index) {
+              _selectedWorktimeIndex = index;
+            }
+          }
+        }
+        break;
     }
   },
-  getSelectedWorktimeIndex() {
-    return _selectedWorktimeIndex;
+  mergeCalendar(calendar, type) {
+    switch (type) {
+      case 1: _worktimeList = _worktimeList.set(_selectedWorktimeIndex, Immutable.fromJS(calendar));
+        _selectedWorktime = _worktimeList.get(_selectedWorktimeIndex);
+        break;
+    }
   },
-  setSelectedWorktimeIndex(index) {
-    _selectedWorktimeIndex = index;
+  deleteCalendar(type) {
+    switch (type) {
+      case 1: _worktimeList = _worktimeList.delete(_selectedWorktimeIndex);
+        var length = _worktimeList.size;
+        if (length !== 0) {
+          if (_selectedWorktimeIndex === length) {
+            _selectedWorktimeIndex = length - 1;
+          }
+          _selectedWorktime = _worktimeList.get(_selectedWorktimeIndex);
+        } else {
+          _selectedWorktimeIndex = null;
+          _selectedWorktime = null;
+        }
+        break;
+    }
   },
-  emitWorktimeListChange: function() {
+  setSelectedCalendar(calendar, type) {
+    switch (type) {
+      case 1: _selectedWorktime = Immutable.fromJS(calendar);
+        break;
+    }
+  },
+  getSelectedCalendar(type) {
+    switch (type) {
+      case 1: return _selectedWorktime;
+    }
+  },
+  getSelectedCalendarIndex(type) {
+    switch (type) {
+      case 1: return _selectedWorktimeIndex;
+    }
+  },
+  setSelectedCalendarIndex(index, type) {
+    switch (type) {
+      case 1:
+        _selectedWorktimeIndex = index;
+        _selectedWorktime = _worktimeList.get(_selectedWorktimeIndex);
+        break;
+    }
+  },
+  emitCalendarListChange: function() {
     this.emit(CHANGE_WORKTIME_EVENT);
   },
-  addWorktimeListChangeListener: function(callback) {
+  addCalendarListChangeListener: function(callback) {
     this.on(CHANGE_WORKTIME_EVENT, callback);
   },
-  removeWorktimeListChangeListener: function(callback) {
+  removeCalendarListChangeListener: function(callback) {
     this.removeListener(CHANGE_WORKTIME_EVENT, callback);
   },
-  emitSelectedWorktimeChange: function() {
+  emitSelectedCalendarChange: function() {
     this.emit(CHANGE_SELECTED_WORKTIME_EVENT);
   },
-  addSelectedWorktimeChangeListener: function(callback) {
+  addSelectedCalendarChangeListener: function(callback) {
     this.on(CHANGE_SELECTED_WORKTIME_EVENT, callback);
   },
-  removeSelectedWorktimeChangeListener: function(callback) {
+  removeSelectedCalendarChangeListener: function(callback) {
     this.removeListener(CHANGE_SELECTED_WORKTIME_EVENT, callback);
   },
 
@@ -67,30 +111,33 @@ var CalendarStore = assign({}, PrototypeStore, {
 CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_WORKTIME_LIST_SUCCESS:
-      CalendarStore.setWorktimeList(action.worktimeList);
-      CalendarStore.emitWorktimeListChange();
-      CalendarStore.emitSelectedWorktimeChange();
+      CalendarStore.setCalendarList(action.calendarList, action.calendarType);
+      CalendarStore.emitCalendarListChange();
+      CalendarStore.emitSelectedCalendarChange();
       break;
     case Action.GET_WORKTIME_LIST_ERROR:
-      CalendarStore.setWorktimeList([]);
-      CalendarStore.emitWorktimeListChange();
+      CalendarStore.setCalendarList([], action.calendarType);
+      CalendarStore.emitCalendarListChange();
       break;
     case Action.SET_SELECTED_WORKTIME:
-      CalendarStore.setSelectedWorktimeIndex(action.index);
-      CalendarStore.emitSelectedWorktimeChange();
+      CalendarStore.setSelectedCalendarIndex(action.index, action.calendarType);
+      CalendarStore.emitSelectedCalendarChange();
       break;
     case Action.CANCEL_SAVE_WORKTIME:
-      CalendarStore.emitSelectedWorktimeChange();
+      CalendarStore.emitSelectedCalendarChange();
       break;
     case Action.MODIFT_WORKTIME_SUCCESS:
-      CalendarStore.mergeWorktime(action.worktime);
-      CalendarStore.emitWorktimeListChange();
-      CalendarStore.emitSelectedWorktimeChange();
+      CalendarStore.mergeCalendar(action.calendar, action.calendarType);
+      CalendarStore.emitCalendarListChange();
+      CalendarStore.emitSelectedCalendarChange();
       break;
     case Action.DELETE_WORKTIME_SUCCESS:
-      CalendarStore.deleteWorktime();
-      CalendarStore.emitWorktimeListChange();
-      CalendarStore.emitSelectedWorktimeChange();
+      CalendarStore.deleteCalendar(action.calendarType);
+      CalendarStore.emitCalendarListChange();
+      CalendarStore.emitSelectedCalendarChange();
+      break;
+    case Action.CREATE_WORKTIME_SUCCESS:
+      CalendarStore.setSelectedCalendar(action.calendar, action.calendarType);
       break;
   }
 });
