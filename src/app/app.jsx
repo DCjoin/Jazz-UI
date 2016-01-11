@@ -58,7 +58,7 @@ var routes = (
         <Route name="workday" path="workday" handler={WorkTime}></Route>
         <Route name="worktime" path="worktime"></Route>
         <Route name="coldwarm" path="coldwarm"></Route>
-        <Route name="daynight" path="daynight" handle={DayNight}></Route>
+        <Route name="daynight" path="daynight" handler={DayNight}></Route>
 
         <Route name='price' path='price'></Route>
         <Route name='carbon' path='carbon'></Route>
