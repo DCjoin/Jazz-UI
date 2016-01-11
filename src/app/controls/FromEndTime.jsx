@@ -141,6 +141,7 @@ var FromEndTime = React.createClass({
       this.props.errorText === nextProps.errorText &&
       this.props.startTime === nextProps.startTime &&
       this.props.endTime === nextProps.endTime &&
+      this.props.hasDeleteButton === nextProps.hasDeleteButton &&
       this.state.startTime === nextState.startTime &&
       this.state.endTime === nextState.endTime &&
       this.state.errorText === nextState.errorText) {
