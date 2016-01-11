@@ -3,7 +3,7 @@
 import React from "react";
 import classnames from "classnames";
 
-
+import { formStatus } from '../../constants/FormStatus.jsx';
 import UserStore from '../../stores/UserStore.jsx';
 
 var UserItem = React.createClass({
@@ -126,9 +126,17 @@ module.exports = React.createClass({
 				<div className="pop-manage-list-title pop-framework-left-title">
 					<div className="pop-manage-list-title-action">
 
-							<span onClick={setAddStatus} className="pop-manage-list-title-action-item"><span className="icon-add pop-manage-list-title-action-item-icon"/>用户</span>
+							<span onClick={setAddStatus} className={
+      classnames({
+        "pop-manage-list-title-action-item": true,
+        "jazz-disabled": !(this.props.formStatus === formStatus.VIEW)
+      })}><span className="icon-add pop-manage-list-title-action-item-icon"/>用户</span>
 
-						<span onClick={handleShowFilterSideNav} className="pop-manage-list-title-action-item"><span className="icon-filter pop-manage-list-title-action-item-icon"/>筛选</span>
+						<span onClick={handleShowFilterSideNav} className={
+      classnames({
+        "pop-manage-list-title-action-item": true,
+        "jazz-disabled": !(this.props.formStatus === formStatus.VIEW)
+      })}><span className="icon-filter pop-manage-list-title-action-item-icon"/>筛选</span>
 					</div>
 				</div>
 				{filterReset}

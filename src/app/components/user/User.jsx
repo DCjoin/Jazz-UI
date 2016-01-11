@@ -137,7 +137,7 @@ var User = React.createClass({
   },
   _handlerCancel: function() {
     UserAction.reset();
-    this._setViewStatus();
+    this._setViewStatus(this.state.selectedUserId);
   },
   _resetFilter() {
     UserAction.resetFilter();

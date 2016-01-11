@@ -595,7 +595,9 @@ var UserDetail = React.createClass({
         "pop-framework-right-expand": that.props.closedList
       })}>
 				<div className="pop-framework-right-actionbar">
-	                <div className="pop-framework-right-actionbar-top">
+	                <div className="pop-framework-right-actionbar-top" style={{
+        marginTop: '13px'
+      }}>
 						<OrigamiPanel />
 						{collapseButton}
 	                </div>
