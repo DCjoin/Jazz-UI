@@ -126,8 +126,8 @@ var FromEndTime = React.createClass({
       errorText: ''
     });
   },
-  _onDeleteWorktimeData: function() {
-    this.props.onDeleteWorktimeData(this.props.index);
+  _onDeleteTimeData: function() {
+    this.props.onDeleteTimeData(this.props.index);
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
@@ -181,7 +181,7 @@ var FromEndTime = React.createClass({
     };
     var deleteButton = null;
     if (!me.props.isViewStatus && me.props.hasDeleteButton) {
-      deleteButton = deleteButton = <div className='jazz-fromendtime-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteWorktimeData} style={{
+      deleteButton = deleteButton = <div className='jazz-fromendtime-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteTimeData} style={{
         background: 'transparent'
       }} /></div>;
     }

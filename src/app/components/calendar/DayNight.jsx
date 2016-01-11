@@ -14,8 +14,8 @@ import FromEndTimeGroup from './FromEndTimeGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Immutable from 'immutable';
 
-var calendarType = 1;
-var WorkTime = React.createClass({
+var calendarType = 3;
+var Daynight = React.createClass({
   getInitialState: function() {
     return {
       isLeftLoading: true,
@@ -25,15 +25,15 @@ var WorkTime = React.createClass({
       showDeleteDialog: false
     };
   },
-  _onWorktimeListChange: function() {
-    var worktimeList = CalendarStore.getCalendarList(calendarType);
+  _onDaynightListChange: function() {
+    var daynightList = CalendarStore.getCalendarList(calendarType);
     this.setState({
-      worktimeList: worktimeList,
+      daynightList: daynightList,
       isLeftLoading: false
     });
   },
   _onSelectedItemChange: function() {
-    if (this.refs.worktimeTitleId) {
+    if (this.refs.daynightTitleId) {
       this._clearAllErrorText();
     }
     var selectedIndex = CalendarStore.getSelectedCalendarIndex(calendarType);
@@ -84,7 +84,7 @@ var WorkTime = React.createClass({
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
-      onClick={this._deleteWorktime} />,
+      onClick={this._deleteDaynight} />,
 
       <FlatButton
       label={I18N.Common.Button.Cancel}
@@ -99,18 +99,18 @@ var WorkTime = React.createClass({
         {I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}
       </Dialog>);
   },
-  _deleteWorktime() {
+  _deleteDaynight() {
     var selectedData = this.state.selectedData;
     CalendarAction.deleteCalendarById(selectedData.get('Id'), selectedData.get('Version'), calendarType);
   },
-  _addWorktime() {
-    var worktime = {
+  _addDaynight() {
+    var daynight = {
       Name: '',
-      Type: 1,
+      Type: 3,
       Version: null,
       Id: null,
       Items: [{
-        Type: 2,
+        Type: 6,
         StartFirstPart: -1,
         StartSecondPart: -1,
         EndFirstPart: -1,
@@ -118,21 +118,21 @@ var WorkTime = React.createClass({
       }]
     };
     this.setState({
-      selectedData: Immutable.fromJS(worktime),
+      selectedData: Immutable.fromJS(daynight),
       enableSave: false,
       formStatus: formStatus.Add
     });
   },
   _clearAllErrorText() {
-    this.refs.worktimeTitleId.clearErrorText();
-    this.refs.worktimeGroup.clearErrorText();
+    this.refs.daynightTitleId.clearErrorText();
+    this.refs.daynightGroup.clearErrorText();
   },
   _isValid() {
-    var isValid = this.refs.worktimeTitleId.isValid();
-    isValid = isValid && this.refs.worktimeGroup.isValid();
+    var isValid = this.refs.daynightTitleId.isValid();
+    isValid = isValid && this.refs.daynightGroup.isValid();
     return isValid;
   },
-  _addWorkTimeData: function() {
+  _addDaynightData: function() {
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -140,7 +140,7 @@ var WorkTime = React.createClass({
       StartSecondPart: -1,
       EndFirstPart: -1,
       EndSecondPart: -1,
-      Type: 2
+      Type: 6
     };
     items = items.unshift(Immutable.fromJS(item));
     selectedData = selectedData.set('Items', items);
@@ -149,7 +149,7 @@ var WorkTime = React.createClass({
       enableSave: false
     });
   },
-  _deleteWorktimeData: function(index) {
+  _deleteDaynightData: function(index) {
     var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
@@ -195,7 +195,7 @@ var WorkTime = React.createClass({
     var me = this;
     let selectedData = me.state.selectedData;
     var titleProps = {
-      ref: 'worktimeTitleId',
+      ref: 'daynightTitleId',
       isViewStatus: isView,
       didChanged: me._onNameChange,
       defaultValue: selectedData.get('Name'),
@@ -213,20 +213,20 @@ var WorkTime = React.createClass({
   _renderContent: function(isView) {
     var me = this;
     let selectedData = me.state.selectedData;
-    var workTimeText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkTime}</div>);
-    var addWorktimeDataButton = null;
+    var daynightText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultDayNight}</div>);
+    var addDaynightDataButton = null;
     if (!isView) {
-      addWorktimeDataButton = (<div className="jazz-calendar-add">
-      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.WorkTime}</div>
-      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorkTimeData} /></div>
+      addDaynightDataButton = (<div className="jazz-calendar-add">
+      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.Day}</div>
+      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addDaynightData} /></div>
       </div>);
     }
-    var worktimeGroup = <FromEndTimeGroup ref='worktimeGroup' items={selectedData.get('Items')} isViewStatus={isView} onDeleteTimeData={me._deleteWorktimeData} onTimeChange={me._onTimeChange}></FromEndTimeGroup>;
+    var daynightGroup = <FromEndTimeGroup ref='daynightGroup' items={selectedData.get('Items')} isViewStatus={isView} onDeleteTimeData={me._deleteDaynightData} onTimeChange={me._onTimeChange}></FromEndTimeGroup>;
     return (
       <div className={"jazz-calendar-content"}>
-        {workTimeText}
-        {addWorktimeDataButton}
-        {worktimeGroup}
+        {daynightText}
+        {addDaynightDataButton}
+        {daynightGroup}
       </div>
       );
   },
@@ -239,12 +239,12 @@ var WorkTime = React.createClass({
 
   componentDidMount: function() {
     CalendarAction.getCalendarListByType(calendarType);
-    CalendarStore.addWorktimeListChangeListener(this._onWorktimeListChange);
-    CalendarStore.addSelectedWorktimeChangeListener(this._onSelectedItemChange);
+    CalendarStore.addDaynightListChangeListener(this._onDaynightListChange);
+    CalendarStore.addSelectedDaynightChangeListener(this._onSelectedItemChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeWorktimeListChangeListener(this._onWorktimeListChange);
-    CalendarStore.removeSelectedWorktimeChangeListener(this._onSelectedItemChange);
+    CalendarStore.removeDaynightListChangeListener(this._onDaynightListChange);
+    CalendarStore.removeSelectedDaynightChangeListener(this._onSelectedItemChange);
   },
 
 
@@ -255,9 +255,9 @@ var WorkTime = React.createClass({
       isAdd = this.state.formStatus === formStatus.ADD;
     let displayedDom = null;
     let items = [];
-    var worktimeList = me.state.worktimeList;
-    if (worktimeList && worktimeList.size !== 0) {
-      items = worktimeList.map(function(item, i) {
+    var daynightList = me.state.daynightList;
+    if (daynightList && daynightList.size !== 0) {
+      items = daynightList.map(function(item, i) {
         let props = {
           index: i,
           label: item.get('Name'),
@@ -293,10 +293,10 @@ var WorkTime = React.createClass({
         display: 'flex',
         flex: 1
       }}>
-        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorktimeSetting}
+        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.DaynightSetting}
       isViewStatus={isView}
       isLoading={this.state.isLeftLoading}
-      contentItems={items} onAddBtnClick={me._addWorktime}/>
+      contentItems={items} onAddBtnClick={me._addDaynight}/>
         <Panel>
           {displayedDom}
         </Panel>
@@ -306,4 +306,4 @@ var WorkTime = React.createClass({
   }
 });
 
-module.exports = WorkTime;
+module.exports = Daynight;

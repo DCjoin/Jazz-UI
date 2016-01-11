@@ -44,8 +44,8 @@ var FromEndTimeGroup = React.createClass({
     var timeData = this.getTimeData(data);
     this.props.onTimeChange(index, timeData);
   },
-  _onDeleteWorktimeData: function(index) {
-    this.props.onDeleteWorktimeData(index);
+  _onDeleteTimeData: function(index) {
+    this.props.onDeleteTimeData(index);
   },
   clearErrorText: function() {
     var errorTextArr = this.initErrorTextArr();
@@ -144,7 +144,7 @@ var FromEndTimeGroup = React.createClass({
           startTime: item.get('StartFirstPart') === -1 ? -1 : item.get('StartFirstPart') * 60 + item.get('StartSecondPart'),
           endTime: item.get('EndFirstPart') === -1 ? -1 : item.get('EndFirstPart') * 60 + item.get('EndSecondPart'),
           onTimeChange: me._onTimeChange,
-          onDeleteWorktimeData: me._onDeleteWorktimeData
+          onDeleteTimeData: me._onDeleteTimeData
         };
         return (
           <FromEndTime {...props}></FromEndTime>
