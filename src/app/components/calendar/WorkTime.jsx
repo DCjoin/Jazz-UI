@@ -294,7 +294,7 @@ var WorkTime = React.createClass({
         display: 'flex',
         flex: 1
       }}>
-        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorkdaySetting}
+        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorktimeSetting}
       isViewStatus={isView}
       isLoading={this.state.isLeftLoading}
       contentItems={items} onAddBtnClick={me._addWorktime}/>
