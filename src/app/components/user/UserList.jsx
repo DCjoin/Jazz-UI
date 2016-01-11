@@ -3,7 +3,7 @@
 import React from "react";
 import classnames from "classnames";
 
-
+import { formStatus } from '../../constants/FormStatus.jsx';
 import UserStore from '../../stores/UserStore.jsx';
 
 var UserItem = React.createClass({
@@ -27,10 +27,12 @@ var UserItem = React.createClass({
     if (this.props.HasWholeCustomer) {
       relateCustomerName = "全部客户";
     } else {
+      if (!!this.props.Customers) {
+        this.props.Customers.map(function(customer) {
+          relateCustomers.push(customer.CustomerName);
+        });
+      }
 
-      this.props.Customers.map(function(customer) {
-        relateCustomers.push(customer.CustomerName);
-      });
 
       if (relateCustomers.length > 0) {
         relateCustomerName = relateCustomers.join(", ");
@@ -99,6 +101,7 @@ module.exports = React.createClass({
         var props = item.toJS();
         props.selected = selectedId == item.get("Id");
         props.handlerTouchTap = handlerTouchTap;
+        console.log(props);
         return (<UserItem key={"pop-user-key-" + item.get("Id")} {...props} />);
       });
     } else {
@@ -123,9 +126,17 @@ module.exports = React.createClass({
 				<div className="pop-manage-list-title pop-framework-left-title">
 					<div className="pop-manage-list-title-action">
 
-							<span onClick={setAddStatus} className="pop-manage-list-title-action-item"><span className="icon-add pop-manage-list-title-action-item-icon"/>用户</span>
+							<span onClick={setAddStatus} className={
+      classnames({
+        "pop-manage-list-title-action-item": true,
+        "jazz-disabled": !(this.props.formStatus === formStatus.VIEW)
+      })}><span className="icon-add pop-manage-list-title-action-item-icon"/>用户</span>
 
-						<span onClick={handleShowFilterSideNav} className="pop-manage-list-title-action-item"><span className="icon-filter pop-manage-list-title-action-item-icon"/>筛选</span>
+						<span onClick={handleShowFilterSideNav} className={
+      classnames({
+        "pop-manage-list-title-action-item": true,
+        "jazz-disabled": !(this.props.formStatus === formStatus.VIEW)
+      })}><span className="icon-filter pop-manage-list-title-action-item-icon"/>筛选</span>
 					</div>
 				</div>
 				{filterReset}

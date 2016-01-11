@@ -102,6 +102,11 @@ let UserAction = {
       type: Action.RESET_FILTER_OBJ
     });
   },
+  reset: function() {
+    AppDispatcher.dispatch({
+      type: Action.RESET_USER_AND_CUSTOMER
+    });
+  },
   setFilterObj() {
     AppDispatcher.dispatch({
       type: Action.SET_FILTER_OBJ
@@ -155,6 +160,97 @@ let UserAction = {
           type: Action.GET_CUSTOMER_PERMISSION_BY_USER,
           data: data,
           customerId
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  mergeUser(data) {
+    AppDispatcher.dispatch({
+      type: Action.MERGE_USER,
+      data: data
+    });
+  },
+  createUserInfo: function(info) {
+    var that = this;
+    Ajax.post('/User.svc/CreateUser', {
+      params: {
+        dto: info
+      },
+      success: function(data) {
+        that.getAllUsers();
+        AppDispatcher.dispatch({
+          type: Action.MODIFY_USER_SUCCESS,
+          data: data,
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  updateUserInfo: function(info) {
+    var that = this;
+    Ajax.post('/User.svc/ModifyUser', {
+      params: {
+        dto: info
+      },
+      success: function(data) {
+        that.getAllUsers();
+        AppDispatcher.dispatch({
+          type: Action.MODIFY_USER_SUCCESS,
+          data: data,
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  deleteUser(user) {
+    Ajax.post('/User.svc/DeleteUser', {
+      params: {
+        dto: {
+          Id: user.Id,
+          Version: user.Version
+        }
+      },
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_USER_SUCCESS,
+          selectedId: user.Id
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  saveCustomerByUser: function(info) {
+    var that = this;
+    Ajax.post('/AccessControl.svc/SetDataPrivilege', {
+      params: {
+        dto: info
+      },
+      success: function(data) {
+        that.getCustomerByUser(info.UserId);
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  resetPassword: function(userId) {
+    Ajax.post('/User.svc/SendInitPassword', {
+      params: {
+        userid: userId
+      },
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.SEND_EMAIL_SUCCESS,
+          data: data
         });
       },
       error: function(err, res) {

@@ -1,0 +1,124 @@
+.pop-loading {
+
+	@bgc: #EAEBED;
+	@fontColor: #47B8FF;
+
+	&-overley {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: flex;
+		height: 100%;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+		background-color: fade(@bgc, 50%);
+	}
+
+	// Circle Loading Start
+	&-circle{
+
+		@LOADING_RADIUS: 52px;
+		@LAODING_DEFAULT_DEGREE: -180deg;
+
+		@ANIMATION_NAME: pop_loading_circle;
+		@ANIMATION_DELAY_STEP: 0.12s;
+		@ANIMATION_DELAY_BASE: @ANIMATION_DELAY_STEP * 2;
+		@ANIMATION_DELAY_COUNT: 8;
+
+		.keyframes(@ANIMATION_NAME, {
+		    0%
+		    {
+		        background-color: @fontColor;
+		    }
+
+		    100%
+		    {
+		        background-color: #fff;
+		    }
+		});
+
+		&-wrapper {
+		    position: relative;
+
+		    width: 128px;
+		    height: 128px;
+
+			.transform(scale(.6));
+
+			.calcAnimationDelay(@index) when (@index < @ANIMATION_DELAY_COUNT + 1) {
+				.calcAnimationDelay(@index + 1);
+				.pop-loading-circle-item-0@{index} {
+
+				    position: absolute;
+				
+				    width: 23px;
+				    height: 23px;
+				    background-color: #fff;
+
+					.border-radius(12px);
+				    .animation(@ANIMATION_NAME, @ANIMATION_DELAY_BASE + @ANIMATION_DELAY_STEP * @ANIMATION_DELAY_COUNT, ease, @index * @ANIMATION_DELAY_STEP + @ANIMATION_DELAY_BASE, infinite, normal);
+
+					@degree: @LAODING_DEFAULT_DEGREE + (@index - 1) * (360/@ANIMATION_DELAY_COUNT);
+					left: (sin(@degree) + 1) * @LOADING_RADIUS;
+					bottom: (cos(@degree) + 1) * @LOADING_RADIUS;
+				}
+			}
+
+			.calcAnimationDelay(1);
+		}
+	}
+	// Circle Loading End
+
+	// Bounce Loading Start
+	&-bounce {
+
+		@ANIMATION_NAME: pop_loading_bounce;
+		@ANIMATION_DELAY_STEP: 0.13s;
+		@ANIMATION_DELAY_BASE: 0.25s;
+		@ANIMATION_DELAY_COUNT: 5;
+
+		.keyframes(@ANIMATION_NAME, {
+		    0%{
+				-webkit-transform:scale(1.2);
+				opacity:1;
+			}
+
+			100%{
+				-webkit-transform:scale(0.7);
+				opacity:0.1;
+			}
+		});
+
+		&-wrapper {
+			width:186px;
+
+			[class^="pop-loading-bounce-item-0"] {
+				background-color:#fff;
+				border:3px solid @fontColor;
+				float:left;
+				height:91px;
+				margin-left:7px;
+				width:24px;
+				opacity:0.1;
+
+				.animation-name(@ANIMATION_NAME);
+				.animation-duration(1.3s);
+				.animation-iteration-count(infinite);
+				.animation-direction(normal);
+				.transform(scale(0.7));
+			}
+
+			.calcAnimationDelay(@index) when (@index < @ANIMATION_DELAY_COUNT + 1) {
+				.calcAnimationDelay(@index + 1);
+				.pop-loading-bounce-item-0@{index} {
+				    .animation-delay(@index * @ANIMATION_DELAY_STEP + @ANIMATION_DELAY_BASE);
+				}
+			}
+
+			.calcAnimationDelay(1);
+		}
+	}
+	// Bounce Loading End
+
+}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import { Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowColumn, TableFooter, CircularProgress } from 'material-ui';
+import { CircularProgress } from 'material-ui';
 import { isObject, isFunction } from "lodash/lang";
 import UserStore from '../../stores/UserStore.jsx';
 import UserAction from '../../actions/UserAction.jsx';
@@ -10,6 +10,8 @@ import { formStatus } from '../../constants/FormStatus.jsx';
 import UserList from './UserList.jsx';
 import UserFilter from './UserFilter.jsx';
 import UserDetail from './UserDetail.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
 
 var User = React.createClass({
   getInitialState: function() {
@@ -21,6 +23,7 @@ var User = React.createClass({
       allRoles: [],
       selectedUserId: null,
       isLoading: false,
+      resetPasswordDone: false
     };
   },
   // _onAllCostomersListChange: function() {
@@ -73,7 +76,8 @@ var User = React.createClass({
 
     this.setState({
       infoTab: true,
-      formStatus: formStatus.ADD
+      formStatus: formStatus.ADD,
+      selectedUserId: null
     });
   },
   _setEditStatus: function() {
@@ -111,29 +115,37 @@ var User = React.createClass({
     });
   },
   _handleSaveUser: function(infoTab, infoData, roleData) {
-    // if (infoTab) {
-    //   if (infoData.Id) {
-    //     UserAction.updateUserInfo(infoData, CurrentUserCustomerStore.getCurrentUser().SpId);
-    //   } else {
-    //     UserAction.createUserInfo(infoData, CurrentUserCustomerStore.getCurrentUser().SpId);
-    //   }
-    // } else {
-    //   UserAction.saveCustomerByUser(roleData, CurrentUserCustomerStore.getCurrentUser().SpId);
-    // }
-    //ajaxing = true;
+    if (infoTab) {
+      if (infoData.Id) {
+        UserAction.updateUserInfo(infoData);
+      } else {
+        UserAction.createUserInfo(infoData);
+      }
+    } else {
+      UserAction.saveCustomerByUser(roleData);
+    }
+    this.setState({
+      isLoading: true,
+      formStatus: formStatus.VIEW
+    });
   },
   _handleDeleteUser(userId) {
-    UserAction.deleteUser(UserStore.getUser(get(this.props, "params.userId")).toJS());
+    UserAction.deleteUser(UserStore.getUser(this.state.selectedUserId).toJS());
     this.setState({
       formStatus: formStatus.VIEW
     });
   },
   _handlerCancel: function() {
     UserAction.reset();
-    this._setViewStatus();
+    this._setViewStatus(this.state.selectedUserId);
   },
   _resetFilter() {
     UserAction.resetFilter();
+  },
+  _resetPasswordDone() {
+    this.setState({
+      resetPasswordDone: true
+    });
   },
   _switchTab(event) {
     if (event.target.getAttribute("data-tab-index") == 1) {
@@ -171,21 +183,21 @@ var User = React.createClass({
     });
   },
   componentDidMount: function() {
-    //UserStore.addAllCostomersListListener(this._onAllCostomersListChange);
+
     UserStore.addAllRolesListListener(this._onAllRolesListChange);
-    //UserStore.addAllUsersListListener(this._onAllUsersListChange);
+    UserStore.addResetPasswordListener(this._resetPasswordDone);
     UserStore.addChangeListener(this._onChange);
     UserAction.getAllCustomers();
     UserAction.getAllRoles();
     this.setState({
       isLoading: true
     });
-  //UserAction.getAllUsers();
+
   },
   componentWillUnmount: function() {
-    //UserStore.removeAllCostomersListListener(this._onAllCostomersListChange);
+
     UserStore.removeAllRolesListListener(this._onAllRolesListChange);
-    //  UserStore.removeAllUsersListListener(this._onAllUsersListChange);
+    UserStore.removeResetPasswordListener(this._resetPasswordDone);
     UserStore.removeChangeListener(this._onChange);
   },
   render: function() {
@@ -216,7 +228,7 @@ var User = React.createClass({
         infoTab: that.state.infoTab,
         setEditStatus: that._setEditStatus,
         _handleResetPassword: function() {
-          //UserAction.resetPassword(selectedId);
+          UserAction.resetPassword(selectedId);
         },
         handleSaveUser: that._handleSaveUser,
         _handleDeleteUser: that._handleDeleteUser,
@@ -256,6 +268,15 @@ var User = React.createClass({
         })}>
           <UserList {...listProps}/>
           { filterPanel }
+          { that.state.resetPasswordDone ?
+          <Dialog openImmediately={true} modal={true} actions={[
+            <FlatButton label="好" onTouchTap={() => {
+              that.setState({
+                resetPasswordDone: false
+              });
+            }} />
+          ]}>重置密码邮件已发送!</Dialog>
+          : null }
         </div>
         <UserDetail {...detailProps} />
         </div>

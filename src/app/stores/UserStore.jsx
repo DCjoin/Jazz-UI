@@ -31,14 +31,16 @@ let _userStatusList = Immutable.List([]),
   _allCustomers = [],
   _allRolesList = [],
   _allUsersList = emptyList(),
-  _selectedId = null;
+  _selectedId = null,
+  _userPrivilege = null;
 let SET_USER_STATUS_EVENT = 'setuserstatus',
   SET_USER_LIST_EVENT = 'setuserlist',
   SET_ALL_COSTOMERS_LIST_EVENT = 'setallcostomerslist',
   SET_ALL_ROLES_LIST_EVENT = 'setallroleslist',
   SET_ALL_USERS_LIST_EVENT = 'seralluserslist',
   CHANGE_EVENT = 'change',
-  CHANGE_CUSTOMER_PERMISSION_EVENT = 'changecustomerpermission';
+  CHANGE_CUSTOMER_PERMISSION_EVENT = 'changecustomerpermission',
+  RESET_PASSWORD_EVENT = 'resetpassword';
 var _filterObj = emptyMap();
 var _updatingFilterObj = emptyMap();
 var _persistedUser = emptyMap();
@@ -156,6 +158,16 @@ var UserStore = assign({}, PrototypeStore, {
   setUser: function(user) {
     _updatingUser = _persistedUser = Immutable.fromJS(user);
   },
+  updateUserbyEmailSuccess: function(data) {
+    _updatingUser = _updatingUser.set('Version', data.Version);
+    _persistedUser = _persistedUser.set('Version', data.Version);
+    let index = _allUsersList.findIndex(item => item.get('Id') == data.Id);
+    var filterUser = _allUsersList.filter(item => item.get("Id") == data.Id);
+    filterUser = filterUser.set('Version', data.Version);
+    _allUsersList = _allUsersList.update(index, (item) => {
+      return filterUser;
+    });
+  },
   getAllUsers: function() {
     return _allUsersList;
   },
@@ -266,6 +278,32 @@ var UserStore = assign({}, PrototypeStore, {
     mergeUser: function(data) {
       _updatingUser = this.merge(_updatingUser, data);
     },
+    deleteUser(deletedId) {
+      var deletedIndex = -1;
+
+      if (_allUsersList.size < 2) {
+        _allUsersList = emptyList();
+        return 0;
+      }
+
+      var nextSelectedId = 0;
+
+      _allUsersList.every((item, index) => {
+        if (item.get("Id") == deletedId) {
+          deletedIndex = index;
+          if (index == _allUsersList.size) {
+            nextSelectedId = _allUsersList.getIn([_allUsersList.size - 1, "Id"]);
+          } else {
+            nextSelectedId = _allUsersList.getIn([index + 1, "Id"]);
+          }
+          return false;
+        }
+        return true;
+      });
+      _allUsersList = _allUsersList.deleteIn([deletedIndex]);
+
+      return nextSelectedId;
+    },
     // Customers
     getUserCustomers() {
       return _userCustomers;
@@ -275,6 +313,7 @@ var UserStore = assign({}, PrototypeStore, {
     },
 
     setUserCustomers(userCustomers) {
+      _userPrivilege = userCustomers;
       var customers = [];
       if (!!userCustomers.WholeSystem) {
         userCustomers.Privileges.forEach(privilege => {
@@ -310,8 +349,15 @@ var UserStore = assign({}, PrototypeStore, {
     mergeFilterObj: function(data) {
       _updatingFilterObj = this.merge(_updatingFilterObj, data);
     },
+    getDataPrivilege: function() {
+      return _userPrivilege;
+    },
     resetFilterObj: function() {
       _updatingFilterObj = _filterObj;
+    },
+    reset: function() {
+      _updatingUser = _persistedUser;
+      _updatingUserCustomers = _userCustomers;
     },
     addChangeListener(callback) {
       this.on(CHANGE_EVENT, callback);
@@ -385,6 +431,17 @@ var UserStore = assign({}, PrototypeStore, {
     emitChangeCustomerPermission() {
       this.emit(CHANGE_CUSTOMER_PERMISSION_EVENT);
     },
+    addResetPasswordListener(callback) {
+      this.on(RESET_PASSWORD_EVENT, callback);
+    },
+
+    removeResetPasswordListener(callback) {
+      this.removeListener(RESET_PASSWORD_EVENT, callback);
+    },
+
+    emitResetPassword() {
+      this.emit(RESET_PASSWORD_EVENT);
+    },
   });
   var UserAction = User.Action;
 
@@ -414,8 +471,13 @@ var UserStore = assign({}, PrototypeStore, {
         UserStore.emitAllRolesListChange();
         break;
       case UserAction.GET_ALL_USERS_LIST:
+        var pre = _allUsersList;
         UserStore.setAllUsers(action.usersList);
-        UserStore.emitChange(_allUsersList.getIn([0, "Id"]));
+        if (pre.size === 0) {
+          UserStore.emitChange(_allUsersList.getIn([0, "Id"]));
+        } else {
+          UserStore.emitChange();
+        }
         break;
       case UserAction.MERGE_FILTER_OBJ:
         UserStore.mergeFilterObj(action.data);
@@ -463,6 +525,28 @@ var UserStore = assign({}, PrototypeStore, {
           });
         }
         UserStore.emitChangeCustomerPermission();
+        break;
+      case UserAction.MERGE_USER:
+        UserStore.mergeUser(action.data);
+        UserStore.emitChange();
+        break;
+      case UserAction.MODIFY_USER_SUCCESS:
+        // UserStore.setSelectedId(action.createdUserId);
+        //UserStore.updateUserList(action.newUserList);
+        UserStore.setUser(action.data);
+        UserStore.emitChange(action.data.Id);
+        break;
+      case UserAction.SEND_EMAIL_SUCCESS:
+        UserStore.updateUserbyEmailSuccess(action.data);
+        UserStore.emitResetPassword();
+        break;
+      case UserAction.DELETE_USER_SUCCESS:
+        var selecteId = UserStore.deleteUser(action.selectedId);
+        UserStore.emitChange(selecteId);
+        break;
+      case UserAction.RESET_USER_AND_CUSTOMER:
+        UserStore.reset();
+        UserStore.emitChange();
         break;
     }
 
