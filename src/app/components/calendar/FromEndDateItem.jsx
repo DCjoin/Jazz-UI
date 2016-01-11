@@ -6,10 +6,12 @@ import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
 import FromEndDate from './FromEndDate.jsx';
 import FlatButton from './FlatButton.jsx';
 
-var WorkDayCalendar = React.createClass({
+var FromEndDateItem = React.createClass({
   getInitialState: function() {
     return {
       type: this.props.type,
+      typeText: this.props.typeText,
+      typeItem: this.props.typeItem,
       startMonth: this.props.startMonth,
       startDay: this.props.startDay,
       endMonth: this.props.endMonth,
@@ -19,4 +21,4 @@ var WorkDayCalendar = React.createClass({
   render: function() {}
 });
 
-module.exports = WorkDayCalendar;
+module.exports = FromEndDateItem;
