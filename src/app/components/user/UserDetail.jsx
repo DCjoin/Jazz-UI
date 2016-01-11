@@ -19,7 +19,7 @@ import PermissionCode from '../../constants/PermissionCode.jsx';
 import Loading from './Loading.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
-import Dialog from '../../controls/Dialog.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
 import UserCustomerPermission from './UserCustomerPermission.jsx';
 
 import { formStatus } from '../../constants/FormStatus.jsx';
@@ -29,7 +29,7 @@ import UserStore from '../../stores/UserStore.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 import SideNav from '../../controls/SideNav.jsx';
 
-var {FlatButton, FontIcon, SelectField, Checkbox} = mui;
+var {FlatButton, FontIcon, SelectField, Checkbox, CircularProgress} = mui;
 
 
 import _isFunction from "lodash/lang/isFunction";
@@ -74,10 +74,10 @@ var UserDetail = React.createClass({
         infoData.RealName = infoData.Name;
       }
       if (_.isNumber(infoData.Title)) {
-        infoData.Title = UserStore.getUserTitleList()[infoData.Title];
+        infoData.Title = infoData.Title;
       }
       if (!infoData.Title) {
-        infoData.Title = UserStore.getUserTitleList()[0];
+        infoData.Title = 0;
       }
       if (!infoData.UserType) {
         var userType = that.props.userRoleList.first();
@@ -85,12 +85,12 @@ var UserDetail = React.createClass({
         infoData.UserTypeName = userType.get("Name");
       }
     } else {
-      roleData.Version = null;
+      roleData.Version = UserStore.getDataPrivilege().Version;
       roleData.Privileges = [];
       that.props.customers.forEach(customer => {
-        if (customer.get("Version") * 1 > roleData.Version * 1) {
-          roleData.Version = customer.get("Version");
-        }
+        // if (customer.get("Version") * 1 > roleData.Version * 1) {
+        //   roleData.Version = customer.get("Version");
+        // }
         if (customer.get("Privileged")) {
           roleData.Privileges.push(customer.delete("dataPrivilege").toJS());
         }
@@ -306,7 +306,12 @@ var UserDetail = React.createClass({
       isView = that.props.formStatus === formStatus.VIEW;
     if (customers.size < 1) {
       return (
-        <div><Loading ref="pop_user_detail_loading"/></div>
+        <div style={{
+          display: 'flex',
+          flex: 1,
+          'alignItems': 'center',
+          'justifyContent': 'center'
+        }}><CircularProgress  mode="indeterminate" size={2} /></div>
         );
     }
 

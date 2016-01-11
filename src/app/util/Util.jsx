@@ -1,7 +1,16 @@
 'use strict';
 import Momment from 'moment';
 import Immutable from 'immutable';
-import _ from 'lodash';
+import _every from 'lodash/collection/every';
+import _forEach from 'lodash/collection/forEach';
+import _isArray from 'lodash/lang/isArray';
+import _isPlainObject from 'lodash/lang/isPlainObject';
+var _ = {
+  every: _every,
+  forEach: _forEach,
+  isArray: _isArray,
+  isPlainObject: _isPlainObject
+};
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 
 import HierarchyStore from '../stores/HierarchyStore.jsx';
@@ -45,6 +54,51 @@ let CommonFuns = {
         console.log(content);
       }
     }
+  },
+  merge: function() {
+    var src, copy, options, name, copyIsArray, clone,
+      target = arguments[0] || {},
+      length = arguments.length,
+      i = 1,
+      deep = false;
+
+    if (typeof target === "boolean") {
+      deep = target;
+      target = arguments[i] || {};
+      i++;
+    }
+    if (typeof target !== "object") {
+      target = {};
+    }
+    if (i === length) {
+      return target;
+    }
+
+    for (; i < length; i++) {
+      if ((options = arguments[i]) != null) {
+        for (name in options) {
+          src = target[name];
+          copy = options[name];
+
+          if (target === copy) {
+            continue;
+          }
+
+          if (deep && copy && ((copyIsArray = _.isArray(copy)) || _.isPlainObject(copy))) {
+            if (copyIsArray) {
+              copyIsArray = false;
+              clone = src && _.isArray(src) ? src : [];
+            } else if (_.isPlainObject(copy)) {
+              clone = src && _.isPlainObject(src) ? src : {};
+            }
+            target[name] = this.merge(deep, clone, copy);
+          } else if (copy !== undefined) {
+            target[name] = copy;
+          }
+        }
+      }
+    }
+    return target;
   },
   isEmpty: function(data) {
     if (typeof data == "object") {

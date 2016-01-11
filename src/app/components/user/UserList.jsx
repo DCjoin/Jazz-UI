@@ -27,10 +27,12 @@ var UserItem = React.createClass({
     if (this.props.HasWholeCustomer) {
       relateCustomerName = "全部客户";
     } else {
+      if (!!this.props.Customers) {
+        this.props.Customers.map(function(customer) {
+          relateCustomers.push(customer.CustomerName);
+        });
+      }
 
-      this.props.Customers.map(function(customer) {
-        relateCustomers.push(customer.CustomerName);
-      });
 
       if (relateCustomers.length > 0) {
         relateCustomerName = relateCustomers.join(", ");
@@ -99,6 +101,7 @@ module.exports = React.createClass({
         var props = item.toJS();
         props.selected = selectedId == item.get("Id");
         props.handlerTouchTap = handlerTouchTap;
+        console.log(props);
         return (<UserItem key={"pop-user-key-" + item.get("Id")} {...props} />);
       });
     } else {

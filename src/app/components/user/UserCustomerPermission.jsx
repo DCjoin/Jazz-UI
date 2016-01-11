@@ -7,7 +7,7 @@ import { List, Map } from 'immutable';
 import { RaisedButton, Checkbox } from 'material-ui';
 
 import SideNav from '../../controls/SideNav.jsx';
-import Dialog from '../../controls/Dialog.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
 import Loading from './Loading.jsx';
 import HierarchyTree from '../../controls/tree/Tree.jsx';
 
@@ -200,7 +200,7 @@ let UserCustomerPermission = React.createClass({
 						<div className="pop-user-customer-permission-dialog-content">
 							{content}
 						</div>
-						{customer.get("dataPrivilege") ?
+						{!!customer.get("dataPrivilege") ?
           <div className="pop-user-customer-permission-dialog-footer">
 							<RaisedButton style={buttonStyle} labelStyle={{
             color: "inherit"
