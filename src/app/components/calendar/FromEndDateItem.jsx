@@ -9,7 +9,7 @@ import FlatButton from './FlatButton.jsx';
 var FromEndDateItem = React.createClass({
   getInitialState: function() {
     return {
-      type: this.props.type,
+      typeValue: this.props.typeValue,
       typeText: this.props.typeText,
       typeItem: this.props.typeItem,
       startMonth: this.props.startMonth,
