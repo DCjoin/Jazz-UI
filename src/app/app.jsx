@@ -26,6 +26,7 @@ import PlatformApp from './components/platform/PlatformApp.jsx';
 import User from './components/user/User.jsx';
 import ServiceApp from './components/service/ServiceApp.jsx';
 import WorkTime from './components/Calendar/WorkTime.jsx';
+import DayNight from './components/Calendar/DayNight.jsx';
 
 // var theme = new ThemeManager();
 import './less/main.less';
@@ -57,7 +58,7 @@ var routes = (
         <Route name="workday" path="workday" handler={WorkTime}></Route>
         <Route name="worktime" path="worktime"></Route>
         <Route name="coldwarm" path="coldwarm"></Route>
-        <Route name="daynight" path="daynight"></Route>
+        <Route name="daynight" path="daynight" handler={DayNight}></Route>
 
         <Route name='price' path='price'></Route>
         <Route name='carbon' path='carbon'></Route>

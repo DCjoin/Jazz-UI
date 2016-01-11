@@ -1,8 +1,9 @@
 'use strict';
 
 import React from 'react';
-import { Mixins, Styles, ClearFix, FlatButton, FontIcon } from 'material-ui';
+import { Mixins, Styles, ClearFix, FontIcon } from 'material-ui';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
+import FlatButton from './FlatButton.jsx';
 
 var FromEndTime = React.createClass({
   propTypes: {
@@ -125,8 +126,8 @@ var FromEndTime = React.createClass({
       errorText: ''
     });
   },
-  _onDeleteWorktimeData: function() {
-    this.props.onDeleteWorktimeData(this.props.index);
+  _onDeleteTimeData: function() {
+    this.props.onDeleteTimeData(this.props.index);
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
@@ -140,6 +141,7 @@ var FromEndTime = React.createClass({
       this.props.errorText === nextProps.errorText &&
       this.props.startTime === nextProps.startTime &&
       this.props.endTime === nextProps.endTime &&
+      this.props.hasDeleteButton === nextProps.hasDeleteButton &&
       this.state.startTime === nextState.startTime &&
       this.state.endTime === nextState.endTime &&
       this.state.errorText === nextState.errorText) {
@@ -158,6 +160,9 @@ var FromEndTime = React.createClass({
       defaultValue: me.state.startTime,
       title: '',
       textField: 'text',
+      style: {
+        width: '90px'
+      },
       didChanged: me._onTimeChange.bind(null, 'startTime')
     };
     var endTimeProps = {
@@ -167,6 +172,9 @@ var FromEndTime = React.createClass({
       defaultValue: me.state.endTime,
       title: '',
       textField: 'text',
+      style: {
+        width: '90px'
+      },
       didChanged: me._onTimeChange.bind(null, 'endTime')
     };
     var cleanIconStyle = {
@@ -174,13 +182,15 @@ var FromEndTime = React.createClass({
     };
     var deleteButton = null;
     if (!me.props.isViewStatus && me.props.hasDeleteButton) {
-      deleteButton = <div><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onDeleteWorktimeData} style={cleanIconStyle}></FontIcon></div>;
+      deleteButton = deleteButton = <div className='jazz-fromendtime-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteTimeData} style={{
+        background: 'transparent'
+      }} /></div>;
     }
     return (
       <div className="jazz-fromendtime">
         <div className='jazz-fromendtime-content'>
           <ViewableDropDownMenu {...startTimeProps}></ViewableDropDownMenu>
-          <span> {'-'} </span>
+          <div className='jazz-fromendtime-to'>{'-'}</div>
           <ViewableDropDownMenu {...endTimeProps}></ViewableDropDownMenu>
           {deleteButton}
         </div>

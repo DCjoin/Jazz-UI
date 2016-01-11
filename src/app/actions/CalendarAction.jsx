@@ -10,14 +10,14 @@ let CalendarAction = {
       },
       success: function(calendarList) {
         AppDispatcher.dispatch({
-          type: Action.GET_WORKTIME_LIST_SUCCESS,
+          type: Action.GET_CALENDAR_LIST_SUCCESS,
           calendarList: calendarList,
           calendarType: type
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
-          type: Action.GET_WORKTIME_LIST_ERROR,
+          type: Action.GET_CALENDAR_LIST_ERROR,
           calendarType: type
         });
       }
@@ -25,14 +25,14 @@ let CalendarAction = {
   },
   setSelectedCalendarIndex(index, type) {
     AppDispatcher.dispatch({
-      type: Action.SET_SELECTED_WORKTIME,
+      type: Action.SET_SELECTED_CALENDAR,
       index: index,
       calendarType: type
     });
   },
   cancelSaveCalendar(type) {
     AppDispatcher.dispatch({
-      type: Action.CANCEL_SAVE_WORKTIME,
+      type: Action.CANCEL_SAVE_CALENDAR,
       calendarType: type
     });
   },
@@ -43,7 +43,7 @@ let CalendarAction = {
       },
       success: function(calendar) {
         AppDispatcher.dispatch({
-          type: Action.MODIFT_WORKTIME_SUCCESS,
+          type: Action.MODIFT_CALENDAR_SUCCESS,
           calendar: calendar,
           calendarType: type
         });
@@ -63,7 +63,7 @@ let CalendarAction = {
       },
       success: function() {
         AppDispatcher.dispatch({
-          type: Action.DELETE_WORKTIME_SUCCESS,
+          type: Action.DELETE_CALENDAR_SUCCESS,
           calendarType: type
         });
       },
@@ -80,11 +80,11 @@ let CalendarAction = {
       },
       success: function(calendar) {
         AppDispatcher.dispatch({
-          type: Action.CREATE_WORKTIME_SUCCESS,
+          type: Action.CREATE_CALENDAR_SUCCESS,
           calendar: calendar,
           calendarType: type
         });
-        me.getCalendarListByType();
+        me.getCalendarListByType(type);
       },
       error: function(err, res) {
         console.log(err, res);

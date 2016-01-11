@@ -840,13 +840,35 @@ input:focus{
     position: relative;
     left:65px;
 }
-.jazz-fromendtime-content{
-  display: flex;
-  flex-direction: row;
-}
-.jazz-fromendtime-error{
-  color:red;
-  font-size: 10px;
+.jazz-fromendtime{
+    display: flex;
+    flex-direction: column;
+    height: 46px;
+    .jazz-fromendtime-content{
+      display: flex;
+      flex-direction: row;
+      .jazz-fromendtime-to{
+        width: 24px;
+        text-align: center;
+        padding-top: 4px;
+      }
+      .jazz-fromendtime-delete-button{
+        padding-top: 5px;
+        > button{
+         border: none !important;
+         background-color: transparent!important;
+         &:hover{
+           color:@schneiderBlue!important;
+           background-color: '#e1fcff'!important;
+         }
+        }
+      }
+    }
+    .jazz-fromendtime-error{
+      color:red;
+      font-size: 10px;
+    }
+
 }
 .keyframes(@name, @mixContent) {
 
