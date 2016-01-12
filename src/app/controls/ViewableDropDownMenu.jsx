@@ -5,6 +5,7 @@ import mui from 'material-ui';
 
 let {SelectField} = mui;
 import assign from 'object-assign';
+import CommonFuns from '../util/Util.jsx';
 var ViewableDropDownMenu = React.createClass({
   propTypes: {
     isViewStatus: React.PropTypes.bool,
@@ -40,45 +41,9 @@ var ViewableDropDownMenu = React.createClass({
     this.props.didChanged(payload);
   },
 
-  _compareArray: function(data1, data2) {
-    if ((data1 === undefined) && (data2 !== undefined) || (data1 !== undefined) && (data2 === undefined)) {
-      return false;
-    } else if (data1 === undefined && (data2 === undefined)) {
-      return true;
-    }
-    if (data1.length !== data2.length) {
-      return false;
-    }
-    for (var i = 0; i < data1.length; i++) {
-      if (!this._compareObj(data1[i], data2[i])) {
-        return false;
-      }
-    }
-    return true;
-  },
-
-  _compareObj: function(a, b) {
-    var aProps = Object.getOwnPropertyNames(a);
-    var bProps = Object.getOwnPropertyNames(b);
-
-    if (aProps.length != bProps.length) {
-      return false;
-    }
-
-    for (var i = 0; i < aProps.length; i++) {
-      var propName = aProps[i];
-
-      if (a[propName] !== b[propName]) {
-        return false;
-      }
-    }
-
-    return true;
-  },
-
   shouldComponentUpdate: function(nextProps, nextState) {
     if (this.props.isViewStatus == nextProps.isViewStatus &&
-      this._compareArray(this.props.dataItems, nextProps.dataItems) &&
+      CommonFuns.CompareArray(this.props.dataItems, nextProps.dataItems) &&
       this.props.selectedIndex == nextProps.selectedIndex &&
       this.props.defaultValue == nextProps.defaultValue) {
       return false;

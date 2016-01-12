@@ -75,7 +75,7 @@ let CommonFuns = {
     }
 
     for (; i < length; i++) {
-      if ((options = arguments[i]) != null) {
+      if ((options = arguments[i]) !== null) {
         for (name in options) {
           src = target[name];
           copy = options[name];
@@ -1498,6 +1498,37 @@ let CommonFuns = {
     combo.setState({
       selectedIndex: valueIndex
     });
+  },
+  CompareArray: function(data1, data2) {
+    if ((data1 === undefined) && (data2 !== undefined) || (data1 !== undefined) && (data2 === undefined)) {
+      return false;
+    } else if (data1 === undefined && (data2 === undefined)) {
+      return true;
+    }
+    if (data1.length !== data2.length) {
+      return false;
+    }
+    for (var i = 0; i < data1.length; i++) {
+      if (!this.CompareObj(data1[i], data2[i])) {
+        return false;
+      }
+    }
+    return true;
+  },
+  CompareObj: function(a, b) {
+    var aProps = Object.getOwnPropertyNames(a);
+    var bProps = Object.getOwnPropertyNames(b);
+    if (aProps.length != bProps.length) {
+      return false;
+    }
+    for (var i = 0; i < aProps.length; i++) {
+      var propName = aProps[i];
+
+      if (a[propName] !== b[propName]) {
+        return false;
+      }
+    }
+    return true;
   },
   DateComputer: {
     FixedTimes: {

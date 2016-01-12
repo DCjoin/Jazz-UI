@@ -82,16 +82,7 @@ var FromEndDate = React.createClass({
         endMonth = value[0];
         endDay = value[1];
       }
-      this.setState({
-        startMonth: value[0],
-        startDay: value[1],
-        endMonth: endMonth,
-        endDay: endDay
-      }, () => {
-        var start = this.refs.startItem.getValue();
-        var end = this.refs.endItem.getValue();
-        this.props.onDateChange(start, end);
-      });
+      this.props.onDateChange(value[0], value[1], endMonth, endDay);
     } else if (type === 1) {
       startValue = this.refs.startItem.getValue();
       endValue = value;
@@ -99,16 +90,7 @@ var FromEndDate = React.createClass({
         startMonth = value[0];
         startDay = value[1];
       }
-      this.setState({
-        startMonth: startMonth,
-        startDay: startDay,
-        endMonth: value[0],
-        endDay: value[1]
-      }, () => {
-        var start = this.refs.startItem.getValue();
-        var end = this.refs.endItem.getValue();
-        this.props.onDateChange(start, end);
-      });
+      this.props.onDateChange(startMonth, startDay, value[0], value[1]);
     }
   },
   componentWillReceiveProps: function(nextProps) {
