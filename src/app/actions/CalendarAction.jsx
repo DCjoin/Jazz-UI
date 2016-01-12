@@ -90,6 +90,30 @@ let CalendarAction = {
         console.log(err, res);
       }
     });
+  },
+  clearAllTimeErrorText: function() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL_TIME_ERROR_TEXT
+    });
+  },
+  setTimeErrorText: function(index, errorText) {
+    AppDispatcher.dispatch({
+      type: Action.SET_TIME_ERROR_TEXT,
+      index: index,
+      errorText: errorText
+    });
+  },
+  clearAllDateErrorText: function() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL_DATE_ERROR_TEXT
+    });
+  },
+  setDateErrorText: function(index, errorText) {
+    AppDispatcher.dispatch({
+      type: Action.SET_DATE_ERROR_TEXT,
+      index: index,
+      errorText: errorText
+    });
   }
 };
 module.exports = CalendarAction;

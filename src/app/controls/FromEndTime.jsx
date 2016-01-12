@@ -101,30 +101,19 @@ var FromEndTime = React.createClass({
       if ((endTime !== -1) && (value >= endTime)) {
         endTime = value + 30;
       }
-      this.setState({
-        startTime: value,
-        endTime: endTime
-      }, () => {
-        var data = this.getValue();
-        this.props.onTimeChange(this.props.index, data);
-      });
+      this.props.onTimeChange(this.props.index, [value, endTime]);
     } else if (name === 'endTime') {
       if ((startTime !== -1) && (value <= startTime)) {
         startTime = value - 30;
       }
-      this.setState({
-        startTime: startTime,
-        endTime: value
-      }, () => {
-        var data = this.getValue();
-        this.props.onTimeChange(this.props.index, data);
-      });
+      this.props.onTimeChange(this.props.index, [startTime, value]);
     }
   },
+  setErrorText: function(errorText) {
+    this.props.setErrorText(this.props.index, errorText);
+  },
   clearInvalide: function() {
-    this.setState({
-      errorText: ''
-    });
+    this.setErrorText('');
   },
   _onDeleteTimeData: function() {
     this.props.onDeleteTimeData(this.props.index);

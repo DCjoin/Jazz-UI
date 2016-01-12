@@ -2,21 +2,23 @@
 
 import React from "react";
 import FromEndTime from '../../controls/FromEndTime.jsx';
+import CalendarAction from '../../actions/CalendarAction.jsx';
+import CalendarStore from '../../stores/CalendarStore.jsx';
+
 
 var FromEndTimeGroup = React.createClass({
   getInitialState: function() {
-    var length = this.props.items.size;
-    var errorTextArr = this.initErrorTextArr();
     return {
-      errorTextArr: errorTextArr
+      errorTextArr: CalendarStore.getTimeErrorText()
     };
   },
-  initErrorTextArr: function() {
-    var errorTextArr = [];
-    for (var i = 0; i < length; i++) {
-      errorTextArr.push('');
-    }
-    return errorTextArr;
+  clearErrorText: function() {
+    CalendarAction.clearAllTimeErrorText();
+  },
+  _onErrorTextChange: function() {
+    this.setState({
+      errorTextArr: CalendarStore.getTimeErrorText()
+    });
   },
   getTimeData: function(data) {
     var startTime = data[0];
@@ -47,17 +49,14 @@ var FromEndTimeGroup = React.createClass({
   _onDeleteTimeData: function(index) {
     this.props.onDeleteTimeData(index);
   },
-  clearErrorText: function() {
-    var errorTextArr = this.initErrorTextArr();
-    this.setState({
-      errorTextArr: errorTextArr
-    });
+  _setErrorText: function(index, errorText) {
+    CalendarAction.setTimeErrorText(index, errorText);
   },
   validate: function() {
     var isValid = true;
     var length = this.props.items.size;
     for (var i = 0; i < length; i++) {
-      isValid = isValid && this.refs['worktime' + (i + 1)].isValid();
+      isValid = isValid && this.refs['fromEndTime' + (i + 1)].isValid();
     }
     return isValid;
   },
@@ -65,23 +64,18 @@ var FromEndTimeGroup = React.createClass({
     var length = this.props.items.size;
     var currentItem, compItem, i, j;
     var isValid = true;
-    var errorTextArr = this.initErrorTextArr();
+    this.clearErrorText();
     for (i = 0; i < length; i++) {
-      currentItem = this.refs['worktime' + (i + 1)];
-
+      currentItem = this.refs['fromEndTime' + (i + 1)];
       for (j = i + 1; j < length; j++) {
-        compItem = this.refs['worktime' + (j + 1)];
-
+        compItem = this.refs['fromEndTime' + (j + 1)];
         if (this.checkOverLap(currentItem, compItem)) {
-          errorTextArr[i] = I18N.Common.Label.TimeConflict;
-          errorTextArr[j] = I18N.Common.Label.TimeConflict;
+          currentItem.setErrorText(I18N.Common.Label.TimeConflict);
+          compItem.setErrorText(I18N.Common.Label.TimeConflict);
           isValid = false;
         }
       }
     }
-    this.setState({
-      errorTextArr: errorTextArr
-    });
     return isValid;
   },
   checkOverLap(item, comItem) {
@@ -126,25 +120,32 @@ var FromEndTimeGroup = React.createClass({
     isValid = isValid && this.validateGroup();
     return isValid;
   },
+  componentDidMount: function() {
+    CalendarStore.addTimeErrorTextChangeListener(this._onErrorTextChange);
+  },
+  componentWillUnmount: function() {
+    CalendarStore.removeTimeErrorTextChangeListener(this._onErrorTextChange);
+  },
   render() {
     let me = this;
     let items = this.props.items;
-    let workTimeItems = null;
+    let timeItems = null;
     if (items && items.size !== 0) {
-      workTimeItems = items.map(function(item, i) {
+      timeItems = items.map(function(item, i) {
         let props = {
           index: i,
           key: item.get('Id'),
           id: item.get('Id'),
           type: item.get('Type'),
-          ref: 'worktime' + (i + 1),
+          ref: 'fromEndTime' + (i + 1),
           isViewStatus: me.props.isViewStatus,
           hasDeleteButton: items.size === 1 ? false : true,
-          errorText: me.state.errorTextArr[i],
+          errorText: me.state.errorTextArr.get(i),
           startTime: item.get('StartFirstPart') === -1 ? -1 : item.get('StartFirstPart') * 60 + item.get('StartSecondPart'),
           endTime: item.get('EndFirstPart') === -1 ? -1 : item.get('EndFirstPart') * 60 + item.get('EndSecondPart'),
           onTimeChange: me._onTimeChange,
-          onDeleteTimeData: me._onDeleteTimeData
+          onDeleteTimeData: me._onDeleteTimeData,
+          setErrorText: me._setErrorText
         };
         return (
           <FromEndTime {...props}></FromEndTime>
@@ -153,7 +154,7 @@ var FromEndTimeGroup = React.createClass({
     }
     return (
       <div>
-        {workTimeItems}
+        {timeItems}
       </div>
       );
   }

@@ -126,7 +126,7 @@ var FromEndDate = React.createClass({
       onMonthDayItemChange: me._onMonthDayItemChanged
     };
     var endProps = {
-      ref: 'startItem',
+      ref: 'endItem',
       isViewStatus: me.props.isViewStatus,
       month: me.state.endMonth,
       day: me.state.endDay,

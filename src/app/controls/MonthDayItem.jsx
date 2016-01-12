@@ -127,39 +127,26 @@ var MonthDayItem = React.createClass({
 
     return dayItems;
   },
-  _onMonthChange: function(value) {
-    var day = this.state.day;
-    var dayNum = this._getDayNum(value);
-    if (day > dayNum) {
-      day = dayNum;
-    }
-    this.setState({
-      month: value,
-      day: day,
-      dayNum: dayNum
-    }, () => {
-      var data = this.getValue();
-      this.props.onMonthDayItemChange(this.props.type, data);
-    });
-  },
   _onMonthDayItemChange(name, value) {
+    var month = this.state.month;
+    var day = this.state.day;
     if (name === 'month') {
-      this._onMonthChange();
+      var dayNum = this._getDayNum(value);
+      if (day > dayNum) {
+        day = dayNum;
+      }
+      this.props.onMonthDayItemChange(this.props.type, [value, day]);
     } else if (name === 'day') {
-      this.setState({
-        day: value
-      }, () => {
-        var data = this.getValue();
-        this.props.onMonthDayItemChange(this.props.type, data);
-      });
+      this.props.onMonthDayItemChange(this.props.type, [month, value]);
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
+    var dayNum = this._getDayNum(nextProps.month);
     this.setState({
       month: nextProps.month,
       day: nextProps.day,
-      dayNum: nextProps.dayNum
+      dayNum: dayNum
     });
   },
   shouldComponentUpdate: function(nextProps, nextState) {
