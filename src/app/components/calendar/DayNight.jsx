@@ -120,12 +120,11 @@ var Daynight = React.createClass({
     this.setState({
       selectedData: Immutable.fromJS(daynight),
       enableSave: false,
-      formStatus: formStatus.Add
+      formStatus: formStatus.ADD
     });
   },
   _clearAllErrorText() {
     this.refs.daynightTitleId.clearErrorText();
-    this.refs.daynightGroup.clearErrorText();
   },
   _isValid() {
     var isValid = this.refs.daynightTitleId.isValid();

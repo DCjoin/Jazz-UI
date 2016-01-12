@@ -450,7 +450,7 @@ I18N.Setting.Calendar.WorkDay = '工作日';
 I18N.Setting.Calendar.Holiday = '非工作日';
 I18N.Setting.Calendar.DefaultWorkDay = '默认工作日：周一至周五';
 I18N.Setting.Calendar.AdditionalDay = '补充日期';
-I18N.Setting.Calendar.ItemType = '日期类型';
+I18N.Setting.Calendar.DateType = '日期类型';
 I18N.Setting.Calendar.StartDate = '开始日期';
 I18N.Setting.Calendar.EndDate = '结束日期';
 I18N.Setting.Calendar.Month = '月';
@@ -458,7 +458,6 @@ I18N.Setting.Calendar.StartMonth = '开始月份';
 I18N.Setting.Calendar.EndMonth = '结束月份';
 I18N.Setting.Calendar.TimeRange = '时间范围';
 I18N.Setting.Calendar.Date = '日';
-I18N.Setting.Calendar.SeansonType = '季节类型';
 I18N.Setting.Calendar.MonthDayFromTo = '{0}月{1}日到{2}月{3}日';
 
 //worktime
@@ -473,6 +472,7 @@ I18N.Setting.Calendar.To = '到';
 
 //cold/warm
 I18N.Setting.Calendar.ColdwarmSetting = '冷暖季';
+I18N.Setting.Calendar.SeansonType = '季节类型';
 I18N.Setting.Calendar.WarmSeason = '采暖季';
 I18N.Setting.Calendar.ColdSeason = '供冷季';
 I18N.Setting.Calendar.AddWarmSeason = '添加采暖季';

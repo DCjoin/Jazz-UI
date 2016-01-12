@@ -8,6 +8,29 @@ import FromEndDate from './FromEndDate.jsx';
 import FlatButton from './FlatButton.jsx';
 
 var FromEndDateItem = React.createClass({
+  propTypes: {
+    index: React.PropTypes.number.isRequired,
+    isViewStatus: React.PropTypes.bool,
+    hasDeleteButton: React.PropTypes.bool,
+    errorText: React.PropTypes.string,
+    typeValue: React.PropTypes.number,
+    typeItems: React.PropTypes.Object,
+    typeText: React.PropTypes.string,
+    startMonth: React.PropTypes.number,
+    startDay: React.PropTypes.number,
+    endMonth: React.PropTypes.number,
+    endDay: React.PropTypes.number
+  },
+  getDefaultProps() {
+    return {
+      startMonth: -1,
+      startDay: -1,
+      endMonth: -1,
+      endDay: -1,
+      errorText: '',
+      hasDeleteButton: true
+    };
+  },
   getInitialState: function() {
     return {
       typeValue: this.props.typeValue,
@@ -29,12 +52,22 @@ var FromEndDateItem = React.createClass({
     return this.state.typeValue;
   },
   _onDateChange: function(startMonth, startDay, endMonth, endDay) {
-    this.setState({
+    var dateData = {
       startMonth: startMonth,
       startDay: startDay,
       endMonth: endMonth,
       endDay: endDay
-    });
+    };
+    this.props.onDateChange(this.props.index, dateData);
+  },
+  setErrorText: function(errorText) {
+    this.props.setErrorText(this.props.index, errorText);
+  },
+  clearInvalide: function() {
+    this.setErrorText('');
+  },
+  _onDeleteDateData: function() {
+    this.props.onDeleteDateData(this.props.index);
   },
   getCompareValue: function() {
     this.refs.fromEndDate.getCompareValue();
@@ -87,16 +120,27 @@ var FromEndDateItem = React.createClass({
       endDay: me.state.endDay,
       onDateChange: me._onDateChange
     };
+    var cleanIconStyle = {
+      fontSize: '16px'
+    };
+    var deleteButton = null;
+    if (!me.props.isViewStatus && me.props.hasDeleteButton) {
+      deleteButton = deleteButton = <div className='jazz-fromenddate-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteDateData} style={{
+        background: 'transparent'
+      }} /></div>;
+    }
     return (
       <div className='jazz-fromenddate-item'>
         <div className='jazz-fromenddate-item-type'>
           <div className='jazz-fromenddate-item-text'>{me.props.typeText}</div>
           <ViewableDropDownMenu {...typeProps}></ViewableDropDownMenu>
+          {deleteButton}
         </div>
         <div className='jazz-fromenddate-item-date'>
           <div className='jazz-fromenddate-item-text'>{I18N.Setting.Calendar.TimeRange}</div>
           <FromEndDate {...dateProps}></FromEndDate>
         </div>
+        <div className="jazz-fromendtime-error">{me.state.errorText}</div>
       </div>
       );
   }

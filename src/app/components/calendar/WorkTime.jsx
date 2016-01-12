@@ -120,12 +120,11 @@ var WorkTime = React.createClass({
     this.setState({
       selectedData: Immutable.fromJS(worktime),
       enableSave: false,
-      formStatus: formStatus.Add
+      formStatus: formStatus.ADD
     });
   },
   _clearAllErrorText() {
     this.refs.worktimeTitleId.clearErrorText();
-    this.refs.worktimeGroup.clearErrorText();
   },
   _isValid() {
     var isValid = this.refs.worktimeTitleId.isValid();
