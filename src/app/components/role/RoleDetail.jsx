@@ -2,6 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
+import Immutable from 'immutable';
 import RoleAction from '../../actions/RoleAction.jsx';
 import RoleStore from '../../stores/RoleStore.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
@@ -85,46 +86,71 @@ var RoleDetail = React.createClass({
 
   _renderPrivatePermission: function(isView) {
     var list = RoleStore.getPrivatePermissionList(isView),
-      permissions = [];
-    var boxStyle = {
-        marginLeft: '20px',
-        width: '24px'
-      },
-      iconstyle = {
-        width: '24px'
-      },
-      labelstyle = {
-        width: '0px',
-        height: '0px'
-      };
+      permissions = [],
+      that = this;
     if (this.state.showPrivatePanel) {
       list.forEach((privilege) => {
-        if (isView) {
-          if (privilege.isChecked) {
-            permissions.push(<div className='pop-role-detail-content-permission-content-item'>
-                      <div className='pop-role-detail-content-permission-content-item-left'>
-                        {privilege.Name}
-                      </div>
-                    </div>)
-          }
+        var liStyle = {};
 
-        } else {
-          permissions.push(<div className="taglist"  id={privilege.Id} onClick={this._handlePrivilegeClick} title={this.props.title}>
-                  <Checkbox
-          checked={privilege.isChecked}
-          style={boxStyle}
-          iconStyle={iconstyle}
-          labelStyle={labelstyle}
-          />
-                    <div className="label">
-                      <div className="title">
-                      {privilege.Name}
-                      </div>
-                    </div>
-                  </div>)
+        if (isView && !privilege.isChecked) {
+          liStyle.display = "none";
         }
+        //onCheck={that._handlePrivilegeClick(privilege.Id)}
+        // //        onClick={ () => {
+        //           if (!isView) {
+        //             that._handlePrivilegeClick(privilege.Id);
+        //           }
+        //         }}
+        permissions.push(
+          <li className="pop-user-detail-customer-subcheck-block-item" style={liStyle}>
+              <div className="pop-user-detail-customer-subcheck-block-item-left" id={privilege.Id} onClick={this._handlePrivilegeClick}>
+                <Checkbox
+          ref=""
+          defaultChecked={privilege.isChecked}
+          disabled={isView}
+          style={{
+            width: "auto",
+            display: "block"
+          }}
+          />
+                <label
+          title={privilege.Name}
+          className={classnames("pop-user-detail-customer-subcheck-block-item-label", {
+            "disabled": isView
+          })}>
+                  {privilege.Name}
+                </label>
+              </div>
+            </li>
+        );
       });
     }
+    //   if (isView) {
+    //     if (privilege.isChecked) {
+    //       permissions.push(<div className='pop-role-detail-content-permission-content-item'>
+    //                 <div className='pop-role-detail-content-permission-content-item-left'>
+    //                   {privilege.Name}
+    //                 </div>
+    //               </div>)
+    //     }
+    //
+    //   } else {
+    //     permissions.push(<div className="taglist"  id={privilege.Id} onClick={this._handlePrivilegeClick} title={this.props.title}>
+    //             <Checkbox
+    //     checked={privilege.isChecked}
+    //     style={boxStyle}
+    //     iconStyle={iconstyle}
+    //     labelStyle={labelstyle}
+    //     />
+    //               <div className="label">
+    //                 <div className="title">
+    //                 {privilege.Name}
+    //                 </div>
+    //               </div>
+    //             </div>)
+    //   }
+    // });
+
 
     return (
       <div className="pop-role-detail-content-permission">
@@ -133,7 +159,9 @@ var RoleDetail = React.createClass({
       <span className="pop-role-detail-content-permission-header-panel-action" onClick={this._handleTogglePanel.bind(this, 1)}>{ this.state.showPrivatePanel ? "隐藏" : "显示"}</span>
     </div>
     <ul className="pop-role-detail-content-permission-content">
+      <ul className="pop-user-detail-customer-subcheck-block">
       {permissions}
+    </ul>
     </ul>
   </div>
       )

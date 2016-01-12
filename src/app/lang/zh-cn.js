@@ -1239,8 +1239,8 @@ I18N.Platform.User.Email = '电子邮箱';
 I18N.Platform.User.EmailError = '电子邮箱格式不正确';
 I18N.Platform.User.Logout = '退出';
 I18N.Platform.About = {};
-I18N.Platform.About.Title = '关于云能耗';
-I18N.Platform.About.QrCode = '云能耗移动端二维码';
+I18N.Platform.About.Title = '关于云能效';
+I18N.Platform.About.QrCode = '云能效移动端二维码';
 I18N.Platform.About.ipadQrCode = 'iPad客户端';
 I18N.Platform.About.WeChatQrCode = '微信公众号';
 I18N.Platform.About.ContactUs = '联系我们';
@@ -1296,6 +1296,7 @@ I18N.Privilege.Common.DashboardView = '仪表盘与小组件查看';
 I18N.Privilege.Common.DashboardManagement = '仪表盘与小组件编辑';
 I18N.Privilege.Common.PersonalInfoManagement = '个人信息管理';
 I18N.Privilege.Common.MapView = '地图信息查看';
+I18N.Privilege.Common.EnergyManager = '能源管理';
 I18N.Privilege.Role = {};
 I18N.Privilege.Role.Role = '角色权限';
 I18N.Privilege.Role.DashboardSharing = '仪表盘和小组件分享与共享';
@@ -1306,23 +1307,33 @@ I18N.Privilege.Role.UnitIndicator = '“单位指标”功能';
 I18N.Privilege.Role.RatioIndicator = '“时段能耗比”功能';
 I18N.Privilege.Role.LabelingIndicator = '“能效标识”功能';
 I18N.Privilege.Role.CorporateRanking = '“集团排名”功能';
-I18N.Privilege.Role.EnergyExport = '数据导出';
+I18N.Privilege.Role.EnergyExport = '能源数据导出';
 I18N.Privilege.Role.ReportView = '报表导出与查看';
 I18N.Privilege.Role.ReportManagement = '报表管理';
-I18N.Privilege.Role.EnergyAlarm = '能效报警';
+I18N.Privilege.Role.EnergyAlarm = '能源报警';
 I18N.Privilege.Role.ChartRemarking = '图表标记';
 I18N.Privilege.Role.SPManagement = '“云能效”系统管理';
 I18N.Privilege.Role.HierarchyManagement = '层级结构管理';
-I18N.Privilege.Role.TagManagement = '普通数据点管理';
+I18N.Privilege.Role.TagManagement = '数据点管理';
 I18N.Privilege.Role.KPIConfiguration = '关键能效指标数据点管理';
 I18N.Privilege.Role.TagMapping = '数据点关联';
 I18N.Privilege.Role.CustomerInfoView = '客户信息查看';
 I18N.Privilege.Role.CustomerInfoManagement = '客户信息管理';
 I18N.Privilege.Role.CustomLabeling = '自定义能效标识';
+I18N.Privilege.Role.BaselineConfiguration = '能耗分析基准值配置';
 
 I18N.Remark = {};
 I18N.Remark.Label = '备注';
 I18N.Remark.DefaultText = '点击此处添加备注';
+
+//usertype
+I18N.Setting.Role = {};
+
+I18N.Setting.Role.AddRole = '角色';
+I18N.Setting.Role.Function = '功能权限角色';
+I18N.Setting.Role.Type = '功能权限角色类型';
+I18N.Setting.Role.Name = '角色名称';
+I18N.Setting.Role.Privilege = '功能权限';
 
 
 
