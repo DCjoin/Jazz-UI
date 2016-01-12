@@ -46,10 +46,11 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   },
   getCommonPrivilegeList: function() {
     return ([
-      I18N.Privilege.Common.DashboardView,
-      I18N.Privilege.Common.DashboardManagement,
+      // I18N.Privilege.Common.DashboardView,
+      // I18N.Privilege.Common.DashboardManagement,
+      I18N.Privilege.Common.MapView,
+      I18N.Privilege.Common.EnergyManager,
       I18N.Privilege.Common.PersonalInfoManagement,
-      I18N.Privilege.Common.MapView
     ]);
   },
   getRolePrivilegeList: function() {
@@ -78,6 +79,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       I18N.Privilege.Role.ReportManagement,
       I18N.Privilege.Role.ChartRemarking,
       I18N.Privilege.Role.EnergyAlarm,
+      '',
+      I18N.Privilege.Role.BaselineConfiguration,
     ];
     role.forEach((item, index) => {
       array[1200 + index] = item;

@@ -1,0 +1,150 @@
+'use strict';
+
+import React from "react";
+import classnames from "classnames";
+import { isFunction, isObject } from "lodash/lang";
+import RoleList from './RoleList.jsx';
+import RoleDetail from './RoleDetail.jsx';
+import { formStatus } from '../../constants/FormStatus.jsx';
+import { CircularProgress } from 'material-ui';
+import UserAction from '../../actions/UserAction.jsx';
+import RoleStore from '../../stores/RoleStore.jsx';
+import RoleAction from '../../actions/RoleAction.jsx';
+var Role = React.createClass({
+  getInitialState: function() {
+    return {
+      formStatus: formStatus.VIEW,
+      selectedId: RoleStore.getRoleList().length === 0 ? null : RoleStore.getRoleList()[0].Id,
+      roles: RoleStore.getRoleList(),
+      closedList: false,
+      isLoading: false
+    };
+  },
+  _handlerTouchTap: function(selectedId) {
+    this._setViewStatus(selectedId);
+  // if (this.state.selectedUserId != selectedId) {
+  //   RoleAction.setCurrentSelectedId(selectedId);
+  // }
+  },
+  _handlerCancel: function() {
+    //RoleActionCreator.resetRole();
+    this._setViewStatus();
+  },
+  _handleSaveRole: function(roleData) {
+    if (roleData.Id) {
+      RoleAction.updateRole(roleData);
+    } else {
+      RoleAction.createRole(roleData);
+    }
+    this.setState({
+      isLoading: false
+    });
+  },
+  _handleDeleteRole: function() {
+    RoleAction.deleteRole(RoleStore.getPersistedRole().toJS());
+
+  },
+  _toggleList: function() {
+    var {closedList} = this.state;
+    this.setState({
+      closedList: !closedList
+    });
+  },
+  _setAddStatus: function() {
+    RoleAction.merge();
+    var userDetail = this.refs.pop_user_detail;
+    if (userDetail && isFunction(userDetail.clearErrorTextBatchViewbaleTextFiled)) {
+      userDetail.clearErrorTextBatchViewbaleTextFiled();
+    }
+    //  UserAction.setCurrentSelectedId(selectedId);
+    this.setState({
+      formStatus: formStatus.ADD,
+      selectedId: null
+    });
+  },
+  _setEditStatus: function() {
+    this.setState({
+      formStatus: formStatus.EDIT
+    });
+  },
+  _setViewStatus: function(selectedId = this.state.selectedId) {
+    var id = selectedId;
+    if (!selectedId) {
+      id = this.state.roles[0].Id;
+    }
+    this.setState({
+      formStatus: formStatus.VIEW,
+      selectedId: id
+    });
+  },
+  _onChange: function(selectedId) {
+    if (!!selectedId) {
+      this._setViewStatus(selectedId);
+    }
+    this.setState({
+      roles: RoleStore.getRoleList(),
+      isLoading: false
+    });
+  },
+  componentDidMount: function() {
+    RoleStore.addChangeListener(this._onChange);
+    if (RoleStore.getRoleList().length === 0) {
+      UserAction.getAllRoles();
+      this.setState({
+        isLoading: true
+      });
+    }
+  },
+  componentWillUnmount: function() {
+    RoleStore.removeChangeListener(this._onChange);
+  },
+  render: function() {
+    var that = this,
+      isView = this.state.formStatus === formStatus.VIEW;
+    var listProps = {
+        formStatus: this.state.formStatus,
+        onAddBtnClick: that._setAddStatus,
+        onRoleClick: that._handlerTouchTap,
+        roles: that.state.roles,
+        selectedId: that.state.selectedId
+      },
+      detailProps = {
+        ref: 'pop_user_detail',
+        role: isView ? RoleStore.getRole(this.state.selectedId) : RoleStore.getUpdatingRole(),
+        formStatus: this.state.formStatus,
+        setEditStatus: this._setEditStatus,
+        handlerCancel: this._handlerCancel,
+        handleSaveRole: this._handleSaveRole,
+        handleDeleteRole: this._handleDeleteRole,
+        toggleList: this._toggleList
+      };
+    let rolelist = (!this.state.closedList) ? <div style={{
+      display: 'flex'
+    }}><RoleList {...listProps}/></div> : <div style={{
+      display: 'none'
+    }}><RoleList {...listProps}/></div>;
+    if (this.state.isLoading) {
+      return (
+        <div style={{
+          display: 'flex',
+          flex: 1,
+          'alignItems': 'center',
+          'justifyContent': 'center'
+        }}>
+          <CircularProgress  mode="indeterminate" size={2} />
+          </div>
+        );
+    } else {
+      return (
+        <div style={{
+          display: 'flex',
+          flex: 1
+        }}>
+      {rolelist}
+        <RoleDetail {...detailProps}/>
+      </div>);
+    }
+
+  },
+});
+module.exports = Role;

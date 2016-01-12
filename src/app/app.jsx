@@ -24,6 +24,7 @@ import Platform from './components/platform/Platform.jsx';
 import Test from './components/setting/Test.jsx';
 import PlatformApp from './components/platform/PlatformApp.jsx';
 import User from './components/user/User.jsx';
+import Role from './components/role/Role.jsx';
 import ServiceApp from './components/service/ServiceApp.jsx';
 import WorkTime from './components/Calendar/WorkTime.jsx';
 import DayNight from './components/Calendar/DayNight.jsx';
@@ -69,7 +70,7 @@ var routes = (
         <Route name="customer" path="customer"></Route>
 
         <Route name="user" path="user" handler={User}></Route>
-        <Route name="privilege" path="privilege"></Route>
+        <Route name="privilege" path="privilege" handler={Role}></Route>
       </Route>
    </Route>
 );
