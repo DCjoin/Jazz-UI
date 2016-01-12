@@ -573,6 +573,7 @@ var UserDetail = React.createClass({
     enableSave={!disabledSaveButton}
     status={this.props.formStatus}
     onSave={this._handleSaveUser}
+    allowDelete={that.props.infoTab}
     onDelete={function() {
       that.setState({
         dialogStatus: true

@@ -53,11 +53,6 @@ var User = React.createClass({
   },
   _setViewStatus: function(selectedId) {
     var infoTab = this.state.infoTab;
-    // if (!selectedId || isObject(selectedId)) {
-    //   if (UserStore.getPersistedUser().has("Id")) {
-    //     selectedId = UserStore.getPersistedUser().get("Id");
-    //   }
-    // }
     if (this.state.selectedUserId != selectedId) {
       infoTab = true;
     }
