@@ -456,6 +456,7 @@ I18N.Setting.Calendar.EndDate = '结束日期';
 I18N.Setting.Calendar.Month = '月';
 I18N.Setting.Calendar.StartMonth = '开始月份';
 I18N.Setting.Calendar.EndMonth = '结束月份';
+I18N.Setting.Calendar.TimeRange = '时间范围';
 I18N.Setting.Calendar.Date = '日';
 I18N.Setting.Calendar.SeansonType = '季节类型';
 I18N.Setting.Calendar.MonthDayFromTo = '{0}月{1}日到{2}月{3}日';
