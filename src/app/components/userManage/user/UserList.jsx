@@ -3,8 +3,8 @@
 import React from "react";
 import classnames from "classnames";
 
-import { formStatus } from '../../constants/FormStatus.jsx';
-import UserStore from '../../stores/UserStore.jsx';
+import { formStatus } from '../../../constants/FormStatus.jsx';
+import UserStore from '../../../stores/UserStore.jsx';
 
 var UserItem = React.createClass({
   propTypes: {
@@ -101,7 +101,6 @@ module.exports = React.createClass({
         var props = item.toJS();
         props.selected = selectedId == item.get("Id");
         props.handlerTouchTap = handlerTouchTap;
-        console.log(props);
         return (<UserItem key={"pop-user-key-" + item.get("Id")} {...props} />);
       });
     } else {

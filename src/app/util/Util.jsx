@@ -226,6 +226,12 @@ let CommonFuns = {
     if (!window.I18N.Message['M' + code]) return window.I18N.Common.Label.UnknownError;
     else return window.I18N.Message['M' + code];
   },
+  getErrorMessageByRes: function(text) {
+    let error = JSON.parse(text).error;
+    let errorCode = this.processErrorCode(error.Code).errorCode;
+    let errorMsg = this.getErrorMessage(errorCode);
+    return errorMsg;
+  },
   processErrorCode: function(errorCode) {
     if (typeof errorCode == 'number')
       errorCode = errorCode.toString();

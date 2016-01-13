@@ -2,10 +2,10 @@
 
 import React from "react";
 import classnames from "classnames";
-import Item from '../../controls/SelectableItem.jsx';
-import SelectablePanel from '../../controls/SelectablePanel.jsx';
-import RoleStore from '../../stores/RoleStore.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
+import Item from '../../../controls/SelectableItem.jsx';
+import SelectablePanel from '../../../controls/SelectablePanel.jsx';
+import RoleStore from '../../../stores/RoleStore.jsx';
+import { formStatus } from '../../../constants/FormStatus.jsx';
 
 var RoleList = React.createClass({
   propTypes: {

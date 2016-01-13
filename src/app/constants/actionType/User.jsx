@@ -23,6 +23,7 @@ module.exports = {
     UPDATE_CUSTOMER_INFO: null,
     SEND_EMAIL_SUCCESS: null,
     DELETE_USER_SUCCESS: null,
-    RESET_USER_AND_CUSTOMER: null
+    RESET_USER_AND_CUSTOMER: null,
+    USER_ERROR: null
   })
 };

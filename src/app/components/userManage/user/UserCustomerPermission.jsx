@@ -6,12 +6,12 @@ import { List, Map } from 'immutable';
 
 import { RaisedButton, Checkbox } from 'material-ui';
 
-import SideNav from '../../controls/SideNav.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import SideNav from '../../../controls/SideNav.jsx';
+import Dialog from '../../../controls/PopupDialog.jsx';
 import Loading from './Loading.jsx';
-import HierarchyTree from '../../controls/tree/Tree.jsx';
+import HierarchyTree from '../../../controls/tree/Tree.jsx';
 
-import UserStore from '../../stores/UserStore.jsx';
+import UserStore from '../../../stores/UserStore.jsx';
 import _forEach from 'lodash/collection/forEach';
 import _find from 'lodash/collection/find';
 import _filter from 'lodash/collection/filter';

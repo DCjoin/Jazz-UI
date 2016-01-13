@@ -251,7 +251,7 @@ I18N.EM.ErrorNeedValidTimeRange = 'Please choose the right time range';
 
 I18N.EM.Rank = {};
 I18N.EM.Rank.TotalRank = 'Overall ranking';
-I18N.EM.Rank.RankByPeople = 'Per capita';
+I18N.EM.Rank.RankByPeople = 'Unit person';
 I18N.EM.Rank.RankByArea = 'Unit area';
 I18N.EM.Rank.RankByHeatArea = 'Unit heating area';
 I18N.EM.Rank.RankByCoolArea = 'Unit cooling area';
@@ -279,8 +279,8 @@ I18N.EM.DayNightRatio = 'Day-night ratio';
 I18N.EM.WorkHolidayRatio = 'Day-off ratio';
 
 I18N.EM.Ratio = {};
-I18N.EM.Ratio.CaculateValue = 'Calculated value';
-I18N.EM.Ratio.RawValue = 'Original value';
+I18N.EM.Ratio.CaculateValue = ' Calculated value';
+I18N.EM.Ratio.RawValue = ' Original value';
 I18N.EM.Ratio.TargetValue = 'Target';
 I18N.EM.Ratio.BaseValue = 'Baseline';
 I18N.EM.Ratio.Error = 'Please select more than one week to view Work-nonwork ratio';
@@ -898,7 +898,7 @@ I18N.Folder.Widget.SwitchContent = 'Switch energy type,Chart will be cleared if 
 I18N.Folder.Widget.SwitchButton = 'OK';
 
 I18N.Commodity = {};
-I18N.Commodity.Overview = 'Media Overview';
+I18N.Commodity.Overview = 'Overview';
 
 I18N.Hierarchy = {};
 I18N.Hierarchy.RankingButtonName = 'Please select the hierarchy nodes for ranking';

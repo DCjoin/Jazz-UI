@@ -3,6 +3,7 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/User.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
+import CommonFuns from '../util/Util.jsx';
 let UserAction = {
   getUserList: function(ExcludeId, CustomerId) {
     Ajax.post('/User.svc/GetUsersByFilter', {
@@ -13,7 +14,6 @@ let UserAction = {
         }
       },
       success: function(userList) {
-
         AppDispatcher.dispatch({
           type: Action.LOAD_USER_LIST,
           userList: Immutable.fromJS(userList)
@@ -179,6 +179,7 @@ let UserAction = {
       params: {
         dto: info
       },
+      commonErrorHandling: false,
       success: function(data) {
         that.getAllUsers();
         AppDispatcher.dispatch({
@@ -187,6 +188,12 @@ let UserAction = {
         });
       },
       error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.USER_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
         console.log(err, res);
       }
     });
@@ -197,6 +204,7 @@ let UserAction = {
       params: {
         dto: info
       },
+      commonErrorHandling: false,
       success: function(data) {
         that.getAllUsers();
         AppDispatcher.dispatch({
@@ -205,6 +213,12 @@ let UserAction = {
         });
       },
       error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.USER_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
         console.log(err, res);
       }
     });
@@ -217,6 +231,7 @@ let UserAction = {
           Version: user.Version
         }
       },
+      commonErrorHandling: false,
       success: function(data) {
         AppDispatcher.dispatch({
           type: Action.DELETE_USER_SUCCESS,
@@ -224,6 +239,12 @@ let UserAction = {
         });
       },
       error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.USER_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
         console.log(err, res);
       }
     });
@@ -234,10 +255,17 @@ let UserAction = {
       params: {
         dto: info
       },
+      commonErrorHandling: false,
       success: function(data) {
         that.getCustomerByUser(info.UserId);
       },
       error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.USER_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
         console.log(err, res);
       }
     });

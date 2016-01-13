@@ -3,17 +3,17 @@
 import React from "react";
 import classnames from "classnames";
 import Immutable from 'immutable';
-import RoleAction from '../../actions/RoleAction.jsx';
-import RoleStore from '../../stores/RoleStore.jsx';
-import Panel from '../../controls/MainContentPanel.jsx';
-import FormBottomBar from '../../controls/FormBottomBar.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
-import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
+import RoleAction from '../../../actions/RoleAction.jsx';
+import RoleStore from '../../../stores/RoleStore.jsx';
+import Panel from '../../../controls/MainContentPanel.jsx';
+import FormBottomBar from '../../../controls/FormBottomBar.jsx';
+import { formStatus } from '../../../constants/FormStatus.jsx';
+import ViewableTextField from '../../../controls/ViewableTextField.jsx';
+import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
+import CurrentUserStore from '../../../stores/CurrentUserStore.jsx';
 import { Checkbox } from 'material-ui';
-import Dialog from '../../controls/PopupDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import Dialog from '../../../controls/PopupDialog.jsx';
+import FlatButton from '../../../controls/FlatButton.jsx';
 
 var RoleDetail = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],

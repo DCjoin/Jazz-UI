@@ -1334,6 +1334,8 @@ I18N.Setting.Role.Function = '功能权限角色';
 I18N.Setting.Role.Type = '功能权限角色类型';
 I18N.Setting.Role.Name = '角色名称';
 I18N.Setting.Role.Privilege = '功能权限';
+I18N.Setting.Role.ErrorTitle = '无法删除功能权限角色“{0}”';
+I18N.Setting.Role.ErrorContent = '功能权限角色“{0}”已被用户引用，无法删除。请将所有引用的用户删除后再操作。';
 
 
 

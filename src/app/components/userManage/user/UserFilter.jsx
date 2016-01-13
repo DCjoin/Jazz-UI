@@ -6,13 +6,13 @@ import React from 'react';
 
 import { RadioButtonGroup, RadioButton, SelectField } from 'material-ui';
 
-import SideNav from '../../controls/SideNav.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import ViewableSelectField from '../../controls/ViewableSelectField.jsx';
-import LinkButton from '../../controls/LinkButton.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import SideNav from '../../../controls/SideNav.jsx';
+import ViewableTextField from '../../../controls/ViewableTextField.jsx';
+import ViewableSelectField from '../../../controls/ViewableSelectField.jsx';
+import LinkButton from '../../../controls/LinkButton.jsx';
+import FlatButton from '../../../controls/FlatButton.jsx';
 
-import UserAction from '../../actions/UserAction.jsx';
+import UserAction from '../../../actions/UserAction.jsx';
 
 import _isObject from "lodash/lang/isObject";
 import _get from 'lodash/object/get';
