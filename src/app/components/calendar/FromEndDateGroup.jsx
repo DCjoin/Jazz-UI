@@ -7,10 +7,8 @@ import CalendarStore from '../../stores/CalendarStore.jsx';
 
 var FromEndDateGroup = React.createClass({
   getInitialState: function() {
-    var length = this.props.items.size;
-    var errorTextArr = this.initErrorTextArr();
     return {
-      errorTextArr: errorTextArr
+      errorTextArr: CalendarStore.getDateErrorText()
     };
   },
   clearErrorText: function() {

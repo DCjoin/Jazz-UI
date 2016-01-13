@@ -26,6 +26,7 @@ import PlatformApp from './components/platform/PlatformApp.jsx';
 import User from './components/user/User.jsx';
 import Role from './components/role/Role.jsx';
 import ServiceApp from './components/service/ServiceApp.jsx';
+import WorkDay from './components/Calendar/WorkDay.jsx';
 import WorkTime from './components/Calendar/WorkTime.jsx';
 import DayNight from './components/Calendar/DayNight.jsx';
 
@@ -56,8 +57,8 @@ var routes = (
         <Route name="mail" path="mail" handler={Mail}></Route>
       </Route>
       <Route name="service" path="service" handler={ServiceApp}>
-        <Route name="workday" path="workday" handler={WorkTime}></Route>
-        <Route name="worktime" path="worktime"></Route>
+        <Route name="workday" path="workday" handler={WorkDay}></Route>
+        <Route name="worktime" path="worktime" handler={WorkTime}></Route>
         <Route name="coldwarm" path="coldwarm"></Route>
         <Route name="daynight" path="daynight" handler={DayNight}></Route>
 

@@ -125,22 +125,20 @@ var FromEndDateItem = React.createClass({
     };
     var deleteButton = null;
     if (!me.props.isViewStatus && me.props.hasDeleteButton) {
-      deleteButton = deleteButton = <div className='jazz-fromenddate-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteDateData} style={{
+      deleteButton = <div className='jazz-fromenddate-item-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteDateData} style={{
         background: 'transparent'
       }} /></div>;
     }
     return (
       <div className='jazz-fromenddate-item'>
         <div className='jazz-fromenddate-item-type'>
-          <div className='jazz-fromenddate-item-text'>{me.props.typeText}</div>
-          <ViewableDropDownMenu {...typeProps}></ViewableDropDownMenu>
+          <div className='jazz-fromenddate-item-type-text'>{me.props.typeText}</div>
           {deleteButton}
         </div>
-        <div className='jazz-fromenddate-item-date'>
-          <div className='jazz-fromenddate-item-text'>{I18N.Setting.Calendar.TimeRange}</div>
-          <FromEndDate {...dateProps}></FromEndDate>
-        </div>
-        <div className="jazz-fromendtime-error">{me.state.errorText}</div>
+        <ViewableDropDownMenu {...typeProps}></ViewableDropDownMenu>
+        <div className='jazz-fromenddate-item-date-text'>{I18N.Setting.Calendar.TimeRange}</div>
+        <FromEndDate {...dateProps}></FromEndDate>
+        <div className="jazz-fromenddate-item-error">{me.state.errorText}</div>
       </div>
       );
   }
