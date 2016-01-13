@@ -4,6 +4,7 @@ import { Action } from '../constants/actionType/Role.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
 import UserAction from './UserAction.jsx';
+import CommonFuns from '../util/Util.jsx';
 let RoleAction = {
   setCurrentSelectedId(id) {
     AppDispatcher.dispatch({
@@ -22,6 +23,7 @@ let RoleAction = {
       params: {
         dto: roledata
       },
+      commonErrorHandling: false,
       success: function(role) {
         UserAction.getAllRoles();
         AppDispatcher.dispatch({
@@ -30,6 +32,12 @@ let RoleAction = {
         });
       },
       error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.ROLE_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
         console.log(err, res);
       }
     });
@@ -39,6 +47,7 @@ let RoleAction = {
       params: {
         dto: roledata
       },
+      commonErrorHandling: false,
       success: function(role) {
         UserAction.getAllRoles();
         AppDispatcher.dispatch({
@@ -47,6 +56,12 @@ let RoleAction = {
         });
       },
       error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.ROLE_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
         console.log(err, res);
       }
     });
@@ -59,6 +74,7 @@ let RoleAction = {
           Version: roledata.Version
         }
       },
+      commonErrorHandling: false,
       success: function(role) {
         AppDispatcher.dispatch({
           type: Action.Delete_ROLE_SUCCESS,
@@ -66,7 +82,11 @@ let RoleAction = {
         });
       },
       error: function(err, res) {
-        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.ROLE_ERROR,
+          title: I18N.format(I18N.Setting.Role.ErrorTitle, roledata.Name),
+          content: I18N.format(I18N.Setting.Role.ErrorContent, roledata.Name),
+        });
       }
     });
   },

@@ -40,7 +40,8 @@ let SET_USER_STATUS_EVENT = 'setuserstatus',
   SET_ALL_USERS_LIST_EVENT = 'seralluserslist',
   CHANGE_EVENT = 'change',
   CHANGE_CUSTOMER_PERMISSION_EVENT = 'changecustomerpermission',
-  RESET_PASSWORD_EVENT = 'resetpassword';
+  RESET_PASSWORD_EVENT = 'resetpassword',
+  Error_CHANGE_EVENT = 'errorchang';
 var _filterObj = emptyMap();
 var _updatingFilterObj = emptyMap();
 var _persistedUser = emptyMap();
@@ -442,6 +443,17 @@ var UserStore = assign({}, PrototypeStore, {
     emitResetPassword() {
       this.emit(RESET_PASSWORD_EVENT);
     },
+    addErrorChangeListener(callback) {
+      this.on(Error_CHANGE_EVENT, callback);
+    },
+
+    removeErrorChangeListener(callback) {
+      this.removeListener(Error_CHANGE_EVENT, callback);
+    },
+
+    emitErrorhange(args) {
+      this.emit(Error_CHANGE_EVENT, args);
+    },
   });
   var UserAction = User.Action;
 
@@ -547,6 +559,12 @@ var UserStore = assign({}, PrototypeStore, {
       case UserAction.RESET_USER_AND_CUSTOMER:
         UserStore.reset();
         UserStore.emitChange();
+        break;
+      case UserAction.USER_ERROR:
+        UserStore.emitErrorhange({
+          title: action.title,
+          content: action.content
+        });
         break;
     }
 

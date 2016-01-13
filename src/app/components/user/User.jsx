@@ -23,7 +23,9 @@ var User = React.createClass({
       allRoles: [],
       selectedUserId: null,
       isLoading: false,
-      resetPasswordDone: false
+      resetPasswordDone: false,
+      errorTitle: null,
+      errorContent: null
     };
   },
   // _onAllCostomersListChange: function() {
@@ -48,7 +50,9 @@ var User = React.createClass({
     }
     this.setState({
       users: UserStore.getFilterUsers(),
-      isLoading: false
+      isLoading: false,
+      errorTitle: null,
+      errorContent: null
     });
   },
   _setViewStatus: function(selectedId) {
@@ -121,7 +125,6 @@ var User = React.createClass({
     }
     this.setState({
       isLoading: true,
-      formStatus: formStatus.VIEW
     });
   },
   _handleDeleteUser(userId) {
@@ -177,11 +180,41 @@ var User = React.createClass({
       closedList: !closedList
     });
   },
+  _onError: function(error) {
+    this.setState({
+      errorTitle: error.title,
+      errorContent: error.content,
+      isLoading: false
+    });
+  },
+  _renderErrorDialog: function() {
+    var that = this;
+    var onClose = function() {
+      that.setState({
+        errorTitle: null,
+        errorContent: null,
+      });
+    };
+    if (!!this.state.errorTitle) {
+      return (<Dialog
+        ref = "_dialog"
+        title={this.state.errorTitle}
+        modal={false}
+        openImmediately={!!this.state.errorTitle}
+        onClose={onClose}
+        >
+    {this.state.errorContent}
+      </Dialog>)
+    } else {
+      return null;
+    }
+  },
   componentDidMount: function() {
 
     UserStore.addAllRolesListListener(this._onAllRolesListChange);
     UserStore.addResetPasswordListener(this._resetPasswordDone);
     UserStore.addChangeListener(this._onChange);
+    UserStore.addErrorChangeListener(this._onError);
     UserAction.getAllCustomers();
     UserAction.getAllRoles();
     this.setState({
@@ -194,6 +227,7 @@ var User = React.createClass({
     UserStore.removeAllRolesListListener(this._onAllRolesListChange);
     UserStore.removeResetPasswordListener(this._resetPasswordDone);
     UserStore.removeChangeListener(this._onChange);
+    UserStore.removeErrorChangeListener(this._onError);
   },
   render: function() {
     var that = this,
@@ -274,6 +308,7 @@ var User = React.createClass({
           : null }
         </div>
         <UserDetail {...detailProps} />
+        {that._renderErrorDialog()}
         </div>
         );
     }

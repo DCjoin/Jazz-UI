@@ -10,6 +10,7 @@ import { CircularProgress } from 'material-ui';
 import UserAction from '../../actions/UserAction.jsx';
 import RoleStore from '../../stores/RoleStore.jsx';
 import RoleAction from '../../actions/RoleAction.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
 var Role = React.createClass({
   getInitialState: function() {
     return {
@@ -17,7 +18,9 @@ var Role = React.createClass({
       selectedId: RoleStore.getRoleList().length === 0 ? null : RoleStore.getRoleList()[0].Id,
       roles: RoleStore.getRoleList(),
       closedList: false,
-      isLoading: false
+      isLoading: false,
+      errorTitle: null,
+      errorContent: null
     };
   },
   _handlerTouchTap: function(selectedId) {
@@ -83,11 +86,34 @@ var Role = React.createClass({
     }
     this.setState({
       roles: RoleStore.getRoleList(),
-      isLoading: false
+      isLoading: false,
+      errorTitle: null,
+      errorContent: null
     });
+  },
+  _onError: function(error) {
+    this.setState({
+      errorTitle: error.title,
+      errorContent: error.content
+    });
+  },
+  _renderErrorDialog: function() {
+    if (!!this.state.errorTitle) {
+      return (<Dialog
+        ref = "_dialog"
+        title={this.state.errorTitle}
+        modal={false}
+        openImmediately={!!this.state.errorTitle}
+        >
+    {this.state.errorContent}
+      </Dialog>)
+    } else {
+      return null;
+    }
   },
   componentDidMount: function() {
     RoleStore.addChangeListener(this._onChange);
+    RoleStore.addErrorChangeListener(this._onError);
     if (RoleStore.getRoleList().length === 0) {
       UserAction.getAllRoles();
       this.setState({
@@ -97,6 +123,7 @@ var Role = React.createClass({
   },
   componentWillUnmount: function() {
     RoleStore.removeChangeListener(this._onChange);
+    RoleStore.removeErrorChangeListener(this._onError);
   },
   render: function() {
     var that = this,
@@ -142,6 +169,7 @@ var Role = React.createClass({
         }}>
       {rolelist}
         <RoleDetail {...detailProps}/>
+        {that._renderErrorDialog()}
       </div>);
     }
 

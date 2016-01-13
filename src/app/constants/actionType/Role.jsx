@@ -7,6 +7,7 @@ module.exports = {
     MERGE_ROLE: null,
     CREATE_ROLE: null,
     UPDATE_ROLE: null,
-    Delete_ROLE_SUCCESS: null
+    Delete_ROLE_SUCCESS: null,
+    ROLE_ERROR: null
   })
 };

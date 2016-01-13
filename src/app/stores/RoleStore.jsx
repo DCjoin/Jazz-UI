@@ -18,7 +18,8 @@ let _roles = [],
   _updatingRole = emptyMap(),
   _selectedId = null;
 
-let CHANGE_EVENT = 'change';
+let CHANGE_EVENT = 'change',
+  Error_CHANGE_EVENT = 'errorchange';
 var RoleStore = assign({}, PrototypeStore, {
   setRoleList: function(rolesList) {
     _roles = rolesList;
@@ -134,6 +135,17 @@ var RoleStore = assign({}, PrototypeStore, {
   emitChange(args) {
     this.emit(CHANGE_EVENT, args);
   },
+  addErrorChangeListener(callback) {
+    this.on(Error_CHANGE_EVENT, callback);
+  },
+
+  removeErrorChangeListener(callback) {
+    this.removeListener(Error_CHANGE_EVENT, callback);
+  },
+
+  emitErrorhange(args) {
+    this.emit(Error_CHANGE_EVENT, args);
+  },
 });
 var RoleAction = Role.Action,
   UserAction = User.Action;
@@ -168,6 +180,12 @@ RoleStore.dispatchToken = AppDispatcher.register(function(action) {
     case RoleAction.Delete_ROLE_SUCCESS:
       var selecteId = RoleStore.deleteRole(action.selectedId);
       RoleStore.emitChange(selecteId);
+      break;
+    case RoleAction.ROLE_ERROR:
+      RoleStore.emitErrorhange({
+        title: action.title,
+        content: action.content
+      });
       break;
   }
 });

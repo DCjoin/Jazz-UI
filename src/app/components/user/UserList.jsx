@@ -101,7 +101,6 @@ module.exports = React.createClass({
         var props = item.toJS();
         props.selected = selectedId == item.get("Id");
         props.handlerTouchTap = handlerTouchTap;
-        console.log(props);
         return (<UserItem key={"pop-user-key-" + item.get("Id")} {...props} />);
       });
     } else {
