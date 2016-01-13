@@ -24,7 +24,6 @@ var FromEndTime = React.createClass({
   },
   getInitialState: function() {
     return {
-      errorText: this.props.errorText,
       startTime: this.props.startTime,
       endTime: this.props.endTime
     };
@@ -120,7 +119,6 @@ var FromEndTime = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
-      errorText: nextProps.errorText,
       startTime: nextProps.startTime,
       endTime: nextProps.endTime
     });
@@ -132,8 +130,7 @@ var FromEndTime = React.createClass({
       this.props.endTime === nextProps.endTime &&
       this.props.hasDeleteButton === nextProps.hasDeleteButton &&
       this.state.startTime === nextState.startTime &&
-      this.state.endTime === nextState.endTime &&
-      this.state.errorText === nextState.errorText) {
+      this.state.endTime === nextState.endTime) {
       return false;
     }
     return true;
@@ -183,7 +180,7 @@ var FromEndTime = React.createClass({
           <ViewableDropDownMenu {...endTimeProps}></ViewableDropDownMenu>
           {deleteButton}
         </div>
-        <div className="jazz-fromendtime-error">{me.state.errorText}</div>
+        <div className="jazz-fromendtime-error">{me.props.errorText}</div>
       </div>
       );
   }

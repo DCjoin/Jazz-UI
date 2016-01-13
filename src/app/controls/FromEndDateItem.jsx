@@ -33,7 +33,6 @@ var FromEndDateItem = React.createClass({
   },
   getInitialState: function() {
     return {
-      typeValue: this.props.typeValue,
       startMonth: this.props.startMonth,
       startDay: this.props.startDay,
       endMonth: this.props.endMonth,
@@ -44,9 +43,7 @@ var FromEndDateItem = React.createClass({
     return this.refs.fromEndDate.isValid();
   },
   _onTypeChange: function(value) {
-    this.setState({
-      typeValue: value
-    });
+    this.props.onTypeChange(this.props.index, value);
   },
   getTypeValue: function() {
     return this.state.typeValue;
@@ -92,7 +89,6 @@ var FromEndDateItem = React.createClass({
       this.props.startDay === nextProps.startDay &&
       this.props.endMonth === nextProps.endMonth &&
       this.props.endDay === nextProps.endDay &&
-      this.state.typeValue === nextState.typeValue &&
       this.state.startMonth === nextState.startMonth &&
       this.state.startDay === nextState.startDay &&
       this.state.endMonth === nextState.endMonth &&
@@ -107,7 +103,7 @@ var FromEndDateItem = React.createClass({
       ref: 'type',
       dataItems: me.props.typeItems,
       isViewStatus: me.props.isViewStatus,
-      defaultValue: me.state.typeValue,
+      defaultValue: me.props.typeValue,
       title: '',
       textField: 'text',
       didChanged: me._onTypeChange

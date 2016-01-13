@@ -163,6 +163,15 @@ var WorkDay = React.createClass({
       });
     });
   },
+  _onTypeChange(index, value) {
+    var selectedData = this.state.selectedData;
+    var items = selectedData.get('Items');
+    items = items.setIn([index, 'Type'], value);
+    selectedData = selectedData.set('Items', items);
+    this.setState({
+      selectedData: selectedData
+    });
+  },
   _onDateChange(index, value) {
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
@@ -221,7 +230,7 @@ var WorkDay = React.createClass({
       <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorkdayData} /></div>
       </div>);
     }
-    var workdayGroup = <FromEndDateGroup ref='workdayGroup' type={calendarType} items={selectedData.get('Items')} isViewStatus={isView} onDeleteDateData={me._deleteWorkdayData} onDateChange={me._onDateChange}></FromEndDateGroup>;
+    var workdayGroup = <FromEndDateGroup ref='workdayGroup' type={calendarType} items={selectedData.get('Items')} isViewStatus={isView} onDeleteDateData={me._deleteWorkdayData} onDateChange={me._onDateChange} onTypeChange={me._onTypeChange}></FromEndDateGroup>;
     return (
       <div className={"jazz-calendar-content"}>
         {workdayText}

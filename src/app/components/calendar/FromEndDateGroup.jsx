@@ -22,6 +22,9 @@ var FromEndDateGroup = React.createClass({
   _onDateChange: function(index, data) {
     this.props.onDateChange(index, data);
   },
+  _onTypeChange: function(index, value) {
+    this.props.onTypeChange(index, value);
+  },
   _onDeleteDateData: function(index) {
     this.props.onDeleteDateData(index);
   },
@@ -259,7 +262,8 @@ var FromEndDateGroup = React.createClass({
           endDay: item.get('EndSecondPart'),
           onDateChange: me._onDateChange,
           onDeleteDateData: me._onDeleteDateData,
-          setErrorText: me._setErrorText
+          setErrorText: me._setErrorText,
+          onTypeChange: me._onTypeChange
         };
         return (
           <FromEndDateItem {...props}></FromEndDateItem>
