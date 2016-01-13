@@ -95,12 +95,6 @@ var RoleDetail = React.createClass({
         if (isView && !privilege.isChecked) {
           liStyle.display = "none";
         }
-        //onCheck={that._handlePrivilegeClick(privilege.Id)}
-        // //        onClick={ () => {
-        //           if (!isView) {
-        //             that._handlePrivilegeClick(privilege.Id);
-        //           }
-        //         }}
         permissions.push(
           <li className="pop-user-detail-customer-subcheck-block-item" style={liStyle}>
               <div className="pop-user-detail-customer-subcheck-block-item-left" id={privilege.Id} onClick={this._handlePrivilegeClick}>
@@ -125,33 +119,6 @@ var RoleDetail = React.createClass({
         );
       });
     }
-    //   if (isView) {
-    //     if (privilege.isChecked) {
-    //       permissions.push(<div className='pop-role-detail-content-permission-content-item'>
-    //                 <div className='pop-role-detail-content-permission-content-item-left'>
-    //                   {privilege.Name}
-    //                 </div>
-    //               </div>)
-    //     }
-    //
-    //   } else {
-    //     permissions.push(<div className="taglist"  id={privilege.Id} onClick={this._handlePrivilegeClick} title={this.props.title}>
-    //             <Checkbox
-    //     checked={privilege.isChecked}
-    //     style={boxStyle}
-    //     iconStyle={iconstyle}
-    //     labelStyle={labelstyle}
-    //     />
-    //               <div className="label">
-    //                 <div className="title">
-    //                 {privilege.Name}
-    //                 </div>
-    //               </div>
-    //             </div>)
-    //   }
-    // });
-
-
     return (
       <div className="pop-role-detail-content-permission">
     <div className="pop-role-detail-content-permission-header-panel">
