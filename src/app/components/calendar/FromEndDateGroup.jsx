@@ -8,15 +8,15 @@ import CalendarStore from '../../stores/CalendarStore.jsx';
 var FromEndDateGroup = React.createClass({
   getInitialState: function() {
     return {
-      errorTextArr: CalendarStore.getDateErrorText()
+      errorTextArr: CalendarStore.getCalendarErrorText()
     };
   },
   clearErrorText: function() {
-    CalendarAction.clearAllDateErrorText();
+    CalendarAction.clearAllCalendarErrorText();
   },
   _onErrorTextChange: function() {
     this.setState({
-      errorTextArr: CalendarStore.getDateErrorText()
+      errorTextArr: CalendarStore.getCalendarErrorText()
     });
   },
   _onDateChange: function(index, data) {
@@ -29,7 +29,7 @@ var FromEndDateGroup = React.createClass({
     this.props.onDeleteDateData(index);
   },
   _setErrorText: function(index, errorText) {
-    CalendarAction.setDateErrorText(index, errorText);
+    CalendarAction.setCalendarErrorText(index, errorText);
   },
   validate: function() {
     var isValid = true;
@@ -208,10 +208,10 @@ var FromEndDateGroup = React.createClass({
     return isValid;
   },
   componentDidMount: function() {
-    CalendarStore.addDateErrorTextChangeListener(this._onErrorTextChange);
+    CalendarStore.addCalendarErrorTextChangeListener(this._onErrorTextChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeDateErrorTextChangeListener(this._onErrorTextChange);
+    CalendarStore.removeCalendarErrorTextChangeListener(this._onErrorTextChange);
   },
   render() {
     let me = this;

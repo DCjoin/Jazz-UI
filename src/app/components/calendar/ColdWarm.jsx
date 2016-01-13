@@ -26,7 +26,7 @@ var ColdWarm = React.createClass({
     };
   },
   _onColdwarmListChange: function() {
-    var coldwarmList = CalendarStore.getCalendarList(calendarType);
+    var coldwarmList = CalendarStore.getCalendarList();
     this.setState({
       coldwarmList: coldwarmList,
       isLeftLoading: false
@@ -36,8 +36,8 @@ var ColdWarm = React.createClass({
     if (this.refs.coldwarmTitleId) {
       this._clearAllErrorText();
     }
-    var selectedIndex = CalendarStore.getSelectedCalendarIndex(calendarType);
-    var selectedData = CalendarStore.getSelectedCalendar(calendarType);
+    var selectedIndex = CalendarStore.getSelectedCalendarIndex();
+    var selectedData = CalendarStore.getSelectedCalendar();
     this.setState({
       isRightLoading: false,
       showDeleteDialog: false,
@@ -47,7 +47,7 @@ var ColdWarm = React.createClass({
     });
   },
   _onItemClick: function(index) {
-    CalendarAction.setSelectedCalendarIndex(index, calendarType);
+    CalendarAction.setSelectedCalendarIndex(index);
   },
   _onEdit: function() {
     this.setState({
@@ -56,7 +56,7 @@ var ColdWarm = React.createClass({
   },
   _onCancel: function() {
     this._clearAllErrorText();
-    CalendarAction.cancelSaveCalendar(calendarType);
+    CalendarAction.cancelSaveCalendar();
   },
   _onSave: function() {
     this._clearAllErrorText();
@@ -64,7 +64,7 @@ var ColdWarm = React.createClass({
     if (selectedData.Id === null) {
       CalendarAction.createCalendar(selectedData, calendarType);
     } else {
-      CalendarAction.modifyCalendar(selectedData, calendarType);
+      CalendarAction.modifyCalendar(selectedData);
     }
   },
   _onDelete: function() {
@@ -101,7 +101,7 @@ var ColdWarm = React.createClass({
   },
   _deleteClodwarm() {
     var selectedData = this.state.selectedData;
-    CalendarAction.deleteCalendarById(selectedData.get('Id'), selectedData.get('Version'), calendarType);
+    CalendarAction.deleteCalendarById(selectedData.get('Id'), selectedData.get('Version'));
   },
   _addColdwarm() {
     var coldwarm = {
@@ -252,12 +252,12 @@ var ColdWarm = React.createClass({
 
   componentDidMount: function() {
     CalendarAction.getCalendarListByType(calendarType);
-    CalendarStore.addColdwarmListChangeListener(this._onColdwarmListChange);
-    CalendarStore.addSelectedColdwarmChangeListener(this._onSelectedItemChange);
+    CalendarStore.addCalendarListChangeListener(this._onColdwarmListChange);
+    CalendarStore.addSelectedCalendarChangeListener(this._onSelectedItemChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeColdwarmListChangeListener(this._onColdwarmListChange);
-    CalendarStore.removeSelectedColdwarmChangeListener(this._onSelectedItemChange);
+    CalendarStore.removeCalendarListChangeListener(this._onColdwarmListChange);
+    CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
   },
 
 
