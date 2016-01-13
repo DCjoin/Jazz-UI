@@ -9,15 +9,15 @@ import CalendarStore from '../../stores/CalendarStore.jsx';
 var FromEndTimeGroup = React.createClass({
   getInitialState: function() {
     return {
-      errorTextArr: CalendarStore.getTimeErrorText()
+      errorTextArr: CalendarStore.getCalendarErrorText()
     };
   },
   clearErrorText: function() {
-    CalendarAction.clearAllTimeErrorText();
+    CalendarAction.clearAllCalendarErrorText();
   },
   _onErrorTextChange: function() {
     this.setState({
-      errorTextArr: CalendarStore.getTimeErrorText()
+      errorTextArr: CalendarStore.getCalendarErrorText()
     });
   },
   getTimeData: function(data) {
@@ -50,7 +50,7 @@ var FromEndTimeGroup = React.createClass({
     this.props.onDeleteTimeData(index);
   },
   _setErrorText: function(index, errorText) {
-    CalendarAction.setTimeErrorText(index, errorText);
+    CalendarAction.setCalendarErrorText(index, errorText);
   },
   validate: function() {
     var isValid = true;
@@ -121,10 +121,10 @@ var FromEndTimeGroup = React.createClass({
     return isValid;
   },
   componentDidMount: function() {
-    CalendarStore.addTimeErrorTextChangeListener(this._onErrorTextChange);
+    CalendarStore.addCalendarErrorTextChangeListener(this._onErrorTextChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeTimeErrorTextChangeListener(this._onErrorTextChange);
+    CalendarStore.removeCalendarErrorTextChangeListener(this._onErrorTextChange);
   },
   render() {
     let me = this;

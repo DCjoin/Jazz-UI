@@ -14,7 +14,7 @@ var FromEndDateItem = React.createClass({
     hasDeleteButton: React.PropTypes.bool,
     errorText: React.PropTypes.string,
     typeValue: React.PropTypes.number,
-    typeItems: React.PropTypes.Object,
+    typeItems: React.PropTypes.array,
     typeText: React.PropTypes.string,
     startMonth: React.PropTypes.number,
     startDay: React.PropTypes.number,
@@ -31,25 +31,11 @@ var FromEndDateItem = React.createClass({
       hasDeleteButton: true
     };
   },
-  getInitialState: function() {
-    return {
-      typeValue: this.props.typeValue,
-      startMonth: this.props.startMonth,
-      startDay: this.props.startDay,
-      endMonth: this.props.endMonth,
-      endDay: this.props.endDay
-    };
-  },
   isValid: function() {
     return this.refs.fromEndDate.isValid();
   },
   _onTypeChange: function(value) {
-    this.setState({
-      typeValue: value
-    });
-  },
-  getTypeValue: function() {
-    return this.state.typeValue;
+    this.props.onTypeChange(this.props.index, value);
   },
   _onDateChange: function(startMonth, startDay, endMonth, endDay) {
     var dateData = {
@@ -70,31 +56,22 @@ var FromEndDateItem = React.createClass({
     this.props.onDeleteDateData(this.props.index);
   },
   getCompareValue: function() {
-    this.refs.fromEndDate.getCompareValue();
+    return this.refs.fromEndDate.getCompareValue();
   },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      typeValue: nextProps.typeValue,
-      startMonth: nextProps.startMonth,
-      startDay: nextProps.startDay,
-      endMonth: nextProps.endMonth,
-      endDay: nextProps.endDay
-    });
+  getTypeValue: function() {
+    return this.props.typeValue;
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     if (this.props.isViewStatus === nextProps.isViewStatus &&
       CommonFuns.CompareArray(this.props.typeItems, nextProps.typeItems) &&
       this.props.typeValue === nextProps.typeValue &&
       this.props.typeText === nextProps.typeText &&
+      this.props.hasDeleteButton === nextProps.hasDeleteButton &&
+      this.props.errorText === nextProps.errorText &&
       this.props.startMonth === nextProps.startMonth &&
       this.props.startDay === nextProps.startDay &&
       this.props.endMonth === nextProps.endMonth &&
-      this.props.endDay === nextProps.endDay &&
-      this.state.typeValue === nextState.typeValue &&
-      this.state.startMonth === nextState.startMonth &&
-      this.state.startDay === nextState.startDay &&
-      this.state.endMonth === nextState.endMonth &&
-      this.state.endDay === nextState.endDay) {
+      this.props.endDay === nextProps.endDay) {
       return false;
     }
     return true;
@@ -105,7 +82,7 @@ var FromEndDateItem = React.createClass({
       ref: 'type',
       dataItems: me.props.typeItems,
       isViewStatus: me.props.isViewStatus,
-      defaultValue: me.state.typeValue,
+      defaultValue: me.props.typeValue,
       title: '',
       textField: 'text',
       didChanged: me._onTypeChange
@@ -114,10 +91,10 @@ var FromEndDateItem = React.createClass({
       ref: 'fromEndDate',
       index: me.props.index,
       isViewStatus: me.props.isViewStatus,
-      startMonth: me.state.startMonth,
-      startDay: me.state.startDay,
-      endMonth: me.state.endMonth,
-      endDay: me.state.endDay,
+      startMonth: me.props.startMonth,
+      startDay: me.props.startDay,
+      endMonth: me.props.endMonth,
+      endDay: me.props.endDay,
       onDateChange: me._onDateChange
     };
     var cleanIconStyle = {
@@ -125,7 +102,7 @@ var FromEndDateItem = React.createClass({
     };
     var deleteButton = null;
     if (!me.props.isViewStatus && me.props.hasDeleteButton) {
-      deleteButton = <div className='jazz-fromenddate-item-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteDateData} style={{
+      deleteButton = <div className='jazz-fromenddate-item-type-delete'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteDateData} style={{
         background: 'transparent'
       }} /></div>;
     }
@@ -136,9 +113,9 @@ var FromEndDateItem = React.createClass({
           {deleteButton}
         </div>
         <ViewableDropDownMenu {...typeProps}></ViewableDropDownMenu>
-        <div className='jazz-fromenddate-item-date-text'>{I18N.Setting.Calendar.TimeRange}</div>
+        <div className='jazz-fromenddate-item-text'>{I18N.Setting.Calendar.TimeRange}</div>
         <FromEndDate {...dateProps}></FromEndDate>
-        <div className="jazz-fromenddate-item-error">{me.state.errorText}</div>
+        <div className="jazz-fromenddate-item-error">{me.props.errorText}</div>
       </div>
       );
   }

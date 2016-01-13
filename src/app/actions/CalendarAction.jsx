@@ -11,32 +11,28 @@ let CalendarAction = {
       success: function(calendarList) {
         AppDispatcher.dispatch({
           type: Action.GET_CALENDAR_LIST_SUCCESS,
-          calendarList: calendarList,
-          calendarType: type
+          calendarList: calendarList
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
-          type: Action.GET_CALENDAR_LIST_ERROR,
-          calendarType: type
+          type: Action.GET_CALENDAR_LIST_ERROR
         });
       }
     });
   },
-  setSelectedCalendarIndex(index, type) {
+  setSelectedCalendarIndex(index) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_CALENDAR,
-      index: index,
-      calendarType: type
+      index: index
     });
   },
-  cancelSaveCalendar(type) {
+  cancelSaveCalendar() {
     AppDispatcher.dispatch({
-      type: Action.CANCEL_SAVE_CALENDAR,
-      calendarType: type
+      type: Action.CANCEL_SAVE_CALENDAR
     });
   },
-  modifyCalendar(data, type) {
+  modifyCalendar(data) {
     Ajax.post('/Administration.svc/ModifyCalendar', {
       params: {
         dto: data
@@ -44,8 +40,7 @@ let CalendarAction = {
       success: function(calendar) {
         AppDispatcher.dispatch({
           type: Action.MODIFT_CALENDAR_SUCCESS,
-          calendar: calendar,
-          calendarType: type
+          calendar: calendar
         });
       },
       error: function(err, res) {
@@ -53,7 +48,7 @@ let CalendarAction = {
       }
     });
   },
-  deleteCalendarById(id, version, type) {
+  deleteCalendarById(id, version) {
     Ajax.post('/Administration.svc/DeleteCalendar', {
       params: {
         dto: {
@@ -63,8 +58,7 @@ let CalendarAction = {
       },
       success: function() {
         AppDispatcher.dispatch({
-          type: Action.DELETE_CALENDAR_SUCCESS,
-          calendarType: type
+          type: Action.DELETE_CALENDAR_SUCCESS
         });
       },
       error: function(err, res) {
@@ -81,8 +75,7 @@ let CalendarAction = {
       success: function(calendar) {
         AppDispatcher.dispatch({
           type: Action.CREATE_CALENDAR_SUCCESS,
-          calendar: calendar,
-          calendarType: type
+          calendar: calendar
         });
         me.getCalendarListByType(type);
       },
@@ -91,26 +84,14 @@ let CalendarAction = {
       }
     });
   },
-  clearAllTimeErrorText: function() {
+  clearAllCalendarErrorText: function() {
     AppDispatcher.dispatch({
-      type: Action.CLEAR_ALL_TIME_ERROR_TEXT
+      type: Action.CLEAR_ALL_CALENDAR_ERROR_TEXT
     });
   },
-  setTimeErrorText: function(index, errorText) {
+  setCalendarErrorText: function(index, errorText) {
     AppDispatcher.dispatch({
-      type: Action.SET_TIME_ERROR_TEXT,
-      index: index,
-      errorText: errorText
-    });
-  },
-  clearAllDateErrorText: function() {
-    AppDispatcher.dispatch({
-      type: Action.CLEAR_ALL_DATE_ERROR_TEXT
-    });
-  },
-  setDateErrorText: function(index, errorText) {
-    AppDispatcher.dispatch({
-      type: Action.SET_DATE_ERROR_TEXT,
+      type: Action.SET_CALENDAR_ERROR_TEXT,
       index: index,
       errorText: errorText
     });

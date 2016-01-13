@@ -22,31 +22,12 @@ var FromEndTime = React.createClass({
       hasDeleteButton: true
     };
   },
-  getInitialState: function() {
-    return {
-      errorText: this.props.errorText,
-      startTime: this.props.startTime,
-      endTime: this.props.endTime
-    };
-  },
   getValue: function() {
-    return [this.state.startTime, this.state.endTime];
-  },
-  setValue: function(itemData) {
-    this.setState({
-      startTime: itemData.get('StartFirstPart') * 60 + itemData.get('StartSecondPart'),
-      endTime: itemData.get('EndFirstPart') * 60 + itemData.get('EndSecondPart')
-    });
-  },
-  setTimeValue: function(start, end) {
-    this.setState({
-      startTime: start,
-      endTime: end
-    });
+    return [this.props.startTime, this.props.endTime];
   },
   isValid: function() {
-    var startTime = this.state.startTime;
-    var endTime = this.state.endTime;
+    var startTime = this.props.startTime;
+    var endTime = this.props.endTime;
     if ((startTime !== -1) && (endTime !== -1)) {
       return true;
     }
@@ -95,8 +76,8 @@ var FromEndTime = React.createClass({
     return endTimeItems;
   },
   _onTimeChange: function(name, value) {
-    var startTime = this.state.startTime;
-    var endTime = this.state.endTime;
+    var startTime = this.props.startTime;
+    var endTime = this.props.endTime;
     if (name === 'startTime') {
       if ((endTime !== -1) && (value >= endTime)) {
         endTime = value + 30;
@@ -118,22 +99,12 @@ var FromEndTime = React.createClass({
   _onDeleteTimeData: function() {
     this.props.onDeleteTimeData(this.props.index);
   },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      errorText: nextProps.errorText,
-      startTime: nextProps.startTime,
-      endTime: nextProps.endTime
-    });
-  },
   shouldComponentUpdate: function(nextProps, nextState) {
     if (this.props.isViewStatus === nextProps.isViewStatus &&
       this.props.errorText === nextProps.errorText &&
       this.props.startTime === nextProps.startTime &&
       this.props.endTime === nextProps.endTime &&
-      this.props.hasDeleteButton === nextProps.hasDeleteButton &&
-      this.state.startTime === nextState.startTime &&
-      this.state.endTime === nextState.endTime &&
-      this.state.errorText === nextState.errorText) {
+      this.props.hasDeleteButton === nextProps.hasDeleteButton) {
       return false;
     }
     return true;
@@ -146,7 +117,7 @@ var FromEndTime = React.createClass({
       ref: 'startTime',
       dataItems: startTimeItems,
       isViewStatus: me.props.isViewStatus,
-      defaultValue: me.state.startTime,
+      defaultValue: me.props.startTime,
       title: '',
       textField: 'text',
       style: {
@@ -158,7 +129,7 @@ var FromEndTime = React.createClass({
       ref: 'endTime',
       dataItems: endTimeItems,
       isViewStatus: me.props.isViewStatus,
-      defaultValue: me.state.endTime,
+      defaultValue: me.props.endTime,
       title: '',
       textField: 'text',
       style: {
@@ -171,7 +142,7 @@ var FromEndTime = React.createClass({
     };
     var deleteButton = null;
     if (!me.props.isViewStatus && me.props.hasDeleteButton) {
-      deleteButton = deleteButton = <div className='jazz-fromendtime-content-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteTimeData} style={{
+      deleteButton = deleteButton = <div className='jazz-fromendtime-content-delete'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteTimeData} style={{
         background: 'transparent'
       }} /></div>;
     }
@@ -183,7 +154,7 @@ var FromEndTime = React.createClass({
           <ViewableDropDownMenu {...endTimeProps}></ViewableDropDownMenu>
           {deleteButton}
         </div>
-        <div className="jazz-fromendtime-error">{me.state.errorText}</div>
+        <div className="jazz-fromendtime-error">{me.props.errorText}</div>
       </div>
       );
   }

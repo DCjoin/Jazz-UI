@@ -48,16 +48,16 @@ let ServiceApp = React.createClass({
         ]
       },
       {
-        name: 'subline',
-        title: I18N.MainMenu.EnergySubline,
+        name: 'statistics',
+        title: I18N.MainMenu.Statistics,
         children: [
           {
             name: 'benchmark',
-            title: I18N.MainMenu.IndustryBenchmark
+            title: I18N.MainMenu.Benchmark
           },
           {
-            name: 'Labelling',
-            title: I18N.MainMenu.Labelling
+            name: 'labeling',
+            title: I18N.MainMenu.Labeling
           }
         ]
       },
@@ -66,7 +66,7 @@ let ServiceApp = React.createClass({
         title: I18N.MainMenu.Customer,
       },
       {
-        name: 'UserManagement',
+        name: 'userManagement',
         title: I18N.MainMenu.User,
         children: [
           {

@@ -8,22 +8,28 @@ import CalendarStore from '../../stores/CalendarStore.jsx';
 var FromEndDateGroup = React.createClass({
   getInitialState: function() {
     return {
-      errorTextArr: CalendarStore.getDateErrorText()
+      errorTextArr: CalendarStore.getCalendarErrorText()
     };
   },
   clearErrorText: function() {
-    CalendarAction.clearAllDateErrorText();
+    CalendarAction.clearAllCalendarErrorText();
   },
   _onErrorTextChange: function() {
     this.setState({
-      errorTextArr: CalendarStore.getDateErrorText()
+      errorTextArr: CalendarStore.getCalendarErrorText()
     });
   },
   _onDateChange: function(index, data) {
     this.props.onDateChange(index, data);
   },
+  _onTypeChange: function(index, value) {
+    this.props.onTypeChange(index, value);
+  },
   _onDeleteDateData: function(index) {
     this.props.onDeleteDateData(index);
+  },
+  _setErrorText: function(index, errorText) {
+    CalendarAction.setCalendarErrorText(index, errorText);
   },
   validate: function() {
     var isValid = true;
@@ -92,9 +98,9 @@ var FromEndDateGroup = React.createClass({
       coldItemList = [];
     for (i = 0; i < length; i++) {
       item = this.refs['fromEndDateItem' + (i + 1)];
-      if (item.getTypeValue === 4) {
+      if (item.getTypeValue() === 4) {
         warmItemList.push(item);
-      } else if (item.getTypeValue === 5) {
+      } else if (item.getTypeValue() === 5) {
         coldItemList.push(item);
       }
     }
@@ -202,10 +208,10 @@ var FromEndDateGroup = React.createClass({
     return isValid;
   },
   componentDidMount: function() {
-    CalendarStore.addDateErrorTextChangeListener(this._onErrorTextChange);
+    CalendarStore.addCalendarErrorTextChangeListener(this._onErrorTextChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeDateErrorTextChangeListener(this._onErrorTextChange);
+    CalendarStore.removeCalendarErrorTextChangeListener(this._onErrorTextChange);
   },
   render() {
     let me = this;
@@ -246,7 +252,7 @@ var FromEndDateGroup = React.createClass({
           ref: 'fromEndDateItem' + (i + 1),
           isViewStatus: me.props.isViewStatus,
           hasDeleteButton: items.size === 1 ? false : true,
-          errorText: me.state.errorTextArr[i],
+          errorText: me.state.errorTextArr.get(i),
           typeValue: item.get('Type'),
           typeItems: typeItems,
           typeText: typeText,
@@ -255,7 +261,9 @@ var FromEndDateGroup = React.createClass({
           endMonth: item.get('EndFirstPart'),
           endDay: item.get('EndSecondPart'),
           onDateChange: me._onDateChange,
-          onDeleteDateData: me._onDeleteDateData
+          onDeleteDateData: me._onDeleteDateData,
+          setErrorText: me._setErrorText,
+          onTypeChange: me._onTypeChange
         };
         return (
           <FromEndDateItem {...props}></FromEndDateItem>
