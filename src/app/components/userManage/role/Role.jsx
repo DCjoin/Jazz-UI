@@ -5,12 +5,12 @@ import classnames from "classnames";
 import { isFunction, isObject } from "lodash/lang";
 import RoleList from './RoleList.jsx';
 import RoleDetail from './RoleDetail.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
+import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
-import UserAction from '../../actions/UserAction.jsx';
-import RoleStore from '../../stores/RoleStore.jsx';
-import RoleAction from '../../actions/RoleAction.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import UserAction from '../../../actions/UserAction.jsx';
+import RoleStore from '../../../stores/RoleStore.jsx';
+import RoleAction from '../../../actions/RoleAction.jsx';
+import Dialog from '../../../controls/PopupDialog.jsx';
 var Role = React.createClass({
   getInitialState: function() {
     return {

@@ -6,28 +6,28 @@ import mui from 'material-ui';
 import classnames from "classnames";
 
 
-import Regex from '../../constants/Regex.jsx';
+import Regex from '../../../constants/Regex.jsx';
 
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
+import ViewableTextField from '../../../controls/ViewableTextField.jsx';
+import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 
-import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
+import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 
 //import PermissionPanel from './PermissionPanel.jsx';
-import PermissionCode from '../../constants/PermissionCode.jsx';
+import PermissionCode from '../../../constants/PermissionCode.jsx';
 
 import Loading from './Loading.jsx';
-import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
-import FormBottomBar from '../../controls/FormBottomBar.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import OrigamiPanel from '../../../controls/OrigamiPanel.jsx';
+import FormBottomBar from '../../../controls/FormBottomBar.jsx';
+import Dialog from '../../../controls/PopupDialog.jsx';
 import UserCustomerPermission from './UserCustomerPermission.jsx';
 
-import { formStatus } from '../../constants/FormStatus.jsx';
+import { formStatus } from '../../../constants/FormStatus.jsx';
 
-import UserAction from '../../actions/UserAction.jsx';
-import UserStore from '../../stores/UserStore.jsx';
-import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
-import SideNav from '../../controls/SideNav.jsx';
+import UserAction from '../../../actions/UserAction.jsx';
+import UserStore from '../../../stores/UserStore.jsx';
+import CurrentUserStore from '../../../stores/CurrentUserStore.jsx';
+import SideNav from '../../../controls/SideNav.jsx';
 
 var {FlatButton, FontIcon, SelectField, Checkbox, CircularProgress} = mui;
 

@@ -4,14 +4,14 @@ import React from "react";
 import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
 import { isObject, isFunction } from "lodash/lang";
-import UserStore from '../../stores/UserStore.jsx';
-import UserAction from '../../actions/UserAction.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
+import UserStore from '../../../stores/UserStore.jsx';
+import UserAction from '../../../actions/UserAction.jsx';
+import { formStatus } from '../../../constants/FormStatus.jsx';
 import UserList from './UserList.jsx';
 import UserFilter from './UserFilter.jsx';
 import UserDetail from './UserDetail.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import Dialog from '../../../controls/PopupDialog.jsx';
+import FlatButton from '../../../controls/FlatButton.jsx';
 
 var User = React.createClass({
   getInitialState: function() {
@@ -57,6 +57,10 @@ var User = React.createClass({
   },
   _setViewStatus: function(selectedId) {
     var infoTab = this.state.infoTab;
+    if (!selectedId) {
+      selectedId = this.state.users.getIn([0, "Id"]);
+    }
+
     if (this.state.selectedUserId != selectedId) {
       infoTab = true;
     }

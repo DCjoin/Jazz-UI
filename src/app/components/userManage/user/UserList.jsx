@@ -3,8 +3,8 @@
 import React from "react";
 import classnames from "classnames";
 
-import { formStatus } from '../../constants/FormStatus.jsx';
-import UserStore from '../../stores/UserStore.jsx';
+import { formStatus } from '../../../constants/FormStatus.jsx';
+import UserStore from '../../../stores/UserStore.jsx';
 
 var UserItem = React.createClass({
   propTypes: {
