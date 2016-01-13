@@ -10,12 +10,12 @@ import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import CalendarAction from '../../actions/CalendarAction.jsx';
 import CalendarStore from '../../stores/CalendarStore.jsx';
-import FromEndTimeGroup from './FromEndTimeGroup.jsx';
+import FromEndDateGroup from './FromEndDateGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Immutable from 'immutable';
 
-var calendarType = 1;
-var WorkTime = React.createClass({
+var calendarType = 0;
+var WorkDay = React.createClass({
   getInitialState: function() {
     return {
       isLeftLoading: true,
@@ -25,15 +25,15 @@ var WorkTime = React.createClass({
       showDeleteDialog: false
     };
   },
-  _onWorktimeListChange: function() {
-    var worktimeList = CalendarStore.getCalendarList(calendarType);
+  _onWorkdayListChange: function() {
+    var workdayList = CalendarStore.getCalendarList(calendarType);
     this.setState({
-      worktimeList: worktimeList,
+      workdayList: workdayList,
       isLeftLoading: false
     });
   },
   _onSelectedItemChange: function() {
-    if (this.refs.worktimeTitleId) {
+    if (this.refs.workdayTitleId) {
       this._clearAllErrorText();
     }
     var selectedIndex = CalendarStore.getSelectedCalendarIndex(calendarType);
@@ -84,7 +84,7 @@ var WorkTime = React.createClass({
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
-      onClick={this._deleteWorktime} />,
+      onClick={this._deleteWorkday} />,
 
       <FlatButton
       label={I18N.Common.Button.Cancel}
@@ -99,18 +99,18 @@ var WorkTime = React.createClass({
         {I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}
       </Dialog>);
   },
-  _deleteWorktime() {
+  _deleteWorkday() {
     var selectedData = this.state.selectedData;
     CalendarAction.deleteCalendarById(selectedData.get('Id'), selectedData.get('Version'), calendarType);
   },
-  _addWorktime() {
-    var worktime = {
+  _addWorkday() {
+    var workday = {
       Name: '',
       Type: calendarType,
       Version: null,
       Id: null,
       Items: [{
-        Type: 2,
+        Type: 0,
         StartFirstPart: -1,
         StartSecondPart: -1,
         EndFirstPart: -1,
@@ -119,20 +119,20 @@ var WorkTime = React.createClass({
     };
     this.setState({
       selectedIndex: null,
-      selectedData: Immutable.fromJS(worktime),
+      selectedData: Immutable.fromJS(workday),
       enableSave: false,
       formStatus: formStatus.ADD
     });
   },
   _clearAllErrorText() {
-    this.refs.worktimeTitleId.clearErrorText();
+    this.refs.workdayTitleId.clearErrorText();
   },
   _isValid() {
-    var isValid = this.refs.worktimeTitleId.isValid();
-    isValid = isValid && this.refs.worktimeGroup.isValid();
+    var isValid = this.refs.workdayTitleId.isValid();
+    isValid = isValid && this.refs.workdayGroup.isValid();
     return isValid;
   },
-  _addWorktimeData: function() {
+  _addWorkdayData: function() {
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -140,7 +140,7 @@ var WorkTime = React.createClass({
       StartSecondPart: -1,
       EndFirstPart: -1,
       EndSecondPart: -1,
-      Type: 2
+      Type: 0
     };
     items = items.unshift(Immutable.fromJS(item));
     selectedData = selectedData.set('Items', items);
@@ -149,7 +149,7 @@ var WorkTime = React.createClass({
       enableSave: false
     });
   },
-  _deleteWorktimeData: function(index) {
+  _deleteWorkdayData: function(index) {
     var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
@@ -163,13 +163,13 @@ var WorkTime = React.createClass({
       });
     });
   },
-  _onTimeChange(index, value) {
+  _onDateChange(index, value) {
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
-    items = items.setIn([index, 'StartFirstPart'], value.StartFirstPart);
-    items = items.setIn([index, 'StartSecondPart'], value.StartSecondPart);
-    items = items.setIn([index, 'EndFirstPart'], value.EndFirstPart);
-    items = items.setIn([index, 'EndSecondPart'], value.EndSecondPart);
+    items = items.setIn([index, 'StartFirstPart'], value.startMonth);
+    items = items.setIn([index, 'StartSecondPart'], value.startDay);
+    items = items.setIn([index, 'EndFirstPart'], value.endMonth);
+    items = items.setIn([index, 'EndSecondPart'], value.endDay);
     selectedData = selectedData.set('Items', items);
     this.setState({
       selectedData: selectedData
@@ -195,7 +195,7 @@ var WorkTime = React.createClass({
     var me = this;
     let selectedData = me.state.selectedData;
     var titleProps = {
-      ref: 'worktimeTitleId',
+      ref: 'workdayTitleId',
       isViewStatus: isView,
       didChanged: me._onNameChange,
       defaultValue: selectedData.get('Name'),
@@ -213,20 +213,20 @@ var WorkTime = React.createClass({
   _renderContent: function(isView) {
     var me = this;
     let selectedData = me.state.selectedData;
-    var worktimeText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkTime}</div>);
-    var addWorktimeDataButton = null;
+    var workdayText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkDay}</div>);
+    var addWorkdayDataButton = null;
     if (!isView) {
-      addWorktimeDataButton = (<div className="jazz-calendar-add">
-      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.WorkTime}</div>
-      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorktimeData} /></div>
+      addWorkdayDataButton = (<div className="jazz-calendar-add">
+      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.AdditionalDay}</div>
+      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorkdayData} /></div>
       </div>);
     }
-    var worktimeGroup = <FromEndTimeGroup ref='worktimeGroup' items={selectedData.get('Items')} isViewStatus={isView} onDeleteTimeData={me._deleteWorktimeData} onTimeChange={me._onTimeChange}></FromEndTimeGroup>;
+    var workdayGroup = <FromEndDateGroup ref='workdayGroup' type={calendarType} items={selectedData.get('Items')} isViewStatus={isView} onDeleteDateData={me._deleteWorkdayData} onDateChange={me._onDateChange}></FromEndDateGroup>;
     return (
       <div className={"jazz-calendar-content"}>
-        {worktimeText}
-        {addWorktimeDataButton}
-        {worktimeGroup}
+        {workdayText}
+        {addWorkdayDataButton}
+        {workdayGroup}
       </div>
       );
   },
@@ -239,12 +239,12 @@ var WorkTime = React.createClass({
 
   componentDidMount: function() {
     CalendarAction.getCalendarListByType(calendarType);
-    CalendarStore.addWorktimeListChangeListener(this._onWorktimeListChange);
-    CalendarStore.addSelectedWorktimeChangeListener(this._onSelectedItemChange);
+    CalendarStore.addWorkdayListChangeListener(this._onWorkdayListChange);
+    CalendarStore.addSelectedWorkdayChangeListener(this._onSelectedItemChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeWorktimeListChangeListener(this._onWorktimeListChange);
-    CalendarStore.removeSelectedWorktimeChangeListener(this._onSelectedItemChange);
+    CalendarStore.removeWorkdayListChangeListener(this._onWorkdayListChange);
+    CalendarStore.removeSelectedWorkdayChangeListener(this._onSelectedItemChange);
   },
 
 
@@ -255,9 +255,9 @@ var WorkTime = React.createClass({
       isAdd = this.state.formStatus === formStatus.ADD;
     let displayedDom = null;
     let items = [];
-    var worktimeList = me.state.worktimeList;
-    if (worktimeList && worktimeList.size !== 0) {
-      items = worktimeList.map(function(item, i) {
+    var workdayList = me.state.workdayList;
+    if (workdayList && workdayList.size !== 0) {
+      items = workdayList.map(function(item, i) {
         let props = {
           index: i,
           label: item.get('Name'),
@@ -293,10 +293,10 @@ var WorkTime = React.createClass({
         display: 'flex',
         flex: 1
       }}>
-        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorktimeSetting}
+        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorkdaySetting}
       isViewStatus={isView}
       isLoading={this.state.isLeftLoading}
-      contentItems={items} onAddBtnClick={me._addWorktime}/>
+      contentItems={items} onAddBtnClick={me._addWorkday}/>
         <Panel>
           {displayedDom}
         </Panel>
@@ -306,4 +306,4 @@ var WorkTime = React.createClass({
   }
 });
 
-module.exports = WorkTime;
+module.exports = WorkDay;

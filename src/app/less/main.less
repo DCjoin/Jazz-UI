@@ -845,32 +845,63 @@ input:focus{
     display: flex;
     flex-direction: column;
     height: 46px;
-    .jazz-fromendtime-content{
+    &-content{
       display: flex;
       flex-direction: row;
-      .jazz-fromendtime-to{
+      &-to{
         width: 24px;
         text-align: center;
         padding-top: 4px;
       }
-      .jazz-fromendtime-delete-button{
+      &-delete-button{
         padding-top: 5px;
+        color: #767a7a !important;
+        font-size: 14px !important;
         > button{
-         border: none !important;
-         background-color: transparent!important;
-         &:hover{
+          border: none !important;
+          background-color: transparent!important;
+          &:hover{
            color:@schneiderBlue!important;
            background-color: '#e1fcff'!important;
-         }
+          }
         }
       }
     }
-    .jazz-fromendtime-error{
+    &-error{
       color:red;
       font-size: 10px;
       margin-top: -10px;
     }
 
+}
+.jazz-monthday-item{
+  display: flex;
+  flex-direction: row;
+}
+.jazz-fromenddate{
+  display: flex;
+  flex-direction: row;
+}
+.jazz-fromenddate-item{
+  margin: 6px 0px 19px 0px;
+  width: 540px;
+  background-color: #f4f4f4;
+  &-type{
+    display: flex;
+    flex-direction: row;
+  }
+  &-delete-button{
+    color: #767a7a !important;
+    font-size: 14px !important;
+    > button{
+      border: none !important;
+      background-color: transparent!important;
+      &:hover{
+       color:@schneiderBlue!important;
+       background-color: '#e1fcff'!important;
+      }
+    }
+  }
 }
 .keyframes(@name, @mixContent) {
 

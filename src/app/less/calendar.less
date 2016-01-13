@@ -6,17 +6,16 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding-left: 30px;
-  background-color: #f4f4f4;
 }
 .jazz-calendar-header{
   display: flex;
+  padding-left: 30px;
   flex-direction: column;
+  border-bottom: 1px solid #ececec;
   .jazz-calendar-title{
     padding: 12px 0px;
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid #ececec;
     .pop-viewable-value{
       >span{
         font-size: 22px!important;
@@ -26,6 +25,8 @@
   }
 }
 .jazz-calendar-content{
+  background-color: #fbfbfb;
+  padding-left: 30px;
   overflow-y: auto;
   overflow-x: hidden;
   flex: 1;
@@ -38,10 +39,14 @@
     flex-direction: row;
     margin: 0 auto;
     .jazz-calendar-add-text{
-      padding-top: 6px;
+      font-size: 14px;
+      color: #767a7a;
+      padding-top: 8px;
     }
     .jazz-calendar-add-button{
-     > button{
+      color: #767a7a !important;
+      font-size: 14px !important;
+      > button{
       border: none !important;
       background-color: transparent!important;
       &:hover{

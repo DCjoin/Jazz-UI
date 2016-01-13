@@ -106,7 +106,7 @@ var Daynight = React.createClass({
   _addDaynight() {
     var daynight = {
       Name: '',
-      Type: 3,
+      Type: calendarType,
       Version: null,
       Id: null,
       Items: [{
@@ -118,6 +118,7 @@ var Daynight = React.createClass({
       }]
     };
     this.setState({
+      selectedIndex: null,
       selectedData: Immutable.fromJS(daynight),
       enableSave: false,
       formStatus: formStatus.ADD
