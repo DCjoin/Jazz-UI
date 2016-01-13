@@ -135,13 +135,9 @@ var FromEndDate = React.createClass({
     };
     return (
       <div className="jazz-fromenddate">
-        <div className='jazz-fromenddate-start'>
-          <MonthDayItem {...startProps}></MonthDayItem>
-        </div>
+        <MonthDayItem {...startProps}></MonthDayItem>
         <div className='jazz-fromenddate-to'>{'-'}</div>
-        <div className='jazz-fromenddate-end'>
-          <MonthDayItem {...endProps}></MonthDayItem>
-        </div>
+        <MonthDayItem {...endProps}></MonthDayItem>
       </div>
       );
   }

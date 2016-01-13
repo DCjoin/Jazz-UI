@@ -171,7 +171,7 @@ var FromEndTime = React.createClass({
     };
     var deleteButton = null;
     if (!me.props.isViewStatus && me.props.hasDeleteButton) {
-      deleteButton = deleteButton = <div className='jazz-fromendtime-content-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteTimeData} style={{
+      deleteButton = deleteButton = <div className='jazz-fromendtime-content-delete'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteTimeData} style={{
         background: 'transparent'
       }} /></div>;
     }

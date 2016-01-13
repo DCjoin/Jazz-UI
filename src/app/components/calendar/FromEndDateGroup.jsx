@@ -25,6 +25,9 @@ var FromEndDateGroup = React.createClass({
   _onDeleteDateData: function(index) {
     this.props.onDeleteDateData(index);
   },
+  _setErrorText: function(index, errorText) {
+    CalendarAction.setDateErrorText(index, errorText);
+  },
   validate: function() {
     var isValid = true;
     var length = this.props.items.size;
@@ -246,7 +249,7 @@ var FromEndDateGroup = React.createClass({
           ref: 'fromEndDateItem' + (i + 1),
           isViewStatus: me.props.isViewStatus,
           hasDeleteButton: items.size === 1 ? false : true,
-          errorText: me.state.errorTextArr[i],
+          errorText: me.state.errorTextArr.get(i),
           typeValue: item.get('Type'),
           typeItems: typeItems,
           typeText: typeText,
@@ -255,7 +258,8 @@ var FromEndDateGroup = React.createClass({
           endMonth: item.get('EndFirstPart'),
           endDay: item.get('EndSecondPart'),
           onDateChange: me._onDateChange,
-          onDeleteDateData: me._onDeleteDateData
+          onDeleteDateData: me._onDeleteDateData,
+          setErrorText: me._setErrorText
         };
         return (
           <FromEndDateItem {...props}></FromEndDateItem>

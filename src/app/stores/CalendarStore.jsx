@@ -276,12 +276,16 @@ var CalendarStore = assign({}, PrototypeStore, {
 CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_CALENDAR_LIST_SUCCESS:
+      CalendarStore.clearAllErrorText(action.calendarType);
       CalendarStore.setCalendarList(action.calendarList, action.calendarType);
       CalendarStore.emitCalendarListChange(action.calendarType);
+      CalendarStore.emitCalendarErrorChange(action.calendarType);
       break;
     case Action.GET_CALENDAR_LIST_ERROR:
+      CalendarStore.clearAllErrorText(action.calendarType);
       CalendarStore.setCalendarList([], action.calendarType);
       CalendarStore.emitCalendarListChange(action.calendarType);
+      CalendarStore.emitCalendarErrorChange(action.calendarType);
       break;
     case Action.SET_SELECTED_CALENDAR:
       CalendarStore.clearAllErrorText(action.calendarType);

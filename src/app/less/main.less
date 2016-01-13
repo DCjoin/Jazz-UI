@@ -844,16 +844,17 @@ input:focus{
 .jazz-fromendtime{
     display: flex;
     flex-direction: column;
-    height: 46px;
+    margin-bottom: 15px;
+    padding: 0px;
     &-content{
       display: flex;
       flex-direction: row;
       &-to{
         width: 24px;
         text-align: center;
-        padding-top: 4px;
+        padding-top: 5px;
       }
-      &-delete-button{
+      &-delete{
         padding-top: 5px;
         color: #767a7a !important;
         font-size: 14px !important;
@@ -869,7 +870,7 @@ input:focus{
     }
     &-error{
       color:red;
-      font-size: 10px;
+      font-size: 12px;
       margin-top: -10px;
     }
 
@@ -878,27 +879,57 @@ input:focus{
   display: flex;
   flex-direction: row;
 }
-.jazz-fromenddate{
-  display: flex;
-  flex-direction: row;
-}
+
 .jazz-fromenddate-item{
-  margin: 6px 0px 19px 0px;
+  margin: 15px 0px 25px -10px;
   width: 540px;
+  padding: 10px 0px 10px 10px;
   background-color: #f4f4f4;
+  &-error{
+    color:red;
+    font-size: 12px;
+  }
   &-type{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    height: 16px;
+    &-text{
+      font-size: 14px;
+      color: #abafae;
+    }
+    &-delete{
+      margin-right: -16px;
+      margin-top: -8px;
+      color: #767a7a !important;
+      font-size: 14px !important;
+      > button{
+        border: none !important;
+        background-color: transparent!important;
+        &:hover{
+         color:@schneiderBlue!important;
+         background-color: '#e1fcff'!important;
+        }
+      }
+    }
   }
-  &-delete-button{
-    color: #767a7a !important;
-    font-size: 14px !important;
-    > button{
-      border: none !important;
-      background-color: transparent!important;
-      &:hover{
-       color:@schneiderBlue!important;
-       background-color: '#e1fcff'!important;
+  &-text{
+    font-size: 14px;
+    color: #abafae;
+    margin-top: 20px;
+  }
+  .jazz-fromenddate{
+    display: flex;
+    flex-direction: row;
+    margin-top: -4px;
+    &-to{
+      width: 24px;
+      text-align: center;
+      padding-top: 5px;
+    }
+    .jazz-monthday-item{
+      &-month{
+        margin-right: 10px
       }
     }
   }

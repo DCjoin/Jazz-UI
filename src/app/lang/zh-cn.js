@@ -126,7 +126,7 @@ I18N.Common.Glossary.WeekDay.Saturday = '六';
 I18N.Common.Glossary.WeekDay.Sunday = '日';
 
 I18N.Common.Label = {};
-I18N.Common.Label.TimeConflict = '时间段冲突。';
+I18N.Common.Label.TimeConflict = '时间段冲突，请重新选择';
 I18N.Common.Label.DuplicatedName = '该名称已存在';
 I18N.Common.Label.TimeZoneConflict = '时间区间重叠';
 I18N.Common.Label.TimeOverlap = '时间区间重叠，请检查。';

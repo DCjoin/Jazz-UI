@@ -14,7 +14,7 @@ var FromEndDateItem = React.createClass({
     hasDeleteButton: React.PropTypes.bool,
     errorText: React.PropTypes.string,
     typeValue: React.PropTypes.number,
-    typeItems: React.PropTypes.Object,
+    typeItems: React.PropTypes.array,
     typeText: React.PropTypes.string,
     startMonth: React.PropTypes.number,
     startDay: React.PropTypes.number,
@@ -70,7 +70,7 @@ var FromEndDateItem = React.createClass({
     this.props.onDeleteDateData(this.props.index);
   },
   getCompareValue: function() {
-    this.refs.fromEndDate.getCompareValue();
+    return this.refs.fromEndDate.getCompareValue();
   },
   componentWillReceiveProps: function(nextProps) {
     this.setState({
@@ -86,6 +86,8 @@ var FromEndDateItem = React.createClass({
       CommonFuns.CompareArray(this.props.typeItems, nextProps.typeItems) &&
       this.props.typeValue === nextProps.typeValue &&
       this.props.typeText === nextProps.typeText &&
+      this.props.hasDeleteButton === nextProps.hasDeleteButton &&
+      this.props.errorText === nextProps.errorText &&
       this.props.startMonth === nextProps.startMonth &&
       this.props.startDay === nextProps.startDay &&
       this.props.endMonth === nextProps.endMonth &&
@@ -125,7 +127,7 @@ var FromEndDateItem = React.createClass({
     };
     var deleteButton = null;
     if (!me.props.isViewStatus && me.props.hasDeleteButton) {
-      deleteButton = <div className='jazz-fromenddate-item-delete-button'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteDateData} style={{
+      deleteButton = <div className='jazz-fromenddate-item-type-delete'><FlatButton secondary={true} label={I18N.Common.Button.Delete} onClick={me._onDeleteDateData} style={{
         background: 'transparent'
       }} /></div>;
     }
@@ -136,9 +138,9 @@ var FromEndDateItem = React.createClass({
           {deleteButton}
         </div>
         <ViewableDropDownMenu {...typeProps}></ViewableDropDownMenu>
-        <div className='jazz-fromenddate-item-date-text'>{I18N.Setting.Calendar.TimeRange}</div>
+        <div className='jazz-fromenddate-item-text'>{I18N.Setting.Calendar.TimeRange}</div>
         <FromEndDate {...dateProps}></FromEndDate>
-        <div className="jazz-fromenddate-item-error">{me.state.errorText}</div>
+        <div className="jazz-fromenddate-item-error">{me.props.errorText}</div>
       </div>
       );
   }
