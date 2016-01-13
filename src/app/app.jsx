@@ -23,13 +23,16 @@ import main from './less/main.less';
 import Platform from './components/platform/Platform.jsx';
 import Test from './components/setting/Test.jsx';
 import PlatformApp from './components/platform/PlatformApp.jsx';
+//for user manage
 import User from './components/userManage/user/User.jsx';
 import Role from './components/userManage/role/Role.jsx';
+
 import ServiceApp from './components/service/ServiceApp.jsx';
 import WorkDay from './components/Calendar/WorkDay.jsx';
 import WorkTime from './components/Calendar/WorkTime.jsx';
 import DayNight from './components/Calendar/DayNight.jsx';
-
+//for energy conversion
+import Carbon from './components/energyConversion/carbon/Carbon.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -63,7 +66,7 @@ var routes = (
         <Route name="daynight" path="daynight" handler={DayNight}></Route>
 
         <Route name='price' path='price'></Route>
-        <Route name='carbon' path='carbon'></Route>
+        <Route name='carbon' path='carbon' handler={Carbon}></Route>
 
         <Route name='benchmark' path='benchmark'></Route>
         <Route name='labelling' path='labelling'></Route>

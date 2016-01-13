@@ -14,7 +14,7 @@ var ViewableDropDownMenu = React.createClass({
     didChanged: React.PropTypes.func,
     maxHeight: React.PropTypes.number,
     dataItems: React.PropTypes.array.isRequired,
-    style: React.PropTypes.object
+    style: React.PropTypes.object,
   },
 
   getInitialState: function() {
