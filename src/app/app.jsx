@@ -28,6 +28,7 @@ import Role from './components/userManage/role/Role.jsx';
 import ServiceApp from './components/service/ServiceApp.jsx';
 import WorkDay from './components/Calendar/WorkDay.jsx';
 import WorkTime from './components/Calendar/WorkTime.jsx';
+import ColdWarm from './components/Calendar/ColdWarm.jsx';
 import DayNight from './components/Calendar/DayNight.jsx';
 
 // var theme = new ThemeManager();
@@ -59,7 +60,7 @@ var routes = (
       <Route name="service" path="service" handler={ServiceApp}>
         <Route name="workday" path="workday" handler={WorkDay}></Route>
         <Route name="worktime" path="worktime" handler={WorkTime}></Route>
-        <Route name="coldwarm" path="coldwarm"></Route>
+        <Route name="coldwarm" path="coldwarm" handler={ColdWarm}></Route>
         <Route name="daynight" path="daynight" handler={DayNight}></Route>
 
         <Route name='price' path='price'></Route>

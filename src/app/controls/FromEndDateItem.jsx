@@ -58,6 +58,9 @@ var FromEndDateItem = React.createClass({
   getCompareValue: function() {
     return this.refs.fromEndDate.getCompareValue();
   },
+  getTypeValue: function() {
+    return this.props.typeValue;
+  },
   shouldComponentUpdate: function(nextProps, nextState) {
     if (this.props.isViewStatus === nextProps.isViewStatus &&
       CommonFuns.CompareArray(this.props.typeItems, nextProps.typeItems) &&

@@ -104,13 +104,13 @@ var ColdWarm = React.createClass({
     CalendarAction.deleteCalendarById(selectedData.get('Id'), selectedData.get('Version'), calendarType);
   },
   _addColdwarm() {
-    var workday = {
+    var coldwarm = {
       Name: '',
       Type: calendarType,
       Version: null,
       Id: null,
       Items: [{
-        Type: 0,
+        Type: 4,
         StartFirstPart: -1,
         StartSecondPart: -1,
         EndFirstPart: -1,
@@ -119,20 +119,20 @@ var ColdWarm = React.createClass({
     };
     this.setState({
       selectedIndex: null,
-      selectedData: Immutable.fromJS(workday),
+      selectedData: Immutable.fromJS(coldwarm),
       enableSave: false,
       formStatus: formStatus.ADD
     });
   },
   _clearAllErrorText() {
-    this.refs.workdayTitleId.clearErrorText();
+    this.refs.coldwarmTitleId.clearErrorText();
   },
   _isValid() {
-    var isValid = this.refs.workdayTitleId.isValid();
-    isValid = isValid && this.refs.workdayGroup.isValid();
+    var isValid = this.refs.coldwarmTitleId.isValid();
+    isValid = isValid && this.refs.coldwarmGroup.isValid();
     return isValid;
   },
-  _addWorkdayData: function() {
+  _addColdwarmData: function() {
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -140,7 +140,7 @@ var ColdWarm = React.createClass({
       StartSecondPart: -1,
       EndFirstPart: -1,
       EndSecondPart: -1,
-      Type: 0
+      Type: 4
     };
     items = items.unshift(Immutable.fromJS(item));
     selectedData = selectedData.set('Items', items);
@@ -149,7 +149,7 @@ var ColdWarm = React.createClass({
       enableSave: false
     });
   },
-  _deleteWorkdayData: function(index) {
+  _deleteColdwarmData: function(index) {
     var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
@@ -170,6 +170,10 @@ var ColdWarm = React.createClass({
     selectedData = selectedData.set('Items', items);
     this.setState({
       selectedData: selectedData
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _onDateChange(index, value) {
@@ -204,7 +208,7 @@ var ColdWarm = React.createClass({
     var me = this;
     let selectedData = me.state.selectedData;
     var titleProps = {
-      ref: 'workdayTitleId',
+      ref: 'coldwarmTitleId',
       isViewStatus: isView,
       didChanged: me._onNameChange,
       defaultValue: selectedData.get('Name'),
@@ -222,20 +226,20 @@ var ColdWarm = React.createClass({
   _renderContent: function(isView) {
     var me = this;
     let selectedData = me.state.selectedData;
-    var workdayText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkDay}</div>);
-    var addWorkdayDataButton = null;
+    var coldwarmText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.WarmColdDeclaration}</div>);
+    var addColdwarmDataButton = null;
     if (!isView) {
-      addWorkdayDataButton = (<div className="jazz-calendar-add">
-      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.AdditionalDay}</div>
-      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorkdayData} /></div>
+      addColdwarmDataButton = (<div className="jazz-calendar-add">
+      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.ColdwarmSetting}</div>
+      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addColdwarmData} /></div>
       </div>);
     }
-    var workdayGroup = <FromEndDateGroup ref='workdayGroup' type={calendarType} items={selectedData.get('Items')} isViewStatus={isView} onDeleteDateData={me._deleteWorkdayData} onDateChange={me._onDateChange} onTypeChange={me._onTypeChange}></FromEndDateGroup>;
+    var coldwarmGroup = <FromEndDateGroup ref='coldwarmGroup' type={calendarType} items={selectedData.get('Items')} isViewStatus={isView} onDeleteDateData={me._deleteColdwarmData} onDateChange={me._onDateChange} onTypeChange={me._onTypeChange}></FromEndDateGroup>;
     return (
       <div className={"jazz-calendar-content"}>
-        {workdayText}
-        {addWorkdayDataButton}
-        {workdayGroup}
+        {coldwarmText}
+        {addColdwarmDataButton}
+        {coldwarmGroup}
       </div>
       );
   },
@@ -248,12 +252,12 @@ var ColdWarm = React.createClass({
 
   componentDidMount: function() {
     CalendarAction.getCalendarListByType(calendarType);
-    CalendarStore.addWorkdayListChangeListener(this._onWorkdayListChange);
-    CalendarStore.addSelectedWorkdayChangeListener(this._onSelectedItemChange);
+    CalendarStore.addColdwarmListChangeListener(this._onColdwarmListChange);
+    CalendarStore.addSelectedColdwarmChangeListener(this._onSelectedItemChange);
   },
   componentWillUnmount: function() {
-    CalendarStore.removeWorkdayListChangeListener(this._onWorkdayListChange);
-    CalendarStore.removeSelectedWorkdayChangeListener(this._onSelectedItemChange);
+    CalendarStore.removeColdwarmListChangeListener(this._onColdwarmListChange);
+    CalendarStore.removeSelectedColdwarmChangeListener(this._onSelectedItemChange);
   },
 
 
@@ -264,9 +268,9 @@ var ColdWarm = React.createClass({
       isAdd = this.state.formStatus === formStatus.ADD;
     let displayedDom = null;
     let items = [];
-    var workdayList = me.state.workdayList;
-    if (workdayList && workdayList.size !== 0) {
-      items = workdayList.map(function(item, i) {
+    var coldwarmList = me.state.coldwarmList;
+    if (coldwarmList && coldwarmList.size !== 0) {
+      items = coldwarmList.map(function(item, i) {
         let props = {
           index: i,
           label: item.get('Name'),
@@ -302,10 +306,10 @@ var ColdWarm = React.createClass({
         display: 'flex',
         flex: 1
       }}>
-        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorkdaySetting}
+        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.ColdwarmSetting}
       isViewStatus={isView}
       isLoading={this.state.isLeftLoading}
-      contentItems={items} onAddBtnClick={me._addWorkday}/>
+      contentItems={items} onAddBtnClick={me._addColdwarm}/>
         <Panel>
           {displayedDom}
         </Panel>

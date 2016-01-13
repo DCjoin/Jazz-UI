@@ -98,9 +98,9 @@ var FromEndDateGroup = React.createClass({
       coldItemList = [];
     for (i = 0; i < length; i++) {
       item = this.refs['fromEndDateItem' + (i + 1)];
-      if (item.getTypeValue === 4) {
+      if (item.getTypeValue() === 4) {
         warmItemList.push(item);
-      } else if (item.getTypeValue === 5) {
+      } else if (item.getTypeValue() === 5) {
         coldItemList.push(item);
       }
     }
