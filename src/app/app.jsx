@@ -67,7 +67,7 @@ var routes = (
         <Route name='carbon' path='carbon'></Route>
 
         <Route name='benchmark' path='benchmark'></Route>
-        <Route name='labelling' path='labelling'></Route>
+        <Route name='labeling' path='labeling'></Route>
 
         <Route name="customer" path="customer"></Route>
 
