@@ -31,15 +31,6 @@ var FromEndDateItem = React.createClass({
       hasDeleteButton: true
     };
   },
-  getInitialState: function() {
-    return {
-      typeValue: this.props.typeValue,
-      startMonth: this.props.startMonth,
-      startDay: this.props.startDay,
-      endMonth: this.props.endMonth,
-      endDay: this.props.endDay
-    };
-  },
   isValid: function() {
     return this.refs.fromEndDate.isValid();
   },
@@ -67,15 +58,6 @@ var FromEndDateItem = React.createClass({
   getCompareValue: function() {
     return this.refs.fromEndDate.getCompareValue();
   },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      typeValue: nextProps.typeValue,
-      startMonth: nextProps.startMonth,
-      startDay: nextProps.startDay,
-      endMonth: nextProps.endMonth,
-      endDay: nextProps.endDay
-    });
-  },
   shouldComponentUpdate: function(nextProps, nextState) {
     if (this.props.isViewStatus === nextProps.isViewStatus &&
       CommonFuns.CompareArray(this.props.typeItems, nextProps.typeItems) &&
@@ -86,12 +68,7 @@ var FromEndDateItem = React.createClass({
       this.props.startMonth === nextProps.startMonth &&
       this.props.startDay === nextProps.startDay &&
       this.props.endMonth === nextProps.endMonth &&
-      this.props.endDay === nextProps.endDay &&
-      this.state.typeValue === nextState.typeValue &&
-      this.state.startMonth === nextState.startMonth &&
-      this.state.startDay === nextState.startDay &&
-      this.state.endMonth === nextState.endMonth &&
-      this.state.endDay === nextState.endDay) {
+      this.props.endDay === nextProps.endDay) {
       return false;
     }
     return true;
@@ -102,7 +79,7 @@ var FromEndDateItem = React.createClass({
       ref: 'type',
       dataItems: me.props.typeItems,
       isViewStatus: me.props.isViewStatus,
-      defaultValue: me.state.typeValue,
+      defaultValue: me.props.typeValue,
       title: '',
       textField: 'text',
       didChanged: me._onTypeChange
@@ -111,10 +88,10 @@ var FromEndDateItem = React.createClass({
       ref: 'fromEndDate',
       index: me.props.index,
       isViewStatus: me.props.isViewStatus,
-      startMonth: me.state.startMonth,
-      startDay: me.state.startDay,
-      endMonth: me.state.endMonth,
-      endDay: me.state.endDay,
+      startMonth: me.props.startMonth,
+      startDay: me.props.startDay,
+      endMonth: me.props.endMonth,
+      endDay: me.props.endDay,
       onDateChange: me._onDateChange
     };
     var cleanIconStyle = {

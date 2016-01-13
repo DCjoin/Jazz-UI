@@ -24,14 +24,6 @@ var FromEndDate = React.createClass({
       }
     };
   },
-  getInitialState: function() {
-    return {
-      startMonth: this.props.startMonth,
-      startDay: this.props.startDay,
-      endMonth: this.props.endMonth,
-      endDay: this.props.endDay
-    };
-  },
   getCompareValue: function() {
     var startValue = this.refs.startItem.getCompareValue();
     var endValue = this.refs.endItem.getCompareValue();
@@ -71,10 +63,10 @@ var FromEndDate = React.createClass({
   },
   _onMonthDayItemChanged: function(type, value) {
     var startValue, endValue;
-    var startMonth = this.state.startMonth;
-    var startDay = this.state.startDay;
-    var endMonth = this.state.endMonth;
-    var endDay = this.state.endDay;
+    var startMonth = this.props.startMonth;
+    var startDay = this.props.startDay;
+    var endMonth = this.props.endMonth;
+    var endDay = this.props.endDay;
     if (type === 0) {
       startValue = value;
       endValue = this.refs.endItem.getValue();
@@ -93,24 +85,12 @@ var FromEndDate = React.createClass({
       this.props.onDateChange(startMonth, startDay, value[0], value[1]);
     }
   },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      startMonth: nextProps.startMonth,
-      startDay: nextProps.startDay,
-      endMonth: nextProps.endMonth,
-      endDay: nextProps.endDay
-    });
-  },
   shouldComponentUpdate: function(nextProps, nextState) {
     if (this.props.isViewStatus === nextProps.isViewStatus &&
       this.props.startMonth === nextProps.startMonth &&
       this.props.startDay === nextProps.startDay &&
       this.props.endMonth === nextProps.endMonth &&
-      this.props.endDay === nextProps.endDay &&
-      this.state.startMonth === nextState.startMonth &&
-      this.state.startDay === nextState.startDay &&
-      this.state.endMonth === nextState.endMonth &&
-      this.state.endDay === nextState.endDay) {
+      this.props.endDay === nextProps.endDay) {
       return false;
     }
     return true;
@@ -120,16 +100,16 @@ var FromEndDate = React.createClass({
     var startProps = {
       ref: 'startItem',
       isViewStatus: me.props.isViewStatus,
-      month: me.state.startMonth,
-      day: me.state.startDay,
+      month: me.props.startMonth,
+      day: me.props.startDay,
       type: 0,
       onMonthDayItemChange: me._onMonthDayItemChanged
     };
     var endProps = {
       ref: 'endItem',
       isViewStatus: me.props.isViewStatus,
-      month: me.state.endMonth,
-      day: me.state.endDay,
+      month: me.props.endMonth,
+      day: me.props.endDay,
       type: 1,
       onMonthDayItemChange: me._onMonthDayItemChanged
     };

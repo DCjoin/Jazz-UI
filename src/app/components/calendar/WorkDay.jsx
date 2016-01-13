@@ -170,6 +170,10 @@ var WorkDay = React.createClass({
     selectedData = selectedData.set('Items', items);
     this.setState({
       selectedData: selectedData
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _onDateChange(index, value) {

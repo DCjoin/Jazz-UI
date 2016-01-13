@@ -21,14 +21,12 @@ var MonthDayItem = React.createClass({
   getInitialState: function() {
     var dayNum = this._getDayNum(this.props.month);
     return {
-      month: this.props.month,
-      day: this.props.day,
       dayNum: dayNum
     };
   },
   getValue: function() {
-    var month = this.state.month;
-    var day = this.state.day;
+    var month = this.props.month;
+    var day = this.props.day;
     return [month, day];
   },
   getCompareValue: function() {
@@ -38,12 +36,6 @@ var MonthDayItem = React.createClass({
     } else {
       return value[0] + value[1] / 100;
     }
-  },
-  setValue: function(month, day) {
-    this.setState({
-      month: month,
-      day: day
-    });
   },
   isValid: function() {
     var value = this.getValue();
@@ -128,8 +120,8 @@ var MonthDayItem = React.createClass({
     return dayItems;
   },
   _onMonthDayItemChange(name, value) {
-    var month = this.state.month;
-    var day = this.state.day;
+    var month = this.props.month;
+    var day = this.props.day;
     if (name === 'month') {
       var dayNum = this._getDayNum(value);
       if (day > dayNum) {
@@ -140,12 +132,9 @@ var MonthDayItem = React.createClass({
       this.props.onMonthDayItemChange(this.props.type, [month, value]);
     }
   },
-
   componentWillReceiveProps: function(nextProps) {
     var dayNum = this._getDayNum(nextProps.month);
     this.setState({
-      month: nextProps.month,
-      day: nextProps.day,
       dayNum: dayNum
     });
   },
@@ -154,9 +143,6 @@ var MonthDayItem = React.createClass({
       this.props.type === nextProps.type &&
       this.props.month === nextProps.month &&
       this.props.day === nextProps.day &&
-      this.props.dayNum === nextProps.dayNum &&
-      this.state.month === nextState.month &&
-      this.state.day === nextState.day &&
       this.state.dayNum === nextState.dayNum) {
       return false;
     }
@@ -170,7 +156,7 @@ var MonthDayItem = React.createClass({
       ref: 'month',
       dataItems: monthItems,
       isViewStatus: me.props.isViewStatus,
-      defaultValue: me.state.month,
+      defaultValue: me.props.month,
       title: '',
       textField: 'text',
       style: {
@@ -182,7 +168,7 @@ var MonthDayItem = React.createClass({
       ref: 'day',
       dataItems: dayItems,
       isViewStatus: me.props.isViewStatus,
-      defaultValue: me.state.day,
+      defaultValue: me.props.day,
       title: '',
       textField: 'text',
       style: {
