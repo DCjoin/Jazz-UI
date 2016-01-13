@@ -48,12 +48,12 @@ let ServiceApp = React.createClass({
         ]
       },
       {
-        name: 'guide',
-        title: I18N.MainMenu.EnergySubline,
+        name: 'statistics',
+        title: I18N.MainMenu.Statistics,
         children: [
           {
             name: 'benchmark',
-            title: I18N.MainMenu.IndustryBenchmark
+            title: I18N.MainMenu.Benchmark
           },
           {
             name: 'labeling',
