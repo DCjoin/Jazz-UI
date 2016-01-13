@@ -178,10 +178,10 @@ var MonthDayItem = React.createClass({
     };
     return (
       <div className="jazz-monthday-item">
-        <div className='jazz-monthday-item-month'>
+        <div className='jazz-monthday-item-content'>
           <ViewableDropDownMenu {...monthProps}></ViewableDropDownMenu>
         </div>
-        <div className='jazz-monthday-item-day'>
+        <div className='jazz-monthday-item-content'>
           <ViewableDropDownMenu {...dayProps}></ViewableDropDownMenu>
         </div>
       </div>
