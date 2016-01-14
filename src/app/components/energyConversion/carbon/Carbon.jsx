@@ -29,6 +29,15 @@ var Carbon = React.createClass({
       CarbonAction.setCurrentSelectedId(selectedId);
     }
   },
+  _handleSaveCarbon: function(carbonData) {
+    CarbonAction.SaveCarbonFactor(carbonData);
+    this.setState({
+      isLoading: true
+    });
+  },
+  _handleDeleteCarbon: function(carbon) {
+    CarbonAction.deleteCarbon(carbon.toJS());
+  },
   _setViewStatus: function(selectedId = this.state.selectedId) {
     var id = selectedId;
     if (!selectedId) {
@@ -41,10 +50,10 @@ var Carbon = React.createClass({
     });
   },
   _setAddStatus: function() {
-    // var userDetail = this.refs.pop_user_detail;
-    // if (userDetail && isFunction(userDetail.clearErrorTextBatchViewbaleTextFiled)) {
-    //   userDetail.clearErrorTextBatchViewbaleTextFiled();
-    // }
+    var carbonDetail = this.refs.pop_carbon_detail;
+    if (carbonDetail && isFunction(carbonDetail.clearErrorTextBatchViewbaleTextFiled)) {
+      carbonDetail.clearErrorTextBatchViewbaleTextFiled();
+    }
     CarbonAction.setCurrentSelectedId(null);
     this.setState({
       formStatus: formStatus.ADD,
@@ -107,8 +116,8 @@ var Carbon = React.createClass({
         formStatus: this.state.formStatus,
         setEditStatus: this._setEditStatus,
         handlerCancel: this._handlerCancel,
-        // handleSaveRole: this._handleSaveRole,
-        // handleDeleteRole: this._handleDeleteRole,
+        handleSaveCarbon: this._handleSaveCarbon,
+        handleDeleteCarbon: this._handleDeleteCarbon,
         toggleList: this._toggleList
       };
 

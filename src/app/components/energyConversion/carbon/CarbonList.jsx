@@ -4,7 +4,7 @@ import React from "react";
 import classnames from "classnames";
 import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
-import CarbonStore from '../../../stores/CarbonStore.jsx';
+import CarbonStore from '../../../stores/energyConversion/CarbonStore.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 
 var CarbonList = React.createClass({
@@ -37,13 +37,29 @@ var CarbonList = React.createClass({
     });
     return items;
   },
+  _onChange: function() {
+    this.setState({
+      selectableCarbons: CarbonStore.getSelectableCarbons(),
+    });
+  },
+  getInitialState: function() {
+    return {
+      selectableCarbons: CarbonStore.getSelectableCarbons()
+    }
+  },
+  componentDidMount: function() {
+    CarbonStore.addChangeListener(this._onChange);
+  },
+  componentWillUnmount: function() {
+    CarbonStore.removeChangeListener(this._onChange);
+  },
 
   render: function() {
     var that = this;
     var props = {
       addBtnLabel: I18N.Setting.CarbonFactor.Title,
       onAddBtnClick: that.props.onAddBtnClick,
-      isViewStatus: that.props.formStatus === formStatus.VIEW,
+      isViewStatus: that.props.formStatus === formStatus.VIEW && this.state.selectableCarbons.size > 0,
       isLoading: false,
       contentItems: that._renderCarbonItems(),
     };

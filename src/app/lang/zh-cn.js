@@ -1384,7 +1384,7 @@ I18N.Setting.CarbonFactor.Title = '转换因子';
 I18N.Setting.CarbonFactor.Source = '转换物';
 I18N.Setting.CarbonFactor.Target = '转换目标';
 I18N.Setting.CarbonFactor.EffectiveYear = '生效日期';
-
+I18N.Setting.CarbonFactor.Conflict = '时间区间重叠，请重新选择';
 I18N.Setting.CarbonFactor.ConfirmDelete = '确认删除“{0}”到“{1}”的##Setting.CarbonFactor.Title##？';
 
 module.exports = I18N;
