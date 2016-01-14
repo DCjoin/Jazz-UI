@@ -77,9 +77,6 @@ var CalendarStore = assign({}, PrototypeStore, {
   setSelectedCalendar(calendar) {
     _selecteCalendar = Immutable.fromJS(calendar);
   },
-  setDefalutSelectedCalendar() {
-    _selecteCalendar = _calendarList.get(_selecteCalendarIndex);
-  },
   getSelectedCalendar() {
     return _selecteCalendar;
   },
@@ -143,7 +140,6 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.CANCEL_SAVE_CALENDAR:
       CalendarStore.clearAllCalendarErrorText();
-      CalendarStore.setDefalutSelectedCalendar();
       CalendarStore.emitSelectedCalendarChange();
       CalendarStore.emitCalendarErrorTextChange();
       break;
