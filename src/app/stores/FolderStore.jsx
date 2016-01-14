@@ -146,7 +146,7 @@ var FolderStore = assign({}, PrototypeStore, {
       _modifyNameErrorCode = null;
       _errorName = null;
       _errorType = null;
-      _selectedNode = newNode
+      _selectedNode = newNode;
     },
     copyItem: function(destItem, newNode) {
       var parent = destItem;
