@@ -65,14 +65,14 @@ var Benchmark = React.createClass({
     });
   },
   _onCancel: function() {
-    BenchmarkAction.cancelSaveCalendar();
+    BenchmarkAction.cancelSaveBenchmark();
   },
   _onSave: function() {
     var selectedData = this.state.selectedData.toJS();
     if (selectedData.IndustryId === -1) {
-      BenchmarkAction.createCalendar(selectedData);
+      BenchmarkAction.createBenchmark(selectedData);
     } else {
-      BenchmarkAction.modifyCalendar(selectedData);
+      BenchmarkAction.modifyBenchmark(selectedData);
     }
   },
   _onDelete: function() {
@@ -92,7 +92,7 @@ var Benchmark = React.createClass({
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
-      onClick={this._deleteWorktime} />,
+      onClick={this._deleteBenchmark} />,
 
       <FlatButton
       label={I18N.Common.Button.Cancel}
@@ -104,15 +104,15 @@ var Benchmark = React.createClass({
       openImmediately={true}
       actions={dialogActions}
       modal={true}>
-        {I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}
+        {I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('IndustryComment'))}
       </Dialog>);
   },
-  _deleteWorktime() {
+  _deleteBenchmark() {
     var selectedData = this.state.selectedData;
-    BenchmarkAction.deleteCalendarById(selectedData.get('Id'), selectedData.get('Version'));
+    BenchmarkAction.deleteBenchmarkById(selectedData.get('IndustryId'), selectedData.get('Version'));
   },
-  _addWorktime() {
-    var worktime = {
+  _addBenchmark() {
+    var benchmark = {
       Name: '',
       Version: null,
       Id: null,
@@ -126,17 +126,17 @@ var Benchmark = React.createClass({
     };
     this.setState({
       selectedIndex: null,
-      selectedData: Immutable.fromJS(worktime),
+      selectedData: Immutable.fromJS(benchmark),
       enableSave: false,
       formStatus: formStatus.ADD
     });
   },
   _isValid() {
-    var isValid = this.refs.worktimeTitleId.isValid();
-    isValid = isValid && this.refs.worktimeGroup.isValid();
+    var isValid = this.refs.benchmarkTitleId.isValid();
+    isValid = isValid && this.refs.benchmarkGroup.isValid();
     return isValid;
   },
-  _addWorktimeData: function() {
+  _addBenchmarkData: function() {
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -153,7 +153,7 @@ var Benchmark = React.createClass({
       enableSave: false
     });
   },
-  _deleteWorktimeData: function(index) {
+  _deleteBenchmarkData: function(index) {
     var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
@@ -164,22 +164,6 @@ var Benchmark = React.createClass({
     }, () => {
       this.setState({
         enableSave: me._isValid()
-      });
-    });
-  },
-  _onTimeChange(index, value) {
-    var selectedData = this.state.selectedData;
-    var items = selectedData.get('Items');
-    items = items.setIn([index, 'StartFirstPart'], value.StartFirstPart);
-    items = items.setIn([index, 'StartSecondPart'], value.StartSecondPart);
-    items = items.setIn([index, 'EndFirstPart'], value.EndFirstPart);
-    items = items.setIn([index, 'EndSecondPart'], value.EndSecondPart);
-    selectedData = selectedData.set('Items', items);
-    this.setState({
-      selectedData: selectedData
-    }, () => {
-      this.setState({
-        enableSave: this._isValid()
       });
     });
   },
@@ -195,21 +179,22 @@ var Benchmark = React.createClass({
       });
     });
   },
-  _renderHeader: function(isView) {
+  _renderHeader: function(isAdd) {
     var me = this;
     let selectedData = me.state.selectedData;
-    var titleProps = {
-      ref: 'worktimeTitleId',
-      isViewStatus: isView,
-      didChanged: me._onNameChange,
-      defaultValue: selectedData.get('Name'),
-      title: I18N.Common.Glossary.Name,
-      isRequired: true
+    var titleTextProps = {
+      ref: 'benchmarkTitleText',
+      isViewStatus: !isAdd,
+      defaultValue: selectedData.get('IndustryComment'),
+      title: ''
+    };
+    var titleDropProps = {
+
     };
     return (
-      <div className="jazz-calendar-header">
-        <div className='jazz-calendar-title'>
-          <ViewableTextField {...titleProps}></ViewableTextField>
+      <div className="jazz-benchmark-header">
+        <div className='jazz-benchmark-title-text'>
+          <ViewableTextField {...titleTextProps}></ViewableTextField>
         </div>
       </div>
       );
@@ -217,20 +202,10 @@ var Benchmark = React.createClass({
   _renderContent: function(isView) {
     var me = this;
     let selectedData = me.state.selectedData;
-    var worktimeText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkTime}</div>);
-    var addWorktimeDataButton = null;
-    if (!isView) {
-      addWorktimeDataButton = (<div className="jazz-calendar-add">
-      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.WorkTime}</div>
-      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorktimeData} /></div>
-      </div>);
-    }
-    var worktimeGroup = <FromEndTimeGroup ref='worktimeGroup' items={selectedData.get('Items')} isViewStatus={isView} onDeleteTimeData={me._deleteWorktimeData} onTimeChange={me._onTimeChange}></FromEndTimeGroup>;
+    var benchmarkText = (<div className='jazz-benchmark-text'>{I18N.Setting.Calendar.DefaultWorkTime}</div>);
     return (
       <div className={"jazz-calendar-content"}>
-        {worktimeText}
-        {addWorktimeDataButton}
-        {worktimeGroup}
+        {benchmarkText}
       </div>
       );
   },
@@ -265,9 +240,9 @@ var Benchmark = React.createClass({
       isAdd = this.state.formStatus === formStatus.ADD;
     let displayedDom = null;
     let items = [];
-    var worktimeList = me.state.worktimeList;
-    if (worktimeList && worktimeList.size !== 0) {
-      items = worktimeList.map(function(item, i) {
+    var benchmarkList = me.state.benchmarkList;
+    if (benchmarkList && benchmarkList.size !== 0) {
+      items = benchmarkList.map(function(item, i) {
         let props = {
           index: i,
           label: item.get('Name'),
@@ -286,7 +261,7 @@ var Benchmark = React.createClass({
         width: '100px'
       }}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
     } else if (selectedData !== null) {
-      var header = me._renderHeader(isView);
+      var header = me._renderHeader(isAdd);
       var content = me._renderContent(isView);
       var footer = me._renderFooter();
       displayedDom = (
@@ -306,7 +281,7 @@ var Benchmark = React.createClass({
         <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorktimeSetting}
       isViewStatus={isView}
       isLoading={this.state.isLeftLoading}
-      contentItems={items} onAddBtnClick={me._addWorktime}/>
+      contentItems={items} onAddBtnClick={me._addBenchmark}/>
         <Panel>
           {displayedDom}
         </Panel>

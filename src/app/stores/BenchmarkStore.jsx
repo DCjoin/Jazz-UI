@@ -77,13 +77,13 @@ var BenchmarkStore = assign({}, PrototypeStore, {
   removeBenchmarkDataChangeListener: function(callback) {
     this.removeListener(BENCHMARK_DATA_CHANGE_EVENT, callback);
   },
-  addSelectedBenchmarkDataChangeListener: function(callback) {
+  addSelectedBenchmarkChangeListener: function(callback) {
     this.on(SELECTED_BENCHMARK_CHANGE_EVENT, callback);
   },
-  emitSelectedBenchmarkDataChange: function() {
+  emitSelectedBenchmarkChange: function() {
     this.emit(SELECTED_BENCHMARK_CHANGE_EVENT);
   },
-  removeSelectedBenchmarkDataChangeListener: function(callback) {
+  removeSelectedBenchmarkChangeListener: function(callback) {
     this.removeListener(SELECTED_BENCHMARK_CHANGE_EVENT, callback);
   }
 });
@@ -102,6 +102,10 @@ BenchmarkStore.jsx.dispatchToken = AppDispatcher.register(function(action) {
     case LabelAction.GET_BENCHMARK_DATA_SUCCESS:
       BenchmarkStore.setBenchmarkData(action.benchmarkData);
       BenchmarkStore.emitBenchmarkDataChange();
+      break;
+    case Action.SET_SELECTED_CALENDAR:
+      BenchmarkStore.setSelectedBenchmarkIndex(action.index);
+      BenchmarkStore.emitSelectedBenchmarkChange();
       break;
   }
 });
