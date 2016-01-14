@@ -98,7 +98,7 @@ let defaultConfig = {
             left = y.left + this.plotWidth + 5 + (offset * (i - 1));
           }
           if (!y.yTitle && y.options.yname && y.hasVisibleSeries) {
-            var name = y.options.yname.replace('Person', '人');
+            var name = y.options.yname;
             var yTitle = this.renderer.text(name, left, top).add();
             y.yTitle = yTitle;
           }
@@ -124,7 +124,7 @@ let defaultConfig = {
             });
           } else {
             if (y.options.yname) {
-              var name = y.options.yname.replace('Person', '人');
+              var name = y.options.yname;
               var yTitle = this.renderer.text(name, left, top).add();
               y.yTitle = yTitle;
             }
