@@ -34,6 +34,7 @@ import ColdWarm from './components/Calendar/ColdWarm.jsx';
 import DayNight from './components/Calendar/DayNight.jsx';
 //for energy conversion
 import Carbon from './components/energyConversion/carbon/Carbon.jsx';
+import Tariff from './components/energyConversion/tariff/Tariff.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -66,7 +67,7 @@ var routes = (
         <Route name="coldwarm" path="coldwarm" handler={ColdWarm}></Route>
         <Route name="daynight" path="daynight" handler={DayNight}></Route>
 
-        <Route name='price' path='price'></Route>
+        <Route name='price' path='price' handler={Tariff}></Route>
         <Route name='carbon' path='carbon' handler={Carbon}></Route>
 
         <Route name='benchmark' path='benchmark'></Route>

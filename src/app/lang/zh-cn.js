@@ -1380,11 +1380,17 @@ I18N.Setting.Role.ErrorContent = '功能权限角色“{0}”已被用户引用�
 //carbon factor
 I18N.Setting.CarbonFactor = {};
 
+
+
 I18N.Setting.CarbonFactor.Title = '转换因子';
 I18N.Setting.CarbonFactor.Source = '转换物';
 I18N.Setting.CarbonFactor.Target = '转换目标';
 I18N.Setting.CarbonFactor.EffectiveYear = '生效日期';
 I18N.Setting.CarbonFactor.Conflict = '时间区间重叠，请重新选择';
 I18N.Setting.CarbonFactor.ConfirmDelete = '确认删除“{0}”到“{1}”的##Setting.CarbonFactor.Title##？';
+
+I18N.Setting.TOUTariff = {};
+I18N.Setting.TOUTariff.TOUSetting = '峰谷电价';
+I18N.Setting.TOUTariff.Name = '价格配置名称';
 
 module.exports = I18N;

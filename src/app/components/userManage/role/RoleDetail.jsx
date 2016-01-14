@@ -205,6 +205,10 @@ var RoleDetail = React.createClass({
     );
 
     return (
+      <div className={classnames({
+        "jazz-framework-right-expand": that.props.closedList,
+        "jazz-framework-right-fold": !that.props.closedList
+      })}>
       <Panel onToggle={this.props.toggleList}>
         <div className="pop-manage-detail-header">
           <div className="pop-manage-detail-header-name">
@@ -218,6 +222,7 @@ var RoleDetail = React.createClass({
         </div>
         	{that._renderDialog()}
         </Panel>
+      </div>
 
       )
   },

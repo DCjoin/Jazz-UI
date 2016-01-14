@@ -5,8 +5,8 @@ import classnames from "classnames";
 import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
 import Regex from '../../../constants/Regex.jsx';
-import CarbonAction from '../../../actions/energyConversion/CarbonAction.jsx';
-import CarbonStore from '../../../stores/energyConversion/CarbonStore.jsx';
+import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
+import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
@@ -17,15 +17,17 @@ import DeletableItem from '../../../controls/DeletableItem.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
-var CarbonDetail = React.createClass({
+var TariffDetail = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   propTypes: {
     formStatus: React.PropTypes.bool,
-    carbon: React.PropTypes.object,
+    infoTab: React.PropTypes.bool,
+    tariff: React.PropTypes.object,
     setEditStatus: React.PropTypes.func,
     handlerCancel: React.PropTypes.func,
-    handleSaveCarbon: React.PropTypes.func,
-    handleDeleteCarbon: React.PropTypes.func,
+    handleSaveTariff: React.PropTypes.func,
+    handleDeleteTariff: React.PropTypes.func,
+    handlerSwitchTab: React.PropTypes.func,
     toggleList: React.PropTypes.func,
   },
   getInitialState: function() {
@@ -33,28 +35,28 @@ var CarbonDetail = React.createClass({
       dialogStatus: false
     };
   },
-  _handleSaveCarbon: function() {
-    var {carbon} = this.props,
-      factors = carbon.get('Factors'),
-      carbonData = {
-        Id: (!!carbon.get('Id')) ? carbon.get('Id') : null,
-        CommodityId: carbon.getIn(['ConversionPair', 'SourceCommodity', 'Id']),
-        FactorType: carbon.getIn(['ConversionPair', 'FactorType']),
-        Version: (!!carbon.get('Version')) ? carbon.get('Version') : null,
+  _handleSaveTariff: function() {
+    var {tariff} = this.props,
+      factors = tariff.get('Factors'),
+      tariffData = {
+        Id: (!!tariff.get('Id')) ? tariff.get('Id') : null,
+        CommodityId: tariff.getIn(['ConversionPair', 'SourceCommodity', 'Id']),
+        FactorType: tariff.getIn(['ConversionPair', 'FactorType']),
+        Version: (!!tariff.get('Version')) ? tariff.get('Version') : null,
         Factors: []
       };
     factors.forEach(factor => {
       let factorValue = parseFloat(factor.get('FactorValue'));
-      carbonData.Factors.push(factor.set('FactorValue', factorValue).toJS());
+      tariffData.Factors.push(factor.set('FactorValue', factorValue).toJS());
     });
-    this.props.handleSaveCarbon(carbonData);
+    this.props.handleSaveTariff(tariffData);
 
   },
   _handelAddFactor: function() {
-    CarbonAction.addFactor();
+    TariffAction.addFactor();
   },
   _handleDeleteFactor: function(index) {
-    CarbonAction.deleteFactor(index);
+    TariffAction.deleteFactor(index);
   },
   _renderDialog: function() {
     var that = this;
@@ -66,11 +68,11 @@ var CarbonDetail = React.createClass({
     if (!this.state.dialogStatus) {
       return null;
     } else {
-      var carbon = that.props.carbon;
-      let sourceCommodity = carbon.getIn(['ConversionPair', 'SourceCommodity', 'Comment']),
-        sourceUom = carbon.getIn(['ConversionPair', 'SourceUom', 'Comment']),
-        destinationCommodity = carbon.getIn(['ConversionPair', 'DestinationCommodity', 'Comment']),
-        destinationUom = carbon.getIn(['ConversionPair', 'DestinationUom', 'Comment']),
+      var tariff = that.props.tariff;
+      let sourceCommodity = tariff.getIn(['ConversionPair', 'SourceCommodity', 'Comment']),
+        sourceUom = tariff.getIn(['ConversionPair', 'SourceUom', 'Comment']),
+        destinationCommodity = tariff.getIn(['ConversionPair', 'DestinationCommodity', 'Comment']),
+        destinationUom = tariff.getIn(['ConversionPair', 'DestinationUom', 'Comment']),
         label = sourceCommodity + ' ( ' + sourceUom + ' ) ' + '- ' + destinationCommodity + ' ( ' + destinationUom + ' )';
 
       return (
@@ -80,7 +82,7 @@ var CarbonDetail = React.createClass({
           label="删除"
           primary={true}
           onClick={() => {
-            that.props.handleDeleteCarbon(carbon);
+            that.props.handleDeleteTariff(tariff);
             closeDialog();
           }} />,
           <FlatButton
@@ -94,87 +96,41 @@ var CarbonDetail = React.createClass({
   },
   _renderHeader: function() {
     var that = this,
-      {carbon} = this.props,
-      selectedIndex = 0,
-      conversionText = '',
-      isADD = that.props.formStatus == formStatus.ADD;
-    var getItems = function() {
-      var Items = [];
-      if (isADD) {
-        var carbons = CarbonStore.getSelectableCarbons();
-        Items.push({
-          payload: 0,
-          text: I18N.Setting.CarbonFactor.Source
-        });
-        carbons.forEach((item, index) => {
-          Items.push({
-            payload: index + 1,
-            text: item.getIn(['SourceCommodity', 'Comment']) + ' ( ' + item.getIn(['SourceUom', 'Comment']) + ' )'
-          });
-          if (!!carbon.get('ConversionPair')) {
-            if (carbon.get('ConversionPair') == item) {
-              selectedIndex = index;
-              conversionText = ' - ' + item.getIn(['DestinationCommodity', 'Comment']) + ' ( ' + item.getIn(['DestinationUom', 'Comment']) + ' )';
-            }
-          }
-        });
-      } else {
-        var carbons = CarbonStore.getCarbons();
-        carbons.forEach((item, index) => {
-          Items.push({
-            payload: index,
-            text: item.getIn(['ConversionPair', 'SourceCommodity', 'Comment']) + ' ( ' + item.getIn(['ConversionPair', 'SourceUom', 'Comment']) + ' )'
-          });
-          if (carbon.get('Id') == item.get('Id')) {
-            selectedIndex = index;
-            conversionText = ' - ' + item.getIn(['ConversionPair', 'DestinationCommodity', 'Comment']) + ' ( ' + item.getIn(['ConversionPair', 'DestinationUom', 'Comment']) + ' )';
-          }
-        });
-      }
-      return Items;
-    };
-    var titleItems = getItems();
-    var sourceProps = {
-      isViewStatus: !isADD,
-      title: I18N.Setting.CarbonFactor.Source,
-      selectedIndex: selectedIndex,
-      textField: "text",
-      dataItems: titleItems,
-      didChanged: value => {
-        CarbonAction.merge({
-          value: {
-            value: value,
-            items: titleItems
-          },
-          path: "ConversionPair"
-        });
-      }
-    };
+      {tariff} = this.props,
+      isView = this.props.formStatus === formStatus.VIEW,
+      tariffNameProps = {
+        isViewStatus: isView,
+        title: I18N.Setting.TOUTariff.Name,
+        defaultValue: tariff.get("Name"),
+        maxLen: 200,
+        isRequired: true,
+        didChanged: value => {
+          // TariffAction.merge({
+          //   value,
+          //   path: "Name"
+          // })
+        }
+      };
     return (
       <div className="pop-manage-detail-header">
-        <div className="jazz-carbon-detail-header-name">
-          <ViewableDropDownMenu {...sourceProps} />
-          <div className={classnames({
-        "isAdd": isADD
-      })}>
-              {conversionText}
-          </div>
-
-        </div>
+      <div className="pop-manage-detail-header-name">
+        <ViewableTextField  {...tariffNameProps} />
       </div>
+    </div>
       )
+
   },
   _renderContent: function() {
     var that = this,
-      {carbon} = this.props,
+      {tariff} = this.props,
       isView = (that.props.formStatus == formStatus.VIEW),
       items = [];
-    var factors = carbon.get('Factors');
-    var errors = carbon.get('Errors');
+    var factors = tariff.get('Factors');
+    var errors = tariff.get('Errors');
     factors.forEach((factor, index) => {
       var titleItems = [{
           payload: 0,
-          text: I18N.Setting.CarbonFactor.EffectiveYear
+          text: I18N.Setting.TariffFactor.EffectiveYear
         }],
         selectedId = 0,
         error = (!!errors) ? errors.getIn([index]) : null;
@@ -192,12 +148,12 @@ var CarbonDetail = React.createClass({
       }
       var yearProps = {
           isViewStatus: isView,
-          title: I18N.Setting.CarbonFactor.EffectiveYear,
+          title: I18N.Setting.TariffFactor.EffectiveYear,
           selectedIndex: selectedId,
           textField: "text",
           dataItems: titleItems,
           didChanged: value => {
-            CarbonAction.merge({
+            TariffAction.merge({
               value: {
                 value: value,
                 titleItems: titleItems,
@@ -209,14 +165,14 @@ var CarbonDetail = React.createClass({
         },
         conversionProps = {
           isViewStatus: isView,
-          title: I18N.Setting.CarbonFactor.Title,
+          title: I18N.Setting.TariffFactor.Title,
           defaultValue: factor.get("FactorValue"),
           regex: Regex.FactorRule,
           errorMessage: "该输入项只能是正数",
           maxLen: 200,
           isRequired: true,
           didChanged: value => {
-            CarbonAction.merge({
+            TariffAction.merge({
               value: {
                 value: value,
                 factorIndex: index
@@ -234,10 +190,10 @@ var CarbonDetail = React.createClass({
         };
 
       items.push(
-        <div className='jazz-carbon-factorItem'>
+        <div className='jazz-tariff-factorItem'>
           <DeletableItem {...deleteProps}>
             <ViewableDropDownMenu {...yearProps} />
-            <div className='jazz-carbon-addItem-errorText'>{error}</div>
+            <div className='jazz-tariff-addItem-errorText'>{error}</div>
             <div style={{
           marginTop: '25px'
         }}><ViewableTextField  {...conversionProps} /></div>
@@ -248,10 +204,10 @@ var CarbonDetail = React.createClass({
     })
     return (
       <div className="pop-manage-detail-content">
-        <div className="jazz-carbon-addItem">
-          <div>{I18N.Setting.CarbonFactor.Title}</div>
+        <div className="jazz-tariff-addItem">
+          <div>{I18N.Setting.TariffFactor.Title}</div>
           <div className={classnames({
-        "jazz-carbon-addItem-addBtn": true,
+        "jazz-tariff-addItem-addBtn": true,
         "inactive": isView
       })} onClick={this._handelAddFactor}>
           {I18N.Common.Button.Add}
@@ -264,36 +220,30 @@ var CarbonDetail = React.createClass({
   },
   _renderFooter: function() {
     var disabledSaveButton = false,
-      {carbon} = this.props,
+      {tariff} = this.props,
       that = this;
-    var error = (!!carbon.get('Errors')) ? carbon.get('Errors').size != 0 : false;
-    if (!carbon.get('ConversionPair') || error) {
-      disabledSaveButton = true
-    }
-    carbon.get('Factors').forEach(factor => {
-      if (factor.get("EffectiveYear") == 0 || factor.get("EffectiveYear") == I18N.Setting.CarbonFactor.EffectiveYear) {
-        disabledSaveButton = true
-      }
-      if (!Regex.FactorRule.test(factor.get("FactorValue"))) {
-        disabledSaveButton = true
-      }
-    })
     return (
-      <FormBottomBar
+      <div style={{
+        flex: '1'
+      }}>
+        <FormBottomBar
       transition={true}
       enableSave={!disabledSaveButton}
       status={this.props.formStatus}
-      onSave={this._handleSaveCarbon}
+      onSave={this._handleSaveTariff}
       onDelete={function() {
         that.setState({
           dialogStatus: true
         });
       }}
+      allowDelete={that.props.infoTab}
       onCancel={this.props.handlerCancel}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()
       }}/>
+      </div>
+
       )
   },
   componentWillMount: function() {
@@ -302,7 +252,7 @@ var CarbonDetail = React.createClass({
   render: function() {
     var that = this;
     var header = this._renderHeader(),
-      content = this._renderContent(),
+      // content = this._renderContent(),
       footer = this._renderFooter();
     return (
       <div className={classnames({
@@ -311,13 +261,11 @@ var CarbonDetail = React.createClass({
       })}>
       <Panel onToggle={this.props.toggleList}>
         {header}
-        {content}
         {footer}
-        {that._renderDialog()}
       </Panel>
     </div>
       )
   },
 });
 
-module.exports = CarbonDetail;
+module.exports = TariffDetail;
