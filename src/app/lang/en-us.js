@@ -53,6 +53,21 @@ I18N.MainMenu.Report = 'Report';
 I18N.MainMenu.DailyReport = 'Daily report';
 I18N.MainMenu.Template = 'Template';
 
+I18N.MainMenu.Calendar = 'Calendar Setting';
+I18N.MainMenu.WorkdaySetting = 'Work day';
+I18N.MainMenu.WorktimeSetting = 'Work time';
+I18N.MainMenu.ColdwarmSetting = 'HC seasons';
+I18N.MainMenu.DaynightSetting = 'Day & night';
+I18N.MainMenu.EnergyConvert = 'Energy Convert';
+I18N.MainMenu.Price = 'Price';
+I18N.MainMenu.Carbon = 'Carbon';
+I18N.MainMenu.Statistics = 'Big data analysis';
+I18N.MainMenu.Benchmark = 'Benchmark';
+I18N.MainMenu.Labeling = 'Labelling';
+I18N.MainMenu.Customer = 'Customer management';
+I18N.MainMenu.User = 'User management';
+I18N.MainMenu.Privilege = 'Function Privilege';
+
 I18N.Login = {};
 I18N.Login.UserName = 'User name';
 I18N.Login.Password = 'Password';
@@ -426,6 +441,9 @@ I18N.EM.Export.Preview = 'Preview export picture';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = 'Time';
+I18N.Setting.Calendar.DeleteMessage = 'Delete “{0}” ？';
+
+I18N.Setting.Calendar.WorkdaySetting = 'Work Non-workday';
 I18N.Setting.Calendar.WorkDay = 'Workday';
 I18N.Setting.Calendar.Holiday = 'Non-workday';
 I18N.Setting.Calendar.DefaultWorkDay = 'Default workday: Mon. -Fri.';
@@ -436,12 +454,37 @@ I18N.Setting.Calendar.EndDate = 'End date';
 I18N.Setting.Calendar.Month = 'Month';
 I18N.Setting.Calendar.StartMonth = 'Start month';
 I18N.Setting.Calendar.EndMonth = 'End month';
+I18N.Setting.Calendar.TimeRange = 'Timespan';
 I18N.Setting.Calendar.Date = 'Day';
 I18N.Setting.Calendar.SeansonType = 'Season type';
 I18N.Setting.Calendar.MonthDayFromTo = '{0}Month{1}day to {2}month{3}day';
 
+
+
+I18N.Setting.Calendar.WorktimeSetting = 'WorkTime';
+I18N.Setting.Calendar.WorkTime = 'WorkTime';
+I18N.Setting.Calendar.RestTime = 'Non-Work Time';
+I18N.Setting.Calendar.DefaultWorkTime = 'Time except work time is all non-work time.';
+I18N.Setting.Calendar.AddWorkTime = 'Add';
+I18N.Setting.Calendar.StartTime = 'Start time';
+I18N.Setting.Calendar.EndTime = 'End time';
+I18N.Setting.Calendar.To = 'To';
+
+//cold/warm
+I18N.Setting.Calendar.WarmSeason = 'Hot season';
 I18N.Setting.Calendar.WarmSeason = 'Heating season';
 I18N.Setting.Calendar.ColdSeason = 'Cooling season';
+I18N.Setting.Calendar.AddWarmSeason = 'Add heating season';
+I18N.Setting.Calendar.AddColdSeason = 'Add cooling season';
+I18N.Setting.Calendar.WarmColdDeclaration = 'There must be a more-than-7-day interval between a heating season and a cooling season which cannot exist in the same month either.';
+
+//day/night
+I18N.Setting.Calendar.DaynightSetting = 'Day-night time';
+I18N.Setting.Calendar.Day = 'Daytime';
+I18N.Setting.Calendar.Night = 'Night time';
+I18N.Setting.Calendar.DefaultDayNight = 'Time except daytime is all night time.';
+I18N.Setting.Calendar.AddDay = 'Add daytime';
+I18N.Setting.Calendar.AddColdWarm = 'Add cooling/heating season time';
 
 I18N.Setting.Benchmark = {};
 I18N.Setting.Benchmark.Label = {};
@@ -487,6 +530,23 @@ I18N.Common.Label = {};
 I18N.Common.Label.UnknownError = 'Sorry, unknown error.';
 I18N.Common.Label.MandatoryEmptyError = 'Required';
 I18N.Common.Label.ExcelColumnError = 'Please fill in the cell name as C1，AB23';
+
+I18N.Setting.UserManagement = {};
+I18N.Setting.UserManagement.UserManagement = 'User management';
+I18N.Setting.UserManagement.UserInfoManagement = 'User info management';
+I18N.Setting.UserManagement.ViewFunction = 'Function Privilege view';
+I18N.Setting.UserManagement.UserName = 'User name';
+I18N.Setting.UserManagement.RealName = 'Real name';
+I18N.Setting.UserManagement.Title = 'Title';
+I18N.Setting.UserManagement.TitlePlatformAdmin = 'Platform Manager';
+I18N.Setting.UserManagement.Telephone = 'Telephone';
+I18N.Setting.UserManagement.Email = 'Mail';
+I18N.Setting.UserManagement.Comment = 'Comment';
+I18N.Setting.UserManagement.CreatePasswrod = 'Create Password';
+I18N.Setting.UserManagement.MailSent = 'Mail sent successfully';
+I18N.Setting.UserManagement.MembershipCustomer = 'Customers';
+I18N.Setting.UserManagement.AllCustomers = 'Whole customers';
+I18N.Setting.UserManagement.Privilege = 'Function Privilege';
 
 I18N.Message = {};
 
@@ -1218,6 +1278,7 @@ I18N.Privilege.Common.DashboardView = 'folder and widget view';
 I18N.Privilege.Common.DashboardManagement = 'folder and widget  edit';
 I18N.Privilege.Common.PersonalInfoManagement = 'personal info management';
 I18N.Privilege.Common.MapView = 'Map view';
+I18N.Privilege.Common.EnergyManager = 'Energy management';
 I18N.Privilege.Role = {};
 I18N.Privilege.Role.Role = 'role';
 I18N.Privilege.Role.DashboardSharing = 'folder and widget share';
@@ -1228,7 +1289,7 @@ I18N.Privilege.Role.UnitIndicator = 'Unit function';
 I18N.Privilege.Role.RatioIndicator = 'Ratio function';
 I18N.Privilege.Role.LabelingIndicator = 'Labelling function';
 I18N.Privilege.Role.CorporateRanking = 'Ranking function';
-I18N.Privilege.Role.EnergyExport = 'Data export';
+I18N.Privilege.Role.EnergyExport = 'Energy Data export';
 I18N.Privilege.Role.ReportView = 'Report export and view';
 I18N.Privilege.Role.ReportManagement = 'Report management';
 I18N.Privilege.Role.EnergyAlarm = 'Energy alarm';
@@ -1241,12 +1302,33 @@ I18N.Privilege.Role.TagMapping = 'Association';
 I18N.Privilege.Role.CustomerInfoView = 'View customer information';
 I18N.Privilege.Role.CustomerInfoManagement = 'Manage customer information';
 I18N.Privilege.Role.CustomLabeling = 'Customized labeling';
+I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline setting';
 
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
 I18N.Remark.DefaultText = 'Click here to add comment';
 
+I18N.Setting.Role = {};
 
+I18N.Setting.Role.AddRole = 'Role';
+I18N.Setting.Role.Function = 'Role';
+I18N.Setting.Role.Type = 'Type';
+I18N.Setting.Role.Name = 'Name';
+I18N.Setting.Role.Privilege = 'Privilege';
+I18N.Setting.Role.ErrorTitle = 'Can not delete role “{0}”';
+I18N.Setting.Role.ErrorContent = 'Role can not be deleted because “{0}” is referred by some users。Please delete users then try again.';
+
+//carbon factor
+I18N.Setting.CarbonFactor = {};
+
+I18N.Setting.CarbonFactor.Title = 'Conversion factor';
+I18N.Setting.CarbonFactor.Source = 'Conversion object';
+I18N.Setting.CarbonFactor.Target = 'Conversion target';
+I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
+I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
+I18N.Setting.CarbonFactor.Conflict = 'Timespan overlapped, please select again';
+
+I18N.Setting.CarbonFactor.ConfirmDelete = 'Are you sure to delete ##Setting.CarbonFactor.Title## from ""{0}"" to "{1}"?';
 
 module.exports = I18N;
