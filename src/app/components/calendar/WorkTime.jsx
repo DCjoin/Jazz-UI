@@ -128,9 +128,9 @@ var WorkTime = React.createClass({
     this.refs.worktimeTitleId.clearErrorText();
   },
   _isValid() {
-    var isValid = this.refs.worktimeTitleId.isValid();
-    isValid = isValid && this.refs.worktimeGroup.isValid();
-    return isValid;
+    var isTitleValid = this.refs.worktimeTitleId.isValid();
+    var isTimeValid = this.refs.worktimeGroup.isValid();
+    return isTitleValid && isTimeValid;
   },
   _addWorktimeData: function() {
     var selectedData = this.state.selectedData;

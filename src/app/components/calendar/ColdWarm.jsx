@@ -128,9 +128,9 @@ var ColdWarm = React.createClass({
     this.refs.coldwarmTitleId.clearErrorText();
   },
   _isValid() {
-    var isValid = this.refs.coldwarmTitleId.isValid();
-    isValid = isValid && this.refs.coldwarmGroup.isValid();
-    return isValid;
+    var isTitleValid = this.refs.coldwarmTitleId.isValid();
+    var isDateValid = this.refs.coldwarmGroup.isValid();
+    return isTitleValid && isDateValid;
   },
   _addColdwarmData: function() {
     var selectedData = this.state.selectedData;
