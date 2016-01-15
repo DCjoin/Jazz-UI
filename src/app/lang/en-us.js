@@ -484,6 +484,7 @@ I18N.Setting.NodeBtn.Deleting = 'Deleting...';
 I18N.Setting.NodeBtn.Delete = 'Delete';
 
 I18N.Common.Label = {};
+I18N.Common.Label.TimeConflict = 'Conflict time duration.';
 I18N.Common.Label.UnknownError = 'Sorry, unknown error.';
 I18N.Common.Label.MandatoryEmptyError = 'Required';
 I18N.Common.Label.ExcelColumnError = 'Please fill in the cell name as C1，AB23';

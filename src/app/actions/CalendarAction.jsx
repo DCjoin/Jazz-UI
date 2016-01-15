@@ -32,7 +32,8 @@ let CalendarAction = {
       type: Action.CANCEL_SAVE_CALENDAR
     });
   },
-  modifyCalendar(data) {
+  modifyCalendar(data, type) {
+    var me = this;
     Ajax.post('/Administration.svc/ModifyCalendar', {
       params: {
         dto: data
@@ -42,6 +43,7 @@ let CalendarAction = {
           type: Action.MODIFT_CALENDAR_SUCCESS,
           calendar: calendar
         });
+        me.getCalendarListByType(type);
       },
       error: function(err, res) {
         console.log(err, res);

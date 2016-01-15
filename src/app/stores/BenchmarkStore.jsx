@@ -4,7 +4,6 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-import Labeling from '../constants/actionType/Labeling.jsx';
 import { Action } from '../constants/actionType/Benchmark.jsx';
 
 
@@ -24,6 +23,24 @@ var BenchmarkStore = assign({}, PrototypeStore, {
   },
   setBenchmarkData(benchmarkData) {
     _benchmarkData = Immutable.fromJS(benchmarkData);
+    if (_benchmarkData.size !== 0) {
+      if (_selecteBenchmarkIndex === null) {
+        _selecteBenchmarkIndex = 0;
+        _selecteBenchmark = _benchmarkData.get(0);
+      } else {
+        var index = _benchmarkData.findIndex((item) => {
+          if (item.get('IndustryId') === _selecteBenchmark.get('IndustryId')) {
+            return true;
+          }
+        });
+        if (index !== -1 && _selecteBenchmarkIndex !== index) {
+          _selecteBenchmarkIndex = index;
+        }
+      }
+    } else {
+      _selecteBenchmarkIndex = null;
+      _selecteBenchmark = null;
+    }
   },
   getIndustryData() {
     return _industryData;
@@ -46,9 +63,22 @@ var BenchmarkStore = assign({}, PrototypeStore, {
   setSelectedBenchmark(benchmark) {
     _selecteBenchmark = Immutable.fromJS(benchmark);
   },
-  setSelectedCalendarIndex(index) {
+  setSelectedBenchmarkIndex(index) {
     _selecteBenchmarkIndex = index;
     _selecteBenchmark = _benchmarkData.get(_selecteBenchmarkIndex);
+  },
+  deleteBenchmark() {
+    _benchmarkData = _benchmarkData.delete(_selecteBenchmarkIndex);
+    var length = _benchmarkData.size;
+    if (length !== 0) {
+      if (_selecteBenchmarkIndex === length) {
+        _selecteBenchmarkIndex = length - 1;
+      }
+      _selecteBenchmark = _benchmarkData.get(_selecteBenchmarkIndex);
+    } else {
+      _selecteBenchmarkIndex = null;
+      _selecteBenchmark = null;
+    }
   },
   addIndustryDataChangeListener: function(callback) {
     this.on(INDUSTRY_DATA_CHANGE_EVENT, callback);
@@ -88,23 +118,35 @@ var BenchmarkStore = assign({}, PrototypeStore, {
   }
 });
 
-var LabelAction = Labeling.Action;
-BenchmarkStore.jsx.dispatchToken = AppDispatcher.register(function(action) {
+BenchmarkStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
-    case LabelAction.GET_ALL_INDUSTRIES_SUCCESS:
+    case Action.GET_ALL_INDUSTRIES_SUCCESS:
       BenchmarkStore.setIndustryData(action.industryData);
       BenchmarkStore.emitIndustryDataChange();
       break;
-    case LabelAction.GET_ALL_ZONES_SUCCESS:
+    case Action.GET_ALL_ZONES_SUCCESS:
       BenchmarkStore.setZoneData(action.zoneData);
       BenchmarkStore.emitZoneDataChange();
       break;
-    case LabelAction.GET_BENCHMARK_DATA_SUCCESS:
+    case Action.GET_BENCHMARK_DATA_SUCCESS:
       BenchmarkStore.setBenchmarkData(action.benchmarkData);
       BenchmarkStore.emitBenchmarkDataChange();
+      BenchmarkStore.emitSelectedBenchmarkChange();
       break;
-    case Action.SET_SELECTED_CALENDAR:
+    case Action.SET_SELECTED_BENCHMARK:
       BenchmarkStore.setSelectedBenchmarkIndex(action.index);
+      BenchmarkStore.emitSelectedBenchmarkChange();
+      break;
+    case Action.CANCEL_SAVE_BENCHMARK:
+      BenchmarkStore.emitSelectedBenchmarkChange();
+      break;
+    case Action.MODIFT_BENCHMARK_SUCCESS:
+    case Action.CREATE_BENCHMARK_SUCCESS:
+      BenchmarkStore.setSelectedBenchmark(action.benchmark);
+      break;
+    case Action.DELETE_CALENDAR_SUCCESS:
+      BenchmarkStore.deleteBenchmark();
+      BenchmarkStore.emitBenchmarkDataChange();
       BenchmarkStore.emitSelectedBenchmarkChange();
       break;
   }

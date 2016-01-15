@@ -1,7 +1,8 @@
 'use strict';
 
 import React from "react";
-import { CircularProgress, Dialog } from 'material-ui';
+import classnames from "classnames";
+import { CircularProgress, Dialog, Checkbox } from 'material-ui';
 import Item from '../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../controls/SelectablePanel.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
@@ -9,10 +10,8 @@ import FlatButton from '../../controls/FlatButton.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
-import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
-import BenchmarkAction from '../../stores/BenchmarkAction.jsx';
+import BenchmarkAction from '../../actions/BenchmarkAction.jsx';
 import BenchmarkStore from '../../stores/BenchmarkStore.jsx';
-import FromEndTimeGroup from './FromEndTimeGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Immutable from 'immutable';
 
@@ -34,9 +33,9 @@ var Benchmark = React.createClass({
     });
   },
   _onIndustryDataChange: function() {
-    var industyData = BenchmarkStore.getIndustryData();
+    var industryData = BenchmarkStore.getIndustryData();
     this.setState({
-      industyData: industyData
+      industryData: industryData
     });
   },
   _onZoneDataChange: function() {
@@ -68,11 +67,19 @@ var Benchmark = React.createClass({
     BenchmarkAction.cancelSaveBenchmark();
   },
   _onSave: function() {
-    var selectedData = this.state.selectedData.toJS();
-    if (selectedData.IndustryId === -1) {
-      BenchmarkAction.createBenchmark(selectedData);
-    } else {
-      BenchmarkAction.modifyBenchmark(selectedData);
+    var selectedData = this.state.selectedData;
+    var formStatus = this.state.formStatus;
+    var benchmark = {
+      IndustryComment: '',
+      IndustryId: selectedData.get('IndustryId'),
+      Version: selectedData.get('Version'),
+      ZoneComments: '',
+      ZoneIds: selectedData.get('ZoneIds').toJS()
+    };
+    if (formStatus === formStatus.ADD) {
+      BenchmarkAction.createBenchmark(benchmark);
+    } else if (formStatus === formStatus.EDIT) {
+      BenchmarkAction.modifyBenchmark(benchmark);
     }
   },
   _onDelete: function() {
@@ -113,16 +120,11 @@ var Benchmark = React.createClass({
   },
   _addBenchmark() {
     var benchmark = {
-      Name: '',
-      Version: null,
-      Id: null,
-      Items: [{
-        Type: 2,
-        StartFirstPart: -1,
-        StartSecondPart: -1,
-        EndFirstPart: -1,
-        EndSecondPart: -1,
-      }]
+      IndustryComment: '',
+      IndustryId: -1,
+      Version: 0,
+      ZoneComments: '',
+      ZoneIds: []
     };
     this.setState({
       selectedIndex: null,
@@ -132,45 +134,17 @@ var Benchmark = React.createClass({
     });
   },
   _isValid() {
-    var isValid = this.refs.benchmarkTitleId.isValid();
-    isValid = isValid && this.refs.benchmarkGroup.isValid();
-    return isValid;
-  },
-  _addBenchmarkData: function() {
     var selectedData = this.state.selectedData;
-    var items = selectedData.get('Items');
-    var item = {
-      StartFirstPart: -1,
-      StartSecondPart: -1,
-      EndFirstPart: -1,
-      EndSecondPart: -1,
-      Type: 2
-    };
-    items = items.unshift(Immutable.fromJS(item));
-    selectedData = selectedData.set('Items', items);
-    this.setState({
-      selectedData: selectedData,
-      enableSave: false
-    });
+    var zoneIds = selectedData.get('ZoneIds');
+    if (selectedData.get('IndustryId') === -1 || zoneIds.size === 0) {
+      return false;
+    }
+    return true;
   },
-  _deleteBenchmarkData: function(index) {
-    var me = this;
-    var selectedData = this.state.selectedData;
-    var items = selectedData.get('Items');
-    items = items.delete(index);
-    selectedData = selectedData.set('Items', items);
-    this.setState({
-      selectedData: selectedData
-    }, () => {
-      this.setState({
-        enableSave: me._isValid()
-      });
-    });
-  },
-  _onNameChange(value) {
+  _onIndustryChange(value) {
     var me = this;
     var selectedData = me.state.selectedData;
-    selectedData = selectedData.set('Name', value);
+    selectedData = selectedData.set('IndustryId', value);
     me.setState({
       selectedData: selectedData
     }, () => {
@@ -179,8 +153,58 @@ var Benchmark = React.createClass({
       });
     });
   },
+  _handleZoneClick(e) {
+    var me = this;
+    var value = parseInt(e.currentTarget.id);
+    var selectedData = me.state.selectedData;
+    var zoneIds = selectedData.get('ZoneIds');
+    var index = zoneIds.findIndex((item) => {
+      if (item === value) {
+        return true;
+      }
+    });
+    if (index === -1) {
+      zoneIds = zoneIds.push(value);
+    } else {
+      zoneIds = zoneIds.delete(index);
+    }
+    selectedData = selectedData.set('ZoneIds', zoneIds);
+    me.setState({
+      selectedData: selectedData
+    }, () => {
+      me.setState({
+        enableSave: me._isValid()
+      });
+    });
+  },
+  _getBenchmarkItems() {
+    var benchmarkItems = [{
+      payload: -1,
+      text: I18N.Setting.Labeling.Label.Industry,
+      disabled: true
+    }];
+    var industryData = this.state.industryData;
+    var benchmarkList = this.state.benchmarkList;
+    if (industryData && industryData.size !== 0) {
+      industryData.forEach((industry) => {
+        var index = benchmarkList.findIndex((item) => {
+          if (industry.get('Id') === item.get('IndustryId')) {
+            return true;
+          }
+        });
+        if (index === -1) {
+          benchmarkItems.push({
+            payload: industry.get('Id'),
+            text: industry.get('Comment')
+          });
+        }
+      });
+    }
+    return benchmarkItems;
+  },
   _renderHeader: function(isAdd) {
     var me = this;
+    var benchmarkItems = this._getBenchmarkItems();
     let selectedData = me.state.selectedData;
     var titleTextProps = {
       ref: 'benchmarkTitleText',
@@ -189,23 +213,87 @@ var Benchmark = React.createClass({
       title: ''
     };
     var titleDropProps = {
-
+      ref: 'benchmarkTitleDrop',
+      dataItems: benchmarkItems,
+      isViewStatus: !isAdd,
+      defaultValue: selectedData.get('IndustryId'),
+      title: '',
+      textField: 'text',
+      didChanged: me._onIndustryChange
     };
+    var title = null;
+    if (isAdd) {
+      title = (<div className='jazz-benchmark-header-dropdown'>
+        <ViewableDropDownMenu {...titleDropProps}></ViewableDropDownMenu>
+      </div>);
+    } else {
+      title = (<div className='jazz-benchmark-header-text'>
+        <ViewableTextField {...titleTextProps}></ViewableTextField>
+      </div>);
+    }
     return (
       <div className="jazz-benchmark-header">
-        <div className='jazz-benchmark-title-text'>
-          <ViewableTextField {...titleTextProps}></ViewableTextField>
-        </div>
+        {title}
       </div>
       );
   },
   _renderContent: function(isView) {
     var me = this;
-    let selectedData = me.state.selectedData;
-    var benchmarkText = (<div className='jazz-benchmark-text'>{I18N.Setting.Calendar.DefaultWorkTime}</div>);
+    var zoneData = me.state.zoneData;
+    var displayZones = [];
+    //  var checked;
+    if (zoneData && zoneData.size !== 0) {
+      var selectedData = me.state.selectedData;
+      var zoneIds = selectedData.get('ZoneIds');
+      zoneData.forEach((zone) => {
+        var checked = false;
+        var index = zoneIds.findIndex((item) => {
+          if (item === zone.get('Id')) {
+            return true;
+          }
+        });
+        var liStyle = {};
+        if (index === -1) {
+          if (isView) {
+            liStyle.display = "none";
+          }
+          checked = false;
+        } else {
+          checked = true;
+        }
+        displayZones.push(
+          <li className="jazz-benchmark-content-zone-list-item" style={liStyle}>
+            <div className="jazz-benchmark-content-zone-list-item-left" id={zone.get('Id')} onClick={this._handleZoneClick}>
+              <Checkbox
+          defaultChecked={checked}
+          disabled={isView}
+          style={{
+            width: "auto",
+            display: "block"
+          }}
+          />
+              <label
+          title={zone.get('Comment')}
+          className={classnames("jazz-benchmark-content-zone-list-item-label", {
+            "disabled": isView
+          })}>
+                {zone.get('Comment')}
+              </label>
+            </div>
+          </li>
+        );
+      });
+    }
+    var benchmarkText = (<div className='jazz-benchmark-content-text'>{I18N.Setting.Benchmark.Label.SelectTip}</div>);
     return (
-      <div className={"jazz-calendar-content"}>
+      <div className="jazz-benchmark-content">
         {benchmarkText}
+        <div className="jazz-benchmark-content-zone">
+          <div className="jazz-benchmark-content-zone-text">
+            {I18N.Setting.Benchmark.Label.ClimateZone}
+          </div>
+          <div className='jazz-benchmark-content-zone-list'>{displayZones}</div>
+        </div>
       </div>
       );
   },
@@ -217,9 +305,9 @@ var Benchmark = React.createClass({
   },
 
   componentDidMount: function() {
-    LabelMenuAction.getAllBenchmarks();
-    LabelMenuAction.getAllIndustries();
-    LabelMenuAction.getAllZones();
+    BenchmarkAction.getAllIndustries();
+    BenchmarkAction.getAllZones();
+    BenchmarkAction.getAllBenchmarks();
     BenchmarkStore.addBenchmarkDataChangeListener(this._onBenchmarkListChange);
     BenchmarkStore.addIndustryDataChangeListener(this._onIndustryDataChange);
     BenchmarkStore.addZoneDataChangeListener(this._onZoneDataChange);
@@ -245,7 +333,7 @@ var Benchmark = React.createClass({
       items = benchmarkList.map(function(item, i) {
         let props = {
           index: i,
-          label: item.get('Name'),
+          label: item.get('IndustryComment'),
           selectedIndex: me.state.selectedIndex,
           onItemClick: me._onItemClick
         };
@@ -256,7 +344,7 @@ var Benchmark = React.createClass({
     }
     let selectedData = me.state.selectedData;
     if (me.state.isRightLoading) {
-      displayedDom = (<div className='jazz-calendar-loading'><div style={{
+      displayedDom = (<div className='jazz-benchmark-loading'><div style={{
         margin: 'auto',
         width: '100px'
       }}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
@@ -265,7 +353,7 @@ var Benchmark = React.createClass({
       var content = me._renderContent(isView);
       var footer = me._renderFooter();
       displayedDom = (
-        <div className="jazz-calendar-container">
+        <div className="jazz-benchmark">
           {header}
           {content}
           {footer}
@@ -278,7 +366,7 @@ var Benchmark = React.createClass({
         display: 'flex',
         flex: 1
       }}>
-        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.WorktimeSetting}
+        <SelectablePanel addBtnLabel={I18N.Setting.Benchmark.Label.IndustryBenchmark}
       isViewStatus={isView}
       isLoading={this.state.isLeftLoading}
       contentItems={items} onAddBtnClick={me._addBenchmark}/>

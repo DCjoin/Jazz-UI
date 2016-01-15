@@ -64,7 +64,7 @@ var WorkDay = React.createClass({
     if (selectedData.Id === null) {
       CalendarAction.createCalendar(selectedData, calendarType);
     } else {
-      CalendarAction.modifyCalendar(selectedData);
+      CalendarAction.modifyCalendar(selectedData, calendarType);
     }
   },
   _onDelete: function() {
