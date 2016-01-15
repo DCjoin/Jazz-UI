@@ -143,7 +143,8 @@ var Role = React.createClass({
         handlerCancel: this._handlerCancel,
         handleSaveRole: this._handleSaveRole,
         handleDeleteRole: this._handleDeleteRole,
-        toggleList: this._toggleList
+        toggleList: this._toggleList,
+        closedList: this.state.closedList
       };
     let rolelist = (!this.state.closedList) ? <div style={{
       display: 'flex'

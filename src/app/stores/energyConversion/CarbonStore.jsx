@@ -29,7 +29,9 @@ var CarbonStore = assign({}, PrototypeStore, {
     _carbons = Immutable.fromJS(carbons);
     _conversionPairs.forEach(carbon => {
       let index = _carbons.findIndex(item => (item.getIn(['ConversionPair', 'SourceCommodity', 'Id']) == carbon.getIn(['SourceCommodity', 'Id'])
-        && item.getIn(['ConversionPair', 'DestinationCommodity', 'Id']) == carbon.getIn(['DestinationCommodity', 'Id'])));
+        && item.getIn(['ConversionPair', 'DestinationCommodity', 'Id']) == carbon.getIn(['DestinationCommodity', 'Id'])
+        && item.getIn(['ConversionPair', 'SourceUom', 'Id']) == carbon.getIn(['SourceUom', 'Id'])
+        && item.getIn(['ConversionPair', 'DestinationUom', 'Id']) == carbon.getIn(['DestinationUom', 'Id'])));
       if (index < 0) {
         _selectableCarbons = _selectableCarbons.push(carbon);
       }
@@ -69,13 +71,83 @@ var CarbonStore = assign({}, PrototypeStore, {
     _updatingCarbon = emptyMap();
     _selectedId = null;
   },
-  merge: function(data) {
-    if (data.path == 'ConversionPair') {
-      var index = data.value.value;
-      if (index !== 0) {
-        _updatingCarbon = _updatingCarbon.set(data.path, _selectableCarbons.getIn([index - 1]));
+  checkError: function(index) {
+    var factors = _updatingCarbon.get('Factors'),
+      factor = factors.getIn([index]),
+      errors = emptyList();
+    factors.forEach((item, id) => {
+      if (id != index && item.get('EffectiveYear') == factor.get('EffectiveYear')) {
+        errors = errors.setIn([index], I18N.Setting.CarbonFactor.Conflict);
+        errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
       }
+    });
+    _updatingCarbon = _updatingCarbon.set('Errors', errors);
+  },
+  merge: function(data) {
+    switch (data.path) {
+      case 'ConversionPair':
+        var index = data.value.value;
+        if (index !== 0) {
+          _updatingCarbon = _updatingCarbon.set(data.path, _selectableCarbons.getIn([index - 1]));
+        }
+        break;
+      case 'EffectiveYear':
+        var year = data.value.titleItems[data.value.value],
+          factorIndex = data.value.factorIndex,
+          that = this;
+        var factors = _updatingCarbon.get('Factors');
+        _updatingCarbon = _updatingCarbon.set('Factors', factors.update(factorIndex, (item) => {
+          return factors.getIn([factorIndex]).set('EffectiveYear', year.text);
+        }));
+        that.checkError(factorIndex);
+        break;
+      case 'FactorValue':
+        var value = data.value.value,
+          factorIndex = data.value.factorIndex;
+        var factors = _updatingCarbon.get('Factors');
+        _updatingCarbon = _updatingCarbon.set('Factors', factors.update(factorIndex, (item) => {
+          return factors.getIn([factorIndex]).set('FactorValue', value);
+        }));
+        break;
     }
+
+  },
+  addFactor: function() {
+    var factors = _updatingCarbon.get('Factors');
+    factors = factors.unshift(Immutable.fromJS({
+      EffectiveYear: 0
+    }));
+    _updatingCarbon = _updatingCarbon.set('Factors', factors);
+  },
+  deleteFactor: function(index) {
+    var factors = _updatingCarbon.get('Factors');
+    _updatingCarbon = _updatingCarbon.set('Factors', factors.delete(index));
+  },
+  deleteCarbon(deletedId) {
+    var deletedIndex = -1;
+
+    if (_carbons.size < 2) {
+      _carbons = emptyList();
+      return 0;
+    }
+
+    var nextSelectedId = 0;
+
+    _carbons.every((item, index) => {
+      if (item.get("Id") == deletedId) {
+        deletedIndex = index;
+        if (index == _carbons.size - 1) {
+          nextSelectedId = _carbons.getIn([index - 1, "Id"]);
+        } else {
+          nextSelectedId = _carbons.getIn([index + 1, "Id"]);
+        }
+        return false;
+      }
+      return true;
+    });
+    _carbons = _carbons.deleteIn([deletedIndex]);
+    this.setCarbons(_carbons.toJS());
+    return nextSelectedId;
   },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
@@ -101,7 +173,8 @@ CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
         CarbonStore.setSelectedId(_carbons.getIn([0, "Id"]));
         CarbonStore.emitChange(_carbons.getIn([0, "Id"]));
       } else {
-        CarbonStore.emitChange();
+        CarbonStore.setSelectedId(_selectedId);
+        CarbonStore.emitChange(_selectedId);
       }
       break;
     case CarbonAction.SET_SELECTED_ID:
@@ -113,6 +186,22 @@ CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
     case CarbonAction.MERGE_CARBON:
       CarbonStore.merge(action.data);
       CarbonStore.emitChange();
+      break;
+    case CarbonAction.ADD_FACTOR:
+      CarbonStore.addFactor();
+      CarbonStore.emitChange();
+      break;
+    case CarbonAction.DELETE_FACTOR:
+      CarbonStore.deleteFactor(action.index);
+      CarbonStore.emitChange();
+      break;
+    case CarbonAction.SAVE_FACTOR_SUCCESS:
+      CarbonStore.setSelectedId(action.id);
+      break;
+    case CarbonAction.DELETE_FACTOR_SUCCESS:
+      var selecteId = CarbonStore.deleteCarbon(action.id);
+      CarbonStore.setSelectedId(selecteId);
+      CarbonStore.emitChange(selecteId);
       break;
 
   }

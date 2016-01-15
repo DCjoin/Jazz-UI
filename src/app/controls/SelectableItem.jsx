@@ -22,10 +22,10 @@ let SelectableItem = React.createClass({
         "jazz-selectable-item": true,
         "isSelected": this.props.index == this.props.selectedIndex,
       })} onClick={this.onClick}>
-        <div className='label'>
+        <div className='label' title={this.props.label}>
           {this.props.label}
         </div>
-        <div className='text'>
+        <div className='text' title={this.props.text}>
           {this.props.text}
         </div>
       </div>

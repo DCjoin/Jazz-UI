@@ -153,6 +153,7 @@ var UserDetail = React.createClass({
     var isNew = !this.props.selectedId;
     return {
       user: this.props.user,
+
       infoTab: true,
 
       showRoleSideNav: false

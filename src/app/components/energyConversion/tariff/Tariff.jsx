@@ -3,59 +3,86 @@
 import React from "react";
 import classnames from "classnames";
 import { isFunction, isObject } from "lodash/lang";
-import CarbonList from './CarbonList.jsx';
-import CarbonDetail from './CarbonDetail.jsx';
+import TariffList from './TariffList.jsx';
+import TariffDetail from './TariffDetail.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
-import CarbonAction from '../../../actions/energyConversion/CarbonAction.jsx';
-import CarbonStore from '../../../stores/energyConversion/CarbonStore.jsx';
+import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
+import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
 
 import Dialog from '../../../controls/PopupDialog.jsx';
-var Carbon = React.createClass({
+var Tariff = React.createClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,
       selectedId: null,
-      carbons: CarbonStore.getCarbons(),
+      tariffs: TariffStore.getTariffs(),
       closedList: false,
       isLoading: true,
       errorTitle: null,
-      errorContent: null
+      errorContent: null,
+      infoTab: true,
     };
   },
   _handlerTouchTap: function(selectedId) {
     this._setViewStatus(selectedId);
     if (this.state.selectedId != selectedId) {
-      CarbonAction.setCurrentSelectedId(selectedId);
+      TariffAction.setCurrentSelectedId(selectedId);
     }
   },
-  _handleSaveCarbon: function(carbonData) {
-    CarbonAction.SaveCarbonFactor(carbonData);
+  _handleSaveTariff: function(infoTab, tariffData) {
+    TariffAction.SaveTariffFactor(tariffData);
     this.setState({
       isLoading: true
     });
   },
-  _handleDeleteCarbon: function(carbon) {
-    CarbonAction.deleteCarbon(carbon.toJS());
+  _handleDeleteTariff: function(tariff) {
+    TariffAction.deleteTariff(tariff.toJS());
+  },
+  _switchTab(event) {
+    if (event.target.getAttribute("data-tab-index") == 1) {
+      if (this.state.infoTab) {
+        return;
+      }
+      this.setState({
+        infoTab: true,
+        formStatus: formStatus.VIEW
+      });
+    } else {
+      if (!this.state.infoTab) {
+        return;
+      }
+
+      this.setState({
+        infoTab: false,
+        formStatus: formStatus.VIEW
+      });
+    }
   },
   _setViewStatus: function(selectedId = this.state.selectedId) {
-    var id = selectedId;
+    var id = selectedId,
+      infoTab = this.state.infoTab;
     if (!selectedId) {
-      id = this.state.carbons.getIn([0, "Id"]);
-      CarbonAction.setCurrentSelectedId(id);
+      id = this.state.tariffs.getIn([0, "Id"]);
+      TariffAction.setCurrentSelectedId(id);
+    }
+    if (this.state.selectedUserId != selectedId) {
+      infoTab = true;
     }
     this.setState({
+      infoTab: infoTab,
       formStatus: formStatus.VIEW,
       selectedId: id
     });
   },
   _setAddStatus: function() {
-    var carbonDetail = this.refs.pop_carbon_detail;
-    if (carbonDetail && isFunction(carbonDetail.clearErrorTextBatchViewbaleTextFiled)) {
-      carbonDetail.clearErrorTextBatchViewbaleTextFiled();
+    var tariffDetail = this.refs.pop_tariff_detail;
+    if (tariffDetail && isFunction(tariffDetail.clearErrorTextBatchViewbaleTextFiled)) {
+      tariffDetail.clearErrorTextBatchViewbaleTextFiled();
     }
-    CarbonAction.setCurrentSelectedId(null);
+    TariffAction.setCurrentSelectedId(null);
     this.setState({
+      infoTab: true,
       formStatus: formStatus.ADD,
       selectedId: null
     });
@@ -80,15 +107,15 @@ var Carbon = React.createClass({
       this._setViewStatus(selectedId);
     }
     this.setState({
-      carbons: CarbonStore.getCarbons(),
+      tariffs: TariffStore.getTariffs(),
       isLoading: false,
       errorTitle: null,
       errorContent: null
     });
   },
   componentDidMount: function() {
-    CarbonStore.addChangeListener(this._onChange);
-    CarbonAction.GetConversionPairs();
+    TariffStore.addChangeListener(this._onChange);
+    TariffAction.GetTouTariff();
     this.setState({
       isLoading: true
     });
@@ -96,8 +123,8 @@ var Carbon = React.createClass({
 
   },
   componentWillUnmount: function() {
-    CarbonStore.removeChangeListener(this._onChange);
-    CarbonAction.ClearAll();
+    TariffStore.removeChangeListener(this._onChange);
+  //TariffAction.ClearAll();
   },
   render: function() {
     var that = this,
@@ -106,27 +133,29 @@ var Carbon = React.createClass({
     var listProps = {
         formStatus: this.state.formStatus,
         onAddBtnClick: that._setAddStatus,
-        onCarbonClick: that._handlerTouchTap,
-        carbons: that.state.carbons,
+        onTariffClick: that._handlerTouchTap,
+        tariffs: that.state.tariffs,
         selectedId: that.state.selectedId
       },
       detailProps = {
-        ref: 'pop_carbon_detail',
-        carbon: isView ? CarbonStore.getPersistedCarbon() : CarbonStore.getUpdatingCarbon(),
+        ref: 'pop_tariff_detail',
+        tariff: isView ? TariffStore.getPersistedTariff() : TariffStore.getUpdatingTariff(),
         formStatus: this.state.formStatus,
+        infoTab: this.state.infoTab,
         setEditStatus: this._setEditStatus,
         handlerCancel: this._handlerCancel,
-        handleSaveCarbon: this._handleSaveCarbon,
-        handleDeleteCarbon: this._handleDeleteCarbon,
+        handleSaveTariff: this._handleSaveTariff,
+        handleDeleteTariff: this._handleDeleteTariff,
+        handlerSwitchTab: that._switchTab,
         toggleList: this._toggleList,
         closedList: this.state.closedList
       };
 
-    let carbonlist = (!this.state.closedList) ? <div style={{
+    let tarifflist = (!this.state.closedList) ? <div style={{
       display: 'flex'
-    }}><CarbonList {...listProps}/></div> : <div style={{
+    }}><TariffList {...listProps}/></div> : <div style={{
       display: 'none'
-    }}><CarbonList {...listProps}/></div>;
+    }}><TariffList {...listProps}/></div>;
     if (this.state.isLoading) {
       return (
         <div style={{
@@ -144,10 +173,10 @@ var Carbon = React.createClass({
           display: 'flex',
           flex: 1
         }}>
-    {carbonlist}
-    <CarbonDetail {...detailProps}/>
+    {tarifflist}
+    <TariffDetail {...detailProps}/>
     </div>);
     }
   },
 });
-module.exports = Carbon;
+module.exports = Tariff;

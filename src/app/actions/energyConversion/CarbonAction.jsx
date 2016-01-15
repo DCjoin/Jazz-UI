@@ -32,6 +32,45 @@ let CarbonAction = {
       }
     });
   },
+  SaveCarbonFactor: function(carbonData) {
+    var that = this;
+    Ajax.post('/Administration.svc/SaveCarbonFactor', {
+      params: {
+        dto: carbonData
+      },
+      success: function(carbon) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_FACTOR_SUCCESS,
+          id: carbon.Id
+        });
+        that.GetAllCarbonFactor();
+
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  deleteCarbon: function(carbonData) {
+    var that = this;
+    Ajax.post('/Administration.svc/DeleteCarbonFactor', {
+      params: {
+        dto: {
+          Id: carbonData.Id,
+          Version: carbonData.Version
+        }
+      },
+      success: function(carbon) {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_FACTOR_SUCCESS,
+          id: carbonData.Id
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   setCurrentSelectedId: function(id) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_ID,
@@ -47,6 +86,17 @@ let CarbonAction = {
     AppDispatcher.dispatch({
       type: Action.MERGE_CARBON,
       data: data
+    });
+  },
+  addFactor: function() {
+    AppDispatcher.dispatch({
+      type: Action.ADD_FACTOR
+    });
+  },
+  deleteFactor: function(index) {
+    AppDispatcher.dispatch({
+      type: Action.DELETE_FACTOR,
+      index: index,
     });
   },
 
