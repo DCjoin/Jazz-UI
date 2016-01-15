@@ -1,8 +1,8 @@
 'use strict';
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import { Action } from '../constants/actionType/Benchmark.jsx';
+import { Action } from '../constants/actionType/Labeling.jsx';
 import Ajax from '../ajax/ajax.jsx';
-let BenchmarkAction = {
+let LabelingAction = {
   getAllIndustries() {
     Ajax.post('/Administration.svc/GetAllIndustries', {
       params: {
@@ -40,80 +40,81 @@ let BenchmarkAction = {
       }
     });
   },
-  getAllBenchmarks() {
-    Ajax.post('/Administration.svc/GetAllBenchmarks', {
+  getAllLabelings() {
+    Ajax.post('/Administration.svc/GetAllLabelings', {
       params: {},
-      success: function(benchmarkData) {
+      success: function(labelingData) {
         AppDispatcher.dispatch({
-          type: Action.GET_BENCHMARK_DATA_SUCCESS,
-          benchmarkData: benchmarkData
+          type: Action.GET_ALL_LABELS_SUCCESS,
+          labelingData: labelingData
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
-          type: Action.GET_BENCHMARK_DATA_ERROR
+          type: Action.GET_ALL_LABELS_ERROR
         });
       }
     });
   },
-  setSelectedBenchmarkIndex(index) {
+  setSelectedLabelingIndex(index) {
     AppDispatcher.dispatch({
-      type: Action.SET_SELECTED_BENCHMARK,
+      type: Action.SET_SELECTED_LABELING,
       index: index
     });
   },
-  cancelSaveBenchmark() {
+  cancelSaveLabeling() {
     AppDispatcher.dispatch({
-      type: Action.CANCEL_SAVE_BENCHMARK
+      type: Action.CANCEL_SAVE_LABELING
     });
   },
-  modifyBenchmark(data) {
+  modifyLabeling(data) {
     var me = this;
-    Ajax.post('/Administration.svc/ModifyBenchmark', {
+    Ajax.post('/Administration.svc/ModifyLabeling', {
       params: {
-        benchmark: data
+        labeling: data
       },
-      success: function(benchmark) {
+      success: function(labeling) {
         AppDispatcher.dispatch({
-          type: Action.MODIFT_BENCHMARK_SUCCESS,
-          benchmark: benchmark
+          type: Action.MODIFT_LABELING_SUCCESS,
+          labeling: labeling
         });
-        me.getAllBenchmarks();
+        me.getAllLabelings();
       },
       error: function(err, res) {
         console.log(err, res);
       }
     });
   },
-  createBenchmark(data) {
+  createLabeling(data) {
     var me = this;
-    Ajax.post('/Administration.svc/CreateBenchmark', {
+    Ajax.post('/Administration.svc/CreateLabeling', {
       params: {
-        benchmark: data
+        labeling: data
       },
-      success: function(benchmark) {
+      success: function(labeling) {
         AppDispatcher.dispatch({
-          type: Action.CREATE_BENCHMARK_SUCCESS,
-          benchmark: benchmark
+          type: Action.CREATE_LABELING_SUCCESS,
+          labeling: labeling
         });
-        me.getAllBenchmarks();
+        me.getAllLabelings();
       },
       error: function(err, res) {
         console.log(err, res);
       }
     });
   },
-  deleteBenchmarkById(id, version) {
-    Ajax.post('/Administration.svc/DeleteBenchmark', {
+  deleteLabelingById(industryId, zoneId, version) {
+    Ajax.post('/Administration.svc/DeleteLabeling', {
       params: {
-        benchmark: {
-          Id: id,
+        labeling: {
+          IndustryId: industryId,
+          ZoneId: zoneId,
           Version: version
         }
       },
       success: function() {
         AppDispatcher.dispatch({
-          type: Action.DELETE_BENCHMARK_SUCCESS
+          type: Action.DELETE_LABELING_SUCCESS
         });
       },
       error: function(err, res) {
@@ -122,4 +123,4 @@ let BenchmarkAction = {
     });
   }
 };
-module.exports = BenchmarkAction;
+module.exports = LabelingAction;

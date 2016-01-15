@@ -144,7 +144,7 @@ BenchmarkStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.CREATE_BENCHMARK_SUCCESS:
       BenchmarkStore.setSelectedBenchmark(action.benchmark);
       break;
-    case Action.DELETE_CALENDAR_SUCCESS:
+    case Action.DELETE_BENCHMARK_SUCCESS:
       BenchmarkStore.deleteBenchmark();
       BenchmarkStore.emitBenchmarkDataChange();
       BenchmarkStore.emitSelectedBenchmarkChange();
