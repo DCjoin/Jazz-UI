@@ -1331,4 +1331,8 @@ I18N.Setting.CarbonFactor.Conflict = 'Timespan overlapped, please select again';
 
 I18N.Setting.CarbonFactor.ConfirmDelete = 'Are you sure to delete ##Setting.CarbonFactor.Title## from ""{0}"" to "{1}"?';
 
+I18N.Setting.TOUTariff = {};
+I18N.Setting.TOUTariff.TOUSetting = '峰谷电价';
+I18N.Setting.TOUTariff.Name = '价格配置名称';
+
 module.exports = I18N;
