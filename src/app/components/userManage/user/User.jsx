@@ -55,7 +55,7 @@ var User = React.createClass({
       errorContent: null
     });
   },
-  _setViewStatus: function(selectedId) {
+  _setViewStatus: function(selectedId = this.state.selectedUserId) {
     var infoTab = this.state.infoTab;
     if (!selectedId) {
       selectedId = this.state.users.getIn([0, "Id"]);
