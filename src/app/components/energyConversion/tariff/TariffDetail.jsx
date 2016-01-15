@@ -4,6 +4,7 @@ import React from "react";
 import classnames from "classnames";
 import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
+import { Toggle } from 'material-ui';
 import Regex from '../../../constants/Regex.jsx';
 import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
 import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
@@ -16,6 +17,8 @@ import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import DeletableItem from '../../../controls/DeletableItem.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
+import FromEndTime from '../../../controls/FromEndTime.jsx';
+import FromEndDate from '../../../controls/FromEndDate.jsx';
 
 var TariffDetail = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
@@ -52,12 +55,12 @@ var TariffDetail = React.createClass({
     this.props.handleSaveTariff(tariffData);
 
   },
-  _handelAddFactor: function() {
-    TariffAction.addFactor();
-  },
-  _handleDeleteFactor: function(index) {
-    TariffAction.deleteFactor(index);
-  },
+  _handelAddPeakTimeRange: function() {},
+  _handelAddValleyTimeRange: function() {},
+  _handelAddPulsePeakDateTimeRange: function() {},
+  _handelDeletePeakTimeRange: function(index) {},
+  _handelDeleteValleyTimeRange: function(index) {},
+  _handelDeletePulsePeakDateTimeRange: function(index) {},
   _renderDialog: function() {
     var that = this;
     var closeDialog = function() {
@@ -98,6 +101,7 @@ var TariffDetail = React.createClass({
     var that = this,
       {tariff} = this.props,
       isView = this.props.formStatus === formStatus.VIEW,
+      isAdd = this.props.formStatus === formStatus.ADD,
       tariffNameProps = {
         isViewStatus: isView,
         title: I18N.Setting.TOUTariff.Name,
@@ -115,105 +119,323 @@ var TariffDetail = React.createClass({
       <div className="pop-manage-detail-header">
       <div className="pop-manage-detail-header-name">
         <ViewableTextField  {...tariffNameProps} />
+          {
+      isAdd ? null :
+        <div className="pop-user-detail-tabs">
+      <span className={classnames({
+          "pop-user-detail-tabs-tab": true,
+          "selected": that.props.infoTab
+        })} data-tab-index="1" onClick={that.props.handlerSwitchTab}>{I18N.Setting.TOUTariff.BasicProperties}</span>
+      <span className={classnames({
+          "pop-user-detail-tabs-tab": true,
+          "selected": !that.props.infoTab
+        })} data-tab-index="2" onClick={that.props.handlerSwitchTab}>{I18N.Setting.TOUTariff.PulsePeak}</span>
+    </div>
+      }
       </div>
     </div>
       )
 
   },
-  _renderContent: function() {
-    var that = this,
-      {tariff} = this.props,
-      isView = (that.props.formStatus == formStatus.VIEW),
-      items = [];
-    var factors = tariff.get('Factors');
-    var errors = tariff.get('Errors');
-    factors.forEach((factor, index) => {
-      var titleItems = [{
-          payload: 0,
-          text: I18N.Setting.TariffFactor.EffectiveYear
-        }],
-        selectedId = 0,
-        error = (!!errors) ? errors.getIn([index]) : null;
-      let date = new Date();
-      let yearMenuItems = [];
-      let yearRange = 10;
-      for (var thisYear = date.getFullYear(), i = thisYear - yearRange; i <= thisYear; i++) {
-        titleItems.push({
-          payload: 11 - (thisYear - i),
-          text: i
-        });
-        if (factor.get('EffectiveYear') == i) {
-          selectedId = 11 - (thisYear - i);
-        }
-      }
-      var yearProps = {
-          isViewStatus: isView,
-          title: I18N.Setting.TariffFactor.EffectiveYear,
-          selectedIndex: selectedId,
-          textField: "text",
-          dataItems: titleItems,
-          didChanged: value => {
-            TariffAction.merge({
-              value: {
-                value: value,
-                titleItems: titleItems,
-                factorIndex: index
-              },
-              path: "EffectiveYear"
-            });
-          }
-        },
-        conversionProps = {
-          isViewStatus: isView,
-          title: I18N.Setting.TariffFactor.Title,
-          defaultValue: factor.get("FactorValue"),
-          regex: Regex.FactorRule,
-          errorMessage: "该输入项只能是正数",
-          maxLen: 200,
-          isRequired: true,
-          didChanged: value => {
-            TariffAction.merge({
-              value: {
-                value: value,
-                factorIndex: index
-              },
-              path: "FactorValue"
-            });
-          }
-        },
-        deleteProps = {
-          isDelete: !isView && (factors.size > 1),
-          onDelete: () => {
-            that._handleDeleteFactor(index);
-          }
-
-        };
-
-      items.push(
-        <div className='jazz-tariff-factorItem'>
-          <DeletableItem {...deleteProps}>
-            <ViewableDropDownMenu {...yearProps} />
-            <div className='jazz-tariff-addItem-errorText'>{error}</div>
-            <div style={{
-          marginTop: '25px'
-        }}><ViewableTextField  {...conversionProps} /></div>
-          </DeletableItem>
+  _renderPeakTimeRange: function(peakPriceItem) {
+    var Items = [],
+      isView = this.props.formStatus === formStatus.VIEW,
+      that = this;
+    var onTimeChange = function(index, times) {};
+    if (!!peakPriceItem) {
+      peakPriceItem.get('TimeRange').forEach((time, index) => {
+        Items.push(
+          <div className='jazz-item-in-margin'>
+            <FromEndTime index={index}
+          onTimeChange={onTimeChange}
+          isViewStatus={isView}
+          hasDeleteButton={peakPriceItem.get('TimeRange').size > 1}
+          startTime={time.get('m_Item1')}
+          endTime={time.get('m_Item2')}
+          onDeleteTimeData={that._handelDeletePeakTimeRange.bind(index)}/>
+          </div>
+        )
+      })
+    } else {
+      Items.push(
+        <div className='jazz-item-in-margin'>
+          <FromEndTime onTimeChange={onTimeChange}
+        isViewStatus={isView}
+        hasDeleteButton={false}/>
         </div>
 
       )
-    })
+    }
     return (
-      <div className="pop-manage-detail-content">
-        <div className="jazz-tariff-addItem">
-          <div>{I18N.Setting.TariffFactor.Title}</div>
+      <div>
+        {Items}
+      </div>
+      )
+
+  },
+  _renderValleyTimeRange: function(valleyPriceItem) {
+    var Items = [],
+      isView = this.props.formStatus === formStatus.VIEW,
+      that = this;
+    var onTimeChange = function(index, times) {};
+    if (!!valleyPriceItem) {
+      valleyPriceItem.get('TimeRange').forEach((time, index) => {
+        Items.push(
+          <div className='jazz-item-in-margin'>
+            <FromEndTime index={index}
+          onTimeChange={onTimeChange}
+          isViewStatus={isView}
+          hasDeleteButton={valleyPriceItem.get('TimeRange').size > 1}
+          startTime={time.get('m_Item1')}
+          endTime={time.get('m_Item2')}
+          onDeleteTimeData={that._handelDeleteValleyTimeRange.bind(index)}/>
+          </div>
+        )
+      })
+    } else {
+      Items.push(
+        <div className='jazz-item-in-margin'>
+          <FromEndTime onTimeChange={onTimeChange}
+        isViewStatus={isView}
+        hasDeleteButton={false}/>
+        </div>
+
+      )
+    }
+    return (
+      <div>
+        {Items}
+      </div>
+      )
+
+  },
+  _renderInfoTab: function() {
+    var touTariff = this.props.tariff.get('TouTariffItems'),
+      isView = this.props.formStatus === formStatus.VIEW,
+      plainPriceItem, peakPriceItem, valleyPriceItem,
+      plainPrice, peakPrice, valleyPrice;
+    if (!!touTariff) {
+      plainPriceItem = touTariff.find(item => item.get("ItemType") == 2);
+      peakPriceItem = touTariff.find(item => item.get("ItemType") == 1);
+      valleyPriceItem = touTariff.find(item => item.get("ItemType") == 3);
+      plainPrice = (!!plainPriceItem) ? plainPriceItem.get('Price') : null;
+      peakPrice = peakPriceItem.get('Price');
+      valleyPrice = valleyPriceItem.get('Price');
+    }
+
+    //props
+    var plainPriceProps = {
+        isViewStatus: isView,
+        title: I18N.Setting.TOUTariff.PlainPrice,
+        defaultValue: plainPrice,
+        regex: Regex.FactorRule,
+        errorMessage: "该输入项只能是正数",
+        maxLen: 200,
+        didChanged: value => {
+          // CarbonAction.merge({
+          //   value: {
+          //     value: value,
+          //     factorIndex: index
+          //   },
+          //   path: "FactorValue"
+          // });
+        }
+      },
+      peakPriceProps = {
+        isViewStatus: isView,
+        title: I18N.Setting.TOUTariff.PeakPrice,
+        defaultValue: peakPrice,
+        regex: Regex.FactorRule,
+        errorMessage: "该输入项只能是正数",
+        maxLen: 200,
+        isRequired: true,
+        didChanged: value => {
+          // CarbonAction.merge({
+          //   value: {
+          //     value: value,
+          //     factorIndex: index
+          //   },
+          //   path: "FactorValue"
+          // });
+        }
+      },
+      valleyPriceProps = {
+        isViewStatus: isView,
+        title: I18N.Setting.TOUTariff.ValleyPrice,
+        defaultValue: valleyPrice,
+        regex: Regex.FactorRule,
+        errorMessage: "该输入项只能是正数",
+        maxLen: 200,
+        isRequired: true,
+        didChanged: value => {
+          // CarbonAction.merge({
+          //   value: {
+          //     value: value,
+          //     factorIndex: index
+          //   },
+          //   path: "FactorValue"
+          // });
+        }
+      };
+    var peakBtn = (<div className="jazz-carbon-addItem">
+          <div>{I18N.Setting.TOUTariff.PeakTimeRange}</div>
           <div className={classnames({
-        "jazz-tariff-addItem-addBtn": true,
+        "jazz-carbon-addItem-addBtn": true,
         "inactive": isView
-      })} onClick={this._handelAddFactor}>
+      })} onClick={this._handelAddPeakTimeRange}>
           {I18N.Common.Button.Add}
         </div>
+      </div>),
+      valleyBtn = (<div className="jazz-carbon-addItem">
+            <div>{I18N.Setting.TOUTariff.ValleyTimeRange}</div>
+            <div className={classnames({
+        "jazz-carbon-addItem-addBtn": true,
+        "inactive": isView
+      })} onClick={this._handelAddValleyTimeRange}>
+            {I18N.Common.Button.Add}
+          </div>
+        </div>);
+    return (
+      <div>
+        <div className='jazz-tariff-infoTab-notice'>
+          {I18N.Setting.TOUTariff.BasicPropertyTip}
         </div>
-        {items}
+        {
+      (!isView || !!plainPrice) ? <div className='jazz-item-margin'>
+                    <ViewableTextField  {...plainPriceProps} />
+                  </div> : null
+      }
+        <div className='jazz-item-margin'>
+          <ViewableTextField  {...peakPriceProps} />
+        </div>
+        <div className='jazz-item-margin'>
+          {peakBtn}
+        </div>
+        {this._renderPeakTimeRange(peakPriceItem)}
+        <div className='jazz-item-margin'>
+          <ViewableTextField  {...valleyPriceProps} />
+        </div>
+        <div className='jazz-item-margin'>
+          {valleyBtn}
+        </div>
+        {this._renderValleyTimeRange(valleyPriceItem)}
+      </div>
+      )
+
+  },
+  _renderPeakTab: function() {
+    var PeakTariff = this.props.tariff.get('PeakTariff'),
+      isView = this.props.formStatus === formStatus.VIEW,
+      that = this;
+
+    var toggleBtn = <Toggle
+    label={I18N.Setting.TOUTariff.PulsePeakPriceSetting}
+    labelStyle={{
+      fontSize: '14px',
+      color: '#464949',
+      width: 'auto'
+    }}
+    disabled={isView}
+    defaultToggled={this.props.tariff.get('onOff')}
+    onToggle={(event, toggled) => {
+
+    }}/>;
+
+    var onDateChange = function(startMonth, startDay, endMonth, endDay) {},
+      onTimeChange = function(index, times) {};
+
+    var peakTariffItems;
+    if (this.props.tariff.get('onOff')) {
+      var props = {
+        isViewStatus: isView,
+        title: I18N.Setting.TOUTariff.PulsePeakPrice,
+        defaultValue: PeakTariff.get('Price'),
+        regex: Regex.FactorRule,
+        errorMessage: "该输入项只能是正数",
+        maxLen: 200,
+        didChanged: value => {
+          // CarbonAction.merge({
+          //   value: {
+          //     value: value,
+          //     factorIndex: index
+          //   },
+          //   path: "FactorValue"
+          // });
+        }
+      };
+      var peakItems = [],
+        fontStyle = {
+          fontSize: '14px',
+          color: '#abafae'
+        };
+      PeakTariff.get('TimeRanges').forEach((time, index) => {
+        var deleteProps = {
+          isDelete: !isView && (PeakTariff.get('TimeRanges').size > 1),
+          onDelete: () => {
+            that._handelDeletePulsePeakDateTimeRange(index);
+          }
+        };
+        peakItems.push(<div className='jazz-item-in-margin'>
+        <DeletableItem {...deleteProps}>
+          <div className='jazz-item-in-margin' style={fontStyle}>
+            {I18N.Setting.TOUTariff.DateTimeRange}
+          </div>
+          <div className='jazz-item-in-margin'>
+            <FromEndDate index={index}
+        isViewStatus={isView}
+        startMonth={time.get('StartMonth')}
+        startDay={time.get('StartDay')}
+        endMonth={time.get('EndMonth')}
+        endDay={time.get('EndDay')}
+        onDateChange={onDateChange}/>
+          </div>
+          <div className='jazz-item-in-margin' style={fontStyle}>
+            {I18N.Setting.TOUTariff.PeakValueTimeRange}
+          </div>
+          <div className='jazz-item-in-margin'>
+            <FromEndTime index={index}
+        onTimeChange={onTimeChange}
+        isViewStatus={isView}
+        hasDeleteButton={false}
+        startTime={time.get("StartTime")}
+        endTime={time.get('EndTime')}/>
+          </div>
+        </DeletableItem>
+      </div>)
+      })
+
+      peakTariffItems = (
+        <div>
+          <div className='jazz-item-margin'>
+            <ViewableTextField  {...props} />
+          </div>
+          <div className='jazz-item-margin'>
+            <div className="jazz-carbon-addItem">
+                  <div>{I18N.Setting.TOUTariff.PulsePeakDateTime}</div>
+                  <div className={classnames({
+          "jazz-carbon-addItem-addBtn": true,
+          "inactive": isView
+        })} onClick={this._handelAddPulsePeakDateTimeRange}>
+                  {I18N.Common.Button.Add}
+                </div>
+              </div>
+          </div>
+          {peakItems}
+        </div>
+      )
+    }
+    return (
+      <div>
+      {toggleBtn}
+      {peakTariffItems}
+    </div>
+      )
+
+  },
+  _renderContent: function() {
+    return (
+      <div className="pop-manage-detail-content">
+        {this.props.infoTab ? this._renderInfoTab() : this._renderPeakTab()}
       </div>
 
       )
@@ -223,10 +445,7 @@ var TariffDetail = React.createClass({
       {tariff} = this.props,
       that = this;
     return (
-      <div style={{
-        flex: '1'
-      }}>
-        <FormBottomBar
+      <FormBottomBar
       transition={true}
       enableSave={!disabledSaveButton}
       status={this.props.formStatus}
@@ -242,7 +461,6 @@ var TariffDetail = React.createClass({
         that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()
       }}/>
-      </div>
 
       )
   },
@@ -252,7 +470,7 @@ var TariffDetail = React.createClass({
   render: function() {
     var that = this;
     var header = this._renderHeader(),
-      // content = this._renderContent(),
+      content = this._renderContent(),
       footer = this._renderFooter();
     return (
       <div className={classnames({
@@ -261,6 +479,7 @@ var TariffDetail = React.createClass({
       })}>
       <Panel onToggle={this.props.toggleList}>
         {header}
+        {content}
         {footer}
       </Panel>
     </div>

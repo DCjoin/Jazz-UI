@@ -29,6 +29,11 @@ let TariffAction = {
       id: id
     });
   },
+  reset: function() {
+    AppDispatcher.dispatch({
+      type: Action.RESET_TARIFF,
+    });
+  },
 
 };
 module.exports = TariffAction;

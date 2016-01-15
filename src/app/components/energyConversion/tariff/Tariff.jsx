@@ -58,6 +58,7 @@ var Tariff = React.createClass({
         formStatus: formStatus.VIEW
       });
     }
+    TariffAction.reset();
   },
   _setViewStatus: function(selectedId = this.state.selectedId) {
     var id = selectedId,

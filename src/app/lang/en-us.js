@@ -1377,7 +1377,19 @@ I18N.Setting.CarbonFactor.Conflict = 'Timespan overlapped, please select again';
 I18N.Setting.CarbonFactor.ConfirmDelete = 'Are you sure to delete ##Setting.CarbonFactor.Title## from ""{0}"" to "{1}"?';
 
 I18N.Setting.TOUTariff = {};
-I18N.Setting.TOUTariff.TOUSetting = '峰谷电价';
+I18N.Setting.TOUTariff.TOUSetting = 'Peak/Valley electricity price';
 I18N.Setting.TOUTariff.Name = '价格配置名称';
-
+I18N.Setting.TOUTariff.BasicProperties = 'Properties';
+I18N.Setting.TOUTariff.PulsePeak = 'Peak season';
+I18N.Setting.TOUTariff.BasicPropertyTip = 'In case electricity price in normal period is set, it will cover the time periods uncovered by those in peak period and valley period.';
+I18N.Setting.TOUTariff.PeakPrice = 'peak period price';
+I18N.Setting.TOUTariff.ValleyPrice = 'valley period price';
+I18N.Setting.TOUTariff.PlainPrice = 'normal period price';
+I18N.Setting.TOUTariff.PeakTimeRange = 'peak period';
+I18N.Setting.TOUTariff.ValleyTimeRange = 'valley period';
+I18N.Setting.TOUTariff.PulsePeakPriceSetting = '峰值季节电价配置';
+I18N.Setting.TOUTariff.PulsePeakPrice = 'Peak season price';
+I18N.Setting.TOUTariff.PulsePeakDateTime = '峰值季节时间';
+I18N.Setting.TOUTariff.DateTimeRange = '日期范围';
+I18N.Setting.TOUTariff.PeakValueTimeRange = 'Peak period';
 module.exports = I18N;
