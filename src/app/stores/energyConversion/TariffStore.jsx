@@ -41,20 +41,6 @@ var TariffStore = assign({}, PrototypeStore, {
   getUpdatingTariff: function() {
     return _updatingTariff;
   },
-  getPeakTariff: function(isView) {
-    if (isView) {
-      return _persistedTariff.get('PeakTariff');
-    } else {
-      return _updatingTariff.get('PeakTariff');
-    }
-  },
-  getTouTariff: function(isView) {
-    if (isView) {
-      return _persistedTariff.get('TouTariffItems');
-    } else {
-      return _updatingTariff.get('TouTariffItems');
-    }
-  },
   clearAll: function() {
     _tariffs = emptyList();
     _persistedTariff = emptyMap();
@@ -139,6 +125,9 @@ var TariffStore = assign({}, PrototypeStore, {
     this.setTariffs(_tariffs.toJS());
     return nextSelectedId;
   },
+  reset: function() {
+    _updatingTariff = _persistedTariff;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -167,28 +156,31 @@ TariffStore.dispatchToken = AppDispatcher.register(function(action) {
     case TariffAction.SET_SELECTED_TARTIFF_ID:
       TariffStore.setSelectedId(action.id);
       break;
-    case TariffAction.CLEAR_ALL:
-      TariffStore.clearAll();
-      break;
-    case TariffAction.MERGE_CARBON:
-      TariffStore.merge(action.data);
-      TariffStore.emitChange();
-      break;
-    case TariffAction.ADD_FACTOR:
-      TariffStore.addFactor();
-      TariffStore.emitChange();
-      break;
-    case TariffAction.DELETE_FACTOR:
-      TariffStore.deleteFactor(action.index);
-      TariffStore.emitChange();
-      break;
-    case TariffAction.SAVE_FACTOR_SUCCESS:
-      TariffStore.setSelectedId(action.id);
-      break;
-    case TariffAction.DELETE_FACTOR_SUCCESS:
-      var selecteId = TariffStore.deleteTariff(action.id);
-      TariffStore.setSelectedId(selecteId);
-      TariffStore.emitChange(selecteId);
+    // case TariffAction.CLEAR_ALL:
+    //   TariffStore.clearAll();
+    //   break;
+    // case TariffAction.MERGE_CARBON:
+    //   TariffStore.merge(action.data);
+    //   TariffStore.emitChange();
+    //   break;
+    // case TariffAction.ADD_FACTOR:
+    //   TariffStore.addFactor();
+    //   TariffStore.emitChange();
+    //   break;
+    // case TariffAction.DELETE_FACTOR:
+    //   TariffStore.deleteFactor(action.index);
+    //   TariffStore.emitChange();
+    //   break;
+    // case TariffAction.SAVE_FACTOR_SUCCESS:
+    //   TariffStore.setSelectedId(action.id);
+    //   break;
+    // case TariffAction.DELETE_FACTOR_SUCCESS:
+    //   var selecteId = TariffStore.deleteTariff(action.id);
+    //   TariffStore.setSelectedId(selecteId);
+    //   TariffStore.emitChange(selecteId);
+    //   break;
+    case TariffAction.RESET_TARIFF:
+      TariffStore.reset();
       break;
 
   }

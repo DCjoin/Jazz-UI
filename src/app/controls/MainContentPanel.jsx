@@ -7,7 +7,7 @@ import OrigamiPanel from './OrigamiPanel.jsx';
 
 let MainContentPanel = React.createClass({
   propTypes: {
-    onToggle: React.PropTypes.object,
+    onToggle: React.PropTypes.func,
   },
   render: function() {
     var collapseButton = (
