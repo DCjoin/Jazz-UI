@@ -61,7 +61,7 @@ I18N.MainMenu.DaynightSetting = 'Day & night';
 I18N.MainMenu.EnergyConvert = 'Energy Convert';
 I18N.MainMenu.Price = 'Price';
 I18N.MainMenu.Carbon = 'Carbon';
-I18N.MainMenu.Statistics = 'Big data analysis';
+I18N.MainMenu.Statistics = 'Statistics';
 I18N.MainMenu.Benchmark = 'Benchmark';
 I18N.MainMenu.Labeling = 'Labelling';
 I18N.MainMenu.Customer = 'Customer management';
@@ -127,6 +127,19 @@ I18N.Common.Glossary.WeekDay.Friday = 'Fri.';
 I18N.Common.Glossary.WeekDay.Saturday = 'Sat.';
 I18N.Common.Glossary.WeekDay.Sunday = 'Sun.';
 
+I18N.Common.Label = {};
+I18N.Common.Label.TimeConflict = 'Conflict time duration.';
+I18N.Common.Label.DuplicatedName = 'Name already existed';
+I18N.Common.Label.TimeZoneConflict = 'Timezone conflict';
+I18N.Common.Label.TimeOverlap = 'Time overlapped, please check';
+I18N.Common.Label.CommoEmptyText = 'Please select';
+I18N.Common.Label.MandatoryEmptyError = 'Required';
+I18N.Common.Label.OverValueError = 'Max value is: 999999999。';
+I18N.Common.Label.UnspecifyCommodity = 'unasighed ##Common.Glossary.Commodity##';
+I18N.Common.Label.UnknownError = 'Sorry, UnknownError';
+I18N.Common.Label.MandatoryNumberError = 'Number Mandatory';
+I18N.Common.Label.ExcelColumnError = 'Please fill in the cell name as C1，AB23';
+
 I18N.Common.DateRange = {};
 I18N.Common.DateRange.Last7Day = 'Last 7 Days';
 I18N.Common.DateRange.Last30Day = 'Last 30 Days';
@@ -164,14 +177,21 @@ I18N.Common.Button.Calendar.ShowHC = 'HC seasons';
 I18N.Common.Button.Calendar.ShowHoliday = 'Non-work time';
 I18N.Common.Button.Show = 'View';
 I18N.Common.Button.Add = 'Add';
+I18N.Common.Button.Comparation = 'Compare';
 I18N.Common.Button.Confirm = 'Confirm';
 I18N.Common.Button.Save = 'Save';
+I18N.Common.Button.SaveExport = 'Save and export';
 I18N.Common.Button.ReportExport = 'Export';
 I18N.Common.Button.Cancel = 'Cancel';
+I18N.Common.Button.Cancel2 = 'Cancel';
 I18N.Common.Button.Delete = 'Delete';
 I18N.Common.Button.Edit = 'Edit';
+I18N.Common.Button.Exit = 'Exit';
 I18N.Common.Button.Clear = 'Clear';
 I18N.Common.Button.ClearAll = 'Clear all';
+I18N.Common.Button.Send = 'Send';
+I18N.Common.Button.GoOn = 'Continue';
+I18N.Common.Button.Confirmed = 'OK';
 
 
 I18N.Common.CarbonUomType = {};
@@ -314,11 +334,11 @@ I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePreviousComboLabel = 'Last';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious7Day = '7 days';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious30Day = '30 days';
 I18N.EM.EnergyAnalyse.AddIntervalWindow.CompareTimePrevious12Month = '30 months';
+I18N.EM.EnergyAnalyse.SumData = 'Data sum';
 I18N.EM.YAxisSetting = 'Y-Axis setting';
 I18N.EM.YAxisSettingTags = 'Tags';
 I18N.EM.YAxisTitle = 'Y-Axis';
 I18N.EM.YAxisMinMaxValidation = 'Max value must larger than Min value';
-I18N.EM.EnergyAnalyse.SumData = 'Data sum';
 
 I18N.EM.CannotShowCalendarByStep = 'The current interval does not support display of {0} background color.';
 I18N.EM.CannotShowCalendarByTimeRange = 'No calendar background is seen? Change to another time and try.';
@@ -328,7 +348,7 @@ I18N.EM.WeatherSupportsNotMinuteStep = 'This function cannot support minute step
 I18N.EM.WeatherSupportsNotMultiTime = 'This function cannot support mulitiple timespan';
 I18N.EM.TouSupportsMoreThanHourStep = 'This function only support steps larger than Hourly.';
 I18N.EM.TouSupportsOnlyElec = 'This function only support "Electricity" commodity.';
-I18N.EM.WeatherSupportsNotPie = 'Weather cannot support pie chart.'
+I18N.EM.WeatherSupportsNotPie = 'Weather cannot support pie chart.';
 
 I18N.EM.CharType = {};
 I18N.EM.CharType.Line = 'Line';
@@ -353,18 +373,6 @@ I18N.EM.Labeling.NonBuilding = 'This node is not building, please choose other n
 I18N.EM.Labeling.NonData = 'No energy data in this time range.';
 I18N.EM.Labeling.DifferentCommodity = 'Chosen tags are not same commodity, please choose again';
 I18N.EM.Labeling.SelectHieForSys = 'Choose Building to config area dimension';
-I18N.Common.Label = {};
-I18N.Common.Label.TimeConflict = 'Time conflict.';
-I18N.Common.Label.DuplicatedName = 'Name already existed';
-I18N.Common.Label.TimeZoneConflict = 'Timezone conflict';
-I18N.Common.Label.TimeOverlap = 'Time overlapped, please check';
-I18N.Common.Label.CommoEmptyText = 'Please select';
-I18N.Common.Label.MandatoryEmptyError = 'Mandantory';
-I18N.Common.Label.OverValueError = 'Max value is: 999999999。';
-I18N.Common.Label.UnspecifyCommodity = 'unasighed ##Common.Glossary.Commodity##';
-I18N.Common.Label.UnknownError = 'Sorry, UnknownError';
-I18N.Common.Label.MandatoryNumberError = 'Number Mandatory';
-I18N.Common.Label.ExcelColumnError = 'Please input according excel format, like:C1，AB23';
 
 I18N.EM.Report = {};
 I18N.EM.Report.Select = 'Mandatory';
@@ -437,18 +445,18 @@ I18N.EM.Report.ExportTagUnassociated = 'Data is unassociated.';
 I18N.EM.Export = {};
 I18N.EM.Export.Preview = 'Preview export picture';
 
-//workday
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = 'Time';
 I18N.Setting.Calendar.DeleteMessage = 'Delete “{0}” ？';
 
-I18N.Setting.Calendar.WorkdaySetting = 'Work Non-workday';
+//workday
+I18N.Setting.Calendar.WorkdaySetting = 'Work day';
 I18N.Setting.Calendar.WorkDay = 'Workday';
 I18N.Setting.Calendar.Holiday = 'Non-workday';
 I18N.Setting.Calendar.DefaultWorkDay = 'Default workday: Mon. -Fri.';
 I18N.Setting.Calendar.AdditionalDay = 'Supplementary date';
-I18N.Setting.Calendar.ItemType = 'Date type';
+I18N.Setting.Calendar.DateType = 'Date type';
 I18N.Setting.Calendar.StartDate = 'Start date';
 I18N.Setting.Calendar.EndDate = 'End date';
 I18N.Setting.Calendar.Month = 'Month';
@@ -456,12 +464,10 @@ I18N.Setting.Calendar.StartMonth = 'Start month';
 I18N.Setting.Calendar.EndMonth = 'End month';
 I18N.Setting.Calendar.TimeRange = 'Timespan';
 I18N.Setting.Calendar.Date = 'Day';
-I18N.Setting.Calendar.SeansonType = 'Season type';
 I18N.Setting.Calendar.MonthDayFromTo = '{0}Month{1}day to {2}month{3}day';
 
-
-
-I18N.Setting.Calendar.WorktimeSetting = 'WorkTime';
+//worktime
+I18N.Setting.Calendar.WorktimeSetting = 'Work time';
 I18N.Setting.Calendar.WorkTime = 'WorkTime';
 I18N.Setting.Calendar.RestTime = 'Non-Work Time';
 I18N.Setting.Calendar.DefaultWorkTime = 'Time except work time is all non-work time.';
@@ -471,7 +477,8 @@ I18N.Setting.Calendar.EndTime = 'End time';
 I18N.Setting.Calendar.To = 'To';
 
 //cold/warm
-I18N.Setting.Calendar.WarmSeason = 'Hot season';
+I18N.Setting.Calendar.ColdwarmSetting = 'HC seasons';
+I18N.Setting.Calendar.SeansonType = 'Season type';
 I18N.Setting.Calendar.WarmSeason = 'Heating season';
 I18N.Setting.Calendar.ColdSeason = 'Cooling season';
 I18N.Setting.Calendar.AddWarmSeason = 'Add heating season';
@@ -479,7 +486,7 @@ I18N.Setting.Calendar.AddColdSeason = 'Add cooling season';
 I18N.Setting.Calendar.WarmColdDeclaration = 'There must be a more-than-7-day interval between a heating season and a cooling season which cannot exist in the same month either.';
 
 //day/night
-I18N.Setting.Calendar.DaynightSetting = 'Day-night time';
+I18N.Setting.Calendar.DaynightSetting = 'Day night';
 I18N.Setting.Calendar.Day = 'Daytime';
 I18N.Setting.Calendar.Night = 'Night time';
 I18N.Setting.Calendar.DefaultDayNight = 'Time except daytime is all night time.';
@@ -490,6 +497,46 @@ I18N.Setting.Benchmark = {};
 I18N.Setting.Benchmark.Label = {};
 I18N.Setting.Benchmark.Label.None = 'None';
 I18N.Setting.Benchmark.Label.SelectLabelling = 'Please select a labeling';
+I18N.Setting.Benchmark.Label.EnergyBenchmark = 'Benchmark';
+I18N.Setting.Benchmark.Label.IndustryEnegyBenchmark = 'Benchmark config';
+I18N.Setting.Benchmark.Label.ClimateZone = 'Climate zone';
+I18N.Setting.Benchmark.Label.IndustryBenchmark = 'Benchmark';
+I18N.Setting.Benchmark.Label.SelectTip = 'Please select industries and regions for which energy labeling needs to be calculated by the platform.';
+I18N.Setting.Benchmark.Label.AtleastOneZone = 'Please select at least one option.';
+I18N.Setting.Benchmark.Label.Industry = 'Industry';
+I18N.Setting.Benchmark.Label.IndustryBaseLineValue = 'Industry benchmark';
+
+I18N.Setting.Benchmark.Zone = {};
+I18N.Setting.Benchmark.Zone.AllZone = 'All the regions';
+I18N.Setting.Benchmark.Zone.ColdA = 'Coldest region A';
+I18N.Setting.Benchmark.Zone.ColdB = 'Coldest region B';
+I18N.Setting.Benchmark.Zone.ColdRegion = 'Cold region';
+I18N.Setting.Benchmark.Zone.HotSummerColdWinterRegion = 'Region with hot summer and cold winter';
+I18N.Setting.Benchmark.Zone.SubtropicalRegion = 'Region with hot summer and warm winter';
+I18N.Setting.Benchmark.Zone.TemperateRegion = 'Mild region';
+
+I18N.Setting.Benchmark.Industry = {};
+I18N.Setting.Benchmark.Industry.AllIndustry = 'All the industries';
+I18N.Setting.Benchmark.Industry.OfficeBuilding = 'Office building';
+I18N.Setting.Benchmark.Industry.DataCenter = 'Data center';
+I18N.Setting.Benchmark.Industry.Hotel = 'Hotel';
+I18N.Setting.Benchmark.Industry.TwoStarAndBelowHotel = 'Hotel (3-star and below)';
+I18N.Setting.Benchmark.Industry.ThreeStarHotel = 'Hotel (3-star)';
+I18N.Setting.Benchmark.Industry.FourStarHotel = 'Hotel (4-star)';
+I18N.Setting.Benchmark.Industry.FiveStarHotel = 'Hotel (5-star)';
+I18N.Setting.Benchmark.Industry.Hospital = ' Hospital';
+I18N.Setting.Benchmark.Industry.School = ' School';
+I18N.Setting.Benchmark.Industry.Retail = ' Retail industry';
+I18N.Setting.Benchmark.Industry.Supermarket = ' Supermarket';
+I18N.Setting.Benchmark.Industry.ClothingRetails = ' Clothing retailing';
+I18N.Setting.Benchmark.Industry.Mall = ' Shopping mall';
+I18N.Setting.Benchmark.Industry.Communication = ' Communication';
+I18N.Setting.Benchmark.Industry.CommunicationRoom = ' Computer room';
+I18N.Setting.Benchmark.Industry.BaseStation = ' Communication base station';
+I18N.Setting.Benchmark.Industry.TelecommunicationsBusinessHall = ' Communication business hall';
+I18N.Setting.Benchmark.Industry.RailTransport = ' Rail transit';
+I18N.Setting.Benchmark.Industry.Airport = ' Airport';
+I18N.Setting.Benchmark.Industry.Manufacture = ' Manufacturing industry';
 
 I18N.Setting.Labeling = {};
 I18N.Setting.Labeling.Label = {};
@@ -520,16 +567,14 @@ I18N.Setting.User.Manager = 'Managers';
 I18N.Setting.User.BusinessPerson = 'Business Person';
 I18N.Setting.User.Sales = 'Sales';
 I18N.Setting.User.ServerManager = 'SP Manager';
+
 I18N.Setting.NodeBtn = {};
 I18N.Setting.NodeBtn.Saving = 'Saving...';
 I18N.Setting.NodeBtn.Save = 'Save';
 I18N.Setting.NodeBtn.Deleting = 'Deleting...';
 I18N.Setting.NodeBtn.Delete = 'Delete';
 
-I18N.Common.Label = {};
-I18N.Common.Label.UnknownError = 'Sorry, unknown error.';
-I18N.Common.Label.MandatoryEmptyError = 'Required';
-I18N.Common.Label.ExcelColumnError = 'Please fill in the cell name as C1，AB23';
+
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = 'User management';

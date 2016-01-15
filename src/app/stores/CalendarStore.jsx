@@ -47,7 +47,7 @@ var CalendarStore = assign({}, PrototypeStore, {
               return true;
             }
           });
-          if (_selecteCalendarIndex !== index && index !== -1) {
+          if (index !== -1 && _selecteCalendarIndex !== index) {
             _selecteCalendarIndex = index;
           }
         }
@@ -56,10 +56,6 @@ var CalendarStore = assign({}, PrototypeStore, {
       _selecteCalendarIndex = null;
       _selecteCalendar = null;
     }
-  },
-  modifyCalendar(calendar) {
-    _calendarList = _calendarList.set(_selecteCalendarIndex, Immutable.fromJS(calendar));
-    _selecteCalendar = _calendarList.get(_selecteCalendarIndex);
   },
   deleteCalendar() {
     _calendarList = _calendarList.delete(_selecteCalendarIndex);
@@ -143,13 +139,6 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       CalendarStore.emitSelectedCalendarChange();
       CalendarStore.emitCalendarErrorTextChange();
       break;
-    case Action.MODIFT_CALENDAR_SUCCESS:
-      CalendarStore.clearAllCalendarErrorText();
-      CalendarStore.modifyCalendar(action.calendar);
-      CalendarStore.emitCalendarListChange();
-      CalendarStore.emitSelectedCalendarChange();
-      CalendarStore.emitCalendarErrorTextChange();
-      break;
     case Action.DELETE_CALENDAR_SUCCESS:
       CalendarStore.clearAllCalendarErrorText();
       CalendarStore.deleteCalendar();
@@ -157,10 +146,9 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       CalendarStore.emitSelectedCalendarChange();
       CalendarStore.emitCalendarErrorTextChange();
       break;
+    case Action.MODIFT_CALENDAR_SUCCESS:
     case Action.CREATE_CALENDAR_SUCCESS:
-      CalendarStore.clearAllCalendarErrorText();
       CalendarStore.setSelectedCalendar(action.calendar);
-      CalendarStore.emitCalendarErrorTextChange();
       break;
     case Action.CLEAR_ALL_CALENDAR_ERROR_TEXT:
       CalendarStore.clearAllCalendarErrorText();

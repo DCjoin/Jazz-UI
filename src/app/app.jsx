@@ -28,10 +28,11 @@ import User from './components/userManage/user/User.jsx';
 import Role from './components/userManage/role/Role.jsx';
 
 import ServiceApp from './components/service/ServiceApp.jsx';
-import WorkDay from './components/Calendar/WorkDay.jsx';
-import WorkTime from './components/Calendar/WorkTime.jsx';
-import ColdWarm from './components/Calendar/ColdWarm.jsx';
-import DayNight from './components/Calendar/DayNight.jsx';
+import WorkDay from './components/calendar/WorkDay.jsx';
+import WorkTime from './components/calendar/WorkTime.jsx';
+import ColdWarm from './components/calendar/ColdWarm.jsx';
+import DayNight from './components/calendar/DayNight.jsx';
+import Benchmark from './components/statistics/Benchmark.jsx';
 //for energy conversion
 import Carbon from './components/energyConversion/carbon/Carbon.jsx';
 import Tariff from './components/energyConversion/tariff/Tariff.jsx';
@@ -70,7 +71,7 @@ var routes = (
         <Route name='price' path='price' handler={Tariff}></Route>
         <Route name='carbon' path='carbon' handler={Carbon}></Route>
 
-        <Route name='benchmark' path='benchmark'></Route>
+        <Route name='benchmark' path='benchmark' handler={Benchmark}></Route>
         <Route name='labeling' path='labeling'></Route>
 
         <Route name="customer" path="customer"></Route>
