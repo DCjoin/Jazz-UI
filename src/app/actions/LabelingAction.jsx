@@ -103,11 +103,12 @@ let LabelingAction = {
       }
     });
   },
-  deleteLabelingById(id, version) {
+  deleteLabelingById(industryId, zoneId, version) {
     Ajax.post('/Administration.svc/DeleteLabeling', {
       params: {
         labeling: {
-          Id: id,
+          IndustryId: industryId,
+          ZoneId: zoneId,
           Version: version
         }
       },

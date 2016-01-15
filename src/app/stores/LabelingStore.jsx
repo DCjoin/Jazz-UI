@@ -29,7 +29,7 @@ var LabelingStore = assign({}, PrototypeStore, {
         _selecteLabeling = _labelingData.get(0);
       } else {
         var index = _labelingData.findIndex((item) => {
-          if (item.get('IndustryId') === _selecteLabeling.get('IndustryId')) {
+          if (item.get('IndustryId') === _selecteLabeling.get('IndustryId') && item.get('ZoneId') === _selecteLabeling.get('ZoneId')) {
             return true;
           }
         });

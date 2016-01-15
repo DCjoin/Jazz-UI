@@ -16,15 +16,22 @@ import LabelingStore from '../../stores/LabelingStore.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Immutable from 'immutable';
 
+var map = {}
 var Labeling = React.createClass({
   getInitialState: function() {
+    var zoneItems = [{
+      payload: -1,
+      text: I18N.Setting.Benchmark.Label.ClimateZone,
+      disabled: true
+    }];
     return {
       isLeftLoading: true,
       isRightLoading: true,
       formStatus: formStatus.VIEW,
       enableSave: true,
       showDeleteDialog: false,
-      showLeft: true
+      showLeft: true,
+      zoneItems: zoneItems
     };
   },
   _onToggle: function() {
@@ -72,17 +79,18 @@ var Labeling = React.createClass({
     });
   },
   _onCancel: function() {
-    LabelingAction.cancelSavelabeling();
+    LabelingAction.cancelSaveLabeling();
   },
   _onSave: function() {
     var selectedData = this.state.selectedData;
     var curFormStatus = this.state.formStatus;
     var labeling = {
-      IndustryComment: '',
       IndustryId: selectedData.get('IndustryId'),
+      ZoneId: selectedData.get('ZoneId'),
       Version: selectedData.get('Version'),
-      ZoneComments: '',
-      ZoneIds: selectedData.get('ZoneIds').toJS()
+      Grade: selectedData.get('Grade'),
+      StartYear: selectedData.get('StartYear'),
+      EndYear: selectedData.get('EndYear')
     };
     if (curFormStatus === formStatus.ADD) {
       LabelingAction.createLabeling(labeling);
@@ -124,15 +132,18 @@ var Labeling = React.createClass({
   },
   _deleteLabeling() {
     var selectedData = this.state.selectedData;
-    LabelingAction.deleteLabelingById(selectedData.get('IndustryId'), selectedData.get('Version'));
+    LabelingAction.deleteLabelingById(selectedData.get('IndustryId'), selectedData.get('ZoneId'), selectedData.get('Version'));
   },
   _addLabeling() {
+    let date = new Date();
+    let thisYear = date.getFullYear();
     var labeling = {
-      IndustryComment: '',
       IndustryId: -1,
-      Version: 0,
-      ZoneComments: '',
-      ZoneIds: []
+      ZoneId: -1,
+      Version: null,
+      Grade: 3,
+      StartYear: thisYear - 2,
+      EndYear: thisYear
     };
     this.setState({
       selectedIndex: null,
@@ -143,8 +154,7 @@ var Labeling = React.createClass({
   },
   _isValid() {
     var selectedData = this.state.selectedData;
-    var zoneIds = selectedData.get('ZoneIds');
-    if (selectedData.get('IndustryId') === -1 || zoneIds.size === 0) {
+    if (selectedData.get('IndustryId') === -1 || selectedData.get('ZoneId') === -1) {
       return false;
     }
     return true;
@@ -153,6 +163,20 @@ var Labeling = React.createClass({
     var me = this;
     var selectedData = me.state.selectedData;
     selectedData = selectedData.set('IndustryId', value);
+    var zoneItems = map[value];
+    me.setState({
+      selectedData: selectedData,
+      zoneItems: zoneItems
+    }, () => {
+      this.setState({
+        enableSave: me._isValid()
+      });
+    });
+  },
+  _onItemChange(name, value) {
+    var me = this;
+    var selectedData = me.state.selectedData;
+    selectedData = selectedData.set(name, value);
     me.setState({
       selectedData: selectedData
     }, () => {
@@ -161,50 +185,49 @@ var Labeling = React.createClass({
       });
     });
   },
-  _handleZoneClick(e) {
-    var me = this;
-    var value = parseInt(e.currentTarget.id);
-    var selectedData = me.state.selectedData;
-    var zoneIds = selectedData.get('ZoneIds');
-    var index = zoneIds.findIndex((item) => {
-      if (item === value) {
-        return true;
-      }
-    });
-    if (index === -1) {
-      zoneIds = zoneIds.push(value);
-    } else {
-      zoneIds = zoneIds.delete(index);
-    }
-    selectedData = selectedData.set('ZoneIds', zoneIds);
-    me.setState({
-      selectedData: selectedData
-    }, () => {
-      me.setState({
-        enableSave: me._isValid()
-      });
-    });
-  },
   _getIndustryItems() {
+    var labelingList = this.state.labelingList;
+    var industryData = this.state.industryData;
+    var zoneData = this.state.zoneData;
     var industryItems = [{
       payload: -1,
       text: I18N.Setting.Labeling.Label.Industry,
       disabled: true
     }];
-    var industryData = this.state.industryData;
-    var benchmarkList = this.state.benchmarkList;
+    map = {};
     if (industryData && industryData.size !== 0) {
       industryData.forEach((industry) => {
-        var index = benchmarkList.findIndex((item) => {
+        var existIndustry = labelingList.filter((item) => {
           if (industry.get('Id') === item.get('IndustryId')) {
             return true;
           }
         });
-        if (index === -1) {
+        var zoneItems = [{
+          payload: -1,
+          text: I18N.Setting.Benchmark.Label.ClimateZone,
+          disabled: true
+        }];
+        if (zoneData && industryData.size !== 0) {
+          zoneData.forEach((zone) => {
+            var index = existIndustry.findIndex((item) => {
+              if (zone.get('Id') === item.get('ZoneId')) {
+                return true;
+              }
+            });
+            if (index === -1) {
+              zoneItems.push({
+                payload: zone.get('Id'),
+                text: zone.get('Comment')
+              });
+            }
+          });
+        }
+        if (zoneItems.length > 1) {
           industryItems.push({
             payload: industry.get('Id'),
             text: industry.get('Comment')
           });
+          map[industry.get('Id')] = zoneItems;
         }
       });
     }
@@ -212,42 +235,30 @@ var Labeling = React.createClass({
   },
   _renderHeader: function(isAdd) {
     var me = this;
-    var industryItems = this._getIndustryItems();
-    var zoneItems = this.state.zoneItems;
     let selectedData = me.state.selectedData;
-    var industryTextProps = {
-      ref: 'industryTitleText',
-      isViewStatus: !isAdd,
-      defaultValue: selectedData.get('IndustryComment'),
-      title: ''
-    };
-    var industryDropProps = {
-      ref: 'industryTitleDrop',
-      dataItems: industryItems,
-      isViewStatus: !isAdd,
-      defaultValue: selectedData.get('IndustryId'),
-      title: '',
-      textField: 'text',
-      didChanged: me._onIndustryChange
-    };
-    var zoneTextProps = {
-      ref: 'zoneTitleText',
-      isViewStatus: !isAdd,
-      defaultValue: selectedData.get('ZoneComment'),
-      title: ''
-    };
-    var zoneDropProps = {
-      ref: 'zoneTitleDrop',
-      dataItems: zoneItems,
-      isViewStatus: !isAdd,
-      defaultValue: selectedData.get('ZoneId'),
-      title: '',
-      textField: 'text',
-      didChanged: me._onZoneChange
-    };
     var industryDom = null;
     var zoneDom = null;
     if (isAdd) {
+      var industryItems = this._getIndustryItems();
+      var zoneItems = this.state.zoneItems;
+      var industryDropProps = {
+        ref: 'industryTitleDrop',
+        dataItems: industryItems,
+        isViewStatus: !isAdd,
+        defaultValue: selectedData.get('IndustryId'),
+        title: '',
+        textField: 'text',
+        didChanged: me._onIndustryChange
+      };
+      var zoneDropProps = {
+        ref: 'zoneTitleDrop',
+        dataItems: zoneItems,
+        isViewStatus: !isAdd,
+        defaultValue: selectedData.get('ZoneId'),
+        title: '',
+        textField: 'text',
+        didChanged: me._onItemChange.bind(null, 'ZoneId')
+      };
       industryDom = (<div className='jazz-labeling-header-dropdown'>
         <ViewableDropDownMenu {...industryDropProps}></ViewableDropDownMenu>
       </div>);
@@ -255,6 +266,18 @@ var Labeling = React.createClass({
         <ViewableDropDownMenu {...zoneDropProps}></ViewableDropDownMenu>
       </div>);
     } else {
+      var industryTextProps = {
+        ref: 'industryTitleText',
+        isViewStatus: !isAdd,
+        defaultValue: selectedData.get('IndustryComment'),
+        title: ''
+      };
+      var zoneTextProps = {
+        ref: 'zoneTitleText',
+        isViewStatus: !isAdd,
+        defaultValue: selectedData.get('ZoneComment'),
+        title: ''
+      };
       industryDom = (<div className='jazz-labeling-header-text'>
         <ViewableTextField {...industryTextProps}></ViewableTextField>
       </div>);
@@ -307,22 +330,34 @@ var Labeling = React.createClass({
       defaultValue: selectedData.get('Grade'),
       title: '',
       textField: 'text',
-      didChanged: me._onGradeChange
+      didChanged: me._onItemChange.bind(null, 'Grade')
     };
     var startYearProps = {
-      ref: "startYear"
+      ref: "startYear",
+      isViewStatus: isView,
+      selectedYear: selectedData.get('StartYear'),
+      onYearPickerSelected: me._onItemChange.bind(null, 'StartYear'),
+      style: {
+        width: '90px'
+      }
     };
     var endYearProps = {
-      ref: "endYear"
+      ref: "endYear",
+      isViewStatus: isView,
+      selectedYear: selectedData.get('EndYear'),
+      onYearPickerSelected: me._onItemChange.bind(null, 'EndYear'),
+      style: {
+        width: '90px'
+      }
     };
     var grade = (<div className="jazz-labeling-content-grade">
       <ViewableDropDownMenu {...gradeProps}></ViewableDropDownMenu>
     </div>);
-    var startYear = (<div className="jazz-labeling-content-year">
+    var startYear = (<div className="jazz-labeling-content-year-item">
       <YearPicker {...startYearProps}></YearPicker>
     </div>);
-    var endYear = (<div className="jazz-labeling-content-year">
-      <YearPicker {...startYearProps}></YearPicker>
+    var endYear = (<div className="jazz-labeling-content-year-item">
+      <YearPicker {...endYearProps}></YearPicker>
     </div>);
     var labelingText = (<div className='jazz-labeling-content-text'>{I18N.Setting.Labeling.Label.DataYear}</div>);
     return (

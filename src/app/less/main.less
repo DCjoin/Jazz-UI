@@ -38,6 +38,7 @@
 @import "deletableItem.less";
 @import "carbon.less";
 @import "benchmark.less";
+@import "labeling.less";
 
 
 
@@ -930,24 +931,24 @@ input:focus{
     color: #abafae;
     margin-top: 20px;
   }
-  .jazz-fromenddate{
-    display: flex;
-    flex-direction: row;
-    margin-top: -4px;
-    &-to{
-      width: 24px;
-      text-align: center;
-      padding-top: 5px;
-    }
-    .jazz-monthday-item{
-      &-content{
-        margin-right: 10px;
-        .pop-viewableDropDownMenu-ddm{
-          >div:nth-of-type(2){
-            >div{
-              padding-left: 12px !important;
-              padding-right: 60px !important;
-            }
+}
+.jazz-fromenddate{
+  display: flex;
+  flex-direction: row;
+  margin-top: -4px;
+  &-to{
+    width: 24px;
+    text-align: center;
+    padding-top: 5px;
+  }
+  .jazz-monthday-item{
+    &-content{
+      margin-right: 10px;
+      .pop-viewableDropDownMenu-ddm{
+        >div:nth-of-type(2){
+          >div{
+            padding-left: 12px !important;
+            padding-right: 60px !important;
           }
         }
       }
