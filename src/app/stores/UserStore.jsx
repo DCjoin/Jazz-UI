@@ -525,7 +525,7 @@ var UserStore = assign({}, PrototypeStore, {
         break;
       case UserAction.GET_CUSTOMER_BY_USER:
         UserStore.setUserCustomers(action.data);
-        UserStore.emitChange();
+        UserStore.emitChange(action.data.UserId);
         break;
       case UserAction.GET_CUSTOMER_PERMISSION_BY_USER:
         if (action.data) {
