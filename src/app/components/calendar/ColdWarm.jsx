@@ -22,8 +22,15 @@ var ColdWarm = React.createClass({
       isRightLoading: true,
       formStatus: formStatus.VIEW,
       enableSave: true,
-      showDeleteDialog: false
+      showDeleteDialog: false,
+      showLeft: true
     };
+  },
+  _onToggle: function() {
+    var showLeft = this.state.showLeft;
+    this.setState({
+      showLeft: !showLeft
+    });
   },
   _onColdwarmListChange: function() {
     var coldwarmList = CalendarStore.getCalendarList();
@@ -301,16 +308,25 @@ var ColdWarm = React.createClass({
       );
     }
     var deleteDialog = me._renderDeleteDialog();
+    var leftProps = {
+      addBtnLabel: I18N.Setting.Calendar.ColdwarmSetting,
+      isViewStatus: isView,
+      isLoading: this.state.isLeftLoading,
+      contentItems: items,
+      onAddBtnClick: me._addColdwarm
+    };
+    var leftPanel = (this.state.showLeft) ? <div style={{
+      display: 'flex'
+    }}><SelectablePanel {...leftProps}/></div> : <div style={{
+      display: 'none'
+    }}><SelectablePanel {...leftProps}/></div>;
     return (
       <div style={{
         display: 'flex',
         flex: 1
       }}>
-        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.ColdwarmSetting}
-      isViewStatus={isView}
-      isLoading={this.state.isLeftLoading}
-      contentItems={items} onAddBtnClick={me._addColdwarm}/>
-        <Panel>
+        {leftPanel}
+        <Panel onToggle={this._onToggle}>
           {displayedDom}
         </Panel>
         {deleteDialog}

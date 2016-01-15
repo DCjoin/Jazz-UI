@@ -22,8 +22,15 @@ var Daynight = React.createClass({
       isRightLoading: true,
       formStatus: formStatus.VIEW,
       enableSave: true,
-      showDeleteDialog: false
+      showDeleteDialog: false,
+      showLeft: true
     };
+  },
+  _onToggle: function() {
+    var showLeft = this.state.showLeft;
+    this.setState({
+      showLeft: !showLeft
+    });
   },
   _onDaynightListChange: function() {
     var daynightList = CalendarStore.getCalendarList();
@@ -288,16 +295,25 @@ var Daynight = React.createClass({
       );
     }
     var deleteDialog = me._renderDeleteDialog();
+    var leftProps = {
+      addBtnLabel: I18N.Setting.Calendar.DaynightSetting,
+      isViewStatus: isView,
+      isLoading: this.state.isLeftLoading,
+      contentItems: items,
+      onAddBtnClick: me._addDaynight
+    };
+    var leftPanel = (this.state.showLeft) ? <div style={{
+      display: 'flex'
+    }}><SelectablePanel {...leftProps}/></div> : <div style={{
+      display: 'none'
+    }}><SelectablePanel {...leftProps}/></div>;
     return (
       <div style={{
         display: 'flex',
         flex: 1
       }}>
-        <SelectablePanel addBtnLabel={I18N.Setting.Calendar.DaynightSetting}
-      isViewStatus={isView}
-      isLoading={this.state.isLeftLoading}
-      contentItems={items} onAddBtnClick={me._addDaynight}/>
-        <Panel>
+        {leftPanel}
+        <Panel onToggle={this._onToggle}>
           {displayedDom}
         </Panel>
         {deleteDialog}
