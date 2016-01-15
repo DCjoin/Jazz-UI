@@ -210,7 +210,7 @@ var UserDetail = React.createClass({
         dataItems: titleItems,
         didChanged: (idx) => {
           UserAction.mergeUser({
-            value: CurrentUserStore.getUserTitle()[idx],
+            value: idx,
             path: "Title"
           });
         }

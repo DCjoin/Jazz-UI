@@ -1379,9 +1379,6 @@ I18N.Setting.Role.ErrorContent = '功能权限角色“{0}”已被用户引用�
 
 //carbon factor
 I18N.Setting.CarbonFactor = {};
-
-
-
 I18N.Setting.CarbonFactor.Title = '转换因子';
 I18N.Setting.CarbonFactor.Source = '转换物';
 I18N.Setting.CarbonFactor.Target = '转换目标';
