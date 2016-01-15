@@ -201,11 +201,12 @@ var FromEndDateGroup = React.createClass({
   },
   isValid: function() {
     var isValid = this.validate();
-    isValid = isValid && this.validateGroup();
+    var isGroupValid = this.validateGroup();
+    var isColdwarmGroup = true;
     if (this.props.type === 2) {
-      isValid = isValid && this.validateColdwarmGroup();
+      isColdwarmGroup = this.validateColdwarmGroup();
     }
-    return isValid;
+    return isValid && isGroupValid && isColdwarmGroup;
   },
   componentDidMount: function() {
     CalendarStore.addCalendarErrorTextChangeListener(this._onErrorTextChange);

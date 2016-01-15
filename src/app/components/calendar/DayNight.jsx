@@ -128,9 +128,9 @@ var Daynight = React.createClass({
     this.refs.daynightTitleId.clearErrorText();
   },
   _isValid() {
-    var isValid = this.refs.daynightTitleId.isValid();
-    isValid = isValid && this.refs.daynightGroup.isValid();
-    return isValid;
+    var isTitleValid = this.refs.daynightTitleId.isValid();
+    var isTimeValid = this.refs.daynightGroup.isValid();
+    return isTitleValid && isTimeValid;
   },
   _addDaynightData: function() {
     var selectedData = this.state.selectedData;

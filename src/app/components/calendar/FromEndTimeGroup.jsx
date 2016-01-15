@@ -117,8 +117,8 @@ var FromEndTimeGroup = React.createClass({
   },
   isValid: function() {
     var isValid = this.validate();
-    isValid = isValid && this.validateGroup();
-    return isValid;
+    var isGroupValid = this.validateGroup();
+    return isValid && isGroupValid;
   },
   componentDidMount: function() {
     CalendarStore.addCalendarErrorTextChangeListener(this._onErrorTextChange);

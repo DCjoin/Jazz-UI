@@ -128,9 +128,9 @@ var WorkDay = React.createClass({
     this.refs.workdayTitleId.clearErrorText();
   },
   _isValid() {
-    var isValid = this.refs.workdayTitleId.isValid();
-    isValid = isValid && this.refs.workdayGroup.isValid();
-    return isValid;
+    var isTitleValid = this.refs.workdayTitleId.isValid();
+    var isDateValid = this.refs.workdayGroup.isValid();
+    return isTitleValid && isDateValid;
   },
   _addWorkdayData: function() {
     var selectedData = this.state.selectedData;
