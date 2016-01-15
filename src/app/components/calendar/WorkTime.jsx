@@ -57,8 +57,13 @@ var WorkTime = React.createClass({
     CalendarAction.setSelectedCalendarIndex(index);
   },
   _onEdit: function() {
+    var me = this;
     this.setState({
       formStatus: formStatus.EDIT
+    }, () => {
+      this.setState({
+        enableSave: me._isValid()
+      });
     });
   },
   _onCancel: function() {
