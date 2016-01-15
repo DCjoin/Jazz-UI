@@ -71,7 +71,7 @@ let BenchmarkAction = {
     var me = this;
     Ajax.post('/Administration.svc/ModifyBenchmark', {
       params: {
-        dto: data
+        benchmark: data
       },
       success: function(benchmark) {
         AppDispatcher.dispatch({
@@ -89,7 +89,7 @@ let BenchmarkAction = {
     var me = this;
     Ajax.post('/Administration.svc/CreateBenchmark', {
       params: {
-        dto: data
+        benchmark: data
       },
       success: function(benchmark) {
         AppDispatcher.dispatch({
@@ -106,7 +106,7 @@ let BenchmarkAction = {
   deleteBenchmarkById(id, version) {
     Ajax.post('/Administration.svc/DeleteBenchmark', {
       params: {
-        dto: {
+        benchmark: {
           Id: id,
           Version: version
         }

@@ -22,8 +22,15 @@ var Benchmark = React.createClass({
       isRightLoading: true,
       formStatus: formStatus.VIEW,
       enableSave: true,
-      showDeleteDialog: false
+      showDeleteDialog: false,
+      showLeft: true
     };
+  },
+  _onToggle: function() {
+    var showLeft = this.state.showLeft;
+    this.setState({
+      showLeft: !showLeft
+    });
   },
   _onBenchmarkListChange: function() {
     var benchmarkList = BenchmarkStore.getBenchmarkData();
@@ -68,7 +75,7 @@ var Benchmark = React.createClass({
   },
   _onSave: function() {
     var selectedData = this.state.selectedData;
-    var formStatus = this.state.formStatus;
+    var curFormStatus = this.state.formStatus;
     var benchmark = {
       IndustryComment: '',
       IndustryId: selectedData.get('IndustryId'),
@@ -76,9 +83,9 @@ var Benchmark = React.createClass({
       ZoneComments: '',
       ZoneIds: selectedData.get('ZoneIds').toJS()
     };
-    if (formStatus === formStatus.ADD) {
+    if (curFormStatus === formStatus.ADD) {
       BenchmarkAction.createBenchmark(benchmark);
-    } else if (formStatus === formStatus.EDIT) {
+    } else if (curFormStatus === formStatus.EDIT) {
       BenchmarkAction.modifyBenchmark(benchmark);
     }
   },
@@ -361,16 +368,25 @@ var Benchmark = React.createClass({
       );
     }
     var deleteDialog = me._renderDeleteDialog();
+    var leftProps = {
+      addBtnLabel: I18N.Setting.Benchmark.Label.IndustryBenchmark,
+      isViewStatus: isView,
+      isLoading: this.state.isLeftLoading,
+      contentItems: items,
+      onAddBtnClick: me._addBenchmark
+    };
+    var leftPanel = (this.state.showLeft) ? <div style={{
+      display: 'flex'
+    }}><SelectablePanel {...leftProps}/></div> : <div style={{
+      display: 'none'
+    }}><SelectablePanel {...leftProps}/></div>;
     return (
       <div style={{
         display: 'flex',
         flex: 1
       }}>
-        <SelectablePanel addBtnLabel={I18N.Setting.Benchmark.Label.IndustryBenchmark}
-      isViewStatus={isView}
-      isLoading={this.state.isLeftLoading}
-      contentItems={items} onAddBtnClick={me._addBenchmark}/>
-        <Panel>
+        {leftPanel}
+        <Panel onToggle={this._onToggle}>
           {displayedDom}
         </Panel>
         {deleteDialog}
