@@ -551,6 +551,19 @@ I18N.Setting.Labeling.Label.IndustryLabelingSetting = 'Industry labeling';
 I18N.Setting.Labeling.Label.LabelingGrade = 'Labeling level';
 I18N.Setting.Labeling.Label.DataYear = 'Data source';
 
+I18N.Setting.CustomizedLabeling = {};
+I18N.Setting.CustomizedLabeling.Grade = 'Level {0}';
+I18N.Setting.CustomizedLabeling.OrderMode = 'sequence';
+I18N.Setting.CustomizedLabeling.Ascending = 'Positive sequence';
+I18N.Setting.CustomizedLabeling.Declining = 'Inverted sequence';
+I18N.Setting.CustomizedLabeling.Configurationer = 'Configured by';
+I18N.Setting.CustomizedLabeling.ConfigurationDate = 'Configured on';
+I18N.Setting.CustomizedLabeling.KPIType = 'Type of indicator';
+I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*Please ensure the value to be entered in the right interval is greater than that in the left one.';
+I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*Please ensure the value to be entered in the left interval is greater than that in the right one.';
+I18N.Setting.CustomizedLabeling.DeleteTip = '<br/>Display of the dashboard relevants to this label is abnormal after deletion.';
+
+
 I18N.Setting.TargetBaseline = {};
 I18N.Setting.TargetBaseline.AlarmThreshold = 'Alarm sensitivity';
 I18N.Setting.TargetBaseline.AlarmThresholdTip = 'When the data goes beyond the sensitivity set by the reference value, the alarm is displayed. ';

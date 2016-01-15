@@ -33,6 +33,7 @@ import WorkTime from './components/calendar/WorkTime.jsx';
 import ColdWarm from './components/calendar/ColdWarm.jsx';
 import DayNight from './components/calendar/DayNight.jsx';
 import Benchmark from './components/statistics/Benchmark.jsx';
+import Labeling from './components/statistics/Labeling.jsx';
 //for energy conversion
 import Carbon from './components/energyConversion/carbon/Carbon.jsx';
 import Tariff from './components/energyConversion/tariff/Tariff.jsx';
@@ -72,7 +73,7 @@ var routes = (
         <Route name='carbon' path='carbon' handler={Carbon}></Route>
 
         <Route name='benchmark' path='benchmark' handler={Benchmark}></Route>
-        <Route name='labeling' path='labeling'></Route>
+        <Route name='labeling' path='labeling' handler={Labeling}></Route>
 
         <Route name="customer" path="customer"></Route>
 

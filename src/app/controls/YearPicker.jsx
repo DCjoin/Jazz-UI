@@ -36,7 +36,7 @@ let YearPicker = React.createClass({
     let index;
     let yearRange = this.props.yearRange;
     if (this.props.selectedIndex === null || this.props.selectedIndex === undefined) {
-      index = yearRange - 1;
+      index = yearRange;
     } else {
       index = this.props.selectedIndex;
     }
