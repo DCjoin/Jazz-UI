@@ -3,6 +3,7 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/energyConversion/Tariff.jsx';
 import Ajax from '../../ajax/ajax.jsx';
 import Immutable from 'immutable';
+import CommonFuns from '../../util/Util.jsx';
 let TariffAction = {
   GetTouTariff: function() {
     Ajax.post('/Administration.svc/GetTouTariff', {
@@ -23,6 +24,32 @@ let TariffAction = {
       }
     });
   },
+  SaveTouTariff: function(tariffData) {
+    var that = this;
+    Ajax.post('/Administration.svc/SaveTouTariff', {
+      params: {
+        dto: tariffData
+      },
+      commonErrorHandling: false,
+      success: function(tariff) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_TARIFF_SUCCESS,
+          id: tariff.Id
+        });
+        that.GetTouTariff();
+
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.TARIFF_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
   setCurrentSelectedId: function(id) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_TARTIFF_ID,
@@ -32,6 +59,34 @@ let TariffAction = {
   reset: function() {
     AppDispatcher.dispatch({
       type: Action.RESET_TARIFF,
+    });
+  },
+  merge: function(data) {
+    AppDispatcher.dispatch({
+      type: Action.MERGE_TARIFF,
+      data: data
+    });
+  },
+  addPeakTimeRange: function() {
+    AppDispatcher.dispatch({
+      type: Action.ADD_PEAK_TIMERANGE
+    });
+  },
+  addValleyTimeRange: function() {
+    AppDispatcher.dispatch({
+      type: Action.ADD_VALLEY_TIMERANGE
+    });
+  },
+  deletePeakTimeRange: function(index) {
+    AppDispatcher.dispatch({
+      type: Action.DELETE_PEAK_TIMERANGE,
+      index: index
+    });
+  },
+  deleteValleyTimeRange: function(index) {
+    AppDispatcher.dispatch({
+      type: Action.DELETE_VALLEY_TIMERANGE,
+      index: index
     });
   },
 

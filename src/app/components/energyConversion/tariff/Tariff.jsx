@@ -9,8 +9,8 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
 import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
-
 import Dialog from '../../../controls/PopupDialog.jsx';
+
 var Tariff = React.createClass({
   getInitialState: function() {
     return {
@@ -30,8 +30,11 @@ var Tariff = React.createClass({
       TariffAction.setCurrentSelectedId(selectedId);
     }
   },
-  _handleSaveTariff: function(infoTab, tariffData) {
-    TariffAction.SaveTariffFactor(tariffData);
+  _handleSaveTariff: function(tariffData) {
+    if (this.state.infoTab) {
+      TariffAction.SaveTouTariff(tariffData);
+    }
+
     this.setState({
       isLoading: true
     });
@@ -114,8 +117,30 @@ var Tariff = React.createClass({
       errorContent: null
     });
   },
+  _onError: function(error) {
+    this.setState({
+      errorTitle: error.title,
+      errorContent: error.content,
+      isLoading: false
+    });
+  },
+  _renderErrorDialog: function() {
+    if (!!this.state.errorTitle) {
+      return (<Dialog
+        ref = "_dialog"
+        title={this.state.errorTitle}
+        modal={false}
+        openImmediately={!!this.state.errorTitle}
+        >
+  {this.state.errorContent}
+    </Dialog>)
+    } else {
+      return null;
+    }
+  },
   componentDidMount: function() {
     TariffStore.addChangeListener(this._onChange);
+    TariffStore.addErrorChangeListener(this._onError);
     TariffAction.GetTouTariff();
     this.setState({
       isLoading: true
@@ -125,6 +150,7 @@ var Tariff = React.createClass({
   },
   componentWillUnmount: function() {
     TariffStore.removeChangeListener(this._onChange);
+    TariffStore.removeErrorChangeListener(this._onError);
   //TariffAction.ClearAll();
   },
   render: function() {
@@ -176,6 +202,7 @@ var Tariff = React.createClass({
         }}>
     {tarifflist}
     <TariffDetail {...detailProps}/>
+    {that._renderErrorDialog()}
     </div>);
     }
   },

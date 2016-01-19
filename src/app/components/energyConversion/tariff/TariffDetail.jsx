@@ -40,26 +40,49 @@ var TariffDetail = React.createClass({
   },
   _handleSaveTariff: function() {
     var {tariff} = this.props,
-      factors = tariff.get('Factors'),
+      touTariff = tariff.get('TouTariffItems'),
+      tariffData;
+    if (this.props.infoTab) {
+      let plainPriceItem = touTariff.find(item => item.get("ItemType") == 2),
+        peakPriceItem = touTariff.find(item => item.get("ItemType") == 1),
+        valleyPriceItem = touTariff.find(item => item.get("ItemType") == 3);
       tariffData = {
-        Id: (!!tariff.get('Id')) ? tariff.get('Id') : null,
-        CommodityId: tariff.getIn(['ConversionPair', 'SourceCommodity', 'Id']),
-        FactorType: tariff.getIn(['ConversionPair', 'FactorType']),
-        Version: (!!tariff.get('Version')) ? tariff.get('Version') : null,
-        Factors: []
+        Id: tariff.get('Id'),
+        Name: tariff.get('Name'),
+        PlainPrice: (!!plainPriceItem) ? plainPriceItem.get('Price') : null,
+        PeakPrice: peakPriceItem.get('Price'),
+        ValleyPrice: valleyPriceItem.get('Price'),
+        Version: tariff.get('Version')
       };
-    factors.forEach(factor => {
-      let factorValue = parseFloat(factor.get('FactorValue'));
-      tariffData.Factors.push(factor.set('FactorValue', factorValue).toJS());
-    });
+      let items = new List();
+      plainPriceItem = (!!plainPriceItem) ? plainPriceItem.set('Price', parseFloat(plainPriceItem.get('Price'))) : null;
+      peakPriceItem = peakPriceItem.set('Price', parseFloat(peakPriceItem.get('Price')));
+      valleyPriceItem = valleyPriceItem.set('Price', parseFloat(valleyPriceItem.get('Price')));
+      if (!!plainPriceItem) {
+        items = items.push(plainPriceItem);
+        items = items.push(peakPriceItem);
+        items = items.push(valleyPriceItem);
+      } else {
+        items = items.push(peakPriceItem);
+        items = items.push(valleyPriceItem);
+      }
+      tariffData.TouTariffItems = items.toJS();
+    }
     this.props.handleSaveTariff(tariffData);
-
   },
-  _handelAddPeakTimeRange: function() {},
-  _handelAddValleyTimeRange: function() {},
+  _handelAddPeakTimeRange: function() {
+    TariffAction.addPeakTimeRange();
+  },
+  _handelAddValleyTimeRange: function() {
+    TariffAction.addValleyTimeRange();
+  },
   _handelAddPulsePeakDateTimeRange: function() {},
-  _handelDeletePeakTimeRange: function(index) {},
-  _handelDeleteValleyTimeRange: function(index) {},
+  _handelDeletePeakTimeRange: function(index) {
+    TariffAction.deletePeakTimeRange(index);
+  },
+  _handelDeleteValleyTimeRange: function(index) {
+    TariffAction.deleteValleyTimeRange(index);
+  },
   _handelDeletePulsePeakDateTimeRange: function(index) {},
   _renderDialog: function() {
     var that = this;
@@ -103,16 +126,16 @@ var TariffDetail = React.createClass({
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
       tariffNameProps = {
-        isViewStatus: isView,
+        isViewStatus: isView || !this.props.infoTab,
         title: I18N.Setting.TOUTariff.Name,
         defaultValue: tariff.get("Name"),
         maxLen: 200,
         isRequired: true,
         didChanged: value => {
-          // TariffAction.merge({
-          //   value,
-          //   path: "Name"
-          // })
+          TariffAction.merge({
+            value,
+            path: "Name"
+          })
         }
       };
     return (
@@ -140,10 +163,22 @@ var TariffDetail = React.createClass({
   _renderPeakTimeRange: function(peakPriceItem) {
     var Items = [],
       isView = this.props.formStatus === formStatus.VIEW,
-      that = this;
-    var onTimeChange = function(index, times) {};
+      that = this,
+      errors = this.props.tariff.getIn(['Errors', 'Peak']);
+    var onTimeChange = function(index, times) {
+      TariffAction.merge({
+        value: {
+          value: times,
+          ItemType: 1,
+          path: 'TimeRange',
+          index: index
+        },
+        path: "TouTariffItems"
+      });
+    };
     if (!!peakPriceItem) {
       peakPriceItem.get('TimeRange').forEach((time, index) => {
+        var error = (!!errors) ? errors.getIn([index]) : null;
         Items.push(
           <div className='jazz-item-in-margin'>
             <FromEndTime index={index}
@@ -153,6 +188,7 @@ var TariffDetail = React.createClass({
           startTime={time.get('m_Item1')}
           endTime={time.get('m_Item2')}
           onDeleteTimeData={that._handelDeletePeakTimeRange.bind(index)}/>
+        <div className='jazz-carbon-addItem-errorText'>{error}</div>
           </div>
         )
       })
@@ -176,10 +212,22 @@ var TariffDetail = React.createClass({
   _renderValleyTimeRange: function(valleyPriceItem) {
     var Items = [],
       isView = this.props.formStatus === formStatus.VIEW,
-      that = this;
-    var onTimeChange = function(index, times) {};
+      that = this,
+      errors = this.props.tariff.getIn(['Errors', 'Valley']);
+    var onTimeChange = function(index, times) {
+      TariffAction.merge({
+        value: {
+          value: times,
+          ItemType: 3,
+          path: 'TimeRange',
+          index: index
+        },
+        path: "TouTariffItems"
+      });
+    };
     if (!!valleyPriceItem) {
       valleyPriceItem.get('TimeRange').forEach((time, index) => {
+        var error = (!!errors) ? errors.getIn([index]) : null;
         Items.push(
           <div className='jazz-item-in-margin'>
             <FromEndTime index={index}
@@ -189,6 +237,7 @@ var TariffDetail = React.createClass({
           startTime={time.get('m_Item1')}
           endTime={time.get('m_Item2')}
           onDeleteTimeData={that._handelDeleteValleyTimeRange.bind(index)}/>
+        <div className='jazz-carbon-addItem-errorText'>{error}</div>
           </div>
         )
       })
@@ -219,8 +268,8 @@ var TariffDetail = React.createClass({
       peakPriceItem = touTariff.find(item => item.get("ItemType") == 1);
       valleyPriceItem = touTariff.find(item => item.get("ItemType") == 3);
       plainPrice = (!!plainPriceItem) ? plainPriceItem.get('Price') : null;
-      peakPrice = peakPriceItem.get('Price');
-      valleyPrice = valleyPriceItem.get('Price');
+      peakPrice = (!!peakPriceItem) ? peakPriceItem.get('Price') : null;
+      valleyPrice = (!!valleyPriceItem) ? valleyPriceItem.get('Price') : null;
     }
 
     //props
@@ -232,13 +281,13 @@ var TariffDetail = React.createClass({
         errorMessage: "该输入项只能是正数",
         maxLen: 200,
         didChanged: value => {
-          // CarbonAction.merge({
-          //   value: {
-          //     value: value,
-          //     factorIndex: index
-          //   },
-          //   path: "FactorValue"
-          // });
+          TariffAction.merge({
+            value: {
+              value: value,
+              ItemType: 2
+            },
+            path: "TouTariffItems"
+          });
         }
       },
       peakPriceProps = {
@@ -250,13 +299,14 @@ var TariffDetail = React.createClass({
         maxLen: 200,
         isRequired: true,
         didChanged: value => {
-          // CarbonAction.merge({
-          //   value: {
-          //     value: value,
-          //     factorIndex: index
-          //   },
-          //   path: "FactorValue"
-          // });
+          TariffAction.merge({
+            value: {
+              value: value,
+              ItemType: 1,
+              path: 'Price'
+            },
+            path: "TouTariffItems"
+          });
         }
       },
       valleyPriceProps = {
@@ -268,13 +318,14 @@ var TariffDetail = React.createClass({
         maxLen: 200,
         isRequired: true,
         didChanged: value => {
-          // CarbonAction.merge({
-          //   value: {
-          //     value: value,
-          //     factorIndex: index
-          //   },
-          //   path: "FactorValue"
-          // });
+          TariffAction.merge({
+            value: {
+              value: value,
+              ItemType: 3,
+              path: 'Price'
+            },
+            path: "TouTariffItems"
+          });
         }
       };
     var peakBtn = (<div className="jazz-carbon-addItem">
@@ -354,7 +405,7 @@ var TariffDetail = React.createClass({
         errorMessage: "该输入项只能是正数",
         maxLen: 200,
         didChanged: value => {
-          // CarbonAction.merge({
+          // TariffAction.merge({
           //   value: {
           //     value: value,
           //     factorIndex: index
@@ -444,6 +495,32 @@ var TariffDetail = React.createClass({
     var disabledSaveButton = false,
       {tariff} = this.props,
       that = this;
+    var error = (!!tariff.get('Errors')) ? true : false;
+    if (this.props.infoTab) {
+      if (!tariff.get('Name') || error || !tariff.get('TouTariffItems')) {
+        disabledSaveButton = true
+      } else {
+        var peakPriceItem = tariff.get('TouTariffItems').find(item => item.get("ItemType") == 1),
+          valleyPriceItem = tariff.get('TouTariffItems').find(item => item.get("ItemType") == 3);
+        if (!peakPriceItem || !valleyPriceItem) {
+          disabledSaveButton = true
+        } else {
+          tariff.get('TouTariffItems').forEach(item => {
+            if (!item.get('Price') || !item.get('TimeRange')) {
+              disabledSaveButton = true
+            } else {
+              item.get('TimeRange').forEach(time => {
+                if (time.get('m_Item1') < 0 || time.get('m_Item2') < 0) {
+                  disabledSaveButton = true
+                }
+              })
+
+            }
+          })
+        }
+      }
+
+    }
     return (
       <FormBottomBar
       transition={true}
