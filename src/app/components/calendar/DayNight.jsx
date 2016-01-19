@@ -59,6 +59,10 @@ var Daynight = React.createClass({
   _onEdit: function() {
     this.setState({
       formStatus: formStatus.EDIT
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _onCancel: function() {
@@ -140,7 +144,6 @@ var Daynight = React.createClass({
     return isTitleValid && isTimeValid;
   },
   _addDaynightData: function() {
-    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -156,12 +159,11 @@ var Daynight = React.createClass({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
   _deleteDaynightData: function(index) {
-    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     items = items.delete(index);
@@ -170,7 +172,7 @@ var Daynight = React.createClass({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
@@ -191,14 +193,13 @@ var Daynight = React.createClass({
     });
   },
   _onNameChange(value) {
-    var me = this;
-    var selectedData = me.state.selectedData;
+    var selectedData = this.state.selectedData;
     selectedData = selectedData.set('Name', value);
-    me.setState({
+    this.setState({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },

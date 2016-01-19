@@ -57,12 +57,11 @@ var WorkTime = React.createClass({
     CalendarAction.setSelectedCalendarIndex(index);
   },
   _onEdit: function() {
-    var me = this;
     this.setState({
       formStatus: formStatus.EDIT
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
@@ -145,7 +144,6 @@ var WorkTime = React.createClass({
     return isTitleValid && isTimeValid;
   },
   _addWorktimeData: function() {
-    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -161,12 +159,11 @@ var WorkTime = React.createClass({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
   _deleteWorktimeData: function(index) {
-    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     items = items.delete(index);
@@ -175,7 +172,7 @@ var WorkTime = React.createClass({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
@@ -196,14 +193,13 @@ var WorkTime = React.createClass({
     });
   },
   _onNameChange(value) {
-    var me = this;
-    var selectedData = me.state.selectedData;
+    var selectedData = this.state.selectedData;
     selectedData = selectedData.set('Name', value);
-    me.setState({
+    this.setState({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },

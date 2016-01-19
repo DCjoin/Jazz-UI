@@ -68,6 +68,10 @@ var Benchmark = React.createClass({
   _onEdit: function() {
     this.setState({
       formStatus: formStatus.EDIT
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _onCancel: function() {
@@ -149,21 +153,19 @@ var Benchmark = React.createClass({
     return true;
   },
   _onIndustryChange(value) {
-    var me = this;
-    var selectedData = me.state.selectedData;
+    var selectedData = this.state.selectedData;
     selectedData = selectedData.set('IndustryId', value);
-    me.setState({
+    this.setState({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
   _handleZoneClick(e) {
-    var me = this;
     var value = parseInt(e.currentTarget.id);
-    var selectedData = me.state.selectedData;
+    var selectedData = this.state.selectedData;
     var zoneIds = selectedData.get('ZoneIds');
     var index = zoneIds.findIndex((item) => {
       if (item === value) {
@@ -176,11 +178,11 @@ var Benchmark = React.createClass({
       zoneIds = zoneIds.delete(index);
     }
     selectedData = selectedData.set('ZoneIds', zoneIds);
-    me.setState({
+    this.setState({
       selectedData: selectedData
     }, () => {
-      me.setState({
-        enableSave: me._isValid()
+      this.setState({
+        enableSave: this._isValid()
       });
     });
   },

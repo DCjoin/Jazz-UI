@@ -244,6 +244,12 @@ var FromEndDateGroup = React.createClass({
       typeText = I18N.Setting.Calendar.SeansonType;
     }
     let dateItems = null;
+    var hasDeleteButton;
+    if (me.props.type === 0) {
+      hasDeleteButton = true;
+    } else {
+      hasDeleteButton = items.size === 1 ? false : true;
+    }
     if (items && items.size !== 0) {
       dateItems = items.map(function(item, i) {
         let props = {
@@ -252,7 +258,7 @@ var FromEndDateGroup = React.createClass({
           id: item.get('Id'),
           ref: 'fromEndDateItem' + (i + 1),
           isViewStatus: me.props.isViewStatus,
-          hasDeleteButton: items.size === 1 ? false : true,
+          hasDeleteButton: hasDeleteButton,
           errorText: me.state.errorTextArr.get(i),
           typeValue: item.get('Type'),
           typeItems: typeItems,

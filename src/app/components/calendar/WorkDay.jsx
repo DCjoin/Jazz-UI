@@ -59,6 +59,10 @@ var WorkDay = React.createClass({
   _onEdit: function() {
     this.setState({
       formStatus: formStatus.EDIT
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _onCancel: function() {
@@ -116,13 +120,7 @@ var WorkDay = React.createClass({
       Type: calendarType,
       Version: null,
       Id: null,
-      Items: [{
-        Type: 0,
-        StartFirstPart: -1,
-        StartSecondPart: -1,
-        EndFirstPart: -1,
-        EndSecondPart: -1,
-      }]
+      Items: []
     };
     this.setState({
       selectedIndex: null,
@@ -140,7 +138,6 @@ var WorkDay = React.createClass({
     return isTitleValid && isDateValid;
   },
   _addWorkdayData: function() {
-    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -153,16 +150,14 @@ var WorkDay = React.createClass({
     items = items.unshift(Immutable.fromJS(item));
     selectedData = selectedData.set('Items', items);
     this.setState({
-      selectedData: selectedData,
-      enableSave: false
+      selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
   _deleteWorkdayData: function(index) {
-    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     items = items.delete(index);
@@ -171,7 +166,7 @@ var WorkDay = React.createClass({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
@@ -205,14 +200,13 @@ var WorkDay = React.createClass({
     });
   },
   _onNameChange(value) {
-    var me = this;
-    var selectedData = me.state.selectedData;
+    var selectedData = this.state.selectedData;
     selectedData = selectedData.set('Name', value);
-    me.setState({
+    this.setState({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
