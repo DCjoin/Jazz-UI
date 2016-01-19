@@ -257,6 +257,7 @@ var WorkTime = React.createClass({
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onWorktimeListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarAction.setSelectedCalendarIndex(null);
   },
 
 

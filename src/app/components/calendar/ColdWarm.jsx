@@ -270,6 +270,7 @@ var ColdWarm = React.createClass({
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onColdwarmListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarAction.setSelectedCalendarIndex(null);
   },
 
 

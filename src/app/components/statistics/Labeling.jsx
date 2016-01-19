@@ -395,6 +395,7 @@ var Labeling = React.createClass({
     LabelingStore.removeIndustryDataChangeListener(this._onIndustryDataChange);
     LabelingStore.removeZoneDataChangeListener(this._onZoneDataChange);
     LabelingStore.removeSelectedLabelingChangeListener(this._onSelectedItemChange);
+    LabelingAction.setSelectedLabelingIndex(null);
   },
 
 

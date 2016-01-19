@@ -257,6 +257,7 @@ var Daynight = React.createClass({
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onDaynightListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarAction.setSelectedCalendarIndex(null);
   },
 
 

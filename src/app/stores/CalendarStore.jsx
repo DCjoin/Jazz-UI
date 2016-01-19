@@ -80,8 +80,13 @@ var CalendarStore = assign({}, PrototypeStore, {
     return _selecteCalendarIndex;
   },
   setSelectedCalendarIndex(index) {
-    _selecteCalendarIndex = index;
-    _selecteCalendar = _calendarList.get(_selecteCalendarIndex);
+    if (index === null) {
+      _selecteCalendarIndex = null;
+      _selecteCalendar = null;
+    } else {
+      _selecteCalendarIndex = index;
+      _selecteCalendar = _calendarList.get(_selecteCalendarIndex);
+    }
   },
   emitCalendarListChange: function() {
     this.emit(CHANGE_CALENDAR_EVENT);

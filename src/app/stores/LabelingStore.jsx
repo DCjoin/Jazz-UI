@@ -64,8 +64,13 @@ var LabelingStore = assign({}, PrototypeStore, {
     _selecteLabeling = Immutable.fromJS(labeling);
   },
   setSelectedLabelingIndex(index) {
-    _selecteLabelingIndex = index;
-    _selecteLabeling = _labelingData.get(_selecteLabelingIndex);
+    if (index === null) {
+      _selecteLabelingIndex = null;
+      _selecteLabeling = null;
+    } else {
+      _selecteLabelingIndex = index;
+      _selecteLabeling = _labelingData.get(_selecteLabelingIndex);
+    }
   },
   deleteLabeling() {
     _labelingData = _labelingData.delete(_selecteLabelingIndex);

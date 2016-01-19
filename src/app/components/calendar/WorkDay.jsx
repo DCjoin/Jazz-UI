@@ -264,6 +264,7 @@ var WorkDay = React.createClass({
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onWorkdayListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarAction.setSelectedCalendarIndex(null);
   },
 
 

@@ -327,6 +327,7 @@ var Benchmark = React.createClass({
     BenchmarkStore.removeIndustryDataChangeListener(this._onIndustryDataChange);
     BenchmarkStore.removeZoneDataChangeListener(this._onZoneDataChange);
     BenchmarkStore.removeSelectedBenchmarkChangeListener(this._onSelectedItemChange);
+    BenchmarkAction.setSelectedBenchmarkIndex(null);
   },
 
 
