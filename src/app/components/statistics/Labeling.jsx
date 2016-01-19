@@ -76,6 +76,10 @@ var Labeling = React.createClass({
   _onEdit: function() {
     this.setState({
       formStatus: formStatus.EDIT
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _onCancel: function() {
@@ -160,28 +164,26 @@ var Labeling = React.createClass({
     return true;
   },
   _onIndustryChange(value) {
-    var me = this;
-    var selectedData = me.state.selectedData;
+    var selectedData = this.state.selectedData;
     selectedData = selectedData.set('IndustryId', value);
     var zoneItems = map[value];
-    me.setState({
+    this.setState({
       selectedData: selectedData,
       zoneItems: zoneItems
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
   _onItemChange(name, value) {
-    var me = this;
-    var selectedData = me.state.selectedData;
+    var selectedData = this.state.selectedData;
     selectedData = selectedData.set(name, value);
-    me.setState({
+    this.setState({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
@@ -328,7 +330,7 @@ var Labeling = React.createClass({
       dataItems: gradeItems,
       isViewStatus: isView,
       defaultValue: selectedData.get('Grade'),
-      title: '',
+      title: I18N.Setting.Labeling.Label.LabelingGrade,
       textField: 'text',
       didChanged: me._onItemChange.bind(null, 'Grade')
     };
@@ -393,6 +395,7 @@ var Labeling = React.createClass({
     LabelingStore.removeIndustryDataChangeListener(this._onIndustryDataChange);
     LabelingStore.removeZoneDataChangeListener(this._onZoneDataChange);
     LabelingStore.removeSelectedLabelingChangeListener(this._onSelectedItemChange);
+    LabelingAction.setSelectedLabelingIndex(null);
   },
 
 
@@ -422,7 +425,7 @@ var Labeling = React.createClass({
       displayedDom = (<div className='jazz-labeling-loading'><div style={{
         margin: 'auto',
         width: '100px'
-      }}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
+      }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
     } else if (selectedData !== null) {
       var header = me._renderHeader(isAdd);
       var content = me._renderContent(isView);

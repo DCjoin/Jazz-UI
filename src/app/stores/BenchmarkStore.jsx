@@ -64,8 +64,13 @@ var BenchmarkStore = assign({}, PrototypeStore, {
     _selecteBenchmark = Immutable.fromJS(benchmark);
   },
   setSelectedBenchmarkIndex(index) {
-    _selecteBenchmarkIndex = index;
-    _selecteBenchmark = _benchmarkData.get(_selecteBenchmarkIndex);
+    if (index === null) {
+      _selecteBenchmarkIndex = null;
+      _selecteBenchmark = null;
+    } else {
+      _selecteBenchmarkIndex = index;
+      _selecteBenchmark = _benchmarkData.get(_selecteBenchmarkIndex);
+    }
   },
   deleteBenchmark() {
     _benchmarkData = _benchmarkData.delete(_selecteBenchmarkIndex);

@@ -59,6 +59,10 @@ var WorkTime = React.createClass({
   _onEdit: function() {
     this.setState({
       formStatus: formStatus.EDIT
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _onCancel: function() {
@@ -152,12 +156,14 @@ var WorkTime = React.createClass({
     items = items.unshift(Immutable.fromJS(item));
     selectedData = selectedData.set('Items', items);
     this.setState({
-      selectedData: selectedData,
-      enableSave: false
+      selectedData: selectedData
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _deleteWorktimeData: function(index) {
-    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     items = items.delete(index);
@@ -166,7 +172,7 @@ var WorkTime = React.createClass({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
@@ -187,14 +193,13 @@ var WorkTime = React.createClass({
     });
   },
   _onNameChange(value) {
-    var me = this;
-    var selectedData = me.state.selectedData;
+    var selectedData = this.state.selectedData;
     selectedData = selectedData.set('Name', value);
-    me.setState({
+    this.setState({
       selectedData: selectedData
     }, () => {
       this.setState({
-        enableSave: me._isValid()
+        enableSave: this._isValid()
       });
     });
   },
@@ -252,6 +257,7 @@ var WorkTime = React.createClass({
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onWorktimeListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarAction.setSelectedCalendarIndex(null);
   },
 
 
@@ -281,7 +287,7 @@ var WorkTime = React.createClass({
       displayedDom = (<div className='jazz-calendar-loading'><div style={{
         margin: 'auto',
         width: '100px'
-      }}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
+      }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
     } else if (selectedData !== null) {
       var header = me._renderHeader(isView);
       var content = me._renderContent(isView);

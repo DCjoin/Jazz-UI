@@ -105,7 +105,7 @@ var FromEndTimeGroup = React.createClass({
       } else if (comEnd === -1) {
         return (comStart >= start && comStart < end);
       } else {
-        if (start == comStart) {
+        if (start === comStart) {
           return true;
         } else if (start < comStart) {
           return (end > comStart);
