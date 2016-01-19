@@ -140,6 +140,7 @@ var WorkDay = React.createClass({
     return isTitleValid && isDateValid;
   },
   _addWorkdayData: function() {
+    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -154,6 +155,10 @@ var WorkDay = React.createClass({
     this.setState({
       selectedData: selectedData,
       enableSave: false
+    }, () => {
+      this.setState({
+        enableSave: me._isValid()
+      });
     });
   },
   _deleteWorkdayData: function(index) {

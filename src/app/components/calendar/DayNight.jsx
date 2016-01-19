@@ -140,6 +140,7 @@ var Daynight = React.createClass({
     return isTitleValid && isTimeValid;
   },
   _addDaynightData: function() {
+    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -152,8 +153,11 @@ var Daynight = React.createClass({
     items = items.unshift(Immutable.fromJS(item));
     selectedData = selectedData.set('Items', items);
     this.setState({
-      selectedData: selectedData,
-      enableSave: false
+      selectedData: selectedData
+    }, () => {
+      this.setState({
+        enableSave: me._isValid()
+      });
     });
   },
   _deleteDaynightData: function(index) {

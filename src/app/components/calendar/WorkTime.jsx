@@ -145,6 +145,7 @@ var WorkTime = React.createClass({
     return isTitleValid && isTimeValid;
   },
   _addWorktimeData: function() {
+    var me = this;
     var selectedData = this.state.selectedData;
     var items = selectedData.get('Items');
     var item = {
@@ -157,8 +158,11 @@ var WorkTime = React.createClass({
     items = items.unshift(Immutable.fromJS(item));
     selectedData = selectedData.set('Items', items);
     this.setState({
-      selectedData: selectedData,
-      enableSave: false
+      selectedData: selectedData
+    }, () => {
+      this.setState({
+        enableSave: me._isValid()
+      });
     });
   },
   _deleteWorktimeData: function(index) {
