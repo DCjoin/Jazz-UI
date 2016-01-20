@@ -218,7 +218,7 @@ var WorkDay = React.createClass({
       isViewStatus: isView,
       didChanged: me._onNameChange,
       defaultValue: selectedData.get('Name'),
-      title: I18N.Common.Glossary.Name,
+      title: I18N.Setting.Calendar.WorkdayName,
       isRequired: true
     };
     return (

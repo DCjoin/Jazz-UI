@@ -452,6 +452,7 @@ I18N.Setting.Calendar.DeleteMessage = 'Delete “{0}” ？';
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = 'Work day';
+I18N.Setting.Calendar.WorkdayName = 'Workday name';
 I18N.Setting.Calendar.WorkDay = 'Workday';
 I18N.Setting.Calendar.Holiday = 'Non-workday';
 I18N.Setting.Calendar.DefaultWorkDay = 'Default workday: Mon. -Fri.';
@@ -468,6 +469,7 @@ I18N.Setting.Calendar.MonthDayFromTo = '{0}Month{1}day to {2}month{3}day';
 
 //worktime
 I18N.Setting.Calendar.WorktimeSetting = 'Work time';
+I18N.Setting.Calendar.WorktimeName = 'WorkTime name';
 I18N.Setting.Calendar.WorkTime = 'WorkTime';
 I18N.Setting.Calendar.RestTime = 'Non-Work Time';
 I18N.Setting.Calendar.DefaultWorkTime = 'Time except work time is all non-work time.';
@@ -478,6 +480,7 @@ I18N.Setting.Calendar.To = 'To';
 
 //cold/warm
 I18N.Setting.Calendar.ColdwarmSetting = 'HC seasons';
+I18N.Setting.Calendar.ColdwarmName = 'HC season name';
 I18N.Setting.Calendar.SeansonType = 'Season type';
 I18N.Setting.Calendar.WarmSeason = 'Heating season';
 I18N.Setting.Calendar.ColdSeason = 'Cooling season';
@@ -487,6 +490,7 @@ I18N.Setting.Calendar.WarmColdDeclaration = 'There must be a more-than-7-day int
 
 //day/night
 I18N.Setting.Calendar.DaynightSetting = 'Day night';
+I18N.Setting.Calendar.DaynightName = 'Day night name';
 I18N.Setting.Calendar.Day = 'Daytime';
 I18N.Setting.Calendar.Night = 'Night time';
 I18N.Setting.Calendar.DefaultDayNight = 'Time except daytime is all night time.';

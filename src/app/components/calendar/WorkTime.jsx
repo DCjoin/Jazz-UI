@@ -211,7 +211,7 @@ var WorkTime = React.createClass({
       isViewStatus: isView,
       didChanged: me._onNameChange,
       defaultValue: selectedData.get('Name'),
-      title: I18N.Common.Glossary.Name,
+      title: I18N.Setting.Calendar.WorktimeName,
       isRequired: true
     };
     return (
