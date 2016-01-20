@@ -67,6 +67,19 @@ var TariffDetail = React.createClass({
         items = items.push(valleyPriceItem);
       }
       tariffData.TouTariffItems = items.toJS();
+    } else {
+      if (!!tariff.get('PeakTariff')) {
+        tariffData = tariff.get('PeakTariff').toJS();
+        tariffData.Id = tariff.get('Id');
+        tariffData.onOff = tariff.get('onOff');
+      } else {
+        tariffData = {
+          Id: tariff.get('Id'),
+          onOff: tariff.get('onOff'),
+          Version: tariff.get('Version')
+        };
+      }
+
     }
     this.props.handleSaveTariff(tariffData);
   },
@@ -76,14 +89,38 @@ var TariffDetail = React.createClass({
   _handelAddValleyTimeRange: function() {
     TariffAction.addValleyTimeRange();
   },
-  _handelAddPulsePeakDateTimeRange: function() {},
+  _handelAddPulsePeakDateTimeRange: function() {
+    TariffAction.addPulsePeakDateTimeRange();
+  },
   _handelDeletePeakTimeRange: function(index) {
     TariffAction.deletePeakTimeRange(index);
   },
   _handelDeleteValleyTimeRange: function(index) {
     TariffAction.deleteValleyTimeRange(index);
   },
-  _handelDeletePulsePeakDateTimeRange: function(index) {},
+  _handelDeletePulsePeakDateTimeRange: function(index) {
+    TariffAction.deletePulsePeakDateTimeRange(index);
+  },
+  onDateChange: function(index, startMonth, startDay, endMonth, endDay) {
+    TariffAction.merge({
+      value: {
+        value: [startMonth, startDay, endMonth, endDay],
+        index: index,
+        path: 'Date'
+      },
+      path: "PeakTariff"
+    });
+  },
+  onTimeChange: function(index, times) {
+    TariffAction.merge({
+      value: {
+        value: times,
+        index: index,
+        path: 'Time'
+      },
+      path: "PeakTariff"
+    });
+  },
   _renderDialog: function() {
     var that = this;
     var closeDialog = function() {
@@ -95,15 +132,10 @@ var TariffDetail = React.createClass({
       return null;
     } else {
       var tariff = that.props.tariff;
-      let sourceCommodity = tariff.getIn(['ConversionPair', 'SourceCommodity', 'Comment']),
-        sourceUom = tariff.getIn(['ConversionPair', 'SourceUom', 'Comment']),
-        destinationCommodity = tariff.getIn(['ConversionPair', 'DestinationCommodity', 'Comment']),
-        destinationUom = tariff.getIn(['ConversionPair', 'DestinationUom', 'Comment']),
-        label = sourceCommodity + ' ( ' + sourceUom + ' ) ' + '- ' + destinationCommodity + ' ( ' + destinationUom + ' )';
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={"删除转换因子 “" + label + "”"} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={"删除 “" + tariff.get('Name') + "”"} modal={true} actions={[
           <FlatButton
           label="删除"
           primary={true}
@@ -115,7 +147,7 @@ var TariffDetail = React.createClass({
           label="放弃"
           onClick={closeDialog} />
         ]}>
-        {"转换因子 “" + label + "” 将被删除"}
+        {" “" + tariff.get('Name') + "” 将被删除"}
       </Dialog>
         );
     }
@@ -377,7 +409,8 @@ var TariffDetail = React.createClass({
   _renderPeakTab: function() {
     var PeakTariff = this.props.tariff.get('PeakTariff'),
       isView = this.props.formStatus === formStatus.VIEW,
-      that = this;
+      that = this,
+      errors = this.props.tariff.get('Errors');
 
     var toggleBtn = <Toggle
     label={I18N.Setting.TOUTariff.PulsePeakPriceSetting}
@@ -389,11 +422,16 @@ var TariffDetail = React.createClass({
     disabled={isView}
     defaultToggled={this.props.tariff.get('onOff')}
     onToggle={(event, toggled) => {
-
+      TariffAction.merge({
+        value: {
+          value: toggled,
+          path: 'onOff'
+        },
+        path: "PeakTariff"
+      });
     }}/>;
 
-    var onDateChange = function(startMonth, startDay, endMonth, endDay) {},
-      onTimeChange = function(index, times) {};
+
 
     var peakTariffItems;
     if (this.props.tariff.get('onOff')) {
@@ -405,13 +443,13 @@ var TariffDetail = React.createClass({
         errorMessage: "该输入项只能是正数",
         maxLen: 200,
         didChanged: value => {
-          // TariffAction.merge({
-          //   value: {
-          //     value: value,
-          //     factorIndex: index
-          //   },
-          //   path: "FactorValue"
-          // });
+          TariffAction.merge({
+            value: {
+              value: value,
+              path: 'Price'
+            },
+            path: "PeakTariff"
+          });
         }
       };
       var peakItems = [],
@@ -420,6 +458,8 @@ var TariffDetail = React.createClass({
           color: '#abafae'
         };
       PeakTariff.get('TimeRanges').forEach((time, index) => {
+        var dateError = (!!errors) ? errors.getIn(['Date', index]) : null,
+          timeError = (!!errors) ? errors.getIn(['Time', index]) : null;
         var deleteProps = {
           isDelete: !isView && (PeakTariff.get('TimeRanges').size > 1),
           onDelete: () => {
@@ -438,18 +478,22 @@ var TariffDetail = React.createClass({
         startDay={time.get('StartDay')}
         endMonth={time.get('EndMonth')}
         endDay={time.get('EndDay')}
-        onDateChange={onDateChange}/>
+        onDateChange={(startMonth, startDay, endMonth, endDay) => {
+          that.onDateChange(index, startMonth, startDay, endMonth, endDay);
+        }}/>
+          <div className='jazz-carbon-addItem-errorText'>{dateError}</div>
           </div>
           <div className='jazz-item-in-margin' style={fontStyle}>
             {I18N.Setting.TOUTariff.PeakValueTimeRange}
           </div>
           <div className='jazz-item-in-margin'>
             <FromEndTime index={index}
-        onTimeChange={onTimeChange}
+        onTimeChange={that.onTimeChange}
         isViewStatus={isView}
         hasDeleteButton={false}
         startTime={time.get("StartTime")}
         endTime={time.get('EndTime')}/>
+        <div className='jazz-carbon-addItem-errorText'>{timeError}</div>
           </div>
         </DeletableItem>
       </div>)
@@ -520,6 +564,18 @@ var TariffDetail = React.createClass({
         }
       }
 
+    } else {
+      if (tariff.get('onOff')) {
+        if (!tariff.getIn(['PeakTariff', 'Price'])) {
+          disabledSaveButton = true
+        }
+        tariff.getIn(['PeakTariff', 'TimeRanges']).forEach(time => {
+          let {StartDay, StartMonth, StartTime, EndTime, EndMonth, EndDay} = time.toJS();
+          if (StartDay < 0 || StartMonth < 0 || StartTime < 0 || EndTime < 0 || EndMonth < 0 || EndDay < 0) {
+            disabledSaveButton = true
+          }
+        })
+      }
     }
     return (
       <FormBottomBar
@@ -559,6 +615,7 @@ var TariffDetail = React.createClass({
         {content}
         {footer}
       </Panel>
+      {that._renderDialog()}
     </div>
       )
   },

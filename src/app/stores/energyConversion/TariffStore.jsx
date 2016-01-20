@@ -73,9 +73,9 @@ var TariffStore = assign({}, PrototypeStore, {
           }
         }
       }
-      for (let i = 0; i < items.size - 2; i++) {
+      for (let i = 0; i < items.size - 1; i++) {
         for (let j = i + 1; j <= items.size - 1; j++) {
-          var a = parseFloat(items.get(i).get('m_Item1')),
+          let a = parseFloat(items.get(i).get('m_Item1')),
             b = parseFloat(items.get(i).get('m_Item2')),
             c = parseFloat(items.get(j).get('m_Item1')),
             d = parseFloat(items.get(j).get('m_Item2'));
@@ -92,6 +92,43 @@ var TariffStore = assign({}, PrototypeStore, {
         }
       }
       if (errors.get('Valley').size > 0 || errors.get('Peak').size > 0) {
+        _updatingTariff = _updatingTariff.set('Errors', errors);
+      } else {
+        _updatingTariff = _updatingTariff.set('Errors', null);
+      }
+    } else {
+      var errors = Immutable.fromJS({
+        Date: [],
+        Time: []
+      });
+      var timeRanges = _updatingTariff.getIn(['PeakTariff', 'TimeRanges']);
+      for (let i = 0; i < timeRanges.size - 1; i++) {
+        for (let j = i + 1; j <= timeRanges.size - 1; j++) {
+          let a = timeRanges.getIn([i]),
+            b = timeRanges.getIn([j]);
+          if ((a.get('StartTime') < 0 && a.get('EndTime') < 0) || (b.get('StartTime') < 0 && b.get('EndTime') < 0)) {
+          } else {
+            if ((a.get('StartTime') <= b.get('StartTime') && a.get('EndTime') <= b.get('StartTime')) || (a.get('StartTime') >= b.get('StartTime') && a.get('StartTime') >= b.get('EndTime'))) {
+            } else {
+              errors = errors.setIn(['Time', i], I18N.Setting.CarbonFactor.Conflict);
+              errors = errors.setIn(['Time', j], I18N.Setting.CarbonFactor.Conflict);
+            }
+          }
+          if ((a.get('StartDay') < 0 && a.get('StartMonth') < 0) || (a.get('EndMonth') < 0 && a.get('EndDay') < 0) ||
+            (b.get('EndMonth') < 0 && b.get('EndDay') < 0) || (b.get('StartDay') < 0 && b.get('StartMonth') < 0)) {
+          } else {
+            if (((a.get('StartMonth') < b.get('StartMonth') || (a.get('StartMonth') == b.get('StartMonth') && a.get('StartDay') <= b.get('StartDay'))) &&
+              (a.get('EndMonth') < b.get('StartMonth') || (a.get('EndMonth') == b.get('StartMonth') && a.get('EndDay') <= b.get('StartDay'))))
+              || ((a.get('StartMonth') > b.get('StartMonth') || (a.get('StartMonth') == b.get('StartMonth') && a.get('StartDay') >= b.get('StartDay'))) &&
+              (a.get('StartMonth') > b.get('EndMonth') || (a.get('StartMonth') == b.get('EndMonth') && a.get('StartDay') >= b.get('EndMonth'))))) {
+            } else {
+              errors = errors.setIn(['Date', i], I18N.Setting.CarbonFactor.Conflict);
+              errors = errors.setIn(['Date', j], I18N.Setting.CarbonFactor.Conflict);
+            }
+          }
+        }
+      }
+      if (errors.get('Date').size > 0 || errors.get('Time').size > 0) {
         _updatingTariff = _updatingTariff.set('Errors', errors);
       } else {
         _updatingTariff = _updatingTariff.set('Errors', null);
@@ -211,6 +248,48 @@ var TariffStore = assign({}, PrototypeStore, {
             that.checkError('TouTariffItems');
             break;
         }
+      } else {
+        switch (data.value.path) {
+          case 'onOff':
+            _updatingTariff = _updatingTariff.set('onOff', data.value.value);
+            if (data.value.value) {
+              _updatingTariff = _updatingTariff.set('PeakTariff', Immutable.fromJS({
+                Price: null,
+                TimeRanges: [{
+                  EndDay: -1,
+                  EndMonth: -1,
+                  EndTime: -1,
+                  StartDay: -1,
+                  StartMonth: -1,
+                  StartTime: -1
+                }]
+              }));
+            } else {
+              _updatingTariff = _updatingTariff.set('PeakTariff', null);
+            }
+            break;
+          case 'Price':
+            _updatingTariff = _updatingTariff.setIn(['PeakTariff', 'Price'], data.value.value);
+            break;
+          case 'Date':
+            let timeRange = _updatingTariff.getIn(['PeakTariff', 'TimeRanges', data.value.index]);
+            timeRange = timeRange.set('StartMonth', data.value.value[0]);
+            timeRange = timeRange.set('StartDay', data.value.value[1]);
+            timeRange = timeRange.set('EndMonth', data.value.value[2]);
+            timeRange = timeRange.set('EndDay', data.value.value[3]);
+
+            _updatingTariff = _updatingTariff.setIn(['PeakTariff', 'TimeRanges', data.value.index], timeRange);
+            that.checkError('PeakTariff');
+            break;
+          case 'Time':
+            let timeRange = _updatingTariff.getIn(['PeakTariff', 'TimeRanges', data.value.index]);
+            timeRange = timeRange.set('StartTime', data.value.value[0]);
+            timeRange = timeRange.set('EndTime', data.value.value[1]);
+
+            _updatingTariff = _updatingTariff.setIn(['PeakTariff', 'TimeRanges', data.value.index], timeRange);
+            that.checkError('PeakTariff');
+            break;
+        }
       }
     }
 
@@ -264,6 +343,20 @@ var TariffStore = assign({}, PrototypeStore, {
     }
 
   },
+  addPulsePeakDate: function() {
+    var PeakTariff = _updatingTariff.get('PeakTariff'),
+      timerange = PeakTariff.get('TimeRanges');
+    timerange = timerange.unshift(Immutable.fromJS({
+      EndDay: -1,
+      EndMonth: -1,
+      EndTime: -1,
+      StartDay: -1,
+      StartMonth: -1,
+      StartTime: -1
+    }));
+    _updatingTariff = _updatingTariff.setIn(['PeakTariff', 'TimeRanges'], timerange);
+
+  },
   deleteTimeRange(itemType, index) {
     var touTariff = _updatingTariff.get('TouTariffItems'),
       priceItem = touTariff.find(item => item.get("ItemType") == itemType),
@@ -274,32 +367,39 @@ var TariffStore = assign({}, PrototypeStore, {
     }));
     this.checkError('TouTariffItems');
   },
-  // deleteTariff(deletedId) {
-  //   var deletedIndex = -1;
-  //
-  //   if (_tariffs.size < 2) {
-  //     _tariffs = emptyList();
-  //     return 0;
-  //   }
-  //
-  //   var nextSelectedId = 0;
-  //
-  //   _tariffs.every((item, index) => {
-  //     if (item.get("Id") == deletedId) {
-  //       deletedIndex = index;
-  //       if (index == _tariffs.size - 1) {
-  //         nextSelectedId = _tariffs.getIn([index - 1, "Id"]);
-  //       } else {
-  //         nextSelectedId = _tariffs.getIn([index + 1, "Id"]);
-  //       }
-  //       return false;
-  //     }
-  //     return true;
-  //   });
-  //   _tariffs = _tariffs.deleteIn([deletedIndex]);
-  //   this.setTariffs(_tariffs.toJS());
-  //   return nextSelectedId;
-  // },
+  deletePulsePeakDate: function(index) {
+    var timeRange = _updatingTariff.getIn(['PeakTariff', 'TimeRanges']);
+
+    timeRange = timeRange.delete(index);
+    _updatingTariff = _updatingTariff.setIn(['PeakTariff', 'TimeRanges'], timeRange);
+    this.checkError('PeakTariff');
+  },
+  deleteTariff(deletedId) {
+    var deletedIndex = -1;
+
+    if (_tariffs.size < 2) {
+      _tariffs = emptyList();
+      return 0;
+    }
+
+    var nextSelectedId = 0;
+
+    _tariffs.every((item, index) => {
+      if (item.get("Id") == deletedId) {
+        deletedIndex = index;
+        if (index == _tariffs.size - 1) {
+          nextSelectedId = _tariffs.getIn([index - 1, "Id"]);
+        } else {
+          nextSelectedId = _tariffs.getIn([index + 1, "Id"]);
+        }
+        return false;
+      }
+      return true;
+    });
+    _tariffs = _tariffs.deleteIn([deletedIndex]);
+    this.setTariffs(_tariffs.toJS());
+    return nextSelectedId;
+  },
   reset: function() {
     _updatingTariff = _persistedTariff;
   },
@@ -357,6 +457,10 @@ TariffStore.dispatchToken = AppDispatcher.register(function(action) {
       TariffStore.addTimeRange(3);
       TariffStore.emitChange();
       break;
+    case TariffAction.ADD_PULSE_PEAK_DATE:
+      TariffStore.addPulsePeakDate();
+      TariffStore.emitChange();
+      break;
     case TariffAction.DELETE_PEAK_TIMERANGE:
       TariffStore.deleteTimeRange(1, action.index);
       TariffStore.emitChange();
@@ -365,14 +469,14 @@ TariffStore.dispatchToken = AppDispatcher.register(function(action) {
       TariffStore.deleteTimeRange(3, action.index);
       TariffStore.emitChange();
       break;
+    case TariffAction.DELETE_PULSE_PEAK_TIMERANGE:
+      TariffStore.deletePulsePeakDate(action.index);
+      TariffStore.emitChange();
+      break;
+
     case TariffAction.SAVE_TARIFF_SUCCESS:
       TariffStore.setSelectedId(action.id);
       break;
-    // case TariffAction.DELETE_FACTOR_SUCCESS:
-    //   var selecteId = TariffStore.deleteTariff(action.id);
-    //   TariffStore.setSelectedId(selecteId);
-    //   TariffStore.emitChange(selecteId);
-    //   break;
     case TariffAction.RESET_TARIFF:
       TariffStore.reset();
       break;
@@ -381,6 +485,11 @@ TariffStore.dispatchToken = AppDispatcher.register(function(action) {
         title: action.title,
         content: action.content
       });
+      break;
+    case TariffAction.DELETE_TARIFF_SUCCESS:
+      var selecteId = TariffStore.deleteTariff(action.id);
+      TariffStore.setSelectedId(selecteId);
+      TariffStore.emitChange(selecteId);
       break;
 
   }

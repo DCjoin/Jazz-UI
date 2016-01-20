@@ -50,6 +50,31 @@ let TariffAction = {
       }
     });
   },
+  SavePeakTariff: function(tariffData) {
+    var that = this;
+    Ajax.post('/Administration.svc/SavePeakTariff', {
+      params: {
+        dto: tariffData
+      },
+      commonErrorHandling: false,
+      success: function(tariff) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_TARIFF_SUCCESS,
+          id: tariff.Id
+        });
+        that.GetTouTariff();
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.TARIFF_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
   setCurrentSelectedId: function(id) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_TARTIFF_ID,
@@ -77,6 +102,11 @@ let TariffAction = {
       type: Action.ADD_VALLEY_TIMERANGE
     });
   },
+  addPulsePeakDateTimeRange: function() {
+    AppDispatcher.dispatch({
+      type: Action.ADD_PULSE_PEAK_DATE
+    });
+  },
   deletePeakTimeRange: function(index) {
     AppDispatcher.dispatch({
       type: Action.DELETE_PEAK_TIMERANGE,
@@ -87,6 +117,29 @@ let TariffAction = {
     AppDispatcher.dispatch({
       type: Action.DELETE_VALLEY_TIMERANGE,
       index: index
+    });
+  },
+  deletePulsePeakDateTimeRange: function(index) {
+    AppDispatcher.dispatch({
+      type: Action.DELETE_PULSE_PEAK_TIMERANGE,
+      index: index
+    });
+  },
+  deleteTariff: function(dto) {
+    var that = this;
+    Ajax.post('/Administration.svc/DeleteTouTariff', {
+      params: {
+        dto: dto
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_TARIFF_SUCCESS,
+          id: dto.Id
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
     });
   },
 

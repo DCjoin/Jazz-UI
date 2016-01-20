@@ -33,6 +33,8 @@ var Tariff = React.createClass({
   _handleSaveTariff: function(tariffData) {
     if (this.state.infoTab) {
       TariffAction.SaveTouTariff(tariffData);
+    } else {
+      TariffAction.SavePeakTariff(tariffData);
     }
 
     this.setState({
@@ -40,7 +42,10 @@ var Tariff = React.createClass({
     });
   },
   _handleDeleteTariff: function(tariff) {
-    TariffAction.deleteTariff(tariff.toJS());
+    TariffAction.deleteTariff({
+      Id: tariff.get('Id'),
+      Version: tariff.get('Version')
+    });
   },
   _switchTab(event) {
     if (event.target.getAttribute("data-tab-index") == 1) {
@@ -70,7 +75,7 @@ var Tariff = React.createClass({
       id = this.state.tariffs.getIn([0, "Id"]);
       TariffAction.setCurrentSelectedId(id);
     }
-    if (this.state.selectedUserId != selectedId) {
+    if (this.state.selectedId != selectedId) {
       infoTab = true;
     }
     this.setState({
@@ -97,7 +102,7 @@ var Tariff = React.createClass({
     });
   },
   _handlerCancel: function() {
-    //RoleActionCreator.resetRole();
+    TariffAction.reset();
     this._setViewStatus();
   },
   _toggleList: function() {

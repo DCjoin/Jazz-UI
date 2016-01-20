@@ -12,6 +12,9 @@ module.exports = {
     DELETE_PEAK_TIMERANGE: null,
     DELETE_VALLEY_TIMERANGE: null,
     SAVE_TARIFF_SUCCESS: null,
-    TARIFF_ERROR: null
+    TARIFF_ERROR: null,
+    ADD_PULSE_PEAK_DATE: null,
+    DELETE_PULSE_PEAK_TIMERANGE: null,
+    DELETE_TARIFF_SUCCESS: null
   })
 };
