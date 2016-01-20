@@ -94,7 +94,8 @@ var Role = React.createClass({
   _onError: function(error) {
     this.setState({
       errorTitle: error.title,
-      errorContent: error.content
+      errorContent: error.content,
+      isLoading: false
     });
   },
   _renderErrorDialog: function() {
