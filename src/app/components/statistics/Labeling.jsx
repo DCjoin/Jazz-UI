@@ -16,7 +16,7 @@ import LabelingStore from '../../stores/LabelingStore.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Immutable from 'immutable';
 
-var map = {}
+var map = {};
 var Labeling = React.createClass({
   getInitialState: function() {
     var zoneItems = [{
@@ -377,7 +377,10 @@ var Labeling = React.createClass({
   _renderFooter: function() {
     var me = this;
     return (
-      <FormBottomBar isShow={true} allowDelete={true} allowEdit={true} enableSave={me.state.enableSave} ref="actionBar" status={me.state.formStatus} onSave={this._onSave} onEdit={this._onEdit} onDelete={this._onDelete} onCancel={this._onCancel} />
+      <div className={classnames({
+        "jazz-framework-right-expand": !me.state.showLeft,
+        "jazz-framework-right-fold": me.state.showLeft
+      })}><FormBottomBar isShow={true} allowDelete={true} allowEdit={true} enableSave={me.state.enableSave} ref="actionBar" status={me.state.formStatus} onSave={this._onSave} onEdit={this._onEdit} onDelete={this._onDelete} onCancel={this._onCancel} /></div>
       );
   },
 
