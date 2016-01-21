@@ -1,0 +1,25 @@
+.section-panel-title-action {
+    color: @schneiderGray;
+    cursor: pointer;
+    &:hover {
+        color: @primaryColor;
+    }
+}
+
+.section-panel {
+    border-top: 1px solid @splitColor;
+    padding: 25px 0 25px 0;
+    &-title {
+        display: flex;
+        align-items: center;
+        >span {
+        		.section-panel-title-action;
+        }
+    }
+    h3 {
+        color: @schneiderBlack;
+        font-size: 14px;
+        font-weight: normal;
+        margin-right: 25px;
+    }
+}

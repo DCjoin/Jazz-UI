@@ -1414,4 +1414,30 @@ I18N.Setting.TOUTariff.PulsePeakPrice = '峰值季节电价';
 I18N.Setting.TOUTariff.PulsePeakDateTime = '峰值季节时间';
 I18N.Setting.TOUTariff.DateTimeRange = '日期范围';
 I18N.Setting.TOUTariff.PeakValueTimeRange = '峰值时间段';
+
+I18N.Common.Glossary.Customer = '客户';
+
+I18N.Setting.Labeling.CustomerName = '客户名称';
+
+I18N.Setting.CustomerManagement.Label = {};
+I18N.Setting.CustomerManagement.Label.MapPageInfo = '地图页信息';
+I18N.Setting.CustomerManagement.Label.Code = '客户编码';
+I18N.Setting.CustomerManagement.Label.Address = '客户地址';
+I18N.Setting.CustomerManagement.Label.OperationStartTime = '运营时间';
+I18N.Setting.CustomerManagement.Label.Electricity = '用电总量';
+I18N.Setting.CustomerManagement.Label.Water = '用水总量';
+I18N.Setting.CustomerManagement.Label.CarbonEmission = '二氧化碳排放总量';
+I18N.Setting.CustomerManagement.Label.Cost = '成本总量';
+I18N.Setting.CustomerManagement.Label.Gas = '天然气总量';
+I18N.Setting.CustomerManagement.Label.SoftWater = '软水总量';
+I18N.Setting.CustomerManagement.Label.Petrol = '汽油总量';
+I18N.Setting.CustomerManagement.Label.LowPressureSteam = '低压蒸汽总量';
+I18N.Setting.CustomerManagement.Label.DieselOi = '柴油总量';
+I18N.Setting.CustomerManagement.Label.HeatQ = '热量总量';
+I18N.Setting.CustomerManagement.Label.CoolQ = '冷量总量';
+I18N.Setting.CustomerManagement.Label.Coal = '煤总量';
+I18N.Setting.CustomerManagement.Label.CoalOil = '煤油总量';
+I18N.Setting.CustomerManagement.Label.SelectTip = '请选择在用户地图页焦点楼宇节点下需要同时显示的能源信息类型。';
+I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive = '请至少选择1项，最多可选择5项。';
+
 module.exports = I18N;

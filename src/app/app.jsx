@@ -37,6 +37,8 @@ import Labeling from './components/statistics/Labeling.jsx';
 //for energy conversion
 import Carbon from './components/energyConversion/carbon/Carbon.jsx';
 import Tariff from './components/energyConversion/tariff/Tariff.jsx';
+//for customer
+import Customer from './components/customer/Customer.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -75,7 +77,7 @@ var routes = (
         <Route name='benchmark' path='benchmark' handler={Benchmark}></Route>
         <Route name='labeling' path='labeling' handler={Labeling}></Route>
 
-        <Route name="customer" path="customer"></Route>
+        <Route name="customer" path="customer" handler={Customer}></Route>
 
         <Route name="user" path="user" handler={User}></Route>
         <Route name="privilege" path="privilege" handler={Role}></Route>

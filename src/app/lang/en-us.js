@@ -1405,4 +1405,29 @@ I18N.Setting.TOUTariff.PulsePeakPrice = 'Peak season price';
 I18N.Setting.TOUTariff.PulsePeakDateTime = '峰值季节时间';
 I18N.Setting.TOUTariff.DateTimeRange = '日期范围';
 I18N.Setting.TOUTariff.PeakValueTimeRange = 'Peak period';
+
+I18N.Common.Glossary.Customer = 'Customer';
+
+I18N.Setting.Labeling.CustomerName = 'Customer name';
+
+I18N.Setting.CustomerManagement.Label = {};
+I18N.Setting.CustomerManagement.Label.MapPageInfo = 'Map sheet information';
+I18N.Setting.CustomerManagement.Label.Code = '客户编码';
+I18N.Setting.CustomerManagement.Label.Address = '客户地址';
+I18N.Setting.CustomerManagement.Label.OperationStartTime = 'Operation time';
+I18N.Setting.CustomerManagement.Label.Electricity = ' total power use';
+I18N.Setting.CustomerManagement.Label.Water = ' total water use';
+I18N.Setting.CustomerManagement.Label.CarbonEmission = ' total co2 emission';
+I18N.Setting.CustomerManagement.Label.Cost = ' total cost';
+I18N.Setting.CustomerManagement.Label.Gas = ' total natural gas';
+I18N.Setting.CustomerManagement.Label.SoftWater = ' total soft water';
+I18N.Setting.CustomerManagement.Label.Petrol = ' total petrol';
+I18N.Setting.CustomerManagement.Label.LowPressureSteam = ' total L-P steam';
+I18N.Setting.CustomerManagement.Label.DieselOi = ' total diesel';
+I18N.Setting.CustomerManagement.Label.HeatQ = ' total heat';
+I18N.Setting.CustomerManagement.Label.CoolQ = ' total cooling';
+I18N.Setting.CustomerManagement.Label.Coal = ' total coal';
+I18N.Setting.CustomerManagement.Label.CoalOil = ' total kerosene';
+I18N.Setting.CustomerManagement.Label.SelectTip = 'Please select energy information types to be displayed simultaneously under the node of focal building in user\'s map sheet.';
+I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive = 'Please select at least one item, with a maximum of 5 items.';
 module.exports = I18N;

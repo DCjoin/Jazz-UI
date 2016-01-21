@@ -3,20 +3,21 @@
 import React from "react";
 import classnames from "classnames";
 import { isFunction, isObject } from "lodash/lang";
-import TariffList from './TariffList.jsx';
-import TariffDetail from './TariffDetail.jsx';
-import { formStatus } from '../../../constants/FormStatus.jsx';
+import CustomerList from './CustomerList.jsx';
+import CustomerDetail from './CustomerDetail.jsx';
+import { formStatus } from '../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
-import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
-import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import CustomerAction from '../../actions/CustomerAction.jsx';
+import CustomerStore from '../../stores/CustomerStore.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
 
-var Tariff = React.createClass({
+
+var Customer = React.createClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,
       selectedId: null,
-      tariffs: TariffStore.getTariffs(),
+      customers: CustomerStore.getCustomers(),
       closedList: false,
       isLoading: true,
       errorTitle: null,
@@ -27,26 +28,27 @@ var Tariff = React.createClass({
   _handlerTouchTap: function(selectedId) {
     this._setViewStatus(selectedId);
     if (this.state.selectedId != selectedId) {
-      TariffAction.setCurrentSelectedId(selectedId);
+      CustomerAction.setCurrentSelectedId(selectedId);
     }
   },
-  _handleSaveTariff: function(tariffData) {
+  _handleSaveCustomer: function(customerData) {
     if (this.state.infoTab) {
-      TariffAction.SaveTouTariff(tariffData);
+      CustomerAction.SaveTouCustomer(customerData);
+      this.setState({
+        isLoading: true
+      });
     } else {
-      TariffAction.SavePeakTariff(tariffData);
+      CustomerAction.SaveCustomerEnergyInfo(customerData);
     }
 
-    this.setState({
-      isLoading: true
-    });
+
   },
-  _handleDeleteTariff: function(tariff) {
-    TariffAction.deleteTariff({
-      Id: tariff.get('Id'),
-      Version: tariff.get('Version')
-    });
-  },
+  // _handleDeleteCustomer: function(customer) {
+  //   CustomerAction.deleteCustomer({
+  //     Id: customer.get('Id'),
+  //     Version: customer.get('Version')
+  //   });
+  // },
   _switchTab(event) {
     if (event.target.getAttribute("data-tab-index") == 1) {
       if (this.state.infoTab) {
@@ -66,14 +68,14 @@ var Tariff = React.createClass({
         formStatus: formStatus.VIEW
       });
     }
-    TariffAction.reset();
+    CustomerAction.reset();
   },
   _setViewStatus: function(selectedId = this.state.selectedId) {
     var id = selectedId,
       infoTab = this.state.infoTab;
     if (!selectedId) {
-      id = this.state.tariffs.getIn([0, "Id"]);
-      TariffAction.setCurrentSelectedId(id);
+      id = this.state.customers.getIn([0, "Id"]);
+      CustomerAction.setCurrentSelectedId(id);
     }
     if (this.state.selectedId != selectedId) {
       infoTab = true;
@@ -85,11 +87,11 @@ var Tariff = React.createClass({
     });
   },
   _setAddStatus: function() {
-    var tariffDetail = this.refs.pop_tariff_detail;
-    if (tariffDetail && isFunction(tariffDetail.clearErrorTextBatchViewbaleTextFiled)) {
-      tariffDetail.clearErrorTextBatchViewbaleTextFiled();
+    var customerDetail = this.refs.pop_customer_detail;
+    if (customerDetail && isFunction(customerDetail.clearErrorTextBatchViewbaleTextFiled)) {
+      customerDetail.clearErrorTextBatchViewbaleTextFiled();
     }
-    TariffAction.setCurrentSelectedId(null);
+    CustomerAction.setCurrentSelectedId(null);
     this.setState({
       infoTab: true,
       formStatus: formStatus.ADD,
@@ -102,8 +104,13 @@ var Tariff = React.createClass({
     });
   },
   _handlerCancel: function() {
-    TariffAction.reset();
+    CustomerAction.reset();
     this._setViewStatus();
+  },
+  _handlerChangeSortBy: function() {
+    this.setState({
+      isLoading: true
+    });
   },
   _toggleList: function() {
     var {closedList} = this.state;
@@ -116,7 +123,7 @@ var Tariff = React.createClass({
       this._setViewStatus(selectedId);
     }
     this.setState({
-      tariffs: TariffStore.getTariffs(),
+      customers: CustomerStore.getCustomers(),
       isLoading: false,
       errorTitle: null,
       errorContent: null
@@ -144,19 +151,17 @@ var Tariff = React.createClass({
     }
   },
   componentDidMount: function() {
-    TariffStore.addChangeListener(this._onChange);
-    TariffStore.addErrorChangeListener(this._onError);
-    TariffAction.GetTouTariff();
+    CustomerStore.addChangeListener(this._onChange);
+    CustomerStore.addErrorChangeListener(this._onError);
+    CustomerAction.GetCustomers('Name');
     this.setState({
       isLoading: true
     });
-
-
   },
   componentWillUnmount: function() {
-    TariffStore.removeChangeListener(this._onChange);
-    TariffStore.removeErrorChangeListener(this._onError);
-    TariffAction.ClearAll();
+    CustomerStore.removeChangeListener(this._onChange);
+    CustomerStore.removeErrorChangeListener(this._onError);
+  //CustomerAction.ClearAll();
   },
   render: function() {
     var that = this,
@@ -165,29 +170,30 @@ var Tariff = React.createClass({
     var listProps = {
         formStatus: this.state.formStatus,
         onAddBtnClick: that._setAddStatus,
-        onTariffClick: that._handlerTouchTap,
-        tariffs: that.state.tariffs,
-        selectedId: that.state.selectedId
+        onCustomerClick: that._handlerTouchTap,
+        customers: that.state.customers,
+        selectedId: that.state.selectedId,
+        changeSortBy: that._handlerChangeSortBy
       },
       detailProps = {
-        ref: 'pop_tariff_detail',
-        tariff: isView ? TariffStore.getPersistedTariff() : TariffStore.getUpdatingTariff(),
+        ref: 'pop_customer_detail',
+        customer: isView ? CustomerStore.getPersistedCustomer() : CustomerStore.getUpdatingCustomer(),
         formStatus: this.state.formStatus,
         infoTab: this.state.infoTab,
         setEditStatus: this._setEditStatus,
         handlerCancel: this._handlerCancel,
-        handleSaveTariff: this._handleSaveTariff,
-        handleDeleteTariff: this._handleDeleteTariff,
-        handlerSwitchTab: that._switchTab,
+        handleSaveCustomer: this._handleSaveCustomer,
+        handleDeleteCustomer: this._handleDeleteCustomer,
         toggleList: this._toggleList,
-        closedList: this.state.closedList
+        closedList: this.state.closedList,
+        handlerSwitchTab: this._switchTab
       };
 
-    let tarifflist = (!this.state.closedList) ? <div style={{
+    let customerlist = (!this.state.closedList) ? <div style={{
       display: 'flex'
-    }}><TariffList {...listProps}/></div> : <div style={{
+    }}><CustomerList {...listProps}/></div> : <div style={{
       display: 'none'
-    }}><TariffList {...listProps}/></div>;
+    }}><CustomerList {...listProps}/></div>;
     if (this.state.isLoading) {
       return (
         <div style={{
@@ -205,11 +211,11 @@ var Tariff = React.createClass({
           display: 'flex',
           flex: 1
         }}>
-    {tarifflist}
-    <TariffDetail {...detailProps}/>
-    {that._renderErrorDialog()}
+    {customerlist}
+    <CustomerDetail {...detailProps}/>
+    {this._renderErrorDialog()}
     </div>);
     }
   },
 });
-module.exports = Tariff;
+module.exports = Customer;

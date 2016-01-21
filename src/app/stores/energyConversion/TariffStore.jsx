@@ -442,9 +442,6 @@ TariffStore.dispatchToken = AppDispatcher.register(function(action) {
     case TariffAction.SET_SELECTED_TARTIFF_ID:
       TariffStore.setSelectedId(action.id);
       break;
-    // case TariffAction.CLEAR_ALL:
-    //   TariffStore.clearAll();
-    //   break;
     case TariffAction.MERGE_TARIFF:
       TariffStore.merge(action.data);
       TariffStore.emitChange();
@@ -490,6 +487,10 @@ TariffStore.dispatchToken = AppDispatcher.register(function(action) {
       var selecteId = TariffStore.deleteTariff(action.id);
       TariffStore.setSelectedId(selecteId);
       TariffStore.emitChange(selecteId);
+      break;
+    case TariffAction.CLEAR_ALL:
+      TariffStore.clearAll();
+      TariffStore.emitChange();
       break;
 
   }

@@ -12,7 +12,7 @@ let SelectablePanel = React.createClass({
     // onFilterBtnClick: React.PropTypes.object,
     sortItems: React.PropTypes.object,
     sortBy: React.PropTypes.string,
-    changeSortBy: React.PropTypes.object,
+    changeSortBy: React.PropTypes.func,
     contentItems: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool,
     isLoading: React.PropTypes.bool,

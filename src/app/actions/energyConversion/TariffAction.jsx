@@ -142,6 +142,11 @@ let TariffAction = {
       }
     });
   },
+  ClearAll: function() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL,
+    });
+  },
 
 };
 module.exports = TariffAction;

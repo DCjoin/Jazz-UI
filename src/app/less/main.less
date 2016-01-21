@@ -40,6 +40,8 @@
 @import "benchmark.less";
 @import "tariff.less";
 @import "labeling.less";
+@import "imageUploader.less";
+@import "SectionPanel.less";
 
 
 
@@ -1052,4 +1054,88 @@ input:focus{
 }
 .jazz-item-in-margin{
   margin-top:10px;
+}
+.pop-admins{
+    display:flex;
+    flex-direction:column;
+    > .pop-admins-title{
+        display:flex;
+        font-size:14px;
+
+        > .pop-admins-button{
+          margin:0 0 0 25px;
+          color:red;
+          cursor:pointer;
+        }
+    }
+    > .pop-admin-container{
+        flex-wrap: wrap;
+        display:flex;
+        margin-top:30px;
+        margin-bottom: -25px;
+        > .pop-admin{
+          font-size: 14px;
+          width: 220px;
+          margin-right: 24px;
+          color: @schneiderBlack;
+          margin-bottom: 25px;
+          .pop-admin-btn {
+            margin-top: 20px;
+            a {
+              cursor: pointer;
+              color: @schneiderGray;
+              &:hover {
+                color: @warningRed;
+              }
+            }
+          }
+          .pop-admin-name{
+            max-width: 132px;
+            font-size: 16px;
+            margin-bottom: 6px;
+          }
+          .pop-admin-title{
+            max-width: 80px;
+            font-size: 16px;
+            margin-left: 8px;
+            margin-bottom: 6px;
+          }
+          .pop-admin-other{
+            margin-bottom: 6px;
+          }
+          > ul{
+            list-style-type: none;
+            // margin-bottom: 20px;
+            li{
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                a{
+                    color: inherit;
+                }
+                >span{
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    display: inline-block;
+                }
+            }
+          }
+        }
+    }
+
+}
+.pop-admin-window{
+  //margin: 0 0 0 26px;
+  > .admin-title {
+    color: @schneiderBlack;
+    font-size: 20px;
+  }
+  ul {
+    list-style-type: none;
+    margin-top: 20px;
+    li {
+      // margin-top: -20px;
+    }
+  }
 }
