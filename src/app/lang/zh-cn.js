@@ -446,6 +446,7 @@ I18N.Setting.Calendar.DeleteMessage = '确定删除“{0}”吗？';
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = '工休日';
+I18N.Setting.Calendar.WorkdayName = '公休日名称';
 I18N.Setting.Calendar.WorkDay = '工作日';
 I18N.Setting.Calendar.Holiday = '非工作日';
 I18N.Setting.Calendar.DefaultWorkDay = '默认工作日：周一至周五';
@@ -462,6 +463,7 @@ I18N.Setting.Calendar.MonthDayFromTo = '{0}月{1}日到{2}月{3}日';
 
 //worktime
 I18N.Setting.Calendar.WorktimeSetting = '工作时间';
+I18N.Setting.Calendar.WorktimeName = '工作时间名称';
 I18N.Setting.Calendar.WorkTime = '工作时间';
 I18N.Setting.Calendar.RestTime = '休息时间';
 I18N.Setting.Calendar.DefaultWorkTime = '工作时间以外均为非工作时间';
@@ -472,6 +474,7 @@ I18N.Setting.Calendar.To = '到';
 
 //cold/warm
 I18N.Setting.Calendar.ColdwarmSetting = '冷暖季';
+I18N.Setting.Calendar.ColdwarmName = '冷暖季名称';
 I18N.Setting.Calendar.SeansonType = '季节类型';
 I18N.Setting.Calendar.WarmSeason = '采暖季';
 I18N.Setting.Calendar.ColdSeason = '供冷季';
@@ -481,6 +484,7 @@ I18N.Setting.Calendar.WarmColdDeclaration = '采暖季与供冷季之间不能�
 
 //day/night
 I18N.Setting.Calendar.DaynightSetting = '昼夜时间';
+I18N.Setting.Calendar.DaynightName = '昼夜时间名称';
 I18N.Setting.Calendar.Day = '白昼时间';
 I18N.Setting.Calendar.Night = '黑夜时间';
 I18N.Setting.Calendar.DefaultDayNight = '白昼时间以外均为黑夜时间';
