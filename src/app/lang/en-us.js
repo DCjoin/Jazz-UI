@@ -126,6 +126,7 @@ I18N.Common.Glossary.WeekDay.Thursday = 'Thur.';
 I18N.Common.Glossary.WeekDay.Friday = 'Fri.';
 I18N.Common.Glossary.WeekDay.Saturday = 'Sat.';
 I18N.Common.Glossary.WeekDay.Sunday = 'Sun.';
+I18N.Common.Glossary.User = 'User management';
 
 I18N.Common.Label = {};
 I18N.Common.Label.TimeConflict = 'Conflict time duration.';
@@ -554,6 +555,10 @@ I18N.Setting.Labeling.Label.IndustryLabeling = 'Industry labeling';
 I18N.Setting.Labeling.Label.IndustryLabelingSetting = 'Industry labeling';
 I18N.Setting.Labeling.Label.LabelingGrade = 'Labeling level';
 I18N.Setting.Labeling.Label.DataYear = 'Data source';
+I18N.Setting.Labeling.ViewDataPermission = 'View data authority';
+I18N.Setting.Labeling.EditDataPermission = 'Edit data authority';
+I18N.Setting.Labeling.PlatformDataPermissionTip = 'It is recommended to check this for who having "EnergyMost system administrator" authority.';
+I18N.Setting.Labeling.AllCusomer = 'All customers';
 
 I18N.Setting.CustomizedLabeling = {};
 I18N.Setting.CustomizedLabeling.Grade = 'Level {0}';
@@ -584,6 +589,8 @@ I18N.Setting.User.Manager = 'Managers';
 I18N.Setting.User.BusinessPerson = 'Business Person';
 I18N.Setting.User.Sales = 'Sales';
 I18N.Setting.User.ServerManager = 'SP Manager';
+I18N.Setting.User.WholeCustomer = 'Data authority of all hierarchy nodes';
+I18N.Setting.User.WholeCustomerTip = 'It is recommended to check this for who having "Hierarchy Structure Management" authority.';
 
 I18N.Setting.NodeBtn = {};
 I18N.Setting.NodeBtn.Saving = 'Saving...';
@@ -1434,4 +1441,22 @@ I18N.Setting.CustomerManagement.Label.Coal = ' total coal';
 I18N.Setting.CustomerManagement.Label.CoalOil = ' total kerosene';
 I18N.Setting.CustomerManagement.Label.SelectTip = 'Please select energy information types to be displayed simultaneously under the node of focal building in user\'s map sheet.';
 I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive = 'Please select at least one item, with a maximum of 5 items.';
+
+I18N.Setting.CarbonFactor.DeleteTitle = '删除转换因子“{0}”';
+I18N.Setting.CarbonFactor.DeleteContent = '转换因子“{0}”将被删除';
+I18N.Setting.TOUTariff.DeleteTitle = '删除"{0}"';
+I18N.Setting.TOUTariff.DeleteContent = '"{0}"将被删除';
+I18N.Setting.Role.DeleteTitle = '删除角色"{0}"';
+I18N.Setting.Role.DeleteContent = '角色"{0}"将被删除';
+I18N.Setting.User.SendEmailSuccess = '重置密码邮件已发送!';
+I18N.Setting.User.AllCusomerDataPermission = '全部客户数据权限';
+I18N.Setting.Labeling.NoCusomer = '无客户';
+I18N.Setting.User.UserFilter = '用户筛选';
+I18N.Setting.User.Cancel = '清除';
+I18N.Setting.User.SelectedCusomer = '关联客户';
+I18N.Setting.User.FilterResult = '没有符合筛选条件的用户';
+I18N.Setting.User.FilterRecommendation = '您可以修改筛选条件再试一下';
+I18N.Setting.User.FilterResult = '清空筛选条件';
+I18N.Setting.User.Filter = '筛选';
+
 module.exports = I18N;

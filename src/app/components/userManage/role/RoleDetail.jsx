@@ -147,19 +147,19 @@ var RoleDetail = React.createClass({
       var {Name} = that.props.role.toJS();
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={"删除角色 “" + Name + "”"} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.Role.DeleteTitle, Name)} modal={true} actions={[
           <FlatButton
-          label="删除"
+          label={I18N.Template.Delete.Delete}
           primary={true}
           onClick={() => {
             that.props.handleDeleteRole();
             closeDialog();
           }} />,
           <FlatButton
-          label="放弃"
+          label={I18N.Template.Delete.Cancel}
           onClick={closeDialog} />
         ]}>
-					{"角色 “" + Name + "” 将被删除"}
+					{I10N.format(I18N.Setting.Role.DeleteContent, Name)}
 				</Dialog>
         );
     }

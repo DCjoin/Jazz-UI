@@ -22,10 +22,10 @@ var UserItem = React.createClass({
   },
 
   render() {
-    var relateCustomerName = "无",
+    var relateCustomerName = I18N.Setting.Benchmark.Label.None,
       relateCustomers = [];
     if (this.props.HasWholeCustomer) {
-      relateCustomerName = "全部客户";
+      relateCustomerName = I18N.Setting.Labeling.AllCusomer;
     } else {
       if (!!this.props.Customers) {
         this.props.Customers.map(function(customer) {
@@ -55,7 +55,7 @@ var UserItem = React.createClass({
 						<span className="pop-user-list-item-user-real-name">{this.props.RealName}</span>
 					</div>
 					<div className="pop-user-list-item-customer">
-						<span className="pop-user-list-item-customer-title">关联客户</span>
+						<span className="pop-user-list-item-customer-title">{I18N.Setting.User.SelectedCusomer}</span>
 						<span className="pop-user-list-item-customer-value">{relateCustomerName}</span>
 					</div>
 				</div>
@@ -106,8 +106,8 @@ module.exports = React.createClass({
     } else {
       userItems = (
         <div className="pop-user-list-empty-tip">
-						<span className="pop-user-list-empty-tip-result">没有符合筛选条件的用户</span>
-						<span className="pop-user-list-empty-tip-recommendation">您可以修改筛选条件再试一下</span>
+						<span className="pop-user-list-empty-tip-result">{I18N.Setting.User.FilterResult}</span>
+						<span className="pop-user-list-empty-tip-recommendation">{I18N.Setting.User.FilterRecommendation}</span>
 					</div>
       );
     }
@@ -115,7 +115,7 @@ module.exports = React.createClass({
     if (filterNotEmpty) {
       filterReset = (
         <div className="pop-user-list-reset">
-					<span className="pop-user-list-reset-button" onClick={this.props.resetFilter}>清空筛选条件</span>
+					<span className="pop-user-list-reset-button" onClick={this.props.resetFilter}>{I18N.Setting.User.FilterResult}</span>
 				</div>
       );
     }
@@ -129,13 +129,13 @@ module.exports = React.createClass({
       classnames({
         "pop-manage-list-title-action-item": true,
         "jazz-disabled": !(this.props.formStatus === formStatus.VIEW)
-      })}><span className="icon-add pop-manage-list-title-action-item-icon"/>用户</span>
+      })}><span className="icon-add pop-manage-list-title-action-item-icon"/>{I18N.Common.Glossary.User}</span>
 
 						<span onClick={handleShowFilterSideNav} className={
       classnames({
         "pop-manage-list-title-action-item": true,
         "jazz-disabled": !(this.props.formStatus === formStatus.VIEW)
-      })}><span className="icon-filter pop-manage-list-title-action-item-icon"/>筛选</span>
+      })}><span className="icon-filter pop-manage-list-title-action-item-icon"/>{I18N.Setting.User.Filter}</span>
 					</div>
 				</div>
 				{filterReset}

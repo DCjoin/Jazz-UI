@@ -548,6 +548,11 @@ I18N.Setting.Labeling.Label.IndustryLabeling = '行业能效标识';
 I18N.Setting.Labeling.Label.IndustryLabelingSetting = '行业能效标识配置';
 I18N.Setting.Labeling.Label.LabelingGrade = '能效标识级别';
 I18N.Setting.Labeling.Label.DataYear = '数据来源';
+I18N.Setting.Labeling.ViewDataPermission = '查看数据权限';
+I18N.Setting.Labeling.EditDataPermission = '编辑数据权限';
+I18N.Setting.Labeling.PlatformDataPermissionTip = '建议对具备““云能效”系统管理”功能权限的用户勾选此项。';
+I18N.Setting.Labeling.AllCusomer = '全部客户';
+I18N.Setting.Labeling.NoCusomer = '无客户';
 
 I18N.Setting.CustomizedLabeling = {};
 I18N.Setting.CustomizedLabeling.Grade = '{0}级';
@@ -577,6 +582,19 @@ I18N.Setting.User.Manager = '管理层';
 I18N.Setting.User.BusinessPerson = '业务人员';
 I18N.Setting.User.Sales = '销售人员';
 I18N.Setting.User.ServerManager = '服务商管理员';
+I18N.Setting.User.SendEmailSuccess = '重置密码邮件已发送!';
+I18N.Setting.User.WholeCustomer = '全部层级节点数据权限';
+I18N.Setting.User.WholeCustomerTip = '建议对具备“层级结构管理”功能权限的用户勾选此项。';
+I18N.Setting.User.AllCusomerDataPermission = '全部客户数据权限';
+I18N.Setting.User.DeleteTitle = '删除用户“{0}”';
+I18N.Setting.User.DeleteContent = '用户“{0}”将被删除';
+I18N.Setting.User.UserFilter = '用户筛选';
+I18N.Setting.User.Cancel = '清除';
+I18N.Setting.User.SelectedCusomer = '关联客户';
+I18N.Setting.User.FilterResult = '没有符合筛选条件的用户';
+I18N.Setting.User.FilterRecommendation = '您可以修改筛选条件再试一下';
+I18N.Setting.User.FilterResult = '清空筛选条件';
+I18N.Setting.User.Filter = '筛选';
 
 I18N.Setting.NodeBtn = {};
 I18N.Setting.NodeBtn.Saving = '正在保存...';
@@ -1392,10 +1410,14 @@ I18N.Setting.Role.Name = '角色名称';
 I18N.Setting.Role.Privilege = '功能权限';
 I18N.Setting.Role.ErrorTitle = '无法删除功能权限角色“{0}”';
 I18N.Setting.Role.ErrorContent = '功能权限角色“{0}”已被用户引用，无法删除。请将所有引用的用户删除后再操作。';
+I18N.Setting.Role.DeleteTitle = '删除角色"{0}"';
+I18N.Setting.Role.DeleteContent = '角色"{0}"将被删除';
 
 //carbon factor
 I18N.Setting.CarbonFactor = {};
 I18N.Setting.CarbonFactor.Title = '转换因子';
+I18N.Setting.CarbonFactor.DeleteTitle = '删除转换因子“{0}”';
+I18N.Setting.CarbonFactor.DeleteContent = '转换因子“{0}”将被删除';
 I18N.Setting.CarbonFactor.Source = '转换物';
 I18N.Setting.CarbonFactor.Target = '转换目标';
 I18N.Setting.CarbonFactor.EffectiveYear = '生效日期';
@@ -1418,8 +1440,11 @@ I18N.Setting.TOUTariff.PulsePeakPrice = '峰值季节电价';
 I18N.Setting.TOUTariff.PulsePeakDateTime = '峰值季节时间';
 I18N.Setting.TOUTariff.DateTimeRange = '日期范围';
 I18N.Setting.TOUTariff.PeakValueTimeRange = '峰值时间段';
+I18N.Setting.TOUTariff.DeleteTitle = '删除"{0}"';
+I18N.Setting.TOUTariff.DeleteContent = '"{0}"将被删除';
 
 I18N.Common.Glossary.Customer = '客户';
+I18N.Common.Glossary.User = '用户';
 
 I18N.Setting.Labeling.CustomerName = '客户名称';
 

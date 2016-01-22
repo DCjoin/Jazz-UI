@@ -303,12 +303,12 @@ var User = React.createClass({
           { filterPanel }
           { that.state.resetPasswordDone ?
           <Dialog openImmediately={true} modal={true} actions={[
-            <FlatButton label="好" onTouchTap={() => {
+            <FlatButton label={I18N.Mail.Send.Ok} onTouchTap={() => {
               that.setState({
                 resetPasswordDone: false
               });
             }} />
-          ]}>重置密码邮件已发送!</Dialog>
+          ]}>{I18N.Setting.User.SendEmailSuccess}</Dialog>
           : null }
         </div>
         <UserDetail {...detailProps} />
