@@ -70,6 +70,56 @@ let CustomerAction = {
       type: Action.RESET_CUSTOMER,
     });
   },
+  ModifyCustomer: function(customer) {
+    var that = this;
+    Ajax.post('/Customer.svc/ModifyCustomer', {
+      params: {
+        dto: customer
+      },
+      commonErrorHandling: false,
+      success: function(customer) {
+        AppDispatcher.dispatch({
+          type: Action.SET_SELECTED_COSTOMER_ID,
+          id: customer.Id
+        });
+        that.GetCustomers(_Column);
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.CUSTOMER_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
+  CreateCustomer: function(customer) {
+    var that = this;
+    Ajax.post('/Customer.svc/CreateCustomer', {
+      params: {
+        dto: customer
+      },
+      commonErrorHandling: false,
+      success: function(customer) {
+        AppDispatcher.dispatch({
+          type: Action.SET_SELECTED_COSTOMER_ID,
+          id: customer.Id
+        });
+        that.GetCustomers(_Column);
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.CUSTOMER_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
   SaveCustomerEnergyInfo: function(info) {
     var that = this;
     Ajax.post('/Customer.svc/SaveCustomerEnergyInfo', {
@@ -90,6 +140,23 @@ let CustomerAction = {
           title: I18N.Platform.ServiceProvider.ErrorNotice,
           content: ErrorMsg,
         });
+        console.log(err, res);
+      }
+    });
+  },
+  deleteCustomer: function(dto) {
+    var that = this;
+    Ajax.post('/Customer.svc/DeleteCustomer', {
+      params: {
+        dto: dto
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_CUSTOMER_SUCCESS,
+          id: dto.Id
+        });
+      },
+      error: function(err, res) {
         console.log(err, res);
       }
     });

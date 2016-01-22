@@ -11,6 +11,8 @@ module.exports = {
     RESET_CUSTOMER: null,
     SAVE_CUATOMER_SUCCESS: null,
     SAVE_CUATOMER_ENERGYINFO_SUCCESS: null,
-    CUSTOMER_ERROR: null
+    CUSTOMER_ERROR: null,
+    MODIFY_CUSTOMER: null,
+    DELETE_CUSTOMER_SUCCESS: null
   })
 };

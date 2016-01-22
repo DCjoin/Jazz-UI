@@ -51,7 +51,7 @@ var CustomerDetail = React.createClass({
     var {customer} = this.props,
       customerData;
     if (this.props.infoTab) {
-
+      customerData = customer.toJS();
     } else {
       customerData = CustomerStore.getUpdatingEnergyInfo().toJS();
       this.setState({
@@ -216,7 +216,7 @@ var CustomerDetail = React.createClass({
       imageDidChanged: value => {
         CustomerAction.merge({
           value,
-          path: "Logo.Logo"
+          path: "LogoId"
         })
       },
       wrapperWidth: 420,
@@ -410,7 +410,7 @@ var CustomerDetail = React.createClass({
         {content}
         {footer}
       </Panel>
-
+{that._renderDialog()}
     </div>
       )
   },

@@ -146,6 +146,32 @@ var CustomerStore = assign({}, PrototypeStore, {
       _updatingEnergyInfo = _updatingEnergyInfo.set('EnergyInfoIds', _updatingEnergyInfo.get('EnergyInfoIds').push(value));
     }
   },
+  deleteCustomer(deletedId) {
+    var deletedIndex = -1;
+
+    if (_customers.size < 2) {
+      _customers = emptyList();
+      return 0;
+    }
+
+    var nextSelectedId = 0;
+
+    _customers.every((item, index) => {
+      if (item.get("Id") == deletedId) {
+        deletedIndex = index;
+        if (index == _customers.size - 1) {
+          nextSelectedId = _customers.getIn([index - 1, "Id"]);
+        } else {
+          nextSelectedId = _customers.getIn([index + 1, "Id"]);
+        }
+        return false;
+      }
+      return true;
+    });
+    _customers = _customers.deleteIn([deletedIndex]);
+    this.setCustomers(_customers.toJS());
+    return nextSelectedId;
+  },
   reset: function() {
     _updatingCustomer = _persistedCustomer;
     _updatingEnergyInfo = _persistedEnergyInfo;
@@ -225,6 +251,11 @@ CustomerStore.dispatchToken = AppDispatcher.register(function(action) {
         title: action.title,
         content: action.content
       });
+      break;
+    case CustomerAction.DELETE_CUSTOMER_SUCCESS:
+      var selecteId = CustomerStore.deleteCustomer(action.id);
+      CustomerStore.setSelectedId(selecteId);
+      CustomerStore.emitChange(selecteId);
       break;
   }
 });

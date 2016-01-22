@@ -33,7 +33,12 @@ var Customer = React.createClass({
   },
   _handleSaveCustomer: function(customerData) {
     if (this.state.infoTab) {
-      CustomerAction.SaveTouCustomer(customerData);
+      if (!!customerData.Id) {
+        CustomerAction.ModifyCustomer(customerData);
+      } else {
+        CustomerAction.CreateCustomer(customerData);
+      }
+
       this.setState({
         isLoading: true
       });
@@ -43,12 +48,12 @@ var Customer = React.createClass({
 
 
   },
-  // _handleDeleteCustomer: function(customer) {
-  //   CustomerAction.deleteCustomer({
-  //     Id: customer.get('Id'),
-  //     Version: customer.get('Version')
-  //   });
-  // },
+  _handleDeleteCustomer: function(customer) {
+    CustomerAction.deleteCustomer({
+      Id: customer.get('Id'),
+      Version: customer.get('Version')
+    });
+  },
   _switchTab(event) {
     if (event.target.getAttribute("data-tab-index") == 1) {
       if (this.state.infoTab) {
