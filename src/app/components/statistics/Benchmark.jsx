@@ -213,29 +213,29 @@ var Benchmark = React.createClass({
   },
   _renderHeader: function(isAdd) {
     var me = this;
-    var benchmarkItems = this._getBenchmarkItems();
     let selectedData = me.state.selectedData;
-    var titleTextProps = {
-      ref: 'benchmarkTitleText',
-      isViewStatus: !isAdd,
-      defaultValue: selectedData.get('IndustryComment'),
-      title: ''
-    };
-    var titleDropProps = {
-      ref: 'benchmarkTitleDrop',
-      dataItems: benchmarkItems,
-      isViewStatus: !isAdd,
-      defaultValue: selectedData.get('IndustryId'),
-      title: '',
-      textField: 'text',
-      didChanged: me._onIndustryChange
-    };
     var title = null;
     if (isAdd) {
+      var benchmarkItems = this._getBenchmarkItems();
+      var titleDropProps = {
+        ref: 'benchmarkTitleDrop',
+        dataItems: benchmarkItems,
+        isViewStatus: !isAdd,
+        defaultValue: selectedData.get('IndustryId'),
+        title: '',
+        textField: 'text',
+        didChanged: me._onIndustryChange
+      };
       title = (<div className='jazz-benchmark-header-dropdown'>
         <ViewableDropDownMenu {...titleDropProps}></ViewableDropDownMenu>
       </div>);
     } else {
+      var titleTextProps = {
+        ref: 'benchmarkTitleText',
+        isViewStatus: !isAdd,
+        defaultValue: selectedData.get('IndustryComment'),
+        title: ''
+      };
       title = (<div className='jazz-benchmark-header-text'>
         <ViewableTextField {...titleTextProps}></ViewableTextField>
       </div>);
@@ -372,9 +372,14 @@ var Benchmark = React.createClass({
       );
     }
     var deleteDialog = me._renderDeleteDialog();
+    var benchmarkItems = this._getBenchmarkItems();
+    var canAdd = true;
+    if (benchmarkItems.length === 1) {
+      canAdd = false;
+    }
     var leftProps = {
       addBtnLabel: I18N.Setting.Benchmark.Label.IndustryBenchmark,
-      isViewStatus: isView,
+      isViewStatus: isView && canAdd,
       isLoading: this.state.isLeftLoading,
       contentItems: items,
       onAddBtnClick: me._addBenchmark
