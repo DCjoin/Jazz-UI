@@ -52,10 +52,10 @@ var UserFilter = React.createClass({
 			Text: ""
 		},*/ {
       CustomerId: -1,
-      Text: "无客户"
+      Text: I18N.Setting.Labeling.NoCusomer
     }, {
       CustomerId: -2,
-      Text: "全部客户"
+      Text: I18N.Setting.Labeling.AllCusomer
     }];
 
     this.props.customers.forEach(customer => {
@@ -91,7 +91,7 @@ var UserFilter = React.createClass({
   _renderRoleRadio: function() {
     var radioList = [(<RadioButton key={"role-radio-key-all"} style={{
       paddingTop: "20px"
-    }} value="" label="全部" />)];
+    }} value="" label={I18N.Common.Glossary.Order.All} />)];
 
     this.props.userRoleList.forEach(role => {
       radioList.push(
@@ -140,33 +140,33 @@ var UserFilter = React.createClass({
       return (
         <SideNav open={true} ref="pop_user_filter_side_nav" onClose={this.props.onClose}>
 				<div className="pop-user-filter-side-nav-wrapper">
-					<div className="pop-user-filter-side-nav-header sidebar-title">用户筛选</div>
+					<div className="pop-user-filter-side-nav-header sidebar-title">{I18N.Setting.User.UserFilter}</div>
 					<div className="sidebar-content pop-user-filter-side-nav-content">
 
 						<div className="pop-user-filter-side-nav-content-item sidebar-content-item">
 							<div className="pop-user-filter-side-nav-content-item-header">
-								<div className="pop-user-filter-side-nav-content-item-header-title">用户名</div>
-								<LinkButton disabled={!this.props.filterObj.get("displayName")} onClick={this._bindChangeFilter("displayName", true)} label="清除"/>
+								<div className="pop-user-filter-side-nav-content-item-header-title">{I18N.Setting.UserManagement.UserName}</div>
+								<LinkButton disabled={!this.props.filterObj.get("displayName")} onClick={this._bindChangeFilter("displayName", true)} label={I18N.Setting.User.Cancel}/>
 							</div>
 							<div className="pop-user-filter-side-nav-content-item-input">
-								<ViewableTextField didChanged={this._bindChangeFilter("displayName")} hintText="用户名" defaultValue={this.props.filterObj.get("displayName")} />
+								<ViewableTextField didChanged={this._bindChangeFilter("displayName")} hintText={I18N.Setting.UserManagement.UserName} defaultValue={this.props.filterObj.get("displayName")} />
 							</div>
 						</div>
 
 						<div className="pop-user-filter-side-nav-content-item sidebar-content-item">
 							<div className="pop-user-filter-side-nav-content-item-header">
-								<div className="pop-user-filter-side-nav-content-item-header-title">显示名称</div>
-								<LinkButton disabled={!this.props.filterObj.get("realName")} onClick={this._bindChangeFilter("realName", true)} label="清除"/>
+								<div className="pop-user-filter-side-nav-content-item-header-title">{I18N.Setting.UserManagement.RealName}</div>
+								<LinkButton disabled={!this.props.filterObj.get("realName")} onClick={this._bindChangeFilter("realName", true)} label={I18N.Setting.User.Cancel}/>
 							</div>
 							<div className="pop-user-filter-side-nav-content-item-input">
-								<ViewableTextField didChanged={this._bindChangeFilter("realName")} hintText="显示名称" defaultValue={this.props.filterObj.get("realName")} />
+								<ViewableTextField didChanged={this._bindChangeFilter("realName")} hintText={I18N.Setting.UserManagement.RealName} defaultValue={this.props.filterObj.get("realName")} />
 							</div>
 						</div>
 
 						<div className="pop-user-filter-side-nav-content-item sidebar-content-item">
 							<div className="pop-user-filter-side-nav-content-item-header">
-								<div className="pop-user-filter-side-nav-content-item-header-title">关联客户</div>
-								<LinkButton disabled={!this.props.filterObj.get("selectedCusomer")} onClick={this._bindChangeFilter("selectedCusomer", true)} label="清除"/>
+								<div className="pop-user-filter-side-nav-content-item-header-title">{I18N.Setting.User.SelectedCusomer}</div>
+								<LinkButton disabled={!this.props.filterObj.get("selectedCusomer")} onClick={this._bindChangeFilter("selectedCusomer", true)} label={I18N.Setting.User.Cancel}/>
 							</div>
 							<div className="pop-user-filter-side-nav-content-item-input pop-viewableSelectField">
 								<SelectField
@@ -182,7 +182,7 @@ var UserFilter = React.createClass({
         autoWidth={true}
         className={'pop-viewableSelectField-ddm'}
         value={selectedCusomer}
-        hintText={"客户名称"}
+        hintText={I18N.Setting.Labeling.CustomerName}
         valueMember={"CustomerId"}
         displayMember={"Text"}
         menuItems={this._getCustomerList()}
@@ -191,7 +191,7 @@ var UserFilter = React.createClass({
 						</div>
 
 						<div className="pop-user-filter-side-nav-content-item sidebar-content-item">
-							<div className="pop-user-filter-side-nav-content-item-role-header">功能权限角色</div>
+							<div className="pop-user-filter-side-nav-content-item-role-header">{I18N.Platform.User.Role}</div>
 							<div className="pop-user-filter-side-nav-content-item-role-list">
 								{this._renderRoleRadio()}
 							</div>

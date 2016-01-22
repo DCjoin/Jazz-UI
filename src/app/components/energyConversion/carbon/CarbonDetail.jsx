@@ -75,19 +75,19 @@ var CarbonDetail = React.createClass({
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={"删除转换因子 “" + label + "”"} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.CarbonFactor.DeleteTitle, label)} modal={true} actions={[
           <FlatButton
-          label="删除"
+          label={I18N.Template.Delete.Delete}
           primary={true}
           onClick={() => {
             that.props.handleDeleteCarbon(carbon);
             closeDialog();
           }} />,
           <FlatButton
-          label="放弃"
+          label={I18N.Template.Delete.Cancel}
           onClick={closeDialog} />
         ]}>
-        {"转换因子 “" + label + "” 将被删除"}
+        {I18N.format(I18N.Setting.CarbonFactor.DeleteContent, label)}
       </Dialog>
         );
     }

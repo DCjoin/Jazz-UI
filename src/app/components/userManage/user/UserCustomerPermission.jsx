@@ -158,8 +158,8 @@ let UserCustomerPermission = React.createClass({
           width: "auto"
         }}/>
 						<div className="pop-user-customer-permission-dialog-header-label">
-							<span className="pop-user-customer-permission-dialog-header-label-title" onClick={this._selectedAll}>全部层级节点数据权限</span>
-							<span className="pop-user-customer-permission-dialog-header-label-detail">建议对具备“层级结构管理”功能权限的用户勾选此项。</span>
+							<span className="pop-user-customer-permission-dialog-header-label-title" onClick={this._selectedAll}>{I18N.Setting.User.WholeCustomer}</span>
+							<span className="pop-user-customer-permission-dialog-header-label-detail">{I18N.Setting.User.WholeCustomerTip}</span>
 						</div>
 					</div>
 					<HierarchyTree {...props} />
@@ -172,7 +172,7 @@ let UserCustomerPermission = React.createClass({
       return (
         <SideNav side="right" onClose={this.onClose} ref="pop_user_customer_permission_side_nav">
 					<div className="pop-user-customer-permission-side-nav-wrapper">
-						<div className="pop-user-customer-permission-side-nav-header sidebar-title">客户名称</div>
+						<div className="pop-user-customer-permission-side-nav-header sidebar-title">{I18N.Setting.Labeling.CustomerName}</div>
 						{content}
 					</div>
 				</SideNav>
@@ -196,7 +196,7 @@ let UserCustomerPermission = React.createClass({
         onDismiss={this.onClose}
         modal={true}>
 
-						<div className="pop-user-customer-permission-dialog-title">编辑数据权限</div>
+						<div className="pop-user-customer-permission-dialog-title">{I18N.Setting.Labeling.EditDataPermission}</div>
 						<div className="pop-user-customer-permission-dialog-content">
 							{content}
 						</div>
@@ -204,8 +204,8 @@ let UserCustomerPermission = React.createClass({
           <div className="pop-user-customer-permission-dialog-footer">
 							<RaisedButton style={buttonStyle} labelStyle={{
             color: "inherit"
-          }} label="保存" onClick={this._save} />
-							<RaisedButton style={buttonStyle} label="放弃" onClick={this._close} />
+          }} label={I18N.Baseline.Button.Save} onClick={this._save} />
+							<RaisedButton style={buttonStyle} label={I18N.Baseline.Button.Cancel} onClick={this._close} />
 						</div>
           : null}
 					</Dialog>

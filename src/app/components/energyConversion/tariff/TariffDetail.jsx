@@ -135,19 +135,19 @@ var TariffDetail = React.createClass({
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={"删除 “" + tariff.get('Name') + "”"} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.TOUTariff.DeleteTitle, tariff.get('Name'))} modal={true} actions={[
           <FlatButton
-          label="删除"
+          label={I18N.Template.Delete.Delete}
           primary={true}
           onClick={() => {
             that.props.handleDeleteTariff(tariff);
             closeDialog();
           }} />,
           <FlatButton
-          label="放弃"
+          label={I18N.Template.Delete.Cancel}
           onClick={closeDialog} />
         ]}>
-        {" “" + tariff.get('Name') + "” 将被删除"}
+        {I18N.format(I18N.Setting.TOUTariff.DeleteContent, tariff.get('Name'))}
       </Dialog>
         );
     }

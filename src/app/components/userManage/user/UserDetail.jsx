@@ -204,7 +204,7 @@ var UserDetail = React.createClass({
 
       userTitleProps = {
         isViewStatus: isView,
-        title: "职务",
+        title: I18N.Platform.User.Position,
         selectedIndex: titleSelectedIndex,
         textField: "text",
         dataItems: titleItems,
@@ -217,7 +217,7 @@ var UserDetail = React.createClass({
       },
       userTelephoneProps = {
         isViewStatus: isView,
-        title: "电话",
+        title: I18N.Platform.User.Telephone,
         defaultValue: Telephone || "",
         isRequired: true,
         // regex: Regex.TelephoneRule,
@@ -231,11 +231,11 @@ var UserDetail = React.createClass({
       },
       userEmailProps = {
         isViewStatus: isView,
-        title: "电子邮箱",
+        title: I18N.Platform.User.Email,
         defaultValue: Email || "",
         isRequired: true,
         regex: Regex.Email,
-        errorMessage: "请按照\"user@example.com\"的格式输入",
+        errorMessage: I18N.Platform.ServiceProvider.EmailError,
         maxLen: 254,
         didChanged: value => {
           UserAction.mergeUser({
@@ -246,7 +246,7 @@ var UserDetail = React.createClass({
       },
       userCommentProps = {
         isViewStatus: isView,
-        title: "描述",
+        title: I18N.Setting.UserManagement.Comment,
         defaultValue: Comment || "",
         multiLine: true,
         didChanged: value => {
@@ -265,10 +265,10 @@ var UserDetail = React.createClass({
 				</div>
 
 				<div className="pop-user-detail-content-item pop-user-detail-user-type">
-					<div className="info-title">功能权限角色</div>
+					<div className="info-title">{I18N.Platform.User.Role}</div>
 					<div className="info-value">
 						{isView || isSuperAdmin ?
-        <div>{isSuperAdmin ? "服务商初始管理员" : that.props.user.get("UserTypeName")}</div>
+        <div>{isSuperAdmin ? I18N.Platform.User.ServerManager : that.props.user.get("UserTypeName")}</div>
         :
         <SelectField className="pop-viewableSelectField-ddm" onChange={(event, key, obj) => {
           UserAction.mergeUser({
@@ -281,7 +281,7 @@ var UserDetail = React.createClass({
           });
         }} ref="pop_user_detail_role" selectedIndex={roleSelectedIndex} menuItems={roleItems.toJS()} />
       }
-						<div onClick={that._showRoleSideNav}>查看权限角色详情</div>
+						<div onClick={that._showRoleSideNav}>{I18N.Platform.User.ShowFuncAuth}</div>
 					</div>
 				</div>
 
@@ -324,7 +324,7 @@ var UserDetail = React.createClass({
 
     var _renderDataPermissionLink = function(showPermissionProps) {
       //var showPermissionUpCode = isView ? PermissionCode.TREE_STRUCTURE_MANAGE.READONLY : PermissionCode.TREE_STRUCTURE_MANAGE.FULL;
-      var text = isView ? "查看数据权限" : "编辑数据权限";
+      var text = isView ? I18N.Setting.Labeling.ViewDataPermission : I18N.Setting.Labeling.EditDataPermission;
       return (
         //<PermissionPanel showPermissionUpCode={ showPermissionUpCode }>
         <span {...showPermissionProps}>{ text }</span>
@@ -342,9 +342,9 @@ var UserDetail = React.createClass({
       onCheck={that._bindChangeCheckbox(true, 0)}
       defaultChecked={checkAll}
       disabled={isView}
-      label={"全部客户数据权限"}
+      label={I18N.Setting.User.AllCusomerDataPermission}
       />
-					<div className="pop-user-detail-customer-perm-checkall-desc">建议对具备“FacilityMost服务商管理”功能权限的用户勾选此项</div>
+					<div className="pop-user-detail-customer-perm-checkall-desc">{I18N.Setting.Labeling.PlatformDataPermissionTip}</div>
 				</div>
 				<ul className="pop-user-detail-customer-subcheck-block">
 				{
@@ -465,19 +465,19 @@ var UserDetail = React.createClass({
       var {Name, RealName} = that.props.user.toJS();
       return (
 
-        <Dialog modal={true} openImmediately={this.state.dialogStatus} title={"删除用户 “" + Name + " " + RealName + "”"} actions={[
+        <Dialog modal={true} openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.User.DeleteTitle, Name + " " + RealName)} actions={[
           <FlatButton
-          label="删除"
+          label={I18N.Template.Delete.Delete}
           primary={true}
           onClick={() => {
             that.props._handleDeleteUser();
             closeDialog();
           }} />,
           <FlatButton
-          label="放弃"
+          label={I18N.Template.Delete.Cancel}
           onClick={closeDialog} />
         ]}>
-					{"用户 “" + Name + " " + RealName + "” 将被删除"}
+					{I18N.format(I18N.Setting.User.DeleteContent, Name + " " + RealName)}
 				</Dialog>
         );
     }
@@ -503,7 +503,7 @@ var UserDetail = React.createClass({
 
       userNameProps = {
         isViewStatus: isView,
-        title: "用户名",
+        title: I18N.Setting.UserManagement.UserName,
         defaultValue: this.props.user.get("Name"),
         isRequired: true,
         maxLen: 200,
