@@ -303,22 +303,34 @@ var CarbonDetail = React.createClass({
   },
   render: function() {
     var that = this;
-    var header = this._renderHeader(),
-      content = this._renderContent(),
-      footer = this._renderFooter();
-    return (
-      <div className={classnames({
-        "jazz-framework-right-expand": that.props.closedList,
-        "jazz-framework-right-fold": !that.props.closedList
-      })}>
-      <Panel onToggle={this.props.toggleList}>
-        {header}
-        {content}
-        {footer}
-        {that._renderDialog()}
-      </Panel>
-    </div>
-      )
+
+    if (this.props.carbon.size != 0) {
+      var header = this._renderHeader(),
+        content = this._renderContent(),
+        footer = this._renderFooter();
+      return (
+        <div className={classnames({
+          "jazz-framework-right-expand": that.props.closedList,
+          "jazz-framework-right-fold": !that.props.closedList
+        })}>
+          <Panel onToggle={this.props.toggleList}>
+            {header}
+            {content}
+            {footer}
+            {that._renderDialog()}
+          </Panel>
+        </div>
+        )
+    } else {
+      return (
+        <div className={classnames({
+          "jazz-framework-right-expand": that.props.closedList,
+          "jazz-framework-right-fold": !that.props.closedList
+        })}>
+        </div>
+        )
+    }
+
   },
 });
 
