@@ -270,7 +270,7 @@ var UserDetail = React.createClass({
 						{isView || isSuperAdmin ?
         <div>{isSuperAdmin ? I18N.Platform.User.ServerManager : that.props.user.get("UserTypeName")}</div>
         :
-        <SelectField className="jazz-user-position-viewableSelectField-ddm" onChange={(event, key, obj) => {
+        <SelectField className="pop-viewableSelectField-ddm" onChange={(event, key, obj) => {
           UserAction.mergeUser({
             value: obj.id,
             path: "UserType"

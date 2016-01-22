@@ -73,14 +73,27 @@ var CarbonStore = assign({}, PrototypeStore, {
   },
   checkError: function(index) {
     var factors = _updatingCarbon.get('Factors'),
-      factor = factors.getIn([index]),
       errors = emptyList();
-    factors.forEach((item, id) => {
-      if (id != index && item.get('EffectiveYear') == factor.get('EffectiveYear')) {
-        errors = errors.setIn([index], I18N.Setting.CarbonFactor.Conflict);
-        errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
-      }
-    });
+    if (index > -1) {
+      var factor = factors.getIn([index]);
+      factors.forEach((item, id) => {
+        if (id != index && item.get('EffectiveYear') == factor.get('EffectiveYear')) {
+          errors = errors.setIn([index], I18N.Setting.CarbonFactor.Conflict);
+          errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
+        }
+      });
+    } else {
+      factors.forEach((item, id) => {
+        var filterId = factors.findIndex(el => {
+          return (el.get('EffectiveYear') == item.get('EffectiveYear'));
+        });
+        if (filterId != id) {
+          errors = errors.setIn([filterId], I18N.Setting.CarbonFactor.Conflict);
+          errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
+        }
+      });
+    }
+
     _updatingCarbon = _updatingCarbon.set('Errors', errors);
   },
   merge: function(data) {
@@ -122,6 +135,7 @@ var CarbonStore = assign({}, PrototypeStore, {
   deleteFactor: function(index) {
     var factors = _updatingCarbon.get('Factors');
     _updatingCarbon = _updatingCarbon.set('Factors', factors.delete(index));
+    this.checkError(-1);
   },
   deleteCarbon(deletedId) {
     var deletedIndex = -1;
