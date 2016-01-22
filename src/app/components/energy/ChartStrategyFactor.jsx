@@ -4048,19 +4048,20 @@ let ChartStrategyFactor = {
       var yearProps = {
         ref: "yearSelector",
         selectedIndex: analysisPanel.state.selectedYear,
+        isViewStatus: false,
         style: {
           width: '82px',
-          border: '1px solid #efefef',
           margin: '0px 10px 0px 0px'
         }
       };
-      var YearSelect = <YearPicker {...yearProps}/>;
+      var YearSelect = <div className='jazz-label-year'><YearPicker {...yearProps}/></div>;
       var labelBtn = ChartStrategyFactor.getLabelBtn(analysisPanel);
       var kpiTypeBtn = ChartStrategyFactor.getKpiTypeBtn(analysisPanel);
       var monthItem = ConstStore.getLabelMonth();
       return <div className={'jazz-alarm-chart-toolbar'} style={{
           marginTop: '30px'
         }}>
+      {YearSelect}
       <div className={'jazz-full-border-dropdownmenu-container'} style={{
           display: 'flex',
           alignItems: 'center',
@@ -4068,7 +4069,6 @@ let ChartStrategyFactor = {
           height: '38px',
           marginTop: '-4px'
         }}>
-      {YearSelect}
       <DropDownMenu style={{
           width: '82px'
         }} menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
