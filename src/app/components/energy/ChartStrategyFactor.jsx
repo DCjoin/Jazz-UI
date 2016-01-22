@@ -4478,13 +4478,16 @@ let ChartStrategyFactor = {
       if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.tagIds.length > 1) {
         baselineBtnStatus = true;
       }
-
+      let baselineE1 = null;
+      if (analysisPanel.state.baselineRivilege) {
+        baselineE1 = <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>;
+      }
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
         marginLeft: '10px'
       }} desktop={true}
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
-       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>
+       {baselineE1}
        <MenuDivider />
        <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={sumBtnStatus}/>
        {calendarEl}
