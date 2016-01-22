@@ -598,7 +598,19 @@ I18N.Setting.NodeBtn.Save = 'Save';
 I18N.Setting.NodeBtn.Deleting = 'Deleting...';
 I18N.Setting.NodeBtn.Delete = 'Delete';
 
-
+//customer
+I18N.Setting.CustomerManagement = {};
+I18N.Setting.CustomerManagement.CustomerManagement = 'Customer';
+I18N.Setting.CustomerManagement.Logo = 'Logo';
+I18N.Setting.CustomerManagement.LogoUpload = 'Upload local images';
+I18N.Setting.CustomerManagement.LogoUploadInfo = 'Please upload image files that are less than 420px * 90px and 800KB in size. Only formats of png and gif are supported.';
+I18N.Setting.CustomerManagement.Address = 'Address';
+I18N.Setting.CustomerManagement.Principal = 'Responsible person';
+I18N.Setting.CustomerManagement.Telephone = 'Tel.';
+I18N.Setting.CustomerManagement.Email = 'Email';
+I18N.Setting.CustomerManagement.OperationStartTime = 'Operation time';
+I18N.Setting.CustomerManagement.Administrator = 'Customer administrator';
+I18N.Setting.CustomerManagement.NoAdministrator = 'Unselected';
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = 'User management';
