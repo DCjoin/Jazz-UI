@@ -348,6 +348,7 @@ var Benchmark = React.createClass({
           index: i,
           label: item.get('IndustryComment'),
           selectedIndex: me.state.selectedIndex,
+          text: item.get('ZoneComments').toJS().join(),
           onItemClick: me._onItemClick
         };
         return (
