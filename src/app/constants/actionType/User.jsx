@@ -21,7 +21,7 @@ module.exports = {
     MERGE_USER: null,
     MODIFY_USER_SUCCESS: null,
     UPDATE_CUSTOMER_INFO: null,
-    SEND_EMAIL_SUCCESS: null,
+    SEND_USER_EMAIL_SUCCESS: null,
     DELETE_USER_SUCCESS: null,
     RESET_USER_AND_CUSTOMER: null,
     USER_ERROR: null

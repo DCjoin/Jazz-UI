@@ -277,7 +277,7 @@ let UserAction = {
       },
       success: function(data) {
         AppDispatcher.dispatch({
-          type: Action.SEND_EMAIL_SUCCESS,
+          type: Action.SEND_USER_EMAIL_SUCCESS,
           data: data
         });
       },

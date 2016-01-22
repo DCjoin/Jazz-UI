@@ -548,7 +548,7 @@ var UserStore = assign({}, PrototypeStore, {
         UserStore.setUser(action.data);
         UserStore.emitChange(action.data.Id);
         break;
-      case UserAction.SEND_EMAIL_SUCCESS:
+      case UserAction.SEND_USER_EMAIL_SUCCESS:
         UserStore.updateUserbyEmailSuccess(action.data);
         UserStore.emitResetPassword();
         break;
