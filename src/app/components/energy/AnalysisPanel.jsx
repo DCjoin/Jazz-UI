@@ -18,6 +18,7 @@ import RankStore from '../../stores/RankStore.jsx';
 import RatioStore from '../../stores/RatioStore.jsx';
 import CarbonStore from '../../stores/CarbonStore.jsx';
 import LabelMenuStore from '../../stores/LabelMenuStore.jsx';
+import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 import TBSettingAction from '../../actions/TBSettingAction.jsx';
 import EnergyStore from '../../stores/energy/EnergyStore.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
@@ -72,7 +73,10 @@ let AnalysisPanel = React.createClass({
     this.searchDate = MultipleTimespanStore.getRelativeItems();
     let strategyName = this.getStrategyName(this.props.bizType, this.props.energyType);
     let chartStrategy = ChartStrategyFactor.getStrategyByStoreType(strategyName);
+    var rivilege = CurrentUserStore.getCurrentPrivilege();
+    var baselineRivilege = this._getBaselineRivilege(rivilege);
     let state = {
+      baselineRivilege: baselineRivilege,
       isLoading: false,
       energyData: null,
       energyRawData: null,
@@ -95,6 +99,15 @@ let AnalysisPanel = React.createClass({
 
     assign(state, obj);
     return state;
+  },
+  _getBaselineRivilege(rivilege) {
+    var baselineRivilege = false;
+    if (rivilege !== null) {
+      if (rivilege.indexOf('1223') > -1) {
+        baselineRivilege = true;
+      }
+    }
+    return baselineRivilege;
   },
   _onTitleMenuSelect: function(e, item) {
     let menuIndex = parseInt(item.key);
