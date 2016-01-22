@@ -159,7 +159,7 @@ var RoleDetail = React.createClass({
           label={I18N.Template.Delete.Cancel}
           onClick={closeDialog} />
         ]}>
-					{I10N.format(I18N.Setting.Role.DeleteContent, Name)}
+					{I18N.format(I18N.Setting.Role.DeleteContent, Name)}
 				</Dialog>
         );
     }
