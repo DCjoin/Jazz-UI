@@ -414,7 +414,7 @@ var Labeling = React.createClass({
       items = labelingList.map(function(item, i) {
         let props = {
           index: i,
-          label: item.get('IndustryComment'),
+          label: item.get('IndustryComment') + '-' + item.get('ZoneComment'),
           selectedIndex: me.state.selectedIndex,
           onItemClick: me._onItemClick
         };
