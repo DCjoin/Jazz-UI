@@ -270,7 +270,7 @@ var UserDetail = React.createClass({
 						{isView || isSuperAdmin ?
         <div>{isSuperAdmin ? I18N.Platform.User.ServerManager : that.props.user.get("UserTypeName")}</div>
         :
-        <SelectField className="pop-viewableSelectField-ddm" onChange={(event, key, obj) => {
+        <SelectField className="jazz-user-position-viewableSelectField-ddm" onChange={(event, key, obj) => {
           UserAction.mergeUser({
             value: obj.id,
             path: "UserType"
@@ -547,6 +547,9 @@ var UserDetail = React.createClass({
       ) {
         disabledSaveButton = true;
       }
+      if (this.props.user.get("Comment") && this.props.user.get("Comment").length > 200) {
+        disabledSaveButton = true;
+      }
     }
 
     var collapseButton = (
@@ -560,7 +563,7 @@ var UserDetail = React.createClass({
     var sendPasswordButton = null;
     if (that.props.infoTab) {
       sendPasswordButton = (
-        <FlatButton secondary={true} className="pop-user-detail-content-footer-send-email-button" label="发送邮件" style={{
+        <FlatButton secondary={true} className="pop-user-detail-content-footer-send-email-button" label={I18N.Platform.ServiceProvider.SendEmail} style={{
           borderRight: '1px solid #ececec',
           color: '#abafae'
         }} onClick={that.props._handleResetPassword}/>
@@ -619,11 +622,11 @@ var UserDetail = React.createClass({
 							<span className={classnames({
           "pop-user-detail-tabs-tab": true,
           "selected": that.props.infoTab
-        })} data-tab-index="1" onClick={that.props._handlerSwitchTab}>用户信息</span>
+        })} data-tab-index="1" onClick={that.props._handlerSwitchTab}>{I18N.Setting.UserManagement.UserInfo}</span>
 							<span className={classnames({
           "pop-user-detail-tabs-tab": true,
           "selected": !that.props.infoTab
-        })} data-tab-index="2" onClick={that.props._handlerSwitchTab}>数据权限设置</span>
+        })} data-tab-index="2" onClick={that.props._handlerSwitchTab}>{I18N.Setting.UserManagement.DataPermissionSetting}</span>
 						</div>
       }
 					</div>

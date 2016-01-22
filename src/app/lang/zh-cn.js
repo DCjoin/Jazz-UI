@@ -633,6 +633,8 @@ I18N.Setting.UserManagement.MailSent = '邮件已发送。';
 I18N.Setting.UserManagement.MembershipCustomer = '所属客户';
 I18N.Setting.UserManagement.AllCustomers = '全部客户';
 I18N.Setting.UserManagement.Privilege = '功能权限';
+I18N.Setting.UserManagement.UserInfo = '用户信息';
+I18N.Setting.UserManagement.DataPermissionSetting = '数据权限设置';
 
 
 I18N.Message = {};
