@@ -104,7 +104,8 @@ var CarbonDetail = React.createClass({
         var carbons = CarbonStore.getSelectableCarbons();
         Items.push({
           payload: 0,
-          text: I18N.Setting.CarbonFactor.Source
+          text: I18N.Setting.CarbonFactor.Source,
+          disabled: true
         });
         carbons.forEach((item, index) => {
           Items.push({
@@ -174,7 +175,8 @@ var CarbonDetail = React.createClass({
     factors.forEach((factor, index) => {
       var titleItems = [{
           payload: 0,
-          text: I18N.Setting.CarbonFactor.EffectiveYear
+          text: I18N.Setting.CarbonFactor.EffectiveYear,
+          disabled: true
         }],
         selectedId = 0,
         error = (!!errors) ? errors.getIn([index]) : null;
