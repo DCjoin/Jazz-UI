@@ -102,11 +102,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   },
   setCurrentPrivilege: function(role, useId, userType) {
     if (useId == 100001 || useId == 1 || userType == -1) {
-      _currentPrivilege = [];
-      for (var i = 1200; i <= 1221; i++) {
-        var index = i + '';
-        _currentPrivilege.push(index);
-      }
+      _currentPrivilege = ['1205', '1218', '1219', '1221', '1206', '1207', '1208', '1210', '1217', '1223'];
+
     } else {
       _currentPrivilege = role.PrivilegeCodes;
     }

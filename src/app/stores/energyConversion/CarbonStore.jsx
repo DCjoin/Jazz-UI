@@ -26,9 +26,10 @@ var CarbonStore = assign({}, PrototypeStore, {
   },
   setCarbons: function(carbons) {
     _selectableCarbons = emptyList();
-    _carbons = Immutable.fromJS(carbons);
+    _carbons = (!carbons) ? _carbons : Immutable.fromJS(carbons);
     _conversionPairs.forEach(carbon => {
-      let index = _carbons.findIndex(item => (item.getIn(['ConversionPair', 'SourceCommodity', 'Id']) == carbon.getIn(['SourceCommodity', 'Id'])
+      let index = -1;
+      index = (!carbons) ? index : _carbons.findIndex(item => (item.getIn(['ConversionPair', 'SourceCommodity', 'Id']) == carbon.getIn(['SourceCommodity', 'Id'])
         && item.getIn(['ConversionPair', 'DestinationCommodity', 'Id']) == carbon.getIn(['DestinationCommodity', 'Id'])
         && item.getIn(['ConversionPair', 'SourceUom', 'Id']) == carbon.getIn(['SourceUom', 'Id'])
         && item.getIn(['ConversionPair', 'DestinationUom', 'Id']) == carbon.getIn(['DestinationUom', 'Id'])));
@@ -183,13 +184,18 @@ CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
     case CarbonAction.GET_ALL_CARBON_FACTOR:
       var pre = _carbons;
       CarbonStore.setCarbons(action.carbons);
-      if (pre.size === 0) {
-        CarbonStore.setSelectedId(_carbons.getIn([0, "Id"]));
-        CarbonStore.emitChange(_carbons.getIn([0, "Id"]));
+      if (!!action.carbons) {
+        if (pre.size === 0) {
+          CarbonStore.setSelectedId(_carbons.getIn([0, "Id"]));
+          CarbonStore.emitChange(_carbons.getIn([0, "Id"]));
+        } else {
+          CarbonStore.setSelectedId(_selectedId);
+          CarbonStore.emitChange(_selectedId);
+        }
       } else {
-        CarbonStore.setSelectedId(_selectedId);
-        CarbonStore.emitChange(_selectedId);
+        CarbonStore.emitChange();
       }
+
       break;
     case CarbonAction.SET_SELECTED_ID:
       CarbonStore.setSelectedId(action.id);
