@@ -164,6 +164,9 @@ var CarbonStore = assign({}, PrototypeStore, {
     this.setCarbons(_carbons.toJS());
     return nextSelectedId;
   },
+  reset: function() {
+    _updatingCarbon = _persistedCarbon;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -222,6 +225,10 @@ CarbonStore.dispatchToken = AppDispatcher.register(function(action) {
       var selecteId = CarbonStore.deleteCarbon(action.id);
       CarbonStore.setSelectedId(selecteId);
       CarbonStore.emitChange(selecteId);
+      break;
+
+    case CarbonAction.RESET_CARBON:
+      CarbonStore.reset();
       break;
 
   }

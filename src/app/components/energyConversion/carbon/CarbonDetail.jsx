@@ -137,7 +137,7 @@ var CarbonDetail = React.createClass({
     var titleItems = getItems();
     var sourceProps = {
       isViewStatus: !isADD,
-      title: I18N.Setting.CarbonFactor.Source,
+      title: "",
       selectedIndex: selectedIndex,
       textField: "text",
       dataItems: titleItems,
@@ -194,7 +194,7 @@ var CarbonDetail = React.createClass({
       }
       var yearProps = {
           isViewStatus: isView,
-          title: I18N.Setting.CarbonFactor.EffectiveYear,
+          title: "",
           selectedIndex: selectedId,
           textField: "text",
           dataItems: titleItems,

@@ -11,5 +11,6 @@ module.exports = {
     DELETE_FACTOR: null,
     SAVE_FACTOR_SUCCESS: null,
     DELETE_FACTOR_SUCCESS: null,
+    RESET_CARBON: null
   })
 };

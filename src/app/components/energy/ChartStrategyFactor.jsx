@@ -45,6 +45,7 @@ import CalendarManager from './CalendarManager.jsx';
 import WidgetSaveWindow from './WidgetSaveWindow.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
+import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
@@ -641,13 +642,26 @@ let ChartStrategyFactor = {
       };
       let selectedWidget = FolderStore.getSelectedNode();
       let buttonDisabled = (!analysisPanel.state.energyData || !selectedWidget.get('ChartType'));
-      let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
-                              <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
-                              <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
-                              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} disabled={buttonDisabled}/>
-                              <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} disabled={buttonDisabled}/>
-                              <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
-                           </IconMenu>;
+      let widgetOptMenu = null;
+      if (!analysisPanel.props.isFromAlarm) {
+        if (CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1) {
+          widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+                                  <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
+                                  <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
+                                  <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} disabled={buttonDisabled}/>
+                                  <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} disabled={buttonDisabled}/>
+                                  <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
+                               </IconMenu>;
+        } else {
+          widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+                                  <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
+                                  <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
+                                  <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} disabled={buttonDisabled}/>
+                                  <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
+                               </IconMenu>;
+        }
+
+      }
       return widgetOptMenu;
     },
     getLabelWidgetOptMenu(analysisPanel) {

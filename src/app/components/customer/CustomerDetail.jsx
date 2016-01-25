@@ -21,6 +21,7 @@ import Dialog from '../../controls/PopupDialog.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import AdminList from './AdminList.jsx';
 import ImageUpload from '../../controls/ImageUpload.jsx';
+import CommonFuns from '../../util/Util.jsx';
 
 var CustomerDetail = React.createClass({
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
@@ -199,8 +200,9 @@ var CustomerDetail = React.createClass({
       regex: Regex.CommonTextNotNullRule,
       errorMessage: "请输入客户地址",
       didChanged: value => {
+        var d2j = CommonFuns.DataConverter.DatetimeToJson;
         CustomerAction.merge({
-          value,
+          value: d2j(new Date(value)),
           path: "StartTime"
         })
       }

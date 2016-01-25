@@ -99,6 +99,10 @@ let CarbonAction = {
       index: index,
     });
   },
-
+  reset: function() {
+    AppDispatcher.dispatch({
+      type: Action.RESET_CARBON,
+    });
+  },
 };
 module.exports = CarbonAction;
