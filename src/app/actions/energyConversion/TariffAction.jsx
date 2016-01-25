@@ -60,7 +60,7 @@ let TariffAction = {
       success: function(tariff) {
         AppDispatcher.dispatch({
           type: Action.SAVE_TARIFF_SUCCESS,
-          id: tariff.Id
+          id: tariffData.Id
         });
         that.GetTouTariff();
       },
