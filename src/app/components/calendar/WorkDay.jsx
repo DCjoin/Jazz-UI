@@ -258,6 +258,7 @@ var WorkDay = React.createClass({
   },
 
   componentDidMount: function() {
+    document.title = I18N.Privilege.Role.SPManagement;
     CalendarAction.getCalendarListByType(calendarType);
     CalendarStore.addCalendarListChangeListener(this._onWorkdayListChange);
     CalendarStore.addSelectedCalendarChangeListener(this._onSelectedItemChange);
