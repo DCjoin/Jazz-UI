@@ -41,14 +41,14 @@ var BackgroudImage = React.createClass({
         parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
         parmas += "&random=" + Math.random();
       }
-      url = "url(/webhost/Logo.aspx" + parmas + ")";
+      url = "url(" + Path.BackgroundImagePath + "/Logo.aspx" + parmas + ")";
     } else if (this.props.imageId) {
       var parmas = "?logoId=" + this.props.imageId;
       if (this.props.width && this.props.height) {
         parmas += "&width=" + this.props.width + "&height=" + this.props.height;
         parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
       }
-      url = "url(/webhost/Logo.aspx" + parmas + ")";
+      url = "url(" + Path.BackgroundImagePath + "/Logo.aspx" + parmas + ")";
     } else {
       url = this.props.url || "url()";
     }
