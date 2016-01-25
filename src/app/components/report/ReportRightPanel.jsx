@@ -649,7 +649,7 @@ var ReportRightPanel = React.createClass({
       var dataLength = reportItem.get('data').size;
       var reportData = reportItem.get('data').map(function(item, index) {
         let props = {
-          key: index,
+          key: dataLength - index,
           ref: 'reportData' + (index + 1),
           disabled: me.state.disabled,
           startTime: item.get('DataStartTime'),
