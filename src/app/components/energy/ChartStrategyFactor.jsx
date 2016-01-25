@@ -4478,21 +4478,31 @@ let ChartStrategyFactor = {
       if (analysisPanel.state.selectedChartType === 'rawdata' || submitParams.tagIds.length > 1) {
         baselineBtnStatus = true;
       }
-      let baselineE1 = null;
+      let configButton;
       if (analysisPanel.state.baselineRivilege) {
-        baselineE1 = <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>;
-      }
-      let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
-        marginLeft: '10px'
-      }} desktop={true}
-      onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
+        configButton = (<ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
+          marginLeft: '10px'
+        }} desktop={true}
+        onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
-       {baselineE1}
+       <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>
        <MenuDivider />
        <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={sumBtnStatus}/>
        {calendarEl}
        {weatherEl}
-     </ButtonMenu>;
+     </ButtonMenu>);
+      } else {
+        configButton = (<ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
+          marginLeft: '10px'
+        }} desktop={true}
+        onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
+       <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
+       <MenuDivider />
+       <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={sumBtnStatus}/>
+       {calendarEl}
+       {weatherEl}
+     </ButtonMenu>);
+      }
 
       return <div className='jazz-AuxiliaryCompareBtn-container'>{configButton}</div>;
     },

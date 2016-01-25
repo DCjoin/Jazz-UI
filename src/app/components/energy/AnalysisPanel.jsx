@@ -109,6 +109,13 @@ let AnalysisPanel = React.createClass({
     }
     return baselineRivilege;
   },
+  _onCurrentrivilegeChanged: function() {
+    var rivilege = CurrentUserStore.getCurrentPrivilege();
+    var baselineRivilege = this._getBaselineRivilege(rivilege);
+    this.setState({
+      baselineRivilege: baselineRivilege
+    });
+  },
   _onTitleMenuSelect: function(e, item) {
     let menuIndex = parseInt(item.key);
 
@@ -308,7 +315,7 @@ let AnalysisPanel = React.createClass({
       }
     }
     FolderStore.addDialogListener(this._onDialogChanged);
-
+    CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
   componentWillUnmount: function() {
     let me = this;
@@ -320,6 +327,7 @@ let AnalysisPanel = React.createClass({
       LabelMenuStore.clearHierNode();
     }
     FolderStore.removeDialogListener(this._onDialogChanged);
+    CurrentUserStore.removeCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
   getRemarck: function(e) {
     this.setState({
