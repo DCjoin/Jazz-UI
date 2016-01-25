@@ -26,7 +26,7 @@ var CarbonStore = assign({}, PrototypeStore, {
   },
   setCarbons: function(carbons) {
     _selectableCarbons = emptyList();
-    _carbons = (!carbons) ? _carbons : Immutable.fromJS(carbons);
+    _carbons = (!carbons) ? emptyList() : Immutable.fromJS(carbons);
     _conversionPairs.forEach(carbon => {
       let index = -1;
       index = (!carbons) ? index : _carbons.findIndex(item => (item.getIn(['ConversionPair', 'SourceCommodity', 'Id']) == carbon.getIn(['SourceCommodity', 'Id'])
@@ -46,17 +46,19 @@ var CarbonStore = assign({}, PrototypeStore, {
   },
   setSelectedId: function(id) {
     _selectedId = id;
-    if (!!id) {
-      var filterCarbon = Immutable.fromJS(_carbons).filter(item => item.get("Id") == id);
-      _persistedCarbon = _updatingCarbon = filterCarbon.first();
-    } else {
-      _persistedCarbon = _updatingCarbon = emptyMap();
-      var factors = Immutable.fromJS([{
-        EffectiveYear: 0
-      }]);
-      _persistedCarbon = _persistedCarbon.set('Factors', factors);
-      _updatingCarbon = _updatingCarbon.set('Factors', factors);
+    if (id !== 0) {
+      if (!!id) {
+        var filterCarbon = Immutable.fromJS(_carbons).filter(item => item.get("Id") == id);
+        _persistedCarbon = _updatingCarbon = filterCarbon.first();
+      } else {
+        _persistedCarbon = _updatingCarbon = emptyMap();
+        var factors = Immutable.fromJS([{
+          EffectiveYear: 0
+        }]);
+        _updatingCarbon = _updatingCarbon.set('Factors', factors);
+      }
     }
+
   },
   getPersistedCarbon: function() {
     return _persistedCarbon;
@@ -142,7 +144,9 @@ var CarbonStore = assign({}, PrototypeStore, {
     var deletedIndex = -1;
 
     if (_carbons.size < 2) {
-      _carbons = emptyList();
+      this.setCarbons(null);
+      _persistedCarbon = emptyMap();
+      _updatingCarbon = emptyMap();
       return 0;
     }
 
