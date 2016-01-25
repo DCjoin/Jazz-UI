@@ -66,14 +66,43 @@ var MonthDayItem = React.createClass({
     return type;
   },
   _getMonthItems: function() {
-    var monthItems = [], m;
-    for (var i = 0; i < 12; i++) {
-      m = i + 1;
-      monthItems[i] = {
-        payload: m,
-        text: ((m < 10) ? '0' : '') + m + I18N.EM.Month
-      };
-    }
+    var monthItems = [{
+      payload: 1,
+      text: I18N.Common.Date.January
+    }, {
+      payload: 2,
+      text: I18N.Common.Date.February
+    }, {
+      payload: 3,
+      text: I18N.Common.Date.March
+    }, {
+      payload: 4,
+      text: I18N.Common.Date.April
+    }, {
+      payload: 5,
+      text: I18N.Common.Date.May
+    }, {
+      payload: 6,
+      text: I18N.Common.Date.June
+    }, {
+      payload: 7,
+      text: I18N.Common.Date.July
+    }, {
+      payload: 8,
+      text: I18N.Common.Date.August
+    }, {
+      payload: 9,
+      text: I18N.Common.Date.September
+    }, {
+      payload: 10,
+      text: I18N.Common.Date.October
+    }, {
+      payload: 11,
+      text: I18N.Common.Date.November
+    }, {
+      payload: 12,
+      text: I18N.Common.Date.December
+    }];
     var startItem = {
       payload: -1,
       text: I18N.Setting.Calendar.StartMonth,

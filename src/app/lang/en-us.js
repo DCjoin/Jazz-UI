@@ -128,6 +128,20 @@ I18N.Common.Glossary.WeekDay.Saturday = 'Sat.';
 I18N.Common.Glossary.WeekDay.Sunday = 'Sun.';
 I18N.Common.Glossary.User = 'User management';
 
+I18N.Common.Date = {};
+I18N.Common.Date.January = 'Jan.';
+I18N.Common.Date.February = 'Feb.';
+I18N.Common.Date.March = 'Mar.';
+I18N.Common.Date.April = 'Apr.';
+I18N.Common.Date.May = 'May.';
+I18N.Common.Date.June = 'Jun.';
+I18N.Common.Date.July = 'Jul.';
+I18N.Common.Date.August = 'Aug.';
+I18N.Common.Date.September = 'Sept.';
+I18N.Common.Date.October = 'Oct.';
+I18N.Common.Date.November = 'Nov.';
+I18N.Common.Date.December = 'Dec.';
+
 I18N.Common.Label = {};
 I18N.Common.Label.TimeConflict = 'Conflict time duration.';
 I18N.Common.Label.DuplicatedName = 'Name already existed';
@@ -465,7 +479,7 @@ I18N.Setting.Calendar.Month = 'Month';
 I18N.Setting.Calendar.StartMonth = 'Start month';
 I18N.Setting.Calendar.EndMonth = 'End month';
 I18N.Setting.Calendar.TimeRange = 'Timespan';
-I18N.Setting.Calendar.Date = 'Day';
+I18N.Setting.Calendar.Date = '';
 I18N.Setting.Calendar.MonthDayFromTo = '{0}Month{1}day to {2}month{3}day';
 
 //worktime

@@ -125,6 +125,20 @@ I18N.Common.Glossary.WeekDay.Friday = '五';
 I18N.Common.Glossary.WeekDay.Saturday = '六';
 I18N.Common.Glossary.WeekDay.Sunday = '日';
 
+I18N.Common.Date = {};
+I18N.Common.Date.January = '01月';
+I18N.Common.Date.February = '02月';
+I18N.Common.Date.March = '03月';
+I18N.Common.Date.April = '04月';
+I18N.Common.Date.May = '05月';
+I18N.Common.Date.June = '06月';
+I18N.Common.Date.July = '07月';
+I18N.Common.Date.August = '08月';
+I18N.Common.Date.September = '09月';
+I18N.Common.Date.October = '10月';
+I18N.Common.Date.November = '11月';
+I18N.Common.Date.December = '12月';
+
 I18N.Common.Label = {};
 I18N.Common.Label.TimeConflict = '时间段冲突，请重新选择';
 I18N.Common.Label.DuplicatedName = '该名称已存在';
