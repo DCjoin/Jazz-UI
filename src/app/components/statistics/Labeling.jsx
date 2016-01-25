@@ -268,23 +268,11 @@ var Labeling = React.createClass({
         <ViewableDropDownMenu {...zoneDropProps}></ViewableDropDownMenu>
       </div>);
     } else {
-      var industryTextProps = {
-        ref: 'industryTitleText',
-        isViewStatus: !isAdd,
-        defaultValue: selectedData.get('IndustryComment'),
-        title: ''
-      };
-      var zoneTextProps = {
-        ref: 'zoneTitleText',
-        isViewStatus: !isAdd,
-        defaultValue: selectedData.get('ZoneComment'),
-        title: ''
-      };
       industryDom = (<div className='jazz-labeling-header-text'>
-        <ViewableTextField {...industryTextProps}></ViewableTextField>
+        {selectedData.get('IndustryComment')}
       </div>);
       zoneDom = (<div className='jazz-labeling-header-text'>
-        <ViewableTextField {...zoneTextProps}></ViewableTextField>
+        {selectedData.get('ZoneComment')}
       </div>);
     }
     return (
