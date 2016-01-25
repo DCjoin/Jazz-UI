@@ -80,7 +80,7 @@ var ViewableTextField = React.createClass({
     this.setState({
       value: nextProps.defaultValue,
     });
-    if (!!nextProps.errorText) {
+    if (nextProps.errorText != this.state.errorText) {
       this.setState({
         errorText: nextProps.errorText,
       });
@@ -221,7 +221,7 @@ var ViewableTextField = React.createClass({
 
     if (!this.props.isViewStatus) {
       inputProps = {
-        errorText: this.state.errorText, //this._getError(),
+        errorText: !this.state.value ? this.state.errorText : this._getError(), //this.state.errorText,
         onChange: this._handleChange,
         onBlur: this._onBlur,
         onFocus: this._onFocus,
