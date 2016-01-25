@@ -275,13 +275,13 @@ var BaselineBasic = React.createClass({
     var curYear = (new Date()).getFullYear();
     var yearProps = {
       noUnderline: true,
-      disabled: this.state.isViewStatus,
+      isViewStatus: !this.state.isViewStatus,
       ref: "YearField",
       selectedIndex: ((this.state.year || curYear) - curYear + 10),
       onYearPickerSelected: this._onYearChanged,
       style: {
-        border: '1px solid #efefef',
         margin: '0px 10px',
+        width: '100px'
       //zIndex: 2,
       },
       //className: "yearpicker",
@@ -335,7 +335,7 @@ var BaselineBasic = React.createClass({
 
     var yearPicker = null;
     if (this.state.isViewStatus) {
-      yearPicker = <YearPicker {...yearProps} />;
+      yearPicker = <div className='jazz-setting-basic-year'><YearPicker {...yearProps} /></div>;
     } else {
       yearPicker = <span style={spanStyle}>{this.state.year}</span>;
     }
