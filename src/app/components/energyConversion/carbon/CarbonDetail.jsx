@@ -214,7 +214,7 @@ var CarbonDetail = React.createClass({
           title: I18N.Setting.CarbonFactor.Title,
           defaultValue: factor.get("FactorValue"),
           regex: Regex.FactorRule,
-          errorMessage: "该输入项只能是正数",
+          errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
           maxLen: 200,
           isRequired: true,
           didChanged: value => {

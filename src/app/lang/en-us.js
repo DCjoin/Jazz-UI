@@ -1471,5 +1471,6 @@ I18N.Setting.User.FilterRecommendation = '您可以修改筛选条件再试一�
 I18N.Setting.User.FilterResult = '清空筛选条件';
 I18N.Setting.User.Filter = '筛选';
 I18N.Setting.UserManagement.UserInfo = '用户信息';
+I18N.Setting.CarbonFactor.ErrorContent = '请输入小于999999999.999999的正数';
 
 module.exports = I18N;
