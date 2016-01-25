@@ -66,7 +66,7 @@ var Carbon = React.createClass({
     });
   },
   _handlerCancel: function() {
-    //RoleActionCreator.resetRole();
+    CarbonAction.reset();
     this._setViewStatus();
   },
   _toggleList: function() {
