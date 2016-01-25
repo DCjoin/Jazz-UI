@@ -617,7 +617,6 @@ I18N.Setting.CustomerManagement = {};
 I18N.Setting.CustomerManagement.CustomerManagement = 'Customer';
 I18N.Setting.CustomerManagement.Logo = 'Logo';
 I18N.Setting.CustomerManagement.LogoUpload = 'Upload local images';
-I18N.Setting.CustomerManagement.LogoUploadInfo = 'Please upload image files that are less than 420px * 90px and 800KB in size. Only formats of png and gif are supported.';
 I18N.Setting.CustomerManagement.Address = 'Address';
 I18N.Setting.CustomerManagement.Principal = 'Responsible person';
 I18N.Setting.CustomerManagement.Telephone = 'Tel.';
@@ -1486,5 +1485,6 @@ I18N.Setting.User.FilterResult = '清空筛选条件';
 I18N.Setting.User.Filter = '筛选';
 I18N.Setting.UserManagement.UserInfo = '用户信息';
 I18N.Setting.CarbonFactor.ErrorContent = '请输入小于999999999.999999的正数';
+I18N.Setting.CustomerManagement.LogoUploadInfo = '请上传客户logo';
 
 module.exports = I18N;

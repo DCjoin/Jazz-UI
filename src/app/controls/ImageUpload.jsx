@@ -185,7 +185,7 @@ let ImageUpload = React.createClass({
       });
       tips = (<div className={c}>
 							<div>{this.props.updateTips}</div>
-							<span>请上传文件不大于2M的图片</span>
+							<span>{I18N.Setting.CustomerManagement.LogoUploadInfo}</span>
 						</div>);
     }
 
