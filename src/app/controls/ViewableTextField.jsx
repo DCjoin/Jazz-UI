@@ -43,9 +43,11 @@ var ViewableTextField = React.createClass({
 
   getInitialState: function() {
     var v = null;
-    if (_.isString(this.props.defaultValue) && this.props.defaultValue !== '') {
-      v = this.props.defaultValue;
-    }
+    //changed by wangyanhui 2016/1/25
+    // if (_.isString(this.props.defaultValue) && this.props.defaultValue !== '') {
+    //   v = this.props.defaultValue;
+    // }
+    v = this.props.defaultValue;
     return {
       errorText: "",
       value: v
