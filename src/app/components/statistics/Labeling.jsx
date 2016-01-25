@@ -439,9 +439,14 @@ var Labeling = React.createClass({
       );
     }
     var deleteDialog = me._renderDeleteDialog();
+    var industryItems = this._getIndustryItems();
+    var canAdd = true;
+    if (industryItems.length === 1) {
+      canAdd = false;
+    }
     var leftProps = {
       addBtnLabel: I18N.Setting.Labeling.Label.Labeling,
-      isViewStatus: isView,
+      isViewStatus: isView && canAdd,
       isLoading: this.state.isLeftLoading,
       contentItems: items,
       onAddBtnClick: me._addLabeling
