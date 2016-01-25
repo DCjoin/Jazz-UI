@@ -134,7 +134,7 @@ var FromEndTimeGroup = React.createClass({
       timeItems = items.map(function(item, i) {
         let props = {
           index: i,
-          key: item.get('Id'),
+          key: items.size - i,
           id: item.get('Id'),
           type: item.get('Type'),
           ref: 'fromEndTime' + (i + 1),

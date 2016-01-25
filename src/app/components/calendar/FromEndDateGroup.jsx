@@ -254,7 +254,7 @@ var FromEndDateGroup = React.createClass({
       dateItems = items.map(function(item, i) {
         let props = {
           index: i,
-          key: item.get('Id'),
+          key: items.size - i,
           id: item.get('Id'),
           ref: 'fromEndDateItem' + (i + 1),
           isViewStatus: me.props.isViewStatus,
