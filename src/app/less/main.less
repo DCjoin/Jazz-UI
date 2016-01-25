@@ -720,6 +720,13 @@ input:focus{
     }
 
     &-ddm {
+      &>div:nth-child(1) {
+        &>div:nth-child(3){
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
       &>div:nth-child(2) {
         max-height: 300px;
         overflow-y: auto !important;
