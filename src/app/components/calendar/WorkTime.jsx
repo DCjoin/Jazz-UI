@@ -108,7 +108,7 @@ var WorkTime = React.createClass({
       openImmediately={true}
       actions={dialogActions}
       modal={true}>
-        {I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}
+        <div className='jazz-calendar-delete'>{I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}</div>
       </Dialog>);
   },
   _deleteWorktime() {
