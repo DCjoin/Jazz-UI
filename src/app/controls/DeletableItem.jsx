@@ -12,7 +12,7 @@ var DeletableItem = React.createClass({
         <div className={classnames({
         "jazz-deletable-item-icon": true,
         "inactive": !this.props.isDelete
-      })} onClick={this.props.onDelete}>删除</div>
+      })} onClick={this.props.onDelete}>{I18N.Common.Button.Delete}</div>
     <div className={classnames({
         "jazz-deletable-item-content": this.props.isDelete
       })}>

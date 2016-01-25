@@ -74,7 +74,7 @@ var FormBottomBar = React.createClass({
 
     // save button
     saveBtnProps = _.assign({
-      label: "保存"
+      label: I18N.Common.Button.Save
     }, saveBtnProps);
 
     var saveButtonStyle = {
@@ -90,7 +90,7 @@ var FormBottomBar = React.createClass({
 
     // delete button
     deleteBtnProps = _.assign({
-      label: "删除",
+      label: I18N.Common.Button.Delete,
       style: {
         color: '#abafae'
       }
@@ -103,7 +103,7 @@ var FormBottomBar = React.createClass({
       deleteButton = null;
     }
     var editButton = (
-    <FlatButton secondary={true}  label="编辑" style={{
+    <FlatButton secondary={true}  label={I18N.Common.Button.Edit} style={{
       borderRight: '1px solid #ececec',
       color: '#abafae'
     }} onClick={this._handleEditBtn} {...editBtnProps}/>
@@ -115,7 +115,7 @@ var FormBottomBar = React.createClass({
       editButton = null;
     }
 
-    var cancelButton = <FlatButton label="放弃" secondary={true} className="form-bottom-bar-cancelbtn" style={{
+    var cancelButton = <FlatButton label={I18N.Common.Button.Cancel} secondary={true} className="form-bottom-bar-cancelbtn" style={{
       borderRight: '1px solid #ececec'
     }} onClick={this._handleCancelBtn} {...cancelBtnProps}   />;
 
