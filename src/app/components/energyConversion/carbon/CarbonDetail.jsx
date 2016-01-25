@@ -114,7 +114,7 @@ var CarbonDetail = React.createClass({
           });
           if (!!carbon.get('ConversionPair')) {
             if (carbon.get('ConversionPair') == item) {
-              selectedIndex = index;
+              selectedIndex = index + 1;
               conversionText = ' - ' + item.getIn(['DestinationCommodity', 'Comment']) + ' ( ' + item.getIn(['DestinationUom', 'Comment']) + ' )';
             }
           }
@@ -301,6 +301,12 @@ var CarbonDetail = React.createClass({
   componentWillMount: function() {
     this.initBatchViewbaleTextFiled();
   },
+  // componentWillReceiveProps: function(nextprops) {
+  //   if (nextprops.carbon.get('Factors').size != this.props.carbon.get('Factors').size) {
+  //     this.clearErrorTextBatchViewbaleTextFiled();
+  //   }
+  //
+  // },
   render: function() {
     var that = this;
 
