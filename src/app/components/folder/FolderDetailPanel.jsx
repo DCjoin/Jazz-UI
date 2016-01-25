@@ -8,6 +8,7 @@ let Menu = require('material-ui/lib/menus/menu');
 import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
+import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 var FolderItem = React.createClass({
   propTypes: {
@@ -101,13 +102,23 @@ var FolderItem = React.createClass({
               <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={menuStyle}/>
               </IconMenu>
       } else {
-        menu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
-              <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
-              <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} style={menuStyle}/>
-              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} style={menuStyle}/>
-              <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle}/>
-              <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={menuStyle}/>
-              </IconMenu>
+        if (CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1) {
+          menu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
+                <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
+                <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} style={menuStyle}/>
+                <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} style={menuStyle}/>
+                <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle}/>
+                <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={menuStyle}/>
+                </IconMenu>
+        } else {
+          menu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
+                <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
+                <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} style={menuStyle}/>
+                <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} style={menuStyle}/>
+                <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={menuStyle}/>
+                </IconMenu>
+        }
+
       }
     }
     ;
