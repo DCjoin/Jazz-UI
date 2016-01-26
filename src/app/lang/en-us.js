@@ -1491,4 +1491,8 @@ I18N.Setting.UserManagement.DataPermissionSetting = 'Data authority';
 I18N.Setting.CarbonFactor.ErrorContent = 'Please input less 99999999.999999';
 I18N.Setting.CustomerManagement.LogoUploadInfo = 'Please upload logo';
 
+I18N.Setting.CustomerManagement.LogoUploadErrorTitle = '照片添加失败';
+I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent = '图片文件格式为PNG，JPG，BMP和GIF，请重新选择。';
+I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = '图片文件大小为0，请重新选择。';
+
 module.exports = I18N;
