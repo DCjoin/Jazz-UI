@@ -1477,6 +1477,8 @@ I18N.Setting.Role.DeleteContent = 'Role "{0}" will be deleted';
 I18N.Setting.User.SendEmailSuccess = 'Password reset was sent!';
 I18N.Setting.User.AllCusomerDataPermission = 'All customer';
 I18N.Setting.Labeling.NoCusomer = 'No customer';
+I18N.Setting.User.DeleteTitle = 'Delete User “{0}”';
+I18N.Setting.User.DeleteContent = ' User“{0}” will be deleted';
 I18N.Setting.User.UserFilter = 'User filter';
 I18N.Setting.User.Cancel = 'Cancel';
 I18N.Setting.User.SelectedCusomer = 'Select cutomer';
@@ -1485,6 +1487,7 @@ I18N.Setting.User.FilterRecommendation = 'Please try other confition';
 I18N.Setting.User.FilterResult = 'Clear filter content';
 I18N.Setting.User.Filter = 'Filter';
 I18N.Setting.UserManagement.UserInfo = 'User Info';
+I18N.Setting.UserManagement.DataPermissionSetting = 'Data Privilege';
 I18N.Setting.CarbonFactor.ErrorContent = 'Please input less 99999999.999999';
 I18N.Setting.CustomerManagement.LogoUploadInfo = 'Please upload logo';
 
