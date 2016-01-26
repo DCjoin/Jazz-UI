@@ -24,7 +24,7 @@ let GlobalErrorMessageDialog = React.createClass({
     this.refs.errorMessageDialog.dismiss();
   },
   render() {
-    var errorCodeArr = ['21802', '1'];
+    var errorCodeArr = ['21802', '1', '03054'];
     var output = null;
     var _buttonActions = [
       <FlatButton label={'确定'} secondary={true} onClick={this._hide} />

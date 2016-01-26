@@ -47,24 +47,7 @@ let CalendarAction = {
       },
       error: function(err, res) {
         console.log(err, res);
-      }
-    });
-  },
-  deleteCalendarById(id, version) {
-    Ajax.post('/Administration.svc/DeleteCalendar', {
-      params: {
-        dto: {
-          Id: id,
-          Version: version
-        }
-      },
-      success: function() {
-        AppDispatcher.dispatch({
-          type: Action.DELETE_CALENDAR_SUCCESS
-        });
-      },
-      error: function(err, res) {
-        console.log(err, res);
+        me.getCalendarListByType(type);
       }
     });
   },
@@ -80,6 +63,25 @@ let CalendarAction = {
           calendar: calendar
         });
         me.getCalendarListByType(type);
+      },
+      error: function(err, res) {
+        console.log(err, res);
+        me.getCalendarListByType(type);
+      }
+    });
+  },
+  deleteCalendarById(id, version) {
+    Ajax.post('/Administration.svc/DeleteCalendar', {
+      params: {
+        dto: {
+          Id: id,
+          Version: version
+        }
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_CALENDAR_SUCCESS
+        });
       },
       error: function(err, res) {
         console.log(err, res);
