@@ -70,11 +70,11 @@ var TariffDetail = React.createClass({
     } else {
       if (!!tariff.get('PeakTariff')) {
         tariffData = tariff.get('PeakTariff').toJS();
-        tariffData.Id = tariff.get('Id');
+        //tariffData.Id = tariff.get('Id');
         tariffData.onOff = tariff.get('onOff');
       } else {
         tariffData = {
-          Id: tariff.get('Id'),
+          TouTariffId: tariff.get('Id'),
           onOff: tariff.get('onOff'),
           Version: tariff.get('Version')
         };
@@ -310,7 +310,7 @@ var TariffDetail = React.createClass({
         title: I18N.Setting.TOUTariff.PlainPrice,
         defaultValue: plainPrice,
         regex: Regex.FactorRule,
-        errorMessage: "该输入项只能是正数",
+        errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
         maxLen: 200,
         didChanged: value => {
           TariffAction.merge({
@@ -327,7 +327,7 @@ var TariffDetail = React.createClass({
         title: I18N.Setting.TOUTariff.PeakPrice,
         defaultValue: peakPrice,
         regex: Regex.FactorRule,
-        errorMessage: "该输入项只能是正数",
+        errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
         maxLen: 200,
         isRequired: true,
         didChanged: value => {
@@ -346,7 +346,7 @@ var TariffDetail = React.createClass({
         title: I18N.Setting.TOUTariff.ValleyPrice,
         defaultValue: valleyPrice,
         regex: Regex.FactorRule,
-        errorMessage: "该输入项只能是正数",
+        errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
         maxLen: 200,
         isRequired: true,
         didChanged: value => {
@@ -440,7 +440,7 @@ var TariffDetail = React.createClass({
         title: I18N.Setting.TOUTariff.PulsePeakPrice,
         defaultValue: PeakTariff.get('Price'),
         regex: Regex.FactorRule,
-        errorMessage: "该输入项只能是正数",
+        errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
         maxLen: 200,
         didChanged: value => {
           TariffAction.merge({
@@ -550,7 +550,7 @@ var TariffDetail = React.createClass({
           disabledSaveButton = true
         } else {
           tariff.get('TouTariffItems').forEach(item => {
-            if (!item.get('Price') || !item.get('TimeRange')) {
+            if (!item.get('Price') || !Regex.FactorRule.test(item.get('Price')) || !item.get('TimeRange')) {
               disabledSaveButton = true
             } else {
               item.get('TimeRange').forEach(time => {
@@ -566,7 +566,7 @@ var TariffDetail = React.createClass({
 
     } else {
       if (tariff.get('onOff')) {
-        if (!tariff.getIn(['PeakTariff', 'Price'])) {
+        if (!tariff.getIn(['PeakTariff', 'Price']) || !Regex.FactorRule.test(tariff.getIn(['PeakTariff', 'Price']))) {
           disabledSaveButton = true
         }
         tariff.getIn(['PeakTariff', 'TimeRanges']).forEach(time => {
