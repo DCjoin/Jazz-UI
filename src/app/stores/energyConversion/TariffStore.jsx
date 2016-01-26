@@ -149,10 +149,15 @@ var TariffStore = assign({}, PrototypeStore, {
             if (!!touTariff) {
               let plainPriceItem = touTariff.find(item => item.get("ItemType") == 2);
               if (!!plainPriceItem) {
-                plainPriceItem = plainPriceItem.set('Price', value);
-                _updatingTariff = _updatingTariff.set('TouTariffItems', touTariff.update(touTariff.findIndex(item => item.get('ItemType') == 2), (item) => {
-                  return plainPriceItem;
-                }));
+                if (!!value) {
+                  plainPriceItem = plainPriceItem.set('Price', value);
+                  _updatingTariff = _updatingTariff.set('TouTariffItems', touTariff.update(touTariff.findIndex(item => item.get('ItemType') == 2), (item) => {
+                    return plainPriceItem;
+                  }));
+                } else {
+                  _updatingTariff = _updatingTariff.set('TouTariffItems', touTariff.delete(touTariff.findIndex(item => item.get("ItemType") == 2)));
+                }
+
               } else {
                 touTariff = touTariff.push(Immutable.fromJS({
                   ItemType: 2,
