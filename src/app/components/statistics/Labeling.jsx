@@ -238,6 +238,7 @@ var Labeling = React.createClass({
     let selectedData = me.state.selectedData;
     var industryDom = null;
     var zoneDom = null;
+    var toDom = null;
     if (isAdd) {
       var industryItems = this._getIndustryItems();
       var zoneItems = this.state.zoneItems;
@@ -262,6 +263,7 @@ var Labeling = React.createClass({
       industryDom = (<div className='jazz-labeling-header-dropdown'>
         <ViewableDropDownMenu {...industryDropProps}></ViewableDropDownMenu>
       </div>);
+      toDom = (<div className='jazz-labeling-header-dropdown-to'>{'-'}</div>);
       zoneDom = (<div className='jazz-labeling-header-dropdown'>
         <ViewableDropDownMenu {...zoneDropProps}></ViewableDropDownMenu>
       </div>);
@@ -269,6 +271,7 @@ var Labeling = React.createClass({
       industryDom = (<div className='jazz-labeling-header-text'>
         {selectedData.get('IndustryComment')}
       </div>);
+      toDom = (<div className='jazz-labeling-header-text-to'>{'-'}</div>);
       zoneDom = (<div className='jazz-labeling-header-text'>
         {selectedData.get('ZoneComment')}
       </div>);
@@ -276,7 +279,7 @@ var Labeling = React.createClass({
     return (
       <div className="jazz-labeling-header">
         {industryDom}
-        <div className='jazz-labeling-header-to'>{'-'}</div>
+        {toDom}
         {zoneDom}
       </div>
       );
