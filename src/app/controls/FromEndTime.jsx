@@ -121,7 +121,7 @@ var FromEndTime = React.createClass({
       title: '',
       textField: 'text',
       style: {
-        width: '90px'
+        width: '100px'
       },
       didChanged: me._onTimeChange.bind(null, 'startTime')
     };
@@ -133,7 +133,7 @@ var FromEndTime = React.createClass({
       title: '',
       textField: 'text',
       style: {
-        width: '90px'
+        width: '100px'
       },
       didChanged: me._onTimeChange.bind(null, 'endTime')
     };

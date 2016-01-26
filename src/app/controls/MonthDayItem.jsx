@@ -189,7 +189,7 @@ var MonthDayItem = React.createClass({
       title: '',
       textField: 'text',
       style: {
-        width: '90px'
+        width: '100px'
       },
       didChanged: me._onMonthDayItemChange.bind(null, 'month')
     };
@@ -201,7 +201,7 @@ var MonthDayItem = React.createClass({
       title: '',
       textField: 'text',
       style: {
-        width: '90px'
+        width: '100px'
       },
       didChanged: me._onMonthDayItemChange.bind(null, 'day')
     };
