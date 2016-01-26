@@ -98,9 +98,51 @@ let JazzApp = React.createClass({
           }
 
         } else if (url.indexOf('menutype=service') > -1) {
-          me.replaceWith('workday', {
-            lang: lang
-          });
+          if (url.indexOf('workday') > -1) {
+            me.replaceWith('workday', {
+              lang: lang
+            });
+          } else if (url.indexOf('worktime') > -1) {
+            me.replaceWith('worktime', {
+              lang: lang
+            });
+          } else if (url.indexOf('coldwarm') > -1) {
+            me.replaceWith('coldwarm', {
+              lang: lang
+            });
+          } else if (url.indexOf('daynight') > -1) {
+            me.replaceWith('daynight', {
+              lang: lang
+            });
+          } else if (url.indexOf('price') > -1) {
+            me.replaceWith('price', {
+              lang: lang
+            });
+          } else if (url.indexOf('carbon') > -1) {
+            me.replaceWith('carbon', {
+              lang: lang
+            });
+          } else if (url.indexOf('benchmark') > -1) {
+            me.replaceWith('benchmark', {
+              lang: lang
+            });
+          } else if (url.indexOf('labeling') > -1) {
+            me.replaceWith('labeling', {
+              lang: lang
+            });
+          } else if (url.indexOf('customer') > -1) {
+            me.replaceWith('customer', {
+              lang: lang
+            });
+          } else if (url.indexOf('user') > -1) {
+            me.replaceWith('user', {
+              lang: lang
+            });
+          } else {
+            me.replaceWith('privilege', {
+              lang: lang
+            });
+          }
         } else if (url.indexOf('menutype=energy') > -1) {
           me.replaceWith('setting', {
             lang: lang
