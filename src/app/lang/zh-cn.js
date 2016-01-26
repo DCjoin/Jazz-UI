@@ -1438,7 +1438,7 @@ I18N.Setting.CarbonFactor.Source = '转换物';
 I18N.Setting.CarbonFactor.Target = '转换目标';
 I18N.Setting.CarbonFactor.EffectiveYear = '生效日期';
 I18N.Setting.CarbonFactor.Conflict = '时间区间重叠，请重新选择';
-I18N.Setting.CarbonFactor.ErrorContent = '请输入小于999999999.999999的正数';
+I18N.Setting.CarbonFactor.ErrorContent = '请输入小于1000000000的正数，小数点后最多保留6位';
 
 I18N.Setting.TOUTariff = {};
 I18N.Setting.TOUTariff.TOUSetting = '峰谷电价';

@@ -335,7 +335,7 @@ let PlatformContent = React.createClass({
       Domain.length > 200 ||
       !Address ||
       !Telephone ||
-      !Email || !Regex.Email.test(Email) ||
+      !Email || !Regex.Email.test(Email) || Email.length > 254 ||
       !StartDate
     ) {
       saveButtonDisabled = true;
