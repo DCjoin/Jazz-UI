@@ -134,6 +134,7 @@ var CarbonStore = assign({}, PrototypeStore, {
       EffectiveYear: 0
     }));
     _updatingCarbon = _updatingCarbon.set('Factors', factors);
+    this.checkError(-1);
   },
   deleteFactor: function(index) {
     var factors = _updatingCarbon.get('Factors');
