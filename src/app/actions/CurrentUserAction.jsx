@@ -7,6 +7,7 @@ var UserTypeName = null,
   UserType = null;
 let CurrentUserAction = {
   getUser: function(userId) {
+    var that = this;
     Ajax.post('/User.svc/GetUsersByFilter', {
       params: {
         filter: {
@@ -16,6 +17,7 @@ let CurrentUserAction = {
       success: function(userList) {
         UserTypeName = userList[0].UserTypeName;
         UserType = userList[0].UserType;
+        that.getRoles(userId);
         AppDispatcher.dispatch({
           type: Action.GET_USER,
           userInfo: userList[0]
