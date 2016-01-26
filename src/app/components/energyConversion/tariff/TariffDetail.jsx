@@ -70,7 +70,7 @@ var TariffDetail = React.createClass({
     } else {
       if (!!tariff.get('PeakTariff')) {
         tariffData = tariff.get('PeakTariff').toJS();
-        //tariffData.Id = tariff.get('Id');
+        //tariffData.Id = tariff.get('lId');
         tariffData.onOff = tariff.get('onOff');
       } else {
         tariffData = {
