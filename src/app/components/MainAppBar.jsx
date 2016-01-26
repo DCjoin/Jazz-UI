@@ -430,7 +430,7 @@ var MainAppBar = React.createClass({
         !Regex.Email.test(user.Email) ||
         user.Telephone.length > 200 ||
         user.RealName.length > 200 ||
-        user.Email.length > 200
+        user.Email.length > 254
         }
         onClick={this._saveUser} />,
         <CustomFlatButton
@@ -482,7 +482,7 @@ var MainAppBar = React.createClass({
               <ViewableTextField didChanged={this._bindMergeTemp("Telephone")} maxLen={200} ref="telephone"  isViewStatus={false} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone} />
           </li>
           <li>
-              <ViewableTextField didChanged={this._bindMergeTemp("Email")} maxLen={200} ref="email" errorMessage={I18N.Platform.User.EmailError} regex={Regex.Email} isViewStatus={false} title={I18N.Platform.User.Email} defaultValue={user.Email} />
+              <ViewableTextField didChanged={this._bindMergeTemp("Email")} maxLen={254} ref="email" errorMessage={I18N.Platform.User.EmailError} regex={Regex.Email} isViewStatus={false} title={I18N.Platform.User.Email} defaultValue={user.Email} />
           </li>
       </ul>
   </Dialog>);
@@ -624,7 +624,7 @@ var MainAppBar = React.createClass({
                   {logo}
                   {title}
                 </div>
-              
+
                     {mainmenu}
                       <div className="jazz-mainmenu-info">
                         {mail}
