@@ -74,28 +74,19 @@ var CarbonStore = assign({}, PrototypeStore, {
     _updatingCarbon = emptyMap();
     _selectedId = null;
   },
-  checkError: function(index) {
+  checkError: function() {
     var factors = _updatingCarbon.get('Factors'),
       errors = emptyList();
-    if (index > -1) {
-      var factor = factors.getIn([index]);
-      factors.forEach((item, id) => {
-        if (id != index && item.get('EffectiveYear') == factor.get('EffectiveYear')) {
-          errors = errors.setIn([index], I18N.Setting.CarbonFactor.Conflict);
-          errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
-        }
+
+    factors.forEach((item, id) => {
+      var filterId = factors.findIndex(el => {
+        return (el.get('EffectiveYear') == item.get('EffectiveYear'));
       });
-    } else {
-      factors.forEach((item, id) => {
-        var filterId = factors.findIndex(el => {
-          return (el.get('EffectiveYear') == item.get('EffectiveYear'));
-        });
-        if (filterId != id) {
-          errors = errors.setIn([filterId], I18N.Setting.CarbonFactor.Conflict);
-          errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
-        }
-      });
-    }
+      if (filterId != id) {
+        errors = errors.setIn([filterId], I18N.Setting.CarbonFactor.Conflict);
+        errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
+      }
+    });
 
     _updatingCarbon = _updatingCarbon.set('Errors', errors);
   },
@@ -115,7 +106,7 @@ var CarbonStore = assign({}, PrototypeStore, {
         _updatingCarbon = _updatingCarbon.set('Factors', factors.update(factorIndex, (item) => {
           return factors.getIn([factorIndex]).set('EffectiveYear', year.text);
         }));
-        that.checkError(factorIndex);
+        that.checkError();
         break;
       case 'FactorValue':
         var value = data.value.value,
@@ -134,12 +125,12 @@ var CarbonStore = assign({}, PrototypeStore, {
       EffectiveYear: 0
     }));
     _updatingCarbon = _updatingCarbon.set('Factors', factors);
-    this.checkError(-1);
+    this.checkError();
   },
   deleteFactor: function(index) {
     var factors = _updatingCarbon.get('Factors');
     _updatingCarbon = _updatingCarbon.set('Factors', factors.delete(index));
-    this.checkError(-1);
+    this.checkError();
   },
   deleteCarbon(deletedId) {
     var deletedIndex = -1;

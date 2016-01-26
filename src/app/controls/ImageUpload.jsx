@@ -45,11 +45,9 @@ let ImageUpload = React.createClass({
       let file = files[0];
 
       if (!FILE_TYPE_IMAGE_REG.test(file.type)) {
-        this.refs.errorDialog._error('照片添加失败', '图片文件格式为PNG，JPG，BMP和GIF，请重新选择。');
-      } else if (ENABLE_FILE_LIMIT && file.size > that.props.imageSizeMax) {
-        this.refs.errorDialog._error('照片添加失败', '图片文件超过了2M的上限，请重新选择。');
+        this.refs.errorDialog._error(I18N.Setting.CustomerManagement.LogoUploadErrorTitle, I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent);
       } else if (file.size === 0) {
-        this.refs.errorDialog._error('照片添加失败', '图片文件大小为0，请重新选择。');
+        this.refs.errorDialog._error(I18N.Setting.CustomerManagement.LogoUploadErrorTitle, I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent);
       } else {
         var createElement = window.Highcharts.createElement,
           discardElement = window.Highcharts.discardElement;

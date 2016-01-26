@@ -199,7 +199,7 @@ var UserFilter = React.createClass({
 
 					</div>
 					<div className="sidebar-bottom-action">
-						<FlatButton label="筛&nbsp;&nbsp;&nbsp;&nbsp;选" onClick={this.props.handleFilter} labelStyle={{
+						<FlatButton label={I18N.Setting.User.Filter} onClick={this.props.handleFilter} labelStyle={{
           color: "#00BCD4"
         }} style={{
           color: '#abafae',

@@ -53,6 +53,9 @@ var CustomerDetail = React.createClass({
       customerData;
     if (this.props.infoTab) {
       customerData = customer.toJS();
+      if (customerData.CalcStatus !== true && customerData.CalcStatus !== false) {
+        customerData.CalcStatus = true;
+      }
     } else {
       customerData = CustomerStore.getUpdatingEnergyInfo().toJS();
       this.setState({
@@ -162,7 +165,7 @@ var CustomerDetail = React.createClass({
     var {customer} = this.props,
       adminList = null,
       isView = this.props.formStatus === formStatus.VIEW,
-      {Code, Address, StartTime, LinkMans} = customer.toJS();
+      {Code, Address, StartTime, LinkMans, Comment, CalcStatus} = customer.toJS();
 
     //props
     var customerCodeProps = {
@@ -224,6 +227,29 @@ var CustomerDetail = React.createClass({
       wrapperWidth: 420,
       wrapperHeight: 140
     };
+    var userCommentProps = {
+      isViewStatus: isView,
+      title: I18N.Setting.UserManagement.Comment,
+      defaultValue: Comment || "",
+      multiLine: true,
+      didChanged: value => {
+        CustomerAction.merge({
+          value,
+          path: "Comment"
+        });
+      }
+    };
+    var calStatusProps = {
+      checked: (CalcStatus != true && CalcStatus != false) ? true : CalcStatus,
+      disabled: isView,
+      label: I18N.Platform.ServiceProvider.CalcStatus,
+      onCheck: (event, checked) => {
+        CustomerAction.merge({
+          value: checked,
+          path: "CalcStatus"
+        })
+      }
+    };
 
     if (!isView || (LinkMans && LinkMans.length > 0)) {
       var adminProps = {
@@ -260,6 +286,12 @@ var CustomerDetail = React.createClass({
           </div>
           <div className="pop-customer-detail-content-left-item">
             <ViewableDatePicker {...customerStartTimeProps} />
+          </div>
+          <div className="pop-user-detail-content-item">
+            <Checkbox {...calStatusProps} />
+          </div>
+          <div className="pop-user-detail-content-item">
+            <ViewableTextField {...userCommentProps}/>
           </div>
         </div>
         <div className="pop-customer-detail-content-right pop-customer-detail-info-logo">
@@ -373,7 +405,13 @@ var CustomerDetail = React.createClass({
         });
       }}
       allowDelete={that.props.infoTab}
-      onCancel={this.props.handlerCancel}
+      onCancel={
+      () => {
+        that.setState({
+          energyInfo: CustomerStore.getEnergyInfo(true)
+        })
+        that.props.handlerCancel();
+      }}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()

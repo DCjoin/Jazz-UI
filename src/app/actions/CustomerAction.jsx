@@ -16,7 +16,7 @@ let CustomerAction = {
           UserId: null,
           Order: {
             Column: Column,
-            Type: 0
+            Type: Column == 'Name' ? 0 : 1,
           }
         }
       },
