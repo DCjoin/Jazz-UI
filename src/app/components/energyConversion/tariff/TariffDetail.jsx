@@ -219,7 +219,8 @@ var TariffDetail = React.createClass({
           hasDeleteButton={peakPriceItem.get('TimeRange').size > 1}
           startTime={time.get('m_Item1')}
           endTime={time.get('m_Item2')}
-          onDeleteTimeData={that._handelDeletePeakTimeRange.bind(index)}/>
+          onDeleteTimeData={that._handelDeletePeakTimeRange.bind(index)}
+          lang={window.currentLanguage}/>
         <div className='jazz-carbon-addItem-errorText'>{error}</div>
           </div>
         )
