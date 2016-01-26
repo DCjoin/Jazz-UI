@@ -70,7 +70,7 @@ var TariffDetail = React.createClass({
     } else {
       if (!!tariff.get('PeakTariff')) {
         tariffData = tariff.get('PeakTariff').toJS();
-        //tariffData.Id = tariff.get('lId');
+        tariffData.TouTariffId = tariff.get('TouTariffId') ? tariff.get('TouTariffId') : tariff.get('Id');
         tariffData.onOff = tariff.get('onOff');
       } else {
         tariffData = {
@@ -550,16 +550,25 @@ var TariffDetail = React.createClass({
           disabledSaveButton = true
         } else {
           tariff.get('TouTariffItems').forEach(item => {
-            if (!item.get('Price') || !Regex.FactorRule.test(item.get('Price')) || !item.get('TimeRange')) {
-              disabledSaveButton = true
-            } else {
-              item.get('TimeRange').forEach(time => {
-                if (time.get('m_Item1') < 0 || time.get('m_Item2') < 0) {
+            if (item.get("ItemType") == 2) {
+              if (!!item.get('Price')) {
+                if (!Regex.FactorRule.test(item.get('Price'))) {
                   disabledSaveButton = true
                 }
-              })
+              }
+            } else {
+              if (!item.get('Price') || !Regex.FactorRule.test(item.get('Price')) || !item.get('TimeRange')) {
+                disabledSaveButton = true
+              } else {
+                item.get('TimeRange').forEach(time => {
+                  if (time.get('m_Item1') < 0 || time.get('m_Item2') < 0) {
+                    disabledSaveButton = true
+                  }
+                })
 
+              }
             }
+
           })
         }
       }
