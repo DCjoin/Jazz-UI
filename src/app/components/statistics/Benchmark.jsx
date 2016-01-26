@@ -18,8 +18,7 @@ import Immutable from 'immutable';
 var Benchmark = React.createClass({
   getInitialState: function() {
     return {
-      isLeftLoading: true,
-      isRightLoading: true,
+      isLoading: true,
       formStatus: formStatus.VIEW,
       enableSave: true,
       showDeleteDialog: false,
@@ -35,8 +34,7 @@ var Benchmark = React.createClass({
   _onBenchmarkListChange: function() {
     var benchmarkList = BenchmarkStore.getBenchmarkData();
     this.setState({
-      benchmarkList: benchmarkList,
-      isLeftLoading: false
+      benchmarkList: benchmarkList
     });
   },
   _onIndustryDataChange: function() {
@@ -55,7 +53,7 @@ var Benchmark = React.createClass({
     var selectedIndex = BenchmarkStore.getSelectedBenchmarkIndex();
     var selectedData = BenchmarkStore.getSelectedBenchmark();
     this.setState({
-      isRightLoading: false,
+      isLoading: false,
       showDeleteDialog: false,
       formStatus: formStatus.VIEW,
       selectedIndex: selectedIndex,
@@ -336,7 +334,7 @@ var Benchmark = React.createClass({
       isView = this.state.formStatus === formStatus.VIEW,
       isEdit = this.state.formStatus === formStatus.EDIT,
       isAdd = this.state.formStatus === formStatus.ADD;
-    let displayedDom = null;
+    let rightPanel = null;
     let items = [];
     var benchmarkList = me.state.benchmarkList;
     if (benchmarkList && benchmarkList.size !== 0) {
@@ -354,24 +352,27 @@ var Benchmark = React.createClass({
       });
     }
     let selectedData = me.state.selectedData;
-    if (me.state.isRightLoading) {
-      displayedDom = (<div className='jazz-benchmark-loading'><div style={{
-        margin: 'auto',
-        width: '100px'
-      }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+    if (me.state.isLoading) {
+      return (<div className='jazz-benchmark-loading'><div style={{
+          margin: 'auto',
+          width: '100px'
+        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
     } else if (selectedData !== null) {
       var header = me._renderHeader(isAdd);
       var content = me._renderContent(isView);
       var footer = me._renderFooter();
-      displayedDom = (
-        <div className="jazz-benchmark">
-          {header}
-          {content}
-          {footer}
-        </div>
+      var deleteDialog = me._renderDeleteDialog();
+      rightPanel = (
+        <Panel onToggle={this._onToggle}>
+          <div className="jazz-benchmark">
+            {header}
+            {content}
+            {footer}
+            {deleteDialog}
+          </div>
+        </Panel>
       );
     }
-    var deleteDialog = me._renderDeleteDialog();
     var benchmarkItems = this._getBenchmarkItems();
     var canAdd = true;
     if (benchmarkItems.length === 1) {
@@ -380,7 +381,7 @@ var Benchmark = React.createClass({
     var leftProps = {
       addBtnLabel: I18N.Setting.Benchmark.Label.IndustryBenchmark,
       isViewStatus: isView && canAdd,
-      isLoading: this.state.isLeftLoading,
+      isLoading: false,
       contentItems: items,
       onAddBtnClick: me._addBenchmark
     };
@@ -390,16 +391,18 @@ var Benchmark = React.createClass({
       display: 'none'
     }}><SelectablePanel {...leftProps}/></div>;
     return (
-      <div className={classnames({
+      <div style={{
+        display: 'flex',
+        flex: 1
+      }}>
+        {leftPanel}
+        <div className={classnames({
         "jazz-framework-right-expand": !me.state.showLeft,
         "jazz-framework-right-fold": me.state.showLeft
       })}>
-        {leftPanel}
-        <Panel onToggle={this._onToggle}>
-          {displayedDom}
-        </Panel>
-        {deleteDialog}
-    </div>
+          {rightPanel}
+        </div>
+      </div>
       );
   }
 });

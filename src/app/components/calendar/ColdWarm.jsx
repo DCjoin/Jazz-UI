@@ -19,8 +19,7 @@ var calendarType = 2;
 var ColdWarm = React.createClass({
   getInitialState: function() {
     return {
-      isLeftLoading: true,
-      isRightLoading: true,
+      isLoading: true,
       formStatus: formStatus.VIEW,
       enableSave: true,
       showDeleteDialog: false,
@@ -36,8 +35,7 @@ var ColdWarm = React.createClass({
   _onColdwarmListChange: function() {
     var coldwarmList = CalendarStore.getCalendarList();
     this.setState({
-      coldwarmList: coldwarmList,
-      isLeftLoading: false
+      coldwarmList: coldwarmList
     });
   },
   _onSelectedItemChange: function() {
@@ -47,7 +45,7 @@ var ColdWarm = React.createClass({
     var selectedIndex = CalendarStore.getSelectedCalendarIndex();
     var selectedData = CalendarStore.getSelectedCalendar();
     this.setState({
-      isRightLoading: false,
+      isLoading: false,
       showDeleteDialog: false,
       formStatus: formStatus.VIEW,
       selectedIndex: selectedIndex,
@@ -280,7 +278,7 @@ var ColdWarm = React.createClass({
       isView = this.state.formStatus === formStatus.VIEW,
       isEdit = this.state.formStatus === formStatus.EDIT,
       isAdd = this.state.formStatus === formStatus.ADD;
-    let displayedDom = null;
+    let rightPanel = null;
     let items = [];
     var coldwarmList = me.state.coldwarmList;
     if (coldwarmList && coldwarmList.size !== 0) {
@@ -297,28 +295,31 @@ var ColdWarm = React.createClass({
       });
     }
     let selectedData = me.state.selectedData;
-    if (me.state.isRightLoading) {
-      displayedDom = (<div className='jazz-calendar-loading'><div style={{
-        margin: 'auto',
-        width: '100px'
-      }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+    if (me.state.isLoading) {
+      return (<div className='jazz-calendar-loading'><div style={{
+          margin: 'auto',
+          width: '100px'
+        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
     } else if (selectedData !== null) {
       var header = me._renderHeader(isView);
       var content = me._renderContent(isView);
       var footer = me._renderFooter();
-      displayedDom = (
-        <div className="jazz-calendar-container">
-          {header}
-          {content}
-          {footer}
-        </div>
+      var deleteDialog = me._renderDeleteDialog();
+      rightPanel = (
+        <Panel onToggle={this._onToggle}>
+          <div className="jazz-calendar-container">
+            {header}
+            {content}
+            {footer}
+            {deleteDialog}
+          </div>
+        </Panel>
       );
     }
-    var deleteDialog = me._renderDeleteDialog();
     var leftProps = {
       addBtnLabel: I18N.Setting.Calendar.ColdwarmSetting,
       isViewStatus: isView,
-      isLoading: this.state.isLeftLoading,
+      isLoading: false,
       contentItems: items,
       onAddBtnClick: me._addColdwarm
     };
@@ -328,16 +329,18 @@ var ColdWarm = React.createClass({
       display: 'none'
     }}><SelectablePanel {...leftProps}/></div>;
     return (
-      <div className={classnames({
+      <div style={{
+        display: 'flex',
+        flex: 1
+      }}>
+        {leftPanel}
+        <div className={classnames({
         "jazz-framework-right-expand": !me.state.showLeft,
         "jazz-framework-right-fold": me.state.showLeft
       })}>
-        {leftPanel}
-        <Panel onToggle={this._onToggle}>
-          {displayedDom}
-        </Panel>
-        {deleteDialog}
-    </div>
+          {rightPanel}
+        </div>
+      </div>
       );
   }
 });
