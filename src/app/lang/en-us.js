@@ -1428,7 +1428,7 @@ I18N.Setting.CarbonFactor.ConfirmDelete = 'Are you sure to delete ##Setting.Carb
 
 I18N.Setting.TOUTariff = {};
 I18N.Setting.TOUTariff.TOUSetting = 'Peak/Valley electricity price';
-I18N.Setting.TOUTariff.Name = 'Name';
+I18N.Setting.TOUTariff.Name = 'Price Name';
 I18N.Setting.TOUTariff.BasicProperties = 'Properties';
 I18N.Setting.TOUTariff.PulsePeak = 'Peak';
 I18N.Setting.TOUTariff.BasicPropertyTip = 'In case electricity price in normal period is set, it will cover the time periods uncovered by those in peak period and valley period.';
@@ -1491,8 +1491,8 @@ I18N.Setting.UserManagement.DataPermissionSetting = 'Data authority';
 I18N.Setting.CarbonFactor.ErrorContent = 'Please input less 99999999.999999';
 I18N.Setting.CustomerManagement.LogoUploadInfo = 'Please upload logo';
 
-I18N.Setting.CustomerManagement.LogoUploadErrorTitle = '照片添加失败';
-I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent = '图片文件格式为PNG，JPG，BMP和GIF，请重新选择。';
-I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = '图片文件大小为0，请重新选择。';
+I18N.Setting.CustomerManagement.LogoUploadErrorTitle = 'Logo upload failed';
+I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent = 'Logo format must be PNG，JPG，BMP or GIF, Please select again';
+I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = 'Logo file size is 0, please select again';
 
 module.exports = I18N;
