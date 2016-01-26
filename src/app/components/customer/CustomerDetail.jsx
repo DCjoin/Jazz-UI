@@ -405,7 +405,13 @@ var CustomerDetail = React.createClass({
         });
       }}
       allowDelete={that.props.infoTab}
-      onCancel={this.props.handlerCancel}
+      onCancel={
+      () => {
+        that.setState({
+          energyInfo: CustomerStore.getEnergyInfo(true)
+        })
+        that.props.handlerCancel();
+      }}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()

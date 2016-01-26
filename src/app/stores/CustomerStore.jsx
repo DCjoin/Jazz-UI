@@ -61,6 +61,9 @@ var CustomerStore = assign({}, PrototypeStore, {
   getUpdatingEnergyInfo: function() {
     return _updatingEnergyInfo;
   },
+  getPersistedEnergyInfo: function() {
+    return _persistedEnergyInfo;
+  },
   getEnergyList: function() {
     var array = [],
       index = -1,
@@ -238,7 +241,7 @@ CustomerStore.dispatchToken = AppDispatcher.register(function(action) {
       CustomerStore.mergeEnergy(action.data);
       CustomerStore.emitEnergyInfohange();
       break;
-    case CustomerAction.MERGE_CUSTOMER_ENERGYINFO:
+    case CustomerAction.RESET_CUSTOMER:
       CustomerStore.reset();
       break;
     case CustomerAction.SAVE_CUATOMER_ENERGYINFO_SUCCESS:
