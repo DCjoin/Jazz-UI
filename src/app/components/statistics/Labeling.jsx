@@ -84,6 +84,9 @@ var Labeling = React.createClass({
     LabelingAction.cancelSaveLabeling();
   },
   _onSave: function() {
+    this.setState({
+      isLoading: true
+    });
     var selectedData = this.state.selectedData;
     var curFormStatus = this.state.formStatus;
     var labeling = {

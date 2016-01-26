@@ -76,6 +76,9 @@ var Benchmark = React.createClass({
     BenchmarkAction.cancelSaveBenchmark();
   },
   _onSave: function() {
+    this.setState({
+      isLoading: true
+    });
     var selectedData = this.state.selectedData;
     var curFormStatus = this.state.formStatus;
     var benchmark = {
