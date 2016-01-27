@@ -19,25 +19,27 @@ let GlobalErrorMessageDialog = React.createClass({
     });
   },
   componentDidUpdate: function() {
-    this.refs.errorMessageDialog.show();
+    if (this.state.isShowed) {
+      this.refs.errorMessageDialog.show();
+    }
   },
   render() {
     var errorCodeArr = ['21802', '1', '03054'];
     var output = null;
-    var snackbar = <Snackbar style={{
-      maxWidth: 'none'
-    }} message={this.state.errorMessage} openOnMount={true} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
-    var dialog = <Dialog title={'错误提示'} openImmediately={true} modal={false} ref='errorMessageDialog'>
-      {this.state.errorMessage}
-    </Dialog>;
     if (this.state.isShowed) {
+      var snackbar = <Snackbar style={{
+        maxWidth: 'none'
+      }} message={this.state.errorMessage} openOnMount={true} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
+      var dialog = <Dialog title={I18N.Platform.ServiceProvider.ErrorNotice} openImmediately={true} modal={false} ref='errorMessageDialog'>
+        {this.state.errorMessage}
+      </Dialog>;
       if (errorCodeArr.indexOf(this.state.errorCode) !== -1 || this.state.dialogShow) {
         output = dialog;
       } else {
         output = snackbar;
       }
     }
-    return <div>{output} </div>;
+    return <div>{output}</div>;
   }
 });
 
