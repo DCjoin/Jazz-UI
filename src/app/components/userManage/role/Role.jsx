@@ -158,7 +158,8 @@ var Role = React.createClass({
           display: 'flex',
           flex: 1,
           'alignItems': 'center',
-          'justifyContent': 'center'
+          'justifyContent': 'center',
+          overflow: 'auto'
         }}>
           <CircularProgress  mode="indeterminate" size={2} />
           </div>
@@ -167,7 +168,8 @@ var Role = React.createClass({
       return (
         <div style={{
           display: 'flex',
-          flex: 1
+          flex: 1,
+          overflow: 'auto'
         }}>
       {rolelist}
         <RoleDetail {...detailProps}/>

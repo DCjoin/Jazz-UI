@@ -287,7 +287,8 @@ var User = React.createClass({
           display: 'flex',
           flex: 1,
           'alignItems': 'center',
-          'justifyContent': 'center'
+          'justifyContent': 'center',
+          overflow: 'auto'
         }}>
           <CircularProgress  mode="indeterminate" size={2} />
           </div>
