@@ -215,12 +215,10 @@ let ImageUpload = React.createClass({
 				<label className={labelClassName} style={borderStyle} htmlFor="pop_image_upload_button">
 					<BackgroundImage width={this.props.wrapperWidth} height={this.props.wrapperHeight} style={backGroundStyle} mode={this.props.clipMode} imageId={this.props.imageId} imageContent={!!this.props.imageId ? null : this.props.imageSource} background={this.props.background} >
 						{tips}
-						<label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="pop_image_upload_button">
 
 						<input id="pop_image_upload_button"  name='imageFile' ref="pop_image_upload_button" type="file" disabled={this.props.isViewState} style={{
         opacity: 0
       }} onClick={this._handleClick} onChange={this._handlerChangeImageUpload} accept="images/*"/>
-			</label>
 					</BackgroundImage>
 				</label>
 				<AjaxDialog ref="errorDialog"/>

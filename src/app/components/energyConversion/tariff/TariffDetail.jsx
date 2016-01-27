@@ -230,7 +230,8 @@ var TariffDetail = React.createClass({
         <div className='jazz-item-in-margin'>
           <FromEndTime onTimeChange={onTimeChange}
         isViewStatus={isView}
-        hasDeleteButton={false}/>
+        hasDeleteButton={false}
+        lang={window.currentLanguage}/>
         </div>
 
       )
@@ -269,7 +270,8 @@ var TariffDetail = React.createClass({
           hasDeleteButton={valleyPriceItem.get('TimeRange').size > 1}
           startTime={time.get('m_Item1')}
           endTime={time.get('m_Item2')}
-          onDeleteTimeData={that._handelDeleteValleyTimeRange.bind(index)}/>
+          onDeleteTimeData={that._handelDeleteValleyTimeRange.bind(index)}
+          lang={window.currentLanguage}/>
         <div className='jazz-carbon-addItem-errorText'>{error}</div>
           </div>
         )
@@ -279,7 +281,8 @@ var TariffDetail = React.createClass({
         <div className='jazz-item-in-margin'>
           <FromEndTime onTimeChange={onTimeChange}
         isViewStatus={isView}
-        hasDeleteButton={false}/>
+        hasDeleteButton={false}
+        lang={window.currentLanguage}/>
         </div>
 
       )
@@ -493,7 +496,8 @@ var TariffDetail = React.createClass({
         isViewStatus={isView}
         hasDeleteButton={false}
         startTime={time.get("StartTime")}
-        endTime={time.get('EndTime')}/>
+        endTime={time.get('EndTime')}
+        lang={window.currentLanguage}/>
         <div className='jazz-carbon-addItem-errorText'>{timeError}</div>
           </div>
         </DeletableItem>
