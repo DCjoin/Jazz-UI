@@ -85,6 +85,11 @@ var WorkDay = React.createClass({
       showDeleteDialog: true
     });
   },
+  _onError: function() {
+    this.setState({
+      isLoading: false
+    });
+  },
   _handleDialogDismiss() {
     this.setState({
       showDeleteDialog: false
@@ -263,11 +268,13 @@ var WorkDay = React.createClass({
     CalendarAction.getCalendarListByType(calendarType);
     CalendarStore.addCalendarListChangeListener(this._onWorkdayListChange);
     CalendarStore.addSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onWorkdayListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
     CalendarAction.setSelectedCalendarIndex(null);
+    CalendarStore.removeErrorChangeListener(this._onError);
   },
 
 

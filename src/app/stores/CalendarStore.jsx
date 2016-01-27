@@ -15,6 +15,7 @@ let _calendarList = Immutable.fromJS([]),
 let CHANGE_CALENDAR_EVENT = 'changecalendar';
 let CHANGE_SELECTED_CALENDAR_EVENT = 'changeselectedcalendar';
 let CHANGE_CALENDAR_ERROR_TEXT_EVENT = 'changetimeerrortext';
+let ERROR_CHANGE_EVENT = 'errorchange';
 
 var CalendarStore = assign({}, PrototypeStore, {
   getCalendarList() {
@@ -114,7 +115,16 @@ var CalendarStore = assign({}, PrototypeStore, {
   },
   removeCalendarErrorTextChangeListener: function(callback) {
     this.removeListener(CHANGE_CALENDAR_ERROR_TEXT_EVENT, callback);
-  }
+  },
+  addErrorChangeListener(callback) {
+    this.on(ERROR_CHANGE_EVENT, callback);
+  },
+  removeErrorChangeListener(callback) {
+    this.removeListener(ERROR_CHANGE_EVENT, callback);
+  },
+  emitErrorhange() {
+    this.emit(ERROR_CHANGE_EVENT);
+  },
 
 });
 CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -140,9 +150,6 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       CalendarStore.emitCalendarErrorTextChange();
       break;
     case Action.CANCEL_SAVE_CALENDAR:
-    case Action.MODIFT_CALENDAR_ERROR:
-    case Action.CREATE_CALENDAR_ERROR:
-    case Action.DELETE_CALENDAR_ERROR:
       CalendarStore.clearAllCalendarErrorText();
       CalendarStore.emitSelectedCalendarChange();
       CalendarStore.emitCalendarErrorTextChange();
@@ -157,6 +164,11 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       CalendarStore.emitCalendarListChange();
       CalendarStore.emitSelectedCalendarChange();
       CalendarStore.emitCalendarErrorTextChange();
+      break;
+    case Action.MODIFT_CALENDAR_ERROR:
+    case Action.CREATE_CALENDAR_ERROR:
+    case Action.DELETE_CALENDAR_ERROR:
+      CalendarStore.emitErrorhange();
       break;
     case Action.CLEAR_ALL_CALENDAR_ERROR_TEXT:
       CalendarStore.clearAllCalendarErrorText();
