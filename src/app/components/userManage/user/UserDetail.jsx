@@ -603,7 +603,10 @@ var UserDetail = React.createClass({
 	                <div className="pop-framework-right-actionbar-top" style={{
         marginTop: '13px'
       }}>
-						<OrigamiPanel />
+      <div style={{
+        marginTop: '-11px'
+      }}><OrigamiPanel /></div>
+
 						{collapseButton}
 	                </div>
 	            </div>

@@ -199,6 +199,7 @@ var Customer = React.createClass({
     }}><CustomerList {...listProps}/></div> : <div style={{
       display: 'none'
     }}><CustomerList {...listProps}/></div>;
+    let detail = (this.state.customers.size === 0) ? null : <CustomerDetail {...detailProps}/>;
     if (this.state.isLoading) {
       return (
         <div style={{
@@ -218,7 +219,7 @@ var Customer = React.createClass({
           overflow: 'auto'
         }}>
     {customerlist}
-    <CustomerDetail {...detailProps}/>
+    {detail}
     {this._renderErrorDialog()}
     </div>);
     }

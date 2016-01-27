@@ -294,13 +294,20 @@ var User = React.createClass({
           </div>
         );
     } else {
+      let userList = (!this.state.closedList) ? <div style={{
+        display: 'flex',
+        width: '320px'
+      }}><UserList {...listProps}/></div> : <div style={{
+        display: 'none'
+      }}><UserList {...listProps}/></div>;
       return (
+
         <div className="pop-manage-wrapper pop-framework">
             <div className={classnames({
           "pop-manage-list-wrapper": true,
-          "closed": this.state.closedList
+          "closed": false
         })}>
-          <UserList {...listProps}/>
+        {userList}
           { filterPanel }
           { that.state.resetPasswordDone ?
           <Dialog openImmediately={true} modal={true} actions={[
