@@ -90,7 +90,8 @@ var FromEndDate = React.createClass({
       this.props.startMonth === nextProps.startMonth &&
       this.props.startDay === nextProps.startDay &&
       this.props.endMonth === nextProps.endMonth &&
-      this.props.endDay === nextProps.endDay) {
+      this.props.endDay === nextProps.endDay &&
+      this.props.lang === nextProps.lang) {
       return false;
     }
     return true;
@@ -103,6 +104,7 @@ var FromEndDate = React.createClass({
       month: me.props.startMonth,
       day: me.props.startDay,
       type: 0,
+      lang: me.props.lang,
       onMonthDayItemChange: me._onMonthDayItemChanged
     };
     var endProps = {
@@ -111,6 +113,7 @@ var FromEndDate = React.createClass({
       month: me.props.endMonth,
       day: me.props.endDay,
       type: 1,
+      lang: me.props.lang,
       onMonthDayItemChange: me._onMonthDayItemChanged
     };
     return (

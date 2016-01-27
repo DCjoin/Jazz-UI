@@ -267,6 +267,7 @@ var FromEndDateGroup = React.createClass({
           startDay: item.get('StartSecondPart'),
           endMonth: item.get('EndFirstPart'),
           endDay: item.get('EndSecondPart'),
+          lang: window.currentLanguage,
           onDateChange: me._onDateChange,
           onDeleteDateData: me._onDeleteDateData,
           setErrorText: me._setErrorText,

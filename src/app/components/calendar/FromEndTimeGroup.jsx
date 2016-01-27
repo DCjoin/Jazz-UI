@@ -143,6 +143,7 @@ var FromEndTimeGroup = React.createClass({
           errorText: me.state.errorTextArr.get(i),
           startTime: item.get('StartFirstPart') === -1 ? -1 : item.get('StartFirstPart') * 60 + item.get('StartSecondPart'),
           endTime: item.get('EndFirstPart') === -1 ? -1 : item.get('EndFirstPart') * 60 + item.get('EndSecondPart'),
+          lang: window.currentLanguage,
           onTimeChange: me._onTimeChange,
           onDeleteTimeData: me._onDeleteTimeData,
           setErrorText: me._setErrorText
