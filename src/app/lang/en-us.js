@@ -622,7 +622,6 @@ I18N.Setting.CustomerManagement.Principal = 'Responsible person';
 I18N.Setting.CustomerManagement.Telephone = 'Tel.';
 I18N.Setting.CustomerManagement.Email = 'Email';
 I18N.Setting.CustomerManagement.OperationStartTime = 'Operation time';
-I18N.Setting.CustomerManagement.Administrator = 'Customer administrator';
 I18N.Setting.CustomerManagement.NoAdministrator = 'Unselected';
 
 I18N.Setting.UserManagement = {};
@@ -1495,4 +1494,7 @@ I18N.Setting.CustomerManagement.LogoUploadErrorTitle = 'Logo upload failed';
 I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent = 'Logo format must be PNG，JPG，BMP or GIF, Please select again';
 I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = 'Logo file size is 0, please select again';
 
+I18N.Setting.CustomerManagement.Administrator = 'Customer administrator';
+I18N.Setting.CustomerManagement.AddAdministrator = 'Add Customer administrator';
+I18N.Setting.CustomerManagement.EditAdministrator = 'Edit Customer administrator';
 module.exports = I18N;

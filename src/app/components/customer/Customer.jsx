@@ -199,7 +199,7 @@ var Customer = React.createClass({
     }}><CustomerList {...listProps}/></div> : <div style={{
       display: 'none'
     }}><CustomerList {...listProps}/></div>;
-    let detail = (this.state.customers.size === 0) ? null : <CustomerDetail {...detailProps}/>;
+    let detail = (this.state.customers.size === 0 && isView) ? null : <CustomerDetail {...detailProps}/>;
     if (this.state.isLoading) {
       return (
         <div style={{

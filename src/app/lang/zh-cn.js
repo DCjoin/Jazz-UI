@@ -628,11 +628,13 @@ I18N.Setting.CustomerManagement.Principal = '负责人';
 I18N.Setting.CustomerManagement.Telephone = '负责人电话';
 I18N.Setting.CustomerManagement.Email = '负责人电子邮箱';
 I18N.Setting.CustomerManagement.OperationStartTime = '运营时间';
-I18N.Setting.CustomerManagement.Administrator = '客户管理员';
+I18N.Setting.CustomerManagement.Administrator = '维护负责人';
 I18N.Setting.CustomerManagement.NoAdministrator = '未选择';
 I18N.Setting.CustomerManagement.LogoUploadErrorTitle = '照片添加失败';
 I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent = '图片文件格式为PNG，JPG，BMP和GIF，请重新选择。';
 I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = '图片文件大小为0，请重新选择。';
+I18N.Setting.CustomerManagement.AddAdministrator = '添加维护负责人';
+I18N.Setting.CustomerManagement.EditAdministrator = '编辑维护负责人';
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = '用户管理';

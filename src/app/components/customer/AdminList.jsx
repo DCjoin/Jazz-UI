@@ -102,7 +102,7 @@ var AdminList = React.createClass({
     });
 
     var sectionPanelProps = {
-      title: "维护负责人",
+      title: I18N.Setting.CustomerManagement.Administrator,
       hasAction: status !== formStatus.VIEW,
       onAction: this._handleClickAddAdmin
     };
@@ -303,7 +303,7 @@ var AdminDialog = React.createClass({
       defaultValue: this.state.name || "",
       isRequired: true,
       didChanged: this._onChanged,
-      title: '姓名',
+      title: I18N.Template.User.Name,
       autoFocus: true
     };
     var name = (
@@ -324,7 +324,7 @@ var AdminDialog = React.createClass({
       defaultValue: this.state.telephone || "",
       isRequired: true,
       didChanged: this._onChanged,
-      title: '电话'
+      title: I18N.Setting.UserManagement.Telephone
     };
     var phoneNumber = (
     <ViewableTextField ref="phone" {...phoneNumberProps}/>
@@ -332,11 +332,11 @@ var AdminDialog = React.createClass({
 
     var emailProps = {
       defaultValue: this.state.email || "",
-      errorMessage: "请按照\"user@example.com\"的格式输入",
+      errorMessage: I18N.Platform.ServiceProvider.EmailError,
       regex: Regex.Email,
       isRequired: true,
       didChanged: this._onChanged,
-      title: '电子邮箱',
+      title: I18N.Setting.UserManagement.Email,
       maxLen: 254
     };
     var email = (
@@ -344,11 +344,11 @@ var AdminDialog = React.createClass({
     );
 
     var disabled = !this._checkValid();
-    var saveButtonTitle = '添加';
-    var operationTitle = "添加维护负责人";
+    var saveButtonTitle = I18N.Common.Button.Add;
+    var operationTitle = I18N.Setting.CustomerManagement.AddAdministrator;
     if (this.props.admin.get("Manager")) {
-      saveButtonTitle = '完成';
-      operationTitle = "编辑维护负责人";
+      saveButtonTitle = I18N.Platform.Password.Confirm;
+      operationTitle = I18N.Setting.CustomerManagement.EditAdministrator;
     }
 
     return (
@@ -362,7 +362,7 @@ var AdminDialog = React.createClass({
       onTouchTap = {
       this.handleClickFinish
       } />, < FlatButton
-      label      = "放弃"
+      label      = {I18N.Common.Button.Cancel}
       onTouchTap = {
       this.handleClickCancel
       }/>]} dismissOnClickAway={false} modal={true} openImmediately={true} ref="dialog1" style={{

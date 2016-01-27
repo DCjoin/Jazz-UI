@@ -188,7 +188,7 @@ var Tariff = React.createClass({
     }}><TariffList {...listProps}/></div> : <div style={{
       display: 'none'
     }}><TariffList {...listProps}/></div>;
-    let detail = (this.state.tariffs.size == 0) ? null : <TariffDetail {...detailProps}/>;
+    let detail = (this.state.tariffs.size == 0 && isView) ? null : <TariffDetail {...detailProps}/>;
     if (this.state.isLoading) {
       return (
         <div style={{
