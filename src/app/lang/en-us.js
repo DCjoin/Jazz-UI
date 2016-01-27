@@ -56,7 +56,7 @@ I18N.MainMenu.Template = 'Template';
 I18N.MainMenu.Calendar = 'Calendar';
 I18N.MainMenu.WorkdaySetting = 'Work day';
 I18N.MainMenu.WorktimeSetting = 'Work time';
-I18N.MainMenu.ColdwarmSetting = 'HC seasons';
+I18N.MainMenu.ColdwarmSetting = 'HC season';
 I18N.MainMenu.DaynightSetting = 'Day & night';
 I18N.MainMenu.EnergyConvert = 'Conversion';
 I18N.MainMenu.Price = 'Price';
@@ -188,7 +188,7 @@ I18N.Common.Glossary.Index = 'Index';
 
 I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
-I18N.Common.Button.Calendar.ShowHC = 'HC seasons';
+I18N.Common.Button.Calendar.ShowHC = 'HC season';
 I18N.Common.Button.Calendar.ShowHoliday = 'Non-work time';
 I18N.Common.Button.Show = 'View';
 I18N.Common.Button.Add = 'Add';
@@ -286,7 +286,7 @@ I18N.EM.Tool.Weather.Humidity = 'Humidity';
 I18N.EM.Tool.Calendar = {};
 I18N.EM.Tool.Calendar.BackgroundColor = 'Show calendar';
 I18N.EM.Tool.Calendar.NoneWorkTime = 'Non-work time';
-I18N.EM.Tool.Calendar.HotColdSeason = 'HC seasons';
+I18N.EM.Tool.Calendar.HotColdSeason = 'HC season';
 I18N.EM.Tool.Benchmark = 'Industry benchmark';
 I18N.EM.Tool.HistoryCompare = 'History comparison';
 I18N.EM.Tool.BenchmarkSetting = 'Baseline setting';
@@ -494,7 +494,7 @@ I18N.Setting.Calendar.EndTime = 'End time';
 I18N.Setting.Calendar.To = 'To';
 
 //cold/warm
-I18N.Setting.Calendar.ColdwarmSetting = 'HC seasons';
+I18N.Setting.Calendar.ColdwarmSetting = 'HC season';
 I18N.Setting.Calendar.ColdwarmName = 'HC season name';
 I18N.Setting.Calendar.SeansonType = 'Season type';
 I18N.Setting.Calendar.WarmSeason = 'Heating season';

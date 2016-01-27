@@ -172,6 +172,7 @@ var MonthDayItem = React.createClass({
       this.props.type === nextProps.type &&
       this.props.month === nextProps.month &&
       this.props.day === nextProps.day &&
+      this.props.lang === nextProps.lang &&
       this.state.dayNum === nextState.dayNum) {
       return false;
     }

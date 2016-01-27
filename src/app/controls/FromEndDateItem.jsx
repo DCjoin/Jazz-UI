@@ -71,7 +71,8 @@ var FromEndDateItem = React.createClass({
       this.props.startMonth === nextProps.startMonth &&
       this.props.startDay === nextProps.startDay &&
       this.props.endMonth === nextProps.endMonth &&
-      this.props.endDay === nextProps.endDay) {
+      this.props.endDay === nextProps.endDay &&
+      this.props.lang === nextProps.lang) {
       return false;
     }
     return true;
@@ -95,6 +96,7 @@ var FromEndDateItem = React.createClass({
       startDay: me.props.startDay,
       endMonth: me.props.endMonth,
       endDay: me.props.endDay,
+      lang: me.props.lang,
       onDateChange: me._onDateChange
     };
     var cleanIconStyle = {
