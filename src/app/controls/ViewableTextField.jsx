@@ -76,15 +76,15 @@ var ViewableTextField = React.createClass({
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps: function(nextProps, nextState) {
     this.setState({
       value: nextProps.defaultValue,
     });
-    if (nextProps.errorText != this.state.errorText) {
-      this.setState({
-        errorText: nextProps.errorText,
-      });
-    }
+    // if (nextProps.errorText != this.state.errorText) {
+    //   this.setState({
+    //     errorText: nextProps.errorText,
+    //   });
+    // }
 
   },
 

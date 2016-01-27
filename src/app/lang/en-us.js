@@ -1486,8 +1486,8 @@ I18N.Setting.User.FilterResult = 'No Customer';
 I18N.Setting.User.FilterRecommendation = 'Please try other confition';
 I18N.Setting.User.FilterResult = 'Clear filter content';
 I18N.Setting.User.Filter = 'Filter';
-I18N.Setting.UserManagement.UserInfo = 'User Info';
-I18N.Setting.UserManagement.DataPermissionSetting = 'Data authority';
+I18N.Setting.UserManagement.UserInfo = 'Properties';
+I18N.Setting.UserManagement.DataPermissionSetting = 'Authority';
 I18N.Setting.CarbonFactor.ErrorContent = 'Please input less 99999999.999999';
 I18N.Setting.CustomerManagement.LogoUploadInfo = 'Please upload logo';
 

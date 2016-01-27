@@ -88,25 +88,28 @@ var CustomerStore = assign({}, PrototypeStore, {
   },
   getEnergyInfo: function(isView) {
     var list = this.getEnergyList(),
-      energyInfo = [];
+      ids = (isView) ? _persistedEnergyInfo.toJS().EnergyInfoIds : _updatingEnergyInfo.toJS().EnergyInfoIds,
+      energyInfo = [{
+        Id: 1,
+        Name: list[3],
+        isChecked: (!!ids) ? ids.indexOf(1) > -1 : false,
+      }];
     list.forEach((item, index) => {
-
-      let ids = (isView) ? _persistedEnergyInfo.toJS().EnergyInfoIds : _updatingEnergyInfo.toJS().EnergyInfoIds;
-      if (!!ids) {
-        energyInfo.push({
-          Id: index - 2,
-          Name: item,
-          isChecked: ids.indexOf(index - 2) > -1
-        });
-      } else {
-        energyInfo.push({
-          Id: index - 2,
-          Name: item,
-          isChecked: false
-        });
+      if (index != 3) {
+        if (!!ids) {
+          energyInfo.push({
+            Id: index - 2,
+            Name: item,
+            isChecked: ids.indexOf(index - 2) > -1
+          });
+        } else {
+          energyInfo.push({
+            Id: index - 2,
+            Name: item,
+            isChecked: false
+          });
+        }
       }
-
-
     });
     return energyInfo;
   },
