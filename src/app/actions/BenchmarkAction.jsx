@@ -82,7 +82,9 @@ let BenchmarkAction = {
       },
       error: function(err, res) {
         console.log(err, res);
-        me.getAllBenchmarks();
+        AppDispatcher.dispatch({
+          type: Action.MODIFT_BENCHMARK_ERROR
+        });
       }
     });
   },
@@ -101,7 +103,9 @@ let BenchmarkAction = {
       },
       error: function(err, res) {
         console.log(err, res);
-        me.getAllBenchmarks();
+        AppDispatcher.dispatch({
+          type: Action.CREATE_BENCHMARK_ERROR
+        });
       }
     });
   },
@@ -120,6 +124,9 @@ let BenchmarkAction = {
       },
       error: function(err, res) {
         console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.DELETE_BENCHMARK_ERROR
+        });
       }
     });
   }

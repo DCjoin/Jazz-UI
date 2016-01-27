@@ -47,7 +47,9 @@ let CalendarAction = {
       },
       error: function(err, res) {
         console.log(err, res);
-        me.getCalendarListByType(type);
+        AppDispatcher.dispatch({
+          type: Action.MODIFT_CALENDAR_ERROR
+        });
       }
     });
   },
@@ -66,7 +68,9 @@ let CalendarAction = {
       },
       error: function(err, res) {
         console.log(err, res);
-        me.getCalendarListByType(type);
+        AppDispatcher.dispatch({
+          type: Action.CREATE_CALENDAR_ERROR,
+        });
       }
     });
   },
@@ -84,7 +88,9 @@ let CalendarAction = {
         });
       },
       error: function(err, res) {
-        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.DELETE_CALENDAR_ERROR
+        });
       }
     });
   },

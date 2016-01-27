@@ -112,7 +112,7 @@ var ColdWarm = React.createClass({
         <div className='jazz-calendar-delete'>{I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}</div>
       </Dialog>);
   },
-  _deleteClodwarm() {
+  _deleteColdwarm() {
     var selectedData = this.state.selectedData;
     CalendarAction.deleteCalendarById(selectedData.get('Id'), selectedData.get('Version'));
   },
