@@ -407,9 +407,12 @@ var CustomerDetail = React.createClass({
       allowDelete={that.props.infoTab}
       onCancel={
       () => {
-        that.setState({
-          energyInfo: CustomerStore.getEnergyInfo(true)
-        })
+        if (!that.props.infoTab) {
+          that.setState({
+            energyInfo: CustomerStore.getEnergyInfo(true)
+          })
+        }
+
         that.props.handlerCancel();
       }}
       onEdit={ () => {
