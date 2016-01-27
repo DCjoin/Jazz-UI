@@ -376,8 +376,8 @@ var CustomerDetail = React.createClass({
     var {Id, Name, Code, Address, StartTime, LogoId} = customer.toJS();
     if (this.props.infoTab) {
       if (
-        Name && Name.length < 200 &&
-        Code && Code.length < 200 &&
+        Name && Name.length <= 200 &&
+        Code && Code.length <= 200 &&
         Address && Address.trim() &&
         StartTime &&
         (Id || LogoId)
