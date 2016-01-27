@@ -484,7 +484,8 @@ var TariffDetail = React.createClass({
         endDay={time.get('EndDay')}
         onDateChange={(startMonth, startDay, endMonth, endDay) => {
           that.onDateChange(index, startMonth, startDay, endMonth, endDay);
-        }}/>
+        }}
+        lang={window.currentLanguage}/>
           <div className='jazz-carbon-addItem-errorText'>{dateError}</div>
           </div>
           <div className='jazz-item-in-margin' style={fontStyle}>
