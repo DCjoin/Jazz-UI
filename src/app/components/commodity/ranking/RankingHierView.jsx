@@ -101,7 +101,10 @@ var RankingHierView = React.createClass({
             <RaisedButton label={I18N.Hierarchy.Confirm} onClick={this._onConfirm}/>
             <RaisedButton label={I18N.Hierarchy.Clear} onClick={this._onClear} style={buttonStyle} disabled={this.state.clearBtnDisabled}/>
           </div>
-          <div className="tree-field">
+          <div className="tree-field" style={{
+          marginTop: '5px',
+          height: '336px'
+        }}>
             <Tree {...props}/>
             </div>
         </Paper>
