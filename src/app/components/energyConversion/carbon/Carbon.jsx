@@ -142,7 +142,8 @@ var Carbon = React.createClass({
       return (
         <div style={{
           display: 'flex',
-          flex: 1
+          flex: 1,
+          overflow: 'auto'
         }}>
     {carbonlist}
     <CarbonDetail {...detailProps}/>
