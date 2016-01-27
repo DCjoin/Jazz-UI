@@ -265,8 +265,8 @@ var Daynight = React.createClass({
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onDaynightListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
-    CalendarAction.setSelectedCalendarIndex(null);
     CalendarStore.removeErrorChangeListener(this._onError);
+    CalendarAction.setSelectedCalendarIndex(null);
   },
 
 
@@ -328,7 +328,8 @@ var Daynight = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1
+        flex: 1,
+        overflow: 'auto'
       }}>
         {leftPanel}
         <div className={classnames({

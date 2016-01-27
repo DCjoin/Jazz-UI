@@ -108,6 +108,11 @@ var Labeling = React.createClass({
       showDeleteDialog: true
     });
   },
+  _onError: function() {
+    this.setState({
+      isLoading: false
+    });
+  },
   _handleDialogDismiss() {
     this.setState({
       showDeleteDialog: false
@@ -381,12 +386,14 @@ var Labeling = React.createClass({
     LabelingStore.addIndustryDataChangeListener(this._onIndustryDataChange);
     LabelingStore.addZoneDataChangeListener(this._onZoneDataChange);
     LabelingStore.addSelectedLabelingChangeListener(this._onSelectedItemChange);
+    LabelingStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     LabelingStore.removeLabelingDataChangeListener(this._onLabelingListChange);
     LabelingStore.removeIndustryDataChangeListener(this._onIndustryDataChange);
     LabelingStore.removeZoneDataChangeListener(this._onZoneDataChange);
     LabelingStore.removeSelectedLabelingChangeListener(this._onSelectedItemChange);
+    LabelingStore.removeErrorChangeListener(this._onError);
     LabelingAction.setSelectedLabelingIndex(null);
   },
 
@@ -454,7 +461,8 @@ var Labeling = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1
+        flex: 1,
+        overflow: 'auto'
       }}>
         {leftPanel}
         <div className={classnames({

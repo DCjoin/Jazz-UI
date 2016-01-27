@@ -124,8 +124,7 @@ var CalendarStore = assign({}, PrototypeStore, {
   },
   emitErrorhange() {
     this.emit(ERROR_CHANGE_EVENT);
-  },
-
+  }
 });
 CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {

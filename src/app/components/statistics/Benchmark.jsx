@@ -99,6 +99,11 @@ var Benchmark = React.createClass({
       showDeleteDialog: true
     });
   },
+  _onError: function() {
+    this.setState({
+      isLoading: false
+    });
+  },
   _handleDialogDismiss() {
     this.setState({
       showDeleteDialog: false
@@ -316,12 +321,14 @@ var Benchmark = React.createClass({
     BenchmarkStore.addIndustryDataChangeListener(this._onIndustryDataChange);
     BenchmarkStore.addZoneDataChangeListener(this._onZoneDataChange);
     BenchmarkStore.addSelectedBenchmarkChangeListener(this._onSelectedItemChange);
+    BenchmarkStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     BenchmarkStore.removeBenchmarkDataChangeListener(this._onBenchmarkListChange);
     BenchmarkStore.removeIndustryDataChangeListener(this._onIndustryDataChange);
     BenchmarkStore.removeZoneDataChangeListener(this._onZoneDataChange);
     BenchmarkStore.removeSelectedBenchmarkChangeListener(this._onSelectedItemChange);
+    BenchmarkStore.removeErrorChangeListener(this._onError);
     BenchmarkAction.setSelectedBenchmarkIndex(null);
   },
 
@@ -390,7 +397,8 @@ var Benchmark = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1
+        flex: 1,
+        overflow: 'auto'
       }}>
         {leftPanel}
         <div className={classnames({
