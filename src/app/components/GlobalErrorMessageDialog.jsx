@@ -1,11 +1,13 @@
 'use strict';
 import React from "react";
 
-import { Dialog, Snackbar, FlatButton } from 'material-ui';
+import { Snackbar, FlatButton } from 'material-ui';
+import Dialog from '../controls/PopupDialog.jsx';
 
 let GlobalErrorMessageDialog = React.createClass({
   getInitialState() {
     return {
+      isShowed: false,
       errorMessage: '',
       errorCode: '',
       dialogShow: false
@@ -13,35 +15,31 @@ let GlobalErrorMessageDialog = React.createClass({
   },
   _onDismiss() {
     this.setState({
-      errorMessage: '',
-      errorCode: '',
-      dialogShow: false
+      isShowed: false
     });
+  },
+  componentDidUpdate: function() {
+    if (this.state.isShowed) {
+      this.refs.errorMessageDialog.show();
+    }
   },
   render() {
     var errorCodeArr = ['21802', '1', '03054'];
     var output = null;
-    var _buttonActions = [
-      <FlatButton label={'确定'} secondary={true} onClick={this._onDismiss} />
-    ];
-    var snackbar = <Snackbar style={{
-      maxWidth: 'none'
-    }} message={this.state.errorMessage} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
-    var dialog = <Dialog title="" openImmediately={true} actions={_buttonActions} modal={false} ref='errorMessageDialog' contentStyle={{
-      width: '500px',
-      color: '#464949'
-    }}>
-      <div> {this.state.errorMessage}</div>
-    </Dialog>;
-    if (this.state.errorCode !== '') {
+    if (this.state.isShowed) {
+      var snackbar = <Snackbar style={{
+        maxWidth: 'none'
+      }} message={this.state.errorMessage} openOnMount={true} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
+      var dialog = <Dialog title={I18N.Platform.ServiceProvider.ErrorNotice} openImmediately={true} modal={false} ref='errorMessageDialog'>
+        {this.state.errorMessage}
+      </Dialog>;
       if (errorCodeArr.indexOf(this.state.errorCode) !== -1 || this.state.dialogShow) {
         output = dialog;
       } else {
         output = snackbar;
       }
     }
-
-    return <div>{output} </div>;
+    return <div>{output}</div>;
   }
 });
 
