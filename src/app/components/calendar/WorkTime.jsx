@@ -85,6 +85,11 @@ var WorkTime = React.createClass({
       showDeleteDialog: true
     });
   },
+  _onError: function() {
+    this.setState({
+      isLoading: false
+    });
+  },
   _handleDialogDismiss() {
     this.setState({
       showDeleteDialog: false
@@ -255,10 +260,12 @@ var WorkTime = React.createClass({
     CalendarAction.getCalendarListByType(calendarType);
     CalendarStore.addCalendarListChangeListener(this._onWorktimeListChange);
     CalendarStore.addSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onWorktimeListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarStore.removeErrorChangeListener(this._onError);
     CalendarAction.setSelectedCalendarIndex(null);
   },
 
@@ -321,7 +328,8 @@ var WorkTime = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1
+        flex: 1,
+        overflow: 'auto'
       }}>
         {leftPanel}
         <div className={classnames({

@@ -16,6 +16,7 @@ var INDUSTRY_DATA_CHANGE_EVENT = 'industrydatachange';
 var ZONE_DATA_CHANGE_EVENT = 'zonedatachange';
 var LABELING_DATA_CHANGE_EVENT = 'labelingdatachange';
 let SELECTED_LABELING_CHANGE_EVENT = 'selectedlabelingchange';
+let ERROR_CHANGE_EVENT = 'errorchange';
 
 var LabelingStore = assign({}, PrototypeStore, {
   getLabelingData() {
@@ -120,6 +121,15 @@ var LabelingStore = assign({}, PrototypeStore, {
   },
   removeSelectedLabelingChangeListener: function(callback) {
     this.removeListener(SELECTED_LABELING_CHANGE_EVENT, callback);
+  },
+  addErrorChangeListener(callback) {
+    this.on(ERROR_CHANGE_EVENT, callback);
+  },
+  removeErrorChangeListener(callback) {
+    this.removeListener(ERROR_CHANGE_EVENT, callback);
+  },
+  emitErrorhange() {
+    this.emit(ERROR_CHANGE_EVENT);
   }
 });
 
@@ -143,9 +153,6 @@ LabelingStore.dispatchToken = AppDispatcher.register(function(action) {
       LabelingStore.emitSelectedLabelingChange();
       break;
     case Action.CANCEL_SAVE_LABELING:
-    case Action.MODIFT_LABELING_ERROR:
-    case Action.CREATE_LABELING_ERROR:
-    case Action.DELETE_LABELING_ERROR:
       LabelingStore.emitSelectedLabelingChange();
       break;
     case Action.MODIFT_LABELING_SUCCESS:
@@ -156,6 +163,11 @@ LabelingStore.dispatchToken = AppDispatcher.register(function(action) {
       LabelingStore.deleteLabeling();
       LabelingStore.emitLabelingDataChange();
       LabelingStore.emitSelectedLabelingChange();
+      break;
+    case Action.MODIFT_LABELING_ERROR:
+    case Action.CREATE_LABELING_ERROR:
+    case Action.DELETE_LABELING_ERROR:
+      LabelingStore.emitErrorhange();
       break;
   }
 });

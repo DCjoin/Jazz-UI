@@ -16,6 +16,7 @@ var INDUSTRY_DATA_CHANGE_EVENT = 'industrydatachange';
 var ZONE_DATA_CHANGE_EVENT = 'zonedatachange';
 var BENCHMARK_DATA_CHANGE_EVENT = 'benchmarkdatachange';
 let SELECTED_BENCHMARK_CHANGE_EVENT = 'selectedbenchmarkchange';
+let ERROR_CHANGE_EVENT = 'errorchange';
 
 var BenchmarkStore = assign({}, PrototypeStore, {
   getBenchmarkData() {
@@ -120,6 +121,15 @@ var BenchmarkStore = assign({}, PrototypeStore, {
   },
   removeSelectedBenchmarkChangeListener: function(callback) {
     this.removeListener(SELECTED_BENCHMARK_CHANGE_EVENT, callback);
+  },
+  addErrorChangeListener(callback) {
+    this.on(ERROR_CHANGE_EVENT, callback);
+  },
+  removeErrorChangeListener(callback) {
+    this.removeListener(ERROR_CHANGE_EVENT, callback);
+  },
+  emitErrorhange() {
+    this.emit(ERROR_CHANGE_EVENT);
   }
 });
 
@@ -143,9 +153,6 @@ BenchmarkStore.dispatchToken = AppDispatcher.register(function(action) {
       BenchmarkStore.emitSelectedBenchmarkChange();
       break;
     case Action.CANCEL_SAVE_BENCHMARK:
-    case Action.MODIFT_BENCHMARK_ERROR:
-    case Action.CREATE_BENCHMARK_ERROR:
-    case Action.DELETE_BENCHMARK_ERROR:
       BenchmarkStore.emitSelectedBenchmarkChange();
       break;
     case Action.MODIFT_BENCHMARK_SUCCESS:
@@ -156,6 +163,11 @@ BenchmarkStore.dispatchToken = AppDispatcher.register(function(action) {
       BenchmarkStore.deleteBenchmark();
       BenchmarkStore.emitBenchmarkDataChange();
       BenchmarkStore.emitSelectedBenchmarkChange();
+      break;
+    case Action.MODIFT_BENCHMARK_ERROR:
+    case Action.CREATE_BENCHMARK_ERROR:
+    case Action.DELETE_BENCHMARK_ERROR:
+      BenchmarkStore.emitErrorhange();
       break;
   }
 });
