@@ -143,6 +143,9 @@ BenchmarkStore.dispatchToken = AppDispatcher.register(function(action) {
       BenchmarkStore.emitSelectedBenchmarkChange();
       break;
     case Action.CANCEL_SAVE_BENCHMARK:
+    case Action.MODIFT_BENCHMARK_ERROR:
+    case Action.CREATE_BENCHMARK_ERROR:
+    case Action.DELETE_BENCHMARK_ERROR:
       BenchmarkStore.emitSelectedBenchmarkChange();
       break;
     case Action.MODIFT_BENCHMARK_SUCCESS:

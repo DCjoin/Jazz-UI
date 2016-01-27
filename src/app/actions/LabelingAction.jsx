@@ -82,7 +82,9 @@ let LabelingAction = {
       },
       error: function(err, res) {
         console.log(err, res);
-        me.getAllLabelings();
+        AppDispatcher.dispatch({
+          type: Action.MODIFT_LABELING_ERROR
+        });
       }
     });
   },
@@ -101,7 +103,9 @@ let LabelingAction = {
       },
       error: function(err, res) {
         console.log(err, res);
-        me.getAllLabelings();
+        AppDispatcher.dispatch({
+          type: Action.CREATE_LABELING_ERROR
+        });
       }
     });
   },
@@ -121,6 +125,9 @@ let LabelingAction = {
       },
       error: function(err, res) {
         console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.DELETE_LABELING_ERROR
+        });
       }
     });
   }

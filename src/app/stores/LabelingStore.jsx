@@ -143,6 +143,9 @@ LabelingStore.dispatchToken = AppDispatcher.register(function(action) {
       LabelingStore.emitSelectedLabelingChange();
       break;
     case Action.CANCEL_SAVE_LABELING:
+    case Action.MODIFT_LABELING_ERROR:
+    case Action.CREATE_LABELING_ERROR:
+    case Action.DELETE_LABELING_ERROR:
       LabelingStore.emitSelectedLabelingChange();
       break;
     case Action.MODIFT_LABELING_SUCCESS:

@@ -140,9 +140,16 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       CalendarStore.emitCalendarErrorTextChange();
       break;
     case Action.CANCEL_SAVE_CALENDAR:
+    case Action.MODIFT_CALENDAR_ERROR:
+    case Action.CREATE_CALENDAR_ERROR:
+    case Action.DELETE_CALENDAR_ERROR:
       CalendarStore.clearAllCalendarErrorText();
       CalendarStore.emitSelectedCalendarChange();
       CalendarStore.emitCalendarErrorTextChange();
+      break;
+    case Action.MODIFT_CALENDAR_SUCCESS:
+    case Action.CREATE_CALENDAR_SUCCESS:
+      CalendarStore.setSelectedCalendar(action.calendar);
       break;
     case Action.DELETE_CALENDAR_SUCCESS:
       CalendarStore.clearAllCalendarErrorText();
@@ -150,10 +157,6 @@ CalendarStore.dispatchToken = AppDispatcher.register(function(action) {
       CalendarStore.emitCalendarListChange();
       CalendarStore.emitSelectedCalendarChange();
       CalendarStore.emitCalendarErrorTextChange();
-      break;
-    case Action.MODIFT_CALENDAR_SUCCESS:
-    case Action.CREATE_CALENDAR_SUCCESS:
-      CalendarStore.setSelectedCalendar(action.calendar);
       break;
     case Action.CLEAR_ALL_CALENDAR_ERROR_TEXT:
       CalendarStore.clearAllCalendarErrorText();

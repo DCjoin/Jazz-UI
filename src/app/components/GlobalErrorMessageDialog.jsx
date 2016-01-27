@@ -6,7 +6,6 @@ import { Dialog, Snackbar, FlatButton } from 'material-ui';
 let GlobalErrorMessageDialog = React.createClass({
   getInitialState() {
     return {
-      isShowed: false,
       errorMessage: '',
       errorCode: '',
       dialogShow: false
@@ -14,15 +13,6 @@ let GlobalErrorMessageDialog = React.createClass({
   },
   _onDismiss() {
     this.setState({
-      isShowed: false
-    });
-  },
-  _show() {
-    this.refs.errorMessageDialog.show();
-  },
-  _hide() {
-    this.setState({
-      isShowed: false,
       errorMessage: '',
       errorCode: '',
       dialogShow: false
@@ -32,12 +22,12 @@ let GlobalErrorMessageDialog = React.createClass({
     var errorCodeArr = ['21802', '1', '03054'];
     var output = null;
     var _buttonActions = [
-      <FlatButton label={'确定'} secondary={true} onClick={this._hide} />
+      <FlatButton label={'确定'} secondary={true} onClick={this._onDismiss} />
     ];
     var snackbar = <Snackbar style={{
       maxWidth: 'none'
     }} message={this.state.errorMessage} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
-    var dialog = <Dialog title="" openImmediately={this.state.isShowed} actions={_buttonActions} modal={false} ref='errorMessageDialog' contentStyle={{
+    var dialog = <Dialog title="" openImmediately={true} actions={_buttonActions} modal={false} ref='errorMessageDialog' contentStyle={{
       width: '500px',
       color: '#464949'
     }}>
@@ -52,12 +42,7 @@ let GlobalErrorMessageDialog = React.createClass({
     }
 
     return <div>{output} </div>;
-  },
-  componentDidUpdate() {
-    if (this.state.isShowed) {
-      this._show();
-    }
-  },
+  }
 });
 
 module.exports = GlobalErrorMessageDialog;
