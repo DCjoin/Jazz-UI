@@ -268,10 +268,10 @@ let CommonFuns = {
       errorType = error.errorType; // 02、05输入错误，06并发错误;
 
     if (errorType === undefined) {
-      CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorCode), errorCode);
+      CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorCode), errorModelNCode);
       return;
     }
-    CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorModelNCode), errorCode);
+    CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorModelNCode), errorModelNCode);
 
   },
   base64ToBackgroundImageUrl: function(base64Data) {

@@ -82,6 +82,7 @@ let BenchmarkAction = {
       },
       error: function(err, res) {
         console.log(err, res);
+        me.getAllBenchmarks();
       }
     });
   },
@@ -100,6 +101,7 @@ let BenchmarkAction = {
       },
       error: function(err, res) {
         console.log(err, res);
+        me.getAllBenchmarks();
       }
     });
   },

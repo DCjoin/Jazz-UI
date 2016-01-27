@@ -70,6 +70,9 @@ var ColdWarm = React.createClass({
   },
   _onSave: function() {
     this._clearAllErrorText();
+    this.setState({
+      isLoading: true
+    });
     var selectedData = this.state.selectedData.toJS();
     if (selectedData.Id === null) {
       CalendarAction.createCalendar(selectedData, calendarType);

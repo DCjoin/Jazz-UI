@@ -21,10 +21,15 @@ let GlobalErrorMessageDialog = React.createClass({
     this.refs.errorMessageDialog.show();
   },
   _hide() {
-    this.refs.errorMessageDialog.dismiss();
+    this.setState({
+      isShowed: false,
+      errorMessage: '',
+      errorCode: '',
+      dialogShow: false
+    });
   },
   render() {
-    var errorCodeArr = ['21802', '1'];
+    var errorCodeArr = ['21802', '1', '03054'];
     var output = null;
     var _buttonActions = [
       <FlatButton label={'确定'} secondary={true} onClick={this._hide} />
@@ -38,10 +43,12 @@ let GlobalErrorMessageDialog = React.createClass({
     }}>
       <div> {this.state.errorMessage}</div>
     </Dialog>;
-    if (errorCodeArr.indexOf(this.state.errorCode) !== -1 || this.state.dialogShow) {
-      output = dialog;
-    } else {
-      output = snackbar;
+    if (this.state.errorCode !== '') {
+      if (errorCodeArr.indexOf(this.state.errorCode) !== -1 || this.state.dialogShow) {
+        output = dialog;
+      } else {
+        output = snackbar;
+      }
     }
 
     return <div>{output} </div>;

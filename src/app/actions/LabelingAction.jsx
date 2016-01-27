@@ -82,6 +82,7 @@ let LabelingAction = {
       },
       error: function(err, res) {
         console.log(err, res);
+        me.getAllLabelings();
       }
     });
   },
@@ -100,6 +101,7 @@ let LabelingAction = {
       },
       error: function(err, res) {
         console.log(err, res);
+        me.getAllLabelings();
       }
     });
   },
