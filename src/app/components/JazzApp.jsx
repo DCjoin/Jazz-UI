@@ -259,7 +259,7 @@ let JazzApp = React.createClass({
       errorCode: errorCode,
       dialogShow: dialogShow
     });
-    this.refs.globalErrorMessageDialog._hide();
+    this.refs.globalErrorMessageDialog._onDismiss();
   },
   _onErrorMessageChanged() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();

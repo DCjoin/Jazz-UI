@@ -97,14 +97,15 @@ var AdminList = React.createClass({
     var that = this;
     var admins = adminData.map((item, index) => {
       return (
-        <Admin admin={item} deleteAdmin={this._deleteAdmin} index={index} key={"admin-index-" + index} showDialog={that._showDialog} status={status}/>
+        <Admin lang={window.currentLanguage} admin={item} deleteAdmin={this._deleteAdmin} index={index} key={"admin-index-" + index} showDialog={that._showDialog} status={status}/>
         );
     });
 
     var sectionPanelProps = {
-      title: "维护负责人",
+      title: I18N.Setting.CustomerManagement.Administrator,
       hasAction: status !== formStatus.VIEW,
-      onAction: this._handleClickAddAdmin
+      onAction: this._handleClickAddAdmin,
+      actionLabel: I18N.Common.Button.Add
     };
     var dialog = null;
     var state = this.state.state;
@@ -147,7 +148,7 @@ var Admin = React.createClass({
 
   shouldComponentUpdate: function(nextProps, nextState) {
 
-    if (this.props.status === nextProps.status && this.props.admin === nextProps.admin) {
+    if (this.props.status === nextProps.status && this.props.admin === nextProps.admin && this.props.lang === nextProps.lang) {
       return false;
     }
     return true;
@@ -173,7 +174,7 @@ var Admin = React.createClass({
     if (this.props.status !== formStatus.VIEW) {
       deleteBtn = (
         <div className="pop-admin-btn">
-          <a onClick={this._handleDeleteAdmin}>删除</a>
+          <a onClick={this._handleDeleteAdmin}>{I18N.Common.Button.Delete}</a>
         </div>
       );
     }
@@ -303,7 +304,7 @@ var AdminDialog = React.createClass({
       defaultValue: this.state.name || "",
       isRequired: true,
       didChanged: this._onChanged,
-      title: '姓名',
+      title: I18N.Template.User.Name,
       autoFocus: true
     };
     var name = (
@@ -311,7 +312,7 @@ var AdminDialog = React.createClass({
     );
 
     var titleProps = {
-      title: '职位',
+      title: I18N.Setting.CustomerManagement.Title,
       defaultValue: this.state.title || "",
       isRequired: true,
       didChanged: this._onChanged,
@@ -324,7 +325,7 @@ var AdminDialog = React.createClass({
       defaultValue: this.state.telephone || "",
       isRequired: true,
       didChanged: this._onChanged,
-      title: '电话'
+      title: I18N.Setting.UserManagement.Telephone
     };
     var phoneNumber = (
     <ViewableTextField ref="phone" {...phoneNumberProps}/>
@@ -332,11 +333,11 @@ var AdminDialog = React.createClass({
 
     var emailProps = {
       defaultValue: this.state.email || "",
-      errorMessage: "请按照\"user@example.com\"的格式输入",
+      errorMessage: I18N.Platform.ServiceProvider.EmailError,
       regex: Regex.Email,
       isRequired: true,
       didChanged: this._onChanged,
-      title: '电子邮箱',
+      title: I18N.Setting.UserManagement.Email,
       maxLen: 254
     };
     var email = (
@@ -344,11 +345,11 @@ var AdminDialog = React.createClass({
     );
 
     var disabled = !this._checkValid();
-    var saveButtonTitle = '添加';
-    var operationTitle = "添加维护负责人";
+    var saveButtonTitle = I18N.Common.Button.Add;
+    var operationTitle = I18N.Setting.CustomerManagement.AddAdministrator;
     if (this.props.admin.get("Manager")) {
-      saveButtonTitle = '完成';
-      operationTitle = "编辑维护负责人";
+      saveButtonTitle = I18N.Platform.Password.Confirm;
+      operationTitle = I18N.Setting.CustomerManagement.EditAdministrator;
     }
 
     return (
@@ -362,7 +363,7 @@ var AdminDialog = React.createClass({
       onTouchTap = {
       this.handleClickFinish
       } />, < FlatButton
-      label      = "放弃"
+      label      = {I18N.Common.Button.Cancel}
       onTouchTap = {
       this.handleClickCancel
       }/>]} dismissOnClickAway={false} modal={true} openImmediately={true} ref="dialog1" style={{

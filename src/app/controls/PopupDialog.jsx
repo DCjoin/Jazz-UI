@@ -1,26 +1,28 @@
 'use strict';
 
 import React from 'react';
-import {Dialog } from 'material-ui';
+import { Dialog } from 'material-ui';
 
 import util from '../util/util.jsx';
 
 import FlatButton from './FlatButton.jsx';
 import _assign from "lodash/object/assign";
-var _={assign:_assign};
+var _ = {
+  assign: _assign
+};
 
 var timeoutHandler = null;
 
 var CustomDialog = React.createClass({
 
-	propTypes: {
+  propTypes: {
     rightActions: React.PropTypes.bool
-	},
+  },
 
   getInitialState: function() {
-  	return {
-			loadingStatus:0,
-  	};
+    return {
+      loadingStatus: 0,
+    };
   },
 
   getDefaultProps: function() {
@@ -32,18 +34,20 @@ var CustomDialog = React.createClass({
 
   _handleResize() {
 
-      if (timeoutHandler!=null){
-          clearTimeout(timeoutHandler);
-      }
-      timeoutHandler = setTimeout(()=>{
-          this._positionMaxHeight();
-      },400);
-      
+    if (timeoutHandler != null) {
+      clearTimeout(timeoutHandler);
+    }
+    timeoutHandler = setTimeout(() => {
+      this._positionMaxHeight();
+    }, 400);
+
   },
 
 
   _getAction: function(actionJSON, key) {
-    var styles = {marginRight: 8};
+    var styles = {
+      marginRight: 8
+    };
     var props = {
       key: key,
       // secondary: true,
@@ -66,8 +70,8 @@ var CustomDialog = React.createClass({
 
     return (
       <FlatButton
-        {...props} />
-    );
+      {...props} />
+      );
   },
 
   _getActionsContainer: function(actions) {
@@ -83,9 +87,9 @@ var CustomDialog = React.createClass({
       marginTop: 0
     };
 
-		_.assign(actionStyle, this.props.actionStyle);
+    _.assign(actionStyle, this.props.actionStyle);
 
-    if( this.props.rightActions ) {
+    if (this.props.rightActions) {
       actionStyle.textAlign = 'right';
       actionStyle.paddingLeft = 8;
       actionStyle.paddingRight = 16;
@@ -99,29 +103,29 @@ var CustomDialog = React.createClass({
           currentAction = this._getAction(currentAction, i);
         }
 
-        if( !currentAction.DisabledClose ) {
+        if (!currentAction.DisabledClose) {
           var rawClick = currentAction.props.onClick;
-          ( (rawClick) => {            
-            currentAction.props.onClick = ( e ) => {
+          ((rawClick) => {
+            currentAction.props.onClick = (e) => {
               this.dismiss();
-              setTimeout( () => {
-                if( rawClick ) {
-                  rawClick( e );
+              setTimeout(() => {
+                if (rawClick) {
+                  rawClick(e);
                 }
-              }, 450 );
+              }, 450);
             };
-          } );
+          });
         }
 
         var props = currentAction.props || {};
         props.inDialog = true;
-        if( i > 0 ) {
+        if (i > 0) {
           props.style = _.assign({}, props.style, {
             marginLeft: 20
           });
         }
 
-        actionObjects.push( React.cloneElement(currentAction, props) );
+        actionObjects.push(React.cloneElement(currentAction, props));
       }
 
       actionContainer = (
@@ -135,17 +139,17 @@ var CustomDialog = React.createClass({
   },
 
   dismiss: function() {
-    if( this.refs.dialog ) {      
+    if (this.refs.dialog) {
       this.refs.dialog.dismiss();
-      setTimeout( () => {
-        if(this.props.onClose){
+      setTimeout(() => {
+        if (this.props.onClose) {
           this.props.onClose();
         }
       }, 450);
     } else {
-        if(this.props.onClose){
-          this.props.onClose();
-        }      
+      if (this.props.onClose) {
+        this.props.onClose();
+      }
     }
   },
 
@@ -155,19 +159,19 @@ var CustomDialog = React.createClass({
 
   _onShow: function() {
     this._positionMaxHeight();
-    if(this.props._onShow){
+    if (this.props._onShow) {
       this.props._onShow();
     }
   },
-  
+
   _positionMaxHeight() {
     let clientHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     let dialogContentMaxHeight = (clientHeight < 600 ? 600 : clientHeight) / 4 * 3;
 
     let dialog = this.refs["dialog"];
-    if( dialog ) {
+    if (dialog) {
       let dialogScrollDom = dialog.getDOMNode().querySelector(".dialog-scroll");
-      if( dialogScrollDom ) {        
+      if (dialogScrollDom) {
         let dialogOtherHeight = dialog.getDOMNode().querySelector(".dialog-content").clientHeight - dialogScrollDom.clientHeight;
         dialogScrollDom.style.maxHeight = `${dialogContentMaxHeight - dialogOtherHeight}px`;
         dialog._positionDialog();
@@ -188,20 +192,22 @@ var CustomDialog = React.createClass({
   },
 
   componentWillUnmount: function() {
-      window.removeEventListener('resize', this._handleResize);
+    window.removeEventListener('resize', this._handleResize);
   },
 
-	render: function() {
-		var other = util.merge( true, {}, this.props,{onShow: this._onShow} ),
-			actions = this._getActionsContainer(other.actions||[]),
+  render: function() {
+    var other = util.merge(true, {}, this.props, {
+        onShow: this._onShow
+      }),
+      actions = this._getActionsContainer(other.actions || []),
       closeIcon = null;
 
-		delete other.actions;
+    delete other.actions;
     delete other.openImmediately;
 
-		var contentStyle = _.assign({}, this.props.contentStyle);
+    var contentStyle = _.assign({}, this.props.contentStyle);
 
-    if( this.props.modal !== true ) {
+    if (this.props.modal !== true) {
       closeIcon = (<div className="dialog-close-icon icon-close" onClick={this.dismiss}></div>);
       other.onClickAway = this.dismiss;
     }
@@ -209,12 +215,15 @@ var CustomDialog = React.createClass({
     return (
       <Dialog ref="dialog" {...other} contentClassName="dialog-content" contentStyle={contentStyle}>
         {closeIcon}
-        {this.props.children}
+				<div style={{
+        wordWrap: 'break-word'
+      }}>{this.props.children}</div>
+
         {actions}
       </Dialog>
 
-    );
-	}
+      );
+  }
 });
 
 module.exports = CustomDialog;

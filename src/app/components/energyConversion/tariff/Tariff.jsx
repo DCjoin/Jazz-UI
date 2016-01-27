@@ -188,6 +188,7 @@ var Tariff = React.createClass({
     }}><TariffList {...listProps}/></div> : <div style={{
       display: 'none'
     }}><TariffList {...listProps}/></div>;
+    let detail = (this.state.tariffs.size == 0 && isView) ? null : <TariffDetail {...detailProps}/>;
     if (this.state.isLoading) {
       return (
         <div style={{
@@ -207,7 +208,7 @@ var Tariff = React.createClass({
           overflow: 'auto'
         }}>
     {tarifflist}
-    <TariffDetail {...detailProps}/>
+{detail}
     {that._renderErrorDialog()}
     </div>);
     }
