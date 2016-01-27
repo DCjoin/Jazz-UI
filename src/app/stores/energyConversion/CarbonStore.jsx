@@ -79,13 +79,16 @@ var CarbonStore = assign({}, PrototypeStore, {
       errors = emptyList();
 
     factors.forEach((item, id) => {
-      var filterId = factors.findIndex(el => {
-        return (el.get('EffectiveYear') == item.get('EffectiveYear'));
-      });
-      if (filterId != id) {
-        errors = errors.setIn([filterId], I18N.Setting.CarbonFactor.Conflict);
-        errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
+      if (item.get('EffectiveYear') !== 0) {
+        let filterId = factors.findIndex(el => {
+          return (el.get('EffectiveYear') == item.get('EffectiveYear'));
+        });
+        if (filterId != id) {
+          errors = errors.setIn([filterId], I18N.Setting.CarbonFactor.Conflict);
+          errors = errors.setIn([id], I18N.Setting.CarbonFactor.Conflict);
+        }
       }
+
     });
 
     _updatingCarbon = _updatingCarbon.set('Errors', errors);
