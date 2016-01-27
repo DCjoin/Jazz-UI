@@ -104,19 +104,19 @@ var CustomerDetail = React.createClass({
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={"删除 “" + customer.get('Name') + "”"} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.TOUTariff.DeleteTitle, customer.get('Name'))} modal={true} actions={[
           <FlatButton
-          label="删除"
+          label={I18N.Common.Button.Delete}
           primary={true}
           onClick={() => {
             that.props.handleDeleteCustomer(customer);
             closeDialog();
           }} />,
           <FlatButton
-          label="放弃"
+          label={I18N.Common.Button.Cancel}
           onClick={closeDialog} />
         ]}>
-        {" “" + customer.get('Name') + "” 将被删除"}
+        {I18N.format(I18N.Setting.TOUTariff.DeleteContent, customer.get('Name'))}
       </Dialog>
         );
     }
@@ -202,6 +202,7 @@ var CustomerDetail = React.createClass({
       isRequired: true,
       regex: Regex.CommonTextNotNullRule,
       errorMessage: "请输入客户地址",
+      lang: window.currentLanguage,
       didChanged: value => {
         var d2j = CommonFuns.DataConverter.DatetimeToJson;
         CustomerAction.merge({

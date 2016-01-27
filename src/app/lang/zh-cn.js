@@ -635,6 +635,7 @@ I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent = '图片文件格式
 I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = '图片文件大小为0，请重新选择。';
 I18N.Setting.CustomerManagement.AddAdministrator = '添加维护负责人';
 I18N.Setting.CustomerManagement.EditAdministrator = '编辑维护负责人';
+I18N.Setting.CustomerManagement.Title = '职位';
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = '用户管理';

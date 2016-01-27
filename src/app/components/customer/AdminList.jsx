@@ -97,14 +97,15 @@ var AdminList = React.createClass({
     var that = this;
     var admins = adminData.map((item, index) => {
       return (
-        <Admin admin={item} deleteAdmin={this._deleteAdmin} index={index} key={"admin-index-" + index} showDialog={that._showDialog} status={status}/>
+        <Admin lang={window.currentLanguage} admin={item} deleteAdmin={this._deleteAdmin} index={index} key={"admin-index-" + index} showDialog={that._showDialog} status={status}/>
         );
     });
 
     var sectionPanelProps = {
       title: I18N.Setting.CustomerManagement.Administrator,
       hasAction: status !== formStatus.VIEW,
-      onAction: this._handleClickAddAdmin
+      onAction: this._handleClickAddAdmin,
+      actionLabel: I18N.Common.Button.Add
     };
     var dialog = null;
     var state = this.state.state;
@@ -147,7 +148,7 @@ var Admin = React.createClass({
 
   shouldComponentUpdate: function(nextProps, nextState) {
 
-    if (this.props.status === nextProps.status && this.props.admin === nextProps.admin) {
+    if (this.props.status === nextProps.status && this.props.admin === nextProps.admin && this.props.lang === nextProps.lang) {
       return false;
     }
     return true;
@@ -173,7 +174,7 @@ var Admin = React.createClass({
     if (this.props.status !== formStatus.VIEW) {
       deleteBtn = (
         <div className="pop-admin-btn">
-          <a onClick={this._handleDeleteAdmin}>删除</a>
+          <a onClick={this._handleDeleteAdmin}>{I18N.Common.Button.Delete}</a>
         </div>
       );
     }
@@ -311,7 +312,7 @@ var AdminDialog = React.createClass({
     );
 
     var titleProps = {
-      title: '职位',
+      title: I18N.Setting.CustomerManagement.Title,
       defaultValue: this.state.title || "",
       isRequired: true,
       didChanged: this._onChanged,

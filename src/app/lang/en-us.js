@@ -1497,4 +1497,5 @@ I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = 'Logo file size is 
 I18N.Setting.CustomerManagement.Administrator = 'Customer administrator';
 I18N.Setting.CustomerManagement.AddAdministrator = 'Add Customer administrator';
 I18N.Setting.CustomerManagement.EditAdministrator = 'Edit Customer administrator';
+I18N.Setting.CustomerManagement.Title = 'Title';
 module.exports = I18N;
