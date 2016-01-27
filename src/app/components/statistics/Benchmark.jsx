@@ -231,14 +231,8 @@ var Benchmark = React.createClass({
         <ViewableDropDownMenu {...titleDropProps}></ViewableDropDownMenu>
       </div>);
     } else {
-      var titleTextProps = {
-        ref: 'benchmarkTitleText',
-        isViewStatus: !isAdd,
-        defaultValue: selectedData.get('IndustryComment'),
-        title: ''
-      };
       title = (<div className='jazz-benchmark-header-text'>
-        <ViewableTextField {...titleTextProps}></ViewableTextField>
+        {selectedData.get('IndustryComment')}
       </div>);
     }
     return (
