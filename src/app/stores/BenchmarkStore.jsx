@@ -24,7 +24,7 @@ var BenchmarkStore = assign({}, PrototypeStore, {
   },
   setBenchmarkData(benchmarkData) {
     _benchmarkData = Immutable.fromJS(benchmarkData);
-    if (_benchmarkData.size !== 0) {
+    if (_benchmarkData && _benchmarkData.size !== 0) {
       if (_selecteBenchmarkIndex === null) {
         _selecteBenchmarkIndex = 0;
         _selecteBenchmark = _benchmarkData.get(0);

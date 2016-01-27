@@ -24,7 +24,7 @@ var LabelingStore = assign({}, PrototypeStore, {
   },
   setLabelingData(labelingData) {
     _labelingData = Immutable.fromJS(labelingData);
-    if (_labelingData.size !== 0) {
+    if (_labelingData && _labelingData.size !== 0) {
       if (_selecteLabelingIndex === null) {
         _selecteLabelingIndex = 0;
         _selecteLabeling = _labelingData.get(0);
