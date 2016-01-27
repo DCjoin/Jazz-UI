@@ -85,6 +85,11 @@ var ColdWarm = React.createClass({
       showDeleteDialog: true
     });
   },
+  _onError: function() {
+    this.setState({
+      isLoading: false
+    });
+  },
   _handleDialogDismiss() {
     this.setState({
       showDeleteDialog: false
@@ -268,11 +273,13 @@ var ColdWarm = React.createClass({
     CalendarAction.getCalendarListByType(calendarType);
     CalendarStore.addCalendarListChangeListener(this._onColdwarmListChange);
     CalendarStore.addSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onColdwarmListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
     CalendarAction.setSelectedCalendarIndex(null);
+    CalendarStore.removeErrorChangeListener(this._onError);
   },
 
 

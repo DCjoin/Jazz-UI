@@ -85,6 +85,11 @@ var Daynight = React.createClass({
       showDeleteDialog: true
     });
   },
+  _onError: function() {
+    this.setState({
+      isLoading: false
+    });
+  },
   _handleDialogDismiss() {
     this.setState({
       showDeleteDialog: false
@@ -255,11 +260,13 @@ var Daynight = React.createClass({
     CalendarAction.getCalendarListByType(calendarType);
     CalendarStore.addCalendarListChangeListener(this._onDaynightListChange);
     CalendarStore.addSelectedCalendarChangeListener(this._onSelectedItemChange);
+    CalendarStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     CalendarStore.removeCalendarListChangeListener(this._onDaynightListChange);
     CalendarStore.removeSelectedCalendarChangeListener(this._onSelectedItemChange);
     CalendarAction.setSelectedCalendarIndex(null);
+    CalendarStore.removeErrorChangeListener(this._onError);
   },
 
 
