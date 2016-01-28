@@ -98,7 +98,8 @@ let Platform = React.createClass({
         formStatus: this.state.status,
         _toggleList: this._onToggleList,
         setEditStatus: this._setEditStatus,
-        handleCancel: this._handleCancel
+        handleCancel: this._handleCancel,
+        show: this.state.leftPanelShow,
       };
     let leftPanel = (this.state.leftPanelShow) ? <div style={{
       display: 'flex'
