@@ -305,16 +305,16 @@ var UserDetail = React.createClass({
       checkAll = true,
       {customers} = that.props,
       isView = that.props.formStatus === formStatus.VIEW;
-    if (customers.size < 1) {
-      return (
-        <div style={{
-          display: 'flex',
-          flex: 1,
-          'alignItems': 'center',
-          'justifyContent': 'center'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div>
-        );
-    }
+      // if (customers.size < 1) {
+      //   return (
+      //     <div style={{
+      //       display: 'flex',
+      //       flex: 1,
+      //       'alignItems': 'center',
+      //       'justifyContent': 'center'
+      //     }}><CircularProgress  mode="indeterminate" size={2} /></div>
+      //     );
+      // }
 
     customers.forEach((customer) => {
       if (!customer.get("Privileged")) {

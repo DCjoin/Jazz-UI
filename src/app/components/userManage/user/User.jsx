@@ -165,7 +165,8 @@ var User = React.createClass({
 
       this.setState({
         infoTab: false,
-        formStatus: formStatus.VIEW
+        formStatus: formStatus.VIEW,
+        isLoading: true
       });
       UserAction.getCustomerByUser(this.state.selectedUserId);
     }
