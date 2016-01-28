@@ -2665,7 +2665,7 @@ let ChartStrategyFactor = {
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
           display: 'flex',
-          height: '96px'
+          minHeight: '48px'
         }}>
         <div style={{
           marginLeft: '10px'
@@ -2690,7 +2690,8 @@ let ChartStrategyFactor = {
            </div>;
       } else if (chartType === 'rawdata') {
         toolElement = <div style={{
-          display: 'flex'
+          display: 'flex',
+          minHeight: '48px'
         }}>
              <div style={{
           margin: '10px 0 0 30px'
@@ -2709,7 +2710,7 @@ let ChartStrategyFactor = {
       } else if (chartType === 'pie') {
         toolElement = <div style={{
           display: 'flex',
-          height: '96px'
+          minHeight: '48px'
         }}>
              <div style={{
           margin: '10px 0 0 23px'
@@ -2738,7 +2739,7 @@ let ChartStrategyFactor = {
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
           display: 'flex',
-          height: '96px'
+          minHeight: '48px'
         }}>
         <div style={{
           marginLeft: '10px'
@@ -2763,7 +2764,7 @@ let ChartStrategyFactor = {
       } else if (chartType === 'pie') {
         toolElement = <div style={{
           display: 'flex',
-          height: '96px'
+          minHeight: '48px'
         }}>
              <div style={{
           margin: '10px 0 0 23px'
@@ -2799,7 +2800,7 @@ let ChartStrategyFactor = {
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
           display: 'flex',
-          height: '96px'
+          minHeight: '48px'
         }}>
         <div style={{
           marginLeft: '10px'
@@ -2825,7 +2826,7 @@ let ChartStrategyFactor = {
       } else if (chartType === 'pie') {
         toolElement = <div style={{
           display: 'flex',
-          height: '96px'
+          minHeight: '48px'
         }}>
              <div style={{
           margin: '10px 0 0 23px'
@@ -2853,7 +2854,7 @@ let ChartStrategyFactor = {
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex',
-        height: '96px'
+        minHeight: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
@@ -2887,7 +2888,7 @@ let ChartStrategyFactor = {
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex',
-        height: '96px'
+        minHeight: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
@@ -2928,7 +2929,7 @@ let ChartStrategyFactor = {
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex',
-        height: '96px'
+        minHeight: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
@@ -2970,7 +2971,7 @@ let ChartStrategyFactor = {
 
       toolElement = <div style={{
         display: 'flex',
-        height: '96px'
+        minHeight: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
@@ -3010,7 +3011,7 @@ let ChartStrategyFactor = {
       var rangeCombo = <DropDownMenu menuItems={rangeItem} selectedIndex={analysisPanel.getRangeIndex()} ref='rangeCombo' onChange={analysisPanel._onRangeChange}></DropDownMenu>;
       toolElement = <div style={{
         display: 'flex',
-        height: '96px'
+        minHeight: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
