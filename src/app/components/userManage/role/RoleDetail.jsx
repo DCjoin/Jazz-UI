@@ -211,7 +211,7 @@ var RoleDetail = React.createClass({
       })}>
       <Panel onToggle={this.props.toggleList}>
         <div className="pop-manage-detail-header">
-          <div className="pop-manage-detail-header-name">
+          <div className={classnames("pop-manage-detail-header-name", "jazz-header")}>
             <ViewableTextField  {...roleNameProps} />
           </div>
         </div>
