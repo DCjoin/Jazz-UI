@@ -50,6 +50,17 @@ var _userCustomers = emptyMap();
 var _updatingUserCustomers = emptyMap();
 
 var UserStore = assign({}, PrototypeStore, {
+  clearAll: function() {
+    _userStatusList = Immutable.List([]);
+    _userList = null;
+    _userIds = [];
+    _allCustomersList = [];
+    _allCustomers = [];
+    _allRolesList = [];
+    _allUsersList = emptyList();
+    _selectedId = null;
+    _userPrivilege = null;
+  },
   setUserStatus: function(user, status) {
     if (status) {
       _userStatusList = _userStatusList.push(user);
@@ -565,6 +576,9 @@ var UserStore = assign({}, PrototypeStore, {
           title: action.title,
           content: action.content
         });
+        break;
+      case UserAction.CLEAR_ALL_USERS:
+        UserStore.clearAll();
         break;
     }
 

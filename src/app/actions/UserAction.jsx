@@ -286,6 +286,13 @@ let UserAction = {
       }
     });
   },
+  clearAll: function() {
+
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL_USERS,
+    });
+
+  },
 };
 
 module.exports = UserAction;

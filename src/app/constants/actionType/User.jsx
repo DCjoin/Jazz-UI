@@ -24,6 +24,7 @@ module.exports = {
     SEND_USER_EMAIL_SUCCESS: null,
     DELETE_USER_SUCCESS: null,
     RESET_USER_AND_CUSTOMER: null,
-    USER_ERROR: null
+    USER_ERROR: null,
+    CLEAR_ALL_USERS: null
   })
 };
