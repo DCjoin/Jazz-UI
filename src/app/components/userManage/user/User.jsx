@@ -307,9 +307,9 @@ var User = React.createClass({
         <div className="pop-manage-wrapper pop-framework">
             <div className={classnames({
           "pop-manage-list-wrapper": true,
-          "closed": false
+          "closed": this.state.closedList
         })}>
-        {userList}
+        <UserList {...listProps}/>
           { filterPanel }
           { that.state.resetPasswordDone ?
           <Dialog openImmediately={true} modal={true} actions={[
