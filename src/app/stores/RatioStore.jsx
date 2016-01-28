@@ -137,6 +137,7 @@ var RatioStore = assign({}, PrototypeStore, {
     _paramsObj.timeRanges = timeRanges;
     _paramsObj.startTime = startTime;
     _paramsObj.endTime = endTime;
+    _submitParams.viewOption.TimeRanges = timeRanges;
     _relativeDate = 'Customerize';
   },
   addRatioDataLoadingListener: function(callback) {
