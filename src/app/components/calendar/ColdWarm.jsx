@@ -341,8 +341,7 @@ var ColdWarm = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1,
-        overflow: 'auto'
+        flex: 1
       }}>
         {leftPanel}
         <div className={classnames({
