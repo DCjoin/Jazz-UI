@@ -151,7 +151,6 @@ var FolderDetailPanel = React.createClass({
     onToggle: React.PropTypes.func,
     nodeData: React.PropTypes.object,
     onOperationSelect: React.PropTypes.func,
-    show: React.PropTypes.bool,
   },
   _onTitleMenuClick: function() {
     this.setState({
@@ -228,11 +227,7 @@ var FolderDetailPanel = React.createClass({
       : null;
 
     return (
-      <div className={classNames({
-        "jazz-folder-detail": true,
-        "fold": this.props.show,
-        "expand": !this.props.show
-      })}>
+      <div className='jazz-folder-detail'>
 
         <div className='header'>
           <OrigamiPanel />

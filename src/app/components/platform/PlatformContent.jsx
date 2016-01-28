@@ -28,7 +28,6 @@ let PlatformContent = React.createClass({
   mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
-    show: React.PropTypes.bool
   },
   _onError: function() {
     var error = PlatformStore.getError();
@@ -500,14 +499,11 @@ let PlatformContent = React.createClass({
 
     }
     return (
-      <div className={classnames({
-        "jazz-framework-right-expand": !this.props.show,
-        "jazz-framework-right-fold": this.props.show,
-      })} style={{
-        'flexDirection': 'column',
-        top: '72px',
-        'backgroundColor': '#ffffff'
-      }}>
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column'
+      }} className='jazz-content'>
       <div className="pop-framework-right-actionbar">
           <div className="pop-framework-right-actionbar-top">
             <OrigamiPanel />

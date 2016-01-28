@@ -99,7 +99,6 @@ let Platform = React.createClass({
         _toggleList: this._onToggleList,
         setEditStatus: this._setEditStatus,
         handleCancel: this._handleCancel,
-        show: this.state.leftPanelShow,
       };
     let leftPanel = (this.state.leftPanelShow) ? <div style={{
       display: 'flex'
@@ -111,7 +110,6 @@ let Platform = React.createClass({
       <div style={{
         display: 'flex',
         flex: 1,
-        overflow: 'auto'
       }}>
     {leftPanel}
     {content}
