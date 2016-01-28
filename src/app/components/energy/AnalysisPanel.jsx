@@ -222,8 +222,7 @@ let AnalysisPanel = React.createClass({
       remarkDiv = <div className={classNames(
         {
           'jazz-energy-remark-container': true,
-          'jazz-energy-remark-text-hidden': !this.state.remarkDisplay,
-          'jazz-energy-remark-text-display': this.state.remarkDisplay
+          'jazz-energy-remark-expand': !this.props.showLeft
         }
       )}>
       <div style={{

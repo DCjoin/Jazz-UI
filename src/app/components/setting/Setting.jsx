@@ -505,6 +505,7 @@ let Setting = React.createClass({
           bizType: bizType,
           energyType: energyType,
           widgetDto: widgetDto,
+          showLeft: this.state.showLeftPanel,
           onEnergyTypeChange: me._onEnergyTypeChanged,
           onOperationSelect: me._onWidgetMenuSelect,
           onCollapseButtonClick: me._onLeftSwitchButtonClick,
