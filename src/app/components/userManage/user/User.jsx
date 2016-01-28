@@ -233,6 +233,7 @@ var User = React.createClass({
     UserStore.removeResetPasswordListener(this._resetPasswordDone);
     UserStore.removeChangeListener(this._onChange);
     UserStore.removeErrorChangeListener(this._onError);
+    UserAction.clearAll();
   },
   render: function() {
     var that = this,
