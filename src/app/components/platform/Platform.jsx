@@ -98,7 +98,7 @@ let Platform = React.createClass({
         formStatus: this.state.status,
         _toggleList: this._onToggleList,
         setEditStatus: this._setEditStatus,
-        handleCancel: this._handleCancel
+        handleCancel: this._handleCancel,
       };
     let leftPanel = (this.state.leftPanelShow) ? <div style={{
       display: 'flex'
@@ -109,7 +109,7 @@ let Platform = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1
+        flex: 1,
       }}>
     {leftPanel}
     {content}

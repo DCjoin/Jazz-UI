@@ -305,16 +305,16 @@ var UserDetail = React.createClass({
       checkAll = true,
       {customers} = that.props,
       isView = that.props.formStatus === formStatus.VIEW;
-    if (customers.size < 1) {
-      return (
-        <div style={{
-          display: 'flex',
-          flex: 1,
-          'alignItems': 'center',
-          'justifyContent': 'center'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div>
-        );
-    }
+      // if (customers.size < 1) {
+      //   return (
+      //     <div style={{
+      //       display: 'flex',
+      //       flex: 1,
+      //       'alignItems': 'center',
+      //       'justifyContent': 'center'
+      //     }}><CircularProgress  mode="indeterminate" size={2} /></div>
+      //     );
+      // }
 
     customers.forEach((customer) => {
       if (!customer.get("Privileged")) {
@@ -613,8 +613,8 @@ var UserDetail = React.createClass({
 				<div className="pop-manage-detail-header">
 					<div className="pop-manage-detail-header-name">
 						<div className="pop-user-detail-name">
-							<span className="pop-user-detail-display-name exists">{that.props.user.get("Name")}</span>
-							<span className="pop-user-detail-real-name exists">{that.props.user.get("RealName")}</span>
+							<span className="pop-user-detail-display-name exists" title={that.props.user.get("Name")}>{that.props.user.get("Name")}</span>
+							<span className="pop-user-detail-real-name exists" title={that.props.user.get("RealName")}>{that.props.user.get("RealName")}</span>
 							<div className="add">
 								<ViewableTextField {...userNameProps}/>
 							</div>

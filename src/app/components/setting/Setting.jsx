@@ -488,7 +488,8 @@ let Setting = React.createClass({
         //forder
         mainPanel = (this.state.selectedNode ? <FolderDetailPanel onToggle={this._onLeftSwitchButtonClick}
         nodeData={this.state.selectedNode}
-        onOperationSelect={this._onTemplateSelect}/> : null);
+        onOperationSelect={this._onTemplateSelect}
+        /> : null);
       } else if (type === 7) {
         //chart panel
         let widgetDto = me.state.widgetDto;
@@ -506,7 +507,7 @@ let Setting = React.createClass({
           widgetDto: widgetDto,
           onEnergyTypeChange: me._onEnergyTypeChanged,
           onOperationSelect: me._onWidgetMenuSelect,
-          onCollapseButtonClick: me._onLeftSwitchButtonClick
+          onCollapseButtonClick: me._onLeftSwitchButtonClick,
         };
         let widgetInitState = WidgetStore.getInitState();
         if (widgetInitState) {
@@ -526,7 +527,7 @@ let Setting = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1
+        flex: 1,
       }}>
         {leftPanel}
         {mainPanel}

@@ -38,7 +38,7 @@ var BackgroudImage = React.createClass({
       var parmas = "?hierarchyId=" + this.props.imageContent.hierarchyId;
       if (this.props.width && this.props.height) {
         parmas += "&width=" + this.props.width + "&height=" + this.props.height;
-        parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
+        parmas += "&mode=" + 1; //parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
         parmas += "&random=" + Math.random();
       }
       url = "url(" + Path.BackgroundImagePath + "/Logo.aspx" + parmas + ")";
@@ -46,7 +46,7 @@ var BackgroudImage = React.createClass({
       var parmas = "?logoId=" + this.props.imageId;
       if (this.props.width && this.props.height) {
         parmas += "&width=" + this.props.width + "&height=" + this.props.height;
-        parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
+        parmas += "&mode=" + 1; //parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
       }
       url = "url(" + Path.BackgroundImagePath + "/Logo.aspx" + parmas + ")";
     } else {

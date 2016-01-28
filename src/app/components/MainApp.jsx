@@ -5,7 +5,7 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import MainAppBar from './MainAppBar.jsx';
 import lang from '../lang/lang.jsx';
 import keyMirror from 'keymirror';
-import { LeftNav } from 'material-ui';
+import { LeftNav, CircularProgress } from 'material-ui';
 import assign from 'object-assign';
 import UOMStore from '../stores/UOMStore.jsx';
 import AllCommodityStore from '../stores/AllCommodityStore.jsx';
@@ -82,18 +82,31 @@ let MainApp = React.createClass({
           }
         );
       }
+      var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
+      return (
+        <div className='jazz-main'>
+              <MainAppBar items={menuItems} logoUrl={logoUrl} />
+              <RouteHandler {...this.props} />
+              <NetworkChecker></NetworkChecker>
+              <ExportChart></ExportChart>
+          </div>
+        );
+    } else {
+      return (
+        <div className='jazz-main'>
+          <div style={{
+          display: 'flex',
+          flex: 1,
+          'alignItems': 'center',
+          'justifyContent': 'center'
+        }}>
+        <CircularProgress  mode="indeterminate" size={2} />
+        </div>
+          </div>
+        );
     }
 
-    var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
 
-    return (
-      <div className='jazz-main'>
-            <MainAppBar items={menuItems} logoUrl={logoUrl} />
-            <RouteHandler {...this.props} />
-            <NetworkChecker></NetworkChecker>
-            <ExportChart></ExportChart>
-        </div>
-      );
   },
   componentDidMount() {
     UOMStore.addChangeListener(this._onAllUOMSChange);
