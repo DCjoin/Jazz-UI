@@ -141,7 +141,7 @@ var CustomerDetail = React.createClass({
     };
     return (
       <div className="pop-manage-detail-header">
-      <div className="pop-manage-detail-header-name">
+      <div className={classnames("pop-manage-detail-header-name", "jazz-header")}>
         <ViewableTextField  {...customerNameProps} />
           {
       isAdd ? null :

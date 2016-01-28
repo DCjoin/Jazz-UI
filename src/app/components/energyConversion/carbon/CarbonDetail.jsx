@@ -153,7 +153,7 @@ var CarbonDetail = React.createClass({
     };
     return (
       <div className="pop-manage-detail-header">
-        <div className="jazz-carbon-detail-header-name">
+        <div className={classnames("jazz-carbon-detail-header-name", "jazz-carbon-header")}>
           <ViewableDropDownMenu {...sourceProps} />
           <div className={classnames({
         "isAdd": isADD
