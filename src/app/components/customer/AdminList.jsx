@@ -127,7 +127,9 @@ var AdminList = React.createClass({
     return (
       <SectionPanel className="pop-admins" {...sectionPanelProps}>
         {adminData.size > 0 ? (
-        <div className="pop-admin-container">
+        <div className="pop-admin-container" style={{
+          marginTop: '25px'
+        }}>
               {admins}
             </div>
         ) : null}

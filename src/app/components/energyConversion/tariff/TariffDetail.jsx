@@ -135,7 +135,7 @@ var TariffDetail = React.createClass({
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.TOUTariff.DeleteTitle, tariff.get('Name'))} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.TOUTariff.DeleteTitle} modal={true} actions={[
           <FlatButton
           label={I18N.Template.Delete.Delete}
           primary={true}
@@ -212,7 +212,9 @@ var TariffDetail = React.createClass({
       peakPriceItem.get('TimeRange').forEach((time, index) => {
         var error = (!!errors) ? errors.getIn([index]) : null;
         Items.push(
-          <div className='jazz-item-in-margin'>
+          <div style={{
+            marginTop: '5px'
+          }}>
             <FromEndTime index={index}
           onTimeChange={onTimeChange}
           isViewStatus={isView}
@@ -227,7 +229,9 @@ var TariffDetail = React.createClass({
       })
     } else {
       Items.push(
-        <div className='jazz-item-in-margin'>
+        <div style={{
+          marginTop: '5px'
+        }}>
           <FromEndTime onTimeChange={onTimeChange}
         isViewStatus={isView}
         hasDeleteButton={false}
@@ -263,7 +267,9 @@ var TariffDetail = React.createClass({
       valleyPriceItem.get('TimeRange').forEach((time, index) => {
         var error = (!!errors) ? errors.getIn([index]) : null;
         Items.push(
-          <div className='jazz-item-in-margin'>
+          <div style={{
+            marginTop: '5px'
+          }}>
             <FromEndTime index={index}
           onTimeChange={onTimeChange}
           isViewStatus={isView}
@@ -278,7 +284,9 @@ var TariffDetail = React.createClass({
       })
     } else {
       Items.push(
-        <div className='jazz-item-in-margin'>
+        <div style={{
+          marginTop: '5px'
+        }}>
           <FromEndTime onTimeChange={onTimeChange}
         isViewStatus={isView}
         hasDeleteButton={false}
@@ -364,7 +372,10 @@ var TariffDetail = React.createClass({
           });
         }
       };
-    var peakBtn = (<div className="jazz-carbon-addItem">
+    var peakBtn = (<div className={classnames({
+        "jazz-carbon-addItem": true,
+        "isView": isView
+      })}>
           <div>{I18N.Setting.TOUTariff.PeakTimeRange}</div>
           <div className={classnames({
         "jazz-carbon-addItem-addBtn": true,
@@ -399,7 +410,9 @@ var TariffDetail = React.createClass({
           {peakBtn}
         </div>
         {this._renderPeakTimeRange(peakPriceItem)}
-        <div className='jazz-item-margin'>
+        <div className='jazz-item-margin' style={{
+        marginTop: '35px'
+      }}>
           <ViewableTextField  {...valleyPriceProps} />
         </div>
         <div className='jazz-item-margin'>
@@ -470,12 +483,14 @@ var TariffDetail = React.createClass({
             that._handelDeletePulsePeakDateTimeRange(index);
           }
         };
-        peakItems.push(<div className='jazz-item-in-margin'>
+        peakItems.push(<div className='jazz-item-margin'>
         <DeletableItem {...deleteProps}>
           <div className='jazz-item-in-margin' style={fontStyle}>
             {I18N.Setting.TOUTariff.DateTimeRange}
           </div>
-          <div className='jazz-item-in-margin'>
+          <div className='jazz-item-in-margin' style={{
+          marginTop: '5px'
+        }}>
             <FromEndDate index={index}
         isViewStatus={isView}
         startMonth={time.get('StartMonth')}
@@ -488,10 +503,12 @@ var TariffDetail = React.createClass({
         lang={window.currentLanguage}/>
           <div className='jazz-carbon-addItem-errorText'>{dateError}</div>
           </div>
-          <div className='jazz-item-in-margin' style={fontStyle}>
+          <div className='jazz-item-margin' style={fontStyle}>
             {I18N.Setting.TOUTariff.PeakValueTimeRange}
           </div>
-          <div className='jazz-item-in-margin'>
+          <div style={{
+          marginTop: '5px'
+        }}>
             <FromEndTime index={index}
         onTimeChange={that.onTimeChange}
         isViewStatus={isView}

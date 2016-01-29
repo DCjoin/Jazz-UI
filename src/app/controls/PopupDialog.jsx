@@ -216,7 +216,8 @@ var CustomDialog = React.createClass({
       <Dialog ref="dialog" {...other} contentClassName="dialog-content" contentStyle={contentStyle}>
         {closeIcon}
 				<div style={{
-        wordWrap: 'break-word'
+        wordWrap: 'break-word',
+        wordBreak: 'break-all'
       }}>{this.props.children}</div>
 
         {actions}

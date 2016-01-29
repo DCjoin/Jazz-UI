@@ -104,7 +104,7 @@ var CustomerDetail = React.createClass({
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.TOUTariff.DeleteTitle, customer.get('Name'))} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.CustomerManagement.DeleteTitle} modal={true} actions={[
           <FlatButton
           label={I18N.Common.Button.Delete}
           primary={true}
@@ -116,7 +116,7 @@ var CustomerDetail = React.createClass({
           label={I18N.Common.Button.Cancel}
           onClick={closeDialog} />
         ]}>
-        {I18N.format(I18N.Setting.TOUTariff.DeleteContent, customer.get('Name'))}
+        {I18N.format(I18N.Setting.CustomerManagement.DeleteContent, customer.get('Name'))}
       </Dialog>
         );
     }
@@ -292,9 +292,10 @@ var CustomerDetail = React.createClass({
           <div className="pop-user-detail-content-item">
             <Checkbox {...calStatusProps} />
           </div>
-          <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
-            <ViewableTextField {...userCommentProps}/>
-          </div>
+          {Comment ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
+                    <ViewableTextField {...userCommentProps}/>
+                  </div> : null}
+
         </div>
         <div className="pop-customer-detail-content-right pop-customer-detail-info-logo">
           <ImageUpload {...imageProps} />
@@ -345,7 +346,10 @@ var CustomerDetail = React.createClass({
           <div className='jazz-tariff-infoTab-notice'>
             {I18N.Setting.CustomerManagement.Label.SelectTip}
           </div>
-          <div className='jazz-tariff-infoTab-notice'>
+          <div className='jazz-tariff-infoTab-notice' style={{
+          marginTop: '10px',
+          marginBottom: '25px'
+        }}>
             {I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive}
           </div>
     <ul className="pop-role-detail-content-permission-content">

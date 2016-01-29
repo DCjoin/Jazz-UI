@@ -75,7 +75,7 @@ var CarbonDetail = React.createClass({
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.CarbonFactor.DeleteTitle, label)} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.CarbonFactor.DeleteTitle} modal={true} actions={[
           <FlatButton
           label={I18N.Template.Delete.Delete}
           primary={true}
@@ -194,7 +194,7 @@ var CarbonDetail = React.createClass({
       }
       var yearProps = {
           isViewStatus: isView,
-          title: "",
+          title: I18N.Setting.CarbonFactor.EffectiveYear,
           selectedIndex: selectedId,
           textField: "text",
           dataItems: titleItems,

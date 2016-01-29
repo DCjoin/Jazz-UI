@@ -465,7 +465,7 @@ var UserDetail = React.createClass({
       var {Name, RealName} = that.props.user.toJS();
       return (
 
-        <Dialog modal={true} openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.User.DeleteTitle, Name + " " + RealName)} actions={[
+        <Dialog modal={true} openImmediately={this.state.dialogStatus} title={I18N.Setting.User.DeleteTitle} actions={[
           <FlatButton
           label={I18N.Template.Delete.Delete}
           primary={true}
