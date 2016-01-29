@@ -233,6 +233,7 @@ var CustomerDetail = React.createClass({
       title: I18N.Setting.UserManagement.Comment,
       defaultValue: Comment || "",
       multiLine: true,
+      maxLen: -1,
       didChanged: value => {
         CustomerAction.merge({
           value,
