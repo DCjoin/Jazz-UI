@@ -2,7 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import { CircularProgress, Dialog } from 'material-ui';
+import { CircularProgress } from 'material-ui';
 import Item from '../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../controls/SelectablePanel.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
@@ -13,6 +13,7 @@ import CalendarAction from '../../actions/CalendarAction.jsx';
 import CalendarStore from '../../stores/CalendarStore.jsx';
 import FromEndTimeGroup from './FromEndTimeGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
 import Immutable from 'immutable';
 
 var calendarType = 3;
@@ -102,6 +103,7 @@ var Daynight = React.createClass({
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
+      primary={true}
       onClick={this._deleteDaynight} />,
 
       <FlatButton
@@ -115,7 +117,7 @@ var Daynight = React.createClass({
       title={I18N.Setting.Calendar.DeleteDaynight}
       actions={dialogActions}
       modal={true}>
-        <div className='jazz-calendar-delete'>{I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}</div>
+        <div className='jazz-calendar-delete'>{I18N.format(I18N.Setting.Calendar.DeleteDaynightContent, this.state.selectedData.get('Name'))}</div>
       </Dialog>);
   },
   _deleteDaynight() {

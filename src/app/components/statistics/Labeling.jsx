@@ -2,7 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import { CircularProgress, Dialog } from 'material-ui';
+import { CircularProgress } from 'material-ui';
 import Item from '../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../controls/SelectablePanel.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
@@ -14,6 +14,7 @@ import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import LabelingAction from '../../actions/LabelingAction.jsx';
 import LabelingStore from '../../stores/LabelingStore.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
 import Immutable from 'immutable';
 
 var map = {};
@@ -125,6 +126,7 @@ var Labeling = React.createClass({
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
+      primary={true}
       onClick={this._deleteLabeling} />,
 
       <FlatButton
@@ -138,7 +140,7 @@ var Labeling = React.createClass({
       title={I18N.Setting.Labeling.Label.DeleteLabeling}
       actions={dialogActions}
       modal={true}>
-        {I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('IndustryComment'))}
+        {I18N.format(I18N.Setting.Labeling.Label.DeleteLabelingContent, this.state.selectedData.get('IndustryComment'))}
       </Dialog>);
   },
   _deleteLabeling() {
