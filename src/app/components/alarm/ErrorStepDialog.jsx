@@ -45,7 +45,7 @@ let ErrorStepDialog = React.createClass({
     });
     _buttonActions.push(
       <FlatButton
-      label="放弃"
+      label={I18N.Common.Button.Cancel}
       primary={true}
       onClick={me._onAction.bind(me, 'cancel')} />
     );
