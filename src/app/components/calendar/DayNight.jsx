@@ -112,6 +112,7 @@ var Daynight = React.createClass({
     return (<Dialog
       ref="deleteDialog"
       openImmediately={true}
+      title={I18N.Setting.Calendar.DeleteDaynight}
       actions={dialogActions}
       modal={true}>
         <div className='jazz-calendar-delete'>{I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('Name'))}</div>
