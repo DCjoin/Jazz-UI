@@ -3,6 +3,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import CommonFuns from '../util/Util.jsx';
 import Map from '../constants/actionType/Map.jsx';
+import CurrentUser from '../constants/actionType/CurrentUser.jsx';
 import Language from '../constants/actionType/Language.jsx';
 import _get from 'lodash/object/get';
 var _ = {
@@ -115,7 +116,8 @@ var MapStore = assign({}, PrototypeStore, {
     this.dispose();
   },
 });
-var MapAction = Map.Action;
+var MapAction = Map.Action,
+  CurrentUserAction = CurrentUser.Action;
 
 
 MapStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -131,6 +133,10 @@ MapStore.dispatchToken = AppDispatcher.register(function(action) {
     case MapAction.SET_MAP_BUILDING:
       MapStore.setBuildingInfo(action.buildInfo);
       MapStore.emitBuildingInfoChange();
+      break;
+    case CurrentUserAction.GET_ROLE:
+      MapStore.setSelectedDate(5);
+      MapStore.emitDateMenuChange();
       break;
   }
 });
