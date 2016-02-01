@@ -99,12 +99,20 @@ var Role = React.createClass({
     });
   },
   _renderErrorDialog: function() {
+    var that = this;
+    var onClose = function() {
+      that.setState({
+        errorTitle: null,
+        errorContent: null,
+      });
+    };
     if (!!this.state.errorTitle) {
       return (<Dialog
         ref = "_dialog"
         title={this.state.errorTitle}
         modal={false}
         openImmediately={!!this.state.errorTitle}
+        onClose={onClose}
         >
     {this.state.errorContent}
       </Dialog>)
