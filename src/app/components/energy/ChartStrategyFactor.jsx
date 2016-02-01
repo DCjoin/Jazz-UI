@@ -3834,7 +3834,7 @@ let ChartStrategyFactor = {
         step = analysisPanel.state.step,
         limitInterval = CommonFuns.getLimitInterval(timeRanges),
         stepList = limitInterval.stepList;
-      if (stepList.indexOf(step) == -1) {
+      if (stepList.indexOf(step) === -1) {
         step = limitInterval.display;
       }
       if (ratioType === 1 && (step === 0 || step === 1))
