@@ -461,6 +461,7 @@ I18N.Setting.Calendar.DeleteMessage = '确定删除“{0}”吗？';
 //workday
 I18N.Setting.Calendar.WorkdaySetting = '工休日';
 I18N.Setting.Calendar.DeleteWorkday = '删除工休日';
+I18N.Setting.Calendar.DeleteWorkdayContent = '工休日"{0}"将被删除';
 I18N.Setting.Calendar.WorkdayName = '公休日名称';
 I18N.Setting.Calendar.WorkDay = '工作日';
 I18N.Setting.Calendar.Holiday = '非工作日';
@@ -479,6 +480,7 @@ I18N.Setting.Calendar.MonthDayFromTo = '{0}月{1}日到{2}月{3}日';
 //worktime
 I18N.Setting.Calendar.WorktimeSetting = '工作时间';
 I18N.Setting.Calendar.DeleteWorktime = '删除工作时间';
+I18N.Setting.Calendar.DeleteWorktimeContent = '工作时间"{0}"将被删除';
 I18N.Setting.Calendar.WorktimeName = '工作时间名称';
 I18N.Setting.Calendar.WorkTime = '工作时间';
 I18N.Setting.Calendar.RestTime = '休息时间';
@@ -491,6 +493,7 @@ I18N.Setting.Calendar.To = '到';
 //cold/warm
 I18N.Setting.Calendar.ColdwarmSetting = '冷暖季';
 I18N.Setting.Calendar.DeleteColdwarm = '删除冷暖季';
+I18N.Setting.Calendar.DeleteColdwarmContent = '冷暖季"{0}"将被删除';
 I18N.Setting.Calendar.ColdwarmName = '冷暖季名称';
 I18N.Setting.Calendar.SeansonType = '季节类型';
 I18N.Setting.Calendar.WarmSeason = '采暖季';
@@ -502,6 +505,7 @@ I18N.Setting.Calendar.WarmColdDeclaration = '采暖季与供冷季之间不能�
 //day/night
 I18N.Setting.Calendar.DaynightSetting = '昼夜时间';
 I18N.Setting.Calendar.DeleteDaynight = '删除昼夜时间';
+I18N.Setting.Calendar.DeleteDaynightContent = '昼夜时间"{0}"将被删除';
 I18N.Setting.Calendar.DaynightName = '昼夜时间名称';
 I18N.Setting.Calendar.Day = '白昼时间';
 I18N.Setting.Calendar.Night = '黑夜时间';
@@ -518,6 +522,7 @@ I18N.Setting.Benchmark.Label.IndustryEnegyBenchmark = '行业能效对标配置'
 I18N.Setting.Benchmark.Label.ClimateZone = '气候分区';
 I18N.Setting.Benchmark.Label.IndustryBenchmark = '行业对标';
 I18N.Setting.Benchmark.Label.DeleteBenchmark = '删除行业对标';
+I18N.Setting.Benchmark.Label.DeleteBenchmarkContent = '行业对标"{0}"将被删除';
 I18N.Setting.Benchmark.Label.SelectTip = '请选择需要平台计算的能效对标针对的行业及区域。请至少选择一项。';
 I18N.Setting.Benchmark.Label.AtleastOneZone = '请至少选择一项。';
 I18N.Setting.Benchmark.Label.Industry = '行业';
@@ -563,6 +568,7 @@ I18N.Setting.Labeling.Label.ClimateZone = '气候分区';
 I18N.Setting.Labeling.Label.CustomizedLabeling = '自定义能效标识';
 I18N.Setting.Labeling.Label.Labeling = '能效标识';
 I18N.Setting.Labeling.Label.DeleteLabeling = '删除能效标识';
+I18N.Setting.Labeling.Label.DeleteLabelingContent = '能效标识"{0}"将被删除';
 I18N.Setting.Labeling.Label.LabelingSetting = '能效标识配置';
 I18N.Setting.Labeling.Label.IndustryLabeling = '行业能效标识';
 I18N.Setting.Labeling.Label.IndustryLabelingSetting = '行业能效标识配置';
