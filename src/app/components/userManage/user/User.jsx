@@ -304,12 +304,11 @@ var User = React.createClass({
       }}><UserList {...listProps}/></div>;
       return (
 
-        <div className="pop-manage-wrapper pop-framework">
-            <div className={classnames({
-          "pop-manage-list-wrapper": true,
-          "closed": this.state.closedList
-        })}>
-        <UserList {...listProps}/>
+        <div style={{
+          display: 'flex',
+          flex: 1
+        }}>
+        {userList}
           { filterPanel }
           { that.state.resetPasswordDone ?
           <Dialog openImmediately={true} modal={true} actions={[
@@ -320,7 +319,6 @@ var User = React.createClass({
             }} />
           ]}>{I18N.Setting.User.SendEmailSuccess}</Dialog>
           : null }
-        </div>
         <UserDetail {...detailProps} />
         {that._renderErrorDialog()}
         </div>

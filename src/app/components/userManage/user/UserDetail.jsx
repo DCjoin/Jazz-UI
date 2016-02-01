@@ -28,6 +28,7 @@ import UserAction from '../../../actions/UserAction.jsx';
 import UserStore from '../../../stores/UserStore.jsx';
 import CurrentUserStore from '../../../stores/CurrentUserStore.jsx';
 import SideNav from '../../../controls/SideNav.jsx';
+import Panel from '../../../controls/MainContentPanel.jsx';
 
 var {FlatButton, FontIcon, SelectField, Checkbox, CircularProgress} = mui;
 
@@ -334,7 +335,7 @@ var UserDetail = React.createClass({
 
     return (
       <div className={classnames({
-        "pop-user-detail-customer": true
+        "pop-role-detail-content-permission": true
       })}>
 				<div className="pop-user-detail-customer-checkall-block">
 
@@ -369,8 +370,12 @@ var UserDetail = React.createClass({
         }
 
         return (
-          <li className="pop-user-detail-customer-subcheck-block-item" style={liStyle}>
-							<div className="pop-user-detail-customer-subcheck-block-item-left">
+          <li className={classnames("pop-user-detail-customer-subcheck-block-item", {
+            "fold": !this.props.closedList
+          })} style={liStyle}>
+							<div className={classnames("pop-user-detail-customer-subcheck-block-item-left", {
+            "fold": !this.props.closedList
+          })}>
 								<Checkbox
           ref=""
           onCheck={that._bindChangeCheckbox(false, customer.get("CustomerId"))}
@@ -390,7 +395,8 @@ var UserDetail = React.createClass({
           }}
           title={ customer.get("CustomerName") }
           className={classnames("pop-user-detail-customer-subcheck-block-item-label", {
-            "disabled": isView
+            "disabled": isView,
+            'fold': !this.props.closedList
           })}>
 									{ customer.get("CustomerName") }
 								</label>
@@ -589,33 +595,24 @@ var UserDetail = React.createClass({
       that.props.setEditStatus()
     }}/>
     );
-
+    var addStyle = isAdd ? null : {
+      display: 'none'
+    };
     return (
       <div className={classnames({
-        "pop-framework-right": true,
-        "pop-user-detail": true,
-        "pop-manage-detail": true,
-        editing: !isView,
-        adding: !that.props.selectedId,
-        "pop-framework-right-expand": that.props.closedList
+        "jazz-framework-right-expand": that.props.closedList,
+        "jazz-framework-right-fold": !that.props.closedList
       })}>
-				<div className="pop-framework-right-actionbar">
-	                <div className="pop-framework-right-actionbar-top" style={{
-        marginTop: '13px'
-      }}>
-      <div style={{
-        marginTop: '-11px'
-      }}><OrigamiPanel /></div>
-
-						{collapseButton}
-	                </div>
-	            </div>
-				<div className="pop-manage-detail-header">
+        <Panel onToggle={this.props._toggleList}>
+				<div className={classnames({
+        "pop-manage-detail-header": true,
+        "fold": !this.props.closedList && !this.props.infoTab
+      })}>
 					<div className="pop-manage-detail-header-name">
 						<div className="pop-user-detail-name">
 							<span className="pop-user-detail-display-name exists" title={that.props.user.get("Name")}>{that.props.user.get("Name")}</span>
 							<span className="pop-user-detail-real-name exists" title={that.props.user.get("RealName")}>{that.props.user.get("RealName")}</span>
-							<div className="add">
+							<div className="add" style={addStyle}>
 								<ViewableTextField {...userNameProps}/>
 							</div>
 						</div>
@@ -644,6 +641,7 @@ var UserDetail = React.createClass({
 
 				{this._renderDialog()}
 				<Loading ref="pop_user_detail_loading"/>
+        </Panel>
 			</div>
       );
   },
