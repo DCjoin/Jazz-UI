@@ -141,7 +141,7 @@ let ImageUpload = React.createClass({
     //this.forceUpdate();
   },
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.isViewState !== nextProps.isViewState;
+    return this.props !== nextProps;
   },
 
   componentWillUnmount() {},
