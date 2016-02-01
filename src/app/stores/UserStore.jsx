@@ -60,6 +60,12 @@ var UserStore = assign({}, PrototypeStore, {
     _allUsersList = emptyList();
     _selectedId = null;
     _userPrivilege = null;
+    _filterObj = emptyMap();
+    _updatingFilterObj = emptyMap();
+    _persistedUser = emptyMap();
+    _updatingUser = emptyMap();
+    _userCustomers = emptyMap();
+    _updatingUserCustomers = emptyMap();
   },
   setUserStatus: function(user, status) {
     if (status) {
