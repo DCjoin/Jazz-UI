@@ -55,7 +55,9 @@ var SectionPanel = React.createClass({
       if (actionComponent) {
         action = actionComponent;
       } else if (_.isFunction(onAction)) {
-        action = <span onClick={this._handleAddBtn}>{actionLabel}</span>
+        action = <span onClick={this._handleAddBtn} style={{
+          fontSize: '14px'
+        }}>{actionLabel}</span>
       }
     }
 

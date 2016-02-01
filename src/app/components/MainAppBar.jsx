@@ -428,6 +428,9 @@ var MainAppBar = React.createClass({
         secondary={true}
         disabled={
         !Regex.Email.test(user.Email) ||
+        !user.Telephone ||
+        !user.RealName ||
+        !user.Email ||
         user.Telephone.length > 200 ||
         user.RealName.length > 200 ||
         user.Email.length > 254

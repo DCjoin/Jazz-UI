@@ -172,7 +172,7 @@ let UserCustomerPermission = React.createClass({
       return (
         <SideNav side="right" onClose={this.onClose} ref="pop_user_customer_permission_side_nav">
 					<div className="pop-user-customer-permission-side-nav-wrapper">
-						<div className="pop-user-customer-permission-side-nav-header sidebar-title">{I18N.Setting.Labeling.CustomerName}</div>
+						<div className="pop-user-customer-permission-side-nav-header sidebar-title">{customer.get("CustomerName")}</div>
 						{content}
 					</div>
 				</SideNav>

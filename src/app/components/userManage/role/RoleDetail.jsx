@@ -147,7 +147,7 @@ var RoleDetail = React.createClass({
       var {Name} = that.props.role.toJS();
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.Role.DeleteTitle, Name)} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.Role.DeleteTitle} modal={true} actions={[
           <FlatButton
           label={I18N.Template.Delete.Delete}
           primary={true}
