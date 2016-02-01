@@ -165,6 +165,7 @@ var CustomerDetail = React.createClass({
     var {customer} = this.props,
       adminList = null,
       isView = this.props.formStatus === formStatus.VIEW,
+      isAdd = this.props.formStatus === formStatus.ADD,
       {Code, Address, StartTime, LinkMans, Comment, CalcStatus} = customer.toJS();
 
     //props
@@ -292,7 +293,7 @@ var CustomerDetail = React.createClass({
           <div className="pop-user-detail-content-item">
             <Checkbox {...calStatusProps} />
           </div>
-          {Comment ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
+          {Comment || isAdd ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
                     <ViewableTextField {...userCommentProps}/>
                   </div> : null}
 
