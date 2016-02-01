@@ -246,10 +246,11 @@ var MainAppBar = React.createClass({
             <div className="pop-userprofile-auth">
               <h3>{I18N.Platform.About.QrCode}</h3>
               <h3>{I18N.Platform.About.ipadQrCode}</h3>
-                <div className="jazz-qrCode">
+                <div className="jazz-ipadQrCode">
                 </div>
                 <h3>{I18N.Platform.About.WeChatQrCode}</h3>
-                  <div className="jazz-ipadQrCode">
+
+                    <div className="jazz-qrCode">
                   </div>
             </div>
             <div className="pop-userprofile-auth">
