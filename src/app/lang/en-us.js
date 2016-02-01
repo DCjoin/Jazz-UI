@@ -463,11 +463,11 @@ I18N.EM.Export.Preview = 'Preview export picture';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = 'Time';
-I18N.Setting.Calendar.DeleteMessage = 'Delete “{0}”?';
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = 'Work day';
 I18N.Setting.Calendar.DeleteWorkday = 'Delete work day';
+I18N.Setting.Calendar.DeleteWorkdayContent = 'Work day "{0}" will be deleted';
 I18N.Setting.Calendar.WorkdayName = 'Workday name';
 I18N.Setting.Calendar.WorkDay = 'Workday';
 I18N.Setting.Calendar.Holiday = 'Non-workday';
@@ -486,6 +486,7 @@ I18N.Setting.Calendar.MonthDayFromTo = '{0}Month{1}day to {2}month{3}day';
 //worktime
 I18N.Setting.Calendar.WorktimeSetting = 'Work time';
 I18N.Setting.Calendar.DeleteWorktime = 'Delete work time';
+I18N.Setting.Calendar.DeleteWorktimeContent = 'Work time "{0}" will be deleted';
 I18N.Setting.Calendar.WorktimeName = 'WorkTime name';
 I18N.Setting.Calendar.WorkTime = 'WorkTime';
 I18N.Setting.Calendar.RestTime = 'Non-Work Time';
@@ -498,6 +499,7 @@ I18N.Setting.Calendar.To = 'To';
 //cold/warm
 I18N.Setting.Calendar.ColdwarmSetting = 'HC season';
 I18N.Setting.Calendar.DeleteColdwarm = 'Delete HC season';
+I18N.Setting.Calendar.DeleteColdwarmContent = 'HC season "{0}" will be deleted';
 I18N.Setting.Calendar.ColdwarmName = 'HC season name';
 I18N.Setting.Calendar.SeansonType = 'Season type';
 I18N.Setting.Calendar.WarmSeason = 'Heating season';
@@ -509,6 +511,7 @@ I18N.Setting.Calendar.WarmColdDeclaration = 'There must be a more-than-7-day int
 //day/night
 I18N.Setting.Calendar.DaynightSetting = 'Day night';
 I18N.Setting.Calendar.DeleteDaynight = 'Delete day night';
+I18N.Setting.Calendar.DeleteDaynightContent = 'Day night "{0}" will be deleted';
 I18N.Setting.Calendar.DaynightName = 'Day night name';
 I18N.Setting.Calendar.Day = 'Daytime';
 I18N.Setting.Calendar.Night = 'Night time';
@@ -525,6 +528,7 @@ I18N.Setting.Benchmark.Label.IndustryEnegyBenchmark = 'Benchmark config';
 I18N.Setting.Benchmark.Label.ClimateZone = 'Climate zone';
 I18N.Setting.Benchmark.Label.IndustryBenchmark = 'Benchmark';
 I18N.Setting.Benchmark.Label.DeleteBenchmark = 'Delete benchmark';
+I18N.Setting.Benchmark.Label.DeleteBenchmarkContent = 'Benchmark "{0}" will be deleted';
 I18N.Setting.Benchmark.Label.SelectTip = 'Please select industries and regions for which energy labeling needs to be calculated by the platform. Please select at least one option.';
 I18N.Setting.Benchmark.Label.AtleastOneZone = 'Please select at least one option.';
 I18N.Setting.Benchmark.Label.Industry = 'Industry';
@@ -570,6 +574,7 @@ I18N.Setting.Labeling.Label.ClimateZone = 'Climate zone';
 I18N.Setting.Labeling.Label.CustomizedLabeling = 'Customized labeling';
 I18N.Setting.Labeling.Label.Labeling = 'Labeling';
 I18N.Setting.Labeling.Label.DeleteLabeling = 'Delete labeling';
+I18N.Setting.Labeling.Label.DeleteLabelingContent = 'Labeling "{0}" will be deleted';
 I18N.Setting.Labeling.Label.LabelingSetting = 'Labeling';
 I18N.Setting.Labeling.Label.IndustryLabeling = 'Industry labeling';
 I18N.Setting.Labeling.Label.IndustryLabelingSetting = 'Industry labeling';
