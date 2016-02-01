@@ -441,7 +441,11 @@ var UserDetail = React.createClass({
       });
 
       return (<SideNav open={true} side="right" onClose={this._onCloseRoleSideNav} >
-		          <div className="sidebar-title" >
+		          <div className="sidebar-title" title={Name} style={{
+          overflow: ' hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis'
+        }}>
 		              {Name}
 		          </div>
 		          <div className="sidebar-content">
