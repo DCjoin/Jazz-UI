@@ -251,16 +251,17 @@ var ColdWarm = React.createClass({
     var coldwarmText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.WarmColdDeclaration}</div>);
     var addColdwarmDataButton = null;
     if (!isView) {
-      addColdwarmDataButton = (<div className="jazz-calendar-add">
-      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.ColdwarmSetting}</div>
-      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addColdwarmData} /></div>
-      </div>);
+      addColdwarmDataButton = (<div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addColdwarmData} /></div>);
     }
+    var addColdwarmData = (<div className="jazz-calendar-add">
+    <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.ColdwarmSetting}</div>
+    {addColdwarmDataButton}
+    </div>);
     var coldwarmGroup = <FromEndDateGroup ref='coldwarmGroup' type={calendarType} items={selectedData.get('Items')} isViewStatus={isView} onDeleteDateData={me._deleteColdwarmData} onDateChange={me._onDateChange} onTypeChange={me._onTypeChange}></FromEndDateGroup>;
     return (
       <div className={"jazz-calendar-content"}>
         {coldwarmText}
-        {addColdwarmDataButton}
+        {addColdwarmData}
         {coldwarmGroup}
       </div>
       );

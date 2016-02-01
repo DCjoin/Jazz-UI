@@ -238,16 +238,17 @@ var WorkTime = React.createClass({
     var worktimeText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkTime}</div>);
     var addWorktimeDataButton = null;
     if (!isView) {
-      addWorktimeDataButton = (<div className="jazz-calendar-add">
-      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.WorkTime}</div>
-      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorktimeData} /></div>
-      </div>);
+      addWorktimeDataButton = (<div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorktimeData} /></div>);
     }
+    var addWorktimeData = (<div className="jazz-calendar-add">
+    <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.WorkTime}</div>
+    {addWorktimeDataButton}
+    </div>);
     var worktimeGroup = <FromEndTimeGroup ref='worktimeGroup' items={selectedData.get('Items')} isViewStatus={isView} onDeleteTimeData={me._deleteWorktimeData} onTimeChange={me._onTimeChange}></FromEndTimeGroup>;
     return (
       <div className={"jazz-calendar-content"}>
         {worktimeText}
-        {addWorktimeDataButton}
+        {addWorktimeData}
         {worktimeGroup}
       </div>
       );

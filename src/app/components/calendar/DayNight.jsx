@@ -238,16 +238,17 @@ var Daynight = React.createClass({
     var daynightText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultDayNight}</div>);
     var addDaynightDataButton = null;
     if (!isView) {
-      addDaynightDataButton = (<div className="jazz-calendar-add">
-      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.Day}</div>
-      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addDaynightData} /></div>
-      </div>);
+      addDaynightDataButton = (<div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addDaynightData} /></div>);
     }
+    var addDaynightData = (<div className="jazz-calendar-add">
+    <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.Day}</div>
+    {addDaynightDataButton}
+    </div>);
     var daynightGroup = <FromEndTimeGroup ref='daynightGroup' items={selectedData.get('Items')} isViewStatus={isView} onDeleteTimeData={me._deleteDaynightData} onTimeChange={me._onTimeChange}></FromEndTimeGroup>;
     return (
       <div className={"jazz-calendar-content"}>
         {daynightText}
-        {addDaynightDataButton}
+        {addDaynightData}
         {daynightGroup}
       </div>
       );
