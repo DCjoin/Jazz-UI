@@ -135,6 +135,7 @@ var Labeling = React.createClass({
     return (<Dialog
       ref="deleteDialog"
       openImmediately={true}
+      title={I18N.Setting.Labeling.Label.DeleteLabeling}
       actions={dialogActions}
       modal={true}>
         {I18N.format(I18N.Setting.Calendar.DeleteMessage, this.state.selectedData.get('IndustryComment'))}
