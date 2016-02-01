@@ -165,7 +165,7 @@ var UserDetail = React.createClass({
     var that = this,
       isView = that.props.formStatus === formStatus.VIEW,
       roleSelectedIndex = 0,
-      roleItems = that.props.userRoleList.map((item, index) => {
+      roleItems = (that.props.userRoleList.size === 0 || !that.props.userRoleList) ? Immutable.fromJS([]) : that.props.userRoleList.map((item, index) => {
         if (item.get("Id") === that.props.user.get("UserType")) {
           roleSelectedIndex = index;
         }
@@ -193,6 +193,7 @@ var UserDetail = React.createClass({
         });
       }
     });
+
     // titleItems = UserStore.getUserTitleList().map((title, index) => {
     //   if (title == that.props.user.get("Title")) {
     //     titleSelectedIndex = index;
@@ -271,7 +272,7 @@ var UserDetail = React.createClass({
 						{isView || isSuperAdmin ?
         <div>{isSuperAdmin ? I18N.Platform.User.ServerManager : that.props.user.get("UserTypeName")}</div>
         :
-        <SelectField className="pop-viewableSelectField-ddm" onChange={(event, key, obj) => {
+        <SelectField className="jazz-user-pop-viewableSelectField-ddm" onChange={(event, key, obj) => {
           UserAction.mergeUser({
             value: obj.id,
             path: "UserType"

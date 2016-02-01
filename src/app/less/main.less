@@ -1169,3 +1169,20 @@ input:focus{
     }
   }
 }
+.jazz-user-pop-viewableSelectField-ddm {
+  &>div:nth-child(1) {
+    &>div:nth-child(3){
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  &>div:nth-child(2) {
+    position: fixed !important;
+    max-height: 300px;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    width:256px !important;
+    top:350px !important;
+  }
+}
