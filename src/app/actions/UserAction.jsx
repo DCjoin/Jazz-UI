@@ -131,6 +131,7 @@ let UserAction = {
     });
   },
   getCustomerByUser(userId) {
+    var that = this;
     Ajax.post('/AccessControl.svc/GetDataPrivilege', {
       params: {
         filter: {
