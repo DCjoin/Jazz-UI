@@ -183,7 +183,7 @@ let DataSelectMainPanel = React.createClass({
           dropdownmenuStyle: {
             width: '77px',
             height: '46px',
-
+            minWidth: '77px',
             float: 'right',
             paddingLeft: '0'
           }
@@ -192,6 +192,7 @@ let DataSelectMainPanel = React.createClass({
       case 1:this.setState({
           dropdownmenuStyle: {
             width: '122px',
+            minWidth: '122px',
             height: '46px',
             float: 'right'
           }
@@ -200,6 +201,7 @@ let DataSelectMainPanel = React.createClass({
       case 2:this.setState({
           dropdownmenuStyle: {
             width: '137px',
+            minWidth: '137px',
             height: '46px',
             float: 'right'
           }
@@ -209,6 +211,7 @@ let DataSelectMainPanel = React.createClass({
         this.setState({
           dropdownmenuStyle: {
             width: '92px',
+            minWidth: '92px',
             height: '46px',
             float: 'right'
           }
@@ -263,7 +266,7 @@ let DataSelectMainPanel = React.createClass({
   _onSelectFull: function(fullFlag) {
     this.setState({
       checkAbled: fullFlag
-    })
+    });
 
   },
   _onCheckSelect: function(checkFlag) {
@@ -306,6 +309,7 @@ let DataSelectMainPanel = React.createClass({
       searchTagListChanged: false,
       dropdownmenuStyle: {
         width: '77px',
+        minWidth: '77px',
         height: '46px',
         float: 'right'
       }
@@ -520,7 +524,7 @@ let DataSelectMainPanel = React.createClass({
     }
     var hierId = (this.state.dimParentNode === null) ? null : this.state.dimParentNode.Id;
     var dropDownMenu = (this.props.widgetType == 'Energy' || this.props.linkFrom == "Alarm") ?
-      <DropDownMenu  ref="dropDownMenu" autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
+      <DropDownMenu  ref="dropDownMenu"  disabled={this.state.dimParentNode === null} autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
       : <div style={{
         width: '20px'
       }}/>;
