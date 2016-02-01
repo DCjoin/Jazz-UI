@@ -140,7 +140,7 @@ var Labeling = React.createClass({
       title={I18N.Setting.Labeling.Label.DeleteLabeling}
       actions={dialogActions}
       modal={true}>
-        {I18N.format(I18N.Setting.Labeling.Label.DeleteLabelingContent, this.state.selectedData.get('IndustryComment'))}
+        {I18N.format(I18N.Setting.Labeling.Label.DeleteLabelingContent, (this.state.selectedData.get('IndustryComment') + '-' + this.state.selectedData.get('ZoneComment')))}
       </Dialog>);
   },
   _deleteLabeling() {
