@@ -307,22 +307,26 @@ var UserDetail = React.createClass({
       checkAll = true,
       {customers} = that.props,
       isView = that.props.formStatus === formStatus.VIEW;
-      // if (customers.size < 1) {
-      //   return (
-      //     <div style={{
-      //       display: 'flex',
-      //       flex: 1,
-      //       'alignItems': 'center',
-      //       'justifyContent': 'center'
-      //     }}><CircularProgress  mode="indeterminate" size={2} /></div>
-      //     );
-      // }
+    // if (customers.size < 1) {
+    //   return (
+    //     <div style={{
+    //       display: 'flex',
+    //       flex: 1,
+    //       'alignItems': 'center',
+    //       'justifyContent': 'center'
+    //     }}><CircularProgress  mode="indeterminate" size={2} /></div>
+    //     );
+    // }
+    if (customers.size === 0) {
+      checkAll = false;
+    } else {
+      customers.forEach((customer) => {
+        if (!customer.get("Privileged")) {
+          checkAll = false;
+        }
+      });
+    }
 
-    customers.forEach((customer) => {
-      if (!customer.get("Privileged")) {
-        checkAll = false;
-      }
-    });
 
     var _renderDataPermissionLink = function(showPermissionProps) {
       //var showPermissionUpCode = isView ? PermissionCode.TREE_STRUCTURE_MANAGE.READONLY : PermissionCode.TREE_STRUCTURE_MANAGE.FULL;
@@ -343,7 +347,7 @@ var UserDetail = React.createClass({
 					<Checkbox
       onCheck={that._bindChangeCheckbox(true, 0)}
       defaultChecked={checkAll}
-      disabled={isView}
+      disabled={isView || customers.size === 0}
       label={I18N.Setting.User.AllCusomerDataPermission}
       />
 					<div className="pop-user-detail-customer-perm-checkall-desc">{I18N.Setting.Labeling.PlatformDataPermissionTip}</div>
