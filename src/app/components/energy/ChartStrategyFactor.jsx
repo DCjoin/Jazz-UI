@@ -3834,13 +3834,13 @@ let ChartStrategyFactor = {
         step = analysisPanel.state.step,
         limitInterval = CommonFuns.getLimitInterval(timeRanges),
         stepList = limitInterval.stepList;
-      if (stepList.indexOf(step) == -1) {
+      if (stepList.indexOf(step) === -1) {
         step = limitInterval.display;
       }
       if (ratioType === 1 && (step === 0 || step === 1))
         step = 2;
       if (ratioType === 2 && (step === 0 || step === 1 || step === 2))
-        step = 3;
+        step = 5;
       analysisPanel.state.chartStrategy.getEnergyDataFn(timeRanges, step, tagOptions, ratioType, relativeDate);
     },
     setUnitEnergyFitStepAndGetData(startDate, endDate, tagOptions, unitType, relativeDate, analysisPanel, benchmarkOption) {
