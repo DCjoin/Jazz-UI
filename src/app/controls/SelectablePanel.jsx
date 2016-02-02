@@ -7,7 +7,7 @@ import { FlatButton, FontIcon, DropDownMenu, CircularProgress } from 'material-u
 let SelectablePanel = React.createClass({
   propTypes: {
     addBtnLabel: React.PropTypes.string,
-    onAddBtnClick: React.PropTypes.object,
+    onAddBtnClick: React.PropTypes.func,
     // filterBtnLabel: React.PropTypes.string,
     // onFilterBtnClick: React.PropTypes.object,
     sortItems: React.PropTypes.object,

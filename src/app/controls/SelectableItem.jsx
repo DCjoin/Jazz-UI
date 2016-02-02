@@ -11,7 +11,7 @@ let SelectableItem = React.createClass({
     //the second line
     text: React.PropTypes.string,
     selectedIndex: React.PropTypes.number,
-    onItemClick: React.PropTypes.object,
+    onItemClick: React.PropTypes.func,
   },
   onClick: function() {
     this.props.onItemClick(this.props.index);
