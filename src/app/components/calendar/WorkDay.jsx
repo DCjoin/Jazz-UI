@@ -248,7 +248,7 @@ var WorkDay = React.createClass({
     if (!isView) {
       addWorkdayDataButton = (<div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorkdayData} /></div>);
     }
-    if (selectedData.get('Items').size !== 0) {
+    if ((selectedData.get('Items').size !== 0 && isView) || !isView) {
       addWorkdayData = (<div className="jazz-calendar-add">
     <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.AdditionalDay}</div>
     {addWorkdayDataButton}
