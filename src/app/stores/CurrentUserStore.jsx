@@ -115,11 +115,9 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   },
   getCurrentPrivilegeByUser: function(user, userRoleList) {
     var privilege = [];
-    if (user.Id == 100001 || user.Id == 1 || user.userType == -1) {
-      for (var i = 1200; i <= 1221; i++) {
-        var index = i + '';
-        privilege.push(index);
-      }
+    if (user.Id == 100001 || user.Id == 1 || user.UserType == -1) {
+      privilege = ['1205', '1218', '1219', '1221', '1206', '1207', '1208', '1210', '1217', '1223'];
+
     } else {
       userRoleList.forEach(role => {
         if (role.Id == user.UserType) {
