@@ -244,17 +244,21 @@ var WorkDay = React.createClass({
     let selectedData = me.state.selectedData;
     var workdayText = (<div className='jazz-calendar-text'>{I18N.Setting.Calendar.DefaultWorkDay}</div>);
     var addWorkdayDataButton = null;
+    var addWorkdayData = null;
     if (!isView) {
-      addWorkdayDataButton = (<div className="jazz-calendar-add">
-      <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.AdditionalDay}</div>
-      <div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorkdayData} /></div>
-      </div>);
+      addWorkdayDataButton = (<div className="jazz-calendar-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addWorkdayData} /></div>);
+    }
+    if (selectedData.get('Items').size !== 0) {
+      addWorkdayData = (<div className="jazz-calendar-add">
+    <div className="jazz-calendar-add-text">{I18N.Setting.Calendar.AdditionalDay}</div>
+    {addWorkdayDataButton}
+    </div>);
     }
     var workdayGroup = <FromEndDateGroup ref='workdayGroup' type={calendarType} items={selectedData.get('Items')} isViewStatus={isView} onDeleteDateData={me._deleteWorkdayData} onDateChange={me._onDateChange} onTypeChange={me._onTypeChange}></FromEndDateGroup>;
     return (
       <div className={"jazz-calendar-content"}>
         {workdayText}
-        {addWorkdayDataButton}
+        {addWorkdayData}
         {workdayGroup}
       </div>
       );

@@ -456,7 +456,6 @@ I18N.EM.Export.Preview = '导出图片预览';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = '时间';
-I18N.Setting.Calendar.DeleteMessage = '确定删除“{0}”吗？';
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = '工休日';
