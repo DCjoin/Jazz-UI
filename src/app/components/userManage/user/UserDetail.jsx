@@ -619,11 +619,13 @@ var UserDetail = React.createClass({
       })}>
 					<div className="pop-manage-detail-header-name">
 						<div className="pop-user-detail-name">
-							<span className="pop-user-detail-display-name exists" title={that.props.user.get("Name")}>{that.props.user.get("Name")}</span>
-							<span className="pop-user-detail-real-name exists" title={that.props.user.get("RealName")}>{that.props.user.get("RealName")}</span>
-							<div className="add" style={addStyle}>
-								<ViewableTextField {...userNameProps}/>
-							</div>
+              {isAdd ? <div className="add" style={addStyle}>
+              								<ViewableTextField {...userNameProps}/>
+              							</div> :
+        <div><span className="pop-user-detail-display-name exists" title={that.props.user.get("Name")}>{that.props.user.get("Name")}</span>
+      <span className="pop-user-detail-real-name exists" title={that.props.user.get("RealName")}>{that.props.user.get("RealName")}</span></div>}
+
+
 						</div>
 					{
       !that.props.selectedId ? null :
