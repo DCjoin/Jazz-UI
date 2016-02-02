@@ -375,12 +375,8 @@ var UserDetail = React.createClass({
         }
 
         return (
-          <li className={classnames("pop-user-detail-customer-subcheck-block-item", {
-            "fold": !this.props.closedList
-          })} style={liStyle}>
-							<div className={classnames("pop-user-detail-customer-subcheck-block-item-left", {
-            "fold": !this.props.closedList
-          })}>
+          <li className={classnames("pop-user-detail-customer-subcheck-block-item")} style={liStyle}>
+							<div className={classnames("pop-user-detail-customer-subcheck-block-item-left")}>
 								<Checkbox
           ref=""
           onCheck={that._bindChangeCheckbox(false, customer.get("CustomerId"))}
@@ -400,8 +396,7 @@ var UserDetail = React.createClass({
           }}
           title={ customer.get("CustomerName") }
           className={classnames("pop-user-detail-customer-subcheck-block-item-label", {
-            "disabled": isView,
-            'fold': !this.props.closedList
+            "disabled": isView
           })}>
 									{ customer.get("CustomerName") }
 								</label>
@@ -615,7 +610,7 @@ var UserDetail = React.createClass({
         <Panel onToggle={this.props._toggleList}>
 				<div className={classnames({
         "pop-manage-detail-header": true,
-        "fold": !this.props.closedList && !this.props.infoTab
+
       })}>
 					<div className="pop-manage-detail-header-name">
 						<div className="pop-user-detail-name">
