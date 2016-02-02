@@ -293,7 +293,7 @@ var CustomerDetail = React.createClass({
           <div className="pop-user-detail-content-item">
             <Checkbox {...calStatusProps} />
           </div>
-          {Comment || isAdd ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
+          {Comment || !isView ? <div className={classnames("pop-user-detail-content-item", "jazz-customer-comment")}>
                     <ViewableTextField {...userCommentProps}/>
                   </div> : null}
 
