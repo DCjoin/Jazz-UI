@@ -578,6 +578,7 @@ I18N.Setting.Labeling.EditDataPermission = '编辑数据权限';
 I18N.Setting.Labeling.PlatformDataPermissionTip = '建议对具备““云能效”系统管理”功能权限的用户勾选此项。';
 I18N.Setting.Labeling.AllCusomer = '全部客户';
 I18N.Setting.Labeling.NoCusomer = '无客户';
+I18N.Setting.Labeling.ElectrovalenceUom = '元/千瓦时';
 
 I18N.Setting.CustomizedLabeling = {};
 I18N.Setting.CustomizedLabeling.Grade = '{0}级';

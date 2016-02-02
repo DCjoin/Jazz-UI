@@ -393,27 +393,41 @@ var TariffDetail = React.createClass({
             {I18N.Common.Button.Add}
           </div>
         </div>);
+    var uomStyle = isView ? {
+      marginTop: '25px',
+      marginLeft: '-250px'
+    } : {
+      marginTop: '40px'
+    };
     return (
       <div>
         <div className='jazz-tariff-infoTab-notice'>
           {I18N.Setting.TOUTariff.BasicPropertyTip}
         </div>
         {
-      (!isView || !!plainPrice) ? <div className='jazz-item-margin'>
+      (!isView || !!plainPrice) ? <div className='jazz-item-margin' style={{
+        display: 'flex'
+      }}>
                     <ViewableTextField  {...plainPriceProps} />
+                    <div className='jazz-tariff-electrovalenceUom' style={uomStyle}>{I18N.Setting.Labeling.ElectrovalenceUom}</div>
                   </div> : null
       }
-        <div className='jazz-item-margin'>
+        <div className='jazz-item-margin' style={{
+        display: 'flex'
+      }}>
           <ViewableTextField  {...peakPriceProps} />
+          <div className='jazz-tariff-electrovalenceUom' style={uomStyle}>{I18N.Setting.Labeling.ElectrovalenceUom}</div>
         </div>
         <div className='jazz-item-margin'>
           {peakBtn}
         </div>
         {this._renderPeakTimeRange(peakPriceItem)}
         <div className='jazz-item-margin' style={{
-        marginTop: '35px'
+        marginTop: '35px',
+        display: 'flex'
       }}>
           <ViewableTextField  {...valleyPriceProps} />
+          <div className='jazz-tariff-electrovalenceUom' style={uomStyle}>{I18N.Setting.Labeling.ElectrovalenceUom}</div>
         </div>
         <div className='jazz-item-margin'>
           {valleyBtn}
@@ -474,6 +488,12 @@ var TariffDetail = React.createClass({
           fontSize: '14px',
           color: '#abafae'
         };
+      var uomStyle = isView ? {
+        marginTop: '25px',
+        marginLeft: '-250px'
+      } : {
+        marginTop: '40px'
+      };
       PeakTariff.get('TimeRanges').forEach((time, index) => {
         var dateError = (!!errors) ? errors.getIn(['Date', index]) : null,
           timeError = (!!errors) ? errors.getIn(['Time', index]) : null;
@@ -524,8 +544,11 @@ var TariffDetail = React.createClass({
 
       peakTariffItems = (
         <div>
-          <div className='jazz-item-margin'>
+          <div className='jazz-item-margin' style={{
+          display: 'flex'
+        }}>
             <ViewableTextField  {...props} />
+            <div className='jazz-tariff-electrovalenceUom' style={uomStyle}>{I18N.Setting.Labeling.ElectrovalenceUom}</div>
           </div>
           <div className='jazz-item-margin'>
             <div className="jazz-carbon-addItem">
