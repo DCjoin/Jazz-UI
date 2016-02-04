@@ -584,6 +584,7 @@ I18N.Setting.Labeling.ViewDataPermission = 'View data authority';
 I18N.Setting.Labeling.EditDataPermission = 'Edit data authority';
 I18N.Setting.Labeling.PlatformDataPermissionTip = 'It is recommended to check this for who having "EnergyMost system administrator" authority.';
 I18N.Setting.Labeling.AllCusomer = 'All customers';
+I18N.Setting.Labeling.ElectrovalenceUom = 'RMB/kwh';
 
 I18N.Setting.CustomizedLabeling = {};
 I18N.Setting.CustomizedLabeling.Grade = 'Level {0}';

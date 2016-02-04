@@ -32,7 +32,9 @@ var _ = {
 
 var _getChildren = function(children = new List(), node = [], selected = false) {
 
-
+  if (!children) {
+    children = new List();
+  }
   children.forEach(child => {
 
     if (!selected || (selected && child.get("HasDataPrivilege") && !_.find(node, item => item.Id == child.get("Id")))) {
@@ -169,10 +171,15 @@ let UserCustomerPermission = React.createClass({
 
 
     if (this.props.isView) {
+      let titleStyle = {
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
+      };
       return (
         <SideNav side="right" onClose={this.onClose} ref="pop_user_customer_permission_side_nav">
 					<div className="pop-user-customer-permission-side-nav-wrapper">
-						<div className="pop-user-customer-permission-side-nav-header sidebar-title">{customer.get("CustomerName")}</div>
+						<div className="pop-user-customer-permission-side-nav-header sidebar-title" style={titleStyle} title={customer.get("CustomerName")}>{customer.get("CustomerName")}</div>
 						{content}
 					</div>
 				</SideNav>
