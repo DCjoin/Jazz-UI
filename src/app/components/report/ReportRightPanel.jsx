@@ -604,7 +604,9 @@ var ReportRightPanel = React.createClass({
           didChanged: me._onExistTemplateChange
         };
         if (me.state.showDownloadButton) {
-          downloadButton = (<FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={me._downloadTemplate} secondary={true} />);
+          downloadButton = (<div className='jazz-report-rightpanel-template-download-button'><FlatButton label={I18N.EM.Report.DownloadTemplate} onClick={me._downloadTemplate} secondary={true} style={{
+            background: 'transparent'
+          }} /></div>);
         }
         if (!me.state.showDownloadButton) {
           var fileInputStyle = {
@@ -641,11 +643,12 @@ var ReportRightPanel = React.createClass({
             </div>
           </div>
         );
-        addReportDataButton = (<div className="jazz-report-rightpanel-add" >
-        <div>{I18N.EM.Report.Data}</div>
-        <FlatButton label={I18N.Common.Button.Add} onClick={me._addReportData} />
-      </div>);
+        addReportDataButton = (<div className="jazz-report-rightpanel-add-button"><FlatButton label={I18N.Common.Button.Add} onClick={me._addReportData} /></div>);
       }
+      var addReportData = (<div className="jazz-report-rightpanel-add">
+      <div className="jazz-report-rightpanel-add-text">{I18N.EM.Report.Data}</div>
+      {addReportDataButton}
+    </div>);
       var dataLength = reportItem.get('data').size;
       var reportData = reportItem.get('data').map(function(item, index) {
         let props = {
@@ -690,7 +693,7 @@ var ReportRightPanel = React.createClass({
             <div className="jazz-report-rightpanel-template">
               {reportTemplate}
             </div>
-            {addReportDataButton}
+            {addReportData}
             <div className="jazz-report-rightpanel-data">
               {reportData}
             </div>

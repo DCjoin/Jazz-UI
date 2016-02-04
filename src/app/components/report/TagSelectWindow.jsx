@@ -272,6 +272,7 @@ let TagSelectWindow = React.createClass({
       paddingLeft: '7px',
       backgroundColor: '#fbfbfb',
       height: '30px',
+      minHeight: '30px',
       'line-height': '30px'
     }}>
         <div className='jazz-report-tag-checkbox'><Checkbox disabled={this.props.disabled} checked={this.state.checkAll} onCheck={this._onCheckAll}/></div>
@@ -286,6 +287,7 @@ let TagSelectWindow = React.createClass({
       paddingLeft: '7px',
       backgroundColor: '#efefef',
       height: '30px',
+      minHeight: '30px',
       'line-height': '30px'
     }}>
           <div style={{

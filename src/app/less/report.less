@@ -24,15 +24,18 @@
   align-items: center;
   justify-content: space-around;
   display: flex;
+  border-bottom:1px solid #434d5e;
   >div{
     height: 40px !important;
     width: 192px !important;
     div:first-of-type{
       div:nth-of-type(3){
         color: #ffffff !important;
+        line-height: 40px!important
       }
       >svg{
         right: 29px !important;
+        top: 8px !important;
       }
       div:nth-of-type(4){
         border-top: 0 !important;
@@ -48,7 +51,7 @@
 .jazz-report-grid-tr-item{
   padding: 10px 18px;
   cursor: pointer;
-  border-top:1px solid #434d5e;
+  border-bottom:1px solid #434d5e;
   background-color: rgb(53, 64, 82);
   font-size: 14px;
   height: 40px;
@@ -68,12 +71,12 @@
 .jazz-report-rightpanel-header{
   display: flex;
   flex-direction: column;
-  min-height: 128px;
+  min-height: 130px;
+  border-bottom: 1px solid #ececec;
   .jazz-report-rightpanel-title{
     padding: 12px 30px;
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid #ececec;
     .pop-viewable-value{
       >span{
         font-size: 22px!important;
@@ -86,21 +89,47 @@
   overflow-y: auto;
   overflow-x: hidden;
   flex: 1;
+  background-color: #fbfbfb;
   .jazz-report-rightpanel-template{
     padding: 25px 30px;
     margin: 0 auto;
     &-title{
       margin-bottom: 10px;
     }
+    &-download-button{
+       > button{
+        border: none !important;
+        background-color: transparent!important;
+        &:hover{
+          color:@schneiderBlue!important;
+          background-color: '#e1fcff'!important;
+        }
+       }
+    }
   }
   .jazz-report-rightpanel-add{
-    padding: 25px 30px;
+    padding: 15px 30px;
     display: flex;
     flex-direction: row;
     margin: 0 auto;
     border-top: 1px solid #ececec;
     >div{
       padding-top: 5px;
+    }
+    &-text{
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    &-button{
+      margin-left: 101px;
+      > button{
+       border: none !important;
+       background-color: transparent!important;
+       &:hover{
+         color:@schneiderBlue!important;
+         background-color: '#e1fcff'!important;
+       }
+      }
     }
   }
   .jazz-report-rightpanel-data{
@@ -155,14 +184,21 @@
   margin: 0 20px 15px 20px;
   padding-left: 10px;
   background-color: #f4f4f4;
-  .jazz-report-data-delete-button{
-    > button{
-     border: none !important;
-     background-color: transparent!important;
-     &:hover{
-       color:@schneiderBlue!important;
-       background-color: '#e1fcff'!important;
-     }
+  width: 800px;
+  .jazz-report-data-delete{
+    padding: 10px 0px 15px 0px;
+    display: flex;
+    flex-direction: row;
+    margin-top: -15px !important;
+    &-button{
+      > button{
+       border: none !important;
+       background-color: transparent!important;
+       &:hover{
+         color:@schneiderBlue!important;
+         background-color: '#e1fcff'!important;
+       }
+      }
     }
   }
   .jazz-report-data-datasource-button{
@@ -182,17 +218,6 @@
      }
   }
 }
-.jazz-report-data-delete{
-  padding: 10px 0px 15px 0px;
-  display: flex;
-  flex-direction: row;
-  border-top: 1px solid #ececec;
-  >div:nth-of-type(1){
-    padding-top: 7px;
-    height: 16px;
-    padding-bottom:10px;
-  }
-}
 .jazz-report-data-container{
   display: flex;
   flex-direction: column;
@@ -201,6 +226,28 @@
     font-size: 14px!important;
     color: #abafae!important;
     margin-bottom: 6px!important;
+  }
+  .jazz-report-data-timerange{
+    display: flex;
+    flex-direction: row;
+    .pop-viewableDropDownMenu-ddm{
+      div:nth-of-type(2){
+        >div{
+          padding-right: 5px !important;
+          padding-left: 12px !important;
+        }
+      }
+    }
+    .jazz-full-border-datepicker-container{
+      >div{
+        background-color: transparent !important;
+        border: 0px !important;
+        border-bottom: 1px solid #e0e0e0 !important;
+        input{
+          font-size: 16px!important;
+        }
+      }
+    }
   }
   .pop-viewableTextField-noempty label{
     color: #abafae!important;
@@ -287,6 +334,8 @@
    .jazz-report-taglist-tagselect{
      width: 380px;
      display: flex;
+     height: 78px;
+     min-height: 78px;
      flex-direction: column;
      div{
        color:#000000 !important;

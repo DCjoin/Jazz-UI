@@ -430,7 +430,7 @@ let ReportDataItem = React.createClass({
     } else {
       dataSourceButton = <div className='jazz-report-data-datasource-button'><FlatButton secondary={true} onClick={me._showTagsDialog} label={I18N.EM.Report.ViewTag}/></div>;
       dateTimeSelector = <div style={{
-        marginLeft: '100px',
+        marginLeft: '15px',
         paddingTop: '6px'
       }}>{me._displayTimeRange()}</div>;
     }
@@ -475,7 +475,10 @@ let ReportDataItem = React.createClass({
       defaultValue: me.props.dateType,
       title: '',
       textField: 'text',
-      didChanged: me._onDateTypeChange
+      didChanged: me._onDateTypeChange,
+      style: {
+        width: '120px'
+      }
     };
     var targetSheetProps = {
       ref: 'targetSheetId',
@@ -527,12 +530,15 @@ let ReportDataItem = React.createClass({
 
     return (
       <div className='jazz-report-data-content'>
-        <div className='jazz-report-data-delete'>
-          <div>{I18N.EM.Report.Data}</div>
-          {deleteButton}
-        </div>
         <div className='jazz-report-data-container'>
+          <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+      }}>
           <ViewableDropDownMenu {...reportTypeProps}></ViewableDropDownMenu>
+          <div className='jazz-report-data-delete'>{deleteButton}</div>
+          </div>
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.DataSource}</span>
@@ -540,10 +546,7 @@ let ReportDataItem = React.createClass({
         </div>
         <div className='jazz-report-data-container'>
           <span>{I18N.EM.Report.TimeRange}</span>
-          <div style={{
-        display: 'flex',
-        flexDirection: 'row'
-      }}>
+          <div className='jazz-report-data-timerange'>
             <ViewableDropDownMenu  {...dateTypeProps}></ViewableDropDownMenu>
             {dateTimeSelector}
           </div>
