@@ -16,13 +16,14 @@ var CustomerList = React.createClass({
     onAddBtnClick: React.PropTypes.func,
     customers: React.PropTypes.object,
     selectedId: React.PropTypes.number,
-    changeSortBy: React.PropTypes.func
+    changeSortBy: React.PropTypes.func,
+    sortBy: React.PropTypes.string,
   },
-  getInitialState: function() {
-    return {
-      sortBy: 'customername@asc'
-    };
-  },
+  // getInitialState: function() {
+  //   return {
+  //     sortBy: 'customername@asc'
+  //   };
+  // },
   _renderCustomerItems: function() {
     var items = [],
       that = this;
@@ -45,11 +46,11 @@ var CustomerList = React.createClass({
     return items;
   },
   _changeSortBy: function(type) {
-    this.setState({
-      sortBy: type
-    });
+    // this.setState({
+    //   sortBy: type
+    // });
     CustomerAction.GetCustomers(type == 'customername@asc' ? 'Name' : 'StartTime');
-    this.props.changeSortBy();
+    this.props.changeSortBy(type);
   },
   render: function() {
     var that = this;
@@ -70,7 +71,7 @@ var CustomerList = React.createClass({
         },
       ],
       changeSortBy: that._changeSortBy,
-      sortBy: that.state.sortBy
+      sortBy: that.props.sortBy
     };
     return (
       <SelectablePanel {...props}/>
