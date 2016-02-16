@@ -5298,8 +5298,11 @@ let ChartStrategyFactor = {
     return widgetOptMenu;
   },
   getClearChartBtn(analysisPanel) {
+    var icon = <div><FontIcon className="icon-delete" style={{
+      fontSize: '14px'
+    }}/></div>;
     var btn = <RaisedButton label={I18N.EM.Tool.ClearChart} onClick={analysisPanel.state.chartStrategy.clearChartDataFn.bind(analysisPanel, analysisPanel)}/>;
-    return <div className='jazz-no-background-button-container'>{btn}</div>;
+    return <div className='jazz-no-background-button-container'>{icon}{btn}</div>;
   },
   getSearchBtn(analysisPanel) {
     var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick} backgroundColor='#1ca8dd' labelStyle={{
