@@ -128,7 +128,7 @@ var ButtonMenu = React.createClass({
       marginRight: '10px',
       marginLeft: '-5px'
     }}
-    hoverColor='yellow' onClick={this._onDropdownIconClick}/>
+    hoverColor='yellow'/>
                     </RaisedButton>;
 
     var menu = open ? React.createElement(
@@ -163,7 +163,7 @@ var ButtonMenu = React.createClass({
   _onButtonClick() {
     if (this.props.onButtonClick) {
       this.props.onButtonClick();
-    } else {
+    } else if (!this.state.disabled) {
       this._onDropdownIconClick();
     }
   },

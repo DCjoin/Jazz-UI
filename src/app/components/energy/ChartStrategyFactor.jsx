@@ -3902,7 +3902,7 @@ let ChartStrategyFactor = {
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
 
-       <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
 
        <div className={'jazz-flat-button'}>
          {searchButton}
@@ -3928,7 +3928,7 @@ let ChartStrategyFactor = {
           width: '90px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
-      <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
       </div>
@@ -3953,7 +3953,7 @@ let ChartStrategyFactor = {
           width: '90px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
-      <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
       </div>
@@ -4017,13 +4017,13 @@ let ChartStrategyFactor = {
         }}>
          {chartTypeCmp}
          <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '112px'
+          width: '90px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
          <DropDownMenu ref='ratioTypeCombo' menuItems={ratios} style={{
-          width: '102px',
+          width: '90px',
           marginRight: '10px'
         }} onChange={(e, selectedIndex, menuItem) => {
           analysisPanel.setState({
@@ -4051,13 +4051,13 @@ let ChartStrategyFactor = {
         }}>
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '112px'
+          width: '90px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-container'} >
         <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{
-          width: '158px'
+          width: '130px'
         }} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
@@ -4065,7 +4065,8 @@ let ChartStrategyFactor = {
           marginLeft: '10px'
         }} label={I18N.Common.Button.Show}  backgroundColor='#1ca8dd' labelStyle={{
           color: 'white',
-          fontWeight: '100'
+          fontWeight: '100',
+          fontSize: '12px'
         }} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
     </div>;
@@ -4076,7 +4077,7 @@ let ChartStrategyFactor = {
         selectedIndex: analysisPanel.state.selectedYear,
         isViewStatus: false,
         style: {
-          width: '82px',
+          width: '90px',
           margin: '0px 10px 0px 0px'
         }
       };
@@ -4096,13 +4097,12 @@ let ChartStrategyFactor = {
           marginTop: '-4px'
         }}>
       <DropDownMenu style={{
-          width: '82px'
+          width: '90px'
         }} menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
       </div>
-      <div>
-      {labelBtn}
-    </div>
-
+      <div className={'jazz-label-btn'} >
+        {labelBtn}
+      </div>
       <div className={'jazz-full-border-dropdownmenu-container'} >
         {kpiTypeBtn}
       </div>
@@ -4111,7 +4111,8 @@ let ChartStrategyFactor = {
           marginLeft: '10px'
         }} label={I18N.Common.Button.Show}  backgroundColor='#1ca8dd' labelStyle={{
           color: 'white',
-          fontWeight: '100'
+          fontWeight: '100',
+          fontSize: '12px'
         }} onClick={analysisPanel.onSearchDataButtonClick}></RaisedButton>
       </div>
     </div>;
@@ -5293,7 +5294,8 @@ let ChartStrategyFactor = {
     var customizedSubItems = analysisPanel.state.customerMenuItems;
     let labelButton = <ButtonMenu label={analysisPanel.state.selectedLabelItem.text} style={{
       marginLeft: '10px',
-      fontSize: '14px'
+      fontSize: '12px',
+      width: '132px'
     }} desktop={true}
     disabled={analysisPanel.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
       <ExtendableMenuItem primaryText={I18N.Setting.Labeling.Label.IndustryLabeling} value='industryZone' subItems={industySubItems}>
@@ -5310,8 +5312,8 @@ let ChartStrategyFactor = {
       height: '32px',
       lineHeight: '32px',
       border: '1px solid #efefef',
-      margin: '0px 0px 0px 10px',
-      fontSize: '15px',
+      margin: '-4px 0px 0px 10px',
+      fontSize: '12px',
       color: '#b3b3b3',
       textAlign: 'left',
       paddingLeft: '15px',
