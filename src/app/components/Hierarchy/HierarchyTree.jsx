@@ -400,7 +400,8 @@ let HierarchyTree = React.createClass({
       cleanIconStyle = {
         marginTop: '3px',
         fontSize: '16px',
-        display: 'none'
+        display: 'none',
+        marginRight: '5px'
       },
       textFieldStyle = {
         flex: '1',

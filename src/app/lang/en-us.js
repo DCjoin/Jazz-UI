@@ -42,7 +42,7 @@ I18N.MainMenu.Alarm = 'Failure alarm';
 I18N.MainMenu.Maintain = 'Equipment maintenance ';
 I18N.MainMenu.Setting = 'Setting';
 I18N.MainMenu.Customer = 'Customer management';
-I18N.MainMenu.User = 'User management';
+I18N.MainMenu.User = 'User';
 I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
@@ -126,7 +126,7 @@ I18N.Common.Glossary.WeekDay.Thursday = 'Thur.';
 I18N.Common.Glossary.WeekDay.Friday = 'Fri.';
 I18N.Common.Glossary.WeekDay.Saturday = 'Sat.';
 I18N.Common.Glossary.WeekDay.Sunday = 'Sun.';
-I18N.Common.Glossary.User = 'User management';
+I18N.Common.Glossary.User = 'User';
 
 I18N.Common.Date = {};
 I18N.Common.Date.January = 'Jan.';
@@ -1346,8 +1346,8 @@ I18N.Platform.Password.Title = 'Modify password';
 
 I18N.Platform.ServiceProvider = {};
 I18N.Platform.ServiceProvider.SP = 'Service Provider';
-I18N.Platform.ServiceProvider.CustomerName = 'Sort according SP Name';
-I18N.Platform.ServiceProvider.StartTime = 'Sort according create time';
+I18N.Platform.ServiceProvider.CustomerName = 'Sort by SP Name';
+I18N.Platform.ServiceProvider.StartTime = 'Sort by create time';
 I18N.Platform.ServiceProvider.NormalStatus = 'Normal';
 I18N.Platform.ServiceProvider.PauseStatus = 'Pause';
 I18N.Platform.ServiceProvider.OperationTime = 'Operation time';
@@ -1512,4 +1512,6 @@ I18N.Setting.CustomerManagement.EditAdministrator = 'Edit Customer administrator
 I18N.Setting.CustomerManagement.Title = 'Title';
 I18N.Setting.CustomerManagement.DeleteTitle = 'Delete Customer';
 I18N.Setting.CustomerManagement.DeleteContent = 'Customer "{0}" will be deleted';
+
+I18N.Setting.SPManagement = 'EnergyMost sys-management';
 module.exports = I18N;

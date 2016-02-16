@@ -83,7 +83,7 @@ let ServiceApp = React.createClass({
 
     return (
       <div className='jazz-main'>
-            <MainAppBar items={menuItems} />
+            <MainAppBar items={menuItems} title={I18N.Setting.SPManagement}/>
             <RouteHandler {...this.props} />
             <NetworkChecker></NetworkChecker>
         </div>

@@ -71,9 +71,9 @@ var FolderSearchBox = React.createClass({
         marginLeft: '5px'
       },
       cleanIconStyle = {
-        marginTop: '3px',
-        fontSize: '14px',
-        display: 'none'
+        fontSize: '16px',
+        display: 'none',
+        marginRight: '5px'
       },
       textFieldStyle = {
         flex: '1',

@@ -93,7 +93,10 @@ let PlatformContent = React.createClass({
     };
     return (
       <div className="pop-manage-detail-header">
-        <div className="pop-customer-detail-name">
+        <div className={classnames({
+        "pop-customer-detail-name": true,
+        "jazz-platform-header": true
+      })}>
           <ViewableTextField {...providerNameProps} />
         </div>
       </div>

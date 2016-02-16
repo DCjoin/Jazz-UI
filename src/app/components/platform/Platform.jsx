@@ -9,7 +9,7 @@ import PlatformAction from '../../actions/PlatformAction.jsx';
 import PlatformStore from '../../stores/PlatformStore.jsx';
 import Content from './PlatformContent.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
-
+//test
 let Platform = React.createClass({
   _onChangeSortBy: function(type) {
     if (type == 'customername@asc') {

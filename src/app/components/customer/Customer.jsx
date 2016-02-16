@@ -23,6 +23,7 @@ var Customer = React.createClass({
       errorTitle: null,
       errorContent: null,
       infoTab: true,
+      sortBy: 'customername@asc'
     };
   },
   _handlerTouchTap: function(selectedId) {
@@ -112,9 +113,10 @@ var Customer = React.createClass({
     CustomerAction.reset();
     this._setViewStatus();
   },
-  _handlerChangeSortBy: function() {
+  _handlerChangeSortBy: function(type) {
     this.setState({
-      isLoading: true
+      isLoading: true,
+      sortBy: type
     });
   },
   _toggleList: function() {
@@ -178,7 +180,8 @@ var Customer = React.createClass({
         onCustomerClick: that._handlerTouchTap,
         customers: that.state.customers,
         selectedId: that.state.selectedId,
-        changeSortBy: that._handlerChangeSortBy
+        changeSortBy: that._handlerChangeSortBy,
+        sortBy: this.state.sortBy
       },
       detailProps = {
         ref: 'pop_customer_detail',

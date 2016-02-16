@@ -10,6 +10,7 @@ import PlatformAction from '../../actions/PlatformAction.jsx';
 let PlatformApp = React.createClass({
   mixins: [Navigation, State],
   componentDidMount: function() {
+    document.title = I18N.Platform.Config;
     PlatformAction.getServiceProviders('Name', 0);
   },
   render: function() {
