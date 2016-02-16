@@ -3152,7 +3152,7 @@ let ChartStrategyFactor = {
           value: 'Carbon'
         }];
       return <DropDownMenu selectedIndex={index} menuItems={types} style={{
-          width: '92px',
+          width: '90px',
           marginRight: '10px'
         }} onChange={analysisPanel.state.chartStrategy.onEnergyTypeChangeFn.bind(analysisPanel, analysisPanel)}></DropDownMenu>;
     }
@@ -3898,7 +3898,7 @@ let ChartStrategyFactor = {
         }}>
          {chartTypeCmp}
          <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate'style={{
-          width: '112px',
+          width: '90px',
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
 
@@ -3925,7 +3925,7 @@ let ChartStrategyFactor = {
         }}>
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '112px'
+          width: '90px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
@@ -3950,7 +3950,7 @@ let ChartStrategyFactor = {
         }}>
         {chartTypeCmp}
         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '112px'
+          width: '90px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' endLeft='-80px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
@@ -3974,7 +3974,7 @@ let ChartStrategyFactor = {
         }}>
          {chartTypeCmp}
          <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
-          width: '112px'
+          width: '90px'
         }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
@@ -5283,7 +5283,8 @@ let ChartStrategyFactor = {
   getSearchBtn(analysisPanel) {
     var searchButton = <RaisedButton label={I18N.Common.Button.Show} onClick={analysisPanel.onSearchDataButtonClick} backgroundColor='#1ca8dd' labelStyle={{
       color: 'white',
-      fontWeight: '100'
+      fontWeight: '100',
+      fontSize: '12px'
     }}/>;
     return searchButton;
   },

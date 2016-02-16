@@ -299,7 +299,7 @@
       }
 
       div:nth-of-type(3){
-        font-size: 14px !important;
+        font-size: 12px !important;
         top: 0px !important;
         opacity: 1 !important;
         padding-left: 10px !important;
@@ -316,6 +316,7 @@
     div:nth-of-type(2){
       >div{
         padding-right: 5px !important;
+        font-size: 12px !important;
       }
     }
   }
@@ -433,6 +434,15 @@
     }
   }
 }
+.jazz-full-border-datepicker{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color:'#fbfbfb';
+  >span{
+    font-size: 12px;
+  }
+}
 .jazz-full-border-datepicker-container{
   height: 38px;
   margin-left:10px;
@@ -441,10 +451,11 @@
     background-color: #ffffff;
     cursor: pointer;
     border: 1px solid rgb(235, 235, 235);
-    >div{
+    >div:first-child{
+      width: 90px !important;
       >input{
         cursor: pointer;
-        font-size: 14px !important;
+        font-size: 12px !important;
       }
       >hr{
         border-bottom-width: 0px !important;
@@ -505,6 +516,7 @@
 .jazz-flat-button{
   margin-top: -5px;
   >div{
+    width:92px !important;
     box-shadow: none !important;
     border:1px solid rgb(235, 235, 235) !important;
   }
