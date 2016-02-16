@@ -217,7 +217,7 @@ let MapPanel = React.createClass({
         content = "<div class='firstline'>" +
           "<div>" + preTitle + EnergyInfo[value.EnergyDataType + 2] + "</div>" +
           "<div class='value'>" +
-          "<div>" + valueStr + "</div>" +
+          "<div class='valueStr'>" + valueStr + "</div>" +
           "<div class='font'>" + uom + "</div>" +
           "</div>" +
           "</div>";
