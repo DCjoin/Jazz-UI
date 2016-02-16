@@ -19,8 +19,8 @@ let SearchItem = React.createClass({
     var icon = (
     <div className={classNames({
       //add for file operation
-      "icon-column-fold": this.props.nodeData.Type == nodeType.Folder,
-      "icon-image": this.props.nodeData.Type == nodeType.Widget
+      "icon-folder": this.props.nodeData.Type == nodeType.Folder,
+      "icon-chart": this.props.nodeData.Type == nodeType.Widget
     })}/>
     );
 

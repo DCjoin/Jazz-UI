@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Energymost Project",
   "scripts": {
+    "lint": "eslint --ext jsx src/app",
     "test": "karma start",
     "dev": "webpack-dev-server --config webpack-hot-dev-server.config.js --hot --progress --colors --port 3000 --inline",
     "build": "webpack --config webpack-production.config.js --progress --profile --colors > ret.log",
@@ -31,6 +32,8 @@
     "babel-loader": "5.1.3",
     "chai": "3.4.1",
     "css-loader": "0.14.4",
+    "eslint": "1.10.3",
+    "eslint-plugin-react": "3.16.1",
     "extract-text-webpack-plugin": "0.8.1",
     "file-loader": "0.8.4",
     "hapi": "8.2.0",

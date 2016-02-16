@@ -1436,6 +1436,7 @@ I18N.Remark = {};
 I18N.Remark.Label = '备注';
 I18N.Remark.DefaultText = '点击此处添加备注';
 
+
 //usertype
 I18N.Setting.Role = {};
 
@@ -1505,4 +1506,5 @@ I18N.Setting.CustomerManagement.Label.CoalOil = '煤油总量';
 I18N.Setting.CustomerManagement.Label.SelectTip = '请选择在用户地图页焦点楼宇节点下需要同时显示的能源信息类型。';
 I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive = '请至少选择1项，最多可选择5项。';
 
+I18N.Setting.SPManagement = '“云能效”系统管理';
 module.exports = I18N;
