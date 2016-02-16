@@ -44,7 +44,6 @@
     "react/jsx-boolean-value": 0,
     "react/jsx-curly-spacing": 0,
     "react/jsx-no-undef": 1,
-    "react/jsx-quotes": 1,
     "react/jsx-sort-prop-types": 0,
     "react/jsx-sort-props": 0,
     "react/jsx-uses-react": 1,
