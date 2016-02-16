@@ -266,27 +266,48 @@
       }
 
       >div:nth-of-type(3){
-        font-size: 14px !important;
+        font-size: 12px !important;
         top: 0px !important;
         opacity: 1 !important;
-        padding-left: 10px !important;
+        padding-left: 7px !important;
         line-height: 32px !important;
         overflow:hidden;
         white-space:nowrap;
 
       }
-      svg{
-        right: 9px !important;
+      >svg{
+        right: 0px !important;
         top: 4px !important;
       }
-      svg+div{
+      >svg+div{
         border-top-width: 0px !important;
       }
     }
-    div:nth-of-type(2){
+    >div:nth-of-type(2){
+      width: 100% !important;
       >div{
         padding-right: 5px !important;
         padding-left: 12px !important;
+        font-size: 12px !important;
+      }
+    }
+  }
+}
+.jazz-label-btn{
+  >div{
+    >div:first-child{
+      box-shadow: none !important;
+      border: 1px solid rgb(235, 235, 235);
+      height: 34px !important;
+      >button{
+        span{
+          font-size: 12px !important;
+        }
+      }
+    }
+    >span{
+      div{
+        font-size: 12px!important;
       }
     }
   }
@@ -297,102 +318,39 @@
     height: 32px !important;
     >div:first-child
     {
-      div:nth-of-type(2){
+      >div:nth-of-type(2){
         opacity: 1 !important;
       }
-
-      div:nth-of-type(3){
-        font-size: 14px !important;
+      >div:nth-of-type(3){
+        font-size: 12px !important;
         top: 0px !important;
         opacity: 1 !important;
-        padding-left: 10px !important;
+        padding-left: 7px !important;
         line-height: 32px !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        width: 72% !important;
       }
-      svg{
-        right: 9px !important;
+      >svg{
+        right: 0px !important;
         top: 4px !important;
       }
-      svg+div{
+      >svg+div{
         border-top-width: 0px !important;
       }
     }
-    div:nth-of-type(2){
-      >div{
-        padding-right: 5px !important;
-      }
-    }
-  }
-}
-.jazz-full-border-dropdownmenu-ranktype-container{
-  margin-right: 10px;
-  >div{
-    border: 1px solid rgb(235, 235, 235);
-    >div:first-child
-    {
-      div:nth-of-type(2){
-        opacity: 1 !important;
-      }
-
-      div:nth-of-type(3){
-        font-size: 12px !important;
-        top: 0px !important;
-        opacity: 1 !important;
-        padding-left: 15px !important;
-      }
-      svg{
-        right: 9px !important;
-      }
-      svg+div{
-        border-top-width: 0px !important;
-      }
-    }
-
-    >div:last-child{
-      left: 0px !important;
-      top: 33px !important;
-      width: 140px !important;
-      div{
-        padding-left: 22px !important;
-        padding-right: auto !important;
-        font-size: 12px !important;
-      }
-    }
-  }
-}
-.jazz-full-border-dropdownmenu-time-container{
-  margin-right: 10px;
-  >div{
-    border: 1px solid rgb(235, 235, 235);
-    >div:first-child
-    {
-      div:nth-of-type(2){
-        opacity: 1 !important;
-      }
-
-      div:nth-of-type(3){
-        font-size: 12px !important;
-        top: 0px !important;
-        opacity: 1 !important;
-        padding-left: 12px !important;
-      }
-      svg{
-        right: 9px !important;
-      }
-      svg+div{
-        border-top-width: 0px !important;
-      }
-    }
-
-    >div:last-child{
-      left: 0px !important;
-      top: 33px !important;
-      width: 76px !important;
-      max-height: 300px !important;
+    >div:nth-of-type(2){
+      width: 100% !important;
+      max-height: 250px;
       overflow-y: auto !important;
       overflow-x: hidden !important;
-      div{
+      >div{
+        max-width: 100% !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+        padding-right: 5px !important;
         padding-left: 12px !important;
-        padding-right: auto !important;
         font-size: 12px !important;
       }
     }
@@ -436,6 +394,15 @@
     }
   }
 }
+.jazz-full-border-datepicker{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color:'#fbfbfb';
+  >span{
+    font-size: 12px;
+  }
+}
 .jazz-full-border-datepicker-container{
   height: 38px;
   margin-left:10px;
@@ -444,10 +411,11 @@
     background-color: #ffffff;
     cursor: pointer;
     border: 1px solid rgb(235, 235, 235);
-    >div{
+    >div:first-child{
+      width: 90px !important;
       >input{
         cursor: pointer;
-        font-size: 14px !important;
+        font-size: 12px !important;
       }
       >hr{
         border-bottom-width: 0px !important;
@@ -508,6 +476,7 @@
 .jazz-flat-button{
   margin-top: -5px;
   >div{
+    width:92px !important;
     box-shadow: none !important;
     border:1px solid rgb(235, 235, 235) !important;
   }

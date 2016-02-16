@@ -232,16 +232,12 @@ let DateTimeSelector = React.createClass({
         me._onChangeDateTime(null, null, null, v);
       }
     };
-    return <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center'
-      }}>
-      <div className={'jazz-full-border-datepicker-container'}>
+    return <div className='jazz-full-border-datepicker'>
+      <div className='jazz-full-border-datepicker-container'>
         <ViewableDatePicker ref="startDate" {...startDateProps}/>
       </div>
-      <span> {I18N.EM.To} </span>
-      <div className={'jazz-full-border-datepicker-container'}>
+      <span>{I18N.EM.To}</span>
+      <div className='jazz-full-border-datepicker-container'>
         <ViewableDatePicker ref="endDate" {...endDateProps}/>
       </div>
     </div>;
