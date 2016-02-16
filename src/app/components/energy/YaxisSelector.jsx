@@ -72,7 +72,11 @@ let YaxisSelector = React.createClass({
     return <div style={{
         'align-self': 'center'
       }}>
-      <IconButton iconClassName="icon-setting"   onTouchTap={me._onYaxisClick} />
+      <IconButton iconClassName="icon-setting" iconStyle={{
+        fontSize: '18px'
+      }} style={{
+        marginTop: '4px'
+      }} onTouchTap={me._onYaxisClick} />
 
         <YaxisDialog yaxisConfig={me.state.yaxisConfig} storedConfig={me.state.storedConfig}
       onDialogSubmit={me._onDialogSubmit} ref='yaxisDialog' onYaxisDialogDismiss={me.onYaxisDialogDismiss}></YaxisDialog>

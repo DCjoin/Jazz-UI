@@ -2665,7 +2665,8 @@ let ChartStrategyFactor = {
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
           display: 'flex',
-          minHeight: '48px'
+          minHeight: '48px',
+          height: '48px'
         }}>
         <div style={{
           marginLeft: '10px'
@@ -2673,7 +2674,7 @@ let ChartStrategyFactor = {
          <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
        </div>
         <div style={{
-          margin: '10px 20px 0 23px'
+          margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
 
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
@@ -2691,10 +2692,11 @@ let ChartStrategyFactor = {
       } else if (chartType === 'rawdata') {
         toolElement = <div style={{
           display: 'flex',
-          minHeight: '48px'
+          minHeight: '48px',
+          height: '48px'
         }}>
              <div style={{
-          margin: '10px 0 0 30px'
+          margin: '14px 0 0 30px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
           margin: '5px 30px 0px auto'
@@ -2710,10 +2712,11 @@ let ChartStrategyFactor = {
       } else if (chartType === 'pie') {
         toolElement = <div style={{
           display: 'flex',
-          minHeight: '48px'
+          minHeight: '48px',
+          height: '48px'
         }}>
              <div style={{
-          margin: '10px 0 0 23px'
+          margin: '14px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
           margin: '5px 30px 0px auto'
@@ -2739,7 +2742,8 @@ let ChartStrategyFactor = {
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
           display: 'flex',
-          minHeight: '48px'
+          minHeight: '48px',
+          height: '48px'
         }}>
         <div style={{
           marginLeft: '10px'
@@ -2747,7 +2751,7 @@ let ChartStrategyFactor = {
           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
         </div>
         <div style={{
-          margin: '10px 20px 0 23px'
+          margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
 
              <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
@@ -2764,10 +2768,11 @@ let ChartStrategyFactor = {
       } else if (chartType === 'pie') {
         toolElement = <div style={{
           display: 'flex',
-          minHeight: '48px'
+          minHeight: '48px',
+          height: '48px'
         }}>
              <div style={{
-          margin: '10px 0 0 23px'
+          margin: '14px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
           margin: '5px 30px 0px auto'
@@ -2795,12 +2800,15 @@ let ChartStrategyFactor = {
         return true;
       };
       var selectedIndex = CarbonStore.getDestination() - 2;
-      var carbonDest = <DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} onChange={menuItemChange} className='jazz-energy-carbon-dest'/>;
+      var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu menuItems={menuItems} style={{
+        width: '90px'
+      }} selectedIndex={selectedIndex} onChange={menuItemChange} /></div>;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
           display: 'flex',
-          minHeight: '48px'
+          minHeight: '48px',
+          height: '48px'
         }}>
         <div style={{
           marginLeft: '10px'
@@ -2808,7 +2816,7 @@ let ChartStrategyFactor = {
           <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
         </div>
         <div style={{
-          margin: '10px 20px 0 23px'
+          margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
              <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
              <div style={{
@@ -2826,10 +2834,11 @@ let ChartStrategyFactor = {
       } else if (chartType === 'pie') {
         toolElement = <div style={{
           display: 'flex',
-          minHeight: '48px'
+          minHeight: '48px',
+          height: '48px'
         }}>
              <div style={{
-          margin: '10px 0 0 23px'
+          margin: '14px 0 0 23px'
         }}>{chartTypeIconMenu}</div>
              <div style={{
           margin: '5px 30px 0px auto'
@@ -2854,7 +2863,8 @@ let ChartStrategyFactor = {
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex',
-        minHeight: '48px'
+        minHeight: '48px',
+        height: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
@@ -2862,7 +2872,7 @@ let ChartStrategyFactor = {
       <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
       </div>
       <div style={{
-        margin: '10px 20px 0 23px'
+        margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
@@ -2888,7 +2898,8 @@ let ChartStrategyFactor = {
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex',
-        minHeight: '48px'
+        minHeight: '48px',
+        height: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
@@ -2896,7 +2907,7 @@ let ChartStrategyFactor = {
       <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
       </div>
       <div style={{
-        margin: '10px 20px 0 23px'
+        margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
            <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
@@ -2925,11 +2936,14 @@ let ChartStrategyFactor = {
         return true;
       };
       var selectedIndex = CarbonStore.getDestination() - 2;
-      var carbonDest = <DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} onChange={menuItemChange} className='jazz-energy-carbon-dest'/>;
+      var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} style={{
+        width: '90px'
+      }} onChange={menuItemChange}/></div>;
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex',
-        minHeight: '48px'
+        minHeight: '48px',
+        height: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
@@ -2937,7 +2951,7 @@ let ChartStrategyFactor = {
       <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
       </div>
       <div style={{
-        margin: '10px 20px 0 23px'
+        margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
            <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
@@ -2971,7 +2985,8 @@ let ChartStrategyFactor = {
 
       toolElement = <div style={{
         display: 'flex',
-        minHeight: '48px'
+        minHeight: '48px',
+        height: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
@@ -2979,7 +2994,7 @@ let ChartStrategyFactor = {
         <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
       </div>
       <div style={{
-        margin: '10px 20px 0 23px'
+        margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
            <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
@@ -3007,20 +3022,24 @@ let ChartStrategyFactor = {
       }
       var orderItem = ConstStore.getOrderItem();
       var rangeItem = ConstStore.getRangeItem();
-      var orderCombo = <DropDownMenu menuItems={orderItem} selectedIndex={analysisPanel.state.order - 1} ref='orderCombo' onChange={analysisPanel._onOrderChange}></DropDownMenu>;
-      var rangeCombo = <DropDownMenu menuItems={rangeItem} selectedIndex={analysisPanel.getRangeIndex()} ref='rangeCombo' onChange={analysisPanel._onRangeChange}></DropDownMenu>;
+      var orderCombo = <DropDownMenu menuItems={orderItem} selectedIndex={analysisPanel.state.order - 1} ref='orderCombo' onChange={analysisPanel._onOrderChange} style={{
+        width: '90px'
+      }}></DropDownMenu>;
+      var rangeCombo = <DropDownMenu menuItems={rangeItem} selectedIndex={analysisPanel.getRangeIndex()} ref='rangeCombo' onChange={analysisPanel._onRangeChange} style={{
+        width: '90px',
+        marginLeft: '30px'
+      }}></DropDownMenu>;
       toolElement = <div style={{
         display: 'flex',
-        minHeight: '48px'
+        minHeight: '48px',
+        height: '48px'
       }}>
       <div style={{
         marginLeft: '10px'
       }}>
       <YaxisSelector initYaxisDialog={analysisPanel._initYaxisDialog} onYaxisSelectorDialogSubmit={analysisPanel._onYaxisSelectorDialogSubmit} yaxisConfig={analysisPanel.state.yaxisConfig}/>
       </div>
-         <div style={{
-        margin: '10px 20px 0 23px'
-      }}>
+         <div className='jazz-energy-rank-container'>
            {orderCombo}
            {rangeCombo}
          </div>
@@ -5231,7 +5250,8 @@ let ChartStrategyFactor = {
       style = {
         padding: '0px',
         height: '18px',
-        width: '18px'
+        width: '18px',
+        fontSize: '18px'
       };
     let menuMap = {
       line: {
