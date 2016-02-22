@@ -53,7 +53,7 @@ I18N.MainMenu.Template = '模板管理';
 I18N.MainMenu.CustomerSetting = '客户配置';
 I18N.MainMenu.PTagManagement = '计量数据P';
 I18N.MainMenu.VTagManagement = '计量数据V';
-I18N.MainMenu.VEEMonitorRule = '异常检测规则';
+I18N.MainMenu.VEEMonitorRule = '异常监测规则';
 I18N.MainMenu.TagBatchImportLog = '配置导入日志';
 I18N.MainMenu.CustomizedLabeling = '自定义能效标识';
 
