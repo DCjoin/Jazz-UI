@@ -17,11 +17,11 @@ import Report from './components/report/Report.jsx';
 import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import { Styles } from 'material-ui';
-let {ThemeManager, LightRawTheme} = Styles;
+let {ThemeManager} = Styles;
 import AppTheme from './AppTheme.jsx';
 import main from './less/main.less';
 import Platform from './components/platform/Platform.jsx';
-import Test from './components/setting/Test.jsx';
+//import Test from './components/setting/Test.jsx';
 import PlatformApp from './components/platform/PlatformApp.jsx';
 //for user manage
 import User from './components/userManage/user/User.jsx';
@@ -39,6 +39,8 @@ import Carbon from './components/energyConversion/carbon/Carbon.jsx';
 import Tariff from './components/energyConversion/tariff/Tariff.jsx';
 //for customer
 import Customer from './components/customer/Customer.jsx';
+//for customerSetting
+import VEE from './components/customerSetting/VEERules/VEERules.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -62,7 +64,7 @@ var routes = (
         <Route name="template" path="template" handler={Template}></Route>
         <Route name="ptag" path="ptag"></Route>
         <Route name="vtag" path="vtag"></Route>
-        <Route name="vee" path="vee"></Route>
+        <Route name="vee" path="vee" handler={VEE}></Route>
         <Route name="log" path="log"></Route>
         <Route name="customerLabeling" path="customerLabeling"></Route>
       </Route>

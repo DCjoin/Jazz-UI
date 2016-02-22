@@ -2,11 +2,11 @@
 
 import React from "react";
 import List from './VEEList.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
+import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
-import VEEAction from '../../actions/VEEAction.jsx';
-import VEEStore from '../../stores/VEEStore.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import VEEAction from '../../../actions/customerSetting/VEEAction.jsx';
+import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
+import Dialog from '../../../controls/PopupDialog.jsx';
 
 var VEERules = React.createClass({
   getInitialState: function() {

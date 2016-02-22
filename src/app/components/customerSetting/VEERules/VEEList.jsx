@@ -1,9 +1,8 @@
 'use strict';
 
 import React from "react";
-import Item from '../../controls/SelectableItem.jsx';
-import SelectablePanel from '../../controls/SelectablePanel.jsx';
-import VEEStore from '../../stores/VEEStore.jsx';
+import Item from '../../../controls/SelectableItem.jsx';
+import SelectablePanel from '../../../controls/SelectablePanel.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 
 var VEEList = React.createClass({

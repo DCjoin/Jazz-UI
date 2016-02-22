@@ -1,9 +1,9 @@
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import PrototypeStore from './PrototypeStore.jsx';
+import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
+import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import { List, Map } from 'immutable';
-import VEE from '../constants/actionType/VEE.jsx';
+import VEE from '../../constants/actionType/customerSetting/VEE.jsx';
 
 function emptyList() {
   return new List();
@@ -74,3 +74,4 @@ VEEStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
   }
 });
+module.exports = VEEStore;

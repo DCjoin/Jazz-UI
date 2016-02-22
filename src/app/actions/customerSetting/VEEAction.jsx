@@ -1,13 +1,15 @@
 'use strict';
-import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
-import { Action } from '../constants/actionType/VEE.jsx';
-import Ajax from '../ajax/ajax.jsx';
+import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
+import { Action } from '../../constants/actionType/customerSetting/VEE.jsx';
+import Ajax from '../../ajax/ajax.jsx';
 
 let VEEAction = {
   GetVEERules: function() {
-    Ajax.post('/Administration.svc/GetTouTariff', {
-      filter: {
-        CustomerId: window.currentCustomerId,
+    Ajax.post('/VEE.svc/GetVEERules', {
+      params: {
+        filter: {
+          CustomerId: window.currentCustomerId,
+        }
       },
       success: function(rules) {
         AppDispatcher.dispatch({
