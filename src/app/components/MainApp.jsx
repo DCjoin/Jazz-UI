@@ -71,7 +71,7 @@ let MainApp = React.createClass({
             title: I18N.MainMenu.Report,
             children: [
               {
-                name: 'daily_report',
+                name: 'dailyReport',
                 title: I18N.MainMenu.DailyReport
               },
               {
@@ -79,6 +79,42 @@ let MainApp = React.createClass({
                 title: I18N.MainMenu.Template
               }
             ]
+          }
+        );
+      }
+      if (this.state.rivilege.indexOf('1208') > -1 || this.state.rivilege.indexOf('1217') > -1) {
+        var customerChildren = [];
+        if (this.state.rivilege.indexOf('1208') > -1) {
+          customerChildren = [
+            {
+              name: 'ptag',
+              title: I18N.MainMenu.PTagManagement
+            },
+            {
+              name: 'vtag',
+              title: I18N.MainMenu.VTagManagement
+            },
+            {
+              name: 'vee',
+              title: I18N.MainMenu.VEEMonitorRule
+            },
+            {
+              name: 'log',
+              title: I18N.MainMenu.TagBatchImportLog
+            }
+          ];
+          if (this.state.rivilege.indexOf('1217') > -1) {
+            customerChildren.push({
+              name: 'customerLabeling',
+              title: I18N.MainMenu.CustomizedLabeling
+            });
+          }
+        }
+        menuItems.push(
+          {
+            name: 'customerSetting',
+            title: I18N.MainMenu.CustomerSetting,
+            children: customerChildren
           }
         );
       }
