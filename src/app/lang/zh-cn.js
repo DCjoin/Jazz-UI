@@ -1507,4 +1507,7 @@ I18N.Setting.CustomerManagement.Label.SelectTip = '请选择在用户地图页�
 I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive = '请至少选择1项，最多可选择5项。';
 
 I18N.Setting.SPManagement = '“云能效”系统管理';
+
+I18N.Setting.VEEMonitorRule = {};
+I18N.Setting.VEEMonitorRule.Rule = '规则集';
 module.exports = I18N;

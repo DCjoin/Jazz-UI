@@ -1514,4 +1514,7 @@ I18N.Setting.CustomerManagement.DeleteTitle = 'Delete Customer';
 I18N.Setting.CustomerManagement.DeleteContent = 'Customer "{0}" will be deleted';
 
 I18N.Setting.SPManagement = 'EnergyMost sys-management';
+
+I18N.Setting.VEEMonitorRule = {};
+I18N.Setting.VEEMonitorRule.Rule = 'Rule';
 module.exports = I18N;
