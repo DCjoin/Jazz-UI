@@ -38,17 +38,19 @@ let TagList = React.createClass({
         <div className="jazz-tag-leftpanel-header">
           <div className={classNames(addBtnClasses)}>
             <FlatButton disabled={!this.props.isViewStatus}  onClick={this.props.onAddBtnClick} style={buttonStyle}>
-              <FontIcon  className="fa icon-add btn-icon"/>
+              <FontIcon className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.Common.Button.Add}</span>
             </FlatButton>
           </div>
-          <div className="jazz-tag-leftpanel-header-file">
+          <div className='jazz-tag-leftpanel-button'>
             <FlatButton onClick={this.props.onImportBtnClick} style={buttonStyle}>
-              <FontIcon  className="fa icon-add btn-icon"/>
+              <FontIcon className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.Common.Button.Import}</span>
             </FlatButton>
+          </div>
+          <div className='jazz-tag-leftpanel-button'>
             <FlatButton onClick={this.props.onExportBtnClick} style={buttonStyle}>
-              <FontIcon  className="fa icon-add btn-icon"/>
+              <FontIcon className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.Common.Button.Export}</span>
             </FlatButton>
           </div>

@@ -18,10 +18,10 @@ let SearchAndFilterBar = React.createClass({
     };
     return (
       <div className="jazz-search-filter-bar">
-        <div className='search'>
+        <div className='jazz-search'>
           <SearchBar onSearch={this.props.onSearch} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}/>
         </div>
-        <div className='filter'>
+        <div className='jazz-filter'>
           <FlatButton onClick={this.props.onFilter} style={buttonStyle}>
             <FontIcon  className="fa icon-add btn-icon"/>
             <span className="mui-flat-button-label btn-text">{I18N.Common.Button.Filter}</span>

@@ -91,7 +91,9 @@ let Tag = React.createClass({
     var me = this,
       selectedTag = me.state.selectedTag,
       rightPanel = null,
-      isView = this.state.formStatus === formStatus.VIEW;
+      isView = this.state.formStatus === formStatus.VIEW,
+      isEdit = this.state.formStatus === formStatus.EDIT,
+      isAdd = this.state.formStatus === formStatus.ADD;
     if (me.state.isLoading) {
       return (<div className='jazz-tag-loading'><div style={{
           margin: 'auto',

@@ -3,17 +3,82 @@
   flex: 1;
 }
 .jazz-tag-leftpanel{
-   display: flex;
-   flex-direction: column;
-   width:320px;
-   &-header{
-     padding: 0 30px;
-     display: flex;
-     flex-direction: row;
-     align-items: center;
-     justify-content: space-around;
-     min-height:32px;
-     height:32px;
-     background-color: #86ccff;
-   }
+  display: flex;
+  flex-direction: column;
+  width:320px;
+  &-header{
+    padding: 0 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    min-height:32px;
+    height:32px;
+    background-color: #86ccff;
+  }
+  .jazz-tag-leftpanel-button,
+  .jazz-filter{
+    span {
+      font-size: 14px !important;
+      opacity: opacity;
+    }
+    .btn-icon {
+      color: #ffffff !important;
+      margin-right: 8px;
+    }
+    .btn-text {
+      color: #ffffff !important;
+    }
+    &:hover {
+      .btn-icon {
+        color: @textWhiteHover !important;
+      }
+      .btn-text {
+        color: @textWhiteHover !important;
+      }
+    }
+  }
+  .jazz-tag-search-filter-bar{
+    .jazz-search-filter-bar{
+      display: flex;
+      flex-direction: row;
+      background-color: #fbfbfb;
+      .jazz-search{
+        display:flex;
+        flex-flow: row nowrap;
+        margin-top: 0px;
+        border-color:#e4e7e9 transparent;
+        width:200px;
+        min-height:46px;
+        .jazz-dataselectmainpanel{
+          margin-top: 0px;
+          width: 200px;
+          display: flex;
+          flex-direction: column;
+          .search{
+            flex:1;
+            display:flex;
+            flex-flow:row nowrap;
+            min-height:26px;
+            border:1px solid #e4e7e6;
+            margin:9px 10px 9px 10px;
+            .input{
+              >hr{
+                border-bottom-color:transparent !important;
+              }
+            }
+          }
+        }
+      }
+      .jazz-filter{
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  .jazz-tag-list{
+    overflow: auto;
+    flex:1;
+    background-color: rgb(53, 64, 82);
+  }
 }
