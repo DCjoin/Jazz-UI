@@ -4,12 +4,11 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-import CommonFuns from '../util/Util.jsx';
 import { Action } from '../constants/actionType/Calendar.jsx';
 
 let _calendarList = Immutable.fromJS([]),
-  _selecteCalendarIndex = null,
-  _selecteCalendar = null,
+  _selectedCalendarIndex = null,
+  _selectedCalendar = null,
   _calendarErrorTextArr = Immutable.fromJS([]);
 
 let CHANGE_CALENDAR_EVENT = 'changecalendar';
@@ -35,58 +34,58 @@ var CalendarStore = assign({}, PrototypeStore, {
   setCalendarList(calendarList) {
     _calendarList = Immutable.fromJS(calendarList);
     if (_calendarList.size !== 0) {
-      if (_selecteCalendarIndex === null) {
-        _selecteCalendarIndex = 0;
-        _selecteCalendar = _calendarList.get(0);
+      if (_selectedCalendarIndex === null) {
+        _selectedCalendarIndex = 0;
+        _selectedCalendar = _calendarList.get(0);
       } else {
-        if (_calendarList.getIn([0, 'Type']) !== _selecteCalendar.get('Type')) {
-          _selecteCalendarIndex = 0;
-          _selecteCalendar = _calendarList.get(0);
+        if (_calendarList.getIn([0, 'Type']) !== _selectedCalendar.get('Type')) {
+          _selectedCalendarIndex = 0;
+          _selectedCalendar = _calendarList.get(0);
         } else {
           var index = _calendarList.findIndex((item) => {
-            if (item.get('Id') === _selecteCalendar.get('Id')) {
+            if (item.get('Id') === _selectedCalendar.get('Id')) {
               return true;
             }
           });
-          if (index !== -1 && _selecteCalendarIndex !== index) {
-            _selecteCalendarIndex = index;
+          if (index !== -1 && _selectedCalendarIndex !== index) {
+            _selectedCalendarIndex = index;
           }
         }
       }
     } else {
-      _selecteCalendarIndex = null;
-      _selecteCalendar = null;
+      _selectedCalendarIndex = null;
+      _selectedCalendar = null;
     }
   },
   deleteCalendar() {
-    _calendarList = _calendarList.delete(_selecteCalendarIndex);
+    _calendarList = _calendarList.delete(_selectedCalendarIndex);
     var length = _calendarList.size;
     if (length !== 0) {
-      if (_selecteCalendarIndex === length) {
-        _selecteCalendarIndex = length - 1;
+      if (_selectedCalendarIndex === length) {
+        _selectedCalendarIndex = length - 1;
       }
-      _selecteCalendar = _calendarList.get(_selecteCalendarIndex);
+      _selectedCalendar = _calendarList.get(_selectedCalendarIndex);
     } else {
-      _selecteCalendarIndex = null;
-      _selecteCalendar = null;
+      _selectedCalendarIndex = null;
+      _selectedCalendar = null;
     }
   },
   setSelectedCalendar(calendar) {
-    _selecteCalendar = Immutable.fromJS(calendar);
+    _selectedCalendar = Immutable.fromJS(calendar);
   },
   getSelectedCalendar() {
-    return _selecteCalendar;
+    return _selectedCalendar;
   },
   getSelectedCalendarIndex() {
-    return _selecteCalendarIndex;
+    return _selectedCalendarIndex;
   },
   setSelectedCalendarIndex(index) {
     if (index === null) {
-      _selecteCalendarIndex = null;
-      _selecteCalendar = null;
+      _selectedCalendarIndex = null;
+      _selectedCalendar = null;
     } else {
-      _selecteCalendarIndex = index;
-      _selecteCalendar = _calendarList.get(_selecteCalendarIndex);
+      _selectedCalendarIndex = index;
+      _selectedCalendar = _calendarList.get(_selectedCalendarIndex);
     }
   },
   emitCalendarListChange: function() {

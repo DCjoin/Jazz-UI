@@ -42,7 +42,8 @@ let TagSelectWindow = React.createClass({
     }).toJS();
   },
   _onCheckAll: function(e, checked) {
-    var index, i;
+    var index,
+      i;
     var tagList = this.state.tagList;
     var selectedTagList = this.state.selectedTagList;
     if (tagList.size !== 0) {
@@ -97,7 +98,7 @@ let TagSelectWindow = React.createClass({
     }
     this.setState({
       tagList: tagList,
-      total: ReportStore.getTagTotalPage(),
+      total: ReportStore.getTagTotalNum(),
       isLeftLoading: false,
       checkAll: checkAll
     });

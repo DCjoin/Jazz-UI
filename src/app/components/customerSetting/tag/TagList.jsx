@@ -2,15 +2,24 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { FlatButton, FontIcon, DropDownMenu, CircularProgress } from 'material-ui';
+import { FlatButton, FontIcon } from 'material-ui';
 import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
 
-let SelectablePanel = React.createClass({
+let TagList = React.createClass({
   propTypes: {
     onAddBtnClick: React.PropTypes.func,
     onImportBtnClick: React.PropTypes.func,
     onExportBtnClick: React.PropTypes.func,
+    onPrePage: React.PropTypes.func,
+    onNextPage: React.PropTypes.func,
+    jumpToPage: React.PropTypes.func,
+    curPageNum: React.PropTypes.number,
+    totalPageNum: React.PropTypes.number,
+    hasJumpBtn: React.PropTypes.bool,
+    onSearch: React.PropTypes.func,
+    onSearchCleanButtonClick: React.PropTypes.func,
+    filterStatus: React.PropTypes.bool,
     contentItems: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool
   },
@@ -45,16 +54,23 @@ let SelectablePanel = React.createClass({
           </div>
         </div>
         <div className="jazz-tag-search-filter-bar">
-          <SearchAndFilterBar/>
+          <SearchAndFilterBar onFilter={this.props.onFilter}
+      onSearch={this.props.onSearch} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}
+      filterStatus={this.props.filterStatus}/>
         </div>
         <div className="jazz-tag-list">
           {this.props.contentItems}
         </div>
         <div className="jazz-tag-pagination">
-          <Pagination/>
+          <Pagination previousPage={this.props.onPrePage}
+      nextPage={this.props.onNextPage}
+      jumpToPage={this.props.jumpToPage}
+      curPageNum={this.props.curPageNum}
+      totalPageNum={this.props.totalPageNum}
+      hasJumpBtn={this.props.hasJumpBtn}/>
         </div>
       </div>
       );
   },
 });
-module.exports = SelectablePanel;
+module.exports = TagList;

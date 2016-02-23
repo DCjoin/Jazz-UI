@@ -201,6 +201,7 @@ I18N.Common.Button.Save = '保存';
 I18N.Common.Button.SaveExport = '保存并导出';
 I18N.Common.Button.Import = '导入';
 I18N.Common.Button.Export = '导出';
+I18N.Common.Button.Filter = '筛选';
 I18N.Common.Button.Cancel = '放弃';
 I18N.Common.Button.Cancel2 = '取消';
 I18N.Common.Button.Delete = '删除';

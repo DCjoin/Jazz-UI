@@ -10,8 +10,8 @@ import { Action } from '../constants/actionType/Labeling.jsx';
 var _industryData = Immutable.fromJS([]);
 var _zoneData = Immutable.fromJS([]);
 var _labelingData = Immutable.fromJS([]);
-var _selecteLabelingIndex = null;
-var _selecteLabeling = null;
+var _selectedLabelingIndex = null;
+var _selectedLabeling = null;
 var INDUSTRY_DATA_CHANGE_EVENT = 'industrydatachange';
 var ZONE_DATA_CHANGE_EVENT = 'zonedatachange';
 var LABELING_DATA_CHANGE_EVENT = 'labelingdatachange';
@@ -25,22 +25,22 @@ var LabelingStore = assign({}, PrototypeStore, {
   setLabelingData(labelingData) {
     _labelingData = Immutable.fromJS(labelingData);
     if (_labelingData && _labelingData.size !== 0) {
-      if (_selecteLabelingIndex === null) {
-        _selecteLabelingIndex = 0;
-        _selecteLabeling = _labelingData.get(0);
+      if (_selectedLabelingIndex === null) {
+        _selectedLabelingIndex = 0;
+        _selectedLabeling = _labelingData.get(0);
       } else {
         var index = _labelingData.findIndex((item) => {
-          if (item.get('IndustryId') === _selecteLabeling.get('IndustryId') && item.get('ZoneId') === _selecteLabeling.get('ZoneId')) {
+          if (item.get('IndustryId') === _selectedLabeling.get('IndustryId') && item.get('ZoneId') === _selectedLabeling.get('ZoneId')) {
             return true;
           }
         });
-        if (index !== -1 && _selecteLabelingIndex !== index) {
-          _selecteLabelingIndex = index;
+        if (index !== -1 && _selectedLabelingIndex !== index) {
+          _selectedLabelingIndex = index;
         }
       }
     } else {
-      _selecteLabelingIndex = null;
-      _selecteLabeling = null;
+      _selectedLabelingIndex = null;
+      _selectedLabeling = null;
     }
   },
   getIndustryData() {
@@ -56,34 +56,34 @@ var LabelingStore = assign({}, PrototypeStore, {
     _zoneData = Immutable.fromJS(zoneData);
   },
   getSelectedLabeling() {
-    return _selecteLabeling;
+    return _selectedLabeling;
   },
   getSelectedLabelingIndex() {
-    return _selecteLabelingIndex;
+    return _selectedLabelingIndex;
   },
   setSelectedLabeling(labeling) {
-    _selecteLabeling = Immutable.fromJS(labeling);
+    _selectedLabeling = Immutable.fromJS(labeling);
   },
   setSelectedLabelingIndex(index) {
     if (index === null) {
-      _selecteLabelingIndex = null;
-      _selecteLabeling = null;
+      _selectedLabelingIndex = null;
+      _selectedLabeling = null;
     } else {
-      _selecteLabelingIndex = index;
-      _selecteLabeling = _labelingData.get(_selecteLabelingIndex);
+      _selectedLabelingIndex = index;
+      _selectedLabeling = _labelingData.get(_selectedLabelingIndex);
     }
   },
   deleteLabeling() {
-    _labelingData = _labelingData.delete(_selecteLabelingIndex);
+    _labelingData = _labelingData.delete(_selectedLabelingIndex);
     var length = _labelingData.size;
     if (length !== 0) {
-      if (_selecteLabelingIndex === length) {
-        _selecteLabelingIndex = length - 1;
+      if (_selectedLabelingIndex === length) {
+        _selectedLabelingIndex = length - 1;
       }
-      _selecteLabeling = _labelingData.get(_selecteLabelingIndex);
+      _selectedLabeling = _labelingData.get(_selectedLabelingIndex);
     } else {
-      _selecteLabelingIndex = null;
-      _selecteLabeling = null;
+      _selectedLabelingIndex = null;
+      _selectedLabeling = null;
     }
   },
   addIndustryDataChangeListener: function(callback) {

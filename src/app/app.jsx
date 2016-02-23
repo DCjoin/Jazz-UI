@@ -41,6 +41,7 @@ import Tariff from './components/energyConversion/tariff/Tariff.jsx';
 import Customer from './components/customer/Customer.jsx';
 //for customerSetting
 import VEE from './components/customerSetting/VEERules/VEERules.jsx';
+import Tag from './components/customerSetting/tag/Tag.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -62,7 +63,7 @@ var routes = (
         <Route name="setting" path="setting" handler={Setting}></Route>
         <Route name="dailyReport" path="dailyReport" handler={Report}></Route>
         <Route name="template" path="template" handler={Template}></Route>
-        <Route name="ptag" path="ptag"></Route>
+        <Route name="ptag" path="ptag" handler={Tag}></Route>
         <Route name="vtag" path="vtag"></Route>
         <Route name="vee" path="vee" handler={VEE}></Route>
         <Route name="log" path="log"></Route>
