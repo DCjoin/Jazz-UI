@@ -23,6 +23,11 @@ let TagList = React.createClass({
     contentItems: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool
   },
+  _onJumpToPage: function(targetPage) {
+    if (this.props.jumpToPage) {
+      this.props.jumpToPage(targetPage);
+    }
+  },
   render: function() {
     var addBtnClasses = {
         'btn-container': true,
@@ -66,7 +71,7 @@ let TagList = React.createClass({
         <div className="jazz-tag-pagination">
           <Pagination previousPage={this.props.onPrePage}
       nextPage={this.props.onNextPage}
-      jumpToPage={this.props.jumpToPage}
+      jumpToPage={this._onJumpToPage}
       curPageNum={this.props.curPageNum}
       totalPageNum={this.props.totalPageNum}
       hasJumpBtn={this.props.hasJumpBtn}/>

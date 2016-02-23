@@ -66,6 +66,33 @@ let Tag = React.createClass({
       selectedData: selectedData
     });
   },
+  _onPrePage: function() {
+    var curPageNum = this.state.curPageNum;
+    if (curPageNum > 1) {
+      this.setState({
+        curPageNum: curPageNum - 1
+      }, () => {
+        TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+      });
+    }
+  },
+  _onNextPage: function() {
+    var curPageNum = this.state.curPageNum;
+    if (20 * curPageNum < this.state.total) {
+      this.setState({
+        curPageNum: curPageNum + 1
+      }, () => {
+        TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+      });
+    }
+  },
+  _onJumpToPage: function(targetPage) {
+    this.setState({
+      curPageNum: targetPage
+    }, () => {
+      TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+    });
+  },
   componentDidMount: function() {
     TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
     TagStore.addTagListChangeListener(this._onTagListChange);
@@ -127,7 +154,7 @@ let Tag = React.createClass({
       onExportBtnClick: me._exportTag,
       onPrePage: me._onPrePage,
       onNextPage: me._onNextPage,
-      jumpToPage: me._jumpToPage,
+      jumpToPage: me._onJumpToPage,
       hasJumpBtn: hasJumpBtn,
       curPageNum: me.state.curPageNum,
       totalPageNum: totalPageNum,
