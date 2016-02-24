@@ -19,7 +19,9 @@ let TagAction = {
         });
       },
       error: function(err, res) {
-        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.GET_TAG_LIST_ERROR
+        });
       }
     });
   }

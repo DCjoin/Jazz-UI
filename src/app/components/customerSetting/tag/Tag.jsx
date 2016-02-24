@@ -4,6 +4,8 @@ import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
 import Item from '../../../controls/SelectableItem.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
+import Dialog from '../../../controls/PopupDialog.jsx';
+import FlatButton from '../../../controls/FlatButton.jsx';
 import TagList from './TagList.jsx';
 //import TagNode from './TagNode.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
@@ -21,7 +23,7 @@ let Tag = React.createClass({
   },
   getInitialState: function() {
     var filterObj = {
-      CustomerId: window.currentCustomerId,
+      CustomerId: parseInt(window.currentCustomerId),
       Type: this.props.tagType
     };
     if (this.props.tagType === 2) {
@@ -93,6 +95,34 @@ let Tag = React.createClass({
       TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
     });
   },
+  _onSearch: function(value) {
+    var filterObj = this.state.filterObj;
+    filterObj.LikeCodeOrName = value;
+    this.setState({
+      filterObj: filterObj
+    }, () => {
+      TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+    });
+  },
+  _onSearchCleanButtonClick: function() {
+    var filterObj = this.state.filterObj;
+    filterObj.LikeCodeOrName = null;
+    this.setState({
+      filterObj: filterObj
+    }, () => {
+      TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+    });
+  },
+  _onExportTag: function() {
+    var filterObj = this.state.filterObj;
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = 'TagImportExcel.aspx?filter=' + encodeURIComponent(JSON.stringify(filterObj)) + '&filters=' + encodeURIComponent(JSON.stringify([])) + '&sorters=' + encodeURIComponent(JSON.stringify([]));
+    iframe.onload = function() {
+      document.body.removeChild(iframe);
+    };
+    document.body.appendChild(iframe);
+  },
   componentDidMount: function() {
     TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
     TagStore.addTagListChangeListener(this._onTagListChange);
@@ -149,18 +179,18 @@ let Tag = React.createClass({
     var leftProps = {
       isViewStatus: isView,
       contentItems: items,
-      onAddBtnClick: me._addTag,
-      onImportBtnClick: me._importTag,
-      onExportBtnClick: me._exportTag,
+      onAddBtnClick: me._onAddTag,
+      onExportBtnClick: me._onExportTag,
       onPrePage: me._onPrePage,
       onNextPage: me._onNextPage,
-      jumpToPage: me._onJumpToPage,
+      onJumpToPage: me._onJumpToPage,
       hasJumpBtn: hasJumpBtn,
       curPageNum: me.state.curPageNum,
       totalPageNum: totalPageNum,
       onSearch: me._onSearch,
       onSearchCleanButtonClick: me._onSearchCleanButtonClick,
-      filterStatus: me.state.filterStatus
+      filterStatus: me.state.filterStatus,
+      tagType: me.props.tagType
     };
     var leftPanel = (this.state.showLeft) ? <div style={{
       display: 'flex'

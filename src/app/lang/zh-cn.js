@@ -202,6 +202,7 @@ I18N.Common.Button.SaveExport = '保存并导出';
 I18N.Common.Button.Import = '导入';
 I18N.Common.Button.Export = '导出';
 I18N.Common.Button.Filter = '筛选';
+I18N.Common.Button.Close = '关闭';
 I18N.Common.Button.Cancel = '放弃';
 I18N.Common.Button.Cancel2 = '取消';
 I18N.Common.Button.Delete = '删除';
@@ -677,6 +678,13 @@ I18N.Setting.UserManagement.AllCustomers = '全部客户';
 I18N.Setting.UserManagement.Privilege = '功能权限';
 I18N.Setting.UserManagement.UserInfo = '用户信息';
 I18N.Setting.UserManagement.DataPermissionSetting = '数据权限设置';
+
+I18N.Setting.TagBatchImport = {};
+I18N.Setting.TagBatchImport.DownloadLog = '下载导入日志';
+I18N.Setting.TagBatchImport.ImportSuccess = '导入完成';
+I18N.Setting.TagBatchImport.ImportSuccessView = '配置导入已完成。成功导入{0}条，失败{1}条，总计{2}条。';
+I18N.Setting.TagBatchImport.ImportError = '导入失败';
+I18N.Setting.TagBatchImport.ImportErrorView = '导入失败，数据格式有误，请重试。';
 
 
 I18N.Message = {};

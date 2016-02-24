@@ -220,16 +220,12 @@ var ReportRightPanel = React.createClass({
       }).toJS();
     }
   },
-  _endsWith(str, pattern) {
-    var d = str.length - pattern.length;
-    return d >= 0 && str.lastIndexOf(pattern) === d;
-  },
   _handleFileSelect(event) {
     var me = this;
     var file = event.target.files[0];
     var fileName = file.name;
 
-    if (!me._endsWith(fileName.toLowerCase(), '.xlsx') && !me._endsWith(fileName.toLowerCase(), '.xls')) {
+    if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
       CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
       return;
     }

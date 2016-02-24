@@ -23,7 +23,7 @@ var TagStore = assign({}, PrototypeStore, {
     return _total;
   },
   setTagList(tagData) {
-    if (tagData.total) {
+    if (tagData !== null) {
       _total = tagData.total;
       _tagList = Immutable.fromJS(tagData.GetTagsByFilterResult);
       if (_tagList.size !== 0) {
@@ -114,6 +114,11 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_TAG_LIST_SUCCESS:
       TagStore.setTagList(action.tagData);
+      TagStore.emitTagListChange();
+      TagStore.emitSelectedTagChange();
+      break;
+    case Action.GET_TAG_LIST_ERROR:
+      TagStore.setTagList(null);
       TagStore.emitTagListChange();
       TagStore.emitSelectedTagChange();
       break;
