@@ -71,9 +71,11 @@ var RuleBasic = React.createClass({
       };
     var hoursProps = {
       isViewStatus: isView,
+      title: I18N.Setting.VEEMonitorRule.ConsecutiveHours,
       defaultValue: NotifyConsecutiveHours,
+      regex: Regex.ConsecutiveHoursRule,
+      errorMessage: I18N.Setting.VEEMonitorRule.ConsecutiveHoursError,
       maxLen: 200,
-      isRequired: true,
       didChanged: value => {
         this.props.merge({
           value,
@@ -82,10 +84,10 @@ var RuleBasic = React.createClass({
       }
     };
     var uomStyle = isView ? {
-      marginTop: '5px',
+      marginTop: '25px',
       marginLeft: '-250px'
     } : {
-      marginTop: '20px'
+      marginTop: '40px'
     };
     var detail = [];
     for (var i = 0; i <= 1; i++) {

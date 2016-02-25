@@ -1557,5 +1557,7 @@ I18N.Setting.VEEMonitorRule.DeleteTitle = '删除规则集';
 I18N.Setting.VEEMonitorRule.DeleteContent = '删除规则集{0}';
 I18N.Setting.VEEMonitorRule.FirstScanTime = '每日首次监测扫描时间为0: 00。';
 I18N.Setting.VEEMonitorRule.ScanTimeInfo = '每日监测扫描时间为{0}';
+I18N.Setting.VEEMonitorRule.ConsecutiveHours = '连续时长';
+I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '该输入项的最大值为999999999';
 
 module.exports = I18N;

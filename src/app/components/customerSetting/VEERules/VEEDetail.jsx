@@ -13,6 +13,7 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import RuleBasic from './RuleBasic.jsx';
 import MonitorTag from './MonitorTag.jsx';
+import Regex from '../../../constants/Regex.jsx';
 
 var VEEDetail = React.createClass({
 
@@ -116,6 +117,9 @@ var VEEDetail = React.createClass({
       if (!rule.get('Name') || rule.get('Name').length > 200
         || (!rule.get('CheckNegative') && !rule.get('CheckNull') && !rule.get('CheckZero'))
         || !rule.get('StartTime')) {
+        disabledSaveButton = true
+      }
+      if (rule.get('CheckNotify') && !Regex.ConsecutiveHoursRule.test(rule.get('NotifyConsecutiveHours'))) {
         disabledSaveButton = true
       }
 
