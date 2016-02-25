@@ -14,7 +14,7 @@ let SelectablePanel = React.createClass({
     sortBy: React.PropTypes.string,
     changeSortBy: React.PropTypes.func,
     contentItems: React.PropTypes.object,
-    isViewStatus: React.PropTypes.bool,
+    isAddStatus: React.PropTypes.bool,
     isLoading: React.PropTypes.bool,
   },
   render: function() {
@@ -27,7 +27,7 @@ let SelectablePanel = React.createClass({
     var addBtnClasses = {
         'se-dropdownbutton': true,
         'btn-container': true,
-        'btn-container-active': this.props.isViewStatus
+        'btn-container-active': !this.props.isAddStatus
       },
       buttonStyle = {
         backgroundColor: 'transparent',
@@ -76,7 +76,7 @@ let SelectablePanel = React.createClass({
         padding: '0 30px'
       }}>
           <div className={classNames(addBtnClasses)}>
-            <FlatButton disabled={!this.props.isViewStatus}  onClick={this.props.onAddBtnClick} style={buttonStyle}>
+            <FlatButton disabled={this.props.isAddStatus}  onClick={this.props.onAddBtnClick} style={buttonStyle}>
               <FontIcon  className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{this.props.addBtnLabel}</span>
             </FlatButton>

@@ -111,7 +111,7 @@ let VEEAction = {
       success: function() {
         AppDispatcher.dispatch({
           type: Action.DELETE_RULE_SUCCESS,
-          id: data.Id
+          id: data.Ids[0]
         });
       },
       error: function(err, res) {

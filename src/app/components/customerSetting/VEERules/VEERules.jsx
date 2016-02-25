@@ -73,10 +73,15 @@ var VEERules = React.createClass({
   },
   _handleSaveRule: function(data) {
     if (this.state.infoTab) {
+      let dto = data.toJS();
+      if (parseInt(dto.NotifyConsecutiveHours) >= 0) {
+        dto.NotifyConsecutiveHours = parseInt(dto.NotifyConsecutiveHours)
+      }
       if (!data.get('Id')) {
-        VEEAction.createVEERule(data.toJS());
+        dto.CustomerId = window.currentCustomerId;
+        VEEAction.createVEERule(dto);
       } else {
-        VEEAction.modifyVEERule(data.toJS());
+        VEEAction.modifyVEERule(dto);
       }
     } else {
 
@@ -88,7 +93,7 @@ var VEERules = React.createClass({
   },
   _handleDeleteRule: function(data) {
     VEEAction.deleteRule({
-      Id: this.state.selectedId,
+      Ids: [this.state.selectedId],
       Version: data.get('Version')
     });
   },

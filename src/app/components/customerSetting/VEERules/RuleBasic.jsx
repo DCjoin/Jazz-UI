@@ -60,10 +60,15 @@ var RuleBasic = React.createClass({
       } : null,
       notifyStyle = (isView && !CheckNotify) ? {
         display: 'none'
-      } : null,
+      } : {
+        marginTop: '30px'
+      },
       enableEstimationStyle = (isView && !EnableEstimation) ? {
         display: 'none'
-      } : null;
+      } : {
+        marginTop: '30px',
+        marginBottom: '4px'
+      };
     var hoursProps = {
       isViewStatus: isView,
       defaultValue: NotifyConsecutiveHours,
@@ -110,7 +115,7 @@ var RuleBasic = React.createClass({
         />
           <label
         title={title}
-        className={classnames("pop-user-detail-customer-subcheck-block-item-label", {
+        className={classnames("jazz-checkbox-label", {
           "disabled": isView
         })}>
             {title}
@@ -133,7 +138,7 @@ var RuleBasic = React.createClass({
       />
         <label
       title={I18N.Setting.VEEMonitorRule.NullValue}
-      className={classnames("pop-user-detail-customer-subcheck-block-item-label", {
+      className={classnames("jazz-checkbox-label", {
         "disabled": isView
       })}>
           {I18N.Setting.VEEMonitorRule.NullValue}
@@ -153,17 +158,19 @@ var RuleBasic = React.createClass({
       />
             <label
       title={I18N.Setting.VEEMonitorRule.Notify}
-      className={classnames("pop-user-detail-customer-subcheck-block-item-label", {
+      className={classnames("jazz-checkbox-label", {
         "disabled": isView
       })}>
               {I18N.Setting.VEEMonitorRule.Notify}
             </label>
           </div>
-          <div>
+          <div className='jazz-checkbox-label-comment'>
             {I18N.Setting.VEEMonitorRule.NotifyMsg}
           </div>
-          <div className='jazz-item-margin' style={{
-        display: 'flex'
+          <div style={{
+        display: 'flex',
+        marginTop: '10px',
+        marginLeft: '40px'
       }}>
                         <ViewableTextField  {...hoursProps} />
                         <div className='jazz-tariff-electrovalenceUom' style={uomStyle}>{I18N.EM.Hour}</div>
@@ -183,11 +190,14 @@ var RuleBasic = React.createClass({
       />
             <label
       title={I18N.Setting.VEEMonitorRule.AutoRepair}
-      className={classnames("pop-user-detail-customer-subcheck-block-item-label", {
+      className={classnames("jazz-checkbox-label", {
         "disabled": isView
       })}>
               {I18N.Setting.VEEMonitorRule.AutoRepair}
             </label>
+          </div>
+          <div className='jazz-checkbox-label-comment'>
+            {I18N.Setting.VEEMonitorRule.AutoRepairMsg}
           </div>
         </div>
       </div>
@@ -215,7 +225,31 @@ var RuleBasic = React.createClass({
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
       {StartTime, Interval, Delay, Receivers} = rule.toJS();
+    var getScanTime = function() {
+      var minutes = 24 * 60;
+      var i = 0, r,
+        list = [],
+        sub = [];
+      if (Delay == null || isNaN(Delay)) return;
+      while (true) {
+        if ((r = Delay + Interval * i) <= minutes) {
+          sub.push(parseInt(Delay / 60) + Interval * i / 60 + ':' + (Delay % 60 == 0 ? '00' : Delay % 60));
 
+          ++i;
+        // if (i % 6 == 0) {
+        //   var t = sub.join(', ')
+        //   list.push(t);
+        //   sub = [];
+        // }
+        } else {
+          var t = sub.join(', ');
+          list.push(t);
+          break;
+        }
+
+      }
+      return list;
+    };
     var intervalSelectedIndex = 0,
       intervalItems = [];
     VEEStore.getIntervalList().forEach((interval, index) => {
@@ -304,23 +338,31 @@ var RuleBasic = React.createClass({
     }
     return (
       <div>
-      <div className="pop-role-detail-content-permission">
-<div className="pop-role-detail-content-permission-header-panel">
-  <span className="pop-role-detail-content-permission-header-panel-title">{I18N.Setting.VEEMonitorRule.MonitorSetting}</span>
-</div>
-<div className="pop-customer-detail-content-left-item">
-  <ViewableDatePicker {...ruleStartTimeProps} />
-</div>
-<div className="pop-customer-detail-content-left-item">
-  <ViewableDropDownMenu {...ruleIntervalProps}/>
-</div>
-<div className="pop-customer-detail-content-left-item">
-  <ViewableDropDownMenu {...ruleDelayProps}/>
-</div>
+      <div className="pop-role-detail-content-permission" style={{
+        paddingBottom: '12px'
+      }}>
+      <div className="jazz-vee-rule-setting-subheader">
+        <span className="pop-role-detail-content-permission-header-panel-title">{I18N.Setting.VEEMonitorRule.MonitorSetting}</span>
+      </div>
+      <div className="pop-customer-detail-content-left-item">
+        <ViewableDatePicker {...ruleStartTimeProps} />
+      </div>
+      <div className="pop-customer-detail-content-left-item">
+        <ViewableDropDownMenu {...ruleIntervalProps}/>
+      </div>
+      <div className='jazz-vee-textfeild-comment'>
+        {I18N.Setting.VEEMonitorRule.FirstScanTime}
+      </div>
+      <div className="pop-customer-detail-content-left-item">
+        <ViewableDropDownMenu {...ruleDelayProps}/>
+      </div>
+      <div className='jazz-vee-textfeild-comment'>
+        {I18N.format(I18N.Setting.VEEMonitorRule.ScanTimeInfo, getScanTime())}
+      </div>
 
-</div>
-{receiversList}
-</div>
+    </div>
+    {receiversList}
+  </div>
       )
 
   },
