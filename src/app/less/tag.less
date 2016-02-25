@@ -2,6 +2,9 @@
   display: flex;
   flex: 1;
 }
+.pointer{
+  cursor: pointer;
+}
 .jazz-tag-leftpanel{
   display: flex;
   flex-direction: column;
@@ -15,25 +18,19 @@
     min-height:32px;
     height:32px;
     background-color: #86ccff;
-  }
-  .jazz-tag-leftpanel-button,
-  .jazz-filter{
+    color: #ffffff;
     span {
       font-size: 14px !important;
-      opacity: opacity;
     }
-    .btn-icon {
-      color: #ffffff !important;
-      margin-right: 8px;
+    label {
+      height: 22px;
     }
-    .btn-text {
-      color: #ffffff !important;
-    }
-    &:hover {
-      .btn-icon {
-        color: @textWhiteHover !important;
+    &-item{
+      .pointer;
+      &-icon {
+        padding-right: 8px;
       }
-      .btn-text {
+      &:hover {
         color: @textWhiteHover !important;
       }
     }
@@ -73,6 +70,18 @@
       .jazz-filter{
         display: flex;
         align-items: center;
+        span {
+          font-size: 14px !important;
+        }
+        &-item{
+          .pointer;
+          &-icon {
+            padding-right: 8px;
+          }
+          &:hover {
+            color: @textWhiteHover;
+          }
+        }
       }
     }
   }

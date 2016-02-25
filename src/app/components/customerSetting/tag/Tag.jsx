@@ -8,6 +8,7 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import TagList from './TagList.jsx';
 //import TagNode from './TagNode.jsx';
+import TagFilter from './TagFilter.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 
@@ -22,22 +23,41 @@ let Tag = React.createClass({
     };
   },
   getInitialState: function() {
-    var filterObj = {
-      CustomerId: parseInt(window.currentCustomerId),
-      Type: this.props.tagType
-    };
-    if (this.props.tagType === 2) {
-      filterObj.ReverseFormula = true;
-    }
+    var filterObj = this._getInitFilterObj();
     return {
       isLoading: true,
       formStatus: formStatus.VIEW,
       filterObj: filterObj,
       showLeft: true,
-      filterStatus: false,
+      isFilter: false,
       total: 0,
-      curPageNum: 1
+      curPageNum: 1,
+      showFilter: false
     };
+  },
+  _resetFilterObj: function() {
+    var filterObj = this.state.filterObj;
+    filterObj.CommodityId = '-1';
+    filterObj.UomId = '-1';
+    filterObj.IsAccumulated = '-1';
+    this.setState({
+      filterObj: filterObj,
+      curPageNum: 1
+    });
+  },
+  _getInitFilterObj: function() {
+    var filterObj = {
+      CustomerId: parseInt(window.currentCustomerId),
+      Type: this.props.tagType,
+      CommodityId: '-1',
+      UomId: '-1',
+      IsAccumulated: '-1',
+      LikeCodeOrName: ''
+    };
+    if (this.props.tagType === 2) {
+      filterObj.ReverseFormula = true;
+    }
+    return filterObj;
   },
   _onToggle: function() {
     var showLeft = this.state.showLeft;
@@ -117,11 +137,44 @@ let Tag = React.createClass({
     var filterObj = this.state.filterObj;
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?filter=' + encodeURIComponent(JSON.stringify(filterObj)) + '&filters=' + encodeURIComponent(JSON.stringify([])) + '&sorters=' + encodeURIComponent(JSON.stringify([]));
+    iframe.src = 'TagImportExcel.aspx?filter=' + encodeURIComponent(JSON.stringify(filterObj));
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };
     document.body.appendChild(iframe);
+  },
+  _handleShowFilterSideNav: function() {
+    this.setState({
+      showFilter: true
+    });
+  },
+  _handleCloseFilterSideNav: function() {
+    this._resetFilterObj();
+    this.setState({
+      showFilter: false
+    });
+  },
+  _handleFilter: function() {
+    this.setState({
+      curPageNum: 1,
+      showFilter: false
+    }, () => {
+      TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+    });
+  },
+  _mergeFilterObj: function(data) {
+    var filterObj = this.state.filterObj;
+    filterObj[data.path] = data.value;
+    var isFilter;
+    if (filterObj.CommodityId === '-1' && filterObj.UomId === '-1' && filterObj.IsAccumulated === '-1') {
+      isFilter = false;
+    } else {
+      isFilter = true;
+    }
+    this.setState({
+      filterObj: filterObj,
+      isFilter: isFilter
+    });
   },
   componentDidMount: function() {
     TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
@@ -148,9 +201,17 @@ let Tag = React.createClass({
     var me = this,
       selectedTag = me.state.selectedTag,
       rightPanel = null,
-      isView = this.state.formStatus === formStatus.VIEW,
-      isEdit = this.state.formStatus === formStatus.EDIT,
-      isAdd = this.state.formStatus === formStatus.ADD;
+      isAdd = this.state.formStatus === formStatus.ADD,
+      filterProps = {
+        handleFilter: me._handleFilter,
+        onClose: me._handleCloseFilterSideNav,
+        filterObj: me.state.filterObj,
+        mergeFilterObj: me._mergeFilterObj
+      };
+    var filterPanel = null;
+    if (this.state.showFilter) {
+      filterPanel = <TagFilter {...filterProps}/>;
+    }
     if (me.state.isLoading) {
       return (<div className='jazz-tag-loading'><div style={{
           margin: 'auto',
@@ -177,7 +238,7 @@ let Tag = React.createClass({
       });
     }
     var leftProps = {
-      isViewStatus: isView,
+      isAddStatus: isAdd,
       contentItems: items,
       onAddBtnClick: me._onAddTag,
       onExportBtnClick: me._onExportTag,
@@ -189,7 +250,10 @@ let Tag = React.createClass({
       totalPageNum: totalPageNum,
       onSearch: me._onSearch,
       onSearchCleanButtonClick: me._onSearchCleanButtonClick,
-      filterStatus: me.state.filterStatus,
+      onFilter: me._handleShowFilterSideNav,
+      isFilter: me.state.isFilter,
+      filterObj: me.state.filterObj,
+      resetFilterObj: me._resetFilterObj,
       tagType: me.props.tagType
     };
     var leftPanel = (this.state.showLeft) ? <div style={{
@@ -209,6 +273,7 @@ let Tag = React.createClass({
       })}>
           {rightPanel}
         </div>
+        {filterPanel}
       </div>
       );
   },

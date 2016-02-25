@@ -2,10 +2,11 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { FlatButton, FontIcon, CircularProgress } from 'material-ui';
+import { CircularProgress } from 'material-ui';
 import CommonFuns from '../../../util/Util.jsx';
 import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
+import FlatButton from '../../../controls/FlatButton.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 
@@ -22,9 +23,10 @@ let TagList = React.createClass({
     hasJumpBtn: React.PropTypes.bool,
     onSearch: React.PropTypes.func,
     onSearchCleanButtonClick: React.PropTypes.func,
-    filterStatus: React.PropTypes.bool,
+    isFilter: React.PropTypes.bool,
+    filterObj: React.PropTypes.object,
     contentItems: React.PropTypes.object,
-    isViewStatus: React.PropTypes.bool,
+    isAddStatus: React.PropTypes.bool,
     tagType: React.PropTypes.number
   },
   getInitialState: function() {
@@ -48,6 +50,15 @@ let TagList = React.createClass({
       showImportDialog: false
     });
   },
+  _downloadLogFile: function() {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = 'TagImportExcel.aspx?Id=' + this.state.importResult.Id;
+    iframe.onload = function() {
+      document.body.removeChild(iframe);
+    };
+    document.body.appendChild(iframe);
+  },
   _renderImportDialog() {
     var dialogActions = [];
     var dialogContent;
@@ -67,7 +78,7 @@ let TagList = React.createClass({
       dialogActions = [
         <FlatButton
         label={I18N.Setting.TagBatchImport.DownloadLog}
-        onClick={this._downloadLog} />,
+        onClick={this._downloadLogFile} />,
 
         <FlatButton
         label={I18N.Common.Button.Close}
@@ -91,13 +102,10 @@ let TagList = React.createClass({
     var me = this;
     var file = event.target.files[0];
     var fileName = file.name;
-    var filterObj = {
-      CustomerId: window.currentCustomerId,
-      Type: me.props.tagType
-    };
-    if (me.props.tagType === 2) {
-      filterObj.ReverseFormula = true;
-    }
+    var filterObj = this.props.filterObj;
+    filterObj.CommodityId = '';
+    filterObj.UomId = '';
+    filterObj.IsAccumulated = '';
 
     if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
       CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
@@ -113,6 +121,7 @@ let TagList = React.createClass({
       var json = iframe.contentDocument.body.innerHTML;
       var obj = JSON.parse(json);
       if (obj.success === true) {
+        me.props.resetFilterObj();
         TagAction.getTagListByType(me.props.tagType, 1, filterObj);
         me.setState({
           importResult: obj.TagImportHisDto,
@@ -174,8 +183,8 @@ let TagList = React.createClass({
   },
   render: function() {
     var addBtnClasses = {
-        'btn-container': true,
-        'btn-container-active': this.props.isViewStatus
+        'jazz-tag-leftpanel-header-item': true,
+        'jazz-disabled': this.props.isAddStatus
       },
       fileInputStyle = {
         opacity: 0,
@@ -183,39 +192,29 @@ let TagList = React.createClass({
         top: 0,
         left: 0,
         display: 'none'
-      },
-      buttonStyle = {
-        backgroundColor: 'transparent',
-        height: '32px'
       };
     var importDialog = this._renderImportDialog();
     return (
       <div className="jazz-tag-leftpanel">
         <div className="jazz-tag-leftpanel-header">
-          <div className={classNames(addBtnClasses)}>
-            <FlatButton disabled={!this.props.isViewStatus}  onClick={this.props.onAddBtnClick} style={buttonStyle}>
-              <FontIcon className="fa icon-add btn-icon"/>
-              <span className="mui-flat-button-label btn-text">{I18N.Common.Button.Add}</span>
-            </FlatButton>
-          </div>
-          <div className='jazz-tag-leftpanel-button'>
-            <label ref="fileInputLabel" className="jazz-tag-upload-label" htmlFor="fileInput">
-              <FontIcon className="fa icon-add btn-icon"/>
-              <span className="mui-flat-button-label btn-text">{I18N.Common.Button.Import}</span>
-              <input type="file" ref="fileInput" id='fileInput' name='fileInput' onChange={this._onImportBtnClick} style={fileInputStyle}/>
-            </label>
-          </div>
-          <div className='jazz-tag-leftpanel-button'>
-            <FlatButton onClick={this.props.onExportBtnClick} style={buttonStyle}>
-              <FontIcon className="fa icon-add btn-icon"/>
-              <span className="mui-flat-button-label btn-text">{I18N.Common.Button.Export}</span>
-            </FlatButton>
-          </div>
+          <span onClick={this.props.onAddBtnClick} disabled={this.props.isAddStatus} className={classNames(addBtnClasses)}>
+            <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
+            {I18N.Common.Button.Add}
+          </span>
+          <label ref="fileInputLabel" className="jazz-tag-leftpanel-header-item" htmlFor="fileInput">
+            <span className="icon-import jazz-tag-leftpanel-header-item-icon"></span>
+            {I18N.Common.Button.Import}
+            <input type="file" ref="fileInput" id='fileInput' name='fileInput' onChange={this._onImportBtnClick} style={fileInputStyle}/>
+          </label>
+          <span onClick={this.props.onExportBtnClick} className="jazz-tag-leftpanel-header-item">
+            <span className="icon-export jazz-tag-leftpanel-header-item-icon"></span>
+            {I18N.Common.Button.Export}
+          </span>
         </div>
         <div className="jazz-tag-search-filter-bar">
           <SearchAndFilterBar onFilter={this.props.onFilter}
       onSearch={this._onSearch} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}
-      filterStatus={this.props.filterStatus}/>
+      isFilter={this.props.isFilter}/>
         </div>
         <div className="jazz-tag-list">
           {this.props.contentItems}

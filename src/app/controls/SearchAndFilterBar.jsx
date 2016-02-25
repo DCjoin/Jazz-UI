@@ -2,19 +2,19 @@
 import React from "react";
 import classNames from 'classnames';
 import SearchBar from '../controls/SearchBar.jsx';
-import { FlatButton, FontIcon } from 'material-ui';
 
 let SearchAndFilterBar = React.createClass({
   propTypes: {
     onFilter: React.PropTypes.func,
-    filterStatus: React.PropTypes.bool,
+    isFilter: React.PropTypes.bool,
     onSearch: React.PropTypes.func,
     onSearchCleanButtonClick: React.PropTypes.func,
   },
   render: function() {
-    var buttonStyle = {
-      backgroundColor: 'transparent',
-      height: '32px'
+    var filterIconClasses = {
+      'jazz-filter-item-icon': true,
+      'icon-filter': !this.props.isFilter,
+      'icon-filtered': this.props.isFilter
     };
     return (
       <div className="jazz-search-filter-bar">
@@ -22,10 +22,10 @@ let SearchAndFilterBar = React.createClass({
           <SearchBar onSearch={this.props.onSearch} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}/>
         </div>
         <div className='jazz-filter'>
-          <FlatButton onClick={this.props.onFilter} style={buttonStyle}>
-            <FontIcon  className="fa icon-add btn-icon"/>
-            <span className="mui-flat-button-label btn-text">{I18N.Common.Button.Filter}</span>
-          </FlatButton>
+          <span onClick={this.props.onFilter} className="jazz-filter-item">
+            <span className={classNames(filterIconClasses)}></span>
+            {I18N.Common.Button.Filter}
+          </span>
         </div>
       </div>
       );

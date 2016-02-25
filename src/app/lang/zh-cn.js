@@ -686,6 +686,15 @@ I18N.Setting.TagBatchImport.ImportSuccessView = '配置导入已完成。成功�
 I18N.Setting.TagBatchImport.ImportError = '导入失败';
 I18N.Setting.TagBatchImport.ImportErrorView = '导入失败，数据格式有误，请重试。';
 
+I18N.Setting.Tag = {};
+I18N.Setting.Tag.TagFilter = '数据点筛选';
+I18N.Setting.Tag.isAccumulated = '累计值';
+I18N.Setting.Tag.isNotAccumulated = '非累计值';
+I18N.Setting.Tag.Commodity = '介质';
+I18N.Setting.Tag.Uom = '单位';
+I18N.Setting.Tag.Type = '数据类型';
+
+
 
 I18N.Message = {};
 
