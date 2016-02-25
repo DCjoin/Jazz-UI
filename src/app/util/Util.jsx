@@ -56,7 +56,12 @@ let CommonFuns = {
     }
   },
   merge: function() {
-    var src, copy, options, name, copyIsArray, clone,
+    var src,
+      copy,
+      options,
+      name,
+      copyIsArray,
+      clone,
       target = arguments[0] || {},
       length = arguments.length,
       i = 1,
@@ -274,6 +279,10 @@ let CommonFuns = {
     CommonFuns.popupErrorMessage(CommonFuns.getErrorMessage(errorModelNCode), errorModelNCode);
 
   },
+  endsWith(str, pattern) {
+    var d = str.length - pattern.length;
+    return d >= 0 && str.lastIndexOf(pattern) === d;
+  },
   base64ToBackgroundImageUrl: function(base64Data) {
     return "url(data:image/*;base64," + base64Data + ")";
   },
@@ -299,7 +308,10 @@ let CommonFuns = {
     let canvas = document.createElement('canvas'),
       img = new Image(),
       ctx = canvas.getContext('2d'),
-      newLeft, newTop, newWidth, newHeight;
+      newLeft,
+      newTop,
+      newWidth,
+      newHeight;
 
     img.src = source;
 
@@ -457,27 +469,38 @@ let CommonFuns = {
   GetStrDateType: function(value) {
     var result = '';
     switch (value) {
-      case 0: result = 'last7day';
+      case 0:
+        result = 'last7day';
         break;
-      case 9: result = 'last30day';
+      case 9:
+        result = 'last30day';
         break;
-      case 10: result = 'last12month';
+      case 10:
+        result = 'last12month';
         break;
-      case 1: result = 'today';
+      case 1:
+        result = 'today';
         break;
-      case 2: result = 'yesterday';
+      case 2:
+        result = 'yesterday';
         break;
-      case 3: result = 'thisweek';
+      case 3:
+        result = 'thisweek';
         break;
-      case 4: result = 'lastweek';
+      case 4:
+        result = 'lastweek';
         break;
-      case 5: result = 'thismonth';
+      case 5:
+        result = 'thismonth';
         break;
-      case 6: result = 'lastmonth';
+      case 6:
+        result = 'lastmonth';
         break;
-      case 7: result = 'thisyear';
+      case 7:
+        result = 'thisyear';
         break;
-      case 8: result = 'lastyear';
+      case 8:
+        result = 'lastyear';
         break;
     }
     return result;
@@ -638,7 +661,8 @@ let CommonFuns = {
         break;
       }
     }
-    var list = [], display,
+    var list = [],
+      display,
       gridList = [];
     //1-Hourly,2-Daily,3-Monthly,4-Yearly,5-Weekly
     switch (i) {
@@ -920,7 +944,9 @@ let CommonFuns = {
     return decimalDigits;
   },
   toFixed(s, len) {
-    var tempNum = 0, temp, result,
+    var tempNum = 0,
+      temp,
+      result,
       s1 = s + '',
       start = s1.indexOf('.');
     if (start == -1 || s1.length - 1 - start <= len) {
@@ -997,7 +1023,9 @@ let CommonFuns = {
       var max = maxlength;
       var sum = 0;
 
-      var ret = [], begin, end;
+      var ret = [],
+        begin,
+        end;
       if (from == 'left') {
         for (let i = 0; i < text.length; i++) {
           if (/^[\u4e00-\u9fa5]$/.test(text[i])) {
@@ -1257,7 +1285,9 @@ let CommonFuns = {
     return commodityIds;
   },
   getNodeNameAssociationByTagOptions(tagOptions, dimInfo) {
-    let nodeNameAssociation = [], tag, hieNameArr,
+    let nodeNameAssociation = [],
+      tag,
+      hieNameArr,
       hieName = '';
     for (let i = 0, len = tagOptions.length; i < len; i++) {
       tag = tagOptions[i];
@@ -1313,7 +1343,8 @@ let CommonFuns = {
   },
   filterBenchmarksByTagOptions(tagOptions) {
     let hierId = null,
-      commodityId = null, tagOption;
+      commodityId = null,
+      tagOption;
     for (let i = 0, len = tagOptions.length; i < len; i++) {
       tagOption = tagOptions[i];
       if (hierId === null) {

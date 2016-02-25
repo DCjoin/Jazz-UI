@@ -14,7 +14,7 @@ let _reportList = Immutable.fromJS([]),
   _errorReport = null,
   _tagList = Immutable.fromJS([]),
   _selectedTagList = Immutable.fromJS([]),
-  _totalPage = 0,
+  _total = 0,
   _reportItem = null;
 
 let CHANGE_REPORT_LIST_EVENT = 'changereportlist';
@@ -43,8 +43,8 @@ var ReportStore = assign({}, PrototypeStore, {
   getTagList() {
     return _tagList;
   },
-  getTagTotalPage() {
-    return _totalPage;
+  getTagTotalNum() {
+    return _total;
   },
   getSelectedTagList() {
     return _selectedTagList;
@@ -66,7 +66,7 @@ var ReportStore = assign({}, PrototypeStore, {
     return _errorReport;
   },
   setTagData(tagData) {
-    _totalPage = tagData.total;
+    _total = tagData.total;
     _tagList = Immutable.fromJS(tagData.GetTagsByFilterResult);
   },
   setSelctedTagData(tagData) {

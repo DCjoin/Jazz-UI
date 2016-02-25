@@ -10,13 +10,24 @@ var ViewableDropDownMenu = React.createClass({
   propTypes: {
     isViewStatus: React.PropTypes.bool,
     selectedIndex: React.PropTypes.number,
+    title: React.PropTypes.string,
+    defaultValue: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    afterValue: React.PropTypes.string,
     textField: React.PropTypes.string,
+    valueField: React.PropTypes.string,
     didChanged: React.PropTypes.func,
-    maxHeight: React.PropTypes.number,
     dataItems: React.PropTypes.array.isRequired,
     style: React.PropTypes.object,
+    disabled: React.PropTypes.bool,
   },
-
+  getDefaultProps() {
+    return {
+      textField: 'text',
+      valueField: 'payload',
+      isViewStatus: false,
+      disabled: false
+    };
+  },
   getInitialState: function() {
 
     return {
@@ -25,7 +36,7 @@ var ViewableDropDownMenu = React.createClass({
   },
   isValid: function() {
     var index = this.props.dataItems.findIndex((item) => {
-      if (item.payload === this.props.defaultValue) {
+      if (item[this.props.valueField] === this.props.defaultValue) {
         return true;
       }
     });
@@ -37,15 +48,16 @@ var ViewableDropDownMenu = React.createClass({
   },
 
   _handleChange: function(e, index, object) {
-    var payload = object.payload;
-    this.props.didChanged(payload);
+    var value = object[this.props.valueField];
+    this.props.didChanged(value);
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
-    if (this.props.isViewStatus == nextProps.isViewStatus &&
+    if (this.props.isViewStatus === nextProps.isViewStatus &&
       CommonFuns.CompareArray(this.props.dataItems, nextProps.dataItems) &&
-      this.props.selectedIndex == nextProps.selectedIndex &&
-      this.props.defaultValue == nextProps.defaultValue) {
+      this.props.selectedIndex === nextProps.selectedIndex &&
+      this.props.defaultValue === nextProps.defaultValue &&
+      this.props.disabled === nextProps.disabled) {
       return false;
     }
 
@@ -54,14 +66,15 @@ var ViewableDropDownMenu = React.createClass({
 
   render: function() {
     var dropDownMenu;
-    var text = this.props.textField;
+    var textField = this.props.textField;
+    var valueField = this.props.valueField;
     if (this.props.dataItems === undefined) {
       return null;
     }
     var menuItems = this.props.dataItems.map((item, id) => {
       return {
-        payload: item.payload,
-        text: item[text],
+        payload: item[valueField],
+        text: item[textField],
         disabled: (item.disabled !== undefined) ? item.disabled : false
       };
     });
@@ -102,20 +115,20 @@ var ViewableDropDownMenu = React.createClass({
       }
       var value = '';
       if (this.props.selectedIndex >= 0) {
-        value = this.props.dataItems[this.props.selectedIndex][text];
+        value = this.props.dataItems[this.props.selectedIndex][textField];
       } else if (this.props.defaultValue !== undefined) {
         var index = this.props.dataItems.findIndex((item) => {
-          if (item.payload === this.props.defaultValue) {
+          if (item[this.props.valueField] === this.props.defaultValue) {
             return true;
           }
         });
         if (index !== -1) {
-          value = this.props.dataItems[index][text];
+          value = this.props.dataItems[index][textField];
         } else {
           value = null;
         }
       } else if (this.props.dataItems.length > 0) {
-        value = this.props.dataItems[0][text];
+        value = this.props.dataItems[0][textField];
       }
 
       dropDownMenu = (

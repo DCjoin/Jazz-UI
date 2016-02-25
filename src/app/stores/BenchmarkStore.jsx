@@ -10,8 +10,8 @@ import { Action } from '../constants/actionType/Benchmark.jsx';
 var _industryData = Immutable.fromJS([]);
 var _zoneData = Immutable.fromJS([]);
 var _benchmarkData = Immutable.fromJS([]);
-var _selecteBenchmarkIndex = null;
-var _selecteBenchmark = null;
+var _selectedBenchmarkIndex = null;
+var _selectedBenchmark = null;
 var INDUSTRY_DATA_CHANGE_EVENT = 'industrydatachange';
 var ZONE_DATA_CHANGE_EVENT = 'zonedatachange';
 var BENCHMARK_DATA_CHANGE_EVENT = 'benchmarkdatachange';
@@ -25,22 +25,22 @@ var BenchmarkStore = assign({}, PrototypeStore, {
   setBenchmarkData(benchmarkData) {
     _benchmarkData = Immutable.fromJS(benchmarkData);
     if (_benchmarkData && _benchmarkData.size !== 0) {
-      if (_selecteBenchmarkIndex === null) {
-        _selecteBenchmarkIndex = 0;
-        _selecteBenchmark = _benchmarkData.get(0);
+      if (_selectedBenchmarkIndex === null) {
+        _selectedBenchmarkIndex = 0;
+        _selectedBenchmark = _benchmarkData.get(0);
       } else {
         var index = _benchmarkData.findIndex((item) => {
-          if (item.get('IndustryId') === _selecteBenchmark.get('IndustryId')) {
+          if (item.get('IndustryId') === _selectedBenchmark.get('IndustryId')) {
             return true;
           }
         });
-        if (index !== -1 && _selecteBenchmarkIndex !== index) {
-          _selecteBenchmarkIndex = index;
+        if (index !== -1 && _selectedBenchmarkIndex !== index) {
+          _selectedBenchmarkIndex = index;
         }
       }
     } else {
-      _selecteBenchmarkIndex = null;
-      _selecteBenchmark = null;
+      _selectedBenchmarkIndex = null;
+      _selectedBenchmark = null;
     }
   },
   getIndustryData() {
@@ -56,34 +56,34 @@ var BenchmarkStore = assign({}, PrototypeStore, {
     _zoneData = Immutable.fromJS(zoneData);
   },
   getSelectedBenchmark() {
-    return _selecteBenchmark;
+    return _selectedBenchmark;
   },
   getSelectedBenchmarkIndex() {
-    return _selecteBenchmarkIndex;
+    return _selectedBenchmarkIndex;
   },
   setSelectedBenchmark(benchmark) {
-    _selecteBenchmark = Immutable.fromJS(benchmark);
+    _selectedBenchmark = Immutable.fromJS(benchmark);
   },
   setSelectedBenchmarkIndex(index) {
     if (index === null) {
-      _selecteBenchmarkIndex = null;
-      _selecteBenchmark = null;
+      _selectedBenchmarkIndex = null;
+      _selectedBenchmark = null;
     } else {
-      _selecteBenchmarkIndex = index;
-      _selecteBenchmark = _benchmarkData.get(_selecteBenchmarkIndex);
+      _selectedBenchmarkIndex = index;
+      _selectedBenchmark = _benchmarkData.get(_selectedBenchmarkIndex);
     }
   },
   deleteBenchmark() {
-    _benchmarkData = _benchmarkData.delete(_selecteBenchmarkIndex);
+    _benchmarkData = _benchmarkData.delete(_selectedBenchmarkIndex);
     var length = _benchmarkData.size;
     if (length !== 0) {
-      if (_selecteBenchmarkIndex === length) {
-        _selecteBenchmarkIndex = length - 1;
+      if (_selectedBenchmarkIndex === length) {
+        _selectedBenchmarkIndex = length - 1;
       }
-      _selecteBenchmark = _benchmarkData.get(_selecteBenchmarkIndex);
+      _selectedBenchmark = _benchmarkData.get(_selectedBenchmarkIndex);
     } else {
-      _selecteBenchmarkIndex = null;
-      _selecteBenchmark = null;
+      _selectedBenchmarkIndex = null;
+      _selectedBenchmark = null;
     }
   },
   addIndustryDataChangeListener: function(callback) {

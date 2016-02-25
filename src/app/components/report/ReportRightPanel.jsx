@@ -220,16 +220,12 @@ var ReportRightPanel = React.createClass({
       }).toJS();
     }
   },
-  _endsWith(str, pattern) {
-    var d = str.length - pattern.length;
-    return d >= 0 && str.lastIndexOf(pattern) === d;
-  },
   _handleFileSelect(event) {
     var me = this;
     var file = event.target.files[0];
     var fileName = file.name;
 
-    if (!me._endsWith(fileName.toLowerCase(), '.xlsx') && !me._endsWith(fileName.toLowerCase(), '.xls')) {
+    if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
       CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
       return;
     }
@@ -261,7 +257,8 @@ var ReportRightPanel = React.createClass({
           showUploadDialog: false,
           fileName: ''
         });
-        var errorCode = obj.UploadResponse.ErrorCode, errorMessage;
+        var errorCode = obj.UploadResponse.ErrorCode,
+          errorMessage;
         if (errorCode === -1) {
           errorMessage = I18N.EM.Report.DuplicatedName;
         }
@@ -550,7 +547,7 @@ var ReportRightPanel = React.createClass({
         borderRight: '1px solid #ececec'
       };
       var editButton = (me.props.onlyRead ? null : <FlatButton label={I18N.Common.Button.Edit} onClick={me._editReport}  secondary={true} style={saveButtonStyle} />);
-      var exportButton = <FlatButton label={I18N.Common.Button.ReportExport} onClick={me._exportTemplate}  secondary={true} style={saveButtonStyle} />;
+      var exportButton = <FlatButton label={I18N.Common.Button.Export} onClick={me._exportTemplate}  secondary={true} style={saveButtonStyle} />;
       var deleteButton = (me.props.onlyRead ? null : <FlatButton label={I18N.Common.Button.Delete} onClick={me._showDeleteDialog} primary={true} />);
       var saveButton = <FlatButton style={saveButtonStyle} secondary={true} label={I18N.Common.Button.Save} onClick={me._saveReport} disabled={me.state.saveDisabled} />;
       var cancelButton = <FlatButton label={I18N.Common.Button.Cancel} onClick={me._cancelEditReport} />;
