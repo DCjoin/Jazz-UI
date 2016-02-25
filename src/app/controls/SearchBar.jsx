@@ -1,14 +1,15 @@
 'use strict';
 import React from "react";
-import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
+import { Navigation, State } from 'react-router';
 import { FontIcon, TextField } from 'material-ui';
 
 let SearchBar = React.createClass({
-  mixins: [Navigation, State],
+
   propTypes: {
     onSearch: React.PropTypes.func,
     onSearchCleanButtonClick: React.PropTypes.func,
   },
+  mixins: [Navigation, State],
   _onSearchBlur: function(e) {
     if (!e.target.value) {
       React.findDOMNode(this.refs.searchIcon).style.display = 'block';

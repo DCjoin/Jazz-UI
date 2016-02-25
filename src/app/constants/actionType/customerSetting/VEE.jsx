@@ -4,6 +4,9 @@ module.exports = {
 
   Action: keyMirror({
     GET_VEE_RULES: null,
-    SET_SELECTED_RULE_ID: null
+    SET_SELECTED_RULE_ID: null,
+    GET_VEE_ALL_RECEIVERS: null,
+    VEE_ERROR: null,
+    DELETE_RULE_SUCCESS: null
   })
 };

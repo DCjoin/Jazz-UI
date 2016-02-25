@@ -1,18 +1,31 @@
 'use strict';
 
 import React from "react";
-import List from './VEEList.jsx';
+import RuleList from './VEEList.jsx';
+import { isFunction } from "lodash/lang";
+import Immutable from 'immutable';
+import Detail from './VEEDetail.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import VEEAction from '../../../actions/customerSetting/VEEAction.jsx';
 import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
+import { List, Map } from 'immutable';
+import { dataStatus } from '../../../constants/DataStatus.jsx';
 
+function emptyMap() {
+  return new Map();
+}
+function emptyList() {
+  return new List();
+}
 var VEERules = React.createClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,
       selectedId: null,
+      selectedRule: emptyMap(),
+      selectedTag: emptyList(),
       rules: VEEStore.getRules(),
       closedList: false,
       isLoading: true,
@@ -27,6 +40,93 @@ var VEERules = React.createClass({
       VEEAction.setCurrentSelectedId(selectedId);
     }
   },
+  _handlerMerge: function(data) {
+    var {status, path, value} = data,
+      paths = path.split("."),
+      value = Immutable.fromJS(value);
+    var mData = (this.state.infoTab) ? this.state.selectedRule : this.state.selectedTag;
+    if (status === dataStatus.DELETED) {
+      mData = mData.deleteIn(paths);
+    } else if (status === dataStatus.NEW) {
+
+    } else {
+      mData = mData.setIn(paths, value)
+      if (path === 'CheckNotify' && value === false) {
+        mData = mData.set('NotifyConsecutiveHours', null)
+      }
+      if (path === 'CheckNull' && value === false) {
+        mData = mData.set('CheckNotify', false);
+        mData = mData.set('NotifyConsecutiveHours', null);
+        mData = mData.set('EnableEstimation', false);
+      }
+    }
+    if (this.state.infoTab) {
+      this.setState({
+        selectedRule: mData,
+      })
+    } else {
+      this.setState({
+        selectedTag: mData,
+      })
+    }
+
+  },
+  _handleSaveRule: function(data) {
+    if (this.state.infoTab) {
+      if (!data.get('Id')) {
+        VEEAction.createVEERule(data.toJS());
+      } else {
+        VEEAction.modifyVEERule(data.toJS());
+      }
+    } else {
+
+    }
+
+    this.setState({
+      isLoading: true
+    });
+  },
+  _handleDeleteRule: function(data) {
+    VEEAction.deleteRule({
+      Id: this.state.selectedId,
+      Version: data.get('Version')
+    });
+  },
+  _handlerCancel: function() {
+    if (this.state.selectedId === null) {
+      this._setViewStatus(VEEStore.getSelectedId());
+    } else {
+      this._setViewStatus();
+    }
+
+  },
+  _switchTab(event) {
+    if (event.target.getAttribute("data-tab-index") === '1') {
+      if (this.state.infoTab) {
+        return;
+      }
+      this.setState({
+        infoTab: true,
+        formStatus: formStatus.VIEW
+      });
+    } else {
+      if (!this.state.infoTab) {
+        return;
+      }
+
+      this.setState({
+        infoTab: false,
+        formStatus: formStatus.VIEW
+      });
+    }
+
+  },
+  _toggleList: function() {
+    var {closedList} = this.state;
+    this.setState({
+      closedList: !closedList
+    });
+  },
   _setViewStatus: function(selectedId = this.state.selectedId) {
     var id = selectedId,
       infoTab = this.state.infoTab;
@@ -40,21 +140,30 @@ var VEERules = React.createClass({
     this.setState({
       infoTab: infoTab,
       formStatus: formStatus.VIEW,
-      selectedId: id
+      selectedId: id,
+      selectedRule: VEEStore.getRuleById(id)
     });
   },
   _setAddStatus: function() {
-    // var tariffDetail = this.refs.pop_tariff_detail;
-    // if (tariffDetail && isFunction(tariffDetail.clearErrorTextBatchViewbaleTextFiled)) {
-    //   tariffDetail.clearErrorTextBatchViewbaleTextFiled();
-    // }
+    var ruleDetail = this.refs.jazz_vee_detail;
+    if (ruleDetail && isFunction(ruleDetail.clearErrorTextBatchViewbaleTextFiled)) {
+      ruleDetail.clearErrorTextBatchViewbaleTextFiled();
+      ruleDetail._clearErrorText();
+    }
     // TariffAction.setCurrentSelectedId(null);
     this.setState({
       infoTab: true,
       formStatus: formStatus.ADD,
-      selectedId: null
+      selectedId: null,
+      selectedRule: emptyMap()
     });
   },
+  _setEditStatus: function() {
+    this.setState({
+      formStatus: formStatus.EDIT
+    });
+  },
+
   _onChange: function(selectedId) {
     if (!!selectedId) {
       this._setViewStatus(selectedId);
@@ -72,6 +181,20 @@ var VEERules = React.createClass({
       errorContent: error.content,
       isLoading: false
     });
+  },
+  _renderErrorDialog: function() {
+    if (!!this.state.errorTitle) {
+      return (<Dialog
+        ref = "_dialog"
+        title={this.state.errorTitle}
+        modal={false}
+        openImmediately={!!this.state.errorTitle}
+        >
+        {this.state.errorContent}
+      </Dialog>)
+    } else {
+      return null;
+    }
   },
   componentWillMount: function() {
     VEEAction.GetVEERules();
@@ -91,17 +214,32 @@ var VEERules = React.createClass({
   render: function() {
     var isView = this.state.formStatus === formStatus.VIEW;
     var listProps = {
-      formStatus: this.state.formStatus,
-      onAddBtnClick: this._setAddStatus,
-      onRuleClick: this._handlerTouchTap,
-      rules: this.state.rules,
-      selectedId: this.state.selectedId
-    };
+        formStatus: this.state.formStatus,
+        onAddBtnClick: this._setAddStatus,
+        onRuleClick: this._handlerTouchTap,
+        rules: this.state.rules,
+        selectedId: this.state.selectedId
+      },
+      detailProps = {
+        ref: 'jazz_vee_detail',
+        rule: this.state.selectedRule,
+        formStatus: this.state.formStatus,
+        infoTab: this.state.infoTab,
+        setEditStatus: this._setEditStatus,
+        handlerCancel: this._handlerCancel,
+        handleSaveRule: this._handleSaveRule,
+        handleDeleteRule: this._handleDeleteRule,
+        handlerSwitchTab: this._switchTab,
+        toggleList: this._toggleList,
+        closedList: this.state.closedList,
+        merge: this._handlerMerge
+      };
     let list = (!this.state.closedList) ? <div style={{
       display: 'flex'
-    }}><List {...listProps}/></div> : <div style={{
+    }}><RuleList {...listProps}/></div> : <div style={{
       display: 'none'
-    }}><List {...listProps}/></div>;
+    }}><RuleList {...listProps}/></div>;
+    let detail = (this.state.rules.size === 0 && isView) ? null : <Detail {...detailProps}/>;
     if (this.state.isLoading) {
       return (
         <div style={{
@@ -121,7 +259,8 @@ var VEERules = React.createClass({
           overflow: 'auto'
         }}>
               {list}
-
+              {detail}
+              {this._renderErrorDialog()}
             </div>);
     }
   },

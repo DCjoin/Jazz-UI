@@ -1516,4 +1516,24 @@ I18N.Setting.SPManagement = '“云能效”系统管理';
 
 I18N.Setting.VEEMonitorRule = {};
 I18N.Setting.VEEMonitorRule.Rule = '规则集';
+I18N.Setting.VEEMonitorRule.RuleName = '规则集名称';
+I18N.Setting.VEEMonitorRule.MonitorTag = '监测数据点';
+I18N.Setting.VEEMonitorRule.MonitorRule = '监测规则集';
+I18N.Setting.VEEMonitorRule.MonitorSetting = '监测扫描设置';
+I18N.Setting.VEEMonitorRule.NullValue = '空值';
+I18N.Setting.VEEMonitorRule.NegativeValue = '负值';
+I18N.Setting.VEEMonitorRule.ZeroValue = '零值';
+I18N.Setting.VEEMonitorRule.Notify = '按连续时长设置通知规则';
+I18N.Setting.VEEMonitorRule.NotifyMsg = '仅空值需要单独设置通知规则，超出规则的部分发送报警邮件。';
+I18N.Setting.VEEMonitorRule.AutoRepair = '自动修复';
+I18N.Setting.VEEMonitorRule.MonitorStartTime = '监测起始时间';
+I18N.Setting.VEEMonitorRule.MonitorInterval = '监测扫描间隔';
+I18N.Setting.VEEMonitorRule.MonitorDelayTime = '扫描延后时长';
+I18N.Setting.VEEMonitorRule.NoMonitorDelay = '无延时';
+I18N.Setting.VEEMonitorRule.MonitorDelay = '无延时';
+I18N.Setting.VEEMonitorRule.Receivers = '邮件联系人';
+I18N.Setting.VEEMonitorRule.AddReceivers = '添加邮件联系人';
+I18N.Setting.VEEMonitorRule.DeleteTitle = '删除规则集';
+I18N.Setting.VEEMonitorRule.DeleteContent = '删除规则集{0}';
+
 module.exports = I18N;

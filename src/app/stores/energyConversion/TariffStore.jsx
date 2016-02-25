@@ -2,7 +2,7 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-import { List, updater, update, Map } from 'immutable';
+import { List, Map } from 'immutable';
 import Tariff from '../../constants/actionType/energyConversion/Tariff.jsx';
 
 function emptyList() {
