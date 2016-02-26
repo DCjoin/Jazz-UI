@@ -35,7 +35,7 @@ var VEEList = React.createClass({
     var props = {
       addBtnLabel: I18N.Setting.VEEMonitorRule.Rule,
       onAddBtnClick: this.props.onAddBtnClick,
-      isViewStatus: this.props.formStatus === formStatus.VIEW,
+      isAddStatus: this.props.formStatus === formStatus.ADD,
       isLoading: false,
       contentItems: this._renderRuleItems(),
     };

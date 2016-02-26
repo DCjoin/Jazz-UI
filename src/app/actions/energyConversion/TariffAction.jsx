@@ -2,7 +2,6 @@
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/energyConversion/Tariff.jsx';
 import Ajax from '../../ajax/ajax.jsx';
-import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
 let TariffAction = {
   GetTouTariff: function() {
