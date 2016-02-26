@@ -3,6 +3,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { FlatButton, FontIcon, DropDownMenu, CircularProgress } from 'material-ui';
+import _isBoolean from 'lodash/lang/isBoolean';
 
 let SelectablePanel = React.createClass({
   propTypes: {
@@ -15,6 +16,7 @@ let SelectablePanel = React.createClass({
     changeSortBy: React.PropTypes.func,
     contentItems: React.PropTypes.object,
     isAddStatus: React.PropTypes.bool,
+    isViewStatus: React.PropTypes.bool,
     isLoading: React.PropTypes.bool,
   },
   render: function() {
@@ -27,7 +29,7 @@ let SelectablePanel = React.createClass({
     var addBtnClasses = {
         'se-dropdownbutton': true,
         'btn-container': true,
-        'btn-container-active': !this.props.isAddStatus
+        'btn-container-active': _isBoolean(this.props.isAddStatus) ? !this.props.isAddStatus : this.props.isViewStatus
       },
       buttonStyle = {
         backgroundColor: 'transparent',
@@ -76,7 +78,7 @@ let SelectablePanel = React.createClass({
         padding: '0 30px'
       }}>
           <div className={classNames(addBtnClasses)}>
-            <FlatButton disabled={this.props.isAddStatus}  onClick={this.props.onAddBtnClick} style={buttonStyle}>
+            <FlatButton disabled={_isBoolean(this.props.isAddStatus) ? this.props.isAddStatus : !this.props.isViewStatus}  onClick={this.props.onAddBtnClick} style={buttonStyle}>
               <FontIcon  className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{this.props.addBtnLabel}</span>
             </FlatButton>
