@@ -36,6 +36,25 @@ let TagAction = {
       type: Action.CANCEL_SAVE_TAG
     });
   },
+  modifyTag(data) {
+    Ajax.post('/Tag.svc/ModifyTag', {
+      params: {
+        dto: data
+      },
+      success: function(tag) {
+        AppDispatcher.dispatch({
+          type: Action.MODIFT_TAG_SUCCESS,
+          tag: tag
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.MODIFT_TAG_ERROR
+        });
+      }
+    });
+  },
   deleteTagById(id, version) {
     Ajax.post('/Tag.svc/DeleteTag', {
       params: {

@@ -45,6 +45,13 @@ let Tag = React.createClass({
       curPageNum: 1
     });
   },
+  _getResetFiltObj: function() {
+    var filterObj = this.state.filterObj;
+    filterObj.CommodityId = null;
+    filterObj.UomId = null;
+    filterObj.IsAccumulated = null;
+    return filterObj;
+  },
   _getInitFilterObj: function() {
     var filterObj = {
       CustomerId: parseInt(window.currentCustomerId),
@@ -235,9 +242,10 @@ let Tag = React.createClass({
     });
   },
   _handleCloseFilterSideNav: function() {
-    this._resetFilterObj();
+    var filterObj = this._getResetFiltObj();
     this.setState({
-      showFilter: false
+      showFilter: false,
+      filterObj: filterObj
     });
   },
   _handleFilter: function() {
@@ -300,7 +308,17 @@ let Tag = React.createClass({
       TagAction.cancelSaveTag();
     }
   },
-  _onSave: function() {},
+  _onSave: function() {
+    this.setState({
+      isLoading: true
+    });
+    var selectedTag = this.state.selectedTag.toJS();
+    if (selectedTag.Id === 0) {
+      TagAction.createTag(selectedTag, this.props.tagType, 1, this.state.filterObj);
+    } else {
+      TagAction.modifyTag(selectedTag);
+    }
+  },
   _onDelete: function() {
     this.setState({
       showDeleteDialog: true

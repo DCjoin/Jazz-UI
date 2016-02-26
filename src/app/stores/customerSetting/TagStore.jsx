@@ -39,7 +39,10 @@ var TagStore = assign({}, PrototypeStore, {
               return true;
             }
           });
-          if (index !== -1 && _selectedTagIndex !== index) {
+          if (index === -1) {
+            _selectedTagIndex = null;
+            _selectedTag = null;
+          } else if (_selectedTagIndex !== index) {
             _selectedTagIndex = index;
           }
         }
