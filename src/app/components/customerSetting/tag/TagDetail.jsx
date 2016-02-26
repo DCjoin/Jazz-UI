@@ -94,7 +94,13 @@ var TagDetail = React.createClass({
       isViewStatus: isView,
       title: I18N.Setting.Tag.TagName,
       defaultValue: selectedTag.get('Name'),
-      isRequired: true
+      isRequired: true,
+      didChanged: value => {
+        me.props.mergeTag({
+          value,
+          path: "Name"
+        });
+      }
     };
     var displayStr = me.props.tagType === 1 ? I18N.Setting.Tag.RawData : I18N.Setting.Tag.Formula;
     return (

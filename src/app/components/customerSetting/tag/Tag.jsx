@@ -314,7 +314,7 @@ let Tag = React.createClass({
     });
     var selectedTag = this.state.selectedTag.toJS();
     if (selectedTag.Id === 0) {
-      TagAction.createTag(selectedTag, this.props.tagType, 1, this.state.filterObj);
+      TagAction.createTag(selectedTag);
     } else {
       TagAction.modifyTag(selectedTag);
     }

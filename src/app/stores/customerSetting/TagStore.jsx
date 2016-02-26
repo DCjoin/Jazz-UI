@@ -72,6 +72,7 @@ var TagStore = assign({}, PrototypeStore, {
   },
   setSelectedTag(tag) {
     _selectedTag = Immutable.fromJS(tag);
+    _tagList = _tagList.set(_selectedTagIndex, _selectedTag);
   },
   getSelectedTag() {
     return _selectedTag;
@@ -150,6 +151,8 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.MODIFT_TAG_SUCCESS:
     case Action.CREATE_TAG_SUCCESS:
       TagStore.setSelectedTag(action.tag);
+      TagStore.emitTagListChange();
+      TagStore.emitSelectedTagChange();
       break;
     case Action.DELETE_TAG_SUCCESS:
       TagStore.deleteTag();
