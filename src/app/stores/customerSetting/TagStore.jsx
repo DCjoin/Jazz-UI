@@ -4,12 +4,15 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
+import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 
 let _tagList = Immutable.fromJS([]),
   _total = 0,
   _selectedTagIndex = null,
-  _selectedTag = null;
+  _selectedTag = null,
+  _errorCode = null,
+  _errorMessage = null;
 
 let CHANGE_TAG_EVENT = 'changetag';
 let CHANGE_SELECTED_TAG_EVENT = 'changeselectedtag';
@@ -51,19 +54,19 @@ var TagStore = assign({}, PrototypeStore, {
       _selectedTag = null;
     }
   },
-  // deleteCalendar() {
-  //   _calendarList = _calendarList.delete(_selecteCalendarIndex);
-  //   var length = _calendarList.size;
-  //   if (length !== 0) {
-  //     if (_selecteCalendarIndex === length) {
-  //       _selecteCalendarIndex = length - 1;
-  //     }
-  //     _selecteCalendar = _calendarList.get(_selecteCalendarIndex);
-  //   } else {
-  //     _selecteCalendarIndex = null;
-  //     _selecteCalendar = null;
-  //   }
-  // },
+  deleteTag() {
+    _tagList = _tagList.delete(_selectedTagIndex);
+    var length = _tagList.size;
+    if (length !== 0) {
+      if (_selectedTagIndex === length) {
+        _selectedTagIndex = length - 1;
+      }
+      _selectedTag = _tagList.get(_selectedTagIndex);
+    } else {
+      _selectedTagIndex = null;
+      _selectedTag = null;
+    }
+  },
   setSelectedTag(tag) {
     _selectedTag = Immutable.fromJS(tag);
   },
@@ -73,7 +76,7 @@ var TagStore = assign({}, PrototypeStore, {
   getSelectedTagIndex() {
     return _selectedTagIndex;
   },
-  setSelectedCalendarIndex(index) {
+  setSelectedTagIndex(index) {
     if (index === null) {
       _selectedTagIndex = null;
       _selectedTag = null;
@@ -81,6 +84,18 @@ var TagStore = assign({}, PrototypeStore, {
       _selectedTagIndex = index;
       _selectedTag = _tagList.get(_selectedTagIndex);
     }
+  },
+  getErrorMessage() {
+    return _errorMessage;
+  },
+  getErrorCode() {
+    return _errorCode;
+  },
+  initErrorText(errorText) {
+    let error = JSON.parse(errorText).error;
+    let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
+    _errorCode = errorCode;
+    _errorMessage = error.Messages;
   },
   emitTagListChange: function() {
     this.emit(CHANGE_TAG_EVENT);
@@ -141,6 +156,7 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.MODIFT_TAG_ERROR:
     case Action.CREATE_TAG_ERROR:
     case Action.DELETE_TAG_ERROR:
+      TagStore.initErrorText(action.errorText);
       TagStore.emitErrorhange();
       break;
   }

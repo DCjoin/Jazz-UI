@@ -131,6 +131,8 @@ I18N.Common.Glossary.WeekDay.Friday = '五';
 I18N.Common.Glossary.WeekDay.Saturday = '六';
 I18N.Common.Glossary.WeekDay.Sunday = '日';
 
+
+
 I18N.Common.Date = {};
 I18N.Common.Date.January = '01月';
 I18N.Common.Date.February = '02月';
@@ -219,9 +221,23 @@ I18N.Common.CarbonUomType.StandardCoal = '标煤';
 I18N.Common.CarbonUomType.CO2 = '二氧化碳';
 I18N.Common.CarbonUomType.Tree = '树';
 
+I18N.Common.CaculationType = {};
+I18N.Common.CaculationType.Non = '无';
+I18N.Common.CaculationType.Sum = '求和';
+I18N.Common.CaculationType.Avg = '平均值';
+I18N.Common.CaculationType.Max = '最大值';
+I18N.Common.CaculationType.Min = '最小值';
+
 I18N.Common.AggregationStep = {};
 I18N.Common.AggregationStep.Minute = '分钟';
+I18N.Common.AggregationStep.Min15 = '15分钟';
+I18N.Common.AggregationStep.Min30 = '30分钟';
 I18N.Common.AggregationStep.Hourly = '每小时';
+I18N.Common.AggregationStep.Hour2 = "2小时";
+I18N.Common.AggregationStep.Hour4 = "4小时";
+I18N.Common.AggregationStep.Hour6 = "6小时";
+I18N.Common.AggregationStep.Hour8 = "8小时";
+I18N.Common.AggregationStep.Hour12 = "12小时";
 I18N.Common.AggregationStep.Daily = '每天';
 I18N.Common.AggregationStep.Weekly = '每周';
 I18N.Common.AggregationStep.Monthly = '每月';
@@ -693,7 +709,26 @@ I18N.Setting.Tag.isNotAccumulated = '非累计值';
 I18N.Setting.Tag.Commodity = '介质';
 I18N.Setting.Tag.Uom = '单位';
 I18N.Setting.Tag.Type = '数据类型';
-
+I18N.Setting.Tag.TagName = '数据点名称';
+I18N.Setting.Tag.BasicProperties = '基础属性';
+I18N.Setting.Tag.RawData = '原始数据';
+I18N.Setting.Tag.Formula = '计算公式';
+I18N.Setting.Tag.DeleteTag = '删除数据点';
+I18N.Setting.Tag.Code = '编码';
+I18N.Setting.Tag.MeterCode = '表编码';
+I18N.Setting.Tag.Channel = '通道';
+I18N.Setting.Tag.CalculationStep = '采集周期';
+I18N.Setting.Tag.CalculationType = '计算方式';
+I18N.Setting.Tag.Slope = '斜率（选填）';
+I18N.Setting.Tag.Offset = '偏移（选填）';
+I18N.Setting.Tag.Comment = '备注（选填）';
+I18N.Setting.Tag.AccumulatedValueCal = '使用累积值计算';
+I18N.Setting.Tag.deleteContent = '计量数据{0}"{1}"将被删除';
+I18N.Setting.Tag.PTagManagement = '计量数据P';
+I18N.Setting.Tag.VTagManagement = '计量数据V';
+I18N.Setting.Tag.KPI = '关键能效指标';
+I18N.Setting.Tag.PanelTitle = '层级结构';
+I18N.Setting.Tag.ErrorContent = '请输入-1000000000~1000000000的数，小数点后最多保留6位';
 
 
 I18N.Message = {};

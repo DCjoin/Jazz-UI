@@ -25,7 +25,7 @@ var TagFilter = React.createClass({
   },
   _bindChangeFilter: function(paths, isClear) {
     if (isClear) {
-      return this._mergeFilterObj.bind(this, paths, "-1");
+      return this._mergeFilterObj.bind(this, paths, null);
     }
     return this._mergeFilterObj.bind(this, paths);
   },
@@ -112,7 +112,7 @@ var TagFilter = React.createClass({
 						<div className="pop-user-filter-side-nav-content-item sidebar-content-item">
 							<div className="pop-user-filter-side-nav-content-item-header">
 								<div className="pop-user-filter-side-nav-content-item-header-title">{I18N.Setting.Tag.Commodity}</div>
-								<LinkButton disabled={filterObj.CommodityId === '-1'} onClick={this._bindChangeFilter("CommodityId", true)} label={I18N.Setting.User.Cancel}/>
+								<LinkButton disabled={!filterObj.CommodityId} onClick={this._bindChangeFilter("CommodityId", true)} label={I18N.Setting.User.Cancel}/>
 							</div>
 							<div className="pop-user-filter-side-nav-content-item-input pop-viewableSelectField">
                 <ViewableDropDownMenu style={inputStyle} menuItemStyle={menuItemStyle} dataItems={this._getCommodityList()} defaultValue={filterObj.CommodityId} hintText={I18N.Setting.Tag.Commodity} didChanged={this._bindChangeFilter("CommodityId")}>
@@ -123,7 +123,7 @@ var TagFilter = React.createClass({
 						<div className="pop-user-filter-side-nav-content-item sidebar-content-item">
 							<div className="pop-user-filter-side-nav-content-item-header">
 								<div className="pop-user-filter-side-nav-content-item-header-title">{I18N.Setting.Tag.Uom}</div>
-								<LinkButton disabled={filterObj.UomId === '-1'} onClick={this._bindChangeFilter("UomId", true)} label={I18N.Setting.User.Cancel}/>
+								<LinkButton disabled={!filterObj.UomId} onClick={this._bindChangeFilter("UomId", true)} label={I18N.Setting.User.Cancel}/>
 							</div>
 							<div className="pop-user-filter-side-nav-content-item-input pop-viewableSelectField">
                 <ViewableDropDownMenu style={inputStyle} menuItemStyle={menuItemStyle} dataItems={this._getUomList()} defaultValue={filterObj.UomId} hintText={I18N.Setting.Tag.Uom} didChanged={this._bindChangeFilter("UomId")}>
@@ -134,7 +134,7 @@ var TagFilter = React.createClass({
 						<div className="pop-user-filter-side-nav-content-item sidebar-content-item">
 							<div className="pop-user-filter-side-nav-content-item-header">
 								<div className="pop-user-filter-side-nav-content-item-header-title">{I18N.Setting.Tag.Type}</div>
-								<LinkButton disabled={filterObj.IsAccumulated === '-1'} onClick={this._bindChangeFilter("IsAccumulated", true)} label={I18N.Setting.User.Cancel}/>
+								<LinkButton disabled={!filterObj.IsAccumulated} onClick={this._bindChangeFilter("IsAccumulated", true)} label={I18N.Setting.User.Cancel}/>
 							</div>
 							<div className="pop-user-filter-side-nav-content-item-input pop-viewableSelectField">
                 <ViewableDropDownMenu style={inputStyle} menuItemStyle={menuItemStyle} dataItems={this._getAccumulatedList()} defaultValue={filterObj.IsAccumulated} hintText={I18N.Setting.Tag.Type} didChanged={this._bindChangeFilter("IsAccumulated")}>

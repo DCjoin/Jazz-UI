@@ -60,12 +60,12 @@ let TagList = React.createClass({
     document.body.appendChild(iframe);
   },
   _renderImportDialog() {
-    var dialogActions = [];
-    var dialogContent;
-    var dialogTitle = '';
     if (!this.state.showImportDialog) {
       return null;
     }
+    var dialogActions = [];
+    var dialogContent;
+    var dialogTitle = '';
     if (this.state.isImporting) {
       dialogContent = (<div className='jazz-tag-loading'><div style={{
         margin: 'auto',
@@ -91,7 +91,7 @@ let TagList = React.createClass({
 
     return (<Dialog
       ref="importDialog"
-      openImmediately={true}
+      openImmediately={this.state.showImportDialog}
       title={dialogTitle}
       actions={dialogActions}
       modal={this.state.isImporting || this.state.importSuccess}>

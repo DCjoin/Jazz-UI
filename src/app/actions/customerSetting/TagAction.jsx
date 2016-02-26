@@ -24,7 +24,39 @@ let TagAction = {
         });
       }
     });
-  }
+  },
+  setSelectedTagIndex(index) {
+    AppDispatcher.dispatch({
+      type: Action.SET_SELECTED_TAG,
+      index: index
+    });
+  },
+  cancelSaveTag() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_TAG
+    });
+  },
+  deleteTagById(id, version) {
+    Ajax.post('/Tag.svc/DeleteTag', {
+      params: {
+        dto: {
+          Id: id,
+          Version: version
+        }
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_TAG_SUCCESS
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_TAG_ERROR,
+          errorText: res.text
+        });
+      }
+    });
+  },
 };
 
 module.exports = TagAction;
