@@ -215,6 +215,17 @@ var PTagBasic = React.createClass({
           });
         }
       },
+      checkProps = {
+        label: I18N.Setting.Tag.AccumulatedValueCal,
+        checked: IsAccumulated,
+        disabled: isView,
+        onCheck: (event, checked) => {
+          me.props.mergeTag({
+            value: checked,
+            path: "IsAccumulated"
+          });
+        }
+      },
       commentProps = {
         ref: 'comment',
         isViewStatus: isView,
@@ -237,7 +248,7 @@ var PTagBasic = React.createClass({
         <ViewableTextField {...offsetProps}/>
       </div>);
     var isAccumulated = !IsAccumulated && isView ? null : (<div className="pop-customer-detail-content-left-item">
-      <Checkbox label={I18N.Setting.Tag.AccumulatedValueCal} checked={IsAccumulated}/>
+      <Checkbox {...checkProps}/>
     </div>);
     var comment = !Comment && isView ? null : (<div className="pop-customer-detail-content-left-item">
         <ViewableTextField {...commentProps}/>

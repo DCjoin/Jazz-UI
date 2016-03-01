@@ -40,8 +40,8 @@ var TagStore = assign({}, PrototypeStore, {
             }
           });
           if (index === -1) {
-            _selectedTagIndex = null;
-            _selectedTag = null;
+            _selectedTagIndex = 0;
+            _selectedTag = _tagList.get(0);
           } else if (_selectedTagIndex !== index) {
             _selectedTagIndex = index;
           }
@@ -73,6 +73,11 @@ var TagStore = assign({}, PrototypeStore, {
   setSelectedTag(tag) {
     _selectedTag = Immutable.fromJS(tag);
     _tagList = _tagList.set(_selectedTagIndex, _selectedTag);
+  },
+  addSelectedTag(tag) {
+    _selectedTag = Immutable.fromJS(tag);
+    _tagList = _tagList.unshift(_selectedTag);
+    _selectedTagIndex = 0;
   },
   getSelectedTag() {
     return _selectedTag;
@@ -125,7 +130,7 @@ var TagStore = assign({}, PrototypeStore, {
   removeErrorChangeListener(callback) {
     this.removeListener(ERROR_CHANGE_EVENT, callback);
   },
-  emitErrorhange() {
+  emitErrorChange() {
     this.emit(ERROR_CHANGE_EVENT);
   }
 });
@@ -149,8 +154,12 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       TagStore.emitSelectedTagChange();
       break;
     case Action.MODIFT_TAG_SUCCESS:
-    case Action.CREATE_TAG_SUCCESS:
       TagStore.setSelectedTag(action.tag);
+      TagStore.emitTagListChange();
+      TagStore.emitSelectedTagChange();
+      break;
+    case Action.CREATE_TAG_SUCCESS:
+      TagStore.addSelectedTag(action.tag);
       TagStore.emitTagListChange();
       TagStore.emitSelectedTagChange();
       break;
@@ -163,7 +172,8 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.CREATE_TAG_ERROR:
     case Action.DELETE_TAG_ERROR:
       TagStore.initErrorText(action.errorText);
-      TagStore.emitErrorhange();
+      TagStore.emitErrorChange();
+      TagStore.emitSelectedTagChange();
       break;
   }
 });

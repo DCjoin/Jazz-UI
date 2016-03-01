@@ -50,7 +50,28 @@ let TagAction = {
       error: function(err, res) {
         console.log(err, res);
         AppDispatcher.dispatch({
-          type: Action.MODIFT_TAG_ERROR
+          type: Action.MODIFT_TAG_ERROR,
+          errorText: res.text
+        });
+      }
+    });
+  },
+  createTag(data) {
+    Ajax.post('/Tag.svc/CreateTag', {
+      params: {
+        dto: data
+      },
+      success: function(tag) {
+        AppDispatcher.dispatch({
+          type: Action.CREATE_TAG_SUCCESS,
+          tag: tag
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.CREATE_TAG_ERROR,
+          errorText: res.text
         });
       }
     });

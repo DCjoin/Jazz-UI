@@ -12,6 +12,7 @@ import PTagBasic from './PTagBasic.jsx';
 
 var TagDetail = React.createClass({
   propTypes: {
+    tagType: React.PropTypes.number,
     formStatus: React.PropTypes.string,
     showLeft: React.PropTypes.bool,
     showBasic: React.PropTypes.bool,

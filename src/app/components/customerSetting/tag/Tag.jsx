@@ -9,6 +9,7 @@ import TagFilter from './TagFilter.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import GlobalErrorMessageAction from '../../../actions/GlobalErrorMessageAction.jsx';
+import Immutable from 'immutable';
 
 
 let Tag = React.createClass({
@@ -176,10 +177,6 @@ let Tag = React.createClass({
         GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code, true);
       }, 0);
     }
-    this.setState({
-      isLoading: false,
-      showDeleteDialog: false,
-    });
   },
   _onPrePage: function() {
     var curPageNum = this.state.curPageNum;
@@ -333,7 +330,53 @@ let Tag = React.createClass({
     var selectedTag = this.state.selectedTag;
     TagAction.deleteTagById(selectedTag.get('Id'), selectedTag.get('Version'));
   },
-  _onAddTag: function() {},
+  _onAddTag: function() {
+    var tag = {
+      Checked: 0,
+      Id: 0,
+      Name: "",
+      Version: 0,
+      Code: "",
+      Comment: "",
+      Type: this.props.tagType,
+      TypeName: "",
+      TagGroupType: 0,
+      ChannelId: null,
+      TimezoneId: 1,
+      MeterCode: "",
+      CalculationType: 1,
+      UomId: 1,
+      UomName: "",
+      CommodityId: 1,
+      CommodityName: "",
+      StartTime: null,
+      HierarchyId: null,
+      SystemDimensionId: null,
+      AreaDimensionId: null,
+      CustomerId: parseInt(window.currentCustomerId),
+      GuidCode: 0,
+      EnergyConsumption: 0,
+      CalculationStep: 6,
+      Slope: null,
+      Offset: null,
+      Formula: "",
+      DayNightRatio: false,
+      ReverseFormula: false,
+      HasAlarmSetting: false,
+      IsAccumulated: false,
+      Associatiable: false,
+      SystemDimensionName: "",
+      AreaDimensionName: "",
+      HierarchyName: "",
+      DimensionName: "",
+      TagModifyMode: 1
+    };
+    this.setState({
+      selectedIndex: null,
+      selectedTag: Immutable.fromJS(tag),
+      formStatus: formStatus.ADD
+    });
+  },
   componentDidMount: function() {
     TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
     TagStore.addTagListChangeListener(this._onTagListChange);
