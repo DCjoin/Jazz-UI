@@ -14,12 +14,7 @@ import Immutable from 'immutable';
 
 let Tag = React.createClass({
   propTypes: {
-    tagType: React.PropTypes.number
-  },
-  getDefaultProps: function() {
-    return {
-      tagType: 1
-    };
+    tagType: React.PropTypes.number.isRequired
   },
   getInitialState: function() {
     var filterObj = this._getInitFilterObj();
@@ -390,13 +385,13 @@ let Tag = React.createClass({
     TagAction.setSelectedTagIndex(null);
   },
   componentWillMount: function() {
-    document.title = I18N.MainMenu.CustomerSetting;
+    // document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidUpdate: function() {
-    if (window.lastLanguage !== window.currentLanguage) {
-      document.title = I18N.MainMenu.CustomerSetting;
-      window.lastLanguage = window.currentLanguage;
-    }
+    // if (window.lastLanguage !== window.currentLanguage) {
+    //   document.title = I18N.MainMenu.CustomerSetting;
+    //   window.lastLanguage = window.currentLanguage;
+    // }
   },
   render() {
     var me = this,

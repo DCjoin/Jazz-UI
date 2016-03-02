@@ -9,6 +9,7 @@ import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import PTagBasic from './PTagBasic.jsx';
+import VTagBasic from './VTagBasic.jsx';
 
 var TagDetail = React.createClass({
   propTypes: {
@@ -34,18 +35,25 @@ var TagDetail = React.createClass({
     };
   },
   _isValid: function() {
+    var codeIsValid,
+      meterCodeIsValid,
+      channelIsValid,
+      commodityIsValid,
+      uomIsValid,
+      calculationStepIsValid,
+      calculationTypeIsValid,
+      slopeIsValid = true,
+      offsetIsValid = true,
+      commentIsValid = true;
     if (this.refs.pTagBasic) {
       var pTagBasic = this.refs.pTagBasic;
-      var codeIsValid = pTagBasic.refs.code.isValid(),
-        meterCodeIsValid = pTagBasic.refs.meterCode.isValid(),
-        channelIsValid = pTagBasic.refs.channel.isValid(),
-        commodityIsValid = pTagBasic.refs.commodity.isValid(),
-        uomIsValid = pTagBasic.refs.uom.isValid(),
-        calculationStepIsValid = pTagBasic.refs.calculationStep.isValid(),
-        calculationTypeIsValid = pTagBasic.refs.calculationType.isValid(),
-        slopeIsValid = true,
-        offsetIsValid = true,
-        commentIsValid = true;
+      codeIsValid = pTagBasic.refs.code.isValid();
+      meterCodeIsValid = pTagBasic.refs.meterCode.isValid();
+      channelIsValid = pTagBasic.refs.channel.isValid();
+      commodityIsValid = pTagBasic.refs.commodity.isValid();
+      uomIsValid = pTagBasic.refs.uom.isValid();
+      calculationStepIsValid = pTagBasic.refs.calculationStep.isValid();
+      calculationTypeIsValid = pTagBasic.refs.calculationType.isValid();
       if (pTagBasic.refs.slope) {
         slopeIsValid = pTagBasic.refs.slope.isValid();
       }
@@ -57,6 +65,18 @@ var TagDetail = React.createClass({
       }
 
       return codeIsValid && meterCodeIsValid && channelIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && slopeIsValid && offsetIsValid && commentIsValid;
+    } else if (this.refs.vTagBasic) {
+      var vTagBasic = this.refs.vTagBasic;
+      codeIsValid = vTagBasic.refs.code.isValid();
+      commodityIsValid = vTagBasic.refs.commodity.isValid();
+      uomIsValid = vTagBasic.refs.uom.isValid();
+      calculationStepIsValid = vTagBasic.refs.calculationStep.isValid();
+      calculationTypeIsValid = vTagBasic.refs.calculationType.isValid();
+      if (vTagBasic.refs.comment) {
+        commentIsValid = vTagBasic.refs.comment.isValid();
+      }
+
+      return codeIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
     }
   },
   _onSwitchTab: function(event) {
@@ -133,6 +153,10 @@ var TagDetail = React.createClass({
     if (this.props.tagType === 1) {
       if (this.props.showBasic) {
         content = <PTagBasic ref='pTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
+      }
+    } else {
+      if (this.props.showBasic) {
+        content = <VTagBasic ref='vTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
       }
     }
     return (
