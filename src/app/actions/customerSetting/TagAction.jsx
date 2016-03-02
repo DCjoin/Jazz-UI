@@ -24,7 +24,79 @@ let TagAction = {
         });
       }
     });
-  }
+  },
+  setSelectedTagIndex(index) {
+    AppDispatcher.dispatch({
+      type: Action.SET_SELECTED_TAG,
+      index: index
+    });
+  },
+  cancelSaveTag() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_TAG
+    });
+  },
+  modifyTag(data) {
+    Ajax.post('/Tag.svc/ModifyTag', {
+      params: {
+        dto: data
+      },
+      success: function(tag) {
+        AppDispatcher.dispatch({
+          type: Action.MODIFT_TAG_SUCCESS,
+          tag: tag
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.MODIFT_TAG_ERROR,
+          errorText: res.text
+        });
+      }
+    });
+  },
+  createTag(data) {
+    Ajax.post('/Tag.svc/CreateTag', {
+      params: {
+        dto: data
+      },
+      success: function(tag) {
+        AppDispatcher.dispatch({
+          type: Action.CREATE_TAG_SUCCESS,
+          tag: tag
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.CREATE_TAG_ERROR,
+          errorText: res.text
+        });
+      }
+    });
+  },
+  deleteTagById(id, version) {
+    Ajax.post('/Tag.svc/DeleteTag', {
+      params: {
+        dto: {
+          Id: id,
+          Version: version
+        }
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_TAG_SUCCESS
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_TAG_ERROR,
+          errorText: res.text
+        });
+      }
+    });
+  },
 };
 
 module.exports = TagAction;

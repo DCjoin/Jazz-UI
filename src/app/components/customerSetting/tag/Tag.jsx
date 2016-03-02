@@ -1,26 +1,20 @@
 'use strict';
 import React from "react";
-import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
 import Item from '../../../controls/SelectableItem.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
 import TagList from './TagList.jsx';
-//import TagNode from './TagNode.jsx';
+import TagDetail from './TagDetail.jsx';
 import TagFilter from './TagFilter.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
+import GlobalErrorMessageAction from '../../../actions/GlobalErrorMessageAction.jsx';
+import Immutable from 'immutable';
 
 
 let Tag = React.createClass({
   propTypes: {
-    tagType: React.PropTypes.number
-  },
-  getDefaultProps: function() {
-    return {
-      tagType: 1
-    };
+    tagType: React.PropTypes.number.isRequired
   },
   getInitialState: function() {
     var filterObj = this._getInitFilterObj();
@@ -32,26 +26,35 @@ let Tag = React.createClass({
       isFilter: false,
       total: 0,
       curPageNum: 1,
-      showFilter: false
+      showFilter: false,
+      showBasic: true,
+      showDeleteDialog: false
     };
   },
   _resetFilterObj: function() {
     var filterObj = this.state.filterObj;
-    filterObj.CommodityId = '-1';
-    filterObj.UomId = '-1';
-    filterObj.IsAccumulated = '-1';
+    filterObj.CommodityId = null;
+    filterObj.UomId = null;
+    filterObj.IsAccumulated = null;
     this.setState({
       filterObj: filterObj,
       curPageNum: 1
     });
   },
+  _getResetFiltObj: function() {
+    var filterObj = this.state.filterObj;
+    filterObj.CommodityId = null;
+    filterObj.UomId = null;
+    filterObj.IsAccumulated = null;
+    return filterObj;
+  },
   _getInitFilterObj: function() {
     var filterObj = {
       CustomerId: parseInt(window.currentCustomerId),
       Type: this.props.tagType,
-      CommodityId: '-1',
-      UomId: '-1',
-      IsAccumulated: '-1',
+      CommodityId: null,
+      UomId: null,
+      IsAccumulated: null,
       LikeCodeOrName: ''
     };
     if (this.props.tagType === 2) {
@@ -72,21 +75,103 @@ let Tag = React.createClass({
       total: TagStore.getTagTotalNum()
     });
   },
-  _onError: function() {
-    this.setState({
-      isLoading: false
-    });
-  },
   _onSelectedTagChange: function() {
     var selectedIndex = TagStore.getSelectedTagIndex();
-    var selectedData = TagStore.getSelectedTag();
+    var selectedTag = TagStore.getSelectedTag();
     this.setState({
       isLoading: false,
       showDeleteDialog: false,
       formStatus: formStatus.VIEW,
       selectedIndex: selectedIndex,
-      selectedData: selectedData
+      selectedTag: selectedTag
     });
+  },
+  _onItemClick: function(index) {
+    TagAction.setSelectedTagIndex(index);
+  },
+  _onError: function() {
+    let code = TagStore.getErrorCode(),
+      messages = TagStore.getErrorMessage();
+    if (!code) {
+      return;
+    } else if (code === '06182') {
+      var associateItems = [],
+        deleteLabel = '',
+        deleteName,
+        colon = ':',
+        errorMsg = '',
+        deleteType = this.props.tagType,
+        pl = I18N.Setting.Tag.PTagManagement,
+        vl = I18N.Setting.Tag.VTagManagement,
+        kl = I18N.Setting.Tag.KPI,
+        hl = I18N.Setting.Tag.PanelTitle,
+        br = '<br/>',
+        divStart = '<div style="margin-left:60px; width:190px;">',
+        divEnd = '</div>';
+      switch (deleteType) {
+        case 1:
+          deleteLabel = pl;
+          break;
+        case 2:
+          deleteLabel = vl;
+          break;
+        case 4:
+          deleteLabel = kl;
+          break;
+      }
+      if (messages) {
+        var message,
+          type,
+          name,
+          vtags = [],
+          kpis = [],
+          hierarchys = [];
+        for (var i = 0, len = messages.length; i < len; i++) {
+          message = messages[i];
+          if (message && messages.length > 1) {
+            type = message.charAt(0);
+            name = message.substring(1);
+            switch (type) {
+              case 'S':
+                deleteName = name;
+                break;
+              case 'V':
+                vtags.push(name);
+                break;
+              case 'K':
+                kpis.push(name);
+                break;
+              case 'H':
+                hierarchys.push(name);
+                break;
+            }
+          }
+        }
+        var hd = false;
+        if (vtags.length) {
+          associateItems.push(vl + colon + br);
+          associateItems.push(divStart + vtags.join(br));
+          hd = true;
+        }
+        if (kpis.length) {
+          associateItems.push((hd ? br : '') + (kl + colon + br));
+          associateItems.push((hd ? '' : divStart) + kpis.join(br));
+          hd = true;
+        }
+        if (hierarchys.length) {
+          associateItems.push((hd ? br : '') + (hl + colon + br));
+          associateItems.push((hd ? '' : divStart) + hierarchys.join(br));
+        }
+        associateItems.push(divEnd);
+        errorMsg = I18N.format(I18N.Message.M06182, deleteLabel, deleteName, associateItems.join(''));
+      } else {
+        deleteName = this.state.selectedTag.get('Name');
+        errorMsg = I18N.format(I18N.Message.M06182, deleteLabel, deleteName, '');
+      }
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code, true);
+      }, 0);
+    }
   },
   _onPrePage: function() {
     var curPageNum = this.state.curPageNum;
@@ -149,9 +234,10 @@ let Tag = React.createClass({
     });
   },
   _handleCloseFilterSideNav: function() {
-    this._resetFilterObj();
+    var filterObj = this._getResetFiltObj();
     this.setState({
-      showFilter: false
+      showFilter: false,
+      filterObj: filterObj
     });
   },
   _handleFilter: function() {
@@ -166,7 +252,7 @@ let Tag = React.createClass({
     var filterObj = this.state.filterObj;
     filterObj[data.path] = data.value;
     var isFilter;
-    if (filterObj.CommodityId === '-1' && filterObj.UomId === '-1' && filterObj.IsAccumulated === '-1') {
+    if (filterObj.CommodityId === null && filterObj.UomId === null && filterObj.IsAccumulated === null) {
       isFilter = false;
     } else {
       isFilter = true;
@@ -174,6 +260,116 @@ let Tag = React.createClass({
     this.setState({
       filterObj: filterObj,
       isFilter: isFilter
+    });
+  },
+  _mergeTag: function(data) {
+    var selectedTag = this.state.selectedTag;
+    selectedTag = selectedTag.set(data.path, data.value);
+    this.setState({
+      selectedTag: selectedTag
+    });
+  },
+  _onSwitchTab: function(event) {
+    if (event.target.getAttribute("data-tab-index") === '1') {
+      if (this.state.showBasic) {
+        return;
+      } else {
+        this.setState({
+          showBasic: true,
+          formStatus: formStatus.VIEW
+        });
+      }
+    } else {
+      if (!this.state.showBasic) {
+        return;
+      } else {
+        this.setState({
+          showBasic: false,
+          formStatus: formStatus.VIEW
+        });
+      }
+    }
+  },
+  _onEdit: function() {
+    this.setState({
+      formStatus: formStatus.EDIT
+    });
+  },
+  _onCancel: function() {
+    if (this.state.showBasic) {
+      TagAction.cancelSaveTag();
+    }
+  },
+  _onSave: function() {
+    this.setState({
+      isLoading: true
+    });
+    var selectedTag = this.state.selectedTag.toJS();
+    if (selectedTag.Id === 0) {
+      TagAction.createTag(selectedTag);
+    } else {
+      TagAction.modifyTag(selectedTag);
+    }
+  },
+  _onDelete: function() {
+    this.setState({
+      showDeleteDialog: true
+    });
+  },
+  _onCloseDialog() {
+    this.setState({
+      showDeleteDialog: false
+    });
+  },
+  _onDeleteTag: function() {
+    var selectedTag = this.state.selectedTag;
+    TagAction.deleteTagById(selectedTag.get('Id'), selectedTag.get('Version'));
+  },
+  _onAddTag: function() {
+    var tag = {
+      Checked: 0,
+      Id: 0,
+      Name: "",
+      Version: 0,
+      Code: "",
+      Comment: "",
+      Type: this.props.tagType,
+      TypeName: "",
+      TagGroupType: 0,
+      ChannelId: null,
+      TimezoneId: 1,
+      MeterCode: "",
+      CalculationType: 1,
+      UomId: 1,
+      UomName: "",
+      CommodityId: 1,
+      CommodityName: "",
+      StartTime: null,
+      HierarchyId: null,
+      SystemDimensionId: null,
+      AreaDimensionId: null,
+      CustomerId: parseInt(window.currentCustomerId),
+      GuidCode: 0,
+      EnergyConsumption: 0,
+      CalculationStep: 6,
+      Slope: null,
+      Offset: null,
+      Formula: "",
+      DayNightRatio: false,
+      ReverseFormula: false,
+      HasAlarmSetting: false,
+      IsAccumulated: false,
+      Associatiable: false,
+      SystemDimensionName: "",
+      AreaDimensionName: "",
+      HierarchyName: "",
+      DimensionName: "",
+      TagModifyMode: 1
+    };
+    this.setState({
+      selectedIndex: null,
+      selectedTag: Immutable.fromJS(tag),
+      formStatus: formStatus.ADD
     });
   },
   componentDidMount: function() {
@@ -186,16 +382,16 @@ let Tag = React.createClass({
     TagStore.removeTagListChangeListener(this._onTagListChange);
     TagStore.removeSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.removeErrorChangeListener(this._onError);
-  //TagAction.setSelectedTagIndex(null);
+    TagAction.setSelectedTagIndex(null);
   },
   componentWillMount: function() {
-    document.title = I18N.MainMenu.CustomerSetting;
+    // document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidUpdate: function() {
-    if (window.lastLanguage !== window.currentLanguage) {
-      document.title = I18N.MainMenu.CustomerSetting;
-      window.lastLanguage = window.currentLanguage;
-    }
+    // if (window.lastLanguage !== window.currentLanguage) {
+    //   document.title = I18N.MainMenu.CustomerSetting;
+    //   window.lastLanguage = window.currentLanguage;
+    // }
   },
   render() {
     var me = this,
@@ -209,7 +405,7 @@ let Tag = React.createClass({
         mergeFilterObj: me._mergeFilterObj
       };
     var filterPanel = null;
-    if (this.state.showFilter) {
+    if (me.state.showFilter) {
       filterPanel = <TagFilter {...filterProps}/>;
     }
     if (me.state.isLoading) {
@@ -218,9 +414,27 @@ let Tag = React.createClass({
           width: '100px'
         }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
     } else if (selectedTag !== null) {
+      var rightProps = {
+        formStatus: me.state.formStatus,
+        selectedTag: selectedTag,
+        showLeft: me.state.showLeft,
+        showBasic: me.state.showBasic,
+        showDeleteDialog: me.state.showDeleteDialog,
+        tagType: me.props.tagType,
+        onCancel: this._onCancel,
+        onSave: this._onSave,
+        onDelete: this._onDelete,
+        onCloseDialog: this._onCloseDialog,
+        onDeleteTag: this._onDeleteTag,
+        onEdit: this._onEdit,
+        onToggle: this._onToggle,
+        onSwitchTab: this._onSwitchTab,
+        mergeTag: this._mergeTag
+      };
+      rightPanel = <TagDetail {...rightProps}/>;
     }
-    var totalPageNum = parseInt((this.state.total + 19) / 20),
-      hasJumpBtn = (this.state.total === 0) ? false : true;
+    var totalPageNum = parseInt((me.state.total + 19) / 20),
+      hasJumpBtn = (me.state.total === 0) ? false : true;
     let items = [];
     var tagList = me.state.tagList;
     if (tagList && tagList.size !== 0) {
@@ -256,7 +470,7 @@ let Tag = React.createClass({
       resetFilterObj: me._resetFilterObj,
       tagType: me.props.tagType
     };
-    var leftPanel = (this.state.showLeft) ? <div style={{
+    var leftPanel = (me.state.showLeft) ? <div style={{
       display: 'flex'
     }}><TagList {...leftProps}/></div> : <div style={{
       display: 'none'
@@ -266,13 +480,8 @@ let Tag = React.createClass({
         display: 'flex',
         flex: 1
       }}>
-      {leftPanel}
-        <div className={classnames({
-        "jazz-framework-right-expand": !me.state.showLeft,
-        "jazz-framework-right-fold": me.state.showLeft
-      })}>
-          {rightPanel}
-        </div>
+        {leftPanel}
+        {rightPanel}
         {filterPanel}
       </div>
       );
