@@ -4,6 +4,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import { List, Map } from 'immutable';
 import VEE from '../../constants/actionType/customerSetting/VEE.jsx';
+import Main from '../../constants/actionType/Main.jsx';
 
 function emptyList() {
   return new List();
@@ -14,11 +15,14 @@ function emptyList() {
 
 let _rules = emptyList(),
   _selectedId = null,
-  _allReceivers = emptyList();
+  _allReceivers = emptyList(),
+  _total = null,
+  _tagList = null;
 
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
-  REVEIVERS_CHANGE_EVENT = 'receiverschange';
+  REVEIVERS_CHANGE_EVENT = 'receiverschange',
+  TAG_CHANGE_EVENT = 'tagchange';
 
 var VEEStore = assign({}, PrototypeStore, {
   setRules: function(rules) {
@@ -109,6 +113,34 @@ var VEEStore = assign({}, PrototypeStore, {
     this.setRules(_rules.toJS());
     return nextSelectedId;
   },
+
+  //tag
+  setTagList: function(data) {
+    _total = data.total;
+    _tagList = Immutable.fromJS(data.GetVEETagsByFilterResult);
+  },
+  getTagList: function() {
+    return _tagList
+  },
+  getTotal: function() {
+    return _total === 0 ? 1 : parseInt((_total + 19) / 20)
+  },
+  findCommodityById: function(id) {
+    var commodities = Immutable.fromJS(window.allCommodities),
+      filter = commodities.find(item => (item.get('Id') === id));
+    return (filter.get('Comment'))
+  },
+  findUOMById: function(id) {
+    var uoms = Immutable.fromJS(window.uoms),
+      filter = uoms.find(item => (item.get('Id') === id));
+    return (filter.get('Comment'))
+  },
+  ifEmitTagChange: function() {
+    var that = this;
+    if (_tagList !== null & !!window.allCommodities && !!window.uoms) {
+      that.emitTagChange()
+    }
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -138,8 +170,18 @@ var VEEStore = assign({}, PrototypeStore, {
   emitReceiversChange(args) {
     this.emit(REVEIVERS_CHANGE_EVENT, args);
   },
+  addTagChangeListener(callback) {
+    this.on(TAG_CHANGE_EVENT, callback);
+  },
+  removeTagChangeListener(callback) {
+    this.removeListener(TAG_CHANGE_EVENT, callback);
+  },
+  emitTagChange(args) {
+    this.emit(TAG_CHANGE_EVENT, args);
+  },
 });
-var VEEAction = VEE.Action;
+var VEEAction = VEE.Action,
+  MainAction = Main.Action;
 
 VEEStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -172,6 +214,17 @@ VEEStore.dispatchToken = AppDispatcher.register(function(action) {
       VEEStore.setSelectedId(selecteId);
       VEEStore.emitChange(selecteId);
       break;
+    case VEEAction.GET_ASSOCIATED_TAG:
+      VEEStore.setTagList(action.data);
+      VEEStore.ifEmitTagChange();
+      break;
+    case MainAction.GET_ALL_UOMS_SUCCESS:
+      VEEStore.ifEmitTagChange();
+      break;
+    case MainAction.GET_ALL_COMMODITY_SUCCESS:
+      VEEStore.ifEmitTagChange();
+      break;
+
   }
 });
 module.exports = VEEStore;

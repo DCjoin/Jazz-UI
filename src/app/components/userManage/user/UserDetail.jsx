@@ -251,6 +251,7 @@ var UserDetail = React.createClass({
         title: I18N.Setting.UserManagement.Comment,
         defaultValue: Comment || "",
         multiLine: true,
+        maxLen: -1,
         didChanged: value => {
           UserAction.mergeUser({
             value,
@@ -557,9 +558,9 @@ var UserDetail = React.createClass({
       ) {
         disabledSaveButton = true;
       }
-      if (this.props.user.get("Comment") && this.props.user.get("Comment").length > 200) {
-        disabledSaveButton = true;
-      }
+    // if (this.props.user.get("Comment") && this.props.user.get("Comment").length > 200) {
+    //   disabledSaveButton = true;
+    // }
     }
 
     var collapseButton = (

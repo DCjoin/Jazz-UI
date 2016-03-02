@@ -7,6 +7,7 @@ module.exports = {
     SET_SELECTED_RULE_ID: null,
     GET_VEE_ALL_RECEIVERS: null,
     VEE_ERROR: null,
-    DELETE_RULE_SUCCESS: null
+    DELETE_RULE_SUCCESS: null,
+    GET_ASSOCIATED_TAG: null
   })
 };

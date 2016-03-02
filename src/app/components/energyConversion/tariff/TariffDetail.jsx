@@ -2,16 +2,13 @@
 
 import React from "react";
 import classnames from "classnames";
-import Immutable from 'immutable';
-import { List, updater, update, Map } from 'immutable';
+import { List } from 'immutable';
 import { Toggle } from 'material-ui';
 import Regex from '../../../constants/Regex.jsx';
 import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
-import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
-import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import DeletableItem from '../../../controls/DeletableItem.jsx';
@@ -21,7 +18,7 @@ import FromEndTime from '../../../controls/FromEndTime.jsx';
 import FromEndDate from '../../../controls/FromEndDate.jsx';
 
 var TariffDetail = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+
   propTypes: {
     formStatus: React.PropTypes.bool,
     infoTab: React.PropTypes.bool,
@@ -33,6 +30,7 @@ var TariffDetail = React.createClass({
     handlerSwitchTab: React.PropTypes.func,
     toggleList: React.PropTypes.func,
   },
+  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false
@@ -101,16 +99,7 @@ var TariffDetail = React.createClass({
   _handelDeletePulsePeakDateTimeRange: function(index) {
     TariffAction.deletePulsePeakDateTimeRange(index);
   },
-  onDateChange: function(index, startMonth, startDay, endMonth, endDay) {
-    TariffAction.merge({
-      value: {
-        value: [startMonth, startDay, endMonth, endDay],
-        index: index,
-        path: 'Date'
-      },
-      path: "PeakTariff"
-    });
-  },
+
   onTimeChange: function(index, times) {
     TariffAction.merge({
       value: {
@@ -651,6 +640,16 @@ var TariffDetail = React.createClass({
       }}/>
 
       )
+  },
+  onDateChange: function(index, startMonth, startDay, endMonth, endDay) {
+    TariffAction.merge({
+      value: {
+        value: [startMonth, startDay, endMonth, endDay],
+        index: index,
+        path: 'Date'
+      },
+      path: "PeakTariff"
+    });
   },
   componentWillMount: function() {
     this.initBatchViewbaleTextFiled();

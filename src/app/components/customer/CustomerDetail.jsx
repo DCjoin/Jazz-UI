@@ -2,9 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import Immutable from 'immutable';
 import moment from "moment";
-import { List, updater, update, Map } from 'immutable';
 import { CircularProgress, Checkbox } from 'material-ui';
 import Regex from '../../constants/Regex.jsx';
 import CustomerAction from '../../actions/CustomerAction.jsx';
@@ -12,7 +10,6 @@ import CustomerStore from '../../stores/CustomerStore.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
-import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePickerByStatus.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import { dataStatus } from '../../constants/DataStatus.jsx';
@@ -24,7 +21,7 @@ import ImageUpload from '../../controls/ImageUpload.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
 var CustomerDetail = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+
   propTypes: {
     formStatus: React.PropTypes.bool,
     infoTab: React.PropTypes.bool,
@@ -36,6 +33,7 @@ var CustomerDetail = React.createClass({
     handlerSwitchTab: React.PropTypes.func,
     toggleList: React.PropTypes.func,
   },
+  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false,
