@@ -22,6 +22,9 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   getCurrentUser: function() {
     return _currentUser;
   },
+  updateCurrentUser: function(version) {
+    _currentUser.Version = version;
+  },
   setPasswordError: function(res) {
     var errorCode = eval("(" + res + ")");
     _error = errorCode.error.Code;
@@ -187,6 +190,7 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
       CurrentUserStore.emitPasswordErrorChange();
       break;
     case CurrentUserAction.PASSWORD_SUCCESS:
+      CurrentUserStore.updateCurrentUser(action.version);
       CurrentUserStore.setPasswordSuccess();
       CurrentUserStore.emitPasswordSuccessChange();
       break;

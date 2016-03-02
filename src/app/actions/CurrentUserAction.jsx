@@ -56,9 +56,10 @@ let CurrentUserAction = {
         dto: passwordDto
       },
       commonErrorHandling: false,
-      success: function() {
+      success: function(dto) {
         AppDispatcher.dispatch({
           type: Action.PASSWORD_SUCCESS,
+          version: dto.Version
         });
       },
       error: function(err, res) {
