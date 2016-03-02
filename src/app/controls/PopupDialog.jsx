@@ -3,7 +3,7 @@
 import React from 'react';
 import { Dialog } from 'material-ui';
 
-import util from '../util/util.jsx';
+import util from '../util/Util.jsx';
 
 import FlatButton from './FlatButton.jsx';
 import _assign from "lodash/object/assign";

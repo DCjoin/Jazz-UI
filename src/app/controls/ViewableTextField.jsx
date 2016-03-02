@@ -23,7 +23,7 @@ var ViewableTextField = React.createClass({
     didBlur: React.PropTypes.func,
     multiLine: React.PropTypes.bool,
     didFocus: React.PropTypes.func,
-    defaultValue: React.PropTypes.string,
+    defaultValue: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
     errorMessage: React.PropTypes.string,
     errorText: React.PropTypes.string,
     hintText: React.PropTypes.string,
