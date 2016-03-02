@@ -184,6 +184,9 @@ I18N.Common.Glossary.Order.Rank50 = 'Top 50';
 I18N.Common.Glossary.Name = 'Name';
 I18N.Common.Glossary.Code = 'Code';
 I18N.Common.Glossary.Index = 'Index';
+I18N.Common.Glossary.Commodity = 'Commodity';
+I18N.Common.Glossary.UOM = 'Unit';
+I18N.Common.Glossary.Operation = 'Operate';
 
 
 I18N.Common.Button = {};
@@ -1541,4 +1544,5 @@ I18N.Setting.VEEMonitorRule.FirstScanTime = 'Every day, the first scanning time 
 I18N.Setting.VEEMonitorRule.ScanTimeInfo = '每日监测扫描时间为{0}';
 I18N.Setting.VEEMonitorRule.ConsecutiveHours = '连续时长';
 I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '该输入项的最大值为999999999';
+I18N.Setting.VEEMonitorRule.AddTagInfo = '点击添加按钮，选择监测数据点';
 module.exports = I18N;

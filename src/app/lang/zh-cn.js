@@ -187,6 +187,10 @@ I18N.Common.Glossary.Order.Rank50 = '前50名';
 I18N.Common.Glossary.Name = '名称';
 I18N.Common.Glossary.Code = '编码';
 I18N.Common.Glossary.Index = '序号';
+I18N.Common.Glossary.Commodity = '介质';
+I18N.Common.Glossary.UOM = '单位';
+I18N.Common.Glossary.Operation = '操作';
+
 
 
 I18N.Common.Button = {};
@@ -1559,5 +1563,6 @@ I18N.Setting.VEEMonitorRule.FirstScanTime = '每日首次监测扫描时间为0:
 I18N.Setting.VEEMonitorRule.ScanTimeInfo = '每日监测扫描时间为{0}';
 I18N.Setting.VEEMonitorRule.ConsecutiveHours = '连续时长';
 I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '该输入项的最大值为999999999';
+I18N.Setting.VEEMonitorRule.AddTagInfo = '点击添加按钮，选择监测数据点';
 
 module.exports = I18N;

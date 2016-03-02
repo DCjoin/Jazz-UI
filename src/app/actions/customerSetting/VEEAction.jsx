@@ -103,7 +103,6 @@ let VEEAction = {
     });
   },
   deleteRule: function(data) {
-    var that = this;
     Ajax.post('/VEE.svc/DeleteVEERule', {
       params: {
         filter: data
@@ -118,7 +117,34 @@ let VEEAction = {
         console.log(err, res);
       }
     });
-  }
+  },
+  getAssociatedTag: function(page, ruleId, association) {
+    Ajax.post('/VEE.svc/GetVEETagsByFilter', {
+      params: {
+        filter: {
+          CustomerId: window.currentCustomerId,
+          Association: association,
+          Type: 1,
+          RuleIds: [ruleId],
+          HierarchyIds: null
+        },
+        page: page,
+        start: 0,
+        limit: 20,
+        size: 20
+      },
+      success: function(data) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ASSOCIATED_TAG,
+          data: data
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+
 };
 
 module.exports = VEEAction;

@@ -373,7 +373,7 @@ var RuleBasic = React.createClass({
   },
   render: function() {
     return (
-      <div className="pop-manage-detail-content ">
+      <div className="pop-manage-detail-content">
         {this._renderRuleDetail()}
         {this._renderRuleSetting()}
       </div>

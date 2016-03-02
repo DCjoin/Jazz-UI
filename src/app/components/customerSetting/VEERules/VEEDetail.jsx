@@ -97,14 +97,16 @@ var VEEDetail = React.createClass({
         formStatus: this.props.formStatus
       },
       tagProps = {
-        ref: 'jazz_vee_tag'
+        ref: 'jazz_vee_tag',
+        formStatus: this.props.formStatus,
+        ruleId: this.props.rule.get('Id')
       };
     return (
       <div style={{
         display: 'flex',
         flex: '1'
       }}>
-      {this.props.infoTab ? <RuleBasic {...basicProps}/> : <MonitorTag/>}
+      {this.props.infoTab ? <RuleBasic {...basicProps}/> : <MonitorTag {...tagProps}/>}
     </div>
 
       )
@@ -112,7 +114,8 @@ var VEEDetail = React.createClass({
   _renderFooter: function() {
     var disabledSaveButton = false,
       {rule} = this.props,
-      that = this;
+      that = this,
+      editBtnProps;
     if (this.props.infoTab) {
       if (!rule.get('Name') || rule.get('Name').length > 200
         || (!rule.get('CheckNegative') && !rule.get('CheckNull') && !rule.get('CheckZero'))
@@ -124,6 +127,9 @@ var VEEDetail = React.createClass({
       }
 
     } else {
+      editBtnProps = {
+        label: I18N.Common.Button.Add
+      }
     }
     return (
       <FormBottomBar
@@ -142,7 +148,8 @@ var VEEDetail = React.createClass({
         that.clearErrorTextBatchViewbaleTextFiled();
         that._clearErrorText();
         that.props.setEditStatus()
-      }}/>
+      }}
+      editBtnProps={editBtnProps}/>
 
       )
   },
