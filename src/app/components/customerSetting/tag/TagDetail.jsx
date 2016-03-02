@@ -146,9 +146,13 @@ var TagDetail = React.createClass({
     if (this.props.formStatus === formStatus.EDIT) {
       enableSave = this._isValid();
     }
-    return (
-      <FormBottomBar allowDelete={this.props.showBasic} allowEdit={true} enableSave={enableSave} ref="actionBar" status={this.props.formStatus} onSave={this.props.onSave} onEdit={this.props.onEdit} onDelete={this.props.onDelete} onCancel={this.props.onCancel} />
+    var bottom = null;
+    if (this.props.tagType !== 1 || this.props.showLeft) {
+      bottom = (
+        <FormBottomBar allowDelete={this.props.showBasic} allowEdit={true} enableSave={enableSave} ref="actionBar" status={this.props.formStatus} onSave={this.props.onSave} onEdit={this.props.onEdit} onDelete={this.props.onDelete} onCancel={this.props.onCancel} />
       );
+    }
+    return bottom;
   },
   componentWillMount: function() {},
   componentDidMount: function() {},
