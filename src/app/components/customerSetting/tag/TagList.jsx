@@ -86,7 +86,8 @@ let TagList = React.createClass({
       ];
     } else {
       dialogTitle = I18N.Setting.TagBatchImport.ImportError;
-      dialogContent = (<div>{I18N.Setting.TagBatchImport.ImportErrorView}</div>);
+      var errorText = this.state.sizeError ? I18N.Setting.TagBatchImport.ImportSizeErrorView : I18N.Setting.TagBatchImport.ImportErrorView;
+      dialogContent = (<div>{errorText}</div>);
     }
 
     return (<Dialog
@@ -129,18 +130,23 @@ let TagList = React.createClass({
           importSuccess: true
         });
       } else {
+        var sizeError = false;
+        if (obj.UploadResponse.ErrorCode === -7) {
+          sizeError = true;
+        }
         me.setState({
           isImporting: false,
-          importSuccess: false
+          importSuccess: false,
+          sizeError: sizeError
         });
-        var errorCode = obj.UploadResponse.ErrorCode,
-          errorMessage;
-        if (errorCode === -1) {
-          errorMessage = I18N.EM.Report.DuplicatedName;
-        }
-        if (errorMessage) {
-          CommonFuns.popupErrorMessage(errorMessage, '', true);
-        }
+      // var errorCode = obj.UploadResponse.ErrorCode,
+      //   errorMessage;
+      // if (errorCode === -1) {
+      //   errorMessage = I18N.EM.Report.DuplicatedName;
+      // }
+      // if (errorMessage) {
+      //   CommonFuns.popupErrorMessage(errorMessage, '', true);
+      // }
       }
     };
 
