@@ -167,7 +167,7 @@ var TagDetail = React.createClass({
   },
   _renderFooter: function() {
     var enableSave = true;
-    if (this.props.formStatus === formStatus.EDIT) {
+    if (this.props.formStatus !== formStatus.VIEW) {
       enableSave = this._isValid();
     }
     var bottom = null;

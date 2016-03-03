@@ -173,7 +173,6 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.DELETE_TAG_ERROR:
       TagStore.initErrorText(action.errorText);
       TagStore.emitErrorChange();
-      TagStore.emitSelectedTagChange();
       break;
   }
 });
