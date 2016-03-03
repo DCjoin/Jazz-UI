@@ -87,7 +87,11 @@ module.exports = React.createClass({
       handleShowFilterSideNav() {}
     };
   },
-
+  onAddBtnClick: function() {
+    if (this.props.formStatus === formStatus.VIEW) {
+      this.props.setAddStatus();
+    }
+  },
   render() {
 
     var that = this,
@@ -125,7 +129,7 @@ module.exports = React.createClass({
 				<div className="pop-manage-list-title pop-framework-left-title">
 					<div className="pop-manage-list-title-action">
 
-							<span onClick={setAddStatus} className={
+							<span onClick={this.onAddBtnClick} className={
       classnames({
         "pop-manage-list-title-action-item": true,
         "jazz-disabled": !(this.props.formStatus === formStatus.VIEW)
