@@ -378,7 +378,7 @@ let Tag = React.createClass({
     TagStore.addSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.addErrorChangeListener(this._onError);
   },
-  componentWillUnMount: function() {
+  componentWillUnmount: function() {
     TagStore.removeTagListChangeListener(this._onTagListChange);
     TagStore.removeSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.removeErrorChangeListener(this._onError);
@@ -441,6 +441,7 @@ let Tag = React.createClass({
       items = tagList.map(function(item, i) {
         let props = {
           index: i,
+          key: i,
           label: item.get('Name'),
           text: I18N.Common.Glossary.Code + ' : ' + item.get('Code'),
           selectedIndex: me.state.selectedIndex,

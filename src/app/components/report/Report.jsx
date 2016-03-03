@@ -47,7 +47,7 @@ let Report = React.createClass({
   componentDidMount: function() {
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
-  componentWillUnMount: function() {
+  componentWillUnmount: function() {
     CurrentUserStore.removeCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
   componentWillMount: function() {
