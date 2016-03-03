@@ -90,6 +90,9 @@ let Tag = React.createClass({
     TagAction.setSelectedTagIndex(index);
   },
   _onError: function() {
+    this.setState({
+      isLoading: false
+    });
     let code = TagStore.getErrorCode(),
       messages = TagStore.getErrorMessage();
     if (!code) {
@@ -369,7 +372,10 @@ let Tag = React.createClass({
     this.setState({
       selectedIndex: null,
       selectedTag: Immutable.fromJS(tag),
-      formStatus: formStatus.ADD
+    }, () => {
+      this.setState({
+        formStatus: formStatus.ADD
+      });
     });
   },
   componentDidMount: function() {
