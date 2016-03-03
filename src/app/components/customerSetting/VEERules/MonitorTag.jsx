@@ -29,9 +29,7 @@ var MonitorTag = React.createClass({
       isLoading: false
     })
   },
-  getAssociatedTag: function() {
-    VEEAction.getAssociatedTag(this.state.page, this.props.ruleId, this.state.association)
-  },
+
   _previousPage: function() {
     var that = this;
     this.setState({
@@ -60,12 +58,13 @@ var MonitorTag = React.createClass({
     })
   },
   _onDeleteTag: function(tag) {
-    console.log('_onDeleteTag');
+    VEEAction.modifyVEETags(null, tag.get('Id'));
+    this.setState({
+      isLoading: true
+    })
   },
   _renderDisplayTag: function() {
-    var commodities = window.allCommodities,
-      uoms = window.uoms,
-      that = this;
+    var that = this;
     var pagingPropTypes = {
       curPageNum: this.state.page,
       totalPageNum: VEEStore.getTotal(),
@@ -79,11 +78,11 @@ var MonitorTag = React.createClass({
       that.state.taglist.forEach(tag => {
         list.push(
           <div className='jazz-vee-monitor-tag-content-list'>
-            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Name')}</div>
+            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')}>{tag.get('Name')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Code')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findCommodityById(tag.get('CommodityId'))}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findUOMById(tag.get('UomId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-operation-item' onClick={that._onDeleteTag}>{I18N.Common.Button.Delete}</div>
+            <div className='jazz-vee-monitor-tag-content-operation-item' onClick={that._onDeleteTag.bind(this, tag)}>{I18N.Common.Button.Delete}</div>
       </div>
         )
       })
@@ -118,6 +117,10 @@ var MonitorTag = React.createClass({
     }
 
   },
+  _renderSelectTag: function() {},
+  getAssociatedTag: function() {
+    VEEAction.getAssociatedTag(this.state.page, this.props.ruleId, this.state.association)
+  },
   componentDidMount: function() {
     VEEStore.addTagChangeListener(this._onChange);
     this.getAssociatedTag();
@@ -133,11 +136,6 @@ var MonitorTag = React.createClass({
       }, () => {
         that.getAssociatedTag();
       })
-    // if (nextProps.formStatus === formStatus.VIEW) {
-    //   VEEAction.getAssociatedTag(this.state.page, this.props.ruleId, 1)
-    // } else {
-    //   VEEAction.getAssociatedTag(this.state.page, this.props.ruleId, 4)
-    // }
     }
   },
   componentWillUnmount: function() {
