@@ -21,7 +21,13 @@ var TagFilter = React.createClass({
     handleFilter: React.PropTypes.func,
     onClose: React.PropTypes.func,
     mergeFilterObj: React.PropTypes.func,
-    filterObj: React.PropTypes.object
+    filterObj: React.PropTypes.object,
+    side: React.PropTypes.string
+  },
+  getDefaultProps() {
+    return {
+      side: 'left'
+    };
   },
   _bindChangeFilter: function(paths, isClear) {
     if (isClear) {
@@ -105,7 +111,7 @@ var TagFilter = React.createClass({
       };
     var filterObj = this.props.filterObj;
     return (
-      <SideNav open={true} ref="pop-user_filter_side_nav" onClose={this.props.onClose}>
+      <SideNav open={true} ref="pop-user_filter_side_nav" onClose={this.props.onClose} side={this.props.side}>
 				<div className="pop-user-filter-side-nav-wrapper">
 					<div className="pop-user-filter-side-nav-header sidebar-title">{I18N.Setting.Tag.TagFilter}</div>
 					<div className="sidebar-content pop-user-filter-side-nav-content">
