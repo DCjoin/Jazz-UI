@@ -224,7 +224,9 @@ VEEStore.dispatchToken = AppDispatcher.register(function(action) {
     case MainAction.GET_ALL_COMMODITY_SUCCESS:
       VEEStore.ifEmitTagChange();
       break;
-
+    case VEEAction.SAVE_VEE_TAG_SUCCESS:
+      VEEStore.emitChange(_selectedId);
+      break;
   }
 });
 module.exports = VEEStore;

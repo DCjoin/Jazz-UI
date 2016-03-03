@@ -1599,5 +1599,8 @@ I18N.Setting.VEEMonitorRule.ScanTimeInfo = '每日监测扫描时间为{0}';
 I18N.Setting.VEEMonitorRule.ConsecutiveHours = '连续时长';
 I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '该输入项的最大值为999999999';
 I18N.Setting.VEEMonitorRule.AddTagInfo = '点击添加按钮，选择监测数据点';
+I18N.Setting.VEEMonitorRule.AddTag = '添加数据点';
+I18N.Setting.VEEMonitorRule.AddingTagsInfo = '在列表中点击数据点进行添加';
+I18N.Setting.VEEMonitorRule.TagList = '数据点列表';
 
 module.exports = I18N;

@@ -36,7 +36,6 @@ flex-direction: column;
   background-color: #fbfbfb;
   flex: 1;
   display:flex;
-  justify-content: center;
   overflow: hidden;
   flex-direction: column;
 }
@@ -89,7 +88,48 @@ flex-direction: column;
   &-paging{
 
   }
-  &-item{
-
+}
+.jazz-vee-monitor-tag-title{
+  font-size: 14px;
+  color:black
+}
+.jazz-vee-monitor-tag-addcontent{
+  display: flex;
+  flex-flow: row wrap;
+  border: 1px solid #ececec;
+  background-color: #ffffff;
+  padding: 10px;
+  height: 90px;
+  min-height:90px;
+  overflow: auto;
+  margin-top:10px;
+}
+.jazz-vee-monitor-tag-hintMsg{
+  font-size: 14px;
+  color:@schneiderGray;
+}
+.jazz-vee-monitor-tag-selectfiled{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  &-header{
+    display: flex;
+    flex-direction: row;
+    margin-top:50px;
+    height:20px;
+    min-height: 20px;
+  }
+  &-list{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  margin-top:10px;
+  }
+  &-allcheck{
+    display: flex;
+    flex-direction: row;
+    .name{
+      flex:1;
+    }
   }
 }

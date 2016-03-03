@@ -84,12 +84,12 @@ var VEERules = React.createClass({
         VEEAction.modifyVEERule(dto);
       }
     } else {
-
+      VEEAction.modifyVEETags(data.ruleId, data.tagIds)
     }
-
     this.setState({
       isLoading: true
     });
+
   },
   _handleDeleteRule: function(data) {
     VEEAction.deleteRule({

@@ -47,7 +47,23 @@ var VEEDetail = React.createClass({
     }
   },
   _handleSaveRule: function() {
-    this.props.handleSaveRule(this.props.rule)
+    if (this.props.infoTab) {
+      this.props.handleSaveRule(this.props.rule)
+    } else {
+      if (this.refs.jazz_vee_tag) {
+        let tags = this.refs.jazz_vee_tag._handlerSave(),
+          tagIds = [];
+        tags.forEach(tag => {
+          tagIds.push(tag.get('Id'))
+        });
+        this.props.handleSaveRule({
+          ruleId: this.props.rule.get('Id'),
+          tagIds: tagIds
+        })
+      }
+
+    }
+
   },
   _renderHeader: function() {
     var that = this,

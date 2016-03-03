@@ -118,7 +118,7 @@ let VEEAction = {
       }
     });
   },
-  getAssociatedTag: function(page, ruleId, association) {
+  getAssociatedTag: function(page, ruleId, association, refresh) {
     _page = page;
     _ruleId = ruleId;
     _association = association;
@@ -141,20 +141,25 @@ let VEEAction = {
           type: Action.GET_ASSOCIATED_TAG,
           data: data
         });
+        if (refresh === true) {
+          AppDispatcher.dispatch({
+            type: Action.SAVE_VEE_TAG_SUCCESS,
+          });
+        }
       },
       error: function(err, res) {
         console.log(err, res);
       }
     });
   },
-  modifyVEETags: function(ruleId, tagId) {
+  modifyVEETags: function(ruleId, tagIds) {
     var that = this;
     Ajax.post('/VEE.svc/ModifyVEETags', {
       params: {
         dto: {
           "Filter": {
             "RuleIds": ruleId === null ? null : [ruleId],
-            "TagIds": [tagId],
+            "TagIds": tagIds,
             "CustomerId": window.currentCustomerId
           },
           "AssociateAll": false
@@ -162,7 +167,7 @@ let VEEAction = {
 
       },
       success: function(data) {
-        that.getAssociatedTag(_page, _ruleId, _association);
+        that.getAssociatedTag(_page, _ruleId, _association, ruleId !== null);
       },
       error: function(err, res) {
         console.log(err, res);

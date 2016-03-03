@@ -8,6 +8,7 @@ module.exports = {
     GET_VEE_ALL_RECEIVERS: null,
     VEE_ERROR: null,
     DELETE_RULE_SUCCESS: null,
-    GET_ASSOCIATED_TAG: null
+    GET_ASSOCIATED_TAG: null,
+    SAVE_VEE_TAG_SUCCESS: null
   })
 };
