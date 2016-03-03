@@ -705,6 +705,7 @@ I18N.Setting.TagBatchImport.ImportSuccess = '导入完成';
 I18N.Setting.TagBatchImport.ImportSuccessView = '配置导入已完成。成功导入{0}条，失败{1}条，总计{2}条。';
 I18N.Setting.TagBatchImport.ImportError = '导入失败';
 I18N.Setting.TagBatchImport.ImportErrorView = '导入失败，数据格式有误，请重试。';
+I18N.Setting.TagBatchImport.ImportSizeErrorView = '导入失败，每次导入的数据点数量不能大于1000条，请重试。';
 
 I18N.Setting.Tag = {};
 I18N.Setting.Tag.TagFilter = '数据点筛选';
