@@ -133,14 +133,14 @@ let TagList = React.createClass({
           isImporting: false,
           importSuccess: false
         });
-        var errorCode = obj.UploadResponse.ErrorCode,
-          errorMessage;
-        if (errorCode === -1) {
-          errorMessage = I18N.EM.Report.DuplicatedName;
-        }
-        if (errorMessage) {
-          CommonFuns.popupErrorMessage(errorMessage, '', true);
-        }
+      // var errorCode = obj.UploadResponse.ErrorCode,
+      //   errorMessage;
+      // if (errorCode === -1) {
+      //   errorMessage = I18N.EM.Report.DuplicatedName;
+      // }
+      // if (errorMessage) {
+      //   CommonFuns.popupErrorMessage(errorMessage, '', true);
+      // }
       }
     };
 

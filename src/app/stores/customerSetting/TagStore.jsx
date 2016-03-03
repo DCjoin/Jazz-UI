@@ -30,22 +30,8 @@ var TagStore = assign({}, PrototypeStore, {
       _total = tagData.total;
       _tagList = Immutable.fromJS(tagData.GetTagsByFilterResult);
       if (_tagList.size !== 0) {
-        if (_selectedTagIndex === null) {
-          _selectedTagIndex = 0;
-          _selectedTag = _tagList.get(0);
-        } else {
-          var index = _tagList.findIndex((item) => {
-            if (item.get('Id') === _selectedTag.get('Id')) {
-              return true;
-            }
-          });
-          if (index === -1) {
-            _selectedTagIndex = 0;
-            _selectedTag = _tagList.get(0);
-          } else if (_selectedTagIndex !== index) {
-            _selectedTagIndex = index;
-          }
-        }
+        _selectedTagIndex = 0;
+        _selectedTag = _tagList.get(0);
       } else {
         _selectedTagIndex = null;
         _selectedTag = null;
