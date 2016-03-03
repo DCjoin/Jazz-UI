@@ -3,7 +3,7 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/customerSetting/VEE.jsx';
 import Ajax from '../../ajax/ajax.jsx';
 import CommonFuns from '../../util/Util.jsx';
-var _page, _ruleId, _association;
+var _page, _ruleId, _association, _filterObj;
 let VEEAction = {
   GetVEERules: function() {
     Ajax.post('/VEE.svc/GetVEERules', {
@@ -118,10 +118,11 @@ let VEEAction = {
       }
     });
   },
-  getAssociatedTag: function(page, ruleId, association, refresh) {
+  getAssociatedTag: function(page, ruleId, association, filterObj, refresh) {
     _page = page;
     _ruleId = ruleId;
     _association = association;
+    _filterObj = filterObj;
     Ajax.post('/VEE.svc/GetVEETagsByFilter', {
       params: {
         filter: {
@@ -129,7 +130,11 @@ let VEEAction = {
           Association: association,
           Type: 1,
           RuleIds: [ruleId],
-          HierarchyIds: null
+          HierarchyIds: null,
+          CommodityId: filterObj.CommodityId,
+          UomId: filterObj.UomId,
+          IsAccumulated: filterObj.IsAccumulated,
+          LikeCodeOrName: filterObj.LikeCodeOrName
         },
         page: page,
         start: (page - 1) * 20,

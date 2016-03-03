@@ -10,6 +10,7 @@ import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
 import { List } from 'immutable';
 import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
+import TagFilter from '../tag/TagFilter.jsx';
 function emptyList() {
   return new List();
 }
@@ -55,14 +56,63 @@ var MonitorTag = React.createClass({
       taglist: null,
       isLoading: true,
       association: 4,
-      addingTags: emptyList()
+      addingTags: emptyList(),
+      showFilter: false,
+      filterObj: this._getInitFilterObj(),
+      isFilter: false
     })
+  },
+  _getInitFilterObj: function() {
+    var filterObj = {
+      CommodityId: null,
+      UomId: null,
+      IsAccumulated: null,
+      LikeCodeOrName: ''
+    };
+    return filterObj;
+  },
+  _getResetFiltObj: function() {
+    var filterObj = this.state.filterObj;
+    filterObj.CommodityId = null;
+    filterObj.UomId = null;
+    filterObj.IsAccumulated = null;
+    return filterObj;
   },
   _handlerSave: function() {
     // this.setState({
     //   isLoading: true
     // });
     return this.state.addingTags;
+  },
+  _handleCloseFilterSideNav: function() {
+    var filterObj = this._getResetFiltObj();
+    this.setState({
+      showFilter: false,
+      filterObj: filterObj
+    });
+  },
+  _handleFilter: function() {
+    var that = this;
+    this.setState({
+      page: 1,
+      showFilter: false
+    }, () => {
+      that.getAssociatedTag();
+    });
+  },
+  _mergeFilterObj: function(data) {
+    var filterObj = this.state.filterObj;
+    filterObj[data.path] = data.value;
+    var isFilter;
+    if (filterObj.CommodityId === null && filterObj.UomId === null && filterObj.IsAccumulated === null) {
+      isFilter = false;
+    } else {
+      isFilter = true;
+    }
+    this.setState({
+      filterObj: filterObj,
+      isFilter: isFilter
+    });
   },
   _onChange: function() {
     this.setState({
@@ -136,9 +186,25 @@ var MonitorTag = React.createClass({
     }
     return false
   },
-  _onFilter: function() {},
-  _onSearch: function() {},
-  _onSearchCleanButtonClick: function() {},
+  _onFilter: function() {
+    this.setState({
+      showFilter: true
+    });
+  },
+  _onSearch: function(value) {
+    var filterObj = this.state.filterObj,
+      that = this;
+    filterObj.LikeCodeOrName = value;
+    this.setState({
+      filterObj: filterObj,
+      page: 1
+    }, () => {
+      that.getAssociatedTag();
+    });
+  },
+  _onSearchCleanButtonClick: function() {
+    this._onSearch('')
+  },
   _renderDisplayTag: function() {
     var that = this;
     var pagingPropTypes = {
@@ -155,7 +221,7 @@ var MonitorTag = React.createClass({
         list.push(
           <div className='jazz-vee-monitor-tag-content-list'>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')}>{tag.get('Name')}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Code')}</div>
+            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Code')}>{tag.get('Code')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findCommodityById(tag.get('CommodityId'))}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findUOMById(tag.get('UomId'))}</div>
             <div className='jazz-vee-monitor-tag-content-operation-item' onClick={that._onDeleteTag.bind(this, tag)}>{I18N.Common.Button.Delete}</div>
@@ -255,7 +321,7 @@ var MonitorTag = React.createClass({
                 </div>
               </div>
             </div>
-            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Code')}</div>
+            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Code')}>{tag.get('Code')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findCommodityById(tag.get('CommodityId'))}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findUOMById(tag.get('UomId'))}</div>
       </div>
@@ -286,10 +352,10 @@ var MonitorTag = React.createClass({
             <div className='jazz-vee-monitor-tag-title'>
               {I18N.Setting.VEEMonitorRule.TagList}
             </div>
-            <div className="jazz-tag-search-filter-bar">
+            <div className="jazz-vee-tag-search-filter-bar">
             <SearchAndFilterBar onFilter={this._onFilter}
       onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}
-      isFilter={true}/>
+      isFilter={this.state.isFilter}/>
     </div>
           </div>
           <div className='jazz-vee-monitor-tag-selectfiled-list' style={{
@@ -331,7 +397,7 @@ var MonitorTag = React.createClass({
       )
   },
   getAssociatedTag: function() {
-    VEEAction.getAssociatedTag(this.state.page, this.props.ruleId, this.state.association)
+    VEEAction.getAssociatedTag(this.state.page, this.props.ruleId, this.state.association, this.state.filterObj)
   },
   componentDidMount: function() {
     VEEStore.addTagChangeListener(this._onChange);
@@ -345,7 +411,8 @@ var MonitorTag = React.createClass({
         isLoading: true,
         page: 1,
         association: (nextProps.formStatus === formStatus.VIEW ? 4 : 1),
-        addingTags: emptyList()
+        addingTags: emptyList(),
+        showFilter: false
       }, () => {
         that.getAssociatedTag();
       })
@@ -355,7 +422,13 @@ var MonitorTag = React.createClass({
     VEEStore.removeTagChangeListener(this._onChange);
   },
   render: function() {
-    var isView = this.props.formStatus === formStatus.VIEW;
+    var isView = this.props.formStatus === formStatus.VIEW,
+      filterProps = {
+        handleFilter: this._handleFilter,
+        onClose: this._handleCloseFilterSideNav,
+        filterObj: this.state.filterObj,
+        mergeFilterObj: this._mergeFilterObj
+      };
     var loading = <div style={{
       display: 'flex',
       flex: 1,
@@ -364,11 +437,16 @@ var MonitorTag = React.createClass({
     }}>
             <CircularProgress  mode="indeterminate" size={2} />
           </div>;
+    var filterPanel = null;
+    if (this.state.showFilter) {
+      filterPanel = <TagFilter {...filterProps}/>;
+    }
     return (
       <div className="pop-manage-detail-content" style={{
         display: 'flex'
       }}>
         {this.state.isLoading ? loading : (isView ? this._renderDisplayTag() : this._renderSelectTag())  }
+        {filterPanel}
       </div>
       )
   },
