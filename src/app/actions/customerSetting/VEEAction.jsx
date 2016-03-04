@@ -172,11 +172,16 @@ let VEEAction = {
 
       },
       success: function(data) {
-        that.getAssociatedTag(_page, _ruleId, _association, ruleId !== null);
+        that.getAssociatedTag(_page, _ruleId, _association, _filterObj, ruleId !== null);
       },
       error: function(err, res) {
         console.log(err, res);
       }
+    });
+  },
+  clearAll: function() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL_VEE_TAGS,
     });
   },
 

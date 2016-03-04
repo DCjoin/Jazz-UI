@@ -47,8 +47,9 @@ let AddTagItem = React.createClass({
 
 var MonitorTag = React.createClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
+    formStatus: React.PropTypes.string,
     ruleId: React.PropTypes.number,
+    onUpdate: React.PropTypes.func,
   },
   getInitialState: function() {
     return ({
@@ -155,7 +156,8 @@ var MonitorTag = React.createClass({
     })
   },
   _onAllTagsSelected: function(event, checked) {
-    var tags = this.state.addingTags;
+    var tags = this.state.addingTags,
+      that = this;
     this.state.taglist.forEach(tag => {
       let index = tags.findIndex(item => item.get('Id') === tag.get('Id'));
       if (checked) {
@@ -171,7 +173,10 @@ var MonitorTag = React.createClass({
     })
     this.setState({
       addingTags: tags
+    }, () => {
+      that.props.onUpdate()
     })
+
   },
   _onCheckAllSelected: function() {
     var len = 0,
@@ -219,9 +224,13 @@ var MonitorTag = React.createClass({
       var list = [];
       that.state.taglist.forEach(tag => {
         list.push(
-          <div className='jazz-vee-monitor-tag-content-list'>
-            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')}>{tag.get('Name')}</div>
-            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Code')}>{tag.get('Code')}</div>
+          <div className='jazz-vee-monitor-tag-content-list' key={tag.get('Id')}>
+            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')} style={{
+            marginTop: '10px'
+          }}>{tag.get('Name')}</div>
+            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Code')} style={{
+            marginTop: '10px'
+          }}>{tag.get('Code')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findCommodityById(tag.get('CommodityId'))}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findUOMById(tag.get('UomId'))}</div>
             <div className='jazz-vee-monitor-tag-content-operation-item' onClick={that._onDeleteTag.bind(this, tag)}>{I18N.Common.Button.Delete}</div>
@@ -232,7 +241,9 @@ var MonitorTag = React.createClass({
     };
     if (that.state.taglist.size === 0) {
       return (
-        <div>
+        <div style={{
+          color: '#abafae'
+        }}>
           {I18N.Setting.VEEMonitorRule.AddTagInfo}
         </div>
         )
@@ -287,6 +298,8 @@ var MonitorTag = React.createClass({
       tags = tags.delete(tags.findIndex(item => item.get('Id') === tag.get('Id')));
       that.setState({
         addingTags: tags
+      }, () => {
+        that.props.onUpdate()
       })
     };
     var onTagClick = function(tag) {
@@ -300,13 +313,15 @@ var MonitorTag = React.createClass({
 
       that.setState({
         addingTags: tags
+      }, () => {
+        that.props.onUpdate()
       })
     };
     var getTableBody = function() {
       var list = [];
       that.state.taglist.forEach(tag => {
         list.push(
-          <div className='jazz-vee-monitor-tag-content-list' onClick={onTagClick.bind(this, tag)}>
+          <div className='jazz-vee-monitor-tag-content-list' onClick={onTagClick.bind(this, tag)} key={tag.get('Id')}>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')}>
               <div className='jazz-vee-monitor-tag-selectfiled-allcheck'>
                 <Checkbox
@@ -316,7 +331,7 @@ var MonitorTag = React.createClass({
           labelStyle={labelstyle}
           checked={that.state.addingTags.findIndex(item => item.get('Id') === tag.get('Id')) > -1}
           />
-                <div style={fontStyle} className='name'>
+                <div className='name'>
                   {tag.get('Name')}
                 </div>
               </div>
@@ -427,7 +442,8 @@ var MonitorTag = React.createClass({
         handleFilter: this._handleFilter,
         onClose: this._handleCloseFilterSideNav,
         filterObj: this.state.filterObj,
-        mergeFilterObj: this._mergeFilterObj
+        mergeFilterObj: this._mergeFilterObj,
+        side: 'right'
       };
     var loading = <div style={{
       display: 'flex',

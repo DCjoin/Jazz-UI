@@ -9,6 +9,7 @@ module.exports = {
     VEE_ERROR: null,
     DELETE_RULE_SUCCESS: null,
     GET_ASSOCIATED_TAG: null,
-    SAVE_VEE_TAG_SUCCESS: null
+    SAVE_VEE_TAG_SUCCESS: null,
+    CLEAR_ALL_VEE_TAGS: null
   })
 };
