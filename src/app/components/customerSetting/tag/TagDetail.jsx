@@ -10,6 +10,7 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import PTagBasic from './PTagBasic.jsx';
 import VTagBasic from './VTagBasic.jsx';
+import TagFormula from './TagFormula.jsx';
 
 var TagDetail = React.createClass({
   propTypes: {
@@ -157,6 +158,8 @@ var TagDetail = React.createClass({
     } else {
       if (this.props.showBasic) {
         content = <VTagBasic ref='vTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
+      } else {
+        content = <TagFormula ref='formula'  selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
       }
     }
     return (

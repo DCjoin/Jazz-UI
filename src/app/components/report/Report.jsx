@@ -44,14 +44,14 @@ let Report = React.createClass({
       showLeftPanel: leftShow
     });
   },
+  componentWillMount: function() {
+    document.title = I18N.MainMenu.Report;
+  },
   componentDidMount: function() {
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
   componentWillUnmount: function() {
     CurrentUserStore.removeCurrentrivilegeListener(this._onCurrentrivilegeChanged);
-  },
-  componentWillMount: function() {
-    document.title = I18N.MainMenu.Report;
   },
   componentDidUpdate: function() {
     if (window.lastLanguage != window.currentLanguage) {
