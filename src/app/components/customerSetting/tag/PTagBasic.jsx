@@ -5,6 +5,7 @@ import { Checkbox } from 'material-ui';
 import Regex from '../../../constants/Regex.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
+import AllCommodityStore from '../../../stores/AllCommodityStore.jsx';
 
 var PTagBasic = React.createClass({
   propTypes: {
@@ -16,19 +17,16 @@ var PTagBasic = React.createClass({
     return {
     };
   },
-  _getCommodityList: function() {
-    let commodityList = [];
-    window.allCommodities.forEach(commodity => {
+  _onAllCommoditiesChange: function() {
+    var allCommodities = AllCommodityStore.getAllCommodities();
+    let commodityList = [],
+      uomList = [];
+    allCommodities.forEach(commodity => {
       commodityList.push({
         payload: commodity.Id,
         text: commodity.Comment
       });
     });
-    return commodityList;
-  },
-  _getUomList: function() {
-    let uomList = [];
-    var allCommodities = window.allCommodities;
     var commodityId = this.props.selectedTag.get('CommodityId');
     var index = allCommodities.findIndex((item) => {
       if (item.Id === commodityId) {
@@ -43,7 +41,10 @@ var PTagBasic = React.createClass({
         });
       });
     }
-    return uomList;
+    this.setState({
+      commodityList: commodityList,
+      uomList: uomList
+    });
   },
   _getCalculationStepList: function() {
     let calculationStepList = [{
@@ -84,8 +85,12 @@ var PTagBasic = React.createClass({
     return calculationTypeList;
   },
   componentWillMount: function() {},
-  componentDidMount: function() {},
-  componentWillUnmount: function() {},
+  componentDidMount: function() {
+    AllCommodityStore.addChangeListener(this._onAllCommoditiesChange);
+  },
+  componentWillUnmount: function() {
+    AllCommodityStore.removeChangeListener(this._onAllCommoditiesChange);
+  },
   componentWillReceiveProps: function(nextProps) {},
   render: function() {
     var me = this;
@@ -136,7 +141,7 @@ var PTagBasic = React.createClass({
         isViewStatus: isView,
         title: I18N.Setting.Tag.Commodity,
         defaultValue: CommodityId,
-        dataItems: me._getCommodityList(),
+        dataItems: me.state.commodityList,
         didChanged: value => {
           me.props.mergeTag({
             value,
@@ -149,7 +154,7 @@ var PTagBasic = React.createClass({
         isViewStatus: isView,
         title: I18N.Setting.Tag.Uom,
         defaultValue: UomId,
-        dataItems: me._getUomList(),
+        dataItems: me.state.uomList,
         didChanged: value => {
           me.props.mergeTag({
             value,

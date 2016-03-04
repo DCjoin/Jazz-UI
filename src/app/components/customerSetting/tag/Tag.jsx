@@ -299,9 +299,7 @@ let Tag = React.createClass({
     });
   },
   _onCancel: function() {
-    if (this.state.showBasic) {
-      TagAction.cancelSaveTag();
-    }
+    TagAction.cancelSaveTag();
   },
   _onSave: function() {
     this.setState({

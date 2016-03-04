@@ -156,6 +156,9 @@ var Template = React.createClass({
       sortBy: sortBy
     });
   },
+  componentWillMount: function() {
+    document.title = I18N.MainMenu.Report;
+  },
   componentDidMount: function() {
     ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
     ReportStore.addTemplateListChangeListener(this._onChange);

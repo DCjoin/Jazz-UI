@@ -4,69 +4,61 @@ import React from "react";
 import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
 import { formStatus } from '../../../constants/FormStatus.jsx';
+import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
 
 var MonitorTag = React.createClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
-    ruleId: React.PropTypes.number,
+    tagId: React.PropTypes.number,
   },
   getInitialState: function() {
     return ({
       page: 1,
-      taglist: null,
-      selectedTags: [],
-      isLoading: true,
-      association: 1
+      isLoading: true
     });
   },
   _onChange: function() {
     this.setState({
-      taglist: VEEStore.getTagList(),
+      taglist: TagStore.getAllTagList(),
+      total: TagStore.getTotal(),
       isLoading: false
     });
   },
 
   _previousPage: function() {
-    var that = this;
+    var me = this;
     this.setState({
       page: this.state.page - 1,
       isLoading: true,
     }, () => {
-      that.getAssociatedTag();
+      me.getTagList();
     });
   },
   _nextPage: function() {
-    var that = this;
+    var me = this;
     this.setState({
       page: this.state.page + 1,
       isLoading: true,
     }, () => {
-      that.getAssociatedTag();
+      me.getTagList();
     });
   },
   _jumpToPage: function(page) {
-    var that = this;
+    var me = this;
     this.setState({
       page: page,
       isLoading: true,
     }, () => {
-      that.getAssociatedTag();
-    });
-  },
-  _onDeleteTag: function(tag) {
-    VEEAction.modifyVEETags(null, tag.get('Id'));
-    this.setState({
-      isLoading: true
+      me.getTagList();
     });
   },
   _renderDisplayTag: function() {
     var that = this;
     var pagingPropTypes = {
       curPageNum: this.state.page,
-      totalPageNum: VEEStore.getTotal(),
+      totalPageNum: this.state.total,
       previousPage: this._previousPage,
       nextPage: this._nextPage,
       jumpToPage: this._jumpToPage,
@@ -79,20 +71,16 @@ var MonitorTag = React.createClass({
           <div className='jazz-vee-monitor-tag-content-list'>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')}>{tag.get('Name')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Code')}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findCommodityById(tag.get('CommodityId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{VEEStore.findUOMById(tag.get('UomId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-operation-item' onClick={that._onDeleteTag.bind(this, tag)}>{I18N.Common.Button.Delete}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getCommodityById(tag.get('CommodityId'))}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getUomById(tag.get('UomId'))}</div>
+            <div className='jazz-vee-monitor-tag-content-operation-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
       </div>
         );
       });
       return list;
     };
     if (that.state.taglist.size === 0) {
-      return (
-        <div>
-          {I18N.Setting.VEEMonitorRule.AddTagInfo}
-        </div>
-        );
+      return null;
     } else {
       return (
         <div className='jazz-vee-monitor-tag-background'>
@@ -101,7 +89,7 @@ var MonitorTag = React.createClass({
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Code}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Commodity}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.UOM}</div>
-            <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Operation}</div>
+            <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Type}</div>
           </div>
           <div className='jazz-vee-monitor-tag'>
             <div className='jazz-vee-monitor-tag-content'>
@@ -114,34 +102,19 @@ var MonitorTag = React.createClass({
         </div>
         );
     }
-
   },
-  _renderSelectTag: function() {},
-  getAssociatedTag: function() {
-    VEEAction.getAssociatedTag(this.state.page, this.props.ruleId, this.state.association);
+  getTagList: function() {
+    TagAction.getTagList(this.state.page, this.props.tagId);
   },
   componentDidMount: function() {
-    VEEStore.addTagChangeListener(this._onChange);
-    this.getAssociatedTag();
+    TagStore.addAllTagChangeListener(this._onChange);
+    this.getTagList();
   },
-  componentWillReceiveProps: function(nextProps) {
-    var that = this;
-    if (nextProps.formStatus !== this.props.formStatus) {
-      this.setState({
-        taglist: null,
-        isLoading: true,
-        page: 1,
-        association: (nextProps.formStatus === formStatus.VIEW ? 1 : 4)
-      }, () => {
-        that.getAssociatedTag();
-      });
-    }
-  },
+  componentWillReceiveProps: function(nextProps) {},
   componentWillUnmount: function() {
-    VEEStore.removeTagChangeListener(this._onChange);
+    TagStore.removeAllTagChangeListener(this._onChange);
   },
   render: function() {
-    var isView = this.props.formStatus === formStatus.VIEW;
     var loading = <div style={{
       display: 'flex',
       flex: 1,
@@ -154,7 +127,7 @@ var MonitorTag = React.createClass({
       <div className="pop-manage-detail-content" style={{
         display: 'flex'
       }}>
-        {this.state.isLoading ? loading : (isView ? this._renderDisplayTag() : this._renderSelectTag())  }
+        {this.state.isLoading ? loading : this._renderDisplayTag() }
       </div>
       );
   },
