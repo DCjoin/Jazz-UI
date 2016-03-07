@@ -60,6 +60,7 @@ var TagFormula = React.createClass({
       isRequired: true,
       multiLine: true,
       regexFn: this.validateFormula,
+      hintText: I18N.Setting.Tag.FormulaEditText,
       didChanged: value => {
         me.props.mergeTag({
           value,
@@ -69,14 +70,14 @@ var TagFormula = React.createClass({
     };
     return (<div className={"jazz-tag-formula-content-top"}>
     <div>{I18N.Setting.Tag.Formula}</div>
-    <div className={"jazz-tag-formula-content-input"}>
+    <div className={"jazz-tag-formula-content-top-input"}>
       <ViewableTextField {...fomulaProps}/>
     </div>
   </div>);
   },
   _renderTable: function() {
     var table = null;
-    if (this.props.selectedTag.get('Formula') === '') {
+    if (this.props.selectedTag.get('Formula') === '' && this.props.isViewStatus) {
       table = <div>{I18N.Setting.Tag.FormulaText}</div>;
     } else if (!this.props.isViewStatus) {
       table = <MonitorTag tagId={this.props.selectedTag.get('Id')} onRowClick={this._onRowClick}/>;

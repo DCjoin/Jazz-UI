@@ -709,6 +709,7 @@ I18N.Setting.TagBatchImport.ImportErrorView = '导入失败，数据格式有误
 I18N.Setting.TagBatchImport.ImportSizeErrorView = '导入失败，每次导入的数据点数量不能大于1000条，请重试。';
 
 I18N.Setting.Tag = {};
+I18N.Setting.Tag.TagList = '数据点列表';
 I18N.Setting.Tag.TagFilter = '数据点筛选';
 I18N.Setting.Tag.isAccumulated = '累计值';
 I18N.Setting.Tag.isNotAccumulated = '非累计值';
@@ -737,6 +738,7 @@ I18N.Setting.Tag.PanelTitle = '层级结构';
 I18N.Setting.Tag.FormulaText = '点击编辑按钮，设计计算公式';
 I18N.Setting.Tag.ErrorContent = '请输入-1000000000~1000000000的数，小数点后最多保留6位';
 I18N.Setting.Tag.InvalidFormula = '计算公式的格式有误，请检查。';
+I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公式';
 
 
 I18N.Message = {};

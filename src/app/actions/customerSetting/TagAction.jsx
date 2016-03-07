@@ -25,13 +25,10 @@ let TagAction = {
       }
     });
   },
-  getTagList: function(page, tagId) {
+  getTagList: function(page, filter) {
     Ajax.post('/Tag.svc/GetVariableItemsByFilter', {
       params: {
-        filter: {
-          CustomerId: parseInt(window.currentCustomerId),
-          ExcludeId: tagId
-        },
+        filter: filter,
         page: page,
         size: 20,
         start: 20 * (page - 1)
