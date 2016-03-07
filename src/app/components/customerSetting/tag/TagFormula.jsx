@@ -36,7 +36,7 @@ var TagFormula = React.createClass({
     }
   },
   _onRowClick: function(type, code) {
-    var value = this.refs.fomula.getValue();
+    var value = this.refs.formula.getValue();
     var tagType;
     if (type === 1) {
       tagType = 'ptag';
@@ -44,9 +44,9 @@ var TagFormula = React.createClass({
       tagType = 'vtag';
     }
     var newValue = value + '{' + tagType + '|' + code + '}';
-    this.refs.fomula.setState({
+    this.refs.formula.setState({
       value: newValue,
-      errorText: this.refs.fomula._getError(newValue)
+      errorText: this.refs.formula._getError(newValue)
     });
   },
   _renderFormula: function() {
@@ -54,7 +54,7 @@ var TagFormula = React.createClass({
     var isView = this.props.isViewStatus;
     var selectedTag = this.props.selectedTag;
     var fomulaProps = {
-      ref: 'fomula',
+      ref: 'formula',
       isViewStatus: isView,
       defaultValue: selectedTag.get('Formula'),
       isRequired: true,

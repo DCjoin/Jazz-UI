@@ -79,7 +79,7 @@ var TagDetail = React.createClass({
       return codeIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
     } else if (this.refs.vTagFormula) {
       var vTagFormula = this.refs.vTagFormula;
-      var fomulaIsValid = vTagFormula.refs.fomula.isValid();
+      var fomulaIsValid = vTagFormula.refs.formula.isValid();
       return fomulaIsValid;
     }
   },
