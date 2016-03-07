@@ -36,7 +36,6 @@ flex-direction: column;
   background-color: #fbfbfb;
   flex: 1;
   display:flex;
-  justify-content: center;
   overflow: hidden;
   flex-direction: column;
 }
@@ -89,7 +88,102 @@ flex-direction: column;
   &-paging{
 
   }
-  &-item{
-
+}
+.jazz-vee-monitor-tag-title{
+  font-size: 14px;
+  color:#464949
+}
+.jazz-vee-monitor-tag-addcontent{
+  display: flex;
+  flex-flow: row wrap;
+  border: 1px solid #ececec;
+  background-color: #ffffff;
+  padding: 10px;
+  height: 90px;
+  min-height:90px;
+  overflow: auto;
+  margin-top:10px;
+}
+.jazz-vee-monitor-tag-hintMsg{
+  font-size: 14px;
+  color:@schneiderGray;
+}
+.jazz-vee-monitor-tag-selectfiled{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  &-header{
+    display: flex;
+    flex-direction: row;
+    margin-top:50px;
+    height:20px;
+    min-height: 20px;
+    justify-content: space-between;
+  }
+  &-list{
+  display: flex;
+  flex:1;
+  flex-direction: column;
+  margin-top:10px;
+  }
+  &-allcheck{
+    display: flex;
+    flex-direction: row;
+    .name{
+      flex:1;
+      font-size: 14px;
+      color:#464949
+    }
+  }
+}
+.jazz-vee-tag-search-filter-bar{
+  margin-top:-10px;
+  .jazz-search-filter-bar{
+    display: flex;
+    flex-direction: row;
+    background-color: #fbfbfb;
+    .jazz-search{
+      display:flex;
+      flex-flow: row nowrap;
+      margin-top: 0px;
+      border-color:#e4e7e9 transparent;
+      width:200px;
+      min-height:46px;
+      .jazz-dataselectmainpanel{
+        margin-top: 0px;
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        .search{
+          flex:1;
+          display:flex;
+          flex-flow:row nowrap;
+          min-height:26px;
+          border:1px solid #e4e7e6;
+          margin:9px 10px 9px 10px;
+          .input{
+            >hr{
+              border-bottom-color:transparent !important;
+            }
+          }
+        }
+      }
+    }
+    .jazz-filter{
+      display: flex;
+      align-items: center;
+      span {
+        font-size: 14px !important;
+      }
+      &-item{
+        .pointer;
+        &-icon {
+          padding-right: 8px;
+        }
+        &:hover {
+          color: @textWhiteHover;
+        }
+      }
+    }
   }
 }

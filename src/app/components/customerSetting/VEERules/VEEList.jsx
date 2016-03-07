@@ -7,7 +7,7 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 
 var VEEList = React.createClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
+    formStatus: React.PropTypes.string,
     onRuleClick: React.PropTypes.func,
     onAddBtnClick: React.PropTypes.func,
     rules: React.PropTypes.object,
@@ -25,7 +25,8 @@ var VEEList = React.createClass({
         index: rule.get('Id'),
         label: rule.get('Name'),
         selectedIndex: that.props.selectedId,
-        onItemClick: onItemClick
+        onItemClick: onItemClick,
+        key: rule.get('Id'),
       };
       items.push(<Item {...props}/>);
     });

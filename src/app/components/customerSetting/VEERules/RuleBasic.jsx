@@ -21,7 +21,7 @@ var RuleBasic = React.createClass({
   propTypes: {
     rule: React.PropTypes.object,
     merge: React.PropTypes.func,
-    formStatus: React.PropTypes.bool,
+    formStatus: React.PropTypes.string,
   },
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _handleRuleDetailClick: function(values) {
@@ -104,7 +104,7 @@ var RuleBasic = React.createClass({
         path = 'CheckZero';
       }
       detail.push(
-        <li className="pop-user-detail-customer-subcheck-block-item" style={style}>
+        <li className="pop-user-detail-customer-subcheck-block-item" style={style} key={i}>
         <div className="pop-user-detail-customer-subcheck-block-item-left" id={i} onClick={this._handleRuleDetailClick.bind(this, [path, !defaultChecked])}>
           <Checkbox
         ref=""
@@ -127,7 +127,7 @@ var RuleBasic = React.createClass({
       );
     }
     detail.push(
-      <div className="jazz-vee-rule-null-item" style={checkNullStyle}>
+      <div className="jazz-vee-rule-null-item" style={checkNullStyle} key={2}>
       <div className="pop-user-detail-customer-subcheck-block-item-left" id={2} onClick={this._handleRuleDetailClick.bind(this, ['CheckNull', !CheckNull])}>
         <Checkbox
       ref=""
@@ -148,7 +148,7 @@ var RuleBasic = React.createClass({
       </div>
       <div className='jazz-vee-rule-null-rule' style={nullRuleStyle}>
         <div style={notifyStyle}>
-          <div className="pop-user-detail-customer-subcheck-block-item-left" id={3} onClick={this._handleRuleDetailClick.bind(this, ['CheckNotify', !CheckNotify])}>
+          <div className="pop-user-detail-customer-subcheck-block-item-left" id={3} key={3} onClick={this._handleRuleDetailClick.bind(this, ['CheckNotify', !CheckNotify])}>
             <Checkbox
       ref=""
       defaultChecked={CheckNotify || false}
@@ -180,7 +180,7 @@ var RuleBasic = React.createClass({
 
         </div>
         <div style={enableEstimationStyle}>
-          <div className="pop-user-detail-customer-subcheck-block-item-left" id={4} onClick={this._handleRuleDetailClick.bind(this, ['EnableEstimation', !EnableEstimation])}>
+          <div className="pop-user-detail-customer-subcheck-block-item-left" id={4} key={4} onClick={this._handleRuleDetailClick.bind(this, ['EnableEstimation', !EnableEstimation])}>
             <Checkbox
       ref=""
       defaultChecked={EnableEstimation || false}
@@ -225,7 +225,7 @@ var RuleBasic = React.createClass({
     var {rule} = this.props,
       receiversList = null,
       isView = this.props.formStatus === formStatus.VIEW,
-      isAdd = this.props.formStatus === formStatus.ADD,
+      //isAdd = this.props.formStatus === formStatus.ADD,
       {StartTime, Interval, Delay, Receivers} = rule.toJS();
     var getScanTime = function() {
       var minutes = 24 * 60;
@@ -252,7 +252,7 @@ var RuleBasic = React.createClass({
       }
       return list;
     };
-    var intervalSelectedIndex = 0,
+    var intervalSelectedIndex = 4,
       intervalItems = [];
     VEEStore.getIntervalList().forEach((interval, index) => {
       if (VEEStore.getIntervalListByMin()[index] === Interval) {

@@ -141,6 +141,13 @@ var VEEStore = assign({}, PrototypeStore, {
       that.emitTagChange()
     }
   },
+  clearAll: function() {
+    _rules = emptyList();
+    _selectedId = null;
+    _allReceivers = emptyList();
+    _total = null;
+    _tagList = null;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -224,7 +231,12 @@ VEEStore.dispatchToken = AppDispatcher.register(function(action) {
     case MainAction.GET_ALL_COMMODITY_SUCCESS:
       VEEStore.ifEmitTagChange();
       break;
-
+    case VEEAction.SAVE_VEE_TAG_SUCCESS:
+      VEEStore.emitChange(_selectedId);
+      break;
+    case VEEAction.CLEAR_ALL_VEE_TAGS:
+      VEEStore.clearAll();
+      break;
   }
 });
 module.exports = VEEStore;

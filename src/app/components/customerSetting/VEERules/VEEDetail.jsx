@@ -18,7 +18,7 @@ import Regex from '../../../constants/Regex.jsx';
 var VEEDetail = React.createClass({
 
   propTypes: {
-    formStatus: React.PropTypes.bool,
+    formStatus: React.PropTypes.string,
     infoTab: React.PropTypes.bool,
     rule: React.PropTypes.object,
     setEditStatus: React.PropTypes.func,
@@ -36,6 +36,9 @@ var VEEDetail = React.createClass({
       dialogStatus: false
     };
   },
+  _update: function() {
+    this.forceUpdate();
+  },
   _clearErrorText: function() {
     var basic = this.refs.jazz_vee_basic,
       tag = this.refs.jazz_vee_tag;
@@ -47,7 +50,30 @@ var VEEDetail = React.createClass({
     }
   },
   _handleSaveRule: function() {
-    this.props.handleSaveRule(this.props.rule)
+    if (this.props.infoTab) {
+      let rule = this.props.rule;
+      if (!rule.get('Interval')) {
+        rule = rule.set('Interval', 1440)
+      }
+      if (!rule.get('Delay')) {
+        rule = rule.set('Delay', 0)
+      }
+      this.props.handleSaveRule(rule)
+    } else {
+      if (this.refs.jazz_vee_tag) {
+        let tags = this.refs.jazz_vee_tag._handlerSave(),
+          tagIds = [];
+        tags.forEach(tag => {
+          tagIds.push(tag.get('Id'))
+        });
+        this.props.handleSaveRule({
+          ruleId: this.props.rule.get('Id'),
+          tagIds: tagIds
+        })
+      }
+
+    }
+
   },
   _renderHeader: function() {
     var that = this,
@@ -99,7 +125,8 @@ var VEEDetail = React.createClass({
       tagProps = {
         ref: 'jazz_vee_tag',
         formStatus: this.props.formStatus,
-        ruleId: this.props.rule.get('Id')
+        ruleId: this.props.rule.get('Id'),
+        onUpdate: this._update
       };
     return (
       <div style={{
@@ -129,6 +156,12 @@ var VEEDetail = React.createClass({
     } else {
       editBtnProps = {
         label: I18N.Common.Button.Add
+      }
+      if (this.refs.jazz_vee_tag) {
+        let tags = this.refs.jazz_vee_tag._handlerSave();
+        if (tags.size === 0) {
+          disabledSaveButton = true
+        }
       }
     }
     return (

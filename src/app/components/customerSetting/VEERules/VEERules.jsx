@@ -84,12 +84,12 @@ var VEERules = React.createClass({
         VEEAction.modifyVEERule(dto);
       }
     } else {
-
+      VEEAction.modifyVEETags(data.ruleId, data.tagIds)
     }
-
     this.setState({
       isLoading: true
     });
+
   },
   _handleDeleteRule: function(data) {
     VEEAction.deleteRule({
@@ -202,6 +202,7 @@ var VEERules = React.createClass({
     }
   },
   componentWillMount: function() {
+    document.title = I18N.MainMenu.Customer;
     VEEAction.GetVEERules();
     this.setState({
       isLoading: true
@@ -214,7 +215,7 @@ var VEERules = React.createClass({
   componentWillUnmount: function() {
     VEEStore.removeChangeListener(this._onChange);
     VEEStore.removeErrorChangeListener(this._onError);
-  //TariffAction.ClearAll();
+  //VEEAction.ClearAll();
   },
   render: function() {
     var isView = this.state.formStatus === formStatus.VIEW;
