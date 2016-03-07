@@ -91,7 +91,8 @@ let Tag = React.createClass({
   },
   _onError: function() {
     this.setState({
-      isLoading: false
+      isLoading: false,
+      showDeleteDialog: false
     });
     let code = TagStore.getErrorCode(),
       messages = TagStore.getErrorMessage();

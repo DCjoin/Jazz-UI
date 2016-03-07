@@ -8,6 +8,8 @@ import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 
 let _tagList = Immutable.fromJS([]),
+  _allTagList = Immutable.fromJS([]),
+  _allTotal = 0,
   _total = 0,
   _selectedTagIndex = null,
   _selectedTag = null,
@@ -15,6 +17,7 @@ let _tagList = Immutable.fromJS([]),
   _errorMessage = null;
 
 let CHANGE_TAG_EVENT = 'changetag';
+let CHANGE_ALL_TAG_EVENT = 'changealltag';
 let CHANGE_SELECTED_TAG_EVENT = 'changeselectedtag';
 let ERROR_CHANGE_EVENT = 'errorchange';
 
@@ -22,8 +25,14 @@ var TagStore = assign({}, PrototypeStore, {
   getTagList() {
     return _tagList;
   },
+  getAllTagList() {
+    return _allTagList;
+  },
   getTagTotalNum() {
     return _total;
+  },
+  getTotal() {
+    return _allTotal;
   },
   setTagList(tagData) {
     if (tagData !== null) {
@@ -41,6 +50,15 @@ var TagStore = assign({}, PrototypeStore, {
       _tagList = Immutable.fromJS([]);
       _selectedTagIndex = null;
       _selectedTag = null;
+    }
+  },
+  setAllTagList(allTagData) {
+    if (allTagData !== null) {
+      _allTotal = allTagData.total;
+      _allTagList = Immutable.fromJS(allTagData.GetVariableItemsByFilterResult);
+    } else {
+      _allTotal = 0;
+      _allTagList = Immutable.fromJS([]);
     }
   },
   deleteTag() {
@@ -101,6 +119,15 @@ var TagStore = assign({}, PrototypeStore, {
   removeTagListChangeListener: function(callback) {
     this.removeListener(CHANGE_TAG_EVENT, callback);
   },
+  emitAllTagListChange: function() {
+    this.emit(CHANGE_ALL_TAG_EVENT);
+  },
+  addAllTagListChangeListener: function(callback) {
+    this.on(CHANGE_ALL_TAG_EVENT, callback);
+  },
+  removeAllTagListChangeListener: function(callback) {
+    this.removeListener(CHANGE_ALL_TAG_EVENT, callback);
+  },
   emitSelectedTagChange: function() {
     this.emit(CHANGE_SELECTED_TAG_EVENT);
   },
@@ -131,6 +158,14 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       TagStore.setTagList(null);
       TagStore.emitTagListChange();
       TagStore.emitSelectedTagChange();
+      break;
+    case Action.GET_ALL_TAG_LIST_SUCCESS:
+      TagStore.setAllTagList(action.allTagData);
+      TagStore.emitAllTagListChange();
+      break;
+    case Action.GET_ALL_TAG_LIST_ERROR:
+      TagStore.setALLTagList(null);
+      TagStore.emitALLTagListChange();
       break;
     case Action.SET_SELECTED_TAG:
       TagStore.setSelectedTagIndex(action.index);

@@ -736,6 +736,7 @@ I18N.Setting.Tag.KPI = '关键能效指标';
 I18N.Setting.Tag.PanelTitle = '层级结构';
 I18N.Setting.Tag.FormulaText = '点击编辑按钮，设计计算公式';
 I18N.Setting.Tag.ErrorContent = '请输入-1000000000~1000000000的数，小数点后最多保留6位';
+I18N.Setting.Tag.InvalidFormula = '计算公式的格式有误，请检查。';
 
 
 I18N.Message = {};

@@ -3,7 +3,6 @@
 import React from "react";
 import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
-import { formStatus } from '../../../constants/FormStatus.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
@@ -12,6 +11,7 @@ import Pagination from '../../../controls/paging/Pagination.jsx';
 var MonitorTag = React.createClass({
   propTypes: {
     tagId: React.PropTypes.number,
+    onRowClick: React.PropTypes.func
   },
   getInitialState: function() {
     return ({
@@ -55,10 +55,10 @@ var MonitorTag = React.createClass({
     });
   },
   _renderDisplayTag: function() {
-    var that = this;
+    var me = this;
     var pagingPropTypes = {
       curPageNum: this.state.page,
-      totalPageNum: this.state.total,
+      totalPageNum: parseInt((this.state.total + 19) / 20),
       previousPage: this._previousPage,
       nextPage: this._nextPage,
       jumpToPage: this._jumpToPage,
@@ -66,20 +66,20 @@ var MonitorTag = React.createClass({
     };
     var getTableBody = function() {
       var list = [];
-      that.state.taglist.forEach(tag => {
+      me.state.taglist.forEach(tag => {
         list.push(
-          <div className='jazz-vee-monitor-tag-content-list'>
+          <div className='jazz-vee-monitor-tag-content-list' onClick={me.props.onRowClick.bind(null, tag.get('Type'), tag.get('Code'))}>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')}>{tag.get('Name')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Code')}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getCommodityById(tag.get('CommodityId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getUomById(tag.get('UomId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-operation-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getUomById(tag.get('UomId')).Comment}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
       </div>
         );
       });
       return list;
     };
-    if (that.state.taglist.size === 0) {
+    if (me.state.taglist.size === 0) {
       return null;
     } else {
       return (
@@ -107,12 +107,12 @@ var MonitorTag = React.createClass({
     TagAction.getTagList(this.state.page, this.props.tagId);
   },
   componentDidMount: function() {
-    TagStore.addAllTagChangeListener(this._onChange);
+    TagStore.addAllTagListChangeListener(this._onChange);
     this.getTagList();
   },
   componentWillReceiveProps: function(nextProps) {},
   componentWillUnmount: function() {
-    TagStore.removeAllTagChangeListener(this._onChange);
+    TagStore.removeAllTagListChangeListener(this._onChange);
   },
   render: function() {
     var loading = <div style={{

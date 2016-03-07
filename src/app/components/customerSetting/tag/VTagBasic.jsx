@@ -15,36 +15,48 @@ var VTagBasic = React.createClass({
   },
   getInitialState: function() {
     return {
+      allCommodities: AllCommodityStore.getAllCommodities()
     };
   },
   _onAllCommoditiesChange: function() {
-    var allCommodities = AllCommodityStore.getAllCommodities();
-    let commodityList = [],
-      uomList = [];
-    allCommodities.forEach(commodity => {
-      commodityList.push({
-        payload: commodity.Id,
-        text: commodity.Comment
-      });
+    this.setState({
+      allCommodities: AllCommodityStore.getAllCommodities()
     });
-    var commodityId = this.props.selectedTag.get('CommodityId');
-    var index = allCommodities.findIndex((item) => {
-      if (item.Id === commodityId) {
-        return true;
-      }
-    });
-    if (index !== -1) {
-      allCommodities[index].Uoms.forEach(uom => {
-        uomList.push({
-          payload: uom.Id,
-          text: uom.Comment
+  },
+  _getCommodityList: function() {
+    var allCommodities = this.state.allCommodities;
+    let commodityList = [];
+    if (allCommodities !== null) {
+      allCommodities.forEach(commodity => {
+        commodityList.push({
+          payload: commodity.Id,
+          text: commodity.Comment
         });
       });
     }
-    this.setState({
-      commodityList: commodityList,
-      uomList: uomList
-    });
+    return commodityList;
+
+  },
+  _getUomList: function() {
+    var allCommodities = this.state.allCommodities;
+    var commodityId = this.props.selectedTag.get('CommodityId');
+    var uomList = [];
+    if (allCommodities !== null) {
+      var index = allCommodities.findIndex((item) => {
+        if (item.Id === commodityId) {
+          return true;
+        }
+      });
+      if (index !== -1) {
+        allCommodities[index].Uoms.forEach(uom => {
+          uomList.push({
+            payload: uom.Id,
+            text: uom.Comment
+          });
+        });
+      }
+    }
+    return uomList;
   },
   _getCalculationStepList: function() {
     let calculationStepList = [{
@@ -115,7 +127,7 @@ var VTagBasic = React.createClass({
         isViewStatus: isView,
         title: I18N.Setting.Tag.Commodity,
         defaultValue: CommodityId,
-        dataItems: me.state.commodityList,
+        dataItems: me._getCommodityList(),
         didChanged: value => {
           me.props.mergeTag({
             value,
@@ -128,7 +140,7 @@ var VTagBasic = React.createClass({
         isViewStatus: isView,
         title: I18N.Setting.Tag.Uom,
         defaultValue: UomId,
-        dataItems: me.state.uomList,
+        dataItems: me._getUomList(),
         didChanged: value => {
           me.props.mergeTag({
             value,

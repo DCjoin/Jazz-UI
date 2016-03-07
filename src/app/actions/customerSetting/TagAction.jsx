@@ -25,6 +25,30 @@ let TagAction = {
       }
     });
   },
+  getTagList: function(page, tagId) {
+    Ajax.post('/Tag.svc/GetVariableItemsByFilter', {
+      params: {
+        filter: {
+          CustomerId: parseInt(window.currentCustomerId),
+          ExcludeId: tagId
+        },
+        page: page,
+        size: 20,
+        start: 20 * (page - 1)
+      },
+      success: function(allTagData) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_TAG_LIST_SUCCESS,
+          allTagData: allTagData
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_TAG_LIST_ERROR
+        });
+      }
+    });
+  },
   setSelectedTagIndex(index) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_TAG,
