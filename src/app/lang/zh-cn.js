@@ -707,8 +707,20 @@ I18N.Setting.TagBatchImport.ImportSuccessView = '配置导入已完成。成功�
 I18N.Setting.TagBatchImport.ImportError = '导入失败';
 I18N.Setting.TagBatchImport.ImportErrorView = '导入失败，数据格式有误，请重试。';
 I18N.Setting.TagBatchImport.ImportSizeErrorView = '导入失败，每次导入的数据点数量不能大于1000条，请重试。';
+I18N.Setting.TagBatchImport.ImportDate = '导入时间';
+I18N.Setting.TagBatchImport.TagType = '类型';
+I18N.Setting.TagBatchImport.Importer = '导入者';
+I18N.Setting.TagBatchImport.File = '导入文件：';
+I18N.Setting.TagBatchImport.ConfigLog = '配置批量导入日志';
+I18N.Setting.TagBatchImport.ImportResult = ' 成功导入{0}条，失败{1}条，总计{2}条';
+I18N.Setting.TagBatchImport.DownloadLog = '下载日志文件';
+I18N.Setting.TagBatchImport.DownloadLogFile = '下载导入日志';
+I18N.Setting.TagBatchImport.UploadAt = '上传于';
+I18N.Setting.TagBatchImport.ToViewLog = '以查看详细记录';
+I18N.Setting.TagBatchImport.ImportResultView = '批量导入已完成。成功导入{0}条，失败{1}条，总计{2}条。';
 
 I18N.Setting.Tag = {};
+I18N.Setting.Tag.SearchText = '请输入名称或编码';
 I18N.Setting.Tag.TagList = '数据点列表';
 I18N.Setting.Tag.TagFilter = '数据点筛选';
 I18N.Setting.Tag.isAccumulated = '累计值';
@@ -744,18 +756,6 @@ I18N.Setting.Tag.PTagRawData.PauseMonitor = '暂停监测';
 I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时将忽略所选的规则';
 
 
-I18N.Setting.TagBatchImport = {};
-I18N.Setting.TagBatchImport.ImportDate = '导入时间';
-I18N.Setting.TagBatchImport.TagType = '类型';
-I18N.Setting.TagBatchImport.Importer = '导入者';
-I18N.Setting.TagBatchImport.File = '导入文件：';
-I18N.Setting.TagBatchImport.ConfigLog = '配置批量导入日志';
-I18N.Setting.TagBatchImport.ImportResult = ' 成功导入{0}条，失败{1}条，总计{2}条';
-I18N.Setting.TagBatchImport.DownloadLog = '下载日志文件';
-I18N.Setting.TagBatchImport.DownloadLogFile = '下载导入日志';
-I18N.Setting.TagBatchImport.UploadAt = '上传于';
-I18N.Setting.TagBatchImport.ToViewLog = '以查看详细记录';
-I18N.Setting.TagBatchImport.ImportResultView = '批量导入已完成。成功导入{0}条，失败{1}条，总计{2}条。';
 
 
 I18N.Message = {};
