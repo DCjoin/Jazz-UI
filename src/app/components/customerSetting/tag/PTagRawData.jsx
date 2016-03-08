@@ -1,12 +1,13 @@
 'use strict';
 
 import React from "react";
-import { CircularProgress, FlatButton } from 'material-ui';
+import { CircularProgress, FlatButton,Checkbox} from 'material-ui';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import { List } from 'immutable';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
+import Dialog from '../../../controls/PopupDialog.jsx';
 function emptyList() {
   return new List();
 }
@@ -20,12 +21,13 @@ let PTagRawData = React.createClass({
       isLoading: true,
       veeTagStatus: null,
       start: this._getInitDate().start,
-      end: this._getInitDate().end
+      end: this._getInitDate().end,
+      paulseDialogShow: false
     })
   },
   _getInitDate: function() {
     let date = new Date();
-    date.setHours(0, 0, 0);
+    date.setHours(0, 0, 0, 0);
     let last7Days = CommonFuns.dateAdd(date, -6, 'days');
     let endDate = CommonFuns.dateAdd(date, 1, 'days');
     return ({
@@ -61,6 +63,58 @@ let PTagRawData = React.createClass({
       that._getTagsData(this.props)
     })
   },
+  _onPauseDialogShow: function() {
+    this.setState({
+      paulseDialogShow: true
+    })
+  },
+  _renderDialog: function() {
+    var that = this;
+    var closeDialog = function() {
+      that.setState({
+        paulseDialogShow: false
+      });
+    };
+    if (!this.state.paulseDialogShow) {
+      return null;
+    } else {
+      var Status = this.state.veeTagStatus.get('Status');
+      var ruleType = TagStore.getRuleType();
+      var content=[];
+      ruleType.forEach(rule=>{
+        let st=Status.find(item=>item.get('Type')===rule.id),
+        index=Status.findIndex(item=>item.get('Type')===rule.id);
+        if(index>-1){
+          content.push(
+            <Checkbox
+          )
+        }
+      })
+
+      return (
+
+        <Dialog openImmediately={this.state.paulseDialogShow} title={I18N.Setting.Tag.PTagRawData.PauseMonitor} modal={true} actions={[
+          <FlatButton
+          label={I18N.Platform.Password.Confirm}
+          primary={true}
+          onClick={() => {
+            //that.props.handleDeleteCustomer(customer);
+            closeDialog();
+          }} />,
+          <FlatButton
+          label={I18N.Platform.Password.Cancel}
+          onClick={closeDialog} />
+        ]}>
+      <div>
+        <div>
+          {I18N.Setting.Tag.PTagRawData.PauseMonitorContent}
+        </div>
+
+      </div>
+      </Dialog>
+        );
+    }
+  },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
     this._getTagsData(this.props, true);
@@ -80,9 +134,9 @@ let PTagRawData = React.createClass({
     }
   },
   render: function() {
-    var btn = <FlatButton label="Default" style={{
+    var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor} style={{
       border: '1px solid black'
-    }}/>;
+    }} onClick={this._onPauseDialogShow}/>;
     if (this.state.isLoading) {
       return (
         <div style={{
@@ -106,7 +160,7 @@ let PTagRawData = React.createClass({
               {this.state.veeTagStatus.size === 0 ? null : btn}
             </div>
           </div>
-
+          {this._renderDialog()}
         </div>
         )
     }

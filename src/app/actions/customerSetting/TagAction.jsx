@@ -130,7 +130,7 @@ let TagAction = {
           DataOption: {
             OriginalValue: true
           },
-          Step: step,
+          Step: 0,
           TimeRanges: [{
             StartTime: StartTime,
             EndTime: EndTime
@@ -160,6 +160,20 @@ let TagAction = {
         }
       },
       success: function(tagStatus) {
+        tagStatus = {
+          tagId: tagId,
+          RuleName: 'XX',
+          Status: [
+            {
+              Type: 1,
+              Status: 2
+            },
+            {
+              Type: 2,
+              Status: 2
+            }
+          ]
+        };
         AppDispatcher.dispatch({
           type: Action.GET_TAG_DATAS_SUCCESS,
           tagDatas: tagDatas,

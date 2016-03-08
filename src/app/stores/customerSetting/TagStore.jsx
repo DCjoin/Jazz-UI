@@ -118,6 +118,22 @@ var TagStore = assign({}, PrototypeStore, {
   getErrorCode() {
     return _errorCode;
   },
+  getRuleType: function() {
+    return ([
+      {
+        type: I18N.Setting.VEEMonitorRule.NegativeValue,
+        id: 2
+      },
+      {
+        type: I18N.Setting.VEEMonitorRule.ZeroValue,
+        id: 3
+      },
+      {
+        type: I18N.Setting.VEEMonitorRule.NullValue,
+        id: 1
+      }
+    ])
+  },
   initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
