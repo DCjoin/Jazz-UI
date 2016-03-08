@@ -709,6 +709,7 @@ I18N.Setting.TagBatchImport.ImportErrorView = '导入失败，数据格式有误
 I18N.Setting.TagBatchImport.ImportSizeErrorView = '导入失败，每次导入的数据点数量不能大于1000条，请重试。';
 
 I18N.Setting.Tag = {};
+I18N.Setting.Tag.SearchText = '请输入名称或编码';
 I18N.Setting.Tag.TagList = '数据点列表';
 I18N.Setting.Tag.TagFilter = '数据点筛选';
 I18N.Setting.Tag.isAccumulated = '累计值';
