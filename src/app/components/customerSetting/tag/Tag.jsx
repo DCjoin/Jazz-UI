@@ -91,7 +91,8 @@ let Tag = React.createClass({
   },
   _onError: function() {
     this.setState({
-      isLoading: false
+      isLoading: false,
+      showDeleteDialog: false
     });
     let code = TagStore.getErrorCode(),
       messages = TagStore.getErrorMessage();
@@ -369,10 +370,11 @@ let Tag = React.createClass({
     };
     this.setState({
       selectedIndex: null,
-      selectedTag: Immutable.fromJS(tag),
+      selectedTag: Immutable.fromJS(tag)
     }, () => {
       this.setState({
-        formStatus: formStatus.ADD
+        formStatus: formStatus.ADD,
+        showBasic: true
       });
     });
   },

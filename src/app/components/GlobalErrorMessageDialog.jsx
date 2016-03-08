@@ -24,15 +24,18 @@ let GlobalErrorMessageDialog = React.createClass({
     }
   },
   render() {
-    var errorCodeArr = ['21802', '1', '03054'];
+    var errorCodeArr = ['21802', '1', '03054', '06182'];
+    var content = this.state.errorCode === '06182' ? (<div dangerouslySetInnerHTML={{
+      __html: this.state.errorMessage
+    }}></div>) : (<div>{this.state.errorMessage}</div>);
     var output = null;
     if (this.state.isShowed) {
       var snackbar = <Snackbar style={{
         maxWidth: 'none'
       }} message={this.state.errorMessage} openOnMount={true} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
-      var dialog = <Dialog title={I18N.Platform.ServiceProvider.ErrorNotice} openImmediately={true} modal={false} onClose={this._onDismiss} ref='errorMessageDialog'>
-        {this.state.errorMessage}
-      </Dialog>;
+      var dialog = (<Dialog title={I18N.Platform.ServiceProvider.ErrorNotice} openImmediately={true} modal={false} onClose={this._onDismiss} ref='errorMessageDialog'>
+        {content}
+      </Dialog>);
       if (errorCodeArr.indexOf(this.state.errorCode) !== -1 || this.state.dialogShow) {
         output = dialog;
       } else {

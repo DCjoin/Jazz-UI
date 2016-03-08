@@ -1,6 +1,5 @@
 'use strict';
 import React from 'react';
-import { SelectField } from 'material-ui';
 
 import SideNav from '../../../controls/SideNav.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';

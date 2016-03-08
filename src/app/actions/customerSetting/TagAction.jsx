@@ -25,6 +25,27 @@ let TagAction = {
       }
     });
   },
+  getTagList: function(page, filter) {
+    Ajax.post('/Tag.svc/GetVariableItemsByFilter', {
+      params: {
+        filter: filter,
+        page: page,
+        size: 20,
+        start: 20 * (page - 1)
+      },
+      success: function(allTagData) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_TAG_LIST_SUCCESS,
+          allTagData: allTagData
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_TAG_LIST_ERROR
+        });
+      }
+    });
+  },
   setSelectedTagIndex(index) {
     AppDispatcher.dispatch({
       type: Action.SET_SELECTED_TAG,
@@ -148,6 +169,24 @@ let TagAction = {
       error: function(err, res) {}
     });
   },
+  getTagLogListByCustomerId: function() {
+    Ajax.post('/TagImport.svc/GetTagImportHistory', {
+      params: {
+        customerId: parseInt(window.currentCustomerId)
+      },
+      success: function(logList) {
+        AppDispatcher.dispatch({
+          type: Action.GET_LOG_LIST_SUCCESS,
+          logList: logList
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_LOG_LIST_ERROR,
+        });
+      }
+    });
+  }
 };
 
 module.exports = TagAction;

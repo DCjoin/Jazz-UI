@@ -1,9 +1,9 @@
 'use strict';
 
 import React from "react";
-import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
-import { formStatus } from '../../../constants/FormStatus.jsx';
+import TagFilter from './TagFilter.jsx';
+import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
@@ -12,11 +12,89 @@ import Pagination from '../../../controls/paging/Pagination.jsx';
 var MonitorTag = React.createClass({
   propTypes: {
     tagId: React.PropTypes.number,
+    onRowClick: React.PropTypes.func
   },
   getInitialState: function() {
+    var filterObj = this._getInitFilterObj();
     return ({
       page: 1,
-      isLoading: true
+      isLoading: true,
+      filterObj: filterObj,
+      isFilter: false,
+      showFilter: false
+    });
+  },
+  _getResetFiltObj: function() {
+    var filterObj = this.state.filterObj;
+    filterObj.CommodityId = null;
+    filterObj.UomId = null;
+    filterObj.IsAccumulated = null;
+    return filterObj;
+  },
+  _getInitFilterObj: function() {
+    var filterObj = {
+      CustomerId: parseInt(window.currentCustomerId),
+      ExcludeId: this.props.tagId,
+      CommodityId: null,
+      UomId: null,
+      IsAccumulated: null,
+      LikeCodeOrName: ''
+    };
+    return filterObj;
+  },
+  _handleShowFilterSideNav: function() {
+    this.setState({
+      showFilter: true
+    });
+  },
+  _onSearch: function(value) {
+    var me = this;
+    var filterObj = this.state.filterObj;
+    filterObj.LikeCodeOrName = value;
+    this.setState({
+      filterObj: filterObj
+    }, () => {
+      me.getTagList();
+    });
+  },
+  _onSearchCleanButtonClick: function() {
+    var me = this;
+    var filterObj = this.state.filterObj;
+    filterObj.LikeCodeOrName = null;
+    this.setState({
+      filterObj: filterObj
+    }, () => {
+      me.getTagList();
+    });
+  },
+  _handleFilter: function() {
+    var me = this;
+    this.setState({
+      page: 1,
+      showFilter: false
+    }, () => {
+      me.getTagList();
+    });
+  },
+  _handleCloseFilterSideNav: function() {
+    var filterObj = this._getResetFiltObj();
+    this.setState({
+      showFilter: false,
+      filterObj: filterObj
+    });
+  },
+  _mergeFilterObj: function(data) {
+    var filterObj = this.state.filterObj;
+    filterObj[data.path] = data.value;
+    var isFilter;
+    if (filterObj.CommodityId === null && filterObj.UomId === null && filterObj.IsAccumulated === null) {
+      isFilter = false;
+    } else {
+      isFilter = true;
+    }
+    this.setState({
+      filterObj: filterObj,
+      isFilter: isFilter
     });
   },
   _onChange: function() {
@@ -54,11 +132,20 @@ var MonitorTag = React.createClass({
       me.getTagList();
     });
   },
+  _renderHeader: function() {
+    return (
+      <div className="jazz-tag-formula-content-taglist-top">
+        <div className="jazz-tag-formula-content-taglist-top-text">{I18N.Setting.Tag.TagList}</div>
+        <div className="jazz-tag-search-filter-bar"><SearchAndFilterBar onFilter={this._handleShowFilterSideNav}
+      onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}
+      isFilter={this.state.isFilter}/></div>
+  </div>);
+  },
   _renderDisplayTag: function() {
-    var that = this;
+    var me = this;
     var pagingPropTypes = {
       curPageNum: this.state.page,
-      totalPageNum: this.state.total,
+      totalPageNum: parseInt((this.state.total + 19) / 20),
       previousPage: this._previousPage,
       nextPage: this._nextPage,
       jumpToPage: this._jumpToPage,
@@ -66,20 +153,20 @@ var MonitorTag = React.createClass({
     };
     var getTableBody = function() {
       var list = [];
-      that.state.taglist.forEach(tag => {
+      me.state.taglist.forEach(tag => {
         list.push(
-          <div className='jazz-vee-monitor-tag-content-list'>
-            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')}>{tag.get('Name')}</div>
+          <div className='jazz-vee-monitor-tag-content-list' onClick={me.props.onRowClick.bind(null, tag.get('Type'), tag.get('Code'))}>
+            <div className="jazz-vee-monitor-tag-content-item" title={tag.get('Name')}>{tag.get('Name')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Code')}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getCommodityById(tag.get('CommodityId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getUomById(tag.get('UomId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-operation-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getUomById(tag.get('UomId')).Comment}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
       </div>
         );
       });
       return list;
     };
-    if (that.state.taglist.size === 0) {
+    if (me.state.taglist.size === 0) {
       return null;
     } else {
       return (
@@ -104,15 +191,15 @@ var MonitorTag = React.createClass({
     }
   },
   getTagList: function() {
-    TagAction.getTagList(this.state.page, this.props.tagId);
+    TagAction.getTagList(this.state.page, this.state.filterObj);
   },
   componentDidMount: function() {
-    TagStore.addAllTagChangeListener(this._onChange);
+    TagStore.addAllTagListChangeListener(this._onChange);
     this.getTagList();
   },
   componentWillReceiveProps: function(nextProps) {},
   componentWillUnmount: function() {
-    TagStore.removeAllTagChangeListener(this._onChange);
+    TagStore.removeAllTagListChangeListener(this._onChange);
   },
   render: function() {
     var loading = <div style={{
@@ -123,11 +210,25 @@ var MonitorTag = React.createClass({
     }}>
             <CircularProgress  mode="indeterminate" size={2} />
           </div>;
+    var header = this._renderHeader();
+    var filterPanel = null;
+    var filterProps = {
+      handleFilter: this._handleFilter,
+      onClose: this._handleCloseFilterSideNav,
+      filterObj: this.state.filterObj,
+      mergeFilterObj: this._mergeFilterObj,
+      side: 'right'
+    };
+    if (this.state.showFilter) {
+      filterPanel = <TagFilter {...filterProps}/>;
+    }
     return (
-      <div className="pop-manage-detail-content" style={{
-        display: 'flex'
-      }}>
-        {this.state.isLoading ? loading : this._renderDisplayTag() }
+      <div className="jazz-tag-formula-content-taglist">
+        {header}
+        <div className="jazz-tag-formula-content-taglist-content">
+          {this.state.isLoading ? loading : this._renderDisplayTag()}
+        </div>
+        {filterPanel}
       </div>
       );
   },

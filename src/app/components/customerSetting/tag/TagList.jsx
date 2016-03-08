@@ -22,6 +22,7 @@ let TagList = React.createClass({
     totalPageNum: React.PropTypes.number,
     hasJumpBtn: React.PropTypes.bool,
     onSearch: React.PropTypes.func,
+    onFilter: React.PropTypes.func,
     onSearchCleanButtonClick: React.PropTypes.func,
     isFilter: React.PropTypes.bool,
     filterObj: React.PropTypes.object,

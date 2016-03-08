@@ -15,6 +15,7 @@ var ViewableTextField = React.createClass({
   propTypes: {
     isViewStatus: React.PropTypes.bool,
     regex: React.PropTypes.object,
+    regexFn: React.PropTypes.func,
     maxLen: React.PropTypes.number,
     autoFocus: React.PropTypes.bool,
     isRequired: React.PropTypes.bool,
@@ -110,6 +111,10 @@ var ViewableTextField = React.createClass({
 
     if (this.props.maxLen && this.props.maxLen > 0 && value.length > this.props.maxLen) {
       return "超过最大长度" + this.props.maxLen;
+    }
+
+    if (this.props.regexFn) {
+      return this.props.regexFn(value);
     }
 
     if (this.props.regex != null && this.props.regex.test(value)) {

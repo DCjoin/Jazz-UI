@@ -12,6 +12,10 @@ module.exports = {
     CREATE_TAG_ERROR: null,
     DELETE_TAG_SUCCESS: null,
     DELETE_TAG_ERROR: null,
+    GET_ALL_TAG_LIST_SUCCESS: null,
+    GET_ALL_TAG_LIST_ERROR: null,
+    GET_LOG_LIST_SUCCESS: null,
+    GET_LOG_LIST_ERROR: null,
     GET_TAG_DATAS_SUCCESS: null
   })
 };

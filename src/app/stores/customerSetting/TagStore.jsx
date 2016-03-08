@@ -8,6 +8,9 @@ import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 
 let _tagList = Immutable.fromJS([]),
+  _allTagList = Immutable.fromJS([]),
+  _logList = Immutable.fromJS([]),
+  _allTotal = 0,
   _total = 0,
   _selectedTagIndex = null,
   _selectedTag = null,
@@ -17,6 +20,8 @@ let _tagList = Immutable.fromJS([]),
   _tagStatus = Immutable.fromJS({});
 
 let CHANGE_TAG_EVENT = 'changetag';
+let CHANGE_ALL_TAG_EVENT = 'changealltag';
+let CHANGE_LOG_EVENT = 'changelog';
 let CHANGE_SELECTED_TAG_EVENT = 'changeselectedtag';
 let ERROR_CHANGE_EVENT = 'errorchange';
 let TAG_DATAS_CHANGE_EVENT = 'tagdataschange';
@@ -26,8 +31,17 @@ var TagStore = assign({}, PrototypeStore, {
   getTagList() {
     return _tagList;
   },
+  getAllTagList() {
+    return _allTagList;
+  },
+  getTagLogList() {
+    return _logList;
+  },
   getTagTotalNum() {
     return _total;
+  },
+  getTotal() {
+    return _allTotal;
   },
   setTagList(tagData) {
     if (tagData !== null) {
@@ -45,6 +59,20 @@ var TagStore = assign({}, PrototypeStore, {
       _tagList = Immutable.fromJS([]);
       _selectedTagIndex = null;
       _selectedTag = null;
+    }
+  },
+  setAllTagList(allTagData) {
+    if (allTagData !== null) {
+      _allTotal = allTagData.total;
+      _allTagList = Immutable.fromJS(allTagData.GetVariableItemsByFilterResult);
+    } else {
+      _allTotal = 0;
+      _allTagList = Immutable.fromJS([]);
+    }
+  },
+  setTagLogList(logList) {
+    if (logList) {
+      _logList = Immutable.fromJS(logList);
     }
   },
   deleteTag() {
@@ -119,6 +147,24 @@ var TagStore = assign({}, PrototypeStore, {
   removeTagListChangeListener: function(callback) {
     this.removeListener(CHANGE_TAG_EVENT, callback);
   },
+  emitAllTagListChange: function() {
+    this.emit(CHANGE_ALL_TAG_EVENT);
+  },
+  addAllTagListChangeListener: function(callback) {
+    this.on(CHANGE_ALL_TAG_EVENT, callback);
+  },
+  removeAllTagListChangeListener: function(callback) {
+    this.removeListener(CHANGE_ALL_TAG_EVENT, callback);
+  },
+  emitTagLogListChange: function() {
+    this.emit(CHANGE_LOG_EVENT);
+  },
+  addTagLogListChangeListener: function(callback) {
+    this.on(CHANGE_LOG_EVENT, callback);
+  },
+  removeTagLogListChangeListener: function(callback) {
+    this.removeListener(CHANGE_LOG_EVENT, callback);
+  },
   emitSelectedTagChange: function() {
     this.emit(CHANGE_SELECTED_TAG_EVENT);
   },
@@ -158,6 +204,22 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       TagStore.setTagList(null);
       TagStore.emitTagListChange();
       TagStore.emitSelectedTagChange();
+      break;
+    case Action.GET_ALL_TAG_LIST_SUCCESS:
+      TagStore.setAllTagList(action.allTagData);
+      TagStore.emitAllTagListChange();
+      break;
+    case Action.GET_ALL_TAG_LIST_ERROR:
+      TagStore.setALLTagList(null);
+      TagStore.emitALLTagListChange();
+      break;
+    case Action.GET_LOG_LIST_SUCCESS:
+      TagStore.setTagLogList(action.logList);
+      TagStore.emitTagLogListChange();
+      break;
+    case Action.GET_LOG_LIST_ERROR:
+      TagStore.setTagLogList([]);
+      TagStore.emitTemplateListChange();
       break;
     case Action.SET_SELECTED_TAG:
       TagStore.setSelectedTagIndex(action.index);

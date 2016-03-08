@@ -55,7 +55,7 @@ I18N.MainMenu.PTagManagement = '计量数据P';
 I18N.MainMenu.VTagManagement = '计量数据V';
 I18N.MainMenu.VEEMonitorRule = '异常监测规则';
 I18N.MainMenu.TagBatchImportLog = '配置导入日志';
-I18N.MainMenu.CustomizedLabeling = '自定义能效标识';
+I18N.MainMenu.CustomizedLabeling = '能效标识';
 
 I18N.MainMenu.Calendar = '日历配置';
 I18N.MainMenu.WorkdaySetting = '工休日';
@@ -709,6 +709,7 @@ I18N.Setting.TagBatchImport.ImportErrorView = '导入失败，数据格式有误
 I18N.Setting.TagBatchImport.ImportSizeErrorView = '导入失败，每次导入的数据点数量不能大于1000条，请重试。';
 
 I18N.Setting.Tag = {};
+I18N.Setting.Tag.TagList = '数据点列表';
 I18N.Setting.Tag.TagFilter = '数据点筛选';
 I18N.Setting.Tag.isAccumulated = '累计值';
 I18N.Setting.Tag.isNotAccumulated = '非累计值';
@@ -736,6 +737,21 @@ I18N.Setting.Tag.KPI = '关键能效指标';
 I18N.Setting.Tag.PanelTitle = '层级结构';
 I18N.Setting.Tag.FormulaText = '点击编辑按钮，设计计算公式';
 I18N.Setting.Tag.ErrorContent = '请输入-1000000000~1000000000的数，小数点后最多保留6位';
+I18N.Setting.Tag.InvalidFormula = '计算公式的格式有误，请检查。';
+I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公式';
+
+I18N.Setting.TagBatchImport = {};
+I18N.Setting.TagBatchImport.ImportDate = '导入时间';
+I18N.Setting.TagBatchImport.TagType = '类型';
+I18N.Setting.TagBatchImport.Importer = '导入者';
+I18N.Setting.TagBatchImport.File = '导入文件：';
+I18N.Setting.TagBatchImport.ConfigLog = '配置批量导入日志';
+I18N.Setting.TagBatchImport.ImportResult = ' 成功导入{0}条，失败{1}条，总计{2}条';
+I18N.Setting.TagBatchImport.DownloadLog = '下载日志文件';
+I18N.Setting.TagBatchImport.DownloadLogFile = '下载导入日志';
+I18N.Setting.TagBatchImport.UploadAt = '上传于';
+I18N.Setting.TagBatchImport.ToViewLog = '以查看详细记录';
+I18N.Setting.TagBatchImport.ImportResultView = '批量导入已完成。成功导入{0}条，失败{1}条，总计{2}条。';
 
 
 I18N.Message = {};

@@ -33,7 +33,6 @@ var TagDetail = React.createClass({
   },
   getInitialState: function() {
     return {
-      showDeleteDialog: false
     };
   },
   _isValid: function() {
@@ -79,6 +78,10 @@ var TagDetail = React.createClass({
       }
 
       return codeIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
+    } else if (this.refs.vTagFormula) {
+      var vTagFormula = this.refs.vTagFormula;
+      var fomulaIsValid = vTagFormula.refs.formula.isValid();
+      return fomulaIsValid;
     }
   },
   _onSwitchTab: function(event) {
@@ -162,7 +165,7 @@ var TagDetail = React.createClass({
       if (this.props.showBasic) {
         content = <VTagBasic ref='vTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
       } else {
-        content = <TagFormula ref='formula'  selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
+        content = <TagFormula ref='vTagFormula'  selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
       }
     }
     return (
@@ -186,8 +189,9 @@ var TagDetail = React.createClass({
   },
   componentWillMount: function() {},
   componentDidMount: function() {},
-  componentWillUnmount: function() {},
   componentWillReceiveProps: function(nextProps) {},
+  componentWillUnmount: function() {},
+
   render: function() {
     var header = this._renderHeader(),
       content = this._renderContent(),
