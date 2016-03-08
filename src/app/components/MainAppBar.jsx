@@ -612,7 +612,7 @@ var MainAppBar = React.createClass({
       })} style={configStyle} onClick={this._onConfigClick}>{this.props.items[0].title}</div></div> : <MainMenu items={this.props.items} params={params}  onClick={this._onClick}/>;
     }
     ;
-    var mail = (!!this.props.title) ? (      <div className="jazz-mainmenu-user" style={{
+    var mail = (this.props.title === I18N.Platform.Title) ? (      <div className="jazz-mainmenu-user" style={{
       display: 'flex'
     }}>
           <FlatButton label={I18N.Mail.Mail} labelStyle={langLabelStyle} onClick={this._onMailLoaded} style={{

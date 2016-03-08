@@ -11,6 +11,7 @@ import FlatButton from '../../../controls/FlatButton.jsx';
 import PTagBasic from './PTagBasic.jsx';
 import VTagBasic from './VTagBasic.jsx';
 import TagFormula from './TagFormula.jsx';
+import PTagRawData from './PtagRawData.jsx';
 
 var TagDetail = React.createClass({
   propTypes: {
@@ -154,6 +155,8 @@ var TagDetail = React.createClass({
     if (this.props.tagType === 1) {
       if (this.props.showBasic) {
         content = <PTagBasic ref='pTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
+      } else {
+        content = <PTagRawData ref='pTagRawData' selectedTag={this.props.selectedTag}/>
       }
     } else {
       if (this.props.showBasic) {

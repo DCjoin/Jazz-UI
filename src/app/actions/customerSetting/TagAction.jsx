@@ -97,6 +97,57 @@ let TagAction = {
       }
     });
   },
+  getTagsData: function(tagId, step, StartTime, EndTime, refreshTagStatus) {
+    var that = this;
+    Ajax.post('/Energy.svc/GetTagsData', {
+      params: {
+        limit: 0,
+        page: 0,
+        start: 0,
+        tagIds: [tagId],
+        viewOption: {
+          DataOption: {
+            OriginalValue: true
+          },
+          Step: step,
+          TimeRanges: [{
+            StartTime: StartTime,
+            EndTime: EndTime
+          }]
+        }
+      },
+      success: function(tagDatas) {
+        if (refreshTagStatus) {
+          that.getVEETagStatus(tagId, tagDatas);
+        } else {
+          AppDispatcher.dispatch({
+            type: Action.GET_TAG_DATAS_SUCCESS,
+            tagDatas: tagDatas,
+            tagStatus: false
+          });
+        }
+
+      },
+      error: function(err, res) {}
+    });
+  },
+  getVEETagStatus: function(tagId, tagDatas) {
+    Ajax.post('/VEE.svc/GetVEETagStatus', {
+      params: {
+        dto: {
+          tagId: tagId,
+        }
+      },
+      success: function(tagStatus) {
+        AppDispatcher.dispatch({
+          type: Action.GET_TAG_DATAS_SUCCESS,
+          tagDatas: tagDatas,
+          tagStatus: tagStatus
+        });
+      },
+      error: function(err, res) {}
+    });
+  },
 };
 
 module.exports = TagAction;

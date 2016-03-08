@@ -12,11 +12,15 @@ let _tagList = Immutable.fromJS([]),
   _selectedTagIndex = null,
   _selectedTag = null,
   _errorCode = null,
-  _errorMessage = null;
+  _errorMessage = null,
+  _tagDatas = Immutable.fromJS([]),
+  _tagStatus = Immutable.fromJS({});
 
 let CHANGE_TAG_EVENT = 'changetag';
 let CHANGE_SELECTED_TAG_EVENT = 'changeselectedtag';
 let ERROR_CHANGE_EVENT = 'errorchange';
+let TAG_DATAS_CHANGE_EVENT = 'tagdataschange';
+
 
 var TagStore = assign({}, PrototypeStore, {
   getTagList() {
@@ -92,6 +96,20 @@ var TagStore = assign({}, PrototypeStore, {
     _errorCode = errorCode;
     _errorMessage = error.Messages;
   },
+
+  // for PtagRawData
+  setTagDatas: function(tagDatas, tagStatus) {
+    _tagDatas = Immutable.fromJS(tagDatas);
+    if (tagStatus !== false) {
+      _tagStatus = tagStatus === null ? Immutable.fromJS({}) : Immutable.fromJS(tagStatus);
+    }
+  },
+  getTagDatas: function() {
+    return _tagDatas
+  },
+  getTagStatus: function() {
+    return _tagStatus
+  },
   emitTagListChange: function() {
     this.emit(CHANGE_TAG_EVENT);
   },
@@ -118,6 +136,15 @@ var TagStore = assign({}, PrototypeStore, {
   },
   emitErrorChange() {
     this.emit(ERROR_CHANGE_EVENT);
+  },
+  addTagDatasChangeListener(callback) {
+    this.on(TAG_DATAS_CHANGE_EVENT, callback);
+  },
+  removeTagDatasChangeListener(callback) {
+    this.removeListener(TAG_DATAS_CHANGE_EVENT, callback);
+  },
+  emitTagDatasChange() {
+    this.emit(TAG_DATAS_CHANGE_EVENT);
   }
 });
 TagStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -159,6 +186,10 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.DELETE_TAG_ERROR:
       TagStore.initErrorText(action.errorText);
       TagStore.emitErrorChange();
+      break;
+    case Action.GET_TAG_DATAS_SUCCESS:
+      TagStore.setTagDatas(action.tagDatas, action.tagStatus);
+      TagStore.emitTagDatasChange();
       break;
   }
 });
