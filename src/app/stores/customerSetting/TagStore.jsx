@@ -9,6 +9,7 @@ import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 
 let _tagList = Immutable.fromJS([]),
   _allTagList = Immutable.fromJS([]),
+  _logList = Immutable.fromJS([]),
   _allTotal = 0,
   _total = 0,
   _selectedTagIndex = null,
@@ -18,6 +19,7 @@ let _tagList = Immutable.fromJS([]),
 
 let CHANGE_TAG_EVENT = 'changetag';
 let CHANGE_ALL_TAG_EVENT = 'changealltag';
+let CHANGE_LOG_EVENT = 'changelog';
 let CHANGE_SELECTED_TAG_EVENT = 'changeselectedtag';
 let ERROR_CHANGE_EVENT = 'errorchange';
 
@@ -27,6 +29,9 @@ var TagStore = assign({}, PrototypeStore, {
   },
   getAllTagList() {
     return _allTagList;
+  },
+  getTagLogList() {
+    return _logList;
   },
   getTagTotalNum() {
     return _total;
@@ -59,6 +64,11 @@ var TagStore = assign({}, PrototypeStore, {
     } else {
       _allTotal = 0;
       _allTagList = Immutable.fromJS([]);
+    }
+  },
+  setTagLogList(logList) {
+    if (logList) {
+      _logList = Immutable.fromJS(logList);
     }
   },
   deleteTag() {
@@ -128,6 +138,15 @@ var TagStore = assign({}, PrototypeStore, {
   removeAllTagListChangeListener: function(callback) {
     this.removeListener(CHANGE_ALL_TAG_EVENT, callback);
   },
+  emitTagLogListChange: function() {
+    this.emit(CHANGE_LOG_EVENT);
+  },
+  addTagLogListChangeListener: function(callback) {
+    this.on(CHANGE_LOG_EVENT, callback);
+  },
+  removeTagLogListChangeListener: function(callback) {
+    this.removeListener(CHANGE_LOG_EVENT, callback);
+  },
   emitSelectedTagChange: function() {
     this.emit(CHANGE_SELECTED_TAG_EVENT);
   },
@@ -166,6 +185,14 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_ALL_TAG_LIST_ERROR:
       TagStore.setALLTagList(null);
       TagStore.emitALLTagListChange();
+      break;
+    case Action.GET_LOG_LIST_SUCCESS:
+      TagStore.setTagLogList(action.logList);
+      TagStore.emitTagLogListChange();
+      break;
+    case Action.GET_LOG_LIST_ERROR:
+      TagStore.setTagLogList([]);
+      TagStore.emitTemplateListChange();
       break;
     case Action.SET_SELECTED_TAG:
       TagStore.setSelectedTagIndex(action.index);

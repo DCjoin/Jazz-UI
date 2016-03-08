@@ -740,6 +740,19 @@ I18N.Setting.Tag.ErrorContent = '请输入-1000000000~1000000000的数，小数�
 I18N.Setting.Tag.InvalidFormula = '计算公式的格式有误，请检查。';
 I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公式';
 
+I18N.Setting.TagBatchImport = {};
+I18N.Setting.TagBatchImport.ImportDate = '导入时间';
+I18N.Setting.TagBatchImport.TagType = '类型';
+I18N.Setting.TagBatchImport.Importer = '导入者';
+I18N.Setting.TagBatchImport.File = '导入文件：';
+I18N.Setting.TagBatchImport.ConfigLog = '配置批量导入日志';
+I18N.Setting.TagBatchImport.ImportResult = ' 成功导入{0}条，失败{1}条，总计{2}条';
+I18N.Setting.TagBatchImport.DownloadLog = '下载日志文件';
+I18N.Setting.TagBatchImport.DownloadLogFile = '下载导入日志';
+I18N.Setting.TagBatchImport.UploadAt = '上传于';
+I18N.Setting.TagBatchImport.ToViewLog = '以查看详细记录';
+I18N.Setting.TagBatchImport.ImportResultView = '批量导入已完成。成功导入{0}条，失败{1}条，总计{2}条。';
+
 
 I18N.Message = {};
 

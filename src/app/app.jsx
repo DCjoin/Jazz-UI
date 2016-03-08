@@ -43,6 +43,7 @@ import Customer from './components/customer/Customer.jsx';
 import VEE from './components/customerSetting/VEERules/VEERules.jsx';
 import PTag from './components/customerSetting/tag/PTag.jsx';
 import VTag from './components/customerSetting/tag/VTag.jsx';
+import TagLog from './components/customerSetting/importLog/TagLog.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -67,7 +68,7 @@ var routes = (
         <Route name="ptag" path="ptag" handler={PTag}></Route>
         <Route name="vtag" path="vtag" handler={VTag}></Route>
         <Route name="vee" path="vee" handler={VEE}></Route>
-        <Route name="log" path="log"></Route>
+        <Route name="log" path="log" handler={TagLog}></Route>
         <Route name="customerLabeling" path="customerLabeling"></Route>
       </Route>
       <Route name="platform" path="platform" handler={PlatformApp}>

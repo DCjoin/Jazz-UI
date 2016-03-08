@@ -118,6 +118,24 @@ let TagAction = {
       }
     });
   },
+  getTagLogListByCustomerId: function() {
+    Ajax.post('/TagImport.svc/GetTagImportHistory', {
+      params: {
+        customerId: parseInt(window.currentCustomerId)
+      },
+      success: function(logList) {
+        AppDispatcher.dispatch({
+          type: Action.GET_LOG_LIST_SUCCESS,
+          logList: logList
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_LOG_LIST_ERROR,
+        });
+      }
+    });
+  }
 };
 
 module.exports = TagAction;

@@ -200,7 +200,7 @@ var Template = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead}></TemplateList>);
+    }}><CircularProgress  mode="indeterminate" size={2} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead}></TemplateList>);
     var uploadDom = (this.state.onlyRead ? null : <div className="jazz-template-action">
       <div className='jazz-template-upload-button'>
         <label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
