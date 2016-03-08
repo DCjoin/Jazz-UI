@@ -186,8 +186,9 @@ var TagDetail = React.createClass({
   },
   componentWillMount: function() {},
   componentDidMount: function() {},
-  componentWillUnmount: function() {},
   componentWillReceiveProps: function(nextProps) {},
+  componentWillUnmount: function() {},
+
   render: function() {
     var header = this._renderHeader(),
       content = this._renderContent(),
