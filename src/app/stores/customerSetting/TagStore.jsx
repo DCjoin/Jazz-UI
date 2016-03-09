@@ -143,7 +143,10 @@ var TagStore = assign({}, PrototypeStore, {
 
   // for PtagRawData
   setTagDatas: function(tagDatas, tagStatus) {
-    _tagDatas = Immutable.fromJS(tagDatas);
+    if (tagDatas !== false) {
+      _tagDatas = Immutable.fromJS(tagDatas);
+    }
+
     if (tagStatus !== false) {
       _tagStatus = tagStatus === null ? Immutable.fromJS({}) : Immutable.fromJS(tagStatus);
     }

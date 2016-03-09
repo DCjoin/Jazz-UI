@@ -68,6 +68,30 @@ let PTagRawData = React.createClass({
       paulseDialogShow: true
     })
   },
+  _onStatusChanged: function(st) {
+    var veeTagStatus = this.state.veeTagStatus,
+      status = veeTagStatus.get('Status'),
+      index = status.findIndex(item => item.get('Type') == st.get('Type')),
+      sta = st;
+    if (sta.get('Status') === 2) {
+      sta = sta.set('Status', 1)
+    } else {
+      sta = sta.set('Status', 2)
+    }
+
+
+    veeTagStatus = veeTagStatus.set('Status', status.setIn([index], sta));
+    this.setState({
+      veeTagStatus: veeTagStatus
+    })
+
+  },
+  _onModifyVEETagStatus: function() {
+    TagAction.modifyVEETagStatus(this.state.veeTagStatus.toJS());
+    this.setState({
+      isLoading: true
+    })
+  },
   _renderDialog: function() {
     var that = this;
     var closeDialog = function() {
@@ -85,9 +109,23 @@ let PTagRawData = React.createClass({
         let st = Status.find(item => item.get('Type') === rule.id),
           index = Status.findIndex(item => item.get('Type') === rule.id);
         if (index > -1) {
-          // content.push(
-          //   <Checkbox
-          // )
+          content.push(
+            <div onClick={that._onStatusChanged.bind(this, st)}>
+              <Checkbox
+            ref=""
+            defaultChecked={st.get('Status') === 2}
+            style={{
+              width: "auto",
+              display: "block"
+            }}
+            />
+              <label
+            className="jazz-checkbox-label">
+                {rule.type}
+              </label>
+            </div>
+
+          )
         }
       })
 
@@ -98,18 +136,30 @@ let PTagRawData = React.createClass({
           label={I18N.Platform.Password.Confirm}
           primary={true}
           onClick={() => {
-            //that.props.handleDeleteCustomer(customer);
+            that._onModifyVEETagStatus();
             closeDialog();
           }} />,
           <FlatButton
           label={I18N.Platform.Password.Cancel}
-          onClick={closeDialog} />
+          onClick={() => {
+            that._onChanged();
+            closeDialog();
+          }} />
         ]}>
       <div>
         <div>
           {I18N.Setting.Tag.PTagRawData.PauseMonitorContent}
         </div>
-
+        <div>
+          <div>
+            {I18N.Setting.VEEMonitorRule.RuleName}
+          </div>
+          <div style={{
+          display: 'flex'
+        }}>
+            {content}
+          </div>
+        </div>
       </div>
       </Dialog>
         );
@@ -157,7 +207,7 @@ let PTagRawData = React.createClass({
             <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' startDate={this.state.start} endDate={this.state.end} _onDateSelectorChanged={this._onDateSelectorChanged}/>
             </div>
             <div className='rightside'>
-              {this.state.veeTagStatus.size === 0 ? null : btn}
+              {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
             </div>
           </div>
           {this._renderDialog()}
