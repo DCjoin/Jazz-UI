@@ -93,9 +93,10 @@ let TagList = React.createClass({
 
     return (<Dialog
       ref="importDialog"
-      openImmediately={this.state.showImportDialog}
+      openImmediately={true}
       title={dialogTitle}
       actions={dialogActions}
+      onDismiss={this._handleImportDialogDismiss}
       modal={this.state.isImporting || this.state.importSuccess}>
         {dialogContent}
       </Dialog>);
