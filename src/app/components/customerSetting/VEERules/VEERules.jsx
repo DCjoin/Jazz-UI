@@ -156,11 +156,15 @@ var VEERules = React.createClass({
       ruleDetail._clearErrorText();
     }
     // TariffAction.setCurrentSelectedId(null);
+    var rule = Immutable.fromJS({
+      Interval: 1440,
+      Delay: 0
+    });
     this.setState({
       infoTab: true,
       formStatus: formStatus.ADD,
       selectedId: null,
-      selectedRule: emptyMap()
+      selectedRule: rule
     });
   },
   _setEditStatus: function() {

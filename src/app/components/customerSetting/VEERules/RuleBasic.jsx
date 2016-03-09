@@ -227,31 +227,31 @@ var RuleBasic = React.createClass({
       isView = this.props.formStatus === formStatus.VIEW,
       //isAdd = this.props.formStatus === formStatus.ADD,
       {StartTime, Interval, Delay, Receivers} = rule.toJS();
-    var getScanTime = function() {
-      var minutes = 24 * 60;
-      var i = 0, r,
-        list = [],
-        sub = [];
-      if (Delay == null || isNaN(Delay)) return;
-      while (true) {
-        if ((r = Delay + Interval * i) <= minutes) {
-          sub.push(parseInt(Delay / 60) + Interval * i / 60 + ':' + (Delay % 60 == 0 ? '00' : Delay % 60));
-
-          ++i;
-        // if (i % 6 == 0) {
-        //   var t = sub.join(', ')
-        //   list.push(t);
-        //   sub = [];
-        // }
-        } else {
-          var t = sub.join(', ');
-          list.push(t);
-          break;
-        }
-
-      }
-      return list;
-    };
+    // var getScanTime = function() {
+    //   var minutes = 24 * 60;
+    //   var i = 0, r,
+    //     list = [],
+    //     sub = [];
+    //   if (Delay == null || isNaN(Delay)) return;
+    //   while (true) {
+    //     if ((r = Delay + Interval * i) < minutes) {
+    //       sub.push(parseInt(Delay / 60) + Interval * i / 60 + ':' + (Delay % 60 == 0 ? '00' : Delay % 60));
+    //
+    //       ++i;
+    //     // if (i % 6 == 0) {
+    //     //   var t = sub.join(', ')
+    //     //   list.push(t);
+    //     //   sub = [];
+    //     // }
+    //     } else {
+    //       var t = sub.join(', ');
+    //       list.push(t);
+    //       break;
+    //     }
+    //
+    //   }
+    //   return list;
+    // };
     var intervalSelectedIndex = 4,
       intervalItems = [];
     VEEStore.getIntervalList().forEach((interval, index) => {
@@ -359,7 +359,7 @@ var RuleBasic = React.createClass({
         <ViewableDropDownMenu {...ruleDelayProps}/>
       </div>
       <div className='jazz-vee-textfeild-comment'>
-        {I18N.format(I18N.Setting.VEEMonitorRule.ScanTimeInfo, getScanTime())}
+        {I18N.format(I18N.Setting.VEEMonitorRule.ScanTimeInfo, VEEStore.getScanTime(Delay, Interval))}
       </div>
 
     </div>

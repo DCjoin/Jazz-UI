@@ -148,6 +148,31 @@ var VEEStore = assign({}, PrototypeStore, {
     _total = null;
     _tagList = null;
   },
+  getScanTime: function(Delay, Interval) {
+    var minutes = 24 * 60;
+    var i = 0, r,
+      list = [],
+      sub = [];
+    if (Delay == null || isNaN(Delay)) return;
+    while (true) {
+      if ((r = Delay + Interval * i) < minutes) {
+        sub.push(parseInt(Delay / 60) + Interval * i / 60 + ':' + (Delay % 60 == 0 ? '00' : Delay % 60));
+
+        ++i;
+      // if (i % 6 == 0) {
+      //   var t = sub.join(', ')
+      //   list.push(t);
+      //   sub = [];
+      // }
+      } else {
+        var t = sub.join(', ');
+        list.push(t);
+        break;
+      }
+
+    }
+    return list;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },

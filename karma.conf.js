@@ -13,12 +13,14 @@ module.exports = function(config) {
 
     files: [
       //'tests.webpack.js'
-      'src/app/**/Regex-test.js'
+      //'src/app/**/Regex-test.js',
+      'src/app/**/VEEStore-test.js'
     ],
 
     preprocessors: {
       //'tests.webpack.js': [ 'webpack', 'sourcemap' ]
-      'src/app/**/Regex-test.js': ['webpack', 'sourcemap', 'coverage']
+      //  'src/app/**/Regex-test.js': ['webpack', 'sourcemap', 'coverage'],
+      'src/app/**/VEEStore-test.js': ['webpack', 'sourcemap', 'coverage']
     },
     coverageReporter: {
       type: 'html',

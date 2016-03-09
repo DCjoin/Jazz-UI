@@ -52,12 +52,12 @@ var VEEDetail = React.createClass({
   _handleSaveRule: function() {
     if (this.props.infoTab) {
       let rule = this.props.rule;
-      if (!rule.get('Interval')) {
-        rule = rule.set('Interval', 1440)
-      }
-      if (!rule.get('Delay')) {
-        rule = rule.set('Delay', 0)
-      }
+      // if (!rule.get('Interval')) {
+      //   rule = rule.set('Interval', 1440)
+      // }
+      // if (!rule.get('Delay')) {
+      //   rule = rule.set('Delay', 0)
+      // }
       this.props.handleSaveRule(rule)
     } else {
       if (this.refs.jazz_vee_tag) {
