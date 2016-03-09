@@ -118,6 +118,22 @@ var TagStore = assign({}, PrototypeStore, {
   getErrorCode() {
     return _errorCode;
   },
+  getRuleType: function() {
+    return ([
+      {
+        type: I18N.Setting.VEEMonitorRule.NegativeValue,
+        id: 2
+      },
+      {
+        type: I18N.Setting.VEEMonitorRule.ZeroValue,
+        id: 3
+      },
+      {
+        type: I18N.Setting.VEEMonitorRule.NullValue,
+        id: 1
+      }
+    ])
+  },
   initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
     let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
@@ -127,7 +143,10 @@ var TagStore = assign({}, PrototypeStore, {
 
   // for PtagRawData
   setTagDatas: function(tagDatas, tagStatus) {
-    _tagDatas = Immutable.fromJS(tagDatas);
+    if (tagDatas !== false) {
+      _tagDatas = Immutable.fromJS(tagDatas);
+    }
+
     if (tagStatus !== false) {
       _tagStatus = tagStatus === null ? Immutable.fromJS({}) : Immutable.fromJS(tagStatus);
     }

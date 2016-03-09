@@ -130,7 +130,7 @@ let TagAction = {
           DataOption: {
             OriginalValue: true
           },
-          Step: step,
+          Step: 0,
           TimeRanges: [{
             StartTime: StartTime,
             EndTime: EndTime
@@ -155,14 +155,27 @@ let TagAction = {
   getVEETagStatus: function(tagId, tagDatas) {
     Ajax.post('/VEE.svc/GetVEETagStatus', {
       params: {
-        dto: {
-          tagId: tagId,
-        }
+        tagId: tagId,
       },
       success: function(tagStatus) {
         AppDispatcher.dispatch({
           type: Action.GET_TAG_DATAS_SUCCESS,
           tagDatas: tagDatas,
+          tagStatus: tagStatus
+        });
+      },
+      error: function(err, res) {}
+    });
+  },
+  modifyVEETagStatus: function(statusDto) {
+    Ajax.post('/VEE.svc/ModifyVEETagStatus', {
+      params: {
+        statusDto: statusDto,
+      },
+      success: function(tagStatus) {
+        AppDispatcher.dispatch({
+          type: Action.GET_TAG_DATAS_SUCCESS,
+          tagDatas: false,
           tagStatus: tagStatus
         });
       },
@@ -186,7 +199,8 @@ let TagAction = {
         });
       }
     });
-  }
+  },
+
 };
 
 module.exports = TagAction;

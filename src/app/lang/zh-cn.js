@@ -751,6 +751,10 @@ I18N.Setting.Tag.FormulaText = '点击编辑按钮，设计计算公式';
 I18N.Setting.Tag.ErrorContent = '请输入-1000000000~1000000000的数，小数点后最多保留6位';
 I18N.Setting.Tag.InvalidFormula = '计算公式的格式有误，请检查。';
 I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公式';
+I18N.Setting.Tag.PTagRawData = {};
+I18N.Setting.Tag.PTagRawData.PauseMonitor = '暂停监测';
+I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时将忽略所选的规则';
+
 
 
 
