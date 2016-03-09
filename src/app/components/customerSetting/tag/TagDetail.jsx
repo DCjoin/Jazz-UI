@@ -180,7 +180,7 @@ var TagDetail = React.createClass({
       enableSave = this._isValid();
     }
     var bottom = null;
-    if (this.props.tagType !== 1 || this.props.showLeft) {
+    if (this.props.tagType !== 1 || this.props.showBasic) {
       bottom = (
         <FormBottomBar allowDelete={this.props.showBasic} allowEdit={true} enableSave={enableSave} ref="actionBar" status={this.props.formStatus} onSave={this.props.onSave} onEdit={this.props.onEdit} onDelete={this.props.onDelete} onCancel={this.props.onCancel} />
       );
