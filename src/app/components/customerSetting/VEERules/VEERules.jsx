@@ -139,9 +139,9 @@ var VEERules = React.createClass({
     //   id = this.state.tariffs.getIn([0, "Id"]);
     //   TariffAction.setCurrentSelectedId(id);
     // }
-    if (this.state.selectedId !== selectedId) {
-      infoTab = true;
-    }
+    // if (this.state.selectedId !== selectedId) {
+    //   infoTab = true;
+    // }
     this.setState({
       infoTab: infoTab,
       formStatus: formStatus.VIEW,

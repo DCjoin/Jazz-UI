@@ -420,7 +420,7 @@ var MonitorTag = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     var that = this;
-    if (nextProps.formStatus !== this.props.formStatus) {
+    if (nextProps.formStatus !== this.props.formStatus || nextProps.ruleId !== this.props.ruleId) {
       this.setState({
         taglist: null,
         isLoading: true,

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import { CircularProgress, FlatButton,Checkbox} from 'material-ui';
+import { CircularProgress, FlatButton, Checkbox } from 'material-ui';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import { List } from 'immutable';
@@ -80,14 +80,14 @@ let PTagRawData = React.createClass({
     } else {
       var Status = this.state.veeTagStatus.get('Status');
       var ruleType = TagStore.getRuleType();
-      var content=[];
-      ruleType.forEach(rule=>{
-        let st=Status.find(item=>item.get('Type')===rule.id),
-        index=Status.findIndex(item=>item.get('Type')===rule.id);
-        if(index>-1){
-          content.push(
-            <Checkbox
-          )
+      var content = [];
+      ruleType.forEach(rule => {
+        let st = Status.find(item => item.get('Type') === rule.id),
+          index = Status.findIndex(item => item.get('Type') === rule.id);
+        if (index > -1) {
+          // content.push(
+          //   <Checkbox
+          // )
         }
       })
 
