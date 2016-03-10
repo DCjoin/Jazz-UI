@@ -193,7 +193,7 @@ let LabelChartComponent = React.createClass({
     me.chartRenderer = new Highcharts.Renderer(
       me.refs.jazz_energy_view.getDOMNode(),
       me.state.ctWidth,
-      me.state.ctHeight - (me.isDashboard ? 15 : 30)
+      me.state.ctHeight - (isDashboard ? 15 : 30)
     );
     me.initData();
   },
@@ -266,7 +266,9 @@ let LabelChartComponent = React.createClass({
     me.createArrow(baseX - arrowSpace, baseY, labelsHeight, cr); //y-axis
     me.createHighLowText(I18N.EM.Labeling.LowEnergy, I18N.EM.Labeling.HighEnergy, cr);
 
-    var y, tooltipText, labelObj;
+    var y,
+      tooltipText,
+      labelObj;
     for (var i = 0; i < len; i++) {
       y = baseY + i * (lh + spaceH);
       if (labels[i].MinValue !== null || labels[i].MaxValue !== null) {
@@ -284,7 +286,12 @@ let LabelChartComponent = React.createClass({
 
     var energyData = d.TargetEnergyData,
       elen = energyData.length,
-      item, value, uom, name, index, splitLineX;
+      item,
+      value,
+      uom,
+      name,
+      index,
+      splitLineX;
 
     for (var j = 0; j < elen; j++) {
       item = energyData[j];
@@ -321,7 +328,8 @@ let LabelChartComponent = React.createClass({
     return str;
   },
   createLabel: function(basex, basey, number, displayText, color, index, tooltipText, renderer) {
-    var me = this, label,
+    var me = this,
+      label,
       basew = firstLabelWidth,
       increase = widthIncrease;
 
@@ -375,7 +383,7 @@ let LabelChartComponent = React.createClass({
     var text = renderer.text(displayText, basex + basew - (jw > 16 ? jw : 16), basey + Math.round((lh + 11) / 2))
       .css({
         color: 'white',
-        fontSize: me.isDashboard ? '14px' : '16px'
+        fontSize: isDashboard ? '14px' : '16px'
       })
       .add(agroup).on('mouseover', function(e) {
       path.attr({
@@ -468,10 +476,10 @@ let LabelChartComponent = React.createClass({
       label.hide();
     });
 
-    renderer.text(text, basex + jw + 10, basey + (me.isDashboard ? 10 : 12))
+    renderer.text(text, basex + jw + 10, basey + (isDashboard ? 10 : 12))
       .css({
         color: '#ffffff',
-        fontSize: me.isDashboard ? '28px' : '34px'
+        fontSize: isDashboard ? '28px' : '34px'
       })
       .add().on('mouseover', function(e) {
       path.attr({
@@ -488,12 +496,14 @@ let LabelChartComponent = React.createClass({
   //renderer.text(value + uom, basex + jw, basey - 27)
   //        .css({
   //            color: '#3b3b3b',
-  //            fontSize: me.isDashboard ?'12px':'16px'
+  //            fontSize: isDashboard ?'12px':'16px'
   //        })
   //        .add();
   },
   createTagName: function(x, y, text, renderer) {
-    var textLen, width, padding,
+    var textLen,
+      width,
+      padding,
       me = this;
     if (!isDashboard) {
       textLen = JazzCommon.GetArialStrLen(text);
@@ -516,7 +526,7 @@ let LabelChartComponent = React.createClass({
     renderer.text(text, x + padding, y)
       .css({
         color: '#757575',
-        fontSize: me.isDashboard ? '12px' : '16px'
+        fontSize: isDashboard ? '12px' : '16px'
       })
       .add();
   },
