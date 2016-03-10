@@ -736,6 +736,7 @@ I18N.Setting.Tag.DeleteTag = '删除数据点';
 I18N.Setting.Tag.Code = '编码';
 I18N.Setting.Tag.MeterCode = '表编码';
 I18N.Setting.Tag.Channel = '通道';
+I18N.Setting.Tag.Period = '采集周期';
 I18N.Setting.Tag.CalculationStep = '计算步长';
 I18N.Setting.Tag.CalculationType = '计算方式';
 I18N.Setting.Tag.Slope = '斜率（选填）';

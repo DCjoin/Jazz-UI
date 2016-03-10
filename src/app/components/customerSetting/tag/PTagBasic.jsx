@@ -177,7 +177,7 @@ var PTagBasic = React.createClass({
       calculationStepProps = {
         ref: 'calculationStep',
         isViewStatus: isView,
-        title: I18N.Setting.Tag.CalculationStep,
+        title: I18N.Setting.Tag.Period,
         defaultValue: CalculationStep,
         dataItems: me._getCalculationStepList(),
         didChanged: value => {

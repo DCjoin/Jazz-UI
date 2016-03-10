@@ -111,7 +111,7 @@ let ChartComponent = React.createClass({
   },
   getDefaultProps() {
     return {
-      levelCount: 8
+      levelCount: 5
     };
   },
 
