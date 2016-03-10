@@ -271,6 +271,9 @@ let Tag = React.createClass({
   _mergeTag: function(data) {
     var selectedTag = this.state.selectedTag;
     selectedTag = selectedTag.set(data.path, data.value);
+    if (data.path === 'Formula') {
+      selectedTag = selectedTag.set('TagModifyMode', 1);
+    }
     this.setState({
       selectedTag: selectedTag
     });
@@ -368,7 +371,7 @@ let Tag = React.createClass({
       AreaDimensionName: "",
       HierarchyName: "",
       DimensionName: "",
-      TagModifyMode: 1
+      TagModifyMode: 0
     };
     this.setState({
       selectedIndex: null,
