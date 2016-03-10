@@ -218,7 +218,8 @@ let Tag = React.createClass({
     var filterObj = this.state.filterObj;
     filterObj.LikeCodeOrName = null;
     this.setState({
-      filterObj: filterObj
+      filterObj: filterObj,
+      curPageNum: 1
     }, () => {
       TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
     });
