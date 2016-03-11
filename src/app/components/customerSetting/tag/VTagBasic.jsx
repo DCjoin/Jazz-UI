@@ -60,14 +60,23 @@ var VTagBasic = React.createClass({
   },
   _getCalculationStepList: function() {
     let calculationStepList = [{
-      payload: 6,
-      text: I18N.Common.AggregationStep.Min15
-    }, {
-      payload: 7,
-      text: I18N.Common.AggregationStep.Min30
-    }, {
       payload: 1,
       text: I18N.Common.AggregationStep.Hourly
+    }, {
+      payload: 8,
+      text: I18N.Common.AggregationStep.Hour2
+    }, {
+      payload: 9,
+      text: I18N.Common.AggregationStep.Hour4
+    }, {
+      payload: 10,
+      text: I18N.Common.AggregationStep.Hour6
+    }, {
+      payload: 11,
+      text: I18N.Common.AggregationStep.Hour8
+    }, {
+      payload: 12,
+      text: I18N.Common.AggregationStep.Hour12
     }, {
       payload: 2,
       text: I18N.Common.AggregationStep.Daily

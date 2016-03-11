@@ -736,6 +736,7 @@ I18N.Setting.Tag.DeleteTag = '删除数据点';
 I18N.Setting.Tag.Code = '编码';
 I18N.Setting.Tag.MeterCode = '表编码';
 I18N.Setting.Tag.Channel = '通道';
+I18N.Setting.Tag.Period = '采集周期';
 I18N.Setting.Tag.CalculationStep = '计算步长';
 I18N.Setting.Tag.CalculationType = '计算方式';
 I18N.Setting.Tag.Slope = '斜率（选填）';
@@ -754,7 +755,25 @@ I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公�
 I18N.Setting.Tag.PTagRawData = {};
 I18N.Setting.Tag.PTagRawData.PauseMonitor = '暂停监测';
 I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时将忽略所选的规则';
+<<<<<<< HEAD
 I18N.Setting.Tag.PTagRawData.DifferenceValue = '差值';
+=======
+
+I18N.Setting.CustomizedLabeling = {};
+I18N.Setting.CustomizedLabeling.Grade = '{0}级';
+I18N.Setting.CustomizedLabeling.OrderMode = '排列方式';
+I18N.Setting.CustomizedLabeling.Ascending = '正序';
+I18N.Setting.CustomizedLabeling.Declining = '倒序';
+I18N.Setting.CustomizedLabeling.Configurationer = '配置人';
+I18N.Setting.CustomizedLabeling.ConfigurationDate = '配置时间';
+I18N.Setting.CustomizedLabeling.KPIType = '指标类型';
+I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*请确保输入的右区间大于左区间';
+I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*请确保输入的左区间大于右区间';
+I18N.Setting.CustomizedLabeling.DeleteTip = '<br/>删除后，关联该标识的仪表盘将无法正常显示。';
+
+
+
+>>>>>>> 7aba477aa002dec17a16fc9918656a13bb3a4bb6
 
 I18N.Message = {};
 

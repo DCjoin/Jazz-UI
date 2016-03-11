@@ -208,7 +208,8 @@ let Tag = React.createClass({
     var filterObj = this.state.filterObj;
     filterObj.LikeCodeOrName = value;
     this.setState({
-      filterObj: filterObj
+      filterObj: filterObj,
+      curPageNum: 1
     }, () => {
       TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
     });
@@ -217,7 +218,8 @@ let Tag = React.createClass({
     var filterObj = this.state.filterObj;
     filterObj.LikeCodeOrName = null;
     this.setState({
-      filterObj: filterObj
+      filterObj: filterObj,
+      curPageNum: 1
     }, () => {
       TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
     });
@@ -269,6 +271,9 @@ let Tag = React.createClass({
   _mergeTag: function(data) {
     var selectedTag = this.state.selectedTag;
     selectedTag = selectedTag.set(data.path, data.value);
+    if (data.path === 'Formula') {
+      selectedTag = selectedTag.set('TagModifyMode', 1);
+    }
     this.setState({
       selectedTag: selectedTag
     });
@@ -366,7 +371,7 @@ let Tag = React.createClass({
       AreaDimensionName: "",
       HierarchyName: "",
       DimensionName: "",
-      TagModifyMode: 1
+      TagModifyMode: 0
     };
     this.setState({
       selectedIndex: null,
@@ -379,7 +384,7 @@ let Tag = React.createClass({
     });
   },
   componentDidMount: function() {
-    TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+    TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
     TagStore.addTagListChangeListener(this._onTagListChange);
     TagStore.addSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.addErrorChangeListener(this._onError);

@@ -381,8 +381,8 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       TagStore.emitAllTagListChange();
       break;
     case Action.GET_ALL_TAG_LIST_ERROR:
-      TagStore.setALLTagList(null);
-      TagStore.emitALLTagListChange();
+      TagStore.setAllTagList(null);
+      TagStore.emitAllTagListChange();
       break;
     case Action.GET_LOG_LIST_SUCCESS:
       TagStore.setTagLogList(action.logList);

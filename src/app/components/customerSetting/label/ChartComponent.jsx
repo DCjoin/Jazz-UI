@@ -1,105 +1,77 @@
 'use strict';
 
 import React from 'react';
-import assign from 'object-assign';
-import _ from 'lodash';
-import Immutable from 'immutable';
 let Highcharts = window.Highcharts;
-import CommonFuns from '../../util/Util.jsx';
-import mui from 'material-ui';
-import ChartXAxisSetter from './ChartXAxisSetter.jsx';
-import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
-import EnergyCommentFactory from './EnergyCommentFactory.jsx';
-import AlarmAction from '../../actions/AlarmAction.jsx';
-import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
+import CommonFuns from '../../../util/Util.jsx';
+import { JazzCommon } from '../../../util/Util.jsx';
 
-let {Dialog, FlatButton, Checkbox} = mui;
 var labelConfig = {
     3: {
       colors: ['#33963f', '#ffd92a', '#eb4040'],
-      firstLabelWidth: 190,
-      dashboardfirstLabelWidth: 90,
-      widthIncrease: 80,
-      dashboardwidthIncrease: 40,
-      threeTagsWidthIncrease: 25,
-      jh: 20,
-      jw: 20,
-      dashboardjh: 15,
-      dashboardjw: 15,
-      spaceH: 40,
-      dashboardspaceH: 10
+      firstLabelWidth: 25,
+      widthIncrease: 60,
+      jh: 15,
+      jw: 12,
+      spaceH: 9
     },
     4: {
       colors: ['#33963f', '#95eb40', '#ffd92a', '#eb4040'],
-      firstLabelWidth: 140,
-      dashboardfirstLabelWidth: 70,
-      widthIncrease: 70,
-      dashboardwidthIncrease: 30,
-      threeTagsWidthIncrease: 25,
-      jh: 20,
-      jw: 20,
-      dashboardjh: 12,
-      dashboardjw: 12,
-      spaceH: 20,
-      dashboardspaceH: 8
+      firstLabelWidth: 25,
+      widthIncrease: 40,
+      jh: 15,
+      jw: 12,
+      spaceH: 9
     },
     5: {
       colors: ['#33963f', '#40d12c', '#ffd92a', '#fc7b35', '#eb4040'],
-      firstLabelWidth: 132,
-      dashboardfirstLabelWidth: 65,
-      widthIncrease: 55,
-      dashboardwidthIncrease: 27,
-      threeTagsWidthIncrease: 20,
-      jh: 18,
-      jw: 18,
-      dashboardjh: 10,
-      dashboardjw: 10,
-      spaceH: 15,
-      dashboardspaceH: 5
+      firstLabelWidth: 25,
+      widthIncrease: 30,
+      jh: 15,
+      jw: 12,
+      spaceH: 9
     },
     6: {
       colors: ['#33963f', '#40d12c', '#95eb40', '#ffd92a', '#fc7b35', '#eb4040'],
-      firstLabelWidth: 100,
-      dashboardfirstLabelWidth: 50,
-      widthIncrease: 50,
-      dashboardwidthIncrease: 25,
-      threeTagsWidthIncrease: 20,
+      firstLabelWidth: 25,
+      widthIncrease: 24,
       jh: 15,
-      jw: 15,
-      dashboardjh: 9,
-      dashboardjw: 9,
-      spaceH: 11,
-      dashboardspaceH: 3
+      jw: 12,
+      spaceH: 9
     },
     7: {
       colors: ['#33963f', '#40d12c', '#95eb40', '#fffc2a', '#ffd92a', '#fc7b35', '#eb4040'],
-      firstLabelWidth: 87,
-      dashboardfirstLabelWidth: 43,
-      widthIncrease: 45,
-      dashboardwidthIncrease: 22,
-      threeTagsWidthIncrease: 17,
-      jh: 13,
-      jw: 13,
-      dashboardjh: 7,
-      dashboardjw: 7,
-      spaceH: 10,
-      dashboardspaceH: 3
+      firstLabelWidth: 25,
+      widthIncrease: 20,
+      jh: 15,
+      jw: 12,
+      spaceH: 9
     },
     8: {
       colors: ['#33963f', '#40d12c', '#95eb40', '#fffc2a', '#ffd92a', '#fcaf35', '#fc7b35', '#eb4040'],
-      firstLabelWidth: 77,
-      dashboardfirstLabelWidth: 39,
-      widthIncrease: 40,
-      dashboardwidthIncrease: 20,
-      threeTagsWidthIncrease: 15,
-      jh: 13,
-      jw: 13,
-      dashboardjh: 7,
-      dashboardjw: 7,
-      spaceH: 5,
-      dashboardspaceH: 2
+      firstLabelWidth: 25,
+      widthIncrease: 17,
+      jh: 15,
+      jw: 12,
+      spaceH: 9
     }
   },
+  labelingLevels = [{
+    Name: 'A'
+  }, {
+    Name: 'B'
+  }, {
+    Name: 'C'
+  }, {
+    Name: 'D'
+  }, {
+    Name: 'E'
+  }, {
+    Name: 'F'
+  }, {
+    Name: 'G'
+  }, {
+    Name: 'H'
+  }],
 
   title = '能效标识',
   isDashboard = false,
@@ -111,8 +83,8 @@ var labelConfig = {
   jh = 15, // standered label's arrow's half height
   jw = 20, // standered label's arrow's half width
   lh = 30,
-  baseX = 130, // the x-coordinate for the labels
-  baseY = 100, // the y-coordinate for the labels
+  baseX = 20, // the x-coordinate for the labels
+  baseY = 25, // the y-coordinate for the labels
   spaceH = 10, // the height space between labels
 
   // tag labels property
@@ -132,53 +104,30 @@ var labelConfig = {
   arrowSpace = 15; // the space between the arrow and the labels
 
 
-let LabelChartComponent = React.createClass({
+let ChartComponent = React.createClass({
   chartRenderer: null,
   propTypes: {
-    onDeleteButtonClick: React.PropTypes.func,
-    onDeleteAllButtonClick: React.PropTypes.func,
-    afterChartCreated: React.PropTypes.func,
-    energyData: React.PropTypes.object,
-    energyRawData: React.PropTypes.object,
-    startTime: React.PropTypes.string,
-    endTime: React.PropTypes.string
+    levelCount: React.PropTypes.number
   },
   getDefaultProps() {
     return {
-      options: {}
+      levelCount: 5
     };
   },
 
   getInitialState() {
     return {
-      ctHeight: 1600,
-      ctWidth: 370
     };
   },
   componentWillMount() {},
   componentDidMount() {
-    var me = this;
-    this.setState({
-      ctHeight: this.refs.jazz_energy_view.getDOMNode().clientHeight,
-      ctWidth: this.refs.jazz_energy_view.getDOMNode().clientWidth
-    }, () => {
-      this.createChart();
-    });
-
-    window.onresize = function() {
-      me.setState({
-        ctHeight: me.refs.jazz_energy_view.getDOMNode().clientHeight,
-        ctWidth: me.refs.jazz_energy_view.getDOMNode().clientWidth
-      }, () => {
-        me.createChart();
-      });
-    };
+    this.createChart();
   },
   componentDidUpdate() {
     this.createChart();
   },
   shouldComponentUpdate: function(nextProps, nextState) {
-    return !(this.props.energyData.equals(nextProps.energyData));
+    return (this.props.levelCount !== nextProps.levelCount);
   },
   render() {
     return <div style={{
@@ -192,37 +141,26 @@ let LabelChartComponent = React.createClass({
     }
     me.chartRenderer = new Highcharts.Renderer(
       me.refs.jazz_energy_view.getDOMNode(),
-      me.state.ctWidth,
-      me.state.ctHeight - (isDashboard ? 15 : 30)
+      400,
+      me.props.levelCount * 40 + 40
     );
-    me.initData();
+    var data = {
+      LabelingLevels: labelingLevels.slice(0, me.props.levelCount),
+      TargetEnergyData: []
+    };
+    me.initData(data, me.chartRenderer);
   },
   initProperties: function(data) {
     var me = this,
       d = data,
       len = d.LabelingLevels.length,
-      tagsLen = d.TargetEnergyData.length,
       lc = labelConfig[len];
 
-    var ds = isDashboard ? 'dashboard' : '';
-
-    firstLabelWidth = lc[ds + 'firstLabelWidth'];
-    widthIncrease = lc[ds + 'widthIncrease'];
-    jh = lc[ds + 'jh'];
-    jw = lc[ds + 'jw'];
-    spaceH = lc[ds + 'spaceH'];
-
-    if (isDashboard) {
-      //tag label need specific size
-      tw = 40;
-      showTitle = false;
-      tjh = 18; //tag label's arrow's half height
-      tjw = 18;
-
-      if (tagsLen === 3) {
-        widthIncrease = lc['threeTagsWidthIncrease'];
-      }
-    }
+    firstLabelWidth = lc['firstLabelWidth'];;
+    widthIncrease = lc['widthIncrease'];
+    jh = lc['jh'];
+    jw = lc['jw'];
+    spaceH = lc['spaceH'];
   },
   caculateProperties: function() {
     lh = 2 * jh;
@@ -235,14 +173,8 @@ let LabelChartComponent = React.createClass({
       len = d.LabelingLevels.length,
       elen = d.TargetEnergyData.length;
 
-    var chartHeight = lh + (len - 1) * (lh + spaceH) + tagTitleAboveHeight + 20;
-    var chartWidth = firstLabelWidth + (len - 1) * widthIncrease + jw + elen * (wholeTagWidth + lineTagSpace * 2);
-
-    baseX = parseInt((me.state.ctWidth - chartWidth) / 2);
-    baseY = parseInt((me.state.ctHeight - chartHeight) / 2) - 20;
-
-    baseX = baseX > 21 ? baseX : 21; //baseX is the labels x-axis, it need 16px for arrow
-    baseY = isDashboard ? 50 : (baseY > 60 ? baseY : 60);
+    // var chartHeight = lh + (len - 1) * (lh + spaceH) + tagTitleAboveHeight + 20;
+      // var chartWidth = firstLabelWidth + (len - 1) * widthIncrease + jw + elen * (wholeTagWidth + lineTagSpace * 2);
 
     labelsHeight = lh + (len - 1) * (lh + spaceH);
     labelsWidth = firstLabelWidth + (len - 1) * widthIncrease + jw;
@@ -568,4 +500,4 @@ let LabelChartComponent = React.createClass({
   }
 });
 
-module.exports = LabelChartComponent;
+module.exports = ChartComponent;
