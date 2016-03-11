@@ -1,7 +1,6 @@
 'use strict';
 
 import React from "react";
-import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
 import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
