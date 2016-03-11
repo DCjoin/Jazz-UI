@@ -44,7 +44,7 @@ import VEE from './components/customerSetting/VEERules/VEERules.jsx';
 import PTag from './components/customerSetting/tag/PTag.jsx';
 import VTag from './components/customerSetting/tag/VTag.jsx';
 import TagLog from './components/customerSetting/importLog/TagLog.jsx';
-import Label from './components/customerSetting/label/ChartComponent.jsx';
+import Label from './components/customerSetting/label/Label.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 

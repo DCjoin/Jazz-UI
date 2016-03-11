@@ -4,7 +4,7 @@ import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 import Ajax from '../../ajax/ajax.jsx';
 
 let TagAction = {
-  getTagListByType: function(type, page, filter) {
+  getTagListByType: function(page, filter) {
     Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: filter,

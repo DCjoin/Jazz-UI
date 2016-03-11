@@ -384,7 +384,7 @@ let Tag = React.createClass({
     });
   },
   componentDidMount: function() {
-    TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+    TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
     TagStore.addTagListChangeListener(this._onTagListChange);
     TagStore.addSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.addErrorChangeListener(this._onError);
