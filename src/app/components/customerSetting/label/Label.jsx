@@ -7,7 +7,7 @@ import SelectablePanel from '../../../controls/SelectablePanel.jsx';
 import LabelAction from '../../../actions/customerSetting/LabelAction.jsx';
 import LabelStore from '../../../stores/customerSetting/LabelStore.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
-import LabelDetail from './LabelDetail.jsx';
+//import LabelDetail from './LabelDetail.jsx';
 import Immutable from 'immutable';
 
 var Label = React.createClass({

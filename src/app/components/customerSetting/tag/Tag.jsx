@@ -183,7 +183,7 @@ let Tag = React.createClass({
       this.setState({
         curPageNum: curPageNum - 1
       }, () => {
-        TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+        TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
       });
     }
   },
@@ -193,7 +193,7 @@ let Tag = React.createClass({
       this.setState({
         curPageNum: curPageNum + 1
       }, () => {
-        TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+        TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
       });
     }
   },
@@ -201,7 +201,7 @@ let Tag = React.createClass({
     this.setState({
       curPageNum: targetPage
     }, () => {
-      TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+      TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
     });
   },
   _onSearch: function(value) {
@@ -211,7 +211,7 @@ let Tag = React.createClass({
       filterObj: filterObj,
       curPageNum: 1
     }, () => {
-      TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+      TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
     });
   },
   _onSearchCleanButtonClick: function() {
@@ -221,7 +221,7 @@ let Tag = React.createClass({
       filterObj: filterObj,
       curPageNum: 1
     }, () => {
-      TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+      TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
     });
   },
   _onExportTag: function() {
@@ -251,7 +251,7 @@ let Tag = React.createClass({
       curPageNum: 1,
       showFilter: false
     }, () => {
-      TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+      TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
     });
   },
   _mergeFilterObj: function(data) {
