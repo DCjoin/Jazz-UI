@@ -243,6 +243,7 @@ let Tag = React.createClass({
     var filterObj = this._getResetFiltObj();
     this.setState({
       showFilter: false,
+      isFilter: false,
       filterObj: filterObj
     });
   },
