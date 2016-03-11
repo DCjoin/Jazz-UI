@@ -4,7 +4,6 @@ import React from "react";
 import classnames from "classnames";
 import { CircularProgress, Checkbox, FontIcon } from 'material-ui';
 import { formStatus } from '../../../constants/FormStatus.jsx';
-import { dataStatus } from '../../../constants/DataStatus.jsx';
 import VEEAction from '../../../actions/customerSetting/VEEAction.jsx';
 import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
@@ -321,7 +320,9 @@ var MonitorTag = React.createClass({
       var list = [];
       that.state.taglist.forEach(tag => {
         list.push(
-          <div className='jazz-vee-monitor-tag-content-list' onClick={onTagClick.bind(this, tag)} key={tag.get('Id')}>
+          <div className='jazz-vee-monitor-tag-content-list' style={{
+            alignItems: 'center'
+          }} onClick={onTagClick.bind(this, tag)} key={tag.get('Id')}>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')}>
               <div className='jazz-vee-monitor-tag-selectfiled-allcheck'>
                 <Checkbox
@@ -331,7 +332,7 @@ var MonitorTag = React.createClass({
           labelStyle={labelstyle}
           checked={that.state.addingTags.findIndex(item => item.get('Id') === tag.get('Id')) > -1}
           />
-                <div className='name'>
+                <div className={classnames("name", "hiddenEllipsis")}>
                   {tag.get('Name')}
                 </div>
               </div>

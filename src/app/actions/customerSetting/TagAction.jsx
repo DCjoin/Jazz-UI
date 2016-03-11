@@ -158,6 +158,11 @@ let TagAction = {
         tagId: tagId,
       },
       success: function(tagStatus) {
+        // tagStatus = {
+        //   RuleName: "Nancy楼宇A特殊值新",
+        //   Status: null,
+        //   TagId: 11667
+        // };
         AppDispatcher.dispatch({
           type: Action.GET_TAG_DATAS_SUCCESS,
           tagDatas: tagDatas,

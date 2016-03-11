@@ -716,6 +716,7 @@ I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公�
 I18N.Setting.Tag.PTagRawData = {};
 I18N.Setting.Tag.PTagRawData.PauseMonitor = '暂停监测';
 I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时将忽略所选的规则';
+I18N.Setting.Tag.PTagRawData.DifferenceValue = 'Difference';
 
 I18N.Message = {};
 
