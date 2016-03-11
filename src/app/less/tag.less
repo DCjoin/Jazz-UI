@@ -148,21 +148,32 @@
     }
   }
 }
-.jazz-ptag-rawdata-panel{
-  display: flex;
-  flex:1;
+
   .jazz-ptag-rawdata{
     display: flex;
     flex:1;
     &-toolbar{
       display:flex;
+      flex-direction:row;
+      justify-content: space-between;
+    align-items: stretch;
+    width:100%;
       .leftside{
-
+        display: flex;
+        flex-direction:row;
+        align-items:center;
+        .switch-accumulated{
+          display: flex;
+          flex-direction:row;
+          .label{
+            font-size: 14px;
+          }
+        }
       }
       .rightside{
 
       }
     }
-  }
+
 
 }

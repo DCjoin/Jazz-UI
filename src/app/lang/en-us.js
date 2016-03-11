@@ -714,8 +714,14 @@ I18N.Setting.Tag.ErrorContent = 'Please input data between -1000000000~100000000
 I18N.Setting.Tag.InvalidFormula = 'Formula format not correct, please check.';
 I18N.Setting.Tag.FormulaEditText = 'Click item in the list to add it to formula';
 I18N.Setting.Tag.PTagRawData = {};
+<<<<<<< HEAD
+I18N.Setting.Tag.PTagRawData.PauseMonitor = '暂停监测';
+I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时将忽略所选的规则';
+I18N.Setting.Tag.PTagRawData.DifferenceValue = 'Difference';
+=======
 I18N.Setting.Tag.PTagRawData.PauseMonitor = 'Suspend scanning';
 I18N.Setting.Tag.PTagRawData.PauseMonitorContent = 'Selected rule will be suspended from next scanning';
+>>>>>>> 7aba477aa002dec17a16fc9918656a13bb3a4bb6
 
 I18N.Message = {};
 

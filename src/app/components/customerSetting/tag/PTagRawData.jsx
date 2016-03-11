@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import { CircularProgress, FlatButton, Checkbox } from 'material-ui';
+import { CircularProgress, FlatButton, Checkbox, FontIcon } from 'material-ui';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import { List } from 'immutable';
@@ -22,7 +22,8 @@ let PTagRawData = React.createClass({
       veeTagStatus: null,
       start: this._getInitDate().start,
       end: this._getInitDate().end,
-      paulseDialogShow: false
+      paulseDialogShow: false,
+      isRawData: this.props.selectedTag.get('IsAccumulated') ? false : true,
     })
   },
   _getInitDate: function() {
@@ -46,9 +47,17 @@ let PTagRawData = React.createClass({
   },
   _onChanged: function() {
     this.setState({
-      tagData: TagStore.getTagDatas(),
+      tagData: this.state.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
       isLoading: false,
       veeTagStatus: TagStore.getTagStatus(),
+    })
+  },
+  _onSwitchRawDataView: function() {
+    var rawDataStatus = this.state.isRawData;
+    this.setState({
+      tagData: !rawDataStatus ? TagStore.getRawData() : TagStore.getDifferenceData(),
+      isLoading: false,
+      isRawData: !rawDataStatus,
     })
   },
   _onDateSelectorChanged: function() {
@@ -78,8 +87,6 @@ let PTagRawData = React.createClass({
     } else {
       sta = sta.set('Status', 2)
     }
-
-
     veeTagStatus = veeTagStatus.set('Status', status.setIn([index], sta));
     this.setState({
       veeTagStatus: veeTagStatus
@@ -124,13 +131,10 @@ let PTagRawData = React.createClass({
                 {rule.type}
               </label>
             </div>
-
           )
         }
       })
-
       return (
-
         <Dialog openImmediately={this.state.paulseDialogShow} title={I18N.Setting.Tag.PTagRawData.PauseMonitor} modal={true} actions={[
           <FlatButton
           label={I18N.Platform.Password.Confirm}
@@ -165,13 +169,37 @@ let PTagRawData = React.createClass({
         );
     }
   },
+  _renderToolBar: function() {
+    var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor} style={{
+      border: '1px solid black'
+    }} onClick={this._onPauseDialogShow}/>;
+    var switchIconStyle = {
+      fontSize: '14px',
+      margin: '0 8px'
+    };
+    var label = this.state.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
+    return (
+      <div className='jazz-ptag-rawdata-toolbar'>
+        <div className='leftside'>
+        <div className='switch-accumulated'>
+          <div className='label'>
+            {label + '(' + I18N.Common.Glossary.UOM + ')'}
+          </div>
+          {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-sync' style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
+        </div>
+        <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' startDate={this.state.start} endDate={this.state.end} _onDateSelectorChanged={this._onDateSelectorChanged}/>
+        </div>
+        <div className='rightside'>
+          {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
+        </div>
+      </div>
+      )
+  },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
     this._getTagsData(this.props, true);
   },
-  componentWillUnmount: function() {
-    TagStore.removeTagDatasChangeListener(this._onChanged);
-  },
+
   componentWillReceiveProps: function(nextProps) {
     var that = this;
     if (nextProps.selectedTag !== this.props.selectedTag) {
@@ -183,10 +211,11 @@ let PTagRawData = React.createClass({
       })
     }
   },
+  componentWillUnmount: function() {
+    TagStore.removeTagDatasChangeListener(this._onChanged);
+  },
   render: function() {
-    var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor} style={{
-      border: '1px solid black'
-    }} onClick={this._onPauseDialogShow}/>;
+
     if (this.state.isLoading) {
       return (
         <div style={{
@@ -202,14 +231,7 @@ let PTagRawData = React.createClass({
     } else {
       return (
         <div className='jazz-ptag-rawdata'>
-          <div className='jazz-ptag-rawdata-toolbar'>
-            <div className='leftside'>
-            <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' startDate={this.state.start} endDate={this.state.end} _onDateSelectorChanged={this._onDateSelectorChanged}/>
-            </div>
-            <div className='rightside'>
-              {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
-            </div>
-          </div>
+          {this._renderToolBar()}
           {this._renderDialog()}
         </div>
         )

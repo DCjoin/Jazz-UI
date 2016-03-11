@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_3d1a9cd3078ca2a4f5c1480c3707bfe6.eot");
-  src: url("./fontcustom_3d1a9cd3078ca2a4f5c1480c3707bfe6.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_3d1a9cd3078ca2a4f5c1480c3707bfe6.woff") format("woff"),
-       url("./fontcustom_3d1a9cd3078ca2a4f5c1480c3707bfe6.ttf") format("truetype"),
-       url("./fontcustom_3d1a9cd3078ca2a4f5c1480c3707bfe6.svg#fontcustom") format("svg");
+  src: url("./fontcustom_84cd59107869159f8fb24f5d50881187.eot");
+  src: url("./fontcustom_84cd59107869159f8fb24f5d50881187.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_84cd59107869159f8fb24f5d50881187.woff") format("woff"),
+       url("./fontcustom_84cd59107869159f8fb24f5d50881187.ttf") format("truetype"),
+       url("./fontcustom_84cd59107869159f8fb24f5d50881187.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_3d1a9cd3078ca2a4f5c1480c3707bfe6.svg#fontcustom") format("svg");
+    src: url("./fontcustom_84cd59107869159f8fb24f5d50881187.svg#fontcustom") format("svg");
   }
 }
 
@@ -32,6 +32,7 @@
 .icon-arrow-right:before,
 .icon-arrow-trail:before,
 .icon-arrow-up:before,
+.icon-assignment:before,
 .icon-battery-empty:before,
 .icon-battery-full:before,
 .icon-building:before,
@@ -39,6 +40,7 @@
 .icon-capacity:before,
 .icon-cb-close:before,
 .icon-cb-open:before,
+.icon-cb-trip:before,
 .icon-chart:before,
 .icon-check-circle:before,
 .icon-check-mark:before,
@@ -61,6 +63,7 @@
 .icon-energy-analysis:before,
 .icon-energy-consumption:before,
 .icon-export:before,
+.icon-file:before,
 .icon-filter:before,
 .icon-filtered:before,
 .icon-folder:before,
@@ -85,6 +88,7 @@
 .icon-menu:before,
 .icon-model:before,
 .icon-myalarm:before,
+.icon-next-arrow-right:before,
 .icon-orgnization:before,
 .icon-panel:before,
 .icon-panel-box:before,
@@ -146,6 +150,7 @@
 .icon-arrow-right:before { content: "\f104"; }
 .icon-arrow-trail:before { content: "\f105"; }
 .icon-arrow-up:before { content: "\f106"; }
+.icon-assignment:before { content: "\f16b"; }
 .icon-battery-empty:before { content: "\f108"; }
 .icon-battery-full:before { content: "\f109"; }
 .icon-building:before { content: "\f10a"; }
@@ -153,6 +158,7 @@
 .icon-capacity:before { content: "\f134"; }
 .icon-cb-close:before { content: "\f10b"; }
 .icon-cb-open:before { content: "\f10c"; }
+.icon-cb-trip:before { content: "\f16c"; }
 .icon-chart:before { content: "\f153"; }
 .icon-check-circle:before { content: "\f16a"; }
 .icon-check-mark:before { content: "\f161"; }
@@ -175,6 +181,7 @@
 .icon-energy-analysis:before { content: "\f156"; }
 .icon-energy-consumption:before { content: "\f116"; }
 .icon-export:before { content: "\f117"; }
+.icon-file:before { content: "\f16e"; }
 .icon-filter:before { content: "\f118"; }
 .icon-filtered:before { content: "\f165"; }
 .icon-folder:before { content: "\f157"; }
@@ -199,6 +206,7 @@
 .icon-menu:before { content: "\f123"; }
 .icon-model:before { content: "\f124"; }
 .icon-myalarm:before { content: "\f166"; }
+.icon-next-arrow-right:before { content: "\f16d"; }
 .icon-orgnization:before { content: "\f125"; }
 .icon-panel:before { content: "\f126"; }
 .icon-panel-box:before { content: "\f127"; }

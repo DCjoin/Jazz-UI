@@ -6,6 +6,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
+import energyStore from '../Energy/EnergyStore.jsx';
 
 let _tagList = Immutable.fromJS([]),
   _allTagList = Immutable.fromJS([]),
@@ -16,8 +17,9 @@ let _tagList = Immutable.fromJS([]),
   _selectedTag = null,
   _errorCode = null,
   _errorMessage = null,
-  _tagDatas = Immutable.fromJS([]),
-  _tagStatus = Immutable.fromJS({});
+  _rawData = Immutable.fromJS([]),
+  _tagStatus = Immutable.fromJS({}),
+  _differenceTargetEnergyData = null;
 
 let CHANGE_TAG_EVENT = 'changetag';
 let CHANGE_ALL_TAG_EVENT = 'changealltag';
@@ -143,16 +145,166 @@ var TagStore = assign({}, PrototypeStore, {
 
   // for PtagRawData
   setTagDatas: function(tagDatas, tagStatus) {
+    var that = this;
     if (tagDatas !== false) {
-      _tagDatas = Immutable.fromJS(tagDatas);
+      _rawData = Immutable.fromJS(tagDatas);
+      that.extractDifferenceData(tagDatas);
     }
 
     if (tagStatus !== false) {
       _tagStatus = tagStatus === null ? Immutable.fromJS({}) : Immutable.fromJS(tagStatus);
     }
   },
-  getTagDatas: function() {
-    return _tagDatas
+  extractDifferenceData: function(data) {
+    var targetEnergyData = data.TargetEnergyData,
+      item, target,
+      differenceItem = null;
+    if (targetEnergyData && targetEnergyData.length > 0) {
+      for (var i = 0, len = targetEnergyData.length; i < len; i++) {
+        item = targetEnergyData[i];
+        target = item.Target;
+        if (target.Type && target.Type === 17) {
+          if (i === 0) {
+            differenceItem = data.TargetEnergyData.shift();
+          } else {
+            differenceItem = data.TargetEnergyData.pop();
+          }
+          _rawData = Immutable.fromJS(data);
+        }
+      }
+    }
+    _differenceTargetEnergyData = differenceItem;
+  },
+  constituteDifferenceDataArray: function(rawData, differenceData) {
+    var dataArray = rawData.TargetEnergyData[0].EnergyData,
+      item,
+      difArray = [], difItem;
+
+    difArray[0] = this.getFirstDifferenceItem(dataArray[0], differenceData);
+
+    for (var i = 1, len = dataArray.length; i < len; i++) {
+      item = dataArray[i];
+      difItem = this.getDifferenceItem(item, i - 1, dataArray, differenceData);
+      difArray.push(difItem);
+    }
+    return difArray;
+  },
+  getFirstDifferenceItem: function(firstItem, differenceData) {
+    var difItem = {
+      DataValue: null,
+      LocalTime: firstItem.LocalTime,
+      DataQuality: firstItem.DataQuality
+    };
+
+    if (differenceData && differenceData.EnergyData && differenceData.EnergyData.length > 0 && differenceData.EnergyData[0].DataValue !== null) {
+      var differenceValue = (firstItem.DataValue * 10 * 10 - differenceData.EnergyData[0].DataValue * 10 * 10) / 100;
+      if (differenceValue >= 0) {
+        difItem.DataValue = differenceValue;
+      }
+    }
+    return difItem;
+
+  },
+  getDifferenceItem: function(currentItem, preIndex, dataArray, differenceData) {
+    var preItem, difItem,
+      difItem = {
+        DataValue: null,
+        LocalTime: currentItem.LocalTime,
+        DataQuality: currentItem.DataQuality
+      };
+
+    if (currentItem.DataValue !== null) {
+      preItem = this.getPreviousItem(preIndex, dataArray, differenceData);
+      if (preItem) {
+        var differenceValue = (currentItem.DataValue * 10 * 10 - preItem.DataValue * 10 * 10) / 100;
+        if (differenceValue >= 0) {
+          difItem.DataValue = differenceValue;
+        }
+      }
+    }
+
+    return difItem;
+  },
+  getPreviousItem: function(preIndex, dataArray, differenceData) {
+    var item;
+    for (var i = preIndex; i >= 0; i--) {
+      item = dataArray[i];
+      if (item.DataValue !== null) {
+        return item;
+      }
+    }
+    if (differenceData && differenceData.EnergyData && differenceData.EnergyData.length > 0 && differenceData.EnergyData[0].DataValue !== null) {
+      return differenceData.EnergyData[0];
+    }
+    return null;
+  },
+  getRawData: function() {
+    return _rawData
+  },
+  getDifferenceData: function() {
+    var rawData = _rawData.toJS(),
+      difArray = this.constituteDifferenceDataArray(rawData, _differenceTargetEnergyData),
+      templateED = rawData.TargetEnergyData[0].EnergyData;
+
+    delete rawData.TargetEnergyData[0].EnergyData;
+
+    var cloneData = assign({}, rawData);
+    rawData.TargetEnergyData[0].EnergyData = templateED;
+
+    cloneData.TargetEnergyData[0].EnergyData = difArray;
+    return Immutable.fromJS(cloneData);
+  },
+  convert(data, obj) {
+    var timeRanges = obj.timeRanges,
+      returnDatas;
+    if (!data) return;
+    var start = j2d(obj.start);
+    var end = j2d(obj.end);
+    var step = obj.step;
+    var d, date;
+    var energyData, localTime;
+    var earliestTime = Number.MAX_VALUE; //2000 年1月1日
+
+    if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
+      for (var i = 0, len = data.TargetEnergyData.length; i < len; i++) {
+        energyData = data.TargetEnergyData[i].EnergyData;
+        if (energyData && energyData.length > 0) {
+          localTime = j2d(energyData[0].LocalTime);
+          if (localTime < earliestTime) {
+            earliestTime = localTime;
+          }
+        }
+      }
+    }
+
+
+    if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
+      d = energyStore.readerStrategy.getSeriesInternalFn(energyStore, data.TargetEnergyData, energyStore.readerStrategy.tagSeriesConstructorFn, undefined, step, start, end);
+    }
+
+    return {
+      Data: d,
+    };
+    if (!timeRanges || timeRanges.length <= 1) {
+      returnDatas = energyStore.readerStrategy.convertSingleTimeDataFn(data, obj, energyStore);
+    } else {
+      returnDatas = energyStore.readerStrategy.convertMultiTimeDataFn(data, obj, energyStore);
+    }
+
+    return returnDatas;
+  },
+  getDataForChart: function(data, obj) {
+    var _energyData;
+
+    // let obj = {
+    //   start: params.viewOption.TimeRanges[0].StartTime,
+    //   end: params.viewOption.TimeRanges[0].EndTime,
+    //   step: params.viewOption.Step,
+    //   timeRanges: params.viewOption.TimeRanges
+    // };
+
+    //ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
+    _energyData = Immutable.fromJS(this.convertFn(data, obj));
   },
   getTagStatus: function() {
     return _tagStatus
