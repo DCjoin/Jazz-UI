@@ -28,8 +28,59 @@ let Tag = React.createClass({
       curPageNum: 1,
       showFilter: false,
       showBasic: true,
-      showDeleteDialog: false
+      showDeleteDialog: false,
+      enableSave: true
     };
+  },
+  _isValid: function() {
+    var codeIsValid,
+      meterCodeIsValid,
+      channelIsValid,
+      commodityIsValid,
+      uomIsValid,
+      calculationStepIsValid,
+      calculationTypeIsValid,
+      slopeIsValid = true,
+      offsetIsValid = true,
+      commentIsValid = true;
+    var tagDetail = this.refs.tagDetail;
+    if (this.state.showBasic && this.props.tagType === 1) {
+      var pTagBasic = tagDetail.refs.pTagBasic;
+      codeIsValid = pTagBasic.refs.code.isValid();
+      meterCodeIsValid = pTagBasic.refs.meterCode.isValid();
+      channelIsValid = pTagBasic.refs.channel.isValid();
+      commodityIsValid = pTagBasic.refs.commodity.isValid();
+      uomIsValid = pTagBasic.refs.uom.isValid();
+      calculationStepIsValid = pTagBasic.refs.calculationStep.isValid();
+      calculationTypeIsValid = pTagBasic.refs.calculationType.isValid();
+      if (pTagBasic.refs.slope) {
+        slopeIsValid = pTagBasic.refs.slope.isValid();
+      }
+      if (pTagBasic.refs.offset) {
+        offsetIsValid = pTagBasic.refs.offset.isValid();
+      }
+      if (pTagBasic.refs.comment) {
+        commentIsValid = pTagBasic.refs.comment.isValid();
+      }
+
+      return codeIsValid && meterCodeIsValid && channelIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && slopeIsValid && offsetIsValid && commentIsValid;
+    } else if (this.state.showBasic && this.props.tagType === 2) {
+      var vTagBasic = tagDetail.refs.vTagBasic;
+      codeIsValid = vTagBasic.refs.code.isValid();
+      commodityIsValid = vTagBasic.refs.commodity.isValid();
+      uomIsValid = vTagBasic.refs.uom.isValid();
+      calculationStepIsValid = vTagBasic.refs.calculationStep.isValid();
+      calculationTypeIsValid = vTagBasic.refs.calculationType.isValid();
+      if (vTagBasic.refs.comment) {
+        commentIsValid = vTagBasic.refs.comment.isValid();
+      }
+
+      return codeIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
+    } else if (!this.state.showBasic && this.props.tagType === 2) {
+      var vTagFormula = tagDetail.refs.vTagFormula;
+      var fomulaIsValid = vTagFormula.refs.formula.isValid();
+      return fomulaIsValid;
+    }
   },
   _resetFilterObj: function() {
     var filterObj = this.state.filterObj;
@@ -277,6 +328,10 @@ let Tag = React.createClass({
     }
     this.setState({
       selectedTag: selectedTag
+    }, () => {
+      this.setState({
+        enableSave: this._isValid()
+      });
     });
   },
   _onSwitchTab: function(event) {
@@ -302,7 +357,8 @@ let Tag = React.createClass({
   },
   _onEdit: function() {
     this.setState({
-      formStatus: formStatus.EDIT
+      formStatus: formStatus.EDIT,
+      enableSave: true
     });
   },
   _onCancel: function() {
@@ -380,7 +436,8 @@ let Tag = React.createClass({
     }, () => {
       this.setState({
         formStatus: formStatus.ADD,
-        showBasic: true
+        showBasic: true,
+        enableSave: false
       });
     });
   },
@@ -427,6 +484,7 @@ let Tag = React.createClass({
         }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
     } else if (selectedTag !== null) {
       var rightProps = {
+        ref: 'tagDetail',
         formStatus: me.state.formStatus,
         selectedTag: selectedTag,
         showLeft: me.state.showLeft,
@@ -441,7 +499,8 @@ let Tag = React.createClass({
         onEdit: this._onEdit,
         onToggle: this._onToggle,
         onSwitchTab: this._onSwitchTab,
-        mergeTag: this._mergeTag
+        mergeTag: this._mergeTag,
+        enableSave: this.state.enableSave
       };
       rightPanel = <TagDetail {...rightProps}/>;
     }
