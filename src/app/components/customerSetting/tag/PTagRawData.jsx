@@ -8,6 +8,7 @@ import { List } from 'immutable';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
+//import ChartPanel from './RawDataChartPanel.jsx';
 function emptyList() {
   return new List();
 }
@@ -195,6 +196,34 @@ let PTagRawData = React.createClass({
       </div>
       )
   },
+  _renderChartComponent: function() {
+    let d2j = CommonFuns.DataConverter.DatetimeToJson,
+      start = d2j(this.state.start, false),
+      end = d2j(this.state.end, false);
+    let obj = {
+      start: start,
+      end: end,
+      step: this.props.selectedTag.get('CalculationStep'),
+      timeRanges: [{
+        StartTime: start,
+        EndTime: end
+      }]
+    };
+    var dataForChart = TagStore.getDataForChart(this.state.tagData.toJS(), obj);
+    var chartProps = {
+      ref: 'ChartComponent',
+      energyData: this.state.tagData,
+      energyRawData: dataForChart,
+      step: obj.step,
+      startTime: obj.start,
+      endTime: obj.end,
+      timeRanges: obj.timeRanges
+    }
+    return (
+      <div>
+      </div>
+      )
+  },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
     this._getTagsData(this.props, true);
@@ -233,6 +262,7 @@ let PTagRawData = React.createClass({
         <div className='jazz-ptag-rawdata'>
           {this._renderToolBar()}
           {this._renderDialog()}
+          {this._renderChartComponent()}
         </div>
         )
     }
