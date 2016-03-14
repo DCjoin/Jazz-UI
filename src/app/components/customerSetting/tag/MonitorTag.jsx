@@ -24,20 +24,10 @@ var MonitorTag = React.createClass({
       showFilter: false
     });
   },
-  _getResetFiltObj: function() {
-    var filterObj = this.state.filterObj;
-    filterObj.CommodityId = null;
-    filterObj.UomId = null;
-    filterObj.IsAccumulated = null;
-    return filterObj;
-  },
   _getInitFilterObj: function() {
     var filterObj = {
-      CustomerId: parseInt(window.currentCustomerId),
-      ExcludeId: this.props.tagId,
       CommodityId: null,
       UomId: null,
-      IsAccumulated: null,
       LikeCodeOrName: ''
     };
     return filterObj;
@@ -69,15 +59,24 @@ var MonitorTag = React.createClass({
   },
   _handleFilter: function() {
     var me = this;
+    var isFilter;
+    var filterObj = this.state.filterObj;
+    TagAction.setFormulaFilterObj(filterObj);
+    if (filterObj.CommodityId === null && filterObj.UomId === null) {
+      isFilter = false;
+    } else {
+      isFilter = true;
+    }
     this.setState({
       page: 1,
-      showFilter: false
+      showFilter: false,
+      isFilter: isFilter
     }, () => {
       me.getTagList();
     });
   },
   _handleCloseFilterSideNav: function() {
-    var filterObj = this._getResetFiltObj();
+    var filterObj = TagStore.getFormulaFilterObj().toJS();
     this.setState({
       showFilter: false,
       filterObj: filterObj
@@ -86,15 +85,8 @@ var MonitorTag = React.createClass({
   _mergeFilterObj: function(data) {
     var filterObj = this.state.filterObj;
     filterObj[data.path] = data.value;
-    var isFilter;
-    if (filterObj.CommodityId === null && filterObj.UomId === null && filterObj.IsAccumulated === null) {
-      isFilter = false;
-    } else {
-      isFilter = true;
-    }
     this.setState({
-      filterObj: filterObj,
-      isFilter: isFilter
+      filterObj: filterObj
     });
   },
   _onChange: function() {
@@ -191,7 +183,7 @@ var MonitorTag = React.createClass({
     }
   },
   getTagList: function() {
-    TagAction.getTagList(this.state.page, this.state.filterObj);
+    TagAction.getTagList(this.props.tagId, this.state.page, this.state.filterObj);
   },
   componentDidMount: function() {
     TagStore.addAllTagListChangeListener(this._onChange);

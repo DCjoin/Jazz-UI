@@ -29,60 +29,12 @@ var TagDetail = React.createClass({
     onCloseDialog: React.PropTypes.func,
     onToggle: React.PropTypes.func,
     onSwitchTab: React.PropTypes.func,
-    mergeTag: React.PropTypes.func
+    mergeTag: React.PropTypes.func,
+    enableSave: React.PropTypes.bool
   },
   getInitialState: function() {
     return {
     };
-  },
-  _isValid: function() {
-    var codeIsValid,
-      meterCodeIsValid,
-      channelIsValid,
-      commodityIsValid,
-      uomIsValid,
-      calculationStepIsValid,
-      calculationTypeIsValid,
-      slopeIsValid = true,
-      offsetIsValid = true,
-      commentIsValid = true;
-    if (this.refs.pTagBasic) {
-      var pTagBasic = this.refs.pTagBasic;
-      codeIsValid = pTagBasic.refs.code.isValid();
-      meterCodeIsValid = pTagBasic.refs.meterCode.isValid();
-      channelIsValid = pTagBasic.refs.channel.isValid();
-      commodityIsValid = pTagBasic.refs.commodity.isValid();
-      uomIsValid = pTagBasic.refs.uom.isValid();
-      calculationStepIsValid = pTagBasic.refs.calculationStep.isValid();
-      calculationTypeIsValid = pTagBasic.refs.calculationType.isValid();
-      if (pTagBasic.refs.slope) {
-        slopeIsValid = pTagBasic.refs.slope.isValid();
-      }
-      if (pTagBasic.refs.offset) {
-        offsetIsValid = pTagBasic.refs.offset.isValid();
-      }
-      if (pTagBasic.refs.comment) {
-        commentIsValid = pTagBasic.refs.comment.isValid();
-      }
-
-      return codeIsValid && meterCodeIsValid && channelIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && slopeIsValid && offsetIsValid && commentIsValid;
-    } else if (this.refs.vTagBasic) {
-      var vTagBasic = this.refs.vTagBasic;
-      codeIsValid = vTagBasic.refs.code.isValid();
-      commodityIsValid = vTagBasic.refs.commodity.isValid();
-      uomIsValid = vTagBasic.refs.uom.isValid();
-      calculationStepIsValid = vTagBasic.refs.calculationStep.isValid();
-      calculationTypeIsValid = vTagBasic.refs.calculationType.isValid();
-      if (vTagBasic.refs.comment) {
-        commentIsValid = vTagBasic.refs.comment.isValid();
-      }
-
-      return codeIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
-    } else if (this.refs.vTagFormula) {
-      var vTagFormula = this.refs.vTagFormula;
-      var fomulaIsValid = vTagFormula.refs.formula.isValid();
-      return fomulaIsValid;
-    }
   },
   _onSwitchTab: function(event) {
     this.props.onSwitchTab(event);
@@ -159,7 +111,7 @@ var TagDetail = React.createClass({
       if (this.props.showBasic) {
         content = <PTagBasic ref='pTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
       } else {
-        content = <PTagRawData ref='pTagRawData' selectedTag={this.props.selectedTag}/>
+        content = <PTagRawData ref='pTagRawData' selectedTag={this.props.selectedTag}/>;
       }
     } else {
       if (this.props.showBasic) {
@@ -175,14 +127,10 @@ var TagDetail = React.createClass({
       );
   },
   _renderFooter: function() {
-    var enableSave = true;
-    if (this.props.formStatus !== formStatus.VIEW) {
-      enableSave = this._isValid();
-    }
     var bottom = null;
     if (this.props.tagType !== 1 || this.props.showBasic) {
       bottom = (
-        <FormBottomBar allowDelete={this.props.showBasic} allowEdit={true} enableSave={enableSave} ref="actionBar" status={this.props.formStatus} onSave={this.props.onSave} onEdit={this.props.onEdit} onDelete={this.props.onDelete} onCancel={this.props.onCancel} />
+        <FormBottomBar allowDelete={this.props.showBasic} allowEdit={true} enableSave={this.props.enableSave} ref="actionBar" status={this.props.formStatus} onSave={this.props.onSave} onEdit={this.props.onEdit} onDelete={this.props.onDelete} onCancel={this.props.onCancel} />
       );
     }
     return bottom;

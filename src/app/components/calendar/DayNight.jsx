@@ -319,7 +319,7 @@ var Daynight = React.createClass({
     }
     var leftProps = {
       addBtnLabel: I18N.Setting.Calendar.DaynightSetting,
-      isViewStatus: isView,
+      isAddStatus: isAdd,
       isLoading: false,
       contentItems: items,
       onAddBtnClick: me._addDaynight

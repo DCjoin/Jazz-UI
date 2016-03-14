@@ -15,6 +15,16 @@ let j2d = DataConverter.JsonToDateTime,
 let _tagList = Immutable.fromJS([]),
   _allTagList = Immutable.fromJS([]),
   _logList = Immutable.fromJS([]),
+  _filterObj = Immutable.fromJS({
+    CommodityId: null,
+    UomId: null,
+    LikeCodeOrName: ''
+  }),
+  _formulaFilterObj = Immutable.fromJS({
+    CommodityId: null,
+    UomId: null,
+    LikeCodeOrName: ''
+  }),
   _allTotal = 0,
   _total = 0,
   _selectedTagIndex = null,
@@ -81,6 +91,18 @@ var TagStore = assign({}, PrototypeStore, {
       _logList = Immutable.fromJS(logList);
     }
   },
+  setFilterObj: function(filterObj) {
+    _filterObj = Immutable.fromJS(filterObj);
+  },
+  getFilterObj: function() {
+    return _filterObj;
+  },
+  setFormulaFilterObj: function(filterObj) {
+    _formulaFilterObj = Immutable.fromJS(filterObj);
+  },
+  getFormulaFilterObj: function() {
+    return _formulaFilterObj;
+  },
   deleteTag() {
     _tagList = _tagList.delete(_selectedTagIndex);
     var length = _tagList.size;
@@ -138,7 +160,7 @@ var TagStore = assign({}, PrototypeStore, {
         type: I18N.Setting.VEEMonitorRule.NullValue,
         id: 1
       }
-    ])
+    ]);
   },
   initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
@@ -161,7 +183,8 @@ var TagStore = assign({}, PrototypeStore, {
   },
   extractDifferenceData: function(data) {
     var targetEnergyData = data.TargetEnergyData,
-      item, target,
+      item,
+      target,
       differenceItem = null;
     if (targetEnergyData && targetEnergyData.length > 0) {
       for (var i = 0, len = targetEnergyData.length; i < len; i++) {
@@ -182,7 +205,8 @@ var TagStore = assign({}, PrototypeStore, {
   constituteDifferenceDataArray: function(rawData, differenceData) {
     var dataArray = rawData.TargetEnergyData[0].EnergyData,
       item,
-      difArray = [], difItem;
+      difArray = [],
+      difItem;
 
     difArray[0] = this.getFirstDifferenceItem(dataArray[0], differenceData);
 
@@ -210,7 +234,7 @@ var TagStore = assign({}, PrototypeStore, {
 
   },
   getDifferenceItem: function(currentItem, preIndex, dataArray, differenceData) {
-    var preItem, difItem,
+    var preItem,
       difItem = {
         DataValue: null,
         LocalTime: currentItem.LocalTime,
@@ -243,7 +267,7 @@ var TagStore = assign({}, PrototypeStore, {
     return null;
   },
   getRawData: function() {
-    return _rawData
+    return _rawData;
   },
   getDifferenceData: function() {
     var rawData = _rawData.toJS(),
@@ -258,175 +282,6 @@ var TagStore = assign({}, PrototypeStore, {
     cloneData.TargetEnergyData[0].EnergyData = difArray;
     return Immutable.fromJS(cloneData);
   },
-  // translateDate(val, s, targetStep) {
-  //   var step = targetStep,
-  //     sign = CommonFuns.isNumber(s) ? s : 1,
-  //     date = moment(CommonFuns.isNumber(val) ? val : j2d(val)),
-  //     newDate;
-  //   switch (step) {
-  //     case 0: //raw
-  //       //newDate = date;
-  //       newDate = date.add(-7.5 * sign, 'minutes');
-  //       break;
-  //     case 1: //hour add 30mins
-  //       newDate = date.add(-30 * sign, 'minutes');
-  //       break;
-  //     case 2: //day add 12hours
-  //       newDate = date.add(-12 * sign, 'hours');
-  //       break;
-  //     case 3: //month add 15days
-  //       newDate = date.add(-15 * sign, 'days');
-  //       break;
-  //     case 4: //2010年 add 6months
-  //       newDate = date.add(-6 * sign, 'months');
-  //       break;
-  //     case 5: //week add 3days&12hours
-  //       newDate = date.add(-4 * sign, 'days');
-  //       newDate = newDate.add(12 * sign, 'hours');
-  //       break;
-  //     case 6: //15mins
-  //       newDate = date.add(-7.5 * sign, 'minutes');
-  //       break;
-  //     case 7: //30mins
-  //       newDate = date.add(-15 * sign, 'minutes');
-  //       break;
-  //     case 8: //2 hours
-  //       newDate = date.add(-1 * sign, 'hours');
-  //       break;
-  //     case 9: //4 hours
-  //       newDate = date.add(-2 * sign, 'hours');
-  //       break;
-  //     case 10: //6 hours
-  //       newDate = date.add(-3 * sign, 'hours');
-  //       break;
-  //     case 11: //8 hours
-  //       newDate = date.add(-4 * sign, 'hours');
-  //       break;
-  //     case 12: //12hours
-  //       newDate = date.add(-6 * sign, 'hours');
-  //       break;
-  //   }
-  //
-  //   return j2d(d2j(newDate._d));
-  // },
-  // tagSeriesConstructor(target) {
-  //   var obj = {
-  //     dType: target.Type,
-  //     name: target.Name,
-  //     uid: target.TargetId,
-  //     option: {
-  //       commodityId: target.CommodityId
-  //     },
-  //     graySerie: false
-  //   };
-  //   var name = target.Name || '';
-  //
-  //   switch (target.Type) {
-  //     case 11:
-  //       obj.name = name + I18N.EM.Ratio.CaculateValue;
-  //       break;
-  //     case 12:
-  //       obj.name = name + I18N.EM.Ratio.RawValue;
-  //       obj.graySerie = true;
-  //       obj.disableDelete = true;
-  //       break;
-  //     case 13:
-  //       obj.name = I18N.EM.Ratio.TargetValue;
-  //       obj.disableDelete = true;
-  //       break;
-  //     case 14:
-  //       obj.name = I18N.EM.Ratio.BaseValue;
-  //       obj.disableDelete = true;
-  //       break;
-  //     case 18:
-  //       obj.name = I18N.EM.Tool.Weather.Temperature;
-  //       //obj.disableDelete = true;
-  //       break;
-  //     case 19:
-  //       obj.name = I18N.EM.Tool.Weather.Humidity;
-  //       //obj.disableDelete = true;
-  //       break;
-  //     default: break;
-  //   }
-  //   return obj;
-  // },
-  // getSeriesInternal(data, seriesConstructorFn, setter, step, start, end) {
-  //   var ret = [], eData, t, arr, series, obj, eStep,
-  //     uom = 'null';
-  //   for (var i = 0; i < data.length; i++) {
-  //     arr = [];
-  //     series = data[i];
-  //     eStep = series.Target.Step;
-  //     if (series.EnergyData) {
-  //       for (var j = 0; j < series.EnergyData.length; j++) {
-  //         eData = series.EnergyData[j];
-  //         arr.push([this.translateDate(eData.LocalTime, null, eStep), eData.DataValue]);
-  //       }
-  //     }
-  //     obj = seriesConstructorFn(series.Target);
-  //     if (!obj) continue;
-  //     if (!obj.option)
-  //       obj.option = {};
-  //     t = series.Target;
-  //     if (t.Uom) {
-  //       uom = t.Uom;
-  //     }
-  //     if (uom == 'null')
-  //       uom = '';
-  //     obj.option = assign(obj.option, {
-  //       start: start,
-  //       end: end,
-  //       step: step,
-  //       targetStep: t.Step,
-  //       uom: uom,
-  //       uomId: t.UomId
-  //     });
-  //     obj.data = arr;
-  //     if (setter) {
-  //       setter(series.Target, obj);
-  //     }
-  //
-  //     ret.push(obj);
-  //   }
-  //   return ret;
-  // },
-  // convertSingleTimeData: function(data, obj) {
-  //   if (!data) return;
-  //   var start = j2d(obj.start);
-  //   var end = j2d(obj.end);
-  //   var step = obj.step;
-  //   var d, date;
-  //   var energyData, localTime;
-  //   var earliestTime = Number.MAX_VALUE; //2000 年1月1日
-  //
-  //   if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
-  //     for (var i = 0, len = data.TargetEnergyData.length; i < len; i++) {
-  //       energyData = data.TargetEnergyData[i].EnergyData;
-  //       if (energyData && energyData.length > 0) {
-  //         localTime = j2d(energyData[0].LocalTime);
-  //         if (localTime < earliestTime) {
-  //           earliestTime = localTime;
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  //
-  //   if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
-  //     d = this.getSeriesInternal(data.TargetEnergyData, this.tagSeriesConstructor, undefined, step, start, end);
-  //   }
-  //
-  //   return {
-  //     Data: d,
-  //   };
-  // },
-  // convert(data, obj) {
-  //   var timeRanges = obj.timeRanges,
-  //     returnDatas;
-  //   returnDatas = this.convertSingleTimeData(data, obj);
-  //
-  //   return returnDatas;
-  // },
   getDataForChart: function(data, obj) {
     var _energyData;
 
@@ -443,80 +298,9 @@ var TagStore = assign({}, PrototypeStore, {
     _energyData = _energyData.set('NavigatorData', null)
     return _energyData
   },
-  energyChartCmpMergeConfig(defaultConfig, chartComponentBox) {
-    var commonTooltipFormatter = function() {
-      var op = this.points[0].series.options.option,
-        start = op.start,
-        end = op.end, uom,
-        step = op.targetStep || op.step,
-        decimalDigits, serieDecimalDigits;
 
-      var getPercent = function(value, total) {
-        var pv = 0;
-        if (CommonFuns.isNumber(value) && total !== 0) {
-          pv = value / total;
-          pv = pv * 100;
-          pv = pv.toFixed(1);
-        }
-        return ', ' + pv + '%';
-      };
-
-      var str = formatDateByStep(this.x, start, end, step);
-      str += '<br/>';
-      var total = 0;
-      decimalDigits = 0;
-      let isStack = (chartComponentBox.props.chartType === 'stack');
-      let stackTotal = 0;
-      if (isStack) {
-        for (let i = 0; i < this.points.length; ++i) {
-          let point = this.points[i];
-          stackTotal += point.y;
-        }
-      }
-      for (let i = 0; i < this.points.length; ++i) {
-        let point = this.points[i],
-          series = point.series,
-          name = series.name,
-          color = series.color;
-
-        uom = series.options.option.uom;
-        if (isStack) {
-          str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b>{4}</span><br/>',
-            color, name, dataLabelFormatter.call({
-              value: point.y
-            }, false), uom, getPercent(point.y, stackTotal));
-        } else {
-          str += I18N.format('<span style="color:{0}">{1}: <b>{2}{3}</b></span><br/>',
-            color, name, dataLabelFormatter.call({
-              value: point.y
-            }, false), uom);
-        }
-
-        if (isNumber(point.y)) {
-          total += point.y;
-
-          serieDecimalDigits = getDecimalDigits(point.y);
-          if (serieDecimalDigits > 0 && serieDecimalDigits > decimalDigits) {
-            decimalDigits = serieDecimalDigits;
-          }
-        }
-      }
-      if (decimalDigits > 0) {
-        total = toFixed(total, decimalDigits);
-      }
-      total = dataLabelFormatter.call({
-        value: total
-      }, false);
-      if (this.points.length > 1 && this.points[0].series.chart.userOptions.chartTooltipHasTotal) {
-        str += '总计：<b>' + total + uom + '</b>';
-      }
-      return str;
-    };
-
-    defaultConfig.tooltip.formatter = commonTooltipFormatter;
-  },
   getTagStatus: function() {
-    return _tagStatus
+    return _tagStatus;
   },
   emitTagListChange: function() {
     this.emit(CHANGE_TAG_EVENT);
@@ -632,6 +416,12 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_TAG_DATAS_SUCCESS:
       TagStore.setTagDatas(action.tagDatas, action.tagStatus);
       TagStore.emitTagDatasChange();
+      break;
+    case Action.SET_FILTER_OBJ:
+      TagStore.setFilterObj(action.filterObj);
+      break;
+    case Action.SET_FORMULA_FILTER_OBJ:
+      TagStore.setFormulaFilterObj(action.filterObj);
       break;
   }
 });
