@@ -136,16 +136,6 @@ var TagFilter = React.createClass({
 							</div>
 						</div>
 
-						<div className="pop-user-filter-side-nav-content-item sidebar-content-item">
-							<div className="pop-user-filter-side-nav-content-item-header">
-								<div className="pop-user-filter-side-nav-content-item-header-title">{I18N.Setting.Tag.Type}</div>
-								<LinkButton disabled={!filterObj.IsAccumulated} onClick={this._bindChangeFilter("IsAccumulated", true)} label={I18N.Setting.User.Cancel}/>
-							</div>
-							<div className="pop-user-filter-side-nav-content-item-input pop-viewableSelectField">
-                <ViewableDropDownMenu style={inputStyle} menuItemStyle={menuItemStyle} dataItems={this._getAccumulatedList()} defaultValue={filterObj.IsAccumulated} hintText={I18N.Setting.Tag.Type} didChanged={this._bindChangeFilter("IsAccumulated")}>
-								</ViewableDropDownMenu>
-							</div>
-						</div>
 					</div>
 					<div className="sidebar-bottom-action">
 						<FlatButton label={I18N.Common.Button.Filter} onClick={this.props.handleFilter} labelStyle={{

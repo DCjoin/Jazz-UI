@@ -83,34 +83,19 @@ let Tag = React.createClass({
     }
   },
   _resetFilterObj: function() {
-    var filterObj = this.state.filterObj;
-    filterObj.CommodityId = null;
-    filterObj.UomId = null;
-    filterObj.IsAccumulated = null;
+    var filterObj = this._getInitFilterObj();
+    TagAction.setFilterObj(filterObj);
     this.setState({
       filterObj: filterObj,
       curPageNum: 1
     });
   },
-  _getResetFiltObj: function() {
-    var filterObj = this.state.filterObj;
-    filterObj.CommodityId = null;
-    filterObj.UomId = null;
-    filterObj.IsAccumulated = null;
-    return filterObj;
-  },
   _getInitFilterObj: function() {
     var filterObj = {
-      CustomerId: parseInt(window.currentCustomerId),
-      Type: this.props.tagType,
       CommodityId: null,
       UomId: null,
-      IsAccumulated: null,
       LikeCodeOrName: ''
     };
-    if (this.props.tagType === 2) {
-      filterObj.ReverseFormula = true;
-    }
     return filterObj;
   },
   _onToggle: function() {
@@ -234,7 +219,7 @@ let Tag = React.createClass({
       this.setState({
         curPageNum: curPageNum - 1
       }, () => {
-        TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
+        this.getTagList();
       });
     }
   },
@@ -244,7 +229,7 @@ let Tag = React.createClass({
       this.setState({
         curPageNum: curPageNum + 1
       }, () => {
-        TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
+        this.getTagList();
       });
     }
   },
@@ -252,7 +237,7 @@ let Tag = React.createClass({
     this.setState({
       curPageNum: targetPage
     }, () => {
-      TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
+      this.getTagList();
     });
   },
   _onSearch: function(value) {
@@ -262,7 +247,7 @@ let Tag = React.createClass({
       filterObj: filterObj,
       curPageNum: 1
     }, () => {
-      TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
+      this.getTagList();
     });
   },
   _onSearchCleanButtonClick: function() {
@@ -272,7 +257,7 @@ let Tag = React.createClass({
       filterObj: filterObj,
       curPageNum: 1
     }, () => {
-      TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
+      this.getTagList();
     });
   },
   _onExportTag: function() {
@@ -291,33 +276,34 @@ let Tag = React.createClass({
     });
   },
   _handleCloseFilterSideNav: function() {
-    var filterObj = this._getResetFiltObj();
+    var filterObj = TagStore.getFilterObj().toJS();
     this.setState({
       showFilter: false,
-      isFilter: false,
       filterObj: filterObj
     });
   },
   _handleFilter: function() {
-    this.setState({
-      curPageNum: 1,
-      showFilter: false
-    }, () => {
-      TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
-    });
-  },
-  _mergeFilterObj: function(data) {
-    var filterObj = this.state.filterObj;
-    filterObj[data.path] = data.value;
     var isFilter;
-    if (filterObj.CommodityId === null && filterObj.UomId === null && filterObj.IsAccumulated === null) {
+    var filterObj = this.state.filterObj;
+    TagAction.setFilterObj(filterObj);
+    if (filterObj.CommodityId === null && filterObj.UomId === null) {
       isFilter = false;
     } else {
       isFilter = true;
     }
     this.setState({
-      filterObj: filterObj,
+      curPageNum: 1,
+      showFilter: false,
       isFilter: isFilter
+    }, () => {
+      this.getTagList();
+    });
+  },
+  _mergeFilterObj: function(data) {
+    var filterObj = this.state.filterObj;
+    filterObj[data.path] = data.value;
+    this.setState({
+      filterObj: filterObj
     });
   },
   _mergeTag: function(data) {
@@ -441,8 +427,11 @@ let Tag = React.createClass({
       });
     });
   },
+  getTagList: function() {
+    TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+  },
   componentDidMount: function() {
-    TagAction.getTagListByType(this.state.curPageNum, this.state.filterObj);
+    this.getTagList();
     TagStore.addTagListChangeListener(this._onTagListChange);
     TagStore.addSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.addErrorChangeListener(this._onError);

@@ -11,6 +11,16 @@ import energyStore from '../Energy/EnergyStore.jsx';
 let _tagList = Immutable.fromJS([]),
   _allTagList = Immutable.fromJS([]),
   _logList = Immutable.fromJS([]),
+  _filterObj = Immutable.fromJS({
+    CommodityId: null,
+    UomId: null,
+    LikeCodeOrName: ''
+  }),
+  _formulaFilterObj = Immutable.fromJS({
+    CommodityId: null,
+    UomId: null,
+    LikeCodeOrName: ''
+  }),
   _allTotal = 0,
   _total = 0,
   _selectedTagIndex = null,
@@ -77,6 +87,18 @@ var TagStore = assign({}, PrototypeStore, {
       _logList = Immutable.fromJS(logList);
     }
   },
+  setFilterObj: function(filterObj) {
+    _filterObj = Immutable.fromJS(filterObj);
+  },
+  getFilterObj: function() {
+    return _filterObj;
+  },
+  setFormulaFilterObj: function(filterObj) {
+    _formulaFilterObj = Immutable.fromJS(filterObj);
+  },
+  getFormulaFilterObj: function() {
+    return _formulaFilterObj;
+  },
   deleteTag() {
     _tagList = _tagList.delete(_selectedTagIndex);
     var length = _tagList.size;
@@ -134,7 +156,7 @@ var TagStore = assign({}, PrototypeStore, {
         type: I18N.Setting.VEEMonitorRule.NullValue,
         id: 1
       }
-    ])
+    ]);
   },
   initErrorText(errorText) {
     let error = JSON.parse(errorText).error;
@@ -157,7 +179,8 @@ var TagStore = assign({}, PrototypeStore, {
   },
   extractDifferenceData: function(data) {
     var targetEnergyData = data.TargetEnergyData,
-      item, target,
+      item,
+      target,
       differenceItem = null;
     if (targetEnergyData && targetEnergyData.length > 0) {
       for (var i = 0, len = targetEnergyData.length; i < len; i++) {
@@ -178,7 +201,8 @@ var TagStore = assign({}, PrototypeStore, {
   constituteDifferenceDataArray: function(rawData, differenceData) {
     var dataArray = rawData.TargetEnergyData[0].EnergyData,
       item,
-      difArray = [], difItem;
+      difArray = [],
+      difItem;
 
     difArray[0] = this.getFirstDifferenceItem(dataArray[0], differenceData);
 
@@ -206,7 +230,7 @@ var TagStore = assign({}, PrototypeStore, {
 
   },
   getDifferenceItem: function(currentItem, preIndex, dataArray, differenceData) {
-    var preItem, difItem,
+    var preItem,
       difItem = {
         DataValue: null,
         LocalTime: currentItem.LocalTime,
@@ -239,7 +263,7 @@ var TagStore = assign({}, PrototypeStore, {
     return null;
   },
   getRawData: function() {
-    return _rawData
+    return _rawData;
   },
   getDifferenceData: function() {
     var rawData = _rawData.toJS(),
@@ -261,8 +285,10 @@ var TagStore = assign({}, PrototypeStore, {
     var start = j2d(obj.start);
     var end = j2d(obj.end);
     var step = obj.step;
-    var d, date;
-    var energyData, localTime;
+    var d,
+      date;
+    var energyData,
+      localTime;
     var earliestTime = Number.MAX_VALUE; //2000 年1月1日
 
     if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
@@ -307,7 +333,7 @@ var TagStore = assign({}, PrototypeStore, {
     _energyData = Immutable.fromJS(this.convertFn(data, obj));
   },
   getTagStatus: function() {
-    return _tagStatus
+    return _tagStatus;
   },
   emitTagListChange: function() {
     this.emit(CHANGE_TAG_EVENT);
@@ -423,6 +449,12 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_TAG_DATAS_SUCCESS:
       TagStore.setTagDatas(action.tagDatas, action.tagStatus);
       TagStore.emitTagDatasChange();
+      break;
+    case Action.SET_FILTER_OBJ:
+      TagStore.setFilterObj(action.filterObj);
+      break;
+    case Action.SET_FORMULA_FILTER_OBJ:
+      TagStore.setFormulaFilterObj(action.filterObj);
       break;
   }
 });

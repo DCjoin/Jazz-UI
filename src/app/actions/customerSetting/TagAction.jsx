@@ -2,9 +2,16 @@
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 import Ajax from '../../ajax/ajax.jsx';
+import assign from "object-assign";
 
 let TagAction = {
-  getTagListByType: function(page, filter) {
+  getTagListByType: function(type, page, filterObj) {
+    var obj = {
+      CustomerId: parseInt(window.currentCustomerId),
+      Type: type,
+      ReverseFormula: type === 2 ? true : false
+    };
+    var filter = assign(filterObj, obj);
     Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: filter,
@@ -25,7 +32,12 @@ let TagAction = {
       }
     });
   },
-  getTagList: function(page, filter) {
+  getTagList: function(tagId, page, filterObj) {
+    var obj = {
+      CustomerId: parseInt(window.currentCustomerId),
+      ExcludeId: tagId
+    };
+    var filter = assign(filterObj, obj);
     Ajax.post('/Tag.svc/GetVariableItemsByFilter', {
       params: {
         filter: filter,
@@ -205,7 +217,18 @@ let TagAction = {
       }
     });
   },
-
+  setFilterObj(filterObj) {
+    AppDispatcher.dispatch({
+      type: Action.SET_FILTER_OBJ,
+      filterObj: filterObj
+    });
+  },
+  setFormulaFilterObj(filterObj) {
+    AppDispatcher.dispatch({
+      type: Action.SET_FORMULA_FILTER_OBJ,
+      filterObj: filterObj
+    });
+  },
 };
 
 module.exports = TagAction;
