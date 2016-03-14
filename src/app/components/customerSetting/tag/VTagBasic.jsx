@@ -1,11 +1,9 @@
 'use strict';
 
 import React from "react";
-import { Checkbox } from 'material-ui';
-import Regex from '../../../constants/Regex.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
-import AllCommodityStore from '../../../stores/AllCommodityStore.jsx';
+import ComAndUom from '../ComAndUom.jsx';
 
 var VTagBasic = React.createClass({
   propTypes: {
@@ -15,48 +13,12 @@ var VTagBasic = React.createClass({
   },
   getInitialState: function() {
     return {
-      allCommodities: AllCommodityStore.getAllCommodities()
     };
   },
-  _onAllCommoditiesChange: function() {
-    this.setState({
-      allCommodities: AllCommodityStore.getAllCommodities()
-    });
-  },
-  _getCommodityList: function() {
-    var allCommodities = this.state.allCommodities;
-    let commodityList = [];
-    if (allCommodities !== null) {
-      allCommodities.forEach(commodity => {
-        commodityList.push({
-          payload: commodity.Id,
-          text: commodity.Comment
-        });
-      });
+  _mergeTag: function(data) {
+    if (this.props.mergeTag) {
+      this.props.mergeTag(data);
     }
-    return commodityList;
-
-  },
-  _getUomList: function() {
-    var allCommodities = this.state.allCommodities;
-    var commodityId = this.props.selectedTag.get('CommodityId');
-    var uomList = [];
-    if (allCommodities !== null) {
-      var index = allCommodities.findIndex((item) => {
-        if (item.Id === commodityId) {
-          return true;
-        }
-      });
-      if (index !== -1) {
-        allCommodities[index].Uoms.forEach(uom => {
-          uomList.push({
-            payload: uom.Id,
-            text: uom.Comment
-          });
-        });
-      }
-    }
-    return uomList;
   },
   _getCalculationStepList: function() {
     let calculationStepList = [{
@@ -106,18 +68,14 @@ var VTagBasic = React.createClass({
     return calculationTypeList;
   },
   componentWillMount: function() {},
-  componentDidMount: function() {
-    AllCommodityStore.addChangeListener(this._onAllCommoditiesChange);
-  },
-  componentWillUnmount: function() {
-    AllCommodityStore.removeChangeListener(this._onAllCommoditiesChange);
-  },
+  componentDidMount: function() {},
   componentWillReceiveProps: function(nextProps) {},
+  componentWillUnmount: function() {},
   render: function() {
     var me = this;
     var isView = this.props.isViewStatus;
     var selectedTag = this.props.selectedTag,
-      {Code, CommodityId, UomId, CalculationStep, CalculationType, Comment} = selectedTag.toJS();
+      {Code, CalculationStep, CalculationType, Comment} = selectedTag.toJS();
     var codeProps = {
         ref: 'code',
         isViewStatus: isView,
@@ -128,32 +86,6 @@ var VTagBasic = React.createClass({
           me.props.mergeTag({
             value,
             path: "Code"
-          });
-        }
-      },
-      commodityProps = {
-        ref: 'commodity',
-        isViewStatus: isView,
-        title: I18N.Setting.Tag.Commodity,
-        defaultValue: CommodityId,
-        dataItems: me._getCommodityList(),
-        didChanged: value => {
-          me.props.mergeTag({
-            value,
-            path: "CommodityId"
-          });
-        }
-      },
-      uomProps = {
-        ref: 'uom',
-        isViewStatus: isView,
-        title: I18N.Setting.Tag.Uom,
-        defaultValue: UomId,
-        dataItems: me._getUomList(),
-        didChanged: value => {
-          me.props.mergeTag({
-            value,
-            path: "UomId"
           });
         }
       },
@@ -207,12 +139,7 @@ var VTagBasic = React.createClass({
           <div className="pop-customer-detail-content-left-item">
             <ViewableTextField {...codeProps}/>
           </div>
-          <div className="pop-customer-detail-content-left-item">
-            <ViewableDropDownMenu {...commodityProps}/>
-          </div>
-          <div className="pop-customer-detail-content-left-item">
-            <ViewableDropDownMenu {...uomProps}/>
-          </div>
+          <ComAndUom ref='comAndUom' selectedItem={selectedTag} mergeItem={this._mergeTag} isViewStatus={isView}/>
           <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...calculationStepProps}/>
           </div>

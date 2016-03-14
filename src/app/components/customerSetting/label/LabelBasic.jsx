@@ -1,37 +1,45 @@
 'use strict';
 
 import React from "react";
-import { Checkbox } from 'material-ui';
-import Regex from '../../../constants/Regex.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import ComAndUom from '../ComAndUom.jsx';
 
-var PTagBasic = React.createClass({
+var LabelBasic = React.createClass({
   propTypes: {
-    selectedTag: React.PropTypes.object,
-    mergeTag: React.PropTypes.func,
+    selectedLabel: React.PropTypes.object,
+    mergeLabel: React.PropTypes.func,
     isViewStatus: React.PropTypes.bool
   },
   getInitialState: function() {
     return {
     };
   },
-  _mergeTag: function(data) {
-    if (this.props.mergeTag) {
-      this.props.mergeTag(data);
+  _mergeLabel: function(data) {
+    if (this.props.mergeLabel) {
+      this.props.mergeLabel(data);
     }
   },
+  _getKpiTypelist: function() {},
   _getCalculationStepList: function() {
     let calculationStepList = [{
-      payload: 6,
-      text: I18N.Common.AggregationStep.Min15
-    }, {
-      payload: 7,
-      text: I18N.Common.AggregationStep.Min30
-    }, {
       payload: 1,
       text: I18N.Common.AggregationStep.Hourly
+    }, {
+      payload: 8,
+      text: I18N.Common.AggregationStep.Hour2
+    }, {
+      payload: 9,
+      text: I18N.Common.AggregationStep.Hour4
+    }, {
+      payload: 10,
+      text: I18N.Common.AggregationStep.Hour6
+    }, {
+      payload: 11,
+      text: I18N.Common.AggregationStep.Hour8
+    }, {
+      payload: 12,
+      text: I18N.Common.AggregationStep.Hour12
     }, {
       payload: 2,
       text: I18N.Common.AggregationStep.Daily
@@ -67,8 +75,8 @@ var PTagBasic = React.createClass({
   render: function() {
     var me = this;
     var isView = this.props.isViewStatus;
-    var selectedTag = this.props.selectedTag,
-      {Code, MeterCode, ChannelId, CalculationStep, CalculationType, Slope, Offset, IsAccumulated, Comment} = selectedTag.toJS();
+    var selectedLabel = this.props.selectedLabel,
+      {Code, CalculationStep, CalculationType, Comment} = selectedLabel.toJS();
     var codeProps = {
         ref: 'code',
         isViewStatus: isView,
@@ -82,36 +90,10 @@ var PTagBasic = React.createClass({
           });
         }
       },
-      meterCodeProps = {
-        ref: 'meterCode',
-        isViewStatus: isView,
-        title: I18N.Setting.Tag.MeterCode,
-        defaultValue: MeterCode,
-        isRequired: true,
-        didChanged: value => {
-          me.props.mergeTag({
-            value,
-            path: "MeterCode"
-          });
-        }
-      },
-      channelProps = {
-        ref: 'channel',
-        isViewStatus: isView,
-        title: I18N.Setting.Tag.Channel,
-        defaultValue: ChannelId,
-        isRequired: true,
-        didChanged: value => {
-          me.props.mergeTag({
-            value,
-            path: "ChannelId"
-          });
-        }
-      },
       calculationStepProps = {
         ref: 'calculationStep',
         isViewStatus: isView,
-        title: I18N.Setting.Tag.Period,
+        title: I18N.Setting.Tag.CalculationStep,
         defaultValue: CalculationStep,
         dataItems: me._getCalculationStepList(),
         didChanged: value => {
@@ -134,48 +116,6 @@ var PTagBasic = React.createClass({
           });
         }
       },
-      slopeProps = {
-        ref: 'slope',
-        isViewStatus: isView,
-        title: I18N.Setting.Tag.Slope,
-        defaultValue: Slope,
-        isRequired: false,
-        maxLen: 17,
-        regex: Regex.TagRule,
-        errorMessage: I18N.Setting.Tag.ErrorContent,
-        didChanged: value => {
-          me.props.mergeTag({
-            value,
-            path: "Slope"
-          });
-        }
-      },
-      offsetProps = {
-        ref: 'offset',
-        isViewStatus: isView,
-        title: I18N.Setting.Tag.Offset,
-        defaultValue: Offset,
-        isRequired: false,
-        regex: Regex.TagRule,
-        errorMessage: I18N.Setting.Tag.ErrorContent,
-        didChanged: value => {
-          me.props.mergeTag({
-            value,
-            path: "Offset"
-          });
-        }
-      },
-      checkProps = {
-        label: I18N.Setting.Tag.AccumulatedValueCal,
-        checked: IsAccumulated,
-        disabled: isView,
-        onCheck: (event, checked) => {
-          me.props.mergeTag({
-            value: checked,
-            path: "IsAccumulated"
-          });
-        }
-      },
       commentProps = {
         ref: 'comment',
         isViewStatus: isView,
@@ -191,15 +131,6 @@ var PTagBasic = React.createClass({
           });
         }
       };
-    var slope = !Slope && isView ? null : (<div className="pop-customer-detail-content-left-item">
-        <ViewableTextField {...slopeProps}/>
-      </div>);
-    var offset = !Offset && isView ? null : (<div className="pop-customer-detail-content-left-item">
-        <ViewableTextField {...offsetProps}/>
-      </div>);
-    var isAccumulated = !IsAccumulated && isView ? null : (<div className="pop-customer-detail-content-left-item">
-      <Checkbox {...checkProps}/>
-    </div>);
     var comment = !Comment && isView ? null : (<div className="pop-customer-detail-content-left-item">
         <ViewableTextField {...commentProps}/>
       </div>);
@@ -209,22 +140,13 @@ var PTagBasic = React.createClass({
           <div className="pop-customer-detail-content-left-item">
             <ViewableTextField {...codeProps}/>
           </div>
-          <div className="pop-customer-detail-content-left-item">
-            <ViewableTextField {...meterCodeProps}/>
-          </div>
-          <div className="pop-customer-detail-content-left-item">
-            <ViewableTextField {...channelProps}/>
-          </div>
-          <ComAndUom ref='comAndUom' selectedItem={selectedTag} mergeItem={this._mergeTag} isViewStatus={isView}/>
+          <ComAndUom ref='comAndUom' selectedItem={selectedLabel} mergeItem={this._mergeLabel} isViewStatus={isView}/>
           <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...calculationStepProps}/>
           </div>
           <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...calculationTypeProps}/>
           </div>
-          {slope}
-          {offset}
-          {isAccumulated}
           {comment}
         </div>
       </div>
@@ -232,4 +154,4 @@ var PTagBasic = React.createClass({
   },
 });
 
-module.exports = PTagBasic;
+module.exports = LabelBasic;

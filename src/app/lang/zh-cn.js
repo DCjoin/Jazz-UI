@@ -758,6 +758,7 @@ I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时�
 I18N.Setting.Tag.PTagRawData.DifferenceValue = '差值';
 
 I18N.Setting.CustomizedLabeling = {};
+I18N.Setting.CustomizedLabeling.DeleteLabel = '删除能效标识';
 I18N.Setting.CustomizedLabeling.Grade = '{0}级';
 I18N.Setting.CustomizedLabeling.OrderMode = '排列方式';
 I18N.Setting.CustomizedLabeling.Ascending = '正序';
@@ -767,7 +768,7 @@ I18N.Setting.CustomizedLabeling.ConfigurationDate = '配置时间';
 I18N.Setting.CustomizedLabeling.KPIType = '指标类型';
 I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*请确保输入的右区间大于左区间';
 I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*请确保输入的左区间大于右区间';
-I18N.Setting.CustomizedLabeling.DeleteTip = '<br/>删除后，关联该标识的仪表盘将无法正常显示。';
+I18N.Setting.CustomizedLabeling.DeleteTip = '计量数据"{0}"将被删除。删除后，关联该标识的仪表盘将无法正常显示。';
 
 
 I18N.Message = {};
