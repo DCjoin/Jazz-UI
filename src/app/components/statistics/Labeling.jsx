@@ -451,7 +451,7 @@ var Labeling = React.createClass({
     }
     var leftProps = {
       addBtnLabel: I18N.Setting.Labeling.Label.Labeling,
-      isViewStatus: isView && canAdd,
+      isAddStatus: isAdd && canAdd,
       isLoading: false,
       contentItems: items,
       onAddBtnClick: me._addLabeling

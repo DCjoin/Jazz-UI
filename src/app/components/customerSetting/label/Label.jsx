@@ -109,8 +109,7 @@ var Label = React.createClass({
 
   render: function() {
     let me = this,
-      isAdd = this.state.formStatus === formStatus.ADD,
-      isView = this.state.formStatus === formStatus.VIEW;
+      isAdd = this.state.formStatus === formStatus.ADD;
     let rightPanel = null;
     let items = [];
     var labelList = me.state.labelList;
@@ -139,7 +138,7 @@ var Label = React.createClass({
     }
     var leftProps = {
       addBtnLabel: I18N.Setting.Labeling.Label.Labeling,
-      isViewStatus: isView,
+      isAddStatus: isAdd,
       isLoading: false,
       contentItems: items,
       onAddBtnClick: me._addLabel

@@ -319,7 +319,7 @@ var WorkTime = React.createClass({
     }
     var leftProps = {
       addBtnLabel: I18N.Setting.Calendar.WorktimeSetting,
-      isViewStatus: isView,
+      isAddStatus: isAdd,
       isLoading: false,
       contentItems: items,
       onAddBtnClick: me._addWorktime
