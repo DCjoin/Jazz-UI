@@ -1008,7 +1008,7 @@ I18N.Message.M12105 = 'Service provider has been suspended! Please contact the a
 I18N.Message.M12106 = 'Service provider has been deleted! Please contact the administrator.';
 I18N.Message.M12107 = 'Your user has been deleted! Please contact the administrator.';
 I18N.Message.M12108 = 'Cannot send it to non-trial users!';
-
+I18N.Message.M12111 = 'Telephone existed, please try again.';
 
 I18N.Message.M13001 = 'Tags have been deleted by other users!';
 I18N.Message.M13002 = 'Alarm has been deleted by other users!';

@@ -1060,7 +1060,7 @@ I18N.Message.M12105 = '服务商已经暂停！请联系管理员。';
 I18N.Message.M12106 = '服务商已经删除！请联系管理员。';
 I18N.Message.M12107 = '您的用户被删除了！请联系管理员。';
 I18N.Message.M12108 = '非试用用户，不能发送！';
-
+I18N.Message.M12111 = '该手机号已存在。';
 
 I18N.Message.M13001 = '数据点已经被其他用户删除！';
 I18N.Message.M13002 = '报警已经被其他用户删除！';
@@ -1448,7 +1448,7 @@ I18N.Platform.User.Position = '职务';
 I18N.Platform.User.Role = '功能权限角色';
 I18N.Platform.User.ServerManager = '服务商初始管理员';
 I18N.Platform.User.ShowFuncAuth = '查看功能权限角色详情';
-I18N.Platform.User.Telephone = '电话';
+I18N.Platform.User.Telephone = '手机';
 I18N.Platform.User.Email = '电子邮箱';
 I18N.Platform.User.EmailError = '电子邮箱格式不正确';
 I18N.Platform.User.Logout = '退出';
