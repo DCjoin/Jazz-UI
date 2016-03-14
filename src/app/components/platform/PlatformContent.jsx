@@ -17,6 +17,7 @@ import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Delete from '../../controls/OperationTemplate/Delete.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
+import assign from 'object-assign';
 
 const DIALOG_TYPE = {
   DELETE: "cancel",
@@ -61,10 +62,12 @@ let PlatformContent = React.createClass({
     return m.format('YYYY/MM/DD');
   },
   _handleSaveUser: function() {
+    var provider = assign({}, this.props.provider);
+    provider.Telephone = null;
     if (!!this.props.provider.Id) {
-      PlatformAction.modifyServiceProvider(this.props.provider);
+      PlatformAction.modifyServiceProvider(provider);
     } else {
-      PlatformAction.createServiceProvider(this.props.provider);
+      PlatformAction.createServiceProvider(provider);
     }
   },
   _handleCancel: function() {
@@ -276,9 +279,6 @@ let PlatformContent = React.createClass({
           <ViewableTextField {...providerAddressProps} />
         </div>
         <div className="pop-user-detail-content-item">
-          <ViewableTextField {...providerTelephoneProps} />
-        </div>
-        <div className="pop-user-detail-content-item">
           <ViewableTextField {...providerEmailProps} />
         </div>
         <div className="pop-user-detail-content-item">
@@ -337,7 +337,6 @@ let PlatformContent = React.createClass({
       !Domain ||
       Domain.length > 200 ||
       !Address ||
-      !Telephone ||
       !Email || !Regex.Email.test(Email) || Email.length > 254 ||
       !StartDate
     ) {

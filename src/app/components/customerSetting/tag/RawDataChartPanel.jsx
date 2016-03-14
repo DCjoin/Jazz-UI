@@ -7,14 +7,10 @@ import Immutable from 'immutable';
 import mui from 'material-ui';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
-import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
-import AlarmAction from '../../actions/AlarmAction.jsx';
+import ChartCmpStrategyFactor from '../../energy/ChartCmpStrategyFactor.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
-import ChartCmpStrategyFactor from './ChartCmpStrategyFactor.jsx';
-import ChartStatusStore from '../../stores/energy/ChartStatusStore.jsx';
-import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
-import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
+import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 
 let {Dialog, FlatButton, Checkbox} = mui;
 let yAxisOffset = 70;
@@ -182,29 +178,29 @@ let defaultConfig = {
   rangeSelector: {
     enabled: false
   },
-  navigator: {
-    enabled: true,
-    margin: 25,
-    adaptToUpdatedData: false,
-    xAxis: {
-      ordinal: false,
-      labels: {
-        formatter: function() {
-          var v = this.value;
-          var chart = this.chart;
-          var step = chart.options.navigator.step;
-          if (step == 4) {
-            return dateFormat(new Date(v), 'YYYY');
-          } else {
-            return dateFormat(new Date(v), 'YYYY/MM');
-          }
-        }
-      }
-    },
-    yAxis: {
-      min: 0
-    }
-  },
+  // navigator: {
+  //   enabled: true,
+  //   margin: 25,
+  //   adaptToUpdatedData: false,
+  //   xAxis: {
+  //     ordinal: false,
+  //     labels: {
+  //       formatter: function() {
+  //         var v = this.value;
+  //         var chart = this.chart;
+  //         var step = chart.options.navigator.step;
+  //         if (step == 4) {
+  //           return dateFormat(new Date(v), 'YYYY');
+  //         } else {
+  //           return dateFormat(new Date(v), 'YYYY/MM');
+  //         }
+  //       }
+  //     }
+  //   },
+  //   yAxis: {
+  //     min: 0
+  //   }
+  // },
   scrollbar: {
     enabled: true,
     liveRedraw: true
@@ -213,32 +209,32 @@ let defaultConfig = {
     "fontSize": "12px",
     fontFamily: 'Microsoft YaHei'
   },
-  legend: {
-    deleteAllButtonText: '',
-    enabled: true,
-    layout: 'vertical',
-    verticalAlign: 'top',
-    y: 40,
-    x: -25,
-    useHTML: true,
-    labelFormatter: function() {
-      return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name.replace('<br/>', '&#10;') + '">' + this.name + '</div>';
-    },
-    itemStyle: {
-      cursor: 'default',
-      color: '#3b3b3b',
-      "fontWeight": "normal"
-    },
-    itemHoverStyle: {
-      cursor: 'pointer',
-      color: '#000'
-    },
-    borderWidth: 0,
-    margin: 10,
-    align: 'right',
-    itemMarginTop: 6,
-    itemMarginBottom: 6
-  },
+  // legend: {
+  //   deleteAllButtonText: '',
+  //   enabled: true,
+  //   layout: 'vertical',
+  //   verticalAlign: 'top',
+  //   y: 40,
+  //   x: -25,
+  //   useHTML: true,
+  //   labelFormatter: function() {
+  //     return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name.replace('<br/>', '&#10;') + '">' + this.name + '</div>';
+  //   },
+  //   itemStyle: {
+  //     cursor: 'default',
+  //     color: '#3b3b3b',
+  //     "fontWeight": "normal"
+  //   },
+  //   itemHoverStyle: {
+  //     cursor: 'pointer',
+  //     color: '#000'
+  //   },
+  //   borderWidth: 0,
+  //   margin: 10,
+  //   align: 'right',
+  //   itemMarginTop: 6,
+  //   itemMarginBottom: 6
+  // },
   //delete Highcharts.com label
   credits: {
     enabled: false
@@ -315,68 +311,28 @@ let RawDataChartPanel = React.createClass({
     step: React.PropTypes.number,
     startTime: React.PropTypes.string,
     endTime: React.PropTypes.string,
-    chartType: React.PropTypes.string,
-    chartTooltipHasTotal: React.PropTypes.bool
   },
   getDefaultProps() {
     return {
       chartType: 'line',
+      bizType: 'Energy',
+      energyType: 'Energy',
       chartTooltipHasTotal: false
     };
   },
   componentWillMount() {
     this.initDefaultConfig();
   },
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.range && nextProps.range !== this.props.range) {
-      this.state.chartCmpStrategy.onChangeRangeFn(nextProps.range, this);
-    }
-    if (nextProps.order && nextProps.order !== this.props.order) {
-      this.state.chartCmpStrategy.onChangeOrderFn(nextProps.order, this);
-    }
-  },
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.range && nextProps.range !== this.props.range) {
+  //     this.state.chartCmpStrategy.onChangeRangeFn(nextProps.range, this);
+  //   }
+  //   if (nextProps.order && nextProps.order !== this.props.order) {
+  //     this.state.chartCmpStrategy.onChangeOrderFn(nextProps.order, this);
+  //   }
+  // },
   getInitialState() {
-    let bizType = this.props.bizType,
-      energyType = this.props.energyType,
-      chartType = this.props.chartType;
-
-    let chartCmpStrategy;
-    switch (bizType) {
-      case 'Energy':
-        if (energyType === 'Energy') {
-          if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
-            chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
-          } else if (chartType === 'pie') {
-            chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
-          }
-        } else if (energyType === 'Carbon') {
-          if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
-            chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
-          } else if (chartType === 'pie') {
-            chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
-          }
-        } else if (energyType === 'Cost') {
-          if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
-            chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
-          } else if (chartType === 'pie') {
-            chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyPieComponent');
-          }
-        }
-        break;
-      case 'Unit':
-        chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('UnitTrendComponent');
-        break;
-      case 'Ratio':
-        chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
-        break;
-      case 'Label':
-
-        break;
-      case 'Rank':
-        chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('RankTrendComponent');
-        break;
-
-    }
+    let chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
     var obj = chartCmpStrategy.getInitialStateFn(this);
     var state = {
       chartCmpStrategy: chartCmpStrategy
@@ -385,7 +341,7 @@ let RawDataChartPanel = React.createClass({
     return state;
   },
   shouldComponentUpdate: function(nextProps, nextState) {
-    return !(this.props.energyData.equals(nextProps.energyData) && this.props.chartType === nextProps.chartType);
+    return !(this.props.energyData.equals(nextProps.energyData));
   },
   getDataLabelFormatterFn() {
     return dataLabelFormatter;
@@ -405,36 +361,17 @@ let RawDataChartPanel = React.createClass({
 
     c.chart.cancelChartContainerclickBubble = true;
   },
-  _onIgnoreDialogSubmit() {
-    let isBatchIgnore = this.refs.ignoreDialogWindow.refs.batchIgnore.isChecked();
-    let point = this.selectedIgnorePoint,
-      factory = EnergyCommentFactory,
-      ids,
-      ignorePoints = [];
-    if (isBatchIgnore) {
-      let step = point.series.options.option.step;
-      ids = factory.getContinuousPointids(point, ignorePoints, step);
-    } else {
-      ids = point.alarmId;
-      ignorePoints.push(point);
-    }
-    AlarmAction.ignoreAlarm(ids, isBatchIgnore, ignorePoints);
-    this.refs.ignoreDialogWindow.dismiss();
-  },
-  _onIgnoreDialogCancel() {
-    this.refs.ignoreDialogWindow.dismiss();
-  },
   render() {
     let that = this;
     if (!this.props.energyData) {
       return null;
     }
-    var ignoreObj = {
-      _onIgnoreDialogSubmit: this._onIgnoreDialogSubmit,
-      _onIgnoreDialogCancel: this._onIgnoreDialogCancel,
-      ref: 'ignoreDialogWindow'
-    };
-    var dialog = <AlarmIgnoreWindow {...ignoreObj} ></AlarmIgnoreWindow>;
+    // var ignoreObj = {
+    //   _onIgnoreDialogSubmit: this._onIgnoreDialogSubmit,
+    //   _onIgnoreDialogCancel: this._onIgnoreDialogCancel,
+    //   ref: 'ignoreDialogWindow'
+    // };
+    // var dialog = <AlarmIgnoreWindow {...ignoreObj} ></AlarmIgnoreWindow>;
 
     let highstockEvents = {
       onDeleteButtonClick: that._onDeleteButtonClick,
@@ -450,7 +387,7 @@ let RawDataChartPanel = React.createClass({
         marginLeft: '10px',
         marginTop: '20px'
       }}>
-          <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
+          <Highstock ref="highstock" options={that._initChartObj()}></Highstock>
           {dialog}
        </div>;
   },
@@ -527,7 +464,7 @@ let RawDataChartPanel = React.createClass({
 
     newConfig.tooltip.shared = true;
     newConfig.tooltip.crosshairs = true;
-    newConfig.navigator.step = this.props.step;
+    //newConfig.navigator.step = this.props.step;
 
     this.mergeConfig(newConfig);
 
@@ -575,7 +512,7 @@ let RawDataChartPanel = React.createClass({
     }
   },
   mergeConfig: function(defaultConfig) {
-    this.state.chartCmpStrategy.mergeConfigFn(defaultConfig, this);
+    this.state.chartCmpStrategy.mergeConfig(defaultConfig, this);
   },
   convertData: function(data, config) {
     return this.state.chartCmpStrategy.convertDataFn(data, config, this);

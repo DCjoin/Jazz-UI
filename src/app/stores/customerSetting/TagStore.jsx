@@ -4,9 +4,13 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
+import moment from 'moment';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
-import energyStore from '../Energy/EnergyStore.jsx';
+import ChartReaderStrategyFactor from '../Energy/ChartReaderStrategyFactor.jsx';
+let {DataConverter, formatDateValue} = CommonFuns;
+let j2d = DataConverter.JsonToDateTime,
+  d2j = DataConverter.DatetimeToJson;
 
 let _tagList = Immutable.fromJS([]),
   _allTagList = Immutable.fromJS([]),
@@ -278,47 +282,6 @@ var TagStore = assign({}, PrototypeStore, {
     cloneData.TargetEnergyData[0].EnergyData = difArray;
     return Immutable.fromJS(cloneData);
   },
-  convert(data, obj) {
-    var timeRanges = obj.timeRanges,
-      returnDatas;
-    if (!data) return;
-    var start = j2d(obj.start);
-    var end = j2d(obj.end);
-    var step = obj.step;
-    var d,
-      date;
-    var energyData,
-      localTime;
-    var earliestTime = Number.MAX_VALUE; //2000 年1月1日
-
-    if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
-      for (var i = 0, len = data.TargetEnergyData.length; i < len; i++) {
-        energyData = data.TargetEnergyData[i].EnergyData;
-        if (energyData && energyData.length > 0) {
-          localTime = j2d(energyData[0].LocalTime);
-          if (localTime < earliestTime) {
-            earliestTime = localTime;
-          }
-        }
-      }
-    }
-
-
-    if (data.TargetEnergyData && data.TargetEnergyData.length > 0) {
-      d = energyStore.readerStrategy.getSeriesInternalFn(energyStore, data.TargetEnergyData, energyStore.readerStrategy.tagSeriesConstructorFn, undefined, step, start, end);
-    }
-
-    return {
-      Data: d,
-    };
-    if (!timeRanges || timeRanges.length <= 1) {
-      returnDatas = energyStore.readerStrategy.convertSingleTimeDataFn(data, obj, energyStore);
-    } else {
-      returnDatas = energyStore.readerStrategy.convertMultiTimeDataFn(data, obj, energyStore);
-    }
-
-    return returnDatas;
-  },
   getDataForChart: function(data, obj) {
     var _energyData;
 
@@ -330,8 +293,12 @@ var TagStore = assign({}, PrototypeStore, {
     // };
 
     //ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
-    _energyData = Immutable.fromJS(this.convertFn(data, obj));
+    this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType('EnergyTrendReader');
+    _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
+    _energyData = _energyData.set('NavigatorData', null)
+    return _energyData
   },
+
   getTagStatus: function() {
     return _tagStatus;
   },
