@@ -755,9 +755,7 @@ I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公�
 I18N.Setting.Tag.PTagRawData = {};
 I18N.Setting.Tag.PTagRawData.PauseMonitor = '暂停监测';
 I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时将忽略所选的规则';
-<<<<<<< HEAD
 I18N.Setting.Tag.PTagRawData.DifferenceValue = '差值';
-=======
 
 I18N.Setting.CustomizedLabeling = {};
 I18N.Setting.CustomizedLabeling.Grade = '{0}级';
@@ -771,9 +769,6 @@ I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*请确保输入的右区间大
 I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*请确保输入的左区间大于右区间';
 I18N.Setting.CustomizedLabeling.DeleteTip = '<br/>删除后，关联该标识的仪表盘将无法正常显示。';
 
-
-
->>>>>>> 7aba477aa002dec17a16fc9918656a13bb3a4bb6
 
 I18N.Message = {};
 
