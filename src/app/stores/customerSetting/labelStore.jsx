@@ -98,7 +98,7 @@ var LabelStore = assign({}, PrototypeStore, {
   addLabelListChangeListener: function(callback) {
     this.on(CHANGE_LABEL_EVENT, callback);
   },
-  removelabelListChangeListener: function(callback) {
+  removeLabelListChangeListener: function(callback) {
     this.removeListener(CHANGE_LABEL_EVENT, callback);
   },
   emitSelectedLabelChange: function() {

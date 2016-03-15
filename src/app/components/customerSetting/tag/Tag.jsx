@@ -36,8 +36,7 @@ let Tag = React.createClass({
     var codeIsValid,
       meterCodeIsValid,
       channelIsValid,
-      commodityIsValid,
-      uomIsValid,
+      comAndUomIsValid,
       calculationStepIsValid,
       calculationTypeIsValid,
       slopeIsValid = true,
@@ -49,8 +48,7 @@ let Tag = React.createClass({
       codeIsValid = pTagBasic.refs.code.isValid();
       meterCodeIsValid = pTagBasic.refs.meterCode.isValid();
       channelIsValid = pTagBasic.refs.channel.isValid();
-      commodityIsValid = pTagBasic.refs.commodity.isValid();
-      uomIsValid = pTagBasic.refs.uom.isValid();
+      comAndUomIsValid = pTagBasic.refs.comAndUom.isValid();
       calculationStepIsValid = pTagBasic.refs.calculationStep.isValid();
       calculationTypeIsValid = pTagBasic.refs.calculationType.isValid();
       if (pTagBasic.refs.slope) {
@@ -63,19 +61,18 @@ let Tag = React.createClass({
         commentIsValid = pTagBasic.refs.comment.isValid();
       }
 
-      return codeIsValid && meterCodeIsValid && channelIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && slopeIsValid && offsetIsValid && commentIsValid;
+      return codeIsValid && meterCodeIsValid && channelIsValid && comAndUomIsValid && calculationStepIsValid && calculationTypeIsValid && slopeIsValid && offsetIsValid && commentIsValid;
     } else if (this.state.showBasic && this.props.tagType === 2) {
       var vTagBasic = tagDetail.refs.vTagBasic;
       codeIsValid = vTagBasic.refs.code.isValid();
-      commodityIsValid = vTagBasic.refs.commodity.isValid();
-      uomIsValid = vTagBasic.refs.uom.isValid();
+      comAndUomIsValid = vTagBasic.refs.comAndUom.isValid();
       calculationStepIsValid = vTagBasic.refs.calculationStep.isValid();
       calculationTypeIsValid = vTagBasic.refs.calculationType.isValid();
       if (vTagBasic.refs.comment) {
         commentIsValid = vTagBasic.refs.comment.isValid();
       }
 
-      return codeIsValid && commodityIsValid && uomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
+      return codeIsValid && comAndUomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
     } else if (!this.state.showBasic && this.props.tagType === 2) {
       var vTagFormula = tagDetail.refs.vTagFormula;
       var fomulaIsValid = vTagFormula.refs.formula.isValid();
@@ -85,9 +82,13 @@ let Tag = React.createClass({
   _resetFilterObj: function() {
     var filterObj = this._getInitFilterObj();
     TagAction.setFilterObj(filterObj);
+    this.refs.tagList.refs.searchAndFilter.refs.searchBar.clearSearchText();
     this.setState({
       filterObj: filterObj,
+      isFilter: false,
       curPageNum: 1
+    }, () => {
+      this.getTagList();
     });
   },
   _getInitFilterObj: function() {
@@ -513,6 +514,7 @@ let Tag = React.createClass({
       });
     }
     var leftProps = {
+      ref: 'tagList',
       isAddStatus: isAdd,
       contentItems: items,
       onAddBtnClick: me._onAddTag,

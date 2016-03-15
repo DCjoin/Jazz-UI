@@ -47,6 +47,7 @@ let TagList = React.createClass({
     }
   },
   _handleImportDialogDismiss: function() {
+    this.props.resetFilterObj();
     this.setState({
       showImportDialog: false
     });
@@ -124,8 +125,6 @@ let TagList = React.createClass({
       var json = iframe.contentDocument.body.innerHTML;
       var obj = JSON.parse(json);
       if (obj.success === true) {
-        me.props.resetFilterObj();
-        TagAction.getTagListByType(me.props.tagType, 1, filterObj);
         me.setState({
           importResult: obj.TagImportHisDto,
           isImporting: false,
@@ -207,7 +206,7 @@ let TagList = React.createClass({
         <div className="jazz-tag-leftpanel-header">
           <span onClick={this.props.onAddBtnClick} disabled={this.props.isAddStatus} className={classNames(addBtnClasses)}>
             <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
-            {I18N.Common.Button.Add}
+            {I18N.Setting.Tag.Tag}
           </span>
           <label ref="fileInputLabel" className="jazz-tag-leftpanel-header-item" htmlFor="fileInput">
             <span className="icon-import jazz-tag-leftpanel-header-item-icon"></span>
@@ -220,7 +219,7 @@ let TagList = React.createClass({
           </span>
         </div>
         <div className="jazz-tag-search-filter-bar">
-          <SearchAndFilterBar onFilter={this.props.onFilter}
+          <SearchAndFilterBar onFilter={this.props.onFilter} ref='searchAndFilter'
       onSearch={this._onSearch} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}
       isFilter={this.props.isFilter}/>
         </div>

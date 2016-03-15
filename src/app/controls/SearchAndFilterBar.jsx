@@ -19,7 +19,7 @@ let SearchAndFilterBar = React.createClass({
     return (
       <div className="jazz-search-filter-bar">
         <div className='jazz-search'>
-          <SearchBar onSearch={this.props.onSearch} hintText={I18N.Setting.Tag.SearchText} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}/>
+          <SearchBar ref='searchBar' onSearch={this.props.onSearch} hintText={I18N.Setting.Tag.SearchText} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}/>
         </div>
         <div className='jazz-filter'>
           <span onClick={this.props.onFilter} className="jazz-filter-item">

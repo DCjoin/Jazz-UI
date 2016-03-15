@@ -56,21 +56,37 @@ var labelConfig = {
     }
   },
   labelingLevels = [{
-    Name: 'A'
+    Name: 'A',
+    MinValue: null,
+    MaxValue: null
   }, {
-    Name: 'B'
+    Name: 'B',
+    MinValue: null,
+    MaxValue: null
   }, {
-    Name: 'C'
+    Name: 'C',
+    MinValue: null,
+    MaxValue: null
   }, {
-    Name: 'D'
+    Name: 'D',
+    MinValue: null,
+    MaxValue: null
   }, {
-    Name: 'E'
+    Name: 'E',
+    MinValue: null,
+    MaxValue: null
   }, {
-    Name: 'F'
+    Name: 'F',
+    MinValue: null,
+    MaxValue: null
   }, {
-    Name: 'G'
+    Name: 'G',
+    MinValue: null,
+    MaxValue: null
   }, {
-    Name: 'H'
+    Name: 'H',
+    MinValue: null,
+    MaxValue: null
   }],
 
   title = '能效标识',
@@ -199,7 +215,7 @@ let ChartComponent = React.createClass({
     me.createHighLowText(I18N.EM.Labeling.LowEnergy, I18N.EM.Labeling.HighEnergy, cr);
 
     var y,
-      tooltipText,
+      tooltipText = null,
       labelObj;
     for (var i = 0; i < len; i++) {
       y = baseY + i * (lh + spaceH);
