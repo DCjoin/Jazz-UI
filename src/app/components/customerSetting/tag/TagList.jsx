@@ -206,7 +206,7 @@ let TagList = React.createClass({
         <div className="jazz-tag-leftpanel-header">
           <span onClick={this.props.onAddBtnClick} disabled={this.props.isAddStatus} className={classNames(addBtnClasses)}>
             <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
-            {I18N.Common.Button.Add}
+            {I18N.Setting.Tag.Tag}
           </span>
           <label ref="fileInputLabel" className="jazz-tag-leftpanel-header-item" htmlFor="fileInput">
             <span className="icon-import jazz-tag-leftpanel-header-item-icon"></span>

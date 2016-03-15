@@ -731,6 +731,7 @@ I18N.Setting.TagBatchImport.ImportResultView = '批量导入已完成。成功�
 
 I18N.Setting.Tag = {};
 I18N.Setting.Tag.SearchText = '请输入名称或编码';
+I18N.Setting.Tag.Tag = '数据点';
 I18N.Setting.Tag.TagList = '数据点列表';
 I18N.Setting.Tag.TagFilter = '数据点筛选';
 I18N.Setting.Tag.isAccumulated = '累计值';
