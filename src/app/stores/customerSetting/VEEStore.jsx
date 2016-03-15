@@ -123,7 +123,7 @@ var VEEStore = assign({}, PrototypeStore, {
     return _tagList
   },
   getTotal: function() {
-    return _total === 0 ? 1 : parseInt((_total + 19) / 20)
+    return _total;
   },
   findCommodityById: function(id) {
     var commodities = Immutable.fromJS(window.allCommodities),

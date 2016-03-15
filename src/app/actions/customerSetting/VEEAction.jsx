@@ -3,6 +3,7 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/customerSetting/VEE.jsx';
 import Ajax from '../../ajax/ajax.jsx';
 import CommonFuns from '../../util/Util.jsx';
+import VEEStore from '../../stores/customerSetting/VEEStore.jsx';
 var _page, _ruleId, _association, _filterObj;
 let VEEAction = {
   GetVEERules: function() {
@@ -172,6 +173,11 @@ let VEEAction = {
 
       },
       success: function(data) {
+        if (ruleId === null) {
+          if (VEEStore.getTotal() - 1 > 0 && parseInt((VEEStore.getTotal() - 1 + 19) / 20) < _page) {
+            _page = _page - 1;
+          }
+        }
         that.getAssociatedTag(_page, _ruleId, _association, _filterObj, ruleId !== null);
       },
       error: function(err, res) {
