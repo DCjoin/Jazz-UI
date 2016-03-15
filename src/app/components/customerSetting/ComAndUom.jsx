@@ -6,6 +6,7 @@ import AllCommodityStore from '../../stores/AllCommodityStore.jsx';
 
 var ComAndUom = React.createClass({
   propTypes: {
+    isFirst: React.PropTypes.bool,
     selectedItem: React.PropTypes.object,
     mergeItem: React.PropTypes.func,
     isViewStatus: React.PropTypes.bool
@@ -13,6 +14,11 @@ var ComAndUom = React.createClass({
   getInitialState: function() {
     return {
       allCommodities: AllCommodityStore.getAllCommodities()
+    };
+  },
+  getDefaultProps() {
+    return {
+      isFirst: false
     };
   },
   isValid: function() {
@@ -64,10 +70,10 @@ var ComAndUom = React.createClass({
   componentDidMount: function() {
     AllCommodityStore.addChangeListener(this._onAllCommoditiesChange);
   },
+  componentWillReceiveProps: function(nextProps) {},
   componentWillUnmount: function() {
     AllCommodityStore.removeChangeListener(this._onAllCommoditiesChange);
   },
-  componentWillReceiveProps: function(nextProps) {},
   render: function() {
     var me = this;
     var isView = this.props.isViewStatus;
@@ -99,9 +105,10 @@ var ComAndUom = React.createClass({
           });
         }
       };
+    var first = this.props.isFirst ? null : <div className="pop-customer-detail-content-left-item"></div>;
     return (
       <div>
-        <div className="pop-customer-detail-content-left-item"></div>
+        {first}
         <div className="pop-customer-detail-content-left-item">
           <ViewableDropDownMenu {...commodityProps}/>
         </div>

@@ -8,6 +8,8 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
+import LabelBasic from './LabelBasic.jsx';
+import ChartComponent from './ChartComponent.jsx';
 
 var LabelDetail = React.createClass({
   propTypes: {
@@ -84,12 +86,18 @@ var LabelDetail = React.createClass({
     var isView = this.props.formStatus === formStatus.VIEW;
     return (
       <div className="pop-manage-detail-content">
+        <div>
+          <LabelBasic selectedLabel={this.props.selectedLabel} isViewStatus={isView} mergeLabel={this._mergeLabel}/>
+        </div>
+        <div>
+          <ChartComponent levelCount={this.props.selectedLabel.get('Grade')}/>
+        </div>
       </div>
       );
   },
   _renderFooter: function() {
     var bottom = (
-    <FormBottomBar allowDelete={this.props.showBasic} allowEdit={true} enableSave={this.props.enableSave} ref="actionBar" status={this.props.formStatus} onSave={this.props.onSave} onEdit={this.props.onEdit} onDelete={this.props.onDelete} onCancel={this.props.onCancel} />
+    <FormBottomBar allowDelete={true} allowEdit={true} enableSave={this.props.enableSave} ref="actionBar" status={this.props.formStatus} onSave={this.props.onSave} onEdit={this.props.onEdit} onDelete={this.props.onDelete} onCancel={this.props.onCancel} />
     );
 
     return bottom;

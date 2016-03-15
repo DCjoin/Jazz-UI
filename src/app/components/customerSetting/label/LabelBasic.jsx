@@ -20,53 +20,77 @@ var LabelBasic = React.createClass({
       this.props.mergeLabel(data);
     }
   },
-  _getKpiTypelist: function() {},
-  _getCalculationStepList: function() {
-    let calculationStepList = [{
-      payload: 1,
-      text: I18N.Common.AggregationStep.Hourly
+  _getKpiTypeList: function() {
+    let kpiTypeList = [
+      {
+        payload: 7,
+        text: I18N.EM.Unit.UnitOriginal /*'指标原值'*/
+      }, {
+        payload: 1,
+        text: I18N.EM.Unit.UnitPopulation /*'单位人口'*/
+      }, {
+        payload: 2,
+        text: I18N.EM.Unit.UnitArea /*'单位面积'*/
+      }, {
+        payload: 3,
+        text: I18N.EM.Unit.UnitColdArea /*'单位供冷面积'*/
+      }, {
+        payload: 4,
+        text: I18N.EM.Unit.UnitWarmArea /*'单位采暖面积'*/
+      }, {
+        payload: 8,
+        text: I18N.EM.Unit.UnitRoom
+      }, {
+        payload: 9,
+        text: I18N.EM.Unit.UnitUsedRoom
+      }, {
+        payload: 10,
+        text: I18N.EM.Unit.UnitBed
+      }, {
+        payload: 11,
+        text: I18N.EM.Unit.UnitUsedBed
+      }, {
+        payload: 5,
+        text: I18N.EM.DayNightRatio /*'昼夜能耗比'*/
+      }, {
+        payload: 6,
+        text: I18N.EM.WorkHolidayRatio
+      }];
+    return kpiTypeList;
+  },
+  _getLabelGradeList: function() {
+    var uom = I18N.Setting.CustomizedLabeling.Grade;
+    let labelGradeList = [{
+      payload: 3,
+      text: I18N.format(uom, 3)
+    }, {
+      payload: 4,
+      text: I18N.format(uom, 4)
+    }, {
+      payload: 5,
+      text: I18N.format(uom, 5)
+    }, {
+      payload: 6,
+      text: I18N.format(uom, 6)
+    }, {
+      payload: 7,
+      text: I18N.format(uom, 7)
     }, {
       payload: 8,
-      text: I18N.Common.AggregationStep.Hour2
-    }, {
-      payload: 9,
-      text: I18N.Common.AggregationStep.Hour4
-    }, {
-      payload: 10,
-      text: I18N.Common.AggregationStep.Hour6
-    }, {
-      payload: 11,
-      text: I18N.Common.AggregationStep.Hour8
-    }, {
-      payload: 12,
-      text: I18N.Common.AggregationStep.Hour12
-    }, {
-      payload: 2,
-      text: I18N.Common.AggregationStep.Daily
-    }, {
-      payload: 3,
-      text: I18N.Common.AggregationStep.Monthly
-    }, {
-      payload: 4,
-      text: I18N.Common.AggregationStep.Yearly
+      text: I18N.format(uom, 8)
     }];
-    return calculationStepList;
+    return labelGradeList;
   },
-  _getCalculationTypeList: function() {
-    let calculationTypeList = [{
-      payload: 1,
-      text: I18N.Common.CaculationType.Sum
-    }, {
-      payload: 2,
-      text: I18N.Common.CaculationType.Avg
-    }, {
-      payload: 3,
-      text: I18N.Common.CaculationType.Max
-    }, {
-      payload: 4,
-      text: I18N.Common.CaculationType.Min
-    }];
-    return calculationTypeList;
+  _getOrderList: function() {
+    let orderList = [
+      {
+        payload: 0,
+        text: I18N.Setting.CustomizedLabeling.Ascending
+      }, {
+        payload: 1,
+        text: I18N.Setting.CustomizedLabeling.Declining
+      }];
+    return orderList;
   },
   componentWillMount: function() {},
   componentDidMount: function() {},
@@ -76,43 +100,43 @@ var LabelBasic = React.createClass({
     var me = this;
     var isView = this.props.isViewStatus;
     var selectedLabel = this.props.selectedLabel,
-      {Code, CalculationStep, CalculationType, Comment} = selectedLabel.toJS();
-    var codeProps = {
-        ref: 'code',
+      {LabellingType, Grade, Order, Comment} = selectedLabel.toJS();
+    var kpiTypeProps = {
+        ref: 'kpiType',
         isViewStatus: isView,
-        title: I18N.Setting.Tag.Code,
-        defaultValue: Code,
-        isRequired: true,
+        title: I18N.Setting.CustomizedLabeling.KPIType,
+        defaultValue: LabellingType,
+        dataItems: me._getKpiTypeList(),
         didChanged: value => {
           me.props.mergeTag({
             value,
-            path: "Code"
+            path: "LabellingType"
           });
         }
       },
-      calculationStepProps = {
-        ref: 'calculationStep',
+      gradeProps = {
+        ref: 'grade',
         isViewStatus: isView,
-        title: I18N.Setting.Tag.CalculationStep,
-        defaultValue: CalculationStep,
-        dataItems: me._getCalculationStepList(),
+        title: I18N.Setting.Labeling.Label.LabelingGrade,
+        defaultValue: Grade,
+        dataItems: me._getLabelGradeList(),
         didChanged: value => {
           me.props.mergeTag({
             value,
-            path: "CalculationStep"
+            path: "Grade"
           });
         }
       },
-      calculationTypeProps = {
-        ref: 'calculationType',
+      orderProps = {
+        ref: 'order',
         isViewStatus: isView,
-        title: I18N.Setting.Tag.CalculationType,
-        defaultValue: CalculationType,
-        dataItems: me._getCalculationTypeList(),
+        title: I18N.Setting.CustomizedLabeling.OrderMode,
+        defaultValue: Order,
+        dataItems: me._getOrderList(),
         didChanged: value => {
           me.props.mergeTag({
             value,
-            path: "CalculationType"
+            path: "Order"
           });
         }
       },
@@ -135,20 +159,16 @@ var LabelBasic = React.createClass({
         <ViewableTextField {...commentProps}/>
       </div>);
     return (
-      <div className={"pop-customer-detail-content"}>
-        <div className="pop-customer-detail-content-left">
-          <div className="pop-customer-detail-content-left-item">
-            <ViewableTextField {...codeProps}/>
-          </div>
-          <ComAndUom ref='comAndUom' selectedItem={selectedLabel} mergeItem={this._mergeLabel} isViewStatus={isView}/>
-          <div className="pop-customer-detail-content-left-item">
-            <ViewableDropDownMenu {...calculationStepProps}/>
-          </div>
-          <div className="pop-customer-detail-content-left-item">
-            <ViewableDropDownMenu {...calculationTypeProps}/>
-          </div>
+      <div className={"jazz-customer-label-detail-content"}>
+          <ComAndUom ref='comAndUom' selectedItem={selectedLabel} mergeItem={this._mergeLabel} isViewStatus={isView} isFirst={true}/>
           {comment}
-        </div>
+          <div className="jazz-customer-label-detail-content-devide">{I18N.Setting.CustomizedLabeling.EnergyGrade}</div>
+          <div className="jazz-customer-label-detail-content-item">
+            <ViewableDropDownMenu {...gradeProps}/>
+          </div>
+          <div className="jazz-customer-label-detail-content-item">
+            <ViewableDropDownMenu {...orderProps}/>
+          </div>
       </div>
       );
   },

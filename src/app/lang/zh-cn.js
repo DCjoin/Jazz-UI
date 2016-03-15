@@ -611,7 +611,9 @@ I18N.Setting.Labeling.NoCusomer = '无客户';
 I18N.Setting.Labeling.ElectrovalenceUom = '元/千瓦时';
 
 I18N.Setting.CustomizedLabeling = {};
+I18N.Setting.CustomizedLabeling.DeleteLabel = '删除能效标识';
 I18N.Setting.CustomizedLabeling.Grade = '{0}级';
+I18N.Setting.CustomizedLabeling.EnergyGrade = '能耗级别设置';
 I18N.Setting.CustomizedLabeling.OrderMode = '排列方式';
 I18N.Setting.CustomizedLabeling.Ascending = '正序';
 I18N.Setting.CustomizedLabeling.Declining = '倒序';
@@ -620,7 +622,15 @@ I18N.Setting.CustomizedLabeling.ConfigurationDate = '配置时间';
 I18N.Setting.CustomizedLabeling.KPIType = '指标类型';
 I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*请确保输入的右区间大于左区间';
 I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*请确保输入的左区间大于右区间';
-I18N.Setting.CustomizedLabeling.DeleteTip = '<br/>删除后，关联该标识的仪表盘将无法正常显示。';
+I18N.Setting.CustomizedLabeling.DeleteTip = '计量数据"{0}"将被删除。删除后，关联该标识的仪表盘将无法正常显示。';
+
+
+I18N.Setting.CustomizedLabeling.Grade3 = '三级';
+I18N.Setting.CustomizedLabeling.Grade4 = '四级';
+I18N.Setting.CustomizedLabeling.Grade5 = '五级';
+I18N.Setting.CustomizedLabeling.Grade6 = '六级';
+I18N.Setting.CustomizedLabeling.Grade7 = '七级';
+I18N.Setting.CustomizedLabeling.Grade8 = '八级';
 
 I18N.Setting.TargetBaseline = {};
 I18N.Setting.TargetBaseline.AlarmThreshold = '报警敏感度';
@@ -757,18 +767,6 @@ I18N.Setting.Tag.PTagRawData.PauseMonitor = '暂停监测';
 I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时将忽略所选的规则';
 I18N.Setting.Tag.PTagRawData.DifferenceValue = '差值';
 
-I18N.Setting.CustomizedLabeling = {};
-I18N.Setting.CustomizedLabeling.DeleteLabel = '删除能效标识';
-I18N.Setting.CustomizedLabeling.Grade = '{0}级';
-I18N.Setting.CustomizedLabeling.OrderMode = '排列方式';
-I18N.Setting.CustomizedLabeling.Ascending = '正序';
-I18N.Setting.CustomizedLabeling.Declining = '倒序';
-I18N.Setting.CustomizedLabeling.Configurationer = '配置人';
-I18N.Setting.CustomizedLabeling.ConfigurationDate = '配置时间';
-I18N.Setting.CustomizedLabeling.KPIType = '指标类型';
-I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*请确保输入的右区间大于左区间';
-I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*请确保输入的左区间大于右区间';
-I18N.Setting.CustomizedLabeling.DeleteTip = '计量数据"{0}"将被删除。删除后，关联该标识的仪表盘将无法正常显示。';
 
 
 I18N.Message = {};
