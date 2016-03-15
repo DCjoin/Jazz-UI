@@ -8,7 +8,7 @@ import { List } from 'immutable';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
-//import ChartPanel from './RawDataChartPanel.jsx';
+import ChartPanel from './RawDataChartPanel.jsx';
 function emptyList() {
   return new List();
 }
@@ -100,6 +100,11 @@ let PTagRawData = React.createClass({
       isLoading: true
     })
   },
+  // _afterChartCreated(chartObj) {
+  //   if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
+  //     chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
+  //   }
+  // },
   _renderDialog: function() {
     var that = this;
     var closeDialog = function() {
@@ -212,8 +217,8 @@ let PTagRawData = React.createClass({
     var dataForChart = TagStore.getDataForChart(this.state.tagData.toJS(), obj);
     var chartProps = {
       ref: 'ChartComponent',
-      energyData: this.state.tagData,
-      energyRawData: dataForChart,
+      energyData: dataForChart,
+      energyRawData: this.state.tagData.toJS(),
       step: obj.step,
       startTime: obj.start,
       endTime: obj.end,
@@ -221,6 +226,7 @@ let PTagRawData = React.createClass({
     }
     return (
       <div>
+        <ChartPanel {...chartProps}/>
       </div>
       )
   },
