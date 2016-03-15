@@ -82,9 +82,13 @@ let Tag = React.createClass({
   _resetFilterObj: function() {
     var filterObj = this._getInitFilterObj();
     TagAction.setFilterObj(filterObj);
+    this.refs.tagList.refs.searchAndFilter.refs.searchBar.clearSearchText();
     this.setState({
       filterObj: filterObj,
+      isFilter: false,
       curPageNum: 1
+    }, () => {
+      this.getTagList();
     });
   },
   _getInitFilterObj: function() {
@@ -510,6 +514,7 @@ let Tag = React.createClass({
       });
     }
     var leftProps = {
+      ref: 'tagList',
       isAddStatus: isAdd,
       contentItems: items,
       onAddBtnClick: me._onAddTag,

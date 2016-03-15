@@ -47,6 +47,7 @@ let TagList = React.createClass({
     }
   },
   _handleImportDialogDismiss: function() {
+    this.props.resetFilterObj();
     this.setState({
       showImportDialog: false
     });
@@ -124,8 +125,6 @@ let TagList = React.createClass({
       var json = iframe.contentDocument.body.innerHTML;
       var obj = JSON.parse(json);
       if (obj.success === true) {
-        me.props.resetFilterObj();
-        TagAction.getTagListByType(me.props.tagType, 1, filterObj);
         me.setState({
           importResult: obj.TagImportHisDto,
           isImporting: false,
@@ -220,7 +219,7 @@ let TagList = React.createClass({
           </span>
         </div>
         <div className="jazz-tag-search-filter-bar">
-          <SearchAndFilterBar onFilter={this.props.onFilter}
+          <SearchAndFilterBar onFilter={this.props.onFilter} ref='searchAndFilter'
       onSearch={this._onSearch} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}
       isFilter={this.props.isFilter}/>
         </div>
