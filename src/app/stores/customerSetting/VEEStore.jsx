@@ -27,7 +27,7 @@ let CHANGE_EVENT = 'change',
 var VEEStore = assign({}, PrototypeStore, {
   setRules: function(rules) {
     rules.forEach(rule => {
-      rule.CheckNotify = !!rule.NotifyConsecutiveHours
+      rule.CheckNotify = rule.NotifyConsecutiveHours !== null
     });
     _rules = Immutable.fromJS(rules);
   },

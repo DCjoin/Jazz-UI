@@ -58,6 +58,7 @@
     "webpack-dev-server": "1.9.0"
   },
   "dependencies": {
+    "numeral": "1.5.3",
     "material-ui": "0.12.3",
     "object-assign": "2.0.0",
     "superagent": "1.0.0",

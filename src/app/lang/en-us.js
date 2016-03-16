@@ -1616,7 +1616,7 @@ I18N.Setting.VEEMonitorRule.DeleteTitle = 'Delete rule set';
 I18N.Setting.VEEMonitorRule.DeleteContent = 'Rule set {0} will be deleted';
 I18N.Setting.VEEMonitorRule.FirstScanTime = 'Every day, the first scanning time is 0:00.';
 I18N.Setting.VEEMonitorRule.ScanTimeInfo = 'Scanning time {0}';
-I18N.Setting.VEEMonitorRule.ConsecutiveHours = 'Consecutive Hours';
+I18N.Setting.VEEMonitorRule.ConsecutiveHours = 'Consecutive Hours(h)';
 
 I18N.Setting.VEEMonitorRule.AddTagInfo = 'Clcik add button to add tags';
 I18N.Setting.VEEMonitorRule.AddTag = 'Add tags';

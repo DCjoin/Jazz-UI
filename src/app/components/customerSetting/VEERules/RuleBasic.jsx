@@ -9,6 +9,7 @@ import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import ViewableDatePicker from '../../../controls/ViewableDatePickerByStatus.jsx';
+import ViewableNumberField from '../../../controls/ViewableNumberField.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import { Checkbox } from 'material-ui';
 import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
@@ -70,24 +71,33 @@ var RuleBasic = React.createClass({
         marginBottom: '4px'
       };
     var hoursProps = {
+      // isViewStatus: isView,
+      // title: I18N.Setting.VEEMonitorRule.ConsecutiveHours,
+      // defaultValue: NotifyConsecutiveHours,
+      // regex: Regex.ConsecutiveHoursRule,
+      // errorMessage: I18N.Setting.VEEMonitorRule.ConsecutiveHoursError,
+      // maxLen: 200,
+      // didChanged: value => {
+      //   this.props.merge({
+      //     value,
+      //     path: "NotifyConsecutiveHours"
+      //   })
+      // }
+      defaultValue: NotifyConsecutiveHours,
       isViewStatus: isView,
       title: I18N.Setting.VEEMonitorRule.ConsecutiveHours,
-      defaultValue: NotifyConsecutiveHours,
-      regex: Regex.ConsecutiveHoursRule,
-      errorMessage: I18N.Setting.VEEMonitorRule.ConsecutiveHoursError,
-      maxLen: 200,
       didChanged: value => {
         this.props.merge({
           value,
           path: "NotifyConsecutiveHours"
         })
-      }
-    };
-    var uomStyle = isView ? {
-      marginTop: '25px',
-      marginLeft: '-250px'
-    } : {
-      marginTop: '40px'
+      },
+      validate: value => {
+        if (value !== '' && !Regex.ConsecutiveHoursRule.test(value)) {
+          return I18N.Setting.VEEMonitorRule.ConsecutiveHoursError
+        }
+      },
+      unit: ' ' + I18N.EM.Hour
     };
     var detail = [];
     for (var i = 0; i <= 1; i++) {
@@ -174,8 +184,7 @@ var RuleBasic = React.createClass({
         marginTop: '10px',
         marginLeft: '40px'
       }}>
-                        <ViewableTextField  {...hoursProps} />
-                        <div className='jazz-tariff-electrovalenceUom' style={uomStyle}>{I18N.EM.Hour}</div>
+                        <ViewableNumberField  {...hoursProps} />
                       </div>
 
         </div>
