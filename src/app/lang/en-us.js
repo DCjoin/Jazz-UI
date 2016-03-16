@@ -1624,4 +1624,8 @@ I18N.Setting.VEEMonitorRule.AddingTagsInfo = 'Click items to add';
 I18N.Setting.VEEMonitorRule.TagList = 'Tag list';
 
 I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '请输入0-999999999的整数';
+I18N.Setting.Tag.PTagRawData.PauseMonitorNoRule = '该规则集未关联任何规则';
+I18N.Setting.Tag.PTagRawData.normal = '正常值';
+I18N.Setting.Tag.PTagRawData.abnormal = '异常值';
+I18N.Setting.Tag.PTagRawData.repair = '修复值';
 module.exports = I18N;
