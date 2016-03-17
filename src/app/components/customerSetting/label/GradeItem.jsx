@@ -9,6 +9,8 @@ var GradeContainer = React.createClass({
   propTypes: {
     labelValue: React.PropTypes.object,
     mergeLabelItem: React.PropTypes.func,
+    onFocus: React.PropTypes.func,
+    onBlur: React.PropTypes.func,
     isViewStatus: React.PropTypes.bool,
     gradeLevel: React.PropTypes.number,
     gradeLabel: React.PropTypes.string,
@@ -67,7 +69,7 @@ var GradeContainer = React.createClass({
         defaultValue: labelValue.get('MinValue'),
         isRequired: true,
         regex: Regex.TagRule,
-        errorMessage: I18N.Setting.Tag.ErrorContent,
+        errorMessage: I18N.Setting.CustomizedLabeling.InputError,
         style: {
           'width': (this.props.gradeLevel === 1 || this.props.gradeLevel === 8) ? '200px' : '100px'
         },
@@ -93,7 +95,7 @@ var GradeContainer = React.createClass({
         defaultValue: labelValue.get('MaxValue'),
         isRequired: true,
         regex: Regex.TagRule,
-        errorMessage: I18N.Setting.Tag.ErrorContent,
+        errorMessage: I18N.Setting.CustomizedLabeling.InputError,
         style: {
           'width': (this.props.gradeLevel === 1 || this.props.gradeLevel === 8) ? '200px' : '100px'
         },

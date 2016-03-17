@@ -67,29 +67,46 @@ var GradeContainer = React.createClass({
       }
     }
   },
+  _formatValue: function(value) {
+    if (isNaN(parseFloat(value))) {
+      return value;
+    }
+    var index = value.indexOf('.');
+    if (index !== -1) {
+      var afterValue = value.substring(index + 1);
+      if (afterValue.length <= 2) {
+        return value;
+      } else {
+        return parseFloat(value).toFixed(2);
+      }
+    } else {
+      return value;
+    }
+  },
   _mergeLabelItem: function(data) {
     var labelGradeList = this.props.labelGradeList;
-    labelGradeList = labelGradeList.setIn([data.index, data.path], data.value);
+    var value = this._formatValue(data.value);
+    labelGradeList = labelGradeList.setIn([data.index, data.path], value);
     if (data.path === 'MinValue') {
       if (this.props.order === 0) {
-        labelGradeList = labelGradeList.setIn([data.index - 1, 'MaxValue'], data.value);
+        labelGradeList = labelGradeList.setIn([data.index - 1, 'MaxValue'], value);
         this.refs['gradeItem' + (data.index)].refs.MaxValue.setState({
           errorText: this.refs['gradeItem' + (data.index + 1)].refs[data.path].state.errorText
         });
       } else if (this.props.order === 1) {
-        labelGradeList = labelGradeList.setIn([data.index + 1, 'MaxValue'], data.value);
+        labelGradeList = labelGradeList.setIn([data.index + 1, 'MaxValue'], value);
         this.refs['gradeItem' + (data.index + 2)].refs.MaxValue.setState({
           errorText: this.refs['gradeItem' + (data.index + 1)].refs[data.path].state.errorText
         });
       }
     } else if (data.path === 'MaxValue') {
       if (this.props.order === 0) {
-        labelGradeList = labelGradeList.setIn([data.index + 1, 'MinValue'], data.value);
+        labelGradeList = labelGradeList.setIn([data.index + 1, 'MinValue'], value);
         this.refs['gradeItem' + (data.index + 2)].refs.MinValue.setState({
           errorText: this.refs['gradeItem' + (data.index + 1)].refs[data.path].state.errorText
         });
       } else if (this.props.order === 1) {
-        labelGradeList = labelGradeList.setIn([data.index - 1, 'MinValue'], data.value);
+        labelGradeList = labelGradeList.setIn([data.index - 1, 'MinValue'], value);
         this.refs['gradeItem' + (data.index)].refs.MinValue.setState({
           errorText: this.refs['gradeItem' + (data.index + 1)].refs[data.path].state.errorText
         });
