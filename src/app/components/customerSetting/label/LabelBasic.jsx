@@ -23,8 +23,11 @@ var LabelBasic = React.createClass({
   _isValid: function() {
     var kpiTypeIsValid = this.refs.kpiType.isValid(),
       gradeIsValid = this.refs.grade.isValid(),
-      orderIsValid = this.refs.order.isValid(),
+      orderIsValid = this.refs.order.isValid();
+    var commentIsValid = true;
+    if (this.refs.comment) {
       commentIsValid = this.refs.comment.isValid();
+    }
     return kpiTypeIsValid && gradeIsValid && orderIsValid && commentIsValid;
   },
   _getKpiTypeList: function() {
