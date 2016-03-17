@@ -25,7 +25,7 @@ var GradeContainer = React.createClass({
     }
     return isValid;
   },
-  _mergeLabelItem: function(data) {
+  _onBlur: function() {
     var labelGradeList = this.props.labelGradeList;
     for (var i = 0; i < labelGradeList.size; i++) {
       if (this.refs['gradeItem' + (i + 1)].refs.MinValue) {
@@ -39,24 +39,45 @@ var GradeContainer = React.createClass({
         });
       }
     }
-    labelGradeList = labelGradeList.setIn([data.index, data.path], data.value);
+  },
+  _onFocus: function(data) {
+    this._onBlur();
     this.refs['gradeItem' + (data.index + 1)].refs[data.path].refs.TextField.setState({
       isFocused: true
     });
     if (data.path === 'MinValue') {
       if (this.props.order === 0) {
-        labelGradeList = labelGradeList.setIn([data.index - 1, 'MaxValue'], data.value);
         this.refs['gradeItem' + (data.index)].refs.MaxValue.refs.TextField.setState({
           isFocused: true
         });
+      } else if (this.props.order === 1) {
+        this.refs['gradeItem' + (data.index + 2)].refs.MaxValue.refs.TextField.setState({
+          isFocused: true
+        });
+      }
+    } else if (data.path === 'MaxValue') {
+      if (this.props.order === 0) {
+        this.refs['gradeItem' + (data.index + 2)].refs.MinValue.refs.TextField.setState({
+          isFocused: true
+        });
+      } else if (this.props.order === 1) {
+        this.refs['gradeItem' + (data.index)].refs.MinValue.refs.TextField.setState({
+          isFocused: true
+        });
+      }
+    }
+  },
+  _mergeLabelItem: function(data) {
+    var labelGradeList = this.props.labelGradeList;
+    labelGradeList = labelGradeList.setIn([data.index, data.path], data.value);
+    if (data.path === 'MinValue') {
+      if (this.props.order === 0) {
+        labelGradeList = labelGradeList.setIn([data.index - 1, 'MaxValue'], data.value);
         this.refs['gradeItem' + (data.index)].refs.MaxValue.setState({
           errorText: this.refs['gradeItem' + (data.index + 1)].refs[data.path].state.errorText
         });
       } else if (this.props.order === 1) {
         labelGradeList = labelGradeList.setIn([data.index + 1, 'MaxValue'], data.value);
-        this.refs['gradeItem' + (data.index + 2)].refs.MaxValue.refs.TextField.setState({
-          isFocused: true
-        });
         this.refs['gradeItem' + (data.index + 2)].refs.MaxValue.setState({
           errorText: this.refs['gradeItem' + (data.index + 1)].refs[data.path].state.errorText
         });
@@ -64,17 +85,11 @@ var GradeContainer = React.createClass({
     } else if (data.path === 'MaxValue') {
       if (this.props.order === 0) {
         labelGradeList = labelGradeList.setIn([data.index + 1, 'MinValue'], data.value);
-        this.refs['gradeItem' + (data.index + 2)].refs.MinValue.refs.TextField.setState({
-          isFocused: true
-        });
         this.refs['gradeItem' + (data.index + 2)].refs.MinValue.setState({
           errorText: this.refs['gradeItem' + (data.index + 1)].refs[data.path].state.errorText
         });
       } else if (this.props.order === 1) {
         labelGradeList = labelGradeList.setIn([data.index - 1, 'MinValue'], data.value);
-        this.refs['gradeItem' + (data.index)].refs.MinValue.refs.TextField.setState({
-          isFocused: true
-        });
         this.refs['gradeItem' + (data.index)].refs.MinValue.setState({
           errorText: this.refs['gradeItem' + (data.index + 1)].refs[data.path].state.errorText
         });
@@ -105,7 +120,9 @@ var GradeContainer = React.createClass({
         mergeLabelItem: me._mergeLabelItem,
         uom: me.props.uom,
         order: me.props.order,
-        isViewStatus: me.props.isViewStatus
+        isViewStatus: me.props.isViewStatus,
+        onFocus: me._onFocus,
+        onBlur: me._onBlur
       };
       return (
         <GradeItem {...props}/>

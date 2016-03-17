@@ -50,7 +50,14 @@ var GradeContainer = React.createClass({
             path: "MinValue",
             index: me.props.index
           });
-        }
+        },
+        didFocus: () => {
+          me.props.onFocus({
+            path: "MinValue",
+            index: me.props.index
+          });
+        },
+        didBlur: me.props.onBlur
       },
 
       maxValueProps = {
@@ -69,7 +76,14 @@ var GradeContainer = React.createClass({
             path: "MaxValue",
             index: me.props.index
           });
-        }
+        },
+        didFocus: () => {
+          me.props.onFocus({
+            path: "MaxValue",
+            index: me.props.index
+          });
+        },
+        didBlur: me.props.onBlur
       };
 
     if (gradeLevel === 1) {

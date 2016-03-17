@@ -133,7 +133,9 @@ var Label = React.createClass({
       enableSave: false
     });
   },
-
+  componentWillMount: function() {
+    document.title = I18N.MainMenu.CustomerSetting;
+  },
   componentDidMount: function() {
     LabelAction.getLabelList();
     LabelStore.addLabelListChangeListener(this._onLabelListChange);
