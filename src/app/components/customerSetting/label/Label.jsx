@@ -57,23 +57,32 @@ var Label = React.createClass({
     var selectedLabel = this.state.selectedLabel;
     var labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     var i;
+    var list = [];
     if (data.path === 'Order') {
-      var list = selectedLabel.get('LabellingItems').toJS().reverse();
+      list = selectedLabel.get('LabellingItems').toJS().reverse();
       for (i = 0; i < list.length; i++) {
         list[i].Name = labels[i];
       }
       selectedLabel = selectedLabel.set('LabellingItems', Immutable.fromJS(list));
     } else if (data.path === 'Grade') {
       var gradeLevel = data.value;
-      var newList = [];
       for (i = 0; i < gradeLevel; i++) {
-        newList.push({
+        list.push({
           'MinValue': null,
           'MaxValue': null,
           'Name': labels[i]
         });
       }
-      selectedLabel = selectedLabel.set('LabellingItems', Immutable.fromJS(newList));
+      selectedLabel = selectedLabel.set('LabellingItems', Immutable.fromJS(list));
+    } else if (data.path === 'LabellingType' || data.path === 'CommodityId') {
+      for (i = 0; i < selectedLabel.get('LabellingItems').size; i++) {
+        list.push({
+          'MinValue': null,
+          'MaxValue': null,
+          'Name': labels[i]
+        });
+      }
+      selectedLabel = selectedLabel.set('LabellingItems', Immutable.fromJS(list));
     }
     selectedLabel = selectedLabel.set(data.path, data.value);
     this.setState({
@@ -124,7 +133,27 @@ var Label = React.createClass({
     LabelAction.deleteLabelById(selectedLabel.get('Id'), selectedLabel.get('Version'));
   },
   _onAddLabel() {
+    var list = [];
+    var labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    for (var i = 0; i < 5; i++) {
+      list.push({
+        'MinValue': null,
+        'MaxValue': null,
+        'Name': labels[i]
+      });
+    }
     var label = {
+      Id: null,
+      Version: null,
+      CommodityId: 1,
+      UomId: 1,
+      Grade: 5,
+      CustomerId: parseInt(window.currentCustomerId),
+      Order: 0,
+      Name: '',
+      LabellingType: 1,
+      Comment: '',
+      LabellingItems: list
     };
     this.setState({
       selectedIndex: null,
