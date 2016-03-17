@@ -103,22 +103,20 @@ let MainApp = React.createClass({
               title: I18N.MainMenu.TagBatchImportLog
             }
           ];
-          if (this.state.rivilege.indexOf('1217') > -1) {
-            customerChildren.push({
-              name: 'customerLabeling',
-              title: I18N.MainMenu.CustomizedLabeling
-            });
+        }
+        if (this.state.rivilege.indexOf('1217') > -1) {
+          customerChildren.push({
+            name: 'customerLabeling',
+            title: I18N.MainMenu.CustomizedLabeling
+          });
+        }
+        menuItems.push(
+          {
+            name: 'customerSetting',
+            title: I18N.MainMenu.CustomerSetting,
+            children: customerChildren
           }
-        }
-        if (customerChildren.length !== 0) {
-          menuItems.push(
-            {
-              name: 'customerSetting',
-              title: I18N.MainMenu.CustomerSetting,
-              children: customerChildren
-            }
-          );
-        }
+        );
       }
       var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
       return (
