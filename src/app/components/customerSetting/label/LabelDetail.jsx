@@ -12,6 +12,7 @@ import LabelBasic from './LabelBasic.jsx';
 import GradeContainer from './GradeContainer.jsx';
 import ChartComponent from './ChartComponent.jsx';
 import CommonFuns from '../../../util/Util.jsx';
+import UOMStore from '../../../stores/UOMStore.jsx';
 
 var LabelDetail = React.createClass({
   propTypes: {
@@ -35,6 +36,22 @@ var LabelDetail = React.createClass({
   },
   _mergeLabel: function(data) {
     this.props.mergeLabel(data);
+  },
+  _onUomChange: function() {
+    var selectedLabel = this.props.selectedLabel;
+    var uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
+    var kpiList = this._getKpiTypeList();
+    var index = kpiList.findIndex((item) => {
+      if (item.payload === selectedLabel.get('LabellingType')) {
+        return true;
+      }
+    });
+    if (index !== -1) {
+      uom += kpiList[index].uom;
+    }
+    this.setState({
+      uom: uom
+    });
   },
   _getKpiTypeList: function() {
     let kpiTypeList = [
@@ -139,16 +156,6 @@ var LabelDetail = React.createClass({
     var content = null;
     var isView = this.props.formStatus === formStatus.VIEW;
     var selectedLabel = this.props.selectedLabel;
-    var uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
-    var kpiList = this._getKpiTypeList();
-    var index = kpiList.findIndex((item) => {
-      if (item.payload === selectedLabel.get('LabellingType')) {
-        return true;
-      }
-    });
-    if (index !== -1) {
-      uom += kpiList[index].uom;
-    }
 
     return (
       <div className="pop-manage-detail-content">
@@ -156,7 +163,7 @@ var LabelDetail = React.createClass({
           <LabelBasic ref='labelBasic' selectedLabel={selectedLabel} isViewStatus={isView} mergeLabel={this._mergeLabel}/>
         </div>
         <div className='jazz-customer-label-chart'>
-          <GradeContainer ref='gradeContainer' labelGradeList={selectedLabel.get('LabellingItems')} isViewStatus={isView} mergeLabel={this._mergeLabel} uom={uom} order={selectedLabel.get('Order')}/>
+          <GradeContainer ref='gradeContainer' labelGradeList={selectedLabel.get('LabellingItems')} isViewStatus={isView} mergeLabel={this._mergeLabel} uom={this.state.uom} order={selectedLabel.get('Order')}/>
           <ChartComponent levelCount={selectedLabel.get('Grade')}/>
         </div>
       </div>
@@ -170,9 +177,13 @@ var LabelDetail = React.createClass({
     return bottom;
   },
   componentWillMount: function() {},
-  componentDidMount: function() {},
+  componentDidMount: function() {
+    UOMStore.addChangeListener(this._onUomChange);
+  },
   componentWillReceiveProps: function(nextProps) {},
-  componentWillUnmount: function() {},
+  componentWillUnmount: function() {
+    UOMStore.removeChangeListener(this._onUomChange);
+  },
 
   render: function() {
     var header = this._renderHeader(),

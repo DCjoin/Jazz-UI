@@ -3,6 +3,7 @@
 import React from "react";
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import Regex from '../../../constants/Regex.jsx';
+import classnames from "classnames";
 
 var GradeContainer = React.createClass({
   propTypes: {
@@ -16,16 +17,42 @@ var GradeContainer = React.createClass({
   },
   getInitialState: function() {
     return {
+      errorText: ''
     };
   },
   _isValid: function() {
     var minValueIsValid = true,
       maxValueIsValid = true;
+    var labelValue = this.props.labelValue;
+    var errorStr;
+    if (this.props.order === 0) {
+      errorStr = I18N.Setting.CustomizedLabeling.ErrorMessage1;
+    } else {
+      errorStr = I18N.Setting.CustomizedLabeling.ErrorMessage2;
+    }
     if (this.refs.MinValue) {
       minValueIsValid = this.refs.MinValue.isValid();
     }
     if (this.refs.MaxValue) {
       maxValueIsValid = this.refs.MaxValue.isValid();
+    }
+    if (this.refs.MinValue && this.refs.MaxValue) {
+      if (minValueIsValid && maxValueIsValid) {
+        if (labelValue.get('MinValue') >= labelValue.get('MaxValue')) {
+          this.setState({
+            errorText: errorStr
+          });
+          return false;
+        } else {
+          this.setState({
+            errorText: ''
+          });
+        }
+      } else {
+        this.setState({
+          errorText: ''
+        });
+      }
     }
     return minValueIsValid && maxValueIsValid;
   },
@@ -89,45 +116,93 @@ var GradeContainer = React.createClass({
     if (gradeLevel === 1) {
       if (this.props.order === 0) {
         item = (<div className='jazz-jazz-customer-label-grade-item'>
-        <div className='jazz-jazz-customer-label-grade-item-signal'>{'<='}</div>
+        <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-signal': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{'<='}</div>
         <ViewableTextField {...maxValueProps}/>
-        <div className='jazz-jazz-customer-label-grade-item-uom'>{this.props.uom}</div>
+        <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-uom': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{this.props.uom}</div>
       </div>);
       } else {
         item = (<div className='jazz-jazz-customer-label-grade-item'>
-      <div className='jazz-jazz-customer-label-grade-item-signal'>{'>'}</div>
+      <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-signal': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{'>'}</div>
       <ViewableTextField {...minValueProps}/>
-      <div className='jazz-jazz-customer-label-grade-item-uom'>{this.props.uom}</div>
+      <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-uom': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{this.props.uom}</div>
     </div>);
       }
     } else if (gradeLevel === 8) {
       if (this.props.order === 0) {
         item = (<div className='jazz-jazz-customer-label-grade-item'>
-        <div className='jazz-jazz-customer-label-grade-item-signal'>{'>'}</div>
+        <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-signal': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{'>'}</div>
         <ViewableTextField {...minValueProps}/>
-        <div className='jazz-jazz-customer-label-grade-item-uom'>{this.props.uom}</div>
+        <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-uom': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{this.props.uom}</div>
       </div>);
       } else {
         item = (<div className='jazz-jazz-customer-label-grade-item'>
-      <div className='jazz-jazz-customer-label-grade-item-signal'>{'<='}</div>
+      <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-signal': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{'<='}</div>
       <ViewableTextField {...maxValueProps}/>
-      <div className='jazz-jazz-customer-label-grade-item-uom'>{this.props.uom}</div>
+      <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-uom': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{this.props.uom}</div>
       </div>);
       }
     } else {
       if (this.props.order === 0) {
         item = (<div className='jazz-jazz-customer-label-grade-item'>
         <ViewableTextField {...minValueProps}/>
-        <div className='jazz-jazz-customer-label-grade-item-to'>{'-'}</div>
+        <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-to': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{'-'}</div>
         <ViewableTextField {...maxValueProps}/>
-        <div className='jazz-jazz-customer-label-grade-item-uom'>{this.props.uom}</div>
+        <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-uom': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{this.props.uom}</div>
       </div>);
       } else {
         item = (<div className='jazz-jazz-customer-label-grade-item'>
       <ViewableTextField {...maxValueProps}/>
-      <div className='jazz-jazz-customer-label-grade-item-to'>{'-'}</div>
+      <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-to': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{'-'}</div>
       <ViewableTextField {...minValueProps}/>
-      <div className='jazz-jazz-customer-label-grade-item-uom'>{this.props.uom}</div>
+      <div className={classnames({
+          'jazz-jazz-customer-label-grade-item-uom': true,
+          "jazz-jazz-customer-label-grade-item-edit": !this.props.isViewStatus,
+          "jazz-jazz-customer-label-grade-item-view": this.props.isViewStatus
+        })}>{this.props.uom}</div>
     </div>);
       }
     }
@@ -135,14 +210,23 @@ var GradeContainer = React.createClass({
   },
   componentWillMount: function() {},
   componentDidMount: function() {},
-  componentWillReceiveProps: function(nextProps) {},
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.isViewStatus) {
+      this.setState({
+        errorText: ''
+      });
+    }
+  },
   componentWillUnmount: function() {},
   render: function() {
-    var me = this;
-    var isView = this.props.isViewStatus;
-    var labelValue = this.props.labelValue;
     var content = this._renderItem(this.props.gradeLevel);
-    return content;
+    let errorTextElement = this.state.errorText !== '' ? (
+      <div className='jazz-jazz-customer-label-grade-item-error'>{this.state.errorText}</div>
+      ) : null;
+    return <div>
+      {content}
+      {errorTextElement}
+    </div>;
   }
 });
 
