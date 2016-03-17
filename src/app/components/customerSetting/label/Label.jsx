@@ -22,7 +22,9 @@ var Label = React.createClass({
   },
   _isValid: function() {
     var labelDetail = this.refs.labelDetail;
-    return true;
+    var labelBasicIsValid = labelDetail.refs.labelBasic._isValid();
+    var gradeIsValid = labelDetail.refs.gradeContainer._isValid();
+    return labelBasicIsValid && gradeIsValid;
 
   },
   _onToggle: function() {
@@ -53,6 +55,26 @@ var Label = React.createClass({
   },
   _mergeLabel: function(data) {
     var selectedLabel = this.state.selectedLabel;
+    var labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    var i;
+    if (data.path === 'Order') {
+      var list = selectedLabel.get('LabellingItems').toJS().reverse();
+      for (i = 0; i < list.length; i++) {
+        list[i].Name = labels[i];
+      }
+      selectedLabel = selectedLabel.set('LabellingItems', Immutable.fromJS(list));
+    } else if (data.path === 'Grade') {
+      var gradeLevel = data.value;
+      var newList = [];
+      for (i = 0; i < gradeLevel; i++) {
+        newList.push({
+          'MinValue': null,
+          'MaxValue': null,
+          'Name': labels[i]
+        });
+      }
+      selectedLabel = selectedLabel.set('LabellingItems', Immutable.fromJS(newList));
+    }
     selectedLabel = selectedLabel.set(data.path, data.value);
     this.setState({
       selectedLabel: selectedLabel
@@ -111,7 +133,9 @@ var Label = React.createClass({
       enableSave: false
     });
   },
-
+  componentWillMount: function() {
+    document.title = I18N.MainMenu.CustomerSetting;
+  },
   componentDidMount: function() {
     LabelAction.getLabelList();
     LabelStore.addLabelListChangeListener(this._onLabelListChange);

@@ -719,16 +719,16 @@ I18N.Setting.Tag.PTagRawData.PauseMonitorContent = 'Selected rule will be suspen
 I18N.Setting.Tag.PTagRawData.DifferenceValue = 'Difference';
 
 I18N.Setting.CustomizedLabeling = {};
-I18N.Setting.CustomizedLabeling.Grade = '{0} lelel';
-I18N.Setting.CustomizedLabeling.OrderMode = 'Order';
-I18N.Setting.CustomizedLabeling.Ascending = 'Asc';
-I18N.Setting.CustomizedLabeling.Declining = 'Desc';
-I18N.Setting.CustomizedLabeling.Configurationer = 'Configurationer';
-I18N.Setting.CustomizedLabeling.ConfigurationDate = 'Config time';
-I18N.Setting.CustomizedLabeling.KPIType = 'Type';
-I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*Ensure right value larger than left';
-I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*Ensure left value larger than right';
-I18N.Setting.CustomizedLabeling.DeleteTip = '<br/> Widget can not display after delete';
+I18N.Setting.CustomizedLabeling.Grade = '{0}级';
+I18N.Setting.CustomizedLabeling.OrderMode = '排列方式';
+I18N.Setting.CustomizedLabeling.Ascending = '正序';
+I18N.Setting.CustomizedLabeling.Declining = '倒序';
+I18N.Setting.CustomizedLabeling.Configurationer = '配置人';
+I18N.Setting.CustomizedLabeling.ConfigurationDate = '配置时间';
+I18N.Setting.CustomizedLabeling.KPIType = '指标类型';
+I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*请确保输入的右区间大于左区间';
+I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*请确保输入的左区间大于右区间';
+I18N.Setting.CustomizedLabeling.DeleteTip = '<br/>删除后，关联该标识的仪表盘将无法正常显示。';
 
 I18N.Message = {};
 
@@ -1623,9 +1623,9 @@ I18N.Setting.VEEMonitorRule.AddTag = 'Add tags';
 I18N.Setting.VEEMonitorRule.AddingTagsInfo = 'Click items to add';
 I18N.Setting.VEEMonitorRule.TagList = 'Tag list';
 
-I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = 'Please input integer between 0 and 999999999';
-I18N.Setting.Tag.PTagRawData.PauseMonitorNoRule = 'This rule set not include any rule';
-I18N.Setting.Tag.PTagRawData.normal = 'Normal';
-I18N.Setting.Tag.PTagRawData.abnormal = 'Abnormal';
-I18N.Setting.Tag.PTagRawData.repair = 'Modified';
+I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '请输入0-999999999的整数';
+I18N.Setting.Tag.PTagRawData.PauseMonitorNoRule = '该规则集未关联任何规则';
+I18N.Setting.Tag.PTagRawData.normal = '正常值';
+I18N.Setting.Tag.PTagRawData.abnormal = '异常值';
+I18N.Setting.Tag.PTagRawData.repair = '修复值';
 module.exports = I18N;

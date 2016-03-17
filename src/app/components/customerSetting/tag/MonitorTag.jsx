@@ -183,7 +183,7 @@ var MonitorTag = React.createClass({
     }
   },
   getTagList: function() {
-    TagAction.getTagList(this.props.tagId, this.state.page, this.state.filterObj);
+    TagAction.getTagList(this.state.page, this.state.filterObj);
   },
   componentDidMount: function() {
     TagStore.addAllTagListChangeListener(this._onChange);
