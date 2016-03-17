@@ -92,7 +92,7 @@ var RuleBasic = React.createClass({
           path: "NotifyConsecutiveHours"
         })
       },
-      validate: value => {
+      validate: (value = '') => {
         if (value !== '' && !Regex.ConsecutiveHoursRule.test(value)) {
           return I18N.Setting.VEEMonitorRule.ConsecutiveHoursError
         }
