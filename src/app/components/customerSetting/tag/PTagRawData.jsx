@@ -367,14 +367,12 @@ let PTagRawData = React.createClass({
 
     } else {
       return (
-
         <div className='jazz-ptag-rawdata'>
             {this._renderToolBar()}
             {this._renderDialog()}
             {this._renderChartComponent()}
             {this._renderErrorDialog()}
           </div>
-
         )
     }
 
