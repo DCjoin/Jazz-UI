@@ -9,7 +9,9 @@ import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import LabelBasic from './LabelBasic.jsx';
+import GradeContainer from './GradeContainer.jsx';
 import ChartComponent from './ChartComponent.jsx';
+import CommonFuns from '../../../util/Util.jsx';
 
 var LabelDetail = React.createClass({
   propTypes: {
@@ -30,6 +32,58 @@ var LabelDetail = React.createClass({
   getInitialState: function() {
     return {
     };
+  },
+  _mergeLabel: function(data) {
+    this.props.mergeLabel(data);
+  },
+  _getKpiTypeList: function() {
+    let kpiTypeList = [
+      {
+        payload: 7,
+        uom: '',
+        text: I18N.EM.Unit.UnitOriginal /*'指标原值'*/
+      }, {
+        payload: 1,
+        uom: I18N.Common.Per.Person,
+        text: I18N.EM.Unit.UnitPopulation /*'单位人口'*/
+      }, {
+        payload: 2,
+        uom: I18N.Common.Per.m2,
+        text: I18N.EM.Unit.UnitArea /*'单位面积'*/
+      }, {
+        payload: 3,
+        uom: I18N.Common.Per.m2,
+        text: I18N.EM.Unit.UnitColdArea /*'单位供冷面积'*/
+      }, {
+        payload: 4,
+        uom: I18N.Common.Per.m2,
+        text: I18N.EM.Unit.UnitWarmArea /*'单位采暖面积'*/
+      }, {
+        payload: 8,
+        uom: I18N.Common.Per.Room,
+        text: I18N.EM.Unit.UnitRoom
+      }, {
+        payload: 9,
+        uom: I18N.Common.Per.Room,
+        text: I18N.EM.Unit.UnitUsedRoom
+      }, {
+        payload: 10,
+        uom: I18N.Common.Per.Bed,
+        text: I18N.EM.Unit.UnitBed
+      }, {
+        payload: 11,
+        uom: I18N.Common.Per.Bed,
+        text: I18N.EM.Unit.UnitUsedBed
+      }, {
+        payload: 5,
+        uom: '',
+        text: I18N.EM.DayNightRatio /*'昼夜能耗比'*/
+      }, {
+        payload: 6,
+        uom: '',
+        text: I18N.EM.WorkHolidayRatio
+      }];
+    return kpiTypeList;
   },
   _renderDeleteDialog() {
     if (!this.props.showDeleteDialog) {
@@ -84,13 +138,26 @@ var LabelDetail = React.createClass({
   _renderContent: function() {
     var content = null;
     var isView = this.props.formStatus === formStatus.VIEW;
+    var selectedLabel = this.props.selectedLabel;
+    var uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
+    var kpiList = this._getKpiTypeList();
+    var index = kpiList.findIndex((item) => {
+      if (item.payload === selectedLabel.get('LabellingType')) {
+        return true;
+      }
+    });
+    if (index !== -1) {
+      uom += kpiList[index].uom;
+    }
+
     return (
       <div className="pop-manage-detail-content">
         <div>
-          <LabelBasic selectedLabel={this.props.selectedLabel} isViewStatus={isView} mergeLabel={this._mergeLabel}/>
+          <LabelBasic ref='labelBasic' selectedLabel={selectedLabel} isViewStatus={isView} mergeLabel={this._mergeLabel}/>
         </div>
-        <div>
-          <ChartComponent levelCount={this.props.selectedLabel.get('Grade')}/>
+        <div className='jazz-customer-label-chart'>
+          <GradeContainer ref='gradeContainer' labelGradeList={selectedLabel.get('LabellingItems')} isViewStatus={isView} mergeLabel={this._mergeLabel} uom={uom} order={selectedLabel.get('Order')}/>
+          <ChartComponent levelCount={selectedLabel.get('Grade')}/>
         </div>
       </div>
       );

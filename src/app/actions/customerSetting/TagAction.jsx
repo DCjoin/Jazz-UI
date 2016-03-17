@@ -32,13 +32,12 @@ let TagAction = {
       }
     });
   },
-  getTagList: function(tagId, page, filterObj) {
+  getTagList: function(page, filterObj) {
     var obj = {
-      CustomerId: parseInt(window.currentCustomerId),
-      ExcludeId: tagId
+      CustomerId: parseInt(window.currentCustomerId)
     };
     var filter = assign(filterObj, obj);
-    Ajax.post('/Tag.svc/GetVariableItemsByFilter', {
+    Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: filter,
         page: page,
