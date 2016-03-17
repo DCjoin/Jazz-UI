@@ -125,12 +125,13 @@ var Label = React.createClass({
   },
   _onError: function() {
     this.setState({
-      isLoading: false
+      isLoading: false,
+      showDeleteDialog: false
     });
   },
   _onDeleteLabel() {
     var selectedLabel = this.state.selectedLabel;
-    LabelAction.deleteLabelById(selectedLabel.get('Id'), selectedLabel.get('Version'));
+    LabelAction.deleteLabelById(selectedLabel.get('Id'));
   },
   _onAddLabel() {
     var list = [];

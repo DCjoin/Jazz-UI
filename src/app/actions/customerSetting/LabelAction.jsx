@@ -77,13 +77,10 @@ let LabelAction = {
       }
     });
   },
-  deleteTagById(id, version) {
-    Ajax.post('/Customer.svc/DeleteCustomerLabellingTag', {
+  deleteLabelById(id) {
+    Ajax.post('/Customer.svc/DeleteCustomerLabelling', {
       params: {
-        dto: {
-          Id: id,
-          Version: version
-        }
+        labellingId: id
       },
       success: function() {
         AppDispatcher.dispatch({
