@@ -10,6 +10,7 @@ import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import GlobalErrorMessageAction from '../../../actions/GlobalErrorMessageAction.jsx';
 import Immutable from 'immutable';
+import RawDataList from './RawDataList.jsx';
 
 
 let Tag = React.createClass({
@@ -29,7 +30,9 @@ let Tag = React.createClass({
       showFilter: false,
       showBasic: true,
       showDeleteDialog: false,
-      enableSave: true
+      enableSave: true,
+      showRawDataList: false,
+      isRawData: false
     };
   },
   _isValid: function() {
@@ -328,7 +331,9 @@ let Tag = React.createClass({
       } else {
         this.setState({
           showBasic: true,
-          formStatus: formStatus.VIEW
+          formStatus: formStatus.VIEW,
+          showRawDataList: false,
+          isRawData: false
         });
       }
     } else {
@@ -428,6 +433,12 @@ let Tag = React.createClass({
       });
     });
   },
+  _onSwitchRawDataListView: function(switchFlag, isRawData) {
+    this.setState({
+      showRawDataList: switchFlag ? !this.state.showRawDataList : this.state.showRawDataList,
+      isRawData: isRawData
+    });
+  },
   getTagList: function() {
     TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
   },
@@ -490,7 +501,9 @@ let Tag = React.createClass({
         onToggle: this._onToggle,
         onSwitchTab: this._onSwitchTab,
         mergeTag: this._mergeTag,
-        enableSave: this.state.enableSave
+        enableSave: this.state.enableSave,
+        onSwitchRawDataListView: this._onSwitchRawDataListView,
+        showRawDataList: this.state.showRawDataList
       };
       rightPanel = <TagDetail {...rightProps}/>;
     }
@@ -538,6 +551,15 @@ let Tag = React.createClass({
     }}><TagList {...leftProps}/></div> : <div style={{
       display: 'none'
     }}><TagList {...leftProps}/></div>;
+    var listProps = {
+      isRawData: this.state.isRawData,
+      step: this.state.selectedTag.get('CalculationStep')
+    };
+    var RawDataListPanel = (me.state.showRawDataList) ? <div style={{
+      display: 'flex'
+    }}><RawDataList {...listProps}/></div> : <div style={{
+      display: 'none'
+    }}><RawDataList {...listProps}/></div>;
     return (
       <div style={{
         display: 'flex',
@@ -546,6 +568,7 @@ let Tag = React.createClass({
         {leftPanel}
         {rightPanel}
         {filterPanel}
+        {RawDataListPanel}
       </div>
       );
   },

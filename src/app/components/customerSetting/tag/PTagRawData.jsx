@@ -9,12 +9,14 @@ import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
+import DataList from './RawDataList.jsx';
 function emptyList() {
   return new List();
 }
 let PTagRawData = React.createClass({
   propTypes: {
-    selectedTag: React.PropTypes.object
+    selectedTag: React.PropTypes.object,
+    onSwitchRawDataListView: React.PropTypes.func,
   },
   getInitialState: function() {
     return ({
@@ -54,11 +56,14 @@ let PTagRawData = React.createClass({
     })
   },
   _onSwitchRawDataView: function() {
-    var rawDataStatus = this.state.isRawData;
+    var rawDataStatus = this.state.isRawData,
+      that = this;
     this.setState({
       tagData: !rawDataStatus ? TagStore.getRawData() : TagStore.getDifferenceData(),
       isLoading: false,
       isRawData: !rawDataStatus,
+    }, () => {
+      that.props.onSwitchRawDataListView(false, this.state.isRawData);
     })
   },
   _onDateSelectorChanged: function() {
@@ -105,6 +110,9 @@ let PTagRawData = React.createClass({
   //     chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
   //   }
   // },
+  _onSwitchListView: function() {
+    this.props.onSwitchRawDataListView(true, this.state.isRawData);
+  },
   _renderDialog: function() {
     var that = this;
     var closeDialog = function() {
@@ -200,6 +208,13 @@ let PTagRawData = React.createClass({
         border: '1px solid #abafae',
         height: '34px',
         width: '92px'
+      },
+      listBtnStyle = {
+        fontSize: '36px',
+        marginLeft: '30px',
+        height: '36px',
+        marginTop: '-8px',
+        cursor: 'pointer'
       };
     var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
     style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
@@ -218,6 +233,7 @@ let PTagRawData = React.createClass({
         </div>
         <div className='rightside'>
           {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
+           <FontIcon className='icon-taglist-fold' style={listBtnStyle} ref="listBtn" onClick={this._onSwitchListView}/>
         </div>
       </div>
       )
@@ -262,17 +278,29 @@ let PTagRawData = React.createClass({
       startTime: obj.start,
       endTime: obj.end,
       timeRanges: obj.timeRanges
+    };
+    if (this.state.tagData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) {
+      return (
+        <div style={{
+          display: 'flex',
+          'flexDirection': 'column',
+          marginTop: '77px'
+        }}>
+        </div>
+        )
+    } else {
+      return (
+        <div style={{
+          display: 'flex',
+          'flexDirection': 'column',
+          marginTop: '77px'
+        }}>
+          <ChartPanel {...chartProps}/>
+          {this._renderComment()}
+        </div>
+        )
     }
-    return (
-      <div style={{
-        display: 'flex',
-        'flexDirection': 'column',
-        marginTop: '77px'
-      }}>
-        <ChartPanel {...chartProps}/>
-        {this._renderComment()}
-      </div>
-      )
+
   },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
@@ -284,7 +312,8 @@ let PTagRawData = React.createClass({
     if (nextProps.selectedTag !== this.props.selectedTag) {
       that.setState({
         start: this._getInitDate().start,
-        end: this._getInitDate().end
+        end: this._getInitDate().end,
+        isRawData: nextProps.selectedTag.get('IsAccumulated') ? false : true,
       }, () => {
         that._getTagsData(nextProps, true)
       })
@@ -309,11 +338,13 @@ let PTagRawData = React.createClass({
 
     } else {
       return (
+
         <div className='jazz-ptag-rawdata'>
-          {this._renderToolBar()}
-          {this._renderDialog()}
-          {this._renderChartComponent()}
-        </div>
+            {this._renderToolBar()}
+            {this._renderDialog()}
+            {this._renderChartComponent()}
+          </div>
+
         )
     }
 

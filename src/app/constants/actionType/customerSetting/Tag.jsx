@@ -18,6 +18,7 @@ module.exports = {
     GET_LOG_LIST_ERROR: null,
     GET_TAG_DATAS_SUCCESS: null,
     SET_FILTER_OBJ: null,
-    SET_FORMULA_FILTER_OBJ: null
+    SET_FORMULA_FILTER_OBJ: null,
+    SET_POINT_TO_LIST: null,
   })
 };
