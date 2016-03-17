@@ -246,9 +246,9 @@ var TagStore = assign({}, PrototypeStore, {
       preItem = this.getPreviousItem(preIndex, dataArray, differenceData);
       if (preItem) {
         var differenceValue = (currentItem.DataValue * 10 * 10 - preItem.DataValue * 10 * 10) / 100;
-        if (differenceValue >= 0) {
-          difItem.DataValue = differenceValue;
-        }
+        // if (differenceValue >= 0) {
+        difItem.DataValue = differenceValue;
+      //}
       }
     }
 
@@ -271,7 +271,7 @@ var TagStore = assign({}, PrototypeStore, {
     return _rawData;
   },
   getDifferenceData: function() {
-    if (_rawData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) return _rawData;
+    if (_rawData.size === 0) return _rawData;
     var rawData = _rawData.toJS(),
       difArray = this.constituteDifferenceDataArray(rawData, _differenceTargetEnergyData),
       templateED = rawData.TargetEnergyData[0].EnergyData;
@@ -303,6 +303,57 @@ var TagStore = assign({}, PrototypeStore, {
 
   getTagStatus: function() {
     return _tagStatus;
+  },
+  translateDate(val, s, targetStep) {
+    var step = targetStep,
+      sign = CommonFuns.isNumber(s) ? s : 1,
+      date = moment(CommonFuns.isNumber(val) ? val : j2d(val)),
+      newDate;
+    switch (step) {
+      case 0: //raw
+        //newDate = date;
+        newDate = date.add(-7.5 * sign, 'minutes');
+        break;
+      case 1: //hour add 30mins
+        newDate = date.add(-30 * sign, 'minutes');
+        break;
+      case 2: //day add 12hours
+        newDate = date.add(-12 * sign, 'hours');
+        break;
+      case 3: //month add 15days
+        newDate = date.add(-15 * sign, 'days');
+        break;
+      case 4: //2010年 add 6months
+        newDate = date.add(-6 * sign, 'months');
+        break;
+      case 5: //week add 3days&12hours
+        newDate = date.add(-4 * sign, 'days');
+        newDate = newDate.add(12 * sign, 'hours');
+        break;
+      case 6: //15mins
+        newDate = date.add(-7.5 * sign, 'minutes');
+        break;
+      case 7: //30mins
+        newDate = date.add(-15 * sign, 'minutes');
+        break;
+      case 8: //2 hours
+        newDate = date.add(-1 * sign, 'hours');
+        break;
+      case 9: //4 hours
+        newDate = date.add(-2 * sign, 'hours');
+        break;
+      case 10: //6 hours
+        newDate = date.add(-3 * sign, 'hours');
+        break;
+      case 11: //8 hours
+        newDate = date.add(-4 * sign, 'hours');
+        break;
+      case 12: //12hours
+        newDate = date.add(-6 * sign, 'hours');
+        break;
+    }
+
+    return j2d(d2j(newDate._d));
   },
   emitTagListChange: function() {
     this.emit(CHANGE_TAG_EVENT);

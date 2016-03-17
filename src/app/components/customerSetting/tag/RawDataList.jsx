@@ -3,8 +3,10 @@
 import React from "react";
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
+import Immutable from 'immutable';
 let d2j = CommonFuns.DataConverter.JsonToDateTime;
-let dateItem = [];
+let dateItem = [],
+  indexItem = [];
 let ListItem = React.createClass({
   propTypes: {
     time: React.PropTypes.string,
@@ -14,12 +16,12 @@ let ListItem = React.createClass({
   render: function() {
     let color;
     if (this.props.data.get('DataQuality') === 9) {
-      color = 'orange'
+      color = '#f46a58'
     } else {
       if (this.props.data.get('DataQuality') === 6 || this.props.data.get('DataQuality') === 8) {
-        color = 'purple'
+        color = '#cfa9ff'
       } else {
-        color = 'green'
+        color = '#11d9db'
       }
     }
     return (
@@ -53,21 +55,22 @@ let RawDataList = React.createClass({
       Items = [],
       currentDate = null,
       firstDate = null,
+      pId = 0,
       that = this;
+
     energyData.forEach((data, index) => {
-      let str = CommonFuns.formatDateByStep(d2j(data.get('LocalTime')), null, null, this.props.step);
+      let str = CommonFuns.formatDateByStep(TagStore.translateDate(data.get('LocalTime'), null, this.props.step), null, null, this.props.step);
       let date = str.split(' ')[0],
         time = str.split(' ')[1];
-
       if (data.get('DataValue') !== null) {
+        indexItem[pId] = index;
+        pId++;
         if (currentDate !== date && currentDate !== null) {
           Items.push(
-            <div className="date" style={{
-              height: '40px',
-              minHeight: '40px'
-            }}>{date}</div>
+            <div className="date">{date}</div>
           );
           dateItem.push(date);
+          pId++;
         }
         if (currentDate === null) {
           firstDate = date
@@ -90,9 +93,11 @@ let RawDataList = React.createClass({
       head.style.display = 'flex';
       head.innerText = firstDate;
     }
-
+    var style = {
+      height: document.body.offsetHeight - 150
+    };
     return (
-      <div className="list" ref='list' onScroll={that._onScroll}>
+      <div className="list" ref='list' style={style} onScroll={that._onScroll}>
         {Items}
       </div>
       )
@@ -100,11 +105,19 @@ let RawDataList = React.createClass({
 
   },
   _onChanged: function() {
+    dateItem = [];
+    indexItem = [];
+    if (this.refs.list) {
+      var el = this.refs.list.getDOMNode();
+      el.scrollTop = 0;
+    }
+
     this.forceUpdate();
   },
   _onListItemSelected: function(index) {
     var el = this.refs.list.getDOMNode();
-    el.scrollTop = (index - 1) * 41 + 150;
+    var id = indexItem.indexOf(index);
+    el.scrollTop = id * 41 + 1;
   },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
@@ -114,7 +127,19 @@ let RawDataList = React.createClass({
     TagStore.removeTagDatasChangeListener(this._onChanged);
     TagStore.removePointToListChangeListener(this._onListItemSelected);
   },
+  componentWillReceiveProps: function(nextProps) {
+    if (nextProps.isRawData !== this.props.isRawData) {
+      dateItem = [];
+      indexItem = [];
+      if (this.refs.list) {
+        var el = this.refs.list.getDOMNode();
+        el.scrollTop = 0;
+      }
+    }
+  },
   render: function() {
+    var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
+      uom = data.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
     var label = this.props.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
     return (
       <div className='jazz-ptag-rawdata-list'>
@@ -122,7 +147,7 @@ let RawDataList = React.createClass({
           <div>{I18N.RawData.Time}</div>
           <div style={{
         marginLeft: '170px'
-      }}>{label + '(' + I18N.Common.Glossary.UOM + ')'}</div>
+      }}>{label + '(' + uom + ')'}</div>
         </div>
         <div className="date" ref='header'>
            </div>

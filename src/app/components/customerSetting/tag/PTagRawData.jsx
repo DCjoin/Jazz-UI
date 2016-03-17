@@ -225,7 +225,7 @@ let PTagRawData = React.createClass({
         <div className='leftside'>
         <div className='switch-accumulated'>
           <div className='label'>
-            {label + '(' + I18N.Common.Glossary.UOM + ')'}
+            {label + '(' + this.state.tagData.getIn(['TargetEnergyData', 0, 'Target', 'Uom']) + ')'}
           </div>
           {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-sync' style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
