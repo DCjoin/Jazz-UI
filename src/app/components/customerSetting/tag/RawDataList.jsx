@@ -14,7 +14,8 @@ let ListItem = React.createClass({
     onClick: React.PropTypes.func,
   },
   render: function() {
-    let color;
+    let color,
+      time = this.props.time;
     if (this.props.data.get('DataQuality') === 9) {
       color = '#f46a58'
     } else {
@@ -24,9 +25,11 @@ let ListItem = React.createClass({
         color = '#11d9db'
       }
     }
+    time = time.replace(/点/g, ':');
+    time = time.replace(/分/g, '');
     return (
       <div className='jazz-ptag-rawdata-list-item' onClick={this.props.onClick}>
-        <div>{this.props.time}</div>
+        <div>{time}</div>
         <div style={{
         marginLeft: '50px',
         color: color
@@ -148,7 +151,7 @@ let RawDataList = React.createClass({
         <div className='title'>
           <div>{I18N.RawData.Time}</div>
           <div style={{
-        marginLeft: '140px'
+        marginLeft: '90px'
       }}>{label + '(' + uom + ')'}</div>
         </div>
         <div className="date" ref='header'>

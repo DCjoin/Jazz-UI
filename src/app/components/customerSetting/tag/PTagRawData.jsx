@@ -233,7 +233,7 @@ let PTagRawData = React.createClass({
         color: '#464949'
       },
       pauseBtnStyle = {
-        border: '1px solid #abafae',
+        border: '1px solid #e4e7e9',
         height: '34px',
         width: '92px'
       },
