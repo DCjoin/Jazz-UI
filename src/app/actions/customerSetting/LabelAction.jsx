@@ -65,7 +65,7 @@ let LabelAction = {
       success: function(label) {
         AppDispatcher.dispatch({
           type: Action.CREATE_LABEL_SUCCESS,
-          tag: label
+          label: label
         });
         me.getLabelList();
       },
