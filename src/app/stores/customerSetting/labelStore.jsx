@@ -58,12 +58,6 @@ var LabelStore = assign({}, PrototypeStore, {
   },
   setSelectedLabel(label) {
     _selectedLabel = Immutable.fromJS(label);
-    _labelList = _labelList.set(_selectedLabelIndex, _selectedLabel);
-  },
-  addSelectedLabel(label) {
-    _selectedLabel = Immutable.fromJS(label);
-    _labelList = _labelList.unshift(_selectedLabel);
-    _selectedLabelIndex = 0;
   },
   getSelectedLabel() {
     return _selectedLabel;
@@ -127,7 +121,7 @@ LabelStore.dispatchToken = AppDispatcher.register(function(action) {
       LabelStore.emitLabelListChange();
       LabelStore.emitSelectedLabelChange();
       break;
-    case Action.GET_TAG_LIST_ERROR:
+    case Action.GET_LABEL_LIST_ERROR:
       LabelStore.setLabelList(null);
       LabelStore.emitLabelListChange();
       LabelStore.emitSelectedLabelChange();
@@ -140,23 +134,17 @@ LabelStore.dispatchToken = AppDispatcher.register(function(action) {
       LabelStore.emitSelectedLabelChange();
       break;
     case Action.MODIFT_LABEL_SUCCESS:
-      LabelStore.setSelectedLabel(action.label);
-      LabelStore.emitLabelListChange();
-      LabelStore.emitSelectedLabelChange();
-      break;
     case Action.CREATE_LABEL_SUCCESS:
-      LabelStore.addSelectedLabel(action.label);
-      LabelStore.emitLabelListChange();
-      LabelStore.emitSelectedLabelChange();
+      LabelStore.setSelectedLabel(action.label);
       break;
     case Action.DELETE_LABEL_SUCCESS:
       LabelStore.deleteLabel();
       LabelStore.emitLabelListChange();
       LabelStore.emitSelectedLabelChange();
       break;
-    case Action.MODIFT_TAG_ERROR:
-    case Action.CREATE_TAG_ERROR:
-    case Action.DELETE_TAG_ERROR:
+    case Action.MODIFT_LABEL_ERROR:
+    case Action.CREATE_LABEL_ERROR:
+    case Action.DELETE_LABEL_ERROR:
       LabelStore.initErrorText(action.errorText);
       LabelStore.emitErrorChange();
       break;

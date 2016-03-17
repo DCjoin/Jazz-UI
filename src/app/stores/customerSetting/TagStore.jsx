@@ -7,7 +7,7 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
-import ChartReaderStrategyFactor from '../Energy/ChartReaderStrategyFactor.jsx';
+import ChartReaderStrategyFactor from '../energy/ChartReaderStrategyFactor.jsx';
 let {DataConverter, formatDateValue} = CommonFuns;
 let j2d = DataConverter.JsonToDateTime,
   d2j = DataConverter.DatetimeToJson;
@@ -81,7 +81,7 @@ var TagStore = assign({}, PrototypeStore, {
   setAllTagList(allTagData) {
     if (allTagData !== null) {
       _allTotal = allTagData.total;
-      _allTagList = Immutable.fromJS(allTagData.GetVariableItemsByFilterResult);
+      _allTagList = Immutable.fromJS(allTagData.GetTagsByFilterResult);
     } else {
       _allTotal = 0;
       _allTagList = Immutable.fromJS([]);

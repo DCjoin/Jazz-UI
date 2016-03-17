@@ -103,12 +103,12 @@ let MainApp = React.createClass({
               title: I18N.MainMenu.TagBatchImportLog
             }
           ];
-          if (this.state.rivilege.indexOf('1217') > -1) {
-            customerChildren.push({
-              name: 'customerLabeling',
-              title: I18N.MainMenu.CustomizedLabeling
-            });
-          }
+        }
+        if (this.state.rivilege.indexOf('1217') > -1) {
+          customerChildren.push({
+            name: 'customerLabeling',
+            title: I18N.MainMenu.CustomizedLabeling
+          });
         }
         menuItems.push(
           {

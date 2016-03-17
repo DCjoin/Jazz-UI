@@ -11,7 +11,7 @@ import EnergyCommentFactory from '../../energy/EnergyCommentFactory.jsx';
 import ChartCmpStrategyFactor from '../../energy/ChartCmpStrategyFactor.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../../util/Util.jsx';
-import ChartStatusStore from '../../../stores/Energy/ChartStatusStore.jsx';
+import ChartStatusStore from '../../../stores/energy/ChartStatusStore.jsx';
 let {Dialog, FlatButton, Checkbox} = mui;
 let yAxisOffset = 70;
 
@@ -471,7 +471,10 @@ let RawDataChartPanel = React.createClass({
     this.state.chartCmpStrategy.initNavigatorDataFn(newConfig, timeRange, data, this);
   },
   arrayMax(array, comparisonFn) {
-    var max = array[0], i, ln, item;
+    var max = array[0],
+      i,
+      ln,
+      item;
     for (i = 0, ln = array.length; i < ln; i++) {
       item = array[i];
       if (comparisonFn) {
@@ -524,7 +527,8 @@ let RawDataChartPanel = React.createClass({
       t = dmData.TargetEnergyData,
       factory = EnergyCommentFactory;
 
-    var type, subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
+    var type,
+      subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
     var xaxisMap;
 
     for (var i = 0, len = t.length; i < len; i++) {
@@ -540,7 +544,8 @@ let RawDataChartPanel = React.createClass({
     }
     let data = [];
     newConfig.series[0].data.forEach((item, index) => {
-      let pItem, color;
+      let pItem,
+        color;
 
       if (item[1] !== null) {
         if (t[0].EnergyData[index - 1].DataQuality === 9) {

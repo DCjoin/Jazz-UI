@@ -65,7 +65,7 @@ let LabelAction = {
       success: function(label) {
         AppDispatcher.dispatch({
           type: Action.CREATE_LABEL_SUCCESS,
-          tag: label
+          label: label
         });
         me.getLabelList();
       },
@@ -77,13 +77,10 @@ let LabelAction = {
       }
     });
   },
-  deleteTagById(id, version) {
-    Ajax.post('/Customer.svc/DeleteCustomerLabellingTag', {
+  deleteLabelById(id) {
+    Ajax.post('/Customer.svc/DeleteCustomerLabelling', {
       params: {
-        dto: {
-          Id: id,
-          Version: version
-        }
+        labellingId: id
       },
       success: function() {
         AppDispatcher.dispatch({

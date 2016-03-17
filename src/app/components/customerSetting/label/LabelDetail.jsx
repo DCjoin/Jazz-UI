@@ -136,7 +136,7 @@ var LabelDetail = React.createClass({
       defaultValue: selectedLabel.get('Name'),
       isRequired: true,
       didChanged: value => {
-        me.props.mergeTag({
+        me.props.mergeLabel({
           value,
           path: "Name"
         });
@@ -180,7 +180,22 @@ var LabelDetail = React.createClass({
   componentDidMount: function() {
     UOMStore.addChangeListener(this._onUomChange);
   },
-  componentWillReceiveProps: function(nextProps) {},
+  componentWillReceiveProps: function(nextProps) {
+    var selectedLabel = nextProps.selectedLabel;
+    var uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
+    var kpiList = this._getKpiTypeList();
+    var index = kpiList.findIndex((item) => {
+      if (item.payload === selectedLabel.get('LabellingType')) {
+        return true;
+      }
+    });
+    if (index !== -1) {
+      uom += kpiList[index].uom;
+    }
+    this.setState({
+      uom: uom
+    });
+  },
   componentWillUnmount: function() {
     UOMStore.removeChangeListener(this._onUomChange);
   },
