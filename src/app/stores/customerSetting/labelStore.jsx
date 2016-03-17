@@ -56,11 +56,11 @@ var LabelStore = assign({}, PrototypeStore, {
       _selectedLabel = null;
     }
   },
-  setSelectedTag(label) {
+  setSelectedLabel(label) {
     _selectedLabel = Immutable.fromJS(label);
     _labelList = _labelList.set(_selectedLabelIndex, _selectedLabel);
   },
-  addSelectedTag(label) {
+  addSelectedLabel(label) {
     _selectedLabel = Immutable.fromJS(label);
     _labelList = _labelList.unshift(_selectedLabel);
     _selectedLabelIndex = 0;
@@ -141,7 +141,7 @@ LabelStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.MODIFT_LABEL_SUCCESS:
       LabelStore.setSelectedLabel(action.label);
-      LabelStore.emitlabelListChange();
+      LabelStore.emitLabelListChange();
       LabelStore.emitSelectedLabelChange();
       break;
     case Action.CREATE_LABEL_SUCCESS:

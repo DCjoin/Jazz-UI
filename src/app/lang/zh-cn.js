@@ -131,7 +131,11 @@ I18N.Common.Glossary.WeekDay.Friday = '五';
 I18N.Common.Glossary.WeekDay.Saturday = '六';
 I18N.Common.Glossary.WeekDay.Sunday = '日';
 
-
+I18N.Common.Per = {};
+I18N.Common.Per.Person = '/人';
+I18N.Common.Per.m2 = '/M²';
+I18N.Common.Per.Bed = '/床';
+I18N.Common.Per.Room = '/房间';
 
 I18N.Common.Date = {};
 I18N.Common.Date.January = '01月';
@@ -620,17 +624,9 @@ I18N.Setting.CustomizedLabeling.Declining = '倒序';
 I18N.Setting.CustomizedLabeling.Configurationer = '配置人';
 I18N.Setting.CustomizedLabeling.ConfigurationDate = '配置时间';
 I18N.Setting.CustomizedLabeling.KPIType = '指标类型';
-I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*请确保输入的右区间大于左区间';
-I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*请确保输入的左区间大于右区间';
+I18N.Setting.CustomizedLabeling.ErrorMessage1 = '请确保输入的右区间大于左区间';
+I18N.Setting.CustomizedLabeling.ErrorMessage2 = '请确保输入的左区间大于右区间';
 I18N.Setting.CustomizedLabeling.DeleteTip = '计量数据"{0}"将被删除。删除后，关联该标识的仪表盘将无法正常显示。';
-
-
-I18N.Setting.CustomizedLabeling.Grade3 = '三级';
-I18N.Setting.CustomizedLabeling.Grade4 = '四级';
-I18N.Setting.CustomizedLabeling.Grade5 = '五级';
-I18N.Setting.CustomizedLabeling.Grade6 = '六级';
-I18N.Setting.CustomizedLabeling.Grade7 = '七级';
-I18N.Setting.CustomizedLabeling.Grade8 = '八级';
 
 I18N.Setting.TargetBaseline = {};
 I18N.Setting.TargetBaseline.AlarmThreshold = '报警敏感度';
@@ -760,7 +756,7 @@ I18N.Setting.Tag.VTagManagement = '计量数据V';
 I18N.Setting.Tag.KPI = '关键能效指标';
 I18N.Setting.Tag.PanelTitle = '层级结构';
 I18N.Setting.Tag.FormulaText = '点击编辑按钮，设计计算公式';
-I18N.Setting.Tag.ErrorContent = '请输入-1000000000~1000000000的数，小数点后最多保留6位';
+I18N.Setting.Tag.ErrorContent = '请输入大于-1000000000小于1000000000的数，小数点后最多保留6位';
 I18N.Setting.Tag.InvalidFormula = '计算公式的格式有误，请检查。';
 I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公式';
 I18N.Setting.Tag.PTagRawData = {};

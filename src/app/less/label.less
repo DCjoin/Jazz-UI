@@ -6,10 +6,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-bottom: 45px;
+  padding-bottom: 40px;
   &-devide{
     border-top: 1px solid #e7e7e8;
     margin-top: 45px;
+    margin-bottom: 20px;
     padding-top: 5px;
   }
   &-item {
@@ -19,8 +20,40 @@
     }
   }
 }
-.jazz-customer-label-devide{
-  border-top: 1px solid #e7e7e8;
-  margin-top: 45px;
-  padding-top: 5px;
+.jazz-customer-label-chart{
+  display: flex;
+  flex-direction: row;
+  &-text{
+    width: 500px;
+    padding-top: 13px;
+  }
+}
+.jazz-jazz-customer-label-grade-item{
+  display: flex;
+  flex-direction: row;
+  height: 32px;
+  padding-top: 8px;
+  &-signal{
+    width: 40px;
+  }
+  &-to{
+    width: 40px;
+    text-align: center;
+  }
+  &-uom{
+    padding-left:20px;
+  }
+  &-edit{
+    padding-top: 10px;
+  }
+  &-view{
+    padding-top: 5px;
+  }
+  &-error{
+    font-size: 12px;
+    color: #f44336;
+    position: relative;
+    top: 15px;
+    line-height: 12px
+  }
 }

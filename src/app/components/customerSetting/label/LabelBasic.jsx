@@ -20,40 +20,58 @@ var LabelBasic = React.createClass({
       this.props.mergeLabel(data);
     }
   },
+  _isValid: function() {
+    var kpiTypeIsValid = this.refs.kpiType.isValid(),
+      gradeIsValid = this.refs.grade.isValid(),
+      orderIsValid = this.refs.order.isValid(),
+      commentIsValid = this.refs.comment.isValid();
+    return kpiTypeIsValid && gradeIsValid && orderIsValid && commentIsValid;
+  },
   _getKpiTypeList: function() {
     let kpiTypeList = [
       {
         payload: 7,
+        uom: '',
         text: I18N.EM.Unit.UnitOriginal /*'指标原值'*/
       }, {
         payload: 1,
+        uom: I18N.Common.Per.Person,
         text: I18N.EM.Unit.UnitPopulation /*'单位人口'*/
       }, {
         payload: 2,
+        uom: I18N.Common.Per.m2,
         text: I18N.EM.Unit.UnitArea /*'单位面积'*/
       }, {
         payload: 3,
+        uom: I18N.Common.Per.m2,
         text: I18N.EM.Unit.UnitColdArea /*'单位供冷面积'*/
       }, {
         payload: 4,
+        uom: I18N.Common.Per.m2,
         text: I18N.EM.Unit.UnitWarmArea /*'单位采暖面积'*/
       }, {
         payload: 8,
+        uom: I18N.Common.Per.Room,
         text: I18N.EM.Unit.UnitRoom
       }, {
         payload: 9,
+        uom: I18N.Common.Per.Room,
         text: I18N.EM.Unit.UnitUsedRoom
       }, {
         payload: 10,
+        uom: I18N.Common.Per.Bed,
         text: I18N.EM.Unit.UnitBed
       }, {
         payload: 11,
+        uom: I18N.Common.Per.Bed,
         text: I18N.EM.Unit.UnitUsedBed
       }, {
         payload: 5,
+        uom: '',
         text: I18N.EM.DayNightRatio /*'昼夜能耗比'*/
       }, {
         payload: 6,
+        uom: '',
         text: I18N.EM.WorkHolidayRatio
       }];
     return kpiTypeList;
@@ -108,7 +126,7 @@ var LabelBasic = React.createClass({
         defaultValue: LabellingType,
         dataItems: me._getKpiTypeList(),
         didChanged: value => {
-          me.props.mergeTag({
+          me.props.mergeLabel({
             value,
             path: "LabellingType"
           });
@@ -121,7 +139,7 @@ var LabelBasic = React.createClass({
         defaultValue: Grade,
         dataItems: me._getLabelGradeList(),
         didChanged: value => {
-          me.props.mergeTag({
+          me.props.mergeLabel({
             value,
             path: "Grade"
           });
@@ -134,7 +152,7 @@ var LabelBasic = React.createClass({
         defaultValue: Order,
         dataItems: me._getOrderList(),
         didChanged: value => {
-          me.props.mergeTag({
+          me.props.mergeLabel({
             value,
             path: "Order"
           });
@@ -149,7 +167,7 @@ var LabelBasic = React.createClass({
         multiLine: true,
         maxLen: null,
         didChanged: value => {
-          me.props.mergeTag({
+          me.props.mergeLabel({
             value,
             path: "Comment"
           });
@@ -161,13 +179,18 @@ var LabelBasic = React.createClass({
     return (
       <div className={"jazz-customer-label-detail-content"}>
           <ComAndUom ref='comAndUom' selectedItem={selectedLabel} mergeItem={this._mergeLabel} isViewStatus={isView} isFirst={true}/>
+          <div className="jazz-customer-label-detail-content-item">
+            <ViewableDropDownMenu {...kpiTypeProps}/>
+          </div>
           {comment}
           <div className="jazz-customer-label-detail-content-devide">{I18N.Setting.CustomizedLabeling.EnergyGrade}</div>
-          <div className="jazz-customer-label-detail-content-item">
-            <ViewableDropDownMenu {...gradeProps}/>
-          </div>
-          <div className="jazz-customer-label-detail-content-item">
-            <ViewableDropDownMenu {...orderProps}/>
+          <div>
+            <div className="jazz-customer-label-detail-content-item">
+              <ViewableDropDownMenu {...gradeProps}/>
+            </div>
+            <div className="jazz-customer-label-detail-content-item">
+              <ViewableDropDownMenu {...orderProps}/>
+            </div>
           </div>
       </div>
       );
