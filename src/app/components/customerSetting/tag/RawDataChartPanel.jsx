@@ -547,14 +547,14 @@ let RawDataChartPanel = React.createClass({
       let pItem,
         color;
 
-      if (index <= t[0].EnergyData.length - 1) {
-        if (t[0].EnergyData[index].DataQuality === 9) {
-          color = 'orange'
+      if (item[1] !== null) {
+        if (t[0].EnergyData[index - 1].DataQuality === 9) {
+          color = '#f46a58'
         } else {
-          if (t[0].EnergyData[index].DataQuality === 6 || t[0].EnergyData[index].DataQuality === 8) {
-            color = 'purple'
+          if (t[0].EnergyData[index - 1].DataQuality === 6 || t[0].EnergyData[index - 1].DataQuality === 8) {
+            color = '#cfa9ff'
           } else {
-            color = 'green'
+            color = '#11d9db'
           }
         }
         pItem = {
@@ -562,11 +562,9 @@ let RawDataChartPanel = React.createClass({
           y: item[1],
           fillColor: color,
           color: color,
-          selected: index === t[0].EnergyData.length - 2,
           events: {
             click: () => {
-              console.log(t[0].EnergyData[index]);
-              TagAction.selectPointToList(index);
+              TagAction.selectPointToList(index - 1);
             }
           },
           marker: {
@@ -582,13 +580,13 @@ let RawDataChartPanel = React.createClass({
           }
         }
         if (index !== t[0].EnergyData.length - 1) {
-          if (t[0].EnergyData[index].DataQuality === 9 || t[0].EnergyData[index + 1].DataQuality === 9) {
-            pItem.segmentColor = 'orange';
+          if (t[0].EnergyData[index - 1].DataQuality === 9 || t[0].EnergyData[index].DataQuality === 9) {
+            pItem.segmentColor = '#f46a58';
           } else {
-            if (t[0].EnergyData[index].DataQuality === 6 || t[0].EnergyData[index].DataQuality === 8 || t[0].EnergyData[index + 1].DataQuality === 6 || t[0].EnergyData[index + 1].DataQuality === 8) {
-              pItem.segmentColor = 'purple';
+            if (t[0].EnergyData[index - 1].DataQuality === 6 || t[0].EnergyData[index - 1].DataQuality === 8 || t[0].EnergyData[index].DataQuality === 6 || t[0].EnergyData[index].DataQuality === 8) {
+              pItem.segmentColor = '#cfa9ff';
             } else {
-              pItem.segmentColor = 'green';
+              pItem.segmentColor = '#11d9db';
             }
           }
         }
