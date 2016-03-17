@@ -150,8 +150,13 @@ var MonitorTag = React.createClass({
   },
   _onDeleteTag: function(tag) {
     VEEAction.modifyVEETags(null, [tag.get('Id')]);
+    let page = this.state.page;
+    if (VEEStore.getTotal() - 1 > 0 && parseInt((VEEStore.getTotal() - 1 + 19) / 20) < page) {
+      page = page - 1;
+    }
     this.setState({
-      isLoading: true
+      isLoading: true,
+      page: page
     })
   },
   _onAllTagsSelected: function(event, checked) {
@@ -210,10 +215,11 @@ var MonitorTag = React.createClass({
     this._onSearch('')
   },
   _renderDisplayTag: function() {
-    var that = this;
+    var that = this,
+      total = VEEStore.getTotal();
     var pagingPropTypes = {
       curPageNum: this.state.page,
-      totalPageNum: VEEStore.getTotal(),
+      totalPageNum: total === 0 ? 1 : parseInt((total + 19) / 20),
       previousPage: this._previousPage,
       nextPage: this._nextPage,
       jumpToPage: this._jumpToPage,

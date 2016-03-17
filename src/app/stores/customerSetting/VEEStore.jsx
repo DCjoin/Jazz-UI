@@ -27,7 +27,7 @@ let CHANGE_EVENT = 'change',
 var VEEStore = assign({}, PrototypeStore, {
   setRules: function(rules) {
     rules.forEach(rule => {
-      rule.CheckNotify = !!rule.NotifyConsecutiveHours
+      rule.CheckNotify = rule.NotifyConsecutiveHours !== null
     });
     _rules = Immutable.fromJS(rules);
   },
@@ -123,7 +123,7 @@ var VEEStore = assign({}, PrototypeStore, {
     return _tagList
   },
   getTotal: function() {
-    return _total === 0 ? 1 : parseInt((_total + 19) / 20)
+    return _total;
   },
   findCommodityById: function(id) {
     var commodities = Immutable.fromJS(window.allCommodities),

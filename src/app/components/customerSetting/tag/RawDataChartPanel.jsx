@@ -5,13 +5,12 @@ import assign from 'object-assign';
 import _ from 'lodash';
 import Immutable from 'immutable';
 import mui from 'material-ui';
-import Highstock from '../highcharts/Highstock.jsx';
-import ChartXAxisSetter from './ChartXAxisSetter.jsx';
-import EnergyCommentFactory from './EnergyCommentFactory.jsx';
+import Highstock from '../../highcharts/Highstock.jsx';
+import ChartXAxisSetter from '../../energy/ChartXAxisSetter.jsx';
+import EnergyCommentFactory from '../../energy/EnergyCommentFactory.jsx';
 import ChartCmpStrategyFactor from '../../energy/ChartCmpStrategyFactor.jsx';
-import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
-import TagStore from '../../../stores/customerSetting/TagStore.jsx';
-
+import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../../util/Util.jsx';
+import ChartStatusStore from '../../../stores/Energy/ChartStatusStore.jsx';
 let {Dialog, FlatButton, Checkbox} = mui;
 let yAxisOffset = 70;
 
@@ -75,7 +74,9 @@ let defaultConfig = {
     thousandsSep: ','
   },
   chart: {
+    type: 'coloredline',
     panning: false,
+    zoomType: 'xy',
     backgroundColor: "#FBFBFB",
     plotBackgroundColor: null,
     plotBorderWidth: null,
@@ -178,29 +179,25 @@ let defaultConfig = {
   rangeSelector: {
     enabled: false
   },
-  // navigator: {
-  //   enabled: true,
-  //   margin: 25,
-  //   adaptToUpdatedData: false,
-  //   xAxis: {
-  //     ordinal: false,
-  //     labels: {
-  //       formatter: function() {
-  //         var v = this.value;
-  //         var chart = this.chart;
-  //         var step = chart.options.navigator.step;
-  //         if (step == 4) {
-  //           return dateFormat(new Date(v), 'YYYY');
-  //         } else {
-  //           return dateFormat(new Date(v), 'YYYY/MM');
-  //         }
-  //       }
-  //     }
-  //   },
-  //   yAxis: {
-  //     min: 0
-  //   }
-  // },
+  navigator: {
+    enabled: false,
+    margin: 25,
+    adaptToUpdatedData: false,
+    xAxis: {
+      ordinal: false,
+      labels: {
+        formatter: function() {
+          var v = this.value;
+
+          return dateFormat(new Date(v), 'MM/DD');
+
+        }
+      }
+    },
+    yAxis: {
+      min: 0
+    }
+  },
   scrollbar: {
     enabled: true,
     liveRedraw: true
@@ -249,7 +246,11 @@ let defaultConfig = {
     series: {
       marker: {
         enabled: true,
-        radius: 3
+        radius: 4,
+        fillColor: false,
+        hover: {
+          fillColor: false,
+        }
       }
     },
     column: {
@@ -305,7 +306,7 @@ let RawDataChartPanel = React.createClass({
   propTypes: {
     //onDeleteButtonClick: React.PropTypes.func,
     //onDeleteAllButtonClick: React.PropTypes.func,
-    //afterChartCreated: React.PropTypes.func,
+    afterChartCreated: React.PropTypes.func,
     energyData: React.PropTypes.object,
     energyRawData: React.PropTypes.object,
     step: React.PropTypes.number,
@@ -374,12 +375,7 @@ let RawDataChartPanel = React.createClass({
     // var dialog = <AlarmIgnoreWindow {...ignoreObj} ></AlarmIgnoreWindow>;
 
     let highstockEvents = {
-      onDeleteButtonClick: that._onDeleteButtonClick,
-      onDeleteAllButtonClick: that._onDeleteAllButtonClick,
-      onIgnoreAlarmEvent: that.onIgnoreAlarmEvent,
       afterChartCreated: that._afterChartCreated,
-      onLegendItemClick: that._onLegendItemClick,
-      onSwitchChartTypeButtonClick: that._onSwitchChartTypeButtonClick
     };
     return <div style={{
         display: 'flex',
@@ -387,65 +383,16 @@ let RawDataChartPanel = React.createClass({
         marginLeft: '10px',
         marginTop: '20px'
       }}>
-          <Highstock ref="highstock" options={that._initChartObj()}></Highstock>
-          {dialog}
+          <Highstock ref="highstock" options={that._initChartObj()} {...highstockEvents}></Highstock>
        </div>;
-  },
-  _onLegendItemClick(obj) {
-    var event = obj.event,
-      seriesItem = obj.seriesItem,
-      enableHide = obj.enableHide,
-      flagSerie,
-      factory = EnergyCommentFactory;
-
-    if (this.props.chartType === 'pie' || this.props.chartType === 'stack') {
-      let options = seriesItem.options;
-      ChartStatusAction.modifySingleStatus(options.id, 'IsDisplay', seriesItem.visible);
-      return;
-    }
-
-    if (enableHide) {
-      flagSerie = factory.getFlagSeriesByOnSeriesId(seriesItem.options.id, seriesItem.chart.series, 'comment');
-      if (flagSerie) {
-        flagSerie.setVisible();
-      }
-
-      flagSerie = factory.getFlagSeriesByOnSeriesId(seriesItem.options.id, seriesItem.chart.series, 'alarm');
-      if (flagSerie) {
-        flagSerie.setVisible();
-      }
-      let options = seriesItem.options;
-      ChartStatusAction.modifySingleStatus(options.id, 'IsDisplay', seriesItem.visible);
-    //this.hideOrDestroyOtherCommentPanel(true);//隐藏所有的comment panel
-    }
-  },
-  _onSwitchChartTypeButtonClick(nextType, seriesItem) {
-    console.log(nextType, seriesItem);
-    ChartStatusAction.modifySingleStatus(seriesItem.options.id, 'ChartType', nextType);
   },
   _afterChartCreated(chartObj) {
     if (this.props.afterChartCreated) {
       this.props.afterChartCreated(chartObj);
     }
   },
-  _onDeleteButtonClick(obj) {
-    if (this.props.onDeleteButtonClick) {
-      this.props.onDeleteButtonClick(obj);
-    }
-  },
-  _onDeleteAllButtonClick() {
-    if (this.props.onDeleteAllButtonClick) {
-      this.props.onDeleteAllButtonClick();
-    }
-  },
-  onIgnoreAlarmEvent(obj) {
-    let point = obj.point;
-    this.refs.ignoreDialogWindow.show();
-    this.selectedIgnorePoint = point;
-
-    return false;
-  },
   _initChartObj() {
+    var that = this;
     var data = this.props.energyData.toJS();
     var cloneConfig = _.cloneDeep(defaultConfig);
     var newConfig = assign({}, cloneConfig,
@@ -472,14 +419,11 @@ let RawDataChartPanel = React.createClass({
 
     var realData = this.convertData(data.Data, newConfig);
     var timeRange = this.initRange(newConfig, realData);
-    this.initNavigatorData(newConfig, timeRange, data);
-    if (this.props.chartType == "line" || this.props.chartType == "column") {
+    //this.initNavigatorData(newConfig, timeRange, data);
+    if (this.props.chartType === "line" || this.props.chartType === "column") {
       this.initFlagSeriesData(newConfig, realData);
     }
 
-    if (this.state.chartCmpStrategy.getLegendListFn) {
-      this.state.chartCmpStrategy.getLegendListFn(newConfig);
-    }
 
     this.initSeriesVisibility(newConfig.series);
 
@@ -489,7 +433,6 @@ let RawDataChartPanel = React.createClass({
     if (this.props.chartTooltipHasTotal) {
       newConfig.chartTooltipHasTotal = true;
     }
-
     return newConfig;
 
   },
@@ -512,7 +455,7 @@ let RawDataChartPanel = React.createClass({
     }
   },
   mergeConfig: function(defaultConfig) {
-    this.state.chartCmpStrategy.mergeConfig(defaultConfig, this);
+    this.state.chartCmpStrategy.mergeConfigFn(defaultConfig, this);
   },
   convertData: function(data, config) {
     return this.state.chartCmpStrategy.convertDataFn(data, config, this);
@@ -586,39 +529,6 @@ let RawDataChartPanel = React.createClass({
     for (var i = 0, len = t.length; i < len; i++) {
       item = t[i];
       xaxisMap = {};
-
-      if (false) { //not support comment for new version
-        // get and push comment flag series
-        if (item.EnergyAssociatedData && item.EnergyAssociatedData.Comments && item.EnergyAssociatedData.Comments.length > 0) {
-          serieObj = factory.createCommentSeriesByTargetEnergyDataItem(item, this.props.step, convertedData[i].id, xaxisMap);
-          serieObj.option.step = item.Target.Step;
-          serieObj.visible = !convertedData[i].graySerie;
-          serieObj.zIndex = 11;
-          flagSeries.push(serieObj);
-        }
-      }
-      if (CurrentUserStore.getCurrentPrivilege().indexOf('1221') > -1) { //will check privilidge for alarm
-        //get and push alarm flag series
-        if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
-          var index = null;
-          var indexData = null;
-          for (var j = 0; j < convertedData.length; j++) {
-            if (convertedData[j].originalName == item.Target.Name) {
-              index = convertedData[j].id;
-              indexData = convertedData[j];
-              break;
-            }
-          }
-          if (index !== null) {
-            serieObj = factory.createAlarmSeriesByTargetEnergyDataItem(item, index, xaxisMap, item.Target.Step);
-            serieObj.visible = !indexData.graySerie;
-            serieObj.zIndex = 11; //default 10
-            serieObj.option.step = item.Target.Step;
-            alarmSeries.push(serieObj);
-          }
-        }
-      }
-
       //set type and subtype for this scope
       if (!isNumber(type)) {
         if (item.EnergyAssociatedData && isNumber(item.EnergyAssociatedData.Type)) {
@@ -627,6 +537,63 @@ let RawDataChartPanel = React.createClass({
         }
       }
     }
+    let data = [];
+    newConfig.series[0].data.forEach((item, index) => {
+      let pItem, color;
+
+      if (index <= t[0].EnergyData.length - 1) {
+        if (t[0].EnergyData[index].DataQuality === 9) {
+          color = 'orange'
+        } else {
+          if (t[0].EnergyData[index].DataQuality === 6 || t[0].EnergyData[index].DataQuality === 8) {
+            color = 'purple'
+          } else {
+            color = 'green'
+          }
+        }
+        pItem = {
+          x: item[0],
+          y: item[1],
+          fillColor: color,
+          color: color,
+          selected: index === t[0].EnergyData.length - 2,
+          events: {
+            click: () => {
+              console.log(t[0].EnergyData[index]);
+            }
+          },
+          marker: {
+            color: color,
+            fillColor: color,
+            states: {
+              hover: {
+                marker: {
+                  fillColor: color
+                }
+              }
+            }
+          }
+        }
+        if (index !== t[0].EnergyData.length - 1) {
+          if (t[0].EnergyData[index].DataQuality === 9 || t[0].EnergyData[index + 1].DataQuality === 9) {
+            pItem.segmentColor = 'orange';
+          } else {
+            if (t[0].EnergyData[index].DataQuality === 6 || t[0].EnergyData[index].DataQuality === 8 || t[0].EnergyData[index + 1].DataQuality === 6 || t[0].EnergyData[index + 1].DataQuality === 8) {
+              pItem.segmentColor = 'purple';
+            } else {
+              pItem.segmentColor = 'green';
+            }
+          }
+        }
+
+        data.push(pItem)
+      }
+
+
+    });
+    newConfig.series[0].data = data;
+    newConfig.series[0].type = 'coloredline';
+    newConfig.series[0].dType = null;
     newConfig.series = newConfig.series.concat(flagSeries);
     newConfig.series = newConfig.series.concat(alarmSeries);
   }

@@ -283,7 +283,7 @@ var TagStore = assign({}, PrototypeStore, {
     return Immutable.fromJS(cloneData);
   },
   getDataForChart: function(data, obj) {
-    var _energyData;
+    var _energyData = Immutable.fromJS({});
 
     // let obj = {
     //   start: params.viewOption.TimeRanges[0].StartTime,
@@ -294,8 +294,8 @@ var TagStore = assign({}, PrototypeStore, {
 
     //ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType('EnergyTrendReader');
-    _energyData = Immutable.fromJS(this.readerStrategy.convertFn(data, obj, this));
-    _energyData = _energyData.set('NavigatorData', null)
+    let tmp = this.readerStrategy.convertFn(data, obj, this);
+    _energyData = _energyData.set('Data', tmp.Data)
     return _energyData
   },
 

@@ -770,8 +770,11 @@ I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公�
 I18N.Setting.Tag.PTagRawData = {};
 I18N.Setting.Tag.PTagRawData.PauseMonitor = '暂停监测';
 I18N.Setting.Tag.PTagRawData.PauseMonitorContent = '再次监测异常数据时将忽略所选的规则';
+I18N.Setting.Tag.PTagRawData.PauseMonitorNoRule = '该规则集未关联任何规则';
 I18N.Setting.Tag.PTagRawData.DifferenceValue = '差值';
-
+I18N.Setting.Tag.PTagRawData.normal = '正常值';
+I18N.Setting.Tag.PTagRawData.abnormal = '异常值';
+I18N.Setting.Tag.PTagRawData.repair = '修复值';
 
 
 I18N.Message = {};
@@ -1635,8 +1638,8 @@ I18N.Setting.VEEMonitorRule.DeleteTitle = '删除规则集';
 I18N.Setting.VEEMonitorRule.DeleteContent = '规则集{0}将被删除。';
 I18N.Setting.VEEMonitorRule.FirstScanTime = '每日首次监测扫描时间为0: 00。';
 I18N.Setting.VEEMonitorRule.ScanTimeInfo = '每日监测扫描时间为{0}';
-I18N.Setting.VEEMonitorRule.ConsecutiveHours = '连续时长';
-I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '该输入项的最大值为999999999';
+I18N.Setting.VEEMonitorRule.ConsecutiveHours = '连续时长(小时)';
+I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '请输入0-999999999的整数';
 I18N.Setting.VEEMonitorRule.AddTagInfo = '点击添加按钮，选择监测数据点';
 I18N.Setting.VEEMonitorRule.AddTag = '添加数据点';
 I18N.Setting.VEEMonitorRule.AddingTagsInfo = '在列表中点击数据点进行添加';

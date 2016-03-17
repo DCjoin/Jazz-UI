@@ -8,7 +8,7 @@ import { List } from 'immutable';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
-//import ChartPanel from './RawDataChartPanel.jsx';
+import ChartPanel from './RawDataChartPanel.jsx';
 function emptyList() {
   return new List();
 }
@@ -100,6 +100,11 @@ let PTagRawData = React.createClass({
       isLoading: true
     })
   },
+  // _afterChartCreated(chartObj) {
+  //   if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
+  //     chartObj.xAxis[0].bind('setExtremes', this.OnNavigatorChanged);
+  //   }
+  // },
   _renderDialog: function() {
     var that = this;
     var closeDialog = function() {
@@ -113,28 +118,41 @@ let PTagRawData = React.createClass({
       var Status = this.state.veeTagStatus.get('Status');
       var ruleType = TagStore.getRuleType();
       var content = [];
-      ruleType.forEach(rule => {
-        let st = Status.find(item => item.get('Type') === rule.id),
-          index = Status.findIndex(item => item.get('Type') === rule.id);
-        if (index > -1) {
-          content.push(
-            <div onClick={that._onStatusChanged.bind(this, st)}>
-              <Checkbox
-            ref=""
-            defaultChecked={st.get('Status') === 2}
-            style={{
-              width: "auto",
-              display: "block"
-            }}
-            />
-              <label
-            className="jazz-checkbox-label">
-                {rule.type}
-              </label>
-            </div>
-          )
-        }
-      })
+      if (Status.size === 0) {
+        content = <div style={{
+          fontSize: '14px',
+          color: '#464949'
+        }}>{I18N.Setting.Tag.PTagRawData.PauseMonitorNoRule}</div>;
+      } else {
+        ruleType.forEach(rule => {
+          let st = Status.find(item => item.get('Type') === rule.id),
+            index = Status.findIndex(item => item.get('Type') === rule.id);
+          if (index > -1) {
+            content.push(
+              <div onClick={that._onStatusChanged.bind(this, st)} style={{
+                marginRight: '30px',
+                display: 'flex'
+              }}>
+                <Checkbox
+              ref=""
+              defaultChecked={st.get('Status') === 2}
+              style={{
+                width: "auto",
+                display: "block"
+              }}
+              />
+                <label
+              className="jazz-checkbox-label" style={{
+                marginLeft: '-6px',
+              }}>
+                  {rule.type}
+                </label>
+              </div>
+            )
+          }
+        })
+      }
+
       return (
         <Dialog openImmediately={this.state.paulseDialogShow} title={I18N.Setting.Tag.PTagRawData.PauseMonitor} modal={true} actions={[
           <FlatButton
@@ -151,12 +169,12 @@ let PTagRawData = React.createClass({
             closeDialog();
           }} />
         ]}>
-      <div>
-        <div>
+      <div className='jazz-ptag-rawdata-pauseMonitor'>
+        <div className='subTitile'>
           {I18N.Setting.Tag.PTagRawData.PauseMonitorContent}
         </div>
         <div>
-          <div>
+          <div className='ruleName'>
             {I18N.Setting.VEEMonitorRule.RuleName}
           </div>
           <div style={{
@@ -171,13 +189,21 @@ let PTagRawData = React.createClass({
     }
   },
   _renderToolBar: function() {
-    var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor} style={{
-      border: '1px solid black'
-    }} onClick={this._onPauseDialogShow}/>;
     var switchIconStyle = {
-      fontSize: '14px',
-      margin: '0 8px'
-    };
+        fontSize: '16px',
+        margin: '0 -2px 0 8px'
+      },
+      labelStyle = {
+        color: '#464949'
+      },
+      pauseBtnStyle = {
+        border: '1px solid #abafae',
+        height: '34px',
+        width: '92px'
+      };
+    var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
+    style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
+
     var label = this.state.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
     return (
       <div className='jazz-ptag-rawdata-toolbar'>
@@ -192,6 +218,24 @@ let PTagRawData = React.createClass({
         </div>
         <div className='rightside'>
           {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
+        </div>
+      </div>
+      )
+  },
+  _renderComment: function() {
+    return (
+      <div className='jazz-ptag-rawdata-comment'>
+        <div className='item'>
+          <label className='normal-circle'/>
+          <div className='label'>{I18N.Setting.Tag.PTagRawData.normal}</div>
+        </div>
+        <div className='item'>
+          <label className='abnormal-circle'/>
+          <div className='label'>{I18N.Setting.Tag.PTagRawData.abnormal}</div>
+        </div>
+        <div className='item'>
+          <label className='repair-circle'/>
+          <div className='label'>{I18N.Setting.Tag.PTagRawData.repair}</div>
         </div>
       </div>
       )
@@ -212,15 +256,21 @@ let PTagRawData = React.createClass({
     var dataForChart = TagStore.getDataForChart(this.state.tagData.toJS(), obj);
     var chartProps = {
       ref: 'ChartComponent',
-      energyData: this.state.tagData,
-      energyRawData: dataForChart,
+      energyData: dataForChart,
+      energyRawData: this.state.tagData.toJS(),
       step: obj.step,
       startTime: obj.start,
       endTime: obj.end,
       timeRanges: obj.timeRanges
     }
     return (
-      <div>
+      <div style={{
+        display: 'flex',
+        'flexDirection': 'column',
+        marginTop: '77px'
+      }}>
+        <ChartPanel {...chartProps}/>
+        {this._renderComment()}
       </div>
       )
   },
