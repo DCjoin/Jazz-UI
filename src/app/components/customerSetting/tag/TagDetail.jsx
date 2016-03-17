@@ -30,7 +30,9 @@ var TagDetail = React.createClass({
     onToggle: React.PropTypes.func,
     onSwitchTab: React.PropTypes.func,
     mergeTag: React.PropTypes.func,
-    enableSave: React.PropTypes.bool
+    enableSave: React.PropTypes.bool,
+    onSwitchRawDataListView: React.PropTypes.func,
+    showRawDataList: React.PropTypes.bool,
   },
   getInitialState: function() {
     return {
@@ -38,6 +40,9 @@ var TagDetail = React.createClass({
   },
   _onSwitchTab: function(event) {
     this.props.onSwitchTab(event);
+  },
+  _onSwitchRawDataListView: function(switchFlag, isRawData) {
+    this.props.onSwitchRawDataListView(switchFlag, isRawData);
   },
   _renderDeleteDialog() {
     if (!this.props.showDeleteDialog) {
@@ -111,7 +116,7 @@ var TagDetail = React.createClass({
       if (this.props.showBasic) {
         content = <PTagBasic ref='pTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
       } else {
-        content = <PTagRawData ref='pTagRawData' selectedTag={this.props.selectedTag}/>;
+        content = <PTagRawData ref='pTagRawData' selectedTag={this.props.selectedTag} onSwitchRawDataListView={this._onSwitchRawDataListView}/>;
       }
     } else {
       if (this.props.showBasic) {
@@ -147,8 +152,12 @@ var TagDetail = React.createClass({
       deleteDialog = this._renderDeleteDialog();
     return (
       <div className={classnames({
-        "jazz-framework-right-expand": !this.props.showLeft,
-        "jazz-framework-right-fold": this.props.showLeft
+        'jazz-ptag-panel': true,
+        "jazz-ptag-left-fold": !this.props.showLeft,
+        "jazz-ptag-left-expand": this.props.showLeft,
+        "jazz-ptag-right-fold": !this.props.showRawDataList,
+        "jazz-ptag-right-expand": this.props.showRawDataList
+
       })}>
       <Panel onToggle={this.props.onToggle}>
         {header}

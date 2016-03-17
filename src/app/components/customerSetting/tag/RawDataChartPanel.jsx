@@ -9,6 +9,7 @@ import Highstock from '../../highcharts/Highstock.jsx';
 import ChartXAxisSetter from '../../energy/ChartXAxisSetter.jsx';
 import EnergyCommentFactory from '../../energy/EnergyCommentFactory.jsx';
 import ChartCmpStrategyFactor from '../../energy/ChartCmpStrategyFactor.jsx';
+import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../../util/Util.jsx';
 import ChartStatusStore from '../../../stores/Energy/ChartStatusStore.jsx';
 let {Dialog, FlatButton, Checkbox} = mui;
@@ -560,6 +561,7 @@ let RawDataChartPanel = React.createClass({
           events: {
             click: () => {
               console.log(t[0].EnergyData[index]);
+              TagAction.selectPointToList(index);
             }
           },
           marker: {

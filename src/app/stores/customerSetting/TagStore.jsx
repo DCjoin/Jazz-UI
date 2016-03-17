@@ -41,6 +41,7 @@ let CHANGE_LOG_EVENT = 'changelog';
 let CHANGE_SELECTED_TAG_EVENT = 'changeselectedtag';
 let ERROR_CHANGE_EVENT = 'errorchange';
 let TAG_DATAS_CHANGE_EVENT = 'tagdataschange';
+let POINT_TO_LIST_CHANGE_EVENT = 'pointtolistchange'
 
 
 var TagStore = assign({}, PrototypeStore, {
@@ -270,6 +271,7 @@ var TagStore = assign({}, PrototypeStore, {
     return _rawData;
   },
   getDifferenceData: function() {
+    if (_rawData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) return _rawData;
     var rawData = _rawData.toJS(),
       difArray = this.constituteDifferenceDataArray(rawData, _differenceTargetEnergyData),
       templateED = rawData.TargetEnergyData[0].EnergyData;
@@ -295,7 +297,7 @@ var TagStore = assign({}, PrototypeStore, {
     //ChartStatusStore.onEnergyDataLoaded(data, _submitParams);
     this.readerStrategy = ChartReaderStrategyFactor.getStrategyByBizChartType('EnergyTrendReader');
     let tmp = this.readerStrategy.convertFn(data, obj, this);
-    _energyData = _energyData.set('Data', tmp.Data)
+    _energyData = _energyData.set('Data', tmp.Data);
     return _energyData
   },
 
@@ -355,6 +357,15 @@ var TagStore = assign({}, PrototypeStore, {
   },
   emitTagDatasChange() {
     this.emit(TAG_DATAS_CHANGE_EVENT);
+  },
+  addPointToListChangeListener(callback) {
+    this.on(POINT_TO_LIST_CHANGE_EVENT, callback);
+  },
+  removePointToListChangeListener(callback) {
+    this.removeListener(POINT_TO_LIST_CHANGE_EVENT, callback);
+  },
+  emitPointToListChange(args) {
+    this.emit(POINT_TO_LIST_CHANGE_EVENT, args);
   }
 });
 TagStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -422,6 +433,9 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SET_FORMULA_FILTER_OBJ:
       TagStore.setFormulaFilterObj(action.filterObj);
+      break;
+    case Action.SET_POINT_TO_LIST:
+      TagStore.emitPointToListChange(action.index);
       break;
   }
 });

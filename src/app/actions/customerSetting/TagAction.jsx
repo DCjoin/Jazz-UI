@@ -229,6 +229,12 @@ let TagAction = {
       filterObj: filterObj
     });
   },
+  selectPointToList: function(index) {
+    AppDispatcher.dispatch({
+      type: Action.SET_POINT_TO_LIST,
+      index: index
+    });
+  },
 };
 
 module.exports = TagAction;
