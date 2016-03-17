@@ -71,7 +71,7 @@ var GradeContainer = React.createClass({
         regex: Regex.TagRule,
         errorMessage: I18N.Setting.CustomizedLabeling.InputError,
         style: {
-          'width': (this.props.gradeLevel === 1 || this.props.gradeLevel === 8) ? '200px' : '100px'
+          'width': (this.props.gradeLevel === 1 || this.props.gradeLevel === 8) ? '280px' : '140px'
         },
         didChanged: value => {
           me.props.mergeLabelItem({
@@ -97,7 +97,7 @@ var GradeContainer = React.createClass({
         regex: Regex.TagRule,
         errorMessage: I18N.Setting.CustomizedLabeling.InputError,
         style: {
-          'width': (this.props.gradeLevel === 1 || this.props.gradeLevel === 8) ? '200px' : '100px'
+          'width': (this.props.gradeLevel === 1 || this.props.gradeLevel === 8) ? '280px' : '140px'
         },
         didChanged: value => {
           me.props.mergeLabelItem({

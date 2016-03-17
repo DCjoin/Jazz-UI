@@ -110,13 +110,15 @@ let MainApp = React.createClass({
             });
           }
         }
-        menuItems.push(
-          {
-            name: 'customerSetting',
-            title: I18N.MainMenu.CustomerSetting,
-            children: customerChildren
-          }
-        );
+        if (customerChildren.length !== 0) {
+          menuItems.push(
+            {
+              name: 'customerSetting',
+              title: I18N.MainMenu.CustomerSetting,
+              children: customerChildren
+            }
+          );
+        }
       }
       var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
       return (
