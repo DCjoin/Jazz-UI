@@ -27,6 +27,7 @@ let PTagRawData = React.createClass({
       end: this._getInitDate().end,
       paulseDialogShow: false,
       isRawData: this.props.selectedTag.get('IsAccumulated') ? false : true,
+      showErrorDialog: false
     })
   },
   _getInitDate: function() {
@@ -69,14 +70,45 @@ let PTagRawData = React.createClass({
   _onDateSelectorChanged: function() {
     let that = this,
       dateSelector = this.refs.dateTimeSelector,
-      timeRange = dateSelector.getDateTime();
+      timeRange = dateSelector.getDateTime(),
+      showErrorDialog = false;
+    if (timeRange.end - timeRange.start > 30 * 24 * 60 * 60 * 1000) {
+      showErrorDialog = true;
+    }
+    if (showErrorDialog) {
+      this.setState({
+        showErrorDialog: true
+      })
+    } else {
+      this.setState({
+        start: timeRange.start,
+        end: timeRange.end,
+        showErrorDialog: showErrorDialog
+      }, () => {
+        that._getTagsData(that.props)
+      })
+    }
 
-    this.setState({
-      start: timeRange.start,
-      end: timeRange.end
-    }, () => {
-      that._getTagsData(this.props)
-    })
+  },
+  _renderErrorDialog: function() {
+    var that = this;
+    if (this.state.showErrorDialog) {
+      return (<Dialog
+        ref = "_dialog"
+        title={I18N.Platform.ServiceProvider.ErrorNotice}
+        modal={false}
+        openImmediately={true}
+        onDismiss={() => {
+          that.setState({
+            showErrorDialog: false
+          })
+        }}
+        >
+        {I18N.EM.RawData.Error}
+    </Dialog>)
+    } else {
+      return null;
+    }
   },
   _onPauseDialogShow: function() {
     this.setState({
@@ -314,6 +346,7 @@ let PTagRawData = React.createClass({
         start: this._getInitDate().start,
         end: this._getInitDate().end,
         isRawData: nextProps.selectedTag.get('IsAccumulated') ? false : true,
+        showErrorDialog: false
       }, () => {
         that._getTagsData(nextProps, true)
       })
@@ -343,6 +376,7 @@ let PTagRawData = React.createClass({
             {this._renderToolBar()}
             {this._renderDialog()}
             {this._renderChartComponent()}
+            {this._renderErrorDialog()}
           </div>
 
         )

@@ -382,7 +382,7 @@ I18N.EM.CharType.Pie = 'Pie';
 I18N.EM.CharType.RawData = 'Raw data';
 
 I18N.EM.RawData = {};
-I18N.EM.RawData.Error = 'Raw data only support with 7 days';
+I18N.EM.RawData.Error = 'Raw data only support with 30 days';
 
 I18N.EM.Legend = {};
 I18N.EM.Legend.ToLine = 'Switch to line';
