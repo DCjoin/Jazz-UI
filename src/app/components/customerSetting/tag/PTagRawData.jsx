@@ -9,10 +9,6 @@ import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
-import DataList from './RawDataList.jsx';
-function emptyList() {
-  return new List();
-}
 let PTagRawData = React.createClass({
   propTypes: {
     selectedTag: React.PropTypes.object,
