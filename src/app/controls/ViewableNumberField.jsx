@@ -3,7 +3,7 @@ import mui from 'material-ui';
 let {TextField} = mui;
 import assign from 'object-assign';
 import classNames from 'classnames';
-import Util from '../util/util.jsx';
+import Util from '../util/Util.jsx';
 import numeral from 'numeral';
 
 var ViewableNumberField = React.createClass({

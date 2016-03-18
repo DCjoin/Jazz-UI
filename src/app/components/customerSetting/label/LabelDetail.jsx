@@ -39,10 +39,14 @@ var LabelDetail = React.createClass({
   },
   _onUomChange: function() {
     var selectedLabel = this.props.selectedLabel;
-    var uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
+    var kpi = selectedLabel.get('LabellingType');
+    var uom = '';
+    if (kpi !== 5 && kpi !== 6) {
+      uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
+    }
     var kpiList = this._getKpiTypeList();
     var index = kpiList.findIndex((item) => {
-      if (item.payload === selectedLabel.get('LabellingType')) {
+      if (item.payload === kpi) {
         return true;
       }
     });
@@ -182,10 +186,14 @@ var LabelDetail = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     var selectedLabel = nextProps.selectedLabel;
-    var uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
+    var kpi = selectedLabel.get('LabellingType');
+    var uom = '';
+    if (kpi !== 5 && kpi !== 6) {
+      uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
+    }
     var kpiList = this._getKpiTypeList();
     var index = kpiList.findIndex((item) => {
-      if (item.payload === selectedLabel.get('LabellingType')) {
+      if (item.payload === kpi) {
         return true;
       }
     });

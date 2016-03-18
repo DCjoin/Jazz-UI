@@ -93,10 +93,13 @@
 }
 .jazz-tag-formula-content{
   display: flex;
+  flex:1;
   flex-direction: column;
   &-top{
     display: flex;
     flex-direction: column;
+    height: 120px;
+    min-height: 120px;
     &-input{
       margin-top: 10px;
       >div{
@@ -136,19 +139,55 @@
     }
   }
   &-taglist{
-    padding-top: 38px;
+    flex:1;
+    display:flex;
+    flex-direction: column;
     &-top{
-      margin-bottom: 0px;
+      margin-top: 50px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      height: 40px;
+      min-height: 40px;
       &-text{
         margin-top: 12px;
       }
     }
+    &-content{
+      display: flex;
+      flex: 1;
+    }
   }
 }
+.jazz-formula-monitor-tag{
+  flex: 1;
+  overflow: auto;
+  font-size:14px;
+  color:#464949;
+  &-content{
+    &-list{
+      height:40px;
+      min-height: 40px;
+      border-bottom: 1px solid @listBorder;
+      display: flex;
+      &:hover{
+        background-color:@hoverGray;
+      }
+    }
+    &-item{
+      flex:1;
+      align-items: center;
+      line-height: 40px;
+      width:295px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  &-paging{
 
+  }
+}
   .jazz-ptag-rawdata{
       display: flex;
       flex:1;

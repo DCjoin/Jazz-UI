@@ -126,7 +126,9 @@ var TagDetail = React.createClass({
       }
     }
     return (
-      <div className="pop-manage-detail-content">
+      <div className="pop-manage-detail-content" style={{
+        display: 'flex'
+      }}>
         {content}
       </div>
       );

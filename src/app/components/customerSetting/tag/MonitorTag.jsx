@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
 import TagFilter from './TagFilter.jsx';
 import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
@@ -147,12 +148,12 @@ var MonitorTag = React.createClass({
       var list = [];
       me.state.taglist.forEach(tag => {
         list.push(
-          <div className='jazz-vee-monitor-tag-content-list' onClick={me.props.onRowClick.bind(null, tag.get('Type'), tag.get('Code'))}>
-            <div className="jazz-vee-monitor-tag-content-item" title={tag.get('Name')}>{tag.get('Name')}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Code')}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getUomById(tag.get('UomId')).Comment}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
+          <div className='jazz-formula-monitor-tag-content-list' onClick={me.props.onRowClick.bind(null, tag.get('Type'), tag.get('Code'))}>
+            <div className="jazz-formula-monitor-tag-content-item" title={tag.get('Name')}>{tag.get('Name')}</div>
+            <div className="jazz-formula-monitor-tag-content-item" title={tag.get('Code')}>{tag.get('Code')}</div>
+            <div className='jazz-formula-monitor-tag-content-item'>{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</div>
+            <div className='jazz-formula-monitor-tag-content-item'>{CommonFuns.getUomById(tag.get('UomId')).Comment}</div>
+            <div className='jazz-formula-monitor-tag-content-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
       </div>
         );
       });
@@ -170,11 +171,11 @@ var MonitorTag = React.createClass({
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.UOM}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Type}</div>
           </div>
-          <div className='jazz-vee-monitor-tag'>
-            <div className='jazz-vee-monitor-tag-content'>
+          <div className='jazz-formula-monitor-tag'>
+            <div className='jazz-formula-monitor-tag-content'>
               {getTableBody()}
             </div>
-            <div className='jazz-vee-monitor-tag-paging'>
+            <div className='jazz-formula-monitor-tag-paging'>
               <Pagination {...pagingPropTypes}/>
             </div>
           </div>
