@@ -129,9 +129,6 @@ let PTagRawData = React.createClass({
   },
   _onModifyVEETagStatus: function() {
     TagAction.modifyVEETagStatus(this.state.veeTagStatus.toJS());
-    this.setState({
-      isLoading: true
-    })
   },
   // _afterChartCreated(chartObj) {
   //   if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
