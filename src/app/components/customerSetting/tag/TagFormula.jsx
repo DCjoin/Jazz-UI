@@ -63,7 +63,9 @@ var TagFormula = React.createClass({
   _renderTable: function() {
     var table = null;
     if (this.props.selectedTag.get('Formula') === '' && this.props.isViewStatus) {
-      table = <div>{I18N.Setting.Tag.FormulaText}</div>;
+      table = <div style={{
+        'margin-top': '-50px;'
+      }}>{I18N.Setting.Tag.FormulaText}</div>;
     } else if (!this.props.isViewStatus) {
       table = <MonitorTag tagId={this.props.selectedTag.get('Id')} onRowClick={this._onRowClick}/>;
     }

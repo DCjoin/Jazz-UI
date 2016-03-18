@@ -159,7 +159,35 @@
     }
   }
 }
+.jazz-formula-monitor-tag{
+  flex: 1;
+  overflow: auto;
+  font-size:14px;
+  color:#464949;
+  &-content{
+    &-list{
+      height:40px;
+      min-height: 40px;
+      border-bottom: 1px solid @listBorder;
+      display: flex;
+      &:hover{
+        background-color:@hoverGray;
+      }
+    }
+    &-item{
+      flex:1;
+      align-items: center;
+      line-height: 40px;
+      width:295px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  &-paging{
 
+  }
+}
   .jazz-ptag-rawdata{
       display: flex;
       flex:1;
