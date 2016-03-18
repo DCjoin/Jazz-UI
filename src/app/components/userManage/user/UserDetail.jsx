@@ -174,7 +174,7 @@ var UserDetail = React.createClass({
           id: item.get("Id")
         };
       }),
-      isSuperAdmin = that.props.user.get("UserType") == -1,
+      isSuperAdmin = that.props.user.get("UserType") === -1,
       titleSelectedIndex = 0,
       titleItems = [];
     CurrentUserStore.getUserTitle().forEach((title, index) => {
@@ -288,9 +288,9 @@ var UserDetail = React.createClass({
 					</div>
 				</div>
 
-				<div className="pop-user-detail-content-item">
+			{isSuperAdmin ? null : <div className="pop-user-detail-content-item">
 					<ViewableTextField {...userTelephoneProps}/>
-				</div>
+				</div>}
 				<div className="pop-user-detail-content-item">
 					<ViewableTextField {...userEmailProps}/>
 				</div>
@@ -501,6 +501,8 @@ var UserDetail = React.createClass({
   render: function() {
 
     var that = this,
+      isSuperAdmin = that.props.user.get("UserType") === -1,
+      isUserSelf = that.props.user.get("Id") === parseInt(window.currentUserId),
       leftButtonInlineStyle = {
         padding: "0 54px"
       },
@@ -588,7 +590,7 @@ var UserDetail = React.createClass({
     enableSave={!disabledSaveButton}
     status={this.props.formStatus}
     onSave={this._handleSaveUser}
-    allowDelete={that.props.infoTab}
+    allowDelete={that.props.infoTab && !isSuperAdmin && !isUserSelf}
     onDelete={function() {
       that.setState({
         dialogStatus: true
