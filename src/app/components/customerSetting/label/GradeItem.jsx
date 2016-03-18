@@ -66,7 +66,7 @@ var GradeContainer = React.createClass({
     var minValueProps = {
         ref: 'MinValue',
         isViewStatus: this.props.isViewStatus,
-        defaultValue: labelValue.get('MinValue'),
+        defaultValue: labelValue.get('MinValue') + '',
         isRequired: true,
         regex: Regex.TagRule,
         errorMessage: I18N.Setting.CustomizedLabeling.InputError,
@@ -92,7 +92,7 @@ var GradeContainer = React.createClass({
       maxValueProps = {
         ref: 'MaxValue',
         isViewStatus: this.props.isViewStatus,
-        defaultValue: labelValue.get('MaxValue'),
+        defaultValue: labelValue.get('MaxValue') + '',
         isRequired: true,
         regex: Regex.TagRule,
         errorMessage: I18N.Setting.CustomizedLabeling.InputError,
