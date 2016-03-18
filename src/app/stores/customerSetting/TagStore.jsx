@@ -41,7 +41,8 @@ let CHANGE_LOG_EVENT = 'changelog';
 let CHANGE_SELECTED_TAG_EVENT = 'changeselectedtag';
 let ERROR_CHANGE_EVENT = 'errorchange';
 let TAG_DATAS_CHANGE_EVENT = 'tagdataschange';
-let POINT_TO_LIST_CHANGE_EVENT = 'pointtolistchange'
+let POINT_TO_LIST_CHANGE_EVENT = 'pointtolistchange';
+let LIST_TO_POINT_CHANGE_EVENT = 'listtopointchange';
 
 
 var TagStore = assign({}, PrototypeStore, {
@@ -417,6 +418,15 @@ var TagStore = assign({}, PrototypeStore, {
   },
   emitPointToListChange(args) {
     this.emit(POINT_TO_LIST_CHANGE_EVENT, args);
+  },
+  addListToPointChangeListener(callback) {
+    this.on(LIST_TO_POINT_CHANGE_EVENT, callback);
+  },
+  removeListToPointChangeListener(callback) {
+    this.removeListener(LIST_TO_POINT_CHANGE_EVENT, callback);
+  },
+  emitListToPointChange(args) {
+    this.emit(LIST_TO_POINT_CHANGE_EVENT, args);
   }
 });
 TagStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -487,6 +497,9 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SET_POINT_TO_LIST:
       TagStore.emitPointToListChange(action.index);
+      break;
+    case Action.SET_LIST_TO_POINT:
+      TagStore.emitListToPointChange(action.localTime);
       break;
   }
 });

@@ -10,6 +10,7 @@ import ChartXAxisSetter from '../../energy/ChartXAxisSetter.jsx';
 import EnergyCommentFactory from '../../energy/EnergyCommentFactory.jsx';
 import ChartCmpStrategyFactor from '../../energy/ChartCmpStrategyFactor.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
+import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../../util/Util.jsx';
 import ChartStatusStore from '../../../stores/energy/ChartStatusStore.jsx';
 let {Dialog, FlatButton, Checkbox} = mui;
@@ -325,6 +326,10 @@ let RawDataChartPanel = React.createClass({
   componentWillMount() {
     this.initDefaultConfig();
   },
+  componentDidMount: function() {
+    TagStore.addListToPointChangeListener(this._onListToPointChanged);
+  },
+
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.range && nextProps.range !== this.props.range) {
   //     this.state.chartCmpStrategy.onChangeRangeFn(nextProps.range, this);
@@ -344,6 +349,12 @@ let RawDataChartPanel = React.createClass({
   },
   shouldComponentUpdate: function(nextProps, nextState) {
     return !(this.props.energyData.equals(nextProps.energyData));
+  },
+  componentWillUnmount: function() {
+    TagStore.removeListToPointChangeListener(this._onListToPointChanged);
+  },
+  _onListToPointChanged: function(localTime) {
+    console.log(localTime);
   },
   getDataLabelFormatterFn() {
     return dataLabelFormatter;

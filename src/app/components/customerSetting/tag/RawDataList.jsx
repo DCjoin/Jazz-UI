@@ -3,8 +3,8 @@
 import React from "react";
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
-import Immutable from 'immutable';
-let d2j = CommonFuns.DataConverter.JsonToDateTime;
+import TagAction from '../../../actions/customerSetting/TagAction.jsx';
+let j2d = CommonFuns.DataConverter.JsonToDateTime;
 let dateItem = [],
   indexItem = [];
 let ListItem = React.createClass({
@@ -14,7 +14,8 @@ let ListItem = React.createClass({
     onClick: React.PropTypes.func,
   },
   render: function() {
-    let color;
+    let color,
+      time = this.props.time;
     if (this.props.data.get('DataQuality') === 9) {
       color = '#f46a58'
     } else {
@@ -24,9 +25,11 @@ let ListItem = React.createClass({
         color = '#11d9db'
       }
     }
+    time = time.replace(/点/g, ':');
+    time = time.replace(/分/g, '');
     return (
       <div className='jazz-ptag-rawdata-list-item' onClick={this.props.onClick}>
-        <div>{this.props.time}</div>
+        <div>{time}</div>
         <div style={{
         marginLeft: '50px',
         color: color
@@ -43,11 +46,13 @@ let RawDataList = React.createClass({
   _onScroll: function() {
     var el = this.refs.list.getDOMNode(),
       head = this.refs.header.getDOMNode();
-    var scrollIndex = parseInt((el.scrollTop - 1) / 40);
+    var scrollIndex = parseInt(el.scrollTop / 41);
     //set scrollTop to scroll el.scrollTop=500
     head.innerText = dateItem[scrollIndex];
   },
-  _onItemClick: function(item) {},
+  _onItemClick: function(data) {
+    TagAction.selectListToPonit(j2d(data.get('LocalTime')));
+  },
   _renderListItems: function() {
     if (TagStore.getRawData().size === 0) return;
     var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
@@ -77,22 +82,22 @@ let RawDataList = React.createClass({
         }
         currentDate = date;
         Items.push(
-          <ListItem time={time} data={data} onClick={that._onItemClick.bind(this, {
-            data,
-            index
-          })}/>
+          <ListItem time={time} data={data} onClick={that._onItemClick.bind(this, data)}/>
         )
         dateItem.push(date);
       }
 
     });
-    let head = this.refs.header.getDOMNode();
-    if (firstDate === null) {
-      head.style.display = 'none';
-    } else {
-      head.style.display = 'flex';
-      head.innerText = firstDate;
+    if (this.refs.header) {
+      let head = this.refs.header.getDOMNode();
+      if (firstDate === null) {
+        head.style.display = 'none';
+      } else {
+        head.style.display = 'flex';
+        head.innerText = firstDate;
+      }
     }
+
     var style = {
       height: document.body.offsetHeight - 150
     };
@@ -146,7 +151,7 @@ let RawDataList = React.createClass({
         <div className='title'>
           <div>{I18N.RawData.Time}</div>
           <div style={{
-        marginLeft: '170px'
+        marginLeft: '90px'
       }}>{label + '(' + uom + ')'}</div>
         </div>
         <div className="date" ref='header'>

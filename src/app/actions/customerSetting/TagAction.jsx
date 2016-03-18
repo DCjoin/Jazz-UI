@@ -234,6 +234,12 @@ let TagAction = {
       index: index
     });
   },
+  selectListToPonit: function(localTime) {
+    AppDispatcher.dispatch({
+      type: Action.SET_LIST_TO_POINT,
+      localTime: localTime
+    });
+  },
 };
 
 module.exports = TagAction;

@@ -551,15 +551,19 @@ let Tag = React.createClass({
     }}><TagList {...leftProps}/></div> : <div style={{
       display: 'none'
     }}><TagList {...leftProps}/></div>;
-    var listProps = {
-      isRawData: this.state.isRawData,
-      step: !this.state.selectedTag ? 0 : this.state.selectedTag.get('CalculationStep')
-    };
-    var RawDataListPanel = (me.state.showRawDataList) ? <div style={{
-      display: 'flex'
-    }}><RawDataList {...listProps}/></div> : <div style={{
-      display: 'none'
-    }}><RawDataList {...listProps}/></div>;
+    var RawDataListPanel = null;
+    if (this.state.selectedTag !== null) {
+      var listProps = {
+        isRawData: this.state.isRawData,
+        step: this.state.selectedTag.get('CalculationStep')
+      };
+      RawDataListPanel = (me.state.showRawDataList) ? <div style={{
+        display: 'flex'
+      }}><RawDataList {...listProps}/></div> : <div style={{
+        display: 'none'
+      }}><RawDataList {...listProps}/></div>;
+    }
+
     return (
       <div style={{
         display: 'flex',

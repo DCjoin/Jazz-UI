@@ -20,5 +20,6 @@ module.exports = {
     SET_FILTER_OBJ: null,
     SET_FORMULA_FILTER_OBJ: null,
     SET_POINT_TO_LIST: null,
+    SET_LIST_TO_POINT: null,
   })
 };
