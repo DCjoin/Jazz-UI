@@ -144,6 +144,9 @@ var PTagBasic = React.createClass({
         regex: Regex.TagRule,
         errorMessage: I18N.Setting.Tag.ErrorContent,
         didChanged: value => {
+          if (value === '') {
+            value = null;
+          }
           me.props.mergeTag({
             value,
             path: "Slope"
@@ -159,6 +162,9 @@ var PTagBasic = React.createClass({
         regex: Regex.TagRule,
         errorMessage: I18N.Setting.Tag.ErrorContent,
         didChanged: value => {
+          if (value === '') {
+            value = null;
+          }
           me.props.mergeTag({
             value,
             path: "Offset"
