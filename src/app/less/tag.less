@@ -93,6 +93,7 @@
 }
 .jazz-tag-formula-content{
   display: flex;
+  flex:1;
   flex-direction: column;
   &-top{
     display: flex;
@@ -136,6 +137,9 @@
     }
   }
   &-taglist{
+    flex:1;
+    display:flex;
+    flex-direction: column;
     padding-top: 38px;
     &-top{
       margin-bottom: 0px;
@@ -145,6 +149,10 @@
       &-text{
         margin-top: 12px;
       }
+    }
+    &-content{
+      display: flex;
+      flex: 1;
     }
   }
 }

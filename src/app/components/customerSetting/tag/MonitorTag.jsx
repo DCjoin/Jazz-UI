@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import classnames from "classnames";
 import { CircularProgress } from 'material-ui';
 import TagFilter from './TagFilter.jsx';
 import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
@@ -148,8 +149,12 @@ var MonitorTag = React.createClass({
       me.state.taglist.forEach(tag => {
         list.push(
           <div className='jazz-vee-monitor-tag-content-list' onClick={me.props.onRowClick.bind(null, tag.get('Type'), tag.get('Code'))}>
-            <div className="jazz-vee-monitor-tag-content-item" title={tag.get('Name')}>{tag.get('Name')}</div>
-            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Code')}</div>
+            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')} style={{
+            marginTop: '12px'
+          }}>{tag.get('Name')}</div>
+            <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Code')} style={{
+            marginTop: '12px'
+          }}>{tag.get('Code')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{CommonFuns.getUomById(tag.get('UomId')).Comment}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>

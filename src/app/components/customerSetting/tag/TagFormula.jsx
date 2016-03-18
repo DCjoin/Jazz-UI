@@ -43,6 +43,7 @@ var TagFormula = React.createClass({
       defaultValue: selectedTag.get('Formula'),
       isRequired: true,
       multiLine: true,
+      maxLen: -1,
       regexFn: this.validateFormula,
       hintText: I18N.Setting.Tag.FormulaEditText,
       didChanged: value => {
