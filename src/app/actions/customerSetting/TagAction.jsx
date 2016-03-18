@@ -234,10 +234,10 @@ let TagAction = {
       index: index
     });
   },
-  selectListToPonit: function(localTime) {
+  selectListToPonit: function(nId) {
     AppDispatcher.dispatch({
       type: Action.SET_LIST_TO_POINT,
-      localTime: localTime
+      nId: nId
     });
   },
 };

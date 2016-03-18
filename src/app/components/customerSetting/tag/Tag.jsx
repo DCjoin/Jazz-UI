@@ -123,7 +123,8 @@ let Tag = React.createClass({
       showDeleteDialog: false,
       formStatus: formStatus.VIEW,
       selectedIndex: selectedIndex,
-      selectedTag: selectedTag
+      selectedTag: selectedTag,
+      isRawData: selectedTag.get('IsAccumulated') ? false : true,
     });
   },
   _onItemClick: function(index) {

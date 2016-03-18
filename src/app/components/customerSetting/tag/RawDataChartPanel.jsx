@@ -15,7 +15,7 @@ import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep
 import ChartStatusStore from '../../../stores/energy/ChartStatusStore.jsx';
 let {Dialog, FlatButton, Checkbox} = mui;
 let yAxisOffset = 70;
-
+let _chartObj = null;
 var dataLabelFormatter = function(format) {
   var f = window.Highcharts.numberFormat;
   var v = Number(this.value);
@@ -353,8 +353,16 @@ let RawDataChartPanel = React.createClass({
   componentWillUnmount: function() {
     TagStore.removeListToPointChangeListener(this._onListToPointChanged);
   },
-  _onListToPointChanged: function(localTime) {
-    console.log(localTime);
+  _onListToPointChanged: function(nId) {
+    var originalSeries = _chartObj.series[0].data;
+    originalSeries.forEach((data, index) => {
+      if (index != nId && data.selected === true) {
+        data.select(false)
+      }
+      if (index === nId) {
+        data.select(true)
+      }
+    })
   },
   getDataLabelFormatterFn() {
     return dataLabelFormatter;
@@ -399,6 +407,7 @@ let RawDataChartPanel = React.createClass({
        </div>;
   },
   _afterChartCreated(chartObj) {
+    _chartObj = chartObj;
     if (this.props.afterChartCreated) {
       this.props.afterChartCreated(chartObj);
     }
