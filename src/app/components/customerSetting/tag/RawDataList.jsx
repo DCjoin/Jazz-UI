@@ -125,22 +125,28 @@ let RawDataList = React.createClass({
 
 
   },
-  _onChanged: function() {
-    dateItem = [];
-    indexItem = [];
-    if (this.refs.list) {
-      var el = this.refs.list.getDOMNode();
-      el.scrollTop = 0;
+  _onChanged: function(flag) {
+    if (flag != false) {
+      dateItem = [];
+      indexItem = [];
+      if (this.refs.list) {
+        var el = this.refs.list.getDOMNode();
+        el.scrollTop = 0;
+      }
+      this.setState({
+        selectedId: -1
+      })
+      this.forceUpdate();
     }
-    this.setState({
-      selectedId: -1
-    })
-    this.forceUpdate();
+
   },
   _onListItemSelected: function(index) {
     var el = this.refs.list.getDOMNode();
     var id = indexItem.indexOf(index);
     el.scrollTop = id * 41 + 1;
+    this.setState({
+      selectedId: index
+    })
   },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
