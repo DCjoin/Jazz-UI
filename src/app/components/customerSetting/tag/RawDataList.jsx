@@ -81,29 +81,27 @@ let RawDataList = React.createClass({
       let str = CommonFuns.formatDateByStep(TagStore.translateDate(data.get('LocalTime'), null, this.props.step), null, null, this.props.step);
       let date = str.split(' ')[0],
         time = str.split(' ')[1];
-      if (data.get('DataValue') !== null) {
-        indexItem[pId] = index;
-        pId++;
-        if (currentDate !== date && currentDate !== null) {
-          Items.push(
-            <div className="date">{date}</div>
-          );
-          dateItem.push(date);
-          pId++;
-        }
-        if (currentDate === null) {
-          firstDate = date
-        }
-        currentDate = date;
+      indexItem[pId] = index;
+      pId++;
+      if (currentDate !== date && currentDate !== null) {
         Items.push(
-          <ListItem time={time} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
-            data,
-            nId
-          })}/>
-        )
+          <div className="date">{date}</div>
+        );
         dateItem.push(date);
-        nId++;
+        pId++;
       }
+      if (currentDate === null) {
+        firstDate = date
+      }
+      currentDate = date;
+      Items.push(
+        <ListItem time={time} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
+          data,
+          nId
+        })}/>
+      )
+      dateItem.push(date);
+      nId++;
 
     });
     if (this.refs.header) {

@@ -567,7 +567,7 @@ let RawDataChartPanel = React.createClass({
       let pItem,
         color;
 
-      if (item[1] !== null) {
+      if (index > 0) {
         if (t[0].EnergyData[index - 1].DataQuality === 9) {
           color = '#f46a58'
         } else {
@@ -599,7 +599,7 @@ let RawDataChartPanel = React.createClass({
             }
           }
         }
-        if (index !== t[0].EnergyData.length - 1) {
+        if (index < t[0].EnergyData.length - 1) {
           if (t[0].EnergyData[index - 1].DataQuality === 9 || t[0].EnergyData[index].DataQuality === 9) {
             pItem.segmentColor = '#f46a58';
           } else {
@@ -613,6 +613,8 @@ let RawDataChartPanel = React.createClass({
 
         data.push(pItem)
       }
+
+
 
 
     });
