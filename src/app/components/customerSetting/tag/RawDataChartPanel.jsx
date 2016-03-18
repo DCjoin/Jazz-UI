@@ -348,7 +348,7 @@ let RawDataChartPanel = React.createClass({
     return state;
   },
   shouldComponentUpdate: function(nextProps, nextState) {
-    return !(this.props.energyData.equals(nextProps.energyData));
+    return !(this.props.energyRawData.equals(nextProps.energyRawData));
   },
   componentWillUnmount: function() {
     TagStore.removeListToPointChangeListener(this._onListToPointChanged);
@@ -543,7 +543,7 @@ let RawDataChartPanel = React.createClass({
       serieObj,
       flagSeries = [],
       alarmSeries = [],
-      dmData = this.props.energyRawData,
+      dmData = this.props.energyRawData.toJS(),
       t = dmData.TargetEnergyData,
       factory = EnergyCommentFactory;
 

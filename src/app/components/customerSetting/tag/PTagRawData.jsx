@@ -301,7 +301,7 @@ let PTagRawData = React.createClass({
     var chartProps = {
       ref: 'ChartComponent',
       energyData: dataForChart,
-      energyRawData: this.state.tagData.toJS(),
+      energyRawData: this.state.tagData,
       step: obj.step,
       startTime: obj.start,
       endTime: obj.end,
