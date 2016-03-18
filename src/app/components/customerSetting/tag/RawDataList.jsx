@@ -4,7 +4,8 @@ import React from "react";
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
-let j2d = CommonFuns.DataConverter.JsonToDateTime;
+import classnames from "classnames";
+//let j2d = CommonFuns.DataConverter.JsonToDateTime;
 let dateItem = [],
   indexItem = [];
 let ListItem = React.createClass({
@@ -12,6 +13,7 @@ let ListItem = React.createClass({
     time: React.PropTypes.string,
     data: React.PropTypes.object,
     onClick: React.PropTypes.func,
+    isSelected: React.PropTypes.bool,
   },
   render: function() {
     let color,
@@ -28,7 +30,10 @@ let ListItem = React.createClass({
     time = time.replace(/点/g, ':');
     time = time.replace(/分/g, '');
     return (
-      <div className='jazz-ptag-rawdata-list-item' onClick={this.props.onClick}>
+      <div className={classnames({
+        "jazz-ptag-rawdata-list-item": true,
+        "selected": this.props.isSelected
+      })} onClick={this.props.onClick}>
         <div>{time}</div>
         <div style={{
         marginLeft: '50px',
@@ -43,6 +48,11 @@ let RawDataList = React.createClass({
     isRawData: React.PropTypes.bool,
     step: React.PropTypes.number
   },
+  getInitialState: function() {
+    return {
+      selectedId: -1
+    }
+  },
   _onScroll: function() {
     var el = this.refs.list.getDOMNode(),
       head = this.refs.header.getDOMNode();
@@ -50,8 +60,11 @@ let RawDataList = React.createClass({
     //set scrollTop to scroll el.scrollTop=500
     head.innerText = dateItem[scrollIndex];
   },
-  _onItemClick: function(data) {
-    TagAction.selectListToPonit(j2d(data.get('LocalTime')));
+  _onItemClick: function(item) {
+    TagAction.selectListToPonit(item.nId);
+    this.setState({
+      selectedId: item.nId
+    })
   },
   _renderListItems: function() {
     if (TagStore.getRawData().size === 0) return;
@@ -61,6 +74,7 @@ let RawDataList = React.createClass({
       currentDate = null,
       firstDate = null,
       pId = 0,
+      nId = 0,
       that = this;
 
     energyData.forEach((data, index) => {
@@ -82,9 +96,13 @@ let RawDataList = React.createClass({
         }
         currentDate = date;
         Items.push(
-          <ListItem time={time} data={data} onClick={that._onItemClick.bind(this, data)}/>
+          <ListItem time={time} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
+            data,
+            nId
+          })}/>
         )
         dateItem.push(date);
+        nId++;
       }
 
     });
@@ -116,7 +134,9 @@ let RawDataList = React.createClass({
       var el = this.refs.list.getDOMNode();
       el.scrollTop = 0;
     }
-
+    this.setState({
+      selectedId: -1
+    })
     this.forceUpdate();
   },
   _onListItemSelected: function(index) {
@@ -140,6 +160,9 @@ let RawDataList = React.createClass({
         var el = this.refs.list.getDOMNode();
         el.scrollTop = 0;
       }
+      this.setState({
+        selectedId: -1
+      })
     }
   },
   render: function() {

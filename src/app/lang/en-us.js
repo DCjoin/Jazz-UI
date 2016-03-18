@@ -41,8 +41,6 @@ I18N.MainMenu.Asset = 'My assets';
 I18N.MainMenu.Alarm = 'Failure alarm';
 I18N.MainMenu.Maintain = 'Equipment maintenance ';
 I18N.MainMenu.Setting = 'Setting';
-I18N.MainMenu.Customer = 'Customer management';
-I18N.MainMenu.User = 'User';
 I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
@@ -132,7 +130,12 @@ I18N.Common.Glossary.WeekDay.Thursday = 'Thur.';
 I18N.Common.Glossary.WeekDay.Friday = 'Fri.';
 I18N.Common.Glossary.WeekDay.Saturday = 'Sat.';
 I18N.Common.Glossary.WeekDay.Sunday = 'Sun.';
-I18N.Common.Glossary.User = 'User';
+
+I18N.Common.Per = {};
+I18N.Common.Per.Person = '/Person';
+I18N.Common.Per.m2 = '/M²';
+I18N.Common.Per.Bed = '/Bed';
+I18N.Common.Per.Room = '/Room';
 
 I18N.Common.Date = {};
 I18N.Common.Date.January = 'Jan.';
@@ -192,6 +195,7 @@ I18N.Common.Glossary.Code = 'Code';
 I18N.Common.Glossary.Index = 'Index';
 I18N.Common.Glossary.Commodity = 'Commodity';
 I18N.Common.Glossary.UOM = 'Unit';
+I18N.Common.Glossary.Type = 'Type';
 I18N.Common.Glossary.Operation = 'Operate';
 
 
@@ -205,7 +209,10 @@ I18N.Common.Button.Comparation = 'Compare';
 I18N.Common.Button.Confirm = 'Confirm';
 I18N.Common.Button.Save = 'Save';
 I18N.Common.Button.SaveExport = 'Save and export';
+I18N.Common.Button.Import = 'Import';
 I18N.Common.Button.Export = 'Export';
+I18N.Common.Button.Filter = 'Filter';
+I18N.Common.Button.Close = 'Close';
 I18N.Common.Button.Cancel = 'Cancel';
 I18N.Common.Button.Cancel2 = 'Cancel';
 I18N.Common.Button.Delete = 'Delete';
@@ -223,9 +230,23 @@ I18N.Common.CarbonUomType.StandardCoal = 'Standard coal';
 I18N.Common.CarbonUomType.CO2 = 'Carbon dioxide';
 I18N.Common.CarbonUomType.Tree = 'Tree';
 
+I18N.Common.CaculationType = {};
+I18N.Common.CaculationType.Non = 'None';
+I18N.Common.CaculationType.Sum = 'Sum';
+I18N.Common.CaculationType.Avg = 'Ave';
+I18N.Common.CaculationType.Max = 'Max';
+I18N.Common.CaculationType.Min = 'Min';
+
 I18N.Common.AggregationStep = {};
 I18N.Common.AggregationStep.Minute = 'Minute';
+I18N.Common.AggregationStep.Min15 = '15Min';
+I18N.Common.AggregationStep.Min30 = '30Min';
 I18N.Common.AggregationStep.Hourly = 'Hour';
+I18N.Common.AggregationStep.Hour2 = "2Hour";
+I18N.Common.AggregationStep.Hour4 = "4Hour";
+I18N.Common.AggregationStep.Hour6 = "6Hour";
+I18N.Common.AggregationStep.Hour8 = "8Hour";
+I18N.Common.AggregationStep.Hour12 = "12Hour";
 I18N.Common.AggregationStep.Daily = 'Daily';
 I18N.Common.AggregationStep.Weekly = 'Weekly';
 I18N.Common.AggregationStep.Monthly = 'Monthly';
@@ -372,7 +393,7 @@ I18N.EM.WeatherSupportsNotMinuteStep = 'This function cannot support minute step
 I18N.EM.WeatherSupportsNotMultiTime = 'This function cannot support mulitiple timespan';
 I18N.EM.TouSupportsMoreThanHourStep = 'This function only support steps larger than Hourly.';
 I18N.EM.TouSupportsOnlyElec = 'This function only support "Electricity" commodity.';
-I18N.EM.WeatherSupportsNotPie = 'Weather cannot support pie chart.';
+
 
 I18N.EM.CharType = {};
 I18N.EM.CharType.Line = 'Line';
@@ -593,16 +614,20 @@ I18N.Setting.Labeling.ViewDataPermission = 'View data authority';
 I18N.Setting.Labeling.EditDataPermission = 'Edit data authority';
 I18N.Setting.Labeling.PlatformDataPermissionTip = 'It is recommended to check this for who having "EnergyMost system administrator" authority.';
 I18N.Setting.Labeling.AllCusomer = 'All customers';
+I18N.Setting.Labeling.NoCusomer = 'No customer';
 I18N.Setting.Labeling.ElectrovalenceUom = 'RMB/kwh';
 
 I18N.Setting.CustomizedLabeling = {};
+I18N.Setting.CustomizedLabeling.DeleteLabel = 'Delete Label';
 I18N.Setting.CustomizedLabeling.Grade = 'Level {0}';
+I18N.Setting.CustomizedLabeling.EnergyGrade = 'Grade setting';
 I18N.Setting.CustomizedLabeling.OrderMode = 'sequence';
 I18N.Setting.CustomizedLabeling.Ascending = 'Positive sequence';
 I18N.Setting.CustomizedLabeling.Declining = 'Inverted sequence';
 I18N.Setting.CustomizedLabeling.Configurationer = 'Configured by';
 I18N.Setting.CustomizedLabeling.ConfigurationDate = 'Configured on';
 I18N.Setting.CustomizedLabeling.KPIType = 'Type of indicator';
+I18N.Setting.CustomizedLabeling.InputError = 'Invalidate value';
 I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*Please ensure the value to be entered in the right interval is greater than that in the left one.';
 I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*Please ensure the value to be entered in the left interval is greater than that in the right one.';
 I18N.Setting.CustomizedLabeling.DeleteTip = '<br/>Display of the dashboard relevants to this label is abnormal after deletion.';
@@ -624,8 +649,19 @@ I18N.Setting.User.Manager = 'Managers';
 I18N.Setting.User.BusinessPerson = 'Business Person';
 I18N.Setting.User.Sales = 'Sales';
 I18N.Setting.User.ServerManager = 'SP Manager';
-I18N.Setting.User.WholeCustomer = 'Data authority of all hierarchy nodes';
-I18N.Setting.User.WholeCustomerTip = 'It is recommended to check this for who having "Hierarchy Structure Management" authority.';
+I18N.Setting.User.SendEmailSuccess = 'Password reset mail already sent';
+I18N.Setting.User.WholeCustomer = 'All hierarchy privilege';
+I18N.Setting.User.WholeCustomerTip = 'Suggest select "hierarchy management" who has this privilege';
+I18N.Setting.User.AllCusomerDataPermission = 'All customer privilege';
+I18N.Setting.User.DeleteTitle = 'Delete user';
+I18N.Setting.User.DeleteContent = 'User "{0}" will be deleted';
+I18N.Setting.User.UserFilter = 'User filter';
+I18N.Setting.User.Cancel = 'Clear';
+I18N.Setting.User.SelectedCusomer = 'Customers';
+I18N.Setting.User.FilterResult = 'No customer fit this filter';
+I18N.Setting.User.FilterRecommendation = 'Please modify filter condition and try again';
+I18N.Setting.User.FilterResult = 'Clear filter';
+I18N.Setting.User.Filter = 'Filter';
 
 I18N.Setting.NodeBtn = {};
 I18N.Setting.NodeBtn.Saving = 'Saving...';
@@ -637,13 +673,23 @@ I18N.Setting.NodeBtn.Delete = 'Delete';
 I18N.Setting.CustomerManagement = {};
 I18N.Setting.CustomerManagement.CustomerManagement = 'Customer';
 I18N.Setting.CustomerManagement.Logo = 'Logo';
+I18N.Setting.CustomerManagement.LogoUpload = 'Upload local picture';
 I18N.Setting.CustomerManagement.LogoUpload = 'Upload local images';
 I18N.Setting.CustomerManagement.Address = 'Address';
 I18N.Setting.CustomerManagement.Principal = 'Responsible person';
 I18N.Setting.CustomerManagement.Telephone = 'Tel.';
 I18N.Setting.CustomerManagement.Email = 'Email';
 I18N.Setting.CustomerManagement.OperationStartTime = 'Operation time';
+I18N.Setting.CustomerManagement.Administrator = 'Maintainer';
 I18N.Setting.CustomerManagement.NoAdministrator = 'Unselected';
+I18N.Setting.CustomerManagement.LogoUploadErrorTitle='Picture upload failed';
+I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent = 'Only support PNG,JPG,BMP and GIF, please select again';
+I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = 'Picture size is 0, please select again';
+I18N.Setting.CustomerManagement.AddAdministrator = 'Add maintainer';
+I18N.Setting.CustomerManagement.EditAdministrator = 'Edit maintainer';
+I18N.Setting.CustomerManagement.Title = 'Title';
+I18N.Setting.CustomerManagement.DeleteTitle = 'Delete customer';
+I18N.Setting.CustomerManagement.DeleteContent = 'Customer "{0}" will be deleted';
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = 'User management';
@@ -661,6 +707,8 @@ I18N.Setting.UserManagement.MailSent = 'Mail sent successfully';
 I18N.Setting.UserManagement.MembershipCustomer = 'Customers';
 I18N.Setting.UserManagement.AllCustomers = 'Whole customers';
 I18N.Setting.UserManagement.Privilege = 'Function Privilege';
+I18N.Setting.UserManagement.UserInfo = 'User information';
+I18N.Setting.UserManagement.DataPermissionSetting = 'Data privilege setting';
 
 I18N.Setting.TagBatchImport = {};
 I18N.Setting.TagBatchImport.DownloadLog = 'Download import log';
@@ -682,7 +730,8 @@ I18N.Setting.TagBatchImport.ToViewLog = 'View detail info';
 I18N.Setting.TagBatchImport.ImportResultView = 'Import finished, successfully {0} items, failed {1} items, total {2} items.';
 
 I18N.Setting.Tag = {};
-I18N.Setting.Tag.SearchText = 'Please input name or code';
+I18N.Setting.Tag.SearchText = 'Name or code';
+I18N.Setting.Tag.Tag = 'Tag';
 I18N.Setting.Tag.TagList = 'Tag list';
 I18N.Setting.Tag.TagFilter = 'Tag filter';
 I18N.Setting.Tag.isAccumulated = 'Accumulate';
@@ -698,6 +747,7 @@ I18N.Setting.Tag.DeleteTag = 'Delete tag';
 I18N.Setting.Tag.Code = 'Code';
 I18N.Setting.Tag.MeterCode = 'Meter code';
 I18N.Setting.Tag.Channel = 'Channel';
+I18N.Setting.Tag.Period = 'Collection cycle';
 I18N.Setting.Tag.CalculationStep = 'Calculation step';
 I18N.Setting.Tag.CalculationType = 'Calculation type';
 I18N.Setting.Tag.Slope = 'Slope';
@@ -716,19 +766,11 @@ I18N.Setting.Tag.FormulaEditText = 'Click item in the list to add it to formula'
 I18N.Setting.Tag.PTagRawData = {};
 I18N.Setting.Tag.PTagRawData.PauseMonitor = 'Suspend scanning';
 I18N.Setting.Tag.PTagRawData.PauseMonitorContent = 'Selected rule will be suspended from next scanning';
+I18N.Setting.Tag.PTagRawData.PauseMonitorNoRule = 'This ruleset does not set rule';
 I18N.Setting.Tag.PTagRawData.DifferenceValue = 'Difference';
-
-I18N.Setting.CustomizedLabeling = {};
-I18N.Setting.CustomizedLabeling.Grade = '{0}级';
-I18N.Setting.CustomizedLabeling.OrderMode = '排列方式';
-I18N.Setting.CustomizedLabeling.Ascending = '正序';
-I18N.Setting.CustomizedLabeling.Declining = '倒序';
-I18N.Setting.CustomizedLabeling.Configurationer = '配置人';
-I18N.Setting.CustomizedLabeling.ConfigurationDate = '配置时间';
-I18N.Setting.CustomizedLabeling.KPIType = '指标类型';
-I18N.Setting.CustomizedLabeling.ErrorMessage1 = '*请确保输入的右区间大于左区间';
-I18N.Setting.CustomizedLabeling.ErrorMessage2 = '*请确保输入的左区间大于右区间';
-I18N.Setting.CustomizedLabeling.DeleteTip = '<br/>删除后，关联该标识的仪表盘将无法正常显示。';
+I18N.Setting.Tag.PTagRawData.normal = 'Normal';
+I18N.Setting.Tag.PTagRawData.abnormal = 'Abnormal';
+I18N.Setting.Tag.PTagRawData.repair = 'Modify';
 
 I18N.Message = {};
 
@@ -1307,14 +1349,13 @@ I18N.Baseline.BaselineModify.YearBaseline = 'Year Baseline';
 I18N.Baseline.BaselineModify.YearValue = 'Yearly';
 I18N.Baseline.BaselineModify.MonthBaseline = 'Month Baseline';
 I18N.Baseline.BaselineBasic.AlarmText = 'This Steps will alarm';
+I18N.Baseline.Calc = {};
+I18N.Baseline.Calc.MonthBaseline = 'Monthly';
 I18N.Baseline.TBSettingItem = {};
 I18N.Baseline.TBSettingItem.Error = 'Conflict with existed timespan, please select again';
 I18N.Baseline.TBSettingItem.CalcRadio = 'Calculate selected average data value as baseline value';
 I18N.Baseline.TBSettingItem.NormalRadio = 'Set baseline manually';
 I18N.Baseline.TBSettingItem.TimeSpanSetting = 'TimeSpan setting';
-
-I18N.Baseline.Calc = {};
-I18N.Baseline.Calc.MonthBaseline = 'Monthly';
 I18N.Baseline.Calc.workdaytitle = 'Work-nonwork calendar:';
 I18N.Baseline.Calc.workdaycontent = 'Default work day: Mon-Fri';
 I18N.Baseline.Cal = {};
@@ -1492,6 +1533,7 @@ I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
 I18N.Remark.DefaultText = 'Click here to add comment';
 
+//usertype
 I18N.Setting.Role = {};
 
 I18N.Setting.Role.AddRole = 'Role';
@@ -1501,18 +1543,22 @@ I18N.Setting.Role.Name = 'Name';
 I18N.Setting.Role.Privilege = 'Privilege';
 I18N.Setting.Role.ErrorTitle = 'Can not delete role “{0}”';
 I18N.Setting.Role.ErrorContent = 'Role can not be deleted because “{0}��?is referred by some users。Please delete users then try again.';
+I18N.Setting.Role.DeleteTitle = 'Delete role ';
+I18N.Setting.Role.DeleteContent = 'Role "{0}" will be deleted';
 
 //carbon factor
 I18N.Setting.CarbonFactor = {};
 
 I18N.Setting.CarbonFactor.Title = 'Conversion factor';
+I18N.Setting.CarbonFactor.DeleteTitle = 'Delete conversion factor';
+I18N.Setting.CarbonFactor.DeleteContent = 'Conversion factor “{0}” will be deleted';
 I18N.Setting.CarbonFactor.Source = 'Conversion object';
 I18N.Setting.CarbonFactor.Target = 'Conversion target';
 I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
 I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
 I18N.Setting.CarbonFactor.Conflict = 'Timespan overlapped, please select again';
 
-I18N.Setting.CarbonFactor.ConfirmDelete = 'Are you sure to delete ##Setting.CarbonFactor.Title## from ""{0}"" to "{1}"?';
+
 
 I18N.Setting.TOUTariff = {};
 I18N.Setting.TOUTariff.TOUSetting = 'Peak/Valley electricity price';
@@ -1530,8 +1576,11 @@ I18N.Setting.TOUTariff.PulsePeakPrice = 'Peak season price';
 I18N.Setting.TOUTariff.PulsePeakDateTime = 'Peak season time';
 I18N.Setting.TOUTariff.DateTimeRange = 'TimeSpan';
 I18N.Setting.TOUTariff.PeakValueTimeRange = 'Peak period';
+I18N.Setting.TOUTariff.DeleteTitle = 'Delete price';
+I18N.Setting.TOUTariff.DeleteContent = 'Price"{0}" will be deleted';
 
 I18N.Common.Glossary.Customer = 'Customer';
+I18N.Common.Glossary.User = 'User';
 
 I18N.Setting.Labeling.CustomerName = 'Customer name';
 
@@ -1555,48 +1604,13 @@ I18N.Setting.CustomerManagement.Label.Coal = ' total coal';
 I18N.Setting.CustomerManagement.Label.CoalOil = ' total kerosene';
 I18N.Setting.CustomerManagement.Label.SelectTip = 'Please select energy information types to be displayed simultaneously under the node of focal building in user\'s map sheet.';
 I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive = 'Please select at least one item, with a maximum of 5 items.';
-
-I18N.Setting.CarbonFactor.DeleteTitle = 'Delete conversion factor';
-I18N.Setting.CarbonFactor.DeleteContent = 'Conversion factor “{0}” will be deleted';
-I18N.Setting.TOUTariff.DeleteTitle = 'Delete price';
-I18N.Setting.TOUTariff.DeleteContent = 'Price"{0}" will be deleted';
-I18N.Setting.Role.DeleteTitle = 'Delete role ';
-I18N.Setting.Role.DeleteContent = 'Role "{0}" will be deleted';
-I18N.Setting.User.SendEmailSuccess = 'Password reset was sent!';
-I18N.Setting.User.AllCusomerDataPermission = 'All customer';
-I18N.Setting.Labeling.NoCusomer = 'No customer';
-I18N.Setting.User.DeleteTitle = 'Delete User';
-I18N.Setting.User.DeleteContent = ' User“{0}” will be deleted';
-I18N.Setting.User.UserFilter = 'User filter';
-I18N.Setting.User.Cancel = 'Cancel';
-I18N.Setting.User.SelectedCusomer = 'Select cutomer';
-I18N.Setting.User.FilterResult = 'No Customer';
-I18N.Setting.User.FilterRecommendation = 'Please try other confition';
-I18N.Setting.User.FilterResult = 'Clear filter content';
-I18N.Setting.User.Filter = 'Filter';
-I18N.Setting.UserManagement.UserInfo = 'Properties';
-I18N.Setting.UserManagement.DataPermissionSetting = 'Authority';
-I18N.Setting.CarbonFactor.ErrorContent = 'Please input less 99999999.999999';
-I18N.Setting.CustomerManagement.LogoUploadInfo = 'Please upload logo';
-
-I18N.Setting.CustomerManagement.LogoUploadErrorTitle = 'Logo upload failed';
-I18N.Setting.CustomerManagement.LogoUploadErrorTypeContent = 'Logo format must be PNG，JPG，BMP or GIF, Please select again';
-I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent = 'Logo file size is 0, please select again';
-
-I18N.Setting.CustomerManagement.Administrator = 'Customer administrator';
-I18N.Setting.CustomerManagement.AddAdministrator = 'Add Customer administrator';
-I18N.Setting.CustomerManagement.EditAdministrator = 'Edit Customer administrator';
-I18N.Setting.CustomerManagement.Title = 'Title';
-I18N.Setting.CustomerManagement.DeleteTitle = 'Delete Customer';
-I18N.Setting.CustomerManagement.DeleteContent = 'Customer "{0}" will be deleted';
-
 I18N.Setting.SPManagement = 'EnergyMost sys-management';
 
 I18N.Setting.VEEMonitorRule = {};
 I18N.Setting.VEEMonitorRule.Rule = 'Rule';
 I18N.Setting.VEEMonitorRule.RuleName = 'Rule Name';
 I18N.Setting.VEEMonitorRule.MonitorTag = 'tag';
-I18N.Setting.VEEMonitorRule.CreateTime = 'Configured On';
+
 I18N.Setting.VEEMonitorRule.MonitorRule = 'Rule set';
 I18N.Setting.VEEMonitorRule.MonitorSetting = 'VEE setting';
 I18N.Setting.VEEMonitorRule.NullValue = 'Null value';
@@ -1610,6 +1624,7 @@ I18N.Setting.VEEMonitorRule.MonitorStartTime = 'Starting time';
 I18N.Setting.VEEMonitorRule.MonitorInterval = 'Scanning interval';
 I18N.Setting.VEEMonitorRule.MonitorDelayTime = 'Scan delay duration ';
 I18N.Setting.VEEMonitorRule.NoMonitorDelay = 'No delay';
+
 I18N.Setting.VEEMonitorRule.Receivers = 'Mail Receiver';
 I18N.Setting.VEEMonitorRule.AddReceivers = 'Add mail receiver';
 I18N.Setting.VEEMonitorRule.DeleteTitle = 'Delete rule set';
@@ -1617,15 +1632,11 @@ I18N.Setting.VEEMonitorRule.DeleteContent = 'Rule set {0} will be deleted';
 I18N.Setting.VEEMonitorRule.FirstScanTime = 'Every day, the first scanning time is 0:00.';
 I18N.Setting.VEEMonitorRule.ScanTimeInfo = 'Scanning time {0}';
 I18N.Setting.VEEMonitorRule.ConsecutiveHours = 'Consecutive Hours(h)';
-
+I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = 'Please input integer between 0 and 999999999';
 I18N.Setting.VEEMonitorRule.AddTagInfo = 'Clcik add button to add tags';
 I18N.Setting.VEEMonitorRule.AddTag = 'Add tags';
 I18N.Setting.VEEMonitorRule.AddingTagsInfo = 'Click items to add';
 I18N.Setting.VEEMonitorRule.TagList = 'Tag list';
 
-I18N.Setting.VEEMonitorRule.ConsecutiveHoursError = '请输入0-999999999的整数';
-I18N.Setting.Tag.PTagRawData.PauseMonitorNoRule = '该规则集未关联任何规则';
-I18N.Setting.Tag.PTagRawData.normal = '正常值';
-I18N.Setting.Tag.PTagRawData.abnormal = '异常值';
-I18N.Setting.Tag.PTagRawData.repair = '修复值';
+
 module.exports = I18N;

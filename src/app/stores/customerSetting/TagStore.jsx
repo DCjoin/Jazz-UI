@@ -499,7 +499,7 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       TagStore.emitPointToListChange(action.index);
       break;
     case Action.SET_LIST_TO_POINT:
-      TagStore.emitListToPointChange(action.localTime);
+      TagStore.emitListToPointChange(action.nId);
       break;
   }
 });
