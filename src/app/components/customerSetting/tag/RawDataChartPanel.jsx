@@ -348,7 +348,7 @@ let RawDataChartPanel = React.createClass({
     return state;
   },
   shouldComponentUpdate: function(nextProps, nextState) {
-    return !(this.props.energyData.equals(nextProps.energyData));
+    return !(this.props.energyRawData.equals(nextProps.energyRawData));
   },
   componentWillUnmount: function() {
     TagStore.removeListToPointChangeListener(this._onListToPointChanged);
@@ -543,9 +543,10 @@ let RawDataChartPanel = React.createClass({
       serieObj,
       flagSeries = [],
       alarmSeries = [],
-      dmData = this.props.energyRawData,
+      dmData = this.props.energyRawData.toJS(),
       t = dmData.TargetEnergyData,
-      factory = EnergyCommentFactory;
+      factory = EnergyCommentFactory,
+      that = this;
 
     var type,
       subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
@@ -567,7 +568,7 @@ let RawDataChartPanel = React.createClass({
       let pItem,
         color;
 
-      if (item[1] !== null) {
+      if (index > 0 && index < t[0].EnergyData.length) {
         if (t[0].EnergyData[index - 1].DataQuality === 9) {
           color = '#f46a58'
         } else {
@@ -585,6 +586,7 @@ let RawDataChartPanel = React.createClass({
           events: {
             click: () => {
               TagAction.selectPointToList(index - 1);
+              that._onListToPointChanged(index - 1);
             }
           },
           marker: {
@@ -599,7 +601,7 @@ let RawDataChartPanel = React.createClass({
             }
           }
         }
-        if (index !== t[0].EnergyData.length - 1) {
+        if (index < t[0].EnergyData.length - 1) {
           if (t[0].EnergyData[index - 1].DataQuality === 9 || t[0].EnergyData[index].DataQuality === 9) {
             pItem.segmentColor = '#f46a58';
           } else {
@@ -613,6 +615,8 @@ let RawDataChartPanel = React.createClass({
 
         data.push(pItem)
       }
+
+
 
 
     });

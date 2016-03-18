@@ -5,6 +5,7 @@ import Ajax from '../../ajax/ajax.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import VEEStore from '../../stores/customerSetting/VEEStore.jsx';
 var _page, _ruleId, _association, _filterObj;
+let {isNumber} = CommonFuns;
 let VEEAction = {
   GetVEERules: function() {
     Ajax.post('/VEE.svc/GetVEERules', {
@@ -34,7 +35,7 @@ let VEEAction = {
     Ajax.post('/VEE.svc/GetUsersByFilter', {
       params: {
         "filter": {
-          "RuleIds": [ruleId],
+          "RuleIds": isNumber(ruleId) ? [ruleId] : [],
           "CustomerId": window.currentCustomerId,
           "IncludeAll": true
         },

@@ -129,9 +129,6 @@ let PTagRawData = React.createClass({
   },
   _onModifyVEETagStatus: function() {
     TagAction.modifyVEETagStatus(this.state.veeTagStatus.toJS());
-    this.setState({
-      isLoading: true
-    })
   },
   // _afterChartCreated(chartObj) {
   //   if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
@@ -301,7 +298,7 @@ let PTagRawData = React.createClass({
     var chartProps = {
       ref: 'ChartComponent',
       energyData: dataForChart,
-      energyRawData: this.state.tagData.toJS(),
+      energyRawData: this.state.tagData,
       step: obj.step,
       startTime: obj.start,
       endTime: obj.end,

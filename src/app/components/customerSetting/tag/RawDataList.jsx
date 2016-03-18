@@ -81,29 +81,27 @@ let RawDataList = React.createClass({
       let str = CommonFuns.formatDateByStep(TagStore.translateDate(data.get('LocalTime'), null, this.props.step), null, null, this.props.step);
       let date = str.split(' ')[0],
         time = str.split(' ')[1];
-      if (data.get('DataValue') !== null) {
-        indexItem[pId] = index;
-        pId++;
-        if (currentDate !== date && currentDate !== null) {
-          Items.push(
-            <div className="date">{date}</div>
-          );
-          dateItem.push(date);
-          pId++;
-        }
-        if (currentDate === null) {
-          firstDate = date
-        }
-        currentDate = date;
+      indexItem[pId] = index;
+      pId++;
+      if (currentDate !== date && currentDate !== null) {
         Items.push(
-          <ListItem time={time} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
-            data,
-            nId
-          })}/>
-        )
+          <div className="date">{date}</div>
+        );
         dateItem.push(date);
-        nId++;
+        pId++;
       }
+      if (currentDate === null) {
+        firstDate = date
+      }
+      currentDate = date;
+      Items.push(
+        <ListItem time={time} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
+          data,
+          nId
+        })}/>
+      )
+      dateItem.push(date);
+      nId++;
 
     });
     if (this.refs.header) {
@@ -127,22 +125,28 @@ let RawDataList = React.createClass({
 
 
   },
-  _onChanged: function() {
-    dateItem = [];
-    indexItem = [];
-    if (this.refs.list) {
-      var el = this.refs.list.getDOMNode();
-      el.scrollTop = 0;
+  _onChanged: function(flag) {
+    if (flag != false) {
+      dateItem = [];
+      indexItem = [];
+      if (this.refs.list) {
+        var el = this.refs.list.getDOMNode();
+        el.scrollTop = 0;
+      }
+      this.setState({
+        selectedId: -1
+      })
+      this.forceUpdate();
     }
-    this.setState({
-      selectedId: -1
-    })
-    this.forceUpdate();
+
   },
   _onListItemSelected: function(index) {
     var el = this.refs.list.getDOMNode();
     var id = indexItem.indexOf(index);
     el.scrollTop = id * 41 + 1;
+    this.setState({
+      selectedId: index
+    })
   },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);

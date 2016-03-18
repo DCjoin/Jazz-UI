@@ -407,8 +407,8 @@ var TagStore = assign({}, PrototypeStore, {
   removeTagDatasChangeListener(callback) {
     this.removeListener(TAG_DATAS_CHANGE_EVENT, callback);
   },
-  emitTagDatasChange() {
-    this.emit(TAG_DATAS_CHANGE_EVENT);
+  emitTagDatasChange(args) {
+    this.emit(TAG_DATAS_CHANGE_EVENT, args);
   },
   addPointToListChangeListener(callback) {
     this.on(POINT_TO_LIST_CHANGE_EVENT, callback);
@@ -487,7 +487,7 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.GET_TAG_DATAS_SUCCESS:
       TagStore.setTagDatas(action.tagDatas, action.tagStatus);
-      TagStore.emitTagDatasChange();
+      TagStore.emitTagDatasChange(action.tagDatas);
       break;
     case Action.SET_FILTER_OBJ:
       TagStore.setFilterObj(action.filterObj);
