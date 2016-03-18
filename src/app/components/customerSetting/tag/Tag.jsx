@@ -124,7 +124,7 @@ let Tag = React.createClass({
       formStatus: formStatus.VIEW,
       selectedIndex: selectedIndex,
       selectedTag: selectedTag,
-      isRawData: selectedTag.get('IsAccumulated') ? false : true,
+      isRawData: selectedTag === null ? false : (selectedTag.get('IsAccumulated') ? false : true),
     });
   },
   _onItemClick: function(index) {
