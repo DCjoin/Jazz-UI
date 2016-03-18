@@ -1355,7 +1355,6 @@ I18N.Baseline.TBSettingItem.Error = '时间段冲突， 请重新选择时段';
 I18N.Baseline.TBSettingItem.CalcRadio = '计算所选数据平均值为基准数据';
 I18N.Baseline.TBSettingItem.NormalRadio = '手动设置基准值';
 I18N.Baseline.TBSettingItem.TimeSpanSetting = '时段设置';
-
 I18N.Baseline.Calc.workdaytitle = '公休日日历 ：';
 I18N.Baseline.Calc.workdaycontent = '默认工作日 : 周一至周五';
 I18N.Baseline.Cal = {};
@@ -1604,7 +1603,6 @@ I18N.Setting.CustomerManagement.Label.Coal = '煤总量';
 I18N.Setting.CustomerManagement.Label.CoalOil = '煤油总量';
 I18N.Setting.CustomerManagement.Label.SelectTip = '请选择在用户地图页焦点楼宇节点下需要同时显示的能源信息类型。';
 I18N.Setting.CustomerManagement.Label.AtleastOneAtMostFive = '请至少选择1项，最多可选择5项。';
-
 I18N.Setting.SPManagement = '“云能效”系统管理';
 
 I18N.Setting.VEEMonitorRule = {};
@@ -1624,7 +1622,6 @@ I18N.Setting.VEEMonitorRule.MonitorStartTime = '监测起始时间';
 I18N.Setting.VEEMonitorRule.MonitorInterval = '监测扫描间隔';
 I18N.Setting.VEEMonitorRule.MonitorDelayTime = '扫描延后时长';
 I18N.Setting.VEEMonitorRule.NoMonitorDelay = '无延时';
-I18N.Setting.VEEMonitorRule.MonitorDelay = '无延时';
 I18N.Setting.VEEMonitorRule.Receivers = '邮件联系人';
 I18N.Setting.VEEMonitorRule.AddReceivers = '添加邮件联系人';
 I18N.Setting.VEEMonitorRule.DeleteTitle = '删除规则集';
