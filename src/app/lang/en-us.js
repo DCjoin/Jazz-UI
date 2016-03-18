@@ -730,7 +730,7 @@ I18N.Setting.TagBatchImport.ToViewLog = 'View detail info';
 I18N.Setting.TagBatchImport.ImportResultView = 'Import finished, successfully {0} items, failed {1} items, total {2} items.';
 
 I18N.Setting.Tag = {};
-I18N.Setting.Tag.SearchText = 'Please input name or code';
+I18N.Setting.Tag.SearchText = 'Name or code';
 I18N.Setting.Tag.Tag = 'Tag';
 I18N.Setting.Tag.TagList = 'Tag list';
 I18N.Setting.Tag.TagFilter = 'Tag filter';
