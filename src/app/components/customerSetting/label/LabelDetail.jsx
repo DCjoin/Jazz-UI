@@ -44,7 +44,7 @@ var LabelDetail = React.createClass({
     if (kpi !== 5 && kpi !== 6) {
       uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
     }
-    var kpiList = this._getKpiTypeList();
+    var kpiList = this.refs.labelBasic._getKpiTypeList();
     var index = kpiList.findIndex((item) => {
       if (item.payload === kpi) {
         return true;
@@ -56,55 +56,6 @@ var LabelDetail = React.createClass({
     this.setState({
       uom: uom
     });
-  },
-  _getKpiTypeList: function() {
-    let kpiTypeList = [
-      {
-        payload: 7,
-        uom: '',
-        text: I18N.EM.Unit.UnitOriginal /*'指标原值'*/
-      }, {
-        payload: 1,
-        uom: I18N.Common.Per.Person,
-        text: I18N.EM.Unit.UnitPopulation /*'单位人口'*/
-      }, {
-        payload: 2,
-        uom: I18N.Common.Per.m2,
-        text: I18N.EM.Unit.UnitArea /*'单位面积'*/
-      }, {
-        payload: 3,
-        uom: I18N.Common.Per.m2,
-        text: I18N.EM.Unit.UnitColdArea /*'单位供冷面积'*/
-      }, {
-        payload: 4,
-        uom: I18N.Common.Per.m2,
-        text: I18N.EM.Unit.UnitWarmArea /*'单位采暖面积'*/
-      }, {
-        payload: 8,
-        uom: I18N.Common.Per.Room,
-        text: I18N.EM.Unit.UnitRoom
-      }, {
-        payload: 9,
-        uom: I18N.Common.Per.Room,
-        text: I18N.EM.Unit.UnitUsedRoom
-      }, {
-        payload: 10,
-        uom: I18N.Common.Per.Bed,
-        text: I18N.EM.Unit.UnitBed
-      }, {
-        payload: 11,
-        uom: I18N.Common.Per.Bed,
-        text: I18N.EM.Unit.UnitUsedBed
-      }, {
-        payload: 5,
-        uom: '',
-        text: I18N.EM.DayNightRatio /*'昼夜能耗比'*/
-      }, {
-        payload: 6,
-        uom: '',
-        text: I18N.EM.WorkHolidayRatio
-      }];
-    return kpiTypeList;
   },
   _renderDeleteDialog() {
     if (!this.props.showDeleteDialog) {
@@ -191,7 +142,7 @@ var LabelDetail = React.createClass({
     if (kpi !== 5 && kpi !== 6) {
       uom = CommonFuns.getUomById(selectedLabel.get('UomId')).Code;
     }
-    var kpiList = this._getKpiTypeList();
+    var kpiList = this.refs.labelBasic._getKpiTypeList();
     var index = kpiList.findIndex((item) => {
       if (item.payload === kpi) {
         return true;
