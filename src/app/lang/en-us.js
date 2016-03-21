@@ -233,7 +233,7 @@ I18N.Common.CarbonUomType.Tree = 'Tree';
 I18N.Common.CaculationType = {};
 I18N.Common.CaculationType.Non = 'None';
 I18N.Common.CaculationType.Sum = 'Sum';
-I18N.Common.CaculationType.Avg = 'Ave';
+I18N.Common.CaculationType.Avg = 'Average';
 I18N.Common.CaculationType.Max = 'Max';
 I18N.Common.CaculationType.Min = 'Min';
 
