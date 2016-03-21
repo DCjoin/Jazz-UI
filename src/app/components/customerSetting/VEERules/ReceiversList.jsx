@@ -82,7 +82,7 @@ var ReceiversList = React.createClass({
 
 
   render: function() {
-    var receiversData = this.props.receivers || [];
+    var receiversData = this.props.receivers || emptyList();
     var status = this.props.status;
     var receivers = receiversData.map((item, index) => {
       return (
