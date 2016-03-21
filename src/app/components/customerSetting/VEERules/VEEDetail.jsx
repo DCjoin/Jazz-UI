@@ -131,7 +131,8 @@ var VEEDetail = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: '1'
+        flex: '1',
+        overflow: 'auto'
       }}>
       {this.props.infoTab ? <RuleBasic {...basicProps}/> : <MonitorTag {...tagProps}/>}
     </div>
