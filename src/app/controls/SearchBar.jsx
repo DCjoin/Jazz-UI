@@ -44,6 +44,7 @@ let SearchBar = React.createClass({
     if (this.props.value) {
       this.refs.searchText.setValue(this.props.value);
       React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+      React.findDOMNode(this.refs.searchIcon).style.display = 'none';
     }
   },
   render: function() {
