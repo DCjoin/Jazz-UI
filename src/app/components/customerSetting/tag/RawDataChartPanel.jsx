@@ -585,6 +585,7 @@ let RawDataChartPanel = React.createClass({
           color: color,
           events: {
             click: () => {
+              console.log('_chart_index:' + (index - 1));
               TagAction.selectPointToList(index - 1);
               that._onListToPointChanged(index - 1);
             }

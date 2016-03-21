@@ -126,7 +126,7 @@ let RawDataList = React.createClass({
 
   },
   _onChanged: function(flag) {
-    if (flag != false) {
+    if (flag !== false) {
       dateItem = [];
       indexItem = [];
       if (this.refs.list) {
@@ -141,20 +141,20 @@ let RawDataList = React.createClass({
 
   },
   _onListItemSelected: function(index) {
-    var el = this.refs.list.getDOMNode();
-    var id = indexItem.indexOf(index);
-    el.scrollTop = id * 41 + 1;
-    this.setState({
-      selectedId: index
-    })
+    console.log('_list_index=' + index);
+    if (index !== this.state.selectedId) {
+      var el = this.refs.list.getDOMNode();
+      var id = indexItem.indexOf(index);
+      el.scrollTop = id * 41 + 1;
+      this.setState({
+        selectedId: index
+      })
+    }
+
   },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
     TagStore.addPointToListChangeListener(this._onListItemSelected);
-  },
-  componentWillUnmount: function() {
-    TagStore.removeTagDatasChangeListener(this._onChanged);
-    TagStore.removePointToListChangeListener(this._onListItemSelected);
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.isRawData !== this.props.isRawData) {
@@ -168,6 +168,10 @@ let RawDataList = React.createClass({
         selectedId: -1
       })
     }
+  },
+  componentWillUnmount: function() {
+    TagStore.removeTagDatasChangeListener(this._onChanged);
+    TagStore.removePointToListChangeListener(this._onListItemSelected);
   },
   render: function() {
     var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
