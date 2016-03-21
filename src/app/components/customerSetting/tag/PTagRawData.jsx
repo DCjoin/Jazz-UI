@@ -208,7 +208,7 @@ let PTagRawData = React.createClass({
         </div>
         <div>
           <div className='ruleName'>
-            {I18N.Setting.VEEMonitorRule.RuleName}
+            {this.state.veeTagStatus.get('RuleName')}
           </div>
           <div style={{
           display: 'flex'
