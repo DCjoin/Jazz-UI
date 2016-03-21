@@ -130,6 +130,7 @@ let Tag = React.createClass({
     TagAction.setSelectedTagIndex(index);
   },
   _onError: function() {
+    var errorMsg = '';
     this.setState({
       isLoading: false,
       showDeleteDialog: false
@@ -143,7 +144,6 @@ let Tag = React.createClass({
         deleteLabel = '',
         deleteName,
         colon = ':',
-        errorMsg = '',
         deleteType = this.props.tagType,
         pl = I18N.Setting.Tag.PTagManagement,
         vl = I18N.Setting.Tag.VTagManagement,
@@ -215,7 +215,28 @@ let Tag = React.createClass({
       setTimeout(() => {
         GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code, true);
       }, 0);
+    } else if (code === '06201') {
+      var step = this.state.selectedTag.get('CalculationStep');
+      var stepList = [],
+        stepText = '';
+      if (this.state.selectedTag.tagType === 0) {
+        stepList = this.refs.tagDetail.refs.pTagBasic._getCalculationStepList();
+      } else {
+        stepList = this.refs.tagDetail.refs.vTagBasic._getCalculationStepList();
+      }
+      var index = stepList.findIndex((item) => {
+        if (item.payload === step) {
+          return true;
+        }
+      });
+      if (index !== -1) {
+        stepText = stepList[index].text;
+      }
+      errorMsg = I18N.format(I18N.Message.M06201, stepText);
     }
+    setTimeout(() => {
+      GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code, false);
+    }, 0);
   },
   _onPrePage: function() {
     var curPageNum = this.state.curPageNum;
