@@ -43,6 +43,7 @@ let SearchBar = React.createClass({
   componentDidMount: function() {
     if (this.props.value) {
       this.refs.searchText.setValue(this.props.value);
+      React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
     }
   },
   render: function() {
