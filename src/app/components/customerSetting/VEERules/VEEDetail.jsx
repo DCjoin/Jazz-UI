@@ -52,6 +52,9 @@ var VEEDetail = React.createClass({
   _handleSaveRule: function() {
     if (this.props.infoTab) {
       let rule = this.props.rule;
+      if (rule.get('NotifyConsecutiveHours') === '') {
+        rule = rule.set('NotifyConsecutiveHours', null)
+      }
       // if (!rule.get('Interval')) {
       //   rule = rule.set('Interval', 1440)
       // }
