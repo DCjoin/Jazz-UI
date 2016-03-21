@@ -67,19 +67,6 @@ var TagFilter = React.createClass({
     });
     return uomList;
   },
-  _getAccumulatedList: function() {
-    let accumulatedList = [
-      {
-        payload: 1,
-        text: I18N.Setting.Tag.isAccumulated
-      },
-      {
-        payload: 2,
-        text: I18N.Setting.Tag.isNotAccumulated
-      }
-    ];
-    return accumulatedList;
-  },
 
   close: function() {
     if (this.refs.pop_user_filter_side_nav) {

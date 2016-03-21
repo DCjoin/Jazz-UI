@@ -9,6 +9,7 @@ let SearchAndFilterBar = React.createClass({
     isFilter: React.PropTypes.bool,
     onSearch: React.PropTypes.func,
     onSearchCleanButtonClick: React.PropTypes.func,
+    value: React.PropTypes.string
   },
   render: function() {
     var filterIconClasses = {
@@ -19,7 +20,7 @@ let SearchAndFilterBar = React.createClass({
     return (
       <div className="jazz-search-filter-bar">
         <div className='jazz-search'>
-          <SearchBar ref='searchBar' onSearch={this.props.onSearch} hintText={I18N.Setting.Tag.SearchText} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}/>
+          <SearchBar ref='searchBar' onSearch={this.props.onSearch} hintText={I18N.Setting.Tag.SearchText} value={this.props.value} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}/>
         </div>
         <div className='jazz-filter'>
           <span onClick={this.props.onFilter} className="jazz-filter-item">

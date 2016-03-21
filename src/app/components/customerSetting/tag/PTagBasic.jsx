@@ -88,6 +88,8 @@ var PTagBasic = React.createClass({
         title: I18N.Setting.Tag.MeterCode,
         defaultValue: MeterCode,
         isRequired: true,
+        regex: Regex.MeterCode,
+        errorMessage: I18N.Setting.Tag.CodeError,
         didChanged: value => {
           me.props.mergeTag({
             value,

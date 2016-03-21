@@ -109,7 +109,6 @@ let TagList = React.createClass({
     var filterObj = this.props.filterObj;
     filterObj.CommodityId = '';
     filterObj.UomId = '';
-    filterObj.IsAccumulated = '';
 
     if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
       CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
@@ -220,7 +219,7 @@ let TagList = React.createClass({
         </div>
         <div className="jazz-tag-search-filter-bar">
           <SearchAndFilterBar onFilter={this.props.onFilter} ref='searchAndFilter'
-      onSearch={this._onSearch} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}
+      onSearch={this._onSearch} value={this.props.filterObj.LikeCodeOrName} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}
       isFilter={this.props.isFilter}/>
         </div>
         <div className="jazz-tag-list">

@@ -9,6 +9,7 @@ let SearchBar = React.createClass({
     onSearch: React.PropTypes.func,
     onSearchCleanButtonClick: React.PropTypes.func,
     hintText: React.PropTypes.string,
+    value: React.PropTypes.string
   },
   mixins: [Navigation, State],
   _onSearchBlur: function(e) {
@@ -61,7 +62,7 @@ let SearchBar = React.createClass({
       <div className="jazz-dataselectmainpanel filter">
         <label className="search" onBlur={this._onSearchBlur}>
         <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
-        <TextField style={textFieldStyle} hintStyle={hintTextStyle} hintText={this.props.hintText} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearch}/>
+        <TextField style={textFieldStyle} hintStyle={hintTextStyle} hintText={this.props.hintText} className="input" ref="searchText" onClick={this._onSearchClick} value={this.props.value ? this.props.value : null} onChange={this._onSearch}/>
         <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
     </label>
       </div>

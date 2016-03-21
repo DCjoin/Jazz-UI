@@ -85,7 +85,6 @@ let Tag = React.createClass({
   _resetFilterObj: function() {
     var filterObj = this._getInitFilterObj();
     TagAction.setFilterObj(filterObj);
-    this.refs.tagList.refs.searchAndFilter.refs.searchBar.clearSearchText();
     this.setState({
       filterObj: filterObj,
       isFilter: false,
