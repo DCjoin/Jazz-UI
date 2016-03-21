@@ -336,8 +336,6 @@ let PTagRawData = React.createClass({
     var that = this;
     if (nextProps.selectedTag !== this.props.selectedTag) {
       that.setState({
-        start: this._getInitDate().start,
-        end: this._getInitDate().end,
         isRawData: nextProps.selectedTag.get('IsAccumulated') ? false : true,
         showErrorDialog: false
       }, () => {

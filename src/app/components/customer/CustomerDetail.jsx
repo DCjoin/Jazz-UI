@@ -171,6 +171,8 @@ var CustomerDetail = React.createClass({
       isViewStatus: isView,
       title: I18N.Setting.CustomerManagement.Label.Code,
       defaultValue: Code,
+      regex: Regex.CustomerCode,
+      errorMessage: "请输入客户地址",
       isRequired: true,
       didChanged: value => {
         CustomerAction.merge({
