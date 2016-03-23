@@ -314,6 +314,7 @@ let RawDataChartPanel = React.createClass({
     step: React.PropTypes.number,
     startTime: React.PropTypes.string,
     endTime: React.PropTypes.string,
+    refresh: React.PropTypes.bool,
   },
   getDefaultProps() {
     return {
@@ -348,7 +349,7 @@ let RawDataChartPanel = React.createClass({
     return state;
   },
   shouldComponentUpdate: function(nextProps, nextState) {
-    return !(this.props.energyRawData.equals(nextProps.energyRawData));
+    return !(this.props.energyRawData.equals(nextProps.energyRawData)) || nextProps.refresh;
   },
   componentWillUnmount: function() {
     TagStore.removeListToPointChangeListener(this._onListToPointChanged);
@@ -585,6 +586,7 @@ let RawDataChartPanel = React.createClass({
           color: color,
           events: {
             click: () => {
+              //console.log('_chart_index:' + (index - 1));
               TagAction.selectPointToList(index - 1);
               that._onListToPointChanged(index - 1);
             }
