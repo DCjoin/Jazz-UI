@@ -40,7 +40,7 @@ var GradeContainer = React.createClass({
     }
     if (this.refs.MinValue && this.refs.MaxValue) {
       if (minValueIsValid && maxValueIsValid) {
-        if (labelValue.get('MinValue') >= labelValue.get('MaxValue')) {
+        if (parseInt(labelValue.get('MinValue')) >= parseInt(labelValue.get('MaxValue'))) {
           this.setState({
             errorText: errorStr
           });

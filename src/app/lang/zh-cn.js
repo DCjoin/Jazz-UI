@@ -627,7 +627,7 @@ I18N.Setting.CustomizedLabeling.KPIType = '指标类型';
 I18N.Setting.CustomizedLabeling.InputError = '无效值';
 I18N.Setting.CustomizedLabeling.ErrorMessage1 = '请确保输入的右区间大于左区间';
 I18N.Setting.CustomizedLabeling.ErrorMessage2 = '请确保输入的左区间大于右区间';
-I18N.Setting.CustomizedLabeling.DeleteTip = '计量数据"{0}"将被删除。删除后，关联该标识的仪表盘将无法正常显示。';
+I18N.Setting.CustomizedLabeling.DeleteTip = '能效标示"{0}"将被删除。删除后，关联该标识的仪表盘将无法正常显示。';
 
 I18N.Setting.TargetBaseline = {};
 I18N.Setting.TargetBaseline.AlarmThreshold = '报警敏感度';

@@ -46,6 +46,7 @@ let Tag = React.createClass({
       offsetIsValid = true,
       commentIsValid = true;
     var tagDetail = this.refs.tagDetail;
+    var nameIsValid = tagDetail.refs.tagName.isValid();
     if (this.state.showBasic && this.props.tagType === 1) {
       var pTagBasic = tagDetail.refs.pTagBasic;
       codeIsValid = pTagBasic.refs.code.isValid();
@@ -64,7 +65,7 @@ let Tag = React.createClass({
         commentIsValid = pTagBasic.refs.comment.isValid();
       }
 
-      return codeIsValid && meterCodeIsValid && channelIsValid && comAndUomIsValid && calculationStepIsValid && calculationTypeIsValid && slopeIsValid && offsetIsValid && commentIsValid;
+      return nameIsValid && codeIsValid && meterCodeIsValid && channelIsValid && comAndUomIsValid && calculationStepIsValid && calculationTypeIsValid && slopeIsValid && offsetIsValid && commentIsValid;
     } else if (this.state.showBasic && this.props.tagType === 2) {
       var vTagBasic = tagDetail.refs.vTagBasic;
       codeIsValid = vTagBasic.refs.code.isValid();
@@ -75,7 +76,7 @@ let Tag = React.createClass({
         commentIsValid = vTagBasic.refs.comment.isValid();
       }
 
-      return codeIsValid && comAndUomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
+      return nameIsValid && codeIsValid && comAndUomIsValid && calculationStepIsValid && calculationTypeIsValid && commentIsValid;
     } else if (!this.state.showBasic && this.props.tagType === 2) {
       var vTagFormula = tagDetail.refs.vTagFormula;
       var fomulaIsValid = vTagFormula.refs.formula.isValid();
