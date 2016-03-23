@@ -16,6 +16,13 @@ let ChartStatusAction = {
       value: value
     });
   },
+  modifyChartType(chartType) {
+    //
+    AppDispatcher.dispatch({
+      type: Action.MODIFY_CHART_TYPE,
+      chartType: chartType,
+    });
+  },
   setWidgetDto(widgetDto, bizType, energyType, chartType) {
     AppDispatcher.dispatch({
       type: Action.SET_WIDGETDTO,

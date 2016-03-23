@@ -86,6 +86,7 @@ var LabelDetail = React.createClass({
     var selectedLabel = me.props.selectedLabel,
       isView = me.props.formStatus === formStatus.VIEW;
     var labelNameProps = {
+      ref: 'labelName',
       isViewStatus: isView,
       title: I18N.Setting.Tag.TagName,
       defaultValue: selectedLabel.get('Name'),

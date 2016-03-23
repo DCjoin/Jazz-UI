@@ -1247,7 +1247,9 @@ let ChartStrategyFactor = {
         return tagOptions;
       };
       let tagOptions = convertWidgetOptions2TagOption(widgetDto.WidgetOptions);
-      var map = {}, hierId, i,
+      var map = {},
+        hierId,
+        i,
         hierIds = [];
       for (i = 0; i < tagOptions.length; i++) {
         hierId = tagOptions[i].hierId;
@@ -3075,7 +3077,8 @@ let ChartStrategyFactor = {
             showSumDialog: true
           });
           break;
-        case 'background':{
+        case 'background':
+          {
           subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -3133,7 +3136,8 @@ let ChartStrategyFactor = {
     handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
       let itemValue = menuItem.props.value;
       switch (itemValue) {
-        case 'background':{
+        case 'background':
+          {
           var subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -3756,12 +3760,13 @@ let ChartStrategyFactor = {
   },
   onSearchBtnItemTouchTapFnStrategy: {
     onSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
-      ChartStatusAction.clearStatus();
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
+        ChartStatusAction.modifyChartType(nextChartType);
         analysisPanel.setState({
           selectedChartType: nextChartType
         });
       } else { //if(nextChartType === 'pie'){
+        ChartStatusAction.clearStatus();
         analysisPanel.setState({
           selectedChartType: nextChartType,
           energyData: null
@@ -3780,12 +3785,13 @@ let ChartStrategyFactor = {
       }
     },
     onCostSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
-      ChartStatusAction.clearStatus();
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
+        ChartStatusAction.modifyChartType(nextChartType);
         analysisPanel.setState({
           selectedChartType: nextChartType
         });
       } else { //if(nextChartType === 'pie'){
+        ChartStatusAction.clearStatus();
         analysisPanel.setState({
           selectedChartType: nextChartType,
           energyData: null
@@ -3797,7 +3803,8 @@ let ChartStrategyFactor = {
   },
   setFitStepAndGetDataFnStrategy: {
     setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate, analysisPanel, clearWeatherflag) {
-      let timeRanges, weather;
+      let timeRanges,
+        weather;
       if (tagOptions.length > 1) {
         MultiTimespanAction.clearMultiTimespan('both');
         timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);

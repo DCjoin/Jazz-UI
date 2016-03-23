@@ -48,6 +48,11 @@ let ChartStatusStore = assign({}, PrototypeStore, {
       }
     }
   },
+  modifyChartType(chartType) {
+    _seriesStatus.forEach((item, index) => {
+      item.ChartType = this.getNumByChartType(chartType);
+    });
+  },
   modifySingleStatus(id, name, value) {
     if (_seriesStatus && _seriesStatus.length > 0) {
       let me = this;
@@ -209,6 +214,9 @@ ChartStatusStore.dispatchToken = PopAppDispatcher.register(function(action) {
       break;
     case Action.MODIFY_SINGLE_STATUS:
       ChartStatusStore.modifySingleStatus(action.id, action.name, action.value);
+      break;
+    case Action.MODIFY_CHART_TYPE:
+      ChartStatusStore.modifyChartType(action.chartType);
       break;
     case Action.CLEAR_STATUS:
       ChartStatusStore.clearStatus();

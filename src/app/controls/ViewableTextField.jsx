@@ -233,9 +233,7 @@ var ViewableTextField = React.createClass({
         style: assign({
           width: 430
         }, this.props.style),
-        multiLine: this.props.multiLine
-          ? true
-          : false,
+        multiLine: this.props.multiLine ? true : false,
         floatingLabelText: this.props.title
       };
       if (this.props.hintText) {
@@ -245,12 +243,12 @@ var ViewableTextField = React.createClass({
         inputProps.floatingLabelText = this.props.title;
         inputProps.className = "pop-viewableTextField-floatmode";
       }
-      if (this.state.value) {
+      if (this.state.value !== undefined) {
         inputProps.value = this.state.value;
       } else {
         //inputProps.hintText = this.props.title;
       }
-      if (inputProps.value) {
+      if (inputProps.value !== undefined) {
         inputProps.className += " pop-viewableTextField-noempty";
       }
       textField = (
