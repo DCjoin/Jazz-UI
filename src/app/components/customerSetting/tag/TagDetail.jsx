@@ -74,7 +74,8 @@ var TagDetail = React.createClass({
       isView = me.props.formStatus === formStatus.VIEW,
       isAdd = me.props.formStatus === formStatus.ADD;
     var tagNameProps = {
-      isViewStatus: isView,
+      ref: 'tagName',
+      isViewStatus: this.props.showBasic ? isView : true,
       title: I18N.Setting.Tag.TagName,
       defaultValue: selectedTag.get('Name'),
       isRequired: true,
