@@ -138,7 +138,9 @@ var RuleBasic = React.createClass({
     }
     detail.push(
       <div className="jazz-vee-rule-null-item" style={checkNullStyle} key={2}>
-      <div className="pop-user-detail-customer-subcheck-block-item-left" id={2} onClick={this._handleRuleDetailClick.bind(this, ['CheckNull', !CheckNull])}>
+      <div className="pop-user-detail-customer-subcheck-block-item-left" style={{
+        minHeight: '24px'
+      }} id={2} onClick={this._handleRuleDetailClick.bind(this, ['CheckNull', !CheckNull])}>
         <Checkbox
       ref=""
       defaultChecked={CheckNull || false}
