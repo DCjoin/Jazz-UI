@@ -13,6 +13,8 @@ let PTagRawData = React.createClass({
   propTypes: {
     selectedTag: React.PropTypes.object,
     onSwitchRawDataListView: React.PropTypes.func,
+    showLeft: React.PropTypes.bool,
+    showRawDataList: React.PropTypes.bool,
   },
   getInitialState: function() {
     return ({
@@ -23,7 +25,8 @@ let PTagRawData = React.createClass({
       end: this._getInitDate().end,
       paulseDialogShow: false,
       isRawData: this.props.selectedTag.get('IsAccumulated') ? false : true,
-      showErrorDialog: false
+      showErrorDialog: false,
+      refresh: false
     })
   },
   _getInitDate: function() {
@@ -302,7 +305,8 @@ let PTagRawData = React.createClass({
       step: obj.step,
       startTime: obj.start,
       endTime: obj.end,
-      timeRanges: obj.timeRanges
+      timeRanges: obj.timeRanges,
+      refresh: this.state.refresh
     };
     if (this.state.tagData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) {
       return (
@@ -340,6 +344,15 @@ let PTagRawData = React.createClass({
         showErrorDialog: false
       }, () => {
         that._getTagsData(nextProps, true)
+      })
+    }
+    if (this.props.showLeft !== nextProps.showLeft || this.props.showRawDataList !== nextProps.showRawDataList) {
+      this.setState({
+        refresh: true
+      })
+    } else {
+      this.setState({
+        refresh: false
       })
     }
   },

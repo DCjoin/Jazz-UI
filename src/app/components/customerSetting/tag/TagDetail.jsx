@@ -112,11 +112,15 @@ var TagDetail = React.createClass({
   _renderContent: function() {
     var content = null;
     var isView = this.props.formStatus === formStatus.VIEW;
+    var style = {
+      display: 'flex'
+    };
     if (this.props.tagType === 1) {
       if (this.props.showBasic) {
         content = <PTagBasic ref='pTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
       } else {
-        content = <PTagRawData ref='pTagRawData' selectedTag={this.props.selectedTag} onSwitchRawDataListView={this._onSwitchRawDataListView}/>;
+        content = <PTagRawData ref='pTagRawData' showLeft={this.props.showLeft} showRawDataList={this.props.showRawDataList} selectedTag={this.props.selectedTag} onSwitchRawDataListView={this._onSwitchRawDataListView}/>;
+        style = null;
       }
     } else {
       if (this.props.showBasic) {
@@ -126,9 +130,7 @@ var TagDetail = React.createClass({
       }
     }
     return (
-      <div className="pop-manage-detail-content" style={{
-        display: 'flex'
-      }}>
+      <div className="pop-manage-detail-content" style={style}>
         {content}
       </div>
       );

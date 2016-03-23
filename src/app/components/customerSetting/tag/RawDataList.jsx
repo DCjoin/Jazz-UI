@@ -27,8 +27,16 @@ let ListItem = React.createClass({
         color = '#11d9db'
       }
     }
-    time = time.replace(/点/g, ':');
-    time = time.replace(/分/g, '');
+    if (time) {
+      if (time.indexOf('点') > -1) {
+        time = time.replace(/点/g, ':');
+      }
+      if (time.indexOf('分') > -1) {
+        time = time.replace(/分/g, '');
+      }
+    }
+
+
     return (
       <div className={classnames({
         "jazz-ptag-rawdata-list-item": true,
@@ -38,7 +46,7 @@ let ListItem = React.createClass({
         <div style={{
         marginLeft: '50px',
         color: color
-      }}>{this.props.data.get('DataValue')}</div>
+      }}>{this.props.data.get('DataValue')}+'____'+{this.props.pId}</div>
       </div>
       )
   },
@@ -81,8 +89,7 @@ let RawDataList = React.createClass({
       let str = CommonFuns.formatDateByStep(TagStore.translateDate(data.get('LocalTime'), null, this.props.step), null, null, this.props.step);
       let date = str.split(' ')[0],
         time = str.split(' ')[1];
-      indexItem[pId] = index;
-      pId++;
+
       if (currentDate !== date && currentDate !== null) {
         Items.push(
           <div className="date">{date}</div>
@@ -95,11 +102,13 @@ let RawDataList = React.createClass({
       }
       currentDate = date;
       Items.push(
-        <ListItem time={time} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
+        <ListItem time={time} data={data} isSelected={this.state.selectedId === nId} pId={pId} onClick={that._onItemClick.bind(this, {
           data,
           nId
         })}/>
       )
+      indexItem[pId] = index;
+      pId++;
       dateItem.push(date);
       nId++;
 
@@ -141,11 +150,11 @@ let RawDataList = React.createClass({
 
   },
   _onListItemSelected: function(index) {
-    console.log('_list_index=' + index);
+    //console.log('_list_index=' + index);
     if (index !== this.state.selectedId) {
       var el = this.refs.list.getDOMNode();
       var id = indexItem.indexOf(index);
-      el.scrollTop = id * 41 + 1;
+      el.scrollTop = id * 40 + 1;
       this.setState({
         selectedId: index
       })
@@ -187,9 +196,7 @@ let RawDataList = React.createClass({
         </div>
         <div className="date" ref='header'>
            </div>
-
              {this._renderListItems()}
-
       </div>
       )
   },
