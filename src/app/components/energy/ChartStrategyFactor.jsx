@@ -3760,7 +3760,6 @@ let ChartStrategyFactor = {
   },
   onSearchBtnItemTouchTapFnStrategy: {
     onSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
-      //ChartStatusAction.clearStatus();
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
         ChartStatusAction.modifyChartType(nextChartType);
         analysisPanel.setState({
@@ -3786,12 +3785,13 @@ let ChartStrategyFactor = {
       }
     },
     onCostSearchBtnItemTouchTap(curChartType, nextChartType, analysisPanel) {
-      ChartStatusAction.clearStatus();
       if (analysisPanel.state.chartStrategy.canShareDataWithFn(curChartType, nextChartType) && !!analysisPanel.state.energyData) {
+        ChartStatusAction.modifyChartType(nextChartType);
         analysisPanel.setState({
           selectedChartType: nextChartType
         });
       } else { //if(nextChartType === 'pie'){
+        ChartStatusAction.clearStatus();
         analysisPanel.setState({
           selectedChartType: nextChartType,
           energyData: null
