@@ -22,9 +22,10 @@ var Label = React.createClass({
   },
   _isValid: function() {
     var labelDetail = this.refs.labelDetail;
+    var labelNameIsValid = labelDetail.refs.labelName.isValid();
     var labelBasicIsValid = labelDetail.refs.labelBasic._isValid();
     var gradeIsValid = labelDetail.refs.gradeContainer._isValid();
-    return labelBasicIsValid && gradeIsValid;
+    return labelNameIsValid && labelBasicIsValid && gradeIsValid;
 
   },
   _onToggle: function() {
