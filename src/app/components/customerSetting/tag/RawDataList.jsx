@@ -46,7 +46,7 @@ let ListItem = React.createClass({
         <div style={{
         marginLeft: '50px',
         color: color
-      }}>{this.props.data.get('DataValue')}+'____'+{this.props.pId}</div>
+      }}>{this.props.data.get('DataValue')}</div>
       </div>
       )
   },

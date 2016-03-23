@@ -313,7 +313,8 @@ let PTagRawData = React.createClass({
         <div style={{
           display: 'flex',
           'flexDirection': 'column',
-          marginTop: '77px'
+          marginTop: '77px',
+          flex: '1'
         }}>
         </div>
         )
@@ -322,7 +323,8 @@ let PTagRawData = React.createClass({
         <div style={{
           display: 'flex',
           'flexDirection': 'column',
-          marginTop: '77px'
+          marginTop: '77px',
+          flex: '1'
         }}>
           <ChartPanel {...chartProps}/>
           {this._renderComment()}
