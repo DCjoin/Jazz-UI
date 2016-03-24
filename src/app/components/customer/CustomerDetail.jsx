@@ -384,7 +384,7 @@ var CustomerDetail = React.createClass({
     if (this.props.infoTab) {
       if (
         Name && Name.length <= 200 &&
-        Code && Code.length <= 200 &&
+        Code && Code.length <= 200 && Regex.CustomerCode.test(Code) &&
         Address && Address.trim() &&
         StartTime &&
         (Id || LogoId)

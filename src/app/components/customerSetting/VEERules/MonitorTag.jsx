@@ -290,9 +290,10 @@ var MonitorTag = React.createClass({
         fontSize: '14px',
         color: '#abafae'
       };
+    var total = VEEStore.getTotal();
     var pagingPropTypes = {
       curPageNum: this.state.page,
-      totalPageNum: VEEStore.getTotal(),
+      totalPageNum: total === 0 ? 1 : parseInt((total + 19) / 20),
       previousPage: this._previousPage,
       nextPage: this._nextPage,
       jumpToPage: this._jumpToPage,
