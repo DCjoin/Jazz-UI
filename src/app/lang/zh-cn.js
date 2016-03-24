@@ -702,6 +702,7 @@ I18N.Setting.CustomerManagement.EditAdministrator = '编辑维护负责人';
 I18N.Setting.CustomerManagement.Title = '职位';
 I18N.Setting.CustomerManagement.DeleteTitle = '删除客户';
 I18N.Setting.CustomerManagement.DeleteContent = '客户"{0}"将被删除';
+I18N.Setting.CustomerManagement.CodeError = '不支持输入#|$<>\',"?\\*“<:/';
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = '用户管理';
