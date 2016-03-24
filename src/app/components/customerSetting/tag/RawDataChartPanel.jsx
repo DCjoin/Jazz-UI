@@ -253,7 +253,8 @@ let defaultConfig = {
         hover: {
           fillColor: false,
         }
-      }
+      },
+      turboThreshold: 3000
     },
     column: {
       dataGrouping: {
@@ -340,7 +341,7 @@ let RawDataChartPanel = React.createClass({
   //   }
   // },
   getInitialState() {
-    let chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('EnergyTrendComponent');
+    let chartCmpStrategy = ChartCmpStrategyFactor.getStrategyByChartType('RawGridComponent');
     var obj = chartCmpStrategy.getInitialStateFn(this);
     var state = {
       chartCmpStrategy: chartCmpStrategy
@@ -375,7 +376,7 @@ let RawDataChartPanel = React.createClass({
     var t = ['millisecond', 'second', 'minute', 'hour', 'day', 'dayhour', 'week', 'month', 'fullmonth', 'year'],
       c = defaultConfig,
       x = c.xAxis,
-      f = I18N.DateTimeFormat.HighFormat;
+      f = I18N.DateTimeFormat.HighFormat.RawData;
 
     t.forEach(function(n) {
       x.dateTimeLabelFormats[n] = (f[cap(n)]);
@@ -569,54 +570,54 @@ let RawDataChartPanel = React.createClass({
       let pItem,
         color;
 
-      if (index > 0 && index < t[0].EnergyData.length) {
-        if (t[0].EnergyData[index - 1].DataQuality === 9) {
-          color = '#f46a58'
+
+      if (t[0].EnergyData[index].DataQuality === 9) {
+        color = '#f46a58'
+      } else {
+        if (t[0].EnergyData[index].DataQuality === 6 || t[0].EnergyData[index].DataQuality === 8) {
+          color = '#cfa9ff'
         } else {
-          if (t[0].EnergyData[index - 1].DataQuality === 6 || t[0].EnergyData[index - 1].DataQuality === 8) {
-            color = '#cfa9ff'
-          } else {
-            color = '#11d9db'
-          }
+          color = '#11d9db'
         }
-        pItem = {
-          x: item[0],
-          y: item[1],
-          fillColor: color,
+      }
+      pItem = {
+        x: item[0],
+        y: item[1],
+        fillColor: color,
+        color: color,
+        events: {
+          click: () => {
+            //console.log('_chart_index:' + (index - 1));
+            TagAction.selectPointToList(index);
+            that._onListToPointChanged(index);
+          }
+        },
+        marker: {
           color: color,
-          events: {
-            click: () => {
-              //console.log('_chart_index:' + (index - 1));
-              TagAction.selectPointToList(index - 1);
-              that._onListToPointChanged(index - 1);
-            }
-          },
-          marker: {
-            color: color,
-            fillColor: color,
-            states: {
-              hover: {
-                marker: {
-                  fillColor: color
-                }
+          fillColor: color,
+          states: {
+            hover: {
+              marker: {
+                fillColor: color
               }
             }
           }
         }
-        if (index < t[0].EnergyData.length - 1) {
-          if (t[0].EnergyData[index - 1].DataQuality === 9 || t[0].EnergyData[index].DataQuality === 9) {
-            pItem.segmentColor = '#f46a58';
+      }
+      if (index < t[0].EnergyData.length - 1) {
+        if (t[0].EnergyData[index].DataQuality === 9 || t[0].EnergyData[index + 1].DataQuality === 9) {
+          pItem.segmentColor = '#f46a58';
+        } else {
+          if (t[0].EnergyData[index].DataQuality === 6 || t[0].EnergyData[index].DataQuality === 8 || t[0].EnergyData[index + 1].DataQuality === 6 || t[0].EnergyData[index + 1].DataQuality === 8) {
+            pItem.segmentColor = '#cfa9ff';
           } else {
-            if (t[0].EnergyData[index - 1].DataQuality === 6 || t[0].EnergyData[index - 1].DataQuality === 8 || t[0].EnergyData[index].DataQuality === 6 || t[0].EnergyData[index].DataQuality === 8) {
-              pItem.segmentColor = '#cfa9ff';
-            } else {
-              pItem.segmentColor = '#11d9db';
-            }
+            pItem.segmentColor = '#11d9db';
           }
         }
-
-        data.push(pItem)
       }
+
+      data.push(pItem)
+
 
 
 

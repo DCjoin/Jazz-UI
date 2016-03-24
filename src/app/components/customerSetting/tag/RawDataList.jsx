@@ -5,7 +5,7 @@ import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import classnames from "classnames";
-//let j2d = CommonFuns.DataConverter.JsonToDateTime;
+let j2d = CommonFuns.DataConverter.JsonToDateTime;
 let dateItem = [],
   indexItem = [];
 let ListItem = React.createClass({
@@ -25,14 +25,6 @@ let ListItem = React.createClass({
         color = '#cfa9ff'
       } else {
         color = '#11d9db'
-      }
-    }
-    if (time) {
-      if (time.indexOf('点') > -1) {
-        time = time.replace(/点/g, ':');
-      }
-      if (time.indexOf('分') > -1) {
-        time = time.replace(/分/g, '');
       }
     }
 
@@ -74,19 +66,15 @@ let RawDataList = React.createClass({
       selectedId: item.nId
     })
   },
-  _renderListItems: function() {
-    if (TagStore.getRawData().size === 0) return;
-    var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
-      energyData = data.getIn(['TargetEnergyData', 0, 'EnergyData']),
-      Items = [],
+  _renderCalendarItems: function(energyData) {
+    var Items = [],
       currentDate = null,
       firstDate = null,
       pId = 0,
       nId = 0,
       that = this;
-
     energyData.forEach((data, index) => {
-      let str = CommonFuns.formatDateByStep(TagStore.translateDate(data.get('LocalTime'), null, this.props.step), null, null, this.props.step);
+      let str = CommonFuns.formatDateValueForRawData(j2d(data.get('LocalTime')), this.props.step);
       let date = str.split(' ')[0],
         time = str.split(' ')[1];
 
@@ -128,11 +116,49 @@ let RawDataList = React.createClass({
     };
     return (
       <div className="list" ref='list' style={style} onScroll={that._onScroll}>
-        {Items}
-      </div>
+          {Items}
+        </div>
       )
 
 
+  },
+  _renderNormalItems: function(energyData) {
+    var Items = [],
+      nId = 0,
+      that = this;
+    energyData.forEach((data, index) => {
+      let str = CommonFuns.formatDateValueForRawData(j2d(data.get('LocalTime')), this.props.step);
+
+      Items.push(
+        <ListItem time={str} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
+          data,
+          nId
+        })}/>
+      )
+      indexItem[nId] = index;
+      nId++;
+
+    });
+    var style = {
+      height: document.body.offsetHeight - 150
+    };
+    return (
+      <div className="list" ref='list' style={style}>
+          {Items}
+        </div>
+      )
+
+  },
+  _renderListItems: function() {
+    if (TagStore.getRawData().size === 0) return;
+    var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
+      energyData = data.getIn(['TargetEnergyData', 0, 'EnergyData']),
+      that = this;
+    if (this.props.step === 6 || this.props.step === 7 || this.props.step === 1) {
+      return that._renderCalendarItems(energyData)
+    } else {
+      return that._renderNormalItems(energyData)
+    }
   },
   _onChanged: function(flag) {
     if (flag !== false) {
@@ -177,6 +203,10 @@ let RawDataList = React.createClass({
         selectedId: -1
       })
     }
+    if (nextProps.step !== this.props.step) {
+      let head = this.refs.header.getDOMNode();
+      head.style.display = 'none';
+    }
   },
   componentWillUnmount: function() {
     TagStore.removeTagDatasChangeListener(this._onChanged);
@@ -194,7 +224,9 @@ let RawDataList = React.createClass({
         marginLeft: '90px'
       }}>{label + '(' + uom + ')'}</div>
         </div>
-        <div className="date" ref='header'>
+        <div className="date" ref='header' style={{
+        display: 'none'
+      }}>
            </div>
              {this._renderListItems()}
       </div>
