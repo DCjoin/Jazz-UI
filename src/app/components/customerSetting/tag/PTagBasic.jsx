@@ -102,6 +102,9 @@ var PTagBasic = React.createClass({
         isViewStatus: isView,
         title: I18N.Setting.Tag.Channel,
         defaultValue: ChannelId,
+        maxLen: 9,
+        regex: Regex.ConsecutiveHoursRule,
+        errorMessage: I18N.Setting.VEEMonitorRule.ConsecutiveHoursError,
         isRequired: true,
         didChanged: value => {
           me.props.mergeTag({
