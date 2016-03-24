@@ -234,10 +234,10 @@ let Tag = React.createClass({
         stepText = stepList[index].text;
       }
       errorMsg = I18N.format(I18N.Message.M06201, stepText);
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code, false);
+      }, 0);
     }
-    setTimeout(() => {
-      GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code, false);
-    }, 0);
   },
   _onPrePage: function() {
     var curPageNum = this.state.curPageNum;

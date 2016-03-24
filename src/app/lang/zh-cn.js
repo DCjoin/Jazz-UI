@@ -978,7 +978,7 @@ Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, ref
 I18N.Message.M06100 = '数据点已经被删除，无法加载。';
 I18N.Message.M06104 = '该名称已存在';
 I18N.Message.M06107 = '该编码已存在';
-I18N.Message.M06109 = '该通道已存在';
+I18N.Message.M06109 = '相同的表编码和通道已存在';
 I18N.Message.M06122 = '该名称已存在';
 I18N.Message.M06127 = '该编码已存在';
 I18N.Message.M06133 = '计算公式的格式有误，请检查。';
