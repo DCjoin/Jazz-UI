@@ -267,8 +267,16 @@ I18N.DateTimeFormat.HighFormat.Year = '%Y年';
 I18N.DateTimeFormat.HighFormat.FullDateTime = '%Y年%m月%d日 %H点%M分%S秒';
 I18N.DateTimeFormat.HighFormat.FullDate = '%Y年%m月%d日';
 I18N.DateTimeFormat.HighFormat.FullYear = '全年';
+I18N.DateTimeFormat.HighFormat.RawData = {};
+I18N.DateTimeFormat.HighFormat.RawData.Dayhour = '%m/%d %H:00';
+I18N.DateTimeFormat.HighFormat.RawData.Hour = '%H:00';
+I18N.DateTimeFormat.HighFormat.RawData.Day = '%m/%d';
+I18N.DateTimeFormat.HighFormat.RawData.Month = '%m';
+I18N.DateTimeFormat.HighFormat.RawData.Fullmonth = '%Y/%m';
+I18N.DateTimeFormat.HighFormat.RawData.Year = '%Y';
 
 I18N.DateTimeFormat.IntervalFormat = {};
+I18N.DateTimeFormat.IntervalFormat.RawDate = {};
 I18N.DateTimeFormat.IntervalFormat.Second = 'YYYY年MM月DD日 HH点mm分ss秒';
 I18N.DateTimeFormat.IntervalFormat.FullMinute = 'YYYY年MM月DD日 HH点mm分';
 I18N.DateTimeFormat.IntervalFormat.RangeFullMinute = 'YYYY年MM月DD日 HH点mm分';
@@ -285,6 +293,13 @@ I18N.DateTimeFormat.IntervalFormat.FullDateTime = 'YYYY年MM月DD日 HH点mm分s
 I18N.DateTimeFormat.IntervalFormat.FullDate = 'YYYY年MM月DD日';
 I18N.DateTimeFormat.IntervalFormat.MonthDayHour = 'MM月DD日HH点';
 I18N.DateTimeFormat.IntervalFormat.DayHour = 'DD日HH点';
+I18N.DateTimeFormat.IntervalFormat.RawDate.FullHour = 'YYYY/MM/DD HH:mm';
+I18N.DateTimeFormat.IntervalFormat.RawDate.FullDay = 'YYYY/MM/DD';
+I18N.DateTimeFormat.IntervalFormat.RawDate.Month = 'YYYY/MM';
+I18N.DateTimeFormat.IntervalFormat.RawDate.Year = 'YYYY';
+I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFullMinute = 'YYYY/MM/DD HH:mm';
+
+
 
 I18N.EM = {};
 I18N.EM.To = '到';

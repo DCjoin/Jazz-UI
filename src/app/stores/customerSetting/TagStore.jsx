@@ -272,7 +272,7 @@ var TagStore = assign({}, PrototypeStore, {
     return _rawData;
   },
   getDifferenceData: function() {
-    if (_rawData.size === 0) return _rawData;
+    if (_rawData.size === 0 || _rawData.getIn(['TargetEnergyData', 0, 'EnergyData']).size === 0) return _rawData;
     var rawData = _rawData.toJS(),
       difArray = this.constituteDifferenceDataArray(rawData, _differenceTargetEnergyData),
       templateED = rawData.TargetEnergyData[0].EnergyData;

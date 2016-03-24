@@ -93,7 +93,15 @@ let ChartCmpStrategyFactor = {
       initRangeFn: 'pieInitRange',
       initNavigatorDataFn: 'pieInitNavigatorData',
       getInitialStateFn: 'empty'
-    }
+    },
+    RawGridComponent: {
+      convertDataFn: 'convertData',
+      convertSingleItemFn: 'empty',
+      initYaxisFn: 'initYaxis',
+      getInitialStateFn: 'empty',
+      mergeConfigFn: 'energyChartCmpMergeConfig',
+      initRangeFn: 'rawInitRange',
+    },
   },
   getLegendListFnStrategy: {
     getEnergyLegendList(config) {
@@ -281,7 +289,7 @@ let ChartCmpStrategyFactor = {
     }
   },
   initRangeFnStrategy: {
-    empty: function() {},
+
     initRange(newConfig, realData, cmpBox) {
       let converter = DataConverter,
         j2d = converter.JsonToDateTime,
@@ -306,6 +314,147 @@ let ChartCmpStrategyFactor = {
         cmpBox.navCache = false;
         newConfig.scrollbar.liveRedraw = false;
       }
+
+      newConfig.xAxis.min = startTime;
+      var nowBound = new Date();
+      nowBound.setMinutes(0, 0, 0);
+      //#2488
+      switch (step) {
+        case 0:
+          endTime = new Date(endTime);
+          startTime = new Date(startTime);
+          nowBound.setMinutes(endTime.getMinutes(), 0, 0);
+          break;
+        case 1:
+          endTime = new Date(endTime);
+          if (endTime.getMinutes() < 30) {
+            endTime = dateAdd(new Date(endTime), 1, 'hours');
+          }
+          nowBound = dateAdd(nowBound, 1, 'hours');
+          startTime = new Date(startTime);
+          break;
+        case 2:
+          endTime = new Date(endTime);
+          if (endTime.getHours() > 0 && endTime.getHours() < 12) {
+            endTime = dateAdd(new Date(endTime), 1, 'days');
+          }
+          startTime = new Date(startTime);
+          if (startTime.getHours() !== 0 && startTime.getHours() <= 12) {
+            startTime.setHours(13);
+            newConfig.xAxis.min = startTime.getTime();
+          }
+          nowBound.setHours(0);
+          nowBound = dateAdd(nowBound, 1, 'days');
+          break;
+        case 3:
+          endTime = new Date(endTime);
+          if (!(endTime.getDate() === 1 && endTime.getHours() === 0)) {
+            if (endTime.getDate() < 15) {
+              endTime = dateAdd(new Date(endTime), 1, 'months');
+            }
+          }
+          startTime = new Date(startTime);
+          if (startTime.getDate() > 1 && startTime.getDate() <= 16) {
+            startTime.setDate(17);
+            newConfig.xAxis.min = startTime.getTime();
+          }
+          nowBound.setDate(1);
+          nowBound.setHours(0);
+          nowBound = dateAdd(nowBound, 1, 'months');
+          break;
+        case 4:
+          endTime = new Date(endTime);
+          if (!(endTime.getMonth() === 0 && endTime.getDate() === 1 && endTime.getHours() === 0)) {
+            if (endTime.getMonth() < 5) {
+              endTime = dateAdd(new Date(endTime), 1, 'years');
+            }
+          }
+          startTime = new Date(startTime);
+          if (!(startTime.getMonth() === 0 && startTime.getDate() === 1 && startTime.getHours() === 0)) {
+
+            if (startTime.getMonth() > 0 && startTime.getMonth() <= 6) {
+              startTime.setMonth(7);
+              newConfig.xAxis.min = startTime.getTime();
+            }
+          }
+          nowBound.setMonth(0, 1);
+          nowBound.setHours(0);
+          nowBound = dateAdd(nowBound, 1, 'years');
+          break;
+        case 5:
+          endTime = new Date(endTime);
+          if (!(endTime.getDay() === 1 && endTime.getHours() === 0)) {
+            if (endTime.getDay() !== 0 && (endTime.getDay() < 3 || (endTime.getDay() < 4 && endTime.getHours() < 12))) {
+              endTime = dateAdd(new Date(endTime), 7, 'days');
+            }
+          }
+          startTime = new Date(startTime);
+          if (startTime.getDay() !== 1 && startTime.getDay() !== 0 && startTime.getDay() < 4) { //not monday
+
+            startTime = dateAdd(startTime, 5 - startTime.getDay(), 'days');
+
+            newConfig.xAxis.min = startTime.getTime();
+          }
+          if (nowBound.getDay() === 0) {
+            nowBound = dateAdd(nowBound, -6, 'days');
+          } else {
+            nowBound = dateAdd(nowBound, 1 - nowBound.getDay(), 'days');
+          }
+          nowBound.setHours(0);
+          nowBound = dateAdd(nowBound, 7, 'days');
+          break;
+        case 6:
+          endTime = new Date(endTime);
+          startTime = new Date(startTime);
+          nowBound.setMinutes(endTime.getMinutes(), 0, 0);
+          break;
+        case 7:
+          endTime = new Date(endTime);
+          if (endTime.getMinutes() < 30) {
+            endTime = dateAdd(new Date(endTime), 1, 'hours');
+          }
+          nowBound = dateAdd(nowBound, 1, 'hours');
+          startTime = new Date(startTime);
+          break;
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12: endTime = new Date(endTime);
+          if (endTime.getHours() > 0 && endTime.getHours() < 12) {
+            endTime = dateAdd(new Date(endTime), 1, 'days');
+          }
+          startTime = new Date(startTime);
+          if (startTime.getHours() !== 0 && startTime.getHours() <= 12) {
+            startTime.setHours(13);
+            newConfig.xAxis.min = startTime.getTime();
+          }
+          nowBound.setHours(0);
+          nowBound = dateAdd(nowBound, 1, 'days');
+          break;
+      }
+      newConfig.xAxis.max = endTime.getTime();
+
+      return [startTime, endTime, nowBound];
+    },
+    rawInitRange: function(newConfig, realData, cmpBox) {
+      let converter = DataConverter,
+        j2d = converter.JsonToDateTime,
+        endTime = j2d(cmpBox.props.endTime, true),
+        startTime = j2d(cmpBox.props.startTime, true);
+      var step;
+
+      if (CommonFuns.isNumeric(cmpBox.props.step)) {
+        step = cmpBox.props.step;
+      } else {
+        step = 2;
+      }
+
+      newConfig.series = realData;
+
+      cmpBox.navCache = false;
+      newConfig.scrollbar.liveRedraw = false;
+
 
       newConfig.xAxis.min = startTime;
       var nowBound = new Date();
@@ -971,6 +1120,7 @@ let ChartCmpStrategyFactor = {
     }
   },
   convertSingleItemFnStrategy: {
+    empty() {},
     convertSingleItem(item, s, cmpBox) {
       var d = s.data;
       if (!d) return;
