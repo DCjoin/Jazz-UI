@@ -703,6 +703,7 @@ I18N.Setting.CustomerManagement.EditAdministrator = 'Edit maintainer';
 I18N.Setting.CustomerManagement.Title = 'Title';
 I18N.Setting.CustomerManagement.DeleteTitle = 'Delete customer';
 I18N.Setting.CustomerManagement.DeleteContent = 'Customer "{0}" will be deleted';
+I18N.Setting.CustomerManagement.CodeError = 'Don\'t support #|$<>\',"?\\*“<:/';
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = 'User management';
@@ -978,7 +979,7 @@ Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, ref
 I18N.Message.M06100 = 'Tag has been deleted and cannot be loaded.';
 I18N.Message.M06104 = 'The name already exists.';
 I18N.Message.M06107 = 'The code already exists.';
-I18N.Message.M06109 = 'The channel already exists.';
+I18N.Message.M06109 = 'Same metercode and channel already exists.';
 I18N.Message.M06122 = 'The name already exists.';
 I18N.Message.M06127 = 'The code already exists.';
 I18N.Message.M06133 = 'Format of the formula is incorrect, please check it.';
