@@ -429,7 +429,7 @@ let Tag = React.createClass({
       CustomerId: parseInt(window.currentCustomerId),
       GuidCode: 0,
       EnergyConsumption: 0,
-      CalculationStep: 6,
+      CalculationStep: this.props.tagType === 1 ? 6 : 1,
       Slope: null,
       Offset: null,
       Formula: "",
