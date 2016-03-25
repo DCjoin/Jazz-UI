@@ -97,7 +97,9 @@ var VEEDetail = React.createClass({
         }
       };
     return (
-      <div className="pop-manage-detail-header">
+      <div className="pop-manage-detail-header" style={{
+        marginTop: '-12px'
+      }}>
     <div className={classnames("pop-manage-detail-header-name", "jazz-header")}>
       <ViewableTextField  {...ruleNameProps} />
         {

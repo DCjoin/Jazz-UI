@@ -230,19 +230,22 @@ let PTagRawData = React.createClass({
         margin: '0 -2px 0 8px'
       },
       labelStyle = {
-        color: '#464949'
+        color: '#464949',
+        fontSize: '12px'
       },
       pauseBtnStyle = {
         border: '1px solid #e4e7e9',
         height: '34px',
-        width: '92px'
+        width: '92px',
+        backgroundColor: '#fbfbfb'
       },
       listBtnStyle = {
         fontSize: '36px',
         marginLeft: '30px',
         height: '36px',
         marginTop: '-8px',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        color: '#767a7a'
       };
     var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
     style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
@@ -313,7 +316,7 @@ let PTagRawData = React.createClass({
         <div style={{
           display: 'flex',
           'flexDirection': 'column',
-          marginTop: '77px',
+          marginTop: '20px',
           flex: '1'
         }}>
         </div>
@@ -323,7 +326,7 @@ let PTagRawData = React.createClass({
         <div style={{
           display: 'flex',
           'flexDirection': 'column',
-          marginTop: '77px',
+          marginTop: '20px',
           flex: '1'
         }}>
           <ChartPanel {...chartProps}/>
