@@ -280,7 +280,6 @@ var MonitorTag = React.createClass({
     var addingTags = [],
       that = this;
     var allCheckStyle = {
-        marginLeft: '20px',
         width: '36px',
       },
       labelstyle = {
