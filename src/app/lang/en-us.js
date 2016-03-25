@@ -252,6 +252,10 @@ I18N.Common.AggregationStep.Weekly = 'Weekly';
 I18N.Common.AggregationStep.Monthly = 'Monthly';
 I18N.Common.AggregationStep.Yearly = 'Yearly';
 
+I18N.Common.Control = {};
+I18N.Common.Control.ViewableNumberField = {};
+I18N.Common.Control.ViewableNumberField.Error = 'Pleaes input correct integer';
+
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
 I18N.DateTimeFormat.HighFormat.Millisecond = '%H:%M:%S:%L';

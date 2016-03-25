@@ -290,7 +290,7 @@ let CommonFuns = {
   formatChinaDate: function(dateString, withTime) {
     var date = new Date(dateString);
 
-    var result = date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
+    var result = new Momment(date).format(I18N.DateTimeFormat.IntervalFormat.FullDay);
 
     if (withTime) {
       var minutes = date.getMinutes();
