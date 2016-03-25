@@ -189,8 +189,8 @@ let TagList = React.createClass({
   },
   render: function() {
     var addBtnClasses = {
-        'jazz-tag-leftpanel-header-item': true,
-        'jazz-disabled': this.props.isAddStatus
+        'jazz-tag-leftpanel-header-item': !this.props.isAddStatus,
+        'jazz-tag-disabled': this.props.isAddStatus
       },
       fileInputStyle = {
         opacity: 0,

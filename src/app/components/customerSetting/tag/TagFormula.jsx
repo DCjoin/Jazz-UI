@@ -53,18 +53,27 @@ var TagFormula = React.createClass({
         });
       }
     };
-    return (<div className={"jazz-tag-formula-content-top"}>
-    <div>{I18N.Setting.Tag.Formula}</div>
-    <div className={"jazz-tag-formula-content-top-input"}>
-      <ViewableTextField {...fomulaProps}/>
-    </div>
-  </div>);
+    var formular;
+    if (this.props.selectedTag.get('Formula') === '' && this.props.isViewStatus) {
+      formular = null;
+    } else {
+      formular = (<div className={"jazz-tag-formula-content-top"}>
+      <div style={{
+        fontSize: '14px',
+        color: '#abafae'
+      }}>{I18N.Setting.Tag.Formula}</div>
+      <div className={"jazz-tag-formula-content-top-input"}>
+        <ViewableTextField {...fomulaProps}/>
+      </div>
+    </div>);
+    }
+    return formular;
   },
   _renderTable: function() {
     var table = null;
     if (this.props.selectedTag.get('Formula') === '' && this.props.isViewStatus) {
       table = <div style={{
-        'margin-top': '-50px;'
+        fontSize: '14px'
       }}>{I18N.Setting.Tag.FormulaText}</div>;
     } else if (!this.props.isViewStatus) {
       table = <MonitorTag tagId={this.props.selectedTag.get('Id')} onRowClick={this._onRowClick}/>;

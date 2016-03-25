@@ -40,12 +40,27 @@
     flex:1;
     background-color: rgb(53, 64, 82);
   }
+  .jazz-tag-pagination{
+    background-color: #354052;
+    color: white;
+    .buttonBar{
+      border-top: 1px solid #434d5e !important;
+    }
+  }
+}
+.jazz-tag-disabled{
+    color: rgba(255, 255, 255, 0.298039) !important;
+    &-icon {
+      padding-right: 8px;
+    }
 }
 .jazz-tag-search-filter-bar{
   .jazz-search-filter-bar{
     display: flex;
     flex-direction: row;
-    background-color: #fbfbfb;
+    background-color: #354052;
+    border-bottom: 1px solid #434d5e;
+    color: white;
     .jazz-search{
       display:flex;
       flex-flow: row nowrap;
@@ -63,8 +78,14 @@
           display:flex;
           flex-flow:row nowrap;
           min-height:26px;
-          border:1px solid #e4e7e6;
+          border:1px solid #434d5e;
           margin:9px 10px 9px 10px;
+          >span{
+            color:white !important;
+          }
+          div{
+            color:white !important;
+          }
           .input{
             >hr{
               border-bottom-color:transparent !important;
@@ -103,11 +124,14 @@
     &-input{
       margin-top: 10px;
       >div{
-        width: 100%!important;
+        display: flex;
+        flex: 1;
         >div{
           height: 90px!important;
+          display: flex;
+          flex: 1;
           >div{
-            width: 100%!important;
+            flex:1;
             >div:nth-of-type(1){
               font-size: 12px!important;
               margin-left: 10px;
@@ -150,6 +174,8 @@
       justify-content: space-between;
       height: 40px;
       min-height: 40px;
+      font-size: 14px;
+      color: #abafae;
       &-text{
         margin-top: 12px;
       }
@@ -159,6 +185,14 @@
       flex: 1;
     }
   }
+}
+.jazz-tag-monitor-background{
+  background-color: #fbfbfb;
+  padding-right: 2px;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
 }
 .jazz-formula-monitor-tag{
   flex: 1;
@@ -334,4 +368,12 @@ padding-left:20px
 }
 .jazz-ptag-right-expand{
     right: 320px;
+}
+.jazz-tag-log-item-fileName{
+  width:300px;
+  margin-top: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
 }

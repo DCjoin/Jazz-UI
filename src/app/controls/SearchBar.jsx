@@ -63,7 +63,8 @@ let SearchBar = React.createClass({
         height: '26px'
       },
       hintTextStyle = {
-        bottom: '0px'
+        bottom: '0px',
+        fontSize: '14px'
       };
     return (
       <div className="jazz-dataselectmainpanel filter">
