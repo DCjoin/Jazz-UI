@@ -470,7 +470,7 @@ var MainAppBar = React.createClass({
       dataItems: titleItems
     };
     return (<Dialog actions={actions} openImmediately={true} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
-      <ul className="pop-userprofile-edit">
+      <ul className={classnames("pop-userprofile-edit", 'jazz-userprofile-edit')}>
           <li>
               <ViewableTextField didChanged={this._bindMergeTemp("RealName")} maxLen={200} ref="name" isViewStatus={false} title={I18N.Platform.User.ShowName} defaultValue={user.RealName} />
           </li>
