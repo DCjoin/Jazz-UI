@@ -252,6 +252,10 @@ I18N.Common.AggregationStep.Weekly = '每周';
 I18N.Common.AggregationStep.Monthly = '每月';
 I18N.Common.AggregationStep.Yearly = '每年';
 
+I18N.Common.Control = {};
+I18N.Common.Control.ViewableNumberField = {};
+I18N.Common.Control.ViewableNumberField.Error = '请输入格式正确的数字';
+
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
 I18N.DateTimeFormat.HighFormat.Millisecond = '%H点%M分%S秒%L毫秒';
