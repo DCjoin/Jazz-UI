@@ -83,7 +83,7 @@ var RuleBasic = React.createClass({
       //     path: "NotifyConsecutiveHours"
       //   })
       // }
-      defaultValue: NotifyConsecutiveHours || '',
+      defaultValue: NotifyConsecutiveHours,
       isViewStatus: isView,
       title: I18N.Setting.VEEMonitorRule.ConsecutiveHours,
       didChanged: value => {
@@ -350,13 +350,12 @@ var RuleBasic = React.createClass({
       );
     }
     return (
-      <div>
+      <div style={{
+        marginTop: '50px'
+      }}>
       <div className="pop-role-detail-content-permission" style={{
         paddingBottom: '12px'
       }}>
-      <div className="jazz-vee-rule-setting-subheader">
-        <span className="pop-role-detail-content-permission-header-panel-title">{I18N.Setting.VEEMonitorRule.MonitorSetting}</span>
-      </div>
       <div className="pop-customer-detail-content-left-item">
         <ViewableDatePicker {...ruleStartTimeProps} />
       </div>

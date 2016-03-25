@@ -103,9 +103,43 @@ let Tag = React.createClass({
     return filterObj;
   },
   _onToggle: function() {
-    var showLeft = this.state.showLeft;
+    var showLeft = !this.state.showLeft, showRawDataList;
+    if (this.state.showLeft) {
+      showRawDataList = this.state.showRawDataList;
+    } else {
+      if (this.state.showRawDataList) {
+        showRawDataList = false;
+      } else {
+        showRawDataList = this.state.showRawDataList;
+      }
+    }
     this.setState({
-      showLeft: !showLeft
+      showLeft: showLeft,
+      showRawDataList: showRawDataList
+    });
+  },
+  _onSwitchRawDataListView: function(switchFlag, isRawData) {
+    var showLeft, showRawDataList;
+    if (switchFlag) {
+      showRawDataList = !this.state.showRawDataList;
+      if (this.state.showRawDataList) {
+        showLeft = this.state.showLeft;
+      } else {
+        if (this.state.showLeft) {
+          showLeft = false;
+        } else {
+          showLeft = this.state.showLeft;
+        }
+      }
+    } else {
+      showLeft = this.state.showLeft;
+      showRawDataList = this.state.showRawDataList;
+    }
+
+    this.setState({
+      showLeft: showLeft,
+      showRawDataList: showRawDataList,
+      isRawData: isRawData
     });
   },
   _onTagListChange: function() {
@@ -448,12 +482,7 @@ let Tag = React.createClass({
       });
     });
   },
-  _onSwitchRawDataListView: function(switchFlag, isRawData) {
-    this.setState({
-      showRawDataList: switchFlag ? !this.state.showRawDataList : this.state.showRawDataList,
-      isRawData: isRawData
-    });
-  },
+
   getTagList: function() {
     TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
   },

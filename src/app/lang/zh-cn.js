@@ -1506,6 +1506,7 @@ I18N.Platform.ServiceProvider.DeleteContent = '删除服务商“{0}”，该服
 I18N.Platform.ServiceProvider.SendEmail = '发送邮件';
 I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
+I18N.Platform.ServiceProvider.Error002 = '该服务商ID已存在！';
 I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
 I18N.Platform.ServiceProvider.ErrorNotice = '错误提示';
 

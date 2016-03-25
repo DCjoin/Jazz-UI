@@ -247,7 +247,8 @@ var MonitorTag = React.createClass({
     if (that.state.taglist.size === 0) {
       return (
         <div style={{
-          color: '#abafae'
+          color: '#767a7a',
+          fontSize: '14px'
         }}>
           {I18N.Setting.VEEMonitorRule.AddTagInfo}
         </div>
@@ -279,7 +280,6 @@ var MonitorTag = React.createClass({
     var addingTags = [],
       that = this;
     var allCheckStyle = {
-        marginLeft: '20px',
         width: '36px',
       },
       labelstyle = {

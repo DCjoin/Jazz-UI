@@ -34,9 +34,10 @@ let ListItem = React.createClass({
         "jazz-ptag-rawdata-list-item": true,
         "selected": this.props.isSelected
       })} onClick={this.props.onClick}>
-        <div>{time}</div>
         <div style={{
-        marginLeft: '50px',
+        width: '122px'
+      }}>{time}</div>
+        <div style={{
         color: color
       }}>{this.props.data.get('DataValue')}</div>
       </div>

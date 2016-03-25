@@ -39,15 +39,9 @@ let PlatformContent = React.createClass({
       });
     } else {
       error = error.substring(error.length - 5, error.length);
-      if (error.indexOf('002') > -1) {
-        this.setState({
-          providerIdError: I18N.Message.M14002
-        });
-      } else {
-        this.setState({
-          dialogType: DIALOG_TYPE.ERROR
-        });
-      }
+      this.setState({
+        dialogType: DIALOG_TYPE.ERROR
+      });
     }
 
   },
@@ -431,7 +425,16 @@ let PlatformContent = React.createClass({
     };
     var error = PlatformStore.getError();
     error = error.substring(error.length - 5, error.length);
-    var content = (error.indexOf('001') > -1) ? I18N.Platform.ServiceProvider.Error001 : I18N.Platform.ServiceProvider.Error003;
+    var content;
+    if (error.indexOf('001') > -1) {
+      content = I18N.Platform.ServiceProvider.Error001
+    } else {
+      if (error.indexOf('002') > -1) {
+        content = I18N.Platform.ServiceProvider.Error002
+      } else {
+        content = I18N.Platform.ServiceProvider.Error003;
+      }
+    }
     var props = {
       title: I18N.Platform.ServiceProvider.ErrorNotice,
       firstActionLabel: I18N.Mail.Send.Ok,
