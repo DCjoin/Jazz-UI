@@ -252,6 +252,10 @@ I18N.Common.AggregationStep.Weekly = '每周';
 I18N.Common.AggregationStep.Monthly = '每月';
 I18N.Common.AggregationStep.Yearly = '每年';
 
+I18N.Common.Control = {};
+I18N.Common.Control.ViewableNumberField = {};
+I18N.Common.Control.ViewableNumberField.Error = '请输入格式正确的数字';
+
 I18N.DateTimeFormat = {};
 I18N.DateTimeFormat.HighFormat = {};
 I18N.DateTimeFormat.HighFormat.Millisecond = '%H点%M分%S秒%L毫秒';
@@ -702,6 +706,7 @@ I18N.Setting.CustomerManagement.EditAdministrator = '编辑维护负责人';
 I18N.Setting.CustomerManagement.Title = '职位';
 I18N.Setting.CustomerManagement.DeleteTitle = '删除客户';
 I18N.Setting.CustomerManagement.DeleteContent = '客户"{0}"将被删除';
+I18N.Setting.CustomerManagement.CodeError = '不支持输入#|$<>\',"?\\*“<:/';
 
 I18N.Setting.UserManagement = {};
 I18N.Setting.UserManagement.UserManagement = '用户管理';

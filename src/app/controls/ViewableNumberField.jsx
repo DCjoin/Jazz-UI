@@ -65,7 +65,7 @@ var ViewableNumberField = React.createClass({
     if (value != null && value !== "" && !/^(\+|\-)?[0-9]+(.[0-9]+)?$/.test(value)) {
       return {
         valid: false,
-        text: '请输入格式正确的数字'
+        text: I18N.Common.Control.ViewableNumberField.Error
       };
     }
 
