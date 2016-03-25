@@ -217,14 +217,14 @@ var MainAppBar = React.createClass({
                         </div>
                     </li>
 
-                    <li className="sidebar-content-item">
+                  {isSuperAdmin ? null : <li className="sidebar-content-item">
                         <ViewableTextField style={{
         width: "auto"
       }} isViewStatus={true} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone} />
                         {!user.DemoStatus && <div>
                           <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.TELE_PHONE)} label={I18N.Platform.User.Edit}/>
                         </div> }
-                    </li>
+                    </li>}
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
         width: "auto"
@@ -423,18 +423,25 @@ var MainAppBar = React.createClass({
   _getEditUserDialog: function() {
     var that = this,
       user = this.state.tempData,
-      actions = [
+      isSuperAdmin = user.UserType == -1,
+      disabled = false;
+    if (!Regex.Email.test(user.Email) ||
+      !user.Telephone ||
+      !user.RealName ||
+      !user.Email ||
+      user.RealName.length > 200 ||
+      user.Email.length > 254) {
+      disabled = true
+    }
+    if (!isSuperAdmin && user.Telephone.length > 200) {
+      disabled = true
+    }
+    var actions = [
         <CustomFlatButton
         label={I18N.Platform.Password.Confirm}
         secondary={true}
         disabled={
-        !Regex.Email.test(user.Email) ||
-        !user.Telephone ||
-        !user.RealName ||
-        !user.Email ||
-        user.Telephone.length > 200 ||
-        user.RealName.length > 200 ||
-        user.Email.length > 254
+        disabled
         }
         onClick={this._saveUser} />,
         <CustomFlatButton
@@ -482,9 +489,10 @@ var MainAppBar = React.createClass({
         that._mergeTemp("Title", idx);
       }} {...titleProps} />
           </li>
-          <li>
-              <ViewableTextField didChanged={this._bindMergeTemp("Telephone")} maxLen={200} ref="telephone"  isViewStatus={false} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone} />
-          </li>
+          {isSuperAdmin ? null : <li>
+                        <ViewableTextField didChanged={this._bindMergeTemp("Telephone")} maxLen={200} ref="telephone"  isViewStatus={false} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone} />
+                    </li>}
+
           <li>
               <ViewableTextField didChanged={this._bindMergeTemp("Email")} maxLen={254} ref="email" errorMessage={I18N.Platform.User.EmailError} regex={Regex.Email} isViewStatus={false} title={I18N.Platform.User.Email} defaultValue={user.Email} />
           </li>
