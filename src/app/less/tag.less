@@ -66,11 +66,11 @@
       flex-flow: row nowrap;
       margin-top: 0px;
       border-color:#e4e7e9 transparent;
-      width:200px;
+      width:260px;
       min-height:46px;
       .jazz-dataselectmainpanel{
         margin-top: 0px;
-        width: 200px;
+        width: 260px;
         display: flex;
         flex-direction: column;
         .search{
@@ -123,14 +123,18 @@
     min-height: 120px;
     &-input{
       margin-top: 10px;
-      >div{
+      .pop-viewableTextField{
         display: flex;
         flex: 1;
+        .pop-viewable-value{
+          display: flex;
+          flex: 1;
+        }
         >div{
           height: 90px!important;
           display: flex;
           flex: 1;
-          >div{
+          .pop-viewableTextField-noempty,.pop-viewableTextField-focus{
             flex:1;
             >div:nth-of-type(1){
               font-size: 12px!important;
@@ -147,6 +151,7 @@
                 margin-top: 6px!important;
                 padding-left: 10px!important;
                 overflow: hidden!important;
+                color: #464949!important;
               }
             }
             >div:nth-of-type(3){
