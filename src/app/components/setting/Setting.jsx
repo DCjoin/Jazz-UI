@@ -68,7 +68,8 @@ let Setting = React.createClass({
     };
   },
   _onLeftSwitchButtonClick() {
-    var leftShow, rightShow;
+    var leftShow,
+      rightShow;
     leftShow = !this.state.showLeftPanel;
     if (this.state.showLeftPanel) {
       rightShow = this.state.showRightPanel;
@@ -85,7 +86,8 @@ let Setting = React.createClass({
     }, ChartAction.redrawChart);
   },
   _onRightSwitchButtonClick() {
-    var leftShow, rightShow;
+    var leftShow,
+      rightShow;
     rightShow = !this.state.showRightPanel;
     if (this.state.showRightPanel) {
       leftShow = this.state.showLeftPanel;
@@ -431,7 +433,7 @@ let Setting = React.createClass({
     }
     return (
       <Dialog {...props}/>
-      )
+    )
   },
   _getErrorNoticeDialog: function() {
     var that = this;
@@ -449,7 +451,7 @@ let Setting = React.createClass({
     }
     return (
       <Dialog {...props}/>
-      )
+    )
   },
   render: function() {
     let me = this;
@@ -506,6 +508,7 @@ let Setting = React.createClass({
           energyType: energyType,
           widgetDto: widgetDto,
           showLeft: this.state.showLeftPanel,
+          showRight: this.state.showRightPanel,
           onEnergyTypeChange: me._onEnergyTypeChanged,
           onOperationSelect: me._onWidgetMenuSelect,
           onCollapseButtonClick: me._onLeftSwitchButtonClick,
