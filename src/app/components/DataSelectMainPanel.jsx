@@ -530,7 +530,9 @@ let DataSelectMainPanel = React.createClass({
         width: '20px'
       }}/>;
     return (
-      <div className="jazz-dataselectmainpanel" >
+      <div className="jazz-dataselectmainpanel" style={{
+        borderLeft: '1px solid #ececec'
+      }}>
 
           <div  className="header">
             <HierarchyButton hierId={hierId}
