@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import { CircularProgress, FlatButton, Checkbox, FontIcon } from 'material-ui';
+import { CircularProgress, Checkbox, FontIcon } from 'material-ui';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import { List } from 'immutable';
@@ -9,6 +9,7 @@ import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
+import FlatButton from '../../../controls/FlatButton.jsx';
 let PTagRawData = React.createClass({
   propTypes: {
     selectedTag: React.PropTypes.object,
@@ -180,6 +181,7 @@ let PTagRawData = React.createClass({
                 <label
               className="jazz-checkbox-label" style={{
                 marginLeft: '-6px',
+                marginTop: '3px'
               }}>
                   {rule.type}
                 </label>
@@ -193,7 +195,6 @@ let PTagRawData = React.createClass({
         <Dialog openImmediately={this.state.paulseDialogShow} title={I18N.Setting.Tag.PTagRawData.PauseMonitor} modal={true} actions={[
           <FlatButton
           label={I18N.Platform.Password.Confirm}
-          primary={true}
           onClick={() => {
             that._onModifyVEETagStatus();
             closeDialog();

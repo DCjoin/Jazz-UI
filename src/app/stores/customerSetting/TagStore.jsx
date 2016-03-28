@@ -8,7 +8,7 @@ import moment from 'moment';
 import CommonFuns from '../../util/Util.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 import ChartReaderStrategyFactor from '../energy/ChartReaderStrategyFactor.jsx';
-let {DataConverter, formatDateValue} = CommonFuns;
+let {DataConverter} = CommonFuns;
 let j2d = DataConverter.JsonToDateTime,
   d2j = DataConverter.DatetimeToJson;
 

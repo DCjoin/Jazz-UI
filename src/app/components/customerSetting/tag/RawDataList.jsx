@@ -24,7 +24,7 @@ let ListItem = React.createClass({
       if (this.props.data.get('DataQuality') === 6 || this.props.data.get('DataQuality') === 8) {
         color = '#cfa9ff'
       } else {
-        color = '#11d9db'
+        color = '#464949'
       }
     }
 
