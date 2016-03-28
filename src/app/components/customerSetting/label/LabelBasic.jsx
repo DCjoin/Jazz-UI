@@ -176,7 +176,7 @@ var LabelBasic = React.createClass({
           });
         }
       };
-    var comment = !Comment && isView ? null : (<div className="pop-customer-detail-content-left-item">
+    var comment = !Comment && isView ? null : (<div className="jazz-customer-label-detail-content-item">
         <ViewableTextField {...commentProps}/>
       </div>);
     return (
@@ -186,14 +186,11 @@ var LabelBasic = React.createClass({
             <ViewableDropDownMenu {...kpiTypeProps}/>
           </div>
           {comment}
-          <div className="jazz-customer-label-detail-content-devide">{I18N.Setting.CustomizedLabeling.EnergyGrade}</div>
-          <div>
-            <div className="jazz-customer-label-detail-content-item">
-              <ViewableDropDownMenu {...gradeProps}/>
-            </div>
-            <div className="jazz-customer-label-detail-content-item">
-              <ViewableDropDownMenu {...orderProps}/>
-            </div>
+          <div className="jazz-customer-label-detail-content-item">
+            <ViewableDropDownMenu {...gradeProps}/>
+          </div>
+          <div className="jazz-customer-label-detail-content-item">
+            <ViewableDropDownMenu {...orderProps}/>
           </div>
       </div>
       );

@@ -215,7 +215,7 @@ var PTagBasic = React.createClass({
         <ViewableTextField {...commentProps}/>
       </div>);
     return (
-      <div className={"pop-customer-detail-content"}>
+      <div className={"pop-customer-detail-content jazz-tag-right-panel"}>
         <div className="pop-customer-detail-content-left">
           <div className="pop-customer-detail-content-left-item">
             <ViewableTextField {...codeProps}/>

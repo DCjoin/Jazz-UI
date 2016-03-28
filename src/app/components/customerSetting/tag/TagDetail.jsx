@@ -118,15 +118,15 @@ var TagDetail = React.createClass({
     };
     if (this.props.tagType === 1) {
       if (this.props.showBasic) {
-        content = <PTagBasic ref='pTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
+        content = <div><PTagBasic ref='pTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/></div>;
       } else {
         content = <PTagRawData ref='pTagRawData' showLeft={this.props.showLeft} showRawDataList={this.props.showRawDataList} selectedTag={this.props.selectedTag} onSwitchRawDataListView={this._onSwitchRawDataListView}/>;
       }
     } else {
       if (this.props.showBasic) {
-        content = <VTagBasic ref='vTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
+        content = <div><VTagBasic ref='vTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/></div>;
       } else {
-        content = <TagFormula ref='vTagFormula'  selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/>;
+        content = <div className="jazz-tag-monitor-background"><TagFormula ref='vTagFormula'  selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/></div>;
       }
     }
     return (

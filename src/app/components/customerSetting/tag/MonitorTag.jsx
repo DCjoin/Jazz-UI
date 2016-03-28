@@ -129,7 +129,7 @@ var MonitorTag = React.createClass({
     return (
       <div className="jazz-tag-formula-content-taglist-top">
         <div className="jazz-tag-formula-content-taglist-top-text">{I18N.Setting.Tag.TagList}</div>
-        <div className="jazz-tag-search-filter-bar"><SearchAndFilterBar onFilter={this._handleShowFilterSideNav}
+        <div className="jazz-vee-tag-search-filter-bar"><SearchAndFilterBar onFilter={this._handleShowFilterSideNav}
       onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}
       isFilter={this.state.isFilter}/></div>
   </div>);

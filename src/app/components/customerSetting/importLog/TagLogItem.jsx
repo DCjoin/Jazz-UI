@@ -68,8 +68,6 @@ let TagLogItem = React.createClass({
           </div>
         </div>
       </div>
-      <div className="jazz-template-item-middle">
-      </div>
       <div className='jazz-template-item-left'>
         {downloadButton}
       </div>
