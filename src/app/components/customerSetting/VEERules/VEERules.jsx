@@ -52,7 +52,7 @@ var VEERules = React.createClass({
     } else {
       mData = mData.setIn(paths, value)
       if (path === 'NotifyConsecutiveHours') {
-        mData = mData.set('CheckNotify', value !== '')
+        mData = mData.set('CheckNotify', true)
       }
       if (path === 'CheckNotify' && value === false) {
         mData = mData.set('NotifyConsecutiveHours', null)
