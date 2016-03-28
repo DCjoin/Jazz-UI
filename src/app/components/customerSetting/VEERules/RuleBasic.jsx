@@ -83,7 +83,7 @@ var RuleBasic = React.createClass({
       //     path: "NotifyConsecutiveHours"
       //   })
       // }
-      defaultValue: NotifyConsecutiveHours,
+      defaultValue: NotifyConsecutiveHours === null ? '' : NotifyConsecutiveHours,
       isViewStatus: isView,
       title: I18N.Setting.VEEMonitorRule.ConsecutiveHours,
       didChanged: value => {
