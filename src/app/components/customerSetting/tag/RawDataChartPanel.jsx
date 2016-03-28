@@ -3,17 +3,14 @@
 import React from 'react';
 import assign from 'object-assign';
 import _ from 'lodash';
-import Immutable from 'immutable';
-import mui from 'material-ui';
 import Highstock from '../../highcharts/Highstock.jsx';
 import ChartXAxisSetter from '../../energy/ChartXAxisSetter.jsx';
 import EnergyCommentFactory from '../../energy/EnergyCommentFactory.jsx';
 import ChartCmpStrategyFactor from '../../energy/ChartCmpStrategyFactor.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
-import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../../util/Util.jsx';
+import { dateFormat, isNumber } from '../../../util/Util.jsx';
 import ChartStatusStore from '../../../stores/energy/ChartStatusStore.jsx';
-let {Dialog, FlatButton, Checkbox} = mui;
 let yAxisOffset = 70;
 let _chartObj = null;
 var dataLabelFormatter = function(format) {
@@ -201,7 +198,7 @@ let defaultConfig = {
     }
   },
   scrollbar: {
-    enabled: true,
+    enabled: false,
     liveRedraw: true
   },
   style: {
