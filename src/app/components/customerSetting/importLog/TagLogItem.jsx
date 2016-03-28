@@ -53,7 +53,7 @@ let TagLogItem = React.createClass({
     return (
       <div className='jazz-template-item' onMouseLeave={me._showDownloadButton.bind(null, false)} onMouseEnter={me._showDownloadButton.bind(null, true)}>
       <div className='jazz-template-item-right'>
-        <div className='jazz-template-item-right-name'>{displayStr}</div>
+        <div className='jazz-template-item-right-name' title={displayStr}>{displayStr}</div>
         <div className="jazz-template-item-right-user">
           <div className="jazz-template-user-info jazz-template-item-right-user-info">
             <a href={'mailto:' + me.props.email}>

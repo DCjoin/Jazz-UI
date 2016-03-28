@@ -222,7 +222,7 @@ let AnalysisPanel = React.createClass({
       remarkDiv = <div className={classNames(
         {
           'jazz-energy-remark-container': true,
-          'jazz-energy-remark-expand': !this.props.showLeft
+          'jazz-energy-remark-expand': !this.props.showLeft && !this.props.showRight
         }
       )}>
       <div style={{
@@ -1094,7 +1094,8 @@ let AnalysisPanel = React.createClass({
   },
   setIndustyLable(benchmarkOption, labelingType) {
     var curType = this.state.labelType;
-    var type = '', i;
+    var type = '',
+      i;
     var selectedLabelItem = this.state.selectedLabelItem;
     var industyMenuItems = this.state.industyMenuItems;
     var customerMenuItems = this.state.customerMenuItems;
@@ -1317,7 +1318,9 @@ let AnalysisPanel = React.createClass({
     return menuItems;
   },
   removeRedundance: function(items) {
-    var map = {}, id, item;
+    var map = {},
+      id,
+      item;
     for (var i = 0; i < items.length; i++) {
       item = items[i];
       id = item.industryId + '_' + item.zoneId;
@@ -1334,7 +1337,10 @@ let AnalysisPanel = React.createClass({
     var industryStore = LabelMenuStore.getIndustryData();
     var labelingsStore = LabelMenuStore.getLabelData();
     var zoneStore = LabelMenuStore.getZoneData();
-    var hierNode, industryId, zoneId, parentId,
+    var hierNode,
+      industryId,
+      zoneId,
+      parentId,
       industyMenuItems = [];
 
     if (industryStore === null || labelingsStore === null || zoneStore === null || hierNodes.length === 0) {
@@ -1366,7 +1372,9 @@ let AnalysisPanel = React.createClass({
     var labelingsStore = LabelMenuStore.getLabelData();
     var zoneStore = LabelMenuStore.getZoneData();
     var hierNode = LabelMenuStore.getHierNode();
-    var industryId, zoneId, parentId,
+    var industryId,
+      zoneId,
+      parentId,
       industyMenuItems = this.state.industyMenuItems;
     if (industryStore === null || labelingsStore === null || zoneStore === null || !hierNode) {
       return;
@@ -1542,7 +1550,8 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.handleConfigBtnItemTouchTapFn(this, menuParam, menuItem);
   },
   handleBaselineCfg: function(e) {
-    let tagOption, tagObj,
+    let tagOption,
+      tagObj,
       tagOptions = this.state.chartStrategy.getSelectedNodesFn(); //this.getSelectedTagOptions();
 
     if (tagOptions && tagOptions.length === 1) {
@@ -1583,7 +1592,8 @@ let AnalysisPanel = React.createClass({
     let hasTotal = true;
     if (data.TargetEnergyData && data.TargetEnergyData.length > 1) {
       var targetEnergyData = data.TargetEnergyData,
-        targetP, targetN;
+        targetP,
+        targetN;
 
       for (var i = 0, len = targetEnergyData.length; i < len - 1; i++) {
         targetP = targetEnergyData[i].Target;
