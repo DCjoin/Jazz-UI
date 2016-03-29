@@ -103,7 +103,8 @@ let Tag = React.createClass({
     return filterObj;
   },
   _onToggle: function() {
-    var showLeft = !this.state.showLeft, showRawDataList;
+    var showLeft = !this.state.showLeft,
+      showRawDataList;
     if (this.state.showLeft) {
       showRawDataList = this.state.showRawDataList;
     } else {
@@ -119,7 +120,8 @@ let Tag = React.createClass({
     });
   },
   _onSwitchRawDataListView: function(switchFlag, isRawData) {
-    var showLeft, showRawDataList;
+    var showLeft,
+      showRawDataList;
     if (switchFlag) {
       showRawDataList = !this.state.showRawDataList;
       if (this.state.showRawDataList) {
@@ -254,7 +256,7 @@ let Tag = React.createClass({
       var step = this.state.selectedTag.get('CalculationStep');
       var stepList = [],
         stepText = '';
-      if (this.state.selectedTag.tagType === 0) {
+      if (this.props.tagType === 1) {
         stepList = this.refs.tagDetail.refs.pTagBasic._getCalculationStepList();
       } else {
         stepList = this.refs.tagDetail.refs.vTagBasic._getCalculationStepList();
