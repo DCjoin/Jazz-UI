@@ -370,7 +370,9 @@ var MonitorTag = React.createClass({
         <div className='jazz-vee-monitor-tag-addcontent'>
           {addingTags}
         </div>
-        <div className='jazz-vee-monitor-tag-selectfiled'>
+        <div className='jazz-vee-monitor-tag-selectfiled' style={{
+        overflow: 'auto'
+      }}>
           <div className='jazz-vee-monitor-tag-selectfiled-header'>
             <div className='jazz-vee-monitor-tag-title'>
               {I18N.Setting.VEEMonitorRule.TagList}
@@ -382,7 +384,8 @@ var MonitorTag = React.createClass({
     </div>
           </div>
           <div className='jazz-vee-monitor-tag-selectfiled-list' style={{
-        cursor: 'pointer'
+        cursor: 'pointer',
+        overflow: 'auto'
       }}>
             <div className='jazz-vee-monitor-tag-header'>
               <div className='jazz-vee-monitor-tag-header-item'>
