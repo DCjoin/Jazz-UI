@@ -152,7 +152,6 @@ var Label = React.createClass({
       Grade: 5,
       CustomerId: parseInt(window.currentCustomerId),
       Order: 0,
-      Name: '',
       LabellingType: 1,
       Comment: '',
       LabellingItems: list
