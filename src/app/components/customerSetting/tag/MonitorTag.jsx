@@ -43,7 +43,8 @@ var MonitorTag = React.createClass({
     var filterObj = this.state.filterObj;
     filterObj.LikeCodeOrName = value;
     this.setState({
-      filterObj: filterObj
+      filterObj: filterObj,
+      page: 1
     }, () => {
       me.getTagList();
     });
@@ -53,7 +54,8 @@ var MonitorTag = React.createClass({
     var filterObj = this.state.filterObj;
     filterObj.LikeCodeOrName = null;
     this.setState({
-      filterObj: filterObj
+      filterObj: filterObj,
+      page: 1
     }, () => {
       me.getTagList();
     });
