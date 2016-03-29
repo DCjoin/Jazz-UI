@@ -446,6 +446,7 @@ let Tag = React.createClass({
       Version: 0,
       Type: this.props.tagType,
       TypeName: "",
+      Comment: '',
       TagGroupType: 0,
       TimezoneId: 1,
       CalculationType: 1,
