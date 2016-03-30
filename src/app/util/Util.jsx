@@ -1248,7 +1248,14 @@ let CommonFuns = {
         //hour 20-21,08/08, 2014
         {
         date = date.setMinutes(0);
-        str = eft(date, ft.FullHour);
+        if (date.getHours() === 0) {
+          let newDate = Momment(date);
+          newDate = newDate.add(-1, 'minutes');
+          //date = newDate._d;
+          str = newDate.format(ft.Full24Hour);
+        } else {
+          str = eft(date, ft.FullHour);
+        }
         break;
         }
       case 2: //day 2010年10月3日
@@ -1307,13 +1314,28 @@ let CommonFuns = {
       case 6: //15mins 2010年10月3日23点45分-3日24点  2010年10月3日0点-0点15分
         {
         date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), Math.floor(date.getMinutes() / 15) * 15);
-        str = eft(date, ft.RangeFullMinute);
+        if (date.getHours() === 0 && date.getMinutes() === 0) {
+          let newDate = Momment(date);
+          newDate = newDate.add(-1, 'minutes');
+          //date = newDate._d;
+          str = newDate.format(ft.RangeFull24Minute);
+        } else {
+          str = eft(date, ft.RangeFullMinute);
+        }
+
         break;
         }
       case 7: //30mins 2010年10月3日23点45分-3日24点  2010年10月3日0点-0点15分
         {
         date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), Math.floor(date.getMinutes() / 30) * 30);
-        str = eft(date, ft.RangeFullMinute);
+        if (date.getHours() === 0 && date.getMinutes() === 0) {
+          let newDate = Momment(date);
+          newDate = newDate.add(-1, 'minutes');
+          date = newDate._d;
+          str = newDate.format(ft.RangeFull24Minute);
+        } else {
+          str = eft(date, ft.RangeFullMinute);
+        }
         break;
         }
     }

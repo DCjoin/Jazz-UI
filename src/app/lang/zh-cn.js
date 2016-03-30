@@ -298,10 +298,12 @@ I18N.DateTimeFormat.IntervalFormat.FullDate = 'YYYY年MM月DD日';
 I18N.DateTimeFormat.IntervalFormat.MonthDayHour = 'MM月DD日HH点';
 I18N.DateTimeFormat.IntervalFormat.DayHour = 'DD日HH点';
 I18N.DateTimeFormat.IntervalFormat.RawDate.FullHour = 'YYYY/MM/DD HH:mm';
+I18N.DateTimeFormat.IntervalFormat.RawDate.Full24Hour = 'YYYY/MM/DD 24:mm';
 I18N.DateTimeFormat.IntervalFormat.RawDate.FullDay = 'YYYY/MM/DD';
 I18N.DateTimeFormat.IntervalFormat.RawDate.Month = 'YYYY/MM';
 I18N.DateTimeFormat.IntervalFormat.RawDate.Year = 'YYYY';
 I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFullMinute = 'YYYY/MM/DD HH:mm';
+I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFull24Minute = 'YYYY/MM/DD 24:00';
 
 
 

@@ -186,7 +186,6 @@ let RawDataList = React.createClass({
         selectedId: index
       })
     }
-
   },
   componentDidMount: function() {
     TagStore.addTagDatasChangeListener(this._onChanged);
