@@ -417,15 +417,18 @@ let PlatformContent = React.createClass({
   },
   _getErrorDialog: function() {
     var that = this;
+
+    var error = PlatformStore.getError();
+    error = error.substring(error.length - 5, error.length);
+    var content;
     var _onConfirm = function() {
       that.setState({
         dialogType: ''
       })
-      PlatformAction.getServiceProviders();
+      if (error.indexOf('002') < 0) {
+        PlatformAction.getServiceProviders();
+      }
     };
-    var error = PlatformStore.getError();
-    error = error.substring(error.length - 5, error.length);
-    var content;
     if (error.indexOf('001') > -1) {
       content = I18N.Platform.ServiceProvider.Error001
     } else {
