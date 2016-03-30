@@ -1503,6 +1503,7 @@ I18N.Platform.ServiceProvider.DeleteContent = 'Delete SP “{0}”，All public 
 I18N.Platform.ServiceProvider.SendEmail = 'Send mail';
 I18N.Platform.ServiceProvider.SendEmailSuccess = 'Mail send successfully';
 I18N.Platform.ServiceProvider.Error001 = 'SP is modified by other user';
+I18N.Platform.ServiceProvider.Error002 = 'SP ID already existed';
 I18N.Platform.ServiceProvider.Error003 = 'SP is deleted by other user';
 I18N.Platform.ServiceProvider.ErrorNotice = 'Error message';
 
