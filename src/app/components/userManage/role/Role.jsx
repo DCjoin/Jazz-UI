@@ -40,7 +40,7 @@ var Role = React.createClass({
       RoleAction.createRole(roleData);
     }
     this.setState({
-      isLoading: false
+      isLoading: true
     });
   },
   _handleDeleteRole: function() {

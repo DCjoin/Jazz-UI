@@ -208,9 +208,6 @@ let JazzApp = React.createClass({
             lang: lang
           });
         }
-
-
-
       });
     };
 

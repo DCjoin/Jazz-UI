@@ -125,7 +125,8 @@ var VEEDetail = React.createClass({
         ref: 'jazz_vee_basic',
         rule: this.props.rule,
         merge: this.props.merge,
-        formStatus: this.props.formStatus
+        formStatus: this.props.formStatus,
+      // key: this.props.rule.get('Id')
       },
       tagProps = {
         ref: 'jazz_vee_tag',
