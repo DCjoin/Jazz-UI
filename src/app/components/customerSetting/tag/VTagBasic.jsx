@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import Regex from '../../../constants/Regex.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import ComAndUom from '../ComAndUom.jsx';
@@ -82,6 +83,8 @@ var VTagBasic = React.createClass({
         title: I18N.Setting.Tag.Code,
         defaultValue: Code,
         isRequired: true,
+        regex: Regex.Code,
+        errorMessage: I18N.Setting.Tag.CodeError,
         didChanged: value => {
           me.props.mergeTag({
             value,
