@@ -10,6 +10,7 @@ import CommonFuns from '../../../util/Util.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
+import Immutable from 'immutable';
 let PTagRawData = React.createClass({
   propTypes: {
     selectedTag: React.PropTypes.object,
@@ -342,7 +343,7 @@ let PTagRawData = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     var that = this;
-    if (nextProps.selectedTag !== this.props.selectedTag) {
+    if (!nextProps.selectedTag.equals(this.props.selectedTag)) {
       that.setState({
         isRawData: nextProps.selectedTag.get('IsAccumulated') ? false : true,
         showErrorDialog: false
@@ -355,10 +356,15 @@ let PTagRawData = React.createClass({
         refresh: true
       })
     } else {
-      this.setState({
-        refresh: false
-      })
+      if (this.state.refresh === true) {
+        this.setState({
+          refresh: false
+        })
+      }
     }
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return (nextProps.selectedTag !== this.props.selectedTag || this.props.showLeft !== nextProps.showLeft || this.props.showRawDataList !== nextProps.showRawDataList || !Immutable.fromJS(nextState).equals(Immutable.fromJS(this.state)));
   },
   componentWillUnmount: function() {
     TagStore.removeTagDatasChangeListener(this._onChanged);
