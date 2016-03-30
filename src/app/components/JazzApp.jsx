@@ -177,6 +177,8 @@ let JazzApp = React.createClass({
     var afterLoadLang = function(b) {
       window.I18N = b;
       me._setHighchartConfig();
+      CurrentUserAction.getUser(window.currentUserId);
+
       me.setState({
         isLangLoaded: true
       }, () => {
@@ -244,7 +246,7 @@ let JazzApp = React.createClass({
     }
     GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
-    CurrentUserAction.getUser(window.currentUserId);
+    // CurrentUserAction.getUser(window.currentUserId);
     //CurrentUserAction.getRoles(window.currentUserId);
     LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
   },
