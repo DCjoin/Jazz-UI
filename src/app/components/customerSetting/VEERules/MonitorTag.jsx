@@ -274,7 +274,6 @@ var MonitorTag = React.createClass({
         </div>
         )
     }
-
   },
   _renderSelectTag: function() {
     var addingTags = [],
@@ -316,7 +315,6 @@ var MonitorTag = React.createClass({
       } else {
         tags = tags.delete(index);
       }
-
       that.setState({
         addingTags: tags
       }, () => {
