@@ -28,7 +28,11 @@ let PTagRawData = React.createClass({
       paulseDialogShow: false,
       isRawData: this.props.selectedTag.get('IsAccumulated') ? false : true,
       showErrorDialog: false,
-      refresh: false
+      refresh: false,
+      startDate: this._getInitDate().startDate,
+      endDate: this._getInitDate().endDate,
+      startTime: this._getInitDate().startTime,
+      endTime: this._getInitDate().endTime
     })
   },
   _getInitDate: function() {
@@ -38,7 +42,11 @@ let PTagRawData = React.createClass({
     let endDate = CommonFuns.dateAdd(date, 1, 'days');
     return ({
       start: last7Days,
-      end: endDate
+      end: endDate,
+      startDate: last7Days,
+      endDate: endDate,
+      startTime: null,
+      endTime: null
     })
   },
   _getTagsData: function(props, refreshTagStatus = false) {
@@ -68,7 +76,7 @@ let PTagRawData = React.createClass({
       that.props.onSwitchRawDataListView(false, this.state.isRawData);
     })
   },
-  _onDateSelectorChanged: function() {
+  _onDateSelectorChanged: function(startDate, endDate, startTime, endTime) {
     let that = this,
       dateSelector = this.refs.dateTimeSelector,
       timeRange = dateSelector.getDateTime(),
@@ -84,7 +92,11 @@ let PTagRawData = React.createClass({
       this.setState({
         start: timeRange.start,
         end: timeRange.end,
-        showErrorDialog: showErrorDialog
+        showErrorDialog: showErrorDialog,
+        startDate: startDate,
+        endDate: endDate,
+        startTime: startTime,
+        endTime: endTime
       }, () => {
         that._getTagsData(that.props)
       })
@@ -262,7 +274,10 @@ let PTagRawData = React.createClass({
           </div>
           {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-sync' style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
-        <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' startDate={this.state.start} endDate={this.state.end} _onDateSelectorChanged={this._onDateSelectorChanged}/>
+        <DateTimeSelector ref='dateTimeSelector' endLeft='-100px'     startDate= {this.state.startDate}
+      endDate={this.state.endDate}
+      startTime={this.state.startTime}
+      endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <div className='rightside'>
           {this.state.veeTagStatus.size === 0 ? null : pauseBtn}

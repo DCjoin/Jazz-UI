@@ -575,8 +575,6 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.handleStepChangeFn(this, step);
   },
   _onDateSelectorChanged() {
-    // var dateSelector = this.refs.dateTimeSelector,
-    //   timeRange = dateSelector.getDateTime();
     this.refs.relativeDate.setState({
       selectedIndex: 0
     });
