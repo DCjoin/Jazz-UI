@@ -3077,8 +3077,7 @@ let ChartStrategyFactor = {
             showSumDialog: true
           });
           break;
-        case 'background':
-          {
+        case 'background':{
           subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -3136,8 +3135,7 @@ let ChartStrategyFactor = {
     handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
       let itemValue = menuItem.props.value;
       switch (itemValue) {
-        case 'background':
-          {
+        case 'background':{
           var subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -3407,7 +3405,7 @@ let ChartStrategyFactor = {
         startDate = dateRange.start,
         endDate = dateRange.end;
       if (analysisPanel.state.selectedChartType == 'rawdata' && (endDate - startDate > 604800000)) {
-        FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
+        FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
       } else {
         analysisPanel.state.chartStrategy.initEnergyStoreByBizChartTypeFn(analysisPanel);
 

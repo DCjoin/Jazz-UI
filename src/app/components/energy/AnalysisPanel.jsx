@@ -811,7 +811,7 @@ let AnalysisPanel = React.createClass({
       dateSelector = this.refs.dateTimeSelector;
 
     if (this.state.selectedChartType == 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
-      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
+      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
     } else {
       if (value && value !== 'Customerize') {
         var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
@@ -1044,7 +1044,7 @@ let AnalysisPanel = React.createClass({
       endDate = dateRange.end;
 
     if (child.props.value == 'rawdata' && endDate - startDate > 604800000) {
-      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.Error);
+      FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
     } else {
       this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
     }

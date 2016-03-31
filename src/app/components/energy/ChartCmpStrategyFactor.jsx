@@ -289,7 +289,7 @@ let ChartCmpStrategyFactor = {
     }
   },
   initRangeFnStrategy: {
-
+    empty: function() {},
     initRange(newConfig, realData, cmpBox) {
       let converter = DataConverter,
         j2d = converter.JsonToDateTime,

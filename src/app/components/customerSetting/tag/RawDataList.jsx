@@ -181,7 +181,7 @@ let RawDataList = React.createClass({
     if (index !== this.state.selectedId) {
       var el = this.refs.list.getDOMNode();
       var id = indexItem.indexOf(index);
-      el.scrollTop = id * 41.111 + 1;
+      el.scrollTop = id * 40 + 1;
       this.setState({
         selectedId: index
       })
