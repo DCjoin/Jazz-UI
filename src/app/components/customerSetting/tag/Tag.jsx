@@ -599,7 +599,7 @@ let Tag = React.createClass({
       display: 'none'
     }}><TagList {...leftProps}/></div>;
     var RawDataListPanel = null;
-    if (this.state.selectedTag !== null) {
+    if (this.state.selectedTag !== null && this.props.tagType === 1) {
       var listProps = {
         isRawData: this.state.isRawData,
         step: this.state.selectedTag.get('CalculationStep')
