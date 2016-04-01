@@ -107,12 +107,18 @@ let DateTimeSelector = React.createClass({
     }
     if (startDate.getTime() >= endDate.getTime() || multiDate) {
       if ((sd !== null) || (st !== null)) {
+        if (this.props.onChangeStart) {
+          this.props.onChangeStart(true);
+        }
         if (this.props.showTime === false) {
           endDate = dateAdd(startDate, 1, 'days');
         } else {
           endDate = dateAdd(startDate, 1, 'hours');
         }
       } else if ((ed !== null) || (et !== null)) {
+        if (this.props.onChangeStart) {
+          this.props.onChangeStart(false);
+        }
         if (this.props.showTime === false) {
           startDate = dateAdd(endDate, -1, 'days');
         } else {
@@ -137,7 +143,8 @@ let DateTimeSelector = React.createClass({
   getInitialState: function() {
     let startDate = this.props.startDate || null;
     let endDate = this.props.endDate || null;
-    let startTime, endTime;
+    let startTime,
+      endTime;
     if (this.props.startTime) {
       startTime = this.props.startTime;
     } else {
@@ -168,7 +175,8 @@ let DateTimeSelector = React.createClass({
     if (nextProps.startDate) {
       let startDate = nextProps.startDate,
         endDate = nextProps.endDate;
-      let startTime, endTime;
+      let startTime,
+        endTime;
       if (nextProps.startTime) {
         startTime = nextProps.startTime;
       } else {
