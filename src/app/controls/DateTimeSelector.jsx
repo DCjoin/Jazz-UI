@@ -72,22 +72,19 @@ let DateTimeSelector = React.createClass({
       endTime = et;
     if (sd === null) {
       startDate = this.refs.startDate.getValue();
-    } else {
-      _isStart = true;
     }
     if (st === null) {
       startTime = this.refs.startDate.getTime();
-    } else {
-      _isStart = true;
     }
     if (ed === null) {
       endDate = this.refs.endDate.getValue();
-    } else {
-      _isStart = false;
     }
     if (et === null) {
       endTime = this.refs.endDate.getTime();
-    } else {
+    }
+    if ((sd !== null) || (st !== null)) {
+      _isStart = true;
+    } else if ((ed !== null) || (et !== null)) {
       _isStart = false;
     }
     if (startDate === null) {
@@ -107,18 +104,12 @@ let DateTimeSelector = React.createClass({
     }
     if (startDate.getTime() >= endDate.getTime() || multiDate) {
       if ((sd !== null) || (st !== null)) {
-        if (this.props.onChangeStart) {
-          this.props.onChangeStart(true);
-        }
         if (this.props.showTime === false) {
           endDate = dateAdd(startDate, 1, 'days');
         } else {
           endDate = dateAdd(startDate, 1, 'hours');
         }
       } else if ((ed !== null) || (et !== null)) {
-        if (this.props.onChangeStart) {
-          this.props.onChangeStart(false);
-        }
         if (this.props.showTime === false) {
           startDate = dateAdd(endDate, -1, 'days');
         } else {
@@ -126,11 +117,7 @@ let DateTimeSelector = React.createClass({
         }
       }
     }
-    if ((sd !== null) || (ed !== null)) {
-      this.setDateField(startDate, endDate, this.props._onDateSelectorChanged);
-    }
-    if ((st !== null) || (et !== null))
-      this.setDateField(startDate, endDate, this.props._onDateSelectorChanged);
+    this.setDateField(startDate, endDate, this.props._onDateSelectorChanged);
   },
   getDefaultProps() {
     return {
