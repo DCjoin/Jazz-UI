@@ -11,6 +11,7 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import Immutable from 'immutable';
+import moment from "moment";
 let PTagRawData = React.createClass({
   propTypes: {
     selectedTag: React.PropTypes.object,
@@ -27,7 +28,6 @@ let PTagRawData = React.createClass({
       end: this._getInitDate().end,
       paulseDialogShow: false,
       isRawData: this.props.selectedTag.get('IsAccumulated') ? false : true,
-      showErrorDialog: false,
       refresh: false,
       startDate: this._getInitDate().startDate,
       endDate: this._getInitDate().endDate,
@@ -79,49 +79,32 @@ let PTagRawData = React.createClass({
   _onDateSelectorChanged: function(startDate, endDate, startTime, endTime) {
     let that = this,
       dateSelector = this.refs.dateTimeSelector,
-      timeRange = dateSelector.getDateTime(),
-      showErrorDialog = false;
+      timeRange = dateSelector.getDateTime();
     if (timeRange.end - timeRange.start > 30 * 24 * 60 * 60 * 1000) {
-      showErrorDialog = true;
-    }
-    if (showErrorDialog) {
-      this.setState({
-        showErrorDialog: true
-      })
-    } else {
-      this.setState({
-        start: timeRange.start,
-        end: timeRange.end,
-        showErrorDialog: showErrorDialog,
-        startDate: startDate,
-        endDate: endDate,
-        startTime: startTime,
-        endTime: endTime
-      }, () => {
-        that._getTagsData(that.props)
-      })
+      let isStart = dateSelector.getTimeType();
+      if (isStart) {
+        endDate = moment(startDate), add(29, 'days')._d;
+        endTime = startTime;
+        timeRange.end = endDate.setHours(endTime, 0, 0, 0);
+      } else {
+        startDate = moment(endDate), add(-29, 'days')._d;
+        startTime = endTime;
+        timeRange.start = startDate.setHours(startTime, 0, 0, 0);
+      }
     }
 
-  },
-  _renderErrorDialog: function() {
-    var that = this;
-    if (this.state.showErrorDialog) {
-      return (<Dialog
-        ref = "_dialog"
-        title={I18N.Platform.ServiceProvider.ErrorNotice}
-        modal={false}
-        openImmediately={true}
-        onDismiss={() => {
-          that.setState({
-            showErrorDialog: false
-          })
-        }}
-        >
-        {I18N.EM.RawData.Error}
-    </Dialog>)
-    } else {
-      return null;
-    }
+    this.setState({
+      start: timeRange.start,
+      end: timeRange.end,
+      showErrorDialog: showErrorDialog,
+      startDate: startDate,
+      endDate: endDate,
+      startTime: startTime,
+      endTime: endTime
+    }, () => {
+      that._getTagsData(that.props)
+    })
+
   },
   _onPauseDialogShow: function() {
     this.setState({
@@ -360,8 +343,7 @@ let PTagRawData = React.createClass({
     var that = this;
     if (!nextProps.selectedTag.equals(this.props.selectedTag)) {
       that.setState({
-        isRawData: nextProps.selectedTag.get('IsAccumulated') ? false : true,
-        showErrorDialog: false
+        isRawData: nextProps.selectedTag.get('IsAccumulated') ? false : true
       }, () => {
         that._getTagsData(nextProps, true)
       })
@@ -404,7 +386,6 @@ let PTagRawData = React.createClass({
             {this._renderToolBar()}
             {this._renderDialog()}
             {this._renderChartComponent()}
-            {this._renderErrorDialog()}
           </div>
         )
     }
