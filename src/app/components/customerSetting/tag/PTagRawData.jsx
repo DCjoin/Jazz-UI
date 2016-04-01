@@ -11,7 +11,7 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import Immutable from 'immutable';
-import moment from "moment";
+let {dateAdd} = CommonFuns;
 let PTagRawData = React.createClass({
   propTypes: {
     selectedTag: React.PropTypes.object,
@@ -38,8 +38,8 @@ let PTagRawData = React.createClass({
   _getInitDate: function() {
     let date = new Date();
     date.setHours(0, 0, 0, 0);
-    let last7Days = CommonFuns.dateAdd(date, -6, 'days');
-    let endDate = CommonFuns.dateAdd(date, 1, 'days');
+    let last7Days = dateAdd(date, -6, 'days');
+    let endDate = dateAdd(date, 1, 'days');
     return ({
       start: last7Days,
       end: endDate,
@@ -83,20 +83,19 @@ let PTagRawData = React.createClass({
     if (timeRange.end - timeRange.start > 30 * 24 * 60 * 60 * 1000) {
       let isStart = dateSelector.getTimeType();
       if (isStart) {
-        endDate = moment(startDate), add(29, 'days')._d;
+        endDate = dateAdd(startDate, 30, 'days');
         endTime = startTime;
-        timeRange.end = endDate.setHours(endTime, 0, 0, 0);
+        timeRange.end = new Date(endDate.setHours(endTime, 0, 0, 0));
       } else {
-        startDate = moment(endDate), add(-29, 'days')._d;
+        startDate = dateAdd(endDate, -31, 'days');
         startTime = endTime;
-        timeRange.start = startDate.setHours(startTime, 0, 0, 0);
+        timeRange.start = new Date(startDate.setHours(startTime, 0, 0, 0));
       }
     }
 
     this.setState({
       start: timeRange.start,
       end: timeRange.end,
-      showErrorDialog: showErrorDialog,
       startDate: startDate,
       endDate: endDate,
       startTime: startTime,
@@ -114,7 +113,7 @@ let PTagRawData = React.createClass({
   _onStatusChanged: function(st) {
     var veeTagStatus = this.state.veeTagStatus,
       status = veeTagStatus.get('Status'),
-      index = status.findIndex(item => item.get('Type') == st.get('Type')),
+      index = status.findIndex(item => item.get('Type') === st.get('Type')),
       sta = st;
     if (sta.get('Status') === 2) {
       sta = sta.set('Status', 1)
