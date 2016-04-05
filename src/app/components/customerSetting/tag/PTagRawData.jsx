@@ -87,8 +87,14 @@ let PTagRawData = React.createClass({
         endTime = startTime;
         timeRange.end = new Date(endDate.setHours(endTime, 0, 0, 0));
       } else {
-        startDate = dateAdd(endDate, -31, 'days');
+        //jacob 2016-04-05: 开始时间不能出现24点
+        startDate = dateAdd(endDate, -30, 'days');
         startTime = endTime;
+        if(endTime==24)
+        {
+          startTime = 0;
+          startDate = dateAdd(startDate, 1, 'days');
+        }
         timeRange.start = new Date(startDate.setHours(startTime, 0, 0, 0));
       }
     }
