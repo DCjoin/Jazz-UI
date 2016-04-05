@@ -1247,7 +1247,8 @@ let CommonFuns = {
       case 1: //hour 2010年10月3日0点-1点; 2010年10月3日23点-3日24点
         //hour 20-21,08/08, 2014
         {
-        date = date.setMinutes(0);
+          //Jacob 2016-04-05 bug fix: date.setMinutes返回值为一个毫秒数，调用后面的方法异常
+        date = new Date(date.setMinutes(0));
         if (date.getHours() === 0) {
           let newDate = Momment(date);
           newDate = newDate.add(-1, 'minutes');
