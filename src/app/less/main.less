@@ -256,6 +256,14 @@ span {
             display: flex;
             position: relative;
             & .jazz-mainmenu-main {
+              width: 100px;
+              padding: 0px;
+              text-align: center;
+              flex-direction: column;
+              >div:nth-child(3){
+                margin-top: 72px !important;
+                padding-top: 0px !important;
+              }
               &.active{
                 background-color:@menuActive;
                 flex-direction: column;

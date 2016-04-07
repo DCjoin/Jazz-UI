@@ -2,7 +2,9 @@
 
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
-import { Mixins, DropDownMenu, Menu } from 'material-ui';
+import { Mixins, DropDownMenu } from 'material-ui';
+let Menu = require('material-ui/lib/menus/menu');
+let MenuItem = require('material-ui/lib/menus/menu-item');
 import classnames from "classnames";
 
 import BubbleIcon from '../components/BubbleIcon.jsx';
@@ -30,9 +32,9 @@ var SubMainMenu = React.createClass({
     };
   },
 
-  _onMenuItemClick: function(e, index, payload) {
+  _onMenuItemClick: function(e, item) {
 
-    this.transitionTo(payload.name, this.props.params);
+    this.transitionTo(item.props.name, this.props.params);
     this._dismissSubMain();
 
 
@@ -46,12 +48,26 @@ var SubMainMenu = React.createClass({
     var {node, _renderMenuItems, params} = this.props,
       {showSubMenu} = this.state,
       {isActive, activeTitle} = this._checkSubIsActive(node.children);
-
+    var menu = null;
     var menuItems = this.props.node.children.map((item) => {
-      item.text = item.title;
-      item.payload = item.name;
-      return item;
+      return <MenuItem primaryText={item.title} name={item.name} style={{
+          fontSize: '14px',
+          paddingLeft: '0px',
+          paddingRight: '0px',
+          paddingTop: '0px',
+          width: isActive ? '120px' : '100px'
+        }}/>;
     });
+    if (showSubMenu) {
+      menu = <Menu
+      style={{
+        left: 0
+      }}
+      ref="menuItems"
+      autoWidth={false}
+      onItemTouchTap={this._onMenuItemClick}
+      >{menuItems}</Menu>;
+    }
 
     return (
       <div
@@ -61,24 +77,12 @@ var SubMainMenu = React.createClass({
           <a className={classnames({
         "jazz-mainmenu-main": true,
         "active": isActive
-      })} onClick={this._showSubMenu}>
+      })} onMouseEnter={this._showSubMenu} onMouseLeave={this._dismissSubMain}>
             <div>{node.title}</div>
             <div className="jazz-mainmenu-main-title">{activeTitle}</div>
+            {menu}
           </a>
-          <Menu
-      style={{
-        left: 0
-      }}
-      ref="menuItems"
-      autoWidth={false}
-      menuItems={menuItems}
-      menuItemStyle={{
-        paddingRight: 0,
-        paddingLeft: 8
-      }}
-      hideable={true}
-      visible={this.state.showSubMenu}
-      onItemTap={this._onMenuItemClick} />
+
       </div>
       );
   },
@@ -90,9 +94,12 @@ var SubMainMenu = React.createClass({
   },
 
   _dismissSubMain: function() {
-    this.setState({
-      showSubMenu: false
-    });
+    var me = this;
+    window.setTimeout(() => {
+      me.setState({
+        showSubMenu: false
+      });
+    }, 200);
   },
 
   _checkSubIsActive: function(children) {
