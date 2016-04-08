@@ -51,10 +51,15 @@ I18N.MainMenu.Report = 'Report';
 I18N.MainMenu.DailyReport = 'Daily report';
 I18N.MainMenu.Template = 'Template';
 I18N.MainMenu.CustomerSetting = 'Customer';
+I18N.MainMenu.TagSetting = '数据点配置';
 I18N.MainMenu.PTagManagement = 'PTag';
 I18N.MainMenu.VTagManagement = 'VTag';
 I18N.MainMenu.VEEMonitorRule = 'VE&E';
 I18N.MainMenu.TagBatchImportLog = 'Import log';
+I18N.MainMenu.HierarchySetting = '层级配置';
+I18N.MainMenu.HierarchyNodeSetting = '层级节点配置';
+I18N.MainMenu.HierarchyLog = '配置导入日志';
+I18N.MainMenu.CustomSetting = '自定义配置';
 I18N.MainMenu.CustomizedLabeling = 'Labelling';
 
 I18N.MainMenu.Calendar = 'Calendar';
