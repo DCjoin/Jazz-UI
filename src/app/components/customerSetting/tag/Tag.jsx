@@ -12,7 +12,7 @@ import GlobalErrorMessageAction from '../../../actions/GlobalErrorMessageAction.
 import Immutable from 'immutable';
 import RawDataList from './RawDataList.jsx';
 
-
+var timeoutID = null;
 let Tag = React.createClass({
   propTypes: {
     tagType: React.PropTypes.number.isRequired
@@ -303,13 +303,20 @@ let Tag = React.createClass({
     });
   },
   _onSearch: function(value) {
+    var me = this;
     var filterObj = this.state.filterObj;
     filterObj.LikeCodeOrName = value;
     this.setState({
       filterObj: filterObj,
       curPageNum: 1
     }, () => {
-      this.getTagList();
+      if (timeoutID) {
+        clearTimeout(timeoutID);
+      }
+      timeoutID = setTimeout(() => {
+        me.getTagList();
+        timeoutID = null;
+      }, 200);
     });
   },
   _onSearchCleanButtonClick: function() {
