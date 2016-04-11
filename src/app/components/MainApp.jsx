@@ -69,45 +69,67 @@ let MainApp = React.createClass({
           {
             name: 'report',
             title: I18N.MainMenu.Report,
-            children: [
-              {
-                name: 'dailyReport',
-                title: I18N.MainMenu.DailyReport
-              },
-              {
-                name: 'template',
-                title: I18N.MainMenu.Template
-              }
-            ]
+            children: [{
+              list: [
+                {
+                  name: 'dailyReport',
+                  title: I18N.MainMenu.DailyReport
+                },
+                {
+                  name: 'template',
+                  title: I18N.MainMenu.Template
+                }
+              ]
+            }]
           }
         );
       }
       if (this.state.rivilege.indexOf('1208') > -1 || this.state.rivilege.indexOf('1217') > -1) {
         var customerChildren = [];
         if (this.state.rivilege.indexOf('1208') > -1) {
-          customerChildren = [
-            {
-              name: 'ptag',
-              title: I18N.MainMenu.PTagManagement
-            },
-            {
-              name: 'vtag',
-              title: I18N.MainMenu.VTagManagement
-            },
-            {
-              name: 'vee',
-              title: I18N.MainMenu.VEEMonitorRule
-            },
-            {
-              name: 'log',
-              title: I18N.MainMenu.TagBatchImportLog
-            }
-          ];
+          customerChildren = [{
+            title: I18N.MainMenu.TagSetting,
+            list: [
+              {
+                name: 'ptag',
+                title: I18N.MainMenu.PTagManagement
+              },
+              {
+                name: 'vtag',
+                title: I18N.MainMenu.VTagManagement
+              },
+              {
+                name: 'vee',
+                title: I18N.MainMenu.VEEMonitorRule
+              },
+              {
+                name: 'log',
+                title: I18N.MainMenu.TagBatchImportLog
+              }
+            ]
+          }, {
+            title: I18N.MainMenu.HierarchySetting,
+            list: [
+              {
+                name: 'hierNode',
+                title: I18N.MainMenu.HierarchyNodeSetting
+              },
+              {
+                name: 'hierLog',
+                title: I18N.MainMenu.HierarchyLog
+              }
+            ]
+          }];
         }
         if (this.state.rivilege.indexOf('1217') > -1) {
           customerChildren.push({
-            name: 'customerLabeling',
-            title: I18N.MainMenu.CustomizedLabeling
+            title: I18N.MainMenu.CustomSetting,
+            list: [
+              {
+                name: 'customerLabeling',
+                title: I18N.MainMenu.CustomizedLabeling
+              }
+            ]
           });
         }
         menuItems.push(

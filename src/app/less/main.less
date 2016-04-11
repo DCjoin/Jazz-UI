@@ -256,18 +256,28 @@ span {
             display: flex;
             position: relative;
             & .jazz-mainmenu-main {
+              >div:nth-child(3){
+                z-index:99;
+                position: absolute;
+                .jazz-mainmenu-level-main-list{
+                  display: table-cell;;
+                  >div{
+                    position: inherit!important;
+                    >div{
+                      box-shadow: none !important;
+                    }
+                  }
+                }
+              }
               width: 100px;
               padding: 0px;
               text-align: center;
               flex-direction: column;
-              >div:nth-child(3){
-                margin-top: 72px !important;
-                padding-top: 0px !important;
-              }
+
               &.active{
                 background-color:@menuActive;
                 flex-direction: column;
-                line-height: normal;
+                line-height: 21px;
                 width: 120px;
                 text-align: center;
                 padding: 26px 0 0;

@@ -2,12 +2,55 @@
 
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
-import { Mixins, DropDownMenu } from 'material-ui';
+import { Mixins, DropDownMenu, Paper } from 'material-ui';
 let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
 import classnames from "classnames";
 
 import BubbleIcon from '../components/BubbleIcon.jsx';
+
+
+var ListMenu = React.createClass({
+  propTypes: function() {
+    return {
+      title: React.PropTypes.string
+    };
+  },
+  render: function() {
+    var title = this.props.title;
+    var menuStyle = {
+      fontSize: '14px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      paddingTop: '0px',
+      width: this.props.isActive ? '120px' : '100px'
+    };
+    var menuItems = this.props.menuItems.map((item) => {
+      return <MenuItem primaryText={item.title} name={item.name} style={menuStyle}/>;
+    });
+    if (title) {
+      menuItems.unshift(<MenuItem primaryText={title} disabled={true} style={menuStyle}/>);
+    }
+    var menu = <Menu
+    style={{
+      left: (this.props.isActive ? 120 : 80) * this.props.index
+    }}
+    ref="menuItems"
+    autoWidth={false}
+    onItemTouchTap={this._onMenuItemClick}
+    >{menuItems}</Menu>;
+    return (
+      <div
+      ref="list"
+      className={"jazz-mainmenu-level-main-list"}>
+        {menu}
+      </div>
+      );
+  },
+  _onMenuItemClick: function(e, item) {
+    this.props.onMenuItemClick(e, item);
+  }
+});
 
 var SubMainMenu = React.createClass({
   mixins: [State, Mixins.ClickAwayable, Navigation],
@@ -24,6 +67,8 @@ var SubMainMenu = React.createClass({
       params: React.PropTypes.object
     };
   },
+
+
 
   getDefaultProps: function() {
     return {
@@ -49,24 +94,12 @@ var SubMainMenu = React.createClass({
       {showSubMenu} = this.state,
       {isActive, activeTitle} = this._checkSubIsActive(node.children);
     var menu = null;
-    var menuItems = this.props.node.children.map((item) => {
-      return <MenuItem primaryText={item.title} name={item.name} style={{
-          fontSize: '14px',
-          paddingLeft: '0px',
-          paddingRight: '0px',
-          paddingTop: '0px',
-          width: isActive ? '120px' : '100px'
-        }}/>;
+    var listItems = this.props.node.children.map((item, i) => {
+      return <ListMenu title={item.title} menuItems={item.list} onMenuItemClick={this._onMenuItemClick} isActive={isActive} index={i}/>;
     });
+    var listNum = this.props.node.children.length;
     if (showSubMenu) {
-      menu = <Menu
-      style={{
-        left: 0
-      }}
-      ref="menuItems"
-      autoWidth={false}
-      onItemTouchTap={this._onMenuItemClick}
-      >{menuItems}</Menu>;
+      menu = <Paper zDepth={1}>{listItems}</Paper>;
     }
 
     return (
@@ -107,12 +140,14 @@ var SubMainMenu = React.createClass({
       hasActive = false,
       title = null;
     children.every((item) => {
-      if (that.isActive(item.name)) {
-        title = item.title;
-        hasActive = true;
-        return false;
-      }
-      return true;
+      item.list.every((menu) => {
+        if (that.isActive(menu.name)) {
+          title = menu.title;
+          hasActive = true;
+          return false;
+        }
+        return true;
+      });
     });
     return {
       isActive: hasActive,
