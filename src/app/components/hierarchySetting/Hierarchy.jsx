@@ -16,7 +16,7 @@ var Hierarchy = React.createClass({
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,
-      selectedId: null,
+      selectedNode: emptyMap(),
       selectedContent: emptyMap(),
       hierarchys: HierarchyStore.getHierarchys(),
       closedList: false,
@@ -26,9 +26,9 @@ var Hierarchy = React.createClass({
       infoTabNo: 1,
     };
   },
-  _onChange: function(selectedId) {
-    if (!!selectedId) {
-      this._setViewStatus(selectedId);
+  _onChange: function(selectedNode) {
+    if (!!selectedNode) {
+      this._setViewStatus(selectedNode);
     }
     this.setState({
       hierarchys: HierarchyStore.getHierarchys(),
@@ -44,7 +44,7 @@ var Hierarchy = React.createClass({
       isLoading: false
     });
   },
-  _setViewStatus: function(selectedId = this.state.selectedId) {
+  _setViewStatus: function(selectedNode = this.state.selectedNode) {
     // if (!selectedId) {
     //   id = this.state.tariffs.getIn([0, "Id"]);
     //   TariffAction.setCurrentSelectedId(id);
@@ -54,7 +54,7 @@ var Hierarchy = React.createClass({
     // }
     this.setState({
       formStatus: formStatus.VIEW,
-      selectedId: selectedId,
+      selectedNode: selectedNode,
     //  selectedContent: VEEStore.getRuleById(id)
     });
   },
@@ -79,7 +79,7 @@ var Hierarchy = React.createClass({
       onAddBtnClick: this._setAddStatus,
       onHierarchyClick: this._handlerTouchTap,
       hierarchys: this.state.hierarchys,
-      selectedId: this.state.selectedId,
+      selectedNode: this.state.selectedNode,
     //onGragulaNode: this._onGragulaNode
     };
     let list = (!this.state.closedList) ? <div style={{

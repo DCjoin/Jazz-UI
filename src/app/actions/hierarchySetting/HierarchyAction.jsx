@@ -4,9 +4,10 @@ import { Action } from '../../constants/actionType/hierarchySetting/Hierarchy.js
 import Ajax from '../../ajax/ajax.jsx';
 let HierarchyAction = {
   GetHierarchys: function() {
+    let customerId = parseInt(window.currentCustomerId);
     Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive', {
       params: {
-        CustomerId: window.currentCustomerId,
+        customerId: customerId,
       },
       success: function(hierarchys) {
         AppDispatcher.dispatch({

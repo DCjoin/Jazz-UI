@@ -11,7 +11,7 @@ var HierarchyList = React.createClass({
     onHierarchyClick: React.PropTypes.func,
     onAddBtnClick: React.PropTypes.func,
     hierarchys: React.PropTypes.object,
-    selectedId: React.PropTypes.number
+    selectedNode: React.PropTypes.object
   //onGragulaNode: React.PropTypes.func
   },
   render: function() {
@@ -21,13 +21,20 @@ var HierarchyList = React.createClass({
       allHasCheckBox: false,
       allDisabled: false,
       onSelectNode: this.props.onHierarchyClick,
-      selectedNode: HierarchyStore.getHierarchyById(this.props.selectedId),
+      selectedNode: this.props.electedNode,
+      arrowClass: 'jazz-foldertree-arrow',
+      treeNodeClass: 'jazz-foldertree-node',
     //onGragulaNode: this._onGragulaNode,
     }
     return (
-      <div className="jazz-folder-leftpanel-foldertree">
-        <Tree {...treeProps}/>
+      <div className='jazz-tag-leftpanel'>
+        <div className="jazz-folder-leftpanel-foldertree" style={{
+        color: '#ffffff'
+      }}>
+          <Tree {...treeProps}/>
+        </div>
       </div>
+
       )
   }
 });

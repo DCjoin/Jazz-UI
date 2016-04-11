@@ -9,7 +9,7 @@ function emptyMap() {
   return new Map();
 }
 var _hierarchys = emptyMap(),
-  _selectedId = null;
+  _selectedNode = null;
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange';
 var HierarchyStore = assign({}, PrototypeStore, {
@@ -19,14 +19,11 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getHierarchys: function() {
     return _hierarchys
   },
-  getHierarchyById: function(id) {
-    return _hierarchys.find(item => (item.get('Id') === id))
+  setSelectedNode: function(selectedNode) {
+    _selectedNode = selectedNode;
   },
-  setSelectedId: function(id) {
-    _selectedId = id;
-  },
-  getSelectedId: function() {
-    return _selectedId;
+  getSelectedNode: function() {
+    return _selectedNode;
   },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
@@ -57,11 +54,11 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       var pre = _hierarchys;
       HierarchyStore.setHierarchys(action.hierarchys);
       if (pre.size === 0) {
-        HierarchyStore.setSelectedId(_hierarchys.get("Id"));
-        HierarchyStore.emitChange(_hierarchys.get("Id"));
+        HierarchyStore.setSelectedNode(_hierarchys);
+        HierarchyStore.emitChange(_hierarchys);
       } else {
-        HierarchyStore.setSelectedId(_selectedId);
-        HierarchyStore.emitChange(_selectedId);
+        HierarchyStore.setSelectedNode(_selectedNode);
+        HierarchyStore.emitChange(_selectedNode);
       }
       HierarchyStore.emitChange();
       break;

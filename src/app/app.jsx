@@ -70,9 +70,10 @@ var routes = (
         <Route name="template" path="template" handler={Template}></Route>
         <Route name="ptag" path="ptag" handler={PTag}></Route>
         <Route name="vtag" path="vtag" handler={VTag}></Route>
-        <Route name="vee" path="vee" handler={Hierarchy}></Route>
+        <Route name="vee" path="vee" handler={VEE}></Route>
         <Route name="log" path="log" handler={TagLog}></Route>
         <Route name="customerLabeling" path="customerLabeling" handler={Label}></Route>
+        <Route name="hierNode" path="hierNode" handler={Hierarchy}></Route>
       </Route>
       <Route name="platform" path="platform" handler={PlatformApp}>
         <Route name='config' path='config' handler={Platform}></Route>
