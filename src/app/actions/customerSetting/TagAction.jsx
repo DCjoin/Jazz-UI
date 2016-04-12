@@ -6,6 +6,7 @@ import assign from "object-assign";
 
 
 var search = null;
+var formulaSearch = null;
 let TagAction = {
   getTagListByType: function(type, page, filterObj) {
     var obj = {
@@ -43,7 +44,10 @@ let TagAction = {
       CustomerId: parseInt(window.currentCustomerId)
     };
     var filter = assign(filterObj, obj);
-    Ajax.post('/Tag.svc/GetTagsByFilter', {
+    if (formulaSearch) {
+      formulaSearch.abort();
+    }
+    formulaSearch = Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: filter,
         page: page,
@@ -51,6 +55,7 @@ let TagAction = {
         start: 20 * (page - 1)
       },
       success: function(allTagData) {
+        formulaSearch = null;
         AppDispatcher.dispatch({
           type: Action.GET_ALL_TAG_LIST_SUCCESS,
           allTagData: allTagData
