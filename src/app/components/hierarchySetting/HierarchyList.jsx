@@ -184,7 +184,6 @@ var HierarchyList = React.createClass({
       isImporting: true
     });
   },
-  _onExportBtnClick: function() {},
   render: function() {
     var treeProps = {
         collapsedLevel: 0,
