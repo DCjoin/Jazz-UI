@@ -13,10 +13,10 @@ let HierarchyLogList = React.createClass({
   componentWillUnmount: function() {},
   render() {
     let me = this;
-    let tagLogList = this.props.tagLogList;
-    let tagLogItems = null;
-    if (tagLogList && tagLogList.size !== 0) {
-      tagLogItems = tagLogList.map(function(item) {
+    let logList = this.props.logList;
+    let logItems = null;
+    if (logList && logList.size !== 0) {
+      logItems = logList.map(function(item) {
         let props = {
           key: item.get('Id'),
           id: item.get('Id'),
@@ -38,7 +38,7 @@ let HierarchyLogList = React.createClass({
 
     return (
       <div>
-        {tagLogItems}
+        {logItems}
       </div>
       );
   }
