@@ -131,6 +131,11 @@ I18N.Common.Glossary.WeekDay.Friday = '五';
 I18N.Common.Glossary.WeekDay.Saturday = '六';
 I18N.Common.Glossary.WeekDay.Sunday = '日';
 
+I18N.Common.Glossary.Organization = '组织';
+I18N.Common.Glossary.Site = '园区';
+I18N.Common.Glossary.Building = '建筑';
+I18N.Common.Glossary.Node = '节点';
+
 I18N.Common.Per = {};
 I18N.Common.Per.Person = '/人';
 I18N.Common.Per.m2 = '/M²';

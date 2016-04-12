@@ -131,6 +131,11 @@ I18N.Common.Glossary.WeekDay.Friday = 'Fri.';
 I18N.Common.Glossary.WeekDay.Saturday = 'Sat.';
 I18N.Common.Glossary.WeekDay.Sunday = 'Sun.';
 
+I18N.Common.Glossary.Organization = 'Organization';
+I18N.Common.Glossary.Site = 'Site';
+I18N.Common.Glossary.Building = 'Building';
+I18N.Common.Glossary.Node = 'Node';
+
 I18N.Common.Per = {};
 I18N.Common.Per.Person = '/Person';
 I18N.Common.Per.m2 = '/M²';
