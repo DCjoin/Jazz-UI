@@ -46,6 +46,15 @@ var Hierarchy = React.createClass({
       isLoading: false
     });
   },
+  _onExportBtnClick: function() {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(window.currentCustomerId);
+    iframe.onload = function() {
+      document.body.removeChild(iframe);
+    };
+    document.body.appendChild(iframe);
+  },
   _setViewStatus: function(selectedNode = this.state.selectedNode) {
     // if (!selectedId) {
     //   id = this.state.tariffs.getIn([0, "Id"]);
@@ -102,6 +111,12 @@ var Hierarchy = React.createClass({
     }
     return detail
   },
+  _onReloadHierachyTree: function() {
+    HierarchyAction.GetHierarchys();
+    this.setState({
+      isLoading: true
+    });
+  },
   componentWillMount: function() {
     document.title = I18N.MainMenu.CustomerSetting;
     HierarchyAction.GetHierarchys();
@@ -120,27 +135,14 @@ var Hierarchy = React.createClass({
   render: function() {
     var isView = this.state.formStatus === formStatus.VIEW;
     var listProps = {
-        formStatus: this.state.formStatus,
-        onAddBtnClick: this._setAddStatus,
-        onHierarchyClick: this._handlerTouchTap,
-        hierarchys: this.state.hierarchys,
-        selectedNode: this.state.selectedNode,
-      //onGragulaNode: this._onGragulaNode
-      },
-      detailProps = {
-        ref: 'jazz_hierarchy_detail',
-        content: this.state.selectedContent,
-        formStatus: this.state.formStatus,
-        infoTabNo: this.state.infoTabNo,
-        setEditStatus: this._setEditStatus,
-        handlerCancel: this._handlerCancel,
-        handleSave: this._handleSave,
-        handleDelete: this._handleDelete,
-        handlerSwitchTab: this._switchTab,
-        toggleList: this._toggleList,
-        closedList: this.state.closedList,
-        merge: this._handlerMerge
-      };
+      formStatus: this.state.formStatus,
+      onAddBtnClick: this._setAddStatus,
+      onHierarchyClick: this._handlerTouchTap,
+      hierarchys: this.state.hierarchys,
+      selectedNode: this.state.selectedNode,
+      onReloadHierachyTree: this._onReloadHierachyTree
+    //onGragulaNode: this._onGragulaNode
+    };
     let list = (!this.state.closedList) ? <div style={{
       display: 'flex'
     }}><HierarchyList {...listProps}/></div> : <div style={{
