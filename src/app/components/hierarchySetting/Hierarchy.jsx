@@ -44,6 +44,15 @@ var Hierarchy = React.createClass({
       isLoading: false
     });
   },
+  _onExportBtnClick: function() {
+    var iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(window.currentCustomerId);
+    iframe.onload = function() {
+      document.body.removeChild(iframe);
+    };
+    document.body.appendChild(iframe);
+  },
   _setViewStatus: function(selectedNode = this.state.selectedNode) {
     // if (!selectedId) {
     //   id = this.state.tariffs.getIn([0, "Id"]);

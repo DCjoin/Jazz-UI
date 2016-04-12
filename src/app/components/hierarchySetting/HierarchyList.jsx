@@ -3,11 +3,11 @@
 import React from "react";
 import { CircularProgress } from 'material-ui';
 import { formStatus } from '../../constants/FormStatus.jsx';
-import CommonFuns from '../../../util/Util.jsx';
+import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
 import Tree from '../../controls/tree/Tree.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
