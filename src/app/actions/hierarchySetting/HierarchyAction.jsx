@@ -25,7 +25,26 @@ let HierarchyAction = {
       type: Action.SET_SELECTED_HIERARCHY_NODE,
       node: node
     });
-  }
+  },
+  //for customer
+  getCustomersByFilter: function(customerId) {
+    Ajax.post('/Customer.svc/GetCustomersByFilter', {
+      params: {
+        filter: {
+          CustomerId: customerId,
+        }
+      },
+      success: function(customer) {
+        AppDispatcher.dispatch({
+          type: Action.GET_CUSTOMER_FOR_HIERARCHY,
+          customer: customer
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 
 };
 

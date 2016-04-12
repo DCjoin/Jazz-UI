@@ -9,9 +9,11 @@ function emptyMap() {
   return new Map();
 }
 var _hierarchys = emptyMap(),
-  _selectedNode = null;
+  _selectedNode = null,
+  _customer = emptyMap();
 let CHANGE_EVENT = 'change',
-  ERROR_CHANGE_EVENT = 'errorchange';
+  ERROR_CHANGE_EVENT = 'errorchange',
+  CUSTOMER_CHANGE_EVENT = 'customerchange';
 var HierarchyStore = assign({}, PrototypeStore, {
   setHierarchys: function(hierarchys) {
     _hierarchys = Immutable.fromJS(hierarchys);
@@ -36,6 +38,47 @@ var HierarchyStore = assign({}, PrototypeStore, {
     }
     return items
   },
+  getParent: function(node) {
+    var parent;
+    var f = function(item) {
+      if (item.get('Id') == node.get('ParentId')) {
+        parent = item;
+      } else {
+        if (item.get('Children')) {
+          item.get('Children').forEach(child => {
+            f(child)
+          })
+        }
+      }
+    };
+    f(_hierarchys);
+    return parent;
+  },
+  getAddBtnStatusByNode: function(node) {
+    var that = this;
+    if (node.get('Type') === 0 || node.get('Type') === 3) {
+      let sum = 1;
+      let parent = that.getParent(node);
+      while (parent.get('Type') === node.get('Type')) {
+        sum++;
+        parent = that.getParent(parent);
+      }
+      if (sum >= 5) {
+        return true
+      } else {
+        return false
+      }
+    } else {
+      return false
+    }
+  },
+  //for customer
+  setSelectedCustomer: function(customer) {
+    _customer = Immutable.fromJS(customer[0]);
+  },
+  getSelectedCustomer: function() {
+    return _customer;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -56,6 +99,15 @@ var HierarchyStore = assign({}, PrototypeStore, {
   emitErrorhange(args) {
     this.emit(ERROR_CHANGE_EVENT, args);
   },
+  addCustomerChangeListener(callback) {
+    this.on(CUSTOMER_CHANGE_EVENT, callback);
+  },
+  removeCustomerChangeListener(callback) {
+    this.removeListener(CUSTOMER_CHANGE_EVENT, callback);
+  },
+  emitCustomerChange(args) {
+    this.emit(CUSTOMER_CHANGE_EVENT, args);
+  },
 });
 var HierarchyAction = Hierarchy.Action;
 HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -75,6 +127,10 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case HierarchyAction.SET_SELECTED_HIERARCHY_NODE:
       HierarchyStore.setSelectedNode(action.node);
+      break;
+    case HierarchyAction.GET_CUSTOMER_FOR_HIERARCHY:
+      HierarchyStore.setSelectedCustomer(action.customer);
+      HierarchyStore.emitCustomerChange();
       break;
 
   }

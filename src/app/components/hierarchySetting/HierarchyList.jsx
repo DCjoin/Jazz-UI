@@ -2,11 +2,13 @@
 
 import React from "react";
 import { formStatus } from '../../constants/FormStatus.jsx';
+import TreeConstants from '../../constants/TreeConstants.jsx';
 import classNames from 'classnames';
 import Tree from '../../controls/tree/Tree.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
+let {nodeType} = TreeConstants;
 
 var HierarchyList = React.createClass({
   propTypes: {
@@ -35,6 +37,44 @@ var HierarchyList = React.createClass({
     return menuItems
 
   },
+  getAddBtnDisabled: function() {
+    if (this.props.formStatus === formStatus.ADD) {
+      return true;
+    } else {
+      return HierarchyStore.getAddBtnStatusByNode(this.props.selectedNode);
+    }
+  },
+  _onAddBtnClick: function() {
+    let newNodeType = null;
+    switch (selectedNode.get('Type')) {
+      case nodeType.Site:
+        newNodeType = nodeType.Building;
+        break;
+      case nodeType.Building:
+        newNodeType = nodeType.Area;
+        break;
+      case nodeType.Area:
+        newNodeType = nodeType.Area;
+        break;
+    }
+    this.props.onAddBtnClick(newNodeType);
+  },
+  _onMenuAddBtnClick: function(e, item) {
+    let key = parseInt(item.key);
+    let newNodeType = null;
+    switch (key) {
+      case 0:
+        newNodeType = nodeType.Organization;
+        break;
+      case 1:
+        newNodeType = nodeType.Site;
+        break;
+      case 2:
+        newNodeType = nodeType.Building;
+        break;
+    }
+    this.props.onAddBtnClick(newNodeType);
+  },
   _onImportBtnClick: function() {},
   _onExportBtnClick: function() {},
   render: function() {
@@ -53,7 +93,7 @@ var HierarchyList = React.createClass({
         type: "Add",
         text: I18N.Common.Glossary.Node,
         menuItems: this.getAddMenuItems(),
-        onItemClick: this._onNewWidget,
+        onItemClick: this._onMenuAddBtnClick,
       //disabled: this.state.buttonDisabled
       };
     var addBtnClasses = {
@@ -69,7 +109,7 @@ var HierarchyList = React.createClass({
       };
     var addBtn = null;
     if (this.props.selectedNode.get('Type') > 1) {
-      addBtn = <span onClick={this.props.onAddBtnClick} disabled={this.props.isAddStatus} className={classNames(addBtnClasses)}>
+      addBtn = <span onClick={this._onAddBtnClick} disabled={this.getAddBtnDisabled()} className={classNames(addBtnClasses)}>
             <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
             {I18N.Common.Glossary.Node}
           </span>

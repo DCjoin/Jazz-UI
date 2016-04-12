@@ -161,5 +161,10 @@ let CustomerAction = {
       }
     });
   },
+  clearAll: function() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_CUSTOMER_ALL
+    });
+  },
 };
 module.exports = CustomerAction;
