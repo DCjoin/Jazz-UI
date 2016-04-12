@@ -58,6 +58,12 @@ var Hierarchy = React.createClass({
     //  selectedContent: VEEStore.getRuleById(id)
     });
   },
+  _handlerTouchTap: function(node) {
+    this._setViewStatus(node);
+    if (this.state.selectedNode !== node) {
+      HierarchyAction.setCurrentSelectedNode(node);
+    }
+  },
   componentWillMount: function() {
     document.title = I18N.MainMenu.CustomerSetting;
     HierarchyAction.GetHierarchys();

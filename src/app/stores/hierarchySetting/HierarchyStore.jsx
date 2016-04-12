@@ -25,6 +25,17 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getSelectedNode: function() {
     return _selectedNode;
   },
+  getDropDownMenuItemsByType: function(type) {
+    var items = null;
+    switch (type) {
+      case -1:
+      case 0: items = [I18N.Common.Glossary.Organization, I18N.Common.Glossary.Site, I18N.Common.Glossary.Building];
+        break;
+      case 1: items = [I18N.Common.Glossary.Building];
+        break;
+    }
+    return items
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -61,6 +72,9 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
         HierarchyStore.emitChange(_selectedNode);
       }
       HierarchyStore.emitChange();
+      break;
+    case HierarchyAction.SET_SELECTED_HIERARCHY_NODE:
+      HierarchyStore.setSelectedNode(action.node);
       break;
 
   }

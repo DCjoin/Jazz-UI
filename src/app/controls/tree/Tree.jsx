@@ -135,7 +135,6 @@ var Tree = React.createClass({
     if (this.props.onGragulaNode) {
       drake.containers.push(container);
     }
-
   },
 
   _onDrop: function(el, target, source) {

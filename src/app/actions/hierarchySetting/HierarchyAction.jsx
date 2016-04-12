@@ -20,6 +20,12 @@ let HierarchyAction = {
       }
     });
   },
+  setCurrentSelectedNode: function(node) {
+    AppDispatcher.dispatch({
+      type: Action.SET_SELECTED_HIERARCHY_NODE,
+      node: node
+    });
+  }
 
 };
 
