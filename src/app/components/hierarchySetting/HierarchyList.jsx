@@ -159,10 +159,15 @@ var HierarchyList = React.createClass({
       name: 'CustomerId',
       value: parseInt(window.currentCustomerId)
     }, null, form);
-    var typeInput = createElement('input', {
+    var hierarchyInput = createElement('input', {
       type: 'hidden',
       name: 'HierarchyId',
       value: me.props.selectedNode.get('Id')
+    }, null, form);
+    var typeInput = createElement('input', {
+      type: 'hidden',
+      name: 'TagType',
+      value: 'Hierarchy'
     }, null, form);
 
     form.submit();
@@ -219,6 +224,7 @@ var HierarchyList = React.createClass({
     } else {
       addBtn = <DropdownButton {...addBtnProps}/>;
     }
+    var importDialog = this._renderImportDialog();
     return (
       <div className='jazz-tag-leftpanel'>
         <div className="jazz-tag-leftpanel-header">
@@ -238,6 +244,7 @@ var HierarchyList = React.createClass({
       }}>
           <Tree {...treeProps}/>
         </div>
+        {importDialog}
       </div>
 
       );
