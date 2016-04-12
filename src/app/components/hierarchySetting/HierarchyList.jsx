@@ -35,6 +35,8 @@ var HierarchyList = React.createClass({
     return menuItems
 
   },
+  _onImportBtnClick: function() {},
+  _onExportBtnClick: function() {},
   render: function() {
     var treeProps = {
         collapsedLevel: 0,
@@ -83,7 +85,7 @@ var HierarchyList = React.createClass({
             {I18N.Common.Button.Import}
             <input type="file" ref="fileInput" id='fileInput' name='fileInput' onChange={this._onImportBtnClick} style={fileInputStyle}/>
           </label>
-          <span onClick={this.props.onExportBtnClick} className="jazz-tag-leftpanel-header-item">
+          <span onClick={this._onExportBtnClick} className="jazz-tag-leftpanel-header-item">
             <span className="icon-export jazz-tag-leftpanel-header-item-icon"></span>
             {I18N.Common.Button.Export}
           </span>
