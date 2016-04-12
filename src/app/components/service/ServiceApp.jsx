@@ -14,24 +14,26 @@ let ServiceApp = React.createClass({
       {
         name: 'calendar',
         title: I18N.MainMenu.Calendar,
-        children: [
-          {
-            name: 'workday',
-            title: I18N.MainMenu.WorkdaySetting
-          },
-          {
-            name: 'worktime',
-            title: I18N.MainMenu.WorktimeSetting
-          },
-          {
-            name: 'coldwarm',
-            title: I18N.MainMenu.ColdwarmSetting
-          },
-          {
-            name: 'daynight',
-            title: I18N.MainMenu.DaynightSetting
-          }
-        ]
+        children: [{
+          list: [
+            {
+              name: 'workday',
+              title: I18N.MainMenu.WorkdaySetting
+            },
+            {
+              name: 'worktime',
+              title: I18N.MainMenu.WorktimeSetting
+            },
+            {
+              name: 'coldwarm',
+              title: I18N.MainMenu.ColdwarmSetting
+            },
+            {
+              name: 'daynight',
+              title: I18N.MainMenu.DaynightSetting
+            }
+          ]
+        }]
       },
       {
         name: 'convert',
