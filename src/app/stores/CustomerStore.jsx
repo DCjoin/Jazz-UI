@@ -182,6 +182,14 @@ var CustomerStore = assign({}, PrototypeStore, {
     _updatingCustomer = _persistedCustomer;
     _updatingEnergyInfo = _persistedEnergyInfo;
   },
+  clearAll: function() {
+    _customers = emptyList();
+    _persistedCustomer = emptyMap();
+    _updatingCustomer = emptyMap();
+    _selectedId = null;
+    _persistedEnergyInfo = null;
+    _updatingEnergyInfo = null;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -246,6 +254,9 @@ CustomerStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case CustomerAction.RESET_CUSTOMER:
       CustomerStore.reset();
+      break;
+    case CustomerAction.CLEAR_CUSTOMER_ALL:
+      CustomerStore.clearAll();
       break;
     case CustomerAction.SAVE_CUATOMER_ENERGYINFO_SUCCESS:
       CustomerStore.setEnergyInfo(action.energyInfo);
