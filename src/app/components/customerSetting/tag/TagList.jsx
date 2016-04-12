@@ -47,7 +47,9 @@ let TagList = React.createClass({
     }
   },
   _handleImportDialogDismiss: function() {
-    this.props.resetFilterObj();
+    if (this.state.importSuccess) {
+      this.props.resetFilterObj();
+    }
     this.setState({
       showImportDialog: false
     });
@@ -106,9 +108,6 @@ let TagList = React.createClass({
     var me = this;
     var file = event.target.files[0];
     var fileName = file.name;
-    var filterObj = this.props.filterObj;
-    filterObj.CommodityId = '';
-    filterObj.UomId = '';
 
     if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
       CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
