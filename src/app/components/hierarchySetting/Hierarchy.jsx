@@ -107,9 +107,9 @@ var Hierarchy = React.createClass({
     switch (type) {
       case -1:
         detailProps.ref = 'jazz_hierarchy_customer_detail';
-        detail = <Customer {...detailProps}/>
+        detail = <Customer {...detailProps}/>;
     }
-    return detail
+    return detail;
   },
   _onReloadHierachyTree: function() {
     HierarchyAction.GetHierarchys();
