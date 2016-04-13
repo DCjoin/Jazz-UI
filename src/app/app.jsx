@@ -47,6 +47,7 @@ import TagLog from './components/customerSetting/importLog/TagLog.jsx';
 import Label from './components/customerSetting/label/Label.jsx';
 //for hierarchySetting
 import Hierarchy from './components/hierarchySetting/Hierarchy.jsx';
+import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -74,6 +75,7 @@ var routes = (
         <Route name="log" path="log" handler={TagLog}></Route>
         <Route name="customerLabeling" path="customerLabeling" handler={Label}></Route>
         <Route name="hierNode" path="hierNode" handler={Hierarchy}></Route>
+        <Route name="hierLog" path="hierLog" handler={HierarchyLog}></Route>
       </Route>
       <Route name="platform" path="platform" handler={PlatformApp}>
         <Route name='config' path='config' handler={Platform}></Route>
