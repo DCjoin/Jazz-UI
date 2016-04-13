@@ -22,6 +22,9 @@ var HierarchyStore = assign({}, PrototypeStore, {
     return _hierarchys
   },
   setSelectedNode: function(selectedNode) {
+    if (selectedNode.get('Type') !== -1) {
+      _customer = emptyMap();
+    }
     _selectedNode = selectedNode;
   },
   getSelectedNode: function() {

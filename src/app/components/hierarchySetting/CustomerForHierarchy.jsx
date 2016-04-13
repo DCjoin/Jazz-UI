@@ -16,7 +16,8 @@ var CustomerForHierarchy = React.createClass({
   },
   getInitialState: function() {
     return {
-      isLoading: true,
+      isLoading: false,
+      customer: HierarchyStore.getSelectedCustomer()
     };
   },
   _onChange: function() {
@@ -27,10 +28,12 @@ var CustomerForHierarchy = React.createClass({
   },
   componentDidMount: function() {
     HierarchyStore.addCustomerChangeListener(this._onChange);
-    HierarchyAction.getCustomersByFilter(this.props.selectedNode.get('Id'));
-    this.setState({
-      isLoading: true
-    });
+    if (this.state.customer.size === 0) {
+      HierarchyAction.getCustomersByFilter(this.props.selectedNode.get('Id'));
+      this.setState({
+        isLoading: true
+      });
+    }
   },
   componentWillUnmount: function() {
     HierarchyStore.removeCustomerChangeListener(this._onChange);

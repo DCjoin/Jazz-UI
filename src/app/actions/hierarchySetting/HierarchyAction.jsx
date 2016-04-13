@@ -27,7 +27,8 @@ let HierarchyAction = {
     });
   },
   //for customer
-  getCustomersByFilter: function(customerId) {
+  getCustomersByFilter: function(customerId, refresh = false) {
+    var that = this;
     Ajax.post('/Customer.svc/GetCustomersByFilter', {
       params: {
         filter: {
@@ -39,6 +40,9 @@ let HierarchyAction = {
           type: Action.GET_CUSTOMER_FOR_HIERARCHY,
           customer: customer
         });
+        if (refresh) {
+          that.GetHierarchys();
+        }
       },
       error: function(err, res) {
         console.log(err, res);
