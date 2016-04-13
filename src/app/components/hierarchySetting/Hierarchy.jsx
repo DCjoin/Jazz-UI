@@ -11,6 +11,7 @@ import { CircularProgress } from 'material-ui';
 import { Map, List } from 'immutable';
 import Customer from './CustomerForHierarchy.jsx';
 import Organization from './Organization/Organization.jsx';
+import Building from './Building/Building.jsx';
 
 function emptyMap() {
   return new Map();
@@ -172,6 +173,10 @@ var Hierarchy = React.createClass({
       case 1:
         detailProps.ref = 'jazz_hierarchy_organization_detail';
         detail = <Organization {...detailProps}/>;
+        break;
+      case 2:
+        detailProps.ref = 'jazz_hierarchy_building_detail';
+        detail = <Building {...detailProps}/>;
         break;
     }
     return detail;

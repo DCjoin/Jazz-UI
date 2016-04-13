@@ -1686,4 +1686,8 @@ I18N.Setting.Organization.HierarchyNodeCalendarProperties = '日历属性';
 I18N.Setting.Organization.Name = '{0}名称';
 I18N.Setting.Organization.Code = '{0}编码';
 
+I18N.Setting.Building = {};
+I18N.Setting.Building.HierarchyNodeCostProperties = '成本属性';
+I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = '人口面积';
+
 module.exports = I18N;

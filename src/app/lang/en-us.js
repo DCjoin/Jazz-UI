@@ -1683,6 +1683,9 @@ I18N.Setting.VEEMonitorRule.TagList = 'Tag list';
 I18N.Setting.Organization = {};
 I18N.Setting.Organization.AssociateTag = 'Associate';
 I18N.Setting.Organization.HierarchyNodeCalendarProperties = 'Calendar';
+I18N.Setting.Building = {};
+I18N.Setting.Building.HierarchyNodeCostProperties = 'Cost';
+I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = 'Population & Area';
 
 
 module.exports = I18N;
