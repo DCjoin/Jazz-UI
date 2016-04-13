@@ -104,7 +104,7 @@ var HierarchyList = React.createClass({
   _downloadLogFile: function() {
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = 'ImpExpHierarchy.aspx?Id=' + this.state.importResult.Id;
+    iframe.src = 'ImpExpHierarchy.aspx?TagType=Hierarchy&Id=' + this.state.importResult.Id;
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };

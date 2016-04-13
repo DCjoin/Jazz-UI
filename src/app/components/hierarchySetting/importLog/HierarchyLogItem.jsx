@@ -20,11 +20,6 @@ let HierarchyLogItem = React.createClass({
     var resultStr = I18N.format(I18N.Setting.TagBatchImport.ImportResult, this.props.successNum, this.props.failedNum, this.props.total);
     return I18N.Setting.TagBatchImport.File + this.props.fileName + resultStr;
   },
-  _showDeleteDialog() {
-    if (this.props.showDeleteDialog) {
-      this.props.showDeleteDialog(this.props.id, this.props.name);
-    }
-  },
   _showDownloadButton(value) {
     this.setState({
       showDownloadButton: value
@@ -33,7 +28,7 @@ let HierarchyLogItem = React.createClass({
   _downloadLog: function() {
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Id=' + this.props.id;
+    iframe.src = 'ImpExpHierarchy.aspx?TagType=Hierarchy&Id=' + this.props.id;
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };

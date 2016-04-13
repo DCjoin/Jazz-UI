@@ -157,7 +157,7 @@ var Hierarchy = React.createClass({
         detail = <Organization {...detailProps}/>;
         break;
     }
-    return detail
+    return detail;
   },
   _onReloadHierachyTree: function() {
     HierarchyAction.GetHierarchys();
@@ -188,6 +188,7 @@ var Hierarchy = React.createClass({
       onHierarchyClick: this._handlerTouchTap,
       hierarchys: this.state.hierarchys,
       selectedNode: this.state.selectedNode,
+      onExportBtnClick: this._onExportBtnClick,
       onReloadHierachyTree: this._onReloadHierachyTree
     //onGragulaNode: this._onGragulaNode
     };
