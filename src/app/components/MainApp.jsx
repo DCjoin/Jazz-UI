@@ -35,8 +35,16 @@ function getCurrentCustomers() {
   return CurrentUserCustomerStore.getAll();
 }
 
+function getCurrentCustomer() {
+  return CurrentUserCustomerStore.getCurrentCustomer();
+}
+
 function getCurrentUser() {
   return CurrentUserCustomerStore.getCurrentUser();
+}
+
+function isSpAdmin() {
+  return CurrentUserCustomerStore.isSpAdmin();
 }
 
 let MainApp = React.createClass({
@@ -65,6 +73,27 @@ let MainApp = React.createClass({
   _closeSelectCustomer : function() {
       this.setState({viewState: viewState.MAIN});
   },
+  _onChange: function(argument) {
+    var currentCustomer = getCurrentCustomer();
+
+    if (!_.isEmpty(currentCustomer) && window.currentCustomerId != currentCustomer.Id.toString()) {
+      this._switchCustomer(currentCustomer);
+      return;
+    }
+  },
+  _switchCustomer: function(customer) {
+      console.log('see this');
+      // this._redirectRouter(MainAppBar.GetAssetMenuItems()[0], assign({}, this.props.params, {
+      //     customerCode: customer.Id
+      // }));
+      var currentCustomer = getCurrentCustomer();
+      CookieUtil.remove('currentCustomer');
+      CookieUtil.set('currentCustomerId', customer.Id, {'expires':5,'path':'/webhost'});
+      window.location.reload();
+
+      this.setState({viewState: viewState.MAIN});
+
+  },
 
   render: function() {
     if(this.state.viewState == viewState.SELECT_CUSTOMER){
@@ -72,7 +101,7 @@ let MainApp = React.createClass({
         <SelectCustomer close={this._closeSelectCustomer}
                         currentCustomerId={parseInt(window.currentCustomerId)}
                         params={getCurrentCustomers()}
-                        userId={'10001'}/>
+                        userId={parseInt(window.currentUserId)}/>
       );
     }else{
       var menuItems;
@@ -208,9 +237,8 @@ let MainApp = React.createClass({
     MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
 
-    var params = this.props.params;
-
-    var _currentUserId = parseInt(window.currentCustomerId);
+    CurrentUserCustomerStore.addChangeListener(this._onChange);
+    var _currentUserId = parseInt(window.currentUserId);
     if (!getCurrentUser()) {
       SelectCustomerActionCreator.getCustomer(_currentUserId);
       return;
@@ -220,6 +248,8 @@ let MainApp = React.createClass({
     UOMStore.removeChangeListener(this._onAllUOMSChange);
     AllCommodityStore.removeChangeListener(this._onAllCommoditiesChange);
     CurrentUserStore.removeCurrentrivilegeListener(this._onCurrentrivilegeChanged);
+
+    CurrentUserCustomerStore.removeChangeListener(this._onChange);
   }
 });
 

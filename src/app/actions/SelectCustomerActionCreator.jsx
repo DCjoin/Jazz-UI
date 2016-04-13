@@ -11,26 +11,25 @@ let {Action} = SelectCustomerActionType;
 
 var listener = null;
 
-
 module.exports = {
   selectCustomer: function(customer) {
     AppDispatcher.dispatch({type: Action.SELECT_ACCOUNT_SUCCESS, data: customer});
   },
 
   getCustomer: function(userId) {
-    console.log('*****userId is:'+userId);
     Ajax.post('/Customer.svc/GetCustomersByFilter', {
       params : {
-        "SpId":1,
-        "CustomerId": 100002,
-        "Order": {
-            "Column": "Name",
-            "Type": 0
-        }
+          "filter": {
+              "UserId": 300534,
+              "Order": {
+                  "Column": "Name",
+                  "Type": 0
+              }
+          }
       },
       success: function(data) {
-        console.log('*****data is:'+ data);
-        AppDispatcher.dispatch({type: Action.GET_CUSTOMERS, data: data});
+        //console.log(JSON.stringify(data,0,1));
+        AppDispatcher.dispatch({type: Action.GET_SELECT_CUSTOMERS, data: data});
       },
     });
   }

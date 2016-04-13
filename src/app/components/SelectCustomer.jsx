@@ -6,7 +6,8 @@ import MainAppBar from './MainAppBar.jsx';
 import BackgroudImage from '../controls/BackgroundImage.jsx';
 import classNames from 'classnames';
 import _findIndex from 'lodash/array/findIndex';
-import CustomerStore from '../stores/CustomerStore.jsx';
+import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
+import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
 
 var _bgData = "";
 var timeoutHandler = null;
@@ -18,59 +19,28 @@ var SelectCustomer = React.createClass({
     mixins: [
       Navigation, State
     ],
-    getInitialState: function() {
+    propTypes: {
+      userId: React.PropTypes.number,
+      params: React.PropTypes.array,
+      closable: React.PropTypes.bool,
+      currentCustomerId: React.PropTypes.number
+    },
+    getInitialState : function() {
       return {
-        currentIndex:0,
+        UserId: this.props.userId,
+        showCustomer: false,
+        currentIndex: 0,
       };
     },
     _saveSelectCustomer : function(customer) {
-      //SelectCustomerActionCreator.selectCustomer(customer);
+      SelectCustomerActionCreator.selectCustomer(customer);
     },
     _onClose() {
       this.props.close();
     },
     _selectCustomerChangeHandler : function(selectedIndex) {
       if (this.state.currentIndex == selectedIndex) {
-        //var customerList = CurrentUserCustomerStore.getAll();
-        var customerList = [
-            {
-                "Id": 310643,
-                "Name": "梅赛德斯",
-                "Version": 5717631
-            }, {
-                "Id": 312170,
-                "Name": "克莱斯勒",
-                "Version": 5566023
-            }, {
-                "Id": 309902,
-                "Name": "福特",
-                "Version": 5167425
-            }, {
-                "Id": 311056,
-                "Name": "大众",
-                "Version": 5209955
-            }, {
-                "Id": 306463,
-                "Name": "丰田",
-                "Version": 5236682
-            }, {
-                "Id": 306437,
-                "Name": "雷克萨斯",
-                "Version": 5057861
-            }, {
-                "Id": 100650,
-                "Name": "本田",
-                "Version": 5391643
-            }, {
-                "Id": 312297,
-                "Name": "讴歌",
-                "Version": 5218283
-            }, {
-                "Id": 309866,
-                "Name": "马自达",
-                "Version": 4994126
-            }
-        ];
+        var customerList = CurrentUserCustomerStore.getAll();
         this._saveSelectCustomer(customerList[selectedIndex]);
       } else {
         this.setState({currentIndex: selectedIndex});
@@ -78,11 +48,8 @@ var SelectCustomer = React.createClass({
     },
 
     _getCustomerList() {
-      var customerList = CustomerStore.getCustomers();
-      console.log('**************************************');
-      console.log(JSON.stringify(customerList,0,1));
-      console.log('**************************************');
-
+      var customerList = CurrentUserCustomerStore.getAll();
+      //if(customerList.length < 1) return
       customerList = customerList.map(((item, idx) => {
           var style = {
               opacity: 0.95
@@ -93,7 +60,6 @@ var SelectCustomer = React.createClass({
               cursor: 'pointer'
           };
           var baseWidth = this.state.screenWidth / 5.5;
-
           var baseHeight = baseWidth / 2;
           if (baseWidth < 210) baseWidth = 210;
           style.width = baseWidth + 'px';
@@ -131,7 +97,6 @@ var SelectCustomer = React.createClass({
       }).bind(this));
 
       return customerList;
-
     },
 
     _prevPage() {
@@ -142,46 +107,7 @@ var SelectCustomer = React.createClass({
       }
     },
     _nextPage() {
-      var customerList = [
-          {
-              "Id": 310643,
-              "Name": "梅赛德斯",
-              "Version": 5717631
-          }, {
-              "Id": 312170,
-              "Name": "克莱斯勒",
-              "Version": 5566023
-          }, {
-              "Id": 309902,
-              "Name": "福特",
-              "Version": 5167425
-          }, {
-              "Id": 311056,
-              "Name": "大众",
-              "Version": 5209955
-          }, {
-              "Id": 306463,
-              "Name": "丰田",
-              "Version": 5236682
-          }, {
-              "Id": 306437,
-              "Name": "雷克萨斯",
-              "Version": 5057861
-          }, {
-              "Id": 100650,
-              "Name": "本田",
-              "Version": 5391643
-          }, {
-              "Id": 312297,
-              "Name": "讴歌",
-              "Version": 5218283
-          }, {
-              "Id": 309866,
-              "Name": "马自达",
-              "Version": 4994126
-          }
-      ];
-
+      var customerList = CurrentUserCustomerStore.getAll();
       if (this.state.currentIndex < (customerList.length - 1)) {
         this.setState({
           currentIndex: this.state.currentIndex + 1
@@ -210,45 +136,7 @@ var SelectCustomer = React.createClass({
     },
     componentWillMount : function() {
         if (this.props.currentCustomerId) {
-            var customerList = [
-                {
-                    "Id": 310643,
-                    "Name": "梅赛德斯",
-                    "Version": 5717631
-                }, {
-                    "Id": 312170,
-                    "Name": "克莱斯勒",
-                    "Version": 5566023
-                }, {
-                    "Id": 309902,
-                    "Name": "福特",
-                    "Version": 5167425
-                }, {
-                    "Id": 311056,
-                    "Name": "大众",
-                    "Version": 5209955
-                }, {
-                    "Id": 306463,
-                    "Name": "丰田",
-                    "Version": 5236682
-                }, {
-                    "Id": 306437,
-                    "Name": "雷克萨斯",
-                    "Version": 5057861
-                }, {
-                    "Id": 100650,
-                    "Name": "本田",
-                    "Version": 5391643
-                }, {
-                    "Id": 312297,
-                    "Name": "讴歌",
-                    "Version": 5218283
-                }, {
-                    "Id": 309866,
-                    "Name": "马自达",
-                    "Version": 4994126
-                }
-            ];
+            var customerList = CurrentUserCustomerStore.getAll();
             var idx = _.findIndex(customerList, 'Id', this.props.currentCustomerId);
             if (idx < 0)
                 idx = 0;

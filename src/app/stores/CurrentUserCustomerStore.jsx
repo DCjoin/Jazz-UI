@@ -46,12 +46,12 @@ let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
     return false;
   },
   setCustomer: function(customer) {
+    //console.log('here***********************' + JSON.stringify(customer));
     _currentCustomer = assign({}, _currentCustomer, customer);
     checkSpAdmin(_currentCustomer);
   },
   init: function(data) {
     _customers = data;
-    console.log(_customers);
     // _currentUser = data;
     // if (_customers.length + this.checkHasSpAdmin() === 1) {
     //   this.setCustomer(this.checkHasSpAdmin() ? { CustomerId: -1 } : _customers[0]);
@@ -145,8 +145,12 @@ let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
 
   dispatcherIndex: AppDispatcher.register(function(action) {
     switch (action.type) {
-      case SelectCustomerActionType.Action.GET_CUSTOMERS:
+      case SelectCustomerActionType.Action.GET_SELECT_CUSTOMERS:
         CurrentUserCustomerStore.init(action.data);
+        CurrentUserCustomerStore.emitChange();
+        break;
+      case SelectCustomerActionType.Action.SELECT_ACCOUNT_SUCCESS:
+        CurrentUserCustomerStore.setCustomer(action.data);
         CurrentUserCustomerStore.emitChange();
         break;
       default: // do nothing
