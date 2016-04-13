@@ -140,6 +140,7 @@ var Hierarchy = React.createClass({
       onHierarchyClick: this._handlerTouchTap,
       hierarchys: this.state.hierarchys,
       selectedNode: this.state.selectedNode,
+      onExportBtnClick: this._onExportBtnClick,
       onReloadHierachyTree: this._onReloadHierachyTree
     //onGragulaNode: this._onGragulaNode
     };
