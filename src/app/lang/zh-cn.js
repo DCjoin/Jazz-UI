@@ -1684,5 +1684,6 @@ I18N.Setting.Organization = {};
 I18N.Setting.Organization.AssociateTag = '关联数据点';
 I18N.Setting.Organization.HierarchyNodeCalendarProperties = '日历属性';
 I18N.Setting.Organization.Name = '{0}名称';
+I18N.Setting.Organization.Code = '{0}编码';
 
 module.exports = I18N;

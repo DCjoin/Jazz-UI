@@ -114,7 +114,7 @@ var Organization = React.createClass({
     var content;
     switch (this.props.infoTabNo) {
       case 1:
-        //  content = <Basic {...basicProps}/>
+        content = <Basic {...basicProps}/>
         break;
       case 2:
 
@@ -222,6 +222,7 @@ var Organization = React.createClass({
       })}>
     <Panel onToggle={this.props.toggleList}>
       {header}
+      {content}
       {footer}
     </Panel>
     {that._renderDialog()}
