@@ -140,6 +140,7 @@ I18N.Common.Glossary.Organization = '组织';
 I18N.Common.Glossary.Site = '园区';
 I18N.Common.Glossary.Building = '建筑';
 I18N.Common.Glossary.Node = '节点';
+I18N.Common.Glossary.Dim = '维度';
 
 
 I18N.Common.Per = {};

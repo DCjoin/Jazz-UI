@@ -12,6 +12,7 @@ import { Map, List } from 'immutable';
 import Customer from './CustomerForHierarchy.jsx';
 import Organization from './Organization/Organization.jsx';
 import Building from './Building/Building.jsx';
+import Dim from './Dim/Dim.jsx';
 
 function emptyMap() {
   return new Map();
@@ -177,6 +178,10 @@ var Hierarchy = React.createClass({
       case 2:
         detailProps.ref = 'jazz_hierarchy_building_detail';
         detail = <Building {...detailProps}/>;
+        break;
+      case 101:
+        detailProps.ref = 'jazz_hierarchy_dim_detail';
+        detail = <Dim {...detailProps}/>;
         break;
     }
     return detail;

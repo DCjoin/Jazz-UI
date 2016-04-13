@@ -60,7 +60,7 @@ var Building = React.createClass({
       isAdd = this.props.formStatus === formStatus.ADD,
       NameProps = {
         isViewStatus: isView || this.props.infoTabNo !== 1,
-        title: I18N.format(I18N.Setting.Organization.Name, I18N.Common.Glossary.Building),
+        title: I18N.format(I18N.Setting.Organization.Name, I18N.Common.Glossary.Dim),
         defaultValue: selectedNode.get("Name"),
         maxLen: 200,
         isRequired: true,
@@ -80,8 +80,8 @@ var Building = React.createClass({
         {
       isAdd ? null :
         <div className="pop-user-detail-tabs" style={{
-          width: '625px',
-          minWidth: '625px'
+          width: '250px',
+          minWidth: '250px'
         }}>
     <span className={classnames({
           "pop-user-detail-tabs-tab": true,
@@ -91,18 +91,6 @@ var Building = React.createClass({
           "pop-user-detail-tabs-tab": true,
           "selected": that.props.infoTabNo === 2
         })} data-tab-index="2" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Organization.AssociateTag}</span>
-        <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
-          "selected": that.props.infoTabNo === 3
-        })} data-tab-index="3" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Organization.HierarchyNodeCalendarProperties}</span>
-        <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
-          "selected": that.props.infoTabNo === 4
-        })} data-tab-index="4" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Building.HierarchyNodeCostProperties}</span>
-        <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
-          "selected": that.props.infoTabNo === 5
-        })} data-tab-index="5" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Building.HierarchyNodePopulationNAreaProperties}</span>
   </div>
       }
     </div>
@@ -112,7 +100,7 @@ var Building = React.createClass({
   },
   _renderContent: function() {
     var basicProps = {
-      ref: 'jazz_building_basic',
+      ref: 'jazz_dim_basic',
       selectedNode: this.props.selectedNode,
       merge: this.props.merge,
       formStatus: this.props.formStatus,
