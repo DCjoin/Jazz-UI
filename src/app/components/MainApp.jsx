@@ -4,6 +4,10 @@ import React from 'react';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import MainAppBar from './MainAppBar.jsx';
 import SelectCustomer from './SelectCustomer.jsx';
+import util from '../util/util.jsx';
+
+import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
+import CookieUtil from '../util/cookieUtil.jsx';
 
 import lang from '../lang/lang.jsx';
 import keyMirror from 'keymirror';
@@ -15,6 +19,7 @@ import MainAction from '../actions/MainAction.jsx';
 import NetworkChecker from '../controls/NetworkChecker.jsx';
 import ExportChart from './energy/ExportChart.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
+import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
 
 var viewState = keyMirror({
   SELECT_CUSTOMER: null,
@@ -26,8 +31,12 @@ var viewState = keyMirror({
   NO_ALL_CUSTOMERS: null
 });
 
-function getCurrentCustomer() {
-  return CurrentUserCustomerStore.getCurrentCustomer();
+function getCurrentCustomers() {
+  return CurrentUserCustomerStore.getAll();
+}
+
+function getCurrentUser() {
+  return CurrentUserCustomerStore.getCurrentUser();
 }
 
 let MainApp = React.createClass({
@@ -40,7 +49,6 @@ let MainApp = React.createClass({
     window.allCommodities = AllCommodityStore.getAllCommodities();
   },
   _onCurrentrivilegeChanged: function() {
-    console.log('1x....................');
     this.setState({
       rivilege: CurrentUserStore.getCurrentPrivilege()
     });
@@ -51,19 +59,20 @@ let MainApp = React.createClass({
     };
   },
 
-_showCustomerList : function(argument) {
-    this.setState({viewState: viewState.SELECT_CUSTOMER});
-},
-_closeSelectCustomer : function() {
+  _showCustomerList : function(argument) {
+      this.setState({viewState: viewState.SELECT_CUSTOMER});
+  },
+  _closeSelectCustomer : function() {
       this.setState({viewState: viewState.MAIN});
-},
+  },
 
   render: function() {
-    console.log('开始渲染'+'this.state.viewState:' + this.state.viewState);
-    console.log('viewState.SELECT_CUSTOMER' + viewState.SELECT_CUSTOMER);
     if(this.state.viewState == viewState.SELECT_CUSTOMER){
       return(
-        <SelectCustomer close={this._closeSelectCustomer}/>
+        <SelectCustomer close={this._closeSelectCustomer}
+                        currentCustomerId={parseInt(window.currentCustomerId)}
+                        params={getCurrentCustomers()}
+                        userId={'10001'}/>
       );
     }else{
       var menuItems;
@@ -198,6 +207,14 @@ _closeSelectCustomer : function() {
     MainAction.getAllUoms();
     MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
+
+    var params = this.props.params;
+
+    var _currentUserId = parseInt(window.currentCustomerId);
+    if (!getCurrentUser()) {
+      SelectCustomerActionCreator.getCustomer(_currentUserId);
+      return;
+    }
   },
   componentWillUnmount: function() {
     UOMStore.removeChangeListener(this._onAllUOMSChange);
