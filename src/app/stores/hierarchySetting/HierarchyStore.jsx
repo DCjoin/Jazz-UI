@@ -35,6 +35,9 @@ var HierarchyStore = assign({}, PrototypeStore, {
     return _logList;
   },
   setSelectedNode: function(selectedNode) {
+    if (selectedNode.get('Type') !== -1) {
+      _customer = emptyMap();
+    }
     _selectedNode = selectedNode;
   },
   getSelectedNode: function() {
