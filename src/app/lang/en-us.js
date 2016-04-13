@@ -56,10 +56,10 @@ I18N.MainMenu.PTagManagement = 'PTag';
 I18N.MainMenu.VTagManagement = 'VTag';
 I18N.MainMenu.VEEMonitorRule = 'VE&E';
 I18N.MainMenu.TagBatchImportLog = 'Import log';
-I18N.MainMenu.HierarchySetting = '层级配置';
 I18N.MainMenu.HierarchyNodeSetting = '层级节点配置';
 I18N.MainMenu.HierarchyLog = '配置导入日志';
 I18N.MainMenu.CustomSetting = '自定义配置';
+I18N.MainMenu.HierarchySetting = '层级配置';
 I18N.MainMenu.CustomizedLabeling = 'Labelling';
 
 I18N.MainMenu.Calendar = 'Calendar';
@@ -135,6 +135,11 @@ I18N.Common.Glossary.WeekDay.Thursday = 'Thur.';
 I18N.Common.Glossary.WeekDay.Friday = 'Fri.';
 I18N.Common.Glossary.WeekDay.Saturday = 'Sat.';
 I18N.Common.Glossary.WeekDay.Sunday = 'Sun.';
+
+I18N.Common.Glossary.Organization = 'Organization';
+I18N.Common.Glossary.Site = 'Site';
+I18N.Common.Glossary.Building = 'Building';
+I18N.Common.Glossary.Node = 'Node';
 
 I18N.Common.Per = {};
 I18N.Common.Per.Person = '/Person';
@@ -795,8 +800,8 @@ I18N.Setting.Tag.KPI = 'KPI';
 I18N.Setting.Tag.PanelTitle = 'Hierarchy';
 I18N.Setting.Tag.FormulaText = 'Click edit button, set formula';
 I18N.Setting.Tag.ErrorContent = 'Please input data between -1000000000~1000000000, Retained maximum period of 6 decimal places';
-I18N.Setting.Tag.CodeError = 'can not support +-*/{}|';
-I18N.Setting.Tag.MeterCodeError = 'can not support #|$<>\',"';
+I18N.Setting.Tag.CodeError = 'can not support *{}';
+I18N.Setting.Tag.MeterCodeError = 'can not support #$<>\',"';
 I18N.Setting.Tag.InvalidFormula = 'Formula format not correct, please check.';
 I18N.Setting.Tag.FormulaEditText = 'Click item in the list to add it to formula';
 I18N.Setting.Tag.PTagRawData = {};

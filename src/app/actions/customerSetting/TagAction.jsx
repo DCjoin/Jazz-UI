@@ -4,6 +4,9 @@ import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 import Ajax from '../../ajax/ajax.jsx';
 import assign from "object-assign";
 
+
+var search = null;
+var formulaSearch = null;
 let TagAction = {
   getTagListByType: function(type, page, filterObj) {
     var obj = {
@@ -12,7 +15,10 @@ let TagAction = {
       ReverseFormula: type === 2 ? true : false
     };
     var filter = assign(filterObj, obj);
-    Ajax.post('/Tag.svc/GetTagsByFilter', {
+    if (search) {
+      search.abort();
+    }
+    search = Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: filter,
         page: page,
@@ -20,6 +26,7 @@ let TagAction = {
         start: 20 * (page - 1)
       },
       success: function(tagData) {
+        search = null;
         AppDispatcher.dispatch({
           type: Action.GET_TAG_LIST_SUCCESS,
           tagData: tagData
@@ -37,7 +44,10 @@ let TagAction = {
       CustomerId: parseInt(window.currentCustomerId)
     };
     var filter = assign(filterObj, obj);
-    Ajax.post('/Tag.svc/GetTagsByFilter', {
+    if (formulaSearch) {
+      formulaSearch.abort();
+    }
+    formulaSearch = Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: filter,
         page: page,
@@ -45,6 +55,7 @@ let TagAction = {
         start: 20 * (page - 1)
       },
       success: function(allTagData) {
+        formulaSearch = null;
         AppDispatcher.dispatch({
           type: Action.GET_ALL_TAG_LIST_SUCCESS,
           allTagData: allTagData

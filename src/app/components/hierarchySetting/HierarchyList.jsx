@@ -1,34 +1,29 @@
 'use strict';
 
-import React from 'react';
-import classNames from 'classnames';
+import React from "react";
 import { CircularProgress } from 'material-ui';
-import CommonFuns from '../../../util/Util.jsx';
-import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
-import Pagination from '../../../controls/paging/Pagination.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
-import TagAction from '../../../actions/customerSetting/TagAction.jsx';
+import { formStatus } from '../../constants/FormStatus.jsx';
+import TreeConstants from '../../constants/TreeConstants.jsx';
+import CommonFuns from '../../util/Util.jsx';
+import classNames from 'classnames';
+import Tree from '../../controls/tree/Tree.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
+import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
+import DropdownButton from '../../controls/DropdownButton.jsx';
+let MenuItem = require('material-ui/lib/menus/menu-item');
+let {nodeType} = TreeConstants;
 
-let TagList = React.createClass({
+var HierarchyList = React.createClass({
   propTypes: {
+    formStatus: React.PropTypes.string,
+    onHierarchyClick: React.PropTypes.func,
     onAddBtnClick: React.PropTypes.func,
-    onImportBtnClick: React.PropTypes.func,
+    hierarchys: React.PropTypes.object,
+    selectedNode: React.PropTypes.object,
     onExportBtnClick: React.PropTypes.func,
-    onPrePage: React.PropTypes.func,
-    onNextPage: React.PropTypes.func,
-    onJumpToPage: React.PropTypes.func,
-    curPageNum: React.PropTypes.number,
-    totalPageNum: React.PropTypes.number,
-    hasJumpBtn: React.PropTypes.bool,
-    onSearch: React.PropTypes.func,
-    onFilter: React.PropTypes.func,
-    onSearchCleanButtonClick: React.PropTypes.func,
-    isFilter: React.PropTypes.bool,
-    filterObj: React.PropTypes.object,
-    contentItems: React.PropTypes.object,
-    isAddStatus: React.PropTypes.bool,
-    tagType: React.PropTypes.number
+    onReloadHierachyTree: React.PropTypes.func
+  //onGragulaNode: React.PropTypes.func
   },
   getInitialState: function() {
     return {
@@ -36,19 +31,66 @@ let TagList = React.createClass({
       isImporting: false
     };
   },
-  _onSearch: function(value) {
-    if (this.props.onSearch) {
-      this.props.onSearch(value);
+  getAddMenuItems: function() {
+    var items = HierarchyStore.getDropDownMenuItemsByType(this.props.selectedNode.get('Type')),
+      menuItems = [];
+    var itemStyle = {
+      fontSize: '14px',
+      color: '#767a7a',
+      paddingLeft: '44px'
+    };
+    if (items !== null) {
+      items.forEach((item, index) => {
+        menuItems.push(
+          <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
+        );
+      });
+    }
+    return menuItems;
+
+  },
+
+  getAddBtnDisabled: function() {
+    if (this.props.formStatus === formStatus.ADD) {
+      return true;
+    } else {
+      return HierarchyStore.getAddBtnStatusByNode(this.props.selectedNode);
     }
   },
-  _onJumpToPage: function(targetPage) {
-    if (this.props.onJumpToPage) {
-      this.props.onJumpToPage(targetPage);
+  _onAddBtnClick: function() {
+    let newNodeType = null;
+    switch (selectedNode.get('Type')) {
+      case nodeType.Site:
+        newNodeType = nodeType.Building;
+        break;
+      case nodeType.Building:
+        newNodeType = nodeType.Area;
+        break;
+      case nodeType.Area:
+        newNodeType = nodeType.Area;
+        break;
     }
+    this.props.onAddBtnClick(newNodeType);
+  },
+  _onMenuAddBtnClick: function(e, item) {
+    let key = parseInt(item.key);
+    let newNodeType = null;
+    switch (key) {
+      case 0:
+        newNodeType = nodeType.Organization;
+        break;
+      case 1:
+        newNodeType = nodeType.Site;
+        break;
+      case 2:
+        newNodeType = nodeType.Building;
+        break;
+    }
+    this.props.onAddBtnClick(newNodeType);
   },
   _handleImportDialogDismiss: function() {
     if (this.state.importSuccess) {
-      this.props.resetFilterObj();
+      this.props.onReloadHierachyTree();
     }
     this.setState({
       showImportDialog: false
@@ -57,7 +99,7 @@ let TagList = React.createClass({
   _downloadLogFile: function() {
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Id=' + this.state.importResult.Id;
+    iframe.src = 'ImpExpHierarchy.aspx?Id=' + this.state.importResult.Id;
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };
@@ -101,8 +143,8 @@ let TagList = React.createClass({
       actions={dialogActions}
       onClose={this._handleImportDialogDismiss}
       modal={this.state.isImporting || this.state.importSuccess}>
-        {dialogContent}
-      </Dialog>);
+          {dialogContent}
+        </Dialog>);
   },
   _onImportBtnClick: function(event) {
     var me = this;
@@ -138,20 +180,12 @@ let TagList = React.createClass({
           importSuccess: false,
           sizeError: sizeError
         });
-      // var errorCode = obj.UploadResponse.ErrorCode,
-      //   errorMessage;
-      // if (errorCode === -1) {
-      //   errorMessage = I18N.EM.Report.DuplicatedName;
-      // }
-      // if (errorMessage) {
-      //   CommonFuns.popupErrorMessage(errorMessage, '', true);
-      // }
       }
     };
 
     var form = createElement('form', {
       method: 'post',
-      action: 'TagImportExcel.aspx',
+      action: 'ImpExpHierarchy.aspx',
       target: '_self',
       enctype: 'multipart/form-data',
       name: 'inputForm'
@@ -166,10 +200,15 @@ let TagList = React.createClass({
       name: 'CustomerId',
       value: parseInt(window.currentCustomerId)
     }, null, form);
+    var hierarchyInput = createElement('input', {
+      type: 'hidden',
+      name: 'HierarchyId',
+      value: me.props.selectedNode.get('Id')
+    }, null, form);
     var typeInput = createElement('input', {
       type: 'hidden',
       name: 'TagType',
-      value: me.props.tagType === 1 ? 'PTag' : 'VTag'
+      value: 'Hierarchy'
     }, null, form);
 
     form.submit();
@@ -187,6 +226,24 @@ let TagList = React.createClass({
     });
   },
   render: function() {
+    var treeProps = {
+        collapsedLevel: 0,
+        allNode: this.props.hierarchys,
+        allHasCheckBox: false,
+        allDisabled: false,
+        onSelectNode: this.props.onHierarchyClick,
+        selectedNode: this.props.selectedNode,
+        arrowClass: 'jazz-foldertree-arrow',
+        treeNodeClass: 'jazz-foldertree-node',
+      //onGragulaNode: this._onGragulaNode,
+      },
+      addBtnProps = {
+        type: "Add",
+        text: I18N.Common.Glossary.Node,
+        menuItems: this.getAddMenuItems(),
+        onItemClick: this._onMenuAddBtnClick,
+      //disabled: this.state.buttonDisabled
+      };
     var addBtnClasses = {
         'jazz-tag-leftpanel-header-item': !this.props.isAddStatus,
         'jazz-tag-disabled': this.props.isAddStatus
@@ -198,14 +255,20 @@ let TagList = React.createClass({
         left: 0,
         display: 'none'
       };
+    var addBtn = null;
+    if (this.props.selectedNode.get('Type') > 1) {
+      addBtn = <span onClick={this._onAddBtnClick} disabled={this.getAddBtnDisabled()} className={classNames(addBtnClasses)}>
+            <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
+            {I18N.Common.Glossary.Node}
+          </span>;
+    } else {
+      addBtn = <DropdownButton {...addBtnProps}/>;
+    }
     var importDialog = this._renderImportDialog();
     return (
-      <div className="jazz-tag-leftpanel">
+      <div className='jazz-tag-leftpanel'>
         <div className="jazz-tag-leftpanel-header">
-          <span onClick={this.props.onAddBtnClick} disabled={this.props.isAddStatus} className={classNames(addBtnClasses)}>
-            <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
-            {I18N.Setting.Tag.Tag}
-          </span>
+          {addBtn}
           <label ref="fileInputLabel" className="jazz-tag-leftpanel-header-item" htmlFor="fileInput">
             <span className="icon-import jazz-tag-leftpanel-header-item-icon"></span>
             {I18N.Common.Button.Import}
@@ -216,25 +279,15 @@ let TagList = React.createClass({
             {I18N.Common.Button.Export}
           </span>
         </div>
-        <div className="jazz-tag-search-filter-bar">
-          <SearchAndFilterBar onFilter={this.props.onFilter} ref='searchAndFilter'
-      onSearch={this._onSearch} value={this.props.filterObj.LikeCodeOrName} onSearchCleanButtonClick={this.props.onSearchCleanButtonClick}
-      isFilter={this.props.isFilter}/>
-        </div>
-        <div className="jazz-tag-list">
-          {this.props.contentItems}
-        </div>
-        <div className="jazz-tag-pagination">
-          <Pagination previousPage={this.props.onPrePage}
-      nextPage={this.props.onNextPage}
-      jumpToPage={this._onJumpToPage}
-      curPageNum={this.props.curPageNum}
-      totalPageNum={this.props.totalPageNum}
-      hasJumpBtn={this.props.hasJumpBtn}/>
+        <div className="jazz-folder-leftpanel-foldertree" style={{
+        color: '#ffffff'
+      }}>
+          <Tree {...treeProps}/>
         </div>
         {importDialog}
       </div>
+
       );
-  },
+  }
 });
-module.exports = TagList;
+module.exports = HierarchyList;

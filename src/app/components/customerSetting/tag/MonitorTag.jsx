@@ -10,6 +10,7 @@ import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
 
+var timeoutID = null;
 var MonitorTag = React.createClass({
   propTypes: {
     tagId: React.PropTypes.number,
@@ -46,7 +47,13 @@ var MonitorTag = React.createClass({
       filterObj: filterObj,
       page: 1
     }, () => {
-      me.getTagList();
+      if (timeoutID) {
+        clearTimeout(timeoutID);
+      }
+      timeoutID = setTimeout(() => {
+        me.getTagList();
+        timeoutID = null;
+      }, 200);
     });
   },
   _onSearchCleanButtonClick: function() {

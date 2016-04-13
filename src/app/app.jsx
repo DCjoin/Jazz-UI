@@ -45,6 +45,8 @@ import PTag from './components/customerSetting/tag/PTag.jsx';
 import VTag from './components/customerSetting/tag/VTag.jsx';
 import TagLog from './components/customerSetting/importLog/TagLog.jsx';
 import Label from './components/customerSetting/label/Label.jsx';
+//for hierarchySetting
+import Hierarchy from './components/hierarchySetting/Hierarchy.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
 
@@ -71,6 +73,7 @@ var routes = (
         <Route name="vee" path="vee" handler={VEE}></Route>
         <Route name="log" path="log" handler={TagLog}></Route>
         <Route name="customerLabeling" path="customerLabeling" handler={Label}></Route>
+        <Route name="hierNode" path="hierNode" handler={Hierarchy}></Route>
       </Route>
       <Route name="platform" path="platform" handler={PlatformApp}>
         <Route name='config' path='config' handler={Platform}></Route>
@@ -115,7 +118,6 @@ Router.run(routes, Router.HashLocation, (Root, state) => {
   muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
 
   muiTheme.linkbutton = {
-
     labelStyle: {
       color: "#767a7a",
       cursor: "pointer",

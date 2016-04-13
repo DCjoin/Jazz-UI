@@ -56,12 +56,11 @@ I18N.MainMenu.PTagManagement = '计量数据P';
 I18N.MainMenu.VTagManagement = '计量数据V';
 I18N.MainMenu.VEEMonitorRule = '异常监测规则';
 I18N.MainMenu.TagBatchImportLog = '配置导入日志';
-I18N.MainMenu.HierarchySetting = '层级配置';
 I18N.MainMenu.HierarchyNodeSetting = '层级节点配置';
 I18N.MainMenu.HierarchyLog = '配置导入日志';
 I18N.MainMenu.CustomSetting = '自定义配置';
+I18N.MainMenu.HierarchySetting = '层级配置';
 I18N.MainMenu.CustomizedLabeling = '能效标识';
-
 
 I18N.MainMenu.Calendar = '日历配置';
 I18N.MainMenu.WorkdaySetting = '工休日';
@@ -136,6 +135,11 @@ I18N.Common.Glossary.WeekDay.Thursday = '四';
 I18N.Common.Glossary.WeekDay.Friday = '五';
 I18N.Common.Glossary.WeekDay.Saturday = '六';
 I18N.Common.Glossary.WeekDay.Sunday = '日';
+
+I18N.Common.Glossary.Organization = '组织';
+I18N.Common.Glossary.Site = '园区';
+I18N.Common.Glossary.Building = '建筑';
+I18N.Common.Glossary.Node = '节点';
 
 I18N.Common.Per = {};
 I18N.Common.Per.Person = '/人';
@@ -795,8 +799,8 @@ I18N.Setting.Tag.KPI = '关键能效指标';
 I18N.Setting.Tag.PanelTitle = '层级结构';
 I18N.Setting.Tag.FormulaText = '点击编辑按钮，设计计算公式';
 I18N.Setting.Tag.ErrorContent = '请输入大于-1000000000小于1000000000的数，小数点后最多保留6位';
-I18N.Setting.Tag.CodeError = '不支持输入+-*/{}|';
-I18N.Setting.Tag.MeterCodeError = '不支持输入#|$<>\',"';
+I18N.Setting.Tag.CodeError = '不支持输入*{}';
+I18N.Setting.Tag.MeterCodeError = '不支持输入#$<>\',"';
 I18N.Setting.Tag.InvalidFormula = '计算公式的格式有误，请检查。';
 I18N.Setting.Tag.FormulaEditText = '在列表中点击数据点加入计算公式';
 I18N.Setting.Tag.PTagRawData = {};

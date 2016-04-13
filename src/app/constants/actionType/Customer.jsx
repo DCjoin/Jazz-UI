@@ -13,6 +13,7 @@ module.exports = {
     SAVE_CUATOMER_ENERGYINFO_SUCCESS: null,
     CUSTOMER_ERROR: null,
     MODIFY_CUSTOMER: null,
-    DELETE_CUSTOMER_SUCCESS: null
+    DELETE_CUSTOMER_SUCCESS: null,
+    CLEAR_CUSTOMER_ALL: null
   })
 };

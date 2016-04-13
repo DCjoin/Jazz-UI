@@ -32,6 +32,7 @@ var CustomerDetail = React.createClass({
     handleDeleteCustomer: React.PropTypes.func,
     handlerSwitchTab: React.PropTypes.func,
     toggleList: React.PropTypes.func,
+    isFromHierarchy: React.PropTypes.bool,
   },
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
@@ -142,7 +143,7 @@ var CustomerDetail = React.createClass({
       <div className={classnames("pop-manage-detail-header-name", "jazz-header")}>
         <ViewableTextField  {...customerNameProps} />
           {
-      isAdd ? null :
+      isAdd || this.props.isFromHierarchy ? null :
         <div className="pop-user-detail-tabs">
       <span className={classnames({
           "pop-user-detail-tabs-tab": true,
@@ -458,7 +459,7 @@ var CustomerDetail = React.createClass({
       <Panel onToggle={this.props.toggleList}>
         {header}
         {content}
-        {footer}
+        {this.props.isFromHierarchy ? null : footer}
       </Panel>
 {that._renderDialog()}
     </div>

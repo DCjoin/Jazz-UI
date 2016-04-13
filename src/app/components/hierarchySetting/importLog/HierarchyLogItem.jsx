@@ -4,7 +4,7 @@ import React from 'react';
 import CommonFuns from '../../../util/Util.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
-let TagLogItem = React.createClass({
+let HierarchyLogItem = React.createClass({
   getInitialState: function() {
     return {
       showDownloadButton: false
@@ -71,4 +71,4 @@ let TagLogItem = React.createClass({
   }
 });
 
-module.exports = TagLogItem;
+module.exports = HierarchyLogItem;
