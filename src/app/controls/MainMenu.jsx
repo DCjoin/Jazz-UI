@@ -148,6 +148,7 @@ var SubMainMenu = React.createClass({
         }
         return true;
       });
+      return true;
     });
     return {
       isActive: hasActive,

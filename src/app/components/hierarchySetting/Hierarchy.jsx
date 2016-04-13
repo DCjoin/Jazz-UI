@@ -1,18 +1,25 @@
 'use strict';
 
 import React from "react";
+import Immutable from 'immutable';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyList from './HierarchyList.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
+import { dataStatus } from '../../constants/DataStatus.jsx';
 import { CircularProgress } from 'material-ui';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import Customer from './CustomerForHierarchy.jsx';
+import Organization from './Organization/Organization.jsx';
+import Building from './Building/Building.jsx';
+import Dim from './Dim/Dim.jsx';
 
 function emptyMap() {
   return new Map();
 }
-
+function emptyList() {
+  return new List();
+}
 var Hierarchy = React.createClass({
   getInitialState: function() {
     return {
@@ -77,9 +84,20 @@ var Hierarchy = React.createClass({
     this.setState({
       infoTabNo: 1,
       formStatus: formStatus.ADD,
-      newType: newType,
-      selectedNode: null,
-      selectedContent: emptyMap()
+      selectedNode: Immutable.fromJS({
+        Type: newType
+      }),
+    });
+  },
+  _setEditStatus: function() {
+    this.setState({
+      formStatus: formStatus.EDIT
+    });
+  },
+  _toggleList: function() {
+    var {closedList} = this.state;
+    this.setState({
+      closedList: !closedList
     });
   },
   _handlerTouchTap: function(node) {
@@ -88,9 +106,52 @@ var Hierarchy = React.createClass({
       HierarchyAction.setCurrentSelectedNode(node);
     }
   },
+  _handlerMerge: function(data) {
+    var {status, path, value, index} = data,
+      paths = path.split("."),
+      value = Immutable.fromJS(value);
+    var mData = (this.state.infoTabNo === 1) ? this.state.selectedNode : null;
+    if (status === dataStatus.DELETED) {
+      mData = mData.deleteIn(paths);
+    } else if (status === dataStatus.NEW) {
+      var children = mData.getIn(paths);
+      if (!children) {
+        children = emptyList();
+      }
+      if (Immutable.List.isList(children)) {
+        if (index) {
+          paths.push(index);
+        } else {
+          value = children.push(value);
+        }
+      }
+      mData = mData.setIn(paths, value);
+    } else {
+      mData = mData.setIn(paths, value);
+    }
+    if (this.state.infoTabNo === 1) {
+      this.setState({
+        selectedNode: mData,
+      })
+    } else {
+    }
+
+  },
+  _handlerCancel: function() {
+    this._setViewStatus(HierarchyStore.getSelectedNode());
+  },
+  _switchTab(event) {
+    let no = parseInt(event.target.getAttribute("data-tab-index"));
+    this.setState({
+      infoTabNo: no,
+      formStatus: formStatus.VIEW
+    });
+
+  },
   _renderContent: function() {
     var detailProps = {
       selectedNode: this.state.selectedNode,
+      key: this.state.selectedNode.get('Id') === null ? Math.random() : this.state.selectedNode.get('Id'),
       formStatus: this.state.formStatus,
       infoTabNo: this.state.infoTabNo,
       setEditStatus: this._setEditStatus,
@@ -102,14 +163,28 @@ var Hierarchy = React.createClass({
       closedList: this.state.closedList,
       merge: this._handlerMerge
     };
-    var type = (this.state.selectedNode === null ? this.state.newType : this.state.selectedNode.get('Type')),
+    var type = this.state.selectedNode.get('Type'),
       detail = null;
     switch (type) {
       case -1:
         detailProps.ref = 'jazz_hierarchy_customer_detail';
-        detail = <Customer {...detailProps}/>
+        detail = <Customer {...detailProps}/>;
+        break;
+      case 0:
+      case 1:
+        detailProps.ref = 'jazz_hierarchy_organization_detail';
+        detail = <Organization {...detailProps}/>;
+        break;
+      case 2:
+        detailProps.ref = 'jazz_hierarchy_building_detail';
+        detail = <Building {...detailProps}/>;
+        break;
+      case 101:
+        detailProps.ref = 'jazz_hierarchy_dim_detail';
+        detail = <Dim {...detailProps}/>;
+        break;
     }
-    return detail
+    return detail;
   },
   _onReloadHierachyTree: function() {
     HierarchyAction.GetHierarchys();
@@ -119,7 +194,7 @@ var Hierarchy = React.createClass({
   },
   componentWillMount: function() {
     document.title = I18N.MainMenu.CustomerSetting;
-    HierarchyAction.GetHierarchys();
+    HierarchyAction.getCustomersByFilter(window.currentCustomerId, true);
     this.setState({
       isLoading: true
     });
@@ -140,6 +215,7 @@ var Hierarchy = React.createClass({
       onHierarchyClick: this._handlerTouchTap,
       hierarchys: this.state.hierarchys,
       selectedNode: this.state.selectedNode,
+      onExportBtnClick: this._onExportBtnClick,
       onReloadHierachyTree: this._onReloadHierachyTree
     //onGragulaNode: this._onGragulaNode
     };

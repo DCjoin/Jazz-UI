@@ -235,6 +235,7 @@ var VEERules = React.createClass({
       },
       detailProps = {
         ref: 'jazz_vee_detail',
+        key: this.state.selectedRule.get('Id'),
         rule: this.state.selectedRule,
         formStatus: this.state.formStatus,
         infoTab: this.state.infoTab,

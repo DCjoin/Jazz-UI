@@ -455,7 +455,7 @@ TagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.GET_LOG_LIST_ERROR:
       TagStore.setTagLogList([]);
-      TagStore.emitTemplateListChange();
+      TagStore.emitTagLogListChange();
       break;
     case Action.SET_SELECTED_TAG:
       TagStore.setSelectedTagIndex(action.index);

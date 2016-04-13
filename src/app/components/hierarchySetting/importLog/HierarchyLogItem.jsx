@@ -28,7 +28,7 @@ let HierarchyLogItem = React.createClass({
   _downloadLog: function() {
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = 'TagImportExcel.aspx?Id=' + this.props.id;
+    iframe.src = 'ImpExpHierarchy.aspx?TagType=Hierarchy&Id=' + this.props.id;
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };

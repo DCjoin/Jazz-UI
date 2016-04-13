@@ -40,11 +40,16 @@ var HierarchyList = React.createClass({
       paddingLeft: '44px'
     };
     if (items !== null) {
-      items.forEach((item, index) => {
-        menuItems.push(
-          <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
-        );
-      });
+      if (items.length === 1) {
+        menuItems = [<MenuItem key={2} innerDivStyle={itemStyle} primaryText={items[0]}/>]
+      } else {
+        items.forEach((item, index) => {
+          menuItems.push(
+            <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
+          );
+        });
+      }
+
     }
     return menuItems;
 
@@ -99,7 +104,7 @@ var HierarchyList = React.createClass({
   _downloadLogFile: function() {
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = 'ImpExpHierarchy.aspx?Id=' + this.state.importResult.Id;
+    iframe.src = 'ImpExpHierarchy.aspx?TagType=Hierarchy&Id=' + this.state.importResult.Id;
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };
@@ -226,6 +231,7 @@ var HierarchyList = React.createClass({
     });
   },
   render: function() {
+    var isAddStatus = this.props.formStatus === formStatus.ADD;
     var treeProps = {
         collapsedLevel: 0,
         allNode: this.props.hierarchys,
@@ -245,8 +251,8 @@ var HierarchyList = React.createClass({
       //disabled: this.state.buttonDisabled
       };
     var addBtnClasses = {
-        'jazz-tag-leftpanel-header-item': !this.props.isAddStatus,
-        'jazz-tag-disabled': this.props.isAddStatus
+        'jazz-tag-leftpanel-header-item': !isAddStatus,
+        'jazz-tag-disabled': isAddStatus
       },
       fileInputStyle = {
         opacity: 0,
@@ -256,14 +262,17 @@ var HierarchyList = React.createClass({
         display: 'none'
       };
     var addBtn = null;
-    if (this.props.selectedNode.get('Type') > 1) {
+
+    if (this.props.selectedNode.get('Type') > 1 || this.props.selectedNode.size === 0) {
       addBtn = <span onClick={this._onAddBtnClick} disabled={this.getAddBtnDisabled()} className={classNames(addBtnClasses)}>
-            <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
-            {I18N.Common.Glossary.Node}
-          </span>;
+              <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
+              {I18N.Common.Glossary.Node}
+            </span>;
     } else {
       addBtn = <DropdownButton {...addBtnProps}/>;
     }
+
+
     var importDialog = this._renderImportDialog();
     return (
       <div className='jazz-tag-leftpanel'>

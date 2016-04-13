@@ -140,6 +140,8 @@ I18N.Common.Glossary.Organization = '组织';
 I18N.Common.Glossary.Site = '园区';
 I18N.Common.Glossary.Building = '建筑';
 I18N.Common.Glossary.Node = '节点';
+I18N.Common.Glossary.Dim = '维度';
+
 
 I18N.Common.Per = {};
 I18N.Common.Per.Person = '/人';
@@ -1678,5 +1680,15 @@ I18N.Setting.VEEMonitorRule.AddTagInfo = '点击添加按钮，选择监测数�
 I18N.Setting.VEEMonitorRule.AddTag = '添加数据点';
 I18N.Setting.VEEMonitorRule.AddingTagsInfo = '在列表中点击数据点进行添加';
 I18N.Setting.VEEMonitorRule.TagList = '数据点列表';
+
+I18N.Setting.Organization = {};
+I18N.Setting.Organization.AssociateTag = '关联数据点';
+I18N.Setting.Organization.HierarchyNodeCalendarProperties = '日历属性';
+I18N.Setting.Organization.Name = '{0}名称';
+I18N.Setting.Organization.Code = '{0}编码';
+
+I18N.Setting.Building = {};
+I18N.Setting.Building.HierarchyNodeCostProperties = '成本属性';
+I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = '人口面积';
 
 module.exports = I18N;

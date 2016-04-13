@@ -2,26 +2,42 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import Hierarchy from '../../constants/actionType/hierarchySetting/Hierarchy.jsx';
 
 function emptyMap() {
   return new Map();
 }
+function emptyList() {
+  return new List();
+}
 var _hierarchys = emptyMap(),
   _selectedNode = null,
+  _logList = emptyList(),
   _customer = emptyMap();
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
-  CUSTOMER_CHANGE_EVENT = 'customerchange';
+  CUSTOMER_CHANGE_EVENT = 'customerchange',
+  CHANGE_LOG_EVENT = 'changelog';
 var HierarchyStore = assign({}, PrototypeStore, {
   setHierarchys: function(hierarchys) {
     _hierarchys = Immutable.fromJS(hierarchys);
   },
   getHierarchys: function() {
-    return _hierarchys
+    return _hierarchys;
+  },
+  setLogList(logList) {
+    if (logList) {
+      _logList = Immutable.fromJS(logList);
+    }
+  },
+  getLogList() {
+    return _logList;
   },
   setSelectedNode: function(selectedNode) {
+    if (selectedNode.get('Type') !== -1) {
+      _customer = emptyMap();
+    }
     _selectedNode = selectedNode;
   },
   getSelectedNode: function() {
@@ -31,12 +47,14 @@ var HierarchyStore = assign({}, PrototypeStore, {
     var items = null;
     switch (type) {
       case -1:
-      case 0: items = [I18N.Common.Glossary.Organization, I18N.Common.Glossary.Site, I18N.Common.Glossary.Building];
+      case 0:
+        items = [I18N.Common.Glossary.Organization, I18N.Common.Glossary.Site, I18N.Common.Glossary.Building];
         break;
-      case 1: items = [I18N.Common.Glossary.Building];
+      case 1:
+        items = [I18N.Common.Glossary.Building];
         break;
     }
-    return items
+    return items;
   },
   getParent: function(node) {
     var parent;
@@ -46,8 +64,8 @@ var HierarchyStore = assign({}, PrototypeStore, {
       } else {
         if (item.get('Children')) {
           item.get('Children').forEach(child => {
-            f(child)
-          })
+            f(child);
+          });
         }
       }
     };
@@ -64,12 +82,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
         parent = that.getParent(parent);
       }
       if (sum >= 5) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     } else {
-      return false
+      return false;
     }
   },
   //for customer
@@ -108,6 +126,15 @@ var HierarchyStore = assign({}, PrototypeStore, {
   emitCustomerChange(args) {
     this.emit(CUSTOMER_CHANGE_EVENT, args);
   },
+  emitLogListChange: function() {
+    this.emit(CHANGE_LOG_EVENT);
+  },
+  addLogListChangeListener: function(callback) {
+    this.on(CHANGE_LOG_EVENT, callback);
+  },
+  removeLogListChangeListener: function(callback) {
+    this.removeListener(CHANGE_LOG_EVENT, callback);
+  },
 });
 var HierarchyAction = Hierarchy.Action;
 HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -131,6 +158,14 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
     case HierarchyAction.GET_CUSTOMER_FOR_HIERARCHY:
       HierarchyStore.setSelectedCustomer(action.customer);
       HierarchyStore.emitCustomerChange();
+      break;
+    case HierarchyAction.GET_LOG_LIST_SUCCESS:
+      HierarchyStore.setLogList(action.logList);
+      HierarchyStore.emitLogListChange();
+      break;
+    case HierarchyAction.GET_LOG_LIST_ERROR:
+      HierarchyStore.setLogList([]);
+      HierarchyStore.emitLogListChange();
       break;
 
   }
