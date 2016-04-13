@@ -6,15 +6,18 @@ import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyList from './HierarchyList.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
+import { dataStatus } from '../../constants/DataStatus.jsx';
 import { CircularProgress } from 'material-ui';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import Customer from './CustomerForHierarchy.jsx';
 import Organization from './Organization/Organization.jsx';
 
 function emptyMap() {
   return new Map();
 }
-
+function emptyList() {
+  return new List();
+}
 var Hierarchy = React.createClass({
   getInitialState: function() {
     return {
@@ -102,14 +105,25 @@ var Hierarchy = React.createClass({
     }
   },
   _handlerMerge: function(data) {
-    var {status, path, value} = data,
+    var {status, path, value, index} = data,
       paths = path.split("."),
       value = Immutable.fromJS(value);
     var mData = (this.state.infoTabNo === 1) ? this.state.selectedNode : null;
     if (status === dataStatus.DELETED) {
       mData = mData.deleteIn(paths);
     } else if (status === dataStatus.NEW) {
-
+      var children = mData.getIn(paths);
+      if (!children) {
+        children = emptyList();
+      }
+      if (Immutable.List.isList(children)) {
+        if (index) {
+          paths.push(index);
+        } else {
+          value = children.push(value);
+        }
+      }
+      mData = mData.setIn(paths, value);
     } else {
       mData = mData.setIn(paths, value);
     }
@@ -120,6 +134,9 @@ var Hierarchy = React.createClass({
     } else {
     }
 
+  },
+  _handlerCancel: function() {
+    this._setViewStatus(HierarchyStore.getSelectedNode());
   },
   _switchTab(event) {
     let no = parseInt(event.target.getAttribute("data-tab-index"));

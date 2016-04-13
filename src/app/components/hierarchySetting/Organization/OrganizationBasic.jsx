@@ -9,7 +9,7 @@ import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import Regex from '../../../constants/Regex.jsx';
-import ReceiversList from '../../customerSetting/VEERules/ReceiversList.jsx';
+import AdminList from '../../customer/AdminList.jsx';
 
 
 var OrganizationBasic = React.createClass({
@@ -54,13 +54,12 @@ var OrganizationBasic = React.createClass({
         }
       };
     if (!isView || (Administrators && Administrators.length > 0)) {
-      var adminsProps = {
+      var adminProps = {
         status: this.props.formStatus,
-        ruleId: this.props.selectedNode.get('Id'),
-        receivers: this.props.rule.get('Receivers'),
+        admins: this.props.selectedNode.get("Administrators"),
         dataDidChanged: (status, value, index) => {
           var path = "Administrators";
-          if (status === dataStatus.DELETED) {
+          if (status !== dataStatus.NEW) {
             path += "." + index;
           }
           this.props.merge({
@@ -73,7 +72,7 @@ var OrganizationBasic = React.createClass({
       };
 
       adminList = (
-        <ReceiversList {...receiversProps}/>
+        <AdminList {...adminProps}/>
       );
     }
     return (
