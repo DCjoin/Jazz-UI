@@ -1691,4 +1691,8 @@ I18N.Setting.Building = {};
 I18N.Setting.Building.HierarchyNodeCostProperties = '成本属性';
 I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = '人口面积';
 
+I18N.Setting.Hierarchy = {};
+I18N.Setting.Hierarchy.DeleteTitle = '删除{0}';
+I18N.Setting.Hierarchy.DeleteContent = '删除{0}“{1}”，该{2}的所有数据也将被删除。';
+
 module.exports = I18N;

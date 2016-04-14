@@ -2,7 +2,6 @@
 
 import React from "react";
 import classnames from "classnames";
-import { isFunction } from "lodash/lang";
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
@@ -10,7 +9,7 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
-//import Basic from './OrganizationBasic.jsx';
+import Basic from './DimBasic.jsx';
 
 var Building = React.createClass({
 
@@ -52,7 +51,9 @@ var Building = React.createClass({
       editBtnDisabled: status
     });
   },
-  _handleSave: function() {},
+  _handleSave: function() {
+    this.props.handleSave(this.props.selectedNode);
+  },
   _renderHeader: function() {
     var that = this,
       {selectedNode} = this.props,
@@ -112,9 +113,6 @@ var Building = React.createClass({
         content = <Basic {...basicProps}/>
         break;
       case 2:
-
-        break;
-      case 3:
 
         break;
 
@@ -177,23 +175,23 @@ var Building = React.createClass({
     if (!this.state.dialogStatus) {
       return null;
     } else {
-      var rule = that.props.rule;
+      var selectedNode = that.props.selectedNode;
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.VEEMonitorRule.DeleteTitle} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.Hierarchy.DeleteTitle, I18N.Common.Glossary.Dim)} modal={true} actions={[
           <FlatButton
           label={I18N.Template.Delete.Delete}
           primary={true}
           onClick={() => {
-            that.props.handleDeleteRule(rule);
+            that.props.handleDelete(selectedNode);
             closeDialog();
           }} />,
           <FlatButton
           label={I18N.Template.Delete.Cancel}
           onClick={closeDialog} />
         ]}>
-      {I18N.format(I18N.Setting.VEEMonitorRule.DeleteContent, rule.get('Name'))}
+      {I18N.format(I18N.format(I18N.Setting.Hierarchy.DeleteContent, I18N.Common.Glossary.Dim, selectedNode.get('Name'), I18N.Common.Glossary.Dim))}
     </Dialog>
         );
     }
@@ -208,7 +206,7 @@ var Building = React.createClass({
   render: function() {
     var that = this;
     var header = this._renderHeader(),
-      //  content = this._renderContent(),
+      content = this._renderContent(),
       footer = this._renderFooter();
     return (
       <div className={classnames({
@@ -217,6 +215,7 @@ var Building = React.createClass({
       })}>
     <Panel onToggle={this.props.toggleList}>
       {header}
+      {content}
       {footer}
     </Panel>
     {that._renderDialog()}

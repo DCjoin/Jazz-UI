@@ -52,7 +52,9 @@ var Organization = React.createClass({
       editBtnDisabled: status
     });
   },
-  _handleSave: function() {},
+  _handleSave: function() {
+    this.props.handleSave(this.props.selectedNode);
+  },
   _renderHeader: function() {
     var that = this,
       {selectedNode} = this.props,
@@ -182,23 +184,24 @@ var Organization = React.createClass({
     if (!this.state.dialogStatus) {
       return null;
     } else {
-      var rule = that.props.rule;
+      var selectedNode = that.props.selectedNode,
+        title = selectedNode.get('Type') === 0 ? I18N.Common.Glossary.Organization : I18N.Common.Glossary.Site;
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.VEEMonitorRule.DeleteTitle} modal={true} actions={[
+        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.Hierarchy.DeleteTitle, title)} modal={true} actions={[
           <FlatButton
           label={I18N.Template.Delete.Delete}
           primary={true}
           onClick={() => {
-            that.props.handleDeleteRule(rule);
+            that.props.handleDelete(selectedNode);
             closeDialog();
           }} />,
           <FlatButton
           label={I18N.Template.Delete.Cancel}
           onClick={closeDialog} />
         ]}>
-      {I18N.format(I18N.Setting.VEEMonitorRule.DeleteContent, rule.get('Name'))}
+      {I18N.format(I18N.Setting.Hierarchy.DeleteContent, title, selectedNode.get('Name'), title)}
     </Dialog>
         );
     }
