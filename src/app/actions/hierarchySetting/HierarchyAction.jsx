@@ -185,7 +185,6 @@ let HierarchyAction = {
           title: I18N.Platform.ServiceProvider.ErrorNotice,
           content: ErrorMsg,
         });
-        console.log(err, res);
       }
     });
   },
