@@ -83,13 +83,15 @@ var SelectCustomer = React.createClass({
           }
           style.left = ((this.state.screenWidth - 150 * 2 - baseWidth) / 2 - this.state.currentIndex * baseWidth) + 'px';
 
-          var imageId = item.Id.toString();
+          var imageContent = {
+            hierarchyId:item.Id.toString(),
+          };
           var customerName = item.Name;
 
           return (
               <div className="pop-select-customer-ct" style={style} key={idx} onClick={this._selectCustomerChangeHandler.bind(this, idx)} >
                   <div style={innerStyle} title={customerName}>
-                    <BackgroudImage imageId={imageId} />
+                    <BackgroudImage imageContent={imageContent} />
                   </div>
                   {customerName && <span>{customerName}</span>}
               </div>

@@ -15,8 +15,7 @@ let CurrentUserAction = {
         }
       },
       success: function(userList) {
-
-        console.log('Here:'+JSON.stringify(userList,0,1));
+        //console.log('Here:'+JSON.stringify(userList,0,1));
         UserTypeName = userList[0].UserTypeName;
         UserType = userList[0].UserType;
         that.getRoles(userId);
