@@ -4,9 +4,10 @@ import React from 'react';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import MainAppBar from './MainAppBar.jsx';
 import SelectCustomer from './SelectCustomer.jsx';
-import util from '../util/util.jsx';
+import util from '../util/Util.jsx';
 
 import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
+import { viewState } from '../constants/MainAppStatus.jsx';
 import CookieUtil from '../util/cookieUtil.jsx';
 
 import lang from '../lang/lang.jsx';
@@ -21,17 +22,9 @@ import ExportChart from './energy/ExportChart.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
 
-var viewState = keyMirror({
-  SELECT_CUSTOMER: null,
-  SPADMIN: null,
-  MAIN: null,
-  EMPTY: null,
-  NO_SELECT_CUSTOMERS: null,
-  NO_CURRENT_CUSTOMER: null,
-  NO_ALL_CUSTOMERS: null
-});
 
 function getCurrentCustomers() {
+  //console.log('getCurrentCustomers():'+ CurrentUserCustomerStore.getAll().length);
   return CurrentUserCustomerStore.getAll();
 }
 
@@ -41,10 +34,6 @@ function getCurrentCustomer() {
 
 function getCurrentUser() {
   return CurrentUserCustomerStore.getCurrentUser();
-}
-
-function isSpAdmin() {
-  return CurrentUserCustomerStore.isSpAdmin();
 }
 
 let MainApp = React.createClass({
@@ -82,25 +71,21 @@ let MainApp = React.createClass({
     }
   },
   _switchCustomer: function(customer) {
-      console.log('see this');
-      // this._redirectRouter(MainAppBar.GetAssetMenuItems()[0], assign({}, this.props.params, {
-      //     customerCode: customer.Id
-      // }));
       var currentCustomer = getCurrentCustomer();
       CookieUtil.remove('currentCustomer');
       CookieUtil.set('currentCustomerId', customer.Id, {'expires':5,'path':'/webhost'});
       window.location.reload();
 
       this.setState({viewState: viewState.MAIN});
-
   },
 
   render: function() {
-    if(this.state.viewState == viewState.SELECT_CUSTOMER){
+    var CustomersList = getCurrentCustomers();
+    if(this.state.viewState == viewState.SELECT_CUSTOMER && CustomersList && CustomersList.length > 0){
       return(
         <SelectCustomer close={this._closeSelectCustomer}
                         currentCustomerId={parseInt(window.currentCustomerId)}
-                        params={getCurrentCustomers()}
+                        params={CustomersList}
                         userId={parseInt(window.currentUserId)}/>
       );
     }else{

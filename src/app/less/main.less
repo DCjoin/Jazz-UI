@@ -45,6 +45,7 @@
 @import "veeRule.less";
 @import "tag.less";
 @import "label.less";
+@import "selectCustomer.less";
 
 
 
@@ -1222,56 +1223,4 @@ input:focus{
     width:256px !important;
     top:350px !important;
   }
-}
-
-
-//add by qif
-.jazz-selectbg{
-  background: -webkit-linear-gradient(left, @mainBlueStart, @mainBlueEnd); /* Safari 5.1 - 6.0 */
-  background: -o-linear-gradient(right, @mainBlueStart, @mainBlueEnd); /* Opera 11.1 - 12.0 */
-  background: -moz-linear-gradient(right, @mainBlueStart, @mainBlueEnd); /* Firefox 3.6 - 15 */
-  background: linear-gradient(to right, @mainBlueStart, @mainBlueEnd);
-  width:100%;
-  height: 88px;
-  box-shadow: 0px 4px 6px 0px rgba(70,184,255,.5);
-}
-
-.jazz-mask{
-  width: 100%;
-  height: 100%;
-  background-color: rgba(23, 25, 25, 0.5);
-  position: absolute;
-  margin-top: -88px;
-}
-
-.jazz-customerList{
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  margin-top: -88px;
-}
-
-.jazz-select-customer-handler{
-    width:150px;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor: pointer;
-    font-size: 48px;
-    &:hover{
-        opacity:0.5;
-    }
-}
-
-.pop-select-customer-ct {
-    transition: left 0.5s ease-in-out 0;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-sizing: border-box;
-    width: 100px;
-    height: 100px;
 }

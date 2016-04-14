@@ -4,7 +4,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import events from 'events';
 import assign from 'object-assign';
-import Util from '../util/util.jsx';
+import Util from '../util/Util.jsx';
 import PermissionCode from '../constants/PermissionCode.jsx';
 //import LoginActionType from '../constants/actionType/Login.jsx';
 import SelectCustomerActionType from '../constants/actionType/SelectCustomer.jsx';
@@ -20,6 +20,7 @@ let _customers = null;
 let _currentCustomer = null;
 let _currentUser = null;
 let _isSpAdmin = false;
+
 
 function reset() {
   _customers = null;
@@ -142,21 +143,20 @@ let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
   emitUserInfoChange: function() {
     this.emit(USER_IFNO_CHANGE_EVENT);
   },
+});
 
-  dispatcherIndex: AppDispatcher.register(function(action) {
-    switch (action.type) {
-      case SelectCustomerActionType.Action.GET_SELECT_CUSTOMERS:
-        CurrentUserCustomerStore.init(action.data);
-        CurrentUserCustomerStore.emitChange();
-        break;
-      case SelectCustomerActionType.Action.SELECT_ACCOUNT_SUCCESS:
-        CurrentUserCustomerStore.setCustomer(action.data);
-        CurrentUserCustomerStore.emitChange();
-        break;
-      default: // do nothing
-    }
-  })
-
+CurrentUserCustomerStore.dispatchToken = AppDispatcher.register(function(action) {
+  switch (action.type) {
+    case SelectCustomerActionType.Action.GET_SELECT_CUSTOMERS:
+      CurrentUserCustomerStore.init(action.data);
+      CurrentUserCustomerStore.emitChange();
+      break;
+    case SelectCustomerActionType.Action.SELECT_ACCOUNT_SUCCESS:
+      CurrentUserCustomerStore.setCustomer(action.data);
+      CurrentUserCustomerStore.emitChange();
+      break;
+    default: // do nothing
+  }
 });
 
 module.exports = CurrentUserCustomerStore;
