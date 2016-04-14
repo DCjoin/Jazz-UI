@@ -20,7 +20,7 @@ module.exports = {
     Ajax.post('/Customer.svc/GetCustomersByFilter', {
       params : {
           "filter": {
-              "UserId": 300534,
+              "UserId": userId,
               "Order": {
                   "Column": "Name",
                   "Type": 0
