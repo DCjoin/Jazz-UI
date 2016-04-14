@@ -64,7 +64,7 @@ var HierarchyList = React.createClass({
   },
   _onAddBtnClick: function() {
     let newNodeType = null;
-    switch (selectedNode.get('Type')) {
+    switch (this.props.selectedNode.get('Type')) {
       case nodeType.Site:
         newNodeType = nodeType.Building;
         break;
@@ -248,7 +248,7 @@ var HierarchyList = React.createClass({
         text: I18N.Common.Glossary.Node,
         menuItems: this.getAddMenuItems(),
         onItemClick: this._onMenuAddBtnClick,
-      //disabled: this.state.buttonDisabled
+        disabled: this.getAddBtnDisabled()
       };
     var addBtnClasses = {
         'jazz-tag-leftpanel-header-item': !isAddStatus,
@@ -264,12 +264,16 @@ var HierarchyList = React.createClass({
     var addBtn = null;
 
     if (this.props.selectedNode.get('Type') > 1 || this.props.selectedNode.size === 0) {
-      addBtn = <span onClick={this._onAddBtnClick} disabled={this.getAddBtnDisabled()} className={classNames(addBtnClasses)}>
+      addBtn = <span onClick={this._onAddBtnClick} disabled={this.getAddBtnDisabled()} className={classNames(addBtnClasses)} style={{
+        margin: '0 15px'
+      }}>
               <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>
               {I18N.Common.Glossary.Node}
             </span>;
     } else {
-      addBtn = <DropdownButton {...addBtnProps}/>;
+      addBtn = <div style={{
+        marginTop: '-2px'
+      }}><DropdownButton {...addBtnProps}/></div>;
     }
 
 
