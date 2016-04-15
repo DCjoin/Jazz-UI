@@ -3,8 +3,7 @@
 
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import SelectCustomerActionType from '../constants/actionType/SelectCustomer.jsx';
-import Ajax from '../ajax/Ajax.jsx';
-import Path from '../constants/Path.jsx';
+import Ajax from '../ajax/ajax.jsx';
 import Util from '../util/Util.jsx';
 
 let {Action} = SelectCustomerActionType;
@@ -28,8 +27,7 @@ module.exports = {
           }
       },
       success: function(data) {
-        //console.log(JSON.stringify(data,0,1));
-        //console.log('Ajax:'+ data.length);
+        console.log('getCustomer ready num:'+ data.length);
         AppDispatcher.dispatch({type: Action.GET_SELECT_CUSTOMERS, data: data});
       },
     });

@@ -24,16 +24,11 @@ import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
 
 
 function getCurrentCustomers() {
-  //console.log('getCurrentCustomers():'+ CurrentUserCustomerStore.getAll().length);
   return CurrentUserCustomerStore.getAll();
 }
 
 function getCurrentCustomer() {
   return CurrentUserCustomerStore.getCurrentCustomer();
-}
-
-function getCurrentUser() {
-  return CurrentUserCustomerStore.getCurrentUser();
 }
 
 let MainApp = React.createClass({
@@ -72,6 +67,7 @@ let MainApp = React.createClass({
   },
   _switchCustomer: function(customer) {
       var currentCustomer = getCurrentCustomer();
+      //临时解决方案 
       CookieUtil.remove('currentCustomer');
       CookieUtil.set('currentCustomerId', customer.Id, {'expires':5,'path':'/webhost'});
       window.location.reload();
@@ -222,12 +218,9 @@ let MainApp = React.createClass({
     MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
 
+    SelectCustomerActionCreator.getCustomer(window.currentUserId);
     CurrentUserCustomerStore.addChangeListener(this._onChange);
-    var _currentUserId = parseInt(window.currentUserId);
-    if (!getCurrentUser()) {
-      SelectCustomerActionCreator.getCustomer(_currentUserId);
-      return;
-    }
+
   },
   componentWillUnmount: function() {
     UOMStore.removeChangeListener(this._onAllUOMSChange);

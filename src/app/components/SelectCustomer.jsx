@@ -9,7 +9,6 @@ import _findIndex from 'lodash/array/findIndex';
 import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
 import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
 
-var _bgData = "";
 var timeoutHandler = null;
 var _ = {
   findIndex: _findIndex
@@ -22,7 +21,6 @@ var SelectCustomer = React.createClass({
     propTypes: {
       userId: React.PropTypes.number,
       params: React.PropTypes.array,
-      closable: React.PropTypes.bool,
       currentCustomerId: React.PropTypes.number
     },
     getInitialState : function() {
@@ -49,8 +47,6 @@ var SelectCustomer = React.createClass({
 
     _getCustomerList() {
       var customerList = CurrentUserCustomerStore.getAll();
-      //console.log(customerList.length);
-      //console.log(JSON.stringify(customerList,0,1));
       if(customerList && customerList.length > 0) {
         customerList = customerList.map(((item, idx) => {
             var style = {
@@ -103,7 +99,6 @@ var SelectCustomer = React.createClass({
         return customerList;
       }
       return
-
     },
 
     _prevPage() {
@@ -140,11 +135,19 @@ var SelectCustomer = React.createClass({
       this.setState({
         screenWidth: app.clientWidth,
       });
-    },
-    componentWillMount : function() {
+
       if (this.props.currentCustomerId) {
           var customerList = CurrentUserCustomerStore.getAll();
-          //console.log('componentWillMount:'+JSON.stringify(customerList,0,1));
+          var idx = _.findIndex(customerList, 'Id', this.props.currentCustomerId);
+          if (idx < 0) idx = 0;
+          this.setState({currentIndex: idx});
+      }
+    },
+    componentWillMount : function() {
+      window.removeEventListener('resize', this._handleResize);
+
+      if (this.props.currentCustomerId) {
+          var customerList = CurrentUserCustomerStore.getAll();
           var idx = _.findIndex(customerList, 'Id', this.props.currentCustomerId);
           if (idx < 0)
               idx = 0;
@@ -190,7 +193,6 @@ var SelectCustomer = React.createClass({
                     </div>
                   </div>
                 </div>
-
             </div>
 
         );
