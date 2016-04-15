@@ -251,7 +251,7 @@ var MonitorTag = React.createClass({
           color: '#767a7a',
           fontSize: '14px'
         }}>
-          {I18N.Setting.VEEMonitorRule.AddTagInfo}
+          {I18N.Setting.Hierarchy.AddTagInfo}
         </div>
         );
     } else {

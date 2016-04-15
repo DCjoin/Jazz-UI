@@ -1687,5 +1687,8 @@ I18N.Setting.Building = {};
 I18N.Setting.Building.HierarchyNodeCostProperties = 'Cost';
 I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = 'Population & Area';
 
+I18N.Setting.Hierarchy = {};
+I18N.Setting.Hierarchy.AddTagInfo = 'Click add button to add tags';
+
 
 module.exports = I18N;
