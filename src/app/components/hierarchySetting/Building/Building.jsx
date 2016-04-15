@@ -10,7 +10,8 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
-//import Basic from './OrganizationBasic.jsx';
+import MonitorTag from '../MonitorTag.jsx';
+import Basic from './OrganizationBasic.jsx';
 
 var Building = React.createClass({
 
@@ -53,7 +54,24 @@ var Building = React.createClass({
     });
   },
   _handleSave: function() {
-    this.props.handleSave(this.props.selectedNode);
+    if (this.props.infoTabNo === 1) {
+      this.props.handleSave(this.props.selectedNode);
+    } else if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_building_tag) {
+        let tags = this.refs.jazz_Org_tag._handlerSave(),
+          tagIds = [];
+        tags.forEach(tag => {
+          tagIds.push({
+            Id: tag.get('Id'),
+            Version: tag.get('Version')
+          });
+        });
+        this.props.handleSave({
+          hierarchyId: this.props.selectedNode.get('Id'),
+          tags: tagIds
+        });
+      }
+    }
   },
   _renderHeader: function() {
     var that = this,
@@ -70,7 +88,7 @@ var Building = React.createClass({
           this.props.merge({
             value,
             path: "Name"
-          })
+          });
         }
       };
     return (
@@ -109,24 +127,30 @@ var Building = React.createClass({
       }
     </div>
   </div>
-      )
+      );
 
   },
   _renderContent: function() {
     var basicProps = {
-      ref: 'jazz_building_basic',
-      selectedNode: this.props.selectedNode,
-      merge: this.props.merge,
-      formStatus: this.props.formStatus,
-      key: this.props.selectedNode.get('Id') === null ? Math.random() : this.props.selectedNode.get('Id'),
-    };
+        ref: 'jazz_building_basic',
+        selectedNode: this.props.selectedNode,
+        merge: this.props.merge,
+        formStatus: this.props.formStatus,
+        key: this.props.selectedNode.get('Id') === null ? Math.random() : this.props.selectedNode.get('Id'),
+      },
+      tagProps = {
+        ref: 'jazz_building_tag',
+        formStatus: this.props.formStatus,
+        hierarchyId: this.props.selectedNode.get('Id'),
+        onUpdate: this._update
+      };
     var content;
     switch (this.props.infoTabNo) {
       case 1:
-        content = <Basic {...basicProps}/>
+        content = <Basic {...basicProps}/>;
         break;
       case 2:
-
+        content = <MonitorTag {...tagProps}/>;
         break;
       case 3:
 
@@ -142,7 +166,7 @@ var Building = React.createClass({
       {content}
     </div>
 
-      )
+      );
   },
   _renderFooter: function() {
     var disabledSaveButton = this.state.editBtnDisabled,
@@ -151,13 +175,13 @@ var Building = React.createClass({
       editBtnProps;
     if (this.props.infoTabNo === 1) {
       if (!selectedNode.get('Name') || selectedNode.get('Name').length > 200) {
-        disabledSaveButton = true
+        disabledSaveButton = true;
       }
     } else {
       if (this.props.infoTabNo === 2) {
         editBtnProps = {
           label: I18N.Common.Button.Add
-        }
+        };
       }
     }
     return (
@@ -175,11 +199,11 @@ var Building = React.createClass({
       onCancel={this.props.handlerCancel}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
-        that.props.setEditStatus()
+        that.props.setEditStatus();
       }}
       editBtnProps={editBtnProps}/>
 
-      )
+      );
   },
   _renderDialog: function() {
     var that = this;
@@ -235,7 +259,7 @@ var Building = React.createClass({
     </Panel>
     {that._renderDialog()}
   </div>
-      )
+      );
   },
 });
 module.exports = Building;
