@@ -22,8 +22,27 @@ let CHANGE_EVENT = 'change',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
   CHANGE_LOG_EVENT = 'changelog';
 var HierarchyStore = assign({}, PrototypeStore, {
+  traversalNode: function(node) {
+    var f = function(item) {
+      if (item.Children === null || item.HasChildren === false) {
+        if (item.Type === 101) {
+          item.Id = 0 - item.Id
+        }
+        return
+      } else {
+        if (item.Type === 101) {
+          item.Id = 0 - item.Id
+        }
+        item.Children.forEach(el => {
+          f(el)
+        })
+      }
+    };
+    f(node);
+    return node;
+  },
   setHierarchys: function(hierarchys) {
-    _hierarchys = Immutable.fromJS(hierarchys);
+    _hierarchys = Immutable.fromJS(this.traversalNode(hierarchys));
   },
   getHierarchys: function() {
     return _hierarchys;
@@ -126,6 +145,24 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getSelectedCustomer: function() {
     return _customer;
   },
+  findNextSelectedNode: function(dto) {
+    var node = Immutable.fromJS(dto),
+      parent = this.getParent(node),
+      children = parent.get('Children'),
+      selectedNode = null;
+    var index = children.findIndex(item => item.get('Id') == node.get('Id'))
+    if (children.size === 1) {
+      selectedNode = parent;
+    } else {
+      if (index == children.size - 1) {
+        selectedNode = children.find((item, i) => (i == index - 1));
+      } else {
+        selectedNode = children.find((item, i) => (i == index + 1));
+      }
+
+    }
+    return selectedNode
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -213,6 +250,16 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
     case HierarchyAction.CLEAR_ALL_ASSOCIATED_TAGS:
       HierarchyStore.clearAll();
       break;
+    case HierarchyAction.DELETE_HIERARCHY_DTO_SUCCESS:
+      HierarchyStore.setSelectedNode(action.nextSelectedNode);
+      break;
+    case HierarchyAction.HIERARCHY_ERROR:
+      HierarchyStore.emitErrorhange({
+        title: action.title,
+        content: action.content
+      });
+      break;
+
   }
 });
 

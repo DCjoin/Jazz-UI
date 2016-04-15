@@ -9,6 +9,7 @@ import { formStatus } from '../../constants/FormStatus.jsx';
 import { dataStatus } from '../../constants/DataStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import { Map, List } from 'immutable';
+import Dialog from '../../controls/PopupDialog.jsx';
 import Customer from './CustomerForHierarchy.jsx';
 import Organization from './Organization/Organization.jsx';
 import Building from './Building/Building.jsx';
@@ -140,6 +141,30 @@ var Hierarchy = React.createClass({
   _handlerCancel: function() {
     this._setViewStatus(HierarchyStore.getSelectedNode());
   },
+  _handleDelete: function(node) {
+    HierarchyAction.deleteHierarchy(node.toJS());
+    this.setState({
+      isLoading: true
+    });
+  },
+  _handleSave: function(node) {
+    if (this.state.infoTabNo === 1) {
+      if (!node.get('Id')) {
+        var parent = HierarchyStore.getSelectedNode();
+        node = node.set('ParentId', parent.get('Id'));
+        node = node.set('CustomerId', parseInt(window.currentCustomerId));
+        if (node.get('Type') === 101) {
+          node = node.set('HierarchyId', parent.get('HierarchyId'));
+        }
+        HierarchyAction.createHierarchy(node.toJS());
+      } else {
+        HierarchyAction.modifyHierarchy(node.toJS());
+      }
+    }
+    this.setState({
+      isLoading: true
+    });
+  },
   _switchTab(event) {
     let no = parseInt(event.target.getAttribute("data-tab-index"));
     this.setState({
@@ -185,6 +210,28 @@ var Hierarchy = React.createClass({
         break;
     }
     return detail;
+  },
+  _renderErrorDialog: function() {
+    var that = this;
+    var onClose = function() {
+      that.setState({
+        errorTitle: null,
+        errorContent: null,
+      });
+    };
+    if (!!this.state.errorTitle) {
+      return (<Dialog
+        ref = "_dialog"
+        title={this.state.errorTitle}
+        modal={false}
+        openImmediately={!!this.state.errorTitle}
+        onClose={onClose}
+        >
+        {this.state.errorContent}
+      </Dialog>)
+    } else {
+      return null;
+    }
   },
   _onReloadHierachyTree: function() {
     HierarchyAction.GetHierarchys();
@@ -244,6 +291,7 @@ var Hierarchy = React.createClass({
         }}>
           {list}
           {(this.state.hierarchys.size === 0 && isView) ? null : this._renderContent()}
+          {this._renderErrorDialog()}
         </div>);
     }
   },

@@ -2,12 +2,10 @@
 
 import React from "react";
 import classnames from "classnames";
-import moment from "moment";
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { dataStatus } from '../../../constants/DataStatus.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
-import CommonFuns from '../../../util/Util.jsx';
 import Regex from '../../../constants/Regex.jsx';
 import AdminList from '../../customer/AdminList.jsx';
 
@@ -23,7 +21,6 @@ var OrganizationBasic = React.createClass({
   _renderDetail: function() {
     var {Code, Comment, Administrators} = this.props.selectedNode.toJS(),
       isView = this.props.formStatus === formStatus.VIEW,
-      isAdd = this.props.formStatus === formStatus.ADD,
       title = this.props.selectedNode.get('Type') === 0 ? I18N.Common.Glossary.Organization : I18N.Common.Glossary.Site,
       adminList = null;
     var codeProps = {

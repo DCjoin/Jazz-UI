@@ -3,6 +3,8 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/hierarchySetting/Hierarchy.jsx';
 import Ajax from '../../ajax/ajax.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
+import CommonFuns from '../../util/Util.jsx';
+import Immutable from 'immutable';
 var _page,
   _hierarchyId,
   _association,
@@ -141,6 +143,80 @@ let HierarchyAction = {
   clearAll: function() {
     AppDispatcher.dispatch({
       type: Action.CLEAR_ALL_ASSOCIATED_TAGS,
+    });
+  },
+  createHierarchy: function(dto) {
+    var that = this;
+    Ajax.post('/Hierarchy.svc/CreateHierarchy', {
+      params: {
+        hierarchy: dto
+      },
+      commonErrorHandling: false,
+      success: function(node) {
+        AppDispatcher.dispatch({
+          type: Action.SET_SELECTED_HIERARCHY_NODE,
+          node: Immutable.fromJS(node)
+        });
+        that.GetHierarchys();
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.HIERARCHY_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
+  modifyHierarchy: function(dto) {
+    var that = this;
+    Ajax.post('/Hierarchy.svc/ModifyHierarchy', {
+      params: {
+        hierarchy: HierarchyStore.traversalNode(dto)
+      },
+      commonErrorHandling: false,
+      success: function(node) {
+        AppDispatcher.dispatch({
+          type: Action.SET_SELECTED_HIERARCHY_NODE,
+          node: Immutable.fromJS(node)
+        });
+        that.GetHierarchys();
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.HIERARCHY_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+      }
+    });
+  },
+  deleteHierarchy: function(dto) {
+    var that = this;
+    Ajax.post('/Hierarchy.svc/DeleteHierarchy', {
+      params: {
+        hierarchy: HierarchyStore.traversalNode(dto)
+      },
+      commonErrorHandling: false,
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_HIERARCHY_DTO_SUCCESS,
+          nextSelectedNode: HierarchyStore.findNextSelectedNode(dto)
+        });
+        that.GetHierarchys();
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.HIERARCHY_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
     });
   },
 };
