@@ -54,7 +54,24 @@ var Organization = React.createClass({
     });
   },
   _handleSave: function() {
-    this.props.handleSave(this.props.selectedNode);
+    if (this.props.infoTabNo === 1) {
+      this.props.handleSave(this.props.selectedNode);
+    } else if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_Org_tag) {
+        let tags = this.refs.jazz_Org_tag._handlerSave(),
+          tagIds = [];
+        tags.forEach(tag => {
+          tagIds.push({
+            Id: tag.get('Id'),
+            Version: tag.get('Version')
+          });
+        });
+        this.props.handleSave({
+          hierarchyId: this.props.selectedNode.get('Id'),
+          tags: tagIds
+        });
+      }
+    }
   },
   _renderHeader: function() {
     var that = this,

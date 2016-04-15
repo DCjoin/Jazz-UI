@@ -113,22 +113,18 @@ let HierarchyAction = {
       }
     });
   },
-  modifyTags: function(ruleId, tagIds) {
+  modifyTags: function(hierarchyId, tags) {
     var that = this;
-    Ajax.post('/VEE.svc/ModifyVEETags', {
+    Ajax.post('/Tag.svc/SetAssociation', {
       params: {
         dto: {
-          "Filter": {
-            "RuleIds": ruleId === null ? null : [ruleId],
-            "TagIds": tagIds,
-            "CustomerId": parseInt(window.currentCustomerId)
-          },
-          "AssociateAll": false
+          AssociationId: hierarchyId,
+          AssociationType: 1,
+          Tags: tags
         }
-
       },
       success: function(data) {
-        if (ruleId === null) {
+        if (hierarchyId === null) {
           if (HierarchyStore.getTotal() - 1 > 0 && parseInt((HierarchyStore.getTotal() - 1 + 19) / 20) < _page) {
             _page = _page - 1;
           }

@@ -4,6 +4,7 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import { Map, List } from 'immutable';
 import Hierarchy from '../../constants/actionType/hierarchySetting/Hierarchy.jsx';
+import Main from '../../constants/actionType/Main.jsx';
 
 function emptyMap() {
   return new Map();
@@ -20,22 +21,23 @@ var _hierarchys = emptyMap(),
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
-  CHANGE_LOG_EVENT = 'changelog';
+  CHANGE_LOG_EVENT = 'changelog',
+  TAG_CHANGE_EVENT = 'tagchange';
 var HierarchyStore = assign({}, PrototypeStore, {
   traversalNode: function(node) {
     var f = function(item) {
       if (item.Children === null || item.HasChildren === false) {
         if (item.Type === 101) {
-          item.Id = 0 - item.Id
+          item.Id = 0 - item.Id;
         }
-        return
+        return;
       } else {
         if (item.Type === 101) {
-          item.Id = 0 - item.Id
+          item.Id = 0 - item.Id;
         }
         item.Children.forEach(el => {
-          f(el)
-        })
+          f(el);
+        });
       }
     };
     f(node);
@@ -58,7 +60,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
   //tag
   setTagList: function(data) {
     _total = data.total;
-    _tagList = Immutable.fromJS(data.GetVEETagsByFilterResult);
+    _tagList = Immutable.fromJS(data.GetTagsByFilterResult);
   },
   getTagList: function() {
     return _tagList;
@@ -161,7 +163,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
       }
 
     }
-    return selectedNode
+    return selectedNode;
   },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
@@ -200,6 +202,15 @@ var HierarchyStore = assign({}, PrototypeStore, {
   },
   removeLogListChangeListener: function(callback) {
     this.removeListener(CHANGE_LOG_EVENT, callback);
+  },
+  addTagChangeListener(callback) {
+    this.on(TAG_CHANGE_EVENT, callback);
+  },
+  removeTagChangeListener(callback) {
+    this.removeListener(TAG_CHANGE_EVENT, callback);
+  },
+  emitTagChange(args) {
+    this.emit(TAG_CHANGE_EVENT, args);
   },
 });
 var HierarchyAction = Hierarchy.Action,
@@ -245,7 +256,7 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.ifEmitTagChange();
       break;
     case HierarchyAction.SAVE_ASSOCIATED_TAG_SUCCESS:
-      HierarchyStore.emitChange(_selectedId);
+      HierarchyStore.emitChange(_selectedNode);
       break;
     case HierarchyAction.CLEAR_ALL_ASSOCIATED_TAGS:
       HierarchyStore.clearAll();

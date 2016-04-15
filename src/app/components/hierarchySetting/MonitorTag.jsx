@@ -55,7 +55,7 @@ var MonitorTag = React.createClass({
       page: 1,
       taglist: null,
       isLoading: true,
-      association: 0,
+      association: 2,
       addingTags: emptyList(),
       showFilter: false,
       filterObj: this._getInitFilterObj(),
@@ -147,7 +147,10 @@ var MonitorTag = React.createClass({
     });
   },
   _onDeleteTag: function(tag) {
-    HierarchyAction.modifyTags(null, [tag.get('Id')]);
+    HierarchyAction.modifyTags(null, [{
+      Id: tag.get('Id'),
+      Version: tag.get('Version')
+    }]);
     let page = this.state.page;
     if (HierarchyStore.getTotal() - 1 > 0 && parseInt((HierarchyStore.getTotal() - 1 + 19) / 20) < page) {
       page = page - 1;
@@ -432,7 +435,7 @@ var MonitorTag = React.createClass({
         taglist: null,
         isLoading: true,
         page: 1,
-        association: (nextProps.formStatus === formStatus.VIEW ? 2 : 0),
+        association: (nextProps.formStatus === formStatus.VIEW ? 2 : 13),
         addingTags: emptyList(),
         showFilter: false
       }, () => {

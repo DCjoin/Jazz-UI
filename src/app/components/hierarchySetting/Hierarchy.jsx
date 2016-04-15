@@ -160,6 +160,8 @@ var Hierarchy = React.createClass({
       } else {
         HierarchyAction.modifyHierarchy(node.toJS());
       }
+    } else if (this.state.infoTabNo === 2) {
+      HierarchyAction.modifyTags(node.hierarchyId, node.tags);
     }
     this.setState({
       isLoading: true
