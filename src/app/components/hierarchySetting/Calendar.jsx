@@ -13,7 +13,7 @@ import Regex from '../../constants/Regex.jsx';
 var Calendar = React.createClass({
 
   propTypes: {
-    selectedNode: React.PropTypes.object,
+    hierarchyId: React.PropTypes.number,
     merge: React.PropTypes.func,
     formStatus: React.PropTypes.string,
   },
@@ -62,12 +62,13 @@ var Calendar = React.createClass({
       );
 
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
+  componentWillMount: function() {},
+  componentDidMount: function() {
+    HierarchyAction.getCalendar(this.props.hierarchyId);
+    HierarchyStore.addCalendarChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
+    HierarchyStore.removeCalendarChangeListener(this._onChange);
   },
   render: function() {
     return (
