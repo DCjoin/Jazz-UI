@@ -7,7 +7,10 @@ module.exports = {
     SET_SELECTED_HIERARCHY_NODE: null,
     GET_CUSTOMER_FOR_HIERARCHY: null,
     GET_LOG_LIST_SUCCESS: null,
-    GET_LOG_LIST_ERROR: null
+    GET_LOG_LIST_ERROR: null,
+    GET_ASSOCIATED_TAG: null,
+    SAVE_ASSOCIATED_TAG_SUCCESS: null,
+    CLEAR_ALL_ASSOCIATED_TAGS: null
   })
 
 };

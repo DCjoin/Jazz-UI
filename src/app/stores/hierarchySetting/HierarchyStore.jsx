@@ -14,6 +14,8 @@ function emptyList() {
 var _hierarchys = emptyMap(),
   _selectedNode = null,
   _logList = emptyList(),
+  _tagList = null,
+  _total = null,
   _customer = emptyMap();
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
@@ -33,6 +35,33 @@ var HierarchyStore = assign({}, PrototypeStore, {
   },
   getLogList() {
     return _logList;
+  },
+  //tag
+  setTagList: function(data) {
+    _total = data.total;
+    _tagList = Immutable.fromJS(data.GetVEETagsByFilterResult);
+  },
+  getTagList: function() {
+    return _tagList;
+  },
+  getTotal: function() {
+    return _total;
+  },
+  findCommodityById: function(id) {
+    var commodities = Immutable.fromJS(window.allCommodities),
+      filter = commodities.find(item => (item.get('Id') === id));
+    return (filter.get('Comment'));
+  },
+  findUOMById: function(id) {
+    var uoms = Immutable.fromJS(window.uoms),
+      filter = uoms.find(item => (item.get('Id') === id));
+    return (filter.get('Comment'));
+  },
+  ifEmitTagChange: function() {
+    var that = this;
+    if (_tagList !== null & !!window.allCommodities && !!window.uoms) {
+      that.emitTagChange();
+    }
   },
   setSelectedNode: function(selectedNode) {
     if (selectedNode.get('Type') !== -1) {
@@ -136,7 +165,8 @@ var HierarchyStore = assign({}, PrototypeStore, {
     this.removeListener(CHANGE_LOG_EVENT, callback);
   },
 });
-var HierarchyAction = Hierarchy.Action;
+var HierarchyAction = Hierarchy.Action,
+  MainAction = Main.Action;
 HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
 
   switch (action.type) {
@@ -167,7 +197,22 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.setLogList([]);
       HierarchyStore.emitLogListChange();
       break;
-
+    case HierarchyAction.GET_ASSOCIATED_TAG:
+      HierarchyStore.setTagList(action.data);
+      HierarchyStore.ifEmitTagChange();
+      break;
+    case MainAction.GET_ALL_UOMS_SUCCESS:
+      HierarchyStore.ifEmitTagChange();
+      break;
+    case MainAction.GET_ALL_COMMODITY_SUCCESS:
+      HierarchyStore.ifEmitTagChange();
+      break;
+    case HierarchyAction.SAVE_ASSOCIATED_TAG_SUCCESS:
+      HierarchyStore.emitChange(_selectedId);
+      break;
+    case HierarchyAction.CLEAR_ALL_ASSOCIATED_TAGS:
+      HierarchyStore.clearAll();
+      break;
   }
 });
 

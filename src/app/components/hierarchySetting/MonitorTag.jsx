@@ -47,7 +47,7 @@ let AddTagItem = React.createClass({
 var MonitorTag = React.createClass({
   propTypes: {
     formStatus: React.PropTypes.string,
-    ruleId: React.PropTypes.number,
+    hierarchyId: React.PropTypes.number,
     onUpdate: React.PropTypes.func,
   },
   getInitialState: function() {
@@ -55,7 +55,7 @@ var MonitorTag = React.createClass({
       page: 1,
       taglist: null,
       isLoading: true,
-      association: 4,
+      association: 0,
       addingTags: emptyList(),
       showFilter: false,
       filterObj: this._getInitFilterObj(),
@@ -419,7 +419,7 @@ var MonitorTag = React.createClass({
       );
   },
   getAssociatedTag: function() {
-    HierarchyAction.getAssociatedTag(this.state.page, this.props.ruleId, this.state.association, this.state.filterObj);
+    HierarchyAction.getAssociatedTag(this.state.page, this.props.hierarchyId, this.state.association, this.state.filterObj);
   },
   componentDidMount: function() {
     HierarchyStore.addTagChangeListener(this._onChange);
@@ -432,7 +432,7 @@ var MonitorTag = React.createClass({
         taglist: null,
         isLoading: true,
         page: 1,
-        association: (nextProps.formStatus === formStatus.VIEW ? 4 : 1),
+        association: (nextProps.formStatus === formStatus.VIEW ? 2 : 0),
         addingTags: emptyList(),
         showFilter: false
       }, () => {

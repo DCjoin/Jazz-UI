@@ -4,7 +4,7 @@ import { Action } from '../../constants/actionType/hierarchySetting/Hierarchy.js
 import Ajax from '../../ajax/ajax.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 var _page,
-  _ruleId,
+  _hierarchyId,
   _association,
   _filterObj;
 let HierarchyAction = {
@@ -72,19 +72,20 @@ let HierarchyAction = {
       }
     });
   },
-  getAssociatedTag: function(page, ruleId, association, filterObj, refresh) {
+  getAssociatedTag: function(page, hierarchyId, association, filterObj, refresh) {
     _page = page;
-    _ruleId = ruleId;
+    _hierarchyId = hierarchyId;
     _association = association;
     _filterObj = filterObj;
     Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: {
           CustomerId: parseInt(window.currentCustomerId),
-          Association: association,
-          Type: 1,
-          RuleIds: [ruleId],
-          HierarchyIds: null,
+          Association: {
+            AssociationId: hierarchyId,
+            AssociationOption: association
+          },
+          IncludeAssociationName: true,
           CommodityId: filterObj.CommodityId,
           UomId: filterObj.UomId,
           LikeCodeOrName: filterObj.LikeCodeOrName
@@ -101,7 +102,7 @@ let HierarchyAction = {
         });
         if (refresh === true) {
           AppDispatcher.dispatch({
-            type: Action.SAVE_VEE_TAG_SUCCESS,
+            type: Action.SAVE_ASSOCIATED_TAG_SUCCESS,
           });
         }
       },
@@ -118,7 +119,7 @@ let HierarchyAction = {
           "Filter": {
             "RuleIds": ruleId === null ? null : [ruleId],
             "TagIds": tagIds,
-            "CustomerId": window.currentCustomerId
+            "CustomerId": parseInt(window.currentCustomerId)
           },
           "AssociateAll": false
         }
@@ -130,11 +131,16 @@ let HierarchyAction = {
             _page = _page - 1;
           }
         }
-        that.getAssociatedTag(_page, _ruleId, _association, _filterObj, ruleId !== null);
+        that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
       },
       error: function(err, res) {
         console.log(err, res);
       }
+    });
+  },
+  clearAll: function() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAR_ALL_ASSOCIATED_TAGS,
     });
   },
 };
