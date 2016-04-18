@@ -93,6 +93,9 @@ var MainAppBar = React.createClass({
   _bindEditButton: function(modifyType) {
     return this._editUser.bind(this, modifyType);
   },
+  _showCustomerList: function() {
+      this.props.showCustomerList();
+    },
   _savePassword: function() {
     var user = currentUser();
     var data = {
@@ -608,9 +611,7 @@ var MainAppBar = React.createClass({
       configStyle = {
         cursor: 'pointer'
       };
-    var logo = (!!this.props.logoUrl) ? <div className='jazz_logo_img' style={{
-      backgroundImage: 'url(' + this.props.logoUrl + ')'
-    }}></div> : null;
+    var logo = (!!this.props.logoUrl) ? <div className='jazz_logo_img' style={{backgroundImage: 'url(' + this.props.logoUrl + ')'}} onClick={this._showCustomerList}></div> : null;
     var title = (!!this.props.title) ? <div className='jazz-title'>{this.props.title}</div> : null;
     var mainmenu;
     if (!!this.props.items) {
@@ -632,17 +633,15 @@ var MainAppBar = React.createClass({
         </div>) : null;
     return (
       <div className="jazz-mainmenu">
-                <div className="jazz-logo">
-                  {logo}
-                  {title}
-                </div>
+        <div className="jazz-logo">
+          {logo}
+          {title}
+        </div>
+        {mainmenu}
+        <div className="jazz-mainmenu-info">
+          {mail}
 
-                    {mainmenu}
-                      <div className="jazz-mainmenu-info">
-                        {mail}
-      <div className="jazz-mainmenu-user" style={{
-        display: 'flex'
-      }}>
+      <div className="jazz-mainmenu-user" style={{display: 'flex'}}>
       <FlatButton label={I18N.Platform.InEnglish} labelStyle={langLabelStyle} onClick={this._onLangSwitch} style={{
         backgroundColor: 'transparent',
         color: 'white',

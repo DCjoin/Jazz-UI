@@ -3,6 +3,13 @@
 import React from 'react';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import MainAppBar from './MainAppBar.jsx';
+import SelectCustomer from './SelectCustomer.jsx';
+import util from '../util/Util.jsx';
+
+import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
+import { viewState } from '../constants/MainAppStatus.jsx';
+import CookieUtil from '../util/cookieUtil.jsx';
+
 import lang from '../lang/lang.jsx';
 import keyMirror from 'keymirror';
 import { LeftNav, CircularProgress } from 'material-ui';
@@ -13,6 +20,16 @@ import MainAction from '../actions/MainAction.jsx';
 import NetworkChecker from '../controls/NetworkChecker.jsx';
 import ExportChart from './energy/ExportChart.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
+import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
+
+
+function getCurrentCustomers() {
+  return CurrentUserCustomerStore.getAll();
+}
+
+function getCurrentCustomer() {
+  return CurrentUserCustomerStore.getCurrentCustomer();
+}
 
 let MainApp = React.createClass({
   mixins: [Navigation, State],
@@ -34,137 +51,165 @@ let MainApp = React.createClass({
     };
   },
 
+  _showCustomerList : function(argument) {
+      this.setState({viewState: viewState.SELECT_CUSTOMER});
+  },
+  _closeSelectCustomer : function() {
+      this.setState({viewState: viewState.MAIN});
+  },
+  _onChange: function(argument) {
+    var currentCustomer = getCurrentCustomer();
+
+    if (!_.isEmpty(currentCustomer) && window.currentCustomerId != currentCustomer.Id.toString()) {
+      this._switchCustomer(currentCustomer);
+      return;
+    }
+  },
+  _switchCustomer: function(customer) {
+      var currentCustomer = getCurrentCustomer();
+      //临时解决方案 
+      CookieUtil.remove('currentCustomer');
+      CookieUtil.set('currentCustomerId', customer.Id, {'expires':5,'path':'/webhost'});
+      window.location.reload();
+
+      this.setState({viewState: viewState.MAIN});
+  },
+
   render: function() {
-    var menuItems;
-    if (this.state.rivilege !== null) {
-      if (this.state.rivilege.indexOf('1221') > -1) {
-        menuItems = [
-          {
-            name: 'map',
-            title: I18N.MainMenu.Map
-          },
-          {
-            name: 'alarm',
-            title: I18N.MainMenu.Alarm
-          },
-          {
-            name: 'setting',
-            title: I18N.MainMenu.Energy
-          }
-        ];
-      } else {
-        menuItems = [
-          {
-            name: 'map',
-            title: I18N.MainMenu.Map
-          },
-          {
-            name: 'setting',
-            title: I18N.MainMenu.Energy
-          }
-        ];
-      }
-      if (this.state.rivilege.indexOf('1218') > -1 || this.state.rivilege.indexOf('1219') > -1) {
-        menuItems.push(
-          {
-            name: 'report',
-            title: I18N.MainMenu.Report,
-            children: [{
+    var CustomersList = getCurrentCustomers();
+    if(this.state.viewState == viewState.SELECT_CUSTOMER && CustomersList && CustomersList.length > 0){
+      return(
+        <SelectCustomer close={this._closeSelectCustomer}
+                        currentCustomerId={parseInt(window.currentCustomerId)}
+                        params={CustomersList}
+                        userId={parseInt(window.currentUserId)}/>
+      );
+    }else{
+      var menuItems;
+      if (this.state.rivilege !== null) {
+        if (this.state.rivilege.indexOf('1221') > -1) {
+          menuItems = [
+            {
+              name: 'map',
+              title: I18N.MainMenu.Map
+            },
+            {
+              name: 'alarm',
+              title: I18N.MainMenu.Alarm
+            },
+            {
+              name: 'setting',
+              title: I18N.MainMenu.Energy
+            }
+          ];
+        } else {
+          menuItems = [
+            {
+              name: 'map',
+              title: I18N.MainMenu.Map
+            },
+            {
+              name: 'setting',
+              title: I18N.MainMenu.Energy
+            }
+          ];
+        }
+        if (this.state.rivilege.indexOf('1218') > -1 || this.state.rivilege.indexOf('1219') > -1) {
+          menuItems.push(
+            {
+              name: 'report',
+              title: I18N.MainMenu.Report,
+              children: [{
+                list: [
+                  {
+                    name: 'dailyReport',
+                    title: I18N.MainMenu.DailyReport
+                  },
+                  {
+                    name: 'template',
+                    title: I18N.MainMenu.Template
+                  }
+                ]
+              }]
+            }
+          );
+        }
+        if (this.state.rivilege.indexOf('1208') > -1 || this.state.rivilege.indexOf('1217') > -1) {
+          var customerChildren = [];
+          if (this.state.rivilege.indexOf('1208') > -1) {
+            customerChildren = [{
+              title: I18N.MainMenu.TagSetting,
               list: [
                 {
-                  name: 'dailyReport',
-                  title: I18N.MainMenu.DailyReport
+                  name: 'ptag',
+                  title: I18N.MainMenu.PTagManagement
                 },
                 {
-                  name: 'template',
-                  title: I18N.MainMenu.Template
+                  name: 'vtag',
+                  title: I18N.MainMenu.VTagManagement
+                },
+                {
+                  name: 'vee',
+                  title: I18N.MainMenu.VEEMonitorRule
+                },
+                {
+                  name: 'log',
+                  title: I18N.MainMenu.TagBatchImportLog
                 }
               ]
-            }]
+            }, {
+              title: I18N.MainMenu.HierarchySetting,
+              list: [
+                {
+                  name: 'hierNode',
+                  title: I18N.MainMenu.HierarchyNodeSetting
+                },
+                {
+                  name: 'hierLog',
+                  title: I18N.MainMenu.HierarchyLog
+                }
+              ]
+            }];
           }
-        );
-      }
-      if (this.state.rivilege.indexOf('1208') > -1 || this.state.rivilege.indexOf('1217') > -1) {
-        var customerChildren = [];
-        if (this.state.rivilege.indexOf('1208') > -1) {
-          customerChildren = [{
-            title: I18N.MainMenu.TagSetting,
-            list: [
-              {
-                name: 'ptag',
-                title: I18N.MainMenu.PTagManagement
-              },
-              {
-                name: 'vtag',
-                title: I18N.MainMenu.VTagManagement
-              },
-              {
-                name: 'vee',
-                title: I18N.MainMenu.VEEMonitorRule
-              },
-              {
-                name: 'log',
-                title: I18N.MainMenu.TagBatchImportLog
-              }
-            ]
-          }, {
-            title: I18N.MainMenu.HierarchySetting,
-            list: [
-              {
-                name: 'hierNode',
-                title: I18N.MainMenu.HierarchyNodeSetting
-              },
-              {
-                name: 'hierLog',
-                title: I18N.MainMenu.HierarchyLog
-              }
-            ]
-          }];
-        }
-        if (this.state.rivilege.indexOf('1217') > -1) {
-          customerChildren.push({
-            title: I18N.MainMenu.CustomSetting,
-            list: [
-              {
-                name: 'customerLabeling',
-                title: I18N.MainMenu.CustomizedLabeling
-              }
-            ]
-          });
-        }
-        menuItems.push(
-          {
-            name: 'customerSetting',
-            title: I18N.MainMenu.CustomerSetting,
-            children: customerChildren
+          if (this.state.rivilege.indexOf('1217') > -1) {
+            customerChildren.push({
+              title: I18N.MainMenu.CustomSetting,
+              list: [
+                {
+                  name: 'customerLabeling',
+                  title: I18N.MainMenu.CustomizedLabeling
+                }
+              ]
+            });
           }
-        );
-      }
-      var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
-      return (
-        <div className='jazz-main'>
-              <MainAppBar items={menuItems} logoUrl={logoUrl} />
-              <RouteHandler {...this.props} />
-              <NetworkChecker></NetworkChecker>
-              <ExportChart></ExportChart>
+          menuItems.push(
+            {
+              name: 'customerSetting',
+              title: I18N.MainMenu.CustomerSetting,
+              children: customerChildren
+            }
+          );
+        }
+
+        var logoUrl = 'Logo.aspx?hierarchyId=' + window.currentCustomerId;
+        return (
+            <div className='jazz-main'>
+                <MainAppBar items={menuItems} logoUrl={logoUrl} showCustomerList={this._showCustomerList}/>
+                <RouteHandler {...this.props} />
+                <NetworkChecker></NetworkChecker>
+                <ExportChart></ExportChart>
+            </div>
+          );
+      } else {
+        return (
+          <div className='jazz-main'>
+            <div style={{ display: 'flex', flex: 1, 'alignItems': 'center', 'justifyContent': 'center' }}>
+              <CircularProgress  mode="indeterminate" size={2} />
+            </div>
           </div>
         );
-    } else {
-      return (
-        <div className='jazz-main'>
-          <div style={{
-          display: 'flex',
-          flex: 1,
-          'alignItems': 'center',
-          'justifyContent': 'center'
-        }}>
-        <CircularProgress  mode="indeterminate" size={2} />
-        </div>
-          </div>
-        );
+      }
     }
-
-
   },
   componentDidMount() {
     UOMStore.addChangeListener(this._onAllUOMSChange);
@@ -172,11 +217,17 @@ let MainApp = React.createClass({
     MainAction.getAllUoms();
     MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
+
+    SelectCustomerActionCreator.getCustomer(window.currentUserId);
+    CurrentUserCustomerStore.addChangeListener(this._onChange);
+
   },
   componentWillUnmount: function() {
     UOMStore.removeChangeListener(this._onAllUOMSChange);
     AllCommodityStore.removeChangeListener(this._onAllCommoditiesChange);
     CurrentUserStore.removeCurrentrivilegeListener(this._onCurrentrivilegeChanged);
+
+    CurrentUserCustomerStore.removeChangeListener(this._onChange);
   }
 });
 

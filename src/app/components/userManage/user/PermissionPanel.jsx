@@ -3,7 +3,7 @@
 import React from 'react';
 
 
-import Util from '../../util/util.jsx';
+import Util from '../../util/Util.jsx';
 
 import CurrentUserCustomerStore from '../../stores/CurrentUserCustomerStore.jsx';
 
