@@ -3,6 +3,7 @@
 import React from "react";
 import classnames from "classnames";
 import { Checkbox } from 'material-ui';
+import Immutable from 'immutable';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { dataStatus } from '../../../constants/DataStatus.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
@@ -27,7 +28,8 @@ var BuildingBasic = React.createClass({
     var {Code, Comment, AssoiciatedTagCountP, AssoiciatedTagCountV, IndustryId, ZoneId, CalcStatus, BuildingPictureIds, Administrators} = this.props.selectedNode.toJS(),
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
-      adminList = null;
+      adminList = null,
+      buildingPictureIds = Immutable.fromJS(BuildingPictureIds || []);
     var codeProps = {
         isViewStatus: isView,
         title: I18N.format(I18N.Setting.Organization.Code, I18N.Common.Glossary.Building),
@@ -173,9 +175,9 @@ var BuildingBasic = React.createClass({
                   </div> : null}
 
         </div>
-        <div className="pop-customer-detail-content-right pop-customer-detail-info-logo">
+        {buildingPictureIds.size === 0 && isView ? null : <div className="pop-customer-detail-content-right pop-customer-detail-info-logo">
           <ImageUpload {...imageProps} />
-        </div>
+        </div>}
       </div>
       {adminList}
       { isAdd ? null : <div className='pop-admins section-panel'>
