@@ -108,7 +108,7 @@ var Calendar = React.createClass({
       <div>
         <div className={"pop-customer-detail-content"}>
         <div className="pop-customer-detail-content-left">
-
+          
 
         </div>
       </div>

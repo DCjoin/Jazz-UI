@@ -22,7 +22,7 @@ var OrganizationBasic = React.createClass({
       isView = this.props.formStatus === formStatus.VIEW;
     var commentProps = {
       isViewStatus: isView,
-      title: I18N.Setting.UserManagement.Comment,
+      title: I18N.Platform.ServiceProvider.Comment,
       defaultValue: Comment || "",
       multiLine: true,
       maxLen: -1,
