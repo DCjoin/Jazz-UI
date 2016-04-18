@@ -2,7 +2,6 @@
 
 import React from "react";
 import classnames from "classnames";
-import { isFunction } from "lodash/lang";
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
@@ -11,7 +10,7 @@ import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import MonitorTag from '../MonitorTag.jsx';
-import Basic from './OrganizationBasic.jsx';
+//import Basic from './OrganizationBasic.jsx';
 
 var Building = React.createClass({
 
@@ -147,7 +146,7 @@ var Building = React.createClass({
     var content;
     switch (this.props.infoTabNo) {
       case 1:
-        content = <Basic {...basicProps}/>;
+        //content = <Basic {...basicProps}/>;
         break;
       case 2:
         content = <MonitorTag {...tagProps}/>;
