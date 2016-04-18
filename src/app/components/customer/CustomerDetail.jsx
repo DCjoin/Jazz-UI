@@ -223,12 +223,13 @@ var CustomerDetail = React.createClass({
       isViewState: isView,
       imageDidChanged: value => {
         CustomerAction.merge({
-          value,
+          value: value.logoId,
           path: "LogoId"
         })
       },
       wrapperWidth: 420,
-      wrapperHeight: 140
+      wrapperHeight: 140,
+      uploadUrl: 'LogoUpload.aspx'
     };
     var userCommentProps = {
       isViewStatus: isView,

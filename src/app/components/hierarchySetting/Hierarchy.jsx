@@ -243,7 +243,7 @@ var Hierarchy = React.createClass({
   },
   componentWillMount: function() {
     document.title = I18N.MainMenu.CustomerSetting;
-    HierarchyAction.getCustomersByFilter(window.currentCustomerId, true);
+    HierarchyAction.getAllIndustries();
     this.setState({
       isLoading: true
     });

@@ -17,7 +17,9 @@ var _hierarchys = emptyMap(),
   _logList = emptyList(),
   _tagList = null,
   _total = null,
-  _customer = emptyMap();
+  _customer = emptyMap(),
+  _industries = null,
+  _zones = null;
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
@@ -165,6 +167,18 @@ var HierarchyStore = assign({}, PrototypeStore, {
     }
     return selectedNode;
   },
+  setIndustries: function(industries) {
+    _industries = industries;
+  },
+  getAllIndustries: function() {
+    return _industries;
+  },
+  setZones: function(zones) {
+    _zones = zones;
+  },
+  getAllZones: function() {
+    return _zones;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -269,6 +283,12 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
         title: action.title,
         content: action.content
       });
+      break;
+    case HierarchyAction.GET_ALL_INDUSTRIES_FOR_HIERARCHY:
+      HierarchyStore.setIndustries(action.industries);
+      break;
+    case HierarchyAction.GET_ALL_ZONES_FOR_HIERARCHY:
+      HierarchyStore.setZones(action.zones);
       break;
 
   }
