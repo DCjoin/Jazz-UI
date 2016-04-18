@@ -129,6 +129,9 @@ Router.run(routes, Router.HashLocation, (Root, state) => {
     disableColor: "#abafae"
 
   };
-  React.render(<Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>, document.getElementById('emopapp'));
+  React.render(
+    <Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>,
+    document.getElementById('emopapp')
+  );
 
 });
