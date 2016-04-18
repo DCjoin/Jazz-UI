@@ -140,6 +140,7 @@ var Building = React.createClass({
       tagProps = {
         ref: 'jazz_building_tag',
         formStatus: this.props.formStatus,
+        isDim: false,
         hierarchyId: this.props.selectedNode.get('Id'),
         onUpdate: this._update
       };

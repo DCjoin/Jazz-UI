@@ -215,6 +215,23 @@ let HierarchyAction = {
       }
     });
   },
+  getAllCalendar: function() {
+    Ajax.post('/Administration.svc/GetAllCalendars', {
+      params: {
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_CALENDARS_SUCCESS,
+          calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_CALENDARS_ERROR
+        });
+      }
+    });
+  }
 };
 
 module.exports = HierarchyAction;

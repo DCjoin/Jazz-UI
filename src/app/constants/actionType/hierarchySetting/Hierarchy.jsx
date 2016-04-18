@@ -12,7 +12,9 @@ module.exports = {
     HIERARCHY_ERROR: null,
     GET_ASSOCIATED_TAG: null,
     SAVE_ASSOCIATED_TAG_SUCCESS: null,
-    CLEAR_ALL_ASSOCIATED_TAGS: null
+    CLEAR_ALL_ASSOCIATED_TAGS: null,
+    GET_ALL_CALENDARS_SUCCESS: null,
+    GET_ALL_CALENDARS_ERROR: null
   })
 
 };

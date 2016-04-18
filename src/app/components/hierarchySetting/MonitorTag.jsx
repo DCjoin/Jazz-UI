@@ -16,7 +16,7 @@ function emptyList() {
 let AddTagItem = React.createClass({
   propTypes: {
     tag: React.PropTypes.object,
-    removeTag: React.PropTypes.func,
+    removeTag: React.PropTypes.func
   },
   _onCleanButtonClick: function() {
     this.props.removeTag(this.props.tag);
@@ -49,13 +49,14 @@ var MonitorTag = React.createClass({
     formStatus: React.PropTypes.string,
     hierarchyId: React.PropTypes.number,
     onUpdate: React.PropTypes.func,
+    isDim: React.PropTypes.bool
   },
   getInitialState: function() {
     return ({
       page: 1,
       taglist: null,
       isLoading: true,
-      association: 2,
+      association: this.props.isDim ? 6 : 1,
       addingTags: emptyList(),
       showFilter: false,
       filterObj: this._getInitFilterObj(),
@@ -430,12 +431,14 @@ var MonitorTag = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     var that = this;
+    var viewOption = this.props.isDim ? 6 : 1;
+    var editOption = this.props.isDim ? 12 : 13;
     if (nextProps.formStatus !== this.props.formStatus || nextProps.hierarchyId !== this.props.hierarchyId) {
       this.setState({
         taglist: null,
         isLoading: true,
         page: 1,
-        association: (nextProps.formStatus === formStatus.VIEW ? 2 : 13),
+        association: (nextProps.formStatus === formStatus.VIEW ? viewOption : editOption),
         addingTags: emptyList(),
         showFilter: false
       }, () => {
