@@ -38,30 +38,34 @@ let ServiceApp = React.createClass({
       {
         name: 'convert',
         title: I18N.MainMenu.EnergyConvert,
-        children: [
-          {
-            name: 'price',
-            title: I18N.MainMenu.Price
-          },
-          {
-            name: 'carbon',
-            title: I18N.MainMenu.Carbon
-          }
-        ]
+        children: [{
+          list: [
+            {
+              name: 'price',
+              title: I18N.MainMenu.Price
+            },
+            {
+              name: 'carbon',
+              title: I18N.MainMenu.Carbon
+            }
+          ]
+        }]
       },
       {
         name: 'statistics',
         title: I18N.MainMenu.Statistics,
-        children: [
-          {
-            name: 'benchmark',
-            title: I18N.MainMenu.Benchmark
-          },
-          {
-            name: 'labeling',
-            title: I18N.MainMenu.Labeling
-          }
-        ]
+        children: [{
+          list: [
+            {
+              name: 'benchmark',
+              title: I18N.MainMenu.Benchmark
+            },
+            {
+              name: 'labeling',
+              title: I18N.MainMenu.Labeling
+            }
+          ]
+        }]
       },
       {
         name: 'customer',
@@ -70,16 +74,18 @@ let ServiceApp = React.createClass({
       {
         name: 'userManagement',
         title: I18N.MainMenu.User,
-        children: [
-          {
-            name: 'user',
-            title: I18N.MainMenu.User
-          },
-          {
-            name: 'privilege',
-            title: I18N.MainMenu.Privilege
-          }
-        ]
+        children: [{
+          list: [
+            {
+              name: 'user',
+              title: I18N.MainMenu.User
+            },
+            {
+              name: 'privilege',
+              title: I18N.MainMenu.Privilege
+            }
+          ]
+        }]
       }
     ];
 

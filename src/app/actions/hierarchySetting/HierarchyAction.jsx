@@ -215,6 +215,58 @@ let HierarchyAction = {
       }
     });
   },
+  getAllCalendar: function() {
+    Ajax.post('/Administration.svc/GetAllCalendars', {
+      params: {
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_CALENDARS_FOR_HIERARCHY,
+          calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getAllIndustries: function() {
+    var that = this;
+    Ajax.post('/Administration.svc/GetAllIndustries', {
+      params: {
+        includeRoot: false,
+        onlyLeaf: true
+      },
+      success: function(industries) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_INDUSTRIES_FOR_HIERARCHY,
+          industries: industries
+        });
+        that.getAllZones();
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getAllZones: function() {
+    var that = this;
+    Ajax.post('/Administration.svc/GetAllZones', {
+      params: {
+        includeRoot: false
+      },
+      success: function(zones) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_ZONES_FOR_HIERARCHY,
+          zones: zones
+        });
+        that.getCustomersByFilter(window.currentCustomerId, true);
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 };
 
 module.exports = HierarchyAction;

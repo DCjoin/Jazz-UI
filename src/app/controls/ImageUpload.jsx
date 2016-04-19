@@ -29,10 +29,12 @@ let ImageUpload = React.createClass({
     clipRatioHeight: React.PropTypes.number,
     background: React.PropTypes.string,
     imageSource: React.PropTypes.string,
+    imageUrl: React.PropTypes.string,
     imageSizeMax: React.PropTypes.number,
     wrapperWidth: React.PropTypes.number,
     wrapperHeight: React.PropTypes.number,
-    clipMode: React.PropTypes.string
+    clipMode: React.PropTypes.string,
+    uploadUrl: React.PropTypes.string,
   },
 
   _handleClick() {
@@ -60,14 +62,14 @@ let ImageUpload = React.createClass({
           var obj = JSON.parse(json);
           var uploadTemplate;
           if (obj.success === true) {
-            that.props.imageDidChanged(obj.logoId);
+            that.props.imageDidChanged(obj);
           } else {
             console.log('fail');
           }
         };
         var form = createElement('form', {
           method: 'post',
-          action: 'LogoUpload.aspx',
+          action: this.props.uploadUrl,
           enctype: 'multipart/form-data',
           target: '_self',
           name: 'inputForm'
@@ -120,6 +122,7 @@ let ImageUpload = React.createClass({
       tip: "",
       isViewState: true,
       imageId: "",
+      imageUrl: '',
       imageSource: "",
       imageSizeMax: DEFAULT_IMAGE_SIZE_MAX,
       wrapperWidth: DEFAULT_WRAPPER_WIDTH,
@@ -169,7 +172,7 @@ let ImageUpload = React.createClass({
       backGroundStyle.backgroundOrigin = "border-box";
       backGroundStyle.backgroundSize = "contain";
     }
-    if (!this.props.imageSource && !this.props.imageId) {
+    if (!this.props.imageSource && !this.props.imageId && !this.props.imageUrl) {
 
       tips = (<div  className="pop-image-tips">
 							<div>未配置任何照片</div>
@@ -179,7 +182,7 @@ let ImageUpload = React.createClass({
     if (!this.props.isViewState) {
       var c = classnames({
         "pop-image-tips": true,
-        "pop-hide": (this.props.imageSource || this.props.imageId)
+        "pop-hide": (this.props.imageSource || this.props.imageId || this.props.imageUrl)
       });
       tips = (<div className={c}>
 							<div>{this.props.updateTips}</div>
@@ -188,14 +191,14 @@ let ImageUpload = React.createClass({
     }
 
     var baseClassName = classnames({
-      'pop-hide': (!this.props.imageSource && !this.props.imageId && this.props.isViewState)
+      'pop-hide': (!this.props.imageSource && !this.props.imageId && !this.props.imageUrl && this.props.isViewState)
     });
 
     var labelClassName = "pop-image-upload";
     if (this.props.background) {
       labelClassName += " " + this.props.background;
     }
-    if (!this.props.imageSource && !this.props.imageId) {
+    if (!this.props.imageSource && !this.props.imageId && !this.props.imageUrl) {
       labelClassName += " blank-img";
     }
 
@@ -213,7 +216,7 @@ let ImageUpload = React.createClass({
     return (
       <div className={baseClassName}>
 				<label className={labelClassName} style={borderStyle} htmlFor="pop_image_upload_button">
-					<BackgroundImage width={this.props.wrapperWidth} height={this.props.wrapperHeight} style={backGroundStyle} mode={this.props.clipMode} imageId={this.props.imageId} imageContent={!!this.props.imageId ? null : this.props.imageSource} background={this.props.background} >
+					<BackgroundImage url={this.props.imageUrl} width={this.props.wrapperWidth} height={this.props.wrapperHeight} style={backGroundStyle} mode={this.props.clipMode} imageId={this.props.imageId} imageContent={!!this.props.imageId ? null : this.props.imageSource} background={this.props.background} >
 						{tips}
 <label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="pop_image_upload_button">
 						<input id="pop_image_upload_button"  name='imageFile' ref="pop_image_upload_button" type="file" disabled={this.props.isViewState} style={{

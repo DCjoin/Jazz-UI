@@ -1686,6 +1686,10 @@ I18N.Setting.Organization.HierarchyNodeCalendarProperties = 'Calendar';
 I18N.Setting.Building = {};
 I18N.Setting.Building.HierarchyNodeCostProperties = 'Cost';
 I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = 'Population & Area';
+I18N.Setting.Building.Industry = 'Industry involved';
+I18N.Setting.Building.Zone = 'Zone of climate';
+I18N.Setting.Building.PTagCount = 'Physical Tag No.';
+I18N.Setting.Building.VTagCount = 'Virtual Tag No.';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.AddTagInfo = 'Click add button to add tags';

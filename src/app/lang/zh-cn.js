@@ -1690,6 +1690,10 @@ I18N.Setting.Organization.Code = '{0}编码';
 I18N.Setting.Building = {};
 I18N.Setting.Building.HierarchyNodeCostProperties = '成本属性';
 I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = '人口面积';
+I18N.Setting.Building.Industry = '所属行业';
+I18N.Setting.Building.Zone = '所属气候分区';
+I18N.Setting.Building.PTagCount = '计量数据P数量';
+I18N.Setting.Building.VTagCount = '计量数据V数量';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = '删除{0}';
