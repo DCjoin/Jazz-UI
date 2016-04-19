@@ -156,6 +156,7 @@ var SelectCustomer = React.createClass({
     },
 
     render: function() {
+
         var closeButton = (
             <em className="icon-close pop-close-overlay-icon" onClick={this._onClose} style={{
                 margin: -10,
@@ -167,6 +168,14 @@ var SelectCustomer = React.createClass({
                 color:'#fff'
             }}></em>
         );
+        var leftHandlerBarStyle = {};
+        var rightHandlerBarStyle = {};
+        if (this.state.currentIndex === 0) {
+            leftHandlerBarStyle.visibility = 'hidden';
+        }
+        if (this.state.currentIndex == (CurrentUserCustomerStore.getAll().length - 1)) {
+            rightHandlerBarStyle.visibility = 'hidden';
+        }
         return (
             <div>
                 <div className="jazz-selectbg"></div>
@@ -178,13 +187,13 @@ var SelectCustomer = React.createClass({
                       {closeButton}
 
                       <div style={{ flex: 1, display: 'flex' }}>
-                        <div className="jazz-select-customer-handler" onClick ={this._prevPage} >
+                        <div className="jazz-select-customer-handler" style={leftHandlerBarStyle} onClick ={this._prevPage} >
                           <em className="icon-arrow-left"></em>
                         </div>
                         <div style={{ flex: 1, display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
                           <div id="pop_select_customer_list" style={{ flex: 1, display: 'flex' }}>{this._getCustomerList()}</div>
                         </div>
-                        <div className="jazz-select-customer-handler" onClick ={this._nextPage}>
+                        <div className="jazz-select-customer-handler" style={rightHandlerBarStyle} onClick ={this._nextPage}>
                           <em className="icon-arrow-right"></em>
                         </div>
 
