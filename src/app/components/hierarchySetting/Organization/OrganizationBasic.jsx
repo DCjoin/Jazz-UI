@@ -16,12 +16,14 @@ var OrganizationBasic = React.createClass({
     selectedNode: React.PropTypes.object,
     merge: React.PropTypes.func,
     formStatus: React.PropTypes.string,
+    setEditBtnStatus: React.PropTypes.func
   },
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _renderDetail: function() {
     var {Code, Comment, Administrators} = this.props.selectedNode.toJS(),
       isView = this.props.formStatus === formStatus.VIEW,
       title = this.props.selectedNode.get('Type') === 0 ? I18N.Common.Glossary.Organization : I18N.Common.Glossary.Site,
+      that = this,
       adminList = null;
     var codeProps = {
         isViewStatus: isView,
@@ -31,6 +33,11 @@ var OrganizationBasic = React.createClass({
         errorMessage: I18N.Setting.CustomerManagement.CodeError,
         isRequired: true,
         didChanged: value => {
+          if (!Regex.CustomerCode.test(value)) {
+            that.props.setEditBtnStatus(true);
+          } else {
+            that.props.setEditBtnStatus(false);
+          }
           this.props.merge({
             value,
             path: "Code"

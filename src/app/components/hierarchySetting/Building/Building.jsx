@@ -11,6 +11,7 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import MonitorTag from '../MonitorTag.jsx';
 import Basic from './BuildingBasic.jsx';
+import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
 
 var Building = React.createClass({
 
@@ -31,7 +32,7 @@ var Building = React.createClass({
   getInitialState: function() {
     return {
       dialogStatus: false,
-      editBtnDisabled: false
+      editBtnDisabled: this.props.formStatus === formStatus.ADD ? true : false
     };
   },
   _update: function() {
@@ -54,7 +55,14 @@ var Building = React.createClass({
   },
   _handleSave: function() {
     if (this.props.infoTabNo === 1) {
-      this.props.handleSave(this.props.selectedNode);
+      let node = this.props.selectedNode;
+      if (!node.get('IndustryId')) {
+        node = node.set('IndustryId', HierarchyStore.getAllIndustries()[0].Id)
+      }
+      if (!node.get('ZoneId')) {
+        node = node.set('ZoneId', HierarchyStore.getAllZones()[0].Id)
+      }
+      this.props.handleSave(node);
     } else if (this.props.infoTabNo === 2) {
       if (this.refs.jazz_building_tag) {
         let tags = this.refs.jazz_Org_tag._handlerSave(),
@@ -135,6 +143,7 @@ var Building = React.createClass({
         selectedNode: this.props.selectedNode,
         merge: this.props.merge,
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         key: this.props.selectedNode.get('Id') === null ? Math.random() : this.props.selectedNode.get('Id'),
       },
       tagProps = {

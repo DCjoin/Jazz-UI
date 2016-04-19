@@ -8,6 +8,7 @@ var ViewableMap = React.createClass({
 
   propTypes: {
     isView: React.PropTypes.bool.isRequired,
+    isAdd: React.PropTypes.bool,
     lng: React.PropTypes.number,
     lat: React.PropTypes.number,
     address: React.PropTypes.string,
@@ -42,8 +43,9 @@ var ViewableMap = React.createClass({
       resizeEnable: false,
       view: new AMap.View2D({})
     });
-
-    AMap.event.addListener(this._map, 'moveend', this._onMapMove);
+    if (!this.props.isView) {
+      AMap.event.addListener(this._map, 'moveend', this._onMapMove);
+    }
 
     if (this.props.lng && this.props.lat) {
       this._map.setZoomAndCenter(ZOOM_LEVEL, new AMap.LngLat(this.props.lng, this.props.lat));
@@ -58,6 +60,8 @@ var ViewableMap = React.createClass({
     var node = React.findDOMNode(this.refs.map);
     if (node.style.display === "none") {
       node.style.display = "block";
+    }
+    if (this.props.isAdd) {
       this._initMap();
     }
   },
@@ -151,19 +155,25 @@ var ViewableMap = React.createClass({
       target.style.opacity = "0.88";
     }
   },
+  componentDidMount: function() {
+    if (!this.props.isAdd) {
+      this._initMap();
+    } else {
+      var node = React.findDOMNode(this.refs.map);
+      node.style.display = "none";
+    }
 
+  },
   componentWillReceiveProps: function(nextProps) {
 
     var node = React.findDOMNode(this.refs.map);
-    if (nextProps.isView === true) {
-      node.style.display = "none";
-    } else {
-      var text = nextProps.address;
-      if (node.style.display === "none" && text !== null && text.trim() !== "") {
-        node.style.display = "block";
-        this._initMap();
-      }
+
+    var text = nextProps.address;
+    if (this.props.address !== text && text !== null && text.trim() !== "") {
+      //node.style.display = "block";
+      this._initMap();
     }
+
 
 
   },
@@ -189,7 +199,7 @@ var ViewableMap = React.createClass({
       position: "relative",
       width: this.props.width,
       height: this.props.height,
-      display: "none"
+    //display: "none"
     };
 
     return (

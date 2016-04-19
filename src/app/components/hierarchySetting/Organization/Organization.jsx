@@ -32,7 +32,7 @@ var Organization = React.createClass({
   getInitialState: function() {
     return {
       dialogStatus: false,
-      editBtnDisabled: false
+      editBtnDisabled: this.props.formStatus === formStatus.ADD ? true : false
     };
   },
   _update: function() {
@@ -129,6 +129,7 @@ var Organization = React.createClass({
         selectedNode: this.props.selectedNode,
         merge: this.props.merge,
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         key: this.props.selectedNode.get('Id') === null ? Math.random() : this.props.selectedNode.get('Id'),
       },
       tagProps = {

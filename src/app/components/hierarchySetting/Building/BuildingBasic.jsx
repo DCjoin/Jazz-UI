@@ -23,6 +23,7 @@ var BuildingBasic = React.createClass({
     selectedNode: React.PropTypes.object,
     merge: React.PropTypes.func,
     formStatus: React.PropTypes.string,
+    setEditBtnStatus: React.PropTypes.func
   },
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _locationChanged(lng, lat, address) {
@@ -50,7 +51,8 @@ var BuildingBasic = React.createClass({
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
       adminList = null,
-      buildingPictureIds = Immutable.fromJS(BuildingPictureIds || []);
+      buildingPictureIds = Immutable.fromJS(BuildingPictureIds || []),
+      that = this;
     var codeProps = {
         isViewStatus: isView,
         title: I18N.format(I18N.Setting.Organization.Code, I18N.Common.Glossary.Building),
@@ -59,6 +61,11 @@ var BuildingBasic = React.createClass({
         errorMessage: I18N.Setting.CustomerManagement.CodeError,
         isRequired: true,
         didChanged: value => {
+          if (!Regex.CustomerCode.test(value)) {
+            that.props.setEditBtnStatus(true);
+          } else {
+            that.props.setEditBtnStatus(false);
+          }
           this.props.merge({
             value,
             path: "Code"
@@ -156,7 +163,7 @@ var BuildingBasic = React.createClass({
     var locationText = this.props.selectedNode.getIn(["Location", "Province"]);
     var lng = this.props.selectedNode.getIn(["Location", "Longitude"]);
     var lat = this.props.selectedNode.getIn(["Location", "Latitude"]);
-    var map = <ViewableMap address={locationText} lng={lng}  lat={lat} isView={isView} didChanged={this._locationChanged}></ViewableMap>;
+    var map = <ViewableMap address={locationText} lng={lng}  lat={lat} isAdd={isAdd} isView={isView} didChanged={this._locationChanged}></ViewableMap>;
     if (!isView || (Administrators && Administrators.length > 0)) {
       var adminProps = {
         status: this.props.formStatus,
@@ -192,9 +199,9 @@ var BuildingBasic = React.createClass({
           <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...zoneProps}/>
           </div>
-          <div className="pop-customer-detail-content-left-item">
+          {locationText || !isView ? <div className="pop-customer-detail-content-left-item">
             {map}
-          </div>
+          </div> : null}
           <div className="pop-user-detail-content-item">
             <Checkbox {...calStatusProps} />
           </div>
