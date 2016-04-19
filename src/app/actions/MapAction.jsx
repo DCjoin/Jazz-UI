@@ -24,8 +24,8 @@ let MapAction = {
     Ajax.post('/Energy.svc/GetMapBuildingsByCustomerId', {
       params: {
         baseTime: DataConverter.DatetimeToJson(new Date()),
-        //customerId: window.currentCustomerId,
-        customerId: customerCode,
+        customerId: window.currentCustomerId,
+        //customerId: customerCode,
         relativeDateType: relativeDateType
       },
       success: function(mapList) {
