@@ -156,9 +156,6 @@ let JazzApp = React.createClass({
             lang: lang
           });
         }
-
-
-
       });
     };
     this._onClearGlobalError();
@@ -174,8 +171,16 @@ let JazzApp = React.createClass({
     var query = this.getQuery();
     var routes = this.getRoutes();
     var me = this;
+
+    //console.log('JazzApp params:' + JSON.stringify(params,0,1));
+
     var afterLoadLang = function(b) {
       window.I18N = b;
+
+      //由于登录未完成，临时获取window.currentCustomerId
+      var customerCode = params.customerId || query.customerId  || window.currentCustomerId;
+      //console.log('JazzApp customerId:' + customerCode);
+
       me._setHighchartConfig();
       CurrentUserAction.getUser(window.currentUserId);
 
@@ -188,25 +193,15 @@ let JazzApp = React.createClass({
           return;
         }
         if (url.indexOf('menutype=platform') > -1) {
-          me.replaceWith('config', {
-            lang: lang
-          });
+          me.replaceWith('config', { lang: lang , customerId: customerCode});
         } else if (url.indexOf('menutype=service') > -1) {
-          me.replaceWith('workday', {
-            lang: lang
-          });
+          me.replaceWith('workday', { lang: lang , customerId: customerCode});
         } else if (url.indexOf('menutype=energy') > -1) {
-          me.replaceWith('setting', {
-            lang: lang
-          });
+          me.replaceWith('setting', { lang: lang , customerId: customerCode});
         } else if (url.indexOf('menutype=alarm') > -1) {
-          me.replaceWith('alarm', {
-            lang: lang
-          });
+          me.replaceWith('alarm', { lang: lang , customerId: customerCode});
         } else if (url.indexOf('menutype=map') > -1) {
-          me.replaceWith('map', {
-            lang: lang
-          });
+          me.replaceWith('map', { lang: lang , customerId: customerCode});
         }
       });
     };
@@ -214,9 +209,9 @@ let JazzApp = React.createClass({
     if (!lang) {
       var url = window.location.toLocaleString();
       //currentLanguage： 0 中文, 1 英文
-      if (url.indexOf('langNum=0') > -1) { //Chinese
+      if (url.indexOf('langNum=0') > -1) {
+        //Chinese
         lang = 'zh-cn';
-
       } else if (url.indexOf('langNum=1') > -1) {
         lang = 'en-us';
       } else {
@@ -234,7 +229,6 @@ let JazzApp = React.createClass({
       window.currentLanguage = 1;
     }
     window.lastLanguage = window.currentLanguage;
-
 
     if (lang.toLowerCase() == 'en-us') {
       require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
@@ -293,10 +287,10 @@ let JazzApp = React.createClass({
     }
     return (
       <div className="jazz-app">
-              {mainPanel}
-              {loading}
-              <GlobalErrorMessageDialog ref='globalErrorMessageDialog'/>
-          </div>
+          {mainPanel}
+          {loading}
+          <GlobalErrorMessageDialog ref='globalErrorMessageDialog'/>
+      </div>
       );
   }
 });

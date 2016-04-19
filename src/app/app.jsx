@@ -61,9 +61,10 @@ window.currentCustomerId = getCookie('currentCustomerId');
 function getLessVar(name) {
   return main["@" + name];
 }
+// /:customerId?
 var routes = (
-<Route name="app" path="/:lang?" handler={JazzApp}>
-      <Route name="main" path="main" handler={MainApp}>
+    <Route name="app" path="/:lang?" handler={JazzApp}>
+      <Route name="main" path=":customerId?" handler={MainApp}>
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}></Route>
         <Route name="setting" path="setting" handler={Setting}></Route>
@@ -94,20 +95,17 @@ var routes = (
         <Route name='labeling' path='labeling' handler={Labeling}></Route>
 
         <Route name="customer" path="customer" handler={Customer}></Route>
-
         <Route name="user" path="user" handler={User}></Route>
         <Route name="privilege" path="privilege" handler={Role}></Route>
       </Route>
-   </Route>
+    </Route>
 );
 
 Router.run(routes, Router.HashLocation, (Root, state) => {
   //var muiTheme = ThemeManager.getMuiTheme(LightRawTheme);
   //var muiTheme = ThemeManager.getMuiTheme(AppTheme.rawTheme);
   //muiTheme = AppTheme.setComponentThemes(muiTheme);
-
   // React.render(<Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>, document.getElementById('emopapp'));
-
   var muiTheme = ThemeManager.getMuiTheme(AppTheme);
   muiTheme.textField.focusColor = '#1ca8dd';
   muiTheme.checkbox.labelColor = "#767a7a";
@@ -118,7 +116,6 @@ Router.run(routes, Router.HashLocation, (Root, state) => {
   muiTheme.flatButton.secondaryTextColor = '#1ca8dd';
   muiTheme.snackbar.backgroundColor = "#323232";
   muiTheme.fontFamily = 'LantingHei sc,Microsoft YaHei Light,Microsoft YaHei';
-
   muiTheme.linkbutton = {
     labelStyle: {
       color: "#767a7a",
@@ -127,8 +124,10 @@ Router.run(routes, Router.HashLocation, (Root, state) => {
     },
     hoverColor: "#1ca8dd",
     disableColor: "#abafae"
-
   };
+
+ //console.log('state:'+JSON.stringify(state,0,1));
+
   React.render(
     <Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>,
     document.getElementById('emopapp')
