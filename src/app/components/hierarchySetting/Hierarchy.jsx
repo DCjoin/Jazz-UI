@@ -154,7 +154,12 @@ var Hierarchy = React.createClass({
         node = node.set('ParentId', parent.get('Id'));
         node = node.set('CustomerId', parseInt(window.currentCustomerId));
         if (node.get('Type') === 101) {
-          node = node.set('HierarchyId', parent.get('HierarchyId'));
+          if (parent.get('Type') === 101) {
+            node = node.set('HierarchyId', parent.get('HierarchyId'));
+          } else {
+            node = node.set('HierarchyId', parent.get('Id'));
+          }
+
         }
         HierarchyAction.createHierarchy(node.toJS());
       } else {

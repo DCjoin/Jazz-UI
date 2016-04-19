@@ -14,6 +14,7 @@ import AdminList from '../../customer/AdminList.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
 import ImageUpload from '../../../controls/ImageUpload.jsx';
 import Path from '../../../constants/Path.jsx';
+import ViewableMap from '../../../controls/ViewableMap.jsx';
 
 
 var BuildingBasic = React.createClass({
@@ -24,6 +25,26 @@ var BuildingBasic = React.createClass({
     formStatus: React.PropTypes.string,
   },
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  _locationChanged(lng, lat, address) {
+    //  console.debug(lng+","+lat+","+address);
+    var value = this.props.selectedNode.get('Location');
+    if (value) {
+      value = value.set('Province', address);
+      value = value.set('Latitude', lat);
+      value = value.set('Longitude', lng);
+    } else {
+      value = Immutable.fromJS({
+        Province: address,
+        Latitude: lat,
+        Longitude: lng
+      })
+    }
+
+    this.props.merge({
+      path: 'Location',
+      value
+    });
+  },
   _renderDetail: function() {
     var {Code, Comment, AssoiciatedTagCountP, AssoiciatedTagCountV, IndustryId, ZoneId, CalcStatus, BuildingPictureIds, Administrators} = this.props.selectedNode.toJS(),
       isView = this.props.formStatus === formStatus.VIEW,
@@ -132,6 +153,10 @@ var BuildingBasic = React.createClass({
           })
         }
       };
+    var locationText = this.props.selectedNode.getIn(["Location", "Province"]);
+    var lng = this.props.selectedNode.getIn(["Location", "Longitude"]);
+    var lat = this.props.selectedNode.getIn(["Location", "Latitude"]);
+    var map = <ViewableMap address={locationText} lng={lng}  lat={lat} isView={isView} didChanged={this._locationChanged}></ViewableMap>;
     if (!isView || (Administrators && Administrators.length > 0)) {
       var adminProps = {
         status: this.props.formStatus,
@@ -166,6 +191,9 @@ var BuildingBasic = React.createClass({
           </div>
           <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...zoneProps}/>
+          </div>
+          <div className="pop-customer-detail-content-left-item">
+            {map}
           </div>
           <div className="pop-user-detail-content-item">
             <Checkbox {...calStatusProps} />
