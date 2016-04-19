@@ -36,7 +36,8 @@ let YearPicker = React.createClass({
   getInitialState() {
     let date = new Date();
     var thisYear = date.getFullYear();
-    let index, selectedYear;
+    let index,
+      selectedYear;
     let yearRange = this.props.yearRange;
     if (this.props.selectedIndex === null || this.props.selectedIndex === undefined) {
       if (this.props.selectedYear === null || this.props.selectedYear === undefined) {
@@ -59,7 +60,8 @@ let YearPicker = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     let date = new Date();
     let thisYear = date.getFullYear();
-    let index, selectedYear;
+    let index,
+      selectedYear;
     let yearRange = this.props.yearRange;
     if (this.props.selectedIndex !== nextProps.selectedIndex) {
       if (nextProps.selectedIndex === null || nextProps.selectedIndex === undefined) {
@@ -120,7 +122,7 @@ let YearPicker = React.createClass({
       style: this.props.style,
       iconStyle: this.props.iconStyle,
       labelStyle: this.props.labelStyle,
-      title: '',
+      title: this.props.title || '',
       textField: 'text',
       className: classNames({
         'jazz-year-selector_dropdownmenu_nounderline': this.props.noUnderline

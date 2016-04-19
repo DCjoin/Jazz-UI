@@ -215,6 +215,21 @@ let HierarchyAction = {
       }
     });
   },
+  getAllCalendar: function() {
+    Ajax.post('/Administration.svc/GetAllCalendars', {
+      params: {
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.GET_ALL_CALENDARS_FOR_HIERARCHY,
+          calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   getAllIndustries: function() {
     var that = this;
     Ajax.post('/Administration.svc/GetAllIndustries', {
