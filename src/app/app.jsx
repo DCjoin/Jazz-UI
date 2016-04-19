@@ -61,7 +61,7 @@ window.currentCustomerId = getCookie('currentCustomerId');
 function getLessVar(name) {
   return main["@" + name];
 }
-// /:customerId?
+
 var routes = (
     <Route name="app" path="/:lang?" handler={JazzApp}>
       <Route name="main" path=":customerId?" handler={MainApp}>

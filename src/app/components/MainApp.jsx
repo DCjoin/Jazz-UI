@@ -82,6 +82,7 @@ let MainApp = React.createClass({
     if (!_.isEmpty(currentCustomer) && customerCode != currentCustomer.Id.toString()) {
       this._switchCustomer(currentCustomer);
       params.customerId = currentCustomer.Id;
+      window.currentCustomerId = currentCustomer.Id;
       return;
     }
 
