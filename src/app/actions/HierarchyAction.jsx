@@ -14,7 +14,7 @@ let HierarchyAction = {
          type: Action.SET_HIE_NODE_LOAGDING
     });
       },0);
-    Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive?', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive?', {
         params: {customerId: data},
         success: function(hierarchyList){
 

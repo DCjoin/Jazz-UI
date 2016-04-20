@@ -67,10 +67,10 @@ var ReportStore = assign({}, PrototypeStore, {
   },
   setTagData(tagData) {
     _total = tagData.total;
-    _tagList = Immutable.fromJS(tagData.Data);
+    _tagList = Immutable.fromJS(tagData.GetTagsByFilterResult);
   },
   setSelctedTagData(tagData) {
-    _selectedTagList = Immutable.fromJS(tagData.Data);
+    _selectedTagList = Immutable.fromJS(tagData.GetTagsByFilterResult);
   },
   setSelectedReportItem: function(reportItem) {
     _reportItem = Immutable.fromJS(reportItem);

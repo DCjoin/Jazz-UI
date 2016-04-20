@@ -12,7 +12,7 @@ var _page,
 let HierarchyAction = {
   GetHierarchys: function() {
     let customerId = parseInt(window.currentCustomerId);
-    Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive', {
       params: {
         customerId: customerId,
       },
@@ -36,7 +36,7 @@ let HierarchyAction = {
   //for customer
   getCustomersByFilter: function(customerId, refresh = false) {
     var that = this;
-    Ajax.post('/Customer/GetCustomersByFilter', {
+    Ajax.post('/Customer.svc/GetCustomersByFilter', {
       params: {
         filter: {
           CustomerId: customerId,
@@ -57,7 +57,7 @@ let HierarchyAction = {
     });
   },
   getLogListByCustomerId: function() {
-    Ajax.post('/Hierarchy/GetHierarchyImportHistory', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyImportHistory', {
       params: {
         customerId: parseInt(window.currentCustomerId)
       },
@@ -79,7 +79,7 @@ let HierarchyAction = {
     _hierarchyId = hierarchyId;
     _association = association;
     _filterObj = filterObj;
-    Ajax.post('/Tag/GetTagsByFilter', {
+    Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: {
           CustomerId: parseInt(window.currentCustomerId),
@@ -100,7 +100,7 @@ let HierarchyAction = {
       success: function(data) {
         AppDispatcher.dispatch({
           type: Action.GET_ASSOCIATED_TAG,
-          data: data.GetTagsByFilterResult
+          data: data
         });
         if (refresh === true) {
           AppDispatcher.dispatch({
@@ -115,7 +115,7 @@ let HierarchyAction = {
   },
   modifyTags: function(hierarchyId, tags) {
     var that = this;
-    Ajax.post('/Tag/SetAssociation', {
+    Ajax.post('/Tag.svc/SetAssociation', {
       params: {
         dto: {
           AssociationId: hierarchyId,
@@ -164,7 +164,7 @@ let HierarchyAction = {
   },
   createHierarchy: function(dto) {
     var that = this;
-    Ajax.post('/Hierarchy/CreateHierarchy', {
+    Ajax.post('/Hierarchy.svc/CreateHierarchy', {
       params: {
         hierarchy: dto
       },
@@ -189,7 +189,7 @@ let HierarchyAction = {
   },
   modifyHierarchy: function(dto) {
     var that = this;
-    Ajax.post('/Hierarchy/ModifyHierarchy', {
+    Ajax.post('/Hierarchy.svc/ModifyHierarchy', {
       params: {
         hierarchy: HierarchyStore.traversalNode(dto)
       },
@@ -213,7 +213,7 @@ let HierarchyAction = {
   },
   deleteHierarchy: function(dto) {
     var that = this;
-    Ajax.post('/Hierarchy/DeleteHierarchy', {
+    Ajax.post('/Hierarchy.svc/DeleteHierarchy', {
       params: {
         hierarchy: HierarchyStore.traversalNode(dto)
       },
@@ -237,7 +237,7 @@ let HierarchyAction = {
     });
   },
   getAllCalendar: function() {
-    Ajax.post('/Administration/GetAllCalendars', {
+    Ajax.post('/Administration.svc/GetAllCalendars', {
       params: {
       },
       success: function(calendar) {
@@ -269,7 +269,7 @@ let HierarchyAction = {
   },
   getAllIndustries: function() {
     var that = this;
-    Ajax.post('/Administration/GetAllIndustries', {
+    Ajax.post('/Administration.svc/GetAllIndustries', {
       params: {
         includeRoot: false,
         onlyLeaf: true
@@ -288,7 +288,7 @@ let HierarchyAction = {
   },
   getAllZones: function() {
     var that = this;
-    Ajax.post('/Administration/GetAllZones', {
+    Ajax.post('/Administration.svc/GetAllZones', {
       params: {
         includeRoot: false
       },

@@ -5,7 +5,7 @@ import Ajax from '../../ajax/ajax.jsx';
 import CommonFuns from '../../util/Util.jsx';
 let TariffAction = {
   GetTouTariff: function() {
-    Ajax.post('/Administration/GetTouTariff', {
+    Ajax.post('/Administration.svc/GetTouTariff', {
       params: {
         limit: 25,
         page: 1,
@@ -25,7 +25,7 @@ let TariffAction = {
   },
   SaveTouTariff: function(tariffData) {
     var that = this;
-    Ajax.post('/Administration/SaveTouTariff', {
+    Ajax.post('/Administration.svc/SaveTouTariff', {
       params: {
         dto: tariffData
       },
@@ -51,7 +51,7 @@ let TariffAction = {
   },
   SavePeakTariff: function(tariffData) {
     var that = this;
-    Ajax.post('/Administration/SavePeakTariff', {
+    Ajax.post('/Administration.svc/SavePeakTariff', {
       params: {
         dto: tariffData
       },
@@ -126,7 +126,7 @@ let TariffAction = {
   },
   deleteTariff: function(dto) {
     var that = this;
-    Ajax.post('/Administration/DeleteTouTariff', {
+    Ajax.post('/Administration.svc/DeleteTouTariff', {
       params: {
         dto: dto
       },
