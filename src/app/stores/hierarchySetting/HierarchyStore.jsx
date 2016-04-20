@@ -85,7 +85,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
     return (filter.get('Comment'));
   },
   setTagEnergyConsumption: function(tag) {
-    var newTag = Immutable.fromJS(tag);
+    var newTag = Immutable.fromJS(tag[0]);
     var index = _tagList.findIndex(item => (item.get('Id') === newTag.get('Id')));
     if (index !== -1) {
       _tagList = _tagList.set(index, newTag);

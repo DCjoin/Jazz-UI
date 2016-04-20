@@ -57,7 +57,7 @@ var Building = React.createClass({
       this.props.handleSave(this.props.selectedNode);
     } else if (this.props.infoTabNo === 2) {
       if (this.refs.jazz_dim_tag) {
-        let tags = this.refs.jazz_Org_tag._handlerSave(),
+        let tags = this.refs.jazz_dim_tag._handlerSave(),
           tagIds = [];
         tags.forEach(tag => {
           tagIds.push({

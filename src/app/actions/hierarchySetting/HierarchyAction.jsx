@@ -142,7 +142,7 @@ let HierarchyAction = {
     });
   },
   setEnergyConsumption: function(tag, value, type, hierarchyId) {
-    Ajax.post('/Tag/SetEnergyConsumption', {
+    Ajax.post('/Tag.svc/SetEnergyConsumption', {
       params: {
         dto: {
           AssociationId: hierarchyId,

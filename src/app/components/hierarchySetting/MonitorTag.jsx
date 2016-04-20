@@ -238,19 +238,19 @@ var MonitorTag = React.createClass({
     var cleanIconStyle = {
       fontSize: '16px'
     };
-    var getTableBody = function() {
+    var getTableBody = () => {
       var list = [];
-      that.state.taglist.forEach(tag => {
+      this.state.taglist.forEach((tag) => {
         var energyConsumption = tag.get('EnergyConsumption');
         var flag = null;
         if (energyConsumption === 1) {
-          flag = <FontIcon className="icon-clean" color="#939796" onClick={that._setEnergyConsumption.bind(this, tag, 2)} style={cleanIconStyle}></FontIcon>;
+          flag = <FontIcon className="icon-clean" color="#939796" onClick={() => this._setEnergyConsumption(tag, 2)} style={cleanIconStyle}></FontIcon>;
         } else if (energyConsumption === 2) {
-          flag = <FontIcon className="icon-clean" color="#ffffff" onClick={that._setEnergyConsumption.bind(this, tag, 1)} style={cleanIconStyle}></FontIcon>;
+          flag = <FontIcon className="icon-clean" color="#000" onClick={() => this._setEnergyConsumption(tag, 1)} style={cleanIconStyle}></FontIcon>;
         }
         list.push(
           <div className='jazz-vee-monitor-tag-content-list' key={tag.get('Id')}>
-            <div className='jazz-vee-monitor-tag-content-operation-item'>{flag}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{flag}</div>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')} style={{
             marginTop: '10px'
           }}>{tag.get('Name')}</div>
@@ -259,7 +259,7 @@ var MonitorTag = React.createClass({
           }}>{tag.get('Code')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{HierarchyStore.findCommodityById(tag.get('CommodityId'))}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{HierarchyStore.findUOMById(tag.get('UomId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-operation-item' onClick={that._onDeleteTag.bind(this, tag)}>{I18N.Common.Button.Delete}</div>
+            <div className='jazz-vee-monitor-tag-content-operation-item' onClick={() => this._onDeleteTag(tag)}>{I18N.Common.Button.Delete}</div>
       </div>
         );
       });
@@ -278,6 +278,7 @@ var MonitorTag = React.createClass({
       return (
         <div className='jazz-vee-monitor-tag-background'>
           <div className='jazz-vee-monitor-tag-header'>
+            <div className='jazz-vee-monitor-tag-header-item'></div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Name}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Code}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Commodity}</div>
