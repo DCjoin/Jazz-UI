@@ -5,7 +5,7 @@ import Ajax from '../ajax/ajax.jsx';
 
 let AlarmSettingAction = {
   loadData(tbId){
-    Ajax.post('/TargetBaseline/GetTBAlarmSetting', {
+    Ajax.post('/TargetBaseline.svc/GetTBAlarmSetting', {
       params: {tbId: tbId},
       success: function(alarmSettingData){
         AppDispatcher.dispatch({
@@ -21,7 +21,7 @@ let AlarmSettingAction = {
     });
   },
   saveData(setting){
-    Ajax.post('/TargetBaseline/ModifyAlarmSetting', {
+    Ajax.post('/TargetBaseline.svc/ModifyAlarmSetting', {
       params: setting,
       success: function(alarmSettingData){
         AppDispatcher.dispatch({

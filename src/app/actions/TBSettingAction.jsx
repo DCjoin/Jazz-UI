@@ -9,7 +9,7 @@ var Action = TBSetting.Action;
 
 let TBSettingAction = {
   loadData(tbId, year, callback){
-    Ajax.post('/TargetBaseline/GetTBSetting2?', {
+    Ajax.post('/TargetBaseline.svc/GetTBSetting2?', {
         params: {tbId: tbId, year: year},
         success: function(setting){
           console.log(setting);
@@ -25,7 +25,7 @@ let TBSettingAction = {
     });
   },
   saveData(setting, callback, fail){
-    Ajax.post('/TargetBaseline/SetTBSetting2?', {
+    Ajax.post('/TargetBaseline.svc/SetTBSetting2?', {
         params: {dto: setting},
         success: function(setting2){
           console.log(setting2);
@@ -42,7 +42,7 @@ let TBSettingAction = {
     });
   },
   calcData(timeRange, tagId, callback){
-    Ajax.post('/Energy/GetTagAvgEnergyData?', {
+    Ajax.post('/Energy.svc/GetTagAvgEnergyData?', {
         params: {timeRange: timeRange, tagId: tagId},
         success: function(data){
           if(callback) callback(data);
@@ -56,7 +56,7 @@ let TBSettingAction = {
     AppDispatcher.dispatch({
          type: Action.SET_CALDETAIL_LOAGDING
     });
-    Ajax.post('/Hierarchy/GetHiearchyOrInheritedCalendarByHierarchyId', {
+    Ajax.post('/Hierarchy.svc/GetHiearchyOrInheritedCalendarByHierarchyId', {
          params: {
            hierarchyId:hierId
           },

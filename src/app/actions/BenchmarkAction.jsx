@@ -4,7 +4,7 @@ import { Action } from '../constants/actionType/Benchmark.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let BenchmarkAction = {
   getAllIndustries() {
-    Ajax.post('/Administration/GetAllIndustries', {
+    Ajax.post('/Administration.svc/GetAllIndustries', {
       params: {
         includeRoot: true,
         onlyLeaf: false
@@ -23,7 +23,7 @@ let BenchmarkAction = {
     });
   },
   getAllZones() {
-    Ajax.post('/Administration/GetAllZones', {
+    Ajax.post('/Administration.svc/GetAllZones', {
       params: {
         includeRoot: true
       },
@@ -41,7 +41,7 @@ let BenchmarkAction = {
     });
   },
   getAllBenchmarks() {
-    Ajax.post('/Administration/GetAllBenchmarks', {
+    Ajax.post('/Administration.svc/GetAllBenchmarks', {
       params: {},
       success: function(benchmarkData) {
         AppDispatcher.dispatch({
@@ -69,7 +69,7 @@ let BenchmarkAction = {
   },
   modifyBenchmark(data) {
     var me = this;
-    Ajax.post('/Administration/ModifyBenchmark', {
+    Ajax.post('/Administration.svc/ModifyBenchmark', {
       params: {
         benchmark: data
       },
@@ -90,7 +90,7 @@ let BenchmarkAction = {
   },
   createBenchmark(data) {
     var me = this;
-    Ajax.post('/Administration/CreateBenchmark', {
+    Ajax.post('/Administration.svc/CreateBenchmark', {
       params: {
         benchmark: data
       },
@@ -110,7 +110,7 @@ let BenchmarkAction = {
     });
   },
   deleteBenchmarkById(id, version) {
-    Ajax.post('/Administration/DeleteBenchmark', {
+    Ajax.post('/Administration.svc/DeleteBenchmark', {
       params: {
         benchmark: {
           Id: id,

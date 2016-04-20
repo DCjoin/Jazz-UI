@@ -33,7 +33,7 @@ let ExportChart = React.createClass({
            }, {
                display: 'none'
            }, doc.body);
-if(url.indexOf('/Dashboard/ExportWidget')>=0){
+if(url.indexOf('/Dashboard.svc/ExportWidget')>=0){
 
      createElement('input', {
          type: 'hidden',
