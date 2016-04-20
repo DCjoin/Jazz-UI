@@ -18,6 +18,7 @@ var _hierarchys = emptyMap(),
   _tagList = null,
   _total = null,
   _customer = emptyMap(),
+  _calendar = null,
   _allCalendar = null,
   _industries = null,
   _zones = null;
@@ -25,6 +26,7 @@ let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
   CHANGE_LOG_EVENT = 'changelog',
+  CHANGER_CALENDAR_EVENT = 'changecalendar',
   CHANGER_ALL_CALENDAR_EVENT = 'changeallcalendar',
   TAG_CHANGE_EVENT = 'tagchange';
 var HierarchyStore = assign({}, PrototypeStore, {
@@ -82,6 +84,13 @@ var HierarchyStore = assign({}, PrototypeStore, {
       filter = uoms.find(item => (item.get('Id') === id));
     return (filter.get('Comment'));
   },
+  setTagEnergyConsumption: function(tag) {
+    var newTag = Immutable.fromJS(tag[0]);
+    var index = _tagList.findIndex(item => (item.get('Id') === newTag.get('Id')));
+    if (index !== -1) {
+      _tagList = _tagList.set(index, newTag);
+    }
+  },
   ifEmitTagChange: function() {
     var that = this;
     if (_tagList !== null & !!window.allCommodities && !!window.uoms) {
@@ -93,6 +102,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
   },
   getAllCalendar: function() {
     return _allCalendar;
+  },
+  setCalendar: function(calendar) {
+    var _calendar = Immutable.fromJS(calendar);
+  },
+  getCalendar: function() {
+    return _calendar;
   },
   setSelectedNode: function(selectedNode) {
     if (selectedNode.get('Type') !== -1) {
@@ -269,6 +284,15 @@ var HierarchyStore = assign({}, PrototypeStore, {
   removeAllCalendarChangeListener: function(callback) {
     this.removeListener(CHANGER_ALL_CALENDAR_EVENT, callback);
   },
+  emitCalendarChange: function() {
+    this.emit(CHANGER_CALENDAR_EVENT);
+  },
+  addCalendarChangeListener: function(callback) {
+    this.on(CHANGER_CALENDAR_EVENT, callback);
+  },
+  removeCalendarChangeListener: function(callback) {
+    this.removeListener(CHANGER_CALENDAR_EVENT, callback);
+  },
   addTagChangeListener(callback) {
     this.on(TAG_CHANGE_EVENT, callback);
   },
@@ -347,13 +371,20 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.setAllCalendar(action.calendar);
       HierarchyStore.emitAllCalendarChange();
       break;
+    case HierarchyAction.GET_CALENDAR_FOR_HIERARCHY:
+      HierarchyStore.setCalendar(action.calendar);
+      HierarchyStore.emitCalendarChange();
+      break;
     case HierarchyAction.GET_ALL_INDUSTRIES_FOR_HIERARCHY:
       HierarchyStore.setIndustries(action.industries);
       break;
     case HierarchyAction.GET_ALL_ZONES_FOR_HIERARCHY:
       HierarchyStore.setZones(action.zones);
       break;
-
+    case HierarchyAction.SET_ENERGY_CONSUMPTION:
+      HierarchyStore.setTagEnergyConsumption(action.tag);
+      HierarchyStore.ifEmitTagChange();
+      break;
   }
 });
 

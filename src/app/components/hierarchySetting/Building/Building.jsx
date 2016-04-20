@@ -57,15 +57,15 @@ var Building = React.createClass({
     if (this.props.infoTabNo === 1) {
       let node = this.props.selectedNode;
       if (!node.get('IndustryId')) {
-        node = node.set('IndustryId', HierarchyStore.getAllIndustries()[0].Id)
+        node = node.set('IndustryId', HierarchyStore.getAllIndustries()[0].Id);
       }
       if (!node.get('ZoneId')) {
-        node = node.set('ZoneId', HierarchyStore.getAllZones()[0].Id)
+        node = node.set('ZoneId', HierarchyStore.getAllZones()[0].Id);
       }
       this.props.handleSave(node);
     } else if (this.props.infoTabNo === 2) {
       if (this.refs.jazz_building_tag) {
-        let tags = this.refs.jazz_Org_tag._handlerSave(),
+        let tags = this.refs.jazz_building_tag._handlerSave(),
           tagIds = [];
         tags.forEach(tag => {
           tagIds.push({
