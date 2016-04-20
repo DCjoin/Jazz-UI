@@ -23,8 +23,8 @@ var HierarchyList = React.createClass({
     hierarchys: React.PropTypes.object,
     selectedNode: React.PropTypes.object,
     onExportBtnClick: React.PropTypes.func,
-    onReloadHierachyTree: React.PropTypes.func
-  //onGragulaNode: React.PropTypes.func
+    onReloadHierachyTree: React.PropTypes.func,
+    onGragulaNode: React.PropTypes.func
   },
   getInitialState: function() {
     return {
@@ -231,45 +231,6 @@ var HierarchyList = React.createClass({
       isImporting: true
     });
   },
-  _onGragulaNode: function(targetId, sourceId, pre) {
-    let targetNode = HierarchyStore.getNodeById(parseInt(targetId)),
-      sourceNode = HierarchyStore.getNodeById(parseInt(sourceId)),
-      parentNode = HierarchyStore.getParent(targetNode),
-      node = null;
-    let desParent = {
-        Id: parentNode.get('Id'),
-        Version: parentNode.get('Version')
-      },
-      movingHierarchies = {
-        Id: sourceNode.get('Id'),
-        Version: sourceNode.get('Version')
-      };
-    if (pre) {
-      node = HierarchyStore.getNextNode(targetNode, parentNode);
-      let previousBrother = {
-          Id: targetNode.get('Id'),
-          Version: targetNode.get('Version')
-        },
-        nextBrother = node === null ? null : {
-          Id: node.get('Id'),
-          Version: node.get('Version')
-        };
-      HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
-    } else {
-      node = HierarchyStore.getPreNode(targetNode, parentNode);
-      let nextBrother = {
-          Id: targetNode.get('Id'),
-          Version: targetNode.get('Version')
-        },
-        previousBrother = node === null ? null : {
-          Id: node.get('Id'),
-          Version: node.get('Version')
-        };
-      HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
-    }
-
-
-  },
   _ifGragulaInvalid: function(id) {
     if (id < 0) {
       return true;
@@ -290,7 +251,7 @@ var HierarchyList = React.createClass({
         selectedNode: this.props.selectedNode,
         arrowClass: 'jazz-foldertree-arrow',
         treeNodeClass: 'jazz-foldertree-node',
-        onGragulaNode: this._onGragulaNode,
+        onGragulaNode: this.props.onGragulaNode,
         ifGragulaInvalid: this._ifGragulaInvalid
       },
       addBtnProps = {
