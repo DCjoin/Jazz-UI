@@ -249,6 +249,7 @@ var Hierarchy = React.createClass({
   componentWillMount: function() {
     document.title = I18N.MainMenu.CustomerSetting;
     HierarchyAction.getAllIndustries();
+    //HierarchyAction.GetHierarchys();
     this.setState({
       isLoading: true
     });

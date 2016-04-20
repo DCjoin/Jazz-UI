@@ -116,6 +116,22 @@ var HierarchyStore = assign({}, PrototypeStore, {
     }
     return items;
   },
+  getNodeById: function(id) {
+    var node;
+    var f = function(item) {
+      if (item.get('Id') == id) {
+        node = item;
+      } else {
+        if (item.get('Children')) {
+          item.get('Children').forEach(child => {
+            f(child)
+          })
+        }
+      }
+    };
+    f(_hierarchys);
+    return node;
+  },
   getParent: function(node) {
     var parent;
     var f = function(item) {
@@ -131,6 +147,25 @@ var HierarchyStore = assign({}, PrototypeStore, {
     };
     f(_hierarchys);
     return parent;
+  },
+  getPreNode: function(node, parentNode) {
+    var children = parentNode.get('Children'),
+      index = children.findIndex(item => item.get('Id') === node.get('Id'));
+    if (index === 0) {
+      return null;
+    } else {
+      return children.getIn([index - 1]);
+    }
+
+  },
+  getNextNode: function(node, parentNode) {
+    var children = parentNode.get('Children'),
+      index = children.findIndex(item => item.get('Id') === node.get('Id'));
+    if (index === children.size - 1) {
+      return null;
+    } else {
+      return children.getIn([index + 1]);
+    }
   },
   getAddBtnStatusByNode: function(node) {
     var that = this;
@@ -256,8 +291,15 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
         HierarchyStore.setSelectedNode(_hierarchys);
         HierarchyStore.emitChange(_hierarchys);
       } else {
-        HierarchyStore.setSelectedNode(_selectedNode);
-        HierarchyStore.emitChange(_selectedNode);
+        if (action.selectedId) {
+          let node = HierarchyStore.getNodeById(action.selectedId);
+          HierarchyStore.setSelectedNode(node);
+          HierarchyStore.emitChange(node);
+        } else {
+          HierarchyStore.setSelectedNode(_selectedNode);
+          HierarchyStore.emitChange(_selectedNode);
+        }
+
       }
       HierarchyStore.emitChange();
       break;

@@ -16,6 +16,7 @@ var lastOver = null,
   pass = true;
 
 var EditNode = null;
+var ifGragulaInvalid = null;
 
 var drake = dragula({
   moves: function(el, source, handle) {
@@ -30,6 +31,14 @@ var drake = dragula({
         return true;
       }
     }
+
+    if (ifGragulaInvalid) {
+      if (ifGragulaInvalid(id)) {
+        return true;
+      }
+    }
+
+
     if (parseInt(target.id) === -1) {
       return true;
     }
@@ -90,7 +99,7 @@ var Tree = React.createClass({
     onGragulaNode: React.PropTypes.func,
     // arrow style
     arrowClass: React.PropTypes.string,
-
+    ifGragulaInvalid: React.PropTypes.func,
   },
   getInitialState: function() {
     return {
@@ -182,6 +191,9 @@ var Tree = React.createClass({
     pass = false;
     drake.on('drop', this._onDrop);
     drake.on('shadow', this._onShadow);
+    if (this.props.ifGragulaInvalid) {
+      ifGragulaInvalid = this.props.ifGragulaInvalid;
+    }
 
   },
   render: function() {

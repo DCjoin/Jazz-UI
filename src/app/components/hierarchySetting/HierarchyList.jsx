@@ -11,6 +11,7 @@ import FlatButton from '../../controls/FlatButton.jsx';
 import Dialog from '../../controls/PopupDialog.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';
+import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
 let {nodeType} = TreeConstants;
 
@@ -230,6 +231,54 @@ var HierarchyList = React.createClass({
       isImporting: true
     });
   },
+  _onGragulaNode: function(targetId, sourceId, pre) {
+    let targetNode = HierarchyStore.getNodeById(parseInt(targetId)),
+      sourceNode = HierarchyStore.getNodeById(parseInt(sourceId)),
+      parentNode = HierarchyStore.getParent(targetNode),
+      node = null;
+    let desParent = {
+        Id: parentNode.get('Id'),
+        Version: parentNode.get('Version')
+      },
+      movingHierarchies = {
+        Id: sourceNode.get('Id'),
+        Version: sourceNode.get('Version')
+      };
+    if (pre) {
+      node = HierarchyStore.getNextNode(targetNode, parentNode);
+      let previousBrother = {
+          Id: targetNode.get('Id'),
+          Version: targetNode.get('Version')
+        },
+        nextBrother = node === null ? null : {
+          Id: node.get('Id'),
+          Version: node.get('Version')
+        };
+      HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
+    } else {
+      node = HierarchyStore.getPreNode(targetNode, parentNode);
+      let nextBrother = {
+          Id: targetNode.get('Id'),
+          Version: targetNode.get('Version')
+        },
+        previousBrother = node === null ? null : {
+          Id: node.get('Id'),
+          Version: node.get('Version')
+        };
+      HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
+    }
+
+
+  },
+  _ifGragulaInvalid: function(id) {
+    if (id < 0) {
+      return true;
+    }
+    if (id === parseInt(window.currentCustomerId)) {
+      return true;
+    }
+    return false;
+  },
   render: function() {
     var isAddStatus = this.props.formStatus === formStatus.ADD;
     var treeProps = {
@@ -241,7 +290,8 @@ var HierarchyList = React.createClass({
         selectedNode: this.props.selectedNode,
         arrowClass: 'jazz-foldertree-arrow',
         treeNodeClass: 'jazz-foldertree-node',
-      //onGragulaNode: this._onGragulaNode,
+        onGragulaNode: this._onGragulaNode,
+        ifGragulaInvalid: this._ifGragulaInvalid
       },
       addBtnProps = {
         type: "Add",
