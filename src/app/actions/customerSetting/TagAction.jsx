@@ -18,7 +18,7 @@ let TagAction = {
     if (search) {
       search.abort();
     }
-    search = Ajax.post('/Tag.svc/GetTagsByFilter', {
+    search = Ajax.post('/Tag/GetTagsByFilter', {
       params: {
         filter: filter,
         page: page,
@@ -29,7 +29,7 @@ let TagAction = {
         search = null;
         AppDispatcher.dispatch({
           type: Action.GET_TAG_LIST_SUCCESS,
-          tagData: tagData
+          tagData: tagData.GetTagsByFilterResult
         });
       },
       error: function(err, res) {
@@ -47,7 +47,7 @@ let TagAction = {
     if (formulaSearch) {
       formulaSearch.abort();
     }
-    formulaSearch = Ajax.post('/Tag.svc/GetTagsByFilter', {
+    formulaSearch = Ajax.post('/Tag/GetTagsByFilter', {
       params: {
         filter: filter,
         page: page,
@@ -58,7 +58,7 @@ let TagAction = {
         formulaSearch = null;
         AppDispatcher.dispatch({
           type: Action.GET_ALL_TAG_LIST_SUCCESS,
-          allTagData: allTagData
+          allTagData: allTagData.GetTagsByFilterResult
         });
       },
       error: function(err, res) {
@@ -80,7 +80,7 @@ let TagAction = {
     });
   },
   modifyTag(data) {
-    Ajax.post('/Tag.svc/ModifyTag', {
+    Ajax.post('/Tag/ModifyTag', {
       params: {
         dto: data
       },
@@ -100,7 +100,7 @@ let TagAction = {
     });
   },
   createTag(data) {
-    Ajax.post('/Tag.svc/CreateTag', {
+    Ajax.post('/Tag/CreateTag', {
       params: {
         dto: data
       },
@@ -120,7 +120,7 @@ let TagAction = {
     });
   },
   deleteTagById(id, version) {
-    Ajax.post('/Tag.svc/DeleteTag', {
+    Ajax.post('/Tag/DeleteTag', {
       params: {
         dto: {
           Id: id,
@@ -142,7 +142,7 @@ let TagAction = {
   },
   getTagsData: function(tagId, step, StartTime, EndTime, refreshTagStatus) {
     var that = this;
-    Ajax.post('/Energy.svc/GetTagsData', {
+    Ajax.post('/Energy/GetTagsData', {
       params: {
         limit: 0,
         page: 0,
@@ -175,7 +175,7 @@ let TagAction = {
     });
   },
   getVEETagStatus: function(tagId, tagDatas) {
-    Ajax.post('/VEE.svc/GetVEETagStatus', {
+    Ajax.post('/VEE/GetVEETagStatus', {
       params: {
         tagId: tagId,
       },
@@ -195,7 +195,7 @@ let TagAction = {
     });
   },
   modifyVEETagStatus: function(statusDto) {
-    Ajax.post('/VEE.svc/ModifyVEETagStatus', {
+    Ajax.post('/VEE/ModifyVEETagStatus', {
       params: {
         statusDto: statusDto,
       },
@@ -210,7 +210,7 @@ let TagAction = {
     });
   },
   getTagLogListByCustomerId: function() {
-    Ajax.post('/TagImport.svc/GetTagImportHistory', {
+    Ajax.post('/TagImport/GetTagImportHistory', {
       params: {
         customerId: parseInt(window.currentCustomerId)
       },

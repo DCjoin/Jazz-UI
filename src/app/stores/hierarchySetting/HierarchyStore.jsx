@@ -64,7 +64,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
   //tag
   setTagList: function(data) {
     _total = data.total;
-    _tagList = Immutable.fromJS(data.GetTagsByFilterResult);
+    _tagList = Immutable.fromJS(data.Data);
   },
   getTagList: function() {
     return _tagList;

@@ -6,7 +6,7 @@ import Immutable from 'immutable';
 import CommonFuns from '../util/Util.jsx';
 let UserAction = {
   getUserList: function(ExcludeId, CustomerId) {
-    Ajax.post('/User.svc/GetUsersByFilter', {
+    Ajax.post('/User/GetUsersByFilter', {
       params: {
         filter: {
           ExcludeId: ExcludeId,
@@ -44,7 +44,7 @@ let UserAction = {
   },
   getAllCustomers: function() {
     var that = this;
-    Ajax.post('/Customer.svc/GetCustomersByFilter', {
+    Ajax.post('/Customer/GetCustomersByFilter', {
       params: {
         filter: {}
       },
@@ -61,7 +61,7 @@ let UserAction = {
     });
   },
   getAllRoles: function() {
-    Ajax.post('/AccessControl.svc/GetRolesByFilter', {
+    Ajax.post('/AccessControl/GetRolesByFilter', {
       params: {
         filter: {}
       },
@@ -77,7 +77,7 @@ let UserAction = {
     });
   },
   getAllUsers: function() {
-    Ajax.post('/User.svc/GetUsersByFilter', {
+    Ajax.post('/User/GetUsersByFilter', {
       params: {
         filter: {}
       },
@@ -132,7 +132,7 @@ let UserAction = {
   },
   getCustomerByUser(userId) {
     var that = this;
-    Ajax.post('/AccessControl.svc/GetDataPrivilege', {
+    Ajax.post('/AccessControl/GetDataPrivilege', {
       params: {
         filter: {
           UserId: userId,
@@ -151,7 +151,7 @@ let UserAction = {
     });
   },
   getUserCustomerPermission: function(userId, customerId) {
-    Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive?', {
+    Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive?', {
       params: {
         customerId: customerId
       },
@@ -176,7 +176,7 @@ let UserAction = {
   },
   createUserInfo: function(info) {
     var that = this;
-    Ajax.post('/User.svc/CreateUser', {
+    Ajax.post('/User/CreateUser', {
       params: {
         dto: info
       },
@@ -201,7 +201,7 @@ let UserAction = {
   },
   updateUserInfo: function(info) {
     var that = this;
-    Ajax.post('/User.svc/ModifyUser', {
+    Ajax.post('/User/ModifyUser', {
       params: {
         dto: info
       },
@@ -225,7 +225,7 @@ let UserAction = {
     });
   },
   deleteUser(user) {
-    Ajax.post('/User.svc/DeleteUser', {
+    Ajax.post('/User/DeleteUser', {
       params: {
         dto: {
           Id: user.Id,
@@ -252,7 +252,7 @@ let UserAction = {
   },
   saveCustomerByUser: function(info) {
     var that = this;
-    Ajax.post('/AccessControl.svc/SetDataPrivilege', {
+    Ajax.post('/AccessControl/SetDataPrivilege', {
       params: {
         dto: info
       },
@@ -272,7 +272,7 @@ let UserAction = {
     });
   },
   resetPassword: function(userId) {
-    Ajax.post('/User.svc/SendInitPassword', {
+    Ajax.post('/User/SendInitPassword', {
       params: {
         userid: userId
       },

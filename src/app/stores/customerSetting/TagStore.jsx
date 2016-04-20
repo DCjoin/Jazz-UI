@@ -64,7 +64,7 @@ var TagStore = assign({}, PrototypeStore, {
   setTagList(tagData) {
     if (tagData !== null) {
       _total = tagData.total;
-      _tagList = Immutable.fromJS(tagData.GetTagsByFilterResult);
+      _tagList = Immutable.fromJS(tagData.Data);
       if (_tagList.size !== 0) {
         _selectedTagIndex = 0;
         _selectedTag = _tagList.get(0);
@@ -82,7 +82,7 @@ var TagStore = assign({}, PrototypeStore, {
   setAllTagList(allTagData) {
     if (allTagData !== null) {
       _allTotal = allTagData.total;
-      _allTagList = Immutable.fromJS(allTagData.GetTagsByFilterResult);
+      _allTagList = Immutable.fromJS(allTagData.Data);
     } else {
       _allTotal = 0;
       _allTagList = Immutable.fromJS([]);

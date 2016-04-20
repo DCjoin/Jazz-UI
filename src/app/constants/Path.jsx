@@ -1,8 +1,9 @@
 'use strict';
 
-let basePath, backgroundImagePath;
+let basePath,
+  backgroundImagePath;
 if ("production" !== process.env.NODE_ENV) {
-  basePath = "/webhost/API";
+  basePath = "/webapihost/API";
   backgroundImagePath = '/webhost';
   console.log(process.env.NODE_ENV + '---------------------------');
 } else {

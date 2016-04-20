@@ -16,7 +16,7 @@ module.exports = {
   },
 
   getCustomer: function(userId) {
-    Ajax.post('/Customer.svc/GetCustomersByFilter', {
+    Ajax.post('/Customer/GetCustomersByFilter', {
       params : {
           "filter": {
               "UserId": userId,

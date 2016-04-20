@@ -4,7 +4,7 @@ import { Action } from '../constants/actionType/Calendar.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let CalendarAction = {
   getCalendarListByType(type) {
-    Ajax.post('/Administration.svc/GetCalendarsByType', {
+    Ajax.post('/Administration/GetCalendarsByType', {
       params: {
         type: type
       },
@@ -34,7 +34,7 @@ let CalendarAction = {
   },
   modifyCalendar(data, type) {
     var me = this;
-    Ajax.post('/Administration.svc/ModifyCalendar', {
+    Ajax.post('/Administration/ModifyCalendar', {
       params: {
         dto: data
       },
@@ -55,7 +55,7 @@ let CalendarAction = {
   },
   createCalendar(data, type) {
     var me = this;
-    Ajax.post('/Administration.svc/CreateCalendar', {
+    Ajax.post('/Administration/CreateCalendar', {
       params: {
         dto: data
       },
@@ -75,7 +75,7 @@ let CalendarAction = {
     });
   },
   deleteCalendarById(id, version) {
-    Ajax.post('/Administration.svc/DeleteCalendar', {
+    Ajax.post('/Administration/DeleteCalendar', {
       params: {
         dto: {
           Id: id,
