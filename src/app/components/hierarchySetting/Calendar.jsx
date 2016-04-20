@@ -3,7 +3,7 @@
 import React from "react";
 import classnames from "classnames";
 import { formStatus } from '../../constants/FormStatus.jsx';
-import { Checkbox } from 'material-ui';
+import { Checkbox, CircularProgress } from 'material-ui';
 import Immutable from 'immutable';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
@@ -16,9 +16,22 @@ let CalendarItem = React.createClass({
   propTypes: {
     index: React.PropTypes.number,
     type: React.PropTypes.number,
+    merge: React.PropTypes.func,
     calendarItem: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object
+  },
+  _getCalendarNameItems: function() {
+    var me = this;
+    var allCalendar = this.props.allCalendar;
+    var items = allCalendar.filter(item => (item.get('Type') === me.props.type));
+    var calendarNameItems = items.map(item => {
+      return {
+        payload: item.get('Id'),
+        text: item.get('Name')
+      };
+    });
+    return calendarNameItems;
   },
   render: function() {
     var me = this;
@@ -31,7 +44,7 @@ let CalendarItem = React.createClass({
       title: I18N.Setting.Tag.Code,
       selectedYear: this.props.calendarItem.get('EffectiveTime'),
       onYearPickerSelected: value => {
-        this.props.mergeTag({
+        this.props.merge({
           value,
           path: "EffectiveTime"
         });
@@ -44,7 +57,7 @@ let CalendarItem = React.createClass({
       defaultValue: this.props.calendarItem.get('Calendar').get('Id'),
       dataItems: me._getCalendarNameItems(),
       didChanged: value => {
-        me.props.mergeTag({
+        me.props.merge({
           value,
           path: "Calendar"
         });
@@ -70,7 +83,7 @@ let CalendarItem = React.createClass({
           defaultValue: this.props.calendarItem.get('WorkTimeCalendar').get('Id'),
           dataItems: me._getWorktimeItems(),
           didChanged: value => {
-            me.props.mergeTag({
+            me.props.merge({
               value,
               path: "WorkTimeCalendar"
             });
@@ -78,15 +91,15 @@ let CalendarItem = React.createClass({
         };
         worktime = <ViewableDropDownMenu {...worktimeProps}/>;
       }
-      worktimeDiv = <div classname='jazz-hierarchy-calendar-item-worktime'>{addWorktime}{worktime}</div>;
+      worktimeDiv = <div className='jazz-hierarchy-calendar-type-item-worktime'>{addWorktime}{worktime}</div>;
     }
     return (
-      <div className='jazz-hierarchy-calendar-item'>
-        <div classname='jazz-hierarchy-calendar-item-time'>
+      <div className='jazz-hierarchy-calendar-type-item'>
+        <div className='jazz-hierarchy-calendar-type-item-time'>
           <YearPicker {...effectiveTimeProps}/>
           {deleteButton}
         </div>
-        <div classname='jazz-hierarchy-calendar-item-name'>
+        <div className='jazz-hierarchy-calendar-type-item-name'>
           <ViewableDropDownMenu {...nameProps}/>
           {showDetailButton}
         </div>
@@ -100,9 +113,25 @@ let CalendarItem = React.createClass({
 let CalendarItems = React.createClass({
   propTypes: {
     type: React.PropTypes.number,
+    merge: React.PropTypes.func,
     calendarItems: React.PropTypes.array,
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object
+  },
+  getTextByType: function() {
+    var text = '';
+    switch (this.props.type) {
+      case 0:
+        text = I18N.Setting.Calendar.WorkdaySetting;
+        break;
+      case 2:
+        text = I18N.Setting.Calendar.ColdwarmSetting;
+        break;
+      case 3:
+        text = I18N.Setting.Calendar.DaynightSetting;
+        break;
+    }
+    return text;
   },
   render: function() {
     var me = this;
@@ -118,6 +147,7 @@ let CalendarItems = React.createClass({
           type: me.props.type,
           calendarItem: item,
           isViewStatus: isView,
+          merge: me.props.merge,
           allCalendar: me.props.allCalendar
         };
         return (
@@ -125,8 +155,8 @@ let CalendarItems = React.createClass({
           );
       });
     return (
-      <div className='jazz-hierarchy-calendar-item'>
-        <div classname='jazz-hierarchy-calendar-item-add'>
+      <div className='jazz-hierarchy-calendar-type'>
+        <div className='jazz-hierarchy-calendar-type-add'>
           {this.getTextByType()}
           {addButton}
         </div>
@@ -177,19 +207,27 @@ var Calendar = React.createClass({
     if (this.state.calendar !== null) {
       calendarItemGroups = this.state.calendar.get('CalendarItemGroups');
     }
-    var calendar = calendarItemGroups.map((item, i) => {
-      let props = {
-        key: i,
-        type: item.get('Type'),
-        calendarItems: item.get('CalendarItems'),
-        isViewStatus: isView,
-        allCalendar: me.state.allCalendar
-      };
-      return (
-        <CalendarItems {...props}/>
-        );
-    });
-    return (
+    var calendar = null;
+    if (isView && this.state.calendar === null) {
+      calendar = I18N.Setting.Hierarchy.AddCalendarInfo;
+    } else {
+      calendar = calendarItemGroups.map((item, i) => {
+        let props = {
+          key: i,
+          type: item.get('Type'),
+          calendarItems: item.get('CalendarItems'),
+          isViewStatus: isView,
+          allCalendar: me.state.allCalendar
+        };
+        return (
+          <CalendarItems {...props}/>
+          );
+      });
+    }
+    return me.state.isLoading ? (<div className='jazz-hierarchy-calendar-loading'><div style={{
+      margin: 'auto',
+      width: '100px'
+    }}><CircularProgress  mode="indeterminate" size={2} /></div></div>) : (
       <div>
         <div className={"pop-customer-detail-content"}>
         <div className="pop-customer-detail-content-left">

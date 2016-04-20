@@ -1699,5 +1699,6 @@ I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = '删除{0}';
 I18N.Setting.Hierarchy.DeleteContent = '删除{0}“{1}”，该{2}的所有数据也将被删除。';
 I18N.Setting.Hierarchy.AddTagInfo = '点击添加按钮，选择关联数据点';
+I18N.Setting.Hierarchy.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
 
 module.exports = I18N;

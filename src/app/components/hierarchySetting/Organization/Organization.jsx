@@ -12,6 +12,7 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import Basic from './OrganizationBasic.jsx';
 import MonitorTag from '../MonitorTag.jsx';
+import Calendar from '../Calendar.jsx';
 
 var Organization = React.createClass({
 
@@ -138,6 +139,12 @@ var Organization = React.createClass({
         isDim: false,
         hierarchyId: this.props.selectedNode.get('Id'),
         onUpdate: this._update
+      },
+      calendarProps = {
+        ref: 'jazz_Org_calendar',
+        formStatus: this.props.formStatus,
+        hierarchyId: this.props.selectedNode.get('Id'),
+        merge: this.props.merge,
       };
     var content;
     switch (this.props.infoTabNo) {
@@ -148,7 +155,7 @@ var Organization = React.createClass({
         content = <MonitorTag {...tagProps}/>;
         break;
       case 3:
-
+        content = <Calendar {...calendarProps}/>;
         break;
 
     }

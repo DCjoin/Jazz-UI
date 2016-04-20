@@ -98,13 +98,13 @@ var HierarchyStore = assign({}, PrototypeStore, {
     }
   },
   setAllCalendar: function(calendar) {
-    var _allCalendar = Immutable.fromJS(calendar);
+    _allCalendar = Immutable.fromJS(calendar);
   },
   getAllCalendar: function() {
     return _allCalendar;
   },
   setCalendar: function(calendar) {
-    var _calendar = Immutable.fromJS(calendar);
+    _calendar = Immutable.fromJS(calendar);
   },
   getCalendar: function() {
     return _calendar;
