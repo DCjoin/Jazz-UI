@@ -4,7 +4,7 @@ import { Action } from '../constants/actionType/Report.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let ReportAction = {
   getReportListByCustomerId(customerId, sortBy, order) {
-    Ajax.post('/DataReport.svc/GetExportByCustomerId', {
+    Ajax.post('/DataReport/GetExportByCustomerId', {
       params: {
         dto: {
           customerId: customerId,
@@ -26,7 +26,7 @@ let ReportAction = {
     });
   },
   getTemplateListByCustomerId(customerId, sortBy, order) {
-    Ajax.post('/DataReport.svc/GetExportTemplateByCustomerId', {
+    Ajax.post('/DataReport/GetExportTemplateByCustomerId', {
       params: {
         dto: {
           customerId: customerId,
@@ -59,7 +59,7 @@ let ReportAction = {
     });
   },
   saveCustomerReport(data) {
-    Ajax.post('/DataReport.svc/SaveCustomerReport', {
+    Ajax.post('/DataReport/SaveCustomerReport', {
       params: {
         dto: data
       },
@@ -79,7 +79,7 @@ let ReportAction = {
     });
   },
   deleteReportById(id) {
-    Ajax.post('/DataReport.svc/DeleteReportById', {
+    Ajax.post('/DataReport/DeleteReportById', {
       params: {
         id: id
       },
@@ -95,7 +95,7 @@ let ReportAction = {
     });
   },
   deleteTemplateById(id) {
-    Ajax.post('/DataReport.svc/DeleteTemplateById', {
+    Ajax.post('/DataReport/DeleteTemplateById', {
       params: {
         id: id
       },
@@ -111,7 +111,7 @@ let ReportAction = {
     });
   },
   getTagData(nodeId, option, page, filters) {
-    Ajax.post('/Tag.svc/GetTagsByFilter?', {
+    Ajax.post('/Tag/GetTagsByFilter?', {
       params: {
         filter: {
           Association: {
@@ -130,7 +130,7 @@ let ReportAction = {
       success: function(tagData) {
         AppDispatcher.dispatch({
           type: Action.GET_REPORT_TAG_DATA_SUCCESS,
-          tagData: tagData
+          tagData: tagData.GetTagsByFilterResult
         });
       },
       error: function(err, res) {
@@ -139,7 +139,7 @@ let ReportAction = {
     });
   },
   getSelectedTagData(ids) {
-    Ajax.post('/Tag.svc/GetTagsByFilter?', {
+    Ajax.post('/Tag/GetTagsByFilter?', {
       params: {
         filter: {
           Ids: ids,
@@ -154,7 +154,7 @@ let ReportAction = {
       success: function(tagData) {
         AppDispatcher.dispatch({
           type: Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS,
-          tagData: tagData
+          tagData: tagData.GetTagsByFilterResult
         });
       },
       error: function(err, res) {

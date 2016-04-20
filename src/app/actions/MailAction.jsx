@@ -8,7 +8,7 @@ let timeoutHandle = null;
 
 let MailAction = {
   GetServiceProviders() {
-    Ajax.post('/ServiceProvider.svc/GetServiceProviders', {
+    Ajax.post('/ServiceProvider/GetServiceProviders', {
       params: {
         dto: {
           StatusFilter: {
@@ -29,7 +29,7 @@ let MailAction = {
     });
   },
   GetPlatFormUserGroupDto() {
-    Ajax.post('/Customer.svc/GetPlatFormUserGroupDto', {
+    Ajax.post('/Customer/GetPlatFormUserGroupDto', {
       params: {
       },
       success: function(GroupDto) {
@@ -57,7 +57,7 @@ let MailAction = {
       templateContent: viewParam.content,
       templateNewFlag: viewParam.template.templateNewFlag
     };
-    Ajax.post('/Notification.svc/sendEamilOrMessage', {
+    Ajax.post('/Notification/sendEamilOrMessage', {
       params: {
         emailDto: {
           template: template,
@@ -110,7 +110,7 @@ let MailAction = {
     });
   },
   getAllNotificationTemplate: function() {
-    Ajax.post('/Notification.svc/getAllNotificationTemplate', {
+    Ajax.post('/Notification/getAllNotificationTemplate', {
       params: {
       },
       success: function(templateList) {
@@ -131,7 +131,7 @@ let MailAction = {
     });
   },
   deleteNotificationTemplate: function(template) {
-    Ajax.post('/Notification.svc/deleteNotificationTemplate', {
+    Ajax.post('/Notification/deleteNotificationTemplate', {
       params: {
         templateID: template.templateId
       },

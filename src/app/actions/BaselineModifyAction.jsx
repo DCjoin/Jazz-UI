@@ -8,7 +8,7 @@ let BaselineModifyAction = {
     AppDispatcher.dispatch({
          type: Action.GET_BASELINE_DATA_LOADING
     });
-    Ajax.post('/TargetBaseline.svc/GetTargetBaselineDataSetting', {
+    Ajax.post('/TargetBaseline/GetTargetBaselineDataSetting', {
       params: {
         tbId: tbId,
         year: year
@@ -30,7 +30,7 @@ let BaselineModifyAction = {
     AppDispatcher.dispatch({
          type: Action.SET_BASELINE_DATA_LOADING
     });
-    Ajax.post('/TargetBaseline.svc/ModifyTargetBaselineDataSetting', {
+    Ajax.post('/TargetBaseline/ModifyTargetBaselineDataSetting', {
       params: {dto: data},
       success: function(modifyData){
         AppDispatcher.dispatch({

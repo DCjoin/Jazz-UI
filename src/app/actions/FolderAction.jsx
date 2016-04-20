@@ -6,7 +6,7 @@ import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
 let FolderAction = {
   getFolderTreeByCustomerId(customerId) {
-    Ajax.post('/Dashboard.svc/GetWdigetFolderTreeByCustomerId', {
+    Ajax.post('/Dashboard/GetWdigetFolderTreeByCustomerId', {
       params: {
         customerId: customerId
       },
@@ -29,7 +29,7 @@ let FolderAction = {
       CustomerId: customerId,
       WidgetType: widgetType
     };
-    Ajax.post('/Dashboard.svc/CreateWidgetOrFolder', {
+    Ajax.post('/Dashboard/CreateWidgetOrFolder', {
       params: {
         dto: dto
       },
@@ -46,7 +46,7 @@ let FolderAction = {
     });
   },
   modifyFolderName: function(widgetFolderDto, newName) {
-    Ajax.post('/Dashboard.svc/ModifyFolderName', {
+    Ajax.post('/Dashboard/ModifyFolderName', {
       params: {
         widgetFolderDto: widgetFolderDto,
         newName: newName,
@@ -76,7 +76,7 @@ let FolderAction = {
     });
   },
   copyItem: function(sourceItem, destItem, newName) {
-    Ajax.post('/Dashboard.svc/CopyItem', {
+    Ajax.post('/Dashboard/CopyItem', {
       params: {
         sourceTreeNode: sourceItem.toJSON(),
         desFolder: destItem.toJSON(),
@@ -100,7 +100,7 @@ let FolderAction = {
 
   },
   deleteItem: function(node, isLoadByWidget) {
-    Ajax.post('/Dashboard.svc/DeleteFolderOrWidgetById', {
+    Ajax.post('/Dashboard/DeleteFolderOrWidgetById', {
       params: {
         id: node.get('Id'),
         type: node.get('Type')
@@ -121,7 +121,7 @@ let FolderAction = {
     });
   },
   modifyFolderReadStatus: function(selectedNode) {
-    Ajax.post('/Dashboard.svc/ModfiyReadingStatus', {
+    Ajax.post('/Dashboard/ModfiyReadingStatus', {
       params: {
         readStatus: true,
         id: selectedNode.get('Id')
@@ -137,7 +137,7 @@ let FolderAction = {
 
   },
   sendFolderCopy: function(sourceTreeNode, userIds) {
-    Ajax.post('/Dashboard.svc/SendItemCopy', {
+    Ajax.post('/Dashboard/SendItemCopy', {
       params: {
         sourceTreeNode: sourceTreeNode.toJSON(),
         userIds: userIds
@@ -152,7 +152,7 @@ let FolderAction = {
     });
   },
   shareItemCopy: function(sourceTreeNode, userIds) {
-    Ajax.post('/CollaborativeWidget.svc/ShareCollaborativeWidget', {
+    Ajax.post('/CollaborativeWidget/ShareCollaborativeWidget', {
       params: {
         widget: sourceTreeNode.toJSON(),
         userIds: userIds
@@ -167,7 +167,7 @@ let FolderAction = {
     });
   },
   moveItem: function(sourceNode, parentNode, previousNode, nextNode) {
-    Ajax.post('/Dashboard.svc/MoveItem', {
+    Ajax.post('/Dashboard/MoveItem', {
       params: {
         sourceItem: sourceNode,
         desItem: parentNode,
@@ -201,7 +201,7 @@ let FolderAction = {
       });
     }, 0);
 
-    Ajax.post('/Dashboard.svc/GetWidgetDtos', {
+    Ajax.post('/Dashboard/GetWidgetDtos', {
       params: {
         widgetIds: widgetIds
       },
@@ -221,7 +221,7 @@ let FolderAction = {
   },
   updateWidgetDtos(widgetDto, menuIndex) {
     let originWidgetDto = widgetDto;
-    Ajax.post('/Dashboard.svc/CreateWidget', {
+    Ajax.post('/Dashboard/CreateWidget', {
       params: {
         widgetDto: widgetDto
       },
@@ -249,7 +249,7 @@ let FolderAction = {
     });
   },
   exportWidget(widgetId) {
-    Ajax.post('/Dashboard.svc/ExportWidget', {
+    Ajax.post('/Dashboard/ExportWidget', {
       params: {
         widgetId: widgetId
       },
@@ -267,7 +267,7 @@ let FolderAction = {
   },
   WidgetSave(widgetDto, customerId) {
     let originWidgetDto = widgetDto;
-    Ajax.post('/Dashboard.svc/CreateWidget', {
+    Ajax.post('/Dashboard/CreateWidget', {
       params: {
         widgetDto: widgetDto,
         customerId: customerId
@@ -287,7 +287,7 @@ let FolderAction = {
   },
   SaveAsItem(sourceTreeNode, desFolder, newName, widgetDto) {
     let originWidgetDto = widgetDto;
-    Ajax.post('/Dashboard.svc/SaveAsItem', {
+    Ajax.post('/Dashboard/SaveAsItem', {
       params: {
         sourceTreeNode: sourceTreeNode,
         desFolder: desFolder,
