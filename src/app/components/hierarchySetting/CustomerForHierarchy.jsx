@@ -19,7 +19,7 @@ import FormBottomBar from '../../controls/FormBottomBar.jsx';
 
 var CustomerForHierarchy = React.createClass({
   propTypes: {
-    formStatus: React.PropTypes.bool,
+    formStatus: React.PropTypes.string,
     closedList: React.PropTypes.bool,
     toggleList: React.PropTypes.func,
     selectedNode: React.PropTypes.object,
