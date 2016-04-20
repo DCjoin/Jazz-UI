@@ -16,6 +16,7 @@ import ImageUpload from '../../controls/ImageUpload.jsx';
 import AdminList from '../customer/AdminList.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
+import MonitorTag from './MonitorTag.jsx';
 
 var CustomerForHierarchy = React.createClass({
   propTypes: {
@@ -56,7 +57,24 @@ var CustomerForHierarchy = React.createClass({
       editBtnDisabled: status
     });
   },
-  _handleSave: function() {},
+  _handleSave: function() {
+    if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_customer_tag) {
+        let tags = this.refs.jazz_customer_tag._handlerSave(),
+          tagIds = [];
+        tags.forEach(tag => {
+          tagIds.push({
+            Id: tag.get('Id'),
+            Version: tag.get('Version')
+          });
+        });
+        this.props.handleSave({
+          hierarchyId: this.props.selectedNode.get('Id'),
+          tags: tagIds
+        });
+      }
+    }
+  },
   _renderInfoTab: function() {
     var {customer} = this.state,
       adminList = null,
@@ -203,7 +221,7 @@ var CustomerForHierarchy = React.createClass({
     {adminList}
     </div>
 
-      )
+    )
 
   },
   _renderHeader: function() {
@@ -250,13 +268,13 @@ var CustomerForHierarchy = React.createClass({
 
   },
   _renderContent: function() {
-    // var tagProps = {
-    //     ref: 'jazz_Org_tag',
-    //     formStatus: this.props.formStatus,
-    //     isDim: false,
-    //     hierarchyId: this.props.selectedNode.get('Id'),
-    //     onUpdate: this._update
-    //   };
+    var tagProps = {
+      ref: 'jazz_customer_tag',
+      formStatus: this.props.formStatus,
+      isDim: false,
+      hierarchyId: this.props.selectedNode.get('Id'),
+      onUpdate: this._update
+    };
     var content,
       that = this;
     switch (this.props.infoTabNo) {
@@ -264,7 +282,7 @@ var CustomerForHierarchy = React.createClass({
         content = that._renderInfoTab();
         break;
       case 2:
-        //content = <MonitorTag {...tagProps}/>;
+        content = <MonitorTag {...tagProps}/>;
         break;
 
     }
@@ -300,7 +318,6 @@ var CustomerForHierarchy = React.createClass({
       allowDelete={that.props.infoTabNo === 1}
       onCancel={this.props.handlerCancel}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
       }}
       editBtnProps={editBtnProps}/>
