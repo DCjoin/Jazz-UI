@@ -141,6 +141,27 @@ let HierarchyAction = {
       type: Action.CLEAR_ALL_ASSOCIATED_TAGS,
     });
   },
+  setEnergyConsumption: function(tag, value, type, hierarchyId) {
+    Ajax.post('/Tag/SetEnergyConsumption', {
+      params: {
+        dto: {
+          AssociationId: hierarchyId,
+          AssociationType: type,
+          EnergyConsumption: value,
+          Tags: tag
+        }
+      },
+      success: function(tag) {
+        AppDispatcher.dispatch({
+          type: Action.SET_ENERGY_CONSUMPTION,
+          tag: tag
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   createHierarchy: function(dto) {
     var that = this;
     Ajax.post('/Hierarchy.svc/CreateHierarchy', {
@@ -222,6 +243,22 @@ let HierarchyAction = {
       success: function(calendar) {
         AppDispatcher.dispatch({
           type: Action.GET_ALL_CALENDARS_FOR_HIERARCHY,
+          calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getCalendar: function(hierarchyId) {
+    Ajax.post('/Hierarchy/GetHierarchyCalendarByHierarchyId', {
+      params: {
+        hierarchyId: hierarchyId
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.GET_CALENDAR_FOR_HIERARCHY,
           calendar: calendar
         });
       },

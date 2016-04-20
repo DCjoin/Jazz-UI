@@ -216,6 +216,14 @@ var MonitorTag = React.createClass({
   _onSearchCleanButtonClick: function() {
     this._onSearch('');
   },
+  _setEnergyConsumption: function(tag, value) {
+    var tagData = [{
+      Id: tag.get('Id'),
+      Version: tag.get('Version')
+    }];
+    var type = this.props.isDim ? 4 : 1;
+    HierarchyAction.setEnergyConsumption(tagData, value, type, this.props.hierarchyId);
+  },
   _renderDisplayTag: function() {
     var that = this,
       total = HierarchyStore.getTotal();
@@ -227,11 +235,22 @@ var MonitorTag = React.createClass({
       jumpToPage: this._jumpToPage,
       hasJumpBtn: true
     };
+    var cleanIconStyle = {
+      fontSize: '16px'
+    };
     var getTableBody = function() {
       var list = [];
       that.state.taglist.forEach(tag => {
+        var energyConsumption = tag.get('EnergyConsumption');
+        var flag = null;
+        if (energyConsumption === 1) {
+          flag = <FontIcon className="icon-clean" color="#939796" onClick={that._setEnergyConsumption.bind(this, tag, 2)} style={cleanIconStyle}></FontIcon>;
+        } else if (energyConsumption === 2) {
+          flag = <FontIcon className="icon-clean" color="#ffffff" onClick={that._setEnergyConsumption.bind(this, tag, 1)} style={cleanIconStyle}></FontIcon>;
+        }
         list.push(
           <div className='jazz-vee-monitor-tag-content-list' key={tag.get('Id')}>
+            <div className='jazz-vee-monitor-tag-content-operation-item'>{flag}</div>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')} style={{
             marginTop: '10px'
           }}>{tag.get('Name')}</div>
