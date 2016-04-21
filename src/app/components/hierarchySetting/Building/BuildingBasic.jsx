@@ -96,20 +96,20 @@ var BuildingBasic = React.createClass({
           })
         }
       },
-      parmas = "&width=" + 420 + "&height=" + 140 + "&mode=" + 1,
+      parmas = "&width=" + 480 + "&height=" + 320 + "&mode=" + 1,
       imageProps = {
         clip: false,
-        background: 'customer-background-logo',
-        imageUrl: BuildingPictureIds ? "url(" + Path.BackgroundImagePath + "/BuildingPicture.aspx?pictureId=" + BuildingPictureIds[0] + parmas + ")" : '',
+        imageUrl: buildingPictureIds.size !== 0 ? "url(" + Path.BackgroundImagePath + "/BuildingPicture.aspx?pictureId=" + BuildingPictureIds[0] + parmas + ")" : '',
         isViewState: isView,
+        updateTips: buildingPictureIds.size === 0 ? I18N.Setting.Building.AddImage : I18N.Setting.Building.UpdateImage,
         imageDidChanged: value => {
           this.props.merge({
             value: [value.pictureId],
             path: "BuildingPictureIds"
           })
         },
-        wrapperWidth: 420,
-        wrapperHeight: 140,
+        wrapperWidth: 480,
+        wrapperHeight: 320,
         uploadUrl: 'BuildingPicture.aspx'
       };
     var industrySelectedIndex = 0,

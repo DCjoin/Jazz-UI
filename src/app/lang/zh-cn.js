@@ -1694,6 +1694,8 @@ I18N.Setting.Building.Industry = '所属行业';
 I18N.Setting.Building.Zone = '所属气候分区';
 I18N.Setting.Building.PTagCount = '计量数据P数量';
 I18N.Setting.Building.VTagCount = '计量数据V数量';
+I18N.Setting.Building.AddImage = '请添加建筑照片';
+I18N.Setting.Building.UpdateImage = '重新上传建筑照片';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = '删除{0}';

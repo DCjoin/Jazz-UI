@@ -311,7 +311,7 @@ let HierarchyAction = {
       params: {
         hierarchyMovingDto: {
           DesParent: DesParent,
-          MovingHierarchies: MovingHierarchies,
+          MovingHierarchies: [MovingHierarchies],
           NextBrother: NextBrother,
           PreviousBrother: PreviousBrother
         }
