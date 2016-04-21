@@ -140,8 +140,6 @@ var Hierarchy = React.createClass({
     this.setState({
       isLoading: true
     });
-
-
   },
   _handlerTouchTap: function(node) {
     this._setViewStatus(node);
