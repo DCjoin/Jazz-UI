@@ -253,7 +253,7 @@ let HierarchyAction = {
     });
   },
   getCalendar: function(hierarchyId) {
-    Ajax.post('/Hierarchy/GetHierarchyCalendarByHierarchyId', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyCalendarByHierarchyId', {
       params: {
         hierarchyId: hierarchyId
       },

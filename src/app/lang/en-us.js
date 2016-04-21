@@ -1693,6 +1693,7 @@ I18N.Setting.Building.VTagCount = 'Virtual Tag No.';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.AddTagInfo = 'Click add button to add tags';
+I18N.Setting.Hierarchy.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
 
 
 module.exports = I18N;

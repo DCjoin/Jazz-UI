@@ -12,6 +12,7 @@ import FlatButton from '../../../controls/FlatButton.jsx';
 import MonitorTag from '../MonitorTag.jsx';
 import Basic from './BuildingBasic.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
+import Calendar from '../Calendar.jsx';
 
 var Building = React.createClass({
 
@@ -152,6 +153,12 @@ var Building = React.createClass({
         isDim: false,
         hierarchyId: this.props.selectedNode.get('Id'),
         onUpdate: this._update
+      },
+      calendarProps = {
+        ref: 'jazz_building_calendar',
+        formStatus: this.props.formStatus,
+        hierarchyId: this.props.selectedNode.get('Id'),
+        merge: this.props.merge,
       };
     var content;
     switch (this.props.infoTabNo) {
@@ -162,7 +169,7 @@ var Building = React.createClass({
         content = <MonitorTag {...tagProps}/>;
         break;
       case 3:
-
+        content = <Calendar {...calendarProps}/>;
         break;
 
     }
