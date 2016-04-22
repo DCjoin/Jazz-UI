@@ -20,7 +20,8 @@ let CalendarItem = React.createClass({
     calendarItem: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object,
-    deleteCalendarItem: React.PropTypes.func
+    deleteCalendarItem: React.PropTypes.func,
+    checkWorktime: React.PropTypes.func
   },
   _getCalendarNameItems: function(type) {
     var me = this;
@@ -40,6 +41,9 @@ let CalendarItem = React.createClass({
   _deleteCalendarItem: function() {
     this.props.deleteCalendarItem(this.props.type, this.props.index);
   },
+  _checkWorktime: function(e, checked) {
+    this.props.checkWorktime(this.props.type, this.props.index, checked);
+  },
   render: function() {
     var me = this;
     var isView = this.props.isViewStatus;
@@ -56,7 +60,9 @@ let CalendarItem = React.createClass({
       onYearPickerSelected: value => {
         this.props.merge({
           value,
-          path: "EffectiveTime"
+          path: "EffectiveTime",
+          type: me.props.type,
+          index: me.props.index
         });
       }
     };
@@ -72,7 +78,9 @@ let CalendarItem = React.createClass({
       didChanged: value => {
         me.props.merge({
           value,
-          path: "Calendar"
+          path: "Calendar",
+          type: me.props.type,
+          index: me.props.index
         });
       }
     };
@@ -83,7 +91,7 @@ let CalendarItem = React.createClass({
       var addWorktimeProps = {
         label: I18N.Setting.Calendar.AddWorkTime,
         checked: this.props.calendarItem.get('WorkTimeCalendar') === null ? false : true,
-        onCheck: this.checkWorktime,
+        onCheck: this._checkWorktime,
         disabled: isView
       };
       var addWorktime = (<div className='jazz-hierarchy-calendar-type-item-worktime-checkbox'><Checkbox {...addWorktimeProps}/></div>);
@@ -101,7 +109,9 @@ let CalendarItem = React.createClass({
           didChanged: value => {
             me.props.merge({
               value,
-              path: "WorkTimeCalendar"
+              path: "WorkTimeCalendar",
+              type: me.props.type,
+              index: me.props.index
             });
           }
         };
@@ -157,6 +167,9 @@ let CalendarItems = React.createClass({
   _deleteCalendarItem: function(type, index) {
     this.props.deleteCalendarItem(type, index);
   },
+  _checkWorktime: function(type, index, checked) {
+    this.props.checkWorktime(type, index, checked);
+  },
   render: function() {
     var me = this;
     var isView = this.props.isViewStatus;
@@ -173,7 +186,8 @@ let CalendarItems = React.createClass({
           isViewStatus: isView,
           merge: me.props.merge,
           allCalendar: me.props.allCalendar,
-          deleteCalendarItem: me._deleteCalendarItem
+          deleteCalendarItem: me._deleteCalendarItem,
+          checkWorktime: me._checkWorktime
         };
         return (
           <CalendarItem {...props}/>
@@ -232,12 +246,12 @@ var Calendar = React.createClass({
     return defaultCalendarItem;
   },
   _addCalendarItem: function(type) {
-    var calendar = this.state.calendar;
-    var calendarItemGroups = calendar.get('CalendarItemGroups');
-    var calendarItemIndex = calendarItemGroups.findIndex(item => (item.get('Type') === type));
-    var calendarItemType = calendarItemGroups.get(calendarItemIndex);
-    var calendarItems = calendarItemType.get('CalendarItems');
-    var defaultCalendarItem = this._getDefaultCalendarItem(type);
+    var calendar = this.state.calendar,
+      calendarItemGroups = calendar.get('CalendarItemGroups'),
+      calendarItemIndex = calendarItemGroups.findIndex(item => (item.get('Type') === type)),
+      calendarItemType = calendarItemGroups.get(calendarItemIndex),
+      calendarItems = calendarItemType.get('CalendarItems'),
+      defaultCalendarItem = this._getDefaultCalendarItem(type);
 
     if (calendarItems === null) {
       calendarItems = defaultCalendarItem;
@@ -252,12 +266,59 @@ var Calendar = React.createClass({
     });
   },
   _deleteCalendarItem: function(type, index) {
-    var calendar = this.state.calendar;
-    var calendarItemGroups = calendar.get('CalendarItemGroups');
-    var calendarItemIndex = calendarItemGroups.findIndex(item => (item.get('Type') === type));
-    var calendarItemType = calendarItemGroups.get(calendarItemIndex);
-    var calendarItems = calendarItemType.get('CalendarItems');
+    var calendar = this.state.calendar,
+      calendarItemGroups = calendar.get('CalendarItemGroups'),
+      calendarItemIndex = calendarItemGroups.findIndex(item => (item.get('Type') === type)),
+      calendarItemType = calendarItemGroups.get(calendarItemIndex),
+      calendarItems = calendarItemType.get('CalendarItems');
     calendarItems = calendarItems.delete(index);
+    calendarItemType = calendarItemType.set('CalendarItems', calendarItems);
+    calendarItemGroups = calendarItemGroups.set(calendarItemIndex, calendarItemType);
+    calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
+    this.setState({
+      calendar: calendar
+    });
+  },
+  _checkWorktime: function(type, index, checked) {
+    var calendar = this.state.calendar,
+      calendarItemGroups = calendar.get('CalendarItemGroups'),
+      calendarItemIndex = calendarItemGroups.findIndex(item => (item.get('Type') === type)),
+      calendarItemType = calendarItemGroups.get(calendarItemIndex),
+      calendarItems = calendarItemType.get('CalendarItems'),
+      calendarItem = calendarItems.get(index),
+      worktimeCalendar = this.state.allCalendar.find(item => (item.get('Type') === 1));
+    if (checked) {
+      calendarItem = calendarItem.set('WorkTimeCalendar', worktimeCalendar);
+    } else {
+      calendarItem = calendarItem.set('WorkTimeCalendar', null);
+    }
+    calendarItems = calendarItems.set(index, calendarItem);
+    calendarItemType = calendarItemType.set('CalendarItems', calendarItems);
+    calendarItemGroups = calendarItemGroups.set(calendarItemIndex, calendarItemType);
+    calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
+    this.setState({
+      calendar: calendar
+    });
+  },
+  _merge: function(data) {
+    var type = data.type,
+      index = data.index,
+      path = data.path,
+      value = data.value;
+    var calendar = this.state.calendar,
+      calendarItemGroups = calendar.get('CalendarItemGroups'),
+      calendarItemIndex = calendarItemGroups.findIndex(item => (item.get('Type') === type)),
+      calendarItemType = calendarItemGroups.get(calendarItemIndex),
+      calendarItems = calendarItemType.get('CalendarItems'),
+      calendarItem = calendarItems.get(index);
+    var selectCalendar = null;
+    if (path === 'EffectiveTime') {
+      calendarItem = calendarItem.set(path, value);
+    } else {
+      selectCalendar = this.state.allCalendar.find(item => (item.get('Id') === value));
+      calendarItem = calendarItem.set(path, selectCalendar);
+    }
+    calendarItems = calendarItems.set(index, calendarItem);
     calendarItemType = calendarItemType.set('CalendarItems', calendarItems);
     calendarItemGroups = calendarItemGroups.set(calendarItemIndex, calendarItemType);
     calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
@@ -293,7 +354,9 @@ var Calendar = React.createClass({
           isViewStatus: isView,
           allCalendar: me.state.allCalendar,
           addCalendarItem: me._addCalendarItem,
-          deleteCalendarItem: me._deleteCalendarItem
+          deleteCalendarItem: me._deleteCalendarItem,
+          checkWorktime: me._checkWorktime,
+          merge: me._merge,
         };
         return (
           <CalendarItems {...props}/>
