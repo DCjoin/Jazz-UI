@@ -217,13 +217,13 @@ var BuildingBasic = React.createClass({
       {adminList}
      <div className='pop-admins section-panel'>
         <div className='pop-admin-container'>
-          <div>
-            <div>{I18N.Setting.Building.PTagCount}</div>
-            <div>{AssoiciatedTagCountP || 0}</div>
+          <div className='buildingbasic-tag-item'>
+            <div className='title'>{I18N.Setting.Building.PTagCount}</div>
+            <div className='content'>{AssoiciatedTagCountP || 0}</div>
           </div>
-          <div>
-            <div>{I18N.Setting.Building.VTagCount}</div>
-            <div>{AssoiciatedTagCountV || 0}</div>
+          <div className='buildingbasic-tag-item'>
+            <div className='title'>{I18N.Setting.Building.VTagCount}</div>
+            <div className='content'>{AssoiciatedTagCountV || 0}</div>
           </div>
         </div>
 
