@@ -78,11 +78,14 @@
   margin-bottom: 20px;
   &-add{
     margin-bottom: 10px;
-    >span{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    &-text{
       font-size: 14px;
+      width: 80px;
     }
     > button{
-      margin-left: 101px !important;
       border: none !important;
       background-color: transparent!important;
       &:hover{

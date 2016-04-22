@@ -150,6 +150,10 @@ let CalendarItems = React.createClass({
     var isView = this.props.isViewStatus;
     var calendarItems = me.props.calendarItems;
     var addButton = (<FlatButton label={I18N.Common.Button.Add} onClick={this._addCalendarItem} primary={false}/>);
+    var addDom = isView ? null : (<div className='jazz-hierarchy-calendar-type-add'>
+      <div className='jazz-hierarchy-calendar-type-add-text'>{this.getTextByType()}</div>
+      {addButton}
+    </div>);
     var calendar = null;
     if (calendarItems && calendarItems.size > 0)
       calendar = calendarItems.map((item, i) => {
@@ -168,10 +172,7 @@ let CalendarItems = React.createClass({
       });
     return (
       <div className='jazz-hierarchy-calendar-type'>
-        <div className='jazz-hierarchy-calendar-type-add'>
-          {this.getTextByType()}
-          {addButton}
-        </div>
+        {addDom}
         {calendar}
       </div>
 
@@ -236,7 +237,7 @@ var Calendar = React.createClass({
           );
       });
     }
-    return me.state.isLoading ? (<div className='jazz-hierarchy-calendar-loading'><div style={{
+    return me.state.isLoading ? (<div className='jazz-calendar-loading'><div style={{
       margin: 'auto',
       width: '100px'
     }}><CircularProgress  mode="indeterminate" size={2} /></div></div>) : (
