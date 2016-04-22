@@ -115,7 +115,7 @@ let CalendarItem = React.createClass({
             });
           }
         };
-        worktime = <ViewableDropDownMenu {...worktimeProps}/>;
+        worktime = <div className='jazz-hierarchy-calendar-type-item-worktime-item'><ViewableDropDownMenu {...worktimeProps}/>{showDetailButton}</div>;
       }
       worktimeDiv = <div className='jazz-hierarchy-calendar-type-item-worktime'>{addWorktime}{worktime}</div>;
     }
