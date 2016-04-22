@@ -268,6 +268,11 @@ let HierarchyAction = {
       }
     });
   },
+  cancelSaveCalendar() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_CALENDAR
+    });
+  },
   getAllIndustries: function() {
     var that = this;
     Ajax.post('/Administration.svc/GetAllIndustries', {

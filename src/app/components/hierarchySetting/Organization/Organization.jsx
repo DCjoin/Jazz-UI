@@ -13,6 +13,7 @@ import FlatButton from '../../../controls/FlatButton.jsx';
 import Basic from './OrganizationBasic.jsx';
 import MonitorTag from '../MonitorTag.jsx';
 import Calendar from '../Calendar.jsx';
+import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
 
 var Organization = React.createClass({
 
@@ -198,7 +199,7 @@ var Organization = React.createClass({
         });
       }}
       allowDelete={that.props.infoTabNo === 1}
-      onCancel={this.props.handlerCancel}
+      onCancel={this._handlerCancel}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
@@ -237,6 +238,12 @@ var Organization = React.createClass({
       {I18N.format(I18N.Setting.Hierarchy.DeleteContent, title, selectedNode.get('Name'), title)}
     </Dialog>
         );
+    }
+  },
+  _handlerCancel: function() {
+    this.props.handlerCancel();
+    if (this.props.infoTabNo === 3) {
+      HierarchyAction.cancelSaveCalendar();
     }
   },
   componentWillMount: function() {

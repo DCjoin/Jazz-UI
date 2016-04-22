@@ -12,6 +12,7 @@ import FlatButton from '../../../controls/FlatButton.jsx';
 import MonitorTag from '../MonitorTag.jsx';
 import Basic from './BuildingBasic.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
+import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
 import Calendar from '../Calendar.jsx';
 
 var Building = React.createClass({
@@ -212,7 +213,7 @@ var Building = React.createClass({
         });
       }}
       allowDelete={that.props.infoTabNo === 1}
-      onCancel={this.props.handlerCancel}
+      onCancel={this._handlerCancel}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
@@ -250,6 +251,12 @@ var Building = React.createClass({
       {I18N.format(I18N.Setting.Hierarchy.DeleteContent, I18N.Common.Glossary.Building, selectedNode.get('Name'), I18N.Common.Glossary.Building)}
     </Dialog>
         );
+    }
+  },
+  _handlerCancel: function() {
+    this.props.handlerCancel();
+    if (this.props.infoTabNo === 3) {
+      HierarchyAction.cancelSaveCalendar();
     }
   },
   componentWillMount: function() {

@@ -18,7 +18,8 @@ module.exports = {
     GET_ALL_INDUSTRIES_FOR_HIERARCHY: null,
     GET_ALL_ZONES_FOR_HIERARCHY: null,
     MODIFY_HIERARCHY_PATH: null,
-    SET_ENERGY_CONSUMPTION: null
+    SET_ENERGY_CONSUMPTION: null,
+    CANCEL_SAVE_CALENDAR: null
   })
 
 };

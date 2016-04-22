@@ -385,6 +385,9 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.setTagEnergyConsumption(action.tag);
       HierarchyStore.ifEmitTagChange();
       break;
+    case HierarchyAction.CANCEL_SAVE_CALENDAR:
+      HierarchyStore.emitCalendarChange();
+      break;
   }
 });
 

@@ -19,7 +19,8 @@ let CalendarItem = React.createClass({
     merge: React.PropTypes.func,
     calendarItem: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool,
-    allCalendar: React.PropTypes.object
+    allCalendar: React.PropTypes.object,
+    deleteCalendarItem: React.PropTypes.func
   },
   _getCalendarNameItems: function(type) {
     var me = this;
@@ -35,6 +36,9 @@ let CalendarItem = React.createClass({
       }).toJS();
     }
     return calendarNameItems;
+  },
+  _deleteCalendarItem: function() {
+    this.props.deleteCalendarItem(this.props.type, this.props.index);
   },
   render: function() {
     var me = this;
@@ -128,7 +132,9 @@ let CalendarItems = React.createClass({
     merge: React.PropTypes.func,
     calendarItems: React.PropTypes.array,
     isViewStatus: React.PropTypes.bool,
-    allCalendar: React.PropTypes.object
+    allCalendar: React.PropTypes.object,
+    addCalendarItem: React.PropTypes.func,
+    deleteCalendarItem: React.PropTypes.func
   },
   getTextByType: function() {
     var text = '';
@@ -145,15 +151,17 @@ let CalendarItems = React.createClass({
     }
     return text;
   },
+  _addCalendarItem: function() {
+    this.props.addCalendarItem(this.props.type);
+  },
+  _deleteCalendarItem: function(type, index) {
+    this.props.deleteCalendarItem(type, index);
+  },
   render: function() {
     var me = this;
     var isView = this.props.isViewStatus;
     var calendarItems = me.props.calendarItems;
-    var addButton = (<FlatButton label={I18N.Common.Button.Add} onClick={this._addCalendarItem} primary={false}/>);
-    var addDom = isView ? null : (<div className='jazz-hierarchy-calendar-type-add'>
-      <div className='jazz-hierarchy-calendar-type-add-text'>{this.getTextByType()}</div>
-      {addButton}
-    </div>);
+    var addButton = isView ? null : (<FlatButton label={I18N.Common.Button.Add} onClick={this._addCalendarItem} primary={false}/>);
     var calendar = null;
     if (calendarItems && calendarItems.size > 0)
       calendar = calendarItems.map((item, i) => {
@@ -164,7 +172,8 @@ let CalendarItems = React.createClass({
           calendarItem: item,
           isViewStatus: isView,
           merge: me.props.merge,
-          allCalendar: me.props.allCalendar
+          allCalendar: me.props.allCalendar,
+          deleteCalendarItem: me._deleteCalendarItem
         };
         return (
           <CalendarItem {...props}/>
@@ -172,7 +181,10 @@ let CalendarItems = React.createClass({
       });
     return (
       <div className='jazz-hierarchy-calendar-type'>
-        {addDom}
+        <div className='jazz-hierarchy-calendar-type-add'>
+          <div className='jazz-hierarchy-calendar-type-add-text'>{this.getTextByType()}</div>
+          {addButton}
+        </div>
         {calendar}
       </div>
 
@@ -204,6 +216,55 @@ var Calendar = React.createClass({
       isLoading: false
     });
   },
+  _getDefaultCalendarItem: function(type) {
+    var allCalendar = this.state.allCalendar;
+    let thisYear = new Date().getFullYear();
+    var calendar = allCalendar.find(item => (item.get('Type') === type));
+    var worktimeCalendar = null;
+    if (type === 0) {
+      worktimeCalendar = allCalendar.find(item => (item.get('Type') === 1));
+    }
+    var defaultCalendarItem = Immutable.fromJS({
+      Calendar: calendar,
+      EffectiveTime: thisYear,
+      WorkTimeCalendar: worktimeCalendar
+    });
+    return defaultCalendarItem;
+  },
+  _addCalendarItem: function(type) {
+    var calendar = this.state.calendar;
+    var calendarItemGroups = calendar.get('CalendarItemGroups');
+    var calendarItemIndex = calendarItemGroups.findIndex(item => (item.get('Type') === type));
+    var calendarItemType = calendarItemGroups.get(calendarItemIndex);
+    var calendarItems = calendarItemType.get('CalendarItems');
+    var defaultCalendarItem = this._getDefaultCalendarItem(type);
+
+    if (calendarItems === null) {
+      calendarItems = defaultCalendarItem;
+    } else {
+      calendarItems = calendarItems.unshift(defaultCalendarItem);
+    }
+    calendarItemType = calendarItemType.set('CalendarItems', calendarItems);
+    calendarItemGroups = calendarItemGroups.set(calendarItemIndex, calendarItemType);
+    calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
+    this.setState({
+      calendar: calendar
+    });
+  },
+  _deleteCalendarItem: function(type, index) {
+    var calendar = this.state.calendar;
+    var calendarItemGroups = calendar.get('CalendarItemGroups');
+    var calendarItemIndex = calendarItemGroups.findIndex(item => (item.get('Type') === type));
+    var calendarItemType = calendarItemGroups.get(calendarItemIndex);
+    var calendarItems = calendarItemType.get('CalendarItems');
+    calendarItems = calendarItems.delete(index);
+    calendarItemType = calendarItemType.set('CalendarItems', calendarItems);
+    calendarItemGroups = calendarItemGroups.set(calendarItemIndex, calendarItemType);
+    calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
+    this.setState({
+      calendar: calendar
+    });
+  },
   _renderDetail: function() {
     var me = this;
     var isView = this.props.formStatus === formStatus.VIEW;
@@ -230,7 +291,9 @@ var Calendar = React.createClass({
           type: item.get('Type'),
           calendarItems: item.get('CalendarItems'),
           isViewStatus: isView,
-          allCalendar: me.state.allCalendar
+          allCalendar: me.state.allCalendar,
+          addCalendarItem: me._addCalendarItem,
+          deleteCalendarItem: me._deleteCalendarItem
         };
         return (
           <CalendarItems {...props}/>
