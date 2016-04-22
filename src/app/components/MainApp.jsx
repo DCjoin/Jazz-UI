@@ -33,6 +33,9 @@ function getCurrentCustomer() {
 
 let MainApp = React.createClass({
   mixins: [Navigation, State],
+  // contextTypes: {
+  //   rivilege: React.PropTypes.array
+  // },
 
   _onAllUOMSChange() {
     window.uoms = UOMStore.getUoms();
@@ -76,28 +79,22 @@ let MainApp = React.createClass({
   _onChange: function(argument) {
     var params = this.props.params;
     var customerCode = params.customerId;
-    //console.log('MainApp _onChange customerId:'+ this.props.params.customerId);
-
     var currentCustomer = getCurrentCustomer();
+
+    if(!currentCustomer){
+      this.setState({viewState: viewState.SELECT_CUSTOMER});
+    }
+
     if (!_.isEmpty(currentCustomer) && customerCode != currentCustomer.Id.toString()) {
       this._switchCustomer(currentCustomer);
       params.customerId = currentCustomer.Id;
       window.currentCustomerId = currentCustomer.Id;
       return;
     }
-
-    // if(typeof(customerCode) !== "undefined"){
-    // }else {
-    //   params.customerId = window.currentCustomerId;
-    //   this._redirectRouter(this._getMenuItems()[0], params);
-    //   this.setState({viewState: viewState.MAIN});
-    // }
-
   },
   _switchCustomer: function(customer) {
       var currentCustomer = getCurrentCustomer();
 
-      //由于登录未完成，临时更新currentCustomerId
       CookieUtil.set('currentCustomerId', customer.Id, {'expires':5,'path':'/webhost'});
 
       this._redirectRouter(this._getMenuItems()[0], assign({}, this.props.params, {
@@ -107,7 +104,7 @@ let MainApp = React.createClass({
       this.setState({viewState: viewState.MAIN});
   },
   _getMenuItems:function(){
-    var menuItems;
+    var menuItems = [];
 
     if (this.state.rivilege.indexOf('1221') > -1) {
       menuItems = [
@@ -218,7 +215,7 @@ let MainApp = React.createClass({
 
   render: function() {
     var CustomersList = getCurrentCustomers();
-    if(this.state.viewState == viewState.SELECT_CUSTOMER && CustomersList && CustomersList.length > 0){
+    if(this.state.viewState == viewState.SELECT_CUSTOMER){
       return(
         <SelectCustomer close={this._closeSelectCustomer}
                         currentCustomerId={parseInt(this.props.params.customerId)}
@@ -226,6 +223,7 @@ let MainApp = React.createClass({
                         userId={parseInt(window.currentUserId)}/>
       );
     }else{
+      //console.log('xxx3'+JSON.stringify(this.state.rivilege));
       if (this.state.rivilege !== null) {
         var menuItems = this._getMenuItems();
         //console.log(JSON.stringify(menuItems,0,1));
@@ -256,6 +254,7 @@ let MainApp = React.createClass({
     MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
 
+    //console.log(window.currentUserId);
     SelectCustomerActionCreator.getCustomer(window.currentUserId);
     CurrentUserCustomerStore.addChangeListener(this._onChange);
 
