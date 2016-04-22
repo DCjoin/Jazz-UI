@@ -579,6 +579,35 @@ I18N.Setting.Calendar.DefaultDayNight = 'Time except daytime is all night time.'
 I18N.Setting.Calendar.AddDay = 'Add daytime';
 I18N.Setting.Calendar.AddColdWarm = 'Add cooling/heating season time';
 
+I18N.Setting.Calendar.CalendarDetail = '日历详情';
+I18N.Setting.Calendar.HolidayCalendar = '工休日日历:';
+I18N.Setting.Calendar.WorkTimeCalendar = '工作时间日历:';
+I18N.Setting.Calendar.ViewCalendarDetail = '查看日历详情';
+I18N.Setting.Calendar.NoHierarchyAssociation = '该数据点未关联任何层级节点。请关联后再设置，保证设置内容可被计算。';
+I18N.Setting.Calendar.HierarchyNoCalendar = '该数据点所关联层级节点未引用任何日历模板。请引用后再设置，保证设置内容可被计算。';
+I18N.Setting.Calendar.HasAssociation = '当前时间的工作日历已配置 ';
+
+//hiearchy calendar
+I18N.Setting.Calendar.TabName = '日历属性';
+I18N.Setting.Calendar.WorkHoliday = '工休日';
+I18N.Setting.Calendar.ColdWarm = '冷暖季';
+I18N.Setting.Calendar.DayNight = '昼夜时间';
+I18N.Setting.Calendar.EffectiveDate = '生效日期';
+I18N.Setting.Calendar.Name = '日历名称';
+I18N.Setting.Calendar.DefaultWorkDayTitle = '默认工作日：';
+I18N.Setting.Calendar.DefaultWorkDayContent = '周一至周五';
+I18N.Setting.Calendar.WorkDayTitle = '工作日区间：';
+I18N.Setting.Calendar.HolidayTitle = '休息日区间：';
+I18N.Setting.Calendar.RestTimeTitle = '非工作时间：';
+I18N.Setting.Calendar.RestTimeContent = '工作时间以外均为非工作时间';
+I18N.Setting.Calendar.WorkTimeTitle = '工作时间：';
+I18N.Setting.Calendar.WarmTitle = '采暖季区间：';
+I18N.Setting.Calendar.ColdTitle = '供冷季区间：';
+I18N.Setting.Calendar.NightTitle = '黑夜时间：';
+I18N.Setting.Calendar.NightContent = '白昼时间以外均为黑夜时间';
+I18N.Setting.Calendar.DayTitle = '白昼时间：';
+I18N.Setting.Calendar.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
+
 I18N.Setting.Benchmark = {};
 I18N.Setting.Benchmark.Label = {};
 I18N.Setting.Benchmark.Label.None = 'None';
@@ -1693,7 +1722,6 @@ I18N.Setting.Building.VTagCount = 'Virtual Tag No.';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.AddTagInfo = 'Click add button to add tags';
-I18N.Setting.Hierarchy.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
 
 
 module.exports = I18N;

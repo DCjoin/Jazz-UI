@@ -21,16 +21,19 @@ let CalendarItem = React.createClass({
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object
   },
-  _getCalendarNameItems: function() {
+  _getCalendarNameItems: function(type) {
     var me = this;
     var allCalendar = this.props.allCalendar;
-    var items = allCalendar.filter(item => (item.get('Type') === me.props.type));
-    var calendarNameItems = items.map(item => {
-      return {
-        payload: item.get('Id'),
-        text: item.get('Name')
-      };
-    });
+    var calendarNameItems = [];
+    if (allCalendar && allCalendar.size > 0) {
+      var items = allCalendar.filter(item => (item.get('Type') === type));
+      calendarNameItems = items.map(item => {
+        return {
+          payload: item.get('Id'),
+          text: item.get('Name')
+        };
+      }).toJS();
+    }
     return calendarNameItems;
   },
   render: function() {
@@ -40,8 +43,11 @@ let CalendarItem = React.createClass({
     var effectiveTimeProps = {
       ref: "effectiveTime",
       isViewStatus: isView,
+      style: {
+        width: '300px'
+      },
       yearRange: date.getFullYear() - 2006,
-      title: I18N.Setting.Tag.Code,
+      title: I18N.Setting.Calendar.EffectiveDate,
       selectedYear: this.props.calendarItem.get('EffectiveTime'),
       onYearPickerSelected: value => {
         this.props.merge({
@@ -53,9 +59,12 @@ let CalendarItem = React.createClass({
     var nameProps = {
       ref: 'name',
       isViewStatus: isView,
-      title: I18N.Setting.Tag.Code,
+      style: {
+        width: '300px'
+      },
+      title: I18N.Setting.Calendar.Name,
       defaultValue: this.props.calendarItem.get('Calendar').get('Id'),
-      dataItems: me._getCalendarNameItems(),
+      dataItems: me._getCalendarNameItems(me.props.type),
       didChanged: value => {
         me.props.merge({
           value,
@@ -64,24 +73,27 @@ let CalendarItem = React.createClass({
       }
     };
     var deleteButton = (this.props.isViewStatus ? null : <FlatButton label={I18N.Common.Button.Delete} onClick={this._deleteCalendarItem} primary={true}/>);
-    var showDetailButton = (<FlatButton label={I18N.Common.Button.Delete} onClick={this._showDetail} primary={false}/>);
+    var showDetailButton = (<FlatButton label={I18N.Setting.Calendar.ViewCalendarDetail} onClick={this._showDetail} primary={false}/>);
     var worktimeDiv = null;
     if (this.props.type === 0) {
       var addWorktimeProps = {
-        label: I18N.Commodity.Overview,
+        label: I18N.Setting.Calendar.AddWorkTime,
         checked: this.props.calendarItem.get('WorkTimeCalendar') === null ? false : true,
         onCheck: this.checkWorktime,
         disabled: isView
       };
-      var addWorktime = (<Checkbox {...addWorktimeProps}/>);
+      var addWorktime = (<div className='jazz-hierarchy-calendar-type-item-worktime-checkbox'><Checkbox {...addWorktimeProps}/></div>);
       var worktime = null;
       if (this.props.calendarItem.get('WorkTimeCalendar') !== null) {
         var worktimeProps = {
           ref: 'worktime',
           isViewStatus: isView,
-          title: I18N.Setting.Tag.Code,
+          style: {
+            width: '300px'
+          },
+          title: I18N.Setting.Calendar.WorktimeSetting,
           defaultValue: this.props.calendarItem.get('WorkTimeCalendar').get('Id'),
-          dataItems: me._getWorktimeItems(),
+          dataItems: me._getCalendarNameItems(1),
           didChanged: value => {
             me.props.merge({
               value,
@@ -139,7 +151,7 @@ let CalendarItems = React.createClass({
     var calendarItems = me.props.calendarItems;
     var addButton = (<FlatButton label={I18N.Common.Button.Add} onClick={this._addCalendarItem} primary={false}/>);
     var calendar = null;
-    if (calendarItems && calendarItems.length > 0)
+    if (calendarItems && calendarItems.size > 0)
       calendar = calendarItems.map((item, i) => {
         let props = {
           key: i,
@@ -209,7 +221,7 @@ var Calendar = React.createClass({
     }
     var calendar = null;
     if (isView && this.state.calendar === null) {
-      calendar = I18N.Setting.Hierarchy.AddCalendarInfo;
+      calendar = I18N.Setting.Calendar.AddCalendarInfo;
     } else {
       calendar = calendarItemGroups.map((item, i) => {
         let props = {

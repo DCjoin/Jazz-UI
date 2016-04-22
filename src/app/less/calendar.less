@@ -71,3 +71,57 @@
    }
   }
 }
+.jazz-hierarchy-calendar-type{
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-bottom: 20px;
+  &-add{
+    margin-bottom: 10px;
+    >span{
+      font-size: 14px;
+    }
+    > button{
+      margin-left: 101px !important;
+      border: none !important;
+      background-color: transparent!important;
+      &:hover{
+        color:@schneiderBlue!important;
+        background-color: '#e1fcff'!important;
+      }
+    }
+  }
+  &-item{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    background-color: #f4f4f4;
+    width: 520px;
+    padding-left: 10px;
+    &-time, &-name{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 10px 0px;
+      > button{
+       margin-left: 101px !important;
+       border: none !important;
+       background-color: transparent!important;
+       &:hover{
+         color:@schneiderBlue!important;
+         background-color: '#e1fcff'!important;
+       }
+      }
+    }
+    &-worktime{
+      display: flex;
+      flex-direction: column;
+      margin: 10px 0px;
+      &-checkbox{
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+    }
+  }
+}
