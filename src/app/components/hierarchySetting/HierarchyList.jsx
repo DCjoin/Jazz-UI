@@ -252,7 +252,8 @@ var HierarchyList = React.createClass({
         arrowClass: 'jazz-foldertree-arrow',
         treeNodeClass: 'jazz-foldertree-node',
         onGragulaNode: this.props.onGragulaNode,
-        ifGragulaInvalid: this._ifGragulaInvalid
+        ifGragulaInvalid: this._ifGragulaInvalid,
+        onUnfoldNode: this._onUnfoldNode
       },
       addBtnProps = {
         type: "Add",

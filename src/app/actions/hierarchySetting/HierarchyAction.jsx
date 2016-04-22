@@ -175,7 +175,7 @@ let HierarchyAction = {
           type: Action.SET_SELECTED_HIERARCHY_NODE,
           node: Immutable.fromJS(node)
         });
-        that.GetHierarchys();
+        that.GetHierarchys(node.Id);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);

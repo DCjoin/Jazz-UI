@@ -98,6 +98,9 @@ var OrganizationBasic = React.createClass({
 
   },
   componentWillMount: function() {
+    if (this.props.selectedNode.get('Code') && Regex.CustomerCode.test(this.props.selectedNode.get('Code'))) {
+      this.props.setEditBtnStatus(false);
+    }
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();
   },

@@ -17,6 +17,7 @@ var lastOver = null,
 
 var EditNode = null;
 var ifGragulaInvalid = null;
+var ifGragulaInvalid = null;
 
 var drake = dragula({
   moves: function(el, source, handle) {
@@ -99,7 +100,7 @@ var Tree = React.createClass({
     onGragulaNode: React.PropTypes.func,
     // arrow style
     arrowClass: React.PropTypes.string,
-    ifGragulaInvalid: React.PropTypes.func,
+    ifGragulaInvalid: React.PropTypes.func
   },
   getInitialState: function() {
     return {
@@ -154,8 +155,11 @@ var Tree = React.createClass({
       if (target.children[1].id == el.id) {
         pre = true;
       }
-      this.props.onGragulaNode(target.id, source.id, pre);
+      this.props.onGragulaNode(target.id, source.id, pre, this.state.collapsedNodeId);
       clearTimeout(timeoutHandle);
+      this.setState({
+        collapsedNodeId: null
+      });
     }
 
 
@@ -168,8 +172,13 @@ var Tree = React.createClass({
       lastOver = container.children[0];
     }
     clearTimeout(timeoutHandle);
-    timeoutHandle = setTimeout(() => {
+    setTimeout(() => {
+      this.setState({
+        collapsedNodeId: null
+      });
+    }, 500)
 
+    timeoutHandle = setTimeout(() => {
       if (lastOver) {
         this.setState({
           collapsedNodeId: parseInt(lastOver.id)

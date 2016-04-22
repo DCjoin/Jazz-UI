@@ -215,24 +215,27 @@ var BuildingBasic = React.createClass({
         </div>}
       </div>
       {adminList}
-      { isAdd ? null : <div className='pop-admins section-panel'>
+     <div className='pop-admins section-panel'>
         <div className='pop-admin-container'>
           <div>
             <div>{I18N.Setting.Building.PTagCount}</div>
-            <div>{AssoiciatedTagCountP}</div>
+            <div>{AssoiciatedTagCountP || 0}</div>
           </div>
           <div>
             <div>{I18N.Setting.Building.VTagCount}</div>
-            <div>{AssoiciatedTagCountV}</div>
+            <div>{AssoiciatedTagCountV || 0}</div>
           </div>
         </div>
 
-      </div>}
+      </div>
       </div>
       )
 
   },
   componentWillMount: function() {
+    if (this.props.selectedNode.get('Code') && Regex.CustomerCode.test(this.props.selectedNode.get('Code'))) {
+      this.props.setEditBtnStatus(false);
+    }
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();
   },

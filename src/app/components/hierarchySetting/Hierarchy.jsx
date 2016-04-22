@@ -101,7 +101,7 @@ var Hierarchy = React.createClass({
       closedList: !closedList
     });
   },
-  _onGragulaNode: function(targetId, sourceId, pre) {
+  _onGragulaNode: function(targetId, sourceId, pre, collapsedNodeId) {
     let targetNode = HierarchyStore.getNodeById(parseInt(targetId)),
       sourceNode = HierarchyStore.getNodeById(parseInt(sourceId)),
       parentNode = HierarchyStore.getParent(targetNode),
@@ -113,10 +113,27 @@ var Hierarchy = React.createClass({
       movingHierarchies = {
         Id: sourceNode.get('Id'),
         Version: sourceNode.get('Version')
+      },
+      previousBrother = null,
+      nextBrother = null;
+    if (collapsedNodeId) {
+      let desNode = HierarchyStore.getNodeById(collapsedNodeId),
+        previousBrother = null;
+      desParent = {
+        Id: desNode.get('Id'),
+        Version: desNode.get('Version')
       };
-    if (pre) {
-      node = HierarchyStore.getNextNode(targetNode, parentNode);
-      let previousBrother = {
+      if (desNode.get('HasChildren')) {
+        let previousNode = desNode.get('Children').getIn([desNode.get('Children').size - 1]);
+        previousBrother = {
+          Id: previousNode.get('Id'),
+          Version: previousNode.get('Version')
+        };
+      }
+    } else {
+      if (pre) {
+        node = HierarchyStore.getNextNode(targetNode, parentNode);
+        previousBrother = {
           Id: targetNode.get('Id'),
           Version: targetNode.get('Version')
         },
@@ -124,10 +141,10 @@ var Hierarchy = React.createClass({
           Id: node.get('Id'),
           Version: node.get('Version')
         };
-      HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
-    } else {
-      node = HierarchyStore.getPreNode(targetNode, parentNode);
-      let nextBrother = {
+
+      } else {
+        node = HierarchyStore.getPreNode(targetNode, parentNode);
+        nextBrother = {
           Id: targetNode.get('Id'),
           Version: targetNode.get('Version')
         },
@@ -135,8 +152,9 @@ var Hierarchy = React.createClass({
           Id: node.get('Id'),
           Version: node.get('Version')
         };
-      HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
+      }
     }
+    HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
     this.setState({
       isLoading: true
     });
