@@ -241,8 +241,8 @@ var TreeNode = React.createClass({
     return (
       <div className={classNames("arrow", arrowClass, true)} onClick={this.handleClickArrow}>
         <div className={classNames({
-        "hasChild": (hasChild || type == nodeType.Folder),
-        "hasNoChild": !(hasChild || type == nodeType.Folder)
+        "hasChild": (hasChild || type == nodeType.Folder || nodeData.get('Id') === this.props.collapsedNodeId),
+        "hasNoChild": !(hasChild || type == nodeType.Folder || nodeData.get('Id') === this.props.collapsedNodeId)
       })}>
           <div className={classNames({
         "fa icon-hierarchy-unfold": !this.state.collapsed,

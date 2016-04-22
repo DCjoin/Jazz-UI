@@ -863,7 +863,7 @@ I18N.Message.M01013 = '该层级节层级超限';
 I18N.Message.M01014 = '该节点已被其他用户修改或删除，层级树将被刷新。';
 I18N.Message.M01015 = '当前层级节点无子节点'; //for energy view single tag to pie chart
 I18N.Message.M01016 = '相关的层级无有效日历，无法获得本年的目标值和基准值。';
-I18N.Message.M01018 = '无法移动到目标节点下，请按照规则拖动层级节点：<br/>组织->组织、客户；<br/>园区->组织、客户；<br/>楼宇->园区、组织、客户。';
+I18N.Message.M01018 = '无法移动到目标节点下，请按照规则拖动层级节点：组织->组织、客户；园区->组织、客户；楼宇->园区、组织、客户。';
 I18N.Message.M01019 = '层级被修改';
 I18N.Message.M01251 = '该层级节点的高级属性已被其他用户修改。界面即将刷新';
 I18N.Message.M01254 = '高级属性的输入项非法，无法保存。';
@@ -1723,6 +1723,8 @@ I18N.Setting.Building.Industry = '所属行业';
 I18N.Setting.Building.Zone = '所属气候分区';
 I18N.Setting.Building.PTagCount = '计量数据P数量';
 I18N.Setting.Building.VTagCount = '计量数据V数量';
+I18N.Setting.Building.AddImage = '请添加建筑照片';
+I18N.Setting.Building.UpdateImage = '重新上传建筑照片';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = '删除{0}';

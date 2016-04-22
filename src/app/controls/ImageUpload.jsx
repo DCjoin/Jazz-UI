@@ -185,8 +185,7 @@ let ImageUpload = React.createClass({
         "pop-hide": (this.props.imageSource || this.props.imageId || this.props.imageUrl)
       });
       tips = (<div className={c}>
-							<div>{this.props.updateTips}</div>
-							<span>{I18N.Setting.CustomerManagement.LogoUploadInfo}</span>
+						<div>{this.props.updateTips}</div>
 						</div>);
     }
 

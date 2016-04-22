@@ -43,6 +43,9 @@ var ViewableMap = React.createClass({
       resizeEnable: false,
       view: new AMap.View2D({})
     });
+    this._map.setStatus({
+      dragEnable: !this.props.isView,
+    });
     if (!this.props.isView) {
       AMap.event.addListener(this._map, 'moveend', this._onMapMove);
     }
@@ -172,6 +175,10 @@ var ViewableMap = React.createClass({
     if (this.props.address !== text && text !== null && text.trim() !== "") {
       //node.style.display = "block";
       this._initMap();
+    }
+    if (!nextProps.isAdd) {
+      var node = React.findDOMNode(this.refs.map);
+      node.style.display = "block";
     }
 
 

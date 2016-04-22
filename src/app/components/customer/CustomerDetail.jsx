@@ -221,6 +221,7 @@ var CustomerDetail = React.createClass({
         hierarchyId: customer.get('Id')
       },
       isViewState: isView,
+      updateTips: I18N.Setting.CustomerManagement.LogoUploadInfo,
       imageDidChanged: value => {
         CustomerAction.merge({
           value: value.logoId,

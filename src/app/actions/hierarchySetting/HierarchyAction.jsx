@@ -175,7 +175,7 @@ let HierarchyAction = {
           type: Action.SET_SELECTED_HIERARCHY_NODE,
           node: Immutable.fromJS(node)
         });
-        that.GetHierarchys();
+        that.GetHierarchys(node.Id);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
@@ -200,7 +200,7 @@ let HierarchyAction = {
           type: Action.SET_SELECTED_HIERARCHY_NODE,
           node: Immutable.fromJS(node)
         });
-        that.GetHierarchys();
+        that.GetHierarchys(dto.Id);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
@@ -311,7 +311,7 @@ let HierarchyAction = {
       params: {
         hierarchyMovingDto: {
           DesParent: DesParent,
-          MovingHierarchies: MovingHierarchies,
+          MovingHierarchies: [MovingHierarchies],
           NextBrother: NextBrother,
           PreviousBrother: PreviousBrother
         }
