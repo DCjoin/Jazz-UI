@@ -78,6 +78,11 @@ var MonitorTag = React.createClass({
     filterObj.UomId = null;
     return filterObj;
   },
+  _resetFilterObj: function() {
+    this.setState({
+      filterObj: this._getInitFilterObj()
+    });
+  },
   _handlerSave: function() {
     this.setState({
       isLoading: true

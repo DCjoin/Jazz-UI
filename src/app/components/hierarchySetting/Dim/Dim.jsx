@@ -182,14 +182,14 @@ var Building = React.createClass({
         });
       }}
       allowDelete={that.props.infoTabNo === 1}
-      onCancel={this.props.handlerCancel}
+      onCancel={this._handlerCancel}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
-        that.props.setEditStatus()
+        that.props.setEditStatus();
       }}
       editBtnProps={editBtnProps}/>
 
-    )
+      );
   },
   _renderDialog: function() {
     var that = this;
@@ -220,6 +220,14 @@ var Building = React.createClass({
       {I18N.format(I18N.format(I18N.Setting.Hierarchy.DeleteContent, I18N.Common.Glossary.Dim, selectedNode.get('Name'), I18N.Common.Glossary.Dim))}
     </Dialog>
         );
+    }
+  },
+  _handlerCancel: function() {
+    this.props.handlerCancel();
+    if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_dim_tag) {
+        this.refs.jazz_dim_tag._resetFilterObj();
+      }
     }
   },
   componentWillMount: function() {

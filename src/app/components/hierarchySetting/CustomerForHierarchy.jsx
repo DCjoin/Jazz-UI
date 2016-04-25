@@ -271,6 +271,7 @@ var CustomerForHierarchy = React.createClass({
     var tagProps = {
       ref: 'jazz_customer_tag',
       formStatus: this.props.formStatus,
+      setEditBtnStatus: this._setEditBtnStatus,
       isDim: false,
       hierarchyId: this.props.selectedNode.get('Id'),
       onUpdate: this._update
@@ -316,7 +317,7 @@ var CustomerForHierarchy = React.createClass({
         });
       }}
       allowDelete={that.props.infoTabNo === 1}
-      onCancel={this.props.handlerCancel}
+      onCancel={this._handlerCancel}
       onEdit={ () => {
         that.props.setEditStatus();
       }}
@@ -361,6 +362,14 @@ var CustomerForHierarchy = React.createClass({
       customer: HierarchyStore.getSelectedCustomer(),
       isLoading: false,
     });
+  },
+  _handlerCancel: function() {
+    this.props.handlerCancel();
+    if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_customer_tag) {
+        this.refs.jazz_customer_tag._resetFilterObj();
+      }
+    }
   },
   componentDidMount: function() {
     HierarchyStore.addCustomerChangeListener(this._onChange);

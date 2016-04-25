@@ -253,7 +253,11 @@ var Organization = React.createClass({
   },
   _handlerCancel: function() {
     this.props.handlerCancel();
-    if (this.props.infoTabNo === 3) {
+    if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_Org_tag) {
+        this.refs.jazz_Org_tag._resetFilterObj();
+      }
+    } else if (this.props.infoTabNo === 3) {
       HierarchyAction.cancelSaveCalendar();
     }
   },
