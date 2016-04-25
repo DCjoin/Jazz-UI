@@ -11,6 +11,156 @@ import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
+import SideNav from '../../controls/SideNav.jsx';
+
+let CalendarDetail = React.createClass({
+  propTypes: {
+    calendar: React.PropTypes.object,
+    type: React.PropTypes.number,
+    onClose: React.PropTypes.func,
+    side: React.PropTypes.string
+  },
+  getDefaultProps() {
+    return {
+      side: 'right'
+    };
+  },
+  _formatDate: function(value) {
+    return value > 9 ? value : '0' + value;
+  },
+  _getDisplay: function(item, day) {
+    var startFirst = this._formatDate(item.get('StartFirstPart'));
+    var startSecond = this._formatDate(item.get('StartSecondPart'));
+    var endFirst = this._formatDate(item.get('EndFirstPart'));
+    var endSecond = this._formatDate(item.get('EndSecondPart'));
+    if (day) {
+      return startFirst + '/' + startSecond + '-' + endFirst + '/' + endSecond;
+    } else {
+      return startFirst + ':' + startSecond + '-' + endFirst + ':' + endSecond;
+    }
+  },
+  _renderDetail: function() {
+    var me = this;
+    var calendar = this.props.calendar,
+      name = calendar.get('Name'),
+      Items = calendar.get('Items');
+    var display;
+    switch (this.props.type) {
+      case 0:
+        var workdayItems = Items.filter(item => (item.get('Type') === 0)),
+          holidayItems = Items.filter(item => (item.get('Type') === 1));
+        var workday = null,
+          holiday = null;
+        if (workdayItems && workdayItems.size > 0) {
+          workday = workdayItems.map((item, i) => {
+            if (i === 0) {
+              return <div>{I18N.Setting.Calendar.WorkDayTitle + me._getDisplay(item, true)}</div>;
+            } else {
+              return <div>{me._getDisplay(item, true)}</div>;
+            }
+          });
+        }
+        if (holidayItems && holidayItems.size > 0) {
+          holiday = holidayItems.map((item, i) => {
+            if (i === 0) {
+              return <div>{I18N.Setting.Calendar.HolidayTitle + me._getDisplay(item, true)}</div>;
+            } else {
+              return <div>{me._getDisplay(item, true)}</div>;
+            }
+          });
+        }
+
+        display = (<div>
+          <div>{I18N.Setting.Calendar.HolidayCalendar + name}</div>
+          <div>{I18N.Setting.Calendar.DefaultWorkDay}</div>
+          {workday}
+          {holiday}
+        </div>);
+        break;
+      case 1:
+        var worktimeItems = Items.filter(item => (item.get('Type') === 2));
+        var worktime = null;
+        if (worktimeItems && worktimeItems.size > 0) {
+          worktime = worktimeItems.map((item, i) => {
+            if (i === 0) {
+              return <div>{I18N.Setting.Calendar.WorkTimeTitle + me._getDisplay(item, false)}</div>;
+            } else {
+              return <div>{me._getDisplay(item, false)}</div>;
+            }
+          });
+        }
+        display = (<div>
+        <div>{I18N.Setting.Calendar.WorkTimeCalendar + name}</div>
+        <div>{I18N.Setting.Calendar.DefaultWorkTime}</div>
+        {worktime}
+      </div>);
+        break;
+      case 2:
+        var warmItems = Items.filter(item => (item.get('Type') === 4)),
+          coldItems = Items.filter(item => (item.get('Type') === 5));
+        var warm = null,
+          cold = null;
+        if (warmItems && warmItems.size > 0) {
+          warm = warmItems.map((item, i) => {
+            if (i === 0) {
+              return <div>{I18N.Setting.Calendar.WarmTitle + me._getDisplay(item, true)}</div>;
+            } else {
+              return <div>{me._getDisplay(item, true)}</div>;
+            }
+          });
+        }
+        if (coldItems && coldItems.size > 0) {
+          cold = coldItems.map((item, i) => {
+            if (i === 0) {
+              return <div>{I18N.Setting.Calendar.ColdTitle + me._getDisplay(item, true)}</div>;
+            } else {
+              return <div>{me._getDisplay(item, true)}</div>;
+            }
+          });
+        }
+
+        display = (<div>
+          <div>{I18N.Setting.Calendar.Name + name}</div>
+          {warm}
+          {cold}
+        </div>);
+        break;
+      case 3:
+        var dayItems = Items.filter(item => (item.get('Type') === 6));
+        var day = null;
+        if (dayItems && dayItems.size > 0) {
+          day = dayItems.map((item, i) => {
+            if (i === 0) {
+              return <div>{I18N.Setting.Calendar.DayTitle + me._getDisplay(item, false)}</div>;
+            } else {
+              return <div>{me._getDisplay(item, false)}</div>;
+            }
+          });
+        }
+        display = (<div>
+        <div>{I18N.Setting.Calendar.Name + name}</div>
+        <div>{I18N.Setting.Calendar.DefaultDayNight}</div>
+        {day}
+      </div>);
+        break;
+    }
+    return display;
+  },
+  render: function() {
+    var me = this;
+    var calendarDetail = this._renderDetail();
+    return (
+      <SideNav open={true} ref="calendarDetail" onClose={this.props.onClose} side={this.props.side}>
+        <div className="pop-user-filter-side-nav-wrapper">
+          <div className="pop-user-filter-side-nav-header sidebar-title">{I18N.Setting.Calendar.CalendarDetail}</div>
+        <div className="sidebar-content pop-user-filter-side-nav-content">
+          {calendarDetail}
+        </div>
+      </div>
+      </SideNav>
+      );
+  }
+});
 
 let CalendarItem = React.createClass({
   propTypes: {
@@ -22,6 +172,12 @@ let CalendarItem = React.createClass({
     allCalendar: React.PropTypes.object,
     deleteCalendarItem: React.PropTypes.func,
     checkWorktime: React.PropTypes.func
+  },
+  getInitialState: function() {
+    return {
+      showDetail: false,
+      showWorktime: false
+    };
   },
   _getCalendarNameItems: function(type) {
     var me = this;
@@ -43,6 +199,17 @@ let CalendarItem = React.createClass({
   },
   _checkWorktime: function(e, checked) {
     this.props.checkWorktime(this.props.type, this.props.index, checked);
+  },
+  _handleCloseDetailSideNav: function() {
+    this.setState({
+      showDetail: false
+    });
+  },
+  _showDetail: function(showWorktime) {
+    this.setState({
+      showDetail: true,
+      showWorktime: showWorktime
+    });
   },
   render: function() {
     var me = this;
@@ -85,7 +252,8 @@ let CalendarItem = React.createClass({
       }
     };
     var deleteButton = (this.props.isViewStatus ? null : <FlatButton label={I18N.Common.Button.Delete} onClick={this._deleteCalendarItem} primary={true}/>);
-    var showDetailButton = (<FlatButton label={I18N.Setting.Calendar.ViewCalendarDetail} onClick={this._showDetail} primary={false}/>);
+    var showDetailButton = (<FlatButton label={I18N.Setting.Calendar.ViewCalendarDetail} onClick={this._showDetail.bind(this, false)} primary={false}/>);
+    var showWorkTimeDetailButton = (<FlatButton label={I18N.Setting.Calendar.ViewCalendarDetail} onClick={this._showDetail.bind(this, true)} primary={false}/>);
     var worktimeDiv = null;
     if (this.props.type === 0) {
       var addWorktimeProps = {
@@ -115,9 +283,18 @@ let CalendarItem = React.createClass({
             });
           }
         };
-        worktime = <div className='jazz-hierarchy-calendar-type-item-worktime-item'><ViewableDropDownMenu {...worktimeProps}/>{showDetailButton}</div>;
+        worktime = <div className='jazz-hierarchy-calendar-type-item-worktime-item'><ViewableDropDownMenu {...worktimeProps}/>{showWorkTimeDetailButton}</div>;
       }
       worktimeDiv = <div className='jazz-hierarchy-calendar-type-item-worktime'>{addWorktime}{worktime}</div>;
+    }
+    var detailPanel = null;
+    var detailProps = {
+      type: me.state.showWorktime ? 1 : me.props.type,
+      calendar: me.state.showWorktime ? me.props.calendarItem.get('WorkTimeCalendar') : me.props.calendarItem.get('Calendar'),
+      onClose: me._handleCloseDetailSideNav,
+    };
+    if (me.state.showDetail) {
+      detailPanel = <CalendarDetail {...detailProps}/>;
     }
     return (
       <div className='jazz-hierarchy-calendar-type-item'>
@@ -130,6 +307,7 @@ let CalendarItem = React.createClass({
           {showDetailButton}
         </div>
         {worktimeDiv}
+        {detailPanel}
       </div>
 
       );
@@ -144,7 +322,8 @@ let CalendarItems = React.createClass({
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object,
     addCalendarItem: React.PropTypes.func,
-    deleteCalendarItem: React.PropTypes.func
+    deleteCalendarItem: React.PropTypes.func,
+    checkWorktime: React.PropTypes.func
   },
   getTextByType: function() {
     var text = '';
