@@ -295,7 +295,7 @@ var Hierarchy = React.createClass({
         onClose={onClose}
         >
         {this.state.errorContent}
-      </Dialog>)
+      </Dialog>);
     } else {
       return null;
     }
