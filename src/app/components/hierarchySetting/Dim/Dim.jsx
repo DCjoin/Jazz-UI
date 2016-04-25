@@ -152,7 +152,7 @@ var Building = React.createClass({
       {content}
     </div>
 
-    )
+      );
   },
   _renderFooter: function() {
     var disabledSaveButton = this.state.editBtnDisabled,
@@ -161,13 +161,13 @@ var Building = React.createClass({
       editBtnProps;
     if (this.props.infoTabNo === 1) {
       if (!selectedNode.get('Name') || selectedNode.get('Name').length > 200) {
-        disabledSaveButton = true
+        disabledSaveButton = true;
       }
     } else {
       if (this.props.infoTabNo === 2) {
         editBtnProps = {
           label: I18N.Common.Button.Add
-        }
+        };
       }
     }
     return (
@@ -254,7 +254,7 @@ var Building = React.createClass({
     </Panel>
     {that._renderDialog()}
   </div>
-    )
+      );
   },
 });
 module.exports = Building;

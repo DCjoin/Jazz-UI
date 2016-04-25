@@ -93,7 +93,7 @@ var CustomerForHierarchy = React.createClass({
         this.props.merge({
           value,
           path: "Code"
-        })
+        });
       }
     };
 
@@ -107,7 +107,7 @@ var CustomerForHierarchy = React.createClass({
         this.props.merge({
           value,
           path: "Address"
-        })
+        });
       }
     };
 
@@ -124,7 +124,7 @@ var CustomerForHierarchy = React.createClass({
         this.props.merge({
           value: d2j(new Date(value)),
           path: "StartTime"
-        })
+        });
       }
     };
     var imageProps = {
@@ -139,7 +139,7 @@ var CustomerForHierarchy = React.createClass({
         this.props.merge({
           value: value.logoId,
           path: "LogoId"
-        })
+        });
       },
       wrapperWidth: 420,
       wrapperHeight: 140,
@@ -159,14 +159,14 @@ var CustomerForHierarchy = React.createClass({
       }
     };
     var calStatusProps = {
-      checked: (CalcStatus != true && CalcStatus != false) ? true : CalcStatus,
+      checked: (CalcStatus !== true && CalcStatus !== false) ? true : CalcStatus,
       disabled: isView,
       label: I18N.Platform.ServiceProvider.CalcStatus,
       onCheck: (event, checked) => {
         this.props.merge({
           value: checked,
           path: "CalcStatus"
-        })
+        });
       }
     };
 
@@ -184,7 +184,7 @@ var CustomerForHierarchy = React.createClass({
             value,
             path,
             index
-          })
+          });
         }
       };
 
@@ -221,7 +221,7 @@ var CustomerForHierarchy = React.createClass({
     {adminList}
     </div>
 
-    )
+      );
 
   },
   _renderHeader: function() {
