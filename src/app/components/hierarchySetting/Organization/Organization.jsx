@@ -73,6 +73,15 @@ var Organization = React.createClass({
           tags: tagIds
         });
       }
+    } else if (this.props.infoTabNo === 3) {
+      if (this.refs.jazz_Org_calendar) {
+        let calendar = this.refs.jazz_Org_calendar._handlerSave();
+        this.props.handleSave({
+          HierarchyId: calendar.HierarchyId,
+          Version: calendar.Version,
+          CalendarItemGroups: calendar.CalendarItemGroups
+        });
+      }
     }
   },
   _renderHeader: function() {
@@ -137,6 +146,7 @@ var Organization = React.createClass({
       tagProps = {
         ref: 'jazz_Org_tag',
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         isDim: false,
         hierarchyId: this.props.selectedNode.get('Id'),
         onUpdate: this._update
@@ -144,6 +154,7 @@ var Organization = React.createClass({
       calendarProps = {
         ref: 'jazz_Org_calendar',
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         hierarchyId: this.props.selectedNode.get('Id'),
         merge: this.props.merge,
       };

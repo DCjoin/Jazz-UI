@@ -414,6 +414,9 @@ var Calendar = React.createClass({
       this.props.setEditBtnStatus(!isValid);
     });
   },
+  _handlerSave: function() {
+    return this.state.calendar.toJS();
+  },
   _isValid: function() {
     var calendar = this.state.calendar;
     var allCalendar = this.state.allCalendar;

@@ -80,6 +80,15 @@ var Building = React.createClass({
           tags: tagIds
         });
       }
+    } else if (this.props.infoTabNo === 3) {
+      if (this.refs.jazz_building_calendar) {
+        let calendar = this.refs.jazz_building_calendar._handlerSave();
+        this.props.handleSave({
+          HierarchyId: calendar.HierarchyId,
+          Version: calendar.Version,
+          CalendarItemGroups: calendar.CalendarItemGroups
+        });
+      }
     }
   },
   _renderHeader: function() {
@@ -151,6 +160,7 @@ var Building = React.createClass({
       tagProps = {
         ref: 'jazz_building_tag',
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         isDim: false,
         hierarchyId: this.props.selectedNode.get('Id'),
         onUpdate: this._update

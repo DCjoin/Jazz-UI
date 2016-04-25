@@ -268,9 +268,25 @@ let HierarchyAction = {
       }
     });
   },
-  cancelSaveCalendar() {
+  cancelSaveCalendar: function() {
     AppDispatcher.dispatch({
       type: Action.CANCEL_SAVE_CALENDAR
+    });
+  },
+  saveCalendar: function(calendar) {
+    Ajax.post('/Hierarchy.svc/SaveHierarchyCalendar', {
+      params: {
+        dto: calendar
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.SET_CALENDAR_FOR_HIERARCHY,
+          calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
     });
   },
   getAllIndustries: function() {

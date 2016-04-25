@@ -372,6 +372,7 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.emitAllCalendarChange();
       break;
     case HierarchyAction.GET_CALENDAR_FOR_HIERARCHY:
+    case HierarchyAction.SET_CALENDAR_FOR_HIERARCHY:
       HierarchyStore.setCalendar(action.calendar);
       HierarchyStore.emitCalendarChange();
       break;

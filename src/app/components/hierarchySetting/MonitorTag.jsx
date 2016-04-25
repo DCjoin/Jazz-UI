@@ -49,6 +49,7 @@ var MonitorTag = React.createClass({
     formStatus: React.PropTypes.string,
     hierarchyId: React.PropTypes.number,
     onUpdate: React.PropTypes.func,
+    setEditBtnStatus: React.PropTypes.func,
     isDim: React.PropTypes.bool
   },
   getInitialState: function() {
@@ -78,9 +79,9 @@ var MonitorTag = React.createClass({
     return filterObj;
   },
   _handlerSave: function() {
-    // this.setState({
-    //   isLoading: true
-    // });
+    this.setState({
+      isLoading: true
+    });
     return this.state.addingTags;
   },
   _handleCloseFilterSideNav: function() {
@@ -180,6 +181,11 @@ var MonitorTag = React.createClass({
     this.setState({
       addingTags: tags
     }, () => {
+      if (that.state.addingTags.size === 0) {
+        that.props.setEditBtnStatus(true);
+      } else {
+        that.props.setEditBtnStatus(false);
+      }
       that.props.onUpdate();
     });
 
@@ -326,6 +332,11 @@ var MonitorTag = React.createClass({
       that.setState({
         addingTags: tags
       }, () => {
+        if (that.state.addingTags.size === 0) {
+          that.props.setEditBtnStatus(true);
+        } else {
+          that.props.setEditBtnStatus(false);
+        }
         that.props.onUpdate();
       });
     };
@@ -340,6 +351,11 @@ var MonitorTag = React.createClass({
       that.setState({
         addingTags: tags
       }, () => {
+        if (that.state.addingTags.size === 0) {
+          that.props.setEditBtnStatus(true);
+        } else {
+          that.props.setEditBtnStatus(false);
+        }
         that.props.onUpdate();
       });
     };
@@ -444,6 +460,9 @@ var MonitorTag = React.createClass({
   },
   getAssociatedTag: function() {
     HierarchyAction.getAssociatedTag(this.state.page, this.props.hierarchyId, this.state.association, this.state.filterObj);
+  },
+  componentWillMount: function() {
+    this.props.setEditBtnStatus(true);
   },
   componentDidMount: function() {
     HierarchyStore.addTagChangeListener(this._onChange);
