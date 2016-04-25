@@ -5,6 +5,7 @@ import classnames from "classnames";
 import { formStatus } from '../../constants/FormStatus.jsx';
 import { Checkbox, CircularProgress } from 'material-ui';
 import Immutable from 'immutable';
+import { Map, List } from 'immutable';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
@@ -390,6 +391,7 @@ var Calendar = React.createClass({
     hierarchyId: React.PropTypes.number,
     merge: React.PropTypes.func,
     formStatus: React.PropTypes.string,
+    setEditBtnStatus: React.PropTypes.func
   },
   getInitialState: function() {
     return ({
@@ -407,7 +409,48 @@ var Calendar = React.createClass({
     this.setState({
       calendar: HierarchyStore.getCalendar(),
       isLoading: false
+    }, () => {
+      var isValid = this._isValid();
+      this.props.setEditBtnStatus(!isValid);
     });
+  },
+  _isValid: function() {
+    var calendar = this.state.calendar;
+    var allCalendar = this.state.allCalendar;
+    if (calendar === null || allCalendar === null) {
+      return false;
+    } else {
+      var calendarItemGroups = calendar.get('CalendarItemGroups');
+      if (calendarItemGroups.getIn([0, 'CalendarItems']) === null && calendarItemGroups.getIn([1, 'CalendarItems']) === null && calendarItemGroups.getIn([2, 'CalendarItems']) === null) {
+        return false;
+      }
+      if (calendarItemGroups.getIn([0, 'CalendarItems']) !== null) {
+        var workdayItem = this._getDefaultCalendarItem(0);
+        if (workdayItem.get('Calendar') === undefined) {
+          return false;
+        }
+        var calendarItems = calendarItemGroups.getIn([0, 'CalendarItems']);
+        for (var i = 0; i < calendarItems.size; i++) {
+          if (calendarItems.getIn([i, 'WorkTimeCalendar']) === undefined) {
+            return false;
+          }
+        }
+      }
+      if (calendarItemGroups.getIn([2, 'CalendarItems']) !== null) {
+        var coldwormItem = this._getDefaultCalendarItem(2);
+        if (coldwormItem.get('Calendar') === undefined) {
+          return false;
+        }
+      }
+      if (calendarItemGroups.getIn([3, 'CalendarItems']) !== null) {
+        var daynightItem = this._getDefaultCalendarItem(3);
+        if (daynightItem.get('Calendar') === undefined) {
+          return false;
+        }
+      }
+      return true;
+    }
+
   },
   _getDefaultCalendarItem: function(type) {
     var allCalendar = this.state.allCalendar;
@@ -431,9 +474,10 @@ var Calendar = React.createClass({
       calendarItemType = calendarItemGroups.get(calendarItemIndex),
       calendarItems = calendarItemType.get('CalendarItems'),
       defaultCalendarItem = this._getDefaultCalendarItem(type);
+    var emptyList = new List();
 
     if (calendarItems === null) {
-      calendarItems = defaultCalendarItem;
+      calendarItems = emptyList.push(defaultCalendarItem);
     } else {
       calendarItems = calendarItems.unshift(defaultCalendarItem);
     }
@@ -442,6 +486,9 @@ var Calendar = React.createClass({
     calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
     this.setState({
       calendar: calendar
+    }, () => {
+      var isValid = this._isValid();
+      this.props.setEditBtnStatus(!isValid);
     });
   },
   _deleteCalendarItem: function(type, index) {
@@ -451,11 +498,17 @@ var Calendar = React.createClass({
       calendarItemType = calendarItemGroups.get(calendarItemIndex),
       calendarItems = calendarItemType.get('CalendarItems');
     calendarItems = calendarItems.delete(index);
+    if (calendarItems.size === 0) {
+      calendarItems = null;
+    }
     calendarItemType = calendarItemType.set('CalendarItems', calendarItems);
     calendarItemGroups = calendarItemGroups.set(calendarItemIndex, calendarItemType);
     calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
     this.setState({
       calendar: calendar
+    }, () => {
+      var isValid = this._isValid();
+      this.props.setEditBtnStatus(!isValid);
     });
   },
   _checkWorktime: function(type, index, checked) {
@@ -477,6 +530,9 @@ var Calendar = React.createClass({
     calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
     this.setState({
       calendar: calendar
+    }, () => {
+      var isValid = this._isValid();
+      this.props.setEditBtnStatus(!isValid);
     });
   },
   _merge: function(data) {
@@ -503,60 +559,53 @@ var Calendar = React.createClass({
     calendar = calendar.set('CalendarItemGroups', calendarItemGroups);
     this.setState({
       calendar: calendar
+    }, () => {
+      var isValid = this._isValid();
+      this.props.setEditBtnStatus(!isValid);
     });
   },
   _renderDetail: function() {
     var me = this;
     var isView = this.props.formStatus === formStatus.VIEW;
-    var calendarItemGroups = Immutable.fromJS([{
-      CalendarItems: null,
-      Type: 0
-    }, {
-      CalendarItems: null,
-      Type: 2
-    }, {
-      CalendarItems: null,
-      Type: 3
-    }]);
-    if (this.state.calendar !== null) {
-      calendarItemGroups = this.state.calendar.get('CalendarItemGroups');
-    }
-    var calendar = null;
-    if (isView && this.state.calendar === null) {
-      calendar = I18N.Setting.Calendar.AddCalendarInfo;
+    if (me.state.isLoading) {
+      return (<div className='jazz-calendar-loading'><div style={{
+          margin: 'auto',
+          width: '100px'
+        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
     } else {
-      calendar = calendarItemGroups.map((item, i) => {
-        let props = {
-          key: i,
-          type: item.get('Type'),
-          calendarItems: item.get('CalendarItems'),
-          isViewStatus: isView,
-          allCalendar: me.state.allCalendar,
-          addCalendarItem: me._addCalendarItem,
-          deleteCalendarItem: me._deleteCalendarItem,
-          checkWorktime: me._checkWorktime,
-          merge: me._merge,
-        };
-        return (
-          <CalendarItems {...props}/>
-          );
-      });
-    }
-    return me.state.isLoading ? (<div className='jazz-calendar-loading'><div style={{
-      margin: 'auto',
-      width: '100px'
-    }}><CircularProgress  mode="indeterminate" size={2} /></div></div>) : (
-      <div>
-        <div className={"pop-customer-detail-content"}>
-        <div className="pop-customer-detail-content-left">
-          {calendar}
+      var calendarItemGroups = this.state.calendar.get('CalendarItemGroups');
+      var calendar = null;
+      if (isView && calendarItemGroups.getIn([0, 'CalendarItems']) === null && calendarItemGroups.getIn([1, 'CalendarItems']) === null && calendarItemGroups.getIn([2, 'CalendarItems']) === null) {
+        calendar = I18N.Setting.Calendar.AddCalendarInfo;
+      } else {
+        calendar = calendarItemGroups.map((item, i) => {
+          let props = {
+            key: i,
+            type: item.get('Type'),
+            calendarItems: item.get('CalendarItems'),
+            isViewStatus: isView,
+            allCalendar: me.state.allCalendar,
+            addCalendarItem: me._addCalendarItem,
+            deleteCalendarItem: me._deleteCalendarItem,
+            checkWorktime: me._checkWorktime,
+            merge: me._merge,
+          };
+          return (
+            <CalendarItems {...props}/>
+            );
+        });
+      }
+      return (
+        <div>
+          <div className={"pop-customer-detail-content"}>
+          <div className="pop-customer-detail-content-left">
+            {calendar}
+          </div>
         </div>
-      </div>
-      </div>
-      );
-
+        </div>
+        );
+    }
   },
-  componentWillMount: function() {},
   componentDidMount: function() {
     HierarchyAction.getAllCalendar();
     HierarchyAction.getCalendar(this.props.hierarchyId);

@@ -158,6 +158,7 @@ var Building = React.createClass({
       calendarProps = {
         ref: 'jazz_building_calendar',
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         hierarchyId: this.props.selectedNode.get('Id'),
         merge: this.props.merge,
       };
