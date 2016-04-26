@@ -9,7 +9,6 @@ import { Map, List } from 'immutable';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
 import SideNav from '../../controls/SideNav.jsx';
@@ -55,25 +54,25 @@ let CalendarDetail = React.createClass({
         if (workdayItems && workdayItems.size > 0) {
           workday = workdayItems.map((item, i) => {
             if (i === 0) {
-              return <div>{I18N.Setting.Calendar.WorkDayTitle + me._getDisplay(item, true)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkDayTitle + me._getDisplay(item, true)}</div>;
             } else {
-              return <div>{me._getDisplay(item, true)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
             }
           });
         }
         if (holidayItems && holidayItems.size > 0) {
           holiday = holidayItems.map((item, i) => {
             if (i === 0) {
-              return <div>{I18N.Setting.Calendar.HolidayTitle + me._getDisplay(item, true)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.HolidayTitle + me._getDisplay(item, true)}</div>;
             } else {
-              return <div>{me._getDisplay(item, true)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
             }
           });
         }
 
         display = (<div>
-          <div>{I18N.Setting.Calendar.HolidayCalendar + name}</div>
-          <div>{I18N.Setting.Calendar.DefaultWorkDay}</div>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.HolidayCalendar + name}</div>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DefaultWorkDay}</div>
           {workday}
           {holiday}
         </div>);
@@ -84,15 +83,15 @@ let CalendarDetail = React.createClass({
         if (worktimeItems && worktimeItems.size > 0) {
           worktime = worktimeItems.map((item, i) => {
             if (i === 0) {
-              return <div>{I18N.Setting.Calendar.WorkTimeTitle + me._getDisplay(item, false)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkTimeTitle + me._getDisplay(item, false)}</div>;
             } else {
-              return <div>{me._getDisplay(item, false)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, false)}</div>;
             }
           });
         }
         display = (<div>
-        <div>{I18N.Setting.Calendar.WorkTimeCalendar + name}</div>
-        <div>{I18N.Setting.Calendar.DefaultWorkTime}</div>
+        <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkTimeCalendar + name}</div>
+        <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DefaultWorkTime}</div>
         {worktime}
       </div>);
         break;
@@ -104,24 +103,24 @@ let CalendarDetail = React.createClass({
         if (warmItems && warmItems.size > 0) {
           warm = warmItems.map((item, i) => {
             if (i === 0) {
-              return <div>{I18N.Setting.Calendar.WarmTitle + me._getDisplay(item, true)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WarmTitle + me._getDisplay(item, true)}</div>;
             } else {
-              return <div>{me._getDisplay(item, true)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
             }
           });
         }
         if (coldItems && coldItems.size > 0) {
           cold = coldItems.map((item, i) => {
             if (i === 0) {
-              return <div>{I18N.Setting.Calendar.ColdTitle + me._getDisplay(item, true)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.ColdTitle + me._getDisplay(item, true)}</div>;
             } else {
-              return <div>{me._getDisplay(item, true)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
             }
           });
         }
 
         display = (<div>
-          <div>{I18N.Setting.Calendar.Name + name}</div>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.Name + name}</div>
           {warm}
           {cold}
         </div>);
@@ -132,15 +131,15 @@ let CalendarDetail = React.createClass({
         if (dayItems && dayItems.size > 0) {
           day = dayItems.map((item, i) => {
             if (i === 0) {
-              return <div>{I18N.Setting.Calendar.DayTitle + me._getDisplay(item, false)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DayTitle + me._getDisplay(item, false)}</div>;
             } else {
-              return <div>{me._getDisplay(item, false)}</div>;
+              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, false)}</div>;
             }
           });
         }
         display = (<div>
-        <div>{I18N.Setting.Calendar.Name + name}</div>
-        <div>{I18N.Setting.Calendar.DefaultDayNight}</div>
+        <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.Name + name}</div>
+        <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DefaultDayNight}</div>
         {day}
       </div>);
         break;
