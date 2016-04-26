@@ -608,6 +608,40 @@ I18N.Setting.Calendar.NightContent = '白昼时间以外均为黑夜时间';
 I18N.Setting.Calendar.DayTitle = '白昼时间：';
 I18N.Setting.Calendar.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
 
+//hierarchy population/area
+I18N.Setting.DynamicProperty = {};
+
+I18N.Setting.DynamicProperty.PopulationArea = 'Population & Area';
+I18N.Setting.DynamicProperty.AddPropertyInfo = '暂无人口面积，点击编辑进行设置';
+
+I18N.Setting.DynamicProperty.Area = 'Area';
+I18N.Setting.DynamicProperty.AArea = 'Total area(㎡)';
+I18N.Setting.DynamicProperty.WArea = 'Heating area(㎡)';
+I18N.Setting.DynamicProperty.CArea = 'Cooling area(㎡)';
+I18N.Setting.DynamicProperty.AreaUnitValue = '㎡';
+
+I18N.Setting.DynamicProperty.Population = 'Population';
+I18N.Setting.DynamicProperty.PopulationCode = 'Population code';
+I18N.Setting.DynamicProperty.PopulationNumber = 'Population';
+I18N.Setting.DynamicProperty.PopulationUnitValue = 'Person';
+I18N.Setting.DynamicProperty.PopulationStartDateDuplicated = 'Effective date of population property is repeated';
+
+I18N.Setting.DynamicProperty.Other = 'Other properties';
+I18N.Setting.DynamicProperty.ARoom = 'Total rooms';
+I18N.Setting.DynamicProperty.ARoomNumber = 'Total number of rooms';
+I18N.Setting.DynamicProperty.UsedRoom = 'Used rooms';
+I18N.Setting.DynamicProperty.UsedRoomNumber = 'Number of used rooms';
+I18N.Setting.DynamicProperty.RoomUnitValue = 'Room';
+I18N.Setting.DynamicProperty.RoomStartDateDuplicated = 'Effective data of property of used rooms duplicated';
+I18N.Setting.DynamicProperty.ABed = 'Total beds';
+I18N.Setting.DynamicProperty.ABedNumber = 'Total number of beds';
+I18N.Setting.DynamicProperty.UsedBed = 'Used beds';
+I18N.Setting.DynamicProperty.UsedBedNumber = 'Number of used beds';
+I18N.Setting.DynamicProperty.BedStartDateDuplicated = 'Effective data of property of used beds duplicated';
+I18N.Setting.DynamicProperty.BedUnitValue = 'Bed(s)';
+
+I18N.Setting.DynamicProperty.StartDate = 'Effective date';
+
 I18N.Setting.Benchmark = {};
 I18N.Setting.Benchmark.Label = {};
 I18N.Setting.Benchmark.Label.None = 'None';

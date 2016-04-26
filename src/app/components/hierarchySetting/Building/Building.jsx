@@ -14,6 +14,7 @@ import Basic from './BuildingBasic.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
 import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
 import Calendar from '../Calendar.jsx';
+import Property from './Property.jsx';
 
 var Building = React.createClass({
 
@@ -169,8 +170,13 @@ var Building = React.createClass({
         ref: 'jazz_building_calendar',
         formStatus: this.props.formStatus,
         setEditBtnStatus: this._setEditBtnStatus,
-        hierarchyId: this.props.selectedNode.get('Id'),
-        merge: this.props.merge,
+        hierarchyId: this.props.selectedNode.get('Id')
+      },
+      propertyProps = {
+        ref: 'jazz_building_property',
+        formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
+        hierarchyId: this.props.selectedNode.get('Id')
       };
     var content;
     switch (this.props.infoTabNo) {
@@ -182,6 +188,9 @@ var Building = React.createClass({
         break;
       case 3:
         content = <Calendar {...calendarProps}/>;
+        break;
+      case 5:
+        content = <Property {...propertyProps}/>;
         break;
 
     }

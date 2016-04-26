@@ -288,6 +288,22 @@ let HierarchyAction = {
       }
     });
   },
+  getProperty: function(hierarchyId) {
+    Ajax.post('/Hierarchy.svc/GetAdvancedPropertyValuesByHierarchy', {
+      params: {
+        hierarchyId: hierarchyId
+      },
+      success: function(property) {
+        AppDispatcher.dispatch({
+          type: Action.GET_PROPERTY_FOR_HIERARCHY,
+          property: property
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   getAllIndustries: function() {
     var that = this;
     Ajax.post('/Administration.svc/GetAllIndustries', {

@@ -228,8 +228,10 @@ var Hierarchy = React.createClass({
       });
     } else if (this.state.infoTabNo === 2) {
       HierarchyAction.modifyTags(node.hierarchyId, node.tags);
+      this._setViewStatus();
     } else if (this.state.infoTabNo === 3) {
       HierarchyAction.saveCalendar(node);
+      this._setViewStatus();
     }
   },
   _switchTab(event) {

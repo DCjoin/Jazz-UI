@@ -19,15 +19,17 @@ var _hierarchys = emptyMap(),
   _total = null,
   _customer = emptyMap(),
   _calendar = null,
+  _property = null,
   _allCalendar = null,
   _industries = null,
   _zones = null;
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
-  CHANGE_LOG_EVENT = 'changelog',
-  CHANGER_CALENDAR_EVENT = 'changecalendar',
-  CHANGER_ALL_CALENDAR_EVENT = 'changeallcalendar',
+  LOG_CHANGE_EVENT = 'logchange',
+  CALENDAR_CHANGE_EVENT = 'calendarchange',
+  ALL_CALENDAR_CHANGE_EVENT = 'allcalendarchange',
+  PROPERTY_CHANGE_EVENT = 'propertychange',
   TAG_CHANGE_EVENT = 'tagchange';
 var HierarchyStore = assign({}, PrototypeStore, {
   traversalNode: function(node) {
@@ -109,6 +111,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getCalendar: function() {
     return _calendar;
   },
+  setProperty: function(property) {
+    _property = Immutable.fromJS(property);
+  },
+  getProperty: function() {
+    return _property;
+  },
   setSelectedNode: function(selectedNode) {
     if (selectedNode.get('Type') !== -1) {
       _customer = emptyMap();
@@ -139,8 +147,8 @@ var HierarchyStore = assign({}, PrototypeStore, {
       } else {
         if (item.get('Children')) {
           item.get('Children').forEach(child => {
-            f(child)
-          })
+            f(child);
+          });
         }
       }
     };
@@ -267,31 +275,40 @@ var HierarchyStore = assign({}, PrototypeStore, {
     this.emit(CUSTOMER_CHANGE_EVENT, args);
   },
   emitLogListChange: function() {
-    this.emit(CHANGE_LOG_EVENT);
+    this.emit(LOG_CHANGE_EVENT);
   },
   addLogListChangeListener: function(callback) {
-    this.on(CHANGE_LOG_EVENT, callback);
+    this.on(LOG_CHANGE_EVENT, callback);
   },
   removeLogListChangeListener: function(callback) {
-    this.removeListener(CHANGE_LOG_EVENT, callback);
+    this.removeListener(LOG_CHANGE_EVENT, callback);
   },
   emitAllCalendarChange: function() {
-    this.emit(CHANGER_ALL_CALENDAR_EVENT);
+    this.emit(ALL_CALENDAR_CHANGE_EVENT);
   },
   addAllCalendarChangeListener: function(callback) {
-    this.on(CHANGER_ALL_CALENDAR_EVENT, callback);
+    this.on(ALL_CALENDAR_CHANGE_EVENT, callback);
   },
   removeAllCalendarChangeListener: function(callback) {
-    this.removeListener(CHANGER_ALL_CALENDAR_EVENT, callback);
+    this.removeListener(ALL_CALENDAR_CHANGE_EVENT, callback);
   },
   emitCalendarChange: function() {
-    this.emit(CHANGER_CALENDAR_EVENT);
+    this.emit(CALENDAR_CHANGE_EVENT);
   },
   addCalendarChangeListener: function(callback) {
-    this.on(CHANGER_CALENDAR_EVENT, callback);
+    this.on(CALENDAR_CHANGE_EVENT, callback);
   },
   removeCalendarChangeListener: function(callback) {
-    this.removeListener(CHANGER_CALENDAR_EVENT, callback);
+    this.removeListener(CALENDAR_CHANGE_EVENT, callback);
+  },
+  emitPropertyChange: function() {
+    this.emit(PROPERTY_CHANGE_EVENT);
+  },
+  addPropertyChangeListener: function(callback) {
+    this.on(PROPERTY_CHANGE_EVENT, callback);
+  },
+  removePropertyChangeListener: function(callback) {
+    this.removeListener(PROPERTY_CHANGE_EVENT, callback);
   },
   addTagChangeListener(callback) {
     this.on(TAG_CHANGE_EVENT, callback);
@@ -373,6 +390,11 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.setCalendar(action.calendar);
       HierarchyStore.emitCalendarChange();
       break;
+    case HierarchyAction.GET_PROPERTY_FOR_HIERARCHY:
+    case HierarchyAction.SET_PROPERTY_FOR_HIERARCHY:
+      HierarchyStore.setProperty(action.property);
+      HierarchyStore.emitPropertyChange();
+      break;
     case HierarchyAction.GET_ALL_INDUSTRIES_FOR_HIERARCHY:
       HierarchyStore.setIndustries(action.industries);
       break;
@@ -385,6 +407,9 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case HierarchyAction.CANCEL_SAVE_CALENDAR:
       HierarchyStore.emitCalendarChange();
+      break;
+    case HierarchyAction.CANCEL_SAVE_PROPERTY:
+      HierarchyStore.emitPropertyChange();
       break;
   }
 });

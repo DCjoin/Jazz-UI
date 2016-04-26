@@ -388,7 +388,6 @@ let CalendarItems = React.createClass({
 var Calendar = React.createClass({
   propTypes: {
     hierarchyId: React.PropTypes.number,
-    merge: React.PropTypes.func,
     formStatus: React.PropTypes.string,
     setEditBtnStatus: React.PropTypes.func
   },

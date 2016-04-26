@@ -155,8 +155,7 @@ var Organization = React.createClass({
         ref: 'jazz_Org_calendar',
         formStatus: this.props.formStatus,
         setEditBtnStatus: this._setEditBtnStatus,
-        hierarchyId: this.props.selectedNode.get('Id'),
-        merge: this.props.merge,
+        hierarchyId: this.props.selectedNode.get('Id')
       };
     var content;
     switch (this.props.infoTabNo) {
