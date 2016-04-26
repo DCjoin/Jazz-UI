@@ -75,19 +75,23 @@ let HierarchyAction = {
       }
     });
   },
-  getAssociatedTag: function(page, hierarchyId, association, filterObj, refresh) {
+  getAssociatedTag: function(page, hierarchyId, association, filterObj, isView) {
     _page = page;
     _hierarchyId = hierarchyId;
     _association = association;
     _filterObj = filterObj;
+    var associationObj = {
+      AssociationId: hierarchyId,
+      AssociationOption: association
+    };
+    if (!isView) {
+      associationObj.Associatiable = true;
+    }
     Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: {
           CustomerId: parseInt(window.currentCustomerId),
-          Association: {
-            AssociationId: hierarchyId,
-            AssociationOption: association
-          },
+          Association: associationObj,
           IncludeAssociationName: true,
           CommodityId: filterObj.CommodityId,
           UomId: filterObj.UomId,
@@ -103,11 +107,6 @@ let HierarchyAction = {
           type: Action.GET_ASSOCIATED_TAG,
           data: data
         });
-        if (refresh === true) {
-          AppDispatcher.dispatch({
-            type: Action.SAVE_ASSOCIATED_TAG_SUCCESS,
-          });
-        }
       },
       error: function(err, res) {
         console.log(err, res);

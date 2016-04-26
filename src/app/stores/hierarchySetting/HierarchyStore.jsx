@@ -352,9 +352,6 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
     case MainAction.GET_ALL_COMMODITY_SUCCESS:
       HierarchyStore.ifEmitTagChange();
       break;
-    case HierarchyAction.SAVE_ASSOCIATED_TAG_SUCCESS:
-      HierarchyStore.emitChange(_selectedNode);
-      break;
     case HierarchyAction.CLEAR_ALL_ASSOCIATED_TAGS:
       HierarchyStore.clearAll();
       break;
