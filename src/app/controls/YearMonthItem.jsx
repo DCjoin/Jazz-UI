@@ -9,12 +9,12 @@ var YearMonthItem = React.createClass({
   propTypes: {
     isViewStatus: React.PropTypes.bool,
     //date:"/Date(XX)/"
-    date: React.PropTypes.number,
+    date: React.PropTypes.string,
     onDateChange: React.PropTypes.func,
   },
   getDefaultProps() {
     return {
-      date: null
+      date: new Date()
     };
   },
   _onDateChange: function(value, items, type) {
@@ -88,6 +88,12 @@ var YearMonthItem = React.createClass({
         text: I18N.Common.Date.December
       }];
     return monthItems;
+  },
+  componentDidMount: function() {
+    console.log('componentDidMount');
+  },
+  componentWillReceiveProps: function() {
+    console.log('componentWillReceiveProps');
   },
   render: function() {
     var m = moment(this.props.date),

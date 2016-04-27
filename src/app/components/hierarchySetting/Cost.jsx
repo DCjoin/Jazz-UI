@@ -15,6 +15,8 @@ import ViewableNumberField from '../../controls/ViewableNumberField.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
 import Regex from '../../constants/Regex.jsx';
+import CommonFuns from '../../util/Util.jsx';
+var d2j = CommonFuns.DataConverter.DatetimeToJson;
 function emptyMap() {
   return new Map();
 }
@@ -102,7 +104,7 @@ var Cost = React.createClass({
         UomId: 1,
         Items: [{
           ComplexItem: null,
-          EffectiveDate: '',
+          EffectiveDate: d2j(new Date()),
           SimpleItem: null
         }]
       })
@@ -115,7 +117,7 @@ var Cost = React.createClass({
       power = power.set('Items', power.get('Items').push(
         Immutable.fromJS({
           ComplexItem: null,
-          EffectiveDate: '',
+          EffectiveDate: d2j(new Date()),
           SimpleItem: null
         })
       ));
