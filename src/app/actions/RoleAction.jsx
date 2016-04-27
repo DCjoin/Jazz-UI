@@ -19,7 +19,7 @@ let RoleAction = {
     });
   },
   createRole: function(roledata) {
-    Ajax.post('/AccessControl.svc/CreateRole', {
+    Ajax.post('/AccessControl/CreateRole', {
       params: {
         dto: roledata
       },
@@ -43,7 +43,7 @@ let RoleAction = {
     });
   },
   updateRole: function(roledata) {
-    Ajax.post('/AccessControl.svc/ModifyRole', {
+    Ajax.post('/AccessControl/ModifyRole', {
       params: {
         dto: roledata
       },
@@ -67,7 +67,7 @@ let RoleAction = {
     });
   },
   deleteRole: function(roledata) {
-    Ajax.post('/AccessControl.svc/DeleteRole', {
+    Ajax.post('/AccessControl/DeleteRole', {
       params: {
         dto: {
           Id: roledata.Id,

@@ -23,6 +23,8 @@ import MailConfirmDialog from '../controls/OperationTemplate/BlankDialog.jsx';
 import MailStore from '../stores/MailStore.jsx';
 import FolderAction from '../actions/FolderAction.jsx';
 import FolderStore from '../stores/FolderStore.jsx';
+import Config from 'config';
+import { getCookie } from '../util/Util.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 var f = lang.f;
@@ -611,7 +613,7 @@ var MainAppBar = React.createClass({
       configStyle = {
         cursor: 'pointer'
       };
-    var logo = (!!this.props.logoUrl) ? <div className='jazz_logo_img' style={{backgroundImage: 'url(' + this.props.logoUrl + ')'}} onClick={this._showCustomerList}></div> : null;
+    var logo = (!!this.props.logoUrl) ? <div className='jazz_logo_img' style={{backgroundImage: 'url(' + Config.ServeAddress +  '/' + this.props.logoUrl + ')'}} onClick={this._showCustomerList}></div> : null;
     var title = (!!this.props.title) ? <div className='jazz-title'>{this.props.title}</div> : null;
     var mainmenu;
     if (!!this.props.items) {

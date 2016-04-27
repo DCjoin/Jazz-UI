@@ -18,7 +18,7 @@ import Config from 'config';
 var _ajax = function(url, options) {
 
 	options = options || {};
-	var realUrl = 'http://127.0.0.1:80/webhost/API' + url,
+	var realUrl = Config.ServeAddress + Config.APIBasePath + url,
 		type = options.type || "get",
 		params = options.params || {},
 
@@ -36,7 +36,7 @@ var _ajax = function(url, options) {
 
 		dataType = options.dataType || "application/json";
 
-	request[type.toLowerCase()]('http://127.0.0.1:80/webhost/API' + url)
+	request[type.toLowerCase()](Config.ServeAddress + Config.APIBasePath + url)
 		.send(params)
         .set('Accept', dataType)
         .set('httpWebRequest.MediaType', dataType)

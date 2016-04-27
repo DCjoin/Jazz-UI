@@ -262,7 +262,7 @@ let Setting = React.createClass({
             template = <ShareView onDismiss={this._onTemplateDismiss} shareNode={this.state.templateNode}/>;
             break;
           case 4:
-            let path = '/Dashboard.svc/ExportWidget';
+            let path = '/Dashboard/ExportWidget';
             let params = {
               widgetId: this.state.templateNode.get('Id')
             };

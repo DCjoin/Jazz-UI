@@ -21,10 +21,13 @@ let LoginStore = assign({}, EventEmitter.prototype, {
   init: function(data, success) {
     if (success) {
       _lastError = null;
+      
+      CookieUtil.set('UserId', data.Id, {'expires':5,'path':'/'});
+      CookieUtil.set('Username', data.Name, {'expires':5,'path':'/'});
+      window.currentUserId = data.Id;
+      window.currentUser = data;
 
-      CookieUtil.set('UserId', data.Id);
-      CookieUtil.set('Username', data.Name);
-      window.currentUserId = getCookie('UserId');
+      CookieUtil.set('User', JSON.stringify(data), {'expires':5,'path':'/'});
     } else {
       this.empty();
       _lastError = data;
