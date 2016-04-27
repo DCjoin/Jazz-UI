@@ -14,8 +14,10 @@ import DeletableItem from '../../controls/DeletableItem.jsx';
 import ViewableNumberField from '../../controls/ViewableNumberField.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
+import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import Regex from '../../constants/Regex.jsx';
 import CommonFuns from '../../util/Util.jsx';
+import SideNav from '../../controls/SideNav.jsx';
 var d2j = CommonFuns.DataConverter.DatetimeToJson;
 function emptyMap() {
   return new Map();
@@ -32,6 +34,9 @@ var Cost = React.createClass({
     return ({
       cost: emptyMap(),
       isLoading: true,
+      showTouDetailSideNav: false,
+      showPowerFactorSideNav: false,
+      touIndex: null
     })
   },
   _handlerSave: function() {
@@ -45,6 +50,11 @@ var Cost = React.createClass({
       cost: HierarchyStore.getCost(),
       isLoading: false
     })
+  },
+  _formatTime(time) {
+    var h = Math.floor(time / 60),
+      m = time % 60;
+    return ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m
   },
   merge: function(data) {
 
@@ -163,6 +173,19 @@ var Cost = React.createClass({
     }
 
   },
+  _showTouDetailsideNav: function(touIndex) {
+    this.setState({
+      showTouDetailSideNav: true,
+      touIndex: touIndex
+    });
+  },
+
+  _onCloseTouDetailSideNav: function() {
+    this.setState({
+      showTouDetailSideNav: false,
+      touIndex: null
+    });
+  },
   _renderSimpleItem: function(item, id) {
     var costCommodities = this.state.cost.get('CostCommodities'),
       isView = this.props.formStatus === formStatus.VIEW,
@@ -196,6 +219,99 @@ var Cost = React.createClass({
                   </div>
       )
 
+  },
+  _renderTouDetailSideNav: function() {
+    var that = this;
+    if (this.state.showTouDetailSideNav) {
+      var tou = that.state.cost.get('TouTariffs').getIn([that.state.touIndex]);
+      var touTariffItems = tou.get('TouTariffItems'),
+        peakTariff = tou.get('PeakTariff');
+      var renderTouTariffItems = function() {
+        var items = [];
+        touTariffItems.forEach(item => {
+          if (item.get('ItemType') === 2) {
+            items.push(
+              <div className='jazz-building-cost-tou-item'>
+                  {I18N.Setting.TOUTariff.PlainPrice + ' : ' + item.get('Price')}
+                </div>
+            )
+          } else if (item.get('ItemType') === 1) {
+            items.push(
+              <div className='jazz-building-cost-tou-item'>
+                  {I18N.Setting.TOUTariff.PeakPrice + ' : ' + item.get('Price')}
+                </div>
+            );
+            let times = [];
+            item.get('TimeRange').forEach(time => {
+              times.push(<div>{that._formatTime(time.get('m_Item1')) + ' - ' + that._formatTime(time.get('m_Item2'))}</div>)
+            });
+            items.push(
+              <div className='jazz-building-cost-tou-item'>
+                  {I18N.Setting.TOUTariff.PeakTimeRange + ' : '}
+                <div style={{
+                marginLeft: '5px'
+              }}>{times}</div>
+                </div>
+            );
+          } else if (item.get('ItemType') === 3) {
+            items.push(
+              <div className='jazz-building-cost-tou-item'>
+                  {I18N.Setting.TOUTariff.ValleyPrice + ' : ' + item.get('Price')}
+                </div>
+            );
+            let times = [];
+            item.get('TimeRange').forEach(time => {
+              times.push(<div>{that._formatTime(time.get('m_Item1')) + ' - ' + that._formatTime(time.get('m_Item2'))}</div>)
+            });
+            items.push(
+              <div className='jazz-building-cost-tou-item'>
+                  {I18N.Setting.TOUTariff.ValleyTimeRange + ' : '}
+                <div style={{
+                marginLeft: '5px'
+              }}>{times}</div>
+                </div>
+            );
+          }
+        })
+        return (
+          <div>{items}</div>
+          )
+      };
+      var renderPeakTariff = function() {
+        var items = [];
+        items.push(<div className='jazz-building-cost-tou-item'>
+                        {I18N.Setting.TOUTariff.PulsePeakPrice + ' : ' + peakTariff.get('Price')}
+                      </div>);
+        peakTariff.get('TimeRanges').forEach(time => {
+          items.push(<div className='jazz-building-cost-tou-item'>
+                          {I18N.Setting.TOUTariff.PulsePeak + ' : ' + time.get('StartMonth')}
+                        </div>)
+        })
+      };
+      return (<SideNav open={true} side="right" onClose={this._onCloseTouDetailSideNav}>
+        <div className='jazz-default-font'>
+          <div className="sidebar-title" title={tou.get('Name')} style={{
+          overflow: ' hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis'
+        }}>
+          {I18N.Setting.Cost.TouDetail}
+        </div>
+        <div className="sidebar-content">
+          <div className='jazz-building-cost-tou-item'>
+            {I18N.Common.Glossary.PriceStrategy + ' : ' + tou.get('Name')}
+          </div>
+          <div className='jazz-building-cost-tou-item'>
+            {I18N.Setting.TOUTariff.BasicPropertyTip}
+          </div>
+          {renderTouTariffItems()}
+          {peakTariff === null ? null : renderPeakTariff()}
+        </div>
+
+        </div>
+      </SideNav>);
+    }
+    return null;
   },
   _renderComplexItem: function(item, id) {
     var costCommodities = this.state.cost.get('CostCommodities'),
@@ -285,6 +401,117 @@ var Cost = React.createClass({
             </div>
         )
     };
+    var renderTimeMode = function() {
+      var {HourPrice, HourTagId} = complexItem.toJS();
+      var selectedId = 0,
+        titleItems = [];
+      that.state.cost.get('HourTags').forEach((tag, index) => {
+        titleItems.push({
+          payload: index,
+          text: tag.get('Name')
+        });
+        if (tag.get('Id') === HourTagId) {
+          selectedId = index;
+        }
+      });
+
+      var hourTagProps = {
+          isViewStatus: isView,
+          title: I18N.Setting.Cost.DemandHourLabel,
+          selectedIndex: selectedId,
+          textField: "text",
+          dataItems: titleItems,
+          style: {
+            maxWidth: '200px'
+          },
+          didChanged: value => {
+            // CarbonAction.merge({
+            //   value: {
+            //     value: value,
+            //     titleItems: titleItems,
+            //     factorIndex: index
+            //   },
+            //   path: "EffectiveYear"
+            // });
+          }
+        },
+        hourPriceProps = {
+          isViewStatus: isView,
+          title: I18N.Setting.Cost.DemandPrice,
+          defaultValue: HourPrice,
+          regex: Regex.FactorRule,
+          errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
+          maxLen: 16,
+          isRequired: true,
+          style: {
+            maxWidth: '200px'
+          },
+          didChanged: value => {
+            // CarbonAction.merge({
+            //   value: {
+            //     value: value,
+            //     factorIndex: index
+            //   },
+            //   path: "FactorValue"
+            // });
+          }
+        };
+      return (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row'
+        }}>
+              <ViewableDropDownMenu  {...hourTagProps} />
+
+              <ViewableTextField  {...hourPriceProps} />
+              <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
+            </div>
+        )
+    };
+    var renderUsageCost = function() {
+      var {TouTariffId} = complexItem.toJS();
+      var selectedId = 0,
+        titleItems = [];
+      that.state.cost.get('TouTariffs').forEach((tou, index) => {
+        titleItems.push({
+          payload: index,
+          text: tou.get('Name')
+        });
+        if (tou.get('Id') === TouTariffId) {
+          selectedId = index;
+        }
+      });
+
+      var touTariffProps = {
+        isViewStatus: isView,
+        title: I18N.Setting.Cost.UsageCost,
+        selectedIndex: selectedId,
+        textField: "text",
+        dataItems: titleItems,
+        style: {
+          maxWidth: '200px'
+        },
+        didChanged: value => {
+          // CarbonAction.merge({
+          //   value: {
+          //     value: value,
+          //     titleItems: titleItems,
+          //     factorIndex: index
+          //   },
+          //   path: "EffectiveYear"
+          // });
+        }
+      };
+      return (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'row'
+        }}>
+                <ViewableDropDownMenu  {...touTariffProps} />
+                <div className='jazz-building-cost-showTou' onClick={that._showTouDetailsideNav.bind(this, selectedId)}>{I18N.Setting.Cost.SearchTouDetail}</div>
+              </div>
+        )
+    };
     return (
       <div>
         <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.DemandCostMode}</div>
@@ -307,7 +534,9 @@ var Cost = React.createClass({
       disabled={isView}
       />
           </RadioButtonGroup>
-        {defaultSelected === '1' ? renderTransformerMode() : null}
+        {defaultSelected === '1' ? renderTransformerMode() : renderTimeMode()}
+        {renderUsageCost()}
+        {that._renderTouDetailSideNav()}
       </div>
       )
 

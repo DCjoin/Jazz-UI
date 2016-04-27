@@ -233,6 +233,7 @@ I18N.Common.Glossary.Commodity = 'Commodity';
 I18N.Common.Glossary.UOM = 'Unit';
 I18N.Common.Glossary.Type = 'Type';
 I18N.Common.Glossary.Operation = 'Operate';
+I18N.Common.Glossary.PriceStrategy = 'Price strategy';
 
 
 I18N.Common.Button = {};
@@ -1794,6 +1795,11 @@ I18N.Setting.Cost.TransformerMode = 'Transformer capacity mode';
 I18N.Setting.Cost.TimeMode = 'Demand mode';
 I18N.Setting.Cost.DemandPrice = 'Price';
 I18N.Setting.Cost.TransformerCapacity = 'Capacity';
+I18N.Setting.Cost.DemandHourLabel = 'Electricity consumption data';
+I18N.Setting.Cost.UsageCost = 'Consumption cost';
+I18N.Setting.Cost.SearchTouDetail = 'Price strategy';
+I18N.Setting.Cost.SearchPowerFactor = 'Power factor';
+I18N.Setting.Cost.TouDetail = 'Details of price strategy';
 
 
 module.exports = I18N;

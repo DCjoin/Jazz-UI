@@ -234,6 +234,7 @@ I18N.Common.Glossary.Commodity = '介质';
 I18N.Common.Glossary.UOM = '单位';
 I18N.Common.Glossary.Type = '类型';
 I18N.Common.Glossary.Operation = '操作';
+I18N.Common.Glossary.PriceStrategy = '价格策略';
 
 
 
@@ -1808,4 +1809,9 @@ I18N.Setting.Cost.TransformerUOM = '元/千伏安';
 I18N.Setting.Cost.PowerUOM = '元/千瓦时';
 I18N.Setting.Cost.TransformerCapacity = '变压器容量';
 I18N.Setting.Cost.DemandPrice = '需求价格';
+I18N.Setting.Cost.DemandHourLabel = '用电数据';
+I18N.Setting.Cost.UsageCost = '用量成本';
+I18N.Setting.Cost.SearchTouDetail = '查看价格策略详情';
+I18N.Setting.Cost.SearchPowerFactor = '查看所选功率因数';
+I18N.Setting.Cost.TouDetail = '价格策略详情';
 module.exports = I18N;
