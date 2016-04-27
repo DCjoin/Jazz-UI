@@ -410,7 +410,7 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.emitAllCalendarChange();
       break;
     case HierarchyAction.GET_CALENDAR_FOR_HIERARCHY:
-    case HierarchyAction.SET_CALENDAR_FOR_HIERARCHY:
+    case HierarchyAction.SET_CALENDAR_FOR_HIERARCHY_SUCCESS:
       HierarchyStore.setCalendar(action.calendar);
       HierarchyStore.emitCalendarChange();
       break;
@@ -430,6 +430,7 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.ifEmitTagChange();
       break;
     case HierarchyAction.CANCEL_SAVE_CALENDAR:
+    case HierarchyAction.SET_CALENDAR_FOR_HIERARCHY_ERROR:
       HierarchyStore.emitCalendarChange();
       break;
     case HierarchyAction.CANCEL_SAVE_PROPERTY:

@@ -647,22 +647,19 @@ I18N.Setting.DynamicProperty.CArea = '供冷面积(㎡)';
 I18N.Setting.DynamicProperty.AreaUnitValue = '㎡';
 
 I18N.Setting.DynamicProperty.Population = '人口属性';
-I18N.Setting.DynamicProperty.PopulationCode = '人口编码';
-I18N.Setting.DynamicProperty.PopulationNumber = '人口数量';
+I18N.Setting.DynamicProperty.PopulationNumber = '人口数量(人)';
 I18N.Setting.DynamicProperty.PopulationUnitValue = '人';
 I18N.Setting.DynamicProperty.PopulationStartDateDuplicated = '人口属性生效日期重复';
 
 I18N.Setting.DynamicProperty.Other = '其他属性';
-I18N.Setting.DynamicProperty.ARoom = '总客房';
-I18N.Setting.DynamicProperty.ARoomNumber = '总客房数量';
+I18N.Setting.DynamicProperty.ARoomNumber = '总客房数量(间)';
 I18N.Setting.DynamicProperty.UsedRoom = '已用客房';
-I18N.Setting.DynamicProperty.UsedRoomNumber = '已用客房数量';
+I18N.Setting.DynamicProperty.UsedRoomNumber = '已用客房数量(间)';
 I18N.Setting.DynamicProperty.RoomUnitValue = '间';
 I18N.Setting.DynamicProperty.RoomStartDateDuplicated = '已用客房属性生效日期重复';
-I18N.Setting.DynamicProperty.ABed = '总床位';
-I18N.Setting.DynamicProperty.ABedNumber = '总床位数量';
+I18N.Setting.DynamicProperty.ABedNumber = '总床位数量(床)';
 I18N.Setting.DynamicProperty.UsedBed = '已用床位';
-I18N.Setting.DynamicProperty.UsedBedNumber = '已用床位数量';
+I18N.Setting.DynamicProperty.UsedBedNumber = '已用床位数量(床)';
 I18N.Setting.DynamicProperty.BedStartDateDuplicated = '已用床位属性生效日期重复';
 I18N.Setting.DynamicProperty.BedUnitValue = '床';
 
