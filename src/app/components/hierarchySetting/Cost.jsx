@@ -281,10 +281,9 @@ var Cost = React.createClass({
           margin: '35px 5px 0 5px'
         }}>x</div>
               <ViewableTextField  {...transformerPriceProps} />
+              <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
             </div>
         )
-
-
     };
     return (
       <div>

@@ -1805,6 +1805,7 @@ I18N.Setting.Cost.DemandCost = '需量成本';
 I18N.Setting.Cost.TransformerMode = '变压器容量模式';
 I18N.Setting.Cost.TimeMode = '时间容量模式';
 I18N.Setting.Cost.TransformerUOM = '元/千伏安';
+I18N.Setting.Cost.PowerUOM = '元/千瓦时';
 I18N.Setting.Cost.TransformerCapacity = '变压器容量';
 I18N.Setting.Cost.DemandPrice = '需求价格';
 module.exports = I18N;

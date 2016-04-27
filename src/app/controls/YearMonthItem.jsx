@@ -30,11 +30,7 @@ var YearMonthItem = React.createClass({
     this.props.onDateChange(d2j(new Date(m._d)));
   },
   _getYearItems: function() {
-    var items = [{
-      payload: 0,
-      text: I18N.Setting.Cost.Year,
-      disabled: true
-    }];
+    var items = [];
     for (var thisYear = new Date().getFullYear(), i = 2006; i <= thisYear; i++) {
       items.push({
         payload: i - 2005,
@@ -45,11 +41,6 @@ var YearMonthItem = React.createClass({
   },
   _getMonthItems: function() {
     var monthItems = [
-      {
-        payload: 0,
-        text: I18N.Setting.Cost.Month,
-        disabled: true
-      },
       {
         payload: 1,
         text: I18N.Common.Date.January
@@ -88,12 +79,6 @@ var YearMonthItem = React.createClass({
         text: I18N.Common.Date.December
       }];
     return monthItems;
-  },
-  componentDidMount: function() {
-    console.log('componentDidMount');
-  },
-  componentWillReceiveProps: function() {
-    console.log('componentWillReceiveProps');
   },
   render: function() {
     var m = moment(this.props.date),
