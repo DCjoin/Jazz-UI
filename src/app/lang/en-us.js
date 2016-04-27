@@ -92,6 +92,32 @@ I18N.M212006 = 'Incorrect password';
 I18N.M212007 = 'Incorrect service provider domain name';
 
 I18N.Common = {};
+I18N.Common.Commodity = {};
+I18N.Common.Commodity.Electric = 'Electricity';
+I18N.Common.Commodity.Water = 'Water';
+I18N.Common.Commodity.Gas = 'Gas';
+I18N.Common.Commodity.Air = 'AirQuality';
+I18N.Common.Commodity.Steam = 'Steam';
+I18N.Common.Commodity.HeatQ = 'HeatQ';
+I18N.Common.Commodity.CoolQ = 'CoolQ';
+I18N.Common.Commodity.Coal = 'Coal';
+I18N.Common.Commodity.Oil = 'Crude oil';
+I18N.Common.Commodity.Other = 'Others';
+I18N.Common.Commodity.CleanedCoal = 'Cleaned coal';
+I18N.Common.Commodity.Coke = 'Coke';
+I18N.Common.Commodity.Petrol = 'Petrol';
+I18N.Common.Commodity.Kerosene = 'Kerosene';
+I18N.Common.Commodity.LPG = 'LPG';
+I18N.Common.Commodity.CokeOvenGas = 'Coke oven gas';
+I18N.Common.Commodity.LowPressureSteam = 'L-P Steam';
+I18N.Common.Commodity.MediumPressureSteam = 'M-P steam';
+I18N.Common.Commodity.HighPressureSteam = 'H-P steam';
+I18N.Common.Commodity.HeavyWater = 'Heavy water';
+I18N.Common.Commodity.ReclaimedWater = 'Recycled water';
+I18N.Common.Commodity.LightWater = 'Light water';
+I18N.Common.Commodity.DieselOil = 'Diesel oil';
+I18N.Common.Commodity.Unspecified = 'Not specified';
+
 I18N.Common.Glossary = {};
 I18N.Common.Glossary.HierarchyNode = 'Hierarchy node';
 I18N.Common.Glossary.Max = 'Max';
@@ -1694,6 +1720,18 @@ I18N.Setting.Building.VTagCount = 'Virtual Tag No.';
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.AddTagInfo = 'Click add button to add tags';
 I18N.Setting.Hierarchy.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
+
+I18N.Setting.Cost = {};
+I18N.Setting.Cost.FormatYear = '{0}';
+I18N.Setting.Cost.PriceType = 'Price type';
+I18N.Setting.Cost.FixedPrice = 'Fixed rate electricity price';
+I18N.Setting.Cost.ComplexPrice = 'Integrated electricity price';
+I18N.Setting.Cost.DemandCostMode = 'Demand cost mode';
+I18N.Setting.Cost.DemandCost = 'Demand cost';
+I18N.Setting.Cost.TransformerMode = 'Transformer capacity mode';
+I18N.Setting.Cost.TimeMode = 'Demand mode';
+I18N.Setting.Cost.DemandPrice = 'Price';
+I18N.Setting.Cost.TransformerCapacity = 'Capacity';
 
 
 module.exports = I18N;

@@ -331,6 +331,22 @@ let HierarchyAction = {
       }
     });
   },
+  getCostByHierarchy: function(hierarchyId) {
+    Ajax.post('/Cost.svc/GetCostByHierarchy', {
+      params: {
+        hierarchyId: hierarchyId
+      },
+      success: function(cost) {
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_BY_HIERARCHY,
+          cost: cost
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 };
 
 module.exports = HierarchyAction;

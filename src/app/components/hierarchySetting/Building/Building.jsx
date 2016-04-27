@@ -13,6 +13,7 @@ import MonitorTag from '../MonitorTag.jsx';
 import Basic from './BuildingBasic.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
 import Calendar from '../Calendar.jsx';
+import Cost from '../Cost.jsx';
 
 var Building = React.createClass({
 
@@ -159,6 +160,12 @@ var Building = React.createClass({
         formStatus: this.props.formStatus,
         hierarchyId: this.props.selectedNode.get('Id'),
         merge: this.props.merge,
+      },
+      costProps = {
+        ref: 'jazz_building_cost',
+        formStatus: this.props.formStatus,
+        hierarchyId: this.props.selectedNode.get('Id'),
+        onUpdate: this._update
       };
     var content;
     switch (this.props.infoTabNo) {
@@ -170,6 +177,9 @@ var Building = React.createClass({
         break;
       case 3:
         content = <Calendar {...calendarProps}/>;
+        break;
+      case 4:
+        content = <Cost {...calendarProps}/>;
         break;
 
     }

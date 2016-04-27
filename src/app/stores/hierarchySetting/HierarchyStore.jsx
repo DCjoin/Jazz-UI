@@ -21,14 +21,16 @@ var _hierarchys = emptyMap(),
   _calendar = null,
   _allCalendar = null,
   _industries = null,
-  _zones = null;
+  _zones = null,
+  _cost = emptyMap();
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
   CHANGE_LOG_EVENT = 'changelog',
   CHANGER_CALENDAR_EVENT = 'changecalendar',
   CHANGER_ALL_CALENDAR_EVENT = 'changeallcalendar',
-  TAG_CHANGE_EVENT = 'tagchange';
+  TAG_CHANGE_EVENT = 'tagchange',
+  COST_CHANGE_EVENT = 'costchange';
 var HierarchyStore = assign({}, PrototypeStore, {
   traversalNode: function(node) {
     var f = function(item) {
@@ -95,6 +97,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
     var that = this;
     if (_tagList !== null & !!window.allCommodities && !!window.uoms) {
       that.emitTagChange();
+    }
+  },
+  ifEmitCostChange: function() {
+    var that = this;
+    if (_cost.size !== 0 && !!window.uoms) {
+      that.emitCostChange();
     }
   },
   setAllCalendar: function(calendar) {
@@ -237,6 +245,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getAllZones: function() {
     return _zones;
   },
+  setCost: function(cost) {
+    _cost = Immutable.fromJS(cost);
+  },
+  getCost: function() {
+    return _cost;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -302,6 +316,15 @@ var HierarchyStore = assign({}, PrototypeStore, {
   emitTagChange(args) {
     this.emit(TAG_CHANGE_EVENT, args);
   },
+  addCostChangeListener(callback) {
+    this.on(COST_CHANGE_EVENT, callback);
+  },
+  removeCostChangeListener(callback) {
+    this.removeListener(COST_CHANGE_EVENT, callback);
+  },
+  emitCostChange(args) {
+    this.emit(COST_CHANGE_EVENT, args);
+  },
 });
 var HierarchyAction = Hierarchy.Action,
   MainAction = Main.Action;
@@ -348,6 +371,7 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case MainAction.GET_ALL_UOMS_SUCCESS:
       HierarchyStore.ifEmitTagChange();
+      HierarchyStore.ifEmitCostChange();
       break;
     case MainAction.GET_ALL_COMMODITY_SUCCESS:
       HierarchyStore.ifEmitTagChange();
@@ -384,6 +408,10 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
     case HierarchyAction.SET_ENERGY_CONSUMPTION:
       HierarchyStore.setTagEnergyConsumption(action.tag);
       HierarchyStore.ifEmitTagChange();
+      break;
+    case HierarchyAction.GET_COST_BY_HIERARCHY:
+      HierarchyStore.setCost(action.cost);
+      HierarchyStore.ifEmitCostChange();
       break;
   }
 });
