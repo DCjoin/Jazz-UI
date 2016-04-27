@@ -9,12 +9,12 @@ var YearMonthItem = React.createClass({
   propTypes: {
     isViewStatus: React.PropTypes.bool,
     //date:"/Date(XX)/"
-    date: React.PropTypes.number,
+    date: React.PropTypes.string,
     onDateChange: React.PropTypes.func,
   },
   getDefaultProps() {
     return {
-      date: null
+      date: new Date()
     };
   },
   _onDateChange: function(value, items, type) {
@@ -30,11 +30,7 @@ var YearMonthItem = React.createClass({
     this.props.onDateChange(d2j(new Date(m._d)));
   },
   _getYearItems: function() {
-    var items = [{
-      payload: 0,
-      text: I18N.Setting.Cost.Year,
-      disabled: true
-    }];
+    var items = [];
     for (var thisYear = new Date().getFullYear(), i = 2006; i <= thisYear; i++) {
       items.push({
         payload: i - 2005,
@@ -45,11 +41,6 @@ var YearMonthItem = React.createClass({
   },
   _getMonthItems: function() {
     var monthItems = [
-      {
-        payload: 0,
-        text: I18N.Setting.Cost.Month,
-        disabled: true
-      },
       {
         payload: 1,
         text: I18N.Common.Date.January

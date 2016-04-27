@@ -174,7 +174,12 @@ let HierarchyAction = {
           type: Action.SET_SELECTED_HIERARCHY_NODE,
           node: Immutable.fromJS(node)
         });
-        that.GetHierarchys(node.Id);
+        if (node.Type === 101) {
+          that.GetHierarchys(-node.Id);
+        } else {
+          that.GetHierarchys(node.Id);
+        }
+
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
