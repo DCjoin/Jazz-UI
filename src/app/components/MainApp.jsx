@@ -93,6 +93,7 @@ let MainApp = React.createClass({
   _switchCustomer: function(customer) {
       var currentCustomer = getCurrentCustomer();
       var menus = this._getMenuItems();
+      //, {'expires':5,'path':'/'}
       CookieUtil.set('currentCustomerId', customer.Id);
       window.currentCustomerId = customer.Id;
 

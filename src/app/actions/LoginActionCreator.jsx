@@ -15,14 +15,14 @@ module.exports = {
 		Ajax.newPost('/AccessControl/ValidateUser', {
 			params: params,
 			success: function(res) {
-        //console.log('LoginActionCreator:'+JSON.stringify(res,0,1));
+        // console.log('LoginActionCreator:'+JSON.stringify(res,0,1));
 				AppDispatcher.dispatch({
 					type: Action.LOGIN_SUCCESS,
 					data: res
 				});
 			},
 			error: function(err, res) {
-        //console.log(JSON.stringify(err,0,1) + JSON.stringify(res,0,1));
+        // console.log(JSON.stringify(err,0,1) + JSON.stringify(res,0,1));
 				AppDispatcher.dispatch({
 					type: Action.LOGIN_ERROR,
 					data: res.body

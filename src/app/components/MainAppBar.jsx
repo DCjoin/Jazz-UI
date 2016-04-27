@@ -541,6 +541,7 @@ var MainAppBar = React.createClass({
   },
   // ************* Render Component End *************
   getInitialState: function() {
+    console.log('xxxxxxxxxxxxx'+ JSON.stringify(window.currentUser,0,1));
     return {
       customError: "",
       sidebarType: "",
@@ -563,7 +564,7 @@ var MainAppBar = React.createClass({
     CurrentUserStore.removeCurrentrivilegeListener(this._onRefresh);
   },
   render: function() {
-    var user = currentUser() || {};
+    var user = window.currentUser || currentUser() || {};
     var params = this.getParams();
     var leftNav = null,
       dialog = null;

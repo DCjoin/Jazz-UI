@@ -34,9 +34,9 @@ server.state('Username', {
 server.state('currentUserId', {
     clearInvalid: true, // remove invalid cookies
 });
-server.state('User', {
-    clearInvalid: true, // remove invalid cookies
-});
+// server.state('UserInfo', {
+//     clearInvalid: true, // remove invalid cookies
+// });
 
 function returnIndexHtml(request,reply){
 	var html = fs.readFileSync(path.resolve(__dirname, "../app/index.html"), "utf-8");
