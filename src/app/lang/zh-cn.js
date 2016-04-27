@@ -605,6 +605,69 @@ I18N.Setting.Calendar.DefaultDayNight = '白昼时间以外均为黑夜时间';
 I18N.Setting.Calendar.AddDay = '添加白昼时间';
 I18N.Setting.Calendar.AddColdWarm = '添加冷暖季时间';
 
+I18N.Setting.Calendar.CalendarDetail = '日历详情';
+I18N.Setting.Calendar.HolidayCalendar = '工休日日历：';
+I18N.Setting.Calendar.WorkTimeCalendar = '工作时间日历：';
+I18N.Setting.Calendar.ViewCalendarDetail = '查看日历详情';
+I18N.Setting.Calendar.NoHierarchyAssociation = '该数据点未关联任何层级节点。请关联后再设置，保证设置内容可被计算。';
+I18N.Setting.Calendar.HierarchyNoCalendar = '该数据点所关联层级节点未引用任何日历模板。请引用后再设置，保证设置内容可被计算。';
+I18N.Setting.Calendar.HasAssociation = '当前时间的工作日历已配置 ';
+
+//hiearchy calendar
+I18N.Setting.Calendar.TabName = '日历属性';
+I18N.Setting.Calendar.WorkHoliday = '工休日';
+I18N.Setting.Calendar.ColdWarm = '冷暖季';
+I18N.Setting.Calendar.DayNight = '昼夜时间';
+I18N.Setting.Calendar.EffectiveDate = '生效日期';
+I18N.Setting.Calendar.Name = '日历名称';
+I18N.Setting.Calendar.DefaultWorkDayTitle = '默认工作日：';
+I18N.Setting.Calendar.DefaultWorkDayContent = '周一至周五';
+I18N.Setting.Calendar.WorkDayTitle = '工作日：';
+I18N.Setting.Calendar.HolidayTitle = '休息日：';
+I18N.Setting.Calendar.RestTimeTitle = '非工作时间：';
+I18N.Setting.Calendar.RestTimeContent = '工作时间以外均为非工作时间';
+I18N.Setting.Calendar.WorkTimeTitle = '工作时间：';
+I18N.Setting.Calendar.WarmTitle = '采暖季：';
+I18N.Setting.Calendar.ColdTitle = '供冷季：';
+I18N.Setting.Calendar.NightTitle = '黑夜时间：';
+I18N.Setting.Calendar.NightContent = '白昼时间以外均为黑夜时间';
+I18N.Setting.Calendar.DayTitle = '白昼时间：';
+I18N.Setting.Calendar.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
+
+//hierarchy population/area
+I18N.Setting.DynamicProperty = {};
+
+I18N.Setting.DynamicProperty.PopulationArea = '人口面积';
+I18N.Setting.DynamicProperty.AddPropertyInfo = '暂无人口面积，点击编辑进行设置';
+
+I18N.Setting.DynamicProperty.Area = '面积属性';
+I18N.Setting.DynamicProperty.AArea = '总面积(㎡)';
+I18N.Setting.DynamicProperty.WArea = '采暖面积(㎡)';
+I18N.Setting.DynamicProperty.CArea = '供冷面积(㎡)';
+I18N.Setting.DynamicProperty.AreaUnitValue = '㎡';
+
+I18N.Setting.DynamicProperty.Population = '人口属性';
+I18N.Setting.DynamicProperty.PopulationCode = '人口编码';
+I18N.Setting.DynamicProperty.PopulationNumber = '人口数量';
+I18N.Setting.DynamicProperty.PopulationUnitValue = '人';
+I18N.Setting.DynamicProperty.PopulationStartDateDuplicated = '人口属性生效日期重复';
+
+I18N.Setting.DynamicProperty.Other = '其他属性';
+I18N.Setting.DynamicProperty.ARoom = '总客房';
+I18N.Setting.DynamicProperty.ARoomNumber = '总客房数量';
+I18N.Setting.DynamicProperty.UsedRoom = '已用客房';
+I18N.Setting.DynamicProperty.UsedRoomNumber = '已用客房数量';
+I18N.Setting.DynamicProperty.RoomUnitValue = '间';
+I18N.Setting.DynamicProperty.RoomStartDateDuplicated = '已用客房属性生效日期重复';
+I18N.Setting.DynamicProperty.ABed = '总床位';
+I18N.Setting.DynamicProperty.ABedNumber = '总床位数量';
+I18N.Setting.DynamicProperty.UsedBed = '已用床位';
+I18N.Setting.DynamicProperty.UsedBedNumber = '已用床位数量';
+I18N.Setting.DynamicProperty.BedStartDateDuplicated = '已用床位属性生效日期重复';
+I18N.Setting.DynamicProperty.BedUnitValue = '床';
+
+I18N.Setting.DynamicProperty.StartDate = '生效日期';
+
 I18N.Setting.Benchmark = {};
 I18N.Setting.Benchmark.Label = {};
 I18N.Setting.Benchmark.Label.None = '无';
@@ -1726,7 +1789,6 @@ I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = '删除{0}';
 I18N.Setting.Hierarchy.DeleteContent = '删除{0}“{1}”，该{2}的所有数据也将被删除。';
 I18N.Setting.Hierarchy.AddTagInfo = '点击添加按钮，选择关联数据点';
-I18N.Setting.Hierarchy.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
 
 I18N.Setting.Cost = {};
 I18N.Setting.Cost.NoCommodities = '暂无成本属性，点击编辑进行设置。';

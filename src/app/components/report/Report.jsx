@@ -81,7 +81,8 @@ let Report = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        flex: 1
+        flex: 1,
+        overflow: 'auto'
       }}>
           {LeftPanelField}
           {mainPanel}

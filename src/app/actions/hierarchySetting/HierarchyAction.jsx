@@ -75,19 +75,23 @@ let HierarchyAction = {
       }
     });
   },
-  getAssociatedTag: function(page, hierarchyId, association, filterObj, refresh) {
+  getAssociatedTag: function(page, hierarchyId, association, filterObj, isView) {
     _page = page;
     _hierarchyId = hierarchyId;
     _association = association;
     _filterObj = filterObj;
+    var associationObj = {
+      AssociationId: hierarchyId,
+      AssociationOption: association
+    };
+    if (!isView) {
+      associationObj.Associatiable = true;
+    }
     Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: {
           CustomerId: parseInt(window.currentCustomerId),
-          Association: {
-            AssociationId: hierarchyId,
-            AssociationOption: association
-          },
+          Association: associationObj,
           IncludeAssociationName: true,
           CommodityId: filterObj.CommodityId,
           UomId: filterObj.UomId,
@@ -103,11 +107,6 @@ let HierarchyAction = {
           type: Action.GET_ASSOCIATED_TAG,
           data: data
         });
-        if (refresh === true) {
-          AppDispatcher.dispatch({
-            type: Action.SAVE_ASSOCIATED_TAG_SUCCESS,
-          });
-        }
       },
       error: function(err, res) {
         console.log(err, res);
@@ -261,6 +260,43 @@ let HierarchyAction = {
         AppDispatcher.dispatch({
           type: Action.GET_CALENDAR_FOR_HIERARCHY,
           calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  cancelSaveCalendar: function() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_CALENDAR
+    });
+  },
+  saveCalendar: function(calendar) {
+    Ajax.post('/Hierarchy.svc/SaveHierarchyCalendar', {
+      params: {
+        dto: calendar
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.SET_CALENDAR_FOR_HIERARCHY,
+          calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getProperty: function(hierarchyId) {
+    Ajax.post('/Hierarchy.svc/GetAdvancedPropertyValuesByHierarchy', {
+      params: {
+        hierarchyId: hierarchyId
+      },
+      success: function(property) {
+        AppDispatcher.dispatch({
+          type: Action.GET_PROPERTY_FOR_HIERARCHY,
+          property: property
         });
       },
       error: function(err, res) {

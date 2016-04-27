@@ -12,8 +12,10 @@ import FlatButton from '../../../controls/FlatButton.jsx';
 import MonitorTag from '../MonitorTag.jsx';
 import Basic from './BuildingBasic.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
+import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
 import Calendar from '../Calendar.jsx';
 import Cost from '../Cost.jsx';
+import Property from './Property.jsx';
 
 var Building = React.createClass({
 
@@ -78,6 +80,15 @@ var Building = React.createClass({
         this.props.handleSave({
           hierarchyId: this.props.selectedNode.get('Id'),
           tags: tagIds
+        });
+      }
+    } else if (this.props.infoTabNo === 3) {
+      if (this.refs.jazz_building_calendar) {
+        let calendar = this.refs.jazz_building_calendar._handlerSave();
+        this.props.handleSave({
+          HierarchyId: calendar.HierarchyId,
+          Version: calendar.Version,
+          CalendarItemGroups: calendar.CalendarItemGroups
         });
       }
     }
@@ -151,6 +162,7 @@ var Building = React.createClass({
       tagProps = {
         ref: 'jazz_building_tag',
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         isDim: false,
         hierarchyId: this.props.selectedNode.get('Id'),
         onUpdate: this._update
@@ -158,8 +170,14 @@ var Building = React.createClass({
       calendarProps = {
         ref: 'jazz_building_calendar',
         formStatus: this.props.formStatus,
-        hierarchyId: this.props.selectedNode.get('Id'),
-        merge: this.props.merge,
+        setEditBtnStatus: this._setEditBtnStatus,
+        hierarchyId: this.props.selectedNode.get('Id')
+      },
+      propertyProps = {
+        ref: 'jazz_building_property',
+        formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
+        hierarchyId: this.props.selectedNode.get('Id')
       },
       costProps = {
         ref: 'jazz_building_cost',
@@ -179,7 +197,10 @@ var Building = React.createClass({
         content = <Calendar {...calendarProps}/>;
         break;
       case 4:
-        content = <Cost {...calendarProps}/>;
+        content = <Cost {...costProps}/>;
+        break;
+      case 5:
+        content = <Property {...propertyProps}/>;
         break;
 
     }
@@ -222,7 +243,7 @@ var Building = React.createClass({
         });
       }}
       allowDelete={that.props.infoTabNo === 1}
-      onCancel={this.props.handlerCancel}
+      onCancel={this._handlerCancel}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
@@ -260,6 +281,16 @@ var Building = React.createClass({
       {I18N.format(I18N.Setting.Hierarchy.DeleteContent, I18N.Common.Glossary.Building, selectedNode.get('Name'), I18N.Common.Glossary.Building)}
     </Dialog>
         );
+    }
+  },
+  _handlerCancel: function() {
+    this.props.handlerCancel();
+    if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_building_tag) {
+        this.refs.jazz_building_tag._resetFilterObj();
+      }
+    } else if (this.props.infoTabNo === 3) {
+      HierarchyAction.cancelSaveCalendar();
     }
   },
   componentWillMount: function() {

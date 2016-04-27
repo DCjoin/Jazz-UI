@@ -128,6 +128,7 @@ var Building = React.createClass({
       tagProps = {
         ref: 'jazz_dim_tag',
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         isDim: true,
         hierarchyId: this.props.selectedNode.get('Id'),
         onUpdate: this._update
@@ -151,7 +152,7 @@ var Building = React.createClass({
       {content}
     </div>
 
-    )
+      );
   },
   _renderFooter: function() {
     var disabledSaveButton = this.state.editBtnDisabled,
@@ -160,13 +161,13 @@ var Building = React.createClass({
       editBtnProps;
     if (this.props.infoTabNo === 1) {
       if (!selectedNode.get('Name') || selectedNode.get('Name').length > 200) {
-        disabledSaveButton = true
+        disabledSaveButton = true;
       }
     } else {
       if (this.props.infoTabNo === 2) {
         editBtnProps = {
           label: I18N.Common.Button.Add
-        }
+        };
       }
     }
     return (
@@ -181,14 +182,14 @@ var Building = React.createClass({
         });
       }}
       allowDelete={that.props.infoTabNo === 1}
-      onCancel={this.props.handlerCancel}
+      onCancel={this._handlerCancel}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
-        that.props.setEditStatus()
+        that.props.setEditStatus();
       }}
       editBtnProps={editBtnProps}/>
 
-    )
+      );
   },
   _renderDialog: function() {
     var that = this;
@@ -221,6 +222,14 @@ var Building = React.createClass({
         );
     }
   },
+  _handlerCancel: function() {
+    this.props.handlerCancel();
+    if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_dim_tag) {
+        this.refs.jazz_dim_tag._resetFilterObj();
+      }
+    }
+  },
   componentWillMount: function() {
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();
@@ -245,7 +254,7 @@ var Building = React.createClass({
     </Panel>
     {that._renderDialog()}
   </div>
-    )
+      );
   },
 });
 module.exports = Building;
