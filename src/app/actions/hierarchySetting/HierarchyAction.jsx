@@ -285,12 +285,14 @@ let HierarchyAction = {
       },
       success: function(calendar) {
         AppDispatcher.dispatch({
-          type: Action.SET_CALENDAR_FOR_HIERARCHY,
+          type: Action.SET_CALENDAR_FOR_HIERARCHY_SUCCESS,
           calendar: calendar
         });
       },
       error: function(err, res) {
-        console.log(err, res);
+        AppDispatcher.dispatch({
+          type: Action.SET_CALENDAR_FOR_HIERARCHY_ERROR
+        });
       }
     });
   },
@@ -369,22 +371,6 @@ let HierarchyAction = {
           title: I18N.Platform.ServiceProvider.ErrorNotice,
           content: ErrorMsg,
         });
-        console.log(err, res);
-      }
-    });
-  },
-  getCostByHierarchy: function(hierarchyId) {
-    Ajax.post('/Cost.svc/GetCostByHierarchy', {
-      params: {
-        hierarchyId: hierarchyId
-      },
-      success: function(cost) {
-        AppDispatcher.dispatch({
-          type: Action.GET_COST_BY_HIERARCHY,
-          cost: cost
-        });
-      },
-      error: function(err, res) {
         console.log(err, res);
       }
     });
