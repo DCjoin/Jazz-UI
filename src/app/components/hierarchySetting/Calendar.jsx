@@ -354,8 +354,16 @@ let CalendarItems = React.createClass({
     var isView = this.props.isViewStatus;
     var calendarItems = me.props.calendarItems;
     var addButton = isView ? null : (<FlatButton label={I18N.Common.Button.Add} onClick={this._addCalendarItem} primary={false}/>);
-    var calendar = null;
-    if (calendarItems && calendarItems.size > 0)
+    var hasCalendar = (calendarItems && calendarItems.size > 0) ? true : false;
+    var addDom = null,
+      calendar = null;
+    if (!isView || hasCalendar) {
+      addDom = (<div className='jazz-hierarchy-calendar-type-add'>
+        <div className='jazz-hierarchy-calendar-type-add-text'>{this.getTextByType()}</div>
+        {addButton}
+      </div>);
+    }
+    if (hasCalendar) {
       calendar = calendarItems.map((item, i) => {
         let props = {
           key: i,
@@ -372,12 +380,10 @@ let CalendarItems = React.createClass({
           <CalendarItem {...props}/>
           );
       });
+    }
     return (
       <div className='jazz-hierarchy-calendar-type'>
-        <div className='jazz-hierarchy-calendar-type-add'>
-          <div className='jazz-hierarchy-calendar-type-add-text'>{this.getTextByType()}</div>
-          {addButton}
-        </div>
+        {addDom}
         {calendar}
       </div>
 
