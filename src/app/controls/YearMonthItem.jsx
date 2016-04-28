@@ -21,7 +21,7 @@ var YearMonthItem = React.createClass({
     var m = moment(this.props.date);
     var d2j = CommonFuns.DataConverter.DatetimeToJson;
     if (type === 'Year') {
-      let year = parseInt(items[value].text);
+      let year = parseInt(items[value - 1].text);
       m = m.set('year', year);
     } else {
       let month = value;

@@ -156,6 +156,22 @@ var Cost = React.createClass({
       path: 'CostCommodities' + '.' + index + '.' + 'Items' + '.' + id
     })
   },
+  _handelAddOthers: function() {
+    var costCommodities = this.state.cost.get('CostCommodities'),
+      that = this;
+    that.merge({
+      status: dataStatus.NEW,
+      path: 'CostCommodities',
+      value: Immutable.fromJS({
+        CommodityId: 2,
+        Items: [{
+          EffectiveDate: new Date()
+        }],
+        UomId: 9
+      })
+    })
+  },
+  _handerDeleteOthers: function() {},
   _onPowerPriceChange: function(value, index, id) {
     var simpleItem, complexItem,
       that = this;
@@ -592,6 +608,98 @@ var Cost = React.createClass({
               </div>
           )
       };
+      var renderTags = function() {
+        var {RealTagId, ReactiveTagId} = complexItem.toJS();
+        var selectedRealId = 0,
+          selectedReactiveId = 0,
+          realTitleItems = [],
+          reactiveTitleItems = [];
+        that.state.cost.get('RealTags').forEach((tag, index) => {
+          realTitleItems.push({
+            payload: index,
+            text: tag.get('Name')
+          });
+          if (tag.get('Id') === RealTagId) {
+            selectedRealId = index;
+          }
+        });
+        that.state.cost.get('ReactiveTags').forEach((tag, index) => {
+          reactiveTitleItems.push({
+            payload: index,
+            text: tag.get('Name')
+          });
+          if (tag.get('Id') === ReactiveTagId) {
+            selectedReactiveId = index;
+          }
+        });
+        var realTagProps = {
+            isViewStatus: isView,
+            title: I18N.Setting.Cost.RealPower,
+            selectedIndex: selectedRealId,
+            textField: "text",
+            dataItems: realTitleItems,
+            style: {
+              maxWidth: '200px'
+            },
+            didChanged: value => {
+              // CarbonAction.merge({
+              //   value: {
+              //     value: value,
+              //     titleItems: titleItems,
+              //     factorIndex: index
+              //   },
+              //   path: "EffectiveYear"
+              // });
+            }
+          },
+          reactiveTagProps = {
+            isViewStatus: isView,
+            title: I18N.Setting.Cost.ReactivePower,
+            selectedIndex: selectedReactiveId,
+            textField: "text",
+            dataItems: reactiveTitleItems,
+            style: {
+              maxWidth: '200px'
+            },
+            didChanged: value => {
+              // CarbonAction.merge({
+              //   value: {
+              //     value: value,
+              //     titleItems: titleItems,
+              //     factorIndex: index
+              //   },
+              //   path: "EffectiveYear"
+              // });
+            }
+          };
+        return (
+          <div className='jazz-building-cost-tou-item'>
+                <ViewableDropDownMenu  {...realTagProps}/>
+                <ViewableDropDownMenu  {...reactiveTagProps}/>
+              </div>
+          )
+      };
+      var paddingCostProps = {
+        isViewStatus: isView,
+        title: I18N.Setting.Cost.PaddingCost,
+        defaultValue: complexItem.get('PaddingCost'),
+        regex: Regex.FactorRule,
+        errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
+        maxLen: 16,
+        isRequired: true,
+        style: {
+          maxWidth: '200px'
+        },
+        didChanged: value => {
+          // CarbonAction.merge({
+          //   value: {
+          //     value: value,
+          //     factorIndex: index
+          //   },
+          //   path: "FactorValue"
+          // });
+        }
+      };
       return (
         <div>
         <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.DemandCostMode}</div>
@@ -617,9 +725,10 @@ var Cost = React.createClass({
         {defaultSelected === '1' ? renderTransformerMode() : renderTimeMode()}
         {renderUsageCost()}
         {renderFactorType()}
+        {renderTags()}
+        <ViewableTextField  {...paddingCostProps} />
       </div>
         )
-
     },
     _renderPower: function(power, id) {
       var isView = this.props.formStatus === formStatus.VIEW,
@@ -706,6 +815,79 @@ var Cost = React.createClass({
         {items}
         {that._renderTouDetailSideNav()}
         {that._renderFactorTypeDialog()}
+      </div>
+        )
+    },
+    _renderOthers: function() {
+      var isView = this.props.formStatus === formStatus.VIEW,
+        that = this,
+        costCommodities = this.state.cost.get('CostCommodities'),
+        commodityItems = [];
+      costCommodities.forEach((commodity, id) => {
+        var {CommodityId, Items} = commodity.toJS();
+        Items.forEach((item, itemId) => {
+          var selectedId = 0,
+            titleItems = [];
+          HierarchyStore.getCommodities().forEach((commodity, index) => {
+            titleItems.push({
+              payload: index,
+              text: commodity.Comment
+            });
+            if (commodity.Id === CommodityId) {
+              selectedId = index;
+            }
+          });
+          var dateProps = {
+              ref: 'date',
+              key: this.props.hierarchyId + '_commodity' + id + '_item' + itemId,
+              isViewStatus: isView,
+              date: item.get('EffectiveDate'),
+              onDateChange: date => {
+                // that.merge(
+                //   {
+                //     path: 'CostCommodities' + '.' + id + '.' + 'Items' + '.' + index + '.' + 'EffectiveDate',
+                //     value: date
+                //   }
+                // )
+              }
+            },
+            priceProps = {
+              isViewStatus: isView,
+              title: I18N.MainMenu.Price,
+              defaultValue: item.getIn(['SimpleItem', 'Price']),
+              regex: Regex.FactorRule,
+              errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
+              maxLen: 16,
+              isRequired: true,
+              style: {
+                maxWidth: '200px'
+              },
+              didChanged: value => {
+                // CarbonAction.merge({
+                //   value: {
+                //     value: value,
+                //     factorIndex: index
+                //   },
+                //   path: "FactorValue"
+                // });
+              }
+            };
+        })
+
+
+      })
+      return (
+        <div className="pop-manage-detail-content">
+        <div className="jazz-carbon-addItem">
+          <div>{I18N.Setting.Cost.OtherCommodities}</div>
+          <div className={classnames({
+          "jazz-carbon-addItem-addBtn": true,
+          "inactive": isView
+        })} onClick={this._handelAddOthers}>
+          {I18N.Common.Button.Add}
+        </div>
+        </div>
+
       </div>
         )
     },
