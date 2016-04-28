@@ -284,14 +284,12 @@ let HierarchyAction = {
       },
       success: function(calendar) {
         AppDispatcher.dispatch({
-          type: Action.SET_CALENDAR_FOR_HIERARCHY_SUCCESS,
+          type: Action.SET_CALENDAR_FOR_HIERARCHY,
           calendar: calendar
         });
       },
       error: function(err, res) {
-        AppDispatcher.dispatch({
-          type: Action.SET_CALENDAR_FOR_HIERARCHY_ERROR
-        });
+        console.log(err, res);
       }
     });
   },
