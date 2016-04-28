@@ -18,6 +18,10 @@ import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import Regex from '../../constants/Regex.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import SideNav from '../../controls/SideNav.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
+import Factor09Detail from './Factor09Detail.jsx';
+import Factor085Detail from './Factor085Detail.jsx';
+
 var d2j = CommonFuns.DataConverter.DatetimeToJson;
 function emptyMap() {
   return new Map();
@@ -35,8 +39,9 @@ var Cost = React.createClass({
       cost: emptyMap(),
       isLoading: true,
       showTouDetailSideNav: false,
-      showPowerFactorSideNav: false,
-      touIndex: null
+      showPowerFactorDialog: false,
+      touIndex: null,
+      factorIndex: null
     })
   },
   _handlerSave: function() {
@@ -115,7 +120,7 @@ var Cost = React.createClass({
         Items: [{
           ComplexItem: null,
           EffectiveDate: d2j(new Date()),
-          SimpleItem: null
+          SimpleItem: {}
         }]
       })
       that.merge({
@@ -128,7 +133,7 @@ var Cost = React.createClass({
         Immutable.fromJS({
           ComplexItem: null,
           EffectiveDate: d2j(new Date()),
-          SimpleItem: null
+          SimpleItem: {}
         })
       ));
       that.merge({
@@ -184,6 +189,12 @@ var Cost = React.createClass({
     this.setState({
       showTouDetailSideNav: false,
       touIndex: null
+    });
+  },
+  _showPowerFactorDialog: function(factorIndex) {
+    this.setState({
+      showPowerFactorDialog: true,
+      factorIndex: factorIndex
     });
   },
   _renderSimpleItem: function(item, id) {
@@ -284,17 +295,25 @@ var Cost = React.createClass({
                       </div>);
         peakTariff.get('TimeRanges').forEach(time => {
           items.push(<div className='jazz-building-cost-tou-item'>
-                          {I18N.Setting.TOUTariff.PulsePeak + ' : ' + time.get('StartMonth')}
-                        </div>)
-        })
-      };
-      return (<SideNav open={true} side="right" onClose={this._onCloseTouDetailSideNav}>
+                          {I18N.Setting.TOUTariff.PulsePeak + ' : ' + time.get('StartMonth') + I18N.Setting.Cost.Month + time.get('StartDay') + I18N.Setting.Cost.Day + I18N.Setting.Cost.To}
+                          {time.get('EndMonth') + I18N.Setting.Cost.Month + time.get('EndDay') + I18N.Setting.Cost.Day}
+                        </div>);
+          items.push(<div className='jazz-building-cost-tou-item'>
+                                        {I18N.Setting.TOUTariff.PeakValueTimeRange + ' : ' + that._formatTime(time.get('StartTime')) + ' - ' + that._formatTime(time.get('EndTime'))}
+                                      </div>);
+          return (
+            <div>{items}</div>
+            )
+          })
+
+        };
+        return (<SideNav open={true} side="right" onClose={this._onCloseTouDetailSideNav}>
         <div className='jazz-default-font'>
           <div className="sidebar-title" title={tou.get('Name')} style={{
-          overflow: ' hidden',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis'
-        }}>
+            overflow: ' hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis'
+          }}>
           {I18N.Setting.Cost.TouDetail}
         </div>
         <div className="sidebar-content">
@@ -310,114 +329,198 @@ var Cost = React.createClass({
 
         </div>
       </SideNav>);
-    }
-    return null;
-  },
-  _renderComplexItem: function(item, id) {
-    var costCommodities = this.state.cost.get('CostCommodities'),
-      isView = this.props.formStatus === formStatus.VIEW,
-      that = this,
-      power = emptyMap(),
-      index = 0;
-    if (costCommodities.size !== 0) {
-      power = costCommodities.find(item => (item.get('CommodityId') === 1));
-      index = costCommodities.findIndex(item => (item.get('CommodityId') === 1));
-    }
-    var path = 'CostCommodities' + '.' + index + '.' + 'Items' + '.' + id + '.' + 'ComplexItem' + '.';
-    var complexItem = item.get('ComplexItem'),
-      defaultSelected = complexItem.get('DemandCostType') !== 2 ? '1' : '2';
-    var styles = {
-      group: {
-        display: 'flex',
-        'flexDirection': 'row'
-      },
-      leftradioButton: {
-        fontSize: '14px',
-        color: '#464949'
-      },
-      rightradioButton: {
-        fontSize: '14px',
-        color: '#464949',
-        marginLeft: '-350px'
-      },
-    };
-    var renderTransformerMode = function() {
-      var {TransformerPrice, TransformerCapacity} = complexItem.toJS();
-      var transformerPriceProps = {
-          isViewStatus: isView,
-          title: I18N.Setting.Cost.DemandPrice,
-          defaultValue: TransformerPrice,
-          regex: Regex.FactorRule,
-          errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
-          maxLen: 16,
-          isRequired: true,
-          style: {
-            maxWidth: '200px'
-          },
-          didChanged: value => {
-            // CarbonAction.merge({
-            //   value: {
-            //     value: value,
-            //     factorIndex: index
-            //   },
-            //   path: "FactorValue"
-            // });
-          }
-        },
-        transformerCapacityProps = {
-          isViewStatus: isView,
-          title: I18N.Setting.Cost.TransformerCapacity,
-          defaultValue: TransformerPrice,
-          regex: Regex.FactorRule,
-          errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
-          maxLen: 16,
-          isRequired: true,
-          style: {
-            maxWidth: '200px'
-          },
-          didChanged: value => {
-            // CarbonAction.merge({
-            //   value: {
-            //     value: value,
-            //     factorIndex: index
-            //   },
-            //   path: "FactorValue"
-            // });
-          }
-        };
-      return (
-        <div style={{
+      }
+      return null;
+    },
+    _renderFactorTypeDialog: function() {
+      var that = this;
+      var closeDialog = function() {
+        that.setState({
+          showPowerFactorDialog: false
+        });
+      };
+      if (!this.state.showPowerFactorDialog) {
+        return null;
+      } else {
+        return (
+          <Dialog openImmediately={this.state.showPowerFactorDialog}  modal={false} onClose={closeDialog}>
+          {this.state.factorIndex === 1 ? <Factor09Detail/> : <Factor085Detail/>}
+        </Dialog>
+          );
+      }
+    },
+    _renderComplexItem: function(item, id) {
+      var costCommodities = this.state.cost.get('CostCommodities'),
+        isView = this.props.formStatus === formStatus.VIEW,
+        that = this,
+        power = emptyMap(),
+        index = 0;
+      if (costCommodities.size !== 0) {
+        power = costCommodities.find(item => (item.get('CommodityId') === 1));
+        index = costCommodities.findIndex(item => (item.get('CommodityId') === 1));
+      }
+      var path = 'CostCommodities' + '.' + index + '.' + 'Items' + '.' + id + '.' + 'ComplexItem' + '.';
+      var complexItem = item.get('ComplexItem'),
+        defaultSelected = complexItem.get('DemandCostType') !== 2 ? '1' : '2';
+      var styles = {
+        group: {
           display: 'flex',
-          flexDirection: 'row'
-        }}>
+          'flexDirection': 'row'
+        },
+        leftradioButton: {
+          fontSize: '14px',
+          color: '#464949'
+        },
+        rightradioButton: {
+          fontSize: '14px',
+          color: '#464949',
+          marginLeft: '-350px'
+        },
+      };
+      var renderTransformerMode = function() {
+        var {TransformerPrice, TransformerCapacity} = complexItem.toJS();
+        var transformerPriceProps = {
+            isViewStatus: isView,
+            title: I18N.Setting.Cost.DemandPrice,
+            defaultValue: TransformerPrice,
+            regex: Regex.FactorRule,
+            errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
+            maxLen: 16,
+            isRequired: true,
+            style: {
+              maxWidth: '200px'
+            },
+            didChanged: value => {
+              // CarbonAction.merge({
+              //   value: {
+              //     value: value,
+              //     factorIndex: index
+              //   },
+              //   path: "FactorValue"
+              // });
+            }
+          },
+          transformerCapacityProps = {
+            isViewStatus: isView,
+            title: I18N.Setting.Cost.TransformerCapacity,
+            defaultValue: TransformerPrice,
+            regex: Regex.FactorRule,
+            errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
+            maxLen: 16,
+            isRequired: true,
+            style: {
+              maxWidth: '200px'
+            },
+            didChanged: value => {
+              // CarbonAction.merge({
+              //   value: {
+              //     value: value,
+              //     factorIndex: index
+              //   },
+              //   path: "FactorValue"
+              // });
+            }
+          };
+        return (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row'
+          }}>
               <ViewableTextField  {...transformerCapacityProps} />
               <div style={isView ? {
-          margin: '20px 5px 0 5px'
-        } : {
-          margin: '35px 5px 0 5px'
-        }}>x</div>
+            margin: '20px 5px 0 5px'
+          } : {
+            margin: '35px 5px 0 5px'
+          }}>x</div>
               <ViewableTextField  {...transformerPriceProps} />
               <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
             </div>
-        )
-    };
-    var renderTimeMode = function() {
-      var {HourPrice, HourTagId} = complexItem.toJS();
-      var selectedId = 0,
-        titleItems = [];
-      that.state.cost.get('HourTags').forEach((tag, index) => {
-        titleItems.push({
-          payload: index,
-          text: tag.get('Name')
+          )
+      };
+      var renderTimeMode = function() {
+        var {HourPrice, HourTagId} = complexItem.toJS();
+        var selectedId = 0,
+          titleItems = [];
+        that.state.cost.get('HourTags').forEach((tag, index) => {
+          titleItems.push({
+            payload: index,
+            text: tag.get('Name')
+          });
+          if (tag.get('Id') === HourTagId) {
+            selectedId = index;
+          }
         });
-        if (tag.get('Id') === HourTagId) {
-          selectedId = index;
-        }
-      });
 
-      var hourTagProps = {
+        var hourTagProps = {
+            isViewStatus: isView,
+            title: I18N.Setting.Cost.DemandHourLabel,
+            selectedIndex: selectedId,
+            textField: "text",
+            dataItems: titleItems,
+            style: {
+              maxWidth: '200px'
+            },
+            didChanged: value => {
+              // CarbonAction.merge({
+              //   value: {
+              //     value: value,
+              //     titleItems: titleItems,
+              //     factorIndex: index
+              //   },
+              //   path: "EffectiveYear"
+              // });
+            }
+          },
+          hourPriceProps = {
+            isViewStatus: isView,
+            title: I18N.Setting.Cost.DemandPrice,
+            defaultValue: HourPrice,
+            regex: Regex.FactorRule,
+            errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
+            maxLen: 16,
+            isRequired: true,
+            style: {
+              maxWidth: '200px'
+            },
+            didChanged: value => {
+              // CarbonAction.merge({
+              //   value: {
+              //     value: value,
+              //     factorIndex: index
+              //   },
+              //   path: "FactorValue"
+              // });
+            }
+          };
+        return (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row'
+          }}>
+              <ViewableDropDownMenu  {...hourTagProps} />
+
+              <ViewableTextField  {...hourPriceProps} />
+              <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
+            </div>
+          )
+      };
+      var renderUsageCost = function() {
+        var {TouTariffId} = complexItem.toJS();
+        var selectedId = 0,
+          titleItems = [];
+        that.state.cost.get('TouTariffs').forEach((tou, index) => {
+          titleItems.push({
+            payload: index,
+            text: tou.get('Name')
+          });
+          if (tou.get('Id') === TouTariffId) {
+            selectedId = index;
+          }
+        });
+
+        var touTariffProps = {
           isViewStatus: isView,
-          title: I18N.Setting.Cost.DemandHourLabel,
+          title: I18N.Setting.Cost.UsageCost,
           selectedIndex: selectedId,
           textField: "text",
           dataItems: titleItems,
@@ -434,15 +537,37 @@ var Cost = React.createClass({
             //   path: "EffectiveYear"
             // });
           }
-        },
-        hourPriceProps = {
+        };
+        return (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row'
+          }}>
+                <ViewableDropDownMenu  {...touTariffProps} />
+                <div className='jazz-building-cost-showTou' onClick={that._showTouDetailsideNav.bind(this, selectedId)}>{I18N.Setting.Cost.SearchTouDetail}</div>
+              </div>
+          )
+      };
+      var renderFactorType = function() {
+        var {FactorType} = complexItem.toJS();
+        var selectedId = 0,
+          titleItems = [{
+            payload: 0,
+            text: 0.85
+          },
+            {
+              payload: 1,
+              text: 0.9
+            }];
+        if (FactorType === 1) {
+          selectedId = 1;
+        }
+        var factorProps = {
           isViewStatus: isView,
-          title: I18N.Setting.Cost.DemandPrice,
-          defaultValue: HourPrice,
-          regex: Regex.FactorRule,
-          errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
-          maxLen: 16,
-          isRequired: true,
+          title: I18N.Setting.Cost.PowerFactorFee,
+          selectedIndex: selectedId,
+          textField: "text",
+          dataItems: titleItems,
           style: {
             maxWidth: '200px'
           },
@@ -450,254 +575,211 @@ var Cost = React.createClass({
             // CarbonAction.merge({
             //   value: {
             //     value: value,
+            //     titleItems: titleItems,
             //     factorIndex: index
             //   },
-            //   path: "FactorValue"
+            //   path: "EffectiveYear"
             // });
           }
         };
-      return (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row'
-        }}>
-              <ViewableDropDownMenu  {...hourTagProps} />
-
-              <ViewableTextField  {...hourPriceProps} />
-              <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
-            </div>
-        )
-    };
-    var renderUsageCost = function() {
-      var {TouTariffId} = complexItem.toJS();
-      var selectedId = 0,
-        titleItems = [];
-      that.state.cost.get('TouTariffs').forEach((tou, index) => {
-        titleItems.push({
-          payload: index,
-          text: tou.get('Name')
-        });
-        if (tou.get('Id') === TouTariffId) {
-          selectedId = index;
-        }
-      });
-
-      var touTariffProps = {
-        isViewStatus: isView,
-        title: I18N.Setting.Cost.UsageCost,
-        selectedIndex: selectedId,
-        textField: "text",
-        dataItems: titleItems,
-        style: {
-          maxWidth: '200px'
-        },
-        didChanged: value => {
-          // CarbonAction.merge({
-          //   value: {
-          //     value: value,
-          //     titleItems: titleItems,
-          //     factorIndex: index
-          //   },
-          //   path: "EffectiveYear"
-          // });
-        }
+        return (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'row'
+          }}>
+                <ViewableDropDownMenu  {...factorProps} />
+                <div className='jazz-building-cost-showTou' onClick={that._showPowerFactorDialog.bind(this, selectedId)}>{I18N.Setting.Cost.SearchPowerFactor}</div>
+              </div>
+          )
       };
       return (
-        <div style={{
-          display: 'flex',
-          flexDirection: 'row'
-        }}>
-                <ViewableDropDownMenu  {...touTariffProps} />
-                <div className='jazz-building-cost-showTou' onClick={that._showTouDetailsideNav.bind(this, selectedId)}>{I18N.Setting.Cost.SearchTouDetail}</div>
-              </div>
-        )
-    };
-    return (
-      <div>
+        <div>
         <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.DemandCostMode}</div>
           <RadioButtonGroup name="price" defaultSelected={defaultSelected} onChange={(event, value) => {
-        this.merge({
-          path: path + 'DemandCostType',
-          value: parseInt(value)
-        })
-      }} style={styles.group}>
-            <RadioButton
-      value="1"
-      label={I18N.Setting.Cost.TransformerMode}
-      style={styles.leftradioButton}
-      disabled={isView}
-      />
-            <RadioButton
-      value="2"
-      label={I18N.Setting.Cost.TimeMode}
-      style={styles.rightradioButton}
-      disabled={isView}
-      />
-          </RadioButtonGroup>
-        {defaultSelected === '1' ? renderTransformerMode() : renderTimeMode()}
-        {renderUsageCost()}
-        {that._renderTouDetailSideNav()}
-      </div>
-      )
-
-  },
-  _renderPower: function(power, id) {
-    var isView = this.props.formStatus === formStatus.VIEW,
-      items = [],
-      that = this;
-    power.get('Items').forEach((item, index) => {
-      var deleteProps = {
-        isDelete: !isView,
-        onDelete: () => {
-          that._handleDeletePower(index);
-        }
-      };
-      var date = item.get('EffectiveDate');
-      var complexItem = item.get('ComplexItem'),
-        simpleItem = item.get('SimpleItem'),
-        defaultSelected = complexItem === null ? 'simpleItem' : 'complexItem';
-      var dateProps = {
-        ref: 'date',
-        key: this.props.hierarchyId + '_power' + index,
-        isViewStatus: isView,
-        date: date,
-        onDateChange: date => {
-          that.merge(
-            {
-              path: 'CostCommodities' + '.' + id + '.' + 'Items' + '.' + index + '.' + 'EffectiveDate',
-              value: date
-            }
-          )
-        }
-      };
-      var styles = {
-        group: {
-          display: 'flex',
-          'flexDirection': 'row'
-        },
-        leftradioButton: {
-          fontSize: '14px',
-          color: '#464949'
-        },
-        rightradioButton: {
-          fontSize: '14px',
-          color: '#464949',
-          marginLeft: '-350px'
-        },
-      };
-      items.unshift(
-        <div className='jazz-carbon-factorItem'>
-        <DeletableItem {...deleteProps}>
-        <YearMonthItem {...dateProps}/>
-        <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.PriceType}</div>
-          <RadioButtonGroup name="price" defaultSelected={defaultSelected} onChange={(event, value) => {
-          this._onPowerPriceChange(value, id, index)
+          this.merge({
+            path: path + 'DemandCostType',
+            value: parseInt(value)
+          })
         }} style={styles.group}>
             <RadioButton
-        value="simpleItem"
-        label={I18N.Setting.Cost.FixedPrice}
+        value="1"
+        label={I18N.Setting.Cost.TransformerMode}
         style={styles.leftradioButton}
         disabled={isView}
         />
             <RadioButton
-        value="complexItem"
-        label={I18N.Setting.Cost.ComplexPrice}
+        value="2"
+        label={I18N.Setting.Cost.TimeMode}
         style={styles.rightradioButton}
         disabled={isView}
         />
           </RadioButtonGroup>
+        {defaultSelected === '1' ? renderTransformerMode() : renderTimeMode()}
+        {renderUsageCost()}
+        {renderFactorType()}
+      </div>
+        )
+
+    },
+    _renderPower: function(power, id) {
+      var isView = this.props.formStatus === formStatus.VIEW,
+        items = [],
+        that = this;
+      power.get('Items').forEach((item, index) => {
+        var deleteProps = {
+          isDelete: !isView,
+          onDelete: () => {
+            that._handleDeletePower(index);
+          }
+        };
+        var date = item.get('EffectiveDate');
+        var complexItem = item.get('ComplexItem'),
+          simpleItem = item.get('SimpleItem'),
+          defaultSelected = complexItem === null ? 'simpleItem' : 'complexItem';
+        var dateProps = {
+          ref: 'date',
+          key: this.props.hierarchyId + '_power' + index,
+          isViewStatus: isView,
+          date: date,
+          onDateChange: date => {
+            that.merge(
+              {
+                path: 'CostCommodities' + '.' + id + '.' + 'Items' + '.' + index + '.' + 'EffectiveDate',
+                value: date
+              }
+            )
+          }
+        };
+        var styles = {
+          group: {
+            display: 'flex',
+            'flexDirection': 'row'
+          },
+          leftradioButton: {
+            fontSize: '14px',
+            color: '#464949'
+          },
+          rightradioButton: {
+            fontSize: '14px',
+            color: '#464949',
+            marginLeft: '-350px'
+          },
+        };
+        items.unshift(
+          <div className='jazz-carbon-factorItem'>
+        <DeletableItem {...deleteProps}>
+        <YearMonthItem {...dateProps}/>
+        <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.PriceType}</div>
+          <RadioButtonGroup name="price" defaultSelected={defaultSelected} onChange={(event, value) => {
+            this._onPowerPriceChange(value, id, index)
+          }} style={styles.group}>
+            <RadioButton
+          value="simpleItem"
+          label={I18N.Setting.Cost.FixedPrice}
+          style={styles.leftradioButton}
+          disabled={isView}
+          />
+            <RadioButton
+          value="complexItem"
+          label={I18N.Setting.Cost.ComplexPrice}
+          style={styles.rightradioButton}
+          disabled={isView}
+          />
+          </RadioButtonGroup>
           {defaultSelected === 'simpleItem' ? this._renderSimpleItem(item, index) : this._renderComplexItem(item, index)}
         </DeletableItem>
       </div>
-      )
-    });
+        )
+      });
 
-    return (
-      <div className="pop-manage-detail-content">
+      return (
+        <div className="pop-manage-detail-content">
         <div className="jazz-carbon-addItem">
           <div>{I18N.Common.Commodity.Electric}</div>
           <div className={classnames({
-        "jazz-carbon-addItem-addBtn": true,
-        "inactive": isView
-      })} onClick={this._handelAddPower}>
+          "jazz-carbon-addItem-addBtn": true,
+          "inactive": isView
+        })} onClick={this._handelAddPower}>
           {I18N.Common.Button.Add}
         </div>
         </div>
         {items}
+        {that._renderTouDetailSideNav()}
+        {that._renderFactorTypeDialog()}
       </div>
-      )
-  },
-  _renderCommodities: function() {
-    var costCommodities = this.state.cost.get('CostCommodities'),
-      that = this,
-      power = emptyMap(),
-      index = 0;
-    if (costCommodities.size !== 0) {
-      power = costCommodities.find(item => (item.get('CommodityId') === 1));
-      index = costCommodities.findIndex(item => (item.get('CommodityId') === 1));
-    }
+        )
+    },
+    _renderCommodities: function() {
+      var costCommodities = this.state.cost.get('CostCommodities'),
+        that = this,
+        power = emptyMap(),
+        index = 0;
+      if (costCommodities.size !== 0) {
+        power = costCommodities.find(item => (item.get('CommodityId') === 1));
+        index = costCommodities.findIndex(item => (item.get('CommodityId') === 1));
+      }
 
-    return (
-      <div className='jazz-vee-monitor-tag-background'>
+      return (
+        <div className='jazz-vee-monitor-tag-background'>
         {power.size === 0 ? null : that._renderPower(power, index)}
         </div>
-      )
-  },
-  _renderContent: function() {
-    var that = this,
-      {CostCommodities} = this.state.cost.toJS();
-    if (CostCommodities === null && this.props.formStatus === formStatus.VIEW) {
-      return (
-        <div style={{
-          color: '#767a7a',
-          fontSize: '14px'
-        }}>
+        )
+    },
+    _renderContent: function() {
+      var that = this,
+        {CostCommodities} = this.state.cost.toJS();
+      if (CostCommodities === null && this.props.formStatus === formStatus.VIEW) {
+        return (
+          <div style={{
+            color: '#767a7a',
+            fontSize: '14px'
+          }}>
           {I18N.Setting.Cost.NoCommodities}
         </div>
+          )
+      } else {
+        return (
+        that._renderCommodities()
         )
-    } else {
-      return (
-      that._renderCommodities()
-      )
-    }
-  },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-  },
-  componentDidMount: function() {
-    HierarchyStore.addCostChangeListener(this._onChange);
-    HierarchyAction.getCostByHierarchy(this.props.hierarchyId);
-  },
-  componentWillReceiveProps: function(nextProps) {
-    var that = this;
-    if (nextProps.formStatus === formStatus.VIEW) {
-      that.setState({
-        cost: HierarchyStore.getCost(),
-        isLoading: false
-      })
-    }
-  },
-  componentWillUnmount: function() {
-    HierarchyStore.removeCostChangeListener(this._onChange);
-  },
-  render: function() {
-    var isView = this.props.formStatus === formStatus.VIEW;
-    var loading = <div style={{
-      display: 'flex',
-      flex: 1,
-      'alignItems': 'center',
-      'justifyContent': 'center'
-    }}>
+      }
+    },
+    componentWillMount: function() {
+      this.initBatchViewbaleTextFiled();
+    },
+    componentDidMount: function() {
+      HierarchyStore.addCostChangeListener(this._onChange);
+      HierarchyAction.getCostByHierarchy(this.props.hierarchyId);
+    },
+    componentWillReceiveProps: function(nextProps) {
+      var that = this;
+      if (nextProps.formStatus === formStatus.VIEW) {
+        that.setState({
+          cost: HierarchyStore.getCost(),
+          isLoading: false
+        })
+      }
+    },
+    componentWillUnmount: function() {
+      HierarchyStore.removeCostChangeListener(this._onChange);
+    },
+    render: function() {
+      var isView = this.props.formStatus === formStatus.VIEW;
+      var loading = <div style={{
+        display: 'flex',
+        flex: 1,
+        'alignItems': 'center',
+        'justifyContent': 'center'
+      }}>
             <CircularProgress  mode="indeterminate" size={2} />
           </div>;
-    return (
-      <div className="pop-manage-detail-content" style={{
-        display: 'flex'
-      }}>
+      return (
+        <div className="pop-manage-detail-content" style={{
+          display: 'flex'
+        }}>
         {this.state.isLoading ? loading : this._renderContent()}
       </div>
-      )
-  },
+        )
+    },
 
-});
-module.exports = Cost;
+  });
+  module.exports = Cost;

@@ -217,7 +217,7 @@ var Hierarchy = React.createClass({
           } else {
             node = node.set('HierarchyId', parent.get('Id'));
           }
-
+          node = node.set('ParentType', parent.get('Type'));
         }
         HierarchyAction.createHierarchy(node.toJS());
       } else {

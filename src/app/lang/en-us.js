@@ -1800,6 +1800,10 @@ I18N.Setting.Cost.UsageCost = 'Consumption cost';
 I18N.Setting.Cost.SearchTouDetail = 'Price strategy';
 I18N.Setting.Cost.SearchPowerFactor = 'Power factor';
 I18N.Setting.Cost.TouDetail = 'Details of price strategy';
-
+I18N.Setting.Cost.Month = '/';
+I18N.Setting.Cost.Day = '';
+I18N.Setting.Cost.To = '-';
+I18N.Setting.Cost.PowerFactorFee = 'Power factor fee';
+I18N.Setting.Cost.SearchPowerFactor = 'Power factor';
 
 module.exports = I18N;
