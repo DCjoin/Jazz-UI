@@ -240,15 +240,13 @@ var Hierarchy = React.createClass({
       setTimeout(() => {
         this._setViewStatus();
       }, 1000);
+      this.setState({
+        isLoading: true
+      });
     } else if (this.state.infoTabNo === 3) {
       HierarchyAction.saveCalendar(node);
     } else if (this.state.infoTabNo === 5) {
       HierarchyAction.saveProperty(node);
-    }
-    if (this.state.infoTabNo !== 2) {
-      this.setState({
-        isLoading: true
-      });
     }
   },
   _switchTab(event) {

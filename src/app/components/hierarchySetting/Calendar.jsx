@@ -318,7 +318,7 @@ let CalendarItems = React.createClass({
   propTypes: {
     type: React.PropTypes.number,
     merge: React.PropTypes.func,
-    calendarItems: React.PropTypes.array,
+    calendarItems: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object,
     addCalendarItem: React.PropTypes.func,
@@ -404,14 +404,10 @@ var Calendar = React.createClass({
       isLoading: true
     });
   },
-  _onAllChange: function() {
-    this.setState({
-      allCalendar: HierarchyStore.getAllCalendar()
-    });
-  },
   _onChange: function() {
     this.setState({
       calendar: HierarchyStore.getCalendar(),
+      allCalendar: HierarchyStore.getAllCalendar(),
       isLoading: false
     }, () => {
       var isValid = this._isValid();
@@ -419,6 +415,9 @@ var Calendar = React.createClass({
     });
   },
   _handlerSave: function() {
+    this.setState({
+      isLoading: true
+    });
     return this.state.calendar.toJS();
   },
   _isValid: function() {
@@ -615,14 +614,14 @@ var Calendar = React.createClass({
         );
     }
   },
-  componentDidMount: function() {
+  componentWillMount: function() {
     HierarchyAction.getAllCalendar();
     HierarchyAction.getCalendar(this.props.hierarchyId);
-    HierarchyStore.addAllCalendarChangeListener(this._onAllChange);
+  },
+  componentDidMount: function() {
     HierarchyStore.addCalendarChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
-    HierarchyStore.removeAllCalendarChangeListener(this._onAllChange);
     HierarchyStore.removeCalendarChangeListener(this._onChange);
   },
   render: function() {

@@ -95,6 +95,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
       _tagList = _tagList.set(index, newTag);
     }
   },
+  ifEmitCalendarChange: function() {
+    var that = this;
+    if (_calendar !== null && _allCalendar !== null) {
+      that.emitCalendarChange();
+    }
+  },
   ifEmitTagChange: function() {
     var that = this;
     if (_tagList !== null & !!window.allCommodities && !!window.uoms) {
@@ -303,15 +309,6 @@ var HierarchyStore = assign({}, PrototypeStore, {
   removeLogListChangeListener: function(callback) {
     this.removeListener(LOG_CHANGE_EVENT, callback);
   },
-  emitAllCalendarChange: function() {
-    this.emit(ALL_CALENDAR_CHANGE_EVENT);
-  },
-  addAllCalendarChangeListener: function(callback) {
-    this.on(ALL_CALENDAR_CHANGE_EVENT, callback);
-  },
-  removeAllCalendarChangeListener: function(callback) {
-    this.removeListener(ALL_CALENDAR_CHANGE_EVENT, callback);
-  },
   emitCalendarChange: function() {
     this.emit(CALENDAR_CHANGE_EVENT);
   },
@@ -413,12 +410,12 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case HierarchyAction.GET_ALL_CALENDARS_FOR_HIERARCHY:
       HierarchyStore.setAllCalendar(action.calendar);
-      HierarchyStore.emitAllCalendarChange();
+      HierarchyStore.ifEmitCalendarChange();
       break;
     case HierarchyAction.GET_CALENDAR_FOR_HIERARCHY:
     case HierarchyAction.SET_CALENDAR_FOR_HIERARCHY:
       HierarchyStore.setCalendar(action.calendar);
-      HierarchyStore.emitCalendarChange();
+      HierarchyStore.ifEmitCalendarChange();
       break;
     case HierarchyAction.GET_PROPERTY_FOR_HIERARCHY:
     case HierarchyAction.SET_PROPERTY_FOR_HIERARCHY:
