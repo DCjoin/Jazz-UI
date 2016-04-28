@@ -11,8 +11,7 @@ let { Action } = LoginActionType;
 module.exports = {
 	login: function(params) {
     //console.log(JSON.stringify(params,0,1));
-		//由于"/webhost/API"未完全被替换，因此，临时使用newPost
-		Ajax.newPost('/AccessControl/ValidateUser', {
+		Ajax.post('/AccessControl/ValidateUser', {
 			params: params,
 			success: function(res) {
         // console.log('LoginActionCreator:'+JSON.stringify(res,0,1));
@@ -28,6 +27,11 @@ module.exports = {
 					data: res.body
 				});
 			}
+		});
+	},
+	logout: function(params) {
+		AppDispatcher.dispatch({
+			type: Action.LOGOUT
 		});
 	},
 };

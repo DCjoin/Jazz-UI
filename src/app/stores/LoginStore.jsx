@@ -57,9 +57,11 @@ let LoginStore = assign({}, EventEmitter.prototype, {
   },
   empty: function() {
     CookieUtil.set('UserId', null);
-    localStorage.setItem('UserId', null);
-    _currentUserId = null;
-    _currentUser = null;
+    CookieUtil.set('Username', null);
+    CookieUtil.set('currentCustomerId', null);
+    window.currentUserId = null;
+    window.currentUser = null;
+    window.currentCustomerId = null;
   },
   getLastError: function(argument) {
     return _lastError;

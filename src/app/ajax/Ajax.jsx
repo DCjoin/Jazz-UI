@@ -21,47 +21,6 @@ var _ajax = function(url, options) {
 	var realUrl = Config.ServeAddress + Config.APIBasePath + url,
 		type = options.type || "get",
 		params = options.params || {},
-
-		success = options.success || function(resBody) {
-			Util.log('Call Ajax Success: ' + realUrl);
-			Util.log('body: ');
-			Util.log(resBody);
-		},
-
-		error = options.error || function(err) {
-			Util.log('Call Ajax Error: ' + realUrl);
-			Util.log('err.response: ');
-			Util.log(err && err.response);
-		},
-
-		dataType = options.dataType || "application/json";
-
-	request[type.toLowerCase()](Config.ServeAddress + Config.APIBasePath + url)
-		.send(params)
-        .set('Accept', dataType)
-        .set('httpWebRequest.MediaType', dataType)
-        .set('Content-Type', dataType)
-        .end(function(err, res){
-        	if (res.ok && Util.isSuccess(res.body)) {
-    				success.call(options, Util.getResResult(res.body));
-        	} else {
-						if(res.body){
-							Util.ErrorHandler(options, res.body.error.Code);
-						}else if(res.text){
-							let errorObj = JSON.parse(res.text);
-							Util.ErrorHandler(options, errorObj.error.Code);
-						}
-
-        		error.call(options, err, res);
-        	}
-        });
-};
-
-var _newAjax = function(url, options) {
-	options = options || {};
-	var realUrl = Config.ServeAddress + Config.APIBasePath + url,
-		type = options.type || "get",
-		params = options.params || {},
 		success = options.success || function(resBody) {
 			Util.log('Call Ajax Success: ' + realUrl);
 			Util.log('body: ');
@@ -89,6 +48,7 @@ var _newAjax = function(url, options) {
 							let errorObj = JSON.parse(res.text);
 							Util.ErrorHandler(options, errorObj.error.Code);
 						}
+
         		error.call(options, err, res);
         	}
         });
@@ -104,12 +64,6 @@ module.exports = {
 	post: function(url, options) {
 		options.type = 'post';
 		_ajax(url, options);
-	},
-
-	//由于"/webhost/API"未完全被替换，因此，临时使用_newAjax
-	newPost:function(url, options) {
-		options.type = 'post';
-		_newAjax(url, options);
 	}
 
 };
