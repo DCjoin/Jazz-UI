@@ -118,7 +118,7 @@ let HierarchyAction = {
     Ajax.post('/Tag.svc/SetAssociation', {
       params: {
         dto: {
-          AssociationId: hierarchyId,
+          AssociationId: hierarchyId, //zone:id是负的
           AssociationType: 1,
           Tags: tags
         }
