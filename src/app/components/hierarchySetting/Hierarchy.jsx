@@ -49,6 +49,11 @@ var Hierarchy = React.createClass({
   },
   _onDataChange: function() {
     this._setViewStatus();
+    this.setState({
+      isLoading: false,
+      errorTitle: null,
+      errorContent: null
+    });
   },
   _onError: function(error) {
     this.setState({
@@ -226,14 +231,20 @@ var Hierarchy = React.createClass({
       } else {
         HierarchyAction.modifyHierarchy(node.toJS());
       }
+    } else if (this.state.infoTabNo === 2) {
+      HierarchyAction.modifyTags(node.hierarchyId, node.tags);
+      setTimeout(() => {
+        this._setViewStatus();
+      }, 1000);
+    } else if (this.state.infoTabNo === 3) {
+      HierarchyAction.saveCalendar(node);
+    } else if (this.state.infoTabNo === 5) {
+      HierarchyAction.saveProperty(node);
+    }
+    if (this.state.infoTabNo !== 2) {
       this.setState({
         isLoading: true
       });
-    } else if (this.state.infoTabNo === 2) {
-      HierarchyAction.modifyTags(node.hierarchyId, node.tags);
-      this._setViewStatus();
-    } else if (this.state.infoTabNo === 3) {
-      HierarchyAction.saveCalendar(node);
     }
   },
   _switchTab(event) {
@@ -321,11 +332,13 @@ var Hierarchy = React.createClass({
   componentDidMount: function() {
     HierarchyStore.addChangeListener(this._onChange);
     HierarchyStore.addCalendarChangeListener(this._onDataChange);
+    HierarchyStore.addPropertyChangeListener(this._onDataChange);
     HierarchyStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     HierarchyStore.removeChangeListener(this._onChange);
     HierarchyStore.removeCalendarChangeListener(this._onDataChange);
+    HierarchyStore.removePropertyChangeListener(this._onDataChange);
     HierarchyStore.removeErrorChangeListener(this._onError);
   },
   render: function() {

@@ -1,7 +1,6 @@
 'use strict';
 
 import React from "react";
-import classnames from "classnames";
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import Immutable from 'immutable';
@@ -9,7 +8,6 @@ import { Map, List } from 'immutable';
 import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
 import ViewableNumberField from '../../../controls/ViewableNumberField.jsx';
-import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import YearMonthItem from '../../../controls/YearMonthItem.jsx';
 import Regex from '../../../constants/Regex.jsx';
@@ -74,6 +72,7 @@ let PropertyItem = React.createClass({
         defaultValue: this.props.data.get('Value'),
         isViewStatus: this.props.isViewStatus,
         title: this._getTitle(),
+        format: null,
         didChanged: value => {
           this.props.merge({
             value,
@@ -124,9 +123,11 @@ var Property = React.createClass({
   _handlerSave: function() {
     return this.state.property.toJS();
   },
-  _isValid: function() {},
+  _isValid: function() {
+    return true;
+  },
   _getDefaultPropertyItem: function(type) {},
-  _addPropertyItem: function(type) {
+  _addPropertyItem: function(code) {
     var property = this.state.property;
     this.setState({
       property: property
@@ -135,7 +136,7 @@ var Property = React.createClass({
       this.props.setEditBtnStatus(!isValid);
     });
   },
-  _deletePropertyItem: function(type, index) {
+  _deletePropertyItem: function(code, index) {
     var property = this.state.property;
     this.setState({
       property: property
@@ -147,8 +148,15 @@ var Property = React.createClass({
   _merge: function(data) {
     var index = data.index,
       path = data.path,
-      value = data.value;
-    var property = this.state.property;
+      value = data.value,
+      code = data.code;
+    var property = this.state.property,
+      properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    propertyItemValue = propertyItemValue.setIn([index, path], value);
+    properties = properties.setIn([propertyIndex, 'Values'], propertyItemValue);
+    property = property.set('Properties', properties);
     this.setState({
       property: property
     }, () => {
@@ -182,8 +190,9 @@ var Property = React.createClass({
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.AArea,
           style: areaWidthStyle,
+          format: null,
           didChanged: value => {
-            this._.merge({
+            this._merge({
               value,
               index: 0,
               code: 'TotalArea',
@@ -205,6 +214,7 @@ var Property = React.createClass({
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.WArea,
           style: areaWidthStyle,
+          format: null,
           didChanged: value => {
             this._merge({
               value,
@@ -228,6 +238,7 @@ var Property = React.createClass({
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.CArea,
           style: areaWidthStyle,
+          format: null,
           didChanged: value => {
             this._merge({
               value,
@@ -324,8 +335,9 @@ var Property = React.createClass({
           defaultValue: totalRoom.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.ARoomNumber,
+          format: null,
           didChanged: value => {
-            this._.merge({
+            this._merge({
               value,
               index: 0,
               code: 'TotalRoom',
@@ -377,8 +389,9 @@ var Property = React.createClass({
           defaultValue: totalBed.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.ABedNumber,
+          format: null,
           didChanged: value => {
-            this._.merge({
+            this._merge({
               value,
               index: 0,
               code: 'TotalBed',
