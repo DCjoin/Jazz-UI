@@ -47,6 +47,9 @@ var Hierarchy = React.createClass({
       errorContent: null
     });
   },
+  _onDataChange: function() {
+    this._setViewStatus();
+  },
   _onError: function(error) {
     this.setState({
       errorTitle: error.title,
@@ -235,7 +238,6 @@ var Hierarchy = React.createClass({
       this._setViewStatus();
     } else if (this.state.infoTabNo === 3) {
       HierarchyAction.saveCalendar(node);
-      this._setViewStatus();
     }
   },
   _switchTab(event) {
@@ -322,10 +324,12 @@ var Hierarchy = React.createClass({
   },
   componentDidMount: function() {
     HierarchyStore.addChangeListener(this._onChange);
+    HierarchyStore.addCalendarChangeListener(this._onDataChange);
     HierarchyStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     HierarchyStore.removeChangeListener(this._onChange);
+    HierarchyStore.removeCalendarChangeListener(this._onDataChange);
     HierarchyStore.removeErrorChangeListener(this._onError);
   },
   render: function() {

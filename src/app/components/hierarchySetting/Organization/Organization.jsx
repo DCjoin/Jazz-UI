@@ -77,7 +77,7 @@ var Organization = React.createClass({
       if (this.refs.jazz_Org_calendar) {
         let calendar = this.refs.jazz_Org_calendar._handlerSave();
         this.props.handleSave({
-          HierarchyId: calendar.HierarchyId,
+          HierarchyId: this.props.selectedNode.get('Id'),
           Version: calendar.Version,
           CalendarItemGroups: calendar.CalendarItemGroups
         });

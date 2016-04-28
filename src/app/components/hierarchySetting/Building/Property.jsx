@@ -166,6 +166,9 @@ var Property = React.createClass({
     var hasTotalArea = totalArea.get('Values').size === 0 ? false : true,
       hasHeatingArea = heatingArea.get('Values').size === 0 ? false : true,
       hasCoolingArea = coolingArea.get('Values').size === 0 ? false : true;
+    var areaWidthStyle = {
+      width: '200px'
+    };
     if (hasTotalArea || hasHeatingArea || hasCoolingArea || !isView) {
       var areaTitle = (<div className='jazz-hierarchy-property-title'>
         <div className='jazz-hierarchy-property-title-text'>{I18N.Setting.DynamicProperty.Area}</div>
@@ -178,6 +181,7 @@ var Property = React.createClass({
           defaultValue: totalArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.AArea,
+          style: areaWidthStyle,
           didChanged: value => {
             this._.merge({
               value,
@@ -200,6 +204,7 @@ var Property = React.createClass({
           defaultValue: heatingArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.WArea,
+          style: areaWidthStyle,
           didChanged: value => {
             this._merge({
               value,
@@ -222,6 +227,7 @@ var Property = React.createClass({
           defaultValue: coolingArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.CArea,
+          style: areaWidthStyle,
           didChanged: value => {
             this._merge({
               value,
