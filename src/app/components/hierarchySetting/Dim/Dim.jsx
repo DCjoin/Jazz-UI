@@ -12,7 +12,7 @@ import FlatButton from '../../../controls/FlatButton.jsx';
 import Basic from './DimBasic.jsx';
 import MonitorTag from '../MonitorTag.jsx';
 
-var Building = React.createClass({
+var Dim = React.createClass({
 
   propTypes: {
     formStatus: React.PropTypes.string,
@@ -257,4 +257,4 @@ var Building = React.createClass({
       );
   },
 });
-module.exports = Building;
+module.exports = Dim;

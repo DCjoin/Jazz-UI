@@ -193,7 +193,8 @@ let HierarchyAction = {
     });
   },
   modifyHierarchy: function(dto) {
-    var that = this;
+    var that = this,
+      id = dto.Id;
     Ajax.post('/Hierarchy.svc/ModifyHierarchy', {
       params: {
         hierarchy: HierarchyStore.traversalNode(dto)
@@ -204,7 +205,7 @@ let HierarchyAction = {
           type: Action.SET_SELECTED_HIERARCHY_NODE,
           node: Immutable.fromJS(node)
         });
-        that.GetHierarchys(dto.Id);
+        that.GetHierarchys(id);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
@@ -226,7 +227,7 @@ let HierarchyAction = {
       success: function() {
         AppDispatcher.dispatch({
           type: Action.DELETE_HIERARCHY_DTO_SUCCESS,
-          nextSelectedNode: HierarchyStore.findNextSelectedNode(dto)
+          nextSelectedNode: HierarchyStore.findNextSelectedNode(HierarchyStore.traversalNode(dto))
         });
         that.GetHierarchys();
       },
