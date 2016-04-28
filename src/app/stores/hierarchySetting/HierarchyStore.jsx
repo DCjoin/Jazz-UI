@@ -259,6 +259,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getCost: function() {
     return _cost;
   },
+  getCommodities: function() {
+    var items = window.allCommodities;
+    items.shift();
+    items.pop();
+    return items;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },

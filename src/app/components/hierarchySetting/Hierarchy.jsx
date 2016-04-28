@@ -209,7 +209,11 @@ var Hierarchy = React.createClass({
     if (this.state.infoTabNo === 1) {
       if (!node.get('Id')) {
         var parent = HierarchyStore.getSelectedNode();
-        node = node.set('ParentId', parent.get('Id'));
+        if (parent.get('Type') === 101) {
+          node = node.set('ParentId', -parent.get('Id'));
+        } else {
+          node = node.set('ParentId', parent.get('Id'));
+        }
         node = node.set('CustomerId', parseInt(window.currentCustomerId));
         if (node.get('Type') === 101) {
           if (parent.get('Type') === 101) {

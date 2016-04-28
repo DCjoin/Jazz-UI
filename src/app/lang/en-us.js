@@ -1805,5 +1805,8 @@ I18N.Setting.Cost.Day = '';
 I18N.Setting.Cost.To = '-';
 I18N.Setting.Cost.PowerFactorFee = 'Power factor fee';
 I18N.Setting.Cost.SearchPowerFactor = 'Power factor';
+I18N.Setting.Cost.ReactivePower = 'Reactive energy';
+I18N.Setting.Cost.RealPower = 'Active energy';
+I18N.Setting.Cost.PaddingCost = 'Supplement';
 
 module.exports = I18N;
