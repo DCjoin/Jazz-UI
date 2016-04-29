@@ -231,6 +231,7 @@ let MainApp = React.createClass({
     if(this.state.viewState == viewState.SELECT_CUSTOMER){
       return(
         <SelectCustomer close={this._closeSelectCustomer}
+                        closable={this.props.params.customerId ? true: false}
                         currentCustomerId={parseInt(this.props.params.customerId)}
                         params={CustomersList}
                         userId={parseInt(window.currentUserId)}/>

@@ -156,18 +156,19 @@ var SelectCustomer = React.createClass({
     },
 
     render: function() {
-
-        var closeButton = (
-            <em className="icon-close pop-close-overlay-icon" onClick={this._onClose} style={{
-                margin: -10,
-                padding: 10,
-                position: 'absolute',
-                zIndex: 100,
-                top: '30px',
-                right: '30px',
-                color:'#fff'
-            }}></em>
-        );
+        if (this.props.closable){
+          var closeButton = (
+              <em className="icon-close pop-close-overlay-icon" onClick={this._onClose} style={{
+                  margin: -10,
+                  padding: 10,
+                  position: 'absolute',
+                  zIndex: 100,
+                  top: '30px',
+                  right: '30px',
+                  color:'#fff'
+              }}></em>
+          );
+        }
         var leftHandlerBarStyle = {};
         var rightHandlerBarStyle = {};
         if (this.state.currentIndex === 0) {
