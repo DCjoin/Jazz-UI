@@ -47,9 +47,12 @@ var HierarchyList = React.createClass({
       } else {
         items.forEach((item, index) => {
           if (index === 0) {
-            menuItems.push(
-              <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item} disabled={that.getAddBtnDisabled()}/>
-            );
+            if (!that.getAddBtnDisabled()) {
+              menuItems.push(
+                <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
+              );
+            }
+
           } else {
             menuItems.push(
               <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
