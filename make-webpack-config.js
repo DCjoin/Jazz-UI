@@ -26,7 +26,7 @@ module.exports = function(options) {
 
   var publicPath = options.devServer ?
     "http://localhost:3000/build/" :
-    "/assets/"; //"./";
+    "/webapihost/assets/"; //"./";
   var output = {
     path: path.join(__dirname, "build", "assets"),
     publicPath: publicPath,
