@@ -318,14 +318,39 @@ let CalendarItems = React.createClass({
   propTypes: {
     type: React.PropTypes.number,
     merge: React.PropTypes.func,
-    calendarItems: React.PropTypes.array,
+    calendarItems: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object,
     addCalendarItem: React.PropTypes.func,
     deleteCalendarItem: React.PropTypes.func,
     checkWorktime: React.PropTypes.func
   },
-  getTextByType: function() {
+  getInitialState: function() {
+    return ({
+      errorText: ''
+    });
+  },
+  _isValid: function() {
+    var calendarItems = this.props.calendarItems;
+    var length = calendarItems.size;
+
+    for (var i = 0; i < length; i++) {
+      for (var j = (i + 1); j < length; j++) {
+        if (parseInt(calendarItems.getIn([i, 'EffectiveTime'])) === parseInt(calendarItems.getIn([j, 'EffectiveTime']))) {
+          this.setState({
+            errorText: I18N.Common.Label.TimeZoneConflict
+          });
+          return false;
+        }
+      }
+    }
+
+    this.setState({
+      errorText: ''
+    });
+    return true;
+  },
+  _getTextByType: function() {
     var text = '';
     switch (this.props.type) {
       case 0:
@@ -359,7 +384,7 @@ let CalendarItems = React.createClass({
       calendar = null;
     if (!isView || hasCalendar) {
       addDom = (<div className='jazz-hierarchy-calendar-type-add'>
-        <div className='jazz-hierarchy-calendar-type-add-text'>{this.getTextByType()}</div>
+        <div className='jazz-hierarchy-calendar-type-add-text'>{this._getTextByType()}</div>
         {addButton}
       </div>);
     }
@@ -381,10 +406,12 @@ let CalendarItems = React.createClass({
           );
       });
     }
+    var error = this.state.errorText === '' ? null : (<div className='jazz-hierarchy-calendar-type-error'>{this.state.errorText}</div>);
     return (
       <div className='jazz-hierarchy-calendar-type'>
         {addDom}
         {calendar}
+        {error}
       </div>
 
       );
@@ -404,14 +431,10 @@ var Calendar = React.createClass({
       isLoading: true
     });
   },
-  _onAllChange: function() {
-    this.setState({
-      allCalendar: HierarchyStore.getAllCalendar()
-    });
-  },
   _onChange: function() {
     this.setState({
       calendar: HierarchyStore.getCalendar(),
+      allCalendar: HierarchyStore.getAllCalendar(),
       isLoading: false
     }, () => {
       var isValid = this._isValid();
@@ -419,15 +442,24 @@ var Calendar = React.createClass({
     });
   },
   _handlerSave: function() {
+    this.setState({
+      isLoading: true
+    });
     return this.state.calendar.toJS();
   },
   _isValid: function() {
     var calendar = this.state.calendar;
     var allCalendar = this.state.allCalendar;
+    var i;
     if (calendar === null || allCalendar === null) {
       return false;
     } else {
       var calendarItemGroups = calendar.get('CalendarItemGroups');
+      for (i = 0; i < calendarItemGroups.size; i++) {
+        if (!this.refs['calendarItems' + (i + 1)]._isValid()) {
+          return false;
+        }
+      }
       if (calendarItemGroups.getIn([0, 'CalendarItems']) === null && calendarItemGroups.getIn([1, 'CalendarItems']) === null && calendarItemGroups.getIn([2, 'CalendarItems']) === null) {
         return false;
       }
@@ -437,7 +469,7 @@ var Calendar = React.createClass({
           return false;
         }
         var calendarItems = calendarItemGroups.getIn([0, 'CalendarItems']);
-        for (var i = 0; i < calendarItems.size; i++) {
+        for (i = 0; i < calendarItems.size; i++) {
           if (calendarItems.getIn([i, 'WorkTimeCalendar']) === undefined) {
             return false;
           }
@@ -590,6 +622,7 @@ var Calendar = React.createClass({
         calendar = calendarItemGroups.map((item, i) => {
           let props = {
             key: i,
+            ref: 'calendarItems' + (i + 1),
             type: item.get('Type'),
             calendarItems: item.get('CalendarItems'),
             isViewStatus: isView,
@@ -615,14 +648,14 @@ var Calendar = React.createClass({
         );
     }
   },
-  componentDidMount: function() {
+  componentWillMount: function() {
     HierarchyAction.getAllCalendar();
     HierarchyAction.getCalendar(this.props.hierarchyId);
-    HierarchyStore.addAllCalendarChangeListener(this._onAllChange);
+  },
+  componentDidMount: function() {
     HierarchyStore.addCalendarChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
-    HierarchyStore.removeAllCalendarChangeListener(this._onAllChange);
     HierarchyStore.removeCalendarChangeListener(this._onChange);
   },
   render: function() {

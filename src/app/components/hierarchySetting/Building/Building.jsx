@@ -86,10 +86,15 @@ var Building = React.createClass({
       if (this.refs.jazz_building_calendar) {
         let calendar = this.refs.jazz_building_calendar._handlerSave();
         this.props.handleSave({
-          HierarchyId: calendar.HierarchyId,
+          HierarchyId: this.props.selectedNode.get('Id'),
           Version: calendar.Version,
           CalendarItemGroups: calendar.CalendarItemGroups
         });
+      }
+    } else if (this.props.infoTabNo === 5) {
+      if (this.refs.jazz_building_property) {
+        let property = this.refs.jazz_building_property._handlerSave();
+        this.props.handleSave(property);
       }
     }
   },
@@ -291,6 +296,8 @@ var Building = React.createClass({
       }
     } else if (this.props.infoTabNo === 3) {
       HierarchyAction.cancelSaveCalendar();
+    } else if (this.props.infoTabNo === 5) {
+      HierarchyAction.cancelSaveProperty();
     }
   },
   componentWillMount: function() {

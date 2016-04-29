@@ -9,7 +9,7 @@ let YearPicker = React.createClass({
 
   propTypes: {
     selectedIndex: React.PropTypes.number,
-    selectedYear: React.PropTypes.number,
+    selectedYear: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
     isViewStatus: React.PropTypes.bool,
     onYearPickerSelected: React.PropTypes.func,
     menuItemStyle: React.PropTypes.object,
