@@ -34,7 +34,8 @@ var HierarchyList = React.createClass({
   },
   getAddMenuItems: function() {
     var items = HierarchyStore.getDropDownMenuItemsByType(this.props.selectedNode.get('Type')),
-      menuItems = [];
+      menuItems = [],
+      that = this;
     var itemStyle = {
       fontSize: '14px',
       color: '#767a7a',
@@ -45,9 +46,16 @@ var HierarchyList = React.createClass({
         menuItems = [<MenuItem key={2} innerDivStyle={itemStyle} primaryText={items[0]}/>]
       } else {
         items.forEach((item, index) => {
-          menuItems.push(
-            <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
-          );
+          if (index === 0) {
+            menuItems.push(
+              <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item} disabled={that.getAddBtnDisabled()}/>
+            );
+          } else {
+            menuItems.push(
+              <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
+            );
+          }
+
         });
       }
 
@@ -259,8 +267,7 @@ var HierarchyList = React.createClass({
         type: "Add",
         text: I18N.Common.Glossary.Node,
         menuItems: this.getAddMenuItems(),
-        onItemClick: this._onMenuAddBtnClick,
-        disabled: this.getAddBtnDisabled()
+        onItemClick: this._onMenuAddBtnClick
       };
     var addBtnClasses = {
         'jazz-tag-leftpanel-header-item': !isAddStatus,
