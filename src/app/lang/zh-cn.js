@@ -1823,4 +1823,5 @@ I18N.Setting.Cost.ReactivePower = '无功电量';
 I18N.Setting.Cost.RealPower = '有功电量';
 I18N.Setting.Cost.PaddingCost = '月补充成本';
 I18N.Setting.Cost.OtherCommodities = '其他成本属性';
+I18N.Setting.Cost.CostCommodity = '成本属性';
 module.exports = I18N;

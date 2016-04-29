@@ -802,7 +802,7 @@ var Cost = React.createClass({
       });
 
       return (
-        <div className="pop-manage-detail-content">
+        <div>
         <div className="jazz-carbon-addItem">
           <div>{I18N.Common.Commodity.Electric}</div>
           <div className={classnames({
@@ -824,60 +824,91 @@ var Cost = React.createClass({
         costCommodities = this.state.cost.get('CostCommodities'),
         commodityItems = [];
       costCommodities.forEach((commodity, id) => {
-        var {CommodityId, Items} = commodity.toJS();
-        Items.forEach((item, itemId) => {
-          var selectedId = 0,
-            titleItems = [];
-          HierarchyStore.getCommodities().forEach((commodity, index) => {
-            titleItems.push({
-              payload: index,
-              text: commodity.Comment
-            });
-            if (commodity.Id === CommodityId) {
-              selectedId = index;
-            }
-          });
-          var dateProps = {
-              ref: 'date',
-              key: this.props.hierarchyId + '_commodity' + id + '_item' + itemId,
-              isViewStatus: isView,
-              date: item.get('EffectiveDate'),
-              onDateChange: date => {
-                // that.merge(
-                //   {
-                //     path: 'CostCommodities' + '.' + id + '.' + 'Items' + '.' + index + '.' + 'EffectiveDate',
-                //     value: date
-                //   }
-                // )
+        var {CommodityId, Items, UomId} = commodity.toJS();
+        if (CommodityId !== 1) {
+          var coItem = [];
+          Items.forEach((item, itemId) => {
+            var selectedId = 0,
+              titleItems = [];
+            HierarchyStore.getCommodities().forEach((co, index) => {
+              titleItems.push({
+                payload: index,
+                text: co.Comment
+              });
+              if (co.Id === CommodityId) {
+                selectedId = index;
               }
-            },
-            priceProps = {
-              isViewStatus: isView,
-              title: I18N.MainMenu.Price,
-              defaultValue: item.getIn(['SimpleItem', 'Price']),
-              regex: Regex.FactorRule,
-              errorMessage: I18N.Setting.CarbonFactor.ErrorContent,
-              maxLen: 16,
-              isRequired: true,
-              style: {
-                maxWidth: '200px'
+            });
+            var commodityProps = {
+                isViewStatus: isView,
+                title: I18N.Setting.Cost.CostCommodity,
+                selectedIndex: selectedId,
+                textField: "text",
+                dataItems: titleItems,
+                style: {
+                  maxWidth: '200px'
+                },
+                didChanged: value => {
+                  // CarbonAction.merge({
+                  //   value: {
+                  //     value: value,
+                  //     titleItems: titleItems,
+                  //     factorIndex: index
+                  //   },
+                  //   path: "EffectiveYear"
+                  // });
+                }
               },
-              didChanged: value => {
-                // CarbonAction.merge({
-                //   value: {
-                //     value: value,
-                //     factorIndex: index
-                //   },
-                //   path: "FactorValue"
-                // });
+              dateProps = {
+                ref: 'date',
+                key: this.props.hierarchyId + '_commodity' + id + '_item' + itemId,
+                isViewStatus: isView,
+                date: item.EffectiveDate,
+                onDateChange: date => {
+                  // that.merge(
+                  //   {
+                  //     path: 'CostCommodities' + '.' + id + '.' + 'Items' + '.' + index + '.' + 'EffectiveDate',
+                  //     value: date
+                  //   }
+                  // )
+                }
+              },
+              priceProps = {
+                defaultValue: item.SimpleItem.Price,
+                isViewStatus: isView,
+                title: I18N.MainMenu.Price + '(' + I18N.Setting.Cost.PriceUom + '/' + HierarchyStore.findUOMById(UomId) + ')',
+                didChanged: value => {
+                  // that.merge({
+                  //   path: 'CostCommodities' + '.' + index + '.' + 'Items' + '.' + id + '.' + 'SimpleItem' + '.' + 'Price',
+                  //   value: value
+                  // })
+                },
+                unit: ' ' + I18N.Setting.Cost.PriceUom + '/' + HierarchyStore.findUOMById(UomId)
+              };
+            var deleteProps = {
+              isDelete: !isView,
+              onDelete: () => {
+                that._handerDeleteOthers(id, itemId);
               }
             };
-        })
+            coItem.unshift(
+              <div className='jazz-carbon-factorItem'>
+              <DeletableItem {...deleteProps}>
+                  <ViewableDropDownMenu {...commodityProps}/>
+                  <YearMonthItem {...dateProps}/>
+                  <ViewableNumberField {...priceProps}/>
+                </DeletableItem>
+              </div>
+            )
+          })
+          commodityItems.push(coItem)
+        }
+
 
 
       })
       return (
-        <div className="pop-manage-detail-content">
+        <div>
         <div className="jazz-carbon-addItem">
           <div>{I18N.Setting.Cost.OtherCommodities}</div>
           <div className={classnames({
@@ -887,7 +918,7 @@ var Cost = React.createClass({
           {I18N.Common.Button.Add}
         </div>
         </div>
-
+        {commodityItems}
       </div>
         )
     },
@@ -903,7 +934,11 @@ var Cost = React.createClass({
 
       return (
         <div className='jazz-vee-monitor-tag-background'>
-        {power.size === 0 ? null : that._renderPower(power, index)}
+          <div className='pop-manage-detail-content'>
+            {power.size === 0 ? null : that._renderPower(power, index)}
+            {that._renderOthers()}
+          </div>
+
         </div>
         )
     },

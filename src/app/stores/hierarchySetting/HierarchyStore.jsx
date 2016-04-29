@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import { Map, List } from 'immutable';
 import Hierarchy from '../../constants/actionType/hierarchySetting/Hierarchy.jsx';
 import Main from '../../constants/actionType/Main.jsx';
+import AllCommodityStore from '../AllCommodityStore.jsx';
 
 function emptyMap() {
   return new Map();
@@ -166,7 +167,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getParent: function(node) {
     var parent;
     var f = function(item) {
-      if (item.get('Id') == node.get('ParentId')) {
+      if (item.get('Id') == node.get('ParentId') || (node.get('ParentType') === 101 && item.get('Id') == -node.get('ParentId'))) {
         parent = item;
       } else {
         if (item.get('Children')) {
@@ -260,9 +261,11 @@ var HierarchyStore = assign({}, PrototypeStore, {
     return _cost;
   },
   getCommodities: function() {
-    var items = window.allCommodities;
+    var items = assign([], AllCommodityStore.getAllCommodities());
+    console.log(items);
     items.shift();
     items.pop();
+    console.log(items);
     return items;
   },
   addChangeListener(callback) {
