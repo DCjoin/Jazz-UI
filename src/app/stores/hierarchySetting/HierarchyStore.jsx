@@ -268,10 +268,9 @@ var HierarchyStore = assign({}, PrototypeStore, {
   },
   getCommodities: function() {
     var items = assign([], AllCommodityStore.getAllCommodities());
-    console.log(items);
+    items.shift();
     items.shift();
     items.pop();
-    console.log(items);
     return items;
   },
   addChangeListener(callback) {

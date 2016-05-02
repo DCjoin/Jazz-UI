@@ -247,6 +247,8 @@ var Hierarchy = React.createClass({
       HierarchyAction.saveCalendar(node);
     } else if (this.state.infoTabNo === 5) {
       HierarchyAction.saveProperty(node);
+    } else if (this.state.infoTabNo === 4) {
+      HierarchyAction.saveCost(node);
     }
   },
   _switchTab(event) {

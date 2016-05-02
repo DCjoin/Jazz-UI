@@ -96,6 +96,9 @@ var Building = React.createClass({
         let property = this.refs.jazz_building_property._handlerSave();
         this.props.handleSave(property);
       }
+    } else if (this.props.infoTabNo === 4) {
+      let cost = this.refs.jazz_building_cost._handlerSave();
+      this.props.handleSave(cost);
     }
   },
   _renderHeader: function() {
@@ -188,6 +191,8 @@ var Building = React.createClass({
         ref: 'jazz_building_cost',
         formStatus: this.props.formStatus,
         hierarchyId: this.props.selectedNode.get('Id'),
+        setEditBtnStatus: this._setEditBtnStatus,
+        name: this.props.selectedNode.get('Name'),
         onUpdate: this._update
       };
     var content;
