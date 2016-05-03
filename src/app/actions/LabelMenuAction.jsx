@@ -15,7 +15,7 @@ let LabelMenuAction = {
     });
   },
   getHierNodes(hierIds) {
-    Ajax.post('/Hierarchy/GetHierarchyByIds', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyByIds', {
       params: {
         ids: hierIds
       },
@@ -33,7 +33,7 @@ let LabelMenuAction = {
     });
   },
   getAllIndustries() {
-    Ajax.post('/Administration/GetAllIndustries', {
+    Ajax.post('/Administration.svc/GetAllIndustries', {
       params: {
         includeRoot: true,
         onlyLeaf: false
@@ -52,7 +52,7 @@ let LabelMenuAction = {
     });
   },
   getAllZones() {
-    Ajax.post('/Administration/GetAllZones', {
+    Ajax.post('/Administration.svc/GetAllZones', {
       params: {
         includeRoot: true
       },
@@ -70,7 +70,7 @@ let LabelMenuAction = {
     });
   },
   getAllLabels() {
-    Ajax.post('/Administration/GetAllLabelings', {
+    Ajax.post('/Administration.svc/GetAllLabelings', {
       params: {},
       success: function(labelData) {
         AppDispatcher.dispatch({
@@ -86,7 +86,7 @@ let LabelMenuAction = {
     });
   },
   getAllBenchmarks() {
-    Ajax.post('/Administration/GetAllBenchmarks', {
+    Ajax.post('/Administration.svc/GetAllBenchmarks', {
       params: {},
       success: function(benchmarkData) {
         AppDispatcher.dispatch({
@@ -102,7 +102,7 @@ let LabelMenuAction = {
     });
   },
   getCustomerLabels() {
-    Ajax.post('/Customer/GetCustomerLabellings', {
+    Ajax.post('/Customer.svc/GetCustomerLabellings', {
       params: {
         filter: {
           CustomerId: parseInt(window.currentCustomerId)

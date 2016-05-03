@@ -4,7 +4,7 @@ import { Action } from '../constants/actionType/Labeling.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let LabelingAction = {
   getAllIndustries() {
-    Ajax.post('/Administration/GetAllIndustries', {
+    Ajax.post('/Administration.svc/GetAllIndustries', {
       params: {
         includeRoot: true,
         onlyLeaf: false
@@ -23,7 +23,7 @@ let LabelingAction = {
     });
   },
   getAllZones() {
-    Ajax.post('/Administration/GetAllZones', {
+    Ajax.post('/Administration.svc/GetAllZones', {
       params: {
         includeRoot: true
       },
@@ -41,7 +41,7 @@ let LabelingAction = {
     });
   },
   getAllLabelings() {
-    Ajax.post('/Administration/GetAllLabelings', {
+    Ajax.post('/Administration.svc/GetAllLabelings', {
       params: {},
       success: function(labelingData) {
         AppDispatcher.dispatch({
@@ -69,7 +69,7 @@ let LabelingAction = {
   },
   modifyLabeling(data) {
     var me = this;
-    Ajax.post('/Administration/ModifyLabeling', {
+    Ajax.post('/Administration.svc/ModifyLabeling', {
       params: {
         labeling: data
       },
@@ -90,7 +90,7 @@ let LabelingAction = {
   },
   createLabeling(data) {
     var me = this;
-    Ajax.post('/Administration/CreateLabeling', {
+    Ajax.post('/Administration.svc/CreateLabeling', {
       params: {
         labeling: data
       },
@@ -110,7 +110,7 @@ let LabelingAction = {
     });
   },
   deleteLabelingById(industryId, zoneId, version) {
-    Ajax.post('/Administration/DeleteLabeling', {
+    Ajax.post('/Administration.svc/DeleteLabeling', {
       params: {
         labeling: {
           IndustryId: industryId,

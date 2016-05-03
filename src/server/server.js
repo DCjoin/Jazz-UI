@@ -24,20 +24,6 @@ server.connection({
 	port: 8080
 });
 
-//fix refresh problems
-server.state('UserId', {
-    clearInvalid: true, // remove invalid cookies
-});
-server.state('Username', {
-    clearInvalid: true, // remove invalid cookies
-});
-server.state('currentUserId', {
-    clearInvalid: true, // remove invalid cookies
-});
-// server.state('UserInfo', {
-//     clearInvalid: true, // remove invalid cookies
-// });
-
 function returnIndexHtml(request,reply){
 	var html = fs.readFileSync(path.resolve(__dirname, "../app/index.html"), "utf-8");
 	html = html.replace('APP_URL',APP_URL);
@@ -95,18 +81,12 @@ server.route({
     handler: returnIndexHtml
 });
 
+
 module.exports = server;
 
-server.register(
-	// {
-	// 	options: {
-  //       cookieOptions: {
-  //           clearInvalid: true,
-  //           isSecure: false
-  //       }
-  //   }
-	// },
-	[{
+server.register([
+
+	{
     register: require("./orgnization.js")
   },
 	{
@@ -115,7 +95,7 @@ server.register(
 	{
 		register: require("./rank.js")
 	}
-	],function () {
+], function () {
     //Start the server
     server.start(function() {
         //Log to the console the host and port info

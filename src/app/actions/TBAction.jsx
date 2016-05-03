@@ -9,7 +9,7 @@ var Action = TB.Action;
 
 let TBAction = {
   loadData(tagId, callback){
-    Ajax.post('/TargetBaseline/GetTBsByVTag?', {
+    Ajax.post('/TargetBaseline.svc/GetTBsByVTag?', {
         params: {vtagId: tagId},
         success: function(tbs){
           console.log(tbs);
@@ -27,7 +27,7 @@ let TBAction = {
     });
   },
   saveData(data, callback){
-    Ajax.post('/TargetBaseline/ModifyTB?', {
+    Ajax.post('/TargetBaseline.svc/ModifyTB?', {
         params: {dto: data},
         success: function(dto){
           console.log(dto);
