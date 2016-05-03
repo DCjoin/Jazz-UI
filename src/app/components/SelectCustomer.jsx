@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import _findIndex from 'lodash/array/findIndex';
 import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
 import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
+import LoginStore from '../stores/LoginStore.jsx';
 
 var timeoutHandler = null;
 var _ = {
@@ -156,18 +157,19 @@ var SelectCustomer = React.createClass({
     },
 
     render: function() {
-
-        var closeButton = (
-            <em className="icon-close pop-close-overlay-icon" onClick={this._onClose} style={{
-                margin: -10,
-                padding: 10,
-                position: 'absolute',
-                zIndex: 100,
-                top: '30px',
-                right: '30px',
-                color:'#fff'
-            }}></em>
-        );
+        if (this.props.closable){
+          var closeButton = (
+              <em className="icon-close pop-close-overlay-icon" onClick={this._onClose} style={{
+                  margin: -10,
+                  padding: 10,
+                  position: 'absolute',
+                  zIndex: 100,
+                  top: '30px',
+                  right: '30px',
+                  color:'#fff'
+              }}></em>
+          );
+        }
         var leftHandlerBarStyle = {};
         var rightHandlerBarStyle = {};
         if (this.state.currentIndex === 0) {
@@ -185,7 +187,6 @@ var SelectCustomer = React.createClass({
                     <span style={{ position: 'fixed', width: '100%', fontSize: '22px', top: "20%", textAlign: 'center', color: 'white' }}>请选择客户</span>
                     <div style={{display: 'flex',flex: 1,flexDirection: 'column'}}>
                       {closeButton}
-
                       <div style={{ flex: 1, display: 'flex' }}>
                         <div className="jazz-select-customer-handler" style={leftHandlerBarStyle} onClick ={this._prevPage} >
                           <em className="icon-arrow-left"></em>
@@ -196,10 +197,10 @@ var SelectCustomer = React.createClass({
                         <div className="jazz-select-customer-handler" style={rightHandlerBarStyle} onClick ={this._nextPage}>
                           <em className="icon-arrow-right"></em>
                         </div>
-
                       </div>
-
                     </div>
+                    {LoginStore.checkHasSpAdmin() &&  <span title="资产管理开放平台" className="jazz-select-sp-manage"
+                       onClick={() => { this._saveSelectCustomer({CustomerId: -1}) }}>平台管理></span>}
                   </div>
                 </div>
             </div>

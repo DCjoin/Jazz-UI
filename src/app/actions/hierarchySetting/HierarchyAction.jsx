@@ -12,7 +12,7 @@ var _page,
 let HierarchyAction = {
   GetHierarchys: function(selectedId) {
     let customerId = parseInt(window.currentCustomerId);
-    Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive', {
+    Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive', {
       params: {
         customerId: customerId,
       },
@@ -37,7 +37,7 @@ let HierarchyAction = {
   //for customer
   getCustomersByFilter: function(customerId, refresh = false) {
     var that = this;
-    Ajax.post('/Customer.svc/GetCustomersByFilter', {
+    Ajax.post('/Customer/GetCustomersByFilter', {
       params: {
         filter: {
           CustomerId: customerId,
@@ -58,7 +58,7 @@ let HierarchyAction = {
     });
   },
   getLogListByCustomerId: function() {
-    Ajax.post('/Hierarchy.svc/GetHierarchyImportHistory', {
+    Ajax.post('/Hierarchy/GetHierarchyImportHistory', {
       params: {
         customerId: parseInt(window.currentCustomerId)
       },
@@ -115,7 +115,7 @@ let HierarchyAction = {
   },
   modifyTags: function(hierarchyId, tags) {
     var that = this;
-    Ajax.post('/Tag.svc/SetAssociation', {
+    Ajax.post('/Tag/SetAssociation', {
       params: {
         dto: {
           AssociationId: hierarchyId,
@@ -164,7 +164,7 @@ let HierarchyAction = {
   },
   createHierarchy: function(dto) {
     var that = this;
-    Ajax.post('/Hierarchy.svc/CreateHierarchy', {
+    Ajax.post('/Hierarchy/CreateHierarchy', {
       params: {
         hierarchy: dto
       },
@@ -219,7 +219,7 @@ let HierarchyAction = {
   },
   deleteHierarchy: function(dto) {
     var that = this;
-    Ajax.post('/Hierarchy.svc/DeleteHierarchy', {
+    Ajax.post('/Hierarchy/DeleteHierarchy', {
       params: {
         hierarchy: HierarchyStore.traversalNode(dto)
       },
@@ -243,7 +243,7 @@ let HierarchyAction = {
     });
   },
   getAllCalendar: function() {
-    Ajax.post('/Administration.svc/GetAllCalendars', {
+    Ajax.post('/Administration/GetAllCalendars', {
       params: {
       },
       success: function(calendar) {
@@ -312,7 +312,7 @@ let HierarchyAction = {
   },
   getAllIndustries: function() {
     var that = this;
-    Ajax.post('/Administration.svc/GetAllIndustries', {
+    Ajax.post('/Administration/GetAllIndustries', {
       params: {
         includeRoot: false,
         onlyLeaf: true
@@ -331,7 +331,7 @@ let HierarchyAction = {
   },
   getAllZones: function() {
     var that = this;
-    Ajax.post('/Administration.svc/GetAllZones', {
+    Ajax.post('/Administration/GetAllZones', {
       params: {
         includeRoot: false
       },

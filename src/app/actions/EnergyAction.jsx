@@ -37,9 +37,9 @@ let EnergyAction = {
       tagOptions: tagOptions,
       relativeDate: relativeDate
     });
-    let path = '/Energy.svc/AggregateTagsData';
+    let path = '/Energy/AggregateTagsData';
     if (timeRange.length > 1) {
-      path = '/Energy.svc/AggregateTimeSpansData';
+      path = '/Energy/AggregateTimeSpansData';
     }
 
     Ajax.post(path, {
@@ -86,7 +86,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/GetTagsData', {
+    Ajax.post('/Energy/GetTagsData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -131,7 +131,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/AggregateCostData', {
+    Ajax.post('/Energy/AggregateCostData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -177,7 +177,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/GetCostData', {
+    Ajax.post('/Energy/GetCostData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -223,7 +223,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/AggregateElectricityCostData', {
+    Ajax.post('/Energy/AggregateElectricityCostData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -268,7 +268,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/GetElectricityCostData', {
+    Ajax.post('/Energy/GetElectricityCostData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -316,7 +316,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/GetTagsData', {
+    Ajax.post('/Energy/GetTagsData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -359,7 +359,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/RatioGetTagsData', {
+    Ajax.post('/Energy/RatioGetTagsData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -401,7 +401,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/GetEnergyUsageUnitData', {
+    Ajax.post('/Energy/GetEnergyUsageUnitData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -449,7 +449,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/GetCostUnitData', {
+    Ajax.post('/Energy/GetCostUnitData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -485,7 +485,7 @@ let EnergyAction = {
       labelingType: labelingType
     });
 
-    Ajax.post('/Energy.svc/LabelingGetTagsData', {
+    Ajax.post('/Energy/LabelingGetTagsData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -527,7 +527,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/RankingEnergyUsageData', {
+    Ajax.post('/Energy/RankingEnergyUsageData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -571,7 +571,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/RankingCarbonData', {
+    Ajax.post('/Energy/RankingCarbonData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -614,7 +614,7 @@ let EnergyAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/RankingCostData', {
+    Ajax.post('/Energy/RankingCostData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
