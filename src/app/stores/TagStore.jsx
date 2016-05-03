@@ -328,7 +328,7 @@ var TagStore = assign({}, PrototypeStore, {
   setDataByAlarm(data) {
     _data = data;
     _isLoading = false;
-    this.setCurrentTagList(data.GetPageTagDataResult);
+    this.setCurrentTagList(data.Data);
   },
   // doWidgetDtos: function(widgetDto) {
   //   this.resetTagInfo(widgetDto.WidgetType);
