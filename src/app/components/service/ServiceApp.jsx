@@ -8,6 +8,28 @@ import NetworkChecker from '../../controls/NetworkChecker.jsx';
 
 let ServiceApp = React.createClass({
   mixins: [Navigation, State],
+
+  _redirectRouter : function(target, params) {
+      if (!target) {
+          return;
+      }
+      var _redirectFunc = this.context.router.transitionTo;
+      if (this.props.routes.length < 3) {
+          _redirectFunc = this.context.router.replaceWith;
+      }
+      if (target.children && target.children.length > 0) {
+          _redirectFunc(target.children[0].name, params);
+      } else {
+          _redirectFunc(target.name, params);
+      }
+  },
+  _showCustomerList : function(argument) {
+    this._redirectRouter({
+        name: 'map',
+        title: I18N.MainMenu.Map
+    },assign({}, this.props.params, {customerId: '312527'}));
+  },
+
   componentDidMount: function() {},
   render: function() {
     var menuItems = [
@@ -91,7 +113,7 @@ let ServiceApp = React.createClass({
 
     return (
       <div className='jazz-main'>
-            <MainAppBar items={menuItems} title={I18N.Setting.SPManagement}/>
+            <MainAppBar items={menuItems} title={I18N.Setting.SPManagement}  showCustomerList={this._showCustomerList}/>
             <RouteHandler {...this.props} />
             <NetworkChecker></NetworkChecker>
         </div>

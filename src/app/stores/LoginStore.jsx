@@ -18,10 +18,16 @@ let _currentUser = null;
 let _lastError = null;
 
 let LoginStore = assign({}, EventEmitter.prototype, {
+  checkHasSpAdmin: function() {
+    //console.log('1111111'+JSON.stringify(_currentUser,0,1));
+    if (_currentUser.UserType === -1) {
+      return true;
+    }
+    return false;
+  },
   init: function(data, success) {
     if (success) {
       _lastError = null;
-
       //, {'expires':5,'path':'/'}
       //CookieUtil.set('UserInfo', JSON.stringify(data));
       CookieUtil.set('UserId', data.Id);
@@ -29,6 +35,8 @@ let LoginStore = assign({}, EventEmitter.prototype, {
 
       window.currentUserId = data.Id;
       window.currentUser = data;
+      _currentUser = data;
+      return _currentUser;
     } else {
       this.empty();
       _lastError = data;

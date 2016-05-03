@@ -83,6 +83,16 @@ let MainApp = React.createClass({
       this.setState({viewState: viewState.SELECT_CUSTOMER});
     }
 
+    if(currentCustomer && currentCustomer.CustomerId === -1){
+      //切换至系统管理
+      this._redirectRouter({
+          name: 'workday',
+          title: I18N.MainMenu.Workday
+      },this.props.params);
+      this.setState({viewState: viewState.MAIN});
+      return;
+    }
+
     if (!_.isEmpty(currentCustomer) && customerCode != currentCustomer.Id.toString()) {
       params.customerId = currentCustomer.Id;
       window.currentCustomerId = currentCustomer.Id;
