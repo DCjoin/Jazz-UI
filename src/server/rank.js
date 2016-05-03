@@ -8,7 +8,7 @@ var sleep = util.sleep;
 exports.register = function(server, options, next){
   server.route([{
     method: 'POST',
-    path: '/webhost/API/Energy/RankingEnergyUsageData',
+    path: '/webhost/API/Energy.svc/RankingEnergyUsageData',
     handler: function (request, reply){
   		reply({
         RankingEnergyUsageDataResult:{

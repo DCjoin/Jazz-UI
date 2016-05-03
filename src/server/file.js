@@ -10,7 +10,7 @@ var sleep = util.sleep;
     server.route([
         {
     	    method: 'POST',
-    	    path: '/webhost/API/Dashboard/GetWdigetFolderTreeByCustomerId',
+    	    path: '/webhost/API/Dashboard.svc/GetWdigetFolderTreeByCustomerId',
     	    handler: function (request, reply) {
     			reply({
             GetHierarchyTreeDtosRecursiveResult:
@@ -23,7 +23,7 @@ var sleep = util.sleep;
         },
         {
           method: 'POST',
-          path: '/webhost/API/Dashboard/CreateWidgetOrFolder',
+          path: '/webhost/API/Dashboard.svc/CreateWidgetOrFolder',
           handler: function (request, reply) {
             	var newUser = request.payload;
 
@@ -44,7 +44,7 @@ var sleep = util.sleep;
         },
         {
           method: 'POST',
-          path: '/webhost/API/Dashboard/ModifyFolderName',
+          path: '/webhost/API/Dashboard.svc/ModifyFolderName',
           handler: function (request, reply) {
               var newUser = request.payload;
 

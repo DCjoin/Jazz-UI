@@ -9,7 +9,7 @@ var Action = Dim.Action;
 
 let DimAction = {
   loadall(data){
-    Ajax.post('/AreaDimension/GetAreaDimensionTree?', {
+    Ajax.post('/AreaDimension.svc/GetAreaDimensionTree?', {
         params: {hierarchyId: data},
         success: function(dimList){
           AppDispatcher.dispatch({

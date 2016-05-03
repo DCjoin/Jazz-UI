@@ -323,7 +323,8 @@ let MapPanel = React.createClass({
     MapStore.addBuildingInfoListener(this._onBuildingInfoChanged);
     LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
 
-    MapAction.getMapBuildingsByCustomerId(5);
+    // console.log('MapPanel params:' + JSON.stringify(this.getParams(),0,1));
+    MapAction.getMapBuildingsByCustomerId(5,this.getParams().customerId);
   // this.setState({
   //   isloading: true
   // });

@@ -16,13 +16,13 @@ module.exports = {
   },
 
   getCustomer: function(userId) {
-    Ajax.post('/Customer/GetCustomersByFilter', {
+    Ajax.post('/Customer.svc/GetCustomersByFilter', {
       params : {
           "filter": {
               "UserId": userId,
               "Order": {
-                  "Column": "Id",
-                  "Type": 1
+                  "Column": "Name",
+                  "Type": 0
               }
           }
       },
