@@ -110,8 +110,6 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     } else {
       _currentPrivilege = role.PrivilegeCodes;
     }
-
-
   },
   getCurrentPrivilege: function() {
     return _currentPrivilege;

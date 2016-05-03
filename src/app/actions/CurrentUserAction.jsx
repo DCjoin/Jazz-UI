@@ -8,7 +8,7 @@ var UserTypeName = null,
 let CurrentUserAction = {
   getUser: function(userId) {
     var that = this;
-    Ajax.post('/User.svc/GetUsersByFilter', {
+    Ajax.post('/User/GetUsersByFilter', {
       params: {
         filter: {
           UserIds: [userId]
@@ -30,7 +30,7 @@ let CurrentUserAction = {
     });
   },
   getRoles: function(userId) {
-    Ajax.post('/AccessControl.svc/GetRolesByFilter', {
+    Ajax.post('/AccessControl/GetRolesByFilter', {
       params: {
         filter: {
           UserIds: [userId]
@@ -52,7 +52,7 @@ let CurrentUserAction = {
 
   },
   resetPassword: function(passwordDto) {
-    Ajax.post('/User.svc/ResetPassword', {
+    Ajax.post('/User/ResetPassword', {
       params: {
         dto: passwordDto
       },
@@ -72,7 +72,7 @@ let CurrentUserAction = {
     });
   },
   modifyProfile: function(data) {
-    Ajax.post('/User.svc/ModifyProfile', {
+    Ajax.post('/User/ModifyProfile', {
       params: {
         dto: {
           Comment: data.Comment,

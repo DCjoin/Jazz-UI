@@ -5,7 +5,7 @@ import {Action} from '../constants/actionType/Main.jsx';
 
 let MainAction = {
   getAllUoms(){
-    Ajax.post('/Administration.svc/GetAllUoms', {
+    Ajax.post('/Administration/GetAllUoms', {
         params: {},
         success: function(uoms){
           AppDispatcher.dispatch({
@@ -21,7 +21,7 @@ let MainAction = {
     });
   },
   getAllCommodities(){
-    Ajax.post('/Administration.svc/GetAllCommodity', {
+    Ajax.post('/Administration/GetAllCommodity', {
         params: {},
         success: function(commodities){
           AppDispatcher.dispatch({
