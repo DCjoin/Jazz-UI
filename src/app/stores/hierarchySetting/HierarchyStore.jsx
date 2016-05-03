@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import { Map, List } from 'immutable';
 import Hierarchy from '../../constants/actionType/hierarchySetting/Hierarchy.jsx';
 import Main from '../../constants/actionType/Main.jsx';
+import AllCommodityStore from '../AllCommodityStore.jsx';
 
 function emptyMap() {
   return new Map();
@@ -19,15 +20,19 @@ var _hierarchys = emptyMap(),
   _total = null,
   _customer = emptyMap(),
   _calendar = null,
+  _property = null,
   _allCalendar = null,
   _industries = null,
-  _zones = null;
+  _zones = null,
+  _cost = emptyMap();
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
-  CHANGE_LOG_EVENT = 'changelog',
-  CHANGER_CALENDAR_EVENT = 'changecalendar',
-  CHANGER_ALL_CALENDAR_EVENT = 'changeallcalendar',
+  LOG_CHANGE_EVENT = 'logchange',
+  CALENDAR_CHANGE_EVENT = 'calendarchange',
+  ALL_CALENDAR_CHANGE_EVENT = 'allcalendarchange',
+  PROPERTY_CHANGE_EVENT = 'propertychange',
+  COST_CHANGE_EVENT = 'costchange',
   TAG_CHANGE_EVENT = 'tagchange';
 var HierarchyStore = assign({}, PrototypeStore, {
   traversalNode: function(node) {
@@ -85,10 +90,16 @@ var HierarchyStore = assign({}, PrototypeStore, {
     return (filter.get('Comment'));
   },
   setTagEnergyConsumption: function(tag) {
-    var newTag = Immutable.fromJS(tag);
+    var newTag = Immutable.fromJS(tag[0]);
     var index = _tagList.findIndex(item => (item.get('Id') === newTag.get('Id')));
     if (index !== -1) {
       _tagList = _tagList.set(index, newTag);
+    }
+  },
+  ifEmitCalendarChange: function() {
+    var that = this;
+    if (_calendar !== null && _allCalendar !== null) {
+      that.emitCalendarChange();
     }
   },
   ifEmitTagChange: function() {
@@ -97,17 +108,29 @@ var HierarchyStore = assign({}, PrototypeStore, {
       that.emitTagChange();
     }
   },
+  ifEmitCostChange: function() {
+    var that = this;
+    if (_cost.size !== 0 && !!window.uoms) {
+      that.emitCostChange();
+    }
+  },
   setAllCalendar: function(calendar) {
-    var _allCalendar = Immutable.fromJS(calendar);
+    _allCalendar = Immutable.fromJS(calendar);
   },
   getAllCalendar: function() {
     return _allCalendar;
   },
   setCalendar: function(calendar) {
-    var _calendar = Immutable.fromJS(calendar);
+    _calendar = Immutable.fromJS(calendar);
   },
   getCalendar: function() {
     return _calendar;
+  },
+  setProperty: function(property) {
+    _property = Immutable.fromJS(property);
+  },
+  getProperty: function() {
+    return _property;
   },
   setSelectedNode: function(selectedNode) {
     if (selectedNode.get('Type') !== -1) {
@@ -131,10 +154,26 @@ var HierarchyStore = assign({}, PrototypeStore, {
     }
     return items;
   },
+  getNodeById: function(id) {
+    var node;
+    var f = function(item) {
+      if (item.get('Id') == id) {
+        node = item;
+      } else {
+        if (item.get('Children')) {
+          item.get('Children').forEach(child => {
+            f(child);
+          });
+        }
+      }
+    };
+    f(_hierarchys);
+    return node;
+  },
   getParent: function(node) {
     var parent;
     var f = function(item) {
-      if (item.get('Id') == node.get('ParentId')) {
+      if (item.get('Id') == node.get('ParentId') || (node.get('ParentType') === 101 && item.get('Id') == -node.get('ParentId'))) {
         parent = item;
       } else {
         if (item.get('Children')) {
@@ -146,6 +185,25 @@ var HierarchyStore = assign({}, PrototypeStore, {
     };
     f(_hierarchys);
     return parent;
+  },
+  getPreNode: function(node, parentNode) {
+    var children = parentNode.get('Children'),
+      index = children.findIndex(item => item.get('Id') === node.get('Id'));
+    if (index === 0) {
+      return null;
+    } else {
+      return children.getIn([index - 1]);
+    }
+
+  },
+  getNextNode: function(node, parentNode) {
+    var children = parentNode.get('Children'),
+      index = children.findIndex(item => item.get('Id') === node.get('Id'));
+    if (index === children.size - 1) {
+      return null;
+    } else {
+      return children.getIn([index + 1]);
+    }
   },
   getAddBtnStatusByNode: function(node) {
     var that = this;
@@ -202,6 +260,20 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getAllZones: function() {
     return _zones;
   },
+  setCost: function(cost) {
+    _cost = Immutable.fromJS(cost);
+  },
+  getCost: function() {
+    return _cost;
+  },
+  getCommodities: function() {
+    var items = assign([], AllCommodityStore.getAllCommodities());
+    console.log(items);
+    items.shift();
+    items.pop();
+    console.log(items);
+    return items;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -232,31 +304,31 @@ var HierarchyStore = assign({}, PrototypeStore, {
     this.emit(CUSTOMER_CHANGE_EVENT, args);
   },
   emitLogListChange: function() {
-    this.emit(CHANGE_LOG_EVENT);
+    this.emit(LOG_CHANGE_EVENT);
   },
   addLogListChangeListener: function(callback) {
-    this.on(CHANGE_LOG_EVENT, callback);
+    this.on(LOG_CHANGE_EVENT, callback);
   },
   removeLogListChangeListener: function(callback) {
-    this.removeListener(CHANGE_LOG_EVENT, callback);
-  },
-  emitAllCalendarChange: function() {
-    this.emit(CHANGER_ALL_CALENDAR_EVENT);
-  },
-  addAllCalendarChangeListener: function(callback) {
-    this.on(CHANGER_ALL_CALENDAR_EVENT, callback);
-  },
-  removeAllCalendarChangeListener: function(callback) {
-    this.removeListener(CHANGER_ALL_CALENDAR_EVENT, callback);
+    this.removeListener(LOG_CHANGE_EVENT, callback);
   },
   emitCalendarChange: function() {
-    this.emit(CHANGER_CALENDAR_EVENT);
+    this.emit(CALENDAR_CHANGE_EVENT);
   },
   addCalendarChangeListener: function(callback) {
-    this.on(CHANGER_CALENDAR_EVENT, callback);
+    this.on(CALENDAR_CHANGE_EVENT, callback);
   },
   removeCalendarChangeListener: function(callback) {
-    this.removeListener(CHANGER_CALENDAR_EVENT, callback);
+    this.removeListener(CALENDAR_CHANGE_EVENT, callback);
+  },
+  emitPropertyChange: function() {
+    this.emit(PROPERTY_CHANGE_EVENT);
+  },
+  addPropertyChangeListener: function(callback) {
+    this.on(PROPERTY_CHANGE_EVENT, callback);
+  },
+  removePropertyChangeListener: function(callback) {
+    this.removeListener(PROPERTY_CHANGE_EVENT, callback);
   },
   addTagChangeListener(callback) {
     this.on(TAG_CHANGE_EVENT, callback);
@@ -266,6 +338,15 @@ var HierarchyStore = assign({}, PrototypeStore, {
   },
   emitTagChange(args) {
     this.emit(TAG_CHANGE_EVENT, args);
+  },
+  addCostChangeListener(callback) {
+    this.on(COST_CHANGE_EVENT, callback);
+  },
+  removeCostChangeListener(callback) {
+    this.removeListener(COST_CHANGE_EVENT, callback);
+  },
+  emitCostChange(args) {
+    this.emit(COST_CHANGE_EVENT, args);
   },
 });
 var HierarchyAction = Hierarchy.Action,
@@ -280,8 +361,15 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
         HierarchyStore.setSelectedNode(_hierarchys);
         HierarchyStore.emitChange(_hierarchys);
       } else {
-        HierarchyStore.setSelectedNode(_selectedNode);
-        HierarchyStore.emitChange(_selectedNode);
+        if (action.selectedId) {
+          let node = HierarchyStore.getNodeById(action.selectedId);
+          HierarchyStore.setSelectedNode(node);
+          HierarchyStore.emitChange(node);
+        } else {
+          HierarchyStore.setSelectedNode(_selectedNode);
+          HierarchyStore.emitChange(_selectedNode);
+        }
+
       }
       HierarchyStore.emitChange();
       break;
@@ -306,12 +394,10 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case MainAction.GET_ALL_UOMS_SUCCESS:
       HierarchyStore.ifEmitTagChange();
+      HierarchyStore.ifEmitCostChange();
       break;
     case MainAction.GET_ALL_COMMODITY_SUCCESS:
       HierarchyStore.ifEmitTagChange();
-      break;
-    case HierarchyAction.SAVE_ASSOCIATED_TAG_SUCCESS:
-      HierarchyStore.emitChange(_selectedNode);
       break;
     case HierarchyAction.CLEAR_ALL_ASSOCIATED_TAGS:
       HierarchyStore.clearAll();
@@ -327,11 +413,17 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case HierarchyAction.GET_ALL_CALENDARS_FOR_HIERARCHY:
       HierarchyStore.setAllCalendar(action.calendar);
-      HierarchyStore.emitAllCalendarChange();
+      HierarchyStore.ifEmitCalendarChange();
       break;
     case HierarchyAction.GET_CALENDAR_FOR_HIERARCHY:
+    case HierarchyAction.SET_CALENDAR_FOR_HIERARCHY:
       HierarchyStore.setCalendar(action.calendar);
-      HierarchyStore.emitCalendarChange();
+      HierarchyStore.ifEmitCalendarChange();
+      break;
+    case HierarchyAction.GET_PROPERTY_FOR_HIERARCHY:
+    case HierarchyAction.SET_PROPERTY_FOR_HIERARCHY:
+      HierarchyStore.setProperty(action.property);
+      HierarchyStore.emitPropertyChange();
       break;
     case HierarchyAction.GET_ALL_INDUSTRIES_FOR_HIERARCHY:
       HierarchyStore.setIndustries(action.industries);
@@ -342,6 +434,16 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
     case HierarchyAction.SET_ENERGY_CONSUMPTION:
       HierarchyStore.setTagEnergyConsumption(action.tag);
       HierarchyStore.ifEmitTagChange();
+      break;
+    case HierarchyAction.CANCEL_SAVE_CALENDAR:
+      HierarchyStore.emitCalendarChange();
+      break;
+    case HierarchyAction.CANCEL_SAVE_PROPERTY:
+      HierarchyStore.emitPropertyChange();
+      break;
+    case HierarchyAction.GET_COST_BY_HIERARCHY:
+      HierarchyStore.setCost(action.cost);
+      HierarchyStore.ifEmitCostChange();
       break;
   }
 });

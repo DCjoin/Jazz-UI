@@ -51,15 +51,15 @@ I18N.MainMenu.Report = 'Report';
 I18N.MainMenu.DailyReport = 'Daily report';
 I18N.MainMenu.Template = 'Template';
 I18N.MainMenu.CustomerSetting = 'Customer';
-I18N.MainMenu.TagSetting = '数据点配置';
+I18N.MainMenu.TagSetting = 'Tag Config';
 I18N.MainMenu.PTagManagement = 'PTag';
 I18N.MainMenu.VTagManagement = 'VTag';
 I18N.MainMenu.VEEMonitorRule = 'VE&E';
 I18N.MainMenu.TagBatchImportLog = 'Import log';
-I18N.MainMenu.HierarchyNodeSetting = '层级节点配置';
-I18N.MainMenu.HierarchyLog = '配置导入日志';
-I18N.MainMenu.CustomSetting = '自定义配置';
-I18N.MainMenu.HierarchySetting = '层级配置';
+I18N.MainMenu.HierarchyNodeSetting = 'Hierarchy Config';
+I18N.MainMenu.HierarchyLog = 'Config import log';
+I18N.MainMenu.CustomSetting = 'Customer config';
+I18N.MainMenu.HierarchySetting = 'Hierarchy config';
 I18N.MainMenu.CustomizedLabeling = 'Labelling';
 
 I18N.MainMenu.Calendar = 'Calendar';
@@ -92,6 +92,32 @@ I18N.M212006 = 'Incorrect password';
 I18N.M212007 = 'Incorrect service provider domain name';
 
 I18N.Common = {};
+I18N.Common.Commodity = {};
+I18N.Common.Commodity.Electric = 'Electricity';
+I18N.Common.Commodity.Water = 'Water';
+I18N.Common.Commodity.Gas = 'Gas';
+I18N.Common.Commodity.Air = 'AirQuality';
+I18N.Common.Commodity.Steam = 'Steam';
+I18N.Common.Commodity.HeatQ = 'HeatQ';
+I18N.Common.Commodity.CoolQ = 'CoolQ';
+I18N.Common.Commodity.Coal = 'Coal';
+I18N.Common.Commodity.Oil = 'Crude oil';
+I18N.Common.Commodity.Other = 'Others';
+I18N.Common.Commodity.CleanedCoal = 'Cleaned coal';
+I18N.Common.Commodity.Coke = 'Coke';
+I18N.Common.Commodity.Petrol = 'Petrol';
+I18N.Common.Commodity.Kerosene = 'Kerosene';
+I18N.Common.Commodity.LPG = 'LPG';
+I18N.Common.Commodity.CokeOvenGas = 'Coke oven gas';
+I18N.Common.Commodity.LowPressureSteam = 'L-P Steam';
+I18N.Common.Commodity.MediumPressureSteam = 'M-P steam';
+I18N.Common.Commodity.HighPressureSteam = 'H-P steam';
+I18N.Common.Commodity.HeavyWater = 'Heavy water';
+I18N.Common.Commodity.ReclaimedWater = 'Recycled water';
+I18N.Common.Commodity.LightWater = 'Light water';
+I18N.Common.Commodity.DieselOil = 'Diesel oil';
+I18N.Common.Commodity.Unspecified = 'Not specified';
+
 I18N.Common.Glossary = {};
 I18N.Common.Glossary.HierarchyNode = 'Hierarchy node';
 I18N.Common.Glossary.Max = 'Max';
@@ -140,6 +166,7 @@ I18N.Common.Glossary.Organization = 'Organization';
 I18N.Common.Glossary.Site = 'Site';
 I18N.Common.Glossary.Building = 'Building';
 I18N.Common.Glossary.Node = 'Node';
+I18N.Common.Glossary.Dim = 'Area';
 
 I18N.Common.Per = {};
 I18N.Common.Per.Person = '/Person';
@@ -207,6 +234,7 @@ I18N.Common.Glossary.Commodity = 'Commodity';
 I18N.Common.Glossary.UOM = 'Unit';
 I18N.Common.Glossary.Type = 'Type';
 I18N.Common.Glossary.Operation = 'Operate';
+I18N.Common.Glossary.PriceStrategy = 'Price strategy';
 
 
 I18N.Common.Button = {};
@@ -579,6 +607,69 @@ I18N.Setting.Calendar.DefaultDayNight = 'Time except daytime is all night time.'
 I18N.Setting.Calendar.AddDay = 'Add daytime';
 I18N.Setting.Calendar.AddColdWarm = 'Add cooling/heating season time';
 
+I18N.Setting.Calendar.CalendarDetail = 'Calendar details';
+I18N.Setting.Calendar.HolidayCalendar = 'Workday calendar:';
+I18N.Setting.Calendar.WorkTimeCalendar = 'Work time calendar:';
+I18N.Setting.Calendar.ViewCalendarDetail = 'View calendar details';
+I18N.Setting.Calendar.NoHierarchyAssociation = 'This ##Common.Glossary.Tag## is not associated with any hierarchy nodes. Please set after association and make sure the setting content can be calculated.';
+I18N.Setting.Calendar.HierarchyNoCalendar = 'No calendar template is referred to by the hierarchy node associated with this ##Common.Glossary.Tag##. Please set after reference and make sure the setting content can be calculated.';
+I18N.Setting.Calendar.HasAssociation = 'The work calendar of current time has been configured. ';
+
+//hiearchy calendar
+I18N.Setting.Calendar.TabName = 'Calendar';
+I18N.Setting.Calendar.WorkHoliday = 'Work day';
+I18N.Setting.Calendar.ColdWarm = 'HC seasons';
+I18N.Setting.Calendar.DayNight = 'Day & night time';
+I18N.Setting.Calendar.EffectiveDate = 'Effective date';
+I18N.Setting.Calendar.Name = 'Calendar template';
+I18N.Setting.Calendar.DefaultWorkDayTitle = 'Default workday:';
+I18N.Setting.Calendar.DefaultWorkDayContent = 'Mon. -Fri.';
+I18N.Setting.Calendar.WorkDayTitle = 'Workday';
+I18N.Setting.Calendar.HolidayTitle = 'Non-work day:';
+I18N.Setting.Calendar.RestTimeTitle = 'Non-work time:';
+I18N.Setting.Calendar.RestTimeContent = 'Time except work time is all non-work time.';
+I18N.Setting.Calendar.WorkTimeTitle = 'Work time:';
+I18N.Setting.Calendar.WarmTitle = 'Heating season:';
+I18N.Setting.Calendar.ColdTitle = 'Cooling season:'
+I18N.Setting.Calendar.NightTitle = 'Night time'
+I18N.Setting.Calendar.NightContent = 'Time except daytime is all night time.'
+I18N.Setting.Calendar.DayTitle = 'Daytime:'
+I18N.Setting.Calendar.AddCalendarInfo = 'No calendar,click edit to set';
+
+//hierarchy population/area
+I18N.Setting.DynamicProperty = {};
+
+I18N.Setting.DynamicProperty.PopulationArea = 'Population & Area';
+I18N.Setting.DynamicProperty.AddPropertyInfo = 'No property setting,click edit to set';
+
+I18N.Setting.DynamicProperty.Area = 'Area';
+I18N.Setting.DynamicProperty.AArea = 'Total area(㎡)';
+I18N.Setting.DynamicProperty.WArea = 'Heating area(㎡)';
+I18N.Setting.DynamicProperty.CArea = 'Cooling area(㎡)';
+I18N.Setting.DynamicProperty.AreaUnitValue = '㎡';
+
+I18N.Setting.DynamicProperty.Population = 'Population';
+I18N.Setting.DynamicProperty.PopulationCode = 'Population code';
+I18N.Setting.DynamicProperty.PopulationNumber = 'Population';
+I18N.Setting.DynamicProperty.PopulationUnitValue = 'Person';
+I18N.Setting.DynamicProperty.PopulationStartDateDuplicated = 'Effective date of population property is repeated';
+
+I18N.Setting.DynamicProperty.Other = 'Other properties';
+I18N.Setting.DynamicProperty.ARoom = 'Total rooms';
+I18N.Setting.DynamicProperty.ARoomNumber = 'Total number of rooms';
+I18N.Setting.DynamicProperty.UsedRoom = 'Used rooms';
+I18N.Setting.DynamicProperty.UsedRoomNumber = 'Number of used rooms';
+I18N.Setting.DynamicProperty.RoomUnitValue = 'Room';
+I18N.Setting.DynamicProperty.RoomStartDateDuplicated = 'Effective data of property of used rooms duplicated';
+I18N.Setting.DynamicProperty.ABed = 'Total beds';
+I18N.Setting.DynamicProperty.ABedNumber = 'Total number of beds';
+I18N.Setting.DynamicProperty.UsedBed = 'Used beds';
+I18N.Setting.DynamicProperty.UsedBedNumber = 'Number of used beds';
+I18N.Setting.DynamicProperty.BedStartDateDuplicated = 'Effective data of property of used beds duplicated';
+I18N.Setting.DynamicProperty.BedUnitValue = 'Bed(s)';
+
+I18N.Setting.DynamicProperty.StartDate = 'Effective date';
+
 I18N.Setting.Benchmark = {};
 I18N.Setting.Benchmark.Label = {};
 I18N.Setting.Benchmark.Label.None = 'None';
@@ -832,7 +923,7 @@ I18N.Message.M01013 = 'The hierarchy level exceeds the limit.';
 I18N.Message.M01014 = '"This node has been modified or deleted by another user, therefore the hierarchy tree will be refreshed."';
 I18N.Message.M01015 = 'The current hierarchy node has no child nodes.'; //for energy view single tag to pie chart
 I18N.Message.M01016 = 'Relevant hierarchy does not have a valid calendar, thus the target line and the baseline for this year cannot be obtained.';
-I18N.Message.M01018 = 'Cannot move to target node, please following rules to move node: <br/>Org -> Org, Customer; <br/>Site -> Org, Customer; <br/>Building -> Site, Org, Customer.';
+I18N.Message.M01018 = 'Cannot move to target node, please following rules to move node: Org -> Org, Customer; Site -> Org, Customer; Building -> Site, Org, Customer.';
 I18N.Message.M01019 = 'The hierarchy was modified';
 I18N.Message.M01251 = 'Advanced attributes of the hierarchy node have been modified by other users. page will be refreshed.';
 I18N.Message.M01254 = 'Entries of advanced properties are illegal, and cannot be saved.';
@@ -1683,6 +1774,8 @@ I18N.Setting.VEEMonitorRule.TagList = 'Tag list';
 I18N.Setting.Organization = {};
 I18N.Setting.Organization.AssociateTag = 'Associate';
 I18N.Setting.Organization.HierarchyNodeCalendarProperties = 'Calendar';
+I18N.Setting.Organization.Name = '{0} name';
+I18N.Setting.Organization.Code = '{0} code';
 I18N.Setting.Building = {};
 I18N.Setting.Building.HierarchyNodeCostProperties = 'Cost';
 I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = 'Population & Area';
@@ -1690,9 +1783,45 @@ I18N.Setting.Building.Industry = 'Industry involved';
 I18N.Setting.Building.Zone = 'Zone of climate';
 I18N.Setting.Building.PTagCount = 'Physical Tag No.';
 I18N.Setting.Building.VTagCount = 'Virtual Tag No.';
+I18N.Setting.Building.AddImage = 'Please add builing picture';
+I18N.Setting.Building.UpdateImage = 'Update building picture';
 
 I18N.Setting.Hierarchy = {};
+I18N.Setting.Hierarchy.DeleteTitle = 'Delete {0}';
+I18N.Setting.Hierarchy.DeleteContent = 'Delete {0} “{1}”，all tags belong to {2} will be deleted';
 I18N.Setting.Hierarchy.AddTagInfo = 'Click add button to add tags';
 
+I18N.Setting.Cost = {};
+I18N.Setting.Cost.NoCommodities = 'No cost config set, please click edit to set';
+I18N.Setting.Cost.Year = 'Year';
+I18N.Setting.Cost.FormatYear = '{0}';
+I18N.Setting.Cost.Month = 'Month';
+I18N.Setting.Cost.EffectiveDate = 'Effective date';
+I18N.Setting.Cost.PriceType = 'Price type';
+I18N.Setting.Cost.FixedPrice = 'Fixed rate electricity price';
+I18N.Setting.Cost.ComplexPrice = 'Integrated electricity price';
+I18N.Setting.Cost.PriceUom = 'Yin';
+I18N.Setting.Cost.DemandCostMode = 'Demand cost mode';
+I18N.Setting.Cost.DemandCost = 'Demand cost';
+I18N.Setting.Cost.TransformerMode = 'Transformer capacity mode';
+I18N.Setting.Cost.TimeMode = 'Demand mode';
+I18N.Setting.Cost.TransformerUOM = 'Yin/KVA';
+I18N.Setting.Cost.PowerUOM = 'Yin/KWH';
+I18N.Setting.Cost.DemandPrice = 'Price';
+I18N.Setting.Cost.TransformerCapacity = 'Capacity';
+I18N.Setting.Cost.DemandHourLabel = 'Electricity consumption data';
+I18N.Setting.Cost.UsageCost = 'Consumption cost';
+I18N.Setting.Cost.SearchTouDetail = 'Price strategy';
+I18N.Setting.Cost.SearchPowerFactor = 'Power factor';
+I18N.Setting.Cost.TouDetail = 'Details of price strategy';
+I18N.Setting.Cost.Month = '/';
+I18N.Setting.Cost.Day = '';
+I18N.Setting.Cost.To = '-';
+I18N.Setting.Cost.PowerFactorFee = 'Power factor fee';
+I18N.Setting.Cost.SearchPowerFactor = 'Power factor';
+I18N.Setting.Cost.ReactivePower = 'Reactive energy';
+I18N.Setting.Cost.RealPower = 'Active energy';
+I18N.Setting.Cost.PaddingCost = 'Supplement';
+I18N.Setting.Cost.OtherCommodities = 'Other cost property';
 
 module.exports = I18N;

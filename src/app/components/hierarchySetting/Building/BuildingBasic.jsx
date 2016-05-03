@@ -97,20 +97,20 @@ var BuildingBasic = React.createClass({
           })
         }
       },
-      parmas = "&width=" + 420 + "&height=" + 140 + "&mode=" + 1,
+      parmas = "&width=" + 480 + "&height=" + 320 + "&mode=" + 1,
       imageProps = {
         clip: false,
-        background: 'customer-background-logo',
-        imageUrl: BuildingPictureIds ? "url(" + Config.BackgroundImagePath + "/BuildingPicture.aspx?pictureId=" + BuildingPictureIds[0] + parmas + ")" : '',
+        imageUrl: buildingPictureIds.size !== 0 ? "url(" + Path.BackgroundImagePath + "/BuildingPicture.aspx?pictureId=" + BuildingPictureIds[0] + parmas + ")" : '',
         isViewState: isView,
+        updateTips: buildingPictureIds.size === 0 ? I18N.Setting.Building.AddImage : I18N.Setting.Building.UpdateImage,
         imageDidChanged: value => {
           this.props.merge({
             value: [value.pictureId],
             path: "BuildingPictureIds"
           })
         },
-        wrapperWidth: 420,
-        wrapperHeight: 140,
+        wrapperWidth: 480,
+        wrapperHeight: 320,
         uploadUrl: 'BuildingPicture.aspx'
       };
     var industrySelectedIndex = 0,
@@ -216,24 +216,27 @@ var BuildingBasic = React.createClass({
         </div>}
       </div>
       {adminList}
-      { isAdd ? null : <div className='pop-admins section-panel'>
+     <div className='pop-admins section-panel'>
         <div className='pop-admin-container'>
-          <div>
-            <div>{I18N.Setting.Building.PTagCount}</div>
-            <div>{AssoiciatedTagCountP}</div>
+          <div className='jazz-buildingbasic-tag-item'>
+            <div className='title'>{I18N.Setting.Building.PTagCount}</div>
+            <div className='content'>{AssoiciatedTagCountP || 0}</div>
           </div>
-          <div>
-            <div>{I18N.Setting.Building.VTagCount}</div>
-            <div>{AssoiciatedTagCountV}</div>
+          <div className='jazz-buildingbasic-tag-item'>
+            <div className='title'>{I18N.Setting.Building.VTagCount}</div>
+            <div className='content'>{AssoiciatedTagCountV || 0}</div>
           </div>
         </div>
 
-      </div>}
+      </div>
       </div>
       )
 
   },
   componentWillMount: function() {
+    if (this.props.selectedNode.get('Code') && Regex.CustomerCode.test(this.props.selectedNode.get('Code'))) {
+      this.props.setEditBtnStatus(false);
+    }
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();
   },

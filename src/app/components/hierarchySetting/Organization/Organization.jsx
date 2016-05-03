@@ -12,6 +12,8 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import Basic from './OrganizationBasic.jsx';
 import MonitorTag from '../MonitorTag.jsx';
+import Calendar from '../Calendar.jsx';
+import HierarchyAction from '../../../actions/hierarchySetting/HierarchyAction.jsx';
 
 var Organization = React.createClass({
 
@@ -69,6 +71,15 @@ var Organization = React.createClass({
         this.props.handleSave({
           hierarchyId: this.props.selectedNode.get('Id'),
           tags: tagIds
+        });
+      }
+    } else if (this.props.infoTabNo === 3) {
+      if (this.refs.jazz_Org_calendar) {
+        let calendar = this.refs.jazz_Org_calendar._handlerSave();
+        this.props.handleSave({
+          HierarchyId: this.props.selectedNode.get('Id'),
+          Version: calendar.Version,
+          CalendarItemGroups: calendar.CalendarItemGroups
         });
       }
     }
@@ -135,9 +146,16 @@ var Organization = React.createClass({
       tagProps = {
         ref: 'jazz_Org_tag',
         formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
         isDim: false,
         hierarchyId: this.props.selectedNode.get('Id'),
         onUpdate: this._update
+      },
+      calendarProps = {
+        ref: 'jazz_Org_calendar',
+        formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
+        hierarchyId: this.props.selectedNode.get('Id')
       };
     var content;
     switch (this.props.infoTabNo) {
@@ -148,7 +166,7 @@ var Organization = React.createClass({
         content = <MonitorTag {...tagProps}/>;
         break;
       case 3:
-
+        content = <Calendar {...calendarProps}/>;
         break;
 
     }
@@ -191,7 +209,7 @@ var Organization = React.createClass({
         });
       }}
       allowDelete={that.props.infoTabNo === 1}
-      onCancel={this.props.handlerCancel}
+      onCancel={this._handlerCancel}
       onEdit={ () => {
         that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
@@ -230,6 +248,16 @@ var Organization = React.createClass({
       {I18N.format(I18N.Setting.Hierarchy.DeleteContent, title, selectedNode.get('Name'), title)}
     </Dialog>
         );
+    }
+  },
+  _handlerCancel: function() {
+    this.props.handlerCancel();
+    if (this.props.infoTabNo === 2) {
+      if (this.refs.jazz_Org_tag) {
+        this.refs.jazz_Org_tag._resetFilterObj();
+      }
+    } else if (this.props.infoTabNo === 3) {
+      HierarchyAction.cancelSaveCalendar();
     }
   },
   componentWillMount: function() {

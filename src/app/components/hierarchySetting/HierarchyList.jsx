@@ -11,6 +11,7 @@ import FlatButton from '../../controls/FlatButton.jsx';
 import Dialog from '../../controls/PopupDialog.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';
+import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
 let MenuItem = require('material-ui/lib/menus/menu-item');
 let {nodeType} = TreeConstants;
 
@@ -22,8 +23,8 @@ var HierarchyList = React.createClass({
     hierarchys: React.PropTypes.object,
     selectedNode: React.PropTypes.object,
     onExportBtnClick: React.PropTypes.func,
-    onReloadHierachyTree: React.PropTypes.func
-  //onGragulaNode: React.PropTypes.func
+    onReloadHierachyTree: React.PropTypes.func,
+    onGragulaNode: React.PropTypes.func
   },
   getInitialState: function() {
     return {
@@ -33,7 +34,8 @@ var HierarchyList = React.createClass({
   },
   getAddMenuItems: function() {
     var items = HierarchyStore.getDropDownMenuItemsByType(this.props.selectedNode.get('Type')),
-      menuItems = [];
+      menuItems = [],
+      that = this;
     var itemStyle = {
       fontSize: '14px',
       color: '#767a7a',
@@ -44,9 +46,19 @@ var HierarchyList = React.createClass({
         menuItems = [<MenuItem key={2} innerDivStyle={itemStyle} primaryText={items[0]}/>]
       } else {
         items.forEach((item, index) => {
-          menuItems.push(
-            <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
-          );
+          if (index === 0) {
+            if (!that.getAddBtnDisabled()) {
+              menuItems.push(
+                <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
+              );
+            }
+
+          } else {
+            menuItems.push(
+              <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
+            );
+          }
+
         });
       }
 
@@ -230,6 +242,15 @@ var HierarchyList = React.createClass({
       isImporting: true
     });
   },
+  _ifGragulaInvalid: function(id) {
+    if (id < 0) {
+      return true;
+    }
+    if (id === parseInt(window.currentCustomerId)) {
+      return true;
+    }
+    return false;
+  },
   render: function() {
     var isAddStatus = this.props.formStatus === formStatus.ADD;
     var treeProps = {
@@ -241,14 +262,15 @@ var HierarchyList = React.createClass({
         selectedNode: this.props.selectedNode,
         arrowClass: 'jazz-foldertree-arrow',
         treeNodeClass: 'jazz-foldertree-node',
-      //onGragulaNode: this._onGragulaNode,
+        onGragulaNode: this.props.onGragulaNode,
+        ifGragulaInvalid: this._ifGragulaInvalid,
+        onUnfoldNode: this._onUnfoldNode
       },
       addBtnProps = {
         type: "Add",
         text: I18N.Common.Glossary.Node,
         menuItems: this.getAddMenuItems(),
-        onItemClick: this._onMenuAddBtnClick,
-        disabled: this.getAddBtnDisabled()
+        onItemClick: this._onMenuAddBtnClick
       };
     var addBtnClasses = {
         'jazz-tag-leftpanel-header-item': !isAddStatus,

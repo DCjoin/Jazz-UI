@@ -29,7 +29,8 @@ const DIALOG_TYPE = {
 };
 var targetNode, pre,
   sourceNode ,
-  parentNode;
+  parentNode,
+  collapsedId;
 
 var FolderLeftPanel = React.createClass({
 
@@ -179,20 +180,27 @@ var FolderLeftPanel = React.createClass({
 
   },
   didDrag: function() {
-    if (pre) {
-      FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), targetNode.toJSON(), null)
+    if (collapsedId) {
+      let node = FolderStore.getNodeById(collapsedId);
+      FolderAction.moveItem(sourceNode.toJSON(), node.toJS(), null, null)
     } else {
-      FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), null, targetNode.toJSON())
+      if (pre) {
+        FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), targetNode.toJSON(), null)
+      } else {
+        FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), null, targetNode.toJSON())
+      }
     }
+
     this.setState({
       isLoading: true,
     })
   },
-  _onGragulaNode: function(targetId, sourceId, pre) {
+  _onGragulaNode: function(targetId, sourceId, pre, collapsedNodeId) {
     targetNode = FolderStore.getNodeById(parseInt(targetId));
     sourceNode = FolderStore.getNodeById(parseInt(sourceId));
     parentNode = FolderStore.getParent(targetNode);
     pre = pre;
+    collapsedId = collapsedNodeId;
     // if(!pass){
     //   FolderAction.moveItem(sourceNode.toJSON(),targetNode.toJSON(),null)
     // }
