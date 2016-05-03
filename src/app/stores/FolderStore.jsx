@@ -171,18 +171,30 @@ var FolderStore = assign({}, PrototypeStore, {
       _selectedNode = newNode;
     },
     insertItem: function(preItem, nextItem, newNode) {
-      var parent = (!!preItem) ? this.getParent(preItem) : this.getParent(nextItem);
-      var children = parent.get('Children');
-      var index = (!!preItem) ? children.indexOf(preItem) : children.indexOf(nextItem);
-      var pre, next;
-      if (!!preItem) {
-        pre = children.filter((item, i) => (i <= index));
-        next = children.filter((item, i) => (i > index));
+      var parent, temp;
+      if (preItem || nextItem) {
+        parent = (!!preItem) ? this.getParent(preItem) : this.getParent(nextItem);
+        var children = parent.get('Children');
+        var index = (!!preItem) ? children.indexOf(preItem) : children.indexOf(nextItem);
+        var pre, next;
+        if (!!preItem) {
+          pre = children.filter((item, i) => (i <= index));
+          next = children.filter((item, i) => (i > index));
+        } else {
+          pre = children.filter((item, i) => (i < index));
+          next = children.filter((item, i) => (i >= index));
+        }
+        temp = pre.push(newNode).concat(next);
       } else {
-        pre = children.filter((item, i) => (i < index));
-        next = children.filter((item, i) => (i >= index));
+        parent = this.getParent(newNode);
+        var children = parent.get('Children');
+        if (children) {
+          temp = children.push(newNode);
+        } else {
+          temp = Immutable.formJS([]);
+          temp = temp.push(newNode);
+        }
       }
-      var temp = pre.push(newNode).concat(next);
       parent = parent.set('Children', temp);
       _parentId = parent.get('Id');
       _changedNode = parent;

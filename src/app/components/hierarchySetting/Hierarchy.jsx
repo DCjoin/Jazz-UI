@@ -41,7 +41,14 @@ var Hierarchy = React.createClass({
       this._setViewStatus(selectedNode);
     }
     this.setState({
-      hierarchys: HierarchyStore.getHierarchys(),
+      isLoading: false,
+      errorTitle: null,
+      errorContent: null
+    });
+  },
+  _onDataChange: function() {
+    this._setViewStatus();
+    this.setState({
       isLoading: false,
       errorTitle: null,
       errorContent: null
@@ -74,6 +81,7 @@ var Hierarchy = React.createClass({
     this.setState({
       formStatus: formStatus.VIEW,
       selectedNode: selectedNode,
+      hierarchys: HierarchyStore.getHierarchys(),
     //  selectedContent: VEEStore.getRuleById(id)
     });
   },
@@ -99,6 +107,64 @@ var Hierarchy = React.createClass({
     var {closedList} = this.state;
     this.setState({
       closedList: !closedList
+    });
+  },
+  _onGragulaNode: function(targetId, sourceId, pre, collapsedNodeId) {
+    let targetNode = HierarchyStore.getNodeById(parseInt(targetId)),
+      sourceNode = HierarchyStore.getNodeById(parseInt(sourceId)),
+      parentNode = HierarchyStore.getParent(targetNode),
+      node = null;
+    let desParent = {
+        Id: parentNode.get('Id'),
+        Version: parentNode.get('Version')
+      },
+      movingHierarchies = {
+        Id: sourceNode.get('Id'),
+        Version: sourceNode.get('Version')
+      },
+      previousBrother = null,
+      nextBrother = null;
+    if (collapsedNodeId) {
+      let desNode = HierarchyStore.getNodeById(collapsedNodeId),
+        previousBrother = null;
+      desParent = {
+        Id: desNode.get('Id'),
+        Version: desNode.get('Version')
+      };
+      if (desNode.get('HasChildren')) {
+        let previousNode = desNode.get('Children').getIn([desNode.get('Children').size - 1]);
+        previousBrother = {
+          Id: previousNode.get('Id'),
+          Version: previousNode.get('Version')
+        };
+      }
+    } else {
+      if (pre) {
+        node = HierarchyStore.getNextNode(targetNode, parentNode);
+        previousBrother = {
+          Id: targetNode.get('Id'),
+          Version: targetNode.get('Version')
+        },
+        nextBrother = node === null ? null : {
+          Id: node.get('Id'),
+          Version: node.get('Version')
+        };
+
+      } else {
+        node = HierarchyStore.getPreNode(targetNode, parentNode);
+        nextBrother = {
+          Id: targetNode.get('Id'),
+          Version: targetNode.get('Version')
+        },
+        previousBrother = node === null ? null : {
+          Id: node.get('Id'),
+          Version: node.get('Version')
+        };
+      }
+    }
+    HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
+    this.setState({
+      isLoading: true
     });
   },
   _handlerTouchTap: function(node) {
@@ -133,7 +199,7 @@ var Hierarchy = React.createClass({
     if (this.state.infoTabNo === 1) {
       this.setState({
         selectedNode: mData,
-      })
+      });
     } else {
     }
 
@@ -151,7 +217,11 @@ var Hierarchy = React.createClass({
     if (this.state.infoTabNo === 1) {
       if (!node.get('Id')) {
         var parent = HierarchyStore.getSelectedNode();
-        node = node.set('ParentId', parent.get('Id'));
+        if (parent.get('Type') === 101) {
+          node = node.set('ParentId', -parent.get('Id'));
+        } else {
+          node = node.set('ParentId', parent.get('Id'));
+        }
         node = node.set('CustomerId', parseInt(window.currentCustomerId));
         if (node.get('Type') === 101) {
           if (parent.get('Type') === 101) {
@@ -159,7 +229,7 @@ var Hierarchy = React.createClass({
           } else {
             node = node.set('HierarchyId', parent.get('Id'));
           }
-
+          node = node.set('ParentType', parent.get('Type'));
         }
         HierarchyAction.createHierarchy(node.toJS());
       } else {
@@ -167,10 +237,17 @@ var Hierarchy = React.createClass({
       }
     } else if (this.state.infoTabNo === 2) {
       HierarchyAction.modifyTags(node.hierarchyId, node.tags);
+      setTimeout(() => {
+        this._setViewStatus();
+      }, 1000);
+      this.setState({
+        isLoading: true
+      });
+    } else if (this.state.infoTabNo === 3) {
+      HierarchyAction.saveCalendar(node);
+    } else if (this.state.infoTabNo === 5) {
+      HierarchyAction.saveProperty(node);
     }
-    this.setState({
-      isLoading: true
-    });
   },
   _switchTab(event) {
     let no = parseInt(event.target.getAttribute("data-tab-index"));
@@ -235,7 +312,7 @@ var Hierarchy = React.createClass({
         onClose={onClose}
         >
         {this.state.errorContent}
-      </Dialog>)
+      </Dialog>);
     } else {
       return null;
     }
@@ -249,16 +326,21 @@ var Hierarchy = React.createClass({
   componentWillMount: function() {
     document.title = I18N.MainMenu.CustomerSetting;
     HierarchyAction.getAllIndustries();
+    //HierarchyAction.GetHierarchys();
     this.setState({
       isLoading: true
     });
   },
   componentDidMount: function() {
     HierarchyStore.addChangeListener(this._onChange);
+    HierarchyStore.addCalendarChangeListener(this._onDataChange);
+    HierarchyStore.addPropertyChangeListener(this._onDataChange);
     HierarchyStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
     HierarchyStore.removeChangeListener(this._onChange);
+    HierarchyStore.removeCalendarChangeListener(this._onDataChange);
+    HierarchyStore.removePropertyChangeListener(this._onDataChange);
     HierarchyStore.removeErrorChangeListener(this._onError);
   },
   render: function() {
@@ -270,8 +352,8 @@ var Hierarchy = React.createClass({
       hierarchys: this.state.hierarchys,
       selectedNode: this.state.selectedNode,
       onExportBtnClick: this._onExportBtnClick,
-      onReloadHierachyTree: this._onReloadHierachyTree
-    //onGragulaNode: this._onGragulaNode
+      onReloadHierachyTree: this._onReloadHierachyTree,
+      onGragulaNode: this._onGragulaNode
     };
     let list = (!this.state.closedList) ? <div style={{
       display: 'flex'
