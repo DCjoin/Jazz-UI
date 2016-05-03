@@ -249,9 +249,6 @@ var Hierarchy = React.createClass({
       HierarchyAction.saveProperty(node);
     } else if (this.state.infoTabNo === 4) {
       HierarchyAction.saveCost(node);
-      this.setState({
-        isLoading: true
-      });
     }
   },
   _switchTab(event) {

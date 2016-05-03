@@ -373,7 +373,7 @@ let HierarchyAction = {
       }
     });
   },
-  getCostByHierarchy: function(hierarchyId) {
+  getCostByHierarchy: function(hierarchyId, refresh = false) {
     Ajax.post('/Cost.svc/GetCostByHierarchy', {
       params: {
         hierarchyId: hierarchyId
@@ -383,6 +383,11 @@ let HierarchyAction = {
           type: Action.GET_COST_BY_HIERARCHY,
           cost: cost
         });
+        if (refresh) {
+          AppDispatcher.dispatch({
+            type: Action.SAVE_COST_BY_HIERARCHY_SUCCESS
+          });
+        }
       },
       error: function(err, res) {
         console.log(err, res);
@@ -396,7 +401,9 @@ let HierarchyAction = {
         dto: cost
       },
       success: function(cost) {
-        that.getCostByHierarchy(cost.HierarchyId)
+        that.getCostByHierarchy(cost.HierarchyId, true);
+
+
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);

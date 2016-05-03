@@ -52,6 +52,9 @@ var Cost = React.createClass({
   _handlerSave: function() {
     var cost = this.state.cost.toJS();
     cost.Name = this.props.name;
+    this.setState({
+      isLoading: true
+    });
     return cost;
 
   },

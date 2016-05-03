@@ -444,6 +444,9 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.setCost(action.cost);
       HierarchyStore.ifEmitCostChange();
       break;
+    case HierarchyAction.SAVE_COST_BY_HIERARCHY_SUCCESS:
+      HierarchyStore.emitChange(_selectedNode);
+      break;
   }
 });
 

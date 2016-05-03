@@ -1795,7 +1795,6 @@ I18N.Setting.Cost = {};
 I18N.Setting.Cost.NoCommodities = 'No cost config set, please click edit to set';
 I18N.Setting.Cost.Year = 'Year';
 I18N.Setting.Cost.FormatYear = '{0}';
-I18N.Setting.Cost.Month = 'Month';
 I18N.Setting.Cost.EffectiveDate = 'Effective date';
 I18N.Setting.Cost.PriceType = 'Price type';
 I18N.Setting.Cost.FixedPrice = 'Fixed rate electricity price';

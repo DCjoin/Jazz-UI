@@ -1795,7 +1795,6 @@ I18N.Setting.Cost = {};
 I18N.Setting.Cost.NoCommodities = '暂无成本属性，点击编辑进行设置。';
 I18N.Setting.Cost.Year = '年份';
 I18N.Setting.Cost.FormatYear = '{0}年';
-I18N.Setting.Cost.Month = '月份';
 I18N.Setting.Cost.EffectiveDate = '生效日期';
 I18N.Setting.Cost.PriceType = '价格类型';
 I18N.Setting.Cost.FixedPrice = '固定电价';
