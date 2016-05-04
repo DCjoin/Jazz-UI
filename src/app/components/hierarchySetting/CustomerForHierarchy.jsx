@@ -261,6 +261,10 @@ var CustomerForHierarchy = React.createClass({
         "pop-user-detail-tabs-tab": true,
         "selected": that.props.infoTabNo === 2
       })} data-tab-index="2" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Organization.AssociateTag}</span>
+      <span className={classnames({
+        "pop-user-detail-tabs-tab": true,
+        "selected": that.props.infoTabNo === 3
+      })} data-tab-index="3" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Organization.HierarchyNodeCalendarProperties}</span>
 </div>
 
   </div>
@@ -303,9 +307,9 @@ var CustomerForHierarchy = React.createClass({
     var disabledSaveButton = this.state.editBtnDisabled,
       {selectedNode} = this.props,
       that = this,
-      editBtnProps = {
+      editBtnProps = this.props.infoTabNo === 2 ? {
         label: I18N.Common.Button.Add
-      };
+      } : null;
     return (
       <FormBottomBar
       transition={true}

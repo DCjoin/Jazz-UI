@@ -235,12 +235,10 @@ var Building = React.createClass({
       if (!selectedNode.get('Name') || selectedNode.get('Name').length > 200) {
         disabledSaveButton = true;
       }
-    } else {
-      if (this.props.infoTabNo === 2) {
-        editBtnProps = {
-          label: I18N.Common.Button.Add
-        };
-      }
+    } else if (this.props.infoTabNo === 2) {
+      editBtnProps = {
+        label: I18N.Common.Button.Add
+      };
     }
     return (
       <FormBottomBar
