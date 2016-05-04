@@ -21,8 +21,11 @@ let PropertyItem = React.createClass({
     isViewStatus: React.PropTypes.bool,
     deletePropertyItem: React.PropTypes.func
   },
-  _deletePropertyItem: function(type, index) {
-    this.props.deletePropertyItem(type, index);
+  _deletePropertyItem: function() {
+    this.props.deletePropertyItem(this.props.code, this.props.index);
+  },
+  _isValid: function() {
+    return this.refs.value.isValid().valid;
   },
   _getTitle: function() {
     var title;
@@ -69,6 +72,7 @@ let PropertyItem = React.createClass({
         }
       },
       valueProps = {
+        ref: 'value',
         defaultValue: this.props.data.get('Value'),
         isViewStatus: this.props.isViewStatus,
         title: this._getTitle(),
@@ -82,7 +86,7 @@ let PropertyItem = React.createClass({
           })
         },
         validate: (value = '') => {
-          if (value !== '' && !Regex.ConsecutiveHoursRule.test(value)) {
+          if ((value !== '' && !Regex.ConsecutiveHoursRule.test(value)) || value === '') {
             return I18N.Setting.VEEMonitorRule.ConsecutiveHoursError
           }
         },
@@ -124,11 +128,37 @@ var Property = React.createClass({
     return this.state.property.toJS();
   },
   _isValid: function() {
+    var areaIsValid = this._areaIsValid();
+    var populationIsvalid = this._populationIsvalid();
+    var otherIsValid = this._otherIsValid();
+    return areaIsValid && populationIsvalid && otherIsValid;
+  },
+  _areaIsValid: function() {
+    var totalAreaIsValid = this.refs.totalArea.isValid().valid;
+    var heatingAreaIsValid = this.refs.heatingArea.isValid().valid;
+    var coolingAreaIsValid = this.refs.coolingArea.isValid().valid;
+
+    return totalAreaIsValid && heatingAreaIsValid && coolingAreaIsValid;
+  },
+  _populationIsvalid: function() {
     return true;
   },
-  _getDefaultPropertyItem: function(type) {},
+  _otherIsValid: function() {
+    var totalRoomIsValid = this.refs.totalRoom.isValid().valid;
+    var totalBedIsValid = this.refs.totalBed.isValid().valid;
+    return totalRoomIsValid && totalBedIsValid;
+  },
   _addPropertyItem: function(code) {
-    var property = this.state.property;
+    var property = this.state.property,
+      properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    var addPropertyItem = Immutable.fromJS({
+      StartDate: new Date()
+    });
+    propertyItemValue = propertyItemValue.unshift(addPropertyItem);
+    properties = properties.setIn([propertyIndex, 'Values'], propertyItemValue);
+    property = property.set('Properties', properties);
     this.setState({
       property: property
     }, () => {
@@ -137,7 +167,13 @@ var Property = React.createClass({
     });
   },
   _deletePropertyItem: function(code, index) {
-    var property = this.state.property;
+    var property = this.state.property,
+      properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    propertyItemValue = propertyItemValue.delete(index);
+    properties = properties.setIn([propertyIndex, 'Values'], propertyItemValue);
+    property = property.set('Properties', properties);
     this.setState({
       property: property
     }, () => {
@@ -186,6 +222,7 @@ var Property = React.createClass({
         coolingAreaDom = null;
       if (hasTotalArea || !isView) {
         var totalAreaProps = {
+          ref: 'totalArea',
           defaultValue: totalArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.AArea,
@@ -210,6 +247,7 @@ var Property = React.createClass({
       }
       if (hasHeatingArea || !isView) {
         var heatingAreaProps = {
+          ref: 'heatingArea',
           defaultValue: heatingArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.WArea,
@@ -234,6 +272,7 @@ var Property = React.createClass({
       }
       if (hasCoolingArea || !isView) {
         var coolingAreaProps = {
+          ref: 'coolingArea',
           defaultValue: coolingArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.CArea,
@@ -291,7 +330,7 @@ var Property = React.createClass({
             isViewStatus: isView,
             merge: me._merge,
             data: item,
-            deletePropertyItem: me._deletePropertyItem.bind(me, 'TotalPopulation')
+            deletePropertyItem: me._deletePropertyItem
           };
           return (
             <PropertyItem {...props}/>
@@ -332,6 +371,7 @@ var Property = React.createClass({
         usedBedDom = null;
       if (hasTotalRoom || !isView) {
         var totalRoomProps = {
+          ref: 'totalRoom',
           defaultValue: totalRoom.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.ARoomNumber,
@@ -370,7 +410,7 @@ var Property = React.createClass({
               isViewStatus: isView,
               merge: me._merge,
               data: item,
-              deletePropertyItem: me._deletePropertyItem.bind(me, 'UsedRoom')
+              deletePropertyItem: me._deletePropertyItem
             };
             return (
               <PropertyItem {...props}/>
@@ -386,6 +426,7 @@ var Property = React.createClass({
       }
       if (hasTotalBed || !isView) {
         var totalBedProps = {
+          ref: 'totalBed',
           defaultValue: totalBed.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.ABedNumber,
@@ -424,7 +465,7 @@ var Property = React.createClass({
               isViewStatus: isView,
               merge: me._merge,
               data: item,
-              deletePropertyItem: me._deletePropertyItem.bind(me, 'UsedBed')
+              deletePropertyItem: me._deletePropertyItem
             };
             return (
               <PropertyItem {...props}/>

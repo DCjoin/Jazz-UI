@@ -455,44 +455,39 @@ var Calendar = React.createClass({
     var allCalendar = this.state.allCalendar;
     var calendarIndex;
     var i;
-    if (calendar === null || allCalendar === null) {
-      return false;
-    } else {
-      var calendarItemGroups = calendar.get('CalendarItemGroups');
-      for (i = 0; i < calendarItemGroups.size; i++) {
-        if (!this.refs['calendarItems' + (i + 1)]._isValid()) {
-          return false;
-        }
-      }
-      if (calendarItemGroups.getIn([0, 'CalendarItems']) === null && calendarItemGroups.getIn([1, 'CalendarItems']) === null && calendarItemGroups.getIn([2, 'CalendarItems']) === null) {
+
+    var calendarItemGroups = calendar.get('CalendarItemGroups');
+    for (i = 0; i < calendarItemGroups.size; i++) {
+      if (!this.refs['calendarItems' + (i + 1)]._isValid()) {
         return false;
       }
-      if (calendarItemGroups.getIn([0, 'CalendarItems']) !== null) {
-        calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 0));
-        if (calendarIndex === -1) {
-          return false;
-        }
-        if (checked) {
-          calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 1));
-          if (calendarIndex === -1) {
-            return false;
-          }
-        }
-      }
-      if (calendarItemGroups.getIn([2, 'CalendarItems']) !== null) {
-        calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 2));
-        if (calendarIndex === -1) {
-          return false;
-        }
-      }
-      if (calendarItemGroups.getIn([3, 'CalendarItems']) !== null) {
-        calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 3));
-        if (calendarIndex === -1) {
-          return false;
-        }
-      }
-      return true;
     }
+    if (calendarItemGroups.getIn([0, 'CalendarItems']) !== null) {
+      calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 0));
+      if (calendarIndex === -1) {
+        return false;
+      }
+      if (checked) {
+        calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 1));
+        if (calendarIndex === -1) {
+          return false;
+        }
+      }
+    }
+    if (calendarItemGroups.getIn([2, 'CalendarItems']) !== null) {
+      calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 2));
+      if (calendarIndex === -1) {
+        return false;
+      }
+    }
+    if (calendarItemGroups.getIn([3, 'CalendarItems']) !== null) {
+      calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 3));
+      if (calendarIndex === -1) {
+        return false;
+      }
+    }
+    return true;
+
 
   },
   _getDefaultCalendarItem: function(type) {
