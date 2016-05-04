@@ -240,9 +240,6 @@ var Hierarchy = React.createClass({
       setTimeout(() => {
         this._setViewStatus();
       }, 1000);
-    // this.setState({
-    //   isLoading: true
-    // });
     } else if (this.state.infoTabNo === 3) {
       HierarchyAction.saveCalendar(node);
     } else if (this.state.infoTabNo === 5) {
