@@ -49,12 +49,15 @@ var Cost = React.createClass({
       factorIndex: null
     })
   },
-  _handlerSave: function() {
+  _handlerSave: function(refresh = true) {
     var cost = this.state.cost.toJS();
     cost.Name = this.props.name;
-    this.setState({
-      isLoading: true
-    });
+    if (refresh) {
+      this.setState({
+        isLoading: true
+      });
+    }
+
     return cost;
 
   },
@@ -85,8 +88,12 @@ var Cost = React.createClass({
                 flag = true;
               }
             } else {
-              let {HourPrice, PaddingCost, DemandCostType, TransformerCapacity, TransformerPrice} = item.get('ComplexItem').toJS();
-              if (DemandCostType === 2 && (!HourPrice || HourPrice === '' || !Regex.FactorRule.test(HourPrice) || HourPrice.length > 16)) {
+              let {HourPrice, PaddingCost, DemandCostType, TransformerCapacity, TransformerPrice} = item.get('ComplexItem').toJS(),
+                {ReactiveTags, RealTags, TouTariffs} = this.state.cost.toJS();
+              if (ReactiveTags.length === 0 || RealTags.length === 0 || TouTariffs.length === 0) {
+                flag = true;
+              }
+              if (DemandCostType === 2 && (!HourPrice || HourPrice === '' || !Regex.FactorRule.test(HourPrice) || HourPrice.length > 16 || this.state.cost.get('HourTags').size === 0)) {
                 flag = true;
               }
               if (DemandCostType === 1 && (!TransformerPrice || TransformerPrice === '' || !Regex.FactorRule.test(TransformerPrice) || TransformerPrice.length > 16 ||
@@ -232,7 +239,7 @@ var Cost = React.createClass({
       value: Immutable.fromJS({
         CommodityId: 2,
         Items: [{
-          EffectiveDate: new Date()
+          EffectiveDate: d2j(new Date())
         }],
         UomId: 9
       })
