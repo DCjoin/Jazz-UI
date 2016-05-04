@@ -113,13 +113,13 @@ let HierarchyAction = {
       }
     });
   },
-  modifyTags: function(hierarchyId, tags) {
+  modifyTags: function(hierarchyId, tags, associationType) {
     var that = this;
     Ajax.post('/Tag.svc/SetAssociation', {
       params: {
         dto: {
           AssociationId: hierarchyId,
-          AssociationType: 1,
+          AssociationType: associationType,
           Tags: tags
         }
       },

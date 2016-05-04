@@ -70,7 +70,8 @@ var Organization = React.createClass({
         });
         this.props.handleSave({
           hierarchyId: this.props.selectedNode.get('Id'),
-          tags: tagIds
+          tags: tagIds,
+          associationType: 1
         });
       }
     } else if (this.props.infoTabNo === 3) {

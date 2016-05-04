@@ -236,13 +236,10 @@ var Hierarchy = React.createClass({
         HierarchyAction.modifyHierarchy(node.toJS());
       }
     } else if (this.state.infoTabNo === 2) {
-      HierarchyAction.modifyTags(node.hierarchyId, node.tags);
+      HierarchyAction.modifyTags(node.hierarchyId, node.tags, node.associationType);
       setTimeout(() => {
         this._setViewStatus();
       }, 1000);
-      this.setState({
-        isLoading: true
-      });
     } else if (this.state.infoTabNo === 3) {
       HierarchyAction.saveCalendar(node);
     } else if (this.state.infoTabNo === 5) {
