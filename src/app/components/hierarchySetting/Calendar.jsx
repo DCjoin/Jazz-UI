@@ -332,6 +332,9 @@ let CalendarItems = React.createClass({
   },
   _isValid: function() {
     var calendarItems = this.props.calendarItems;
+    if (calendarItems === null) {
+      return true;
+    }
     var length = calendarItems.size;
 
     for (var i = 0; i < length; i++) {
@@ -447,9 +450,10 @@ var Calendar = React.createClass({
     });
     return this.state.calendar.toJS();
   },
-  _isValid: function() {
+  _isValid: function(checked) {
     var calendar = this.state.calendar;
     var allCalendar = this.state.allCalendar;
+    var calendarIndex;
     var i;
     if (calendar === null || allCalendar === null) {
       return false;
@@ -464,26 +468,26 @@ var Calendar = React.createClass({
         return false;
       }
       if (calendarItemGroups.getIn([0, 'CalendarItems']) !== null) {
-        var workdayItem = this._getDefaultCalendarItem(0);
-        if (workdayItem.get('Calendar') === undefined) {
+        calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 0));
+        if (calendarIndex === -1) {
           return false;
         }
-        var calendarItems = calendarItemGroups.getIn([0, 'CalendarItems']);
-        for (i = 0; i < calendarItems.size; i++) {
-          if (calendarItems.getIn([i, 'WorkTimeCalendar']) === undefined) {
+        if (checked) {
+          calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 1));
+          if (calendarIndex === -1) {
             return false;
           }
         }
       }
       if (calendarItemGroups.getIn([2, 'CalendarItems']) !== null) {
-        var coldwormItem = this._getDefaultCalendarItem(2);
-        if (coldwormItem.get('Calendar') === undefined) {
+        calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 2));
+        if (calendarIndex === -1) {
           return false;
         }
       }
       if (calendarItemGroups.getIn([3, 'CalendarItems']) !== null) {
-        var daynightItem = this._getDefaultCalendarItem(3);
-        if (daynightItem.get('Calendar') === undefined) {
+        calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 3));
+        if (calendarIndex === -1) {
           return false;
         }
       }
@@ -495,14 +499,10 @@ var Calendar = React.createClass({
     var allCalendar = this.state.allCalendar;
     let thisYear = new Date().getFullYear();
     var calendar = allCalendar.find(item => (item.get('Type') === type));
-    var worktimeCalendar = null;
-    if (type === 0) {
-      worktimeCalendar = allCalendar.find(item => (item.get('Type') === 1));
-    }
     var defaultCalendarItem = Immutable.fromJS({
       Calendar: calendar,
       EffectiveTime: thisYear,
-      WorkTimeCalendar: worktimeCalendar
+      WorkTimeCalendar: null
     });
     return defaultCalendarItem;
   },
@@ -570,7 +570,7 @@ var Calendar = React.createClass({
     this.setState({
       calendar: calendar
     }, () => {
-      var isValid = this._isValid();
+      var isValid = this._isValid(checked);
       this.props.setEditBtnStatus(!isValid);
     });
   },
