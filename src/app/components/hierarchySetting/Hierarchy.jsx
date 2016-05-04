@@ -41,7 +41,6 @@ var Hierarchy = React.createClass({
       this._setViewStatus(selectedNode);
     }
     this.setState({
-      hierarchys: HierarchyStore.getHierarchys(),
       isLoading: false,
       errorTitle: null,
       errorContent: null
@@ -82,6 +81,7 @@ var Hierarchy = React.createClass({
     this.setState({
       formStatus: formStatus.VIEW,
       selectedNode: selectedNode,
+      hierarchys: HierarchyStore.getHierarchys(),
     //  selectedContent: VEEStore.getRuleById(id)
     });
   },
@@ -247,6 +247,8 @@ var Hierarchy = React.createClass({
       HierarchyAction.saveCalendar(node);
     } else if (this.state.infoTabNo === 5) {
       HierarchyAction.saveProperty(node);
+    } else if (this.state.infoTabNo === 4) {
+      HierarchyAction.saveCost(node);
     }
   },
   _switchTab(event) {
