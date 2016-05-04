@@ -92,7 +92,7 @@ let MainApp = React.createClass({
           title: I18N.MainMenu.Workday
       },this.props.params);
       this.setState({viewState: viewState.MAIN});
-      currentCustomer.CustomerId = -2;
+      currentCustomer.CustomerId = '';
       return;
     }
 
