@@ -49,6 +49,7 @@ var MonitorTag = React.createClass({
     formStatus: React.PropTypes.string,
     hierarchyId: React.PropTypes.number,
     onUpdate: React.PropTypes.func,
+    setEditBtnStatus: React.PropTypes.func,
     isDim: React.PropTypes.bool
   },
   getInitialState: function() {
@@ -77,10 +78,15 @@ var MonitorTag = React.createClass({
     filterObj.UomId = null;
     return filterObj;
   },
+  _resetFilterObj: function() {
+    this.setState({
+      filterObj: this._getInitFilterObj()
+    });
+  },
   _handlerSave: function() {
-    // this.setState({
-    //   isLoading: true
-    // });
+    this.setState({
+      isLoading: true
+    });
     return this.state.addingTags;
   },
   _handleCloseFilterSideNav: function() {
@@ -180,6 +186,11 @@ var MonitorTag = React.createClass({
     this.setState({
       addingTags: tags
     }, () => {
+      if (that.state.addingTags.size === 0) {
+        that.props.setEditBtnStatus(true);
+      } else {
+        that.props.setEditBtnStatus(false);
+      }
       that.props.onUpdate();
     });
 
@@ -238,19 +249,19 @@ var MonitorTag = React.createClass({
     var cleanIconStyle = {
       fontSize: '16px'
     };
-    var getTableBody = function() {
+    var getTableBody = () => {
       var list = [];
-      that.state.taglist.forEach(tag => {
+      this.state.taglist.forEach((tag) => {
         var energyConsumption = tag.get('EnergyConsumption');
         var flag = null;
         if (energyConsumption === 1) {
-          flag = <FontIcon className="icon-clean" color="#939796" onClick={that._setEnergyConsumption.bind(this, tag, 2)} style={cleanIconStyle}></FontIcon>;
+          flag = <FontIcon className="icon-clean" color="#939796" onClick={() => this._setEnergyConsumption(tag, 2)} style={cleanIconStyle}></FontIcon>;
         } else if (energyConsumption === 2) {
-          flag = <FontIcon className="icon-clean" color="#ffffff" onClick={that._setEnergyConsumption.bind(this, tag, 1)} style={cleanIconStyle}></FontIcon>;
+          flag = <FontIcon className="icon-clean" color="#000" onClick={() => this._setEnergyConsumption(tag, 1)} style={cleanIconStyle}></FontIcon>;
         }
         list.push(
           <div className='jazz-vee-monitor-tag-content-list' key={tag.get('Id')}>
-            <div className='jazz-vee-monitor-tag-content-operation-item'>{flag}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{flag}</div>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')} style={{
             marginTop: '10px'
           }}>{tag.get('Name')}</div>
@@ -259,7 +270,8 @@ var MonitorTag = React.createClass({
           }}>{tag.get('Code')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{HierarchyStore.findCommodityById(tag.get('CommodityId'))}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{HierarchyStore.findUOMById(tag.get('UomId'))}</div>
-            <div className='jazz-vee-monitor-tag-content-operation-item' onClick={that._onDeleteTag.bind(this, tag)}>{I18N.Common.Button.Delete}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
+            <div className='jazz-vee-monitor-tag-content-operation-item' onClick={() => this._onDeleteTag(tag)}>{I18N.Common.Button.Delete}</div>
       </div>
         );
       });
@@ -278,10 +290,12 @@ var MonitorTag = React.createClass({
       return (
         <div className='jazz-vee-monitor-tag-background'>
           <div className='jazz-vee-monitor-tag-header'>
+            <div className='jazz-vee-monitor-tag-header-item'></div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Name}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Code}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Commodity}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.UOM}</div>
+            <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Type}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Operation}</div>
           </div>
           <div className='jazz-vee-monitor-tag'>
@@ -325,6 +339,11 @@ var MonitorTag = React.createClass({
       that.setState({
         addingTags: tags
       }, () => {
+        if (that.state.addingTags.size === 0) {
+          that.props.setEditBtnStatus(true);
+        } else {
+          that.props.setEditBtnStatus(false);
+        }
         that.props.onUpdate();
       });
     };
@@ -339,6 +358,11 @@ var MonitorTag = React.createClass({
       that.setState({
         addingTags: tags
       }, () => {
+        if (that.state.addingTags.size === 0) {
+          that.props.setEditBtnStatus(true);
+        } else {
+          that.props.setEditBtnStatus(false);
+        }
         that.props.onUpdate();
       });
     };
@@ -366,6 +390,7 @@ var MonitorTag = React.createClass({
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Code')}>{tag.get('Code')}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{HierarchyStore.findCommodityById(tag.get('CommodityId'))}</div>
             <div className='jazz-vee-monitor-tag-content-item'>{HierarchyStore.findUOMById(tag.get('UomId'))}</div>
+            <div className='jazz-vee-monitor-tag-content-item'>{tag.get('Type') === 1 ? I18N.Setting.Tag.PTagManagement : I18N.Setting.Tag.VTagManagement}</div>
       </div>
         );
       });
@@ -425,6 +450,7 @@ var MonitorTag = React.createClass({
               <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Code}</div>
               <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Commodity}</div>
               <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.UOM}</div>
+              <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Type}</div>
             </div>
             <div className='jazz-vee-monitor-tag'>
               <div className='jazz-vee-monitor-tag-content'>
@@ -442,7 +468,11 @@ var MonitorTag = React.createClass({
       );
   },
   getAssociatedTag: function() {
-    HierarchyAction.getAssociatedTag(this.state.page, this.props.hierarchyId, this.state.association, this.state.filterObj);
+    var isView = this.props.formStatus === formStatus.VIEW;
+    HierarchyAction.getAssociatedTag(this.state.page, this.props.hierarchyId, this.state.association, this.state.filterObj, isView);
+  },
+  componentWillMount: function() {
+    this.props.setEditBtnStatus(true);
   },
   componentDidMount: function() {
     HierarchyStore.addTagChangeListener(this._onChange);

@@ -92,6 +92,31 @@ I18N.M212006 = '密码错误';
 I18N.M212007 = '服务商域名不正确';
 
 I18N.Common = {};
+I18N.Common.Commodity = {};
+I18N.Common.Commodity.Electric = '电力';
+I18N.Common.Commodity.Water = '自来水';
+I18N.Common.Commodity.Gas = '天然气';
+I18N.Common.Commodity.Air = '空气';
+I18N.Common.Commodity.Steam = '蒸汽';
+I18N.Common.Commodity.HeatQ = '热量';
+I18N.Common.Commodity.CoolQ = '冷量';
+I18N.Common.Commodity.Coal = '原煤';
+I18N.Common.Commodity.Oil = '原油';
+I18N.Common.Commodity.Other = '其他';
+I18N.Common.Commodity.CleanedCoal = '洗精煤';
+I18N.Common.Commodity.Coke = '焦炭';
+I18N.Common.Commodity.Petrol = '汽油';
+I18N.Common.Commodity.Kerosene = '煤油';
+I18N.Common.Commodity.LPG = '液化石油气';
+I18N.Common.Commodity.CokeOvenGas = '焦炉煤气';
+I18N.Common.Commodity.LowPressureSteam = '低压蒸汽';
+I18N.Common.Commodity.MediumPressureSteam = '中压蒸汽';
+I18N.Common.Commodity.HighPressureSteam = '高压蒸汽';
+I18N.Common.Commodity.HeavyWater = '重水';
+I18N.Common.Commodity.ReclaimedWater = '中水';
+I18N.Common.Commodity.LightWater = '轻水';
+I18N.Common.Commodity.DieselOil = '柴油';
+I18N.Common.Commodity.Unspecified = '未指定';
 I18N.Common.Glossary = {};
 I18N.Common.Glossary.HierarchyNode = '层级节点';
 I18N.Common.Glossary.Max = '最大值';
@@ -209,6 +234,7 @@ I18N.Common.Glossary.Commodity = '介质';
 I18N.Common.Glossary.UOM = '单位';
 I18N.Common.Glossary.Type = '类型';
 I18N.Common.Glossary.Operation = '操作';
+I18N.Common.Glossary.PriceStrategy = '价格策略';
 
 
 
@@ -580,6 +606,69 @@ I18N.Setting.Calendar.DefaultDayNight = '白昼时间以外均为黑夜时间';
 I18N.Setting.Calendar.AddDay = '添加白昼时间';
 I18N.Setting.Calendar.AddColdWarm = '添加冷暖季时间';
 
+I18N.Setting.Calendar.CalendarDetail = '日历详情';
+I18N.Setting.Calendar.HolidayCalendar = '工休日日历：';
+I18N.Setting.Calendar.WorkTimeCalendar = '工作时间日历：';
+I18N.Setting.Calendar.ViewCalendarDetail = '查看日历详情';
+I18N.Setting.Calendar.NoHierarchyAssociation = '该数据点未关联任何层级节点。请关联后再设置，保证设置内容可被计算。';
+I18N.Setting.Calendar.HierarchyNoCalendar = '该数据点所关联层级节点未引用任何日历模板。请引用后再设置，保证设置内容可被计算。';
+I18N.Setting.Calendar.HasAssociation = '当前时间的工作日历已配置 ';
+
+//hiearchy calendar
+I18N.Setting.Calendar.TabName = '日历属性';
+I18N.Setting.Calendar.WorkHoliday = '工休日';
+I18N.Setting.Calendar.ColdWarm = '冷暖季';
+I18N.Setting.Calendar.DayNight = '昼夜时间';
+I18N.Setting.Calendar.EffectiveDate = '生效日期';
+I18N.Setting.Calendar.Name = '日历名称';
+I18N.Setting.Calendar.DefaultWorkDayTitle = '默认工作日：';
+I18N.Setting.Calendar.DefaultWorkDayContent = '周一至周五';
+I18N.Setting.Calendar.WorkDayTitle = '工作日：';
+I18N.Setting.Calendar.HolidayTitle = '休息日：';
+I18N.Setting.Calendar.RestTimeTitle = '非工作时间：';
+I18N.Setting.Calendar.RestTimeContent = '工作时间以外均为非工作时间';
+I18N.Setting.Calendar.WorkTimeTitle = '工作时间：';
+I18N.Setting.Calendar.WarmTitle = '采暖季：';
+I18N.Setting.Calendar.ColdTitle = '供冷季：';
+I18N.Setting.Calendar.NightTitle = '黑夜时间：';
+I18N.Setting.Calendar.NightContent = '白昼时间以外均为黑夜时间';
+I18N.Setting.Calendar.DayTitle = '白昼时间：';
+I18N.Setting.Calendar.AddCalendarInfo = '暂无日历属性，点击编辑进行设置';
+
+//hierarchy population/area
+I18N.Setting.DynamicProperty = {};
+
+I18N.Setting.DynamicProperty.PopulationArea = '人口面积';
+I18N.Setting.DynamicProperty.AddPropertyInfo = '暂无人口面积，点击编辑进行设置';
+
+I18N.Setting.DynamicProperty.Area = '面积属性';
+I18N.Setting.DynamicProperty.AArea = '总面积(㎡)';
+I18N.Setting.DynamicProperty.WArea = '采暖面积(㎡)';
+I18N.Setting.DynamicProperty.CArea = '供冷面积(㎡)';
+I18N.Setting.DynamicProperty.AreaUnitValue = '㎡';
+
+I18N.Setting.DynamicProperty.Population = '人口属性';
+I18N.Setting.DynamicProperty.PopulationCode = '人口编码';
+I18N.Setting.DynamicProperty.PopulationNumber = '人口数量';
+I18N.Setting.DynamicProperty.PopulationUnitValue = '人';
+I18N.Setting.DynamicProperty.PopulationStartDateDuplicated = '人口属性生效日期重复';
+
+I18N.Setting.DynamicProperty.Other = '其他属性';
+I18N.Setting.DynamicProperty.ARoom = '总客房';
+I18N.Setting.DynamicProperty.ARoomNumber = '总客房数量';
+I18N.Setting.DynamicProperty.UsedRoom = '已用客房';
+I18N.Setting.DynamicProperty.UsedRoomNumber = '已用客房数量';
+I18N.Setting.DynamicProperty.RoomUnitValue = '间';
+I18N.Setting.DynamicProperty.RoomStartDateDuplicated = '已用客房属性生效日期重复';
+I18N.Setting.DynamicProperty.ABed = '总床位';
+I18N.Setting.DynamicProperty.ABedNumber = '总床位数量';
+I18N.Setting.DynamicProperty.UsedBed = '已用床位';
+I18N.Setting.DynamicProperty.UsedBedNumber = '已用床位数量';
+I18N.Setting.DynamicProperty.BedStartDateDuplicated = '已用床位属性生效日期重复';
+I18N.Setting.DynamicProperty.BedUnitValue = '床';
+
+I18N.Setting.DynamicProperty.StartDate = '生效日期';
+
 I18N.Setting.Benchmark = {};
 I18N.Setting.Benchmark.Label = {};
 I18N.Setting.Benchmark.Label.None = '无';
@@ -834,7 +923,7 @@ I18N.Message.M01013 = '该层级节层级超限';
 I18N.Message.M01014 = '该节点已被其他用户修改或删除，层级树将被刷新。';
 I18N.Message.M01015 = '当前层级节点无子节点'; //for energy view single tag to pie chart
 I18N.Message.M01016 = '相关的层级无有效日历，无法获得本年的目标值和基准值。';
-I18N.Message.M01018 = '无法移动到目标节点下，请按照规则拖动层级节点：<br/>组织->组织、客户；<br/>园区->组织、客户；<br/>楼宇->园区、组织、客户。';
+I18N.Message.M01018 = '无法移动到目标节点下，请按照规则拖动层级节点：组织->组织、客户；园区->组织、客户；楼宇->园区、组织、客户。';
 I18N.Message.M01019 = '层级被修改';
 I18N.Message.M01251 = '该层级节点的高级属性已被其他用户修改。界面即将刷新';
 I18N.Message.M01254 = '高级属性的输入项非法，无法保存。';
@@ -1694,10 +1783,45 @@ I18N.Setting.Building.Industry = '所属行业';
 I18N.Setting.Building.Zone = '所属气候分区';
 I18N.Setting.Building.PTagCount = '计量数据P数量';
 I18N.Setting.Building.VTagCount = '计量数据V数量';
+I18N.Setting.Building.AddImage = '请添加建筑照片';
+I18N.Setting.Building.UpdateImage = '重新上传建筑照片';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = '删除{0}';
 I18N.Setting.Hierarchy.DeleteContent = '删除{0}“{1}”，该{2}的所有数据也将被删除。';
 I18N.Setting.Hierarchy.AddTagInfo = '点击添加按钮，选择关联数据点';
 
+I18N.Setting.Cost = {};
+I18N.Setting.Cost.NoCommodities = '暂无成本属性，点击编辑进行设置。';
+I18N.Setting.Cost.Year = '年份';
+I18N.Setting.Cost.FormatYear = '{0}年';
+I18N.Setting.Cost.Month = '月份';
+I18N.Setting.Cost.EffectiveDate = '生效日期';
+I18N.Setting.Cost.PriceType = '价格类型';
+I18N.Setting.Cost.FixedPrice = '固定电价';
+I18N.Setting.Cost.ComplexPrice = '综合电价';
+I18N.Setting.Cost.PriceUom = '元';
+I18N.Setting.Cost.DemandCostMode = '需量成本模式';
+I18N.Setting.Cost.DemandCost = '需量成本';
+I18N.Setting.Cost.TransformerMode = '变压器容量模式';
+I18N.Setting.Cost.TimeMode = '时间容量模式';
+I18N.Setting.Cost.TransformerUOM = '元/千伏安';
+I18N.Setting.Cost.PowerUOM = '元/千瓦时';
+I18N.Setting.Cost.TransformerCapacity = '变压器容量';
+I18N.Setting.Cost.DemandPrice = '需求价格';
+I18N.Setting.Cost.DemandHourLabel = '用电数据';
+I18N.Setting.Cost.UsageCost = '用量成本';
+I18N.Setting.Cost.SearchTouDetail = '查看价格策略详情';
+I18N.Setting.Cost.SearchPowerFactor = '查看所选功率因数';
+I18N.Setting.Cost.TouDetail = '价格策略详情';
+I18N.Setting.Cost.Month = '月';
+I18N.Setting.Cost.Day = '日';
+I18N.Setting.Cost.To = '到';
+I18N.Setting.Cost.PowerFactorFee = '功率因数调整电费';
+I18N.Setting.Cost.SearchPowerFactor = '查看所选功率因数';
+I18N.Setting.Cost.ReactivePower = '无功电量';
+I18N.Setting.Cost.RealPower = '有功电量';
+I18N.Setting.Cost.PaddingCost = '月补充成本';
+I18N.Setting.Cost.OtherCommodities = '其他成本属性';
+I18N.Setting.Cost.CostCommodity = '成本属性';
 module.exports = I18N;

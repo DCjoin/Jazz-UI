@@ -9,7 +9,7 @@ import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import Regex from '../../../constants/Regex.jsx';
 
 
-var OrganizationBasic = React.createClass({
+var DimBasic = React.createClass({
 
   propTypes: {
     selectedNode: React.PropTypes.object,
@@ -63,4 +63,4 @@ var OrganizationBasic = React.createClass({
 
   },
 });
-module.exports = OrganizationBasic;
+module.exports = DimBasic;

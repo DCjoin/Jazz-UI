@@ -10,7 +10,7 @@ var _page,
   _association,
   _filterObj;
 let HierarchyAction = {
-  GetHierarchys: function() {
+  GetHierarchys: function(selectedId) {
     let customerId = parseInt(window.currentCustomerId);
     Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive', {
       params: {
@@ -19,7 +19,8 @@ let HierarchyAction = {
       success: function(hierarchys) {
         AppDispatcher.dispatch({
           type: Action.GET_HIERARCHY_TREE_DTOS,
-          hierarchys: hierarchys
+          hierarchys: hierarchys,
+          selectedId: selectedId
         });
       },
       error: function(err, res) {
@@ -74,19 +75,23 @@ let HierarchyAction = {
       }
     });
   },
-  getAssociatedTag: function(page, hierarchyId, association, filterObj, refresh) {
+  getAssociatedTag: function(page, hierarchyId, association, filterObj, isView) {
     _page = page;
     _hierarchyId = hierarchyId;
     _association = association;
     _filterObj = filterObj;
-    Ajax.post('/Tag/GetTagsByFilter', {
+    var associationObj = {
+      AssociationId: hierarchyId,
+      AssociationOption: association
+    };
+    if (!isView) {
+      associationObj.Associatiable = true;
+    }
+    Ajax.post('/Tag.svc/GetTagsByFilter', {
       params: {
         filter: {
           CustomerId: parseInt(window.currentCustomerId),
-          Association: {
-            AssociationId: hierarchyId,
-            AssociationOption: association
-          },
+          Association: associationObj,
           IncludeAssociationName: true,
           CommodityId: filterObj.CommodityId,
           UomId: filterObj.UomId,
@@ -102,11 +107,6 @@ let HierarchyAction = {
           type: Action.GET_ASSOCIATED_TAG,
           data: data
         });
-        if (refresh === true) {
-          AppDispatcher.dispatch({
-            type: Action.SAVE_ASSOCIATED_TAG_SUCCESS,
-          });
-        }
       },
       error: function(err, res) {
         console.log(err, res);
@@ -118,7 +118,7 @@ let HierarchyAction = {
     Ajax.post('/Tag/SetAssociation', {
       params: {
         dto: {
-          AssociationId: hierarchyId,
+          AssociationId: hierarchyId, //zone:id是负的
           AssociationType: 1,
           Tags: tags
         }
@@ -132,6 +132,12 @@ let HierarchyAction = {
         that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
       },
       error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.HIERARCHY_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
         console.log(err, res);
       }
     });
@@ -142,7 +148,7 @@ let HierarchyAction = {
     });
   },
   setEnergyConsumption: function(tag, value, type, hierarchyId) {
-    Ajax.post('/Tag/SetEnergyConsumption', {
+    Ajax.post('/Tag.svc/SetEnergyConsumption', {
       params: {
         dto: {
           AssociationId: hierarchyId,
@@ -174,7 +180,12 @@ let HierarchyAction = {
           type: Action.SET_SELECTED_HIERARCHY_NODE,
           node: Immutable.fromJS(node)
         });
-        that.GetHierarchys();
+        if (node.Type === 101) {
+          that.GetHierarchys(-node.Id);
+        } else {
+          that.GetHierarchys(node.Id);
+        }
+
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
@@ -188,8 +199,9 @@ let HierarchyAction = {
     });
   },
   modifyHierarchy: function(dto) {
-    var that = this;
-    Ajax.post('/Hierarchy/ModifyHierarchy', {
+    var that = this,
+      id = dto.Id;
+    Ajax.post('/Hierarchy.svc/ModifyHierarchy', {
       params: {
         hierarchy: HierarchyStore.traversalNode(dto)
       },
@@ -199,7 +211,7 @@ let HierarchyAction = {
           type: Action.SET_SELECTED_HIERARCHY_NODE,
           node: Immutable.fromJS(node)
         });
-        that.GetHierarchys();
+        that.GetHierarchys(id);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
@@ -221,7 +233,7 @@ let HierarchyAction = {
       success: function() {
         AppDispatcher.dispatch({
           type: Action.DELETE_HIERARCHY_DTO_SUCCESS,
-          nextSelectedNode: HierarchyStore.findNextSelectedNode(dto)
+          nextSelectedNode: HierarchyStore.findNextSelectedNode(HierarchyStore.traversalNode(dto))
         });
         that.GetHierarchys();
       },
@@ -252,7 +264,7 @@ let HierarchyAction = {
     });
   },
   getCalendar: function(hierarchyId) {
-    Ajax.post('/Hierarchy/GetHierarchyCalendarByHierarchyId', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyCalendarByHierarchyId', {
       params: {
         hierarchyId: hierarchyId
       },
@@ -260,6 +272,76 @@ let HierarchyAction = {
         AppDispatcher.dispatch({
           type: Action.GET_CALENDAR_FOR_HIERARCHY,
           calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  cancelSaveCalendar: function() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_CALENDAR
+    });
+  },
+  saveCalendar: function(calendar) {
+    Ajax.post('/Hierarchy.svc/SaveHierarchyCalendar', {
+      params: {
+        dto: calendar
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.SET_CALENDAR_FOR_HIERARCHY,
+          calendar: calendar
+        });
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.HIERARCHY_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
+  getProperty: function(hierarchyId) {
+    Ajax.post('/Hierarchy.svc/GetAdvancedPropertyValuesByHierarchy', {
+      params: {
+        hierarchyId: hierarchyId
+      },
+      success: function(property) {
+        AppDispatcher.dispatch({
+          type: Action.GET_PROPERTY_FOR_HIERARCHY,
+          property: property
+        });
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.HIERARCHY_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
+  cancelSaveProperty: function() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_PROPERTY
+    });
+  },
+  saveProperty: function(property) {
+    Ajax.post('/Hierarchy.svc/SetAdvancedPropertyValues', {
+      params: {
+        setting: property
+      },
+      success: function(calendar) {
+        AppDispatcher.dispatch({
+          type: Action.SET_PROPERTY_FOR_HIERARCHY,
+          property: property
         });
       },
       error: function(err, res) {
@@ -298,6 +380,48 @@ let HierarchyAction = {
           zones: zones
         });
         that.getCustomersByFilter(window.currentCustomerId, true);
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  modifyHierarchyPath: function(DesParent, MovingHierarchies, NextBrother, PreviousBrother) {
+    var that = this;
+    Ajax.post('/Hierarchy.svc/ModifyHierarchyPath', {
+      params: {
+        hierarchyMovingDto: {
+          DesParent: DesParent,
+          MovingHierarchies: [MovingHierarchies],
+          NextBrother: NextBrother,
+          PreviousBrother: PreviousBrother
+        }
+      },
+      commonErrorHandling: false,
+      success: function(result) {
+        that.GetHierarchys(MovingHierarchies.Id);
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.HIERARCHY_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
+  getCostByHierarchy: function(hierarchyId) {
+    Ajax.post('/Cost.svc/GetCostByHierarchy', {
+      params: {
+        hierarchyId: hierarchyId
+      },
+      success: function(cost) {
+        AppDispatcher.dispatch({
+          type: Action.GET_COST_BY_HIERARCHY,
+          cost: cost
+        });
       },
       error: function(err, res) {
         console.log(err, res);
