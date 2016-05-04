@@ -17,6 +17,7 @@ import AdminList from '../customer/AdminList.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import MonitorTag from './MonitorTag.jsx';
+import Calendar from './Calendar.jsx';
 
 var CustomerForHierarchy = React.createClass({
   propTypes: {
@@ -72,6 +73,15 @@ var CustomerForHierarchy = React.createClass({
           hierarchyId: this.props.selectedNode.get('Id'),
           tags: tagIds,
           associationType: 1
+        });
+      }
+    } else if (this.props.infoTabNo === 3) {
+      if (this.refs.jazz_customer_calendar) {
+        let calendar = this.refs.jazz_customer_calendar._handlerSave();
+        this.props.handleSave({
+          HierarchyId: this.props.selectedNode.get('Id'),
+          Version: calendar.Version,
+          CalendarItemGroups: calendar.CalendarItemGroups
         });
       }
     }
@@ -274,13 +284,19 @@ var CustomerForHierarchy = React.createClass({
   },
   _renderContent: function() {
     var tagProps = {
-      ref: 'jazz_customer_tag',
-      formStatus: this.props.formStatus,
-      setEditBtnStatus: this._setEditBtnStatus,
-      isDim: false,
-      hierarchyId: this.props.selectedNode.get('Id'),
-      onUpdate: this._update
-    };
+        ref: 'jazz_customer_tag',
+        formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
+        isDim: false,
+        hierarchyId: this.props.selectedNode.get('Id'),
+        onUpdate: this._update
+      },
+      calendarProps = {
+        ref: 'jazz_customer_calendar',
+        formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
+        hierarchyId: this.props.selectedNode.get('Id')
+      };
     var content,
       that = this;
     switch (this.props.infoTabNo) {
@@ -289,6 +305,9 @@ var CustomerForHierarchy = React.createClass({
         break;
       case 2:
         content = <MonitorTag {...tagProps}/>;
+        break;
+      case 3:
+        content = <Calendar {...calendarProps}/>;
         break;
 
     }
