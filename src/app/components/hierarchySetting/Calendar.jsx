@@ -171,7 +171,8 @@ let CalendarItem = React.createClass({
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object,
     deleteCalendarItem: React.PropTypes.func,
-    checkWorktime: React.PropTypes.func
+    checkWorktime: React.PropTypes.func,
+    errorText: React.PropTypes.string
   },
   getInitialState: function() {
     return {
@@ -302,6 +303,7 @@ let CalendarItem = React.createClass({
           <YearPicker {...effectiveTimeProps}/>
           {deleteButton}
         </div>
+        <div className='jazz-hierarchy-calendar-type-item-error'>{this.props.errorText}</div>
         <div className='jazz-hierarchy-calendar-type-item-name'>
           <ViewableDropDownMenu {...nameProps}/>
           {showDetailButton}
@@ -326,31 +328,46 @@ let CalendarItems = React.createClass({
     checkWorktime: React.PropTypes.func
   },
   getInitialState: function() {
+    var errorTextArr = this._getInitError();
     return ({
-      errorText: ''
+      errorTextArr: errorTextArr
     });
   },
+  _getInitError: function() {
+    var errorTextArr = [];
+    var calendarItems = this.props.calendarItems;
+    if (calendarItems && calendarItems.size > 0) {
+      for (var i = 0; i < calendarItems.size; i++) {
+        errorTextArr.push('');
+      }
+    }
+    return errorTextArr;
+  },
   _isValid: function() {
+    var i;
     var calendarItems = this.props.calendarItems;
     if (calendarItems === null) {
       return true;
     }
+    var errorTextArr = this._getInitError();
     var length = calendarItems.size;
 
-    for (var i = 0; i < length; i++) {
+    for (i = 0; i < length; i++) {
       for (var j = (i + 1); j < length; j++) {
         if (parseInt(calendarItems.getIn([i, 'EffectiveTime'])) === parseInt(calendarItems.getIn([j, 'EffectiveTime']))) {
-          this.setState({
-            errorText: I18N.Common.Label.TimeZoneConflict
-          });
-          return false;
+          errorTextArr[i] = I18N.Common.Label.TimeZoneConflict;
+          errorTextArr[j] = I18N.Common.Label.TimeZoneConflict;
         }
       }
     }
-
     this.setState({
-      errorText: ''
+      errorTextArr: errorTextArr
     });
+    for (i = 0; i < length; i++) {
+      if (errorTextArr[i] !== '') {
+        return false;
+      }
+    }
     return true;
   },
   _getTextByType: function() {
@@ -402,7 +419,8 @@ let CalendarItems = React.createClass({
           merge: me.props.merge,
           allCalendar: me.props.allCalendar,
           deleteCalendarItem: me._deleteCalendarItem,
-          checkWorktime: me._checkWorktime
+          checkWorktime: me._checkWorktime,
+          errorText: me.state.errorTextArr[i]
         };
         return (
           <CalendarItem {...props}/>
