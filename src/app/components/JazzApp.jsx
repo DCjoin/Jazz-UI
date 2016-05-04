@@ -183,14 +183,14 @@ let JazzApp = React.createClass({
 
       //routes.length === 1 || (routes.length === 2 && !customerCode)
       if(!window.currentUserId){
-        console.log('登录');
+        //console.log('登录');
         me.setState({
           isLangLoaded: true
         },() => {
           me.replaceWith('login', { lang: lang });
         });
       }else{
-        console.log('主页');
+        //console.log('主页');
         me._setHighchartConfig();
         CurrentUserAction.getUser(window.currentUserId);
 

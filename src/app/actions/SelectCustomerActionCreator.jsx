@@ -27,7 +27,7 @@ module.exports = {
           }
       },
       success: function(data) {
-        console.log('getCustomer ready num:'+ data.length);
+        console.log('Get Customers Ready,Total Num is '+ data.length);
         AppDispatcher.dispatch({type: Action.GET_SELECT_CUSTOMERS, data: data});
       },
     });

@@ -29,13 +29,11 @@ module.exports = {
  	 *  @return void
 	 */
 	set: function(key, value, options) {
-		//debugger;
 		options = options || {};
 		if (typeof options.expires === 'number') {
 			var days = options.expires, t = options.expires = new Date();
 			t.setMilliseconds(t.getMilliseconds() + days * 864e+5);
 		}
-
 		return (document.cookie = [
 			key, '=', value,
 			options.expires ? '; expires=' + options.expires.toUTCString() : '',
