@@ -22,7 +22,7 @@ module.exports = {
               "UserId": userId,
               "Order": {
                   "Column": "Id",
-                  "Type": 1
+                  "Type": 0
               }
           }
       },
