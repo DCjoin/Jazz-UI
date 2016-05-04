@@ -70,7 +70,8 @@ var CustomerForHierarchy = React.createClass({
         });
         this.props.handleSave({
           hierarchyId: this.props.selectedNode.get('Id'),
-          tags: tagIds
+          tags: tagIds,
+          associationType: 1
         });
       }
     }
