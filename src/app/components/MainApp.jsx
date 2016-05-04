@@ -46,9 +46,11 @@ let MainApp = React.createClass({
     });
   },
   getInitialState: function() {
+    //||CurrentUserStore.getCurrentPrivilegeByUser(JSON.parse(getCookie('UserInfo')))
+    var _rivilege = CurrentUserStore.getCurrentPrivilege() ;
     return {
       currentUser:window.currentUser,
-      rivilege: CurrentUserStore.getCurrentPrivilege()
+      rivilege: _rivilege
     };
   },
 
@@ -83,20 +85,27 @@ let MainApp = React.createClass({
       this.setState({viewState: viewState.SELECT_CUSTOMER});
     }
 
-    if(currentCustomer && currentCustomer.CustomerId === -1){
+    if(currentCustomer && currentCustomer.CustomerId === -1 && !window.toMainApp){
       //切换至系统管理
       this._redirectRouter({
           name: 'workday',
           title: I18N.MainMenu.Workday
       },this.props.params);
       this.setState({viewState: viewState.MAIN});
+      currentCustomer.CustomerId = -2;
       return;
     }
 
-    if (!_.isEmpty(currentCustomer) && customerCode != currentCustomer.Id.toString()) {
+    // console.log('currentCustomer.Id:'+currentCustomer.Id);
+    // console.log('window.currentCustomerId:'+window.currentCustomerId);
+    // console.log('window.toMainApp:'+window.toMainApp);
+    // console.log('currentCustomer.CustomerId:'+ currentCustomer.CustomerId);
+    // && customerCode != currentCustomer.Id.toString()
+    if (!_.isEmpty(currentCustomer) ) {
       params.customerId = currentCustomer.Id;
       window.currentCustomerId = currentCustomer.Id;
       this._switchCustomer(currentCustomer);
+      window.toMainApp = false;
       return;
     }
   },
@@ -238,7 +247,7 @@ let MainApp = React.createClass({
 
   render: function() {
     var CustomersList = getCurrentCustomers();
-    if(this.state.viewState == viewState.SELECT_CUSTOMER){
+    if( this.state.viewState == viewState.SELECT_CUSTOMER || window.toMainApp){
       return(
         <SelectCustomer close={this._closeSelectCustomer}
                         closable={this.props.params.customerId ? true: false}

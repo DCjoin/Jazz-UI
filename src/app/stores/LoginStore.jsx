@@ -19,7 +19,6 @@ let _lastError = null;
 
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
-    //console.log('1111111'+JSON.stringify(_currentUser,0,1));
     if (_currentUser.UserType === -1) {
       return true;
     }
@@ -30,8 +29,12 @@ let LoginStore = assign({}, EventEmitter.prototype, {
       _lastError = null;
       //, {'expires':5,'path':'/'}
       //CookieUtil.set('UserInfo', JSON.stringify(data));
+
       CookieUtil.set('UserId', data.Id);
       CookieUtil.set('Username', data.Name);
+
+      var _UserInfo = JSON.stringify(data);
+      CookieUtil.set('UserInfo', _UserInfo);
 
       window.currentUserId = data.Id;
       window.currentUser = data;
@@ -67,9 +70,15 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     CookieUtil.set('UserId', null);
     CookieUtil.set('Username', null);
     CookieUtil.set('currentCustomerId', null);
+    CookieUtil.set('UserInfo', null);
+    // CookieUtil.remove('UserId');
+    // CookieUtil.remove('Username');
+    // CookieUtil.remove('currentCustomerId');
+    // CookieUtil.remove('UserInfo');
     window.currentUserId = null;
     window.currentUser = null;
     window.currentCustomerId = null;
+    window.toMainApp = null;
   },
   getLastError: function(argument) {
     return _lastError;
