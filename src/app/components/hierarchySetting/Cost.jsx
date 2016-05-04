@@ -110,6 +110,9 @@ var Cost = React.createClass({
         }
       })
     }
+    if (HierarchyStore.getCostErrorStatus()) {
+      flag = true;
+    }
     this.props.setEditBtnStatus(flag);
   },
   merge: function(data) {
@@ -168,10 +171,8 @@ var Cost = React.createClass({
       } else {
         mData = mData.setIn(paths, value);
       }
-
-
     }
-
+    mData = HierarchyStore.checkoutCostErrorMsg(mData);
     this.setState({
       cost: mData
     }, () => {
@@ -804,15 +805,16 @@ var Cost = React.createClass({
             that._handleDeletePower(index);
           }
         };
-        var date = item.get('EffectiveDate');
+        var date = item.get('EffectiveDate'),
+          errorMsg = item.get('ErrorMsg');
         var complexItem = item.get('ComplexItem'),
-          simpleItem = item.get('SimpleItem'),
           defaultSelected = complexItem === null ? 'simpleItem' : 'complexItem';
         var dateProps = {
           ref: 'date',
           key: this.props.hierarchyId + '_power' + index,
           isViewStatus: isView,
           date: date,
+          errorMsg: errorMsg,
           onDateChange: date => {
             that.merge(
               {
@@ -925,6 +927,7 @@ var Cost = React.createClass({
               key: this.props.hierarchyId + '_commodity' + id,
               isViewStatus: isView,
               date: Items[0].EffectiveDate,
+              errorMsg: Items[0].ErrorMsg,
               onDateChange: date => {
                 that.merge(
                   {

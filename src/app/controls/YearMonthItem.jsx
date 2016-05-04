@@ -11,6 +11,7 @@ var YearMonthItem = React.createClass({
     //date:"/Date(XX)/"
     date: React.PropTypes.string,
     onDateChange: React.PropTypes.func,
+    errorMsg: React.PropTypes.string,
   },
   getDefaultProps() {
     return {
@@ -125,6 +126,7 @@ var YearMonthItem = React.createClass({
               <ViewableDropDownMenu {...monthProps}></ViewableDropDownMenu>
             </div>
           </div>
+          <div className='jazz-carbon-addItem-errorText'>{this.props.errorMsg}</div>
       </div>
 
       );
