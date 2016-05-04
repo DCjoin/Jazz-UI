@@ -310,6 +310,27 @@ let HierarchyAction = {
       }
     });
   },
+  cancelSaveProperty: function() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_PROPERTY
+    });
+  },
+  saveProperty: function(property) {
+    Ajax.post('/Hierarchy.svc/SetAdvancedPropertyValues', {
+      params: {
+        setting: property
+      },
+      success: function(property) {
+        AppDispatcher.dispatch({
+          type: Action.SET_PROPERTY_FOR_HIERARCHY,
+          property: property
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   getAllIndustries: function() {
     var that = this;
     Ajax.post('/Administration.svc/GetAllIndustries', {

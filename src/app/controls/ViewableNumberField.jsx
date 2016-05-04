@@ -61,8 +61,8 @@ var ViewableNumberField = React.createClass({
     }
   },
 
-  isValid(value) {
-    if (value != null && value !== "" && !/^(\+|\-)?[0-9]+(.[0-9]+)?$/.test(value)) {
+  isValid(value = this.props.defaultValue) {
+    if (!this.props.validate && value != null && value !== "" && !/^(\+|\-)?[0-9]+(.[0-9]+)?$/.test(value)) {
       return {
         valid: false,
         text: I18N.Common.Control.ViewableNumberField.Error
@@ -78,7 +78,6 @@ var ViewableNumberField = React.createClass({
         };
       }
     }
-
     return {
       valid: true
     };
