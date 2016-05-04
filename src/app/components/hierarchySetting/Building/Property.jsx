@@ -146,7 +146,7 @@ var Property = React.createClass({
   },
   _isValid: function() {
     var areaIsValid = this._areaIsValid();
-    var populationIsvalid = this._populationIsvalid();
+    var populationIsvalid = this._dynamicIsValid('TotalPopulation');
     var otherIsValid = this._otherIsValid();
     return areaIsValid && populationIsvalid && otherIsValid;
   },
@@ -203,18 +203,20 @@ var Property = React.createClass({
     this.setState(obj);
     return itemsIsValid;
   },
-  _populationIsvalid: function() {
+  _dynamicIsValid: function(code) {
     var everyItemIsValid = true,
-      itemsIsValid = this._itemsIsValid('TotalPopulation');
-    for (var k = 0; k < length; k++) {
-      everyItemIsValid = everyItemIsValid && this.refs['totalPopulation' + (k + 1)]._isValid();
+      itemsIsValid = this._itemsIsValid(code);
+    for (var i = 0; i < length; i++) {
+      everyItemIsValid = everyItemIsValid && this.refs[code + (i + 1)]._isValid();
     }
     return everyItemIsValid && itemsIsValid;
   },
   _otherIsValid: function() {
     var totalRoomIsValid = this.refs.totalRoom.isValid().valid;
     var totalBedIsValid = this.refs.totalBed.isValid().valid;
-    return totalRoomIsValid && totalBedIsValid;
+    var usedRoomIsValid = this._dynamicIsValid('UsedRoom');
+    var usedBedIsValid = this._dynamicIsValid('UsedBed');
+    return totalRoomIsValid && totalBedIsValid && usedRoomIsValid && usedBedIsValid;
   },
   _addPropertyItem: function(code) {
     var property = this.state.property,
@@ -394,7 +396,7 @@ var Property = React.createClass({
             key: i,
             index: i,
             code: 'TotalPopulation',
-            ref: 'totalPopulation' + (i + 1),
+            ref: 'TotalPopulation' + (i + 1),
             calendarItem: item,
             isViewStatus: isView,
             merge: me._merge,
@@ -476,10 +478,12 @@ var Property = React.createClass({
               key: i,
               index: i,
               code: 'UsedRoom',
+              ref: 'UsedRoom' + (i + 1),
               calendarItem: item,
               isViewStatus: isView,
               merge: me._merge,
               data: item,
+              errorText: me.state.UsedRoomErrorTextArr[i],
               deletePropertyItem: me._deletePropertyItem
             };
             return (
@@ -531,10 +535,12 @@ var Property = React.createClass({
               key: i,
               index: i,
               code: 'UsedBed',
+              ref: 'UsedBed' + (i + 1),
               calendarItem: item,
               isViewStatus: isView,
               merge: me._merge,
               data: item,
+              errorText: me.state.UsedBedErrorTextArr[i],
               deletePropertyItem: me._deletePropertyItem
             };
             return (
