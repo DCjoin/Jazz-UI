@@ -17,6 +17,8 @@ import AdminList from '../customer/AdminList.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import MonitorTag from './MonitorTag.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
 
 var CustomerForHierarchy = React.createClass({
   propTypes: {
@@ -317,9 +319,9 @@ var CustomerForHierarchy = React.createClass({
       status={this.props.formStatus}
       onSave={this._handleSave}
       onDelete={function() {
-        that.setState({
-          dialogStatus: true
-        });
+        // that.setState({
+        //   dialogStatus: true
+        // });
       }}
       allowDelete={that.props.infoTabNo === 1}
       onCancel={this._handlerCancel}
@@ -329,38 +331,6 @@ var CustomerForHierarchy = React.createClass({
       editBtnProps={editBtnProps}/>
 
       );
-  },
-  _renderDialog: function() {
-    var that = this;
-    var closeDialog = function() {
-      that.setState({
-        dialogStatus: false
-      });
-    };
-    if (!this.state.dialogStatus) {
-      return null;
-    } else {
-      var selectedNode = that.props.selectedNode,
-        title = selectedNode.get('Type') === 0 ? I18N.Common.Glossary.Organization : I18N.Common.Glossary.Site;
-
-      return (
-
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.Hierarchy.DeleteTitle, title)} modal={true} actions={[
-          <FlatButton
-          label={I18N.Template.Delete.Delete}
-          primary={true}
-          onClick={() => {
-            that.props.handleDelete(selectedNode);
-            closeDialog();
-          }} />,
-          <FlatButton
-          label={I18N.Template.Delete.Cancel}
-          onClick={closeDialog} />
-        ]}>
-    {I18N.format(I18N.Setting.Hierarchy.DeleteContent, title, selectedNode.get('Name'), title)}
-  </Dialog>
-        );
-    }
   },
   _onChange: function() {
     this.setState({
@@ -414,7 +384,6 @@ var CustomerForHierarchy = React.createClass({
         {content}
         {this.props.infoTabNo === 1 ? null : this._renderFooter()}
       </Panel>
-      {that._renderDialog()}
     </div>);
     }
   },
