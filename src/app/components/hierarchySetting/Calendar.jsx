@@ -351,24 +351,21 @@ let CalendarItems = React.createClass({
     }
     var errorTextArr = this._getInitError();
     var length = calendarItems.size;
+    var itemsIsValid = true;
 
     for (i = 0; i < length; i++) {
       for (var j = (i + 1); j < length; j++) {
         if (parseInt(calendarItems.getIn([i, 'EffectiveTime'])) === parseInt(calendarItems.getIn([j, 'EffectiveTime']))) {
           errorTextArr[i] = I18N.Common.Label.TimeZoneConflict;
           errorTextArr[j] = I18N.Common.Label.TimeZoneConflict;
+          itemsIsValid = false;
         }
       }
     }
     this.setState({
       errorTextArr: errorTextArr
     });
-    for (i = 0; i < length; i++) {
-      if (errorTextArr[i] !== '') {
-        return false;
-      }
-    }
-    return true;
+    return itemsIsValid;
   },
   _getTextByType: function() {
     var text = '';

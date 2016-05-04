@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import moment from "moment";
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import Immutable from 'immutable';
@@ -19,7 +20,8 @@ let PropertyItem = React.createClass({
     merge: React.PropTypes.func,
     data: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool,
-    deletePropertyItem: React.PropTypes.func
+    deletePropertyItem: React.PropTypes.func,
+    errorText: React.PropTypes.string
   },
   _deletePropertyItem: function() {
     this.props.deletePropertyItem(this.props.code, this.props.index);
@@ -62,6 +64,7 @@ let PropertyItem = React.createClass({
     var yearMonthProps = {
         isViewStatus: this.props.isViewStatus,
         date: this.props.data.get('StartDate'),
+        errorMsg: this.props.errorText,
         onDateChange: value => {
           this.props.merge({
             value,
@@ -118,9 +121,23 @@ var Property = React.createClass({
       isLoading: true
     });
   },
+  _getInitError: function(code, property = this.state.property) {
+    var errorTextArr = [];
+    var properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    for (var i = 0; i < propertyItemValue.size; i++) {
+      errorTextArr.push('');
+    }
+    return errorTextArr;
+  },
   _onChange: function() {
+    var property = HierarchyStore.getProperty();
     this.setState({
-      property: HierarchyStore.getProperty(),
+      property: property,
+      TotalPopulationErrorTextArr: this._getInitError('TotalPopulation', property),
+      UsedRoomErrorTextArr: this._getInitError('UsedRoom', property),
+      UsedBedErrorTextArr: this._getInitError('UsedBed', property),
       isLoading: false
     });
   },
@@ -140,8 +157,59 @@ var Property = React.createClass({
 
     return totalAreaIsValid && heatingAreaIsValid && coolingAreaIsValid;
   },
+  _compareDate(date, compDate) {
+    var m = moment(date);
+    var comp = moment(compDate);
+    if (m.get('year') === comp.get('year') && m.get('month') === comp.get('month')) {
+      return true;
+    }
+    return false;
+  },
+  _getErrorText: function(code) {
+    var errorText = '';
+    switch (code) {
+      case 'TotalPopulation':
+        errorText = I18N.Setting.DynamicProperty.PopulationStartDateDuplicated;
+        break;
+      case 'UsedRoom':
+        errorText = I18N.Setting.DynamicProperty.RoomStartDateDuplicated;
+        break;
+      case 'UsedBed':
+        errorText = I18N.Setting.DynamicProperty.BedStartDateDuplicated;
+        break;
+    }
+    return errorText;
+  },
+  _itemsIsValid: function(code) {
+    var errorText = this._getErrorText(code);
+    var obj = {};
+    var property = this.state.property,
+      properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    var length = propertyItemValue.size;
+    var itemsIsValid = true;
+    var errorTextArr = this._getInitError(code);
+    for (var i = 0; i < length; i++) {
+      for (var j = (i + 1); j < length; j++) {
+        if (this._compareDate(propertyItemValue.getIn([i, 'StartDate']), propertyItemValue.getIn([j, 'StartDate']))) {
+          errorTextArr[i] = errorText;
+          errorTextArr[j] = errorText;
+          itemsIsValid = false;
+        }
+      }
+    }
+    obj[code + 'ErrorTextArr'] = errorTextArr;
+    this.setState(obj);
+    return itemsIsValid;
+  },
   _populationIsvalid: function() {
-    return true;
+    var everyItemIsValid = true,
+      itemsIsValid = this._itemsIsValid('TotalPopulation');
+    for (var k = 0; k < length; k++) {
+      everyItemIsValid = everyItemIsValid && this.refs['totalPopulation' + (k + 1)]._isValid();
+    }
+    return everyItemIsValid && itemsIsValid;
   },
   _otherIsValid: function() {
     var totalRoomIsValid = this.refs.totalRoom.isValid().valid;
@@ -326,10 +394,12 @@ var Property = React.createClass({
             key: i,
             index: i,
             code: 'TotalPopulation',
+            ref: 'totalPopulation' + (i + 1),
             calendarItem: item,
             isViewStatus: isView,
             merge: me._merge,
             data: item,
+            errorText: me.state.TotalPopulationErrorTextArr[i],
             deletePropertyItem: me._deletePropertyItem
           };
           return (
