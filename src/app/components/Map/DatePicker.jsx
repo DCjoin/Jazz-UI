@@ -15,6 +15,7 @@ let DatePicker = React.createClass({
     onMenuItemClick: React.PropTypes.func
   },
   getInitialState: function() {
+    MapStore.setSelectedDate(5);
     return {
       isDateMenuShow: false,
       dateMenu: MapStore.getDateMenu(),
@@ -52,8 +53,9 @@ let DatePicker = React.createClass({
   },
   componentDidMount: function() {
     MapStore.addDateMenuListener(this._onDateMenuChanged);
-  //LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
-    MapAction.setSelectedDate(5); //this month
+    //LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
+    //setTimeout('MapAction.setSelectedDate(5)',0);
+     //this month
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.lang !== this.props.lang) {

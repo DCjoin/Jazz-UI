@@ -39,6 +39,7 @@ server.state('currentUserId', {
 });
 server.state('UserInfo', {
     clearInvalid: false, // remove invalid cookies
+		strictHeader:false,
 		//isSecure: false
 });
 
