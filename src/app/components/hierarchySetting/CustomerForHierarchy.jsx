@@ -393,6 +393,8 @@ var CustomerForHierarchy = React.createClass({
       if (this.refs.jazz_customer_tag) {
         this.refs.jazz_customer_tag._resetFilterObj();
       }
+    } else if (this.props.infoTabNo === 3) {
+      HierarchyAction.cancelSaveCalendar();
     }
   },
   componentDidMount: function() {
