@@ -107,6 +107,12 @@ var Cost = React.createClass({
               }
             }
           })
+        } else {
+          let price = data.getIn(['Items', 0, 'SimpleItem', 'Price']);
+          if (!price || price === '' || !Regex.FactorRule.test(price) || price.length > 16) {
+            flag = true;
+          }
+
         }
       })
     }
@@ -215,6 +221,7 @@ var Cost = React.createClass({
         path: 'CostCommodities' + '.' + index,
         value: power
       })
+
     }
   },
   _handleDeletePower: function(id) {
@@ -244,7 +251,7 @@ var Cost = React.createClass({
         }],
         UomId: 9
       })
-    })
+    });
   },
   _handerDeleteOthers: function(id) {
     this.merge({
@@ -871,7 +878,10 @@ var Cost = React.createClass({
 
     return (
       <div>
-        <div className="jazz-carbon-addItem">
+        <div className={classnames({
+        "jazz-carbon-addItem": true,
+        "jazz-hide": isView && power.size === 0
+      })}>
           <div>{I18N.Common.Commodity.Electric}</div>
           <div className={classnames({
         "jazz-carbon-addItem-addBtn": true,
@@ -980,8 +990,13 @@ var Cost = React.createClass({
     }
 
     return (
-      <div>
-        <div className="jazz-carbon-addItem">
+      <div style={{
+        marginTop: '25px'
+      }}>
+        <div className={classnames({
+        "jazz-carbon-addItem": true,
+        "jazz-hide": isView && commodityItems.length === 0
+      })}>
           <div>{I18N.Setting.Cost.OtherCommodities}</div>
           <div className={classnames({
         "jazz-carbon-addItem-addBtn": true,
@@ -1018,6 +1033,15 @@ var Cost = React.createClass({
     var that = this,
       {CostCommodities} = this.state.cost.toJS();
     if (CostCommodities === null && this.props.formStatus === formStatus.VIEW) {
+      return (
+        <div style={{
+          color: '#767a7a',
+          fontSize: '14px'
+        }}>
+          {I18N.Setting.Cost.NoCommodities}
+        </div>
+        )
+    } else if (CostCommodities.length === 0 && this.props.formStatus === formStatus.VIEW) {
       return (
         <div style={{
           color: '#767a7a',
