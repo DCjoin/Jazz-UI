@@ -81,12 +81,6 @@ var YearMonthItem = React.createClass({
       }];
     return monthItems;
   },
-  componentWillReceiveProps: function() {
-    console.log('componentWillReceiveProps');
-  },
-  componentDidMount: function() {
-    console.log('componentDidMount');
-  },
   render: function() {
     var m = moment(this.props.date),
       year = m.get('year') - 2005 || 0,
