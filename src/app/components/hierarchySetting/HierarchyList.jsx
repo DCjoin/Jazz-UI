@@ -52,6 +52,7 @@ var HierarchyList = React.createClass({
                 <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
               );
             }
+
           } else {
             menuItems.push(
               <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>

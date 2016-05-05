@@ -13,8 +13,9 @@ import Regex from '../../../constants/Regex.jsx';
 import AdminList from '../../customer/AdminList.jsx';
 import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx';
 import ImageUpload from '../../../controls/ImageUpload.jsx';
-import Path from '../../../constants/Path.jsx';
+//import Path from '../../../constants/Path.jsx';
 import ViewableMap from '../../../controls/ViewableMap.jsx';
+import Config from 'config';
 
 
 var BuildingBasic = React.createClass({

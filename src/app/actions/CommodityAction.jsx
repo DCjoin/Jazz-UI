@@ -5,7 +5,7 @@ import Ajax from '../ajax/ajax.jsx';
 
 let CommodityAction = {
   loadCommodityList(hierId, dimId) {
-    Ajax.post('/Energy.svc/GetCommodities', {
+    Ajax.post('/Energy/GetCommodities', {
       params: {
         hierarchyId: hierId,
         areaDimensionId: dimId,
@@ -29,7 +29,7 @@ let CommodityAction = {
     list.forEach(function(node) {
       hierarchyIds.push(node.get('Id'))
     });
-    Ajax.post('/Energy.svc/RankingGetCommodities', {
+    Ajax.post('/Energy/RankingGetCommodities', {
       params: {
         hierarchyIds: hierarchyIds,
         limit: 25,

@@ -5,7 +5,7 @@ import Ajax from '../../ajax/ajax.jsx';
 
 let LabelAction = {
   getLabelList: function() {
-    Ajax.post('/Customer.svc/GetCustomerLabellings', {
+    Ajax.post('/Customer/GetCustomerLabellings', {
       params: {
         filter: {
           CustomerId: parseInt(window.currentCustomerId)
@@ -37,7 +37,7 @@ let LabelAction = {
   },
   modifyLabel(data) {
     var me = this;
-    Ajax.post('/Customer.svc/ModifyCustomerLabelling', {
+    Ajax.post('/Customer/ModifyCustomerLabelling', {
       params: {
         dto: data
       },
@@ -58,7 +58,7 @@ let LabelAction = {
   },
   createLabel(data) {
     var me = this;
-    Ajax.post('/Customer.svc/CreateCustomerLabelling', {
+    Ajax.post('/Customer/CreateCustomerLabelling', {
       params: {
         dto: data
       },
@@ -78,7 +78,7 @@ let LabelAction = {
     });
   },
   deleteLabelById(id) {
-    Ajax.post('/Customer.svc/DeleteCustomerLabelling', {
+    Ajax.post('/Customer/DeleteCustomerLabelling', {
       params: {
         labellingId: id
       },

@@ -10,7 +10,7 @@ let CustomerAction = {
   GetCustomers: function(Column) {
     //Column:Name,StartDate
     _Column = Column;
-    Ajax.post('/Customer.svc/GetCustomersByFilter', {
+    Ajax.post('/Customer/GetCustomersByFilter', {
       params: {
         filter: {
           UserId: null,
@@ -32,7 +32,7 @@ let CustomerAction = {
     });
   },
   GetCustomerEnergyInfos: function(id) {
-    Ajax.post('/Customer.svc/GetCustomerEnergyInfosByCustomerId', {
+    Ajax.post('/Customer/GetCustomerEnergyInfosByCustomerId', {
       params: {
         customerId: id
       },
@@ -72,7 +72,7 @@ let CustomerAction = {
   },
   ModifyCustomer: function(customer) {
     var that = this;
-    Ajax.post('/Customer.svc/ModifyCustomer', {
+    Ajax.post('/Customer/ModifyCustomer', {
       params: {
         dto: customer
       },
@@ -97,7 +97,7 @@ let CustomerAction = {
   },
   CreateCustomer: function(customer) {
     var that = this;
-    Ajax.post('/Customer.svc/CreateCustomer', {
+    Ajax.post('/Customer/CreateCustomer', {
       params: {
         dto: customer
       },
@@ -122,7 +122,7 @@ let CustomerAction = {
   },
   SaveCustomerEnergyInfo: function(info) {
     var that = this;
-    Ajax.post('/Customer.svc/SaveCustomerEnergyInfo', {
+    Ajax.post('/Customer/SaveCustomerEnergyInfo', {
       params: {
         customerEnergyInfo: info
       },
@@ -146,7 +146,7 @@ let CustomerAction = {
   },
   deleteCustomer: function(dto) {
     var that = this;
-    Ajax.post('/Customer.svc/DeleteCustomer', {
+    Ajax.post('/Customer/DeleteCustomer', {
       params: {
         dto: dto
       },
