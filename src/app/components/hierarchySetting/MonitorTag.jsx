@@ -154,10 +154,11 @@ var MonitorTag = React.createClass({
     });
   },
   _onDeleteTag: function(tag) {
+    var associationType = this.props.isDim ? 4 : 1;
     HierarchyAction.modifyTags(null, [{
       Id: tag.get('Id'),
       Version: tag.get('Version')
-    }]);
+    }], associationType);
     let page = this.state.page;
     if (HierarchyStore.getTotal() - 1 > 0 && parseInt((HierarchyStore.getTotal() - 1 + 19) / 20) < page) {
       page = page - 1;
