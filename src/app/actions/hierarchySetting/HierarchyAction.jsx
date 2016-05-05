@@ -87,7 +87,7 @@ let HierarchyAction = {
     if (!isView) {
       associationObj.Associatiable = true;
     }
-    Ajax.post('/Tag.svc/GetTagsByFilter', {
+    Ajax.post('/Tag/GetTagsByFilter', {
       params: {
         filter: {
           CustomerId: parseInt(window.currentCustomerId),
@@ -142,7 +142,7 @@ let HierarchyAction = {
     });
   },
   setEnergyConsumption: function(tag, value, type, hierarchyId) {
-    Ajax.post('/Tag.svc/SetEnergyConsumption', {
+    Ajax.post('/Tag/SetEnergyConsumption', {
       params: {
         dto: {
           AssociationId: hierarchyId,
@@ -195,7 +195,7 @@ let HierarchyAction = {
   modifyHierarchy: function(dto) {
     var that = this,
       id = dto.Id;
-    Ajax.post('/Hierarchy.svc/ModifyHierarchy', {
+    Ajax.post('/Hierarchy/ModifyHierarchy', {
       params: {
         hierarchy: HierarchyStore.traversalNode(dto)
       },
@@ -258,7 +258,7 @@ let HierarchyAction = {
     });
   },
   getCalendar: function(hierarchyId) {
-    Ajax.post('/Hierarchy.svc/GetHierarchyCalendarByHierarchyId', {
+    Ajax.post('/Hierarchy/GetHierarchyCalendarByHierarchyId', {
       params: {
         hierarchyId: hierarchyId
       },
@@ -279,7 +279,7 @@ let HierarchyAction = {
     });
   },
   saveCalendar: function(calendar) {
-    Ajax.post('/Hierarchy.svc/SaveHierarchyCalendar', {
+    Ajax.post('/Hierarchy/SaveHierarchyCalendar', {
       params: {
         dto: calendar
       },
@@ -295,7 +295,7 @@ let HierarchyAction = {
     });
   },
   getProperty: function(hierarchyId) {
-    Ajax.post('/Hierarchy.svc/GetAdvancedPropertyValuesByHierarchy', {
+    Ajax.post('/Hierarchy/GetAdvancedPropertyValuesByHierarchy', {
       params: {
         hierarchyId: hierarchyId
       },
@@ -316,7 +316,7 @@ let HierarchyAction = {
     });
   },
   saveProperty: function(property) {
-    Ajax.post('/Hierarchy.svc/SetAdvancedPropertyValues', {
+    Ajax.post('/Hierarchy/SetAdvancedPropertyValues', {
       params: {
         setting: property
       },
@@ -370,7 +370,7 @@ let HierarchyAction = {
   },
   modifyHierarchyPath: function(DesParent, MovingHierarchies, NextBrother, PreviousBrother) {
     var that = this;
-    Ajax.post('/Hierarchy.svc/ModifyHierarchyPath', {
+    Ajax.post('/Hierarchy/ModifyHierarchyPath', {
       params: {
         hierarchyMovingDto: {
           DesParent: DesParent,
@@ -395,7 +395,7 @@ let HierarchyAction = {
     });
   },
   getCostByHierarchy: function(hierarchyId, refresh = false) {
-    Ajax.post('/Cost.svc/GetCostByHierarchy', {
+    Ajax.post('/Cost/GetCostByHierarchy', {
       params: {
         hierarchyId: hierarchyId
       },
@@ -417,7 +417,7 @@ let HierarchyAction = {
   },
   saveCost: function(cost) {
     var that = this;
-    Ajax.post('/Cost.svc/SaveCost', {
+    Ajax.post('/Cost/SaveCost', {
       params: {
         dto: cost
       },
