@@ -47,34 +47,38 @@ let MainApp = React.createClass({
   },
   getInitialState: function() {
     //||CurrentUserStore.getCurrentPrivilegeByUser(JSON.parse(getCookie('UserInfo')))
-    var _rivilege = CurrentUserStore.getCurrentPrivilege() ;
+    var _rivilege = CurrentUserStore.getCurrentPrivilege();
     return {
-      currentUser:window.currentUser,
+      currentUser: window.currentUser,
       rivilege: _rivilege
     };
   },
 
-  _redirectRouter : function(target, params) {
-      if (!target) {
-          //this.context.router.replaceWith(NO_PERMISSION_TIP_NAME, params);
-          return;
-      }
-      var _redirectFunc = this.context.router.transitionTo;
-      if (this.props.routes.length < 3) {
-          _redirectFunc = this.context.router.replaceWith;
-      }
-      if (target.children && target.children.length > 0) {
-          _redirectFunc(target.children[0].name, params);
-      } else {
-          _redirectFunc(target.name, params);
-      }
+  _redirectRouter: function(target, params) {
+    if (!target) {
+      //this.context.router.replaceWith(NO_PERMISSION_TIP_NAME, params);
+      return;
+    }
+    var _redirectFunc = this.context.router.transitionTo;
+    if (this.props.routes.length < 3) {
+      _redirectFunc = this.context.router.replaceWith;
+    }
+    if (target.children && target.children.length > 0) {
+      _redirectFunc(target.children[0].name, params);
+    } else {
+      _redirectFunc(target.name, params);
+    }
   },
 
-  _showCustomerList : function(argument) {
-      this.setState({viewState: viewState.SELECT_CUSTOMER});
+  _showCustomerList: function(argument) {
+    this.setState({
+      viewState: viewState.SELECT_CUSTOMER
+    });
   },
-  _closeSelectCustomer : function() {
-      this.setState({viewState: viewState.MAIN});
+  _closeSelectCustomer: function() {
+    this.setState({
+      viewState: viewState.MAIN
+    });
   },
   _onChange: function(argument) {
     var params = this.props.params;
@@ -82,17 +86,21 @@ let MainApp = React.createClass({
 
     var currentCustomer = getCurrentCustomer();
 
-    if(!customerCode){
-      this.setState({viewState: viewState.SELECT_CUSTOMER});
+    if (!customerCode) {
+      this.setState({
+        viewState: viewState.SELECT_CUSTOMER
+      });
     }
 
-    if(currentCustomer && currentCustomer.CustomerId === -1 && !window.toMainApp){
+    if (currentCustomer && currentCustomer.CustomerId === -1 && !window.toMainApp) {
       //切换至系统管理
       this._redirectRouter({
-          name: 'workday',
-          title: I18N.MainMenu.Workday
-      },this.props.params);
-      this.setState({viewState: viewState.MAIN});
+        name: 'workday',
+        title: I18N.MainMenu.Workday
+      }, this.props.params);
+      this.setState({
+        viewState: viewState.MAIN
+      });
       currentCustomer.CustomerId = '';
       return;
     }
@@ -102,7 +110,7 @@ let MainApp = React.createClass({
     // console.log('window.toMainApp:'+window.toMainApp);
     // console.log('currentCustomer.CustomerId:'+ currentCustomer.CustomerId);
     // && customerCode != currentCustomer.Id.toString()
-    if (!_.isEmpty(currentCustomer) ) {
+    if (!_.isEmpty(currentCustomer)) {
       params.customerId = currentCustomer.Id;
       window.currentCustomerId = currentCustomer.Id;
       this._switchCustomer(currentCustomer);
@@ -120,18 +128,23 @@ let MainApp = React.createClass({
 
   },
   _switchCustomer: function(customer) {
-      var currentCustomer = getCurrentCustomer();
+    var currentCustomer = getCurrentCustomer();
 
-      //由于登录未完成，临时更新currentCustomerId
-      CookieUtil.set('currentCustomerId', customer.Id, {'expires':5,'path':'/webhost'});
+    //由于登录未完成，临时更新currentCustomerId
+    CookieUtil.set('currentCustomerId', customer.Id, {
+      'expires': 5,
+      'path': '/webhost'
+    });
 
-      this._redirectRouter(this._getMenuItems()[0], assign({}, this.props.params, {
-        customerId: customer.Id
-      }));
+    this._redirectRouter(this._getMenuItems()[0], assign({}, this.props.params, {
+      customerId: customer.Id
+    }));
 
-      this.setState({viewState: viewState.MAIN});
+    this.setState({
+      viewState: viewState.MAIN
+    });
   },
-  _getMenuItems:function(){
+  _getMenuItems: function() {
     var menuItems;
 
     if (this.state.rivilege.indexOf('1221') > -1) {
@@ -181,7 +194,7 @@ let MainApp = React.createClass({
         }
       );
     }
-    if (this.state.rivilege.indexOf('1208') > -1 || this.state.rivilege.indexOf('1217') > -1) {
+    if (this.state.rivilege.indexOf('1208') > -1 || this.state.rivilege.indexOf('1207') > -1 || this.state.rivilege.indexOf('1217') > -1) {
       var customerChildren = [];
       if (this.state.rivilege.indexOf('1208') > -1) {
         customerChildren = [{
@@ -204,7 +217,10 @@ let MainApp = React.createClass({
               title: I18N.MainMenu.TagBatchImportLog
             }
           ]
-        }, {
+        }];
+      }
+      if (this.state.rivilege.indexOf('1207') > -1) {
+        customerChildren.push({
           title: I18N.MainMenu.HierarchySetting,
           list: [
             {
@@ -216,7 +232,7 @@ let MainApp = React.createClass({
               title: I18N.MainMenu.HierarchyLog
             }
           ]
-        }];
+        });
       }
       if (this.state.rivilege.indexOf('1217') > -1) {
         customerChildren.push({
@@ -229,13 +245,11 @@ let MainApp = React.createClass({
           ]
         });
       }
-      menuItems.push(
-        {
-          name: 'customerSetting',
-          title: I18N.MainMenu.CustomerSetting,
-          children: customerChildren
-        }
-      );
+      menuItems.push({
+        name: 'customerSetting',
+        title: I18N.MainMenu.CustomerSetting,
+        children: customerChildren
+      });
     }
 
     return menuItems;
@@ -244,21 +258,21 @@ let MainApp = React.createClass({
   render: function() {
     var CustomersList = getCurrentCustomers();
 
-    if( this.state.viewState == viewState.SELECT_CUSTOMER || window.toMainApp){
+    if (this.state.viewState == viewState.SELECT_CUSTOMER || window.toMainApp) {
 
-      return(
+      return (
         <SelectCustomer close={this._closeSelectCustomer}
-                        currentCustomerId={parseInt(this.props.params.customerId)}
-                        params={CustomersList}
-                        userId={parseInt(window.currentUserId)}/>
-      );
-    }else{
+        currentCustomerId={parseInt(this.props.params.customerId)}
+        params={CustomersList}
+        userId={parseInt(window.currentUserId)}/>
+        );
+    } else {
       if (this.state.rivilege !== null) {
         var menuItems = this._getMenuItems();
         //console.log(JSON.stringify(menuItems,0,1));
         var logoUrl = 'Logo.aspx?hierarchyId=' + this.props.params.customerId;
         return (
-            <div className='jazz-main'>
+          <div className='jazz-main'>
                 <MainAppBar items={menuItems} logoUrl={logoUrl} showCustomerList={this._showCustomerList}/>
                 <RouteHandler {...this.props} />
                 <NetworkChecker></NetworkChecker>
@@ -268,11 +282,16 @@ let MainApp = React.createClass({
       } else {
         return (
           <div className='jazz-main'>
-            <div style={{ display: 'flex', flex: 1, 'alignItems': 'center', 'justifyContent': 'center' }}>
+            <div style={{
+            display: 'flex',
+            flex: 1,
+            'alignItems': 'center',
+            'justifyContent': 'center'
+          }}>
               <CircularProgress  mode="indeterminate" size={2} />
             </div>
           </div>
-        );
+          );
       }
     }
   },
