@@ -46,8 +46,11 @@ let MainApp = React.createClass({
     });
   },
   getInitialState: function() {
+    //||CurrentUserStore.getCurrentPrivilegeByUser(JSON.parse(getCookie('UserInfo')))
+    var _rivilege = CurrentUserStore.getCurrentPrivilege() ;
     return {
-      rivilege: CurrentUserStore.getCurrentPrivilege()
+      currentUser:window.currentUser,
+      rivilege: _rivilege
     };
   },
 
@@ -76,13 +79,35 @@ let MainApp = React.createClass({
   _onChange: function(argument) {
     var params = this.props.params;
     var customerCode = params.customerId;
-    //console.log('MainApp _onChange customerId:'+ this.props.params.customerId);
 
     var currentCustomer = getCurrentCustomer();
-    if (!_.isEmpty(currentCustomer) && customerCode != currentCustomer.Id.toString()) {
-      this._switchCustomer(currentCustomer);
+
+    if(!customerCode){
+      this.setState({viewState: viewState.SELECT_CUSTOMER});
+    }
+
+    if(currentCustomer && currentCustomer.CustomerId === -1 && !window.toMainApp){
+      //切换至系统管理
+      this._redirectRouter({
+          name: 'workday',
+          title: I18N.MainMenu.Workday
+      },this.props.params);
+      this.setState({viewState: viewState.MAIN});
+      currentCustomer.CustomerId = '';
+      return;
+    }
+
+    // console.log('currentCustomer.Id:'+currentCustomer.Id);
+    // console.log('window.currentCustomerId:'+window.currentCustomerId);
+    // console.log('window.toMainApp:'+window.toMainApp);
+    // console.log('currentCustomer.CustomerId:'+ currentCustomer.CustomerId);
+    // && customerCode != currentCustomer.Id.toString()
+    if (!_.isEmpty(currentCustomer) ) {
       params.customerId = currentCustomer.Id;
       window.currentCustomerId = currentCustomer.Id;
+      this._switchCustomer(currentCustomer);
+      window.toMainApp = false;
+
       return;
     }
 
@@ -218,7 +243,9 @@ let MainApp = React.createClass({
 
   render: function() {
     var CustomersList = getCurrentCustomers();
-    if(this.state.viewState == viewState.SELECT_CUSTOMER && CustomersList && CustomersList.length > 0){
+
+    if( this.state.viewState == viewState.SELECT_CUSTOMER || window.toMainApp){
+
       return(
         <SelectCustomer close={this._closeSelectCustomer}
                         currentCustomerId={parseInt(this.props.params.customerId)}

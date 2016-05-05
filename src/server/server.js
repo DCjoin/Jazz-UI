@@ -24,6 +24,27 @@ server.connection({
 	port: 8080
 });
 
+
+//fix refresh problems
+server.state('UserId', {
+    clearInvalid: true, // remove invalid cookies
+		//isSecure: false
+});
+server.state('Username', {
+    clearInvalid: true, // remove invalid cookies
+		//isSecure: false
+});
+server.state('currentUserId', {
+    clearInvalid: true, // remove invalid cookies
+		//isSecure: false
+});
+server.state('UserInfo', {
+    clearInvalid: false, // remove invalid cookies
+		strictHeader:false,
+		//isSecure: false
+});
+
+
 function returnIndexHtml(request,reply){
 	var html = fs.readFileSync(path.resolve(__dirname, "../app/index.html"), "utf-8");
 	html = html.replace('APP_URL',APP_URL);

@@ -238,8 +238,13 @@ var MainAppBar = React.createClass({
                     </li>
                 </ul>
             </div>
-        </SideNav>);
-  },
+            <div className="sidebar-bottom-action" >
+                <CustomFlatButton className="pop-userprofile-logout" label={I18N.Login.Logout} primary={true} onClick={this._showLogout} style={{color:'#abafae',height:'48px',width:'100%'}} />
+            </div>
+        </SideNav>
+    );
+},
+
   _getAboutNav: function() {
     return (<SideNav open={true} onClose={this._onClose}  side="right">
           <div className="sidebar-title" >

@@ -321,14 +321,14 @@ var TagStore = assign({}, PrototypeStore, {
   setData(data) {
     _data = data;
     _isLoading = false;
-    this.setCurrentTagList(data.GetTagsByFilterResult);
+    this.setCurrentTagList(data.Data);
     //每次load当页的taglist，判断“全选”的状态 disable or not?
 
   },
   setDataByAlarm(data) {
     _data = data;
     _isLoading = false;
-    this.setCurrentTagList(data.GetPageTagDataResult);
+    this.setCurrentTagList(data.Data);
   },
   // doWidgetDtos: function(widgetDto) {
   //   this.resetTagInfo(widgetDto.WidgetType);

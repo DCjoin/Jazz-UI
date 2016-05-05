@@ -8,6 +8,7 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 require("babel-polyfill");
 
 import JazzApp from './components/JazzApp.jsx';
+import Login from './components/Login.jsx';
 import MainApp from './components/MainApp.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
@@ -55,15 +56,24 @@ let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Rou
 
 injectTapEventPlugin();
 
-window.currentUserId = getCookie('currentUserId');
+
+window._tempUserInfo = getCookie('UserInfo');
+if (window._tempUserInfo) {
+  window.currentUserId = JSON.parse(getCookie('UserInfo')).Id;
+} else {
+  window.currentUserId = getCookie('UserId');
+}
+
 window.currentCustomerId = getCookie('currentCustomerId');
+window.toMainApp = false;
 
 function getLessVar(name) {
   return main["@" + name];
 }
 
 var routes = (
-    <Route name="app" path="/:lang?" handler={JazzApp}>
+<Route name="app" path="/:lang?" handler={JazzApp}>
+      <Route name="login" path="login" handler={Login}/>
       <Route name="main" path=":customerId?" handler={MainApp}>
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}></Route>
@@ -126,7 +136,7 @@ Router.run(routes, Router.HashLocation, (Root, state) => {
     disableColor: "#abafae"
   };
 
- //console.log('state:'+JSON.stringify(state,0,1));
+  //console.log('state:'+JSON.stringify(state,0,1));
 
   React.render(
     <Root {...state} muiTheme={muiTheme}  getLessVar={getLessVar}/>,
