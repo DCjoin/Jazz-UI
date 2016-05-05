@@ -459,7 +459,7 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       HierarchyStore.clearAll();
       break;
     case HierarchyAction.DELETE_HIERARCHY_DTO_SUCCESS:
-      HierarchyStore.setSelectedNode(action.nextSelectedNode);
+      //HierarchyStore.setSelectedNode(action.nextSelectedNode);
       break;
     case HierarchyAction.HIERARCHY_ERROR:
       HierarchyStore.emitErrorhange({

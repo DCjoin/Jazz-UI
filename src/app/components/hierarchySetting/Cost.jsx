@@ -342,8 +342,7 @@ var Cost = React.createClass({
     return (
       <div style={{
         display: 'flex',
-        marginTop: '10px',
-        marginLeft: '40px'
+        marginTop: '10px'
       }}>
                     <ViewableNumberField  {...priceProps} />
                   </div>
@@ -484,7 +483,8 @@ var Cost = React.createClass({
     var styles = {
       group: {
         display: 'flex',
-        'flexDirection': 'row'
+        'flexDirection': 'row',
+        marginTop: '15px'
       },
       leftradioButton: {
         fontSize: '14px',
@@ -537,7 +537,8 @@ var Cost = React.createClass({
       return (
         <div style={{
           display: 'flex',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          marginTop: '30px'
         }}>
               <ViewableTextField  {...transformerCapacityProps} />
               <div style={isView ? {
@@ -546,7 +547,11 @@ var Cost = React.createClass({
           margin: '35px 5px 0 5px'
         }}>x</div>
               <ViewableTextField  {...transformerPriceProps} />
-              <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
+              <div classnames='jazz-default-font' style={isView ? {
+          margin: '25px 5px 0 5px'
+        } : {
+          margin: '45px 5px 0 5px'
+        }}>{I18N.Setting.Cost.PowerUOM}</div>
             </div>
         )
     };
@@ -571,7 +576,7 @@ var Cost = React.createClass({
           textField: "text",
           dataItems: titleItems,
           style: {
-            maxWidth: '200px'
+            width: '190px'
           },
           didChanged: value => {
             that.merge({
@@ -589,7 +594,7 @@ var Cost = React.createClass({
           maxLen: 16,
           isRequired: true,
           style: {
-            maxWidth: '200px'
+            width: '200px'
           },
           didChanged: value => {
             that.merge({
@@ -601,12 +606,27 @@ var Cost = React.createClass({
       return (
         <div style={{
           display: 'flex',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          marginTop: '30px'
         }}>
-              <ViewableDropDownMenu  {...hourTagProps} />
+        <div style={{
+          width: '200px'
+        }}><ViewableDropDownMenu  {...hourTagProps} /></div>
+      <div style={isView ? {
+          width: '200px',
+        // paddingLeft: '10px'
+        } : {
+          width: '200px',
+          // paddingLeft: '10px',
+          marginTop: '-10px'
+        }}><ViewableTextField  {...hourPriceProps} /> </div>
 
-              <ViewableTextField  {...hourPriceProps} />
-              <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
+
+              <div classnames='jazz-default-font' style={isView ? {
+          margin: '25px 5px 0 5px'
+        } : {
+          margin: '35px 5px 0 5px'
+        }}>{I18N.Setting.Cost.PowerUOM}</div>
             </div>
         )
     };
@@ -631,7 +651,7 @@ var Cost = React.createClass({
         textField: "text",
         dataItems: titleItems,
         style: {
-          maxWidth: '200px'
+          width: '200px'
         },
         didChanged: value => {
           that.merge({
@@ -643,10 +663,17 @@ var Cost = React.createClass({
       return (
         <div style={{
           display: 'flex',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          marginTop: '30px'
         }}>
-                <ViewableDropDownMenu  {...touTariffProps} />
-                <div className='jazz-building-cost-showTou' onClick={that._showTouDetailsideNav.bind(this, selectedId)}>{I18N.Setting.Cost.SearchTouDetail}</div>
+        <div style={{
+          width: '200px'
+        }}><ViewableDropDownMenu  {...touTariffProps} /></div>
+
+                <div className='jazz-building-cost-showTou' style={{
+          marginTop: '26px',
+          marginLeft: '0'
+        }} onClick={that._showTouDetailsideNav.bind(this, selectedId)}>{I18N.Setting.Cost.SearchTouDetail}</div>
               </div>
         )
     };
@@ -671,7 +698,7 @@ var Cost = React.createClass({
         textField: "text",
         dataItems: titleItems,
         style: {
-          maxWidth: '200px'
+          width: '200px'
         },
         didChanged: value => {
           that.merge({
@@ -683,10 +710,17 @@ var Cost = React.createClass({
       return (
         <div style={{
           display: 'flex',
-          flexDirection: 'row'
+          flexDirection: 'row',
+          marginTop: '30px'
         }}>
-                <ViewableDropDownMenu  {...factorProps} />
-                <div className='jazz-building-cost-showTou' onClick={that._showPowerFactorDialog.bind(this, selectedId)}>{I18N.Setting.Cost.SearchPowerFactor}</div>
+        <div style={{
+          width: '200px'
+        }}><ViewableDropDownMenu  {...factorProps} /></div>
+
+                <div className='jazz-building-cost-showTou' style={{
+          marginTop: '26px',
+          marginLeft: '0'
+        }} onClick={that._showPowerFactorDialog.bind(this, selectedId)}>{I18N.Setting.Cost.SearchPowerFactor}</div>
               </div>
         )
     };
@@ -747,9 +781,16 @@ var Cost = React.createClass({
           }
         };
       return (
-        <div className='jazz-building-cost-tou-item'>
-                <ViewableDropDownMenu  {...realTagProps}/>
-                <ViewableDropDownMenu  {...reactiveTagProps}/>
+        <div className='jazz-building-cost-tou-item' style={{
+          marginTop: '30px'
+        }}>
+        <div style={{
+          width: '200px'
+        }}><ViewableDropDownMenu  {...realTagProps}/></div>
+        <div style={{
+          width: '200px'
+        }}><ViewableDropDownMenu  {...reactiveTagProps}/></div>
+
               </div>
         )
     };
@@ -772,7 +813,9 @@ var Cost = React.createClass({
     };
     return (
       <div>
-        <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.DemandCostMode}</div>
+        <div className='jazz-fromenddate-item-text' style={{
+        marginTop: '30px'
+      }}>{I18N.Setting.Cost.DemandCostMode}</div>
           <RadioButtonGroup name="price" defaultSelected={defaultSelected} onChange={(event, value) => {
         this.merge({
           path: path + 'DemandCostType',
@@ -796,7 +839,10 @@ var Cost = React.createClass({
         {renderUsageCost()}
         {renderFactorType()}
         {renderTags()}
-        <ViewableTextField  {...paddingCostProps} />
+        <div style={{
+        marginTop: '30px'
+      }}><ViewableTextField  {...paddingCostProps} /></div>
+
       </div>
       )
   },
@@ -834,7 +880,8 @@ var Cost = React.createClass({
         var styles = {
           group: {
             display: 'flex',
-            'flexDirection': 'row'
+            'flexDirection': 'row',
+            marginTop: '15px'
           },
           leftradioButton: {
             fontSize: '14px',
@@ -979,9 +1026,16 @@ var Cost = React.createClass({
           commodityItems.push(
             <div className='jazz-carbon-factorItem'>
                   <DeletableItem {...deleteProps}>
-                      <ViewableDropDownMenu {...commodityProps}/>
-                      <YearMonthItem {...dateProps}/>
-                      <ViewableNumberField {...priceProps}/>
+                    <div style={{
+              marginTop: '25px'
+            }}><ViewableDropDownMenu {...commodityProps}/></div>
+                    <div style={{
+              marginTop: '30px'
+            }}><YearMonthItem {...dateProps}/></div>
+                    <div style={{
+              marginTop: '30px'
+            }}><ViewableNumberField {...priceProps}/></div>
+
                     </DeletableItem>
                   </div>
           )

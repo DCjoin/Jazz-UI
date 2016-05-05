@@ -227,9 +227,9 @@ let HierarchyAction = {
       success: function() {
         AppDispatcher.dispatch({
           type: Action.DELETE_HIERARCHY_DTO_SUCCESS,
-          nextSelectedNode: HierarchyStore.findNextSelectedNode(HierarchyStore.traversalNode(dto))
+        // nextSelectedNode: HierarchyStore.findNextSelectedNode(HierarchyStore.traversalNode(dto))
         });
-        that.GetHierarchys();
+        that.GetHierarchys(HierarchyStore.findNextSelectedNode(HierarchyStore.traversalNode(dto)).get('Id'));
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
