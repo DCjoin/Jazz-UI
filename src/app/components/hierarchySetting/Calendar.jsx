@@ -171,7 +171,8 @@ let CalendarItem = React.createClass({
     isViewStatus: React.PropTypes.bool,
     allCalendar: React.PropTypes.object,
     deleteCalendarItem: React.PropTypes.func,
-    checkWorktime: React.PropTypes.func
+    checkWorktime: React.PropTypes.func,
+    errorText: React.PropTypes.string
   },
   getInitialState: function() {
     return {
@@ -302,6 +303,7 @@ let CalendarItem = React.createClass({
           <YearPicker {...effectiveTimeProps}/>
           {deleteButton}
         </div>
+        <div className='jazz-hierarchy-calendar-type-item-error'>{this.props.errorText}</div>
         <div className='jazz-hierarchy-calendar-type-item-name'>
           <ViewableDropDownMenu {...nameProps}/>
           {showDetailButton}
@@ -326,29 +328,44 @@ let CalendarItems = React.createClass({
     checkWorktime: React.PropTypes.func
   },
   getInitialState: function() {
+    var errorTextArr = this._getInitError();
     return ({
-      errorText: ''
+      errorTextArr: errorTextArr
     });
   },
-  _isValid: function() {
+  _getInitError: function() {
+    var errorTextArr = [];
     var calendarItems = this.props.calendarItems;
+    if (calendarItems && calendarItems.size > 0) {
+      for (var i = 0; i < calendarItems.size; i++) {
+        errorTextArr.push('');
+      }
+    }
+    return errorTextArr;
+  },
+  _isValid: function() {
+    var i;
+    var calendarItems = this.props.calendarItems;
+    if (calendarItems === null) {
+      return true;
+    }
+    var errorTextArr = this._getInitError();
     var length = calendarItems.size;
+    var itemsIsValid = true;
 
-    for (var i = 0; i < length; i++) {
+    for (i = 0; i < length; i++) {
       for (var j = (i + 1); j < length; j++) {
         if (parseInt(calendarItems.getIn([i, 'EffectiveTime'])) === parseInt(calendarItems.getIn([j, 'EffectiveTime']))) {
-          this.setState({
-            errorText: I18N.Common.Label.TimeZoneConflict
-          });
-          return false;
+          errorTextArr[i] = I18N.Common.Label.TimeZoneConflict;
+          errorTextArr[j] = I18N.Common.Label.TimeZoneConflict;
+          itemsIsValid = false;
         }
       }
     }
-
     this.setState({
-      errorText: ''
+      errorTextArr: errorTextArr
     });
-    return true;
+    return itemsIsValid;
   },
   _getTextByType: function() {
     var text = '';
@@ -399,7 +416,8 @@ let CalendarItems = React.createClass({
           merge: me.props.merge,
           allCalendar: me.props.allCalendar,
           deleteCalendarItem: me._deleteCalendarItem,
-          checkWorktime: me._checkWorktime
+          checkWorktime: me._checkWorktime,
+          errorText: me.state.errorTextArr[i]
         };
         return (
           <CalendarItem {...props}/>
@@ -447,62 +465,54 @@ var Calendar = React.createClass({
     });
     return this.state.calendar.toJS();
   },
-  _isValid: function() {
+  _isValid: function(checked) {
     var calendar = this.state.calendar;
     var allCalendar = this.state.allCalendar;
+    var calendarIndex;
     var i;
-    if (calendar === null || allCalendar === null) {
-      return false;
-    } else {
-      var calendarItemGroups = calendar.get('CalendarItemGroups');
-      for (i = 0; i < calendarItemGroups.size; i++) {
-        if (!this.refs['calendarItems' + (i + 1)]._isValid()) {
-          return false;
-        }
-      }
-      if (calendarItemGroups.getIn([0, 'CalendarItems']) === null && calendarItemGroups.getIn([1, 'CalendarItems']) === null && calendarItemGroups.getIn([2, 'CalendarItems']) === null) {
+
+    var calendarItemGroups = calendar.get('CalendarItemGroups');
+    for (i = 0; i < calendarItemGroups.size; i++) {
+      if (!this.refs['calendarItems' + (i + 1)]._isValid()) {
         return false;
       }
-      if (calendarItemGroups.getIn([0, 'CalendarItems']) !== null) {
-        var workdayItem = this._getDefaultCalendarItem(0);
-        if (workdayItem.get('Calendar') === undefined) {
-          return false;
-        }
-        var calendarItems = calendarItemGroups.getIn([0, 'CalendarItems']);
-        for (i = 0; i < calendarItems.size; i++) {
-          if (calendarItems.getIn([i, 'WorkTimeCalendar']) === undefined) {
-            return false;
-          }
-        }
-      }
-      if (calendarItemGroups.getIn([2, 'CalendarItems']) !== null) {
-        var coldwormItem = this._getDefaultCalendarItem(2);
-        if (coldwormItem.get('Calendar') === undefined) {
-          return false;
-        }
-      }
-      if (calendarItemGroups.getIn([3, 'CalendarItems']) !== null) {
-        var daynightItem = this._getDefaultCalendarItem(3);
-        if (daynightItem.get('Calendar') === undefined) {
-          return false;
-        }
-      }
-      return true;
     }
+    if (calendarItemGroups.getIn([0, 'CalendarItems']) !== null) {
+      calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 0));
+      if (calendarIndex === -1) {
+        return false;
+      }
+      if (checked) {
+        calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 1));
+        if (calendarIndex === -1) {
+          return false;
+        }
+      }
+    }
+    if (calendarItemGroups.getIn([2, 'CalendarItems']) !== null) {
+      calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 2));
+      if (calendarIndex === -1) {
+        return false;
+      }
+    }
+    if (calendarItemGroups.getIn([3, 'CalendarItems']) !== null) {
+      calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 3));
+      if (calendarIndex === -1) {
+        return false;
+      }
+    }
+    return true;
+
 
   },
   _getDefaultCalendarItem: function(type) {
     var allCalendar = this.state.allCalendar;
     let thisYear = new Date().getFullYear();
     var calendar = allCalendar.find(item => (item.get('Type') === type));
-    var worktimeCalendar = null;
-    if (type === 0) {
-      worktimeCalendar = allCalendar.find(item => (item.get('Type') === 1));
-    }
     var defaultCalendarItem = Immutable.fromJS({
       Calendar: calendar,
       EffectiveTime: thisYear,
-      WorkTimeCalendar: worktimeCalendar
+      WorkTimeCalendar: null
     });
     return defaultCalendarItem;
   },
@@ -570,7 +580,7 @@ var Calendar = React.createClass({
     this.setState({
       calendar: calendar
     }, () => {
-      var isValid = this._isValid();
+      var isValid = this._isValid(checked);
       this.props.setEditBtnStatus(!isValid);
     });
   },

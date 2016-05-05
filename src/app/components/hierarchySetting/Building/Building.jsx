@@ -79,7 +79,8 @@ var Building = React.createClass({
         });
         this.props.handleSave({
           hierarchyId: this.props.selectedNode.get('Id'),
-          tags: tagIds
+          tags: tagIds,
+          associationType: 1
         });
       }
     } else if (this.props.infoTabNo === 3) {
@@ -96,6 +97,9 @@ var Building = React.createClass({
         let property = this.refs.jazz_building_property._handlerSave();
         this.props.handleSave(property);
       }
+    } else if (this.props.infoTabNo === 4) {
+      let cost = this.refs.jazz_building_cost._handlerSave();
+      this.props.handleSave(cost);
     }
   },
   _renderHeader: function() {
@@ -188,6 +192,8 @@ var Building = React.createClass({
         ref: 'jazz_building_cost',
         formStatus: this.props.formStatus,
         hierarchyId: this.props.selectedNode.get('Id'),
+        setEditBtnStatus: this._setEditBtnStatus,
+        name: this.props.selectedNode.get('Name'),
         onUpdate: this._update
       };
     var content;
@@ -229,12 +235,10 @@ var Building = React.createClass({
       if (!selectedNode.get('Name') || selectedNode.get('Name').length > 200) {
         disabledSaveButton = true;
       }
-    } else {
-      if (this.props.infoTabNo === 2) {
-        editBtnProps = {
-          label: I18N.Common.Button.Add
-        };
-      }
+    } else if (this.props.infoTabNo === 2) {
+      editBtnProps = {
+        label: I18N.Common.Button.Add
+      };
     }
     return (
       <FormBottomBar

@@ -81,7 +81,7 @@ I18N.Login = {};
 I18N.Login.UserName = '用户名';
 I18N.Login.Password = '密码';
 I18N.Login.Logout = '注销';
-I18N.Login.Login = '登录';
+I18N.Login.Login = '登陆';
 
 I18N.M212001 = '用户不存在';
 I18N.M212002 = '服务提供商无效';
@@ -1795,7 +1795,6 @@ I18N.Setting.Cost = {};
 I18N.Setting.Cost.NoCommodities = '暂无成本属性，点击编辑进行设置。';
 I18N.Setting.Cost.Year = '年份';
 I18N.Setting.Cost.FormatYear = '{0}年';
-I18N.Setting.Cost.Month = '月份';
 I18N.Setting.Cost.EffectiveDate = '生效日期';
 I18N.Setting.Cost.PriceType = '价格类型';
 I18N.Setting.Cost.FixedPrice = '固定电价';

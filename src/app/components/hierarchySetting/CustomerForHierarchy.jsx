@@ -17,6 +17,9 @@ import AdminList from '../customer/AdminList.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import MonitorTag from './MonitorTag.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
+import Calendar from './Calendar.jsx';
 
 var CustomerForHierarchy = React.createClass({
   propTypes: {
@@ -70,7 +73,17 @@ var CustomerForHierarchy = React.createClass({
         });
         this.props.handleSave({
           hierarchyId: this.props.selectedNode.get('Id'),
-          tags: tagIds
+          tags: tagIds,
+          associationType: 1
+        });
+      }
+    } else if (this.props.infoTabNo === 3) {
+      if (this.refs.jazz_customer_calendar) {
+        let calendar = this.refs.jazz_customer_calendar._handlerSave();
+        this.props.handleSave({
+          HierarchyId: this.props.selectedNode.get('Id'),
+          Version: calendar.Version,
+          CalendarItemGroups: calendar.CalendarItemGroups
         });
       }
     }
@@ -260,6 +273,10 @@ var CustomerForHierarchy = React.createClass({
         "pop-user-detail-tabs-tab": true,
         "selected": that.props.infoTabNo === 2
       })} data-tab-index="2" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Organization.AssociateTag}</span>
+      <span className={classnames({
+        "pop-user-detail-tabs-tab": true,
+        "selected": that.props.infoTabNo === 3
+      })} data-tab-index="3" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Organization.HierarchyNodeCalendarProperties}</span>
 </div>
 
   </div>
@@ -269,13 +286,19 @@ var CustomerForHierarchy = React.createClass({
   },
   _renderContent: function() {
     var tagProps = {
-      ref: 'jazz_customer_tag',
-      formStatus: this.props.formStatus,
-      setEditBtnStatus: this._setEditBtnStatus,
-      isDim: false,
-      hierarchyId: this.props.selectedNode.get('Id'),
-      onUpdate: this._update
-    };
+        ref: 'jazz_customer_tag',
+        formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
+        isDim: false,
+        hierarchyId: this.props.selectedNode.get('Id'),
+        onUpdate: this._update
+      },
+      calendarProps = {
+        ref: 'jazz_customer_calendar',
+        formStatus: this.props.formStatus,
+        setEditBtnStatus: this._setEditBtnStatus,
+        hierarchyId: this.props.selectedNode.get('Id')
+      };
     var content,
       that = this;
     switch (this.props.infoTabNo) {
@@ -284,6 +307,9 @@ var CustomerForHierarchy = React.createClass({
         break;
       case 2:
         content = <MonitorTag {...tagProps}/>;
+        break;
+      case 3:
+        content = <Calendar {...calendarProps}/>;
         break;
 
     }
@@ -302,9 +328,9 @@ var CustomerForHierarchy = React.createClass({
     var disabledSaveButton = this.state.editBtnDisabled,
       {selectedNode} = this.props,
       that = this,
-      editBtnProps = {
+      editBtnProps = this.props.infoTabNo === 2 ? {
         label: I18N.Common.Button.Add
-      };
+      } : null;
     return (
       <FormBottomBar
       transition={true}
@@ -312,9 +338,9 @@ var CustomerForHierarchy = React.createClass({
       status={this.props.formStatus}
       onSave={this._handleSave}
       onDelete={function() {
-        that.setState({
-          dialogStatus: true
-        });
+        // that.setState({
+        //   dialogStatus: true
+        // });
       }}
       allowDelete={that.props.infoTabNo === 1}
       onCancel={this._handlerCancel}
@@ -324,38 +350,6 @@ var CustomerForHierarchy = React.createClass({
       editBtnProps={editBtnProps}/>
 
       );
-  },
-  _renderDialog: function() {
-    var that = this;
-    var closeDialog = function() {
-      that.setState({
-        dialogStatus: false
-      });
-    };
-    if (!this.state.dialogStatus) {
-      return null;
-    } else {
-      var selectedNode = that.props.selectedNode,
-        title = selectedNode.get('Type') === 0 ? I18N.Common.Glossary.Organization : I18N.Common.Glossary.Site;
-
-      return (
-
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.Hierarchy.DeleteTitle, title)} modal={true} actions={[
-          <FlatButton
-          label={I18N.Template.Delete.Delete}
-          primary={true}
-          onClick={() => {
-            that.props.handleDelete(selectedNode);
-            closeDialog();
-          }} />,
-          <FlatButton
-          label={I18N.Template.Delete.Cancel}
-          onClick={closeDialog} />
-        ]}>
-    {I18N.format(I18N.Setting.Hierarchy.DeleteContent, title, selectedNode.get('Name'), title)}
-  </Dialog>
-        );
-    }
   },
   _onChange: function() {
     this.setState({
@@ -369,6 +363,8 @@ var CustomerForHierarchy = React.createClass({
       if (this.refs.jazz_customer_tag) {
         this.refs.jazz_customer_tag._resetFilterObj();
       }
+    } else if (this.props.infoTabNo === 3) {
+      HierarchyAction.cancelSaveCalendar();
     }
   },
   componentDidMount: function() {
@@ -409,7 +405,6 @@ var CustomerForHierarchy = React.createClass({
         {content}
         {this.props.infoTabNo === 1 ? null : this._renderFooter()}
       </Panel>
-      {that._renderDialog()}
     </div>);
     }
   },

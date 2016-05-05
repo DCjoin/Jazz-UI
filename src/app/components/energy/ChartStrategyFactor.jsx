@@ -4918,7 +4918,7 @@ let ChartStrategyFactor = {
         viewOption: viewOption
       };
 
-      path = '/Energy/GetTagsData4Export';
+      path = '/Energy.svc/GetTagsData4Export';
       let nodeNameAssociation = CommonFuns.getNodeNameAssociationByTagOptions(tagOptions, {
         dimName: null,
         dimId: null
@@ -4958,9 +4958,9 @@ let ChartStrategyFactor = {
       }
       var path;
       if (analysisPanel.state.touBtnSelected) {
-        path = '/Energy/GetElectricityCostData4Export';
+        path = '/Energy.svc/GetElectricityCostData4Export';
       } else {
-        path = '/Energy/GetCostData4Export';
+        path = '/Energy.svc/GetCostData4Export';
       }
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
@@ -5011,7 +5011,7 @@ let ChartStrategyFactor = {
       if (!analysisPanel.state.energyData) {
         return;
       }
-      let path = '/Energy/GetCarbonUsageData4Export';
+      let path = '/Energy.svc/GetCarbonUsageData4Export';
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = {},
         hierarchyNode = CommodityStore.getHierNode(),
@@ -5070,7 +5070,7 @@ let ChartStrategyFactor = {
       if (!analysisPanel.state.energyData) {
         return;
       }
-      let path = '/Energy/GetEnergyUsageUnitData4Export';
+      let path = '/Energy.svc/GetEnergyUsageUnitData4Export';
       let chartType = analysisPanel.state.selectedChartType;
       let tagOptions = EnergyStore.getTagOpions();
       let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -5120,7 +5120,7 @@ let ChartStrategyFactor = {
       if (!analysisPanel.state.energyData) {
         return;
       }
-      let path = '/Energy/RatioGetTagsData4Export';
+      let path = '/Energy.svc/RatioGetTagsData4Export';
       let chartType = analysisPanel.state.selectedChartType;
       //let tagOptions = RatioStore.getTagOpions();
       let tagOptions = analysisPanel.state.chartStrategy.getSelectedNodesFn();
@@ -5157,7 +5157,7 @@ let ChartStrategyFactor = {
       if (!analysisPanel.state.energyData) {
         return;
       }
-      let path = '/Energy/GetCostUnitData4Export';
+      let path = '/Energy.svc/GetCostUnitData4Export';
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = CostStore.getSelectedList();
       let submitParams = CostStore.getSubmitParams();
@@ -5206,7 +5206,7 @@ let ChartStrategyFactor = {
       if (!analysisPanel.state.energyData) {
         return;
       }
-      let path = '/Energy/GetCarbonUsageUnitData4Export';
+      let path = '/Energy.svc/GetCarbonUsageUnitData4Export';
       let chartType = analysisPanel.state.selectedChartType;
       let selectedList = {},
         hierarchyNode = CommodityStore.getHierNode(),

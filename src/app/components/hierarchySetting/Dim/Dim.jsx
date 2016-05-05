@@ -66,8 +66,9 @@ var Dim = React.createClass({
           });
         });
         this.props.handleSave({
-          hierarchyId: this.props.selectedNode.get('Id'),
-          tags: tagIds
+          hierarchyId: -this.props.selectedNode.get('Id'),
+          tags: tagIds,
+          associationType: 4
         });
       }
     }
@@ -130,7 +131,7 @@ var Dim = React.createClass({
         formStatus: this.props.formStatus,
         setEditBtnStatus: this._setEditBtnStatus,
         isDim: true,
-        hierarchyId: this.props.selectedNode.get('Id'),
+        hierarchyId: -this.props.selectedNode.get('Id'),
         onUpdate: this._update
       };
     var content;

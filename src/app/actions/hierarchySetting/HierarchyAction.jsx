@@ -12,7 +12,7 @@ var _page,
 let HierarchyAction = {
   GetHierarchys: function(selectedId) {
     let customerId = parseInt(window.currentCustomerId);
-    Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyTreeDtosRecursive', {
       params: {
         customerId: customerId,
       },
@@ -37,7 +37,7 @@ let HierarchyAction = {
   //for customer
   getCustomersByFilter: function(customerId, refresh = false) {
     var that = this;
-    Ajax.post('/Customer/GetCustomersByFilter', {
+    Ajax.post('/Customer.svc/GetCustomersByFilter', {
       params: {
         filter: {
           CustomerId: customerId,
@@ -58,7 +58,7 @@ let HierarchyAction = {
     });
   },
   getLogListByCustomerId: function() {
-    Ajax.post('/Hierarchy/GetHierarchyImportHistory', {
+    Ajax.post('/Hierarchy.svc/GetHierarchyImportHistory', {
       params: {
         customerId: parseInt(window.currentCustomerId)
       },
@@ -113,13 +113,13 @@ let HierarchyAction = {
       }
     });
   },
-  modifyTags: function(hierarchyId, tags) {
+  modifyTags: function(hierarchyId, tags, associationType) {
     var that = this;
-    Ajax.post('/Tag/SetAssociation', {
+    Ajax.post('/Tag.svc/SetAssociation', {
       params: {
         dto: {
-          AssociationId: hierarchyId, //zone:id是负的
-          AssociationType: 1,
+          AssociationId: hierarchyId,
+          AssociationType: associationType,
           Tags: tags
         }
       },
@@ -132,12 +132,6 @@ let HierarchyAction = {
         that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
       },
       error: function(err, res) {
-        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
-        AppDispatcher.dispatch({
-          type: Action.HIERARCHY_ERROR,
-          title: I18N.Platform.ServiceProvider.ErrorNotice,
-          content: ErrorMsg,
-        });
         console.log(err, res);
       }
     });
@@ -170,7 +164,7 @@ let HierarchyAction = {
   },
   createHierarchy: function(dto) {
     var that = this;
-    Ajax.post('/Hierarchy/CreateHierarchy', {
+    Ajax.post('/Hierarchy.svc/CreateHierarchy', {
       params: {
         hierarchy: dto
       },
@@ -225,7 +219,7 @@ let HierarchyAction = {
   },
   deleteHierarchy: function(dto) {
     var that = this;
-    Ajax.post('/Hierarchy/DeleteHierarchy', {
+    Ajax.post('/Hierarchy.svc/DeleteHierarchy', {
       params: {
         hierarchy: HierarchyStore.traversalNode(dto)
       },
@@ -249,7 +243,7 @@ let HierarchyAction = {
     });
   },
   getAllCalendar: function() {
-    Ajax.post('/Administration/GetAllCalendars', {
+    Ajax.post('/Administration.svc/GetAllCalendars', {
       params: {
       },
       success: function(calendar) {
@@ -296,12 +290,6 @@ let HierarchyAction = {
         });
       },
       error: function(err, res) {
-        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
-        AppDispatcher.dispatch({
-          type: Action.HIERARCHY_ERROR,
-          title: I18N.Platform.ServiceProvider.ErrorNotice,
-          content: ErrorMsg,
-        });
         console.log(err, res);
       }
     });
@@ -318,12 +306,6 @@ let HierarchyAction = {
         });
       },
       error: function(err, res) {
-        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
-        AppDispatcher.dispatch({
-          type: Action.HIERARCHY_ERROR,
-          title: I18N.Platform.ServiceProvider.ErrorNotice,
-          content: ErrorMsg,
-        });
         console.log(err, res);
       }
     });
@@ -338,7 +320,7 @@ let HierarchyAction = {
       params: {
         setting: property
       },
-      success: function(calendar) {
+      success: function(property) {
         AppDispatcher.dispatch({
           type: Action.SET_PROPERTY_FOR_HIERARCHY,
           property: property
@@ -351,7 +333,7 @@ let HierarchyAction = {
   },
   getAllIndustries: function() {
     var that = this;
-    Ajax.post('/Administration/GetAllIndustries', {
+    Ajax.post('/Administration.svc/GetAllIndustries', {
       params: {
         includeRoot: false,
         onlyLeaf: true
@@ -370,7 +352,7 @@ let HierarchyAction = {
   },
   getAllZones: function() {
     var that = this;
-    Ajax.post('/Administration/GetAllZones', {
+    Ajax.post('/Administration.svc/GetAllZones', {
       params: {
         includeRoot: false
       },
@@ -412,7 +394,7 @@ let HierarchyAction = {
       }
     });
   },
-  getCostByHierarchy: function(hierarchyId) {
+  getCostByHierarchy: function(hierarchyId, refresh = false) {
     Ajax.post('/Cost.svc/GetCostByHierarchy', {
       params: {
         hierarchyId: hierarchyId
@@ -422,8 +404,35 @@ let HierarchyAction = {
           type: Action.GET_COST_BY_HIERARCHY,
           cost: cost
         });
+        if (refresh) {
+          AppDispatcher.dispatch({
+            type: Action.SAVE_COST_BY_HIERARCHY_SUCCESS
+          });
+        }
       },
       error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  saveCost: function(cost) {
+    var that = this;
+    Ajax.post('/Cost.svc/SaveCost', {
+      params: {
+        dto: cost
+      },
+      success: function(cost) {
+        that.getCostByHierarchy(cost.HierarchyId, true);
+
+
+      },
+      error: function(err, res) {
+        let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        AppDispatcher.dispatch({
+          type: Action.HIERARCHY_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
         console.log(err, res);
       }
     });

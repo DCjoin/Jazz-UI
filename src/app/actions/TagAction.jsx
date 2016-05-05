@@ -14,7 +14,7 @@ let TagAction = {
     //        type: Action.SET_NODE_LOAGDING
     //   });
     // },0);
-    Ajax.post('/Tag/GetTagsByFilter?', {
+    Ajax.post('/Tag.svc/GetTagsByFilter?', {
       params: {
         filter: {
           Ids: ids,
@@ -50,7 +50,7 @@ let TagAction = {
     //        type: Action.SET_NODE_LOAGDING
     //   });
     // },0);
-    Ajax.post('/Tag/GetPageTagData', {
+    Ajax.post('/Tag.svc/GetPageTagData', {
       params: {
         hierarchyId: ioData.hierId,
         tagId: ioData.tagId,

@@ -6,6 +6,7 @@ import { Map, List } from 'immutable';
 import Hierarchy from '../../constants/actionType/hierarchySetting/Hierarchy.jsx';
 import Main from '../../constants/actionType/Main.jsx';
 import AllCommodityStore from '../AllCommodityStore.jsx';
+import moment from "moment";
 
 function emptyMap() {
   return new Map();
@@ -24,7 +25,8 @@ var _hierarchys = emptyMap(),
   _allCalendar = null,
   _industries = null,
   _zones = null,
-  _cost = emptyMap();
+  _cost = emptyMap(),
+  _costError = false;
 let CHANGE_EVENT = 'change',
   ERROR_CHANGE_EVENT = 'errorchange',
   CUSTOMER_CHANGE_EVENT = 'customerchange',
@@ -268,11 +270,65 @@ var HierarchyStore = assign({}, PrototypeStore, {
   },
   getCommodities: function() {
     var items = assign([], AllCommodityStore.getAllCommodities());
-    console.log(items);
+    items.shift();
     items.shift();
     items.pop();
-    console.log(items);
     return items;
+  },
+  checkoutCostErrorMsg: function(cost) {
+    _costError = false;
+    let power = emptyMap(),
+      index = -1;
+    var checkPower = function(power, id) {
+      let powerLength = power.get('Items').size;
+      power.get('Items').forEach((item, index) => {
+        cost = cost.setIn(['CostCommodities', id, 'Items', index, 'ErrorMsg'], null);
+      })
+      for (var i = 0; i <= powerLength - 2; i++)
+        for (var j = i + 1; j <= powerLength - 1; j++) {
+          var ipowerDate = moment(power.getIn(['Items', i, 'EffectiveDate'])),
+            jpowerDate = moment(power.getIn(['Items', j, 'EffectiveDate']));
+          if (ipowerDate.get('year') === jpowerDate.get('year') && ipowerDate.get('month') === jpowerDate.get('month')) {
+            cost = cost.setIn(['CostCommodities', id, 'Items', i, 'ErrorMsg'], I18N.Common.Label.TimeConflict);
+            cost = cost.setIn(['CostCommodities', id, 'Items', j, 'ErrorMsg'], I18N.Common.Label.TimeConflict);
+            _costError = true;
+          }
+      }
+    };
+    var checkOthers = function() {
+      let coLength = cost.get('CostCommodities').size;
+      cost.get('CostCommodities').forEach((co, index) => {
+        if (co.get('CommodityId') !== 1) {
+          cost = cost.setIn(['CostCommodities', index, 'Items', 0, 'ErrorMsg'], null);
+        }
+      });
+      for (var i = 0; i <= coLength - 2; i++)
+        for (var j = i + 1; j <= coLength - 1; j++) {
+          if (cost.getIn(['CostCommodities', i, 'CommodityId']) !== 1 && cost.getIn(['CostCommodities', j, 'CommodityId']) !== 1 &&
+            cost.getIn(['CostCommodities', i, 'CommodityId']) === cost.getIn(['CostCommodities', j, 'CommodityId'])) {
+            var iotherDate = moment(cost.getIn(['CostCommodities', i, 'Items', 0, 'EffectiveDate'])),
+              jotherDate = moment(cost.getIn(['CostCommodities', j, 'Items', 0, 'EffectiveDate']));
+            if (iotherDate.get('year') === jotherDate.get('year') && iotherDate.get('month') === jotherDate.get('month')) {
+              cost = cost.setIn(['CostCommodities', i, 'Items', 0, 'ErrorMsg'], I18N.Common.Label.TimeConflict);
+              cost = cost.setIn(['CostCommodities', j, 'Items', 0, 'ErrorMsg'], I18N.Common.Label.TimeConflict);
+              _costError = true;
+            }
+          }
+
+      }
+    };
+    if (cost.get('CostCommodities') !== null) {
+      power = cost.get('CostCommodities').find(item => (item.get('CommodityId') === 1));
+      index = cost.get('CostCommodities').findIndex(item => (item.get('CommodityId') === 1));
+      if (index > -1) {
+        checkPower(power, index);
+      }
+      checkOthers();
+    }
+    return cost;
+  },
+  getCostErrorStatus: function() {
+    return _costError
   },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
@@ -444,6 +500,9 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
     case HierarchyAction.GET_COST_BY_HIERARCHY:
       HierarchyStore.setCost(action.cost);
       HierarchyStore.ifEmitCostChange();
+      break;
+    case HierarchyAction.SAVE_COST_BY_HIERARCHY_SUCCESS:
+      HierarchyStore.emitChange(_selectedNode);
       break;
   }
 });

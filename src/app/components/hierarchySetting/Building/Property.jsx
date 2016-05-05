@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import moment from "moment";
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import Immutable from 'immutable';
@@ -19,10 +20,14 @@ let PropertyItem = React.createClass({
     merge: React.PropTypes.func,
     data: React.PropTypes.object,
     isViewStatus: React.PropTypes.bool,
-    deletePropertyItem: React.PropTypes.func
+    deletePropertyItem: React.PropTypes.func,
+    errorText: React.PropTypes.string
   },
-  _deletePropertyItem: function(type, index) {
-    this.props.deletePropertyItem(type, index);
+  _deletePropertyItem: function() {
+    this.props.deletePropertyItem(this.props.code, this.props.index);
+  },
+  _isValid: function() {
+    return this.refs.value.isValid().valid;
   },
   _getTitle: function() {
     var title;
@@ -59,6 +64,7 @@ let PropertyItem = React.createClass({
     var yearMonthProps = {
         isViewStatus: this.props.isViewStatus,
         date: this.props.data.get('StartDate'),
+        errorMsg: this.props.errorText,
         onDateChange: value => {
           this.props.merge({
             value,
@@ -69,6 +75,7 @@ let PropertyItem = React.createClass({
         }
       },
       valueProps = {
+        ref: 'value',
         defaultValue: this.props.data.get('Value'),
         isViewStatus: this.props.isViewStatus,
         title: this._getTitle(),
@@ -82,7 +89,7 @@ let PropertyItem = React.createClass({
           })
         },
         validate: (value = '') => {
-          if (value !== '' && !Regex.ConsecutiveHoursRule.test(value)) {
+          if ((value !== '' && !Regex.ConsecutiveHoursRule.test(value)) || value === '') {
             return I18N.Setting.VEEMonitorRule.ConsecutiveHoursError
           }
         },
@@ -114,9 +121,23 @@ var Property = React.createClass({
       isLoading: true
     });
   },
+  _getInitError: function(code, property = this.state.property) {
+    var errorTextArr = [];
+    var properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    for (var i = 0; i < propertyItemValue.size; i++) {
+      errorTextArr.push('');
+    }
+    return errorTextArr;
+  },
   _onChange: function() {
+    var property = HierarchyStore.getProperty();
     this.setState({
-      property: HierarchyStore.getProperty(),
+      property: property,
+      TotalPopulationErrorTextArr: this._getInitError('TotalPopulation', property),
+      UsedRoomErrorTextArr: this._getInitError('UsedRoom', property),
+      UsedBedErrorTextArr: this._getInitError('UsedBed', property),
       isLoading: false
     });
   },
@@ -124,11 +145,90 @@ var Property = React.createClass({
     return this.state.property.toJS();
   },
   _isValid: function() {
-    return true;
+    var areaIsValid = this._areaIsValid();
+    var populationIsvalid = this._dynamicIsValid('TotalPopulation');
+    var otherIsValid = this._otherIsValid();
+    return areaIsValid && populationIsvalid && otherIsValid;
   },
-  _getDefaultPropertyItem: function(type) {},
+  _areaIsValid: function() {
+    var totalAreaIsValid = this.refs.totalArea.isValid().valid;
+    var heatingAreaIsValid = this.refs.heatingArea.isValid().valid;
+    var coolingAreaIsValid = this.refs.coolingArea.isValid().valid;
+
+    return totalAreaIsValid && heatingAreaIsValid && coolingAreaIsValid;
+  },
+  _compareDate(date, compDate) {
+    var m = moment(date);
+    var comp = moment(compDate);
+    if (m.get('year') === comp.get('year') && m.get('month') === comp.get('month')) {
+      return true;
+    }
+    return false;
+  },
+  _getErrorText: function(code) {
+    var errorText = '';
+    switch (code) {
+      case 'TotalPopulation':
+        errorText = I18N.Setting.DynamicProperty.PopulationStartDateDuplicated;
+        break;
+      case 'UsedRoom':
+        errorText = I18N.Setting.DynamicProperty.RoomStartDateDuplicated;
+        break;
+      case 'UsedBed':
+        errorText = I18N.Setting.DynamicProperty.BedStartDateDuplicated;
+        break;
+    }
+    return errorText;
+  },
+  _itemsIsValid: function(code) {
+    var errorText = this._getErrorText(code);
+    var obj = {};
+    var property = this.state.property,
+      properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    var length = propertyItemValue.size;
+    var itemsIsValid = true;
+    var errorTextArr = this._getInitError(code);
+    for (var i = 0; i < length; i++) {
+      for (var j = (i + 1); j < length; j++) {
+        if (this._compareDate(propertyItemValue.getIn([i, 'StartDate']), propertyItemValue.getIn([j, 'StartDate']))) {
+          errorTextArr[i] = errorText;
+          errorTextArr[j] = errorText;
+          itemsIsValid = false;
+        }
+      }
+    }
+    obj[code + 'ErrorTextArr'] = errorTextArr;
+    this.setState(obj);
+    return itemsIsValid;
+  },
+  _dynamicIsValid: function(code) {
+    var everyItemIsValid = true,
+      itemsIsValid = this._itemsIsValid(code);
+    for (var i = 0; i < length; i++) {
+      everyItemIsValid = everyItemIsValid && this.refs[code + (i + 1)]._isValid();
+    }
+    return everyItemIsValid && itemsIsValid;
+  },
+  _otherIsValid: function() {
+    var totalRoomIsValid = this.refs.totalRoom.isValid().valid;
+    var totalBedIsValid = this.refs.totalBed.isValid().valid;
+    var usedRoomIsValid = this._dynamicIsValid('UsedRoom');
+    var usedBedIsValid = this._dynamicIsValid('UsedBed');
+    return totalRoomIsValid && totalBedIsValid && usedRoomIsValid && usedBedIsValid;
+  },
   _addPropertyItem: function(code) {
-    var property = this.state.property;
+    var property = this.state.property,
+      properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    var addPropertyItem = Immutable.fromJS({
+      StartDate: new Date()
+    });
+    propertyItemValue = propertyItemValue.unshift(addPropertyItem);
+    properties = properties.setIn([propertyIndex, 'Values'], propertyItemValue);
+    property = property.set('Properties', properties);
     this.setState({
       property: property
     }, () => {
@@ -137,7 +237,13 @@ var Property = React.createClass({
     });
   },
   _deletePropertyItem: function(code, index) {
-    var property = this.state.property;
+    var property = this.state.property,
+      properties = property.get('Properties'),
+      propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
+      propertyItemValue = properties.getIn([propertyIndex, 'Values']);
+    propertyItemValue = propertyItemValue.delete(index);
+    properties = properties.setIn([propertyIndex, 'Values'], propertyItemValue);
+    property = property.set('Properties', properties);
     this.setState({
       property: property
     }, () => {
@@ -186,6 +292,7 @@ var Property = React.createClass({
         coolingAreaDom = null;
       if (hasTotalArea || !isView) {
         var totalAreaProps = {
+          ref: 'totalArea',
           defaultValue: totalArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.AArea,
@@ -210,6 +317,7 @@ var Property = React.createClass({
       }
       if (hasHeatingArea || !isView) {
         var heatingAreaProps = {
+          ref: 'heatingArea',
           defaultValue: heatingArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.WArea,
@@ -234,6 +342,7 @@ var Property = React.createClass({
       }
       if (hasCoolingArea || !isView) {
         var coolingAreaProps = {
+          ref: 'coolingArea',
           defaultValue: coolingArea.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.CArea,
@@ -287,11 +396,13 @@ var Property = React.createClass({
             key: i,
             index: i,
             code: 'TotalPopulation',
+            ref: 'TotalPopulation' + (i + 1),
             calendarItem: item,
             isViewStatus: isView,
             merge: me._merge,
             data: item,
-            deletePropertyItem: me._deletePropertyItem.bind(me, 'TotalPopulation')
+            errorText: me.state.TotalPopulationErrorTextArr[i],
+            deletePropertyItem: me._deletePropertyItem
           };
           return (
             <PropertyItem {...props}/>
@@ -332,6 +443,7 @@ var Property = React.createClass({
         usedBedDom = null;
       if (hasTotalRoom || !isView) {
         var totalRoomProps = {
+          ref: 'totalRoom',
           defaultValue: totalRoom.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.ARoomNumber,
@@ -366,11 +478,13 @@ var Property = React.createClass({
               key: i,
               index: i,
               code: 'UsedRoom',
+              ref: 'UsedRoom' + (i + 1),
               calendarItem: item,
               isViewStatus: isView,
               merge: me._merge,
               data: item,
-              deletePropertyItem: me._deletePropertyItem.bind(me, 'UsedRoom')
+              errorText: me.state.UsedRoomErrorTextArr[i],
+              deletePropertyItem: me._deletePropertyItem
             };
             return (
               <PropertyItem {...props}/>
@@ -386,6 +500,7 @@ var Property = React.createClass({
       }
       if (hasTotalBed || !isView) {
         var totalBedProps = {
+          ref: 'totalBed',
           defaultValue: totalBed.get('Values').getIn([0, 'Value']),
           isViewStatus: isView,
           title: I18N.Setting.DynamicProperty.ABedNumber,
@@ -420,11 +535,13 @@ var Property = React.createClass({
               key: i,
               index: i,
               code: 'UsedBed',
+              ref: 'UsedBed' + (i + 1),
               calendarItem: item,
               isViewStatus: isView,
               merge: me._merge,
               data: item,
-              deletePropertyItem: me._deletePropertyItem.bind(me, 'UsedBed')
+              errorText: me.state.UsedBedErrorTextArr[i],
+              deletePropertyItem: me._deletePropertyItem
             };
             return (
               <PropertyItem {...props}/>
