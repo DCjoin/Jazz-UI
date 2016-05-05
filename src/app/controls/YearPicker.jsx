@@ -18,27 +18,24 @@ let YearPicker = React.createClass({
     labelStyle: React.PropTypes.object,
   },
   getDefaultProps() {
-    let date = new Date();
-    let yearMenuItems = [];
-    let yearRange = 10;
-    for (var thisYear = date.getFullYear(), i = thisYear - yearRange; i <= thisYear; i++) {
-      yearMenuItems.push({
-        payload: i,
-        text: i
-      });
-    }
     return {
       noUnderline: false,
-      _yearItems: yearMenuItems,
-      yearRange: yearRange
+      yearRange: 10
     };
   },
   getInitialState() {
     let date = new Date();
     var thisYear = date.getFullYear();
+    let yearMenuItems = [];
     let index,
       selectedYear;
     let yearRange = this.props.yearRange;
+    for (var i = thisYear - yearRange; i <= thisYear; i++) {
+      yearMenuItems.push({
+        payload: i,
+        text: i
+      });
+    }
     if (this.props.selectedIndex === null || this.props.selectedIndex === undefined) {
       if (this.props.selectedYear === null || this.props.selectedYear === undefined) {
         index = yearRange;
@@ -54,7 +51,8 @@ let YearPicker = React.createClass({
     }
     return {
       selectedYear: selectedYear,
-      yearIndex: index
+      yearIndex: index,
+      _yearItems: yearMenuItems
     };
   },
   componentWillReceiveProps: function(nextProps) {
@@ -113,7 +111,7 @@ let YearPicker = React.createClass({
   },
   render() {
     var yearProps = {
-      dataItems: this.props._yearItems,
+      dataItems: this.state._yearItems,
       didChanged: this._onYearChanged,
       isViewStatus: this.props.isViewStatus,
       selectedIndex: this.state.yearIndex,

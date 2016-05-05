@@ -184,7 +184,7 @@ var Property = React.createClass({
     }
     return errorText;
   },
-  _itemsIsValid: function(code) {
+  _dynamicIsValid: function(code) {
     var errorText = this._getErrorText(code);
     var obj = {};
     var property = this.state.property,
@@ -192,8 +192,14 @@ var Property = React.createClass({
       propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
       propertyItemValue = properties.getIn([propertyIndex, 'Values']);
     var length = propertyItemValue.size;
-    var itemsIsValid = true;
+    var everyItemIsValid = true,
+      itemsIsValid = true;
     var errorTextArr = this._getInitError(code);
+
+    for (var i = 0; i < length; i++) {
+      everyItemIsValid = everyItemIsValid && this.refs[code + (i + 1)]._isValid();
+    }
+
     for (var i = 0; i < length; i++) {
       for (var j = (i + 1); j < length; j++) {
         if (this._compareDate(propertyItemValue.getIn([i, 'StartDate']), propertyItemValue.getIn([j, 'StartDate']))) {
@@ -205,14 +211,6 @@ var Property = React.createClass({
     }
     obj[code + 'ErrorTextArr'] = errorTextArr;
     this.setState(obj);
-    return itemsIsValid;
-  },
-  _dynamicIsValid: function(code) {
-    var everyItemIsValid = true,
-      itemsIsValid = this._itemsIsValid(code);
-    for (var i = 0; i < length; i++) {
-      everyItemIsValid = everyItemIsValid && this.refs[code + (i + 1)]._isValid();
-    }
     return everyItemIsValid && itemsIsValid;
   },
   _otherIsValid: function() {
