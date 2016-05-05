@@ -260,7 +260,8 @@ var Cost = React.createClass({
     })
   },
   _onPowerPriceChange: function(value, index, id) {
-    var simpleItem, complexItem,
+    var simpleItem,
+      complexItem,
       that = this;
     if (value === 'simpleItem') {
       complexItem = null;
@@ -347,7 +348,7 @@ var Cost = React.createClass({
       }}>
                     <ViewableNumberField  {...priceProps} />
                   </div>
-      )
+    )
 
   },
   _renderTouDetailSideNav: function() {
@@ -405,7 +406,7 @@ var Cost = React.createClass({
         })
         return (
           <div>{items}</div>
-          )
+        )
       };
       var renderPeakTariff = function() {
         var peakItems = [];
@@ -424,7 +425,7 @@ var Cost = React.createClass({
         })
         return (
           <div>{peakItems}</div>
-          )
+        )
       };
       return (<SideNav open={true} side="right" onClose={this._onCloseTouDetailSideNav}>
         <div className='jazz-default-font'>
@@ -548,7 +549,7 @@ var Cost = React.createClass({
               <ViewableTextField  {...transformerPriceProps} />
               <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
             </div>
-        )
+      )
     };
     var renderTimeMode = function() {
       var {HourPrice, HourTagId} = complexItem.toJS();
@@ -608,7 +609,7 @@ var Cost = React.createClass({
               <ViewableTextField  {...hourPriceProps} />
               <div classnames='jazz-default-font'>{I18N.Setting.Cost.PowerUOM}</div>
             </div>
-        )
+      )
     };
     var renderUsageCost = function() {
       var {TouTariffId} = complexItem.toJS();
@@ -648,7 +649,7 @@ var Cost = React.createClass({
                 <ViewableDropDownMenu  {...touTariffProps} />
                 <div className='jazz-building-cost-showTou' onClick={that._showTouDetailsideNav.bind(this, selectedId)}>{I18N.Setting.Cost.SearchTouDetail}</div>
               </div>
-        )
+      )
     };
     var renderFactorType = function() {
       var {FactorType} = complexItem.toJS();
@@ -688,7 +689,7 @@ var Cost = React.createClass({
                 <ViewableDropDownMenu  {...factorProps} />
                 <div className='jazz-building-cost-showTou' onClick={that._showPowerFactorDialog.bind(this, selectedId)}>{I18N.Setting.Cost.SearchPowerFactor}</div>
               </div>
-        )
+      )
     };
     var renderTags = function() {
       var {RealTagId, ReactiveTagId} = complexItem.toJS();
@@ -751,7 +752,7 @@ var Cost = React.createClass({
                 <ViewableDropDownMenu  {...realTagProps}/>
                 <ViewableDropDownMenu  {...reactiveTagProps}/>
               </div>
-        )
+      )
     };
     var paddingCostProps = {
       isViewStatus: isView,
@@ -798,7 +799,7 @@ var Cost = React.createClass({
         {renderTags()}
         <ViewableTextField  {...paddingCostProps} />
       </div>
-      )
+    )
   },
   _renderPower: function(power = emptyMap(), id) {
     var isView = this.props.formStatus === formStatus.VIEW,
@@ -818,7 +819,7 @@ var Cost = React.createClass({
           defaultSelected = complexItem === null ? 'simpleItem' : 'complexItem';
         var dateProps = {
           ref: 'date',
-          key: this.props.hierarchyId + '_power' + index,
+          key: this.props.hierarchyId + '_power' + index + 'RandomId' + Math.random(),
           isViewStatus: isView,
           date: date,
           errorMsg: errorMsg,
@@ -894,7 +895,7 @@ var Cost = React.createClass({
         {that._renderTouDetailSideNav()}
         {that._renderFactorTypeDialog()}
       </div>
-      )
+    )
   },
   _renderOthers: function() {
     var isView = this.props.formStatus === formStatus.VIEW,
@@ -934,7 +935,7 @@ var Cost = React.createClass({
             },
             dateProps = {
               ref: 'date',
-              key: this.props.hierarchyId + '_commodity' + id,
+              key: this.props.hierarchyId + '_commodity' + id + 'RandomId' + Math.random(),
               isViewStatus: isView,
               date: Items[0].EffectiveDate,
               errorMsg: Items[0].ErrorMsg,
@@ -1007,7 +1008,7 @@ var Cost = React.createClass({
         </div>
         {commodityItems}
       </div>
-      )
+    )
   },
   _renderCommodities: function() {
     var costCommodities = this.state.cost.get('CostCommodities'),
@@ -1027,7 +1028,7 @@ var Cost = React.createClass({
           </div>
 
         </div>
-      )
+    )
   },
   _renderContent: function() {
     var that = this,
@@ -1040,7 +1041,7 @@ var Cost = React.createClass({
         }}>
           {I18N.Setting.Cost.NoCommodities}
         </div>
-        )
+      )
     } else if (CostCommodities.length === 0 && this.props.formStatus === formStatus.VIEW) {
       return (
         <div style={{
@@ -1049,7 +1050,7 @@ var Cost = React.createClass({
         }}>
           {I18N.Setting.Cost.NoCommodities}
         </div>
-        )
+      )
     } else {
       return (
       that._renderCommodities()
@@ -1091,7 +1092,7 @@ var Cost = React.createClass({
       }}>
         {this.state.isLoading ? loading : this._renderContent()}
       </div>
-      )
+    )
   },
 
 });
