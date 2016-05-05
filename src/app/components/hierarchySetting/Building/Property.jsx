@@ -11,8 +11,10 @@ import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx'
 import ViewableNumberField from '../../../controls/ViewableNumberField.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import YearMonthItem from '../../../controls/YearMonthItem.jsx';
+import CommonFuns from '../../../util/Util.jsx';
 import Regex from '../../../constants/Regex.jsx';
 
+var d2j = CommonFuns.DataConverter.DatetimeToJson;
 let PropertyItem = React.createClass({
   propTypes: {
     code: React.PropTypes.string,
@@ -62,6 +64,8 @@ let PropertyItem = React.createClass({
   render: function() {
     var deleteButton = (this.props.isViewStatus ? null : <FlatButton label={I18N.Common.Button.Delete} onClick={this._deletePropertyItem} primary={true}/>);
     var yearMonthProps = {
+        ref: 'date',
+        key: this.props.code + '_' + this.props.index + 'RandomId' + Math.random(),
         isViewStatus: this.props.isViewStatus,
         date: this.props.data.get('StartDate'),
         errorMsg: this.props.errorText,
@@ -224,7 +228,7 @@ var Property = React.createClass({
       propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
       propertyItemValue = properties.getIn([propertyIndex, 'Values']);
     var addPropertyItem = Immutable.fromJS({
-      StartDate: new Date()
+      StartDate: d2j(new Date())
     });
     propertyItemValue = propertyItemValue.unshift(addPropertyItem);
     properties = properties.setIn([propertyIndex, 'Values'], propertyItemValue);

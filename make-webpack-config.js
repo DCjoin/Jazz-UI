@@ -16,7 +16,7 @@ module.exports = function(options) {
     // { test: /some-reg-exp$/, loader: "any-loader" }
   ];
   var alias = {
-
+    config: path.join(__dirname, "src/app/config/" + options.env + ".jsx")
   };
   var aliasLoader = {
 
@@ -26,7 +26,7 @@ module.exports = function(options) {
 
   var publicPath = options.devServer ?
     "http://localhost:3000/build/" :
-    "/web/assets/"; //"./";
+    "/webapihost/assets/"; //"./";
   var output = {
     path: path.join(__dirname, "build", "assets"),
     publicPath: publicPath,
@@ -136,6 +136,9 @@ module.exports = function(options) {
         }
       ]
     },
+    resolve:{
+			alias:alias
+		},
     devtool: options.devtool,
     debug: options.debug,
     externals: externals,

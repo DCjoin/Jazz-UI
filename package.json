@@ -7,7 +7,8 @@
     "test": "karma start",
     "dev": "webpack-dev-server --config webpack-hot-dev-server.config.js --hot --progress --colors --port 3000 --inline",
     "build": "webpack --config webpack-production.config.js --progress --profile --colors > ret.log",
-    "start": "supervisor -w ./src/server/ ./src/server/server.js"
+    "start": "supervisor -w ./src/server/ ./src/server/server.js",
+    "build-test": "webpack --config webpack-test.config.js --progress --profile --colors > ret-test.log"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",

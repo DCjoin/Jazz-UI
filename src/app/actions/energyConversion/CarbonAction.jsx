@@ -5,7 +5,7 @@ import Ajax from '../../ajax/ajax.jsx';
 import Immutable from 'immutable';
 let CarbonAction = {
   GetAllCarbonFactor: function() {
-    Ajax.post('/Administration.svc/GetAllCarbonFactor', {
+    Ajax.post('/Administration/GetAllCarbonFactor', {
       success: function(carbons) {
         AppDispatcher.dispatch({
           type: Action.GET_ALL_CARBON_FACTOR,
@@ -19,7 +19,7 @@ let CarbonAction = {
   },
   GetConversionPairs: function() {
     var that = this;
-    Ajax.post('/Administration.svc/GetConversionPairs', {
+    Ajax.post('/Administration/GetConversionPairs', {
       success: function(conversionPairs) {
         that.GetAllCarbonFactor();
         AppDispatcher.dispatch({
@@ -34,7 +34,7 @@ let CarbonAction = {
   },
   SaveCarbonFactor: function(carbonData) {
     var that = this;
-    Ajax.post('/Administration.svc/SaveCarbonFactor', {
+    Ajax.post('/Administration/SaveCarbonFactor', {
       params: {
         dto: carbonData
       },
@@ -53,7 +53,7 @@ let CarbonAction = {
   },
   deleteCarbon: function(carbonData) {
     var that = this;
-    Ajax.post('/Administration.svc/DeleteCarbonFactor', {
+    Ajax.post('/Administration/DeleteCarbonFactor', {
       params: {
         dto: {
           Id: carbonData.Id,

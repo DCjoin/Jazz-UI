@@ -12,7 +12,7 @@ const MONTHSTEP = 3,
 
 let AlarmAction = {
   getHierarchyListByDate(date, step) {
-    Ajax.post('/TargetBaseline.svc/GetAlarmTagIdsByDate', {
+    Ajax.post('/TargetBaseline/GetAlarmTagIdsByDate', {
       params: {
         date: date,
         customerId: window.currentCustomerId,
@@ -63,7 +63,7 @@ let AlarmAction = {
       tagOptions: tagOptions
     });
 
-    Ajax.post('/Energy.svc/GetTagsData', {
+    Ajax.post('/Energy/GetTagsData', {
       params: submitParams,
       success: function(energyData) {
         AppDispatcher.dispatch({
@@ -102,7 +102,7 @@ let AlarmAction = {
       relativeDate: relativeDate
     });
 
-    Ajax.post('/Energy.svc/GetTagsData', {
+    Ajax.post('/Energy/GetTagsData', {
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -145,7 +145,7 @@ let AlarmAction = {
     return [startDate, endDate];
   },
   getDashboardByHierachy(hierId) {
-    Ajax.post('/DashBoard.svc/GetDashboardByHierachy', {
+    Ajax.post('/DashBoard/GetDashboardByHierachy', {
       params: {
         hierarchyId: hierId,
         userId: window.currentUserId
@@ -166,9 +166,9 @@ let AlarmAction = {
   save2Dashboard(params, createNewDashboard) {
     let url;
     if (!createNewDashboard) {
-      url = '/DashBoard.svc/CreateWidget';
+      url = '/DashBoard/CreateWidget';
     } else {
-      url = '/DashBoard.svc/CreateDashboard';
+      url = '/DashBoard/CreateDashboard';
     }
     Ajax.post(url, {
       params: params,
@@ -190,10 +190,10 @@ let AlarmAction = {
     let url,
       dto = {};
     if (isBatch) {
-      url = '/TargetBaseline.svc/IgnoreAlarmContinuousPoints';
+      url = '/TargetBaseline/IgnoreAlarmContinuousPoints';
       dto.ids = ids;
     } else {
-      url = '/TargetBaseline.svc/IgnoreAlarmPoint';
+      url = '/TargetBaseline/IgnoreAlarmPoint';
       dto.id = ids;
     }
 

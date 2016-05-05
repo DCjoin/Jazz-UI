@@ -3,7 +3,7 @@
 import request from 'superagent';
 import Path from '../constants/Path.jsx';
 import Util from '../util/Util.jsx';
-
+import Config from 'config';
 
 /**
  *
@@ -18,25 +18,22 @@ import Util from '../util/Util.jsx';
 var _ajax = function(url, options) {
 
 	options = options || {};
-	var realUrl = Path.APIBasePath + url,
+	var realUrl = Config.ServeAddress + Config.APIBasePath + url,
 		type = options.type || "get",
 		params = options.params || {},
-
 		success = options.success || function(resBody) {
 			Util.log('Call Ajax Success: ' + realUrl);
 			Util.log('body: ');
 			Util.log(resBody);
 		},
-
 		error = options.error || function(err) {
 			Util.log('Call Ajax Error: ' + realUrl);
 			Util.log('err.response: ');
 			Util.log(err && err.response);
 		},
-
 		dataType = options.dataType || "application/json";
 
-	request[type.toLowerCase()](Path.APIBasePath + url)
+	request[type.toLowerCase()](Config.ServeAddress + Config.APIBasePath + url)
 		.send(params)
         .set('Accept', dataType)
         .set('httpWebRequest.MediaType', dataType)

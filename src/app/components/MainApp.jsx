@@ -9,6 +9,7 @@ import util from '../util/Util.jsx';
 import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
 import { viewState } from '../constants/MainAppStatus.jsx';
 import CookieUtil from '../util/cookieUtil.jsx';
+import { getCookie } from '../util/Util.jsx';
 
 import lang from '../lang/lang.jsx';
 import keyMirror from 'keymirror';
@@ -33,7 +34,6 @@ function getCurrentCustomer() {
 
 let MainApp = React.createClass({
   mixins: [Navigation, State],
-
   _onAllUOMSChange() {
     window.uoms = UOMStore.getUoms();
   },
@@ -79,7 +79,6 @@ let MainApp = React.createClass({
   _onChange: function(argument) {
     var params = this.props.params;
     var customerCode = params.customerId;
-
     var currentCustomer = getCurrentCustomer();
 
     if(!customerCode){
@@ -107,32 +106,37 @@ let MainApp = React.createClass({
       window.currentCustomerId = currentCustomer.Id;
       this._switchCustomer(currentCustomer);
       window.toMainApp = false;
-
       return;
     }
-
-    // if(typeof(customerCode) !== "undefined"){
-    // }else {
-    //   params.customerId = window.currentCustomerId;
-    //   this._redirectRouter(this._getMenuItems()[0], params);
-    //   this.setState({viewState: viewState.MAIN});
-    // }
-
   },
   _switchCustomer: function(customer) {
       var currentCustomer = getCurrentCustomer();
+      var menus = this._getMenuItems();
+      //, {'expires':5,'path':'/'}
+      CookieUtil.set('currentCustomerId', customer.Id);
+      window.currentCustomerId = customer.Id;
 
-      //由于登录未完成，临时更新currentCustomerId
-      CookieUtil.set('currentCustomerId', customer.Id, {'expires':5,'path':'/webhost'});
-
-      this._redirectRouter(this._getMenuItems()[0], assign({}, this.props.params, {
-        customerId: customer.Id
-      }));
+      if(menus && menus.length > 0){
+        //after select customer
+        this._redirectRouter(this._getMenuItems()[0], assign({}, this.props.params, {
+          customerId: customer.Id
+        }));
+      }else{
+        //login first time
+        this.setState({
+          rivilege: CurrentUserStore.getCurrentPrivilegeByUser(this.state.currentUser)
+        });
+        this._redirectRouter({
+            name: 'map',
+            title: I18N.MainMenu.Map
+        }, assign({}, this.props.params, {customerId: customer.Id}));
+      }
 
       this.setState({viewState: viewState.MAIN});
   },
   _getMenuItems:function(){
-    var menuItems;
+    var menuItems = [];
+    if(!this.state.rivilege) return
 
     if (this.state.rivilege.indexOf('1221') > -1) {
       menuItems = [
@@ -243,11 +247,10 @@ let MainApp = React.createClass({
 
   render: function() {
     var CustomersList = getCurrentCustomers();
-
     if( this.state.viewState == viewState.SELECT_CUSTOMER || window.toMainApp){
-
       return(
         <SelectCustomer close={this._closeSelectCustomer}
+                        closable={this.props.params.customerId ? true: false}
                         currentCustomerId={parseInt(this.props.params.customerId)}
                         params={CustomersList}
                         userId={parseInt(window.currentUserId)}/>
@@ -255,7 +258,6 @@ let MainApp = React.createClass({
     }else{
       if (this.state.rivilege !== null) {
         var menuItems = this._getMenuItems();
-        //console.log(JSON.stringify(menuItems,0,1));
         var logoUrl = 'Logo.aspx?hierarchyId=' + this.props.params.customerId;
         return (
             <div className='jazz-main'>
@@ -285,10 +287,6 @@ let MainApp = React.createClass({
 
     SelectCustomerActionCreator.getCustomer(window.currentUserId);
     CurrentUserCustomerStore.addChangeListener(this._onChange);
-
-    // var params = this.getParams();
-    // console.log('MainApp componentDidMount params:' + JSON.stringify(params,0,1));
-
   },
   componentWillUnmount: function() {
     UOMStore.removeChangeListener(this._onAllUOMSChange);
