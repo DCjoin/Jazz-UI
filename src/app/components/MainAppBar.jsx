@@ -249,7 +249,7 @@ var MainAppBar = React.createClass({
                 </ul>
             </div>
             <div className="sidebar-bottom-action" >
-                <CustomFlatButton className="pop-userprofile-logout" label="Logout" primary={true} onClick={this._showLogout} style={{color:'#abafae',height:'48px',width:'100%'}} />
+                <CustomFlatButton className="pop-userprofile-logout" label={I18N.Login.Logout} primary={true} onClick={this._showLogout} style={{color:'#abafae',height:'48px',width:'100%'}} />
             </div>
         </SideNav>
     );

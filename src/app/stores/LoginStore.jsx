@@ -19,7 +19,8 @@ let _lastError = null;
 
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
-    if (_currentUser.UserType === -1) {
+    // _currentUser
+    if (JSON.parse(getCookie('UserInfo')).UserType === -1) {
       return true;
     }
     return false;
