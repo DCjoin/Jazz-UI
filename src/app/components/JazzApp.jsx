@@ -172,31 +172,27 @@ let JazzApp = React.createClass({
     var routes = this.getRoutes();
     var me = this;
 
-    //console.log('JazzApp params:' + JSON.stringify(params,0,1));
+    // console.log('JAZZAPP params:' + JSON.stringify(params,0,1));
+    // console.log('JAZZAPP query:' + JSON.stringify(query,0,1));
+    // console.log('JAZZAPP routes:' + JSON.stringify(routes,0,1));
 
     var afterLoadLang = function(b) {
       window.I18N = b;
 
-      //由于登录未完成，临时获取window.currentCustomerId
-      var customerCode = params.customerId || query.customerId || window.currentCustomerId;
-      //console.log('JazzApp customerId:' + customerCode);
-
+      var customerCode = params.customerId || query.customerId  || window.currentCustomerId;
 
       //routes.length === 1 || (routes.length === 2 && !customerCode)
-      if (!window.currentUserId) {
+      if(!window.currentUserId){
         //console.log('登录');
         me.setState({
           isLangLoaded: true
-        }, () => {
-          me.replaceWith('login', {
-            lang: lang
-          });
+        },() => {
+          me.replaceWith('login', { lang: lang });
         });
-      } else {
+      }else{
         //console.log('主页');
         me._setHighchartConfig();
         CurrentUserAction.getUser(window.currentUserId);
-
 
         me.setState({
           isLangLoaded: true
@@ -207,30 +203,15 @@ let JazzApp = React.createClass({
             return;
           }
           if (url.indexOf('menutype=platform') > -1) {
-            me.replaceWith('config', {
-              lang: lang,
-              customerId: customerCode
-            });
+            me.replaceWith('config', { lang: lang , customerId: customerCode});
           } else if (url.indexOf('menutype=service') > -1) {
-            me.replaceWith('workday', {
-              lang: lang,
-              customerId: customerCode
-            });
+            me.replaceWith('workday', { lang: lang , customerId: customerCode});
           } else if (url.indexOf('menutype=energy') > -1) {
-            me.replaceWith('setting', {
-              lang: lang,
-              customerId: customerCode
-            });
+            me.replaceWith('setting', { lang: lang , customerId: customerCode});
           } else if (url.indexOf('menutype=alarm') > -1) {
-            me.replaceWith('alarm', {
-              lang: lang,
-              customerId: customerCode
-            });
+            me.replaceWith('alarm', { lang: lang , customerId: customerCode});
           } else if (url.indexOf('menutype=map') > -1) {
-            me.replaceWith('map', {
-              lang: lang,
-              customerId: customerCode
-            });
+            me.replaceWith('map', { lang: lang , customerId: customerCode});
           }
         });
       }
@@ -267,8 +248,6 @@ let JazzApp = React.createClass({
     }
     GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
-    // CurrentUserAction.getUser(window.currentUserId);
-    //CurrentUserAction.getRoles(window.currentUserId);
     LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
   },
   _onClearGlobalError: function() {

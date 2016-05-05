@@ -11,7 +11,7 @@ let PlatformAction = {
     _column = column;
     _type = type;
     //Column:Name, StartDate,type:0：升， 1：降
-    Ajax.post('/ServiceProvider.svc/GetServiceProviders', {
+    Ajax.post('/ServiceProvider/GetServiceProviders', {
       params: {
         dto: {
           StatusFilter: null,
@@ -33,7 +33,7 @@ let PlatformAction = {
     });
   },
   modifyServiceProvider: function(provider) {
-    Ajax.post('/ServiceProvider.svc/ModifyServiceProvider', {
+    Ajax.post('/ServiceProvider/ModifyServiceProvider', {
       params: {
         dto: provider
       },
@@ -55,7 +55,7 @@ let PlatformAction = {
   },
   createServiceProvider: function(provider) {
     var that = this;
-    Ajax.post('/ServiceProvider.svc/CreateServiceProvider', {
+    Ajax.post('/ServiceProvider/CreateServiceProvider', {
       params: {
         dto: provider
       },
@@ -77,7 +77,7 @@ let PlatformAction = {
   },
   deleteServiceProvider: function(dto) {
     var that = this;
-    Ajax.post('/ServiceProvider.svc/DeleteServiceProvider', {
+    Ajax.post('/ServiceProvider/DeleteServiceProvider', {
       params: {
         dto: dto
       },
@@ -93,7 +93,7 @@ let PlatformAction = {
     });
   },
   sendInitPassword: function(id) {
-    Ajax.post('/ServiceProvider.svc/SendInitPassword', {
+    Ajax.post('/ServiceProvider/SendInitPassword', {
       params: {
         spId: id
       },

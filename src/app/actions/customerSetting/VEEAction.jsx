@@ -8,7 +8,7 @@ var _page, _ruleId, _association, _filterObj;
 let {isNumber} = CommonFuns;
 let VEEAction = {
   GetVEERules: function() {
-    Ajax.post('/VEE.svc/GetVEERules', {
+    Ajax.post('/VEE/GetVEERules', {
       params: {
         filter: {
           CustomerId: window.currentCustomerId,
@@ -32,7 +32,7 @@ let VEEAction = {
     });
   },
   getAllReceivers: function(ruleId) {
-    Ajax.post('/VEE.svc/GetUsersByFilter', {
+    Ajax.post('/VEE/GetUsersByFilter', {
       params: {
         "filter": {
           "RuleIds": isNumber(ruleId) ? [ruleId] : [],
@@ -56,7 +56,7 @@ let VEEAction = {
   },
   createVEERule: function(rule) {
     var that = this;
-    Ajax.post('/VEE.svc/CreateVEERule', {
+    Ajax.post('/VEE/CreateVEERule', {
       params: {
         dto: rule
       },
@@ -81,7 +81,7 @@ let VEEAction = {
   },
   modifyVEERule: function(rule) {
     var that = this;
-    Ajax.post('/VEE.svc/ModifyVEERule', {
+    Ajax.post('/VEE/ModifyVEERule', {
       params: {
         dto: rule
       },
@@ -105,7 +105,7 @@ let VEEAction = {
     });
   },
   deleteRule: function(data) {
-    Ajax.post('/VEE.svc/DeleteVEERule', {
+    Ajax.post('/VEE/DeleteVEERule', {
       params: {
         filter: data
       },
@@ -125,7 +125,7 @@ let VEEAction = {
     _ruleId = ruleId;
     _association = association;
     _filterObj = filterObj;
-    Ajax.post('/VEE.svc/GetVEETagsByFilter', {
+    Ajax.post('/VEE/GetVEETagsByFilter', {
       params: {
         filter: {
           CustomerId: window.currentCustomerId,
@@ -161,7 +161,7 @@ let VEEAction = {
   },
   modifyVEETags: function(ruleId, tagIds) {
     var that = this;
-    Ajax.post('/VEE.svc/ModifyVEETags', {
+    Ajax.post('/VEE/ModifyVEETags', {
       params: {
         dto: {
           "Filter": {

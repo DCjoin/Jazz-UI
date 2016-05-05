@@ -38,12 +38,9 @@ let DatePicker = React.createClass({
     var menu = [];
     if (this.state.dateMenu.length !== 0) {
       this.state.dateMenu.forEach(item => {
-        menu.push(<div id={item.id} className={classNames({
-          "menuitem": true,
-          "selected": (item.selected)
-        })} onClick={this._onMenuItemClick}>
-        {item.text}
-      </div>)
+        menu.push(<div id={item.id} className={classNames({"menuitem": true, "selected": (item.selected)})} onClick={this._onMenuItemClick}>
+                    {item.text}
+                  </div>)
       })
     }
     return menu
@@ -56,11 +53,9 @@ let DatePicker = React.createClass({
   },
   componentDidMount: function() {
     MapStore.addDateMenuListener(this._onDateMenuChanged);
-
     //LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
     //setTimeout('MapAction.setSelectedDate(5)',0);
      //this month
-
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.lang !== this.props.lang) {
@@ -96,21 +91,15 @@ let DatePicker = React.createClass({
     };
     if (this.state.isDateMenuShow) {
       dropdownmenu = <Paper style={paperStyle}>
-      {this._generateMenu()}
-      </Paper>
+                      {this._generateMenu()}
+                     </Paper>
     }
     return (
       <div className='datepicker'>
-
-          <FlatButton label={this.state.dateSelected}  labelStyle={{
-        color: '#767a7a'
-      }} onTouchTap={this._onDateMenuClick}>
-            <FontIcon className="icon-arrow-down" hoverColor='#1ca8dd' style={{
-        fontSize: '12px',
-        marginLeft: '-6px'
-      }}/>
+          <FlatButton label={this.state.dateSelected}  labelStyle={{ color: '#767a7a' }} onTouchTap={this._onDateMenuClick}>
+            <FontIcon className="icon-arrow-down" hoverColor='#1ca8dd' style={{ fontSize: '12px', marginLeft: '-6px' }}/>
           </FlatButton>
-        {dropdownmenu}
+          {dropdownmenu}
       </div>
       )
   }
