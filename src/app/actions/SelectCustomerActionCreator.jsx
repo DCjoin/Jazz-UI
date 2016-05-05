@@ -21,13 +21,13 @@ module.exports = {
           "filter": {
               "UserId": userId,
               "Order": {
-                  "Column": "Name",
+                  "Column": "Id",
                   "Type": 0
               }
           }
       },
       success: function(data) {
-        console.log('getCustomer ready num:'+ data.length);
+        console.log('Get Customers Ready,Total Num is '+ data.length);
         AppDispatcher.dispatch({type: Action.GET_SELECT_CUSTOMERS, data: data});
       },
     });

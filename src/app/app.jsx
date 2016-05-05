@@ -55,8 +55,16 @@ let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Rou
 
 injectTapEventPlugin();
 
-window.currentUserId = getCookie('currentUserId');
+
+window._tempUserInfo = getCookie('UserInfo');
+if(window._tempUserInfo){
+  window.currentUserId = JSON.parse(getCookie('UserInfo')).Id;
+}else {
+  window.currentUserId = getCookie('UserId');
+}
+
 window.currentCustomerId = getCookie('currentCustomerId');
+window.toMainApp = false;
 
 function getLessVar(name) {
   return main["@" + name];

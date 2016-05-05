@@ -181,8 +181,20 @@ let JazzApp = React.createClass({
       var customerCode = params.customerId || query.customerId  || window.currentCustomerId;
       //console.log('JazzApp customerId:' + customerCode);
 
-      me._setHighchartConfig();
-      CurrentUserAction.getUser(window.currentUserId);
+
+      //routes.length === 1 || (routes.length === 2 && !customerCode)
+      if(!window.currentUserId){
+        //console.log('登录');
+        me.setState({
+          isLangLoaded: true
+        },() => {
+          me.replaceWith('login', { lang: lang });
+        });
+      }else{
+        //console.log('主页');
+        me._setHighchartConfig();
+        CurrentUserAction.getUser(window.currentUserId);
+
 
       me.setState({
         isLangLoaded: true

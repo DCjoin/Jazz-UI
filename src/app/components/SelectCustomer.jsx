@@ -170,11 +170,15 @@ var SelectCustomer = React.createClass({
         );
         var leftHandlerBarStyle = {};
         var rightHandlerBarStyle = {};
+        var spManagementStyle = {};
         if (this.state.currentIndex === 0) {
             leftHandlerBarStyle.visibility = 'hidden';
         }
         if (this.state.currentIndex == (CurrentUserCustomerStore.getAll().length - 1)) {
             rightHandlerBarStyle.visibility = 'hidden';
+        }
+        if (window.toMainApp) {
+            spManagementStyle.visibility = 'hidden';
         }
         return (
             <div>
@@ -200,6 +204,9 @@ var SelectCustomer = React.createClass({
                       </div>
 
                     </div>
+                    {LoginStore.checkHasSpAdmin() &&  <span title="资产管理开放平台" className="jazz-select-sp-manage" style={spManagementStyle}
+                       onClick={() => { this._saveSelectCustomer({CustomerId: -1}) }}>平台管理></span>}
+
                   </div>
                 </div>
             </div>

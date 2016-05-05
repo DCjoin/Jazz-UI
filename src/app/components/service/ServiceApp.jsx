@@ -5,9 +5,35 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import MainAppBar from '../MainAppBar.jsx';
 import assign from 'object-assign';
 import NetworkChecker from '../../controls/NetworkChecker.jsx';
+import CookieUtil from '../../util/cookieUtil.jsx';
+import { getCookie } from '../../util/Util.jsx';
 
 let ServiceApp = React.createClass({
   mixins: [Navigation, State],
+
+  _redirectRouter : function(target, params) {
+      if (!target) {
+          return;
+      }
+      var _redirectFunc = this.context.router.transitionTo;
+      if (this.props.routes.length < 3) {
+          _redirectFunc = this.context.router.replaceWith;
+      }
+      if (target.children && target.children.length > 0) {
+          _redirectFunc(target.children[0].name, params);
+      } else {
+          _redirectFunc(target.name, params);
+      }
+  },
+  _showCustomerList : function(argument) {
+    window.currentCustomerId = getCookie('currentCustomerId');
+    window.toMainApp = true;
+    this._redirectRouter({
+        name: 'map',
+        title: I18N.MainMenu.Map
+    },assign({}, this.props.params, {customerId: window.currentCustomerId}));
+  },
+
   componentDidMount: function() {},
   render: function() {
     var menuItems = [
