@@ -85,14 +85,22 @@ let MainApp = React.createClass({
     var customerCode = params.customerId;
     var currentCustomer = getCurrentCustomer();
 
-    if (!customerCode) {
-      this.setState({
-        viewState: viewState.SELECT_CUSTOMER
-      });
+    var currentUser = JSON.parse(getCookie('UserInfo'));
+
+    if (!customerCode && (currentUser && currentUser.Id !== 1)) {
+        // 切换至 Map SelectCustomer
+        this.setState({viewState: viewState.SELECT_CUSTOMER});
+    } else {
+        //切换至系统管理
+        this._redirectRouter({
+            name: 'config',
+            title: I18N.MainMenu.Config
+        }, this.props.params);
+        this.setState({viewState: viewState.MAIN});
     }
 
     if (currentCustomer && currentCustomer.CustomerId === -1 && !window.toMainApp) {
-      //切换至系统管理
+      //切换至平台管理
       this._redirectRouter({
         name: 'workday',
         title: I18N.MainMenu.Workday

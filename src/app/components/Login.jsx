@@ -7,8 +7,10 @@ import {RaisedButton, Snackbar} from 'material-ui';
 //import Authentication from './Auth.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';
-import FlatButton from '../controls/FlatButton.jsx';
+import CusFlatButton from '../controls/FlatButton.jsx';
+import { FlatButton } from 'material-ui';
 import Dialog from '../controls/PopupDialog.jsx';
+import LanguageAction from '../actions/LanguageAction.jsx';
 
 const MAX_LENGTH = 200;
 const MAX_LENGTH_ERROR = "不能大于" + MAX_LENGTH;
@@ -102,6 +104,14 @@ let Login = React.createClass({
     }
   },
 
+  _onLangSwitch: function() {
+    LanguageAction.switchLanguage();
+    var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
+    var currentRoutes = this.context.router.getCurrentRoutes();
+    var activeRouteName = currentRoutes[currentRoutes.length - 1].name;
+    this.context.router.transitionTo(activeRouteName, {lang: lang});
+  },
+
   componentDidMount: function() {
     LoginStore.addChangeListener(this._onChange);
   },
@@ -111,32 +121,36 @@ let Login = React.createClass({
   render: function() {
     var errorMsg = null,
     {username, password, authCode} = this.state;
+
     return (
       <div className="jazz-login">
         <div className="jazz-login-content">
           <div className="jazz-login-content-container">
+            <div className="jazz-login-content-logo"></div>
             <div className="jazz-login-form-handler">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
                  userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} />
+                 <div className="jazz-login-demo-link">
+                   <span>{I18N.Login.tryProduct}</span>
+                   <em className="icon-next-arrow-right"/>
+                 </div>
             </div>
           </div>
         </div>
         <div className="jazz-public-footer">
           <div className="jazz-public-footer-about">
-            <a href="http://www.schneider-electric.com/" target="_blank">About us</a>|
-          	<a href="http://e.weibo.com/schneidercn" target="_blank">Schneider Electric official Weibo</a>|
-            <div style={{cursor: 'pointer'}} onClick={this._showQRCodeDialog}>EnergyMost for iPad</div>|
-          	<a href="#">Contact us</a>|
-            <a href="#">中文版</a>
+            <a href="http://www.schneider-electric.com/" target="_blank">{I18N.Login.AboutUS}</a>|
+          	<a href="http://e.weibo.com/schneidercn" target="_blank">{I18N.Login.Weibo}</a>|
+            <div style={{cursor: 'pointer'}} onClick={this._showQRCodeDialog}>{I18N.Login.iPad}</div>|
+          	<a href="#">{I18N.Login.ContactUS}</a>|
+            <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'}
+              backgroundColor={'transparent'} labelStyle={{color: '#c4bbe2','padding': '0'}}
+               style={{'padding': '0','margin': '0', 'line-height': '18px'}} linkButton={true}></FlatButton>
           </div>
           <div className="jazz-public-footer-about">
-            <span style={{marginRight: "2em"}}>© Copyright. All rights reserved. Schneider Electric (China) Co.,Ltd.</span>
+            <div style={{marginRight: "2em"}}>{I18N.Login.Copyright}</div>
           	<a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备05053940号-5</a>
           </div>
-        </div>
-        <div className="jazz-login-demo-link">
-          <span>产品试用</span>
-          <em className="icon-next-arrow-right"/>
         </div>
         {this._renderDemoApplyDialog()}
       </div>
@@ -156,17 +170,15 @@ var LoginForm = React.createClass({
     onKeyPress: React.PropTypes.func,
     changeLoginMethod: React.PropTypes.func
   },
+
   render: function() {
     var {username, password, errorMsg} = this.props;
     return (
       <div className="jazz-login-form">
-        <div className="jazz-login-form-header">
-          <div className="icon-schneider-en"></div>
-        </div>
+
         <div className="jazz-login-form-content">
           <div className="jazz-login-form-content-title">
-            Schneider Electric<br/><br/>EnergyMost
-            <span className="jazz-login-form-content-subTitle">TM</span>
+            {I18N.Login.Title}
           </div>
           <div className="jazz-login-form-content-input">
             <input type="text" className="username" onKeyPress={this.props.onKeyPress} onChange={this.props.userNameChanged}
@@ -176,7 +188,10 @@ var LoginForm = React.createClass({
             <div className="jazz-login-error">{errorMsg}</div>
           </div>
           <div className="jazz-login-form-content-button">
-            <RaisedButton disabled={!username.length || !password.length} primary label={I18N.Login.Login} style={{ width: 287 }} onClick={this.props.login}/>
+            <RaisedButton disabled={!username.length || !password.length} primary label={I18N.Login.Login} style={{ width: '300px',height:'46px'}} onClick={this.props.login}/>
+          </div>
+          <div className="jazz-login-form-content-forgetPSW">
+            <a href="#">{I18N.Login.forgetPSW}</a>
           </div>
         </div>
       </div>
@@ -193,10 +208,10 @@ var DemoApplyDialog = React.createClass({
   			onClick: this._cancelApply,
   			label: I18N.Common.Button.Cancel
   		};
-    let actions = [<FlatButton {...cancelProps} />];
+    let actions = [<CusFlatButton {...cancelProps} />];
     return(
-      <Dialog title={"云能效iPad客户端"} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '500px' }}>
-				<div>使用iPad上的二维码扫描软件，拍摄下方二维码即可下载。</div>
+      <Dialog title={I18N.Login.iPad} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '600px' }}>
+				<div>{I18N.Login.iPadDetail}</div>
         <div className="jazz-login-ipad"></div>
 			</Dialog>
     );
