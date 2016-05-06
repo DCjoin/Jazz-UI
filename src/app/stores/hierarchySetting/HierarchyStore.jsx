@@ -156,6 +156,21 @@ var HierarchyStore = assign({}, PrototypeStore, {
     }
     return items;
   },
+  getTabSumByType: function(type) {
+    switch (type) {
+      case -1:
+      case 0:
+      case 1:
+        return 3;
+        break;
+      case 2:
+        return 5;
+        break;
+      case 101:
+        return 2;
+        break;
+    }
+  },
   getNodeById: function(id) {
     var node;
     var f = function(item) {

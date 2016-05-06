@@ -208,8 +208,8 @@ var TariffDetail = React.createClass({
           onTimeChange={onTimeChange}
           isViewStatus={isView}
           hasDeleteButton={peakPriceItem.get('TimeRange').size > 1}
-          startTime={time.get('m_Item1')}
-          endTime={time.get('m_Item2')}
+          startTime={time.get('Item1')}
+          endTime={time.get('Item2')}
           onDeleteTimeData={that._handelDeletePeakTimeRange.bind(index)}
           lang={window.currentLanguage}/>
         <div className='jazz-carbon-addItem-errorText'>{error}</div>
@@ -263,8 +263,8 @@ var TariffDetail = React.createClass({
           onTimeChange={onTimeChange}
           isViewStatus={isView}
           hasDeleteButton={valleyPriceItem.get('TimeRange').size > 1}
-          startTime={time.get('m_Item1')}
-          endTime={time.get('m_Item2')}
+          startTime={time.get('Item1')}
+          endTime={time.get('Item2')}
           onDeleteTimeData={that._handelDeleteValleyTimeRange.bind(index)}
           lang={window.currentLanguage}/>
         <div className='jazz-carbon-addItem-errorText'>{error}</div>
@@ -596,7 +596,7 @@ var TariffDetail = React.createClass({
                 disabledSaveButton = true
               } else {
                 item.get('TimeRange').forEach(time => {
-                  if (time.get('m_Item1') < 0 || time.get('m_Item2') < 0) {
+                  if (time.get('Item1') < 0 || time.get('Item2') < 0) {
                     disabledSaveButton = true
                   }
                 })

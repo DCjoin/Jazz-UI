@@ -70,7 +70,7 @@ var Hierarchy = React.createClass({
     };
     document.body.appendChild(iframe);
   },
-  _setViewStatus: function(selectedNode = this.state.selectedNode) {
+  _setViewStatus: function(selectedNode = this.state.selectedNode, infoNo = this.state.infoTabNo) {
     // if (!selectedId) {
     //   id = this.state.tariffs.getIn([0, "Id"]);
     //   TariffAction.setCurrentSelectedId(id);
@@ -82,7 +82,7 @@ var Hierarchy = React.createClass({
       formStatus: formStatus.VIEW,
       selectedNode: selectedNode,
       hierarchys: HierarchyStore.getHierarchys(),
-    //  selectedContent: VEEStore.getRuleById(id)
+      infoTabNo: infoNo
     });
   },
   _setAddStatus: function(newType) {
@@ -168,8 +168,14 @@ var Hierarchy = React.createClass({
     });
   },
   _handlerTouchTap: function(node) {
-    this._setViewStatus(node);
+    var that = this;
+    var infoNo = this.state.infoTabNo;
     if (this.state.selectedNode !== node) {
+      let tabSum = HierarchyStore.getTabSumByType(node.get('Type'));
+      if (infoNo > tabSum) {
+        infoNo = 1;
+      }
+      that._setViewStatus(node, infoNo);
       HierarchyAction.setCurrentSelectedNode(node);
     }
   },
