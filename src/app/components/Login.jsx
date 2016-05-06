@@ -115,9 +115,14 @@ let Login = React.createClass({
       <div className="jazz-login">
         <div className="jazz-login-content">
           <div className="jazz-login-content-container">
+            <div className="jazz-login-content-logo"></div>
             <div className="jazz-login-form-handler">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
                  userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} />
+                 <div className="jazz-login-demo-link">
+                   <span>产品试用</span>
+                   <em className="icon-next-arrow-right"/>
+                 </div>
             </div>
           </div>
         </div>
@@ -133,10 +138,6 @@ let Login = React.createClass({
             <span style={{marginRight: "2em"}}>© Copyright. All rights reserved. Schneider Electric (China) Co.,Ltd.</span>
           	<a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备05053940号-5</a>
           </div>
-        </div>
-        <div className="jazz-login-demo-link">
-          <span>产品试用</span>
-          <em className="icon-next-arrow-right"/>
         </div>
         {this._renderDemoApplyDialog()}
       </div>
@@ -156,16 +157,15 @@ var LoginForm = React.createClass({
     onKeyPress: React.PropTypes.func,
     changeLoginMethod: React.PropTypes.func
   },
+
   render: function() {
     var {username, password, errorMsg} = this.props;
     return (
       <div className="jazz-login-form">
-        <div className="jazz-login-form-header">
-          <div className="icon-schneider-en"></div>
-        </div>
+
         <div className="jazz-login-form-content">
           <div className="jazz-login-form-content-title">
-            Schneider Electric<br/><br/>EnergyMost
+            Schneider Electric EnergyMost
             <span className="jazz-login-form-content-subTitle">TM</span>
           </div>
           <div className="jazz-login-form-content-input">
@@ -176,7 +176,10 @@ var LoginForm = React.createClass({
             <div className="jazz-login-error">{errorMsg}</div>
           </div>
           <div className="jazz-login-form-content-button">
-            <RaisedButton disabled={!username.length || !password.length} primary label={I18N.Login.Login} style={{ width: 287 }} onClick={this.props.login}/>
+            <RaisedButton disabled={!username.length || !password.length} primary label={I18N.Login.Login} style={{ width: '300px',height:'46px'}} onClick={this.props.login}/>
+          </div>
+          <div className="jazz-login-form-content-forgetPSW">
+            <a href="#">忘记密码</a>
           </div>
         </div>
       </div>
