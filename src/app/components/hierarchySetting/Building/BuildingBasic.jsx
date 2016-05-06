@@ -217,7 +217,9 @@ var BuildingBasic = React.createClass({
       {adminList}
      <div className='pop-admins section-panel'>
         <div className='pop-admin-container'>
-          <div className='jazz-buildingbasic-tag-item'>
+          <div className='jazz-buildingbasic-tag-item' style={{
+        width: '200px'
+      }}>
             <div className='title'>{I18N.Setting.Building.PTagCount}</div>
             <div className='content'>{AssoiciatedTagCountP || 0}</div>
           </div>
