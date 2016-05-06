@@ -114,6 +114,9 @@ var Hierarchy = React.createClass({
       sourceNode = HierarchyStore.getNodeById(parseInt(sourceId)),
       parentNode = HierarchyStore.getParent(targetNode),
       node = null;
+    console.log('test for gragula_targetNode:' + targetNode.get('Name'));
+    console.log('test for gragula_targetNode:' + sourceNode.get('Name'));
+    console.log('test for gragula_targetNode:' + parentNode.get('Name'));
     let desParent = {
         Id: parentNode.get('Id'),
         Version: parentNode.get('Version')
