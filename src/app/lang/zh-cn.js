@@ -81,7 +81,17 @@ I18N.Login = {};
 I18N.Login.UserName = '用户名';
 I18N.Login.Password = '密码';
 I18N.Login.Logout = '注销';
-I18N.Login.Login = '登陆';
+I18N.Login.Login = '登录';
+I18N.Login.Title = '云能效管理平台';
+I18N.Login.forgetPSW = '忘记密码';
+I18N.Login.tryProduct = '产品试用';
+I18N.Login.AboutUS = '关于施耐德电气';
+I18N.Login.Weibo = '施耐德电气官方微博';
+I18N.Login.iPad = '云能效iPad客户端';
+I18N.Login.iPadDetail = '使用iPad上的二维码扫描软件，拍摄下方二维码即可下载。';
+I18N.Login.ContactUS = '联系我们';
+I18N.Login.Copyright = '版权所有    施耐德电气（中国）有限公司';
+
 
 I18N.M212001 = '用户不存在';
 I18N.M212002 = '服务提供商无效';
