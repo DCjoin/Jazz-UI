@@ -532,6 +532,7 @@ let Setting = React.createClass({
       <div style={{
         display: 'flex',
         flex: 1,
+        overflow: 'auto'
       }}>
         {leftPanel}
         {mainPanel}
