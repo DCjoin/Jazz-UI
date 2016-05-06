@@ -373,7 +373,7 @@ var Cost = React.createClass({
             );
             let times = [];
             item.get('TimeRange').forEach(time => {
-              times.push(<div>{that._formatTime(time.get('m_Item1')) + ' - ' + that._formatTime(time.get('m_Item2'))}</div>)
+              times.push(<div>{that._formatTime(time.get('Item1')) + ' - ' + that._formatTime(time.get('Item2'))}</div>)
             });
             items.push(
               <div className='jazz-building-cost-tou-item'>
@@ -391,7 +391,7 @@ var Cost = React.createClass({
             );
             let times = [];
             item.get('TimeRange').forEach(time => {
-              times.push(<div>{that._formatTime(time.get('m_Item1')) + ' - ' + that._formatTime(time.get('m_Item2'))}</div>)
+              times.push(<div>{that._formatTime(time.get('Item1')) + ' - ' + that._formatTime(time.get('Item2'))}</div>)
             });
             items.push(
               <div className='jazz-building-cost-tou-item'>
