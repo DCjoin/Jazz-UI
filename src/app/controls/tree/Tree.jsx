@@ -13,7 +13,8 @@ import dragula from 'react-dragula';
 var lastOver = null,
   drag = null,
   timeoutHandle = null,
-  pass = true;
+  pass = true,
+  collapsedNodeId = null;
 
 var EditNode = null;
 var ifGragulaInvalid = null;
@@ -148,21 +149,19 @@ var Tree = React.createClass({
   },
 
   _onDrop: function(el, target, source) {
-
     if (drag) {
       drag = false;
       var pre = false;
-      if (target.children[1].id == el.id) {
+      if (target.children[1].id == el.id && !(this.state.collapsedNodeId || collapsedNodeId)) {
         pre = true;
       }
-      this.props.onGragulaNode(target.id, source.id, pre, this.state.collapsedNodeId);
+      this.props.onGragulaNode(target.id, source.id, pre, this.state.collapsedNodeId || collapsedNodeId);
       clearTimeout(timeoutHandle);
       this.setState({
         collapsedNodeId: null
       });
+      collapsedNodeId = null;
     }
-
-
   },
 
   _onShadow: function(el, container) {
@@ -173,16 +172,22 @@ var Tree = React.createClass({
     }
     clearTimeout(timeoutHandle);
     setTimeout(() => {
+      console.log('clear collapsedNodeId');
+      collapsedNodeId = null;
       this.setState({
         collapsedNodeId: null
       });
-    }, 500)
 
+    }, 500)
+    console.log('_onShadow');
     timeoutHandle = setTimeout(() => {
       if (lastOver) {
+        console.log('set collapsedNodeId:' + parseInt(lastOver.id));
+        collapsedNodeId = parseInt(lastOver.id);
         this.setState({
           collapsedNodeId: parseInt(lastOver.id)
         });
+
       }
     }, 2000);
   },
