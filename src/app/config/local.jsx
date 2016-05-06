@@ -1,6 +1,6 @@
 export default {
   ServeAddress: "http://127.0.0.1:80/webapihost",
-  APIBasePath: "/webapihost/API",
+  APIBasePath: "/API",
   socketServer: "",
 }
 
