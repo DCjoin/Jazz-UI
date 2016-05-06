@@ -37,6 +37,7 @@ var Cost = React.createClass({
     hierarchyId: React.PropTypes.number,
     onUpdate: React.PropTypes.func,
     setEditBtnStatus: React.PropTypes.func,
+    onShowFooter: React.PropTypes.func,
   },
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
@@ -53,6 +54,7 @@ var Cost = React.createClass({
     var cost = this.state.cost.toJS();
     cost.Name = this.props.name;
     if (refresh) {
+      this.props.onShowFooter(false);
       this.setState({
         isLoading: true
       });
@@ -62,6 +64,7 @@ var Cost = React.createClass({
 
   },
   _onChange: function() {
+    this.props.onShowFooter(true);
     this.setState({
       cost: HierarchyStore.getCost(),
       isLoading: false
