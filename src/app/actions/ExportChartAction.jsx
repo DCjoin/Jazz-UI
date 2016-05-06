@@ -6,12 +6,12 @@ import Config from 'config';
 
 let ExportChartAction = {
 
-  getTagsData4Export(params, path){
-    let fullPath = Config.APIBasePath + path;
+  getTagsData4Export(params, path) {
+    let fullPath = Config.ServeAddress + Config.APIBasePath + path;
     AppDispatcher.dispatch({
-        type: ActionTypes.EXPORT_CHART_ACTION_TYPE,
-        params:params,
-        path: fullPath
+      type: ActionTypes.EXPORT_CHART_ACTION_TYPE,
+      params: params,
+      path: fullPath
     });
   }
 
