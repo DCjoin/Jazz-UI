@@ -92,6 +92,7 @@ var Organization = React.createClass({
       isAdd = this.props.formStatus === formStatus.ADD,
       title = selectedNode.get('Type') === 0 ? I18N.Common.Glossary.Organization : I18N.Common.Glossary.Site,
       NameProps = {
+        ref: 'org_head',
         isViewStatus: isView || this.props.infoTabNo !== 1,
         title: I18N.format(I18N.Setting.Organization.Name, title),
         defaultValue: selectedNode.get("Name"),
@@ -264,6 +265,11 @@ var Organization = React.createClass({
   componentWillMount: function() {
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();
+  },
+  componentDidMount: function() {
+    if (this.props.formStatus === formStatus.ADD) {
+      this.refs.org_head.focus();
+    }
   },
   componentWillUnmount: function() {
     this.clearErrorTextBatchViewbaleTextFiled();

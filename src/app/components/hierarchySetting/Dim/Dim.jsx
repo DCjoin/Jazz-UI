@@ -79,6 +79,7 @@ var Dim = React.createClass({
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
       NameProps = {
+        ref: 'dim_head',
         isViewStatus: isView || this.props.infoTabNo !== 1,
         title: I18N.format(I18N.Setting.Organization.Name, I18N.Common.Glossary.Dim),
         defaultValue: selectedNode.get("Name"),
@@ -234,6 +235,11 @@ var Dim = React.createClass({
   componentWillMount: function() {
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();
+  },
+  componentDidMount: function() {
+    if (this.props.formStatus === formStatus.ADD) {
+      this.refs.dim_head.focus();
+    }
   },
   componentWillUnmount: function() {
     this.clearErrorTextBatchViewbaleTextFiled();
