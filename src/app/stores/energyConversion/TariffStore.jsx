@@ -75,10 +75,10 @@ var TariffStore = assign({}, PrototypeStore, {
       }
       for (let i = 0; i < items.size - 1; i++) {
         for (let j = i + 1; j <= items.size - 1; j++) {
-          let a = parseFloat(items.get(i).get('m_Item1')),
-            b = parseFloat(items.get(i).get('m_Item2')),
-            c = parseFloat(items.get(j).get('m_Item1')),
-            d = parseFloat(items.get(j).get('m_Item2'));
+          let a = parseFloat(items.get(i).get('Item1')),
+            b = parseFloat(items.get(i).get('Item2')),
+            c = parseFloat(items.get(j).get('Item1')),
+            d = parseFloat(items.get(j).get('Item2'));
           if ((a < 0 && b < 0) || (c < 0 && d < 0)) {
           } else {
             if ((a <= c && b <= c) || (a >= c && a >= d)) {
@@ -193,8 +193,8 @@ var TariffStore = assign({}, PrototypeStore, {
                     ItemType: data.value.ItemType,
                     Price: value,
                     TimeRange: [{
-                      m_Item1: -1,
-                      m_Item2: -1
+                      Item1: -1,
+                      Item2: -1
                     }],
                     TouTariffId: 0
                   }));
@@ -205,8 +205,8 @@ var TariffStore = assign({}, PrototypeStore, {
                   ItemType: data.value.ItemType,
                   Price: value,
                   TimeRange: [{
-                    m_Item1: -1,
-                    m_Item2: -1
+                    Item1: -1,
+                    Item2: -1
                   }],
                   TouTariffId: 0
                 }]);
@@ -218,8 +218,8 @@ var TariffStore = assign({}, PrototypeStore, {
                 if (!!priceItem) {
                   let timeRange = priceItem.get('TimeRange');
                   timeRange = timeRange.setIn([data.value.index], Immutable.fromJS({
-                    m_Item1: value[0],
-                    m_Item2: value[1]
+                    Item1: value[0],
+                    Item2: value[1]
                   }));
                   priceItem = priceItem.set('TimeRange', timeRange);
                   _updatingTariff = _updatingTariff.set('TouTariffItems', touTariff.update(touTariff.findIndex(item => item.get('ItemType') == data.value.ItemType), (item) => {
@@ -230,8 +230,8 @@ var TariffStore = assign({}, PrototypeStore, {
                     ItemType: data.value.ItemType,
                     Price: null,
                     TimeRange: [{
-                      m_Item1: value[0],
-                      m_Item2: value[1]
+                      Item1: value[0],
+                      Item2: value[1]
                     }],
                     TouTariffId: 0
                   }));
@@ -242,8 +242,8 @@ var TariffStore = assign({}, PrototypeStore, {
                   ItemType: data.value.ItemType,
                   Price: null,
                   TimeRange: [{
-                    m_Item1: value[0],
-                    m_Item2: value[1]
+                    Item1: value[0],
+                    Item2: value[1]
                   }],
                   TouTariffId: 0
                 }]);
@@ -307,8 +307,8 @@ var TariffStore = assign({}, PrototypeStore, {
       if (!!priceItem) {
         let timeRange = priceItem.get('TimeRange');
         timeRange = timeRange.unshift(Immutable.fromJS({
-          m_Item1: -1,
-          m_Item2: -1
+          Item1: -1,
+          Item2: -1
         }));
         priceItem = priceItem.set('TimeRange', timeRange);
         _updatingTariff = _updatingTariff.set('TouTariffItems', touTariff.update(touTariff.findIndex(item => item.get('ItemType') == itemType), (item) => {
@@ -319,12 +319,12 @@ var TariffStore = assign({}, PrototypeStore, {
           ItemType: itemType,
           Price: null,
           TimeRange: [{
-            m_Item1: -1,
-            m_Item2: -1
+            Item1: -1,
+            Item2: -1
           },
             {
-              m_Item1: -1,
-              m_Item2: -1
+              Item1: -1,
+              Item2: -1
             }],
           TouTariffId: 0
         }));
@@ -335,12 +335,12 @@ var TariffStore = assign({}, PrototypeStore, {
         ItemType: itemType,
         Price: null,
         TimeRange: [{
-          m_Item1: -1,
-          m_Item2: -1
+          Item1: -1,
+          Item2: -1
         },
           {
-            m_Item1: -1,
-            m_Item2: -1
+            Item1: -1,
+            Item2: -1
           }],
         TouTariffId: 0
       }])
