@@ -233,9 +233,10 @@ let HierarchyAction = {
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
+        let type = HierarchyStore.getNameByType(dto.Type);
         AppDispatcher.dispatch({
           type: Action.HIERARCHY_ERROR,
-          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          title: I18N.format(I18N.Setting.Hierarchy.CannotDeleteTitle, type, dto.Name),
           content: ErrorMsg,
         });
         console.log(err, res);
