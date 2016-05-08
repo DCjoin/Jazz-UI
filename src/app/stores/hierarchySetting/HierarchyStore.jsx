@@ -171,6 +171,11 @@ var HierarchyStore = assign({}, PrototypeStore, {
         break;
     }
   },
+  getNameByType: function(type) {
+    var typeArr = [I18N.Common.Glossary.Organization, I18N.Common.Glossary.Site, I18N.Common.Glossary.Building];
+    typeArr[101] = I18N.Common.Glossary.Dim;
+    return typeArr[type];
+  },
   getNodeById: function(id) {
     var node;
     var f = function(item) {

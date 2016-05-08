@@ -29,11 +29,10 @@ var OrganizationBasic = React.createClass({
         isViewStatus: isView,
         title: I18N.format(I18N.Setting.Organization.Code, title),
         defaultValue: Code,
-        regex: Regex.CustomerCode,
-        errorMessage: I18N.Setting.CustomerManagement.CodeError,
+        maxLen: 200,
         isRequired: true,
         didChanged: value => {
-          if (!Regex.CustomerCode.test(value)) {
+          if (value.length > 200) {
             that.props.setEditBtnStatus(true);
           } else {
             that.props.setEditBtnStatus(false);
@@ -98,8 +97,9 @@ var OrganizationBasic = React.createClass({
 
   },
   componentWillMount: function() {
-    if (this.props.selectedNode.get('Code') && Regex.CustomerCode.test(this.props.selectedNode.get('Code'))) {
-      this.props.setEditBtnStatus(false);
+    if (this.props.selectedNode.get('Code'))
+      if (this.props.selectedNode.get('Code').length <= 200) {
+        this.props.setEditBtnStatus(false);
     }
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();

@@ -948,6 +948,7 @@ I18N.Message.M01405 = '该层级节点上已有日历设置，无法删除。';
 I18N.Message.M01406 = '该层级节点上已有成本设置，无法删除。';
 I18N.Message.M01407 = '该层级节点上已有高级属性设置，无法删除。';
 I18N.Message.M01408 = '该层级节点上已有数据点关联，无法删除。';
+I18N.Message.M01850 = '该层级节点关联了Facilitymost，无法删除，请解除关联后再试。';
 
 //building picture
 I18N.Message.M01503 = '只允许上传jpg/png格式图片，请重新上传。';
@@ -1798,6 +1799,7 @@ I18N.Setting.Building.UpdateImage = '重新上传建筑照片';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = '删除{0}';
+I18N.Setting.Hierarchy.CannotDeleteTitle = '无法删除{0}“{1}”';
 I18N.Setting.Hierarchy.DeleteContent = '删除{0}“{1}”，该{2}的所有数据也将被删除。';
 I18N.Setting.Hierarchy.AddTagInfo = '点击添加按钮，选择关联数据点';
 

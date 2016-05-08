@@ -244,11 +244,15 @@ var Hierarchy = React.createClass({
       } else {
         HierarchyAction.modifyHierarchy(node.toJS());
       }
+      this.setState({
+        isLoading: true
+      });
     } else if (this.state.infoTabNo === 2) {
       HierarchyAction.modifyTags(node.hierarchyId, node.tags, node.associationType);
       setTimeout(() => {
         this._setViewStatus();
       }, 1000);
+
     } else if (this.state.infoTabNo === 3) {
       HierarchyAction.saveCalendar(node);
     } else if (this.state.infoTabNo === 5) {
@@ -256,6 +260,7 @@ var Hierarchy = React.createClass({
     } else if (this.state.infoTabNo === 4) {
       HierarchyAction.saveCost(node);
     }
+
   },
   _switchTab(event) {
     let no = parseInt(event.target.getAttribute("data-tab-index"));

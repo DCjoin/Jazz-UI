@@ -36,11 +36,17 @@ var Building = React.createClass({
   getInitialState: function() {
     return {
       dialogStatus: false,
-      editBtnDisabled: this.props.formStatus === formStatus.ADD ? true : false
+      editBtnDisabled: this.props.formStatus === formStatus.ADD ? true : false,
+      footerShow: true
     };
   },
   _update: function() {
     this.forceUpdate();
+  },
+  _onShowFooter: function(status) {
+    this.setState({
+      footerShow: status
+    });
   },
   // _clearErrorText: function() {
   //   var basic = this.refs.jazz_vee_basic,
@@ -65,6 +71,9 @@ var Building = React.createClass({
       }
       if (!node.get('ZoneId')) {
         node = node.set('ZoneId', HierarchyStore.getAllZones()[0].Id);
+      }
+      if (!node.get('CalcStatus')) {
+        node = node.set('CalcStatus', true);
       }
       this.props.handleSave(node);
     } else if (this.props.infoTabNo === 2) {
@@ -102,12 +111,17 @@ var Building = React.createClass({
       this.props.handleSave(cost);
     }
   },
+  _handlerSwitchTabForCost: function(event) {
+    this.props.handlerSwitchTab(event);
+    this._onShowFooter(false);
+  },
   _renderHeader: function() {
     var that = this,
       {selectedNode} = this.props,
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
       NameProps = {
+        ref: 'building_head',
         isViewStatus: isView || this.props.infoTabNo !== 1,
         title: I18N.format(I18N.Setting.Organization.Name, I18N.Common.Glossary.Building),
         defaultValue: selectedNode.get("Name"),
@@ -147,7 +161,7 @@ var Building = React.createClass({
         <span className={classnames({
           "pop-user-detail-tabs-tab": true,
           "selected": that.props.infoTabNo === 4
-        })} data-tab-index="4" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Building.HierarchyNodeCostProperties}</span>
+        })} data-tab-index="4" onClick={that._handlerSwitchTabForCost}>{I18N.Setting.Building.HierarchyNodeCostProperties}</span>
         <span className={classnames({
           "pop-user-detail-tabs-tab": true,
           "selected": that.props.infoTabNo === 5
@@ -194,7 +208,8 @@ var Building = React.createClass({
         hierarchyId: this.props.selectedNode.get('Id'),
         setEditBtnStatus: this._setEditBtnStatus,
         name: this.props.selectedNode.get('Name'),
-        onUpdate: this._update
+        onUpdate: this._update,
+        onShowFooter: this._onShowFooter
       };
     var content;
     switch (this.props.infoTabNo) {
@@ -308,6 +323,11 @@ var Building = React.createClass({
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();
   },
+  componentDidMount: function() {
+    if (this.props.formStatus === formStatus.ADD) {
+      this.refs.building_head.focus();
+    }
+  },
   componentWillUnmount: function() {
     this.clearErrorTextBatchViewbaleTextFiled();
   },
@@ -324,7 +344,7 @@ var Building = React.createClass({
     <Panel onToggle={this.props.toggleList}>
       {header}
       {content}
-      {footer}
+      {this.state.footerShow ? footer : null}
     </Panel>
     {that._renderDialog()}
   </div>

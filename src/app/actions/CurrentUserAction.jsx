@@ -48,8 +48,6 @@ let CurrentUserAction = {
         console.log(err, res);
       }
     });
-
-
   },
   resetPassword: function(passwordDto) {
     Ajax.post('/User/ResetPassword', {

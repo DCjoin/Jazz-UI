@@ -58,11 +58,10 @@ var BuildingBasic = React.createClass({
         isViewStatus: isView,
         title: I18N.format(I18N.Setting.Organization.Code, I18N.Common.Glossary.Building),
         defaultValue: Code,
-        regex: Regex.CustomerCode,
-        errorMessage: I18N.Setting.CustomerManagement.CodeError,
+        maxLen: 200,
         isRequired: true,
         didChanged: value => {
-          if (!Regex.CustomerCode.test(value)) {
+          if (value.length > 200) {
             that.props.setEditBtnStatus(true);
           } else {
             that.props.setEditBtnStatus(false);
@@ -218,7 +217,9 @@ var BuildingBasic = React.createClass({
       {adminList}
      <div className='pop-admins section-panel'>
         <div className='pop-admin-container'>
-          <div className='jazz-buildingbasic-tag-item'>
+          <div className='jazz-buildingbasic-tag-item' style={{
+        width: '200px'
+      }}>
             <div className='title'>{I18N.Setting.Building.PTagCount}</div>
             <div className='content'>{AssoiciatedTagCountP || 0}</div>
           </div>
@@ -234,8 +235,9 @@ var BuildingBasic = React.createClass({
 
   },
   componentWillMount: function() {
-    if (this.props.selectedNode.get('Code') && Regex.CustomerCode.test(this.props.selectedNode.get('Code'))) {
-      this.props.setEditBtnStatus(false);
+    if (this.props.selectedNode.get('Code'))
+      if (this.props.selectedNode.get('Code').length <= 200) {
+        this.props.setEditBtnStatus(false);
     }
     this.initBatchViewbaleTextFiled();
     this.clearErrorTextBatchViewbaleTextFiled();
