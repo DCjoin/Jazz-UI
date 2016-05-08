@@ -68,6 +68,7 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
   empty: function() {
+    location.reload();
     CookieUtil.set('UserId', null);
     CookieUtil.set('Username', null);
     CookieUtil.set('currentCustomerId', null);
@@ -80,6 +81,8 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     window.currentUser = null;
     window.currentCustomerId = null;
     window.toMainApp = null;
+    window.currentCustomerId = '';
+
   },
   getLastError: function(argument) {
     return _lastError;

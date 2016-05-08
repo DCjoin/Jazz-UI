@@ -22,6 +22,10 @@ import NetworkChecker from '../controls/NetworkChecker.jsx';
 import ExportChart from './energy/ExportChart.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
+import CurrentUserAction from '../actions/CurrentUserAction.jsx';
+import LoginActionCreator from '../actions/LoginActionCreator.jsx';
+import CusFlatButton from '../controls/FlatButton.jsx';
+import Dialog from '../controls/PopupDialog.jsx';
 
 
 function getCurrentCustomers() {
@@ -41,17 +45,39 @@ let MainApp = React.createClass({
     window.allCommodities = AllCommodityStore.getAllCommodities();
   },
   _onCurrentrivilegeChanged: function() {
+    var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege();
+    // console.log('_currentUserRivilege:'+_currentUserRivilege);
     this.setState({
-      rivilege: CurrentUserStore.getCurrentPrivilege()
+      rivilege: _currentUserRivilege
     });
   },
   getInitialState: function() {
+    SelectCustomerActionCreator.getCustomer(window.currentUserId);
     //||CurrentUserStore.getCurrentPrivilegeByUser(JSON.parse(getCookie('UserInfo')))
     var _rivilege = CurrentUserStore.getCurrentPrivilege();
+    if(!_rivilege){
+      //fixed no rivileges problem when initialed after login completed
+      var _userRoleList = CurrentUserAction.getRoles(window.currentUserId);
+    }
     return {
       currentUser: window.currentUser,
       rivilege: _rivilege
     };
+  },
+
+  _dismissDialog() {
+    LoginActionCreator.logout();
+    var _redirectFunc = this.context.router.replaceWith;
+    _redirectFunc('login',{lang :((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')});
+  },
+  _renderDialog() {
+    if (this.state.viewState == viewState.NO_SELECT_CUSTOMERS) {
+      return (
+        <MessageDialog onCancel={this._dismissDialog}/>
+      );
+    }else{
+      return null;
+    }
   },
 
   _redirectRouter: function(target, params) {
@@ -84,13 +110,12 @@ let MainApp = React.createClass({
     var params = this.props.params;
     var customerCode = params.customerId;
     var currentCustomer = getCurrentCustomer();
-
     var currentUser = JSON.parse(getCookie('UserInfo'));
 
     if (!customerCode && (currentUser && currentUser.Id !== 1)) {
         // 切换至 Map SelectCustomer
         this.setState({viewState: viewState.SELECT_CUSTOMER});
-    } else {
+    } else if(currentUser && currentUser.Id == 1){
         //切换至系统管理
         this._redirectRouter({
             name: 'config',
@@ -98,6 +123,9 @@ let MainApp = React.createClass({
         }, this.props.params);
         this.setState({viewState: viewState.MAIN});
     }
+
+    // console.log(JSON.stringify(currentCustomer,0,1));
+
 
     if (currentCustomer && currentCustomer.CustomerId === -1 && !window.toMainApp) {
       //切换至平台管理
@@ -112,17 +140,30 @@ let MainApp = React.createClass({
       return;
     }
 
-    // console.log('currentCustomer.Id:'+currentCustomer.Id);
-    // console.log('window.currentCustomerId:'+window.currentCustomerId);
-    // console.log('window.toMainApp:'+window.toMainApp);
-    // console.log('currentCustomer.CustomerId:'+ currentCustomer.CustomerId);
-    // && customerCode != currentCustomer.Id.toString()
     if (!_.isEmpty(currentCustomer)) {
       params.customerId = currentCustomer.Id;
       window.currentCustomerId = currentCustomer.Id;
       this._switchCustomer(currentCustomer);
       window.toMainApp = false;
       return;
+    }else{
+      var customers = getCurrentCustomers();
+
+      if(!customers.length && this.state.rivilege.indexOf('1206') < 0){
+        //当用户既没有平台管理权限，又没有客户列表的时候
+        this.setState({viewState: viewState.NO_SELECT_CUSTOMERS});
+        return;
+      } else if(customers.length <= 0 && this.state.rivilege.indexOf('1206') > -1){
+        //当用户仅有1206权限时切换至平台管理
+        this._redirectRouter({
+          name: 'workday',
+          title: I18N.MainMenu.Workday
+        }, this.props.params);
+        this.setState({
+          viewState: viewState.MAIN
+        });
+        return;
+      }
     }
   },
   _switchCustomer: function(customer) {
@@ -139,8 +180,12 @@ let MainApp = React.createClass({
       }));
     } else {
       //login first time
+      // var _currentUserId = getCookie('UserId');
+      // var _userRoleList = CurrentUserAction.getRoles(_currentUserId);
+      // console.log('###'+JSON.stringify(_userRoleList,0,1))
       this.setState({
-        rivilege: CurrentUserStore.getCurrentPrivilegeByUser(this.state.currentUser)
+        rivilege: CurrentUserStore.getCurrentPrivilege()
+        //CurrentUserStore.getCurrentPrivilegeByUser(this.state.currentUser,_userRoleList)
       });
       this._redirectRouter({
         name: 'map',
@@ -268,16 +313,21 @@ let MainApp = React.createClass({
 
   render: function() {
     var CustomersList = getCurrentCustomers();
-    if (this.state.viewState == viewState.SELECT_CUSTOMER || window.toMainApp) {
+    if(this.state.viewState == viewState.NO_SELECT_CUSTOMERS){
+      return(
+        <div>
+          {this._renderDialog()}
+        </div>
+      );
+    }else if (this.state.viewState == viewState.SELECT_CUSTOMER || window.toMainApp) {
       return (
         <SelectCustomer close={this._closeSelectCustomer}
-        closable={this.props.params.customerId ? true : false}
-        currentCustomerId={parseInt(this.props.params.customerId)}
-        params={CustomersList}
-        userId={parseInt(window.currentUserId)}/>
+          closable={this.props.params.customerId ? true : false}
+          currentCustomerId={parseInt(this.props.params.customerId)}
+          params={CustomersList}
+          userId={parseInt(window.currentUserId)}/>
         );
-    } else {
-      if (this.state.rivilege !== null) {
+    } else if (this.state.rivilege !== null && window.currentCustomerId != ''){
         var menuItems = this._getMenuItems();
         var logoUrl = 'Logo.aspx?hierarchyId=' + this.props.params.customerId;
         return (
@@ -288,21 +338,16 @@ let MainApp = React.createClass({
                 <ExportChart></ExportChart>
             </div>
           );
-      } else {
+    }else{
         return (
           <div className='jazz-main'>
-            <div style={{
-            display: 'flex',
-            flex: 1,
-            'alignItems': 'center',
-            'justifyContent': 'center'
-          }}>
+            <div style={{display: 'flex', flex: 1, 'alignItems': 'center', 'justifyContent': 'center'}}>
               <CircularProgress  mode="indeterminate" size={2} />
             </div>
           </div>
           );
-      }
     }
+
   },
   componentDidMount() {
     UOMStore.addChangeListener(this._onAllUOMSChange);
@@ -311,7 +356,6 @@ let MainApp = React.createClass({
     MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
 
-    SelectCustomerActionCreator.getCustomer(window.currentUserId);
     CurrentUserCustomerStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
@@ -321,6 +365,25 @@ let MainApp = React.createClass({
 
     CurrentUserCustomerStore.removeChangeListener(this._onChange);
   }
+});
+
+var MessageDialog = React.createClass({
+  _cancelApply:function(){
+    this.props.onCancel();
+	},
+	render:function(){
+    let cancelProps = {
+  			onClick: this._cancelApply,
+  			label: '返回登录页面'//I18N.Common.Button.Cancel
+  		};
+    let actions = [<CusFlatButton {...cancelProps} />];
+    return(
+      <Dialog title={'无法登录云能效管理平台'} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '600px' }}>
+				<div>您的帐号没有任何数据权限，请联系您的服务商管理员。</div>
+			</Dialog>
+    );
+  }
+
 });
 
 module.exports = MainApp;
