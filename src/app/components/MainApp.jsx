@@ -109,7 +109,7 @@ let MainApp = React.createClass({
   _onChange: function(argument) {
     var params = this.props.params;
     var customerCode = params.customerId;
-    var currentCustomer = getCurrentCustomer();
+    var currentCustomer = CurrentUserCustomerStore.getCurrentCustomer();
     var currentUser = JSON.parse(getCookie('UserInfo'));
 
     if (!customerCode && (currentUser && currentUser.Id !== 1)) {
@@ -124,9 +124,6 @@ let MainApp = React.createClass({
         this.setState({viewState: viewState.MAIN});
     }
 
-    // console.log(JSON.stringify(currentCustomer,0,1));
-
-
     if (currentCustomer && currentCustomer.CustomerId === -1 && !window.toMainApp) {
       //切换至平台管理
       this._redirectRouter({
@@ -139,7 +136,6 @@ let MainApp = React.createClass({
       currentCustomer.CustomerId = '';
       return;
     }
-
     if (!_.isEmpty(currentCustomer)) {
       params.customerId = currentCustomer.Id;
       window.currentCustomerId = currentCustomer.Id;
@@ -148,7 +144,7 @@ let MainApp = React.createClass({
       return;
     }else{
       var customers = getCurrentCustomers();
-
+      // console.log(this.state.rivilege.indexOf('1206'));
       if(!customers.length && this.state.rivilege.indexOf('1206') < 0){
         //当用户既没有平台管理权限，又没有客户列表的时候
         this.setState({viewState: viewState.NO_SELECT_CUSTOMERS});
@@ -175,17 +171,13 @@ let MainApp = React.createClass({
 
     if (menus && menus.length > 0) {
       //after select customer
-      this._redirectRouter(this._getMenuItems()[0], assign({}, this.props.params, {
+      this._redirectRouter(menus[0], assign({}, this.props.params, {
         customerId: customer.Id
       }));
     } else {
       //login first time
-      // var _currentUserId = getCookie('UserId');
-      // var _userRoleList = CurrentUserAction.getRoles(_currentUserId);
-      // console.log('###'+JSON.stringify(_userRoleList,0,1))
       this.setState({
         rivilege: CurrentUserStore.getCurrentPrivilege()
-        //CurrentUserStore.getCurrentPrivilegeByUser(this.state.currentUser,_userRoleList)
       });
       this._redirectRouter({
         name: 'map',

@@ -42,8 +42,17 @@ let LoginStore = assign({}, EventEmitter.prototype, {
       _currentUser = data;
       return _currentUser;
     } else {
-      this.empty();
+      // this.empty();
       _lastError = data;
+      CookieUtil.set('UserId', null);
+      CookieUtil.set('Username', null);
+      CookieUtil.set('currentCustomerId', null);
+      CookieUtil.set('UserInfo', null);
+      window.currentUserId = null;
+      window.currentUser = null;
+      window.currentCustomerId = null;
+      window.toMainApp = null;
+      window.currentCustomerId = '';
     }
   },
   hasLoggedin: function(argument) {
@@ -68,7 +77,7 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
   empty: function() {
-    location.reload();
+    //location.reload();
     CookieUtil.set('UserId', null);
     CookieUtil.set('Username', null);
     CookieUtil.set('currentCustomerId', null);
