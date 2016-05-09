@@ -538,7 +538,7 @@ I18N.EM.Report.Original = '原始数据';
 I18N.EM.Report.TagShouldNotBeEmpty = '请选择至少1个数据点';
 
 I18N.EM.Report.NonReportCriteria = '请至少包含一组报表数据';
-I18N.EM.Report.WrongExcelFile = '模板格式不对，只能是xls或者xlsx后缀的文件';
+I18N.EM.Report.WrongExcelFile = '模板格式有误，仅支持xls或xlsx文件格式，请重新选择。';
 I18N.EM.Report.TemplateHasBeenRefed = '报表模板"{0}"正在被引用，无法删除。请取消所有引用后再试。';
 I18N.EM.Report.RefObject = '引用对象：';
 I18N.EM.Report.UploadingTemplate = '文件{0}正在导入。';
