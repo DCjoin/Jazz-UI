@@ -31,8 +31,8 @@ let AddTagItem = React.createClass({
       fontSize: '16px',
     };
     return (
-      <div className='jazz-mailfield-recieveritem'>
-          <div className='node-content-text' style={{
+      <div className="jazz-mailfield-recieveritem">
+          <div className={classnames("node-content-text", "jazz-monitorTag-item")} style={{
         marginLeft: '7.5px'
       }}>
             {this.props.tag.get('Name')}
