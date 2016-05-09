@@ -56,7 +56,8 @@ let CalendarDetail = React.createClass({
             if (i === 0) {
               return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkDayTitle + me._getDisplay(item, true)}</div>;
             } else {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
+              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
+                  'padding-three')}>{me._getDisplay(item, true)}</div>;
             }
           });
         }
@@ -65,7 +66,8 @@ let CalendarDetail = React.createClass({
             if (i === 0) {
               return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.HolidayTitle + me._getDisplay(item, true)}</div>;
             } else {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
+              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
+                  'padding-three')}>{me._getDisplay(item, true)}</div>;
             }
           });
         }
@@ -85,7 +87,8 @@ let CalendarDetail = React.createClass({
             if (i === 0) {
               return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkTimeTitle + me._getDisplay(item, false)}</div>;
             } else {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, false)}</div>;
+              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
+                  'padding-four')}>{me._getDisplay(item, false)}</div>;
             }
           });
         }
@@ -105,7 +108,8 @@ let CalendarDetail = React.createClass({
             if (i === 0) {
               return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WarmTitle + me._getDisplay(item, true)}</div>;
             } else {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
+              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
+                  'padding-three')}>{me._getDisplay(item, true)}</div>;
             }
           });
         }
@@ -114,13 +118,14 @@ let CalendarDetail = React.createClass({
             if (i === 0) {
               return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.ColdTitle + me._getDisplay(item, true)}</div>;
             } else {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
+              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
+                  'padding-three')}>{me._getDisplay(item, true)}</div>;
             }
           });
         }
 
         display = (<div>
-          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.Name + name}</div>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WramCalendar + name}</div>
           {warm}
           {cold}
         </div>);
@@ -133,12 +138,13 @@ let CalendarDetail = React.createClass({
             if (i === 0) {
               return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DayTitle + me._getDisplay(item, false)}</div>;
             } else {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, false)}</div>;
+              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
+                  'padding-four')}>{me._getDisplay(item, false)}</div>;
             }
           });
         }
         display = (<div>
-        <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.Name + name}</div>
+        <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.NightCalendar + name}</div>
         <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DefaultDayNight}</div>
         {day}
       </div>);
