@@ -1,5 +1,5 @@
 export default {
-  ServeAddress: "http://121.199.24.158/webapihost",
+  ServeAddress: "http://sp1.test26.energymost.com/webapihost",
   APIBasePath: "/API",
   socketServer: "",
 }
