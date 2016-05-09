@@ -660,21 +660,21 @@ I18N.Setting.DynamicProperty.AreaUnitValue = '㎡';
 
 I18N.Setting.DynamicProperty.Population = 'Population';
 I18N.Setting.DynamicProperty.PopulationCode = 'Population code';
-I18N.Setting.DynamicProperty.PopulationNumber = 'Population';
+I18N.Setting.DynamicProperty.PopulationNumber = 'Population(Person)';
 I18N.Setting.DynamicProperty.PopulationUnitValue = 'Person';
 I18N.Setting.DynamicProperty.PopulationStartDateDuplicated = 'Effective date of population property is repeated';
 
 I18N.Setting.DynamicProperty.Other = 'Other properties';
 I18N.Setting.DynamicProperty.ARoom = 'Total rooms';
-I18N.Setting.DynamicProperty.ARoomNumber = 'Total number of rooms';
+I18N.Setting.DynamicProperty.ARoomNumber = 'Total number of rooms(room)';
 I18N.Setting.DynamicProperty.UsedRoom = 'Used rooms';
-I18N.Setting.DynamicProperty.UsedRoomNumber = 'Number of used rooms';
+I18N.Setting.DynamicProperty.UsedRoomNumber = 'Number of used rooms(room)';
 I18N.Setting.DynamicProperty.RoomUnitValue = 'Room';
 I18N.Setting.DynamicProperty.RoomStartDateDuplicated = 'Effective data of property of used rooms duplicated';
 I18N.Setting.DynamicProperty.ABed = 'Total beds';
-I18N.Setting.DynamicProperty.ABedNumber = 'Total number of beds';
+I18N.Setting.DynamicProperty.ABedNumber = 'Total number of beds(bed)';
 I18N.Setting.DynamicProperty.UsedBed = 'Used beds';
-I18N.Setting.DynamicProperty.UsedBedNumber = 'Number of used beds';
+I18N.Setting.DynamicProperty.UsedBedNumber = 'Number of used beds(bed)';
 I18N.Setting.DynamicProperty.BedStartDateDuplicated = 'Effective data of property of used beds duplicated';
 I18N.Setting.DynamicProperty.BedUnitValue = 'Bed(s)';
 
@@ -948,6 +948,7 @@ I18N.Message.M01405 = 'The hierarchy nodes already have calendar settings that c
 I18N.Message.M01406 = 'The hierarchy nodes already have cost settings that cannot be deleted.';
 I18N.Message.M01407 = 'The hierarchy nodes already have advanced attribute settings that cannot be deleted.';
 I18N.Message.M01408 = 'The hierarchy nodes already have tag associations that cannot be deleted.';
+I18N.Message.M01850 = 'The hierarchy used in Facilitymost that cannot be deleted, please delete in Facilitymost and try again.';
 
 //building picture
 I18N.Message.M01503 = 'Only jpg / png images can be uploaded. Please upload again.';
@@ -1798,6 +1799,7 @@ I18N.Setting.Building.UpdateImage = 'Update building picture';
 
 I18N.Setting.Hierarchy = {};
 I18N.Setting.Hierarchy.DeleteTitle = 'Delete {0}';
+I18N.Setting.Hierarchy.CannotDeleteTitle = 'Cannot delete {0} "{1}"';
 I18N.Setting.Hierarchy.DeleteContent = 'Delete {0} “{1}”，all tags belong to {2} will be deleted';
 I18N.Setting.Hierarchy.AddTagInfo = 'Click add button to add tags';
 
@@ -1832,5 +1834,5 @@ I18N.Setting.Cost.ReactivePower = 'Reactive energy';
 I18N.Setting.Cost.RealPower = 'Active energy';
 I18N.Setting.Cost.PaddingCost = 'Supplement';
 I18N.Setting.Cost.OtherCommodities = 'Other cost property';
-
+I18N.Setting.Cost.CostCommodity = 'Cost';
 module.exports = I18N;

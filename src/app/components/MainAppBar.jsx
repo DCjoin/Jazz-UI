@@ -121,7 +121,7 @@ var MainAppBar = React.createClass({
   _logout: function() {
     LoginActionCreator.logout();
     var _redirectFunc = this.context.router.replaceWith;
-    _redirectFunc('login',{lang :'en-us'});
+    _redirectFunc('login',{lang :((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')});
   },
   _cancelLogout: function(){
     this.setState(this.getInitialState());

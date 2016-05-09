@@ -26,10 +26,16 @@ let Login = React.createClass({
   },
   getInitialState: function() {
     return {
-      // username: "platformadmin",
-      // password: "P@ssw0rd",
       username: "",
       password: "",
+      // username: "Ally_Test",
+      // password: "123456qq",
+      // username: "0123456",
+      // password: "0123456",
+      // username: "SchneiderElectricChina",
+      // password: "P@ssw0rdChina",
+      // username: "platformadmin",
+      // password: "P@ssw0rd",
       error: null,
       showQRCodeDialog: false,
       demoEmail: "",
@@ -94,10 +100,10 @@ let Login = React.createClass({
   _dismissQRCodeDialog() {
     this.setState({showQRCodeDialog: false});
   },
-  _renderDemoApplyDialog() {
+  _renderQRCodeDialog() {
     if (this.state.showQRCodeDialog) {
       return (
-        <DemoApplyDialog onCancel={this._dismissQRCodeDialog}/>
+        <QRCodeDialog onCancel={this._dismissQRCodeDialog}/>
       );
     }else{
       return null;
@@ -145,14 +151,14 @@ let Login = React.createClass({
           	<a href="#">{I18N.Login.ContactUS}</a>|
             <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'}
               backgroundColor={'transparent'} labelStyle={{color: '#c4bbe2','padding': '0'}}
-               style={{'padding': '0','margin': '0', 'line-height': '18px'}} linkButton={true}></FlatButton>
+               style={{'padding': '0','margin': '0', lineHeight: '18px'}} linkButton={true}></FlatButton>
           </div>
           <div className="jazz-public-footer-about">
             <div style={{marginRight: "2em"}}>{I18N.Login.Copyright}</div>
           	<a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备05053940号-5</a>
           </div>
         </div>
-        {this._renderDemoApplyDialog()}
+        {this._renderQRCodeDialog()}
       </div>
     );
   }
@@ -175,7 +181,6 @@ var LoginForm = React.createClass({
     var {username, password, errorMsg} = this.props;
     return (
       <div className="jazz-login-form">
-
         <div className="jazz-login-form-content">
           <div className="jazz-login-form-content-title">
             {I18N.Login.Title}
@@ -199,7 +204,7 @@ var LoginForm = React.createClass({
   }
 });
 
-var DemoApplyDialog = React.createClass({
+var QRCodeDialog = React.createClass({
   _cancelApply:function(){
     this.props.onCancel();
 	},
