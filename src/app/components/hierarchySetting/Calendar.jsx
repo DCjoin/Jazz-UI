@@ -52,24 +52,22 @@ let CalendarDetail = React.createClass({
         var workday = null,
           holiday = null;
         if (workdayItems && workdayItems.size > 0) {
-          workday = workdayItems.map((item, i) => {
-            if (i === 0) {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkDayTitle + me._getDisplay(item, true)}</div>;
-            } else {
-              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
-                  'padding-three')}>{me._getDisplay(item, true)}</div>;
-            }
+          var workdayRight = workdayItems.map((item, i) => {
+            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
           });
+          workday = (<div className='jazz-hierarchy-calendar-detail'>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkDayTitle}</div>
+          <div>{workdayRight}</div>
+        </div>);
         }
         if (holidayItems && holidayItems.size > 0) {
-          holiday = holidayItems.map((item, i) => {
-            if (i === 0) {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.HolidayTitle + me._getDisplay(item, true)}</div>;
-            } else {
-              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
-                  'padding-three')}>{me._getDisplay(item, true)}</div>;
-            }
+          var holidayRight = holidayItems.map((item, i) => {
+            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
           });
+          holiday = (<div className='jazz-hierarchy-calendar-detail'>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.HolidayTitle}</div>
+          <div>{holidayRight}</div>
+        </div>);
         }
 
         display = (<div>
@@ -83,14 +81,13 @@ let CalendarDetail = React.createClass({
         var worktimeItems = Items.filter(item => (item.get('Type') === 2));
         var worktime = null;
         if (worktimeItems && worktimeItems.size > 0) {
-          worktime = worktimeItems.map((item, i) => {
-            if (i === 0) {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkTimeTitle + me._getDisplay(item, false)}</div>;
-            } else {
-              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
-                  'padding-four')}>{me._getDisplay(item, false)}</div>;
-            }
+          var worktimeRight = worktimeItems.map((item, i) => {
+            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
           });
+          worktime = (<div className='jazz-hierarchy-calendar-detail'>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkTimeTitle}</div>
+          <div>{worktimeRight}</div>
+        </div>);
         }
         display = (<div>
         <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkTimeCalendar + name}</div>
@@ -104,24 +101,22 @@ let CalendarDetail = React.createClass({
         var warm = null,
           cold = null;
         if (warmItems && warmItems.size > 0) {
-          warm = warmItems.map((item, i) => {
-            if (i === 0) {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WarmTitle + me._getDisplay(item, true)}</div>;
-            } else {
-              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
-                  'padding-three')}>{me._getDisplay(item, true)}</div>;
-            }
+          var warmRight = warmItems.map((item, i) => {
+            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
           });
+          warm = (<div className='jazz-hierarchy-calendar-detail'>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WarmTitle}</div>
+          <div>{warmRight}</div>
+        </div>);
         }
         if (coldItems && coldItems.size > 0) {
-          cold = coldItems.map((item, i) => {
-            if (i === 0) {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.ColdTitle + me._getDisplay(item, true)}</div>;
-            } else {
-              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
-                  'padding-three')}>{me._getDisplay(item, true)}</div>;
-            }
+          var coldRight = coldItems.map((item, i) => {
+            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
           });
+          cold = (<div className='jazz-hierarchy-calendar-detail'>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.ColdTitle}</div>
+          <div>{coldRight}</div>
+        </div>);
         }
 
         display = (<div>
@@ -134,14 +129,13 @@ let CalendarDetail = React.createClass({
         var dayItems = Items.filter(item => (item.get('Type') === 6));
         var day = null;
         if (dayItems && dayItems.size > 0) {
-          day = dayItems.map((item, i) => {
-            if (i === 0) {
-              return <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DayTitle + me._getDisplay(item, false)}</div>;
-            } else {
-              return <div className={classnames('jazz-hierarchy-calendar-detail-item',
-                  'padding-four')}>{me._getDisplay(item, false)}</div>;
-            }
+          var dayRight = dayItems.map((item, i) => {
+            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
           });
+          day = (<div className='jazz-hierarchy-calendar-detail'>
+          <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DayTitle}</div>
+          <div>{dayRight}</div>
+        </div>);
         }
         display = (<div>
         <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.NightCalendar + name}</div>
