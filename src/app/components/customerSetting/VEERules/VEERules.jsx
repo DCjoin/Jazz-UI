@@ -101,8 +101,17 @@ var VEERules = React.createClass({
     });
   },
   _handlerCancel: function() {
+    var that = this;
     if (this.state.selectedId === null) {
-      this._setViewStatus(VEEStore.getSelectedId());
+      if (VEEStore.getSelectedId() === null || !VEEStore.getSelectedId()) {
+        that.setState({
+          selectedRule: emptyMap(),
+          formStatus: formStatus.VIEW,
+        });
+      } else {
+        this._setViewStatus(VEEStore.getSelectedId());
+      }
+
     } else {
       this._setViewStatus();
     }
