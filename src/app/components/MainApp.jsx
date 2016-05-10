@@ -46,7 +46,7 @@ let MainApp = React.createClass({
   },
   _onCurrentrivilegeChanged: function() {
     var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege();
-    console.log('_currentUserRivilege:'+_currentUserRivilege);
+    // console.log('_currentUserRivilege:'+_currentUserRivilege);
     this.setState({
       rivilege: _currentUserRivilege
     });
@@ -144,7 +144,6 @@ let MainApp = React.createClass({
       return;
     }else{
       var customers = getCurrentCustomers();
-      console.log('2222222:'+this.state.rivilege);
       if(!customers.length && (this.state.rivilege && this.state.rivilege.indexOf('1206') < 0 || this.state.rivilege == null)){
         //当用户既没有平台管理权限，又没有客户列表的时候
         this.setState({viewState: viewState.NO_SELECT_CUSTOMERS});
