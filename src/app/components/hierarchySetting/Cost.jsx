@@ -670,9 +670,7 @@ var Cost = React.createClass({
           flexDirection: 'row',
           marginTop: '30px'
         }}>
-        <div style={{
-          width: '200px'
-        }}><ViewableDropDownMenu  {...touTariffProps} /></div>
+        <div className='jazz-building-cost-usagecost'><ViewableDropDownMenu  {...touTariffProps} /></div>
 
                 <div className='jazz-building-cost-showTou' style={{
           marginTop: '26px',
