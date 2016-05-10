@@ -22,8 +22,7 @@ let _reqPSWReset = null;
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
     var _pri = CurrentUserStore.getCurrentPrivilege();
-
-    if (JSON.parse(getCookie('UserInfo')).UserType === -1 || (_pri && _pri.indexOf('1206'))) {
+    if (JSON.parse(getCookie('UserInfo')).UserType === -1 || ( _pri && _pri.indexOf('1206') )) {
       return true;
     }
     return false;

@@ -33,8 +33,8 @@ let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
   },
   removeChangeListener: function(callback) {
     _currentCustomer = '';
-    _customers = null;
-    _currentUser = null;
+    // _customers = null;
+    // _currentUser = null;
     this.removeListener(CHANGE_EVENT, callback);
   },
   emitChange: function() {
