@@ -262,7 +262,12 @@ var Property = React.createClass({
       properties = property.get('Properties'),
       propertyIndex = properties.findIndex(item => (item.get('Code') === code)),
       propertyItemValue = properties.getIn([propertyIndex, 'Values']);
-    propertyItemValue = propertyItemValue.setIn([index, path], value);
+    if (value === '' && code !== 'TotalPopulation' && code !== 'UsedRoom' && code !== 'UsedBed') {
+      propertyItemValue = propertyItemValue.delete(index);
+    } else {
+      propertyItemValue = propertyItemValue.setIn([index, path], value);
+    }
+
     properties = properties.setIn([propertyIndex, 'Values'], propertyItemValue);
     property = property.set('Properties', properties);
     this.setState({

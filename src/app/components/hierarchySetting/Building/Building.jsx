@@ -72,7 +72,7 @@ var Building = React.createClass({
       if (!node.get('ZoneId')) {
         node = node.set('ZoneId', HierarchyStore.getAllZones()[0].Id);
       }
-      if (!node.get('CalcStatus')) {
+      if (node.get('CalcStatus') !== true && node.get('CalcStatus') !== false) {
         node = node.set('CalcStatus', true);
       }
       this.props.handleSave(node);

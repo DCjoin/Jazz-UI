@@ -32,7 +32,7 @@ let AddTagItem = React.createClass({
     };
     return (
       <div className='jazz-mailfield-recieveritem'>
-          <div className='node-content-text' style={{
+          <div className={classnames("node-content-text", "jazz-monitorTag-item")} style={{
         marginLeft: '7.5px'
       }}>
             {this.props.tag.get('Name')}

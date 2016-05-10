@@ -120,7 +120,7 @@ let DataSelectMainPanel = React.createClass({
   _onTagNodeChange: function() {
     var data = TagStore.getData();
     this.setState({
-      tagList: data.GetTagsByFilterResult,
+      tagList: data.Data,
       total: data.total,
       isLoading: false,
     });
@@ -149,8 +149,8 @@ let DataSelectMainPanel = React.createClass({
     page = data.pageIndex;
     this.refs.dimButton.resetButtonName();
     this.setState({
-      tagList: data.GetPageTagDataResult,
-      total: data.totalCount,
+      tagList: data.Data,
+      total: data.total,
       tagId: tagId,
       dimParentNode: node,
       optionType: 2,
