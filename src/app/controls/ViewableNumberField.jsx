@@ -22,14 +22,14 @@ var ViewableNumberField = React.createClass({
 
   getDefaultProps: function() {
     return {
-      format: function(value) {
-        if (parseInt(value) === value) {
-          value = numeral(value).format('0,0');
-          return value;
-        }
-        value = numeral(value).format('0,0.00');
-        return value;
-      },
+      // format: function(value) {
+      //   if (parseInt(value) === value) {
+      //     value = numeral(value).format('0,0');
+      //     return value;
+      //   }
+      //   value = numeral(value).format('0,0.00');
+      //   return value;
+      // },
       unit: ''
     };
   },
