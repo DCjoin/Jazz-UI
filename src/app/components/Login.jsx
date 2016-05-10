@@ -246,8 +246,10 @@ var QRCodeDialog = React.createClass({
 var ForgetPSWDialog = React.createClass({
   getInitialState() {
     return {
-      username:"vonqi",
-      email: "qi.feng@schneider-electric.com",
+      username:"",
+      email: "",
+      // username:"vonqi",
+      // email: "qi.feng@schneider-electric.com",
       reqStatus:null,
     };
   },
