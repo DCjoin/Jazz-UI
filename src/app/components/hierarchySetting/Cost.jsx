@@ -177,6 +177,10 @@ var Cost = React.createClass({
           mData = mData.setIn(pricePath, null);
           mData = mData.setIn(tagIdPath, mData.getIn(['HourTags', 0, 'Id']));
         }
+      } else if (paths[paths.length - 1] === 'CommodityId') {
+        mData = mData.setIn(paths, value);
+        paths[paths.length - 1] = 'UomId';
+        mData = mData.setIn(paths, HierarchyStore.findUOMIdById(value));
       } else {
         mData = mData.setIn(paths, value);
       }
@@ -670,9 +674,7 @@ var Cost = React.createClass({
           flexDirection: 'row',
           marginTop: '30px'
         }}>
-        <div style={{
-          width: '200px'
-        }}><ViewableDropDownMenu  {...touTariffProps} /></div>
+        <div className='jazz-building-cost-usagecost'><ViewableDropDownMenu  {...touTariffProps} /></div>
 
                 <div className='jazz-building-cost-showTou' style={{
           marginTop: '26px',

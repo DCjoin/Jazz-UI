@@ -91,6 +91,15 @@ var HierarchyStore = assign({}, PrototypeStore, {
       filter = uoms.find(item => (item.get('Id') === id));
     return (filter.get('Comment'));
   },
+  findUOMIdById: function(id) {
+    switch (id) {
+      case 1:
+      case 8:
+      case 9: return 1;
+      case 3:return 5;
+      default:return 9;
+    }
+  },
   setTagEnergyConsumption: function(tag) {
     var newTag = Immutable.fromJS(tag[0]);
     var index = _tagList.findIndex(item => (item.get('Id') === newTag.get('Id')));
