@@ -16,6 +16,7 @@ let CHANGE_EVENT = 'change';
 let _currentUserId = null;
 let _currentUser = null;
 let _lastError = null;
+let _reqPSWReset = null;
 
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
@@ -42,18 +43,20 @@ let LoginStore = assign({}, EventEmitter.prototype, {
       _currentUser = data;
       return _currentUser;
     } else {
-      // this.empty();
+      this.empty();
       _lastError = data;
-      CookieUtil.set('UserId', null);
-      CookieUtil.set('Username', null);
-      CookieUtil.set('currentCustomerId', null);
-      CookieUtil.set('UserInfo', null);
-      window.currentUserId = null;
-      window.currentUser = null;
-      window.currentCustomerId = null;
-      window.toMainApp = null;
-      window.currentCustomerId = '';
     }
+  },
+  reqPSWReset:function(data, success){
+    if(success){
+      _reqPSWReset = true;
+    }else {
+      _reqPSWReset = false;
+    }
+    return _reqPSWReset;
+  },
+  getreqPSWReset: function(argument) {
+    return _reqPSWReset;
   },
   hasLoggedin: function(argument) {
     if (CookieUtil.get('UserId')) {
@@ -82,16 +85,11 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     CookieUtil.set('Username', null);
     CookieUtil.set('currentCustomerId', null);
     CookieUtil.set('UserInfo', null);
-    // CookieUtil.remove('UserId');
-    // CookieUtil.remove('Username');
-    // CookieUtil.remove('currentCustomerId');
-    // CookieUtil.remove('UserInfo');
     window.currentUserId = null;
     window.currentUser = null;
     window.currentCustomerId = null;
     window.toMainApp = null;
     window.currentCustomerId = '';
-
   },
   getLastError: function(argument) {
     return _lastError;
@@ -136,6 +134,14 @@ LoginStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case LoginActionType.Action.RESET_AUTH_CODE_STATUE:
       LoginStore.resetReceiveAuthCode();
+      break;
+    case LoginActionType.Action.REQ_PSWRESET_SUCCESS:
+      LoginStore.reqPSWReset(action.data, true);
+      LoginStore.emitChange();
+      break;
+    case LoginActionType.Action.REQ_PSWRESET_ERROR:
+      LoginStore.reqPSWReset(action.data, false);
+      LoginStore.emitChange();
       break;
     default:
       // do nothing

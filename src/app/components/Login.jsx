@@ -11,6 +11,8 @@ import CusFlatButton from '../controls/FlatButton.jsx';
 import { FlatButton } from 'material-ui';
 import Dialog from '../controls/PopupDialog.jsx';
 import LanguageAction from '../actions/LanguageAction.jsx';
+import ViewableTextField from '../controls/ViewableTextField.jsx';
+import Regex from '../constants/Regex.jsx';
 
 const MAX_LENGTH = 200;
 const MAX_LENGTH_ERROR = "不能大于" + MAX_LENGTH;
@@ -38,6 +40,7 @@ let Login = React.createClass({
       // password: "P@ssw0rd",
       error: null,
       showQRCodeDialog: false,
+      showForgetPSWDialog: false,
       demoEmail: "",
       mobileNumber: "",
       authCode: "",
@@ -110,6 +113,22 @@ let Login = React.createClass({
     }
   },
 
+  _showForgetPSWDialog() {
+      this.setState({showForgetPSWDialog: true});
+  },
+  _dismissForgetPSWDialog() {
+    this.setState({showForgetPSWDialog: false});
+  },
+  _renderForgetPSWDialog(){
+    if (this.state.showForgetPSWDialog) {
+      return (
+        <ForgetPSWDialog onCancel={this._dismissForgetPSWDialog}/>
+      );
+    }else{
+      return null;
+    }
+  },
+
   _onLangSwitch: function() {
     LanguageAction.switchLanguage();
     var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
@@ -135,7 +154,7 @@ let Login = React.createClass({
             <div className="jazz-login-content-logo"></div>
             <div className="jazz-login-form-handler">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
-                 userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} />
+                 userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
                  <div className="jazz-login-demo-link">
                    <span>{I18N.Login.tryProduct}</span>
                    <em className="icon-next-arrow-right"/>
@@ -159,6 +178,7 @@ let Login = React.createClass({
           </div>
         </div>
         {this._renderQRCodeDialog()}
+        {this._renderForgetPSWDialog()}
       </div>
     );
   }
@@ -196,7 +216,7 @@ var LoginForm = React.createClass({
             <RaisedButton disabled={!username.length || !password.length} primary label={I18N.Login.Login} style={{ width: '300px',height:'46px'}} onClick={this.props.login}/>
           </div>
           <div className="jazz-login-form-content-forgetPSW">
-            <a href="#">{I18N.Login.forgetPSW}</a>
+            <div style={{cursor: 'pointer'}} onClick={this.props.forgetPSW}>{I18N.Login.forgetPSW}</div>
           </div>
         </div>
       </div>
@@ -221,7 +241,93 @@ var QRCodeDialog = React.createClass({
 			</Dialog>
     );
   }
+});
 
+var ForgetPSWDialog = React.createClass({
+  getInitialState() {
+    return {
+      username:"vonqi",
+      email: "qi.feng@schneider-electric.com",
+      reqStatus:null,
+    };
+  },
+  _onChange:function(){
+    if(LoginStore.getreqPSWReset()){
+      this.setState({reqStatus:true});
+    }
+  },
+  _sendApply:function(){
+    LoginActionCreator.reqPwdReset(this.state.username, this.state.email);
+  },
+  _cancelApply:function(){
+    this.props.onCancel();
+	},
+  componentDidMount: function() {
+    LoginStore.addChangeListener(this._onChange);
+  },
+  componentWillUnmount: function() {
+    LoginStore.removeChangeListener(this._onChange);
+  },
+	render:function(){
+    let email = this.state.email,
+		sendProps = {
+			disabled: !email || !Regex.Email.test( email ) || email.length > 254,
+			onClick: this._sendApply,
+			label: I18N.Common.Button.GoOn
+		},
+		cancelProps = {
+			onClick: this._cancelApply,
+			label: I18N.Common.Button.Cancel
+		},
+    goonProps = {
+			onClick: this._cancelApply,
+			label: I18N.Common.Button.GoOn
+		},
+    usernameProps = {
+			autoFocus: true,
+			isViewStatus: false,
+			title: I18N.Login.UserName,
+			defaultValue: this.state.username,
+			isRequired: true,
+			maxLen:254,
+      didChanged: value => { this.setState({ username: value }) }
+		},
+		emailProps = {
+			autoFocus: false,
+			isViewStatus: false,
+			title: I18N.Login.Email,
+			defaultValue: this.state.email,
+			isRequired: true,
+			regex: Regex.Email,
+			errorMessage: I18N.Login.WrongEmail,
+			maxLen:254,
+			didChanged: value => { this.setState({ email: value }) }
+		};
+
+    if(this.state.reqStatus == true){
+      let actions = [
+  			<CusFlatButton {...goonProps} />
+  		];
+      return(
+        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '530px' }}>
+          <div>{I18N.Login.ReqPSWResetTip1}<b>{this.state.email}</b>{I18N.Login.ReqPSWResetTip3}<br></br>{I18N.Login.ReqPSWResetTip2}</div>
+  			</Dialog>
+      );
+    }else {
+      let actions = [
+  			<FlatButton {...sendProps} />,
+  			<CusFlatButton {...cancelProps} />
+  		];
+      return(
+        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '530px' }}>
+          <div>{I18N.Login.ForgerPSWTips}</div>
+          <br></br>
+          <ViewableTextField {...usernameProps} />
+          <ViewableTextField {...emailProps} />
+  			</Dialog>
+      );
+    }
+  }
 });
 
 module.exports = Login;

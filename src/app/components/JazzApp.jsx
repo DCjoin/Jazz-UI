@@ -179,8 +179,18 @@ let JazzApp = React.createClass({
     var afterLoadLang = function(b) {
       window.I18N = b;
 
-      var customerCode = params.customerId || query.customerId  || window.currentCustomerId;
+      if(me.context.router.getCurrentPath().indexOf('resetpwd') > -1){
+        // console.log(me.context.router.getCurrentParams());
+        var { user, token, lang } = me.context.router.getCurrentParams();
+        me.setState({
+          isLangLoaded: true,
+        },() => {
+          me.replaceWith('resetPSW', { user:user, token:token, lang:lang });
+        });
+        return
+      }
 
+      var customerCode = params.customerId || query.customerId  || window.currentCustomerId;
       //routes.length === 1 || (routes.length === 2 && !customerCode)
       if(!window.currentUserId){
         //console.log('登录');
