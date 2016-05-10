@@ -80,17 +80,31 @@ I18N.MainMenu.Privilege = 'Role';
 I18N.Login = {};
 I18N.Login.UserName = 'User name';
 I18N.Login.Password = 'Password';
+I18N.Login.Email = 'E-mail address';
 I18N.Login.Logout = 'Log out';
 I18N.Login.Login = 'Login';
 I18N.Login.Title = 'Schneider Electric EnergyMost';
 I18N.Login.forgetPSW = 'Forget password';
-I18N.Login.tryProduct = 'Product trial';
+I18N.Login.tryProduct = 'Trial use';
 I18N.Login.AboutUS = 'About us';
 I18N.Login.Weibo = 'Schneider Electric official Weibo';
 I18N.Login.iPad = 'EnergyMost for iPad';
 I18N.Login.iPadDetail = 'Using software on iPad,scan the QR code belowed to download app.';
 I18N.Login.ContactUS = 'Contact us';
 I18N.Login.Copyright = '© Copyright. All rights reserved. Schneider Electric (China) Co.,Ltd.';
+I18N.Login.ForgerPSW = 'Forget Password';
+I18N.Login.ForgerPSWTips = 'Please enter your user name and the e-mail address you have already filled out in the system, and click the continue button.';
+I18N.Login.WrongEmail = 'eg:user@example.com';
+I18N.Login.ReqPSWResetTip1 = 'E-mail has been sent to ';
+I18N.Login.ReqPSWResetTip2 = 'Click the link in e-mail to reset password.';
+I18N.Login.ReqPSWResetTip3 = '.';
+
+I18N.ResetPassword = {};
+I18N.ResetPassword.Title = 'Reset password';
+I18N.ResetPassword.Welcome1 = 'Hi,';
+I18N.ResetPassword.Welcome2 = ',please reset your password.';
+I18N.ResetPassword.SuccessTitle = 'Reset password successfully';
+I18N.ResetPassword.SuccessTips = 'Your password has been reset successfully, please click "continue" to return login page.';
 
 
 I18N.M212001 = 'User does not exist';

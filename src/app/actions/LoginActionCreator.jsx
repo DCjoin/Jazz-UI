@@ -34,4 +34,27 @@ module.exports = {
 			type: Action.LOGOUT
 		});
 	},
+
+	reqPwdReset:function(username, email){
+		Ajax.post('/Common/ReqPwdReset', {
+			params: {
+				"username": username,
+				"email": email,
+				"language":'en-us'
+			},
+			success: function(res) {
+				AppDispatcher.dispatch({
+					type: Action.REQ_PSWRESET_SUCCESS,
+					data: res
+				});
+			},
+			error: function(err, res) {
+				console.log(JSON.stringify(err,0,1) + JSON.stringify(res,0,1));
+				AppDispatcher.dispatch({
+					type: Action.REQ_PSWRESET_ERROR,
+					data: res.body
+				});
+			}
+		});
+	},
 };

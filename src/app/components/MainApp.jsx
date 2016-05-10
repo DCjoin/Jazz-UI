@@ -144,12 +144,11 @@ let MainApp = React.createClass({
       return;
     }else{
       var customers = getCurrentCustomers();
-      // console.log(this.state.rivilege.indexOf('1206'));
-      if(!customers.length && this.state.rivilege.indexOf('1206') < 0){
+      if(!customers.length && (this.state.rivilege && this.state.rivilege.indexOf('1206') < 0 || this.state.rivilege == null)){
         //当用户既没有平台管理权限，又没有客户列表的时候
         this.setState({viewState: viewState.NO_SELECT_CUSTOMERS});
         return;
-      } else if(customers.length <= 0 && this.state.rivilege.indexOf('1206') > -1){
+      } else if(customers.length <= 0 && this.state.rivilege && this.state.rivilege.indexOf('1206') > -1){
         //当用户仅有1206权限时切换至平台管理
         this._redirectRouter({
           name: 'workday',

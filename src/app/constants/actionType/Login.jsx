@@ -12,7 +12,9 @@ module.exports = {
     //MOBILE_LOGIN_ERROR: null,
     GET_AUTH_CODE_SUCCESS: null,
     GET_AUTH_CODE_ERROR: null,
-    RESET_AUTH_CODE_STATUE: null
+    RESET_AUTH_CODE_STATUE: null,
+    REQ_PSWRESET_SUCCESS:null,
+    REQ_PSWRESET_ERROR:null,
   })
 
 };

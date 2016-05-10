@@ -9,6 +9,8 @@ import _findIndex from 'lodash/array/findIndex';
 import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
 import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';
+import CurrentUserStore from '../stores/CurrentUserStore.jsx';
+import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 
 var timeoutHandler = null;
 var _ = {
@@ -25,6 +27,10 @@ var SelectCustomer = React.createClass({
       currentCustomerId: React.PropTypes.number
     },
     getInitialState : function() {
+      var _rivilege = CurrentUserStore.getCurrentPrivilege();
+      if(!_rivilege){
+        var _userRoleList = CurrentUserAction.getRoles(window.currentUserId);
+      }
       return {
         UserId: this.props.userId,
         showCustomer: false,

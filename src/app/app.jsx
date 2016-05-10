@@ -10,6 +10,7 @@ require("babel-polyfill");
 import JazzApp from './components/JazzApp.jsx';
 import Login from './components/Login.jsx';
 import MainApp from './components/MainApp.jsx';
+import resetPSWApp from './components/resetPSWApp.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
@@ -72,6 +73,7 @@ function getLessVar(name) {
 var routes = (
     <Route name="app" path="/:lang?" handler={JazzApp}>
       <Route name="login" path="login" handler={Login}/>
+      <Route name="resetPSW" path="u=:user&t=:token&a=resetpwd&lang=:lang" handler={resetPSWApp}/>
       <Route name="main" path=":customerId?" handler={MainApp}>
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}></Route>
