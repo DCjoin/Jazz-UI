@@ -178,9 +178,9 @@ let JazzApp = React.createClass({
 
     var afterLoadLang = function(b) {
       window.I18N = b;
+      var customerCode = params.customerId || query.customerId  || window.currentCustomerId;
 
       if(me.context.router.getCurrentPath().indexOf('resetpwd') > -1){
-        // console.log(me.context.router.getCurrentParams());
         var { user, token, lang } = me.context.router.getCurrentParams();
         me.setState({
           isLangLoaded: true,
@@ -188,16 +188,15 @@ let JazzApp = React.createClass({
           me.replaceWith('resetPSW', { user:user, token:token, lang:lang });
         });
         return
-      }
+      }else
 
-      var customerCode = params.customerId || query.customerId  || window.currentCustomerId;
       //routes.length === 1 || (routes.length === 2 && !customerCode)
       if(!window.currentUserId){
         //console.log('登录');
         me.setState({
           isLangLoaded: true
         },() => {
-          me.replaceWith('login', { lang: lang });
+          me.replaceWith('login', { lang: me.getParams().lang });
         });
       }else{
         //console.log('主页');
@@ -226,6 +225,7 @@ let JazzApp = React.createClass({
         });
       }
     };
+    // console.log('lang:'+ lang)
 
     if (!lang) {
       var url = window.location.toLocaleString();
@@ -239,7 +239,7 @@ let JazzApp = React.createClass({
         lang = window.navigator.language.toLowerCase();
       }
 
-      this.replaceWith('app', {
+      me.replaceWith('app', {
         lang: lang
       });
     }
