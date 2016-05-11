@@ -6,6 +6,7 @@ import GlobalErrorMessageDialog from './GlobalErrorMessageDialog.jsx';
 import GlobalErrorMessageStore from '../stores/GlobalErrorMessageStore.jsx';
 import LanguageStore from '../stores/LanguageStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
+import { CircularProgress } from 'material-ui';
 
 import keyMirror from 'keymirror';
 
@@ -73,97 +74,33 @@ let JazzApp = React.createClass({
     });
   },
   _onLanguageSwitch: function() {
-    var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
+    var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us',
+      url = location.href;
     var me = this;
-    var afterLoadLang = function(b) {
-      window.I18N = b;
-      me._setHighchartConfig();
-      me.setState({
-        isLangLoaded: true
-      }, () => {
-        var url = window.location.toLocaleString();
-        let subUrl = url.split('#');
-        if (subUrl.length === 2 && subUrl[1].indexOf('main/') > -1) {
-          return;
-        }
-        if (url.indexOf('menutype=platform') > -1) {
-          if (url.indexOf('config') > -1) {
-            me.replaceWith('config', {
-              lang: lang
-            });
-          } else {
-            me.replaceWith('mail', {
-              lang: lang
-            });
-          }
-
-        } else if (url.indexOf('menutype=service') > -1) {
-          if (url.indexOf('workday') > -1) {
-            me.replaceWith('workday', {
-              lang: lang
-            });
-          } else if (url.indexOf('worktime') > -1) {
-            me.replaceWith('worktime', {
-              lang: lang
-            });
-          } else if (url.indexOf('coldwarm') > -1) {
-            me.replaceWith('coldwarm', {
-              lang: lang
-            });
-          } else if (url.indexOf('daynight') > -1) {
-            me.replaceWith('daynight', {
-              lang: lang
-            });
-          } else if (url.indexOf('price') > -1) {
-            me.replaceWith('price', {
-              lang: lang
-            });
-          } else if (url.indexOf('carbon') > -1) {
-            me.replaceWith('carbon', {
-              lang: lang
-            });
-          } else if (url.indexOf('benchmark') > -1) {
-            me.replaceWith('benchmark', {
-              lang: lang
-            });
-          } else if (url.indexOf('labeling') > -1) {
-            me.replaceWith('labeling', {
-              lang: lang
-            });
-          } else if (url.indexOf('customer') > -1) {
-            me.replaceWith('customer', {
-              lang: lang
-            });
-          } else if (url.indexOf('user') > -1) {
-            me.replaceWith('user', {
-              lang: lang
-            });
-          } else {
-            me.replaceWith('privilege', {
-              lang: lang
-            });
-          }
-        } else if (url.indexOf('menutype=energy') > -1) {
-          me.replaceWith('setting', {
-            lang: lang
-          });
-        } else if (url.indexOf('menutype=alarm') > -1) {
-          me.replaceWith('alarm', {
-            lang: lang
-          });
-        } else if (url.indexOf('menutype=map') > -1) {
-          me.replaceWith('map', {
-            lang: lang
-          });
-        }
-      });
-    };
     this._onClearGlobalError();
-    if (lang == 'en-us') {
-      require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
+    // if (lang == 'en-us') {
+    //   require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
+    // } else {
+    //   require(['../lang/zh-cn.js'], afterLoadLang);
+    // }
+    if (lang === 'en-us') {
+      url = url.replace('zh-cn', 'en-us');
     } else {
-      require(['../lang/zh-cn.js'], afterLoadLang);
+      url = url.replace('en-us', 'zh-cn');
     }
+    var index = url.indexOf('#'),
+      pre = url.slice(0, index),
+      aft = url.slice(index, url.length);
+    window.location.href = pre + '?' + Math.random() + aft;
+    //window.location.reload();
+    this.setState({
+      loading: false
+    });
+  },
+  _onLanguageSwitchLoading: function() {
+    this.setState({
+      loading: true
+    });
   },
   componentDidMount: function() {
     var params = this.getParams();
@@ -178,27 +115,33 @@ let JazzApp = React.createClass({
 
     var afterLoadLang = function(b) {
       window.I18N = b;
-      var customerCode = params.customerId || query.customerId  || window.currentCustomerId;
+      var customerCode = params.customerId || query.customerId || window.currentCustomerId;
 
-      if(me.context.router.getCurrentPath().indexOf('resetpwd') > -1){
-        var { user, token, lang } = me.context.router.getCurrentParams();
+      if (me.context.router.getCurrentPath().indexOf('resetpwd') > -1) {
+        var {user, token, lang} = me.context.router.getCurrentParams();
         me.setState({
           isLangLoaded: true,
-        },() => {
-          me.replaceWith('resetPSW', { user:user, token:token, lang:lang });
+        }, () => {
+          me.replaceWith('resetPSW', {
+            user: user,
+            token: token,
+            lang: lang
+          });
         });
         return
-      }else
+      } else
 
       //routes.length === 1 || (routes.length === 2 && !customerCode)
-      if(!window.currentUserId){
+      if (!window.currentUserId) {
         //console.log('登录');
         me.setState({
           isLangLoaded: true
-        },() => {
-          me.replaceWith('login', { lang: me.getParams().lang });
+        }, () => {
+          me.replaceWith('login', {
+            lang: me.getParams().lang
+          });
         });
-      }else{
+      } else {
         //console.log('主页');
         me._setHighchartConfig();
         CurrentUserAction.getUser(window.currentUserId);
@@ -212,15 +155,30 @@ let JazzApp = React.createClass({
             return;
           }
           if (url.indexOf('menutype=platform') > -1) {
-            me.replaceWith('config', { lang: lang , customerId: customerCode});
+            me.replaceWith('config', {
+              lang: lang,
+              customerId: customerCode
+            });
           } else if (url.indexOf('menutype=service') > -1) {
-            me.replaceWith('workday', { lang: lang , customerId: customerCode});
+            me.replaceWith('workday', {
+              lang: lang,
+              customerId: customerCode
+            });
           } else if (url.indexOf('menutype=energy') > -1) {
-            me.replaceWith('setting', { lang: lang , customerId: customerCode});
+            me.replaceWith('setting', {
+              lang: lang,
+              customerId: customerCode
+            });
           } else if (url.indexOf('menutype=alarm') > -1) {
-            me.replaceWith('alarm', { lang: lang , customerId: customerCode});
+            me.replaceWith('alarm', {
+              lang: lang,
+              customerId: customerCode
+            });
           } else if (url.indexOf('menutype=map') > -1) {
-            me.replaceWith('map', { lang: lang , customerId: customerCode});
+            me.replaceWith('map', {
+              lang: lang,
+              customerId: customerCode
+            });
           }
         });
       }
@@ -259,6 +217,7 @@ let JazzApp = React.createClass({
     GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
     LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
+    LanguageStore.addSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
   },
   _onClearGlobalError: function() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();
@@ -288,6 +247,7 @@ let JazzApp = React.createClass({
     GlobalErrorMessageStore.removeChangeListener(this._onErrorMessageChanged);
     GlobalErrorMessageStore.removeClearGlobalErrorListener(this._onClearGlobalError);
     LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
+    LanguageStore.removeSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
   },
   getInitialState: function() {
     return {
@@ -298,7 +258,20 @@ let JazzApp = React.createClass({
   render: function() {
     var loading = null;
     if (this.state.loading) {
-      loading = ''; //(<AjaxDialog ref="ajax" />);
+      loading = <div style={{
+        display: 'flex',
+        flex: 1,
+        'alignItems': 'center',
+        'justifyContent': 'center',
+        position: 'fixed',
+        top: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#ffffff',
+        zIndex: 1000,
+      }}>
+              <CircularProgress  mode="indeterminate" size={2} />
+            </div>; //(<AjaxDialog ref="ajax" />);
     }
     let mainPanel = null;
     if (this.state.isLangLoaded) {

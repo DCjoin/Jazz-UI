@@ -97,8 +97,8 @@ var MainAppBar = React.createClass({
     return this._editUser.bind(this, modifyType);
   },
   _showCustomerList: function() {
-      this.props.showCustomerList();
-    },
+    this.props.showCustomerList();
+  },
 
   _savePassword: function() {
     var user = currentUser();
@@ -121,9 +121,11 @@ var MainAppBar = React.createClass({
   _logout: function() {
     LoginActionCreator.logout();
     var _redirectFunc = this.context.router.replaceWith;
-    _redirectFunc('login',{lang :((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')});
+    _redirectFunc('login', {
+      lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
+    });
   },
-  _cancelLogout: function(){
+  _cancelLogout: function() {
     this.setState(this.getInitialState());
   },
   // ************* Action End *************
@@ -180,80 +182,84 @@ var MainAppBar = React.createClass({
   // ************* Render Component Start *************
   _getUserInfo: function() {
     var user = window.currentUser || currentUser() || {},
-        isSuperAdmin = user.UserType == -1;
+      isSuperAdmin = user.UserType == -1;
     // var associatedCustomers = user.Customers.filter((item) => {
     //   return item.CustomerId >= 0;
     // });
     return (
-        <SideNav ref="nav" open={true} side="right" onClose={this._onClose}>
+      <SideNav ref="nav" open={true} side="right" onClose={this._onClose}>
             <div className="sidebar-title">
                 <FontIcon className="icon-user" color="white" style={{
-                    fontSize: '18px',
-                    marginRight: '8px'
-                }}/>
+        fontSize: '18px',
+        marginRight: '8px'
+      }}/>
                 <span style={{
-                    fontSize: '16px',
-                    lineHeight: '16px'
-                }}>{user.RealName}</span>
+        fontSize: '16px',
+        lineHeight: '16px'
+      }}>{user.RealName}</span>
             </div>
             <div className="sidebar-content">
                 <ul >
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
-                            width: "auto"
-                        }} isViewStatus={true} title={I18N.Platform.User.Name} defaultValue={user.Name}/> {!user.DemoStatus && <div>
+        width: "auto"
+      }} isViewStatus={true} title={I18N.Platform.User.Name} defaultValue={user.Name}/> {!user.DemoStatus && <div>
                             <LinkButton className="pop-userprofile-edit-button" onClick={this._editPassword} label={I18N.Platform.User.ResetPassword}/>
                         </div>}
                     </li>
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
-                            width: "auto"
-                        }} isViewStatus={true} title={I18N.Platform.User.RealName} defaultValue={user.RealName}/> {!user.DemoStatus && <div>
+        width: "auto"
+      }} isViewStatus={true} title={I18N.Platform.User.RealName} defaultValue={user.RealName}/> {!user.DemoStatus && <div>
                             <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.DISPLAY_NAME)} label={I18N.Platform.User.Edit}/>
                         </div>}
                     </li>
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
-                            width: "auto"
-                        }} isViewStatus={true} title={I18N.Platform.User.Position} defaultValue={CurrentUserStore.getUserTitle()[user.Title]}/> {!user.DemoStatus && <div>
+        width: "auto"
+      }} isViewStatus={true} title={I18N.Platform.User.Position} defaultValue={CurrentUserStore.getUserTitle()[user.Title]}/> {!user.DemoStatus && <div>
                             <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.TITLE)} label={I18N.Platform.User.Edit}/>
                         </div>}
                     </li>
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
-                            width: "auto"
-                        }} isViewStatus={true} title={I18N.Platform.User.Role} defaultValue={isSuperAdmin
-                            ? I18N.Platform.User.ServerManager
-                            : user.UserTypeName}/>
+        width: "auto"
+      }} isViewStatus={true} title={I18N.Platform.User.Role} defaultValue={isSuperAdmin
+        ? I18N.Platform.User.ServerManager
+        : user.UserTypeName}/>
                         <div>
                             <LinkButton className="pop-userprofile-edit-button" onClick={this._showFuncAuth} label={I18N.Platform.User.ShowFuncAuth}/>
                         </div>
                     </li>
 
                     {isSuperAdmin
-                        ? null
-                        : <li className="sidebar-content-item">
+        ? null
+        : <li className="sidebar-content-item">
                             <ViewableTextField style={{
-                                width: "auto"
-                            }} isViewStatus={true} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone}/> {!user.DemoStatus && <div>
+          width: "auto"
+        }} isViewStatus={true} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone}/> {!user.DemoStatus && <div>
                                 <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.TELE_PHONE)} label={I18N.Platform.User.Edit}/>
                             </div>}
                         </li>}
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
-                            width: "auto"
-                        }} isViewStatus={true} title={I18N.Platform.User.Email} defaultValue={user.Email}/> {!user.DemoStatus && <div>
+        width: "auto"
+      }} isViewStatus={true} title={I18N.Platform.User.Email} defaultValue={user.Email}/> {!user.DemoStatus && <div>
                             <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.EMAIL)} label={I18N.Platform.User.Edit}/>
                         </div>}
                     </li>
                 </ul>
             </div>
             <div className="sidebar-bottom-action" >
-                <CustomFlatButton className="pop-userprofile-logout" label={I18N.Login.Logout} primary={true} onClick={this._showLogout} style={{color:'#abafae',height:'48px',width:'100%'}} />
+                <CustomFlatButton className="pop-userprofile-logout" label={I18N.Login.Logout} primary={true} onClick={this._showLogout} style={{
+        color: '#abafae',
+        height: '48px',
+        width: '100%'
+      }} />
             </div>
         </SideNav>
-    );
-},
+      );
+  },
   _getAboutNav: function() {
     return (<SideNav open={true} onClose={this._onClose}  side="right">
           <div className="sidebar-title" >
@@ -627,24 +633,30 @@ var MainAppBar = React.createClass({
         cursor: 'pointer'
       };
     var logo = (!!this.props.logoUrl)
-                ? <div className='jazz_logo_img' style={{backgroundImage: 'url(' + Config.ServeAddress +  '/' + this.props.logoUrl + ')'}}
-                 onClick={this._showCustomerList}></div>
-                : null;
+      ? <div className='jazz_logo_img' style={{
+        backgroundImage: 'url(' + Config.ServeAddress + '/' + this.props.logoUrl + ')'
+      }}
+      onClick={this._showCustomerList}></div>
+      : null;
     var title = (!!this.props.title)
-                ? <div className='jazz-title' onClick={this._showCustomerList}>
+      ? <div className='jazz-title' onClick={this._showCustomerList}>
                     {this.props.title}
                   </div>
-               : null;
+      : null;
     var mainmenu;
     if (!!this.props.items) {
       mainmenu = (this.props.items[0].name == 'config')
-      ? <div className="jazz-menu">
-          <div className={classnames({"jazz-mainmenu-main": true,"active": this.state.configSelected})} style={configStyle} onClick={this._onConfigClick}>
+        ? <div className="jazz-menu">
+          <div className={classnames({
+          "jazz-mainmenu-main": true,
+          "active": this.state.configSelected
+        })} style={configStyle} onClick={this._onConfigClick}>
               {this.props.items[0].title}
           </div>
         </div>
-      :<MainMenu items={this.props.items} params={params} onClick={this._onClick}/>;
-    };
+        : <MainMenu items={this.props.items} params={params} onClick={this._onClick}/>;
+    }
+    ;
     var mail = (this.props.title === I18N.Platform.Title) ? (      <div className="jazz-mainmenu-user" style={{
       display: 'flex'
     }}>
@@ -655,8 +667,8 @@ var MainAppBar = React.createClass({
     }} linkButton={true}>
           </FlatButton>
         </div>) : null;
-return (
-    <div className="jazz-mainmenu">
+    return (
+      <div className="jazz-mainmenu">
         <div className="jazz-logo">
             {logo}
             {title}
@@ -665,32 +677,32 @@ return (
         <div className="jazz-mainmenu-info">
             {mail}
             <div className="jazz-mainmenu-user" style={{
-                display: 'flex'
-            }}>
+        display: 'flex'
+      }}>
                 <FlatButton label={I18N.Platform.InEnglish} labelStyle={langLabelStyle} onClick={this._onLangSwitch} style={{
-                    backgroundColor: 'transparent',
-                    color: 'white',
-                    lineHeight: '16px'
-                }} linkButton={true}></FlatButton>
+        backgroundColor: 'transparent',
+        color: 'white',
+        lineHeight: '16px'
+      }} linkButton={true}></FlatButton>
             </div>
             <div className="jazz-mainmenu-user" style={{
-                display: 'flex'
-            }}>
+        display: 'flex'
+      }}>
                 <FlatButton label={user.RealName} labelStyle={nameLableStyle} onClick={this._showUserInfo} style={{
-                    backgroundColor: 'transparent',
-                    color: 'white',
-                    lineHeight: '16px'
-                }} linkButton={true} title={user.RealName}>
+        backgroundColor: 'transparent',
+        color: 'white',
+        lineHeight: '16px'
+      }} linkButton={true} title={user.RealName}>
                     <FontIcon className="icon-user" color="white" style={{
-                        fontSize: '14px',
-                        float: 'left'
-                    }}/>
+        fontSize: '14px',
+        float: 'left'
+      }}/>
                 </FlatButton>
 
             </div>
             <div style={{
-                display: 'flex'
-            }}>
+        display: 'flex'
+      }}>
                 <em className="icon-schneider-style" onClick={this._showIntroducer}>
                     <div className="icon-schneider-en"></div>
                 </em>
@@ -703,7 +715,7 @@ return (
         {dialog}
     </div>
 
-);
+      );
   }
 
 });

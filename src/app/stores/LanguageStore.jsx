@@ -6,7 +6,8 @@ import { List, updater, update, Map } from 'immutable';
 
 import Language from '../constants/actionType/Language.jsx';
 
-let SWITCH_LANGUAGE_EVENT = 'switchlanguage';
+let SWITCH_LANGUAGE_EVENT = 'switchlanguage',
+  SWITCH_LANGUAGE_LOADING_EVENT = 'switchlanguageloading';
 
 var LanguageStore = assign({}, PrototypeStore, {
 
@@ -26,6 +27,17 @@ var LanguageStore = assign({}, PrototypeStore, {
     this.removeListener(SWITCH_LANGUAGE_EVENT, callback);
     this.dispose();
   },
+  emitSwitchLanguageLoadingChange: function() {
+    this.emit(SWITCH_LANGUAGE_LOADING_EVENT);
+  },
+  addSwitchLanguageLoadingListener: function(callback) {
+    this.on(SWITCH_LANGUAGE_LOADING_EVENT, callback);
+  },
+
+  removeSwitchLanguageLoadingListener: function(callback) {
+    this.removeListener(SWITCH_LANGUAGE_LOADING_EVENT, callback);
+    this.dispose();
+  },
 
 });
 
@@ -36,6 +48,9 @@ LanguageStore.dispatchToken = AppDispatcher.register(function(action) {
     case LanguageAction.SWITCH_LANGUAGE:
       LanguageStore.switchLanguage();
       LanguageStore.emitSwitchLanguageChange();
+      break;
+    case LanguageAction.SWITCH_LANGUAGE_LOADING:
+      LanguageStore.emitSwitchLanguageLoadingChange();
       break;
 
   }
