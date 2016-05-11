@@ -282,7 +282,7 @@ var Cost = React.createClass({
       complexItem = {
         DemandCostType: 1,
         TouTariffId: that.state.cost.getIn(['TouTariffs', 0, 'Id']),
-        FactorType: 2,
+        FactorType: 1,
         RealTagId: that.state.cost.getIn(['RealTags', 0, 'Id']),
         ReactiveTagId: that.state.cost.getIn(['ReactiveTags', 0, 'Id'])
       };
@@ -694,7 +694,7 @@ var Cost = React.createClass({
             payload: 1,
             text: 0.9
           }];
-      if (FactorType === 1) {
+      if (FactorType === 2) {
         selectedId = 1;
       }
       var factorProps = {
@@ -709,7 +709,7 @@ var Cost = React.createClass({
         didChanged: value => {
           that.merge({
             path: path + 'FactorType',
-            value: value === 0 ? 2 : 1
+            value: value === 0 ? 1 : 2
           })
         }
       };
