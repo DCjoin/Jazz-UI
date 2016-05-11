@@ -248,7 +248,7 @@ var Hierarchy = React.createClass({
         isLoading: true
       });
     } else if (this.state.infoTabNo === 2) {
-      HierarchyAction.modifyTags(node.hierarchyId, node.tags, node.associationType);
+      HierarchyAction.modifyTags(node.hierarchyId, node.tags, node.associationType, this.state.selectedNode.get('Type'));
       setTimeout(() => {
         this._setViewStatus();
       }, 1000);

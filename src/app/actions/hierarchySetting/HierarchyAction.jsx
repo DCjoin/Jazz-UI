@@ -10,8 +10,9 @@ var _page,
   _association,
   _filterObj;
 let HierarchyAction = {
-  GetHierarchys: function(selectedId) {
-    let customerId = parseInt(window.currentCustomerId);
+  GetHierarchys: function(selectedId, isFromBuilding = false) {
+    let customerId = parseInt(window.currentCustomerId),
+      that = this;
     Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive', {
       params: {
         customerId: customerId,
@@ -22,6 +23,9 @@ let HierarchyAction = {
           hierarchys: hierarchys,
           selectedId: selectedId
         });
+        if (isFromBuilding) {
+          that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
+        }
       },
       error: function(err, res) {
         console.log(err, res);
@@ -113,7 +117,7 @@ let HierarchyAction = {
       }
     });
   },
-  modifyTags: function(hierarchyId, tags, associationType) {
+  modifyTags: function(hierarchyId, tags, associationType, hierarchyType) {
     var that = this;
     Ajax.post('/Tag/SetAssociation', {
       params: {
@@ -130,6 +134,12 @@ let HierarchyAction = {
           }
           that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
         }
+        if (hierarchyType === 2) {
+          that.GetHierarchys(HierarchyStore.getSelectedNode().get('Id'), true);
+        } else {
+          that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
+        }
+
       },
       error: function(err, res) {
         console.log(err, res);
