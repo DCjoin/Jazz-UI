@@ -132,6 +132,7 @@ let HierarchyAction = {
           if (HierarchyStore.getTotal() - 1 > 0 && parseInt((HierarchyStore.getTotal() - 1 + 19) / 20) < _page) {
             _page = _page - 1;
           }
+          that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
         }
         if (hierarchyType === 2) {
           that.GetHierarchys(HierarchyStore.getSelectedNode().get('Id'), true);
