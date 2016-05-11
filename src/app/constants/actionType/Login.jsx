@@ -15,6 +15,8 @@ module.exports = {
     RESET_AUTH_CODE_STATUE: null,
     REQ_PSWRESET_SUCCESS:null,
     REQ_PSWRESET_ERROR:null,
+    REQ_DEMO_APPLY_SUCCESS:null,
+    REQ_DEMO_APPLY_ERROR:null,
   })
 
 };

@@ -18,6 +18,7 @@ let _currentUserId = null;
 let _currentUser = null;
 let _lastError = null;
 let _reqPSWReset = null;
+let _reqTrialUseReset = null;
 
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
@@ -58,6 +59,17 @@ let LoginStore = assign({}, EventEmitter.prototype, {
   },
   getreqPSWReset: function(argument) {
     return _reqPSWReset;
+  },
+  reqTrialUseReset:function(data, success){
+    if(success){
+      _reqTrialUseReset = true;
+    }else {
+      _reqTrialUseReset = false;
+    }
+    return _reqTrialUseReset;
+  },
+  getreqTrialUseReset: function(argument) {
+    return _reqTrialUseReset;
   },
   hasLoggedin: function(argument) {
     if (CookieUtil.get('UserId')) {
@@ -142,6 +154,14 @@ LoginStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case LoginActionType.Action.REQ_PSWRESET_ERROR:
       LoginStore.reqPSWReset(action.data, false);
+      LoginStore.emitChange();
+      break;
+    case LoginActionType.Action.REQ_DEMO_APPLY_SUCCESS :
+      LoginStore.reqTrialUseReset(action.data, true);
+      LoginStore.emitChange();
+      break;
+    case LoginActionType.Action.REQ_DEMO_APPLY_ERROR :
+      LoginStore.reqTrialUseReset(action.data, false);
       LoginStore.emitChange();
       break;
     default:
