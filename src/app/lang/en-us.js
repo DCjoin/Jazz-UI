@@ -95,6 +95,7 @@ I18N.Login.Copyright = '© Copyright. All rights reserved. Schneider Electric (C
 I18N.Login.ForgerPSW = 'Forget Password';
 I18N.Login.ForgerPSWTips = 'Please enter your user name and the e-mail address you have already filled out in the system, and click the continue button.';
 I18N.Login.WrongEmail = 'eg:user@example.com';
+I18N.Login.ForgeremailTips = 'If you forget the registered email address, please contact your system administrator.';
 I18N.Login.ReqPSWResetTip1 = 'E-mail has been sent to ';
 I18N.Login.ReqPSWResetTip2 = 'Click the link in e-mail to reset password.';
 I18N.Login.ReqPSWResetTip3 = '.';
@@ -111,6 +112,10 @@ I18N.ResetPassword.Welcome2 = ',please reset your password.';
 I18N.ResetPassword.SuccessTitle = 'Reset password successfully';
 I18N.ResetPassword.SuccessTips = 'Your password has been reset successfully, please click "continue" to return login page.';
 
+I18N.SelectCustomer = {};
+I18N.SelectCustomer.Title = "Select customer";
+I18N.SelectCustomer.SysManagement = "System management";
+I18N.SelectCustomer.SysManagementTip = "System management";
 
 I18N.M212001 = 'User does not exist';
 I18N.M212002 = 'Service provider is invalid';

@@ -194,7 +194,7 @@ var SelectCustomer = React.createClass({
                 <div className="jazz-mask"></div>
                 <div className="jazz-customerList">
                   <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <span style={{ position: 'fixed', width: '100%', fontSize: '22px', top: "20%", textAlign: 'center', color: 'white' }}>请选择客户</span>
+                    <span style={{ position: 'fixed', width: '100%', fontSize: '22px', top: "20%", textAlign: 'center', color: 'white' }}>{I18N.SelectCustomer.Title}</span>
                     <div style={{display: 'flex',flex: 1,flexDirection: 'column'}}>
                       {closeButton}
                       <div style={{ flex: 1, display: 'flex' }}>
@@ -209,8 +209,8 @@ var SelectCustomer = React.createClass({
                         </div>
                       </div>
                     </div>
-                    {LoginStore.checkHasSpAdmin() &&  <span title="资产管理开放平台" className="jazz-select-sp-manage" style={spManagementStyle}
-                       onClick={() => { this._saveSelectCustomer({CustomerId: -1}) }}>平台管理></span>}
+                    {LoginStore.checkHasSpAdmin() &&  <span title={I18N.SelectCustomer.SysManagementTip} className="jazz-select-sp-manage" style={spManagementStyle}
+                       onClick={() => { this._saveSelectCustomer({CustomerId: -1}) }}>{I18N.SelectCustomer.SysManagement}></span>}
                   </div>
                 </div>
             </div>
