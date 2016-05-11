@@ -146,6 +146,9 @@ var Property = React.createClass({
     });
   },
   _handlerSave: function() {
+    this.setState({
+      isLoading: true
+    });
     return this.state.property.toJS();
   },
   _isValid: function() {

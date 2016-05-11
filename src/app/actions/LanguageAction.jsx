@@ -7,8 +7,23 @@ let timeoutHandle = null;
 
 let LanguageAction = {
   switchLanguage: function() {
-    AppDispatcher.dispatch({
-      type: Action.SWITCH_LANGUAGE
+    setTimeout(() => {
+      AppDispatcher.dispatch({
+        type: Action.SWITCH_LANGUAGE_LOADING
+      });
+    }, 0);
+    Ajax.post('/common/setlanguage', {
+      params: {
+        language: window.currentLanguage === 0 ? 'en-us' : 'zh-cn'
+      },
+      success: function(hierarchyList) {
+        AppDispatcher.dispatch({
+          type: Action.SWITCH_LANGUAGE,
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
     });
   },
 };

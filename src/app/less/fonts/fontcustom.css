@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_84cd59107869159f8fb24f5d50881187.eot");
-  src: url("./fontcustom_84cd59107869159f8fb24f5d50881187.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_84cd59107869159f8fb24f5d50881187.woff") format("woff"),
-       url("./fontcustom_84cd59107869159f8fb24f5d50881187.ttf") format("truetype"),
-       url("./fontcustom_84cd59107869159f8fb24f5d50881187.svg#fontcustom") format("svg");
+  src: url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.eot");
+  src: url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.woff") format("woff"),
+       url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.ttf") format("truetype"),
+       url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_84cd59107869159f8fb24f5d50881187.svg#fontcustom") format("svg");
+    src: url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.svg#fontcustom") format("svg");
   }
 }
 
@@ -57,6 +57,7 @@
 .icon-device-box:before,
 .icon-dimension-node:before,
 .icon-disconnected-position:before,
+.icon-double-arrow-left:before,
 .icon-double-arrow-right:before,
 .icon-dust-concentration:before,
 .icon-edit:before,
@@ -80,6 +81,7 @@
 .icon-labeling:before,
 .icon-language:before,
 .icon-level:before,
+.icon-lighten:before,
 .icon-line:before,
 .icon-location:before,
 .icon-log:before,
@@ -122,6 +124,9 @@
 .icon-taglist-fold:before,
 .icon-temperature:before,
 .icon-test-position:before,
+.icon-tickets-finished:before,
+.icon-tickets-notstart:before,
+.icon-tickets-processing:before,
 .icon-time-ration:before,
 .icon-unit-index:before,
 .icon-user:before,
@@ -175,6 +180,7 @@
 .icon-device-box:before { content: "\f114"; }
 .icon-dimension-node:before { content: "\f151"; }
 .icon-disconnected-position:before { content: "\f163"; }
+.icon-double-arrow-left:before { content: "\f173"; }
 .icon-double-arrow-right:before { content: "\f155"; }
 .icon-dust-concentration:before { content: "\f136"; }
 .icon-edit:before { content: "\f142"; }
@@ -198,6 +204,7 @@
 .icon-labeling:before { content: "\f158"; }
 .icon-language:before { content: "\f138"; }
 .icon-level:before { content: "\f139"; }
+.icon-lighten:before { content: "\f172"; }
 .icon-line:before { content: "\f159"; }
 .icon-location:before { content: "\f11f"; }
 .icon-log:before { content: "\f13a"; }
@@ -240,6 +247,9 @@
 .icon-taglist-fold:before { content: "\f131"; }
 .icon-temperature:before { content: "\f140"; }
 .icon-test-position:before { content: "\f164"; }
+.icon-tickets-finished:before { content: "\f16f"; }
+.icon-tickets-notstart:before { content: "\f170"; }
+.icon-tickets-processing:before { content: "\f171"; }
 .icon-time-ration:before { content: "\f15f"; }
 .icon-unit-index:before { content: "\f160"; }
 .icon-user:before { content: "\f132"; }
