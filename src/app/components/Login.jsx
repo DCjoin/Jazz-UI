@@ -41,6 +41,7 @@ let Login = React.createClass({
       error: null,
       showQRCodeDialog: false,
       showForgetPSWDialog: false,
+      showTrialUseDialog: false,
       demoEmail: "",
       mobileNumber: "",
       authCode: "",
@@ -129,6 +130,22 @@ let Login = React.createClass({
     }
   },
 
+  _showTrialUseDialog() {
+    this.setState({showTrialUseDialog: true});
+  },
+  _dismissTrialUseDialog() {
+    this.setState({showTrialUseDialog: false});
+  },
+  _renderTrialUseDialog(){
+    if (this.state.showTrialUseDialog) {
+      return (
+        <DemoApplyDialog onCancel={this._dismissTrialUseDialog}/>
+      );
+    }else{
+      return null;
+    }
+  },
+
   _onLangSwitch: function() {
     LanguageAction.switchLanguage();
     var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
@@ -155,7 +172,7 @@ let Login = React.createClass({
             <div className="jazz-login-form-handler">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
                  userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
-                 <div className="jazz-login-demo-link">
+                 <div className="jazz-login-demo-link" onClick={this._showTrialUseDialog}>
                    <span>{I18N.Login.tryProduct}</span>
                    <em className="icon-next-arrow-right"/>
                  </div>
@@ -179,6 +196,7 @@ let Login = React.createClass({
         </div>
         {this._renderQRCodeDialog()}
         {this._renderForgetPSWDialog()}
+        {this._renderTrialUseDialog()}
       </div>
     );
   }
@@ -250,12 +268,12 @@ var ForgetPSWDialog = React.createClass({
       email: "",
       // username:"vonqi",
       // email: "qi.feng@schneider-electric.com",
-      reqStatus:null,
+      reqResetPSWStatus:null,
     };
   },
   _onChange:function(){
     if(LoginStore.getreqPSWReset()){
-      this.setState({reqStatus:true});
+      this.setState({reqResetPSWStatus:true});
     }
   },
   _sendApply:function(){
@@ -306,7 +324,7 @@ var ForgetPSWDialog = React.createClass({
 			didChanged: value => { this.setState({ email: value }) }
 		};
 
-    if(this.state.reqStatus == true){
+    if(this.state.reqResetPSWStatus == true){
       let actions = [
   			<CusFlatButton {...goonProps} />
   		];
@@ -330,6 +348,83 @@ var ForgetPSWDialog = React.createClass({
       );
     }
   }
+});
+
+var DemoApplyDialog = React.createClass({
+	getInitialState() {
+		return {
+			email: "",
+      reqTrialUseStatus:null,
+		};
+	},
+  _onChange:function(){
+    if(LoginStore.getreqTrialUseReset()){
+      this.setState({ reqTrialUseStatus:true });
+    }
+  },
+	_sendApply() {
+		LoginActionCreator.reqDemoApply( this.state.email );
+	},
+	_cancelApply() {
+		if( this.props.onCancel ) {
+			this.props.onCancel();
+		}
+	},
+  componentDidMount: function() {
+    LoginStore.addChangeListener(this._onChange);
+  },
+  componentWillUnmount: function() {
+    LoginStore.removeChangeListener(this._onChange);
+  },
+	render() {
+		let email = this.state.email,
+		sendProps = {
+			disabled: !email || !Regex.Email.test( email ) || email.length > 254,
+			onClick: this._sendApply,
+			label: I18N.Common.Button.GoOn
+		},
+		cancelProps = {
+			onClick: this._cancelApply,
+			label: I18N.Common.Button.Cancel
+		},
+    goonProps = {
+			onClick: this._cancelApply,
+			label: I18N.Common.Button.GoOn
+		},
+		emailProps = {
+      autoFocus: true,
+			isViewStatus: false,
+			title: I18N.Login.Email,
+			defaultValue: this.state.email,
+			isRequired: true,
+			regex: Regex.Email,
+			errorMessage: I18N.Login.WrongEmail,
+			maxLen:254,
+			didChanged: value => { this.setState({ email: value }) }
+		};
+
+    if(this.state.reqTrialUseStatus == true){
+      let actions = [
+  			<CusFlatButton {...goonProps} />
+  		];
+      return(
+        <Dialog title={I18N.Login.TrialUseTitle} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '530px' }}>
+          <div>{I18N.Login.TrialUseSussTip1}<b>{this.state.email}</b><br></br>{I18N.Login.TrialUseSussTip2}</div>
+  			</Dialog>
+      );
+    }else{
+      let actions = [
+  			<CusFlatButton {...sendProps} />,
+  			<CusFlatButton {...cancelProps} />
+  		];
+      return (
+  			<Dialog title={I18N.Login.TrialUse} openImmediately={true} modal={true} actions={actions}>
+  				<div>{I18N.Login.TrialUseTips}</div>
+  				<ViewableTextField {...emailProps} />
+  			</Dialog>
+  		);
+    }
+	}
 });
 
 module.exports = Login;

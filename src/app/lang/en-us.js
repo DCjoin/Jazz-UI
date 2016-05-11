@@ -98,6 +98,11 @@ I18N.Login.WrongEmail = 'eg:user@example.com';
 I18N.Login.ReqPSWResetTip1 = 'E-mail has been sent to ';
 I18N.Login.ReqPSWResetTip2 = 'Click the link in e-mail to reset password.';
 I18N.Login.ReqPSWResetTip3 = '.';
+I18N.Login.TrialUse = 'Welcome to use Schneider Electric EnergyMost';
+I18N.Login.TrialUseTips = 'Please enter your e-mail address to receive the product trial link.';
+I18N.Login.TrialUseTitle = 'Schneider Electric EnergyMost';
+I18N.Login.TrialUseSussTip1 = 'E-mail has been sent to ';
+I18N.Login.TrialUseSussTip2 = 'Click the link in e-mail to use Schneider Electric EnergyMost';
 
 I18N.ResetPassword = {};
 I18N.ResetPassword.Title = 'Reset password';
