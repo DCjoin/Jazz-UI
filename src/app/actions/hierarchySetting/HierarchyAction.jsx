@@ -128,8 +128,8 @@ let HierarchyAction = {
           if (HierarchyStore.getTotal() - 1 > 0 && parseInt((HierarchyStore.getTotal() - 1 + 19) / 20) < _page) {
             _page = _page - 1;
           }
+          that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
         }
-        that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
       },
       error: function(err, res) {
         console.log(err, res);
