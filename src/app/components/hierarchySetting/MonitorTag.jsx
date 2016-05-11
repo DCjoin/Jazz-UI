@@ -256,9 +256,9 @@ var MonitorTag = React.createClass({
         var energyConsumption = tag.get('EnergyConsumption');
         var flag = null;
         if (energyConsumption === 1) {
-          flag = <FontIcon className="icon-clean" color="#939796" onClick={() => this._setEnergyConsumption(tag, 2)} style={cleanIconStyle}></FontIcon>;
+          flag = <FontIcon className="icon-lighten" color="#ee7912" onClick={() => this._setEnergyConsumption(tag, 2)} style={cleanIconStyle}></FontIcon>;
         } else if (energyConsumption === 2) {
-          flag = <FontIcon className="icon-clean" color="#000" onClick={() => this._setEnergyConsumption(tag, 1)} style={cleanIconStyle}></FontIcon>;
+          flag = <FontIcon className="icon-lighten" color="#aaaead" onClick={() => this._setEnergyConsumption(tag, 1)} style={cleanIconStyle}></FontIcon>;
         }
         list.push(
           <div className='jazz-vee-monitor-tag-content-list' key={tag.get('Id')}>
