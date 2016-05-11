@@ -92,10 +92,7 @@ let JazzApp = React.createClass({
       pre = url.slice(0, index),
       aft = url.slice(index, url.length);
     window.location.href = pre + '?' + Math.random() + aft;
-    //window.location.reload();
-    this.setState({
-      loading: false
-    });
+  //window.location.reload();
   },
   _onLanguageSwitchLoading: function() {
     this.setState({
