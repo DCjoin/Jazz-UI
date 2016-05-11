@@ -57,4 +57,26 @@ module.exports = {
 			}
 		});
 	},
+	reqDemoApply:function(email){
+		console.log(email);
+		Ajax.post('/Common/reqdemo', {
+			params: {
+				"email": email
+			},
+			success: function(res) {
+				AppDispatcher.dispatch({
+					type: Action.REQ_DEMO_APPLY_SUCCESS,
+					data: res
+				});
+			},
+			error: function(err, res) {
+				console.log(JSON.stringify(err,0,1) + JSON.stringify(res,0,1));
+				AppDispatcher.dispatch({
+					type: Action.REQ_DEMO_APPLY_ERROR,
+					data: res.body
+				});
+			}
+		});
+	},
+
 };
