@@ -99,6 +99,11 @@ I18N.Login.WrongEmail = '请按照\"user@example.com\"的格式输入';
 I18N.Login.ReqPSWResetTip1 = '重置密码的邮件已发送至';
 I18N.Login.ReqPSWResetTip2 = '点击邮件中的链接以重置密码。';
 I18N.Login.ReqPSWResetTip3 = '。';
+I18N.Login.TrialUse = '欢迎试用施耐德电气云能效管理平台';
+I18N.Login.TrialUseTips = '请填写邮箱地址，用来接收产品试用链接。';
+I18N.Login.TrialUseTitle = '云能效管理平台';
+I18N.Login.TrialUseSussTip1 = '试用产品的邮件已发送至';
+I18N.Login.TrialUseSussTip2 = '点击邮件中的链接以试用云能效管理平台。';
 
 I18N.ResetPassword = {};
 I18N.ResetPassword.Title = '重置密码';
