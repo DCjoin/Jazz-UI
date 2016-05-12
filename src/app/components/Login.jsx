@@ -339,11 +339,12 @@ var ForgetPSWDialog = React.createClass({
   			<CusFlatButton {...cancelProps} />
   		];
       return(
-        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '530px' }}>
+        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '590px' }}>
           <div>{I18N.Login.ForgerPSWTips}</div>
           <br></br>
           <ViewableTextField {...usernameProps} />
           <ViewableTextField {...emailProps} />
+          <div>{I18N.Login.ForgeremailTips}</div>
   			</Dialog>
       );
     }

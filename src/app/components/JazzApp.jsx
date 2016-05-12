@@ -126,10 +126,18 @@ let JazzApp = React.createClass({
           });
         });
         return
-      } else
-
+      }
+      else if(me.context.router.getCurrentPath().indexOf('demologin') > -1){
+        var { user, token, lang } = me.context.router.getCurrentParams();
+        me.setState({
+          isLangLoaded: true,
+        },() => {
+          me.replaceWith('demoLogin', { user:user, token:token, lang:lang });
+        });
+        return
+      }
       //routes.length === 1 || (routes.length === 2 && !customerCode)
-      if (!window.currentUserId) {
+      else if(!window.currentUserId){
         //console.log('登录');
         me.setState({
           isLangLoaded: true
