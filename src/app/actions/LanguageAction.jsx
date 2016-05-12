@@ -26,6 +26,21 @@ let LanguageAction = {
       }
     });
   },
+  firstLanguageNotice: function() {
+    Ajax.post('/common/setlanguage', {
+      params: {
+        language: window.currentLanguage === 0 ? 'zh-cn' : 'en-us'
+      },
+      success: function(hierarchyList) {
+        AppDispatcher.dispatch({
+          type: Action.FIRST_LANGUAGE_NOTICE,
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 };
 
 module.exports = LanguageAction;
