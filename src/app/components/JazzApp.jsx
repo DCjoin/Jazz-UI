@@ -251,18 +251,19 @@ let JazzApp = React.createClass({
           });
         });
         return
-      }
-      else if(me.context.router.getCurrentPath().indexOf('contactus') > -1){
-        var { lang } = me.context.router.getCurrentParams();
+      } else if (me.context.router.getCurrentPath().indexOf('contactus') > -1) {
+        var {lang} = me.context.router.getCurrentParams();
         me.setState({
           isLangLoaded: true,
-        },() => {
-          me.replaceWith('contactus', { lang:lang });
+          loading: false
+        }, () => {
+          me.replaceWith('contactus', {
+            lang: lang
+          });
         });
         return
-      }
-      else if(me.context.router.getCurrentPath().indexOf('demologin') > -1){
-        var { user, token, lang } = me.context.router.getCurrentParams();
+      } else if (me.context.router.getCurrentPath().indexOf('demologin') > -1) {
+        var {user, token, lang} = me.context.router.getCurrentParams();
         me.setState({
           isLangLoaded: true,
           loading: false
