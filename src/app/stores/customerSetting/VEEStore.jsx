@@ -260,6 +260,9 @@ VEEStore.dispatchToken = AppDispatcher.register(function(action) {
     case VEEAction.SAVE_ASSOCIATED_TAG_SUCCESS:
       VEEStore.emitChange(_selectedId);
       break;
+    case VEEAction.SAVE_VEE_TAG_SUCCESS:
+      VEEStore.emitChange(_selectedId);
+      break;
     case VEEAction.CLEAR_ALL_VEE_TAGS:
       VEEStore.clearAll();
       break;
