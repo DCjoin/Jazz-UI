@@ -4,7 +4,6 @@
 import React from 'react';
 import assign from 'object-assign';
 import {RaisedButton, Snackbar} from 'material-ui';
-//import Authentication from './Auth.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';
 import CusFlatButton from '../controls/FlatButton.jsx';
@@ -13,6 +12,11 @@ import Dialog from '../controls/PopupDialog.jsx';
 import LanguageAction from '../actions/LanguageAction.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import Regex from '../constants/Regex.jsx';
+import _trimRight from 'lodash/string/trimRight';
+
+var _ = {
+  trimRight: _trimRight
+};
 
 const MAX_LENGTH = 200;
 const MAX_LENGTH_ERROR = "不能大于" + MAX_LENGTH;
@@ -58,11 +62,6 @@ let Login = React.createClass({
         _redirectFunc = this.context.router.replaceWith;
     }
     if (LoginStore.hasLoggedin()) {
-      // console.log('***********************************************');
-      // console.log(JSON.stringify(this.props.query,0,1));
-      // console.log(JSON.stringify(this.props.query.next,0,1));
-      // console.log(JSON.stringify(this.props.params,0,1));
-      // console.log('***********************************************');
       this.context.router.replaceWith('main', this.props.params, assign({}, this.props.query, {from: 'app'}));
     } else {
       console.log('login or get auth code error');
@@ -92,7 +91,7 @@ let Login = React.createClass({
     if (!username || username.length > MAX_LENGTH || !password || password.length > MAX_LENGTH) {
       return false;
     }
-    LoginActionCreator.login({userName:username,password:password});
+    LoginActionCreator.login({userName:_.trimRight(username),password:password});
   },
 
   _showQRCodeDialog() {
