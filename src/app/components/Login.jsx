@@ -163,6 +163,8 @@ let Login = React.createClass({
   render: function() {
     var errorMsg = null,
     {username, password, authCode} = this.state;
+    var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
+    var _contactHref = '#/' + lang + '/contactus';
 
     return (
       <div className="jazz-login">
@@ -184,7 +186,7 @@ let Login = React.createClass({
             <a href="http://www.schneider-electric.com/" target="_blank">{I18N.Login.AboutUS}</a>|
           	<a href="http://e.weibo.com/schneidercn" target="_blank">{I18N.Login.Weibo}</a>|
             <div style={{cursor: 'pointer'}} onClick={this._showQRCodeDialog}>{I18N.Login.iPad}</div>|
-          	<a href="#">{I18N.Login.ContactUS}</a>|
+          	<a href={_contactHref} target="_blank">{I18N.Login.ContactUS}</a>|
             <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'}
               backgroundColor={'transparent'} labelStyle={{color: '#c4bbe2','padding': '0'}}
                style={{'padding': '0','margin': '0', lineHeight: '18px'}} linkButton={true}></FlatButton>

@@ -1,0 +1,61 @@
+.jazz-contactus {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  background-color: @bgcGray;
+  height:100%;
+  margin-top: -40px;
+
+  &-header {
+    display: flex;
+    flex-flow: column;
+    align-items: left;
+    justify-content: left;
+    width:932px;
+    text-align: left;
+  }
+  &-content{
+    display: flex;
+    flex-flow:row;
+    border-top: 1px solid gray;
+    span{
+      height: 24px;
+      line-height: 24px;
+      vertical-align: middle;
+      color: #222;
+    }
+    &-contacts {
+      display: flex;
+      flex-flow: column;
+      border-right: 1px solid gray;
+      margin-top: 20px;
+      .card {
+        width: 330px;
+        .cardName {
+          font-weight: bold;
+        }
+      }
+      .business {
+        display: flex;
+        flex-flow: row;
+      }
+      .technology {
+        display: flex;
+        flex-flow: row;
+      }
+    }
+    &-QRcode {
+      margin-left: 40px;
+      margin-top: 20px;
+      .QRcode{
+        width: 200px;
+        height:190px;
+        margin-top: 20px;
+        background: url(./images/QRcode.png) no-repeat left center;
+        background-size: 80%;
+      }
+    }
+
+  }
+}
