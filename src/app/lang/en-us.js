@@ -105,6 +105,17 @@ I18N.Login.TrialUseTitle = 'Schneider Electric EnergyMost';
 I18N.Login.TrialUseSussTip1 = 'E-mail has been sent to ';
 I18N.Login.TrialUseSussTip2 = 'Click the link in e-mail to use Schneider Electric EnergyMost';
 
+I18N.ContactUS = {};
+I18N.ContactUS.Tips = 'If you have any questions or requirements, please feel free to contact us.';
+I18N.ContactUS.Business = "Business Contacts";
+I18N.ContactUS.Technology = "Technical Support Contacts";
+I18N.ContactUS.BusinessManager = " Business Manager";
+I18N.ContactUS.BusinessDevelopmentManager = " Business Development Manager";
+I18N.ContactUS.TechnicalSupport = " Technical Support";
+I18N.ContactUS.ProductManager = " Product Manager";
+I18N.ContactUS.MicroSite = "Schneider Electric EnergyMost Micro site";
+I18N.ContactUS.Scan = "Scan to attention!";
+
 I18N.ResetPassword = {};
 I18N.ResetPassword.Title = 'Reset password';
 I18N.ResetPassword.Welcome1 = 'Hi,';
