@@ -96,7 +96,8 @@ var HierarchyStore = assign({}, PrototypeStore, {
       case 1:
       case 8:
       case 9: return 1;
-      case 3:return 5;
+      case 3:
+      case 6:return 5;
       default:return 9;
     }
   },
