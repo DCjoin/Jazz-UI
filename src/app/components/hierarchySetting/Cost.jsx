@@ -443,7 +443,12 @@ var Cost = React.createClass({
           {I18N.Setting.Cost.TouDetail}
         </div>
         <div className="sidebar-content">
-          <div className='jazz-building-cost-tou-item'>
+          <div className={classnames({
+          'jazz-building-cost-tou-item': true,
+          'hiddenEllipsis': true
+        })} style={{
+          maxWidth: '270px'
+        }}>
             {I18N.Common.Glossary.PriceStrategy + ' : ' + tou.get('Name')}
           </div>
           <div className='jazz-building-cost-tou-item'>
@@ -555,7 +560,7 @@ var Cost = React.createClass({
           margin: '35px 5px 0 5px'
         }}>x</div>
               <ViewableTextField  {...transformerPriceProps} />
-              <div classnames='jazz-default-font' style={isView ? {
+              <div className='jazz-default-font' style={isView ? {
           margin: '25px 5px 0 5px'
         } : {
           margin: '45px 5px 0 5px'
@@ -630,7 +635,7 @@ var Cost = React.createClass({
         }}><ViewableTextField  {...hourPriceProps} /> </div>
 
 
-              <div classnames='jazz-default-font' style={isView ? {
+      <div className='jazz-default-font' style={isView ? {
           margin: '25px 5px 0 5px'
         } : {
           margin: '35px 5px 0 5px'
