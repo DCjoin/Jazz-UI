@@ -154,10 +154,10 @@ var UserStore = assign({}, PrototypeStore, {
     if (_updatingUser.get("Id") != Id) {
       _updatingUser = emptyMap();
       if (_allUsersList && _allUsersList.size > 0) {
-        var filterUser = _allUsersList.filter(item => item.get("Id") == Id);
+        var filterUser = _allUsersList.find(item => item.get("Id") === Id);
 
-        if (filterUser.size > 0) {
-          _persistedUser = _updatingUser = filterUser.first();
+        if (filterUser) {
+          _persistedUser = _updatingUser = filterUser;
         }
       }
     }

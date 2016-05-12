@@ -95,7 +95,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     array[1206] = I18N.Privilege.Role.SPManagement;
     array[1207] = I18N.Privilege.Role.HierarchyManagement;
     array[1208] = I18N.Privilege.Role.TagManagement;
-    array[1210] = I18N.Privilege.Role.TagMapping;
+    //  array[1210] = I18N.Privilege.Role.TagMapping;
     array[1217] = I18N.Privilege.Role.CustomLabeling;
     array[1223] = I18N.Privilege.Role.BaselineConfiguration;
     return array;
