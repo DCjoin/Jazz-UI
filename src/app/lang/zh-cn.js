@@ -106,8 +106,8 @@ I18N.Login.TrialUseSussTip1 = '试用产品的邮件已发送至';
 I18N.Login.TrialUseSussTip2 = '点击邮件中的链接以试用云能效管理平台。';
 
 I18N.ContactUS = {};
-I18N.ContactUS.Tips = '用户名';
-I18N.ContactUS.Business = '密码';
+I18N.ContactUS.Tips = '如有任何问题或需要，欢迎随时联系我们。';
+I18N.ContactUS.Business = '商务联系人';
 I18N.ContactUS.Technology = "技术支持联系人";
 I18N.ContactUS.BusinessManager = " 商务经理";
 I18N.ContactUS.BusinessDevelopmentManager = " 业务拓展经理";
