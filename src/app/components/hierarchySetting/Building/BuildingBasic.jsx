@@ -113,24 +113,32 @@ var BuildingBasic = React.createClass({
         uploadUrl: 'BuildingPicture.aspx'
       };
     var industrySelectedIndex = 0,
-      industryItems = [];
+      industryItems = [{
+        payload: 0,
+        text: I18N.Setting.Building.Industry,
+        disabled: true
+      }];
     HierarchyStore.getAllIndustries().forEach((industry, index) => {
       if (industry.Id === IndustryId) {
-        industrySelectedIndex = index
+        industrySelectedIndex = index + 1
       }
       industryItems.push({
-        payload: index,
+        payload: index + 1,
         text: industry.Comment
       });
     });
     var zoneSelectedIndex = 0,
-      zoneItems = [];
+      zoneItems = [{
+        payload: 0,
+        text: I18N.Setting.Building.Zone,
+        disabled: true
+      }];
     HierarchyStore.getAllZones().forEach((zone, index) => {
       if (zone.Id === ZoneId) {
-        zoneSelectedIndex = index
+        zoneSelectedIndex = index + 1
       }
       zoneItems.push({
-        payload: index,
+        payload: index + 1,
         text: zone.Comment
       });
     });
@@ -142,7 +150,7 @@ var BuildingBasic = React.createClass({
         dataItems: industryItems,
         didChanged: (idx) => {
           this.props.merge({
-            value: HierarchyStore.getAllIndustries()[idx].Id,
+            value: HierarchyStore.getAllIndustries()[idx - 1].Id,
             path: "IndustryId"
           })
         }
@@ -155,7 +163,7 @@ var BuildingBasic = React.createClass({
         dataItems: zoneItems,
         didChanged: (idx) => {
           this.props.merge({
-            value: HierarchyStore.getAllZones()[idx].Id,
+            value: HierarchyStore.getAllZones()[idx - 1].Id,
             path: "ZoneId"
           })
         }
@@ -193,12 +201,12 @@ var BuildingBasic = React.createClass({
           <div className="pop-customer-detail-content-left-item">
             <ViewableTextField {...codeProps} />
           </div>
-          <div className="pop-customer-detail-content-left-item">
+          {isView && industrySelectedIndex === 0 ? null : <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...industryProps}/>
-          </div>
-          <div className="pop-customer-detail-content-left-item">
+          </div>}
+          {isView && zoneSelectedIndex === 0 ? null : <div className="pop-customer-detail-content-left-item">
             <ViewableDropDownMenu {...zoneProps}/>
-          </div>
+          </div>}
           {locationText || !isView ? <div className="pop-customer-detail-content-left-item">
             {map}
           </div> : null}

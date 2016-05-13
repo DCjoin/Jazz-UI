@@ -40,7 +40,8 @@ let SumWindow = React.createClass({
       start = Math.round(min),
       end = Math.round(max);
 
-    var startTime, endTime;
+    var startTime,
+      endTime;
 
     startTime = new Date(start);
     startTime.setMinutes(0, 0, 0);
@@ -63,7 +64,7 @@ let SumWindow = React.createClass({
       var start = moment(startDate).format(I18N.DateTimeFormat.IntervalFormat.FullMinute);
       if (endDate.getHours() === 0) {
         endDate = dateAdd(endDate, -1, 'days');
-        end = moment(endDate).format(I18N.DateTimeFormat.IntervalFormat.FullDay) + ' ' + I18N.EM.Clock24Minute0;
+        end = moment(endDate).format(I18N.DateTimeFormat.IntervalFormat.FullDay) + ' ' + I18N.EM.Clock24Minute00;
       } else {
         end = moment(endDate).format(I18N.DateTimeFormat.IntervalFormat.FullMinute);
       }
@@ -78,11 +79,16 @@ let SumWindow = React.createClass({
       var chartObj = highstock._paper,
         series = chartObj.series,
         serie,
-        uom = '', isAllNull,
-        decimalDigits, serieDecimalDigits,
+        uom = '',
+        isAllNull,
+        decimalDigits,
+        serieDecimalDigits,
         timeRange = this.getSumTimeRange(chartObj.xAxis[0]);
 
-      var item, total, processedXData, xData;
+      var item,
+        total,
+        processedXData,
+        xData;
       for (var i = 0, len = series.length; i < len; i++) {
         serie = series[i];
         //只记录有legend的serie

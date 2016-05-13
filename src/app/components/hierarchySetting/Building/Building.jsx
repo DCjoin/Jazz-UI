@@ -66,12 +66,12 @@ var Building = React.createClass({
   _handleSave: function() {
     if (this.props.infoTabNo === 1) {
       let node = this.props.selectedNode;
-      if (!node.get('IndustryId')) {
-        node = node.set('IndustryId', HierarchyStore.getAllIndustries()[0].Id);
-      }
-      if (!node.get('ZoneId')) {
-        node = node.set('ZoneId', HierarchyStore.getAllZones()[0].Id);
-      }
+      // if (!node.get('IndustryId')) {
+      //   node = node.set('IndustryId', HierarchyStore.getAllIndustries()[0].Id);
+      // }
+      // if (!node.get('ZoneId')) {
+      //   node = node.set('ZoneId', HierarchyStore.getAllZones()[0].Id);
+      // }
       if (node.get('CalcStatus') !== true && node.get('CalcStatus') !== false) {
         node = node.set('CalcStatus', true);
       }
