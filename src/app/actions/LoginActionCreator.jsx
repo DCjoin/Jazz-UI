@@ -59,7 +59,7 @@ module.exports = {
 		});
 	},
 	reqDemoApply:function(email){
-		console.log(email);
+		// console.log(email);
 		Ajax.post('/Common/reqdemo', {
 			params: {
 				"email": email
