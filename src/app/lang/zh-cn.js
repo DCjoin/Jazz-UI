@@ -401,6 +401,7 @@ I18N.EM.Year = '年';
 I18N.EM.Clock24 = '24点';
 I18N.EM.Clock24InWidget = '24点';
 I18N.EM.Clock24Minute0 = '24点00';
+I18N.EM.Clock24Minute00 = '24点00分';
 
 I18N.EM.UseRaw = '按分钟';
 I18N.EM.UseWeek = '按周';
@@ -1220,9 +1221,9 @@ I18N.Message.M11408 = '该客户被数据点引用，不能删除。';
 
 
 I18N.Message.M12001 = '该名称已存在';
-I18N.Message.M12003 = '登录密码错误';
+I18N.Message.M12003 = '密码输入有误';
 I18N.Message.M12006 = '默认平台管理员账户不可删除。';
-I18N.Message.M12008 = '用户已被删除。界面将刷新。';
+I18N.Message.M12008 = '该用户不存在';
 I18N.Message.M12009 = '您不能删除自己的账户。';
 I18N.Message.M12010 = '您不能修改别人的密码。';
 I18N.Message.M12011 = '您不能修改别人的资料。';

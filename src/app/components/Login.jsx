@@ -14,6 +14,7 @@ import ViewableTextField from '../controls/ViewableTextField.jsx';
 import Regex from '../constants/Regex.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import _trimRight from 'lodash/string/trimRight';
+import _lang from '../lang/lang.jsx';
 
 var _ = {
   trimRight: _trimRight
@@ -51,7 +52,6 @@ let Login = React.createClass({
       mobileNumber: "",
       authCode: "",
       hasGetAuthCode: false,
-      getAuthCodeDisabled: false,
       counting: false,
       countDown: DEFAULT_COUNT_DOWN,
       timer: null
@@ -68,7 +68,7 @@ let Login = React.createClass({
       }));
       CurrentUserAction.getUser(window.currentUserId);
     } else {
-      console.log('login or get auth code error');
+      this.setState({error: LoginStore.getLastError()});
     }
   },
   _onKeyPress: function(event) {
@@ -84,10 +84,8 @@ let Login = React.createClass({
   },
   _onPasswordChange: function(event) {
     if (this.state.error) {
-      if (this.state.error.Error && this.state.error.Error.substr(this.state.error.Error.length - 5, 5) === "12008") {
-        this.setState({
-          password: event.target.value
-        });
+      if (this.state.error.error && this.state.error.error.Code.substr(this.state.error.error.Code.length - 5, 5) === "12008") {
+        this.setState({password: event.target.value});
         return;
       }
     }
@@ -196,6 +194,21 @@ let Login = React.createClass({
     var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
     var _contactHref = '#/' + lang + '/contactus';
 
+    if (this.state.error) {
+      if (this.state.error.error) {
+        var errorCode = this.state.error.error.Code.substr(this.state.error.error.Code.length - 5, 5);
+        errorMsg = _lang.getMessage(errorCode);
+      }
+      errorMsg = errorMsg || this.state.error;
+    }
+
+    if (!errorMsg && username.length > MAX_LENGTH) {
+      errorMsg = "用户名长度" + MAX_LENGTH_ERROR;
+    }
+    if (!errorMsg && password.length > MAX_LENGTH) {
+      errorMsg = "密码长度" + MAX_LENGTH_ERROR;
+    }
+
     return (
       <div className="jazz-login">
         <div className="jazz-login-content">
@@ -203,7 +216,7 @@ let Login = React.createClass({
             <div className="jazz-login-content-logo"></div>
             <div className="jazz-login-form-handler">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
-      userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
+                userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
                  <div className="jazz-login-demo-link" onClick={this._showTrialUseDialog}>
                    <span>{I18N.Login.tryProduct}</span>
                    <em className="icon-next-arrow-right"/>

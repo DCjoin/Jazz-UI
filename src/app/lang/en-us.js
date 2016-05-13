@@ -1220,9 +1220,9 @@ I18N.Message.M11408 = 'The customer is cited by tags and cannot be deleted.';
 
 
 I18N.Message.M12001 = 'The name already exists.';
-I18N.Message.M12003 = 'Incorrect password ';
+I18N.Message.M12003 = 'Incorrect password';
 I18N.Message.M12006 = 'Default platform administrator account cannot be deleted.';
-I18N.Message.M12008 = 'The user has been deleted. The page will be refreshed.';
+I18N.Message.M12008 = 'Incorrect user name';
 I18N.Message.M12009 = 'You cannot delete your own account.';
 I18N.Message.M12010 = 'You cannot modify someone else\'s password.';
 I18N.Message.M12011 = 'You cannot modify someone else\'s data.';
