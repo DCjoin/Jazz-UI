@@ -5,7 +5,7 @@ function f(key,...args) {
 }
 
 function getMessage(errorCode) {
-    var i18n = window.I18N;
+    var i18n = window.I18N.Message;
     if(i18n){
         return i18n['M'+errorCode];
     }

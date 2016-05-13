@@ -13,6 +13,7 @@ import LanguageAction from '../actions/LanguageAction.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import Regex from '../constants/Regex.jsx';
 import _trimRight from 'lodash/string/trimRight';
+import _lang from '../lang/lang.jsx';
 
 var _ = {
   trimRight: _trimRight
@@ -50,7 +51,6 @@ let Login = React.createClass({
       mobileNumber: "",
       authCode: "",
       hasGetAuthCode: false,
-      getAuthCodeDisabled: false,
       counting: false,
       countDown: DEFAULT_COUNT_DOWN,
       timer: null
@@ -64,7 +64,7 @@ let Login = React.createClass({
     if (LoginStore.hasLoggedin()) {
       this.context.router.replaceWith('main', this.props.params, assign({}, this.props.query, {from: 'app'}));
     } else {
-      console.log('login or get auth code error');
+      this.setState({error: LoginStore.getLastError()});
     }
   },
   _onKeyPress: function(event) {
@@ -77,7 +77,7 @@ let Login = React.createClass({
   },
   _onPasswordChange: function(event) {
     if (this.state.error) {
-      if (this.state.error.Error && this.state.error.Error.substr(this.state.error.Error.length - 5, 5) === "12008") {
+      if (this.state.error.error && this.state.error.error.Code.substr(this.state.error.error.Code.length - 5, 5) === "12008") {
         this.setState({password: event.target.value});
         return;
       }
@@ -164,6 +164,21 @@ let Login = React.createClass({
     {username, password, authCode} = this.state;
     var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
     var _contactHref = '#/' + lang + '/contactus';
+
+    if (this.state.error) {
+      if (this.state.error.error) {
+        var errorCode = this.state.error.error.Code.substr(this.state.error.error.Code.length - 5, 5);
+        errorMsg = _lang.getMessage(errorCode);
+      }
+      errorMsg = errorMsg || this.state.error;
+    }
+
+    if (!errorMsg && username.length > MAX_LENGTH) {
+      errorMsg = "用户名长度" + MAX_LENGTH_ERROR;
+    }
+    if (!errorMsg && password.length > MAX_LENGTH) {
+      errorMsg = "密码长度" + MAX_LENGTH_ERROR;
+    }
 
     return (
       <div className="jazz-login">
