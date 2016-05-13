@@ -401,6 +401,7 @@ I18N.EM.Year = '年';
 I18N.EM.Clock24 = '24点';
 I18N.EM.Clock24InWidget = '24点';
 I18N.EM.Clock24Minute0 = '24点00';
+I18N.EM.Clock24Minute00 = '24点00分';
 
 I18N.EM.UseRaw = '按分钟';
 I18N.EM.UseWeek = '按周';
