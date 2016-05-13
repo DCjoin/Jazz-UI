@@ -291,7 +291,6 @@ let JazzApp = React.createClass({
         //console.log('主页');
         me._setHighchartConfig();
         CurrentUserAction.getUser(window.currentUserId);
-
         me.setState({
           isLangLoaded: true,
           loading: false

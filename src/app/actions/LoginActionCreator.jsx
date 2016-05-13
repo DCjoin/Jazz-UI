@@ -20,6 +20,7 @@ module.exports = {
 					data: res
 				});
 			},
+			commonErrorHandling: false,
 			error: function(err, res) {
         // console.log(JSON.stringify(err,0,1) + JSON.stringify(res,0,1));
 				AppDispatcher.dispatch({
