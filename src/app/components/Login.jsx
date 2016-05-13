@@ -369,8 +369,9 @@ var ForgetPSWDialog = React.createClass({
   },
   render: function() {
     let email = this.state.email,
+      username = this.state.username,
       sendProps = {
-        disabled: !email || !Regex.Email.test(email) || email.length > 254,
+        disabled: !email || !Regex.Email.test(email) || email.length > 254 || !username || username.length > 254,
         onClick: this._sendApply,
         label: I18N.Common.Button.GoOn
       },
@@ -416,9 +417,7 @@ var ForgetPSWDialog = React.createClass({
       ];
 
     return (
-        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true} contentStyle={{
-            width: '590px'
-        }}>
+        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true} contentStyle={{ width: '590px' }}>
             <div>{I18N.Login.ForgerPSWTips}</div>
             <br></br>
             <ViewableTextField {...usernameProps}/>
