@@ -4,7 +4,6 @@
 import React from 'react';
 import assign from 'object-assign';
 import { RaisedButton, Snackbar } from 'material-ui';
-//import Authentication from './Auth.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';
 import CusFlatButton from '../controls/FlatButton.jsx';
@@ -14,6 +13,11 @@ import LanguageAction from '../actions/LanguageAction.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import Regex from '../constants/Regex.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
+import _trimRight from 'lodash/string/trimRight';
+
+var _ = {
+  trimRight: _trimRight
+};
 
 const MAX_LENGTH = 200;
 const MAX_LENGTH_ERROR = "不能大于" + MAX_LENGTH;
@@ -59,11 +63,6 @@ let Login = React.createClass({
       _redirectFunc = this.context.router.replaceWith;
     }
     if (LoginStore.hasLoggedin()) {
-      // console.log('***********************************************');
-      // console.log(JSON.stringify(this.props.query,0,1));
-      // console.log(JSON.stringify(this.props.query.next,0,1));
-      // console.log(JSON.stringify(this.props.params,0,1));
-      // console.log('***********************************************');
       this.context.router.replaceWith('main', this.props.params, assign({}, this.props.query, {
         from: 'app'
       }));
@@ -105,7 +104,7 @@ let Login = React.createClass({
       return false;
     }
     LoginActionCreator.login({
-      userName: username,
+      userName: _.trimRight(username),
       password: password
     });
   },
