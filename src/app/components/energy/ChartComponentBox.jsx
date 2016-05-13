@@ -662,7 +662,7 @@ let ChartComponentBox = React.createClass({
         }
       }
       // CurrentUserStore.getCurrentPrivilege().indexOf('1221') > -1
-      if (CurrentUserStore.getCurrentPrivilegeByUser(JSON.parse(getCookie('UserInfo'))).indexOf('1221') > -1) { //will check privilidge for alarm
+      if (CurrentUserStore.getCurrentPrivilege().indexOf('1221') > -1) { //will check privilidge for alarm
         //get and push alarm flag series
         if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
           var index = null;
