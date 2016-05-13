@@ -651,7 +651,6 @@ let ChartStrategyFactor = {
           widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
                                   <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
                                   <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
-                                  <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} disabled={buttonDisabled}/>
                                   <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} disabled={buttonDisabled}/>
                                   <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
                                </IconMenu>;
@@ -659,7 +658,6 @@ let ChartStrategyFactor = {
           widgetOptMenu = <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
                                   <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
                                   <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
-                                  <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} disabled={buttonDisabled}/>
                                   <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
                                </IconMenu>;
         }
@@ -687,7 +685,6 @@ let ChartStrategyFactor = {
       let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
                               <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
                               <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
-                              <MenuItem key={3} primaryText={I18N.Folder.Detail.WidgetMenu.Menu3} disabled={buttonDisabled}/>
                               <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
                            </IconMenu>;
       return widgetOptMenu;
@@ -3080,7 +3077,8 @@ let ChartStrategyFactor = {
             showSumDialog: true
           });
           break;
-        case 'background':{
+        case 'background':
+          {
           subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -3138,7 +3136,8 @@ let ChartStrategyFactor = {
     handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
       let itemValue = menuItem.props.value;
       switch (itemValue) {
-        case 'background':{
+        case 'background':
+          {
           var subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
