@@ -53,12 +53,6 @@ let MainApp = React.createClass({
   },
   getInitialState: function() {
     SelectCustomerActionCreator.getCustomer(window.currentUserId);
-    //||CurrentUserStore.getCurrentPrivilegeByUser(JSON.parse(getCookie('UserInfo')))
-    // var _rivilege = CurrentUserStore.getCurrentPrivilege();
-    // if (!_rivilege) {
-    //   //fixed no rivileges problem when initialed after login completed
-    //   var _userRoleList = CurrentUserAction.getRoles(window.currentUserId);
-    // }
     return {
       currentUser: window.currentUser,
       rivilege: CurrentUserStore.getCurrentPrivilege()
@@ -135,7 +129,7 @@ let MainApp = React.createClass({
       this._redirectRouter({
         name: 'workday',
         title: I18N.MainMenu.Workday
-      }, this.props.params);
+      }, {lang:((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'), cusnum: getCurrentCustomers().length});
       this.setState({
         viewState: viewState.MAIN
       });
@@ -160,10 +154,10 @@ let MainApp = React.createClass({
         //当用户仅有1206权限时切换至平台管理
         this._redirectRouter({
           name: 'workday',
-          title: I18N.MainMenu.Workday
-        }, this.props.params);
+          title: I18N.MainMenu.Workday,
+        }, {lang:((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'), cusnum: customers.length});
         this.setState({
-          viewState: viewState.MAIN
+          viewState: viewState.MAIN,
         });
         return;
       }
@@ -315,12 +309,7 @@ let MainApp = React.createClass({
     if (!this.state.rivilege) {
       return (
         <div className='jazz-main'>
-            <div style={{
-          display: 'flex',
-          flex: 1,
-          'alignItems': 'center',
-          'justifyContent': 'center'
-        }}>
+            <div style={{ display: 'flex', flex: 1, 'alignItems': 'center', 'justifyContent': 'center' }}>
               <CircularProgress  mode="indeterminate" size={2} />
             </div>
           </div>
