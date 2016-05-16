@@ -147,7 +147,6 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   },
 
   removeCurrentrivilegeListener: function(callback) {
-    _currentUser = null,
     _error = null;
     //_currentPrivilege = null;
     this.removeListener(CURRENT_PRIVILEGE_EVENT, callback);
