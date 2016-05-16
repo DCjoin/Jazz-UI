@@ -68,7 +68,9 @@ let Login = React.createClass({
       }));
       CurrentUserAction.getUser(window.currentUserId);
     } else {
-      this.setState({error: LoginStore.getLastError()});
+      this.setState({
+        error: LoginStore.getLastError()
+      });
     }
   },
   _onKeyPress: function(event) {
@@ -85,7 +87,9 @@ let Login = React.createClass({
   _onPasswordChange: function(event) {
     if (this.state.error) {
       if (this.state.error.error && this.state.error.error.Code.substr(this.state.error.error.Code.length - 5, 5) === "12008") {
-        this.setState({password: event.target.value});
+        this.setState({
+          password: event.target.value
+        });
         return;
       }
     }
@@ -216,7 +220,7 @@ let Login = React.createClass({
             <div className="jazz-login-content-logo"></div>
             <div className="jazz-login-form-handler">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
-                userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
+      userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
                  <div className="jazz-login-demo-link" onClick={this._showTrialUseDialog}>
                    <span>{I18N.Login.tryProduct}</span>
                    <em className="icon-next-arrow-right"/>
