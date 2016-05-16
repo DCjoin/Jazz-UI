@@ -87,31 +87,36 @@ var CustomerStore = assign({}, PrototypeStore, {
     return array;
   },
   getEnergyInfo: function(isView) {
-    var list = this.getEnergyList(),
-      ids = (isView) ? _persistedEnergyInfo.toJS().EnergyInfoIds : _updatingEnergyInfo.toJS().EnergyInfoIds,
-      energyInfo = [{
-        Id: 1,
-        Name: list[3],
-        isChecked: (!!ids) ? ids.indexOf(1) > -1 : false,
-      }];
-    list.forEach((item, index) => {
-      if (index != 3) {
-        if (!!ids) {
-          energyInfo.push({
-            Id: index - 2,
-            Name: item,
-            isChecked: ids.indexOf(index - 2) > -1
-          });
-        } else {
-          energyInfo.push({
-            Id: index - 2,
-            Name: item,
-            isChecked: false
-          });
+    if (_persistedEnergyInfo === null && _updatingEnergyInfo === null) {
+      return null;
+    } else {
+      var list = this.getEnergyList(),
+        ids = (isView) ? _persistedEnergyInfo.toJS().EnergyInfoIds : _updatingEnergyInfo.toJS().EnergyInfoIds,
+        energyInfo = [{
+          Id: 1,
+          Name: list[3],
+          isChecked: (!!ids) ? ids.indexOf(1) > -1 : false,
+        }];
+      list.forEach((item, index) => {
+        if (index != 3) {
+          if (!!ids) {
+            energyInfo.push({
+              Id: index - 2,
+              Name: item,
+              isChecked: ids.indexOf(index - 2) > -1
+            });
+          } else {
+            energyInfo.push({
+              Id: index - 2,
+              Name: item,
+              isChecked: false
+            });
+          }
         }
-      }
-    });
-    return energyInfo;
+      });
+      return energyInfo;
+    }
+
   },
   merge: function(data) {
     if (_.isEmpty(data)) {

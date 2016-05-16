@@ -33,6 +33,7 @@ var CustomerDetail = React.createClass({
     handlerSwitchTab: React.PropTypes.func,
     toggleList: React.PropTypes.func,
     isFromHierarchy: React.PropTypes.bool,
+    handleEnergyInfoChanged: React.PropTypes.func,
   },
   mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
@@ -434,6 +435,9 @@ var CustomerDetail = React.createClass({
   },
   componentWillMount: function() {
     this.initBatchViewbaleTextFiled();
+    if (!this.props.infoTab) {
+      CustomerAction.GetCustomerEnergyInfos(this.props.customer.get('Id'));
+    }
   },
   componentDidMount: function() {
     CustomerStore.addEnergyInfoChangeListener(this._onEnergyInfoChanged);

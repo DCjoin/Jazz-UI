@@ -32,14 +32,23 @@ var BuildingBasic = React.createClass({
     var value = this.props.selectedNode.get('Location');
     if (value) {
       value = value.set('Province', address);
-      value = value.set('Latitude', lat);
-      value = value.set('Longitude', lng);
+      if (lat !== null) {
+        value = value.set('Latitude', lat);
+      }
+      if (lng !== null) {
+        value = value.set('Longitude', lng);
+      }
+
     } else {
       value = Immutable.fromJS({
-        Province: address,
-        Latitude: lat,
-        Longitude: lng
-      })
+        Province: address
+      });
+      if (lat !== null) {
+        value = value.set('Latitude', lat);
+      }
+      if (lng !== null) {
+        value = value.set('Longitude', lng);
+      }
     }
 
     this.props.merge({
