@@ -66,7 +66,7 @@ if(window._tempUserInfo){
   window.currentUserId = getCookie('UserId');
 }
 window.currentCustomerId = getCookie('currentCustomerId');
-window.toMainApp = false;
+window.toMainApp = null;
 
 function getLessVar(name) {
   return main["@" + name];
@@ -96,7 +96,7 @@ var routes = (
         <Route name='config' path='config' handler={Platform}></Route>
         <Route name="mail" path="mail" handler={Mail}></Route>
       </Route>
-      <Route name="service" path="service" handler={ServiceApp}>
+      <Route name="service" path="service/:cusnum" handler={ServiceApp}>
         <Route name="workday" path="workday" handler={WorkDay}></Route>
         <Route name="worktime" path="worktime" handler={WorkTime}></Route>
         <Route name="coldwarm" path="coldwarm" handler={ColdWarm}></Route>

@@ -28,13 +28,14 @@ let ServiceApp = React.createClass({
   _showCustomerList : function(argument) {
     window.currentCustomerId = getCookie('currentCustomerId');
     window.toMainApp = true;
-    this._redirectRouter({
-        name: 'map',
-        title: I18N.MainMenu.Map
-    },assign({}, this.props.params, {customerId: window.currentCustomerId}));
+    if(this.props.params.cusnum && this.props.params.cusnum > 0){
+      this._redirectRouter({
+          name: 'map',
+          title: I18N.MainMenu.Map
+      },assign({}, this.props.params, {customerId: window.currentCustomerId}));
+    }
   },
 
-  componentDidMount: function() {},
   render: function() {
     var menuItems = [
       {
