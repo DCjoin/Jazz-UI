@@ -160,6 +160,7 @@ var SpecialSetting = React.createClass({
           tag: me.props.tag,
           year: me.props.year,
           index: index,
+          key: 'item' + index + 'random' + Math.random(),
           ref: 'item' + index,
           start: item.StartTime,
           end: item.EndTime,

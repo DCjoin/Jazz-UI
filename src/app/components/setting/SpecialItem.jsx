@@ -340,11 +340,13 @@ var SpecialItem = React.createClass({
       }
 
       var datapickerStyle = {
-          width: '90px',
-          height: '32px',
+          width: '100px',
+          minHeight: '48px',
           fontSize: '14px',
           fontFamily: 'Microsoft YaHei',
-          color: '#767a7a'
+          color: '#767a7a',
+          paddingTop: '10px',
+          marginBottom: '-10px'
         },
         flatButtonStyle = {
           padding: '0',
