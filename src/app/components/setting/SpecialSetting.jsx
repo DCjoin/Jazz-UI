@@ -160,11 +160,11 @@ var SpecialSetting = React.createClass({
           tag: me.props.tag,
           year: me.props.year,
           index: index,
-          key: 'item' + index + 'random' + Math.random(),
+          // key: 'item' + index + 'random' + Math.random(),
           ref: 'item' + index,
           start: item.StartTime,
           end: item.EndTime,
-          value: item.Value,
+          value: item.Value ? item.Value : ' ',
           isViewStatus: me.props.isViewStatus,
           onRemove: me._removeItem,
           onDateTimeChange: me._onItemDateTimeChange

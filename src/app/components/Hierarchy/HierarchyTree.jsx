@@ -140,7 +140,8 @@ var TreeNode = React.createClass({
       "icon-building": nodeData.Type == nodeType.Building,
       "icon-room": nodeData.Type == nodeType.Room,
       "icon-panel": nodeData.Type == nodeType.Panel,
-      "icon-device": nodeData.Type == nodeType.Device
+      "icon-device": nodeData.Type == nodeType.Device,
+      "icon-dimension-node": nodeData.Type == nodeType.Area
     })}></div>
       </div>
     );
