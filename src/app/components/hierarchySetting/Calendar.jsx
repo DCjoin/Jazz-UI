@@ -627,7 +627,10 @@ var Calendar = React.createClass({
       var calendarItemGroups = this.state.calendar.get('CalendarItemGroups');
       var calendar = null;
       if (isView && calendarItemGroups.getIn([0, 'CalendarItems']) === null && calendarItemGroups.getIn([1, 'CalendarItems']) === null && calendarItemGroups.getIn([2, 'CalendarItems']) === null) {
-        calendar = I18N.Setting.Calendar.AddCalendarInfo;
+        calendar = <div style={{
+          color: '#464949',
+          fontSize: '14px'
+        }}>{I18N.Setting.Calendar.AddCalendarInfo}</div>;
       } else {
         calendar = calendarItemGroups.map((item, i) => {
           let props = {
