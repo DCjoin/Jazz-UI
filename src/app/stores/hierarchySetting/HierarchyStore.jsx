@@ -15,6 +15,7 @@ function emptyList() {
   return new List();
 }
 var _hierarchys = emptyMap(),
+  _preSelectedNode = null,
   _selectedNode = null,
   _logList = emptyList(),
   _tagList = null,
@@ -148,6 +149,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
     if (selectedNode.get('Type') !== -1) {
       _customer = emptyMap();
     }
+    _preSelectedNode = _selectedNode;
     _selectedNode = selectedNode;
   },
   getSelectedNode: function() {
@@ -449,13 +451,17 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       } else {
         if (action.selectedId) {
           let node = HierarchyStore.getNodeById(action.selectedId);
-          HierarchyStore.setSelectedNode(node);
-          HierarchyStore.emitChange(node);
+          if (node) {
+            HierarchyStore.setSelectedNode(node);
+            HierarchyStore.emitChange(node);
+          } else {
+            HierarchyStore.setSelectedNode(_preSelectedNode);
+            HierarchyStore.emitChange(_selectedNode);
+          }
         } else {
           HierarchyStore.setSelectedNode(_selectedNode);
           HierarchyStore.emitChange(_selectedNode);
         }
-
       }
       HierarchyStore.emitChange();
       break;

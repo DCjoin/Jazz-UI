@@ -196,6 +196,7 @@ let JazzApp = React.createClass({
 
     if (!lang) {
       var url = window.location.toLocaleString();
+      console.log('url=' + url);
       //currentLanguage： 0 中文, 1 英文
       if (url.indexOf('langNum=0') > -1) {
         //Chinese
@@ -205,6 +206,8 @@ let JazzApp = React.createClass({
       } else {
         lang = window.navigator.language.toLowerCase();
       }
+      console.log('window.navigator.language.toLowerCase()=' + window.navigator.language.toLowerCase());
+      console.log('lang=' + lang);
 
       me.replaceWith('app', {
         lang: lang

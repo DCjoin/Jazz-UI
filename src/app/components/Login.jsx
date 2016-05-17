@@ -49,6 +49,7 @@ let Login = React.createClass({
       showForgetPSWDialog: false,
       showTrialUseDialog: false,
       demoEmail: "",
+      resetEmail:"",
       mobileNumber: "",
       authCode: "",
       hasGetAuthCode: false,
@@ -68,7 +69,9 @@ let Login = React.createClass({
       }));
       CurrentUserAction.getUser(window.currentUserId);
     } else {
-      this.setState({error: LoginStore.getLastError()});
+      this.setState({
+        error: LoginStore.getLastError()
+      });
     }
   },
   _onKeyPress: function(event) {
@@ -85,7 +88,9 @@ let Login = React.createClass({
   _onPasswordChange: function(event) {
     if (this.state.error) {
       if (this.state.error.error && this.state.error.error.Code.substr(this.state.error.error.Code.length - 5, 5) === "12008") {
-        this.setState({password: event.target.value});
+        this.setState({
+          password: event.target.value
+        });
         return;
       }
     }
@@ -142,14 +147,31 @@ let Login = React.createClass({
       showForgetPSWDialog: false
     });
   },
+  _doneForgetPSWDialog(resetEmail) {
+    this.setState({
+      showForgetPSWDialog: false,
+      resetEmail: resetEmail,
+    });
+  },
   _renderForgetPSWDialog() {
     if (this.state.showForgetPSWDialog) {
       return (
-        <ForgetPSWDialog onCancel={this._dismissForgetPSWDialog}/>
+        <ForgetPSWDialog onDone={this._doneForgetPSWDialog} onCancel={this._dismissForgetPSWDialog}/>
         );
     } else {
       return null;
     }
+  },
+
+  _dismissForgetPSWSnackbar() {
+    this.setState({resetEmail: ""});
+  },
+  _renderForgetPSWSnackbar() {
+    var resetEmail = this.state.resetEmail;
+    if (resetEmail) {
+      return (<Snackbar message={I18N.Login.ReqPSWResetTip1 + resetEmail} openOnMount={true} onRequestClose={this._dismissForgetPSWSnackbar}/>);
+    }
+    return null;
   },
 
   _showTrialUseDialog() {
@@ -162,14 +184,31 @@ let Login = React.createClass({
       showTrialUseDialog: false
     });
   },
+  _doneTrialUseDialog(demoEmail) {
+    this.setState({
+      showTrialUseDialog: false,
+      demoEmail: demoEmail,
+    });
+  },
   _renderTrialUseDialog() {
     if (this.state.showTrialUseDialog) {
       return (
-        <DemoApplyDialog onCancel={this._dismissTrialUseDialog}/>
+        <DemoApplyDialog onDone={this._doneTrialUseDialog} onCancel={this._dismissTrialUseDialog}/>
         );
     } else {
       return null;
     }
+  },
+
+  _dismissTrialUseSnackbar() {
+    this.setState({demoEmail: ""});
+  },
+  _renderTrialUseSnackbar() {
+    var demoEmail = this.state.demoEmail;
+    if (demoEmail) {
+      return (<Snackbar message={I18N.Login.TrialUseSussTip1 + demoEmail} openOnMount={true} onRequestClose={this._dismissTrialUseSnackbar}/>);
+    }
+    return null;
   },
 
   _onLangSwitch: function() {
@@ -216,7 +255,7 @@ let Login = React.createClass({
             <div className="jazz-login-content-logo"></div>
             <div className="jazz-login-form-handler">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
-                userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
+      userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
                  <div className="jazz-login-demo-link" onClick={this._showTrialUseDialog}>
                    <span>{I18N.Login.tryProduct}</span>
                    <em className="icon-next-arrow-right"/>
@@ -228,31 +267,20 @@ let Login = React.createClass({
           <div className="jazz-public-footer-about">
             <a href="http://www.schneider-electric.com/" target="_blank">{I18N.Login.AboutUS}</a>|
           	<a href="http://e.weibo.com/schneidercn" target="_blank">{I18N.Login.Weibo}</a>|
-            <div style={{
-        cursor: 'pointer'
-      }} onClick={this._showQRCodeDialog}>{I18N.Login.iPad}</div>|
+            <div style={{ cursor: 'pointer' }} onClick={this._showQRCodeDialog}>{I18N.Login.iPad}</div>|
           	<a href={_contactHref} target="_blank">{I18N.Login.ContactUS}</a>|
-            <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'}
-      backgroundColor={'transparent'} labelStyle={{
-        color: '#c4bbe2',
-        'padding': '0'
-      }}
-      style={{
-        'padding': '0',
-        'margin': '0',
-        lineHeight: '18px'
-      }} linkButton={true}></FlatButton>
+            <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'} backgroundColor={'transparent'} labelStyle={{ color: '#c4bbe2', 'padding': '0' }} style={{ 'padding': '0', 'margin': '0', lineHeight: '18px' }} linkButton={true}></FlatButton>
           </div>
           <div className="jazz-public-footer-about">
-            <div style={{
-        marginRight: "2em"
-      }}>{I18N.Login.Copyright}</div>
+            <div style={{ marginRight: "2em" }}>{I18N.Login.Copyright}</div>
           	<a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备05053940号-5</a>
           </div>
         </div>
         {this._renderQRCodeDialog()}
         {this._renderForgetPSWDialog()}
+        {this._renderForgetPSWSnackbar()}
         {this._renderTrialUseDialog()}
+        {this._renderTrialUseSnackbar()}
       </div>
       );
   }
@@ -334,29 +362,20 @@ var ForgetPSWDialog = React.createClass({
       reqResetPSWStatus: null,
     };
   },
-  _onChange: function() {
-    if (LoginStore.getreqPSWReset()) {
-      this.setState({
-        reqResetPSWStatus: true
-      });
-    }
-  },
   _sendApply: function() {
     LoginActionCreator.reqPwdReset(this.state.username, this.state.email);
+    if( this.props.onDone ) {
+			this.props.onDone( this.state.email );
+		}
   },
   _cancelApply: function() {
     this.props.onCancel();
   },
-  componentDidMount: function() {
-    LoginStore.addChangeListener(this._onChange);
-  },
-  componentWillUnmount: function() {
-    LoginStore.removeChangeListener(this._onChange);
-  },
   render: function() {
     let email = this.state.email,
+      username = this.state.username,
       sendProps = {
-        disabled: !email || !Regex.Email.test(email) || email.length > 254,
+        disabled: !email || !Regex.Email.test(email) || email.length > 254 || !username || username.length > 254,
         onClick: this._sendApply,
         label: I18N.Common.Button.GoOn
       },
@@ -395,36 +414,21 @@ var ForgetPSWDialog = React.createClass({
             email: value
           })
         }
-      };
-
-    if (this.state.reqResetPSWStatus == true) {
-      let actions = [
-        <CusFlatButton {...goonProps} />
-      ];
-      return (
-        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true}  contentStyle={{
-          width: '530px'
-        }}>
-          <div>{I18N.Login.ReqPSWResetTip1}<b>{this.state.email}</b>{I18N.Login.ReqPSWResetTip3}<br></br>{I18N.Login.ReqPSWResetTip2}</div>
-  			</Dialog>
-        );
-    } else {
-      let actions = [
+      },
+      actions = [
         <FlatButton {...sendProps} />,
         <CusFlatButton {...cancelProps} />
       ];
-      return (
-        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true}  contentStyle={{
-          width: '590px'
-        }}>
-          <div>{I18N.Login.ForgerPSWTips}</div>
-          <br></br>
-          <ViewableTextField {...usernameProps} />
-          <ViewableTextField {...emailProps} />
-          <div>{I18N.Login.ForgeremailTips}</div>
-  			</Dialog>
-        );
-    }
+
+    return (
+        <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true} contentStyle={{ width: '590px' }}>
+            <div>{I18N.Login.ForgerPSWTips}</div>
+            <br></br>
+            <ViewableTextField {...usernameProps}/>
+            <ViewableTextField {...emailProps}/>
+            <div>{I18N.Login.ForgeremailTips}</div>
+        </Dialog>
+    );
   }
 });
 
@@ -435,26 +439,16 @@ var DemoApplyDialog = React.createClass({
       reqTrialUseStatus: null,
     };
   },
-  _onChange: function() {
-    if (LoginStore.getreqTrialUseReset()) {
-      this.setState({
-        reqTrialUseStatus: true
-      });
-    }
-  },
   _sendApply() {
     LoginActionCreator.reqDemoApply(this.state.email);
+    if( this.props.onDone ) {
+			this.props.onDone( this.state.email );
+		}
   },
   _cancelApply() {
     if (this.props.onCancel) {
       this.props.onCancel();
     }
-  },
-  componentDidMount: function() {
-    LoginStore.addChangeListener(this._onChange);
-  },
-  componentWillUnmount: function() {
-    LoginStore.removeChangeListener(this._onChange);
   },
   render() {
     let email = this.state.email,
@@ -485,31 +479,18 @@ var DemoApplyDialog = React.createClass({
             email: value
           })
         }
-      };
-
-    if (this.state.reqTrialUseStatus == true) {
-      let actions = [
-        <CusFlatButton {...goonProps} />
-      ];
-      return (
-        <Dialog title={I18N.Login.TrialUseTitle} actions={actions} modal={true} openImmediately={true}  contentStyle={{
-          width: '530px'
-        }}>
-          <div>{I18N.Login.TrialUseSussTip1}<b>{this.state.email}</b><br></br>{I18N.Login.TrialUseSussTip2}</div>
-  			</Dialog>
-        );
-    } else {
-      let actions = [
+      },
+      actions = [
         <CusFlatButton {...sendProps} />,
         <CusFlatButton {...cancelProps} />
       ];
+
       return (
-        <Dialog title={I18N.Login.TrialUse} openImmediately={true} modal={true} actions={actions}>
-  				<div>{I18N.Login.TrialUseTips}</div>
-  				<ViewableTextField {...emailProps} />
-  			</Dialog>
-        );
-    }
+          <Dialog title={I18N.Login.TrialUse} openImmediately={true} modal={true} actions={actions}>
+              <div>{I18N.Login.TrialUseTips}</div>
+              <ViewableTextField {...emailProps}/>
+          </Dialog>
+      );
   }
 });
 
