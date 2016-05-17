@@ -11,6 +11,7 @@ import CusFlatButton from '../controls/FlatButton.jsx';
 import { FlatButton } from 'material-ui';
 import Dialog from '../controls/PopupDialog.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
+import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 
 var DemoLogin = React.createClass({
 	contextTypes: {
@@ -75,6 +76,7 @@ var DemoLogin = React.createClass({
 		return null;
 	},
 	_goMain() {
+		CurrentUserAction.getUser(window.currentUserId);
 		this.context.router.transitionTo('main', this.props.params);
 	},
 	_goLogin( demoEmail ) {
