@@ -150,10 +150,11 @@ let UserAction = {
       }
     });
   },
-  getUserCustomerPermission: function(userId, customerId) {
+  getUserCustomerPermission: function(userId, customerId, includeArea) {
     Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive?', {
       params: {
-        customerId: customerId
+        customerId: customerId,
+        includeArea: includeArea
       },
       success: function(data) {
 

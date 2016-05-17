@@ -107,7 +107,7 @@ var RankingHierTreeButton = React.createClass({
   //       },
   componentDidMount: function() {
     HierarchyStore.addHierarchyNodeListener(this._onChange);
-    HierarchyAction.loadall(window.currentCustomerId);
+    HierarchyAction.loadall(window.currentCustomerId, false);
     this.props.onLoad(true);
     this.setState({
       isLoading: true,
