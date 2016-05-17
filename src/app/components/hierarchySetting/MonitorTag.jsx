@@ -262,7 +262,11 @@ var MonitorTag = React.createClass({
         }
         list.push(
           <div className='jazz-vee-monitor-tag-content-list' key={tag.get('Id')}>
-            <div className='jazz-vee-monitor-tag-content-item'>{flag}</div>
+            <div style={{
+            marginLeft: '10px',
+            width: '90px',
+            marginTop: '10px'
+          }}>{flag}</div>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')} style={{
             marginTop: '10px'
           }}>{tag.get('Name')}</div>
@@ -281,7 +285,7 @@ var MonitorTag = React.createClass({
     if (that.state.taglist.size === 0) {
       return (
         <div style={{
-          color: '#767a7a',
+          color: '#464949',
           fontSize: '14px'
         }}>
           {I18N.Setting.Hierarchy.AddTagInfo}
@@ -291,7 +295,9 @@ var MonitorTag = React.createClass({
       return (
         <div className='jazz-vee-monitor-tag-background'>
           <div className='jazz-vee-monitor-tag-header'>
-            <div className='jazz-vee-monitor-tag-header-item'></div>
+            <div style={{
+          width: '100px'
+        }}></div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Name}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Code}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Commodity}</div>

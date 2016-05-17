@@ -597,7 +597,10 @@ var Property = React.createClass({
         }
       }
       if (isView && allIsNull) {
-        property = (<div className="pop-customer-detail-content-left">{I18N.Setting.DynamicProperty.AddPropertyInfo}</div>);
+        property = (<div  style={{
+          color: '#464949',
+          fontSize: '14px'
+        }}>{I18N.Setting.DynamicProperty.AddPropertyInfo}</div>);
       } else {
         property = (<div className="pop-customer-detail-content-left">
         {this._renderArea()}
