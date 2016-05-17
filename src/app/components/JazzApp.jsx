@@ -8,6 +8,7 @@ import LanguageStore from '../stores/LanguageStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import { CircularProgress } from 'material-ui';
 import LanguageAction from '../actions/LanguageAction.jsx';
+import { getCookie } from '../util/Util.jsx';
 
 import keyMirror from 'keymirror';
 
@@ -243,6 +244,7 @@ let JazzApp = React.createClass({
     var afterLoadLang = function(b) {
       window.I18N = b;
       var customerCode = params.customerId || query.customerId || window.currentCustomerId;
+      var currentUser = window.currentUserId || getCookie('UserId');
 
       if (me.context.router.getCurrentPath().indexOf('resetpwd') > -1) {
         var {user, token, lang} = me.context.router.getCurrentParams();
@@ -283,7 +285,7 @@ let JazzApp = React.createClass({
         return
       }
       //routes.length === 1 || (routes.length === 2 && !customerCode)
-      else if (!window.currentUserId) {
+      else if (!currentUser) {
         //console.log('登录');
         me.setState({
           isLangLoaded: true,
@@ -296,7 +298,7 @@ let JazzApp = React.createClass({
       } else {
         //console.log('主页');
         me._setHighchartConfig();
-        CurrentUserAction.getUser(window.currentUserId);
+        CurrentUserAction.getUser(currentUser);
         me.setState({
           isLangLoaded: true,
           loading: false
@@ -329,6 +331,12 @@ let JazzApp = React.createClass({
           } else if (url.indexOf('menutype=map') > -1) {
             me.replaceWith('map', {
               lang: lang,
+              customerId: customerCode
+            });
+          }else{
+            //当访问url为http://127.0.0.1:8080/时
+            me.replaceWith('map', {
+              lang: me.getParams().lang,
               customerId: customerCode
             });
           }
