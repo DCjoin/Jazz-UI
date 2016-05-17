@@ -23,7 +23,8 @@ let _reqTrialUseReset = null;
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
     var _pri = CurrentUserStore.getCurrentPrivilege();
-    if (JSON.parse(getCookie('UserInfo')).UserType === -1 || ( _pri && _pri.indexOf('1206') )) {
+    // JSON.parse(getCookie('UserInfo'))
+    if (CurrentUserStore.getCurrentUser().UserType === -1 || ( _pri && _pri.indexOf('1206') )) {
       return true;
     }
     return false;
@@ -35,10 +36,10 @@ let LoginStore = assign({}, EventEmitter.prototype, {
       //CookieUtil.set('UserInfo', JSON.stringify(data));
 
       CookieUtil.set('UserId', data.Id);
-      CookieUtil.set('Username', data.Name);
+      // CookieUtil.set('Username', data.Name);
 
-      var _UserInfo = JSON.stringify(data);
-      CookieUtil.set('UserInfo', _UserInfo);
+      // var _UserInfo = JSON.stringify(data);
+      // CookieUtil.set('UserInfo', _UserInfo);
 
       window.currentUserId = data.Id;
       window.currentUser = data;
@@ -95,9 +96,9 @@ let LoginStore = assign({}, EventEmitter.prototype, {
   empty: function() {
     //location.reload();
     CookieUtil.set('UserId', null);
-    CookieUtil.set('Username', null);
+    // CookieUtil.set('Username', null);
     CookieUtil.set('currentCustomerId', null);
-    CookieUtil.set('UserInfo', null);
+    // CookieUtil.set('UserInfo', null);
     window.currentUserId = null;
     window.currentUser = null;
     window.currentCustomerId = null;

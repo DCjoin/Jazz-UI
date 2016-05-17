@@ -106,7 +106,8 @@ let MainApp = React.createClass({
     var params = this.props.params;
     var customerCode = params.customerId;
     var currentCustomer = CurrentUserCustomerStore.getCurrentCustomer();
-    var currentUser = JSON.parse(getCookie('UserInfo'));
+    // var currentUser = JSON.parse(getCookie('UserInfo'));
+    var currentUser = CurrentUserStore.getCurrentUser();
 
     if (!customerCode && (currentUser && currentUser.Id !== 1)) {
       // 切换至 Map SelectCustomer
