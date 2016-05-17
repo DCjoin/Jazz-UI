@@ -127,12 +127,9 @@ var SubMainMenu = React.createClass({
   },
 
   _dismissSubMain: function() {
-    var me = this;
-    window.setTimeout(() => {
-      me.setState({
-        showSubMenu: false
-      });
-    }, 200);
+    this.setState({
+      showSubMenu: false
+    });
   },
 
   _checkSubIsActive: function(children) {
