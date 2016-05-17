@@ -1629,6 +1629,7 @@ I18N.Platform.User.Telephone = '手机';
 I18N.Platform.User.Email = '电子邮箱';
 I18N.Platform.User.EmailError = '电子邮箱格式不正确';
 I18N.Platform.User.Logout = '退出';
+I18N.Platform.User.LogoutTip = '您将退出，并返回登录页。';
 I18N.Platform.About = {};
 I18N.Platform.About.Title = '关于云能效';
 I18N.Platform.About.QrCode = '云能效移动端二维码';
