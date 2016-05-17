@@ -89,9 +89,10 @@ let JazzApp = React.createClass({
     } else {
       url = url.replace('en-us', 'zh-cn');
     }
-    var index = url.indexOf('#'),
-      pre = url.slice(0, index),
-      aft = url.slice(index, url.length);
+    var index0 = url.indexOf('#'),
+      index1 = url.indexOf('?'),
+      pre = index1 > -1 ? url.slice(0, index1) : url.slice(0, index0),
+      aft = url.slice(index0, url.length);
     window.location.href = pre + '?' + Math.random() + aft;
   //window.location.reload();
   },
@@ -212,6 +213,8 @@ let JazzApp = React.createClass({
       me.replaceWith('app', {
         lang: lang
       });
+    } else {
+      lang = lang.toLowerCase();
     }
     //currentLanguage： 0 中文, 1 英文
     if (lang === 'zh-cn') {
