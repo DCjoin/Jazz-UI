@@ -369,13 +369,13 @@ var Cost = React.createClass({
           if (item.get('ItemType') === 2) {
             items.push(
               <div className='jazz-building-cost-tou-item'>
-                  {I18N.Setting.TOUTariff.PlainPrice + ' : ' + item.get('Price')}
+                  {I18N.Setting.TOUTariff.PlainPrice + ' : ' + item.get('Price') + ' ' + I18N.Setting.Cost.PowerUOM}
                 </div>
             )
           } else if (item.get('ItemType') === 1) {
             items.push(
               <div className='jazz-building-cost-tou-item'>
-                  {I18N.Setting.TOUTariff.PeakPrice + ' : ' + item.get('Price')}
+                  {I18N.Setting.TOUTariff.PeakPrice + ' : ' + item.get('Price') + ' ' + I18N.Setting.Cost.PowerUOM}
                 </div>
             );
             let times = [];
@@ -393,7 +393,7 @@ var Cost = React.createClass({
           } else if (item.get('ItemType') === 3) {
             items.push(
               <div className='jazz-building-cost-tou-item'>
-                  {I18N.Setting.TOUTariff.ValleyPrice + ' : ' + item.get('Price')}
+                  {I18N.Setting.TOUTariff.ValleyPrice + ' : ' + item.get('Price') + ' ' + I18N.Setting.Cost.PowerUOM}
                 </div>
             );
             let times = [];
@@ -417,7 +417,7 @@ var Cost = React.createClass({
       var renderPeakTariff = function() {
         var peakItems = [];
         peakItems.push(<div className='jazz-building-cost-tou-item'>
-                        {I18N.Setting.TOUTariff.PulsePeakPrice + ' : ' + peakTariff.get('Price')}
+                        {I18N.Setting.TOUTariff.PulsePeakPrice + ' : ' + peakTariff.get('Price') + ' ' + I18N.Setting.Cost.PowerUOM}
                       </div>);
         peakTariff.get('TimeRanges').forEach(time => {
           peakItems.push(<div className='jazz-building-cost-tou-item'>
@@ -681,7 +681,7 @@ var Cost = React.createClass({
         }}>
         <div className='jazz-building-cost-usagecost'><ViewableDropDownMenu  {...touTariffProps} /></div>
 
-                <div className='jazz-building-cost-showTou' style={{
+                <div className='jazz-building-cost-detailShow' style={{
           marginTop: '26px',
           marginLeft: '0'
         }} onClick={that._showTouDetailsideNav.bind(this, selectedId)}>{I18N.Setting.Cost.SearchTouDetail}</div>
@@ -728,7 +728,7 @@ var Cost = React.createClass({
           width: '200px'
         }}><ViewableDropDownMenu  {...factorProps} /></div>
 
-                <div className='jazz-building-cost-showTou' style={{
+                <div className='jazz-building-cost-detailShow' style={{
           marginTop: '26px',
           marginLeft: '0'
         }} onClick={that._showPowerFactorDialog.bind(this, selectedId)}>{I18N.Setting.Cost.SearchPowerFactor}</div>
@@ -940,7 +940,9 @@ var Cost = React.createClass({
         "jazz-carbon-addItem": true,
         "jazz-hide": isView && power.size === 0
       })}>
-          <div>{I18N.Common.Commodity.Electric}</div>
+          <div style={{
+        color: '#464949'
+      }}>{I18N.Common.Commodity.Electric}</div>
           <div className={classnames({
         "jazz-carbon-addItem-addBtn": true,
         "inactive": isView
@@ -1062,7 +1064,9 @@ var Cost = React.createClass({
         "jazz-carbon-addItem": true,
         "jazz-hide": isView && commodityItems.length === 0
       })}>
-          <div>{I18N.Setting.Cost.OtherCommodities}</div>
+          <div style={{
+        color: '#464949'
+      }}>{I18N.Setting.Cost.OtherCommodities}</div>
           <div className={classnames({
         "jazz-carbon-addItem-addBtn": true,
         "inactive": isView
@@ -1086,10 +1090,14 @@ var Cost = React.createClass({
 
     return (
       <div className='jazz-vee-monitor-tag-background'>
-          <div className='pop-manage-detail-content'>
-            {that._renderPower(power, index)}
-            {that._renderOthers()}
-          </div>
+        <div className='pop-manage-detail-content' style={{
+        padding: '0'
+      }}>
+          {that._renderPower(power, index)}
+          {that._renderOthers()}
+        </div>
+
+
 
         </div>
       )
@@ -1101,7 +1109,7 @@ var Cost = React.createClass({
       if (this.props.formStatus === formStatus.VIEW) {
         return (
           <div style={{
-            color: '#767a7a',
+            color: '#464949',
             fontSize: '14px'
           }}>
             {I18N.Setting.Cost.NoCommodities}
@@ -1115,7 +1123,7 @@ var Cost = React.createClass({
     } else if (CostCommodities.length === 0 && this.props.formStatus === formStatus.VIEW) {
       return (
         <div style={{
-          color: '#767a7a',
+          color: '#464949',
           fontSize: '14px'
         }}>
           {I18N.Setting.Cost.NoCommodities}
