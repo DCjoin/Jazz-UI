@@ -33,6 +33,7 @@ let Login = React.createClass({
     router: React.PropTypes.func
   },
   getInitialState: function() {
+    document.title = I18N.Login.Login;
     return {
       username: "",
       password: "",

@@ -554,7 +554,7 @@ var MainAppBar = React.createClass({
     ];
 
     return (<Dialog actions={actions} title={I18N.Platform.User.Logout} openImmediately={true} modal={true} >
-      <div>您将退出，并返回登录页。</div>
+      <div>{I18N.Platform.User.LogoutTip}</div>
   </Dialog>);
   },
   // ************* Render Component End *************
