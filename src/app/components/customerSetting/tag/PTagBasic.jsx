@@ -45,6 +45,7 @@ var PTagBasic = React.createClass({
     return calculationStepList;
   },
   _getCalculationTypeList: function() {
+    var isView = this.props.isViewStatus;
     let calculationTypeList = [{
       payload: 1,
       text: I18N.Common.CaculationType.Sum
@@ -58,6 +59,12 @@ var PTagBasic = React.createClass({
       payload: 4,
       text: I18N.Common.CaculationType.Min
     }];
+    if (isView) {
+      calculationTypeList.push({
+        payload: 0,
+        text: I18N.Common.CaculationType.Non
+      });
+    }
     return calculationTypeList;
   },
   componentWillMount: function() {},
