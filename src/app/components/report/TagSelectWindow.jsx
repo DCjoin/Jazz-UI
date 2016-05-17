@@ -165,14 +165,18 @@ let TagSelectWindow = React.createClass({
 
   },
   _onHierachyTreeClick: function(node) {
+    if (node.Id === this.state.nodeId && node.Type === this.state.nodeType) {
+      return;
+    }
+    this.refs.searchBar.clearSearchText();
     filters = null;
     page = 1;
     var optionType = node.Type === 101 ? 6 : 2;
     ReportAction.getTagData(node.Id, optionType, 1, filters);
     this.setState({
       isLeftLoading: true,
-      tagId: node.Id,
       nodeId: node.Id,
+      nodeType: node.Type,
       optionType: optionType
     });
   },
@@ -298,7 +302,7 @@ let TagSelectWindow = React.createClass({
             <Header onHierachyTreeClick={this._onHierachyTreeClick}/>
           </div>
           <div className='filter'>
-            <SearchBar onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
+            <SearchBar ref='searchBar' onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
           </div>
         </div>
         {leftTagListHeader}
