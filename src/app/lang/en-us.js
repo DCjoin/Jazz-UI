@@ -1624,6 +1624,7 @@ I18N.Platform.User.Telephone = 'Telephone';
 I18N.Platform.User.Email = 'Mail address';
 I18N.Platform.User.EmailError = 'Mail format is not correct';
 I18N.Platform.User.Logout = 'Logout';
+I18N.Platform.User.LogoutTip = 'You will logout and return to the login page.';
 I18N.Platform.About = {};
 I18N.Platform.About.Title = 'About';
 I18N.Platform.About.QrCode = 'EnergyMost mobile QR code';
