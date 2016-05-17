@@ -6,7 +6,7 @@ import { Checkbox } from 'material-ui';
 import assign from "object-assign";
 
 import TagList from './TagList.jsx';
-import Header from '../../controls/HierAndDimHeader.jsx';
+import Header from '../../controls/HierHeader.jsx';
 import SearchBar from '../../controls/SearchBar.jsx';
 import Pagination from '../../controls/paging/Pagination.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
@@ -165,36 +165,20 @@ let TagSelectWindow = React.createClass({
 
   },
   _onHierachyTreeClick: function(node) {
+    if (node.Id === this.state.nodeId && node.Type === this.state.nodeType) {
+      return;
+    }
+    this.refs.searchBar.clearSearchText();
     filters = null;
     page = 1;
-    ReportAction.getTagData(node.Id, 2, 1, filters);
+    var optionType = node.Type === 101 ? 6 : 2;
+    ReportAction.getTagData(node.Id, optionType, 1, filters);
     this.setState({
       isLeftLoading: true,
-      tagId: node.Id,
       nodeId: node.Id,
-      optionType: 2,
+      nodeType: node.Type,
+      optionType: optionType
     });
-  },
-  _onDimTreeClick: function(node) {
-    page = 1;
-    if (node.Id !== 0) {
-      ReportAction.getTagData(node.Id, 6, 1, filters);
-      this.setState({
-        dimId: node.Id,
-        nodeId: node.Id,
-        optionType: 6,
-        isLeftLoading: true
-      });
-    } else {
-      var id = this.state.tagId;
-      ReportAction.getTagData(id, 2, 1, filters);
-      this.setState({
-        dimId: null,
-        nodeId: id,
-        optionType: 2,
-        isLeftLoading: true
-      });
-    }
   },
   _onSearch: function(value) {
     filters = [
@@ -315,10 +299,10 @@ let TagSelectWindow = React.createClass({
       <div className='jazz-report-taglist-container-left'>
         <div className="jazz-report-taglist-tagselect" >
           <div className="header">
-            <Header onHierachyTreeClick={this._onHierachyTreeClick} onDimTreeClick={this._onDimTreeClick}/>
+            <Header onHierachyTreeClick={this._onHierachyTreeClick}/>
           </div>
           <div className='filter'>
-            <SearchBar onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
+            <SearchBar ref='searchBar' onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
           </div>
         </div>
         {leftTagListHeader}
