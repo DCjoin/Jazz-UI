@@ -26,6 +26,9 @@ var SelectCustomer = React.createClass({
     params: React.PropTypes.array,
     currentCustomerId: React.PropTypes.number
   },
+  contextTypes: {
+    router: React.PropTypes.func
+  },
   getInitialState: function() {
     // var _rivilege = CurrentUserStore.getCurrentPrivilege();
     // if(!_rivilege){
@@ -41,7 +44,16 @@ var SelectCustomer = React.createClass({
     SelectCustomerActionCreator.selectCustomer(customer);
   },
   _onClose() {
-    this.props.close();
+    var me = this;
+
+    if (window.toMainApp){
+      me.context.router.replaceWith('workday', {
+        lang: window.currentLanguage === 0 ? 'zh-cn' : 'en-us',
+        cusnum:  CurrentUserCustomerStore.getAll().length
+      });
+    }else {
+      this.props.close();
+    }
   },
   _selectCustomerChangeHandler: function(selectedIndex) {
     if (this.state.currentIndex == selectedIndex) {
@@ -138,6 +150,21 @@ var SelectCustomer = React.createClass({
     }, 400);
   },
 
+  _sysManagement(){
+    var me = this;
+
+    if (window.toMainApp){
+      me.context.router.replaceWith('workday', {
+        lang: window.currentLanguage === 0 ? 'zh-cn' : 'en-us',
+        cusnum:  CurrentUserCustomerStore.getAll().length
+      });
+    }else {
+      this._saveSelectCustomer({
+        CustomerId: -1
+      });
+    }
+  },
+
   componentDidMount: function() {
     window.addEventListener('resize', this._handleResize);
 
@@ -195,9 +222,9 @@ var SelectCustomer = React.createClass({
     if (this.state.currentIndex == (CurrentUserCustomerStore.getAll().length - 1)) {
       rightHandlerBarStyle.visibility = 'hidden';
     }
-    if (window.toMainApp) {
-      spManagementStyle.visibility = 'hidden';
-    }
+    // if (window.toMainApp) {
+    //   spManagementStyle.visibility = 'hidden';
+    // }
     return (
       <div>
                 <div className="jazz-selectbg"></div>
@@ -248,11 +275,7 @@ var SelectCustomer = React.createClass({
                       </div>
                     </div>
                     {LoginStore.checkHasSpAdmin() && <span title={I18N.SelectCustomer.SysManagementTip} className="jazz-select-sp-manage" style={spManagementStyle}
-      onClick={() => {
-        this._saveSelectCustomer({
-          CustomerId: -1
-        })
-      }}>{I18N.SelectCustomer.SysManagement}></span>}
+      onClick={this._sysManagement}>{I18N.SelectCustomer.SysManagement}></span>}
                   </div>
                 </div>
             </div>
