@@ -58,13 +58,10 @@ var PTagBasic = React.createClass({
     }, {
       payload: 4,
       text: I18N.Common.CaculationType.Min
+    }, {
+      payload: 0,
+      text: I18N.Common.CaculationType.Non
     }];
-    if (isView) {
-      calculationTypeList.push({
-        payload: 0,
-        text: I18N.Common.CaculationType.Non
-      });
-    }
     return calculationTypeList;
   },
   componentWillMount: function() {},
