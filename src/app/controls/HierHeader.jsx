@@ -2,7 +2,9 @@
 import React from "react";
 import { Navigation, State } from 'react-router';
 import HierarchyButton from '../components/Hierarchy/HierarchyButton.jsx';
+import HierarchyStore from '../stores/HierarchyStore.jsx';
 import DimButton from '../components/Dim/DimButton.jsx';
+import assign from 'object-assign';
 
 let HierHeader = React.createClass({
   propTypes: {
@@ -11,7 +13,11 @@ let HierHeader = React.createClass({
   },
   mixins: [Navigation, State],
   _onHierachyTreeClick: function(node) {
-    this.props.onHierachyTreeClick(node);
+    var clickNode = assign({}, node);
+    if (clickNode.Id < 0) {
+      clickNode.Id = -clickNode.Id;
+    }
+    this.props.onHierachyTreeClick(clickNode);
     this.setState({
       hierId: node.Id,
       HierarchyShow: false,

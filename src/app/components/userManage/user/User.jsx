@@ -175,7 +175,7 @@ var User = React.createClass({
     // if( isView ) {
     // 	UserActionCreator.getUserCustomerPermission(this.props.params.userId, customerId);
     // } else {
-    UserAction.getUserCustomerPermission(this.state.selectedUserId, customerId);
+    UserAction.getUserCustomerPermission(this.state.selectedUserId, customerId, false);
   // }
   },
 

@@ -6,7 +6,7 @@ import { Checkbox } from 'material-ui';
 import assign from "object-assign";
 
 import TagList from './TagList.jsx';
-import Header from '../../controls/HierAndDimHeader.jsx';
+import Header from '../../controls/HierHeader.jsx';
 import SearchBar from '../../controls/SearchBar.jsx';
 import Pagination from '../../controls/paging/Pagination.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';

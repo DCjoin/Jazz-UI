@@ -13,7 +13,13 @@ let HierarchyButton = React.createClass({
     onButtonClick: React.PropTypes.func.isRequired,
     show: React.PropTypes.bool,
     hierId: React.PropTypes.number,
-    handleClickAway: React.PropTypes.func
+    handleClickAway: React.PropTypes.func,
+    isDimTreeShow: React.PropTypes.bool,
+  },
+  getDefaultProps: function() {
+    return {
+      isDimTreeShow: true,
+    };
   },
   _onShowPaper: function() {
     this.setState({
@@ -83,7 +89,7 @@ let HierarchyButton = React.createClass({
     };
   },
   componentWillMount: function() {
-    HierarchyAction.loadall(window.currentCustomerId);
+    HierarchyAction.loadall(window.currentCustomerId, this.props.isDimTreeShow);
   },
   componentDidMount: function() {
     HierarchyStore.addHierarchyNodeListener(this._onChange);

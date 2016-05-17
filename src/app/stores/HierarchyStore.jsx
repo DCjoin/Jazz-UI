@@ -10,6 +10,25 @@ var _data = {};
 var _isLoading = false;
 
 var HierarchyStore = assign({}, PrototypeStore, {
+  traversalNode: function(node) {
+    var f = function(item) {
+      if (item.Children === null || item.HasChildren === false) {
+        if (item.Type === 101) {
+          item.Id = 0 - item.Id;
+        }
+        return;
+      } else {
+        if (item.Type === 101) {
+          item.Id = 0 - item.Id;
+        }
+        item.Children.forEach(el => {
+          f(el);
+        });
+      }
+    };
+    f(node);
+    return node;
+  },
   getData() {
     return _data;
   },

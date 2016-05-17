@@ -117,7 +117,8 @@ var CommonCommodityPanel = React.createClass({
         onTreeClick={this._onHierachyTreeClick}
         onButtonClick={this._onHierarchButtonClick}
         show={this.state.HierarchyShow}
-        handleClickAway={this.handleHierClickAway}/>
+        handleClickAway={this.handleHierClickAway}
+        isDimTreeShow={false}/>
         </div>
 
 
