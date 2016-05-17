@@ -85,7 +85,9 @@ var CalDetail = React.createClass({
       if (workTime.length != 0) {
         workCal.push(
           <div className="worktime">
-                  <div>{I18N.Baseline.Cal.Worktime}</div>
+                  <div style={{
+            marginWidth: '73px'
+          }}>{I18N.Baseline.Cal.Worktime}</div>
                   <div className="time">
                     {workTime}
                   </div>
