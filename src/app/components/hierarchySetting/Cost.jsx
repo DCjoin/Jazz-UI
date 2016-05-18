@@ -501,12 +501,12 @@ var Cost = React.createClass({
       },
       leftradioButton: {
         fontSize: '14px',
-        color: '#464949'
+        color: '#464949',
+        width: '200px'
       },
       rightradioButton: {
         fontSize: '14px',
         color: '#464949',
-        marginLeft: '-350px'
       },
     };
     var renderTransformerMode = function() {
@@ -520,7 +520,7 @@ var Cost = React.createClass({
           maxLen: 16,
           isRequired: true,
           style: {
-            maxWidth: '200px'
+            maxWidth: '180px'
           },
           didChanged: value => {
             that.merge({
@@ -896,12 +896,12 @@ var Cost = React.createClass({
           },
           leftradioButton: {
             fontSize: '14px',
-            color: '#464949'
+            color: '#464949',
+            width: '200px'
           },
           rightradioButton: {
             fontSize: '14px',
             color: '#464949',
-            marginLeft: '-350px'
           },
         };
         items.unshift(
