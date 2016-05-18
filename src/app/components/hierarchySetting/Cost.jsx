@@ -905,7 +905,9 @@ var Cost = React.createClass({
           },
         };
         items.unshift(
-          <div className='jazz-carbon-factorItem' key={'power_simple_' + index}>
+          <div className='jazz-carbon-factorItem' key={'power_simple_' + index} style={{
+            marginLeft: '0'
+          }}>
             <DeletableItem {...deleteProps}>
             <YearMonthItem {...dateProps}/>
             <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.PriceType}</div>
@@ -1037,7 +1039,9 @@ var Cost = React.createClass({
             }
           };
           commodityItems.push(
-            <div className='jazz-carbon-factorItem'>
+            <div className='jazz-carbon-factorItem' style={{
+              marginLeft: '0'
+            }}>
                   <DeletableItem {...deleteProps}>
                     <div style={{
               marginTop: '25px'
