@@ -241,7 +241,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
   },
   getAddBtnStatusByNode: function(node) {
     var that = this;
-    if (node.get('Type') === 0 || node.get('Type') === 3) {
+    if (node.get('Type') === 0 || node.get('Type') === 101) {
       let sum = 1;
       let parent = that.getParent(node);
       while (parent.get('Type') === node.get('Type')) {
