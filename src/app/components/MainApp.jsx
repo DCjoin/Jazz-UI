@@ -108,6 +108,16 @@ let MainApp = React.createClass({
     var currentCustomer = CurrentUserCustomerStore.getCurrentCustomer();
     // var currentUser = JSON.parse(getCookie('UserInfo'));
     var currentUser = CurrentUserStore.getCurrentUser();
+    console.log('****wyh test****');
+    console.log('_onChange');
+    console.log('params=');
+    console.log(params);
+    console.log('customerCode=' + customerCode);
+    console.log('currentCustomer=');
+    console.log(currentCustomer);
+    console.log('currentUser=');
+    console.log(currentUser);
+
 
     if (!customerCode && (currentUser && currentUser.Id !== 1)) {
       // 切换至 Map SelectCustomer
@@ -130,7 +140,10 @@ let MainApp = React.createClass({
       this._redirectRouter({
         name: 'workday',
         title: I18N.MainMenu.Workday
-      }, {lang:((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'), cusnum: getCurrentCustomers().length});
+      }, {
+        lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'),
+        cusnum: getCurrentCustomers().length
+      });
       this.setState({
         viewState: viewState.MAIN
       });
@@ -145,6 +158,10 @@ let MainApp = React.createClass({
       return;
     } else {
       var customers = getCurrentCustomers();
+      console.log('customers');
+      console.log(customers);
+      console.log('this.state.rivilege');
+      console.log(this.state.rivilege);
       if (!customers.length && (this.state.rivilege && this.state.rivilege.indexOf('1206') < 0 || this.state.rivilege == null)) {
         //当用户既没有平台管理权限，又没有客户列表的时候
         this.setState({
@@ -156,7 +173,10 @@ let MainApp = React.createClass({
         this._redirectRouter({
           name: 'workday',
           title: I18N.MainMenu.Workday,
-        }, {lang:((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'), cusnum: customers.length});
+        }, {
+          lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'),
+          cusnum: customers.length
+        });
         this.setState({
           viewState: viewState.MAIN,
         });
@@ -310,12 +330,21 @@ let MainApp = React.createClass({
     if (!this.state.rivilege) {
       return (
         <div className='jazz-main'>
-            <div style={{ display: 'flex', flex: 1, 'alignItems': 'center', 'justifyContent': 'center' }}>
+            <div style={{
+          display: 'flex',
+          flex: 1,
+          'alignItems': 'center',
+          'justifyContent': 'center'
+        }}>
               <CircularProgress  mode="indeterminate" size={2} />
             </div>
           </div>
         );
     } else {
+      console.log('**********wyh test********');
+      console.log('this.state.viewState=' + this.state.viewState);
+      console.log('window.toMainApp=' + window.toMainApp);
+      console.log('window.currentCustomerId=' + window.currentCustomerId);
       if (this.state.viewState == viewState.NO_SELECT_CUSTOMERS) {
         return (
           <div>

@@ -181,7 +181,7 @@ var MainAppBar = React.createClass({
   // ************* Change State End *************
   // ************* Render Component Start *************
   _getUserInfo: function() {
-    var user = window.currentUser || currentUser() || {},
+    var user = currentUser() || {},
       isSuperAdmin = user.UserType == -1;
     // var associatedCustomers = user.Customers.filter((item) => {
     //   return item.CustomerId >= 0;
