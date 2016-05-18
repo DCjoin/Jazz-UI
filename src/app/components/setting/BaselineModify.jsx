@@ -402,7 +402,7 @@ let MonthItem = React.createClass({
         alignItems: 'center',
         height: '28px'
       }}>
-              <div style={leftDivStyle}>{line.LeftMonth}月</div>
+              <div style={leftDivStyle}>{line.LeftMonth}</div>
               <div style={centerDivStyle}>
                 <TextField ref="leftValue" className="jazz-setting-input" style={monthStyle}   defaultValue={null} errorText={this.state.errorLeftText} onChange={this._onLeftChange} disabled={disable}/>
               </div>
@@ -423,7 +423,7 @@ let MonthItem = React.createClass({
         alignItems: 'center',
         height: '28px'
       }}>
-              <div style={leftDivStyle}>{line.RightMonth}月</div>
+              <div style={leftDivStyle}>{line.RightMonth}</div>
               <div style={centerDivStyle}>
                 <TextField ref="rightValue" className="jazz-setting-input" style={monthStyle} defaultValue={null} errorText={this.state.errorRightText} onChange={this._onRightChange} disabled={disable}/>
               </div>

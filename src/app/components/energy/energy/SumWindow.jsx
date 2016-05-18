@@ -221,7 +221,7 @@ let SumWindow = React.createClass({
     </div>;
     let _buttonActions = [
       <FlatButton
-      label="好"
+      label={I18N.Mail.Send.Ok}
       onClick={me._onAction.bind(me, 'ok')} />];
     let titleEl = <div style={{
       fontSize: '20px',
