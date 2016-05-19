@@ -18,6 +18,7 @@ import DropdownButton from '../../controls/DropdownButton.jsx';
 import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
+import { treeSource } from '../../constants/TreeSource.jsx';
 
 
 
@@ -27,7 +28,7 @@ const DIALOG_TYPE = {
   SWITCH_EC: 'switchec',
   SWITCH_WIDGET_BY_DRAG: 'switchwidgetbydrag'
 };
-var targetNode, pre,
+var targetNode, isPre,
   sourceNode ,
   parentNode,
   collapsedId;
@@ -182,9 +183,14 @@ var FolderLeftPanel = React.createClass({
   didDrag: function() {
     if (collapsedId) {
       let node = FolderStore.getNodeById(collapsedId);
-      FolderAction.moveItem(sourceNode.toJSON(), node.toJS(), null, null)
+      if (node.get('HasChildren')) {
+        let nextNode = node.get('Children').getIn([0]);
+        FolderAction.moveItem(sourceNode.toJSON(), node.toJS(), null, nextNode.toJS())
+      } else {
+        FolderAction.moveItem(sourceNode.toJSON(), node.toJS(), null, null)
+      }
     } else {
-      if (pre) {
+      if (isPre) {
         FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), targetNode.toJSON(), null)
       } else {
         FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), null, targetNode.toJSON())
@@ -199,8 +205,12 @@ var FolderLeftPanel = React.createClass({
     targetNode = FolderStore.getNodeById(parseInt(targetId));
     sourceNode = FolderStore.getNodeById(parseInt(sourceId));
     parentNode = FolderStore.getParent(targetNode);
-    pre = pre;
+    isPre = pre;
     collapsedId = collapsedNodeId;
+
+    console.log('test for gragula_targetNode:' + targetNode.get('Name'));
+    console.log('test for gragula_targetNode:' + sourceNode.get('Name'));
+    console.log('test for gragula_targetNode:' + parentNode.get('Name'));
     // if(!pass){
     //   FolderAction.moveItem(sourceNode.toJSON(),targetNode.toJSON(),null)
     // }
@@ -337,6 +347,7 @@ var FolderLeftPanel = React.createClass({
 
     //props
     var treeProps = {
+        key: 'foldertree',
         collapsedLevel: 0,
         allNode: this.state.allNode,
         allHasCheckBox: false,
@@ -346,7 +357,8 @@ var FolderLeftPanel = React.createClass({
         selectedNode: this.state.selectedNode,
         onGragulaNode: this._onGragulaNode,
         arrowClass: 'jazz-foldertree-arrow',
-        treeNodeClass: 'jazz-foldertree-node'
+        treeNodeClass: 'jazz-foldertree-node',
+        treeSource: treeSource.Energy
       },
       newWidgetProps = {
         type: "Add",
