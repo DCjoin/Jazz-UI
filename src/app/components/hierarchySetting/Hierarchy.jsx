@@ -58,7 +58,8 @@ var Hierarchy = React.createClass({
     this.setState({
       errorTitle: error.title,
       errorContent: error.content,
-      isLoading: false
+      isLoading: false,
+      hierarchys: HierarchyStore.getHierarchys(),
     });
   },
   _onExportBtnClick: function() {
