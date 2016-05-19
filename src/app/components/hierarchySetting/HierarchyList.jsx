@@ -274,7 +274,7 @@ var HierarchyList = React.createClass({
       };
     var addBtnClasses = {
         'jazz-tag-leftpanel-header-item': !isAddStatus,
-        'jazz-tag-disabled': isAddStatus
+        'jazz-tag-disabled': isAddStatus || this.getAddBtnDisabled(),
       },
       fileInputStyle = {
         opacity: 0,
@@ -286,7 +286,7 @@ var HierarchyList = React.createClass({
     var addBtn = null;
 
     if (this.props.selectedNode.get('Type') > 1 || this.props.selectedNode.size === 0) {
-      addBtn = <span onClick={this._onAddBtnClick} disabled={this.getAddBtnDisabled()} className={classNames(addBtnClasses)} style={{
+      addBtn = <span onClick={this.getAddBtnDisabled() ? null : this._onAddBtnClick} className={classNames(addBtnClasses)} style={{
         margin: '0 15px'
       }}>
               <span className="icon-add jazz-tag-leftpanel-header-item-icon"></span>

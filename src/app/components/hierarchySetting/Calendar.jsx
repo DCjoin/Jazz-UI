@@ -82,7 +82,7 @@ let CalendarDetail = React.createClass({
         var worktime = null;
         if (worktimeItems && worktimeItems.size > 0) {
           var worktimeRight = worktimeItems.map((item, i) => {
-            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
+            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, false)}</div>;
           });
           worktime = (<div className='jazz-hierarchy-calendar-detail'>
           <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.WorkTimeTitle}</div>
@@ -130,7 +130,7 @@ let CalendarDetail = React.createClass({
         var day = null;
         if (dayItems && dayItems.size > 0) {
           var dayRight = dayItems.map((item, i) => {
-            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, true)}</div>;
+            return <div className='jazz-hierarchy-calendar-detail-item'>{me._getDisplay(item, false)}</div>;
           });
           day = (<div className='jazz-hierarchy-calendar-detail'>
           <div className='jazz-hierarchy-calendar-detail-item'>{I18N.Setting.Calendar.DayTitle}</div>

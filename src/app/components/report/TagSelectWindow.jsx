@@ -81,7 +81,7 @@ let TagSelectWindow = React.createClass({
     var tagList = ReportStore.getTagList();
     var selectedTagList = this.state.selectedTagList;
     var index;
-    if (selectedTagList.size === 0) {
+    if (tagList.size === 0) {
       checkAll = false;
     } else {
       for (var i = 0; i < tagList.size; i++) {
@@ -130,37 +130,61 @@ let TagSelectWindow = React.createClass({
     });
   },
   _onTagItemSelected: function(id) {
-    var addTag = this.state.tagList.find((item) => {
+    var tagList = this.state.tagList;
+    var index;
+    var checkAll = true;
+    var addTag = tagList.find((item) => {
       if (id === item.get('Id')) {
         return true;
       }
     });
-    var obj = {};
     var selectedTagList = this.state.selectedTagList;
     if (addTag) {
       selectedTagList = selectedTagList.push(addTag);
-      obj.selectedTagList = selectedTagList;
-      if (selectedTagList.size === this.state.tagList.size) {
-        obj.checkAll = true;
+      for (var i = 0; i < tagList.size; i++) {
+        index = selectedTagList.findIndex((item) => {
+          if (tagList.getIn([i, 'Id']) === item.get('Id')) {
+            return true;
+          }
+        });
+        if (index === -1) {
+          checkAll = false;
+          break;
+        }
       }
-      this.setState(obj);
+      this.setState({
+        selectedTagList: selectedTagList,
+        checkAll: checkAll
+      });
     }
   },
   _onTagItemUnselected: function(id) {
+    var tagList = this.state.tagList;
     var selectedTagList = this.state.selectedTagList;
+    var index;
+    var checkAll = true;
     var deleteTagIndex = selectedTagList.findIndex((item) => {
       if (id === item.get('Id')) {
         return true;
       }
     });
-    var obj = {};
     if (deleteTagIndex !== -1) {
       selectedTagList = selectedTagList.delete(deleteTagIndex);
-      obj.selectedTagList = selectedTagList;
-      if (selectedTagList.size < this.state.tagList.size) {
-        obj.checkAll = false;
+      for (var i = 0; i < tagList.size; i++) {
+        index = selectedTagList.findIndex((item) => {
+          if (tagList.getIn([i, 'Id']) === item.get('Id')) {
+            return true;
+          }
+        });
+        if (index === -1) {
+          checkAll = false;
+          break;
+        }
       }
-      this.setState(obj);
+      this.setState({
+        selectedTagList: selectedTagList,
+        checkAll: checkAll
+      });
     }
 
   },

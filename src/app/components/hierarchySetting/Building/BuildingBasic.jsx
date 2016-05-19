@@ -180,7 +180,7 @@ var BuildingBasic = React.createClass({
     var locationText = this.props.selectedNode.getIn(["Location", "Province"]);
     var lng = this.props.selectedNode.getIn(["Location", "Longitude"]);
     var lat = this.props.selectedNode.getIn(["Location", "Latitude"]);
-    var map = <ViewableMap address={locationText} lng={lng}  lat={lat} isAdd={isAdd} isView={isView} didChanged={this._locationChanged}></ViewableMap>;
+    var map = <ViewableMap title={I18N.Setting.Building.Address} address={locationText} lng={lng}  lat={lat} isAdd={isAdd} isView={isView} didChanged={this._locationChanged}></ViewableMap>;
     if (!isView || (Administrators && Administrators.length > 0)) {
       var adminProps = {
         status: this.props.formStatus,

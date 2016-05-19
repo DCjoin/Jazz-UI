@@ -23,7 +23,7 @@ var ViewableMap = React.createClass({
   getDefaultProps() {
     return {
       address: "",
-      title: "地理位置",
+      title: '',
       width: 430, //widget width if no provided
       height: 140 //widget heightif no provided
     };
@@ -82,7 +82,7 @@ var ViewableMap = React.createClass({
           that._defaultPositionLabel = result.regeocode.formattedAddress;
           that._changeTip(result.regeocode.formattedAddress);
         } else {
-          that._changeTip("无法获取当前地理位置信息，请手动输入。", "showWarning");
+          that._changeTip(I18N.Setting.Building.MapTip1, "showWarning");
         }
         if (that.props.didChanged) {
           var text = that.refs.mapText.getValue();
@@ -95,7 +95,7 @@ var ViewableMap = React.createClass({
   _changeTip(text, type = "showAddress") {
     if (type === "showAddress") {
       React.findDOMNode(this.refs.tip).setAttribute("title", text);
-      text = "使用该位置：" + text;
+      text = I18N.Setting.Building.MapTip2 + text;
       React.findDOMNode(this.refs.tip).innerHTML = text;
       React.findDOMNode(this.refs.warningContainer).style.display = "none";
       React.findDOMNode(this.refs.tipContainer).style.display = "block";
@@ -141,7 +141,7 @@ var ViewableMap = React.createClass({
               this.props.didChanged(loc.lng, loc.lat, text);
             }
           } else {
-            this._changeTip("找不到该地址，地图无法定位。", "showWarning");
+            this._changeTip(I18N.Setting.Building.MapTip3, "showWarning");
           }
         });
       });

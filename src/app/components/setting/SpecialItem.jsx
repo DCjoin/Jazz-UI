@@ -95,11 +95,11 @@ var SpecialItem = React.createClass({
       if (nextProps.start && nextProps.start != this.state.start) {
         this.refs.startDateField.setValue(jsonToFormDate(nextProps.start));
       }
-      ;
+
       if (nextProps.end && nextProps.end != this.props.end) {
         this.refs.endDateField.setValue(toFormEndDate(jsonToFormDate(nextProps.end)));
       }
-      ;
+
       if (this.refs.valueField) {
         this.refs.valueField.setValue(nextProps.value);
       }

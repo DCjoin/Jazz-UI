@@ -501,12 +501,12 @@ var Cost = React.createClass({
       },
       leftradioButton: {
         fontSize: '14px',
-        color: '#464949'
+        color: '#464949',
+        width: '200px'
       },
       rightradioButton: {
         fontSize: '14px',
         color: '#464949',
-        marginLeft: '-350px'
       },
     };
     var renderTransformerMode = function() {
@@ -520,7 +520,7 @@ var Cost = React.createClass({
           maxLen: 16,
           isRequired: true,
           style: {
-            maxWidth: '200px'
+            maxWidth: '180px'
           },
           didChanged: value => {
             that.merge({
@@ -896,16 +896,18 @@ var Cost = React.createClass({
           },
           leftradioButton: {
             fontSize: '14px',
-            color: '#464949'
+            color: '#464949',
+            width: '200px'
           },
           rightradioButton: {
             fontSize: '14px',
             color: '#464949',
-            marginLeft: '-350px'
           },
         };
         items.unshift(
-          <div className='jazz-carbon-factorItem' key={'power_simple_' + index}>
+          <div className='jazz-carbon-factorItem' key={'power_simple_' + index} style={{
+            marginLeft: '0'
+          }}>
             <DeletableItem {...deleteProps}>
             <YearMonthItem {...dateProps}/>
             <div className='jazz-fromenddate-item-text'>{I18N.Setting.Cost.PriceType}</div>
@@ -1037,7 +1039,9 @@ var Cost = React.createClass({
             }
           };
           commodityItems.push(
-            <div className='jazz-carbon-factorItem'>
+            <div className='jazz-carbon-factorItem' style={{
+              marginLeft: '0'
+            }}>
                   <DeletableItem {...deleteProps}>
                     <div style={{
               marginTop: '25px'
