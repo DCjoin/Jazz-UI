@@ -103,7 +103,7 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     window.currentUser = null;
     window.currentCustomerId = null;
     window.toMainApp = null;
-    window.currentCustomerId = '';
+    window.currentCustomerId = null;
   },
   getLastError: function(argument) {
     return _lastError;
