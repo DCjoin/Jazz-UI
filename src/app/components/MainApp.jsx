@@ -45,8 +45,9 @@ let MainApp = React.createClass({
     window.allCommodities = AllCommodityStore.getAllCommodities();
   },
   _onCurrentrivilegeChanged: function() {
-    var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege();
-    // console.log('_currentUserRivilege:'+_currentUserRivilege);
+    var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege() || [];
+    // console.log('_currentUserRivilege:');
+    // console.log(_currentUserRivilege);
     var _currentUser = CurrentUserStore.getCurrentUser();
     this.setState({
       currentUser:_currentUser,
