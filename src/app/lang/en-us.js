@@ -125,7 +125,7 @@ I18N.ResetPassword.SuccessTips = 'Your password has been reset successfully, ple
 
 I18N.SelectCustomer = {};
 I18N.SelectCustomer.Title = "Select customer";
-I18N.SelectCustomer.SysManagement = "System management";
+I18N.SelectCustomer.SysManagement = "EnergyMost sys-management";
 I18N.SelectCustomer.SysManagementTip = "System management";
 
 I18N.M212001 = 'User does not exist';

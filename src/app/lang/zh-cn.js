@@ -125,7 +125,7 @@ I18N.ResetPassword.SuccessTips = '密码已重置成功，请单击“继续”�
 
 I18N.SelectCustomer = {};
 I18N.SelectCustomer.Title = '请选择客户';
-I18N.SelectCustomer.SysManagement = "平台管理";
+I18N.SelectCustomer.SysManagement = '\"云能效\"系统管理';
 I18N.SelectCustomer.SysManagementTip = "资产管理开放平台";
 
 I18N.M212001 = '用户不存在';
