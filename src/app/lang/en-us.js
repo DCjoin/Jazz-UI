@@ -51,15 +51,15 @@ I18N.MainMenu.Report = 'Report';
 I18N.MainMenu.DailyReport = 'Daily report';
 I18N.MainMenu.Template = 'Template';
 I18N.MainMenu.CustomerSetting = 'Customer';
-I18N.MainMenu.TagSetting = 'Tag Config';
+I18N.MainMenu.TagSetting = 'Tag';
 I18N.MainMenu.PTagManagement = 'PTag';
 I18N.MainMenu.VTagManagement = 'VTag';
 I18N.MainMenu.VEEMonitorRule = 'VE&E';
 I18N.MainMenu.TagBatchImportLog = 'Import log';
-I18N.MainMenu.HierarchyNodeSetting = 'Hierarchy Cfg';
-I18N.MainMenu.HierarchyLog = 'Config import log';
-I18N.MainMenu.CustomSetting = 'Customer config';
-I18N.MainMenu.HierarchySetting = 'Hierarchy config';
+I18N.MainMenu.HierarchyNodeSetting = 'Hierarchy';
+I18N.MainMenu.HierarchyLog = 'Import log';
+I18N.MainMenu.CustomSetting = 'Customer';
+I18N.MainMenu.HierarchySetting = 'Hierarchy';
 I18N.MainMenu.CustomizedLabeling = 'Labelling';
 
 I18N.MainMenu.Calendar = 'Calendar';
@@ -125,7 +125,7 @@ I18N.ResetPassword.SuccessTips = 'Your password has been reset successfully, ple
 
 I18N.SelectCustomer = {};
 I18N.SelectCustomer.Title = "Select customer";
-I18N.SelectCustomer.SysManagement = "System management";
+I18N.SelectCustomer.SysManagement = "EnergyMost sys-management";
 I18N.SelectCustomer.SysManagementTip = "System management";
 
 I18N.M212001 = 'User does not exist';
