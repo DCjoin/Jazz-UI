@@ -38,6 +38,10 @@ function getCurrentCustomer() {
 
 let MainApp = React.createClass({
   mixins: [Navigation, State],
+  contextTypes: {
+    currentUser:React.PropTypes.object,
+    rivilege: React.PropTypes.array
+  },
   _onAllUOMSChange() {
     window.uoms = UOMStore.getUoms();
   },
@@ -45,7 +49,7 @@ let MainApp = React.createClass({
     window.allCommodities = AllCommodityStore.getAllCommodities();
   },
   _onCurrentrivilegeChanged: function() {
-    var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege() || [];
+    var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege();
     // console.log('_currentUserRivilege:');
     // console.log(_currentUserRivilege);
     var _currentUser = CurrentUserStore.getCurrentUser();
@@ -57,7 +61,7 @@ let MainApp = React.createClass({
   getInitialState: function() {
     SelectCustomerActionCreator.getCustomer(window.currentUserId);
     return {
-      currentUser: window.currentUser,
+      currentUser: CurrentUserStore.getCurrentUser(),
       rivilege: CurrentUserStore.getCurrentPrivilege()
     };
   },
@@ -148,9 +152,10 @@ let MainApp = React.createClass({
     } else {
       var customers = getCurrentCustomers();
 
-      // console.log('this.state.rivilege:'+this.state.rivilege);
-      // var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege();
-      // console.log('CurrentUserStore.getCurrentPrivilege():'+_currentUserRivilege);
+      // console.log('this.state.rivilege:');
+      // console.log(this.state.rivilege);
+      // console.log('CurrentUserStore.getCurrentPrivilege():');
+      // console.log(CurrentUserStore.getCurrentPrivilege());
 
       if(!this.state.rivilege || this.state.rivilege.length == 0 ){
         //当用户既没有平台管理权限，又没有客户列表的时候
