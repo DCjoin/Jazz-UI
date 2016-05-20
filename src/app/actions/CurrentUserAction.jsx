@@ -1,5 +1,6 @@
 'use strict';
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
+import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
 import { Action } from '../constants/actionType/CurrentUser.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
@@ -37,6 +38,7 @@ let CurrentUserAction = {
         }
       },
       success: function(list) {
+        SelectCustomerActionCreator.getCustomer(userId);
         AppDispatcher.dispatch({
           type: Action.GET_ROLE,
           userId: userId,

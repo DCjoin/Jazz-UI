@@ -53,16 +53,19 @@ let MainApp = React.createClass({
     // console.log('_currentUserRivilege:');
     // console.log(_currentUserRivilege);
     var _currentUser = CurrentUserStore.getCurrentUser();
+    var _allCustomers = getCurrentCustomers();
     this.setState({
       currentUser: _currentUser,
-      rivilege: _currentUserRivilege
+      rivilege: _currentUserRivilege,
+      allCustomers:_allCustomers
     });
   //SelectCustomerActionCreator.getCustomer(window.currentUserId);
   },
   getInitialState: function() {
     return {
       currentUser: CurrentUserStore.getCurrentUser(),
-      rivilege: CurrentUserStore.getCurrentPrivilege()
+      rivilege: CurrentUserStore.getCurrentPrivilege(),
+      allCustomers:CurrentUserCustomerStore.getAll()
     };
   },
 
@@ -157,9 +160,10 @@ let MainApp = React.createClass({
 
       // console.log('this.state.rivilege:');
       // console.log(this.state.rivilege);
-      // console.log('CurrentUserStore.getCurrentPrivilege():');
-      // console.log(CurrentUserStore.getCurrentPrivilege());
-
+      // console.log('customers:');
+      // console.log(customers);
+      // console.log('currentUser:');
+      // console.log(currentUser);
 
       if( (!this.state.rivilege || this.state.rivilege.length == 0) && (!customers || customers.length <= 0) ){
         //当用户既没有平台管理权限，又没有客户列表的时候
@@ -384,9 +388,9 @@ let MainApp = React.createClass({
 
 
   },
-  componentWillMount() {
-    SelectCustomerActionCreator.getCustomer(window.currentUserId);
-  },
+  // componentWillMount() {
+  //   SelectCustomerActionCreator.getCustomer(window.currentUserId);
+  // },
   componentDidMount() {
     UOMStore.addChangeListener(this._onAllUOMSChange);
     AllCommodityStore.addChangeListener(this._onAllCommoditiesChange);

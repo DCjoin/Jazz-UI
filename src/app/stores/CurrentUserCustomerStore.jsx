@@ -57,11 +57,12 @@ CurrentUserCustomerStore.dispatchToken = AppDispatcher.register(function(action)
   switch (action.type) {
     case selectCustomerAction.GET_SELECT_CUSTOMERS:
       CurrentUserCustomerStore.init(action.data);
-      CurrentUserCustomerStore.ifEmitCustomerrChange();
+      // CurrentUserCustomerStore.ifEmitCustomerrChange();
+      CurrentUserCustomerStore.emitChange();
       break;
-    case currentUserAction.GET_ROLE:
-      CurrentUserCustomerStore.ifEmitCustomerrChange();
-      break;
+    // case currentUserAction.GET_ROLE:
+    //   CurrentUserCustomerStore.ifEmitCustomerrChange();
+    //   break;
     case selectCustomerAction.SELECT_ACCOUNT_SUCCESS:
       CurrentUserCustomerStore.setCustomer(action.data);
       CurrentUserCustomerStore.emitChange();
