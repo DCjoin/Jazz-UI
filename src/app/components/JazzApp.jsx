@@ -283,6 +283,17 @@ let JazzApp = React.createClass({
           });
         });
         return
+      } else if (me.context.router.getCurrentPath().indexOf('initpwd') > -1) {
+        var {lang} = me.context.router.getCurrentParams();
+        me.setState({
+          isLangLoaded: true,
+          loading: false
+        }, () => {
+          me.replaceWith('initChangePSW', {
+            lang: lang
+          });
+        });
+        return
       }
       //routes.length === 1 || (routes.length === 2 && !customerCode)
       else if (!currentUser) {
