@@ -392,7 +392,7 @@ var TreeNode = React.createClass({
   },
   componentDidMount: function() {
     //for Gragula
-    if (this.props.nodeData.get('Id') != -1) {
+    if (this.props.nodeData.get('Id') != -1 && this.props.nodeData.get('Type') != -1) {
       this.props.putGragulaContainer(React.findDOMNode(this));
     }
 
