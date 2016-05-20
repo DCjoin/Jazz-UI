@@ -591,7 +591,10 @@ let ChartComponentBox = React.createClass({
     this.state.chartCmpStrategy.initNavigatorDataFn(newConfig, timeRange, data, this);
   },
   arrayMax(array, comparisonFn) {
-    var max = array[0], i, ln, item;
+    var max = array[0],
+      i,
+      ln,
+      item;
     for (i = 0, ln = array.length; i < ln; i++) {
       item = array[i];
       if (comparisonFn) {
@@ -644,7 +647,8 @@ let ChartComponentBox = React.createClass({
       t = dmData.TargetEnergyData,
       factory = EnergyCommentFactory;
 
-    var type, subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
+    var type,
+      subType; //type and subType两个参数决定了是从哪个页面访问的，energy cost carbon unit ratio，前台也能获取，只不过这部分逻辑放到了后台，为add comment使用。
     var xaxisMap;
 
     for (var i = 0, len = t.length; i < len; i++) {
