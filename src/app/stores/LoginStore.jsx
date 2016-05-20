@@ -24,7 +24,7 @@ let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
     var _pri = CurrentUserStore.getCurrentPrivilege();
     // JSON.parse(getCookie('UserInfo'))
-    if (CurrentUserStore.getCurrentUser().UserType === -1 || ( _pri && _pri.indexOf('1206') )) {
+    if (CurrentUserStore.getCurrentUser().UserType === -1 || ( _pri && _pri.indexOf('1206') > 0 )) {
       return true;
     }
     return false;
