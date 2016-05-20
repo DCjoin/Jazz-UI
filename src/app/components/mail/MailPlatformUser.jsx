@@ -106,6 +106,7 @@ let PlatformUser = React.createClass({
   },
   render: function() {
     var treeProps = {
+      key: 'mailtree',
       collapsedLevel: 0,
       allNode: this.props.users,
       allHasCheckBox: false,

@@ -3,6 +3,7 @@
 import React from "react";
 import { CircularProgress } from 'material-ui';
 import { formStatus } from '../../constants/FormStatus.jsx';
+import { treeSource } from '../../constants/TreeSource.jsx';
 import TreeConstants from '../../constants/TreeConstants.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
@@ -254,6 +255,7 @@ var HierarchyList = React.createClass({
   render: function() {
     var isAddStatus = this.props.formStatus === formStatus.ADD;
     var treeProps = {
+        key: 'hierarchytree',
         collapsedLevel: 0,
         allNode: this.props.hierarchys,
         allHasCheckBox: false,
@@ -264,7 +266,8 @@ var HierarchyList = React.createClass({
         treeNodeClass: 'jazz-foldertree-node',
         onGragulaNode: this.props.onGragulaNode,
         ifGragulaInvalid: this._ifGragulaInvalid,
-        onUnfoldNode: this._onUnfoldNode
+        onUnfoldNode: this._onUnfoldNode,
+        treeSource: treeSource.Hierarchy
       },
       addBtnProps = {
         type: "Add",

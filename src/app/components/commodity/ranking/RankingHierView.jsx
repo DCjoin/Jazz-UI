@@ -60,6 +60,7 @@ var RankingHierView = React.createClass({
   // },
   render: function() {
     var props = {
+      key: 'rangkingtree',
       allNode: this.props.allNode,
       allHasCheckBox: true,
       collapsedLevel: 0,

@@ -8,8 +8,9 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import Immutable from 'immutable';
 import TreeNode from './TreeNode.jsx';
-
+import { treeSource } from '../../constants/TreeSource.jsx';
 import dragula from 'react-dragula';
+import FolderStore from '../../stores/FolderStore.jsx';
 var lastOver = null,
   drag = null,
   timeoutHandle = null,
@@ -19,39 +20,40 @@ var lastOver = null,
 var EditNode = null;
 var ifGragulaInvalid = null;
 var ifGragulaInvalid = null;
+var drake;
 
-var drake = dragula({
-  moves: function(el, source, handle) {
-    drag = true;
-    el.style.backgroundColor = '#323c4d';
-    return true; // elements are always draggable by default
-  },
-  invalid: function(el, target) {
-    var id = parseInt(el.id);
-    if (!!EditNode) {
-      if (id == EditNode.get('Id')) {
-        return true;
-      }
-    }
-
-    if (ifGragulaInvalid) {
-      if (ifGragulaInvalid(id)) {
-        return true;
-      }
-    }
-
-
-    if (parseInt(target.id) === -1) {
-      return true;
-    }
-    return false;
-
-  },
-  direction: 'vertical', // Y axis is considered when determining where an element would be dropped
-  copy: false, // elements are moved by default, not copied
-  revertOnSpill: false, // spilling will put the element back where it was dragged from, if this is true
-  removeOnSpill: false, // spilling will `.remove` the element, if this is true
-});
+//  = dragula({
+//   moves: function(el, source, handle) {
+//     drag = true;
+//     el.style.backgroundColor = '#323c4d';
+//     return true; // elements are always draggable by default
+//   },
+//   invalid: function(el, target) {
+//     var id = parseInt(el.id);
+//     if (!!EditNode) {
+//       if (id == EditNode.get('Id')) {
+//         return true;
+//       }
+//     }
+//
+//     if (ifGragulaInvalid) {
+//       if (ifGragulaInvalid(id)) {
+//         return true;
+//       }
+//     }
+//
+//
+//     if (parseInt(target.id) === -1) {
+//       return true;
+//     }
+//     return false;
+//
+//   },
+//   direction: 'vertical', // Y axis is considered when determining where an element would be dropped
+//   copy: false, // elements are moved by default, not copied
+//   revertOnSpill: false, // spilling will put the element back where it was dragged from, if this is true
+//   removeOnSpill: false, // spilling will `.remove` the element, if this is true
+// });
 
 var Tree = React.createClass({
   mixins: [React.addons.PureRenderMixin, Mixins.ClickAwayable],
@@ -101,7 +103,8 @@ var Tree = React.createClass({
     onGragulaNode: React.PropTypes.func,
     // arrow style
     arrowClass: React.PropTypes.string,
-    ifGragulaInvalid: React.PropTypes.func
+    ifGragulaInvalid: React.PropTypes.func,
+    treeSource: React.PropTypes.number,
   },
   getInitialState: function() {
     return {
@@ -149,13 +152,25 @@ var Tree = React.createClass({
   },
 
   _onDrop: function(el, target, source) {
+    var me = this;
     if (drag) {
       drag = false;
       var pre = false;
       if (target.children[1].id == el.id && !(this.state.collapsedNodeId || collapsedNodeId)) {
         pre = true;
       }
-      this.props.onGragulaNode(target.id, source.id, pre, this.state.collapsedNodeId || collapsedNodeId);
+      if (this.props.treeSource === treeSource.Energy) {
+        var sourceNode = FolderStore.getNodeById(parseInt(source.id));
+        if (sourceNode.get('Type') === 7) {
+          this.props.onGragulaNode(target.id, source.id, pre);
+        } else {
+          this.props.onGragulaNode(target.id, source.id, pre, this.state.collapsedNodeId || collapsedNodeId);
+        }
+      } else {
+        this.props.onGragulaNode(target.id, source.id, pre, this.state.collapsedNodeId || collapsedNodeId);
+      }
+      //this.props.onGragulaNode(target.id, source.id, pre, this.state.collapsedNodeId || collapsedNodeId);
+
       clearTimeout(timeoutHandle);
       this.setState({
         collapsedNodeId: null
@@ -200,15 +215,55 @@ var Tree = React.createClass({
     }
 
   },
+  componentWillMount: function() {
+    drake = dragula({
+      moves: function(el, source, handle) {
+        drag = true;
+        el.style.backgroundColor = '#323c4d';
+        return true; // elements are always draggable by default
+      },
+      invalid: function(el, target) {
+        var id = parseInt(el.id);
+        if (!!EditNode) {
+          if (id == EditNode.get('Id')) {
+            return true;
+          }
+        }
+
+        if (ifGragulaInvalid) {
+          if (ifGragulaInvalid(id)) {
+            return true;
+          }
+        }
+
+
+        if (parseInt(target.id) === -1) {
+          return true;
+        }
+        return false;
+
+      },
+      direction: 'vertical', // Y axis is considered when determining where an element would be dropped
+      copy: false, // elements are moved by default, not copied
+      revertOnSpill: false, // spilling will put the element back where it was dragged from, if this is true
+      removeOnSpill: false, // spilling will `.remove` the element, if this is true
+    });
+  },
   componentDidMount: function() {
     lastOver = null;
     pass = false;
+
+
     drake.on('drop', this._onDrop);
     drake.on('shadow', this._onShadow);
     if (this.props.ifGragulaInvalid) {
       ifGragulaInvalid = this.props.ifGragulaInvalid;
     }
 
+  },
+  componentWillUnmount: function() {
+    console.log('componentWillUnmount');
+    drake.destroy();
   },
   render: function() {
     var dataSource = this.compatibleJSON(this.props.allNode);
@@ -241,7 +296,8 @@ var Tree = React.createClass({
 
           putGragulaContainer: this.putGragulaContainer,
           collapsedNodeId: this.state.collapsedNodeId,
-          arrowClass: this.props.arrowClass
+          arrowClass: this.props.arrowClass,
+          treeSource: this.props.treeSource
         };
         parentNode.push(<TreeNode {...props}></TreeNode>);
       }

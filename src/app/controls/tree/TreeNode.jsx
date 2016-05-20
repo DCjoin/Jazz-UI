@@ -10,6 +10,7 @@ import Immutable from 'immutable';
 import { List, includes } from 'immutable';
 import FolderAction from '../../actions/FolderAction.jsx';
 import dragula from 'react-dragula';
+import { treeSource } from '../../constants/TreeSource.jsx';
 
 //import AlarmStore from '../../stores/AlarmStore.jsx';
 //import BubbleIcon from '../../components/BubbleIcon.jsx';
@@ -63,6 +64,7 @@ var TreeNode = React.createClass({
     collapsedNodeId: React.PropTypes.number,
     // arrow style
     arrowClass: React.PropTypes.string,
+    treeSource: React.PropTypes.number,
   },
 
   getDefaultProps: function() {
@@ -79,7 +81,7 @@ var TreeNode = React.createClass({
       hasCheckBox: false,
       // custome method
       generateNodeConent: null,
-      isFolderOperationTree: false
+      treeSource: treeSource.None
     };
   },
 
@@ -241,8 +243,8 @@ var TreeNode = React.createClass({
     return (
       <div className={classNames("arrow", arrowClass, true)} onClick={this.handleClickArrow}>
         <div className={classNames({
-        "hasChild": (hasChild || type == nodeType.Folder || nodeData.get('Id') === this.props.collapsedNodeId),
-        "hasNoChild": !(hasChild || type == nodeType.Folder || nodeData.get('Id') === this.props.collapsedNodeId)
+        "hasChild": (hasChild || type == nodeType.Folder || (nodeData.get('Id') === this.props.collapsedNodeId && nodeData.get('Type') !== 7)),
+        "hasNoChild": !(hasChild || type == nodeType.Folder || (nodeData.get('Id') === this.props.collapsedNodeId && nodeData.get('Type') !== 7))
       })}>
           <div className={classNames({
         "fa icon-hierarchy-unfold": !this.state.collapsed,
@@ -397,7 +399,7 @@ var TreeNode = React.createClass({
   },
 
   render: function() {
-    var generateNode = ((this.props.isFolderOperationTree && this.props.nodeData.get("Type") == nodeType.Widget) ? null : this.generateNode());
+    var generateNode = ((this.props.treeSource === treeSource.FolderOperation && this.props.nodeData.get("Type") == nodeType.Widget) ? null : this.generateNode());
     return (
 
       <div key={this.props.nodeData.get('Id')} id={this.props.nodeData.get('Id')} className="pop-tree-node-container">

@@ -87,6 +87,7 @@ let Providers = React.createClass({
   },
   render: function() {
     var treeProps = {
+      key: 'mailprovidertree',
       collapsedLevel: 0,
       allNode: this.props.users,
       allHasCheckBox: false,
