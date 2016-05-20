@@ -129,17 +129,17 @@ var Hierarchy = React.createClass({
       previousBrother = null,
       nextBrother = null;
     if (collapsedNodeId) {
-      let desNode = HierarchyStore.getNodeById(collapsedNodeId),
-        previousBrother = null;
+      let desNode = HierarchyStore.getNodeById(collapsedNodeId);
+      nextBrother = null;
       desParent = {
         Id: desNode.get('Id'),
         Version: desNode.get('Version')
       };
       if (desNode.get('HasChildren')) {
-        let previousNode = desNode.get('Children').getIn([desNode.get('Children').size - 1]);
-        previousBrother = {
-          Id: previousNode.get('Id'),
-          Version: previousNode.get('Version')
+        let nextNode = desNode.get('Children').getIn([0]);
+        nextBrother = {
+          Id: nextNode.get('Id'),
+          Version: nextNode.get('Version')
         };
       }
     } else {

@@ -191,7 +191,7 @@ var FolderStore = assign({}, PrototypeStore, {
         if (children) {
           temp = children.push(newNode);
         } else {
-          temp = Immutable.formJS([]);
+          temp = Immutable.fromJS([]);
           temp = temp.push(newNode);
         }
       }

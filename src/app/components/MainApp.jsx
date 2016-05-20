@@ -39,7 +39,7 @@ function getCurrentCustomer() {
 let MainApp = React.createClass({
   mixins: [Navigation, State],
   contextTypes: {
-    currentUser:React.PropTypes.object,
+    currentUser: React.PropTypes.object,
     rivilege: React.PropTypes.array
   },
   _onAllUOMSChange() {
@@ -50,11 +50,11 @@ let MainApp = React.createClass({
   },
   _onCurrentrivilegeChanged: function() {
     var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege();
-    // console.log('_currentUserRivilege:');
-    // console.log(_currentUserRivilege);
+    console.log('_currentUserRivilege:');
+    console.log(_currentUserRivilege);
     var _currentUser = CurrentUserStore.getCurrentUser();
     this.setState({
-      currentUser:_currentUser,
+      currentUser: _currentUser,
       rivilege: _currentUserRivilege
     });
     SelectCustomerActionCreator.getCustomer(window.currentUserId);
@@ -137,7 +137,10 @@ let MainApp = React.createClass({
       this._redirectRouter({
         name: 'workday',
         title: I18N.MainMenu.Workday
-      }, {lang:((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'), cusnum: getCurrentCustomers().length});
+      }, {
+        lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'),
+        cusnum: getCurrentCustomers().length
+      });
       this.setState({
         viewState: viewState.MAIN
       });
@@ -153,23 +156,26 @@ let MainApp = React.createClass({
     } else {
       var customers = getCurrentCustomers();
 
-      // console.log('this.state.rivilege:');
-      // console.log(this.state.rivilege);
-      // console.log('CurrentUserStore.getCurrentPrivilege():');
-      // console.log(CurrentUserStore.getCurrentPrivilege());
+      console.log('this.state.rivilege:');
+      console.log(this.state.rivilege);
+      console.log('CurrentUserStore.getCurrentPrivilege():');
+      console.log(CurrentUserStore.getCurrentPrivilege());
 
-      if(!this.state.rivilege || this.state.rivilege.length == 0 ){
+      if (!this.state.rivilege || this.state.rivilege.length == 0) {
         //当用户既没有平台管理权限，又没有客户列表的时候
         this.setState({
           viewState: viewState.NO_SELECT_CUSTOMERS,
         });
-      }else {
+      } else {
         if (customers.length <= 0 && this.state.rivilege.indexOf('1206') > -1 && (currentUser && currentUser.Id != 1)) {
           //当用户仅有1206权限时切换至平台管理
           this._redirectRouter({
             name: 'workday',
             title: I18N.MainMenu.Workday,
-          }, {lang:((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'), cusnum: customers.length});
+          }, {
+            lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us'),
+            cusnum: customers.length
+          });
           this.setState({
             viewState: viewState.MAIN,
           });
@@ -324,7 +330,12 @@ let MainApp = React.createClass({
     if (!this.state.rivilege) {
       return (
         <div className='jazz-main'>
-            <div style={{ display: 'flex', flex: 1, 'alignItems': 'center', 'justifyContent': 'center' }}>
+            <div style={{
+          display: 'flex',
+          flex: 1,
+          'alignItems': 'center',
+          'justifyContent': 'center'
+        }}>
               <CircularProgress  mode="indeterminate" size={2} />
             </div>
           </div>
@@ -379,7 +390,6 @@ let MainApp = React.createClass({
     MainAction.getAllUoms();
     MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
-
     CurrentUserCustomerStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
