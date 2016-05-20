@@ -57,10 +57,9 @@ let MainApp = React.createClass({
       currentUser: _currentUser,
       rivilege: _currentUserRivilege
     });
-    SelectCustomerActionCreator.getCustomer(window.currentUserId);
+  //SelectCustomerActionCreator.getCustomer(window.currentUserId);
   },
   getInitialState: function() {
-    // SelectCustomerActionCreator.getCustomer(window.currentUserId);
     return {
       currentUser: CurrentUserStore.getCurrentUser(),
       rivilege: CurrentUserStore.getCurrentPrivilege()
@@ -384,6 +383,9 @@ let MainApp = React.createClass({
     }
 
 
+  },
+  componentWillMount() {
+    SelectCustomerActionCreator.getCustomer(window.currentUserId);
   },
   componentDidMount() {
     UOMStore.addChangeListener(this._onAllUOMSChange);

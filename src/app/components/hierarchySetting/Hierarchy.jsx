@@ -149,7 +149,7 @@ var Hierarchy = React.createClass({
           Id: targetNode.get('Id'),
           Version: targetNode.get('Version')
         },
-        nextBrother = node === null ? null : {
+        nextBrother = node === null || node.equals(sourceNode) ? null : {
           Id: node.get('Id'),
           Version: node.get('Version')
         };
@@ -160,7 +160,7 @@ var Hierarchy = React.createClass({
           Id: targetNode.get('Id'),
           Version: targetNode.get('Version')
         },
-        previousBrother = node === null ? null : {
+        previousBrother = node === null || node.equals(sourceNode) ? null : {
           Id: node.get('Id'),
           Version: node.get('Version')
         };

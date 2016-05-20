@@ -11,6 +11,7 @@ import TreeNode from './TreeNode.jsx';
 import { treeSource } from '../../constants/TreeSource.jsx';
 import dragula from 'react-dragula';
 import FolderStore from '../../stores/FolderStore.jsx';
+import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 var lastOver = null,
   drag = null,
   timeoutHandle = null,
@@ -224,20 +225,22 @@ var Tree = React.createClass({
       },
       invalid: function(el, target) {
         var id = parseInt(el.id);
+        console.log('id=' + id);
         if (!!EditNode) {
           if (id == EditNode.get('Id')) {
+            console.log('1');
             return true;
           }
         }
 
         if (ifGragulaInvalid) {
           if (ifGragulaInvalid(id)) {
+            console.log('2');
             return true;
           }
         }
-
-
         if (parseInt(target.id) === -1) {
+          console.log('3');
           return true;
         }
         return false;

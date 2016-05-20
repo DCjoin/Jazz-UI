@@ -264,7 +264,7 @@ var MonitorTag = React.createClass({
           <div className='jazz-vee-monitor-tag-content-list' key={tag.get('Id')}>
             <div style={{
             marginLeft: '10px',
-            width: '90px',
+            width: '40px',
             marginTop: '10px'
           }}>{flag}</div>
             <div className={classnames("jazz-vee-monitor-tag-content-item", "hiddenEllipsis")} title={tag.get('Name')} style={{
@@ -296,7 +296,7 @@ var MonitorTag = React.createClass({
         <div className='jazz-vee-monitor-tag-background'>
           <div className='jazz-vee-monitor-tag-header'>
             <div style={{
-          width: '100px'
+          width: '50px'
         }}></div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Name}</div>
             <div className='jazz-vee-monitor-tag-header-item'>{I18N.Common.Glossary.Code}</div>
