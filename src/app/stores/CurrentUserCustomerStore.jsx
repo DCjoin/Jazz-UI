@@ -13,7 +13,6 @@ let CHANGE_EVENT = 'change';
 let _customers = null;
 let _currentCustomer = null;
 let _currentUser = null;
-let _currentPrivilege = null;
 
 let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
   setCustomer: function(customer) {
