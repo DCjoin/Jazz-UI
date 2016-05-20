@@ -104,10 +104,13 @@ var TreeNodeContent = React.createClass({
       "jazz-icon-read": (isSenderCopy && !isRead)
     })}/>;
 
-
+  var {indent,indentUnit,nodeOriginPaddingLeft}=this.props.panel.props;
     return (
       <div className="tree-node-content" onClick={this._onClick} style={{
-        color: '#ffffff'
+        color: '#ffffff',
+        whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden'
       }}>
                {icon}
                {text}
