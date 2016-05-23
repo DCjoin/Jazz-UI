@@ -123,6 +123,13 @@ I18N.ResetPassword.Welcome2 = ',please reset your password.';
 I18N.ResetPassword.SuccessTitle = 'Reset password successfully';
 I18N.ResetPassword.SuccessTips = 'Your password has been reset successfully, please click "continue" to return login page.';
 
+I18N.InitPassword = {};
+I18N.InitPassword.Title = 'Set password';
+I18N.InitPassword.Welcome1 = 'Hi,';
+I18N.InitPassword.Welcome2 = ',please set your password.';
+I18N.InitPassword.SuccessTitle = 'Set password successfully';
+I18N.InitPassword.SuccessTips = 'Your password has been set successfully, please click "continue" to return login page.';
+
 I18N.SelectCustomer = {};
 I18N.SelectCustomer.Title = "Select customer";
 I18N.SelectCustomer.SysManagement = "EnergyMost sys-management";

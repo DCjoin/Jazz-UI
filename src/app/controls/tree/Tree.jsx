@@ -225,22 +225,18 @@ var Tree = React.createClass({
       },
       invalid: function(el, target) {
         var id = parseInt(el.id);
-        console.log('id=' + id);
         if (!!EditNode) {
           if (id == EditNode.get('Id')) {
-            console.log('1');
             return true;
           }
         }
 
         if (ifGragulaInvalid) {
           if (ifGragulaInvalid(id)) {
-            console.log('2');
             return true;
           }
         }
         if (parseInt(target.id) === -1) {
-          console.log('3');
           return true;
         }
         return false;
@@ -265,7 +261,6 @@ var Tree = React.createClass({
 
   },
   componentWillUnmount: function() {
-    console.log('componentWillUnmount');
     drake.destroy();
   },
   render: function() {

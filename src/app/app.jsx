@@ -12,6 +12,7 @@ import Login from './components/Login.jsx';
 import MainApp from './components/MainApp.jsx';
 import resetPSWApp from './components/resetPSWApp.jsx';
 import demoLoginApp from './components/DemoLogin.jsx';
+import initChangePSWApp from './components/initChangePSW.jsx';
 import contactusApp from './components/ContactUS.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
@@ -82,6 +83,7 @@ var routes = (
       <Route name="contactus" path="contactus" handler={contactusApp}/>
       <Route name="resetPSW" path="u=:user&t=:token&a=resetpwd&lang=:lang" handler={resetPSWApp}/>
       <Route name="demoLogin" path="u=:user&t=:token&a=demologin&lang=:lang" handler={demoLoginApp}/>
+      <Route name="initChangePSW" path="u=:user&t=:token&a=initpwd&lang=:lang" handler={initChangePSWApp}/>
       <Route name="main" path=":customerId?" handler={MainApp}>
         <Route name='map' path='map' handler={MapPanel}></Route>
         <Route name="alarm" path="alarm" handler={Alarm}></Route>
