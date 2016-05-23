@@ -4,7 +4,9 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import events from 'events';
 import assign from 'object-assign';
-import SelectCustomerActionType from '../constants/actionType/SelectCustomer.jsx';
+import SelectCustomer from '../constants/actionType/SelectCustomer.jsx';
+import CurrentUser from '../constants/actionType/CurrentUser.jsx';
+import CurrentUserStore from './CurrentUserStore.jsx';
 
 let {EventEmitter} = events;
 let CHANGE_EVENT = 'change';
@@ -28,6 +30,13 @@ let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
   getCurrentUser: function(argument) {
     return _currentUser;
   },
+  ifEmitCustomerrChange: function() {
+    var that = this;
+    var currentPrivilege = CurrentUserStore.getCurrentPrivilege();
+    if (currentPrivilege !== null && _customers !== null) {
+      that.emitChange();
+    }
+  },
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -42,13 +51,19 @@ let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
   },
 });
 
+var currentUserAction = CurrentUser.Action,
+  selectCustomerAction = SelectCustomer.Action;
 CurrentUserCustomerStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
-    case SelectCustomerActionType.Action.GET_SELECT_CUSTOMERS:
+    case selectCustomerAction.GET_SELECT_CUSTOMERS:
       CurrentUserCustomerStore.init(action.data);
+      // CurrentUserCustomerStore.ifEmitCustomerrChange();
       CurrentUserCustomerStore.emitChange();
       break;
-    case SelectCustomerActionType.Action.SELECT_ACCOUNT_SUCCESS:
+    // case currentUserAction.GET_ROLE:
+    //   CurrentUserCustomerStore.ifEmitCustomerrChange();
+    //   break;
+    case selectCustomerAction.SELECT_ACCOUNT_SUCCESS:
       CurrentUserCustomerStore.setCustomer(action.data);
       CurrentUserCustomerStore.emitChange();
       break;

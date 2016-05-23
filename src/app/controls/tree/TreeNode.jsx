@@ -277,6 +277,7 @@ var TreeNode = React.createClass({
     var checkboxThemeProps = {};
     var type = nodeData.get("Type");
     var isAsset = nodeData.get("isAsset");
+    var {indent, indentUnit} = this.props;
     var icon = (
     <div className="node-content-icon">
           <div className={classNames({
@@ -313,7 +314,7 @@ var TreeNode = React.createClass({
       <div className={classNames({
         "tree-node-content": true,
         "tree-node-content-no-privilege": this.props.disabled
-      })} {...checkboxThemeProps}>
+      })} {...checkboxThemeProps} style={{maxWidth:300-Number(indent * indentUnit) - this.props.nodeOriginPaddingLeft}}>
         {icon}
         {text}
 
@@ -343,7 +344,9 @@ var TreeNode = React.createClass({
       <div {...treeNodeProps}>
        {this.generateArrow(nodeData.get("Children") && nodeData.get("Children").size > 0)}
         {this.props.hasCheckBox ? this.generateCheckbox() : null}
-       <div className="content">
+       <div className="content" style={{ whiteSpace: 'nowrap',
+           textOverflow: 'ellipsis',
+           overflow: 'hidden'}}>
         {this.props.generateNodeConent ? this.props.generateNodeConent(this.props.nodeData) : this.generateNodeConent(this.props.nodeData)}
        </div>
       </div>

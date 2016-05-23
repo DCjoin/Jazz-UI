@@ -142,28 +142,25 @@ var Building = React.createClass({
       <ViewableTextField  {...NameProps} />
         {
       isAdd ? null :
-        <div className="pop-user-detail-tabs" style={{
-          width: '625px',
-          minWidth: '625px'
-        }}>
+        <div className="jazz-building-tabs">
     <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
+          "jazz-building-tabs-tab": true,
           "selected": that.props.infoTabNo === 1
         })} data-tab-index="1" onClick={that.props.handlerSwitchTab}>{I18N.Setting.TOUTariff.BasicProperties}</span>
     <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
+          "jazz-building-tabs-tab": true,
           "selected": that.props.infoTabNo === 2
         })} data-tab-index="2" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Organization.AssociateTag}</span>
         <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
+          "jazz-building-tabs-tab": true,
           "selected": that.props.infoTabNo === 3
         })} data-tab-index="3" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Organization.HierarchyNodeCalendarProperties}</span>
         <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
+          "jazz-building-tabs-tab": true,
           "selected": that.props.infoTabNo === 4
         })} data-tab-index="4" onClick={that._handlerSwitchTabForCost}>{I18N.Setting.Building.HierarchyNodeCostProperties}</span>
         <span className={classnames({
-          "pop-user-detail-tabs-tab": true,
+          "jazz-building-tabs-tab": true,
           "selected": that.props.infoTabNo === 5
         })} data-tab-index="5" onClick={that.props.handlerSwitchTab}>{I18N.Setting.Building.HierarchyNodePopulationNAreaProperties}</span>
   </div>
