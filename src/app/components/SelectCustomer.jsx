@@ -11,6 +11,7 @@ import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.
 import LoginStore from '../stores/LoginStore.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
+import CommodityStore from '../stores/CommodityStore.jsx';
 
 var timeoutHandler = null;
 var _ = {
@@ -46,12 +47,12 @@ var SelectCustomer = React.createClass({
   _onClose() {
     var me = this;
 
-    if (window.toMainApp){
+    if (window.toMainApp) {
       me.context.router.replaceWith('workday', {
         lang: window.currentLanguage === 0 ? 'zh-cn' : 'en-us',
-        cusnum:  CurrentUserCustomerStore.getAll().length
+        cusnum: CurrentUserCustomerStore.getAll().length
       });
-    }else {
+    } else {
       this.props.close();
     }
   },
@@ -59,6 +60,7 @@ var SelectCustomer = React.createClass({
     if (this.state.currentIndex == selectedIndex) {
       var customerList = CurrentUserCustomerStore.getAll();
       this._saveSelectCustomer(customerList[selectedIndex]);
+      CommodityStore.resetHierInfo();
     } else {
       this.setState({
         currentIndex: selectedIndex
@@ -150,15 +152,15 @@ var SelectCustomer = React.createClass({
     }, 400);
   },
 
-  _sysManagement(){
+  _sysManagement() {
     var me = this;
 
-    if (window.toMainApp){
+    if (window.toMainApp) {
       me.context.router.replaceWith('workday', {
         lang: window.currentLanguage === 0 ? 'zh-cn' : 'en-us',
-        cusnum:  CurrentUserCustomerStore.getAll().length
+        cusnum: CurrentUserCustomerStore.getAll().length
       });
-    }else {
+    } else {
       this._saveSelectCustomer({
         CustomerId: -1
       });
