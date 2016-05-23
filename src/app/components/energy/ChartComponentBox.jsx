@@ -221,10 +221,11 @@ let defaultConfig = {
     verticalAlign: 'top',
     y: 40,
     x: -25,
-    useHTML: true,
-    labelFormatter: function() {
-      return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name.replace('<br/>', '&#10;') + '">' + this.name + '</div>';
-    },
+    //注释掉是因为加上这个以后解决了一行太长的问题，但是带来的问题是图例不翻页了。升级highstock以后可以同时解决这两个问题
+    // useHTML: true,
+    // labelFormatter: function() {
+    //   return '<div style="max-width:100px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" title="' + this.name.replace('<br/>', '&#10;') + '">' + this.name + '</div>';
+    // },
     itemStyle: {
       cursor: 'default',
       color: '#3b3b3b',
