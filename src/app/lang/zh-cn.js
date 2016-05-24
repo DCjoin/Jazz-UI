@@ -104,6 +104,9 @@ I18N.Login.TrialUseTips = '请填写邮箱地址，用来接收产品试用链�
 I18N.Login.TrialUseTitle = '云能效管理平台';
 I18N.Login.TrialUseSussTip1 = '试用产品的邮件已发送至';
 I18N.Login.TrialUseSussTip2 = '点击邮件中的链接以试用云能效管理平台。';
+I18N.Login.NoPriTitle = '无法登录云能效管理平台';
+I18N.Login.NoPriDetail = '您的帐号没有任何数据权限，请联系您的服务商管理员。';
+I18N.Login.NoPriButton = '返回登录页面';
 
 I18N.ContactUS = {};
 I18N.ContactUS.Tips = '如有任何问题或需要，欢迎随时联系我们。';
