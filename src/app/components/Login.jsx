@@ -440,11 +440,11 @@ var ForgetPSWDialog = React.createClass({
       <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true} contentStyle={{
         width: '590px'
       }}>
-            <div>{I18N.Login.ForgerPSWTips}</div>
+            <div style={{fontSize:'14px'}}>{I18N.Login.ForgerPSWTips}</div>
             <br></br>
             <ViewableTextField {...usernameProps}/>
             <ViewableTextField {...emailProps}/>
-            <div>{I18N.Login.ForgeremailTips}</div>
+            <div style={{fontSize:'14px'}}>{I18N.Login.ForgeremailTips}</div>
         </Dialog>
       );
   }
@@ -505,7 +505,7 @@ var DemoApplyDialog = React.createClass({
 
     return (
       <Dialog title={I18N.Login.TrialUse} openImmediately={true} modal={true} actions={actions}>
-              <div>{I18N.Login.TrialUseTips}</div>
+              <div style={{fontSize:'14px'}}>{I18N.Login.TrialUseTips}</div>
               <ViewableTextField {...emailProps}/>
           </Dialog>
       );
