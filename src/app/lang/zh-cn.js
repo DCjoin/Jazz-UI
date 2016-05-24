@@ -1141,7 +1141,7 @@ I18N.Message.M05032 = '该名称已存在';
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
 *******/
-
+I18N.Message.M06001 = '该层级节点已不存在。';
 I18N.Message.M06100 = '数据点已经被删除，无法加载。';
 I18N.Message.M06104 = '该名称已存在';
 I18N.Message.M06107 = '该编码已存在';

@@ -1140,7 +1140,7 @@ I18N.Message.M05032 = 'Same room existed';
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
 *******/
-
+I18N.Message.M06001 = 'This Hierarchy node does not exist。';
 I18N.Message.M06100 = 'Tag has been deleted and cannot be loaded.';
 I18N.Message.M06104 = 'The name already exists.';
 I18N.Message.M06107 = 'The code already exists.';
