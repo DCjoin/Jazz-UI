@@ -104,6 +104,9 @@ I18N.Login.TrialUseTips = 'Please enter your e-mail address to receive the produ
 I18N.Login.TrialUseTitle = 'Schneider Electric EnergyMost';
 I18N.Login.TrialUseSussTip1 = 'E-mail has been sent to ';
 I18N.Login.TrialUseSussTip2 = 'Click the link in e-mail to use Schneider Electric EnergyMost';
+I18N.Login.NoPriTitle = 'Unable to log in Schneider Electric EnergyMost';
+I18N.Login.NoPriDetail = 'Customer or data authority is not configured. Please contact your administrator.';
+I18N.Login.NoPriButton = 'back to Login';
 
 I18N.ContactUS = {};
 I18N.ContactUS.Tips = 'If you have any questions or requirements, please feel free to contact us.';

@@ -415,14 +415,14 @@ var MessageDialog = React.createClass({
   render: function() {
     let cancelProps = {
       onClick: this._cancelApply,
-      label: '返回登录页面' //I18N.Common.Button.Cancel
+      label: I18N.Login.NoPriButton
     };
     let actions = [<CusFlatButton {...cancelProps} />];
     return (
-      <Dialog title={'无法登录云能效管理平台'} actions={actions} modal={true} openImmediately={true}  contentStyle={{
-        width: '600px'
+      <Dialog title={I18N.Login.NoPriTitle} actions={actions} modal={true} openImmediately={true}  contentStyle={{
+        width: '640px'
       }}>
-				<div>您的帐号没有任何数据权限，请联系您的服务商管理员。</div>
+				<div style={{fontSize:'14px'}}>{I18N.Login.NoPriDetail}</div>
 			</Dialog>
       );
   }
