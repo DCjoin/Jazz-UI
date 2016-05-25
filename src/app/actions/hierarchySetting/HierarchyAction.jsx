@@ -448,6 +448,11 @@ let HierarchyAction = {
       }
     });
   },
+  resetAll: function() {
+    AppDispatcher.dispatch({
+      type: Action.RESET_ALL_FOR_HIERARCHY,
+    });
+  },
 };
 
 module.exports = HierarchyAction;

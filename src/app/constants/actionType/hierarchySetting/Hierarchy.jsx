@@ -24,7 +24,8 @@ module.exports = {
     MODIFY_HIERARCHY_PATH: null,
     SET_ENERGY_CONSUMPTION: null,
     GET_COST_BY_HIERARCHY: null,
-    SAVE_COST_BY_HIERARCHY_SUCCESS: null
+    SAVE_COST_BY_HIERARCHY_SUCCESS: null,
+    RESET_ALL_FOR_HIERARCHY: null
   })
 
 };

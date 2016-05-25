@@ -12,7 +12,7 @@ import LoginStore from '../stores/LoginStore.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
-
+import HierarchyAction from '../actions/hierarchySetting/HierarchyAction.jsx';
 var timeoutHandler = null;
 var _ = {
   findIndex: _findIndex
@@ -61,6 +61,7 @@ var SelectCustomer = React.createClass({
       var customerList = CurrentUserCustomerStore.getAll();
       this._saveSelectCustomer(customerList[selectedIndex]);
       CommodityStore.resetHierInfo();
+      HierarchyAction.resetAll();
     } else {
       this.setState({
         currentIndex: selectedIndex
