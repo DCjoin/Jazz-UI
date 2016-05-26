@@ -64,10 +64,13 @@ var Cost = React.createClass({
 
   },
   _onChange: function() {
+    var that = this;
     this.props.onShowFooter(true);
     this.setState({
       cost: HierarchyStore.getCost(),
       isLoading: false
+    }, () => {
+      that._onCheckDisabled();
     })
   },
   _formatTime(time) {
@@ -75,10 +78,8 @@ var Cost = React.createClass({
       m = time % 60;
     return ((h < 10) ? '0' : '') + h + ':' + ((m < 10) ? '0' : '') + m
   },
-  _onCheckDisabled: function(data) {
-    var {status, path, value, index} = data,
-      paths = path.split("."),
-      mData = this.state.cost.get('CostCommodities'),
+  _onCheckDisabled: function() {
+    var mData = this.state.cost.get('CostCommodities'),
       flag = false;
     if (mData !== null) {
       mData.forEach(data => {
@@ -91,16 +92,16 @@ var Cost = React.createClass({
                 flag = true;
               }
             } else {
-              let {HourPrice, PaddingCost, DemandCostType, TransformerCapacity, TransformerPrice} = item.get('ComplexItem').toJS(),
+              let {HourPrice, PaddingCost, DemandCostType, TransformerCapacity, TransformerPrice, ReactiveTagId, RealTagId, HourTagId} = item.get('ComplexItem').toJS(),
                 {ReactiveTags, RealTags, TouTariffs} = this.state.cost.toJS();
               if (ReactiveTags.length === 0 || RealTags.length === 0 || TouTariffs.length === 0) {
                 flag = true;
               }
-              if (DemandCostType === 2 && (!HourPrice || HourPrice === '' || !Regex.FactorRule.test(HourPrice) || HourPrice.length > 16 || this.state.cost.get('HourTags').size === 0)) {
+              if (DemandCostType === 2 && (!HourPrice || HourPrice === '' || !Regex.FactorRule.test(HourPrice) || HourPrice.length > 16 || this.state.cost.get('HourTags').size === 0 || !HourTagId)) {
                 flag = true;
               }
               if (DemandCostType === 1 && (!TransformerPrice || TransformerPrice === '' || !Regex.FactorRule.test(TransformerPrice) || TransformerPrice.length > 16 ||
-                !TransformerCapacity || TransformerCapacity === '' || !Regex.FactorRule.test(TransformerCapacity) || TransformerCapacity.length > 16)) {
+                !TransformerCapacity || TransformerCapacity === '' || !Regex.FactorRule.test(TransformerCapacity) || TransformerCapacity.length > 16 || !ReactiveTagId || !RealTagId)) {
                 flag = true;
               }
               if (PaddingCost) {
@@ -175,7 +176,7 @@ var Cost = React.createClass({
           let tagIdPath = assign([], paths);
           mData = mData.setIn(capPath, null);
           mData = mData.setIn(pricePath, null);
-          mData = mData.setIn(tagIdPath, mData.getIn(['HourTags', 0, 'Id']));
+          mData = mData.setIn(tagIdPath, null);
         }
       } else if (paths[paths.length - 1] === 'CommodityId') {
         mData = mData.setIn(paths, value);
@@ -189,7 +190,7 @@ var Cost = React.createClass({
     this.setState({
       cost: mData
     }, () => {
-      that._onCheckDisabled(data);
+      that._onCheckDisabled();
     });
   },
   _handelAddPower: function() {
@@ -283,8 +284,8 @@ var Cost = React.createClass({
         DemandCostType: 1,
         TouTariffId: that.state.cost.getIn(['TouTariffs', 0, 'Id']),
         FactorType: 1,
-        RealTagId: that.state.cost.getIn(['RealTags', 0, 'Id']),
-        ReactiveTagId: that.state.cost.getIn(['ReactiveTags', 0, 'Id'])
+        RealTagId: null,
+        ReactiveTagId: null
       };
       that.merge({
         path: 'CostCommodities' + '.' + index + '.' + 'Items' + '.' + id + '.' + 'ComplexItem',
@@ -571,14 +572,18 @@ var Cost = React.createClass({
     var renderTimeMode = function() {
       var {HourPrice, HourTagId} = complexItem.toJS();
       var selectedId = 0,
-        titleItems = [];
+        titleItems = [{
+          payload: 0,
+          text: I18N.Common.Label.CommoEmptyText,
+          disabled: true
+        }];
       that.state.cost.get('HourTags').forEach((tag, index) => {
         titleItems.push({
-          payload: index,
+          payload: index + 1,
           text: tag.get('Name')
         });
         if (tag.get('Id') === HourTagId) {
-          selectedId = index;
+          selectedId = index + 1;
         }
       });
 
@@ -594,7 +599,7 @@ var Cost = React.createClass({
           didChanged: value => {
             that.merge({
               path: path + 'HourTagId',
-              value: that.state.cost.get('HourTags').getIn([value, 'Id'])
+              value: that.state.cost.get('HourTags').getIn([value - 1, 'Id'])
             })
           }
         },
@@ -739,24 +744,32 @@ var Cost = React.createClass({
       var {RealTagId, ReactiveTagId} = complexItem.toJS();
       var selectedRealId = 0,
         selectedReactiveId = 0,
-        realTitleItems = [],
-        reactiveTitleItems = [];
+        realTitleItems = [{
+          payload: 0,
+          text: I18N.Common.Label.CommoEmptyText,
+          disabled: true
+        }],
+        reactiveTitleItems = [{
+          payload: 0,
+          text: I18N.Common.Label.CommoEmptyText,
+          disabled: true
+        }];
       that.state.cost.get('RealTags').forEach((tag, index) => {
         realTitleItems.push({
-          payload: index,
+          payload: index + 1,
           text: tag.get('Name')
         });
         if (tag.get('Id') === RealTagId) {
-          selectedRealId = index;
+          selectedRealId = index + 1;
         }
       });
       that.state.cost.get('ReactiveTags').forEach((tag, index) => {
         reactiveTitleItems.push({
-          payload: index,
+          payload: index + 1,
           text: tag.get('Name')
         });
         if (tag.get('Id') === ReactiveTagId) {
-          selectedReactiveId = index;
+          selectedReactiveId = index + 1;
         }
       });
       var realTagProps = {
@@ -771,7 +784,7 @@ var Cost = React.createClass({
           didChanged: value => {
             that.merge({
               path: path + 'RealTagId',
-              value: that.state.cost.getIn(['RealTags', value, 'Id'])
+              value: that.state.cost.getIn(['RealTags', value - 1, 'Id'])
             })
           }
         },
@@ -787,7 +800,7 @@ var Cost = React.createClass({
           didChanged: value => {
             that.merge({
               path: path + 'ReactiveTagId',
-              value: that.state.cost.getIn(['ReactiveTags', value, 'Id'])
+              value: that.state.cost.getIn(['ReactiveTags', value - 1, 'Id'])
             })
           }
         };
