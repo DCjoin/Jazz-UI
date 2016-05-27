@@ -14,6 +14,8 @@ let TagAction = {
     //        type: Action.SET_NODE_LOAGDING
     //   });
     // },0);
+    console.log('loadData_filters=');
+    console.log(filters);
     Ajax.post('/Tag/GetTagsByFilter?', {
       params: {
         filter: {

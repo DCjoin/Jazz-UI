@@ -25,6 +25,7 @@ var tagStatus = [];
 var selectTotal = 0;
 var page = 0;
 var alarmTagOption = null;
+var timeoutID = null;
 
 
 
@@ -119,6 +120,8 @@ let DataSelectMainPanel = React.createClass({
 
   _onTagNodeChange: function() {
     var data = TagStore.getData();
+    console.log('_onTagNodeChange');
+    console.log(data);
     this.setState({
       tagList: data.Data,
       total: data.total,
@@ -243,8 +246,14 @@ let DataSelectMainPanel = React.createClass({
         React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
         filters = null;
       }
-      page = 1;
-      TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+      if (timeoutID) {
+        clearTimeout(timeoutID);
+      }
+      timeoutID = setTimeout(() => {
+        page = 1;
+        TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+      }, 200);
+
     }
 
 
