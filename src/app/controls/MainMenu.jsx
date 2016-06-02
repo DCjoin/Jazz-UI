@@ -23,7 +23,7 @@ var ListMenu = React.createClass({
       paddingLeft: '0px',
       paddingRight: '0px',
       paddingTop: '0px',
-      width: this.props.isActive ? '120px' : '100px'
+      width: this.props.isActive ? '120px' : '110px'
     };
     var menuItems = this.props.menuItems.map((item) => {
       return <MenuItem primaryText={item.title} name={item.name} style={menuStyle}/>;
