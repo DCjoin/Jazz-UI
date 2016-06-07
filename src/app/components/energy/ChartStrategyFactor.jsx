@@ -3077,8 +3077,7 @@ let ChartStrategyFactor = {
             showSumDialog: true
           });
           break;
-        case 'background':
-          {
+        case 'background':{
           subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -3136,8 +3135,7 @@ let ChartStrategyFactor = {
     handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
       let itemValue = menuItem.props.value;
       switch (itemValue) {
-        case 'background':
-          {
+        case 'background':{
           var subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -4913,7 +4911,7 @@ let ChartStrategyFactor = {
 
       let params = {
         title: title,
-        tagIds: tagIds,
+        tagIds: [],
         viewOption: viewOption
       };
 
@@ -4922,7 +4920,7 @@ let ChartStrategyFactor = {
         dimName: null,
         dimId: null
       });
-      params.nodeNameAssociation = nodeNameAssociation;
+      params.nodeNameAssociation = [];
 
       let charTypes = [];
       if (chartType !== 'rawdata') {
@@ -4936,6 +4934,8 @@ let ChartStrategyFactor = {
             if (serie) {
               if (serie.IsDisplay) {
                 curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
+                params.tagIds.push(tagIds[i]);
+                params.nodeNameAssociation.push(nodeNameAssociation[i]);
               } else {
                 curChartType = 'null';
               }
@@ -4945,7 +4945,10 @@ let ChartStrategyFactor = {
           } else {
             curChartType = chartType;
           }
-          charTypes.push(curChartType);
+          if (curChartType !== 'null') {
+            charTypes.push(curChartType);
+          }
+
         }
       }
       params.charTypes = charTypes;
