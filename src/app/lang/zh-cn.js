@@ -961,6 +961,11 @@ I18N.Setting.Tag.PTagRawData.normal = '正常值';
 I18N.Setting.Tag.PTagRawData.abnormal = '异常值';
 I18N.Setting.Tag.PTagRawData.repair = '修复值';
 
+I18N.ServerError = {};
+I18N.ServerError.BtnLabel = '好';
+I18N.ServerError.Title = '登录超时';
+I18N.ServerError.Message = '系统发生错误，可能是长时间未操作，请重新登录';
+
 
 I18N.Message = {};
 

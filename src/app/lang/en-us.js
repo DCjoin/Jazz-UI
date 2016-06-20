@@ -961,6 +961,11 @@ I18N.Setting.Tag.PTagRawData.normal = 'Normal';
 I18N.Setting.Tag.PTagRawData.abnormal = 'Abnormal';
 I18N.Setting.Tag.PTagRawData.repair = 'Modify';
 
+I18N.ServerError = {};
+I18N.ServerError.BtnLabel = 'OK';
+I18N.ServerError.Title = 'Login timeout';
+I18N.ServerError.Message = 'System error, may be have not operate in a long time, please relogin';
+
 I18N.Message = {};
 
 I18N.Message.DeletionConcurrency = '{0} does not exist. We will refresh it immediately.';
