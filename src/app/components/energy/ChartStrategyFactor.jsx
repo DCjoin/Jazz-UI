@@ -4911,7 +4911,7 @@ let ChartStrategyFactor = {
 
       let params = {
         title: title,
-        tagIds: [],
+        tagIds: tagIds,
         viewOption: viewOption
       };
 
@@ -4920,7 +4920,7 @@ let ChartStrategyFactor = {
         dimName: null,
         dimId: null
       });
-      params.nodeNameAssociation = [];
+      params.nodeNameAssociation = nodeNameAssociation;
 
       let charTypes = [];
       if (chartType !== 'rawdata') {
@@ -4934,8 +4934,6 @@ let ChartStrategyFactor = {
             if (serie) {
               if (serie.IsDisplay) {
                 curChartType = ChartStatusStore.getChartTypeByNum(serie.ChartType);
-                params.tagIds.push(tagIds[i]);
-                params.nodeNameAssociation.push(nodeNameAssociation[i]);
               } else {
                 curChartType = 'null';
               }
@@ -4945,10 +4943,7 @@ let ChartStrategyFactor = {
           } else {
             curChartType = chartType;
           }
-          if (curChartType !== 'null') {
-            charTypes.push(curChartType);
-          }
-
+          charTypes.push(curChartType);
         }
       }
       params.charTypes = charTypes;
