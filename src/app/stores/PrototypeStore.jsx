@@ -23,6 +23,25 @@ var PrototypeStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
     this.dispose();
   },
+  emitError: function(error) {
+    this.emit("onerror",error);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  addErrorListener: function(callback) {
+    this.on("onerror", callback);
+  },
+
+  /**
+   * @param {function} callback
+   */
+  removeErrorListener: function(callback) {
+    this.removeListener("onerror", callback);
+
+},
+
   dispose(){}
 });
 

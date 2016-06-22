@@ -4,6 +4,7 @@ import request from 'superagent';
 import Path from '../constants/Path.jsx';
 import Util from '../util/Util.jsx';
 import Config from 'config';
+import AjaxAction from '../actions/Ajax.jsx';
 
 /**
  *
@@ -43,7 +44,12 @@ var _ajax = function(url, options) {
     				success.call(options, Util.getResResult(res.body));
         	} else {
 						if(res.body){
-							Util.ErrorHandler(options, res.body.error.Code);
+							if (res.status == 401) {
+								// session timeout or not auth
+								AjaxAction.handleGlobalError(401);
+							}else {
+								Util.ErrorHandler(options, res.error.status);
+							}
 						}else if(res.text){
 							let errorObj = JSON.parse(res.text);
 							Util.ErrorHandler(options, errorObj.error.Code);
