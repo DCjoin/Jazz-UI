@@ -434,7 +434,9 @@ let PlatformContent = React.createClass({
     } else {
       if (error.indexOf('002') > -1) {
         content = I18N.Platform.ServiceProvider.Error002
-      } else {
+      } else if (error.indexOf('007') > -1) {
+        content = I18N.Platform.ServiceProvider.Error007
+      } else{
         content = I18N.Platform.ServiceProvider.Error003;
       }
     }

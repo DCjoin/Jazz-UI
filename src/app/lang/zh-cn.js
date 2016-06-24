@@ -1679,6 +1679,7 @@ I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
 I18N.Platform.ServiceProvider.Error002 = '该服务商ID已存在！';
 I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
+I18N.Platform.ServiceProvider.Error007='该服务商子域名已存在!';
 I18N.Platform.ServiceProvider.ErrorNotice = '错误提示';
 
 I18N.Platform.ServiceProvider.SPName = '服务商名称';
