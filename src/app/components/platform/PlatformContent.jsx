@@ -425,7 +425,7 @@ let PlatformContent = React.createClass({
       that.setState({
         dialogType: ''
       })
-      if (error.indexOf('002') < 0) {
+      if (error.indexOf('002') < 0 && error.indexOf('007') < 0) {
         PlatformAction.getServiceProviders();
       }
     };
