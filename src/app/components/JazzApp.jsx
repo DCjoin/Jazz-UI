@@ -93,6 +93,7 @@ let JazzApp = React.createClass({
     } else {
       url = url.replace('en-us', 'zh-cn');
     }
+    me._setHighchartConfig();
     var index0 = url.indexOf('#'),
       index1 = url.indexOf('?'),
       pre = index1 > -1 ? url.slice(0, index1) : url.slice(0, index0),
@@ -267,7 +268,7 @@ let JazzApp = React.createClass({
       window.I18N = b;
       var customerCode = params.customerId || query.customerId || window.currentCustomerId;
       var currentUser = window.currentUserId || getCookie('UserId');
-
+      me._setHighchartConfig();
       if (me.context.router.getCurrentPath().indexOf('resetpwd') > -1) {
         var {user, token, lang} = me.context.router.getCurrentParams();
         me.setState({
@@ -330,7 +331,6 @@ let JazzApp = React.createClass({
         });
       } else {
         //console.log('主页');
-        me._setHighchartConfig();
         CurrentUserAction.getUser(currentUser);
         me.setState({
           isLangLoaded: true,
