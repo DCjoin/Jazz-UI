@@ -48,7 +48,7 @@ var _ajax = function(url, options) {
 								// session timeout or not auth
 								AjaxAction.handleGlobalError(401);
 							}else {
-								Util.ErrorHandler(options, res.error.status);
+								Util.ErrorHandler(options, res.body.error.Code);
 							}
 						}else if(res.text){
 							let errorObj = JSON.parse(res.text);
