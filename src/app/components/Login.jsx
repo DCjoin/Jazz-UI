@@ -171,7 +171,7 @@ let Login = React.createClass({
   },
   _renderForgetPSWSnackbar() {
     var resetEmail = this.state.resetEmail;
-    if (resetEmail) {
+    if (resetEmail && LoginStore.getreqPSWReset()) {
       return (<Snackbar message={I18N.Login.ReqPSWResetTip1 + resetEmail} openOnMount={true}  onDismiss={this._dismissForgetPSWSnackbar}/>);
     }
     return null;
