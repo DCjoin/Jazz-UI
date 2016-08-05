@@ -40,7 +40,7 @@ var UserItem = React.createClass({
     }
 
     return (
-      <li className={classnames({
+      <div className={classnames({
         "pop-manage-list-item": true,
         "pop-user-list-item": true,
         selected: this.props.selected
@@ -66,7 +66,7 @@ var UserItem = React.createClass({
 				</div>
         : null
       }
-			</li>
+    </div>
       );
   }
 });
@@ -125,7 +125,10 @@ module.exports = React.createClass({
     }
 
     return (
-      <div className="pop-manage-list pop-framework-left">
+      <div className="jazz-folder-leftpanel-container" style={{
+          color:'#fff',
+          backgroundColor:'#354052'
+        }}>
 				<div className="pop-manage-list-title pop-framework-left-title">
 					<div className="pop-manage-list-title-action">
 
@@ -143,13 +146,13 @@ module.exports = React.createClass({
 					</div>
 				</div>
 				{filterReset}
-				<ul className={
+				<div className={
       classnames({
-        "pop-manage-list-content": true,
+        "jazz-provider-list": true,
         "pop-user-list-empty-content": filterNotEmpty && users.size < 1
       })}>
 					{userItems}
-				</ul>
+				</div>
 			</div>
       );
   }
