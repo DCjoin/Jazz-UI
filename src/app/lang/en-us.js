@@ -584,7 +584,7 @@ I18N.EM.Report.TagSelectionTitle = 'Select a tag';
 I18N.EM.Report.TagShouldNotBeEmpty = 'Please select at least one tag';
 
 I18N.EM.Report.NonReportCriteria = 'Include at least one set of report data';
-I18N.EM.Report.WrongExcelFile = 'Template format is wrong. Only xls or xlsx files are supprted.';
+I18N.EM.Report.WrongExcelFile = 'Template format is wrong. Only xls or xlsx files are supported.';
 I18N.EM.Report.TemplateHasBeenRefed = 'Report template {0} can not be deleted because it is used now. Please retry it after remove all associations.';
 I18N.EM.Report.RefObject = 'Referred Object:';
 I18N.EM.Report.UploadingTemplate = 'Importing file {0}.';
