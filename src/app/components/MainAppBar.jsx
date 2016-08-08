@@ -143,6 +143,7 @@ var MainAppBar = React.createClass({
     lastLink = event.target.textContent;
   },
   _onRefresh: function() {
+    window.currentUser=currentUser();
     this.forceUpdate();
   },
   // ************* Change State Start *************
