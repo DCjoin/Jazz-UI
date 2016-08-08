@@ -32,9 +32,12 @@ let ReportItem = React.createClass({
           'jazz-report-grid-tr-item': true,
           'jazz-report-grid-tr-item-selected': !!isSeleted
         }
-      )} onClick={me._onItemSelected}>
+      )} onClick={me._onItemSelected} title={me.props.name}>
         <div style={{
-        color: '#ffffff'
+        color: '#ffffff',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
       }}>{me.props.name}</div>
         <div style={{
         color: '#adb0b8'
