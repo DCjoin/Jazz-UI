@@ -24,6 +24,7 @@ const POPUP_POSITION_LEFT_TOP_Y = -35;
 const POPUP_POSITION_LEFT_BOTTOM_X = -135;
 const POPUP_POSITION_LEFT_BOTTOM_Y = 225;
 
+var buildingId=null;
 
 let MapPanel = React.createClass({
   mixins: [Navigation, State],
@@ -103,6 +104,7 @@ let MapPanel = React.createClass({
           var id = target.getExtData()["id"];
           var html = this._genIconHtml(id, true);
           var marker = this.state.markers[id];
+          buildingId=id;
           MapAction.GetMapBuildingByBuildingId(marker.id);
           target.setContent(html);
           this.setState({
@@ -252,7 +254,7 @@ let MapPanel = React.createClass({
       if (!this.state.popup.show) {
         this._map.clearInfoWindow();
       } else {
-        if (this.state.item !== null) {
+        if (this.state.item !== null && buildingId===this.state.item.id) {
           var marker = this.state.item;
           var position = this._determinePopupPosition(marker);
           this._popupWindow = new AMap.InfoWindow({
