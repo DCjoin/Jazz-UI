@@ -2679,7 +2679,7 @@ let ChartStrategyFactor = {
           margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
 
-             <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+      {analysisPanel.state.timeRanges?<StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
              <div style={{
           margin: '5px 30px 0px auto'
         }}>
@@ -2756,7 +2756,7 @@ let ChartStrategyFactor = {
           margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
 
-             <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+      {analysisPanel.state.timeRanges?<StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
              <div style={{
           margin: '5px 30px 0px auto'
         }}>
@@ -2820,7 +2820,7 @@ let ChartStrategyFactor = {
         <div style={{
           margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+      {analysisPanel.state.timeRanges?<StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
              <div style={{
           margin: '5px 30px 0px auto'
         }}>
@@ -2877,7 +2877,7 @@ let ChartStrategyFactor = {
         margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
-           <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+    {analysisPanel.state.timeRanges?<StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
            <div style={{
         margin: '5px 30px 0px auto'
       }}>
@@ -2912,7 +2912,7 @@ let ChartStrategyFactor = {
         margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
-           <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+    {analysisPanel.state.timeRanges?<StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
            <div style={{
         margin: '5px 30px 0px auto'
       }}>
@@ -2956,7 +2956,7 @@ let ChartStrategyFactor = {
         margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
-           <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+    {analysisPanel.state.timeRanges?<StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
            <div style={{
         margin: '5px 30px 0px auto'
       }}>
@@ -2999,7 +2999,7 @@ let ChartStrategyFactor = {
         margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
-           <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+    {analysisPanel.state.timeRanges?<StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
            <div style={{
         margin: '5px 30px 0px auto'
       }}>

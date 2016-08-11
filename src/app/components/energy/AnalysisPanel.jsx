@@ -813,7 +813,7 @@ let AnalysisPanel = React.createClass({
     if (this.state.selectedChartType == 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
       FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
     } else {
-      if (value && value !== 'Customerize') {
+      if (value && value !== 'Customerize' && dateSelector) {
         var timeregion = CommonFuns.GetDateRegion(value.toLowerCase());
         dateSelector.setDateField(timeregion.start, timeregion.end);
       }
@@ -920,6 +920,7 @@ let AnalysisPanel = React.createClass({
   },
   showStepError(step, EnergyStore) {
     let btns = [],
+    msgs=['UseRaw','UseHour','UseDay','UseMonth','','UseWeek'],
       msg = [],
       map = {
         Hour: 1,
@@ -932,27 +933,22 @@ let AnalysisPanel = React.createClass({
       timeRanges = paramsObj.timeRanges,
       limitInterval = CommonFuns.getLimitInterval(timeRanges),
       availableList = limitInterval.stepList;
-
+      msg = [msgs[paramsObj.step]];
     switch (step) {
       case 'Hourly':
         btns = ['Hour', 'Day', 'Week'];
-        msg = ['UseRaw'];
         break;
       case 'Daily':
         btns = ['Day', 'Week', 'Month'];
-        msg = ['UseHour'];
         break;
       case 'Weekly':
         btns = ['Week', 'Month', 'Year'];
-        msg = ['UseHour', 'UseDay'];
         break;
       case 'Monthly':
         btns = ['Month', 'Year'];
-        msg = ['UseHour', 'UseDay', 'UseWeek'];
         break;
       case 'Yearly':
         btns = ['Year'];
-        msg = ['UseHour', 'UseDay', 'UseMonth'];
         break;
     }
     var newBtns = [];
