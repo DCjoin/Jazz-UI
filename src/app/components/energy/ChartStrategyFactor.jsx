@@ -4724,7 +4724,7 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
       EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
-      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
+      TagStore.removeWeatherBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
     },
