@@ -676,6 +676,12 @@ let ChartStrategyFactor = {
       return widgetOptMenu;
     },
     getLabelWidgetOptMenu(analysisPanel) {
+      var user=window.currentUser || currentUser();
+      let widgetOptMenu = null;
+      // add for PM2.5
+      if(user.Name==='se'){
+        return widgetOptMenu
+      }
       var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
         fontSize: '16px'
       }} style={{
@@ -692,7 +698,7 @@ let ChartStrategyFactor = {
       };
       let selectedWidget = FolderStore.getSelectedNode();
       let buttonDisabled = (!analysisPanel.state.energyData || !selectedWidget.get('ChartType'));
-      let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+      widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
                               <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
                               <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
                               <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
