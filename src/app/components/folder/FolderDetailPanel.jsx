@@ -11,6 +11,10 @@ import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 import { getCookie } from '../../util/Util.jsx';
 
+function currentUser() {
+  return CurrentUserStore.getCurrentUser();
+}
+
 var FolderItem = React.createClass({
   propTypes: {
     nodeData: React.PropTypes.object,
@@ -80,7 +84,12 @@ var FolderItem = React.createClass({
       iconButtonElement: IconButtonElement,
       openDirection: "bottom-left",
     };
-    if (this.props.nodeData.get('Type') == 6) {
+    //add for PM2.5
+    var user=window.currentUser || currentUser();
+    if(user.Name==='se'){
+      menu=null;
+    }
+    else if (this.props.nodeData.get('Type') == 6) {
       menu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
             <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
             <MenuItem key={2} primaryText={I18N.Folder.Detail.Title.Menu2} style={menuStyle}/>
@@ -121,7 +130,7 @@ var FolderItem = React.createClass({
 
       }
     }
-    ;
+
     var image = this.getImage();
     return (
       <div className='jazz-folder-detail-item'>
@@ -175,6 +184,7 @@ var FolderDetailPanel = React.createClass({
   },
   render: function() {
     var that = this;
+    var user=window.currentUser || currentUser();
     var collapseButton = (
     <div className="fold-tree-btn pop-framework-right-actionbar-top-fold-btn" style={{
       "color": "#939796"
@@ -202,8 +212,8 @@ var FolderDetailPanel = React.createClass({
         content.push(<FolderItem key={child.get('Id')} nodeData={child} onOperationSelect={that._onItemMenuSelect}/>)
       })
     }
-    ;
-    var icon = (this.props.nodeData.get('Id') != -1) ? <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
+
+    var icon = (this.props.nodeData.get('Id') != -1 && user.Name!=='se') ? <IconMenu {...iconMenuProps} onItemTouchTap={this._onTitleMenuSelect}>
                                                   <MenuItem ref="Menu1" key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
                                                   <MenuItem ref="Menu2" key={2} primaryText={I18N.Folder.Detail.Title.Menu2} style={menuStyle}/>
                                                   <MenuItem ref="Menu3" key={3} primaryText={I18N.Folder.Detail.Title.Menu3} style={menuStyle}/>
