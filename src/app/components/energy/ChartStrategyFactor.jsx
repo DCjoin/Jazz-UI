@@ -53,6 +53,9 @@ let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
 let MenuDivider = require('material-ui/lib/menus/menu-divider');
 
+function currentUser() {
+  return CurrentUserStore.getCurrentUser();
+}
 
 let ChartStrategyFactor = {
   defaultStrategy: {
@@ -628,6 +631,13 @@ let ChartStrategyFactor = {
   },
   getWidgetOptMenuFnStrategy: {
     getWidgetOptMenu(analysisPanel) {
+      var user=window.currentUser || currentUser();
+      let widgetOptMenu = null;
+      // add for PM2.5
+      if(user.Name==='se'){
+        return widgetOptMenu
+      }
+
       var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
         fontSize: '16px'
       }} style={{
@@ -644,7 +654,7 @@ let ChartStrategyFactor = {
       };
       let selectedWidget = FolderStore.getSelectedNode();
       let buttonDisabled = (!analysisPanel.state.energyData || !selectedWidget.get('ChartType'));
-      let widgetOptMenu = null;
+
       if (!analysisPanel.props.isFromAlarm) {
         //  CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1
         if (CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1) {

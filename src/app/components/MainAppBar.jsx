@@ -205,21 +205,21 @@ var MainAppBar = React.createClass({
                         <ViewableTextField style={{
         width: "auto"
       }} isViewStatus={true} title={I18N.Platform.User.Name} defaultValue={user.Name}/> {!user.DemoStatus && <div>
-                            <LinkButton className="pop-userprofile-edit-button" onClick={this._editPassword} label={I18N.Platform.User.ResetPassword}/>
+                            {user.Name!=='se'?<LinkButton className="pop-userprofile-edit-button" onClick={this._editPassword} label={I18N.Platform.User.ResetPassword}/>:null}
                         </div>}
                     </li>
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
         width: "auto"
       }} isViewStatus={true} title={I18N.Platform.User.RealName} defaultValue={user.RealName}/> {!user.DemoStatus && <div>
-                            <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.DISPLAY_NAME)} label={I18N.Platform.User.Edit}/>
+                            {user.Name!=='se'?<LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.DISPLAY_NAME)} label={I18N.Platform.User.Edit}/>:null}
                         </div>}
                     </li>
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
         width: "auto"
       }} isViewStatus={true} title={I18N.Platform.User.Position} defaultValue={CurrentUserStore.getUserTitle()[user.Title]}/> {!user.DemoStatus && <div>
-                            <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.TITLE)} label={I18N.Platform.User.Edit}/>
+                            {user.Name!=='se'?<LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.TITLE)} label={I18N.Platform.User.Edit}/>:null}
                         </div>}
                     </li>
                     <li className="sidebar-content-item">
@@ -239,14 +239,14 @@ var MainAppBar = React.createClass({
                             <ViewableTextField style={{
           width: "auto"
         }} isViewStatus={true} title={I18N.Platform.User.Telephone} defaultValue={user.Telephone}/> {!user.DemoStatus && <div>
-                                <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.TELE_PHONE)} label={I18N.Platform.User.Edit}/>
+                                {user.Name!=='se'?<LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.TELE_PHONE)} label={I18N.Platform.User.Edit}/>:null}
                             </div>}
                         </li>}
                     <li className="sidebar-content-item">
                         <ViewableTextField style={{
         width: "auto"
       }} isViewStatus={true} title={I18N.Platform.User.Email} defaultValue={user.Email}/> {!user.DemoStatus && <div>
-                            <LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.EMAIL)} label={I18N.Platform.User.Edit}/>
+                            {user.Name!=='se'?<LinkButton className="pop-userprofile-edit-button" onClick={this._bindEditButton(MODIFY_TYPE.EMAIL)} label={I18N.Platform.User.Edit}/>:null}
                         </div>}
                     </li>
                 </ul>

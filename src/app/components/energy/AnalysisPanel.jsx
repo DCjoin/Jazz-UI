@@ -34,6 +34,9 @@ import EnergyDialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 
 let MenuItem = require('material-ui/lib/menus/menu-item');
 
+function currentUser() {
+  return CurrentUserStore.getCurrentUser();
+}
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
   SWITCH_EC: 'switchec',
@@ -158,6 +161,10 @@ let AnalysisPanel = React.createClass({
     let me = this,
       errorDialog = null,
       energyPart = null;
+
+    // add for PM2.5
+    var user=window.currentUser || currentUser();
+
     var dialog;
     switch (this.state.dialogType) {
       case DIALOG_TYPE.SWITCH_EC:
@@ -251,7 +258,7 @@ let AnalysisPanel = React.createClass({
     }}>
                   {me.props.chartTitle}
                 </div>
-                <IconButton iconClassName="icon-save" iconStyle={{
+                {user.Name!=='se'?<IconButton iconClassName="icon-save" iconStyle={{
       fontSize: '16px'
     }} style={{
       padding: '0px',
@@ -259,7 +266,7 @@ let AnalysisPanel = React.createClass({
       width: '18px',
       marginLeft: '10px'
     }} onClick={this._onChart2WidgetClick}
-    disabled={!this.state.energyData}/>
+    disabled={!this.state.energyData}/>:null}
                 {widgetOptMenu}
                 {widgetWd}
               </div>
