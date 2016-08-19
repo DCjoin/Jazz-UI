@@ -17,6 +17,18 @@ let ExtendableMenuItem = React.createClass({
     return { itemMouseOver: false,
              subMenuMouseOver: false};
   },
+  componentDidUpdate(){
+    if(this.refs.subMenu){
+      var subMenu=React.findDOMNode(this.refs.subMenu),
+      menus=React.findDOMNode(this.refs.menus),
+      box=menus.getBoundingClientRect();
+      if(box.left+menus.scrollWidth>document.body.offsetWidth){
+        subMenu.style.left=-(menus.scrollWidth+5)+'px';
+      }
+    }
+
+
+  },
   render(){
     let me = this;
     let subMenu = null;
@@ -28,8 +40,8 @@ let ExtendableMenuItem = React.createClass({
       subItems = subItems.map((item)=>{
         return <MenuItem {...item}/>;
       });
-      subMenu = <div style={{position:'absolute',overflow:'visible', display:'inline-block'}}>
-                  <Menu onMouseOver={me._onSubMenuMouseOver} onItemTouchTap={me._onSubMenuItemTouchTap}
+      subMenu = <div ref='subMenu' style={{position:'absolute',overflow:'visible', display:'inline-block',left:'inherit'}}>
+                  <Menu ref='menus' onMouseOver={me._onSubMenuMouseOver} onItemTouchTap={me._onSubMenuItemTouchTap}
                       onMouseOut={me._onSubMenuMouseOut} style={{left:'2px'}} desktop={true}>{subItems}</Menu>
                 </div> ;
     }
@@ -38,6 +50,7 @@ let ExtendableMenuItem = React.createClass({
                 <MenuItem {...other}></MenuItem>
               </div>
               {subMenu}
+
     </div>;
   },
   _onSubMenuItemTouchTap(e, item){
