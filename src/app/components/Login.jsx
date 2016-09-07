@@ -258,14 +258,12 @@ let Login = React.createClass({
         <div className="jazz-login-content">
           <div className="jazz-login-content-container">
             <div className="jazz-login-content-logo"></div>
-            <div className="jazz-login-form-handler">
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
-      userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
+                  userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
                  <div className="jazz-login-demo-link" onClick={this._showTrialUseDialog}>
                    <span>{I18N.Login.tryProduct}</span>
                    <em className="icon-next-arrow-right"/>
                  </div>
-            </div>
           </div>
         </div>
         <div className="jazz-public-footer">
@@ -273,22 +271,13 @@ let Login = React.createClass({
             <a href="http://www.schneider-electric.com/" target="_blank">{I18N.Login.AboutUS}</a>|
           	<a href="http://e.weibo.com/schneidercn" target="_blank">{I18N.Login.Weibo}</a>|
             <div style={{
-        cursor: 'pointer'
-      }} onClick={this._showQRCodeDialog}>{I18N.Login.iPad}</div>|
+        cursor: 'pointer' }} onClick={this._showQRCodeDialog}>{I18N.Login.iPad}</div>|
           	<a href={_contactHref} target="_blank">{I18N.Login.ContactUS}</a>|
-            <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'} backgroundColor={'transparent'} labelStyle={{
-        color: '#c4bbe2',
-        'padding': '0'
-      }} style={{
-        'padding': '0',
-        'margin': '0',
-        lineHeight: '18px'
-      }} linkButton={true}></FlatButton>
+            <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'} backgroundColor={'transparent'}
+                 labelStyle={{ color: '#464949', 'padding': '0' }} style={{ 'padding': '0', 'margin': '0', lineHeight: '18px' }} linkButton={true}></FlatButton>
           </div>
           <div className="jazz-public-footer-about">
-            <div style={{
-        marginRight: "2em"
-      }}>{I18N.Login.Copyright}</div>
+            <div style={{ marginRight: "2em" }}>{I18N.Login.Copyright}</div>
           	<a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备05053940号-5</a>
           </div>
         </div>
@@ -320,26 +309,31 @@ var LoginForm = React.createClass({
     return (
       <div className="jazz-login-form">
         <div className="jazz-login-form-content">
+            <div className="jazz-login-form-logo">
+                <div className="jazz-login-form-logo-title">
+                  {I18N.Login.Title}
+                </div>
+            </div>
           <div className="jazz-login-form-content-title">
-            {I18N.Login.Title}
+            {I18N.Login.Title2}
           </div>
           <div className="jazz-login-form-content-input">
             <input type="text" className="username" onKeyPress={this.props.onKeyPress} onChange={this.props.userNameChanged}
-      value={username} ref="username" placeholder={I18N.Login.UserName}/>
+                value={username} ref="username" placeholder={I18N.Login.UserName}/>
             <input type="password" className="password" onKeyPress={this.props.onKeyPress} onChange={this.props.passwordChanged}
-      value={password} ref="password" placeholder={I18N.Login.Password}/>
+                value={password} ref="password" placeholder={I18N.Login.Password}/>
             <div className="jazz-login-error">{errorMsg}</div>
           </div>
           <div className="jazz-login-form-content-button">
             <RaisedButton disabled={!username.length || !password.length} primary label={I18N.Login.Login} style={{
-        width: '300px',
-        height: '46px'
-      }} onClick={this.props.login}/>
+                width: '300px',
+                height: '46px'
+              }} onClick={this.props.login}/>
           </div>
           <div className="jazz-login-form-content-forgetPSW">
             <div style={{
-        cursor: 'pointer'
-      }} onClick={this.props.forgetPSW}>{I18N.Login.forgetPSW}</div>
+                cursor: 'pointer'
+              }} onClick={this.props.forgetPSW}>{I18N.Login.forgetPSW}</div>
           </div>
         </div>
       </div>
