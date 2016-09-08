@@ -98,6 +98,8 @@
     width: 100%;
     height: 100%;
     display: flex;
+    justify-content: center;
+    align-items: flex-end;
     flex-direction: column;
     &-handler {
     //   height: 100%;
@@ -148,14 +150,15 @@
     &-content {
         width: 383px;
       height: 432px;
-      right: 10%;
+      margin-right: 10%;
       display: block;
-      position: absolute;
+    //   position: absolute;
       background-color: #fff;
     //   margin-left: 65px;
-      margin-top: -216px;
-      top: 50%;
-      float: right;
+    //   margin-top: -216px;
+    //   top: 50%;
+    //   float: right;
+    align-items:right;
       box-shadow: 0 13px 22px 1px rgba(0,0,0,0.19),0px 7px 7px 1px rgba(0,0,0,0.19);
       &-input {
         margin-top: 30px;
@@ -217,15 +220,16 @@
     background-color: #fff;
   display: flex;
   position: relative;
-  margin-top: -75px;
+  // margin-top: -75px;
   flex-direction: column;
   align-items: center;
   color: #464949;
   font-size: 13px;
-  height: 40px;
-  justify-content: space-between;
-  padding: 32px;
-  // line-height: 24px;
+  height: 10%;
+  justify-content: center;
+  // padding: 32px;
+  padding:4px 0;
+  line-height: 24px;
   &-about {
   	// width: 580px;
 	  display: flex;

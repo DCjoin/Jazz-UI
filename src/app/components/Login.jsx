@@ -257,7 +257,6 @@ let Login = React.createClass({
       <div className="jazz-login">
         <div className="jazz-login-content">
           <div className="jazz-login-content-container">
-            <div className="jazz-login-content-logo"></div>
               <LoginForm username={username} password={password} onKeyPress={this._onKeyPress} errorMsg={errorMsg}
                   userNameChanged={this._onUsernameChange} passwordChanged={this._onPasswordChange} login={this._login} forgetPSW={this._showForgetPSWDialog}/>
                  <div className="jazz-login-demo-link" onClick={this._showTrialUseDialog}>
@@ -274,7 +273,7 @@ let Login = React.createClass({
         cursor: 'pointer' }} onClick={this._showQRCodeDialog}>{I18N.Login.iPad}</div>|
           	<a href={_contactHref} target="_blank">{I18N.Login.ContactUS}</a>|
             <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'} backgroundColor={'transparent'}
-                 labelStyle={{ color: '#464949', 'padding': '0' }} style={{ 'padding': '0', 'margin': '0', lineHeight: '18px' }} linkButton={true}></FlatButton>
+                 labelStyle={{ color: '#464949', 'padding': '0' }} style={{ 'padding': '0', 'margin': '0', lineHeight: '24px' }} linkButton={true}></FlatButton>
           </div>
           <div className="jazz-public-footer-about">
             <div style={{ marginRight: "2em" }}>{I18N.Login.Copyright}</div>
