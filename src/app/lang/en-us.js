@@ -607,6 +607,7 @@ I18N.EM.Export.Preview = 'Preview export picture';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = 'Time';
+I18N.Setting.Calendar.ErrorMsg="No available {0} option, please contact your service provider administrator"
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = 'Work day';
