@@ -99,28 +99,28 @@ let UserCustomerPermission = React.createClass({
     UserStore.addChangeCustomerPermissionListener(this._onChange);
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
-    if (prevState.open !== this.state.open) {
-      if (this.state.open) {
-        if (!this.props.isView) {
-          this.refs.pop_user_customer_permission_dialog.show();
-        }
-      }
-    }
-    var selectAll = this.refs.pop_user_customer_permission_selecte_all,
-      {customer, selectedNode, selectedId} = this.state,
-      children = customer.getIn(["dataPrivilege", "Children"]),
-      checkedAll = false;
-
-    if (!selectAll || !children) {
-      return;
-    }
-    if (selectedNode.length && _getChildren(children).length < selectedNode.length) {
-      checkedAll = true;
-    }
-    selectAll.setChecked(checkedAll);
-
-  },
+  // componentDidUpdate: function(prevProps, prevState) {
+  //   if (prevState.open !== this.state.open) {
+  //     if (this.state.open) {
+  //       if (!this.props.isView) {
+  //         this.refs.pop_user_customer_permission_dialog.show();
+  //       }
+  //     }
+  //   }
+  //   var selectAll = this.refs.pop_user_customer_permission_selecte_all,
+  //     {customer, selectedNode, selectedId} = this.state,
+  //     children = customer.getIn(["dataPrivilege", "Children"]),
+  //     checkedAll = false;
+  //
+  //   if (!selectAll || !children) {
+  //     return;
+  //   }
+  //   if (selectedNode.length && _getChildren(children).length < selectedNode.length) {
+  //     checkedAll = true;
+  //   }
+  //   selectAll.setChecked(checkedAll);
+  //
+  // },
 
   componentWillUnmount: function() {
     UserStore.removeChangCustomerPermissionListener(this._onChange);
@@ -156,7 +156,7 @@ let UserCustomerPermission = React.createClass({
           width: "100%"
         }}>
 					<div className="pop-user-customer-permission-dialog-header">
-						<Checkbox disabled={this.props.isView} onCheck={this._selectedAll} ref="pop_user_customer_permission_selecte_all" style={{
+						<Checkbox disabled={this.props.isView} checked={this.isCheckedAll()} onCheck={this._selectedAll} ref="pop_user_customer_permission_selecte_all" style={{
           width: "auto"
         }}/>
 						<div className="pop-user-customer-permission-dialog-header-label">
@@ -281,6 +281,21 @@ let UserCustomerPermission = React.createClass({
       }
     },
 
+    isCheckedAll: function() {
+
+  		var {customer, selectedNode, selectedId} = this.state,
+  			children = customer.getIn( ["dataPrivilege", "Children"] ),
+  			checkedAll = false;
+
+  		if( !children ) {
+  			return ;
+  		}
+  		if( selectedNode.length && _getChildren( children ).length < selectedNode.length ) {
+  			checkedAll = true;
+  		}
+  		return checkedAll;
+  	},
+    
     _save: function() {
       var {customer, selectedNode, selectedId} = this.state,
         hierarchyIds = /*_.filter(*/ selectedNode.map(node => node.Id) /*, Id => Id !== selectedId)*/ ,
