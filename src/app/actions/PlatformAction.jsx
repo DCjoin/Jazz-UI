@@ -129,6 +129,23 @@ let PlatformAction = {
       type: Action.CANCEL_SAVE,
     });
   },
+
+  getCustomerIdentity: function(spId) {
+    Ajax.post('/ServiceProvider/GetCustomIdentity', {
+      params: {
+        SpId: spId
+      },
+      success: function(customerItem) {
+        AppDispatcher.dispatch({
+          type: Action.GET_CUSTOMER_IDENTITY,
+          customerItem: customerItem
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 };
 
 module.exports = PlatformAction;

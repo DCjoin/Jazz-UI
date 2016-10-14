@@ -11,7 +11,8 @@ module.exports = {
     MODIFY_ERROR: null,
     CREATE_SUCCESS: null,
     DELETE_SUCCESS: null,
-    SEND_EMAIL_SUCCESS: null
+    SEND_EMAIL_SUCCESS: null,
+    GET_CUSTOMER_IDENTITY: null
   })
 
 };

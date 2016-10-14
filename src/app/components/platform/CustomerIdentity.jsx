@@ -8,58 +8,25 @@ import Regex from '../../constants/Regex.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import PlatformAction from '../../actions/PlatformAction.jsx';
 import PlatformStore from '../../stores/PlatformStore.jsx';
-import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePickerByStatus.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
-import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Delete from '../../controls/OperationTemplate/Delete.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 import assign from 'object-assign';
 
-const DIALOG_TYPE = {
-  DELETE: "cancel",
-  SEND_EMAIL: "send_email",
-  ERROR: 'error'
-};
 
-let PlatformContent = React.createClass({
+let CustomerIdentity = React.createClass({
   mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
-    infoTabNo: React.PropTypes.number,
-  },
-  _onError: function() {
-    var error = PlatformStore.getError();
-
-    if (error === null) {
-      this.setState({
-        providerIdError: null
-      });
-    } else {
-      error = error.substring(error.length - 5, error.length);
-      this.setState({
-        dialogType: DIALOG_TYPE.ERROR
-      });
-    }
-
   },
   _onCustomerChanged: function() {
     this.setState({
       customerIdentity: PlatformStore.getCustomerIdentity()
     });
-  },
-  _getDateInput: function(time) {
-    if (!time) {
-      return "";
-    }
-    var m = moment(time);
-    if (!m.isValid()) {
-      m = moment();
-    }
-    return m.format('YYYY/MM/DD');
   },
   _handleSaveUser: function() {
     var provider = assign({}, this.props.provider);
@@ -73,80 +40,7 @@ let PlatformContent = React.createClass({
   _handleCancel: function() {
     PlatformAction.cancelSave();
   },
-  _handleSendEmail: function() {
-    PlatformAction.sendInitPassword(this.props.provider.Id);
-  },
-  _onSendEmailSuccess: function() {
-    this.setState({
-      dialogType: DIALOG_TYPE.SEND_EMAIL
-    });
-  },
-  _renderHeader: function(isView, isAdd) {
-    var that = this;
-    var providerNameProps = {
-      isViewStatus: isView,
-      title: I18N.Platform.ServiceProvider.SPName,
-      defaultValue: this.props.provider.Name,
-      isRequired: true,
-      didChanged: value => {
-        PlatformAction.mergeProvider({
-          value: value,
-          path: "Name"
-        });
-      }
-    };
-    var tab = null;
-    if (!isAdd) {
-      tab = (<div className="pop-user-detail-tabs" style={{
-        width: '375px',
-        minWidth: '375px'
-      }}>
-        <span className={classnames({
-        "pop-user-detail-tabs-tab": true,
-        "selected": that.props.infoTabNo === 1
-      })} data-tab-index="1" onClick={that.props.handlerSwitchTab}>{I18N.Platform.ServiceProvider.SPInfo}</span>
-        <span className={classnames({
-        "pop-user-detail-tabs-tab": true,
-        "selected": that.props.infoTabNo === 2
-      })} data-tab-index="2" onClick={that.props.handlerSwitchTab}>{I18N.Platform.ServiceProvider.Customer}</span>
-  </div>);
-    }
-    return (
-      <div className="pop-manage-detail-header">
-        <div className={classnames({
-        "pop-customer-detail-name": true,
-        "pop-manage-detail-header-name": true,
-        "jazz-platform-header": true,
-        "jazz-header": true
-      })}>
-          <ViewableTextField {...providerNameProps} />
-          {tab}
-        </div>
-      </div>
-      );
-  },
   _renderContent: function(isView, isAdd) {
-    var content,
-      that = this;
-    switch (this.props.infoTabNo) {
-      case 1:
-        content = that._renderInfo(isView, isAdd);
-        break;
-      case 2:
-        content = null;
-        break;
-    }
-    return (
-      <div style={{
-        display: 'flex',
-        flex: '1',
-        overflow: 'auto'
-      }}>
-    {content}
-  </div>
-      );
-  },
-  _renderInfo: function(isView, isAdd) {
     var {UserName, Domain, Address, Telephone, Email, StartDate, LoginUrl, LogOutUrl, Comment, Status, CalcStatus} = this.props.provider;
     var providerCodeProps = {
         isViewStatus: (isAdd) ? isView : true,
@@ -354,192 +248,25 @@ let PlatformContent = React.createClass({
       );
 
   },
-  _renderFooter: function(isView) {
-    var that = this;
-    var sendPasswordButton = null,
-      resetDefaultButton = null,
-      saveButtonDisabled = false;
-    var {Name, UserName, Domain, Address, Telephone, Email, StartDate, LoginUrl, LogOutUrl} = this.props.provider;
-    // if (
-    //   Name && Name.length < 200 &&
-    //   UserName && UserName.length < 200 &&
-    //   Domain && Domain.length < 200 &&
-    //   Address &&
-    //   Telephone &&
-    //   Email &&
-    //   StartDate
-    // ) {
-    //   saveButtonDisabled = false;
-    // }
-    if (this.props.infoTabNo === 1) {
-      if (
-        !Name ||
-        Name.length > 200 ||
-        !UserName ||
-        UserName.length > 200 ||
-        !Domain ||
-        Domain.length > 200 ||
-        !Address ||
-        !Email || !Regex.Email.test(Email) || Email.length > 254 ||
-        !StartDate
-      ) {
-        saveButtonDisabled = true;
-      }
-      if (!!LoginUrl && !Regex.UrlRule.test(LoginUrl)) {
-        saveButtonDisabled = true;
-      }
-      if (!!LogOutUrl && !Regex.UrlRule.test(LogOutUrl)) {
-        saveButtonDisabled = true;
-      }
-    } else if (this.props.infoTabNo === 2) {
-
-    }
-    if (isView) {
-      sendPasswordButton = (
-        <FlatButton secondary={true}  label={I18N.Platform.ServiceProvider.SendEmail} style={{
-          borderRight: '1px solid #ececec',
-          color: '#abafae'
-        }} onClick={
-        that._handleSendEmail
-        }/>
-      );
-      if (this.state.customerIdentity !== null) {
-        resetDefaultButton = (
-          <FlatButton secondary={true}  label={I18N.Platform.ServiceProvider.ResetDefault} style={{
-            borderRight: '1px solid #ececec',
-            color: '#abafae'
-          }} onClick={
-          that._handleResetDefault
-          }/>
-        );
-      }
-    }
-    return (
-      <FormBottomBar
-      transition={true}
-      customButton={this.props.infoTabNo === 1 ? sendPasswordButton : resetDefaultButton}
-      enableSave={!saveButtonDisabled}
-      allowDelete={this.props.infoTabNo === 1}
-      status={this.props.formStatus}
-      onSave={this._handleSaveUser}
-      onDelete={function() {
-        that.setState({
-          dialogType: DIALOG_TYPE.DELETE
-        });
-      }}
-      onCancel={this._handleCancel}
-      onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
-        that.props.setEditStatus();
-      }}/>
-      );
-  },
-  _getDeleteDialog: function() {
-    var that = this;
-    var _onDeleteProvider = function() {
-      var dto = {
-        Id: that.props.provider.Id,
-        Version: that.props.provider.Version
-      };
-      PlatformAction.deleteServiceProvider(dto);
-    };
-    var _onCancel = function() {
-      that.setState({
-        dialogType: ''
-      });
-    };
-    var props = {
-      type: I18N.Platform.ServiceProvider.SP,
-      name: this.props.provider.Name,
-      onFirstActionTouchTap: _onDeleteProvider,
-      onSecondActionTouchTap: _onCancel,
-      onDismiss: _onCancel,
-    };
-    return (
-      <Delete {...props}></Delete>
-      );
-  },
-  _getSendEmailDialog: function() {
-    var that = this;
-    var _onConfirm = function() {
-      that.setState({
-        dialogType: ''
-      });
-    };
-    var props = {
-      title: I18N.Platform.ServiceProvider.SendEmail,
-      firstActionLabel: I18N.Mail.Send.Ok,
-      content: I18N.Platform.ServiceProvider.SendEmailSuccess,
-      onDismiss: _onConfirm,
-      onFirstActionTouchTap: _onConfirm
-    };
-
-    return (
-      <Dialog {...props}/>
-      );
-  },
-  _getErrorDialog: function() {
-    var that = this;
-
-    var error = PlatformStore.getError();
-    error = error.substring(error.length - 5, error.length);
-    var content;
-    var _onConfirm = function() {
-      that.setState({
-        dialogType: ''
-      });
-      if (error.indexOf('002') < 0) {
-        PlatformAction.getServiceProviders();
-      }
-    };
-    if (error.indexOf('001') > -1) {
-      content = I18N.Platform.ServiceProvider.Error001;
-    } else {
-      if (error.indexOf('002') > -1) {
-        content = I18N.Platform.ServiceProvider.Error002;
-      } else {
-        content = I18N.Platform.ServiceProvider.Error003;
-      }
-    }
-    var props = {
-      title: I18N.Platform.ServiceProvider.ErrorNotice,
-      firstActionLabel: I18N.Mail.Send.Ok,
-      content: content,
-      onDismiss: _onConfirm,
-      onFirstActionTouchTap: _onConfirm
-    };
-
-    return (
-      <Dialog {...props}/>
-      );
-  },
   componentWillMount: function() {
+    PlatformAction.getCustomerIdentity(this.props.provider.Id);
     this.initBatchViewbaleTextFiled();
   },
   componentDidMount: function() {
-    PlatformStore.addErrorChangeListener(this._onError);
-    PlatformStore.addSendEmailListener(this._onSendEmailSuccess);
     PlatformStore.addCustomerChangeListener(this._onCustomerChanged);
   },
   componentWillUnmount: function() {
-    PlatformStore.removeErrorListener(this._onError);
-    PlatformStore.removeSendEmailListener(this._onSendEmailSuccess);
     PlatformStore.removeCustomerChangeListener(this._onCustomerChanged);
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.provider.Id != this.props.provider.Id) {
       this.clearErrorTextBatchViewbaleTextFiled();
-      this.setState({
-        providerIdError: '',
-      });
 
     }
   },
 
   getInitialState: function() {
     return {
-      providerIdError: '',
-      dialogType: '',
       customerIdentity: PlatformStore.getCustomerIdentity()
     };
   },
@@ -548,51 +275,9 @@ let PlatformContent = React.createClass({
       isView = this.props.formStatus === formStatus.VIEW,
       isEdit = this.props.formStatus === formStatus.EDIT,
       isAdd = this.props.formStatus === formStatus.ADD;
-    var collapseButton = (
-    <div className="fold-btn pop-framework-right-actionbar-top-fold-btn" style={{
-      "color": "#939796"
-    }}>
-  				<FontIcon className={classnames("icon", "icon-column-fold")} onClick={this.props._toggleList}/>
-  			</div>
-    );
-    var header = this._renderHeader(isView, isAdd);
-    var footer = this._renderFooter(isView);
+
     var content = this._renderContent(isView, isAdd);
-    var dialog;
-    switch (this.state.dialogType) {
-      case DIALOG_TYPE.DELETE:
-        dialog = this._getDeleteDialog();
-        break;
-      case DIALOG_TYPE.SEND_EMAIL:
-        dialog = this._getSendEmailDialog();
-        break;
-      case DIALOG_TYPE.ERROR:
-        dialog = this._getErrorDialog();
-        break;
-
-
-    }
-    return (
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column'
-      }} className='jazz-content'>
-      <div className="pop-framework-right-actionbar">
-          <div className="pop-framework-right-actionbar-top">
-            <OrigamiPanel />
-            {collapseButton}
-          </div>
-      </div>
-          {header}
-        <div className="pop-manage-detail-content">
-
-      {content}
-      {footer}
-      {dialog}
-    </div>
-    </div>
-      );
+    return content;
   },
 });
-module.exports = PlatformContent;
+module.exports = CustomerIdentity;

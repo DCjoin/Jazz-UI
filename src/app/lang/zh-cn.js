@@ -1667,12 +1667,15 @@ I18N.Platform.ServiceProvider.Status = '状态';
 I18N.Platform.ServiceProvider.DeleteContent = '删除服务商“{0}”，该服务商下所有的公共数据、客户数据，以及间接关联的信息也将被删除。';
 
 I18N.Platform.ServiceProvider.SendEmail = '发送邮件';
+I18N.Platform.ServiceProvider.ResetDefault = '恢复默认';
 I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
 I18N.Platform.ServiceProvider.Error002 = '该服务商ID已存在！';
 I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
 I18N.Platform.ServiceProvider.ErrorNotice = '错误提示';
 
+I18N.Platform.ServiceProvider.SPInfo = '服务商信息';
+I18N.Platform.ServiceProvider.Customer = '自定义标识';
 I18N.Platform.ServiceProvider.SPName = '服务商名称';
 I18N.Platform.ServiceProvider.SPID = '服务商ID';
 I18N.Platform.ServiceProvider.SPDomain = '服务商子域名';

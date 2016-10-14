@@ -34,6 +34,7 @@ let Platform = React.createClass({
       selectProvider: PlatformStore.getSelectProvider(),
       addBtnDisabled: false,
       status: formStatus.VIEW,
+      infoTabNo: 1
     });
   },
   _onMergeProviderChanged: function() {
@@ -54,6 +55,7 @@ let Platform = React.createClass({
   _onAddServiceProvider: function() {
     PlatformAction.setSelectedProvider(null);
     this.setState({
+      infoTabNo: 1,
       status: formStatus.ADD,
       addBtnDisabled: true
     });
@@ -61,6 +63,13 @@ let Platform = React.createClass({
   _handleCancel: function() {
     this.setState({
       status: formStatus.VIEW,
+    });
+  },
+  _switchTab(event) {
+    let no = parseInt(event.target.getAttribute("data-tab-index"));
+    this.setState({
+      infoTabNo: no,
+      status: formStatus.VIEW
     });
   },
   componentDidMount: function() {
@@ -81,7 +90,8 @@ let Platform = React.createClass({
       selectProvider: PlatformStore.getSelectProvider(),
       status: formStatus.VIEW,
       leftPanelShow: true,
-      addBtnDisabled: false
+      addBtnDisabled: false,
+      infoTabNo: 1,
     };
   },
   render: function() {
@@ -98,7 +108,9 @@ let Platform = React.createClass({
         formStatus: this.state.status,
         _toggleList: this._onToggleList,
         setEditStatus: this._setEditStatus,
+        infoTabNo: this.state.infoTabNo,
         handleCancel: this._handleCancel,
+        handlerSwitchTab: this._switchTab,
       };
     let leftPanel = (this.state.leftPanelShow) ? <div style={{
       display: 'flex'
@@ -114,7 +126,7 @@ let Platform = React.createClass({
     {leftPanel}
     {content}
     </div>
-      )
+      );
   },
 });
 module.exports = Platform;

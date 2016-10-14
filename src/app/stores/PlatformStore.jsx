@@ -17,12 +17,14 @@ let PlatformAction = Platform.Action;
 let _providerList = [],
   _selectedProvider = null,
   _currentProvider = null,
+  _customerIdentity = null,
   _column = null,
   _sort = null,
   _error = null;
 
 const PROVIDER_LIST_EVENT = 'providerlist',
   SELECT_PROVIDER_EVENT = 'selectprovider',
+  CUSTOMER_IDENTITY_EVENT = 'customeridentity',
   ERROR_EVENT = 'error',
   SEND_EMAIL_EVENT = 'sendemail',
   MERGE_PROVIDER_EVENT = 'mergerprovider';
@@ -64,11 +66,10 @@ var PlatformStore = assign({}, PrototypeStore, {
   },
   getSelectProvider() {
     if (_currentProvider === null) {
-      return {};
+      return null;
     } else {
       return _currentProvider.toJS();
     }
-
   },
   mergeProvider: function(data) {
     if (data.path == 'StartDate') {
@@ -118,6 +119,20 @@ var PlatformStore = assign({}, PrototypeStore, {
       }
     });
   },
+  setCustomerIdentity: function(item) {
+    if (item === null) {
+      _customerIdentity = null;
+    } else {
+      _customerIdentity = Immutable.fromJS(item);
+    }
+  },
+  getCustomerIdentity: function() {
+    if (_customerIdentity === null) {
+      return {};
+    } else {
+      return _customerIdentity.toJS();
+    }
+  },
   addProviderListChangeListener: function(callback) {
     this.on(PROVIDER_LIST_EVENT, callback);
   },
@@ -163,6 +178,15 @@ var PlatformStore = assign({}, PrototypeStore, {
   removeSendEmailListener: function(callback) {
     this.removeListener(SEND_EMAIL_EVENT, callback);
   },
+  addCustomerChangeListener: function(callback) {
+    this.on(CUSTOMER_IDENTITY_EVENT, callback);
+  },
+  emitCustomerChange: function() {
+    this.emit(CUSTOMER_IDENTITY_EVENT);
+  },
+  removeCustomerChangeListener: function(callback) {
+    this.removeListener(CUSTOMER_IDENTITY_EVENT, callback);
+  },
 });
 PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -201,6 +225,10 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
     case PlatformAction.SEND_EMAIL_SUCCESS:
       PlatformStore.modifyProvider(action.provider);
       PlatformStore.emitSendEmailChange();
+      break;
+    case PlatformAction.GET_CUSTOMER_IDENTITY:
+      PlatformStore.setCustomerIdentity(action.customerItem);
+      PlatformStore.emitCustomerChange();
       break;
 
   }
