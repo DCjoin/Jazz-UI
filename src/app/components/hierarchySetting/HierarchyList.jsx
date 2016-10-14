@@ -30,7 +30,8 @@ var HierarchyList = React.createClass({
   getInitialState: function() {
     return {
       showImportDialog: false,
-      isImporting: false
+      isImporting: false,
+      ErrorMsg: null
     };
   },
   getAddMenuItems: function() {
@@ -111,7 +112,8 @@ var HierarchyList = React.createClass({
       this.props.onReloadHierachyTree();
     }
     this.setState({
-      showImportDialog: false
+      showImportDialog: false,
+      ErrorMsg: null
     });
   },
   _downloadLogFile: function() {
@@ -150,7 +152,7 @@ var HierarchyList = React.createClass({
       ];
     } else {
       dialogTitle = I18N.Setting.TagBatchImport.ImportError;
-      var errorText = this.state.sizeError ? I18N.Setting.TagBatchImport.ImportSizeErrorView : I18N.Setting.TagBatchImport.ImportErrorView;
+      var errorText = this.state.ErrorMsg;
       dialogContent = (<div>{errorText}</div>);
     }
 
@@ -189,14 +191,21 @@ var HierarchyList = React.createClass({
           importSuccess: true
         });
       } else {
-        var sizeError = false;
+        var ErrorMsg = null;
         if (obj.UploadResponse.ErrorCode === -7) {
-          sizeError = true;
+          ErrorMsg = I18N.Setting.TagBatchImport.ImportSizeErrorView;
+        } else if (obj.UploadResponse.ErrorCode === -9) {
+          ErrorMsg = I18N.Message.M9;
+        } else if (obj.UploadResponse.ErrorCode === -8) {
+          ErrorMsg = I18N.Message.M8;
+        } else {
+          ErrorMsg = I18N.Setting.TagBatchImport.ImportErrorView;
         }
+
         me.setState({
           isImporting: false,
           importSuccess: false,
-          sizeError: sizeError
+          ErrorMsg: ErrorMsg
         });
       }
     };

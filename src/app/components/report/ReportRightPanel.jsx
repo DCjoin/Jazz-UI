@@ -541,7 +541,7 @@ var ReportRightPanel = React.createClass({
       }} onClick={this.props.onCollapseButtonClick}>
                               <FontIcon hoverColor="#6b6b6b" color="#939796" className={classSet("icon", "icon-column-fold")} />
                            </div>;
-      var reportTitle = (<div className='jazz-report-rightpanel-title'><ViewableTextField {...titleProps}></ViewableTextField></div>);
+      var reportTitle = (<div className={classSet("pop-manage-detail-header-name", "jazz-header")} style={{marginLeft:'30px'}}><ViewableTextField {...titleProps}></ViewableTextField></div>);
       var reportTemplate;
       var saveButtonStyle = {
         borderRight: '1px solid #ececec'
@@ -682,7 +682,7 @@ var ReportRightPanel = React.createClass({
       var uploadDialog = me._renderUploadDialog();
       displayedDom = (
         <div className="jazz-report-rightpanel-container">
-          <div className="jazz-report-rightpanel-header">
+          <div className="jazz-report-rightpanel-header" style={{marginTop:'16px'}}>
             {collapseButton}
             {reportTitle}
           </div>

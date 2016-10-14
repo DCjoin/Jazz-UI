@@ -119,7 +119,7 @@ var UserDetail = React.createClass({
         if (customer.get("CustomerId") == customerId) {
           customer = customer.set("Privileged", !customer.get("Privileged"));
           customer = customer.set("HierarchyIds", []);
-          customer = customer.set("WholeCustomer", false);
+          customer = customer.set("WholeCustomer", customer.get("Privileged"));
         }
       }
       return customer;

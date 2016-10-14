@@ -33,16 +33,18 @@ let PlatformAction = {
     });
   },
   modifyServiceProvider: function(provider) {
+    var that=this;
     Ajax.post('/ServiceProvider/ModifyServiceProvider', {
       params: {
         dto: provider
       },
       commonErrorHandling: false,
-      success: function(item) {
+      success: (item)=> {
         AppDispatcher.dispatch({
           type: Action.MODIFY_SUCCESS,
           provider: item
         });
+        that.getServiceProviders(_column, _type);
       },
       error: function(err, res) {
         AppDispatcher.dispatch({

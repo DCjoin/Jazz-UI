@@ -188,6 +188,7 @@ let EnergyStore = assign({}, PrototypeStore, {
         return true;
       } else if (latestDataList.length > 0) {
         _energyData = _energyData.set('Data', latestDataList);
+        return true;
       } else {
         _energyData = null;
       }

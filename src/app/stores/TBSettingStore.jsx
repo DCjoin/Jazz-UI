@@ -43,7 +43,7 @@ var TBSettingStore = assign({},PrototypeStore,{
   setCalDetailData(data,year){
     _calDetail = null;
     if(data.CalendarItemGroups.length!==0){
-      if(data.CalendarItemGroups[0].Type===0){
+      if(data.CalendarItemGroups[0].Type===0 && data.CalendarItemGroups[0].CalendarItems){
         data.CalendarItemGroups[0].CalendarItems.sort(function(a,b){return a.EffectiveTime>b.EffectiveTime?1:-1});
         _calDetail=data.CalendarItemGroups[0].CalendarItems
       }

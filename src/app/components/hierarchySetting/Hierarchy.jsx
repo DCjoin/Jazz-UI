@@ -332,7 +332,7 @@ var Hierarchy = React.createClass({
     }
   },
   _onReloadHierachyTree: function() {
-    HierarchyAction.GetHierarchys();
+    HierarchyAction.GetHierarchys(this.state.selectedNode.get('Id'));
     this.setState({
       isLoading: true
     });

@@ -50,7 +50,7 @@ module.exports = {
 				});
 			},
 			error: function(err, res) {
-				console.log(JSON.stringify(err,0,1) + JSON.stringify(res,0,1));
+				// console.log(JSON.stringify(err,0,1) + JSON.stringify(res,0,1));
 				AppDispatcher.dispatch({
 					type: Action.REQ_PSWRESET_ERROR,
 					data: res.body

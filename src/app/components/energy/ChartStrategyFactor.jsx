@@ -53,6 +53,9 @@ let Menu = require('material-ui/lib/menus/menu');
 let MenuItem = require('material-ui/lib/menus/menu-item');
 let MenuDivider = require('material-ui/lib/menus/menu-divider');
 
+function currentUser() {
+  return CurrentUserStore.getCurrentUser();
+}
 
 let ChartStrategyFactor = {
   defaultStrategy: {
@@ -628,6 +631,13 @@ let ChartStrategyFactor = {
   },
   getWidgetOptMenuFnStrategy: {
     getWidgetOptMenu(analysisPanel) {
+      var user=window.currentUser || currentUser();
+      let widgetOptMenu = null;
+      // add for PM2.5
+      if(user.Name==='se'){
+        return widgetOptMenu
+      }
+
       var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
         fontSize: '16px'
       }} style={{
@@ -644,7 +654,7 @@ let ChartStrategyFactor = {
       };
       let selectedWidget = FolderStore.getSelectedNode();
       let buttonDisabled = (!analysisPanel.state.energyData || !selectedWidget.get('ChartType'));
-      let widgetOptMenu = null;
+
       if (!analysisPanel.props.isFromAlarm) {
         //  CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1
         if (CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1) {
@@ -666,6 +676,12 @@ let ChartStrategyFactor = {
       return widgetOptMenu;
     },
     getLabelWidgetOptMenu(analysisPanel) {
+      var user=window.currentUser || currentUser();
+      let widgetOptMenu = null;
+      // add for PM2.5
+      if(user.Name==='se'){
+        return widgetOptMenu
+      }
       var IconButtonElement = <IconButton iconClassName="icon-arrow-down" iconStyle={{
         fontSize: '16px'
       }} style={{
@@ -682,7 +698,7 @@ let ChartStrategyFactor = {
       };
       let selectedWidget = FolderStore.getSelectedNode();
       let buttonDisabled = (!analysisPanel.state.energyData || !selectedWidget.get('ChartType'));
-      let widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
+      widgetOptMenu = analysisPanel.props.isFromAlarm ? null : <IconMenu {...iconMenuProps} onItemTouchTap={analysisPanel._onTitleMenuSelect}>
                               <MenuItem key={1} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} disabled={buttonDisabled}/>
                               <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} disabled={buttonDisabled}/>
                               <MenuItem key={5} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} />
@@ -2679,7 +2695,7 @@ let ChartStrategyFactor = {
           margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
 
-             <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+      {analysisPanel.state.timeRanges?<StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
              <div style={{
           margin: '5px 30px 0px auto'
         }}>
@@ -2756,7 +2772,7 @@ let ChartStrategyFactor = {
           margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
 
-             <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+      {analysisPanel.state.timeRanges?<StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
              <div style={{
           margin: '5px 30px 0px auto'
         }}>
@@ -2820,7 +2836,7 @@ let ChartStrategyFactor = {
         <div style={{
           margin: '14px 20px 0 23px'
         }}>{chartTypeIconMenu}</div>
-             <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+      {analysisPanel.state.timeRanges?<StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
              <div style={{
           margin: '5px 30px 0px auto'
         }}>
@@ -2877,7 +2893,7 @@ let ChartStrategyFactor = {
         margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
-           <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+    {analysisPanel.state.timeRanges?<StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
            <div style={{
         margin: '5px 30px 0px auto'
       }}>
@@ -2912,7 +2928,7 @@ let ChartStrategyFactor = {
         margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
-           <StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+    {analysisPanel.state.timeRanges?<StepSelector minStep={1} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
            <div style={{
         margin: '5px 30px 0px auto'
       }}>
@@ -2956,7 +2972,7 @@ let ChartStrategyFactor = {
         margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
-           <StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+    {analysisPanel.state.timeRanges?<StepSelector stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
            <div style={{
         margin: '5px 30px 0px auto'
       }}>
@@ -2999,7 +3015,7 @@ let ChartStrategyFactor = {
         margin: '14px 20px 0 23px'
       }}>{chartTypeIconMenu}</div>
 
-           <StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>
+    {analysisPanel.state.timeRanges?<StepSelector minStep={minStep} stepValue={analysisPanel.state.step} onStepChange={analysisPanel._onStepChange} timeRanges={analysisPanel.state.timeRanges}/>:null}
            <div style={{
         margin: '5px 30px 0px auto'
       }}>
@@ -3077,8 +3093,7 @@ let ChartStrategyFactor = {
             showSumDialog: true
           });
           break;
-        case 'background':
-          {
+        case 'background':{
           subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -3136,8 +3151,7 @@ let ChartStrategyFactor = {
     handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
       let itemValue = menuItem.props.value;
       switch (itemValue) {
-        case 'background':
-          {
+        case 'background':{
           var subMenuValue = menuParam.props.value;
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
@@ -4726,7 +4740,7 @@ let ChartStrategyFactor = {
       EnergyStore.removeEnergyDataLoadErrorListener(analysisPanel._onGetEnergyDataError);
       EnergyStore.removeEnergyDataLoadErrorsListener(analysisPanel._onGetEnergyDataErrors);
       TagStore.removeBaselineBtnDisabledListener(analysisPanel._onBaselineBtnDisabled);
-      TagStore.removeBaselineBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
+      TagStore.removeWeatherBtnDisabledListener(analysisPanel._onWeatherBtnDisabled);
       MultiTimespanAction.clearMultiTimespan('both');
       CalendarManager.hideCalendar();
     },

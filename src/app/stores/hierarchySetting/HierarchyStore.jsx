@@ -362,6 +362,22 @@ var HierarchyStore = assign({}, PrototypeStore, {
   getCostErrorStatus: function() {
     return _costError
   },
+  resetAll: function() {
+    _hierarchys = emptyMap();
+    _preSelectedNode = null;
+    _selectedNode = null;
+    _logList = emptyList();
+    _tagList = null;
+    _total = null;
+    _customer = emptyMap();
+    _calendar = null;
+    _property = null;
+    _allCalendar = null;
+    _industries = null;
+    _zones = null;
+    _cost = emptyMap();
+    _costError = false;
+  },
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -539,6 +555,9 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case HierarchyAction.SAVE_COST_BY_HIERARCHY_SUCCESS:
       HierarchyStore.emitChange(_selectedNode);
+      break;
+    case HierarchyAction.RESET_ALL_FOR_HIERARCHY:
+      HierarchyStore.resetAll();
       break;
   }
 });

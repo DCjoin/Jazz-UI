@@ -231,7 +231,7 @@ var VEERules = React.createClass({
   componentWillUnmount: function() {
     VEEStore.removeChangeListener(this._onChange);
     VEEStore.removeErrorChangeListener(this._onError);
-  //VEEAction.ClearAll();
+    VEEAction.clearAll();
   },
   render: function() {
     var isView = this.state.formStatus === formStatus.VIEW;

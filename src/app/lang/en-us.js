@@ -82,9 +82,10 @@ I18N.Login.UserName = 'User name';
 I18N.Login.Password = 'Password';
 I18N.Login.Email = 'E-mail address';
 I18N.Login.Logout = 'Log out';
-I18N.Login.Login = 'Login';
+I18N.Login.Login = 'Log In';
 I18N.Login.Title = 'Schneider Electric EnergyMost';
-I18N.Login.forgetPSW = 'Forget password';
+I18N.Login.Title2 = 'Log in with Username';
+I18N.Login.forgetPSW = 'Forget password?';
 I18N.Login.tryProduct = 'Trial use';
 I18N.Login.AboutUS = 'About us';
 I18N.Login.Weibo = 'Schneider Electric official Weibo';
@@ -104,6 +105,9 @@ I18N.Login.TrialUseTips = 'Please enter your e-mail address to receive the produ
 I18N.Login.TrialUseTitle = 'Schneider Electric EnergyMost';
 I18N.Login.TrialUseSussTip1 = 'E-mail has been sent to ';
 I18N.Login.TrialUseSussTip2 = 'Click the link in e-mail to use Schneider Electric EnergyMost';
+I18N.Login.NoPriTitle = 'Unable to log in Schneider Electric EnergyMost';
+I18N.Login.NoPriDetail = 'Customer or data authority is not configured. Please contact your administrator.';
+I18N.Login.NoPriButton = 'back to Login';
 
 I18N.ContactUS = {};
 I18N.ContactUS.Tips = 'If you have any questions or requirements, please feel free to contact us.';
@@ -581,7 +585,7 @@ I18N.EM.Report.TagSelectionTitle = 'Select a tag';
 I18N.EM.Report.TagShouldNotBeEmpty = 'Please select at least one tag';
 
 I18N.EM.Report.NonReportCriteria = 'Include at least one set of report data';
-I18N.EM.Report.WrongExcelFile = 'Template format is wrong. Only xls or xlsx files are supprted.';
+I18N.EM.Report.WrongExcelFile = 'Template format is wrong. Only xls or xlsx files are supported.';
 I18N.EM.Report.TemplateHasBeenRefed = 'Report template {0} can not be deleted because it is used now. Please retry it after remove all associations.';
 I18N.EM.Report.RefObject = 'Referred Object:';
 I18N.EM.Report.UploadingTemplate = 'Importing file {0}.';
@@ -603,6 +607,7 @@ I18N.EM.Export.Preview = 'Preview export picture';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = 'Time';
+I18N.Setting.Calendar.ErrorMsg="No available {0} option, please contact your service provider administrator"
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = 'Work day';
@@ -958,6 +963,11 @@ I18N.Setting.Tag.PTagRawData.normal = 'Normal';
 I18N.Setting.Tag.PTagRawData.abnormal = 'Abnormal';
 I18N.Setting.Tag.PTagRawData.repair = 'Modify';
 
+I18N.ServerError = {};
+I18N.ServerError.BtnLabel = 'OK';
+I18N.ServerError.Title = 'Login timeout';
+I18N.ServerError.Message = 'System error, may be have not operate in a long time, please relogin';
+
 I18N.Message = {};
 
 I18N.Message.DeletionConcurrency = '{0} does not exist. We will refresh it immediately.';
@@ -1140,7 +1150,7 @@ I18N.Message.M05032 = 'Same room existed';
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
 *******/
-
+I18N.Message.M06001 = 'This Hierarchy node does not exist。';
 I18N.Message.M06100 = 'Tag has been deleted and cannot be loaded.';
 I18N.Message.M06104 = 'The name already exists.';
 I18N.Message.M06107 = 'The code already exists.';
@@ -1666,6 +1676,7 @@ I18N.Platform.ServiceProvider.SendEmailSuccess = 'Mail send successfully';
 I18N.Platform.ServiceProvider.Error001 = 'SP is modified by other user';
 I18N.Platform.ServiceProvider.Error002 = 'SP ID already existed';
 I18N.Platform.ServiceProvider.Error003 = 'SP is deleted by other user';
+I18N.Platform.ServiceProvider.Error007='SP Domain already existed!';
 I18N.Platform.ServiceProvider.ErrorNotice = 'Error message';
 
 

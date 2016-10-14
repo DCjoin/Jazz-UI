@@ -487,8 +487,8 @@ let PlatformContent = React.createClass({
     var _onConfirm = function() {
       that.setState({
         dialogType: ''
-      });
-      if (error.indexOf('002') < 0) {
+      })
+      if (error.indexOf('002') < 0 && error.indexOf('007') < 0) {
         PlatformAction.getServiceProviders();
       }
     };
@@ -496,7 +496,9 @@ let PlatformContent = React.createClass({
       content = I18N.Platform.ServiceProvider.Error001;
     } else {
       if (error.indexOf('002') > -1) {
-        content = I18N.Platform.ServiceProvider.Error002;
+        content = I18N.Platform.ServiceProvider.Error002
+      } else if (error.indexOf('007') > -1) {
+        content = I18N.Platform.ServiceProvider.Error007
       } else {
         content = I18N.Platform.ServiceProvider.Error003;
       }

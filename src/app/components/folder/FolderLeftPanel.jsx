@@ -19,10 +19,16 @@ import HierarchyStore from '../../stores/HierarchyStore.jsx';
 import HierarchyAction from '../../actions/HierarchyAction.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 import { treeSource } from '../../constants/TreeSource.jsx';
+import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 
 
 import Immutable from 'immutable';
+
+function currentUser() {
+  return CurrentUserStore.getCurrentUser();
+}
+
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
   SWITCH_EC: 'switchec',
@@ -311,6 +317,8 @@ var FolderLeftPanel = React.createClass({
 
   },
   render: function() {
+    // add for PM2.5
+    var user=window.currentUser || currentUser();
     //style
     var iconStyle = {
         paddingTop: '0px'
@@ -355,7 +363,7 @@ var FolderLeftPanel = React.createClass({
         generateNodeConent: this.generateNodeConent,
         onSelectNode: this._onSelectNode,
         selectedNode: this.state.selectedNode,
-        onGragulaNode: this._onGragulaNode,
+        onGragulaNode: user.Name!=='se'?this._onGragulaNode:null,
         arrowClass: 'jazz-foldertree-arrow',
         treeNodeClass: 'jazz-foldertree-node',
         treeSource: treeSource.Energy
@@ -385,15 +393,15 @@ var FolderLeftPanel = React.createClass({
         {dialog}
 
         <div className="jazz-folder-leftpanel-header">
-          <div className={classSet(newFolderClasses)} style={{
+          {user.Name!=='se'?<div className={classSet(newFolderClasses)} style={{
         margin: '0 30px'
       }}>
             <FlatButton disabled={this.state.buttonDisabled} onClick={this._onNewFolder} style={buttonStyle}>
               <FontIcon  className="fa icon-add btn-icon"/>
               <span className="mui-flat-button-label btn-text">{I18N.Folder.FolderName}</span>
             </FlatButton>
-          </div>
-          <DropdownButton {...newWidgetProps}/>
+          </div>:null}
+          {user.Name!=='se'?<DropdownButton {...newWidgetProps}/>:null}
           <div>
 
           </div>

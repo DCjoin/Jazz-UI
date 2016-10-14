@@ -12,6 +12,7 @@ import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
 import SideNav from '../../controls/SideNav.jsx';
+import Dialog from '../../controls/PopupDialog.jsx';
 
 let CalendarDetail = React.createClass({
   propTypes: {
@@ -446,7 +447,9 @@ var Calendar = React.createClass({
     return ({
       allCalendar: null,
       calendar: null,
-      isLoading: true
+      isLoading: true,
+      errorShow:false,
+      errorType:null
     });
   },
   _onChange: function() {
@@ -473,7 +476,7 @@ var Calendar = React.createClass({
 
     var calendarItemGroups = calendar.get('CalendarItemGroups');
     for (i = 0; i < calendarItemGroups.size; i++) {
-      if (!this.refs['calendarItems' + (i + 1)]._isValid()) {
+      if (this.refs['calendarItems' + (i + 1)] && !this.refs['calendarItems' + (i + 1)]._isValid()) {
         return false;
       }
     }
@@ -489,13 +492,13 @@ var Calendar = React.createClass({
         }
       }
     }
-    if (calendarItemGroups.getIn([2, 'CalendarItems']) !== null) {
+    if (calendarItemGroups.getIn([1, 'CalendarItems']) !== null) {
       calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 2));
       if (calendarIndex === -1) {
         return false;
       }
     }
-    if (calendarItemGroups.getIn([3, 'CalendarItems']) !== null) {
+    if (calendarItemGroups.getIn([2, 'CalendarItems']) !== null) {
       calendarIndex = allCalendar.findIndex(item => (item.get('Type') === 3));
       if (calendarIndex === -1) {
         return false;
@@ -523,6 +526,13 @@ var Calendar = React.createClass({
       calendarItemType = calendarItemGroups.get(calendarItemIndex),
       calendarItems = calendarItemType.get('CalendarItems'),
       defaultCalendarItem = this._getDefaultCalendarItem(type);
+    if(!defaultCalendarItem.get("Calendar")){
+      this.setState({
+        errorShow:true,
+        errorType:type
+      })
+      return;
+    }
     var emptyList = new List();
 
     if (calendarItems === null) {
@@ -613,6 +623,35 @@ var Calendar = React.createClass({
       this.props.setEditBtnStatus(!isValid);
     });
   },
+  _renderErrorDialog: function() {
+    var onClose = ()=>{
+      this.setState({
+        errorShow: false,
+        errorType: null,
+      });
+    };
+    var content=null;
+    if(this.state.errorType===0){
+      content=I18N.format(I18N.Setting.Calendar.ErrorMsg,I18N.Setting.Calendar.WorkdaySetting)
+    }
+    else {
+      content=this.state.errorType===2?I18N.format(I18N.Setting.Calendar.ErrorMsg,I18N.Setting.Calendar.ColdwarmSetting):
+      I18N.format(I18N.Setting.Calendar.ErrorMsg,I18N.Setting.Calendar.DaynightSetting);
+    }
+    if (!!this.state.errorShow) {
+      return (<Dialog
+        ref = "_dialog"
+        title={I18N.Platform.ServiceProvider.ErrorNotice}
+        modal={false}
+        openImmediately={!!this.state.errorShow}
+        onClose={onClose}
+        >
+        {content}
+      </Dialog>)
+    } else {
+      return null;
+    }
+  },
   _renderDetail: function() {
     var me = this;
     var isView = this.props.formStatus === formStatus.VIEW;
@@ -677,6 +716,7 @@ var Calendar = React.createClass({
         display: 'flex'
       }}>
         {this._renderDetail()}
+        {this._renderErrorDialog()}
       </div>
       );
 

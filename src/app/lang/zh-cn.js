@@ -84,12 +84,13 @@ I18N.Login.Email = '邮件地址';
 I18N.Login.Logout = '注销';
 I18N.Login.Login = '登录';
 I18N.Login.Title = '云能效管理平台';
-I18N.Login.forgetPSW = '忘记密码';
+I18N.Login.Title2 = '用户名密码登录';
+I18N.Login.forgetPSW = '忘记密码？';
 I18N.Login.tryProduct = '产品试用';
 I18N.Login.AboutUS = '关于施耐德电气';
 I18N.Login.Weibo = '施耐德电气官方微博';
 I18N.Login.iPad = '云能效iPad客户端';
-I18N.Login.iPadDetail = '使用iPad上的二维码扫描软件，拍摄下方二维码即可下载。';
+I18N.Login.iPadDetail = '使用iPad扫描下方二维码即可下载。';
 I18N.Login.ContactUS = '联系我们';
 I18N.Login.Copyright = '©版权所有   施耐德电气（中国）有限公司';
 I18N.Login.ForgerPSW = '找回密码';
@@ -104,6 +105,9 @@ I18N.Login.TrialUseTips = '请填写邮箱地址，用来接收产品试用链�
 I18N.Login.TrialUseTitle = '云能效管理平台';
 I18N.Login.TrialUseSussTip1 = '试用产品的邮件已发送至';
 I18N.Login.TrialUseSussTip2 = '点击邮件中的链接以试用云能效管理平台。';
+I18N.Login.NoPriTitle = '无法登录云能效管理平台';
+I18N.Login.NoPriDetail = '您的帐号没有任何数据权限，请联系您的服务商管理员。';
+I18N.Login.NoPriButton = '返回登录页面';
 
 I18N.ContactUS = {};
 I18N.ContactUS.Tips = '如有任何问题或需要，欢迎随时联系我们。';
@@ -603,6 +607,7 @@ I18N.EM.Export.Preview = '导出图片预览';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = '时间';
+I18N.Setting.Calendar.ErrorMsg="暂无可添加的{0}，请联系您的系统管理员";
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = '工休日';
@@ -958,6 +963,11 @@ I18N.Setting.Tag.PTagRawData.normal = '正常值';
 I18N.Setting.Tag.PTagRawData.abnormal = '异常值';
 I18N.Setting.Tag.PTagRawData.repair = '修复值';
 
+I18N.ServerError = {};
+I18N.ServerError.BtnLabel = '好';
+I18N.ServerError.Title = '登录超时';
+I18N.ServerError.Message = '系统发生错误，可能是长时间未操作，请重新登录';
+
 
 I18N.Message = {};
 
@@ -1141,7 +1151,7 @@ I18N.Message.M05032 = '该名称已存在';
 /******
 Tag Error Code, NOTE that for error of 06001, 06117,06152,06139,06154,06156, refresh is needed.
 *******/
-
+I18N.Message.M06001 = '该层级节点已不存在。';
 I18N.Message.M06100 = '数据点已经被删除，无法加载。';
 I18N.Message.M06104 = '该名称已存在';
 I18N.Message.M06107 = '该编码已存在';
@@ -1672,6 +1682,7 @@ I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
 I18N.Platform.ServiceProvider.Error002 = '该服务商ID已存在！';
 I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
+I18N.Platform.ServiceProvider.Error007='该服务商子域名已存在!';
 I18N.Platform.ServiceProvider.ErrorNotice = '错误提示';
 
 I18N.Platform.ServiceProvider.SPInfo = '服务商信息';

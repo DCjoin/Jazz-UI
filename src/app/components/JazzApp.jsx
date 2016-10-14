@@ -9,6 +9,9 @@ import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import { CircularProgress } from 'material-ui';
 import LanguageAction from '../actions/LanguageAction.jsx';
 import { getCookie } from '../util/Util.jsx';
+import AjaxDialog from '../controls/AjaxDialog.jsx';
+import AjaxStore from '../stores/AjaxStore.jsx';
+import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 
 import keyMirror from 'keymirror';
 
@@ -90,6 +93,7 @@ let JazzApp = React.createClass({
     } else {
       url = url.replace('en-us', 'zh-cn');
     }
+    me._setHighchartConfig();
     var index0 = url.indexOf('#'),
       index1 = url.indexOf('?'),
       pre = index1 > -1 ? url.slice(0, index1) : url.slice(0, index0),
@@ -235,7 +239,26 @@ let JazzApp = React.createClass({
     LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
     LanguageStore.addSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
     LanguageStore.addFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
+    AjaxStore.addErrorListener(this._globalError);
   },
+
+  _globalError:function(httpStatusCode){
+		if(httpStatusCode == 401){
+			var buttonActions=[{
+        label:I18N.ServerError.BtnLabel,
+        onClick:() => {
+          this.refs.ajax._hide();
+  				LoginActionCreator.logout();
+          var _redirectFunc = this.context.router.replaceWith;
+          _redirectFunc('login', {
+            lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
+          });
+  			}
+      }];
+      this.refs.ajax._error(I18N.ServerError.Title, I18N.ServerError.Message, buttonActions, true);
+		}
+	},
+
   _onFirstLanguageNotice: function() {
     var params = this.getParams();
     var query = this.getQuery();
@@ -245,7 +268,7 @@ let JazzApp = React.createClass({
       window.I18N = b;
       var customerCode = params.customerId || query.customerId || window.currentCustomerId;
       var currentUser = window.currentUserId || getCookie('UserId');
-
+      me._setHighchartConfig();
       if (me.context.router.getCurrentPath().indexOf('resetpwd') > -1) {
         var {user, token, lang} = me.context.router.getCurrentParams();
         me.setState({
@@ -308,7 +331,6 @@ let JazzApp = React.createClass({
         });
       } else {
         //console.log('主页');
-        me._setHighchartConfig();
         CurrentUserAction.getUser(currentUser);
         me.setState({
           isLangLoaded: true,
@@ -390,6 +412,7 @@ let JazzApp = React.createClass({
     LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
     LanguageStore.removeSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
     LanguageStore.removeFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
+    AjaxStore.removeErrorListener(this._globalError);
   },
   getInitialState: function() {
     return {
@@ -424,6 +447,7 @@ let JazzApp = React.createClass({
           {mainPanel}
           {loading}
           <GlobalErrorMessageDialog ref='globalErrorMessageDialog'/>
+          <AjaxDialog ref="ajax"/>
       </div>
       );
   }
