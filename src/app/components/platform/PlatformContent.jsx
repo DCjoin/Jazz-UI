@@ -14,6 +14,7 @@ import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePickerByStatus.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
+import Customer from './CustomerIdentity.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Delete from '../../controls/OperationTemplate/Delete.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
@@ -133,7 +134,7 @@ let PlatformContent = React.createClass({
         content = that._renderInfo(isView, isAdd);
         break;
       case 2:
-        content = null;
+        content = <Customer provider={this.props.provider} formStatus={this.props.formStatus} customerItem={this.state.customerIdentity}/>;
         break;
     }
     return (
@@ -403,7 +404,7 @@ let PlatformContent = React.createClass({
         that._handleSendEmail
         }/>
       );
-      if (this.state.customerIdentity !== null) {
+      if (!!this.state.customerIdentity.SpId) {
         resetDefaultButton = (
           <FlatButton secondary={true}  label={I18N.Platform.ServiceProvider.ResetDefault} style={{
             borderRight: '1px solid #ececec',
@@ -487,7 +488,7 @@ let PlatformContent = React.createClass({
     var _onConfirm = function() {
       that.setState({
         dialogType: ''
-      })
+      });
       if (error.indexOf('002') < 0 && error.indexOf('007') < 0) {
         PlatformAction.getServiceProviders();
       }
@@ -496,9 +497,9 @@ let PlatformContent = React.createClass({
       content = I18N.Platform.ServiceProvider.Error001;
     } else {
       if (error.indexOf('002') > -1) {
-        content = I18N.Platform.ServiceProvider.Error002
+        content = I18N.Platform.ServiceProvider.Error002;
       } else if (error.indexOf('007') > -1) {
-        content = I18N.Platform.ServiceProvider.Error007
+        content = I18N.Platform.ServiceProvider.Error007;
       } else {
         content = I18N.Platform.ServiceProvider.Error003;
       }

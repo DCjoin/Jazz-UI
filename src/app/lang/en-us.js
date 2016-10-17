@@ -607,7 +607,7 @@ I18N.EM.Export.Preview = 'Preview export picture';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = 'Time';
-I18N.Setting.Calendar.ErrorMsg="No available {0} option, please contact your service provider administrator"
+I18N.Setting.Calendar.ErrorMsg = "No available {0} option, please contact your service provider administrator"
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = 'Work day';
@@ -1672,14 +1672,26 @@ I18N.Platform.ServiceProvider.Status = 'Status';
 I18N.Platform.ServiceProvider.DeleteContent = 'Delete SP “{0}”，All public data, customer data and associate data will be deleted.';
 
 I18N.Platform.ServiceProvider.SendEmail = 'Send mail';
+I18N.Platform.ServiceProvider.ResetDefault = '恢复默认';
 I18N.Platform.ServiceProvider.SendEmailSuccess = 'Mail send successfully';
 I18N.Platform.ServiceProvider.Error001 = 'SP is modified by other user';
 I18N.Platform.ServiceProvider.Error002 = 'SP ID already existed';
 I18N.Platform.ServiceProvider.Error003 = 'SP is deleted by other user';
-I18N.Platform.ServiceProvider.Error007='SP Domain already existed!';
+I18N.Platform.ServiceProvider.Error007 = 'SP Domain already existed!';
 I18N.Platform.ServiceProvider.ErrorNotice = 'Error message';
 
-
+I18N.Platform.ServiceProvider.AddImage = '上传';
+I18N.Platform.ServiceProvider.UpdateImage = '重新上传';
+I18N.Platform.ServiceProvider.SPInfo = '服务商信息';
+I18N.Platform.ServiceProvider.Customer = '自定义标识';
+I18N.Platform.ServiceProvider.AddInfo = '用户还未自定义标识，请点击"编辑"按钮设置';
+I18N.Platform.ServiceProvider.FullName = '服务商全称';
+I18N.Platform.ServiceProvider.FullNameEtc = '（例：施耐德电气中国有限公司）';
+I18N.Platform.ServiceProvider.Abbreviation = '服务商简称';
+I18N.Platform.ServiceProvider.AbbreviationEtc = '（例：施耐德电气）';
+I18N.Platform.ServiceProvider.About = '"关于服务商"页面链接';
+I18N.Platform.ServiceProvider.Logo = '"服务商LOGO';
+I18N.Platform.ServiceProvider.Background = '首页背景图';
 I18N.Platform.ServiceProvider.SPName = 'Name';
 I18N.Platform.ServiceProvider.SPID = 'ID';
 I18N.Platform.ServiceProvider.SPDomain = 'Domain';

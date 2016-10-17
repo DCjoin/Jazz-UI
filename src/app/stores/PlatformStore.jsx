@@ -17,7 +17,13 @@ let PlatformAction = Platform.Action;
 let _providerList = [],
   _selectedProvider = null,
   _currentProvider = null,
-  _customerIdentity = null,
+  _orginalCustomer = {
+    SpId: 1,
+    FullName: '1',
+    Abbreviation: '1',
+    AboutLink: 'www.baidu.com'
+  },
+  _currentCustomer = null,
   _column = null,
   _sort = null,
   _error = null;
@@ -66,7 +72,7 @@ var PlatformStore = assign({}, PrototypeStore, {
   },
   getSelectProvider() {
     if (_currentProvider === null) {
-      return null;
+      return {};
     } else {
       return _currentProvider.toJS();
     }
@@ -121,17 +127,21 @@ var PlatformStore = assign({}, PrototypeStore, {
   },
   setCustomerIdentity: function(item) {
     if (item === null) {
-      _customerIdentity = null;
+      _orginalCustomer = null;
     } else {
-      _customerIdentity = Immutable.fromJS(item);
+      _orginalCustomer = item;
+      _currentCustomer = Immutable.fromJS(_orginalCustomer);
     }
   },
   getCustomerIdentity: function() {
-    if (_customerIdentity === null) {
+    if (_currentCustomer === null) {
       return {};
     } else {
-      return _customerIdentity.toJS();
+      return _currentCustomer.toJS();
     }
+  },
+  mergeCustomer: function(data) {
+    _currentCustomer = _currentCustomer.set(data.path, data.value);
   },
   addProviderListChangeListener: function(callback) {
     this.on(PROVIDER_LIST_EVENT, callback);
@@ -228,6 +238,10 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case PlatformAction.GET_CUSTOMER_IDENTITY:
       PlatformStore.setCustomerIdentity(action.customerItem);
+      PlatformStore.emitCustomerChange();
+      break;
+    case PlatformAction.MERGE_CUSTOMER:
+      PlatformStore.mergeCustomer(action.data);
       PlatformStore.emitCustomerChange();
       break;
 

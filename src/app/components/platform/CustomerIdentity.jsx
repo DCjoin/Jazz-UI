@@ -15,235 +15,104 @@ import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Delete from '../../controls/OperationTemplate/Delete.jsx';
 import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
+import ImageUpload from '../../controls/ImageUpload.jsx';
 import assign from 'object-assign';
+import Config from 'config';
 
 
 let CustomerIdentity = React.createClass({
   mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
+    customerItem: React.PropTypes.object
   },
-  _onCustomerChanged: function() {
-    this.setState({
-      customerIdentity: PlatformStore.getCustomerIdentity()
-    });
-  },
-  _handleSaveUser: function() {
-    var provider = assign({}, this.props.provider);
-    provider.Telephone = null;
-    if (!!this.props.provider.Id) {
-      PlatformAction.modifyServiceProvider(provider);
-    } else {
-      PlatformAction.createServiceProvider(provider);
-    }
-  },
-  _handleCancel: function() {
-    PlatformAction.cancelSave();
-  },
-  _renderContent: function(isView, isAdd) {
-    var {UserName, Domain, Address, Telephone, Email, StartDate, LoginUrl, LogOutUrl, Comment, Status, CalcStatus} = this.props.provider;
-    var providerCodeProps = {
-        isViewStatus: (isAdd) ? isView : true,
-        title: I18N.Platform.ServiceProvider.SPID,
-        errorText: this.state.providerIdError,
-        defaultValue: UserName || "",
+  _renderContent: function(isView) {
+    var {SpId, FullName, Abbreviation, AboutLink, Logo, HomeBackground, LogoContent, HomeBackgroundContent} = this.props.customerItem;
+    var providerFullNameProps = {
+        isViewStatus: isView,
+        title: I18N.Platform.ServiceProvider.FullName + (isView ? '' : I18N.Platform.ServiceProvider.FullNameEtc),
+        defaultValue: FullName || "",
         isRequired: true,
         didChanged: value => {
-          PlatformAction.mergeProvider({
+          PlatformAction.mergeCustomer({
             value: value,
-            path: "UserName"
+            path: "FullName"
           });
         }
       },
-      providerDomainProps = {
+      providerAbbreviationProps = {
         isViewStatus: isView,
-        title: I18N.Platform.ServiceProvider.SPDomain,
-        defaultValue: Domain || "",
+        title: I18N.Platform.ServiceProvider.Abbreviation + (isView ? '' : I18N.Platform.ServiceProvider.AbbreviationEtc),
+        defaultValue: Abbreviation || "",
         isRequired: true,
         didChanged: value => {
-          PlatformAction.mergeProvider({
+          PlatformAction.mergeCustomer({
             value: value,
-            path: "Domain"
+            path: "Abbreviation"
           });
         }
       },
-      providerAddressProps = {
+      providerAboutProps = {
         isViewStatus: isView,
-        title: I18N.Platform.ServiceProvider.Address,
-        defaultValue: Address || "",
+        title: I18N.Platform.ServiceProvider.About,
+        defaultValue: AboutLink || "",
         isRequired: true,
-        maxLen: -1,
+        errorMessage: I18N.Platform.ServiceProvider.AboutUrlError,
         didChanged: value => {
-          PlatformAction.mergeProvider({
+          PlatformAction.mergeCustomer({
             value: value,
-            path: "Address"
+            path: "AboutLink"
           });
         }
       },
-      providerTelephoneProps = {
-        isViewStatus: isView,
-        title: I18N.Platform.ServiceProvider.Telephone,
-        defaultValue: Telephone || "",
-        isRequired: true,
-        // regex: Regex.TelephoneRule,
-        // errorMessage: "允许数字和中划线，但中划线不能连续出现或做为开头和结尾",
-        didChanged: value => {
-          PlatformAction.mergeProvider({
-            value: value,
-            path: "Telephone"
+      parmas = "&width=" + 240 + "&height=" + 160 + "&mode=" + 1,
+      logoImageProps = {
+        clip: false,
+        background: 'customer-background-logo',
+        url: (LogoContent === null ? (Logo === null ? "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + Logo + parmas + ")" : "") : "url(data:image/png;base64," + LogoContent + ")"),
+        isViewState: isView,
+        updateTips: LogoContent === null ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
+        imageDidChanged: img => {
+          this.props.merge({
+            value: img,
+            path: "LogoContent"
           });
-        }
+        },
+        wrapperWidth: 240,
+        wrapperHeight: 160
       },
-      providerEmailProps = {
-        isViewStatus: isView,
-        title: I18N.Platform.ServiceProvider.Email,
-        defaultValue: Email || "",
-        isRequired: true,
-        regex: Regex.Email,
-        errorMessage: I18N.Platform.ServiceProvider.EmailError,
-        maxLen: 254,
-        didChanged: value => {
-          PlatformAction.mergeProvider({
-            value: value,
-            path: "Email"
+      backgroundImageProps = {
+        clip: false,
+        background: 'customer-background-logo',
+        url: (HomeBackgroundContent === null ? (HomeBackground === null ? "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + HomeBackground + parmas + ")" : "") : "url(data:image/png;base64," + HomeBackgroundContent + ")"),
+        isViewState: isView,
+        imageDidChanged: img => {
+          this.props.merge({
+            value: img,
+            path: "HomeBackgroundContent"
           });
-        }
-      },
-      providerBackToUrlProps = {
-        isViewStatus: isView,
-        title: I18N.Platform.ServiceProvider.LoginUrl,
-        defaultValue: LoginUrl || "",
-        regex: Regex.UrlRule,
-        errorMessage: I18N.Platform.ServiceProvider.LoginUrlError,
-        didChanged: value => {
-          PlatformAction.mergeProvider({
-            value: value,
-            path: "LoginUrl"
-          });
-        }
-      },
-      providerLogOutUrlProps = {
-        isViewStatus: isView,
-        title: I18N.Platform.ServiceProvider.LogOutUrl,
-        defaultValue: LogOutUrl || "",
-        regex: Regex.UrlRule,
-        errorMessage: I18N.Platform.ServiceProvider.LogOutUrlError,
-        didChanged: value => {
-          PlatformAction.mergeProvider({
-            value: value,
-            path: "LogOutUrl"
-          });
-        }
-      },
-      providerStartTimeProps = {
-        isViewStatus: (isAdd) ? isView : true,
-        title: I18N.Platform.ServiceProvider.StartDate,
-        defaultValue: this._getDateInput(StartDate),
-        isRequired: true,
-        // regex: Regex.CommonTextNotNullRule,
-        // errorMessage: "请输入客户地址",
-        didChanged: value => {
-          PlatformAction.mergeProvider({
-            value: value,
-            path: "StartDate"
-          });
-        }
-      },
-      providerCommentProps = {
-        isViewStatus: isView,
-        title: I18N.Platform.ServiceProvider.Comment,
-        defaultValue: Comment || "",
-        multiLine: true,
-        didChanged: value => {
-          PlatformAction.mergeProvider({
-            value: value,
-            path: "Comment"
-          });
-        }
-      },
-      titleItems = [{
-        payload: 0,
-        text: I18N.Platform.ServiceProvider.PauseStatus
-      },
-        {
-          payload: 1,
-          text: I18N.Platform.ServiceProvider.NormalStatus
-        }],
-      providerStatusProps = {
-        isViewStatus: isView,
-        title: I18N.Platform.ServiceProvider.Status,
-        selectedIndex: Status,
-        textField: "text",
-        dataItems: titleItems,
-        didChanged: value => {
-          PlatformAction.mergeProvider({
-            value: value,
-            path: "Status"
-          });
-        }
-      },
-      providerCalStatusProps = {
-        checked: CalcStatus || false,
-        disabled: isView,
-        label: I18N.Platform.ServiceProvider.CalcStatus,
-        onCheck: (event, checked) => {
-          PlatformAction.mergeProvider({
-            value: checked,
-            path: "CalcStatus"
-          });
-        }
+        },
+        wrapperWidth: 240,
+        wrapperHeight: 160,
       };
+
     return (
       <div className={"pop-user-detail-content"}>
         <div className="pop-user-detail-content-item">
-          <ViewableTextField {...providerCodeProps} />
-        </div>
-
-          <div className="pop-user-detail-content-item" style={{
-        flexDirection: 'row'
-      }}>
-            <ViewableTextField {...providerDomainProps} />
-            <div className={classnames({
-        "jazz-platform-viewstatus": isView,
-        "jazz-platform-editstatus": !isView
-      })}>.energymost.com</div>
-
-        </div>
-
-        <div className="pop-user-detail-content-item">
-          <ViewableTextField {...providerAddressProps} />
+          <ViewableTextField {...providerFullNameProps} />
         </div>
         <div className="pop-user-detail-content-item">
-          <ViewableTextField {...providerEmailProps} />
+          <ViewableTextField {...providerAbbreviationProps} />
         </div>
         <div className="pop-user-detail-content-item">
-          <ViewableDatePicker {...providerStartTimeProps} />
+          <ViewableTextField {...providerAboutProps} />
         </div>
         <div className="pop-user-detail-content-item">
-        <ViewableDropDownMenu {...providerStatusProps} />
-      </div>
-        <div className={classnames({
-        "pop-user-detail-content-item": true,
-        "jazz-hide": isView & !LoginUrl
-      })}>
-          <ViewableTextField {...providerBackToUrlProps} />
-        </div>
-        <div className={classnames({
-        "pop-user-detail-content-item": true,
-        "jazz-hide": isView & !LogOutUrl
-      })}>
-          <ViewableTextField {...providerLogOutUrlProps} />
+          <ImageUpload {...logoImageProps} />
         </div>
         <div className="pop-user-detail-content-item">
-          <Checkbox {...providerCalStatusProps} />
+          <ImageUpload {...backgroundImageProps} />
         </div>
-        <div className={classnames({
-        "pop-user-detail-content-item": true,
-        "jazz-hide": isView & !Comment
-      })}>
-        <ViewableTextField {...providerCommentProps} />
-        </div>
-
         </div>
       );
 
@@ -252,12 +121,8 @@ let CustomerIdentity = React.createClass({
     PlatformAction.getCustomerIdentity(this.props.provider.Id);
     this.initBatchViewbaleTextFiled();
   },
-  componentDidMount: function() {
-    PlatformStore.addCustomerChangeListener(this._onCustomerChanged);
-  },
-  componentWillUnmount: function() {
-    PlatformStore.removeCustomerChangeListener(this._onCustomerChanged);
-  },
+  componentDidMount: function() {},
+  componentWillUnmount: function() {},
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.provider.Id != this.props.provider.Id) {
       this.clearErrorTextBatchViewbaleTextFiled();
@@ -267,7 +132,6 @@ let CustomerIdentity = React.createClass({
 
   getInitialState: function() {
     return {
-      customerIdentity: PlatformStore.getCustomerIdentity()
     };
   },
   render: function() {
@@ -276,8 +140,13 @@ let CustomerIdentity = React.createClass({
       isEdit = this.props.formStatus === formStatus.EDIT,
       isAdd = this.props.formStatus === formStatus.ADD;
 
-    var content = this._renderContent(isView, isAdd);
-    return content;
+    var content = this._renderContent(isView);
+    if (!this.props.customerItem.SpId) {
+      return (<div>{I18N.Platform.ServiceProvider.AddInfo}</div>);
+    } else {
+      return content;
+    }
+
   },
 });
 module.exports = CustomerIdentity;

@@ -607,7 +607,7 @@ I18N.EM.Export.Preview = '导出图片预览';
 I18N.Setting = {};
 I18N.Setting.Calendar = {};
 I18N.Setting.Calendar.Time = '时间';
-I18N.Setting.Calendar.ErrorMsg="暂无可添加的{0}，请联系您的系统管理员";
+I18N.Setting.Calendar.ErrorMsg = "暂无可添加的{0}，请联系您的系统管理员";
 
 //workday
 I18N.Setting.Calendar.WorkdaySetting = '工休日';
@@ -1682,11 +1682,22 @@ I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
 I18N.Platform.ServiceProvider.Error002 = '该服务商ID已存在！';
 I18N.Platform.ServiceProvider.Error003 = '服务商已经被其他用户删除！';
-I18N.Platform.ServiceProvider.Error007='该服务商子域名已存在!';
+I18N.Platform.ServiceProvider.Error007 = '该服务商子域名已存在!';
 I18N.Platform.ServiceProvider.ErrorNotice = '错误提示';
 
+I18N.Platform.ServiceProvider.AddImage = '上传';
+I18N.Platform.ServiceProvider.UpdateImage = '重新上传';
 I18N.Platform.ServiceProvider.SPInfo = '服务商信息';
 I18N.Platform.ServiceProvider.Customer = '自定义标识';
+I18N.Platform.ServiceProvider.AddInfo = '用户还未自定义标识，请点击"编辑"按钮设置';
+I18N.Platform.ServiceProvider.FullName = '服务商全称';
+I18N.Platform.ServiceProvider.FullNameEtc = '（例：施耐德电气中国有限公司）';
+I18N.Platform.ServiceProvider.Abbreviation = '服务商简称';
+I18N.Platform.ServiceProvider.AbbreviationEtc = '（例：施耐德电气）';
+I18N.Platform.ServiceProvider.About = '"关于服务商"页面链接';
+I18N.Platform.ServiceProvider.AboutUrlError = '请填写网址';
+I18N.Platform.ServiceProvider.Logo = '"服务商LOGO';
+I18N.Platform.ServiceProvider.Background = '首页背景图';
 I18N.Platform.ServiceProvider.SPName = '服务商名称';
 I18N.Platform.ServiceProvider.SPID = '服务商ID';
 I18N.Platform.ServiceProvider.SPDomain = '服务商子域名';

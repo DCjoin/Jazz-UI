@@ -12,7 +12,8 @@ module.exports = {
     CREATE_SUCCESS: null,
     DELETE_SUCCESS: null,
     SEND_EMAIL_SUCCESS: null,
-    GET_CUSTOMER_IDENTITY: null
+    GET_CUSTOMER_IDENTITY: null,
+    MERGE_CUSTOMER: null
   })
 
 };

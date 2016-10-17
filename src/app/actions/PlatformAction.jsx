@@ -33,13 +33,13 @@ let PlatformAction = {
     });
   },
   modifyServiceProvider: function(provider) {
-    var that=this;
+    var that = this;
     Ajax.post('/ServiceProvider/ModifyServiceProvider', {
       params: {
         dto: provider
       },
       commonErrorHandling: false,
-      success: (item)=> {
+      success: (item) => {
         AppDispatcher.dispatch({
           type: Action.MODIFY_SUCCESS,
           provider: item
@@ -146,6 +146,12 @@ let PlatformAction = {
       error: function(err, res) {
         console.log(err, res);
       }
+    });
+  },
+  mergeCustomer: function(data) {
+    AppDispatcher.dispatch({
+      type: Action.MERGE_CUSTOMER,
+      data: data
     });
   },
 };
