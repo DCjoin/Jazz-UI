@@ -263,7 +263,7 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       PlatformStore.setCustomerIdentity(action.customer);
       PlatformStore.emitCustomerChange();
       break;
-    case PlatformAction.MERGE_CUSTOMER:
+    case PlatformAction.MERGE_CUSTOMER_IDENTITY:
       PlatformStore.mergeCustomer(action.data);
       PlatformStore.emitMergeCustomerChange();
       break;

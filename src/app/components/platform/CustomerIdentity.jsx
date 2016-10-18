@@ -104,7 +104,11 @@ let CustomerIdentity = React.createClass({
         wrapperWidth: 240,
         wrapperHeight: 160,
       };
-
+    var imageFontStyle = {
+      'font-size': '14px',
+      'color': '#abafae',
+      'margin-bottom': '6px'
+    };
     return (
       <div className={"pop-user-detail-content"}>
         {tips}
@@ -118,9 +122,11 @@ let CustomerIdentity = React.createClass({
           <ViewableTextField {...providerAboutProps} />
         </div>
         <div className="pop-user-detail-content-item">
+          <div style={imageFontStyle}>{I18N.Platform.ServiceProvider.Logo}</div>
           <ImageUpload {...logoImageProps} />
         </div>
         <div className="pop-user-detail-content-item">
+          <div style={imageFontStyle}>{I18N.Platform.ServiceProvider.Background}</div>
           <ImageUpload {...backgroundImageProps} />
         </div>
         </div>

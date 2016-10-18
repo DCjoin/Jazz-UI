@@ -150,7 +150,7 @@ let PlatformAction = {
   },
   mergeCustomer: function(data) {
     AppDispatcher.dispatch({
-      type: Action.MERGE_CUSTOMER,
+      type: Action.MERGE_CUSTOMER_IDENTITY,
       data: data
     });
   },
