@@ -137,10 +137,10 @@ let PlatformAction = {
       params: {
         SpId: spId
       },
-      success: function(customerItem) {
+      success: function(customer) {
         AppDispatcher.dispatch({
           type: Action.GET_CUSTOMER_IDENTITY,
-          customerItem: customerItem
+          customer: customer
         });
       },
       error: function(err, res) {
@@ -150,8 +150,66 @@ let PlatformAction = {
   },
   mergeCustomer: function(data) {
     AppDispatcher.dispatch({
-      type: Action.MERGE_CUSTOMER,
+      type: Action.MERGE_CUSTOMER_IDENTITY,
       data: data
+    });
+  },
+  cancelSaveCustomer: function() {
+    AppDispatcher.dispatch({
+      type: Action.CANCEL_SAVE_CUSTOMER,
+    });
+  },
+  modifyCustomer: function(customer) {
+    Ajax.post('/ServiceProvider/ModifyCustomIdentity', {
+      params: {
+        SPCustomIdentity: customer
+      },
+      success: (item) => {
+        AppDispatcher.dispatch({
+          type: Action.MODIFY_CUSTOMER_SUCCESS,
+          customer: item
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.MODIFY_CUSTOMER_ERROR,
+          res: res
+        });
+      }
+    });
+
+  },
+  createCustomer: function(customer) {
+    Ajax.post('/ServiceProvider/CreateCustomIdentity', {
+      params: {
+        SPCustomIdentity: customer
+      },
+      success: function(item) {
+        AppDispatcher.dispatch({
+          type: Action.CREATE_CUSTOMER_SUCCESS,
+          customer: item,
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.CREATE_CUSTOMER_ERROR,
+          res: res
+        });
+      }
+    });
+  },
+  deleteCustomer: function(id) {
+    Ajax.post('/ServiceProvider/DeleteCustomIdentity', {
+      params: {
+        SpId: id
+      },
+      success: function(item) {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_CUSTOMER_SUCCESS,
+          id: id
+        });
+      },
+      error: function(err, res) {}
     });
   },
 };

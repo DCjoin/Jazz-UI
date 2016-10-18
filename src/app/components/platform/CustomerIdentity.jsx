@@ -24,10 +24,11 @@ let CustomerIdentity = React.createClass({
   mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
-    customerItem: React.PropTypes.object
+    customer: React.PropTypes.object
   },
   _renderContent: function(isView) {
-    var {SpId, FullName, Abbreviation, AboutLink, Logo, HomeBackground, LogoContent, HomeBackgroundContent} = this.props.customerItem;
+    var {SpId, FullName, Abbreviation, AboutLink, Logo, HomeBackground, LogoContent, HomeBackgroundContent} = this.props.customer;
+    var tips = isView ? null : (<div className="pop-user-detail-content-item">{I18N.Platform.ServiceProvider.Tips}</div>);
     var providerFullNameProps = {
         isViewStatus: isView,
         title: I18N.Platform.ServiceProvider.FullName + (isView ? '' : I18N.Platform.ServiceProvider.FullNameEtc),
@@ -57,6 +58,7 @@ let CustomerIdentity = React.createClass({
         title: I18N.Platform.ServiceProvider.About,
         defaultValue: AboutLink || "",
         isRequired: true,
+        regex: Regex.UrlRule,
         errorMessage: I18N.Platform.ServiceProvider.AboutUrlError,
         didChanged: value => {
           PlatformAction.mergeCustomer({
@@ -67,37 +69,47 @@ let CustomerIdentity = React.createClass({
       },
       parmas = "&width=" + 240 + "&height=" + 160 + "&mode=" + 1,
       logoImageProps = {
+        id: 'logo',
         clip: false,
         background: 'customer-background-logo',
-        url: (LogoContent === null ? (Logo === null ? "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + Logo + parmas + ")" : "") : "url(data:image/png;base64," + LogoContent + ")"),
+        imageUrl: (!LogoContent ? (!Logo ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + Logo + parmas + ")") : "url(data:image/png;base64," + LogoContent + ")"),
         isViewState: isView,
-        updateTips: LogoContent === null ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
+        updateTips: !LogoContent ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
         imageDidChanged: img => {
-          this.props.merge({
+          PlatformAction.mergeCustomer({
             value: img,
             path: "LogoContent"
           });
         },
+        uploadUrl: null,
         wrapperWidth: 240,
         wrapperHeight: 160
       },
       backgroundImageProps = {
+        id: 'background',
         clip: false,
         background: 'customer-background-logo',
-        url: (HomeBackgroundContent === null ? (HomeBackground === null ? "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + HomeBackground + parmas + ")" : "") : "url(data:image/png;base64," + HomeBackgroundContent + ")"),
+        imageUrl: (!HomeBackgroundContent ? (!HomeBackground ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + HomeBackground + parmas + ")") : "url(data:image/png;base64," + HomeBackgroundContent + ")"),
         isViewState: isView,
+        updateTips: !HomeBackgroundContent ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
         imageDidChanged: img => {
-          this.props.merge({
+          PlatformAction.mergeCustomer({
             value: img,
             path: "HomeBackgroundContent"
           });
         },
+        uploadUrl: null,
         wrapperWidth: 240,
         wrapperHeight: 160,
       };
-
+    var imageFontStyle = {
+      'font-size': '14px',
+      'color': '#abafae',
+      'margin-bottom': '6px'
+    };
     return (
       <div className={"pop-user-detail-content"}>
+        {tips}
         <div className="pop-user-detail-content-item">
           <ViewableTextField {...providerFullNameProps} />
         </div>
@@ -108,9 +120,11 @@ let CustomerIdentity = React.createClass({
           <ViewableTextField {...providerAboutProps} />
         </div>
         <div className="pop-user-detail-content-item">
+          <div style={imageFontStyle}>{I18N.Platform.ServiceProvider.Logo}</div>
           <ImageUpload {...logoImageProps} />
         </div>
         <div className="pop-user-detail-content-item">
+          <div style={imageFontStyle}>{I18N.Platform.ServiceProvider.Background}</div>
           <ImageUpload {...backgroundImageProps} />
         </div>
         </div>
@@ -141,7 +155,7 @@ let CustomerIdentity = React.createClass({
       isAdd = this.props.formStatus === formStatus.ADD;
 
     var content = this._renderContent(isView);
-    if (!this.props.customerItem.SpId) {
+    if (!this.props.customer.SpId && isView) {
       return (<div>{I18N.Platform.ServiceProvider.AddInfo}</div>);
     } else {
       return content;

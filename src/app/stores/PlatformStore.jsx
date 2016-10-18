@@ -31,6 +31,7 @@ let _providerList = [],
 const PROVIDER_LIST_EVENT = 'providerlist',
   SELECT_PROVIDER_EVENT = 'selectprovider',
   CUSTOMER_IDENTITY_EVENT = 'customeridentity',
+  MERGE_CUSTOMER_EVENT = 'mergercustomer',
   ERROR_EVENT = 'error',
   SEND_EMAIL_EVENT = 'sendemail',
   MERGE_PROVIDER_EVENT = 'mergerprovider';
@@ -125,13 +126,13 @@ var PlatformStore = assign({}, PrototypeStore, {
       }
     });
   },
-  setCustomerIdentity: function(item) {
-    if (item === null) {
-      _orginalCustomer = null;
+  setCustomerIdentity: function(customer) {
+    if (customer === null) {
+      _orginalCustomer = {};
     } else {
-      _orginalCustomer = item;
-      _currentCustomer = Immutable.fromJS(_orginalCustomer);
+      _orginalCustomer = customer;
     }
+    _currentCustomer = Immutable.fromJS(_orginalCustomer);
   },
   getCustomerIdentity: function() {
     if (_currentCustomer === null) {
@@ -140,8 +141,19 @@ var PlatformStore = assign({}, PrototypeStore, {
       return _currentCustomer.toJS();
     }
   },
+  resetDefault: function() {
+    _orginalCustomer = {};
+    _currentCustomer = Immutable.fromJS(_orginalCustomer);
+  },
   mergeCustomer: function(data) {
     _currentCustomer = _currentCustomer.set(data.path, data.value);
+  },
+  resetCustomer: function() {
+    if (_orginalCustomer === null) {
+      _currentCustomer = null;
+    } else {
+      _currentCustomer = Immutable.fromJS(_orginalCustomer);
+    }
   },
   addProviderListChangeListener: function(callback) {
     this.on(PROVIDER_LIST_EVENT, callback);
@@ -197,6 +209,15 @@ var PlatformStore = assign({}, PrototypeStore, {
   removeCustomerChangeListener: function(callback) {
     this.removeListener(CUSTOMER_IDENTITY_EVENT, callback);
   },
+  addMergeCustomerChangeListener: function(callback) {
+    this.on(MERGE_CUSTOMER_EVENT, callback);
+  },
+  emitMergeCustomerChange: function() {
+    this.emit(MERGE_CUSTOMER_EVENT);
+  },
+  removeMergeCustomerChangeListener: function(callback) {
+    this.removeListener(MERGE_CUSTOMER_EVENT, callback);
+  }
 });
 PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
@@ -237,14 +258,27 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       PlatformStore.emitSendEmailChange();
       break;
     case PlatformAction.GET_CUSTOMER_IDENTITY:
-      PlatformStore.setCustomerIdentity(action.customerItem);
+    case PlatformAction.MODIFY_CUSTOMER_SUCCESS:
+    case PlatformAction.CREATE_CUSTOMER_SUCCESS:
+      PlatformStore.setCustomerIdentity(action.customer);
       PlatformStore.emitCustomerChange();
       break;
-    case PlatformAction.MERGE_CUSTOMER:
+    case PlatformAction.MERGE_CUSTOMER_IDENTITY:
       PlatformStore.mergeCustomer(action.data);
+      PlatformStore.emitMergeCustomerChange();
+      break;
+    case PlatformAction.CANCEL_SAVE_CUSTOMER:
+      PlatformStore.resetCustomer();
       PlatformStore.emitCustomerChange();
       break;
-
+    case PlatformAction.MODIFY_CUSTOMER_ERROR:
+      PlatformStore.setError(action.res.text);
+      PlatformStore.emitErrorChange();
+      break;
+    case PlatformAction.DELETE_CUSTOMER_SUCCESS:
+      PlatformStore.resetDefault();
+      PlatformStore.emitCustomerChange();
+      break;
   }
 });
 
