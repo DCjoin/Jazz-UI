@@ -70,7 +70,6 @@ let CustomerIdentity = React.createClass({
       parmas = "&width=" + 240 + "&height=" + 160 + "&mode=" + 1,
       logoImageProps = {
         id: 'logo',
-        key: 'logo',
         clip: false,
         background: 'customer-background-logo',
         imageUrl: (!LogoContent ? (!Logo ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + Logo + parmas + ")") : "url(data:image/png;base64," + LogoContent + ")"),
@@ -88,7 +87,6 @@ let CustomerIdentity = React.createClass({
       },
       backgroundImageProps = {
         id: 'background',
-        key: 'background',
         clip: false,
         background: 'customer-background-logo',
         imageUrl: (!HomeBackgroundContent ? (!HomeBackground ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + HomeBackground + parmas + ")") : "url(data:image/png;base64," + HomeBackgroundContent + ")"),

@@ -236,7 +236,6 @@ let ImageUpload = React.createClass({
       background={this.props.background} >
 						{tips}
 						<input id={this.props.id || "pop_image_upload_button"}
-      key={this.props.key}
       name='imageFile'
       ref="pop_image_upload_button"
       type="file"
