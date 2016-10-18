@@ -142,7 +142,7 @@ var PlatformStore = assign({}, PrototypeStore, {
     }
   },
   resetDefault: function() {
-    _orginalCustomer = null;
+    _orginalCustomer = {};
     _currentCustomer = Immutable.fromJS(_orginalCustomer);
   },
   mergeCustomer: function(data) {
@@ -277,6 +277,7 @@ PlatformStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case PlatformAction.DELETE_CUSTOMER_SUCCESS:
       PlatformStore.resetDefault();
+      PlatformStore.emitCustomerChange();
       break;
   }
 });

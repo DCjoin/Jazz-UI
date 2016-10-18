@@ -198,15 +198,15 @@ let PlatformAction = {
       }
     });
   },
-  deleteCustomer: function(dto) {
+  deleteCustomer: function(id) {
     Ajax.post('/ServiceProvider/DeleteCustomIdentity', {
       params: {
-        SpId: dto
+        SpId: id
       },
       success: function(item) {
         AppDispatcher.dispatch({
           type: Action.DELETE_CUSTOMER_SUCCESS,
-          dto: dto
+          id: id
         });
       },
       error: function(err, res) {}

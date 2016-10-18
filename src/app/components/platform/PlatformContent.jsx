@@ -59,6 +59,11 @@ let PlatformContent = React.createClass({
       customer: PlatformStore.getCustomerIdentity()
     });
   },
+  _handleResetDefault: function() {
+    this.setState({
+      dialogType: DIALOG_TYPE.RESET
+    });
+  },
   _getDateInput: function(time) {
     if (!time) {
       return "";
@@ -565,10 +570,7 @@ let PlatformContent = React.createClass({
   _getResetDialog: function() {
     var that = this;
     var _onDeleteCustomer = function() {
-      var dto = {
-        Id: that.props.provider.Id
-      };
-      PlatformAction.deleteCustomer(dto);
+      PlatformAction.deleteCustomer(that.props.provider.Id);
     };
     var _onCancel = function() {
       that.setState({
