@@ -23,7 +23,8 @@ import assign from 'object-assign';
 const DIALOG_TYPE = {
   DELETE: "cancel",
   SEND_EMAIL: "send_email",
-  ERROR: 'error'
+  ERROR: 'error',
+  RESET: 'reset'
 };
 
 let PlatformContent = React.createClass({
@@ -49,7 +50,13 @@ let PlatformContent = React.createClass({
   },
   _onCustomerChanged: function() {
     this.setState({
-      customerIdentity: PlatformStore.getCustomerIdentity()
+      customer: PlatformStore.getCustomerIdentity()
+    });
+    this.props.handleCancel();
+  },
+  _onMergeCustomerChanged: function() {
+    this.setState({
+      customer: PlatformStore.getCustomerIdentity()
     });
   },
   _getDateInput: function(time) {
@@ -71,8 +78,37 @@ let PlatformContent = React.createClass({
       PlatformAction.createServiceProvider(provider);
     }
   },
+  _handleSaveCustomer: function() {
+    var customer;
+    if (!!this.state.customer.SpId) {
+      customer = assign({}, this.state.customer);
+      PlatformAction.modifyCustomer(customer);
+    } else {
+      customer = assign({
+        SpId: this.props.provider.Id
+      }, this.state.customer);
+      PlatformAction.createCustomer(customer);
+    }
+  },
+  _handleSave: function() {
+    switch (this.props.infoTabNo) {
+      case 1:
+        this._handleSaveUser();
+        break;
+      case 2:
+        this._handleSaveCustomer();
+        break;
+    }
+  },
   _handleCancel: function() {
-    PlatformAction.cancelSave();
+    switch (this.props.infoTabNo) {
+      case 1:
+        PlatformAction.cancelSave();
+        break;
+      case 2:
+        PlatformAction.cancelSaveCustomer();
+        break;
+    }
   },
   _handleSendEmail: function() {
     PlatformAction.sendInitPassword(this.props.provider.Id);
@@ -134,14 +170,14 @@ let PlatformContent = React.createClass({
         content = that._renderInfo(isView, isAdd);
         break;
       case 2:
-        content = <Customer provider={this.props.provider} formStatus={this.props.formStatus} customerItem={this.state.customerIdentity}/>;
+        content = <Customer provider={this.props.provider} formStatus={this.props.formStatus} customer={this.state.customer}/>;
         break;
     }
     return (
       <div style={{
         display: 'flex',
         flex: '1',
-        overflow: 'auto'
+      //overflow: 'auto' 自定义标志页面会出现不该出来的滚动条
       }}>
     {content}
   </div>
@@ -361,6 +397,7 @@ let PlatformContent = React.createClass({
       resetDefaultButton = null,
       saveButtonDisabled = false;
     var {Name, UserName, Domain, Address, Telephone, Email, StartDate, LoginUrl, LogOutUrl} = this.props.provider;
+    var {SpId, FullName, Abbreviation, AboutLink, Logo, HomeBackground, LogoContent, HomeBackgroundContent} = this.state.customer;
     // if (
     //   Name && Name.length < 200 &&
     //   UserName && UserName.length < 200 &&
@@ -393,7 +430,16 @@ let PlatformContent = React.createClass({
         saveButtonDisabled = true;
       }
     } else if (this.props.infoTabNo === 2) {
-
+      if (!FullName ||
+        FullName.length > 200 ||
+        !Abbreviation ||
+        Abbreviation.length > 200 ||
+        !AboutLink || !Regex.UrlRule.test(AboutLink) ||
+        (!LogoContent && !Logo) ||
+        (!HomeBackgroundContent && !HomeBackground)
+      ) {
+        saveButtonDisabled = true;
+      }
     }
     if (isView) {
       sendPasswordButton = (
@@ -404,7 +450,7 @@ let PlatformContent = React.createClass({
         that._handleSendEmail
         }/>
       );
-      if (!!this.state.customerIdentity.SpId) {
+      if (!!this.state.customer.SpId) {
         resetDefaultButton = (
           <FlatButton secondary={true}  label={I18N.Platform.ServiceProvider.ResetDefault} style={{
             borderRight: '1px solid #ececec',
@@ -422,7 +468,7 @@ let PlatformContent = React.createClass({
       enableSave={!saveButtonDisabled}
       allowDelete={this.props.infoTabNo === 1}
       status={this.props.formStatus}
-      onSave={this._handleSaveUser}
+      onSave={this._handleSave}
       onDelete={function() {
         that.setState({
           dialogType: DIALOG_TYPE.DELETE
@@ -516,6 +562,32 @@ let PlatformContent = React.createClass({
       <Dialog {...props}/>
       );
   },
+  _getResetDialog: function() {
+    var that = this;
+    var _onDeleteCustomer = function() {
+      var dto = {
+        Id: that.props.provider.Id
+      };
+      PlatformAction.deleteCustomer(dto);
+    };
+    var _onCancel = function() {
+      that.setState({
+        dialogType: ''
+      });
+    };
+    var props = {
+      title: I18N.Platform.ServiceProvider.ResetDefault,
+      content: I18N.Platform.ServiceProvider.ResetContent,
+      firstActionLabel: I18N.Platform.ServiceProvider.Reset,
+      secondActionLabel: I18N.Common.Button.Cancel,
+      onFirstActionTouchTap: _onDeleteCustomer,
+      onSecondActionTouchTap: _onCancel,
+      onDismiss: _onCancel,
+    };
+    return (
+      <Dialog {...props}/>
+      );
+  },
   componentWillMount: function() {
     this.initBatchViewbaleTextFiled();
   },
@@ -523,11 +595,13 @@ let PlatformContent = React.createClass({
     PlatformStore.addErrorChangeListener(this._onError);
     PlatformStore.addSendEmailListener(this._onSendEmailSuccess);
     PlatformStore.addCustomerChangeListener(this._onCustomerChanged);
+    PlatformStore.addMergeCustomerChangeListener(this._onMergeCustomerChanged);
   },
   componentWillUnmount: function() {
     PlatformStore.removeErrorListener(this._onError);
     PlatformStore.removeSendEmailListener(this._onSendEmailSuccess);
     PlatformStore.removeCustomerChangeListener(this._onCustomerChanged);
+    PlatformStore.removeMergeCustomerChangeListener(this._onMergeCustomerChanged);
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.provider.Id != this.props.provider.Id) {
@@ -543,7 +617,7 @@ let PlatformContent = React.createClass({
     return {
       providerIdError: '',
       dialogType: '',
-      customerIdentity: PlatformStore.getCustomerIdentity()
+      customer: PlatformStore.getCustomerIdentity()
     };
   },
   render: function() {
@@ -572,8 +646,9 @@ let PlatformContent = React.createClass({
       case DIALOG_TYPE.ERROR:
         dialog = this._getErrorDialog();
         break;
-
-
+      case DIALOG_TYPE.RESET:
+        dialog = this._getResetDialog();
+        break;
     }
     return (
       <div style={{

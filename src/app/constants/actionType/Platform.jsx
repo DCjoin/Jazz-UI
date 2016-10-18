@@ -13,7 +13,12 @@ module.exports = {
     DELETE_SUCCESS: null,
     SEND_EMAIL_SUCCESS: null,
     GET_CUSTOMER_IDENTITY: null,
-    MERGE_CUSTOMER: null
+    MERGE_CUSTOMER: null,
+    CANCEL_SAVE_CUSTOMER: null,
+    MODIFY_CUSTOMER_SUCCESS: null,
+    MODIFY_CUSTOMER_ERROR: null,
+    CREATE_CUSTOMER_SUCCESS: null,
+    DELETE_CUSTOMER_SUCCESS: null
   })
 
 };

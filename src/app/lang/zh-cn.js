@@ -1678,6 +1678,8 @@ I18N.Platform.ServiceProvider.DeleteContent = '删除服务商“{0}”，该服
 
 I18N.Platform.ServiceProvider.SendEmail = '发送邮件';
 I18N.Platform.ServiceProvider.ResetDefault = '恢复默认';
+I18N.Platform.ServiceProvider.Reset = '恢复';
+I18N.Platform.ServiceProvider.ResetContent = '该操作会清空服务器名称、LOGO等全部自定义信息，是否恢复默认？';
 I18N.Platform.ServiceProvider.SendEmailSuccess = '邮件发送成功';
 I18N.Platform.ServiceProvider.Error001 = '服务商已经被其他用户修改！';
 I18N.Platform.ServiceProvider.Error002 = '该服务商ID已存在！';
@@ -1690,6 +1692,7 @@ I18N.Platform.ServiceProvider.UpdateImage = '重新上传';
 I18N.Platform.ServiceProvider.SPInfo = '服务商信息';
 I18N.Platform.ServiceProvider.Customer = '自定义标识';
 I18N.Platform.ServiceProvider.AddInfo = '用户还未自定义标识，请点击"编辑"按钮设置';
+I18N.Platform.ServiceProvider.Tips = '填写以下信息可以自定义LOGO及千里眼平台首页服务商名称、背景图片等相关信息';
 I18N.Platform.ServiceProvider.FullName = '服务商全称';
 I18N.Platform.ServiceProvider.FullNameEtc = '（例：施耐德电气中国有限公司）';
 I18N.Platform.ServiceProvider.Abbreviation = '服务商简称';

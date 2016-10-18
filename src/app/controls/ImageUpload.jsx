@@ -51,67 +51,73 @@ let ImageUpload = React.createClass({
       } else if (file.size === 0) {
         this.refs.errorDialog._error(I18N.Setting.CustomerManagement.LogoUploadErrorTitle, I18N.Setting.CustomerManagement.LogoUploadErrorSizeContent);
       } else {
-        var createElement = window.Highcharts.createElement,
-          discardElement = window.Highcharts.discardElement;
-        var iframe = createElement('iframe', null, {
-          display: 'none'
-        }, document.body);
-        iframe.onload = function() {
-          var json = iframe.contentDocument.body.innerHTML;
-          if (!json) return;
-          var obj = JSON.parse(json);
-          var uploadTemplate;
-          if (obj.success === true) {
-            that.props.imageDidChanged(obj);
-          } else {
-            console.log('fail');
-          }
-        };
-        var form = createElement('form', {
-          method: 'post',
-          action: this.props.uploadUrl,
-          enctype: 'multipart/form-data',
-          target: '_self',
-          name: 'inputForm'
-        }, {
-          display: 'none'
-        }, iframe.contentDocument.body);
+        if (this.props.uploadUrl === null) {
+          let render = new FileReader();
+          render.readAsDataURL(file);
 
-        var input = this.refs.pop_image_upload_button.getDOMNode();
-        console.log('input', input);
-        form.appendChild(input);
-        form.submit();
-        discardElement(form);
-        var label = this.refs.fileInputLabel.getDOMNode();
-        // var tempForm = document.createElement('form');
-        // document.body.appendChild(tempForm);
-        // tempForm.appendChild(input);
-        // tempForm.reset();
-        // document.body.removeChild(tempForm);
-        label.appendChild(input);
-      // let render = new FileReader();
-      // render.readAsDataURL(file);
-      //
-      // render.onload = function() {
-      //   var ret = this.result;
-      //   var imgChecker = new Image();
-      //   imgChecker.onerror = function(argument) {
-      //
-      //     that.refs.errorDialog._error('照片添加失败', '图片已损坏，请重新选择。');
-      //   };
-      //
-      //   imgChecker.onload = function() {
-      //
-      //
-      //     let result = util.setImageUploadSource(ret);
-      //
-      //     that.props.imageDidChanged(result);
-      //   };
-      //
-      //   imgChecker.src = ret;
-      //
-      //
-      // };
+          render.onload = function() {
+            var ret = this.result;
+            var imgChecker = new Image();
+            imgChecker.onerror = function(argument) {
+
+              that.refs.errorDialog._error('照片添加失败', '图片已损坏，请重新选择。');
+            };
+
+            imgChecker.onload = function() {
+
+
+              let result = util.setImageUploadSource(ret);
+
+              that.props.imageDidChanged(result);
+            };
+
+            imgChecker.src = ret;
+
+
+          };
+        } else {
+          var createElement = window.Highcharts.createElement,
+            discardElement = window.Highcharts.discardElement;
+          var iframe = createElement('iframe', null, {
+            display: 'none'
+          }, document.body);
+          iframe.onload = function() {
+            var json = iframe.contentDocument.body.innerHTML;
+            if (!json) return;
+            var obj = JSON.parse(json);
+            var uploadTemplate;
+            if (obj.success === true) {
+              that.props.imageDidChanged(obj);
+            } else {
+              console.log('fail');
+            }
+          };
+          var form = createElement('form', {
+            method: 'post',
+            action: this.props.uploadUrl,
+            enctype: 'multipart/form-data',
+            target: '_self',
+            name: 'inputForm'
+          }, {
+            display: 'none'
+          }, iframe.contentDocument.body);
+
+          var input = this.refs.pop_image_upload_button.getDOMNode();
+          form.appendChild(input);
+          form.submit();
+          discardElement(form);
+          // var label = this.refs.fileInputLabel.getDOMNode();
+          //label.appendChild(input);
+
+
+          // var tempForm = document.createElement('form');
+          // document.body.appendChild(tempForm);
+          // tempForm.appendChild(input);
+          // tempForm.reset();
+          // document.body.removeChild(tempForm);
+
+        }
+
       }
     }
   },
@@ -214,14 +220,32 @@ let ImageUpload = React.createClass({
     }
     return (
       <div className={baseClassName}>
-				<label className={labelClassName} style={borderStyle} htmlFor="pop_image_upload_button">
-					<BackgroundImage url={this.props.imageUrl} width={this.props.wrapperWidth} height={this.props.wrapperHeight} style={backGroundStyle} mode={this.props.clipMode} imageId={this.props.imageId} imageContent={!!this.props.imageId ? null : this.props.imageSource} background={this.props.background} >
+				<label
+      className={labelClassName}
+      style={borderStyle}
+      htmlFor={this.props.id || "pop_image_upload_button"}>
+					<BackgroundImage
+      url={this.props.imageUrl}
+      width={this.props.wrapperWidth}
+      height={this.props.wrapperHeight}
+      style={backGroundStyle}
+      mode={this.props.clipMode}
+      imageId={this.props.imageId}
+      imageContent={!!this.props.imageId ? null : this.props.imageSource}
+      background={this.props.background} >
 						{tips}
-<label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="pop_image_upload_button">
-						<input id="pop_image_upload_button"  name='imageFile' ref="pop_image_upload_button" type="file" disabled={this.props.isViewState} style={{
+						<input id={this.props.id || "pop_image_upload_button"}
+      key={this.props.key}
+      name='imageFile'
+      ref="pop_image_upload_button"
+      type="file"
+      disabled={this.props.isViewState}
+      style={{
         opacity: 0
-      }} onClick={this._handleClick} onChange={this._handlerChangeImageUpload} accept="images/*"/>
-</label>
+      }}
+      onClick={this._handleClick}
+      onChange={this._handlerChangeImageUpload}
+      accept="images/*"/>
           </BackgroundImage>
 				</label>
 				<AjaxDialog ref="errorDialog"/>
