@@ -106,8 +106,8 @@ let ImageUpload = React.createClass({
           form.appendChild(input);
           form.submit();
           discardElement(form);
-          // var label = this.refs.fileInputLabel.getDOMNode();
-          //label.appendChild(input);
+          var label = this.refs.fileInputLabel.getDOMNode();
+          label.appendChild(input);
 
 
           // var tempForm = document.createElement('form');
@@ -223,6 +223,7 @@ let ImageUpload = React.createClass({
 				<label
       className={labelClassName}
       style={borderStyle}
+      ref="fileInputLabel"
       htmlFor={this.props.id || "pop_image_upload_button"}>
 					<BackgroundImage
       url={this.props.imageUrl}
