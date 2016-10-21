@@ -347,7 +347,8 @@ let HierarchyAction = {
     Ajax.post('/Administration/GetAllIndustries', {
       params: {
         includeRoot: false,
-        onlyLeaf: true
+        onlyLeaf: true,
+        sysId:1
       },
       success: function(industries) {
         AppDispatcher.dispatch({
