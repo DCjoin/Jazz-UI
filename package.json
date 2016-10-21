@@ -48,7 +48,7 @@
     "karma-webpack": "1.7.0",
     "less": "2.5.1",
     "less-loader": "2.2.0",
-      "mocha": "2.3.4",
+    "mocha": "2.3.4",
     "null-loader": "0.1.1",
     "react-hot-loader": "1.2.7",
     "react-proxy-loader": "0.3.1",
@@ -56,7 +56,9 @@
     "supervisor": "0.6.0",
     "url-loader": "0.5.6",
     "webpack": "1.9.10",
-    "webpack-dev-server": "1.9.0"
+    "webpack-dev-server": "1.9.0",
+    "wallaby-webpack":"0.0.26",
+    "node-noop":"1.0.0"
   },
   "dependencies": {
     "numeral": "1.5.3",
