@@ -73,7 +73,7 @@ let CustomerIdentity = React.createClass({
         background: 'customer-background-logo',
         imageUrl: (!LogoContent ? (!Logo ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + Logo + ")") : "url(data:image/png;base64," + LogoContent + ")"),
         isViewState: isView,
-        updateTips: !LogoContent ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
+        updateTips: (!LogoContent && !Logo) ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
         imageDidChanged: img => {
           PlatformAction.mergeCustomer({
             value: img,
@@ -90,7 +90,7 @@ let CustomerIdentity = React.createClass({
         background: 'customer-background-logo',
         imageUrl: (!HomeBackgroundContent ? (!HomeBackground ? "" : "url(" + Config.ServeAddress + "/Logo.aspx?ossKey=" + HomeBackground + ")") : "url(data:image/png;base64," + HomeBackgroundContent + ")"),
         isViewState: isView,
-        updateTips: !HomeBackgroundContent ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
+        updateTips: (!HomeBackgroundContent && !HomeBackground) ? I18N.Platform.ServiceProvider.AddImage : I18N.Platform.ServiceProvider.UpdateImage,
         imageDidChanged: img => {
           PlatformAction.mergeCustomer({
             value: img,
