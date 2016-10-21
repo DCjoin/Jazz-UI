@@ -107,6 +107,7 @@ let Platform = React.createClass({
         provider: this.state.selectProvider,
         formStatus: this.state.status,
         _toggleList: this._onToggleList,
+        showLeft: this.state.leftPanelShow,
         setEditStatus: this._setEditStatus,
         infoTabNo: this.state.infoTabNo,
         handleCancel: this._handleCancel,

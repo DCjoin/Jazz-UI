@@ -182,7 +182,7 @@ let PlatformContent = React.createClass({
       <div style={{
         display: 'flex',
         flex: '1',
-      //overflow: 'auto' 自定义标志页面会出现不该出来的滚动条
+      //overflow: 'auto' //自定义标志页面会出现不该出来的滚动条
       }}>
     {content}
   </div>
@@ -657,7 +657,10 @@ let PlatformContent = React.createClass({
         flex: 1,
         display: 'flex',
         flexDirection: 'column'
-      }} className='jazz-content'>
+      }} className={classnames({
+        'jazz-content': true,
+        "jazz-framework-right-expand": !this.props.showLeft
+      })}>
       <div className="pop-framework-right-actionbar">
           <div className="pop-framework-right-actionbar-top">
             <OrigamiPanel />
