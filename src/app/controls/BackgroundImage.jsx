@@ -41,8 +41,8 @@ var BackgroudImage = React.createClass({
       if (this.props.width && this.props.height) {
         parmas += "&width=" + this.props.width + "&height=" + this.props.height;
         parmas += "&mode=" + 1; //parmas += "&mode=" + (this.props.mode == 'cover' ? 2 : 1);
-        parmas += "&random=" + Math.random();
       }
+      parmas += "&random=" + Math.random();
       url = "url(" + Config.ServeAddress + "/Logo.aspx" + parmas + ")";
     } else if (this.props.imageId) {
       var parmas = "?logoId=" + this.props.imageId;
