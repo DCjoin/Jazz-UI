@@ -297,7 +297,7 @@ var HierarchyList = React.createClass({
       };
     var addBtn = null;
 
-    if (this.props.selectedNode.get('Type') >= 0 || this.props.selectedNode.size === 0) {
+    if (this.props.selectedNode.get('Type') > 1 || this.props.selectedNode.size === 0) {
       addBtn = <span onClick={this.getAddBtnDisabled() ? null : this._onAddBtnClick} className={classNames(addBtnClasses)} style={{
         margin: '0 15px'
       }}>
@@ -305,6 +305,7 @@ var HierarchyList = React.createClass({
               {I18N.Common.Glossary.Node}
             </span>;
     } else {
+      addBtnProps.disabled=this.getAddBtnDisabled();
       addBtn = <div style={{
         marginTop: '-2px'
       }}><DropdownButton {...addBtnProps}/></div>;
