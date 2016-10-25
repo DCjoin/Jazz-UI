@@ -157,8 +157,8 @@ let MapPanel = React.createClass({
         that._map.addControl(toolBar);
         toolBar.show();
       });
-      // var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
-      // this._map.setLang(lang);
+      var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
+      this._map.setLang(lang);
     }
     var markers = MapStore.getMarkers();
     this.setState({
@@ -308,10 +308,10 @@ let MapPanel = React.createClass({
   // });
   // this._popupWindow.open(this._map, new AMap.LngLat(marker.lon, marker.lat));
   },
-  // _onLanguageSwitch: function() {
-  //   var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
-  //   this._map.setLang(lang);
-  // },
+  _onLanguageSwitch: function() {
+    var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
+    this._map.setLang(lang);
+  },
   componentDidUpdate: function() {
     this._showPopup();
     if (window.lastLanguage != window.currentLanguage) {
@@ -322,7 +322,7 @@ let MapPanel = React.createClass({
   componentDidMount: function() {
     MapStore.addMapInfoListener(this._onMapInfoChanged);
     MapStore.addBuildingInfoListener(this._onBuildingInfoChanged);
-    //LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
+    LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
 
     MapAction.getMapBuildingsByCustomerId(5);
   // this.setState({
@@ -332,7 +332,7 @@ let MapPanel = React.createClass({
   componentWillUnmount: function() {
     MapStore.removeMapInfoListener(this._onMapInfoChanged);
     MapStore.removeBuildingInfoListener(this._onBuildingInfoChanged);
-    //LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
+    LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
     if (this._map) {
       this._clearMap();
       this._map.destroy();
