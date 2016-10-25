@@ -126,7 +126,7 @@ let PlatformContent = React.createClass({
   _renderHeader: function(isView, isAdd) {
     var that = this;
     var providerNameProps = {
-      isViewStatus: isView,
+      isViewStatus: isView || this.props.infoTabNo === 2,
       title: I18N.Platform.ServiceProvider.SPName,
       defaultValue: this.props.provider.Name,
       isRequired: true,
