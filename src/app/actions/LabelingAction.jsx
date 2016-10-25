@@ -7,7 +7,8 @@ let LabelingAction = {
     Ajax.post('/Administration/GetAllIndustries', {
       params: {
         includeRoot: true,
-        onlyLeaf: false
+        onlyLeaf: false,
+        sysId:1
       },
       success: function(industryData) {
         AppDispatcher.dispatch({

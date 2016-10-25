@@ -305,6 +305,7 @@ var HierarchyList = React.createClass({
               {I18N.Common.Glossary.Node}
             </span>;
     } else {
+      addBtnProps.disabled=this.getAddBtnDisabled();
       addBtn = <div style={{
         marginTop: '-2px'
       }}><DropdownButton {...addBtnProps}/></div>;
