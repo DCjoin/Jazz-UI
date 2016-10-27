@@ -32,7 +32,7 @@ var Building = React.createClass({
     closedList: React.PropTypes.bool,
     merge: React.PropTypes.func,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false,

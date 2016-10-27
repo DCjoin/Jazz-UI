@@ -1,8 +1,8 @@
 'use strict';
 import React from "react";
 
-let Menu = require('material-ui/lib/menus/menu');
-let MenuItem = require('material-ui/lib/menus/menu-item');
+let Menu = require('material-ui/Menu');
+let MenuItem = require('material-ui/MenuItem');
 
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }

@@ -3,8 +3,8 @@
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
 import { Mixins, DropDownMenu, Paper } from 'material-ui';
-let Menu = require('material-ui/lib/menus/menu');
-let MenuItem = require('material-ui/lib/menus/menu-item');
+let Menu = require('material-ui/Menu');
+let MenuItem = require('material-ui/MenuItem');
 import classnames from "classnames";
 
 import BubbleIcon from '../components/BubbleIcon.jsx';
@@ -53,7 +53,7 @@ var ListMenu = React.createClass({
 });
 
 var SubMainMenu = React.createClass({
-  mixins: [State, Mixins.ClickAwayable, Navigation],
+  //mixins: [State, Mixins.ClickAwayable, Navigation],
 
   getInitialState: function() {
     return {
@@ -138,7 +138,8 @@ var SubMainMenu = React.createClass({
       title = null;
     children.every((item) => {
       item.list.every((menu) => {
-        if (that.isActive(menu.name)) {
+        // to change
+        if (false && that.isActive(menu.name)) {
           title = menu.title;
           hasActive = true;
           return false;

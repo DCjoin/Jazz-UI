@@ -1,15 +1,13 @@
 import React from 'react';
-import mui from 'material-ui';
+import {Dialog, DropDownMenu, FlatButton, TextField, Mixins} from 'material-ui';
 import classSet from 'classnames';
-import CalendarYear from '../controls/CalendarYear.jsx';
-import CalendarMonth from '../controls/CalendarMonth.jsx';
-import DateTime from '../../../node_modules/material-ui/lib/utils/date-time.js';
+// import CalendarYear from '../controls/CalendarYear.jsx';
+// import CalendarMonth from '../controls/CalendarMonth.jsx';
 
-let {Dialog, DropDownMenu, FlatButton, TextField, Mixins} = mui;
-let {ClickAwayable} = Mixins;
+// let {ClickAwayable} = Mixins;
 
 let MonthPicker = React.createClass({
-  mixins: [ClickAwayable],
+  //mixins: [ClickAwayable],
   propTypes: {
     defaultYear: React.PropTypes.number,
     defaultMonth: React.PropTypes.number,
@@ -148,16 +146,16 @@ let MonthPicker = React.createClass({
         border: '1px solid rgb(235, 235, 235)',
         "backgroundColor": "white"
       }}>
-      <CalendarYear
-      ref="calendarYear"
-      onYearChange={this._onYearChange}
-      selectedYear={yearValue}
-      prevYear={yearInteractions.prevYear}
-      nextYear={yearInteractions.nextYear}/>
-      <CalendarMonth
-      ref="calendarMonth"
-      onMonthChange={this._onMonthChange}
-      selectedMonth={monthValue}/>
+      {/*<CalendarYear
+            ref="calendarYear"
+            onYearChange={this._onYearChange}
+            selectedYear={yearValue}
+            prevYear={yearInteractions.prevYear}
+            nextYear={yearInteractions.nextYear}/>
+            <CalendarMonth
+            ref="calendarMonth"
+            onMonthChange={this._onMonthChange}
+            selectedMonth={monthValue}/>*/}
     </div>);
     }
     return (

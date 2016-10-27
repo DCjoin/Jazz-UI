@@ -1,14 +1,13 @@
 'use strict';
 
 import React from 'react';
-import mui from 'material-ui';
+import {Checkbox, FlatButton, TextField, Mixins} from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import JumpBox from './JumpBox.jsx';
-let {Checkbox, FlatButton, TextField, Mixins} = mui;
 
 var Pagination = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  //mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
     curPageNum: React.PropTypes.number,

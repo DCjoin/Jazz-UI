@@ -9,7 +9,7 @@ import DimButton from '../Dim/DimButton.jsx';
 import TagAction from '../../actions/TagAction.jsx';
 
 var CommonCommodityPanel = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   propTypes: {
     ecType: React.PropTypes.string,
   },

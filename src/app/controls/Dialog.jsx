@@ -39,7 +39,7 @@ let Dialog = React.createClass({
 
   closeable: false,
 
-  mixins: [WindowListenable, StylePropable],
+  //mixins: [WindowListenable, StylePropable],
 
   _testSupportedProps: function(props) {
     var i,

@@ -8,7 +8,7 @@ import Tree from '../../controls/tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 import NodeContent from './TreeNodeContent.jsx';
-let MenuItem = require('material-ui/lib/menus/menu-item');
+let MenuItem = require('material-ui/MenuItem');
 import CopyView from './operationView/CopyView.jsx';
 import DeleteView from './operationView/DeleteView.jsx';
 import ShareView from './operationView/ShareView.jsx';

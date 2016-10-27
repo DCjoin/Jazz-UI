@@ -15,7 +15,7 @@ var _ = {
 
 var BackgroudImage = React.createClass({
 
-  mixins: [React.addons.PureRenderMixin],
+  //mixins: [React.addons.PureRenderMixin],
   propTypes: {
     imageId: React.PropTypes.string,
     url: React.PropTypes.string,

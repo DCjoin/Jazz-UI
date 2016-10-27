@@ -1,13 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import mui from 'material-ui';
+import {Dialog, FlatButton, Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowColumn} from 'material-ui';
 import classSet from 'classnames';
 import CommonFuns from '../../../util/Util.jsx';
 import EnergyStore from '../../../stores/energy/EnergyStore.jsx';
 import Immutable from 'immutable';
 let {dateAdd} = CommonFuns;
-
-let {Dialog, FlatButton, Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowColumn} = mui;
 
 let SumWindow = React.createClass({
   propTypes: {

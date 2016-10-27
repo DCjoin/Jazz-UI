@@ -1,9 +1,8 @@
 'use strict';
 
 import React from 'react';
-import mui from 'material-ui';
+import {SelectField} from 'material-ui';
 
-let {SelectField} = mui;
 import assign from 'object-assign';
 import CommonFuns from '../util/Util.jsx';
 var ViewableDropDownMenu = React.createClass({

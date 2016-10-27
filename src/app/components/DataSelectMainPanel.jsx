@@ -30,7 +30,7 @@ var timeoutID = null;
 
 
 let DataSelectMainPanel = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   propTypes: {
     linkFrom: React.PropTypes.string,
     widgetType: React.PropTypes.string, //energy,unit,ratio,labelling

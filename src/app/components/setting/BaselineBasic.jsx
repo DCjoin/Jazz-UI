@@ -16,7 +16,7 @@ import CalDetail from './CalDetail.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 
 var BaselineBasic = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
 
   propTypes: {
     tag: React.PropTypes.object,

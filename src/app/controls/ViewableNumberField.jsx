@@ -1,6 +1,5 @@
 var React = require('react');
-import mui from 'material-ui';
-let {TextField} = mui;
+import {TextField} from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import Util from '../util/Util.jsx';

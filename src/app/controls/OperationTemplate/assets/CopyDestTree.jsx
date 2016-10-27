@@ -7,7 +7,7 @@ import Tree from '../../tree/Tree.jsx';
 import { treeSource } from '../../../constants/TreeSource.jsx';
 
 var CopyDestTree = React.createClass({
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
   propTypes: {
     show: React.PropTypes.bool,
     onTreeClickAway: React.PropTypes.func,

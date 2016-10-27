@@ -27,7 +27,7 @@ const POPUP_POSITION_LEFT_BOTTOM_Y = 225;
 var buildingId=null;
 
 let MapPanel = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   getInitialState: function() {
     return {
       //  isloading: false,

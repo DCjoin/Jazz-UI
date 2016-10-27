@@ -7,7 +7,7 @@ import DimAction from "../../actions/DimAction.jsx";
 import DimStore from "../../stores/DimStore.jsx";
 
 let DimButton = React.createClass({
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
   propTypes: {
     active: React.PropTypes.bool,
     parentNode: React.PropTypes.object,

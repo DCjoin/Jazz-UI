@@ -10,7 +10,7 @@ import MapStore from '../../stores/MapStore.jsx';
 import LanguageStore from '../../stores/LanguageStore.jsx';
 
 let DatePicker = React.createClass({
-  mixins: [Navigation, State, Mixins.ClickAwayable],
+  //mixins: [Navigation, State, Mixins.ClickAwayable],
   propTypes: {
     onMenuItemClick: React.PropTypes.func
   },

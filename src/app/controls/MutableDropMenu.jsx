@@ -1,9 +1,8 @@
 'use strict';
 
 var React = require('react');
-import mui from 'material-ui';
+import { DropDownMenu } from 'material-ui';
 
-let { DropDownMenu } = mui;
 var MutableDropMenu = React.createClass({
 
  	componentWillReceiveProps:function(){

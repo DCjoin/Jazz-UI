@@ -7,7 +7,7 @@ import HierarchyAction from "../../actions/HierarchyAction.jsx";
 import HierarchyStore from "../../stores/HierarchyStore.jsx";
 
 let HierarchyButton = React.createClass({
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
   propTypes: {
     onTreeClick: React.PropTypes.func.isRequired,
     onButtonClick: React.PropTypes.func.isRequired,

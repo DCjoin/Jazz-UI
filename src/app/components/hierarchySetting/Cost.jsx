@@ -39,7 +39,7 @@ var Cost = React.createClass({
     setEditBtnStatus: React.PropTypes.func,
     onShowFooter: React.PropTypes.func,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return ({
       cost: emptyMap(),

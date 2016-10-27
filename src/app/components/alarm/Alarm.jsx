@@ -21,7 +21,7 @@ import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import ChartAction from '../../actions/ChartAction.jsx';
 
 let Alarm = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   _onLeftSwitchButtonClick() {
     var leftShow, rightShow;
     leftShow = !this.state.showLeftPanel;

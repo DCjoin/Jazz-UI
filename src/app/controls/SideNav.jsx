@@ -4,7 +4,7 @@ import React from "react";
 import assign from 'object-assign';
 import classNames from 'classnames';
 
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 let SideNav = React.createClass({
 

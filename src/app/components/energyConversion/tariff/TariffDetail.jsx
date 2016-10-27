@@ -30,7 +30,7 @@ var TariffDetail = React.createClass({
     handlerSwitchTab: React.PropTypes.func,
     toggleList: React.PropTypes.func,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false

@@ -4,7 +4,6 @@ import React from 'react';
 import {Mixins,Styles,ClearFix,Toolbar,ToolbarGroup,IconButton} from 'material-ui';
 import NavigationChevronLeft from '../../../node_modules/material-ui/lib/svg-icons/navigation/chevron-left';
 import NavigationChevronRight from '../../../node_modules/material-ui/lib/svg-icons/navigation/chevron-right';
-import DateTime from '../../../node_modules/material-ui/lib/utils/date-time.js';
 import SlideInTransitionGroup from '../../../node_modules/material-ui/lib/transition-groups/slide-in.js';
 
 var CalendarYear = React.createClass({

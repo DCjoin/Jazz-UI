@@ -1,12 +1,10 @@
 'use strict';
 
-import React from "react/addons";
+import React from "react";
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import assign from 'object-assign';
 import classnames from 'classnames';
 import _ from 'lodash';
-
-
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var NetworkChecker = React.createClass({
 

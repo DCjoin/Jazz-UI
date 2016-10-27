@@ -9,7 +9,7 @@ import Immutable from 'immutable';
 
 var RankingHierTreeButton = React.createClass({
 
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
   propTypes: {
     checkedTreeNodes: React.PropTypes.object,
     onConfirm: React.PropTypes.func,

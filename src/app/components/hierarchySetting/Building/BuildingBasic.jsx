@@ -26,7 +26,7 @@ var BuildingBasic = React.createClass({
     formStatus: React.PropTypes.string,
     setEditBtnStatus: React.PropTypes.func
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _locationChanged(lng, lat, address) {
     //  console.debug(lng+","+lat+","+address);
     var value = this.props.selectedNode.get('Location');

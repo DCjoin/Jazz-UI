@@ -1,13 +1,11 @@
 import React from 'react';
-import mui from 'material-ui';
+import {Dialog, DropDownMenu, FlatButton, IconButton} from 'material-ui';
 import classSet from 'classnames';
 import MultipleTimespanStore from '../../../stores/energy/MultipleTimespanStore.jsx';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
 import MultiTimespanAction from '../../../actions/MultiTimespanAction.jsx';
 import Immutable from 'immutable';
-
-let {Dialog, DropDownMenu, FlatButton, IconButton} = mui;
 
 let TimespanItem = React.createClass({
   propTypes: {

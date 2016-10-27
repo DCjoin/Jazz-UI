@@ -24,7 +24,7 @@ var RuleBasic = React.createClass({
     merge: React.PropTypes.func,
     formStatus: React.PropTypes.string,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _handleRuleDetailClick: function(values) {
     if (this.props.formStatus !== formStatus.VIEW) {
       this.props.merge({

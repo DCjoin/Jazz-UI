@@ -35,7 +35,7 @@ var CustomerDetail = React.createClass({
     isFromHierarchy: React.PropTypes.bool,
     handleEnergyInfoChanged: React.PropTypes.func,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false,

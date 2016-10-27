@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import mui from 'material-ui';
+import {Tabs, Tab, CircularProgress} from 'material-ui';
 import assign from "object-assign";
 import BaselineBasic from './BaselineBasic.jsx';
 import AlarmSetting from './AlarmSetting.jsx';
@@ -10,10 +10,8 @@ import TBStore from "../../stores/TBStore.jsx";
 import TBAction from "../../actions/TBAction.jsx";
 var lastTab = null;
 
-let {Tabs, Tab, CircularProgress} = mui;
-
 let BaselineCfg = React.createClass({
-  mixins: [Navigation, State, mui.Mixins.StylePropable],
+  //mixins: [Navigation, State, mui.Mixins.StylePropable],
 
   propTypes: {
     tag: React.PropTypes.object

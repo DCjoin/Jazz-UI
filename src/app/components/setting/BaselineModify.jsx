@@ -22,7 +22,7 @@ var extractNumber = function(str) {
 };
 const monthItemNum = 6;
 let BaselineModify = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
 
   setValue: function(data) {
     this.refs.yearValue.setValue(data.getIn(["YearlyValues", 0, "DataValue"]));

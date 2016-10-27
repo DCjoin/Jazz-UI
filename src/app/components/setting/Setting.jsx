@@ -51,7 +51,7 @@ const DIALOG_TYPE = {
 
 let Setting = React.createClass({
 
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   getInitialState: function() {
     return {
       showRightPanel: false,

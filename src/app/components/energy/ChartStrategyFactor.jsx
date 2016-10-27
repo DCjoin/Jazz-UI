@@ -49,9 +49,9 @@ import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 import { getCookie } from '../../util/Util.jsx';
 
-let Menu = require('material-ui/lib/menus/menu');
-let MenuItem = require('material-ui/lib/menus/menu-item');
-let MenuDivider = require('material-ui/lib/menus/menu-divider');
+let Menu = require('material-ui/Menu');
+let MenuItem = require('material-ui/MenuItem');
+let MenuDivider = require('material-ui/Divider');
 
 function currentUser() {
   return CurrentUserStore.getCurrentUser();

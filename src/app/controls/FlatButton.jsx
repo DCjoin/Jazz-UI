@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import getLessVar from '../util/GetLessVar.jsx';
 
 import { FlatButton } from 'material-ui';
 import _assign from "lodash/object/assign";
@@ -16,10 +17,6 @@ const redColor = "#f46a58";
 const redColorBackgroundColor = "#fcd2cd";
 
 var CustomFlatButton = React.createClass({
-
-  contextTypes: {
-    getLessVar: React.PropTypes.func.isRequired
-  },
 
   getInitialState: function() {
     return {
@@ -39,25 +36,25 @@ var CustomFlatButton = React.createClass({
     if (!props.disabled) {
 
       if (!that.state.hovered) {
-        props.style.color = this.context.getLessVar("schneiderNormal");
+        props.style.color = getLessVar("schneiderNormal");
         delete props.style.backgroundColor;
       } else {
 
         if (props.primary) {
-          props.style.color = this.context.getLessVar("warningRed");
-          props.style.backgroundColor = this.context.getLessVar("warningRedBackground");
+          props.style.color = getLessVar("warningRed");
+          props.style.backgroundColor = getLessVar("warningRedBackground");
         } else {
-          props.style.color = this.context.getLessVar("schneiderBlue");
-          props.style.backgroundColor = this.context.getLessVar("schneiderBlueBackground");
+          props.style.color = getLessVar("schneiderBlue");
+          props.style.backgroundColor = getLessVar("schneiderBlueBackground");
         }
 
       }
 
       if (props.primary && props.inDialog) {
-        props.style.color = this.context.getLessVar("warningRed");
+        props.style.color = getLessVar("warningRed");
       }
     } else {
-      props.style.color = this.context.getLessVar("schneiderGray");
+      props.style.color = getLessVar("schneiderGray");
       delete props.style.backgroundColor;
     }
 

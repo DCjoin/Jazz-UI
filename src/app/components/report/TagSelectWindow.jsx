@@ -16,7 +16,7 @@ import Immutable from 'immutable';
 var filters = null;
 var page = 0;
 let TagSelectWindow = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   getInitialState: function() {
     return {
       isLeftLoading: null,

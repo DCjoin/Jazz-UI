@@ -25,7 +25,7 @@ const YEARSTEP = 3,
   DAYSTEP = 1;
 
 let AlarmSetting = React.createClass({
-  mixins: [Navigation, State, React.addons.LinkedStateMixin],
+  //mixins: [Navigation, State, React.addons.LinkedStateMixin],
 
   _onChange: function() {
     var alarmSettingData = AlarmSettingStore.getData();

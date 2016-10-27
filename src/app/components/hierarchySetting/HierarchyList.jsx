@@ -13,7 +13,7 @@ import Dialog from '../../controls/PopupDialog.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
-let MenuItem = require('material-ui/lib/menus/menu-item');
+let MenuItem = require('material-ui/MenuItem');
 let {nodeType} = TreeConstants;
 
 var HierarchyList = React.createClass({

@@ -1,9 +1,7 @@
 import React from 'react';
-import mui from 'material-ui';
+import {DropDownMenu} from 'material-ui';
 import classNames from 'classnames';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
-
-let {DropDownMenu} = mui;
 
 let YearPicker = React.createClass({
 

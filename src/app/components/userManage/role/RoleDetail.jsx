@@ -16,7 +16,7 @@ import Dialog from '../../../controls/PopupDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
 var RoleDetail = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   propTypes: {
     formStatus: React.PropTypes.bool,
     role: React.PropTypes.object,

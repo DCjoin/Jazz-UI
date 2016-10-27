@@ -26,7 +26,7 @@ var extractNumber = function(str) {
 };
 
 var DaytimeRangeValue = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   propTypes: {
     index: React.PropTypes.number,
     start: React.PropTypes.number,

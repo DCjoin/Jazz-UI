@@ -38,7 +38,7 @@ let SearchItem = React.createClass({
   }
 });
 let FolderSearch = React.createClass({
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
   propTypes: {
     allNode: React.PropTypes.object.isRequired,
     onSearchNodeClick: React.PropTypes.func.isRequired,

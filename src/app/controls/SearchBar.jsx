@@ -11,7 +11,7 @@ let SearchBar = React.createClass({
     hintText: React.PropTypes.string,
     value: React.PropTypes.string
   },
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   _onSearchBlur: function(e) {
     if (!e.target.value) {
       React.findDOMNode(this.refs.searchIcon).style.display = 'block';

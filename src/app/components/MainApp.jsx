@@ -27,6 +27,8 @@ import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import CusFlatButton from '../controls/FlatButton.jsx';
 import Dialog from '../controls/PopupDialog.jsx';
 
+import RoutePath from '../util/RoutePath.jsx';
+
 
 function getCurrentCustomers() {
   return CurrentUserCustomerStore.getAll();
@@ -37,7 +39,7 @@ function getCurrentCustomer() {
 }
 
 let MainApp = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   contextTypes: {
     currentUser: React.PropTypes.object,
     rivilege: React.PropTypes.array
@@ -71,10 +73,13 @@ let MainApp = React.createClass({
 
   _dismissDialog() {
     LoginActionCreator.logout();
-    var _redirectFunc = this.context.router.replaceWith;
-    _redirectFunc('login', {
+    // var _redirectFunc = this.context.router.replaceWith;
+    // _redirectFunc('login', {
+    //   lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
+    // });
+    this.props.router.replace( RoutePath.login( {
       lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
-    });
+    } ) );
   },
   _renderDialog() {
     if (this.state.viewState == viewState.NO_SELECT_CUSTOMERS) {
@@ -91,14 +96,15 @@ let MainApp = React.createClass({
       //this.context.router.replaceWith(NO_PERMISSION_TIP_NAME, params);
       return;
     }
-    var _redirectFunc = this.context.router.transitionTo;
+    // var _redirectFunc = this.context.router.transitionTo;
+    var _redirectFunc = this.props.router.push;
     if (this.props.routes.length < 3) {
-      _redirectFunc = this.context.router.replaceWith;
+      _redirectFunc = this.context.router.replace;
     }
     if (target.children && target.children.length > 0) {
-      _redirectFunc(target.children[0].name, params);
+      _redirectFunc( RoutePath[target.children[0].name](params));
     } else {
-      _redirectFunc(target.name, params);
+      _redirectFunc( RoutePath[target.name](params));
     }
   },
 
@@ -365,7 +371,7 @@ let MainApp = React.createClass({
         return (
           <div className='jazz-main'>
                   <MainAppBar items={menuItems} logoUrl={logoUrl} showCustomerList={this._showCustomerList}/>
-                  <RouteHandler {...this.props} />
+                  {this.props.children}
                   <NetworkChecker></NetworkChecker>
                   <ExportChart></ExportChart>
               </div>

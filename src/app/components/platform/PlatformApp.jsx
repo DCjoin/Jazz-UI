@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
+// import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import MainAppBar from '../MainAppBar.jsx';
 import assign from 'object-assign';
 import NetworkChecker from '../../controls/NetworkChecker.jsx';
@@ -9,7 +9,7 @@ import PlatformAction from '../../actions/PlatformAction.jsx';
 
 
 let PlatformApp = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
 
   // _redirectRouter : function(target, params) {
   //     if (!target) {
@@ -48,7 +48,7 @@ let PlatformApp = React.createClass({
     return (
       <div className='jazz-main'>
             <MainAppBar items={menuItems} title={title}  showCustomerList={this._showCustomerList}/>
-            <RouteHandler {...this.props} />
+            {this.props.children}
             <NetworkChecker></NetworkChecker>
         </div>
       );

@@ -9,7 +9,7 @@ import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 
 var TreeNodeContent = React.createClass({
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
 
   propTypes: {
     nodeData: React.PropTypes.object,

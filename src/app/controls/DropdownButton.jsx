@@ -1,24 +1,18 @@
 'use strict';
 
 import React from 'react';
-import mui from 'material-ui';
-import classSet from 'classnames';
-let Menu = require('material-ui/lib/menus/menu');
-let MenuItem = require('material-ui/lib/menus/menu-item');
-
-let {
+import {
   Mixins,
   IconButton,
   FlatButton,
   FontIcon
-} = mui;
-
-let {
-  ClickAwayable
-} = Mixins;
+} from 'material-ui';
+import classSet from 'classnames';
+let Menu = require('material-ui/Menu');
+let MenuItem = require('material-ui/MenuItem');
 
 var DropdownButton = React.createClass({
-  mixins: [ClickAwayable],
+  //mixins: [ClickAwayable],
   getInitialState: function () {
     return {
       open: false,

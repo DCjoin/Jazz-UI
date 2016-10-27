@@ -16,6 +16,8 @@ import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import _trimRight from 'lodash/string/trimRight';
 import _lang from '../lang/lang.jsx';
 
+import RoutePath from '../util/RoutePath.jsx';
+
 var _ = {
   trimRight: _trimRight
 };
@@ -23,6 +25,22 @@ var _ = {
 const MAX_LENGTH = 200;
 const MAX_LENGTH_ERROR = "不能大于" + MAX_LENGTH;
 const DEFAULT_COUNT_DOWN = 59;
+
+function replaceWith(router, name, params, query) {
+  router.replace( RoutePath[name]( assign({}, getParams(router), params) ), query );
+}
+function getParams(router) {
+  return router.params;
+}
+function getQuery(router) {
+  return router.location.query;
+}
+function getRoutes(router) {
+  return router.routers;
+}
+function getCurrentPath(router) {
+  return router.location.pathname;
+}
 
 let Login = React.createClass({
   propTypes: {
@@ -60,12 +78,13 @@ let Login = React.createClass({
     };
   },
   _onChange: function(argument) {
-    var _redirectFunc = this.context.router.transitionTo;
-    if (this.props.routes.length < 3) {
-      _redirectFunc = this.context.router.replaceWith;
-    }
+    // Where used?
+    // var _redirectFunc = this.context.router.transitionTo;
+    // if (this.props.routes.length < 3) {
+    //   _redirectFunc = this.props.router.replace;
+    // }
     if (LoginStore.hasLoggedin()) {
-      this.context.router.replaceWith('main', this.props.params, assign({}, this.props.query, {
+      replaceWith(this.props.router, 'main', this.props.params, assign({}, this.props.query, {
         from: 'app'
       }));
       CurrentUserAction.getUser(window.currentUserId);

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from "react";
-import mui from 'material-ui';
+import {FlatButton, FontIcon, SelectField, Checkbox, CircularProgress} from 'material-ui';
 
 import classnames from "classnames";
 
@@ -30,8 +30,6 @@ import CurrentUserStore from '../../../stores/CurrentUserStore.jsx';
 import SideNav from '../../../controls/SideNav.jsx';
 import Panel from '../../../controls/MainContentPanel.jsx';
 
-var {FlatButton, FontIcon, SelectField, Checkbox, CircularProgress} = mui;
-
 
 import _isFunction from "lodash/lang/isFunction";
 import _isNumber from "lodash/lang/isNumber";
@@ -55,7 +53,7 @@ var UserDetail = React.createClass({
     handleCancel: React.PropTypes.func,
     _handleDeleteUser: React.PropTypes.func
   },
-  mixins: [ViewableTextFieldUtil],
+  //mixins: [ViewableTextFieldUtil],
 
   _handleSaveUser: function() {
     let that = this,

@@ -179,7 +179,7 @@ var TariffStore = assign({}, PrototypeStore, {
             break;
           case 1:
           case 3:
-            let value = data.value.value;
+            value = data.value.value;
             if (data.value.path == 'Price') {
               if (!!touTariff) {
                 let priceItem = touTariff.find(item => item.get("ItemType") == data.value.ItemType);
@@ -277,7 +277,7 @@ var TariffStore = assign({}, PrototypeStore, {
             _updatingTariff = _updatingTariff.setIn(['PeakTariff', 'Price'], data.value.value);
             break;
           case 'Date':
-            let timeRange = _updatingTariff.getIn(['PeakTariff', 'TimeRanges', data.value.index]);
+            timeRange = _updatingTariff.getIn(['PeakTariff', 'TimeRanges', data.value.index]);
             timeRange = timeRange.set('StartMonth', data.value.value[0]);
             timeRange = timeRange.set('StartDay', data.value.value[1]);
             timeRange = timeRange.set('EndMonth', data.value.value[2]);
@@ -287,7 +287,7 @@ var TariffStore = assign({}, PrototypeStore, {
             that.checkError('PeakTariff');
             break;
           case 'Time':
-            let timeRange = _updatingTariff.getIn(['PeakTariff', 'TimeRanges', data.value.index]);
+            timeRange = _updatingTariff.getIn(['PeakTariff', 'TimeRanges', data.value.index]);
             timeRange = timeRange.set('StartTime', data.value.value[0]);
             timeRange = timeRange.set('EndTime', data.value.value[1]);
 

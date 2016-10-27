@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 
 var CommonCommodityList = React.createClass({
 
-  mixins:[Navigation,State],
+  //mixins:[Navigation,State],
   propTypes: {
     checkedCommodityList: React.PropTypes.object,
   },

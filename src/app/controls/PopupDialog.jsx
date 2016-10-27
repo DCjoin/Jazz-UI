@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Dialog } from 'material-ui';
 
 import util from '../util/Util.jsx';
@@ -140,7 +141,7 @@ var CustomDialog = React.createClass({
 
   dismiss: function() {
     if (this.refs.dialog) {
-      this.refs.dialog.dismiss();
+      // this.refs.dialog.dismiss();
       setTimeout(() => {
         if (this.props.onClose) {
           this.props.onClose();
@@ -154,7 +155,7 @@ var CustomDialog = React.createClass({
   },
 
   show: function() {
-    this.refs.dialog.show();
+    // this.refs.dialog.show();
   },
 
   _onShow: function() {
@@ -169,10 +170,10 @@ var CustomDialog = React.createClass({
     let dialogContentMaxHeight = (clientHeight < 600 ? 600 : clientHeight) / 4 * 3;
 
     let dialog = this.refs["dialog"];
-    if (dialog) {
-      let dialogScrollDom = dialog.getDOMNode().querySelector(".dialog-scroll");
+    if (dialog && ReactDOM.findDOMNode(dialog) ) {
+      let dialogScrollDom = ReactDOM.findDOMNode(dialog).querySelector(".dialog-scroll");
       if (dialogScrollDom) {
-        let dialogOtherHeight = dialog.getDOMNode().querySelector(".dialog-content").clientHeight - dialogScrollDom.clientHeight;
+        let dialogOtherHeight = ReactDOM.findDOMNode(dialog).querySelector(".dialog-content").clientHeight - dialogScrollDom.clientHeight;
         dialogScrollDom.style.maxHeight = `${dialogContentMaxHeight - dialogOtherHeight}px`;
         dialog._positionDialog();
       }
@@ -182,7 +183,7 @@ var CustomDialog = React.createClass({
   componentDidMount: function() {
     window.addEventListener('resize', this._handleResize);
     if (this.props.openImmediately) {
-      this.refs.dialog.show();
+      // this.refs.dialog.show();
     }
     this._positionMaxHeight();
   },

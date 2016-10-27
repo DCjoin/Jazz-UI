@@ -1,11 +1,10 @@
 'use strict';
 
 import React from 'react';
-import mui from 'material-ui';
+import {TextField} from 'material-ui';
 import _isString from 'lodash/lang/isString';
 import assign from 'object-assign';
 import util from '../util/Util.jsx';
-let {TextField} = mui;
 var _ = {
   isString: _isString
 };

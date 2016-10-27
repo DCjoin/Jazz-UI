@@ -1,11 +1,10 @@
 'use strict';
 import React from "react";
-import mui from 'material-ui';
+import {Dialog, DropDownMenu, FlatButton, TextField, FontIcon, IconButton} from 'material-ui';
 
 import CommonFuns from '../../util/Util.jsx';
 
 let {isNumeric} = CommonFuns;
-let {Dialog, DropDownMenu, FlatButton, TextField, FontIcon, IconButton} = mui;
 
 var _currentChartObj = null,
   _storedConfig = null;

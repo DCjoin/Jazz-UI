@@ -28,7 +28,7 @@ const DIALOG_TYPE = {
 };
 
 let PlatformContent = React.createClass({
-  mixins: [ViewableTextFieldUtil],
+  //mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
     infoTabNo: React.PropTypes.number,
@@ -590,9 +590,6 @@ let PlatformContent = React.createClass({
       <Dialog {...props}/>
       );
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-  },
   componentDidMount: function() {
     PlatformStore.addErrorChangeListener(this._onError);
     PlatformStore.addSendEmailListener(this._onSendEmailSuccess);
@@ -607,7 +604,6 @@ let PlatformContent = React.createClass({
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.provider.Id != this.props.provider.Id) {
-      this.clearErrorTextBatchViewbaleTextFiled();
       this.setState({
         providerIdError: '',
       });

@@ -11,7 +11,7 @@ import Search from './HierarchySearch.jsx';
 
 var TreeNode = React.createClass({
 
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
 
   propTypes: {
     selected: React.PropTypes.bool,
@@ -218,7 +218,7 @@ var TreeNode = React.createClass({
 });
 
 var TreeView = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   propTypes: {
     allNode: React.PropTypes.object.isRequired,
     onTreeClick: React.PropTypes.func.isRequired,
@@ -307,7 +307,7 @@ var TreeView = React.createClass({
 });
 
 let HierarchyTree = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   propTypes: {
     allNode: React.PropTypes.object.isRequired,
     onTreeClick: React.PropTypes.func.isRequired,

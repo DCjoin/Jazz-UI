@@ -21,7 +21,7 @@ import Config from 'config';
 
 
 let CustomerIdentity = React.createClass({
-  mixins: [ViewableTextFieldUtil],
+  //mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
     customer: React.PropTypes.object

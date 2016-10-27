@@ -59,7 +59,7 @@ let TemplateItem = React.createClass({
   }
 });
 let TemplateList = React.createClass({
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
   _onTemplateListChanged: function() {
     this.setState({
       list: MailStore.getTemplateList()

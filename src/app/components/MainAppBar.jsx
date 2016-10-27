@@ -26,8 +26,9 @@ import FolderStore from '../stores/FolderStore.jsx';
 import Config from 'config';
 import { getCookie } from '../util/Util.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
+import RoutePath from '../util/RoutePath.jsx';
 
-let MenuItem = require('material-ui/lib/menus/menu-item');
+let MenuItem = require('material-ui/MenuItem');
 var f = lang.f;
 const MAX_LENGTH = 200;
 let lastLink = null;
@@ -54,8 +55,30 @@ const MODIFY_TYPE = {
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
 }
+function push(router, name, params, query) {
+  router.push( RoutePath[name]( assign({}, getParams(router), params) ), query );
+}
+function replaceWith(router, name, params, query) {
+  router.replace( RoutePath[name]( assign({}, getParams(router), params) ), query );
+}
+function getParams(router) {
+  return router.params;
+}
+function getQuery(router) {
+  return router.location.query;
+}
+function getRoutes(router) {
+  return router.routers;
+}
+function getCurrentPath(router) {
+  return router.location.pathname;
+}
 var MainAppBar = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
+  contextTypes: {
+    router: React.PropTypes.object,
+    loading:React.PropTypes.object
+  },
   _onChange: function() {},
   _onError: function() {
     var error = CurrentUserStore.getError();
@@ -294,15 +317,15 @@ var MainAppBar = React.createClass({
     LanguageAction.switchLanguage();
   },
   _onMailLoaded: function() {
-    var params = this.getParams();
-    this.transitionTo('mail', params);
+    var params = getParams(this.context.router);
+    push(this.context.router, 'mail', params);
     this.setState({
       configSelected: false
     })
   },
   _onConfigLoaded: function() {
-    var params = this.getParams();
-    this.transitionTo('config', params);
+    var params = getParams(this.context.router);
+    push(this.context.router, 'config', params);
     this.setState({
       configSelected: true
     })
@@ -584,7 +607,7 @@ var MainAppBar = React.createClass({
   },
   render: function() {
     var user = window.currentUser || currentUser() || {};
-    var params = this.getParams();
+    var params = getParams(this.context.router);
     var leftNav = null,
       dialog = null;
     var {sidebarType, dialogType, customError} = this.state;

@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import DateTime from '../../../node_modules/material-ui/lib/utils/date-time.js';
 import DefaultRawTheme from '../../../node_modules/material-ui/lib/styles/raw-themes/light-raw-theme.js';
 import ThemeManager from '../../../node_modules/material-ui/lib/styles/theme-manager.js';
 import Transition from '../../../node_modules/material-ui/lib/styles/transitions.js';
@@ -9,7 +8,7 @@ import { Mixins, Styles, ClearFix, StylePropable, EnhancedButton, FlatButton } f
 
 let ItemButton = React.createClass({
 
-  mixins: [StylePropable],
+  //mixins: [StylePropable],
 
   contextTypes: {
     muiTheme: React.PropTypes.object,

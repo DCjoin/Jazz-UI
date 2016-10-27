@@ -9,7 +9,7 @@ import CookieUtil from '../../util/cookieUtil.jsx';
 import { getCookie } from '../../util/Util.jsx';
 
 let ServiceApp = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
 
   _redirectRouter : function(target, params) {
       if (!target) {
@@ -119,7 +119,7 @@ let ServiceApp = React.createClass({
     return (
       <div className='jazz-main'>
             <MainAppBar items={menuItems} title={I18N.Setting.SPManagement}  showCustomerList={this._showCustomerList}/>
-            <RouteHandler {...this.props} />
+            {this.props.children}
             <NetworkChecker></NetworkChecker>
         </div>
       );

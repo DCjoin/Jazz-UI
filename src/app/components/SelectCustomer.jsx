@@ -19,9 +19,9 @@ var _ = {
 };
 
 var SelectCustomer = React.createClass({
-  mixins: [
-    Navigation, State
-  ],
+  //mixins: [
+  //   Navigation, State
+  // ],
   propTypes: {
     userId: React.PropTypes.number,
     params: React.PropTypes.array,

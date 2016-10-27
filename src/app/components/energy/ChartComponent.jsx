@@ -4,7 +4,7 @@ import React from 'react';
 import assign from 'object-assign';
 import _ from 'lodash';
 import Immutable from 'immutable';
-import mui from 'material-ui';
+import { Dialog, FlatButton, Checkbox } from 'material-ui';
 import Highstock from '../highcharts/Highstock.jsx';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
 import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
@@ -12,7 +12,6 @@ import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import {dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon} from '../../util/Util.jsx';
 
-let { Dialog, FlatButton, Checkbox } = mui;
 let yAxisOffset = 70;
 
 var dataLabelFormatter = function (format) {

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import mui from 'material-ui';
+import {Checkbox} from 'material-ui';
 import TreeConstants from '../../constants/TreeConstants.jsx';
 import assign from 'object-assign';
 import classNames from 'classnames';
@@ -14,11 +14,10 @@ import { treeSource } from '../../constants/TreeSource.jsx';
 
 //import AlarmStore from '../../stores/AlarmStore.jsx';
 //import BubbleIcon from '../../components/BubbleIcon.jsx';
-let {Checkbox} = mui;
 let {nodeType} = TreeConstants;
 
 var TreeNode = React.createClass({
-  mixins: [React.addons.PureRenderMixin],
+  //mixins: [React.addons.PureRenderMixin],
 
   propTypes: {
     // feature

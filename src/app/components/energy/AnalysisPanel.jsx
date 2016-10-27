@@ -32,7 +32,7 @@ import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import EnergyDialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 
-let MenuItem = require('material-ui/lib/menus/menu-item');
+let MenuItem = require('material-ui/MenuItem');
 
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
@@ -46,7 +46,7 @@ const DIALOG_TYPE = {
 let lastRelativeDate = 'Customerize';
 
 let AnalysisPanel = React.createClass({
-  mixins: [ChartMixins],
+  //mixins: [ChartMixins],
   propTypes: {
     chartTitle: React.PropTypes.string,
     bizType: React.PropTypes.oneOf(['Energy', 'Unit', 'Ratio', 'Label', 'Rank']),
