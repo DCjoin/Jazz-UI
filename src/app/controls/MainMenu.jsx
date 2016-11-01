@@ -8,6 +8,7 @@ let MenuItem = require('material-ui/MenuItem');
 import classnames from "classnames";
 
 import BubbleIcon from '../components/BubbleIcon.jsx';
+import ClickAway from "../controls/ClickAwayListener.jsx";
 
 
 var ListMenu = React.createClass({
@@ -26,10 +27,10 @@ var ListMenu = React.createClass({
       width: this.props.isActive ? '120px' : '110px'
     };
     var menuItems = this.props.menuItems.map((item) => {
-      return <MenuItem primaryText={item.title} name={item.name} style={menuStyle}/>;
+      return <MenuItem primaryText={item.title} key={item.title} name={item.name} style={menuStyle}/>;
     });
     if (title) {
-      menuItems.unshift(<MenuItem primaryText={title} disabled={true} style={menuStyle}/>);
+      menuItems.unshift(<MenuItem primaryText={title} key={title} disabled={true} style={menuStyle}/>);
     }
     var menu = <Menu
     style={{
@@ -37,7 +38,8 @@ var ListMenu = React.createClass({
     }}
     ref="menuItems"
     autoWidth={false}
-    onItemTouchTap={this._onMenuItemClick}
+    menuItems={menuItems}
+    onChange={this._onMenuItemClick}
     >{menuItems}</Menu>;
     return (
       <div
@@ -53,14 +55,17 @@ var ListMenu = React.createClass({
 });
 
 var SubMainMenu = React.createClass({
-  //mixins: [State, Mixins.ClickAwayable, Navigation],
+  // mixins: [State, Mixins.ClickAwayable, Navigation],
 
   getInitialState: function() {
     return {
       showSubMenu: false
     };
   },
-
+  contextTypes: {
+    router: React.PropTypes.object,
+    currentRoute: React.PropTypes.object,
+  },
   propTypes: function() {
     return {
       node: React.PropTypes.object,
@@ -85,7 +90,7 @@ var SubMainMenu = React.createClass({
 
   },
 
-  componentClickAway: function() {
+  onClickAway: function() {
     this._dismissSubMain();
   },
 
@@ -139,7 +144,7 @@ var SubMainMenu = React.createClass({
     children.every((item) => {
       item.list.every((menu) => {
         // to change
-        if (false && that.isActive(menu.name)) {
+        if (this.context.router.isActive(menu.getPath(this.context.currentRoute.params))) {
           title = menu.title;
           hasActive = true;
           return false;
@@ -161,11 +166,14 @@ var MainMenu = React.createClass({
     items: React.PropTypes.array.isRequired,
     params: React.PropTypes.object.isRequired
   },
+  contextTypes: {
+  router: React.PropTypes.object,
+  currentRoute: React.PropTypes.object
+},
   _onChange: function() {
     this.setState({});
   },
   _renderMenuItems: function(items, params, parent) {
-
     var that = this,
       links = items.map(item => {
         if (item.children) {
@@ -190,7 +198,7 @@ var MainMenu = React.createClass({
           return (<Link key={item.name} className={classnames({
               "jazz-mainmenu-main": parent,
               "jazz-mainmenu-sub": !parent
-            })} to={item.name} params={params}  onClick={this.props.onClick}>{item.title}{redBubble}</Link>);
+            })} to={item.getPath(params)} params={params}  onClick={this.props.onClick}>{item.title}{redBubble}</Link>);
 
         }
       });
@@ -198,7 +206,7 @@ var MainMenu = React.createClass({
   },
 
   render: function() {
-    var params = this.props.params;
+    var params = this.context.currentRoute.params;
 
     var links = this._renderMenuItems(this.props.items, params, true);
 

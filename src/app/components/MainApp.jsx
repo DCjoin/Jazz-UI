@@ -231,14 +231,17 @@ let MainApp = React.createClass({
       menuItems = [
         {
           name: 'map',
+          getPath: RoutePath.map,
           title: I18N.MainMenu.Map
         },
         {
           name: 'alarm',
+          getPath: RoutePath.alarm,
           title: I18N.MainMenu.Alarm
         },
         {
           name: 'setting',
+          getPath: RoutePath.setting,
           title: I18N.MainMenu.Energy
         }
       ];
@@ -246,10 +249,12 @@ let MainApp = React.createClass({
       menuItems = [
         {
           name: 'map',
+          getPath: RoutePath.map,
           title: I18N.MainMenu.Map
         },
         {
           name: 'setting',
+          getPath: RoutePath.setting,
           title: I18N.MainMenu.Energy
         }
       ];
@@ -263,10 +268,12 @@ let MainApp = React.createClass({
             list: [
               {
                 name: 'dailyReport',
+                getPath: RoutePath.report.dailyReport,
                 title: I18N.MainMenu.DailyReport
               },
               {
                 name: 'template',
+                getPath: RoutePath.report.template,
                 title: I18N.MainMenu.Template
               }
             ]
@@ -282,18 +289,22 @@ let MainApp = React.createClass({
           list: [
             {
               name: 'ptag',
+              getPath: RoutePath.customerSetting.ptag,
               title: I18N.MainMenu.PTagManagement
             },
             {
               name: 'vtag',
+              getPath: RoutePath.customerSetting.vtag,
               title: I18N.MainMenu.VTagManagement
             },
             {
               name: 'vee',
+              getPath: RoutePath.customerSetting.vee,
               title: I18N.MainMenu.VEEMonitorRule
             },
             {
               name: 'log',
+              getPath: RoutePath.customerSetting.log,
               title: I18N.MainMenu.TagBatchImportLog
             }
           ]
@@ -305,10 +316,12 @@ let MainApp = React.createClass({
           list: [
             {
               name: 'hierNode',
+              getPath: RoutePath.customerSetting.hierNode,
               title: I18N.MainMenu.HierarchyNodeSetting
             },
             {
               name: 'hierLog',
+              getPath: RoutePath.customerSetting.hierLog,
               title: I18N.MainMenu.HierarchyLog
             }
           ]
@@ -320,6 +333,7 @@ let MainApp = React.createClass({
           list: [
             {
               name: 'customerLabeling',
+              getPath: RoutePath.customerSetting.customerLabeling,
               title: I18N.MainMenu.CustomizedLabeling
             }
           ]

@@ -61,7 +61,8 @@
     "webpack": "1.9.10",
     "webpack-dev-server": "1.9.0",
     "wallaby-webpack":"0.0.26",
-    "node-noop":"1.0.0"
+    "node-noop":"1.0.0",
+    "node-libs-browser":"0.6.0"
   },
   "dependencies": {
     "numeral": "1.5.3",
