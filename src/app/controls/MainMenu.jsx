@@ -2,9 +2,7 @@
 
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
-import { Mixins, DropDownMenu, Paper } from 'material-ui';
-let Menu = require('material-ui/Menu');
-let MenuItem = require('material-ui/MenuItem');
+import { Mixins, DropDownMenu, Paper, Menu, MenuItem } from 'material-ui';
 import classnames from "classnames";
 
 import BubbleIcon from '../components/BubbleIcon.jsx';
