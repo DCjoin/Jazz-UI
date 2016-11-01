@@ -158,6 +158,8 @@ var SubMainMenu = React.createClass({
   },
 });
 
+SubMainMenu=ClickAway(SubMainMenu);
+
 var MainMenu = React.createClass({
 
   propTypes: {
