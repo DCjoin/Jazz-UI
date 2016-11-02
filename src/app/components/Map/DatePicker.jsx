@@ -8,6 +8,7 @@ import CommonFuns from '../../util/Util.jsx';
 import MapAction from '../../actions/MapAction.jsx';
 import MapStore from '../../stores/MapStore.jsx';
 import LanguageStore from '../../stores/LanguageStore.jsx';
+import ClickAway from "../../controls/ClickAwayListener.jsx";
 
 let DatePicker = React.createClass({
   //mixins: [Navigation, State, Mixins.ClickAwayable],
@@ -71,7 +72,7 @@ let DatePicker = React.createClass({
     MapStore.removeDateMenuListener(this._onDateMenuChanged);
   //LanguageStore.removeSwitchLanguageListener(this._onLanguageSwitch);
   },
-  componentClickAway: function() {
+  onClickAway: function() {
     if (this.state.isDateMenuShow) {
       this.setState({
         isDateMenuShow: false
@@ -99,18 +100,21 @@ let DatePicker = React.createClass({
     }
     return (
       <div className='datepicker'>
-          <FlatButton label={this.state.dateSelected}  labelStyle={{
-        color: '#767a7a'
-      }} onTouchTap={this._onDateMenuClick}>
-            <FontIcon className="icon-arrow-down" hoverColor='#1ca8dd' style={{
-        fontSize: '12px',
-        marginLeft: '-6px'
-      }}/>
-          </FlatButton>
+          <FlatButton label={this.state.dateSelected}
+            labelPosition="before"
+            labelStyle={{
+              color: '#767a7a'
+            }} onClick={this._onDateMenuClick}
+            icon={<FontIcon className="icon-arrow-down" hoverColor='#1ca8dd'
+            style={{
+              fontSize: '12px',
+              marginLeft: '-6px'
+            }}/>
+            }/>
           {dropdownmenu}
       </div>
       )
   }
 
 });
-module.exports = DatePicker;
+module.exports = ClickAway(DatePicker);

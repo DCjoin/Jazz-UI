@@ -1,9 +1,10 @@
 'use strict';
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import { DropDownMenu, DatePicker } from 'material-ui';
+import {DatePicker } from 'material-ui';
 import assign from "object-assign";
-
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 import { dateFormat, dateAdd } from '../../util/Util.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import MonthPicker from '../../controls/MonthPicker.jsx';
@@ -39,12 +40,11 @@ var AlarmLeftPanel = React.createClass({
       muiTheme: childContext
     };
   },
-  _dateTypeChangeHandler: function(e, selectedIndex, menuItem) {
-    let type = menuItem.type;
+  _dateTypeChangeHandler: function(event, index, value) {
 
     let date = new Date();
     date.setHours(0, 0, 0);
-    if (type == dateType.DAY_ALARM) { //default yesterday
+    if (value == dateType.DAY_ALARM) { //default yesterday
       date = dateAdd(date, -1, 'days');
       let dayStr = dateFormat(date, 'YYYYMMDD');
       this.loadListByDate(dayStr, HOURSTEP);
@@ -83,7 +83,8 @@ var AlarmLeftPanel = React.createClass({
   },
   getInitialState() {
     return {
-      dateType: dateType.DAY_ALARM
+      dateType: dateType.DAY_ALARM,
+      value:2
     };
   },
   shouldComponentUpdate(nextProps, nextState) {
@@ -91,18 +92,9 @@ var AlarmLeftPanel = React.createClass({
   },
   render: function() {
     var menuItems = [
-      {
-        type: dateType.DAY_ALARM,
-        text: I18N.ALarm.List.Daily
-      },
-      {
-        type: dateType.MONTH_ALARM,
-        text: I18N.ALarm.List.Month
-      },
-      {
-        type: dateType.YEAR_ALARM,
-        text: I18N.ALarm.List.Year
-      }
+      <MenuItem value={dateType.DAY_ALARM} primaryText={I18N.ALarm.List.Daily} />,
+      <MenuItem value={dateType.MONTH_ALARM} primaryText={I18N.ALarm.List.Month} />,
+      <MenuItem value={dateType.YEAR_ALARM} primaryText={I18N.ALarm.List.Year}/>
     ];
     let dateSelector,
       date = new Date();
@@ -136,34 +128,21 @@ var AlarmLeftPanel = React.createClass({
         flexFlow: 'column',
         backgroundColor: 'rgb(53, 64, 82)'
       }}>
-          <div className={'jazz-alarm-left-panel-dropdownmenu-container'}>
-              <DropDownMenu autoWidth={false} style={{
-        width: '320px',
-        height: '32px'
-      }} labelStyle={{
-        marginTop: '-10px'
-      }} iconStyle={{
-        marginTop: '-10px'
-      }} onChange={this._dateTypeChangeHandler} menuItems={menuItems}></DropDownMenu>
-          </div>
-          <div style={{
-        padding: '0px auto 12px auto',
-        height: '32px',
-        flex: 'none'
-      }}>
-            {dateSelector}
-
-          </div>
-          <AlarmList style={{
-        margin: 'auto'
-      }} ref='alarmResList' onItemClick={this.props.onItemClick}></AlarmList>
-
+          <div>
+    <DropDownMenu value={this.state.value} onChange={this._dateTypeChangeHandler}>
+  <MenuItem value={1} primaryText="Never"></MenuItem>
+  <MenuItem value={2} primaryText="Every Night"></MenuItem>
+  <MenuItem value={3} primaryText="Weeknights"></MenuItem>
+  <MenuItem value={4} primaryText="Weekends"></MenuItem>
+  <MenuItem value={5} primaryText="Weekly"></MenuItem>
+</DropDownMenu>
         </div>
+      </div>
       );
   },
   componentDidMount: function() {
-    let dayDate = dateFormat(this.refs.daySelector.getValue(), 'YYYYMMDD');
-    this.loadListByDate(dayDate, HOURSTEP);
+    //let dayDate = dateFormat(this.refs.daySelector.getValue(), 'YYYYMMDD');
+    // this.loadListByDate(dayDate, HOURSTEP);
   }
 });
 
