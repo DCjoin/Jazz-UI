@@ -6,6 +6,7 @@ import {getMuiTheme} from "material-ui/styles";
 import GlobalErrorMessageDialog from './GlobalErrorMessageDialog.jsx';
 import GlobalErrorMessageStore from '../stores/GlobalErrorMessageStore.jsx';
 import LanguageStore from '../stores/LanguageStore.jsx';
+import LoginStore from '../stores/LoginStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import { CircularProgress } from 'material-ui';
 import LanguageAction from '../actions/LanguageAction.jsx';
@@ -129,12 +130,26 @@ let JazzApp = React.createClass({
       loading: true
     });
   },
+  componentWillMount() {
+    GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
+    GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
+    LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
+    LanguageStore.addSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
+    LanguageStore.addFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
+    AjaxStore.addErrorListener(this._globalError);
+
+    if(LoginStore.hasLoggedin()) {
+      LanguageAction.firstLanguageNotice(this.props.router.params.lang);
+      CurrentUserAction.getInitData(getCookie('UserId'));
+    }
+    
+  },
   componentDidMount: function() {
-    console.log(this.props.router);
-    var params = getParams(this.props.router);
-    var lang = params.lang;
-    var query = getQuery(this.props.router);
-    var me = this.props.router;
+    // console.log(this.props.router);
+    // var params = getParams(this.props.router);
+    // var lang = params.lang;
+    // var query = getQuery(this.props.router);
+    // var me = this.props.router;
 
     // console.log('JAZZAPP params:' + JSON.stringify(params,0,1));
     // console.log('JAZZAPP query:' + JSON.stringify(query,0,1));
@@ -223,44 +238,44 @@ let JazzApp = React.createClass({
     // };
     // console.log('lang:'+ lang)
 
-    if (!lang) {
-      var url = window.location.toLocaleString();
-      console.log('url=' + url);
-      //currentLanguage： 0 中文, 1 英文
-      if (url.indexOf('langNum=0') > -1) {
-        //Chinese
-        lang = 'zh-cn';
-      } else if (url.indexOf('langNum=1') > -1) {
-        lang = 'en-us';
-      } else {
-        lang = window.navigator.language.toLowerCase();
-      }
-      console.log('window.navigator.language.toLowerCase()=' + window.navigator.language.toLowerCase());
-      console.log('lang=' + lang);
+    // if (!lang) {
+    //   var url = window.location.toLocaleString();
+    //   console.log('url=' + url);
+    //   //currentLanguage： 0 中文, 1 英文
+    //   if (url.indexOf('langNum=0') > -1) {
+    //     //Chinese
+    //     lang = 'zh-cn';
+    //   } else if (url.indexOf('langNum=1') > -1) {
+    //     lang = 'en-us';
+    //   } else {
+    //     lang = window.navigator.language.toLowerCase();
+    //   }
+    //   console.log('window.navigator.language.toLowerCase()=' + window.navigator.language.toLowerCase());
+    //   console.log('lang=' + lang);
 
-      me.replace(`/${lang}/`);
-    } else {
-      lang = lang.toLowerCase();
-    }
-    //currentLanguage： 0 中文, 1 英文
-    if (lang === 'zh-cn') {
-      window.currentLanguage = 0;
-    } else {
-      window.currentLanguage = 1;
-    }
-    window.lastLanguage = window.currentLanguage;
+    //   me.replace(`/${lang}/`);
+    // } else {
+    //   lang = lang.toLowerCase();
+    // }
+    // //currentLanguage： 0 中文, 1 英文
+    // if (lang === 'zh-cn') {
+    //   window.currentLanguage = 0;
+    // } else {
+    //   window.currentLanguage = 1;
+    // }
+    // window.lastLanguage = window.currentLanguage;
 
 
-    LanguageAction.firstLanguageNotice();
-    this.setState({
-      loading: true
-    });
-    GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
-    GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
-    LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
-    LanguageStore.addSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
-    LanguageStore.addFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
-    AjaxStore.addErrorListener(this._globalError);
+    // LanguageAction.firstLanguageNotice();
+    // this.setState({
+    //   loading: true
+    // });
+    // GlobalErrorMessageStore.addChangeListener(this._onErrorMessageChanged);
+    // GlobalErrorMessageStore.addClearGlobalErrorListener(this._onClearGlobalError);
+    // LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
+    // LanguageStore.addSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
+    // LanguageStore.addFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
+    // AjaxStore.addErrorListener(this._globalError);
   },
 
   _globalError:function(httpStatusCode){
@@ -342,14 +357,14 @@ let JazzApp = React.createClass({
       //routes.length === 1 || (routes.length === 2 && !customerCode)
       else if (!currentUser) {
         //console.log('登录');
-        me.setState({
-          isLangLoaded: true,
-          loading: false
-        }, () => {
-          replaceWith(me.props.router, 'login', {
-            lang: getParams(me.props.router).lang
-          });
-        });
+        // me.setState({
+        //   isLangLoaded: true,
+        //   loading: false
+        // }, () => {
+        //   replaceWith(me.props.router, 'login', {
+        //     lang: getParams(me.props.router).lang
+        //   });
+        // });
       } else {
         //console.log('主页');
         CurrentUserAction.getUser(currentUser);
@@ -365,12 +380,10 @@ let JazzApp = React.createClass({
           if (url.indexOf('menutype=platform') > -1) {
             replaceWith(me.props.router, 'config', {
               lang: lang,
-              customerId: customerCode
             });
           } else if (url.indexOf('menutype=service') > -1) {
             replaceWith(me.props.router, 'workday', {
               lang: lang,
-              customerId: customerCode
             });
           } else if (url.indexOf('menutype=energy') > -1) {
             replaceWith(me.props.router, 'setting', {
@@ -397,11 +410,11 @@ let JazzApp = React.createClass({
         });
       }
     };
-    if (window.currentLanguage === 1) {
-      require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
-    } else {
-      require(['../lang/zh-cn.js'], afterLoadLang);
-    }
+    // if (window.currentLanguage === 1) {
+    //   require(['../lang/en-us.js'], afterLoadLang); //should be changed when support english
+    // } else {
+    //   require(['../lang/zh-cn.js'], afterLoadLang);
+    // }
   },
   _onClearGlobalError: function() {
     let errorMessage = GlobalErrorMessageStore.getErrorMessage();
@@ -442,41 +455,48 @@ let JazzApp = React.createClass({
     };
   },
   render: function() {
-    var loading = null;
-    if (this.state.loading) {
-      loading = <div style={{
-        display: 'flex',
-        flex: 1,
-        'alignItems': 'center',
-        'justifyContent': 'center',
-        position: 'fixed',
-        top: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#ffffff',
-        zIndex: 1000,
-      }}>
-              <CircularProgress  mode="indeterminate" size={2} />
-            </div>; //(<AjaxDialog ref="ajax" />);
-    }
-    let mainPanel = null;
-    if (this.state.isLangLoaded) {
-      let {children,  ...other} = this.props;
-      assign({}, other, {
-        showLoading: this._showLoading,
-        hideLoading: this._hideLoading,
-        showError: this._showError
-      });
-      mainPanel = this.props.children;//React.cloneElement(children, other);//<RouteHandler {...this.props} showLoading={this._showLoading} hideLoading={this._hideLoading} showError={this._showError} />;
-    }
     return (
       <div className="jazz-app">
-          {mainPanel}
-          {loading}
+          {this.props.children}
           <GlobalErrorMessageDialog ref='globalErrorMessageDialog'/>
           <AjaxDialog ref="ajax"/>
       </div>
       );
+    // var loading = null;
+    // if (this.state.loading) {
+    //   loading = <div style={{
+    //     display: 'flex',
+    //     flex: 1,
+    //     'alignItems': 'center',
+    //     'justifyContent': 'center',
+    //     position: 'fixed',
+    //     top: 0,
+    //     width: '100%',
+    //     height: '100%',
+    //     backgroundColor: '#ffffff',
+    //     zIndex: 1000,
+    //   }}>
+    //           <CircularProgress  mode="indeterminate" size={2} />
+    //         </div>; //(<AjaxDialog ref="ajax" />);
+    // }
+    // let mainPanel = null;
+    // if (this.state.isLangLoaded) {
+    //   let {children,  ...other} = this.props;
+    //   assign({}, other, {
+    //     showLoading: this._showLoading,
+    //     hideLoading: this._hideLoading,
+    //     showError: this._showError
+    //   });
+    //   mainPanel = this.props.children;//React.cloneElement(children, other);//<RouteHandler {...this.props} showLoading={this._showLoading} hideLoading={this._hideLoading} showError={this._showError} />;
+    // }
+    // return (
+    //   <div className="jazz-app">
+    //       {mainPanel}
+    //       {loading}
+    //       <GlobalErrorMessageDialog ref='globalErrorMessageDialog'/>
+    //       <AjaxDialog ref="ajax"/>
+    //   </div>
+    //   );
   }
 });
 

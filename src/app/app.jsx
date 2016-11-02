@@ -1,13 +1,18 @@
 'use strict';
 
+import querystring from 'querystring';
+
 import React from 'react';
 import ReactDom from 'react-dom';
 
 import {Router, browserHistory} from 'react-router';
+
+import assign from 'object-assign';
 //import * as polyfill from 'babel/polyfill';
 // require("babel-polyfill");
 
 import JazzApp from './components/JazzApp.jsx';
+import SelectCustomer from './components/SelectCustomer.jsx';
 import Login from './components/Login.jsx';
 import MainApp from './components/MainApp.jsx';
 import resetPSWApp from './components/resetPSWApp.jsx';
@@ -21,6 +26,7 @@ import Mail from './components/mail/Mail.jsx';
 import Report from './components/report/Report.jsx';
 import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
+import RoutePath from './util/RoutePath.jsx';
 import { Styles } from 'material-ui';
 // let {ThemeManager} = Styles;
 import AppTheme from './AppTheme.jsx';
@@ -152,110 +158,164 @@ function getLessVar(name) {
   );
 
 });*/
+const SUPPORT_LANGUAGES = {
+  'zh-cn': true,
+  'en-us': true,
+};
+function loadLanguage({location, params, routes}, replace, callback) {
+  console.log('loadLanguage');
+  let lang = params.lang;
+  if( !lang || !SUPPORT_LANGUAGES[lang] ) {
+    if( location.query.langNum === '0' ) {
+      lang = 'zh-cn';
+    } else if( location.query.langNum === '1' ) {
+      lang = 'en-us';
+    } else {
+      lang = window.navigator.language.toLowerCase();
+    }
+  }
+  require(['./lang/' + lang + '.js'], function(i18n) {
+    window.I18N = i18n;
+    if( params.lang !== lang ) {
+      console.log('replace');
+      replace(RoutePath.base({lang}));
+    }
+    callback();
+  });
+}
+function isLogin(global) {
+  return !!window.currentUserId;
+}
+
+function checkAuth({location, params, routes}, replaceState) {
+  console.log('checkAuth');
+  if( !isLogin(window) && routes.reduce((prev, curr) => {return prev||curr._auth;}, false)) {
+    replaceState(RoutePath.login(params) + '?' + querystring.stringify({
+      next: location.pathname
+    }) );
+  }
+}
+
 ReactDom.render(<Router history={browserHistory} routes={{
-  path: '(:lang)',
-  component: JazzApp,
+  path: '/',
+  onEnter: loadLanguage,
   childRoutes: [{
-    path: 'login',
-    component: Login
-  }, {
-    path: 'contactus',
-    component: contactusApp
-  }, {
-    path: 'u=:user&t=:token&a=resetpwd&lang=:lang',
-    component: resetPSWApp
-  }, {
-    path: 'u=:user&t=:token&a=demologin&lang=:lang',
-    component: demoLoginApp
-  }, {
-    path: 'u=:user&t=:token&a=initpwd&lang=:lang',
-    component: initChangePSWApp
-  }, {
-    path: '(:customerId)',
-    component: MainApp,
+    path: ':lang',
+    component: JazzApp,
+    onEnter: checkAuth,
+    indexRoute: {
+      onEnter: ({params}, replaceState) => {
+        if( !isLogin(window) ) {
+          replaceState(RoutePath.login(params));
+        }
+      },
+      component: MainApp,
+    },
     childRoutes: [{
-      path: 'map',
-      component: MapPanel
+      path: 'login',
+      component: Login
     }, {
-      path: 'alarm',
-      component: Alarm
+      path: 'contactus',
+      component: contactusApp
     }, {
-      path: 'setting',
-      component: Setting
+      path: 'u=:user&t=:token&a=resetpwd&lang=:lang',
+      component: resetPSWApp
     }, {
-      path: 'dailyReport',
-      component: Report
+      path: 'u=:user&t=:token&a=demologin&lang=:lang',
+      component: demoLoginApp
     }, {
-      path: 'template',
-      component: Template
+      path: 'u=:user&t=:token&a=initpwd&lang=:lang',
+      component: initChangePSWApp
     }, {
-      path: 'ptag',
-      component: PTag
+      _auth: true,
+      path: '(:customerId)',
+      component: MainApp,
+      childRoutes: [{
+        path: 'map',
+        component: MapPanel
+      }, {
+        path: 'alarm',
+        component: Alarm
+      }, {
+        path: 'setting',
+        component: Setting
+      }, {
+        path: 'dailyReport',
+        component: Report
+      }, {
+        path: 'template',
+        component: Template
+      }, {
+        path: 'ptag',
+        component: PTag
+      }, {
+        path: 'vtag',
+        component: VTag
+      }, {
+        path: 'vee',
+        component: VEE
+      }, {
+        path: 'log',
+        component: TagLog
+      }, {
+        path: 'customerLabeling',
+        component: Label
+      }, {
+        path: 'hierNode',
+        component: Hierarchy
+      },  {
+        path: 'hierLog',
+        component: HierarchyLog
+      }, ]
     }, {
-      path: 'vtag',
-      component: VTag
+      _auth: true,
+      path: 'platform',
+      component: PlatformApp,
+      childRoutes: [{
+        path: 'config',
+        component: Platform      
+      }, {
+        path: 'mail',
+        component: Mail      
+      }]
     }, {
-      path: 'vee',
-      component: VEE
-    }, {
-      path: 'log',
-      component: TagLog
-    }, {
-      path: 'customerLabeling',
-      component: Label
-    }, {
-      path: 'hierNode',
-      component: Hierarchy
-    },  {
-      path: 'hierLog',
-      component: HierarchyLog
-    }, ]
-  }, {
-    path: 'platform',
-    component: PlatformApp,
-    childRoutes: [{
-      path: 'config',
-      component: Platform      
-    }, {
-      path: 'mail',
-      component: Mail      
-    }]
-  }, {
-    path: 'service/:cusnum',
-    component: ServiceApp,
-    childRoutes: [{
-      path: 'workday',
-      component: WorkDay      
-    }, {
-      path: 'worktime',
-      component: WorkTime      
-    }, {
-      path: 'coldwarm',
-      component: ColdWarm      
-    }, {
-      path: 'daynight',
-      component: DayNight      
-    }, {
-      path: 'price',
-      component: Tariff      
-    }, {
-      path: 'carbon',
-      component: Carbon      
-    }, {
-      path: 'benchmark',
-      component: Benchmark      
-    }, {
-      path: 'labeling',
-      component: Labeling      
-    }, {
-      path: 'customer',
-      component: Customer      
-    }, {
-      path: 'user',
-      component: User      
-    }, {
-      path: 'privilege',
-      component: Role      
+      path: 'service/:cusnum',
+      component: ServiceApp,
+      _auth: true,
+      childRoutes: [{
+        path: 'workday',
+        component: WorkDay      
+      }, {
+        path: 'worktime',
+        component: WorkTime      
+      }, {
+        path: 'coldwarm',
+        component: ColdWarm      
+      }, {
+        path: 'daynight',
+        component: DayNight      
+      }, {
+        path: 'price',
+        component: Tariff      
+      }, {
+        path: 'carbon',
+        component: Carbon      
+      }, {
+        path: 'benchmark',
+        component: Benchmark      
+      }, {
+        path: 'labeling',
+        component: Labeling      
+      }, {
+        path: 'customer',
+        component: Customer      
+      }, {
+        path: 'user',
+        component: User      
+      }, {
+        path: 'privilege',
+        component: Role      
+      }]
     }]
   }]
 }} />, document.getElementById('emopapp'));

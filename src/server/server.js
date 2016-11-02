@@ -53,51 +53,9 @@ function returnIndexHtml(request,reply){
 }
 
 server.route({
-    method: 'GET',
-    path: '/{any?}',
-    handler: returnIndexHtml
-});
-
-server.route({
-    method: 'GET',
-    path: '/en-us/login',
-    handler: returnIndexHtml
-});
-
-server.route({
-    method: 'GET',
-    path: '/en-us/spadmin/customer/{any?}',
-    handler: returnIndexHtml
-});
-
-server.route({
-    method: 'GET',
-    path: '/en-us/{customerCode}/{any?}',
-    handler: returnIndexHtml
-});
-
-server.route({
-    method: 'GET',
-    path: '/zh-cn/{customerCode}/{any?}',
-    handler: returnIndexHtml
-});
-
-server.route({
-    method: 'GET',
-    path: '/{any}/{customerCode}/asset/info/{code?}',
-    handler: returnIndexHtml
-});
-
-server.route({
-    method: 'GET',
-    path: '/{any}/{customerCode}/asset/map/{code?}',
-    handler: returnIndexHtml
-});
-
-server.route({
-    method: 'GET',
-    path: '/{any}/{customerCode}/asset/{mode}/{code}/{sub}',
-    handler: returnIndexHtml
+  method: 'GET',
+  path: '/{path*}',
+  handler: returnIndexHtml
 });
 
 module.exports = server;

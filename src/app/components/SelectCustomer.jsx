@@ -25,7 +25,8 @@ var SelectCustomer = React.createClass({
   propTypes: {
     userId: React.PropTypes.number,
     params: React.PropTypes.array,
-    currentCustomerId: React.PropTypes.number
+    currentCustomerId: React.PropTypes.number,
+    selectCustomer: React.PropTypes.func
   },
   contextTypes: {
     router: React.PropTypes.func
@@ -42,7 +43,8 @@ var SelectCustomer = React.createClass({
     };
   },
   _saveSelectCustomer: function(customer) {
-    SelectCustomerActionCreator.selectCustomer(customer);
+    this.props.selectCustomer(customer);
+    // SelectCustomerActionCreator.selectCustomer(customer);
   },
   _onClose() {
     var me = this;
@@ -59,7 +61,8 @@ var SelectCustomer = React.createClass({
   _selectCustomerChangeHandler: function(selectedIndex) {
     if (this.state.currentIndex == selectedIndex) {
       var customerList = CurrentUserCustomerStore.getAll();
-      this._saveSelectCustomer(customerList[selectedIndex]);
+      // this._saveSelectCustomer(customerList[selectedIndex]);
+      this.props.selectCustomer(customerList[selectedIndex]);
       CommodityStore.resetHierInfo();
       HierarchyAction.resetAll();
     } else {
@@ -156,16 +159,16 @@ var SelectCustomer = React.createClass({
   _sysManagement() {
     var me = this;
 
-    if (window.toMainApp) {
-      me.context.router.replaceWith('workday', {
-        lang: window.currentLanguage === 0 ? 'zh-cn' : 'en-us',
-        cusnum: CurrentUserCustomerStore.getAll().length
-      });
-    } else {
+    // if (window.toMainApp) {
+    //   me.context.router.replaceWith('workday', {
+    //     lang: window.currentLanguage === 0 ? 'zh-cn' : 'en-us',
+    //     cusnum: CurrentUserCustomerStore.getAll().length
+    //   });
+    // } else {
       this._saveSelectCustomer({
-        CustomerId: -1
+        Id: -1
       });
-    }
+    // }
   },
 
   componentDidMount: function() {

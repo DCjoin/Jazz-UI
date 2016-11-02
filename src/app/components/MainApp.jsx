@@ -124,6 +124,8 @@ let MainApp = React.createClass({
     var currentCustomer = CurrentUserCustomerStore.getCurrentCustomer();
     var currentUser = this.state.currentUser;
 
+    this.forceUpdate();
+/*
     if (!customerCode && (currentUser && currentUser.Id !== 1)) {
       // 切换至 Map SelectCustomer
       this.setState({
@@ -193,9 +195,21 @@ let MainApp = React.createClass({
         }
       }
     }
+    */
   },
   _switchCustomer: function(customer) {
-    var currentCustomer = getCurrentCustomer();
+    let customerId = customer.Id,
+    pathname = '';
+    if( customerId === -1 ) {
+      pathname = RoutePath.workday(assign({}, this.props.router.params, {
+        cusnum: CurrentUserCustomerStore.getAll().length
+      }));
+    } else {
+      let menus = this._getMenuItems();
+      pathname = RoutePath[menus[0].name](assign({}, this.props.router.params, {customerId}));
+    }
+    this.props.router.replace(pathname);
+    /*var currentCustomer = getCurrentCustomer();
     var menus = this._getMenuItems();
     //, {'expires':5,'path':'/'}
     CookieUtil.set('currentCustomerId', customer.Id);
@@ -221,7 +235,7 @@ let MainApp = React.createClass({
 
     this.setState({
       viewState: viewState.MAIN
-    });
+    });*/
   },
   _getMenuItems: function() {
     var menuItems = [];
@@ -350,7 +364,48 @@ let MainApp = React.createClass({
   },
 
   render: function() {
-    var CustomersList = getCurrentCustomers();
+    if(CurrentUserStore.getCurrentUser() 
+      && CurrentUserStore.getCurrentPrivilege()
+      && CurrentUserCustomerStore.getAll()
+      ) {
+      let customerId = this.props.router.params.customerId;
+      if( customerId ) {
+        let menuItems = this._getMenuItems();
+        let logoUrl = 'Logo.aspx?hierarchyId=' + customerId;
+        console.log(menuItems);
+        return (
+          <div className='jazz-main'>
+                  <MainAppBar items={menuItems} logoUrl={logoUrl} showCustomerList={this._showCustomerList}/>
+                  {this.props.children}
+                  <NetworkChecker></NetworkChecker>
+                  <ExportChart></ExportChart>
+              </div>
+          );
+      } else {
+        return (
+          <SelectCustomer 
+            selectCustomer={this._switchCustomer}
+            close={this._closeSelectCustomer}
+            closable={false}
+            currentCustomerId={parseInt(this.props.params.customerId)}
+            params={CurrentUserCustomerStore.getAll()}
+            userId={parseInt(window.currentUserId)}/>
+          );
+      }
+    }
+      return (
+        <div className='jazz-main'>
+            <div style={{
+          display: 'flex',
+          flex: 1,
+          'alignItems': 'center',
+          'justifyContent': 'center'
+        }}>
+              <CircularProgress  mode="indeterminate" size={2} />
+            </div>
+          </div>
+        );
+/*    var CustomersList = getCurrentCustomers();
     if (!this.state.rivilege) {
       return (
         <div className='jazz-main'>
@@ -406,7 +461,7 @@ let MainApp = React.createClass({
       }
     }
 
-
+*/
   },
   // componentWillMount() {
   //   SelectCustomerActionCreator.getCustomer(window.currentUserId);

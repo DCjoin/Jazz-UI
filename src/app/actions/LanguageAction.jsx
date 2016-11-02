@@ -26,10 +26,10 @@ let LanguageAction = {
       }
     });
   },
-  firstLanguageNotice: function() {
+  firstLanguageNotice: function(lang) {
     Ajax.post('/common/setlanguage', {
       params: {
-        language: window.currentLanguage === 0 ? 'zh-cn' : 'en-us'
+        language: lang
       },
       success: function(hierarchyList) {
         AppDispatcher.dispatch({

@@ -76,7 +76,7 @@ var DemoLogin = React.createClass({
     return null;
   },
   _goMain() {
-    CurrentUserAction.getUser(window.currentUserId);
+    CurrentUserAction.getInitData(window.currentUserId);
     this.context.router.transitionTo('main', this.props.params);
   },
   _goLogin(demoEmail) {
