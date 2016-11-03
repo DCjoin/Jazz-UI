@@ -1,4 +1,5 @@
 export default {
+	base: p => `/${p.lang}`,
 	resetPSW: p => `/${p.lang}/u=${p.user}&t=${p.token}&a=resetpwd&lang=${p.lang}`,
 	contactus: p => `/${p.lang}/contactus`,
 	demoLogin: p => `/${p.lang}/u=${p.user}&t=${p.token}&a=demologin&lang=${p.lang}`,
@@ -22,5 +23,18 @@ export default {
 		hierNode:p => `/${p.lang}/${p.customerId}/hierNode`,
 		hierLog:p => `/${p.lang}/${p.customerId}/hierLog`,
 		customerLabeling:p => `/${p.lang}/${p.customerId}/customerLabeling`,
+	},
+	service: {
+		workday: p => `/${p.lang}/service/${p.cusnum}/workday`,
+		worktime: p => `/${p.lang}/service/${p.cusnum}/worktime`,
+		coldwarm: p => `/${p.lang}/service/${p.cusnum}/coldwarm`,
+		daynight: p => `/${p.lang}/service/${p.cusnum}/daynight`,
+		price: p => `/${p.lang}/service/${p.cusnum}/price`,
+		carbon: p => `/${p.lang}/service/${p.cusnum}/carbon`,
+		benchmark: p => `/${p.lang}/service/${p.cusnum}/benchmark`,
+		labeling: p => `/${p.lang}/service/${p.cusnum}/labeling`,
+		customer: p => `/${p.lang}/service/${p.cusnum}/customer`,
+		user: p => `/${p.lang}/service/${p.cusnum}/user`,
+		privilege: p => `/${p.lang}/service/${p.cusnum}/privilege`,
 	}
 }

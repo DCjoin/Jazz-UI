@@ -84,10 +84,8 @@ let Login = React.createClass({
     //   _redirectFunc = this.props.router.replace;
     // }
     if (LoginStore.hasLoggedin()) {
-      replaceWith(this.props.router, 'main', this.props.params, assign({}, this.props.query, {
-        from: 'app'
-      }));
-      CurrentUserAction.getUser(window.currentUserId);
+      CurrentUserAction.getInitData(LoginStore.getCurrentUserId());
+      replaceWith(this.props.router, 'main', this.props.params);
     } else {
       this.setState({
         error: LoginStore.getLastError()
