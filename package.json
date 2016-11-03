@@ -24,7 +24,9 @@
       "js"
     ],
     "unmockedModulePathPatterns": [
-      "react","material-ui","superagent"
+      "react",
+      "material-ui",
+      "superagent"
     ]
   },
   "devDependencies": {
@@ -53,17 +55,18 @@
     "less": "2.5.1",
     "less-loader": "2.2.0",
     "mocha": "2.3.4",
+    "node-libs-browser": "0.6.0",
+    "node-noop": "1.0.0",
     "null-loader": "0.1.1",
     "react-hot-loader": "1.2.7",
     "react-proxy-loader": "0.3.1",
+    "react-tap-event-plugin": "^1.0.0",
     "style-loader": "0.12.3",
     "supervisor": "0.6.0",
     "url-loader": "0.5.6",
+    "wallaby-webpack": "0.0.26",
     "webpack": "1.9.10",
-    "webpack-dev-server": "1.9.0",
-    "wallaby-webpack":"0.0.26",
-    "node-noop":"1.0.0",
-    "node-libs-browser":"0.6.0"
+    "webpack-dev-server": "1.9.0"
   },
   "dependencies": {
     "numeral": "1.5.3",
@@ -75,22 +78,24 @@
     "react": "15.3.2",
     "react-dom": "15.3.2",
     "react-addons-css-transition-group": "15.3.2",
-    "immutable":"3.7.2",
+    "immutable": "3.7.2",
     "flux": "2.0.3",
     "react-router": "3.0.0",
     "classnames": "2.1.1",
-    "lodash":"3.10.1",
+    "lodash": "3.10.1",
     "react-grid-layout": "0.13.2",
-    "moment":"2.10.6",
-    "react-dragula":"1.0.12"
+    "moment": "2.10.6",
+    "react-dragula": "1.0.12"
   },
-  "jshintConfig":{
-      "esnext":true,
-      "moz":true,
-      "browser":true,
-      "node":true,
-      "jasmine":true,
-      "predef": [ "I18N","jest" ]
+  "jshintConfig": {
+    "esnext": true,
+    "moz": true,
+    "browser": true,
+    "node": true,
+    "jasmine": true,
+    "predef": [
+      "I18N",
+      "jest"
+    ]
   }
-
 }
