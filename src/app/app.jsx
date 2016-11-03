@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import injectTapEventPlugin from "react-tap-event-plugin";
 
-import {Router, browserHistory} from 'react-router';
+import {Router, hashHistory} from 'react-router';
 
 import assign from 'object-assign';
 //import * as polyfill from 'babel/polyfill';
@@ -197,7 +197,7 @@ function checkAuth({location, params, routes}, replaceState) {
   }
 }
 
-ReactDom.render(<Router history={browserHistory} routes={{
+ReactDom.render(<Router history={hashHistory} routes={{
   path: '/',
   onEnter: loadLanguage,
   childRoutes: [{
