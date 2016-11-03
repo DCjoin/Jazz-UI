@@ -33,7 +33,8 @@ export default class CalendarYearView extends React.Component {
     var yearList = [];
 	var selectedYear = this.props.currentDate.getFullYear();
 	var now = new Date();
-	for (var i=now.getFullYear()-100;i<=now.getFullYear()+100;i++){
+  // different from Pop year:now-10~now
+	for (var i=now.getFullYear()-10;i<=now.getFullYear();i++){
 		var clazz = classnames({
 			"year-item":true,
 			"selected": i===selectedYear

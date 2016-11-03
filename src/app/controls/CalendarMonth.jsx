@@ -71,9 +71,10 @@ var CalendarMonth = React.createClass({
 
     return monthArray.map((monthItem, i) => {
       return (
-        <ClearFix key={i}>
+        <div>
           {this._getMonthElements(monthItem, i)}
-        </ClearFix>
+        </div>
+
         );
     }, this);
   },

@@ -1,240 +1,232 @@
 'use strict';
 
 import React from 'react';
-import {DatePicker, TextField, Mixins} from 'material-ui';
-import assign from 'object-assign';
-import classSet from 'classnames';
-import util from '../util/Util.jsx';
+import TextField from 'material-ui/TextField';
 import moment from 'moment';
-//import Calendar from '../../../node_modules/material-ui/lib/date-picker/calendar.js';
-import Calendar from '../controls/calendar/Calendar.jsx';
-// let {DatePicker, TextField, Mixins} = mui;
-// let {ClickAwayable} = Mixins;
-var ViewableDatePicker = React.createClass({
-  //mixins: [ClickAwayable],
-  propTypes: {
-    isViewStatus: React.PropTypes.bool,
-    defaultValue: React.PropTypes.object, //date
-    defaultTime: React.PropTypes.number,
-    minDate: React.PropTypes.object,
-    maxDate: React.PropTypes.object,
-    dateFormatStr: React.PropTypes.string,
-    showTime: React.PropTypes.bool,
-    timeType: React.PropTypes.number
-  },
+import Calendar from './calendar/Calendar.jsx';
+import ClickAway from './ClickAwayListener.jsx';
 
-  getDefaultProps: function() {
-    return {
-      dateFormatStr: "YYYY/MM/DD/",
-      timeType: 0,
-      defaultTime: 0,
-      showTime: true
-    };
-  },
+const pattern1 = /^\d{4}-\d{2}-\d{2}$/;
+const format1 = "YYYY-MM-DD";
+const pattern2 = /^\d{4}\/\d{2}\/\d{2}$/;
+const format2 = "YYYY/MM/DD";
+const pattern3 = /^\d{4}\d{2}\d{2}$/;
+const format3 = "YYYYMMDD";
 
-  getInitialState: function() {
-    return {
-      curDate: this.props.defaultValue,
-      curTime: this.props.defaultTime,
-      showCalendar: false
-    };
-  },
-  componentWillReceiveProps: function(nextProps) {
-    if (this.props.defaultValue !== nextProps.defaultValue) {
-      this.setState({
-        curDate: nextProps.defaultValue
-      });
-    }
-    if (this.props.defaultTime !== nextProps.defaultTime || this.state.curTime !== nextProps.defaultTime) {
-      this.setState({
-        curTime: nextProps.defaultTime
-      });
-    }
-  },
-  shouldComponentUpdate: function(nextProps, nextState) {
-    if (this.props.isViewStatus == nextProps.isViewStatus &&
-      this.state.curDate == nextProps.defaultValue &&
-      this.state.curDate == nextState.curDate &&
-      this.state.curTime == nextProps.defaultTime &&
-      this.state.curTime == nextState.curTime &&
-      this.state.showCalendar == nextState.showCalendar) {
-      return false;
-    }
+function isValid(dateStr, minDate, maxDate){
+  var isNullDate = ( dateStr === "" || dateStr === null || dateStr === undefined);
+  if (isNullDate){
     return true;
+  }
+  var validDateObject = parseDateStr(dateStr);
+  if (validDateObject){
+    return isInRange(validDateObject.toDate(), minDate, maxDate) === 0;
+  }
+  return false;
+}
 
-  },
-  componentClickAway() {
-    this.setState({
-      showCalendar: false
-    });
-  },
-  _onSelectedDate(date) {
-    this.setState({
-      curDate: date,
-      showCalendar: false
-    });
-    //To kill 'Z' char from date format  eg. "2015-06-12T08:35:02.467Z" => "2015-06-12T08:35:02.467"
-    var str = date.toISOString();
-    str = str.substring(0, str.length - 1);
-    if (this.props.didChanged) {
-      this.props.didChanged(str);
+function isInRange (date, minDate, maxDate){
+    if (maxDate) {
+        var maxDate = moment(
+            [maxDate.getFullYear(),
+            maxDate.getMonth(),
+            maxDate.getDate()
+            ]).toDate();
+        if (maxDate < date){
+            return 1;
+        }
     }
-    if (this.props.onChange) {
-      this.props.onChange(this, date);
+    if (minDate) {
+        var minDate = moment(
+            [minDate.getFullYear(),
+            minDate.getMonth(),
+            minDate.getDate()
+            ]).toDate();
+        if (minDate > date){
+            return -1;
+        }
     }
-  },
-  _onSelectedTime(time) {
-    this.setState({
-      curTime: time
-    });
-    if (this.props.onSelectedTime) {
-      this.props.onSelectedTime(this, time);
-    }
-  },
-  _handleChange: function(date1, date2) {
-    if (!!date2) {
-      this.setState({
-        curDate: date2
-      });
-    }
-  },
+    return 0;
+}
 
-  getValue: function() {
-    if (this.state.curDate) {
-      var d = new Date(this.state.curDate);
-      var m = moment(d).add(d.getTimezoneOffset() * -1 / 60, 'h');
-      return m.toDate();
-    } else {
-      return null;
+function parseDateStr(dateStr){
+    var value = null;
+    if (pattern1.test(dateStr)){
+        value = moment(dateStr, format1);
+    }else if (pattern2.test(dateStr)){
+        value = moment(dateStr, format2);
+    }else if (pattern3.test(dateStr)){
+        value = moment(dateStr, format3);
     }
-  },
-  setValue: function(value) {
-    this.setState({
-      curDate: value
-    });
-  },
-  getTime: function() {
-    return this.state.curTime;
-  },
-  setTime: function(value) {
-    this.setState({
-      curTime: value
-    });
-  },
-  _onFocus(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    if (!this.state.showCalendar) {
-      this.setState({
-        showCalendar: true
-      });
+    if (value && value.isValid()){
+        return value;
     }
-  },
-  _onBlur() {
-    //this.setState({showCalendar:false});
-  },
-  _clearTime: function() {
-    this.setState({
-      curDate: '',
-      curTime: this.props.timeType
-    });
-  },
-  _formatDate(date) {
-    if (date) {
-      return moment(new Date(date)).format(this.props.dateFormatStr);
-    }
-    return '';
-  },
-  _onChange(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    this.setState({
-      curDate: this.state.curDate
-    });
-  },
-  componentDidUpdate: function(prevProps, prevState) {
-    if (this.state.showCalendar) {
-      //this.refs.calendar.getDOMNode().children[1].style.display = 'none';
-      // this.refs.calendar.getDOMNode().parentElement.style.top = '-32px';
-    }
-  },
-  render: function() {
+    return null;
+}
 
-    var datePicker = (<div>{this.state.curDate}</div>);
-    var calendar = null;
-    var v = this._formatDate(this.state.curDate);
-    if (!this.props.isViewStatus) {
+@ClickAway
+class DatePicker extends React.Component {
+  static propTypes = {
+    onChange: React.PropTypes.func.isRequired,
+    value: React.PropTypes.string,
+    title: React.PropTypes.string,
+    name: React.PropTypes.string,
+    minDate: React.PropTypes.object,
+    minDateError: React.PropTypes.string,
+    maxDate: React.PropTypes.object,
+    maxDateError: React.PropTypes.string,
+    errorText:React.PropTypes.string,
+    width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+  };
 
-      var inputProps = {
-        errorText: this.state.errorText,
-        onFocus: this._onFocus,
-        onBlur: this._onBlur,
-        defaultValue: this.state.curDate,
-        value: v,
-        onChange: this._onChange,
-        style: assign({
-          width: 430
-        }, this.props.style)
-      };
-      if (this.state.curDate) {
-        inputProps.className = "jazz-viewableTextField-noempty";
+  constructor(props) {
+    super(props);
+    this._onDateChange = this._onDateChange.bind(this);
+  }
 
-      }
-      var minDate, maxDate;
-      if (this.props.minDate) {
-        minDate = this.props.minDate;
-      } else {
-        minDate = moment("2000-01-01").toDate();
-      }
-      if (this.props.maxDate) {
-        maxDate = this.props.maxDate;
-      } else {
-        maxDate = moment("2050-01-01").toDate();
-      }
-      datePicker = (<TextField {...inputProps} ref="TextField"/>);
-      if (this.state.showCalendar) {
-        calendar = (<div style={{
-          position: 'absolute',
-          "zIndex": 99,
-          left: this.props.left || '0',
-          width: "315px",
-          marginTop: '2px',
-          border: '1px solid rgb(235, 235, 235)',
-          "backgroundColor": "white"
-        }}><Calendar
-        dateFormatStr={this.props.dateFormatStr}
-        ref="calendar"
-        onSelectedDate={this._onSelectedDate}
-        onSelectedTime={this._onSelectedTime}
-        initialDate={moment(this.state.curDate || new Date()).toDate()}
-        initialTime={this.state.curTime}
-        showTime={this.props.showTime}
-        timeType={this.props.timeType}
-        minDate= {minDate}
-        maxDate = {maxDate}
-        /></div>);
-      }
-    } else {
-      var afterValue = null;
-      datePicker = (
-        <div>
-                    <div className="jazz-viewable-title">{this.props.title}</div>
-                    <div className="jazz-viewable-value">{v}</div>
-                </div>
-      );
+  state = {
+    "popup":false
+  };
+
+  _onDateChange(selectedDate){
+    this._onDateTextChange(moment(selectedDate).format("YYYY-MM-DD"));
+  }
+
+  _onDateTextChange(dateStr){
+    var isNullDate = ( dateStr === "" || dateStr === null || dateStr === undefined);
+    var validDateObject = isNullDate?null:parseDateStr(dateStr);
+    var inRange = 0;
+    if (isNullDate){
+        this.setState({popup:true});
+        this.props.onChange(dateStr);
+    }else if(!validDateObject){
+        this.setState({popup:false});
+        this.props.onChange(dateStr,true);
+    }else{
+        this.setState({popup:false});
+        inRange = isInRange(validDateObject.toDate(), this.props.minDate, this.props.maxDate);
+        this.props.onChange(validDateObject.format("YYYY-MM-DD"), !validDateObject || inRange!==0);
     }
 
-    var style = {};
-    if (this.props.isViewStatus && !this.props.defaultValue) {
-      style.display = 'none';
+  }
+
+  _renderPopup(dateObject){
+    if (this.state.popup){
+        return (
+            <div className="datepicker-popup"  >
+                <Calendar onChange={this._onDateChange} value={dateObject}/>
+            </div>
+        );
+    }
+    return null;
+  }
+
+  _renderTextField(error){
+    var style = {width: this.props.width || 430}
+    var value = this.props.value===null?'':this.props.value;
+    return (
+      <div >
+        <TextField
+        className="jazz-month-picker-noempty"
+        style={style}
+        // errorStyle={{position:'absolute',bottom:"-10px"}}
+        floatingLabelText={this.props.title}
+        name={this.props.name}
+        errorText={error}
+        onChange={(evt)=>{
+            this._onDateTextChange(evt.target.value);
+        }}
+        value={value}
+        floatingLabelFocusStyle={{fontSize:'19px'}}
+        onFocus={()=>{this.setState({popup:true})}} />
+      </div>
+    );
+  }
+
+  onClickAway(evt){
+    this.setState({popup:false});
+  }
+
+  render() {
+    var isNullDate = ( this.props.value === "" || this.props.value === null || this.props.value === undefined);
+    var validDateObject = isNullDate?null:parseDateStr(this.props.value);
+    var error,dateObject;
+    if (isNullDate){
+      //no actions so far
+    }else if(!validDateObject){
+        error = "请输入日期格式YYYY-MM-DD";
+    }else{
+        if (isInRange(validDateObject.toDate(), this.props.minDate, this.props.maxDate) >0){
+            error = this.props.maxDateError || "日期不能晚于" + moment(this.props.maxDate).format("YYYY-MM-DD") ;
+        }else if (isInRange(validDateObject.toDate(), this.props.minDate, this.props.maxDate) <0){
+            error = this.props.minDateError || "日期不能早于" + moment(this.props.minDate).format("YYYY-MM-DD") ;
+        }
+        dateObject = validDateObject.toDate();
+    }
+
+    if (this.props.errorText){
+      error = this.props.errorText;
     }
     return (
-      <div className="jazz-viewableDatePicker jazz-viewableTextField" style={style}>
-                {datePicker}
-                {calendar}
-            </div>
-      );
+      <div className="jazz-month-picker">
+        {this._renderTextField(error)}
+        {this._renderPopup(dateObject)}
+      </div>
+    );
   }
-});
+}
 
-module.exports = ViewableDatePicker;
+export default class ViewableDatePicker extends React.Component {
+  static propTypes = {
+    onChange: React.PropTypes.func.isRequired,
+    value: React.PropTypes.string,
+    title: React.PropTypes.string,
+    minDate: React.PropTypes.object,
+    minDateError: React.PropTypes.string,
+    maxDate: React.PropTypes.object,
+    maxDateError: React.PropTypes.string,
+    width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    isViewStatus: React.PropTypes.bool,
+    name: React.PropTypes.string,
+    errorText: React.PropTypes.string,
+    dateFormatStr:React.PropTypes.string
+  };
+
+  static isValid = (dateStr, minDate, maxDate) => {
+    return isValid(dateStr, minDate, maxDate);
+  };
+
+  static isInRange = (date, minDate, maxDate) => {
+    return isInRange(date, minDate, maxDate);
+  };
+
+  formatDateStr(date){
+      if(date){
+          return moment(date).format(this.props.dateFormatStr);
+      }
+      return '';
+  }
+
+  render(){
+    if (this.props.isViewStatus){
+      var style = {width: this.props.width || 430};
+      if(!this.props.value){
+            style.display='none';
+      }
+      return (<div className="jazz-viewableDatePicker jazz-viewableTextField" style={style}>
+                <div className="jazz-viewable-title" >{this.props.title}</div>
+                <div className="jazz-viewable-value">{this.formatDateStr(this.props.value)}</div>
+              </div>);
+    }else{
+      return <DatePicker {...this.props} />
+    }
+  }
+}
+
+// const DISPLAY_FORMAT = "YYYY年MM月DD日";
+// function formatDateStr(date){
+//     if(date){
+//         return moment(date).format(DISPLAY_FORMAT);
+//     }
+//     return '';
+// }

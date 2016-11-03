@@ -39,23 +39,23 @@ export default class Calendar extends React.Component {
   _renderCalendarView(){
   	if (this.state.viewMode === "date"){
   		return (
-  			<CalendarView 
-        locale={this.props.locale} 
-  			currentDate={this.state.currentDate} 
-  			selectedDate={this.props.value} 
+  			<CalendarView
+        locale={this.props.locale}
+  			currentDate={this.state.currentDate}
+  			selectedDate={this.props.value}
   			onChange={this._onDateChange} />
   		);
   	}else if (this.state.viewMode === "month"){
   		return (
-  			<CalendarMonthView 
-        locale={this.props.locale} 
-        onChange={this._onRangeChange} 
+  			<CalendarMonthView
+        locale={this.props.locale}
+        onChange={this._onRangeChange}
         currentDate={this.state.currentDate}  />
   		);
   	}else if (this.state.viewMode === "year"){
   		return (
-  			<CalendarYearView 
-  			onChange={this._onRangeChange} 
+  			<CalendarYearView
+  			onChange={this._onRangeChange}
   			currentDate={this.state.currentDate} />
   		);
   	}
@@ -65,9 +65,10 @@ export default class Calendar extends React.Component {
   render() {
     return (
       <div className="calendar">
-      	<CalendarToolbar 
-        displayActionButton={this.state.viewMode === "date"} 
-        currentDate={this.state.currentDate} 
+      	<CalendarToolbar
+        displayActionButton={this.state.viewMode === "date"}
+        displaySelectButton={this.state.viewMode === "date"}
+        currentDate={this.state.currentDate}
         onChange={this._onRangeChange}
         locale={this.props.locale}  ></CalendarToolbar>
       	{this._renderCalendarView()}

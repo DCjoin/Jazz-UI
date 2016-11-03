@@ -151,3 +151,216 @@
     overflow: hidden;
   }
 }
+
+
+.calendar{
+
+	@dateItemWidth: 34px;
+	@dateItemHeight: 34px;
+	@toolbarHeight: 42px;
+	@itemHMargin:2px;
+	@itemVMargin:1px;
+	@itemBoxHPadding:17px;
+	@itemBoxVPadding:7px;
+	@calendarHoverColor:#b9ebda;
+
+	width: (@dateItemWidth + @itemHMargin*2) * 7 + @itemBoxHPadding*2;
+	box-shadow: 0 2px 9px rgba(0,0,0,0.1), 0 2px 9px rgba(0,0,0,0.1);
+	user-select:none;
+	background-color:#fff;
+	.calendar-toolbar{
+
+		text-align: center;
+		position: relative;
+		height: @toolbarHeight;
+		background-color: @primaryColor;
+		line-height: @toolbarHeight;
+		color: #fff;
+		font-size: 14px;
+
+		.pre-year{
+			position: absolute;
+			left:30px;
+			font-size: 12px;
+			cursor:pointer;
+		}
+
+		.next-year{
+			position: absolute;
+			right:30px;
+			font-size: 12px;
+			cursor:pointer;
+		}
+
+		.next-month{
+			position: absolute;
+			right:52px;
+			font-size: 12px;
+			cursor:pointer;
+		}
+
+		.pre-month{
+			position: absolute;
+			left:52px;
+			font-size: 12px;
+			cursor:pointer;
+		}
+
+		.month-select{
+			margin-left:10px;
+
+			&.active{
+				cursor:pointer;
+			}
+			&.active:hover{
+				text-decoration:underline;
+			}
+		}
+
+		.year-select{
+			&.active{
+				cursor:pointer;
+			}
+			&.active:hover{
+				text-decoration:underline;
+			}
+		}
+	}
+
+	.calendar-view{
+		.selected{
+			background-color: @primaryColor !important;
+			color: #fff !important;
+		}
+
+		.today{
+			color: @primaryColor;
+		}
+
+		.label-box{
+			padding:@itemBoxVPadding @itemBoxHPadding 0;
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: flex-start;
+			color: @primaryColor;
+			font-size: 12px;
+		}
+
+		.label-item{
+			margin:@itemVMargin @itemHMargin;
+			// background-color: gray;
+			line-height: @dateItemHeight;
+			width: @dateItemWidth;
+			height: @dateItemHeight;
+			text-align: center;
+			box-sizing: border-box;
+		}
+
+		.date-box{
+			padding:0 @itemBoxHPadding @itemBoxVPadding;
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: flex-start;
+			color:@schneiderBlack;
+			font-size: 12px;
+		}
+
+		.date-item{
+			margin:@itemVMargin @itemHMargin;
+			// background-color: gray;
+			line-height: @dateItemHeight;
+			width: @dateItemWidth;
+			height: @dateItemHeight;
+			cursor: pointer;
+			text-align: center;
+			box-sizing: border-box;
+			border-radius: @dateItemWidth/2;
+			&:hover{
+				background-color: @calendarHoverColor;
+				color: #fff;
+			}
+			.date-number {
+				flex: 0 0 auto;
+				height: 80%;
+				display: flex;
+				justify-content: center;
+			}
+			.date-event {
+				flex: 0 0 auto;
+				height: 40%;
+				display: flex;
+				justify-content: center;
+				align-items: flex-end;
+				visibility: hidden;
+			}
+			.has-event {
+				visibility: visible;
+			}
+		}
+
+		.generate-weekdays(0);
+		.generate-weekdays(@i) when (@i =< 6) {
+			.weekday-@{i} {
+				margin-left: (@i * (@dateItemWidth + @itemHMargin*2) + @itemHMargin);
+			}
+			.generate-weekdays(@i + 1);
+		}
+	}
+
+	.calendar-month-view{
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-start;
+		padding: 9px 0;
+		font-size: 12px;
+		.month-item{
+			text-align: center;
+			line-height: 40px;
+			width: 40px;
+			height: 40px;
+			margin:11px 30px;
+			border-radius: 20px;
+			cursor:pointer;
+			&:hover{
+				background-color: @calendarHoverColor;
+				color: #fff;
+			}
+		}
+
+		.selected{
+			background-color: @primaryColor !important;
+			color: #fff !important;
+		}
+	}
+
+	.calendar-year-view{
+		position: relative;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-start;
+		// padding: 9px 0;
+		font-size: 12px;
+		height:266px;
+		overflow-y:auto;
+		overflow-x: hidden;
+		.year-item{
+			text-align: center;
+			line-height: 40px;
+			width: 40px;
+			height: 40px;
+			margin:5.5px 0 5.5px 130px;
+			border-radius: 20px;
+			cursor:pointer;
+
+			&:hover{
+				background-color: @calendarHoverColor;
+				color: #fff;
+			}
+		}
+
+		.selected{
+			background-color: @primaryColor !important;
+			color: #fff !important;
+		}
+	}
+}
