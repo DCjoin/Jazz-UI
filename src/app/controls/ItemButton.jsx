@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import DefaultRawTheme from '../../../node_modules/material-ui/lib/styles/raw-themes/light-raw-theme.js';
-import ThemeManager from '../../../node_modules/material-ui/lib/styles/theme-manager.js';
-import Transition from '../../../node_modules/material-ui/lib/styles/transitions.js';
+// import DefaultRawTheme from '../../../node_modules/material-ui/lib/styles/raw-themes/light-raw-theme.js';
+// import ThemeManager from '../../../node_modules/material-ui/lib/styles/theme-manager.js';
+// import Transition from '../../../node_modules/material-ui/lib/styles/transitions.js';
 import { Mixins, Styles, ClearFix, StylePropable, EnhancedButton, FlatButton } from 'material-ui';
 
 let ItemButton = React.createClass({
@@ -42,7 +42,7 @@ let ItemButton = React.createClass({
   getInitialState() {
     return {
       hover: false,
-      muiTheme: this.context.muiTheme ? this.context.muiTheme : ThemeManager.getMuiTheme(DefaultRawTheme),
+      muiTheme: this.context.muiTheme,
     };
   },
 
@@ -82,7 +82,7 @@ let ItemButton = React.createClass({
         width: 60,
         opacity: 0,
         transform: 'scale(0)',
-        transition: Transition.easeOut(),
+        // transition: Transition.easeOut(),
         backgroundColor: this.getTheme().selectColor,
       },
     };

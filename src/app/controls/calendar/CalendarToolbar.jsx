@@ -7,11 +7,13 @@ export default class CalendarToolbar extends React.Component {
     currentDate: React.PropTypes.object,
     onChange: React.PropTypes.func,
     displayActionButton: React.PropTypes.bool,
+    displaySelectButton: React.PropTypes.bool,
     locale: React.PropTypes.string.isRequired
   };
 
   static defaultProps = {
   	displayActionButton: true,
+    displaySelectButton:true
   };
 
   constructor(props) {
@@ -53,13 +55,13 @@ export default class CalendarToolbar extends React.Component {
   }
 
   _switchMonthSelection(){
-    if (this.props.displayActionButton){
+    if (this.props.displaySelectButton){
       this.props.onChange(null,"month");
     }
   }
 
   _switchYearSelection(){
-    if (this.props.displayActionButton){
+    if (this.props.displaySelectButton){
       this.props.onChange(null,"year");
     }
   }
@@ -82,12 +84,12 @@ export default class CalendarToolbar extends React.Component {
 
     var yearSelectClazz = classnames({
       "year-select": true,
-      "active": this.props.displayActionButton
+      "active": this.props.displaySelectButton
     });
 
     var monthSelectClazz = classnames({
       "month-select": true,
-      "active": this.props.displayActionButton
+      "active": this.props.displaySelectButton
     });
 
     return (

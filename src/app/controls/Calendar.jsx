@@ -3,9 +3,9 @@
 import React from 'react';
 import moment from 'moment';
 import { Mixins, Styles, ClearFix } from 'material-ui';
-import CalendarMonth from '../../../node_modules/material-ui/lib/date-picker/calendar-month.js';
-import CalendarYear from '../../../node_modules/material-ui/lib/date-picker/calendar-year.js';
-import CalendarToolbar from '../../../node_modules/material-ui/lib/date-picker/calendar-toolbar.js';
+import CalendarMonth from '../../../node_modules/material-ui/DatePicker/calendar-month.js';
+import CalendarYear from '../../../node_modules/material-ui/DatePicker/calendar-year.js';
+import CalendarToolbar from '../../../node_modules/material-ui/DatePicker/calendar-toolbar.js';
 // import DateTime from '../../../node_modules/material-ui/lib/utils/date-time.js';
 import SlideInTransitionGroup from '../../../node_modules/material-ui/lib/transition-groups/slide-in.js';
 import CalendarTime from '../controls/CalendarTime.jsx';
