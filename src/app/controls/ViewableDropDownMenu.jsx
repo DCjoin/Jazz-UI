@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {SelectField} from 'material-ui';
-
+import MenuItem from 'material-ui/MenuItem';
 import assign from 'object-assign';
 import CommonFuns from '../util/Util.jsx';
 var ViewableDropDownMenu = React.createClass({
@@ -71,18 +71,17 @@ var ViewableDropDownMenu = React.createClass({
       return null;
     }
     var menuItems = this.props.dataItems.map((item, id) => {
-      return {
-        payload: item[valueField],
-        text: item[textField],
-        disabled: (item.disabled !== undefined) ? item.disabled : false
-      };
+      return(
+          <MenuItem value={item[valueField]} primaryText={item[textField]} disabled={(item.disabled !== undefined) ? item.disabled : false}/>
+      )
+
+
     });
 
     if (!this.props.isViewStatus) {
       var inputPorps = {
         errorText: this.state.errorText,
         onChange: this._handleChange,
-        menuItems: menuItems,
         // style:{position:'absolute'},
         className: 'pop-viewableDropDownMenu-ddm',
         //selectedIndex: idx,
@@ -92,7 +91,7 @@ var ViewableDropDownMenu = React.createClass({
         }, this.props.style)
       };
       if (this.props.selectedIndex >= 0) {
-        inputPorps.selectedIndex = this.props.selectedIndex;
+        inputPorps.value = this.props.dataItems[this.props.selectedIndex][valueField];
       }
       if (this.props.defaultValue !== undefined) {
         inputPorps.value = this.props.defaultValue;
@@ -104,7 +103,7 @@ var ViewableDropDownMenu = React.createClass({
                     <div className="pop-viewable-title">{this.props.title}</div>
                     <SelectField
         {...this.props} {...inputPorps}
-        ref="DropDownMenu"/>
+        ref="DropDownMenu">{menuItems}</SelectField>
                 </div>
       );
     } else {
