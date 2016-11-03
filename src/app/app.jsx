@@ -4,6 +4,7 @@ import querystring from 'querystring';
 
 import React from 'react';
 import ReactDom from 'react-dom';
+import injectTapEventPlugin from "react-tap-event-plugin";
 
 import {Router, browserHistory} from 'react-router';
 
@@ -76,7 +77,7 @@ let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Rou
 window.currentUserId = getCookie('UserId');
 window.currentCustomerId = getCookie('currentCustomerId');
 window.toMainApp = null;
-
+injectTapEventPlugin();
 function getLessVar(name) {
   return main["@" + name];
 }
