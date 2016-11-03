@@ -46,8 +46,7 @@ var ViewableDropDownMenu = React.createClass({
     }
   },
 
-  _handleChange: function(e, index, object) {
-    var value = object[this.props.valueField];
+  _handleChange: function(e, index, value) {
     this.props.didChanged(value);
   },
 
