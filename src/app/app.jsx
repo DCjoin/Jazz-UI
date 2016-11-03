@@ -274,10 +274,10 @@ ReactDom.render(<Router history={browserHistory} routes={{
       component: PlatformApp,
       childRoutes: [{
         path: 'config',
-        component: Platform      
+        component: Platform
       }, {
         path: 'mail',
-        component: Mail      
+        component: Mail
       }]
     }, {
       path: 'service/:cusnum',
@@ -285,37 +285,37 @@ ReactDom.render(<Router history={browserHistory} routes={{
       _auth: true,
       childRoutes: [{
         path: 'workday',
-        component: WorkDay      
+        component: WorkDay
       }, {
         path: 'worktime',
-        component: WorkTime      
+        component: WorkTime
       }, {
         path: 'coldwarm',
-        component: ColdWarm      
+        component: ColdWarm
       }, {
         path: 'daynight',
-        component: DayNight      
+        component: DayNight
       }, {
         path: 'price',
-        component: Tariff      
+        component: Tariff
       }, {
         path: 'carbon',
-        component: Carbon      
+        component: Carbon
       }, {
         path: 'benchmark',
-        component: Benchmark      
+        component: Benchmark
       }, {
         path: 'labeling',
-        component: Labeling      
+        component: Labeling
       }, {
         path: 'customer',
-        component: Customer      
+        component: Customer
       }, {
         path: 'user',
-        component: User      
+        component: User
       }, {
         path: 'privilege',
-        component: Role      
+        component: Role
       }]
     }]
   }]

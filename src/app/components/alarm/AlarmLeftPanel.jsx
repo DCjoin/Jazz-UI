@@ -41,8 +41,8 @@ var AlarmLeftPanel = React.createClass({
       muiTheme: childContext
     };
   },
-  _dateTypeChangeHandler: function(e, selectedIndex, menuItem) {
-    let type = menuItem.type;
+  _dateTypeChangeHandler: function(e, selectedIndex, value) {
+    let type = value;
 
     let date = new Date();
     date.setHours(0, 0, 0);
@@ -61,7 +61,7 @@ var AlarmLeftPanel = React.createClass({
     }
 
     this.setState({
-      dateType: menuItem.type
+      dateType: type
     });
   },
   loadListByDate(date, step) {
