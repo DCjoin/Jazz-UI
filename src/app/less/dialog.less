@@ -23,3 +23,125 @@
         color: @schneiderBlack;
     }
 }
+
+.dialog-transition-group {
+
+    &-enter {        
+        & .dialog {
+            transform: translate3d(0px, -24px, 0px);
+        }
+        &.dialog-overlay {
+            opacity: 0;
+        }
+    }
+
+    &-enter&-enter-active {
+        & .dialog {
+            transform: translate3d(0px, 0px, 0px);
+            transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        &.dialog-overlay {
+            opacity: 1;
+            transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+    }
+
+    &-leave {
+        & .dialog {
+            transform: translate3d(0px, 0px, 0px);
+        }
+        &.dialog-overlay {
+            opacity: 1;
+        }
+    }
+
+    &-leave&-leave-active {
+        & .dialog {
+            transform: translate3d(0px, -24px, 0px);    
+            transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);        
+        }
+        &.dialog-overlay {
+            opacity: 0;
+            transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1);
+        }
+    }
+
+}
+
+.dialog-overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.541176);
+    z-index: 9;
+}
+
+.dialog-wrapper {
+    width: 75%;
+    height: 75%;
+    max-width: 768px; 
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.dialog {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    box-shadow: rgba(0, 0, 0, 0.247059) 0px 14px 45px, rgba(0, 0, 0, 0.219608) 0px 10px 18px;
+    border-radius: 2px;
+    background-color: #fff;
+
+    &>div:first-of-type {
+        padding-top: 24px;
+    }
+}
+
+.dialog-title {
+    display: flex;
+    justify-content: space-between;
+    margin: 0px 24px 20px 24px;
+    color: rgba(0, 0, 0, 0.870588);
+    font-size: 22px;
+    line-height: 32px;
+    height: 32px;
+    font-weight: 400;
+    flex: none;
+    &-text {
+        .hiddenEllipsis;
+    }
+}
+
+.dialog-close {
+    .pointer;
+    margin-left: 20px;
+}
+
+.dialog-content {
+    // fix bug with chrome 46~48
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    flex: none;
+    flex-shrink: 1;
+    font-size: 16px;
+    margin: 0px 24px;
+}
+
+.dialog-actions {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    margin: 8px;
+    text-align: left;
+    border-top-style: none;
+    flex: none;
+    height: 36px;
+}

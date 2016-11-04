@@ -1,10 +1,11 @@
 'use strict';
 
 import React from 'react';
-import { Link, Navigation, State, RouteHandler } from 'react-router';
+import Link from 'react-router/lib/Link';
 import { Mixins, DropDownMenu, Paper, Menu, MenuItem } from 'material-ui';
 import classnames from "classnames";
 
+import RoutePath from '../util/RoutePath.jsx';
 import BubbleIcon from '../components/BubbleIcon.jsx';
 import ClickAway from "../controls/ClickAwayListener.jsx";
 
@@ -15,7 +16,13 @@ var ListMenu = React.createClass({
       title: React.PropTypes.string
     };
   },
+  contextTypes: {
+    router: React.PropTypes.object,
+    currentRoute: React.PropTypes.object,
+  },
   render: function() {
+    let {params} = this.context.currentRoute;
+    let {push} = this.context.router;
     var title = this.props.title;
     var menuStyle = {
       fontSize: '14px',
@@ -25,7 +32,10 @@ var ListMenu = React.createClass({
       width: this.props.isActive ? '120px' : '110px'
     };
     var menuItems = this.props.menuItems.map((item) => {
-      return <MenuItem primaryText={item.title} key={item.title} name={item.name} style={menuStyle}/>;
+      return <MenuItem primaryText={item.title} key={item.title} name={item.name} style={menuStyle} onTouchTap={() => {
+        push(item.getPath(params));
+      }}/>;
+      // return <Link key={item.title} to={item.getPath(this.context.currentRoute.params)}>{item.title}</Link>
     });
     if (title) {
       menuItems.unshift(<MenuItem primaryText={title} key={title} disabled={true} style={menuStyle}/>);
@@ -37,7 +47,7 @@ var ListMenu = React.createClass({
     ref="menuItems"
     autoWidth={false}
     menuItems={menuItems}
-    onChange={this._onMenuItemClick}
+    onItemTouchTap={this._onMenuItemClick}
     >{menuItems}</Menu>;
     return (
       <div
@@ -82,8 +92,11 @@ var SubMainMenu = React.createClass({
 
   _onMenuItemClick: function(e, item) {
 
-    this.transitionTo(item.props.name, this.props.params);
-    this._dismissSubMain();
+    // this.transitionTo(item.props.name, this.props.params);
+    // let {push, params} = this.context.currentRoute;
+    // push(RoutePath[item.props.name](params));
+    // this.context.router.push()
+    // this._dismissSubMain();
 
 
   },
