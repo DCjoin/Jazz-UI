@@ -4,7 +4,7 @@ import React from 'react';
 
 import assign from 'object-assign';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import NewDialog from '../../controls/NewDialog.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import SectionPanel from '../../controls/SectionPanel.jsx';
 import Regex from '../../constants/Regex.jsx';
@@ -82,11 +82,14 @@ var AdminList = React.createClass({
     });
     this.setState({
       state
-    }, () => {
+    }/*, () => {
       if (this.refs.adminDialog) {
         this.refs.adminDialog.show();
       }
-    });
+    }*/);
+  },
+  _dismissDialog() {
+    this.setState(this.getInitialState());
   },
 
 
@@ -109,11 +112,14 @@ var AdminList = React.createClass({
     };
     var dialog = null;
     var state = this.state.state;
-    if (state.get('showDialog')) {
+    // if (state.get('showDialog')) {
       var dialogProp = {
         ref: "adminDialog",
         didChanged: this._didChanged,
-        admins: adminData
+        admins: adminData,
+        show: state.get('showDialog'),
+        dismissDialog: that._dismissDialog,
+        showDialog: that._showDialog,
       };
       if (state.get('dialogContent')) {
         dialogProp.admin = state.get('dialogContent');
@@ -122,7 +128,7 @@ var AdminList = React.createClass({
       dialog = (
         <AdminDialog {...dialogProp}/>
       );
-    }
+    // }
 
     return (
       <SectionPanel className="pop-admins" {...sectionPanelProps}>
@@ -201,12 +207,17 @@ var Admin = React.createClass({
 
 var AdminDialog = React.createClass({
   propTypes: {
+    showDialog: React.PropTypes.func,
+    dismissDialog: React.PropTypes.func,
     didChanged: React.PropTypes.func,
     admin: React.PropTypes.object,
     index: React.PropTypes.number
   },
 
   getInitialState: function() {
+    if(!this.props.admin) {
+      return {};
+    }
     return {
       name: this.props.admin.get("Manager"),
       title: this.props.admin.get("title"),
@@ -216,15 +227,16 @@ var AdminDialog = React.createClass({
   },
 
   show: function() {
-    this.refs.dialog1.show();
-    if (this.refs.name) {
-      this.refs.name.focus();
-    }
+    this.props.showDialog();
+    // this.refs.dialog1.show();
+    // if (this.refs.name) {
+    //   this.refs.name.focus();
+    // }
   },
 
   handleClickFinish: function(event) {
-
-    this.refs.dialog1.dismiss();
+    this.props.dismissDialog();
+    // this.refs.dialog1.dismiss();
     this.props.didChanged({
       Manager: this.state.name,
       title: this.state.title,
@@ -282,7 +294,8 @@ var AdminDialog = React.createClass({
 
   },
   handleClickCancel: function(event) {
-    this.refs.dialog1.dismiss();
+    // this.refs.dialog1.dismiss();
+    this.props.dismissDialog();
   },
 
   componentDidMount: function() {
@@ -292,16 +305,22 @@ var AdminDialog = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    var newState = {
-      name: nextProps.admin.get("Manager"),
-      title: nextProps.admin.get("title"),
-      telephone: nextProps.admin.get("Telephone"),
-      email: nextProps.admin.get("Email")
-    };
+    var newState = {};
+    if(nextProps.admin) {
+      newState = {
+        name: nextProps.admin.get("Manager"),
+        title: nextProps.admin.get("title"),
+        telephone: nextProps.admin.get("Telephone"),
+        email: nextProps.admin.get("Email")
+      };
+    }
     this.setState(newState);
   },
 
   render: function() {
+    if(!this.props.admin) {
+      return null;
+    }
     var nameProps = {
       defaultValue: this.state.name || "",
       isRequired: true,
@@ -355,22 +374,24 @@ var AdminDialog = React.createClass({
     }
 
     return (
-      <Dialog actions={[< FlatButton
-      label      = {
-      saveButtonTitle
-      }
-      disabled   = {
-      disabled
-      }
-      onTouchTap = {
-      this.handleClickFinish
-      } />, < FlatButton
-      label      = {I18N.Common.Button.Cancel}
-      onTouchTap = {
-      this.handleClickCancel
-      }/>]} dismissOnClickAway={false} modal={true} openImmediately={true} ref="dialog1" style={{
-        zIndex: 200
-      }}>
+      <NewDialog 
+        actions={[
+          <FlatButton 
+            label={saveButtonTitle}
+            disabled={disabled}
+            onTouchTap = {this.handleClickFinish} />, 
+          <FlatButton
+            label={I18N.Common.Button.Cancel}
+            onTouchTap={
+            this.handleClickCancel
+            }/>]} 
+        dismissOnClickAway={false} 
+        modal={true} 
+        open={true} 
+        ref="dialog1" 
+        style={{
+          zIndex: 200
+        }}>
         <div className="pop-admin-window">
           <div className="admin-title">{operationTitle}</div>
           <ul>
@@ -380,7 +401,7 @@ var AdminDialog = React.createClass({
             <li>{email}</li>
           </ul>
         </div>
-      </Dialog>
+      </NewDialog>
       );
   }
 });

@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 
 
@@ -38,7 +39,7 @@ let ImageUpload = React.createClass({
   },
 
   _handleClick() {
-    this.refs.pop_image_upload_button.getDOMNode().value = '';
+    ReactDOM.findDOMNode(this.refs.pop_image_upload_button).value = '';
   },
   _handlerChangeImageUpload(event) {
     let that = this,
@@ -102,11 +103,11 @@ let ImageUpload = React.createClass({
             display: 'none'
           }, iframe.contentDocument.body);
 
-          var input = this.refs.pop_image_upload_button.getDOMNode();
+          var input = ReactDOM.findDOMNode(this.refs.pop_image_upload_button);
           form.appendChild(input);
           form.submit();
           discardElement(form);
-          var label = this.refs.fileInputLabel.getDOMNode();
+          var label = ReactDOM.findDOMNode(this.refs.fileInputLabel);
           label.appendChild(input);
 
 

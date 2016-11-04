@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {TextField} from 'material-ui';
 import _isString from 'lodash/lang/isString';
 import assign from 'object-assign';
@@ -62,7 +63,7 @@ var ViewableTextField = React.createClass({
 
   componentDidMount: function() {
     if (!this.props.isViewStatus && this.props.autoFocus) {
-      var dom = React.findDOMNode(this);
+      var dom = ReactDOM.findDOMNode(this);
       var text = null;
       if (this.props.multiLine) {
         text = dom.querySelectorAll('textarea')[1];
@@ -189,7 +190,7 @@ var ViewableTextField = React.createClass({
       this.props.didBlur(this.state.value);
     }
     if (!this.state.value) {
-      var node = this.refs.TextField.getDOMNode();
+      var node = ReactDOM.findDOMNode(this.refs.TextField);
       node.className = '';
     }
   },
@@ -208,7 +209,7 @@ var ViewableTextField = React.createClass({
     }
   },
   _onFocus() {
-    var node = this.refs.TextField.getDOMNode();
+    var node = ReactDOM.findDOMNode(this.refs.TextField);
     node.className = 'pop-viewableTextField-focus';
     if (this.props.didFocus) {
       this.props.didFocus();
