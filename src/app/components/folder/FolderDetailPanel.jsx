@@ -3,8 +3,7 @@ import React from "react";
 import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
 import { CircularProgress, FontIcon, IconMenu, IconButton } from 'material-ui';
-let MenuItem = require('material-ui/MenuItem');
-let Menu = require('material-ui/Menu');
+import MenuItem from 'material-ui/MenuItem';
 import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
@@ -82,7 +81,8 @@ var FolderItem = React.createClass({
     //props
     var iconMenuProps = {
       iconButtonElement: IconButtonElement,
-      openDirection: "bottom-left",
+      anchorOrigin:{horizontal: 'left', vertical: 'top'},
+     targetOrigin:{horizontal: 'left', vertical: 'top'}
     };
     //add for PM2.5
     var user=window.currentUser || currentUser();
@@ -203,7 +203,8 @@ var FolderDetailPanel = React.createClass({
     //props
     var iconMenuProps = {
       iconButtonElement: IconButtonElement,
-      openDirection: "bottom-right",
+      anchorOrigin:{horizontal: 'left', vertical: 'top'},
+      targetOrigin:{horizontal: 'left', vertical: 'top'}
     };
     var subtitle = (this.props.nodeData.get('SourceUserName') ? I18N.format(I18N.Folder.Detail.SubTitile, this.props.nodeData.get('SourceUserName')) : null)
     var content = [];

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {Checkbox} from 'material-ui';
+import ReactDOM from 'react-dom';
 import TreeConstants from '../../constants/TreeConstants.jsx';
 import assign from 'object-assign';
 import classNames from 'classnames';
@@ -395,7 +396,7 @@ var TreeNode = React.createClass({
   componentDidMount: function() {
     //for Gragula
     if (this.props.nodeData.get('Id') != -1 && this.props.nodeData.get('Type') != -1) {
-      this.props.putGragulaContainer(React.findDOMNode(this));
+      this.props.putGragulaContainer(ReactDOM.findDOMNode(this));
     }
 
   },

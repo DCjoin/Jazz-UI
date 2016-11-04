@@ -3,12 +3,12 @@ import React from "react";
 import { Navigation, State } from 'react-router';
 import classSet from 'classnames';
 import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu } from 'material-ui';
+import MenuItem from 'material-ui/MenuItem';
 import SearchBox from './FolderSearchBox.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 import FolderAction from '../../actions/FolderAction.jsx';
 import NodeContent from './TreeNodeContent.jsx';
-let MenuItem = require('material-ui/MenuItem');
 import CopyView from './operationView/CopyView.jsx';
 import DeleteView from './operationView/DeleteView.jsx';
 import ShareView from './operationView/ShareView.jsx';
@@ -41,6 +41,9 @@ var targetNode, isPre,
 
 var FolderLeftPanel = React.createClass({
 
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   _onFolderTreeChange: function() {
     this.setState({
       allNode: FolderStore.getFolderTree(),
@@ -87,7 +90,8 @@ var FolderLeftPanel = React.createClass({
       isLoading: true
     });
     var name = FolderStore.getDefaultName(I18N.Folder.NewFolder, this.state.selectedNode, 6);
-    FolderAction.createWidgetOrFolder(this.state.selectedNode, name, 6, window.currentCustomerId);
+    var customerId = this.context.currentRoute.params.customerId;
+    FolderAction.createWidgetOrFolder(this.state.selectedNode, name, 6, customerId);
   },
   _onCreateFolderOrWidgetChange: function() {
     this.setState({
@@ -112,7 +116,8 @@ var FolderLeftPanel = React.createClass({
     this.setState({
       isLoading: true
     });
-    FolderAction.createWidgetOrFolder(this.state.selectedNode, name, 7, window.currentCustomerId, widgetType);
+    var customerId = this.context.currentRoute.params.customerId;
+    FolderAction.createWidgetOrFolder(this.state.selectedNode, name, 7, customerId, widgetType);
     this.setState({
       buttonDisabled: true
     })
@@ -251,7 +256,7 @@ var FolderLeftPanel = React.createClass({
   _getSwitchWidgetDialog: function() {
     var that = this;
     var _onConfirm = function() {
-      FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
+      FolderAction.getFolderTreeByCustomerId(this.context.currentRoute.params.customerId);
       that.didDrag();
     };
     var _onCancel = function() {
@@ -287,7 +292,7 @@ var FolderLeftPanel = React.createClass({
 
     FolderStore.addFolderTreeListener(this._onFolderTreeChange);
     FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
-    FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
+    FolderAction.getFolderTreeByCustomerId(this.context.currentRoute.params.customerId);
 
     FolderStore.addDeleteItemSuccessListener(this._onDeleteItem);
     FolderStore.addCopyItemSuccessListener(this._onCopyItem);
@@ -321,7 +326,8 @@ var FolderLeftPanel = React.createClass({
     var user=window.currentUser || currentUser();
     //style
     var iconStyle = {
-        paddingTop: '0px'
+        top:'-10px',
+        fontSize: '14px'
       },
       itemStyle = {
         fontSize: '14px',
@@ -346,11 +352,11 @@ var FolderLeftPanel = React.createClass({
       rankingIcon = <FontIcon className="icon-ranking" style={iconStyle}/>;
 
     var filterOptions = [
-      <MenuItem key={1} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={energyAnalysisIcon}/>,
-      <MenuItem key={2} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={unitIndexIcon}/>,
-      <MenuItem key={3} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={timeRationIcon}/>,
-      <MenuItem key={4} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={labelingIcon}/>,
-      <MenuItem key={5} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={rankingIcon}/>
+      <MenuItem key={1} value={I18N.Folder.NewWidget.Menu1} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={energyAnalysisIcon}/>,
+      <MenuItem key={2} value={I18N.Folder.NewWidget.Menu2} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={unitIndexIcon}/>,
+      <MenuItem key={3} value={I18N.Folder.NewWidget.Menu3} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={timeRationIcon}/>,
+      <MenuItem key={4} value={I18N.Folder.NewWidget.Menu4} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={labelingIcon}/>,
+      <MenuItem key={5} value={I18N.Folder.NewWidget.Menu5} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={rankingIcon}/>
     ];
 
     //props
@@ -373,7 +379,8 @@ var FolderLeftPanel = React.createClass({
         text: I18N.Folder.WidgetName,
         menuItems: filterOptions,
         onItemClick: this._onNewWidget,
-        disabled: this.state.buttonDisabled
+        disabled: this.state.buttonDisabled,
+        buttonIcon: 'icon-add'
       };
 
 
