@@ -427,14 +427,14 @@ var CustomerDetail = React.createClass({
         that.props.handlerCancel();
       }}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
+        // that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()
       }}/>
 
       )
   },
   componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
+    // this.initBatchViewbaleTextFiled();
     if (!this.props.infoTab) {
       CustomerAction.GetCustomerEnergyInfos(this.props.customer.get('Id'));
     }

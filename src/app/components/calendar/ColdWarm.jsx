@@ -13,7 +13,7 @@ import CalendarAction from '../../actions/CalendarAction.jsx';
 import CalendarStore from '../../stores/CalendarStore.jsx';
 import FromEndDateGroup from './FromEndDateGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
 
 var calendarType = 2;
@@ -97,9 +97,6 @@ var ColdWarm = React.createClass({
     });
   },
   _renderDeleteDialog() {
-    if (!this.state.showDeleteDialog) {
-      return null;
-    }
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
@@ -111,14 +108,14 @@ var ColdWarm = React.createClass({
       onClick={this._handleDialogDismiss} />
     ];
 
-    return (<Dialog
+    return (<NewDialog
       ref="deleteDialog"
-      openImmediately={true}
+      open={this.state.showDeleteDialog}
       title={I18N.Setting.Calendar.DeleteColdwarm}
       actions={dialogActions}
       modal={true}>
         <div className='jazz-calendar-delete'>{I18N.format(I18N.Setting.Calendar.DeleteColdwarmContent, this.state.selectedData.get('Name'))}</div>
-      </Dialog>);
+      </NewDialog>);
   },
   _deleteColdwarm() {
     var selectedData = this.state.selectedData;
