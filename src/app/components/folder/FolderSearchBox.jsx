@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import ReactDOM from 'react-dom';
 import { Navigation, State } from 'react-router';
 import { FontIcon, TextField } from 'material-ui';
 import Search from './FolderSearchPaper.jsx';
@@ -12,8 +13,8 @@ var FolderSearchBox = React.createClass({
     onSearchClick: React.PropTypes.func.isRequired,
   },
   _onSearchClick: function() {
-    React.findDOMNode(this.refs.searchIcon).style.display = 'none';
-    if (this.refs.searchText.getValue()) {
+    ReactDOM.findDOMNode(this.refs.searchIcon).style.display = 'none';
+    if (this.state.searchValue) {
       this.setState({
         showPaper: true,
       });
@@ -23,35 +24,37 @@ var FolderSearchBox = React.createClass({
     var value = e.target.value;
 
     if (value) {
-      React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+      ReactDOM.findDOMNode(this.refs.cleanIcon).style.display = 'block';
       this.setState({
         showPaper: true,
         searchValue: value
       });
     } else {
-      React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+      ReactDOM.findDOMNode(this.refs.cleanIcon).style.display = 'none';
       this.setState({
         showPaper: false,
+        searchValue:''
       });
     }
   },
   _onCleanButtonClick: function() {
-    React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
-    this.refs.searchText.setValue("");
+    ReactDOM.findDOMNode(this.refs.cleanIcon).style.display = 'none';
     this.setState({
-      showPaper: false
+      showPaper: false,
+      searchValue:''
     });
   },
   _onSearchBlur: function(e) {
     if (!e.target.value) {
-      React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+      ReactDOM.findDOMNode(this.refs.searchIcon).style.display = 'block';
     }
   },
   _onSearchNodeClick: function(node) {
     this.props.onSearchClick(Immutable.fromJS(node));
-    this.refs.searchText.setValue(node.Name);
+    //this.refs.searchText.setValue(node.Name);
     this.setState({
       showPaper: false,
+      searchValue:node.Name
     });
   },
   _handleClickAway: function() {
@@ -62,7 +65,7 @@ var FolderSearchBox = React.createClass({
   getInitialState: function() {
     return {
       showPaper: false,
-      searchValue: null
+      searchValue: ''
     };
   },
   render: function() {
@@ -96,7 +99,7 @@ var FolderSearchBox = React.createClass({
       <div>
         <label className="jazz-folder-leftpanel-searchbox" onBlur={this._onSearchBlur}>
             <FontIcon className="icon-search" color="#ffffff" style={searchIconStyle} ref="searchIcon"/>
-            <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearchChange}/>
+            <TextField style={textFieldStyle} className="input" ref="searchText"  value={this.state.searchValue} onClick={this._onSearchClick} onChange={this._onSearchChange}/>
             <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
         </label>
         {searchPaper}

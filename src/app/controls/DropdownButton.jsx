@@ -1,43 +1,46 @@
 'use strict';
 
 import React from 'react';
-import {
-  Mixins,
-  IconButton,
-  FlatButton,
-  FontIcon
-} from 'material-ui';
+import mui from 'material-ui';
+import Add from './icons/Add.jsx';
 import classSet from 'classnames';
-let Menu = require('material-ui/Menu');
-let MenuItem = require('material-ui/MenuItem');
+import assign from 'lodash/object/assign';
+
+// import PopoverAnimationFromTop from '../../../node_modules/material-ui/lib/popover/popover-animation-from-top';
+
+import Menu from 'material-ui/Menu';
+import Popover from 'material-ui/Popover';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
+import ClickAwayListener from './ClickAwayListener.jsx';
 
 var DropdownButton = React.createClass({
-  //mixins: [ClickAwayable],
   getInitialState: function () {
     return {
       open: false,
       rendered: false
     };
   },
-  componentClickAway: function () {
-    if (this.state.open) {
-      this.setState({
-        open: false
-      });
-    }
-  },
+ 
   _showMenu: function (argument) {
     this.setState({
       open: !this.state.open,
       rendered: true
     });
   },
-  _onMenuItemClick: function (e,item) {
+  _onMenuItemClick: function (e, value) {
     this.setState({
       open: false
     });
-    this.props.onItemClick(e, item);
+    this.props.onItemClick(e, value);
   },
+
+  _closeDropdown(){
+    this.setState({
+      open: false
+    });
+  },
+
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.menuItems.length != this.props.menuItems.length) {
       this.setState({
@@ -48,23 +51,20 @@ var DropdownButton = React.createClass({
   },
   render: function () {
     var menuList = null;
-    var listStyle={
-      marginTop:'30px'
-    };
-    var menuProps={
-      onItemTouchTap:this._onMenuItemClick,
-      style:listStyle,
-      openDirection:'bottom-right'
-    };
-    if (!this.props.disabled && this.state.open) {
-      // menuList = (
-      //     <Menu autoWidth={true} hideable={true} menuItemStyle={{lineHeight:'32px'}} menuItems={this.props.menuItems} onItemTap={this._onMenuItemClick} ref="menuItems" style={{fontSize:'14px',top:'none'}} visible={this.state.open} menuItemClassName="menu_item"/>
-      // );
-      menuList = (
-        <Menu {...menuProps}>
-          {this.props.menuItems}
-        </Menu>
-      );
+    if (!this.props.disabled) {
+    menuList = (
+      <Menu
+        autoWidth={true}
+        hideable={true}
+        menuItemStyleLink={{lineHeight:'32px'}}
+        onChange={this._onMenuItemClick}
+        ref="menuItems"
+        style={{width:220,fontSize:'14px',top:'none',visibility:this.state.open?"visible":"hidden"}} 
+        visible={this.state.open}
+        menuItemClassName="menu_item">
+        {this.props.menuItems}
+      </Menu>
+    );
     }
     var buttonDisabled = false;
     var opacity = 1;
@@ -78,18 +78,28 @@ var DropdownButton = React.createClass({
       'btn-container': true,
       'btn-container-active': !buttonDisabled
     };
-    var buttonStyle = {
+    var buttonStyle = assign({
       backgroundColor: 'transparent',
-      height: '32px'
-    };
-
+      height: '48px'
+    }, this.props.buttonStyle);
     return (
-      <div className={classSet(classes)} style={{display:'inline-block'}}>
+      <div ref="root" className={classSet(classes)} style={{display:'inline-block'}}>
         <FlatButton disabled={buttonDisabled} onClick={this._showMenu} style={buttonStyle}>
-          <FontIcon className="fa icon-add btn-icon"/>
+          <FontIcon className={
+            classSet("fa btn-icon", this.props.buttonIcon)
+          }/>
           <span className="mui-flat-button-label btn-text">{this.props.text}</span>
         </FlatButton>
+        <Popover
+          onRequestClose = {this._closeDropdown}
+          anchorEl={this.refs.root}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          open={this.state.open}>
           {menuList}
+        </Popover>
       </div>
     );
   }
