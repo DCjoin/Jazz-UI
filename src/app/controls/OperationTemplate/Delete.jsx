@@ -13,13 +13,15 @@ var Delete = React.createClass({
   },
 
   _onFirstActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    // this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap();
     }
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    // this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
@@ -47,8 +49,8 @@ var Delete = React.createClass({
       title: I18N.format(I18N.Template.Delete.Title, this.props.type),
       actions: actions,
       modal: true,
-      openImmediately: true,
-      onDismiss: this.props.onDismiss,
+      open: true,
+      // onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
     let content;

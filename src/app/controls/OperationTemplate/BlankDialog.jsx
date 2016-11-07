@@ -15,13 +15,13 @@ var BlankDialog = React.createClass({
   },
 
   _onFirstActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap();
     }
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
@@ -54,8 +54,8 @@ var BlankDialog = React.createClass({
       title: this.props.title,
       actions: actions,
       modal: true,
-      openImmediately: true,
-      onDismiss: this.props.onDismiss,
+      open: true,
+      // onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
     var content = this.props.content;

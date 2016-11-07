@@ -36,5 +36,9 @@ export default {
 		customer: p => `/${p.lang}/service/${p.cusnum}/customer`,
 		user: p => `/${p.lang}/service/${p.cusnum}/user`,
 		privilege: p => `/${p.lang}/service/${p.cusnum}/privilege`,
-	}
+	},
+	// platform: {
+		config: p => `/${p.lang}/platform/config`,
+		mail: p => `/${p.lang}/platform/mail`,
+	// }
 }
