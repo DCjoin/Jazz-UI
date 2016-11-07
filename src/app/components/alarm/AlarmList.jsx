@@ -47,7 +47,7 @@ let AlarmList = React.createClass({
       displayedDom = (<div className='jazz-alarm-loading'><div style={{
         backgroundColor: 'rgb(53, 64, 82)',
         textAlign: 'center'
-      }}><CircularProgress  mode="indeterminate" size={1} /></div></div>);
+      }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else {
       let hierarchies = this.state.hierarchies;
       let hierarchyItems = null;

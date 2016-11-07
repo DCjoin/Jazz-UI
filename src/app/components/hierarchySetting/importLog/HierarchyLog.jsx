@@ -34,7 +34,7 @@ var HierarchyLog = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={2} /></div> : <HierarchyLogList ref='logList' logList={this.state.logList}/>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <HierarchyLogList ref='logList' logList={this.state.logList}/>);
     return (
       <div className="jazz-template-container">
         <div className="jazz-template-content">

@@ -308,7 +308,7 @@ var WorkDay = React.createClass({
       return (<div className='jazz-calendar-loading'><div style={{
           margin: 'auto',
           width: '100px'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (selectedData !== null) {
       var header = me._renderHeader(isView);
       var content = me._renderContent(isView);

@@ -187,7 +187,7 @@ let AnalysisPanel = React.createClass({
         margin: 'auto',
         width: '100px'
       }}>
-          <CircularProgress  mode="indeterminate" size={2} />
+          <CircularProgress  mode="indeterminate" size={80} />
         </div>;
     } else if (!!this.state.energyData || trigger) {
       energyPart = this.state.chartStrategy.getChartComponentFn(me);

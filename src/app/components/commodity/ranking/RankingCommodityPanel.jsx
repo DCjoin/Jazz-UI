@@ -86,7 +86,7 @@ var RankingCommodityPanel = React.createClass({
 
     var content;
 
-    content = ((this.state.isCommodityLoading || this.state.isTreeLoading) ? <CircularProgress  mode="indeterminate" size={1} />
+    content = ((this.state.isCommodityLoading || this.state.isTreeLoading) ? <CircularProgress  mode="indeterminate" size={80} />
       : <CommodityList ecType={this.props.ecType}
       checkedCommodity={this.state.checkedCommodity}
       commdityList={this.state.commodityList}

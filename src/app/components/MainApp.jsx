@@ -364,7 +364,7 @@ let MainApp = React.createClass({
   },
 
   render: function() {
-    if(CurrentUserStore.getCurrentUser() 
+    if(CurrentUserStore.getCurrentUser()
       && CurrentUserStore.getCurrentPrivilege()
       && CurrentUserCustomerStore.getAll()
       ) {
@@ -383,7 +383,7 @@ let MainApp = React.createClass({
           );
       } else {
         return (
-          <SelectCustomer 
+          <SelectCustomer
             selectCustomer={this._switchCustomer}
             close={this._closeSelectCustomer}
             closable={false}
@@ -401,7 +401,7 @@ let MainApp = React.createClass({
           'alignItems': 'center',
           'justifyContent': 'center'
         }}>
-              <CircularProgress  mode="indeterminate" size={2} />
+              <CircularProgress  mode="indeterminate" size={80} />
             </div>
           </div>
         );

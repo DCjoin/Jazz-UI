@@ -34,7 +34,7 @@ var TagLog = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={2} /></div> : <TagLogList ref='tagLogList' tagLogList={this.state.tagLogList}/>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <TagLogList ref='tagLogList' tagLogList={this.state.tagLogList}/>);
     return (
       <div className="jazz-template-container">
         <div className="jazz-template-content">

@@ -516,7 +516,7 @@ var ReportRightPanel = React.createClass({
       displayedDom = (<div className='jazz-report-loading'><div style={{
         margin: 'auto',
         width: '100px'
-      }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+      }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (reportItem !== null) {
       var buttonStyle = {
           minWidth: '36px',

@@ -363,7 +363,7 @@ var CustomerDetail = React.createClass({
 
     } else {
       return (
-        <CircularProgress  mode="indeterminate" size={2} />
+        <CircularProgress  mode="indeterminate" size={80} />
         )
     }
 

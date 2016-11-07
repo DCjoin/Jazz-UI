@@ -222,7 +222,7 @@ var VEERules = React.createClass({
   },
   componentWillMount: function() {
     document.title = I18N.MainMenu.Customer;
-    VEEAction.GetVEERules();
+    VEEAction.GetVEERules(this.context.currentRoute.params.customerId);
     this.setState({
       isLoading: true
     });
@@ -274,7 +274,7 @@ var VEERules = React.createClass({
           'alignItems': 'center',
           'justifyContent': 'center'
         }}>
-        <CircularProgress  mode="indeterminate" size={2} />
+        <CircularProgress  mode="indeterminate" size={80} />
       </div>
         );
     } else {

@@ -42,12 +42,12 @@ var VEEDetail = React.createClass({
   _clearErrorText: function() {
     var basic = this.refs.jazz_vee_basic,
       tag = this.refs.jazz_vee_tag;
-    if (basic && isFunction(basic.clearErrorTextBatchViewbaleTextFiled)) {
-      basic.clearErrorTextBatchViewbaleTextFiled();
-    }
-    if (tag && isFunction(tag.clearErrorTextBatchViewbaleTextFiled)) {
-      tag.clearErrorTextBatchViewbaleTextFiled();
-    }
+    // if (basic && isFunction(basic.clearErrorTextBatchViewbaleTextFiled)) {
+    //   basic.clearErrorTextBatchViewbaleTextFiled();
+    // }
+    // if (tag && isFunction(tag.clearErrorTextBatchViewbaleTextFiled)) {
+    //   tag.clearErrorTextBatchViewbaleTextFiled();
+    // }
   },
   _handleSaveRule: function() {
     if (this.props.infoTab) {
@@ -185,8 +185,8 @@ var VEEDetail = React.createClass({
       allowDelete={that.props.infoTab}
       onCancel={this.props.handlerCancel}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
-        that._clearErrorText();
+        //that.clearErrorTextBatchViewbaleTextFiled();
+        //that._clearErrorText();
         that.props.setEditStatus()
       }}
       editBtnProps={editBtnProps}/>
@@ -224,9 +224,9 @@ var VEEDetail = React.createClass({
         );
     }
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-  },
+  // componentWillMount: function() {
+  //   this.initBatchViewbaleTextFiled();
+  // },
   render: function() {
     var that = this;
     var header = this._renderHeader(),

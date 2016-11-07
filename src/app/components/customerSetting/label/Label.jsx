@@ -208,7 +208,7 @@ var Label = React.createClass({
       return (<div className='jazz-customer-label-loading'><div style={{
           margin: 'auto',
           width: '100px'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (selectedLabel !== null) {
       var rightProps = {
         ref: 'labelDetail',
