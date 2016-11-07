@@ -12,7 +12,9 @@ import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 var Template = React.createClass({
 
-
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     var rivilege = CurrentUserStore.getCurrentPrivilege();
     var onlyRead = this._getOnlyRead(rivilege);
@@ -77,7 +79,7 @@ var Template = React.createClass({
       var obj = JSON.parse(json);
       var uploadTemplate;
       if (obj.success === true) {
-        ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), me.state.sortBy, 'asc');
+        ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
         me.setState({
           showUploadDialog: false
         });
@@ -151,7 +153,7 @@ var Template = React.createClass({
     if (sortBy === 'CreateTime') {
       order = 'desc';
     }
-    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), sortBy, order);
+    ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), sortBy, order);
     this.setState({
       sortBy: sortBy
     });
@@ -160,7 +162,7 @@ var Template = React.createClass({
     document.title = I18N.MainMenu.Report;
   },
   componentDidMount: function() {
-    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
+    ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), 'Name', 'asc');
     ReportStore.addTemplateListChangeListener(this._onChange);
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },

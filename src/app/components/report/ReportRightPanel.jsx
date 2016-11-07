@@ -383,7 +383,7 @@ var ReportRightPanel = React.createClass({
     var sendData = {
       CreateUser: reportItem.get('createUser'),
       CriteriaList: reportItem.get('data').toJS(),
-      CustomerId: parseInt(window.currentCustomerId),
+      CustomerId: parseInt(this.context.currentRoute.params.customerId),
       Id: reportItem.get('id'),
       Name: reportItem.get('name'),
       TemplateId: reportItem.get('templateId'),
@@ -546,11 +546,12 @@ var ReportRightPanel = React.createClass({
       var reportTitle = (<div className={classSet("pop-manage-detail-header-name", "jazz-header")} style={{marginLeft:'30px'}}><ViewableTextField {...titleProps}></ViewableTextField></div>);
       var reportTemplate;
       var saveButtonStyle = {
-        borderRight: '1px solid #ececec'
+        borderRight: '1px solid #ececec',
+        height:'56px'
       };
       var editButton = (me.props.onlyRead ? null : <FlatButton label={I18N.Common.Button.Edit} onClick={me._editReport}  secondary={true} style={saveButtonStyle} />);
       var exportButton = <FlatButton label={I18N.Common.Button.Export} onClick={me._exportTemplate}  secondary={true} style={saveButtonStyle} />;
-      var deleteButton = (me.props.onlyRead ? null : <FlatButton label={I18N.Common.Button.Delete} onClick={me._showDeleteDialog} primary={true} />);
+      var deleteButton = (me.props.onlyRead ? null : <FlatButton label={I18N.Common.Button.Delete} onClick={me._showDeleteDialog} style={saveButtonStyle} primary={true} />);
       var saveButton = <FlatButton style={saveButtonStyle} secondary={true} label={I18N.Common.Button.Save} onClick={me._saveReport} disabled={me.state.saveDisabled} />;
       var cancelButton = <FlatButton label={I18N.Common.Button.Cancel} onClick={me._cancelEditReport} />;
       var buttonArea = null;
