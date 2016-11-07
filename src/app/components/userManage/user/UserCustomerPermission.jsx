@@ -7,7 +7,7 @@ import { List, Map } from 'immutable';
 import { RaisedButton, Checkbox } from 'material-ui';
 
 import SideNav from '../../../controls/SideNav.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import NewDialog from '../../../controls/NewDialog.jsx';
 import Loading from './Loading.jsx';
 import HierarchyTree from '../../../controls/tree/Tree.jsx';
 
@@ -190,7 +190,7 @@ let UserCustomerPermission = React.createClass({
       };
       return (
         <div className="pop-user-customer-permission-dialog-wrapper">
-					<Dialog
+					<NewDialog
         bodyStyle={{
           flex: 1,
           display: "flex",
@@ -199,8 +199,8 @@ let UserCustomerPermission = React.createClass({
         contentClassName="pop-user-customer-permission-dialog-wrapper-content"
         contentInnerStyle={{
         }} ref="pop_user_customer_permission_dialog"
-        openImmediately={true}
-        onDismiss={this.onClose}
+        open={open}
+        // onDismiss={this.onClose}
         modal={true}>
 
 						<div className="pop-user-customer-permission-dialog-title">{I18N.Setting.Labeling.EditDataPermission}</div>
@@ -215,7 +215,7 @@ let UserCustomerPermission = React.createClass({
 							<RaisedButton style={buttonStyle} label={I18N.Baseline.Button.Cancel} onClick={this._close} />
 						</div>
           : null}
-					</Dialog>
+					</NewDialog>
 				</div>
         );
     }
@@ -313,9 +313,10 @@ let UserCustomerPermission = React.createClass({
     },
 
     _close: function() {
-      if (this.refs.pop_user_customer_permission_dialog) {
-        this.refs.pop_user_customer_permission_dialog.dismiss();
-      }
+      this.setState({
+        open: false,
+        selectedId: null
+      })
     },
 
     open: function(selectedId, customer) {

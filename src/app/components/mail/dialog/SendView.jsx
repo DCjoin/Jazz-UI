@@ -15,13 +15,13 @@ var Send = React.createClass({
   },
 
   _onFirstActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap();
     }
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
@@ -54,8 +54,8 @@ var Send = React.createClass({
       title: I18N.Mail.Send.Title,
       actions: actions,
       modal: true,
-      openImmediately: true,
-      onDismiss: this.props.onDismiss,
+      open: true,
+      // onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
     var content = this.props.content;

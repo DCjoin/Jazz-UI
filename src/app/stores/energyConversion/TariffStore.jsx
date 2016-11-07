@@ -137,7 +137,8 @@ var TariffStore = assign({}, PrototypeStore, {
 
   },
   merge: function(data) {
-    var that = this;
+    var that = this,
+    timeRange;
     if (data.path == 'Name') {
       _updatingTariff = _updatingTariff.set('Name', data.value);
     } else {
@@ -216,7 +217,7 @@ var TariffStore = assign({}, PrototypeStore, {
               if (!!touTariff) {
                 let priceItem = touTariff.find(item => item.get("ItemType") == data.value.ItemType);
                 if (!!priceItem) {
-                  let timeRange = priceItem.get('TimeRange');
+                  timeRange = priceItem.get('TimeRange');
                   timeRange = timeRange.setIn([data.value.index], Immutable.fromJS({
                     Item1: value[0],
                     Item2: value[1]

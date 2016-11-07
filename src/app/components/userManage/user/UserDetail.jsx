@@ -9,7 +9,6 @@ import classnames from "classnames";
 import Regex from '../../../constants/Regex.jsx';
 
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 
@@ -19,7 +18,7 @@ import PermissionCode from '../../../constants/PermissionCode.jsx';
 import Loading from './Loading.jsx';
 import OrigamiPanel from '../../../controls/OrigamiPanel.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import NewDialog from '../../../controls/NewDialog.jsx';
 import UserCustomerPermission from './UserCustomerPermission.jsx';
 
 import { formStatus } from '../../../constants/FormStatus.jsx';
@@ -34,6 +33,7 @@ import Panel from '../../../controls/MainContentPanel.jsx';
 import _isFunction from "lodash/lang/isFunction";
 import _isNumber from "lodash/lang/isNumber";
 import _trim from 'lodash/string/trim';
+import find from 'lodash/collection/find';
 
 var _ = {
   isFunction: _isFunction,
@@ -53,7 +53,6 @@ var UserDetail = React.createClass({
     handleCancel: React.PropTypes.func,
     _handleDeleteUser: React.PropTypes.func
   },
-  //mixins: [ViewableTextFieldUtil],
 
   _handleSaveUser: function() {
     let that = this,
@@ -171,7 +170,7 @@ var UserDetail = React.createClass({
           text: item.get("Name"),
           id: item.get("Id")
         };
-      }),
+      }).toJS(),
       isSuperAdmin = that.props.user.get("UserType") === -1,
       titleSelectedIndex = 0,
       titleItems = [];
@@ -213,6 +212,19 @@ var UserDetail = React.createClass({
             value: idx,
             path: "Title"
           });
+        }
+      },
+      userTypeNameProps = {
+        isViewStatus: isView,
+        title: I18N.Platform.User.Role,
+        ref: "pop_user_detail_role",
+        textField: "text",
+        valueField: 'id',
+        selectedIndex: roleSelectedIndex,
+        dataItems: roleItems,
+        didChanged: value => {
+          UserAction.mergeUser({value: value ,path: "UserType"});
+          UserAction.mergeUser({value: find(roleItems,  item => item.id === value ).text ,path: "UserTypeName"})
         }
       },
       userTelephoneProps = {
@@ -265,26 +277,39 @@ var UserDetail = React.createClass({
 					<ViewableDropDownMenu {...userTitleProps}/>
 				</div>
 
-				<div className="pop-user-detail-content-item pop-user-detail-user-type">
+
+
+        <div className="pop-user-detail-content-item pop-user-detail-user-type">
+          { isSuperAdmin && <div className="info-title">{I18N.Platform.User.Role}</div> }
+          <div className="info-value">
+            { isSuperAdmin ?
+        <div>{I18N.Platform.User.ServerManager}</div>
+        :
+        <ViewableDropDownMenu {...userTypeNameProps} />
+      }
+            <div onClick={that._showRoleSideNav}>{I18N.Platform.User.ShowFuncAuth}</div>
+          </div>
+        </div>
+
+{/*				<div className="pop-user-detail-content-item pop-user-detail-user-type">
 					<div className="info-title">{I18N.Platform.User.Role}</div>
 					<div className="info-value">
 						{isView || isSuperAdmin ?
         <div>{isSuperAdmin ? I18N.Platform.User.ServerManager : that.props.user.get("UserTypeName")}</div>
-        :
-        <SelectField className="jazz-user-pop-viewableSelectField-ddm" onChange={(event, key, obj) => {
-          UserAction.mergeUser({
-            value: obj.id,
-            path: "UserType"
-          });
-          UserAction.mergeUser({
-            value: obj.text,
-            path: "UserTypeName"
-          });
-        }} ref="pop_user_detail_role" selectedIndex={roleSelectedIndex} menuItems={roleItems.toJS()} />
+        :<SelectField className="jazz-user-pop-viewableSelectField-ddm" onChange={(event, key, obj) => {
+                  UserAction.mergeUser({
+                    value: obj.id,
+                    path: "UserType"
+                  });
+                  UserAction.mergeUser({
+                    value: obj.text,
+                    path: "UserTypeName"
+                  });
+                }} ref="pop_user_detail_role" selectedIndex={roleSelectedIndex} menuItems={roleItems.toJS()} />
       }
 						<div onClick={that._showRoleSideNav}>{I18N.Platform.User.ShowFuncAuth}</div>
 					</div>
-				</div>
+				</div>*/}
 
 			{isSuperAdmin ? null : <div className="pop-user-detail-content-item">
 					<ViewableTextField {...userTelephoneProps}/>
@@ -468,32 +493,24 @@ var UserDetail = React.createClass({
         dialogStatus: false
       });
     }
-    if (!this.state.dialogStatus) {
-      return null;
-    } else {
-      var {Name, RealName} = that.props.user.toJS();
-      return (
+    var {Name, RealName} = that.props.user.toJS();
+    return (
 
-        <Dialog modal={true} openImmediately={this.state.dialogStatus} title={I18N.Setting.User.DeleteTitle} actions={[
-          <FlatButton
-          label={I18N.Template.Delete.Delete}
-          primary={true}
-          onClick={() => {
-            that.props._handleDeleteUser();
-            closeDialog();
-          }} />,
-          <FlatButton
-          label={I18N.Template.Delete.Cancel}
-          onClick={closeDialog} />
-        ]}>
-					{I18N.format(I18N.Setting.User.DeleteContent, Name + " " + RealName)}
-				</Dialog>
-        );
-    }
-  },
-
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
+      <NewDialog modal={true} open={this.state.dialogStatus} title={I18N.Setting.User.DeleteTitle} actions={[
+        <FlatButton
+        label={I18N.Template.Delete.Delete}
+        primary={true}
+        onClick={() => {
+          that.props._handleDeleteUser();
+          closeDialog();
+        }} />,
+        <FlatButton
+        label={I18N.Template.Delete.Cancel}
+        onClick={closeDialog} />
+      ]}>
+				{I18N.format(I18N.Setting.User.DeleteContent, Name + " " + RealName)}
+			</NewDialog>
+      );
   },
 
   render: function() {
@@ -596,7 +613,6 @@ var UserDetail = React.createClass({
     }}
     onCancel={this.props.handleCancel}
     onEdit={ () => {
-      that.clearErrorTextBatchViewbaleTextFiled();
       that.props.setEditStatus()
     }}/>
     );

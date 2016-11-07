@@ -1,9 +1,7 @@
 'use strict';
 import React from "react";
 import { Navigation, State } from 'react-router';
-import {TextField, Paper } from 'material-ui';
-import Dialog from '../NewDialog.jsx';
-import FlatButton from '../FlatButton.jsx';
+import { Dialog, FlatButton, TextField, Paper } from 'material-ui';
 
 var Delete = React.createClass({
   propTypes: {
@@ -13,32 +11,20 @@ var Delete = React.createClass({
     onSecondActionTouchTap: React.PropTypes.func,
     onDismiss: React.PropTypes.func,
   },
-  getInitialState(){
-    return{
-      open:true
-    }
-  },
-  _dismiss(){
-    this.setState({
-      open:false
-    })
-  },
+
   _onFirstActionTouchTap: function() {
-    this._dismiss();
+    // this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap();
     }
   },
   _onSecondActionTouchTap: function() {
-    this._dismiss();
+    // this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
-  },
-  componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      open:true
-    });
   },
   render: function() {
     //style
@@ -63,11 +49,8 @@ var Delete = React.createClass({
       title: I18N.format(I18N.Template.Delete.Title, this.props.type),
       actions: actions,
       modal: true,
-      open: this.state.open,
-      onDismiss: ()=>{
-        this._dismiss();
-        this.props.onDismiss()
-      },
+      open: true,
+      // onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
     let content;

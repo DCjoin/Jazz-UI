@@ -10,8 +10,7 @@ import PlatformAction from '../../actions/PlatformAction.jsx';
 import PlatformStore from '../../stores/PlatformStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
-import ViewableDatePicker from '../../controls/ViewableDatePickerByStatus.jsx';
+import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import Customer from './CustomerIdentity.jsx';
@@ -28,7 +27,6 @@ const DIALOG_TYPE = {
 };
 
 let PlatformContent = React.createClass({
-  //mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
     infoTabNo: React.PropTypes.number,
@@ -286,11 +284,11 @@ let PlatformContent = React.createClass({
       providerStartTimeProps = {
         isViewStatus: (isAdd) ? isView : true,
         title: I18N.Platform.ServiceProvider.StartDate,
-        defaultValue: this._getDateInput(StartDate),
+        value: this._getDateInput(StartDate),
         isRequired: true,
         // regex: Regex.CommonTextNotNullRule,
         // errorMessage: "请输入客户地址",
-        didChanged: value => {
+        onChange: value => {
           PlatformAction.mergeProvider({
             value: value,
             path: "StartDate"
@@ -481,7 +479,6 @@ let PlatformContent = React.createClass({
       }}
       onCancel={this._handleCancel}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
       }}/>
       );

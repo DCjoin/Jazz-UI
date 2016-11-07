@@ -9,7 +9,6 @@ import FlatButton from '../../controls/FlatButton.jsx';
 import PlatformAction from '../../actions/PlatformAction.jsx';
 import PlatformStore from '../../stores/PlatformStore.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePickerByStatus.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
@@ -21,7 +20,6 @@ import Config from 'config';
 
 
 let CustomerIdentity = React.createClass({
-  //mixins: [ViewableTextFieldUtil],
   propTypes: {
     provider: React.PropTypes.object,
     customer: React.PropTypes.object
@@ -132,15 +130,6 @@ let CustomerIdentity = React.createClass({
   },
   componentWillMount: function() {
     PlatformAction.getCustomerIdentity(this.props.provider.Id);
-    this.initBatchViewbaleTextFiled();
-  },
-  componentDidMount: function() {},
-  componentWillUnmount: function() {},
-  componentWillReceiveProps: function(nextProps) {
-    if (nextProps.provider.Id != this.props.provider.Id) {
-      this.clearErrorTextBatchViewbaleTextFiled();
-
-    }
   },
 
   getInitialState: function() {
