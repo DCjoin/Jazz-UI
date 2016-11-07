@@ -2,6 +2,8 @@
 import React from "react";
 import CommonFuns from '../../util/Util.jsx';
 import { CircularProgress, FlatButton, FontIcon, DropDownMenu, Dialog } from 'material-ui';
+import NewDialog from '../../controls/NewDialog.jsx';
+import MenuItem from 'material-ui/MenuItem';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
@@ -23,7 +25,7 @@ var Template = React.createClass({
       onlyRead: onlyRead,
       showUploadDialog: false,
       sortBy: 'Name',
-      fileName: ''
+      fileName: '',
     };
   },
   _addNewTemplate: function() {
@@ -140,15 +142,15 @@ var Template = React.createClass({
     if (!this.state.showUploadDialog) {
       return null;
     }
-    return (<Dialog
+    return (<NewDialog
       ref="uploadDialog"
-      openImmediately={true}
+      open={true}
       modal={true}>
         {I18N.format(I18N.EM.Report.UploadingTemplate, this.state.fileName)}
-      </Dialog>);
+      </NewDialog>);
   },
-  _onSortChange(e) {
-    var sortBy = e.target.value;
+  _onSortChange(e, selectedIndex, value) {
+    var sortBy = value;
     var order = 'asc';
     if (sortBy === 'CreateTime') {
       order = 'desc';
@@ -182,13 +184,10 @@ var Template = React.createClass({
       'btn-container': true,
       'btn-container-active': true
     };
-    var sortItems = [{
-      payload: 'Name',
-      text: I18N.EM.Report.NameSort
-    }, {
-      payload: 'CreateTime',
-      text: I18N.EM.Report.TimeSort
-    }];
+    var sortItems = [
+    <MenuItem key={1} value='Name' primaryText={I18N.EM.Report.NameSort}/>,
+    <MenuItem key={2} value='CreateUser' primaryText={I18N.EM.Report.TimeSort}/>
+    ];
 
     var uploadDialog = this._renderUploadDialog();
 
@@ -219,7 +218,7 @@ var Template = React.createClass({
               {uploadDom}
               <div className="jazz-template-action">
                 <div className="jazz-template-sort">
-                  <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>
+                  <DropDownMenu labelStyle={{lineHeight: '40px',fontSize:'14px'}} onChange={this._onSortChange} value={this.state.sortBy}>{sortItems}</DropDownMenu>
                 </div>
               </div>
             </div>
