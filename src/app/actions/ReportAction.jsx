@@ -110,7 +110,7 @@ let ReportAction = {
       }
     });
   },
-  getTagData(nodeId, option, page, filters) {
+  getTagData(cusomterId,nodeId, option, page, filters) {
     Ajax.post('/Tag/GetTagsByFilter?', {
       params: {
         filter: {
@@ -118,7 +118,7 @@ let ReportAction = {
             AssociationId: nodeId,
             AssociationOption: option
           },
-          CustomerId: parseInt(window.currentCustomerId),
+          CustomerId: parseInt(cusomterId),
           IncludeAssociationName: true
         },
         filters: filters,
@@ -138,12 +138,12 @@ let ReportAction = {
       }
     });
   },
-  getSelectedTagData(ids) {
+  getSelectedTagData(cusomterId,ids) {
     Ajax.post('/Tag/GetTagsByFilter?', {
       params: {
         filter: {
           Ids: ids,
-          CustomerId: parseInt(window.currentCustomerId),
+          CustomerId: parseInt(cusomterId),
           IncludeAssociationName: true
         },
         limit: 20,

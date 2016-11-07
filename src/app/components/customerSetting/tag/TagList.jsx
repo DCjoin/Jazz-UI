@@ -30,6 +30,9 @@ let TagList = React.createClass({
     isAddStatus: React.PropTypes.bool,
     tagType: React.PropTypes.number
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       showImportDialog: false,
@@ -173,7 +176,7 @@ let TagList = React.createClass({
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
-      value: parseInt(window.currentCustomerId)
+      value: parseInt(this.context.currentRoute.params.customerId)
     }, null, form);
     var typeInput = createElement('input', {
       type: 'hidden',

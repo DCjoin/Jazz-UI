@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDom from 'react-dom';
 import ExportChartStore from '../../stores/energy/ExportChartStore.jsx';
 
 let ExportChart = React.createClass({
@@ -20,7 +21,7 @@ let ExportChart = React.createClass({
   _exportFn(){
     var createElement = window.Highcharts.createElement,
         discardElement = window.Highcharts.discardElement,
-        frame = this.refs.exportIframe.getDOMNode(),
+        frame = ReactDom.findDOMNode(this.refs.exportIframe),
         doc = frame.contentDocument;
 
     let url = ExportChartStore.getPath(),

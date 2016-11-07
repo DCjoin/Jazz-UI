@@ -226,6 +226,9 @@ var ViewableTextField = React.createClass({
 
     if (!this.props.isViewStatus) {
       inputProps = {
+        errorStyle:{
+          marginTop:'10px'
+        },
         errorText: !this.state.value ? this.state.errorText : this._getError(), //this.state.errorText,
         onChange: this._handleChange,
         onBlur: this._onBlur,

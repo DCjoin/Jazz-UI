@@ -13,6 +13,9 @@ var WidgetSaveWindow = React.createClass({
     chartTitle: React.PropTypes.string,
     onSave: React.PropTypes.func,
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   _onWidgetSave: function(destNode, newName) {
     this.props.onSave(destNode, newName);
     this.setState({
@@ -40,7 +43,7 @@ var WidgetSaveWindow = React.createClass({
   componentDidMount: function() {
     FolderStore.addWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.addWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
-    FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
+    FolderAction.getFolderTreeByCustomerId(this.context.currentRoute.params.customerId);
     FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
     this.setState({
       treeLoading: true

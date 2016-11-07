@@ -15,6 +15,9 @@ var RankingHierTreeButton = React.createClass({
     onConfirm: React.PropTypes.func,
     onLoad: React.PropTypes.func,
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   _onChange() {
     var data = HierarchyStore.getData();
     this.props.onLoad(false);
@@ -107,7 +110,7 @@ var RankingHierTreeButton = React.createClass({
   //       },
   componentDidMount: function() {
     HierarchyStore.addHierarchyNodeListener(this._onChange);
-    HierarchyAction.loadall(window.currentCustomerId, false);
+    HierarchyAction.loadall(this.context.currentRoute.params.customerId, false);
     this.props.onLoad(true);
     this.setState({
       isLoading: true,

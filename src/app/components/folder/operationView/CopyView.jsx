@@ -55,6 +55,7 @@ var CopyView = React.createClass({
       label = I18N.format(I18N.Folder.Copy.Label, I18N.Folder.WidgetName);
     }
     let Props = {
+      key:this.props.copyNode.get('Id'),
       title: title, //复制文件夹 or 复制图表
       label: label, //文件夹名称 or 图表名称
       labelName: FolderStore.getCopyLabelName(this.props.copyNode, this.props.copyNode.get('Type')),

@@ -36,6 +36,9 @@ var Hierarchy = React.createClass({
       infoTabNo: 1,
     };
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   _onChange: function(selectedNode) {
     if (!!selectedNode) {
       this._setViewStatus(selectedNode);
@@ -65,7 +68,7 @@ var Hierarchy = React.createClass({
   _onExportBtnClick: function() {
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(window.currentCustomerId);
+    iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(this.context.currentRoute.params.customerId);
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };
@@ -232,7 +235,7 @@ var Hierarchy = React.createClass({
         } else {
           node = node.set('ParentId', parent.get('Id'));
         }
-        node = node.set('CustomerId', parseInt(window.currentCustomerId));
+        node = node.set('CustomerId', parseInt(this.context.currentRoute.params.customerId));
         if (node.get('Type') === 101) {
           if (parent.get('Type') === 101) {
             node = node.set('HierarchyId', parent.get('HierarchyId'));

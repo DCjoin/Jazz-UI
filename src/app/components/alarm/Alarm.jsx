@@ -22,6 +22,9 @@ import ChartAction from '../../actions/ChartAction.jsx';
 
 let Alarm = React.createClass({
   //mixins: [Navigation, State],
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   _onLeftSwitchButtonClick() {
     var leftShow, rightShow;
     leftShow = !this.state.showLeftPanel;
@@ -194,7 +197,7 @@ let Alarm = React.createClass({
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
     if (FolderStore.getFolderTree() == Immutable.fromJS()) {
-      FolderAction.getFolderTreeByCustomerId(window.currentCustomerId);
+      FolderAction.getFolderTreeByCustomerId(this.context.currentRoute.params.customerId);
     }
   },
   componentWillUnmount: function() {
