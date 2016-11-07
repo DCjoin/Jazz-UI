@@ -11,6 +11,9 @@ import LabelDetail from './LabelDetail.jsx';
 import Immutable from 'immutable';
 
 var Label = React.createClass({
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       isLoading: true,
@@ -150,7 +153,7 @@ var Label = React.createClass({
       CommodityId: 1,
       UomId: 1,
       Grade: 5,
-      CustomerId: parseInt(window.currentCustomerId),
+      CustomerId: parseInt(this.context.currentRoute.params.customerId),
       Order: 0,
       LabellingType: 1,
       Comment: '',

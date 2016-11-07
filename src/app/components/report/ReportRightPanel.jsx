@@ -15,7 +15,9 @@ import Immutable from 'immutable';
 
 var ReportRightPanel = React.createClass({
 
-
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       isLoading: true,
@@ -242,7 +244,7 @@ var ReportRightPanel = React.createClass({
       var reportItem = me.state.reportItem;
       if (obj.success === true) {
         reportItem = reportItem.set('templateId', obj.TemplateId);
-        ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), me.state.sortBy, 'asc');
+        ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
         me.setState({
           reportItem: reportItem,
           sheetNames: Immutable.fromJS(obj.SheetList),
@@ -495,7 +497,7 @@ var ReportRightPanel = React.createClass({
   },
 
   componentDidMount: function() {
-    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
+    ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), 'Name', 'asc');
     ReportStore.addReportItemChangeListener(this._onChange);
     ReportStore.addTemplateListChangeListener(this._onChangeTemplate);
     ReportStore.addSaveReportErrorListener(this._onErrorHandle);

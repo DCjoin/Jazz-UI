@@ -1,7 +1,8 @@
 'use strict';
 import React from "react";
 import { Navigation, State } from 'react-router';
-import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
+import { FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
+import Dialog from '../NewDialog.jsx';
 
 var BlankDialog = React.createClass({
   propTypes: {
@@ -13,18 +14,32 @@ var BlankDialog = React.createClass({
     content: React.PropTypes.string,
     onDismiss: React.PropTypes.func,
   },
-
+  getInitialState(){
+    return{
+      open:true
+    }
+  },
+  _dismiss(){
+    this.setState({
+      open:false
+    })
+  },
   _onFirstActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this._dismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap();
     }
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this._dismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      open:true
+    });
   },
   render: function() {
     //style
@@ -54,8 +69,11 @@ var BlankDialog = React.createClass({
       title: this.props.title,
       actions: actions,
       modal: true,
-      openImmediately: true,
-      onDismiss: this.props.onDismiss,
+      open: this.state.open,
+      onDismiss: ()=>{
+        this._dismiss();
+        this.props.onDismiss()
+      },
       titleStyle: titleStyle
     };
     var content = this.props.content;

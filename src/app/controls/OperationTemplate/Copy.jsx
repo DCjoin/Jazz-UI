@@ -2,7 +2,8 @@
 import React from "react";
 import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
-import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
+import { FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
+import Dialog from '../NewDialog.jsx';
 import Tree from './assets/CopyDestTree.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
 
@@ -19,13 +20,18 @@ var Copy = React.createClass({
     treeNode: React.PropTypes.object,
     loading: React.PropTypes.bool,
   },
+  _dismiss(){
+    this.setState({
+      open:false
+    })
+  },
   _onFirstActionTouchTap: function() {
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap(this.state.selectedNode, this.state.labelName);
     }
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this._dismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
@@ -69,7 +75,8 @@ var Copy = React.createClass({
       selectedNode: (!!this.props.treeNode ? this.props.treeNode : FolderStore.getFolderTree()),
       treeShow: false,
       errorText: this.props.errorText,
-      btnDisabled: false
+      btnDisabled: false,
+      open:true
     };
   },
   componentWillReceiveProps: function(nextProps) {
@@ -82,7 +89,8 @@ var Copy = React.createClass({
       selectedNode: (!!nextProps.treeNode ? nextProps.treeNode : FolderStore.getFolderTree()),
       treeShow: false,
       errorText: nextProps.errorText,
-      btnDisabled: false
+      btnDisabled: false,
+      open:true
     });
   },
   render: function() {
@@ -111,15 +119,16 @@ var Copy = React.createClass({
         allNode: this.state.allNode,
         onSelectNode: this._onSelectNode,
         selectedNode: this.state.selectedNode,
-
       },
       dialogProps = {
         ref: 'dialog',
         title: this.props.title,
         actions: actions,
         modal: true,
-        openImmediately: true,
-        onDismiss: this.props.onDismiss,
+        open: this.state.open,
+        onDismiss: ()=>{
+          this._dismiss();
+          this.props.onDismiss()},
         titleStyle: titleStyle
       };
 
@@ -139,9 +148,11 @@ var Copy = React.createClass({
                   <div className="icon-arrow-down"/>
                 </div>
     );
+    let FolderTree = (this.state.treeShow ? <Tree {...treeProps}/> : null);
     let FolderTreeField = (
     <div style={{
-      marginTop: '20px'
+      marginTop: '20px',
+      positon:'relative'
     }}>
                     <div>
                       {I18N.Template.Copy.DestinationFolder}
@@ -150,9 +161,10 @@ var Copy = React.createClass({
                       {this.state.selectedNode.get('Name')}
                       {icon}
                     </div>
+                    {FolderTree}
                   </div>
     );
-    let FolderTree = (this.state.treeShow ? <Tree {...treeProps}/> : null);
+
 
 
     if (this.props.loading) {
@@ -179,7 +191,6 @@ var Copy = React.createClass({
             <Dialog {...dialogProps}>
               {nameField}
               {FolderTreeField}
-              {FolderTree}
             </Dialog>
           </div>
         </div>

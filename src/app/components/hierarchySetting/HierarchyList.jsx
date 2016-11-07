@@ -27,6 +27,9 @@ var HierarchyList = React.createClass({
     onReloadHierachyTree: React.PropTypes.func,
     onGragulaNode: React.PropTypes.func
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       showImportDialog: false,
@@ -225,7 +228,7 @@ var HierarchyList = React.createClass({
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
-      value: parseInt(window.currentCustomerId)
+      value: parseInt(this.context.currentRoute.params.customerId)
     }, null, form);
     var hierarchyInput = createElement('input', {
       type: 'hidden',
@@ -256,7 +259,7 @@ var HierarchyList = React.createClass({
     if (id < 0) {
       return true;
     }
-    if (id === parseInt(window.currentCustomerId)) {
+    if (id === parseInt(this.context.currentRoute.params.customerId)) {
       return true;
     }
     return false;

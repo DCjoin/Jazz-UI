@@ -17,6 +17,9 @@ let Tag = React.createClass({
   propTypes: {
     tagType: React.PropTypes.number.isRequired
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     var filterObj = this._getInitFilterObj();
     return {
@@ -465,7 +468,7 @@ let Tag = React.createClass({
       HierarchyId: null,
       SystemDimensionId: null,
       AreaDimensionId: null,
-      CustomerId: parseInt(window.currentCustomerId),
+      CustomerId: parseInt(this.context.currentRoute.params.customerId),
       GuidCode: 0,
       EnergyConsumption: 0,
       CalculationStep: this.props.tagType === 1 ? 6 : 1,
