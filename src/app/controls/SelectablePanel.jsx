@@ -2,7 +2,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { FlatButton, FontIcon, DropDownMenu, CircularProgress } from 'material-ui';
+import { FlatButton, FontIcon, DropDownMenu, MenuItem, CircularProgress } from 'material-ui';
 import _isBoolean from 'lodash/lang/isBoolean';
 
 let SelectablePanel = React.createClass({
@@ -37,7 +37,6 @@ let SelectablePanel = React.createClass({
       };
 
     var dropDownMenuProps = {
-      menuItems: this.props.sortItems,
       valueMember: "type",
       displayMember: "label",
       value: this.props.sortBy,
@@ -51,8 +50,8 @@ let SelectablePanel = React.createClass({
       iconStyle: {
         display: "none"
       },
-      onChange: function(e, selectedIndex, menuItem) {
-        that.props.changeSortBy(menuItem.type);
+      onChange: function(e, selectedIndex, value) {
+        that.props.changeSortBy(value);
       }
     };
 
@@ -67,7 +66,7 @@ let SelectablePanel = React.createClass({
 
     if (!!this.props.sortBy) {
       sort = <div className="jazz-serviceprovider-sortbar">
-                <DropDownMenu {...dropDownMenuProps} />
+                <DropDownMenu {...dropDownMenuProps} >{this.props.sortItems.map( item => <MenuItem  primaryText={item.label} value={item.type} />)}</DropDownMenu>
                 <span className="icon-arrow-down jazz-serviceprovider-sortbar-icon" />
               </div>
     }

@@ -77,6 +77,7 @@ class DatePicker extends React.Component {
     maxDateError: React.PropTypes.string,
     errorText:React.PropTypes.string,
     width: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]),
+    datePickerClassName:React.PropTypes.string,
   };
 
   constructor(props) {
@@ -168,7 +169,7 @@ class DatePicker extends React.Component {
       error = this.props.errorText;
     }
     return (
-      <div className="jazz-month-picker">
+      <div className={this.props.datePickerClassName}>
         {this._renderTextField(error)}
         {this._renderPopup(dateObject)}
       </div>
@@ -198,6 +199,9 @@ export default class ViewableDatePicker extends React.Component {
 
   static isInRange = (date, minDate, maxDate) => {
     return isInRange(date, minDate, maxDate);
+  };
+  static defaultProps  = {
+    dateFormatStr: 'YYYY年MM月DD日'
   };
 
   formatDateStr(date){

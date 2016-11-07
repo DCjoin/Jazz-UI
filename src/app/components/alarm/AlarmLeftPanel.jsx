@@ -107,6 +107,7 @@ var AlarmLeftPanel = React.createClass({
     date=this.state.date;
     var dateProps = {
       dateFormatStr: 'YYYY/MM/DD',
+      datePickerClassName: 'jazz-month-picker',
       value: date,
       isViewStatus:false,
       style: {
