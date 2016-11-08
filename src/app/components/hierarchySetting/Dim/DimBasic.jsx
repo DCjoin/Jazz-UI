@@ -47,13 +47,13 @@ var DimBasic = React.createClass({
       )
 
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
-  componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
+  // componentWillMount: function() {
+  //   this.initBatchViewbaleTextFiled();
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
+  // componentWillUnmount: function() {
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
   render: function() {
     return (
       <div className="pop-manage-detail-content">

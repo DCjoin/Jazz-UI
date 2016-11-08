@@ -124,7 +124,7 @@ var CommonCommodityList = React.createClass({
 
     if(this.state.isLoading){
       return(
-        <CircularProgress  mode="indeterminate" size={1} />
+        <CircularProgress  mode="indeterminate" size={80} />
       )
     }
     else {

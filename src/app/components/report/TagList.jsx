@@ -73,7 +73,7 @@ let TagList = React.createClass({
         margin: 'auto',
         width: '100px'
       }}>
-            <CircularProgress  mode="indeterminate" size={1} />
+            <CircularProgress  mode="indeterminate" size={80} />
           </div>;
     } else {
       displayDom = <div>

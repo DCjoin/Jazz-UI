@@ -7,6 +7,9 @@ import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 
 
 var TagLog = React.createClass({
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       isLoading: true
@@ -23,7 +26,7 @@ var TagLog = React.createClass({
     document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidMount: function() {
-    TagAction.getTagLogListByCustomerId();
+    TagAction.getTagLogListByCustomerId(this.context.currentRoute.params.customerId);
     TagStore.addTagLogListChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
@@ -34,7 +37,7 @@ var TagLog = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={2} /></div> : <TagLogList ref='tagLogList' tagLogList={this.state.tagLogList}/>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <TagLogList ref='tagLogList' tagLogList={this.state.tagLogList}/>);
     return (
       <div className="jazz-template-container">
         <div className="jazz-template-content">

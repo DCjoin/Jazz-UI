@@ -292,7 +292,7 @@ var User = React.createClass({
           'justifyContent': 'center',
           overflow: 'auto'
         }}>
-          <CircularProgress  mode="indeterminate" size={2} />
+          <CircularProgress  mode="indeterminate" size={80} />
           </div>
         );
     } else {

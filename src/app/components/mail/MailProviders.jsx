@@ -106,7 +106,7 @@ let Providers = React.createClass({
     if (this.props.isLoading) {
       return (
         <div style={style}>
-          <CircularProgress  mode="indeterminate" size={1} />
+          <CircularProgress  mode="indeterminate" size={80} />
         </div>
         );
     } else {

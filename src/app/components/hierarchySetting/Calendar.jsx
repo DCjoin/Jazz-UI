@@ -661,7 +661,7 @@ var Calendar = React.createClass({
           flex: 1,
           'alignItems': 'center',
           'justifyContent': 'center'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div>);
     } else {
       var calendarItemGroups = this.state.calendar.get('CalendarItemGroups');
       var calendar = null;

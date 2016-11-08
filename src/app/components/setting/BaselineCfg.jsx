@@ -258,7 +258,7 @@ let BaselineCfg = React.createClass({
         width: 154,
         paddingTop: 255
       }}>
-            <CircularProgress mode="indeterminate"  size={1.5} />
+            <CircularProgress mode="indeterminate"  size={80} />
           </div>
         </Dialog>
       </div>

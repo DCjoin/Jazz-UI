@@ -1,5 +1,6 @@
-var React = require('react');
-
+//ar React = require('react');
+import React from 'react';
+import ReactDom from 'react-dom';
 import ViewableTextField from "./ViewableTextField.jsx";
 
 const ZOOM_LEVEL = 15;
@@ -60,7 +61,7 @@ var ViewableMap = React.createClass({
   },
 
   _onTextFieldFocus() {
-    var node = React.findDOMNode(this.refs.map);
+    var node = ReactDom.findDOMNode(this.refs.map);
     if (node.style.display === "none") {
       node.style.display = "block";
     }
@@ -94,18 +95,18 @@ var ViewableMap = React.createClass({
 
   _changeTip(text, type = "showAddress") {
     if (type === "showAddress") {
-      React.findDOMNode(this.refs.tip).setAttribute("title", text);
+      ReactDom.findDOMNode(this.refs.tip).setAttribute("title", text);
       text = I18N.Setting.Building.MapTip2 + text;
-      React.findDOMNode(this.refs.tip).innerHTML = text;
-      React.findDOMNode(this.refs.warningContainer).style.display = "none";
-      React.findDOMNode(this.refs.tipContainer).style.display = "block";
+      ReactDom.findDOMNode(this.refs.tip).innerHTML = text;
+      ReactDom.findDOMNode(this.refs.warningContainer).style.display = "none";
+      ReactDom.findDOMNode(this.refs.tipContainer).style.display = "block";
     } else if (type === "hide") {
-      React.findDOMNode(this.refs.warningContainer).style.display = "none";
-      React.findDOMNode(this.refs.tipContainer).style.display = "none";
+      ReactDom.findDOMNode(this.refs.warningContainer).style.display = "none";
+      ReactDom.findDOMNode(this.refs.tipContainer).style.display = "none";
     } else if (type === "showWarning") {
-      React.findDOMNode(this.refs.warning).innerHTML = text;
-      React.findDOMNode(this.refs.tipContainer).style.display = "none";
-      React.findDOMNode(this.refs.warningContainer).style.display = "block";
+      ReactDom.findDOMNode(this.refs.warning).innerHTML = text;
+      ReactDom.findDOMNode(this.refs.tipContainer).style.display = "none";
+      ReactDom.findDOMNode(this.refs.warningContainer).style.display = "block";
     }
   },
 
@@ -149,7 +150,7 @@ var ViewableMap = React.createClass({
   },
 
   _onTipHover(isHover) {
-    var target = React.findDOMNode(this.refs.tipContainer);
+    var target = ReactDom.findDOMNode(this.refs.tipContainer);
     if (isHover) {
       target.style.color = this.context.getLessVar("primaryColor");
       target.style.opacity = "1";
@@ -162,14 +163,14 @@ var ViewableMap = React.createClass({
     if (!this.props.isAdd) {
       this._initMap();
     } else {
-      var node = React.findDOMNode(this.refs.map);
+      var node = ReactDom.findDOMNode(this.refs.map);
       node.style.display = "none";
     }
 
   },
   componentWillReceiveProps: function(nextProps) {
 
-    var node = React.findDOMNode(this.refs.map);
+    var node = ReactDom.findDOMNode(this.refs.map);
 
     var text = nextProps.address;
     if (this.props.address !== text && text !== null && text.trim() !== "") {
@@ -177,7 +178,7 @@ var ViewableMap = React.createClass({
       this._initMap();
     }
     if (!nextProps.isAdd) {
-      var node = React.findDOMNode(this.refs.map);
+      var node = ReactDom.findDOMNode(this.refs.map);
       node.style.display = "block";
     }
 

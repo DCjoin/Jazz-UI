@@ -50,7 +50,7 @@ var HierarchyStore = assign({}, PrototypeStore, {
           item.Id = 0 - item.Id;
         }
         item.Children.forEach(el => {
-          f(el);
+            f(el);
         });
       }
     };

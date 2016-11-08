@@ -13,6 +13,7 @@ import Immutable from 'immutable';
 import RawDataList from './RawDataList.jsx';
 
 var timeoutID = null;
+var customerId=null;
 let Tag = React.createClass({
   propTypes: {
     tagType: React.PropTypes.number.isRequired
@@ -468,7 +469,7 @@ let Tag = React.createClass({
       HierarchyId: null,
       SystemDimensionId: null,
       AreaDimensionId: null,
-      CustomerId: parseInt(this.context.currentRoute.params.customerId),
+      CustomerId: parseInt(customerId),
       GuidCode: 0,
       EnergyConsumption: 0,
       CalculationStep: this.props.tagType === 1 ? 6 : 1,
@@ -497,7 +498,7 @@ let Tag = React.createClass({
   },
 
   getTagList: function() {
-    TagAction.getTagListByType(this.props.tagType, this.state.curPageNum, this.state.filterObj);
+    TagAction.getTagListByType(customerId,this.props.tagType, this.state.curPageNum, this.state.filterObj);
   },
   componentDidMount: function() {
     this.getTagList();
@@ -512,6 +513,7 @@ let Tag = React.createClass({
     TagAction.setSelectedTagIndex(null);
   },
   componentWillMount: function() {
+    customerId=this.context.currentRoute.params.customerId;
     // document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidUpdate: function() {
@@ -539,7 +541,7 @@ let Tag = React.createClass({
       return (<div className='jazz-tag-loading'><div style={{
           margin: 'auto',
           width: '100px'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (selectedTag !== null) {
       var rightProps = {
         ref: 'tagDetail',

@@ -63,7 +63,7 @@ var Send = React.createClass({
       content = <div style={{
         marginLeft: '300px'
       }}>
-      <CircularProgress  mode="indeterminate" size={1} />
+      <CircularProgress  mode="indeterminate" size={80} />
       </div>;
       dialogProps.actions = [];
     }

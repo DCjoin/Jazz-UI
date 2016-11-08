@@ -186,7 +186,7 @@ var Dim = React.createClass({
       allowDelete={that.props.infoTabNo === 1}
       onCancel={this._handlerCancel}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
+      //  that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
       }}
       editBtnProps={editBtnProps}/>
@@ -232,18 +232,18 @@ var Dim = React.createClass({
       }
     }
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
+  // componentWillMount: function() {
+  //   this.initBatchViewbaleTextFiled();
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
   componentDidMount: function() {
     if (this.props.formStatus === formStatus.ADD) {
       this.refs.dim_head.focus();
     }
   },
-  componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
+  // componentWillUnmount: function() {
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
   render: function() {
     var that = this;
     var header = this._renderHeader(),

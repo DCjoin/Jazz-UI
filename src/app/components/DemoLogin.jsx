@@ -98,7 +98,7 @@ var DemoLogin = React.createClass({
     if (!this.state.loginError) {
       return (
         <div className="jazz-demo-login">
-          <CircularProgress mode="indeterminate" size={2} />
+          <CircularProgress mode="indeterminate" size={80} />
         </div>);
     } else {
       return (

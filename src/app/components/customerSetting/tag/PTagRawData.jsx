@@ -381,7 +381,7 @@ let PTagRawData = React.createClass({
           'alignItems': 'center',
           'justifyContent': 'center'
         }}>
-                    <CircularProgress  mode="indeterminate" size={2} />
+                    <CircularProgress  mode="indeterminate" size={80} />
                   </div>
         )
 

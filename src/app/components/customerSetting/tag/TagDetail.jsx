@@ -6,7 +6,7 @@ import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import Dialog from '../../../controls/NewDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import PTagBasic from './PTagBasic.jsx';
 import VTagBasic from './VTagBasic.jsx';
@@ -61,7 +61,7 @@ var TagDetail = React.createClass({
 
     return (<Dialog
       ref="deleteDialog"
-      openImmediately={this.props.showDeleteDialog}
+      open={this.props.showDeleteDialog}
       title={I18N.Setting.Tag.DeleteTag}
       actions={dialogActions}
       modal={true}>

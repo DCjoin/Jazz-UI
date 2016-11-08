@@ -4,11 +4,11 @@ import { Action } from '../../constants/actionType/customerSetting/Label.jsx';
 import Ajax from '../../ajax/ajax.jsx';
 
 let LabelAction = {
-  getLabelList: function() {
+  getLabelList: function(CustomerId) {
     Ajax.post('/Customer/GetCustomerLabellings', {
       params: {
         filter: {
-          CustomerId: parseInt(window.currentCustomerId)
+          CustomerId: parseInt(CustomerId)
         }
       },
       success: function(labelList) {

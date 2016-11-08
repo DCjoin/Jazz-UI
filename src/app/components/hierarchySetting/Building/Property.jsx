@@ -585,7 +585,7 @@ var Property = React.createClass({
           flex: 1,
           'alignItems': 'center',
           'justifyContent': 'center'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div>);
     } else {
       var properties = this.state.property.get('Properties');
       var property = null;

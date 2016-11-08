@@ -213,7 +213,7 @@ var Organization = React.createClass({
       allowDelete={that.props.infoTabNo === 1}
       onCancel={this._handlerCancel}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
+        //that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
       }}
       editBtnProps={editBtnProps}/>
@@ -262,17 +262,17 @@ var Organization = React.createClass({
       HierarchyAction.cancelSaveCalendar();
     }
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
+  // componentWillMount: function() {
+  //   this.initBatchViewbaleTextFiled();
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
   componentDidMount: function() {
     if (this.props.formStatus === formStatus.ADD) {
       this.refs.org_head.focus();
     }
   },
   componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
+    //this.clearErrorTextBatchViewbaleTextFiled();
   },
   render: function() {
     var that = this;

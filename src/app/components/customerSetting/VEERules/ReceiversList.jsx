@@ -9,7 +9,9 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import { dataStatus } from '../../../constants/DataStatus.jsx';
 import Immutable from 'immutable';
 import CurrentUserStore from '../../../stores/CurrentUserStore.jsx';
-import { Dialog, CircularProgress, Checkbox } from 'material-ui';
+import {Checkbox } from 'material-ui';
+import CircularProgress from 'material-ui/CircularProgress';
+import Dialog from '../../../controls/NewDialog.jsx';
 import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
 import VEEAction from '../../../actions/customerSetting/VEEAction.jsx';
 import { List } from 'immutable';
@@ -183,15 +185,26 @@ var ReceiversDialog = React.createClass({
     ruleId: React.PropTypes.number,
     onDismiss: React.PropTypes.func,
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return ({
       allReceivers: VEEStore.getAllReceivers(),
       receivers: this.props.receivers,
-      isLoading: true
+      isLoading: true,
+      show:false
     })
   },
   show: function() {
-    this.refs.dialog.show();
+   this.setState({
+     show:true
+   })
+  },
+  _dismiss:function(){
+    this.setState({
+      show:false
+    })
   },
   _onAllReceiversChanged: function() {
     this.setState({
@@ -204,7 +217,7 @@ var ReceiversDialog = React.createClass({
     this.props.onDismiss();
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this._dismiss();
     this.props.onDismiss();
   },
   mergeReceive: function(receiver, isAll, status) {
@@ -227,7 +240,7 @@ var ReceiversDialog = React.createClass({
   },
   componentDidMount: function() {
     VEEStore.addReceiversChangeListener(this._onAllReceiversChanged);
-    VEEAction.getAllReceivers(this.props.ruleId);
+    VEEAction.getAllReceivers(this.context.currentRoute.params.customerId,this.props.ruleId);
   },
   componentWillUnmount: function() {
     VEEStore.removeReceiversChangeListener(this._onAllReceiversChanged);
@@ -348,13 +361,13 @@ var ReceiversDialog = React.createClass({
       title: I18N.Setting.VEEMonitorRule.AddReceivers,
       actions: actions,
       modal: true,
-      openImmediately: true,
+      open: this.state.show,
       onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
     let content;
     if (this.state.isLoading) {
-      content = <CircularProgress  mode="indeterminate" size={1} />
+      content = <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
     } else {
       content = (this.state.allReceivers.size > 0) ? this._renderReceivers() : null;
     }

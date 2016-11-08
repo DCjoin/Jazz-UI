@@ -8,9 +8,9 @@ import assign from "object-assign";
 var search = null;
 var formulaSearch = null;
 let TagAction = {
-  getTagListByType: function(type, page, filterObj) {
+  getTagListByType: function(customerId,type, page, filterObj) {
     var obj = {
-      CustomerId: parseInt(window.currentCustomerId),
+      CustomerId: parseInt(customerId),
       Type: type,
       ReverseFormula: type === 2 ? true : false
     };
@@ -209,10 +209,10 @@ let TagAction = {
       error: function(err, res) {}
     });
   },
-  getTagLogListByCustomerId: function() {
+  getTagLogListByCustomerId: function(customerId) {
     Ajax.post('/TagImport/GetTagImportHistory', {
       params: {
-        customerId: parseInt(window.currentCustomerId)
+        customerId: parseInt(customerId)
       },
       success: function(logList) {
         AppDispatcher.dispatch({

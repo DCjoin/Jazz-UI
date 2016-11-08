@@ -7,11 +7,11 @@ import VEEStore from '../../stores/customerSetting/VEEStore.jsx';
 var _page, _ruleId, _association, _filterObj;
 let {isNumber} = CommonFuns;
 let VEEAction = {
-  GetVEERules: function() {
+  GetVEERules: function(customerId) {
     Ajax.post('/VEE/GetVEERules', {
       params: {
         filter: {
-          CustomerId: window.currentCustomerId,
+          CustomerId: customerId,
         }
       },
       success: function(rules) {
@@ -31,12 +31,12 @@ let VEEAction = {
       id: id
     });
   },
-  getAllReceivers: function(ruleId) {
+  getAllReceivers: function(customerId,ruleId) {
     Ajax.post('/VEE/GetUsersByFilter', {
       params: {
         "filter": {
           "RuleIds": isNumber(ruleId) ? [ruleId] : [],
-          "CustomerId": window.currentCustomerId,
+          "CustomerId": customerId,
           "IncludeAll": true
         },
         "page": 0,
@@ -120,7 +120,7 @@ let VEEAction = {
       }
     });
   },
-  getAssociatedTag: function(page, ruleId, association, filterObj, refresh) {
+  getAssociatedTag: function(customerId,page, ruleId, association, filterObj, refresh) {
     _page = page;
     _ruleId = ruleId;
     _association = association;
@@ -128,7 +128,7 @@ let VEEAction = {
     Ajax.post('/VEE/GetVEETagsByFilter', {
       params: {
         filter: {
-          CustomerId: window.currentCustomerId,
+          CustomerId: customerId,
           Association: association,
           Type: 1,
           RuleIds: [ruleId],

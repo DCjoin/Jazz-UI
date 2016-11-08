@@ -387,7 +387,7 @@ var FolderLeftPanel = React.createClass({
     var treeContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <Tree {...treeProps}/>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <Tree {...treeProps}/>);
 
     var dialog;
     switch (this.state.dialogType) {

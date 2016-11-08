@@ -79,7 +79,7 @@ let TagList = React.createClass({
       dialogContent = (<div className='jazz-tag-loading'><div style={{
         margin: 'auto',
         width: '100px'
-      }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+      }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (this.state.importSuccess) {
       dialogTitle = I18N.Setting.TagBatchImport.ImportSuccess;
       var importResult = this.state.importResult;
