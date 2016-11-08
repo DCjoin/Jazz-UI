@@ -1153,7 +1153,7 @@ var Cost = React.createClass({
     }
   },
   componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
+    //this.initBatchViewbaleTextFiled();
   },
   componentDidMount: function() {
     HierarchyStore.addCostChangeListener(this._onChange);

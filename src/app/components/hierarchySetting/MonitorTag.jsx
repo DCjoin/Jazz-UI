@@ -13,6 +13,7 @@ import TagFilter from '../customerSetting/tag/TagFilter.jsx';
 function emptyList() {
   return new List();
 }
+var customerId=null;
 let AddTagItem = React.createClass({
   propTypes: {
     tag: React.PropTypes.object,
@@ -51,6 +52,9 @@ var MonitorTag = React.createClass({
     onUpdate: React.PropTypes.func,
     setEditBtnStatus: React.PropTypes.func,
     isDim: React.PropTypes.bool
+  },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
   },
   getInitialState: function() {
     return ({
@@ -155,7 +159,7 @@ var MonitorTag = React.createClass({
   },
   _onDeleteTag: function(tag) {
     var associationType = this.props.isDim ? 4 : 1;
-    HierarchyAction.modifyTags(null, [{
+    HierarchyAction.modifyTags(customerId,null, [{
       Id: tag.get('Id'),
       Version: tag.get('Version')
     }], associationType);
@@ -476,9 +480,10 @@ var MonitorTag = React.createClass({
   },
   getAssociatedTag: function() {
     var isView = this.props.formStatus === formStatus.VIEW;
-    HierarchyAction.getAssociatedTag(this.state.page, this.props.hierarchyId, this.state.association, this.state.filterObj, isView);
+    HierarchyAction.getAssociatedTag(customerId,this.state.page, this.props.hierarchyId, this.state.association, this.state.filterObj, isView);
   },
   componentWillMount: function() {
+    customerId=this.context.currentRoute.params.customerId;
     this.props.setEditBtnStatus(true);
   },
   componentDidMount: function() {

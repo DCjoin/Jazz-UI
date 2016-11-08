@@ -50,6 +50,9 @@ var MonitorTag = React.createClass({
     ruleId: React.PropTypes.number,
     onUpdate: React.PropTypes.func,
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return ({
       page: 1,
@@ -421,7 +424,7 @@ var MonitorTag = React.createClass({
       )
   },
   getAssociatedTag: function() {
-    VEEAction.getAssociatedTag(this.state.page, this.props.ruleId, this.state.association, this.state.filterObj)
+    VEEAction.getAssociatedTag(this.context.currentRoute.params.customerId,this.state.page, this.props.ruleId, this.state.association, this.state.filterObj)
   },
   componentDidMount: function() {
     VEEStore.addTagChangeListener(this._onChange);

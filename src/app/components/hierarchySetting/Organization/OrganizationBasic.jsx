@@ -101,11 +101,11 @@ var OrganizationBasic = React.createClass({
       if (this.props.selectedNode.get('Code').length <= 200) {
         this.props.setEditBtnStatus(false);
     }
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
+    //this.initBatchViewbaleTextFiled();
+    //this.clearErrorTextBatchViewbaleTextFiled();
   },
   componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
+    //this.clearErrorTextBatchViewbaleTextFiled();
   },
   render: function() {
     return (

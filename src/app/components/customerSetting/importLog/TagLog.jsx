@@ -7,6 +7,9 @@ import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 
 
 var TagLog = React.createClass({
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       isLoading: true
@@ -23,7 +26,7 @@ var TagLog = React.createClass({
     document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidMount: function() {
-    TagAction.getTagLogListByCustomerId();
+    TagAction.getTagLogListByCustomerId(this.context.currentRoute.params.customerId);
     TagStore.addTagLogListChangeListener(this._onChange);
   },
   componentWillUnmount: function() {

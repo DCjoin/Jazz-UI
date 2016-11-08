@@ -120,7 +120,7 @@ let VEEAction = {
       }
     });
   },
-  getAssociatedTag: function(page, ruleId, association, filterObj, refresh) {
+  getAssociatedTag: function(customerId,page, ruleId, association, filterObj, refresh) {
     _page = page;
     _ruleId = ruleId;
     _association = association;
@@ -128,7 +128,7 @@ let VEEAction = {
     Ajax.post('/VEE/GetVEETagsByFilter', {
       params: {
         filter: {
-          CustomerId: window.currentCustomerId,
+          CustomerId: customerId,
           Association: association,
           Type: 1,
           RuleIds: [ruleId],

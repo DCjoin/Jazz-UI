@@ -170,7 +170,7 @@ var Label = React.createClass({
     document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidMount: function() {
-    LabelAction.getLabelList();
+    LabelAction.getLabelList(this.context.currentRoute.params.customerId);
     LabelStore.addLabelListChangeListener(this._onLabelListChange);
     LabelStore.addSelectedLabelChangeListener(this._onSelectedItemChange);
     LabelStore.addErrorChangeListener(this._onError);

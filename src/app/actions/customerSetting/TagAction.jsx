@@ -209,10 +209,10 @@ let TagAction = {
       error: function(err, res) {}
     });
   },
-  getTagLogListByCustomerId: function() {
+  getTagLogListByCustomerId: function(customerId) {
     Ajax.post('/TagImport/GetTagImportHistory', {
       params: {
-        customerId: parseInt(window.currentCustomerId)
+        customerId: parseInt(customerId)
       },
       success: function(logList) {
         AppDispatcher.dispatch({

@@ -7,6 +7,9 @@ import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx'
 
 
 var HierarchyLog = React.createClass({
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       isLoading: true
@@ -23,7 +26,7 @@ var HierarchyLog = React.createClass({
     document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidMount: function() {
-    HierarchyAction.getLogListByCustomerId();
+    HierarchyAction.getLogListByCustomerId(this.context.currentRoute.params.customerId);
     HierarchyStore.addLogListChangeListener(this._onChange);
   },
   componentWillUnmount: function() {

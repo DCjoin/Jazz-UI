@@ -21,7 +21,11 @@ function emptyMap() {
 function emptyList() {
   return new List();
 }
+var customerId=null;
 var Hierarchy = React.createClass({
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,
@@ -335,14 +339,15 @@ var Hierarchy = React.createClass({
     }
   },
   _onReloadHierachyTree: function() {
-    HierarchyAction.GetHierarchys(this.state.selectedNode.get('Id'));
+    HierarchyAction.GetHierarchys(customerId,this.state.selectedNode.get('Id'));
     this.setState({
       isLoading: true
     });
   },
   componentWillMount: function() {
+    customerId=this.context.currentRoute.params.customerId;
     document.title = I18N.MainMenu.CustomerSetting;
-    HierarchyAction.getAllIndustries();
+    HierarchyAction.getAllIndustries(customerId);
     //HierarchyAction.GetHierarchys();
     this.setState({
       isLoading: true
