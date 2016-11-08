@@ -282,6 +282,12 @@ ReactDom.render(<Router history={hashHistory} routes={{
     }, {
       path: 'service/:cusnum',
       component: ServiceApp,
+      indexRoute: {
+        onEnter: ({params}, replaceState) => {
+          console.log(1111);
+        },
+        component: MainApp,
+      },
       _auth: true,
       childRoutes: [{
         path: 'workday',

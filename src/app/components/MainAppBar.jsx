@@ -6,6 +6,7 @@ import { Menu, Mixins, IconButton, FlatButton, FontIcon, TextField, Dialog } fro
 import classnames from "classnames";
 import { assign, get, set } from "lodash/object";
 import { isObject } from "lodash/lang";
+import SelectCustomer from './SelectCustomer.jsx';
 import lang from '../lang/lang.jsx';
 import ButtonMenu from '../controls/ButtonMenu.jsx';
 import MainMenu from '../controls/MainMenu.jsx';
@@ -120,7 +121,10 @@ var MainAppBar = React.createClass({
     return this._editUser.bind(this, modifyType);
   },
   _showCustomerList: function() {
-    this.props.showCustomerList();
+    // this.props.showCustomerList();
+    this.setState({
+      showCustomerList: true
+    });
   },
 
   _savePassword: function() {
@@ -591,6 +595,7 @@ var MainAppBar = React.createClass({
       editType: "",
       tempData: {},
       configSelected: true,
+      showCustomerList: false,
     };
   },
   componentDidMount: function() {
@@ -737,6 +742,11 @@ var MainAppBar = React.createClass({
 
         {leftNav}
         {dialog}
+        {this.state.showCustomerList && (<SelectCustomer onClose={() => {
+          this.setState({
+            showCustomerList: false
+          });
+        }}/>)}
     </div>
 
       );

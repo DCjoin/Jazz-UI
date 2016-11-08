@@ -22,6 +22,7 @@ import NetworkChecker from '../controls/NetworkChecker.jsx';
 import ExportChart from './energy/ExportChart.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
+import LoginStore from '../stores/LoginStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import CusFlatButton from '../controls/FlatButton.jsx';
@@ -40,10 +41,6 @@ function getCurrentCustomer() {
 
 let MainApp = React.createClass({
   //mixins: [Navigation, State],
-  contextTypes: {
-    currentUser: React.PropTypes.object,
-    rivilege: React.PropTypes.array
-  },
   _onAllUOMSChange() {
     window.uoms = UOMStore.getUoms();
   },
@@ -51,25 +48,26 @@ let MainApp = React.createClass({
     window.allCommodities = AllCommodityStore.getAllCommodities();
   },
   _onCurrentrivilegeChanged: function() {
-    var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege();
-    // console.log('_currentUserRivilege:');
-    // console.log(_currentUserRivilege);
-    var _currentUser = CurrentUserStore.getCurrentUser();
-    var _allCustomers = getCurrentCustomers();
-    this.setState({
-      currentUser: _currentUser,
-      rivilege: _currentUserRivilege,
-      allCustomers:_allCustomers
-    });
+    // var _currentUserRivilege = CurrentUserStore.getCurrentPrivilege();
+    // // console.log('_currentUserRivilege:');
+    // // console.log(_currentUserRivilege);
+    // var _currentUser = CurrentUserStore.getCurrentUser();
+    // var _allCustomers = getCurrentCustomers();
+    // this.setState({
+    //   currentUser: _currentUser,
+    //   rivilege: _currentUserRivilege,
+    //   allCustomers:_allCustomers
+    // });
   //SelectCustomerActionCreator.getCustomer(window.currentUserId);
+    this._dataReady();
   },
-  getInitialState: function() {
-    return {
-      currentUser: CurrentUserStore.getCurrentUser(),
-      rivilege: CurrentUserStore.getCurrentPrivilege(),
-      allCustomers:CurrentUserCustomerStore.getAll()
-    };
-  },
+  // getInitialState: function() {
+  //   return {
+  //     currentUser: CurrentUserStore.getCurrentUser(),
+  //     rivilege: CurrentUserStore.getCurrentPrivilege(),
+  //     allCustomers:CurrentUserCustomerStore.getAll()
+  //   };
+  // },
 
   _dismissDialog() {
     LoginActionCreator.logout();
@@ -118,13 +116,49 @@ let MainApp = React.createClass({
       viewState: viewState.MAIN
     });
   },
+  _prepareShow: function() {
+    return CurrentUserCustomerStore.getAll() && CurrentUserStore.getCurrentPrivilege() && CurrentUserStore.getCurrentUser();
+  },
+  _dataReady: function() {
+    if( this._prepareShow() ) {
+      let defaultReplace = this._needDefaultReplace();
+      if(defaultReplace) {
+        this.props.router.replace(defaultReplace);
+      } else {
+        this.forceUpdate();
+      }
+    }
+  },
+  _needDefaultReplace: function() {
+    if(CurrentUserStore.getCurrentUser().Id === 1) {
+      return RoutePath.config(assign({}, this.props.router.params));
+    }
+    if( CurrentUserCustomerStore.getAll().length > 1 ) {
+      return false;
+    }
+    let isAdmin = LoginStore.checkHasSpAdmin();
+    if( CurrentUserCustomerStore.getAll().length === 1 ) {
+      if( !isAdmin ) {
+        return RoutePath[this._getMenuItems()[0].name](
+          assign({}, this.props.router.params, {
+            customerId: CurrentUserCustomerStore.getAll()[0].Id
+          })
+        );
+      }
+    } else if( isAdmin ) {
+      return RoutePath.workday(assign({}, this.props.router.params, {
+        cusnum: CurrentUserCustomerStore.getAll().length
+      }));
+    }
+    return false;
+  },
   _onChange: function(argument) {
-    var params = this.props.params;
-    var customerCode = params.customerId;
-    var currentCustomer = CurrentUserCustomerStore.getCurrentCustomer();
-    var currentUser = this.state.currentUser;
+    // var params = this.props.params;
+    // var customerCode = params.customerId;
+    // var currentCustomer = CurrentUserCustomerStore.getCurrentCustomer();
+    // var currentUser = this.state.currentUser;
 
-    this.forceUpdate();
+    this._dataReady();
 /*
     if (!customerCode && (currentUser && currentUser.Id !== 1)) {
       // 切换至 Map SelectCustomer
@@ -364,33 +398,22 @@ let MainApp = React.createClass({
   },
 
   render: function() {
-    if(CurrentUserStore.getCurrentUser() 
-      && CurrentUserStore.getCurrentPrivilege()
-      && CurrentUserCustomerStore.getAll()
-      ) {
+    if(this._prepareShow()) {
       let customerId = this.props.router.params.customerId;
       if( customerId ) {
-        let menuItems = this._getMenuItems();
-        let logoUrl = 'Logo.aspx?hierarchyId=' + customerId;
-        console.log(menuItems);
         return (
-          <div className='jazz-main'>
-                  <MainAppBar items={menuItems} logoUrl={logoUrl} showCustomerList={this._showCustomerList}/>
-                  {this.props.children}
-                  <NetworkChecker></NetworkChecker>
-                  <ExportChart></ExportChart>
-              </div>
-          );
+          <div className='jazz-main'>           
+            <MainAppBar
+              items={CurrentUserStore.getMainMenuItems()} 
+              logoUrl={customerId && 'Logo.aspx?hierarchyId=' + customerId} 
+              showCustomerList={this._showCustomerList}/>
+            {customerId && this.props.children}
+            <NetworkChecker /> 
+            <ExportChart /> 
+          </div>
+        );
       } else {
-        return (
-          <SelectCustomer 
-            selectCustomer={this._switchCustomer}
-            close={this._closeSelectCustomer}
-            closable={false}
-            currentCustomerId={parseInt(this.props.params.customerId)}
-            params={CurrentUserCustomerStore.getAll()}
-            userId={parseInt(window.currentUserId)}/>
-          );
+        return ( <SelectCustomer />);
       }
     }
       return (

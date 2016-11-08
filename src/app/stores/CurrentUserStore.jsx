@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
 
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
+import RoutePath from '../util/RoutePath.jsx';
 
 let _currentUser = null,
   _error = null,
@@ -127,6 +128,131 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       });
     }
     return privilege;
+  },
+  getMainMenuItems: function() {
+    var menuItems = [];
+    if (!this.getCurrentPrivilege()) return
+
+    if (this.getCurrentPrivilege().indexOf('1221') > -1) {
+      menuItems = [
+        {
+          name: 'map',
+          getPath: RoutePath.map,
+          title: I18N.MainMenu.Map
+        },
+        {
+          name: 'alarm',
+          getPath: RoutePath.alarm,
+          title: I18N.MainMenu.Alarm
+        },
+        {
+          name: 'setting',
+          getPath: RoutePath.setting,
+          title: I18N.MainMenu.Energy
+        }
+      ];
+    } else {
+      menuItems = [
+        {
+          name: 'map',
+          getPath: RoutePath.map,
+          title: I18N.MainMenu.Map
+        },
+        {
+          name: 'setting',
+          getPath: RoutePath.setting,
+          title: I18N.MainMenu.Energy
+        }
+      ];
+    }
+    if (this.getCurrentPrivilege().indexOf('1218') > -1 || this.getCurrentPrivilege().indexOf('1219') > -1) {
+      menuItems.push(
+        {
+          name: 'report',
+          title: I18N.MainMenu.Report,
+          children: [{
+            list: [
+              {
+                name: 'dailyReport',
+                getPath: RoutePath.report.dailyReport,
+                title: I18N.MainMenu.DailyReport
+              },
+              {
+                name: 'template',
+                getPath: RoutePath.report.template,
+                title: I18N.MainMenu.Template
+              }
+            ]
+          }]
+        }
+      );
+    }
+    if (this.getCurrentPrivilege().indexOf('1208') > -1 || this.getCurrentPrivilege().indexOf('1207') > -1 || this.getCurrentPrivilege().indexOf('1217') > -1) {
+      var customerChildren = [];
+      if (this.getCurrentPrivilege().indexOf('1208') > -1) {
+        customerChildren = [{
+          title: I18N.MainMenu.TagSetting,
+          list: [
+            {
+              name: 'ptag',
+              getPath: RoutePath.customerSetting.ptag,
+              title: I18N.MainMenu.PTagManagement
+            },
+            {
+              name: 'vtag',
+              getPath: RoutePath.customerSetting.vtag,
+              title: I18N.MainMenu.VTagManagement
+            },
+            {
+              name: 'vee',
+              getPath: RoutePath.customerSetting.vee,
+              title: I18N.MainMenu.VEEMonitorRule
+            },
+            {
+              name: 'log',
+              getPath: RoutePath.customerSetting.log,
+              title: I18N.MainMenu.TagBatchImportLog
+            }
+          ]
+        }];
+      }
+      if (this.getCurrentPrivilege().indexOf('1207') > -1) {
+        customerChildren.push({
+          title: I18N.MainMenu.HierarchySetting,
+          list: [
+            {
+              name: 'hierNode',
+              getPath: RoutePath.customerSetting.hierNode,
+              title: I18N.MainMenu.HierarchyNodeSetting
+            },
+            {
+              name: 'hierLog',
+              getPath: RoutePath.customerSetting.hierLog,
+              title: I18N.MainMenu.HierarchyLog
+            }
+          ]
+        });
+      }
+      if (this.getCurrentPrivilege().indexOf('1217') > -1) {
+        customerChildren.push({
+          title: I18N.MainMenu.CustomSetting,
+          list: [
+            {
+              name: 'customerLabeling',
+              getPath: RoutePath.customerSetting.customerLabeling,
+              title: I18N.MainMenu.CustomizedLabeling
+            }
+          ]
+        });
+      }
+      menuItems.push({
+        name: 'customerSetting',
+        title: I18N.MainMenu.CustomerSetting,
+        children: customerChildren
+      });
+    }
+
+    return menuItems;
   },
   emitCurrentUserChange: function() {
     this.emit(CURRENT_USER_EVENT);
