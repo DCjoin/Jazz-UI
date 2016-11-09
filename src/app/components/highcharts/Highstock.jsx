@@ -1,8 +1,9 @@
 'use strict';
-
+import React from 'react';
+import ReactDom from 'react-dom';
 import EnergyChartStore from '../../stores/EnergyChartStore.jsx';
 
-let React = require('react');
+//let React = require('react');
 let assign = require('object-assign');
 
 let Highcharts = window.Highcharts;
@@ -51,7 +52,7 @@ let Highstock = React.createClass({
     let that = this,
       options = assign({}, that.props.options, {
         chart: assign({}, that.props.options.chart, {
-          renderTo: this.refs.jazz_energy_view.getDOMNode()
+          renderTo: ReactDom.findDOMNode(this.refs.jazz_energy_view)
         })
       });
 

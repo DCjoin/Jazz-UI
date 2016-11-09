@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import ReactDom from 'react-dom';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
@@ -55,8 +56,8 @@ let RawDataList = React.createClass({
     }
   },
   _onScroll: function() {
-    var el = this.refs.list.getDOMNode(),
-      head = this.refs.header.getDOMNode();
+    var el = ReactDom.findDOMNode(this.refs.list),
+      head = ReactDom.findDOMNode(this.refs.header);
     var scrollIndex = parseInt(el.scrollTop / 41);
     //set scrollTop to scroll el.scrollTop=500
     head.innerText = dateItem[scrollIndex];
@@ -103,7 +104,7 @@ let RawDataList = React.createClass({
 
     });
     if (this.refs.header) {
-      let head = this.refs.header.getDOMNode();
+      let head = ReactDom.findDOMNode(this.refs.header);
       if (firstDate === null) {
         head.style.display = 'none';
       } else {
@@ -166,7 +167,7 @@ let RawDataList = React.createClass({
       dateItem = [];
       indexItem = [];
       if (this.refs.list) {
-        var el = this.refs.list.getDOMNode();
+        var el = ReactDom.findDOMNode(this.refs.list);
         el.scrollTop = 0;
       }
       this.setState({
@@ -179,7 +180,7 @@ let RawDataList = React.createClass({
   _onListItemSelected: function(index) {
     //console.log('_list_index=' + index);
     if (index !== this.state.selectedId) {
-      var el = this.refs.list.getDOMNode();
+      var el = ReactDom.findDOMNode(this.refs.list);
       var id = indexItem.indexOf(index);
       el.scrollTop = id * 40 + 1;
       this.setState({
@@ -196,7 +197,7 @@ let RawDataList = React.createClass({
       dateItem = [];
       indexItem = [];
       if (this.refs.list) {
-        var el = this.refs.list.getDOMNode();
+        var el = ReactDom.findDOMNode(this.refs.list);
         el.scrollTop = 0;
       }
       this.setState({
@@ -204,7 +205,7 @@ let RawDataList = React.createClass({
       })
     }
     if (nextProps.step !== this.props.step) {
-      let head = this.refs.header.getDOMNode();
+      let head = ReactDom.findDOMNode(this.refs.header);
       head.style.display = 'none';
     }
   },
