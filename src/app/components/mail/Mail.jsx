@@ -11,9 +11,6 @@ let Mail = React.createClass({
   contextTypes:{
       currentRoute: React.PropTypes.object
   },
-  componentWillUnmount: function() {
-    console.log();
-  },
   render: function() {
     var logoUrl = 'Logo.aspx?hierarchyId=' + this.context.currentRoute.params.customerId;
     return (

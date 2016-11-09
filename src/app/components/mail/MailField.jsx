@@ -89,7 +89,8 @@ let MailField = React.createClass({
         padding: '0 10px'
       },
       underlineStyle = {
-        borderBottom: '1px solid transparent',
+        // borderBottom: '1px solid transparent',
+        display: 'none'
       },
       underlineFocusStyle = {
         borderColor: 'transparent'

@@ -1,7 +1,8 @@
 'use strict';
 import React from "react";
-import { Navigation, State } from 'react-router';
-import { Dialog, FlatButton, TextField, Paper } from 'material-ui';
+import { TextField, Paper } from 'material-ui';
+import NewDialog from '../NewDialog.jsx';
+import FlatButton from '../FlatButton.jsx';
 
 var Delete = React.createClass({
   propTypes: {
@@ -36,6 +37,8 @@ var Delete = React.createClass({
 
     let actions = [
       <FlatButton
+      inDialog={true}
+      primary={true}
       label={I18N.Template.Delete.Delete}
       onTouchTap={this._onFirstActionTouchTap}
       />,
@@ -64,7 +67,7 @@ var Delete = React.createClass({
     return (
       <div className='jazz-copytemplate-dialog'>
         <div className='able'>
-          <Dialog {...dialogProps}>
+          <NewDialog {...dialogProps}>
             <div style={{
         'word-wrap': 'break-word',
         'word-break': 'break-all'
@@ -72,7 +75,7 @@ var Delete = React.createClass({
               {content}
             </div>
 
-          </Dialog>
+          </NewDialog>
         </div>
       </div>
       )

@@ -2,7 +2,10 @@
 
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
-import { Menu, Mixins, IconButton, FlatButton, FontIcon, TextField, Dialog } from 'material-ui';
+import FlatButton from 'material-ui/FlatButton';
+import Dialog from 'material-ui/Dialog';
+import FontIcon from 'material-ui/FontIcon';
+import TextField from 'material-ui/TextField';
 import classnames from "classnames";
 import { assign, get, set } from "lodash/object";
 import { isObject } from "lodash/lang";
@@ -11,6 +14,7 @@ import lang from '../lang/lang.jsx';
 import ButtonMenu from '../controls/ButtonMenu.jsx';
 import MainMenu from '../controls/MainMenu.jsx';
 import SideNav from '../controls/SideNav.jsx';
+import NewDialog from '../controls/NewDialog.jsx';
 import LinkButton from '../controls/LinkButton.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../controls/ViewableDropDownMenu.jsx';
@@ -147,10 +151,11 @@ var MainAppBar = React.createClass({
   },
   _logout: function() {
     LoginActionCreator.logout();
-    var _redirectFunc = this.context.router.replaceWith;
-    _redirectFunc('login', {
-      lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
-    });
+    this.context.router.push(RoutePath.login(this.context.router.params));
+    // var _redirectFunc = this.context.router.replaceWith;
+    // _redirectFunc('login', {
+    //   lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
+    // });
   },
   _cancelLogout: function() {
     this.setState(this.getInitialState());
@@ -574,6 +579,7 @@ var MainAppBar = React.createClass({
     var actions = [
       <CustomFlatButton
       label={I18N.Platform.User.Logout}
+      inDialog={true}
       primary={true}
       onClick={this._logout} />,
       <CustomFlatButton
@@ -581,9 +587,9 @@ var MainAppBar = React.createClass({
       onClick={this._cancelLogout} />
     ];
 
-    return (<Dialog actions={actions} title={I18N.Platform.User.Logout} openImmediately={true} modal={true} >
-      <div>{I18N.Platform.User.LogoutTip}</div>
-  </Dialog>);
+  return (<NewDialog actions={actions} title={I18N.Platform.User.Logout} open={DIALOG_TYPE.LOGOUT === this.state.dialogType} modal={true} >
+            <div>{I18N.Platform.User.LogoutTip}</div>
+        </NewDialog>);
   },
   // ************* Render Component End *************
   getInitialState: function() {
@@ -631,9 +637,6 @@ var MainAppBar = React.createClass({
 
     // render dialog
     switch (dialogType) {
-      case DIALOG_TYPE.LOGOUT:
-        dialog = this._getLogoutDialog();
-        break;
       case DIALOG_TYPE.MODIIFY_PASSWORD:
         dialog = this._getEditPasswordDialog(customError);
         break;
@@ -742,6 +745,7 @@ var MainAppBar = React.createClass({
 
         {leftNav}
         {dialog}
+        {this._getLogoutDialog()}
         {this.state.showCustomerList && (<SelectCustomer onClose={() => {
           this.setState({
             showCustomerList: false

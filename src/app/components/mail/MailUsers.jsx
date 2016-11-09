@@ -2,12 +2,14 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import assign from 'object-assign';
 import { FlatButton, CircularProgress, Tabs, Tab } from 'material-ui';
 import MailAction from '../../actions/MailAction.jsx';
 import MailStore from '../../stores/MailStore.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
 import PlatformUser from './MailPlatformUser.jsx';
 import Providers from './MailProviders.jsx';
+import getLessVar from '../../util/GetLessVar.jsx';
 
 let MailUsers = React.createClass({
 
@@ -92,10 +94,13 @@ let MailUsers = React.createClass({
     };
     return (
       <div className='jazz-mailuser'>
-        <Tabs tabItemContainerStyle={itemStyle} valueLink={{
-        value: this.state.tabsValue,
-        requestChange: this._handleTabsChange.bind(this)
-      }}>
+        <Tabs 
+          tabItemContainerStyle={itemStyle}
+          onChange={this._handleTabsChange}
+          inkBarStyle={{
+            backgroundColor: getLessVar('schneiderBlue')
+          }}
+          value={this.state.tabsValue}>
           <Tab ref='tab1' value='tab1' label={I18N.Mail.Contactor} onActive={this._handleContactorTabActive}>
             <Providers ref='providers' users={this.state.users} isLoading={this.state.isLoading}/>
           </Tab>

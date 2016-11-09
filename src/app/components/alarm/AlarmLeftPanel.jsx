@@ -1,13 +1,12 @@
 'use strict';
 import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import { DatePicker} from 'material-ui';
-import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import assign from "object-assign";
 import moment from 'moment';
 import { dateFormat, dateAdd } from '../../util/Util.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
+import CustomDropDownMenu from '../../controls/CustomDropDownMenu.jsx';
 import MonthPicker from '../../controls/MonthPicker.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
@@ -138,19 +137,11 @@ var AlarmLeftPanel = React.createClass({
         flexFlow: 'column',
         backgroundColor: 'rgb(53, 64, 82)'
       }}>
-          <div className={'jazz-alarm-left-panel-dropdownmenu-container'}>
-              <DropDownMenu value={this.state.dateType}
-                autoWidth={false} style={{
-        width: '320px',
-        height: '32px'
-      }} labelStyle={{
-        lineHeight:'32px'
-      }} iconStyle={{
-        marginTop: '-10px'
-      }} onChange={this._dateTypeChangeHandler}>
-      {menuItems}
-      </DropDownMenu>
-          </div>
+        <CustomDropDownMenu 
+          height={32}
+          backgroundColor='#86CCFF' 
+          onChange={this._dateTypeChangeHandler} 
+          value={this.state.dateType} >{menuItems}</CustomDropDownMenu>
           <div style={{
         padding: '0px auto 12px auto',
         height: '32px',
