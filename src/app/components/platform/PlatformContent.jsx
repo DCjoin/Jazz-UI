@@ -448,7 +448,8 @@ let PlatformContent = React.createClass({
       sendPasswordButton = (
         <FlatButton secondary={true}  label={I18N.Platform.ServiceProvider.SendEmail} style={{
           borderRight: '1px solid #ececec',
-          color: '#abafae'
+          color: '#abafae',
+          height: 56
         }} onClick={
         that._handleSendEmail
         }/>
@@ -457,7 +458,8 @@ let PlatformContent = React.createClass({
         resetDefaultButton = (
           <FlatButton secondary={true}  label={I18N.Platform.ServiceProvider.ResetDefault} style={{
             borderRight: '1px solid #ececec',
-            color: '#abafae'
+            color: '#abafae',
+            height: 56
           }} onClick={
           that._handleResetDefault
           }/>

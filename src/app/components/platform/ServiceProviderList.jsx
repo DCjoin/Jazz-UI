@@ -3,7 +3,7 @@
 import React from 'react';
 
 import MainAppBar from '../MainAppBar.jsx';
-import NetworkChecker from '../../controls/NetworkChecker.jsx';
+import CustomDropDownMenu from '../../controls/CustomDropDownMenu.jsx';
 import classSet from 'classnames';
 import { FlatButton, FontIcon, MenuItem, DropDownMenu } from 'material-ui';
 import ProviderItem from './ProviderItem.jsx';
@@ -35,20 +35,7 @@ let ServiceProviderList = React.createClass({
       height: '32px'
     };
     var dropDownMenuProps = {
-
-      valueMember: "type",
-      displayMember: "label",
       value: this.props.sortBy,
-      labelStyle: {
-        color: "#fff",
-        padding: '0'
-      },
-      underlineStyle: {
-        display: "none"
-      },
-      iconStyle: {
-        display: "none"
-      },
       onChange: function(e, selectedIndex, value) {
         that.props.changeSortBy(value);
       }
@@ -69,14 +56,11 @@ let ServiceProviderList = React.createClass({
         </div>
 
 
-        <div className="jazz-serviceprovider-sortbar">
-          <DropDownMenu {...dropDownMenuProps} >
+          <CustomDropDownMenu {...dropDownMenuProps}>            
             <MenuItem value={'customername@asc'} primaryText={I18N.Platform.ServiceProvider.CustomerName}/>
             <MenuItem value={'starttime@asc'} primaryText={I18N.Platform.ServiceProvider.StartTime}/>
-          </DropDownMenu>
-          <span className="icon-arrow-down jazz-serviceprovider-sortbar-icon" />
+          </CustomDropDownMenu>
 
-        </div>
 
         <div className="jazz-provider-list">
 {providerItems}

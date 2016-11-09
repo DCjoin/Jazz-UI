@@ -1,7 +1,9 @@
 'use strict';
 import React from "react";
-import { Navigation, State } from 'react-router';
-import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
+import { TextField, Paper, CircularProgress } from 'material-ui';
+
+import NewDialog from '../NewDialog.jsx';
+import FlatButton from '../FlatButton.jsx';
 
 var BlankDialog = React.createClass({
   propTypes: {
@@ -70,9 +72,9 @@ var BlankDialog = React.createClass({
     return (
       <div className='jazz-copytemplate-dialog'>
         <div className='able'>
-          <Dialog {...dialogProps}>
+          <NewDialog {...dialogProps}>
             {content}
-          </Dialog>
+          </NewDialog>
         </div>
       </div>
       )
