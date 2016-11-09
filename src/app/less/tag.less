@@ -267,9 +267,23 @@
             }
           }
           .jazz-full-border-datepicker{
-            .jazz-full-border-datepicker-container>div{
-            background-color:#fbfbfb !important
-          }
+            .jazz-full-border-datepicker-container{
+              display: flex;
+              align-items: center;
+              >div{
+              background-color:#fbfbfb !important
+              position: relative;
+              border: 0px !important;
+              top:-5px;
+              input{
+                font-size: 16px!important;
+              }
+              .datepicker-popup{
+                z-index:10;
+                position: absolute;
+              }
+            }
+            }
             }
         }
         .rightside{

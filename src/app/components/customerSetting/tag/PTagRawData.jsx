@@ -262,7 +262,7 @@ let PTagRawData = React.createClass({
           </div>
           {this.props.selectedTag.get('IsAccumulated') ? <FontIcon className='icon-sync' style={switchIconStyle} ref="switchIcon" onClick={this._onSwitchRawDataView}/> : null}
         </div>
-        <DateTimeSelector ref='dateTimeSelector' endLeft='-100px'     startDate= {this.state.startDate}
+        <DateTimeSelector ref='dateTimeSelector' showTime={true} endLeft='-100px'     startDate= {this.state.startDate}
       endDate={this.state.endDate}
       startTime={this.state.startTime}
       endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>

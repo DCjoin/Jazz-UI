@@ -17,6 +17,11 @@ let DateTimeSelector = React.createClass({
     endTime: React.PropTypes.number,
     showTime: React.PropTypes.bool
   },
+  getDefaultProps(){
+    return {
+      showTime: true,
+    };
+  },
   setDateField(startDate, endDate, callback) {
 
     let startTime = startDate.getHours(),
