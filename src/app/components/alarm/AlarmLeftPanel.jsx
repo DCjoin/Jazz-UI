@@ -26,10 +26,11 @@ var AlarmLeftPanel = React.createClass({
     onItemClick: React.PropTypes.func,
   },
   childContextTypes: {
-    muiTheme: React.PropTypes.object.isRequired
+    muiTheme: React.PropTypes.object.isRequired,
   },
   contextTypes: {
-    muiTheme: React.PropTypes.object
+    muiTheme: React.PropTypes.object,
+    router: React.PropTypes.object,
   },
   getChildContext() {
     let childContext = assign({}, this.context.muiTheme);
@@ -71,7 +72,7 @@ var AlarmLeftPanel = React.createClass({
       step: step
     });
 
-    AlarmAction.getHierarchyListByDate(date, step);
+    AlarmAction.getHierarchyListByDate(date, step, this.context.router.params.customerId);
   },
   onYearPickerSelected(yearDate) {
     this.loadListByDate(yearDate, MONTHSTEP);

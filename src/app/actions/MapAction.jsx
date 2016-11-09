@@ -18,13 +18,13 @@ let MapAction = {
       dateId: dateId
     });
   },
-  getMapBuildingsByCustomerId: function(relativeDateType,customerCode) {
+  getMapBuildingsByCustomerId: function(relativeDateType,customerId) {
     //console.log('getMapBuildingsByCustomerId:'+ customerCode);
     _relativeDateType = relativeDateType;
     Ajax.post('/Energy/GetMapBuildingsByCustomerId', {
       params: {
         baseTime: DataConverter.DatetimeToJson(new Date()),
-        customerId: window.currentCustomerId,
+        customerId: customerId,
         //customerId: customerCode,
         relativeDateType: relativeDateType
       },

@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 
-import immutable from 'Immutable';
+import Immutable from 'immutable';
 import { RadioButtonGroup, RadioButton, SelectField } from 'material-ui';
 
 import SideNav from '../../../controls/SideNav.jsx';
@@ -24,7 +24,7 @@ var _ = {
 
 class RoleRadio extends Component{
     shouldComponentUpdate (nextProps) {
-      return !immutable.is(nextProps.userRoleList, this.props.userRoleList);
+      return !Immutable.is(nextProps.userRoleList, this.props.userRoleList);
     }
     render() {
       let radioList = [(<RadioButton key={"role-radio-key-all"} style={{paddingTop: "20px"}} value="" label="全部" />)];

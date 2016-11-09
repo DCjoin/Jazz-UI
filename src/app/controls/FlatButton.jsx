@@ -4,7 +4,7 @@ import React from 'react';
 
 import getLessVar from '../util/GetLessVar.jsx';
 
-import { FlatButton } from 'material-ui';
+import FlatButton from 'material-ui/FlatButton';
 import _assign from "lodash/object/assign";
 var _ = {
   assign: _assign
@@ -53,11 +53,16 @@ var CustomFlatButton = React.createClass({
       if (props.primary && props.inDialog) {
         props.style.color = getLessVar("warningRed");
       }
+
+      if (props.highlight && props.inDialog) {
+        props.style.color = getLessVar("schneiderBlue");
+      }
     } else {
       props.style.color = getLessVar("schneiderGray");
       delete props.style.backgroundColor;
     }
-
+    delete props.inDialog;
+    delete props.highlight;
     return props;
   },
 

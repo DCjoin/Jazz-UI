@@ -100,6 +100,7 @@ var WorkTime = React.createClass({
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
+      inDialog={true}
       primary={true}
       onClick={this._deleteWorktime} />,
 

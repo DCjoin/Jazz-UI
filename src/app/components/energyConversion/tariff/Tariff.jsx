@@ -8,7 +8,7 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
 import TariffStore from '../../../stores/energyConversion/TariffStore.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import NewDialog from '../../../controls/NewDialog.jsx';
 
 var Tariff = React.createClass({
   getInitialState: function() {
@@ -129,18 +129,14 @@ var Tariff = React.createClass({
     });
   },
   _renderErrorDialog: function() {
-    if (!!this.state.errorTitle) {
-      return (<Dialog
+    return (<NewDialog
         ref = "_dialog"
         title={this.state.errorTitle}
         modal={false}
-        openImmediately={!!this.state.errorTitle}
+        open={!!this.state.errorTitle}
         >
-  {this.state.errorContent}
-    </Dialog>)
-    } else {
-      return null;
-    }
+        {this.state.errorContent}
+    </NewDialog>)
   },
   componentDidMount: function() {
     TariffStore.addChangeListener(this._onChange);

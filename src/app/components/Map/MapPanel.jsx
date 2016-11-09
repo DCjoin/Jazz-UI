@@ -172,7 +172,7 @@ let MapPanel = React.createClass({
 
   },
   _onDateChanged: function(dateId) {
-    MapAction.getMapBuildingsByCustomerId(dateId);
+    MapAction.getMapBuildingsByCustomerId(dateId, this.props.params.customerId);
   // this.setState({
   //   isloading: true
   // });
@@ -324,7 +324,7 @@ let MapPanel = React.createClass({
     MapStore.addBuildingInfoListener(this._onBuildingInfoChanged);
     LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
 
-    MapAction.getMapBuildingsByCustomerId(5);
+    MapAction.getMapBuildingsByCustomerId(5, this.props.params.customerId);
   // this.setState({
   //   isloading: true
   // });

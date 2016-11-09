@@ -122,6 +122,7 @@ var TariffDetail = React.createClass({
       <NewDialog open={this.state.dialogStatus} title={I18N.Setting.TOUTariff.DeleteTitle} modal={true} actions={[
         <FlatButton
         label={I18N.Template.Delete.Delete}
+        inDialog={true}
         primary={true}
         onClick={() => {
           that.props.handleDeleteTariff(tariff);

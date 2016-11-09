@@ -500,6 +500,7 @@ var UserDetail = React.createClass({
         <FlatButton
         label={I18N.Template.Delete.Delete}
         primary={true}
+        inDialog={true}
         onClick={() => {
           that.props._handleDeleteUser();
           closeDialog();

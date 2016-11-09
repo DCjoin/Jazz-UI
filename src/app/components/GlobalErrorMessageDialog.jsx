@@ -2,7 +2,7 @@
 import React from "react";
 
 import { Snackbar, FlatButton } from 'material-ui';
-import Dialog from '../controls/PopupDialog.jsx';
+import NewDialog from '../controls/NewDialog.jsx';
 
 let GlobalErrorMessageDialog = React.createClass({
   getInitialState() {
@@ -18,11 +18,6 @@ let GlobalErrorMessageDialog = React.createClass({
       isShowed: false
     });
   },
-  componentDidUpdate: function() {
-    if (this.state.isShowed) {
-      this.refs.errorMessageDialog.show();
-    }
-  },
   render() {
     var errorCodeArr = ['21802', '1', '03054', '06182'];
     var content = this.state.errorCode === '06182' ? (<div dangerouslySetInnerHTML={{
@@ -32,10 +27,10 @@ let GlobalErrorMessageDialog = React.createClass({
     if (this.state.isShowed) {
       var snackbar = <Snackbar style={{
         maxWidth: 'none'
-      }} message={this.state.errorMessage} openOnMount={true} onDismiss={this._onDismiss} ref='errorMessageDialog' />;
-      var dialog = (<Dialog title={I18N.Platform.ServiceProvider.ErrorNotice} openImmediately={true} modal={false} onClose={this._onDismiss} ref='errorMessageDialog'>
+      }} message={this.state.errorMessage} open={this.state.isShowed} onRequestClose={this._onDismiss} ref='errorMessageDialog' />;
+      var dialog = (<NewDialog title={I18N.Platform.ServiceProvider.ErrorNotice} open={this.state.isShowed} modal={false} onClose={this._onDismiss} ref='errorMessageDialog'>
         {content}
-      </Dialog>);
+      </NewDialog>);
       if (errorCodeArr.indexOf(this.state.errorCode) !== -1 || this.state.dialogShow) {
         output = dialog;
       } else {

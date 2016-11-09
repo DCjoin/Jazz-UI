@@ -104,6 +104,7 @@ var CustomerDetail = React.createClass({
       <NewDialog open={this.state.dialogStatus} title={I18N.Setting.CustomerManagement.DeleteTitle} modal={true} actions={[
         <FlatButton
         label={I18N.Common.Button.Delete}
+        inDialog={true}
         primary={true}
         onClick={() => {
           that.props.handleDeleteCustomer(customer);
