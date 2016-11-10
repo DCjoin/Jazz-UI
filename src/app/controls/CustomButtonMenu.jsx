@@ -38,8 +38,8 @@ export default class CustomButtonMenu extends Component {
     this.setState({
       open: false
     }, () => {
-      if (this.props.onChange) {
-        this.props.onChange(event, index, child.props.value);
+      if (this.props.onItemTouchTap) {
+        this.props.onItemTouchTap(event, index, child.props.value);
       }
     });
   };
@@ -75,6 +75,9 @@ export default class CustomButtonMenu extends Component {
       }}>
         {menuButton}
         <Popover
+          style={{
+            overflow:'visible'
+          }}
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{horizontal: 'left', vertical: 'top'}}

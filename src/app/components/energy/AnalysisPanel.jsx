@@ -31,8 +31,8 @@ import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagAction from '../../actions/AlarmTagAction.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import EnergyDialog from '../../controls/OperationTemplate/BlankDialog.jsx';
-
-let MenuItem = require('material-ui/MenuItem');
+import MenuItem from 'material-ui/MenuItem';
+//let MenuItem = require('material-ui/MenuItem');
 
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
@@ -96,7 +96,7 @@ let AnalysisPanel = React.createClass({
       remarkText: '',
       remarkDisplay: false,
       dialogType: '',
-      relativeDate:'Customerize'
+      relativeDate:'Last7Day'
     };
 
     var obj = chartStrategy.getInitialStateFn(this);
@@ -1036,7 +1036,7 @@ let AnalysisPanel = React.createClass({
       });
     }
   },
-  _onSearchBtnItemTouchTap(e, child) {
+  _onSearchBtnItemTouchTap(e, value) {
     //this.setState({selectedChartType:child.props.value});
     var _relativeDate = this._getRelativeDateValue();
     // var paramsObj = EnergyStore.getParamsObj(),
@@ -1047,10 +1047,10 @@ let AnalysisPanel = React.createClass({
       startDate = dateRange.start,
       endDate = dateRange.end;
 
-    if (child.props.value == 'rawdata' && endDate - startDate > 604800000) {
+    if (value== 'rawdata' && endDate - startDate > 604800000) {
       FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
     } else {
-      this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, child.props.value, this);
+      this.state.chartStrategy.onSearchBtnItemTouchTapFn(this.state.selectedChartType, value, this);
     }
 
   },
@@ -1550,8 +1550,8 @@ let AnalysisPanel = React.createClass({
       //kpiTypeIndex: menuItem.index
     });
   },
-  _onConfigBtnItemTouchTap(menuParam, menuItem) {
-    this.state.chartStrategy.handleConfigBtnItemTouchTapFn(this, menuParam, menuItem);
+  _onConfigBtnItemTouchTap(e,menuParam, value) {
+    this.state.chartStrategy.handleConfigBtnItemTouchTapFn(this, e, value);
   },
   handleBaselineCfg: function(e) {
     let tagOption,

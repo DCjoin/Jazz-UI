@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import ReactDom from 'react-dom';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import { IconButton, DropDownMenu, DatePicker, FlatButton, FontIcon, Menu, Checkbox, TextField, CircularProgress } from 'material-ui';
 import classnames from 'classnames';
@@ -26,7 +27,7 @@ var selectTotal = 0;
 var page = 0;
 var alarmTagOption = null;
 var timeoutID = null;
-
+var customerId=null;
 
 
 let DataSelectMainPanel = React.createClass({
@@ -35,15 +36,18 @@ let DataSelectMainPanel = React.createClass({
     linkFrom: React.PropTypes.string,
     widgetType: React.PropTypes.string, //energy,unit,ratio,labelling
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   _onHierachyTreeClick: function(node) {
     if (node != this.state.dimParentNode) {
       TagAction.setCurrentHierarchyId(node.Id);
       filters = null;
       alarmType = null;
-      React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+      ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'block';
       TagAction.setCurrentDimentionInfo(null, null);
       CommodityAction.setCurrentDimInfo(null);
-      this.refs.searchText.setValue("");
+      //this.refs.searchText.setValue("");
       if (this.props.widgetType) {
         CommodityAction.setCurrentHierarchyInfo(node);
       }
@@ -55,7 +59,7 @@ let DataSelectMainPanel = React.createClass({
       }
 
     }
-    TagAction.loadData(node.Id, 2, 1, alarmType, filters);
+    TagAction.loadData(customerId,node.Id, 2, 1, alarmType, filters);
     TBSettingAction.setHierId(node.Id);
     LabelMenuAction.setHierNode(node);
     page = 1;
@@ -68,7 +72,8 @@ let DataSelectMainPanel = React.createClass({
       HierarchyShow: false,
       DimShow: true,
       isLoading: true,
-      dimId: null
+      dimId: null,
+      searchValue:''
     });
   },
   _onDimTreeClick: function(node) {
@@ -76,7 +81,7 @@ let DataSelectMainPanel = React.createClass({
     if (node.Id !== 0) {
       TagAction.setCurrentDimentionInfo(node.Id, node.Name);
       CommodityAction.setCurrentDimInfo(node);
-      TagAction.loadData(node.Id, 6, 1, alarmType, filters);
+      TagAction.loadData(customerId,node.Id, 6, 1, alarmType, filters);
       this.setState({
         tagId: node.Id,
         dimId: node.Id,
@@ -89,7 +94,7 @@ let DataSelectMainPanel = React.createClass({
       TagAction.setCurrentDimentionInfo(null, null);
       CommodityAction.setCurrentDimInfo(null);
       let id = TagStore.getCurrentHierarchyId();
-      TagAction.loadData(id, 2, 1, alarmType, filters);
+      TagAction.loadData(customerId,id, 2, 1, alarmType, filters);
       this.setState({
         tagId: id,
         dimId: null,
@@ -102,19 +107,21 @@ let DataSelectMainPanel = React.createClass({
 
   },
   _onHierarchButtonClick: function() {
-    React.findDOMNode(this.refs.searchIcon).style.display = 'block';
-    this.refs.searchText.setValue("");
+    ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'block';
+    //this.refs.searchText.setValue("");
     this.setState({
       HierarchyShow: true,
-      DimShow: false
+      DimShow: false,
+      searchValue:''
     });
   },
   _onDimButtonClick: function() {
-    React.findDOMNode(this.refs.searchIcon).style.display = 'block';
-    this.refs.searchText.setValue("");
+    ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'block';
+    //this.refs.searchText.setValue("");
     this.setState({
       HierarchyShow: false,
-      DimShow: true
+      DimShow: true,
+      searchValue:''
     });
   },
 
@@ -166,19 +173,19 @@ let DataSelectMainPanel = React.createClass({
   _onPrePage: function() {
     if (page > 1) {
       page = page - 1;
-      TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+      TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, alarmType, filters);
     }
   },
   _onNextPage: function() {
     if (20 * page < this.state.total) {
       page = page + 1;
-      TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+      TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, alarmType, filters);
 
     }
   },
   jumpToPage: function(targetPage) {
     page = targetPage;
-    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+    TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, alarmType, filters);
   },
   _onAlarmFilter: function(e, selectedIndex, menuItem) {
     switch (selectedIndex) {
@@ -225,7 +232,7 @@ let DataSelectMainPanel = React.createClass({
     if (alarmType == 3)
       alarmType = null;
     page = 1;
-    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+    TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, alarmType, filters);
 
   },
   _onSearch: function(e) {
@@ -234,7 +241,7 @@ let DataSelectMainPanel = React.createClass({
       FolderAction.setDisplayDialog('errornotice', null, I18N.Tag.SelectError);
     } else {
       if (value) {
-        React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+        ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'block';
         filters = [
           {
             "type": "string",
@@ -243,7 +250,7 @@ let DataSelectMainPanel = React.createClass({
           }
         ];
       } else {
-        React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+        ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
         filters = null;
       }
       if (timeoutID) {
@@ -251,26 +258,31 @@ let DataSelectMainPanel = React.createClass({
       }
       timeoutID = setTimeout(() => {
         page = 1;
-        TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+        TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, alarmType, filters);
       }, 200);
-
+      this.setState({
+        searchValue:value
+      })
     }
 
 
   },
   _onSearchClick: function() {
-    React.findDOMNode(this.refs.searchIcon).style.display = 'none';
+    ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'none';
   },
   _onSearchBlur: function(e) {
     if (!e.target.value) {
-      React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+      ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'block';
     }
   },
   _onCleanButtonClick: function() {
-    React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
-    this.refs.searchText.setValue("");
+    ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+    //this.refs.searchText.setValue("");
     filters = null;
-    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+    TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, alarmType, filters);
+    this.setState({
+      searchValue:''
+    })
   },
   _onSelectFull: function(fullFlag) {
     this.setState({
@@ -298,10 +310,11 @@ let DataSelectMainPanel = React.createClass({
     });
   },
   _onSettingDataChange: function() {
-    TagAction.loadData(this.state.tagId, this.state.optionType, page, alarmType, filters);
+    TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, alarmType, filters);
   },
   getInitialState: function() {
     return {
+      searchValue:'',
       isLoading: false,
       dimActive: false,
       dimId: null,
@@ -325,6 +338,7 @@ let DataSelectMainPanel = React.createClass({
     };
   },
   componentWillMount: function() {
+    customerId=this.context.currentRoute.params.customerId;
     //linkFrom="Alarm"时，读取初始tag状态
     if (this.props.linkFrom == "Alarm") {
       alarmTagOption = EnergyStore.getTagOpions()[0];
@@ -411,7 +425,7 @@ let DataSelectMainPanel = React.createClass({
           });
         } else {
           page = 1;
-          TagAction.loadData(hierNode.hierId, 2, 1, null, null);
+          TagAction.loadData(customerId,hierNode.hierId, 2, 1, null, null);
           this.setState({
             tagId: hierNode.hierId,
             optionType: 2,
@@ -568,7 +582,7 @@ let DataSelectMainPanel = React.createClass({
           <div  className="filter">
             <label className="search" onBlur={this._onSearchBlur}>
               <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
-              <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearch}/>
+              <TextField style={textFieldStyle} underlineShow={false} value={this.state.searchValue} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearch}/>
               <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
           </label>
 

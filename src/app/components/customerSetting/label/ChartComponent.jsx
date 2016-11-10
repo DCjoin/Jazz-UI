@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDom from 'react-dom';
 let Highcharts = window.Highcharts;
 import CommonFuns from '../../../util/Util.jsx';
 import { JazzCommon } from '../../../util/Util.jsx';
@@ -156,7 +157,7 @@ let ChartComponent = React.createClass({
       me.chartRenderer.destroy();
     }
     me.chartRenderer = new Highcharts.Renderer(
-      me.refs.jazz_energy_view.getDOMNode(),
+      ReactDom.findDOMNode(me.refs.jazz_energy_view),
       400,
       me.props.levelCount * 40 + 40
     );

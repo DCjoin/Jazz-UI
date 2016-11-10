@@ -1,5 +1,7 @@
 import React from 'react';
 import {Dialog, DropDownMenu, FlatButton, IconButton} from 'material-ui';
+import MenuItem from 'material-ui/MenuItem';
+import NewDialog from '../../../controls/NewDialog.jsx';
 import classSet from 'classnames';
 import MultipleTimespanStore from '../../../stores/energy/MultipleTimespanStore.jsx';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
@@ -20,18 +22,20 @@ let TimespanItem = React.createClass({
   },
   getDefaultProps() {
     return {
-      isOriginalDate: false
+      isOriginalDate: false,
+      value:1
     };
   },
   _onCompareItemRemove() {
     this.props.onCompareItemRemove(this.props.compareIndex);
   },
   wrapDropdownMenu(menuProps, containerWidth) {
+    var labelStyle={fontSize:'12px',lineHeight:'32px',paddingRight:'0'};
     return <div className='jazz-energy-container-has-absolute-container' style={{
         width: containerWidth
       }}>
             <div className='jazz-full-border-dropdownmenu-container'>
-              <DropDownMenu {...menuProps} />
+              <DropDownMenu {...menuProps} labelStyle={labelStyle}>{menuProps.menuItems}</DropDownMenu>
             </div>
           </div>;
   },
@@ -42,15 +46,14 @@ let TimespanItem = React.createClass({
       let {startDate, endDate} = this.props;
       // startDate = (!!startDate) ? startDate : new Date();
       // endDate = (!!endDate) ? endDate : new Date();
-      return <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/>;
+      return <DateTimeSelector ref='dateTimeSelector' showTime={true} startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/>;
     } else {
       let availableRelativeValues = MultipleTimespanStore.getAvailableRelativeValues(relativeType);
       let uom = MultipleTimespanStore.getRelativeUOM(relativeType);
       let menuItems = availableRelativeValues.map((value) => {
-        return {
-          value: value,
-          text: value
-        };
+        return(
+          <MenuItem primaryText={value} value={value}/>
+        );
       });
 
       return <div style={{
@@ -64,9 +67,7 @@ let TimespanItem = React.createClass({
           style: {
             width: '60px'
           },
-          selectedIndex: Immutable.List(menuItems).findIndex((item) => {
-            return item.value === me.props.relativeValue;
-          }),
+          value: me.props.relativeValue,
           onChange: me._onRelativeValueChange
         }, '62px')}
                 <div style={{
@@ -93,7 +94,7 @@ let TimespanItem = React.createClass({
     }
 
     if (this.props.isOriginalDate) {
-      dateEl = <DateTimeSelector ref='dateTimeSelector' startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
+      dateEl = <DateTimeSelector ref='dateTimeSelector' showTime={true} startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
     } else {
       dateEl = me.getCompareDatePart();
       deleteBtn = <IconButton iconClassName='icon-delete' iconStyle={{
@@ -112,9 +113,7 @@ let TimespanItem = React.createClass({
       style: {
         width: '92px'
       },
-      selectedIndex: Immutable.List(menuItems).findIndex((item) => {
-        return item.value === me.props.relativeType;
-      }),
+      value: me.props.relativeType,
       onChange: me._onRelativeTypeChange
     }, '100px');
     return <div style={{
@@ -135,13 +134,13 @@ let TimespanItem = React.createClass({
               </div>
             </div>;
   },
-  _onRelativeTypeChange(e, selectedIndex, menuItem) {
+  _onRelativeTypeChange(e, selectedIndex, value) {
     let props = this.props;
-    MultiTimespanAction.handleRelativeTypeChange(props.isOriginalDate, menuItem.value, props.compareIndex);
+    MultiTimespanAction.handleRelativeTypeChange(props.isOriginalDate, value, props.compareIndex);
   },
-  _onRelativeValueChange(e, selectedIndex, menuItem) {
+  _onRelativeValueChange(e, selectedIndex, value) {
     let me = this;
-    MultiTimespanAction.handleRelativeValueChange(menuItem.value, me.props.compareIndex);
+    MultiTimespanAction.handleRelativeValueChange(value, me.props.compareIndex);
   },
   _onDateSelectorChanged() {
     let me = this;
@@ -211,7 +210,10 @@ let AddIntervalWindow = React.createClass({
       fontSize: '20px',
       padding: '24px 0 0 50px'
     }}>{I18N.MultipleTimespan.Title}</div>;
-    let dialog = <Dialog {...me.props} title={titleEl} actions={_buttonActions} modal={true}
+    let dialog = <NewDialog {...me.props} title={I18N.MultipleTimespan.Title} titleStyle={{
+      fontSize: '20px',
+      padding: '24px 0 0 50px'
+    }} actions={_buttonActions} modal={true} open={true}
     contentClassName='jazz-add-interval-dialog' style={{
       overflow: 'auto'
     }}>
@@ -224,7 +226,7 @@ let AddIntervalWindow = React.createClass({
       marginTop: '10px'
     }} onClick={me._addNewCompareItem} disabled={isAddBtnDisabled}/>
                     </div>
-                  </Dialog>;
+                  </NewDialog>;
 
     return <div>
              {dialog}

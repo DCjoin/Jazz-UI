@@ -2821,9 +2821,10 @@ let ChartStrategyFactor = {
         return true;
       };
       var value = CarbonStore.getDestination();
+      var labelStyle={fontSize:'12px',lineHeight:'32px',paddingRight:'0'};
       var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu style={{
         width: '90px'
-      }} value={value} onChange={menuItemChange} />{menuItems}</div>;
+      }} labelStyle={labelStyle} value={value} onChange={menuItemChange} />{menuItems}</div>;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
@@ -2960,7 +2961,7 @@ let ChartStrategyFactor = {
       var value = CarbonStore.getDestination();
       var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu value={value} style={{
         width: '90px'
-      }} {...labelStyle} onChange={menuItemChange}>{menuItems}</DropDownMenu></div>;
+      }} labelStyle={labelStyle} onChange={menuItemChange}>{menuItems}</DropDownMenu></div>;
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex',
@@ -3041,14 +3042,14 @@ let ChartStrategyFactor = {
         clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       var carbonTypeBtn = null;
       if (energyType === 'Carbon') {
-        carbonTypeBtn = <DropDownMenu {...labelStyle} value={analysisPanel.state.destination} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}>{ConstStore.getCarbonTypeItem()}</DropDownMenu>;
+        carbonTypeBtn = <DropDownMenu labelStyle={labelStyle} value={analysisPanel.state.destination} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}>{ConstStore.getCarbonTypeItem()}</DropDownMenu>;
       }
       var orderItem = ConstStore.getOrderItem();
       var rangeItem = ConstStore.getRangeItem();
-      var orderCombo = <DropDownMenu {...labelStyle} value={analysisPanel.state.order} ref='orderCombo' onChange={analysisPanel._onOrderChange} style={{
+      var orderCombo = <DropDownMenu labelStyle={labelStyle} value={analysisPanel.state.order} ref='orderCombo' onChange={analysisPanel._onOrderChange} style={{
         width: '90px'
       }}>{orderItem}</DropDownMenu>;
-      var rangeCombo = <DropDownMenu {...labelStyle} value={analysisPanel.getRangeIndex()} ref='rangeCombo' onChange={analysisPanel._onRangeChange} style={{
+      var rangeCombo = <DropDownMenu labelStyle={labelStyle} value={analysisPanel.getRangeIndex()} ref='rangeCombo' onChange={analysisPanel._onRangeChange} style={{
         width: '90px',
         marginLeft: '30px'
       }}>{rangeItem}</DropDownMenu>;
@@ -3081,8 +3082,8 @@ let ChartStrategyFactor = {
     }
   },
   handleConfigBtnItemTouchTapFnStrategy: {
-    handleEnergyConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
-      let itemValue = menuItem.props.value;
+    handleEnergyConfigBtnItemTouchTap(analysisPanel, menuParam, value) {
+      let itemValue = value;
       var subMenuValue;
       switch (itemValue) {
         case 'history':
@@ -4041,7 +4042,7 @@ let ChartStrategyFactor = {
          {chartTypeCmp}
          <DropDownMenu ref='relativeDate' style={{
           width: '90px'
-        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={analysisPanel._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
+        }} labelStyle={{fontSize:'14px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={analysisPanel._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
@@ -5288,7 +5289,6 @@ let ChartStrategyFactor = {
     let iconMenuProps = {
       iconButtonElement: IconButtonElement,
       openDirection: "bottom-right",
-      desktop: true,
       onItemTouchTap: analysisPanel._onSearchBtnItemTouchTap
     };
 
@@ -5296,10 +5296,7 @@ let ChartStrategyFactor = {
       return <MenuItem primaryText={menuMap[item].icon} value={item} />;
     });
 
-    let widgetOptMenu = <IconMenu {...iconMenuProps} menuStyle={{
-      height: '20px',
-      width: '20px'
-    }} width='10px'>
+    let widgetOptMenu = <IconMenu {...iconMenuProps}>
                          {typeItems}
                       </IconMenu>;
     return widgetOptMenu;
@@ -5356,7 +5353,7 @@ let ChartStrategyFactor = {
       kpiTypeButton = <DropDownMenu style={{
         marginLeft: '10px',
         width: '130px'
-      }} {...labelStyle} value={analysisPanel.state.kpiTypeValue} ref='kpiType' onChange={analysisPanel.onChangeKpiType}>{kpiTypeItem}</DropDownMenu>;
+      }} labelStyle={labelStyle} value={analysisPanel.state.kpiTypeValue} ref='kpiType' onChange={analysisPanel.onChangeKpiType}>{kpiTypeItem}</DropDownMenu>;
     } else {
       var kpiTypeText = analysisPanel.getKpiText();
       kpiTypeButton = <span style={kpiSpanStyle}>{kpiTypeText}</span>;

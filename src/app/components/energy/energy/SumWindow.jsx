@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import {Dialog, FlatButton, Table, TableHeader, TableBody, TableRow, TableHeaderColumn, TableRowColumn} from 'material-ui';
+import NewDialog from '../../../controls/NewDialog.jsx';
 import classSet from 'classnames';
 import CommonFuns from '../../../util/Util.jsx';
 import EnergyStore from '../../../stores/energy/EnergyStore.jsx';
@@ -226,7 +227,8 @@ let SumWindow = React.createClass({
       padding: '24px 0 0 50px'
     }}>{I18N.EM.EnergyAnalyse.SumData}</div>;
     let label = this.buildGridTitle();
-    let dialog = <Dialog {...me.props} title={titleEl} actions={_buttonActions} modal={true}
+    let dialog = <NewDialog open={true} title={I18N.EM.EnergyAnalyse.SumData} titleStyle={{fontSize: '20px',
+    padding: '24px 0 0 50px'}} actions={_buttonActions} modal={true}
     contentClassName='jazz-add-interval-dialog'>
                     <div style={{
       height: '418px',
@@ -236,7 +238,7 @@ let SumWindow = React.createClass({
                       <div>{label}</div>
                       {sumTable}
                     </div>
-                  </Dialog>;
+                  </NewDialog>;
 
     return <div>
              {dialog}

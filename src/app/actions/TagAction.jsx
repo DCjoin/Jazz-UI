@@ -8,7 +8,7 @@ import Ajax from '../ajax/ajax.jsx';
 var Action = Tag.Action;
 
 let TagAction = {
-  loadData(nodeId, option, page, alarmType, filters, ids) {
+  loadData(customerId,nodeId, option, page, alarmType, filters, ids) {
     // setTimeout(()=>{
     //   AppDispatcher.dispatch({
     //        type: Action.SET_NODE_LOAGDING
@@ -24,7 +24,7 @@ let TagAction = {
             AssociationId: nodeId,
             AssociationOption: option
           },
-          CustomerId: window.currentCustomerId,
+          CustomerId: customerId,
           IncludeAssociationName: true,
           AlarmStatus: alarmType
         },

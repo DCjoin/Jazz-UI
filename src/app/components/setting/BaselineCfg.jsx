@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDom from 'react-dom';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import {Tabs, Tab, CircularProgress} from 'material-ui';
 import assign from "object-assign";
@@ -86,10 +87,10 @@ let BaselineCfg = React.createClass({
           color: '#767a7a'
         }
       });
-      tab.getDOMNode().style.color = '#1ca8dd';
+      ReactDom.findDOMNode(tab).style.color = '#1ca8dd';
 
       if (lastTab) {
-        lastTab.getDOMNode().style.color = '#767a7a';
+        ReactDom.findDOMNode(lastTab).style.color = '#767a7a';
       }
       lastTab = tab;
     }
@@ -219,6 +220,9 @@ let BaselineCfg = React.createClass({
           width: '790px',
           paddingLeft: '30px',
         //  color: 'red'
+        },
+        tabTemplateStyle:{
+          height:'28px'
         },
         contentContainerStyle: {
           borderTop: '1px solid #ececec'

@@ -61,6 +61,9 @@
     div:nth-of-type(2){
       >div{
         padding-right: 5px !important;
+        svg{
+          top:0px !important;
+        }
       }
     }
   }
@@ -204,7 +207,12 @@
 }
 .jazz-tabs{
   >div:first-of-type{
-      >div:nth-child(2){
+      >div:first-of-type{
+        button{
+          >div >div{
+            height:28px !important;
+          }
+        }
         // width:100%;
         // background-color:#ececec !important
       }

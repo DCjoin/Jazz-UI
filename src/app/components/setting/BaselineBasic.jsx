@@ -284,6 +284,9 @@ var BaselineBasic = React.createClass({
         width: '100px'
       //zIndex: 2,
       },
+      labelStyle:{
+        fontSize:'16px',lineHeight:'32px',paddingRight:'0',left:'24px'
+      }
       //className: "yearpicker",
 
     };
