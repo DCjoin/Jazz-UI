@@ -95,7 +95,8 @@ let AnalysisPanel = React.createClass({
       energyType: this.props.energyType || 'Energy', //'one of energy, cost carbon'
       remarkText: '',
       remarkDisplay: false,
-      dialogType: ''
+      dialogType: '',
+      relativeDate:'Customerize'
     };
 
     var obj = chartStrategy.getInitialStateFn(this);
@@ -789,9 +790,7 @@ let AnalysisPanel = React.createClass({
     }
   },
   _getRelativeDateValue() {
-    let relativeDateIndex = this.refs.relativeDate.state.selectedIndex,
-      obj = this.searchDate[relativeDateIndex];
-    return obj.value;
+    return this.state.relativeDate;
   },
   _setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate) {
     this.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, relativeDate.this);
@@ -813,9 +812,8 @@ let AnalysisPanel = React.createClass({
       this._onRelativeDateChange(null, menuIndex, relativeDateMenuItems[menuIndex]);
     }
   },
-  _onRelativeDateChange(e, selectedIndex, menuItem) {
-    let value = menuItem.value,
-      dateSelector = this.refs.dateTimeSelector;
+  _onRelativeDateChange(e, selectedIndex, value) {
+    let dateSelector = this.refs.dateTimeSelector;
 
     if (this.state.selectedChartType == 'rawdata' && value !== 'Customerize' && value !== 'Last7Day' && value !== 'Today' && value !== 'Yesterday' && value !== 'ThisWeek' && value !== 'LastWeek') {
       FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
@@ -825,15 +823,18 @@ let AnalysisPanel = React.createClass({
         dateSelector.setDateField(timeregion.start, timeregion.end);
       }
     }
+    this.setState({
+      relativeDate:value
+    })
   },
-  _onRankTypeChange(e, selectedIndex, menuItem) {
-    var rankType = menuItem.value;
+  _onRankTypeChange(e, selectedIndex, value) {
+    var rankType =value;
     this.setState({
       rankType: rankType
     });
   },
-  _onRangeChange(e, selectedIndex, menuItem) {
-    var range = menuItem.value;
+  _onRangeChange(e, selectedIndex, value) {
+    var range = value;
     this.setState({
       range: range
     });
@@ -844,17 +845,17 @@ let AnalysisPanel = React.createClass({
       order: order
     });
   },
-  _onCarbonTypeChange(e, selectedIndex, menuItem) {
+  _onCarbonTypeChange(e, selectedIndex, value) {
     var me = this;
     me.setState({
-      destination: menuItem.value
+      destination: value
     }, () => {
       me.state.chartStrategy.onSearchDataButtonClickFn(me);
     });
   },
-  _onChangeMonth(e, selectedIndex, menuItem) {
+  _onChangeMonth(e, selectedIndex, value) {
     this.setState({
-      month: selectedIndex
+      month: value
     });
   },
   _onGetEnergyDataError() {
@@ -1161,14 +1162,14 @@ let AnalysisPanel = React.createClass({
     if (kpiTypeValue === 7) {
       this.setState({
         kpiTypeValue: 1,
-        kpiTypeIndex: 0
+        //kpiTypeIndex: 0
       });
     } else {
       for (var i = 0; i < kpiTypeItem.length; i++) {
         if (kpiTypeItem[i].value === kpiTypeValue) {
           this.setState({
             kpiTypeValue: kpiTypeValue,
-            kpiTypeIndex: kpiTypeItem[i].index
+            //kpiTypeIndex: kpiTypeItem[i].index
           });
           break;
         }
@@ -1201,15 +1202,15 @@ let AnalysisPanel = React.createClass({
   },
   getRangeIndex() {
     var range = this.state.range;
-    var rangeItem = ConstStore.getRangeItem();
-    var rangeIndex;
-    rangeItem.forEach(item => {
-      if (item.value === range) {
-        rangeIndex = item.index;
-        return;
-      }
-    });
-    return rangeIndex;
+    // var rangeItem = ConstStore.getRangeItem();
+    // var rangeIndex;
+    // rangeItem.forEach(item => {
+    //   if (item.value === range) {
+    //     rangeIndex = item.index;
+    //     return;
+    //   }
+    // });
+    return range;
   },
   _onHierNodeChange() {
     this.state.chartStrategy.onHierNodeChangeFn(this);
@@ -1520,7 +1521,7 @@ let AnalysisPanel = React.createClass({
     var step = 3; //default month
 
     var year = parseInt(this.refs.yearSelector.state.selectedYear),
-      month = this.refs.monthSelector.state.selectedIndex;
+      month = this.state.month;
 
     if (month === 0) {
       month = 1;
@@ -1543,10 +1544,10 @@ let AnalysisPanel = React.createClass({
   getKpiType: function() {
     return this.state.kpiTypeValue;
   },
-  onChangeKpiType: function(e, selectedIndex, menuItem) {
+  onChangeKpiType: function(e, selectedIndex, value) {
     this.setState({
-      kpiTypeValue: menuItem.value,
-      kpiTypeIndex: menuItem.index
+      kpiTypeValue: value,
+      //kpiTypeIndex: menuItem.index
     });
   },
   _onConfigBtnItemTouchTap(menuParam, menuItem) {

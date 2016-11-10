@@ -101,8 +101,8 @@ var FolderLeftPanel = React.createClass({
     });
 
   },
-  _onNewWidget: function(e, item) {
-    let widgetType = parseInt(item.key);
+  _onNewWidget: function(e, value) {
+    let widgetType = parseInt(value);
     let _newWidget = [];
 
     _newWidget[1] = I18N.Folder.NewWidget.Menu1;
@@ -352,11 +352,11 @@ var FolderLeftPanel = React.createClass({
       rankingIcon = <FontIcon className="icon-ranking" style={iconStyle}/>;
 
     var filterOptions = [
-      <MenuItem key={1} value={I18N.Folder.NewWidget.Menu1} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={energyAnalysisIcon}/>,
-      <MenuItem key={2} value={I18N.Folder.NewWidget.Menu2} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={unitIndexIcon}/>,
-      <MenuItem key={3} value={I18N.Folder.NewWidget.Menu3} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={timeRationIcon}/>,
-      <MenuItem key={4} value={I18N.Folder.NewWidget.Menu4} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={labelingIcon}/>,
-      <MenuItem key={5} value={I18N.Folder.NewWidget.Menu5} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={rankingIcon}/>
+      <MenuItem key={1} value={1} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={energyAnalysisIcon}/>,
+      <MenuItem key={2} value={2} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={unitIndexIcon}/>,
+      <MenuItem key={3} value={3} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={timeRationIcon}/>,
+      <MenuItem key={4} value={4} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={labelingIcon}/>,
+      <MenuItem key={5} value={5} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={rankingIcon}/>
     ];
 
     //props

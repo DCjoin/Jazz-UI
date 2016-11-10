@@ -413,10 +413,13 @@
   }
 }
 .jazz-full-border-datepicker-container{
+  display: flex;
+  align-items: center;
   height: 38px;
   margin-left:10px;
   margin-right: 10px;
   >div{
+    position: relative;
     background-color: #ffffff;
     cursor: pointer;
     border: 1px solid rgb(235, 235, 235);
@@ -429,6 +432,10 @@
       >hr{
         border-bottom-width: 0px !important;
       }
+    }
+    .datepicker-popup{
+      z-index:10;
+      position: absolute;
     }
   }
 }

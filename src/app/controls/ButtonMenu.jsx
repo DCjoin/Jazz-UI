@@ -69,10 +69,10 @@ let Events = {
     ].indexOf(e.type) !== -1;
   },
 };
-let Menu = require('material-ui/Menu');
+import  Menu from 'material-ui/Menu';
 
 var ButtonMenu = React.createClass({
-  displayName: 'IconMenu',
+  //displayName: 'IconMenu',
 
   // //mixins: [Mixins.StylePropable, Mixins.ClickAwayable],
 
@@ -154,12 +154,13 @@ var ButtonMenu = React.createClass({
 
       menu: {
         top: 37,
-        left: 0
+        left: 0,
+        zIndex:10000
       }
     };
 
-    var mergedRootStyles = this.mergeAndPrefix(styles.root, style);
-    var mergedMenuStyles = this.mergeStyles(styles.menu, menuStyle);
+    var mergedRootStyles = Object.assign({}, styles.root, style);
+    var mergedMenuStyles = Object.assign({},styles.menu, menuStyle);
 
     var menuButton = <RaisedButton style={{
       maxWidth: '140px',
@@ -196,11 +197,7 @@ var ButtonMenu = React.createClass({
         style: mergedRootStyles
       },
       menuButton,
-      React.createElement(
-        ReactTransitionGroup,
-        null,
-        menu
-      )
+      menu
     );
   },
   _onButtonClick() {

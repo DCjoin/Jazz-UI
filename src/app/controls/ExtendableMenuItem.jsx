@@ -1,8 +1,7 @@
 'use strict';
 import React from "react";
-
-let Menu = require('material-ui/Menu');
-let MenuItem = require('material-ui/MenuItem');
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -65,9 +64,9 @@ let ExtendableMenuItem = React.createClass({
   },
   _onItemMouseOut(){
     let me = this;
-    this.itemOverTimeouts.push(window.setTimeout(()=>{
-      me.setState({itemMouseOver:false});
-    },200));
+    // this.itemOverTimeouts.push(window.setTimeout(()=>{
+    //   me.setState({itemMouseOver:false});
+    // },200));
   },
   _onSubMenuMouseOver(){
     this.subMenuOverTimeouts.forEach((item)=>{
