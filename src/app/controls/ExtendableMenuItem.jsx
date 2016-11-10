@@ -64,9 +64,9 @@ let ExtendableMenuItem = React.createClass({
   },
   _onItemMouseOut(){
     let me = this;
-    // this.itemOverTimeouts.push(window.setTimeout(()=>{
-    //   me.setState({itemMouseOver:false});
-    // },200));
+    this.itemOverTimeouts.push(window.setTimeout(()=>{
+      me.setState({itemMouseOver:false});
+    },200));
   },
   _onSubMenuMouseOver(){
     this.subMenuOverTimeouts.forEach((item)=>{
