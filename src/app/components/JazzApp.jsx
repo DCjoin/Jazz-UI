@@ -278,6 +278,15 @@ let JazzApp = React.createClass({
     // AjaxStore.addErrorListener(this._globalError);
   },
 
+  // componentWillReceiveProps(nextProps) {
+  //   if(LoginStore.hasLoggedin()) {
+  //     if(nextProps.params.lang !== this.props.params.lang) {
+  //       LanguageAction.firstLanguageNotice(nextProps.params.lang);
+  //       CurrentUserAction.getInitData(getCookie('UserId'));
+  //     }
+  //   }
+  // },
+
   _globalError:function(httpStatusCode){
 		if(httpStatusCode == 401){
 			var buttonActions=[{
@@ -447,6 +456,9 @@ let JazzApp = React.createClass({
     LanguageStore.removeSwitchLanguageLoadingListener(this._onLanguageSwitchLoading);
     LanguageStore.removeFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
     AjaxStore.removeErrorListener(this._globalError);
+  },
+  componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps');
   },
   getInitialState: function() {
     return {

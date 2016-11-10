@@ -211,6 +211,15 @@ var SelectCustomer = React.createClass({
   },
 
   render: function() {
+    var overlayClass = classNames('overlay-background', {
+        "pop-overlay": true,
+        "pop-is-shown": true
+    });
+    var scollerStyle={
+        display:'flex',
+        flex:1,
+        flexDirection:'column'
+    };
     if ( this._hasClose() ) {
       var closeButton = (
       <em className="icon-close pop-close-overlay-icon" onClick={this._onClose} style={{
@@ -243,6 +252,12 @@ var SelectCustomer = React.createClass({
         top: 0,
       }}>
                 <div className="jazz-selectbg"></div>
+                <div style={{
+                  backgroundColor: '#fff',
+                  width: '100%',
+                  height: '100%',
+                  position: 'fixed'
+                }}></div>
                 <div className="jazz-mask"></div>
                 <div className="jazz-customerList">
                   <div style={{

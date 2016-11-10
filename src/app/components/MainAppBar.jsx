@@ -3,7 +3,6 @@
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
 import FontIcon from 'material-ui/FontIcon';
 import TextField from 'material-ui/TextField';
 import classnames from "classnames";
@@ -31,6 +30,7 @@ import FolderStore from '../stores/FolderStore.jsx';
 import Config from 'config';
 import { getCookie } from '../util/Util.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
+import MainApp from './MainApp.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 
 let MenuItem = require('material-ui/MenuItem');
@@ -126,9 +126,11 @@ var MainAppBar = React.createClass({
   },
   _showCustomerList: function() {
     // this.props.showCustomerList();
-    this.setState({
-      showCustomerList: true
-    });
+    if( !this.props.disabledSelectCustomer ) {
+      this.setState({
+        showCustomerList: true
+      });
+    }
   },
 
   _savePassword: function() {
@@ -323,7 +325,13 @@ var MainAppBar = React.createClass({
     </SideNav>);
   },
   _onLangSwitch: function() {
-    LanguageAction.switchLanguage();
+    let {params, location, push} = this.context.router;
+    let {protocol, host, pathname, hash} = document.location;
+    push(
+      location.pathname.replace(/(\w)+(-)?(\w)*/, 
+        (params.lang === 'en-us') ? 'zh-cn' : 'en-us')
+      + location.search);
+    document.location.reload();
   },
   _onMailLoaded: function() {
     var params = getParams(this.context.router);
@@ -351,24 +359,39 @@ var MainAppBar = React.createClass({
       this._onConfigLoaded();
     }
   },
-  _getEditPasswordDialog: function(customError) {
+  _getEditPasswordDialog: function() {
     var MAX_LENGTH_ERROR = I18N.Platform.MaxLengthError;
     var {oldPassword, newPassword, confirmNewPassword} = this.state.tempData,
 
       oldPasswordProps = {
-        floatingLabelText: I18N.Platform.Password.OldPassword,
-        value: oldPassword,
-        onChange: this._bindMergeTemp("oldPassword")
+        title: I18N.Platform.Password.OldPassword,
+        type: 'password',
+        isRequired: true,
+        maxLen: MAX_LENGTH,
+        defaultValue: oldPassword,
+        didChanged: this._bindMergeTemp("oldPassword"),
+        regexFn: (confirmNewPassword) => {
+          return this.state.customError && I18N.Platform.Password.Error04;
+        },
       },
       newPasswordProps = {
-        floatingLabelText: I18N.Platform.Password.NewPassword,
-        value: newPassword,
-        onChange: this._bindMergeTemp("newPassword")
+        title: I18N.Platform.Password.NewPassword,
+        type: 'password',
+        isRequired: true,
+        maxLen: MAX_LENGTH,
+        defaultValue: newPassword,
+        didChanged: this._bindMergeTemp("newPassword")
       },
       confirmNewPasswordProps = {
-        floatingLabelText: I18N.Platform.Password.confirmNewPassword,
-        value: confirmNewPassword,
-        onChange: this._bindMergeTemp("confirmNewPassword")
+        title: I18N.Platform.Password.confirmNewPassword,
+        type: 'password',
+        isRequired: true,
+        maxLen: MAX_LENGTH,
+        defaultValue: confirmNewPassword,
+        regexFn: (confirmNewPassword) => {
+          return newPassword !== confirmNewPassword && I18N.Platform.Password.Error03;
+        },
+        didChanged: this._bindMergeTemp("confirmNewPassword")
       },
       saveButtonDisabled = false;
 
@@ -395,8 +418,7 @@ var MainAppBar = React.createClass({
       confirmNewPasswordProps.errorText = I18N.Platform.Password.Error03;
       saveButtonDisabled = true;
     }
-
-    if (customError) {
+    if (this.state.customError) {
       oldPasswordProps.errorText = I18N.Platform.Password.Error04;
       saveButtonDisabled = true;
     }
@@ -413,25 +435,19 @@ var MainAppBar = React.createClass({
       onClick={this._onClose} />
     ];
 
-    return (<Dialog actions={actions} openImmediately={true} title={I18N.Platform.Password.Title} modal={true} >
+    return (<NewDialog actions={actions} open={DIALOG_TYPE.MODIIFY_PASSWORD === this.state.dialogType} title={I18N.Platform.Password.Title} modal={true} >
       <ul className="pop-userprofile-edit">
           <li>
-              <TextField {...oldPasswordProps}>
-                <input type="password" />
-              </TextField>
+              <ViewableTextField {...oldPasswordProps}/>
           </li>
           <li>
-              <TextField {...newPasswordProps}>
-                <input type="password" />
-              </TextField>
+              <ViewableTextField {...newPasswordProps}/>
           </li>
           <li>
-              <TextField {...confirmNewPasswordProps}>
-                <input type="password" />
-              </TextField>
+              <ViewableTextField {...confirmNewPasswordProps}/>
           </li>
       </ul>
-  </Dialog>);
+  </NewDialog>);
   },
   _getFuncAuthNav: function() {
     var user = currentUser() || {};
@@ -489,7 +505,7 @@ var MainAppBar = React.createClass({
       user.Email.length > 254) {
       disabled = true
     }
-    if (!isSuperAdmin && user.Telephone.length > 200) {
+    if (!isSuperAdmin && (user.Telephone && user.Telephone.length > 200)) {
       disabled = true
     }
     var actions = [
@@ -532,7 +548,7 @@ var MainAppBar = React.createClass({
       textField: "text",
       dataItems: titleItems
     };
-    return (<Dialog actions={actions} openImmediately={true} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
+    return (<NewDialog actions={actions} open={DIALOG_TYPE.MODIIFY_INFO === this.state.dialogType} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
       <ul className={classnames("pop-userprofile-edit", 'jazz-userprofile-edit')}>
           <li>
               <ViewableTextField didChanged={this._bindMergeTemp("RealName")} maxLen={200} ref="name" isViewStatus={false} title={I18N.Platform.User.ShowName} defaultValue={user.RealName} />
@@ -553,7 +569,7 @@ var MainAppBar = React.createClass({
               <ViewableTextField didChanged={this._bindMergeTemp("Email")} maxLen={254} ref="email" errorMessage={I18N.Platform.User.EmailError} regex={Regex.Email} isViewStatus={false} title={I18N.Platform.User.Email} defaultValue={user.Email} />
           </li>
       </ul>
-  </Dialog>);
+  </NewDialog>);
   },
   _getMailConfigDialog: function() {
     var that = this;
@@ -637,12 +653,12 @@ var MainAppBar = React.createClass({
 
     // render dialog
     switch (dialogType) {
-      case DIALOG_TYPE.MODIIFY_PASSWORD:
-        dialog = this._getEditPasswordDialog(customError);
-        break;
-      case DIALOG_TYPE.MODIIFY_INFO:
-        dialog = this._getEditUserDialog();
-        break;
+      // case DIALOG_TYPE.MODIIFY_PASSWORD:
+      //   dialog = this._getEditPasswordDialog(customError);
+      //   break;
+      // case DIALOG_TYPE.MODIIFY_INFO:
+      //   dialog = this._getEditUserDialog();
+      //   break;
       case DIALOG_TYPE.MAIL_CONFIRM:
         dialog = this._getMailConfigDialog();
         break;
@@ -745,6 +761,8 @@ var MainAppBar = React.createClass({
 
         {leftNav}
         {dialog}
+        {this._getEditPasswordDialog()}
+        {this._getEditUserDialog()}
         {this._getLogoutDialog()}
         {this.state.showCustomerList && (<SelectCustomer onClose={() => {
           this.setState({

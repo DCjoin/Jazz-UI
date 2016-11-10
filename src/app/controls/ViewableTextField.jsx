@@ -237,7 +237,8 @@ var ViewableTextField = React.createClass({
           width: 430
         }, this.props.style),
         multiLine: this.props.multiLine ? true : false,
-        floatingLabelText: this.props.title
+        floatingLabelText: this.props.title,
+        type: this.props.type
       };
       if (this.props.hintText) {
         inputProps.hintText = this.props.hintText;

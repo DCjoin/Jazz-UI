@@ -205,9 +205,17 @@ ReactDom.render(<Router history={hashHistory} routes={{
     component: JazzApp,
     onEnter: checkAuth,
     indexRoute: {
-      onEnter: ({params}, replaceState) => {
+      onEnter: (router, replaceState) => {
+        console.log('onEnter');
         if( !isLogin(window) ) {
-          replaceState(RoutePath.login(params));
+          replaceState(RoutePath.login(router.params));
+        } else {
+          if(MainApp.prepareShow()) {            
+            let defaultReplace = MainApp.needDefaultReplace(router);
+            if(defaultReplace) {
+              replaceState(defaultReplace);
+            }
+          }
         }
       },
       component: MainApp,
