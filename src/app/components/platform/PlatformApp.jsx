@@ -47,7 +47,7 @@ let PlatformApp = React.createClass({
 
     return (
       <div className='jazz-main'>
-            <MainAppBar items={menuItems} title={title}  showCustomerList={this._showCustomerList}/>
+            <MainAppBar disabledSelectCustomer={true} items={menuItems} title={title}/>
             {this.props.children}
             <NetworkChecker></NetworkChecker>
         </div>
