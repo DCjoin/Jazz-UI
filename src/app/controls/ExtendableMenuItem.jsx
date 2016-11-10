@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import ReactDom from 'react-dom';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -18,8 +19,8 @@ let ExtendableMenuItem = React.createClass({
   },
   componentDidUpdate(){
     if(this.refs.subMenu){
-      var subMenu=React.findDOMNode(this.refs.subMenu),
-      menus=React.findDOMNode(this.refs.menus),
+      var subMenu=ReactDom.findDOMNode(this.refs.subMenu),
+      menus=ReactDom.findDOMNode(this.refs.menus),
       box=menus.getBoundingClientRect();
       if(box.left+menus.scrollWidth>document.body.offsetWidth){
         subMenu.style.left=-(menus.scrollWidth+5)+'px';
