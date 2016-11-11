@@ -1,4 +1,4 @@
-import VEEStore from '../../customerSetting/VEEStore.jsx';
+import VEEStore from 'store/customerSetting/VEEStore.jsx';
 import { expect } from 'chai';
 
 describe('VEEStore', function() {
