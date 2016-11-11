@@ -796,21 +796,21 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.setFitStepAndGetDataFn(startDate, endDate, tagOptions, relativeDate.this);
   },
   _setRelativeDateByValue(value) {
-    let relativeDateMenuItems = ConstStore.getSearchDate();
-    let menuIndex = -1;
-    relativeDateMenuItems.forEach((item, index) => {
-      if (item.value === value) {
-        menuIndex = index;
-      }
-    });
-    if (menuIndex !== -1) {
-      if (this.refs.relativeDate) {
-        this.refs.relativeDate.setState({
-          selectedIndex: menuIndex
-        });
-      }
-      this._onRelativeDateChange(null, menuIndex, relativeDateMenuItems[menuIndex]);
-    }
+    // let relativeDateMenuItems = ConstStore.getSearchDate();
+    // let menuIndex = -1;
+    // relativeDateMenuItems.forEach((item, index) => {
+    //   if (item.value === value) {
+    //     menuIndex = index;
+    //   }
+    // });
+    // if (menuIndex !== -1) {
+    //   if (this.refs.relativeDate) {
+    //     this.refs.relativeDate.setState({
+    //       selectedIndex: menuIndex
+    //     });
+    //   }
+      this._onRelativeDateChange(null, null, value);
+    //}
   },
   _onRelativeDateChange(e, selectedIndex, value) {
     let dateSelector = this.refs.dateTimeSelector;
@@ -1477,7 +1477,7 @@ let AnalysisPanel = React.createClass({
   pushIndustryMenuItem(industryId, zoneId, labelItem, industyMenuItems) {
     var labelMenuItem = {};
     var industryText = '';
-    if (this.context.router.getCurrentParams().lang === 'zh-cn') {
+    if (this.context.router.params.lang === 'zh-cn') {
       industryText = labelItem.get('ZoneComment') + labelItem.get('IndustryComment');
     } else {
       industryText = labelItem.get('ZoneComment') + ' ' + labelItem.get('IndustryComment');
