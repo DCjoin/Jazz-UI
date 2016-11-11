@@ -1584,7 +1584,7 @@ let ChartStrategyFactor = {
       if (!!analysisPanel.props.isFromAlarm) {
         widgetDto.DashboardId = destNode.get('Id');
         widgetDto.Name = newName;
-        FolderAction.WidgetSave(widgetDto, window.currentCustomerId);
+        FolderAction.WidgetSave(widgetDto, analysisPanel.context.router.params.customerId);
       } else {
         //for this situation destNode is menuIndex
         if (!!destNode) {
