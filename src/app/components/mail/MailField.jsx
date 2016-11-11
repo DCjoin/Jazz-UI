@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { TextField, CircularProgress, Checkbox } from 'material-ui';
 import Immutable from 'immutable';
 import MailAction from '../../actions/MailAction.jsx';
@@ -73,9 +74,9 @@ let MailField = React.createClass({
   },
   componentDidUpdate: function(prevProps, prevState) {
     if (this.state.content === null) {
-      var RecieverHeight = React.findDOMNode(this.refs.reciever).offsetHeight;
+      var RecieverHeight = ReactDOM.findDOMNode(this.refs.reciever).offsetHeight;
       var contentHeight = 255 - RecieverHeight;
-      this.refs.content.getDOMNode().querySelector('div').querySelector('div').querySelectorAll('textarea')[1].style.height = contentHeight + 'px';
+      ReactDOM.findDOMNode(this.refs.content).querySelector('div').querySelector('div').querySelectorAll('textarea')[1].style.height = contentHeight + 'px';
     }
 
   },
@@ -88,7 +89,8 @@ let MailField = React.createClass({
         padding: '0 10px'
       },
       underlineStyle = {
-        borderBottom: '1px solid transparent',
+        // borderBottom: '1px solid transparent',
+        display: 'none'
       },
       underlineFocusStyle = {
         borderColor: 'transparent'
@@ -126,6 +128,7 @@ let MailField = React.createClass({
         fullWidth: true,
         rows: initRow
       };
+      console.log(this.state.receivers.toJS());
     var receiverField = [];
     if (this.state.receivers.size > 0) {
       this.state.receivers.forEach(receiver => {

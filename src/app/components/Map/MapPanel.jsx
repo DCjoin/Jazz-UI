@@ -27,7 +27,7 @@ const POPUP_POSITION_LEFT_BOTTOM_Y = 225;
 var buildingId=null;
 
 let MapPanel = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   getInitialState: function() {
     return {
       //  isloading: false,
@@ -172,7 +172,7 @@ let MapPanel = React.createClass({
 
   },
   _onDateChanged: function(dateId) {
-    MapAction.getMapBuildingsByCustomerId(dateId);
+    MapAction.getMapBuildingsByCustomerId(dateId, this.props.params.customerId);
   // this.setState({
   //   isloading: true
   // });
@@ -324,7 +324,7 @@ let MapPanel = React.createClass({
     MapStore.addBuildingInfoListener(this._onBuildingInfoChanged);
     LanguageStore.addSwitchLanguageListener(this._onLanguageSwitch);
 
-    MapAction.getMapBuildingsByCustomerId(5);
+    MapAction.getMapBuildingsByCustomerId(5, this.props.params.customerId);
   // this.setState({
   //   isloading: true
   // });

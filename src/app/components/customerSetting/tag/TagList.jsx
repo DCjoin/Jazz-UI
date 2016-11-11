@@ -30,6 +30,9 @@ let TagList = React.createClass({
     isAddStatus: React.PropTypes.bool,
     tagType: React.PropTypes.number
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       showImportDialog: false,
@@ -76,7 +79,7 @@ let TagList = React.createClass({
       dialogContent = (<div className='jazz-tag-loading'><div style={{
         margin: 'auto',
         width: '100px'
-      }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+      }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (this.state.importSuccess) {
       dialogTitle = I18N.Setting.TagBatchImport.ImportSuccess;
       var importResult = this.state.importResult;
@@ -173,7 +176,7 @@ let TagList = React.createClass({
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
-      value: parseInt(window.currentCustomerId)
+      value: parseInt(this.context.currentRoute.params.customerId)
     }, null, form);
     var typeInput = createElement('input', {
       type: 'hidden',

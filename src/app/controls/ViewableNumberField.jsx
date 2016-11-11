@@ -1,6 +1,6 @@
 var React = require('react');
-import mui from 'material-ui';
-let {TextField} = mui;
+import ReactDom from 'react-dom';
+import {TextField} from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import Util from '../util/Util.jsx';
@@ -42,14 +42,14 @@ var ViewableNumberField = React.createClass({
 
   _onBlur() {
     if (Util.isEmptyStr(this.props.defaultValue, false)) {
-      var node = React.findDOMNode(this.refs.tf);
+      var node = ReactDom.findDOMNode(this.refs.tf);
       node.className = '';
     }
     this._focus = false;
   },
 
   _onFocus() {
-    var node = React.findDOMNode(this.refs.tf);
+    var node = ReactDom.findDOMNode(this.refs.tf);
     node.className = 'pop-viewableTextField-focus';
     this._focus = true;
   },
@@ -119,6 +119,9 @@ var ViewableNumberField = React.createClass({
         "pop-viewableTextField-focus": !Util.isEmptyStr(this.props.defaultValue) || this._focus
       });
       var inputProps = {
+        errorStyle:{
+          marginTop:'10px'
+        },
         floatingLabelText: this.props.title,
         onBlur: this._onBlur,
         onFocus: this._onFocus,

@@ -13,7 +13,8 @@ import Dialog from '../../controls/PopupDialog.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
-let MenuItem = require('material-ui/lib/menus/menu-item');
+import MenuItem from 'material-ui/MenuItem';
+
 let {nodeType} = TreeConstants;
 
 var HierarchyList = React.createClass({
@@ -26,6 +27,9 @@ var HierarchyList = React.createClass({
     onExportBtnClick: React.PropTypes.func,
     onReloadHierachyTree: React.PropTypes.func,
     onGragulaNode: React.PropTypes.func
+  },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
   },
   getInitialState: function() {
     return {
@@ -45,19 +49,19 @@ var HierarchyList = React.createClass({
     };
     if (items !== null) {
       if (items.length === 1) {
-        menuItems = [<MenuItem key={2} innerDivStyle={itemStyle} primaryText={items[0]}/>]
+        menuItems = [<MenuItem key={2} value={2} innerDivStyle={itemStyle} primaryText={items[0]}/>]
       } else {
         items.forEach((item, index) => {
           if (index === 0) {
             if (!that.getAddBtnDisabled()) {
               menuItems.push(
-                <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
+                <MenuItem key={index} value={index} innerDivStyle={itemStyle} primaryText={item}/>
               );
             }
 
           } else {
             menuItems.push(
-              <MenuItem key={index} innerDivStyle={itemStyle} primaryText={item}/>
+              <MenuItem key={index} value={index} innerDivStyle={itemStyle} primaryText={item}/>
             );
           }
 
@@ -92,7 +96,7 @@ var HierarchyList = React.createClass({
     this.props.onAddBtnClick(newNodeType);
   },
   _onMenuAddBtnClick: function(e, item) {
-    let key = parseInt(item.key);
+    let key = parseInt(item);
     let newNodeType = null;
     switch (key) {
       case 0:
@@ -136,7 +140,7 @@ var HierarchyList = React.createClass({
       dialogContent = (<div className='jazz-tag-loading'><div style={{
         margin: 'auto',
         width: '100px'
-      }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+      }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (this.state.importSuccess) {
       dialogTitle = I18N.Setting.TagBatchImport.ImportSuccess;
       var importResult = this.state.importResult;
@@ -225,7 +229,7 @@ var HierarchyList = React.createClass({
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
-      value: parseInt(window.currentCustomerId)
+      value: parseInt(this.context.currentRoute.params.customerId)
     }, null, form);
     var hierarchyInput = createElement('input', {
       type: 'hidden',
@@ -256,7 +260,7 @@ var HierarchyList = React.createClass({
     if (id < 0) {
       return true;
     }
-    if (id === parseInt(window.currentCustomerId)) {
+    if (id === parseInt(this.context.currentRoute.params.customerId)) {
       return true;
     }
     return false;
@@ -282,7 +286,8 @@ var HierarchyList = React.createClass({
         type: "Add",
         text: I18N.Common.Glossary.Node,
         menuItems: this.getAddMenuItems(),
-        onItemClick: this._onMenuAddBtnClick
+        onItemClick: this._onMenuAddBtnClick,
+        buttonIcon: 'icon-add'
       };
     var addBtnClasses = {
         'jazz-tag-leftpanel-header-item': !isAddStatus,

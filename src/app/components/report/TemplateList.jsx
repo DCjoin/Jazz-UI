@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog, LinkButton } from 'material-ui';
+import NewDialog from '../../controls/NewDialog.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import TemplateItem from './TemplateItem.jsx';
 import ReportAction from '../../actions/ReportAction.jsx';
@@ -40,15 +41,15 @@ let TemplateList = React.createClass({
       onClick={this._handleDialogDismiss} />
     ];
 
-    return (<Dialog
+    return (<NewDialog
       key={this.state.id}
       title={I18N.EM.Report.DeleteTemplate}
       ref="deleteDialog"
-      openImmediately={true}
+      open={true}
       actions={dialogActions}
       modal={true}>
         {I18N.format(I18N.EM.Report.DeleteTemplateMessage, this.state.name)}
-      </Dialog>);
+      </NewDialog>);
   },
   _deleteTemplate: function() {
     var id = this.state.id;

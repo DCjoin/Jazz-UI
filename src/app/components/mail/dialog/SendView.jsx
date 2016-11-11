@@ -1,8 +1,9 @@
 'use strict';
 import React from "react";
-import { Navigation, State } from 'react-router';
-import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
+import CircularProgress from 'material-ui/CircularProgress';
 import MailAction from '../../../actions/MailAction.jsx';
+import NewDialog from '../../../controls/NewDialog.jsx';
+import FlatButton from '../../../controls/FlatButton.jsx';
 
 var Send = React.createClass({
   propTypes: {
@@ -15,13 +16,13 @@ var Send = React.createClass({
   },
 
   _onFirstActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap();
     }
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this.props.onDismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
@@ -54,8 +55,8 @@ var Send = React.createClass({
       title: I18N.Mail.Send.Title,
       actions: actions,
       modal: true,
-      openImmediately: true,
-      onDismiss: this.props.onDismiss,
+      open: true,
+      // onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };
     var content = this.props.content;
@@ -63,16 +64,16 @@ var Send = React.createClass({
       content = <div style={{
         marginLeft: '300px'
       }}>
-      <CircularProgress  mode="indeterminate" size={1} />
+      <CircularProgress  mode="indeterminate" size={80} />
       </div>;
       dialogProps.actions = [];
     }
     return (
       <div className='jazz-copytemplate-dialog'>
         <div className='able'>
-          <Dialog {...dialogProps}>
+          <NewDialog {...dialogProps}>
             {content}
-          </Dialog>
+          </NewDialog>
         </div>
       </div>
       )

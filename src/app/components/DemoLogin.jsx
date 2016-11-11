@@ -76,7 +76,7 @@ var DemoLogin = React.createClass({
     return null;
   },
   _goMain() {
-    CurrentUserAction.getUser(window.currentUserId);
+    CurrentUserAction.getInitData(window.currentUserId);
     this.context.router.transitionTo('main', this.props.params);
   },
   _goLogin(demoEmail) {
@@ -98,7 +98,7 @@ var DemoLogin = React.createClass({
     if (!this.state.loginError) {
       return (
         <div className="jazz-demo-login">
-          <CircularProgress mode="indeterminate" size={2} />
+          <CircularProgress mode="indeterminate" size={80} />
         </div>);
     } else {
       return (

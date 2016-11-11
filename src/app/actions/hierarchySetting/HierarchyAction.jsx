@@ -10,9 +10,8 @@ var _page,
   _association,
   _filterObj;
 let HierarchyAction = {
-  GetHierarchys: function(selectedId, isFromBuilding = false) {
-    let customerId = parseInt(window.currentCustomerId),
-      that = this;
+  GetHierarchys: function(customerId,selectedId, isFromBuilding = false) {
+    let that = this;
     Ajax.post('/Hierarchy/GetHierarchyTreeDtosRecursive', {
       params: {
         customerId: customerId,
@@ -24,7 +23,7 @@ let HierarchyAction = {
           selectedId: selectedId
         });
         if (isFromBuilding) {
-          that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
+          that.getAssociatedTag(customerId,_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
         }
       },
       error: function(err, res) {
@@ -53,7 +52,7 @@ let HierarchyAction = {
           customer: customer
         });
         if (refresh) {
-          that.GetHierarchys();
+          that.GetHierarchys(customerId);
         }
       },
       error: function(err, res) {
@@ -61,10 +60,10 @@ let HierarchyAction = {
       }
     });
   },
-  getLogListByCustomerId: function() {
+  getLogListByCustomerId: function(CustomerId) {
     Ajax.post('/Hierarchy/GetHierarchyImportHistory', {
       params: {
-        customerId: parseInt(window.currentCustomerId)
+        customerId: parseInt(CustomerId)
       },
       success: function(logList) {
         AppDispatcher.dispatch({
@@ -79,7 +78,7 @@ let HierarchyAction = {
       }
     });
   },
-  getAssociatedTag: function(page, hierarchyId, association, filterObj, isView) {
+  getAssociatedTag: function(customerId,page, hierarchyId, association, filterObj, isView) {
     _page = page;
     _hierarchyId = hierarchyId;
     _association = association;
@@ -94,7 +93,7 @@ let HierarchyAction = {
     Ajax.post('/Tag/GetTagsByFilter', {
       params: {
         filter: {
-          CustomerId: parseInt(window.currentCustomerId),
+          CustomerId: parseInt(customerId),
           Association: associationObj,
           IncludeAssociationName: true,
           CommodityId: filterObj.CommodityId,
@@ -117,7 +116,7 @@ let HierarchyAction = {
       }
     });
   },
-  modifyTags: function(hierarchyId, tags, associationType, hierarchyType) {
+  modifyTags: function(customerId,hierarchyId, tags, associationType, hierarchyType) {
     var that = this;
     Ajax.post('/Tag/SetAssociation', {
       params: {
@@ -132,12 +131,12 @@ let HierarchyAction = {
           if (HierarchyStore.getTotal() - 1 > 0 && parseInt((HierarchyStore.getTotal() - 1 + 19) / 20) < _page) {
             _page = _page - 1;
           }
-          that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
+          that.getAssociatedTag(customerId,_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
         }
         if (hierarchyType === 2) {
-          that.GetHierarchys(HierarchyStore.getSelectedNode().get('Id'), true);
+          that.GetHierarchys(customerId,HierarchyStore.getSelectedNode().get('Id'), true);
         } else {
-          that.getAssociatedTag(_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
+          that.getAssociatedTag(customerId,_page, _hierarchyId, _association, _filterObj, _hierarchyId !== null);
         }
 
       },
@@ -342,7 +341,7 @@ let HierarchyAction = {
       }
     });
   },
-  getAllIndustries: function() {
+  getAllIndustries: function(customerId) {
     var that = this;
     Ajax.post('/Administration/GetAllIndustries', {
       params: {
@@ -355,14 +354,14 @@ let HierarchyAction = {
           type: Action.GET_ALL_INDUSTRIES_FOR_HIERARCHY,
           industries: industries
         });
-        that.getAllZones();
+        that.getAllZones(customerId);
       },
       error: function(err, res) {
         console.log(err, res);
       }
     });
   },
-  getAllZones: function() {
+  getAllZones: function(customerId) {
     var that = this;
     Ajax.post('/Administration/GetAllZones', {
       params: {
@@ -373,7 +372,7 @@ let HierarchyAction = {
           type: Action.GET_ALL_ZONES_FOR_HIERARCHY,
           zones: zones
         });
-        that.getCustomersByFilter(window.currentCustomerId, true);
+        that.getCustomersByFilter(customerId, true);
       },
       error: function(err, res) {
         console.log(err, res);

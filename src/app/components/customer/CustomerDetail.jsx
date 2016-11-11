@@ -10,11 +10,11 @@ import CustomerStore from '../../stores/CustomerStore.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
-import ViewableDatePicker from '../../controls/ViewableDatePickerByStatus.jsx';
+import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import { dataStatus } from '../../constants/DataStatus.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import NewDialog from '../../controls/NewDialog.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import AdminList from './AdminList.jsx';
 import ImageUpload from '../../controls/ImageUpload.jsx';
@@ -35,7 +35,7 @@ var CustomerDetail = React.createClass({
     isFromHierarchy: React.PropTypes.bool,
     handleEnergyInfoChanged: React.PropTypes.func,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false,
@@ -97,29 +97,26 @@ var CustomerDetail = React.createClass({
         dialogStatus: false
       });
     };
-    if (!this.state.dialogStatus) {
-      return null;
-    } else {
-      var customer = that.props.customer;
+    var customer = that.props.customer;
 
-      return (
+    return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.CustomerManagement.DeleteTitle} modal={true} actions={[
-          <FlatButton
-          label={I18N.Common.Button.Delete}
-          primary={true}
-          onClick={() => {
-            that.props.handleDeleteCustomer(customer);
-            closeDialog();
-          }} />,
-          <FlatButton
-          label={I18N.Common.Button.Cancel}
-          onClick={closeDialog} />
-        ]}>
-        {I18N.format(I18N.Setting.CustomerManagement.DeleteContent, customer.get('Name'))}
-      </Dialog>
-        );
-    }
+      <NewDialog open={this.state.dialogStatus} title={I18N.Setting.CustomerManagement.DeleteTitle} modal={true} actions={[
+        <FlatButton
+        label={I18N.Common.Button.Delete}
+        inDialog={true}
+        primary={true}
+        onClick={() => {
+          that.props.handleDeleteCustomer(customer);
+          closeDialog();
+        }} />,
+        <FlatButton
+        label={I18N.Common.Button.Cancel}
+        onClick={closeDialog} />
+      ]}>
+      {I18N.format(I18N.Setting.CustomerManagement.DeleteContent, customer.get('Name'))}
+    </NewDialog>
+      );
   },
   _renderHeader: function() {
     var that = this,
@@ -201,12 +198,12 @@ var CustomerDetail = React.createClass({
     var customerStartTimeProps = {
       isViewStatus: isView,
       title: I18N.Setting.CustomerManagement.Label.OperationStartTime,
-      defaultValue: this._getDateInput(StartTime),
+      value: this._getDateInput(StartTime),
       isRequired: true,
       regex: Regex.CommonTextNotNullRule,
-      errorMessage: "请输入客户地址",
+      errorMessage: "请输入运营时间",
       lang: window.currentLanguage,
-      didChanged: value => {
+      onChange: value => {
         var d2j = CommonFuns.DataConverter.DatetimeToJson;
         CustomerAction.merge({
           value: d2j(new Date(value)),
@@ -367,7 +364,7 @@ var CustomerDetail = React.createClass({
 
     } else {
       return (
-        <CircularProgress  mode="indeterminate" size={2} />
+        <CircularProgress  mode="indeterminate" size={80} />
         )
     }
 
@@ -427,14 +424,14 @@ var CustomerDetail = React.createClass({
         that.props.handlerCancel();
       }}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
+        // that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()
       }}/>
 
       )
   },
   componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
+    // this.initBatchViewbaleTextFiled();
     if (!this.props.infoTab) {
       CustomerAction.GetCustomerEnergyInfos(this.props.customer.get('Id'));
     }

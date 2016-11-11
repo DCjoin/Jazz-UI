@@ -2,8 +2,13 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import { FlatButton, FontIcon, DropDownMenu, CircularProgress } from 'material-ui';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
+import CircularProgress from 'material-ui/CircularProgress';
+import MenuItem from 'material-ui/MenuItem';
 import _isBoolean from 'lodash/lang/isBoolean';
+import CustomDropDownMenu from './CustomDropDownMenu.jsx';
+
 
 let SelectablePanel = React.createClass({
   propTypes: {
@@ -37,10 +42,13 @@ let SelectablePanel = React.createClass({
       };
 
     var dropDownMenuProps = {
-      menuItems: this.props.sortItems,
       valueMember: "type",
       displayMember: "label",
       value: this.props.sortBy,
+      listStyle: {
+        width: 320,
+        left: 0,
+      }, 
       labelStyle: {
         color: "#fff",
         padding: '0'
@@ -51,8 +59,8 @@ let SelectablePanel = React.createClass({
       iconStyle: {
         display: "none"
       },
-      onChange: function(e, selectedIndex, menuItem) {
-        that.props.changeSortBy(menuItem.type);
+      onChange: function(e, selectedIndex, value) {
+        that.props.changeSortBy(value);
       }
     };
 
@@ -64,12 +72,10 @@ let SelectablePanel = React.createClass({
     //               </FlatButton>
     //             </div>
     // }
-
     if (!!this.props.sortBy) {
-      sort = <div className="jazz-serviceprovider-sortbar">
-                <DropDownMenu {...dropDownMenuProps} />
-                <span className="icon-arrow-down jazz-serviceprovider-sortbar-icon" />
-              </div>
+      sort = <CustomDropDownMenu value={this.props.sortBy} onChange={(event, index, value) => {
+                this.props.changeSortBy(value);
+              }}>{this.props.sortItems.map( item => <MenuItem  primaryText={item.label} value={item.type} />)}</CustomDropDownMenu>
     }
 
     return (

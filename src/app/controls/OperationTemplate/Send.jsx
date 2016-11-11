@@ -2,7 +2,9 @@
 import React from "react";
 import { Navigation, State } from 'react-router';
 import classNames from 'classnames';
-import { Dialog, FlatButton, TextField, Paper, CircularProgress } from 'material-ui';
+import {TextField, Paper, CircularProgress } from 'material-ui';
+import FlatButton from '../FlatButton.jsx';
+import Dialog from '../NewDialog.jsx';
 import UserAction from '../../actions/UserAction.jsx';
 import UserStore from '../../stores/UserStore.jsx';
 import UsersOperation from './assets/UsersOperation.jsx';
@@ -19,8 +21,14 @@ var Send = React.createClass({
     return {
       users: null,
       isLoading: false,
-      btnDisabled: true
+      btnDisabled: true,
+      open:true
     };
+  },
+  _dismiss(){
+    this.setState({
+      open:false
+    })
   },
   _onUserStatus: function() {
     if (UserStore.getUserStatus().size === 0) {
@@ -35,13 +43,13 @@ var Send = React.createClass({
 
   },
   _onFirstActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this._dismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap();
     }
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    this._dismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
@@ -50,6 +58,11 @@ var Send = React.createClass({
     this.setState({
       users: UserStore.getUserList(),
       isLoading: false
+    });
+  },
+  componentWillReceiveProps: function(nextProps) {
+    this.setState({
+      open:true
     });
   },
   componentDidMount: function() {
@@ -89,9 +102,11 @@ var Send = React.createClass({
       title: I18N.format(I18N.Template.Send.Title, this.props.type),
       actions: actions,
       modal: true,
-      openImmediately: true,
-      onDismiss: this.props.onDismiss,
-      titleStyle: titleStyle
+      open: this.state.open,
+      onDismiss: ()=>{
+        this._dismiss();
+        this.props.onDismiss()},
+      titleStyle: titleStyle,
     };
     let content;
     if (this.state.isLoading) {
@@ -107,7 +122,7 @@ var Send = React.createClass({
         'able': !this.state.btnDisabled
       })}>
           <Dialog {...dialogProps}>
-            {content}
+                {content}
           </Dialog>
         </div>
       </div>

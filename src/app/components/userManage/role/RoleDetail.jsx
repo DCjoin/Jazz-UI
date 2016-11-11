@@ -9,14 +9,12 @@ import Panel from '../../../controls/MainContentPanel.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import CurrentUserStore from '../../../stores/CurrentUserStore.jsx';
 import { Checkbox } from 'material-ui';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import NewDialog from '../../../controls/NewDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
 var RoleDetail = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   propTypes: {
     formStatus: React.PropTypes.bool,
     role: React.PropTypes.object,
@@ -141,32 +139,27 @@ var RoleDetail = React.createClass({
         dialogStatus: false
       });
     }
-    if (!this.state.dialogStatus) {
-      return null;
-    } else {
-      var {Name} = that.props.role.toJS();
-      return (
+    
+    var {Name} = that.props.role.toJS();
+    return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.Role.DeleteTitle} modal={true} actions={[
-          <FlatButton
-          label={I18N.Template.Delete.Delete}
-          primary={true}
-          onClick={() => {
-            that.props.handleDeleteRole();
-            closeDialog();
-          }} />,
-          <FlatButton
-          label={I18N.Template.Delete.Cancel}
-          onClick={closeDialog} />
-        ]}>
-					{I18N.format(I18N.Setting.Role.DeleteContent, Name)}
-				</Dialog>
-        );
-    }
-  },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-  },
+      <NewDialog open={this.state.dialogStatus} title={I18N.Setting.Role.DeleteTitle} modal={true} actions={[
+        <FlatButton
+        label={I18N.Template.Delete.Delete}
+        primary={true}
+        inDialog={true}
+        onClick={() => {
+          that.props.handleDeleteRole();
+          closeDialog();
+        }} />,
+        <FlatButton
+        label={I18N.Template.Delete.Cancel}
+        onClick={closeDialog} />
+      ]}>
+				{I18N.format(I18N.Setting.Role.DeleteContent, Name)}
+			</NewDialog>
+      );
+},
 
   render: function() {
     var that = this,
@@ -199,7 +192,6 @@ var RoleDetail = React.createClass({
     }}
     onCancel={this.props.handlerCancel}
     onEdit={ () => {
-      that.clearErrorTextBatchViewbaleTextFiled();
       that.props.setEditStatus()
     }}/>
     );

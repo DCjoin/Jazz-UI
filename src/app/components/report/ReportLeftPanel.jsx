@@ -1,6 +1,7 @@
 'use strict';
 import React from "react";
 import { CircularProgress, FlatButton, FontIcon, DropDownMenu } from 'material-ui';
+import MenuItem from 'material-ui/MenuItem';
 import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
 import ReportList from './ReportList.jsx';
@@ -9,11 +10,14 @@ import ReportStore from '../../stores/ReportStore.jsx';
 
 var ReportLeftPanel = React.createClass({
 
-
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       isLoading: true,
-      disableAddButton: false
+      disableAddButton: false,
+      value:'Name'
     };
   },
   _addNewReport: function() {
@@ -44,12 +48,14 @@ var ReportLeftPanel = React.createClass({
       isLoading: false
     });
   },
-  _onSortChange(e) {
-    var sortBy = e.target.value;
-    ReportAction.getReportListByCustomerId(parseInt(window.currentCustomerId), sortBy, 'asc');
+  _onSortChange(e, selectedIndex, value) {
+    this.setState({
+      value:value
+    });
+    ReportAction.getReportListByCustomerId(parseInt(this.context.currentRoute.params.customerId), value, 'asc');
   },
   componentDidMount: function() {
-    ReportAction.getReportListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
+    ReportAction.getReportListByCustomerId(parseInt(this.context.currentRoute.params.customerId), 'Name', 'asc');
     ReportStore.addReportListChangeListener(this._onChange);
     ReportStore.addReportItemChangeListener(this._onChangeReportItem);
   },
@@ -63,25 +69,31 @@ var ReportLeftPanel = React.createClass({
     var buttonStyle = {
       backgroundColor: 'transparent',
       height: '32px'
+    },menustyle={
+      style:{
+        height: '40px',
+        width: '192px'
+      },
+      labelStyle:{
+        color:'#ffffff',
+        lineHeight: '40px'
+      }
     };
     var newReportClasses = {
       'se-dropdownbutton': true,
       'btn-container': true,
       'btn-container-active': !this.state.disableAddButton
     };
-    var sortItems = [{
-      payload: 'Name',
-      text: I18N.EM.Report.ReportSort
-    }, {
-      payload: 'CreateUser',
-      text: I18N.EM.Report.UserSort
-    }];
+    var sortItems = [
+    <MenuItem key={1} value='Name' primaryText={I18N.EM.Report.ReportSort}/>,
+    <MenuItem key={2} value='CreateUser' primaryText={I18N.EM.Report.UserSort}/>
+    ];
 
 
     var reportContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={1} /></div> : <ReportList ref='reportList' reportList={this.state.reportList} reportItem={this.state.reportItem}></ReportList>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <ReportList ref='reportList' reportList={this.state.reportList} reportItem={this.state.reportItem}></ReportList>);
     var headerDom = (this.props.onlyRead ? null : <div className="jazz-report-leftpanel-header">
       <div className={classSet(newReportClasses)} style={{
       margin: '0 30px'
@@ -96,7 +108,8 @@ var ReportLeftPanel = React.createClass({
       <div className="jazz-report-leftpanel-container">
         {headerDom}
         <div className="jazz-report-leftpanel-sort">
-          <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>
+          <DropDownMenu {...menustyle}
+            onChange={this._onSortChange} value={this.state.value}>{sortItems}</DropDownMenu>
         </div>
         <div className="jazz-report-leftpanel-reportlist">
           {reportContent}

@@ -9,11 +9,14 @@ import Immutable from 'immutable';
 
 var RankingHierTreeButton = React.createClass({
 
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
   propTypes: {
     checkedTreeNodes: React.PropTypes.object,
     onConfirm: React.PropTypes.func,
     onLoad: React.PropTypes.func,
+  },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
   },
   _onChange() {
     var data = HierarchyStore.getData();
@@ -107,7 +110,7 @@ var RankingHierTreeButton = React.createClass({
   //       },
   componentDidMount: function() {
     HierarchyStore.addHierarchyNodeListener(this._onChange);
-    HierarchyAction.loadall(window.currentCustomerId, false);
+    HierarchyAction.loadall(this.context.currentRoute.params.customerId, false);
     this.props.onLoad(true);
     this.setState({
       isLoading: true,

@@ -94,16 +94,17 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
   empty: function() {
-    //location.reload();
     CookieUtil.set('UserId', null);
-    // CookieUtil.set('Username', null);
-    CookieUtil.set('currentCustomerId', null);
-    // CookieUtil.set('UserInfo', null);
-    window.currentUserId = null;
-    window.currentUser = null;
-    window.currentCustomerId = null;
-    window.toMainApp = null;
-    window.currentCustomerId = null;
+    // //location.reload();
+    // CookieUtil.set('UserId', null);
+    // // CookieUtil.set('Username', null);
+    // CookieUtil.set('currentCustomerId', null);
+    // // CookieUtil.set('UserInfo', null);
+    // window.currentUserId = null;
+    // window.currentUser = null;
+    // window.currentCustomerId = null;
+    // window.toMainApp = null;
+    // window.currentCustomerId = null;
   },
   getLastError: function(argument) {
     return _lastError;

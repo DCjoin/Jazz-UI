@@ -13,7 +13,7 @@ import CalendarAction from '../../actions/CalendarAction.jsx';
 import CalendarStore from '../../stores/CalendarStore.jsx';
 import FromEndTimeGroup from './FromEndTimeGroup.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
 
 var calendarType = 1;
@@ -97,12 +97,10 @@ var WorkTime = React.createClass({
     });
   },
   _renderDeleteDialog() {
-    if (!this.state.showDeleteDialog) {
-      return null;
-    }
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
+      inDialog={true}
       primary={true}
       onClick={this._deleteWorktime} />,
 
@@ -111,14 +109,14 @@ var WorkTime = React.createClass({
       onClick={this._handleDialogDismiss} />
     ];
 
-    return (<Dialog
+    return (<NewDialog
       ref="deleteDialog"
-      openImmediately={true}
+      open={this.state.showDeleteDialog}
       title={I18N.Setting.Calendar.DeleteWorktime}
       actions={dialogActions}
       modal={true}>
         <div className='jazz-calendar-delete'>{I18N.format(I18N.Setting.Calendar.DeleteWorktimeContent, this.state.selectedData.get('Name'))}</div>
-      </Dialog>);
+      </NewDialog>);
   },
   _deleteWorktime() {
     var selectedData = this.state.selectedData;
@@ -300,7 +298,7 @@ var WorkTime = React.createClass({
       return (<div className='jazz-calendar-loading'><div style={{
           margin: 'auto',
           width: '100px'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (selectedData !== null) {
       var header = me._renderHeader(isView);
       var content = me._renderContent(isView);

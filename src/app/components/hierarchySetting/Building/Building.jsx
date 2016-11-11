@@ -32,7 +32,7 @@ var Building = React.createClass({
     closedList: React.PropTypes.bool,
     merge: React.PropTypes.func,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false,
@@ -266,7 +266,7 @@ var Building = React.createClass({
       allowDelete={that.props.infoTabNo === 1}
       onCancel={this._handlerCancel}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
+        //that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus();
       }}
       editBtnProps={editBtnProps}/>
@@ -316,18 +316,18 @@ var Building = React.createClass({
       HierarchyAction.cancelSaveProperty();
     }
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
+  // componentWillMount: function() {
+  //   this.initBatchViewbaleTextFiled();
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
   componentDidMount: function() {
     if (this.props.formStatus === formStatus.ADD) {
       this.refs.building_head.focus();
     }
   },
-  componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
+  // componentWillUnmount: function() {
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
   render: function() {
     var that = this;
     var header = this._renderHeader(),

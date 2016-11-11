@@ -1,19 +1,22 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
+import assign from 'object-assign';
 import { FlatButton, CircularProgress, Tabs, Tab } from 'material-ui';
 import MailAction from '../../actions/MailAction.jsx';
 import MailStore from '../../stores/MailStore.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
 import PlatformUser from './MailPlatformUser.jsx';
 import Providers from './MailProviders.jsx';
+import getLessVar from '../../util/GetLessVar.jsx';
 
 let MailUsers = React.createClass({
 
   _handleContactorTabActive: function() {
     this.refs.providers.reset();
-    React.findDOMNode(this.refs.tab1).style.opacity = '1';
-    React.findDOMNode(this.refs.tab2).style.opacity = '0.5';
+    ReactDOM.findDOMNode(this.refs.tab1).style.opacity = '1';
+    ReactDOM.findDOMNode(this.refs.tab2).style.opacity = '0.5';
     if (MailStore.getServiceProviders() === null) {
       MailAction.GetServiceProviders();
       this.setState({
@@ -29,8 +32,8 @@ let MailUsers = React.createClass({
   },
   _handlePlatformUserTabActive: function() {
     this.refs.users.reset();
-    React.findDOMNode(this.refs.tab1).style.opacity = '0.5';
-    React.findDOMNode(this.refs.tab2).style.opacity = '1';
+    ReactDOM.findDOMNode(this.refs.tab1).style.opacity = '0.5';
+    ReactDOM.findDOMNode(this.refs.tab2).style.opacity = '1';
     if (MailStore.getPlatFormUserGroupDto() === null) {
       MailAction.GetPlatFormUserGroupDto();
       this.setState({
@@ -56,8 +59,8 @@ let MailUsers = React.createClass({
       users: null
     });
     MailAction.GetServiceProviders();
-    React.findDOMNode(this.refs.tab1).style.opacity = '1';
-    React.findDOMNode(this.refs.tab2).style.opacity = '0.5';
+    ReactDOM.findDOMNode(this.refs.tab1).style.opacity = '1';
+    ReactDOM.findDOMNode(this.refs.tab2).style.opacity = '0.5';
     this.refs.providers.reset();
     this.refs.users.reset();
   },
@@ -70,15 +73,15 @@ let MailUsers = React.createClass({
     return {
       users: null,
       isLoading: true,
-      tabsValue: null
+      tabsValue: 'tab1'
     };
   },
   componentDidMount: function() {
     MailStore.addMailUsersListener(this._onMailUsersChanged);
     MailStore.addSendSuccessListener(this._onSendSuccessChanged);
     MailAction.GetServiceProviders();
-    React.findDOMNode(this.refs.tab1).style.opacity = '1';
-    React.findDOMNode(this.refs.tab2).style.opacity = '0.5';
+    ReactDOM.findDOMNode(this.refs.tab1).style.opacity = '1';
+    ReactDOM.findDOMNode(this.refs.tab2).style.opacity = '0.5';
   },
   componentWillUnmount: function() {
     MailStore.removeMailUsersListener(this._onMailUsersChanged);
@@ -91,10 +94,13 @@ let MailUsers = React.createClass({
     };
     return (
       <div className='jazz-mailuser'>
-        <Tabs tabItemContainerStyle={itemStyle} valueLink={{
-        value: this.state.tabsValue,
-        requestChange: this._handleTabsChange.bind(this)
-      }}>
+        <Tabs 
+          tabItemContainerStyle={itemStyle}
+          onChange={this._handleTabsChange}
+          inkBarStyle={{
+            backgroundColor: getLessVar('schneiderBlue')
+          }}
+          value={this.state.tabsValue}>
           <Tab ref='tab1' value='tab1' label={I18N.Mail.Contactor} onActive={this._handleContactorTabActive}>
             <Providers ref='providers' users={this.state.users} isLoading={this.state.isLoading}/>
           </Tab>

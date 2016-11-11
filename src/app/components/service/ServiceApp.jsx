@@ -7,9 +7,12 @@ import assign from 'object-assign';
 import NetworkChecker from '../../controls/NetworkChecker.jsx';
 import CookieUtil from '../../util/cookieUtil.jsx';
 import { getCookie } from '../../util/Util.jsx';
+import RoutePath from '../../util/RoutePath.jsx';
+
+const service = RoutePath.service;
 
 let ServiceApp = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
 
   _redirectRouter : function(target, params) {
       if (!target) {
@@ -45,18 +48,22 @@ let ServiceApp = React.createClass({
           list: [
             {
               name: 'workday',
+              getPath: service.workday,
               title: I18N.MainMenu.WorkdaySetting
             },
             {
               name: 'worktime',
+              getPath: service.worktime,
               title: I18N.MainMenu.WorktimeSetting
             },
             {
               name: 'coldwarm',
+              getPath: service.coldwarm,
               title: I18N.MainMenu.ColdwarmSetting
             },
             {
               name: 'daynight',
+              getPath: service.daynight,
               title: I18N.MainMenu.DaynightSetting
             }
           ]
@@ -69,10 +76,12 @@ let ServiceApp = React.createClass({
           list: [
             {
               name: 'price',
+              getPath: service.price,
               title: I18N.MainMenu.Price
             },
             {
               name: 'carbon',
+              getPath: service.carbon,
               title: I18N.MainMenu.Carbon
             }
           ]
@@ -85,10 +94,12 @@ let ServiceApp = React.createClass({
           list: [
             {
               name: 'benchmark',
+              getPath: service.benchmark,
               title: I18N.MainMenu.Benchmark
             },
             {
               name: 'labeling',
+              getPath: service.labeling,
               title: I18N.MainMenu.Labeling
             }
           ]
@@ -96,6 +107,7 @@ let ServiceApp = React.createClass({
       },
       {
         name: 'customer',
+        getPath: service.customer,
         title: I18N.MainMenu.Customer,
       },
       {
@@ -105,10 +117,12 @@ let ServiceApp = React.createClass({
           list: [
             {
               name: 'user',
+              getPath: service.user,
               title: I18N.MainMenu.User
             },
             {
               name: 'privilege',
+              getPath: service.privilege,
               title: I18N.MainMenu.Privilege
             }
           ]
@@ -118,8 +132,8 @@ let ServiceApp = React.createClass({
 
     return (
       <div className='jazz-main'>
-            <MainAppBar items={menuItems} title={I18N.Setting.SPManagement}  showCustomerList={this._showCustomerList}/>
-            <RouteHandler {...this.props} />
+            <MainAppBar disabledSelectCustomer={this.props.params.cusnum === 0} items={menuItems} title={I18N.Setting.SPManagement}/>
+            {this.props.children}
             <NetworkChecker></NetworkChecker>
         </div>
       );

@@ -16,7 +16,7 @@ var DimBasic = React.createClass({
     merge: React.PropTypes.func,
     formStatus: React.PropTypes.string,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _renderDetail: function() {
     var {Comment} = this.props.selectedNode.toJS(),
       isView = this.props.formStatus === formStatus.VIEW;
@@ -47,13 +47,13 @@ var DimBasic = React.createClass({
       )
 
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
-  componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
-  },
+  // componentWillMount: function() {
+  //   this.initBatchViewbaleTextFiled();
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
+  // componentWillUnmount: function() {
+  //   this.clearErrorTextBatchViewbaleTextFiled();
+  // },
   render: function() {
     return (
       <div className="pop-manage-detail-content">

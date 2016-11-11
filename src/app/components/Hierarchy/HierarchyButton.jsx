@@ -7,7 +7,7 @@ import HierarchyAction from "../../actions/HierarchyAction.jsx";
 import HierarchyStore from "../../stores/HierarchyStore.jsx";
 
 let HierarchyButton = React.createClass({
-  mixins: [Mixins.ClickAwayable],
+  //mixins: [Mixins.ClickAwayable],
   propTypes: {
     onTreeClick: React.PropTypes.func.isRequired,
     onButtonClick: React.PropTypes.func.isRequired,
@@ -15,6 +15,9 @@ let HierarchyButton = React.createClass({
     hierId: React.PropTypes.number,
     handleClickAway: React.PropTypes.func,
     isDimTreeShow: React.PropTypes.bool,
+  },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
   },
   getDefaultProps: function() {
     return {
@@ -89,7 +92,7 @@ let HierarchyButton = React.createClass({
     };
   },
   componentWillMount: function() {
-    HierarchyAction.loadall(window.currentCustomerId, this.props.isDimTreeShow);
+    HierarchyAction.loadall(this.context.currentRoute.params.customerId, this.props.isDimTreeShow);
   },
   componentDidMount: function() {
     HierarchyStore.addHierarchyNodeListener(this._onChange);
@@ -150,7 +153,7 @@ let HierarchyButton = React.createClass({
             alignItems: 'center',
             marginTop: '160px'
           }}>
-              <CircularProgress  mode="indeterminate" size={1} />
+              <CircularProgress  mode="indeterminate" size={80} />
             </div>
           </Paper>
         )

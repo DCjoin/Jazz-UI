@@ -16,7 +16,7 @@ import CalDetail from './CalDetail.jsx';
 import CommodityStore from '../../stores/CommodityStore.jsx';
 
 var BaselineBasic = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
 
   propTypes: {
     tag: React.PropTypes.object,
@@ -284,6 +284,9 @@ var BaselineBasic = React.createClass({
         width: '100px'
       //zIndex: 2,
       },
+      labelStyle:{
+        fontSize:'16px',lineHeight:'32px',paddingRight:'0',left:'24px'
+      }
       //className: "yearpicker",
 
     };
@@ -348,7 +351,7 @@ var BaselineBasic = React.createClass({
           alignItems: 'center',
           marginTop: '160px'
         }}>
-          <CircularProgress  mode="indeterminate" size={1} />
+          <CircularProgress  mode="indeterminate" size={80} />
         </div>
         );
     } else {

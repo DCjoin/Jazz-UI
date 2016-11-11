@@ -1,11 +1,15 @@
 .jazz-folder-leftpanel{
-  display: flex
+  display: flex;
+
 }
 .jazz-folder-leftpanel-container{
    display: flex;
    flex-direction: column;
    width:320px;
-    }
+  & .jazz-custom-dropdown-menu {
+    border-bottom: 1px solid #434d5e;
+  }
+}
 .jazz-folder-leftpanel-header{
   display: flex;
   flex-direction: row;
@@ -43,9 +47,11 @@
       color:#ffffff !important;
       font-size: 14px !important
     }
-    >hr{
+    >div{
+      >hr{
       border-bottom-color:transparent !important;
     }
+      }
   }
 }
 
@@ -295,8 +301,10 @@
     >input{
       color:#ffffff !important;
     }
-    >hr{
+    >div{
+      >hr{
       border-bottom:1px solid transparent !important
+      }
     }
   }
 

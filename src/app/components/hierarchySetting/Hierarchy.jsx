@@ -21,7 +21,11 @@ function emptyMap() {
 function emptyList() {
   return new List();
 }
+var customerId=null;
 var Hierarchy = React.createClass({
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       formStatus: formStatus.VIEW,
@@ -35,6 +39,9 @@ var Hierarchy = React.createClass({
       errorContent: null,
       infoTabNo: 1,
     };
+  },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
   },
   _onChange: function(selectedNode) {
     if (!!selectedNode) {
@@ -65,7 +72,7 @@ var Hierarchy = React.createClass({
   _onExportBtnClick: function() {
     var iframe = document.createElement('iframe');
     iframe.style.display = 'none';
-    iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(window.currentCustomerId);
+    iframe.src = './ImpExpHierarchy.aspx?Action=ExportHierarchy&customerId=' + parseInt(this.context.currentRoute.params.customerId);
     iframe.onload = function() {
       document.body.removeChild(iframe);
     };
@@ -232,7 +239,7 @@ var Hierarchy = React.createClass({
         } else {
           node = node.set('ParentId', parent.get('Id'));
         }
-        node = node.set('CustomerId', parseInt(window.currentCustomerId));
+        node = node.set('CustomerId', parseInt(this.context.currentRoute.params.customerId));
         if (node.get('Type') === 101) {
           if (parent.get('Type') === 101) {
             node = node.set('HierarchyId', parent.get('HierarchyId'));
@@ -332,14 +339,15 @@ var Hierarchy = React.createClass({
     }
   },
   _onReloadHierachyTree: function() {
-    HierarchyAction.GetHierarchys(this.state.selectedNode.get('Id'));
+    HierarchyAction.GetHierarchys(customerId,this.state.selectedNode.get('Id'));
     this.setState({
       isLoading: true
     });
   },
   componentWillMount: function() {
+    customerId=this.context.currentRoute.params.customerId;
     document.title = I18N.MainMenu.CustomerSetting;
-    HierarchyAction.getAllIndustries();
+    HierarchyAction.getAllIndustries(customerId);
     //HierarchyAction.GetHierarchys();
     this.setState({
       isLoading: true
@@ -382,7 +390,7 @@ var Hierarchy = React.createClass({
           'alignItems': 'center',
           'justifyContent': 'center'
         }}>
-    <CircularProgress  mode="indeterminate" size={2} />
+    <CircularProgress  mode="indeterminate" size={80} />
   </div>
         );
     } else {

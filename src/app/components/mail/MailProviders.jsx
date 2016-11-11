@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { FlatButton, CircularProgress, Tabs, Tab } from 'material-ui';
 import MailAction from '../../actions/MailAction.jsx';
 import MailStore from '../../stores/MailStore.jsx';
@@ -14,10 +15,10 @@ let GropNodeContent = React.createClass({
     MailAction.addReceivers(this.props.nodeData);
   },
   _onMouserOver: function() {
-    React.findDOMNode(this.refs.groupselect).style.display = 'block';
+    ReactDOM.findDOMNode(this.refs.groupselect).style.display = 'block';
   },
   _onMouserOut: function() {
-    React.findDOMNode(this.refs.groupselect).style.display = 'none';
+    ReactDOM.findDOMNode(this.refs.groupselect).style.display = 'none';
   },
   render: function() {
 
@@ -105,7 +106,7 @@ let Providers = React.createClass({
     if (this.props.isLoading) {
       return (
         <div style={style}>
-          <CircularProgress  mode="indeterminate" size={1} />
+          <CircularProgress  mode="indeterminate" size={80} />
         </div>
         );
     } else {

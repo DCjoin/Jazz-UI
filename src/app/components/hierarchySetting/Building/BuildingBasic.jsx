@@ -26,7 +26,7 @@ var BuildingBasic = React.createClass({
     formStatus: React.PropTypes.string,
     setEditBtnStatus: React.PropTypes.func
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _locationChanged(lng, lat, address) {
     //  console.debug(lng+","+lat+","+address);
     var value = this.props.selectedNode.get('Location');
@@ -256,11 +256,11 @@ var BuildingBasic = React.createClass({
       if (this.props.selectedNode.get('Code').length <= 200) {
         this.props.setEditBtnStatus(false);
     }
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
+    //this.initBatchViewbaleTextFiled();
+    //this.clearErrorTextBatchViewbaleTextFiled();
   },
   componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
+  //  this.clearErrorTextBatchViewbaleTextFiled();
   },
   render: function() {
     return (

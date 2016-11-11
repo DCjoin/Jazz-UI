@@ -157,15 +157,20 @@
     div:nth-of-type(2){
       background-color: rgb(134,204,255) !important;
       opacity: 1 !important;
-    }
-
-    div:nth-of-type(3){
       color: #ffffff !important;
       font-size: 14px !important;
       padding-left: 100px !important;
       top: 0px !important;
       opacity: 1 !important;
     }
+
+    // div:nth-of-type(3){
+    //   color: #ffffff !important;
+    //   font-size: 14px !important;
+    //   padding-left: 100px !important;
+    //   top: 0px !important;
+    //   opacity: 1 !important;
+    // }
     svg{
       left: 212px !important;
     }
@@ -188,6 +193,7 @@
   }
 }
 .jazz-alarm-left-panel-year-dropdownmenu-container {
+  border-bottom: 1px solid #434d5e;
   hr{
     border-bottom-width: 0px!important;
   }
@@ -220,10 +226,12 @@
   }
   >div:nth-of-type(2){
     width:150px !important;
-    margin:30px 80px !important;
+    margin:0 80px !important;
     div{
       padding:0 !important;
       text-align:center;
+      color:#ffffff !important;
+      font-size: 14px !important;
     }
   }
   >div:last-child{
@@ -259,7 +267,7 @@
   .pop-viewableDropDownMenu-ddm{
     border: 1px solid rgb(235, 235, 235);
     height: 32px !important;
-    top: 2px!important;
+    top: -5px!important;
     >div:first-child
     {
       >div:nth-of-type(2){
@@ -290,6 +298,7 @@
         padding-right: 5px !important;
         padding-left: 12px !important;
         font-size: 12px !important;
+        top:-10px;
       }
     }
   }
@@ -405,10 +414,13 @@
   }
 }
 .jazz-full-border-datepicker-container{
+  display: flex;
+  align-items: center;
   height: 38px;
   margin-left:10px;
   margin-right: 10px;
   >div{
+    position: relative;
     background-color: #ffffff;
     cursor: pointer;
     border: 1px solid rgb(235, 235, 235);
@@ -421,6 +433,10 @@
       >hr{
         border-bottom-width: 0px !important;
       }
+    }
+    .datepicker-popup{
+      z-index:10;
+      position: absolute;
     }
   }
 }

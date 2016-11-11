@@ -1,5 +1,6 @@
 'use strict';
-
+import React from 'react';
+import MenuItem from 'material-ui/MenuItem';
 import PopAppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
@@ -201,26 +202,19 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
   },
   getRelativeItems() {
     let menuItems = _relativeTypes.map((type) => {
-      return {
-        value: type,
-        text: I18N.Common.DateRange[type]
-      };
+      return <MenuItem value={type} primaryText={I18N.Common.DateRange[type]}/>
     });
     return menuItems;
   },
   getCompareMenuItems() {
     if (_originalType === 'Customerize')
-      return [{
-        value: 'Customerize',
-        text: I18N.Common.DateRange.Customerize
-      }]; else {
-      return [{
-        value: 'Customerize',
-        text: I18N.Common.DateRange.Customerize
-      }, {
-        value: _originalType,
-        text: I18N.MultipleTimespan.RelativeDate
-      }];
+      return [
+        <MenuItem value='Customerize' primaryText={I18N.Common.DateRange.Customerize}/>
+        ]; else {
+      return [
+        <MenuItem value='Customerize' primaryText={I18N.Common.DateRange.Customerize}/>,
+        <MenuItem value={_originalType} primaryText={I18N.MultipleTimespan.RelativeDate}/>
+      ];
     }
   },
   getCustomerizeType() {

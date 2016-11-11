@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import { Paper, FontIcon, TextField } from 'material-ui';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
@@ -11,7 +12,7 @@ import Search from './HierarchySearch.jsx';
 
 var TreeNode = React.createClass({
 
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
 
   propTypes: {
     selected: React.PropTypes.bool,
@@ -218,7 +219,7 @@ var TreeNode = React.createClass({
 });
 
 var TreeView = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   propTypes: {
     allNode: React.PropTypes.object.isRequired,
     onTreeClick: React.PropTypes.func.isRequired,
@@ -307,7 +308,7 @@ var TreeView = React.createClass({
 });
 
 let HierarchyTree = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   propTypes: {
     allNode: React.PropTypes.object.isRequired,
     onTreeClick: React.PropTypes.func.isRequired,
@@ -318,7 +319,7 @@ let HierarchyTree = React.createClass({
       initialTree: true,
       searchList: false,
       searchTree: false,
-      searchValue: null,
+      searchValue: '',
       selectedNode: null
     };
   },
@@ -328,7 +329,7 @@ let HierarchyTree = React.createClass({
     var value = e.target.value;
 
     if (value) {
-      React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+      ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'block';
       this.setState({
         initialTree: false,
         searchList: true,
@@ -336,7 +337,7 @@ let HierarchyTree = React.createClass({
         searchValue: value
       });
     } else {
-      React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+      ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
       this.setState({
         initialTree: true,
         searchList: false,
@@ -345,17 +346,18 @@ let HierarchyTree = React.createClass({
     }
   },
   _onSearchClick: function() {
-    React.findDOMNode(this.refs.searchIcon).style.display = 'none';
+    ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'none';
   },
   _onSearchBlur: function(e) {
     if (!e.target.value) {
-      React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+      ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'block';
     }
   },
   _onCleanButtonClick: function() {
-    React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
-    this.refs.searchText.setValue("");
+    ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+    //this.refs.searchText.setValue("");
     this.setState({
+      searchValue:'',
       initialTree: true,
       searchList: false,
       searchTree: false
@@ -415,7 +417,7 @@ let HierarchyTree = React.createClass({
 
             <label className="tree_search">
               <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
-              <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearchChange}/>
+              <TextField style={textFieldStyle} underlineShow={false} value={this.state.searchValue} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearchChange}/>
               <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
             </label>
             <div className="tree-field">

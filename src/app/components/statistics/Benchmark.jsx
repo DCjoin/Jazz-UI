@@ -13,7 +13,7 @@ import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import BenchmarkAction from '../../actions/BenchmarkAction.jsx';
 import BenchmarkStore from '../../stores/BenchmarkStore.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
 
 var Benchmark = React.createClass({
@@ -111,12 +111,10 @@ var Benchmark = React.createClass({
     });
   },
   _renderDeleteDialog() {
-    if (!this.state.showDeleteDialog) {
-      return null;
-    }
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
+      inDialog={true}
       primary={true}
       onClick={this._deleteBenchmark} />,
 
@@ -125,14 +123,14 @@ var Benchmark = React.createClass({
       onClick={this._handleDialogDismiss} />
     ];
 
-    return (<Dialog
+    return (<NewDialog
       ref="deleteDialog"
-      openImmediately={true}
+      open={this.state.showDeleteDialog}
       title={I18N.Setting.Benchmark.Label.DeleteBenchmark}
       actions={dialogActions}
       modal={true}>
         {I18N.format(I18N.Setting.Benchmark.Label.DeleteBenchmarkContent, this.state.selectedData.get('IndustryComment'))}
-      </Dialog>);
+      </NewDialog>);
   },
   _deleteBenchmark() {
     var selectedData = this.state.selectedData;
@@ -363,7 +361,7 @@ var Benchmark = React.createClass({
       return (<div className='jazz-benchmark-loading'><div style={{
           margin: 'auto',
           width: '100px'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (selectedData !== null) {
       var header = me._renderHeader(isAdd);
       var content = me._renderContent(isView);

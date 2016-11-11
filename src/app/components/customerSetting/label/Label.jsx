@@ -11,6 +11,9 @@ import LabelDetail from './LabelDetail.jsx';
 import Immutable from 'immutable';
 
 var Label = React.createClass({
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       isLoading: true,
@@ -150,7 +153,7 @@ var Label = React.createClass({
       CommodityId: 1,
       UomId: 1,
       Grade: 5,
-      CustomerId: parseInt(window.currentCustomerId),
+      CustomerId: parseInt(this.context.currentRoute.params.customerId),
       Order: 0,
       LabellingType: 1,
       Comment: '',
@@ -167,7 +170,7 @@ var Label = React.createClass({
     document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidMount: function() {
-    LabelAction.getLabelList();
+    LabelAction.getLabelList(this.context.currentRoute.params.customerId);
     LabelStore.addLabelListChangeListener(this._onLabelListChange);
     LabelStore.addSelectedLabelChangeListener(this._onSelectedItemChange);
     LabelStore.addErrorChangeListener(this._onError);
@@ -205,7 +208,7 @@ var Label = React.createClass({
       return (<div className='jazz-customer-label-loading'><div style={{
           margin: 'auto',
           width: '100px'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (selectedLabel !== null) {
       var rightProps = {
         ref: 'labelDetail',

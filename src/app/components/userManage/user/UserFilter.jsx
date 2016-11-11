@@ -1,18 +1,18 @@
 'use strict';
 
-import React from 'react';
+import React, {Component} from 'react';
 
-
-
+import Immutable from 'immutable';
 import { RadioButtonGroup, RadioButton, SelectField } from 'material-ui';
 
 import SideNav from '../../../controls/SideNav.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import ViewableSelectField from '../../../controls/ViewableSelectField.jsx';
+import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import LinkButton from '../../../controls/LinkButton.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
 import UserAction from '../../../actions/UserAction.jsx';
+import UserStore from '../../../stores/UserStore.jsx';
 
 import _isObject from "lodash/lang/isObject";
 import _get from 'lodash/object/get';
@@ -21,6 +21,28 @@ var _ = {
   isObject: _isObject,
   get: _get
 };
+
+class RoleRadio extends Component{
+    shouldComponentUpdate (nextProps) {
+      return !Immutable.is(nextProps.userRoleList, this.props.userRoleList);
+    }
+    render() {
+      let radioList = [(<RadioButton key={"role-radio-key-all"} style={{paddingTop: "20px"}} value="" label="全部" />)];
+
+      this.props.userRoleList.forEach( role => {
+        radioList.push(
+            <RadioButton key={"role-radio-key-" + role.get("Id")} style={{paddingTop: "20px"}} value={role.get("Id") + ""} label={role.get("Name")}/>
+        );
+      } );
+
+      return (
+        <RadioButtonGroup onChange={this.props.handleChange} name="pop_user_filter_role_radio_group" defaultSelected={UserStore.getFilterObj().get("role")}>
+            {radioList}
+        </RadioButtonGroup>
+      );    
+    }
+
+}
 
 var UserFilter = React.createClass({
 
@@ -89,23 +111,24 @@ var UserFilter = React.createClass({
   },
 
   _renderRoleRadio: function() {
-    var radioList = [(<RadioButton key={"role-radio-key-all"} style={{
-      paddingTop: "20px"
-    }} value="" label={I18N.Common.Glossary.Order.All} />)];
+    return (<RoleRadio handleChange={this._bindChangeFilter("role")} userRoleList={this.props.userRoleList} />);
+   //  var radioList = [(<RadioButton key={"role-radio-key-all"} style={{
+   //    paddingTop: "20px"
+   //  }} value="" label={I18N.Common.Glossary.Order.All} />)];
 
-    this.props.userRoleList.forEach(role => {
-      radioList.push(
-        <RadioButton key={"role-radio-key-" + role.get("Id")} style={{
-          paddingTop: "20px"
-        }} value={role.get("Id") + ""} label={role.get("Name")}/>
-      );
-    });
+   //  this.props.userRoleList.forEach(role => {
+   //    radioList.push(
+   //      <RadioButton key={"role-radio-key-" + role.get("Id")} style={{
+   //        paddingTop: "20px"
+   //      }} value={role.get("Id") + ""} label={role.get("Name")}/>
+   //    );
+   //  });
 
-    return (
-      <RadioButtonGroup onChange={this._bindChangeFilter("role")} name="pop_user_filter_role_radio_group" defaultSelected={this.props.filterObj.get("role")}>
-		    	{radioList}
-			</RadioButtonGroup>
-      );
+   //  return (
+   //    <RadioButtonGroup onChange={this._bindChangeFilter("role")} name="pop_user_filter_role_radio_group" defaultSelected={this.props.filterObj.get("role")}>
+		 //    	{radioList}
+			// </RadioButtonGroup>
+   //    );
   },
 
   render: function() {
@@ -169,24 +192,25 @@ var UserFilter = React.createClass({
 								<LinkButton disabled={!this.props.filterObj.get("selectedCusomer")} onClick={this._bindChangeFilter("selectedCusomer", true)} label={I18N.Setting.User.Cancel}/>
 							</div>
 							<div className="pop-user-filter-side-nav-content-item-input pop-viewableSelectField">
-								<SelectField
-        style={{
-          width: 256,
-          zIndex: 3
-        }}
-        menuItemStyle={{
-          "overflow": "hidden",
-          "textOverflow": "ellipsis",
-          "width": 184
-        }}
-        autoWidth={true}
-        className={'pop-viewableSelectField-ddm'}
-        value={selectedCusomer}
-        hintText={I18N.Setting.Labeling.CustomerName}
-        valueMember={"CustomerId"}
-        displayMember={"Text"}
-        menuItems={this._getCustomerList()}
-        onChange={this._bindChangeFilter("selectedCusomer")} />
+								<ViewableDropDownMenu
+                  style={{
+                    width: 256
+                  }}
+                  menuItemsProps={{
+                     style: {
+                                width: 244,
+                            },
+                            innerDivStyle: {
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                            }
+                  }}
+                  textField={'Text'}
+                  valueField={'CustomerId'}
+                  dataItems={this._getCustomerList()}
+                  defaultValue={selectedCusomer}
+                  didChanged={this._bindChangeFilter("selectedCusomer")}>
+                </ViewableDropDownMenu>
 							</div>
 						</div>
 

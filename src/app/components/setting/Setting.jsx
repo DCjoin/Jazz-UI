@@ -51,7 +51,7 @@ const DIALOG_TYPE = {
 
 let Setting = React.createClass({
 
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   getInitialState: function() {
     return {
       showRightPanel: false,
@@ -65,6 +65,7 @@ let Setting = React.createClass({
       templateWidgetDto: null,
       selectedEnergyType: null,
       dialogType: null,
+      snackOpen:false
     };
   },
   _onLeftSwitchButtonClick() {
@@ -110,15 +111,17 @@ let Setting = React.createClass({
   },
   _onModifyNameError: function() {
     this.setState({
-      errorText: FolderStore.GetModifyNameError()
+      errorText: FolderStore.GetModifyNameError(),
+      snackOpen:true
     });
-    this.refs.snackbar.show();
+    //this.refs.snackbar.show();
   },
   _onWidgetSaveError: function() {
     this.setState({
-      errorText: I18N.ALarm.Save.Error
+      errorText: I18N.ALarm.Save.Error,
+      snackOpen:true
     });
-    this.refs.snackbar.show();
+    //this.refs.snackbar.show();
   },
   _onWidgetSaveSuccess: function() {
     this.setState({
@@ -144,21 +147,27 @@ let Setting = React.createClass({
   },
   _onMoveItemError: function() {
     this.setState({
-      errorText: FolderStore.getMoveItemError()
+      errorText: FolderStore.getMoveItemError(),
+      snackOpen:true
     });
-    this.refs.snackbar.show();
+    //this.refs.snackbar.show();
   },
   _onSendStatusChange: function() {
     this.setState({
-      errorText: FolderStore.getSendStatus()
+      errorText: FolderStore.getSendStatus(),
+      snackOpen:true
     });
-    this.refs.snackbar.show();
+    //this.refs.snackbar.show();
   },
   _onShareStatusChange: function() {
     this.setState({
-      errorText: FolderStore.getShareStatus()
+      errorText: FolderStore.getShareStatus(),
+      snackOpen:true
     });
-    this.refs.snackbar.show();
+    //this.refs.snackbar.show();
+  },
+  _snackClose(){
+    this.setState({snackOpen:false});
   },
   _onSelectedNodeChange: function() {
     let me = this;
@@ -376,9 +385,10 @@ let Setting = React.createClass({
     FolderStore.removeFolderTreeListener(this._onFolderTreeChanged);
     FolderStore.removeDialogListener(this._onDialogChanged);
     this.setState({
-      errorText: null
+      errorText: null,
+      snackOpen:false
     });
-    this.refs.snackbar.dismiss();
+    //this.refs.snackbar.dismiss();
   },
   _handleWidgetSelectChange() {
     let widgetDto = WidgetStore.getWidgetDto();
@@ -538,7 +548,7 @@ let Setting = React.createClass({
         {rightPanel}
         {operation}
         {dialog}
-        <Snackbar ref='snackbar' message={this.state.errorText}/>
+        <Snackbar ref='snackbar' open={this.state.snackOpen} onRequestClose={this._snackClose} message={this.state.errorText}/>
       </div>
       );
   },

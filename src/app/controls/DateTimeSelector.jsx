@@ -1,12 +1,14 @@
 'use strict';
 import React from "react";
-import { DropDownMenu, DatePicker } from 'material-ui';
+import moment from 'moment';
 import CommonFuns from '../util/Util.jsx';
 import ViewableDatePicker from '../controls/ViewableDatePicker.jsx';
+import CalendarTime from '../controls/CalendarTime.jsx';
 
 let {hourPickerData, dateAdd} = CommonFuns;
 
 let _isStart = null;
+
 let DateTimeSelector = React.createClass({
   propTypes: {
     startDate: React.PropTypes.object,
@@ -15,9 +17,12 @@ let DateTimeSelector = React.createClass({
     endTime: React.PropTypes.number,
     showTime: React.PropTypes.bool
   },
+  getDefaultProps(){
+    return {
+      showTime: true,
+    };
+  },
   setDateField(startDate, endDate, callback) {
-    let startField = this.refs.startDate,
-      endField = this.refs.endDate;
 
     let startTime = startDate.getHours(),
       endTime = endDate.getHours();
@@ -41,13 +46,11 @@ let DateTimeSelector = React.createClass({
 
   },
   getDateTime() {
-    let startField = this.refs.startDate,
-      endField = this.refs.endDate;
 
-    let startDate = startField.getValue(),
-      endDate = endField.getValue(),
-      startTime = startField.getTime(),
-      endTime = endField.getTime();
+    let startDate = this.state.startDate,
+      endDate = this.state.endDate,
+      startTime = this.state.startTime,
+      endTime = this.state.endTime;
 
     startDate.setHours(startTime, 0, 0, 0);
     if (endTime === 24) {
@@ -71,16 +74,16 @@ let DateTimeSelector = React.createClass({
       endDate = ed,
       endTime = et;
     if (sd === null) {
-      startDate = this.refs.startDate.getValue();
+      startDate = this.state.startDate;
     }
     if (st === null) {
-      startTime = this.refs.startDate.getTime();
+      startTime = this.state.startTime;
     }
     if (ed === null) {
-      endDate = this.refs.endDate.getValue();
+      endDate = this.state.endDate;
     }
     if (et === null) {
-      endTime = this.refs.endDate.getTime();
+      endTime = this.state.endTime;
     }
     if ((sd !== null) || (st !== null)) {
       _isStart = true;
@@ -200,40 +203,44 @@ let DateTimeSelector = React.createClass({
     };
     var startDateProps = {
       dateFormatStr: 'YYYY/MM/DD',
-      defaultValue: this.state.startDate,
-      defaultTime: this.state.startTime,
-      showTime: this.props.showTime,
-      timeType: 0,
-      style: dateStyle,
-      onChange: function(e, v) {
-        me._onChangeDateTime(v, null, null, null);
-      },
-      onSelectedTime: function(e, v) {
-        me._onChangeDateTime(null, v, null, null);
+      value: this.state.startDate && moment(this.state.startDate).format("YYYY/MM/DD"),
+      isViewStatus:false,
+      width: '90px',
+      onChange: function(value) {
+        value=moment(value)._d;
+        me._onChangeDateTime(value, null, null, null);
       }
+    },
+    startTimeProps={
+      selectedTime:this.state.startTime,
+      onTimeChange:(e, selectedIndex, value)=>{this._onChangeDateTime(null, value, null, null)},
+      timeType: 0,
     };
     var endDateProps = {
       dateFormatStr: 'YYYY/MM/DD',
-      defaultValue: this.state.endDate,
-      defaultTime: this.state.endTime,
-      showTime: this.props.showTime,
+      value: this.state.endDate && moment(this.state.endDate).format("YYYY/MM/DD"),
       timeType: 1,
-      left: this.props.endLeft,
-      style: dateStyle,
-      onChange: function(e, v) {
-        me._onChangeDateTime(null, null, v, null);
+      //left: this.props.endLeft,
+      width: '90px',
+      onChange: function(value) {
+        value=moment(value)._d;
+        me._onChangeDateTime(null, null, value, null);
       },
-      onSelectedTime: function(e, v) {
-        me._onChangeDateTime(null, null, null, v);
-      }
+    },
+    endTimeProps={
+      selectedTime:this.state.endTime,
+      onTimeChange:(e, selectedIndex, value)=>{this._onChangeDateTime(null, null, null, value)},
+      timeType: 1,
     };
     return <div className='jazz-full-border-datepicker'>
       <div className='jazz-full-border-datepicker-container'>
-        <ViewableDatePicker ref="startDate" {...startDateProps}/>
+        <ViewableDatePicker {...startDateProps}/>
+        {this.props.showTime && <CalendarTime ref='startTime' {...startTimeProps}/>}
       </div>
       <span>{I18N.EM.To}</span>
       <div className='jazz-full-border-datepicker-container'>
-        <ViewableDatePicker ref="endDate" {...endDateProps}/>
+        <ViewableDatePicker {...endDateProps}/>
+        {this.props.showTime && <CalendarTime ref='endTime' {...endTimeProps}/>}
       </div>
     </div>;
 

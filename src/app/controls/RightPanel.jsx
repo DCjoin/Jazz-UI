@@ -5,7 +5,7 @@ import { IconButton, DropDownMenu, DatePicker, FlatButton, FontIcon, Classable }
 
 
 let RightPanel = React.createClass({
-  mixins: [Classable, Navigation, State],
+  //mixins: [Classable, Navigation, State],
 
   propTypes: {
     onButtonClick: React.PropTypes.func,

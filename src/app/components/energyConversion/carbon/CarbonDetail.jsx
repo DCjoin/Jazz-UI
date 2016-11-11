@@ -9,16 +9,14 @@ import CarbonAction from '../../../actions/energyConversion/CarbonAction.jsx';
 import CarbonStore from '../../../stores/energyConversion/CarbonStore.jsx';
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import DeletableItem from '../../../controls/DeletableItem.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import NewDialog from '../../../controls/NewDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
 var CarbonDetail = React.createClass({
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   propTypes: {
     formStatus: React.PropTypes.bool,
     carbon: React.PropTypes.object,
@@ -63,34 +61,30 @@ var CarbonDetail = React.createClass({
         dialogStatus: false
       });
     };
-    if (!this.state.dialogStatus) {
-      return null;
-    } else {
-      var carbon = that.props.carbon;
-      let sourceCommodity = carbon.getIn(['ConversionPair', 'SourceCommodity', 'Comment']),
-        sourceUom = carbon.getIn(['ConversionPair', 'SourceUom', 'Comment']),
-        destinationCommodity = carbon.getIn(['ConversionPair', 'DestinationCommodity', 'Comment']),
-        destinationUom = carbon.getIn(['ConversionPair', 'DestinationUom', 'Comment']),
-        label = sourceCommodity + ' ( ' + sourceUom + ' ) ' + '- ' + destinationCommodity + ' ( ' + destinationUom + ' )';
+    var carbon = that.props.carbon;
+    let sourceCommodity = carbon.getIn(['ConversionPair', 'SourceCommodity', 'Comment']),
+      sourceUom = carbon.getIn(['ConversionPair', 'SourceUom', 'Comment']),
+      destinationCommodity = carbon.getIn(['ConversionPair', 'DestinationCommodity', 'Comment']),
+      destinationUom = carbon.getIn(['ConversionPair', 'DestinationUom', 'Comment']),
+      label = sourceCommodity + ' ( ' + sourceUom + ' ) ' + '- ' + destinationCommodity + ' ( ' + destinationUom + ' )';
 
-      return (
-
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.CarbonFactor.DeleteTitle} modal={true} actions={[
-          <FlatButton
-          label={I18N.Template.Delete.Delete}
-          primary={true}
-          onClick={() => {
-            that.props.handleDeleteCarbon(carbon);
-            closeDialog();
-          }} />,
-          <FlatButton
-          label={I18N.Template.Delete.Cancel}
-          onClick={closeDialog} />
-        ]}>
-        {I18N.format(I18N.Setting.CarbonFactor.DeleteContent, label)}
-      </Dialog>
-        );
-    }
+    return (
+      <NewDialog open={this.state.dialogStatus} title={I18N.Setting.CarbonFactor.DeleteTitle} modal={true} actions={[
+        <FlatButton
+        label={I18N.Template.Delete.Delete}
+        inDialog={true}
+        primary={true}
+        onClick={() => {
+          that.props.handleDeleteCarbon(carbon);
+          closeDialog();
+        }} />,
+        <FlatButton
+        label={I18N.Template.Delete.Cancel}
+        onClick={closeDialog} />
+      ]}>
+      {I18N.format(I18N.Setting.CarbonFactor.DeleteContent, label)}
+    </NewDialog>
+      );
   },
   _renderHeader: function() {
     var that = this,
@@ -293,20 +287,10 @@ var CarbonDetail = React.createClass({
       }}
       onCancel={this.props.handlerCancel}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()
       }}/>
       )
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-  },
-  // componentWillReceiveProps: function(nextprops) {
-  //   if (nextprops.carbon.get('Factors').size != this.props.carbon.get('Factors').size) {
-  //     this.clearErrorTextBatchViewbaleTextFiled();
-  //   }
-  //
-  // },
   render: function() {
     var that = this;
 

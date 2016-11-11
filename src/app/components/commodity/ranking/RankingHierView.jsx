@@ -91,7 +91,7 @@ var RankingHierView = React.createClass({
           alignItems: 'center',
           marginTop: '160px'
         }}>
-            <CircularProgress  mode="indeterminate" size={1} />
+            <CircularProgress  mode="indeterminate" size={80} />
           </div>
         </Paper>
         )

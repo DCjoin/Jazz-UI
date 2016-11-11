@@ -8,11 +8,10 @@ import Regex from '../../../constants/Regex.jsx';
 import TariffAction from '../../../actions/energyConversion/TariffAction.jsx';
 import Panel from '../../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
 import DeletableItem from '../../../controls/DeletableItem.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import NewDialog from '../../../controls/NewDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import FromEndTime from '../../../controls/FromEndTime.jsx';
 import FromEndDate from '../../../controls/FromEndDate.jsx';
@@ -30,7 +29,6 @@ var TariffDetail = React.createClass({
     handlerSwitchTab: React.PropTypes.func,
     toggleList: React.PropTypes.func,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false
@@ -117,29 +115,26 @@ var TariffDetail = React.createClass({
         dialogStatus: false
       });
     };
-    if (!this.state.dialogStatus) {
-      return null;
-    } else {
-      var tariff = that.props.tariff;
+    var tariff = that.props.tariff;
 
-      return (
+    return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.Setting.TOUTariff.DeleteTitle} modal={true} actions={[
-          <FlatButton
-          label={I18N.Template.Delete.Delete}
-          primary={true}
-          onClick={() => {
-            that.props.handleDeleteTariff(tariff);
-            closeDialog();
-          }} />,
-          <FlatButton
-          label={I18N.Template.Delete.Cancel}
-          onClick={closeDialog} />
-        ]}>
-        {I18N.format(I18N.Setting.TOUTariff.DeleteContent, tariff.get('Name'))}
-      </Dialog>
-        );
-    }
+      <NewDialog open={this.state.dialogStatus} title={I18N.Setting.TOUTariff.DeleteTitle} modal={true} actions={[
+        <FlatButton
+        label={I18N.Template.Delete.Delete}
+        inDialog={true}
+        primary={true}
+        onClick={() => {
+          that.props.handleDeleteTariff(tariff);
+          closeDialog();
+        }} />,
+        <FlatButton
+        label={I18N.Template.Delete.Cancel}
+        onClick={closeDialog} />
+      ]}>
+      {I18N.format(I18N.Setting.TOUTariff.DeleteContent, tariff.get('Name'))}
+    </NewDialog>
+      );
   },
   _renderHeader: function() {
     var that = this,
@@ -635,7 +630,6 @@ var TariffDetail = React.createClass({
       allowDelete={that.props.infoTab}
       onCancel={this.props.handlerCancel}
       onEdit={ () => {
-        that.clearErrorTextBatchViewbaleTextFiled();
         that.props.setEditStatus()
       }}/>
 
@@ -650,9 +644,6 @@ var TariffDetail = React.createClass({
       },
       path: "PeakTariff"
     });
-  },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
   },
   render: function() {
     var that = this;

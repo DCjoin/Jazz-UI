@@ -1,8 +1,6 @@
 import React from 'react';
-import mui from 'material-ui';
+import {Dialog, FlatButton} from 'material-ui';
 import classSet from 'classnames';
-
-let {Dialog, FlatButton} = mui;
 
 let ErrorStepDialog = React.createClass({
   getDefaultProps() {

@@ -24,14 +24,57 @@ function _objectWithoutProperties(obj, keys) {
 
 import React from "react";
 import { Mixins, RaisedButton, FontIcon } from 'material-ui';
-let ReactTransitionGroup = React.addons.TransitionGroup;
-let Events = require('material-ui/lib/utils/events');
-let Menu = require('material-ui/lib/menus/menu');
+import ReactTransitionGroup from 'react-addons-transition-group';
+let Events = {
+
+  once(el, type, callback) {
+    let typeArray = type.split(' ');
+    let recursiveFunction = (e) => {
+      e.target.removeEventListener(e.type, recursiveFunction);
+      return callback(e);
+    };
+
+    for (let i = typeArray.length - 1; i >= 0; i--) {
+      this.on(el, typeArray[i], recursiveFunction);
+    }
+  },
+
+  on(el, type, callback) {
+    if (el.addEventListener) {
+      el.addEventListener(type, callback);
+    }
+    else {
+      // IE8+ Support
+      el.attachEvent('on' + type, () => {
+        callback.call(el);
+      });
+    }
+  },
+
+  off(el, type, callback) {
+    if (el.removeEventListener) {
+      el.removeEventListener(type, callback);
+    }
+    else {
+      // IE8+ Support
+      el.detachEvent('on' + type, callback);
+    }
+  },
+
+  isKeyboard(e) {
+    return [
+      'keydown',
+      'keypress',
+      'keyup',
+    ].indexOf(e.type) !== -1;
+  },
+};
+import  Menu from 'material-ui/Menu';
 
 var ButtonMenu = React.createClass({
-  displayName: 'IconMenu',
+  //displayName: 'IconMenu',
 
-  mixins: [Mixins.StylePropable, Mixins.ClickAwayable],
+  // //mixins: [Mixins.StylePropable, Mixins.ClickAwayable],
 
   contextTypes: {
     muiTheme: React.PropTypes.object
@@ -111,12 +154,13 @@ var ButtonMenu = React.createClass({
 
       menu: {
         top: 37,
-        left: 0
+        left: 0,
+        zIndex:10000
       }
     };
 
-    var mergedRootStyles = this.mergeAndPrefix(styles.root, style);
-    var mergedMenuStyles = this.mergeStyles(styles.menu, menuStyle);
+    var mergedRootStyles = Object.assign({}, styles.root, style);
+    var mergedMenuStyles = Object.assign({},styles.menu, menuStyle);
 
     var menuButton = <RaisedButton style={{
       maxWidth: '140px',
@@ -153,11 +197,7 @@ var ButtonMenu = React.createClass({
         style: mergedRootStyles
       },
       menuButton,
-      React.createElement(
-        ReactTransitionGroup,
-        null,
-        menu
-      )
+      menu
     );
   },
   _onButtonClick() {

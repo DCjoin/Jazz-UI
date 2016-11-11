@@ -34,6 +34,9 @@ var VEERules = React.createClass({
       infoTab: true,
     };
   },
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   _handlerTouchTap: function(selectedId) {
     this._setViewStatus(selectedId);
     if (this.state.selectedId !== selectedId) {
@@ -81,7 +84,7 @@ var VEERules = React.createClass({
         dto.NotifyConsecutiveHours = parseInt(dto.NotifyConsecutiveHours)
       }
       if (!data.get('Id')) {
-        dto.CustomerId = window.currentCustomerId;
+        dto.CustomerId = this.context.currentRoute.params.customerId;
         VEEAction.createVEERule(dto);
       } else {
         VEEAction.modifyVEERule(dto);
@@ -219,7 +222,7 @@ var VEERules = React.createClass({
   },
   componentWillMount: function() {
     document.title = I18N.MainMenu.Customer;
-    VEEAction.GetVEERules();
+    VEEAction.GetVEERules(this.context.currentRoute.params.customerId);
     this.setState({
       isLoading: true
     });
@@ -271,7 +274,7 @@ var VEERules = React.createClass({
           'alignItems': 'center',
           'justifyContent': 'center'
         }}>
-        <CircularProgress  mode="indeterminate" size={2} />
+        <CircularProgress  mode="indeterminate" size={80} />
       </div>
         );
     } else {

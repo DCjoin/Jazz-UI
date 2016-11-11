@@ -8,7 +8,7 @@ import { dataStatus } from '../../../constants/DataStatus.jsx';
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import ViewableDropDownMenu from '../../../controls/ViewableDropDownMenu.jsx';
-import ViewableDatePicker from '../../../controls/ViewableDatePickerByStatus.jsx';
+import ViewableDatePicker from '../../../controls/ViewableDatePicker.jsx';
 import ViewableNumberField from '../../../controls/ViewableNumberField.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import { Checkbox } from 'material-ui';
@@ -24,7 +24,7 @@ var RuleBasic = React.createClass({
     merge: React.PropTypes.func,
     formStatus: React.PropTypes.string,
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _handleRuleDetailClick: function(values) {
     if (this.props.formStatus !== formStatus.VIEW) {
       this.props.merge({
@@ -286,13 +286,14 @@ var RuleBasic = React.createClass({
       });
     });
     var ruleStartTimeProps = {
+      dateFormatStr: 'YYYY/MM/DD',
       isViewStatus: isView,
       title: I18N.Setting.VEEMonitorRule.MonitorStartTime,
-      defaultValue: this._getDateInput(StartTime),
+      value: this._getDateInput(StartTime),
       isRequired: true,
       regex: Regex.CommonTextNotNullRule,
       lang: window.currentLanguage,
-      didChanged: value => {
+      onChange: value => {
         var d2j = CommonFuns.DataConverter.DatetimeToJson;
         this.props.merge({
           value: d2j(new Date(value)),
@@ -378,9 +379,9 @@ var RuleBasic = React.createClass({
       )
 
   },
-  componentWillMount: function() {
-    this.initBatchViewbaleTextFiled();
-  },
+  // componentWillMount: function() {
+  //   this.initBatchViewbaleTextFiled();
+  // },
   render: function() {
     return (
       <div className="pop-manage-detail-content">

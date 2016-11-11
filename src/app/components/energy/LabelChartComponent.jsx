@@ -6,14 +6,13 @@ import _ from 'lodash';
 import Immutable from 'immutable';
 let Highcharts = window.Highcharts;
 import CommonFuns from '../../util/Util.jsx';
-import mui from 'material-ui';
+import {Dialog, FlatButton, Checkbox} from 'material-ui';
 import ChartXAxisSetter from './ChartXAxisSetter.jsx';
 import AlarmIgnoreWindow from './AlarmIgnoreWindow.jsx';
 import EnergyCommentFactory from './EnergyCommentFactory.jsx';
 import AlarmAction from '../../actions/AlarmAction.jsx';
 import { dateAdd, dateFormat, DataConverter, isArray, isNumber, formatDateByStep, getDecimalDigits, toFixed, JazzCommon } from '../../util/Util.jsx';
 
-let {Dialog, FlatButton, Checkbox} = mui;
 var labelConfig = {
     3: {
       colors: ['#33963f', '#ffd92a', '#eb4040'],

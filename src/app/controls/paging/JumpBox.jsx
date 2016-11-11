@@ -1,14 +1,13 @@
 'use strict';
 
 import React from 'react';
-import mui from 'material-ui';
+import {FlatButton, TextField, Mixins} from 'material-ui';
 import assign from 'object-assign';
 import classNames from 'classnames';
 import { Regex } from '../../util/Util.jsx';
-let {FlatButton, TextField, Mixins} = mui;
 
 var JumpBox = React.createClass({
-  mixins: [Mixins.ClickAwayable, React.addons.PureRenderMixin],
+  //mixins: [Mixins.ClickAwayable, React.addons.PureRenderMixin],
 
   PropTypes: {
     handleClickAway: React.PropTypes.func.isRequired,

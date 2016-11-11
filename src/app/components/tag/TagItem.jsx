@@ -7,7 +7,7 @@ import TagAction from '../../actions/TagAction.jsx';
 import LabelMenuAction from '../../actions/LabelMenuAction.jsx';
 
 var TagItem = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   propTypes: {
     title: React.PropTypes.string.isRequired,
     label: React.PropTypes.number,

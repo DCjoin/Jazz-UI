@@ -57,7 +57,7 @@ var drake;
 // });
 
 var Tree = React.createClass({
-  mixins: [React.addons.PureRenderMixin, Mixins.ClickAwayable],
+  //mixins: [React.addons.PureRenderMixin, Mixins.ClickAwayable],
   // compatibleJSON data transfer json to a immutableJS
   compatibleJSON: function(data) {
     if (data && data.toJSON) {

@@ -3,9 +3,9 @@
 import React from 'react';
 
 import MainAppBar from '../MainAppBar.jsx';
-import NetworkChecker from '../../controls/NetworkChecker.jsx';
+import CustomDropDownMenu from '../../controls/CustomDropDownMenu.jsx';
 import classSet from 'classnames';
-import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu, Dialog, DropDownMenu } from 'material-ui';
+import { FlatButton, FontIcon, MenuItem, DropDownMenu } from 'material-ui';
 import ProviderItem from './ProviderItem.jsx';
 
 let ServiceProviderList = React.createClass({
@@ -35,32 +35,9 @@ let ServiceProviderList = React.createClass({
       height: '32px'
     };
     var dropDownMenuProps = {
-
-      menuItems: [
-        {
-          type: 'customername@asc',
-          label: I18N.Platform.ServiceProvider.CustomerName
-        },
-        {
-          type: 'starttime@desc',
-          label: I18N.Platform.ServiceProvider.StartTime
-        },
-      ],
-      valueMember: "type",
-      displayMember: "label",
       value: this.props.sortBy,
-      labelStyle: {
-        color: "#fff",
-        padding: '0'
-      },
-      underlineStyle: {
-        display: "none"
-      },
-      iconStyle: {
-        display: "none"
-      },
-      onChange: function(e, selectedIndex, menuItem) {
-        that.props.changeSortBy(menuItem.type);
+      onChange: function(e, selectedIndex, value) {
+        that.props.changeSortBy(value);
       }
     };
 
@@ -79,11 +56,11 @@ let ServiceProviderList = React.createClass({
         </div>
 
 
-        <div className="jazz-serviceprovider-sortbar">
-          <DropDownMenu {...dropDownMenuProps} />
-          <span className="icon-arrow-down jazz-serviceprovider-sortbar-icon" />
+          <CustomDropDownMenu {...dropDownMenuProps}>            
+            <MenuItem value={'customername@asc'} primaryText={I18N.Platform.ServiceProvider.CustomerName}/>
+            <MenuItem value={'starttime@asc'} primaryText={I18N.Platform.ServiceProvider.StartTime}/>
+          </CustomDropDownMenu>
 
-        </div>
 
         <div className="jazz-provider-list">
 {providerItems}

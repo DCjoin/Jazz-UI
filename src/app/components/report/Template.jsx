@@ -2,6 +2,8 @@
 import React from "react";
 import CommonFuns from '../../util/Util.jsx';
 import { CircularProgress, FlatButton, FontIcon, DropDownMenu, Dialog } from 'material-ui';
+import NewDialog from '../../controls/NewDialog.jsx';
+import MenuItem from 'material-ui/MenuItem';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import classSet from 'classnames';
 import ReportAction from '../../actions/ReportAction.jsx';
@@ -12,7 +14,9 @@ import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 var Template = React.createClass({
 
-
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     var rivilege = CurrentUserStore.getCurrentPrivilege();
     var onlyRead = this._getOnlyRead(rivilege);
@@ -21,7 +25,7 @@ var Template = React.createClass({
       onlyRead: onlyRead,
       showUploadDialog: false,
       sortBy: 'Name',
-      fileName: ''
+      fileName: '',
     };
   },
   _addNewTemplate: function() {
@@ -77,7 +81,7 @@ var Template = React.createClass({
       var obj = JSON.parse(json);
       var uploadTemplate;
       if (obj.success === true) {
-        ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), me.state.sortBy, 'asc');
+        ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
         me.setState({
           showUploadDialog: false
         });
@@ -138,20 +142,20 @@ var Template = React.createClass({
     if (!this.state.showUploadDialog) {
       return null;
     }
-    return (<Dialog
+    return (<NewDialog
       ref="uploadDialog"
-      openImmediately={true}
+      open={true}
       modal={true}>
         {I18N.format(I18N.EM.Report.UploadingTemplate, this.state.fileName)}
-      </Dialog>);
+      </NewDialog>);
   },
-  _onSortChange(e) {
-    var sortBy = e.target.value;
+  _onSortChange(e, selectedIndex, value) {
+    var sortBy = value;
     var order = 'asc';
     if (sortBy === 'CreateTime') {
       order = 'desc';
     }
-    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), sortBy, order);
+    ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), sortBy, order);
     this.setState({
       sortBy: sortBy
     });
@@ -160,7 +164,7 @@ var Template = React.createClass({
     document.title = I18N.MainMenu.Report;
   },
   componentDidMount: function() {
-    ReportAction.getTemplateListByCustomerId(parseInt(window.currentCustomerId), 'Name', 'asc');
+    ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), 'Name', 'asc');
     ReportStore.addTemplateListChangeListener(this._onChange);
     CurrentUserStore.addCurrentrivilegeListener(this._onCurrentrivilegeChanged);
   },
@@ -180,13 +184,10 @@ var Template = React.createClass({
       'btn-container': true,
       'btn-container-active': true
     };
-    var sortItems = [{
-      payload: 'Name',
-      text: I18N.EM.Report.NameSort
-    }, {
-      payload: 'CreateTime',
-      text: I18N.EM.Report.TimeSort
-    }];
+    var sortItems = [
+    <MenuItem key={1} value='Name' primaryText={I18N.EM.Report.NameSort}/>,
+    <MenuItem key={2} value='CreateUser' primaryText={I18N.EM.Report.TimeSort}/>
+    ];
 
     var uploadDialog = this._renderUploadDialog();
 
@@ -200,7 +201,7 @@ var Template = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={2} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead}></TemplateList>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <TemplateList ref='templateList' templateList={this.state.templateList} onlyRead={this.state.onlyRead}></TemplateList>);
     var uploadDom = (this.state.onlyRead ? null : <div className="jazz-template-action">
       <div className='jazz-template-upload-button'>
         <label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
@@ -217,7 +218,7 @@ var Template = React.createClass({
               {uploadDom}
               <div className="jazz-template-action">
                 <div className="jazz-template-sort">
-                  <DropDownMenu onChange={this._onSortChange} menuItems={sortItems}></DropDownMenu>
+                  <DropDownMenu labelStyle={{lineHeight: '40px',fontSize:'14px'}} onChange={this._onSortChange} value={this.state.sortBy}>{sortItems}</DropDownMenu>
                 </div>
               </div>
             </div>

@@ -7,6 +7,9 @@ import HierarchyStore from '../../../stores/hierarchySetting/HierarchyStore.jsx'
 
 
 var HierarchyLog = React.createClass({
+  contextTypes:{
+      currentRoute: React.PropTypes.object
+  },
   getInitialState: function() {
     return {
       isLoading: true
@@ -23,7 +26,7 @@ var HierarchyLog = React.createClass({
     document.title = I18N.MainMenu.CustomerSetting;
   },
   componentDidMount: function() {
-    HierarchyAction.getLogListByCustomerId();
+    HierarchyAction.getLogListByCustomerId(this.context.currentRoute.params.customerId);
     HierarchyStore.addLogListChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
@@ -34,7 +37,7 @@ var HierarchyLog = React.createClass({
     var templateContent = (this.state.isLoading ? <div style={{
       textAlign: 'center',
       marginTop: '400px'
-    }}><CircularProgress  mode="indeterminate" size={2} /></div> : <HierarchyLogList ref='logList' logList={this.state.logList}/>);
+    }}><CircularProgress  mode="indeterminate" size={80} /></div> : <HierarchyLogList ref='logList' logList={this.state.logList}/>);
     return (
       <div className="jazz-template-container">
         <div className="jazz-template-content">

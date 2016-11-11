@@ -4,10 +4,13 @@ import assign from "object-assign";
 import Immutable from 'immutable';
 import _ from 'lodash';
 import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgress, IconMenu, TextField } from 'material-ui';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import MenuDivider from 'material-ui/Divider';
 import BaselineCfg from '../setting/BaselineCfg.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
-import ButtonMenu from '../../controls/ButtonMenu.jsx';
+import ButtonMenu from '../../controls/CustomButtonMenu.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 import AlarmTagStore from '../../stores/AlarmTagStore.jsx';
@@ -49,9 +52,9 @@ import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 import { getCookie } from '../../util/Util.jsx';
 
-let Menu = require('material-ui/lib/menus/menu');
-let MenuItem = require('material-ui/lib/menus/menu-item');
-let MenuDivider = require('material-ui/lib/menus/menu-divider');
+// let Menu = require('material-ui/Menu');
+// let MenuItem = require('material-ui/MenuItem');
+// let MenuDivider = require('material-ui/Divider');
 
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
@@ -1136,7 +1139,7 @@ let ChartStrategyFactor = {
           yaxisConfig: yaxisConfig,
           selectedChartType: typeMap[chartType]
         }, () => {
-          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
+          //CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       });
@@ -1207,7 +1210,7 @@ let ChartStrategyFactor = {
           selectedChartType: typeMap[chartType],
           baselineBtnStatus: CommodityStore.getUCButtonStatus()
         }, () => {
-          CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
+          //CommonFuns.setSelectedIndexByValue(analysisPanel.refs.unitTypeCombo, unitType);
           analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         });
       });
@@ -1278,17 +1281,17 @@ let ChartStrategyFactor = {
       }
       LabelMenuAction.getHierNodes(hierIds);
       var kpiTypeItem = ConstStore.getKpiTypeItem();
-      var kpiTypeIndex;
-      kpiTypeItem.forEach(item => {
-        if (item.value === labelingType) {
-          kpiTypeIndex = item.index;
-          return;
-        }
-      });
+      // var kpiTypeIndex;
+      // kpiTypeItem.forEach(item => {
+      //   if (item.value === labelingType) {
+      //     kpiTypeIndex = item.index;
+      //     return;
+      //   }
+      // });
       analysisPanel.setState({
         benchmarkOption: benchmarkOption,
         kpiTypeValue: labelingType,
-        kpiTypeIndex: kpiTypeIndex
+        //kpiTypeIndex: kpiTypeIndex
       });
 
 
@@ -2812,15 +2815,16 @@ let ChartStrategyFactor = {
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column', 'stack', 'pie']);
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       let menuItems = ConstStore.getCarbonTypeItem();
-      let menuItemChange = function(e, selectedIndex, menuItem) {
-        CarbonStore.setDestination(menuItem.value);
+      let menuItemChange = function(e, selectedIndex, value) {
+        CarbonStore.setDestination(value);
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         return true;
       };
-      var selectedIndex = CarbonStore.getDestination() - 2;
-      var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu menuItems={menuItems} style={{
+      var value = CarbonStore.getDestination();
+      var labelStyle={fontSize:'12px',lineHeight:'32px',paddingRight:'0'};
+      var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu style={{
         width: '90px'
-      }} selectedIndex={selectedIndex} onChange={menuItemChange} /></div>;
+      }} labelStyle={labelStyle} value={value} onChange={menuItemChange} />{menuItems}</div>;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{
@@ -2948,15 +2952,16 @@ let ChartStrategyFactor = {
       let chartType = analysisPanel.state.selectedChartType;
       let chartTypeIconMenu = ChartStrategyFactor.getChartTypeIconMenu(analysisPanel, ['line', 'column']);
       let menuItems = ConstStore.getCarbonTypeItem();
-      let menuItemChange = function(e, selectedIndex, menuItem) {
-        CarbonStore.setDestination(menuItem.value);
+      let menuItemChange = function(e, selectedIndex, value) {
+        CarbonStore.setDestination(value);
         analysisPanel.state.chartStrategy.onSearchDataButtonClickFn(analysisPanel);
         return true;
       };
-      var selectedIndex = CarbonStore.getDestination() - 2;
-      var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu menuItems={menuItems} selectedIndex={selectedIndex} style={{
+      var labelStyle={fontSize:'12px',lineHeight:'32px',paddingRight:'0'};
+      var value = CarbonStore.getDestination();
+      var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu value={value} style={{
         width: '90px'
-      }} onChange={menuItemChange}/></div>;
+      }} labelStyle={labelStyle} onChange={menuItemChange}>{menuItems}</DropDownMenu></div>;
       let configBtn = analysisPanel.state.chartStrategy.getAuxiliaryCompareBtnFn(analysisPanel);
       toolElement = <div style={{
         display: 'flex',
@@ -3032,21 +3037,22 @@ let ChartStrategyFactor = {
     },
     getRankSubToolbar(analysisPanel) {
       var energyType = analysisPanel.state.energyType;
+      var labelStyle={fontSize:'12px',lineHeight:'32px',paddingRight:'0'};
       var toolElement,
         clearChartBtnEl = ChartStrategyFactor.getClearChartBtn(analysisPanel);
       var carbonTypeBtn = null;
       if (energyType === 'Carbon') {
-        carbonTypeBtn = <DropDownMenu selectedIndex={analysisPanel.state.destination - 2} menuItems={ConstStore.getCarbonTypeItem()} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}></DropDownMenu>;
+        carbonTypeBtn = <DropDownMenu labelStyle={labelStyle} value={analysisPanel.state.destination} ref='carbonType' onChange={analysisPanel._onCarbonTypeChange}>{ConstStore.getCarbonTypeItem()}</DropDownMenu>;
       }
       var orderItem = ConstStore.getOrderItem();
       var rangeItem = ConstStore.getRangeItem();
-      var orderCombo = <DropDownMenu menuItems={orderItem} selectedIndex={analysisPanel.state.order - 1} ref='orderCombo' onChange={analysisPanel._onOrderChange} style={{
+      var orderCombo = <DropDownMenu labelStyle={labelStyle} value={analysisPanel.state.order} ref='orderCombo' onChange={analysisPanel._onOrderChange} style={{
         width: '90px'
-      }}></DropDownMenu>;
-      var rangeCombo = <DropDownMenu menuItems={rangeItem} selectedIndex={analysisPanel.getRangeIndex()} ref='rangeCombo' onChange={analysisPanel._onRangeChange} style={{
+      }}>{orderItem}</DropDownMenu>;
+      var rangeCombo = <DropDownMenu labelStyle={labelStyle} value={analysisPanel.getRangeIndex()} ref='rangeCombo' onChange={analysisPanel._onRangeChange} style={{
         width: '90px',
         marginLeft: '30px'
-      }}></DropDownMenu>;
+      }}>{rangeItem}</DropDownMenu>;
       toolElement = <div style={{
         display: 'flex',
         minHeight: '48px',
@@ -3076,8 +3082,8 @@ let ChartStrategyFactor = {
     }
   },
   handleConfigBtnItemTouchTapFnStrategy: {
-    handleEnergyConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
-      let itemValue = menuItem.props.value;
+    handleEnergyConfigBtnItemTouchTap(analysisPanel, menuParam, value) {
+      let itemValue = value;
       var subMenuValue;
       switch (itemValue) {
         case 'history':
@@ -3164,34 +3170,14 @@ let ChartStrategyFactor = {
   getEnergyTypeComboFnStrategy: {
     empty() {},
     getEnergyTypeCombo(analysisPanel) {
-      var index = 0;
-      switch (analysisPanel.state.energyType) {
-        case "Energy":
-          index = 0;
-          break;
-        case "Cost":
-          index = 1;
-          break;
-        case "Carbon":
-          index = 2;
-          break;
-      }
-      let types = [{
-        text: I18N.EM.KpiModeEM,
-        value: 'Energy'
-      },
-        {
-          text: I18N.EM.KpiModeCost,
-          value: 'Cost'
-        },
-        {
-          text: I18N.EM.KpiModeCarbon,
-          value: 'Carbon'
-        }];
-      return <DropDownMenu selectedIndex={index} menuItems={types} style={{
+      let types = [
+        <MenuItem value='Energy' primaryText={I18N.EM.KpiModeEM} />,
+        <MenuItem value='Cost' primaryText={I18N.EM.KpiModeCost} />,
+        <MenuItem value='Carbon' primaryText={I18N.EM.KpiModeCarbon} />];
+      return <DropDownMenu style={{
           width: '90px',
           marginRight: '10px'
-        }} onChange={analysisPanel.state.chartStrategy.onEnergyTypeChangeFn.bind(analysisPanel, analysisPanel)}></DropDownMenu>;
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={analysisPanel.state.energyType} onChange={analysisPanel.state.chartStrategy.onEnergyTypeChangeFn.bind(analysisPanel, analysisPanel)}>{types}</DropDownMenu>;
     }
   },
   getInitParamFnStrategy: {
@@ -3233,9 +3219,9 @@ let ChartStrategyFactor = {
   },
   onEnergyTypeChangeFnStrategy: {
     empty() {},
-    onEnergyTypeChange(analysisPanel, e, selectedIndex, menuItem) {
+    onEnergyTypeChange(analysisPanel, e, selectedIndex, value) {
       if (analysisPanel.props.onEnergyTypeChange) {
-        let menuItemVal = menuItem.value;
+        let menuItemVal = value;
         let capMenuItemVal = menuItemVal[0].toUpperCase() + menuItemVal.substring(1);
         // let chartSttg = ChartStrategyFactor.getStrategyByStoreType(capMenuItemVal);
         // if (analysisPanel) analysisPanel.setState({
@@ -3402,7 +3388,7 @@ let ChartStrategyFactor = {
         customerMenuItems: [],
         selectedLabelItem: selectedLabelItem,
         kpiTypeValue: 1,
-        kpiTypeIndex: 0,
+        //kpiTypeIndex: 0,
         labelDisable: true,
         kpiTypeDisable: false,
         month: curMonth + 1,
@@ -3925,7 +3911,7 @@ let ChartStrategyFactor = {
     energySearchBarGen(analysisPanel) {
       var chartTypeCmp = analysisPanel.props.isFromAlarm ? null : analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
-
+      var relativeDate=analysisPanel._getRelativeDateValue();
       return <div className={'jazz-alarm-chart-toolbar'} style={{
           marginTop: '30px'
         }}>
@@ -3937,12 +3923,12 @@ let ChartStrategyFactor = {
           marginTop: '-4px'
         }}>
          {chartTypeCmp}
-         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate'style={{
+         <DropDownMenu ref='relativeDate'style={{
           width: '90px',
-        }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={analysisPanel._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
        </div>
 
-       <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged} showTime={true}/>
 
        <div className={'jazz-flat-button'}>
          {searchButton}
@@ -3952,7 +3938,7 @@ let ChartStrategyFactor = {
     CostSearchBarGen(analysisPanel) {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel);
-
+      var relativeDate=analysisPanel._getRelativeDateValue();
       return <div className={'jazz-alarm-chart-toolbar'} style={{
           marginTop: '30px'
         }}>
@@ -3964,11 +3950,11 @@ let ChartStrategyFactor = {
           marginTop: '-4px'
         }}>
         {chartTypeCmp}
-        <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
+        <DropDownMenu ref='relativeDate' style={{
           width: '90px'
-        }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={analysisPanel._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
       </div>
-      <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged} showTime={true}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
       </div>
@@ -3977,7 +3963,7 @@ let ChartStrategyFactor = {
     carbonSearchBarGen(analysisPanel) {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel, ['line', 'column', 'stack', 'pie']);
-
+      var relativeDate=analysisPanel._getRelativeDateValue();
       return <div className={'jazz-alarm-chart-toolbar'} style={{
           marginTop: '30px'
         }}>
@@ -3989,11 +3975,11 @@ let ChartStrategyFactor = {
           marginTop: '-4px'
         }}>
         {chartTypeCmp}
-        <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
+        <DropDownMenu ref='relativeDate' style={{
           width: '90px'
-        }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={analysisPanel._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
       </div>
-      <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+      <DateTimeSelector ref='dateTimeSelector' endLeft='-100px' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged} showTime={true}/>
       <div className={'jazz-flat-button'}>
         {searchButton}
       </div>
@@ -4002,6 +3988,8 @@ let ChartStrategyFactor = {
     unitEnergySearchBarGen(analysisPanel) {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel, ['line', 'column']);
+      var relativeDate=analysisPanel._getRelativeDateValue();
+      var unitType=analysisPanel.state.unitType;
       return <div className={'jazz-alarm-chart-toolbar'} style={{
           marginTop: '30px'
         }}>
@@ -4013,20 +4001,20 @@ let ChartStrategyFactor = {
           marginTop: '-4px'
         }}>
          {chartTypeCmp}
-         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
+         <DropDownMenu ref='relativeDate' style={{
           width: '90px'
-        }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={analysisPanel._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
        </div>
-       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
+       <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={analysisPanel._onDateSelectorChanged} showTime={true}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
-         <DropDownMenu ref='unitTypeCombo' menuItems={ConstStore.getUnits()} style={{
+         <DropDownMenu ref='unitTypeCombo' style={{
           width: '130px',
           marginRight: '10px'
-        }} onChange={(e, selectedIndex, menuItem) => {
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={unitType} onChange={(e, selectedIndex, value) => {
           analysisPanel.setState({
-            unitType: menuItem.value
+            unitType: value
           });
-        }}></DropDownMenu>
+        }}>{ConstStore.getUnits()}</DropDownMenu>
        </div>
        <div className={'jazz-flat-button'}>
          {searchButton}
@@ -4036,15 +4024,11 @@ let ChartStrategyFactor = {
     ratioUsageSearchBarGen(analysisPanel) {
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
       var searchButton = ChartStrategyFactor.getSearchBtn(analysisPanel, ['line', 'column']);
-      var ratios = [{
-        text: I18N.EM.DayNightRatio,
-        name: 'RationDayNight',
-        value: 1
-      }, {
-        text: I18N.EM.WorkHolidayRatio,
-        name: 'RationWorkday',
-        value: 2
-      }];
+      var relativeDate=analysisPanel._getRelativeDateValue();
+      var ratioType=analysisPanel.state.ratioType;
+      var ratios = [
+        <MenuItem value={1} primaryText={I18N.EM.DayNightRatio} />,
+        <MenuItem value={2} primaryText={I18N.EM.WorkHolidayRatio} />];
       return <div className={'jazz-alarm-chart-toolbar'} style={{
           marginTop: '30px'
         }}>
@@ -4056,20 +4040,21 @@ let ChartStrategyFactor = {
           marginTop: '-4px'
         }}>
          {chartTypeCmp}
-         <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
+         <DropDownMenu ref='relativeDate' style={{
           width: '90px'
-        }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        }} labelStyle={{fontSize:'14px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={analysisPanel._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
        </div>
        <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
        <div className={'jazz-full-border-dropdownmenu-container'} >
-         <DropDownMenu ref='ratioTypeCombo' menuItems={ratios} style={{
+         <DropDownMenu ref='ratioTypeCombo' style={{
           width: '90px',
           marginRight: '10px'
-        }} onChange={(e, selectedIndex, menuItem) => {
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={ratioType}
+        onChange={(e, selectedIndex, value) => {
           analysisPanel.setState({
-            ratioType: menuItem.value
+            ratioType: value
           });
-        }}></DropDownMenu>
+        }}>{ratios}</DropDownMenu>
        </div>
        <div className={'jazz-flat-button'}>
          {searchButton}
@@ -4079,6 +4064,8 @@ let ChartStrategyFactor = {
     rankSearchBarGen(analysisPanel) {
       var rankTypeItem = ConstStore.getRankTypeItem();
       var chartTypeCmp = analysisPanel.state.chartStrategy.getEnergyTypeComboFn(analysisPanel);
+      var relativeDate=analysisPanel._getRelativeDateValue();
+      var rankType=analysisPanel.state.rankType;
       return <div className={'jazz-alarm-chart-toolbar'} style={{
           marginTop: '30px'
         }}>
@@ -4090,15 +4077,15 @@ let ChartStrategyFactor = {
           marginTop: '-4px'
         }}>
         {chartTypeCmp}
-        <DropDownMenu menuItems={ConstStore.getSearchDate()} ref='relativeDate' style={{
+        <DropDownMenu ref='relativeDate' style={{
           width: '90px'
-        }} onChange={analysisPanel._onRelativeDateChange}></DropDownMenu>
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={relativeDate} onChange={analysisPanel._onRelativeDateChange}>{ConstStore.getSearchDate()}</DropDownMenu>
       </div>
       <DateTimeSelector ref='dateTimeSelector' showTime={false} _onDateSelectorChanged={analysisPanel._onDateSelectorChanged}/>
       <div className={'jazz-full-border-dropdownmenu-container'} >
-        <DropDownMenu menuItems={rankTypeItem} ref='rankType' style={{
+        <DropDownMenu ref='rankType' style={{
           width: '130px'
-        }} onChange={analysisPanel._onRankTypeChange}></DropDownMenu>
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={rankType} onChange={analysisPanel._onRankTypeChange}>{rankTypeItem}</DropDownMenu>
       </div>
       <div className={'jazz-flat-button'}>
         <RaisedButton style={{
@@ -4138,7 +4125,7 @@ let ChartStrategyFactor = {
         }}>
       <DropDownMenu style={{
           width: '90px'
-        }} menuItems={monthItem} selectedIndex={analysisPanel.state.month} onChange={analysisPanel._onChangeMonth} ref='monthSelector'></DropDownMenu>
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={analysisPanel.state.month}onChange={analysisPanel._onChangeMonth} ref='monthSelector'>{monthItem}</DropDownMenu>
       </div>
       <div className={'jazz-label-btn'} >
         {labelBtn}
@@ -4549,14 +4536,14 @@ let ChartStrategyFactor = {
       if (analysisPanel.state.baselineRivilege) {
         configButton = (<ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
           marginLeft: '10px'
-        }} desktop={true}
+        }}
         onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
        <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>
        <MenuDivider />
        <MenuItem primaryText={I18N.EM.Tool.DataSum} value='sum' disabled={sumBtnStatus}/>
-       {calendarEl}
-       {weatherEl}
+         {calendarEl}
+         {weatherEl}
      </ButtonMenu>);
       } else {
         configButton = (<ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
@@ -5302,7 +5289,6 @@ let ChartStrategyFactor = {
     let iconMenuProps = {
       iconButtonElement: IconButtonElement,
       openDirection: "bottom-right",
-      desktop: true,
       onItemTouchTap: analysisPanel._onSearchBtnItemTouchTap
     };
 
@@ -5310,10 +5296,7 @@ let ChartStrategyFactor = {
       return <MenuItem primaryText={menuMap[item].icon} value={item} />;
     });
 
-    let widgetOptMenu = <IconMenu {...iconMenuProps} menuStyle={{
-      height: '20px',
-      width: '20px'
-    }} width='10px'>
+    let widgetOptMenu = <IconMenu {...iconMenuProps}>
                          {typeItems}
                       </IconMenu>;
     return widgetOptMenu;
@@ -5363,13 +5346,14 @@ let ChartStrategyFactor = {
       paddingLeft: '15px',
       display: 'block'
     };
+    var labelStyle={fontSize:'12px',lineHeight:'32px',paddingRight:'0'};
     var kpiTypeItem = ConstStore.getKpiTypeItem();
 
     if (!analysisPanel.state.kpiTypeDisable) {
       kpiTypeButton = <DropDownMenu style={{
         marginLeft: '10px',
         width: '130px'
-      }} selectedIndex={analysisPanel.state.kpiTypeIndex} menuItems={kpiTypeItem} ref='kpiType' onChange={analysisPanel.onChangeKpiType}></DropDownMenu>;
+      }} labelStyle={labelStyle} value={analysisPanel.state.kpiTypeValue} ref='kpiType' onChange={analysisPanel.onChangeKpiType}>{kpiTypeItem}</DropDownMenu>;
     } else {
       var kpiTypeText = analysisPanel.getKpiText();
       kpiTypeButton = <span style={kpiSpanStyle}>{kpiTypeText}</span>;

@@ -1,11 +1,12 @@
 'use strict';
 import React from "react";
-import mui from 'material-ui';
+import {Dialog, DropDownMenu, TextField, FontIcon, IconButton} from 'material-ui';
+import NewDialog from '../../controls/NewDialog.jsx';
+import FlatButton from '../../controls/FlatButton.jsx';
 
 import CommonFuns from '../../util/Util.jsx';
 
 let {isNumeric} = CommonFuns;
-let {Dialog, DropDownMenu, FlatButton, TextField, FontIcon, IconButton} = mui;
 
 var _currentChartObj = null,
   _storedConfig = null;
@@ -65,7 +66,8 @@ let YaxisSelector = React.createClass({
     this.redraw();
     if (this.props.onYaxisSelectorDialogSubmit) {
       this.props.onYaxisSelectorDialogSubmit(ret);
-    }
+    };
+    this.onYaxisDialogDismiss();
   },
   render: function() {
     var me = this;
@@ -131,6 +133,11 @@ let YaxisSelector = React.createClass({
 });
 
 var YaxisDialog = React.createClass({
+  getInitialState(){
+    return{
+      show:false
+    }
+  },
   _onDialogSubmit() {
     if (!this.validate()) {
       return;
@@ -168,22 +175,31 @@ var YaxisDialog = React.createClass({
 
       if (maxMinPair) {
         maxMinPair.setState({
-          maxValue: null,
-          minValue: null
+          maxValue: '',
+          maxError:'',
+          minValue: '',
+          minError:''
         });
       }
 
-      maxField.setErrorText();
-      minField.setErrorText();
+      // maxField.setErrorText();
+      // minField.setErrorText();
     }
   },
   show() {
-    this.refs.dialogWindow.show();
+    this.setState({
+      show:true
+    })
+    //this.refs.dialogWindow.show();
   },
   hide() {
-    this.refs.dialogWindow.dismiss();
+    this.setState({
+      show:false
+    })
+    //this.refs.dialogWindow.dismiss();
   },
   onYaxisDialogDismiss() {
+    this.hide();
     if (this.props.onYaxisDialogDismiss) {
       this.props.onYaxisDialogDismiss();
     }
@@ -249,13 +265,13 @@ var YaxisDialog = React.createClass({
       ++i;
       groups.push(group);
     }
-    let _titleElement = <h3 style={{
+    let titleStyle ={
       fontSize: '20px',
       fontWeight: 'bold',
-      padding: '24px 0 0 50px'
-    }}>{I18N.EM.YAxisSetting}</h3>;
-    var dialog = <Dialog title={_titleElement} actions={_buttonActions}
-    modal={true} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss}>
+      padding: '24px 0 0 25px'
+    };
+    var dialog = <NewDialog title={I18N.EM.YAxisSetting} titleStyle={titleStyle} actions={_buttonActions}
+    modal={true} ref="dialogWindow" onDismiss={this.onYaxisDialogDismiss} open={this.state.show}>
       <div className={'jazz-energy-yaxis-container'} style={{
       marginLeft: '26px',
       'overflow-y': 'auto',
@@ -263,7 +279,7 @@ var YaxisDialog = React.createClass({
     }}>
         {groups}
       </div>
-    </Dialog>;
+    </NewDialog>;
 
     return dialog;
   },
@@ -275,18 +291,31 @@ var YaxisDialog = React.createClass({
     for (var key in yaxisConfig) {
       var uom = key;
       let storedConfigItem = this.getStoredConfigItemByUOM(uom, this.props.storedConfig);
+      let maxMinPair = this.refs[uom + '_pair'];
       let maxField = this.refs[uom + '_pair'].refs[uom + '_max'];
       let minField = this.refs[uom + '_pair'].refs[uom + '_min'];
 
       if (storedConfigItem) {
-        maxField.setValue(storedConfigItem.val[0]);
-        minField.setValue(storedConfigItem.val[1]);
+        maxMinPair.setState({
+          maxValue:storedConfigItem.val[0],
+          maxError:'',
+          minValue:storedConfigItem.val[1],
+          minError:''
+        })
+        // maxField.setValue(storedConfigItem.val[0]);
+        // minField.setValue(storedConfigItem.val[1]);
       } else {
-        maxField.setValue('');
-        minField.setValue('');
+        maxMinPair.setState({
+          maxValue:'',
+          maxError:'',
+          minValue:'',
+          minError:''
+        })
+        // maxField.setValue('');
+        // minField.setValue('');
       }
-      maxField.setErrorText();
-      minField.setErrorText();
+      // maxField.setErrorText();
+      // minField.setErrorText();
     }
   },
   getStoredConfigItemByUOM(uom, storedConfig) {
@@ -306,36 +335,43 @@ var YaxisDialog = React.createClass({
 
     for (let key in yaxisConfig) {
       let uom = key == 'undefined' ? '' : key;
-      let maxField = this.refs[uom + '_pair'].refs[uom + '_max'],
+      let maxMinPair=this.refs[uom + '_pair'],
+        maxField = this.refs[uom + '_pair'].refs[uom + '_max'],
         minField = this.refs[uom + '_pair'].refs[uom + '_min'],
-        maxValue = maxField.getValue(),
-        minValue = minField.getValue();
+        maxValue = maxMinPair.state.maxValue,
+        minValue = maxMinPair.state.minValue,
+        maxError='',minError='';
 
       if (maxValue === '' && minValue === '') {
         //flag = false;
         continue;
       } else if (maxValue === '') {
-        maxField.setErrorText(I18N.Common.Label.MandatoryEmptyError);
+        maxError=I18N.Common.Label.MandatoryEmptyError;
         flag = false;
       } else if (minValue === '') {
-        minField.setErrorText(I18N.Common.Label.MandatoryEmptyError);
+        minError=I18N.Common.Label.MandatoryEmptyError;
         flag = false;
       }
 
       if (!isNumeric(maxValue)) {
-        maxField.setErrorText(I18N.Common.Label.MandatoryNumberError);
+        maxError=I18N.Common.Label.MandatoryNumberError;
         flag = false;
       }
       if (!isNumeric(minValue)) {
-        minField.setErrorText(I18N.Common.Label.MandatoryNumberError);
+        minError=I18N.Common.Label.MandatoryNumberError;
         flag = false;
       }
 
       if (flag && (parseFloat(minValue) >= parseFloat(maxValue))) {
-        maxField.setErrorText(I18N.EM.YAxisMinMaxValidation);
+        maxError=I18N.EM.YAxisMinMaxValidation;
         flag = false;
       }
+      maxMinPair.setState({
+        maxError:maxError,
+        minError:minError
+      })
     }
+
     return flag;
   }
 });
@@ -350,35 +386,39 @@ var MaxMinPair = React.createClass({
     }
     return {
       maxValue: maxValue,
-      minValue: minValue
+      maxError:'',
+      minValue: minValue,
+      minError:''
     };
   },
   render() {
     return <div>
-         <div> <span style={{
+         <div style={{display:'flex',alignItems:'center'}}> <span style={{
         width: '100px',
         display: 'inline-block'
       }}>{I18N.Common.Glossary.Max}</span>
-               <TextField hintText={I18N.Common.Glossary.Auto} onChange={this._onMaxFieldChange} ref={this.props.uom + '_max'} value={this.state.maxValue}/>
+    <TextField hintText={I18N.Common.Glossary.Auto} value={this.state.maxValue} errorText={this.state.maxError} onChange={this._onMaxFieldChange} ref={this.props.uom + '_max'} value={this.state.maxValue}/>
                <span>{this.props.uom}</span></div>
-         <div> <span style={{
+         <div style={{display:'flex',alignItems:'center'}}> <span style={{
         width: '100px',
         display: 'inline-block'
       }}>{I18N.Common.Glossary.Min}</span>
-               <TextField hintText={I18N.Common.Glossary.Auto} onChange={this._onMinFieldChange}ref={this.props.uom + '_min'} value={this.state.minValue}/>
+    <TextField hintText={I18N.Common.Glossary.Auto} value={this.state.minValue} errorText={this.state.minError} onChange={this._onMinFieldChange}ref={this.props.uom + '_min'} value={this.state.minValue}/>
                <span>{this.props.uom}</span></div>
        </div>;
   },
   _onMaxFieldChange(e) {
-    this.refs[this.props.uom + '_max'].setErrorText();
+    //this.refs[this.props.uom + '_max'].setErrorText();
     this.setState({
-      maxValue: e.currentTarget.value
+      maxValue: e.currentTarget.value,
+      maxError:''
     });
   },
   _onMinFieldChange(e) {
-    this.refs[this.props.uom + '_min'].setErrorText();
+    //this.refs[this.props.uom + '_min'].setErrorText();
     this.setState({
-      minValue: e.currentTarget.value
+      minValue: e.currentTarget.value,
+      minError:''
     });
   }
 });

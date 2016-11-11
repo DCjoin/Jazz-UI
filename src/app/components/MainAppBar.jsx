@@ -2,14 +2,18 @@
 
 import React from 'react';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
-import { Menu, Mixins, IconButton, FlatButton, FontIcon, TextField, Dialog } from 'material-ui';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
+import TextField from 'material-ui/TextField';
 import classnames from "classnames";
 import { assign, get, set } from "lodash/object";
 import { isObject } from "lodash/lang";
+import SelectCustomer from './SelectCustomer.jsx';
 import lang from '../lang/lang.jsx';
 import ButtonMenu from '../controls/ButtonMenu.jsx';
 import MainMenu from '../controls/MainMenu.jsx';
 import SideNav from '../controls/SideNav.jsx';
+import NewDialog from '../controls/NewDialog.jsx';
 import LinkButton from '../controls/LinkButton.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../controls/ViewableDropDownMenu.jsx';
@@ -26,8 +30,10 @@ import FolderStore from '../stores/FolderStore.jsx';
 import Config from 'config';
 import { getCookie } from '../util/Util.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
+import MainApp from './MainApp.jsx';
+import RoutePath from '../util/RoutePath.jsx';
 
-let MenuItem = require('material-ui/lib/menus/menu-item');
+let MenuItem = require('material-ui/MenuItem');
 var f = lang.f;
 const MAX_LENGTH = 200;
 let lastLink = null;
@@ -54,8 +60,30 @@ const MODIFY_TYPE = {
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
 }
+function push(router, name, params, query) {
+  router.push( RoutePath[name]( assign({}, getParams(router), params) ), query );
+}
+function replaceWith(router, name, params, query) {
+  router.replace( RoutePath[name]( assign({}, getParams(router), params) ), query );
+}
+function getParams(router) {
+  return router.params;
+}
+function getQuery(router) {
+  return router.location.query;
+}
+function getRoutes(router) {
+  return router.routers;
+}
+function getCurrentPath(router) {
+  return router.location.pathname;
+}
 var MainAppBar = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
+  contextTypes: {
+    router: React.PropTypes.object,
+    loading:React.PropTypes.object
+  },
   _onChange: function() {},
   _onError: function() {
     var error = CurrentUserStore.getError();
@@ -97,7 +125,12 @@ var MainAppBar = React.createClass({
     return this._editUser.bind(this, modifyType);
   },
   _showCustomerList: function() {
-    this.props.showCustomerList();
+    // this.props.showCustomerList();
+    if( !this.props.disabledSelectCustomer ) {
+      this.setState({
+        showCustomerList: true
+      });
+    }
   },
 
   _savePassword: function() {
@@ -120,10 +153,11 @@ var MainAppBar = React.createClass({
   },
   _logout: function() {
     LoginActionCreator.logout();
-    var _redirectFunc = this.context.router.replaceWith;
-    _redirectFunc('login', {
-      lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
-    });
+    this.context.router.push(RoutePath.login(this.context.router.params));
+    // var _redirectFunc = this.context.router.replaceWith;
+    // _redirectFunc('login', {
+    //   lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
+    // });
   },
   _cancelLogout: function() {
     this.setState(this.getInitialState());
@@ -291,18 +325,24 @@ var MainAppBar = React.createClass({
     </SideNav>);
   },
   _onLangSwitch: function() {
-    LanguageAction.switchLanguage();
+    let {params, location, push} = this.context.router;
+    let {protocol, host, pathname, hash} = document.location;
+    push(
+      location.pathname.replace(/(\w)+(-)?(\w)*/, 
+        (params.lang === 'en-us') ? 'zh-cn' : 'en-us')
+      + location.search);
+    document.location.reload();
   },
   _onMailLoaded: function() {
-    var params = this.getParams();
-    this.transitionTo('mail', params);
+    var params = getParams(this.context.router);
+    push(this.context.router, 'mail', params);
     this.setState({
       configSelected: false
     })
   },
   _onConfigLoaded: function() {
-    var params = this.getParams();
-    this.transitionTo('config', params);
+    var params = getParams(this.context.router);
+    push(this.context.router, 'config', params);
     this.setState({
       configSelected: true
     })
@@ -319,24 +359,39 @@ var MainAppBar = React.createClass({
       this._onConfigLoaded();
     }
   },
-  _getEditPasswordDialog: function(customError) {
+  _getEditPasswordDialog: function() {
     var MAX_LENGTH_ERROR = I18N.Platform.MaxLengthError;
     var {oldPassword, newPassword, confirmNewPassword} = this.state.tempData,
 
       oldPasswordProps = {
-        floatingLabelText: I18N.Platform.Password.OldPassword,
-        value: oldPassword,
-        onChange: this._bindMergeTemp("oldPassword")
+        title: I18N.Platform.Password.OldPassword,
+        type: 'password',
+        isRequired: true,
+        maxLen: MAX_LENGTH,
+        defaultValue: oldPassword,
+        didChanged: this._bindMergeTemp("oldPassword"),
+        regexFn: (confirmNewPassword) => {
+          return this.state.customError && I18N.Platform.Password.Error04;
+        },
       },
       newPasswordProps = {
-        floatingLabelText: I18N.Platform.Password.NewPassword,
-        value: newPassword,
-        onChange: this._bindMergeTemp("newPassword")
+        title: I18N.Platform.Password.NewPassword,
+        type: 'password',
+        isRequired: true,
+        maxLen: MAX_LENGTH,
+        defaultValue: newPassword,
+        didChanged: this._bindMergeTemp("newPassword")
       },
       confirmNewPasswordProps = {
-        floatingLabelText: I18N.Platform.Password.confirmNewPassword,
-        value: confirmNewPassword,
-        onChange: this._bindMergeTemp("confirmNewPassword")
+        title: I18N.Platform.Password.confirmNewPassword,
+        type: 'password',
+        isRequired: true,
+        maxLen: MAX_LENGTH,
+        defaultValue: confirmNewPassword,
+        regexFn: (confirmNewPassword) => {
+          return newPassword !== confirmNewPassword && I18N.Platform.Password.Error03;
+        },
+        didChanged: this._bindMergeTemp("confirmNewPassword")
       },
       saveButtonDisabled = false;
 
@@ -363,8 +418,7 @@ var MainAppBar = React.createClass({
       confirmNewPasswordProps.errorText = I18N.Platform.Password.Error03;
       saveButtonDisabled = true;
     }
-
-    if (customError) {
+    if (this.state.customError) {
       oldPasswordProps.errorText = I18N.Platform.Password.Error04;
       saveButtonDisabled = true;
     }
@@ -381,25 +435,19 @@ var MainAppBar = React.createClass({
       onClick={this._onClose} />
     ];
 
-    return (<Dialog actions={actions} openImmediately={true} title={I18N.Platform.Password.Title} modal={true} >
+    return (<NewDialog actions={actions} open={DIALOG_TYPE.MODIIFY_PASSWORD === this.state.dialogType} title={I18N.Platform.Password.Title} modal={true} >
       <ul className="pop-userprofile-edit">
           <li>
-              <TextField {...oldPasswordProps}>
-                <input type="password" />
-              </TextField>
+              <ViewableTextField {...oldPasswordProps}/>
           </li>
           <li>
-              <TextField {...newPasswordProps}>
-                <input type="password" />
-              </TextField>
+              <ViewableTextField {...newPasswordProps}/>
           </li>
           <li>
-              <TextField {...confirmNewPasswordProps}>
-                <input type="password" />
-              </TextField>
+              <ViewableTextField {...confirmNewPasswordProps}/>
           </li>
       </ul>
-  </Dialog>);
+  </NewDialog>);
   },
   _getFuncAuthNav: function() {
     var user = currentUser() || {};
@@ -457,7 +505,7 @@ var MainAppBar = React.createClass({
       user.Email.length > 254) {
       disabled = true
     }
-    if (!isSuperAdmin && user.Telephone.length > 200) {
+    if (!isSuperAdmin && (user.Telephone && user.Telephone.length > 200)) {
       disabled = true
     }
     var actions = [
@@ -500,7 +548,7 @@ var MainAppBar = React.createClass({
       textField: "text",
       dataItems: titleItems
     };
-    return (<Dialog actions={actions} openImmediately={true} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
+    return (<NewDialog actions={actions} open={DIALOG_TYPE.MODIIFY_INFO === this.state.dialogType} title={I18N.Platform.User.EditPersonalInfo} modal={true} >
       <ul className={classnames("pop-userprofile-edit", 'jazz-userprofile-edit')}>
           <li>
               <ViewableTextField didChanged={this._bindMergeTemp("RealName")} maxLen={200} ref="name" isViewStatus={false} title={I18N.Platform.User.ShowName} defaultValue={user.RealName} />
@@ -521,7 +569,7 @@ var MainAppBar = React.createClass({
               <ViewableTextField didChanged={this._bindMergeTemp("Email")} maxLen={254} ref="email" errorMessage={I18N.Platform.User.EmailError} regex={Regex.Email} isViewStatus={false} title={I18N.Platform.User.Email} defaultValue={user.Email} />
           </li>
       </ul>
-  </Dialog>);
+  </NewDialog>);
   },
   _getMailConfigDialog: function() {
     var that = this;
@@ -547,6 +595,7 @@ var MainAppBar = React.createClass({
     var actions = [
       <CustomFlatButton
       label={I18N.Platform.User.Logout}
+      inDialog={true}
       primary={true}
       onClick={this._logout} />,
       <CustomFlatButton
@@ -554,9 +603,9 @@ var MainAppBar = React.createClass({
       onClick={this._cancelLogout} />
     ];
 
-    return (<Dialog actions={actions} title={I18N.Platform.User.Logout} openImmediately={true} modal={true} >
-      <div>{I18N.Platform.User.LogoutTip}</div>
-  </Dialog>);
+  return (<NewDialog actions={actions} title={I18N.Platform.User.Logout} open={DIALOG_TYPE.LOGOUT === this.state.dialogType} modal={true} >
+            <div>{I18N.Platform.User.LogoutTip}</div>
+        </NewDialog>);
   },
   // ************* Render Component End *************
   getInitialState: function() {
@@ -568,6 +617,7 @@ var MainAppBar = React.createClass({
       editType: "",
       tempData: {},
       configSelected: true,
+      showCustomerList: false,
     };
   },
   componentDidMount: function() {
@@ -584,7 +634,7 @@ var MainAppBar = React.createClass({
   },
   render: function() {
     var user = window.currentUser || currentUser() || {};
-    var params = this.getParams();
+    var params = getParams(this.context.router);
     var leftNav = null,
       dialog = null;
     var {sidebarType, dialogType, customError} = this.state;
@@ -603,15 +653,12 @@ var MainAppBar = React.createClass({
 
     // render dialog
     switch (dialogType) {
-      case DIALOG_TYPE.LOGOUT:
-        dialog = this._getLogoutDialog();
-        break;
-      case DIALOG_TYPE.MODIIFY_PASSWORD:
-        dialog = this._getEditPasswordDialog(customError);
-        break;
-      case DIALOG_TYPE.MODIIFY_INFO:
-        dialog = this._getEditUserDialog();
-        break;
+      // case DIALOG_TYPE.MODIIFY_PASSWORD:
+      //   dialog = this._getEditPasswordDialog(customError);
+      //   break;
+      // case DIALOG_TYPE.MODIIFY_INFO:
+      //   dialog = this._getEditUserDialog();
+      //   break;
       case DIALOG_TYPE.MAIL_CONFIRM:
         dialog = this._getMailConfigDialog();
         break;
@@ -714,6 +761,14 @@ var MainAppBar = React.createClass({
 
         {leftNav}
         {dialog}
+        {this._getEditPasswordDialog()}
+        {this._getEditUserDialog()}
+        {this._getLogoutDialog()}
+        {this.state.showCustomerList && (<SelectCustomer onClose={() => {
+          this.setState({
+            showCustomerList: false
+          });
+        }}/>)}
     </div>
 
       );

@@ -1,8 +1,10 @@
 'use strict';
 
 import React from 'react';
-import {Mixins,Styles,ClearFix,FlatButton} from 'material-ui';
-import ItemButton from '../controls/ItemButton.jsx';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import Immutable from 'immutable';
+//import {Mixins,Styles,ClearFix,FlatButton} from 'material-ui';
 
 var CalendarTime = React.createClass({
   propTypes: {
@@ -10,29 +12,26 @@ var CalendarTime = React.createClass({
     onTimeChange: React.PropTypes.func,
     timeType: React.PropTypes.number,
     height: React.PropTypes.number,
-    dateFormatStr: React.PropTypes.string
-  },
-
-  getDefaultProps: function(){
-    return {
-      dateFormatStr: "YYYY/MM/DD"
-    };
   },
 
 
-  render() {
-    let styles = {
-      lineHeight: '32px',
-      textAlign: 'center',
-      padding: '8px 14px 0 14px',
+  render:function() {
+    let style = {
+      autoWidth:false,
+      style:{
+      width: '90px',
+      height: '32px'
+      },
+      labelStyle:{
+      lineHeight:'32px'
+      },
+      onChange:this._onTimeTouchTap
     };
 
     return (
-      <div>
-        <div style={styles}>
+      <DropDownMenu value={this._getSelectedTimeIndex()} {...style}>
           {this._getTimeItems()}
-        </div>
-      </div>
+      </DropDownMenu>
 
     );
   },
@@ -42,43 +41,33 @@ var CalendarTime = React.createClass({
 
     return timeArray.map((timeItem, i) => {
       return (
-        <ClearFix key={i}>
-          {this._getTimeElements(timeItem, i)}
-        </ClearFix>
+          this._getTimeElements(timeItem, i)
       );
     }, this);
   },
-
+  _getSelectedTimeIndex:function(){
+    let timeArray = Immutable.fromJS(this._getTimeArray());
+    return timeArray.findIndex(time=>(time.get('value')===this.props.selectedTime))+this.props.timeType;
+  },
   _getTimeArray(){
     var timeType = this.props.timeType || 0;
     var timeArray = [];
-    var timeSubArray = [];
     for(var i = 0; i < 6; i++){
       for(var j = timeType; j < (timeType+4); j++){
-        timeSubArray.push({ value: i*4+j, text: (((i*4+j) < 10) ? '0' : '') + (i*4+j) + ':00' });
+        timeArray.push({ value: i*4+j, text: (((i*4+j) < 10) ? '0' : '') + (i*4+j) + ':00' });
       }
-      timeArray.push(timeSubArray);
-      timeSubArray = [];
     }
     return timeArray;
   },
 
   _getTimeElements(timeItem, i) {
-    return timeItem.map((time, j) => {
       return (
-        <ItemButton
-          height={this.props.height}
-          key={'time' + i + j}
-          ref={'time'+ time.value}
-          item={time}
-          selected={this.props.selectedTime === time.value}
-          onTouchTap={this._onTimeTouchTap}/>
+        <MenuItem key={'time' + i} value={timeItem.value} primaryText={timeItem.text} />
       );
-    }, this);
   },
 
-  _onTimeTouchTap(e, time) {
-    if (this.props.onTimeChange) this.props.onTimeChange(e, time);
+  _onTimeTouchTap(e, selectedIndex, value) {
+    if (this.props.onTimeChange) this.props.onTimeChange(e, selectedIndex, value);
   }
 });
 

@@ -12,7 +12,7 @@ import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
 
 let Report = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   getInitialState: function() {
     var rivilege = CurrentUserStore.getCurrentPrivilege();
     var onlyRead = this._getOnlyRead(rivilege);

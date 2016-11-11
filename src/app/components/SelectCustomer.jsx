@@ -2,10 +2,11 @@
 
 import React from 'react';
 import { Navigation, State } from 'react-router';
-import MainAppBar from './MainAppBar.jsx';
-import BackgroudImage from '../controls/BackgroundImage.jsx';
 import classNames from 'classnames';
 import _findIndex from 'lodash/array/findIndex';
+import assign from 'object-assign';
+
+import BackgroudImage from '../controls/BackgroundImage.jsx';
 import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
 import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';
@@ -13,55 +14,70 @@ import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import CommodityStore from '../stores/CommodityStore.jsx';
 import HierarchyAction from '../actions/hierarchySetting/HierarchyAction.jsx';
+import RoutePath from '../util/RoutePath.jsx';
 var timeoutHandler = null;
 var _ = {
   findIndex: _findIndex
 };
 
 var SelectCustomer = React.createClass({
-  mixins: [
-    Navigation, State
-  ],
   propTypes: {
-    userId: React.PropTypes.number,
-    params: React.PropTypes.array,
-    currentCustomerId: React.PropTypes.number
+    onClose: React.PropTypes.func,
   },
   contextTypes: {
-    router: React.PropTypes.func
+    router: React.PropTypes.object,
+    currentRoute: React.PropTypes.object,
   },
   getInitialState: function() {
-    // var _rivilege = CurrentUserStore.getCurrentPrivilege();
-    // if(!_rivilege){
-    //   var _userRoleList = CurrentUserAction.getRoles(window.currentUserId);
-    // }
     return {
-      UserId: this.props.userId,
-      showCustomer: false,
       currentIndex: 0,
     };
   },
-  _saveSelectCustomer: function(customer) {
-    SelectCustomerActionCreator.selectCustomer(customer);
+  _hasClose() {
+    return this._getCurrentCustomerId() || this._getCusNum();
+  },
+  _getCurrentCustomerId() {
+    return this.context.currentRoute.params.customerId || '';
+  },
+  _getCusNum() {
+    return this.context.currentRoute.params.cusnum || '';
+  },
+  _getMenuItems() {
+    return CurrentUserStore.getMainMenuItems();
+  },
+  _selectCustomer() {
+    let customerId = this._getCurrentCustomerId() * 1,
+    pathname = '';
+    if( customerId === -1 ) {
+      pathname = RoutePath.workday(assign({}, this.context.currentRoute.params, {
+        cusnum: CurrentUserCustomerStore.getAll().length
+      }));
+    } else {
+      let menus = CurrentUserStore.getMainMenuItems();
+      pathname = RoutePath[menus[0].name](assign({}, this.context.currentRoute.params, {customerId}));
+    }
+    this.context.router.replace(pathname);
+
+    // this.context.router.
   },
   _onClose() {
-    var me = this;
 
-    if (window.toMainApp) {
-      me.context.router.replaceWith('workday', {
-        lang: window.currentLanguage === 0 ? 'zh-cn' : 'en-us',
-        cusnum: CurrentUserCustomerStore.getAll().length
-      });
-    } else {
-      this.props.close();
+    this.setState(this.getInitialState());
+    if(this.props.onClose) {
+      this.props.onClose();
     }
   },
   _selectCustomerChangeHandler: function(selectedIndex) {
     if (this.state.currentIndex == selectedIndex) {
-      var customerList = CurrentUserCustomerStore.getAll();
-      this._saveSelectCustomer(customerList[selectedIndex]);
       CommodityStore.resetHierInfo();
       HierarchyAction.resetAll();
+
+      this.context.router.replace(RoutePath[this._getMenuItems()[0].name](
+        assign({}, this.context.currentRoute.params, {
+          customerId: CurrentUserCustomerStore.getAll()[selectedIndex].Id
+        })
+      ));
+      this._onClose();
     } else {
       this.setState({
         currentIndex: selectedIndex
@@ -154,18 +170,10 @@ var SelectCustomer = React.createClass({
   },
 
   _sysManagement() {
-    var me = this;
-
-    if (window.toMainApp) {
-      me.context.router.replaceWith('workday', {
-        lang: window.currentLanguage === 0 ? 'zh-cn' : 'en-us',
-        cusnum: CurrentUserCustomerStore.getAll().length
-      });
-    } else {
-      this._saveSelectCustomer({
-        CustomerId: -1
-      });
-    }
+    this.context.router.replace(RoutePath.workday(assign({}, this.context.currentRoute.params, {
+      cusnum: CurrentUserCustomerStore.getAll().length
+    })));
+    this._onClose();
   },
 
   componentDidMount: function() {
@@ -178,9 +186,9 @@ var SelectCustomer = React.createClass({
       screenWidth: app.clientWidth,
     });
 
-    if (this.props.currentCustomerId) {
+    if (this._getCustomerList()) {
       var customerList = CurrentUserCustomerStore.getAll();
-      var idx = _.findIndex(customerList, 'Id', this.props.currentCustomerId);
+      var idx = _.findIndex(customerList, 'Id', this._getCustomerList() * 1);
       if (idx < 0)
         idx = 0;
       this.setState({
@@ -191,19 +199,28 @@ var SelectCustomer = React.createClass({
   componentWillMount: function() {
     window.removeEventListener('resize', this._handleResize);
 
-    if (this.props.currentCustomerId) {
+    if (this._getCustomerList()) {
       var customerList = CurrentUserCustomerStore.getAll();
-      var idx = _.findIndex(customerList, 'Id', this.props.currentCustomerId);
+      var idx = _.findIndex(customerList, 'Id', this._getCustomerList() * 1);
       if (idx < 0)
         idx = 0;
-      this.setState({
-        currentIndex: idx
-      });
+        this.setState({
+          currentIndex: idx
+        });
     }
   },
 
   render: function() {
-    if (this.props.closable) {
+    var overlayClass = classNames('overlay-background', {
+        "pop-overlay": true,
+        "pop-is-shown": true
+    });
+    var scollerStyle={
+        display:'flex',
+        flex:1,
+        flexDirection:'column'
+    };
+    if ( this._hasClose() ) {
       var closeButton = (
       <em className="icon-close pop-close-overlay-icon" onClick={this._onClose} style={{
         margin: -10,
@@ -225,12 +242,22 @@ var SelectCustomer = React.createClass({
     if (this.state.currentIndex == (CurrentUserCustomerStore.getAll().length - 1)) {
       rightHandlerBarStyle.visibility = 'hidden';
     }
-    // if (window.toMainApp) {
-    //   spManagementStyle.visibility = 'hidden';
-    // }
     return (
-      <div>
+      <div style={{
+        position: 'fixed',
+        width: '100%',
+        height: '100%',
+        zIndex: 999,
+        left: 0,
+        top: 0,
+      }}>
                 <div className="jazz-selectbg"></div>
+                <div style={{
+                  backgroundColor: '#fff',
+                  width: '100%',
+                  height: '100%',
+                  position: 'fixed'
+                }}></div>
                 <div className="jazz-mask"></div>
                 <div className="jazz-customerList">
                   <div style={{

@@ -1,6 +1,7 @@
 import React from "react";
+import ReactDom from 'react-dom';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import mui from 'material-ui';
+import {Tabs, Tab, CircularProgress} from 'material-ui';
 import assign from "object-assign";
 import BaselineBasic from './BaselineBasic.jsx';
 import AlarmSetting from './AlarmSetting.jsx';
@@ -10,10 +11,8 @@ import TBStore from "../../stores/TBStore.jsx";
 import TBAction from "../../actions/TBAction.jsx";
 var lastTab = null;
 
-let {Tabs, Tab, CircularProgress} = mui;
-
 let BaselineCfg = React.createClass({
-  mixins: [Navigation, State, mui.Mixins.StylePropable],
+  //mixins: [Navigation, State, mui.Mixins.StylePropable],
 
   propTypes: {
     tag: React.PropTypes.object
@@ -88,10 +87,10 @@ let BaselineCfg = React.createClass({
           color: '#767a7a'
         }
       });
-      tab.getDOMNode().style.color = '#1ca8dd';
+      ReactDom.findDOMNode(tab).style.color = '#1ca8dd';
 
       if (lastTab) {
-        lastTab.getDOMNode().style.color = '#767a7a';
+        ReactDom.findDOMNode(lastTab).style.color = '#767a7a';
       }
       lastTab = tab;
     }
@@ -222,6 +221,9 @@ let BaselineCfg = React.createClass({
           paddingLeft: '30px',
         //  color: 'red'
         },
+        tabTemplateStyle:{
+          height:'28px'
+        },
         contentContainerStyle: {
           borderTop: '1px solid #ececec'
         },
@@ -236,7 +238,7 @@ let BaselineCfg = React.createClass({
         fontWeight: 'bold',
         fontFamily: 'Microsoft YaHei',
       };
-    var firstTabStyles = this.mergeAndPrefix(tabStyle, this.state.firstTabStyle);
+    var firstTabStyles = Object.assign({},tabStyle, this.state.firstTabStyle);
     return (
       <div>
         <Dialog title={I18N.Baseline.Basic} ref="cfgDialog" {...dialogProps}>
@@ -260,7 +262,7 @@ let BaselineCfg = React.createClass({
         width: 154,
         paddingTop: 255
       }}>
-            <CircularProgress mode="indeterminate"  size={1.5} />
+            <CircularProgress mode="indeterminate"  size={80} />
           </div>
         </Dialog>
       </div>

@@ -14,7 +14,7 @@ import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import LabelingAction from '../../actions/LabelingAction.jsx';
 import LabelingStore from '../../stores/LabelingStore.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
 
 var map = {};
@@ -120,12 +120,10 @@ var Labeling = React.createClass({
     });
   },
   _renderDeleteDialog() {
-    if (!this.state.showDeleteDialog) {
-      return null;
-    }
     var dialogActions = [
       <FlatButton
       label={I18N.Common.Button.Delete}
+      inDialog={true}
       primary={true}
       onClick={this._deleteLabeling} />,
 
@@ -134,14 +132,14 @@ var Labeling = React.createClass({
       onClick={this._handleDialogDismiss} />
     ];
 
-    return (<Dialog
+    return (<NewDialog
       ref="deleteDialog"
-      openImmediately={true}
+      open={this.state.showDeleteDialog}
       title={I18N.Setting.Labeling.Label.DeleteLabeling}
       actions={dialogActions}
       modal={true}>
         {I18N.format(I18N.Setting.Labeling.Label.DeleteLabelingContent, (this.state.selectedData.get('IndustryComment') + '-' + this.state.selectedData.get('ZoneComment')))}
-      </Dialog>);
+      </NewDialog>);
   },
   _deleteLabeling() {
     var selectedData = this.state.selectedData;
@@ -427,7 +425,7 @@ var Labeling = React.createClass({
       return (<div className='jazz-labeling-loading'><div style={{
           margin: 'auto',
           width: '100px'
-        }}><CircularProgress  mode="indeterminate" size={2} /></div></div>);
+        }}><CircularProgress  mode="indeterminate" size={80} /></div></div>);
     } else if (selectedData !== null) {
       var header = me._renderHeader(isAdd);
       var content = me._renderContent(isView);

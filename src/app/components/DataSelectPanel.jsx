@@ -6,7 +6,7 @@ import {IconButton,DropDownMenu,DatePicker,FlatButton,FontIcon,Classable} from '
 import DataSelectMainPanel from './DataSelectMainPanel.jsx';
 
 let DataSelectPanel=React.createClass({
-    mixins:[Classable,Navigation,State],
+    //mixins:[Classable,Navigation,State],
 
     propTypes: {
       onButtonClick:React.PropTypes.func,

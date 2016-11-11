@@ -1,42 +1,42 @@
 'use strict';
 
-import { Styles, Utils } from 'material-ui';
+// import { Styles, Utils } from 'material-ui';
 
-var {Colors, Typography} = Styles;
-var {ColorManipulator} = Utils;
+// var {Colors, Typography} = Styles;
+// var {ColorManipulator} = Utils;
 
-Typography.fontWeightNormal = 'normal';
-Typography.fontWeightMedium = 'normal';
+// Typography.fontWeightNormal = 'normal';
+// Typography.fontWeightMedium = 'normal';
 
 module.exports = {
-  spacing: {
-    iconSize: 24,
+  // spacing: {
+  //   iconSize: 24,
 
-    desktopGutter: 24,
-    desktopGutterMore: 32,
-    desktopGutterLess: 16,
-    desktopGutterMini: 8,
-    desktopKeylineIncrement: 64,
-    desktopDropDownMenuItemHeight: 32,
-    desktopDropDownMenuFontSize: 15,
-    desktopLeftNavMenuItemHeight: 48,
-    desktopSubheaderHeight: 48,
-    desktopToolbarHeight: 56,
-  },
-  fontFamily: 'Lantinghei sc,Microsoft YaHei Light,Microsoft YaHei',
-  palette: {
-    primary1Color: Colors.cyan500,
-    primary2Color: Colors.cyan700,
-    primary3Color: Colors.lightBlack,
-    accent1Color: '#1ca8dd',
-    accent2Color: Colors.grey100,
-    accent3Color: Colors.grey500,
-    textColor: Colors.darkBlack,
-    alternateTextColor: Colors.white,
-    canvasColor: Colors.white,
-    borderColor: Colors.grey300,
-    disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3),
-  },
+  //   desktopGutter: 24,
+  //   desktopGutterMore: 32,
+  //   desktopGutterLess: 16,
+  //   desktopGutterMini: 8,
+  //   desktopKeylineIncrement: 64,
+  //   desktopDropDownMenuItemHeight: 32,
+  //   desktopDropDownMenuFontSize: 15,
+  //   desktopLeftNavMenuItemHeight: 48,
+  //   desktopSubheaderHeight: 48,
+  //   desktopToolbarHeight: 56,
+  // },
+  // fontFamily: 'Lantinghei sc,Microsoft YaHei Light,Microsoft YaHei',
+  // palette: {
+  //   primary1Color: Colors.cyan500,
+  //   primary2Color: Colors.cyan700,
+  //   primary3Color: Colors.lightBlack,
+  //   accent1Color: '#1ca8dd',
+  //   accent2Color: Colors.grey100,
+  //   accent3Color: Colors.grey500,
+  //   textColor: Colors.darkBlack,
+  //   alternateTextColor: Colors.white,
+  //   canvasColor: Colors.white,
+  //   borderColor: Colors.grey300,
+  //   disabledColor: ColorManipulator.fade(Colors.darkBlack, 0.3),
+  // },
 };
 //
 // var AppTheme = {

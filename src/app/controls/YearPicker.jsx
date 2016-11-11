@@ -1,9 +1,7 @@
 import React from 'react';
-import mui from 'material-ui';
+import DropDownMenu from 'material-ui/DropDownMenu';
 import classNames from 'classnames';
 import ViewableDropDownMenu from './ViewableDropDownMenu.jsx';
-
-let {DropDownMenu} = mui;
 
 let YearPicker = React.createClass({
 
@@ -31,7 +29,8 @@ let YearPicker = React.createClass({
       selectedYear;
     let yearRange = this.props.yearRange;
     for (var i = thisYear - yearRange; i <= thisYear; i++) {
-      yearMenuItems.push({
+      yearMenuItems.push(
+        {
         payload: i,
         text: i
       });

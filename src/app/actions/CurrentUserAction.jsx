@@ -7,6 +7,11 @@ import Immutable from 'immutable';
 var UserTypeName = null,
   UserType = null;
 let CurrentUserAction = {
+  getInitData: function(userId) {
+    this.getUser(userId);
+    this.getRoles(userId);
+    SelectCustomerActionCreator.getCustomer(userId);
+  },
   getUser: function(userId) {
     var that = this;
     Ajax.post('/User/GetUsersByFilter', {

@@ -22,9 +22,9 @@ import BaselineCfg from '../setting/BaselineCfg.jsx';
 import ButtonMenu from '../../controls/ButtonMenu.jsx';
 import ExtendableMenuItem from '../../controls/ExtendableMenuItem.jsx';
 
-let Menu = require('material-ui/lib/menus/menu');
-let MenuItem = require('material-ui/lib/menus/menu-item');
-let MenuDivider = require('material-ui/lib/menus/menu-divider');
+let Menu = require('material-ui/Menu');
+let MenuItem = require('material-ui/MenuItem');
+let MenuDivider = require('material-ui/Divider');
 
 let {hourPickerData, isArray, getUomById, JazzCommon, DataConverter, dateAdd} = CommonFuns;
 
@@ -69,7 +69,7 @@ const searchDate = [{
   }];
 
 let ChartPanel = React.createClass({
-  mixins: [ChartMixins],
+  //mixins: [ChartMixins],
   propTypes: {
     isSettingChart: React.PropTypes.bool
   },
@@ -314,7 +314,7 @@ let ChartPanel = React.createClass({
         margin: 'auto',
         width: '100px'
       }}>
-          <CircularProgress  mode="indeterminate" size={2} />
+          <CircularProgress  mode="indeterminate" size={80} />
         </div>;
     } else if (!!this.state.energyData) {
       let chartCmpObj = {

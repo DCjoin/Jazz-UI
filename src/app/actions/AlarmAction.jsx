@@ -11,12 +11,12 @@ const MONTHSTEP = 3,
   HOURSTEP = 1;
 
 let AlarmAction = {
-  getHierarchyListByDate(date, step) {
+  getHierarchyListByDate(date, step, customerId) {
     Ajax.post('/TargetBaseline/GetAlarmTagIdsByDate', {
       params: {
-        date: date,
-        customerId: window.currentCustomerId,
-        step: step
+        date,
+        step,
+        customerId,
       },
       success: function(alarmList) {
         AppDispatcher.dispatch({

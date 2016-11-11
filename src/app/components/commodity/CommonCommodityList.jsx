@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 
 var CommonCommodityList = React.createClass({
 
-  mixins:[Navigation,State],
+  //mixins:[Navigation,State],
   propTypes: {
     checkedCommodityList: React.PropTypes.object,
   },
@@ -124,7 +124,7 @@ var CommonCommodityList = React.createClass({
 
     if(this.state.isLoading){
       return(
-        <CircularProgress  mode="indeterminate" size={1} />
+        <CircularProgress  mode="indeterminate" size={80} />
       )
     }
     else {

@@ -78,7 +78,8 @@ var FormBottomBar = React.createClass({
     }, saveBtnProps);
 
     var saveButtonStyle = {
-      borderRight: '1px solid #ececec'
+      borderRight: '1px solid #ececec',
+      height:'56px'
     };
     if (enableSave) {
       saveBtnProps.disabled = false;
@@ -92,7 +93,8 @@ var FormBottomBar = React.createClass({
     deleteBtnProps = _.assign({
       label: I18N.Common.Button.Delete,
       style: {
-        color: '#abafae'
+        color: '#abafae',
+        height:'56px'
       }
     }, deleteBtnProps);
     deleteBtnProps.className += " form-bottom-bar-deletebtn";
@@ -105,7 +107,8 @@ var FormBottomBar = React.createClass({
     var editButton = (
     <FlatButton secondary={true}  label={I18N.Common.Button.Edit} style={{
       borderRight: '1px solid #ececec',
-      color: '#abafae'
+      color: '#abafae',
+      height:'56px'
     }} onClick={this._handleEditBtn} {...editBtnProps}/>
     );
     // var editButton = <FlatButton label="编辑" secondary={true} style={{
@@ -116,7 +119,8 @@ var FormBottomBar = React.createClass({
     }
 
     var cancelButton = <FlatButton label={I18N.Common.Button.Cancel} secondary={true} className="form-bottom-bar-cancelbtn" style={{
-      borderRight: '1px solid #ececec'
+      borderRight: '1px solid #ececec',
+      height:'56px'
     }} onClick={this._handleCancelBtn} {...cancelBtnProps}   />;
 
     return (

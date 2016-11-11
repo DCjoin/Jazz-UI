@@ -9,8 +9,9 @@ import DateTimeSelector from '../../controls/DateTimeSelector.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import TagSelectWindow from './TagSelectWindow.jsx';
-import { FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox, Dialog } from 'material-ui';
+import { FontIcon, SelectField, TextField, RadioButton, RadioButtonGroup, Checkbox} from 'material-ui';
 import FlatButton from '../../controls/FlatButton.jsx';
+import NewDialog from '../../controls/NewDialog.jsx';
 import Immutable from 'immutable';
 
 var dateTypeChanged = false;
@@ -303,10 +304,10 @@ let ReportDataItem = React.createClass({
     ];
     var tagWindow = <TagSelectWindow ref='tagListWindow' disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
 
-    return (<div className='jazz-data-tag-select-window'><Dialog
+    return (<div className='jazz-data-tag-select-window'><NewDialog
       ref="tagSelectDialog"
       title={I18N.EM.Report.SelectTag}
-      openImmediately={true}
+      open={true}
       actions={dialogActions}
       modal={true}
       >
@@ -317,7 +318,7 @@ let ReportDataItem = React.createClass({
       }}>
         {tagWindow}
       </div>
-    </Dialog></div>);
+    </NewDialog></div>);
   },
   componentWillReceiveProps: function(nextProps) {
     if (nextProps.id !== this.props.id) {

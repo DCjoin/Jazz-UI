@@ -15,8 +15,12 @@ import Immutable from 'immutable';
 
 var filters = null;
 var page = 0;
+var customerId;
 let TagSelectWindow = React.createClass({
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
+  contextTypes:{
+        currentRoute: React.PropTypes.object
+    },
   getInitialState: function() {
     return {
       isLeftLoading: null,
@@ -25,7 +29,8 @@ let TagSelectWindow = React.createClass({
       checkAllDisabled: true,
       total: 0,
       tagList: Immutable.fromJS([]),
-      selectedTagList: Immutable.fromJS([])
+      selectedTagList: Immutable.fromJS([]),
+      searchValue:''
     };
   },
   _getSelectedTagList() {
@@ -192,16 +197,17 @@ let TagSelectWindow = React.createClass({
     if (node.Id === this.state.nodeId && node.Type === this.state.nodeType) {
       return;
     }
-    this.refs.searchBar.clearSearchText();
+    //this.refs.searchBar.clearSearchText();
     filters = null;
     page = 1;
     var optionType = node.Type === 101 ? 6 : 2;
-    ReportAction.getTagData(node.Id, optionType, 1, filters);
+    ReportAction.getTagData(customerId,node.Id, optionType, 1, filters);
     this.setState({
       isLeftLoading: true,
       nodeId: node.Id,
       nodeType: node.Type,
-      optionType: optionType
+      optionType: optionType,
+      searchValue:''
     });
   },
   _onSearch: function(value) {
@@ -212,41 +218,53 @@ let TagSelectWindow = React.createClass({
         "field": "Name"
       }
     ];
-    ReportAction.getTagData(this.state.nodeId, this.state.optionType, page, filters);
+    this.setState({
+      searchValue:value
+    },()=>{
+      ReportAction.getTagData(customerId,this.state.nodeId, this.state.optionType, page, filters);
+    })
+
   },
   _onSearchCleanButtonClick: function() {
     filters = null;
-    ReportAction.getTagData(this.state.nodeId, this.state.optionType, page, filters);
+    this.setState({
+      searchValue:''
+    },()=>{
+      ReportAction.getTagData(customerId,this.state.nodeId, this.state.optionType, page, filters);
+    })
+
   },
   _onPrePage: function() {
     if (page > 1) {
       page = page - 1;
-      ReportAction.getTagData(this.state.nodeId, this.state.optionType, page, filters);
+      ReportAction.getTagData(customerId,this.state.nodeId, this.state.optionType, page, filters);
     }
   },
   _onNextPage: function() {
     if (20 * page < this.state.total) {
       page = page + 1;
-      ReportAction.getTagData(this.state.nodeId, this.state.optionType, page, filters);
+      ReportAction.getTagData(customerId,this.state.nodeId, this.state.optionType, page, filters);
     }
   },
   jumpToPage: function(targetPage) {
     page = targetPage;
-    ReportAction.getTagData(this.state.nodeId, this.state.optionType, page, filters);
+    ReportAction.getTagData(customerId,this.state.nodeId, this.state.optionType, page, filters);
   },
-
+  componentWillMount:function(){
+    customerId=this.context.currentRoute.params.customerId;
+  },
   componentWillReceiveProps: function(nextProps) {
     var selectedTaglist = nextProps.selectedTagList;
     if (selectedTaglist && selectedTaglist.size !== 0) {
       var selectedTagIds = this._getTagIds(selectedTaglist);
-      ReportAction.getSelectedTagData(selectedTagIds);
+      ReportAction.getSelectedTagData(customerId,selectedTagIds);
     }
   },
   componentDidMount: function() {
     var selectedTaglist = this.props.selectedTagList;
     if (selectedTaglist && selectedTaglist.size !== 0) {
       var selectedTagIds = this._getTagIds(selectedTaglist);
-      ReportAction.getSelectedTagData(selectedTagIds);
+      ReportAction.getSelectedTagData(customerId,selectedTagIds);
     } else if (selectedTaglist.size === 0) {
       this.setState({
         selectedTagList: Immutable.fromJS([]),
@@ -326,7 +344,7 @@ let TagSelectWindow = React.createClass({
             <Header onHierachyTreeClick={this._onHierachyTreeClick}/>
           </div>
           <div className='filter'>
-            <SearchBar ref='searchBar' onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
+            <SearchBar ref='searchBar' value={this.state.searchValue} onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
           </div>
         </div>
         {leftTagListHeader}

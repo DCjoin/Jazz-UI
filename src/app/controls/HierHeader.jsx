@@ -11,7 +11,7 @@ let HierHeader = React.createClass({
     onHierachyTreeClick: React.PropTypes.func,
     onDimTreeClick: React.PropTypes.func, //node.Id==0 为‘全部维度’
   },
-  mixins: [Navigation, State],
+  //mixins: [Navigation, State],
   _onHierachyTreeClick: function(node) {
     var clickNode = assign({}, node);
     if (clickNode.Id < 0) {

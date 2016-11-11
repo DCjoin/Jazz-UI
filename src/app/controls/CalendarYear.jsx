@@ -2,10 +2,9 @@
 
 import React from 'react';
 import {Mixins,Styles,ClearFix,Toolbar,ToolbarGroup,IconButton} from 'material-ui';
-import NavigationChevronLeft from '../../../node_modules/material-ui/lib/svg-icons/navigation/chevron-left';
-import NavigationChevronRight from '../../../node_modules/material-ui/lib/svg-icons/navigation/chevron-right';
-import DateTime from '../../../node_modules/material-ui/lib/utils/date-time.js';
-import SlideInTransitionGroup from '../../../node_modules/material-ui/lib/transition-groups/slide-in.js';
+// import NavigationChevronLeft from '../../../node_modules/material-ui/lib/svg-icons/navigation/chevron-left';
+// import NavigationChevronRight from '../../../node_modules/material-ui/lib/svg-icons/navigation/chevron-right';
+// import SlideInTransitionGroup from '../../../node_modules/material-ui/lib/transition-groups/slide-in.js';
 
 var CalendarYear = React.createClass({
   propTypes: {
@@ -63,25 +62,25 @@ var CalendarYear = React.createClass({
 
     return (
       <Toolbar className="mui-date-picker-calendar-toolbar" style={styles.root} noGutter={true}>
-        <SlideInTransitionGroup
-          style={styles.title}
-          direction={this.state.transitionDirection}>
-          <div key={year}>{year}</div>
-        </SlideInTransitionGroup>
-
         <ToolbarGroup key={0} float="left">
           <IconButton
             disabled={!this.props.prevYear}
             onTouchTap={this._prevYearTouchTap}>
-              <NavigationChevronLeft />
+
           </IconButton>
         </ToolbarGroup>
+
+          style={styles.title}
+          direction={this.state.transitionDirection}>
+          <div key={year}>{year}</div>
+
+
+
 
         <ToolbarGroup key={1} float="right">
           <IconButton
             disabled={!this.props.nextYear}
             onTouchTap={this._nextYearTouchTap}>
-              <NavigationChevronRight />
           </IconButton>
         </ToolbarGroup>
       </Toolbar>

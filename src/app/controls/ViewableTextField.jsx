@@ -1,11 +1,11 @@
 'use strict';
 
 import React from 'react';
-import mui from 'material-ui';
+import ReactDOM from 'react-dom';
+import {TextField} from 'material-ui';
 import _isString from 'lodash/lang/isString';
 import assign from 'object-assign';
 import util from '../util/Util.jsx';
-let {TextField} = mui;
 var _ = {
   isString: _isString
 };
@@ -63,7 +63,7 @@ var ViewableTextField = React.createClass({
 
   componentDidMount: function() {
     if (!this.props.isViewStatus && this.props.autoFocus) {
-      var dom = React.findDOMNode(this);
+      var dom = ReactDOM.findDOMNode(this);
       var text = null;
       if (this.props.multiLine) {
         text = dom.querySelectorAll('textarea')[1];
@@ -190,7 +190,7 @@ var ViewableTextField = React.createClass({
       this.props.didBlur(this.state.value);
     }
     if (!this.state.value) {
-      var node = this.refs.TextField.getDOMNode();
+      var node = ReactDOM.findDOMNode(this.refs.TextField);
       node.className = '';
     }
   },
@@ -209,7 +209,7 @@ var ViewableTextField = React.createClass({
     }
   },
   _onFocus() {
-    var node = this.refs.TextField.getDOMNode();
+    var node = ReactDOM.findDOMNode(this.refs.TextField);
     node.className = 'pop-viewableTextField-focus';
     if (this.props.didFocus) {
       this.props.didFocus();
@@ -226,6 +226,9 @@ var ViewableTextField = React.createClass({
 
     if (!this.props.isViewStatus) {
       inputProps = {
+        errorStyle:{
+          marginTop:'10px'
+        },
         errorText: !this.state.value ? this.state.errorText : this._getError(), //this.state.errorText,
         onChange: this._handleChange,
         onBlur: this._onBlur,
@@ -234,7 +237,8 @@ var ViewableTextField = React.createClass({
           width: 430
         }, this.props.style),
         multiLine: this.props.multiLine ? true : false,
-        floatingLabelText: this.props.title
+        floatingLabelText: this.props.title,
+        type: this.props.type
       };
       if (this.props.hintText) {
         inputProps.hintText = this.props.hintText;

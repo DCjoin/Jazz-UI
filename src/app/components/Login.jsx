@@ -3,18 +3,20 @@
 
 import React from 'react';
 import assign from 'object-assign';
-import { RaisedButton, Snackbar } from 'material-ui';
+import Snackbar from 'material-ui/Snackbar';
+import RaisedButton from 'material-ui/RaisedButton';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import LoginStore from '../stores/LoginStore.jsx';
 import CusFlatButton from '../controls/FlatButton.jsx';
-import { FlatButton } from 'material-ui';
-import Dialog from '../controls/PopupDialog.jsx';
+import NewDialog from '../controls/NewDialog.jsx';
 import LanguageAction from '../actions/LanguageAction.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import Regex from '../constants/Regex.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import _trimRight from 'lodash/string/trimRight';
 import _lang from '../lang/lang.jsx';
+
+import RoutePath from '../util/RoutePath.jsx';
 
 var _ = {
   trimRight: _trimRight
@@ -24,13 +26,29 @@ const MAX_LENGTH = 200;
 const MAX_LENGTH_ERROR = "不能大于" + MAX_LENGTH;
 const DEFAULT_COUNT_DOWN = 59;
 
+function replaceWith(router, name, params, query) {
+  router.replace( RoutePath[name]( assign({}, getParams(router), params) ), query );
+}
+function getParams(router) {
+  return router.params;
+}
+function getQuery(router) {
+  return router.location.query;
+}
+function getRoutes(router) {
+  return router.routers;
+}
+function getCurrentPath(router) {
+  return router.location.pathname;
+}
+
 let Login = React.createClass({
   propTypes: {
     query: React.PropTypes.object,
     params: React.PropTypes.object
   },
   contextTypes: {
-    router: React.PropTypes.func
+    router: React.PropTypes.object
   },
   getInitialState: function() {
     document.title = I18N.Login.Login;
@@ -60,15 +78,9 @@ let Login = React.createClass({
     };
   },
   _onChange: function(argument) {
-    var _redirectFunc = this.context.router.transitionTo;
-    if (this.props.routes.length < 3) {
-      _redirectFunc = this.context.router.replaceWith;
-    }
     if (LoginStore.hasLoggedin()) {
-      this.context.router.replaceWith('main', this.props.params, assign({}, this.props.query, {
-        from: 'app'
-      }));
-      CurrentUserAction.getUser(window.currentUserId);
+      CurrentUserAction.getInitData(LoginStore.getCurrentUserId());
+      replaceWith(this.props.router, 'main', this.props.params);
     } else {
       this.setState({
         error: LoginStore.getLastError()
@@ -155,13 +167,9 @@ let Login = React.createClass({
     });
   },
   _renderForgetPSWDialog() {
-    if (this.state.showForgetPSWDialog) {
-      return (
-        <ForgetPSWDialog onDone={this._doneForgetPSWDialog} onCancel={this._dismissForgetPSWDialog}/>
-        );
-    } else {
-      return null;
-    }
+    return (
+      <ForgetPSWDialog open={this.state.showForgetPSWDialog} onDone={this._doneForgetPSWDialog} onCancel={this._dismissForgetPSWDialog}/>
+    );
   },
 
   _dismissForgetPSWSnackbar() {
@@ -194,13 +202,9 @@ let Login = React.createClass({
     });
   },
   _renderTrialUseDialog() {
-    if (this.state.showTrialUseDialog) {
-      return (
-        <DemoApplyDialog onDone={this._doneTrialUseDialog} onCancel={this._dismissTrialUseDialog}/>
-        );
-    } else {
-      return null;
-    }
+    return (
+      <DemoApplyDialog open={this.state.showTrialUseDialog} onDone={this._doneTrialUseDialog} onCancel={this._dismissTrialUseDialog}/>
+    );
   },
 
   _dismissTrialUseSnackbar() {
@@ -235,9 +239,9 @@ let Login = React.createClass({
   render: function() {
     var errorMsg = null,
       {username, password, authCode} = this.state;
-    var lang = (window.currentLanguage === 0) ? 'zh-cn' : 'en-us';
+    var lang = (this.props.router.params.lang === 'en-us') ? 'zh-cn' : 'en-us';
     var _contactHref = '#/' + lang + '/contactus';
-
+    var _switchLanguageHref = `#${RoutePath.login({lang})}`;
     if (this.state.error) {
       if (this.state.error.error) {
         var errorCode = this.state.error.error.Code.substr(this.state.error.error.Code.length - 5, 5);
@@ -272,8 +276,7 @@ let Login = React.createClass({
             <div style={{
         cursor: 'pointer' }} onClick={this._showQRCodeDialog}>{I18N.Login.iPad}</div>|
           	<a href={_contactHref} target="_blank">{I18N.Login.ContactUS}</a>|
-            <FlatButton label={I18N.Platform.InEnglish} onClick={this._onLangSwitch} hoverColor={'transparent'} rippleColor={'transparent'} backgroundColor={'transparent'}
-                 labelStyle={{ color: '#464949', 'padding': '0' }} style={{ 'padding': '0', 'margin': '0', lineHeight: '24px' }} linkButton={true}></FlatButton>
+            <a href={_switchLanguageHref} target="_blank">{I18N.Platform.InEnglish}</a>
           </div>
           <div className="jazz-public-footer-about">
             <div style={{ marginRight: "2em" }}>{I18N.Login.Copyright}</div>
@@ -324,10 +327,19 @@ var LoginForm = React.createClass({
             <div className="jazz-login-error">{errorMsg}</div>
           </div>
           <div className="jazz-login-form-content-button">
-            <RaisedButton disabled={!username.length || !password.length} primary label={I18N.Login.Login} style={{
-                width: '300px',
-                height: '46px'
-              }} onClick={this.props.login}/>
+            <RaisedButton 
+              disabled={!username.length || !password.length} 
+              primary label={I18N.Login.Login} 
+              style={{
+                width: 300,
+                height: 46
+              }} 
+              labelStyle={{
+                lineHeight: '42px',
+                fontSize: 16,
+                padding: 0
+              }} 
+              onClick={this.props.login}/>
           </div>
           <div className="jazz-login-form-content-forgetPSW">
             <div style={{
@@ -373,22 +385,32 @@ var ForgetPSWDialog = React.createClass({
   },
   _sendApply: function() {
     LoginActionCreator.reqPwdReset(this.state.username, this.state.email);
+    this.setState({
+      state: this.getInitialState()
+    });
     if (this.props.onDone) {
       this.props.onDone(this.state.email);
     }
   },
   _cancelApply: function() {
+    this.setState({
+      state: this.getInitialState()
+    });
     this.props.onCancel();
   },
   render: function() {
     let email = this.state.email,
       username = this.state.username,
       sendProps = {
+        inDialog: true,
+        highlight: true,
+        key: 'send_email',
         disabled: !email || !Regex.Email.test(email) || email.length > 254 || !username || username.length > 254,
         onClick: this._sendApply,
         label: I18N.Common.Button.GoOn
       },
       cancelProps = {
+        key: 'cancel_email',
         onClick: this._cancelApply,
         label: I18N.Common.Button.Cancel
       },
@@ -425,12 +447,12 @@ var ForgetPSWDialog = React.createClass({
         }
       },
       actions = [
-        <FlatButton {...sendProps} />,
+        <CusFlatButton {...sendProps} />,
         <CusFlatButton {...cancelProps} />
       ];
 
     return (
-      <Dialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} openImmediately={true} contentStyle={{
+      <NewDialog title={I18N.Login.ForgerPSW} actions={actions} modal={true} open={this.props.open} contentStyle={{
         width: '590px'
       }}>
             <div style={{fontSize:'14px'}}>{I18N.Login.ForgerPSWTips}</div>
@@ -438,7 +460,7 @@ var ForgetPSWDialog = React.createClass({
             <ViewableTextField {...usernameProps}/>
             <ViewableTextField {...emailProps}/>
             <div style={{fontSize:'14px'}}>{I18N.Login.ForgeremailTips}</div>
-        </Dialog>
+        </NewDialog>
       );
   }
 });
@@ -464,11 +486,13 @@ var DemoApplyDialog = React.createClass({
   render() {
     let email = this.state.email,
       sendProps = {
+        key: 'send_email',
         disabled: !email || !Regex.Email.test(email) || email.length > 254,
         onClick: this._sendApply,
         label: I18N.Common.Button.GoOn
       },
       cancelProps = {
+        key: 'cancel_email',
         onClick: this._cancelApply,
         label: I18N.Common.Button.Cancel
       },
@@ -497,10 +521,10 @@ var DemoApplyDialog = React.createClass({
       ];
 
     return (
-      <Dialog title={I18N.Login.TrialUse} openImmediately={true} modal={true} actions={actions}>
+      <NewDialog title={I18N.Login.TrialUse} open={this.props.open} modal={true} actions={actions}>
               <div style={{fontSize:'14px'}}>{I18N.Login.TrialUseTips}</div>
               <ViewableTextField {...emailProps}/>
-          </Dialog>
+          </NewDialog>
       );
   }
 });

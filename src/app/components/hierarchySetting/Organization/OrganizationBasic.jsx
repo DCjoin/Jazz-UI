@@ -18,7 +18,7 @@ var OrganizationBasic = React.createClass({
     formStatus: React.PropTypes.string,
     setEditBtnStatus: React.PropTypes.func
   },
-  mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
+  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   _renderDetail: function() {
     var {Code, Comment, Administrators} = this.props.selectedNode.toJS(),
       isView = this.props.formStatus === formStatus.VIEW,
@@ -101,11 +101,11 @@ var OrganizationBasic = React.createClass({
       if (this.props.selectedNode.get('Code').length <= 200) {
         this.props.setEditBtnStatus(false);
     }
-    this.initBatchViewbaleTextFiled();
-    this.clearErrorTextBatchViewbaleTextFiled();
+    //this.initBatchViewbaleTextFiled();
+    //this.clearErrorTextBatchViewbaleTextFiled();
   },
   componentWillUnmount: function() {
-    this.clearErrorTextBatchViewbaleTextFiled();
+    //this.clearErrorTextBatchViewbaleTextFiled();
   },
   render: function() {
     return (

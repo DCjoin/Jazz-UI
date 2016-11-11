@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {  SelectField } from 'material-ui';
+import SelectField from 'material-ui/SelectField';
 
 
 import _assign from "lodash/object/assign";

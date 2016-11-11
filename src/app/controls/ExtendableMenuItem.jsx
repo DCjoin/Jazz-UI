@@ -1,8 +1,8 @@
 'use strict';
 import React from "react";
-
-let Menu = require('material-ui/lib/menus/menu');
-let MenuItem = require('material-ui/lib/menus/menu-item');
+import ReactDom from 'react-dom';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -19,8 +19,8 @@ let ExtendableMenuItem = React.createClass({
   },
   componentDidUpdate(){
     if(this.refs.subMenu){
-      var subMenu=React.findDOMNode(this.refs.subMenu),
-      menus=React.findDOMNode(this.refs.menus),
+      var subMenu=ReactDom.findDOMNode(this.refs.subMenu),
+      menus=ReactDom.findDOMNode(this.refs.menus),
       box=menus.getBoundingClientRect();
       if(box.left+menus.scrollWidth>document.body.offsetWidth){
         subMenu.style.left=-(menus.scrollWidth+5)+'px';
