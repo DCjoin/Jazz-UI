@@ -65,7 +65,8 @@ var MonitorTag = React.createClass({
       addingTags: emptyList(),
       showFilter: false,
       filterObj: this._getInitFilterObj(),
-      isFilter: false
+      isFilter: false,
+      searchValue:''
     });
   },
   _getInitFilterObj: function() {
@@ -224,7 +225,8 @@ var MonitorTag = React.createClass({
     filterObj.LikeCodeOrName = value;
     this.setState({
       filterObj: filterObj,
-      page: 1
+      page: 1,
+      searchValue:value
     }, () => {
       that.getAssociatedTag();
     });
@@ -433,7 +435,7 @@ var MonitorTag = React.createClass({
               {I18N.Setting.VEEMonitorRule.TagList}
             </div>
             <div className="jazz-vee-tag-search-filter-bar">
-            <SearchAndFilterBar onFilter={this._onFilter}
+            <SearchAndFilterBar value={this.state.searchValue} onFilter={this._onFilter}
       onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}
       isFilter={this.state.isFilter}/>
     </div>
