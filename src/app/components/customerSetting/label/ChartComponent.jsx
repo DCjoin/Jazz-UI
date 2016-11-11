@@ -165,7 +165,7 @@ let ChartComponent = React.createClass({
       LabelingLevels: labelingLevels.slice(0, me.props.levelCount),
       TargetEnergyData: []
     };
-    me.initData(data, me.chartRniwenderer);
+    me.initData(data, me.chartRenderer);
   },
   initProperties: function(data) {
     var me = this,
