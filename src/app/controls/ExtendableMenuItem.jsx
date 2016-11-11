@@ -3,6 +3,7 @@ import React from "react";
 import ReactDom from 'react-dom';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
 
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -40,10 +41,10 @@ let ExtendableMenuItem = React.createClass({
       subItems = subItems.map((item)=>{
         return <MenuItem {...item}/>;
       });
-      subMenu = <div ref='subMenu' style={{position:'absolute',overflow:'visible', display:'inline-block',left:'inherit'}}>
+      subMenu = <Paper ref='subMenu' style={{position:'absolute',overflow:'visible', display:'inline-block',left:'inherit'}}>
                   <Menu ref='menus' onMouseOver={me._onSubMenuMouseOver} onItemTouchTap={me._onSubMenuItemTouchTap}
                       onMouseOut={me._onSubMenuMouseOut} style={{left:'2px'}} desktop={true}>{subItems}</Menu>
-                </div> ;
+                </Paper> ;
     }
     return <div style={{position:'relative'}} onMouseOver={me._onItemMouseOver} onMouseOut={me._onItemMouseOut} title={tooltipStr}>
               <div style={{display:'inline-block', width:'100%'}}>
