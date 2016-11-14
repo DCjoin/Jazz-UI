@@ -23,7 +23,8 @@ var MonitorTag = React.createClass({
       isLoading: true,
       filterObj: filterObj,
       isFilter: false,
-      showFilter: false
+      showFilter: false,
+      searchValue:''
     });
   },
   _getInitFilterObj: function() {
@@ -45,7 +46,8 @@ var MonitorTag = React.createClass({
     filterObj.LikeCodeOrName = value;
     this.setState({
       filterObj: filterObj,
-      page: 1
+      page: 1,
+      searchValue:value
     }, () => {
       if (timeoutID) {
         clearTimeout(timeoutID);
@@ -62,7 +64,8 @@ var MonitorTag = React.createClass({
     filterObj.LikeCodeOrName = null;
     this.setState({
       filterObj: filterObj,
-      page: 1
+      page: 1,
+      searchValue:''
     }, () => {
       me.getTagList();
     });
@@ -138,7 +141,7 @@ var MonitorTag = React.createClass({
     return (
       <div className="jazz-tag-formula-content-taglist-top">
         <div className="jazz-tag-formula-content-taglist-top-text">{I18N.Setting.Tag.TagList}</div>
-        <div className="jazz-vee-tag-search-filter-bar"><SearchAndFilterBar onFilter={this._handleShowFilterSideNav}
+        <div className="jazz-vee-tag-search-filter-bar"><SearchAndFilterBar value={this.state.searchValue} onFilter={this._handleShowFilterSideNav}
       onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}
       isFilter={this.state.isFilter}/></div>
   </div>);
