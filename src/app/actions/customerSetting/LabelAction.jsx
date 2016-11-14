@@ -46,7 +46,7 @@ let LabelAction = {
           type: Action.MODIFT_LABEL_SUCCESS,
           label: label
         });
-        me.getLabelList();
+        me.getLabelList(data.CustomerId);
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
@@ -67,7 +67,7 @@ let LabelAction = {
           type: Action.CREATE_LABEL_SUCCESS,
           label: label
         });
-        me.getLabelList();
+        me.getLabelList(data.CustomerId);
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
