@@ -129,11 +129,19 @@ var Tariff = React.createClass({
     });
   },
   _renderErrorDialog: function() {
+    var that = this;
+    var onClose = function() {
+      that.setState({
+        errorTitle: null,
+        errorContent: null,
+      });
+    };
     return (<NewDialog
         ref = "_dialog"
         title={this.state.errorTitle}
         modal={false}
         open={!!this.state.errorTitle}
+        onRequestClose={onClose}
         >
         {this.state.errorContent}
     </NewDialog>)

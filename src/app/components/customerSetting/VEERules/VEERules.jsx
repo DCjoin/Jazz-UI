@@ -9,7 +9,7 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import VEEAction from '../../../actions/customerSetting/VEEAction.jsx';
 import VEEStore from '../../../stores/customerSetting/VEEStore.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import Dialog from '../../../controls/NewDialog.jsx';
 import { List, Map } from 'immutable';
 import { dataStatus } from '../../../constants/DataStatus.jsx';
 
@@ -207,12 +207,20 @@ var VEERules = React.createClass({
     });
   },
   _renderErrorDialog: function() {
+    var that = this;
+    var onClose = function() {
+      that.setState({
+        errorTitle: null,
+        errorContent: null,
+      });
+    };
     if (!!this.state.errorTitle) {
       return (<Dialog
         ref = "_dialog"
         title={this.state.errorTitle}
         modal={false}
-        openImmediately={!!this.state.errorTitle}
+        open={!!this.state.errorTitle}
+        onRequestClose={onClose}
         >
         {this.state.errorContent}
       </Dialog>)

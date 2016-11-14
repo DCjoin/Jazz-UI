@@ -9,7 +9,7 @@ import { formStatus } from '../../constants/FormStatus.jsx';
 import { dataStatus } from '../../constants/DataStatus.jsx';
 import { CircularProgress } from 'material-ui';
 import { Map, List } from 'immutable';
-import Dialog from '../../controls/PopupDialog.jsx';
+import Dialog from '../../controls/NewDialog.jsx';
 import Customer from './CustomerForHierarchy.jsx';
 import Organization from './Organization/Organization.jsx';
 import Building from './Building/Building.jsx';
@@ -173,7 +173,7 @@ var Hierarchy = React.createClass({
         };
       }
     }
-    HierarchyAction.modifyHierarchyPath(desParent, movingHierarchies, nextBrother, previousBrother);
+    HierarchyAction.modifyHierarchyPath(this.context.currentRoute.params.customerId,desParent, movingHierarchies, nextBrother, previousBrother);
     this.setState({
       isLoading: true
     });
@@ -329,8 +329,8 @@ var Hierarchy = React.createClass({
         ref = "_dialog"
         title={this.state.errorTitle}
         modal={false}
-        openImmediately={!!this.state.errorTitle}
-        onClose={onClose}
+        open={!!this.state.errorTitle}
+        onRequestClose={onClose}
         >
         {this.state.errorContent}
       </Dialog>);

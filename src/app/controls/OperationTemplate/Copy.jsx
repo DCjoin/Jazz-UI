@@ -26,6 +26,7 @@ var Copy = React.createClass({
     })
   },
   _onFirstActionTouchTap: function() {
+    this._dismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap(this.state.selectedNode, this.state.labelName);
     }

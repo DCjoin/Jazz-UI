@@ -12,7 +12,7 @@ import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import YearPicker from '../../controls/YearPicker.jsx';
 import SideNav from '../../controls/SideNav.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import Dialog from '../../controls/NewDialog.jsx';
 
 let CalendarDetail = React.createClass({
   propTypes: {
@@ -643,8 +643,8 @@ var Calendar = React.createClass({
         ref = "_dialog"
         title={I18N.Platform.ServiceProvider.ErrorNotice}
         modal={false}
-        openImmediately={!!this.state.errorShow}
-        onClose={onClose}
+        open={!!this.state.errorShow}
+        onRequestClose={onClose}
         >
         {content}
       </Dialog>)

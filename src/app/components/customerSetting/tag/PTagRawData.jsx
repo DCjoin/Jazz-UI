@@ -7,7 +7,7 @@ import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import { List } from 'immutable';
 import DateTimeSelector from '../../../controls/DateTimeSelector.jsx';
 import CommonFuns from '../../../util/Util.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import Dialog from '../../../controls/NewDialog.jsx';
 import ChartPanel from './RawDataChartPanel.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import Immutable from 'immutable';
@@ -193,7 +193,7 @@ let PTagRawData = React.createClass({
       }
 
       return (
-        <Dialog openImmediately={this.state.paulseDialogShow} title={I18N.Setting.Tag.PTagRawData.PauseMonitor} modal={true} actions={[
+        <Dialog open={this.state.paulseDialogShow} title={I18N.Setting.Tag.PTagRawData.PauseMonitor} modal={true} actions={[
           <FlatButton
           label={I18N.Platform.Password.Confirm}
           onClick={() => {

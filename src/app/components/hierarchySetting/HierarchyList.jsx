@@ -9,7 +9,7 @@ import CommonFuns from '../../util/Util.jsx';
 import classNames from 'classnames';
 import Tree from '../../controls/tree/Tree.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import Dialog from '../../controls/NewDialog.jsx';
 import HierarchyStore from '../../stores/hierarchySetting/HierarchyStore.jsx';
 import DropdownButton from '../../controls/DropdownButton.jsx';
 import HierarchyAction from '../../actions/hierarchySetting/HierarchyAction.jsx';
@@ -162,7 +162,7 @@ var HierarchyList = React.createClass({
 
     return (<Dialog
       ref="importDialog"
-      openImmediately={true}
+      open={true}
       title={dialogTitle}
       actions={dialogActions}
       onClose={this._handleImportDialogDismiss}

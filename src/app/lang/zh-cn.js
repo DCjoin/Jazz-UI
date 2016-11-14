@@ -798,6 +798,7 @@ I18N.Setting.Labeling.NoCusomer = '无客户';
 I18N.Setting.Labeling.ElectrovalenceUom = '元/千瓦时';
 
 I18N.Setting.CustomizedLabeling = {};
+I18N.Setting.CustomizedLabeling.Title = '能效标识名称';
 I18N.Setting.CustomizedLabeling.DeleteLabel = '删除能效标识';
 I18N.Setting.CustomizedLabeling.Grade = '{0}级';
 I18N.Setting.CustomizedLabeling.EnergyGrade = '能耗级别设置';
@@ -1805,6 +1806,7 @@ I18N.Common.Glossary.User = '用户';
 I18N.Setting.Labeling.CustomerName = '客户名称';
 
 I18N.Setting.CustomerManagement.Label = {};
+I18N.Setting.CustomerManagement.Label.MapPageInfo = '地图页信息';
 I18N.Setting.CustomerManagement.Label.MapPageInfo = '地图页信息';
 I18N.Setting.CustomerManagement.Label.Code = '客户编码';
 I18N.Setting.CustomerManagement.Label.Address = '客户地址';

@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import ReactDom from 'React-dom';
 import { Navigation, State } from 'react-router';
 import { FontIcon } from 'material-ui';
 import AllUser from './AllUsers.jsx';
@@ -16,10 +17,10 @@ var UserItem = React.createClass({
     UserAction.setUserStatus(this.props.user, false);
   },
   _onMouserOver: function() {
-    React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+    ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'block';
   },
   _onMouserOut: function() {
-    React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+    ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
   },
 
   render: function() {

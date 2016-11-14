@@ -19,7 +19,7 @@ import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import Regex from '../../constants/Regex.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import SideNav from '../../controls/SideNav.jsx';
-import Dialog from '../../controls/PopupDialog.jsx';
+import Dialog from '../../controls/NewDialog.jsx';
 import Factor09Detail from './Factor09Detail.jsx';
 import Factor085Detail from './Factor085Detail.jsx';
 
@@ -475,7 +475,7 @@ var Cost = React.createClass({
       return null;
     } else {
       return (
-        <Dialog openImmediately={this.state.showPowerFactorDialog}  modal={false} onClose={closeDialog}>
+        <Dialog open={this.state.showPowerFactorDialog}  modal={false} onRequestClose={closeDialog}>
           {this.state.factorIndex === 1 ? <Factor09Detail/> : <Factor085Detail/>}
         </Dialog>
         );

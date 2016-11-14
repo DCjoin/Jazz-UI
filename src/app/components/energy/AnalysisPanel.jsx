@@ -223,7 +223,7 @@ let AnalysisPanel = React.createClass({
     if (this.state.remarkDisplay) {
       remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
         color: '#abafae'
-      }} multiLine={true} ></TextField></div>;
+      }} multiLine={true} underlineShow={false}></TextField></div>;
     }
     var remarkDiv = null;
     if (!this.props.isFromAlarm) {

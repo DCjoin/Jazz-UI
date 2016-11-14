@@ -10,7 +10,7 @@ import { CircularProgress } from 'material-ui';
 import CarbonAction from '../../../actions/energyConversion/CarbonAction.jsx';
 import CarbonStore from '../../../stores/energyConversion/CarbonStore.jsx';
 
-import Dialog from '../../../controls/PopupDialog.jsx';
+import Dialog from '../../../controls/NewDialog.jsx';
 var Carbon = React.createClass({
   getInitialState: function() {
     return {

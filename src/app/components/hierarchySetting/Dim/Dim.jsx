@@ -7,7 +7,7 @@ import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 import ViewableTextFieldUtil from '../../../controls/ViewableTextFieldUtil.jsx';
 import { formStatus } from '../../../constants/FormStatus.jsx';
 import FormBottomBar from '../../../controls/FormBottomBar.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import Dialog from '../../../controls/NewDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 import Basic from './DimBasic.jsx';
 import MonitorTag from '../MonitorTag.jsx';
@@ -207,7 +207,7 @@ var Dim = React.createClass({
 
       return (
 
-        <Dialog openImmediately={this.state.dialogStatus} title={I18N.format(I18N.Setting.Hierarchy.DeleteTitle, I18N.Common.Glossary.Dim)} modal={true} actions={[
+        <Dialog open={this.state.dialogStatus} title={I18N.format(I18N.Setting.Hierarchy.DeleteTitle, I18N.Common.Glossary.Dim)} modal={true} actions={[
           <FlatButton
           label={I18N.Template.Delete.Delete}
           primary={true}

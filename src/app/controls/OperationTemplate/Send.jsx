@@ -17,6 +17,9 @@ var Send = React.createClass({
     onSecondActionTouchTap: React.PropTypes.func,
     onDismiss: React.PropTypes.func,
   },
+  contextTypes: {
+    router: React.PropTypes.object,
+  },
   getInitialState: function() {
     return {
       users: null,
@@ -69,7 +72,7 @@ var Send = React.createClass({
     UserAction.resetUserList();
     UserStore.addUserListListener(this._onLoadUserList);
     UserStore.addUserStatusListener(this._onUserStatus);
-    UserAction.getUserList(this.props.userId, window.currentCustomerId);
+    UserAction.getUserList(this.props.userId, this.context.router.params.customerId);
     this.setState({
       isLoading: true
     })
