@@ -90,7 +90,7 @@ var VEERules = React.createClass({
         VEEAction.modifyVEERule(dto);
       }
     } else {
-      VEEAction.modifyVEETags(data.ruleId, data.tagIds)
+      VEEAction.modifyVEETags(this.context.currentRoute.params.customerId,data.ruleId, data.tagIds)
     }
     this.setState({
       isLoading: true

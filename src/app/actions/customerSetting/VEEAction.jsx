@@ -159,7 +159,7 @@ let VEEAction = {
       }
     });
   },
-  modifyVEETags: function(ruleId, tagIds) {
+  modifyVEETags: function(customerId,ruleId, tagIds) {
     var that = this;
     Ajax.post('/VEE/ModifyVEETags', {
       params: {
@@ -167,7 +167,7 @@ let VEEAction = {
           "Filter": {
             "RuleIds": ruleId === null ? null : [ruleId],
             "TagIds": tagIds,
-            "CustomerId": window.currentCustomerId
+            "CustomerId": customerId
           },
           "AssociateAll": false
         }
@@ -179,7 +179,7 @@ let VEEAction = {
             _page = _page - 1;
           }
         }
-        that.getAssociatedTag(_page, _ruleId, _association, _filterObj, ruleId !== null);
+        that.getAssociatedTag(customerId,_page, _ruleId, _association, _filterObj, ruleId !== null);
       },
       error: function(err, res) {
         console.log(err, res);
