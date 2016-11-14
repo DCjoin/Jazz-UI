@@ -39,9 +39,9 @@ let TagAction = {
       }
     });
   },
-  getTagList: function(page, filterObj) {
+  getTagList: function(customerId,page, filterObj) {
     var obj = {
-      CustomerId: parseInt(window.currentCustomerId)
+      CustomerId: parseInt(customerId)
     };
     var filter = assign(filterObj, obj);
     if (formulaSearch) {
