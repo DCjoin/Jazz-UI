@@ -10,7 +10,7 @@ import { CircularProgress } from 'material-ui';
 import UserAction from '../../../actions/UserAction.jsx';
 import RoleStore from '../../../stores/RoleStore.jsx';
 import RoleAction from '../../../actions/RoleAction.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import Dialog from '../../../controls/NewDialog.jsx';
 var Role = React.createClass({
   getInitialState: function() {
     return {
@@ -111,8 +111,8 @@ var Role = React.createClass({
         ref = "_dialog"
         title={this.state.errorTitle}
         modal={false}
-        openImmediately={!!this.state.errorTitle}
-        onClose={onClose}
+        open={!!this.state.errorTitle}
+        onRequestClose={onClose}
         >
     {this.state.errorContent}
       </Dialog>)

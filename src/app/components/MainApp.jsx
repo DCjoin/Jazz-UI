@@ -26,7 +26,7 @@ import LoginStore from '../stores/LoginStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import CusFlatButton from '../controls/FlatButton.jsx';
-import Dialog from '../controls/PopupDialog.jsx';
+import Dialog from '../controls/NewDialog.jsx';
 
 import RoutePath from '../util/RoutePath.jsx';
 
@@ -106,14 +106,14 @@ let MainApp = React.createClass({
       let customerId = this.props.router.params.customerId;
       if( customerId ) {
         return (
-          <div className='jazz-main'>           
+          <div className='jazz-main'>
             <MainAppBar
               disabledSelectCustomer={MainApp.prepareShow() && MainApp.needDefaultReplace(this.props.router)}
-              items={CurrentUserStore.getMainMenuItems()} 
+              items={CurrentUserStore.getMainMenuItems()}
               logoUrl={customerId && 'Logo.aspx?hierarchyId=' + customerId}/>
             {customerId && this.props.children}
-            <NetworkChecker /> 
-            <ExportChart /> 
+            <NetworkChecker />
+            <ExportChart />
           </div>
         );
       } else {
@@ -161,7 +161,7 @@ var MessageDialog = React.createClass({
     };
     let actions = [<CusFlatButton {...cancelProps} />];
     return (
-      <Dialog title={I18N.Login.NoPriTitle} actions={actions} modal={true} openImmediately={true}  contentStyle={{
+      <Dialog title={I18N.Login.NoPriTitle} actions={actions} modal={true} open={true}  contentStyle={{
         width: '640px'
       }}>
 				<div style={{fontSize:'14px'}}>{I18N.Login.NoPriDetail}</div>

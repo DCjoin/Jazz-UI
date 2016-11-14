@@ -8,7 +8,7 @@ import CommonFuns from '../../../util/Util.jsx';
 import SearchAndFilterBar from '../../../controls/SearchAndFilterBar.jsx';
 import Pagination from '../../../controls/paging/Pagination.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import Dialog from '../../../controls/NewDialog.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 
 let TagList = React.createClass({
@@ -102,7 +102,7 @@ let TagList = React.createClass({
 
     return (<Dialog
       ref="importDialog"
-      openImmediately={true}
+      open={true}
       title={dialogTitle}
       actions={dialogActions}
       onClose={this._handleImportDialogDismiss}

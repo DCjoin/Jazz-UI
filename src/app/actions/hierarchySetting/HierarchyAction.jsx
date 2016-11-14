@@ -184,9 +184,9 @@ let HierarchyAction = {
           node: Immutable.fromJS(node)
         });
         if (node.Type === 101) {
-          that.GetHierarchys(-node.Id);
+          that.GetHierarchys(dto.CustomerId,-node.Id);
         } else {
-          that.GetHierarchys(node.Id);
+          that.GetHierarchys(dto.CustomerId,node.Id);
         }
 
       },
@@ -214,7 +214,7 @@ let HierarchyAction = {
           type: Action.SET_SELECTED_HIERARCHY_NODE,
           node: Immutable.fromJS(node)
         });
-        that.GetHierarchys(id);
+        that.GetHierarchys(dto.CustomerId,id);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
@@ -238,7 +238,7 @@ let HierarchyAction = {
           type: Action.DELETE_HIERARCHY_DTO_SUCCESS,
         // nextSelectedNode: HierarchyStore.findNextSelectedNode(HierarchyStore.traversalNode(dto))
         });
-        that.GetHierarchys(HierarchyStore.findNextSelectedNode(HierarchyStore.traversalNode(dto)).get('Id'));
+        that.GetHierarchys(dto.CustomerId,HierarchyStore.findNextSelectedNode(HierarchyStore.traversalNode(dto)).get('Id'));
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
@@ -379,7 +379,7 @@ let HierarchyAction = {
       }
     });
   },
-  modifyHierarchyPath: function(DesParent, MovingHierarchies, NextBrother, PreviousBrother) {
+  modifyHierarchyPath: function(customerId,DesParent, MovingHierarchies, NextBrother, PreviousBrother) {
     var that = this;
     Ajax.post('/Hierarchy/ModifyHierarchyPath', {
       params: {
@@ -392,7 +392,7 @@ let HierarchyAction = {
       },
       commonErrorHandling: false,
       success: function(result) {
-        that.GetHierarchys(MovingHierarchies.Id);
+        that.GetHierarchys(customerId,MovingHierarchies.Id);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);

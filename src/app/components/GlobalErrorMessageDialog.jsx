@@ -28,7 +28,7 @@ let GlobalErrorMessageDialog = React.createClass({
       var snackbar = <Snackbar style={{
         maxWidth: 'none'
       }} message={this.state.errorMessage} open={this.state.isShowed} onRequestClose={this._onDismiss} ref='errorMessageDialog' />;
-      var dialog = (<NewDialog title={I18N.Platform.ServiceProvider.ErrorNotice} open={this.state.isShowed} modal={false} onClose={this._onDismiss} ref='errorMessageDialog'>
+      var dialog = (<NewDialog title={I18N.Platform.ServiceProvider.ErrorNotice} open={this.state.isShowed} modal={false} onRequestClose={this._onDismiss} ref='errorMessageDialog'>
         {content}
       </NewDialog>);
       if (errorCodeArr.indexOf(this.state.errorCode) !== -1 || this.state.dialogShow) {

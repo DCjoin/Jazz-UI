@@ -10,7 +10,7 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import UserList from './UserList.jsx';
 import UserFilter from './UserFilter.jsx';
 import UserDetail from './UserDetail.jsx';
-import Dialog from '../../../controls/PopupDialog.jsx';
+import Dialog from '../../../controls/NewDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
 var User = React.createClass({
@@ -205,8 +205,8 @@ var User = React.createClass({
         ref = "_dialog"
         title={this.state.errorTitle}
         modal={false}
-        openImmediately={!!this.state.errorTitle}
-        onClose={onClose}
+        open={!!this.state.errorTitle}
+        onRequestClose={onClose}
         >
     {this.state.errorContent}
       </Dialog>)
