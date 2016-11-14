@@ -13,6 +13,7 @@ var SendView = React.createClass({
     sendNode:React.PropTypes.object,
   },
   _onSendItem:function(){
+    this.props.onDismiss();
     FolderAction.sendFolderCopy(this.props.sendNode,UserStore.getUserIds());
   },
   render:function(){
