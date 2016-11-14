@@ -6,6 +6,7 @@ import events from 'events';
 import assign from 'object-assign';
 import SelectCustomer from '../constants/actionType/SelectCustomer.jsx';
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
+import LoginActionType from '../constants/actionType/Login.jsx';
 import CurrentUserStore from './CurrentUserStore.jsx';
 
 let {EventEmitter} = events;
@@ -66,6 +67,11 @@ CurrentUserCustomerStore.dispatchToken = AppDispatcher.register(function(action)
     case selectCustomerAction.SELECT_ACCOUNT_SUCCESS:
       CurrentUserCustomerStore.setCustomer(action.data);
       CurrentUserCustomerStore.emitChange();
+      break;
+    case LoginActionType.Action.LOGOUT:
+      _customers = null;
+      _currentCustomer = null;
+      _currentUser = null;
       break;
     default: // do nothing
   }

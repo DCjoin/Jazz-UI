@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import { List, updater, update, Map } from 'immutable';
 
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
+import LoginActionType from '../constants/actionType/Login.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 
 let _currentUser = null,
@@ -323,6 +324,11 @@ CurrentUserStore.dispatchToken = AppDispatcher.register(function(action) {
     case CurrentUserAction.GET_ROLE:
       CurrentUserStore.setCurrentPrivilege(action.role, action.userId, action.userType);
       CurrentUserStore.emitCurrentrivilegeChange();
+      break;
+    case LoginActionType.Action.LOGOUT:
+      _currentUser = null;
+      _currentPrivilege = null;
+      _error = null;
       break;
   }
 });
