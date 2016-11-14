@@ -152,7 +152,7 @@ var MonitorTag = React.createClass({
     })
   },
   _onDeleteTag: function(tag) {
-    VEEAction.modifyVEETags(null, [tag.get('Id')]);
+    VEEAction.modifyVEETags(this.context.currentRoute.params.customerId,null, [tag.get('Id')]);
     let page = this.state.page;
     if (VEEStore.getTotal() - 1 > 0 && parseInt((VEEStore.getTotal() - 1 + 19) / 20) < page) {
       page = page - 1;

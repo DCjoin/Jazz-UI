@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import { CircularProgress } from 'material-ui';
 import CommonFuns from '../../../util/Util.jsx';
@@ -171,7 +172,7 @@ let TagList = React.createClass({
       display: 'none'
     }, iframe.contentDocument.body);
 
-    var input = this.refs.fileInput.getDOMNode();
+    var input = ReactDom.findDOMNode(this.refs.fileInput);
     form.appendChild(input);
     var customerInput = createElement('input', {
       type: 'hidden',
@@ -186,7 +187,7 @@ let TagList = React.createClass({
 
     form.submit();
     discardElement(form);
-    var label = me.refs.fileInputLabel.getDOMNode();
+    var label = ReactDom.findDOMNode(this.refs.fileInputLabel);
     var tempForm = document.createElement('form');
     document.body.appendChild(tempForm);
     tempForm.appendChild(input);

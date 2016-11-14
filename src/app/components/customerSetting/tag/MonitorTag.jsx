@@ -16,6 +16,9 @@ var MonitorTag = React.createClass({
     tagId: React.PropTypes.number,
     onRowClick: React.PropTypes.func
   },
+  contextTypes: {
+    router: React.PropTypes.object,
+  },
   getInitialState: function() {
     var filterObj = this._getInitFilterObj();
     return ({
@@ -196,7 +199,7 @@ var MonitorTag = React.createClass({
     }
   },
   getTagList: function() {
-    TagAction.getTagList(this.state.page, this.state.filterObj);
+    TagAction.getTagList(this.context.router.params.customerId,this.state.page, this.state.filterObj);
   },
   componentDidMount: function() {
     TagStore.addAllTagListChangeListener(this._onChange);
