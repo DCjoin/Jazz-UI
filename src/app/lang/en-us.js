@@ -798,6 +798,7 @@ I18N.Setting.Labeling.NoCusomer = 'No customer';
 I18N.Setting.Labeling.ElectrovalenceUom = 'RMB/kwh';
 
 I18N.Setting.CustomizedLabeling = {};
+I18N.Setting.CustomizedLabeling.Title = 'Name';
 I18N.Setting.CustomizedLabeling.DeleteLabel = 'Delete Label';
 I18N.Setting.CustomizedLabeling.Grade = 'Level {0}';
 I18N.Setting.CustomizedLabeling.EnergyGrade = 'Grade setting';

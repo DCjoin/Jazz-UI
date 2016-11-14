@@ -144,7 +144,7 @@ var LabelDetail = React.createClass({
     var labelNameProps = {
       ref: 'labelName',
       isViewStatus: isView,
-      title: I18N.Setting.Tag.TagName,
+      title: I18N.Setting.CustomizedLabeling.Title,
       defaultValue: selectedLabel.get('Name'),
       isRequired: true,
       didChanged: value => {
