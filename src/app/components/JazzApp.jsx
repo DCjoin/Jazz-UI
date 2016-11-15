@@ -3,6 +3,7 @@
 import React from 'react';
 import Router from 'react-router';
 import {getMuiTheme} from "material-ui/styles";
+import AppTheme from '../AppTheme.jsx';
 import GlobalErrorMessageDialog from './GlobalErrorMessageDialog.jsx';
 import GlobalErrorMessageStore from '../stores/GlobalErrorMessageStore.jsx';
 import LanguageStore from '../stores/LanguageStore.jsx';
@@ -48,7 +49,7 @@ let JazzApp = React.createClass({
   },
   getChildContext() {
     return {
-      muiTheme: getMuiTheme({}),
+      muiTheme: getMuiTheme(AppTheme),
       getLessVar: this.props.getLessVar,
       currentRoute: {
           params: this.props.params,
