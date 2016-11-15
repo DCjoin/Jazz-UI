@@ -90,8 +90,8 @@ var AlarmLeftPanel = React.createClass({
   },
   getInitialState() {
     return {
-      dateType: dateType.YEAR_ALARM,
-      date:moment(new Date()).format("YYYY/MM/DD")
+      dateType: dateType.DAY_ALARM,
+      date:moment(new Date()).add(-1,'d').format("YYYY/MM/DD")
     };
   },
   shouldComponentUpdate(nextProps, nextState) {
@@ -137,10 +137,10 @@ var AlarmLeftPanel = React.createClass({
         flexFlow: 'column',
         backgroundColor: 'rgb(53, 64, 82)'
       }}>
-        <CustomDropDownMenu 
+        <CustomDropDownMenu
           height={32}
-          backgroundColor='#86CCFF' 
-          onChange={this._dateTypeChangeHandler} 
+          backgroundColor='#86CCFF'
+          onChange={this._dateTypeChangeHandler}
           value={this.state.dateType} >{menuItems}</CustomDropDownMenu>
           <div style={{
         padding: '0px auto 12px auto',
