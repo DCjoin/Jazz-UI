@@ -3118,8 +3118,8 @@ let ChartStrategyFactor = {
 
       }
     },
-    handleUnitEnergyConfigBtnItemTouchTap(analysisPanel, subMenuItem, firstMenuItem) {
-      let firstMenuItemValue = firstMenuItem.props.value;
+    handleUnitEnergyConfigBtnItemTouchTap(analysisPanel, subMenuItem, value) {
+      let firstMenuItemValue = value;
       if (firstMenuItemValue === 'background') {
         var subMenuValue = subMenuItem.props.value;
         if (subMenuValue === 'work' || subMenuValue === 'hc') {
