@@ -13,6 +13,7 @@ Regex.RealNameRule = /^[\u4e00-\u9fa5][\u4e00-\u9fa5]*$/;
 Regex.CustomerNameRule = /^[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\:\;\.\~\+\%]+( +[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\:\;\.\~\+\%]+)*$/; // 不以空格开头和结尾的字符串，允许汉字，空格，a-z、A-Z、0-9、_、(、)、-、[、]、{、}、#、&、;、,、.、~、+、%。非空。用于Customer Nme
 Regex.AddressNotNullRule = /^[\u4e00-\u9fa50-9a-zA-Z_-][\u4e00-\u9fa50-9a-zA-Z_\- ]*$/;
 Regex.TelephoneRule = /^(\d)+(-(\d)+)*$/;
+Regex.MobilePhoneRule = /^(1\d{10})?$/;
 Regex.Email = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 Regex.CommentRule = /^[\u4e00-\u9fa50-9a-zA-Z_\(\)\-\[\]\{\}\#\&\,\:\;\.\~\+\%\\\/\|]+[\u4e00-\u9fa50-9a-zA-Z_\s\(\)\-\[\]\{\}\#\&\,\:\;\.\~\+\%\\\/\|]*$/;
 Regex.CommonTextRule = /^[\u4e00-\u9fa50-9a-zA-Z_]*[\u4e00-\u9fa50-9a-zA-Z_ ]*$/;

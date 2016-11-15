@@ -232,6 +232,8 @@ var UserDetail = React.createClass({
         title: I18N.Platform.User.Telephone,
         defaultValue: Telephone || "",
         isRequired: true,
+        regex: Regex.MobilePhoneRule,
+        errorMessage: "请输入11位的手机号",
         // regex: Regex.TelephoneRule,
         // errorMessage: "允许数字和中划线，但中划线不能连续出现或做为开头和结尾",
         didChanged: value => {

@@ -213,7 +213,8 @@ var CustomerDetail = React.createClass({
     };
     var imageProps = {
       clip: false,
-      background: 'customer-background-logo',
+      background: (customer.get('Id') || customer.get('LogoId') || customer.getIn(['LogoId', 'hierarchyId'])) && 'customer-background-logo',
+      // background: 'customer-background-logo',
       imageId: customer.get('LogoId'),
       imageSource: {
         hierarchyId: customer.get('Id')
