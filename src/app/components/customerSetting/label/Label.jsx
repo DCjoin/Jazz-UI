@@ -72,8 +72,8 @@ var Label = React.createClass({
       var gradeLevel = data.value;
       for (i = 0; i < gradeLevel; i++) {
         list.push({
-          'MinValue': null,
-          'MaxValue': null,
+          'MinValue': '',
+          'MaxValue': '',
           'Name': labels[i]
         });
       }
@@ -81,8 +81,8 @@ var Label = React.createClass({
     } else if (data.path === 'LabellingType' || data.path === 'CommodityId') {
       for (i = 0; i < selectedLabel.get('LabellingItems').size; i++) {
         list.push({
-          'MinValue': null,
-          'MaxValue': null,
+          'MinValue': '',
+          'MaxValue': '',
           'Name': labels[i]
         });
       }
