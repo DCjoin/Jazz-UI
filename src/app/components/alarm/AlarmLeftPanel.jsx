@@ -49,19 +49,23 @@ var AlarmLeftPanel = React.createClass({
     if (type == dateType.DAY_ALARM) { //default yesterday
       date = dateAdd(date, -1, 'days');
       let dayStr = dateFormat(date, 'YYYYMMDD');
+      date=moment(date).format("YYYY/MM/DD");
       this.loadListByDate(dayStr, HOURSTEP);
     } else if (type == dateType.MONTH_ALARM) { //default last month
       date = dateAdd(date, -1, 'months');
       let monthStr = dateFormat(date, 'YYYYMM');
+      date=moment(date).format("YYYY/MM");
       this.loadListByDate(monthStr, DAYSTEP);
     } else {
       date = dateAdd(date, -1, 'years');
       let yearStr = dateFormat(date, 'YYYY');
+      date=moment(date).format("YYYY");
       this.loadListByDate(yearStr, MONTHSTEP);
     }
 
     this.setState({
-      dateType: type
+      dateType: type,
+      date:date
     });
   },
   loadListByDate(date, step) {
@@ -90,8 +94,8 @@ var AlarmLeftPanel = React.createClass({
   },
   getInitialState() {
     return {
-      dateType: dateType.YEAR_ALARM,
-      date:moment(new Date()).format("YYYY/MM/DD")
+      dateType: dateType.DAY_ALARM,
+      date:moment(new Date()).add(-1,'d').format("YYYY/MM/DD")
     };
   },
   shouldComponentUpdate(nextProps, nextState) {
@@ -121,7 +125,7 @@ var AlarmLeftPanel = React.createClass({
       // date.setHours(0, 0, 0, 0);
       dateSelector = ( <div className='jazz-alarm-datepicker'><ViewableDatePicker {...dateProps} ref='daySelector'/></div>);
     } else if (this.state.dateType == dateType.MONTH_ALARM) {
-      dateSelector = ( <MonthPicker onChange={this.onMonthPickerSelected} ref='monthSelector'/>);
+      dateSelector = ( <MonthPicker onChange={this.onMonthPickerSelected} ref='monthSelector' value={this.state.date}/>);
     } else {
       dateSelector = ( <div className={'jazz-alarm-left-panel-year-dropdownmenu-container'}> <YearPicker ref='yearSelector' style={{
         width: '320px',
@@ -137,10 +141,10 @@ var AlarmLeftPanel = React.createClass({
         flexFlow: 'column',
         backgroundColor: 'rgb(53, 64, 82)'
       }}>
-        <CustomDropDownMenu 
+        <CustomDropDownMenu
           height={32}
-          backgroundColor='#86CCFF' 
-          onChange={this._dateTypeChangeHandler} 
+          backgroundColor='#86CCFF'
+          onChange={this._dateTypeChangeHandler}
           value={this.state.dateType} >{menuItems}</CustomDropDownMenu>
           <div style={{
         padding: '0px auto 12px auto',

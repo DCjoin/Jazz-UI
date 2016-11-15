@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { Paper, Mixins } from 'material-ui';
 import Tree from '../../tree/Tree.jsx';
 import { treeSource } from '../../../constants/TreeSource.jsx';
+import ClickAway from '../../ClickAwayListener.jsx';
 
 var CopyDestTree = React.createClass({
   //mixins: [Mixins.ClickAwayable],
@@ -15,7 +16,7 @@ var CopyDestTree = React.createClass({
     onSelectNode: React.PropTypes.func,
     selectedNode: React.PropTypes.object,
   },
-  componentClickAway: function() {
+  onClickAway: function() {
     if (this.props.show) {
       this.props.onTreeClickAway();
     }
@@ -49,4 +50,4 @@ var CopyDestTree = React.createClass({
   }
 });
 
-module.exports = CopyDestTree;
+module.exports = ClickAway(CopyDestTree);

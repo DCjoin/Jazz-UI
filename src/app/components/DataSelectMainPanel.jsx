@@ -3,6 +3,7 @@ import React from "react";
 import ReactDom from 'react-dom';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import { IconButton, DropDownMenu, DatePicker, FlatButton, FontIcon, Menu, Checkbox, TextField, CircularProgress } from 'material-ui';
+import MenuItem from 'material-ui/MenuItem';
 import classnames from 'classnames';
 import HierarchyButton from './Hierarchy/HierarchyButton.jsx';
 import DimButton from './Dim/DimButton.jsx';
@@ -53,9 +54,9 @@ let DataSelectMainPanel = React.createClass({
       }
 
       if (this.props.widgetType == 'Energy' || this.props.linkFrom == "Alarm") {
-        this.refs.dropDownMenu.setState({
-          selectedIndex: 0
-        });
+        this.setState({
+          selectAlarmValue:1
+        })
       }
 
     }
@@ -187,48 +188,52 @@ let DataSelectMainPanel = React.createClass({
     page = targetPage;
     TagAction.loadData(customerId,this.state.tagId, this.state.optionType, page, alarmType, filters);
   },
-  _onAlarmFilter: function(e, selectedIndex, menuItem) {
-    switch (selectedIndex) {
-      case 0:this.setState({
+  _onAlarmFilter: function(e, selectedIndex, value) {
+    switch (value) {
+      case 1:this.setState({
           dropdownmenuStyle: {
             width: '77px',
             height: '46px',
             minWidth: '77px',
             float: 'right',
             paddingLeft: '0'
-          }
+          },
+          selectAlarmValue:value
         });
         break;
-      case 1:this.setState({
+      case 2:this.setState({
           dropdownmenuStyle: {
             width: '122px',
             minWidth: '122px',
             height: '46px',
             float: 'right'
-          }
+          },
+          selectAlarmValue:value
         });
         break;
-      case 2:this.setState({
+      case 3:this.setState({
           dropdownmenuStyle: {
             width: '137px',
             minWidth: '137px',
             height: '46px',
             float: 'right'
-          }
+          },
+          selectAlarmValue:value
         });
         break;
-      case 3:
+      case 4:
         this.setState({
           dropdownmenuStyle: {
             width: '92px',
             minWidth: '92px',
             height: '46px',
             float: 'right'
-          }
+          },
+          selectAlarmValue:value
         });
         break;
     }
-    alarmType = 3 - selectedIndex;
+    alarmType = 4 - value;
     if (alarmType == 3)
       alarmType = null;
     page = 1;
@@ -334,7 +339,8 @@ let DataSelectMainPanel = React.createClass({
         minWidth: '77px',
         height: '46px',
         float: 'right'
-      }
+      },
+      selectAlarmValue:1
     };
   },
   componentWillMount: function() {
@@ -464,23 +470,10 @@ let DataSelectMainPanel = React.createClass({
   },
   render: function() {
     var menuItems = [
-      {
-        payload: '1',
-        text: I18N.ALarm.Menu1
-      },
-      {
-        payload: '2',
-        text: I18N.ALarm.Menu2
-      },
-      {
-        payload: '3',
-        text: I18N.ALarm.Menu3
-      },
-      {
-        payload: '4',
-        text: I18N.ALarm.Menu4
-      },
-
+        <MenuItem value={1} primaryText={I18N.ALarm.Menu1} />,
+        <MenuItem value={2} primaryText={I18N.ALarm.Menu2} />,
+        <MenuItem value={3} primaryText={I18N.ALarm.Menu3} />,
+        <MenuItem value={4} primaryText={I18N.ALarm.Menu4} />
     ];
 
     var buttonStyle = {
@@ -548,7 +541,9 @@ let DataSelectMainPanel = React.createClass({
     }
     var hierId = (this.state.dimParentNode === null) ? null : this.state.dimParentNode.Id;
     var dropDownMenu = (this.props.widgetType == 'Energy' || this.props.linkFrom == "Alarm") ?
-      <DropDownMenu  ref="dropDownMenu"  disabled={this.state.dimParentNode === null} autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} menuItems={menuItems} onChange={this._onAlarmFilter} />
+      <DropDownMenu  ref="dropDownMenu"  menuStyle={{right:0,left:'auto',width:'140px'}} value={this.state.selectAlarmValue} disabled={this.state.dimParentNode === null} underlineStyle={{display:'none'}} autoWidth={false}  className="dropdownmenu" style={this.state.dropdownmenuStyle} onChange={this._onAlarmFilter}>
+        {menuItems}
+      </DropDownMenu>
       : <div style={{
         width: '20px'
       }}/>;

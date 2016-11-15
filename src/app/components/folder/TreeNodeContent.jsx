@@ -7,6 +7,7 @@ import classNames from 'classnames';
 let {nodeType} = TreeConstants;
 import FolderAction from '../../actions/FolderAction.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
+import ClickAway from "../../controls/ClickAwayListener.jsx";
 
 var TreeNodeContent = React.createClass({
   //mixins: [Mixins.ClickAwayable],
@@ -53,7 +54,7 @@ var TreeNodeContent = React.createClass({
       this.refs.textField.focus();
     }
   },
-  componentClickAway: function() {
+  onClickAway: function() {
     this.setState({
       isSelect: null,
     });
@@ -128,4 +129,4 @@ var TreeNodeContent = React.createClass({
   }
 });
 
-module.exports = TreeNodeContent;
+module.exports = ClickAway(TreeNodeContent);

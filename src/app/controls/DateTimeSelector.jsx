@@ -202,6 +202,7 @@ let DateTimeSelector = React.createClass({
       fontFamily: 'Microsoft YaHei'
     };
     var startDateProps = {
+      datePickerClassName:'jazz-energy-date-picker',
       dateFormatStr: 'YYYY/MM/DD',
       value: this.state.startDate && moment(this.state.startDate).format("YYYY/MM/DD"),
       isViewStatus:false,
@@ -217,6 +218,7 @@ let DateTimeSelector = React.createClass({
       timeType: 0,
     };
     var endDateProps = {
+      datePickerClassName:'jazz-energy-date-picker',
       dateFormatStr: 'YYYY/MM/DD',
       value: this.state.endDate && moment(this.state.endDate).format("YYYY/MM/DD"),
       timeType: 1,
