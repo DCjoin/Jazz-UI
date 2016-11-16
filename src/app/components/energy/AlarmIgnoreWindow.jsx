@@ -1,17 +1,27 @@
 'use strict';
 import React from "react";
-import { Checkbox, Dialog, FlatButton, RaisedButton } from 'material-ui';
+import { Checkbox, FlatButton, RaisedButton } from 'material-ui';
+import Dialog from '../../controls/NewDialog.jsx';
 
 let AlarmIgnoreWindow = React.createClass({
   propTypes: {
     _onIgnoreDialogSubmit: React.PropTypes.func,
     _onIgnoreDialogCancel: React.PropTypes.func
   },
+  getInitialState(){
+    return{
+      show:false
+    }
+  },
   dismiss() {
-    this.refs.ignoreDialog.dismiss();
+    this.setState({
+      show:false
+    })
   },
   show() {
-    this.refs.ignoreDialog.show();
+    this.setState({
+      show:true
+    })
   },
   render() {
     var _buttonActions = [
@@ -27,7 +37,7 @@ let AlarmIgnoreWindow = React.createClass({
       }}/>
     ];
 
-    var dialog = <Dialog actions={_buttonActions} modal={true} ref="ignoreDialog" contentStyle={{
+    var dialog = <Dialog actions={_buttonActions} modal={true} open={this.state.show} ref="ignoreDialog" contentStyle={{
       width: '600px'
     }}>
       <div style={{
