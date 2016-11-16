@@ -30,7 +30,6 @@ import { getCookie } from './util/Util.jsx';
 import RoutePath from './util/RoutePath.jsx';
 import { Styles } from 'material-ui';
 // let {ThemeManager} = Styles;
-import AppTheme from './AppTheme.jsx';
 import main from './less/main.less';
 import Platform from './components/platform/Platform.jsx';
 //import Test from './components/setting/Test.jsx';
