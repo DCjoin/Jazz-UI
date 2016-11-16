@@ -1,5 +1,6 @@
 import React from 'react';
-import {Dialog, FlatButton} from 'material-ui';
+import {FlatButton} from 'material-ui';
+import Dialog from '../../controls/NewDialog.jsx';
 import classSet from 'classnames';
 
 let ErrorStepDialog = React.createClass({
@@ -51,7 +52,7 @@ let ErrorStepDialog = React.createClass({
     var dialog = <Dialog contentStyle={{
       width: '400px'
     }} actions={_buttonActions} modal={true}
-    onDismiss={this._onDismiss} ref="dialogWindow" openImmediately={true}>
+    onDismiss={this._onDismiss} ref="dialogWindow" open={true}>
       <div style={{
       marginTop: '15px'
     }}>
