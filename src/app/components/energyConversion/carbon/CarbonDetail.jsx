@@ -228,9 +228,8 @@ var CarbonDetail = React.createClass({
           }
 
         };
-
       items.push(
-        <div className='jazz-carbon-factorItem'>
+        <div className='jazz-carbon-factorItem' key={factors.size  + '_' + index}>
           <DeletableItem {...deleteProps}>
             <ViewableDropDownMenu {...yearProps} />
             <div className='jazz-carbon-addItem-errorText'>{error}</div>
