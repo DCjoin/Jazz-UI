@@ -66,6 +66,14 @@ let Platform = React.createClass({
     });
   },
   _switchTab(event) {
+    switch (this.state.infoTabNo) {
+      case 1:
+        PlatformAction.cancelSave();
+        break;
+      case 2:
+        PlatformAction.cancelSaveCustomer();
+        break;
+    }
     let no = parseInt(event.target.getAttribute("data-tab-index"));
     this.setState({
       infoTabNo: no,
