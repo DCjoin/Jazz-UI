@@ -142,6 +142,7 @@ var TariffDetail = React.createClass({
       isView = this.props.formStatus === formStatus.VIEW,
       isAdd = this.props.formStatus === formStatus.ADD,
       tariffNameProps = {
+        key: 'name_' + isView,
         isViewStatus: isView || !this.props.infoTab,
         title: I18N.Setting.TOUTariff.Name,
         defaultValue: tariff.get("Name"),
@@ -302,6 +303,7 @@ var TariffDetail = React.createClass({
 
     //props
     var plainPriceProps = {
+        key: 'items_' + isView,
         isViewStatus: isView,
         title: I18N.Setting.TOUTariff.PlainPrice,
         defaultValue: plainPrice,
@@ -319,6 +321,7 @@ var TariffDetail = React.createClass({
         }
       },
       peakPriceProps = {
+        key: 'price_' + isView,
         isViewStatus: isView,
         title: I18N.Setting.TOUTariff.PeakPrice,
         defaultValue: peakPrice,
@@ -338,6 +341,7 @@ var TariffDetail = React.createClass({
         }
       },
       valleyPriceProps = {
+        key: 'valley_' + isView,
         isViewStatus: isView,
         title: I18N.Setting.TOUTariff.ValleyPrice,
         defaultValue: valleyPrice,
@@ -451,6 +455,7 @@ var TariffDetail = React.createClass({
     var peakTariffItems;
     if (this.props.tariff.get('onOff')) {
       var props = {
+        key: 'off_' + isView,
         isViewStatus: isView,
         title: I18N.Setting.TOUTariff.PulsePeakPrice,
         defaultValue: PeakTariff.get('Price'),

@@ -9,7 +9,6 @@ import CustomerAction from '../../actions/CustomerAction.jsx';
 import CustomerStore from '../../stores/CustomerStore.jsx';
 import Panel from '../../controls/MainContentPanel.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import ViewableTextFieldUtil from '../../controls/ViewableTextFieldUtil.jsx';
 import ViewableDatePicker from '../../controls/ViewableDatePicker.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import { dataStatus } from '../../constants/DataStatus.jsx';
@@ -35,7 +34,6 @@ var CustomerDetail = React.createClass({
     isFromHierarchy: React.PropTypes.bool,
     handleEnergyInfoChanged: React.PropTypes.func,
   },
-  //mixins: [React.addons.LinkedStateMixin, ViewableTextFieldUtil],
   getInitialState: function() {
     return {
       dialogStatus: false,
@@ -129,6 +127,7 @@ var CustomerDetail = React.createClass({
       title: I18N.Setting.Labeling.CustomerName,
       defaultValue: Name,
       isRequired: true,
+      key: 'name_' + isView,
       didChanged: value => {
         CustomerAction.merge({
           value,
@@ -168,6 +167,7 @@ var CustomerDetail = React.createClass({
     //props
     var customerCodeProps = {
       isViewStatus: isView,
+      key: 'code_' + isView,
       title: I18N.Setting.CustomerManagement.Label.Code,
       defaultValue: Code,
       regex: Regex.CustomerCode,
@@ -183,6 +183,7 @@ var CustomerDetail = React.createClass({
 
     var customerAddressProps = {
       isViewStatus: isView,
+      key: 'address_' + isView,
       title: I18N.Setting.CustomerManagement.Label.Address,
       defaultValue: Address,
       isRequired: true,
@@ -197,6 +198,7 @@ var CustomerDetail = React.createClass({
 
     var customerStartTimeProps = {
       isViewStatus: isView,
+      key: 'starttime_' + isView,
       title: I18N.Setting.CustomerManagement.Label.OperationStartTime,
       value: this._getDateInput(StartTime),
       isRequired: true,

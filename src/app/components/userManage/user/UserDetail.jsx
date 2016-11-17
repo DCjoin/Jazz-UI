@@ -228,6 +228,7 @@ var UserDetail = React.createClass({
         }
       },
       userTelephoneProps = {
+        key: 'telephone_' + isView,
         isViewStatus: isView,
         title: I18N.Platform.User.Telephone,
         defaultValue: Telephone || "",
@@ -244,6 +245,7 @@ var UserDetail = React.createClass({
         }
       },
       userEmailProps = {
+        key: 'email_' + isView,
         isViewStatus: isView,
         title: I18N.Platform.User.Email,
         defaultValue: Email || "",
