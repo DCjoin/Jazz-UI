@@ -3118,8 +3118,8 @@ let ChartStrategyFactor = {
 
       }
     },
-    handleUnitEnergyConfigBtnItemTouchTap(analysisPanel, subMenuItem, firstMenuItem) {
-      let firstMenuItemValue = firstMenuItem.props.value;
+    handleUnitEnergyConfigBtnItemTouchTap(analysisPanel, subMenuItem, value) {
+      let firstMenuItemValue = value;
       if (firstMenuItemValue === 'background') {
         var subMenuValue = subMenuItem.props.value;
         if (subMenuValue === 'work' || subMenuValue === 'hc') {
@@ -3177,7 +3177,7 @@ let ChartStrategyFactor = {
       return <DropDownMenu style={{
           width: '90px',
           marginRight: '10px'
-        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={analysisPanel.state.energyType} onChange={analysisPanel.state.chartStrategy.onEnergyTypeChangeFn.bind(analysisPanel, analysisPanel)}>{types}</DropDownMenu>;
+        }} labelStyle={{fontSize:'12px',lineHeight:'32px',paddingRight:'0'}} value={analysisPanel.state.energyType} onChange={(e, selectedIndex, value)=>{analysisPanel.state.chartStrategy.onEnergyTypeChangeFn(analysisPanel, e, selectedIndex, value)}}>{types}</DropDownMenu>;
     }
   },
   getInitParamFnStrategy: {
@@ -5289,7 +5289,7 @@ let ChartStrategyFactor = {
     let iconMenuProps = {
       iconButtonElement: IconButtonElement,
       openDirection: "bottom-right",
-      onItemTouchTap: analysisPanel._onSearchBtnItemTouchTap
+      onChange: analysisPanel._onSearchBtnItemTouchTap
     };
 
     let typeItems = types.map((item) => {

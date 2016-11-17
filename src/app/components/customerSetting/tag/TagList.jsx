@@ -105,7 +105,7 @@ let TagList = React.createClass({
       open={true}
       title={dialogTitle}
       actions={dialogActions}
-      onClose={this._handleImportDialogDismiss}
+      onRequestClose={this._handleImportDialogDismiss}
       modal={this.state.isImporting || this.state.importSuccess}>
         {dialogContent}
       </Dialog>);
