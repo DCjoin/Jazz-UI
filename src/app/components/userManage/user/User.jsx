@@ -2,7 +2,7 @@
 
 import React from "react";
 import classnames from "classnames";
-import { CircularProgress } from 'material-ui';
+import CircularProgress from 'material-ui/CircularProgress';
 import { isObject, isFunction } from "lodash/lang";
 import UserStore from '../../../stores/UserStore.jsx';
 import UserAction from '../../../actions/UserAction.jsx';
@@ -10,7 +10,7 @@ import { formStatus } from '../../../constants/FormStatus.jsx';
 import UserList from './UserList.jsx';
 import UserFilter from './UserFilter.jsx';
 import UserDetail from './UserDetail.jsx';
-import Dialog from '../../../controls/NewDialog.jsx';
+import NewDialog from '../../../controls/NewDialog.jsx';
 import FlatButton from '../../../controls/FlatButton.jsx';
 
 var User = React.createClass({
@@ -310,15 +310,13 @@ var User = React.createClass({
         }}>
         {userList}
           { filterPanel }
-          { that.state.resetPasswordDone ?
-          <Dialog openImmediately={true} modal={true} actions={[
-            <FlatButton label={I18N.Mail.Send.Ok} onTouchTap={() => {
-              that.setState({
-                resetPasswordDone: false
-              });
-            }} />
-          ]}>{I18N.Setting.User.SendEmailSuccess}</Dialog>
-          : null }
+          <NewDialog open={that.state.resetPasswordDone} modal={true} actions={[
+                      <FlatButton label={I18N.Mail.Send.Ok} onTouchTap={() => {
+                        that.setState({
+                          resetPasswordDone: false
+                        });
+                      }} />
+                    ]}>{I18N.Setting.User.SendEmailSuccess}</NewDialog>
         <UserDetail {...detailProps} />
         {that._renderErrorDialog()}
         </div>
