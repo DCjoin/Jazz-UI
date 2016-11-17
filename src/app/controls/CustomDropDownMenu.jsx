@@ -11,11 +11,13 @@ export default class CustomDropDownMenu extends Component {
     height: React.PropTypes.stringOrNumber,
     backgroundColor: React.PropTypes.string,
     color: React.PropTypes.string,
+    selfTarget: React.PropTypes.bool,
   };
   static defaultProps = {
     height: 40,
     backgroundColor: '#354052',
-    color: '#fff'
+    color: '#fff',
+    selfTarget: false
   };
   constructor(props) {
     super(props);
@@ -27,8 +29,8 @@ export default class CustomDropDownMenu extends Component {
     event.preventDefault();
     this.setState({
       open: true,
-      anchorEl: event.currentTarget.parentNode,
-      width: event.currentTarget.parentNode.clientWidth
+      anchorEl: this.props.selfTarget ? event.currentTarget : event.currentTarget.parentNode,
+      width: this.props.selfTarget ? event.currentTarget.clientWidth : event.currentTarget.parentNode.clientWidth
     });
   };
   handleItemTouchTap = (event, child, index) => {

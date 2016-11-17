@@ -139,6 +139,7 @@ var AlarmLeftPanel = React.createClass({
       }}>
         <CustomDropDownMenu 
           height={32}
+          selfTarget={true}
           backgroundColor='#86CCFF' 
           onChange={this._dateTypeChangeHandler} 
           value={this.state.dateType} >{menuItems}</CustomDropDownMenu>
