@@ -1391,9 +1391,7 @@ let ChartStrategyFactor = {
           let start = timeRange.StartTime;
           let end = timeRange.EndTime;
           analysisPanel.refs.dateTimeSelector.setDateField(start, end);
-          analysisPanel.refs.relativeDate.setState({
-            selectedIndex: 0
-          });
+          analysisPanel._setRelativeDateByValue('Customerize');
         }
       };
       //init timeRange
