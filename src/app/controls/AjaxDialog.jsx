@@ -4,7 +4,7 @@ import React from 'react';
 import mui from 'material-ui';
 import classSet from 'classnames';
 import keyMirror from 'keymirror';
-import Dialog from "../controls/PopupDialog.jsx";
+import NewDialog from "../controls/NewDialog.jsx";
 import FlatButton from "../controls/FlatButton.jsx";
 
 var viewState = keyMirror({
@@ -23,12 +23,13 @@ var AjaxDialog = React.createClass({
   // },
 
   _hide: function(argument) {
-    setTimeout((() => {
-      this.refs.dialog.dismiss();
-    }).bind(this), 250);
+    // setTimeout((() => {
+    //   this.refs.dialog.dismiss();
+    // }).bind(this), 250);
+    this.setState(this.getInitialState());
   },
 
-  _error: function(title, msg, buttonActions, modal) {
+  _error: function(title, msg, buttonActions, modal = false) {
     // var standardActions = [
     //   <FlatButton label={'buttonLabel'} primary />
     // ];
@@ -39,7 +40,7 @@ var AjaxDialog = React.createClass({
       modal,
       buttonActions
     }, function(argument) {
-      this.refs.dialog.show();
+      // this.refs.dialog.show();
     });
   },
 
@@ -73,7 +74,7 @@ var AjaxDialog = React.createClass({
     //     );
     // }
     // else
-    if (this.state.viewState == viewState.ERROR) {
+    // if (this.state.viewState == viewState.ERROR) {
       var errorMsg = this.state.errorMessage || "服务器错误！";
       var standardActions = [];
       if (this.state.buttonActions && this.state.buttonActions.length > 0) {
@@ -84,11 +85,11 @@ var AjaxDialog = React.createClass({
         }
       }
       dialog = (
-        <Dialog title={this.state.errorTitle} ref="dialog" modal={this.state.modal} actions={standardActions}>
+        <NewDialog open={this.state.viewState == viewState.ERROR} title={this.state.errorTitle} modal={this.state.modal} actions={standardActions} onRequestClose={this._hide}>
                     {errorMsg}
-                </Dialog>
+                </NewDialog>
       );
-    }
+    // }
 
     return (
       <div>{dialog}</div>

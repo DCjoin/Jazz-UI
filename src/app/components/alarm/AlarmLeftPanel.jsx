@@ -141,10 +141,11 @@ var AlarmLeftPanel = React.createClass({
         flexFlow: 'column',
         backgroundColor: 'rgb(53, 64, 82)'
       }}>
-        <CustomDropDownMenu
+        <CustomDropDownMenu 
           height={32}
-          backgroundColor='#86CCFF'
-          onChange={this._dateTypeChangeHandler}
+          selfTarget={true}
+          backgroundColor='#86CCFF' 
+          onChange={this._dateTypeChangeHandler} 
           value={this.state.dateType} >{menuItems}</CustomDropDownMenu>
           <div style={{
         padding: '0px auto 12px auto',

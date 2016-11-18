@@ -228,6 +228,7 @@ var UserDetail = React.createClass({
         }
       },
       userTelephoneProps = {
+        key: 'telephone_' + isView,
         isViewStatus: isView,
         title: I18N.Platform.User.Telephone,
         defaultValue: Telephone || "",
@@ -244,6 +245,7 @@ var UserDetail = React.createClass({
         }
       },
       userEmailProps = {
+        key: 'email_' + isView,
         isViewStatus: isView,
         title: I18N.Platform.User.Email,
         defaultValue: Email || "",
@@ -595,6 +597,7 @@ var UserDetail = React.createClass({
     if (that.props.infoTab) {
       sendPasswordButton = (
         <FlatButton secondary={true} className="pop-user-detail-content-footer-send-email-button" label={I18N.Platform.ServiceProvider.SendEmail} style={{
+          height: 56,
           borderRight: '1px solid #ececec',
           color: '#abafae'
         }} onClick={that.props._handleResetPassword}/>
