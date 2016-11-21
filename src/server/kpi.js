@@ -16,19 +16,29 @@ var otherKPI = {
 
 };
 
-var nonKPI = null;
+var currentQuotaperiod = {
+    Id: 123,
+    Year: 2015,
+    Month: 1, 
+    Day: 12,
+};
+
+var nonQuotaperiod = null;
 
 exports.register = function(server, options, next) {
     server.route([{
         method: 'get',
-        path: '/API/kpi/KpiActuality/manage/{customerId}',
+        path: '/API/quota/getquotaperiod/{customerid}',
         handler: function(request, reply) {
-            if(request.params.customerId === '100001') {
-
+            if(request.params.customerid === '100001') {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": currentQuotaperiod
+                }).type("application/json");
             }
-            reply({
+            return reply({
                 "error": { "Code": "0", "Messages": null },
-                "Result": nonKPI
+                "Result": nonQuotaperiod
             }).type("application/json");
         }
     }]);

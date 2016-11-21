@@ -1594,7 +1594,11 @@ I18N.Paging.Button = {};
 I18N.Paging.Button.PrePage = '上一页';
 I18N.Paging.Button.NextPage = '下一页';
 
-
+I18N.Kpi = {
+  Error:{
+    NonQuotaperiod: '未配置指标现状，请联系您的咨询顾问'
+  }
+};
 
 I18N.Map = {};
 I18N.Map.Date = {};

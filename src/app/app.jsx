@@ -62,8 +62,6 @@ import Hierarchy from './components/hierarchySetting/Hierarchy.jsx';
 import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
-//for test
-import KPI from './components/KPI/KPI.jsx';
 let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Router;
 
 // window._tempUserInfo = getCookie('UserInfo');
