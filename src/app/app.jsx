@@ -62,7 +62,8 @@ import Hierarchy from './components/hierarchySetting/Hierarchy.jsx';
 import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.jsx';
 // var theme = new ThemeManager();
 import './less/main.less';
-
+//for test
+import KPI from './components/KPI/KPI.jsx';
 let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Router;
 
 // window._tempUserInfo = getCookie('UserInfo');
@@ -205,7 +206,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         if( !isLogin(window) ) {
           replaceState(RoutePath.login(router.params));
         } else {
-          if(MainApp.prepareShow()) {            
+          if(MainApp.prepareShow()) {
             let defaultReplace = MainApp.needDefaultReplace(router);
             if(defaultReplace) {
               replaceState(defaultReplace);
@@ -246,6 +247,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'setting',
         component: Setting
+        //component: KPI
       }, {
         path: 'dailyReport',
         component: Report

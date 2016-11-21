@@ -1,0 +1,56 @@
+.jazz-kpi-tag{
+  display: flex;
+  flex-direction: row;
+  &-dimension{
+    width:220px;
+    height:360px;
+    border:1px solid #e4e7e9;
+    overflow-y:auto
+  }
+  &-tags{
+    display: flex;
+    flex-direction: column;
+    width: 560px;
+    height:360px;
+    margin-left: 20px;
+    border:1px solid #e4e7e9;
+    &-header{
+      background-color: #f2f2f2;
+      height: 40px;
+      width: 100%;
+      border-bottom: 1px solid #e4e7e9;
+      td{
+        padding:0 0 0 15px;
+      }
+    }
+    &-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    tr{
+      height:40px;
+      border-bottom: 1px solid #e4e7e9;
+      &.selected{
+        background-color: #f2f2f2
+      }
+      td{
+        padding:0 0 0 15px;
+      }
+    }
+    }
+    .column1{
+      box-sizing:border-box;
+      width: 420px;
+      .hiddenEllipsis();
+    }
+    .column2{
+      // box-sizing:border-box;
+      // padding: 0 0 0 15px;
+      width: 70px;
+    }
+    .column3{
+      // box-sizing:border-box;
+      // padding: 0 0 0 15px;
+      width: 70px;
+    }
+  }
+}

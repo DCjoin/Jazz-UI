@@ -1,7 +1,7 @@
 var Hapi = require("hapi");
 var fs = require("fs");
 var path=require("path");
-
+var util = require('./util.js');
 // Api Mock need
 var http = require('http');
 
@@ -67,7 +67,8 @@ server.register(
 		{register: require("./kpi.js")},
 		{register: require("./orgnization.js")},
 		{register: require("./file.js")},
-		{register: require("./rank.js")}
+		{register: require("./rank.js")},
+		{register: require("./indicator.js")},
 	],function () {
     server.start(function() {
         console.log('Server started at: ' + server.info.uri);
