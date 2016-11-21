@@ -35,7 +35,6 @@ const KPIStore = assign({}, PrototypeStore, {
 KPIStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_QUOTAPERIOD:
-      console.log(action.data);
       KPIStore.setQuotaperiod(action.data);
       KPIStore.emitChange();
       break;

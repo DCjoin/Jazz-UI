@@ -1927,4 +1927,5 @@ I18N.Setting.KPI = {};
 I18N.Setting.KPI.Tag = {};
 I18N.Setting.KPI.Tag.Title = '选择添加指标的数据点';
 I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对应数据点';
+I18N.Setting.KPI.SelectBuilding = '选择客户';
 module.exports = I18N;

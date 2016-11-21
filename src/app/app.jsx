@@ -235,7 +235,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       component: MainApp,
       childRoutes: [{
         path: 'kpi',
-        component: require('./components/KPI')
+        component: KPI
       }, {
         path: 'map',
         component: MapPanel
@@ -245,7 +245,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'setting',
         //component: Setting
-        component: KPI
+        component: require('./components/KPI/KPI.jsx').default
       }, {
         path: 'dailyReport',
         component: Report
