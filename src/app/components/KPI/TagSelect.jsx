@@ -47,12 +47,14 @@ export default class TagSelect extends Component {
 		TagSelectAction.getTags(this.props.hierarchyId,id,this.context.router.params.customerId)
 	}
 
-	_onSave(){}
+	_onSave(){
+		this.props.onSave(this.state.selectedTag);
+	}
 
 	_onSelectDimension(node){
 		this.setState({
 			selectedDimension:node,
-			tags:null,
+			tags:[],
 			selectedTag:null
 		},()=>{
 			this._getTags(node.get('Id'))
@@ -102,11 +104,11 @@ export default class TagSelect extends Component {
 					this.state.tags.map(tag=>{
 						return(
 							<tr className={classNames({
-		        		'selected': tag.get('Id')===this.state.selectedTag.get('Id'),
-		      		})} onClick={this._onSelectTag(tag)}>
+		        		'selected': this.state.selectedTag && tag.get('Id')===this.state.selectedTag.get('Id'),
+		      		})} onClick={this._onSelectTag.bind(this,tag)}>
 								<td className="column1">{tag.get('Name')}</td>
 								<td className="column2">{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</td>
-								<td className="column3">{CommonFuns.getCommodityById(tag.get('UomId')).Code}</td>
+								<td className="column3">{CommonFuns.getUomById(tag.get('UomId')).Code}</td>
 							</tr>
 						)
 					})
@@ -139,7 +141,7 @@ export default class TagSelect extends Component {
 			<FlatButton
 			label={I18N.Common.Button.Save}
 			onTouchTap={this._onSave}
-			disabled={this.state.selectedTagId!==null}
+			disabled={this.state.selectedTag===null}
 			/>,
 			<FlatButton
 			label={I18N.Common.Button.Cancel2}

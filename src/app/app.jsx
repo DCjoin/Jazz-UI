@@ -247,8 +247,8 @@ ReactDom.render(<Router history={hashHistory} routes={{
         component: Alarm
       }, {
         path: 'setting',
-        component: Setting
-        //component: KPI
+        //component: Setting
+        component: KPI
       }, {
         path: 'dailyReport',
         component: Report
