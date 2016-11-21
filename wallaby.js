@@ -1,60 +1,68 @@
-// Wallaby.js configuration
+'use strict';
 
-var wallabyWebpack = require('wallaby-webpack');
-var webpack = require('webpack');
-var webpackPostprocessor = wallabyWebpack({
-  // webpack options
+const path = require('path');
+const webpack = require('webpack');
+
+const webpackPostprocessor = require('wallaby-webpack')({
 
   module: {
     loaders: [
-        {test: /\.(less|css)$/, loader: 'null'}
+        { test: /\.js(x)?$/, loader: 'babel-loader', exclude: /node_modules/ },
+        { test: /\.(less|css|json)$/, loader: 'null'}
     ]
   },
 
   plugins: [
-    new webpack.NormalModuleReplacementPlugin(/\.(gif|png|less|css)$/, 'node-noop')
+    new webpack.NormalModuleReplacementPlugin(/\.(gif|png|less|css)$/, () => {
+        return {}
+    }),
+    new webpack.ProvidePlugin({
+        I18N: path.join(__dirname, 'src/app/lang/zh-cn.js')
+    }),
   ],
-
   externals: {
-    // Use external version of React instead of rebuilding it
-    "react": "React",
-    "immutable":"Immutable",
+    'react/addons': true,
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': true
   },
+
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    alias:{
+      stores: path.join(__dirname, 'src/app/stores'),
+      moment:'moment/min/moment.min.js',
+      numeral:'numeral/min/numeral.min.js',
+      config: path.join(__dirname, 'src/app/config/prod.jsx')
+    }
   }
 });
 
 module.exports = function (wallaby) {
+
   return {
-    // set `load: false` to all source files and tests processed by webpack
-    // (except external files),
-    // as they should not be loaded in browser,
-    // their wrapped versions will be loaded instead
     files: [
       {pattern: 'node_modules/react/dist/react-with-addons.js', instrument: false},
-      {pattern: 'node_modules/immutable/dist/immutable.js', instrument: false},
-      {pattern: 'node_modules/chai/chai.js', instrument: false},
-      {pattern: 'src/app/**/*.js*', load: false},
-      {pattern: 'tests/**/*.js*', ignore: true},
-      {pattern: 'src/app/**/*-test.js*', ignore: true},
+      { pattern: 'src/app/**/*.jsx', load: false, instrument: true },
+      { pattern: 'src/app/less/main.less', load: false, instrument: true },
+      '!src/app/util/html2canvas.jsx',
+      '!src/app/**/*-test.js*',
     ],
 
     tests: [
-      {pattern: 'src/app/**/*-test.js*', load: false}
+      {pattern: 'src/app/**/*-test.js*', load: false, instrument: false},
     ],
-
-    postprocessor: webpackPostprocessor,
-
-    testFramework: 'mocha',
 
     compilers: {
       '**/*.js*': wallaby.compilers.babel(),
     },
+    
+    postprocessor: webpackPostprocessor,
 
     setup: function () {
-      // required to trigger test loading
       window.__moduleBundler.loadTests();
-    }
+    },
+    
+    testFramework: 'mocha',
+
+    debug: true,
   };
 };
