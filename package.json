@@ -4,7 +4,9 @@
   "description": "Energymost Project",
   "scripts": {
     "lint": "eslint --ext jsx src/app",
-    "test": "karma start",
+    "test:coverage": "karma start",
+    "test:s": "webpack --config ./conf/webpack-test-single.config.js",
+    "test:t": "mocha ./dist/bundle.js -R mocha-teamcity-reporter",
     "dev": "webpack-dev-server --config webpack-hot-dev-server.config.js --hot --progress --colors --port 3000 --inline",
     "dev-all": "concurrently --kill-others \"npm run dev\" \"npm run start\"",
     "build": "webpack --config webpack-production.config.js --progress --profile --colors > ret.log",
@@ -31,10 +33,10 @@
     ]
   },
   "devDependencies": {
-    "babel-polyfill":"6.0.2",
     "babel-core": "6.4.5",
     "babel-loader": "6.2.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-polyfill": "6.0.2",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
@@ -47,6 +49,7 @@
     "file-loader": "0.8.4",
     "hapi": "8.2.0",
     "html-loader": "0.3.0",
+    "isparta-loader": "^2.0.0",
     "karma": "0.13.19",
     "karma-chrome-launcher": "0.2.2",
     "karma-cli": "0.1.2",
