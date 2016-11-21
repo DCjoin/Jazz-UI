@@ -6,6 +6,7 @@ import TagSelectStore from '../../stores/KPI/TagSelectStore.jsx';
 import Dialog from '../../controls/NewDialog.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import Tree from '../../controls/tree/Tree.jsx';
+import CommonFuns from '../../util/Util.jsx';
 
 export default class TagSelect extends Component {
 
@@ -18,13 +19,14 @@ export default class TagSelect extends Component {
 
 	static contextTypes = {
 		router: React.PropTypes.object,
-		currentRoute: React.PropTypes.object,
 	};
 
 	constructor(props) {
 		super(props);
 		this._onChange = this._onChange.bind(this);
 		this._onSelectDimension = this._onSelectDimension.bind(this);
+		this._onSelectTag = this._onSelectTag.bind(this);
+
 	}
 
   state = {
@@ -36,8 +38,13 @@ export default class TagSelect extends Component {
 
 	_onChange(){
 		this.setState({
-			dimensions:TagSelectStore.getDimensions()
+			dimensions:TagSelectStore.getDimensions(),
+			tags:TagSelectStore.getTags()
 		})
+	}
+
+	_getTags(id){
+		TagSelectAction.getTags(this.props.hierarchyId,id,this.context.router.params.customerId)
 	}
 
 	_onSave(){}
@@ -48,8 +55,14 @@ export default class TagSelect extends Component {
 			tags:null,
 			selectedTag:null
 		},()=>{
+			this._getTags(node.get('Id'))
+		})
+		}
 
-	})
+	_onSelectTag(tag){
+		this.setState({
+			selectedTag:tag
+		})
 	}
 
 	_renderDimensions(){
@@ -66,6 +79,45 @@ export default class TagSelect extends Component {
 		return(
 			<div className='jazz-kpi-tag-dimension'>
 				<Tree {...treeProps}/>
+			</div>
+		)
+	}
+
+	_renderTags(){
+		var header=(
+			<table className="jazz-kpi-tag-tags-header">
+				<tbody>
+					<tr>
+						<td className="column1">{I18N.Common.Glossary.Name}</td>
+						<td className="column2">{I18N.Common.Glossary.Commodity}</td>
+						<td className="column3">{I18N.Common.Glossary.UOM}</td>
+					</tr>
+				</tbody>
+			</table>
+		);
+		var content=(this.state.tags===null)?<div className="flex-center">{I18N.Setting.KPI.Tag.NoTags}</div>
+	: <table className='jazz-kpi-tag-tags-body'>
+			<tbody>
+				{
+					this.state.tags.map(tag=>{
+						return(
+							<tr className={classNames({
+		        		'selected': tag.get('Id')===this.state.selectedTag.get('Id'),
+		      		})} onClick={this._onSelectTag(tag)}>
+								<td className="column1">{tag.get('Name')}</td>
+								<td className="column2">{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</td>
+								<td className="column3">{CommonFuns.getCommodityById(tag.get('UomId')).Code}</td>
+							</tr>
+						)
+					})
+				}
+			</tbody>
+		</table>
+
+		return(
+			<div className='jazz-kpi-tag-tags'>
+				{header}
+				{content}
 			</div>
 		)
 	}
@@ -100,15 +152,16 @@ export default class TagSelect extends Component {
 		        actions: actions,
 		        modal: true,
 		        open: true,
-		        // onDismiss: ()=>{
-		        //   this._dismiss();
-		        //   this.props.onDismiss()},
-		        // titleStyle: titleStyle
+						wrapperStyle:{
+							width:'852px',
+							maxWidth:'852px'
+						}
 		      };
 		return(
 			<Dialog {...dialogProps}>
 				<div className='jazz-kpi-tag'>
 					{this.state.dimensions && this._renderDimensions()}
+					{this.state.dimensions && this._renderTags()}
 				</div>
 			</Dialog>
 		)

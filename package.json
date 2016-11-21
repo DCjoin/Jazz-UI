@@ -6,6 +6,7 @@
     "lint": "eslint --ext jsx src/app",
     "test": "karma start",
     "dev": "webpack-dev-server --config webpack-hot-dev-server.config.js --hot --progress --colors --port 3000 --inline",
+    "dev-all": "concurrently --kill-others \"npm run dev\" \"npm run start\"",
     "build": "webpack --config webpack-production.config.js --progress --profile --colors > ret.log",
     "start": "supervisor -w ./src/server/ ./src/server/server.js",
     "build-test": "webpack --config webpack-test.config.js --progress --profile --colors > ret-test.log"
@@ -38,6 +39,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "chai": "3.4.1",
+    "concurrently": "^2.0.0",
     "css-loader": "0.14.4",
     "eslint": "1.10.3",
     "eslint-plugin-react": "3.16.1",

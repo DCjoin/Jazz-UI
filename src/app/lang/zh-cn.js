@@ -1917,4 +1917,9 @@ I18N.Setting.Cost.RealPower = '有功电量';
 I18N.Setting.Cost.PaddingCost = '月补充成本';
 I18N.Setting.Cost.OtherCommodities = '其他成本属性';
 I18N.Setting.Cost.CostCommodity = '成本属性';
+
+I18N.Setting.KPI = {};
+I18N.Setting.KPI.Tag = {};
+I18N.Setting.KPI.Tag.Title = '选择添加指标的数据点';
+I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对应数据点';
 module.exports = I18N;
