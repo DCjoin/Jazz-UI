@@ -49,6 +49,8 @@ module.exports = function(config) {
       resolve: {
         alias: {
             stores: path.join(__dirname, 'src/app/stores'),
+            dispatcher: path.join(__dirname, 'src/app/dispatcher'),
+            constants: path.join(__dirname, 'src/app/constants'),
             config: path.join(__dirname, 'src/app/config/test.jsx')
         }
       },
