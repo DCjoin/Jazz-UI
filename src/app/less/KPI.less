@@ -24,11 +24,17 @@
       }
     }
     &-body {
+      flex:1;
+      display: flex;
     overflow-y: auto;
     overflow-x: hidden;
     tr{
       height:40px;
       border-bottom: 1px solid #e4e7e9;
+      &:hover{
+        background-color: #eaebec;
+        cursor: pointer;
+      }
       &.selected{
         background-color: #f2f2f2
       }
@@ -40,16 +46,14 @@
     .column1{
       box-sizing:border-box;
       width: 420px;
+      max-width: 420px;
       .hiddenEllipsis();
+      display: table-cell;
     }
     .column2{
-      // box-sizing:border-box;
-      // padding: 0 0 0 15px;
       width: 70px;
     }
     .column3{
-      // box-sizing:border-box;
-      // padding: 0 0 0 15px;
       width: 70px;
     }
   }
