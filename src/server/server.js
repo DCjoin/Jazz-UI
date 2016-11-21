@@ -61,27 +61,29 @@ server.route({
 module.exports = server;
 
 server.register(
-	// {
-	// 	options: {
-  //       cookieOptions: {
-  //           clearInvalid: true,
-  //           isSecure: false
-  //       }
-  //   }
-	// },
-	[{
-    register: require("./orgnization.js")
-  },
-	{
-	  register: require("./file.js")
-	},
-	{
-		register: require("./rank.js")
-	}
+	[
+		{register: require('h2o2')},
+		{register: require("./user.js")},
+		{register: require("./kpi.js")},
+		{register: require("./orgnization.js")},
+		{register: require("./file.js")},
+		{register: require("./rank.js")}
 	],function () {
-    //Start the server
     server.start(function() {
-        //Log to the console the host and port info
         console.log('Server started at: ' + server.info.uri);
     });
+});
+
+server.route({
+  method: '*',
+  path: '/API/{path*}',
+  handler: {
+    proxy: {
+    	passThrough: true,
+        uri: 'http://sp1.test28.energymost.com/webapihost/{path}',
+        onResponse: function (err, res, request, reply, settings, ttl) {
+            return reply(res);
+        }
+    }
+  }
 });

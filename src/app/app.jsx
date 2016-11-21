@@ -20,6 +20,7 @@ import resetPSWApp from './components/resetPSWApp.jsx';
 import demoLoginApp from './components/DemoLogin.jsx';
 import initChangePSWApp from './components/initChangePSW.jsx';
 import contactusApp from './components/ContactUS.jsx';
+import KPI from './components/KPI';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
@@ -163,7 +164,6 @@ const SUPPORT_LANGUAGES = {
   'en-us': true,
 };
 function loadLanguage({location, params, routes}, replace, callback) {
-  console.log('loadLanguage');
   let lang = params.lang;
   if( !lang || !SUPPORT_LANGUAGES[lang] ) {
     if( location.query.langNum === '0' ) {
@@ -177,7 +177,6 @@ function loadLanguage({location, params, routes}, replace, callback) {
   require(['./lang/' + lang + '.js'], function(i18n) {
     window.I18N = i18n;
     if( params.lang !== lang ) {
-      console.log('replace');
       replace(RoutePath.base({lang}));
     }
     callback();
@@ -188,14 +187,12 @@ function isLogin(global) {
 }
 
 function checkAuth({location, params, routes}, replaceState) {
-  console.log('checkAuth');
   if( !isLogin(window) && routes.reduce((prev, curr) => {return prev||curr._auth;}, false)) {
     replaceState(RoutePath.login(params) + '?' + querystring.stringify({
       next: location.pathname
     }) );
   }
 }
-
 ReactDom.render(<Router history={hashHistory} routes={{
   path: '/',
   onEnter: loadLanguage,
@@ -205,7 +202,6 @@ ReactDom.render(<Router history={hashHistory} routes={{
     onEnter: checkAuth,
     indexRoute: {
       onEnter: (router, replaceState) => {
-        console.log('onEnter');
         if( !isLogin(window) ) {
           replaceState(RoutePath.login(router.params));
         } else {
@@ -239,6 +235,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
       path: '(:customerId)',
       component: MainApp,
       childRoutes: [{
+        path: 'kpi',
+        component: require('./components/KPI')
+      }, {
         path: 'map',
         component: MapPanel
       }, {
@@ -290,9 +289,6 @@ ReactDom.render(<Router history={hashHistory} routes={{
       path: 'service/:cusnum',
       component: ServiceApp,
       indexRoute: {
-        onEnter: ({params}, replaceState) => {
-          console.log(1111);
-        },
         component: MainApp,
       },
       _auth: true,

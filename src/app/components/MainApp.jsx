@@ -66,26 +66,6 @@ let MainApp = React.createClass({
   _onAllCommoditiesChange() {
     window.allCommodities = AllCommodityStore.getAllCommodities();
   },
-/*  _dismissDialog() {
-    LoginActionCreator.logout();
-    // var _redirectFunc = this.context.router.replaceWith;
-    // _redirectFunc('login', {
-    //   lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
-    // });
-    this.props.router.replace( RoutePath.login( {
-      lang: ((window.currentLanguage === 0) ? 'zh-cn' : 'en-us')
-    } ) );
-  },
-  _renderDialog() {
-    if (this.state.viewState == viewState.NO_SELECT_CUSTOMERS) {
-      return (
-        <MessageDialog onCancel={this._dismissDialog}/>
-        );
-    } else {
-      return null;
-    }
-  },
-*/
 
   _dataReady: function() {
     if( MainApp.prepareShow() ) {

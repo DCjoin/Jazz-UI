@@ -72,7 +72,7 @@ var SelectCustomer = React.createClass({
       CommodityStore.resetHierInfo();
       HierarchyAction.resetAll();
 
-      this.context.router.replace(RoutePath[this._getMenuItems()[0].name](
+      this.context.router.replace(this._getMenuItems()[0].getPath(
         assign({}, this.context.currentRoute.params, {
           customerId: CurrentUserCustomerStore.getAll()[selectedIndex].Id
         })

@@ -16,7 +16,12 @@ module.exports = function(options) {
     // { test: /some-reg-exp$/, loader: "any-loader" }
   ];
   var alias = {
-    config: path.join(__dirname, "src/app/config/" + options.env + ".jsx")
+    config: path.join(__dirname, "src/app/config/" + options.env + ".jsx"),
+    actions: path.join(__dirname, "src/app/actions/"),
+    stores: path.join(__dirname, "src/app/stores/"),
+    controls: path.join(__dirname, "src/app/controls/"),
+    util: path.join(__dirname, "src/app/util/"),
+    constants: path.join(__dirname, "src/app/constants/"),
   };
   var aliasLoader = {
 
