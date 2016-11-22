@@ -62,6 +62,7 @@ I18N.MainMenu.HierarchyLog = '配置导入日志';
 I18N.MainMenu.CustomSetting = '自定义配置';
 I18N.MainMenu.HierarchySetting = '层级配置';
 I18N.MainMenu.CustomizedLabeling = '能效标识';
+I18N.MainMenu.KPICycle = '指标计算周期';
 
 I18N.MainMenu.Calendar = '日历配置';
 I18N.MainMenu.WorkdaySetting = '工休日';
@@ -1725,6 +1726,9 @@ I18N.Platform.ServiceProvider.CalcStatus = '参与能效标识大数据计算';
 
 
 I18N.Privilege = {};
+I18N.Privilege.None = '无数据';
+I18N.Privilege.Readonly = '仅查看';
+I18N.Privilege.Full = '完整权限';
 I18N.Privilege.Common = {};
 I18N.Privilege.Common.Common = '公共权限';
 I18N.Privilege.Common.DashboardView = '仪表盘与小组件查看';

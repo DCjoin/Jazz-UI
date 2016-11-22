@@ -9,14 +9,12 @@ import LinkButton from '../controls/LinkButton.jsx';
 import Regex from '../constants/Regex.jsx';
 import CusFlatButton from '../controls/FlatButton.jsx';
 import { FlatButton } from 'material-ui';
-import Dialog from '../controls/PopupDialog.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 import ViewableTextField from '../controls/ViewableTextField.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
 
 var DemoLogin = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.func
-  },
   getInitialState() {
     return {
       showApplyDlg: false,
@@ -69,18 +67,18 @@ var DemoLogin = React.createClass({
       return (
         <Snackbar
         message={"产品试用链接已发送到 " + demoEmail}
-        openOnMount={true}
-        onDismiss={this._dismissDemoSnackbar}/>
+        open={true}
+        onRequestClose={this._dismissDemoSnackbar}/>
         );
     }
     return null;
   },
   _goMain() {
     CurrentUserAction.getInitData(window.currentUserId);
-    this.context.router.transitionTo('main', this.props.params);
+    this.props.router.push(RoutePath.main(this.props.router.params));
   },
   _goLogin(demoEmail) {
-    this.context.router.transitionTo('login', this.props.params);
+    this.props.router.push(RoutePath.login(this.props.router.params));
   },
 
   componentDidMount() {
@@ -182,7 +180,7 @@ var DemoApplyDialog = React.createClass({
         <CusFlatButton {...goonProps} />
       ];
       return (
-        <Dialog title={I18N.Login.TrialUseTitle} actions={actions} modal={true} openImmediately={true}  contentStyle={{
+        <Dialog title={I18N.Login.TrialUseTitle} actions={actions} modal={true} open={true}  contentStyle={{
           width: '530px'
         }}>
           <div>{I18N.Login.TrialUseSussTip1}<b>{this.state.email}</b><br></br>{I18N.Login.TrialUseSussTip2}</div>
@@ -194,7 +192,7 @@ var DemoApplyDialog = React.createClass({
         <CusFlatButton {...cancelProps} />
       ];
       return (
-        <Dialog title={I18N.Login.TrialUse} openImmediately={true} modal={true} actions={actions}>
+        <Dialog title={I18N.Login.TrialUse} open={true} modal={true} actions={actions}>
   				<div>{I18N.Login.TrialUseTips}</div>
   				<ViewableTextField {...emailProps} />
   			</Dialog>

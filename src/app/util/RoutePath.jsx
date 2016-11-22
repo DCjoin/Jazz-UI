@@ -24,6 +24,7 @@ export default {
 		hierNode:p => `/${p.lang}/${p.customerId}/hierNode`,
 		hierLog:p => `/${p.lang}/${p.customerId}/hierLog`,
 		customerLabeling:p => `/${p.lang}/${p.customerId}/customerLabeling`,
+		KPICycle:p => `/${p.lang}/${p.customerId}/KPICycle`,
 	},
 	service: {
 		workday: p => `/${p.lang}/service/${p.cusnum}/workday`,

@@ -1,6 +1,8 @@
 'use strict';
 
-const PermissionCode = {
+const PermissionCode = function() {
+
+	return {
 
 	ASSET_MANAGE_MAP: {
 		READONLY: 2100
@@ -122,6 +124,58 @@ const PermissionCode = {
 		FULL: 1317,
 	},
 
+	MAP_VIEW: {
+		getLabel: () => I18N.Privilege.Common.MapView,
+		READONLY: 1104,
+	},
+
+	ENERGY_MANAGE: {
+		getLabel: () => I18N.Privilege.Common.EnergyManager,
+		FULL: 1222,
+	},
+
+	BASELINE_CONFIG: {
+		getLabel: () => I18N.Privilege.Role.BaselineConfiguration,
+		FULL: 1223,
+	},
+
+	ENERGY_EXPORT: {
+		getLabel: () => I18N.Privilege.Role.EnergyExport,
+		FULL: 1205,
+	},
+
+	ENERGY_ALARM: {
+		getLabel: () => I18N.Privilege.Role.EnergyAlarm,
+		FULL: 1211,
+	},
+	
+	DATA_REPORT_MANAGEMENT: {
+		getLabel: () => I18N.Privilege.Role.ReportManagement,
+		READONLY: 1218,
+		FULL: 1219,
+	},
+
+	TAG_MANAGEMENT: {
+		getLabel: () => I18N.Privilege.Role.TagManagement,
+		FULL: 1208,
+	},
+
+	HIERARCHY_MANAGEMENT: {
+		getLabel: () => I18N.Privilege.Role.HierarchyManagement,
+		FULL: 1207,
+	},
+	
+	CUSTOM_LABELING: {
+		getLabel: () => I18N.Privilege.Role.CustomLabeling,
+		FULL: 1217,
+	},
+
+	PLATFORM_MANAGEMENT: {
+		getLabel: () => I18N.Privilege.Role.SPManagement,
+		FULL: 1206,
+	},
+
+};
 };
 
-module.exports = PermissionCode;
+module.exports = PermissionCode();

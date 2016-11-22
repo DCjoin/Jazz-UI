@@ -1,18 +1,97 @@
 'use strict';
 
-import React from "react";
+import React, {Component, PropTypes} from "react";
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import classnames from "classnames";
 import Immutable from 'immutable';
-import RoleAction from '../../../actions/RoleAction.jsx';
-import RoleStore from '../../../stores/RoleStore.jsx';
-import Panel from '../../../controls/MainContentPanel.jsx';
-import FormBottomBar from '../../../controls/FormBottomBar.jsx';
-import { formStatus } from '../../../constants/FormStatus.jsx';
-import ViewableTextField from '../../../controls/ViewableTextField.jsx';
-import CurrentUserStore from '../../../stores/CurrentUserStore.jsx';
-import { Checkbox } from 'material-ui';
-import NewDialog from '../../../controls/NewDialog.jsx';
-import FlatButton from '../../../controls/FlatButton.jsx';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+
+import { formStatus } from 'constants/FormStatus.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
+
+import RoleAction from 'actions/RoleAction.jsx';
+import RoleStore from 'stores/RoleStore.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+
+import Panel from 'controls/MainContentPanel.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import LinkButton from 'controls/LinkButton.jsx';
+
+
+class PrivilegeList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: true
+    };
+  }
+  render() {
+    let { title, privilegeList, isView, currentPrivilegeCodes, handleChange } = this.props;
+    // console.log(privilegeList);
+    return (
+      <div className="pop-role-detail-content-permission">
+        <div className="pop-role-detail-content-permission-header-panel">
+          <span className="pop-role-detail-content-permission-header-panel-title">{title}</span>
+          <LinkButton label={this.state.open ? "隐藏" : "显示"} onClick={() => {
+            this.setState({
+              open: !this.state.open
+            });
+          }}/>
+        </div>
+        {this.state.open && <ul className="pop-role-detail-content-permission-content">
+          {privilegeList.map( codeObj => {
+            return (
+              <div key={codeObj.getLabel()} className='pop-role-detail-content-permission-content-item'>
+                <div className='pop-role-detail-content-permission-content-item-left'>
+                  {codeObj.getLabel()}
+                </div>                
+                <RadioButtonGroup valueSelected={
+                  privilegeUtil.getFullCode(codeObj, currentPrivilegeCodes) ||
+                  privilegeUtil.getViewCode(codeObj, currentPrivilegeCodes) ||
+                  0
+                } style={{display: 'flex'}}
+                  onChange={(e, value) => {
+                    handleChange(privilegeUtil.changePrivilegeCodes(codeObj, currentPrivilegeCodes, value));
+                  }}>
+                  <RadioButton
+                    value={0}
+                    disabled={isView}
+                    style={{width: 200}}
+                    label={I18N.Privilege.None}
+                  />
+                  <RadioButton
+                    disabled={isView || !codeObj.READONLY}
+                    style={{width: 200}}
+                    value={codeObj.READONLY || -1}
+                    label={I18N.Privilege.Readonly}
+                  />
+                  <RadioButton
+                    disabled={isView || !codeObj.FULL}
+                    style={{width: 200}}
+                    value={codeObj.FULL || -1}
+                    label={I18N.Privilege.Full}
+                  />
+                </RadioButtonGroup>
+              </div>
+            )
+          } )}
+        </ul>}
+      </div>
+    );
+  }
+}
+
+PrivilegeList.PropTypes = {
+  title: PropTypes.string.isRequired,
+  privilegeList: PropTypes.array.isRequired,
+  currentPrivilegeCodes: PropTypes.array.isRequired,
+  isView: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func.isRequired,
+};
+
 
 var RoleDetail = React.createClass({
   propTypes: {
@@ -70,16 +149,15 @@ var RoleDetail = React.createClass({
     }
     return (
       <div className="pop-role-detail-content-permission">
-    <div className="pop-role-detail-content-permission-header-panel">
-      <span className="pop-role-detail-content-permission-header-panel-title">{I18N.Privilege.Common.Common}</span>
-      <span className="pop-role-detail-content-permission-header-panel-action" onClick={this._handleTogglePanel.bind(this, 0)}>{ this.state.showPublicPanel ? "隐藏" : "显示"}</span>
-    </div>
-    <ul className="pop-role-detail-content-permission-content">
-      {permissions}
-    </ul>
-  </div>
-      )
-
+        <div className="pop-role-detail-content-permission-header-panel">
+          <span className="pop-role-detail-content-permission-header-panel-title">{I18N.Privilege.Common.Common}</span>
+          <span className="pop-role-detail-content-permission-header-panel-action" onClick={this._handleTogglePanel.bind(this, 0)}>{ this.state.showPublicPanel ? "隐藏" : "显示"}</span>
+        </div>
+        <ul className="pop-role-detail-content-permission-content">
+          {permissions}
+        </ul>
+      </div>
+    );
   },
 
   _renderPrivatePermission: function(isView) {
@@ -195,7 +273,6 @@ var RoleDetail = React.createClass({
       that.props.setEditStatus()
     }}/>
     );
-
     return (
       <div className={classnames({
         "jazz-framework-right-expand": that.props.closedList,
@@ -207,11 +284,34 @@ var RoleDetail = React.createClass({
             <ViewableTextField  {...roleNameProps} />
           </div>
         </div>
-        <div className="pop-manage-detail-content ">
-          {that._renderPublicPermission()}
-          {that._renderPrivatePermission(isView)}
+        {role.get('PrivilegeCodes')&&<div className="pop-manage-detail-content ">
+          <PrivilegeList 
+            isView={isView}
+            privilegeList={privilegeUtil.getCommonPrivilegeList()} 
+            currentPrivilegeCodes={role.get('PrivilegeCodes').toJS()}
+            handleChange={(value) => {
+              RoleAction.merge({
+                value,
+                path: "PrivilegeCodes"
+              })
+            }}
+            title={I18N.Privilege.Common.Common}/>
+          <PrivilegeList 
+            isView={isView}
+            privilegeList={privilegeUtil.getRolePrivilegeList()} 
+            currentPrivilegeCodes={role.get('PrivilegeCodes').toJS()}
+            handleChange={(value) => {
+              console.log(value);
+              RoleAction.merge({
+                value,
+                path: "PrivilegeCodes"
+              })
+            }}
+            title={I18N.Privilege.Role.Role}/>
+          {/*that._renderPublicPermission()*/}
+          {/*that._renderPrivatePermission(isView)*/}
           {footer}
-        </div>
+        </div>}
         	{that._renderDialog()}
         </Panel>
       </div>
