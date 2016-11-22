@@ -16,6 +16,8 @@ let CURRENT_USER_EVENT = 'currentuser',
   PASSWORD_SUCCESS_EVENT = 'passwordsuccess',
   CURRENT_PRIVILEGE_EVENT = 'currentprivilege';
 
+const PRIVILEGE_ADMIN_PERMISSION = ['1205', '1218', '1219', '1221', '1206', '1207', '1208', '1210', '1217', '1223', '1301'];
+
 var CurrentUserStore = assign({}, PrototypeStore, {
 
   setCurrentUser: function(userInfo) {
@@ -107,7 +109,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   },
   setCurrentPrivilege: function(role, useId, userType) {
     if (useId == 100001 || useId == 1 || userType == -1) {
-      _currentPrivilege = ['1205', '1218', '1219', '1221', '1206', '1207', '1208', '1210', '1217', '1223'];
+      _currentPrivilege = PRIVILEGE_ADMIN_PERMISSION;
 
     } else {
       _currentPrivilege = role.PrivilegeCodes;
@@ -119,7 +121,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   getCurrentPrivilegeByUser: function(user, userRoleList) {
     var privilege = [];
     if (user.Id == 100001 || user.Id == 1 || user.UserType == -1) {
-      privilege = ['1205', '1218', '1219', '1221', '1206', '1207', '1208', '1210', '1217', '1223'];
+      privilege = PRIVILEGE_ADMIN_PERMISSION;
 
     } else {
       userRoleList.forEach(role => {
@@ -134,38 +136,35 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     var menuItems = [];
     if (!this.getCurrentPrivilege()) return
 
+    if (this.getCurrentPrivilege().indexOf('1300') > -1 || this.getCurrentPrivilege().indexOf('1301') > -1) {
+      menuItems.push(
+        {
+          getPath: RoutePath.kpi,
+          title: I18N.MainMenu.KPI,
+        }
+      );
+    }
+    menuItems.push(
+      {
+        getPath: RoutePath.map,
+        title: I18N.MainMenu.Map
+      }
+    );
     if (this.getCurrentPrivilege().indexOf('1221') > -1) {
-      menuItems = [
+      menuItems.push(
         {
-          name: 'map',
-          getPath: RoutePath.map,
-          title: I18N.MainMenu.Map
-        },
-        {
-          name: 'alarm',
           getPath: RoutePath.alarm,
           title: I18N.MainMenu.Alarm
-        },
-        {
-          name: 'setting',
-          getPath: RoutePath.setting,
-          title: I18N.MainMenu.Energy
         }
-      ];
-    } else {
-      menuItems = [
-        {
-          name: 'map',
-          getPath: RoutePath.map,
-          title: I18N.MainMenu.Map
-        },
-        {
-          name: 'setting',
-          getPath: RoutePath.setting,
-          title: I18N.MainMenu.Energy
-        }
-      ];
+      );
     }
+    menuItems.push(
+      {
+        getPath: RoutePath.setting,
+        title: I18N.MainMenu.Energy
+      }
+    );
+    
     if (this.getCurrentPrivilege().indexOf('1218') > -1 || this.getCurrentPrivilege().indexOf('1219') > -1) {
       menuItems.push(
         {
