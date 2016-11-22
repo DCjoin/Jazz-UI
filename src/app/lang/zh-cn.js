@@ -44,6 +44,7 @@ I18N.MainMenu.Setting = '设置';
 I18N.MainMenu.DeviceTemplate = '台账模板';
 I18N.MainMenu.ParameterTemplate = '参数模板';
 
+I18N.MainMenu.KPI = '指标·报表';
 I18N.MainMenu.Map = '地图';
 I18N.MainMenu.Alarm = '报警';
 I18N.MainMenu.Energy = '能源';
@@ -1593,7 +1594,11 @@ I18N.Paging.Button = {};
 I18N.Paging.Button.PrePage = '上一页';
 I18N.Paging.Button.NextPage = '下一页';
 
-
+I18N.Kpi = {
+  Error:{
+    NonQuotaperiod: '未配置指标现状，请联系您的咨询顾问'
+  }
+};
 
 I18N.Map = {};
 I18N.Map.Date = {};
@@ -1922,4 +1927,5 @@ I18N.Setting.KPI = {};
 I18N.Setting.KPI.Tag = {};
 I18N.Setting.KPI.Tag.Title = '选择添加指标的数据点';
 I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对应数据点';
+I18N.Setting.KPI.SelectBuilding = '选择客户';
 module.exports = I18N;
