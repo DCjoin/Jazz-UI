@@ -10,6 +10,10 @@ export default class KPI extends Component {
 	static propTypes = {
     hierarchyId:React.PropTypes.number,
     hierarchyName:React.PropTypes.string,
+		kpiId:React.PropTypes.number,
+		isCreate:React.PropTypes.bool,
+		onSave:React.PropTypes.func,
+		onCancel:React.PropTypes.func,
   };
 
 	static contextTypes = {
