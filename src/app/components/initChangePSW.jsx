@@ -9,15 +9,15 @@ import {
     IconButton,
     FlatButton,
     FontIcon,
-    TextField,
-    Dialog
+    TextField
 } from 'material-ui';
 // import classnames from "classnames";
 import {assign, get, set} from "lodash/object";
 import {isObject} from "lodash/lang";
 import lang from '../lang/lang.jsx';
 
-
+import Dialog from 'controls/NewDialog.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 import ResetPasswordAction from '../actions/ResetPasswordAction.jsx';
 import ResetPasswordStore from '../stores/ResetPasswordStore.jsx';
 import CusFlatButton from '../controls/FlatButton.jsx';
@@ -26,9 +26,6 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 const MAX_LENGTH = 200;
 
 var initChangePSW = React.createClass({
-    contextTypes: {
-      router: React.PropTypes.func
-    },
     _bindMergeTemp: function(path) {
         return this._mergeTemp.bind(this, path);
     },
@@ -48,7 +45,6 @@ var initChangePSW = React.createClass({
         }
     },
     getInitialState: function() {
-        console.log(this.props.params);
         return {
           tempData: {},
           reqStatus:null,
@@ -68,12 +64,13 @@ var initChangePSW = React.createClass({
       ResetPasswordAction.resetPassword(data);
     },
     _returnLogin: function() {
-      var that = this;
-      that.setState({
-        isLangLoaded: true
-      },() => {
-        that.context.router.replaceWith('login', { lang: this.props.params.lang });
-      });
+        this.props.router.replace(RoutePath.login(this.props.router.params));
+      // var that = this;
+      // that.setState({
+      //   isLangLoaded: true
+      // },() => {
+      //   that.context.router.replaceWith('login', { lang: this.props.params.lang });
+      // });
     },
     _getEditPasswordDialog: function() {
         let {newPassword, confirmNewPassword} = this.state.tempData,
@@ -101,7 +98,7 @@ var initChangePSW = React.createClass({
             saveButtonDisabled = true;
         }
 
-        let actions = [< CusFlatButton disabled = {
+        let actions = [<CusFlatButton disabled = {
                 saveButtonDisabled
             }
             label = {
@@ -112,7 +109,7 @@ var initChangePSW = React.createClass({
             } />];
 
         return (
-            <Dialog actions={actions} openImmediately={true} title={I18N.InitPassword.Title} modal={true} contentStyle={{ width: '600px' }}>
+            <Dialog actions={actions} open={true} title={I18N.InitPassword.Title} modal={true} contentStyle={{ width: '600px' }}>
                 <div>{I18N.InitPassword.Welcome1} {this.props.params.user} {I18N.InitPassword.Welcome2}</div>
                 <ul className="pop-userprofile-edit">
                     <li>
@@ -138,7 +135,7 @@ var initChangePSW = React.createClass({
   			<CusFlatButton {...goonProps} />
   		];
       return(
-        <Dialog title={I18N.InitPassword.SuccessTitle} actions={actions} modal={true} openImmediately={true}  contentStyle={{ width: '600px' }}>
+        <Dialog title={I18N.InitPassword.SuccessTitle} actions={actions} modal={true} open={true}  contentStyle={{ width: '600px' }}>
           <div>{I18N.InitPassword.SuccessTips}</div>
   			</Dialog>
       );
