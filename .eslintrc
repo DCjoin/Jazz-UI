@@ -1,7 +1,8 @@
 {
   "plugins": [
-    "react"
+    "react",
   ],
+  "parser": "babel-eslint",
   "ecmaFeatures": {
     "jsx": true,
     "modules": true,
@@ -12,7 +13,8 @@
     "browser": true,
     "amd": true,
     "es6": true,
-    "mocha":true
+    "mocha":true,
+    "jasmine":true
   },
   "globals": {
        "I18N": true,
@@ -44,6 +46,7 @@
     "react/jsx-boolean-value": 0,
     "react/jsx-curly-spacing": 0,
     "react/jsx-no-undef": 1,
+    "jsx-quotes": 1,
     "react/jsx-sort-prop-types": 0,
     "react/jsx-sort-props": 0,
     "react/jsx-uses-react": 1,
