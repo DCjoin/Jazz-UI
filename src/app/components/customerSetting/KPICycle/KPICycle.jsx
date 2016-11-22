@@ -94,7 +94,7 @@ export default class KPICycle extends Component {
 		this._onChange = this._onChange.bind(this);
 		this._onSave = this._onSave.bind(this);
 		this._onEdit = this._onEdit.bind(this);
-		this._onChange = this._onChange.bind(this);
+		this._onCancel = this._onCancel.bind(this);
 	}
 	componentWillMount() {
 		KPIAction.getQuotaperiod(this.props.router.params.customerId);
@@ -125,7 +125,7 @@ export default class KPICycle extends Component {
 	_onCancel() {
 		this.setState({
 			status: formStatus.VIEW,
-			KPICycle: null
+			KPICycle: KPIStore.getQuotaperiod()
 		});
 	}
 	render() {
@@ -137,15 +137,17 @@ export default class KPICycle extends Component {
 					status={status} 
 					data={KPICycle} 
 					onChange={(path, value) => {
+						KPICycle[path] = value;
 						this.setState({
-							KPICycle: KPICycle.setIn([path], value)
+							KPICycle: KPICycle
 						});
 					}}/>
 				<FormBottomBar 
 					isShow={true}
 					allowEdit={true}
+					allowDelete={false}
 					enableSave={KPICycle && KPICycle.Month && KPICycle.Day}
-					status={formStatus}
+					status={status}
 					onSave={this._onSave}
 					onEdit={this._onEdit}
 					onCancel={this._onCancel}
