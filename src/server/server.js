@@ -63,7 +63,7 @@ module.exports = server;
 server.register(
 	[
 		{register: require('h2o2')},
-		{register: require("./user.js")},
+		// {register: require("./user.js")},
 		{register: require("./kpi.js")},
 		{register: require("./orgnization.js")},
 		{register: require("./file.js")},
