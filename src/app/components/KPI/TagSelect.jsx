@@ -26,7 +26,7 @@ export default class TagSelect extends Component {
 		this._onChange = this._onChange.bind(this);
 		this._onSelectDimension = this._onSelectDimension.bind(this);
 		this._onSelectTag = this._onSelectTag.bind(this);
-
+		this._onSave = this._onSave.bind(this);
 	}
 
   state = {
