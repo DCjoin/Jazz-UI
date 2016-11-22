@@ -238,10 +238,13 @@ var CurrentUserStore = assign({}, PrototypeStore, {
           title: I18N.MainMenu.CustomSetting,
           list: [
             {
-              name: 'customerLabeling',
               getPath: RoutePath.customerSetting.customerLabeling,
               title: I18N.MainMenu.CustomizedLabeling
-            }
+            },
+            {
+              getPath: RoutePath.customerSetting.KPICycle,
+              title: I18N.MainMenu.KPICycle
+            },
           ]
         });
       }

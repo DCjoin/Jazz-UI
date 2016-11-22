@@ -57,6 +57,7 @@ import PTag from './components/customerSetting/tag/PTag.jsx';
 import VTag from './components/customerSetting/tag/VTag.jsx';
 import TagLog from './components/customerSetting/importLog/TagLog.jsx';
 import Label from './components/customerSetting/label/Label.jsx';
+import KPICycle from './components/customerSetting/KPICycle';
 //for hierarchySetting
 import Hierarchy from './components/hierarchySetting/Hierarchy.jsx';
 import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.jsx';
@@ -221,13 +222,13 @@ ReactDom.render(<Router history={hashHistory} routes={{
       path: 'contactus',
       component: contactusApp
     }, {
-      path: 'u=:user&t=:token&a=resetpwd&lang=:lang',
+      path: 'u=:user&t=:token&a=resetpwd&lang=:lang2',
       component: resetPSWApp
     }, {
-      path: 'u=:user&t=:token&a=demologin&lang=:lang',
+      path: 'u=:user&t=:token&a=demologin&lang=:lang2',
       component: demoLoginApp
     }, {
-      path: 'u=:user&t=:token&a=initpwd&lang=:lang',
+      path: 'u=:user&t=:token&a=initpwd&lang=:lang2',
       component: initChangePSWApp
     }, {
       _auth: true,
@@ -270,9 +271,12 @@ ReactDom.render(<Router history={hashHistory} routes={{
       }, {
         path: 'hierNode',
         component: Hierarchy
-      },  {
+      }, {
         path: 'hierLog',
         component: HierarchyLog
+      }, {
+        path: 'KPICycle',
+        component: KPICycle
       }, ]
     }, {
       _auth: true,
