@@ -82,17 +82,7 @@ var RoleStore = assign({}, PrototypeStore, {
       _persistedRole = _updatingRole = emptyMap();
       _updatingRole = _updatingRole.set("PrivilegeCodes", Immutable.fromJS([]));
     } else {
-      if (data.path == 'Name') {
-        _updatingRole = _updatingRole.set(data.path, data.value);
-      } else {
-        var privilegeCodes = _updatingRole.get('PrivilegeCodes');
-        var index = privilegeCodes.indexOf(data.value);
-        if (index > -1) {
-          _updatingRole = _updatingRole.set('PrivilegeCodes', privilegeCodes.delete(index));
-        } else {
-          _updatingRole = _updatingRole.set('PrivilegeCodes', privilegeCodes.push(data.value));
-        }
-      }
+      _updatingRole = _updatingRole.set(data.path, Immutable.fromJS(data.value));
     }
 
   },
