@@ -7,6 +7,7 @@ import { List, updater, update, Map } from 'immutable';
 import CurrentUser from '../constants/actionType/CurrentUser.jsx';
 import LoginActionType from '../constants/actionType/Login.jsx';
 import RoutePath from '../util/RoutePath.jsx';
+import PermissionCode from '../constants/PermissionCode.jsx';
 
 let _currentUser = null,
   _error = null,
@@ -132,11 +133,19 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     }
     return privilege;
   },
+  permit:function(code){
+  if (!_currentPrivilege || _currentPrivilege.length===0){
+    return false;
+  }
+
+  return this.getCurrentPrivilege().indexOf(code+'')>-1;
+
+  },
   getMainMenuItems: function() {
     var menuItems = [];
     if (!this.getCurrentPrivilege()) return
 
-    if (this.getCurrentPrivilege().indexOf('1300') > -1 || this.getCurrentPrivilege().indexOf('1301') > -1) {
+    if (this.permit(PermissionCode.INDEX_AND_REPORT.READONLY) || this.permit(PermissionCode.INDEX_AND_REPORT.FULL)) {
       menuItems.push(
         {
           getPath: RoutePath.kpi,
@@ -150,7 +159,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         title: I18N.MainMenu.Map
       }
     );
-    if (this.getCurrentPrivilege().indexOf('1221') > -1) {
+    if (this.permit(PermissionCode.ENERGY_ALARM.FULL)) {
       menuItems.push(
         {
           getPath: RoutePath.alarm,
@@ -164,8 +173,8 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         title: I18N.MainMenu.Energy
       }
     );
-    
-    if (this.getCurrentPrivilege().indexOf('1218') > -1 || this.getCurrentPrivilege().indexOf('1219') > -1) {
+
+    if (this.permit(PermissionCode.DATA_REPORT_MANAGEMENT.FULL)|| this.permit(PermissionCode.DATA_REPORT_MANAGEMENT.READONLY)) {
       menuItems.push(
         {
           name: 'report',
@@ -187,9 +196,9 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         }
       );
     }
-    if (this.getCurrentPrivilege().indexOf('1208') > -1 || this.getCurrentPrivilege().indexOf('1207') > -1 || this.getCurrentPrivilege().indexOf('1217') > -1) {
+    if (this.permit(PermissionCode.TAG_MANAGEMENT.FULL)|| this.permit(PermissionCode.HIERARCHY_MANAGEMENT.FULL) || this.permit(PermissionCode.CUSTOM_LABELING.FULL)) {
       var customerChildren = [];
-      if (this.getCurrentPrivilege().indexOf('1208') > -1) {
+      if (this.permit(PermissionCode.TAG_MANAGEMENT.FULL)) {
         customerChildren = [{
           title: I18N.MainMenu.TagSetting,
           list: [
@@ -216,7 +225,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
           ]
         }];
       }
-      if (this.getCurrentPrivilege().indexOf('1207') > -1) {
+      if (this.permit(PermissionCode.HIERARCHY_MANAGEMENT.FULL)) {
         customerChildren.push({
           title: I18N.MainMenu.HierarchySetting,
           list: [
@@ -233,7 +242,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
           ]
         });
       }
-      if (this.getCurrentPrivilege().indexOf('1217') > -1) {
+      if (this.permit(PermissionCode.CUSTOM_LABELING.FULL)) {
         customerChildren.push({
           title: I18N.MainMenu.CustomSetting,
           list: [

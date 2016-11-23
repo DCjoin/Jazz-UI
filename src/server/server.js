@@ -68,7 +68,6 @@ server.register(
 		{register: require("./orgnization.js")},
 		{register: require("./file.js")},
 		{register: require("./rank.js")},
-		{register: require("./indicator.js")},
 	],function () {
     server.start(function() {
         console.log('Server started at: ' + server.info.uri);

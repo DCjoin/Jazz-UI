@@ -7,15 +7,15 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import Immutable from 'immutable';
 import assign from 'object-assign';
 
-let _dimensions=null;
+let kpiInfo=Immutable.fromJS({});
 let _quotaperiod=null;
 const KPIStore = assign({}, PrototypeStore, {
-  setDimensions(data){
-    _dimensions=Immutable.fromJS(data);
+  setKpiInfo(data){
+    kpiInfo=Immutable.fromJS(data);
   },
 
-  getDimensions(){
-    return _dimensions;
+  getKpiInfo(){
+    return kpiInfo;
   },
 
   setQuotaperiod(data) {
@@ -26,8 +26,27 @@ const KPIStore = assign({}, PrototypeStore, {
     return _quotaperiod;
   },
 
+  merge(data){
+    data.forEach(el=>{
+      let paths = el.path.split(".");
+      kpiInfo=kpiInfo.setIn(paths,el.value);
+    })
+  },
+
+  _getYearList(){
+    let currentYear=(new Date()).getFullYear(),yearList=[];
+    for(var i=currentYear+1;i>=currentYear-3;i--){
+      yearList.push({
+        payload: i,
+        text: i
+      })
+    }
+    return yearList
+  },
+
   dispose(){
-    //ticketList = Immutable.fromJS({});
+    kpiInfo=Immutable.fromJS({});
+    _quotaperiod=null;
   }
 
 });
@@ -38,9 +57,13 @@ KPIStore.dispatchToken = AppDispatcher.register(function(action) {
       KPIStore.setQuotaperiod(action.data);
       KPIStore.emitChange();
       break;
-    case Action.GET_DIMENSION_SUCCESS:
-        //  KPIStore.setDimensions(action.data);
-        //  KPIStore.emitChange();
+    case Action.GET_KPI_INFO_SUCCESS:
+         KPIStore.setKpiInfo(action.data);
+         KPIStore.emitChange();
+         break;
+    case Action.MERGE_KPI_INFO:
+         KPIStore.merge(action.data);
+         KPIStore.emitChange();
          break;
     default:
   }

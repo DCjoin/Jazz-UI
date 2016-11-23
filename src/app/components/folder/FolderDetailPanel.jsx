@@ -9,6 +9,7 @@ import FolderStore from '../../stores/FolderStore.jsx';
 import OrigamiPanel from '../../controls/OrigamiPanel.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 import { getCookie } from '../../util/Util.jsx';
+import PermissionCode from '../../constants/PermissionCode.jsx';
 
 function currentUser() {
   return CurrentUserStore.getCurrentUser();
@@ -113,7 +114,7 @@ var FolderItem = React.createClass({
               </IconMenu>
       } else {
         // CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1
-        if (CurrentUserStore.getCurrentPrivilege().indexOf('1205') > -1) {
+        if (CurrentUserStore.permit(PermissionCode.ENERGY_EXPORT.FULL)) {
           menu = <IconMenu {...iconMenuProps} onItemTouchTap={this._onMenuSelect}>
                 <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
                 <MenuItem key={2} primaryText={I18N.Folder.Detail.WidgetMenu.Menu2} style={menuStyle}/>

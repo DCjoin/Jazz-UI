@@ -1,38 +1,73 @@
 'use strict';
 import React, {Component} from 'react';
-import classNames from 'classnames';
+import Immutable from 'immutable';
 import TagSelect from './TagSelect.jsx';
 import KPIAction from '../../actions/KPI/KPIAction.jsx';
+import KPIStore from '../../stores/KPI/KPIStore.jsx'
 import FlatButton from '../../controls/FlatButton.jsx';
+import BasicConfig from './BasicConfig.jsx';
+import TitleComponent from '../../controls/TtileComponent.jsx';
+import YearAndTypeConfig from './YearAndTypeConfig.jsx';
+import ParameterConfig from './ParameterConfig.jsx';
 
 export default class KPI extends Component {
 
-	static propTypes = {
-    hierarchyId:React.PropTypes.number,
-    hierarchyName:React.PropTypes.string,
-		kpiId:React.PropTypes.number,
-		isCreate:React.PropTypes.bool,
-		onSave:React.PropTypes.func,
-		onCancel:React.PropTypes.func,
-  };
-
 	static contextTypes = {
 		router: React.PropTypes.object,
-		currentRoute: React.PropTypes.object,
 	};
 
   constructor(props) {
     super(props);
-    this._onDialogDismiss = this._onDialogDismiss.bind(this);
+    this._onChange = this._onChange.bind(this);
+		this._onDialogDismiss = this._onDialogDismiss.bind(this);
+		this._onTagSave = this._onTagSave.bind(this);
+		this._onSelectTagShow = this._onSelectTagShow.bind(this);
   }
 
   state = {
     tageSelectShow:false,
-    selectTag:null
+		kpiInfo:Immutable.fromJS({}),
   };
 
-  _onTagSave(){
+	_onChange(){
+		this.setState({
+			kpiInfo:KPIStore.getKpiInfo()
+		})
+	}
 
+	_onNameChange(value){
+		KPIAction.merge([{
+			path:'IndicatorName',
+			value
+		}])
+	}
+
+	_onYearChange(value){
+		KPIAction.merge([{
+			path:'AdvanceSettings.Year',
+			value
+		}])
+	}
+
+	_onIndicatorTypeChange(ev,value){
+		KPIAction.merge([{
+			path:'AdvanceSettings.IndicatorType',
+			value
+		}])
+	}
+
+  _onTagSave(tag){
+		this.setState({
+			tageSelectShow:false
+		},()=>{
+			KPIAction.merge([{
+				path:'ActualTagId',
+				value:tag.get('Id')
+			},{
+				path:'ActualTagName',
+				value:tag.get('Name')
+			}])
+		})
   }
 
   _onDialogDismiss(){
@@ -41,26 +76,96 @@ export default class KPI extends Component {
     })
   }
 
+	_onSelectTagShow(){
+		this.setState({
+			tageSelectShow:true
+		})
+	}
+
+	componentWillMount(){
+		let {isCreate,kpiId,year}=this.props;
+		if(!isCreate){
+			KPIAction.getKPI(kpiId,year)
+		}
+		// KPIAction.merge([{
+		// 	path:'CustomerId',
+		// 	value:customerId
+		// },{
+		// 	path:'HierarchyId',
+		// 	value:hierarchyId
+		// },{
+		// 	path:'HierarchyName',
+		// 	value:hierarchyName
+		// }
+	// ])
+	}
+
+	componentDidMount(){
+		KPIStore.addChangeListener(this._onChange);
+	}
+
+	componentWillUnmount(){
+		KPIStore.removeChangeListener(this._onChange);
+	}
+
   render(){
-    //let {hierarchyId,hierarchyName}=this.props;
-    let hierarchyId=100010,hierarchyName='楼宇A';
-    let tagProps={
-      hierarchyId,
-      hierarchyName,
-      onSave:this._onTagSave,
-      onCancel:this._onDialogDismiss
-    }
+    let {hierarchyId,hierarchyName,isCreate}=this.props;
+		let {IndicatorName,ActualTagName,ActualTagId}=this.state.kpiInfo.toJS();
+    let titleProps={
+			title:`${hierarchyName}-${isCreate?I18N.Setting.KPI.create:I18N.Setting.KPI.edit}`,
+			contentStyle:{
+				marginLeft:'0'
+			},
+			titleStyle:{
+				fontSize:'16px'
+			},
+			className:'jazz-kpi-config-wrap'
+		},
+				tagProps={
+      		hierarchyId,
+      		hierarchyName,
+      		onSave:this._onTagSave,
+      		onCancel:this._onDialogDismiss
+    			},
+				basicProps={
+					onNameChange: this._onNameChange,
+					isCreate:this.props.isCreate,
+					name:IndicatorName,
+					onSelectTagShow:this._onSelectTagShow,
+					tagName:ActualTagName,
+				},
+				yearAndTypeProps={
+					tagId:ActualTagId,
+					onYearChange:this._onYearChange,
+					onIndicatorTypeChange:this._onIndicatorTypeChange,
+					IndicatorType:this.state.kpiInfo.getIn(['AdvanceSettings','IndicatorType']),
+					Year:this.state.kpiInfo.getIn(['AdvanceSettings','Year'])
+				},
+				parameterProps={
+					tagId:ActualTagId
+				};
     return(
-      <div>
-        <FlatButton label='test' onTouchTap={()=>{
-            this.setState({
-              tageSelectShow:true
-            })
-          }}/>
+      <TitleComponent {...titleProps}>
+				<BasicConfig {...basicProps}/>
+				<YearAndTypeConfig {...yearAndTypeProps}/>
+				<ParameterConfig {...parameterProps}/>
         {this.state.tageSelectShow && <TagSelect {...tagProps}/>}
-      </div>
+      </TitleComponent>
     )
   }
-
-
 }
+KPI.propTypes = {
+	hierarchyId:React.PropTypes.number,
+	hierarchyName:React.PropTypes.string,
+	kpiId:React.PropTypes.number,
+	isCreate:React.PropTypes.bool,
+	onSave:React.PropTypes.func,
+	onCancel:React.PropTypes.func,
+	year:React.PropTypes.number,
+};
+KPI.defaultProps = {
+	hierarchyId: 100016,
+	hierarchyName:'楼宇BADGOOD',
+	year:2016,
+	isCreate:true
+};
