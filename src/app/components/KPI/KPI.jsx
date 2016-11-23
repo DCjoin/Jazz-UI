@@ -9,6 +9,7 @@ import BasicConfig from './BasicConfig.jsx';
 import TitleComponent from '../../controls/TtileComponent.jsx';
 import YearAndTypeConfig from './YearAndTypeConfig.jsx';
 import ParameterConfig from './ParameterConfig.jsx';
+import {Type} from '../../constants/actionType/KPI.jsx';
 
 export default class KPI extends Component {
 
@@ -26,6 +27,7 @@ export default class KPI extends Component {
 
   state = {
     tageSelectShow:false,
+		tag:null,
 		kpiInfo:Immutable.fromJS({}),
   };
 
@@ -43,10 +45,15 @@ export default class KPI extends Component {
 	}
 
 	_onYearChange(value){
-		KPIAction.merge([{
-			path:'AdvanceSettings.Year',
-			value
-		}])
+		if(this.props.isCreate){
+			KPIAction.merge([{
+				path:'AdvanceSettings.Year',
+				value
+			}])
+		}
+		else {
+			KPIAction.getKPI(this.props.kpiId,value)
+		}
 	}
 
 	_onIndicatorTypeChange(ev,value){
@@ -56,9 +63,14 @@ export default class KPI extends Component {
 		}])
 	}
 
+	_onAnnualChange(path,value){
+
+	}
+
   _onTagSave(tag){
 		this.setState({
-			tageSelectShow:false
+			tageSelectShow:false,
+			tag:tag
 		},()=>{
 			KPIAction.merge([{
 				path:'ActualTagId',
@@ -111,6 +123,9 @@ export default class KPI extends Component {
   render(){
     let {hierarchyId,hierarchyName,isCreate}=this.props;
 		let {IndicatorName,ActualTagName,ActualTagId}=this.state.kpiInfo.toJS();
+		let AdvanceSettings=this.state.kpiInfo.get('AdvanceSettings') || Immutable.fromJS({});
+		let {IndicatorType,AnnualQuota,AnnualSavingRate}=AdvanceSettings.toJS();
+
     let titleProps={
 			title:`${hierarchyName}-${isCreate?I18N.Setting.KPI.create:I18N.Setting.KPI.edit}`,
 			contentStyle:{
@@ -142,7 +157,10 @@ export default class KPI extends Component {
 					Year:this.state.kpiInfo.getIn(['AdvanceSettings','Year'])
 				},
 				parameterProps={
-					tagId:ActualTagId
+					tag:this.state.tag,
+					IndicatorType:IndicatorType,
+					onAnnualChange:this._onAnnualChange,
+					value:IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate
 				};
     return(
       <TitleComponent {...titleProps}>

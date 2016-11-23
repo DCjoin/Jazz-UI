@@ -85,6 +85,7 @@ const PermissionCode = function() {
 	},
 
 	INDEX_AND_REPORT: {
+		getLabel: () => I18N.Privilege.Role.IndexAndReport,
 		READONLY: 1300,
 		FULL: 1301,
 	},
