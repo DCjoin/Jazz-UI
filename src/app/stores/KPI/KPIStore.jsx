@@ -5,10 +5,17 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/KPI.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import Immutable from 'immutable';
+import { Map } from 'immutable';
 import assign from 'object-assign';
+import {Type} from '../../constants/actionType/KPI.jsx';
 
-let kpiInfo=Immutable.fromJS({});
+function emptyMap() {
+  return new Map();
+}
+
+let kpiInfo=emptyMap();
 let _quotaperiod=null;
+
 const KPIStore = assign({}, PrototypeStore, {
   setKpiInfo(data){
     kpiInfo=Immutable.fromJS(data);
@@ -26,11 +33,23 @@ const KPIStore = assign({}, PrototypeStore, {
     return _quotaperiod;
   },
 
+  clearParam(){
+    let {Year,IndicatorType}=kpiInfo.get('AdvanceSettings').toJS();
+    kpiInfo=kpiInfo.set('AdvanceSettings',emptyMap());
+    kpiInfo=kpiInfo.setIn(['AdvanceSettings','Year'],Year);
+    kpiInfo=kpiInfo.setIn(['AdvanceSettings','IndicatorType'],IndicatorType);
+  },
+
   merge(data){
+    let refresh=false;
     data.forEach(el=>{
       let paths = el.path.split(".");
+      refresh= el.path.indexOf('IndicatorType')>-1 || el.path.indexOf('ActualTagName')>-1;
       kpiInfo=kpiInfo.setIn(paths,el.value);
     })
+    if(refresh){
+      this.clearParam();
+    }
   },
 
   _getYearList(){
@@ -42,6 +61,20 @@ const KPIStore = assign({}, PrototypeStore, {
       })
     }
     return yearList
+  },
+
+  validateQuota(value){
+
+  },
+
+  validateSavingRate(value){
+
+  },
+
+  getErrorText(type){
+    if(type===Type.Quota){
+      return 'dd'
+    }
   },
 
   dispose(){

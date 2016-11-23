@@ -1761,6 +1761,7 @@ I18N.Privilege.Role.CustomerInfoManagement = '客户信息管理';
 I18N.Privilege.Role.CustomLabeling = '自定义能效标识';
 I18N.Privilege.Role.NewCustomLabeling = '自定义配置';
 I18N.Privilege.Role.BaselineConfiguration = '能耗分析基准值配置';
+I18N.Privilege.Role.IndexAndReport = '指标&报表';
 
 I18N.Remark = {};
 I18N.Remark.Label = '备注';
@@ -1930,7 +1931,8 @@ I18N.Setting.Cost.CostCommodity = '成本属性';
 
 I18N.Setting.KPI = {};
 I18N.Setting.KPI.create='新建指标';
-I18N.Setting.KPI.edit='编辑指标';
+I18N.Setting.KPI.Quota='定额';
+I18N.Setting.KPI.SavingRate='节能率';
 I18N.Setting.KPI.Tag = {};
 I18N.Setting.KPI.Tag.Title = '选择添加指标的数据点';
 I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对应数据点';
@@ -1948,4 +1950,8 @@ I18N.Setting.KPI.YearAndType.Quota= '定额指标';
 I18N.Setting.KPI.YearAndType.SavingRate= '节能率指标';
 I18N.Setting.KPI.Parameter = {};
 I18N.Setting.KPI.Parameter.Title= '第三步:参数配置';
+I18N.Setting.KPI.Parameter.Indicator= '配置指标值';
+I18N.Setting.KPI.Parameter.Annual= '全年{0}指标值';
+I18N.Setting.KPI.Parameter.InputAnnual= '输入全年{0}';
+I18N.Setting.KPI.Parameter.InputAnnual= '输入全年{0}';
 module.exports = I18N;

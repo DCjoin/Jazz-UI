@@ -34,7 +34,7 @@ var kpi2016={
   "UomId": 1,
   "CommodityId": 1,
   "AdvanceSettings": {
-    "Year": 1,
+    "Year": 2015,
     "IndicatorType": 2,
     "AnnualQuota": 1.1,
     "AnnualSavingRate": 1.1,
@@ -100,7 +100,7 @@ exports.register = function(server, options, next) {
         method: 'get',
         path: '/API/Kpi/settings/{kpiId}/{year}',
         handler: function(request, reply) {
-            if(request.params.year === 2016) {
+            if(request.params.year === '2016') {
               reply({
                 Result:kpi2016,
                 error: {Code: "0", Messages: null}
