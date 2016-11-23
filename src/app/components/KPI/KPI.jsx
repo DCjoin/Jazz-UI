@@ -4,7 +4,6 @@ import Immutable from 'immutable';
 import TagSelect from './TagSelect.jsx';
 import KPIAction from '../../actions/KPI/KPIAction.jsx';
 import KPIStore from '../../stores/KPI/KPIStore.jsx'
-import FlatButton from '../../controls/FlatButton.jsx';
 import BasicConfig from './BasicConfig.jsx';
 import TitleComponent from '../../controls/TtileComponent.jsx';
 import YearAndTypeConfig from './YearAndTypeConfig.jsx';
@@ -64,6 +63,32 @@ export default class KPI extends Component {
 	}
 
 	_onAnnualChange(path,value){
+		KPIAction.merge([{
+			path,
+			value
+		}])
+	}
+
+	_onTargetValueChange(index,value){
+		let target=this.state.kpiInfo.getIn(['AdvanceSettings','TargetMonthValues',index]),
+				period=KPIStore.getYearQuotaperiod();
+		if(target){
+			KPIAction.merge([{
+				path:`AdvanceSettings.TargetMonthValues.${index}.Value`,
+				value
+			}])
+		}
+		else {
+			KPIAction.merge([{
+				path:`AdvanceSettings.TargetMonthValues.${index}.Value`,
+				value
+			},
+			{
+				path:`AdvanceSettings.TargetMonthValues.${index}.Month`,
+				value:period[index]
+			}
+		])
+		}
 
 	}
 
@@ -96,6 +121,7 @@ export default class KPI extends Component {
 
 	componentWillMount(){
 		let {isCreate,kpiId,year}=this.props;
+		KPIAction.getQuotaperiodByYear(this.context.router.params.customerId,year);
 		if(!isCreate){
 			KPIAction.getKPI(kpiId,year)
 		}
@@ -124,7 +150,7 @@ export default class KPI extends Component {
     let {hierarchyId,hierarchyName,isCreate}=this.props;
 		let {IndicatorName,ActualTagName,ActualTagId}=this.state.kpiInfo.toJS();
 		let AdvanceSettings=this.state.kpiInfo.get('AdvanceSettings') || Immutable.fromJS({});
-		let {IndicatorType,AnnualQuota,AnnualSavingRate}=AdvanceSettings.toJS();
+		let {IndicatorType,AnnualQuota,AnnualSavingRate,TargetMonthValues}=AdvanceSettings.toJS();
 
     let titleProps={
 			title:`${hierarchyName}-${isCreate?I18N.Setting.KPI.create:I18N.Setting.KPI.edit}`,
@@ -160,7 +186,9 @@ export default class KPI extends Component {
 					tag:this.state.tag,
 					IndicatorType:IndicatorType,
 					onAnnualChange:this._onAnnualChange,
-					value:IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate
+					value:IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate,
+					onTargetValueChange:this._onTargetValueChange,
+					TargetMonthValues:TargetMonthValues
 				};
     return(
       <TitleComponent {...titleProps}>

@@ -80,7 +80,8 @@ server.route({
   handler: {
     proxy: {
     	passThrough: true,
-        uri: 'http://sp1.test26.energymost.com/webapihost/{path}',
+        uri: 'http://sp1.test28.energymost.com/webapihost/{path}',
+        //uri: 'http://sp1.dev.energymost.com/webapihost/{path}',
         onResponse: function (err, res, request, reply, settings, ttl) {
             return reply(res);
         }
