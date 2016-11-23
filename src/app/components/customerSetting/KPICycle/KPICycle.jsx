@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import CircularProgress from 'material-ui/CircularProgress';
+import assign from 'object-assign';
 
 import KPIAction from 'actions/KPI/KPIAction.jsx';
 import KPIStore from 'stores/KPI/KPIStore.jsx';
@@ -13,11 +15,11 @@ function calcShowCycle(month, day) {
 	let firstYear = month < 7 ? I18N.Setting.KPICycle.ThisYear : I18N.Setting.KPICycle.LastYear;
 	let lastYear = month < 7 ? I18N.Setting.KPICycle.NextYear : I18N.Setting.KPICycle.ThisYear;
 
-	let showMonth = day < 16 ? month - 1 : month;
+	let showMonth = day < 16 && month > 1 ? month - 1 : month;
 
 	return util.replacePathParams(I18N.Setting.KPICycle.Date, 
 									firstYear, showMonth, day,
-									lastYear, showMonth, day);
+									lastYear, showMonth, day - 1);
 }
 
 function getMonthData() {
@@ -42,12 +44,23 @@ function getDayData() {
 	return result;
 }
 
+function validData(data) {
+	return data && data.Day && data.Month;
+}
+
+function isNewData(data) {
+	return !(validData(data) && data.CreateTime);
+}
+
 class KPICycleDetail extends Component {
 
 	render() {
 		let {data, status} = this.props;
 	    let selectMonthProps = {
 	        key: 'select_month',
+	        style: {
+	        	width: 160,
+	        },
 	        isViewStatus: false,
 	        defaultValue: data && data.Month,
 	        dataItems: getMonthData(),
@@ -57,6 +70,10 @@ class KPICycleDetail extends Component {
 	    },
 	    selectDayProps = {
 	        key: 'select_day',
+	        style: {
+	        	width: 160,
+	        	marginLeft: 10,
+	        },
 	        isViewStatus: false,
 	        defaultValue: data && data.Day,
 	        dataItems: getDayData(),
@@ -65,14 +82,20 @@ class KPICycleDetail extends Component {
 	        }
 	    };
 		return (
-		<div>
-			{!data && <div>{I18N.Setting.KPICycle.Non}</div>}
+		<div className='content'>
+			{isNewData(data) && <div className='non-tip'>{I18N.Setting.KPICycle.Non}</div>}
 			{status === formStatus.EDIT && 
-			<div>
-				<ViewableDropDownMenu {...selectMonthProps}/>
-				<ViewableDropDownMenu {...selectDayProps}/>
+			<div className='select-panel'>
+				<div className="select-panel-title">{I18N.Setting.KPICycle.StartTime}</div>
+				<div className="select-panel-value">
+					<ViewableDropDownMenu {...selectMonthProps}/>
+					<ViewableDropDownMenu {...selectDayProps}/>
+				</div>
 			</div>}
-			{data && <div>{	calcShowCycle(data.Month, data.Year)}</div>}
+			{validData(data) && <div className='result-panel'>
+				<div className='result-panel-title'>{I18N.Setting.KPICycle.Title}</div>
+				<div className='result-panel-value'>{calcShowCycle(data.Month, data.Day)}</div>				
+			</div>}
 		</div>)
 	}
 }
@@ -89,6 +112,7 @@ export default class KPICycle extends Component {
 		super(props);
 		this.state = {
 			status: formStatus.VIEW,
+			loading: true,
 			KPICycle: null
 		};
 		this._onChange = this._onChange.bind(this);
@@ -97,43 +121,49 @@ export default class KPICycle extends Component {
 		this._onCancel = this._onCancel.bind(this);
 	}
 	componentWillMount() {
-		KPIAction.getQuotaperiod(this.props.router.params.customerId);
+		KPIAction.getKPIPeriod(this.props.router.params.customerId);
 		KPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
-		KPIAction.getQuotaperiod(this.props.router.params.customerId);		
+		KPIAction.getKPIPeriod(this.props.router.params.customerId);		
 	}
 	componentWillUnmount() {
 		KPIStore.removeChangeListener(this._onChange);
 	}
 	_onChange() {
 		this.setState({
-			KPICycle: KPIStore.getQuotaperiod()
+			loading: false,
+			KPICycle: KPIStore.getKPIPeriod(),
+			status: formStatus.VIEW
 		});
 	}
 	_onSave() {
 		this.setState({
-			status: formStatus.VIEW
+			loading: true
 		});
+		KPIAction.setKPIPeriod(assign({
+			CustomerId: this.props.router.params.customerId
+		}, this.state.KPICycle));
 	}
 	_onEdit() {
 		this.setState({
 			status: formStatus.EDIT,
-			KPICycle: KPIStore.getQuotaperiod()
+			KPICycle: KPIStore.getKPIPeriod()
 		});
 	}
 	_onCancel() {
 		this.setState({
 			status: formStatus.VIEW,
-			KPICycle: KPIStore.getQuotaperiod()
+			KPICycle: KPIStore.getKPIPeriod()
 		});
 	}
 	render() {
-		let {status, KPICycle} = this.state;
+		let {status, KPICycle, loading} = this.state;
 		return (
-			<div>
-				<div>{I18N.Setting.KPICycle.Title}</div>
-				<KPICycleDetail 
+			<div className={'jazz-kpi-cycle'}>
+				<div className='header-bar'>{I18N.Setting.KPICycle.Title}</div>
+				{loading && <div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>}
+				{!loading && <KPICycleDetail 
 					status={status} 
 					data={KPICycle} 
 					onChange={(path, value) => {
@@ -141,17 +171,17 @@ export default class KPICycle extends Component {
 						this.setState({
 							KPICycle: KPICycle
 						});
-					}}/>
-				<FormBottomBar 
+					}}/>}
+				{!loading && <FormBottomBar 
 					isShow={true}
 					allowEdit={true}
 					allowDelete={false}
-					enableSave={KPICycle && KPICycle.Month && KPICycle.Day}
+					enableSave={validData(KPICycle)}
 					status={status}
 					onSave={this._onSave}
 					onEdit={this._onEdit}
 					onCancel={this._onCancel}
-					/>
+					/>}
 			</div>
 		);
 	}

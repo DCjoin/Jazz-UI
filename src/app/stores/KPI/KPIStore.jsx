@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 import assign from 'object-assign';
 
 let _dimensions=null;
-let _quotaperiod=null;
+let _KPIPeriod=null;
 const KPIStore = assign({}, PrototypeStore, {
   setDimensions(data){
     _dimensions=Immutable.fromJS(data);
@@ -18,12 +18,12 @@ const KPIStore = assign({}, PrototypeStore, {
     return _dimensions;
   },
 
-  setQuotaperiod(data) {
-    _quotaperiod = data;
+  setKPIPeriod(data) {
+    _KPIPeriod = data;
   },
 
-  getQuotaperiod(){
-    return _quotaperiod;
+  getKPIPeriod(){
+    return assign({}, _KPIPeriod);
   },
 
   dispose(){
@@ -35,7 +35,7 @@ const KPIStore = assign({}, PrototypeStore, {
 KPIStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_QUOTAPERIOD:
-      KPIStore.setQuotaperiod(action.data);
+      KPIStore.setKPIPeriod(action.data);
       KPIStore.emitChange();
       break;
     case Action.GET_DIMENSION_SUCCESS:
