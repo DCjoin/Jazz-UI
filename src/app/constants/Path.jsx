@@ -8,7 +8,8 @@ module.exports = {
 			getQuotaperiodByYear: '/kpi/getkpiperiodpoint/{customerid}/{year}',
 			getDimension:'/AreaDimension/GetAreaDimensionTree',
 			getTags:'/Tag/GetTagsByFilter',
-			getKpi:'/Kpi/settings/{kpiId}/{year}'
+			getKpi:'/kpi/settings/{kpiId}/{year}',
+			getCalcValue:'/kpi/calckpigradualvalue'
 		}
   }
 };

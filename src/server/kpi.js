@@ -77,6 +77,55 @@ var kpi2016={
     }
   }
 };
+var calcValue=[
+  {
+      "Month": "2016-06-01",
+      "Value": 10000.2
+    },
+  {
+      "Month": "2016-07-01",
+      "Value": 10000.2
+      },
+  {
+      "Month": "2016-08-01",
+      "Value": 10000.2
+  },
+  {
+      "Month": "2016-09-01",
+      "Value": 10000.2
+    },
+  {
+      "Month": "2016-10-01",
+      "Value": 10000.2
+    },
+  {
+      "Month": "2016-11-01",
+      "Value": 10000.2
+  },
+ {
+      "Month": "2016-12-01",
+      "Value": 10000.2
+  },
+  {
+      "Month": "2017-01-01",
+      "Value": 10000.2
+    },
+  {
+     "Month": "2017-02-01",
+     "Value": 10000.2
+    },
+    {
+     "Month": "2017-03-01",
+      "Value": 10000.2
+    },
+  {
+    "Month": "2017-04-01",
+    "Value": 10000.2
+    },
+  {
+    "Month": "2017-05-01",
+  "Value": 10000.2
+}];
 
 var nonQuotaperiod = null;
 
@@ -109,7 +158,7 @@ exports.register = function(server, options, next) {
     },
     {
         method: 'get',
-        path: '/API/Kpi/settings/{kpiId}/{year}',
+        path: '/API/kpi/settings/{kpiId}/{year}',
         handler: function(request, reply) {
             if(request.params.year === '2016') {
               reply({
@@ -124,7 +173,19 @@ exports.register = function(server, options, next) {
               }).type("application/json");
             }
         }
-    }
+    },
+    {
+        method: 'post',
+        path: '/API/kpi/calckpigradualvalue',
+        handler: function(request, reply) {
+
+              return reply({
+                  "error": { "Code": "0", "Messages": null },
+                  "Result": calcValue
+              }).type("application/json");
+            }
+        }
+
   ]);
     next();
 };
