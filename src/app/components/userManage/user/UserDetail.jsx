@@ -2,7 +2,7 @@
 
 import React from "react";
 import {FlatButton, FontIcon, SelectField, Checkbox, CircularProgress} from 'material-ui';
-
+import Immutable from 'Immutable';
 import classnames from "classnames";
 
 
@@ -162,7 +162,7 @@ var UserDetail = React.createClass({
     var that = this,
       isView = that.props.formStatus === formStatus.VIEW,
       roleSelectedIndex = 0,
-      roleItems = (that.props.userRoleList.size === 0 || !that.props.userRoleList) ? Immutable.fromJS([]) : that.props.userRoleList.map((item, index) => {
+      roleItems = (that.props.userRoleList.size === 0 || !that.props.userRoleList) ? Immutable.from([]) : that.props.userRoleList.map((item, index) => {
         if (item.get("Id") === that.props.user.get("UserType")) {
           roleSelectedIndex = index;
         }
@@ -170,7 +170,7 @@ var UserDetail = React.createClass({
           text: item.get("Name"),
           id: item.get("Id")
         };
-      }).toJS(),
+      }),
       isSuperAdmin = that.props.user.get("UserType") === -1,
       titleSelectedIndex = 0,
       titleItems = [];
@@ -221,7 +221,7 @@ var UserDetail = React.createClass({
         textField: "text",
         valueField: 'id',
         selectedIndex: roleSelectedIndex,
-        dataItems: roleItems,
+        dataItems: roleItems.toJS(),
         didChanged: value => {
           UserAction.mergeUser({value: value ,path: "UserType"});
           UserAction.mergeUser({value: find(roleItems,  item => item.id === value ).text ,path: "UserTypeName"})

@@ -85,6 +85,7 @@ const PermissionCode = function() {
 	},
 
 	INDEX_AND_REPORT: {
+		getLabel: () => I18N.Privilege.Role.IndexAndReport,
 		READONLY: 1300,
 		FULL: 1301,
 	},
@@ -148,7 +149,7 @@ const PermissionCode = function() {
 		getLabel: () => I18N.Privilege.Role.EnergyAlarm,
 		FULL: 1211,
 	},
-	
+
 	DATA_REPORT_MANAGEMENT: {
 		getLabel: () => I18N.Privilege.Role.ReportManagement,
 		READONLY: 1218,
@@ -164,9 +165,10 @@ const PermissionCode = function() {
 		getLabel: () => I18N.Privilege.Role.HierarchyManagement,
 		FULL: 1207,
 	},
-	
+
 	CUSTOM_LABELING: {
-		getLabel: () => I18N.Privilege.Role.CustomLabeling,
+		//getLabel: () => I18N.Privilege.Role.CustomLabeling,
+		getLabel: () => I18N.Privilege.Role.NewCustomLabeling,
 		FULL: 1217,
 	},
 

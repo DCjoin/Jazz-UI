@@ -26,7 +26,7 @@ export default class TagSelect extends Component {
 		this._onChange = this._onChange.bind(this);
 		this._onSelectDimension = this._onSelectDimension.bind(this);
 		this._onSelectTag = this._onSelectTag.bind(this);
-
+		this._onSave = this._onSave.bind(this);
 	}
 
   state = {
@@ -98,23 +98,23 @@ export default class TagSelect extends Component {
 			</table>
 		);
 		var content=(this.state.tags===null)?<div className="flex-center">{I18N.Setting.KPI.Tag.NoTags}</div>
-	: <table className='jazz-kpi-tag-tags-body'>
-			<tbody>
-				{
-					this.state.tags.map(tag=>{
-						return(
-							<tr className={classNames({
-		        		'selected': this.state.selectedTag && tag.get('Id')===this.state.selectedTag.get('Id'),
-		      		})} onClick={this._onSelectTag.bind(this,tag)}>
-								<td className="column1">{tag.get('Name')}</td>
-								<td className="column2">{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</td>
-								<td className="column3">{CommonFuns.getUomById(tag.get('UomId')).Code}</td>
-							</tr>
-						)
-					})
-				}
-			</tbody>
-		</table>
+																				: <table className='jazz-kpi-tag-tags-body'>
+																						<tbody>
+																							{
+																								this.state.tags.map(tag=>{
+																									return(
+																										<tr className={classNames({
+		        																		'selected': this.state.selectedTag && tag.get('Id')===this.state.selectedTag.get('Id'),
+		      															})} onClick={this._onSelectTag.bind(this,tag)}>
+																				<td className="column1">{tag.get('Name')}</td>
+																				<td className="column2">{CommonFuns.getCommodityById(tag.get('CommodityId')).Comment}</td>
+																				<td className="column3">{CommonFuns.getUomById(tag.get('UomId')).Code}</td>
+																			</tr>
+																		)
+																	})
+																}
+															</tbody>
+														</table>
 
 		return(
 			<div className='jazz-kpi-tag-tags'>

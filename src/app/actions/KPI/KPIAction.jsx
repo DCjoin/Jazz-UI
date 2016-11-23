@@ -31,6 +31,36 @@ const KPIAction = {
 			error: function() {}
 		});
 	},
+  getQuotaperiodByYear(customerId,year) {
+    Ajax.get(util.replacePathParams(Path.KPI.getQuotaperiodByYear, customerId,year),
+      {
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_QUOTAPERIOD_BY_YEAR,
+          data: resBody
+        });
+      },
+      error: function() {}
+    });
+  },
+  getKPI(kpiId,year){
+    Ajax.get(util.replacePathParams(Path.KPI.getKpi, kpiId,year),
+    	{
+			success: function(resBody) {
+				AppDispatcher.dispatch({
+					type: Action.GET_KPI_INFO_SUCCESS,
+					data: resBody
+				});
+			},
+			error: function() {}
+		});
+  },
+  merge(data){
+    AppDispatcher.dispatch({
+      type: Action.MERGE_KPI_INFO,
+      data: data
+    });
+  }
 }
 
 export default KPIAction;
