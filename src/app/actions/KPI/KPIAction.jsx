@@ -18,6 +18,18 @@ const KPIAction = {
 			error: function() {}
 		});
 	},
+  getQuotaperiodByYear(customerId,year) {
+    Ajax.get(util.replacePathParams(Path.APISubPaths.KPI.getQuotaperiodByYear, customerId,year),
+      {
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_QUOTAPERIOD_BY_YEAR,
+          data: resBody
+        });
+      },
+      error: function() {}
+    });
+  },
   getKPI(kpiId,year){
     Ajax.get(util.replacePathParams(Path.APISubPaths.KPI.getKpi, kpiId,year),
     	{

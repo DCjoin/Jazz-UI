@@ -22,6 +22,7 @@ var currentQuotaperiod = {
     Month: 1,
     Day: 12,
 };
+var currentQuotaperiod_year = ["2016-06-01","2016-07-01","2016-08-01","2016-09-01","2016-10-01","2016-11-01","2016-12-01","2017-01-01","2017-02-01","2017-03-01","2017-04-01","2017-05-01"];
 var kpi2016={
   "Id": 1,
   "CustomerId": 100001,
@@ -82,7 +83,7 @@ var nonQuotaperiod = null;
 exports.register = function(server, options, next) {
     server.route([{
         method: 'get',
-        path: '/API/quota/getquotaperiod/{customerid}',
+        path: '/API/kpi/getquotaperiod/{customerid}',
         handler: function(request, reply) {
             if(request.params.customerid === '100001') {
                 return reply({
@@ -93,6 +94,16 @@ exports.register = function(server, options, next) {
             return reply({
                 "error": { "Code": "0", "Messages": null },
                 "Result": nonQuotaperiod
+            }).type("application/json");
+        }
+    },
+    {
+        method: 'get',
+        path: '/API/kpi/getkpiperiodpoint/{customerid}/{year}',
+        handler: function(request, reply) {
+            return reply({
+                "error": { "Code": "0", "Messages": null },
+                "Result": currentQuotaperiod_year
             }).type("application/json");
         }
     },

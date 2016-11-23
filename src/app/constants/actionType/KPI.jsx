@@ -8,6 +8,7 @@ module.exports = {
     GET_KPI_TAGS_SUCCESS:null,
     GET_KPI_INFO_SUCCESS:null,
     MERGE_KPI_INFO:null,
+    GET_QUOTAPERIOD_BY_YEAR:null
   }),
 
   Type:{

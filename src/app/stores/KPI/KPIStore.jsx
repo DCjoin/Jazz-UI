@@ -5,6 +5,7 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/KPI.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import Immutable from 'immutable';
+import moment from 'moment';
 import { Map } from 'immutable';
 import assign from 'object-assign';
 import {Type} from '../../constants/actionType/KPI.jsx';
@@ -14,7 +15,8 @@ function emptyMap() {
 }
 
 let kpiInfo=emptyMap();
-let _quotaperiod=null;
+let _quotaperiod=null,
+    _quotaperiodYear=null;
 
 const KPIStore = assign({}, PrototypeStore, {
   setKpiInfo(data){
@@ -33,7 +35,18 @@ const KPIStore = assign({}, PrototypeStore, {
     return _quotaperiod;
   },
 
+  setYearQuotaperiod(data) {
+    _quotaperiodYear = data.map(el=>{
+      return moment(el)
+    });
+  },
+
+  getYearQuotaperiod(){
+    return _quotaperiodYear;
+  },
+
   clearParam(){
+    if(!kpiInfo.get('AdvanceSettings')) return;
     let {Year,IndicatorType}=kpiInfo.get('AdvanceSettings').toJS();
     kpiInfo=kpiInfo.set('AdvanceSettings',emptyMap());
     kpiInfo=kpiInfo.setIn(['AdvanceSettings','Year'],Year);
@@ -64,17 +77,17 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   validateQuota(value){
-
+    let temp=parseFloat(value);
+    if(temp<0 || temp>100 || value.indexOf('.')>-1) return I18N.Setting.KPI.Parameter.QuotaErrorText;
+    return ''
   },
 
   validateSavingRate(value){
-
-  },
-
-  getErrorText(type){
-    if(type===Type.Quota){
-      return 'dd'
-    }
+    let temp=parseFloat(value),
+        index=value.indexOf('.');
+    if(temp<-100 || temp>100) return I18N.Setting.KPI.Parameter.QuotaErrorText;
+    if(index>-1 && value.length-index>2) return I18N.Setting.KPI.Parameter.QuotaErrorText;
+    return ''
   },
 
   dispose(){
@@ -96,6 +109,10 @@ KPIStore.dispatchToken = AppDispatcher.register(function(action) {
          break;
     case Action.MERGE_KPI_INFO:
          KPIStore.merge(action.data);
+         KPIStore.emitChange();
+         break;
+    case Action.GET_QUOTAPERIOD_BY_YEAR:
+         KPIStore.setYearQuotaperiod(action.data);
          KPIStore.emitChange();
          break;
     default:
