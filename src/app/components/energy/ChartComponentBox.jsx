@@ -16,6 +16,7 @@ import ChartStatusStore from '../../stores/energy/ChartStatusStore.jsx';
 import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 import { getCookie } from '../../util/Util.jsx';
+import PermissionCode from '../../constants/PermissionCode.jsx';
 
 let yAxisOffset = 70;
 
@@ -666,7 +667,7 @@ let ChartComponentBox = React.createClass({
         }
       }
       // CurrentUserStore.getCurrentPrivilege().indexOf('1221') > -1
-      if (CurrentUserStore.getCurrentPrivilege().indexOf('1221') > -1) { //will check privilidge for alarm
+      if (CurrentUserStore.permit(PermissionCode.ENERGY_ALARM.FULL)) { //will check privilidge for alarm
         //get and push alarm flag series
         if (item.EnergyAssociatedData && item.EnergyAssociatedData.AlarmHistories && item.EnergyAssociatedData.AlarmHistories.length > 0) {
           var index = null;

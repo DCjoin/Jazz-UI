@@ -10,6 +10,7 @@ import ReportAction from '../../actions/ReportAction.jsx';
 import TemplateList from './TemplateList.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
+import PermissionCode from '../../constants/PermissionCode.jsx';
 
 
 var Template = React.createClass({
@@ -54,7 +55,7 @@ var Template = React.createClass({
   _getOnlyRead(rivilege) {
     var onlyRead = false;
     if (rivilege !== null) {
-      if ((rivilege.indexOf('1218') > -1) && (rivilege.indexOf('1219') === -1)) {
+      if ((rivilege.indexOf(PermissionCode.DATA_REPORT_MANAGEMENT.READONLY+'') > -1) && (rivilege.indexOf(PermissionCode.DATA_REPORT_MANAGEMENT.FULL+'') === -1)) {
         onlyRead = true;
       }
     }

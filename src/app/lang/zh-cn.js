@@ -1759,6 +1759,7 @@ I18N.Privilege.Role.TagMapping = '数据点关联';
 I18N.Privilege.Role.CustomerInfoView = '客户信息查看';
 I18N.Privilege.Role.CustomerInfoManagement = '客户信息管理';
 I18N.Privilege.Role.CustomLabeling = '自定义能效标识';
+I18N.Privilege.Role.NewCustomLabeling = '自定义配置';
 I18N.Privilege.Role.BaselineConfiguration = '能耗分析基准值配置';
 
 I18N.Remark = {};
