@@ -165,7 +165,7 @@ exports.register = function(server, options, next) {
     },
     {
         method: 'get',
-        path: '/API/kpi/getkpiperiodpoint/{customerid}/{year}',
+        path: APIBasePath + APIPath.KPI.getKPIPeriodByYear,
         handler: function(request, reply) {
             return reply({
                 "error": { "Code": "0", "Messages": null },
@@ -175,7 +175,7 @@ exports.register = function(server, options, next) {
     },
     {
         method: 'get',
-        path: '/API/kpi/settings/{kpiId}/{year}',
+        path: APIBasePath + APIPath.KPI.getKpi,
         handler: function(request, reply) {
             if(request.params.year === '2016') {
               reply({
@@ -186,14 +186,14 @@ exports.register = function(server, options, next) {
             else {
               reply({
                   "error": { "Code": "0", "Messages": null },
-                  "Result": nonQuotaperiod
+                  "Result": ''
               }).type("application/json");
             }
         }
     },
     {
         method: 'post',
-        path: '/API/kpi/calckpigradualvalue',
+        path: APIBasePath + APIPath.KPI.getCalcValue,
         handler: function(request, reply) {
 
               return reply({
@@ -201,7 +201,49 @@ exports.register = function(server, options, next) {
                   "Result": calcValue
               }).type("application/json");
             }
-        }
+        },
+        {
+            method: 'post',
+            path: APIBasePath + APIPath.KPI.getCalcPredicate,
+            handler: function(request, reply) {
+
+                  return reply({
+                      "error": { "Code": "0", "Messages": null },
+                      "Result": calcValue
+                  }).type("application/json");
+                }
+            },
+    {
+            method: 'get',
+            path: '/API/kpi/IsAutoCalculable',
+            handler: function(request, reply) {
+                  return reply({
+                      "error": { "Code": "0", "Messages": null },
+                      "Result": true
+                  }).type("application/json");
+                }
+        },
+        {
+                method: 'post',
+                path: APIBasePath + APIPath.KPI.createKpiReportSettings,
+                handler: function(request, reply) {
+                      return reply({
+                          "error": { "Code": "050001228001", "Messages": null },
+                          "Result": null
+                      }).type("application/json");
+                    }
+            },
+            {
+                    method: 'post',
+                    path: APIBasePath + APIPath.KPI.updateKpiReportSettings,
+                    handler: function(request, reply) {
+                          return reply({
+                              "error": { "Code": "0", "Messages": null },
+                              "Result": request.params
+                          }).type("application/json");
+                        }
+                }
+
 
   ]);
     next();

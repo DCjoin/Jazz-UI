@@ -76,7 +76,89 @@ const KPIAction = {
       },
       error: function() {}
     });
-  }
+  },
+  IsAutoCalculable(tagId,year){
+    Ajax.get(util.replacePathParams(Path.KPI.IsAutoCalculable,tagId,year),
+      {
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.IS_AUTO_CALCUL_ABLE,
+          data: {
+            has:resBody,
+            year,
+          }
+        });
+      },
+      error: function() {}
+    });
+  },
+  getCalcPredicate(CustomerId,Year,TagRatios){
+    var url = Path.KPI.getCalcPredicate;
+    Ajax.post(url,
+      {
+      params: {
+          CustomerId,Year,TagRatios
+        },
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_CALC_PREDICATE,
+          data: resBody
+        });
+      },
+      error: function() {}
+    });
+  },
+  createKpi(CustomerId,HierarchyId,HierarchyName,kpiInfo){
+    var url = Path.KPI.createKpiReportSettings;
+    Ajax.post(url,
+      {
+      params: {
+          CustomerId,HierarchyId,HierarchyName,
+          ...kpiInfo
+        },
+      commonErrorHandling: false,
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.KPI_SUCCESS,
+          data: resBody
+        });
+      },
+      error: function(err, res) {
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),HierarchyName);
+        AppDispatcher.dispatch({
+          type: Action.KPI_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
+  updateKpi(kpiInfo){
+    var url = Path.KPI.updateKpiReportSettings;
+    Ajax.post(url,
+      {
+      params: {
+          ...kpiInfo
+        },
+      commonErrorHandling: false,
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.KPI_SUCCESS,
+          data: resBody
+        });
+      },
+      error: function(err, res) {
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),HierarchyName);
+        AppDispatcher.dispatch({
+          type: Action.KPI_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
 }
 
 export default KPIAction;
