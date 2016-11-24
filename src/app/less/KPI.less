@@ -74,3 +74,49 @@
   margin-top: 30px;
   max-width: 1024px;
 }
+
+
+.jazz-kpi-cycle {
+
+  position: relative;
+  margin-top: -16px;
+  background-color: @textWhite;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  & .header-bar {
+    height: 72px;
+    line-height: 72px;
+    font-size: 20px;
+    padding: 0 40px;
+    border-bottom: 1px solid #ececec;
+  }
+
+  & .content {
+    padding: 40px;
+    flex: 1;
+    background-color: @bgcGray;
+
+    & .select-panel {
+      margin-top: 20px;
+    }
+
+    & .result-panel {
+      margin-top: 20px;
+      
+      &-value {
+        font-size: 18px;
+        margin-top: 5px;
+      }
+    }
+
+    & .non-tip {
+      color: @schneiderGray;
+    }
+  }
+
+  & .form-bottom-bar {
+    left: 0;
+  }
+}

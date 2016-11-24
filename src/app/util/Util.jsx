@@ -302,10 +302,10 @@ let CommonFuns = {
   },
 
   replacePathParams(path, ...value) {
-		value.forEach(function(val) {
-			path = path.replace(/{\w*}/, val);
-		});
-		return path;
+    value.forEach(function(val) {
+      path = path.replace(/{\w*}/, val);
+    });
+    return path;
 	},
 
   getImageClipSource(source, clipRatioWidth, clipRatioHeight, wrapperWidth = clipRatioWidth, wrapperHeight = clipRatioHeight) {

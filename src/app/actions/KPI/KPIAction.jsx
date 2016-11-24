@@ -6,9 +6,22 @@ import util from 'util/Util.jsx';
 
 
 const KPIAction = {
-  getQuotaperiod(customerId) {
-		Ajax.get(util.replacePathParams(Path.APISubPaths.KPI.getQuotaperiod, customerId),
-    	{
+  	getKPIPeriod(customerId) {
+		Ajax.get(util.replacePathParams(Path.KPI.getKPIPeriod, customerId),
+		{
+			success: function(resBody) {
+				AppDispatcher.dispatch({
+					type: Action.GET_QUOTAPERIOD,
+					data: resBody
+				});
+			},
+			error: function() {}
+		});
+	},
+  	setKPIPeriod(data) {
+		Ajax.post(Path.KPI.setKPIPeriod,
+		{
+			params: data,
 			success: function(resBody) {
 				AppDispatcher.dispatch({
 					type: Action.GET_QUOTAPERIOD,
@@ -19,7 +32,7 @@ const KPIAction = {
 		});
 	},
   getQuotaperiodByYear(customerId,year) {
-    Ajax.get(util.replacePathParams(Path.APISubPaths.KPI.getQuotaperiodByYear, customerId,year),
+    Ajax.get(util.replacePathParams(Path.KPI.getQuotaperiodByYear, customerId,year),
       {
       success: function(resBody) {
         AppDispatcher.dispatch({
@@ -31,7 +44,7 @@ const KPIAction = {
     });
   },
   getKPI(kpiId,year){
-    Ajax.get(util.replacePathParams(Path.APISubPaths.KPI.getKpi, kpiId,year),
+    Ajax.get(util.replacePathParams(Path.KPI.getKpi, kpiId,year),
     	{
 			success: function(resBody) {
 				AppDispatcher.dispatch({

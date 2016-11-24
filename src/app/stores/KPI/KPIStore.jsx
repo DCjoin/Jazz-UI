@@ -15,7 +15,7 @@ function emptyMap() {
 }
 
 let kpiInfo=emptyMap();
-let _quotaperiod=null,
+let _KPIPeriod=null,
     _quotaperiodYear=null;
 
 const KPIStore = assign({}, PrototypeStore, {
@@ -27,12 +27,12 @@ const KPIStore = assign({}, PrototypeStore, {
     return kpiInfo;
   },
 
-  setQuotaperiod(data) {
-    _quotaperiod = data;
+  setKPIPeriod(data) {
+    _KPIPeriod = data;
   },
 
-  getQuotaperiod(){
-    return _quotaperiod;
+  getKPIPeriod(){
+    return assign({}, _KPIPeriod);
   },
 
   setYearQuotaperiod(data) {
@@ -92,7 +92,7 @@ const KPIStore = assign({}, PrototypeStore, {
 
   dispose(){
     kpiInfo=Immutable.fromJS({});
-    _quotaperiod=null;
+    _KPIPeriod=null;
   }
 
 });
@@ -100,7 +100,7 @@ const KPIStore = assign({}, PrototypeStore, {
 KPIStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_QUOTAPERIOD:
-      KPIStore.setQuotaperiod(action.data);
+      KPIStore.setKPIPeriod(action.data);
       KPIStore.emitChange();
       break;
     case Action.GET_KPI_INFO_SUCCESS:

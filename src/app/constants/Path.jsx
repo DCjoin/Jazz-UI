@@ -2,13 +2,12 @@
 
 module.exports = {
 
-	APISubPaths: {
     KPI:{
-    	getQuotaperiod: '/kpi/getquotaperiod/{customerid}',
-			getQuotaperiodByYear: '/kpi/getkpiperiodpoint/{customerid}/{year}',
-			getDimension:'/AreaDimension/GetAreaDimensionTree',
-			getTags:'/Tag/GetTagsByFilter',
-			getKpi:'/Kpi/settings/{kpiId}/{year}'
-		}
-  }
+		getKPIPeriod: '/kpi/getkpiperiod/{customerid}',
+		setKPIPeriod: '/kpi/setkpiperiod',
+		getKPIPeriodByYear: '/kpi/getkpiperiod/{customerid}/{year}',
+		calcKPIGradualValue: '/kpi/calckpigradualvalue',
+		getDimension:'/AreaDimension/GetAreaDimensionTree',
+		getTags:'/Tag/GetTagsByFilter'
+	}
 };

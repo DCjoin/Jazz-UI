@@ -1958,4 +1958,15 @@ I18N.Setting.KPI.Parameter.QuotaErrorText= '请输入0或正整数';
 I18N.Setting.KPI.Parameter.SavingRateErrorText= '请输入-100.0~100.0';
 I18N.Setting.KPI.Parameter.MonthValue= '逐月指标值';
 I18N.Setting.KPI.Parameter.CalcViaHistory= '根据历史数据计算';
+
+I18N.Setting.KPICycle = {};
+I18N.Setting.KPICycle.Title = '指标计算周期';
+I18N.Setting.KPICycle.StartTime = '起始日期';
+I18N.Setting.KPICycle.Date = '{0}{1}月{2}日 至 {3}{4}月{5}日';
+I18N.Setting.KPICycle.NextYear = '明年';
+I18N.Setting.KPICycle.ThisYear = '今年';
+I18N.Setting.KPICycle.LastYear = '去年';
+I18N.Setting.KPICycle.Month = '{0}月';
+I18N.Setting.KPICycle.Day = '{0}日';
+I18N.Setting.KPICycle.Non = '未配置指标计算周期时，默认按照自然年和自然月进行计算';
 module.exports = I18N;
