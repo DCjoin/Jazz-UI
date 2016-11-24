@@ -22,6 +22,7 @@ export default class KPI extends Component {
 		this._onDialogDismiss = this._onDialogDismiss.bind(this);
 		this._onTagSave = this._onTagSave.bind(this);
 		this._onSelectTagShow = this._onSelectTagShow.bind(this);
+		this._onTargetValueChange = this._onTargetValueChange.bind(this);
   }
 
   state = {
@@ -92,6 +93,28 @@ export default class KPI extends Component {
 
 	}
 
+	_onPredictioChange(index,value){
+		let target=this.state.kpiInfo.getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index]),
+				period=KPIStore.getYearQuotaperiod();
+		if(target){
+			KPIAction.merge([{
+				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
+				value
+			}])
+		}
+		else {
+			KPIAction.merge([{
+				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
+				value
+			},
+			{
+				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
+				value:period[index]
+			}
+		])
+		}
+	}
+
   _onTagSave(tag){
 		this.setState({
 			tageSelectShow:false,
@@ -121,7 +144,7 @@ export default class KPI extends Component {
 
 	componentWillMount(){
 		let {isCreate,kpiId,year}=this.props;
-		KPIAction.getQuotaperiodByYear(this.context.router.params.customerId,year);
+		KPIAction.getKPIPeriodByYear(this.context.router.params.customerId,year);
 		if(!isCreate){
 			KPIAction.getKPI(kpiId,year)
 		}
@@ -150,7 +173,7 @@ export default class KPI extends Component {
     let {hierarchyId,hierarchyName,isCreate}=this.props;
 		let {IndicatorName,ActualTagName,ActualTagId}=this.state.kpiInfo.toJS();
 		let AdvanceSettings=this.state.kpiInfo.get('AdvanceSettings') || Immutable.fromJS({});
-		let {IndicatorType,AnnualQuota,AnnualSavingRate,TargetMonthValues}=AdvanceSettings.toJS();
+		let {IndicatorType,AnnualQuota,AnnualSavingRate,TargetMonthValues,Year,PredictionSetting}=AdvanceSettings.toJS();
 
     let titleProps={
 			title:`${hierarchyName}-${isCreate?I18N.Setting.KPI.create:I18N.Setting.KPI.edit}`,
@@ -179,8 +202,8 @@ export default class KPI extends Component {
 					tagId:ActualTagId,
 					onYearChange:this._onYearChange,
 					onIndicatorTypeChange:this._onIndicatorTypeChange,
-					IndicatorType:this.state.kpiInfo.getIn(['AdvanceSettings','IndicatorType']),
-					Year:this.state.kpiInfo.getIn(['AdvanceSettings','Year'])
+					IndicatorType:IndicatorType,
+					Year:Year || this.props.year,
 				},
 				parameterProps={
 					tag:this.state.tag,
@@ -188,7 +211,10 @@ export default class KPI extends Component {
 					onAnnualChange:this._onAnnualChange,
 					value:IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate,
 					onTargetValueChange:this._onTargetValueChange,
-					TargetMonthValues:TargetMonthValues
+					onPredictioChange:this._onPredictioChange,
+					TargetMonthValues:TargetMonthValues,
+					Year:Year || this.props.year,
+					PredictionSetting:PredictionSetting,
 				};
     return(
       <TitleComponent {...titleProps}>

@@ -12,9 +12,7 @@ export default class DateTextField extends Component {
       disabled,
       underlineShow,
       style:{width:'150px',minWidth:'150px',marginRight:'20px'},
-      onChange:(value)=>{
-        this.props.onChange(date,value)
-      }
+      onChange:(event)=>{this.props.onChange(event.target.value)}
     };
     return(
       <TextField {...props}/>

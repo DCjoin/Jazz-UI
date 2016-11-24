@@ -31,8 +31,8 @@ const KPIAction = {
 			error: function() {}
 		});
 	},
-  getQuotaperiodByYear(customerId,year) {
-    Ajax.get(util.replacePathParams(Path.KPI.getQuotaperiodByYear, customerId,year),
+  getKPIPeriodByYear(customerId,year) {
+    Ajax.get(util.replacePathParams(Path.KPI.getKPIPeriodByYear, customerId,year),
       {
       success: function(resBody) {
         AppDispatcher.dispatch({
@@ -59,6 +59,22 @@ const KPIAction = {
     AppDispatcher.dispatch({
       type: Action.MERGE_KPI_INFO,
       data: data
+    });
+  },
+  getCalcValue(Year,QuotaType,IndexValue,RatioValues){
+    var url = Path.APISubPaths.KPI.getCalcValue;
+    Ajax.post(url,
+      {
+      params: {
+          Year,QuotaType,IndexValue,RatioValues
+        },
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_CALC_VALUE,
+          data: resBody
+        });
+      },
+      error: function() {}
     });
   }
 }

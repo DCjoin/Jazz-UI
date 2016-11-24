@@ -115,6 +115,13 @@ KPIStore.dispatchToken = AppDispatcher.register(function(action) {
          KPIStore.setYearQuotaperiod(action.data);
          KPIStore.emitChange();
          break;
+    case Action.GET_CALC_VALUE:
+        KPIStore.merge([{
+          path:'AdvanceSettings.TargetMonthValues',
+          value:Immutable.fromJS(action.data)
+        }]);
+        KPIStore.emitChange();
+        break;
     default:
   }
 });
