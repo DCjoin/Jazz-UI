@@ -4,16 +4,22 @@ import TitleComponent from '../../controls/TtileComponent.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import {Type} from '../../constants/actionType/KPI.jsx';
+import KPIAction from '../../actions/KPI/KPIAction.jsx';
 import KPIStore from '../../stores/KPI/KPIStore.jsx';
-import DateTextField from '../../controls/DateTextField.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
+import Prediction from './Prediction.jsx';
 
 export default class ParameterConfig extends Component {
 
-  state={
-    calcValue:null,
-  };
+  constructor(props) {
+    super(props);
+    this._onCalcValue = this._onCalcValue.bind(this);
+  }
+  _onCalcValue(){
+    let {Year,IndicatorType,value}=this.props;
+    KPIAction.getCalcValue(Year,IndicatorType,value);
+  }
 
   _renderIndicatorConfig(){
     let {IndicatorType,value,tag,TargetMonthValues,onTargetValueChange}=this.props;
@@ -48,7 +54,7 @@ export default class ParameterConfig extends Component {
     monthGroupProps={
       values:TargetMonthValues,
       onChange:onTargetValueChange,
-      IndicatorType:IndicatorType
+      IndicatorType:Type.MonthValue
     };
 
     return(
@@ -58,10 +64,30 @@ export default class ParameterConfig extends Component {
             <FlatButton
             label={I18N.Setting.KPI.Parameter.CalcViaHistory}
             onTouchTap={this._onCalcValue}
+            disabled={value===''}
             style={{border:'1px solid #e4e7e9'}}
             />
           <MonthValueGroup {...monthGroupProps}/>
           </TitleComponent>
+      </TitleComponent>
+    )
+  }
+
+  _renderPredictionConfig(){
+    let predictionProps={
+      title:I18N.Setting.KPI.Parameter.Prediction,
+      contentStyle:{
+        marginLeft:'0'
+      }
+    },
+    props={
+      PredictionSetting:this.props.PredictionSetting,
+      onPredictioChange:this.props.onPredictioChange,
+    };
+
+    return(
+      <TitleComponent {...predictionProps}>
+        <Prediction {...props}/>
       </TitleComponent>
     )
   }
@@ -74,6 +100,7 @@ export default class ParameterConfig extends Component {
       return(
         <TitleComponent {...props}>
           {this._renderIndicatorConfig()}
+          {this._renderPredictionConfig()}
         </TitleComponent>
       )
     }
@@ -93,6 +120,9 @@ ParameterConfig.propTypes={
     onAnnualChange:PropTypes.func,
     onTargetValueChange:PropTypes.func,
     TargetMonthValues:PropTypes.array,
+    PredictionSetting:PropTypes.object,
+    onPredictioChange:PropTypes.func,
+    Year:PropTypes.number,
 };
 ParameterConfig.defaultProps = {
   value:''

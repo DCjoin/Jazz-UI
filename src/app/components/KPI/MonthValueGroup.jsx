@@ -14,16 +14,16 @@ export default class MonthValueGroup extends Component {
         {
           KPIStore.getYearQuotaperiod().map((el,index)=>{
             var props={
-                  onChange:this.props.onChange,
+                  onChange:(value)=>{this.props.onChange(index,value)},
                   date:CommonFuns.formatDateByPeriod(el)
                 };
-            if(el.isBefore(moment(new Date()).format('YYYY-MM-01')) && this.props.IndicatorType===Type.SavingRate){
+            if(el.isBefore(moment(new Date()).format('YYYY-MM-01')) && this.props.IndicatorType===Type.MonthPrediction){
               props.disabled=true;
               props.underlineShow=false;
               props.value='-'
             }
-            else if(this.props.values && this.props.values.getIn[index]){
-                  props.value=this.props.values.getIn[index,'Value'];
+            else if(this.props.values && this.props.values[index]){
+                  props.value=this.props.values[index].Value;
               }
 
             return <DateTextField {...props}/>
