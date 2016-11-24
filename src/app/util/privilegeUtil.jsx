@@ -7,12 +7,11 @@ import PermissionCode, {
 import {remove} from 'lodash/array';
 
 const PrivilegeUtil = {
-	getCommonPrivilegeList: () => {
-		return [MAP_VIEW, ENERGY_MANAGE];
-	},
 	getRolePrivilegeList: () => {
 		return [
 			INDEX_AND_REPORT,
+			MAP_VIEW,
+			ENERGY_MANAGE,
 			BASELINE_CONFIG,
 			ENERGY_EXPORT,
 			ENERGY_ALARM,
