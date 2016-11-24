@@ -32,6 +32,7 @@ import { getCookie } from '../util/Util.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
 import MainApp from './MainApp.jsx';
 import RoutePath from '../util/RoutePath.jsx';
+import privilegeUtil from '../util/privilegeUtil.jsx';
 
 let MenuItem = require('material-ui/MenuItem');
 var f = lang.f;
@@ -452,8 +453,8 @@ var MainAppBar = React.createClass({
   _getFuncAuthNav: function() {
     var user = currentUser() || {};
     var codeList = CurrentUserStore.getCurrentPrivilege();
-    var commonPrivilege = CurrentUserStore.getCommonPrivilegeList();
-    var role = CurrentUserStore.getRolePrivilegeList(),
+    // var commonPrivilege = CurrentUserStore.getCommonPrivilegeList();
+    var role = privilegeUtil.getRolePrivilegeList(),
       rolePrivilege = [];
 
     // commonPrivilege = commonPrivilege.filter((item) => {
@@ -463,28 +464,27 @@ var MainAppBar = React.createClass({
       //   return false;
       // });
 
-    var commonPrivilegeList = commonPrivilege.map((item) => {
-      return (<div  className="pop-userprofile-authitem">{item}</div>);
-    });
+    // var commonPrivilegeList = commonPrivilege.map((item) => {
+    //   return (<div  className="pop-userprofile-authitem">{item}</div>);
+    // });
 
-    codeList.map((item) => {
-      var index = parseInt(item);
-      rolePrivilege.push(role[index]);
-    });
+    // codeList.map((item) => {
+    //   var index = parseInt(item);
+    //   rolePrivilege.push(role[index]);
+    // });
+    var rolePrivilegeList = role.filter(item => privilegeUtil.canView(item, CurrentUserStore.getCurrentPrivilege()))
+                                .map( item => <div className="pop-userprofile-authitem">{item.getLabel()}</div> )
 
-    var rolePrivilegeList = rolePrivilege.map((item) => {
-      return (<div  className="pop-userprofile-authitem">{item}</div>);
-    });
+
+    // var rolePrivilegeList = rolePrivilege.map((item) => {
+    //   return (<div  className="pop-userprofile-authitem">{item}</div>);
+    // });
 
     return (<SideNav open={true} side="right" onClose={this._onClose} >
           <div className="sidebar-title" >
               {user.RealName}
           </div>
           <div className="sidebar-content">
-              <div className="pop-userprofile-authcommon">
-                  <h3>{I18N.Privilege.Common.Common}</h3>
-                  {commonPrivilegeList}
-              </div>
               <div className="pop-userprofile-authrole">
                   <h3>{I18N.Privilege.Role.Role}</h3>
                   {rolePrivilegeList}

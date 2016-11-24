@@ -287,17 +287,6 @@ var RoleDetail = React.createClass({
         {role.get('PrivilegeCodes')&&<div className="pop-manage-detail-content ">
           <PrivilegeList 
             isView={isView}
-            privilegeList={privilegeUtil.getCommonPrivilegeList()} 
-            currentPrivilegeCodes={role.get('PrivilegeCodes').toJS()}
-            handleChange={(value) => {
-              RoleAction.merge({
-                value,
-                path: "PrivilegeCodes"
-              })
-            }}
-            title={I18N.Privilege.Common.Common}/>
-          <PrivilegeList 
-            isView={isView}
             privilegeList={privilegeUtil.getRolePrivilegeList()} 
             currentPrivilegeCodes={role.get('PrivilegeCodes').toJS()}
             handleChange={(value) => {

@@ -7,6 +7,7 @@ import classnames from "classnames";
 
 
 import Regex from '../../../constants/Regex.jsx';
+import privilegeUtil from 'util/privilegeUtil.jsx';
 
 import ViewableTextField from '../../../controls/ViewableTextField.jsx';
 
@@ -34,6 +35,7 @@ import _isFunction from "lodash/lang/isFunction";
 import _isNumber from "lodash/lang/isNumber";
 import _trim from 'lodash/string/trim';
 import find from 'lodash/collection/find';
+import curry from 'lodash/function/curry';
 
 var _ = {
   isFunction: _isFunction,
@@ -451,21 +453,23 @@ var UserDetail = React.createClass({
         Name = userType.get("Name");
       }
       var codeList = CurrentUserStore.getCurrentPrivilegeByUser(this.props.user.toJS(), this.props.userRoleList.toJS());
-      var commonPrivilege = CurrentUserStore.getCommonPrivilegeList();
-      var role = CurrentUserStore.getRolePrivilegeList(),
+      // var commonPrivilege = CurrentUserStore.getCommonPrivilegeList();
+      var role = privilegeUtil.getRolePrivilegeList(),
         rolePrivilege = [];
-      var commonPrivilegeList = commonPrivilege.map((item) => {
-        return (<div  className="pop-userprofile-authitem">{item}</div>);
-      });
+      // var commonPrivilegeList = commonPrivilege.map((item) => {
+      //   return (<div  className="pop-userprofile-authitem">{item}</div>);
+      // });
 
-      codeList.map((item) => {
-        var index = parseInt(item);
-        rolePrivilege.push(role[index]);
-      });
+      // codeList.map((item) => {
+      //   var index = parseInt(item);
+      //   rolePrivilege.push(role[index]);
+      // });
+      var rolePrivilegeList = role.filter(item => privilegeUtil.canView(item, codeList/*CurrentUserStore.getCurrentPrivilege()*/))
+                                  .map( item => <div className="pop-userprofile-authitem">{item.getLabel()}</div> )
 
-      var rolePrivilegeList = rolePrivilege.map((item) => {
-        return (<div  className="pop-userprofile-authitem">{item}</div>);
-      });
+      // var rolePrivilegeList = rolePrivilege.map((item) => {
+      //   return (<div  className="pop-userprofile-authitem">{item}</div>);
+      // });
 
       return (<SideNav open={true} side="right" onClose={this._onCloseRoleSideNav} >
 		          <div className="sidebar-title" title={Name} style={{
@@ -476,10 +480,6 @@ var UserDetail = React.createClass({
 		              {Name}
 		          </div>
 		          <div className="sidebar-content">
-		              <div className="pop-userprofile-authcommon">
-		                  <h3>{I18N.Privilege.Common.Common}</h3>
-		                  {commonPrivilegeList}
-		              </div>
 		              <div className="pop-userprofile-authrole">
 		                  <h3>{I18N.Privilege.Role.Role}</h3>
 		                  {rolePrivilegeList}

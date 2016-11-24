@@ -17,7 +17,7 @@ let CURRENT_USER_EVENT = 'currentuser',
   PASSWORD_SUCCESS_EVENT = 'passwordsuccess',
   CURRENT_PRIVILEGE_EVENT = 'currentprivilege';
 
-const PRIVILEGE_ADMIN_PERMISSION = ['1205', '1218', '1219', '1221', '1206', '1207', '1208', '1210', '1217', '1223', '1301'];
+const PRIVILEGE_ADMIN = ['1104', '1222', '1205', '1218', '1219', '1221', '1206', '1207', '1208', '1210', '1217', '1223', '1301'];
 
 var CurrentUserStore = assign({}, PrototypeStore, {
 
@@ -110,7 +110,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   },
   setCurrentPrivilege: function(role, useId, userType) {
     if (useId == 100001 || useId == 1 || userType == -1) {
-      _currentPrivilege = PRIVILEGE_ADMIN_PERMISSION;
+      _currentPrivilege = PRIVILEGE_ADMIN;
 
     } else {
       _currentPrivilege = role.PrivilegeCodes;
@@ -122,7 +122,7 @@ var CurrentUserStore = assign({}, PrototypeStore, {
   getCurrentPrivilegeByUser: function(user, userRoleList) {
     var privilege = [];
     if (user.Id == 100001 || user.Id == 1 || user.UserType == -1) {
-      privilege = PRIVILEGE_ADMIN_PERMISSION;
+      privilege = PRIVILEGE_ADMIN;
 
     } else {
       userRoleList.forEach(role => {
