@@ -12,6 +12,7 @@ var stats = require("../../build/stats.json");
 var publicPath = stats.publicPath;
 
 var STYLE_URL = publicPath + "main.css?" + stats.hash;
+console.log(stats.assetsByChunkName.main[0]);
 var APP_URL = publicPath + [].concat(stats.assetsByChunkName.main[0])[0];
 var VENDOR_URL = publicPath + [].concat(stats.assetsByChunkName.vendors)[0];
 //console.log(SCRIPT_URL);
