@@ -144,7 +144,7 @@ export default class KPI extends Component {
 
 	componentWillMount(){
 		let {isCreate,kpiId,year}=this.props;
-		KPIAction.getQuotaperiodByYear(this.context.router.params.customerId,year);
+		KPIAction.getKPIPeriodByYear(this.context.router.params.customerId,year);
 		if(!isCreate){
 			KPIAction.getKPI(kpiId,year)
 		}

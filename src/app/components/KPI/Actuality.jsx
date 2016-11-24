@@ -17,11 +17,11 @@ export default class Actuality extends Component {
 		}
 	}
 	componentWillMount() {
-		KPIAction.getQuotaperiod(this.props.router.params.customerId);
+		KPIAction.getKPIPeriod(this.props.router.params.customerId);
 		KPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
-		KPIAction.getQuotaperiod(this.props.router.params.customerId);
+		KPIAction.getKPIPeriod(this.props.router.params.customerId);
 		
 	}
 	componentWillUnmount() {
@@ -49,7 +49,7 @@ export default class Actuality extends Component {
 		});
 	}
 	render() {
-		if(!KPIStore.getQuotaperiod()) {
+		if(!KPIStore.getKPIPeriod()) {
 			return (
 				<div>{I18N.Kpi.Error.NonQuotaperiod}</div>
 			)

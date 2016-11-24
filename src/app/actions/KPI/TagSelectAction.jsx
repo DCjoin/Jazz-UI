@@ -7,7 +7,7 @@ const perPage=10000;
 
 const TagSelectAction = {
   getDimension(hierarchyId,hierarchyName) {
-		var url = Path.APISubPaths.KPI.getDimension;
+		var url = Path.KPI.getDimension;
 		Ajax.post(url,
       {
       params: {
@@ -24,7 +24,7 @@ const TagSelectAction = {
 		});
 	},
   getTags(hierarchyId,associationId,customerId){
-    var url = Path.APISubPaths.KPI.getTags;
+    var url = Path.KPI.getTags;
     Ajax.post(url,
       {
       params: {
