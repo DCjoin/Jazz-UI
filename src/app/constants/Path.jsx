@@ -11,7 +11,7 @@ module.exports = {
     getCalcValue:'/kpi/calckpigradualvalue',
     IsAutoCalculable:'/kpi/IsAutoCalculable?tagId={tagId}&year={year}',
     getCalcPredicate:'/kpi/CalcKPIPredicateValue',
-    createKpiReportSettings:'/kpi/CreateKpiReportSettings',
-    updateKpiReportSettings:'/kpi/UpdateKpiReportSettings'
+    createKpiReportSettings:'/kpi/CreateKpiSettings',
+    updateKpiReportSettings:'/kpi/UpdateKpiSettings'
 	}
 };
