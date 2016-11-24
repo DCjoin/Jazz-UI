@@ -24,24 +24,15 @@ import LinkButton from 'controls/LinkButton.jsx';
 class PrivilegeList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      open: true
-    };
   }
   render() {
     let { title, privilegeList, isView, currentPrivilegeCodes, handleChange } = this.props;
-    // console.log(privilegeList);
     return (
       <div className="pop-role-detail-content-permission">
         <div className="pop-role-detail-content-permission-header-panel">
           <span className="pop-role-detail-content-permission-header-panel-title">{title}</span>
-          <LinkButton label={this.state.open ? "隐藏" : "显示"} onClick={() => {
-            this.setState({
-              open: !this.state.open
-            });
-          }}/>
         </div>
-        {this.state.open && <ul className="pop-role-detail-content-permission-content">
+        <ul className="pop-role-detail-content-permission-content">
           {privilegeList.map( codeObj => {
             return (
               <div key={codeObj.getLabel()} className='pop-role-detail-content-permission-content-item'>
@@ -78,7 +69,7 @@ class PrivilegeList extends Component {
               </div>
             )
           } )}
-        </ul>}
+        </ul>
       </div>
     );
   }
