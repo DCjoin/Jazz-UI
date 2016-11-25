@@ -12,13 +12,36 @@ import CreateKPI from './KPI.jsx';
 import Highcharts from '../highcharts/Highcharts.jsx';
 
 const DEFAULT_OPTIONS = {
+    credits: {
+        enabled: false
+    },
     chart: {
+    	// height: 500,
+    	spacingBottom: 0,
+      	events: {
+          	load: function () {
+              	let lastLegendItems = document.querySelectorAll('.highcharts-legend .highcharts-legend-item:nth-of-type(3) rect');
+              	if(lastLegendItems) {
+	              	lastLegendItems.forEach((item) => {
+	              		item.setAttribute('width', item.getAttribute('width') * 1  - 1);
+	              		item.setAttribute('height', item.getAttribute('height') * 1  - 1);
+	              		item.setAttribute('y', item.getAttribute('y') * 1 + 1);
+	              		item.setAttribute('stroke', '#434348');
+			            item.setAttribute('stroke-width', 1);
+						item.setAttribute('stroke-dasharray', '4,3');
+	              	})
+              	}
+          	}
+      	}
     },
     title: {
-        text: 'Monthly Average Rainfall'
+    	align: 'left',
+    	margin: 40,
+        text: '用电量'
     },
-    subtitle: {
-        text: 'Source: WorldClimate.com'
+    legend: {
+    	align: 'left',
+    	padding: 30
     },
     xAxis: {
         categories: [
@@ -35,15 +58,25 @@ const DEFAULT_OPTIONS = {
             'Nov',
             'Dec'
         ],
-        crosshair: true
     },
     yAxis: {
+    	type: 'column',
         min: 0,
         title: {
-            text: 'Rainfall (mm)'
+            align: 'high',
+            rotation: 0,
+            offset: 0,
+            y: -20,
+            x: -10,
+            text: 'kWh'
         }
     },
     tooltip: {
+        crosshairs: {
+            width: 1.5,
+            color: 'black',
+        	zIndex: 3
+        },
         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
             '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
@@ -58,28 +91,35 @@ const DEFAULT_OPTIONS = {
             borderWidth: 0
         }
     },
-    series: [{
+    series: [ {
+        name: '指标值',
+        type: 'spline',
+        marker: {
+	        lineWidth: 3,
+	        lineColor: window.Highcharts.getOptions().colors[0],
+	        fillColor: 'white',
+	    },
+        zIndex: 2,
+        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2],
+    },{
         name: '实际值',
         type: 'column',
         pointPadding: 0.4,
         pointPlacement: 0,
+        color: '#90ed7d',
         data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
     }, {
         name: '预测值',
         type: 'column',
         pointPadding: 0.2,
         pointPlacement: 0,
-        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
-		borderColor: 'black',
-		borderWidth: 1,
+		borderColor: '#434348',
+        borderWidth: 1,
 		dashStyle: 'dash',
-		color: 'rgba(255, 255, 255, 0.1)'
+		color: 'rgba(255, 255, 255, 0.1)',
+        data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
 
-    }, {
-        name: '指标值',
-        type: 'spline',
-        data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-    }]
+    },]
 };
 
 class KPIChart extends Component {
