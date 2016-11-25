@@ -21,7 +21,10 @@ export default class MonthValueGroup extends Component {
             if(el.isBefore(moment(new Date()).format('YYYY-MM-01')) && this.props.IndicatorType===Type.MonthPrediction){
               props.disabled=true;
               props.underlineShow=false;
-              props.value='-'
+              props.value='-';
+              if(this.props.values && this.props.values[index]){
+                    props.value=this.props.values[index].Value===null?'-':this.props.values[index].Value;
+                }
             }
             else if(this.props.values && this.props.values[index]){
                   props.value=this.props.values[index].Value;

@@ -13,8 +13,8 @@ export default class TagSelect extends Component {
 	static propTypes = {
 		hierarchyId:React.PropTypes.number,
 		hierarchyName:React.PropTypes.String,
-		onSave:React.PropTypes.object,
-		onCancel:React.PropTypes.object,
+		onSave:React.PropTypes.func,
+		onCancel:React.PropTypes.func,
 		tag:React.PropTypes.object,
 	};
 
@@ -157,7 +157,7 @@ export default class TagSelect extends Component {
 			/>
 		];
 		let  dialogProps = {
-		        ref: 'dialog',
+		        ref: 'tag_dialog',
 		        title: I18N.Setting.KPI.Tag.Title,
 		        actions: actions,
 		        modal: true,

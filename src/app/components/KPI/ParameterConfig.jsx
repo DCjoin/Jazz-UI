@@ -73,7 +73,7 @@ export default class ParameterConfig extends Component {
   }
 
   _renderPredictionConfig(uom){
-    let {onSelectTagShow}=this.props,
+    let {tag,hierarchyId,hierarchyName}=this.props,
       predictionProps={
       title:I18N.Setting.KPI.Parameter.Prediction,
       contentStyle:{
@@ -82,10 +82,9 @@ export default class ParameterConfig extends Component {
     },
     props={
       PredictionSetting:this.props.PredictionSetting,
-      onPredictioChange:this.props.onPredictioChange,
-      onSelectTagShow:onSelectTagShow,
       Year:this.props.Year,
-      uom:uom
+      uom:uom,
+      tag,hierarchyId,hierarchyName
     };
 
     return(
@@ -125,10 +124,10 @@ ParameterConfig.propTypes={
     onTargetValueChange:PropTypes.func,
     TargetMonthValues:PropTypes.array,
     PredictionSetting:PropTypes.object,
-    onPredictioChange:PropTypes.func,
     Year:PropTypes.number,
     hasHistory:PropTypes.bool,
-    onSelectTagShow:PropTypes.func,
+    hierarchyId:React.PropTypes.number,
+    hierarchyName:React.PropTypes.string,
 };
 ParameterConfig.defaultProps = {
   value:''

@@ -22,7 +22,7 @@ export default class Actuality extends Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		KPIAction.getKPIPeriod(this.props.router.params.customerId);
-		
+
 	}
 	componentWillUnmount() {
 		KPIStore.removeChangeListener(this._onChange);

@@ -130,6 +130,7 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   validateQuota(value){
+    value=value+'';
     let temp=parseFloat(value);
     if(!value || value==='-') return '';
     if((temp+'').length!==value.length || temp<0 || value.indexOf('.')>-1) return I18N.Setting.KPI.Parameter.QuotaErrorText;
@@ -137,6 +138,7 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   validateSavingRate(value){
+    value=value+'';
     let temp=parseFloat(value),
         index=value.indexOf('.');
     if(!value || value==='-') return '';

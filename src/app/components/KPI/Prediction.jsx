@@ -10,6 +10,7 @@ import KPIAction from '../../actions/KPI/KPIAction.jsx';
 import KPIStore from '../../stores/KPI/KPIStore.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
+import TagSelect from './TagSelect.jsx';
 
 export default class Prediction extends Component {
 
@@ -20,7 +21,65 @@ export default class Prediction extends Component {
   constructor(props) {
     super(props);
     this._onCalcValue = this._onCalcValue.bind(this);
+    this._onDialogDismiss = this._onDialogDismiss.bind(this);
+    this._onRatesSelectTagShow = this._onRatesSelectTagShow.bind(this);
+    this._onRatesSave = this._onRatesSave.bind(this);
+
   }
+
+  state={
+    ratesTageSelectShow:false,
+  }
+
+  _onDialogDismiss(){
+    this.setState({
+      ratesTageSelectShow:false
+    })
+  }
+
+  _onRatesSelectTagShow(){
+    this.setState({
+      ratesTageSelectShow:true
+    })
+  }
+
+  _onRatesSave(tag){
+    this.setState({
+      ratesTageSelectShow:false
+    },()=>{
+      KPIAction.merge([{
+        path:'AdvanceSettings.PredictionSetting.TagSavingRates',
+        value:Immutable.fromJS({
+          TagId:tag.get('Id'),
+          TagName:tag.get('Name'),
+          SavingRate:0
+        }),
+        status:Status.ADD
+      }])
+    })
+  }
+
+  	_onPredictioChange(index,value){
+  		let target=this.state.kpiInfo.getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index]),
+  				period=KPIStore.getYearQuotaperiod();
+  		if(target){
+  			KPIAction.merge([{
+  				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
+  				value
+  			}])
+  		}
+  		else {
+  			KPIAction.merge([{
+  				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
+  				value
+  			},
+  			{
+  				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
+  				value:period[index]
+  			}
+  		])
+  		}
+  	}
 
   _onCalcValue(TagSavingRates){
     // let {Year,IndicatorType,value}=this.props;
@@ -46,7 +105,7 @@ export default class Prediction extends Component {
             <tbody>
               <tr>
                 {tags.map((tag,index)=>{
-                  return <td>
+                  return <td title={{tag}}>
                   <span className='tagName'>{tag}</span>
                           {index>0 && <IconButton iconStyle={{fontSize:'14PX'}} style={{width:'14px',height:'14px'}} onClick={this._deleteRate.bind(this,index-1)}>
                                          <FontIcon className="icon-delete"/>
@@ -56,10 +115,7 @@ export default class Prediction extends Component {
                 })}
                 <td><FlatButton
                             label={I18N.EM.Report.SelectTag}
-                            onTouchTap={(e)=>{
-                              this.props.onSelectTagShow();
-                              e.stopPropagation();
-                            }}
+                            onTouchTap={this._onRatesSelectTagShow}
                             style={{border:'1px solid #e4e7e9'}}
                             /></td>
               </tr>
@@ -99,13 +155,15 @@ export default class Prediction extends Component {
   }
 
   render(){
-    let {PredictionSetting,onPredictioChange}=this.props;
+    let {PredictionSetting,hierarchyId,hierarchyName,tag}=this.props;
     PredictionSetting=PredictionSetting || {};
     let {MonthPredictionValues,TagSavingRates}=PredictionSetting;
     let savingRateProps={
       title:I18N.Setting.KPI.Parameter.TagSavingRates,
       contentStyle:{
-        marginLeft:'0'
+        marginLeft:'0',
+        overflowX:'auto',
+        paddingBottom:'10px'
       }
     },
     monthProps={
@@ -116,9 +174,17 @@ export default class Prediction extends Component {
     },
     monthGroupProps={
       values:MonthPredictionValues,
-      onChange:onPredictioChange,
+      onChange:this._onPredictioChange,
       IndicatorType:Type.MonthPrediction
-    };
+    },
+    ratesTagProps={
+        key:'ratestagselect',
+          hierarchyId,
+          hierarchyName,
+          tag:tag,
+          onSave:this._onRatesSave,
+          onCancel:this._onDialogDismiss
+          };
 
     return(
       <div>
@@ -134,6 +200,7 @@ export default class Prediction extends Component {
             />
           <MonthValueGroup {...monthGroupProps}/>
           </TitleComponent>
+          {this.state.ratesTageSelectShow && <TagSelect {...ratesTagProps}/>}
       </div>
 
 
@@ -144,10 +211,11 @@ export default class Prediction extends Component {
 
 Prediction.propTypes={
     PredictionSetting:PropTypes.object,
-    onPredictioChange:PropTypes.func,
     Year:PropTypes.number,
-    onSelectTagShow:PropTypes.func,
-    uom:PropTypes.string
+    uom:PropTypes.string,
+    tag:PropTypes.object,
+    hierarchyId:React.PropTypes.number,
+    hierarchyName:React.PropTypes.string,
 };
 Prediction.defaultProps = {
 };
