@@ -15,6 +15,7 @@ export default class TagSelect extends Component {
 		hierarchyName:React.PropTypes.String,
 		onSave:React.PropTypes.object,
 		onCancel:React.PropTypes.object,
+		tag:React.PropTypes.object,
 	};
 
 	static contextTypes = {
@@ -44,7 +45,14 @@ export default class TagSelect extends Component {
 	}
 
 	_getTags(id){
-		TagSelectAction.getTags(this.props.hierarchyId,id,this.context.router.params.customerId)
+		if(!this.props.tag){
+			TagSelectAction.getTags(this.props.hierarchyId,id,this.context.router.params.customerId)
+		}
+		else {
+			TagSelectAction.getTags(this.props.hierarchyId,id,this.context.router.params.customerId,
+				this.props.tag.get('CommodityId'),this.props.tag.get('UomId'))
+		}
+
 	}
 
 	_onSave(){

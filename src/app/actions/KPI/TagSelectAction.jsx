@@ -23,7 +23,7 @@ const TagSelectAction = {
 			error: function() {}
 		});
 	},
-  getTags(hierarchyId,associationId,customerId){
+  getTags(hierarchyId,associationId,customerId,CommodityId,UomId){
     var url = Path.KPI.getTags;
     Ajax.post(url,
       {
@@ -35,7 +35,9 @@ const TagSelectAction = {
               AssociationOption:associationId===-1?2:6
             },
             CustomerId:customerId,
-            IncludeAssociationName:true
+            IncludeAssociationName:true,
+            CommodityId,
+            UomId
           },
           filters:null,
           limit:perPage,

@@ -9,7 +9,11 @@ module.exports = {
     GET_KPI_INFO_SUCCESS:null,
     MERGE_KPI_INFO:null,
     GET_QUOTAPERIOD_BY_YEAR:null,
-    GET_CALC_VALUE:null
+    GET_CALC_VALUE:null,
+    GET_CALC_PREDICATE:null,
+    IS_AUTO_CALCUL_ABLE:null,
+    KPI_SUCCESS:null,
+    KPI_ERROR:null,
   }),
 
   Type:{
@@ -17,6 +21,10 @@ module.exports = {
     SavingRate:2,
     MonthValue:3,
     MonthPrediction:4
+  },
+  Status:{
+    ADD:'add',
+    DELETE:'delete',
   }
 
 };

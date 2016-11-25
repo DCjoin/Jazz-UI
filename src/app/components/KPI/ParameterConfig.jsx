@@ -21,12 +21,11 @@ export default class ParameterConfig extends Component {
     KPIAction.getCalcValue(Year,IndicatorType,value);
   }
 
-  _renderIndicatorConfig(){
+  _renderIndicatorConfig(uom){
     let {IndicatorType,value,tag,TargetMonthValues,onTargetValueChange}=this.props;
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         annualTitle=I18N.format(I18N.Setting.KPI.Parameter.Annual,type),
         annualHint=I18N.format(I18N.Setting.KPI.Parameter.InputAnnual,type);
-    let uom=CommonFuns.getUomById(tag.get('UomId')).Code;
     let indicatorProps={
       title:I18N.Setting.KPI.Parameter.Indicator,
       contentStyle:{
@@ -46,7 +45,7 @@ export default class ParameterConfig extends Component {
       regexFn:IndicatorType===Type.Quota?KPIStore.validateQuota:KPIStore.validateSavingRate,
     },
     monthProps={
-      title:I18N.Setting.KPI.Parameter.MonthValue,
+      title:`${I18N.Setting.KPI.Parameter.MonthValue} (${uom})`,
       contentStyle:{
         marginLeft:'0'
       }
@@ -64,7 +63,7 @@ export default class ParameterConfig extends Component {
             <FlatButton
             label={I18N.Setting.KPI.Parameter.CalcViaHistory}
             onTouchTap={this._onCalcValue}
-            disabled={value===''}
+            disabled={value==='' || this.props.hasHistory}
             style={{border:'1px solid #e4e7e9'}}
             />
           <MonthValueGroup {...monthGroupProps}/>
@@ -73,8 +72,9 @@ export default class ParameterConfig extends Component {
     )
   }
 
-  _renderPredictionConfig(){
-    let predictionProps={
+  _renderPredictionConfig(uom){
+    let {onSelectTagShow}=this.props,
+      predictionProps={
       title:I18N.Setting.KPI.Parameter.Prediction,
       contentStyle:{
         marginLeft:'0'
@@ -83,6 +83,9 @@ export default class ParameterConfig extends Component {
     props={
       PredictionSetting:this.props.PredictionSetting,
       onPredictioChange:this.props.onPredictioChange,
+      onSelectTagShow:onSelectTagShow,
+      Year:this.props.Year,
+      uom:uom
     };
 
     return(
@@ -97,10 +100,11 @@ export default class ParameterConfig extends Component {
       let props={
         title:I18N.Setting.KPI.Parameter.Title
       };
+      let uom=CommonFuns.getUomById(this.props.tag.get('UomId')).Code;
       return(
         <TitleComponent {...props}>
-          {this._renderIndicatorConfig()}
-          {this._renderPredictionConfig()}
+          {this._renderIndicatorConfig(uom)}
+          {this._renderPredictionConfig(uom)}
         </TitleComponent>
       )
     }
@@ -123,6 +127,8 @@ ParameterConfig.propTypes={
     PredictionSetting:PropTypes.object,
     onPredictioChange:PropTypes.func,
     Year:PropTypes.number,
+    hasHistory:PropTypes.bool,
+    onSelectTagShow:PropTypes.func,
 };
 ParameterConfig.defaultProps = {
   value:''

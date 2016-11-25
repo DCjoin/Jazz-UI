@@ -1317,6 +1317,8 @@ I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
 I18N.Message.M21802 = '所选数据点包含计量数据V类型的数据点，不支持原始数据功能，请重新选择。';
 
+I18N.Message.M28001 = '指标名称在{0}下已存在，请修改名称后再保存。';
+
 I18N.Folder = {};
 I18N.Folder.NewWidget = {};
 I18N.Folder.NewWidget.Menu1 = '能耗分析';
@@ -1960,6 +1962,7 @@ I18N.Setting.KPI.Parameter.MonthValue= '逐月指标值';
 I18N.Setting.KPI.Parameter.CalcViaHistory= '根据历史数据计算';
 I18N.Setting.KPI.Parameter.Prediction= '配置预测值';
 I18N.Setting.KPI.Parameter.TagSavingRates= '分项节能率配置';
+I18N.Setting.KPI.Parameter.SavingRates= '分项节能率';
 I18N.Setting.KPI.Parameter.MonthPrediction= '逐月预测值';
 I18N.Setting.KPI.Parameter.CalcViaSavingRates= '根据分项节能率计算';
 I18N.Setting.KPICycle = {};
