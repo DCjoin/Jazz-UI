@@ -15,7 +15,8 @@ export default class MonthValueGroup extends Component {
           KPIStore.getYearQuotaperiod().map((el,index)=>{
             var props={
                   onChange:(value)=>{this.props.onChange(index,value)},
-                  date:CommonFuns.formatDateByPeriod(el)
+                  date:CommonFuns.formatDateByPeriod(el),
+                  regexFn:KPIStore.validateQuota
                 };
             if(el.isBefore(moment(new Date()).format('YYYY-MM-01')) && this.props.IndicatorType===Type.MonthPrediction){
               props.disabled=true;

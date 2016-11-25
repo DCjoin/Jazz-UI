@@ -68,13 +68,40 @@
     margin:50px;
     overflow-x: hidden;
     overflow-y: auto;
+    .form-bottom .form-bottom-bar{
+      left:0 !important;
+    }
   }
 }
 .jazz-kpi-calc-month{
   margin-top: 30px;
   max-width: 1024px;
 }
-
+.jazz-kpi-save-rates{
+  border-collapse: collapse;
+  overflow-x: auto;
+    font-size: 14px;
+    tr{
+      border:1px solid #e4e7e9;
+      td{
+        width:150px;
+        border-left:1px solid #e4e7e9;
+        height:39px;
+        text-align: center;
+        .tagName{
+          .hiddenEllipsis();
+          max-width: 120px;
+        }
+      }
+      td:first-child{
+        border-left:none;
+        width:80px;
+      }
+    }
+    tr:last-child{
+      border-top: none;
+    }
+}
 
 .jazz-kpi-cycle {
 
@@ -104,7 +131,7 @@
 
     & .result-panel {
       margin-top: 20px;
-      
+
       &-value {
         font-size: 18px;
         margin-top: 5px;
