@@ -2,6 +2,7 @@
 
 
 let React = require('react');
+let ReactDOM = require('react-dom');
 let assign = require('object-assign');
 
 let Highcharts = window.Highcharts;
@@ -57,7 +58,7 @@ let Highstock = React.createClass({
         let that = this,
             _tempOptions = JSON.parse(that.state.options),
             options = assign({}, _tempOptions, {
-                chart: assign({}, _tempOptions.chart, {renderTo: this.refs.jazz_energy_view.getDOMNode()})
+                chart: assign({}, _tempOptions.chart, {renderTo: ReactDOM.findDOMNode(this.refs.jazz_energy_view)})
             });
 
         that._paper = new Highcharts.Chart(options);
