@@ -77,12 +77,35 @@ const DEFAULT_OPTIONS = {
             color: 'black',
         	zIndex: 3
         },
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-        footerFormat: '</table>',
+	    borderWidth: 0,
+	    backgroundColor: "rgba(255,255,255,0)",
+	    borderRadius: 0,
+	    formatter: function() {
+	    	var util = 'kWh';
+	    	var data1 = this.points[0];
+	    	var data2 = this.points[1];
+	    	var data3 = this.points[2];
+	    	return `
+	    	<table>
+	    		<b>本月指标使用量: 70%</b>
+	    		<tr>
+			    	<td style="color:${data1.series.color};padding:0">● ${data1.series.name}: </td>
+			    	<td style="padding:0">${data1.y + ' ' + util}</td>
+		    	</tr>
+	    		<tr>
+			    	<td style="color:${data2.series.color};padding:0">■ ${data2.series.name}: </td>
+			    	<td style="padding:0">${data2.y + ' ' + util}</td>
+		    	</tr>
+	    		<tr>
+			    	<td style="color:#434348;padding:0"><div style='    margin-right: 4px;border-color:#434348;border-width:1px;border-style:dotted;display:inline-block;width:6px;height:6px'></div>${data3.series.name}: </td>
+			    	<td style="padding:0">${data3.y + ' ' + util}</td>
+		    	</tr>
+	    	</table>
+	    	`;
+	    },
         shared: true,
-        useHTML: true
+        useHTML: true,
+        shadow: false,
     },
     plotOptions: {
         column: {
@@ -107,6 +130,25 @@ const DEFAULT_OPTIONS = {
         pointPadding: 0.4,
         pointPlacement: 0,
         color: '#90ed7d',
+        dataLabels: {
+            enabled: true,
+            useHTML: true,
+            borderRadius: 5,
+            backgroundColor: 'rgba(252, 255, 197, 0.7)',
+            borderWidth: 1,
+            borderColor: '#AAA',
+            y: -6,
+            formatter: function() {
+            	if(this.point.index === 7) {
+            		return `
+						<div class='actuality-fractional-energy-saving-tooltip'>
+							<div>截至上月节能率</div>
+							<div>9%</div>
+						</div>
+            		`
+            	}
+            }
+        },
         data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
     }, {
         name: '预测值',
