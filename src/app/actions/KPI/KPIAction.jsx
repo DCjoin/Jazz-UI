@@ -55,6 +55,56 @@ const KPIAction = {
 			error: function() {}
 		});
   },
+  initKPIChartData() {
+    AppDispatcher.dispatch({
+      type: Action.INIT_KPI_CHART_DATA,
+    });
+  },
+  getKPIConfigured(CustomerId, Year, HierarchyId) {
+    let getKPIChart = this.getKPIChart;
+    let getKPIChartSummary = this.getKPIChartSummary;
+    let initKPIChartData = this.initKPIChartData;
+    Ajax.get(Path.KPI.getKPIConfigured, {
+      params: {CustomerId, HierarchyId, Year},
+      success: function(resBody) {
+        if(resBody) {
+          initKPIChartData();
+          getKPIChart(CustomerId, Year, HierarchyId);
+          getKPIChartSummary(CustomerId, Year, HierarchyId);
+        } else {
+          AppDispatcher.dispatch({
+            type: Action.GET_KPI_CHART,
+            data: null
+          });          
+        }
+      },
+      error: function() {}
+    });
+  },
+  getKPIChart(CustomerId, Year, HierarchyId) {
+    Ajax.get(Path.KPI.getKPIChart, {
+      params: {CustomerId, Year, HierarchyId},
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_KPI_CHART,
+          data: resBody
+        });
+      },
+      error: function() {}
+    });    
+  },
+  getKPIChartSummary(CustomerId, Year, HierarchyId) {
+    Ajax.get(Path.KPI.getKPIChartSummary, {
+      params: {CustomerId, Year, HierarchyId},
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_KPI_CHART_SUMMARY,
+          data: resBody
+        });
+      },
+      error: function() {}
+    });    
+  },
   merge(data){
     AppDispatcher.dispatch({
       type: Action.MERGE_KPI_INFO,

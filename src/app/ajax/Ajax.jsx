@@ -16,6 +16,16 @@ import AjaxAction from '../actions/Ajax.jsx';
  *		String dataType: send params & get result type
  *
  */
+var _generatorRequest = function( url, type, params ) {
+  var type = type.toLowerCase(),
+    req = request[type]( url.split('?')[0] );
+  if( type === "get" ) {
+    return req.query(params);
+  } else {
+    return req.send(params);
+  }
+
+};
 var _ajax = function(url, options) {
 
 	options = options || {};
@@ -34,26 +44,26 @@ var _ajax = function(url, options) {
 		},
 		dataType = options.dataType || "application/json";
 
-	request[type.toLowerCase()](Config.ServeAddress + Config.APIBasePath + url)
+	_generatorRequest(Config.ServeAddress + Config.APIBasePath + url, type, params)
 		.send(params)
         .set('Accept', dataType)
         .set('httpWebRequest.MediaType', dataType)
         .set('Content-Type', dataType)
         .end(function(err, res){
         	if (res.ok && Util.isSuccess(res.body)) {
-    				success.call(options, Util.getResResult(res.body));
+    			success.call(options, Util.getResResult(res.body));
         	} else {
-						if(res.body){
-							if (res.status == 401) {
-								// session timeout or not auth
-								AjaxAction.handleGlobalError(401);
-							}else {
-								Util.ErrorHandler(options, res.body.error.Code);
-							}
-						}else if(res.text){
-							let errorObj = JSON.parse(res.text);
-							Util.ErrorHandler(options, errorObj.error.Code);
-						}
+				if(res.body){
+					if (res.status == 401) {
+						// session timeout or not auth
+						AjaxAction.handleGlobalError(401);
+					}else {
+						Util.ErrorHandler(options, res.body.error.Code);
+					}
+				}else if(res.text){
+					let errorObj = JSON.parse(res.text);
+					Util.ErrorHandler(options, errorObj.error.Code);
+				}
 
         		error.call(options, err, res);
         	}

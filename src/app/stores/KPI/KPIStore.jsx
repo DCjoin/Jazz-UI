@@ -18,10 +18,46 @@ function emptyList() {
   return new List();
 }
 
+function coverageRawToHighChartData(data) {
+  if(!data) {
+    return null;
+  }
+  return {
+    year: data.year,
+    data: data.IndicatorCharts.map( indicator => {
+      return {
+        unit: indicator.UomId,
+        name: indicator.IndicatorName,
+        id: indicator.IndicatorId,
+        lastMonthSaving: indicator.LstMonthSaving,
+        actual: indicator.ActualActualMonthValues && indicator.ActualActualMonthValues.map( val => val.Value ),
+        target: indicator.TargetMonthValues && indicator.TargetMonthValues.map( val => val.Value ),
+        prediction: indicator.PredictionMonthValues && indicator.PredictionMonthValues.map( val => val.Value ),
+      }
+    } )
+  }
+}
+
 let kpiInfo=emptyMap();
 let _KPIPeriod=null,
+    _KPIConfiguredLoading=false,
+    _KPIConfigured=null,
+    _KPIChart=null,
+    _KPIChartSummary=null,
     _quotaperiodYear=null,
     _hasHistory=false;
+
+function _init() {
+  kpiInfo=emptyMap();
+  _KPIPeriod=null;
+  _KPIConfiguredLoading=true;
+  _KPIConfigured=null;
+  _KPIChart=null;
+  _KPIChartSummary=null;
+  _quotaperiodYear=null;
+  _hasHistory=false;
+}
+
 let KPI_SUCCESS_EVENT = 'kpisuccess',
   KPI_ERROR_EVENT = 'kpierror';
 const KPIStore = assign({}, PrototypeStore, {
@@ -39,6 +75,40 @@ const KPIStore = assign({}, PrototypeStore, {
 
   getKPIPeriod(){
     return assign({}, _KPIPeriod);
+  },
+
+  setKpiConfiguredLoading() {
+    _KPIConfiguredLoading = true;
+  },
+  getKpiConfiguredLoading() {
+    return _KPIConfiguredLoading;
+  },
+
+  setKpiConfigured(value) {
+    _KPIConfiguredLoading = false;
+    _KPIConfigured = value;
+  },
+
+  getKPIConfigured() {
+    return  !!_KPIConfigured;
+  },
+
+  setKPIChart(data) {
+    _KPIChart = Immutable.fromJS(coverageRawToHighChartData(data));
+  },
+  getKPIChart() {
+    return _KPIChart;
+  },
+
+  setKPIChartSummary(data) {
+    _KPIChartSummary = data;
+  },
+  getKPIChartSummary() {
+    return _KPIChartSummary;
+  },
+  _initKpiChartData() {
+    _KPIChartSummary = null;
+    _KPIChart = Immutable.fromJS(coverageRawToHighChartData(null));
   },
 
   setYearQuotaperiod(data) {
@@ -252,6 +322,25 @@ KPIStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.GET_KPI_INFO_SUCCESS:
          KPIStore.setKpiInfo(action.data);
+         KPIStore.emitChange();
+         break;
+    case Action.GET_KPI_CONFIGURED:
+         KPIStore.setKpiConfigured(action.data);
+         KPIStore.emitChange();
+         break;
+    case Action.GET_KPI_CONFIGURED_LOADING:
+         KPIStore.setKpiConfiguredLoading();
+         break;
+    case Action.GET_KPI_CHART:
+         KPIStore.setKPIChart(action.data);
+         KPIStore.emitChange();
+         break;
+    case Action.GET_KPI_CHART_SUMMARY:
+         KPIStore.setKPIChartSummary(action.data);
+         KPIStore.emitChange();
+         break;
+    case Action.INIT_KPI_CHART_DATA:
+         KPIStore._initKpiChartData();
          KPIStore.emitChange();
          break;
     case Action.MERGE_KPI_INFO:

@@ -195,6 +195,29 @@
   &-summary {
     width: 300px;
     margin-left: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & .summary {
+      &-item {
+        border: 1px solid #000;
+        padding: 10px 20px;
+
+        &.overproof {
+          color: red;
+        }
+      }
+      &-value {
+        height: 60px;
+        line-height: 60px;
+        font-size: 22px;
+        &>span:last-of-type {
+          font-size: 16px;
+          margin-left: 10px;
+        }
+      }
+    }
   }
 
   & .actuality-fractional-energy-saving-tooltip {
