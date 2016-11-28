@@ -78,6 +78,6 @@ YearAndTypeConfig.propTypes={
     onYearChange:PropTypes.func,
     onIndicatorTypeChange:PropTypes.func,
 };
-YearAndTypeConfig.defaultProps = {
-	Year:2016,
-};
+// YearAndTypeConfig.defaultProps = {
+// 	Year:2016,
+// };

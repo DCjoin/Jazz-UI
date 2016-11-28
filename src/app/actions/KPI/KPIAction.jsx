@@ -96,27 +96,27 @@ const KPIAction = {
   },
   getKPIChartSummary(CustomerId, Year, HierarchyId) {
     //for test
-    var result = [{
-        actual: ['5.8万'],
-        target: ['6万', '103%'],
-      }, {
-        Overproof: true,
-        actual: ['8%', '5.8万'],
-        target: ['7%', '5.6万'],
-      }];
-        AppDispatcher.dispatch({
-          type: Action.GET_KPI_CHART_SUMMARY,
-          data: result
-        });
-    // Ajax.get(util.replacePathParams(Path.KPI.getKPIChartSummary, CustomerId, Year, HierarchyId), {
-    //   success: function(resBody) {
+    // var result = [{
+    //     actual: ['5.8万'],
+    //     target: ['6万', '103%'],
+    //   }, {
+    //     Overproof: true,
+    //     actual: ['8%', '5.8万'],
+    //     target: ['7%', '5.6万'],
+    //   }];
     //     AppDispatcher.dispatch({
     //       type: Action.GET_KPI_CHART_SUMMARY,
-    //       data: resBody
+    //       data: result
     //     });
-    //   },
-    //   error: function() {}
-    // });
+    Ajax.get(util.replacePathParams(Path.KPI.getKPIChartSummary, CustomerId, Year, HierarchyId), {
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_KPI_CHART_SUMMARY,
+          data: resBody
+        });
+      },
+      error: function() {}
+    });
   },
   merge(data){
     AppDispatcher.dispatch({

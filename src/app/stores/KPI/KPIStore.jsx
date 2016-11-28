@@ -11,9 +11,9 @@ import assign from 'object-assign';
 import {Status,Type} from '../../constants/actionType/KPI.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
-// let {DataConverter} = CommonFuns;
-// let j2d = DataConverter.JsonToDateTime,
-//   d2j = DataConverter.DatetimeToJson;
+let {DataConverter} = CommonFuns;
+let j2d = DataConverter.JsonToDateTime,
+  d2j = DataConverter.DatetimeToJson;
 
 // let j2d=CommonFuns.DataConverter.JsonToDateTime;
 // CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false),
