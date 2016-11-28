@@ -63,6 +63,7 @@ const KPIAction = {
   getKPIConfigured(CustomerId, Year, HierarchyId) {
     let getKPIChart = this.getKPIChart;
     let getKPIChartSummary = this.getKPIChartSummary;
+    let getKPIPeriodByYear = this.getKPIPeriodByYear;
     let initKPIChartData = this.initKPIChartData;
     Ajax.get(util.replacePathParams(Path.KPI.getKPIConfigured, CustomerId, HierarchyId), {
       success: function(resBody) {
@@ -70,6 +71,7 @@ const KPIAction = {
           initKPIChartData();
           getKPIChart(CustomerId, Year, HierarchyId);
           getKPIChartSummary(CustomerId, Year, HierarchyId);
+          getKPIPeriodByYear(CustomerId, Year);
         } else {
           AppDispatcher.dispatch({
             type: Action.GET_KPI_CHART,

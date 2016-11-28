@@ -1932,7 +1932,16 @@ let CommonFuns = {
     TelephoneRule: /^(\d)+(-(\d)+)*$/, // 由数字和中划线组成。不以中划线开头。非空。
     AddressRule: /[\w\W\u4e00-\u9fa5]+$/, // 任何可见字符。非空。用于address
     UrlRule: /(((^https?)):\/\/([\-\w]+\.)+\w{2,3}(\/[%\-\w]+(\.\w{2,})?)*(([\w\-\.\?\\\/+@&#;`~=%!]*)(\.\w{2,})?)*\/?)/i
-  }
+  },
+
+  getDateLabelsFromMomentToKPI(dates) {
+    return dates.map( (date, i) => {
+      if( i === 0 || dates[i - 1].year() !== date.year() ) {
+        return this.replacePathParams(I18N.Kpi.YearMonth, date.year(), date.month() + 1);
+      }
+      return this.replacePathParams(I18N.Kpi.Month,date.month() + 1);
+    } )
+  },
 };
 
 module.exports = CommonFuns;

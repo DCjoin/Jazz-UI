@@ -1599,10 +1599,13 @@ I18N.Paging.Button.PrePage = '上一页';
 I18N.Paging.Button.NextPage = '下一页';
 
 I18N.Kpi = {
+  Month: '{0}月',
+  YearMonth: '{0}年{1}月',
   ActualValues: '实际值',
   TargetValues: '指标值',
   PredictionValues: '预测值',
-  ThisMonthUsaged: '本月指标使用量: ',
+  ThisMonthUsaged: '本月指标使用量: {0}%',
+  ThisMonthUsagedPrediction: '本月指标使用量: {0}%(预测)',
   EditTarget: '编辑指标',
   UpdatePrediction: '更新预测值',
   ActualityFractionalEnergySaving: '截至上月节能率',

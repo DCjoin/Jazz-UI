@@ -136,6 +136,7 @@ var KPIChartData =
   "Year": 2016,
   "IndicatorCharts": [
     {
+      "IndicatorType": 1,
       "IndicatorId": 1,
       "IndicatorName": "用电量",
       "UomId": 3,

@@ -26,6 +26,7 @@ function coverageRawToHighChartData(data) {
     year: data.year,
     data: data.IndicatorCharts.map( indicator => {
       return {
+        type: indicator.IndicatorType,
         unit: indicator.UomId,
         name: indicator.IndicatorName,
         id: indicator.IndicatorId,
