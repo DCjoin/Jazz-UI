@@ -21,6 +21,14 @@ export default class ParameterConfig extends Component {
     KPIAction.getCalcValue(Year,IndicatorType,value);
   }
 
+  _validateQuota(value){
+    return !KPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText
+  }
+
+  _validateSavingRate(value){
+    return !KPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
+  }
+
   _renderIndicatorConfig(uom){
     let {IndicatorType,value,tag,TargetMonthValues,onTargetValueChange}=this.props;
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
@@ -42,7 +50,7 @@ export default class ParameterConfig extends Component {
       defaultValue: value,
       title: `${annualTitle} (${uom})`,
       hintText:annualHint,
-      regexFn:IndicatorType===Type.Quota?KPIStore.validateQuota:KPIStore.validateSavingRate,
+      regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
     },
     monthProps={
       title:`${I18N.Setting.KPI.Parameter.MonthValue} (${uom})`,
@@ -73,7 +81,7 @@ export default class ParameterConfig extends Component {
   }
 
   _renderPredictionConfig(uom){
-    let {onSelectTagShow}=this.props,
+    let {tag,hierarchyId,hierarchyName}=this.props,
       predictionProps={
       title:I18N.Setting.KPI.Parameter.Prediction,
       contentStyle:{
@@ -82,10 +90,9 @@ export default class ParameterConfig extends Component {
     },
     props={
       PredictionSetting:this.props.PredictionSetting,
-      onPredictioChange:this.props.onPredictioChange,
-      onSelectTagShow:onSelectTagShow,
       Year:this.props.Year,
-      uom:uom
+      uom:uom,
+      tag,hierarchyId,hierarchyName
     };
 
     return(
@@ -125,10 +132,10 @@ ParameterConfig.propTypes={
     onTargetValueChange:PropTypes.func,
     TargetMonthValues:PropTypes.array,
     PredictionSetting:PropTypes.object,
-    onPredictioChange:PropTypes.func,
     Year:PropTypes.number,
     hasHistory:PropTypes.bool,
-    onSelectTagShow:PropTypes.func,
+    hierarchyId:React.PropTypes.number,
+    hierarchyName:React.PropTypes.string,
 };
 ParameterConfig.defaultProps = {
   value:''
