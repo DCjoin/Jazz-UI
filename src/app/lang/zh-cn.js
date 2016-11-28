@@ -1599,8 +1599,20 @@ I18N.Paging.Button.PrePage = '上一页';
 I18N.Paging.Button.NextPage = '下一页';
 
 I18N.Kpi = {
+  ActualValues: '实际值',
+  TargetValues: '指标值',
+  PredictionValues: '预测值',
+  ThisMonthUsaged: '本月指标使用量: ',
+  EditTarget: '编辑指标',
+  UpdatePrediction: '更新预测值',
+  ActualityFractionalEnergySaving: '截至上月节能率',
+  KPIActual: '指标现状',
+  SingleProject: '单项目',
   Error:{
-    NonQuotaperiod: '未配置指标现状，请联系您的咨询顾问'
+    SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
+    NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
+    NonKPIConguredSingleBuilding: '未配置指标现状，请联系您的咨询顾问',
+    NonKPICongured: '暂未配置指标，点击上方“+ 指标”按钮开始配置吧~',
   }
 };
 

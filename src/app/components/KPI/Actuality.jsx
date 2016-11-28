@@ -133,16 +133,16 @@ const DEFAULT_OPTIONS = {
             borderWidth: 1,
             borderColor: '#AAA',
             y: -6,
-            formatter: function() {
-            	if(this.point.index === 2) {
-            		return `
-						<div class='actuality-fractional-energy-saving-tooltip'>
-							<div>截至上月节能率</div>
-							<div>9%</div>
-						</div>
-            		`
-            	}
-            }
+      //       formatter: function() {
+      //       	if(this.point.index === 2) {
+      //       		return `
+						// <div class='actuality-fractional-energy-saving-tooltip'>
+						// 	<div>截至上月节能率</div>
+						// 	<div>9%</div>
+						// </div>
+      //       		`
+      //       	}
+      //       }
         },
     }, {
         type: 'column',
@@ -172,7 +172,7 @@ class KPIChart extends Component {
 	    	let list = '';
 	    	this.points.forEach(data => {
 	    		if(data) {
-	    			if(data.series.name === '指标值') {
+	    			if(data.series.name === I18N.Kpi.TargetValues) {
 			    		list += `				
 			    		<tr>
 					    	<td style="color:${data.series.color};padding:0">● ${data.series.name}: </td>
@@ -180,7 +180,7 @@ class KPIChart extends Component {
 				    	</tr>
 			    		`;
 	    			}
-	    			if(data.series.name === '实际值') {
+	    			if(data.series.name === I18N.Kpi.ActualValues) {
 			    		list += `
 			    		<tr>
 					    	<td style="color:${data.series.color};padding:0">■ ${data.series.name}: </td>
@@ -188,7 +188,7 @@ class KPIChart extends Component {
 				    	</tr>
 			    		`;
 	    			}
-	    			if(data.series.name === '预测值') {
+	    			if(data.series.name === I18N.Kpi.PredictionValues) {
 			    		list += `
 			    		<tr>
 					    	<td style="color:#434348;padding:0"><div style='    margin-right: 4px;border-color:#434348;border-width:1px;border-style:dotted;display:inline-block;width:6px;height:6px'></div>${data.series.name}: </td>
@@ -200,7 +200,7 @@ class KPIChart extends Component {
 	    	});
 	    	return `
 	    	<table>
-	    		<b>本月指标使用量: 70%</b>
+	    		<b>${I18N.Kpi.ThisMonthUsaged}70%</b>
 	    		${list}
 	    	</table>
 	    	`;
@@ -209,11 +209,11 @@ class KPIChart extends Component {
 		options.title.text = data.get('name');
 
 		options.series[0].data = data.get('target') && data.get('target').toJS();
-		options.series[0].name = '指标值';
+		options.series[0].name = I18N.Kpi.TargetValues;
 		options.series[1].data = data.get('actual') && data.get('actual').toJS();
-		options.series[1].name = '实际值';
+		options.series[1].name = I18N.Kpi.ActualValues;
 		options.series[2].data = data.get('prediction') && data.get('prediction').toJS();
-		options.series[2].name = '预测值';
+		options.series[2].name = I18N.Kpi.PredictionValues;
 
 		let tooltipIndex = 3;/* options.series[1].data.findLastIndex(((data, index) => {
 			return index < new Date().getMonth()
@@ -223,7 +223,7 @@ class KPIChart extends Component {
         	if(this.point.index === tooltipIndex) {
         		return `
 					<div class='actuality-fractional-energy-saving-tooltip'>
-						<div>截至上月节能率</div>
+						<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
 						<div>${data.lastMonthSaving + '%'}</div>
 					</div>
         		`
@@ -245,7 +245,7 @@ class ActualityHeader extends Component {
 	render() {
 		return (
 			<div className='header-bar'>
-				<div>{!isSingleBuilding() && <span>单项目-</span>}指标现状</div>
+				<div>{!isSingleBuilding() && <span>{I18N.Kpi.SingleProject}-</span>}{I18N.Kpi.KPIActual}</div>
 				{!isSingleBuilding() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
 				{!isSingleBuilding() && <FlatButton disabled={!this.props.hierarchyId} label={'+ 指标'} onClick={this.props.goCreate}/>}
 			</div>
@@ -258,10 +258,10 @@ class ActualityContent extends Component {
 		let {data, summaryData, year, onChangeYear, hierarchyId, onEdit, onRefresh} = this.props;
 		if( !isSingleBuilding() ) {
 			if( !hierarchyId ) {
-				return (<div className="content flex-center"><b>{'请点击上方按钮，选择要查看或配置项目吧～'}</b></div>);
+				return (<div className="content flex-center"><b>{I18N.Kpi.Error.SelectBuilding}</b></div>);
 			}
 			if( !data ) {
-				return (<div className="content flex-center"><b>{'暂未配置指标，点击上方“+ 指标”按钮开始配置吧~'}</b></div>);
+				return (<div className="content flex-center"><b>{I18N.Kpi.Error.NonQuotaCongured}</b></div>);
 			}
 		}
 		let tags = data.get('data');
@@ -279,7 +279,7 @@ class ActualityContent extends Component {
 	      		<div>
 				{(tags && tags.size > 0) ?
 					tags.map( (tag, i) => <KPIReport onEdit={onEdit} onRefresh={onRefresh} data={tag} summaryData={summaryData[i]} key={tag.get('id')}/> ) :
-				<div>{'本年度为配置指标，切换其他年份看看'}～</div>}
+				<div>{I18N.Kpi.Error.NonQuotaConguredInThisYear}</div>}
 			</div>
 			</div>
 		);
@@ -300,10 +300,10 @@ class KPIReport extends Component {
 				      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
 				      targetOrigin={{horizontal: 'right', vertical: 'top'}}
 				    >
-				      <MenuItem primaryText="编辑指标" onClick={() => {
+				      <MenuItem primaryText={I18N.Kpi.EditTarget} onClick={() => {
 				      	onEdit(data.get('Id'));
 				      }}/>
-				      <MenuItem primaryText="更新预测值" onClick={() => {
+				      <MenuItem primaryText={I18N.Kpi.UpdatePrediction} onClick={() => {
 				      	onRefresh(data.get('Id'));
 				      }}/>
 				    </IconMenu>
@@ -392,7 +392,7 @@ export default class Actuality extends Component {
 		}
 		if(isSingleBuilding() && !KPIStore.getKPIChart()) {
 			return (
-				<div className='flex-center'><b>{I18N.Kpi.Error.NonQuotaperiod}</b></div>
+				<div className='flex-center'><b>{I18N.Kpi.Error.NonQuotaConguredSingleBuilding}</b></div>
 			)
 		}
 		if( this.state.showCreate ) {
