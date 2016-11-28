@@ -31,6 +31,8 @@ export default class KPI extends Component {
 		this._onTargetValueChange = this._onTargetValueChange.bind(this);
 		this._onSave = this._onSave.bind(this);
 		this._onError = this._onError.bind(this);
+		this._onSuccess = this._onSuccess.bind(this);
+
   }
 
   state = {
@@ -311,7 +313,7 @@ export default class KPI extends Component {
 				<ParameterConfig {...parameterProps}/>
         {this.state.tageSelectShow && <TagSelect {...tagProps}/>}
 				  <FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={KPIStore.validateKpiInfo(this.state.kpiInfo)}
-				ref="actionBar" status={formStatus.EDIT} onSave={()=>this._onSave} onCancel={this.props.onCancel}
+				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
 				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
 			{this._renderErrorDialog()}
       </TitleComponent>
