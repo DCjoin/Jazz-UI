@@ -1592,6 +1592,31 @@ I18N.Paging.Button = {};
 I18N.Paging.Button.PrePage = 'Pre Page';
 I18N.Paging.Button.NextPage = 'Next Page';
 
+I18N.Kpi = {
+  Month: '{0}月',
+  YearMonth: '{0}年{1}月',
+  ActualValues: '实际值',
+  TargetValues: '指标值',
+  PredictionValues: '预测值',
+  ThisMonthUsaged: '本月指标使用量: {0}%',
+  ThisMonthUsagedPrediction: '本月指标使用量: {0}%(预测)',
+  EditTarget: '编辑指标',
+  UpdatePrediction: '更新预测值',
+  ActualityFractionalEnergySaving: '截至上月节能率',
+  KPIActual: '指标现状',
+  SingleProject: '单项目',
+  IndexValue: '全年定额指标值',
+  PredictSum: '全年用量预测值',
+  SavingValue: '全年节能率指标值',
+  PredictSaving: '全年节能率预测值',
+  Error:{
+    SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
+    NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
+    NonKPIConguredSingleBuilding: '未配置指标现状，请联系您的咨询顾问',
+    NonKPICongured: '暂未配置指标，点击上方“+ 指标”按钮开始配置吧~',
+  }
+};
+
 I18N.Map = {};
 I18N.Map.Date = {};
 I18N.Map.Date.Year = '/';
@@ -1951,10 +1976,10 @@ I18N.Setting.KPI.Parameter.CalcViaSavingRates= '根据分项节能率计算';
 I18N.Setting.KPICycle = {};
 I18N.Setting.KPICycle.Title = '指标计算周期';
 I18N.Setting.KPICycle.StartTime = '起始日期';
-I18N.Setting.KPICycle.Date = '{0}{1}月{2}日 至 {3}{4}月{5}日';
-I18N.Setting.KPICycle.NextYear = '明年';
-I18N.Setting.KPICycle.ThisYear = '今年';
-I18N.Setting.KPICycle.LastYear = '去年';
+I18N.Setting.KPICycle.Date = '第N年的周期为 第{0}年的{1}月{2}日 至 第{3}年的{4}月{5}日';
+I18N.Setting.KPICycle.NextYear = 'N+1';
+I18N.Setting.KPICycle.ThisYear = 'N';
+I18N.Setting.KPICycle.LastYear = 'N-1';
 I18N.Setting.KPICycle.Month = '{0}月';
 I18N.Setting.KPICycle.Day = '{0}日';
 I18N.Setting.KPICycle.Non = '未配置指标计算周期时，默认按照自然年和自然月进行计算';
