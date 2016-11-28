@@ -74,7 +74,7 @@ const KPIAction = {
           AppDispatcher.dispatch({
             type: Action.GET_KPI_CHART,
             data: null
-          });          
+          });
         }
       },
       error: function() {}
@@ -89,7 +89,7 @@ const KPIAction = {
         });
       },
       error: function() {}
-    });    
+    });
   },
   getKPIChartSummary(CustomerId, Year, HierarchyId) {
     Ajax.get(util.replacePathParams(Path.KPI.getKPIChartSummary, CustomerId, HierarchyId, Year), {
@@ -100,7 +100,7 @@ const KPIAction = {
         });
       },
       error: function() {}
-    });    
+    });
   },
   merge(data){
     AppDispatcher.dispatch({
@@ -108,12 +108,12 @@ const KPIAction = {
       data: data
     });
   },
-  getCalcValue(Year,QuotaType,IndexValue,RatioValues){
-    var url = Path.APISubPaths.KPI.getCalcValue;
+  getCalcValue(param){
+    var url = Path.KPI.getCalcValue;
     Ajax.post(url,
       {
       params: {
-          Year,QuotaType,IndexValue,RatioValues
+          ...param
         },
       success: function(resBody) {
         AppDispatcher.dispatch({
@@ -124,8 +124,8 @@ const KPIAction = {
       error: function() {}
     });
   },
-  IsAutoCalculable(tagId,year){
-    Ajax.get(util.replacePathParams(Path.KPI.IsAutoCalculable,tagId,year),
+  IsAutoCalculable(customerId,tagId,year){
+    Ajax.get(util.replacePathParams(Path.KPI.IsAutoCalculable,customerId,tagId,year),
       {
       success: function(resBody) {
         AppDispatcher.dispatch({

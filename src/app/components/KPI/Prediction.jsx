@@ -81,9 +81,6 @@ export default class Prediction extends Component {
   	}
 
   _onCalcValue(TagSavingRates){
-    // let {Year,IndicatorType,value}=this.props;
-    // KPIAction.getCalcValue(Year,IndicatorType,value);
-    //
     KPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,TagSavingRates)
   }
 
