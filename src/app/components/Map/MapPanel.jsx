@@ -39,6 +39,9 @@ let MapPanel = React.createClass({
       item: null
     };
   },
+  contextTypes: {
+    router: React.PropTypes.func
+  },
   _map: null,
   _poiEventHandler: [],
   _markerHandler: null,
@@ -157,8 +160,9 @@ let MapPanel = React.createClass({
         that._map.addControl(toolBar);
         toolBar.show();
       });
-      var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
-      this._map.setLang(lang);
+      //var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
+
+      this._map.setLang(this.context.router.params.lang);
     }
     var markers = MapStore.getMarkers();
     this.setState({
@@ -207,7 +211,7 @@ let MapPanel = React.createClass({
     //   }
     // }
     var energyInfoContent = null;
-    var preTitle = window.currentLanguage == 1 ? '' : RelativeDateType[MapStore.getSelectedDateType()];
+    var preTitle = this.context.router.params.lang==='en' ? '' : RelativeDateType[MapStore.getSelectedDateType()];
     // var value = CommonFuns.convertDataByUom(2245531, 'COM');
     // var uom = CommonFuns.convertUom(2245531, 'COM');
     marker.dataValues.forEach(value => {
@@ -309,8 +313,8 @@ let MapPanel = React.createClass({
   // this._popupWindow.open(this._map, new AMap.LngLat(marker.lon, marker.lat));
   },
   _onLanguageSwitch: function() {
-    var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
-    this._map.setLang(lang);
+    //var lang = (window.currentLanguage === 0) ? 'zh_cn' : 'en';
+    this._map.setLang(this.context.router.params.lang);
   },
   componentDidUpdate: function() {
     this._showPopup();
@@ -363,7 +367,7 @@ let MapPanel = React.createClass({
         flexDirection: 'column',
         marginTop: '-16px'
       }}>
-    <div className='map-timepickerbar'><DatePicker lang={ (window.currentLanguage === 0) ? 'zh_cn' : 'en'} onMenuItemClick={this._onDateChanged}/></div>
+    <div className='map-timepickerbar'><DatePicker lang={this.context.router.params.lang} onMenuItemClick={this._onDateChanged}/></div>
     <div style={styleMap} id="_map"></div>
   </div>
       )

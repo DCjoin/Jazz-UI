@@ -9,7 +9,30 @@ import moment from 'moment';
 import { Map,List} from 'immutable';
 import assign from 'object-assign';
 import {Status,Type} from '../../constants/actionType/KPI.jsx';
+import CommonFuns from '../../util/Util.jsx';
 
+// let {DataConverter} = CommonFuns;
+// let j2d = DataConverter.JsonToDateTime,
+//   d2j = DataConverter.DatetimeToJson;
+
+// let j2d=CommonFuns.DataConverter.JsonToDateTime;
+// CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false),
+//
+function JsonToDateTime(jsonstring, outintval) {
+  outintval = typeof (outintval) === 'boolean' ? outintval : true;
+  jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+
+  var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+  var mydate;
+  if (outintval) {
+    mydate = parseInt(jsonstring) + timezoneoffset;
+  } else {
+    mydate = parseInt(jsonstring) + timezoneoffset;
+    mydate = new Date(mydate);
+  }
+
+  return mydate;
+}
 function emptyMap() {
   return new Map();
 }
@@ -124,7 +147,7 @@ const KPIStore = assign({}, PrototypeStore, {
 
   setYearQuotaperiod(data) {
     _quotaperiodYear = data.map(el=>{
-      return moment(el)
+      return moment(JsonToDateTime(el))
     });
   },
 
@@ -211,7 +234,7 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   validateQuota(value=''){
-    value=value?value+'':value;
+    value=value===0 || value?value+'':value;
     let temp=parseFloat(value);
     if(!value || value==='-') return true;
     if((temp+'').length!==value.length || temp<0 || value.indexOf('.')>-1) return false;
@@ -219,7 +242,7 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   validateSavingRate(value=''){
-    value=value?value+'':value;
+    value=value===0 || value?value+'':value;
     let temp=parseFloat(value),
         index=value.indexOf('.');
     if(!value || value==='-') return true;
@@ -272,16 +295,24 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   transit(kpi){
+    var period=this.getYearQuotaperiod();
     var {AdvanceSettings}=kpi.toJS();
 
     var {TargetMonthValues,PredictionSetting}=AdvanceSettings || {};
 
     if(TargetMonthValues && TargetMonthValues.length>0){
-      TargetMonthValues.forEach((value,index)=>{
-        if(value===''){
-          kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index],null)
+      for(let index=0;index<12;index++){
+        let value=TargetMonthValues[index];
+        if(value){
+          if(value.Value===''){
+            kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Value'],null)
+          }
         }
-      });
+        else {
+          kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Month'],period[index]._i);
+          kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Value'],null);
+        }
+      }
     }
 
     if(PredictionSetting){
@@ -289,8 +320,14 @@ const KPIStore = assign({}, PrototypeStore, {
 
       if(MonthPredictionValues && MonthPredictionValues.length>0){
         MonthPredictionValues.forEach((value,index)=>{
-          if(value===''){
-            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index],null)
+          if(value){
+            if(value.Value===''){
+              kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Value'],null)
+            }
+          }
+          else {
+            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Month'],period[index]._i);
+            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Value'],null);
           }
         });
       }
