@@ -44,7 +44,7 @@ export default class KPI extends Component {
 	_onChange(){
 		this.setState({
 			kpiInfo:KPIStore.getKpiInfo(),
-			hasHistory:KPIStore.getHasHistory()
+			hasHistory:KPIStore.getHasHistory(),
 		})
 	}
 
@@ -240,7 +240,7 @@ export default class KPI extends Component {
 
   render(){
     let {hierarchyId,hierarchyName,isCreate}=this.props;
-		let {IndicatorName,ActualTagName,ActualTagId}=this.state.kpiInfo.toJS();
+		let {IndicatorName,ActualTagName,ActualTagId,UomId,CommodityId}=this.state.kpiInfo.toJS();
 		let AdvanceSettings=this.state.kpiInfo.get('AdvanceSettings') || Immutable.fromJS({});
 		let {IndicatorType,AnnualQuota,AnnualSavingRate,TargetMonthValues,Year,PredictionSetting}=AdvanceSettings.toJS();
 
@@ -288,6 +288,13 @@ export default class KPI extends Component {
 					hierarchyId,
 					hierarchyName,
 				};
+				if(this.state.kpiInfo && this.state.kpiInfo.size>0 && !this.props.isCreate){
+					parameterProps.tag=Immutable.fromJS({
+						Id:ActualTagId,
+						Name:ActualTagName,
+						UomId,CommodityId
+					})
+				}
     return(
       <TitleComponent {...titleProps}>
 				<BasicConfig {...basicProps}/>
@@ -315,6 +322,6 @@ KPI.defaultProps = {
 	hierarchyId: 100010,
 	hierarchyName:'楼宇A',
 	year:2016,
-	isCreate:true,
+	isCreate:false,
 	kpiId:6
 };
