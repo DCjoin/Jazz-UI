@@ -14,7 +14,6 @@ import KPIStore from 'stores/KPI/KPIStore.jsx'
 import HierarchyStore from 'stores/HierarchyStore.jsx'
 import UOMStore from 'stores/UOMStore.jsx'
 import CurrentUserStore from 'stores/CurrentUserStore.jsx'
-import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx'
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -35,7 +34,7 @@ function isSingleBuilding() {
 }
 
 function getHierarchyNameById(Id) {
-	return CurrentUserCustomerStore.getCurrentCustomerBuildingList().filter( building => building.Id === Id )[0].Name;
+	return HierarchyStore.getBuildingList().filter( building => building.Id === Id )[0].Name;
 }
 
 const DEFAULT_OPTIONS = {
