@@ -64,7 +64,8 @@ const KPIAction = {
     let getKPIChart = this.getKPIChart;
     let getKPIChartSummary = this.getKPIChartSummary;
     let initKPIChartData = this.initKPIChartData;
-    Ajax.get(util.replacePathParams(Path.KPI.getKPIConfigured, CustomerId, HierarchyId), {
+    Ajax.get(Path.KPI.getKPIConfigured, {
+      params: {CustomerId, HierarchyId, Year},
       success: function(resBody) {
         if(resBody) {
           initKPIChartData();

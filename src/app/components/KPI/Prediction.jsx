@@ -11,6 +11,7 @@ import KPIStore from '../../stores/KPI/KPIStore.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import TagSelect from './TagSelect.jsx';
+import {DataConverter} from '../../util/Util.jsx';
 
 export default class Prediction extends Component {
 
@@ -59,25 +60,29 @@ export default class Prediction extends Component {
   }
 
   	_onPredictioChange(index,value){
-  		let target=KPIStore.getKpiInfo().getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index]),
+  		let MonthPredictionValues=KPIStore.getKpiInfo().getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues']),
   				period=KPIStore.getYearQuotaperiod();
-  		if(target){
-  			KPIAction.merge([{
-  				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
-  				value
-  			}])
-  		}
-  		else {
-  			KPIAction.merge([{
-  				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
-  				value
-  			},
-  			{
-  				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
-  				value:period[index]
-  			}
-  		])
-  		}
+          if(MonthPredictionValues){
+            KPIAction.merge([{
+              path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
+              value
+            },
+            {
+              path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
+              value:DataConverter.DatetimeToJson(period[index]._d)
+            }
+          ])
+          }
+          else {
+                KPIAction.merge([{
+                  path:'AdvanceSettings.PredictionSetting.MonthPredictionValues',
+                  value:Immutable.fromJS({
+                    Month:DataConverter.DatetimeToJson(period[index]._d),
+                    Value:value,
+                  }),
+                  status:Status.ADD
+                }])
+          }
   	}
 
   _onCalcValue(TagSavingRates){

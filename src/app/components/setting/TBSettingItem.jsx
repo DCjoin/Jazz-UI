@@ -2,6 +2,7 @@ import React from "react";
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
 import { SvgIcon, IconButton, DropDownMenu, TextField, FlatButton, FloatingActionButton, RadioButtonGroup, RadioButton, DatePicker, RaisedButton, CircularProgress } from 'material-ui';
 import assign from "object-assign";
+import moment from 'moment';
 import classNames from 'classnames';
 import YearPicker from '../../controls/YearPicker.jsx';
 import DaytimeSelector from '../../controls/DaytimeSelector.jsx';
@@ -219,8 +220,8 @@ var TBSettingItem = React.createClass({
   },
 
   getValue: function() {
-    var startDate = this.refs.startFeild.getValue(),
-      endDate = fromFormEndDate(this.refs.endFeild.getValue());
+    var startDate = this.state.start,
+      endDate = fromFormEndDate(this.state.end);
     startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0);
     endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0);
     var rtn = {
@@ -380,16 +381,16 @@ var TBSettingItem = React.createClass({
       };
 
     var startProps = {
-      defaultValue: dstartDate,
+      value: moment(dstartDate).format("MM-DD"),
       dateFormatStr: 'MM-DD',
       minDate: startDate,
       maxDate: endDate,
       style: datapickerStyle,
       //className: 'jazz-setting-basic-date',
-      onChange: function(e, v) {
-        var endDate = me.refs.endFeild.getValue();
+      onChange: function(v) {
+        v=moment(v)._d;
+        var endDate = me.state.end;
         if (endDate && endDate < v) {
-          me.refs.endFeild.setValue(v);
           endDate = v;
         }
         var jstart = CommonFuns.DataConverter.DatetimeToJson(v),
@@ -415,15 +416,15 @@ var TBSettingItem = React.createClass({
     };
     var endProps = {
       dateFormatStr: 'MM-DD',
-      defaultValue: dendDate,
+      value: moment(dendDate).format("MM-DD"),
       minDate: startDate,
       maxDate: endDate,
       style: datapickerStyle,
       //className: 'jazz-setting-basic-date',
-      onChange: function(e, v) {
-        var startDate = me.refs.startFeild.getValue();
+      onChange: function(v) {
+        var startDate = me.state.start;
         if (startDate && startDate > v) {
-          me.refs.startFeild.setValue(v);
+          //me.refs.startFeild.setValue(v);
           startDate = v;
         }
         var jstart = CommonFuns.DataConverter.DatetimeToJson(startDate),

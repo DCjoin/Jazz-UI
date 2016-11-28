@@ -839,8 +839,8 @@ let AnalysisPanel = React.createClass({
       range: range
     });
   },
-  _onOrderChange(e, selectedIndex, menuItem) {
-    var order = menuItem.value;
+  _onOrderChange(e, selectedIndex, value) {
+    var order = value;
     this.setState({
       order: order
     });

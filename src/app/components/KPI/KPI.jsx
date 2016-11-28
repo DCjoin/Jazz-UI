@@ -12,6 +12,7 @@ import {Type,Status} from '../../constants/actionType/KPI.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Dialog from '../../controls/NewDialog.jsx';
+import {DataConverter} from '../../util/Util.jsx';
 
 var customerId=null;
 
@@ -44,7 +45,7 @@ export default class KPI extends Component {
 	_onChange(){
 		this.setState({
 			kpiInfo:KPIStore.getKpiInfo(),
-			hasHistory:KPIStore.getHasHistory()
+			hasHistory:KPIStore.getHasHistory(),
 		})
 	}
 
@@ -80,24 +81,28 @@ export default class KPI extends Component {
 	}
 
 	_onTargetValueChange(index,value){
-		let target=this.state.kpiInfo.getIn(['AdvanceSettings','TargetMonthValues',index]),
+		let TargetMonthValues=this.state.kpiInfo.getIn(['AdvanceSettings','TargetMonthValues']),
 				period=KPIStore.getYearQuotaperiod();
-		if(target){
-			KPIAction.merge([{
-				path:`AdvanceSettings.TargetMonthValues.${index}.Value`,
-				value
-			}])
-		}
-		else {
+		if(TargetMonthValues){
 			KPIAction.merge([{
 				path:`AdvanceSettings.TargetMonthValues.${index}.Value`,
 				value
 			},
 			{
 				path:`AdvanceSettings.TargetMonthValues.${index}.Month`,
-				value:period[index]
+				value:DataConverter.DatetimeToJson(period[index]._d)
 			}
 		])
+		}
+		else {
+					KPIAction.merge([{
+						path:'AdvanceSettings.TargetMonthValues',
+						value:Immutable.fromJS({
+							Month:DataConverter.DatetimeToJson(period[index]._d),
+							Value:value,
+						}),
+						status:Status.ADD
+					}])
 		}
 
 	}
@@ -240,7 +245,7 @@ export default class KPI extends Component {
 
   render(){
     let {hierarchyId,hierarchyName,isCreate}=this.props;
-		let {IndicatorName,ActualTagName,ActualTagId}=this.state.kpiInfo.toJS();
+		let {IndicatorName,ActualTagName,ActualTagId,UomId,CommodityId}=this.state.kpiInfo.toJS();
 		let AdvanceSettings=this.state.kpiInfo.get('AdvanceSettings') || Immutable.fromJS({});
 		let {IndicatorType,AnnualQuota,AnnualSavingRate,TargetMonthValues,Year,PredictionSetting}=AdvanceSettings.toJS();
 
@@ -288,6 +293,13 @@ export default class KPI extends Component {
 					hierarchyId,
 					hierarchyName,
 				};
+				if(this.state.kpiInfo && this.state.kpiInfo.size>0 && !this.props.isCreate){
+					parameterProps.tag=Immutable.fromJS({
+						Id:ActualTagId,
+						Name:ActualTagName,
+						UomId,CommodityId
+					})
+				}
     return(
       <TitleComponent {...titleProps}>
 				<BasicConfig {...basicProps}/>
@@ -315,6 +327,6 @@ KPI.defaultProps = {
 	hierarchyId: 100010,
 	hierarchyName:'楼宇A',
 	year:2016,
-	isCreate:true,
+	isCreate:false,
 	kpiId:6
 };

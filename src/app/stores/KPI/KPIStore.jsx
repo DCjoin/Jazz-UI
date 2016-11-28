@@ -9,6 +9,7 @@ import moment from 'moment';
 import { Map,List} from 'immutable';
 import assign from 'object-assign';
 import {Status,Type} from '../../constants/actionType/KPI.jsx';
+import {DataConverter} from '../../util/Util.jsx';
 
 function emptyMap() {
   return new Map();
@@ -113,7 +114,7 @@ const KPIStore = assign({}, PrototypeStore, {
 
   setYearQuotaperiod(data) {
     _quotaperiodYear = data.map(el=>{
-      return moment(el)
+      return moment(DataConverter.JsonToDateTime(el))
     });
   },
 
@@ -261,16 +262,24 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   transit(kpi){
+    var period=this.getYearQuotaperiod();
     var {AdvanceSettings}=kpi.toJS();
 
     var {TargetMonthValues,PredictionSetting}=AdvanceSettings || {};
 
     if(TargetMonthValues && TargetMonthValues.length>0){
-      TargetMonthValues.forEach((value,index)=>{
-        if(value===''){
-          kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index],null)
+      for(let index=0;index<12;index++){
+        let value=TargetMonthValues[index];
+        if(value){
+          if(value.Value===''){
+            kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Value'],null)
+          }
         }
-      });
+        else {
+          kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Month'],period[index]._i);
+          kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Value'],null);
+        }
+      }
     }
 
     if(PredictionSetting){
@@ -278,8 +287,14 @@ const KPIStore = assign({}, PrototypeStore, {
 
       if(MonthPredictionValues && MonthPredictionValues.length>0){
         MonthPredictionValues.forEach((value,index)=>{
-          if(value===''){
-            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index],null)
+          if(value){
+            if(value.Value===''){
+              kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Value'],null)
+            }
+          }
+          else {
+            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Month'],period[index]._i);
+            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Value'],null);
           }
         });
       }
