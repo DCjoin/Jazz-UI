@@ -9,8 +9,30 @@ import moment from 'moment';
 import { Map,List} from 'immutable';
 import assign from 'object-assign';
 import {Status,Type} from '../../constants/actionType/KPI.jsx';
-import {DataConverter} from '../../util/Util.jsx';
+import CommonFuns from '../../util/Util.jsx';
 
+// let {DataConverter} = CommonFuns;
+// let j2d = DataConverter.JsonToDateTime,
+//   d2j = DataConverter.DatetimeToJson;
+
+// let j2d=CommonFuns.DataConverter.JsonToDateTime;
+// CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false),
+//
+function JsonToDateTime(jsonstring, outintval) {
+  outintval = typeof (outintval) === 'boolean' ? outintval : true;
+  jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+
+  var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+  var mydate;
+  if (outintval) {
+    mydate = parseInt(jsonstring) + timezoneoffset;
+  } else {
+    mydate = parseInt(jsonstring) + timezoneoffset;
+    mydate = new Date(mydate);
+  }
+
+  return mydate;
+}
 function emptyMap() {
   return new Map();
 }
@@ -114,7 +136,7 @@ const KPIStore = assign({}, PrototypeStore, {
 
   setYearQuotaperiod(data) {
     _quotaperiodYear = data.map(el=>{
-      return moment(DataConverter.JsonToDateTime(el))
+      return moment(JsonToDateTime(el))
     });
   },
 

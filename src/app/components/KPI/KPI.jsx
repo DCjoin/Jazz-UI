@@ -43,6 +43,10 @@ export default class KPI extends Component {
   };
 
 	_onChange(){
+
+		if(this.state.kpiInfo.size===0 && !this.props.isCreate){
+			KPIAction.IsAutoCalculable(this.context.router.params.customerId,KPIStore.getKpiInfo().get('ActualTagId'),this.props.year)
+		}
 		this.setState({
 			kpiInfo:KPIStore.getKpiInfo(),
 			hasHistory:KPIStore.getHasHistory(),
@@ -226,7 +230,7 @@ export default class KPI extends Component {
 		let {isCreate,kpiId,year}=this.props;
 		KPIAction.getKPIPeriodByYear(customerId,year);
 		if(!isCreate){
-			KPIAction.getKPI(kpiId,year)
+			KPIAction.getKPI(kpiId,year);
 		}
 	}
 
