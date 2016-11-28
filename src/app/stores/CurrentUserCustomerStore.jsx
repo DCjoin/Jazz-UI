@@ -14,10 +14,24 @@ let CHANGE_EVENT = 'change';
 let _customers = null;
 let _currentCustomer = null;
 let _currentUser = null;
+let _currentCustomerBuildingList = null || [{
+  Id: 123,
+  Name: '长城脚下的公社'
+}, {
+  Id: 321,
+  Name: '朝阳门SOHO'
+}, {
+  Id: 11112,
+  Name: '丹棱SOHO'
+}, {
+  Id: 33333,
+  Name: '银河SOHO'
+},];
 
 let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
   setCustomer: function(customer) {
     _currentCustomer = assign({}, _currentCustomer, customer);
+    _currentCustomerBuildingList = null;
   },
   init: function(data) {
     _customers = data;
@@ -30,6 +44,12 @@ let CurrentUserCustomerStore = assign({}, EventEmitter.prototype, {
   },
   getCurrentUser: function(argument) {
     return _currentUser;
+  },
+  setCurrentCustomerBuildingList(data) {
+    _currentCustomerBuildingList = data;
+  },
+  getCurrentCustomerBuildingList() {
+    return _currentCustomerBuildingList;
   },
   ifEmitCustomerrChange: function() {
     var that = this;

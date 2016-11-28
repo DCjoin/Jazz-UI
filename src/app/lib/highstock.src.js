@@ -6852,7 +6852,6 @@
 			var options = this.options,
 				type = options.type,
 				isDatetimeAxis = type === 'datetime';
-
 			axis.labelFormatter = options.labels.formatter || axis.defaultLabelFormatter; // can be overwritten by dynamic format
 
 
@@ -17451,7 +17450,7 @@ end
 				pointAttr;
 
 			// draw the columns
-			each(series.points, function(point) {
+			each(series.points, function(point, i) {
 				var plotY = point.plotY,
 					graphic = point.graphic,
 					borderAttr;
@@ -17462,6 +17461,10 @@ end
 					borderAttr = defined(series.borderWidth) ? {
 						'stroke-width': series.borderWidth
 					} : {};
+					// By Lawrence: add dashStyle to column
+					if (series.options.dashStyle) {
+						borderAttr.dashstyle = series.options.dashStyle;
+					}
 
 					pointAttr = point.pointAttr[point.selected ? SELECT_STATE :
 						NORMAL_STATE] || series.pointAttr[NORMAL_STATE];

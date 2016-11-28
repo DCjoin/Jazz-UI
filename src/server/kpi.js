@@ -131,6 +131,223 @@ var calcValue=[
   "Value": 10000.2
 }];
 
+var KPIChartData =
+{
+  "Year": 2016,
+  "IndicatorCharts": [
+    {
+      "IndicatorId": 1,
+      "IndicatorName": "用电量",
+      "UomId": 3,
+      "ActualActualMonthValues": [
+        {
+          "Month": "2016-06-27T15:15:58.969Z",
+          "Value": 100
+        },
+        {
+          "Month": "2016-07-27T15:15:58.969Z",
+          "Value": 130
+        },
+        {
+          "Month": "2016-08-27T15:15:58.969Z",
+          "Value": 123
+        },
+        {
+          "Month": "2016-09-27T15:15:58.969Z",
+          "Value": 111
+        },
+        {
+          "Month": "2016-10-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2016-11-27T15:15:58.969Z",
+          "Value": 175
+        },
+        {
+          "Month": "2016-12-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-01-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-02-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-03-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-04-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-05-27T15:15:58.969Z",
+          "Value": null
+        }
+      ],
+      "TargetMonthValues": [
+        {
+          "Month": "2016-06-27T15:15:58.969Z",
+          "Value": 120
+        },
+        {
+          "Month": "2016-07-27T15:15:58.969Z",
+          "Value": 140
+        },
+        {
+          "Month": "2016-08-27T15:15:58.969Z",
+          "Value": 133
+        },
+        {
+          "Month": "2016-09-27T15:15:58.969Z",
+          "Value": 131
+        },
+        {
+          "Month": "2016-10-27T15:15:58.969Z",
+          "Value": 199
+        },
+        {
+          "Month": "2016-11-27T15:15:58.969Z",
+          "Value": 175
+        },
+        {
+          "Month": "2016-12-27T15:15:58.969Z",
+          "Value": 234
+        },
+        {
+          "Month": "2017-01-27T15:15:58.969Z",
+          "Value": 252
+        },
+        {
+          "Month": "2017-02-27T15:15:58.969Z",
+          "Value": 284
+        },
+        {
+          "Month": "2017-03-27T15:15:58.969Z",
+          "Value": 242
+        },
+        {
+          "Month": "2017-04-27T15:15:58.969Z",
+          "Value": 290
+        },
+        {
+          "Month": "2017-05-27T15:15:58.969Z",
+          "Value": 222
+        }
+      ],
+      "PredictionMonthValues": [
+        {
+          "Month": "2016-06-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2016-07-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2016-08-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2016-09-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2016-10-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2016-11-27T15:15:58.969Z",
+          "Value": 175
+        },
+        {
+          "Month": "2016-12-27T15:15:58.969Z",
+          "Value": 192
+        },
+        {
+          "Month": "2017-01-27T15:15:58.969Z",
+          "Value": 182
+        },
+        {
+          "Month": "2017-02-27T15:15:58.969Z",
+          "Value": 162
+        },
+        {
+          "Month": "2017-03-27T15:15:58.969Z",
+          "Value": 199
+        },
+        {
+          "Month": "2017-04-27T15:15:58.969Z",
+          "Value": 200
+        },
+        {
+          "Month": "2017-05-27T15:15:58.969Z",
+          "Value": 210
+        }
+      ]
+    },
+    {
+      "IndicatorId": 2,
+      "IndicatorName": "用水量",
+      "UomId": 4,
+      "ActualActualMonthValues": [
+        {
+          "Month": "2016-06-27T15:15:58.969Z",
+          "Value": 100
+        },
+        {
+          "Month": "2016-07-27T15:15:58.969Z",
+          "Value": 130
+        },
+        {
+          "Month": "2016-08-27T15:15:58.969Z",
+          "Value": 123
+        },
+        {
+          "Month": "2016-09-27T15:15:58.969Z",
+          "Value": 111
+        },
+        {
+          "Month": "2016-10-27T15:15:58.969Z",
+          "Value": 123
+        },
+        {
+          "Month": "2016-11-27T15:15:58.969Z",
+          "Value": 175
+        },
+        {
+          "Month": "2016-12-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-01-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-02-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-03-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-04-27T15:15:58.969Z",
+          "Value": null
+        },
+        {
+          "Month": "2017-05-27T15:15:58.969Z",
+          "Value": null
+        }
+      ]
+    }
+  ]
+}
+
 var nonKPIperiod = null;
 
 exports.register = function(server, options, next) {
@@ -189,6 +406,52 @@ exports.register = function(server, options, next) {
                   "Result": ''
               }).type("application/json");
             }
+        }
+    }, 
+    {
+        method: 'get',
+        path: APIBasePath + APIPath.KPI.getKPIConfigured.split('?')[0],
+        handler: function(request, reply) {
+          sleep(1000);
+            reply({
+              Result:true,
+              error: {Code: "0", Messages: null}
+             }).type("application/json");
+        }
+    },
+    {
+        method: 'get',
+        path: APIBasePath + APIPath.KPI.getKPIChart.split('?')[0],
+        handler: function(request, reply) {
+          sleep(1000);
+            var result = KPIChartData;
+            if(request.params.year === '2016') {
+            }
+            reply({
+              Result:result,
+              error: {Code: "0", Messages: null}
+             }).type("application/json");
+        }
+    },
+    {
+        method: 'get',
+        path: APIBasePath + APIPath.KPI.getKPIChartSummary.split('?')[0],
+        handler: function(request, reply) {
+          sleep(1000);
+            var result = [{
+                actual: ['5.8万'],
+                target: ['6万', '103%'],
+              }, {
+                Overproof: true,
+                actual: ['8%', '5.8万'],
+                target: ['7%', '5.6万'],
+              }];
+            if(request.params.year === '2016') {
+            }
+            reply({
+              Result: result,
+              error: {Code: "0", Messages: null}
+             }).type("application/json");
         }
     },
     {

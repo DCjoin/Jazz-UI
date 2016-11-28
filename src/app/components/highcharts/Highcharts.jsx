@@ -31,7 +31,7 @@ let Highstock = React.createClass({
 
     componentWillMount () {
         this.setState({
-            options: JSON.stringify(this.props.options)
+            options: this.props.options//JSON.stringify(this.props.options)
         });
     },
 
@@ -41,7 +41,7 @@ let Highstock = React.createClass({
 
     componentWillReceiveProps (nextProps) {
         this.setState({
-            options: JSON.stringify(nextProps.options)
+            options: this.props.options//JSON.stringify(nextProps.options)
         });
     },
 
@@ -56,7 +56,7 @@ let Highstock = React.createClass({
     _draw () {
 
         let that = this,
-            _tempOptions = JSON.parse(that.state.options),
+            _tempOptions = that.state.options,
             options = assign({}, _tempOptions, {
                 chart: assign({}, _tempOptions.chart, {renderTo: ReactDOM.findDOMNode(this.refs.jazz_energy_view)})
             });
