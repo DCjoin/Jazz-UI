@@ -394,7 +394,7 @@ export default class Actuality extends Component {
 				KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
 				return;
 			}
-		}		
+		}
 		this.setState({
 			loading: false
 		});
@@ -433,13 +433,13 @@ export default class Actuality extends Component {
 				<div className='flex-center'><b>{I18N.Kpi.Error.NonQuotaConguredSingleBuilding}</b></div>
 			)
 		}
-		//for test
+
 		if( this.state.showCreate ) {
 			return (<CreateKPI
-				// hierarchyId={this.state.hierarchyId}
-				// hierarchyName={getHierarchyNameById(this.state.hierarchyId)}
-				// kpiId={this.state.kpiId}
-				// isCreate={!this.state.kpiId}
+				hierarchyId={this.state.hierarchyId}
+				hierarchyName={getHierarchyNameById(this.state.hierarchyId)}
+				kpiId={this.state.kpiId}
+				isCreate={!this.state.kpiId}
 				onSave={this._reload}
 				onCancel={this._reload}
 				year={this.state.year}/>);

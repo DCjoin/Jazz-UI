@@ -107,9 +107,9 @@ export default class UpdatePrediction extends Component {
 	}
 }
 
-UpdatePrediction.defaultProps = {
-	hierarchyId: 100016,
-	hierarchyName:'楼宇BADGOOD',
-	year:2016,
-	isCreate:true
-};
+// UpdatePrediction.defaultProps = {
+// 	hierarchyId: 100016,
+// 	hierarchyName:'楼宇BADGOOD',
+// 	year:2016,
+// 	isCreate:true
+// };

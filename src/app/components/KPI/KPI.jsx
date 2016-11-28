@@ -31,6 +31,8 @@ export default class KPI extends Component {
 		this._onTargetValueChange = this._onTargetValueChange.bind(this);
 		this._onSave = this._onSave.bind(this);
 		this._onError = this._onError.bind(this);
+		this._onSuccess = this._onSuccess.bind(this);
+
   }
 
   state = {
@@ -43,6 +45,10 @@ export default class KPI extends Component {
   };
 
 	_onChange(){
+
+		if(this.state.kpiInfo.size===0 && !this.props.isCreate){
+			KPIAction.IsAutoCalculable(this.context.router.params.customerId,KPIStore.getKpiInfo().get('ActualTagId'),this.props.year)
+		}
 		this.setState({
 			kpiInfo:KPIStore.getKpiInfo(),
 			hasHistory:KPIStore.getHasHistory(),
@@ -226,7 +232,7 @@ export default class KPI extends Component {
 		let {isCreate,kpiId,year}=this.props;
 		KPIAction.getKPIPeriodByYear(customerId,year);
 		if(!isCreate){
-			KPIAction.getKPI(kpiId,year)
+			KPIAction.getKPI(kpiId,year);
 		}
 	}
 
@@ -323,10 +329,10 @@ KPI.propTypes = {
 	onCancel:React.PropTypes.func,
 	year:React.PropTypes.number,
 };
-KPI.defaultProps = {
-	hierarchyId: 100010,
-	hierarchyName:'楼宇A',
-	year:2016,
-	isCreate:false,
-	kpiId:6
-};
+// KPI.defaultProps = {
+// 	hierarchyId: 100010,
+// 	hierarchyName:'楼宇A',
+// 	year:2016,
+// 	isCreate:false,
+// 	kpiId:6
+// };
