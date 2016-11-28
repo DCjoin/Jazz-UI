@@ -112,4 +112,11 @@ describe('KPIStore', function() {
 					// expect(KPIStore.validateKpiInfo(kpi)).to.equal(false);
 
 				});
+
+				it('getCalcPredicateParam test should be correct', function() {
+
+					    //expect(KPIStore.validateSavingRate(-100.0)).to.equal(true);
+
+
+				});
 });

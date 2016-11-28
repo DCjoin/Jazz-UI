@@ -173,7 +173,7 @@ class KPIChart extends Component {
 	    	this.points.forEach(data => {
 	    		if(data) {
 	    			if(data.series.name === I18N.Kpi.TargetValues) {
-			    		list += `				
+			    		list += `
 			    		<tr>
 					    	<td style="color:${data.series.color};padding:0">● ${data.series.name}: </td>
 					    	<td style="padding:0">${data.y + ' ' + unit}</td>
@@ -352,7 +352,7 @@ export default class Actuality extends Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		KPIAction.getKPIConfigured(nextProps.router.params.customerId, this.state.year, this.state.hierarchyId);
-		
+
 	}
 	componentWillUnmount() {
 		KPIStore.removeChangeListener(this._onChange);
@@ -395,14 +395,15 @@ export default class Actuality extends Component {
 				<div className='flex-center'><b>{I18N.Kpi.Error.NonQuotaConguredSingleBuilding}</b></div>
 			)
 		}
+		//for test
 		if( this.state.showCreate ) {
-			return (<CreateKPI 
-				hierarchyId={this.state.hierarchyId} 
-				hierarchyName={getHierarchyNameById(this.state.hierarchyId)} 
-				kpiId={this.state.kpiId} 
-				isCreate={!this.state.kpiId} 
-				onSave={this._reload} 
-				onCancel={this._reload} 
+			return (<CreateKPI
+				// hierarchyId={this.state.hierarchyId}
+				// hierarchyName={getHierarchyNameById(this.state.hierarchyId)}
+				kpiId={this.state.kpiId}
+				isCreate={!this.state.kpiId}
+				onSave={this._reload}
+				onCancel={this._reload}
 				year={this.state.year}/>);
 		} else {
 			let buildingProps = {
@@ -428,15 +429,15 @@ export default class Actuality extends Component {
 		    };
 			return (
 				<div className='jazz-kpi-actuality'>
-					<ActualityHeader 
-						hierarchyId={this.state.hierarchyId} 
-						buildingProps={buildingProps} 
+					<ActualityHeader
+						hierarchyId={this.state.hierarchyId}
+						buildingProps={buildingProps}
 						goCreate={this._goCreate}/>
-					<ActualityContent 
-						hierarchyId={this.state.hierarchyId} 
-						data={KPIStore.getKPIChart()} 
-						year={this.state.year} 
-						summaryData={KPIStore.getKPIChartSummary()} 
+					<ActualityContent
+						hierarchyId={this.state.hierarchyId}
+						data={KPIStore.getKPIChart()}
+						year={this.state.year}
+						summaryData={KPIStore.getKPIChartSummary()}
 						onChangeYear={(year) => {
 			        		this._getData(this.props.router.params.customerId, year, this.state.hierarchyId);
 							this.setState({year});
@@ -451,7 +452,7 @@ export default class Actuality extends Component {
 							this.setState({
 								showRefreshDialog: true,
 								kpiId: Id
-							});							
+							});
 						}}
 					/>
 				</div>

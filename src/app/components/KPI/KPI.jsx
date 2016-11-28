@@ -13,6 +13,8 @@ import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Dialog from '../../controls/NewDialog.jsx';
 
+var customerId=null;
+
 export default class KPI extends Component {
 
 	static contextTypes = {
@@ -55,11 +57,11 @@ export default class KPI extends Component {
 
 	_onYearChange(value){
 		if(this.props.isCreate){
-			KPIAction.IsAutoCalculable(this.state.tag.get('Id'),value)
+			KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value)
 		}
 		else {
 			KPIAction.getKPI(this.props.kpiId,value),
-			KPIAction.IsAutoCalculable(this.state.tag.get('Id'),value)
+			KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value)
 		}
 	}
 
@@ -100,28 +102,6 @@ export default class KPI extends Component {
 
 	}
 
-	// _onPredictioChange(index,value){
-	// 	let target=this.state.kpiInfo.getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index]),
-	// 			period=KPIStore.getYearQuotaperiod();
-	// 	if(target){
-	// 		KPIAction.merge([{
-	// 			path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
-	// 			value
-	// 		}])
-	// 	}
-	// 	else {
-	// 		KPIAction.merge([{
-	// 			path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
-	// 			value
-	// 		},
-	// 		{
-	// 			path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
-	// 			value:period[index]
-	// 		}
-	// 	])
-	// 	}
-	// }
-
   _onTagSave(tag){
 		let preTag=this.state.tag,
 				year=this.state.kpiInfo.getIn(['AdvanceSettings','Year']) || (new Date()).getFullYear();
@@ -153,7 +133,7 @@ export default class KPI extends Component {
 				});
 			}
 			KPIAction.merge(params);
-			KPIAction.IsAutoCalculable(tag.get('Id'),year);
+			KPIAction.IsAutoCalculable(customerId,tag.get('Id'),year);
 		})
   }
 
@@ -199,10 +179,10 @@ export default class KPI extends Component {
 	_onSave(){
 		let kpi=KPIStore.transit(this.state.kpiInfo);
 		if(this.props.isCreate){
-			KPIAction.createKpi(this.context.router.params.customerId,this.props.hierarchyId,this.props.hierarchyName,kpi);
+			KPIAction.createKpi(customerId,this.props.hierarchyId,this.props.hierarchyName,kpi);
 		}
 		else {
-			KPIAction.updateKpi(this.context.router.params.customerId,this.props.hierarchyId,this.props.hierarchyName,kpi)
+			KPIAction.updateKpi(customerId,this.props.hierarchyId,this.props.hierarchyName,kpi)
 		}
 	}
 
@@ -237,8 +217,9 @@ export default class KPI extends Component {
   }
 
 	componentWillMount(){
+		customerId=this.context.router.params.customerId;
 		let {isCreate,kpiId,year}=this.props;
-		KPIAction.getKPIPeriodByYear(this.context.router.params.customerId,year);
+		KPIAction.getKPIPeriodByYear(customerId,year);
 		if(!isCreate){
 			KPIAction.getKPI(kpiId,year)
 		}

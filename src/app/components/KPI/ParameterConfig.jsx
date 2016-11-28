@@ -12,13 +12,18 @@ import Prediction from './Prediction.jsx';
 
 export default class ParameterConfig extends Component {
 
+  static contextTypes = {
+    router: React.PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
     this._onCalcValue = this._onCalcValue.bind(this);
   }
+
   _onCalcValue(){
-    let {Year,IndicatorType,value}=this.props;
-    KPIAction.getCalcValue(Year,IndicatorType,value);
+    let {Year,IndicatorType,value,tag}=this.props;
+    KPIAction.getCalcValue(KPIStore.getCalcPredicateParam(this.context.router.params.customerId,tag.get('Id'),Year,IndicatorType,value));
   }
 
   _validateQuota(value){
@@ -71,7 +76,7 @@ export default class ParameterConfig extends Component {
             <FlatButton
             label={I18N.Setting.KPI.Parameter.CalcViaHistory}
             onTouchTap={this._onCalcValue}
-            disabled={value==='' || this.props.hasHistory}
+            disabled={value==='' || !this.props.hasHistory}
             style={{border:'1px solid #e4e7e9'}}
             />
           <MonthValueGroup {...monthGroupProps}/>
