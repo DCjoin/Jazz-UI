@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import { Map,List} from 'immutable';
 import assign from 'object-assign';
-import {Status} from '../../constants/actionType/KPI.jsx';
+import {Status,Type} from '../../constants/actionType/KPI.jsx';
 
 function emptyMap() {
   return new Map();
@@ -200,8 +200,6 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   validateQuota(value=''){
-    console.log('validateQuota');
-    console.log(value);
     value=value?value+'':value;
     let temp=parseFloat(value);
     if(!value || value==='-') return true;
@@ -221,13 +219,10 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   validateKpiInfo(kpi){
-    //console.log('validateKpiInfo');
     var validDate=true;
     var {IndicatorName,ActualTagName,AdvanceSettings}=kpi.toJS();
 
     var {AnnualQuota,AnnualSavingRate,TargetMonthValues,PredictionSetting}=AdvanceSettings || {};
-    // console.log(AdvanceSettings);
-    // console.log(TargetMonthValues);
 
     if(!IndicatorName || IndicatorName==='') return false;
 
@@ -291,6 +286,16 @@ const KPIStore = assign({}, PrototypeStore, {
     }
 
     return kpi.toJS()
+  },
+
+  getCalcPredicateParam(CustomerId,TagId,Year,QuotaType,value){
+    let param={CustomerId,TagId,Year,QuotaType};
+    if(QuotaType===Type.Quota){
+      param.IndexValue=value
+    }else {
+      param.RatioValue=value
+    }
+    return param
   },
 
   dispose(){

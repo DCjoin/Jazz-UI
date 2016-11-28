@@ -407,7 +407,7 @@ exports.register = function(server, options, next) {
               }).type("application/json");
             }
         }
-    }, 
+    },
     {
         method: 'get',
         path: APIBasePath + APIPath.KPI.getKPIConfigured.split('?')[0],
@@ -454,38 +454,39 @@ exports.register = function(server, options, next) {
              }).type("application/json");
         }
     },
-    {
-        method: 'post',
-        path: APIBasePath + APIPath.KPI.getCalcValue,
-        handler: function(request, reply) {
-
-              return reply({
-                  "error": { "Code": "0", "Messages": null },
-                  "Result": calcValue
-              }).type("application/json");
-            }
-        },
-        {
-            method: 'post',
-            path: APIBasePath + APIPath.KPI.getCalcPredicate,
-            handler: function(request, reply) {
-
-                  return reply({
-                      "error": { "Code": "0", "Messages": null },
-                      "Result": calcValue
-                  }).type("application/json");
-                }
-            },
-    {
-            method: 'get',
-            path: '/API/kpi/IsAutoCalculable',
-            handler: function(request, reply) {
-                  return reply({
-                      "error": { "Code": "0", "Messages": null },
-                      "Result": true
-                  }).type("application/json");
-                }
-        },
+    //for test
+    // {
+    //     method: 'post',
+    //     path: APIBasePath + APIPath.KPI.getCalcValue,
+    //     handler: function(request, reply) {
+    //
+    //           return reply({
+    //               "error": { "Code": "0", "Messages": null },
+    //               "Result": calcValue
+    //           }).type("application/json");
+    //         }
+    //     },
+        // {
+        //     method: 'post',
+        //     path: APIBasePath + APIPath.KPI.getCalcPredicate,
+        //     handler: function(request, reply) {
+        //
+        //           return reply({
+        //               "error": { "Code": "0", "Messages": null },
+        //               "Result": calcValue
+        //           }).type("application/json");
+        //         }
+        //     },
+    // {
+    //         method: 'get',
+    //         path: '/API/kpi/IsAutoCalculable',
+    //         handler: function(request, reply) {
+    //               return reply({
+    //                   "error": { "Code": "0", "Messages": null },
+    //                   "Result": true
+    //               }).type("application/json");
+    //             }
+    //     },
         // {
         //         method: 'post',
         //         path: APIBasePath + APIPath.KPI.createKpiReportSettings,
