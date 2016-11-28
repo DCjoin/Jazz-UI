@@ -170,6 +170,9 @@ class KPIChart extends Component {
 	    	var data2 = this.points[1];
 	    	var data3 = this.points[2];
 	    	let list = '';
+	    	let title = '';
+	    	let targetVal = 0;
+	    	let actualVal = 0;
 	    	this.points.forEach(data => {
 	    		if(data) {
 	    			if(data.series.name === I18N.Kpi.TargetValues) {
@@ -198,10 +201,14 @@ class KPIChart extends Component {
 	    			}
 	    		}
 	    	});
+	    	if(targetVal) {
+	    		title = `<b>${I18N.Kpi.ThisMonthUsaged + (actualVal * 100 / targetVal).toFixed()}%</b>`;
+	    	}
 	    	return `
 	    	<table>
-	    		<b>${I18N.Kpi.ThisMonthUsaged}70%</b>
+	    		${title}
 	    		${list}
+	    		}
 	    	</table>
 	    	`;
 	    };
