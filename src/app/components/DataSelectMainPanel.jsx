@@ -196,7 +196,7 @@ let DataSelectMainPanel = React.createClass({
             height: '46px',
             minWidth: '77px',
             float: 'right',
-            paddingLeft: '0'
+            paddingLeft: '0',
           },
           selectAlarmValue:value
         });
@@ -206,7 +206,7 @@ let DataSelectMainPanel = React.createClass({
             width: '122px',
             minWidth: '122px',
             height: '46px',
-            float: 'right'
+            float: 'right',
           },
           selectAlarmValue:value
         });
@@ -216,7 +216,7 @@ let DataSelectMainPanel = React.createClass({
             width: '137px',
             minWidth: '137px',
             height: '46px',
-            float: 'right'
+            float: 'right',
           },
           selectAlarmValue:value
         });
@@ -227,7 +227,7 @@ let DataSelectMainPanel = React.createClass({
             width: '92px',
             minWidth: '92px',
             height: '46px',
-            float: 'right'
+            float: 'right',
           },
           selectAlarmValue:value
         });
