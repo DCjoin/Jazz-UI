@@ -60,7 +60,7 @@ const KPIAction = {
       type: Action.INIT_KPI_CHART_DATA,
     });
   },
-  getKPIConfigured(CustomerId, HierarchyId, Year) {
+  getKPIConfigured(CustomerId, Year, HierarchyId) {
     let getKPIChart = this.getKPIChart;
     let getKPIChartSummary = this.getKPIChartSummary;
     let initKPIChartData = this.initKPIChartData;
@@ -81,7 +81,7 @@ const KPIAction = {
     });
   },
   getKPIChart(CustomerId, Year, HierarchyId) {
-    Ajax.get(util.replacePathParams(Path.KPI.getKPIChart, CustomerId, HierarchyId, Year), {
+    Ajax.get(util.replacePathParams(Path.KPI.getKPIChart, CustomerId, Year, HierarchyId), {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.GET_KPI_CHART,
@@ -92,7 +92,7 @@ const KPIAction = {
     });
   },
   getKPIChartSummary(CustomerId, Year, HierarchyId) {
-    Ajax.get(util.replacePathParams(Path.KPI.getKPIChartSummary, CustomerId, HierarchyId, Year), {
+    Ajax.get(util.replacePathParams(Path.KPI.getKPIChartSummary, CustomerId, Year, HierarchyId), {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.GET_KPI_CHART_SUMMARY,

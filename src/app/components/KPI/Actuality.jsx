@@ -8,7 +8,9 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import KPIAction from 'actions/KPI/KPIAction.jsx'
+import HierarchyAction from 'actions/HierarchyAction.jsx'
 import KPIStore from 'stores/KPI/KPIStore.jsx'
+import HierarchyStore from 'stores/HierarchyStore.jsx'
 import UOMStore from 'stores/UOMStore.jsx'
 import CurrentUserStore from 'stores/CurrentUserStore.jsx'
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx'
@@ -27,7 +29,7 @@ import CreateKPI from './KPI.jsx';
 import Highcharts from '../highcharts/Highcharts.jsx';
 
 function isSingleBuilding() {
-	return (CurrentUserCustomerStore.getCurrentCustomerBuildingList() && CurrentUserCustomerStore.getCurrentCustomerBuildingList().length === 1)
+	return true || (HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length === 1)
 		&& privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
 
@@ -176,6 +178,7 @@ class KPIChart extends Component {
 	    	this.points.forEach(data => {
 	    		if(data) {
 	    			if(data.series.name === I18N.Kpi.TargetValues) {
+	    				targetVal = data.y;
 			    		list += `
 			    		<tr>
 					    	<td style="color:${data.series.color};padding:0">● ${data.series.name}: </td>
@@ -184,6 +187,7 @@ class KPIChart extends Component {
 			    		`;
 	    			}
 	    			if(data.series.name === I18N.Kpi.ActualValues) {
+	    				actualVal = data.y;
 			    		list += `
 			    		<tr>
 					    	<td style="color:${data.series.color};padding:0">■ ${data.series.name}: </td>
@@ -208,7 +212,6 @@ class KPIChart extends Component {
 	    	<table>
 	    		${title}
 	    		${list}
-	    		}
 	    	</table>
 	    	`;
 	    };
@@ -268,8 +271,11 @@ class ActualityContent extends Component {
 				return (<div className="content flex-center"><b>{I18N.Kpi.Error.SelectBuilding}</b></div>);
 			}
 			if( !data ) {
-				return (<div className="content flex-center"><b>{I18N.Kpi.Error.NonQuotaCongured}</b></div>);
+				return (<div className="content flex-center"><b>{I18N.Kpi.Error.NonKPICongured}</b></div>);
 			}
+		}
+		if( !summaryData || !data ) {
+			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
 		let tags = data.get('data');
 		return (
@@ -342,30 +348,50 @@ export default class Actuality extends Component {
 		super(props);
 		this._goCreate = this._goCreate.bind(this);
 		this._onChange = this._onChange.bind(this);
+		this._onGetBuildingList = this._onGetBuildingList.bind(this);
 		this.state = {
 			loading: false,
 			showCreate: false,
 			showRefreshDialog: false,
 			kpiId: null,
 			year: moment().year(),
-			hierarchyId: isSingleBuilding() ? CurrentUserCustomerStore.getCurrentCustomerBuildingList()[0].Id : null
+			hierarchyId: null
 		}
 	}
 	componentWillMount() {
 		this.setState({
 			loading: true
 		});
-		KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
+		HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
+		// KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
+		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
 		KPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
-		KPIAction.getKPIConfigured(nextProps.router.params.customerId, this.state.year, this.state.hierarchyId);
-
+		HierarchyAction.getBuildingListByCustomerId(nextProps.router.params.customerId);
+		// KPIAction.getKPIConfigured(nextProps.router.params.customerId, this.state.year, this.state.hierarchyId);
 	}
 	componentWillUnmount() {
+		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
 		KPIStore.removeChangeListener(this._onChange);
 	}
 	_onChange() {
+		this.setState({
+			loading: false
+		});
+	}
+	_onGetBuildingList() {
+		let buildingList = HierarchyStore.getBuildingList();
+		if( buildingList && buildingList.length > 0 ) {
+			if(isSingleBuilding()) {
+				let hierarchyId = buildingList[0].Id
+				this.setState({
+					hierarchyId,
+				});
+				KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
+				return;
+			}
+		}		
 		this.setState({
 			loading: false
 		});
@@ -423,9 +449,8 @@ export default class Actuality extends Component {
 		        	margin: '0 20px',
 		        },
 		        didChanged: (hierarchyId) => {
-		        	this._getData(this.props.router.params.customerId, this.state.year, hierarchyId);
+		        	KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, hierarchyId);
 					this.setState({hierarchyId});
-
 		        },
 		        textField: 'Name',
 		        valueField: 'Id',
@@ -433,7 +458,7 @@ export default class Actuality extends Component {
 		        	Id: null,
 		        	disabled: true,
 		        	Name: I18N.Setting.KPI.SelectBuilding
-		        }].concat(CurrentUserCustomerStore.getCurrentCustomerBuildingList()),
+		        }].concat(HierarchyStore.getBuildingList()),
 		    };
 			return (
 				<div className='jazz-kpi-actuality'>

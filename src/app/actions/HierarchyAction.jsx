@@ -5,6 +5,8 @@ import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import Hierarchy from '../constants/actionType/Hierarchy.jsx';
 import HierarchyStore from '../stores/HierarchyStore.jsx';
 import Ajax from '../ajax/ajax.jsx';
+import util from 'util/Util.jsx';
+import Path from 'constants/Path.jsx';
 
 var Action = Hierarchy.Action;
 
@@ -31,7 +33,23 @@ let HierarchyAction = {
         console.log(err, res);
       }
     });
-  }
+  },
+
+  getBuildingListByCustomerId(customerId) {
+    Ajax.get(util.replacePathParams(Path.Hierarchy.GetBuildingList, customerId), {
+      params: {customerId},
+      success: function(buildingList) {
+
+        AppDispatcher.dispatch({
+          type: Action.GET_BUILDING_LIST_BY_CUSTOMER_ID,
+          data: buildingList
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 
 };
 

@@ -6,8 +6,10 @@ import Immutable from 'immutable';
 import Hierarchy from '../constants/actionType/Hierarchy.jsx';
 let HIERARCHY_NODE_EVENT = 'checkallstatus';
 let NODE_LOADING_EVENT = 'nodeloading';
+let BUILDING_LIST_EVENT = 'building_list_event';
 var _data = {};
 var _isLoading = false;
+var _buildingList = false;
 
 var HierarchyStore = assign({}, PrototypeStore, {
   traversalNode: function(node) {
@@ -75,6 +77,12 @@ var HierarchyStore = assign({}, PrototypeStore, {
     f(_data);
     return node;
   },
+  setBuildingList(data) {
+    _buildingList = data;
+  },
+  getBuildingList() {
+    return _buildingList;
+  },
   emitNodeLoadingChange: function() {
     this.emit(NODE_LOADING_EVENT);
   },
@@ -98,6 +106,17 @@ var HierarchyStore = assign({}, PrototypeStore, {
     this.removeListener(HIERARCHY_NODE_EVENT, callback);
     this.dispose();
   },
+  emitBuildingListChange: function() {
+    this.emit(BUILDING_LIST_EVENT);
+  },
+  addBuildingListListener: function(callback) {
+    this.on(BUILDING_LIST_EVENT, callback);
+  },
+
+  removeBuildingListListener: function(callback) {
+    this.removeListener(BUILDING_LIST_EVENT, callback);
+    this.dispose();
+  },
 });
 var Action = Hierarchy.Action;
 HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -110,6 +129,10 @@ HierarchyStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.SET_HIE_NODE_LOAGDING:
       HierarchyStore.setNodeLoading();
       HierarchyStore.emitNodeLoadingChange();
+      break;
+    case Action.GET_BUILDING_LIST_BY_CUSTOMER_ID:
+      HierarchyStore.setBuildingList(action.data);
+      HierarchyStore.emitBuildingListChange();
       break;
 
   }
