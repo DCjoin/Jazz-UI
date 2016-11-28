@@ -149,6 +149,7 @@ var KPIChartData =
   "Year": 2016,
   "IndicatorCharts": [
     {
+      "IndicatorType": 1,
       "IndicatorId": 1,
       "IndicatorName": "用电量",
       "UomId": 3,
@@ -452,12 +453,18 @@ exports.register = function(server, options, next) {
         handler: function(request, reply) {
           sleep(1000);
             var result = [{
-                actual: ['5.8万'],
-                target: ['6万', '103%'],
-              }, {
-                Overproof: true,
-                actual: ['8%', '5.8万'],
-                target: ['7%', '5.6万'],
+                PredictSum: 499999,
+                PredictRatio: 0.6548,
+
+                IndexValue: 599999,
+              },{
+                LastMonthRatio: 0.5548,
+
+                PredictSum: 654321,
+                PredictRatio: 0.2548,
+
+                IndexValue: 999999,
+                RatioValue: 0.84444,
               }];
             if(request.params.year === '2016') {
             }
@@ -475,7 +482,7 @@ exports.register = function(server, options, next) {
             var result = [{
               Id: 123,
               Name: '长城脚下的公社'
-            }/*, {
+            }, {
               Id: 321,
               Name: '朝阳门SOHO'
             }, {
@@ -484,7 +491,7 @@ exports.register = function(server, options, next) {
             }, {
               Id: 33333,
               Name: '银河SOHO'
-          },*/];
+          },];
             if(request.params.year === '2016') {
             }
             reply({
