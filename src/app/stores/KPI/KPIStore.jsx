@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import { Map,List} from 'immutable';
 import assign from 'object-assign';
-import {Type,Status} from '../../constants/actionType/KPI.jsx';
+import {Status} from '../../constants/actionType/KPI.jsx';
 
 function emptyMap() {
   return new Map();
@@ -129,41 +129,47 @@ const KPIStore = assign({}, PrototypeStore, {
     return yearList
   },
 
-  validateQuota(value){
-    value=value+'';
+  validateQuota(value=''){
+    console.log('validateQuota');
+    console.log(value);
+    value=value?value+'':value;
     let temp=parseFloat(value);
-    if(!value || value==='-') return '';
-    if((temp+'').length!==value.length || temp<0 || value.indexOf('.')>-1) return I18N.Setting.KPI.Parameter.QuotaErrorText;
-    return ''
+    if(!value || value==='-') return true;
+    if((temp+'').length!==value.length || temp<0 || value.indexOf('.')>-1) return false;
+    return true
   },
 
-  validateSavingRate(value){
-    value=value+'';
+  validateSavingRate(value=''){
+    value=value?value+'':value;
     let temp=parseFloat(value),
         index=value.indexOf('.');
-    if(!value || value==='-') return '';
-    if((temp+'').length!==value.length || temp<-100 || temp>100) return I18N.Setting.KPI.Parameter.SavingRateErrorText;
-    if(index>-1 && value.length-index>2) return I18N.Setting.KPI.Parameter.SavingRateErrorText;
-    return ''
+    if(!value || value==='-') return true;
+    if(parseInt(value.slice(index,value.length))!==0 && (temp+'').length!==value.length) return false;
+    if(temp<-100 || temp>100) return false;
+    if(index>-1 && value.length-index>2) return false;
+    return true
   },
 
   validateKpiInfo(kpi){
+    //console.log('validateKpiInfo');
     var validDate=true;
     var {IndicatorName,ActualTagName,AdvanceSettings}=kpi.toJS();
 
     var {AnnualQuota,AnnualSavingRate,TargetMonthValues,PredictionSetting}=AdvanceSettings || {};
+    // console.log(AdvanceSettings);
+    // console.log(TargetMonthValues);
 
     if(!IndicatorName || IndicatorName==='') return false;
 
     if(!ActualTagName || ActualTagName==='') return false;
 
-    if(AnnualQuota && this.validateQuota(AnnualQuota)!=='') return false;
+    if(AnnualQuota && !this.validateQuota(AnnualQuota)) return false;
 
-    if(AnnualSavingRate && this.validateSavingRate(AnnualSavingRate)!=='') return false;
+    if(AnnualSavingRate && !this.validateSavingRate(AnnualSavingRate)) return false;
 
     if(TargetMonthValues && TargetMonthValues.length>0){
       TargetMonthValues.forEach(value=>{
-        if(this.validateQuota(value.Value)!==''){
+        if(!this.validateQuota(value.Value)){
           validDate=false
         }
       });
@@ -173,14 +179,14 @@ const KPIStore = assign({}, PrototypeStore, {
       let {TagSavingRates,MonthPredictionValues}=PredictionSetting;
       if(TagSavingRates && TagSavingRates.length>0){
         TagSavingRates.forEach(rate=>{
-          if(this.validateSavingRate(rate.SavingRate)!==''){
+          if(!this.validateSavingRate(rate.SavingRate)){
             validDate=false
           }
         });
       }
       if(MonthPredictionValues && MonthPredictionValues.length>0){
         MonthPredictionValues.forEach(value=>{
-          if(this.validateQuota(value.Value)!==''){
+          if(!this.validateQuota(value.Value)){
             validDate=false
           }
         });

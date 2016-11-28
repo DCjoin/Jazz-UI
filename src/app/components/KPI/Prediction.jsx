@@ -24,7 +24,6 @@ export default class Prediction extends Component {
     this._onDialogDismiss = this._onDialogDismiss.bind(this);
     this._onRatesSelectTagShow = this._onRatesSelectTagShow.bind(this);
     this._onRatesSave = this._onRatesSave.bind(this);
-
   }
 
   state={
@@ -60,7 +59,7 @@ export default class Prediction extends Component {
   }
 
   	_onPredictioChange(index,value){
-  		let target=this.state.kpiInfo.getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index]),
+  		let target=KPIStore.getKpiInfo().getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index]),
   				period=KPIStore.getYearQuotaperiod();
   		if(target){
   			KPIAction.merge([{
@@ -135,7 +134,9 @@ export default class Prediction extends Component {
                                     }])
                                           },
                       defaultValue: rate,
-                      regexFn:KPIStore.validateSavingRate
+                      regexFn:(value)=>{
+                        return !KPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
+                      }
                     };
                     content=<div style={{display:'flex','alignItems':'center'}}>
                       <span><ViewableTextField {...rateProps}/></span>
