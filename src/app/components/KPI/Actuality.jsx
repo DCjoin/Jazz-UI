@@ -266,11 +266,11 @@ class ActualityContent extends Component {
 		return (
 			<div className='content'>
 				<div className='action-bar'>
-					<LinkButton iconName={ "icon-arrow-left" } disabled={year < 2000} onClick={() => {
+					<LinkButton iconName={ "icon-arrow-left" } disabled={year < new Date().getFullYear() - 2 } onClick={() => {
 						onChangeYear(year - 1);
 					}}/>
 					<span className='current-year'>{year}</span>
-					<LinkButton iconName={ "icon-arrow-right" } disabled={year >= new Date().getFullYear()} onClick={() => {
+					<LinkButton iconName={ "icon-arrow-right" } disabled={year >= new Date().getFullYear() + 1} onClick={() => {
 						onChangeYear(year + 1);
 					}}/>
 				</div>
