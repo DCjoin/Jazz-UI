@@ -410,7 +410,7 @@ exports.register = function(server, options, next) {
     },
     {
         method: 'get',
-        path: APIBasePath + APIPath.KPI.getKPIConfigured.split('?')[0],
+        path: APIBasePath + APIPath.KPI.getKPIConfigured,
         handler: function(request, reply) {
           sleep(1000);
             reply({
@@ -421,7 +421,7 @@ exports.register = function(server, options, next) {
     },
     {
         method: 'get',
-        path: APIBasePath + APIPath.KPI.getKPIChart.split('?')[0],
+        path: APIBasePath + APIPath.KPI.getKPIChart,
         handler: function(request, reply) {
           sleep(1000);
             var result = KPIChartData;
@@ -435,7 +435,7 @@ exports.register = function(server, options, next) {
     },
     {
         method: 'get',
-        path: APIBasePath + APIPath.KPI.getKPIChartSummary.split('?')[0],
+        path: APIBasePath + APIPath.KPI.getKPIChartSummary,
         handler: function(request, reply) {
           sleep(1000);
             var result = [{
