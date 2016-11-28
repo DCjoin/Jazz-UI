@@ -477,16 +477,16 @@ exports.register = function(server, options, next) {
         //           }).type("application/json");
         //         }
         //     },
-    // {
-    //         method: 'get',
-    //         path: '/API/kpi/IsAutoCalculable',
-    //         handler: function(request, reply) {
-    //               return reply({
-    //                   "error": { "Code": "0", "Messages": null },
-    //                   "Result": true
-    //               }).type("application/json");
-    //             }
-    //     },
+    {
+            method: 'get',
+            path: APIBasePath + APIPath.KPI.IsAutoCalculable,
+            handler: function(request, reply) {
+                  return reply({
+                      "error": { "Code": "0", "Messages": null },
+                      "Result": true
+                  }).type("application/json");
+                }
+        },
         // {
         //         method: 'post',
         //         path: APIBasePath + APIPath.KPI.createKpiReportSettings,
