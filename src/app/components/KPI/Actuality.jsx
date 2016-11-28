@@ -30,7 +30,7 @@ import CreateKPI from './KPI.jsx';
 import Highcharts from '../highcharts/Highcharts.jsx';
 
 function isSingleBuilding() {
-	return true || (HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length === 1)
+	return (HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length === 1)
 		&& privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
 
@@ -136,7 +136,7 @@ const DEFAULT_OPTIONS = {
 
 class KPIChart extends Component {
 	_generatorOptions() {
-		let {data, period} = this.props;
+		let {data, period, LastMonthRatio} = this.props;
 		let currentMonthIndex = findLastIndex(period,  date => date.isBefore(new Date()) );
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
@@ -220,7 +220,7 @@ class KPIChart extends Component {
         		return `
 					<div class='actuality-fractional-energy-saving-tooltip'>
 						<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
-						<div>${data.lastMonthSaving + '%'}</div>
+						<div>${(LastMonthRatio * 100).toFixed() + '%'}</div>
 					</div>
         		`
         	}
@@ -286,6 +286,34 @@ class ActualityContent extends Component {
 }
 
 class KPIReport extends Component {
+	getValueSummaryItem() {
+		let {data, summaryData} = this.props;
+		let isIndex = data.get('type') === 1;
+		return (
+		<div className='summary-item'>
+			<div className='summary-title'>{isIndex ? I18N.Kpi.IndexValue : I18N.Kpi.SavingValue}</div>
+			<div className='summary-value'>
+				<span>{isIndex ? summaryData.IndexValue : (summaryData.RatioValue * 100).toFixed() + '%'}</span>
+				<span>{isIndex ? '' : summaryData.IndexValue}</span>
+			</div>
+		</div>
+		);
+	}
+	getPredictSummaryItem() {
+		let {data, summaryData} = this.props;
+		let isIndex = data.get('type') === 1;
+		let overproof = isIndex ? (summaryData.IndexValue < summaryData.PredictSum)
+							 : (summaryData.IndexValue > summaryData.PredictSum) ;
+		return (
+		<div className={classnames('summary-item', {overproof: overproof})}>
+			<div className='summary-title'>{isIndex ? I18N.Kpi.PredictSum : I18N.Kpi.PredictSaving}</div>
+			<div className='summary-value'>
+				<span>{isIndex ? summaryData.PredictSum : (summaryData.PredictRatio * 100).toFixed() + '%'}</span>
+				<span>{isIndex ? (summaryData.PredictRatio * 100).toFixed() + '%' : summaryData.PredictSum}</span>
+			</div>
+		</div>
+		);
+	}
 	render() {
 		let {data, summaryData, period, onEdit, onRefresh} = this.props;
 		return (
@@ -308,20 +336,10 @@ class KPIReport extends Component {
 				      }}/>
 				    </IconMenu>
 				</div>
-				<div className='jazz-kpi-report-chart'><KPIChart period={period} data={data}/></div>
+				<div className='jazz-kpi-report-chart'><KPIChart LastMonthRatio={summaryData.LastMonthRatio} period={period} data={data}/></div>
 				<div className='jazz-kpi-report-summary'>
-					<div className='summary-item'>
-						<div className='summary-title'>全年定额指标</div>
-						<div className='summary-value'>
-							<span>{summaryData.actual[0]}</span><span>{summaryData.actual[1]}</span>
-						</div>
-					</div>
-					<div className={classnames('summary-item', {overproof: summaryData.Overproof})}>
-						<div className='summary-title'>全年用量预测值</div>
-						<div className='summary-value'>
-							<span>{summaryData.target[0]}</span><span>{summaryData.target[1]}</span>
-						</div>
-					</div>
+					{this.getValueSummaryItem()}
+					{this.getPredictSummaryItem()}
 				</div>
 			</div>
 		);
