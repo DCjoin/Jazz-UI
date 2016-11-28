@@ -312,8 +312,9 @@ KPI.propTypes = {
 	year:React.PropTypes.number,
 };
 KPI.defaultProps = {
-	hierarchyId: 100016,
-	hierarchyName:'楼宇BADGOOD',
+	hierarchyId: 100010,
+	hierarchyName:'楼宇A',
 	year:2016,
-	isCreate:true
+	isCreate:true,
+	kpiId:6
 };

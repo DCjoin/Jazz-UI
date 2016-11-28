@@ -434,8 +434,8 @@ export default class Actuality extends Component {
 			return (<CreateKPI
 				// hierarchyId={this.state.hierarchyId}
 				// hierarchyName={getHierarchyNameById(this.state.hierarchyId)}
-				kpiId={this.state.kpiId}
-				isCreate={!this.state.kpiId}
+				// kpiId={this.state.kpiId}
+				// isCreate={!this.state.kpiId}
 				onSave={this._reload}
 				onCancel={this._reload}
 				year={this.state.year}/>);
