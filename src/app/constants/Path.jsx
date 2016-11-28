@@ -4,7 +4,7 @@ module.exports = {
     KPI:{
 		getKPIPeriod: '/kpi/getkpiperiod/{customerid}',
 		setKPIPeriod: '/kpi/setkpiperiod',
-		getKPIPeriodByYear: '/kpi/getKPIPeriodPoint/{customerid}/{year}',
+		getKPIPeriodByYear: '/kpi/getkpiperiodpoint/{customerid}/{year}',
 		getDimension:'/AreaDimension/GetAreaDimensionTree',
 		getTags:'/Tag/GetTagsByFilter',
         getKPIConfigured: '/KPI/chart/exist/{customerId}/{HierarchyId}',

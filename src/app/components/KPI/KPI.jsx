@@ -12,6 +12,7 @@ import {Type,Status} from '../../constants/actionType/KPI.jsx';
 import FormBottomBar from '../../controls/FormBottomBar.jsx';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import Dialog from '../../controls/NewDialog.jsx';
+import {DataConverter} from '../../util/Util.jsx';
 
 var customerId=null;
 
@@ -80,24 +81,28 @@ export default class KPI extends Component {
 	}
 
 	_onTargetValueChange(index,value){
-		let target=this.state.kpiInfo.getIn(['AdvanceSettings','TargetMonthValues',index]),
+		let TargetMonthValues=this.state.kpiInfo.getIn(['AdvanceSettings','TargetMonthValues']),
 				period=KPIStore.getYearQuotaperiod();
-		if(target){
-			KPIAction.merge([{
-				path:`AdvanceSettings.TargetMonthValues.${index}.Value`,
-				value
-			}])
-		}
-		else {
+		if(TargetMonthValues){
 			KPIAction.merge([{
 				path:`AdvanceSettings.TargetMonthValues.${index}.Value`,
 				value
 			},
 			{
 				path:`AdvanceSettings.TargetMonthValues.${index}.Month`,
-				value:period[index]
+				value:DataConverter.DatetimeToJson(period[index]._d)
 			}
 		])
+		}
+		else {
+					KPIAction.merge([{
+						path:'AdvanceSettings.TargetMonthValues',
+						value:Immutable.fromJS({
+							Month:DataConverter.DatetimeToJson(period[index]._d),
+							Value:value,
+						}),
+						status:Status.ADD
+					}])
 		}
 
 	}

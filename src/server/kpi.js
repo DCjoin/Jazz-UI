@@ -26,7 +26,20 @@ var currentKPIperiod = {
     Day: 12,
     CreateTime: '2016-11-23T02:59:53.987Z'
 };
-var currentQuotaperiod_year = ["2016-06-01","2016-07-01","2016-08-01","2016-09-01","2016-10-01","2016-11-01","2016-12-01","2017-01-01","2017-02-01","2017-03-01","2017-04-01","2017-05-01"];
+var currentQuotaperiod_year = [
+  new Date(2016,6,1).getTime(),
+  new Date(2016,7,1).getTime(),
+  new Date(2016,8,1).getTime(),
+  new Date(2016,9,1).getTime(),
+  new Date(2016,10,1).getTime(),
+  new Date(2016,11,1).getTime(),
+  new Date(2016,12,1).getTime(),
+  new Date(2017,1,1).getTime(),
+  new Date(2017,2,1).getTime(),
+  new Date(2017,3,1).getTime(),
+  new Date(2017,4,1).getTime(),
+  new Date(2017,5,1).getTime(),
+  ];
 var kpi2016={
   "Id": 1,
   "CustomerId": 100001,
@@ -390,24 +403,24 @@ exports.register = function(server, options, next) {
             }).type("application/json");
         }
     },
-    {
-        method: 'get',
-        path: APIBasePath + APIPath.KPI.getKpi,
-        handler: function(request, reply) {
-            if(request.params.year === '2016') {
-              reply({
-                Result:kpi2016,
-                error: {Code: "0", Messages: null}
-               }).type("application/json");
-            }
-            else {
-              reply({
-                  "error": { "Code": "0", "Messages": null },
-                  "Result": ''
-              }).type("application/json");
-            }
-        }
-    },
+    // {
+    //     method: 'get',
+    //     path: APIBasePath + APIPath.KPI.getKpi,
+    //     handler: function(request, reply) {
+    //         if(request.params.year === '2016') {
+    //           reply({
+    //             Result:kpi2016,
+    //             error: {Code: "0", Messages: null}
+    //            }).type("application/json");
+    //         }
+    //         else {
+    //           reply({
+    //               "error": { "Code": "0", "Messages": null },
+    //               "Result": ''
+    //           }).type("application/json");
+    //         }
+    //     }
+    // },
     {
         method: 'get',
         path: APIBasePath + APIPath.KPI.getKPIConfigured,
