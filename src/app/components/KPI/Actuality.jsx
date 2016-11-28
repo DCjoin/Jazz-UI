@@ -27,6 +27,7 @@ import util from 'util/Util.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 
 import CreateKPI from './KPI.jsx';
+import UpdatePrediction from './UpdatePrediction.jsx';
 
 import Highcharts from '../highcharts/Highcharts.jsx';
 function isSingleBuilding() {
@@ -221,7 +222,6 @@ class KPIChart extends Component {
 		options.series[2].name = I18N.Kpi.PredictionValues;
 
 		options.series[1].dataLabels.formatter = function() {
-	    	console.log(tooltipIndex);
         	if(data.get('type') === 2 && this.point.index === tooltipIndex) {
         		return `
 					<div class='actuality-fractional-energy-saving-tooltip'>
@@ -233,6 +233,9 @@ class KPIChart extends Component {
         }
 
 		return options;
+	}
+	shouldComponentUpdate(nextProps, nextState) {
+		return this.props.data !== nextProps.data;
 	}
     render () {
         return (
@@ -257,7 +260,10 @@ class ActualityHeader extends Component {
 
 class ActualityContent extends Component {
 	render() {
-		let {data, summaryData, period, year, onChangeYear, hierarchyId, onEdit, onRefresh} = this.props;
+		let {data, summaryData, period, year, onChangeYear, hierarchyId, onEdit, onRefresh, chartReady} = this.props;
+		if( !chartReady ) {
+			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
+		}
 		if( !isSingleBuilding() ) {
 			if( !hierarchyId ) {
 				return (<div className="content flex-center"><b>{I18N.Kpi.Error.SelectBuilding}</b></div>);
@@ -265,9 +271,6 @@ class ActualityContent extends Component {
 			if( !data ) {
 				return (<div className="content flex-center"><b>{I18N.Kpi.Error.NonKPICongured}</b></div>);
 			}
-		}
-		if( !summaryData || !data ) {
-			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
 		let tags = data.get('data');
 		return (
@@ -380,7 +383,7 @@ class KPIReport extends Component {
 				      }}/>
 				    </IconMenu>
 				</div>
-				<div className='jazz-kpi-report-chart'><KPIChart LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/></div>
+				<div className='jazz-kpi-report-chart'><KPIChart  LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/></div>
 				<div className='jazz-kpi-report-summary'>
 					{this.getValueSummaryItem()}
 					{this.getPredictSummaryItem()}
@@ -396,6 +399,8 @@ export default class Actuality extends Component {
 		super(props);
 		this._goCreate = this._goCreate.bind(this);
 		this._onChange = this._onChange.bind(this);
+		this._reload = this._reload.bind(this);
+		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onGetBuildingList = this._onGetBuildingList.bind(this);
 		this.state = {
 			loading: false,
@@ -456,16 +461,17 @@ export default class Actuality extends Component {
 		});
 	}
 	_reload() {
-		window.document.location.reload();
-		// this.setState({
-		// 	showCreate: false
-		// });
+		KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
+		this.setState({
+			showRefreshDialog: false,
+			showCreate: false,
+			kpiId: null,
+		});
 	}
 	_getData(customerId, year, hierarchyId) {
 		KPIAction.initKPIChartData();
 		KPIAction.getKPIChart(customerId, year, hierarchyId);
 		KPIAction.getKPIChartSummary(customerId, year, hierarchyId);
-		KPIAction.getKPIPeriodByYear(customerId,year);
 	}
 	render() {
 		if( this.state.loading ) {
@@ -516,6 +522,7 @@ export default class Actuality extends Component {
 						buildingProps={buildingProps}
 						goCreate={this._goCreate}/>
 					<ActualityContent
+						chartReady={KPIStore.chartReady()}
 						period={KPIStore.getYearQuotaperiod()}
 						hierarchyId={this.state.hierarchyId}
 						data={KPIStore.getKPIChart()}
@@ -538,6 +545,14 @@ export default class Actuality extends Component {
 							});
 						}}
 					/>
+					{this.state.showRefreshDialog && <UpdatePrediction
+						hierarchyId={this.state.hierarchyId}
+						hierarchyName={getHierarchyNameById(this.state.hierarchyId)}
+						kpiId={this.state.kpiId}
+						isCreate={!this.state.kpiId}
+						onSave={this._reload}
+						onCancel={this._cancleRefreshDialog}
+						year={this.state.year}/>}
 				</div>
 			);
 		}

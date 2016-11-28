@@ -45,6 +45,8 @@ let _KPIPeriod=null,
     _KPIConfigured=null,
     _KPIChart=null,
     _KPIChartSummary=null,
+    _KPIChartLoading=false,
+    _KPIChartSummaryLoading=false,
     _quotaperiodYear=null,
     _hasHistory=false;
 
@@ -55,6 +57,8 @@ function _init() {
   _KPIConfigured=null;
   _KPIChart=null;
   _KPIChartSummary=null;
+  _KPIChartLoading=false;
+  _KPIChartSummaryLoading=false;
   _quotaperiodYear=null;
   _hasHistory=false;
 }
@@ -95,6 +99,7 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   setKPIChart(data) {
+    _KPIChartLoading = false;
     _KPIChart = Immutable.fromJS(coverageRawToHighChartData(data));
   },
   getKPIChart() {
@@ -102,14 +107,19 @@ const KPIStore = assign({}, PrototypeStore, {
   },
 
   setKPIChartSummary(data) {
+    _KPIChartSummaryLoading = false;
     _KPIChartSummary = data;
   },
   getKPIChartSummary() {
     return _KPIChartSummary;
   },
   _initKpiChartData() {
-    _KPIChartSummary = null;
-    _KPIChart = Immutable.fromJS(coverageRawToHighChartData(null));
+    _KPIChartSummaryLoading = true;
+    _KPIChartLoading = true;
+  },
+
+  chartReady() {
+    return !(_KPIChartSummaryLoading || _KPIChartLoading)
   },
 
   setYearQuotaperiod(data) {
