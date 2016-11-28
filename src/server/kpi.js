@@ -454,6 +454,32 @@ exports.register = function(server, options, next) {
              }).type("application/json");
         }
     },
+    {
+        method: 'get',
+        path: APIBasePath + APIPath.Hierarchy.GetBuildingList,
+        handler: function(request, reply) {
+          sleep(1000);
+            var result = [{
+              Id: 123,
+              Name: '长城脚下的公社'
+            }/*, {
+              Id: 321,
+              Name: '朝阳门SOHO'
+            }, {
+              Id: 11112,
+              Name: '丹棱SOHO'
+            }, {
+              Id: 33333,
+              Name: '银河SOHO'
+          },*/];
+            if(request.params.year === '2016') {
+            }
+            reply({
+              Result: result,
+              error: {Code: "0", Messages: null}
+             }).type("application/json");
+        }
+    },
     //for test
     // {
     //     method: 'post',

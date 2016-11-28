@@ -1,6 +1,9 @@
 'use strict';
 
 module.exports = {
+    Hierarchy: {
+        GetBuildingList: '/Hierarchy/GetBuildingList/{customerId}'
+    },
     KPI:{
 		getKPIPeriod: '/kpi/getkpiperiod/{customerid}',
 		setKPIPeriod: '/kpi/setkpiperiod',
@@ -8,8 +11,8 @@ module.exports = {
 		getDimension:'/AreaDimension/GetAreaDimensionTree',
 		getTags:'/Tag/GetTagsByFilter',
         getKPIConfigured: '/KPI/chart/exist/{customerId}/{HierarchyId}',
-        getKPIChart: '/KPI/chart/{customerId}/{HierarchyId}/{year}',
-        getKPIChartSummary: '/KPI/GetKpiChartSummary/{customerId}/{HierarchyId}/{year}',
+        getKPIChart: '/KPI/chart/{customerId}/{year}/{HierarchyId}',
+        getKPIChartSummary: '/KPI/GetKpiChartSummary/{customerId}/{year}/{HierarchyId}',
     getKpi:'/kpi/settings/{kpiId}/{year}',
     getCalcValue:'/kpi/calckpigradualvalue',
     IsAutoCalculable:'/kpi/isautocalculable/{customerId}/{tagId}/{year}',
