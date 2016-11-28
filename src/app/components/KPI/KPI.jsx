@@ -26,16 +26,12 @@ export default class KPI extends Component {
 		this._onTagSave = this._onTagSave.bind(this);
 		this._onSelectTagShow = this._onSelectTagShow.bind(this);
 		this._onTargetValueChange = this._onTargetValueChange.bind(this);
-		this._onRatesSelectTagShow = this._onRatesSelectTagShow.bind(this);
-		this._onRatesSave = this._onRatesSave.bind(this);
-		this._onPredictioChange = this._onPredictioChange.bind(this);
 		this._onSave = this._onSave.bind(this);
 		this._onError = this._onError.bind(this);
   }
 
   state = {
     tageSelectShow:false,
-		ratesTageSelectShow:false,
 		tag:null,
 		kpiInfo:Immutable.fromJS({}),
 		hasHistory:false,
@@ -104,27 +100,27 @@ export default class KPI extends Component {
 
 	}
 
-	_onPredictioChange(index,value){
-		let target=this.state.kpiInfo.getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index]),
-				period=KPIStore.getYearQuotaperiod();
-		if(target){
-			KPIAction.merge([{
-				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
-				value
-			}])
-		}
-		else {
-			KPIAction.merge([{
-				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
-				value
-			},
-			{
-				path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
-				value:period[index]
-			}
-		])
-		}
-	}
+	// _onPredictioChange(index,value){
+	// 	let target=this.state.kpiInfo.getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index]),
+	// 			period=KPIStore.getYearQuotaperiod();
+	// 	if(target){
+	// 		KPIAction.merge([{
+	// 			path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
+	// 			value
+	// 		}])
+	// 	}
+	// 	else {
+	// 		KPIAction.merge([{
+	// 			path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
+	// 			value
+	// 		},
+	// 		{
+	// 			path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
+	// 			value:period[index]
+	// 		}
+	// 	])
+	// 	}
+	// }
 
   _onTagSave(tag){
 		let preTag=this.state.tag,
@@ -164,7 +160,7 @@ export default class KPI extends Component {
   _onDialogDismiss(){
     this.setState({
       tageSelectShow:false,
-			ratesTageSelectShow:false
+			// ratesTageSelectShow:false
     })
   }
 
@@ -174,27 +170,27 @@ export default class KPI extends Component {
 		})
 	}
 
-	_onRatesSelectTagShow(){
-		this.setState({
-			ratesTageSelectShow:true
-		})
-	}
+	// _onRatesSelectTagShow(){
+	// 	this.setState({
+	// 		ratesTageSelectShow:true
+	// 	})
+	// }
 
-	_onRatesSave(tag){
-		this.setState({
-			ratesTageSelectShow:false
-		},()=>{
-			KPIAction.merge([{
-				path:'AdvanceSettings.PredictionSetting.TagSavingRates',
-				value:Immutable.fromJS({
-					TagId:tag.get('Id'),
-					TagName:tag.get('Name'),
-					SavingRate:0
-				}),
-				status:Status.ADD
-			}])
-		})
-	}
+	// _onRatesSave(tag){
+	// 	this.setState({
+	// 		ratesTageSelectShow:false
+	// 	},()=>{
+	// 		KPIAction.merge([{
+	// 			path:'AdvanceSettings.PredictionSetting.TagSavingRates',
+	// 			value:Immutable.fromJS({
+	// 				TagId:tag.get('Id'),
+	// 				TagName:tag.get('Name'),
+	// 				SavingRate:0
+	// 			}),
+	// 			status:Status.ADD
+	// 		}])
+	// 	})
+	// }
 
 	_onSuccess(){
 		this.props.onSave()
@@ -304,28 +300,19 @@ export default class KPI extends Component {
 					onAnnualChange:this._onAnnualChange,
 					value:IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate,
 					onTargetValueChange:this._onTargetValueChange,
-					onPredictioChange:this._onPredictioChange,
 					TargetMonthValues:TargetMonthValues,
 					Year:Year || this.props.year,
 					PredictionSetting:PredictionSetting,
 					hasHistory:this.state.hasHistory,
-					onSelectTagShow:this._onRatesSelectTagShow,
-				},
-				ratesTagProps={
-						key:'ratestagselect',
-		      		hierarchyId,
-		      		hierarchyName,
-							tag:this.state.tag,
-		      		onSave:this._onRatesSave,
-		      		onCancel:this._onDialogDismiss
-		    			};
+					hierarchyId,
+					hierarchyName,
+				};
     return(
       <TitleComponent {...titleProps}>
 				<BasicConfig {...basicProps}/>
 				<YearAndTypeConfig {...yearAndTypeProps}/>
 				<ParameterConfig {...parameterProps}/>
         {this.state.tageSelectShow && <TagSelect {...tagProps}/>}
-				{this.state.ratesTageSelectShow && <TagSelect {...ratesTagProps}/>}
 				  <FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={KPIStore.validateKpiInfo(this.state.kpiInfo)}
 				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
 				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>

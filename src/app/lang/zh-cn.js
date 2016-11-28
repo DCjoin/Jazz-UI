@@ -1973,6 +1973,7 @@ I18N.Setting.KPI.Parameter.SavingRateErrorText= '请输入-100.0~100.0';
 I18N.Setting.KPI.Parameter.MonthValue= '逐月指标值';
 I18N.Setting.KPI.Parameter.CalcViaHistory= '根据历史数据计算';
 I18N.Setting.KPI.Parameter.Prediction= '配置预测值';
+I18N.Setting.KPI.Parameter.UpdatePrediction= '更新预测值';
 I18N.Setting.KPI.Parameter.TagSavingRates= '分项节能率配置';
 I18N.Setting.KPI.Parameter.SavingRates= '分项节能率';
 I18N.Setting.KPI.Parameter.MonthPrediction= '逐月预测值';

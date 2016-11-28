@@ -199,12 +199,37 @@ const KPIAction = {
         });
       },
       error: function(err, res) {
-        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),HierarchyName);
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),kpiInfo.HierarchyName);
         AppDispatcher.dispatch({
           type: Action.KPI_ERROR,
           title: I18N.Platform.ServiceProvider.ErrorNotice,
           content: ErrorMsg,
         });
+        console.log(err, res);
+      }
+    });
+  },
+  updatePrediction(info){
+    var url = Path.KPI.updatePredictionSetting;
+    Ajax.post(url,
+      {
+      params: {
+          ...info
+        },
+      commonErrorHandling: false,
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.KPI_SUCCESS,
+          data: resBody
+        });
+      },
+      error: function(err, res) {
+        // let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),HierarchyName);
+        // AppDispatcher.dispatch({
+        //   type: Action.KPI_ERROR,
+        //   title: I18N.Platform.ServiceProvider.ErrorNotice,
+        //   content: ErrorMsg,
+        // });
         console.log(err, res);
       }
     });

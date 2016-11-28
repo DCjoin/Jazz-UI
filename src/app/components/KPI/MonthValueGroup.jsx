@@ -16,12 +16,16 @@ export default class MonthValueGroup extends Component {
             var props={
                   onChange:(value)=>{this.props.onChange(index,value)},
                   date:CommonFuns.formatDateByPeriod(el),
-                  regexFn:KPIStore.validateQuota
+                  regexFn:(value)=>{
+                    return !KPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText}
                 };
             if(el.isBefore(moment(new Date()).format('YYYY-MM-01')) && this.props.IndicatorType===Type.MonthPrediction){
               props.disabled=true;
               props.underlineShow=false;
-              props.value='-'
+              props.value='-';
+              if(this.props.values && this.props.values[index]){
+                    props.value=this.props.values[index].Value===null?'-':this.props.values[index].Value;
+                }
             }
             else if(this.props.values && this.props.values[index]){
                   props.value=this.props.values[index].Value;

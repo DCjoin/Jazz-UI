@@ -486,16 +486,16 @@ exports.register = function(server, options, next) {
                   }).type("application/json");
                 }
         },
-        {
-                method: 'post',
-                path: APIBasePath + APIPath.KPI.createKpiReportSettings,
-                handler: function(request, reply) {
-                      return reply({
-                          "error": { "Code": "050001228001", "Messages": null },
-                          "Result": null
-                      }).type("application/json");
-                    }
-            },
+        // {
+        //         method: 'post',
+        //         path: APIBasePath + APIPath.KPI.createKpiReportSettings,
+        //         handler: function(request, reply) {
+        //               return reply({
+        //                   "error": { "Code": "050001228001", "Messages": null },
+        //                   "Result": null
+        //               }).type("application/json");
+        //             }
+        //     },
             {
                     method: 'post',
                     path: APIBasePath + APIPath.KPI.updateKpiReportSettings,
