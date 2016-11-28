@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
+import {findLastIndex} from 'lodash/array';
 import CircularProgress from 'material-ui/CircularProgress';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -29,7 +30,7 @@ import CreateKPI from './KPI.jsx';
 import Highcharts from '../highcharts/Highcharts.jsx';
 
 function isSingleBuilding() {
-	return true || (HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length === 1)
+	return (HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length === 1)
 		&& privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
 
@@ -67,22 +68,7 @@ const DEFAULT_OPTIONS = {
     	align: 'left',
     	padding: 30
     },
-    xAxis: {
-        categories: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
-    },
+    xAxis: {},
     yAxis: {
     	type: 'column',
         min: 0,
@@ -135,16 +121,6 @@ const DEFAULT_OPTIONS = {
             borderWidth: 1,
             borderColor: '#AAA',
             y: -6,
-      //       formatter: function() {
-      //       	if(this.point.index === 2) {
-      //       		return `
-						// <div class='actuality-fractional-energy-saving-tooltip'>
-						// 	<div>截至上月节能率</div>
-						// 	<div>9%</div>
-						// </div>
-      //       		`
-      //       	}
-      //       }
         },
     }, {
         type: 'column',
@@ -160,21 +136,27 @@ const DEFAULT_OPTIONS = {
 
 class KPIChart extends Component {
 	_generatorOptions() {
-		let {data} = this.props;
+		let {data, period, LastMonthRatio} = this.props;
+		let currentMonthIndex = findLastIndex(period,  date => date.isBefore(new Date()) );
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
 
 		let unit = UOMStore.getUoms()[data.get('unit')].Code;
-
+		options.xAxis.categories = util.getDateLabelsFromMomentToKPI(period);
 		options.yAxis.title.text = unit;
 	    options.tooltip.formatter = function() {
 	    	var data1 = this.points[0];
 	    	var data2 = this.points[1];
 	    	var data3 = this.points[2];
 	    	let list = '';
-	    	let title = '';
+	    	let title = '<br/>';
 	    	let targetVal = 0;
 	    	let actualVal = 0;
+	    	let predictionVal = 0;
+	    	let currentDataIndex = data1.point.index;
+			let tooltipIndex =  findLastIndex(options.series[1].data, (data, index) => index < currentMonthIndex && data);
+
+	    	let header = util.replacePathParams(I18N.Kpi.YearMonth, period[currentDataIndex].year(), period[currentDataIndex].month() + 1);
 	    	this.points.forEach(data => {
 	    		if(data) {
 	    			if(data.series.name === I18N.Kpi.TargetValues) {
@@ -196,6 +178,7 @@ class KPIChart extends Component {
 			    		`;
 	    			}
 	    			if(data.series.name === I18N.Kpi.PredictionValues) {
+	    				predictionVal = data.y;
 			    		list += `
 			    		<tr>
 					    	<td style="color:#434348;padding:0"><div style='    margin-right: 4px;border-color:#434348;border-width:1px;border-style:dotted;display:inline-block;width:6px;height:6px'></div>${data.series.name}: </td>
@@ -205,11 +188,18 @@ class KPIChart extends Component {
 	    			}
 	    		}
 	    	});
-	    	if(targetVal) {
-	    		title = `<b>${I18N.Kpi.ThisMonthUsaged + (actualVal * 100 / targetVal).toFixed()}%</b>`;
+	    	if(data.get('type') === 1 && targetVal ) {
+	    		if(currentDataIndex <= currentMonthIndex) {
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.ThisMonthUsaged, (actualVal * 100 / targetVal).toFixed())}</b>`;
+	    		} else {
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.ThisMonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed())}</b>`;
+	    		}
+	    	} else if(currentDataIndex === tooltipIndex) {
+	    		title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + data.lastMonthSaving + '%'}</b>`;
 	    	}
 	    	return `
 	    	<table>
+	    		<b>${header}</b>
 	    		${title}
 	    		${list}
 	    	</table>
@@ -225,16 +215,12 @@ class KPIChart extends Component {
 		options.series[2].data = data.get('prediction') && data.get('prediction').toJS();
 		options.series[2].name = I18N.Kpi.PredictionValues;
 
-		let tooltipIndex = 3;/* options.series[1].data.findLastIndex(((data, index) => {
-			return index < new Date().getMonth()
-		}))*/
-
 		options.series[1].dataLabels.formatter = function() {
-        	if(this.point.index === tooltipIndex) {
+        	if(data.get('type') === 2 && this.point.index === tooltipIndex) {
         		return `
 					<div class='actuality-fractional-energy-saving-tooltip'>
 						<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
-						<div>${data.lastMonthSaving + '%'}</div>
+						<div>${(LastMonthRatio * 100).toFixed() + '%'}</div>
 					</div>
         		`
         	}
@@ -265,7 +251,7 @@ class ActualityHeader extends Component {
 
 class ActualityContent extends Component {
 	render() {
-		let {data, summaryData, year, onChangeYear, hierarchyId, onEdit, onRefresh} = this.props;
+		let {data, summaryData, period, year, onChangeYear, hierarchyId, onEdit, onRefresh} = this.props;
 		if( !isSingleBuilding() ) {
 			if( !hierarchyId ) {
 				return (<div className="content flex-center"><b>{I18N.Kpi.Error.SelectBuilding}</b></div>);
@@ -290,8 +276,8 @@ class ActualityContent extends Component {
 					}}/>
 				</div>
 	      		<div>
-				{(tags && tags.size > 0) ?
-					tags.map( (tag, i) => <KPIReport onEdit={onEdit} onRefresh={onRefresh} data={tag} summaryData={summaryData[i]} key={tag.get('id')}/> ) :
+				{(period && period.length > 0 && tags && tags.size > 0) ?
+					tags.map( (tag, i) => <KPIReport onEdit={onEdit} onRefresh={onRefresh} period={period} data={tag} summaryData={summaryData[i]} key={tag.get('id')}/> ) :
 				<div>{I18N.Kpi.Error.NonQuotaConguredInThisYear}</div>}
 			</div>
 			</div>
@@ -300,8 +286,36 @@ class ActualityContent extends Component {
 }
 
 class KPIReport extends Component {
+	getValueSummaryItem() {
+		let {data, summaryData} = this.props;
+		let isIndex = data.get('type') === 1;
+		return (
+		<div className='summary-item'>
+			<div className='summary-title'>{isIndex ? I18N.Kpi.IndexValue : I18N.Kpi.SavingValue}</div>
+			<div className='summary-value'>
+				<span>{isIndex ? summaryData.IndexValue : (summaryData.RatioValue * 100).toFixed() + '%'}</span>
+				<span>{isIndex ? '' : summaryData.IndexValue}</span>
+			</div>
+		</div>
+		);
+	}
+	getPredictSummaryItem() {
+		let {data, summaryData} = this.props;
+		let isIndex = data.get('type') === 1;
+		let overproof = isIndex ? (summaryData.IndexValue < summaryData.PredictSum)
+							 : (summaryData.IndexValue > summaryData.PredictSum) ;
+		return (
+		<div className={classnames('summary-item', {overproof: overproof})}>
+			<div className='summary-title'>{isIndex ? I18N.Kpi.PredictSum : I18N.Kpi.PredictSaving}</div>
+			<div className='summary-value'>
+				<span>{isIndex ? summaryData.PredictSum : (summaryData.PredictRatio * 100).toFixed() + '%'}</span>
+				<span>{isIndex ? (summaryData.PredictRatio * 100).toFixed() + '%' : summaryData.PredictSum}</span>
+			</div>
+		</div>
+		);
+	}
 	render() {
-		let {data, summaryData, onEdit, onRefresh} = this.props;
+		let {data, summaryData, period, onEdit, onRefresh} = this.props;
 		return (
 			<div className='jazz-kpi-report'>
 				<div style={{
@@ -322,20 +336,10 @@ class KPIReport extends Component {
 				      }}/>
 				    </IconMenu>
 				</div>
-				<div className='jazz-kpi-report-chart'><KPIChart data={data}/></div>
+				<div className='jazz-kpi-report-chart'><KPIChart LastMonthRatio={summaryData.LastMonthRatio} period={period} data={data}/></div>
 				<div className='jazz-kpi-report-summary'>
-					<div className='summary-item'>
-						<div className='summary-title'>全年定额指标</div>
-						<div className='summary-value'>
-							<span>{summaryData.actual[0]}</span><span>{summaryData.actual[1]}</span>
-						</div>
-					</div>
-					<div className={classnames('summary-item', {overproof: summaryData.Overproof})}>
-						<div className='summary-title'>全年用量预测值</div>
-						<div className='summary-value'>
-							<span>{summaryData.target[0]}</span><span>{summaryData.target[1]}</span>
-						</div>
-					</div>
+					{this.getValueSummaryItem()}
+					{this.getPredictSummaryItem()}
 				</div>
 			</div>
 		);
@@ -417,6 +421,7 @@ export default class Actuality extends Component {
 		KPIAction.initKPIChartData();
 		KPIAction.getKPIChart(customerId, year, hierarchyId);
 		KPIAction.getKPIChartSummary(customerId, year, hierarchyId);
+		KPIAction.getKPIPeriodByYear(customerId,year);
 	}
 	render() {
 		if( this.state.loading ) {
@@ -467,6 +472,7 @@ export default class Actuality extends Component {
 						buildingProps={buildingProps}
 						goCreate={this._goCreate}/>
 					<ActualityContent
+						period={KPIStore.getYearQuotaperiod()}
 						hierarchyId={this.state.hierarchyId}
 						data={KPIStore.getKPIChart()}
 						year={this.state.year}

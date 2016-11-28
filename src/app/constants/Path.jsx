@@ -12,7 +12,7 @@ module.exports = {
 		getTags:'/Tag/GetTagsByFilter',
         getKPIConfigured: '/KPI/chart/exist/{customerId}/{HierarchyId}',
         getKPIChart: '/KPI/chart/{customerId}/{year}/{HierarchyId}',
-        getKPIChartSummary: '/KPI/GetKpiChartSummary/{customerId}/{year}/{HierarchyId}',
+        getKPIChartSummary: '/KPI/calcpredictsum/{customerId}/{year}/{HierarchyId}',
     getKpi:'/kpi/settings/{kpiId}/{year}',
     getCalcValue:'/kpi/calckpigradualvalue',
     IsAutoCalculable:'/kpi/isautocalculable/{customerId}/{tagId}/{year}',

@@ -1599,15 +1599,22 @@ I18N.Paging.Button.PrePage = '上一页';
 I18N.Paging.Button.NextPage = '下一页';
 
 I18N.Kpi = {
+  Month: '{0}月',
+  YearMonth: '{0}年{1}月',
   ActualValues: '实际值',
   TargetValues: '指标值',
   PredictionValues: '预测值',
-  ThisMonthUsaged: '本月指标使用量: ',
+  ThisMonthUsaged: '本月指标使用量: {0}%',
+  ThisMonthUsagedPrediction: '本月指标使用量: {0}%(预测)',
   EditTarget: '编辑指标',
   UpdatePrediction: '更新预测值',
   ActualityFractionalEnergySaving: '截至上月节能率',
   KPIActual: '指标现状',
   SingleProject: '单项目',
+  IndexValue: '全年定额指标值',
+  PredictSum: '全年用量预测值',
+  SavingValue: '全年节能率指标值',
+  PredictSaving: '全年节能率预测值',
   Error:{
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
