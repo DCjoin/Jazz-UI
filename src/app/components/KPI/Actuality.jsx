@@ -303,6 +303,7 @@ class KPIReport extends Component {
     				right: 60
 				}}>
 				    <IconMenu
+				    	useLayerForClickAway={true}
 				      iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
 				      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
 				      targetOrigin={{horizontal: 'right', vertical: 'top'}}
