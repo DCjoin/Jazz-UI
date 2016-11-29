@@ -1,6 +1,7 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
 import classNames from 'classnames';
+import assign from 'object-assign';
 
 const Style={
   group:{
@@ -28,17 +29,17 @@ export default class TitleComponent extends Component {
         className,
       } = this.props,
       groupProps={
-        style: Object.assign({},Style.group,style),
+        style: assign({},Style.group,style),
         className:className
       },
      titleProps = {
-        style: Object.assign({},Style.title,titleStyle),
+        style: assign({},Style.title,titleStyle),
         className:titleClassName
             },
 
       contentProps = {
         className: contentClassName,
-        style: Object.assign({},Style.content,contentStyle),
+        style: assign({},Style.content,contentStyle),
       };
       return(
         <div {...groupProps}>

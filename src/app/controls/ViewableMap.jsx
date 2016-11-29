@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import ViewableTextField from "./ViewableTextField.jsx";
+import GetLessVar from '../util/GetLessVar.jsx';
 
 const ZOOM_LEVEL = 15;
 
@@ -18,9 +19,7 @@ var ViewableMap = React.createClass({
     title: React.PropTypes.string,
     didChanged: React.PropTypes.func
   },
-  contextTypes: {
-    getLessVar: React.PropTypes.func.isRequired
-  },
+
   getDefaultProps() {
     return {
       address: "",
@@ -152,7 +151,7 @@ var ViewableMap = React.createClass({
   _onTipHover(isHover) {
     var target = ReactDom.findDOMNode(this.refs.tipContainer);
     if (isHover) {
-      target.style.color = this.context.getLessVar("primaryColor");
+      target.style.color = GetLessVar("primaryColor");
       target.style.opacity = "1";
     } else {
       target.style.color = '#767a7a';

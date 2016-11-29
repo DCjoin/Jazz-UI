@@ -6,7 +6,7 @@ import TagSelect from './TagSelect.jsx';
 import KPIAction from '../../actions/KPI/KPIAction.jsx';
 import KPIStore from '../../stores/KPI/KPIStore.jsx'
 import BasicConfig from './BasicConfig.jsx';
-import TitleComponent from '../../controls/TtileComponent.jsx';
+import TitleComponent from '../../controls/TitleComponent.jsx';
 import YearAndTypeConfig from './YearAndTypeConfig.jsx';
 import ParameterConfig from './ParameterConfig.jsx';
 import {Type,Status} from '../../constants/actionType/KPI.jsx';
