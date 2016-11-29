@@ -1747,7 +1747,7 @@ I18N.Platform.ServiceProvider.CalcStatus = '参与能效标识大数据计算';
 
 
 I18N.Privilege = {};
-I18N.Privilege.None = '无数据';
+I18N.Privilege.None = '无权限';
 I18N.Privilege.Readonly = '仅查看';
 I18N.Privilege.Full = '完整权限';
 I18N.Privilege.Common = {};
