@@ -250,7 +250,7 @@ var KPIChartData =
         },
         {
           "Month": "2017-05-27T15:15:58.969Z",
-          "Value": 222
+          "Value": 120
         }
       ],
       "PredictionMonthValues": [
@@ -305,6 +305,7 @@ var KPIChartData =
       ]
     },
     {
+      "IndicatorType": 2,
       "IndicatorId": 2,
       "IndicatorName": "用水量",
       "UomId": 4,
@@ -453,7 +454,7 @@ exports.register = function(server, options, next) {
         handler: function(request, reply) {
           sleep(1000);
             var result = [{
-                PredictSum: 499999,
+                PredictSum: 123456789123,
                 PredictRatio: 0.6548,
 
                 IndexValue: 599999,
