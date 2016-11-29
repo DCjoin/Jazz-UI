@@ -317,7 +317,9 @@ function getLabelData(value) {
 		}
 
 	}
-	return value + label;
+	if(value) {
+		return value + label;
+	}
 }
 
 class KPIReport extends Component {
@@ -330,11 +332,11 @@ class KPIReport extends Component {
 			{isIndex ?
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.IndexValue)}</span>
-				<span>{UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.IndexValue && UOMStore.getUoms()[data.get('unit')].Code}</span>
 			</div>) : 
 			(<div className='summary-value'>
 				<span>{(summaryData.RatioValue * 100).toFixed(1) * 1 + '%'}</span>
-				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) + ' ' + UOMStore.getUoms()[data.get('unit')].Code)}</span>
+				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) + ' ' + data.get('prediction') && UOMStore.getUoms()[data.get('unit')].Code)}</span>
 			</div>)}
 		</div>
 		);
@@ -350,13 +352,13 @@ class KPIReport extends Component {
 			{isIndex ?
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
-				<span>{UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.PredictSum && UOMStore.getUoms()[data.get('unit')].Code}</span>
 				<span>{(summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 			</div>) : 
 			(<div className='summary-value'>
 				<span>{(summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
-				<span>{UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.PredictSum && UOMStore.getUoms()[data.get('unit')].Code}</span>
 			</div>)}
 		</div>
 		);
@@ -376,10 +378,10 @@ class KPIReport extends Component {
 				      targetOrigin={{horizontal: 'right', vertical: 'top'}}
 				    >
 				      <MenuItem primaryText={I18N.Kpi.EditTarget} onClick={() => {
-				      	onEdit(data.get('Id'));
+				      	onEdit(data.get('id'));
 				      }}/>
 				      <MenuItem primaryText={I18N.Kpi.UpdatePrediction} onClick={() => {
-				      	onRefresh(data.get('Id'));
+				      	onRefresh(data.get('id'));
 				      }}/>
 				    </IconMenu>
 				</div>
