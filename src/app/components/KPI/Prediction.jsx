@@ -3,7 +3,7 @@ import React, {Component,PropTypes} from 'react';
 import Immutable from 'Immutable';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import TitleComponent from '../../controls/TtileComponent.jsx';
+import TitleComponent from '../../controls/TitleComponent.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import {Type,Status} from '../../constants/actionType/KPI.jsx';
 import KPIAction from '../../actions/KPI/KPIAction.jsx';
