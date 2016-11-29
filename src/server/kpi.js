@@ -483,7 +483,7 @@ exports.register = function(server, options, next) {
             var result = [{
               Id: 123,
               Name: '长城脚下的公社'
-            }, {
+            }/*, {
               Id: 321,
               Name: '朝阳门SOHO'
             }, {
@@ -492,7 +492,7 @@ exports.register = function(server, options, next) {
             }, {
               Id: 33333,
               Name: '银河SOHO'
-          },];
+          },*/];
             if(request.params.year === '2016') {
             }
             reply({
