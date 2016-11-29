@@ -3,6 +3,7 @@ import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
 import {findLastIndex, fill} from 'lodash/array';
+import {find} from 'lodash/collection';
 import {sum} from 'lodash/math';
 import CircularProgress from 'material-ui/CircularProgress';
 import IconMenu from 'material-ui/IconMenu';
@@ -44,6 +45,10 @@ function isSingleBuilding() {
 
 function getHierarchyNameById(Id) {
 	return HierarchyStore.getBuildingList().filter( building => building.Id === Id )[0].Name;
+}
+
+function getUnit(id) {
+	return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 }
 
 const DEFAULT_OPTIONS = {
@@ -156,7 +161,7 @@ class KPIChart extends Component {
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
 
-		let unit = UOMStore.getUoms()[data.get('unit')].Code;
+		let unit = getUnit(data.get('unit'));
 		options.xAxis.categories = util.getDateLabelsFromMomentToKPI(period);
 		options.yAxis.title.text = unit;
 	    options.tooltip.formatter = function() {
@@ -339,11 +344,11 @@ class KPIReport extends Component {
 			{isIndex ?
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.IndexValue)}</span>
-				<span>{summaryData.IndexValue && UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.IndexValue && getUnit(data.get('unit'))}</span>
 			</div>) : 
 			(<div className='summary-value'>
 				<span>{(summaryData.RatioValue).toFixed(1) * 1 + '%'}</span>
-				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && UOMStore.getUoms()[data.get('unit')].Code)}</span>
+				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit')))}</span>
 			</div>)}
 		</div>
 		);
@@ -359,13 +364,13 @@ class KPIReport extends Component {
 			{isIndex ?
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
-				<span>{summaryData.PredictSum && UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 				<span>{(summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 			</div>) : 
 			(<div className='summary-value'>
 				<span>{(summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
-				<span>{summaryData.PredictSum && UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 			</div>)}
 		</div>
 		);
