@@ -195,7 +195,7 @@ export default class KPI extends Component {
 			KPIAction.createKpi(customerId,this.props.hierarchyId,this.props.hierarchyName,kpi);
 		}
 		else {
-			KPIAction.updateKpi(customerId,this.props.hierarchyId,this.props.hierarchyName,kpi)
+			KPIAction.updateKpi(kpi)
 		}
 	}
 

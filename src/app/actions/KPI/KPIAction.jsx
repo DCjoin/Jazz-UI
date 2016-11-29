@@ -199,12 +199,11 @@ const KPIAction = {
       }
     });
   },
-  updateKpi(CustomerId,HierarchyId,HierarchyName,kpiInfo){
+  updateKpi(kpiInfo){
     var url = Path.KPI.updateKpiReportSettings;
     Ajax.post(url,
       {
       params: {
-        CustomerId,HierarchyId,HierarchyName,
           ...kpiInfo
         },
       commonErrorHandling: false,
