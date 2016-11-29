@@ -105,6 +105,8 @@ export default class KPI extends Component {
 		else {
 					KPIAction.merge([{
 						path:'AdvanceSettings.TargetMonthValues',
+						index:index,
+						length:12,
 						value:Immutable.fromJS({
 							Month:DataConverter.DatetimeToJson(period[index]._d),
 							Value:value,
@@ -252,10 +254,12 @@ export default class KPI extends Component {
 	}
 
   render(){
-		if(this.state.kpiInfo.size===0){
+		let {hierarchyId,hierarchyName,isCreate}=this.props;
+
+		if(this.state.kpiInfo.size===0 && !isCreate){
 			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
 		};
-    let {hierarchyId,hierarchyName,isCreate}=this.props;
+
 		let {IndicatorName,ActualTagName,ActualTagId,UomId,CommodityId}=this.state.kpiInfo.toJS();
 		let AdvanceSettings=this.state.kpiInfo.get('AdvanceSettings') || Immutable.fromJS({});
 		let {IndicatorType,AnnualQuota,AnnualSavingRate,TargetMonthValues,Year,PredictionSetting}=AdvanceSettings.toJS();

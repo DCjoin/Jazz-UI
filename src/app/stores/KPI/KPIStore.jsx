@@ -170,13 +170,26 @@ const KPIStore = assign({}, PrototypeStore, {
       let paths = path.split(".");
       refresh= path.indexOf('IndicatorType')>-1 || path.indexOf('ActualTagName')>-1;
       if(status===Status.ADD){
+        let {index,length}=el;
         var children = kpiInfo.getIn(paths);
-        if (!children) {
-          children = emptyList();
+        if(length){
+          if (!children) {
+            children = emptyList();
+            children.setSize(length);
+          }
+          if (Immutable.List.isList(children)) {
+              value = children.setIn([index],value);
+          }
         }
-        if (Immutable.List.isList(children)) {
-            value = children.push(value);
+        else {
+          if (!children) {
+            children = emptyList();
+          }
+          if (Immutable.List.isList(children)) {
+              value = children.push(value);
+          }
         }
+
         kpiInfo = kpiInfo.setIn(paths, value);
       }
       else if(status===Status.DELETE){

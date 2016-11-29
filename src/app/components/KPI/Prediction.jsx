@@ -76,6 +76,8 @@ export default class Prediction extends Component {
           else {
                 KPIAction.merge([{
                   path:'AdvanceSettings.PredictionSetting.MonthPredictionValues',
+                  index:index,
+                  length:12,
                   value:Immutable.fromJS({
                     Month:DataConverter.DatetimeToJson(period[index]._d),
                     Value:value,
