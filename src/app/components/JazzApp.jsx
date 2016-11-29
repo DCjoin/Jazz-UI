@@ -458,9 +458,6 @@ let JazzApp = React.createClass({
     LanguageStore.removeFirstLanguageNoticeLoadingListener(this._onFirstLanguageNotice);
     AjaxStore.removeErrorListener(this._globalError);
   },
-  componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps');
-  },
   getInitialState: function() {
     return {
       loading: false,

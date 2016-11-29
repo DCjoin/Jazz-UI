@@ -259,7 +259,7 @@ class ActualityHeader extends Component {
 			<div className='header-bar'>
 				<div>{!isSingleBuilding() && <span>{I18N.Kpi.SingleProject}-</span>}{I18N.Kpi.KPIActual}</div>
 				{!isSingleBuilding() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
-				{!isSingleBuilding() && <FlatButton disabled={!this.props.hierarchyId} label={'+ 指标'} onClick={this.props.goCreate}/>}
+				{!isSingleBuilding() && isFull() && <FlatButton disabled={!this.props.hierarchyId} label={'+ 指标'} onClick={this.props.goCreate}/>}
 			</div>
 		);
 	}
@@ -343,7 +343,7 @@ class KPIReport extends Component {
 			</div>) : 
 			(<div className='summary-value'>
 				<span>{(summaryData.RatioValue).toFixed(1) * 1 + '%'}</span>
-				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) + ' ' + data.get('prediction') && UOMStore.getUoms()[data.get('unit')].Code)}</span>
+				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && UOMStore.getUoms()[data.get('unit')].Code)}</span>
 			</div>)}
 		</div>
 		);
@@ -378,7 +378,7 @@ class KPIReport extends Component {
 					position: 'absolute',
     				right: 60
 				}}>
-				    <IconMenu
+				    {isFull() && <IconMenu
 				    	useLayerForClickAway={true}
 				      iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
 				      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -390,7 +390,7 @@ class KPIReport extends Component {
 				      <MenuItem primaryText={I18N.Kpi.UpdatePrediction} onClick={() => {
 				      	onRefresh(data.get('id'));
 				      }}/>
-				    </IconMenu>
+				    </IconMenu>}
 				</div>
 				<div className='jazz-kpi-report-chart'><KPIChart  LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/></div>
 				<div className='jazz-kpi-report-summary'>
