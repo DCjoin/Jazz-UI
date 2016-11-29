@@ -9,6 +9,7 @@ import CookieUtil from '../util/cookieUtil.jsx';
 import LoginActionType from '../constants/actionType/Login.jsx';
 import { getCookie } from '../util/Util.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
+import PermissionCode from '../constants/PermissionCode.jsx';
 
 let { EventEmitter } = events;
 
@@ -22,9 +23,9 @@ let _reqTrialUseReset = null;
 
 let LoginStore = assign({}, EventEmitter.prototype, {
   checkHasSpAdmin: function() {
-    var _pri = CurrentUserStore.getCurrentPrivilege();
+    // var _pri = CurrentUserStore.getCurrentPrivilege();
     // JSON.parse(getCookie('UserInfo'))
-    if (CurrentUserStore.getCurrentUser().UserType === -1 || ( _pri && _pri.indexOf('1206') > 0 )) {
+    if (CurrentUserStore.getCurrentUser().UserType === -1 || (CurrentUserStore.permit(PermissionCode.PLATFORM_MANAGEMENT.FULL) )) {
       return true;
     }
     return false;
