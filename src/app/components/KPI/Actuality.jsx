@@ -230,7 +230,7 @@ class KPIChart extends Component {
 		options.series[0].name = I18N.Kpi.TargetValues;
 		options.series[1].data = data.get('actual') && data.get('actual').toJS();
 		options.series[1].name = I18N.Kpi.ActualValues;
-		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex);
+		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex).slice(0, 12);
 		options.series[2].name = I18N.Kpi.PredictionValues;
 
 		options.series[1].dataLabels.formatter = function() {
