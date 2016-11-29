@@ -1605,7 +1605,7 @@ I18N.Kpi = {
   ThisMonthUsagedPrediction: '本月指标使用量: {0}%(预测)',
   EditTarget: '编辑指标',
   UpdatePrediction: '更新预测值',
-  ActualityFractionalEnergySaving: '截至上月节能率',
+  ActualityFractionalEnergySaving: '截止上月节能率',
   KPIActual: '指标现状',
   SingleProject: '单项目',
   IndexValue: '全年定额指标值',
