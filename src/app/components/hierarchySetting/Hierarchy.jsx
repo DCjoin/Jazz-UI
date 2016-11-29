@@ -40,9 +40,6 @@ var Hierarchy = React.createClass({
       infoTabNo: 1,
     };
   },
-  contextTypes:{
-      currentRoute: React.PropTypes.object
-  },
   _onChange: function(selectedNode) {
     if (!!selectedNode) {
       this._setViewStatus(selectedNode);
@@ -256,7 +253,7 @@ var Hierarchy = React.createClass({
         isLoading: true
       });
     } else if (this.state.infoTabNo === 2) {
-      HierarchyAction.modifyTags(node.hierarchyId, node.tags, node.associationType, this.state.selectedNode.get('Type'));
+      HierarchyAction.modifyTags(parseInt(this.context.currentRoute.params.customerId),node.hierarchyId, node.tags, node.associationType, this.state.selectedNode.get('Type'));
       setTimeout(() => {
         this._setViewStatus();
       }, 1000);
