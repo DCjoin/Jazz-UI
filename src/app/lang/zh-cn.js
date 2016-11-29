@@ -402,8 +402,6 @@ I18N.DateTimeFormat.IntervalFormat.RawDate.Year = 'YYYY';
 I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFullMinute = 'YYYY/MM/DD HH:mm';
 I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFull24Minute = 'YYYY/MM/DD 24:00';
 
-
-
 I18N.EM = {};
 I18N.EM.To = '到';
 I18N.EM.Week = '周';
@@ -483,7 +481,6 @@ I18N.EM.Ratio.RawValue = '原始值';
 I18N.EM.Ratio.TargetValue = '目标值';
 I18N.EM.Ratio.BaseValue = '基准值';
 I18N.EM.Ratio.Error = '查看工休比请选择不小于一周的时间范围';
-
 
 
 I18N.EM.Total = '总览';
@@ -1842,7 +1839,6 @@ I18N.Setting.Labeling.CustomerName = '客户名称';
 
 I18N.Setting.CustomerManagement.Label = {};
 I18N.Setting.CustomerManagement.Label.MapPageInfo = '地图页信息';
-I18N.Setting.CustomerManagement.Label.MapPageInfo = '地图页信息';
 I18N.Setting.CustomerManagement.Label.Code = '客户编码';
 I18N.Setting.CustomerManagement.Label.Address = '客户地址';
 I18N.Setting.CustomerManagement.Label.OperationStartTime = '运营时间';
@@ -1907,7 +1903,6 @@ I18N.Setting.Building.Zone = '所属气候分区';
 I18N.Setting.Building.PTagCount = '计量数据P数量';
 I18N.Setting.Building.VTagCount = '计量数据V数量';
 I18N.Setting.Building.AddImage = '请添加建筑照片';
-I18N.Setting.Building.UpdateImage = '重新上传建筑照片';
 I18N.Setting.Building.UpdateImage = '重新上传建筑照片';
 I18N.Setting.Building.Address = '地理位置';
 I18N.Setting.Building.MapTip1 = '无法获取当前地理位置信息，请手动输入。';

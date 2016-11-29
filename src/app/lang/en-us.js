@@ -44,6 +44,7 @@ I18N.MainMenu.Setting = 'Setting';
 I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
+I18N.MainMenu.KPI = '指标·报表';
 I18N.MainMenu.Map = 'Map';
 I18N.MainMenu.Alarm = 'Alarm';
 I18N.MainMenu.Energy = 'Energy';
@@ -61,6 +62,7 @@ I18N.MainMenu.HierarchyLog = 'Import log';
 I18N.MainMenu.CustomSetting = 'Customer';
 I18N.MainMenu.HierarchySetting = 'Hierarchy';
 I18N.MainMenu.CustomizedLabeling = 'Labelling';
+I18N.MainMenu.KPICycle = '指标计算周期';
 
 I18N.MainMenu.Calendar = 'Calendar';
 I18N.MainMenu.WorkdaySetting = 'Work day';
@@ -293,6 +295,7 @@ I18N.Common.Glossary.Operation = 'Operate';
 I18N.Common.Glossary.PriceStrategy = 'Price strategy';
 
 
+
 I18N.Common.Button = {};
 I18N.Common.Button.Calendar = {};
 I18N.Common.Button.Calendar.ShowHC = 'HC season';
@@ -410,6 +413,7 @@ I18N.EM.Year = 'Year';
 I18N.EM.Clock24 = '24';
 I18N.EM.Clock24InWidget = '24';
 I18N.EM.Clock24Minute0 = '24:00:00';
+I18N.EM.Clock24Minute00 = '24:00:00';
 
 I18N.EM.UseRaw = 'By minute';
 I18N.EM.UseWeek = 'By week';
@@ -507,7 +511,6 @@ I18N.EM.WeatherSupportsNotMultiTime = 'This function cannot support mulitiple ti
 I18N.EM.TouSupportsMoreThanHourStep = 'This function only support steps larger than Hourly.';
 I18N.EM.TouSupportsOnlyElec = 'This function only support "Electricity" commodity.';
 
-
 I18N.EM.CharType = {};
 I18N.EM.CharType.Line = 'Line';
 I18N.EM.CharType.Bar = 'Column';
@@ -579,9 +582,6 @@ I18N.EM.Report.StartCell = 'Initial cell';
 I18N.EM.Report.Layout = 'Layout direction';
 I18N.EM.Report.ReportTypeEnergy = 'Data of energy efficiency';
 I18N.EM.Report.Original = 'Original value';
-I18N.EM.Report.ReportTypeCarbon = 'Data of carbon emission';
-I18N.EM.Report.ReportTypeCost = 'Cost data';
-I18N.EM.Report.TagSelectionTitle = 'Select a tag';
 I18N.EM.Report.TagShouldNotBeEmpty = 'Please select at least one tag';
 
 I18N.EM.Report.NonReportCriteria = 'Include at least one set of report data';
@@ -813,7 +813,6 @@ I18N.Setting.CustomizedLabeling.ErrorMessage1 = 'Please ensure the value to be e
 I18N.Setting.CustomizedLabeling.ErrorMessage2 = 'Please ensure the value to be entered in the left interval is greater than that in the right one.';
 I18N.Setting.CustomizedLabeling.DeleteTip = 'Labelling "{0}" will be deleted. Widget relevants to this labelling will be abnormal after deletion.';
 
-
 I18N.Setting.TargetBaseline = {};
 I18N.Setting.TargetBaseline.AlarmThreshold = 'Alarm sensitivity';
 I18N.Setting.TargetBaseline.AlarmThresholdTip = 'When the data goes beyond the sensitivity set by the reference value, the alarm is displayed. ';
@@ -849,6 +848,7 @@ I18N.Setting.NodeBtn.Saving = 'Saving...';
 I18N.Setting.NodeBtn.Save = 'Save';
 I18N.Setting.NodeBtn.Deleting = 'Deleting...';
 I18N.Setting.NodeBtn.Delete = 'Delete';
+
 
 //customer
 I18N.Setting.CustomerManagement = {};
@@ -968,6 +968,7 @@ I18N.ServerError = {};
 I18N.ServerError.BtnLabel = 'OK';
 I18N.ServerError.Title = 'Login timeout';
 I18N.ServerError.Message = 'System error, may be have not operate in a long time, please relogin';
+
 
 I18N.Message = {};
 
@@ -1411,6 +1412,7 @@ I18N.ALarm.Save.Title = 'Add to dashboard';
 I18N.ALarm.Save.Label = 'Chart name';
 I18N.ALarm.Save.Save = 'Save';
 I18N.ALarm.Save.Error = 'Existed';
+
 I18N.ALarm.List = {};
 I18N.ALarm.List.Daily = 'Daily alarm list';
 I18N.ALarm.List.Month = 'Monthly alarm list';
@@ -1569,6 +1571,7 @@ I18N.Baseline.Cal.Worktime = 'Work time';
 I18N.Baseline.NormalSetting = {};
 I18N.Baseline.NormalSetting.Baseline = 'Hourly baseline';
 
+
 I18N.MultipleTimespan = {};
 I18N.MultipleTimespan.Before = 'Previous';
 I18N.MultipleTimespan.Button = {};
@@ -1614,6 +1617,8 @@ I18N.Kpi = {
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
     NonKPIConguredSingleBuilding: '未配置指标现状，请联系您的咨询顾问',
     NonKPICongured: '暂未配置指标，点击上方“+ 指标”按钮开始配置吧~',
+    KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的管理员',
+    KPIConguredMoreBuilding: '指标现状暂不支持多项目，请持续关注',
   }
 };
 
@@ -1721,6 +1726,7 @@ I18N.Platform.ServiceProvider.FullNameEtc = '（例：施耐德电气中国有�
 I18N.Platform.ServiceProvider.Abbreviation = '服务商简称';
 I18N.Platform.ServiceProvider.AbbreviationEtc = '（例：施耐德电气）';
 I18N.Platform.ServiceProvider.About = '"关于服务商"页面链接';
+I18N.Platform.ServiceProvider.AboutUrlError = '请填写网址';
 I18N.Platform.ServiceProvider.Logo = '"服务商LOGO';
 I18N.Platform.ServiceProvider.Background = '首页背景图';
 I18N.Platform.ServiceProvider.SPName = 'Name';
@@ -1739,7 +1745,11 @@ I18N.Platform.ServiceProvider.Comment = 'Comment';
 I18N.Platform.ServiceProvider.Status = 'Status';
 I18N.Platform.ServiceProvider.CalcStatus = 'Benchmark Calculation';
 
+
 I18N.Privilege = {};
+I18N.Privilege.None = '无数据';
+I18N.Privilege.Readonly = '仅查看';
+I18N.Privilege.Full = '完整权限';
 I18N.Privilege.Common = {};
 I18N.Privilege.Common.Common = 'Common role';
 I18N.Privilege.Common.DashboardView = 'folder and widget view';
@@ -1770,12 +1780,14 @@ I18N.Privilege.Role.TagMapping = 'Association';
 I18N.Privilege.Role.CustomerInfoView = 'View customer information';
 I18N.Privilege.Role.CustomerInfoManagement = 'Manage customer information';
 I18N.Privilege.Role.CustomLabeling = 'Customized labeling';
+I18N.Privilege.Role.NewCustomLabeling = '自定义配置';
 I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline setting';
-
+I18N.Privilege.Role.IndexAndReport = '指标&报表';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
 I18N.Remark.DefaultText = 'Click here to add comment';
+
 
 //usertype
 I18N.Setting.Role = {};
@@ -1792,7 +1804,6 @@ I18N.Setting.Role.DeleteContent = 'Role "{0}" will be deleted';
 
 //carbon factor
 I18N.Setting.CarbonFactor = {};
-
 I18N.Setting.CarbonFactor.Title = 'Conversion factor';
 I18N.Setting.CarbonFactor.DeleteTitle = 'Delete conversion factor';
 I18N.Setting.CarbonFactor.DeleteContent = 'Conversion factor “{0}” will be deleted';
@@ -1801,8 +1812,6 @@ I18N.Setting.CarbonFactor.Target = 'Conversion target';
 I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
 I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
 I18N.Setting.CarbonFactor.Conflict = 'Timespan overlapped, please select again';
-
-
 
 I18N.Setting.TOUTariff = {};
 I18N.Setting.TOUTariff.TOUSetting = 'Peak/Valley electricity price';
@@ -1854,7 +1863,6 @@ I18N.Setting.VEEMonitorRule = {};
 I18N.Setting.VEEMonitorRule.Rule = 'Rule';
 I18N.Setting.VEEMonitorRule.RuleName = 'Rule Name';
 I18N.Setting.VEEMonitorRule.MonitorTag = 'tag';
-
 I18N.Setting.VEEMonitorRule.MonitorRule = 'Rule set';
 I18N.Setting.VEEMonitorRule.MonitorSetting = 'VEE setting';
 I18N.Setting.VEEMonitorRule.NullValue = 'Null';
@@ -1868,7 +1876,6 @@ I18N.Setting.VEEMonitorRule.MonitorStartTime = 'Starting time';
 I18N.Setting.VEEMonitorRule.MonitorInterval = 'Scanning interval';
 I18N.Setting.VEEMonitorRule.MonitorDelayTime = 'Scan delay duration ';
 I18N.Setting.VEEMonitorRule.NoMonitorDelay = 'No delay';
-
 I18N.Setting.VEEMonitorRule.Receivers = 'Mail Receiver';
 I18N.Setting.VEEMonitorRule.AddReceivers = 'Add mail receiver';
 I18N.Setting.VEEMonitorRule.DeleteTitle = 'Delete rule set';
@@ -1887,6 +1894,7 @@ I18N.Setting.Organization.AssociateTag = 'Associate';
 I18N.Setting.Organization.HierarchyNodeCalendarProperties = 'Calendar';
 I18N.Setting.Organization.Name = '{0} name';
 I18N.Setting.Organization.Code = '{0} code';
+
 I18N.Setting.Building = {};
 I18N.Setting.Building.HierarchyNodeCostProperties = 'Cost';
 I18N.Setting.Building.HierarchyNodePopulationNAreaProperties = 'Population & Area';
@@ -1970,6 +1978,7 @@ I18N.Setting.KPI.Parameter.SavingRateErrorText= '请输入-100.0~100.0';
 I18N.Setting.KPI.Parameter.MonthValue= '逐月指标值';
 I18N.Setting.KPI.Parameter.CalcViaHistory= '根据历史数据计算';
 I18N.Setting.KPI.Parameter.Prediction= '配置预测值';
+I18N.Setting.KPI.Parameter.UpdatePrediction= '更新预测值';
 I18N.Setting.KPI.Parameter.TagSavingRates= '分项节能率配置';
 I18N.Setting.KPI.Parameter.SavingRates= '分项节能率';
 I18N.Setting.KPI.Parameter.MonthPrediction= '逐月预测值';
