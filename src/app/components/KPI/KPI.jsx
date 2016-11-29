@@ -65,13 +65,12 @@ export default class KPI extends Component {
 	}
 
 	_onYearChange(value){
-		if(this.props.isCreate){
-			KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value)
+		if(!this.props.isCreate){
+			KPIAction.getKPI(this.props.kpiId,value);
 		}
-		else {
-			KPIAction.getKPI(this.props.kpiId,value),
-			KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value)
-		}
+		KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value);
+		KPIAction.getKPIPeriodByYear(customerId,value);
+
 	}
 
 	_onIndicatorTypeChange(ev,value){

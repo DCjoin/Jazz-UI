@@ -175,7 +175,7 @@ const KPIStore = assign({}, PrototypeStore, {
         if(length){
           if (!children) {
             children = emptyList();
-            children.setSize(length);
+            children=children.setSize(length);
           }
           if (Immutable.List.isList(children)) {
               value = children.setIn([index],value);
@@ -298,7 +298,7 @@ const KPIStore = assign({}, PrototypeStore, {
       }
       if(MonthPredictionValues && MonthPredictionValues.length>0){
         MonthPredictionValues.forEach(value=>{
-          if(!this.validateQuota(value.Value)){
+          if(value && !this.validateQuota(value.Value)){
             validDate=false
           }
         });
@@ -312,36 +312,55 @@ const KPIStore = assign({}, PrototypeStore, {
     var {AdvanceSettings}=kpi.toJS();
 
     var {TargetMonthValues,PredictionSetting}=AdvanceSettings || {};
-
-      for(let index=0;index<12;index++){
-        let value=TargetMonthValues[index];
-        if(value){
-          if(value.Value===''){
-            kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Value'],null)
+        for(let index=0;index<12;index++){
+          if(!TargetMonthValues){
+            TargetMonthValues = emptyList();
+            TargetMonthValues=TargetMonthValues.setSize(12);
+            kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues'],TargetMonthValues);
+            TargetMonthValues=TargetMonthValues.toJS()
+          }
+          let value=TargetMonthValues[index];
+          if(value){
+            if(value.Value===''){
+              kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Value'],null)
+            }
+          }
+          else {
+            kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index],Immutable.fromJS({
+              Month:period[index]._i,
+              Value:null
+            }));
           }
         }
-        else {
-          kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Month'],period[index]._i);
-          kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Value'],null);
-        }
-      }
+
+
 
     if(PredictionSetting){
       let {MonthPredictionValues}=PredictionSetting;
 
-      for(let index=0;index<12;index++){
-        let value=MonthPredictionValues[index];
-        if(value){
-          if(value.Value===''){
-            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Value'],null)
+        for(let index=0;index<12;index++){
+          if(!MonthPredictionValues){
+            MonthPredictionValues = emptyList();
+            MonthPredictionValues=MonthPredictionValues.setSize(12);
+            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues'],MonthPredictionValues);
+            MonthPredictionValues=MonthPredictionValues.toJS()
+          }
+          let value=MonthPredictionValues[index];
+          if(value){
+            if(value.Value===''){
+              kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Value'],null)
+            }
+          }
+          else {
+            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index],Immutable.fromJS({
+              Month:period[index]._i,
+              Value:null
+            }));
           }
         }
-        else {
-          kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Month'],period[index]._i);
-          kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Value'],null);
-        }
       }
-    }
+
+
 
     return kpi.toJS()
   },
