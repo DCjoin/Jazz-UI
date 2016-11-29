@@ -26,6 +26,8 @@ export default class UpdatePrediction extends Component {
   constructor(props) {
 		super(props);
 		this._onChange = this._onChange.bind(this);
+		this._onSave = this._onSave.bind(this);
+		this._onSuccess = this._onSuccess.bind(this);
 	}
 
   state={
@@ -96,7 +98,8 @@ export default class UpdatePrediction extends Component {
 		        modal: true,
 		        open: true,
 						wrapperStyle:{
-							width:'auto'
+							width:'auto',
+							maxWidth:'75%'
 						}
 		      };
 		return(
