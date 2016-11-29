@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
-import TitleComponent from '../../controls/TtileComponent.jsx';
+import TitleComponent from '../../controls/TitleComponent.jsx';
 import ViewableTextField from '../../controls/ViewableTextField.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
 import {Type} from '../../constants/actionType/KPI.jsx';

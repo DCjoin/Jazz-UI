@@ -6,7 +6,7 @@ import TagSelect from './TagSelect.jsx';
 import KPIAction from '../../actions/KPI/KPIAction.jsx';
 import KPIStore from '../../stores/KPI/KPIStore.jsx'
 import BasicConfig from './BasicConfig.jsx';
-import TitleComponent from '../../controls/TtileComponent.jsx';
+import TitleComponent from '../../controls/TitleComponent.jsx';
 import YearAndTypeConfig from './YearAndTypeConfig.jsx';
 import ParameterConfig from './ParameterConfig.jsx';
 import {Type,Status} from '../../constants/actionType/KPI.jsx';
@@ -65,13 +65,12 @@ export default class KPI extends Component {
 	}
 
 	_onYearChange(value){
-		if(this.props.isCreate){
-			KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value)
+		if(!this.props.isCreate){
+			KPIAction.getKPI(this.props.kpiId,value);
 		}
-		else {
-			KPIAction.getKPI(this.props.kpiId,value),
-			KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value)
-		}
+		KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value);
+		KPIAction.getKPIPeriodByYear(customerId,value);
+
 	}
 
 	_onIndicatorTypeChange(ev,value){

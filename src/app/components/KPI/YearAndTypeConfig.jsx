@@ -1,7 +1,7 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-import TitleComponent from '../../controls/TtileComponent.jsx';
+import TitleComponent from '../../controls/TitleComponent.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import KPIStore from '../../stores/KPI/KPIStore.jsx';
 import {Type} from '../../constants/actionType/KPI.jsx';
