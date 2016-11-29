@@ -27,7 +27,7 @@ export default class MonthValueGroup extends Component {
                     props.value=this.props.values[index].Value===null?'-':this.props.values[index].Value;
                 }
             }
-            else if(this.props.values && this.props.values[index]){
+            else if(this.props.values){
                   props.value=this.props.values[index].Value;
               }
 
