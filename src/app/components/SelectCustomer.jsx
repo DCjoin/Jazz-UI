@@ -185,28 +185,19 @@ var SelectCustomer = React.createClass({
     this.setState({
       screenWidth: app.clientWidth,
     });
+  },
+  componentWillMount: function() {
+    window.addEventListener('resize', this._handleResize);
 
     if (this._getCustomerList()) {
       var customerList = CurrentUserCustomerStore.getAll();
-      var idx = _.findIndex(customerList, 'Id', this._getCustomerList() * 1);
-      if (idx < 0)
+      var idx = _.findIndex(customerList, customer => customer.Id === this.context.currentRoute.params.customerId * 1);
+      if (idx < 0) {        
         idx = 0;
+      }
       this.setState({
         currentIndex: idx
       });
-    }
-  },
-  componentWillMount: function() {
-    window.removeEventListener('resize', this._handleResize);
-
-    if (this._getCustomerList()) {
-      var customerList = CurrentUserCustomerStore.getAll();
-      var idx = _.findIndex(customerList, 'Id', this._getCustomerList() * 1);
-      if (idx < 0)
-        idx = 0;
-        this.setState({
-          currentIndex: idx
-        });
     }
   },
 
