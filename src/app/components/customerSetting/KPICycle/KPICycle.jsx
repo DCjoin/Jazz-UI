@@ -19,7 +19,7 @@ function calcShowCycle(month, day) {
 
 	return util.replacePathParams(I18N.Setting.KPICycle.Date, 
 									firstYear, showMonth, day,
-									lastYear, showMonth, day - 1);
+									lastYear, showMonth, day);
 }
 
 function getMonthData() {

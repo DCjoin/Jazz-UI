@@ -30,9 +30,16 @@ import CreateKPI from './KPI.jsx';
 import UpdatePrediction from './UpdatePrediction.jsx';
 
 import Highcharts from '../highcharts/Highcharts.jsx';
+function isOnlyView() {
+	return privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
+}
+
+function isFull() {
+	return privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
+}
 function isSingleBuilding() {
 	return (HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length === 1)
-		&& privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
+		&& isOnlyView();
 }
 
 function getHierarchyNameById(Id) {
@@ -404,31 +411,26 @@ export default class Actuality extends Component {
 		this._reload = this._reload.bind(this);
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onGetBuildingList = this._onGetBuildingList.bind(this);
-		this.state = this.getInitialState();
+		this.state = this._getInitialState();
 	}
 	componentWillMount() {
-		this.setState({
-			loading: true
-		});
 		HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
 		// KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
 		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
 		KPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
-		this.setState(assign({}, this.getInitialState(), {
-			loading: true
-		}));
-		HierarchyAction.getBuildingListByCustomerId(nextProps.router.params.customerId);
-		// KPIAction.getKPIConfigured(nextProps.router.params.customerId, this.state.year, this.state.hierarchyId);
+		this.setState(assign({}, this._getInitialState()), () => {
+			HierarchyAction.getBuildingListByCustomerId(nextProps.router.params.customerId);
+		});
 	}
 	componentWillUnmount() {
 		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
 		KPIStore.removeChangeListener(this._onChange);
 	}
-	getInitialState() {
+	_getInitialState() {
 		return {
-			loading: false,
+			loading: true,
 			showCreate: false,
 			showRefreshDialog: false,
 			kpiId: null,
@@ -474,6 +476,7 @@ export default class Actuality extends Component {
 			showRefreshDialog: false,
 			showCreate: false,
 			kpiId: null,
+			loading: true,
 		});
 	}
 	_getData(customerId, year, hierarchyId) {
@@ -484,14 +487,24 @@ export default class Actuality extends Component {
 	render() {
 		if( this.state.loading ) {
 			return (
-				<div className='flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
+				<div className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 			);
 		}
-		if(isSingleBuilding() && !KPIStore.getKPIChart()) {
-			return (
-				<div className='flex-center'><b>{I18N.Kpi.Error.NonQuotaConguredSingleBuilding}</b></div>
-			)
+		// if(isSingleBuilding() && !KPIStore.getKPIChart()) {
+		// 	return (
+		// 		<div className='flex-center'><b>{I18N.Kpi.Error.NonKPIConguredSingleBuilding}</b></div>
+		// 	);
+		// }
+		if(isOnlyView()) {
+			if(!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0) {
+				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>);
+			} else if( HierarchyStore.getBuildingList().length > 1 ) {
+				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.KPIConguredMoreBuilding}</b></div>);
+			} else if( !KPIStore.getKPIChart() ) {
+				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.NonKPIConguredSingleBuilding}</b></div>);
+			}
 		}
+
 
 		if( this.state.showCreate ) {
 			return (<CreateKPI
@@ -521,7 +534,7 @@ export default class Actuality extends Component {
 		        	Id: null,
 		        	disabled: true,
 		        	Name: I18N.Setting.KPI.SelectBuilding
-		        }].concat(HierarchyStore.getBuildingList()),
+		        }].concat(HierarchyStore.getBuildingList() || []),
 		    };
 			return (
 				<div className='jazz-kpi-actuality'>
@@ -529,7 +542,8 @@ export default class Actuality extends Component {
 						hierarchyId={this.state.hierarchyId}
 						buildingProps={buildingProps}
 						goCreate={this._goCreate}/>
-					<ActualityContent
+					{isFull() && (!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0)? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
+					(<ActualityContent
 						chartReady={KPIStore.chartReady()}
 						period={KPIStore.getYearQuotaperiod()}
 						hierarchyId={this.state.hierarchyId}
@@ -552,7 +566,7 @@ export default class Actuality extends Component {
 								kpiId: Id
 							});
 						}}
-					/>
+					/>)}
 					{this.state.showRefreshDialog && <UpdatePrediction
 						hierarchyId={this.state.hierarchyId}
 						hierarchyName={getHierarchyNameById(this.state.hierarchyId)}
