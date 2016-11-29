@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
-import numeral from 'numeral';
+import assign from 'object-assign';
 import {findLastIndex} from 'lodash/array';
 import {sum} from 'lodash/math';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -284,11 +284,11 @@ class ActualityContent extends Component {
 						onChangeYear(year + 1);
 					}}/>
 				</div>
-	      		<div>
-				{(period && period.length > 0 && tags && tags.size > 0) ?
-					tags.map( (tag, i) => <KPIReport onEdit={onEdit} onRefresh={onRefresh} period={period} data={tag} summaryData={summaryData[i]} key={tag.get('id')}/> ) :
-				<div>{I18N.Kpi.Error.NonQuotaConguredInThisYear}</div>}
-			</div>
+				<div>
+					{(period && period.length > 0 && tags && tags.size > 0) ?
+						tags.map( (tag, i) => <KPIReport onEdit={onEdit} onRefresh={onRefresh} period={period} data={tag} summaryData={summaryData[i]} key={tag.get('id')}/> ) :
+					<div className='jazz-kpi-report flex-center' style={{height: 400}}>{I18N.Kpi.Error.NonKPIConguredInThisYear}</div>}
+				</div>
 			</div>
 		);
 	}
@@ -404,14 +404,7 @@ export default class Actuality extends Component {
 		this._reload = this._reload.bind(this);
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onGetBuildingList = this._onGetBuildingList.bind(this);
-		this.state = {
-			loading: false,
-			showCreate: false,
-			showRefreshDialog: false,
-			kpiId: null,
-			year: moment().year(),
-			hierarchyId: null
-		}
+		this.state = this.getInitialState();
 	}
 	componentWillMount() {
 		this.setState({
@@ -423,12 +416,25 @@ export default class Actuality extends Component {
 		KPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
+		this.setState(assign({}, this.getInitialState(), {
+			loading: true
+		}));
 		HierarchyAction.getBuildingListByCustomerId(nextProps.router.params.customerId);
 		// KPIAction.getKPIConfigured(nextProps.router.params.customerId, this.state.year, this.state.hierarchyId);
 	}
 	componentWillUnmount() {
 		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
 		KPIStore.removeChangeListener(this._onChange);
+	}
+	getInitialState() {
+		return {
+			loading: false,
+			showCreate: false,
+			showRefreshDialog: false,
+			kpiId: null,
+			year: moment().year(),
+			hierarchyId: null			
+		}
 	}
 	_onChange() {
 		this.setState({
