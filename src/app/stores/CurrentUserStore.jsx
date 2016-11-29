@@ -153,12 +153,15 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         }
       );
     }
-    menuItems.push(
-      {
-        getPath: RoutePath.map,
-        title: I18N.MainMenu.Map
-      }
-    );
+    if (this.permit(PermissionCode.MAP_VIEW.READONLY)) {
+      menuItems.push(
+        {
+          getPath: RoutePath.map,
+          title: I18N.MainMenu.Map
+        }
+      );
+    }
+
     if (this.permit(PermissionCode.ENERGY_ALARM.FULL)) {
       menuItems.push(
         {
@@ -167,12 +170,16 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         }
       );
     }
-    menuItems.push(
-      {
-        getPath: RoutePath.setting,
-        title: I18N.MainMenu.Energy
-      }
-    );
+
+    if (this.permit(PermissionCode.ENERGY_MANAGE.FULL)) {
+      menuItems.push(
+        {
+          getPath: RoutePath.setting,
+          title: I18N.MainMenu.Energy
+        }
+      );
+    }
+
 
     if (this.permit(PermissionCode.DATA_REPORT_MANAGEMENT.FULL)|| this.permit(PermissionCode.DATA_REPORT_MANAGEMENT.READONLY)) {
       menuItems.push(
