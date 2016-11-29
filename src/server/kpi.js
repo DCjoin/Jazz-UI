@@ -153,7 +153,7 @@ var KPIChartData =
       "IndicatorId": 1,
       "IndicatorName": "用电量",
       "UomId": 3,
-      "ActualActualMonthValues": [
+      "ActualMonthValues": [
         {
           "Month": "2016-06-27T15:15:58.969Z",
           "Value": 100
@@ -309,7 +309,7 @@ var KPIChartData =
       "IndicatorId": 2,
       "IndicatorName": "用水量",
       "UomId": 4,
-      "ActualActualMonthValues": [
+      "ActualMonthValues": [
         {
           "Month": "2016-06-27T15:15:58.969Z",
           "Value": 100

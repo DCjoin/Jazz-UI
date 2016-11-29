@@ -144,7 +144,7 @@ class KPIChart extends Component {
 	_generatorOptions() {
 		let {data, period, LastMonthRatio} = this.props;
 		let currentMonthIndex = findLastIndex(period,  date => date.isBefore(new Date()) );
-		let tooltipIndex =  findLastIndex(data.get('actual').toJS(), (val, index) => index < currentMonthIndex && val);
+		let tooltipIndex =  data.get('actual') && findLastIndex(data.get('actual').toJS(), (val, index) => index < currentMonthIndex && val);
 
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
@@ -295,7 +295,7 @@ class ActualityContent extends Component {
 }
 
 function getLabelData(value) {
-	if( !/^[1-9][0-9]*$/.test(value) ) {
+	if( value * 1 !== value ) {
 		return null;
 	}
 	let abbreviations = [
