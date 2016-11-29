@@ -342,7 +342,7 @@ class KPIReport extends Component {
 				<span>{summaryData.IndexValue && UOMStore.getUoms()[data.get('unit')].Code}</span>
 			</div>) : 
 			(<div className='summary-value'>
-				<span>{(summaryData.RatioValue * 100).toFixed(1) * 1 + '%'}</span>
+				<span>{(summaryData.RatioValue).toFixed(1) * 1 + '%'}</span>
 				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) + ' ' + data.get('prediction') && UOMStore.getUoms()[data.get('unit')].Code)}</span>
 			</div>)}
 		</div>
