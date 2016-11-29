@@ -1,6 +1,7 @@
 'use strict';
 import React, {Component} from 'react';
 import Immutable from 'immutable';
+import CircularProgress from 'material-ui/CircularProgress';
 import TagSelect from './TagSelect.jsx';
 import KPIAction from '../../actions/KPI/KPIAction.jsx';
 import KPIStore from '../../stores/KPI/KPIStore.jsx'
@@ -32,6 +33,8 @@ export default class KPI extends Component {
 		this._onSave = this._onSave.bind(this);
 		this._onError = this._onError.bind(this);
 		this._onSuccess = this._onSuccess.bind(this);
+		this._onYearChange = this._onYearChange.bind(this);
+
 
   }
 
@@ -45,8 +48,7 @@ export default class KPI extends Component {
   };
 
 	_onChange(){
-
-		if(this.state.kpiInfo.size===0 && !this.props.isCreate){
+		if(this.state.kpiInfo.size===0 && KPIStore.getKpiInfo().size!==0 && !this.props.isCreate){
 			KPIAction.IsAutoCalculable(this.context.router.params.customerId,KPIStore.getKpiInfo().get('ActualTagId'),this.props.year)
 		}
 		this.setState({
@@ -193,7 +195,7 @@ export default class KPI extends Component {
 			KPIAction.createKpi(customerId,this.props.hierarchyId,this.props.hierarchyName,kpi);
 		}
 		else {
-			KPIAction.updateKpi(customerId,this.props.hierarchyId,this.props.hierarchyName,kpi)
+			KPIAction.updateKpi(kpi)
 		}
 	}
 
@@ -250,6 +252,9 @@ export default class KPI extends Component {
 	}
 
   render(){
+		if(this.state.kpiInfo.size===0){
+			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
+		};
     let {hierarchyId,hierarchyName,isCreate}=this.props;
 		let {IndicatorName,ActualTagName,ActualTagId,UomId,CommodityId}=this.state.kpiInfo.toJS();
 		let AdvanceSettings=this.state.kpiInfo.get('AdvanceSettings') || Immutable.fromJS({});
@@ -306,6 +311,7 @@ export default class KPI extends Component {
 						UomId,CommodityId
 					})
 				}
+
     return(
       <TitleComponent {...titleProps}>
 				<BasicConfig {...basicProps}/>
@@ -329,10 +335,3 @@ KPI.propTypes = {
 	onCancel:React.PropTypes.func,
 	year:React.PropTypes.number,
 };
-// KPI.defaultProps = {
-// 	hierarchyId: 100010,
-// 	hierarchyName:'楼宇A',
-// 	year:2016,
-// 	isCreate:false,
-// 	kpiId:6
-// };

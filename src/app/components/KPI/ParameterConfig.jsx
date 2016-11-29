@@ -76,7 +76,7 @@ export default class ParameterConfig extends Component {
             <FlatButton
             label={I18N.Setting.KPI.Parameter.CalcViaHistory}
             onTouchTap={this._onCalcValue}
-            disabled={value==='' || !this.props.hasHistory}
+            disabled={value==='' || !value || !this.props.hasHistory}
             style={{border:'1px solid #e4e7e9'}}
             />
           <MonthValueGroup {...monthGroupProps}/>
