@@ -32,6 +32,8 @@ export default class KPI extends Component {
 		this._onSave = this._onSave.bind(this);
 		this._onError = this._onError.bind(this);
 		this._onSuccess = this._onSuccess.bind(this);
+		this._onYearChange = this._onYearChange.bind(this);
+
 
   }
 
@@ -45,7 +47,6 @@ export default class KPI extends Component {
   };
 
 	_onChange(){
-
 		if(this.state.kpiInfo.size===0 && !this.props.isCreate){
 			KPIAction.IsAutoCalculable(this.context.router.params.customerId,KPIStore.getKpiInfo().get('ActualTagId'),this.props.year)
 		}
