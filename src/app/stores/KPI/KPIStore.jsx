@@ -54,7 +54,7 @@ function coverageRawToHighChartData(data) {
         name: indicator.IndicatorName,
         id: indicator.IndicatorId,
         lastMonthSaving: indicator.LstMonthSaving,
-        actual: indicator.ActualActualMonthValues && indicator.ActualActualMonthValues.map( val => val.Value ),
+        actual: indicator.ActualMonthValues && indicator.ActualMonthValues.map( val => val.Value ),
         target: indicator.TargetMonthValues && indicator.TargetMonthValues.map( val => val.Value ),
         prediction: indicator.PredictionMonthValues && indicator.PredictionMonthValues.map( val => val.Value ),
       }
