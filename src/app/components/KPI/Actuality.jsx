@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {findLastIndex} from 'lodash/array';
+import {findLastIndex, fill} from 'lodash/array';
 import {sum} from 'lodash/math';
 import CircularProgress from 'material-ui/CircularProgress';
 import IconMenu from 'material-ui/IconMenu';
@@ -225,7 +225,7 @@ class KPIChart extends Component {
 		options.series[0].name = I18N.Kpi.TargetValues;
 		options.series[1].data = data.get('actual') && data.get('actual').toJS();
 		options.series[1].name = I18N.Kpi.ActualValues;
-		options.series[2].data = data.get('prediction') && data.get('prediction').toJS();
+		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex);
 		options.series[2].name = I18N.Kpi.PredictionValues;
 
 		options.series[1].dataLabels.formatter = function() {
