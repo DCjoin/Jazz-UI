@@ -81,6 +81,11 @@ export default class UpdatePrediction extends Component {
 	}
 
 	render(){
+		if(!this.state.kpiInfo || this.state.kpiInfo.size===0){
+			return(
+				<div/>
+			)
+		}
 		let actions = [
 			<FlatButton
 			label={I18N.Common.Button.Save}

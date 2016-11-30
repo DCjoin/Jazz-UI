@@ -11,13 +11,17 @@ import assign from 'object-assign';
 import {Status,Type} from '../../constants/actionType/KPI.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
-// let {DataConverter} = CommonFuns;
 // let j2d = DataConverter.JsonToDateTime,
 //   d2j = DataConverter.DatetimeToJson;
 
 // let j2d=CommonFuns.DataConverter.JsonToDateTime;
 // CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false),
 //
+function DatetimeToJson(datetime) {
+  var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+  var l = datetime.getTime() - timezoneoffset;
+  return '\/Date(' + l + ')\/';
+}
 function JsonToDateTime(jsonstring, outintval) {
   outintval = typeof (outintval) === 'boolean' ? outintval : true;
   jsonstring = jsonstring.substr(6, jsonstring.length - 8);
@@ -327,15 +331,18 @@ const KPIStore = assign({}, PrototypeStore, {
           }
           else {
             kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index],Immutable.fromJS({
-              Month:period[index]._i,
+              Month:DatetimeToJson(period[index]._d),
               Value:null
             }));
           }
         }
 
 
+        if(!PredictionSetting){
+          PredictionSetting={};
+          kpi=kpi.setIn(['AdvanceSettings','PredictionSetting'],emptyMap());
+        }
 
-    if(PredictionSetting){
       let {MonthPredictionValues}=PredictionSetting;
 
         for(let index=0;index<12;index++){
@@ -353,12 +360,12 @@ const KPIStore = assign({}, PrototypeStore, {
           }
           else {
             kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index],Immutable.fromJS({
-              Month:period[index]._i,
+              Month:DatetimeToJson(period[index]._d),
               Value:null
             }));
           }
         }
-      }
+
 
 
 

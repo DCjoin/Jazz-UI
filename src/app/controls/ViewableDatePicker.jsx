@@ -12,6 +12,8 @@ const pattern2 = /^\d{4}\/\d{2}\/\d{2}$/;
 const format2 = "YYYY/MM/DD";
 const pattern3 = /^\d{4}\d{2}\d{2}$/;
 const format3 = "YYYYMMDD";
+const pattern4 = /^\d{4}-\d{2}$/;
+const format4 = "MM-DD";
 
 function isValid(dateStr, minDate, maxDate){
   var isNullDate = ( dateStr === "" || dateStr === null || dateStr === undefined);
@@ -57,6 +59,8 @@ function parseDateStr(dateStr){
         value = moment(dateStr, format2);
     }else if (pattern3.test(dateStr)){
         value = moment(dateStr, format3);
+    } else if (pattern4.test(dateStr)){
+        value = moment(dateStr, format4);
     }
     if (value && value.isValid()){
         return value;
