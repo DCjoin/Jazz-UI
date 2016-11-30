@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {findLastIndex} from 'lodash/array';
+import {findLastIndex, fill} from 'lodash/array';
+import {find} from 'lodash/collection';
 import {sum} from 'lodash/math';
 import CircularProgress from 'material-ui/CircularProgress';
 import IconMenu from 'material-ui/IconMenu';
@@ -44,6 +45,10 @@ function isSingleBuilding() {
 
 function getHierarchyNameById(Id) {
 	return HierarchyStore.getBuildingList().filter( building => building.Id === Id )[0].Name;
+}
+
+function getUnit(id) {
+	return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 }
 
 const DEFAULT_OPTIONS = {
@@ -156,7 +161,7 @@ class KPIChart extends Component {
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
 
-		let unit = UOMStore.getUoms()[data.get('unit')].Code;
+		let unit = getUnit(data.get('unit'));
 		options.xAxis.categories = util.getDateLabelsFromMomentToKPI(period);
 		options.yAxis.title.text = unit;
 	    options.tooltip.formatter = function() {
@@ -225,7 +230,7 @@ class KPIChart extends Component {
 		options.series[0].name = I18N.Kpi.TargetValues;
 		options.series[1].data = data.get('actual') && data.get('actual').toJS();
 		options.series[1].name = I18N.Kpi.ActualValues;
-		options.series[2].data = data.get('prediction') && data.get('prediction').toJS();
+		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex).slice(0, 12);
 		options.series[2].name = I18N.Kpi.PredictionValues;
 
 		options.series[1].dataLabels.formatter = function() {
@@ -259,7 +264,7 @@ class ActualityHeader extends Component {
 			<div className='header-bar'>
 				<div>{!isSingleBuilding() && <span>{I18N.Kpi.SingleProject}-</span>}{I18N.Kpi.KPIActual}</div>
 				{!isSingleBuilding() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
-				{!isSingleBuilding() && <FlatButton disabled={!this.props.hierarchyId} label={'+ 指标'} onClick={this.props.goCreate}/>}
+				{!isSingleBuilding() && isFull() && <FlatButton disabled={!this.props.hierarchyId} label={'+ 指标'} onClick={this.props.goCreate}/>}
 			</div>
 		);
 	}
@@ -339,11 +344,11 @@ class KPIReport extends Component {
 			{isIndex ?
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.IndexValue)}</span>
-				<span>{summaryData.IndexValue && UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.IndexValue && getUnit(data.get('unit'))}</span>
 			</div>) : 
 			(<div className='summary-value'>
-				<span>{(summaryData.RatioValue * 100).toFixed(1) * 1 + '%'}</span>
-				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) + ' ' + data.get('prediction') && UOMStore.getUoms()[data.get('unit')].Code)}</span>
+				<span>{(summaryData.RatioValue).toFixed(1) * 1 + '%'}</span>
+				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit')))}</span>
 			</div>)}
 		</div>
 		);
@@ -359,13 +364,13 @@ class KPIReport extends Component {
 			{isIndex ?
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
-				<span>{summaryData.PredictSum && UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 				<span>{(summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 			</div>) : 
 			(<div className='summary-value'>
 				<span>{(summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
-				<span>{summaryData.PredictSum && UOMStore.getUoms()[data.get('unit')].Code}</span>
+				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 			</div>)}
 		</div>
 		);
@@ -378,7 +383,7 @@ class KPIReport extends Component {
 					position: 'absolute',
     				right: 60
 				}}>
-				    <IconMenu
+				    {isFull() && <IconMenu
 				    	useLayerForClickAway={true}
 				      iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
 				      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -390,7 +395,7 @@ class KPIReport extends Component {
 				      <MenuItem primaryText={I18N.Kpi.UpdatePrediction} onClick={() => {
 				      	onRefresh(data.get('id'));
 				      }}/>
-				    </IconMenu>
+				    </IconMenu>}
 				</div>
 				<div className='jazz-kpi-report-chart'><KPIChart  LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/></div>
 				<div className='jazz-kpi-report-summary'>

@@ -402,8 +402,6 @@ I18N.DateTimeFormat.IntervalFormat.RawDate.Year = 'YYYY';
 I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFullMinute = 'YYYY/MM/DD HH:mm';
 I18N.DateTimeFormat.IntervalFormat.RawDate.RangeFull24Minute = 'YYYY/MM/DD 24:00';
 
-
-
 I18N.EM = {};
 I18N.EM.To = '到';
 I18N.EM.Week = '周';
@@ -483,7 +481,6 @@ I18N.EM.Ratio.RawValue = '原始值';
 I18N.EM.Ratio.TargetValue = '目标值';
 I18N.EM.Ratio.BaseValue = '基准值';
 I18N.EM.Ratio.Error = '查看工休比请选择不小于一周的时间范围';
-
 
 
 I18N.EM.Total = '总览';
@@ -1608,7 +1605,7 @@ I18N.Kpi = {
   ThisMonthUsagedPrediction: '本月指标使用量: {0}%(预测)',
   EditTarget: '编辑指标',
   UpdatePrediction: '更新预测值',
-  ActualityFractionalEnergySaving: '截至上月节能率',
+  ActualityFractionalEnergySaving: '截止上月节能率',
   KPIActual: '指标现状',
   SingleProject: '单项目',
   IndexValue: '全年定额指标值',
@@ -1750,7 +1747,7 @@ I18N.Platform.ServiceProvider.CalcStatus = '参与能效标识大数据计算';
 
 
 I18N.Privilege = {};
-I18N.Privilege.None = '无数据';
+I18N.Privilege.None = '无权限';
 I18N.Privilege.Readonly = '仅查看';
 I18N.Privilege.Full = '完整权限';
 I18N.Privilege.Common = {};
@@ -1842,7 +1839,6 @@ I18N.Setting.Labeling.CustomerName = '客户名称';
 
 I18N.Setting.CustomerManagement.Label = {};
 I18N.Setting.CustomerManagement.Label.MapPageInfo = '地图页信息';
-I18N.Setting.CustomerManagement.Label.MapPageInfo = '地图页信息';
 I18N.Setting.CustomerManagement.Label.Code = '客户编码';
 I18N.Setting.CustomerManagement.Label.Address = '客户地址';
 I18N.Setting.CustomerManagement.Label.OperationStartTime = '运营时间';
@@ -1907,7 +1903,6 @@ I18N.Setting.Building.Zone = '所属气候分区';
 I18N.Setting.Building.PTagCount = '计量数据P数量';
 I18N.Setting.Building.VTagCount = '计量数据V数量';
 I18N.Setting.Building.AddImage = '请添加建筑照片';
-I18N.Setting.Building.UpdateImage = '重新上传建筑照片';
 I18N.Setting.Building.UpdateImage = '重新上传建筑照片';
 I18N.Setting.Building.Address = '地理位置';
 I18N.Setting.Building.MapTip1 = '无法获取当前地理位置信息，请手动输入。';

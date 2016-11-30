@@ -145,15 +145,18 @@ let UserCustomerPermission = React.createClass({
         disableFirstNode: true
       }
 
+      var className = 'sidebar-content';
       if (!this.props.isView) {
         props.enabledChangeDataPrivilege = true;
         props.treeClass = "pop-user-customer-permission-dialog-tree dialog-scroll";
+        className = '';
       }
       content = (
-        <div style={{
+        <div className={className} style={{
           display: "flex",
           flexDirection: "column",
-          width: "100%"
+          overflowX: 'hidden',
+          overflowY: this.props.isView ? 'auto' : 'hidden',
         }}>
 					<div className="pop-user-customer-permission-dialog-header">
 						<Checkbox disabled={this.props.isView} checked={this.isCheckedAll()} onCheck={this._selectedAll} ref="pop_user_customer_permission_selecte_all" style={{
@@ -190,12 +193,27 @@ let UserCustomerPermission = React.createClass({
       };
       return (
         <div className="pop-user-customer-permission-dialog-wrapper">
+          <NewDialog
+            title={'编辑数据权限'}
+            open={open}
+            actions={[
+              <RaisedButton style={buttonStyle} labelStyle={{color: "inherit"}} label={I18N.Baseline.Button.Save} onClick={this._save} />,
+              <RaisedButton style={buttonStyle} label={I18N.Baseline.Button.Cancel} onClick={this._close} />,
+            ]}>
+            {content}
+          </NewDialog>
+        </div>
+      );
+      /*
+      return (
+        <div className="pop-user-customer-permission-dialog-wrapper">
 					<NewDialog
         bodyStyle={{
           flex: 1,
           display: "flex",
           flexDirection: "column"
         }}
+        title={I18N.Setting.Labeling.EditDataPermission}
         contentClassName="pop-user-customer-permission-dialog-wrapper-content"
         contentInnerStyle={{
         }} ref="pop_user_customer_permission_dialog"
@@ -204,7 +222,7 @@ let UserCustomerPermission = React.createClass({
         modal={true}>
 
 						<div className="pop-user-customer-permission-dialog-title">{I18N.Setting.Labeling.EditDataPermission}</div>
-						<div className="pop-user-customer-permission-dialog-content">
+						<div className="pop-user-customer-permission-dialog-content dialog-scroll">
 							{content}
 						</div>
 						{!!customer.get("dataPrivilege") ?
@@ -217,7 +235,7 @@ let UserCustomerPermission = React.createClass({
           : null}
 					</NewDialog>
 				</div>
-        );
+        );*/
     }
   },
 
