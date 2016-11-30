@@ -289,7 +289,7 @@ var UserDetail = React.createClass({
           { isSuperAdmin && <div className="info-title">{I18N.Platform.User.Role}</div> }
           <div className="info-value">
             { isSuperAdmin ?
-        <div>{I18N.Platform.User.ServerManager}</div>
+        <div style={{marginTop: 26}}>{I18N.Platform.User.ServerManager}</div>
         :
         <ViewableDropDownMenu {...userTypeNameProps} />
       }

@@ -78,11 +78,11 @@ let LoginStore = assign({}, EventEmitter.prototype, {
     }
     return false;
   },
-  getCurrentUserId: function(argument) {
-    if (!_currentUserId) {
-      _currentUserId = CookieUtil.get('UserId');
-    }
-    return _currentUserId;
+  getCurrentUserId: function() {
+    // if (!_currentUserId) {
+    //   _currentUserId = CookieUtil.get('UserId');
+    // }
+    return CookieUtil.get('UserId');
   },
   getCurrentUser: function(argument) {
     return _currentUser;

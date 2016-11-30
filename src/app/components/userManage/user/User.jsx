@@ -201,7 +201,7 @@ var User = React.createClass({
       });
     };
     if (!!this.state.errorTitle) {
-      return (<Dialog
+      return (<NewDialog
         ref = "_dialog"
         title={this.state.errorTitle}
         modal={false}
@@ -209,7 +209,7 @@ var User = React.createClass({
         onRequestClose={onClose}
         >
     {this.state.errorContent}
-      </Dialog>)
+      </NewDialog>)
     } else {
       return null;
     }

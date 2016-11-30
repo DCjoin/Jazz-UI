@@ -15,11 +15,11 @@ function calcShowCycle(month, day) {
 	let firstYear = month < 7 ? I18N.Setting.KPICycle.ThisYear : I18N.Setting.KPICycle.LastYear;
 	let lastYear = month < 7 ? I18N.Setting.KPICycle.NextYear : I18N.Setting.KPICycle.ThisYear;
 
-	let showMonth = day < 16 && month > 1 ? month - 1 : month;
+	// let showMonth = day < 16 && month > 1 ? month - 1 : month;
 
 	return util.replacePathParams(I18N.Setting.KPICycle.Date, 
-									firstYear, showMonth, day,
-									lastYear, showMonth, day);
+									firstYear, month, day,
+									lastYear, month, day);
 }
 
 function getMonthData() {
