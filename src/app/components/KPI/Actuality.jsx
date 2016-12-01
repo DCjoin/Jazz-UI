@@ -71,6 +71,7 @@ function getLabelData(value) {
 			let secondValue = value.split('.')[1] || '0000';
 			secondValue = secondValue.substring(0, 4 - firstValue.length);
 			value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
+			break;
 		}
 
 	}
@@ -100,14 +101,6 @@ const DEFAULT_OPTIONS = {
               			let item = lastLegendItems[i];
               			changeLegendStyle(item);
               		}
-	              	/*lastLegendItems.forEach((item) => {
-	              		item.setAttribute('width', item.getAttribute('width') * 1  - 1);
-	              		item.setAttribute('height', item.getAttribute('height') * 1  - 1);
-	              		item.setAttribute('y', item.getAttribute('y') * 1 + 1);
-	              		item.setAttribute('stroke', '#434348');
-			            item.setAttribute('stroke-width', 1);
-						item.setAttribute('stroke-dasharray', '4,3');
-	              	})*/
               	}
           	}
       	}
@@ -195,7 +188,16 @@ class KPIChart extends Component {
 	_generatorOptions() {
 		let {data, period, LastMonthRatio} = this.props;
 		let currentMonthIndex = findLastIndex(period,  date => date.isBefore(new Date()) );
+		// if( period[0].isAfter(new Date()) ) {
+		// 	console.log(1);
+		// 	currentMonthIndex = 12;
+		// }
+		// if( period[period.length - 1].isBefore(new Date()) ) {
+		// 	console.log(-1);
+		// 	currentMonthIndex = 11;
+		// }
 		let tooltipIndex =  data.get('actual') && findLastIndex(data.get('actual').toJS(), (val, index) => index < currentMonthIndex && val);
+		console.log(period, currentMonthIndex, tooltipIndex);
 
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
@@ -204,6 +206,7 @@ class KPIChart extends Component {
 		options.xAxis.categories = util.getDateLabelsFromMomentToKPI(period);
 		options.yAxis.title.text = unit;
 	    options.tooltip.formatter = function() {
+	    	console.log(this.points);
 	    	var data1 = this.points[0];
 	    	var data2 = this.points[1];
 	    	var data3 = this.points[2];
@@ -246,7 +249,7 @@ class KPIChart extends Component {
 	    		}
 	    	});
 	    	if(data.get('type') === 1 && targetVal ) {
-	    		if(currentDataIndex <= currentMonthIndex) {
+	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
 	    			title += `<b>${util.replacePathParams(I18N.Kpi.ThisMonthUsaged, (actualVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		} else {
 	    			title += `<b>${util.replacePathParams(I18N.Kpi.ThisMonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
@@ -265,11 +268,11 @@ class KPIChart extends Component {
 
 		options.title.text = data.get('name');
 
-		options.series[0].data = data.get('target') && data.get('target').toJS();
+		options.series[0].data = data.get('target') && data.get('target').toJS().slice(0, 12);
 		options.series[0].name = I18N.Kpi.TargetValues;
-		options.series[1].data = data.get('actual') && data.get('actual').toJS();
+		options.series[1].data = data.get('actual') && data.get('actual').toJS().slice(0, 12);
 		options.series[1].name = I18N.Kpi.ActualValues;
-		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex).slice(0, 12);
+		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex === -1 ? 0 : currentMonthIndex).slice(0, 12);
 		options.series[2].name = I18N.Kpi.PredictionValues;
 
 		options.series[1].dataLabels.formatter = function() {
@@ -498,6 +501,7 @@ export default class Actuality extends Component {
 	}
 	_getData(customerId, year, hierarchyId) {
 		KPIAction.initKPIChartData();
+		KPIAction.getKPIPeriodByYear(customerId, year);
 		KPIAction.getKPIChart(customerId, year, hierarchyId);
 		KPIAction.getKPIChartSummary(customerId, year, hierarchyId);
 	}
