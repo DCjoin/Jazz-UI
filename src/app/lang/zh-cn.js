@@ -368,6 +368,7 @@ I18N.DateTimeFormat.HighFormat.FullDateTime = '%Y年%m月%d日 %H点%M分%S秒';
 I18N.DateTimeFormat.HighFormat.FullDate = '%Y年%m月%d日';
 I18N.DateTimeFormat.HighFormat.FullYear = '全年';
 I18N.DateTimeFormat.HighFormat.RawData = {};
+// I18N.DateTimeFormat.HighFormat.RawData.Dayhour = '%m/%d %H:%M';
 I18N.DateTimeFormat.HighFormat.RawData.Dayhour = '%m/%d %H:%M';
 I18N.DateTimeFormat.HighFormat.RawData.Hour = '%H:%M';
 I18N.DateTimeFormat.HighFormat.RawData.Day = '%m/%d';

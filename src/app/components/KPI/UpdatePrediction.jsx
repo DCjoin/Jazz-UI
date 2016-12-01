@@ -90,6 +90,7 @@ export default class UpdatePrediction extends Component {
 			<FlatButton
 			label={I18N.Common.Button.Save}
 			onTouchTap={this._onSave}
+			disabled={!KPIStore.validateKpiInfo(this.state.kpiInfo)}
 			/>,
 			<FlatButton
 			label={I18N.Common.Button.Cancel2}

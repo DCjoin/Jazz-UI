@@ -1,5 +1,6 @@
 import React from 'react';
 import {DropDownMenu} from 'material-ui';
+import MenuItem from 'material-ui/MenuItem';
 import classSet from 'classnames';
 import CommonFuns from '../util/Util.jsx';
 
@@ -43,16 +44,23 @@ var DaytimeSelector = React.createClass({
       value: this.props.minute,
       from: this.props.start,
       to: this.props.end,
+      dropdownValue:null
     }) ;
   },
-  _onChange(e, selectedIndex, menuItem){
+  _onChange(e, selectedIndex, value){
     // e.preventDefault();
     // e.stopPropagation();
     var preVal = this.state.value;
-    this.state.value = this.props.from + this.props.step * selectedIndex;
-    if(this.props.onChange){
-      this.props.onChange(e, this.state.value, preVal);
-    }
+    this.setState({
+      value:this.props.from + this.props.step * selectedIndex,
+      dropdownValue:value
+    },()=>{
+      if(this.props.onChange){
+        this.props.onChange(e, this.state.value, preVal);
+      }
+    })
+    //this.state.value = this.props.from + this.props.step * selectedIndex;
+
   },
   getValue: function(){
     return this.state.value;
@@ -66,7 +74,9 @@ var DaytimeSelector = React.createClass({
 
     for (var i = 1; ; i++) {
       var hmstr = CommonFuns.numberToTime(minutes);
-      menuItems.push({ payload: i.toString(), text: hmstr });
+      menuItems.push(
+        <MenuItem value={i.toString()} primaryText={hmstr} />);
+        // { payload: i.toString(), text: hmstr });
 
       minutes = minutes + this.props.step;
       if(minutes > this.props.to) break;
@@ -77,16 +87,19 @@ var DaytimeSelector = React.createClass({
     if(!this.props.isViewStatus){
       ddmProps = {
         onChange: this._onChange,
-        menuItems: menuItems
+        // menuItems: menuItems
       };
+
       var index = 0;
       if(this.state.value){
         index = (this.state.value - this.props.from) / this.props.step;
       }
       ddmProps.selectedIndex = index;
 
-      var ddm = <DropDownMenu ref="DropDownMenu" style={this.props.style} className="jazz-setting-daytimeSelector"
-        {...ddmProps} />;
+      var ddm = <DropDownMenu ref="DropDownMenu" value={this.state.dropdownValue} style={this.props.style} className="jazz-setting-daytimeSelector"
+        {...ddmProps}>
+        {menuItems}
+      </DropDownMenu>;
       return ddm;
     }
     else{

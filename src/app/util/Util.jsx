@@ -407,7 +407,7 @@ let CommonFuns = {
     return "";
   },
   dateFormat(date, formatDate) {
-    return (new Momment(date)).format(formatDate);
+    return Momment(date).format(formatDate);
   },
   dateAdd(date, value, unit) {
     var mdate = new Momment(date);
