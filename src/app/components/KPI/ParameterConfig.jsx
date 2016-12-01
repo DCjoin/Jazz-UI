@@ -38,7 +38,8 @@ export default class ParameterConfig extends Component {
     let {IndicatorType,value,tag,TargetMonthValues,onTargetValueChange}=this.props;
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         annualTitle=I18N.format(I18N.Setting.KPI.Parameter.Annual,type),
-        annualHint=I18N.format(I18N.Setting.KPI.Parameter.InputAnnual,type);
+        annualHint=I18N.format(I18N.Setting.KPI.Parameter.InputAnnual,type),
+        title=IndicatorType===Type.Quota?`${annualTitle} (${uom})`:`${annualTitle} (%)`;
     let indicatorProps={
       title:I18N.Setting.KPI.Parameter.Indicator,
       contentStyle:{
@@ -53,7 +54,7 @@ export default class ParameterConfig extends Component {
                   this.props.onAnnualChange(path,value);
                           },
       defaultValue: value,
-      title: `${annualTitle} (${uom})`,
+      title: title,
       hintText:annualHint,
       regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
     },
