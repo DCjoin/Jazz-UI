@@ -1,14 +1,14 @@
 'use strict';
 import React from "react";
+import ReactDOM from "react-dom";
 import classNames from 'classnames';
-import { FlatButton, FontIcon, Menu, Paper, Mixins } from 'material-ui';
+import Popover from 'material-ui/Popover';
 import DimTree from './DimTree.jsx';
 import DimAction from "../../actions/DimAction.jsx";
 import DimStore from "../../stores/DimStore.jsx";
 import ClickAway from "../../controls/ClickAwayListener.jsx";
 
 let DimButton = React.createClass({
-  //mixins: [Mixins.ClickAwayable],
   propTypes: {
     active: React.PropTypes.bool,
     parentNode: React.PropTypes.object,
@@ -19,7 +19,8 @@ let DimButton = React.createClass({
   },
   _onShowPaper: function() {
     this.setState({
-      open: !this.state.open
+      open: !this.state.open,
+      anchorEl: ReactDOM.findDOMNode(this)
     });
     this.props.onButtonClick();
   },
@@ -43,6 +44,7 @@ let DimButton = React.createClass({
     this.props.onTreeClick(node);
     this.setState({
       open: false,
+      anchorEl: null,
       selectedNode: node,
       buttonName: node.Name
     });
@@ -83,6 +85,7 @@ let DimButton = React.createClass({
 
     return {
       open: false,
+      anchorEl: null,
       dimList: null,
       selectedNode: null,
       buttonName: I18N.Dim.ButtonName
@@ -156,7 +159,15 @@ let DimButton = React.createClass({
       })} onClick={this._onShowPaper}>
                 {this.state.buttonName}
               </div>
+              <Popover
+                open={this.state.open}
+                anchorEl={this.state.anchorEl}
+                anchorOrigin={{horizontal: 'center', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'center', vertical: 'top'}}
+                onRequestClose={this.props.handleClickAway}
+              >
                 {dropdownPaper}
+              </Popover>
             </div>
       )
   }
