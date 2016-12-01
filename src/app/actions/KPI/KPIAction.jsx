@@ -189,7 +189,7 @@ const KPIAction = {
         });
       },
       error: function(err, res) {
-        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),HierarchyName);
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),kpiInfo.IndicatorName,HierarchyName);
         AppDispatcher.dispatch({
           type: Action.KPI_ERROR,
           title: I18N.Platform.ServiceProvider.ErrorNotice,
@@ -214,7 +214,7 @@ const KPIAction = {
         });
       },
       error: function(err, res) {
-        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),kpiInfo.HierarchyName);
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),kpiInfo.IndicatorName,kpiInfo.HierarchyName);
         AppDispatcher.dispatch({
           type: Action.KPI_ERROR,
           title: I18N.Platform.ServiceProvider.ErrorNotice,
