@@ -8,7 +8,7 @@ import assign from 'object-assign';
 import HierarchyStore from "../../stores/HierarchyStore.jsx";
 import { nodeType } from '../../constants/TreeConstants.jsx';
 import Search from './HierarchySearch.jsx';
-
+import ClickAway from "../../controls/ClickAwayListener.jsx";
 
 var TreeNode = React.createClass({
 
@@ -71,6 +71,7 @@ var TreeNode = React.createClass({
       collapsed: this.getCollapsedStatus(nextProps)
     });
   },
+
   handleClickArrow: function(e) {
     e.stopPropagation();
     this.setState({
@@ -363,6 +364,9 @@ let HierarchyTree = React.createClass({
       searchTree: false
     });
   },
+  onClickAway:function(){
+    this.props.onClickAway()
+  },
   render: function() {
 
     var tree;
@@ -430,4 +434,4 @@ let HierarchyTree = React.createClass({
   }
 });
 
-module.exports = HierarchyTree;
+module.exports = ClickAway(HierarchyTree);

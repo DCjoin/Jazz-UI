@@ -3,6 +3,7 @@ import React from "react";
 import classNames from 'classnames';
 import { Paper, Menu, Mixins } from 'material-ui';
 import { nodeType } from '../../constants/TreeConstants.jsx';
+import ClickAway from "../../controls/ClickAwayListener.jsx";
 
 let treeMap = new Array();
 
@@ -73,7 +74,7 @@ let FolderSearch = React.createClass({
           </div>
       );
   },
-  componentClickAway: function() {
+  onClickAway: function() {
     this.props.handleClickAway();
   },
   render: function() {
@@ -114,4 +115,4 @@ let FolderSearch = React.createClass({
   }
 });
 
-module.exports = FolderSearch;
+module.exports = ClickAway(FolderSearch);

@@ -5,6 +5,7 @@ import { FlatButton, FontIcon, Menu, Paper, CircularProgress, Mixins } from 'mat
 import HierarchyTree from './HierarchyTree.jsx';
 import HierarchyAction from "../../actions/HierarchyAction.jsx";
 import HierarchyStore from "../../stores/HierarchyStore.jsx";
+import ClickAway from "../../controls/ClickAwayListener.jsx";
 
 let HierarchyButton = React.createClass({
   //mixins: [Mixins.ClickAwayable],
@@ -117,7 +118,7 @@ let HierarchyButton = React.createClass({
       });
     }
   },
-  componentClickAway: function() {
+  onClickAway: function() {
     if (this.props.show) {
       if (this.props.handleClickAwa) {
         this.props.handleClickAway();
@@ -159,9 +160,9 @@ let HierarchyButton = React.createClass({
         )
       } else {
         if (this.state.selectedNode) {
-          dropdownPaper = <HierarchyTree allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
+          dropdownPaper = <HierarchyTree onClickAway={this.onClickAway} allNode={this.state.hieList} selectedNode={this.state.selectedNode} onTreeClick={this._onTreeClick}/>;
         } else {
-          dropdownPaper = <HierarchyTree allNode={this.state.hieList} selectedNode={this.state.hieList} onTreeClick={this._onTreeClick}/>;
+          dropdownPaper = <HierarchyTree onClickAway={this.onClickAway} allNode={this.state.hieList} selectedNode={this.state.hieList} onTreeClick={this._onTreeClick}/>;
         }
       }
 
@@ -194,4 +195,4 @@ let HierarchyButton = React.createClass({
   }
 });
 
-module.exports = HierarchyButton;
+module.exports =HierarchyButton;
