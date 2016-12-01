@@ -75,7 +75,6 @@ let JazzApp = React.createClass({
     });
   },
   _setHighchartConfig() {
-    console.log('12312314131231');
     window.Highcharts.setOptions({
       global: {
         useUTC: false

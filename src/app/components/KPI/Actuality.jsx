@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {findLastIndex, fill} from 'lodash/array';
+import {findLastIndex, fill, map} from 'lodash/array';
 import {find} from 'lodash/collection';
 import {sum} from 'lodash/math';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -51,6 +51,41 @@ function getUnit(id) {
 	return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 }
 
+function getLabelData(value) {
+	if( value * 1 !== value ) {
+		return null;
+	}
+	let abbreviations = [
+		// {label: '兆', value: Math.pow(10, 12)},
+		{label: '亿', value: Math.pow(10, 8)},
+		{label: '万', value: Math.pow(10, 4)},
+		{label: '', value: Math.pow(10, 0)},
+	];
+	let label = '';
+	for(let i = 0; i < abbreviations.length; i++) {
+		let abbreviation = abbreviations[i];
+		if( value/abbreviation.value > 1 ) {
+			label = abbreviation.label;
+			value = value/abbreviation.value + '';
+			let firstValue = value.split('.')[0];
+			let secondValue = value.split('.')[1] || '0000';
+			secondValue = secondValue.substring(0, 4 - firstValue.length);
+			value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
+		}
+
+	}
+	return value + label;
+}
+
+function changeLegendStyle(item) {
+	item.setAttribute('width', item.getAttribute('width') * 1  - 1);
+	item.setAttribute('height', item.getAttribute('height') * 1  - 1);
+	item.setAttribute('y', item.getAttribute('y') * 1 + 1);
+	item.setAttribute('stroke', '#434348');
+	item.setAttribute('stroke-width', 1);
+	item.setAttribute('stroke-dasharray', '4,3');
+}
+
 const DEFAULT_OPTIONS = {
     credits: {
         enabled: false
@@ -60,15 +95,19 @@ const DEFAULT_OPTIONS = {
       	events: {
           	load: function () {
               	let lastLegendItems = document.querySelectorAll('.highcharts-legend .highcharts-legend-item:nth-of-type(3) rect');
-              	if(lastLegendItems) {
-	              	lastLegendItems.forEach((item) => {
+              	if(lastLegendItems ) {
+              		for(let i = 0; i < lastLegendItems.length; i++) {
+              			let item = lastLegendItems[i];
+              			changeLegendStyle(item);
+              		}
+	              	/*lastLegendItems.forEach((item) => {
 	              		item.setAttribute('width', item.getAttribute('width') * 1  - 1);
 	              		item.setAttribute('height', item.getAttribute('height') * 1  - 1);
 	              		item.setAttribute('y', item.getAttribute('y') * 1 + 1);
 	              		item.setAttribute('stroke', '#434348');
 			            item.setAttribute('stroke-width', 1);
 						item.setAttribute('stroke-dasharray', '4,3');
-	              	})
+	              	})*/
               	}
           	}
       	}
@@ -306,34 +345,6 @@ class ActualityContent extends Component {
 	}
 }
 
-function getLabelData(value) {
-	if( value * 1 !== value ) {
-		return null;
-	}
-	let abbreviations = [
-		// {label: '兆', value: Math.pow(10, 12)},
-		{label: '亿', value: Math.pow(10, 8)},
-		{label: '万', value: Math.pow(10, 4)},
-	];
-	let label = '';
-	for(let i = 0; i < abbreviations.length; i++) {
-		let abbreviation = abbreviations[i];
-		if( value/abbreviation.value > 1 ) {
-			label = abbreviation.label;
-			value = value/abbreviation.value + '';
-			let firstValue = value.split('.')[0];
-			let secondValue = value.split('.')[1] || '0000';
-			secondValue = secondValue.substring(0, 4 - firstValue.length);
-
-			value = firstValue + (secondValue ? '.' + secondValue : '');
-		}
-
-	}
-	if(value) {
-		return value + label;
-	}
-}
-
 class KPIReport extends Component {
 	getValueSummaryItem() {
 		let {data, summaryData} = this.props;
@@ -419,6 +430,7 @@ export default class Actuality extends Component {
 		this.state = this._getInitialState();
 	}
 	componentWillMount() {
+		document.title = I18N.MainMenu.KPI;
 		HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
 		// KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
 		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
