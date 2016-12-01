@@ -331,12 +331,16 @@ class ActualityContent extends Component {
 		return (
 			<div className='content'>
 				<div className='action-bar'>
-					<LinkButton iconName={ "icon-arrow-left" } disabled={year < new Date().getFullYear() - 2 } onClick={() => {
-						onChangeYear(year - 1);
+					<LinkButton iconName={ "icon-arrow-left" } disabled={ !KPIStore.hasLastYear(year) } onClick={() => {
+						if( KPIStore.hasLastYear(year) ) {
+							onChangeYear(year * 1 - 1);
+						}
 					}}/>
 					<span className='current-year'>{year}</span>
-					<LinkButton iconName={ "icon-arrow-right" } disabled={year >= new Date().getFullYear() + 1} onClick={() => {
-						onChangeYear(year + 1);
+					<LinkButton iconName={ "icon-arrow-right" } disabled={ !KPIStore.hasNextYear(year) } onClick={() => {
+						if( KPIStore.hasNextYear(year) ) {
+							onChangeYear(year * 1 + 1);
+						}
 					}}/>
 				</div>
 				<div>
@@ -455,12 +459,13 @@ export default class Actuality extends Component {
 			showCreate: false,
 			showRefreshDialog: false,
 			kpiId: null,
-			year: moment().year(),
+			year: null,
 			hierarchyId: null			
 		}
 	}
 	_onChange() {
 		this.setState({
+			year: this.state.year || KPIStore.getKPIDefaultYear(),
 			loading: false
 		});
 	}

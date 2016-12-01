@@ -8,6 +8,7 @@ import Immutable from 'immutable';
 import moment from 'moment';
 import { Map,List} from 'immutable';
 import assign from 'object-assign';
+import {findLastIndex, last, first} from 'lodash/array';
 import {Status,Type} from '../../constants/actionType/KPI.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
@@ -68,7 +69,6 @@ function coverageRawToHighChartData(data) {
 
 let kpiInfo=emptyMap();
 let _KPIPeriod=null,
-    _KPIConfiguredLoading=false,
     _KPIConfigured=null,
     _KPIChart=null,
     _KPIChartSummary=null,
@@ -80,7 +80,6 @@ let _KPIPeriod=null,
 function _init() {
   kpiInfo=emptyMap();
   _KPIPeriod=null;
-  _KPIConfiguredLoading=true;
   _KPIConfigured=null;
   _KPIChart=null;
   _KPIChartSummary=null;
@@ -131,20 +130,38 @@ const KPIStore = assign({}, PrototypeStore, {
     return assign({}, _KPIPeriod);
   },
 
-  setKpiConfiguredLoading() {
-    _KPIConfiguredLoading = true;
-  },
-  getKpiConfiguredLoading() {
-    return _KPIConfiguredLoading;
-  },
-
   setKpiConfigured(value) {
-    _KPIConfiguredLoading = false;
     _KPIConfigured = value;
   },
 
   getKPIConfigured() {
-    return  !!_KPIConfigured;
+    return _KPIConfigured;
+  },
+
+  getKPIDefaultYear() {
+    let years = this.getKPIConfigured();
+    if(!years || years.length === 0) {
+      return null;
+    }
+    if(years.length === 1) {
+      return years[0];
+    }
+    let thisYear = new Date().getFullYear();
+    if( years[0] * 1 > thisYear ) {
+      return years[0];
+    }
+
+    return years[findLastIndex(years, year => year < thisYear)];
+  },
+
+  hasNextYear(year) {
+    let years = this.getKPIConfigured();
+    return last(years) * 1 > year;
+  },
+
+  hasLastYear(year) {
+    let years = this.getKPIConfigured();
+    return first(years) * 1 < year;
   },
 
   setKPIChart(data) {
@@ -446,9 +463,6 @@ KPIStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_KPI_CONFIGURED:
          KPIStore.setKpiConfigured(action.data);
          KPIStore.emitChange();
-         break;
-    case Action.GET_KPI_CONFIGURED_LOADING:
-         KPIStore.setKpiConfiguredLoading();
          break;
     case Action.GET_KPI_CHART:
          KPIStore.setKPIChart(action.data);
