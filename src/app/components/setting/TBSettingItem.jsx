@@ -220,8 +220,8 @@ var TBSettingItem = React.createClass({
   },
 
   getValue: function() {
-    var startDate = this.state.start,
-      endDate = fromFormEndDate(this.state.end);
+    var startDate = new Date(CommonFuns.DataConverter.JsonToDateTime(this.state.start)),
+      endDate = fromFormEndDate(new Date(CommonFuns.DataConverter.JsonToDateTime(this.state.end)));
     startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0);
     endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0);
     var rtn = {
@@ -389,7 +389,7 @@ var TBSettingItem = React.createClass({
       //className: 'jazz-setting-basic-date',
       onChange: function(v) {
         v=moment(v)._d;
-        var endDate = CommonFuns.DataConverter.JsonToDateTime(me.state.end);
+        var endDate =new Date(CommonFuns.DataConverter.JsonToDateTime(me.state.end));
         if (endDate && endDate < v) {
           endDate = v;
         }
@@ -422,7 +422,8 @@ var TBSettingItem = React.createClass({
       style: datapickerStyle,
       //className: 'jazz-setting-basic-date',
       onChange: function(v) {
-        var startDate = CommonFuns.DataConverter.JsonToDateTime(me.state.start);
+        v=moment(v)._d;
+        var startDate = new Date(CommonFuns.DataConverter.JsonToDateTime(me.state.start));
         if (startDate && startDate > v) {
           //me.refs.startFeild.setValue(v);
           startDate = v;
