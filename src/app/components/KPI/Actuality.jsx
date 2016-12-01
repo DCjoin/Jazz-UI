@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 import assign from 'object-assign';
-import {findLastIndex, fill} from 'lodash/array';
+import {findLastIndex, fill, map} from 'lodash/array';
 import {find} from 'lodash/collection';
 import {sum} from 'lodash/math';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -77,6 +77,15 @@ function getLabelData(value) {
 	return value + label;
 }
 
+function changeLegendStyle(item) {
+	item.setAttribute('width', item.getAttribute('width') * 1  - 1);
+	item.setAttribute('height', item.getAttribute('height') * 1  - 1);
+	item.setAttribute('y', item.getAttribute('y') * 1 + 1);
+	item.setAttribute('stroke', '#434348');
+	item.setAttribute('stroke-width', 1);
+	item.setAttribute('stroke-dasharray', '4,3');
+}
+
 const DEFAULT_OPTIONS = {
     credits: {
         enabled: false
@@ -86,15 +95,19 @@ const DEFAULT_OPTIONS = {
       	events: {
           	load: function () {
               	let lastLegendItems = document.querySelectorAll('.highcharts-legend .highcharts-legend-item:nth-of-type(3) rect');
-              	if(lastLegendItems) {
-	              	lastLegendItems.forEach((item) => {
+              	if(lastLegendItems ) {
+              		for(let i = 0; i < lastLegendItems.length; i++) {
+              			let item = lastLegendItems[i];
+              			changeLegendStyle(item);
+              		}
+	              	/*lastLegendItems.forEach((item) => {
 	              		item.setAttribute('width', item.getAttribute('width') * 1  - 1);
 	              		item.setAttribute('height', item.getAttribute('height') * 1  - 1);
 	              		item.setAttribute('y', item.getAttribute('y') * 1 + 1);
 	              		item.setAttribute('stroke', '#434348');
 			            item.setAttribute('stroke-width', 1);
 						item.setAttribute('stroke-dasharray', '4,3');
-	              	})
+	              	})*/
               	}
           	}
       	}
