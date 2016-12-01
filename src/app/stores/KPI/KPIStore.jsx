@@ -183,10 +183,16 @@ const KPIStore = assign({}, PrototypeStore, {
 
   clearParam(){
     if(!kpiInfo.get('AdvanceSettings')) return;
-    let {Year,IndicatorType}=kpiInfo.get('AdvanceSettings').toJS();
-    kpiInfo=kpiInfo.set('AdvanceSettings',emptyMap());
-    kpiInfo=kpiInfo.setIn(['AdvanceSettings','Year'],Year);
-    kpiInfo=kpiInfo.setIn(['AdvanceSettings','IndicatorType'],IndicatorType);
+    let {Year,IndicatorType,PredictionSettingModel}=kpiInfo.get('AdvanceSettings').toJS();
+    let {KpiSettingsId}=PredictionSettingModel?PredictionSettingModel:{};
+    kpiInfo=kpiInfo.set('AdvanceSettings',Immutable.fromJS({
+      Year,IndicatorType,
+      PredictionSettingModel:{
+        KpiSettingsId
+      }
+    }));
+    // kpiInfo=kpiInfo.setIn(['AdvanceSettings','Year'],Year);
+    // kpiInfo=kpiInfo.setIn(['AdvanceSettings','IndicatorType'],IndicatorType);
   },
 
   merge(data){

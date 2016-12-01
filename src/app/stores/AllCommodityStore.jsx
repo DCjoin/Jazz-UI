@@ -5,7 +5,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import {Action} from '../constants/actionType/Main.jsx';
 
-let _commodities = null;
+let _commodities = [];
 var AllCommodityStore = assign({},PrototypeStore,{
   initCommodities(commodities){
     _commodities = commodities;
