@@ -69,7 +69,7 @@ export default class Prediction extends Component {
             },
             {
               path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
-              value:DataConverter.DatetimeToJson(period[index]._d)
+              value:KPIStore.DatetimeToJson(period[index]._d)
             }
           ])
           }
@@ -79,7 +79,7 @@ export default class Prediction extends Component {
                   index:index,
                   length:12,
                   value:Immutable.fromJS({
-                    Month:DataConverter.DatetimeToJson(period[index]._d),
+                    Month:KPIStore.DatetimeToJson(period[index]._d),
                     Value:value,
                   }),
                   status:Status.ADD

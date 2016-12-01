@@ -17,26 +17,26 @@ import CommonFuns from '../../util/Util.jsx';
 // let j2d=CommonFuns.DataConverter.JsonToDateTime;
 // CommonFuns.DataConverter.JsonToDateTime(paramsObj.startTime, false),
 //
-function DatetimeToJson(datetime) {
-  var timezoneoffset = new Date().getTimezoneOffset() * 60000;
-  var l = datetime.getTime() - timezoneoffset;
-  return '\/Date(' + l + ')\/';
-}
-function JsonToDateTime(jsonstring, outintval) {
-  outintval = typeof (outintval) === 'boolean' ? outintval : true;
-  jsonstring = jsonstring.substr(6, jsonstring.length - 8);
-
-  var timezoneoffset = new Date().getTimezoneOffset() * 60000;
-  var mydate;
-  if (outintval) {
-    mydate = parseInt(jsonstring) + timezoneoffset;
-  } else {
-    mydate = parseInt(jsonstring) + timezoneoffset;
-    mydate = new Date(mydate);
-  }
-
-  return mydate;
-}
+// function DatetimeToJson(datetime) {
+//   var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+//   var l = datetime.getTime() + timezoneoffset;
+//   return '\/Date(' + l + ')\/';
+// }
+// function JsonToDateTime(jsonstring, outintval) {
+//   // outintval = typeof (outintval) === 'boolean' ? outintval : true;
+//   jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+//   //
+//   // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+//   // var mydate;
+//   // if (outintval) {
+//   //   mydate = parseInt(jsonstring) + timezoneoffset;
+//   // } else {
+//   //   mydate = parseInt(jsonstring) + timezoneoffset;
+//   //   mydate = new Date(mydate);
+//   // }
+//
+//   return new Date(parseInt(jsonstring));
+// }
 function emptyMap() {
   return new Map();
 }
@@ -93,6 +93,28 @@ function _init() {
 let KPI_SUCCESS_EVENT = 'kpisuccess',
   KPI_ERROR_EVENT = 'kpierror';
 const KPIStore = assign({}, PrototypeStore, {
+
+  DatetimeToJson(datetime) {
+    var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+    var l = datetime.getTime();
+    return '\/Date(' + l + ')\/';
+  },
+  JsonToDateTime(jsonstring, outintval) {
+    // outintval = typeof (outintval) === 'boolean' ? outintval : true;
+    jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+    //
+    // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+    // var mydate;
+    // if (outintval) {
+    //   mydate = parseInt(jsonstring) + timezoneoffset;
+    // } else {
+    //   mydate = parseInt(jsonstring) + timezoneoffset;
+    //   mydate = new Date(mydate);
+    // }
+
+    return parseInt(jsonstring);
+  },
+
   setKpiInfo(data){
     kpiInfo=Immutable.fromJS(data);
   },
@@ -151,7 +173,7 @@ const KPIStore = assign({}, PrototypeStore, {
 
   setYearQuotaperiod(data) {
     _quotaperiodYear = data.map(el=>{
-      return moment(JsonToDateTime(el))
+      return moment(this.JsonToDateTime(el))
     });
   },
 
@@ -285,7 +307,7 @@ const KPIStore = assign({}, PrototypeStore, {
 
     if(TargetMonthValues && TargetMonthValues.length>0){
       TargetMonthValues.forEach(value=>{
-        if(!this.validateQuota(value.Value)){
+        if(value && !this.validateQuota(value.Value)){
           validDate=false
         }
       });
@@ -295,7 +317,7 @@ const KPIStore = assign({}, PrototypeStore, {
       let {TagSavingRates,MonthPredictionValues}=PredictionSetting;
       if(TagSavingRates && TagSavingRates.length>0){
         TagSavingRates.forEach(rate=>{
-          if(!this.validateSavingRate(rate.SavingRate)){
+          if(rate && !this.validateSavingRate(rate.SavingRate)){
             validDate=false
           }
         });
@@ -331,7 +353,7 @@ const KPIStore = assign({}, PrototypeStore, {
           }
           else {
             kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index],Immutable.fromJS({
-              Month:DatetimeToJson(period[index]._d),
+              Month:this.DatetimeToJson(period[index]._d),
               Value:null
             }));
           }
@@ -360,7 +382,7 @@ const KPIStore = assign({}, PrototypeStore, {
           }
           else {
             kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index],Immutable.fromJS({
-              Month:DatetimeToJson(period[index]._d),
+              Month:this.DatetimeToJson(period[index]._d),
               Value:null
             }));
           }
