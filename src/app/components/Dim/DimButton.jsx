@@ -5,6 +5,7 @@ import { FlatButton, FontIcon, Menu, Paper, Mixins } from 'material-ui';
 import DimTree from './DimTree.jsx';
 import DimAction from "../../actions/DimAction.jsx";
 import DimStore from "../../stores/DimStore.jsx";
+import ClickAway from "../../controls/ClickAwayListener.jsx";
 
 let DimButton = React.createClass({
   //mixins: [Mixins.ClickAwayable],
@@ -38,18 +39,18 @@ let DimButton = React.createClass({
     }
 
   },
-  resetButtonName: function() {
-    this.setState({
-      buttonName: I18N.Dim.AllButtonName,
-      selectedNode: null
-    });
-  },
   _onTreeClick: function(node) {
     this.props.onTreeClick(node);
     this.setState({
       open: false,
       selectedNode: node,
       buttonName: node.Name
+    });
+  },
+  resetButtonName: function() {
+    this.setState({
+      buttonName: I18N.Dim.AllButtonName,
+      selectedNode: null
     });
   },
   selectDimItem(dimId, isCallClickEvent) {
@@ -124,7 +125,7 @@ let DimButton = React.createClass({
 
   },
 
-  componentClickAway: function() {
+  onClickAway: function() {
     if ((this.props.show) && (this.state.open)) {
       this.props.handleClickAway();
     }

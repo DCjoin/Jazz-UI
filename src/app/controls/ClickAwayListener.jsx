@@ -57,7 +57,7 @@ function clickAway(Comp) {
 
     render() {
       return (
-        <Comp ref="comp" {...this.props}  />
+        <Comp ref="comp" {...this.props}/>
       )
     }
   }
