@@ -6,14 +6,34 @@ import { Action } from '../../constants/actionType/KPI.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import Immutable from 'immutable';
 import assign from 'object-assign';
+import TreeConstants from '../../constants/TreeConstants.jsx';
 
+let {nodeType} = TreeConstants;
 let _dimensions=null,_tags=null;
 const TagSelectStore = assign({}, PrototypeStore, {
+  addtype(data){
+    var f=function(item){
+      if(item){
+        item.Type=nodeType.Area;
+        if(item.Children){
+          item.Children.forEach(child=>{
+            f(child)
+          })
+        }
+      }
+    }
+    let result=data.map(el=>{
+      f(el);
+      return el
+    })
+    return result
+  },
   setDimensions(data,name){
     _dimensions=Immutable.fromJS({
       Name:name,
       Id:-1,
-      Children:data
+      Children:this.addtype(data),
+      Type:nodeType.Building
     });
   },
 
