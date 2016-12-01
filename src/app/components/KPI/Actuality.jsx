@@ -59,6 +59,7 @@ function getLabelData(value) {
 		// {label: '兆', value: Math.pow(10, 12)},
 		{label: '亿', value: Math.pow(10, 8)},
 		{label: '万', value: Math.pow(10, 4)},
+		{label: '', value: Math.pow(10, 0)},
 	];
 	let label = '';
 	for(let i = 0; i < abbreviations.length; i++) {
@@ -69,7 +70,6 @@ function getLabelData(value) {
 			let firstValue = value.split('.')[0];
 			let secondValue = value.split('.')[1] || '0000';
 			secondValue = secondValue.substring(0, 4 - firstValue.length);
-			console.log(firstValue, secondValue);
 			value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
 		}
 
