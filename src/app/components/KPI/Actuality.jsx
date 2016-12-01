@@ -362,7 +362,7 @@ class KPIReport extends Component {
 				<span>{summaryData.IndexValue && getUnit(data.get('unit'))}</span>
 			</div>) : 
 			(<div className='summary-value'>
-				<span>{(summaryData.RatioValue).toFixed(1) * 1 + '%'}</span>
+				<span>{(summaryData.RatioValue || 0).toFixed(1) * 1 + '%'}</span>
 				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit')))}</span>
 			</div>)}
 		</div>
@@ -371,8 +371,8 @@ class KPIReport extends Component {
 	getPredictSummaryItem() {
 		let {data, summaryData} = this.props;
 		let isIndex = data.get('type') === 1;
-		let overproof = isIndex ? (summaryData.IndexValue < summaryData.PredictSum)
-							 : (summaryData.IndexValue > summaryData.PredictSum) ;
+		let overproof = summaryData.PredictSum && summaryData.IndexValue && (isIndex ? (summaryData.IndexValue < summaryData.PredictSum)
+									 : (summaryData.IndexValue > summaryData.PredictSum)) ;
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{isIndex ? I18N.Kpi.PredictSum : I18N.Kpi.PredictSaving}</div>
@@ -380,10 +380,10 @@ class KPIReport extends Component {
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
-				<span>{(summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
+				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 			</div>) : 
 			(<div className='summary-value'>
-				<span>{(summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
+				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 			</div>)}
