@@ -113,8 +113,11 @@ const DEFAULT_OPTIONS = {
     	align: 'left',
     	padding: 30
     },
-    xAxis: {},
+    xAxis: {
+    	tickLength: 0
+    },
     yAxis: {
+    	lineWidth: 1,
     	labels: {
 	    	formatter: function() {
 	    		return getLabelData(this.value)
@@ -151,7 +154,7 @@ const DEFAULT_OPTIONS = {
         }
     },
     series: [ {
-        type: 'spline',
+        type: 'line',
         marker: {
 	        lineWidth: 3,
 	        lineColor: window.Highcharts.getOptions().colors[0],
@@ -197,7 +200,6 @@ class KPIChart extends Component {
 		// 	currentMonthIndex = 11;
 		// }
 		let tooltipIndex =  data.get('actual') && findLastIndex(data.get('actual').toJS(), (val, index) => index < currentMonthIndex && val);
-		console.log(period, currentMonthIndex, tooltipIndex);
 
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
@@ -206,7 +208,6 @@ class KPIChart extends Component {
 		options.xAxis.categories = util.getDateLabelsFromMomentToKPI(period);
 		options.yAxis.title.text = unit;
 	    options.tooltip.formatter = function() {
-	    	console.log(this.points);
 	    	var data1 = this.points[0];
 	    	var data2 = this.points[1];
 	    	var data3 = this.points[2];
