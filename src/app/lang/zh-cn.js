@@ -1963,6 +1963,7 @@ I18N.Setting.KPI.SelectBuilding = '选择建筑';
 I18N.Setting.KPI.Basic = {};
 I18N.Setting.KPI.Basic.Title= '第一步:基础配置';
 I18N.Setting.KPI.Basic.Name= '指标名称';
+I18N.Setting.KPI.Basic.NameHint= '输入指标名称';
 I18N.Setting.KPI.YearAndType = {};
 I18N.Setting.KPI.YearAndType.Title= '第二步:指标年份和类型配置';
 I18N.Setting.KPI.YearAndType.SelectYear= '选择配置年份';

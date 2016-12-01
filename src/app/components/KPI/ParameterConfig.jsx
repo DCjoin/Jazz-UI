@@ -123,7 +123,7 @@ export default class ParameterConfig extends Component {
     }
     else {
       return(
-        <TitleComponent title={I18N.Setting.KPI.YearAndType.Title} titleStyle={{color:'#e4e7e9'}}/>
+        <TitleComponent title={I18N.Setting.KPI.Parameter.Title} titleStyle={{color:'#e4e7e9'}}/>
       )
     }
 
