@@ -311,7 +311,7 @@ function getLabelData(value) {
 		return null;
 	}
 	let abbreviations = [
-		{label: '兆', value: Math.pow(10, 12)},
+		// {label: '兆', value: Math.pow(10, 12)},
 		{label: '亿', value: Math.pow(10, 8)},
 		{label: '万', value: Math.pow(10, 4)},
 	];
