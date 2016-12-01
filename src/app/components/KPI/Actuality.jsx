@@ -430,6 +430,7 @@ export default class Actuality extends Component {
 		this.state = this._getInitialState();
 	}
 	componentWillMount() {
+		document.title = I18N.MainMenu.KPI;
 		HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
 		// KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
 		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
