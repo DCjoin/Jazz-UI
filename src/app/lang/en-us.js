@@ -387,6 +387,7 @@ I18N.DateTimeFormat.IntervalFormat.Hour = 'HH';
 I18N.DateTimeFormat.IntervalFormat.FullDay = 'MM/DD, YYYY';
 I18N.DateTimeFormat.IntervalFormat.Day = 'DD';
 I18N.DateTimeFormat.IntervalFormat.Week = 'MM/DD, YYYY';
+I18N.DateTimeFormat.IntervalFormat.OnlyMonth = 'MM月';
 I18N.DateTimeFormat.IntervalFormat.Month = 'MM, YYYY';
 I18N.DateTimeFormat.IntervalFormat.MonthDate = 'MM/DD';
 I18N.DateTimeFormat.IntervalFormat.Year = 'YYYY';
