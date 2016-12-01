@@ -358,12 +358,12 @@ class KPIReport extends Component {
 			<div className='summary-title'>{isIndex ? I18N.Kpi.IndexValue : I18N.Kpi.SavingValue}</div>
 			{isIndex ?
 			(<div className='summary-value'>
-				<span>{getLabelData(summaryData.IndexValue)}</span>
-				<span>{summaryData.IndexValue && getUnit(data.get('unit'))}</span>
+				<span>{summaryData.IndexValue !== null && getLabelData(summaryData.IndexValue)}</span>
+				<span>{summaryData.IndexValue !== null && getUnit(data.get('unit'))}</span>
 			</div>) : 
 			(<div className='summary-value'>
-				<span>{(summaryData.RatioValue || 0).toFixed(1) * 1 + '%'}</span>
-				<span>{getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit')))}</span>
+				<span>{summaryData.RatioValue !== null && (summaryData.RatioValue || 0).toFixed(1) * 1 + '%'}</span>
+				<span>{data.get('prediction') !== null && (getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit'))) )}</span>
 			</div>)}
 		</div>
 		);
