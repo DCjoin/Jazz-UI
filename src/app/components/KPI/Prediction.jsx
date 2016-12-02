@@ -107,7 +107,7 @@ export default class Prediction extends Component {
             <tbody>
               <tr>
                 {tags.map((tag,index)=>{
-                  return <td title={{tag}}>
+                  return <td title={tag}>
                   <span className='tagName'>{tag}</span>
                           {index>0 && <IconButton iconStyle={{fontSize:'14PX'}} style={{width:'14px',height:'14px'}} onClick={this._deleteRate.bind(this,index-1)}>
                                          <FontIcon className="icon-delete"/>

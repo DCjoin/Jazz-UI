@@ -310,6 +310,10 @@ let ReportDataItem = React.createClass({
       open={true}
       actions={dialogActions}
       modal={true}
+      wrapperStyle={{
+        width:"auto",
+        maxWidth:'1000px'
+      }}
       >
       <div style={{
         flex: 1,

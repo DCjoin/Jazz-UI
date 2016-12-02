@@ -11,7 +11,7 @@ import {Router, hashHistory} from 'react-router';
 import assign from 'object-assign';
 //import * as polyfill from 'babel/polyfill';
 // require("babel-polyfill");
-
+import BlankPage from './components/BlankPage.jsx';
 import JazzApp from './components/JazzApp.jsx';
 import SelectCustomer from './components/SelectCustomer.jsx';
 import Login from './components/Login.jsx';
@@ -234,7 +234,11 @@ ReactDom.render(<Router history={hashHistory} routes={{
       _auth: true,
       path: '(:customerId)',
       component: MainApp,
-      childRoutes: [{
+      childRoutes: [
+        {
+          path: 'blankPage',
+          component: BlankPage
+        },{
         path: 'kpi',
         component: KPI
       }, {

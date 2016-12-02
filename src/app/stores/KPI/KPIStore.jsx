@@ -299,6 +299,7 @@ const KPIStore = assign({}, PrototypeStore, {
     value=value===0 || value?value+'':value;
     let temp=parseFloat(value);
     if(!value || value==='-') return true;
+    if(isNaN(temp)) return false;
     if((temp+'').length!==value.length || temp<0 || value.indexOf('.')>-1) return false;
     return true
   },
@@ -308,6 +309,7 @@ const KPIStore = assign({}, PrototypeStore, {
     let temp=parseFloat(value),
         index=value.indexOf('.');
     if(!value || value==='-') return true;
+    if(isNaN(temp)) return false;
     if(value.slice(index+1,value.length) && parseInt(value.slice(index+1,value.length))!==0 && (temp+'').length!==value.length) return false;
     if(temp<-100 || temp>100) return false;
     if(index>-1 && value.length-index>2) return false;
@@ -431,8 +433,8 @@ const KPIStore = assign({}, PrototypeStore, {
     kpiInfo=Immutable.fromJS({});
     _KPIPeriod=null;
   },
-  emitSuccessChange: function() {
-    this.emit(KPI_SUCCESS_EVENT);
+  emitSuccessChange: function(args) {
+    this.emit(KPI_SUCCESS_EVENT,args);
   },
   addSuccessListener: function(callback) {
     this.on(KPI_SUCCESS_EVENT, callback);
@@ -509,7 +511,7 @@ KPIStore.dispatchToken = AppDispatcher.register(function(action) {
         KPIStore.emitChange();
         break;
     case Action.KPI_SUCCESS:
-        KPIStore.emitSuccessChange();
+        KPIStore.emitSuccessChange(action.year);
         break;
     case Action.KPI_ERROR:
         KPIStore.emitErrorChange({
