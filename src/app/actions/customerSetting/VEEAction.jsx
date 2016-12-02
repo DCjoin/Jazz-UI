@@ -66,7 +66,7 @@ let VEEAction = {
           type: Action.SET_SELECTED_RULE_ID,
           id: rule.Id
         });
-        that.GetVEERules();
+        that.GetVEERules(rule.CustomerId);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
@@ -91,7 +91,7 @@ let VEEAction = {
           type: Action.SET_SELECTED_RULE_ID,
           id: rule.Id
         });
-        that.GetVEERules();
+        that.GetVEERules(rule.CustomerId);
       },
       error: function(err, res) {
         let ErrorMsg = CommonFuns.getErrorMessageByRes(res.text);
