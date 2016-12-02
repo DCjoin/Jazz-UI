@@ -190,7 +190,7 @@ const KPIAction = {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.KPI_SUCCESS,
-          data: resBody
+          year: resBody.AdvanceSettings.Year
         });
       },
       error: function(err, res) {
@@ -215,7 +215,7 @@ const KPIAction = {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.KPI_SUCCESS,
-          data: resBody
+          year: resBody.AdvanceSettings.Year
         });
       },
       error: function(err, res) {
@@ -240,7 +240,6 @@ const KPIAction = {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.KPI_SUCCESS,
-          data: resBody
         });
       },
       error: function(err, res) {

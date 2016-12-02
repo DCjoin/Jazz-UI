@@ -184,8 +184,8 @@ export default class KPI extends Component {
 	// 	})
 	// }
 
-	_onSuccess(){
-		this.props.onSave()
+	_onSuccess(year){
+		this.props.onSave(year)
 	}
 
 	_onSave(){
