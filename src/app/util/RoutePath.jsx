@@ -43,4 +43,5 @@ export default {
 		config: p => `/${p.lang}/platform/config`,
 		mail: p => `/${p.lang}/platform/mail`,
 	// }
+	blankPage: p => `/${p.lang}/${p.customerId}/blankPage`,
 }

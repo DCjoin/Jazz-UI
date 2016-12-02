@@ -35,7 +35,7 @@ I18N.format = function(res) {
 
   return s.replace(/\{\d+\}/ig, '');
 };
-
+I18N.BlankPage='暂无任何功能权限，请联系您的管理员';
 I18N.MainMenu = {};
 I18N.MainMenu.Asset = 'My assets';
 I18N.MainMenu.Alarm = 'Failure alarm';

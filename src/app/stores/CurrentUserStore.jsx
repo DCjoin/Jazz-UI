@@ -271,6 +271,13 @@ var CurrentUserStore = assign({}, PrototypeStore, {
       });
     }
 
+    if(menuItems.length===0){
+      menuItems.push(
+        {
+          getPath: RoutePath.blankPage,
+        }
+      );
+    }
     return menuItems;
   },
   emitCurrentUserChange: function() {

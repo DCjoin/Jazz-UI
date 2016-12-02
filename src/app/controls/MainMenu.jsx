@@ -207,11 +207,13 @@ var MainMenu = React.createClass({
               redBubble = <div className="jazz-mainmenu-main-bubble"><BubbleIcon {...item.bubbleProps}/></div>;
             }
           }
+          if(item.title){
+            return (<Link key={item.name} activeClassName={'active'} className={classnames({
+                "jazz-mainmenu-main": parent,
+                "jazz-mainmenu-sub": !parent
+              })} to={item.getPath(params)} onClick={this.props.onClick}>{item.title}{redBubble}</Link>);
+          }
 
-          return (<Link key={item.name} activeClassName={'active'} className={classnames({
-              "jazz-mainmenu-main": parent,
-              "jazz-mainmenu-sub": !parent
-            })} to={item.getPath(params)} onClick={this.props.onClick}>{item.title}{redBubble}</Link>);
 
         }
       });
