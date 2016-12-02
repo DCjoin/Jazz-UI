@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import Immutable from 'immutable';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import AllCommodityStore from '../../stores/AllCommodityStore.jsx';
 
@@ -46,16 +47,17 @@ var ComAndUom = React.createClass({
 
   },
   _getUomList: function() {
-    var allCommodities = this.state.allCommodities;
+    var allCommodities = Immutable.fromJS(this.state.allCommodities);
     var commodityId = this.props.selectedItem.get('CommodityId');
     var uomList = [];
     if (allCommodities !== null) {
       var index = allCommodities.findIndex((item) => {
-        if (item.Id === commodityId) {
+        if (item.get('Id') === commodityId) {
           return true;
         }
       });
       if (index !== -1) {
+        allCommodities=allCommodities.toJS();
         allCommodities[index].Uoms.forEach(uom => {
           uomList.push({
             payload: uom.Id,

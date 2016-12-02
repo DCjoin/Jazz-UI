@@ -13,6 +13,7 @@ export default class BasicConfig extends Component {
       isViewStatus: false,
       didChanged: this.props.onNameChange,
       defaultValue: name || '',
+      hintText:I18N.Setting.KPI.Basic.NameHint,
       title: I18N.Setting.KPI.Basic.Name,
       isRequired: true
       },

@@ -110,7 +110,9 @@ export default class UpdatePrediction extends Component {
 		      };
 		return(
 			<Dialog {...dialogProps}>
-        {this.state.kpiInfo && this.state.kpiInfo.size>0 && <Prediction {...this.getPredictionProps()}/>}
+				<div style={{overflowY:'auto'}}>
+				  {this.state.kpiInfo && this.state.kpiInfo.size>0 && <Prediction {...this.getPredictionProps()}/>}
+				</div>
 			</Dialog>
 		)
 	}

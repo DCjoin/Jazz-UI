@@ -1315,7 +1315,7 @@ I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
 I18N.Message.M21802 = '所选数据点包含计量数据V类型的数据点，不支持原始数据功能，请重新选择。';
 
-I18N.Message.M28001 = '指标名称在{0}下已存在，请修改名称后再保存。';
+I18N.Message.M28001 = '"{0}"在"{1}"下已存在，请修改名称后再保存。';
 
 I18N.Folder = {};
 I18N.Folder.NewWidget = {};
@@ -1963,6 +1963,7 @@ I18N.Setting.KPI.SelectBuilding = '选择建筑';
 I18N.Setting.KPI.Basic = {};
 I18N.Setting.KPI.Basic.Title= '第一步:基础配置';
 I18N.Setting.KPI.Basic.Name= '指标名称';
+I18N.Setting.KPI.Basic.NameHint= '输入指标名称';
 I18N.Setting.KPI.YearAndType = {};
 I18N.Setting.KPI.YearAndType.Title= '第二步:指标年份和类型配置';
 I18N.Setting.KPI.YearAndType.SelectYear= '选择配置年份';
@@ -1978,6 +1979,7 @@ I18N.Setting.KPI.Parameter.QuotaErrorText= '请输入0或正整数';
 I18N.Setting.KPI.Parameter.SavingRateErrorText= '请输入-100.0~100.0';
 I18N.Setting.KPI.Parameter.MonthValue= '逐月指标值';
 I18N.Setting.KPI.Parameter.CalcViaHistory= '根据历史数据计算';
+I18N.Setting.KPI.Parameter.NoCalcViaHistory='无历史数据可用';
 I18N.Setting.KPI.Parameter.Prediction= '配置预测值';
 I18N.Setting.KPI.Parameter.UpdatePrediction= '更新预测值';
 I18N.Setting.KPI.Parameter.TagSavingRates= '分项节能率配置';
