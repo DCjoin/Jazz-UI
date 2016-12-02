@@ -4,6 +4,7 @@ import React from 'react';
 import {SelectField} from 'material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import assign from 'object-assign';
+import findIndex from 'lodash/array/findIndex';
 import CommonFuns from '../util/Util.jsx';
 var ViewableDropDownMenu = React.createClass({
   propTypes: {
@@ -34,7 +35,7 @@ var ViewableDropDownMenu = React.createClass({
     };
   },
   isValid: function() {
-    var index = this.props.dataItems.findIndex((item) => {
+    var index = findIndex(this.props.dataItems, (item) => {
       if (item[this.props.valueField] === this.props.defaultValue) {
         return true;
       }
@@ -114,7 +115,7 @@ var ViewableDropDownMenu = React.createClass({
       if (this.props.selectedIndex >= 0) {
         value = this.props.dataItems[this.props.selectedIndex][textField];
       } else if (this.props.defaultValue !== undefined) {
-        var index = this.props.dataItems.findIndex((item) => {
+        var index = findIndex(this.props.dataItems,(item) => {
           if (item[this.props.valueField] === this.props.defaultValue) {
             return true;
           }

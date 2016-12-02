@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import findIndex from 'lodash/array/findIndex'
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
 import AllCommodityStore from '../../stores/AllCommodityStore.jsx';
 
@@ -50,7 +51,7 @@ var ComAndUom = React.createClass({
     var commodityId = this.props.selectedItem.get('CommodityId');
     var uomList = [];
     if (allCommodities !== null) {
-      var index = allCommodities.findIndex((item) => {
+      var index = findIndex(allCommodities, (item) => {
         if (item.Id === commodityId) {
           return true;
         }
