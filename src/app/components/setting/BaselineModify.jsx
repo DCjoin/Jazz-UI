@@ -9,6 +9,7 @@ import BaselineModifyStore from '../../stores/BaselineModifyStore.jsx';
 import BaselineModifyAction from "../../actions/BaselineModifyAction.jsx";
 
 var extractNumber = function(str) {
+  str=str+'';
   var value = str.replace(/[^\d\.]/g, '');
   var dotIndex = value.indexOf('.');
   if (dotIndex != -1) {
@@ -25,10 +26,15 @@ let BaselineModify = React.createClass({
   //mixins: [Navigation, State],
 
   setValue: function(data) {
-    this.refs.yearValue.setValue(data.getIn(["YearlyValues", 0, "DataValue"]));
-    for (var i = 0; i < monthItemNum; i++) {
-      this.refs['monthItem' + (i + 1)].setValue(data);
-    }
+    this.setState({
+      yearValue:data.getIn(["YearlyValues", 0, "DataValue"])
+    },()=>{
+      for (var i = 0; i < monthItemNum; i++) {
+        this.refs['monthItem' + (i + 1)].setValue(data);
+      }
+    })
+    // this.refs.yearValue.setValue(data.getIn(["YearlyValues", 0, "DataValue"]));
+
   },
   _onLoadingStatusChange: function() {
     var isLoading = BaselineModifyStore.getLoadingStatus();
@@ -84,24 +90,29 @@ let BaselineModify = React.createClass({
     return valid;
   },
   _validateYear: function() {
-    var val = this.refs.yearValue.getValue();
+    var val = this.state.yearValue;
     this._validateValue(val);
     return true;
   },
   _validateValue: function(val) {
     var value = extractNumber(val);
-    if (val !== value) {
-      this.refs.yearValue.setValue(value);
-    }
+    // if (val !== value) {
+    //   this.refs.yearValue.setValue(value);
+    // }
     return value;
   },
   yearValueChange: function(e) {
     var value = this._validateValue(e.target.value);
-    if (value === "") {
-      value = null;
-    }
-    BaselineModifyAction.setYearData(value);
-    BaselineModifyAction.setYearIsModify();
+    this.setState({
+      yearValue:value
+    },()=>{
+      if (value === "") {
+        value = null;
+      }
+      BaselineModifyAction.setYearData(value);
+      BaselineModifyAction.setYearIsModify();
+    })
+
   },
   _onYearPickerSelected(yearData) {
     var year = parseInt(yearData);
@@ -119,7 +130,8 @@ let BaselineModify = React.createClass({
       year: TBSettingStore.getYear(),
       isLoading: true,
       yearIsModify: false,
-      errorText: ""
+      errorText: "",
+      yearValue:''
     };
   },
   componentWillReceiveProps: function(nextProps) {
@@ -268,7 +280,7 @@ let BaselineModify = React.createClass({
           flexFlow: 'row',
           alignItems: 'center'
         }}>
-              {I18N.Baseline.BaselineModify.YearValue}<TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} defalutValue={null} errorText={this.state.errorText} disabled={this.state.disable} onChange={this.yearValueChange}/>{I18N.Baseline.BaselineModify.Uom}
+              {I18N.Baseline.BaselineModify.YearValue}<TextField ref="yearValue" className='jazz-setting-input' style={yearStyle} value={this.state.yearValue} errorText={this.state.errorText} disabled={this.state.disable} onChange={this.yearValueChange}/>{I18N.Baseline.BaselineModify.Uom}
               <span className="icon-revised-cn" style={{
           marginLeft: '5px',
           color: 'red',
@@ -300,56 +312,69 @@ let BaselineModify = React.createClass({
 let MonthItem = React.createClass({
   setValue: function(data) {
     var index = this.props.index;
-    this.refs.leftValue.setValue(data.getIn(["MonthlyValues", index * 2, "DataValue"]));
-    this.refs.rightValue.setValue(data.getIn(["MonthlyValues", index * 2 + 1, "DataValue"]));
+    // this.refs.leftValue.setValue(data.getIn(["MonthlyValues", index * 2, "DataValue"]));
+    // this.refs.rightValue.setValue(data.getIn(["MonthlyValues", index * 2 + 1, "DataValue"]));
     this.setState({
+      leftValue:data.getIn(["MonthlyValues", index * 2, "DataValue"]),
+      rightValue:data.getIn(["MonthlyValues", index * 2 + 1, "DataValue"]),
       leftIsModify: data.getIn(["MonthlyValues", index * 2, "IsModify"]),
       rightIsModify: data.getIn(["MonthlyValues", index * 2 + 1, "IsModify"])
     });
   },
   _validateLeft: function() {
-    var val = this.refs.leftValue.getValue();
+    var val = this.state.leftValue;
     this._validateLeftValue(val);
     return true;
   },
   _validateLeftValue: function(val) {
     var value = extractNumber(val);
-    if (val !== value) {
-      this.refs.leftValue.setValue(value);
-    }
+    // if (val !== value) {
+    //   this.refs.leftValue.setValue(value);
+    // }
     return value;
   },
   _onLeftChange: function(e) {
-    var value = this._validateLeftValue(e.target.value);
-    var itemIndex = this.props.index;
-    var monthIndex = itemIndex * 2;
-    if (value === "") {
-      value = null;
-    }
-    BaselineModifyAction.setMonthData(monthIndex, value);
-    BaselineModifyAction.setMonthIsModify(monthIndex);
+        var value = this._validateLeftValue(e.target.value);
+    this.setState({
+      leftValue:value
+    },()=>{
+      var itemIndex = this.props.index;
+      var monthIndex = itemIndex * 2;
+      if (value === "") {
+        value = null;
+      }
+      BaselineModifyAction.setMonthData(monthIndex, value);
+      BaselineModifyAction.setMonthIsModify(monthIndex);
+    })
+
+
   },
   _validateRight: function() {
-    var val = this.refs.rightValue.getValue();
+    var val = this.state.rightValue;
     this._validateRightValue(val);
     return true;
   },
   _validateRightValue: function(val) {
     var value = extractNumber(val);
-    if (val !== value) {
-      this.refs.rightValue.setValue(value);
-    }
+    // if (val !== value) {
+    //   this.refs.rightValue.setValue(value);
+    // }
     return value;
   },
   _onRightChange: function(e) {
     var value = this._validateRightValue(e.target.value);
-    var itemIndex = this.props.index;
-    var monthIndex = itemIndex * 2 + 1;
-    if (value === "") {
-      value = null;
-    }
-    BaselineModifyAction.setMonthData(monthIndex, value);
-    BaselineModifyAction.setMonthIsModify(monthIndex);
+    this.setState({
+      rightValue:value
+    },()=>{
+      var itemIndex = this.props.index;
+      var monthIndex = itemIndex * 2 + 1;
+      if (value === "") {
+        value = null;
+      }
+      BaselineModifyAction.setMonthData(monthIndex, value);
+      BaselineModifyAction.setMonthIsModify(monthIndex);
+    })
+
   },
   getInitialState: function() {
     var itemIndex = this.props.index;
@@ -357,7 +382,9 @@ let MonthItem = React.createClass({
       errorLeftText: "",
       errorRightText: "",
       leftIsModify: false,
-      rightIsModify: false
+      rightIsModify: false,
+      leftValue:'',
+      rightValue:''
     };
   },
   render: function() {
@@ -404,7 +431,7 @@ let MonthItem = React.createClass({
       }}>
               <div style={leftDivStyle}>{line.LeftMonth}</div>
               <div style={centerDivStyle}>
-                <TextField ref="leftValue" className="jazz-setting-input" style={monthStyle}   defaultValue={null} errorText={this.state.errorLeftText} onChange={this._onLeftChange} disabled={disable}/>
+                <TextField ref="leftValue" className="jazz-setting-input" style={monthStyle}   value={this.state.leftValue} errorText={this.state.errorLeftText} onChange={this._onLeftChange} disabled={disable}/>
               </div>
               <div style={rightDivStyle}>
                 {Uom}
@@ -425,7 +452,7 @@ let MonthItem = React.createClass({
       }}>
               <div style={leftDivStyle}>{line.RightMonth}</div>
               <div style={centerDivStyle}>
-                <TextField ref="rightValue" className="jazz-setting-input" style={monthStyle} defaultValue={null} errorText={this.state.errorRightText} onChange={this._onRightChange} disabled={disable}/>
+                <TextField ref="rightValue" className="jazz-setting-input" style={monthStyle} value={this.state.rightValue} errorText={this.state.errorRightText} onChange={this._onRightChange} disabled={disable}/>
               </div>
               <div style={rightDivStyle}>
                 {Uom}

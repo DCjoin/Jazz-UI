@@ -530,7 +530,7 @@ exports.register = function(server, options, next) {
             handler: function(request, reply) {
                   return reply({
                       "error": { "Code": "0", "Messages": null },
-                      "Result": true
+                      "Result": false
                   }).type("application/json");
                 }
         },

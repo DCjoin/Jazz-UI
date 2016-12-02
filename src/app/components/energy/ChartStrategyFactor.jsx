@@ -3133,8 +3133,8 @@ let ChartStrategyFactor = {
         analysisPanel.state.chartStrategy.handleBenchmarkMenuItemClickFn(analysisPanel, benchmarkOption);
       }
     },
-    handleCostConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
-      let itemValue = menuItem.props.value;
+    handleCostConfigBtnItemTouchTap(analysisPanel, menuParam, value) {
+      let itemValue = value;
       switch (itemValue) {
         case 'touCompare':
           var touBtnSelected = !analysisPanel.state.touBtnSelected;
@@ -3145,7 +3145,7 @@ let ChartStrategyFactor = {
           });
           break;
         case 'background': {
-          var subMenuValue = menuParam.props.value;
+          var subMenuValue = menuParam.props?menuParam.props.value:'';
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
           }
@@ -3153,11 +3153,11 @@ let ChartStrategyFactor = {
           }
       }
     },
-    handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, menuItem) {
-      let itemValue = menuItem.props.value;
+    handleCarbonConfigBtnItemTouchTap(analysisPanel, menuParam, value) {
+      let itemValue = value;
       switch (itemValue) {
         case 'background':{
-          var subMenuValue = menuParam.props.value;
+          var subMenuValue = menuParam.props?menuParam.props.value:'';
           if (subMenuValue === 'work' || subMenuValue === 'hc') {
             analysisPanel.state.chartStrategy.handleCalendarChangeFn(subMenuValue, analysisPanel);
           }

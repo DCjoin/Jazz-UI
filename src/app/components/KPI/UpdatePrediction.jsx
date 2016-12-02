@@ -90,6 +90,7 @@ export default class UpdatePrediction extends Component {
 			<FlatButton
 			label={I18N.Common.Button.Save}
 			onTouchTap={this._onSave}
+			disabled={!KPIStore.validateKpiInfo(this.state.kpiInfo)}
 			/>,
 			<FlatButton
 			label={I18N.Common.Button.Cancel2}
@@ -109,7 +110,9 @@ export default class UpdatePrediction extends Component {
 		      };
 		return(
 			<Dialog {...dialogProps}>
-        {this.state.kpiInfo && this.state.kpiInfo.size>0 && <Prediction {...this.getPredictionProps()}/>}
+				<div style={{overflowY:'auto'}}>
+				  {this.state.kpiInfo && this.state.kpiInfo.size>0 && <Prediction {...this.getPredictionProps()}/>}
+				</div>
 			</Dialog>
 		)
 	}
