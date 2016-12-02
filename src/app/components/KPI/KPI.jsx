@@ -92,14 +92,12 @@ export default class KPI extends Component {
 				period=KPIStore.getYearQuotaperiod();
 		if(TargetMonthValues){
 			KPIAction.merge([{
-				path:`AdvanceSettings.TargetMonthValues.${index}.Value`,
-				value
-			},
-			{
-				path:`AdvanceSettings.TargetMonthValues.${index}.Month`,
-				value:KPIStore.DatetimeToJson(period[index]._d)
-			}
-		])
+				path:`AdvanceSettings.TargetMonthValues.${index}`,
+				value:Immutable.fromJS({
+					Month:KPIStore.DatetimeToJson(period[index]._d),
+					Value:value
+				})
+			}])
 		}
 		else {
 					KPIAction.merge([{
