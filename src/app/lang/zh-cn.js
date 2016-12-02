@@ -1979,6 +1979,7 @@ I18N.Setting.KPI.Parameter.QuotaErrorText= '请输入0或正整数';
 I18N.Setting.KPI.Parameter.SavingRateErrorText= '请输入-100.0~100.0';
 I18N.Setting.KPI.Parameter.MonthValue= '逐月指标值';
 I18N.Setting.KPI.Parameter.CalcViaHistory= '根据历史数据计算';
+I18N.Setting.KPI.Parameter.NoCalcViaHistory='无历史数据可用';
 I18N.Setting.KPI.Parameter.Prediction= '配置预测值';
 I18N.Setting.KPI.Parameter.UpdatePrediction= '更新预测值';
 I18N.Setting.KPI.Parameter.TagSavingRates= '分项节能率配置';

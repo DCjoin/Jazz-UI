@@ -75,7 +75,7 @@ export default class ParameterConfig extends Component {
         <ViewableTextField {...annualProps}/>
           <TitleComponent {...monthProps}>
             <FlatButton
-            label={I18N.Setting.KPI.Parameter.CalcViaHistory}
+            label={this.props.hasHistory?I18N.Setting.KPI.Parameter.CalcViaHistory:I18N.Setting.KPI.Parameter.NoCalcViaHistory}
             onTouchTap={this._onCalcValue}
             disabled={value==='' || !value || !this.props.hasHistory}
             style={{border:'1px solid #e4e7e9'}}
