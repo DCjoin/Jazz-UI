@@ -5,6 +5,7 @@ import {SelectField} from 'material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import assign from 'object-assign';
 import CommonFuns from '../util/Util.jsx';
+import Immutable from 'immutable';
 var ViewableDropDownMenu = React.createClass({
   propTypes: {
     isViewStatus: React.PropTypes.bool,
@@ -34,8 +35,9 @@ var ViewableDropDownMenu = React.createClass({
     };
   },
   isValid: function() {
-    var index = this.props.dataItems.findIndex((item) => {
-      if (item[this.props.valueField] === this.props.defaultValue) {
+    let dataItems=Immutable.fromJS(this.props.dataItems);
+    var index = dataItems.findIndex((item) => {
+      if (item.get(this.props.valueField) === this.props.defaultValue) {
         return true;
       }
     });
@@ -114,8 +116,9 @@ var ViewableDropDownMenu = React.createClass({
       if (this.props.selectedIndex >= 0) {
         value = this.props.dataItems[this.props.selectedIndex][textField];
       } else if (this.props.defaultValue !== undefined) {
-        var index = this.props.dataItems.findIndex((item) => {
-          if (item[this.props.valueField] === this.props.defaultValue) {
+        var dataItems=Immutable.fromJS(this.props.dataItems);
+        var index = dataItems.findIndex((item) => {
+          if (item.get(this.props.valueField) === this.props.defaultValue) {
             return true;
           }
         });
