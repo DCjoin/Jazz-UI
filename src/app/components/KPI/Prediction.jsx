@@ -64,12 +64,11 @@ export default class Prediction extends Component {
   				period=KPIStore.getYearQuotaperiod();
           if(MonthPredictionValues){
             KPIAction.merge([{
-              path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Value`,
-              value
-            },
-            {
-              path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}.Month`,
-              value:KPIStore.DatetimeToJson(period[index]._d)
+              path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}`,
+              value:Immutable.fromJS({
+                Month:KPIStore.DatetimeToJson(period[index]._d),
+                Value:value
+              })
             }
           ])
           }
