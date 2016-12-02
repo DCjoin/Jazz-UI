@@ -4535,7 +4535,7 @@ let ChartStrategyFactor = {
       if (analysisPanel.state.baselineRivilege) {
         configButton = (<ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
           marginLeft: '10px'
-        }}
+        }} backgroundColor='#fbfbfb'
         onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
        <MenuItem primaryText={I18N.EM.Tool.BenchmarkSetting} value='config' disabled={baselineBtnStatus}/>
@@ -4547,7 +4547,7 @@ let ChartStrategyFactor = {
       } else {
         configButton = (<ButtonMenu label={I18N.EM.Tool.AssistCompare}  style={{
           marginLeft: '10px'
-        }} desktop={true}
+        }} desktop={true} backgroundColor='#fbfbfb'
         onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        <MenuItem primaryText={I18N.EM.Tool.HistoryCompare} value='history' disabled={baselineBtnStatus}/>
        <MenuDivider />
@@ -4563,7 +4563,7 @@ let ChartStrategyFactor = {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
-      }} desktop={true}
+      }} desktop={true} backgroundColor="#fbfbfb"
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        {calendarEl}
      </ButtonMenu>;
@@ -4577,7 +4577,7 @@ let ChartStrategyFactor = {
 
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
-      }} desktop={true}
+      }} desktop={true} backgroundColor="#fbfbfb"
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
@@ -4591,7 +4591,7 @@ let ChartStrategyFactor = {
 
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
-      }} desktop={true}
+      }} desktop={true} backgroundColor="#fbfbfb"
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={!benchmarks}/>
@@ -4604,7 +4604,7 @@ let ChartStrategyFactor = {
       let benchmarks = CommonFuns.filterBenchmarksByCostSelectedList(tagOptions);
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
-      }} desktop={true}
+      }} desktop={true} backgroundColor="#fbfbfb"
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.unitBaselineBtnStatus}/>
@@ -4622,7 +4622,7 @@ let ChartStrategyFactor = {
 
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
-      }} desktop={true}
+      }} desktop={true} backgroundColor="#fbfbfb"
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
        {calendarEl}
        <ExtendableMenuItem primaryText={I18N.EM.Tool.Benchmark} value='benchmark' subItems={benchmarks} disabled={analysisPanel.state.unitBaselineBtnStatus}/>
@@ -4633,7 +4633,7 @@ let ChartStrategyFactor = {
       let calendarEl = analysisPanel.getCalenderBgBtnEl();
       let configButton = <ButtonMenu label={I18N.EM.Tool.AssistCompare} style={{
         marginLeft: '10px'
-      }} desktop={true}
+      }} desktop={true} backgroundColor="#fbfbfb"
       onItemTouchTap={analysisPanel._onConfigBtnItemTouchTap}>
         <ExtendableMenuItem primaryText={I18N.EM.ByPeakValley} value='touCompare' disabled={analysisPanel.state.touBtnStatus} tooltip={analysisPanel.state.touBtnTooltip} checked={analysisPanel.state.touBtnSelected} />
        {calendarEl}
@@ -5304,7 +5304,7 @@ let ChartStrategyFactor = {
     var icon = <div><FontIcon className="icon-delete" style={{
       fontSize: '14px'
     }}/></div>;
-    var btn = <RaisedButton label={I18N.EM.Tool.ClearChart} onClick={analysisPanel.state.chartStrategy.clearChartDataFn.bind(analysisPanel, analysisPanel)}/>;
+    var btn = <RaisedButton label={I18N.EM.Tool.ClearChart} style={{backgroundColor:'#fbfbfb'}} onClick={analysisPanel.state.chartStrategy.clearChartDataFn.bind(analysisPanel, analysisPanel)}/>;
     return <div className='jazz-no-background-button-container'>{icon}{btn}</div>;
   },
   getSearchBtn(analysisPanel) {
@@ -5322,7 +5322,7 @@ let ChartStrategyFactor = {
       marginLeft: '10px',
       fontSize: '12px',
       width: '132px'
-    }} desktop={true}
+    }} desktop={true} backgroundColor="#fbfbfb"
     disabled={analysisPanel.state.labelDisable} onItemTouchTap={analysisPanel._onChangeLabelType}>
       <ExtendableMenuItem primaryText={I18N.Setting.Labeling.Label.IndustryLabeling} value='industryZone' subItems={industySubItems}>
       </ExtendableMenuItem>
