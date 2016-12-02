@@ -501,8 +501,8 @@ export default class Actuality extends Component {
 			kpiId: null
 		});
 	}
-	_reload() {
-		KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
+	_reload(year = this.state.year) {
+		KPIAction.getKPIConfigured(this.props.router.params.customerId, year, this.state.hierarchyId);
 		this.setState({
 			showRefreshDialog: false,
 			showCreate: false,
