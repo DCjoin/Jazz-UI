@@ -9,7 +9,6 @@ module.exports = {
     GET_KPI_INFO_SUCCESS:null,
     GET_KPI_CONFIGURED:null,
     GET_KPI_CHART:null,
-    GET_KPI_CONFIGURED_LOADING:null,
     INIT_KPI_CHART_DATA:null,
     MERGE_KPI_INFO:null,
     GET_QUOTAPERIOD_BY_YEAR:null,

@@ -3,6 +3,7 @@ import Ajax from '../../ajax/Ajax.jsx';
 import { Action } from 'constants/actionType/KPI.jsx';
 import Path from 'constants/Path.jsx';
 import util from 'util/Util.jsx';
+import KPIStore from 'stores/KPI/KPIStore.jsx';
 
 
 const KPIAction = {
@@ -67,10 +68,14 @@ const KPIAction = {
     this.initKPIChartData();
     Ajax.get(util.replacePathParams(Path.KPI.getKPIConfigured, CustomerId, HierarchyId), {
       success: function(resBody) {
-        if(resBody) {
-          getKPIChart(CustomerId, Year, HierarchyId);
-          getKPIChartSummary(CustomerId, Year, HierarchyId);
-          getKPIPeriodByYear(CustomerId, Year);
+        if(resBody && resBody.length > 0) {
+          AppDispatcher.dispatch({
+            type: Action.GET_KPI_CONFIGURED,
+            data: resBody
+          });
+          getKPIChart(CustomerId, KPIStore.getKPIDefaultYear(), HierarchyId);
+          getKPIChartSummary(CustomerId, KPIStore.getKPIDefaultYear(), HierarchyId);
+          getKPIPeriodByYear(CustomerId, KPIStore.getKPIDefaultYear());
         } else {
           AppDispatcher.dispatch({
             type: Action.GET_KPI_CHART,

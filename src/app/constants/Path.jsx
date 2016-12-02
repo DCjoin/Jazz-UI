@@ -10,7 +10,7 @@ module.exports = {
 		getKPIPeriodByYear: '/kpi/getkpiperiodpoint/{customerid}/{year}',
 		getDimension:'/AreaDimension/GetAreaDimensionTree',
 		getTags:'/Tag/GetTagsByFilter',
-    getKPIConfigured: '/KPI/chart/exist/{customerId}/{HierarchyId}',
+    getKPIConfigured: '/kpi/{HierarchyId}/years',
     getKPIChart: '/KPI/chart/{customerId}/{year}/{HierarchyId}',
     getKPIChartSummary: '/KPI/calcpredictsum/{customerId}/{year}/{HierarchyId}',
     getKpi:'/kpi/settings/{kpiId}/{year}',
