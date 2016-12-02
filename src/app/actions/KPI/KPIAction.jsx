@@ -73,9 +73,10 @@ const KPIAction = {
             type: Action.GET_KPI_CONFIGURED,
             data: resBody
           });
-          getKPIChart(CustomerId, KPIStore.getKPIDefaultYear(), HierarchyId);
-          getKPIChartSummary(CustomerId, KPIStore.getKPIDefaultYear(), HierarchyId);
-          getKPIPeriodByYear(CustomerId, KPIStore.getKPIDefaultYear());
+          let year = Year || KPIStore.getKPIDefaultYear();
+          getKPIChart(CustomerId, year, HierarchyId);
+          getKPIChartSummary(CustomerId, year, HierarchyId);
+          getKPIPeriodByYear(CustomerId, year);
         } else {
           AppDispatcher.dispatch({
             type: Action.GET_KPI_CHART,
