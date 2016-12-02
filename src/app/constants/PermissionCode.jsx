@@ -147,7 +147,7 @@ const PermissionCode = function() {
 
 	ENERGY_ALARM: {
 		getLabel: () => I18N.Privilege.Role.EnergyAlarm,
-		FULL: 1211,
+		FULL: 1221,
 	},
 
 	DATA_REPORT_MANAGEMENT: {
