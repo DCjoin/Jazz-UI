@@ -200,11 +200,11 @@ const KPIStore = assign({}, PrototypeStore, {
 
   clearParam(){
     if(!kpiInfo.get('AdvanceSettings')) return;
-    let {Year,IndicatorType,PredictionSettingModel}=kpiInfo.get('AdvanceSettings').toJS();
-    let {KpiSettingsId}=PredictionSettingModel?PredictionSettingModel:{};
+    let {Year,IndicatorType,PredictionSetting}=kpiInfo.get('AdvanceSettings').toJS();
+    let {KpiSettingsId}=PredictionSetting?PredictionSetting:{};
     kpiInfo=kpiInfo.set('AdvanceSettings',Immutable.fromJS({
       Year,IndicatorType,
-      PredictionSettingModel:{
+      PredictionSetting:{
         KpiSettingsId
       }
     }));

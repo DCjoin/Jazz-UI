@@ -103,6 +103,12 @@ export default class UpdatePrediction extends Component {
 		        actions: actions,
 		        modal: true,
 		        open: true,
+						contentStyle:{
+							overflowY:'auto',
+							overflowX:'hidden',
+							maxHeight:'485px',
+							height:'480px'
+						},
 						wrapperStyle:{
 							width:'auto',
 							maxWidth:'75%'
@@ -110,9 +116,7 @@ export default class UpdatePrediction extends Component {
 		      };
 		return(
 			<Dialog {...dialogProps}>
-				<div style={{overflowY:'auto'}}>
 				  {this.state.kpiInfo && this.state.kpiInfo.size>0 && <Prediction {...this.getPredictionProps()}/>}
-				</div>
 			</Dialog>
 		)
 	}
