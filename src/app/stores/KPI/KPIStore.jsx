@@ -151,7 +151,7 @@ const KPIStore = assign({}, PrototypeStore, {
       return years[0];
     }
 
-    return years[findLastIndex(years, year => year < thisYear)];
+    return years[findLastIndex(years, year => year <= thisYear)];
   },
 
   hasNextYear(year) {
