@@ -345,7 +345,12 @@ class ActualityContent extends Component {
 				</div>
 				<div>
 					{(period && period.length > 0 && tags && tags.size > 0) ?
-						tags.map( (tag, i) => <KPIReport onEdit={onEdit} onRefresh={onRefresh} period={period} data={tag} summaryData={summaryData[i]} key={tag.get('id')}/> ) :
+						tags.map( (tag, i) => <KPIReport 
+							onEdit={onEdit} 
+							onRefresh={onRefresh} 
+							period={period} data={tag} 
+							summaryData={find(summaryData, sum => sum.KpiId === tag.get('id'))} 
+							key={tag.get('id')}/> ) :
 					<div className='jazz-kpi-report flex-center' style={{height: 400}}>{I18N.Kpi.Error.NonKPIConguredInThisYear}</div>}
 				</div>
 			</div>
@@ -383,11 +388,11 @@ class KPIReport extends Component {
 			{isIndex ?
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
-				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
+				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'))}</span>
 				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 			</div>) : 
 			(<div className='summary-value'>
-				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
+				<span>{(summaryData.PredictRatio === null ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 			</div>)}
