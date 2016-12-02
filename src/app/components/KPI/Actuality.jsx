@@ -541,7 +541,7 @@ export default class Actuality extends Component {
 				isCreate={!this.state.kpiId}
 				onSave={this._reload}
 				onCancel={this._reload}
-				year={this.state.year}/>);
+				year={this.state.year || new Date().getFullYear()}/>);
 		} else {
 			let buildingProps = {
 		        ref: 'commodity',
