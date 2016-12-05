@@ -465,13 +465,13 @@ var TBSettingItem = React.createClass({
         <div style={clearStyle}>
           <div style={datePickerAreaStyle}>
             <div className="jazz-setting-basic-datepicker-container">
-              <ViewableDatePicker  showTime={false} ref='startFeild' {...startProps} />
+              <ViewableDatePicker  datePickerClassName="jazz-energy-date-picker" showTime={false} ref='startFeild' {...startProps} />
             </div>
             <div style={{
         marginLeft: '10px'
       }}>{I18N.EM.To}</div>
             <div className="jazz-setting-basic-datepicker-container">
-              <ViewableDatePicker  showTime={false} ref='endFeild' {...endProps} />
+              <ViewableDatePicker  datePickerClassName="jazz-energy-date-picker" showTime={false} ref='endFeild' {...endProps} />
             </div>
             <FlatButton style={flatButtonStyle} labelStyle={{
         padding: '0'

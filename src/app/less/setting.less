@@ -291,7 +291,14 @@
   background-color: #ffffff;
   >div{
     cursor: pointer;
+    position: relative;
     border: 1px solid rgb(235, 235, 235);
+    >div:first-child{
+      width:90px !important;
+      .jazz-month-picker-noempty{
+        width: 90px !important
+      }
+    }
     >div{
       >input{
         cursor: pointer;
@@ -300,6 +307,10 @@
       >hr{
         border-bottom-width: 0px !important;
       }
+    }
+    .datepicker-popup{
+      z-index: 10;
+      position:absolute;
     }
   }
 }
