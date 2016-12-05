@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import ReactDom from 'react-dom';
 import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog } from 'material-ui';
 import classSet from 'classnames';
 import CommonFuns from '../../util/Util.jsx';
@@ -280,7 +281,7 @@ var ReportRightPanel = React.createClass({
       display: 'none'
     }, iframe.contentDocument.body);
 
-    var input = this.refs.fileInput.getDOMNode();
+    var input = ReactDom.findDOMNode(this.refs.fileInput);
     form.appendChild(input);
     var customerInput = createElement('input', {
       type: 'hidden',
@@ -295,7 +296,7 @@ var ReportRightPanel = React.createClass({
 
     form.submit();
     discardElement(form);
-    var label = me.refs.fileInputLabel.getDOMNode();
+    var label = ReactDom.findDOMNode(me.refs.fileInputLabel);
     var tempForm = document.createElement('form');
     document.body.appendChild(tempForm);
     tempForm.appendChild(input);
