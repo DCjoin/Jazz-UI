@@ -10,8 +10,7 @@ export default class DateTextField extends Component {
   render(){
     let {date,value,disabled,underlineShow}=this.props;
     let props={
-      key:`${date}_${value}`,
-      value:!isNaN(value)?value:value || '',
+      value:!isNaN(value) && value!==null?value:value || '',
       floatingLabelText:date,
       disabled,
       underlineShow,
