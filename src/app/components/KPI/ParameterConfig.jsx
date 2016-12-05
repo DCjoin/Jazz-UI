@@ -53,7 +53,7 @@ export default class ParameterConfig extends Component {
                   let path=IndicatorType===Type.Quota?'AdvanceSettings.AnnualQuota':'AdvanceSettings.AnnualSavingRate';
                   this.props.onAnnualChange(path,value);
                           },
-      defaultValue: value,
+      defaultValue: !isNaN(value) && value!==null?value:value || '',
       title: title,
       hintText:annualHint,
       regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,
