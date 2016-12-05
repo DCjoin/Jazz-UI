@@ -32,7 +32,7 @@ const TagSelectStore = assign({}, PrototypeStore, {
     _dimensions=Immutable.fromJS({
       Name:name,
       Id:-1,
-      Children:this.addtype(data),
+      Children:data?this.addtype(data):[],
       Type:nodeType.Building
     });
   },

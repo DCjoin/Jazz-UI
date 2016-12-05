@@ -420,7 +420,7 @@ let DimTree = React.createClass({
 
             <label className="tree_search">
               <FontIcon className="icon-search" style={searchIconStyle} ref="searchIcon"/>
-              <TextField style={textFieldStyle} className="input" ref="searchText" onClick={this._onSearchClick} onChange={this._onSearchChange}/>
+              <TextField style={textFieldStyle} className="input" ref="searchText" underlineShow={false} onClick={this._onSearchClick} onChange={this._onSearchChange}/>
               <FontIcon className="icon-clean" style={cleanIconStyle} hoverColor='#6b6b6b' color="#939796" ref="cleanIcon" onClick={this._onCleanButtonClick}/>
             </label>
             <div className="tree-field">
