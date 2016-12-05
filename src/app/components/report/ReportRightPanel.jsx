@@ -245,7 +245,7 @@ var ReportRightPanel = React.createClass({
       var reportItem = me.state.reportItem;
       if (obj.success === true) {
         reportItem = reportItem.set('templateId', obj.TemplateId);
-        ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
+        ReportAction.getTemplateListByCustomerId(parseInt(me.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
         me.setState({
           reportItem: reportItem,
           sheetNames: Immutable.fromJS(obj.SheetList),
@@ -286,7 +286,7 @@ var ReportRightPanel = React.createClass({
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
-      value: parseInt(this.context.currentRoute.params.customerId)
+      value: parseInt(me.context.currentRoute.params.customerId)
     }, null, form);
     var activeInput = createElement('input', {
       type: 'hidden',

@@ -83,7 +83,7 @@ var Template = React.createClass({
       var obj = JSON.parse(json);
       var uploadTemplate;
       if (obj.success === true) {
-        ReportAction.getTemplateListByCustomerId(parseInt(this.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
+        ReportAction.getTemplateListByCustomerId(parseInt(me.context.currentRoute.params.customerId), me.state.sortBy, 'asc');
         me.setState({
           showUploadDialog: false
         });
@@ -118,7 +118,7 @@ var Template = React.createClass({
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
-      value: parseInt(this.context.currentRoute.params.customerId)
+      value: parseInt(me.context.currentRoute.params.customerId)
     }, null, form);
     var activeInput = createElement('input', {
       type: 'hidden',
