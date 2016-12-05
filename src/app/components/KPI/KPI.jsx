@@ -49,7 +49,16 @@ export default class KPI extends Component {
 
 	_onChange(){
 		if(this.state.kpiInfo.size===0 && KPIStore.getKpiInfo().size!==0 && !this.props.isCreate){
-			KPIAction.IsAutoCalculable(this.context.router.params.customerId,KPIStore.getKpiInfo().get('ActualTagId'),this.props.year)
+			let {ActualTagId,ActualTagName,UomId,CommodityId}=KPIStore.getKpiInfo().toJS();
+			this.setState({
+				tag:Immutable.fromJS({
+					Id:ActualTagId,
+					Name:ActualTagName,
+					UomId,CommodityId
+				})
+			},()=>{
+				KPIAction.IsAutoCalculable(this.context.router.params.customerId,ActualTagId,this.props.year)
+			})
 		}
 		this.setState({
 			kpiInfo:KPIStore.getKpiInfo(),
