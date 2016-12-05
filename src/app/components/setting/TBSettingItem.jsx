@@ -221,7 +221,7 @@ var TBSettingItem = React.createClass({
 
   getValue: function() {
     var startDate = new Date(CommonFuns.DataConverter.JsonToDateTime(this.state.start)),
-      endDate = fromFormEndDate(new Date(CommonFuns.DataConverter.JsonToDateTime(this.state.end)));
+      endDate = new Date(CommonFuns.DataConverter.JsonToDateTime(this.state.end));
     startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 0, 0, 0);
     endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0, 0);
     var rtn = {
