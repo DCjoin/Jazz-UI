@@ -286,7 +286,7 @@ var ReportRightPanel = React.createClass({
     var customerInput = createElement('input', {
       type: 'hidden',
       name: 'CustomerId',
-      value: parseInt(window.currentCustomerId)
+      value: parseInt(this.context.currentRoute.params.customerId)
     }, null, form);
     var activeInput = createElement('input', {
       type: 'hidden',
