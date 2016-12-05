@@ -132,25 +132,23 @@ let GridComponent = React.createClass({
     }
   },
   getTagColumnContent(hieName, tagName, uom) {
-    var tagColumn = {
-      content: <div style={{
-        height: '107px',
-        minHeight: '107px',
-        borderLeft: '1px solid #e0e0e0'
-      }}>
-                                  <div className={'jazz-energy-gridcomponent-header-item'} title={
-      hieName
-      }> {hieName} </div>
-                                  <div className={'jazz-energy-gridcomponent-header-item'} title={
-      tagName
-      }> {tagName} </div>
-                                  <div className={'jazz-energy-gridcomponent-header-item'} style={{
-        borderBottom: '0px'
-      }} title={
-      uom
-      }> {uom} </div>
-                               </div>
-    };
+    var tagColumn = (       <div style={{
+            height: '107px',
+            minHeight: '107px',
+            borderLeft: '1px solid #e0e0e0'
+          }}>
+                                      <div className={'jazz-energy-gridcomponent-header-item'} title={
+          hieName
+          }> {hieName} </div>
+                                      <div className={'jazz-energy-gridcomponent-header-item'} title={
+          tagName
+          }> {tagName} </div>
+                                      <div className={'jazz-energy-gridcomponent-header-item'} style={{
+            borderBottom: '0px'
+          }} title={
+          uom
+          }> {uom} </div>
+                                   </div>);
     return tagColumn;
   },
   // getColOrder(energyData) {
