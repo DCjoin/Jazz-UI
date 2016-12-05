@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import ReactDom from 'react-dom';
 import CommonFuns from '../../util/Util.jsx';
 import { CircularProgress, FlatButton, FontIcon, DropDownMenu, Dialog } from 'material-ui';
 import NewDialog from '../../controls/NewDialog.jsx';
@@ -112,7 +113,7 @@ var Template = React.createClass({
       display: 'none'
     }, iframe.contentDocument.body);
 
-    var input = this.refs.fileInput.getDOMNode();
+    var input = ReactDom.findDOMNode(this.refs.fileInput);
     form.appendChild(input);
     var customerInput = createElement('input', {
       type: 'hidden',
