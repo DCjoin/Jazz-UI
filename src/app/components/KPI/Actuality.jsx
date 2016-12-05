@@ -359,24 +359,28 @@ class ActualityContent extends Component {
 }
 
 class KPIReport extends Component {
+	/*指标值*/
 	getValueSummaryItem() {
 		let {data, summaryData} = this.props;
 		let isIndex = data.get('type') === 1;
 		return (
 		<div className='summary-item'>
 			<div className='summary-title'>{isIndex ? I18N.Kpi.IndexValue : I18N.Kpi.SavingValue}</div>
-			{isIndex ?
+			{isIndex ?/*定额指标值*/
 			(<div className='summary-value'>
 				<span>{summaryData.IndexValue !== null && getLabelData(summaryData.IndexValue)}</span>
 				<span>{summaryData.IndexValue !== null && getUnit(data.get('unit'))}</span>
-			</div>) : 
+			</div>) : /*节能率指标值*/
 			(<div className='summary-value'>
 				<span>{summaryData.RatioValue !== null && (summaryData.RatioValue || 0).toFixed(1) * 1 + '%'}</span>
-				<span>{data.get('prediction') !== null && (getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit'))) )}</span>
+				<span>{summaryData.IndexValue !== null && getLabelData(summaryData.IndexValue)}</span>
+				<span>{summaryData.IndexValue !== null && getUnit(data.get('unit'))}</span>
+				{/*<span>{data.get('prediction') !== null && (getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit'))) )}</span>*/}
 			</div>)}
 		</div>
 		);
 	}
+	/*预测值*/
 	getPredictSummaryItem() {
 		let {data, summaryData} = this.props;
 		let isIndex = data.get('type') === 1;
@@ -385,12 +389,12 @@ class KPIReport extends Component {
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{isIndex ? I18N.Kpi.PredictSum : I18N.Kpi.PredictSaving}</div>
-			{isIndex ?
+			{isIndex ?/*定额预测值*/
 			(<div className='summary-value'>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'))}</span>
 				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
-			</div>) : 
+			</div>) :/*节能率预测值*/
 			(<div className='summary-value'>
 				<span>{(summaryData.PredictRatio === null ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 				<span>{getLabelData(summaryData.PredictSum)}</span>
