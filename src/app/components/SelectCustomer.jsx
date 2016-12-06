@@ -20,6 +20,22 @@ var _ = {
   findIndex: _findIndex
 };
 
+function getFirstMenuPathFunc(menu) {
+  let firstMenu = menu[0];
+  if( !firstMenu ) {
+    return function() {
+      console.err('No has any menu');
+    }
+  }
+  if(firstMenu.children && firstMenu.children.length > 0) {
+    let firstChild = firstMenu.children[0];
+    if(firstChild.list && firstChild.list.length > 0) {
+      return firstChild.list[0].getPath;
+    }
+  }
+  return  firstMenu.getPath;
+}
+
 var SelectCustomer = React.createClass({
   propTypes: {
     onClose: React.PropTypes.func,
@@ -72,7 +88,7 @@ var SelectCustomer = React.createClass({
       CommodityStore.resetHierInfo();
       HierarchyAction.resetAll();
 
-      this.context.router.replace(this._getMenuItems()[0].getPath(
+      this.context.router.replace(getFirstMenuPathFunc( this._getMenuItems() )(
         assign({}, this.context.currentRoute.params, {
           customerId: CurrentUserCustomerStore.getAll()[selectedIndex].Id
         })

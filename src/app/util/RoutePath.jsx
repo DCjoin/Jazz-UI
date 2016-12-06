@@ -9,6 +9,8 @@ export default {
 	workday: p => `/${p.lang}/service/${p.cusnum}/workday`,
 	main: p => `/${p.lang}/${p.customerId||''}`,
 	kpi: p => `/${p.lang}/${p.customerId}/kpi`,
+	KPIActuality: p => `/${p.lang}/${p.customerId}/kpi/actuality`,
+	KPIConfig: p => `/${p.lang}/${p.customerId}/kpi/config`,
 	setting: p => `/${p.lang}/${p.customerId}/setting`,
 	alarm: p => `/${p.lang}/${p.customerId}/alarm`,
 	map: p => `/${p.lang}/${p.customerId}/map`,
