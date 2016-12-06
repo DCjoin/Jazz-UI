@@ -53,18 +53,12 @@ function returnIndexHtml(request,reply){
 	return res;
 }
 
-server.route({
-  method: 'GET',
-  path: '/{path*}',
-  handler: returnIndexHtml
-});
-
 module.exports = server;
 
 server.register(
 	[
 		{register: require('h2o2')},
-		// {register: require("./user.js")},
+		{register: require("./user.js")},
 		{register: require("./kpi.js")},
 		{register: require("./orgnization.js")},
 		{register: require("./file.js")},
@@ -75,8 +69,21 @@ server.register(
     });
 });
 
-server.route({
-  method: '*',
+server.route([{
+  method: 'post',
+  path: '/API/{path*}',
+  handler: {
+    proxy: {
+      passThrough: true,
+        uri: 'http://sp1.test30.energymost.com/webapihost/{path}',
+        // uri: 'http://sp1.dev.energymost.com/webapihost/{path}',
+        onResponse: function (err, res, request, reply, settings, ttl) {
+            return reply(res);
+        }
+    }
+  }
+}, {
+  method: 'get',
   path: '/API/{path*}',
   handler: {
     proxy: {
@@ -88,4 +95,10 @@ server.route({
         }
     }
   }
+}]);
+
+server.route({
+  method: 'GET',
+  path: '/{path*}',
+  handler: returnIndexHtml
 });
