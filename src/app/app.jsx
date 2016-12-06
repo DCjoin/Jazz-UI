@@ -20,7 +20,8 @@ import resetPSWApp from './components/resetPSWApp.jsx';
 import demoLoginApp from './components/DemoLogin.jsx';
 import initChangePSWApp from './components/initChangePSW.jsx';
 import contactusApp from './components/ContactUS.jsx';
-import KPI from './components/KPI';
+import KPI from './components/KPI/Actuality.jsx';
+import KPIConfig from './components/KPI/KPIConfig.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
@@ -239,8 +240,17 @@ ReactDom.render(<Router history={hashHistory} routes={{
           path: 'blankPage',
           component: BlankPage
         },{
-        path: 'kpi',
-        component: KPI
+          path: 'kpi',
+          indexRoute: {
+            component: KPI,
+          },
+          childRoutes: [{
+            path: 'actuality',
+            component: KPI
+          }, {
+            path: 'config',
+            component: KPIConfig
+          }]
       }, {
         path: 'map',
         component: MapPanel

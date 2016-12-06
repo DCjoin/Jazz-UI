@@ -46,6 +46,8 @@ I18N.MainMenu.DeviceTemplate = '台账模板';
 I18N.MainMenu.ParameterTemplate = '参数模板';
 
 I18N.MainMenu.KPI = '指标·报表';
+I18N.MainMenu.KPIActuality = '指标现状';
+I18N.MainMenu.KPIConfig = '指标现状配置';
 I18N.MainMenu.Map = '地图';
 I18N.MainMenu.Alarm = '报警';
 I18N.MainMenu.Energy = '能源';
