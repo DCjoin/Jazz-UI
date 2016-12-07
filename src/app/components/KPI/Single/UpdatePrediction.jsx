@@ -1,11 +1,11 @@
 'use strict';
 import React, {Component} from 'react';
 import Immutable from 'immutable';
-import Dialog from '../../controls/NewDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
-import CommonFuns from '../../util/Util.jsx';
-import SingleKPIStore from '../../stores/KPI/SingleKPIStore.jsx';
-import SingleKPIAction from '../../actions/KPI/SingleKPIAction.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import CommonFuns from 'util/Util.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import Prediction from './Prediction.jsx';
 
 export default class UpdatePrediction extends Component {

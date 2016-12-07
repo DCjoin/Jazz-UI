@@ -1,12 +1,12 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
-import TitleComponent from '../../controls/TitleComponent.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
-import {Type} from '../../constants/actionType/KPI.jsx';
-import SingleKPIAction from '../../actions/KPI/SingleKPIAction.jsx';
-import SingleKPIStore from '../../stores/KPI/SingleKPIStore.jsx';
-import CommonFuns from '../../util/Util.jsx';
+import TitleComponent from 'controls/TitleComponent.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import {Type} from 'constants/actionType/KPI.jsx';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import CommonFuns from 'util/Util.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
 import Prediction from './Prediction.jsx';
 

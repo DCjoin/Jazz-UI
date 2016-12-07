@@ -30,7 +30,7 @@ import privilegeUtil from 'util/privilegeUtil.jsx';
 import CreateKPI from './KPI.jsx';
 import UpdatePrediction from './UpdatePrediction.jsx';
 
-import Highcharts from '../highcharts/Highcharts.jsx';
+import Highcharts from '../../highcharts/Highcharts.jsx';
 function isOnlyView() {
 	return privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }

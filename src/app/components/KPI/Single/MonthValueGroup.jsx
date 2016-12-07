@@ -1,10 +1,10 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
 import moment from 'moment';
-import DateTextField from '../../controls/DateTextField.jsx';
-import SingleKPIStore from '../../stores/KPI/SingleKPIStore.jsx';
-import CommonFuns from '../../util/Util.jsx';
-import {Type} from '../../constants/actionType/KPI.jsx';
+import DateTextField from 'controls/DateTextField.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import CommonFuns from 'util/Util.jsx';
+import {Type} from 'constants/actionType/KPI.jsx';
 
 export default class MonthValueGroup extends Component {
 

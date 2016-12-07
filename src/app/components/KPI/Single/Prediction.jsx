@@ -3,15 +3,15 @@ import React, {Component,PropTypes} from 'react';
 import Immutable from 'Immutable';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import TitleComponent from '../../controls/TitleComponent.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
-import {Type,Status} from '../../constants/actionType/KPI.jsx';
-import SingleKPIAction from '../../actions/KPI/SingleKPIAction.jsx';
-import SingleKPIStore from '../../stores/KPI/SingleKPIStore.jsx';
+import TitleComponent from 'controls/TitleComponent.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import {Type,Status} from 'constants/actionType/KPI.jsx';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
 import TagSelect from './TagSelect.jsx';
-import {DataConverter} from '../../util/Util.jsx';
+import {DataConverter} from 'util/Util.jsx';
 
 export default class Prediction extends Component {
 

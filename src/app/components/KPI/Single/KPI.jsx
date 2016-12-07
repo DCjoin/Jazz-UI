@@ -3,17 +3,17 @@ import React, {Component} from 'react';
 import Immutable from 'immutable';
 import CircularProgress from 'material-ui/CircularProgress';
 import TagSelect from './TagSelect.jsx';
-import SingleKPIAction from '../../actions/KPI/SingleKPIAction.jsx';
-import SingleKPIStore from '../../stores/KPI/SingleKPIStore.jsx'
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx'
 import BasicConfig from './BasicConfig.jsx';
-import TitleComponent from '../../controls/TitleComponent.jsx';
+import TitleComponent from 'controls/TitleComponent.jsx';
 import YearAndTypeConfig from './YearAndTypeConfig.jsx';
 import ParameterConfig from './ParameterConfig.jsx';
-import {Type,Status} from '../../constants/actionType/KPI.jsx';
-import FormBottomBar from '../../controls/FormBottomBar.jsx';
-import { formStatus } from '../../constants/FormStatus.jsx';
-import Dialog from '../../controls/NewDialog.jsx';
-import {DataConverter} from '../../util/Util.jsx';
+import {Type,Status} from 'constants/actionType/KPI.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import {DataConverter} from 'util/Util.jsx';
 
 var customerId=null;
 
