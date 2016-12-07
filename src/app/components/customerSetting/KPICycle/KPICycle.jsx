@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import assign from 'object-assign';
 
-import KPIAction from 'actions/KPI/KPIAction.jsx';
-import KPIStore from 'stores/KPI/KPIStore.jsx';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 
 import { formStatus } from 'constants/FormStatus.jsx';
 import util from 'util/Util.jsx';
@@ -121,19 +121,19 @@ export default class KPICycle extends Component {
 		this._onCancel = this._onCancel.bind(this);
 	}
 	componentWillMount() {
-		KPIAction.getKPIPeriod(this.props.router.params.customerId);
-		KPIStore.addChangeListener(this._onChange);
+		SingleKPIAction.getKPIPeriod(this.props.router.params.customerId);
+		SingleKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
-		KPIAction.getKPIPeriod(this.props.router.params.customerId);		
+		SingleKPIAction.getKPIPeriod(this.props.router.params.customerId);		
 	}
 	componentWillUnmount() {
-		KPIStore.removeChangeListener(this._onChange);
+		SingleKPIStore.removeChangeListener(this._onChange);
 	}
 	_onChange() {
 		this.setState({
 			loading: false,
-			KPICycle: KPIStore.getKPIPeriod(),
+			KPICycle: SingleKPIStore.getKPIPeriod(),
 			status: formStatus.VIEW
 		});
 	}
@@ -141,20 +141,20 @@ export default class KPICycle extends Component {
 		this.setState({
 			loading: true
 		});
-		KPIAction.setKPIPeriod(assign({
+		SingleKPIAction.setKPIPeriod(assign({
 			CustomerId: this.props.router.params.customerId
 		}, this.state.KPICycle));
 	}
 	_onEdit() {
 		this.setState({
 			status: formStatus.EDIT,
-			KPICycle: KPIStore.getKPIPeriod()
+			KPICycle: SingleKPIStore.getKPIPeriod()
 		});
 	}
 	_onCancel() {
 		this.setState({
 			status: formStatus.VIEW,
-			KPICycle: KPIStore.getKPIPeriod()
+			KPICycle: SingleKPIStore.getKPIPeriod()
 		});
 	}
 	render() {

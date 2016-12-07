@@ -91,7 +91,7 @@ function _init() {
 
 let KPI_SUCCESS_EVENT = 'kpisuccess',
   KPI_ERROR_EVENT = 'kpierror';
-const KPIStore = assign({}, PrototypeStore, {
+const SingleKPIStore = assign({}, PrototypeStore, {
 
   DatetimeToJson(datetime) {
     var timezoneoffset = new Date().getTimezoneOffset() * 60000;
@@ -458,63 +458,63 @@ const KPIStore = assign({}, PrototypeStore, {
 
 });
 
-KPIStore.dispatchToken = AppDispatcher.register(function(action) {
+SingleKPIStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_QUOTAPERIOD:
-      KPIStore.setKPIPeriod(action.data);
-      KPIStore.emitChange();
+      SingleKPIStore.setKPIPeriod(action.data);
+      SingleKPIStore.emitChange();
       break;
     case Action.GET_KPI_INFO_SUCCESS:
-         KPIStore.setKpiInfo(action.data);
-         KPIStore.emitChange();
+         SingleKPIStore.setKpiInfo(action.data);
+         SingleKPIStore.emitChange();
          break;
     case Action.GET_KPI_CONFIGURED:
-         KPIStore.setKpiConfigured(action.data);
-         KPIStore.emitChange();
+         SingleKPIStore.setKpiConfigured(action.data);
+         SingleKPIStore.emitChange();
          break;
     case Action.GET_KPI_CHART:
-         KPIStore.setKPIChart(action.data);
-         KPIStore.emitChange();
+         SingleKPIStore.setKPIChart(action.data);
+         SingleKPIStore.emitChange();
          break;
     case Action.GET_KPI_CHART_SUMMARY:
-         KPIStore.setKPIChartSummary(action.data);
-         KPIStore.emitChange();
+         SingleKPIStore.setKPIChartSummary(action.data);
+         SingleKPIStore.emitChange();
          break;
     case Action.INIT_KPI_CHART_DATA:
-         KPIStore._initKpiChartData();
-         KPIStore.emitChange();
+         SingleKPIStore._initKpiChartData();
+         SingleKPIStore.emitChange();
          break;
     case Action.MERGE_KPI_INFO:
-         KPIStore.merge(action.data);
-         KPIStore.emitChange();
+         SingleKPIStore.merge(action.data);
+         SingleKPIStore.emitChange();
          break;
     case Action.GET_QUOTAPERIOD_BY_YEAR:
-         KPIStore.setYearQuotaperiod(action.data);
-         KPIStore.emitChange();
+         SingleKPIStore.setYearQuotaperiod(action.data);
+         SingleKPIStore.emitChange();
          break;
     case Action.GET_CALC_VALUE:
-        KPIStore.merge([{
+        SingleKPIStore.merge([{
           path:'AdvanceSettings.TargetMonthValues',
           value:Immutable.fromJS(action.data)
         }]);
-        KPIStore.emitChange();
+        SingleKPIStore.emitChange();
         break;
     case Action.GET_CALC_PREDICATE:
-         KPIStore.merge([{
+         SingleKPIStore.merge([{
               path:'AdvanceSettings.PredictionSetting.MonthPredictionValues',
               value:Immutable.fromJS(action.data)
             }]);
-            KPIStore.emitChange();
+            SingleKPIStore.emitChange();
             break;
     case Action.IS_AUTO_CALCUL_ABLE:
-        KPIStore.setHasHistory(action.data)
-        KPIStore.emitChange();
+        SingleKPIStore.setHasHistory(action.data)
+        SingleKPIStore.emitChange();
         break;
     case Action.KPI_SUCCESS:
-        KPIStore.emitSuccessChange(action.year);
+        SingleKPIStore.emitSuccessChange(action.year);
         break;
     case Action.KPI_ERROR:
-        KPIStore.emitErrorChange({
+        SingleKPIStore.emitErrorChange({
           title: action.title,
           content: action.content
         });
@@ -524,4 +524,4 @@ KPIStore.dispatchToken = AppDispatcher.register(function(action) {
   }
 });
 
-export default KPIStore;
+export default SingleKPIStore;

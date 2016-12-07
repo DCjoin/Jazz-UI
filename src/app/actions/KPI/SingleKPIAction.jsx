@@ -3,10 +3,10 @@ import Ajax from '../../ajax/Ajax.jsx';
 import { Action } from 'constants/actionType/KPI.jsx';
 import Path from 'constants/Path.jsx';
 import util from 'util/Util.jsx';
-import KPIStore from 'stores/KPI/KPIStore.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 
 
-const KPIAction = {
+const SingleKPIAction = {
   	getKPIPeriod(customerId) {
 		Ajax.get(util.replacePathParams(Path.KPI.getKPIPeriod, customerId),
 		{
@@ -73,7 +73,7 @@ const KPIAction = {
             type: Action.GET_KPI_CONFIGURED,
             data: resBody
           });
-          let year = Year || KPIStore.getKPIDefaultYear();
+          let year = Year || SingleKPIStore.getKPIDefaultYear();
           getKPIChart(CustomerId, year, HierarchyId);
           getKPIChartSummary(CustomerId, year, HierarchyId);
           getKPIPeriodByYear(CustomerId, year);
@@ -256,4 +256,4 @@ const KPIAction = {
   },
 }
 
-export default KPIAction;
+export default SingleKPIAction;

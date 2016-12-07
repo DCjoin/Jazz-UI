@@ -11,9 +11,9 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-import KPIAction from 'actions/KPI/KPIAction.jsx'
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx'
 import HierarchyAction from 'actions/HierarchyAction.jsx'
-import KPIStore from 'stores/KPI/KPIStore.jsx'
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx'
 import HierarchyStore from 'stores/HierarchyStore.jsx'
 import UOMStore from 'stores/UOMStore.jsx'
 import CurrentUserStore from 'stores/CurrentUserStore.jsx'
@@ -331,25 +331,25 @@ class ActualityContent extends Component {
 		return (
 			<div className='content'>
 				<div className='action-bar'>
-					<LinkButton iconName={ "icon-arrow-left" } disabled={ !KPIStore.hasLastYear(year) } onClick={() => {
-						if( KPIStore.hasLastYear(year) ) {
+					<LinkButton iconName={ "icon-arrow-left" } disabled={ !SingleKPIStore.hasLastYear(year) } onClick={() => {
+						if( SingleKPIStore.hasLastYear(year) ) {
 							onChangeYear(year * 1 - 1);
 						}
 					}}/>
 					<span className='current-year'>{year}</span>
-					<LinkButton iconName={ "icon-arrow-right" } disabled={ !KPIStore.hasNextYear(year) } onClick={() => {
-						if( KPIStore.hasNextYear(year) ) {
+					<LinkButton iconName={ "icon-arrow-right" } disabled={ !SingleKPIStore.hasNextYear(year) } onClick={() => {
+						if( SingleKPIStore.hasNextYear(year) ) {
 							onChangeYear(year * 1 + 1);
 						}
 					}}/>
 				</div>
 				<div>
 					{(period && period.length > 0 && tags && tags.size > 0) ?
-						tags.map( (tag, i) => <KPIReport 
-							onEdit={onEdit} 
-							onRefresh={onRefresh} 
-							period={period} data={tag} 
-							summaryData={find(summaryData, sum => sum.KpiId === tag.get('id'))} 
+						tags.map( (tag, i) => <KPIReport
+							onEdit={onEdit}
+							onRefresh={onRefresh}
+							period={period} data={tag}
+							summaryData={find(summaryData, sum => sum.KpiId === tag.get('id'))}
 							key={tag.get('id')}/> ) :
 					<div className='jazz-kpi-report flex-center' style={{height: 400}}>{I18N.Kpi.Error.NonKPIConguredInThisYear}</div>}
 				</div>
@@ -449,9 +449,9 @@ export default class Actuality extends Component {
 	componentWillMount() {
 		document.title = I18N.MainMenu.KPI;
 		HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
-		// KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
+		// SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
 		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
-		KPIStore.addChangeListener(this._onChange);
+		SingleKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState(assign({}, this._getInitialState()), () => {
@@ -460,7 +460,7 @@ export default class Actuality extends Component {
 	}
 	componentWillUnmount() {
 		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
-		KPIStore.removeChangeListener(this._onChange);
+		SingleKPIStore.removeChangeListener(this._onChange);
 	}
 	_getInitialState() {
 		return {
@@ -469,12 +469,12 @@ export default class Actuality extends Component {
 			showRefreshDialog: false,
 			kpiId: null,
 			year: null,
-			hierarchyId: null			
+			hierarchyId: null
 		}
 	}
 	_onChange() {
 		this.setState({
-			year: this.state.year || KPIStore.getKPIDefaultYear(),
+			year: this.state.year || SingleKPIStore.getKPIDefaultYear(),
 			loading: false
 		});
 	}
@@ -486,7 +486,7 @@ export default class Actuality extends Component {
 				this.setState({
 					hierarchyId,
 				});
-				KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
+				SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
 				return;
 			}
 		}
@@ -506,7 +506,7 @@ export default class Actuality extends Component {
 		});
 	}
 	_reload(year = this.state.year) {
-		KPIAction.getKPIConfigured(this.props.router.params.customerId, year, this.state.hierarchyId);
+		SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, year, this.state.hierarchyId);
 		this.setState({
 			showRefreshDialog: false,
 			showCreate: false,
@@ -515,10 +515,10 @@ export default class Actuality extends Component {
 		});
 	}
 	_getData(customerId, year, hierarchyId) {
-		KPIAction.initKPIChartData();
-		KPIAction.getKPIPeriodByYear(customerId, year);
-		KPIAction.getKPIChart(customerId, year, hierarchyId);
-		KPIAction.getKPIChartSummary(customerId, year, hierarchyId);
+		SingleKPIAction.initKPIChartData();
+		SingleKPIAction.getKPIPeriodByYear(customerId, year);
+		SingleKPIAction.getKPIChart(customerId, year, hierarchyId);
+		SingleKPIAction.getKPIChartSummary(customerId, year, hierarchyId);
 	}
 	render() {
 		if( this.state.loading ) {
@@ -526,7 +526,7 @@ export default class Actuality extends Component {
 				<div className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 			);
 		}
-		// if(isSingleBuilding() && !KPIStore.getKPIChart()) {
+		// if(isSingleBuilding() && !SingleKPIStore.getKPIChart()) {
 		// 	return (
 		// 		<div className='flex-center'><b>{I18N.Kpi.Error.NonKPIConguredSingleBuilding}</b></div>
 		// 	);
@@ -536,7 +536,7 @@ export default class Actuality extends Component {
 				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>);
 			} else if( HierarchyStore.getBuildingList().length > 1 ) {
 				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.KPIConguredMoreBuilding}</b></div>);
-			} else if( !KPIStore.getKPIChart() ) {
+			} else if( !SingleKPIStore.getKPIChart() ) {
 				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.NonKPIConguredSingleBuilding}</b></div>);
 			}
 		}
@@ -561,7 +561,7 @@ export default class Actuality extends Component {
 		        	margin: '0 20px',
 		        },
 		        didChanged: (hierarchyId) => {
-		        	KPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, hierarchyId);
+		        	SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, hierarchyId);
 					this.setState({hierarchyId});
 		        },
 		        textField: 'Name',
@@ -580,12 +580,12 @@ export default class Actuality extends Component {
 						goCreate={this._goCreate}/>
 					{isFull() && (!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0)? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
 					(<ActualityContent
-						chartReady={KPIStore.chartReady()}
-						period={KPIStore.getYearQuotaperiod()}
+						chartReady={SingleKPIStore.chartReady()}
+						period={SingleKPIStore.getYearQuotaperiod()}
 						hierarchyId={this.state.hierarchyId}
-						data={KPIStore.getKPIChart()}
+						data={SingleKPIStore.getKPIChart()}
 						year={this.state.year}
-						summaryData={KPIStore.getKPIChartSummary()}
+						summaryData={SingleKPIStore.getKPIChartSummary()}
 						onChangeYear={(year) => {
 			        		this._getData(this.props.router.params.customerId, year, this.state.hierarchyId);
 							this.setState({year});

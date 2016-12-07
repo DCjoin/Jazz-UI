@@ -3,7 +3,7 @@ import React, {Component,PropTypes} from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TitleComponent from '../../controls/TitleComponent.jsx';
 import ViewableDropDownMenu from '../../controls/ViewableDropDownMenu.jsx';
-import KPIStore from '../../stores/KPI/KPIStore.jsx';
+import SingleKPIStore from '../../stores/KPI/SingleKPIStore.jsx';
 import {Type} from '../../constants/actionType/KPI.jsx';
 
 
@@ -17,7 +17,7 @@ export default class YearAndTypeConfig extends Component {
       isViewStatus: false,
       title: I18N.Setting.KPI.YearAndType.SelectYear,
       defaultValue: Year,
-      dataItems: KPIStore._getYearList(),
+      dataItems: SingleKPIStore._getYearList(),
       didChanged:this.props.onYearChange
     },typeProps={
       title:I18N.Setting.KPI.YearAndType.SelectType,

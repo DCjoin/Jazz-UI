@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import Immutable from 'immutable';
 import CircularProgress from 'material-ui/CircularProgress';
 import TagSelect from './TagSelect.jsx';
-import KPIAction from '../../actions/KPI/KPIAction.jsx';
-import KPIStore from '../../stores/KPI/KPIStore.jsx'
+import SingleKPIAction from '../../actions/KPI/SingleKPIAction.jsx';
+import SingleKPIStore from '../../stores/KPI/SingleKPIStore.jsx'
 import BasicConfig from './BasicConfig.jsx';
 import TitleComponent from '../../controls/TitleComponent.jsx';
 import YearAndTypeConfig from './YearAndTypeConfig.jsx';
@@ -48,8 +48,8 @@ export default class KPI extends Component {
   };
 
 	_onChange(){
-		if(this.state.kpiInfo.size===0 && KPIStore.getKpiInfo().size!==0 && !this.props.isCreate){
-			let {ActualTagId,ActualTagName,UomId,CommodityId}=KPIStore.getKpiInfo().toJS();
+		if(this.state.kpiInfo.size===0 && SingleKPIStore.getKpiInfo().size!==0 && !this.props.isCreate){
+			let {ActualTagId,ActualTagName,UomId,CommodityId}=SingleKPIStore.getKpiInfo().toJS();
 			this.setState({
 				tag:Immutable.fromJS({
 					Id:ActualTagId,
@@ -57,17 +57,17 @@ export default class KPI extends Component {
 					UomId,CommodityId
 				})
 			},()=>{
-				KPIAction.IsAutoCalculable(this.context.router.params.customerId,ActualTagId,this.props.year)
+				SingleKPIAction.IsAutoCalculable(this.context.router.params.customerId,ActualTagId,this.props.year)
 			})
 		}
 		this.setState({
-			kpiInfo:KPIStore.getKpiInfo(),
-			hasHistory:KPIStore.getHasHistory(),
+			kpiInfo:SingleKPIStore.getKpiInfo(),
+			hasHistory:SingleKPIStore.getHasHistory(),
 		})
 	}
 
 	_onNameChange(value){
-		KPIAction.merge([{
+		SingleKPIAction.merge([{
 			path:'IndicatorName',
 			value
 		}])
@@ -75,22 +75,22 @@ export default class KPI extends Component {
 
 	_onYearChange(value){
 		if(!this.props.isCreate){
-			KPIAction.getKPI(this.props.kpiId,value);
+			SingleKPIAction.getKPI(this.props.kpiId,value);
 		}
-		KPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value);
-		KPIAction.getKPIPeriodByYear(customerId,value);
+		SingleKPIAction.IsAutoCalculable(customerId,this.state.tag.get('Id'),value);
+		SingleKPIAction.getKPIPeriodByYear(customerId,value);
 
 	}
 
 	_onIndicatorTypeChange(ev,value){
-		KPIAction.merge([{
+		SingleKPIAction.merge([{
 			path:'AdvanceSettings.IndicatorType',
 			value
 		}])
 	}
 
 	_onAnnualChange(path,value){
-		KPIAction.merge([{
+		SingleKPIAction.merge([{
 			path,
 			value
 		}])
@@ -98,23 +98,23 @@ export default class KPI extends Component {
 
 	_onTargetValueChange(index,value){
 		let TargetMonthValues=this.state.kpiInfo.getIn(['AdvanceSettings','TargetMonthValues']),
-				period=KPIStore.getYearQuotaperiod();
+				period=SingleKPIStore.getYearQuotaperiod();
 		if(TargetMonthValues){
-			KPIAction.merge([{
+			SingleKPIAction.merge([{
 				path:`AdvanceSettings.TargetMonthValues.${index}`,
 				value:Immutable.fromJS({
-					Month:KPIStore.DatetimeToJson(period[index]._d),
+					Month:SingleKPIStore.DatetimeToJson(period[index]._d),
 					Value:value
 				})
 			}])
 		}
 		else {
-					KPIAction.merge([{
+					SingleKPIAction.merge([{
 						path:'AdvanceSettings.TargetMonthValues',
 						index:index,
 						length:12,
 						value:Immutable.fromJS({
-							Month:KPIStore.DatetimeToJson(period[index]._d),
+							Month:SingleKPIStore.DatetimeToJson(period[index]._d),
 							Value:value,
 						}),
 						status:Status.ADD
@@ -153,8 +153,8 @@ export default class KPI extends Component {
 					value:Type.Quota
 				});
 			}
-			KPIAction.merge(params);
-			KPIAction.IsAutoCalculable(customerId,tag.get('Id'),year);
+			SingleKPIAction.merge(params);
+			SingleKPIAction.IsAutoCalculable(customerId,tag.get('Id'),year);
 		})
   }
 
@@ -181,7 +181,7 @@ export default class KPI extends Component {
 	// 	this.setState({
 	// 		ratesTageSelectShow:false
 	// 	},()=>{
-	// 		KPIAction.merge([{
+	// 		SingleKPIAction.merge([{
 	// 			path:'AdvanceSettings.PredictionSetting.TagSavingRates',
 	// 			value:Immutable.fromJS({
 	// 				TagId:tag.get('Id'),
@@ -198,12 +198,12 @@ export default class KPI extends Component {
 	}
 
 	_onSave(){
-		let kpi=KPIStore.transit(this.state.kpiInfo);
+		let kpi=SingleKPIStore.transit(this.state.kpiInfo);
 		if(this.props.isCreate){
-			KPIAction.createKpi(customerId,this.props.hierarchyId,this.props.hierarchyName,kpi);
+			SingleKPIAction.createKpi(customerId,this.props.hierarchyId,this.props.hierarchyName,kpi);
 		}
 		else {
-			KPIAction.updateKpi(kpi)
+			SingleKPIAction.updateKpi(kpi)
 		}
 	}
 
@@ -240,22 +240,22 @@ export default class KPI extends Component {
 	componentWillMount(){
 		customerId=this.context.router.params.customerId;
 		let {isCreate,kpiId,year}=this.props;
-		KPIAction.getKPIPeriodByYear(customerId,year);
+		SingleKPIAction.getKPIPeriodByYear(customerId,year);
 		if(!isCreate){
-			KPIAction.getKPI(kpiId,year);
+			SingleKPIAction.getKPI(kpiId,year);
 		}
 	}
 
 	componentDidMount(){
-		KPIStore.addChangeListener(this._onChange);
-		KPIStore.addSuccessListener(this._onSuccess);
-		KPIStore.addErrorListener(this._onError);
+		SingleKPIStore.addChangeListener(this._onChange);
+		SingleKPIStore.addSuccessListener(this._onSuccess);
+		SingleKPIStore.addErrorListener(this._onError);
 	}
 
 	componentWillUnmount(){
-		KPIStore.removeChangeListener(this._onChange);
-		KPIStore.removeSuccessListener(this._onSuccess);
-		KPIStore.removeErrorListener(this._onError);
+		SingleKPIStore.removeChangeListener(this._onChange);
+		SingleKPIStore.removeSuccessListener(this._onSuccess);
+		SingleKPIStore.removeErrorListener(this._onError);
 
 	}
 
@@ -328,7 +328,7 @@ export default class KPI extends Component {
 				<YearAndTypeConfig {...yearAndTypeProps}/>
 				<ParameterConfig {...parameterProps}/>
         {this.state.tageSelectShow && <TagSelect {...tagProps}/>}
-				  <FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={KPIStore.validateKpiInfo(this.state.kpiInfo)}
+				  <FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={SingleKPIStore.validateKpiInfo(this.state.kpiInfo)}
 				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
 				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
 			{this._renderErrorDialog()}

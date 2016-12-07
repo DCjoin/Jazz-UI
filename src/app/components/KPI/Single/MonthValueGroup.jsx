@@ -2,7 +2,7 @@
 import React, {Component,PropTypes} from 'react';
 import moment from 'moment';
 import DateTextField from '../../controls/DateTextField.jsx';
-import KPIStore from '../../stores/KPI/KPIStore.jsx';
+import SingleKPIStore from '../../stores/KPI/SingleKPIStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
 import {Type} from '../../constants/actionType/KPI.jsx';
 
@@ -12,12 +12,12 @@ export default class MonthValueGroup extends Component {
     return(
       <div className="jazz-kpi-calc-month">
         {
-          KPIStore.getYearQuotaperiod().map((el,index)=>{
+          SingleKPIStore.getYearQuotaperiod().map((el,index)=>{
             var props={
                   onChange:(value)=>{this.props.onChange(index,value)},
                   date:CommonFuns.formatDateByPeriod(el),
                   regexFn:(value)=>{
-                    return !KPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText}
+                    return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText}
                 };
             if(el.isBefore(moment(new Date()).format('YYYY-MM-01')) && this.props.IndicatorType===Type.MonthPrediction){
               props.disabled=true;
