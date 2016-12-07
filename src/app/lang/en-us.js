@@ -35,6 +35,7 @@ I18N.format = function(res) {
 
   return s.replace(/\{\d+\}/ig, '');
 };
+
 I18N.BlankPage='暂无任何功能权限，请联系您的管理员';
 I18N.MainMenu = {};
 I18N.MainMenu.Asset = 'My assets';
@@ -45,6 +46,8 @@ I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
 I18N.MainMenu.KPI = '指标·报表';
+I18N.MainMenu.KPIActuality = '指标现状';
+I18N.MainMenu.KPIConfig = '指标现状配置';
 I18N.MainMenu.Map = 'Map';
 I18N.MainMenu.Alarm = 'Alarm';
 I18N.MainMenu.Energy = 'Energy';
