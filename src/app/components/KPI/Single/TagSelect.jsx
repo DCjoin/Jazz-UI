@@ -1,12 +1,12 @@
 'use strict';
 import React, {Component} from 'react';
 import classNames from 'classnames';
-import TagSelectAction from '../../actions/KPI/TagSelectAction.jsx';
-import TagSelectStore from '../../stores/KPI/TagSelectStore.jsx';
-import Dialog from '../../controls/NewDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
-import Tree from '../../controls/tree/Tree.jsx';
-import CommonFuns from '../../util/Util.jsx';
+import TagSelectAction from 'actions/KPI/TagSelectAction.jsx';
+import TagSelectStore from 'stores/KPI/TagSelectStore.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import Tree from 'controls/tree/Tree.jsx';
+import CommonFuns from 'util/Util.jsx';
 
 export default class TagSelect extends Component {
 

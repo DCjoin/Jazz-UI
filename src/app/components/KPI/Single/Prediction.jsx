@@ -3,15 +3,15 @@ import React, {Component,PropTypes} from 'react';
 import Immutable from 'Immutable';
 import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
-import TitleComponent from '../../controls/TitleComponent.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
-import {Type,Status} from '../../constants/actionType/KPI.jsx';
-import KPIAction from '../../actions/KPI/KPIAction.jsx';
-import KPIStore from '../../stores/KPI/KPIStore.jsx';
+import TitleComponent from 'controls/TitleComponent.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import {Type,Status} from 'constants/actionType/KPI.jsx';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
 import TagSelect from './TagSelect.jsx';
-import {DataConverter} from '../../util/Util.jsx';
+import {DataConverter} from 'util/Util.jsx';
 
 export default class Prediction extends Component {
 
@@ -47,7 +47,7 @@ export default class Prediction extends Component {
     this.setState({
       ratesTageSelectShow:false
     },()=>{
-      KPIAction.merge([{
+      SingleKPIAction.merge([{
         path:'AdvanceSettings.PredictionSetting.TagSavingRates',
         value:Immutable.fromJS({
           TagId:tag.get('Id'),
@@ -60,25 +60,25 @@ export default class Prediction extends Component {
   }
 
   	_onPredictioChange(index,value){
-  		let MonthPredictionValues=KPIStore.getKpiInfo().getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues']),
-  				period=KPIStore.getYearQuotaperiod();
+  		let MonthPredictionValues=SingleKPIStore.getKpiInfo().getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues']),
+  				period=SingleKPIStore.getYearQuotaperiod();
           if(MonthPredictionValues){
-            KPIAction.merge([{
+            SingleKPIAction.merge([{
               path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}`,
               value:Immutable.fromJS({
-                Month:KPIStore.DatetimeToJson(period[index]._d),
+                Month:SingleKPIStore.DatetimeToJson(period[index]._d),
                 Value:value
               })
             }
           ])
           }
           else {
-                KPIAction.merge([{
+                SingleKPIAction.merge([{
                   path:'AdvanceSettings.PredictionSetting.MonthPredictionValues',
                   index:index,
                   length:12,
                   value:Immutable.fromJS({
-                    Month:KPIStore.DatetimeToJson(period[index]._d),
+                    Month:SingleKPIStore.DatetimeToJson(period[index]._d),
                     Value:value,
                   }),
                   status:Status.ADD
@@ -87,11 +87,11 @@ export default class Prediction extends Component {
   	}
 
   _onCalcValue(TagSavingRates){
-    KPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,TagSavingRates)
+    SingleKPIAction.getCalcPredicate(this.context.router.params.customerId,this.props.Year,TagSavingRates)
   }
 
   _deleteRate(index){
-    KPIAction.merge([{
+    SingleKPIAction.merge([{
       path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index}`,
       status:Status.DELETE
     }])
@@ -99,8 +99,8 @@ export default class Prediction extends Component {
 
   _renderTagSavingRates(predictionSetting){
     let {TagSavingRates}=predictionSetting;
-    let tags=KPIStore.getTagTable(TagSavingRates),
-        rates=KPIStore.getRatesTable(TagSavingRates);
+    let tags=SingleKPIStore.getTagTable(TagSavingRates),
+        rates=SingleKPIStore.getRatesTable(TagSavingRates);
 
         return(
           <table className='jazz-kpi-save-rates'>
@@ -131,14 +131,14 @@ export default class Prediction extends Component {
                       style:{width:'120px'},
                       didChanged: value=>{
                                     //if(value==='') value=0;
-                                    KPIAction.merge([{
+                                    SingleKPIAction.merge([{
                                       path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index-1}.SavingRate`,
                                       value,
                                     }])
                                           },
                       defaultValue: rate,
                       regexFn:(value)=>{
-                        return !KPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
+                        return !SingleKPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
                       }
                     };
                     content=<div style={{display:'flex','alignItems':'center'}}>

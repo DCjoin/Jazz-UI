@@ -1,11 +1,11 @@
 'use strict';
 import React, {Component} from 'react';
 import Immutable from 'immutable';
-import Dialog from '../../controls/NewDialog.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
-import CommonFuns from '../../util/Util.jsx';
-import KPIStore from '../../stores/KPI/KPIStore.jsx';
-import KPIAction from '../../actions/KPI/KPIAction.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import CommonFuns from 'util/Util.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import Prediction from './Prediction.jsx';
 
 export default class UpdatePrediction extends Component {
@@ -36,13 +36,13 @@ export default class UpdatePrediction extends Component {
 
 	_onChange(){
 		this.setState({
-			kpiInfo:KPIStore.getKpiInfo()
+			kpiInfo:SingleKPIStore.getKpiInfo()
 		})
 	}
 
   _onSave(){
-    let kpi=KPIStore.transit(this.state.kpiInfo);
-    KPIAction.updatePrediction(kpi.AdvanceSettings.PredictionSetting);
+    let kpi=SingleKPIStore.transit(this.state.kpiInfo);
+    SingleKPIAction.updatePrediction(kpi.AdvanceSettings.PredictionSetting);
   }
 
   _onSuccess(){
@@ -66,18 +66,18 @@ export default class UpdatePrediction extends Component {
 
 	componentWillMount(){
     let {kpiId,year}=this.props;
-    KPIAction.getKPIPeriodByYear(this.context.router.params.customerId,year);
-    KPIAction.getKPI(kpiId,year);
+    SingleKPIAction.getKPIPeriodByYear(this.context.router.params.customerId,year);
+    SingleKPIAction.getKPI(kpiId,year);
 	}
 
 	componentDidMount(){
-		KPIStore.addChangeListener(this._onChange);
-    KPIStore.addSuccessListener(this._onSuccess);
+		SingleKPIStore.addChangeListener(this._onChange);
+    SingleKPIStore.addSuccessListener(this._onSuccess);
 	}
 
 	componentWillUnmount() {
-		KPIStore.removeChangeListener(this._onChange);
-    KPIStore.removeSuccessListener(this._onSuccess);
+		SingleKPIStore.removeChangeListener(this._onChange);
+    SingleKPIStore.removeSuccessListener(this._onSuccess);
 	}
 
 	render(){
@@ -90,7 +90,7 @@ export default class UpdatePrediction extends Component {
 			<FlatButton
 			label={I18N.Common.Button.Save}
 			onTouchTap={this._onSave}
-			disabled={!KPIStore.validateKpiInfo(this.state.kpiInfo)}
+			disabled={!SingleKPIStore.validateKpiInfo(this.state.kpiInfo)}
 			/>,
 			<FlatButton
 			label={I18N.Common.Button.Cancel2}

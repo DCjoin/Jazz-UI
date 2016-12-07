@@ -1,12 +1,12 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
-import TitleComponent from '../../controls/TitleComponent.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
-import {Type} from '../../constants/actionType/KPI.jsx';
-import KPIAction from '../../actions/KPI/KPIAction.jsx';
-import KPIStore from '../../stores/KPI/KPIStore.jsx';
-import CommonFuns from '../../util/Util.jsx';
+import TitleComponent from 'controls/TitleComponent.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import {Type} from 'constants/actionType/KPI.jsx';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import CommonFuns from 'util/Util.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
 import Prediction from './Prediction.jsx';
 
@@ -23,15 +23,15 @@ export default class ParameterConfig extends Component {
 
   _onCalcValue(){
     let {Year,IndicatorType,value,tag}=this.props;
-    KPIAction.getCalcValue(KPIStore.getCalcPredicateParam(this.context.router.params.customerId,tag.get('Id'),Year,IndicatorType,value));
+    SingleKPIAction.getCalcValue(SingleKPIStore.getCalcPredicateParam(this.context.router.params.customerId,tag.get('Id'),Year,IndicatorType,value));
   }
 
   _validateQuota(value){
-    return !KPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText
+    return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText
   }
 
   _validateSavingRate(value){
-    return !KPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
+    return !SingleKPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
   }
 
   _renderIndicatorConfig(uom){

@@ -1,8 +1,8 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
-import TitleComponent from '../../controls/TitleComponent.jsx';
-import ViewableTextField from '../../controls/ViewableTextField.jsx';
-import FlatButton from '../../controls/FlatButton.jsx';
+import TitleComponent from 'controls/TitleComponent.jsx';
+import ViewableTextField from 'controls/ViewableTextField.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
 
 export default class BasicConfig extends Component {
 
