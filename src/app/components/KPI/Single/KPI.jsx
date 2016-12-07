@@ -9,7 +9,7 @@ import BasicConfig from './BasicConfig.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import YearAndTypeConfig from './YearAndTypeConfig.jsx';
 import ParameterConfig from './ParameterConfig.jsx';
-import {Type,Status} from 'constants/actionType/KPI.jsx';
+import {Type,DataStatus} from 'constants/actionType/KPI.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import Dialog from 'controls/NewDialog.jsx';
@@ -117,7 +117,7 @@ export default class KPI extends Component {
 							Month:SingleKPIStore.DatetimeToJson(period[index]._d),
 							Value:value,
 						}),
-						status:Status.ADD
+						status:DataStatus.ADD
 					}])
 		}
 

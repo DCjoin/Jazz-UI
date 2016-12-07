@@ -17,6 +17,8 @@ module.exports = {
     IS_AUTO_CALCUL_ABLE:null,
     KPI_SUCCESS:null,
     KPI_ERROR:null,
+    GET_KPI_GROUP_CONTINUOUS:null,
+    GET_KPI_GROUP_BY_YEAR:null,
   }),
 
   Type:{
@@ -25,9 +27,14 @@ module.exports = {
     MonthValue:3,
     MonthPrediction:4
   },
-  Status:{
-    ADD:'add',
-    DELETE:'delete',
-  }
+  DataStatus:keyMirror({
+    ADD:null,
+    DELETE:null
+  }),
+  SettingStatus:keyMirror({
+    New:null,
+    Edit:null,
+    Prolong:null
+  })
 
 };
