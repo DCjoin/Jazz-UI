@@ -41,15 +41,24 @@ export default class KPIConfig extends Component {
 		)
 	}
 
+	_renderGroupConfig(){
+
+	}
+
 	componentWillMount(){
 		customerId=this.context.router.params.customerId;
-		let {year,id}=this.props;
+		let {year,id,status}=this.props;
 		switch(status){
 			case SettingStatus.Prolong:
-						GroupKPIAction.getGroupContinuous(id,year);
+						var info={
+								CustomerId:customerId,
+								Year:year,
+								IndicatorType:Type.Quota
+							};
+						GroupKPIAction.getGroupByYear(customerId,year,info);
 						break;
 			case SettingStatus.New:
-					let info={
+					var info={
 						CustomerId:customerId,
 						Year:year,
 						IndicatorType:Type.Quota
@@ -57,7 +66,7 @@ export default class KPIConfig extends Component {
 					GroupKPIAction.getBuildingListByCustomerId(customerId,info);
 					break;
 			case SettingStatus.Edit:
-					 GroupKPIAction.getBuildingListByCustomerId(customerId,info);
+					 GroupKPIAction.getGroupSettings(id);
 					 break;
 		}
 	}
@@ -71,8 +80,9 @@ export default class KPIConfig extends Component {
 	}
 
 	render() {
+		var {status,year,name}=this.props;
 		if(this.state.kpiInfo && this.state.kpiInfo.size!==0){
-			let {status,year,name}=this.props;
+
 			let titleProps={
 				title:GroupKPIStore.getTitleByStatus(status,year,name),
 				contentStyle:{
@@ -86,6 +96,7 @@ export default class KPIConfig extends Component {
 			return (
 				<TitleComponent {...titleProps}>
 					{this._renderBasic()}
+					{this._renderGroupConfig()}
 				</TitleComponent>
 			);
 		}
@@ -102,5 +113,15 @@ KPIConfig.propTypes = {
 	year:React.PropTypes.number,
 	//编辑时，需要name
 	name:React.PropTypes.string,
+
+};
+
+KPIConfig.defaultProps = {
+	status:SettingStatus.Prolong,
+	//编辑时 id=kpiSettingsId;延用时 id=KpiId
+	id:2,
+	year:2017,
+	// //编辑时，需要name
+	name:'天然气用量',
 
 };

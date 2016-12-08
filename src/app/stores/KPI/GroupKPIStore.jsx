@@ -24,10 +24,28 @@ function emptyList() {
 const GroupKPIStore = assign({}, PrototypeStore, {
 
   init(info){
-    _kpiInfo=Immutable.fromJS({
-      ...info,
-      Buildings:Array(_buildings.length)
-    });
+    if(_buildings){
+      _kpiInfo=Immutable.fromJS({
+        ...info,
+        Buildings:Array(_buildings.length)
+      });
+      _buildings.forEach((building,index)=>{
+        let defaultBuilding={
+          HierarchyId:building.Id,
+          HierarchyName:building.Name,
+          TargetMonthValues:_.fill(Array(12), {Month:null,value:null}),
+          TagSavingRates:[],
+          MonthPredictionValues:_.fill(Array(12), {Month:null,value:null})
+        }
+        // _kpiInfo=_kpiInfo.setIn(["buildings",index,'KpiType'],KpiType.single);
+        _kpiInfo=_kpiInfo.setIn(["Buildings",index],Immutable.fromJS(defaultBuilding));
+        // _kpiInfo=_kpiInfo.setIn(["BuildingKpiSettingsList",index,'AdvanceSettings','IndicatorType'],indicatorType);
+      })
+    }
+    else {
+      _kpiInfo=Immutable.fromJS(info);
+    }
+
 
     // _kpiInfo=_kpiInfo.set('GroupKpiSetting',Immutable.fromJS(KpiSettingsModel));
     // _kpiInfo=_kpiInfo.set('BuildingKpiSettingsList',Immutable.fromJS(_.fill(Array(_buildings.length), KpiSettingsModel)));
@@ -37,30 +55,20 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     // _kpiInfo=_kpiInfo.setIn(['GroupKpiSetting','AdvanceSettings','Year'],year);
     // _kpiInfo=_kpiInfo.setIn(['GroupKpiSetting','AdvanceSettings','IndicatorType'],indicatorType);
 
-    _buildings.forEach((building,index)=>{
-      let defaultBuilding={
-        HierarchyId:building.Id,
-        HierarchyName:building.Name,
-        TargetMonthValues:_.fill(Array(12), {Month:null,value:null}),
-        TagSavingRates:[],
-        MonthPredictionValues:_.fill(Array(12), {Month:null,value:null})
-      }
-      // _kpiInfo=_kpiInfo.setIn(["buildings",index,'KpiType'],KpiType.single);
-      _kpiInfo=_kpiInfo.setIn(["Buildings",index],Immutable.fromJS(defaultBuilding));
-      // _kpiInfo=_kpiInfo.setIn(["BuildingKpiSettingsList",index,'AdvanceSettings','IndicatorType'],indicatorType);
-    })
+
   },
 
   setKpiInfo(data){
-    let {CustomerId,CommodityId,IndicatorName,AdvanceSettings,PredictionSetting}=data.GroupKpiSetting;
+    let {CustomerId,CommodityId,IndicatorName,AdvanceSettings}=data.GroupKpiSetting;
     let {Year,IndicatorType,AnnualQuota,AnnualSavingRate}=AdvanceSettings;
-    let {TagSavingRates,MonthPredictionValues}=PredictionSetting;
+
     _kpiInfo=Immutable.fromJS({
       CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,
       Buildings:data.BuildingKpiSettingsList.length?
-                data.BuildingKpiSettingsList.map(buildng=>{
+                data.BuildingKpiSettingsList.map(building=>{
                   let {HierarchyId,HierarchyName,ActualTagId,ActualTagName,AdvanceSettings}=building;
-                  let {AnnualQuota,AnnualSavingRate,TargetMonthValues}=AdvanceSettings;
+                  let {AnnualQuota,AnnualSavingRate,TargetMonthValues,PredictionSetting}=AdvanceSettings;
+                  let {TagSavingRates,MonthPredictionValues}=PredictionSetting;
                   return{
                     CommodityId,IndicatorName,
                     HierarchyId,HierarchyName,ActualTagId,ActualTagName,AnnualQuota,AnnualSavingRate,
@@ -74,8 +82,9 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return _kpiInfo;
   },
 
-  setGroupByYear(data){
-    _groupInfo=Immutable.fromJS(data)
+  setGroupByYear(data,info){
+    _groupInfo=Immutable.fromJS(data);
+    this.init(info);
   },
 
   getGroupList(){
@@ -91,7 +100,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       text: I18N.EM.Report.Select,
       disabled:true,
     });
-    return group
+    return group.toJS()
   },
 
   getGroupInfo(){
@@ -171,52 +180,47 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       {
         payload: 1,
         text: I18N.Common.Commodity.ElectricOther,
-        commodityId:1
+        uomId:1
       },
       {
         payload: 2,
         text: I18N.Common.Commodity.Water,
-        commodityId:5
+        uomId:5
       },
       {
         payload: 3,
         text: I18N.Common.Commodity.Gas,
-        commodityId:1
+        uomId:1
       },
       {
         payload: 5,
         text: I18N.Common.Commodity.Petrol,
-        commodityId:8
+        uomId:8
       },
       {
         payload: 7,
         text: I18N.Common.Commodity.DieselOil,
-        commodityId:8
+        uomId:8
       },
       {
         payload: 11,
         text: I18N.Common.Commodity.Kerosene ,
-        commodityId:8
-      },
-      {
-        payload: i,
-        text: I18N.Common.Commodity.Steam = '蒸汽',
-        commodityId:1
+        uomId:8
       },
       {
         payload: 9,
-        text: I18N.Common.Commodity.CoolQ = '冷量',
-        commodityId:1
+        text: I18N.Common.Commodity.CoolQ,
+        uomId:10
       },
       {
         payload: 9,
-        text: I18N.Common.Commodity.HeatQ = '热量',
-        commodityId:1
+        text: I18N.Common.Commodity.HeatQ,
+        uomId:10
       },
       {
         payload: 10,
         text: I18N.Common.Commodity.CoalOther,
-        commodityId:8
+        uomId:8
       },
     ])
   }
@@ -229,7 +233,7 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
       GroupKPIStore.emitChange();
       break;
     case Action.GET_KPI_GROUP_BY_YEAR:
-      GroupKPIStore.setGroupByYear(action.data);
+      GroupKPIStore.setGroupByYear(action.data,action.info);
       GroupKPIStore.emitChange();
       break;
     case Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID:

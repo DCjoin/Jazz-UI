@@ -9,6 +9,11 @@ import GroupKPIAction from '../../../actions/KPI/GroupKPIAction.jsx';
 
 export default class BasicConfig extends Component {
 
+  	constructor(props) {
+  		super(props);
+  		this._onPrelongKpiChange = this._onPrelongKpiChange.bind(this);
+  	}
+
   state={
     ProlongkpiId:-1
   };
@@ -28,10 +33,9 @@ export default class BasicConfig extends Component {
   }
 
   _onPrelongKpiChange(value){
+    GroupKPIAction.getGroupContinuous(value,this.props.year);
     this.setState({
       ProlongkpiId:value
-    },()=>{
-      GroupKPIAction.getGroupContinuous(value,this.props.year);
     })
   }
 
@@ -41,14 +45,14 @@ export default class BasicConfig extends Component {
       value
     }])
   }
-  
+
   _renderNewBasic(){
     let {CommodityId,IndicatorName,IndicatorType}=this.props.kpiInfo.toJS();
     let commodityProps={
       ref: 'commodity',
       isViewStatus: false,
       title: I18N.Setting.KPI.Group.Commodity,
-      defaultValue: CommodityId,
+      defaultValue: CommodityId || -1,
       dataItems: GroupKPIStore.getCommodityList(),
       didChanged:this._onCommodityChange
     },
@@ -71,7 +75,7 @@ export default class BasicConfig extends Component {
       onTypeChange:this._onTypeChange,
     };
     return(
-      <div>
+      <div style={{display:'flex','flexDirection':'column'}}>
         <ViewableDropDownMenu {...commodityProps}/>
         <ViewableTextField {...nameProps}/>
         <ViewableKPIType {...typeProps}/>
@@ -80,14 +84,14 @@ export default class BasicConfig extends Component {
   }
 
   _renderEditBasic(){
-    let {Type}=this.props.kpiInfo.toJS();
+    let {IndicatorType}=this.props.kpiInfo.toJS();
     return(
-      <ViewableKPIType status={SettingStatus.Edit} type={Type}/>
+      <ViewableKPIType status={SettingStatus.Edit} type={IndicatorType}/>
     )
   }
 
   _renderProlongBasic(){
-    let {Type}=this.props.kpiInfo.toJS();
+    let {IndicatorType}=this.props.kpiInfo.toJS();
     let prolongkpiProps={
       ref: 'Prolongkpi',
       isViewStatus: false,
@@ -101,7 +105,7 @@ export default class BasicConfig extends Component {
     },
     typeProps={
       status:SettingStatus.Prolong,
-      type:Type || Type.Quota,
+      type:IndicatorType || Type.Quota,
       onTypeChange:this._onTypeChange,
     };
     return(
@@ -116,7 +120,7 @@ export default class BasicConfig extends Component {
     let content;
     switch(this.props.status) {
       case SettingStatus.New:
-          content=this.renderNewBasic();
+          content=this._renderNewBasic();
           break;
       case SettingStatus.Edit:
           content=this._renderEditBasic();

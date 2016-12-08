@@ -19,13 +19,14 @@ const GroupKPIAction = {
       error: function() {}
     });
   },
-  getGroupByYear(customerId,year){
+  getGroupByYear(customerId,year,info){
     Ajax.get(util.replacePathParams(Path.KPI.getGroupByYear,customerId,year),
     {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.GET_KPI_GROUP_BY_YEAR,
-          data: resBody
+          data: resBody,
+          info
         });
       },
       error: function() {}
