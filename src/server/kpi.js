@@ -233,6 +233,26 @@ exports.register = function(server, options, next) {
                 }).type("application/json");
             }
         },
+        {
+            method: 'post',
+            path: APIBasePath + '/kpi/groupsettings/create',
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": request.params
+                }).type("application/json");
+            }
+        },
+        {
+            method: 'post',
+            path: APIBasePath + '/kpi/groupsettings/update',
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": request.params
+                }).type("application/json");
+            }
+        },
 
 
     ]);
