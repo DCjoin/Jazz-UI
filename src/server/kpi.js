@@ -206,6 +206,33 @@ exports.register = function(server, options, next) {
                 }).type("application/json");
             }
         },
+        {
+            method: 'get',
+            path: APIBasePath + '/kpi/group/{customerId}/{year}',
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": [{
+                        KpiId: 1,
+                        IndicatorName: '用水量'
+                    }]
+                }).type("application/json");
+            }
+        },
+        {
+            method: 'get',
+            path: APIBasePath + '/kpi/groupcontinuous/{KpiId}/{year}',
+            handler: function(request, reply) {
+                var result = KPIData.GroupSettings.NORMAL_QUOTA;
+                if (request.params.KpiId === '2') {
+                  result = KPIData.GroupSettings.NORMAL_SAVING_RATE;
+                }
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": result
+                }).type("application/json");
+            }
+        },
 
 
     ]);
