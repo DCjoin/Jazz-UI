@@ -30,7 +30,41 @@ const GroupKPIAction = {
       },
       error: function() {}
     });
-  }
-  }
+  },
+  getBuildingListByCustomerId(customerId,info) {
+    Ajax.get(util.replacePathParams(Path.Hierarchy.GetBuildingList, customerId), {
+      params: {customerId},
+      success: function(buildingList) {
+
+        AppDispatcher.dispatch({
+          type: Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID,
+          data: buildingList,
+          info
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+  getGroupSettings(kpiSettingsId){
+    Ajax.get(util.replacePathParams(Path.KPI.getGroupSetting,kpiSettingsId),
+    {
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_KPI_GROUP_SETTINGS,
+          data: resBody
+        });
+      },
+      error: function() {}
+    });
+  },
+  merge(data){
+    AppDispatcher.dispatch({
+      type: Action.MERGE_KPI_GROUP_INFO,
+      data: data
+    });
+  },
+}
 
 export default GroupKPIAction;

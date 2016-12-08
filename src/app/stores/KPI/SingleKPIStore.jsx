@@ -484,7 +484,7 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          SingleKPIStore._initKpiChartData();
          SingleKPIStore.emitChange();
          break;
-    case Action.MERGE_KPI_INFO:
+    case Action.MERGE_KPI_SINGLE_INFO:
          SingleKPIStore.merge(action.data);
          SingleKPIStore.emitChange();
          break;

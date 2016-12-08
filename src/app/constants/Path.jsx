@@ -21,6 +21,7 @@ module.exports = {
     updateKpiReportSettings:'/kpi/settings/update',
     updatePredictionSetting:'/kpi/PredictionSetting/update',
     groupcontinuous:'/kpi/groupcontinuous/{KpiId}/{year}',
-    getGroupByYear:'/kpi/group/{customerId}/{year}'
+    getGroupByYear:'/kpi/group/{customerId}/{year}',
+    getGroupSetting:'/kpi/groupsettings/{kpiSettingsId}'
 	}
 };

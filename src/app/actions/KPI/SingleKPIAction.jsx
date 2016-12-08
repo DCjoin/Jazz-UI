@@ -128,7 +128,7 @@ const SingleKPIAction = {
   },
   merge(data){
     AppDispatcher.dispatch({
-      type: Action.MERGE_KPI_INFO,
+      type: Action.MERGE_KPI_SINGLE_INFO,
       data: data
     });
   },

@@ -34,8 +34,6 @@ export default class KPI extends Component {
 		this._onError = this._onError.bind(this);
 		this._onSuccess = this._onSuccess.bind(this);
 		this._onYearChange = this._onYearChange.bind(this);
-
-
   }
 
   state = {

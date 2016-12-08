@@ -12,12 +12,19 @@ export default class BasicConfig extends Component {
   state={
     ProlongkpiId:-1
   };
-  
-  _onCommodityChange(value){
 
+  _onCommodityChange(value){
+    GroupKPIAction.merge([{
+      path:'CommodityId',
+      value
+    }])
   }
 
   _onNameChange(value){
+    GroupKPIAction.merge([{
+      path:'IndicatorName',
+      value
+    }])
   }
 
   _onPrelongKpiChange(value){
@@ -28,8 +35,15 @@ export default class BasicConfig extends Component {
     })
   }
 
+  _onTypeChange(ev,value){
+    GroupKPIAction.merge([{
+      path:'IndicatorType',
+      value
+    }])
+  }
+  
   _renderNewBasic(){
-    let {CommodityId,ActualTagName,Type}=this.props.kpiInfo.toJS();
+    let {CommodityId,IndicatorName,IndicatorType}=this.props.kpiInfo.toJS();
     let commodityProps={
       ref: 'commodity',
       isViewStatus: false,
@@ -42,7 +56,7 @@ export default class BasicConfig extends Component {
       ref: 'name',
       isViewStatus: false,
       didChanged: this._onNameChange,
-      defaultValue: ActualTagName || '',
+      defaultValue: IndicatorName || '',
       hintText:I18N.Setting.KPI.Basic.NameHint,
       title: I18N.Setting.KPI.Basic.Name,
       isRequired: true,
@@ -53,7 +67,7 @@ export default class BasicConfig extends Component {
     },
     typeProps={
       status:SettingStatus.New,
-      type:Type,
+      type:IndicatorType,
       onTypeChange:this._onTypeChange,
     };
     return(

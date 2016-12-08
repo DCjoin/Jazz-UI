@@ -2004,5 +2004,8 @@ I18N.Setting.KPICycle.Non = '未配置指标计算周期时，默认按照自然
 I18N.Setting.KPI.Group = {};
 I18N.Setting.KPI.Group.Commodity = '指标介质';
 I18N.Setting.KPI.Group.Prolongkpi = '选择引用指标';
+I18N.Setting.KPI.Group.New = '新建指标-{0}年';
+I18N.Setting.KPI.Group.Edit = '编辑指标-{0}年-{1}';
+I18N.Setting.KPI.Group.Prolong = '延用上年指标-{0}年';
 
 module.exports = I18N;
