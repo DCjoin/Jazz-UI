@@ -18,9 +18,9 @@ var _kpiInfo=null,
     _buildings=null,
     _annualSum='-',
     _rawData=null,
-    _info=null,,
+    _info=null,
     _groupSettingsList = null,
-    _KpiSettings=Immutable.fromJS(KpiSettingsModel),
+    _KpiSettings=Immutable.fromJS(KpiSettingsModel);
 
 function emptyList() {
       return new List();
