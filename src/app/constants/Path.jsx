@@ -19,6 +19,7 @@ module.exports = {
     getCalcPredicate:'/kpi/CalcKPIPredicateValue',
     createKpiReportSettings:'/kpi/settings/create',
     updateKpiReportSettings:'/kpi/settings/update',
-    updatePredictionSetting:'/kpi/PredictionSetting/update'
+    updatePredictionSetting:'/kpi/PredictionSetting/update',
+        groupSettingsList: '/kpi/groupsettings/list/{customerId}',
 	}
 };

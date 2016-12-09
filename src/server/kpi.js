@@ -253,6 +253,40 @@ exports.register = function(server, options, next) {
                 }).type("application/json");
             }
         },
+        {
+            method: 'get',
+            path: APIBasePath + '/kpi/groupsettings/list/{customerId}',
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": [{
+                        Year: 2015,
+                        GroupKpiItems: [{
+                            KpiSettingsId: 1,
+                            IndicatorName: '用电量',
+                            IndicatorType: 1,
+                            AnnualQuota: 1.1,
+                            AnnualSavingRate: 1.1
+                        }, {
+                            KpiSettingsId: 2,
+                            IndicatorName: '用sui量',
+                            IndicatorType: 2,
+                            AnnualQuota: 1.1,
+                            AnnualSavingRate: 1.1
+                        }]
+                    }, {
+                        Year: 2013,
+                        GroupKpiItems: [{
+                            KpiSettingsId: 6,
+                            IndicatorName: '用电量',
+                            IndicatorType: 1,
+                            AnnualQuota: 6666666666666,
+                            AnnualSavingRate: 1.1
+                        }]
+                    }]
+                }).type("application/json");
+            }
+        },
 
 
     ]);
