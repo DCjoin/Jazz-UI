@@ -7,6 +7,16 @@ import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 
 
 const GroupKPIAction = {
+  getGroupSettingsList(customerId) {
+    Ajax.get( util.replacePathParams(Path.KPI.Group.groupSettingsList, customerId), {
+      success: (res) => {
+        AppDispatcher.dispatch({
+          type: Action.GROUP_SETTINGS_LIST,
+          data: res,
+        })
+      }
+    } );
+  },
   getGroupContinuous(KpiId,year) {
     Ajax.get(util.replacePathParams(Path.KPI.Group.groupcontinuous, KpiId,year),
     {
@@ -109,6 +119,22 @@ const GroupKPIAction = {
           content: ErrorMsg,
         });
         console.log(err, res);
+      }
+    });
+  },
+  deleteGroupSettings(kpiSettingsId, customerId, IndicatorName) {
+    let getGroupSettingsList = this.getGroupSettingsList;
+    Ajax.post(util.replacePathParams(Path.KPI.Group.delete, kpiSettingsId), {
+      success: function() {
+        getGroupSettingsList(customerId);
+      },
+      error: function(err, res) {
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),IndicatorName);
+        AppDispatcher.dispatch({
+          type: Action.KPI_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
       }
     });
   },
