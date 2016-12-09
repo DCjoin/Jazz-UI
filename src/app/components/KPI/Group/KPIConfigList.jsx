@@ -7,7 +7,9 @@ import Popover from 'material-ui/Popover';
 import {Menu, MenuItem} from 'material-ui/Menu';
 import {find} from 'lodash/collection';
 
-import {SettingStatus} from '../../../constants/actionType/KPI.jsx';
+import util from 'util/Util.jsx';
+
+import {SettingStatus} from 'constants/actionType/KPI.jsx';
 
 import FlatButton from 'controls/FlatButton.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
@@ -28,36 +30,9 @@ function getUnit(id) {
 	return '';
 }
 
-function getLabelData(value) {
-	if( value * 1 !== value ) {
-		return null;
-	}
-	let abbreviations = [
-		// {label: '兆', value: Math.pow(10, 12)},
-		{label: '亿', value: Math.pow(10, 8)},
-		{label: '万', value: Math.pow(10, 4)},
-		{label: '', value: Math.pow(10, 0)},
-	];
-	let label = '';
-	for(let i = 0; i < abbreviations.length; i++) {
-		let abbreviation = abbreviations[i];
-		if( value/abbreviation.value > 1 ) {
-			label = abbreviation.label;
-			value = value/abbreviation.value + '';
-			let firstValue = value.split('.')[0];
-			let secondValue = value.split('.')[1] || '0000';
-			secondValue = secondValue.substring(0, 4 - firstValue.length);
-			value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
-			break;
-		}
-
-	}
-	return value + label;
-}
-
 function getConfigSummary(item) {
 	if(item.IndicatorType === 1) {
-		return '定额指标 集团定额 ' + getLabelData(item.AnnualQuota) + ' ' + getUnit(item.CommodityId);
+		return '定额指标 集团定额 ' + util.getLabelData(item.AnnualQuota) + ' ' + getUnit(item.CommodityId);
 	}
 	return '节能率指标 节能率 ' + item.AnnualSavingRate.toFixed() + '%'
 }

@@ -51,33 +51,6 @@ function getUnit(id) {
 	return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 }
 
-function getLabelData(value) {
-	if( value * 1 !== value ) {
-		return null;
-	}
-	let abbreviations = [
-		// {label: '兆', value: Math.pow(10, 12)},
-		{label: '亿', value: Math.pow(10, 8)},
-		{label: '万', value: Math.pow(10, 4)},
-		{label: '', value: Math.pow(10, 0)},
-	];
-	let label = '';
-	for(let i = 0; i < abbreviations.length; i++) {
-		let abbreviation = abbreviations[i];
-		if( value/abbreviation.value > 1 ) {
-			label = abbreviation.label;
-			value = value/abbreviation.value + '';
-			let firstValue = value.split('.')[0];
-			let secondValue = value.split('.')[1] || '0000';
-			secondValue = secondValue.substring(0, 4 - firstValue.length);
-			value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
-			break;
-		}
-
-	}
-	return value + label;
-}
-
 function changeLegendStyle(item) {
 	item.setAttribute('width', item.getAttribute('width') * 1  - 1);
 	item.setAttribute('height', item.getAttribute('height') * 1  - 1);
@@ -120,7 +93,7 @@ const DEFAULT_OPTIONS = {
     	lineWidth: 1,
     	labels: {
 	    	formatter: function() {
-	    		return getLabelData(this.value)
+	    		return util.getLabelData(this.value)
 	    	},
     	},
     	type: 'column',
@@ -225,7 +198,7 @@ class KPIChart extends Component {
 			    		list += `
 			    		<tr>
 					    	<td style="color:${data.series.color};padding:0">● ${data.series.name}: </td>
-					    	<td style="padding:0">${getLabelData(data.y) + ' ' + unit}</td>
+					    	<td style="padding:0">${util.getLabelData(data.y) + ' ' + unit}</td>
 				    	</tr>
 			    		`;
 	    			}
@@ -234,7 +207,7 @@ class KPIChart extends Component {
 			    		list += `
 			    		<tr>
 					    	<td style="color:${data.series.color};padding:0">■ ${data.series.name}: </td>
-					    	<td style="padding:0">${getLabelData(data.y) + ' ' + unit}</td>
+					    	<td style="padding:0">${util.getLabelData(data.y) + ' ' + unit}</td>
 				    	</tr>
 			    		`;
 	    			}
@@ -243,7 +216,7 @@ class KPIChart extends Component {
 			    		list += `
 			    		<tr>
 					    	<td style="color:#434348;padding:0"><div style='    margin-right: 4px;border-color:#434348;border-width:1px;border-style:dotted;display:inline-block;width:6px;height:6px'></div>${data.series.name}: </td>
-					    	<td style="padding:0">${getLabelData(data.y) + ' ' + unit}</td>
+					    	<td style="padding:0">${util.getLabelData(data.y) + ' ' + unit}</td>
 				    	</tr>
 			    		`;
 	    			}
@@ -368,14 +341,14 @@ class KPIReport extends Component {
 			<div className='summary-title'>{isIndex ? I18N.Kpi.IndexValue : I18N.Kpi.SavingValue}</div>
 			{isIndex ?/*定额指标值*/
 			(<div className='summary-value'>
-				<span>{summaryData.IndexValue !== null && getLabelData(summaryData.IndexValue)}</span>
+				<span>{summaryData.IndexValue !== null && util.getLabelData(summaryData.IndexValue)}</span>
 				<span>{summaryData.IndexValue !== null && getUnit(data.get('unit'))}</span>
 			</div>) : /*节能率指标值*/
 			(<div className='summary-value'>
 				<span>{summaryData.RatioValue !== null && (summaryData.RatioValue || 0).toFixed(1) * 1 + '%'}</span>
-				<span>{summaryData.IndexValue !== null && getLabelData(summaryData.IndexValue)}</span>
+				<span>{summaryData.IndexValue !== null && util.getLabelData(summaryData.IndexValue)}</span>
 				<span>{summaryData.IndexValue !== null && getUnit(data.get('unit'))}</span>
-				{/*<span>{data.get('prediction') !== null && (getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit'))) )}</span>*/}
+				{/*<span>{data.get('prediction') !== null && (util.getLabelData(data.get('prediction') && sum(data.get('prediction').toJS()) ) + ' ' + (data.get('prediction') && getUnit(data.get('unit'))) )}</span>*/}
 			</div>)}
 		</div>
 		);
@@ -391,13 +364,13 @@ class KPIReport extends Component {
 			<div className='summary-title'>{isIndex ? I18N.Kpi.PredictSum : I18N.Kpi.PredictSaving}</div>
 			{isIndex ?/*定额预测值*/
 			(<div className='summary-value'>
-				<span>{getLabelData(summaryData.PredictSum)}</span>
+				<span>{util.getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'))}</span>
 				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
 			</div>) :/*节能率预测值*/
 			(<div className='summary-value'>
 				<span>{(summaryData.PredictRatio === null ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
-				<span>{getLabelData(summaryData.PredictSum)}</span>
+				<span>{util.getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 			</div>)}
 		</div>
