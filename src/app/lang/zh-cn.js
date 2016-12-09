@@ -1320,7 +1320,7 @@ I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
 I18N.Message.M21802 = '所选数据点包含计量数据V类型的数据点，不支持原始数据功能，请重新选择。';
 
-I18N.Message.M28001 = '"{0}"在"{1}"下已存在，请修改名称后再保存。';
+I18N.Message.M28001 = '"{0}"{1}已存在，请修改名称后再保存。';
 
 I18N.Folder = {};
 I18N.Folder.NewWidget = {};
@@ -2007,5 +2007,18 @@ I18N.Setting.KPI.Group.Prolongkpi = '选择引用指标';
 I18N.Setting.KPI.Group.New = '新建指标-{0}年';
 I18N.Setting.KPI.Group.Edit = '编辑指标-{0}年-{1}';
 I18N.Setting.KPI.Group.Prolong = '延用上年指标-{0}年';
+I18N.Setting.KPI.Group.GroupConfig ={};
+I18N.Setting.KPI.Group.GroupConfig.Title='第二步：集团指标配置';
+I18N.Setting.KPI.Group.GroupConfig.Annual= '集团{0}指标值';
+I18N.Setting.KPI.Group.GroupConfig.InputAnnual= '输入集团{0}';
+I18N.Setting.KPI.Group.BuildingConfig ={};
+I18N.Setting.KPI.Group.BuildingConfig.Title='第三步：建筑指标配置';
+I18N.Setting.KPI.Group.BuildingConfig.SumTitle='建筑定额指标值总计 ({0})';
+I18N.Setting.KPI.Group.BuildingConfig.Name='建筑名称';
+I18N.Setting.KPI.Group.BuildingConfig.Value='{0}指标值 ({1})';
+I18N.Setting.KPI.Group.BuildingConfig.Tag='引用数据点';
+I18N.Setting.KPI.Group.BuildingConfig.Operation='操作';
+I18N.Setting.KPI.Group.BuildingConfig.MonthConfig='配置逐月值';
+I18N.Setting.KPI.Group.BuildingConfig.Input='输入建筑{0}';
 
 module.exports = I18N;

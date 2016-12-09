@@ -296,6 +296,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   },
 
   validateQuota(value=''){
+    if(value===null){
+      value=''
+    }
     value=value===0 || value?value+'':value;
     let temp=parseFloat(value);
     if(!value || value==='-') return true;
@@ -305,6 +308,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   },
 
   validateSavingRate(value=''){
+    if(value===null){
+      value=''
+    }
     value=value===0 || value?value+'':value;
     let temp=parseFloat(value),
         index=value.indexOf('.');
