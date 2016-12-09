@@ -233,17 +233,17 @@ exports.register = function(server, options, next) {
                 }).type("application/json");
             }
         },
-        {
-            method: 'post',
-            path: APIBasePath + '/kpi/groupsettings/create',
-            handler: function(request, reply) {
-                return reply({
-                    //"error": { "Code": "050001228001", "Messages": null },
-                    "error": { "Code": "0", "Messages": null },
-                    "Result": {}
-                }).type("application/json");
-            }
-        },
+        // {
+        //     method: 'post',
+        //     path: APIBasePath + '/kpi/groupsettings/create',
+        //     handler: function(request, reply) {
+        //         return reply({
+        //             //"error": { "Code": "050001228001", "Messages": null },
+        //             "error": { "Code": "0", "Messages": null },
+        //             "Result": {}
+        //         }).type("application/json");
+        //     }
+        // },
         {
             method: 'post',
             path: APIBasePath + '/kpi/groupsettings/update',

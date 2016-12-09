@@ -238,7 +238,7 @@ let BaselineCfg = React.createClass({
         fontWeight: 'bold',
         fontFamily: 'Microsoft YaHei',
       };
-    var firstTabStyles = Object.assign({},tabStyle, this.state.firstTabStyle);
+    var firstTabStyles = assign({},tabStyle, this.state.firstTabStyle);
     return (
       <div>
         <Dialog title={I18N.Baseline.Basic} ref="cfgDialog" {...dialogProps}>
