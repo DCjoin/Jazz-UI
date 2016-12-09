@@ -280,7 +280,6 @@ class ActualityHeader extends Component {
 			<div className='header-bar'>
 				<div>{!isSingleBuilding() && <span>{I18N.Kpi.SingleProject}-</span>}{I18N.Kpi.KPIActual}</div>
 				{!isSingleBuilding() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
-				{!isSingleBuilding() && isFull() && <FlatButton disabled={!this.props.hierarchyId} label={'+ 指标'} onClick={this.props.goCreate}/>}
 			</div>
 		);
 	}
