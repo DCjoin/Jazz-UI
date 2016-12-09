@@ -88,7 +88,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   updateGroupSettingsList( data ) {
     let nextYear = new Date().getFullYear() + 1,
       convertedData = [];
-    for( let i = nextYear; i >= nextYear - 5; i--) {
+    for( let i = nextYear; i > nextYear - 5; i--) {
       let currentDataIndex = findIndex(data, setting => setting.Year === i);
       if( currentDataIndex > -1 ) {
         data[currentDataIndex].add = true;
@@ -102,7 +102,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         })
       }
     }
-    convertedData.concat(data);
+    convertedData = convertedData.concat(data);
     _groupSettingsList = sortBy(convertedData, ['Year']);
   },
   getGroupSettingsList() {
