@@ -32,9 +32,18 @@ function getUnit(id) {
 
 function getConfigSummary(item) {
 	if(item.IndicatorType === 1) {
-		return '定额指标 集团定额 ' + util.getLabelData(item.AnnualQuota) + ' ' + getUnit(item.CommodityId);
+		return [
+			I18N.Setting.KPI.YearAndType.Quota,
+			I18N.Setting.KPI.GroupQuotaType,
+			util.getLabelData(item.AnnualQuota),
+			getUnit(item.CommodityId)
+		].join(' ');
 	}
-	return '节能率指标 节能率 ' + item.AnnualSavingRate.toFixed() + '%'
+	return [
+		I18N.Setting.KPI.YearAndType.SavingRate,
+		I18N.Setting.KPI.GroupSavingRateType,
+		item.AnnualSavingRate.toFixed(1) + '%'
+	].join(' ');
 }
 
 class KPIItem extends Component {
@@ -73,7 +82,7 @@ class KPIItem extends Component {
       					} );
       				}}>
 					<Menu autoWidth={false}>
-						<MenuItem key={'edit'} primaryText={'编辑'} onClick={() => {
+						<MenuItem key={'edit'} primaryText={I18N.Common.Button.Edit} onClick={() => {
 							onChangeState({
 								settingStatus: SettingStatus.Edit,
 								refId: item.KpiSettingsId,
@@ -81,7 +90,10 @@ class KPIItem extends Component {
 						}}/>
 						<MenuItem key={'delete'} style={{
 							color: '#f46a58'
-						}} primaryText={'删除'} onClick={() => {
+						}} primaryText={I18N.Common.Button.Delete} onClick={() => {
+							this.setState({
+								opened: false
+							});
 							onChangeState({
 								showDeleteDialog: true,
 								refId: item.KpiSettingsId,
@@ -116,7 +128,7 @@ class KPIConfigItem extends Component {
 		return (
 			<section className='year-item'>
 				<header className='year-item-header'>
-					<span>{Year + '年'}</span>
+					<span>{util.replacePathParams(I18N.Setting.KPI.Group.HeaderYear, Year)}</span>
 					<LinkButton ref='add_icon' 
 						className={classnames('fa icon-add btn-icon', {
 							opened: this.state.opened
@@ -134,12 +146,12 @@ class KPIConfigItem extends Component {
           					} );
           				}}>
 						<Menu>
-							<MenuItem primaryText={'新建指标'} onClick={() => {
+							<MenuItem primaryText={I18N.Setting.KPI.create} onClick={() => {
 								this._onChangeState({
 									settingStatus: SettingStatus.New
 								});
 							}} />
-							<MenuItem primaryText={'延续往年指标'} onClick={() => {
+							<MenuItem primaryText={I18N.Setting.KPI.Prolong} onClick={() => {
 								this._onChangeState({
 									settingStatus: SettingStatus.Prolong
 								});
@@ -226,7 +238,8 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		}
 		if( settingStatus ) {
 			return (<KPIConfig 
-						onDone={this._onRefresh}
+						onCancel={this._onRefresh}
+						onSave={this._onRefresh}
 						status={settingStatus}
 						year={refYear}
 						id={refId}
@@ -234,7 +247,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		}
 		return (
 			<div className='jazz-margin-up-main jazz-kpi-config-list'>
-				<header className='header-bar'>指标配置</header>
+				<header className='header-bar'>{I18N.Setting.KPI.GroupList.Header}</header>
 				<article className='content'>
 					{GroupKPIStore.getGroupSettingsList().map( data => (
 					<KPIConfigItem 
@@ -246,7 +259,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 				</article>
 				<NewDialog 
 					open={showDeleteDialog}
-					title={'删除指标“' + (GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || '') + '”'}
+					title={util.replacePathParams(I18N.Setting.KPI.GroupList.DeleteTitle, GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || '')}
 					actions={[
 				      <FlatButton
 					      label={I18N.Common.Button.Delete}
@@ -260,7 +273,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 					      	showDeleteDialog: false
 					      })}} />
 				    ]}
-				>{'删除指标将导致所有相关图表都被删除。'}</NewDialog>
+				>{I18N.Setting.KPI.GroupList.DeleteComment}</NewDialog>
 			</div>
 		);
 	}
