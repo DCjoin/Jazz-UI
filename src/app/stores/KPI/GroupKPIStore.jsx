@@ -8,23 +8,26 @@ import assign from 'object-assign';
 import Immutable from 'immutable';
 import _ from 'lodash';
 import { Map,List} from 'immutable';
+import SingleKPIStore from './SingleKPIStore.jsx';
+import UOMStore from 'stores/UOMStore.jsx';
+import AllCommodityStore from 'stores/AllCommodityStore.jsx';
 
 var _kpiInfo=null,
     _groupInfo=null,
-    _buildings=null;
-
-function emptyMap() {
-      return new Map();
-    }
+    _buildings=null,
+    _annualSum='-',
+    _rawData=null;
 
 function emptyList() {
       return new List();
     }
 
+let KPI_SUCCESS_EVENT = 'kpigroupsuccess',
+      KPI_ERROR_EVENT = 'kpigrouperror';
 const GroupKPIStore = assign({}, PrototypeStore, {
 
   init(info){
-    if(_buildings){
+    if(_buildings!==null){
       _kpiInfo=Immutable.fromJS({
         ...info,
         Buildings:Array(_buildings.length)
@@ -37,9 +40,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
           TagSavingRates:[],
           MonthPredictionValues:_.fill(Array(12), {Month:null,value:null})
         }
-        // _kpiInfo=_kpiInfo.setIn(["buildings",index,'KpiType'],KpiType.single);
         _kpiInfo=_kpiInfo.setIn(["Buildings",index],Immutable.fromJS(defaultBuilding));
-        // _kpiInfo=_kpiInfo.setIn(["BuildingKpiSettingsList",index,'AdvanceSettings','IndicatorType'],indicatorType);
       })
     }
     else {
@@ -47,30 +48,21 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     }
 
 
-    // _kpiInfo=_kpiInfo.set('GroupKpiSetting',Immutable.fromJS(KpiSettingsModel));
-    // _kpiInfo=_kpiInfo.set('BuildingKpiSettingsList',Immutable.fromJS(_.fill(Array(_buildings.length), KpiSettingsModel)));
-    // _kpiInfo=_kpiInfo.setIn(['GroupKpiSetting','KpiType'],KpiType.group);
-    // _kpiInfo=_kpiInfo.setIn(['GroupKpiSetting','CustomerId'],customerId);
-    // _kpiInfo=_kpiInfo.setIn(['GroupKpiSetting','HierarchyId'],customerId);
-    // _kpiInfo=_kpiInfo.setIn(['GroupKpiSetting','AdvanceSettings','Year'],year);
-    // _kpiInfo=_kpiInfo.setIn(['GroupKpiSetting','AdvanceSettings','IndicatorType'],indicatorType);
-
-
   },
 
   setKpiInfo(data){
-    let {CustomerId,CommodityId,IndicatorName,AdvanceSettings}=data.GroupKpiSetting;
+    _rawData=Immutable.fromJS(data);
+    let {CustomerId,UomId,CommodityId,IndicatorName,AdvanceSettings}=data.GroupKpiSetting;
     let {Year,IndicatorType,AnnualQuota,AnnualSavingRate}=AdvanceSettings;
 
     _kpiInfo=Immutable.fromJS({
-      CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,
+      CustomerId,Year,IndicatorType,AnnualQuota,AnnualSavingRate,UomId,IndicatorName,CommodityId,
       Buildings:data.BuildingKpiSettingsList.length?
                 data.BuildingKpiSettingsList.map(building=>{
                   let {HierarchyId,HierarchyName,ActualTagId,ActualTagName,AdvanceSettings}=building;
                   let {AnnualQuota,AnnualSavingRate,TargetMonthValues,PredictionSetting}=AdvanceSettings;
                   let {TagSavingRates,MonthPredictionValues}=PredictionSetting;
                   return{
-                    CommodityId,IndicatorName,
                     HierarchyId,HierarchyName,ActualTagId,ActualTagName,AnnualQuota,AnnualSavingRate,
                     TargetMonthValues,TagSavingRates,MonthPredictionValues
                   }
@@ -128,6 +120,19 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     }
   },
 
+  clearParam(){
+    _kpiInfo=_kpiInfo.set('AnnualQuota',null);
+    _kpiInfo=_kpiInfo.set('AnnualSavingRate',null);
+    _kpiInfo.get('Buildings').forEach((building,index)=>{
+      _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
+        AnnualQuota:null,
+        AnnualSavingRate:null,
+        TargetMonthValues:_.fill(Array(12), {Month:null,value:null}),
+        MonthPredictionValues:_.fill(Array(12), {Month:null,value:null})
+      }))
+    })
+  },
+
   merge(data){
     let refresh=false;
     data.forEach(el=>{
@@ -169,13 +174,31 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     }
   },
 
+  IsActive(status){
+    switch (status) {
+      case SettingStatus.New:
+            var {CommodityId}=_kpiInfo.toJS();
+            return CommodityId?true:false;
+        break;
+      case SettingStatus.Edit:
+          return true;
+        break;
+      case SettingStatus.Prolong:
+           var {Buildings}=_kpiInfo.toJS();
+          return Buildings?true:false;
+        break;
+      default:
+
+    }
+  },
+
   getCommodityList(){
     return([
       {
         payload: -1,
         text: I18N.EM.Report.Select,
         disabled:true,
-        commodityId:-1
+        uomId:-1
       },
       {
         payload: 1,
@@ -204,7 +227,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       },
       {
         payload: 11,
-        text: I18N.Common.Commodity.Kerosene ,
+        text: I18N.Common.Commodity.Kerosene,
         uomId:8
       },
       {
@@ -223,19 +246,134 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         uomId:8
       },
     ])
-  }
+  },
+
+  getUomByCommodityId(id){
+    var list=Immutable.fromJS(this.getCommodityList());
+    var index=list.findIndex(item=>item.get('payload')===id);
+    return list.getIn([index,'uomId'])
+  },
+
+  getBuildingSum(calcSum){
+    if(!calcSum){
+      return _annualSum
+    }
+    else {
+      _annualSum=0;
+      _kpiInfo.get('Buildings').forEach(building=>{
+        if(SingleKPIStore.validateQuota(building.get('AnnualQuota')) && _annualSum!=='-'){
+          _annualSum=building.get('AnnualQuota')?_annualSum+parseFloat(building.get('AnnualQuota')):_annualSum;
+        } else {
+          _annualSum='-'
+        }
+      })
+    }
+    return _annualSum
+  },
+
+  validateKpiInfo(kpiInfo){
+    var validDate=true;
+    var {IndicatorName,CommodityId,AnnualQuota,AnnualSavingRate,Buildings}=kpiInfo.toJS();
+
+    if(!CommodityId || CommodityId===-1) return false;
+
+    if(!IndicatorName || IndicatorName==='') return false;
+
+    if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)) return false;
+
+    if(AnnualSavingRate && !SingleKPIStore.validateSavingRate(AnnualSavingRate)) return false;
+
+    Buildings.forEach(building=>{
+      var {AnnualQuota,AnnualSavingRate}=building;
+
+      if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)) validDate=false;
+
+      if(AnnualSavingRate && !SingleKPIStore.validateSavingRate(AnnualSavingRate)) validDate=false;
+    });
+     return validDate
+  },
+
+  transit(){
+    var result=_rawData;
+    if(_rawData===null){
+      result=Immutable.fromJS({
+        GroupKpiSetting:assign({},KpiSettingsModel),
+        BuildingKpiSettingsList:_.fill(Array(_buildings.length), assign({},KpiSettingsModel))
+      })
+    }
+    let GroupKpiSetting=result.get('GroupKpiSetting');
+    var {CustomerId,Year,IndicatorName,UomId,CommodityId,IndicatorType,AnnualQuota,AnnualSavingRate,Buildings}=_kpiInfo.toJS();
+    //for GroupKpiSetting
+    result=result.set('GroupKpiSetting',GroupKpiSetting.mergeDeep(
+      {
+        KpiType:KpiType.group,
+        HierarchyId:CustomerId,
+        CustomerId,IndicatorName,UomId,CommodityId,
+        AdvanceSettings:{
+          Year,IndicatorType,AnnualQuota,AnnualSavingRate
+        }
+        }
+      )
+    );
+    //for BuildingKpiSettingsList
+    Buildings.forEach((building,index)=>{
+      var kpi=result.getIn(['BuildingKpiSettingsList',index]);
+      var {HierarchyId,HierarchyName,ActualTagId,ActualTagName,AnnualQuota,AnnualSavingRate,TargetMonthValues,
+        TagSavingRates,MonthPredictionValues}=building;
+      result=result.setIn(['BuildingKpiSettingsList',index],kpi.mergeDeep({
+        KpiType:KpiType.single,
+        HierarchyId,HierarchyName,ActualTagId,ActualTagName,
+        AdvanceSettings:{
+          IndicatorType,AnnualQuota,AnnualSavingRate,
+          TargetMonthValues,TagSavingRates,MonthPredictionValues
+        }
+      }));
+    });
+
+    return result.toJS();
+
+  },
+    dispose(){
+      _kpiInfo=null;
+      _groupInfo=null;
+      _buildings=null;
+      _annualSum='-';
+      _rawData=null;
+    },
+    emitSuccessChange: function() {
+      this.emit(KPI_SUCCESS_EVENT);
+    },
+    addSuccessListener: function(callback) {
+      this.on(KPI_SUCCESS_EVENT, callback);
+    },
+
+    removeSuccessListener: function(callback) {
+      this.removeListener(KPI_SUCCESS_EVENT, callback);
+      this.dispose();
+    },
+    emitErrorChange: function(args) {
+      this.emit(KPI_ERROR_EVENT,args);
+    },
+    addErrorListener: function(callback) {
+      this.on(KPI_ERROR_EVENT, callback);
+    },
+
+    removeErrorListener: function(callback) {
+      this.removeListener(KPI_ERROR_EVENT, callback);
+      this.dispose();
+    },
 });
 
 GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_KPI_GROUP_CONTINUOUS:
-      GroupKPIStore.setKpiInfo(action.data);
-      GroupKPIStore.emitChange();
-      break;
+          GroupKPIStore.setKpiInfo(action.data);
+          GroupKPIStore.emitChange();
+        break;
     case Action.GET_KPI_GROUP_BY_YEAR:
-      GroupKPIStore.setGroupByYear(action.data,action.info);
-      GroupKPIStore.emitChange();
-      break;
+          GroupKPIStore.setGroupByYear(action.data,action.info);
+          GroupKPIStore.emitChange();
+          break;
     case Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID:
         GroupKPIStore.setBuildings(action.data,action.info);
         GroupKPIStore.emitChange();
@@ -248,6 +386,15 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          GroupKPIStore.merge(action.data);
          GroupKPIStore.emitChange();
           break;
+    case Action.KPI_GROUP_SUCCESS:
+         GroupKPIStore.emitSuccessChange(action.year);
+         break;
+    case Action.KPI_GROUP_ERROR:
+        GroupKPIStore.emitErrorChange({
+          title: action.title,
+            content: action.content
+        });
+        break;
       default:
     }
   });

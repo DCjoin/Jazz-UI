@@ -5,6 +5,11 @@ import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import BasicConfig from './BasicConfig.jsx';
+import GroupConfig from './GroupConfig.jsx';
+import BuildingConfig from './BuildingConfig.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
+import Dialog from 'controls/NewDialog.jsx';
 
 var customerId=null;
 export default class KPIConfig extends Component {
@@ -16,19 +21,65 @@ export default class KPIConfig extends Component {
 	constructor(props) {
 		super(props);
 		this._onChange = this._onChange.bind(this);
+		this._onSuccess = this._onSuccess.bind(this);
+		this._onError = this._onError.bind(this);
+		this._onSave = this._onSave.bind(this);
 	}
 
 	state={
 		kpiInfo:null,
-		groupInfo:null,
+		errorTitle: null,
+		errorContent: null,
 	};
 
 	_onChange(){
 		this.setState({
 			kpiInfo:GroupKPIStore.getKpiInfo(),
-			groupInfo:GroupKPIStore.getGroupInfo(),
 		})
 	}
+
+	_onSave(){
+		if(this.props.status===SettingStatus.New){
+			GroupKPIAction.create()
+		}
+		else {
+			GroupKPIAction.update()
+		}
+	}
+
+	_onSuccess(){
+		this.props.onSave()
+	}
+
+	_onError(error) {
+		this.setState({
+			errorTitle: error.title,
+			errorContent: error.content,
+		});
+	}
+
+		_renderErrorDialog() {
+	    var that = this;
+	    var onClose = function() {
+	      that.setState({
+	        errorTitle: null,
+	        errorContent: null,
+	      });
+	    };
+	    if (!!this.state.errorTitle) {
+	      return (<Dialog
+	        ref = "_dialog"
+	        title={this.state.errorTitle}
+	        modal={false}
+	        open={!!this.state.errorTitle}
+	        onRequestClose={onClose}
+	        >
+	        {this.state.errorContent}
+	      </Dialog>);
+	    } else {
+	      return null;
+	    }
+	  }
 
 	_renderBasic(){
 		let props={
@@ -42,7 +93,23 @@ export default class KPIConfig extends Component {
 	}
 
 	_renderGroupConfig(){
+		let props={
+			status:this.props.status,
+			kpiInfo:this.state.kpiInfo,
+		};
+		return(
+			<GroupConfig {...props}/>
+		)
+	}
 
+	_renderBuildingConfig(){
+		let props={
+			status:this.props.status,
+			kpiInfo:this.state.kpiInfo,
+		};
+		return(
+			<BuildingConfig {...props}/>
+		)
 	}
 
 	componentWillMount(){
@@ -73,10 +140,14 @@ export default class KPIConfig extends Component {
 
 	componentDidMount(){
 		GroupKPIStore.addChangeListener(this._onChange);
+		GroupKPIStore.addSuccessListener(this._onSuccess);
+		GroupKPIStore.addErrorListener(this._onError);
 	}
 
 	componentWillUnmount(){
 		GroupKPIStore.removeChangeListener(this._onChange);
+		GroupKPIStore.removeSuccessListener(this._onSuccess);
+		GroupKPIStore.removeErrorListener(this._onError);
 	}
 
 	render() {
@@ -97,6 +168,11 @@ export default class KPIConfig extends Component {
 				<TitleComponent {...titleProps}>
 					{this._renderBasic()}
 					{this._renderGroupConfig()}
+					{this._renderBuildingConfig()}
+					<FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={GroupKPIStore.validateKpiInfo(this.state.kpiInfo)}
+						ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
+						cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
+					{this._renderErrorDialog()}
 				</TitleComponent>
 			);
 		}
@@ -113,11 +189,12 @@ KPIConfig.propTypes = {
 	year:React.PropTypes.number,
 	//编辑时，需要name
 	name:React.PropTypes.string,
-
+	onSave:React.PropTypes.func,
+	onCancel:React.PropTypes.func,
 };
 
 KPIConfig.defaultProps = {
-	status:SettingStatus.Prolong,
+	status:SettingStatus.Edit,
 	//编辑时 id=kpiSettingsId;延用时 id=KpiId
 	id:2,
 	year:2017,

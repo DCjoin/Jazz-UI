@@ -195,7 +195,7 @@ const SingleKPIAction = {
         });
       },
       error: function(err, res) {
-        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),kpiInfo.IndicatorName,HierarchyName);
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),kpiInfo.IndicatorName,`“在${HierarchyName}下”`);
         AppDispatcher.dispatch({
           type: Action.KPI_ERROR,
           title: I18N.Platform.ServiceProvider.ErrorNotice,
@@ -220,7 +220,7 @@ const SingleKPIAction = {
         });
       },
       error: function(err, res) {
-        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),kpiInfo.IndicatorName,kpiInfo.HierarchyName);
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),kpiInfo.IndicatorName,`“在${kpiInfo.HierarchyName}下”`);
         AppDispatcher.dispatch({
           type: Action.KPI_ERROR,
           title: I18N.Platform.ServiceProvider.ErrorNotice,

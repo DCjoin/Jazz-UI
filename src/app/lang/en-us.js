@@ -1320,7 +1320,7 @@ I18N.Message.M21702 = 'The report has been modified and the page will be refresh
 I18N.Message.M21706 = 'The report has duplicate Tag, please check it.';
 I18N.Message.M21802 = 'Selected tag include vtag, cannot support raw data view, please select again.';
 
-I18N.Message.M28001 = '"{0}"在"{1}"下已存在，请修改名称后再保存。';
+I18N.Message.M28001 = '"{0}"{1}已存在，请修改名称后再保存。';
 
 I18N.Folder = {};
 I18N.Folder.NewWidget = {};
@@ -2007,5 +2007,11 @@ I18N.Setting.KPI.Group.Prolongkpi = '选择引用指标';
 I18N.Setting.KPI.Group.New = '新建指标-{0}年';
 I18N.Setting.KPI.Group.Edit = '编辑指标-{0}年-{1}';
 I18N.Setting.KPI.Group.Prolong = '延用上年指标-{0}年';
+I18N.Setting.KPI.Group.GroupConfig ={};
+I18N.Setting.KPI.Group.GroupConfig.Title='第二步：集团指标配置';
+I18N.Setting.KPI.Group.GroupConfig.Annual= '集团{0}指标值';
+I18N.Setting.KPI.Group.GroupConfig.InputAnnual= '输入集团{0}';
+I18N.Setting.KPI.Group.BuildingConfig ={};
+I18N.Setting.KPI.Group.BuildingConfig.Title='第三步：建筑指标配置';
 
 module.exports = I18N;

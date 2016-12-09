@@ -3,12 +3,12 @@ import Ajax from '../../ajax/Ajax.jsx';
 import { Action } from 'constants/actionType/KPI.jsx';
 import Path from 'constants/Path.jsx';
 import util from 'util/Util.jsx';
-import GroupKPIStore from 'stores/KPI/SingleKPIStore.jsx';
+import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 
 
 const GroupKPIAction = {
   getGroupContinuous(KpiId,year) {
-    Ajax.get(util.replacePathParams(Path.KPI.groupcontinuous, KpiId,year),
+    Ajax.get(util.replacePathParams(Path.KPI.Group.groupcontinuous, KpiId,year),
     {
       success: function(resBody) {
         AppDispatcher.dispatch({
@@ -20,7 +20,7 @@ const GroupKPIAction = {
     });
   },
   getGroupByYear(customerId,year,info){
-    Ajax.get(util.replacePathParams(Path.KPI.getGroupByYear,customerId,year),
+    Ajax.get(util.replacePathParams(Path.KPI.Group.getGroupByYear,customerId,year),
     {
       success: function(resBody) {
         AppDispatcher.dispatch({
@@ -49,7 +49,7 @@ const GroupKPIAction = {
     });
   },
   getGroupSettings(kpiSettingsId){
-    Ajax.get(util.replacePathParams(Path.KPI.getGroupSetting,kpiSettingsId),
+    Ajax.get(util.replacePathParams(Path.KPI.Group.getGroupSetting,kpiSettingsId),
     {
       success: function(resBody) {
         AppDispatcher.dispatch({
@@ -64,6 +64,52 @@ const GroupKPIAction = {
     AppDispatcher.dispatch({
       type: Action.MERGE_KPI_GROUP_INFO,
       data: data
+    });
+  },
+  create(){
+    var url = Path.KPI.Group.create;
+    var params=GroupKPIStore.transit();
+    Ajax.post(url,
+      {
+      params: params,
+      commonErrorHandling: false,
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.KPI_GROUP_SUCCESS
+        });
+      },
+      error: function(err, res) {
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),params.GroupKpiSetting.IndicatorName);
+        AppDispatcher.dispatch({
+          type: Action.KPI_GROUP_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
+    });
+  },
+  update(){
+    var url = Path.KPI.Group.update;
+    var params=GroupKPIStore.transit();
+    Ajax.post(url,
+      {
+      params: params,
+      commonErrorHandling: false,
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.KPI_GROUP_SUCCESS
+        });
+      },
+      error: function(err, res) {
+        let ErrorMsg = I18N.format(util.getErrorMessageByRes(res.text),params.GroupKpiSetting.IndicatorName);
+        AppDispatcher.dispatch({
+          type: Action.KPI_GROUP_ERROR,
+          title: I18N.Platform.ServiceProvider.ErrorNotice,
+          content: ErrorMsg,
+        });
+        console.log(err, res);
+      }
     });
   },
 }

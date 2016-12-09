@@ -49,7 +49,7 @@ function getFirstMenuPathFunc(menu) {
 let MainApp = React.createClass({
   statics: {
     prepareShow: () => {
-      return CurrentUserCustomerStore.getAll() && CurrentUserStore.getCurrentPrivilege() && CurrentUserStore.getCurrentUser();
+      return UOMStore.getUoms() && AllCommodityStore.getAllCommodities() && CurrentUserCustomerStore.getAll() && CurrentUserStore.getCurrentPrivilege() && CurrentUserStore.getCurrentUser();
     },
     needDefaultReplace: (router) => {
       if(CurrentUserStore.getCurrentUser().Id === 1) {

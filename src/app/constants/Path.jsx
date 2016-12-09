@@ -20,8 +20,14 @@ module.exports = {
     createKpiReportSettings:'/kpi/settings/create',
     updateKpiReportSettings:'/kpi/settings/update',
     updatePredictionSetting:'/kpi/PredictionSetting/update',
-    groupcontinuous:'/kpi/groupcontinuous/{KpiId}/{year}',
-    getGroupByYear:'/kpi/group/{customerId}/{year}',
-    getGroupSetting:'/kpi/groupsettings/{kpiSettingsId}'
+    Group:{
+      groupcontinuous:'/kpi/groupcontinuous/{KpiId}/{year}',
+      getGroupByYear:'/kpi/group/{customerId}/{year}',
+      getGroupSetting:'/kpi/groupsettings/{kpiSettingsId}',
+      create:'/kpi/groupsettings/create',
+      update:'/kpi/groupsettings/update'
+    }
+
+
 	}
 };

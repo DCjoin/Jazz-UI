@@ -4,8 +4,8 @@ import {SettingStatus,Type} from 'constants/actionType/KPI.jsx';
 import ViewableKPIType from './ViewableKPIType.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import ViewableTextField from 'controls/ViewableTextField.jsx';
-import GroupKPIStore from "../../../stores/KPI/GroupKPIStore.jsx";
-import GroupKPIAction from '../../../actions/KPI/GroupKPIAction.jsx';
+import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
+import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 
 export default class BasicConfig extends Component {
 
@@ -22,8 +22,12 @@ export default class BasicConfig extends Component {
     GroupKPIAction.merge([{
       path:'CommodityId',
       value
+    },
+    {
+      path:'UomId',
+      value:GroupKPIStore.getUomByCommodityId(value)
     }])
-  }
+    }
 
   _onNameChange(value){
     GroupKPIAction.merge([{
@@ -65,8 +69,8 @@ export default class BasicConfig extends Component {
       title: I18N.Setting.KPI.Basic.Name,
       isRequired: true,
       style:{
-        marginTop:'30px',
-        marginBottom:'30px'
+        marginTop:'15px',
+        marginBottom:'15px'
       }
     },
     typeProps={

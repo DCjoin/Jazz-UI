@@ -52,7 +52,6 @@ export default class TagSelect extends Component {
 			TagSelectAction.getTags(this.props.hierarchyId,id,this.context.router.params.customerId,
 				this.props.tag.get('CommodityId'),this.props.tag.get('UomId'))
 		}
-
 	}
 
 	_onSave(){

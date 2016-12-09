@@ -22,6 +22,8 @@ module.exports = {
     GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID:null,
     GET_KPI_GROUP_SETTINGS:null,
     MERGE_KPI_GROUP_INFO:null,
+    KPI_GROUP_SUCCESS:null,
+    KPI_GROUP_ERROR:null,
   }),
 
   Type:{
