@@ -30,11 +30,26 @@ import Dialog from '../controls/NewDialog.jsx';
 
 import RoutePath from '../util/RoutePath.jsx';
 
+function getFirstMenuPathFunc(menu) {
+  let firstMenu = menu[0];
+  if( !firstMenu ) {
+    return function() {
+      console.err('No has any menu');
+    }
+  }
+  if(firstMenu.children && firstMenu.children.length > 0) {
+    let firstChild = firstMenu.children[0];
+    if(firstChild.list && firstChild.list.length > 0) {
+      return firstChild.list[0].getPath;
+    }
+  }
+  return  firstMenu.getPath;
+}
 
 let MainApp = React.createClass({
   statics: {
     prepareShow: () => {
-      return CurrentUserCustomerStore.getAll() && CurrentUserStore.getCurrentPrivilege() && CurrentUserStore.getCurrentUser();
+      return UOMStore.getUoms() && AllCommodityStore.getAllCommodities() && CurrentUserCustomerStore.getAll() && CurrentUserStore.getCurrentPrivilege() && CurrentUserStore.getCurrentUser();
     },
     needDefaultReplace: (router) => {
       if(CurrentUserStore.getCurrentUser().Id === 1) {
@@ -46,7 +61,7 @@ let MainApp = React.createClass({
       let isAdmin = LoginStore.checkHasSpAdmin();
       if( CurrentUserCustomerStore.getAll().length === 1 ) {
         if( !isAdmin ) {
-          return RoutePath[this._getMenuItems()[0].name](
+          return getFirstMenuPathFunc(CurrentUserStore.getMainMenuItems())(
             assign({}, router.params, {
               customerId: CurrentUserCustomerStore.getAll()[0].Id
             })

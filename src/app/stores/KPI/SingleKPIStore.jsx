@@ -9,7 +9,7 @@ import moment from 'moment';
 import { Map,List} from 'immutable';
 import assign from 'object-assign';
 import {findLastIndex, last, first} from 'lodash/array';
-import {Status,Type} from '../../constants/actionType/KPI.jsx';
+import {DataStatus,Type} from '../../constants/actionType/KPI.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
 // let j2d = DataConverter.JsonToDateTime,
@@ -218,7 +218,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
       let {path,status,value}=el;
       let paths = path.split(".");
       refresh= path.indexOf('IndicatorType')>-1 || path.indexOf('ActualTagName')>-1;
-      if(status===Status.ADD){
+      if(status===DataStatus.ADD){
         let {index,length}=el;
         var children = kpiInfo.getIn(paths);
         if(length){
@@ -241,7 +241,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
 
         kpiInfo = kpiInfo.setIn(paths, value);
       }
-      else if(status===Status.DELETE){
+      else if(status===DataStatus.DELETE){
         kpiInfo = kpiInfo.deleteIn(paths);
       }
       else {
@@ -296,6 +296,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   },
 
   validateQuota(value=''){
+    if(value===null){
+      value=''
+    }
     value=value===0 || value?value+'':value;
     let temp=parseFloat(value);
     if(!value || value==='-') return true;
@@ -305,6 +308,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   },
 
   validateSavingRate(value=''){
+    if(value===null){
+      value=''
+    }
     value=value===0 || value?value+'':value;
     let temp=parseFloat(value),
         index=value.indexOf('.');
@@ -484,7 +490,7 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          SingleKPIStore._initKpiChartData();
          SingleKPIStore.emitChange();
          break;
-    case Action.MERGE_KPI_INFO:
+    case Action.MERGE_KPI_SINGLE_INFO:
          SingleKPIStore.merge(action.data);
          SingleKPIStore.emitChange();
          break;
