@@ -194,7 +194,7 @@ KPIConfig.propTypes = {
 };
 
 KPIConfig.defaultProps = {
-	status:SettingStatus.Edit,
+	status:SettingStatus.New,
 	//编辑时 id=kpiSettingsId;延用时 id=KpiId
 	id:2,
 	year:2017,
