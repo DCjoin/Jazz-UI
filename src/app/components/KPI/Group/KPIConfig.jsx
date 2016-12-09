@@ -113,7 +113,7 @@ export default class KPIConfig extends Component {
 	}
 
 	componentWillMount(){
-		customerId=this.context.router.params.customerId;
+		customerId=parseInt(this.context.router.params.customerId);
 		let {year,id,status}=this.props;
 		switch(status){
 			case SettingStatus.Prolong:
