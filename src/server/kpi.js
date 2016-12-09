@@ -37,16 +37,17 @@ exports.register = function(server, options, next) {
                     "Result": result
                 }).type("application/json");
             }
-        }, {
-            method: 'get',
-            path: APIBasePath + APIPath.KPI.getKPIPeriodByYear,
-            handler: function(request, reply) {
-                return reply({
-                    "error": { "Code": "0", "Messages": null },
-                    "Result": KPIData.currentQuotaperiod_year
-                }).type("application/json");
-            }
-        },
+          },
+        // }, {
+        //     method: 'get',
+        //     path: APIBasePath + APIPath.KPI.getKPIPeriodByYear,
+        //     handler: function(request, reply) {
+        //         return reply({
+        //             "error": { "Code": "0", "Messages": null },
+        //             "Result": KPIData.currentQuotaperiod_year
+        //         }).type("application/json");
+        //     }
+        // },
         // {
         //     method: 'get',
         //     path: APIBasePath + APIPath.KPI.getKpi,
