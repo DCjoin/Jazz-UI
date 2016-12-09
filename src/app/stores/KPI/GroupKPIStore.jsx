@@ -16,7 +16,9 @@ var _kpiInfo=null,
     _groupInfo=null,
     _buildings=null,
     _annualSum='-',
-    _rawData=null;
+    _rawData=null,
+    _info=null,
+    _KpiSettings=Immutable.fromJS(KpiSettingsModel);
 
 function emptyList() {
       return new List();
@@ -32,13 +34,14 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         ...info,
         Buildings:Array(_buildings.length)
       });
+      let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
       _buildings.forEach((building,index)=>{
         let defaultBuilding={
           HierarchyId:building.Id,
           HierarchyName:building.Name,
-          TargetMonthValues:_.fill(Array(12), {Month:null,value:null}),
+          TargetMonthValues:assign([],values),
           TagSavingRates:[],
-          MonthPredictionValues:_.fill(Array(12), {Month:null,value:null})
+          MonthPredictionValues:assign([],values),
         }
         _kpiInfo=_kpiInfo.setIn(["Buildings",index],Immutable.fromJS(defaultBuilding));
       })
@@ -47,7 +50,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       _kpiInfo=Immutable.fromJS(info);
     }
 
-
+    _info=null;
   },
 
   setKpiInfo(data){
@@ -76,7 +79,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
   setGroupByYear(data,info){
     _groupInfo=Immutable.fromJS(data);
-    this.init(info);
+    _info=info;
+    //this.init(info);
   },
 
   getGroupList(){
@@ -101,7 +105,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
   setBuildings(data,info){
     _buildings=data;
-    this.init(info);
+    _info=info;
+    //this.init(info);
   },
 
   getTitleByStatus(status,year,name){
@@ -121,14 +126,15 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   },
 
   clearParam(){
+    let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
     _kpiInfo=_kpiInfo.set('AnnualQuota',null);
     _kpiInfo=_kpiInfo.set('AnnualSavingRate',null);
     _kpiInfo.get('Buildings').forEach((building,index)=>{
       _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
         AnnualQuota:null,
         AnnualSavingRate:null,
-        TargetMonthValues:_.fill(Array(12), {Month:null,value:null}),
-        MonthPredictionValues:_.fill(Array(12), {Month:null,value:null})
+        TargetMonthValues:assign([],values),
+        MonthPredictionValues:assign([],values)
       }))
     })
   },
@@ -174,6 +180,21 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     }
   },
 
+  mergeMonthValue(data){
+    var values=data.map(item=>{
+      return{Month:item,Value:null}
+    });
+    var setting={
+      AdvanceSettings:{
+        TargetMonthValues:assign([],values),
+        PredictionSetting:{
+          MonthPredictionValues:assign([],values)
+        }
+      }
+    };
+    _KpiSettings=_KpiSettings.mergeDeep(setting);
+    this.init(_info);
+  },
   IsActive(status){
     switch (status) {
       case SettingStatus.New:
@@ -297,8 +318,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     var result=_rawData;
     if(_rawData===null){
       result=Immutable.fromJS({
-        GroupKpiSetting:assign({},KpiSettingsModel),
-        BuildingKpiSettingsList:_.fill(Array(_buildings.length), assign({},KpiSettingsModel))
+        GroupKpiSetting:_KpiSettings,
+        BuildingKpiSettingsList:_.fill(Array(_buildings.length), _KpiSettings)
       })
     }
     let GroupKpiSetting=result.get('GroupKpiSetting');
@@ -320,14 +341,18 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       var kpi=result.getIn(['BuildingKpiSettingsList',index]);
       var {HierarchyId,HierarchyName,ActualTagId,ActualTagName,AnnualQuota,AnnualSavingRate,TargetMonthValues,
         TagSavingRates,MonthPredictionValues}=building;
-      result=result.setIn(['BuildingKpiSettingsList',index],kpi.mergeDeep({
+      var setting={
         KpiType:KpiType.single,
         HierarchyId,HierarchyName,ActualTagId,ActualTagName,
         AdvanceSettings:{
           IndicatorType,AnnualQuota,AnnualSavingRate,
-          TargetMonthValues,TagSavingRates,MonthPredictionValues
+          TargetMonthValues,
+          PredictionSetting:{
+            TagSavingRates,MonthPredictionValues
+          }
         }
-      }));
+      };
+      result=result.setIn(['BuildingKpiSettingsList',index],kpi.mergeDeep(setting));
     });
 
     return result.toJS();
@@ -372,11 +397,11 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
         break;
     case Action.GET_KPI_GROUP_BY_YEAR:
           GroupKPIStore.setGroupByYear(action.data,action.info);
-          GroupKPIStore.emitChange();
+          //GroupKPIStore.emitChange();
           break;
     case Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID:
         GroupKPIStore.setBuildings(action.data,action.info);
-        GroupKPIStore.emitChange();
+        //GroupKPIStore.emitChange();
         break;
     case Action.GET_KPI_GROUP_SETTINGS:
         GroupKPIStore.setKpiInfo(action.data);
@@ -395,6 +420,11 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
             content: action.content
         });
         break;
+    case Action.GET_QUOTAPERIOD_BY_YEAR:
+          GroupKPIStore.mergeMonthValue(action.data);
+          GroupKPIStore.emitChange();
+         break;
+
       default:
     }
   });

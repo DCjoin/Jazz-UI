@@ -4,6 +4,7 @@ import { Action } from 'constants/actionType/KPI.jsx';
 import Path from 'constants/Path.jsx';
 import util from 'util/Util.jsx';
 import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
+import SingleKPIAction from './SingleKPIAction.jsx';
 
 
 const GroupKPIAction = {
@@ -23,6 +24,7 @@ const GroupKPIAction = {
     Ajax.get(util.replacePathParams(Path.KPI.Group.getGroupByYear,customerId,year),
     {
       success: function(resBody) {
+        SingleKPIAction.getKPIPeriodByYear(customerId,year);
         AppDispatcher.dispatch({
           type: Action.GET_KPI_GROUP_BY_YEAR,
           data: resBody,
@@ -36,7 +38,7 @@ const GroupKPIAction = {
     Ajax.get(util.replacePathParams(Path.Hierarchy.GetBuildingList, customerId), {
       params: {customerId},
       success: function(buildingList) {
-
+        SingleKPIAction.getKPIPeriodByYear(customerId,info.Year);
         AppDispatcher.dispatch({
           type: Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID,
           data: buildingList,
