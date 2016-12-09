@@ -5,7 +5,7 @@ import FontIcon from 'material-ui/FontIcon';
 import IconButton from 'material-ui/IconButton';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-import {Type,Status} from 'constants/actionType/KPI.jsx';
+import {Type,DataStatus} from 'constants/actionType/KPI.jsx';
 import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import MonthValueGroup from './MonthValueGroup.jsx';
@@ -54,7 +54,7 @@ export default class Prediction extends Component {
           TagName:tag.get('Name'),
           SavingRate:0
         }),
-        status:Status.ADD
+        status:DataStatus.ADD
       }])
     })
   }
@@ -81,7 +81,7 @@ export default class Prediction extends Component {
                     Month:SingleKPIStore.DatetimeToJson(period[index]._d),
                     Value:value,
                   }),
-                  status:Status.ADD
+                  status:DataStatus.ADD
                 }])
           }
   	}
@@ -93,7 +93,7 @@ export default class Prediction extends Component {
   _deleteRate(index){
     SingleKPIAction.merge([{
       path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index}`,
-      status:Status.DELETE
+      status:DataStatus.DELETE
     }])
   }
 
