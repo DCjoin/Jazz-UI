@@ -11,9 +11,11 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx'
+import UserAction from 'actions/UserAction.jsx'
 import HierarchyAction from 'actions/HierarchyAction.jsx'
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx'
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx'
+import UserStore from 'stores/UserStore.jsx'
 import HierarchyStore from 'stores/HierarchyStore.jsx'
 import UOMStore from 'stores/UOMStore.jsx'
 import CurrentUserStore from 'stores/CurrentUserStore.jsx'
@@ -79,6 +81,20 @@ function groupProjectMenuItems() {
     	disabled: true,
     	Name: I18N.Kpi.GroupProject
     }].concat(CurrentUserCustomerStore.getAll());
+}
+
+function hasAllPrivilege() {
+	let hasAllPrivilege = true;
+    if (UserStore.getUserCustomers().size === 0) {
+      hasAllPrivilege = false;
+    } else {
+      UserStore.getUserCustomers().forEach((customer) => {
+        if (!customer.get("Privileged")) {
+          hasAllPrivilege = false;
+        }
+      });
+    }
+    return hasAllPrivilege;
 }
 
 const DEFAULT_OPTIONS = {
@@ -440,13 +456,16 @@ export default class Actuality extends Component {
 		this._reload = this._reload.bind(this);
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onGetBuildingList = this._onGetBuildingList.bind(this);
+		this._onGetBuildingList = this._onGetBuildingList.bind(this);
 		this.state = this._getInitialState();
 	}
 	componentWillMount() {
 		document.title = I18N.MainMenu.KPI;
 		HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
+		UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 		// SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
 		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
+		UserStore.addChangeListener(this._onGetBuildingList);
 		SingleKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
@@ -457,6 +476,7 @@ export default class Actuality extends Component {
 	componentWillUnmount() {
 		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
 		SingleKPIStore.removeChangeListener(this._onChange);
+		UserStore.removeChangeListener(this._onGetBuildingList);
 	}
 	_getInitialState() {
 		return {
@@ -486,9 +506,11 @@ export default class Actuality extends Component {
 				return;
 			}
 		}
-		this.setState({
-			loading: false
-		});
+		if( UserStore.getUserCustomers().size > 0 ) {
+			this.setState({
+				loading: false
+			});
+		}
 	}
 	_goCreate() {
 		this.setState({
@@ -525,13 +547,13 @@ export default class Actuality extends Component {
 		if(isOnlyView()) {
 			if(!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0) {
 				return (<TipMessage message={I18N.Kpi.Error.KPIConguredNotAnyBuilding}/>);
-			} else if( HierarchyStore.getBuildingList().length > 1 ) {
+			} else if( HierarchyStore.getBuildingList().length > 1 && !hasAllPrivilege() ) {
 				return (<TipMessage message={I18N.Kpi.Error.KPIConguredMoreBuilding}/>);
 			} else if( !SingleKPIStore.getKPIChart() ) {
 				return (<TipMessage message={I18N.Kpi.Error.NonKPIConguredSingleBuilding}/>);
 			}
 		}
-
+		let disabledSelectedProject = isFull() && (!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0);
 
 		if( this.state.showCreate ) {
 			return (<CreateKPI
@@ -555,6 +577,7 @@ export default class Actuality extends Component {
 		        	SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, hierarchyId);
 					this.setState({hierarchyId});
 		        },
+		        disabled: disabledSelectedProject,
 		        textField: 'Name',
 		        valueField: 'Id',
 		        dataItems: [{
@@ -570,7 +593,7 @@ export default class Actuality extends Component {
 						hierarchyId={this.state.hierarchyId}
 						buildingProps={buildingProps}
 						goCreate={this._goCreate}/>
-					{isFull() && (!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0)? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
+					{disabledSelectedProject ? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
 					(<ActualityContent
 						chartReady={SingleKPIStore.chartReady()}
 						period={SingleKPIStore.getYearQuotaperiod()}
