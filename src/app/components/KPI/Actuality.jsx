@@ -17,6 +17,7 @@ import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx'
 import HierarchyStore from 'stores/HierarchyStore.jsx'
 import UOMStore from 'stores/UOMStore.jsx'
 import CurrentUserStore from 'stores/CurrentUserStore.jsx'
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx'
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -27,10 +28,10 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import util from 'util/Util.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 
-import CreateKPI from './KPI.jsx';
-import UpdatePrediction from './UpdatePrediction.jsx';
+import CreateKPI from './single/KPI.jsx';
+import UpdatePrediction from './single/UpdatePrediction.jsx';
 
-import Highcharts from '../../highcharts/Highcharts.jsx';
+import Highcharts from '../highcharts/Highcharts.jsx';
 function isOnlyView() {
 	return privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
@@ -58,6 +59,26 @@ function changeLegendStyle(item) {
 	item.setAttribute('stroke', '#434348');
 	item.setAttribute('stroke-width', 1);
 	item.setAttribute('stroke-dasharray', '4,3');
+}
+function singleProjectMenuItems() {
+	if( !HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0 ) {
+		return [];
+	}
+	return [{
+    	Id: -2,
+    	disabled: true,
+    	Name: I18N.Kpi.SingleProject
+    }].concat(HierarchyStore.getBuildingList());
+}
+function groupProjectMenuItems() {
+	if( !CurrentUserCustomerStore.getAll() || CurrentUserCustomerStore.getAll().length === 0 ) {
+		return [];
+	}
+	return [{
+    	Id: -1,
+    	disabled: true,
+    	Name: I18N.Kpi.GroupProject
+    }].concat(CurrentUserCustomerStore.getAll());
 }
 
 const DEFAULT_OPTIONS = {
@@ -278,7 +299,7 @@ class ActualityHeader extends Component {
 	render() {
 		return (
 			<div className='header-bar'>
-				<div>{!isSingleBuilding() && <span>{I18N.Kpi.SingleProject}-</span>}{I18N.Kpi.KPIActual}</div>
+				<div>{I18N.Kpi.KPIActual}</div>
 				{!isSingleBuilding() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
 			</div>
 		);
@@ -407,6 +428,9 @@ class KPIReport extends Component {
 	}
 }
 
+const TipMessage = (props, context, updater) => {
+	return (<div className='jazz-kpi-actuality flex-center'><b>{props.message}</b></div>)
+}
 
 export default class Actuality extends Component {
 	constructor(props) {
@@ -498,18 +522,13 @@ export default class Actuality extends Component {
 				<div className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 			);
 		}
-		// if(isSingleBuilding() && !SingleKPIStore.getKPIChart()) {
-		// 	return (
-		// 		<div className='flex-center'><b>{I18N.Kpi.Error.NonKPIConguredSingleBuilding}</b></div>
-		// 	);
-		// }
 		if(isOnlyView()) {
 			if(!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0) {
-				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>);
+				return (<TipMessage message={I18N.Kpi.Error.KPIConguredNotAnyBuilding}/>);
 			} else if( HierarchyStore.getBuildingList().length > 1 ) {
-				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.KPIConguredMoreBuilding}</b></div>);
+				return (<TipMessage message={I18N.Kpi.Error.KPIConguredMoreBuilding}/>);
 			} else if( !SingleKPIStore.getKPIChart() ) {
-				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.NonKPIConguredSingleBuilding}</b></div>);
+				return (<TipMessage message={I18N.Kpi.Error.NonKPIConguredSingleBuilding}/>);
 			}
 		}
 
@@ -541,8 +560,9 @@ export default class Actuality extends Component {
 		        dataItems: [{
 		        	Id: null,
 		        	disabled: true,
-		        	Name: I18N.Setting.KPI.SelectBuilding
-		        }].concat(HierarchyStore.getBuildingList() || []),
+		        	Name: I18N.Setting.KPI.SelectProject
+		        }].concat(groupProjectMenuItems())
+		        .concat(singleProjectMenuItems()),
 		    };
 			return (
 				<div className='jazz-kpi-actuality'>

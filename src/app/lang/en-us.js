@@ -1614,6 +1614,7 @@ I18N.Kpi = {
   ActualityFractionalEnergySaving: '截止上月节能率',
   KPIActual: '指标现状',
   SingleProject: '单项目',
+  GroupProject: '多项目',
   IndexValue: '全年定额指标值',
   PredictSum: '全年用量预测值',
   SavingValue: '全年节能率指标值',
@@ -1622,7 +1623,7 @@ I18N.Kpi = {
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
     NonKPIConguredSingleBuilding: '未配置指标现状，请联系您的咨询顾问',
-    NonKPICongured: '暂未配置指标，点击上方“+ 指标”按钮开始配置吧~',
+    NonKPICongured: '暂未配置指标，选择上方“指标配置现状”菜单开始配置吧~',
     KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的管理员',
     KPIConguredMoreBuilding: '指标现状暂不支持多项目，请持续关注',
   }
@@ -1965,7 +1966,7 @@ I18N.Setting.KPI.Tag.Title = '选择添加指标的数据点';
 I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对应数据点';
 I18N.Setting.KPI.Tag.Select = '选择';
 I18N.Setting.KPI.Tag.SelectAgain = '重新选择';
-I18N.Setting.KPI.SelectBuilding = '选择建筑';
+I18N.Setting.KPI.SelectProject = '选择项目';
 I18N.Setting.KPI.Basic = {};
 I18N.Setting.KPI.Basic.Title= '第一步:基础配置';
 I18N.Setting.KPI.Basic.Name= '指标名称';
