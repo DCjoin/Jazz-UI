@@ -273,7 +273,7 @@ exports.register = function(server, options, next) {
                         }, {
                             CommodityId: 1,
                             KpiSettingsId: 2,
-                            IndicatorName: '用sui量',
+                            IndicatorName: '用水量',
                             IndicatorType: 2,
                             AnnualQuota: 1.1,
                             AnnualSavingRate: 1.1
