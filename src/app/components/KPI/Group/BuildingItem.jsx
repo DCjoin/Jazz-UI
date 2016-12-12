@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import {Type} from 'constants/actionType/KPI.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
@@ -44,6 +45,7 @@ export default class BuildingItem extends Component {
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate,
         hint=I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Input,type),
         value=IndicatorType===Type.Quota?AnnualQuota:AnnualSavingRate;
+    let valueIsActive=!isNaN(value) && value!==null && value!=='';
     let props={
           value:!isNaN(value) && value!==null?value:value || '',
           //value:'12345',
@@ -58,7 +60,9 @@ export default class BuildingItem extends Component {
         <td className="column1" title={buildingInfo.HierarchyName}>{buildingInfo.HierarchyName}</td>
         <td className="column2"><ClickAwayTextField {...props}/></td>
         <td className="column3">{buildingInfo.ActualTagName}</td>
-        <td className="column4" onClick={onMonthConfigShow.bind(this,true)}>{I18N.Setting.KPI.Group.BuildingConfig.MonthConfig}</td>
+        <td className="column4" onClick={onMonthConfigShow.bind(this,true)}>
+          <div className={classNames({'active':valueIsActive})}>{I18N.Setting.KPI.Group.BuildingConfig.MonthConfig}</div>
+          </td>
       </tr>
     )
 
