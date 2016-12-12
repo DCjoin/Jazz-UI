@@ -35,12 +35,14 @@ export default class BuildingConfig extends Component {
   _renderBuildingTable(uom){
     let {IndicatorType,Buildings}=this.props.kpiInfo.toJS();
     let type=IndicatorType===Type.Quota?I18N.Setting.KPI.Quota:I18N.Setting.KPI.SavingRate;
+    let indicator=IndicatorType===Type.Quota?I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type,uom)
+                                    :I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type,'%')
     var header=(
       <table className="jazz-kpi-group-buildings-header">
         <tbody>
           <tr>
             <td className="column1">{I18N.Setting.KPI.Group.BuildingConfig.Name}</td>
-            <td className="column2">{I18N.format(I18N.Setting.KPI.Group.BuildingConfig.Value,type,uom)}</td>
+            <td className="column2">{indicator}</td>
             <td className="column3">{I18N.Setting.KPI.Group.BuildingConfig.Tag}</td>
             <td className="column4">{I18N.Setting.KPI.Group.BuildingConfig.Operation}</td>
           </tr>
