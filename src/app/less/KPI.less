@@ -322,3 +322,58 @@
     }
   }
 }
+
+.jazz-kpi-group-buildings{
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  width: 640px;
+  border:1px solid #e4e7e9;
+  &-header{
+    background-color: #f2f2f2;
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid #e4e7e9;
+    // td{
+    //   padding:0 0 0 15px;
+    // }
+  }
+  &-body {
+    flex:1;
+    display: flex;
+    border-collapse: collapse;
+  // overflow-y: auto;
+  // overflow-x: hidden;
+  tr{
+    height:40px;
+    border-bottom: 1px solid #e4e7e9;
+    .column4{
+      width: 120px;
+      min-width: 120px;
+      &:hover{
+        cursor: pointer;
+        color:@schneiderBlue
+      }
+    }
+  }
+  }
+  .column1{
+    box-sizing:border-box;
+    line-height: 40px;
+    width: 120px;
+    //max-width: 420px;
+    .hiddenEllipsis();
+  }
+  .column2{
+    width: 200px;
+    min-width: 200px;
+  }
+  .column3{
+    width: 200px;
+    min-width: 200px;
+  }
+  .column4{
+    width: 108px;
+    min-width: 108px;
+  }
+}
