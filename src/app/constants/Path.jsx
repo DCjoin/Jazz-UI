@@ -28,6 +28,7 @@ module.exports = {
       create:'/kpi/groupsettings/create',
       update:'/kpi/groupsettings/update',
       delete:'/kpi/groupsettings/delete/{kpiSettingsId}',
+      getGroupKpis:'/kpi/getgroupkpis/{customerId}'
     }
 
 

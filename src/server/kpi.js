@@ -302,7 +302,19 @@ exports.register = function(server, options, next) {
                 }).type("application/json");
             }
         },
-
+        {
+            method: 'get',
+            path: APIBasePath + APIPath.KPI.Group.getGroupKpis,
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": [{
+                        Id: 2015,
+                        CommodityId:10
+                        }]
+                }).type("application/json");
+            }
+        },
 
     ]);
     next();

@@ -25,6 +25,7 @@ module.exports = {
     MERGE_KPI_GROUP_INFO:null,
     KPI_GROUP_SUCCESS:null,
     KPI_GROUP_ERROR:null,
+    GET_GROUP_KPIS:null,
   }),
 
   Type:{

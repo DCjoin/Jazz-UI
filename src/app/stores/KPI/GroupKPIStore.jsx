@@ -7,7 +7,7 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import {fill, remove, findIndex, flatten} from 'lodash/array';
-import {sortBy, map, find} from 'lodash/collection';
+import {sortBy, map, find,filter} from 'lodash/collection';
 import { Map,List} from 'immutable';
 import SingleKPIStore from './SingleKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
@@ -20,6 +20,7 @@ var _kpiInfo=null,
     _rawData=null,
     _info=null,
     _groupSettingsList = null,
+    _groupKpis=null,
     _KpiSettings=Immutable.fromJS(KpiSettingsModel);
 
 function emptyList() {
@@ -238,17 +239,18 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     _KpiSettings=_KpiSettings.mergeDeep(setting);
     this.init(_info);
   },
-  IsActive(status){
+
+  IsActive(status,kpiInfo){
     switch (status) {
       case SettingStatus.New:
-            var {CommodityId}=_kpiInfo.toJS();
+            var {CommodityId}=kpiInfo.toJS();
             return CommodityId?true:false;
         break;
       case SettingStatus.Edit:
           return true;
         break;
       case SettingStatus.Prolong:
-           var {Buildings}=_kpiInfo.toJS();
+           var {Buildings}=kpiInfo.toJS();
           return Buildings?true:false;
         break;
       default:
@@ -300,7 +302,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         uomId:10
       },
       {
-        payload: 9,
+        payload: 8,
         text: I18N.Common.Commodity.HeatQ,
         uomId:10
       },
@@ -310,6 +312,13 @@ const GroupKPIStore = assign({}, PrototypeStore, {
         uomId:8
       },
     ])
+  },
+
+  getCurrentCommodityList(){
+    if(_groupKpis===null) return [];
+    var list=this.getCommodityList();//_groupKpis
+    var result=filter(list,(item)=>_groupKpis.findIndex(kpi=>kpi.CommodityId===item.payload)===-1);
+    return result
   },
 
   getUomByCommodityId(id){
@@ -335,25 +344,45 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return _annualSum
   },
 
-  validateKpiInfo(kpiInfo){
+  validateKpiInfo(kpiInfo,
+      quotaValidator = SingleKPIStore.validateQuota,
+      savingRateValidator = SingleKPIStore.validateSavingRate){
+
     var validDate=true;
+
     var {IndicatorName,CommodityId,AnnualQuota,AnnualSavingRate,Buildings}=kpiInfo.toJS();
 
     if(!CommodityId || CommodityId===-1) return false;
 
     if(!IndicatorName || IndicatorName==='') return false;
 
-    if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)) return false;
+    if(AnnualQuota && !quotaValidator(AnnualQuota)) return false;
 
-    if(AnnualSavingRate && !SingleKPIStore.validateSavingRate(AnnualSavingRate)) return false;
+    if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) return false;
 
     Buildings.forEach(building=>{
+
       var {AnnualQuota,AnnualSavingRate}=building;
 
-      if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)) validDate=false;
+      if(AnnualQuota && !quotaValidator(AnnualQuota)) validDate=false;
 
-      if(AnnualSavingRate && !SingleKPIStore.validateSavingRate(AnnualSavingRate)) validDate=false;
+      if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) validDate=false;
     });
+
+    // Buildings.filter(({AnnualQuota,AnnualSavingRate}) => {
+    //   if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)){
+    //     return false;
+    //   }
+    // })
+
+    // it("", () => {
+    //   let buildings = [];
+    //   let validator = spy().return(false);
+    //   let validator1 = spy().return(false);
+    //   validateKpiInfo(buildings,validator,validator)
+    //
+    // })
+
      return validDate
   },
 
@@ -401,6 +430,11 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return result.toJS();
 
   },
+
+  setGroupKpis(data){
+    _groupKpis=data;
+  },
+
     dispose(){
       _kpiInfo=null;
       _groupInfo=null;
@@ -445,6 +479,9 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID:
         GroupKPIStore.setBuildings(action.data,action.info);
         //GroupKPIStore.emitChange();
+        break;
+    case Action.GET_GROUP_KPIS:
+        GroupKPIStore.setGroupKpis(action.data);
         break;
     case Action.GET_KPI_GROUP_SETTINGS:
         GroupKPIStore.setKpiInfo(action.data);
