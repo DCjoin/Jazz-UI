@@ -176,15 +176,15 @@ const DEFAULT_OPTIONS = {
         pointPadding: 0.4,
         pointPlacement: 0,
         color: '#90ed7d',
-        dataLabels: {
-            enabled: true,
-            useHTML: true,
-            borderRadius: 5,
-            backgroundColor: 'rgba(252, 255, 197, 0.7)',
-            borderWidth: 1,
-            borderColor: '#AAA',
-            y: -6,
-        },
+        // dataLabels: {
+        //     enabled: true,
+        //     useHTML: true,
+        //     borderRadius: 5,
+        //     backgroundColor: 'rgba(252, 255, 197, 0.7)',
+        //     borderWidth: 1,
+        //     borderColor: '#AAA',
+        //     y: -6,
+        // },
     }, {
         type: 'column',
         pointPadding: 0.2,
@@ -210,6 +210,7 @@ class KPIChart extends Component {
 		// 	currentMonthIndex = 11;
 		// }
 		let tooltipIndex =  data.get('actual') && findLastIndex(data.get('actual').toJS(), (val, index) => index < currentMonthIndex && val);
+		let ratioMonth = data.get('ratioMonth');
 
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
@@ -261,12 +262,17 @@ class KPIChart extends Component {
 	    	});
 	    	if(data.get('type') === 1 && targetVal ) {
 	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
-	    			title += `<b>${util.replacePathParams(I18N.Kpi.ThisMonthUsaged, (actualVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsaged, (actualVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		} else {
-	    			title += `<b>${util.replacePathParams(I18N.Kpi.ThisMonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		}
-	    	} else if(currentDataIndex === tooltipIndex) {
-	    		title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + (LastMonthRatio * 100).toFixed(1) * 1 + '%'}</b>`;
+	    	} else if(data.get('type') === 2 && ratioMonth/*currentDataIndex === tooltipIndex*/) {
+	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsaged, ratioMonth.get(currentDataIndex).toFixed(1) * 1)}</b>`;
+	    		} else {
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsagedPrediction, ratioMonth.get(currentDataIndex).toFixed(1) * 1)}</b>`;
+	    		}
+	    		// title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + (LastMonthRatio * 100).toFixed(1) * 1 + '%'}</b>`;
 	    	}
 	    	return `
 	    	<table>
@@ -286,16 +292,16 @@ class KPIChart extends Component {
 		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex === -1 ? 0 : currentMonthIndex).slice(0, 12);
 		options.series[2].name = I18N.Kpi.PredictionValues;
 
-		options.series[1].dataLabels.formatter = function() {
-        	if(data.get('type') === 2 && this.point.index === tooltipIndex) {
-        		return `
-					<div class='actuality-fractional-energy-saving-tooltip'>
-						<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
-						<div>${(LastMonthRatio * 100).toFixed(1) * 1 + '%'}</div>
-					</div>
-        		`
-        	}
-        }
+		// options.series[1].dataLabels.formatter = function() {
+  //       	if(data.get('type') === 2 && this.point.index === tooltipIndex) {
+  //       		return `
+		// 			<div class='actuality-fractional-energy-saving-tooltip'>
+		// 				<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
+		// 				<div>${(LastMonthRatio * 100).toFixed(1) * 1 + '%'}</div>
+		// 			</div>
+  //       		`
+  //       	}
+  //       }
 
 		return options;
 	}
