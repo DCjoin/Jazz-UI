@@ -57,7 +57,7 @@ export default class BasicConfig extends Component {
       isViewStatus: false,
       title: I18N.Setting.KPI.Group.Commodity,
       defaultValue: CommodityId || -1,
-      dataItems: GroupKPIStore.getCommodityList(),
+      dataItems: GroupKPIStore.getCurrentCommodityList(),
       didChanged:this._onCommodityChange
     },
     nameProps={

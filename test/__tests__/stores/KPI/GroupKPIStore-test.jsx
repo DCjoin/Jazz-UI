@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Immutable from 'immutable';
-import {KPIPeriod, KPIPeriodNon,KPINoAdvanceSettings,KPIHasAdvanceSettings,KPIValidateData} from 'mockData/KPIData';
+import {} from 'mockData/KPIData';
 
 import AppDispatcher from 'dispatcher/AppDispatcher.jsx';
 import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
@@ -8,7 +8,7 @@ import {Action} from 'constants/actionType/KPI.jsx';
 
 describe('GroupKPIStore', function() {
 
-	it('KPIPeriod test should be right', function() {
+	it('validateKpiInfo test should be right', function() {
 
         AppDispatcher.dispatch({
         	type: Action.GET_QUOTAPERIOD,

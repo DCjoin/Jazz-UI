@@ -46,7 +46,7 @@ export default class GroupConfig extends Component {
   }
 
 	render() {
-    var isActive=GroupKPIStore.IsActive(this.props.status);
+    var isActive=GroupKPIStore.IsActive(this.props.status,this.props.kpiInfo);
     var props={
       title:I18N.Setting.KPI.Group.GroupConfig.Title
     };

@@ -44,11 +44,27 @@ const GroupKPIAction = {
       error: function() {}
     });
   },
+  getGroupKpis(customerId,Year){
+    Ajax.get(util.replacePathParams(Path.KPI.Group.getGroupKpis, customerId), {
+      params: {customerId},
+      success: function(list) {
+        SingleKPIAction.getKPIPeriodByYear(customerId,Year);
+        AppDispatcher.dispatch({
+          type: Action.GET_GROUP_KPIS,
+          data: list,
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
   getBuildingListByCustomerId(customerId,info) {
+    var that=this;
     Ajax.get(util.replacePathParams(Path.Hierarchy.GetBuildingList, customerId), {
       params: {customerId},
       success: function(buildingList) {
-        SingleKPIAction.getKPIPeriodByYear(customerId,info.Year);
+        that.getGroupKpis(customerId,info.Year);
         AppDispatcher.dispatch({
           type: Action.GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID,
           data: buildingList,
