@@ -6,7 +6,8 @@ import { Action,KpiSettingsModel,SettingStatus,KpiType,DataStatus} from '../../c
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
-import _ from 'lodash';
+import {fill, remove, findIndex, flatten} from 'lodash/array';
+import {sortBy, map, find} from 'lodash/collection';
 import { Map,List} from 'immutable';
 import SingleKPIStore from './SingleKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
@@ -18,6 +19,7 @@ var _kpiInfo=null,
     _annualSum='-',
     _rawData=null,
     _info=null,
+    _groupSettingsList = null,
     _KpiSettings=Immutable.fromJS(KpiSettingsModel);
 
 function emptyList() {
@@ -81,6 +83,38 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     _groupInfo=Immutable.fromJS(data);
     _info=info;
     //this.init(info);
+  },
+
+  updateGroupSettingsList( data ) {
+    let nextYear = new Date().getFullYear() + 1,
+      convertedData = [];
+    for( let i = nextYear; i > nextYear - 5; i--) {
+      let currentDataIndex = findIndex(data, setting => setting.Year === i);
+      if( currentDataIndex > -1 ) {
+        data[currentDataIndex].add = true;
+        convertedData.push(data[currentDataIndex]);
+        remove( data, (setting, i) => {i === currentDataIndex} );
+      } else {
+        convertedData.push({
+          Year: i,
+          GroupKpiItems: [],
+          add: true,
+        })
+      }
+    }
+    convertedData = convertedData.concat(data);
+    _groupSettingsList = sortBy(convertedData, ['Year']);
+  },
+  getGroupSettingsList() {
+    return _groupSettingsList;
+  },
+  findKPISettingByKPISettingId(kpiSettingsId) {
+    if(!kpiSettingsId) {
+      return {};
+    }
+    return find(flatten(map(this.getGroupSettingsList(), (yearIem) => {
+      return yearIem.GroupKpiItems;
+    })), item => item.KpiSettingsId === kpiSettingsId);
   },
 
   getGroupList(){
@@ -319,7 +353,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     if(_rawData===null){
       result=Immutable.fromJS({
         GroupKpiSetting:_KpiSettings,
-        BuildingKpiSettingsList:_.fill(Array(_buildings.length), _KpiSettings)
+        BuildingKpiSettingsList:_.fill(Array(_buildings.length), assign({},KpiSettingsModel))
       })
     }
     let GroupKpiSetting=result.get('GroupKpiSetting');
@@ -420,10 +454,15 @@ GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
             content: action.content
         });
         break;
+    case Action.GROUP_SETTINGS_LIST:
+      GroupKPIStore.updateGroupSettingsList(action.data);
+      GroupKPIStore.emitChange();
+      break;
+      
     case Action.GET_QUOTAPERIOD_BY_YEAR:
-          GroupKPIStore.mergeMonthValue(action.data);
-          GroupKPIStore.emitChange();
-         break;
+  	GroupKPIStore.mergeMonthValue(action.data);
+      GroupKPIStore.emitChange();
+      break;
 
       default:
     }

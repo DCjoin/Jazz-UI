@@ -17,6 +17,7 @@ module.exports = {
     IS_AUTO_CALCUL_ABLE:null,
     KPI_SUCCESS:null,
     KPI_ERROR:null,
+    GROUP_SETTINGS_LIST:null,
     GET_KPI_GROUP_CONTINUOUS:null,
     GET_KPI_GROUP_BY_YEAR:null,
     GET_KPI_BUILDING_LIST_BY_CUSTOMER_ID:null,

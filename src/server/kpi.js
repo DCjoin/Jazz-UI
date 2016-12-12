@@ -195,7 +195,7 @@ exports.register = function(server, options, next) {
         },
         {
             method: 'get',
-            path: APIBasePath + '/kpi/groupsettings/{kpiSettingsId}',
+            path: APIBasePath + APIPath.KPI.Group.getGroupSetting,
             handler: function(request, reply) {
                 var result = KPIData.GroupSettings.NORMAL_QUOTA;
                 if (request.params.kpiSettingsId === '2') {
@@ -209,7 +209,7 @@ exports.register = function(server, options, next) {
         },
         {
             method: 'get',
-            path: APIBasePath + '/kpi/group/{customerId}/{year}',
+            path: APIBasePath + APIPath.KPI.Group.getGroupByYear,
             handler: function(request, reply) {
                 return reply({
                     "error": { "Code": "0", "Messages": null },
@@ -222,7 +222,7 @@ exports.register = function(server, options, next) {
         },
         {
             method: 'get',
-            path: APIBasePath + '/kpi/groupcontinuous/{KpiId}/{year}',
+            path: APIBasePath + APIPath.KPI.Group.groupcontinuous,
             handler: function(request, reply) {
                 var result = KPIData.GroupSettings.NORMAL_QUOTA;
                 if (request.params.KpiId === '2') {
@@ -236,7 +236,7 @@ exports.register = function(server, options, next) {
         },
         // {
         //     method: 'post',
-        //     path: APIBasePath + '/kpi/groupsettings/create',
+        //     path: APIBasePath + APIPath.KPI.Group.create,
         //     handler: function(request, reply) {
         //         return reply({
         //             //"error": { "Code": "050001228001", "Messages": null },
@@ -247,11 +247,58 @@ exports.register = function(server, options, next) {
         // },
         {
             method: 'post',
-            path: APIBasePath + '/kpi/groupsettings/update',
+            path: APIBasePath + APIPath.KPI.Group.update,
             handler: function(request, reply) {
                 return reply({
                     "error": { "Code": "0", "Messages": null },
                     "Result": request.params
+                }).type("application/json");
+            }
+        },
+        {
+            method: 'get',
+            path: APIBasePath + APIPath.KPI.Group.groupSettingsList,
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": [{
+                        Year: 2015,
+                        GroupKpiItems: [{
+                            CommodityId: 2,
+                            KpiSettingsId: 1,
+                            IndicatorName: '用电量',
+                            IndicatorType: 1,
+                            AnnualQuota: 1.1,
+                            AnnualSavingRate: 1.1
+                        }, {
+                            CommodityId: 1,
+                            KpiSettingsId: 2,
+                            IndicatorName: '用sui量',
+                            IndicatorType: 2,
+                            AnnualQuota: 1.1,
+                            AnnualSavingRate: 1.1
+                        }]
+                    }, {
+                        Year: 2013,
+                        GroupKpiItems: [{
+                            CommodityId: 3,
+                            KpiSettingsId: 6,
+                            IndicatorName: '用电量',
+                            IndicatorType: 1,
+                            AnnualQuota: 6666666666666,
+                            AnnualSavingRate: 1.1
+                        }]
+                    }]
+                }).type("application/json");
+            }
+        },
+        {
+            method: 'post',
+            path: APIBasePath + APIPath.KPI.Group.delete,
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": null
                 }).type("application/json");
             }
         },

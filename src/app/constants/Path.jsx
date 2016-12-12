@@ -21,11 +21,13 @@ module.exports = {
     updateKpiReportSettings:'/kpi/settings/update',
     updatePredictionSetting:'/kpi/PredictionSetting/update',
     Group:{
+      groupSettingsList: '/kpi/groupsettings/list/{customerId}',
       groupcontinuous:'/kpi/groupcontinuous/{KpiId}/{year}',
       getGroupByYear:'/kpi/group/{customerId}/{year}',
       getGroupSetting:'/kpi/groupsettings/{kpiSettingsId}',
       create:'/kpi/groupsettings/create',
-      update:'/kpi/groupsettings/update'
+      update:'/kpi/groupsettings/update',
+      delete:'/kpi/groupsettings/delete/{kpiSettingsId}',
     }
 
 

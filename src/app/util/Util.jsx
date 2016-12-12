@@ -1942,6 +1942,33 @@ let CommonFuns = {
       return this.replacePathParams(I18N.Kpi.Month,date.month() + 1);
     } )
   },
+
+  getLabelData(value) {
+    if( value * 1 !== value ) {
+      return null;
+    }
+    let abbreviations = [
+      // {label: '兆', value: Math.pow(10, 12)},
+      {label: '亿', value: Math.pow(10, 8)},
+      {label: '万', value: Math.pow(10, 4)},
+      {label: '', value: Math.pow(10, 0)},
+    ];
+    let label = '';
+    for(let i = 0; i < abbreviations.length; i++) {
+      let abbreviation = abbreviations[i];
+      if( value/abbreviation.value > 1 ) {
+        label = abbreviation.label;
+        value = value/abbreviation.value + '';
+        let firstValue = value.split('.')[0];
+        let secondValue = value.split('.')[1] || '0000';
+        secondValue = secondValue.substring(0, 4 - firstValue.length);
+        value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
+        break;
+      }
+
+    }
+    return value + label;
+  }
 };
 
 module.exports = CommonFuns;
