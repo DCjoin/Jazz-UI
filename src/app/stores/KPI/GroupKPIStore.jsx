@@ -335,26 +335,41 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return _annualSum
   },
 
-  validateKpiInfo(kpiInfo){
-    var validDate=true;
+  validateKpiInfo(
+    kpiInfo,
+    quotaValidator = SingleKPIStore.validateQuota,
+    savingRateValidator = SingleKPIStore.validateSavingRate){
+      
+    // var validDate=true;
     var {IndicatorName,CommodityId,AnnualQuota,AnnualSavingRate,Buildings}=kpiInfo.toJS();
 
     if(!CommodityId || CommodityId===-1) return false;
 
     if(!IndicatorName || IndicatorName==='') return false;
+    
+    if(AnnualQuota && !quotaValidator(AnnualQuota)) return false;
 
-    if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)) return false;
+    if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) return false;
 
-    if(AnnualSavingRate && !SingleKPIStore.validateSavingRate(AnnualSavingRate)) return false;
+    // Buildings.forEach(building=>{
+    //   var {AnnualQuota,AnnualSavingRate}=building;
 
-    Buildings.forEach(building=>{
-      var {AnnualQuota,AnnualSavingRate}=building;
+    //   if(AnnualQuota && !quotaValidator(AnnualQuota)) validDate=false;
 
-      if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)) validDate=false;
+    //   if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) validDate=false;
+    // });
 
-      if(AnnualSavingRate && !SingleKPIStore.validateSavingRate(AnnualSavingRate)) validDate=false;
-    });
-     return validDate
+    let res = Buildings.filter(({AnnualQuota}) => quotaValidator(AnnualQuota) === false);
+
+    if(res.length === 0) return false;
+
+    res = Buildings.filter(({AnnualSavingRate}) => savingRateValidator(AnnualSavingRate) === false);
+
+    if(res.length === 0) return false;
+
+    return true;
+    
+    // return validDate
   },
 
   transit(){
