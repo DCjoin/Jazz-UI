@@ -11,12 +11,15 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx'
+import UserAction from 'actions/UserAction.jsx'
 import HierarchyAction from 'actions/HierarchyAction.jsx'
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx'
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx'
+import UserStore from 'stores/UserStore.jsx'
 import HierarchyStore from 'stores/HierarchyStore.jsx'
 import UOMStore from 'stores/UOMStore.jsx'
 import CurrentUserStore from 'stores/CurrentUserStore.jsx'
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx'
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
@@ -27,10 +30,10 @@ import PermissionCode from 'constants/PermissionCode.jsx';
 import util from 'util/Util.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 
-import CreateKPI from './KPI.jsx';
-import UpdatePrediction from './UpdatePrediction.jsx';
+import CreateKPI from './single/KPI.jsx';
+import UpdatePrediction from './single/UpdatePrediction.jsx';
 
-import Highcharts from '../../highcharts/Highcharts.jsx';
+import Highcharts from '../highcharts/Highcharts.jsx';
 function isOnlyView() {
 	return privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
@@ -58,6 +61,40 @@ function changeLegendStyle(item) {
 	item.setAttribute('stroke', '#434348');
 	item.setAttribute('stroke-width', 1);
 	item.setAttribute('stroke-dasharray', '4,3');
+}
+function singleProjectMenuItems() {
+	if( !HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0 ) {
+		return [];
+	}
+	return [{
+    	Id: -2,
+    	disabled: true,
+    	Name: I18N.Kpi.SingleProject
+    }].concat(HierarchyStore.getBuildingList());
+}
+function groupProjectMenuItems() {
+	if( !CurrentUserCustomerStore.getAll() || CurrentUserCustomerStore.getAll().length === 0 ) {
+		return [];
+	}
+	return [{
+    	Id: -1,
+    	disabled: true,
+    	Name: I18N.Kpi.GroupProject
+    }].concat(CurrentUserCustomerStore.getAll());
+}
+
+function hasAllPrivilege() {
+	let hasAllPrivilege = true;
+    if (UserStore.getUserCustomers().size === 0) {
+      hasAllPrivilege = false;
+    } else {
+      UserStore.getUserCustomers().forEach((customer) => {
+        if (!customer.get("Privileged")) {
+          hasAllPrivilege = false;
+        }
+      });
+    }
+    return hasAllPrivilege;
 }
 
 const DEFAULT_OPTIONS = {
@@ -139,15 +176,15 @@ const DEFAULT_OPTIONS = {
         pointPadding: 0.4,
         pointPlacement: 0,
         color: '#90ed7d',
-        dataLabels: {
-            enabled: true,
-            useHTML: true,
-            borderRadius: 5,
-            backgroundColor: 'rgba(252, 255, 197, 0.7)',
-            borderWidth: 1,
-            borderColor: '#AAA',
-            y: -6,
-        },
+        // dataLabels: {
+        //     enabled: true,
+        //     useHTML: true,
+        //     borderRadius: 5,
+        //     backgroundColor: 'rgba(252, 255, 197, 0.7)',
+        //     borderWidth: 1,
+        //     borderColor: '#AAA',
+        //     y: -6,
+        // },
     }, {
         type: 'column',
         pointPadding: 0.2,
@@ -173,6 +210,7 @@ class KPIChart extends Component {
 		// 	currentMonthIndex = 11;
 		// }
 		let tooltipIndex =  data.get('actual') && findLastIndex(data.get('actual').toJS(), (val, index) => index < currentMonthIndex && val);
+		let ratioMonth = data.get('ratioMonth');
 
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
 		});
@@ -224,12 +262,17 @@ class KPIChart extends Component {
 	    	});
 	    	if(data.get('type') === 1 && targetVal ) {
 	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
-	    			title += `<b>${util.replacePathParams(I18N.Kpi.ThisMonthUsaged, (actualVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsaged, (actualVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		} else {
-	    			title += `<b>${util.replacePathParams(I18N.Kpi.ThisMonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		}
-	    	} else if(currentDataIndex === tooltipIndex) {
-	    		title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + (LastMonthRatio * 100).toFixed(1) * 1 + '%'}</b>`;
+	    	} else if(data.get('type') === 2 && ratioMonth/*currentDataIndex === tooltipIndex*/) {
+	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsaged, ratioMonth.get(currentDataIndex).toFixed(1) * 1)}</b>`;
+	    		} else {
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsagedPrediction, ratioMonth.get(currentDataIndex).toFixed(1) * 1)}</b>`;
+	    		}
+	    		// title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + (LastMonthRatio * 100).toFixed(1) * 1 + '%'}</b>`;
 	    	}
 	    	return `
 	    	<table>
@@ -249,16 +292,16 @@ class KPIChart extends Component {
 		options.series[2].data = data.get('prediction') && fill(data.get('prediction').toJS(), null, 0, currentMonthIndex === -1 ? 0 : currentMonthIndex).slice(0, 12);
 		options.series[2].name = I18N.Kpi.PredictionValues;
 
-		options.series[1].dataLabels.formatter = function() {
-        	if(data.get('type') === 2 && this.point.index === tooltipIndex) {
-        		return `
-					<div class='actuality-fractional-energy-saving-tooltip'>
-						<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
-						<div>${(LastMonthRatio * 100).toFixed(1) * 1 + '%'}</div>
-					</div>
-        		`
-        	}
-        }
+		// options.series[1].dataLabels.formatter = function() {
+  //       	if(data.get('type') === 2 && this.point.index === tooltipIndex) {
+  //       		return `
+		// 			<div class='actuality-fractional-energy-saving-tooltip'>
+		// 				<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
+		// 				<div>${(LastMonthRatio * 100).toFixed(1) * 1 + '%'}</div>
+		// 			</div>
+  //       		`
+  //       	}
+  //       }
 
 		return options;
 	}
@@ -278,7 +321,7 @@ class ActualityHeader extends Component {
 	render() {
 		return (
 			<div className='header-bar'>
-				<div>{!isSingleBuilding() && <span>{I18N.Kpi.SingleProject}-</span>}{I18N.Kpi.KPIActual}</div>
+				<div>{I18N.Kpi.KPIActual}</div>
 				{!isSingleBuilding() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
 			</div>
 		);
@@ -407,6 +450,9 @@ class KPIReport extends Component {
 	}
 }
 
+const TipMessage = (props, context, updater) => {
+	return (<div className='jazz-kpi-actuality flex-center'><b>{props.message}</b></div>)
+}
 
 export default class Actuality extends Component {
 	constructor(props) {
@@ -416,13 +462,16 @@ export default class Actuality extends Component {
 		this._reload = this._reload.bind(this);
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onGetBuildingList = this._onGetBuildingList.bind(this);
+		this._onGetBuildingList = this._onGetBuildingList.bind(this);
 		this.state = this._getInitialState();
 	}
 	componentWillMount() {
 		document.title = I18N.MainMenu.KPI;
 		HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
+		UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 		// SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
 		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
+		UserStore.addChangeListener(this._onGetBuildingList);
 		SingleKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
@@ -433,6 +482,7 @@ export default class Actuality extends Component {
 	componentWillUnmount() {
 		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
 		SingleKPIStore.removeChangeListener(this._onChange);
+		UserStore.removeChangeListener(this._onGetBuildingList);
 	}
 	_getInitialState() {
 		return {
@@ -462,9 +512,11 @@ export default class Actuality extends Component {
 				return;
 			}
 		}
-		this.setState({
-			loading: false
-		});
+		if( UserStore.getUserCustomers().size > 0 ) {
+			this.setState({
+				loading: false
+			});
+		}
 	}
 	_goCreate() {
 		this.setState({
@@ -498,21 +550,16 @@ export default class Actuality extends Component {
 				<div className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 			);
 		}
-		// if(isSingleBuilding() && !SingleKPIStore.getKPIChart()) {
-		// 	return (
-		// 		<div className='flex-center'><b>{I18N.Kpi.Error.NonKPIConguredSingleBuilding}</b></div>
-		// 	);
-		// }
 		if(isOnlyView()) {
 			if(!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0) {
-				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>);
-			} else if( HierarchyStore.getBuildingList().length > 1 ) {
-				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.KPIConguredMoreBuilding}</b></div>);
+				return (<TipMessage message={I18N.Kpi.Error.KPIConguredNotAnyBuilding}/>);
+			} else if( HierarchyStore.getBuildingList().length > 1 && !hasAllPrivilege() ) {
+				return (<TipMessage message={I18N.Kpi.Error.KPIConguredMoreBuilding}/>);
 			} else if( !SingleKPIStore.getKPIChart() ) {
-				return (<div className='jazz-kpi-actuality flex-center'><b>{I18N.Kpi.Error.NonKPIConguredSingleBuilding}</b></div>);
+				return (<TipMessage message={I18N.Kpi.Error.NonKPIConguredSingleBuilding}/>);
 			}
 		}
-
+		let disabledSelectedProject = isFull() && (!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0);
 
 		if( this.state.showCreate ) {
 			return (<CreateKPI
@@ -536,13 +583,15 @@ export default class Actuality extends Component {
 		        	SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, hierarchyId);
 					this.setState({hierarchyId});
 		        },
+		        disabled: disabledSelectedProject,
 		        textField: 'Name',
 		        valueField: 'Id',
 		        dataItems: [{
 		        	Id: null,
 		        	disabled: true,
-		        	Name: I18N.Setting.KPI.SelectBuilding
-		        }].concat(HierarchyStore.getBuildingList() || []),
+		        	Name: I18N.Setting.KPI.SelectProject
+		        }].concat(groupProjectMenuItems())
+		        .concat(singleProjectMenuItems()),
 		    };
 			return (
 				<div className='jazz-kpi-actuality'>
@@ -550,7 +599,7 @@ export default class Actuality extends Component {
 						hierarchyId={this.state.hierarchyId}
 						buildingProps={buildingProps}
 						goCreate={this._goCreate}/>
-					{isFull() && (!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0)? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
+					{disabledSelectedProject ? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
 					(<ActualityContent
 						chartReady={SingleKPIStore.chartReady()}
 						period={SingleKPIStore.getYearQuotaperiod()}

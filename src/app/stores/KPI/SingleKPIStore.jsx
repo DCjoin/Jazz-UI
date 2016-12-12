@@ -62,6 +62,7 @@ function coverageRawToHighChartData(data) {
         actual: indicator.ActualMonthValues && indicator.ActualMonthValues.map( val => val.Value ),
         target: indicator.TargetMonthValues && indicator.TargetMonthValues.map( val => val.Value ),
         prediction: indicator.PredictionMonthValues && indicator.PredictionMonthValues.map( val => val.Value ),
+        ratioMonth: indicator.RatioMonthValues && indicator.RatioMonthValues.map( val => val.Value ),
       }
     } )
   }
