@@ -14,6 +14,7 @@ export default class MonthValueGroup extends Component {
         {
           SingleKPIStore.getYearQuotaperiod().map((el,index)=>{
             var props={
+                  onClickAway:this.props.onClickAway,
                   onChange:(value)=>{this.props.onChange(index,value)},
                   date:CommonFuns.formatDateByPeriod(el),
                   regexFn:(value)=>{
@@ -43,6 +44,7 @@ MonthValueGroup.propTypes={
   values:PropTypes.array,
   onChange:PropTypes.func,
   IndicatorType:PropTypes.number,
+  onClickAway:PropTypes.func
 }
 MonthValueGroup.defaultProps = {
   value:[]

@@ -25,13 +25,20 @@ export default class MonthValue extends Component {
 
   state={
     hasHistory:false,
-    calcSum:'-'
+    calcSum:'-',
+    isCalc:this.props.buildingInfo.get('ActualTagId')?true:false
   };
 
   _onChange(){
     this.setState({
       hasHistory:MonthKPIStore.getHasHistory(),
       calcSum:MonthKPIStore.getCalcSumValue()
+    })
+  }
+
+  _onClickAway(){
+    this.setState({
+      isCalc:true
     })
   }
 
@@ -54,11 +61,28 @@ export default class MonthValue extends Component {
   }
 
   _onCalcValue(){
-    let {Year,IndicatorType,value,tag}=this.props;
-    SingleKPIAction.getCalcValue();
+    var {ActualTagId,AnnualSavingRate,AnnualQuota}=this.props.buildingInfo.toJS(),
+        {Year,IndicatorType}=this.props.kpiInfo.toJS();
+    SingleKPIAction.getCalcValue({
+      TagId:ActualTagId,
+      CustomerId:customerId,
+      Year,
+      QuotaType:IndicatorType,
+      IndexValue:AnnualQuota,
+      RatioValue:AnnualSavingRate
+    });
   }
 
   _onTargetValueChange(index,value){
+    this.setState({
+      isCalc:false
+    },()=>{
+      MonthKPIAction.merge([{
+        path:`TargetMonthValues.${index}.value`,
+        value
+      }])
+    })
+
   }
 
   _renderMonth(uom){
@@ -72,8 +96,15 @@ export default class MonthValue extends Component {
     monthGroupProps={
       values:TargetMonthValues,
       onChange:this._onTargetValueChange,
-      IndicatorType:Type.MonthValue
-    };
+      IndicatorType:Type.MonthValue,
+      onClickAway:this._onClickAway
+    },
+    sumProps={
+            title:I18N.format(I18N.Setting.KPI.Group.MonthConfig.MonthValueSum,uom),
+            contentStyle:{
+              margin:'15px 0 30px 0'
+            }
+          };
 
     return(
           <TitleComponent {...monthProps}>
@@ -83,6 +114,9 @@ export default class MonthValue extends Component {
               disabled={value==='' || !value || !this.state.hasHistory}
               style={{border:'1px solid #e4e7e9'}}
             />
+            <TitleComponent {...sumProps}>
+              {MonthKPIStore.getValueSum(this.state.isCalc,this.props.buildingInfo.get('TargetMonthValues')) || '-'}
+            </TitleComponent>
             <MonthValueGroup {...monthGroupProps}/>
           </TitleComponent>
     )

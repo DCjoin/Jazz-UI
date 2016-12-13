@@ -323,25 +323,25 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   },
 
   validateQuota(value = '') {
-    // if (value === null) {
-    //   value = ''
-    // }
-    // value = value === 0 || value ? value + '' : value;
-    // let temp = parseFloat(value);
-    // if (!value || value === '-') return true;
-    // if (isNaN(temp)) return false;
-    // if ((temp + '').length !== value.length || temp < 0 || value.indexOf('.') > -1) return false;
-    // return true
+    if (value === null) {
+      value = ''
+    }
+    value = value === 0 || value ? value + '' : value;
+    let temp = parseFloat(value);
+    if (!value || value === '-') return true;
+    if (isNaN(temp)) return false;
+    if ((temp + '').length !== value.length || temp < 0 || value.indexOf('.') > -1) return false;
+    return true
 
-    if(typeof value !== 'number' && !value) return false; //empty string, null, undefined
-
-    if(isNaN(parseFloat(value))) return false; //not a number
-
-    if(parseFloat(value) < 0) return false; //negative value
-
-    if(!value.toString().match(/\.\d$/)) return false; // only 1 digit
-
-    return true;
+    // if(typeof value !== 'number' && !value) return false; //empty string, null, undefined
+    //
+    // if(isNaN(parseFloat(value))) return false; //not a number
+    //
+    // if(parseFloat(value) < 0) return false; //negative value
+    //
+    // if(!value.toString().match(/\.\d$/)) return false; // only 1 digit
+    //
+    // return true;
 
 
 
