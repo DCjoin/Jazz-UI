@@ -23,12 +23,13 @@ module.exports = {
     Group:{
       groupSettingsList: '/kpi/groupsettings/list/{customerId}',
       groupcontinuous:'/kpi/groupcontinuous/{KpiId}/{year}',
-      getGroupByYear:'/kpi/group/{customerId}/{year}',
+      getGroupByYear:'/kpi/availablegroup/{customerId}/{year}',
       getGroupSetting:'/kpi/groupsettings/{kpiSettingsId}',
       create:'/kpi/groupsettings/create',
       update:'/kpi/groupsettings/update',
       delete:'/kpi/groupsettings/delete/{kpiSettingsId}',
-      getGroupKpis:'/kpi/getgroupkpis/{customerId}'
+      getGroupKpis:'/kpi/getgroupkpis/{customerId}',
+      calckpigradualsumvalue:'/kpi/calckpigradualsumvalue'
     }
 
 

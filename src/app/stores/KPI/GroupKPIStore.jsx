@@ -82,15 +82,15 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
   setGroupByYear(data,info){
     _groupInfo=Immutable.fromJS(data);
-    var thisYearKpiList=Immutable.fromJS(_groupSettingsList).filter(item=>(item.get('Year')===info.Year && item.get('GroupKpiItems').size>0)).first();
-    if(thisYearKpiList){
-      thisYearKpiList.getIn(['GroupKpiItems']).forEach(item=>{
-        let index=_groupInfo.findIndex(kpi=>kpi.get('IndicatorName')===item.get('IndicatorName'));
-        if(index>-1){
-          _groupInfo=_groupInfo.delete(index)
-        }
-      })
-    }
+    // var thisYearKpiList=Immutable.fromJS(_groupSettingsList).filter(item=>(item.get('Year')===info.Year && item.get('GroupKpiItems').size>0)).first();
+    // if(thisYearKpiList){
+    //   thisYearKpiList.getIn(['GroupKpiItems']).forEach(item=>{
+    //     let index=_groupInfo.findIndex(kpi=>kpi.get('IndicatorName')===item.get('IndicatorName'));
+    //     if(index>-1){
+    //       _groupInfo=_groupInfo.delete(index)
+    //     }
+    //   })
+    // }
     _info=info;
     //this.init(info);
   },
@@ -115,9 +115,11 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     convertedData = convertedData.concat(data);
     _groupSettingsList = sortBy(convertedData, ['Year']);
   },
+
   getGroupSettingsList() {
     return _groupSettingsList;
   },
+
   findKPISettingByKPISettingId(kpiSettingsId) {
     if(!kpiSettingsId) {
       return {};
@@ -131,8 +133,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     let group=[]
     group=_groupInfo.map(info=>{
       return{
-        payload:info.get("KpiId"),
-        text:info.get("IndicatorName"),
+        payload:info.get("Id"),
+        text:info.get("Name"),
       }
     });
     group=group.unshift({
@@ -254,7 +256,6 @@ const GroupKPIStore = assign({}, PrototypeStore, {
           return Buildings?true:false;
         break;
       default:
-
     }
   },
 

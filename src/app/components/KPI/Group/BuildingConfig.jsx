@@ -4,26 +4,19 @@ import {SettingStatus,Type} from 'constants/actionType/KPI.jsx';
 import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
 import CommonFuns from 'util/Util.jsx';
 import BuildingItem from './BuildingItem.jsx';
+import MonthConfig from './MonthConfig.jsx';
 
 export default class BuildingConfig extends Component {
 
   constructor(props) {
     super(props);
-    this._onMonthConfig = this._onMonthConfig.bind(this);
     this._onCalcSum = this._onCalcSum.bind(this);
   }
 
   state={
     calcSum:this.props.status!==SettingStatus.New,
-    monthConfigShow:false,
     buildingItem:null
     };
-
-  _onMonthConfig(monthConfigShow){
-    this.setState({
-      monthConfigShow
-    })
-  }
 
   _onCalcSum(calcSum){
     this.setState({
@@ -56,7 +49,7 @@ export default class BuildingConfig extends Component {
                                                   var props={
                                                     IndicatorType,index,
                                                     buildingInfo:building,
-                                                    onMonthConfigShow:this._onMonthConfig.bind(this,true),
+                                                    onMonthConfigShow:()=>{this.props.onMonthConfig(true,index)},
                                                     onCalcSum:this._onCalcSum
                                                   }
                                                   return(
@@ -102,15 +95,11 @@ export default class BuildingConfig extends Component {
       title:I18N.Setting.KPI.Group.BuildingConfig.Title
     };
     if(isActive){
-      if(this.state.MonthConfigShow){
-
-      }else {
         return(
           <TitleComponent {...props}>
             {this._renderConfig()}
           </TitleComponent>
         )
-      }
 
     }
     else {
@@ -124,4 +113,5 @@ export default class BuildingConfig extends Component {
 BuildingConfig.propTypes = {
 	status:React.PropTypes.string,
 	kpiInfo:React.PropTypes.object,
+  onMonthConfig:React.PropTypes.func
 };

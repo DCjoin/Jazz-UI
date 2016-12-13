@@ -1,21 +1,12 @@
 'use strict';
 import React, {Component} from 'react';
-import Immutable from 'immutable';
-import CircularProgress from 'material-ui/CircularProgress';
-import TagSelect from './TagSelect.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx'
 import TitleComponent from 'controls/TitleComponent.jsx';
-import YearAndTypeConfig from './YearAndTypeConfig.jsx';
-import ParameterConfig from './ParameterConfig.jsx';
-import {Type,DataStatus} from 'constants/actionType/KPI.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
-import Dialog from 'controls/NewDialog.jsx';
-import {DataConverter} from 'util/Util.jsx';
 import ActualTag from './ActualTag.jsx';
-
-var customerId=null;
+import MonthValue from './MonthValue.jsx';
 
 export default class MonthConfig extends Component {
 
@@ -39,14 +30,20 @@ export default class MonthConfig extends Component {
     })
 	}
 
-	componentWillMount(){
-		customerId=this.context.router.params.customerId;
-    let paths=this.props.path.split(".");
-    MonthKPIAction.setDefalutMonthInfo(this.props.kpiInfo.getIn(paths));
-	}
+  _renderMonthValue(){
+		var props={
+			kpiInfo:this.props.kpiInfo,
+			buildingInfo:this.state.buildingInfo,
+		};
+		return(
+			<MonthValue {...props}/>
+		)
+  }
 
 	componentDidMount(){
 		MonthKPIStore.addChangeListener(this._onChange);
+    let paths=['Buildings',this.props.index];
+    MonthKPIAction.setDefalutMonthInfo(this.props.kpiInfo.getIn(paths));
 	}
 
 	componentWillUnmount(){
@@ -54,6 +51,9 @@ export default class MonthConfig extends Component {
 	}
 
   render(){
+    if(this.state.buildingInfo===null){
+      return <div/>
+    }
     let {isCreate}=this.props;
     let {CommodityId,UomId}=this.props.kpiInfo.toJS();
 	  let {HierarchyName,HierarchyId,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
@@ -68,27 +68,15 @@ export default class MonthConfig extends Component {
 			className:'jazz-kpi-config-wrap'
 		},
     tagProps={
-      kpiInfo:React.PropTypes.object,
-      buildingInfo:React.PropTypes.object,
+      kpiInfo:this.props.kpiInfo,
+      buildingInfo:this.state.buildingInfo,
       isCreate:isCreate,
     };
-				// tagProps={
-				// 	key:'tagselect',
-      	// 	hierarchyId:HierarchyId,
-      	// 	hierarchyName:HierarchyName,
-        //   tag:Immutable.fromJS({
-        //     Id:ActualTagId,
-        //     Name:ActualTagName,
-        //     UomId,CommodityId
-        //   }),
-      	// 	onSave:this._onTagSave,
-      	// 	onCancel:this._onDialogDismiss
-        // };
 
     return(
       <TitleComponent {...titleProps}>
         <ActualTag {...tagProps}/>
-
+        {this._renderMonthValue()}
 				  <FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={true}
 				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
 				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
@@ -96,9 +84,10 @@ export default class MonthConfig extends Component {
     )
   }
 }
+
 MonthConfig.propTypes = {
 	kpiInfo:React.PropTypes.object,
-  path:React.PropTypes.string,
+  index:React.PropTypes.number,
 	isCreate:React.PropTypes.bool,
 	onSave:React.PropTypes.func,
 	onCancel:React.PropTypes.func,
