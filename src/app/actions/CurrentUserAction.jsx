@@ -24,7 +24,7 @@ let CurrentUserAction = {
         //console.log('Here:'+JSON.stringify(userList,0,1));
         UserTypeName = userList[0].UserTypeName;
         UserType = userList[0].UserType;
-        that.getRoles(userId);
+        // that.getRoles(userId);
         AppDispatcher.dispatch({
           type: Action.GET_USER,
           userInfo: userList[0]
@@ -43,7 +43,7 @@ let CurrentUserAction = {
         }
       },
       success: function(list) {
-        SelectCustomerActionCreator.getCustomer(userId);
+        // SelectCustomerActionCreator.getCustomer(userId);
         AppDispatcher.dispatch({
           type: Action.GET_ROLE,
           userId: userId,
