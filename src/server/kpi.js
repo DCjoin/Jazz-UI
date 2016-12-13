@@ -113,13 +113,14 @@ exports.register = function(server, options, next) {
                     error: { Code: "0", Messages: null }
                 }).type("application/json");
             }
-        }, {
+        },
+        {
             method: 'get',
             path: APIBasePath + APIPath.Hierarchy.GetBuildingList,
             handler: function(request, reply) {
                 sleep(1000);
                 var result = [{
-                        Id: 123,
+                        Id: 100010,
                         Name: '长城脚下的公社'
                     },
                      {
@@ -315,7 +316,16 @@ exports.register = function(server, options, next) {
                 }).type("application/json");
             }
         },
-
+        {
+            method: 'post',
+            path: APIBasePath + APIPath.KPI.Group.calckpigradualsumvalue,
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": 800000
+                }).type("application/json");
+            }
+        },
     ]);
     next();
 };

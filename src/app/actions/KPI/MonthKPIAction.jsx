@@ -13,7 +13,26 @@ const MonthKPIAction = {
           type: Action.SET_MONTH_KPI_INFO,
           data: info,
         })
-
+  },
+  merge(data){
+    AppDispatcher.dispatch({
+      type: Action.MERGE_MONTH_KPI_INFO,
+      data: data
+    });
+  },
+  getCalcSumValue(param){
+    var url = Path.KPI.Group.calckpigradualsumvalue;
+    Ajax.post(url,
+      {
+      params: param,
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_GROUP_CLAC_SUM_VALUE,
+          data: resBody
+        });
+      },
+      error: function() {}
+    });
   },
 }
 

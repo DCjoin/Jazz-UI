@@ -10,6 +10,7 @@ import BuildingConfig from './BuildingConfig.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import Dialog from 'controls/NewDialog.jsx';
+import MonthConfig from './MonthConfig.jsx';
 
 var customerId=null;
 export default class KPIConfig extends Component {
@@ -24,12 +25,15 @@ export default class KPIConfig extends Component {
 		this._onSuccess = this._onSuccess.bind(this);
 		this._onError = this._onError.bind(this);
 		this._onSave = this._onSave.bind(this);
+		this._onMonthConfig = this._onMonthConfig.bind(this);
 	}
 
 	state={
 		kpiInfo:null,
 		errorTitle: null,
 		errorContent: null,
+		monthConfigShow:false,
+		monthIndex:null
 	};
 
 	_onChange(){
@@ -58,7 +62,18 @@ export default class KPIConfig extends Component {
 		});
 	}
 
-		_renderErrorDialog() {
+	_onMonthConfig(show,index=null){
+		this.setState({
+			monthConfigShow:show,
+			monthIndex:index
+		})
+	}
+
+	_TagSave(){
+
+	}
+
+	_renderErrorDialog() {
 	    var that = this;
 	    var onClose = function() {
 	      that.setState({
@@ -106,9 +121,26 @@ export default class KPIConfig extends Component {
 		let props={
 			status:this.props.status,
 			kpiInfo:this.state.kpiInfo,
+			onMonthConfig:this._onMonthConfig
 		};
 		return(
 			<BuildingConfig {...props}/>
+		)
+	}
+
+	_renderMonthConfig(){
+		let isCeate=this.state.kpiInfo.getIn(["Buildings",this.state.monthIndex,'ActualTagName'])?false:true;
+		let props={
+			kpiInfo:this.state.kpiInfo,
+			index:this.state.monthIndex,
+			isCreate:isCeate,
+			onSave:this._TagSave,
+			onCancel:()=>{
+				this._onMonthConfig(false)
+			},
+		}
+		return(
+			<MonthConfig {...props}/>
 		)
 	}
 
@@ -152,34 +184,42 @@ export default class KPIConfig extends Component {
 
 	render() {
 		var {status,year,name}=this.props;
-		if(this.state.kpiInfo && this.state.kpiInfo.size!==0){
-
-			let titleProps={
-				title:GroupKPIStore.getTitleByStatus(status,year,name),
-				contentStyle:{
-					marginLeft:'0'
-				},
-				titleStyle:{
-					fontSize:'16px'
-				},
-				className:'jazz-kpi-config-wrap'
-			};
-			return (
-				<TitleComponent {...titleProps}>
-					{this._renderBasic()}
-					{this._renderGroupConfig()}
-					{this._renderBuildingConfig()}
-					<FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={GroupKPIStore.validateKpiInfo(this.state.kpiInfo)}
-						ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
-						cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
-					{this._renderErrorDialog()}
-				</TitleComponent>
-			);
+		if(this.state.monthConfigShow){
+			return(
+				<div>
+						{this._renderMonthConfig()}
+				</div>
+			)
 		}
 		else {
-			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
-		}
+			if(this.state.kpiInfo && this.state.kpiInfo.size!==0){
 
+				let titleProps={
+					title:GroupKPIStore.getTitleByStatus(status,year,name),
+					contentStyle:{
+						marginLeft:'0'
+					},
+					titleStyle:{
+						fontSize:'16px'
+					},
+					className:'jazz-kpi-config-wrap'
+				};
+				return (
+					<TitleComponent {...titleProps}>
+						{this._renderBasic()}
+						{this._renderGroupConfig()}
+						{this._renderBuildingConfig()}
+						<FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={GroupKPIStore.validateKpiInfo(this.state.kpiInfo)}
+							ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
+							cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
+						{this._renderErrorDialog()}
+					</TitleComponent>
+				);
+			}
+			else {
+				return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
+			}
+		}
 	}
 }
 KPIConfig.propTypes = {

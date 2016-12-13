@@ -2030,6 +2030,7 @@ I18N.Setting.KPI.Group.BuildingConfig.Input='输入建筑{0}';
 I18N.Setting.KPI.Group.MonthConfig = {};
 I18N.Setting.KPI.Group.MonthConfig.Title='配置逐月值';
 I18N.Setting.KPI.Group.MonthConfig.TagSelect='引用实际值数据点';
+I18N.Setting.KPI.Group.MonthConfig.AnnualTotal='年指标总量 ({0})';
 I18N.Setting.KPI.GroupList = {};
 I18N.Setting.KPI.GroupList.Header = '指标配置';
 I18N.Setting.KPI.GroupList.DeleteTitle = '删除指标“{0}”';

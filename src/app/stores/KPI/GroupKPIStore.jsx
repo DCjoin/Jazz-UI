@@ -82,15 +82,15 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
   setGroupByYear(data,info){
     _groupInfo=Immutable.fromJS(data);
-    var thisYearKpiList=Immutable.fromJS(_groupSettingsList).filter(item=>(item.get('Year')===info.Year && item.get('GroupKpiItems').size>0)).first();
-    if(thisYearKpiList){
-      thisYearKpiList.getIn(['GroupKpiItems']).forEach(item=>{
-        let index=_groupInfo.findIndex(kpi=>kpi.get('IndicatorName')===item.get('IndicatorName'));
-        if(index>-1){
-          _groupInfo=_groupInfo.delete(index)
-        }
-      })
-    }
+    // var thisYearKpiList=Immutable.fromJS(_groupSettingsList).filter(item=>(item.get('Year')===info.Year && item.get('GroupKpiItems').size>0)).first();
+    // if(thisYearKpiList){
+    //   thisYearKpiList.getIn(['GroupKpiItems']).forEach(item=>{
+    //     let index=_groupInfo.findIndex(kpi=>kpi.get('IndicatorName')===item.get('IndicatorName'));
+    //     if(index>-1){
+    //       _groupInfo=_groupInfo.delete(index)
+    //     }
+    //   })
+    // }
     _info=info;
     //this.init(info);
   },
@@ -115,9 +115,11 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     convertedData = convertedData.concat(data);
     _groupSettingsList = sortBy(convertedData, ['Year']);
   },
+
   getGroupSettingsList() {
     return _groupSettingsList;
   },
+
   findKPISettingByKPISettingId(kpiSettingsId) {
     if(!kpiSettingsId) {
       return {};
@@ -131,8 +133,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     let group=[]
     group=_groupInfo.map(info=>{
       return{
-        payload:info.get("KpiId"),
-        text:info.get("IndicatorName"),
+        payload:info.get("Id"),
+        text:info.get("Name"),
       }
     });
     group=group.unshift({
@@ -254,7 +256,6 @@ const GroupKPIStore = assign({}, PrototypeStore, {
           return Buildings?true:false;
         break;
       default:
-
     }
   },
 
@@ -344,12 +345,12 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return _annualSum
   },
 
-  validateKpiInfo(kpiInfo,
-      quotaValidator = SingleKPIStore.validateQuota,
-      savingRateValidator = SingleKPIStore.validateSavingRate){
+  validateKpiInfo(
+    kpiInfo,
+    quotaValidator = SingleKPIStore.validateQuota,
+    savingRateValidator = SingleKPIStore.validateSavingRate){
 
-    var validDate=true;
-
+    // var validDate=true;
     var {IndicatorName,CommodityId,AnnualQuota,AnnualSavingRate,Buildings}=kpiInfo.toJS();
 
     if(!CommodityId || CommodityId===-1) return false;
@@ -360,30 +361,25 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
     if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) return false;
 
-    Buildings.forEach(building=>{
+    // Buildings.forEach(building=>{
+    //   var {AnnualQuota,AnnualSavingRate}=building;
 
-      var {AnnualQuota,AnnualSavingRate}=building;
+    //   if(AnnualQuota && !quotaValidator(AnnualQuota)) validDate=false;
 
-      if(AnnualQuota && !quotaValidator(AnnualQuota)) validDate=false;
+    //   if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) validDate=false;
+    // });
 
-      if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) validDate=false;
-    });
+    let res = Buildings.filter(({AnnualQuota}) => quotaValidator(AnnualQuota)===false);
 
-    // Buildings.filter(({AnnualQuota,AnnualSavingRate}) => {
-    //   if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)){
-    //     return false;
-    //   }
-    // })
+    if(res.length !== 0) return false;
 
-    // it("", () => {
-    //   let buildings = [];
-    //   let validator = spy().return(false);
-    //   let validator1 = spy().return(false);
-    //   validateKpiInfo(buildings,validator,validator)
-    //
-    // })
+    res = Buildings.filter(({AnnualSavingRate}) => savingRateValidator(AnnualSavingRate)===false);
 
-     return validDate
+    if(res.length !== 0) return false;
+
+    return true;
+
+    // return validDate
   },
 
   transit(){

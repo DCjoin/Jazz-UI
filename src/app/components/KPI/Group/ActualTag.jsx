@@ -2,25 +2,37 @@
 import React, {Component,PropTypes} from 'react';
 import Immutable from 'immutable';
 import TitleComponent from 'controls/TitleComponent.jsx';
-import ViewableTextField from 'controls/ViewableTextField.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import TagSelect from '../Single/TagSelect.jsx';
+import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 
 export default class ActualTag extends Component {
 
   constructor(props) {
     super(props);
-    this._onChange = this._onChange.bind(this);
+    //this._onChange = this._onChange.bind(this);
   }
 
   state={
     tagShow:false
   };
 
-  _tagSelect(){
-
+  _tagSelect(show){
+    this.setState({
+      tagShow:show
+    })
   }
-  
+
+  _onTagSave(tag){
+    MonthKPIAction.merge([{
+      path:'ActualTagName',
+      value:tag.get('Name')
+    },{
+      path:'ActualTagId',
+      value:tag.get('Id')
+    }])
+  }
+
   _renderConfig(){
     let {isCreate}=this.props;
     let {CommodityId,UomId}=this.props.kpiInfo.toJS();
@@ -36,38 +48,32 @@ export default class ActualTag extends Component {
         UomId,CommodityId
       }),
     	onSave:this._onTagSave,
-    	onCancel:this._onDialogDismiss
+    	onCancel:()=>{
+        this._tagSelect(false)
+      }
     };
 
-    let tagProps={
-        title:I18N.Setting.KPI.Group.MonthConfig.TagSelect,
-        contentStyle:{
-          marginLeft:'0'
-        }
-      };
-
     return(
-          <TitleComponent {...tagProps}>
             <div className="jazz-kpi-tag-wrap">
-              {ActualTagName && <div style={{marginRight:'10px'}}>{tagName}</div>}
+              {ActualTagName && <div style={{marginRight:'10px'}}>{ActualTagName}</div>}
               {isCreate && <FlatButton
                               style={{border:'1px solid #e4e7e9'}}
                               label={ActualTagName?I18N.Setting.KPI.Tag.SelectAgain:I18N.Setting.KPI.Tag.Select}
-                              onTouchTap={this.props.onSelectTagShow}
+                              onTouchTap={()=>{this._tagSelect(true)}}
                               />}
+              {this.state.tagShow && <TagSelect {...tagSelectProps}/>}
             </div>
-          </TitleComponent>
     )
 
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-      return (nextProps.name !== this.props.name || nextProps.tagName !== this.props.tagName || nextProps.isCreate !== this.props.isCreate);
-    }
+      return (nextState!==this.state || nextProps.buildingInfo !== this.props.buildingInfo || nextProps.isCreate !== this.props.isCreate);
+  }
 
   render(){
     let props={
-      title:I18N.Setting.KPI.Basic.Title,
+      title:I18N.Setting.KPI.Group.MonthConfig.TagSelect,
       contentStyle:{
         marginLeft:'0'
       },

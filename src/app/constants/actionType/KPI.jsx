@@ -26,7 +26,9 @@ module.exports = {
     KPI_GROUP_SUCCESS:null,
     KPI_GROUP_ERROR:null,
     GET_GROUP_KPIS:null,
-    SET_MONTH_KPI_INFO:null
+    SET_MONTH_KPI_INFO:null,
+    MERGE_MONTH_KPI_INFO:null,
+    GET_GROUP_CLAC_SUM_VALUE:null
   }),
 
   Type:{

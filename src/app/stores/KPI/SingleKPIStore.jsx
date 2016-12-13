@@ -1,15 +1,26 @@
-
 'use strict';
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
-import { Action } from '../../constants/actionType/KPI.jsx';
+import {
+  Action
+} from '../../constants/actionType/KPI.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import Immutable from 'immutable';
 import moment from 'moment';
-import { Map,List} from 'immutable';
+import {
+  Map,
+  List
+} from 'immutable';
 import assign from 'object-assign';
-import {findLastIndex, last, first} from 'lodash/array';
-import {DataStatus,Type} from '../../constants/actionType/KPI.jsx';
+import {
+  findLastIndex,
+  last,
+  first
+} from 'lodash/array';
+import {
+  DataStatus,
+  Type
+} from '../../constants/actionType/KPI.jsx';
 import CommonFuns from '../../util/Util.jsx';
 
 // let j2d = DataConverter.JsonToDateTime,
@@ -47,12 +58,12 @@ function emptyList() {
 }
 
 function coverageRawToHighChartData(data) {
-  if(!data) {
+  if (!data) {
     return null;
   }
   return {
     year: data.year,
-    data: data.IndicatorCharts.map( indicator => {
+    data: data.IndicatorCharts.map(indicator => {
       return {
         type: indicator.IndicatorType,
         unit: indicator.UomId,
@@ -64,30 +75,30 @@ function coverageRawToHighChartData(data) {
         prediction: indicator.PredictionMonthValues && indicator.PredictionMonthValues.map( val => val.Value ),
         ratioMonth: indicator.RatioMonthValues && indicator.RatioMonthValues.map( val => val.Value ),
       }
-    } )
+    })
   }
 }
 
-let kpiInfo=emptyMap();
-let _KPIPeriod=null,
-    _KPIConfigured=null,
-    _KPIChart=null,
-    _KPIChartSummary=null,
-    _KPIChartLoading=false,
-    _KPIChartSummaryLoading=false,
-    _quotaperiodYear=null,
-    _hasHistory=false;
+let kpiInfo = emptyMap();
+let _KPIPeriod = null,
+  _KPIConfigured = null,
+  _KPIChart = null,
+  _KPIChartSummary = null,
+  _KPIChartLoading = false,
+  _KPIChartSummaryLoading = false,
+  _quotaperiodYear = null,
+  _hasHistory = false;
 
 function _init() {
-  kpiInfo=emptyMap();
-  _KPIPeriod=null;
-  _KPIConfigured=null;
-  _KPIChart=null;
-  _KPIChartSummary=null;
-  _KPIChartLoading=false;
-  _KPIChartSummaryLoading=false;
-  _quotaperiodYear=null;
-  _hasHistory=false;
+  kpiInfo = emptyMap();
+  _KPIPeriod = null;
+  _KPIConfigured = null;
+  _KPIChart = null;
+  _KPIChartSummary = null;
+  _KPIChartLoading = false;
+  _KPIChartSummaryLoading = false;
+  _quotaperiodYear = null;
+  _hasHistory = false;
 }
 
 let KPI_SUCCESS_EVENT = 'kpisuccess',
@@ -115,11 +126,11 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     return parseInt(jsonstring);
   },
 
-  setKpiInfo(data){
-    kpiInfo=Immutable.fromJS(data);
+  setKpiInfo(data) {
+    kpiInfo = Immutable.fromJS(data);
   },
 
-  getKpiInfo(){
+  getKpiInfo() {
     return kpiInfo;
   },
 
@@ -127,7 +138,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     _KPIPeriod = data;
   },
 
-  getKPIPeriod(){
+  getKPIPeriod() {
     return assign({}, _KPIPeriod);
   },
 
@@ -141,14 +152,14 @@ const SingleKPIStore = assign({}, PrototypeStore, {
 
   getKPIDefaultYear() {
     let years = this.getKPIConfigured();
-    if(!years || years.length === 0) {
+    if (!years || years.length === 0) {
       return null;
     }
-    if(years.length === 1) {
+    if (years.length === 1) {
       return years[0];
     }
     let thisYear = new Date().getFullYear();
-    if( years[0] * 1 > thisYear ) {
+    if (years[0] * 1 > thisYear) {
       return years[0];
     }
 
@@ -190,22 +201,29 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   },
 
   setYearQuotaperiod(data) {
-    _quotaperiodYear = data.map(el=>{
+    _quotaperiodYear = data.map(el => {
       return moment(this.JsonToDateTime(el))
     });
   },
 
-  getYearQuotaperiod(){
+  getYearQuotaperiod() {
     return _quotaperiodYear;
   },
 
-  clearParam(){
-    if(!kpiInfo.get('AdvanceSettings')) return;
-    let {Year,IndicatorType,PredictionSetting}=kpiInfo.get('AdvanceSettings').toJS();
-    let {KpiSettingsId}=PredictionSetting?PredictionSetting:{};
-    kpiInfo=kpiInfo.set('AdvanceSettings',Immutable.fromJS({
-      Year,IndicatorType,
-      PredictionSetting:{
+  clearParam() {
+    if (!kpiInfo.get('AdvanceSettings')) return;
+    let {
+      Year,
+      IndicatorType,
+      PredictionSetting
+    } = kpiInfo.get('AdvanceSettings').toJS();
+    let {
+      KpiSettingsId
+    } = PredictionSetting ? PredictionSetting : {};
+    kpiInfo = kpiInfo.set('AdvanceSettings', Immutable.fromJS({
+      Year,
+      IndicatorType,
+      PredictionSetting: {
         KpiSettingsId
       }
     }));
@@ -213,60 +231,67 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     // kpiInfo=kpiInfo.setIn(['AdvanceSettings','IndicatorType'],IndicatorType);
   },
 
-  merge(data){
-    let refresh=false;
-    data.forEach(el=>{
-      let {path,status,value}=el;
+  merge(data) {
+    let refresh = false;
+    data.forEach(el => {
+      let {
+        path,
+        status,
+        value
+      } = el;
       let paths = path.split(".");
-      refresh= path.indexOf('IndicatorType')>-1 || path.indexOf('ActualTagName')>-1;
-      if(status===DataStatus.ADD){
-        let {index,length}=el;
+      refresh = path.indexOf('IndicatorType') > -1 || path.indexOf('ActualTagName') > -1;
+      if (status === DataStatus.ADD) {
+        let {
+          index,
+          length
+        } = el;
         var children = kpiInfo.getIn(paths);
-        if(length){
+        if (length) {
           if (!children) {
             children = emptyList();
-            children=children.setSize(length);
+            children = children.setSize(length);
           }
           if (Immutable.List.isList(children)) {
-              value = children.setIn([index],value);
+            value = children.setIn([index], value);
           }
-        }
-        else {
+        } else {
           if (!children) {
             children = emptyList();
           }
           if (Immutable.List.isList(children)) {
-              value = children.push(value);
+            value = children.push(value);
           }
         }
 
         kpiInfo = kpiInfo.setIn(paths, value);
-      }
-      else if(status===DataStatus.DELETE){
+      } else if (status === DataStatus.DELETE) {
         kpiInfo = kpiInfo.deleteIn(paths);
-      }
-      else {
-        kpiInfo=kpiInfo.setIn(paths,value);
+      } else {
+        kpiInfo = kpiInfo.setIn(paths, value);
       }
     })
-    if(refresh){
+    if (refresh) {
       this.clearParam();
     }
   },
 
-  setHasHistory(data){
-    _hasHistory=data.has;
-    this.merge([{path:'AdvanceSettings.Year',value:data.year}])
+  setHasHistory(data) {
+    _hasHistory = data.has;
+    this.merge([{
+      path: 'AdvanceSettings.Year',
+      value: data.year
+    }])
   },
 
-  getHasHistory(){
+  getHasHistory() {
     return _hasHistory;
   },
 
-  getTagTable(TagSavingRates){
-    var tags=[];
-    if(TagSavingRates){
-      tags=TagSavingRates.map(rate=>{
+  getTagTable(TagSavingRates) {
+    var tags = [];
+    if (TagSavingRates) {
+      tags = TagSavingRates.map(rate => {
         return rate.TagName
       })
     }
@@ -274,10 +299,10 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     return tags
   },
 
-  getRatesTable(TagSavingRates){
-    var rates=[];
-    if(TagSavingRates){
-      rates=TagSavingRates.map(rate=>{
+  getRatesTable(TagSavingRates) {
+    var rates = [];
+    if (TagSavingRates) {
+      rates = TagSavingRates.map(rate => {
         return rate.SavingRate
       })
     }
@@ -285,9 +310,10 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     return rates
   },
 
-  _getYearList(){
-    let currentYear=(new Date()).getFullYear(),yearList=[];
-    for(var i=currentYear+1;i>=currentYear-3;i--){
+  _getYearList() {
+    let currentYear = (new Date()).getFullYear(),
+      yearList = [];
+    for (var i = currentYear + 1; i >= currentYear - 3; i--) {
       yearList.push({
         payload: i,
         text: i
@@ -296,68 +322,94 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     return yearList
   },
 
-  validateQuota(value=''){
-    if(value===null){
-      value=''
+  validateQuota(value = '') {
+    // if (value === null) {
+    //   value = ''
+    // }
+    // value = value === 0 || value ? value + '' : value;
+    // let temp = parseFloat(value);
+    // if (!value || value === '-') return true;
+    // if (isNaN(temp)) return false;
+    // if ((temp + '').length !== value.length || temp < 0 || value.indexOf('.') > -1) return false;
+    // return true
+
+    if(typeof value !== 'number' && !value) return false; //empty string, null, undefined
+
+    if(isNaN(parseFloat(value))) return false; //not a number
+
+    if(parseFloat(value) < 0) return false; //negative value
+
+    if(!value.toString().match(/\.\d$/)) return false; // only 1 digit
+
+    return true;
+
+
+
+
+  },
+
+  validateSavingRate(value = '') {
+    if (value === null) {
+      value = ''
     }
-    value=value===0 || value?value+'':value;
-    let temp=parseFloat(value);
-    if(!value || value==='-') return true;
-    if(isNaN(temp)) return false;
-    if((temp+'').length!==value.length || temp<0 || value.indexOf('.')>-1) return false;
+    value = value === 0 || value ? value + '' : value;
+    let temp = parseFloat(value),
+      index = value.indexOf('.');
+    if (!value || value === '-') return true;
+    if (isNaN(temp)) return false;
+    if (value.slice(index + 1, value.length) && parseInt(value.slice(index + 1, value.length)) !== 0 && (temp + '').length !== value.length) return false;
+    if (temp < -100 || temp > 100) return false;
+    if (index > -1 && value.length - index > 2) return false;
     return true
   },
 
-  validateSavingRate(value=''){
-    if(value===null){
-      value=''
-    }
-    value=value===0 || value?value+'':value;
-    let temp=parseFloat(value),
-        index=value.indexOf('.');
-    if(!value || value==='-') return true;
-    if(isNaN(temp)) return false;
-    if(value.slice(index+1,value.length) && parseInt(value.slice(index+1,value.length))!==0 && (temp+'').length!==value.length) return false;
-    if(temp<-100 || temp>100) return false;
-    if(index>-1 && value.length-index>2) return false;
-    return true
-  },
+  validateKpiInfo(kpi) {
+    var validDate = true;
+    var {
+      IndicatorName,
+      ActualTagName,
+      AdvanceSettings
+    } = kpi.toJS();
 
-  validateKpiInfo(kpi){
-    var validDate=true;
-    var {IndicatorName,ActualTagName,AdvanceSettings}=kpi.toJS();
+    var {
+      AnnualQuota,
+      AnnualSavingRate,
+      TargetMonthValues,
+      PredictionSetting
+    } = AdvanceSettings || {};
 
-    var {AnnualQuota,AnnualSavingRate,TargetMonthValues,PredictionSetting}=AdvanceSettings || {};
+    if (!IndicatorName || IndicatorName === '') return false;
 
-    if(!IndicatorName || IndicatorName==='') return false;
+    if (!ActualTagName || ActualTagName === '') return false;
 
-    if(!ActualTagName || ActualTagName==='') return false;
+    if (AnnualQuota && !this.validateQuota(AnnualQuota)) return false;
 
-    if(AnnualQuota && !this.validateQuota(AnnualQuota)) return false;
+    if (AnnualSavingRate && !this.validateSavingRate(AnnualSavingRate)) return false;
 
-    if(AnnualSavingRate && !this.validateSavingRate(AnnualSavingRate)) return false;
-
-    if(TargetMonthValues && TargetMonthValues.length>0){
-      TargetMonthValues.forEach(value=>{
-        if(value && !this.validateQuota(value.Value)){
-          validDate=false
+    if (TargetMonthValues && TargetMonthValues.length > 0) {
+      TargetMonthValues.forEach(value => {
+        if (value && !this.validateQuota(value.Value)) {
+          validDate = false
         }
       });
     }
 
-    if(PredictionSetting){
-      let {TagSavingRates,MonthPredictionValues}=PredictionSetting;
-      if(TagSavingRates && TagSavingRates.length>0){
-        TagSavingRates.forEach(rate=>{
-          if(rate && !this.validateSavingRate(rate.SavingRate)){
-            validDate=false
+    if (PredictionSetting) {
+      let {
+        TagSavingRates,
+        MonthPredictionValues
+      } = PredictionSetting;
+      if (TagSavingRates && TagSavingRates.length > 0) {
+        TagSavingRates.forEach(rate => {
+          if (rate && !this.validateSavingRate(rate.SavingRate)) {
+            validDate = false
           }
         });
       }
-      if(MonthPredictionValues && MonthPredictionValues.length>0){
-        MonthPredictionValues.forEach(value=>{
-          if(value && !this.validateQuota(value.Value)){
-            validDate=false
+      if (MonthPredictionValues && MonthPredictionValues.length > 0) {
+        MonthPredictionValues.forEach(value => {
+          if (value && !this.validateQuota(value.Value)) {
+            validDate = false
           }
         });
       }
@@ -365,60 +417,65 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     return validDate
   },
 
-  transit(kpi){
-    var period=this.getYearQuotaperiod();
-    var {AdvanceSettings}=kpi.toJS();
+  transit(kpi) {
+    var period = this.getYearQuotaperiod();
+    var {
+      AdvanceSettings
+    } = kpi.toJS();
 
-    var {TargetMonthValues,PredictionSetting}=AdvanceSettings || {};
-        for(let index=0;index<12;index++){
-          if(!TargetMonthValues){
-            TargetMonthValues = emptyList();
-            TargetMonthValues=TargetMonthValues.setSize(12);
-            kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues'],TargetMonthValues);
-            TargetMonthValues=TargetMonthValues.toJS()
-          }
-          let value=TargetMonthValues[index];
-          if(value){
-            if(value.Value===''){
-              kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index,'Value'],null)
-            }
-          }
-          else {
-            kpi=kpi.setIn(['AdvanceSettings','TargetMonthValues',index],Immutable.fromJS({
-              Month:this.DatetimeToJson(period[index]._d),
-              Value:null
-            }));
-          }
+    var {
+      TargetMonthValues,
+      PredictionSetting
+    } = AdvanceSettings || {};
+    for (let index = 0; index < 12; index++) {
+      if (!TargetMonthValues) {
+        TargetMonthValues = emptyList();
+        TargetMonthValues = TargetMonthValues.setSize(12);
+        kpi = kpi.setIn(['AdvanceSettings', 'TargetMonthValues'], TargetMonthValues);
+        TargetMonthValues = TargetMonthValues.toJS()
+      }
+      let value = TargetMonthValues[index];
+      if (value) {
+        if (value.Value === '') {
+          kpi = kpi.setIn(['AdvanceSettings', 'TargetMonthValues', index, 'Value'], null)
         }
+      } else {
+        kpi = kpi.setIn(['AdvanceSettings', 'TargetMonthValues', index], Immutable.fromJS({
+          Month: this.DatetimeToJson(period[index]._d),
+          Value: null
+        }));
+      }
+    }
 
 
-        if(!PredictionSetting){
-          PredictionSetting={};
-          kpi=kpi.setIn(['AdvanceSettings','PredictionSetting'],emptyMap());
+    if (!PredictionSetting) {
+      PredictionSetting = {};
+      kpi = kpi.setIn(['AdvanceSettings', 'PredictionSetting'], emptyMap());
+    }
+
+    let {
+      MonthPredictionValues
+    } = PredictionSetting;
+
+    for (let index = 0; index < 12; index++) {
+      if (!MonthPredictionValues) {
+        MonthPredictionValues = emptyList();
+        MonthPredictionValues = MonthPredictionValues.setSize(12);
+        kpi = kpi.setIn(['AdvanceSettings', 'PredictionSetting', 'MonthPredictionValues'], MonthPredictionValues);
+        MonthPredictionValues = MonthPredictionValues.toJS()
+      }
+      let value = MonthPredictionValues[index];
+      if (value) {
+        if (value.Value === '') {
+          kpi = kpi.setIn(['AdvanceSettings', 'PredictionSetting', 'MonthPredictionValues', index, 'Value'], null)
         }
-
-      let {MonthPredictionValues}=PredictionSetting;
-
-        for(let index=0;index<12;index++){
-          if(!MonthPredictionValues){
-            MonthPredictionValues = emptyList();
-            MonthPredictionValues=MonthPredictionValues.setSize(12);
-            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues'],MonthPredictionValues);
-            MonthPredictionValues=MonthPredictionValues.toJS()
-          }
-          let value=MonthPredictionValues[index];
-          if(value){
-            if(value.Value===''){
-              kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index,'Value'],null)
-            }
-          }
-          else {
-            kpi=kpi.setIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues',index],Immutable.fromJS({
-              Month:this.DatetimeToJson(period[index]._d),
-              Value:null
-            }));
-          }
-        }
+      } else {
+        kpi = kpi.setIn(['AdvanceSettings', 'PredictionSetting', 'MonthPredictionValues', index], Immutable.fromJS({
+          Month: this.DatetimeToJson(period[index]._d),
+          Value: null
+        }));
+      }
+    }
 
 
 
@@ -426,106 +483,111 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     return kpi.toJS()
   },
 
-  getCalcPredicateParam(CustomerId,TagId,Year,QuotaType,value){
-    let param={CustomerId,TagId,Year,QuotaType};
-    if(QuotaType===Type.Quota){
-      param.IndexValue=value
-    }else {
-      param.RatioValue=value
+  getCalcPredicateParam(CustomerId, TagId, Year, QuotaType, value) {
+    let param = {
+      CustomerId,
+      TagId,
+      Year,
+      QuotaType
+    };
+    if (QuotaType === Type.Quota) {
+      param.IndexValue = value
+    } else {
+      param.RatioValue = value
     }
     return param
   },
 
-  dispose(){
-    kpiInfo=Immutable.fromJS({});
-    _KPIPeriod=null;
+  dispose() {
+    kpiInfo = Immutable.fromJS({});
+    _KPIPeriod = null;
   },
-  emitSuccessChange: function(args) {
-    this.emit(KPI_SUCCESS_EVENT,args);
+  emitSuccessChange: function (args) {
+    this.emit(KPI_SUCCESS_EVENT, args);
   },
-  addSuccessListener: function(callback) {
+  addSuccessListener: function (callback) {
     this.on(KPI_SUCCESS_EVENT, callback);
   },
 
-  removeSuccessListener: function(callback) {
+  removeSuccessListener: function (callback) {
     this.removeListener(KPI_SUCCESS_EVENT, callback);
     this.dispose();
   },
-  emitErrorChange: function(args) {
-    this.emit(KPI_ERROR_EVENT,args);
+  emitErrorChange: function (args) {
+    this.emit(KPI_ERROR_EVENT, args);
   },
-  addErrorListener: function(callback) {
+  addErrorListener: function (callback) {
     this.on(KPI_ERROR_EVENT, callback);
   },
 
-  removeErrorListener: function(callback) {
+  removeErrorListener: function (callback) {
     this.removeListener(KPI_ERROR_EVENT, callback);
     this.dispose();
   },
 
 });
 
-SingleKPIStore.dispatchToken = AppDispatcher.register(function(action) {
+SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
   switch (action.type) {
     case Action.GET_QUOTAPERIOD:
       SingleKPIStore.setKPIPeriod(action.data);
       SingleKPIStore.emitChange();
       break;
     case Action.GET_KPI_INFO_SUCCESS:
-         SingleKPIStore.setKpiInfo(action.data);
-         SingleKPIStore.emitChange();
-         break;
+      SingleKPIStore.setKpiInfo(action.data);
+      SingleKPIStore.emitChange();
+      break;
     case Action.GET_KPI_CONFIGURED:
-         SingleKPIStore.setKpiConfigured(action.data);
-         SingleKPIStore.emitChange();
-         break;
+      SingleKPIStore.setKpiConfigured(action.data);
+      SingleKPIStore.emitChange();
+      break;
     case Action.GET_KPI_CHART:
-         SingleKPIStore.setKPIChart(action.data);
-         SingleKPIStore.emitChange();
-         break;
+      SingleKPIStore.setKPIChart(action.data);
+      SingleKPIStore.emitChange();
+      break;
     case Action.GET_KPI_CHART_SUMMARY:
-         SingleKPIStore.setKPIChartSummary(action.data);
-         SingleKPIStore.emitChange();
-         break;
+      SingleKPIStore.setKPIChartSummary(action.data);
+      SingleKPIStore.emitChange();
+      break;
     case Action.INIT_KPI_CHART_DATA:
-         SingleKPIStore._initKpiChartData();
-         SingleKPIStore.emitChange();
-         break;
+      SingleKPIStore._initKpiChartData();
+      SingleKPIStore.emitChange();
+      break;
     case Action.MERGE_KPI_SINGLE_INFO:
-         SingleKPIStore.merge(action.data);
-         SingleKPIStore.emitChange();
-         break;
+      SingleKPIStore.merge(action.data);
+      SingleKPIStore.emitChange();
+      break;
     case Action.GET_QUOTAPERIOD_BY_YEAR:
-         SingleKPIStore.setYearQuotaperiod(action.data);
-         SingleKPIStore.emitChange();
-         break;
+      SingleKPIStore.setYearQuotaperiod(action.data);
+      SingleKPIStore.emitChange();
+      break;
     case Action.GET_CALC_VALUE:
-        SingleKPIStore.merge([{
-          path:'AdvanceSettings.TargetMonthValues',
-          value:Immutable.fromJS(action.data)
-        }]);
-        SingleKPIStore.emitChange();
-        break;
+      SingleKPIStore.merge([{
+        path: 'AdvanceSettings.TargetMonthValues',
+        value: Immutable.fromJS(action.data)
+      }]);
+      SingleKPIStore.emitChange();
+      break;
     case Action.GET_CALC_PREDICATE:
-         SingleKPIStore.merge([{
-              path:'AdvanceSettings.PredictionSetting.MonthPredictionValues',
-              value:Immutable.fromJS(action.data)
-            }]);
-            SingleKPIStore.emitChange();
-            break;
+      SingleKPIStore.merge([{
+        path: 'AdvanceSettings.PredictionSetting.MonthPredictionValues',
+        value: Immutable.fromJS(action.data)
+      }]);
+      SingleKPIStore.emitChange();
+      break;
     case Action.IS_AUTO_CALCUL_ABLE:
-        SingleKPIStore.setHasHistory(action.data)
-        SingleKPIStore.emitChange();
-        break;
+      SingleKPIStore.setHasHistory(action.data)
+      SingleKPIStore.emitChange();
+      break;
     case Action.KPI_SUCCESS:
-        SingleKPIStore.emitSuccessChange(action.year);
-        break;
+      SingleKPIStore.emitSuccessChange(action.year);
+      break;
     case Action.KPI_ERROR:
-        SingleKPIStore.emitErrorChange({
-          title: action.title,
-          content: action.content
-        });
-        break;
+      SingleKPIStore.emitErrorChange({
+        title: action.title,
+        content: action.content
+      });
+      break;
 
     default:
   }

@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "watch": true,
+    "allowJs": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "module": "commonjs"
+  },
+  // "files":[
+  //   "test/**/*-test.ts"
+  //   // "src/**/*.ts",
+  //   // "src/**/*.js"
+  // ],
+  "include": [
+    "test/**/*.ts",
+    // "src/**/*.js",    
+    "./node_modules/@types/**/*"
+  ],
+  "exclude": [
+    
+  ]
+}
