@@ -1,6 +1,6 @@
 'use strict';
 import React, {Component,PropTypes} from 'react';
-import TextField from './ClickAwayTextField.jsx';
+import {TextField} from 'material-ui';
 export default class DateTextField extends Component {
 
   getError(value){
@@ -8,13 +8,13 @@ export default class DateTextField extends Component {
   }
 
   render(){
-    let {date,value,disabled,underlineShow,onClickAway}=this.props;
+    let {date,value,disabled,underlineShow,onBlur}=this.props;
     let props={
       value:!isNaN(value) && value!==null?value:value || '',
       floatingLabelText:date,
       disabled,
       underlineShow,
-      onClickAway,
+      onBlur,
       errorText:this.getError(value),
       style:{width:'150px',minWidth:'150px',marginRight:'20px'},
       onChange:(event)=>{this.props.onChange(event.target.value)}
@@ -31,7 +31,7 @@ DateTextField.propTypes={
   underlineShow:PropTypes.bool,
   onChange:PropTypes.func,
   regexFn: React.PropTypes.func,
-  onClickAway:React.PropTypes.func,
+  onBlur:React.PropTypes.func,
 }
 DateTextField.defaultProps = {
 	disabled: false,

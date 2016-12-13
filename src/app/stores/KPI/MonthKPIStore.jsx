@@ -7,7 +7,7 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import {List} from 'immutable';
-import {filter} from 'lodash/collection';
+import _ from 'lodash';
 import SingleKPIStore from './SingleKPIStore.jsx';
 
 function emptyList() {
@@ -81,27 +81,52 @@ const MonthKPIStore = assign({}, PrototypeStore, {
     return _calcSum
   },
 
-  getValueSum(calcSum,values,
-              validateQuota=SingleKPIStore.validateQuota){
+  getValueSum(calcSum,
+              values,
+              validateQuota=SingleKPIStore.validateQuota
+            ){
     if(!calcSum){
       return _annualValueSum
     }
     else {
       _annualValueSum=0;
-      var res=values.filter(({Value})=>validateQuota(Value));
+      var res=_.filter(values,({Value})=>validateQuota(Value));
       if(res.length!==values.length){
         _annualValueSum='-'
       }
       else {
-
+        _annualValueSum=_.sum(_.map(res,'Value'));
       }
     }
     return _annualValueSum
   },
 
+  validateMonthInfo(
+    month,
+    quotaValidator = SingleKPIStore.validateQuota,
+    savingRateValidator = SingleKPIStore.validateSavingRate){
+      let {TargetMonthValues,TagSavingRates,MonthPredictionValues,ActualTagId}=month.toJS();
+      TagSavingRates=TagSavingRates || [];
+
+      if(!_.isNumber(ActualTagId)) return false;
+
+      let res=_.filter(TargetMonthValues,({Value})=>quotaValidator(Value)===false);
+      if(res.length!==0) return false;
+
+       res=_.filter(MonthPredictionValues,({Value})=>quotaValidator(Value)===false);
+      if(res.length!==0) return false;
+
+      res=_.filter(TagSavingRates,({SavingRate})=>savingRateValidator(SavingRate)===false);
+     if(res.length!==0) return false;
+
+     return true
+    },
+
   dispose(){
-    _monthKpi=null;
-    _hasHistory=false;
+        _monthKpi=null;
+        _hasHistory=false;
+        _calcSum=null;
+        _annualValueSum=null;
   }
 
 });
@@ -135,6 +160,14 @@ MonthKPIStore.dispatchToken = AppDispatcher.register(function(action) {
           }]);
          MonthKPIStore.emitChange();
         break;
+    case Action.GET_CALC_PREDICATE:
+        MonthKPIStore.merge([{
+            path:'MonthPredictionValues',
+            value:Immutable.fromJS(action.data)
+          }]);
+       MonthKPIStore.emitChange();
+        break;
+
     default:
   }
 });

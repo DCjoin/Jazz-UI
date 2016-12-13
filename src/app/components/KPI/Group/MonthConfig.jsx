@@ -1,12 +1,16 @@
 'use strict';
 import React, {Component} from 'react';
+import Immutable from 'immutable';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
+import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx'
 import TitleComponent from 'controls/TitleComponent.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 import ActualTag from './ActualTag.jsx';
 import MonthValue from './MonthValue.jsx';
+import Prediction from './GroupPrediction.jsx';
+import CommonFuns from 'util/Util.jsx';
 
 export default class MonthConfig extends Component {
 
@@ -17,8 +21,8 @@ export default class MonthConfig extends Component {
   constructor(props) {
     super(props);
     this._onChange = this._onChange.bind(this);
-
-  }
+		this._onSave = this._onSave.bind(this);
+	  }
 
   state = {
     buildingInfo:null
@@ -30,6 +34,14 @@ export default class MonthConfig extends Component {
     })
 	}
 
+	_onSave(){
+		GroupKPIAction.merge([{
+			path:`Buildings.${this.props.index}`,
+			value:this.state.buildingInfo
+		}]);
+		this.props.onSave();
+	}
+
   _renderMonthValue(){
 		var props={
 			kpiInfo:this.props.kpiInfo,
@@ -39,6 +51,29 @@ export default class MonthConfig extends Component {
 			<MonthValue {...props}/>
 		)
   }
+
+	_renderPrediction(){
+		var {HierarchyId,HierarchyName,MonthPredictionValues,TagSavingRates,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
+		var {Year,UomId,CommodityId}=this.props.kpiInfo.toJS();
+		var uom=CommonFuns.getUomById(this.props.kpiInfo.get('UomId')).Code;
+		var props={
+			PredictionSetting:{
+				TagSavingRates,MonthPredictionValues
+			},
+	    Year:Year,
+	    uom,
+			tag:Immutable.fromJS({
+				Id:ActualTagId,
+				Name:ActualTagName,
+				UomId,CommodityId
+			}),
+	    hierarchyId:HierarchyId,
+	    hierarchyName:HierarchyName,
+		};
+		return(
+			<Prediction {...props}/>
+		)
+	}
 
 	componentDidMount(){
 		MonthKPIStore.addChangeListener(this._onChange);
@@ -65,7 +100,7 @@ export default class MonthConfig extends Component {
 			titleStyle:{
 				fontSize:'16px'
 			},
-			className:'jazz-kpi-config-wrap'
+			// className:'jazz-kpi-config-wrap'
 		},
     tagProps={
       kpiInfo:this.props.kpiInfo,
@@ -77,7 +112,8 @@ export default class MonthConfig extends Component {
       <TitleComponent {...titleProps}>
         <ActualTag {...tagProps}/>
         {this._renderMonthValue()}
-				  <FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={true}
+				{this._renderPrediction()}
+				  <FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={MonthKPIStore.validateMonthInfo(this.state.buildingInfo)}
 				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
 				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
       </TitleComponent>
