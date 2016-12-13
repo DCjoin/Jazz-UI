@@ -7,6 +7,8 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import {List} from 'immutable';
+import {filter} from 'lodash/collection';
+import SingleKPIStore from './SingleKPIStore.jsx';
 
 function emptyList() {
       return new List();
@@ -14,7 +16,8 @@ function emptyList() {
 
 let _monthKpi=null,
     _hasHistory=false,
-    _calcSum=null;
+    _calcSum=null,
+    _annualValueSum=null;
 const MonthKPIStore = assign({}, PrototypeStore, {
 
   setMonthKpi(data){
@@ -76,6 +79,24 @@ const MonthKPIStore = assign({}, PrototypeStore, {
 
   getCalcSumValue(){
     return _calcSum
+  },
+
+  getValueSum(calcSum,values,
+              validateQuota=SingleKPIStore.validateQuota){
+    if(!calcSum){
+      return _annualValueSum
+    }
+    else {
+      _annualValueSum=0;
+      var res=values.filter(({Value})=>validateQuota(Value));
+      if(res.length!==values.length){
+        _annualValueSum='-'
+      }
+      else {
+
+      }
+    }
+    return _annualValueSum
   },
 
   dispose(){

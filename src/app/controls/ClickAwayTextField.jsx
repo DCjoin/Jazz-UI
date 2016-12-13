@@ -8,7 +8,7 @@ import ClickAway from './ClickAwayListener.jsx';
 export default class ClickAwayTextField extends Component {
 
   onClickAway() {
-    this.props.onClickAway()
+    if(this.props.onClickAway) this.props.onClickAway()
   }
 
   render(){
