@@ -345,12 +345,12 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return _annualSum
   },
 
-  validateKpiInfo(kpiInfo,
-      quotaValidator = SingleKPIStore.validateQuota,
-      savingRateValidator = SingleKPIStore.validateSavingRate){
+  validateKpiInfo(
+    kpiInfo,
+    quotaValidator = SingleKPIStore.validateQuota,
+    savingRateValidator = SingleKPIStore.validateSavingRate){
 
-    var validDate=true;
-
+    // var validDate=true;
     var {IndicatorName,CommodityId,AnnualQuota,AnnualSavingRate,Buildings}=kpiInfo.toJS();
 
     if(!CommodityId || CommodityId===-1) return false;
@@ -361,30 +361,25 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
     if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) return false;
 
-    Buildings.forEach(building=>{
+    // Buildings.forEach(building=>{
+    //   var {AnnualQuota,AnnualSavingRate}=building;
 
-      var {AnnualQuota,AnnualSavingRate}=building;
+    //   if(AnnualQuota && !quotaValidator(AnnualQuota)) validDate=false;
 
-      if(AnnualQuota && !quotaValidator(AnnualQuota)) validDate=false;
+    //   if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) validDate=false;
+    // });
 
-      if(AnnualSavingRate && !savingRateValidator(AnnualSavingRate)) validDate=false;
-    });
+    let res = Buildings.filter(({AnnualQuota}) => quotaValidator(AnnualQuota)===false);
 
-    // Buildings.filter(({AnnualQuota,AnnualSavingRate}) => {
-    //   if(AnnualQuota && !SingleKPIStore.validateQuota(AnnualQuota)){
-    //     return false;
-    //   }
-    // })
+    if(res.length !== 0) return false;
 
-    // it("", () => {
-    //   let buildings = [];
-    //   let validator = spy().return(false);
-    //   let validator1 = spy().return(false);
-    //   validateKpiInfo(buildings,validator,validator)
-    //
-    // })
+    res = Buildings.filter(({AnnualSavingRate}) => savingRateValidator(AnnualSavingRate)===false);
 
-     return validDate
+    if(res.length !== 0) return false;
+
+    return true;
+
+    // return validDate
   },
 
   transit(){
