@@ -22,6 +22,12 @@ import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 
+function getAnnualQuotaForUnit(data) {
+	if(typeof data.AnnualQuota === 'number') {
+		return util.getLabelData(data.AnnualQuota) + getUnit(data.CommodityId);
+	}
+	return '';
+}
 function getUnit(id) {
 	let uomId = find(GroupKPIStore.getCommodityList(), commodity => commodity.payload === id).uomId;
 	if(uomId) {
@@ -34,14 +40,13 @@ function getConfigSummary(item) {
 	if(item.IndicatorType === 1) {
 		return [
 			I18N.Setting.KPI.YearAndType.Quota,
-			I18N.Setting.KPI.GroupQuotaType,
-			util.getLabelData(item.AnnualQuota),
-			getUnit(item.CommodityId)
+			typeof item.AnnualQuota === 'number' ? I18N.Setting.KPI.GroupQuotaType : '',
+			getAnnualQuotaForUnit(item),
 		].join(' ');
 	}
 	return [
 		I18N.Setting.KPI.YearAndType.SavingRate,
-		I18N.Setting.KPI.GroupSavingRateType,
+		typeof item.AnnualSavingRate === 'number' ? I18N.Setting.KPI.GroupSavingRateType : '',
 		item.AnnualSavingRate.toFixed(1) + '%'
 	].join(' ');
 }
