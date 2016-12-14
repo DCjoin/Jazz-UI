@@ -241,7 +241,10 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       }
     };
     _KpiSettings=_KpiSettings.mergeDeep(setting);
-    this.init(_info);
+    if(_info){
+      this.init(_info);
+    }
+
   },
 
   IsActive(status,kpiInfo){
@@ -282,7 +285,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       {
         payload: 3,
         text: I18N.Common.Commodity.Gas,
-        uomId:1
+        uomId:5
       },
       {
         payload: 5,
