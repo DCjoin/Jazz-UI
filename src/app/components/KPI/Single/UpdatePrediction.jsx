@@ -81,7 +81,7 @@ export default class UpdatePrediction extends Component {
 	}
 
 	render(){
-		if(!this.state.kpiInfo || this.state.kpiInfo.size===0){
+		if(!this.state.kpiInfo || this.state.kpiInfo.size===0 || !this.state.kpiInfo.get('UomId')){
 			return(
 				<div/>
 			)

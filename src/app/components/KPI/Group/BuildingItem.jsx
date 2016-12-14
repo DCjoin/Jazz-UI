@@ -63,7 +63,7 @@ export default class BuildingItem extends Component {
         <td className="column1" title={buildingInfo.HierarchyName}>{buildingInfo.HierarchyName}</td>
         <td className="column2"><TextField {...props}/></td>
         <td className="column3" title={buildingInfo.ActualTagName}>{buildingInfo.ActualTagName}</td>
-        <td className="column4" onClick={onMonthConfigShow.bind(this,true)}>
+        <td className="column4" onClick={valueIsActive?onMonthConfigShow.bind(this,true):()=>{}}>
           <div className={classNames({'active':valueIsActive})}>{I18N.Setting.KPI.Group.BuildingConfig.MonthConfig}</div>
           </td>
       </tr>
