@@ -77,9 +77,11 @@ let MainApp = React.createClass({
   },
   _onAllUOMSChange() {
     window.uoms = UOMStore.getUoms();
+    this._onChange();
   },
   _onAllCommoditiesChange() {
     window.allCommodities = AllCommodityStore.getAllCommodities();
+    this._onChange();
   },
 
   _dataReady: function() {
