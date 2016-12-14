@@ -177,8 +177,10 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
     _kpiInfo=_kpiInfo.set('AnnualQuota',null);
     _kpiInfo=_kpiInfo.set('AnnualSavingRate',null);
-    _kpiInfo=_kpiInfo.set('IndicatorType',type);
-    if(type==='CommodityId')
+    if(type==='CommodityId'){
+      _kpiInfo=_kpiInfo.set('IndicatorType',Type.Quota);
+      _kpiInfo=_kpiInfo.set('IndicatorName',null);
+    }
     _kpiInfo.get('Buildings').forEach((building,index)=>{
       _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
         AnnualQuota:null,
@@ -194,8 +196,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     data.forEach(el=>{
       let {path,status,value}=el;
       let paths = path.split(".");
-      refresh= path.indexOf('IndicatorType')>-1?value:refresh;
-      refresh= path.indexOf('CommodityId')>-1?Type.Quota:refresh;
+      refresh= path.indexOf('IndicatorType')>-1?'IndicatorType':refresh;
+      refresh= path.indexOf('CommodityId')>-1?'CommodityId':refresh;
       if(status===DataStatus.ADD){
         let {index,length}=el;
         var children = _kpiInfo.getIn(paths);
