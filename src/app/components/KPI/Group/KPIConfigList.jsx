@@ -31,7 +31,7 @@ function getAnnualQuotaForUnit(data) {
 function getUnit(id) {
 	let uomId = find(GroupKPIStore.getCommodityList(), commodity => commodity.payload === id).uomId;
 	if(uomId) {
-		return find(UOMStore.getUoms(), uom => uom.Id === id).Code || '';
+		return find(UOMStore.getUoms(), uom => uom.Id === uomId).Code || '';
 	}
 	return '';
 }
