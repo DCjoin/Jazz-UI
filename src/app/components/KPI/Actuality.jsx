@@ -34,6 +34,9 @@ import CreateKPI from './single/KPI.jsx';
 import UpdatePrediction from './single/UpdatePrediction.jsx';
 
 import Highcharts from '../highcharts/Highcharts.jsx';
+function canView() {
+	return privilegeUtil.canView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
+}
 function isOnlyView() {
 	return privilegeUtil.isView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
@@ -54,6 +57,13 @@ function getUnit(id) {
 	return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
 }
 
+function getCustomerById(customerId) {
+	return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
+}
+function getCustomerPrivilageById(customerId) {
+	return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
+}
+
 function changeLegendStyle(item) {
 	item.setAttribute('width', item.getAttribute('width') * 1  - 1);
 	item.setAttribute('height', item.getAttribute('height') * 1  - 1);
@@ -72,7 +82,7 @@ function singleProjectMenuItems() {
     	Name: I18N.Kpi.SingleProject
     }].concat(HierarchyStore.getBuildingList());
 }
-function groupProjectMenuItems() {
+function groupProjectMenuItems(customerId) {
 	if( !CurrentUserCustomerStore.getAll() || CurrentUserCustomerStore.getAll().length === 0 ) {
 		return [];
 	}
@@ -80,22 +90,22 @@ function groupProjectMenuItems() {
     	Id: -1,
     	disabled: true,
     	Name: I18N.Kpi.GroupProject
-    }].concat(CurrentUserCustomerStore.getAll());
+    }].concat( getCustomerById(customerId) );
 }
 
-function hasAllPrivilege() {
-	let hasAllPrivilege = true;
-    if (UserStore.getUserCustomers().size === 0) {
-      hasAllPrivilege = false;
-    } else {
-      UserStore.getUserCustomers().forEach((customer) => {
-        if (!customer.get("Privileged")) {
-          hasAllPrivilege = false;
-        }
-      });
-    }
-    return hasAllPrivilege;
-}
+// function hasAllPrivilege() {
+// 	let hasAllPrivilege = true;
+//     if (UserStore.getUserCustomers().size === 0) {
+//       hasAllPrivilege = false;
+//     } else {
+//       UserStore.getUserCustomers().forEach((customer) => {
+//         if (!customer.get("Privileged")) {
+//           hasAllPrivilege = false;
+//         }
+//       });
+//     }
+//     return hasAllPrivilege;
+// }
 
 const DEFAULT_OPTIONS = {
     credits: {
@@ -322,7 +332,7 @@ class ActualityHeader extends Component {
 		return (
 			<div className='header-bar'>
 				<div>{I18N.Kpi.KPIActual}</div>
-				{!isSingleBuilding() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
+				{isFull() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
 			</div>
 		);
 	}
@@ -334,7 +344,7 @@ class ActualityContent extends Component {
 		if( !chartReady ) {
 			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
-		if( !isSingleBuilding() ) {
+		if( isFull() ) {
 			if( !hierarchyId ) {
 				return (<div className="content flex-center"><b>{I18N.Kpi.Error.SelectBuilding}</b></div>);
 			}
@@ -462,31 +472,35 @@ export default class Actuality extends Component {
 		this._reload = this._reload.bind(this);
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onGetBuildingList = this._onGetBuildingList.bind(this);
-		this._onGetBuildingList = this._onGetBuildingList.bind(this);
 		this.state = this._getInitialState();
 	}
 	componentWillMount() {
 		document.title = I18N.MainMenu.KPI;
-		HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
-		UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
-		// SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
+
+		if( canView() ) {
+			HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
+			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
+		}
 		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
 		UserStore.addChangeListener(this._onGetBuildingList);
 		SingleKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState(assign({}, this._getInitialState()), () => {
-			HierarchyAction.getBuildingListByCustomerId(nextProps.router.params.customerId);
+			if( canView() ) {
+				HierarchyAction.getBuildingListByCustomerId(nextProps.router.params.customerId);
+				UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
+			}
 		});
 	}
 	componentWillUnmount() {
 		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
-		SingleKPIStore.removeChangeListener(this._onChange);
 		UserStore.removeChangeListener(this._onGetBuildingList);
+		SingleKPIStore.removeChangeListener(this._onChange);
 	}
 	_getInitialState() {
 		return {
-			loading: true,
+			loading: canView(),
 			showCreate: false,
 			showRefreshDialog: false,
 			kpiId: null,
@@ -500,19 +514,29 @@ export default class Actuality extends Component {
 			loading: false
 		});
 	}
+	_privilegedCustomer() {
+		return getCustomerPrivilageById( this._getCustomerId() ) && getCustomerPrivilageById( this._getCustomerId() ).get('Privileged');
+	}
 	_onGetBuildingList() {
-		let buildingList = HierarchyStore.getBuildingList();
-		if( buildingList && buildingList.length > 0 ) {
-			if(isSingleBuilding()) {
-				let hierarchyId = buildingList[0].Id
-				this.setState({
-					hierarchyId,
-				});
-				SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, this.state.hierarchyId);
-				return;
+
+		if( UserStore.getUserCustomers().size > 0 && HierarchyStore.getBuildingList() ) {
+			if( isOnlyView() ) {
+				let hierarchyId;
+				if( !this._privilegedCustomer() ) {
+					if( isSingleBuilding() ) {
+						hierarchyId = HierarchyStore.getBuildingList()[0].Id;
+					}
+				} else {
+					hierarchyId = this._getCustomerId();
+				}
+				if( hierarchyId ) {
+					this.setState({
+						hierarchyId,
+					});
+					SingleKPIAction.getKPIConfigured(this._getCustomerId(), this.state.year, hierarchyId);
+					return;
+				}				
 			}
-		}
-		if( UserStore.getUserCustomers().size > 0 ) {
 			this.setState({
 				loading: false
 			});
@@ -544,13 +568,29 @@ export default class Actuality extends Component {
 		SingleKPIAction.getKPIChart(customerId, year, hierarchyId);
 		SingleKPIAction.getKPIChartSummary(customerId, year, hierarchyId);
 	}
+	_getCustomerId() {
+		return this.props.params.customerId;
+	}
 	render() {
 		if( this.state.loading ) {
 			return (
 				<div className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
 			);
 		}
-		if(isOnlyView()) {
+		if( !canView() ) {
+			return (<TipMessage message={I18N.Kpi.Error.KPIConguredNotAnyBuilding}/>);
+		}
+		let wholeCustomer = this._privilegedCustomer();
+		if( isOnlyView() ) {
+			if( !wholeCustomer && !isSingleBuilding() ) {
+				return (<TipMessage message={I18N.Kpi.Error.KPIConguredMoreBuilding}/>);
+			}
+
+			if( SingleKPIStore.chartReady() && !SingleKPIStore.getKPIChart() ) {
+				return (<TipMessage message={I18N.Kpi.Error.NonKPIConguredSingleBuilding}/>);
+			}
+		}
+		/*if(isOnlyView()) {
 			if(!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0) {
 				return (<TipMessage message={I18N.Kpi.Error.KPIConguredNotAnyBuilding}/>);
 			} else if( HierarchyStore.getBuildingList().length > 1 && !hasAllPrivilege() ) {
@@ -558,8 +598,10 @@ export default class Actuality extends Component {
 			} else if( !SingleKPIStore.getKPIChart() ) {
 				return (<TipMessage message={I18N.Kpi.Error.NonKPIConguredSingleBuilding}/>);
 			}
-		}
-		let disabledSelectedProject = isFull() && (!HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0);
+		} else if( !getCustomerById( this._getCustomerId() ).WholeCustomer ) {
+			return (<TipMessage message={I18N.Kpi.Error.KPIConguredNotAnyBuilding}/>);
+		}*/
+		let disabledSelectedProject = isFull() && !wholeCustomer;
 
 		if( this.state.showCreate ) {
 			return (<CreateKPI
@@ -590,7 +632,7 @@ export default class Actuality extends Component {
 		        	Id: null,
 		        	disabled: true,
 		        	Name: I18N.Setting.KPI.SelectProject
-		        }].concat(groupProjectMenuItems())
+		        }].concat(groupProjectMenuItems(this.props.params.customerId))
 		        .concat(singleProjectMenuItems()),
 		    };
 			return (
