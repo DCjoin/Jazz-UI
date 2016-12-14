@@ -241,7 +241,10 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       }
     };
     _KpiSettings=_KpiSettings.mergeDeep(setting);
-    this.init(_info);
+    if(_info){
+      this.init(_info);
+    }
+
   },
 
   IsActive(status,kpiInfo){
