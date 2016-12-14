@@ -66,7 +66,7 @@ const MonthKPIStore = assign({}, PrototypeStore, {
     },
 
   setHasHistory(data){
-      _hasHistory=data.has;
+      _hasHistory=data;
   },
 
   getHasHistory(){
@@ -137,10 +137,10 @@ MonthKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          MonthKPIStore.setMonthKpi(action.data);
          MonthKPIStore.emitChange();
          break;
-    case Action.MERGE_MONTH_KPI_INFO:
-         MonthKPIStore.merge(action.data);
-         MonthKPIStore.emitChange();
-        break;
+    // case Action.MERGE_MONTH_KPI_INFO:
+    //      MonthKPIStore.merge(action.data);
+    //      MonthKPIStore.emitChange();
+    //     break;
     case Action.MERGE_MONTH_KPI_INFO:
          MonthKPIStore.merge(action.data);
          MonthKPIStore.emitChange();

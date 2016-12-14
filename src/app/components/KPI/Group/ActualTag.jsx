@@ -10,7 +10,7 @@ export default class ActualTag extends Component {
 
   constructor(props) {
     super(props);
-    //this._onChange = this._onChange.bind(this);
+    this._onTagSave = this._onTagSave.bind(this);
   }
 
   state={
@@ -24,13 +24,18 @@ export default class ActualTag extends Component {
   }
 
   _onTagSave(tag){
-    MonthKPIAction.merge([{
-      path:'ActualTagName',
-      value:tag.get('Name')
-    },{
-      path:'ActualTagId',
-      value:tag.get('Id')
-    }])
+    this.setState({
+      tagShow:false
+    },()=>{
+      MonthKPIAction.merge([{
+        path:'ActualTagName',
+        value:tag.get('Name')
+      },{
+        path:'ActualTagId',
+        value:tag.get('Id')
+      }])
+    })
+
   }
 
   _renderConfig(){

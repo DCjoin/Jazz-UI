@@ -23,6 +23,8 @@ export default class MonthValue extends Component {
     this._onChange = this._onChange.bind(this);
     this._onTargetValueChange = this._onTargetValueChange.bind(this);
     this._onClickAway = this._onClickAway.bind(this);
+    this._onCalcValue = this._onCalcValue.bind(this);
+
   }
 
   state={
@@ -44,9 +46,9 @@ export default class MonthValue extends Component {
     })
   }
 
-  _init(){
-    var {ActualTagId,AnnualSavingRate}=this.props.buildingInfo.toJS(),
-        {Year,IndicatorType}=this.props.kpiInfo.toJS();
+  _init(props){
+    var {ActualTagId,AnnualSavingRate}=props.buildingInfo.toJS(),
+        {Year,IndicatorType}=props.kpiInfo.toJS();
     if(ActualTagId){
       SingleKPIAction.IsAutoCalculable(customerId,ActualTagId,Year);
       if(IndicatorType===Type.SavingRate){
@@ -65,14 +67,19 @@ export default class MonthValue extends Component {
   _onCalcValue(){
     var {ActualTagId,AnnualSavingRate,AnnualQuota}=this.props.buildingInfo.toJS(),
         {Year,IndicatorType}=this.props.kpiInfo.toJS();
-    SingleKPIAction.getCalcValue({
-      TagId:ActualTagId,
-      CustomerId:customerId,
-      Year,
-      QuotaType:IndicatorType,
-      IndexValue:AnnualQuota,
-      RatioValue:AnnualSavingRate
-    });
+        this.setState({
+          isCalc:true
+        },()=>{
+          SingleKPIAction.getCalcValue({
+            TagId:ActualTagId,
+            CustomerId:customerId,
+            Year,
+            QuotaType:IndicatorType,
+            IndexValue:AnnualQuota,
+            RatioValue:AnnualSavingRate
+          });  
+        })
+
   }
 
   _onTargetValueChange(index,value){
@@ -171,12 +178,12 @@ export default class MonthValue extends Component {
   componentDidMount(){
     customerId=parseInt(this.context.router.params.customerId);
     MonthKPIStore.addChangeListener(this._onChange);
-    this._init()
+    this._init(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.buildingInfo.get('ActualTagId')!==this.props.buildingInfo.get('ActualTagId')){
-      this._init()
+      this._init(nextProps)
     }
   }
 
