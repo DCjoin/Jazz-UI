@@ -409,8 +409,7 @@ class KPIReport extends Component {
 	getPredictSummaryItem() {
 		let {data, summaryData} = this.props;
 		let isIndex = data.get('type') === 1;
-		let overproof = summaryData.PredictSum && summaryData.IndexValue && (isIndex ? (summaryData.IndexValue < summaryData.PredictSum)
-									 : (summaryData.IndexValue > summaryData.PredictSum)) ;
+		let overproof = summaryData.PredictSum && summaryData.IndexValue && summaryData.IndexValue < summaryData.PredictSum ;
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
 			<div className='summary-title'>{isIndex ? I18N.Kpi.PredictSum : I18N.Kpi.PredictSaving}</div>
