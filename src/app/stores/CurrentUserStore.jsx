@@ -17,7 +17,19 @@ let CURRENT_USER_EVENT = 'currentuser',
   PASSWORD_SUCCESS_EVENT = 'passwordsuccess',
   CURRENT_PRIVILEGE_EVENT = 'currentprivilege';
 
-const PRIVILEGE_ADMIN = ['1104', '1222', '1205', '1218', '1219', '1221', '1206', '1207', '1208', '1210', '1217', '1223', '1301'];
+const PRIVILEGE_ADMIN = [
+  PermissionCode.MAP_VIEW.READONLY,
+  PermissionCode.ENERGY_MANAGE.FULL,
+  PermissionCode.ENERGY_EXPORT.FULL,
+  PermissionCode.DATA_REPORT_MANAGEMENT.FULL,
+  PermissionCode.ENERGY_ALARM.FULL,
+  PermissionCode.PLATFORM_MANAGEMENT.FULL,
+  PermissionCode.HIERARCHY_MANAGEMENT.FULL,
+  PermissionCode.TAG_MANAGEMENT.FULL,
+  PermissionCode.CUSTOM_LABELING.FULL,
+  PermissionCode.BASELINE_CONFIG.FULL,
+  PermissionCode.INDEX_AND_REPORT.FULL,
+].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
 
