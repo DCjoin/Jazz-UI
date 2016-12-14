@@ -21,6 +21,8 @@ export default class MonthValue extends Component {
   constructor(props) {
     super(props);
     this._onChange = this._onChange.bind(this);
+    this._onTargetValueChange = this._onTargetValueChange.bind(this);
+    this._onClickAway = this._onClickAway.bind(this);
   }
 
   state={
@@ -78,7 +80,7 @@ export default class MonthValue extends Component {
       isCalc:false
     },()=>{
       MonthKPIAction.merge([{
-        path:`TargetMonthValues.${index}.value`,
+        path:`TargetMonthValues.${index}.Value`,
         value
       }])
     })
@@ -111,11 +113,11 @@ export default class MonthValue extends Component {
             <FlatButton
               label={this.state.hasHistory?I18N.Setting.KPI.Parameter.CalcViaHistory:I18N.Setting.KPI.Parameter.NoCalcViaHistory}
               onTouchTap={this._onCalcValue}
-              disabled={value==='' || !value || !this.state.hasHistory}
+              disabled={!this.state.hasHistory}
               style={{border:'1px solid #e4e7e9'}}
             />
             <TitleComponent {...sumProps}>
-              {MonthKPIStore.getValueSum(this.state.isCalc,this.props.buildingInfo.get('TargetMonthValues')) || '-'}
+              {CommonFuns.toThousands(MonthKPIStore.getValueSum(this.state.isCalc,this.props.buildingInfo.get('TargetMonthValues').toJS())) || '-'}
             </TitleComponent>
             <MonthValueGroup {...monthGroupProps}/>
           </TitleComponent>
@@ -133,7 +135,7 @@ export default class MonthValue extends Component {
         };
         return(
           <TitleComponent {...props}>
-            {this.props.buildingInfo.get('AnnualQuota')}
+            {CommonFuns.toThousands(this.props.buildingInfo.get('AnnualQuota'))}
           </TitleComponent>
         )
       }
@@ -156,10 +158,10 @@ export default class MonthValue extends Component {
         return(
           <div style={{display:'flex'}}>
             <TitleComponent {...valueProps}>
-              {this.props.buildingInfo.get('AnnualSavingRate')}
+              {CommonFuns.toThousands(this.props.buildingInfo.get('AnnualSavingRate'))}
             </TitleComponent>
             <TitleComponent {...annualProps}>
-              {this.state.calcSum}
+              {CommonFuns.toThousands(this.state.calcSum)}
             </TitleComponent>
           </div>
         )

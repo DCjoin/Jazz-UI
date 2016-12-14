@@ -49,6 +49,25 @@ let CommonFuns = {
   isNumeric: function(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
   },
+  toThousands(value){
+    if(this.isNumber(value)){
+      value=value.toString();
+    }
+    if(value){
+        return value.replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
+    }
+    else {
+      return value
+    }
+  },
+  thousandsToNormal(value){
+    if(value){
+      return value.replace(/,/g, "")
+    }
+    else {
+      return value
+    }
+  },
   log: function(content) {
     if (true) { // Todo change, is open log
       if (console && typeof this.isFunction(console.log)) {

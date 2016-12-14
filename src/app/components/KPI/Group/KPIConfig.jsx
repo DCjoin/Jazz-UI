@@ -69,10 +69,6 @@ export default class KPIConfig extends Component {
 		})
 	}
 
-	_TagSave(){
-
-	}
-
 	_renderErrorDialog() {
 	    var that = this;
 	    var onClose = function() {
@@ -134,7 +130,9 @@ export default class KPIConfig extends Component {
 			kpiInfo:this.state.kpiInfo,
 			index:this.state.monthIndex,
 			isCreate:isCeate,
-			onSave:this._TagSave,
+			onSave:()=>{
+				this._onMonthConfig(false)
+			},
 			onCancel:()=>{
 				this._onMonthConfig(false)
 			},
@@ -186,7 +184,7 @@ export default class KPIConfig extends Component {
 		var {status,year,name}=this.props;
 		if(this.state.monthConfigShow){
 			return(
-				<div>
+				<div className="jazz-kpi-config-wrap">
 						{this._renderMonthConfig()}
 				</div>
 			)

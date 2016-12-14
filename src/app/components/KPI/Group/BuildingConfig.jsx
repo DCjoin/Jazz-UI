@@ -81,7 +81,7 @@ export default class BuildingConfig extends Component {
         <div>
           {IndicatorType===Type.Quota &&
             <TitleComponent {...sumProps}>
-              {GroupKPIStore.getBuildingSum(this.state.calcSum) || '-'}
+              {CommonFuns.toThousands(GroupKPIStore.getBuildingSum(this.state.calcSum)) || '-'}
             </TitleComponent>
             }
           {this._renderBuildingTable(uom)}

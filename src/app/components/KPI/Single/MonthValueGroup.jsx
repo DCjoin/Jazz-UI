@@ -14,10 +14,14 @@ export default class MonthValueGroup extends Component {
         {
           SingleKPIStore.getYearQuotaperiod().map((el,index)=>{
             var props={
-                  onClickAway:this.props.onClickAway,
-                  onChange:(value)=>{this.props.onChange(index,value)},
+                  onBlur:this.props.onClickAway,
+                  onChange:(value)=>{
+                    value=CommonFuns.thousandsToNormal(value);
+                    this.props.onChange(index,value)
+                  },
                   date:CommonFuns.formatDateByPeriod(el),
                   regexFn:(value)=>{
+                    value=CommonFuns.thousandsToNormal(value);
                     return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText}
                 };
             if(el.isBefore(moment(new Date()).format('YYYY-MM-01')) && this.props.IndicatorType===Type.MonthPrediction){
@@ -25,11 +29,11 @@ export default class MonthValueGroup extends Component {
               props.underlineShow=false;
               props.value='-';
               if(this.props.values && this.props.values[index]){
-                    props.value=this.props.values[index].Value===null?'-':this.props.values[index].Value;
+                    props.value=this.props.values[index].Value===null?'-':CommonFuns.toThousands(this.props.values[index].Value);
                 }
             }
             else if(this.props.values && this.props.values[index]){
-                  props.value=this.props.values[index].Value;
+                  props.value=CommonFuns.toThousands(this.props.values[index].Value);
               }
 
             return <DateTextField {...props}/>

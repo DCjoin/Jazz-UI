@@ -25,6 +25,7 @@ export default class Prediction extends Component {
     this._onDialogDismiss = this._onDialogDismiss.bind(this);
     this._onRatesSelectTagShow = this._onRatesSelectTagShow.bind(this);
     this._onRatesSave = this._onRatesSave.bind(this);
+    this._onPredictioChange = this._onPredictioChange.bind(this);
   }
 
   state={
@@ -47,43 +48,45 @@ export default class Prediction extends Component {
     this.setState({
       ratesTageSelectShow:false
     },()=>{
-      SingleKPIAction.merge([{
-        path:'AdvanceSettings.PredictionSetting.TagSavingRates',
-        value:Immutable.fromJS({
-          TagId:tag.get('Id'),
-          TagName:tag.get('Name'),
-          SavingRate:0
-        }),
-        status:DataStatus.ADD
-      }])
+      this.props.onRatesSave(tag);
+      // SingleKPIAction.merge([{
+      //   path:'AdvanceSettings.PredictionSetting.TagSavingRates',
+      //   value:Immutable.fromJS({
+      //     TagId:tag.get('Id'),
+      //     TagName:tag.get('Name'),
+      //     SavingRate:0
+      //   }),
+      //   status:DataStatus.ADD
+      // }])
     })
   }
 
   	_onPredictioChange(index,value){
-  		let MonthPredictionValues=SingleKPIStore.getKpiInfo().getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues']),
-  				period=SingleKPIStore.getYearQuotaperiod();
-          if(MonthPredictionValues){
-            SingleKPIAction.merge([{
-              path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}`,
-              value:Immutable.fromJS({
-                Month:SingleKPIStore.DatetimeToJson(period[index]._d),
-                Value:value
-              })
-            }
-          ])
-          }
-          else {
-                SingleKPIAction.merge([{
-                  path:'AdvanceSettings.PredictionSetting.MonthPredictionValues',
-                  index:index,
-                  length:12,
-                  value:Immutable.fromJS({
-                    Month:SingleKPIStore.DatetimeToJson(period[index]._d),
-                    Value:value,
-                  }),
-                  status:DataStatus.ADD
-                }])
-          }
+      this.props.onPredictioChange(index,value);
+  		// let MonthPredictionValues=SingleKPIStore.getKpiInfo().getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues']),
+  		// 		period=SingleKPIStore.getYearQuotaperiod();
+      //     if(MonthPredictionValues){
+      //       SingleKPIAction.merge([{
+      //         path:`AdvanceSettings.PredictionSetting.MonthPredictionValues.${index}`,
+      //         value:Immutable.fromJS({
+      //           Month:SingleKPIStore.DatetimeToJson(period[index]._d),
+      //           Value:value
+      //         })
+      //       }
+      //     ])
+      //     }
+      //     else {
+      //           SingleKPIAction.merge([{
+      //             path:'AdvanceSettings.PredictionSetting.MonthPredictionValues',
+      //             index:index,
+      //             length:12,
+      //             value:Immutable.fromJS({
+      //               Month:SingleKPIStore.DatetimeToJson(period[index]._d),
+      //               Value:value,
+      //             }),
+      //             status:DataStatus.ADD
+      //           }])
+      //     }
   	}
 
   _onCalcValue(TagSavingRates){
@@ -91,10 +94,11 @@ export default class Prediction extends Component {
   }
 
   _deleteRate(index){
-    SingleKPIAction.merge([{
-      path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index}`,
-      status:DataStatus.DELETE
-    }])
+    this.props.deleteRate(index)
+    // SingleKPIAction.merge([{
+    //   path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index}`,
+    //   status:DataStatus.DELETE
+    // }])
   }
 
   _renderTagSavingRates(predictionSetting){
@@ -130,11 +134,12 @@ export default class Prediction extends Component {
                       isViewStatus: false,
                       style:{width:'120px'},
                       didChanged: value=>{
+                                    this.props.onTagRateChange(index,value);
                                     //if(value==='') value=0;
-                                    SingleKPIAction.merge([{
-                                      path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index-1}.SavingRate`,
-                                      value,
-                                    }])
+                                    // SingleKPIAction.merge([{
+                                    //   path:`AdvanceSettings.PredictionSetting.TagSavingRates.${index-1}.SavingRate`,
+                                    //   value,
+                                    // }])
                                           },
                       defaultValue: rate,
                       regexFn:(value)=>{

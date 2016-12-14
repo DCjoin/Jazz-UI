@@ -5,15 +5,17 @@ import ViewableTextField from 'controls/ViewableTextField.jsx';
 import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import CommonFuns from 'util/Util.jsx';
-import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx'
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 
 export default class GroupConfig extends Component {
 
   _validateQuota(value){
+    value=CommonFuns.thousandsToNormal(value);
     return !SingleKPIStore.validateQuota(value) && I18N.Setting.KPI.Parameter.QuotaErrorText
   }
 
   _validateSavingRate(value){
+    value=CommonFuns.thousandsToNormal(value);
     return !SingleKPIStore.validateSavingRate(value) && I18N.Setting.KPI.Parameter.SavingRateErrorText
   }
 
@@ -29,13 +31,14 @@ export default class GroupConfig extends Component {
           ref: 'annual',
           isViewStatus: false,
           didChanged:value=>{
+                      value=CommonFuns.thousandsToNormal(value);
                       let path=IndicatorType===Type.Quota?'AnnualQuota':'AnnualSavingRate';
                       GroupKPIAction.merge([{
                         path,
                         value
                       }]);
                               },
-          defaultValue: !isNaN(value) && value!==null?value:value || '',
+          defaultValue: CommonFuns.toThousands(value) || '',
           title: title,
           hintText:annualHint,
           regexFn:IndicatorType===Type.Quota?this._validateQuota:this._validateSavingRate,

@@ -6,7 +6,7 @@ import FlatButton from 'controls/FlatButton.jsx';
 import CommonFuns from 'util/Util.jsx';
 import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
-import Prediction from './Prediction.jsx';
+import Prediction from './PredictionView.jsx';
 
 export default class UpdatePrediction extends Component {
 
