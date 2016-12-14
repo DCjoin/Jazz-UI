@@ -5,6 +5,7 @@ import Immutable from 'Immutable';
 import Prediction from '../Single/Prediction.jsx';
 import MonthKPIAction from 'actions/KPI/MonthKPIAction.jsx';
 import MonthKPIStore from 'stores/KPI/MonthKPIStore.jsx';
+import TitleComponent from 'controls/TitleComponent.jsx';
 
 export default class GroupPrediction extends Component {
 
@@ -48,9 +49,18 @@ export default class GroupPrediction extends Component {
       deleteRate:this._deleteRate,
       onTagRateChange:this._onTagRateChange,
       ...this.props
-    };
+    },
+    titleProps={
+          title:I18N.Setting.KPI.Parameter.MonthPrediction,
+          contentStyle:{
+            marginLeft:'0'
+          }
+        };
     return(
-      <Prediction {...props}/>
+      <TitleComponent {...titleProps}>
+        <Prediction {...props}/>
+      </TitleComponent>
+
   )
   }
 }

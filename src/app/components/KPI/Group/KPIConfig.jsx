@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
 import {SettingStatus,Type} from 'constants/actionType/KPI.jsx';
+import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
@@ -164,6 +165,7 @@ export default class KPIConfig extends Component {
 					break;
 			case SettingStatus.Edit:
 					 GroupKPIAction.getGroupSettings(id);
+					 SingleKPIAction.getKPIPeriodByYear(customerId,year);
 					 break;
 		}
 	}

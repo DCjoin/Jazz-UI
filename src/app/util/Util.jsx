@@ -49,6 +49,15 @@ let CommonFuns = {
   isNumeric: function(value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
   },
+  isValidText:function(value){
+    //null undefined ''返回 false
+    if(this.isNumber(value)){
+      return true
+    }
+    else {
+      return value?true:false
+    }
+  },
   toThousands(value){
     if(this.isNumber(value)){
       value=value.toString();
@@ -61,11 +70,11 @@ let CommonFuns = {
     }
   },
   thousandsToNormal(value){
-    if(value){
-      return value.replace(/,/g, "")
-    }
-    else {
+    if(this.isNumber(value) || !value){
       return value
+    }
+    else{
+      return value.replace(/,/g, "")
     }
   },
   log: function(content) {

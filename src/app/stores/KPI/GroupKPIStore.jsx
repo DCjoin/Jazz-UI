@@ -6,12 +6,14 @@ import { Action,KpiSettingsModel,SettingStatus,KpiType,DataStatus} from '../../c
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
+import _ from 'lodash';
 import {fill, remove, findIndex, flatten} from 'lodash/array';
 import {sortBy, map, find,filter} from 'lodash/collection';
 import { Map,List} from 'immutable';
 import SingleKPIStore from './SingleKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 import AllCommodityStore from 'stores/AllCommodityStore.jsx';
+import CommonFuns from 'util/Util.jsx';
 
 var _kpiInfo=null,
     _groupInfo=null,
@@ -179,8 +181,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
         AnnualQuota:null,
         AnnualSavingRate:null,
-        TargetMonthValues:assign([],values),
-        MonthPredictionValues:assign([],values)
+        TargetMonthValues:Immutable.fromJS(assign([],values)),
+        MonthPredictionValues:Immutable.fromJS(assign([],values))
       }))
     })
   },
@@ -333,14 +335,24 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       return _annualSum
     }
     else {
-      _annualSum=0;
-      _kpiInfo.get('Buildings').forEach(building=>{
-        if(SingleKPIStore.validateQuota(building.get('AnnualQuota')) && _annualSum!=='-'){
-          _annualSum=building.get('AnnualQuota')?_annualSum+parseFloat(building.get('AnnualQuota')):_annualSum;
-        } else {
-          _annualSum='-'
+      // _annualSum=0;
+      // _kpiInfo.get('Buildings').forEach(building=>{
+      //   if(SingleKPIStore.validateQuota(building.get('AnnualQuota')) && _annualSum!=='-'){
+      //     _annualSum=building.get('AnnualQuota')?_annualSum+parseFloat(building.get('AnnualQuota')):_annualSum;
+      //   } else {
+      //     _annualSum='-'
+      //   }
+      // })
+      var buildings=_kpiInfo.get('Buildings').toJS();
+      var resValid=_.filter(buildings,({AnnualQuota})=>CommonFuns.isValidText(AnnualQuota)),
+          resInvalid=_.filter(buildings,({AnnualQuota})=>(SingleKPIStore.validateQuota(AnnualQuota)===false));
+      if (resValid.length===0 || resInvalid.length!==0) {
+        _annualSum='-'
+      }
+        else {
+            _annualSum=_.sum(_.map(buildings,'AnnualQuota'));
         }
-      })
+
     }
     return _annualSum
   },
