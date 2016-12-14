@@ -282,7 +282,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       {
         payload: 3,
         text: I18N.Common.Commodity.Gas,
-        uomId:1
+        uomId:5
       },
       {
         payload: 5,
