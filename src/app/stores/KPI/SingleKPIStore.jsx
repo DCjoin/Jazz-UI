@@ -240,7 +240,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
         value
       } = el;
       let paths = path.split(".");
-      refresh = path.indexOf('IndicatorType') > -1 || path.indexOf('ActualTagName') > -1;
+      refresh = refresh || path.indexOf('IndicatorType') > -1 || path.indexOf('ActualTagName') > -1;
       if (status === DataStatus.ADD) {
         let {
           index,
