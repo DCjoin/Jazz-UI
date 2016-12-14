@@ -2,7 +2,7 @@
 'use strict';
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
-import { Action,KpiSettingsModel,SettingStatus,KpiType,DataStatus} from '../../constants/actionType/KPI.jsx';
+import { Action,Type,KpiSettingsModel,SettingStatus,KpiType,DataStatus} from '../../constants/actionType/KPI.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
@@ -173,10 +173,12 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     }
   },
 
-  clearParam(){
+  clearParam(type){
     let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
     _kpiInfo=_kpiInfo.set('AnnualQuota',null);
     _kpiInfo=_kpiInfo.set('AnnualSavingRate',null);
+    _kpiInfo=_kpiInfo.set('IndicatorType',type);
+    if(type==='CommodityId')
     _kpiInfo.get('Buildings').forEach((building,index)=>{
       _kpiInfo=_kpiInfo.mergeIn(['Buildings',index],Map({
         AnnualQuota:null,
@@ -192,7 +194,8 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     data.forEach(el=>{
       let {path,status,value}=el;
       let paths = path.split(".");
-      refresh= path.indexOf('IndicatorType')>-1 || path.indexOf('ActualTagName')>-1;
+      refresh= path.indexOf('IndicatorType')>-1?value:refresh;
+      refresh= path.indexOf('CommodityId')>-1?Type.Quota:refresh;
       if(status===DataStatus.ADD){
         let {index,length}=el;
         var children = _kpiInfo.getIn(paths);
@@ -224,7 +227,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       }
     })
     if(refresh){
-      this.clearParam();
+      this.clearParam(refresh);
     }
   },
 
@@ -244,7 +247,6 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     if(_info){
       this.init(_info);
     }
-
   },
 
   IsActive(status,kpiInfo){
