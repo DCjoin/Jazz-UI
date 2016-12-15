@@ -16,6 +16,7 @@ export default class TagSelect extends Component {
 		onSave:React.PropTypes.func,
 		onCancel:React.PropTypes.func,
 		tag:React.PropTypes.object,
+		title:React.PropTypes.String,
 	};
 
 	static contextTypes = {
@@ -157,7 +158,7 @@ export default class TagSelect extends Component {
 		];
 		let  dialogProps = {
 		        ref: 'tag_dialog',
-		        title: I18N.Setting.KPI.Tag.Title,
+		        title: this.props.title?this.props.title:I18N.Setting.KPI.Tag.Title,
 		        actions: actions,
 		        modal: true,
 		        open: true,
