@@ -68,7 +68,6 @@ export default class PredictionView extends Component {
       onPredictioChange:this._onPredictionChange,
       deleteRate:this._deleteRate,
       onTagRateChange:this._onTagRateChange,
-
     };
     return(
       <Prediction {...props}/>

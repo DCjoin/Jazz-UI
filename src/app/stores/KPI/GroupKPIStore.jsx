@@ -327,7 +327,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   getCurrentCommodityList(){
     if(_groupKpis===null) return [];
     var list=this.getCommodityList();//_groupKpis
-    var result=filter(list,(item)=>_groupKpis.findIndex(kpi=>kpi.CommodityId===item.payload)===-1);
+    var result=filter(list,(item)=>findIndex(_groupKpis,kpi=>kpi.CommodityId===item.payload)===-1);
     return result
   },
 
