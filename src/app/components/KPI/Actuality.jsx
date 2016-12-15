@@ -282,7 +282,7 @@ class KPIChart extends Component {
 	    		} else {
 	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsagedPrediction, ratioMonth.get(currentDataIndex).toFixed(1) * 1)}</b>`;
 	    		}
-	    		// title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + (LastMonthRatio * 100).toFixed(1) * 1 + '%'}</b>`;
+	    		// title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + LastMonthRatio.toFixed(1) * 1 + '%'}</b>`;
 	    	}
 	    	return `
 	    	<table>
@@ -307,7 +307,7 @@ class KPIChart extends Component {
   //       		return `
 		// 			<div class='actuality-fractional-energy-saving-tooltip'>
 		// 				<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
-		// 				<div>${(LastMonthRatio * 100).toFixed(1) * 1 + '%'}</div>
+		// 				<div>${LastMonthRatio.toFixed(1) * 1 + '%'}</div>
 		// 			</div>
   //       		`
   //       	}
@@ -417,10 +417,10 @@ class KPIReport extends Component {
 			(<div className='summary-value'>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'))}</span>
-				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
+				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
 			</div>) :/*节能率预测值*/
 			(<div className='summary-value'>
-				<span>{(summaryData.PredictRatio === null ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
+				<span>{(summaryData.PredictRatio === null ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 			</div>)}
