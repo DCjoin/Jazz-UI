@@ -64,7 +64,7 @@ class KPIItem extends Component {
 			<li className='config-item'>
 				<span>{item.IndicatorName}</span>
 				<span className='config-item-summary'>{getConfigSummary(item)}</span>
-				<LinkButton ref={'edit_icon'} 
+				<LinkButton ref={'edit_icon'}
 					className={'fa icon-edit btn-icon'} onClick={() => {
 					this.setState({
 						opened: true
@@ -74,7 +74,7 @@ class KPIItem extends Component {
       				open={this.state.opened}
       				anchorEl={this.state.opened && ReactDOM.findDOMNode(this.refs['edit_icon'])}
       				anchorOrigin={{
-      					vertical: 'bottom', 
+      					vertical: 'bottom',
       					horizontal: 'right',
       				}}
       				targetOrigin={{
@@ -134,7 +134,7 @@ class KPIConfigItem extends Component {
 			<section className='year-item'>
 				<header className='year-item-header'>
 					<span>{util.replacePathParams(I18N.Setting.KPI.Group.HeaderYear, Year)}</span>
-					<LinkButton ref='add_icon' 
+					<LinkButton ref='add_icon'
 						className={classnames('fa icon-add btn-icon', {
 							opened: this.state.opened
 						})} onClick={() => {
@@ -165,8 +165,8 @@ class KPIConfigItem extends Component {
 					</Popover>
 				</header>
 				<ul>
-					{ GroupKpiItems.map( item => (<KPIItem 
-						key={item.KpiSettingsId} 
+					{ GroupKpiItems.map( item => (<KPIItem
+						key={item.KpiSettingsId}
 						item={item}
 						onChangeState={this._onChangeState}/>) ) }
 				</ul>
@@ -209,7 +209,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		GroupKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillUnmount() {
-		GroupKPIStore.removeChangeListener(this._onChange);		
+		GroupKPIStore.removeChangeListener(this._onChange);
 	}
 	_onChange() {
 		this.setState({
@@ -242,10 +242,10 @@ export default class KPIConfigList extends Component<void, Props, State> {
 			return (<div className='jazz-margin-up-main flex-center'><CircularProgress size={80}/></div>);
 		}
 		if( settingStatus ) {
-			return (<KPIConfig 
+			return (<KPIConfig
 						onCancel={this._onRefresh}
 						onSave={this._onRefresh}
-						onPending={this.setState({loading: true})}
+						// onPending={()=>{this.setState({loading: true})}}
 						status={settingStatus}
 						year={refYear}
 						id={refId}
@@ -256,14 +256,14 @@ export default class KPIConfigList extends Component<void, Props, State> {
 				<header className='header-bar'>{I18N.Setting.KPI.GroupList.Header}</header>
 				<article className='content'>
 					{GroupKPIStore.getGroupSettingsList().map( data => (
-					<KPIConfigItem 
+					<KPIConfigItem
 						key={data.Year}
 						onChangeState={(state) => {
 							this.setState(state);
 						}}
 						{...data}/>) )}
 				</article>
-				<NewDialog 
+				<NewDialog
 					open={showDeleteDialog}
 					title={util.replacePathParams(I18N.Setting.KPI.GroupList.DeleteTitle, GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || '')}
 					actions={[
