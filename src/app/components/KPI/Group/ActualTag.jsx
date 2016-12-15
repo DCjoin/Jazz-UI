@@ -45,6 +45,7 @@ export default class ActualTag extends Component {
 
     let tagSelectProps={
     	key:'tagselect',
+      title:I18N.Setting.KPI.Group.GroupConfig.SelectTag,
     	hierarchyId:HierarchyId,
     	hierarchyName:HierarchyName,
       tag:Immutable.fromJS({

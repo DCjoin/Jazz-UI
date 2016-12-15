@@ -188,6 +188,7 @@ export default class Prediction extends Component {
     },
     ratesTagProps={
         key:'ratestagselect',
+          title:I18N.Setting.KPI.Group.GroupConfig.SelectTagForPrediction,
           hierarchyId,
           hierarchyName,
           tag:tag,
