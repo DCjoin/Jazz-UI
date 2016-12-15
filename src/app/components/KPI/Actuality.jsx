@@ -6,7 +6,6 @@ import {findLastIndex, fill, map} from 'lodash/array';
 import {find} from 'lodash/collection';
 import {sum} from 'lodash/math';
 import CircularProgress from 'material-ui/CircularProgress';
-import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
@@ -50,6 +49,9 @@ function isSingleBuilding() {
 }
 
 function getHierarchyNameById(Id) {
+	if(getCustomerById(Id)) {
+		return getCustomerById(Id).Name;
+	}
 	return HierarchyStore.getBuildingList().filter( building => building.Id === Id )[0].Name;
 }
 
@@ -277,12 +279,13 @@ class KPIChart extends Component {
 	    			title += `<b>${util.replacePathParams(I18N.Kpi.MonthUsagedPrediction, (predictionVal * 100 / targetVal).toFixed(1) * 1)}</b>`;
 	    		}
 	    	} else if(data.get('type') === 2 && ratioMonth/*currentDataIndex === tooltipIndex*/) {
+	    		let value = ratioMonth.get(currentDataIndex) !== null ? ratioMonth.get(currentDataIndex).toFixed(1) * 1 : 0;
 	    		if(currentDataIndex <= currentMonthIndex || currentMonthIndex === -1) {
-	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsaged, ratioMonth.get(currentDataIndex).toFixed(1) * 1)}</b>`;
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsaged, value)}</b>`;
 	    		} else {
-	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsagedPrediction, ratioMonth.get(currentDataIndex).toFixed(1) * 1)}</b>`;
+	    			title += `<b>${util.replacePathParams(I18N.Kpi.RatioMonthUsagedPrediction, value)}</b>`;
 	    		}
-	    		// title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + (LastMonthRatio * 100).toFixed(1) * 1 + '%'}</b>`;
+	    		// title += `<b>${I18N.Kpi.ActualityFractionalEnergySaving + LastMonthRatio.toFixed(1) * 1 + '%'}</b>`;
 	    	}
 	    	return `
 	    	<table>
@@ -307,7 +310,7 @@ class KPIChart extends Component {
   //       		return `
 		// 			<div class='actuality-fractional-energy-saving-tooltip'>
 		// 				<div>${I18N.Kpi.ActualityFractionalEnergySaving}</div>
-		// 				<div>${(LastMonthRatio * 100).toFixed(1) * 1 + '%'}</div>
+		// 				<div>${LastMonthRatio.toFixed(1) * 1 + '%'}</div>
 		// 			</div>
   //       		`
   //       	}
@@ -417,10 +420,10 @@ class KPIReport extends Component {
 			(<div className='summary-value'>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum !== null && getUnit(data.get('unit'))}</span>
-				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
+				<span>{(!summaryData.PredictRatio ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
 			</div>) :/*节能率预测值*/
 			(<div className='summary-value'>
-				<span>{(summaryData.PredictRatio === null ? 0 : summaryData.PredictRatio * 100).toFixed(1) * 1 + '%'}</span>
+				<span>{(typeof summaryData.PredictRatio !== 'number' ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>
 				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
 			</div>)}
@@ -435,19 +438,10 @@ class KPIReport extends Component {
 					position: 'absolute',
     				right: 60
 				}}>
-				    {isFull() && <IconMenu
-				    	useLayerForClickAway={true}
-				      iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-				      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-				      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-				    >
-				      <MenuItem primaryText={I18N.Kpi.EditTarget} onClick={() => {
-				      	onEdit(data.get('id'));
-				      }}/>
-				      <MenuItem primaryText={I18N.Kpi.UpdatePrediction} onClick={() => {
-				      	onRefresh(data.get('id'));
-				      }}/>
-				    </IconMenu>}
+				    {isFull() &&
+				    	<IconButton iconClassName="fa icon-edit" onClick={() => {
+					      	onRefresh(data.get('id'));
+					      }}/>}
 				</div>
 				<div className='jazz-kpi-report-chart'><KPIChart  LastMonthRatio={summaryData && summaryData.LastMonthRatio} period={period} data={data}/></div>
 				<div className='jazz-kpi-report-summary'>

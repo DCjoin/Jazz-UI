@@ -72,8 +72,14 @@ var ViewableDropDownMenu = React.createClass({
       return null;
     }
     var menuItems = this.props.dataItems.map((item, id) => {
+      let label = item[textField];
       return(
-          <MenuItem value={item[valueField]} primaryText={item[textField]} disabled={(item.disabled !== undefined) ? item.disabled : false}/>
+          <MenuItem value={item[valueField]} label={label} disabled={(item.disabled !== undefined) ? item.disabled : false}>
+            <div title={label} style={{
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+            }}>{label}</div>
+          </MenuItem>
       )
 
 
@@ -81,6 +87,10 @@ var ViewableDropDownMenu = React.createClass({
 
     if (!this.props.isViewStatus) {
       var inputPorps = {
+        listStyle: {
+          display: 'block',
+          width: 'auto',
+        },
         errorText: this.state.errorText,
         onChange: this._handleChange,
         // style:{position:'absolute'},
