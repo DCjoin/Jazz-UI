@@ -22,7 +22,7 @@ var _kpiInfo=null,
     _rawData=null,
     _info=null,
     _groupSettingsList = null,
-    _groupKpis=null,
+    _groupKpis=[],
     _KpiSettings=Immutable.fromJS(KpiSettingsModel);
 
 function emptyList() {
@@ -452,7 +452,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 
     dispose(){
       _kpiInfo=null;
-      _groupInfo=null;
+      _groupInfo=[];
       _buildings=null;
       _annualSum='-';
       _rawData=null;

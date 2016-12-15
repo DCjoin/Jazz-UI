@@ -20,7 +20,7 @@ export default class PredictionView extends Component {
       }])
   }
 
-  _onPredictioChange(index,value){
+  _onPredictionChange(index,value){
     let MonthPredictionValues=SingleKPIStore.getKpiInfo().getIn(['AdvanceSettings','PredictionSetting','MonthPredictionValues']),
         period=SingleKPIStore.getYearQuotaperiod();
         if(MonthPredictionValues){
@@ -63,11 +63,12 @@ export default class PredictionView extends Component {
 
   render(){
     var props={
+      ...this.props,
       onRatesSave:this._onRatesSave,
-      onPredictioChange:this._onPredictioChange,
+      onPredictioChange:this._onPredictionChange,
       deleteRate:this._deleteRate,
       onTagRateChange:this._onTagRateChange,
-      ...this.props
+
     };
     return(
       <Prediction {...props}/>

@@ -226,5 +226,3 @@ Prediction.propTypes={
     hierarchyId:React.PropTypes.number,
     hierarchyName:React.PropTypes.string,
 };
-Prediction.defaultProps = {
-};
