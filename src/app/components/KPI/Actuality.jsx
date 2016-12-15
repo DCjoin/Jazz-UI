@@ -524,9 +524,10 @@ export default class Actuality extends Component {
 				}
 				if( hierarchyId ) {
 					this.setState({
+						year: null,
 						hierarchyId,
 					});
-					SingleKPIAction.getKPIConfigured(this._getCustomerId(), this.state.year, hierarchyId);
+					SingleKPIAction.getKPIConfigured(this._getCustomerId(), null, hierarchyId);
 					return;
 				}				
 			}
@@ -615,8 +616,8 @@ export default class Actuality extends Component {
 		        	margin: '0 20px',
 		        },
 		        didChanged: (hierarchyId) => {
-		        	SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, this.state.year, hierarchyId);
-					this.setState({hierarchyId});
+		        	SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, null, hierarchyId);
+					this.setState({year: null,hierarchyId});
 		        },
 		        disabled: disabledSelectedProject,
 		        textField: 'Name',
