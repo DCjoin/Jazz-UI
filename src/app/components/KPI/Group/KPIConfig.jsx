@@ -34,7 +34,8 @@ export default class KPIConfig extends Component {
 		errorTitle: null,
 		errorContent: null,
 		monthConfigShow:false,
-		monthIndex:null
+		monthIndex:null,
+		isLoading:false
 	};
 
 	_onChange(){
@@ -44,22 +45,33 @@ export default class KPIConfig extends Component {
 	}
 
 	_onSave(){
-		if(this.props.status===SettingStatus.New){
-			GroupKPIAction.create()
-		}
-		else {
-			GroupKPIAction.update()
-		}
+		this.setState({
+			isLoading:true
+		},()=>{
+			if(this.props.status===SettingStatus.New){
+				GroupKPIAction.create()
+			}
+			else {
+				GroupKPIAction.update()
+			}
+		})
+
 	}
 
 	_onSuccess(){
-		this.props.onSave()
+		this.setState({
+			isLoading:false
+		},()=>{
+			this.props.onSave()
+		})
+
 	}
 
 	_onError(error) {
 		this.setState({
 			errorTitle: error.title,
 			errorContent: error.content,
+			isLoading:false
 		});
 	}
 
@@ -184,6 +196,9 @@ export default class KPIConfig extends Component {
 
 	render() {
 		var {status,year,name}=this.props;
+		if(this.state.isLoading){
+			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
+		}
 		if(this.state.monthConfigShow){
 			return(
 				<div className="jazz-kpi-config-wrap">
@@ -231,6 +246,7 @@ KPIConfig.propTypes = {
 	name:React.PropTypes.string,
 	onSave:React.PropTypes.func,
 	onCancel:React.PropTypes.func,
+	// onPending:React.PropTypes.func,
 };
 
 KPIConfig.defaultProps = {
