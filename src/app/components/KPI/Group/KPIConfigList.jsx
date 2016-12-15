@@ -245,6 +245,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 			return (<KPIConfig 
 						onCancel={this._onRefresh}
 						onSave={this._onRefresh}
+						onPending={this.setState({loading: true})}
 						status={settingStatus}
 						year={refYear}
 						id={refId}
