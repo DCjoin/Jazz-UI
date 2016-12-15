@@ -77,7 +77,7 @@ export default class MonthValue extends Component {
             QuotaType:IndicatorType,
             IndexValue:AnnualQuota,
             RatioValue:AnnualSavingRate
-          });  
+          });
         })
 
   }
@@ -168,7 +168,7 @@ export default class MonthValue extends Component {
               {CommonFuns.toThousands(this.props.buildingInfo.get('AnnualSavingRate'))}
             </TitleComponent>
             <TitleComponent {...annualProps}>
-              {CommonFuns.toThousands(this.state.calcSum)}
+              {CommonFuns.toThousands(this.state.calcSum) || '-'}
             </TitleComponent>
           </div>
         )
