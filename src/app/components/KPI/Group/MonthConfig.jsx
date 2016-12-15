@@ -113,7 +113,7 @@ export default class MonthConfig extends Component {
         <ActualTag {...tagProps}/>
         {this._renderMonthValue()}
 				{this._renderPrediction()}
-				  <FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={MonthKPIStore.validateMonthInfo(this.state.buildingInfo)}
+				  <FormBottomBar isShow={true} saveBtnProps={{label:I18N.Platform.Password.Confirm}} allowDelete={false} allowEdit={false} enableSave={MonthKPIStore.validateMonthInfo(this.state.buildingInfo)}
 				ref="actionBar" status={formStatus.EDIT} onSave={this._onSave} onCancel={this.props.onCancel}
 				cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
       </TitleComponent>

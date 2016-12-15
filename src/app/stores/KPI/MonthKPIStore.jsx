@@ -91,7 +91,7 @@ const MonthKPIStore = assign({}, PrototypeStore, {
     else {
       _annualValueSum=0;
       var res=_.filter(values,({Value})=>validateQuota(Value));
-      if(res.length!==values.length){
+      if(res.length!==values.length || values.length===0){
         _annualValueSum='-'
       }
       else {
