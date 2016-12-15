@@ -314,6 +314,10 @@ let ReportDataItem = React.createClass({
         width:"auto",
         maxWidth:'1000px'
       }}
+      contentStyle={{
+        minHeight:'350px',
+        minWidth:'852px'
+      }}
       >
       <div style={{
         flex: 1,
