@@ -274,7 +274,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 					      onClick={this._deleteKPISetting} />,
 
 				      <FlatButton
-					      label={I18N.Common.Button.Cancel}
+					      label={I18N.Common.Button.Cancel2}
 					      onClick={() => {this.setState({
 					      	showDeleteDialog: false
 					      })}} />

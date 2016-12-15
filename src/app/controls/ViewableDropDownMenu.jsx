@@ -88,7 +88,7 @@ var ViewableDropDownMenu = React.createClass({
     if (!this.props.isViewStatus) {
       var inputPorps = {
         listStyle: {
-          display: 'block',
+          display: 'inline',
           width: 'auto',
         },
         errorText: this.state.errorText,
