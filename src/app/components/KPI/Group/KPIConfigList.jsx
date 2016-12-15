@@ -47,7 +47,7 @@ function getConfigSummary(item) {
 	return [
 		I18N.Setting.KPI.YearAndType.SavingRate,
 		typeof item.AnnualSavingRate === 'number' ? I18N.Setting.KPI.GroupSavingRateType : '',
-		typeof item.AnnualSavingRate === 'number' ? item.AnnualSavingRate.toFixed(1) + '%' : ''
+		typeof item.AnnualSavingRate === 'number' ? item.AnnualSavingRate.toFixed(1) * 1 + '%' : ''
 	].join(' ');
 }
 
