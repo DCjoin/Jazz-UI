@@ -325,7 +325,7 @@ let Tag = React.createClass({
   },
   _onSearchCleanButtonClick: function() {
     var filterObj = this.state.filterObj;
-    filterObj.LikeCodeOrName = null;
+    filterObj.LikeCodeOrName = '';
     this.setState({
       filterObj: filterObj,
       curPageNum: 1
