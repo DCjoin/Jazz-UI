@@ -1984,14 +1984,16 @@ let CommonFuns = {
     let label = '';
     for(let i = 0; i < abbreviations.length; i++) {
       let abbreviation = abbreviations[i];
-      if( value/abbreviation.value > 1 ) {
+      if( value/abbreviation.value >= 1 ) {
         label = abbreviation.label;
         value = value/abbreviation.value + '';
         let firstValue = value.split('.')[0];
         let secondValue = value.split('.')[1] || '0000';
         secondValue = secondValue.substring(0, 4 - firstValue.length + 1);
         value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
-        value = (1*value).toFixed(4 - firstValue.length);
+        if(secondValue.length > 0) {
+          value = (1*value).toFixed(secondValue.length - 1) * 1;
+        }
         break;
       }
 
