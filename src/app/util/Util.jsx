@@ -1989,8 +1989,9 @@ let CommonFuns = {
         value = value/abbreviation.value + '';
         let firstValue = value.split('.')[0];
         let secondValue = value.split('.')[1] || '0000';
-        secondValue = secondValue.substring(0, 4 - firstValue.length);
+        secondValue = secondValue.substring(0, 4 - firstValue.length + 1);
         value = firstValue + ((secondValue * 1) ? '.' + secondValue : '');
+        value = (1*value).toFixed(4 - firstValue.length);
         break;
       }
 
