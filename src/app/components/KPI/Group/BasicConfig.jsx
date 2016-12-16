@@ -14,10 +14,6 @@ export default class BasicConfig extends Component {
   		this._onPrelongKpiChange = this._onPrelongKpiChange.bind(this);
   	}
 
-  state={
-    ProlongkpiId:-1
-  };
-
   _onCommodityChange(value){
     GroupKPIAction.merge([{
       path:'CommodityId',
@@ -38,9 +34,9 @@ export default class BasicConfig extends Component {
 
   _onPrelongKpiChange(value){
     GroupKPIAction.getGroupContinuous(value,this.props.year);
-    this.setState({
-      ProlongkpiId:value
-    })
+    // this.setState({
+    //   ProlongkpiId:value
+    // })
   }
 
   _onTypeChange(ev,value){
@@ -100,7 +96,7 @@ export default class BasicConfig extends Component {
       ref: 'Prolongkpi',
       isViewStatus: false,
       title: I18N.Setting.KPI.Group.Prolongkpi,
-      defaultValue: this.state.ProlongkpiId,
+      defaultValue: GroupKPIStore.getProlongkpiId(),
       dataItems: GroupKPIStore.getGroupList(),
       didChanged:this._onPrelongKpiChange,
       style:{

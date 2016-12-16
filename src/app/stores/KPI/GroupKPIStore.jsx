@@ -23,7 +23,8 @@ var _kpiInfo=null,
     _info=null,
     _groupSettingsList = null,
     _groupKpis=[],
-    _KpiSettings=Immutable.fromJS(KpiSettingsModel);
+    _KpiSettings=Immutable.fromJS(KpiSettingsModel),
+    _prolongkpiId=-1;
 
 function emptyList() {
       return new List();
@@ -450,12 +451,25 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     _groupKpis=data;
   },
 
+  setProlongkpiId(id){
+    _prolongkpiId=id;
+  },
+
+  getProlongkpiId(){
+    return _prolongkpiId;
+  },
+
     dispose(){
       _kpiInfo=null;
       _groupInfo=[];
       _buildings=null;
       _annualSum='-';
       _rawData=null;
+      _info=null;
+      _groupSettingsList = null;
+      _groupKpis=[];
+      _KpiSettings=Immutable.fromJS(KpiSettingsModel);
+      _prolongkpiId=-1;
     },
     emitSuccessChange: function() {
       this.emit(KPI_SUCCESS_EVENT);
@@ -484,6 +498,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
 GroupKPIStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case Action.GET_KPI_GROUP_CONTINUOUS:
+          GroupKPIStore.setProlongkpiId(action.KpiId);
           GroupKPIStore.setKpiInfo(action.data);
           GroupKPIStore.emitChange();
         break;
