@@ -17,8 +17,10 @@ import NewDialog from 'controls/NewDialog.jsx';
 
 import KPIConfig from './KPIConfig.jsx';
 
+import HierarchyAction from 'actions/HierarchyAction.jsx';
 import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 
+import HierarchyStore from 'stores/HierarchyStore.jsx';
 import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 
@@ -203,20 +205,30 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		this._deleteKPISetting = this._deleteKPISetting.bind(this);
 		this._onRefresh = this._onRefresh.bind(this);
 		this._onChange = this._onChange.bind(this);
+		this._onGetBuildingList = this._onGetBuildingList.bind(this);
 	}
 	componentWillMount() {
 		this._onRefresh();
+		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
 		GroupKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillUnmount() {
+		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
 		GroupKPIStore.removeChangeListener(this._onChange);
+	}
+	_onGetBuildingList() {
+		if(HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length > 1) {
+			return GroupKPIAction.getGroupSettingsList(this.props.router.params.customerId);
+		}
+		this._onChange();
 	}
 	_onChange() {
 		this.setState({
 			loading: false
 		});
 	}
-	_onRefresh() {
+	_onRefresh(props) {
+		props = props || this.props;
 		this.setState({
 			loading: true,
 			showDeleteDialog: false,
@@ -224,7 +236,8 @@ export default class KPIConfigList extends Component<void, Props, State> {
 			refId: null,
 			refYear: null,
 		});
-		GroupKPIAction.getGroupSettingsList(this.props.router.params.customerId);
+		HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
+		
 	}
 	_deleteKPISetting() {
 		GroupKPIAction.deleteGroupSettings(this.state.refId, this.props.router.params.customerId);
@@ -250,6 +263,9 @@ export default class KPIConfigList extends Component<void, Props, State> {
 						year={refYear}
 						id={refId}
 						name={GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || ''}/>)
+		}
+		if( !HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length <= 1) {
+			return (<div className='jazz-margin-up-main flex-center'>{I18N.Kpi.Error.KPINonMoreBuilding}</div>);
 		}
 		return (
 			<div className='jazz-margin-up-main jazz-kpi-config-list'>
