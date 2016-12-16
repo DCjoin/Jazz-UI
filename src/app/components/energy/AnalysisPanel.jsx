@@ -583,8 +583,8 @@ let AnalysisPanel = React.createClass({
     this.state.chartStrategy.handleStepChangeFn(this, step);
   },
   _onDateSelectorChanged() {
-    this.refs.relativeDate.setState({
-      selectedIndex: 0
+    this.setState({
+      relativeDate: 'Customerize'
     });
   },
   _onLoadingStatusChange() {
