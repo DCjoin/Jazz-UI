@@ -1628,6 +1628,7 @@ I18N.Kpi = {
     NonKPICongured: '暂未配置指标现状，请点击导航菜单中的“指标现状配置”',
     KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的管理员',
     KPIConguredMoreBuilding: '指标现状暂不支持多项目，请持续关注',
+    KPINonMoreBuilding: '楼宇数据权限不足，请联系您的管理员。',
   }
 };
 
