@@ -356,6 +356,7 @@ class ActualityContent extends Component {
 			}
 		}
 		let tags = data.get('data');
+		let isGroup = !!getCustomerById(hierarchyId);
 		return (
 			<div className='content'>
 				<div className='action-bar'>
@@ -375,6 +376,7 @@ class ActualityContent extends Component {
 					{(period && period.length > 0 && tags && tags.size > 0) ?
 						tags.map( (tag, i) => <KPIReport
 							onEdit={onEdit}
+							isGroup={isGroup}
 							onRefresh={onRefresh}
 							period={period} data={tag}
 							summaryData={find(summaryData, sum => sum.KpiId === tag.get('id'))}
@@ -431,14 +433,14 @@ class KPIReport extends Component {
 		);
 	}
 	render() {
-		let {data, summaryData, period, onEdit, onRefresh} = this.props;
+		let {data, summaryData, period, onEdit, onRefresh, isGroup} = this.props;
 		return (
 			<div className='jazz-kpi-report'>
 				<div style={{
 					position: 'absolute',
     				right: 60
 				}}>
-				    {isFull() &&
+				    {isFull() && !isGroup &&
 				    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 					      	onRefresh(data.get('id'));
 					      }}/>}
