@@ -87,6 +87,8 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy/GetTagsData', {
+      avoidDuplicate:true,
+      tag:submitParams.tagIds,
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {
@@ -317,6 +319,8 @@ let EnergyAction = {
     });
 
     Ajax.post('/Energy/GetTagsData', {
+      avoidDuplicate:true,
+      tag:submitParams.tagIds,
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {

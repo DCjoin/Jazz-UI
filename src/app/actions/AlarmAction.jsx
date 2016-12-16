@@ -64,6 +64,8 @@ let AlarmAction = {
     });
 
     Ajax.post('/Energy/GetTagsData', {
+      avoidDuplicate:true,
+      tag:submitParams.tagIds,
       params: submitParams,
       success: function(energyData) {
         AppDispatcher.dispatch({
@@ -103,6 +105,8 @@ let AlarmAction = {
     });
 
     Ajax.post('/Energy/GetTagsData', {
+      avoidDuplicate:true,
+      tag:submitParams.tagIds,
       params: submitParams,
       commonErrorHandling: false,
       success: function(energyData) {

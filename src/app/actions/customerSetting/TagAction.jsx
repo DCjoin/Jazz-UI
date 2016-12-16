@@ -143,6 +143,8 @@ let TagAction = {
   getTagsData: function(tagId, step, StartTime, EndTime, refreshTagStatus) {
     var that = this;
     Ajax.post('/Energy/GetTagsData', {
+      avoidDuplicate:true,
+      tag:tagId,
       params: {
         limit: 0,
         page: 0,

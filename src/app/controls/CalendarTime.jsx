@@ -23,7 +23,8 @@ var CalendarTime = React.createClass({
       height: '32px'
       },
       labelStyle:{
-      lineHeight:'32px'
+      lineHeight:'32px',
+      textOverflow:'clip'
       },
       onChange:this._onTimeTouchTap
     };
