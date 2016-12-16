@@ -9,6 +9,7 @@ import Immutable from 'immutable';
 import {List} from 'immutable';
 import _ from 'lodash';
 import SingleKPIStore from './SingleKPIStore.jsx';
+import CommonFuns from 'util/Util.jsx';
 
 function emptyList() {
       return new List();
@@ -89,13 +90,13 @@ const MonthKPIStore = assign({}, PrototypeStore, {
       return _annualValueSum
     }
     else {
-      _annualValueSum=0;
-      var res=_.filter(values,({Value})=>validateQuota(Value));
-      if(res.length!==values.length || values.length===0){
+      var resValid=_.filter(values,({Value})=>CommonFuns.isValidText(Value));
+      var resInvalid=_.filter(values,({Value})=>validateQuota(Value)===false);
+      if(resInvalid.length!==0 || values.length===0 || resValid.length===0){
         _annualValueSum='-'
       }
       else {
-        _annualValueSum=_.sum(_.map(res,'Value'));
+        _annualValueSum=_.sum(_.map(values,'Value'));
       }
     }
     return _annualValueSum
