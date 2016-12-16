@@ -425,7 +425,7 @@ class KPIReport extends Component {
 			(<div className='summary-value'>
 				<span>{(typeof summaryData.PredictRatio !== 'number' ? 0 : summaryData.PredictRatio).toFixed(1) * 1 + '%'}</span>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>
-				<span>{summaryData.PredictSum && getUnit(data.get('unit'))}</span>
+				<span>{util.isNumber(summaryData.PredictSum) && getUnit(data.get('unit'))}</span>
 			</div>)}
 		</div>
 		);
