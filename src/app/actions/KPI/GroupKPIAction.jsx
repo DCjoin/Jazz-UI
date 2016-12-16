@@ -24,7 +24,8 @@ const GroupKPIAction = {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.GET_KPI_GROUP_CONTINUOUS,
-          data: resBody
+          data: resBody,
+          KpiId
         });
       },
       error: function() {}
