@@ -4,7 +4,6 @@ import {SettingStatus,Type} from 'constants/actionType/KPI.jsx';
 import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
 import CommonFuns from 'util/Util.jsx';
 import BuildingItem from './BuildingItem.jsx';
-import MonthConfig from './MonthConfig.jsx';
 
 export default class BuildingConfig extends Component {
 

@@ -54,9 +54,9 @@ var _ajax = function(url, options) {
         .set('httpWebRequest.MediaType', dataType)
         .set('Content-Type', dataType)
         .end(function(err, res){
-          _.remove(reqList, (reqObj) => {
-            return reqObj.key === options.tag;
-          });
+          // _.remove(reqList, (reqObj) => {
+          //   return reqObj.key === options.tag;
+          // });
         	if (res.ok && Util.isSuccess(res.body)) {
     			success.call(options, Util.getResResult(res.body));
         	} else {
