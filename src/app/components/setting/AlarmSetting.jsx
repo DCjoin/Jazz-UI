@@ -10,7 +10,7 @@ import { DataSelectMainPanel } from "../DataSelectMainPanel.jsx";
 var extractNumber = function(str) {
   var value = str.replace(/[^\d\.]/g, '');
   var dotIndex = value.indexOf('.');
-  if (dotIndex != -1) {
+  if (dotIndex !== -1) {
     if (dotIndex === 0)
       value = '0' + value;
     dotIndex = value.indexOf('.');
@@ -43,8 +43,12 @@ let AlarmSetting = React.createClass({
   },
   setValue: function(alarmSettingData) {
     this.refs.openAlarm.setToggled(alarmSettingData.EnableStatus);
-    this.refs.threshold.setValue(alarmSettingData.AlarmThreshold);
-    this.refs.alarmSteps.setValue(alarmSettingData.AlarmSteps);
+    this.setState({
+      threshold:alarmSettingData.AlarmThreshold,
+      // alarmSteps:alarmSettingData.AlarmSteps
+    })
+    // this.refs.threshold.setValue(alarmSettingData.AlarmThreshold);
+     this.refs.alarmSteps.setValue(alarmSettingData.AlarmSteps);
   },
   handleEdit: function() {
     this.setState({
@@ -76,12 +80,19 @@ let AlarmSetting = React.createClass({
   },
   _validateValue: function(val) {
     var value = extractNumber(val);
-    if (val !== value) {
-      this.refs.threshold.setValue(value);
+    if (val === value) {
+      //this.refs.threshold.setValue(value);
+      this.setState({
+        threshold: value,
+        errorText: (value === '' ? I18N.Baseline.Error.TbnameError : '')
+      });
     }
-    this.setState({
-      errorText: (value === '' ? I18N.Baseline.Error.TbnameError : '')
-    });
+    else {
+      this.setState({
+        errorText: (value === '' ? I18N.Baseline.Error.TbnameError : '')
+      });
+    }
+
     return value;
   },
   changeThreshold: function(e) {
@@ -143,7 +154,7 @@ let AlarmSetting = React.createClass({
             <Toggle ref="openAlarm" label={I18N.ALarm.Alarm} labelPosition="left" onToggle={this.changeToggle} disabled={this.state.disable && this.state.isDisplay}/>
           </div>
           <div className='jazz-setting-alarm-threshold'>
-            {I18N.Setting.TargetBaseline.AlarmThreshold}<TextField ref="threshold" defaultValue={this.state.threshold} style={inputStyle}  className="jazz-setting-input" errorText={this.state.errorText} disabled={this.state.disable} onChange={this.changeThreshold}/>%
+            {I18N.Setting.TargetBaseline.AlarmThreshold}<TextField ref="threshold" value={this.state.threshold} style={inputStyle}  className="jazz-setting-input" errorText={this.state.errorText} disabled={this.state.disable} onChange={this.changeThreshold}/>%
           </div>
           <div className='jazz-setting-alarm-tip'>
             {I18N.Setting.TargetBaseline.AlarmThresholdTip}
