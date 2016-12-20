@@ -510,7 +510,7 @@ export default class Actuality extends Component {
 		});
 	}
 	_privilegedCustomer() {
-		return getCustomerPrivilageById( this._getCustomerId() ) && getCustomerPrivilageById( this._getCustomerId() ).get('Privileged');
+		return getCustomerPrivilageById( this._getCustomerId() ) && getCustomerPrivilageById( this._getCustomerId() ).get('WholeCustomer');
 	}
 	_onGetBuildingList() {
 
