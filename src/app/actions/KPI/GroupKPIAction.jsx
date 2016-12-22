@@ -49,7 +49,7 @@ const GroupKPIAction = {
     Ajax.get(util.replacePathParams(Path.KPI.Group.getGroupKpis, customerId), {
       params: {customerId},
       success: function(list) {
-        SingleKPIAction.getKPIPeriodByYear(customerId,Year);
+        if(Year) {SingleKPIAction.getKPIPeriodByYear(customerId,Year);}
         AppDispatcher.dispatch({
           type: Action.GET_GROUP_KPIS,
           data: list,

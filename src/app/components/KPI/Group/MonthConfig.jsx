@@ -14,10 +14,6 @@ import CommonFuns from 'util/Util.jsx';
 
 export default class MonthConfig extends Component {
 
-	static contextTypes = {
-		router: React.PropTypes.object,
-	};
-
   constructor(props) {
     super(props);
     this._onChange = this._onChange.bind(this);

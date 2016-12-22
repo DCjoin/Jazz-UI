@@ -30,8 +30,11 @@ module.exports = {
       delete:'/kpi/groupsettings/delete/{kpiSettingsId}',
       getGroupKpis:'/kpi/getgroupkpis/{customerId}',
       calckpigradualsumvalue:'/kpi/calckpigradualsumvalue'
+    },
+    Rank:{
+      getRank:'/rank/getrank/{customerId}',
+      setRank:'/rank/setrank'
     }
-
 
 	}
 };

@@ -7,13 +7,14 @@ import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import _ from 'lodash';
-import {fill, remove, findIndex, flatten} from 'lodash/array';
+import {remove, findIndex, flatten} from 'lodash/array';
 import {sortBy, map, find,filter} from 'lodash/collection';
 import { Map,List} from 'immutable';
 import SingleKPIStore from './SingleKPIStore.jsx';
-import UOMStore from 'stores/UOMStore.jsx';
-import AllCommodityStore from 'stores/AllCommodityStore.jsx';
+// import UOMStore from 'stores/UOMStore.jsx';
+// import AllCommodityStore from 'stores/AllCommodityStore.jsx';
 import CommonFuns from '../../util/Util.jsx';
+import RoutePath from '../../util/RoutePath.jsx';
 
 var _kpiInfo=null,
     _groupInfo=null,
@@ -453,6 +454,17 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return _prolongkpiId;
   },
 
+  getConfigMenu(){
+    return([
+      {
+          getPath: RoutePath.KPIConfig,
+          title: I18N.Setting.KPI.GroupList.Header 
+      },{
+          getPath: RoutePath.KPIRankConfig,
+          title: I18N.Setting.KPI.Group.Ranking.Title 
+      }
+    ])
+  },
     dispose(){
       _kpiInfo=null;
       _groupInfo=[];
