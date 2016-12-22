@@ -13,7 +13,7 @@ import { Map,List} from 'immutable';
 import SingleKPIStore from './SingleKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 import AllCommodityStore from 'stores/AllCommodityStore.jsx';
-import CommonFuns from 'util/Util.jsx';
+import CommonFuns from '../../util/Util.jsx';
 
 var _kpiInfo=null,
     _groupInfo=null,
@@ -101,7 +101,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   updateGroupSettingsList( data ) {
     let nextYear = new Date().getFullYear() + 1,
       convertedData = [];
-    for( let i = nextYear; i > nextYear - 2; i--) {
+    for( let i = nextYear; i > nextYear - 5; i--) {
       let currentDataIndex = findIndex(data, setting => setting.Year === i);
       if( currentDataIndex > -1 ) {
         data[currentDataIndex].add = true;
@@ -162,13 +162,10 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     switch (status) {
       case SettingStatus.New:
             return I18N.format(I18N.Setting.KPI.Group.New,year);
-        break;
       case SettingStatus.Edit:
           return I18N.format(I18N.Setting.KPI.Group.Edit,year,name);
-        break;
       case SettingStatus.Prolong:
           return I18N.format(I18N.Setting.KPI.Group.Prolong,year,name);
-        break;
       default:
 
     }
@@ -257,14 +254,11 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       case SettingStatus.New:
             var {CommodityId}=kpiInfo.toJS();
             return CommodityId?true:false;
-        break;
       case SettingStatus.Edit:
           return true;
-        break;
       case SettingStatus.Prolong:
            var {Buildings}=kpiInfo.toJS();
           return Buildings?true:false;
-        break;
       default:
     }
   },
@@ -338,7 +332,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return list.getIn([index,'uomId'])
   },
 
-  getBuildingSum(calcSum){
+  getBuildingSum(calcSum,kpiInfo=_kpiInfo){
     if(!calcSum){
       return _annualSum
     }
@@ -351,7 +345,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
       //     _annualSum='-'
       //   }
       // })
-      var buildings=_kpiInfo.get('Buildings').toJS();
+      var buildings=kpiInfo.get('Buildings').toJS();
       var resValid=_.filter(buildings,({AnnualQuota})=>CommonFuns.isValidText(AnnualQuota)),
           resInvalid=_.filter(buildings,({AnnualQuota})=>(SingleKPIStore.validateQuota(AnnualQuota)===false));
       if (resValid.length===0 || resInvalid.length!==0) {
