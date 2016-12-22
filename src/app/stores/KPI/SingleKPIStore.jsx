@@ -194,7 +194,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   _initKpiChartData() {
     _KPIChartSummaryLoading = true;
     _KPIChartLoading = true;
-    _quotaperiodYear = true;
+    _quotaperiodYear = null;
   },
 
   chartReady() {
