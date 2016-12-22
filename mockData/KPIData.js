@@ -185,7 +185,7 @@ module.exports = {
 	    "Year": 2016,
 	    "IndicatorCharts": [{
 	        "IndicatorType": 1,
-	        "IndicatorId": 1,
+	        "KpiId": 1,
 	        "IndicatorName": "用电量",
 	        "UomId": 3,
 	        "ActualMonthValues": [{
@@ -301,7 +301,7 @@ module.exports = {
 	        }]
 	    }, {
 	        "IndicatorType": 2,
-	        "IndicatorId": 2,
+	        "KpiId": 2,
 	        "IndicatorName": "用水量",
 	        "UomId": 4,
 	        "ActualMonthValues": [{

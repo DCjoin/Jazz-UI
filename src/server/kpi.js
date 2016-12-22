@@ -37,35 +37,34 @@ exports.register = function(server, options, next) {
                     "Result": result
                 }).type("application/json");
             }
-          },
-        // }, {
-        //     method: 'get',
-        //     path: APIBasePath + APIPath.KPI.getKPIPeriodByYear,
-        //     handler: function(request, reply) {
-        //         return reply({
-        //             "error": { "Code": "0", "Messages": null },
-        //             "Result": KPIData.currentQuotaperiod_year
-        //         }).type("application/json");
-        //     }
-        // },
-        // {
-        //     method: 'get',
-        //     path: APIBasePath + APIPath.KPI.getKpi,
-        //     handler: function(request, reply) {
-        //         if(request.params.year === '2016') {
-        //           reply({
-        //             Result:KPIData.kpi2016,
-        //             error: {Code: "0", Messages: null}
-        //            }).type("application/json");
-        //         }
-        //         else {
-        //           reply({
-        //               "error": { "Code": "0", "Messages": null },
-        //               "Result": ''
-        //           }).type("application/json");
-        //         }
-        //     }
-        // },
+        }, {
+            method: 'get',
+            path: APIBasePath + APIPath.KPI.getKPIPeriodByYear,
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": KPIData.currentQuotaperiod_year
+                }).type("application/json");
+            }
+        },
+        {
+            method: 'get',
+            path: APIBasePath + APIPath.KPI.getKpi,
+            handler: function(request, reply) {
+                // if(request.params.year === '2016') {
+                  reply({
+                    Result:KPIData.kpi2016,
+                    error: {Code: "0", Messages: null}
+                   }).type("application/json");
+                // }
+                // else {
+                //   reply({
+                //       "error": { "Code": "0", "Messages": null },
+                //       "Result": ''
+                //   }).type("application/json");
+                // }
+            }
+        },
         {
             method: 'get',
             path: APIBasePath + APIPath.KPI.getKPIConfigured,
@@ -76,7 +75,8 @@ exports.register = function(server, options, next) {
                     error: { Code: "0", Messages: null }
                 }).type("application/json");
             }
-        }, {
+        }, 
+        {
             method: 'get',
             path: APIBasePath + APIPath.KPI.getKPIChart,
             handler: function(request, reply) {
@@ -94,11 +94,13 @@ exports.register = function(server, options, next) {
             handler: function(request, reply) {
                 sleep(1000);
                 var result = [{
+                    KpiId: 1,
                     PredictSum: 123456789123,
                     PredictRatio: 0.6548,
 
                     IndexValue: 599999,
                 }, {
+                    KpiId: 2,
                     LastMonthRatio: 0.5548,
 
                     PredictSum: 654321,
