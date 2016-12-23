@@ -197,7 +197,7 @@ export default class KPIConfig extends Component {
 	render() {
 		var {status,year,name}=this.props;
 		if(this.state.isLoading){
-			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
+			return (<div className="noContent flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
 		}
 		if(this.state.monthConfigShow){
 			return(
@@ -232,7 +232,7 @@ export default class KPIConfig extends Component {
 				);
 			}
 			else {
-				return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
+				return (<div className="noContent flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
 			}
 		}
 	}

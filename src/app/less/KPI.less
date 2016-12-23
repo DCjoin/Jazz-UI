@@ -80,11 +80,14 @@
 .jazz-kpi-config{
   &-wrap{
     flex:1;
-    margin:50px;
+    padding-top:30px;
     overflow-x: hidden;
     overflow-y: auto;
+    margin-top: -16px !important;
+    background-color: #ffffff;
+    position: relative;
     .form-bottom .form-bottom-bar{
-      left:0 !important;
+      left:170px !important;
     }
   }
 }
@@ -382,5 +385,47 @@
   .column4{
     width: 108px;
     min-width: 108px;
+  }
+}
+
+.jazz-kpi-group-ranking {
+  display: flex;
+  flex-direction: column;
+  .header-bar {
+    height: 72px;
+    line-height: 72px;
+    font-size: 20px;
+    padding: 0 40px;
+    border-bottom: 1px solid @hoverGray;
+  }
+  .content {
+    padding: 40px;
+    flex: 1;
+    background-color: #fbfbfb;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top:-16px;
+  }
+  .footer{
+    padding: 40px;
+    background-color: #fbfbfb;
+  }
+  &-block{
+    padding-bottom: 30px;
+    border-bottom: 1px solid @hoverGray;
+  }
+}
+.noContent{
+  margin-top:-16px;
+  background-color: #ffffff;
+  position: relative;
+}
+.jazz-kpi-group-config{
+  flex:1;
+  display: flex;
+  flex-direction: row;
+  .menu{
+    background-color: #ffffff;
+    margin-top:-16px;
   }
 }

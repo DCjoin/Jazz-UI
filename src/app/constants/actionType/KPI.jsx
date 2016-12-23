@@ -28,7 +28,10 @@ module.exports = {
     GET_GROUP_KPIS:null,
     SET_MONTH_KPI_INFO:null,
     MERGE_MONTH_KPI_INFO:null,
-    GET_GROUP_CLAC_SUM_VALUE:null
+    GET_GROUP_CLAC_SUM_VALUE:null,
+    MERGE_GROUP_RANKING:null,
+    GET_GROUP_RANKING:null,
+    SET_GROUP_RANKING:null
   }),
 
   Type:{
@@ -173,6 +176,19 @@ module.exports = {
     ]
   }
   }
+  },
+  Unit:{
+    TotalPersonUnit:2,
+    TotalAreaUnit:3,
+    CoolingAreaUnit:4,
+    HeatingAreaUnit:5,
+    OrignValue:6,
+    TotalRoomUnit:7,
+    UsedRoomUnit:8,
+    TotalBedUnit:9,
+    UsedBedUnit:10,
+    MonthRatio:11,
+    None:12
   }
 
 };

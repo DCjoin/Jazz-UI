@@ -142,7 +142,7 @@ describe("GroupKPIStore", () => {
 
       let ret = GroupKPIStore.validateKpiInfo(kpiInfo, quotaValidator, savingRateValidator);
 
-      expect(ret).to.be.false;
+      expect(ret).to.be.true;
 
     })
 
