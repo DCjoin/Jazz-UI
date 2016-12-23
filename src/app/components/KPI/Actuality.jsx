@@ -111,7 +111,7 @@ class ActualityContent extends Component {
 		}
 		let tags = data.get('data');
 		let isGroup = !!getCustomerById(hierarchyId);
-		let baseProps = {period, tags, summaryData};
+		let baseProps = {period, tags, summaryData, ranks: SingleKPIStore.getKPIRank()};
 		return (
 			<div className='content'>
 				<div className='action-bar'>
@@ -148,6 +148,7 @@ export default class Actuality extends Component {
 		this._reload = this._reload.bind(this);
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
 		this._onGetBuildingList = this._onGetBuildingList.bind(this);
+		this._getKPIRank = this._getKPIRank.bind(this);
 		this.state = this._getInitialState();
 	}
 	componentWillMount() {
@@ -211,7 +212,11 @@ export default class Actuality extends Component {
 						year: null,
 						hierarchyId,
 					});
-					SingleKPIAction.getKPIConfigured(this._getCustomerId(), null, hierarchyId);
+					SingleKPIAction.getKPIConfigured(
+						this._getCustomerId(), 
+						null, 
+						hierarchyId,
+						this._getKPIRank(hierarchyId));
 					return;
 				}				
 			}
@@ -232,7 +237,12 @@ export default class Actuality extends Component {
 		});
 	}
 	_reload(year = this.state.year) {
-		SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, year, this.state.hierarchyId);
+		let hierarchyId = this.state.hierarchyId;
+		SingleKPIAction.getKPIConfigured(
+			this.props.router.params.customerId, 
+			year, 
+			hierarchyId,
+			this._getKPIRank(hierarchyId));
 		this.setState({
 			showRefreshDialog: false,
 			showCreate: false,
@@ -240,11 +250,25 @@ export default class Actuality extends Component {
 			loading: true,
 		});
 	}
+	_getKPIRank(hierarchyId) {
+		let isGroup = !!getCustomerById(hierarchyId);
+		if(isGroup) {
+			return SingleKPIAction.getCustomerRank;
+		} else {
+			let customerId = this.props.router.params.customerId;
+			let kpiIdFromRank = this.state.kpiIdFromRank;
+			if(this.state.kpiIdFromRank) {
+				return SingleKPIAction.getGroupKPIBuildingRank.bind(SingleKPIAction, customerId, kpiIdFromRank, hierarchyId);
+			}
+			return SingleKPIAction.getBuildingRank.bind(SingleKPIAction, customerId, hierarchyId);
+		}
+	}
 	_getData(customerId, year, hierarchyId) {
 		SingleKPIAction.initKPIChartData();
 		SingleKPIAction.getKPIPeriodByYear(customerId, year);
 		SingleKPIAction.getKPIChart(customerId, year, hierarchyId);
 		SingleKPIAction.getKPIChartSummary(customerId, year, hierarchyId);
+		this._getKPIRank(hierarchyId)(year);
 	}
 	_getCustomerId() {
 		return this.props.params.customerId;
@@ -289,7 +313,11 @@ export default class Actuality extends Component {
 		        	margin: '0 20px',
 		        },
 		        didChanged: (hierarchyId) => {
-		        	SingleKPIAction.getKPIConfigured(this.props.router.params.customerId, null, hierarchyId);
+		        	SingleKPIAction.getKPIConfigured(
+		        		this.props.router.params.customerId, 
+		        		null, 
+		        		hierarchyId,
+		        		this._getKPIRank(hierarchyId));
 					this.setState({year: null,hierarchyId});
 		        },
 		        disabled: disabledSelectedProject,

@@ -84,8 +84,10 @@ let _KPIPeriod = null,
   _KPIConfigured = null,
   _KPIChart = null,
   _KPIChartSummary = null,
+  _KPIRank = null,
   _KPIChartLoading = false,
   _KPIChartSummaryLoading = false,
+  _KPIRankLoading = false,
   _quotaperiodYear = null,
   _hasHistory = false;
 
@@ -95,8 +97,10 @@ function _init() {
   _KPIConfigured = null;
   _KPIChart = null;
   _KPIChartSummary = null;
+  _KPIRank = null;
   _KPIChartLoading = false;
   _KPIChartSummaryLoading = false;
+  _KPIRankLoading = false;
   _quotaperiodYear = null;
   _hasHistory = false;
 }
@@ -191,14 +195,23 @@ const SingleKPIStore = assign({}, PrototypeStore, {
   getKPIChartSummary() {
     return _KPIChartSummary;
   },
+
+  setKPIRank(data) {
+    _KPIRankLoading = false;
+    _KPIRank = data;
+  },
+  getKPIRank() {
+    return _KPIRank;
+  },
   _initKpiChartData() {
     _KPIChartSummaryLoading = true;
     _KPIChartLoading = true;
+    _KPIRankLoading = true;
     _quotaperiodYear = null;
   },
 
   chartReady() {
-    return !(_KPIChartSummaryLoading || _KPIChartLoading)
+    return !(_KPIChartSummaryLoading || _KPIChartLoading || _KPIRankLoading)
   },
 
   setYearQuotaperiod(data) {
@@ -588,6 +601,12 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
         title: action.title,
         content: action.content
       });
+      break;
+    case Action.GET_GROUP_KPI_BUILDING_RANK:
+    case Action.GET_BUILDING_RANK:
+    case Action.GET_GROUP_RANK:
+      SingleKPIStore.setKPIRank(action.data);
+      SingleKPIStore.emitChange();
       break;
 
     default:
