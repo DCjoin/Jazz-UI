@@ -19,7 +19,7 @@ export default class Ranking extends Component {
   	constructor(props) {
   		super(props);
       this._onChange = this._onChange.bind(this);
-      this._onSave = this._onSave.bind(this);      
+      this._onSave = this._onSave.bind(this);
   	}
 
     state={
@@ -58,6 +58,9 @@ export default class Ranking extends Component {
 
     _onSave(){
       let {GroupKpiIds,UnitType,TopGroupKpiId}=this.state.config.toJS();
+      if(UnitType===Unit.None){
+        TopGroupKpiId=null
+      }
       RankingKPIAction.setRank({
         CustomerId:customerId,
         GroupKpiIds,UnitType,TopGroupKpiId

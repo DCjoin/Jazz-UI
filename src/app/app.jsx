@@ -252,6 +252,11 @@ ReactDom.render(<Router history={hashHistory} routes={{
           }, {
             path: 'config',
             component: KPIConfig,
+            indexRoute: {
+                onEnter: (router, replaceState) => {
+                  replaceState(RoutePath.KPIConfig(router.params));
+                },
+            },
             childRoutes: [
               {
                  path: 'kpiconfig',

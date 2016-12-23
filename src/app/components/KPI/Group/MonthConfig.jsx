@@ -86,8 +86,7 @@ export default class MonthConfig extends Component {
       return <div/>
     }
     let {isCreate}=this.props;
-    let {CommodityId,UomId}=this.props.kpiInfo.toJS();
-	  let {HierarchyName,HierarchyId,ActualTagId,ActualTagName}=this.state.buildingInfo.toJS();
+	  let {HierarchyName}=this.state.buildingInfo.toJS();
     let titleProps={
 			title:`${HierarchyName}-${I18N.Setting.KPI.Group.MonthConfig.Title}`,
 			contentStyle:{
@@ -96,6 +95,9 @@ export default class MonthConfig extends Component {
 			titleStyle:{
 				fontSize:'16px'
 			},
+      style:{
+        marginTop:'0px'
+      }
 			// className:'jazz-kpi-config-wrap'
 		},
     tagProps={
