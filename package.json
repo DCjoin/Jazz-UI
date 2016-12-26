@@ -7,7 +7,7 @@
     "test:coverage": "karma start",
     "test:s": "webpack --config ./conf/webpack-test-single.config.js",
     "test:t": "mocha ./coverage/test.bundle.js --watch",
-    "test:m": "mocha-webpack --webpack-config webpac-single-ut.config.js --watch \"test/**/*-test.ts\"",
+    "test:m": "mocha-webpack --webpack-config webpac-single-ut.config.js --watch \"test/**/*-test.ts\" --reporter spec",
     "dev": "webpack-dev-server --config webpack-hot-dev-server.config.js --hot --progress --colors --port 3000 --inline",
     "dev-all": "concurrently --kill-others \"npm run dev\" \"npm run start\"",
     "build": "webpack --config webpack-production.config.js --progress --profile --colors > ret.log",

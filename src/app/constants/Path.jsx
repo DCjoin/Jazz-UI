@@ -34,8 +34,9 @@ module.exports = {
     Rank: {
       getBuildingRank: '/rank/buildingrank/{customerId}/{buildingId}/{year}',
       getGroupKPIBuildingRank: '/rank/groupkpibuildingrank/{customerId}/{groupKpiId}/{buildingId}/{year}',
+      getRank:'/rank/getrank/{customerId}',
+      setRank:'/rank/setrank',
     }
-
 
 	}
 };

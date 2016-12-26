@@ -307,14 +307,19 @@ exports.register = function(server, options, next) {
         },
         {
             method: 'get',
-            path: APIBasePath + APIPath.KPI.Group.getGroupKpis,
+            path: APIBasePath + APIPath.KPI.Group.getGroupKpis,          
             handler: function(request, reply) {
+                let result=[{
+                        Id: 2015,
+                        Name:"test",
+                        CommodityId:10
+                        }];
+            if (request.params.customerId === '100001') {
+                    result=[]
+                };
                 return reply({
                     "error": { "Code": "0", "Messages": null },
-                    "Result": [{
-                        Id: 2015,
-                        CommodityId:10
-                        }]
+                    "Result": result
                 }).type("application/json");
             }
         },
@@ -328,6 +333,40 @@ exports.register = function(server, options, next) {
                 }).type("application/json");
             }
         },
+        {
+            method: 'get',
+            path: APIBasePath + APIPath.KPI.Rank.getRank,
+            handler: function(request, reply) {
+                let result={
+                      "CustomerId": 2,
+                      "GroupKpiIds": [2015],
+                         "UnitType": 2,
+                        "TopGroupKpiId": 2015
+                         }
+                if (request.params.customerId === '100001') {
+                    result={
+                      "CustomerId": 0,
+                      "GroupKpiIds": [],
+                         "UnitType": null,
+                        "TopGroupKpiId": null
+                         }
+                }
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": result
+                }).type("application/json");
+            }
+        },
+        {
+            method: 'post',
+            path: APIBasePath + APIPath.KPI.Rank.setRank,
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": 800000
+                }).type("application/json");
+            }
+        }
     ]);
     next();
 };

@@ -149,11 +149,14 @@ var SubMainMenu = React.createClass({
   },
 
   _checkSubIsActive: function(children) {
+    console.log('*********************8');
+    console.log(this.context.currentRoute.params);
     var that = this,
       hasActive = false,
       title = null;
     children.every((item) => {
       item.list.every((menu) => {
+        console.log(menu);
         // to change
         if (this.context.router.isActive(menu.getPath(this.context.currentRoute.params))) {
           title = menu.title;
@@ -164,6 +167,7 @@ var SubMainMenu = React.createClass({
       });
       return true;
     });
+    console.log(title);
     return {
       isActive: hasActive,
       activeTitle: title

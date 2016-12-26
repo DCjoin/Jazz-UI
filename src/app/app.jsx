@@ -21,7 +21,9 @@ import demoLoginApp from './components/DemoLogin.jsx';
 import initChangePSWApp from './components/initChangePSW.jsx';
 import contactusApp from './components/ContactUS.jsx';
 import KPI from './components/KPI/Actuality.jsx';
+import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
+import KPIRanking from './components/KPI/Group/Ranking.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
@@ -249,7 +251,21 @@ ReactDom.render(<Router history={hashHistory} routes={{
             component: KPI
           }, {
             path: 'config',
-            component: KPIConfigList
+            component: KPIConfig,
+            indexRoute: {
+                onEnter: (router, replaceState) => {
+                  replaceState(RoutePath.KPIConfig(router.params));
+                },
+            },
+            childRoutes: [
+              {
+                 path: 'kpiconfig',
+                 component: KPIConfigList
+               },
+               {
+                 path: 'rankconfig',
+                 component: KPIRanking
+             }]
           }]
       }, {
         path: 'map',

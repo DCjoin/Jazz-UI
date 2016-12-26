@@ -33,6 +33,9 @@ module.exports = {
     GET_GROUP_KPI_BUILDING_RANK:null,
     GET_BUILDING_RANK:null,
     GET_GROUP_RANK:null,
+    MERGE_GROUP_RANKING:null,
+    GET_GROUP_RANKING:null,
+    SET_GROUP_RANKING:null
   }),
 
   Type:{
@@ -177,6 +180,19 @@ module.exports = {
     ]
   }
   }
+  },
+  Unit:{
+    TotalPersonUnit:2,
+    TotalAreaUnit:3,
+    CoolingAreaUnit:4,
+    HeatingAreaUnit:5,
+    OrignValue:6,
+    TotalRoomUnit:7,
+    UsedRoomUnit:8,
+    TotalBedUnit:9,
+    UsedBedUnit:10,
+    MonthRatio:11,
+    None:12
   }
 
 };

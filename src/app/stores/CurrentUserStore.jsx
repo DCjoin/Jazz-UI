@@ -165,14 +165,14 @@ var CurrentUserStore = assign({}, PrototypeStore, {
             list: [{
               getPath: RoutePath.KPIActuality,
               title: I18N.MainMenu.KPIActuality
-            }]         
+            }]
           }]
         }
       );
       if( this.permit(PermissionCode.INDEX_AND_REPORT.FULL) ) {
         menuItems[menuItems.length - 1].children[0].list.push({
-            getPath: RoutePath.KPIConfig,
-            title: I18N.MainMenu.KPIConfig           
+            getPath: RoutePath.KPIGroupConfig,
+            title: I18N.MainMenu.KPIConfig
         });
       }
     }
