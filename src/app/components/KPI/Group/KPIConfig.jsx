@@ -248,13 +248,3 @@ KPIConfig.propTypes = {
 	onCancel:React.PropTypes.func,
 	// onPending:React.PropTypes.func,
 };
-
-KPIConfig.defaultProps = {
-	status:SettingStatus.New,
-	//编辑时 id=kpiSettingsId;延用时 id=KpiId
-	id:2,
-	year:2017,
-	// //编辑时，需要name
-	name:'天然气用量',
-
-};

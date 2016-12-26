@@ -75,7 +75,7 @@ exports.register = function(server, options, next) {
                     error: { Code: "0", Messages: null }
                 }).type("application/json");
             }
-        }, 
+        },
         {
             method: 'get',
             path: APIBasePath + APIPath.KPI.getKPIChart,
@@ -307,7 +307,7 @@ exports.register = function(server, options, next) {
         },
         {
             method: 'get',
-            path: APIBasePath + APIPath.KPI.Group.getGroupKpis,          
+            path: APIBasePath + APIPath.KPI.Group.getGroupKpis,
             handler: function(request, reply) {
                 let result=[{
                         Id: 2015,
@@ -366,7 +366,108 @@ exports.register = function(server, options, next) {
                     "Result": 800000
                 }).type("application/json");
             }
-        }
+        },
+        {
+            method: 'get',
+            path: APIBasePath + APIPath.KPI.Rank.rankRecord,
+            handler: function(request, reply) {
+                return reply({
+                    "error": { "Code": "0", "Messages": null },
+                    "Result": [{
+                      Date:'/Date(' + new Date(2016, 8, 1).getTime() + ')/',
+                      Index:1,
+                      DIndex:2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2016, 7, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2016, 6, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2016, 5, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2016, 4, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2016, 3, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2016, 2, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2016, 1, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2015, 12, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2015, 11, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2015, 10, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2015, 9, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    },{
+                      Date:'/Date(' + new Date(2015, 8, 1).getTime() + ')/',
+                      Index:2,
+                      DIndex:-2,
+                      Count:25,
+                      Value:245000,
+                      CommodityId:1
+                    }]
+                }).type("application/json");
+            }
+        },
     ]);
     next();
 };

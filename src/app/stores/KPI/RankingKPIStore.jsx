@@ -9,13 +9,11 @@ import Immutable from 'immutable';
 import {List} from 'immutable';
 import _ from 'lodash';
 import CommonFuns from 'util/Util.jsx';
-
-function emptyList() {
-      return new List();
-    }
+import moment from 'moment';
 
 var _allKpis=null,
-    _rankingConfig=null;
+    _rankingConfig=null,
+    _rankRecord=null;
 const RankingKPIStore = assign({}, PrototypeStore, {
 
   setRankConfig(data){
@@ -80,7 +78,7 @@ const RankingKPIStore = assign({}, PrototypeStore, {
         },
         {
           Id:Unit.MonthRatio,
-          Name:I18N.Setting.KPI.Group.Ranking.MonthRatio    
+          Name:I18N.Setting.KPI.Group.Ranking.MonthRatio
         }
       ])
   },
@@ -92,9 +90,23 @@ const RankingKPIStore = assign({}, PrototypeStore, {
     }))
   },
 
+  setRankRecord(data){
+    _rankRecord=Immutable.fromJS(data)
+  },
+
+  getRankRecord(){
+    return _rankRecord
+  },
+
+  getDate(date){
+    var j2d=CommonFuns.DataConverter.JsonToDateTime;
+    return moment(j2d(date)).format(I18N.DateTimeFormat.IntervalFormat.Month)
+  },
+
   dispose(){
     _allKpis=null;
     _rankingConfig=null;
+    _rankRecord=null;
   }
 
 });
@@ -111,6 +123,10 @@ RankingKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          break;
     case Action.GET_GROUP_RANKING:
          RankingKPIStore.setRankConfig(action.data);
+         RankingKPIStore.emitChange();
+         break;
+    case Action.GET_RANK_RECORD:
+         RankingKPIStore.setRankRecord(action.data);
          RankingKPIStore.emitChange();
          break;
     default:
