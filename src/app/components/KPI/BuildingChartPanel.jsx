@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Immutable from 'immutable';
+import moment from 'moment';
 import {first} from 'lodash/array';
 import {find} from 'lodash/collection';
 import {isNull, isUndefined} from 'lodash/lang';
@@ -55,7 +56,9 @@ function RankNumber(props) {
 }
 
 function getRanlLabelDate() {
-	return util.replacePathParams(I18N.Kpi.YearMonth, new Date().getFullYear(), new Date().getMonth() + 1);
+	let lastMonth = new moment().subtract('month', 1);
+	console.log(lastMonth);
+	return util.replacePathParams(I18N.Kpi.YearMonth, lastMonth.get('year'), lastMonth.get('month') + 1);
 }
 
 export default class BuildingChartPanel extends Component {
