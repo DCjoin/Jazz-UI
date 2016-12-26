@@ -298,7 +298,7 @@ I18N.Common.Glossary.UOM = '单位';
 I18N.Common.Glossary.Type = '类型';
 I18N.Common.Glossary.Operation = '操作';
 I18N.Common.Glossary.PriceStrategy = '价格策略';
-
+I18N.Common.Glossary.Rank = '名次';
 
 
 I18N.Common.Button = {};
@@ -2053,5 +2053,9 @@ I18N.Setting.KPI.Group.Ranking.TotalPersonUnit='单位人员';
 I18N.Setting.KPI.Group.Ranking.MonthRatio='逐月同比';
 I18N.Setting.KPI.Group.Ranking.SelectSource='选择数据来源';
 I18N.Setting.KPI.Group.Ranking.NoKpi='请先新建指标并引用建筑数据点，再进行排名配置';
+I18N.Setting.KPI.Group.Ranking.History = {};
+I18N.Setting.KPI.Group.Ranking.History.Name='{0}-排名历史';
+I18N.Setting.KPI.Group.Ranking.History.Ratio='对比上月';
+I18N.Setting.KPI.Group.Ranking.History.Value='用量';
 
 module.exports = I18N;

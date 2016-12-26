@@ -31,7 +31,8 @@ module.exports = {
     GET_GROUP_CLAC_SUM_VALUE:null,
     MERGE_GROUP_RANKING:null,
     GET_GROUP_RANKING:null,
-    SET_GROUP_RANKING:null
+    SET_GROUP_RANKING:null,
+    GET_RANK_RECORD:null,
   }),
 
   Type:{
@@ -189,6 +190,11 @@ module.exports = {
     UsedBedUnit:10,
     MonthRatio:11,
     None:12
+  },
+  RankType:{
+    GroupRank:1,
+    TopRank:2,
+
   }
 
 };
