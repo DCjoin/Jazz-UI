@@ -111,7 +111,7 @@ class ActualityContent extends Component {
 		}
 		let tags = data.get('data');
 		let isGroup = !!getCustomerById(hierarchyId);
-		let baseProps = {period, tags, summaryData, ranks: SingleKPIStore.getKPIRank()};
+		let baseProps = {period, tags, summaryData, year, ranks: SingleKPIStore.getKPIRank()};
 		return (
 			<div className='content'>
 				<div className='action-bar'>
@@ -129,7 +129,7 @@ class ActualityContent extends Component {
 				</div>
 				{isGroup
 				? <CustomerChartPanel {...baseProps}/>
-				: <BuildingChartPanel {...baseProps} onRefresh={onRefresh}/>}
+				: <BuildingChartPanel {...baseProps} buildingId={hierarchyId} onRefresh={onRefresh}/>}
 			</div>
 		);
 	}
