@@ -31,7 +31,9 @@ module.exports = {
       getGroupKpis:'/kpi/getgroupkpis/{customerId}',
       calckpigradualsumvalue:'/kpi/calckpigradualsumvalue'
     },
-    Rank:{
+    Rank: {
+      getBuildingRank: '/rank/buildingrank/{customerId}/{buildingId}/{year}',
+      getGroupKPIBuildingRank: '/rank/groupkpibuildingrank/{customerId}/{groupKpiId}/{buildingId}/{year}',
       getRank:'/rank/getrank/{customerId}',
       setRank:'/rank/setrank',
       rankRecord:'/rank/rankrecord/{customerId}/{groupKpiId}/{rankType}/{buildingId}',

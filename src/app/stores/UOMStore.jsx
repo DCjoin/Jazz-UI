@@ -3,6 +3,7 @@
 import PopAppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
+import {find} from 'lodash/collection';
 import {Action} from '../constants/actionType/Main.jsx';
 
 let _uoms = null;
@@ -12,6 +13,9 @@ var UOMStore = assign({},PrototypeStore,{
   },
   getUoms(){
     return _uoms; 
+  },
+  getUomById(id) {
+    return find(UOMStore.getUoms(), uom => uom.Id === id).Code;
   }
 });
 

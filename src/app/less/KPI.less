@@ -388,6 +388,98 @@
   }
 }
 
+.building-rank-number {
+  & .self-number {
+    font-size: 40px;
+  }
+
+  & .rank-flag {
+    background: @schneiderGray;
+    margin-left: 20px;
+    padding: 0 2px;
+  }
+}
+
+.jazz-building-kpi-rank {
+
+  width: 300px;
+  float: left;
+  border: 1px solid #000;
+  /* display: flex; */
+  height: calc(~'100% - 2px');
+  position: absolute;
+  /* flex-direction: column; */
+  /* align-items: center; */
+  text-align: center;
+
+  &-wrapper {
+    position: relative;
+  }
+
+  &-header {
+    width: 280px;
+    margin-top: 30px;    
+  }
+
+  &-content {
+    margin-top: 40px;
+    display: block;
+  }
+
+  &-time {
+    margin-top: 10px;
+  }
+
+  & .building-rank-number {
+    margin-top: 50px;
+  }
+
+
+  &-footer {
+    margin-top: 100px;
+    display:inline-block;
+  }
+
+  &-report {
+    margin-left: 320px;
+  }
+}
+
+.jazz-building-top-rank {
+  margin-bottom: 20px;
+  border: 1px #000 solid;
+  height: 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  &-title {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+
+  &-his {
+    display: inline-block;
+    margin-top:5px;
+  }
+
+  &-total {
+    display: flex;
+    align-items: baseline;
+
+    &-number {
+      font-size: 40px;
+      margin-right: 20px;      
+    }
+  }
+
+  & .top-rank-item {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+  }
+}
+
 .jazz-kpi-group-ranking {
   display: flex;
   flex-direction: column;
