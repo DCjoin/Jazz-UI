@@ -67,7 +67,7 @@ export default class KPIReport extends Component {
 	render() {
 		let {data, summaryData, period, onEdit, onRefresh, isGroup} = this.props;
 		return (
-			<div className='jazz-kpi-report' style={{flex: 1, paddingLeft: 0, paddingRight: 0}}>
+			<div className='jazz-kpi-report'>
 				<div style={{
 					position: 'absolute',
     				right: 60

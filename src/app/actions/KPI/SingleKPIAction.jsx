@@ -89,6 +89,9 @@ const SingleKPIAction = {
   },
   getCustomerRank(customerId, year, month) {
     console.log('getCustomerRank');
+    AppDispatcher.dispatch({
+      type: Action.GET_BUILDING_RANK,
+    });
     // Ajax.get(
     //   util.replacePathParams(
     //     Path.KPI.getGroupKPIBuildingRank,
@@ -104,10 +107,16 @@ const SingleKPIAction = {
       type: Action.INIT_KPI_CHART_DATA,
     });
   },
+  emptyKPIChartData() {
+    AppDispatcher.dispatch({
+      type: Action.EMPTY_KPI_CHART_DATA,
+    });
+  },
   getKPIConfigured(CustomerId, Year, HierarchyId, getKPIRank) {
     let getKPIChart = this.getKPIChart;
     let getKPIChartSummary = this.getKPIChartSummary;
     let getKPIPeriodByYear = this.getKPIPeriodByYear;
+    let emptyKPIChartData = this.emptyKPIChartData;
     this.initKPIChartData();
     Ajax.get(util.replacePathParams(Path.KPI.getKPIConfigured, HierarchyId), {
       success: function(resBody) {
@@ -122,14 +131,7 @@ const SingleKPIAction = {
           getKPIPeriodByYear(CustomerId, year);
           getKPIRank(year);
         } else {
-          AppDispatcher.dispatch({
-            type: Action.GET_KPI_CHART,
-            data: null
-          });
-          AppDispatcher.dispatch({
-            type: Action.GET_KPI_CHART_SUMMARY,
-            data: null
-          });
+          emptyKPIChartData();
         }
       },
       error: function() {}

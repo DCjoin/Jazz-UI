@@ -209,6 +209,14 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     _KPIRankLoading = true;
     _quotaperiodYear = null;
   },
+  _emptyKpiChartData() {
+    _KPIChartSummaryLoading = false;
+    _KPIChartLoading = false;
+    _KPIRankLoading = false;
+    this.setKPIChart(null);
+    this.setKPIChartSummary(null);
+    this.setKPIRank(null);
+  },
 
   chartReady() {
     return !(_KPIChartSummaryLoading || _KPIChartLoading || _KPIRankLoading)
@@ -565,6 +573,10 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
       break;
     case Action.INIT_KPI_CHART_DATA:
       SingleKPIStore._initKpiChartData();
+      SingleKPIStore.emitChange();
+      break;
+    case Action.EMPTY_KPI_CHART_DATA:
+      SingleKPIStore._emptyKpiChartData();
       SingleKPIStore.emitChange();
       break;
     case Action.MERGE_KPI_SINGLE_INFO:
