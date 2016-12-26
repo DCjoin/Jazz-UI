@@ -298,7 +298,7 @@ I18N.Common.Glossary.UOM = 'Unit';
 I18N.Common.Glossary.Type = 'Type';
 I18N.Common.Glossary.Operation = 'Operate';
 I18N.Common.Glossary.PriceStrategy = 'Price strategy';
-
+I18N.Common.Glossary.Rank = '名次';
 
 
 I18N.Common.Button = {};

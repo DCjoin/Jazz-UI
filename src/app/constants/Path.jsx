@@ -33,8 +33,8 @@ module.exports = {
     },
     Rank:{
       getRank:'/rank/getrank/{customerId}',
-      setRank:'/rank/setrank'
+      setRank:'/rank/setrank',
+      rankRecord:'/rank/rankrecord/{customerId}/{groupKpiId}/{rankType}/{buildingId}',
     }
-
 	}
 };

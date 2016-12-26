@@ -8,7 +8,7 @@ const RankingKPIAction = {
   getRank(customerId){
     Ajax.get(util.replacePathParams(Path.KPI.Rank.getRank, customerId), {
       params: {customerId},
-      success: function(rank) { 
+      success: function(rank) {
         AppDispatcher.dispatch({
           type: Action.GET_GROUP_RANKING,
           data: rank,
@@ -51,6 +51,20 @@ const RankingKPIAction = {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.SET_GROUP_RANKING
+        });
+      }
+    });
+  },
+  getRankRecord(customerId,groupKpiId,rankType,buildingId){
+    Ajax.get(util.replacePathParams(Path.KPI.Rank.rankRecord,customerId,groupKpiId,rankType,buildingId),
+      {
+      params:{
+        customerId,groupKpiId,rankType,buildingId
+      },
+      success: function(resBody) {
+        AppDispatcher.dispatch({
+          type: Action.GET_RANK_RECORD,
+          data:resBody
         });
       }
     });
