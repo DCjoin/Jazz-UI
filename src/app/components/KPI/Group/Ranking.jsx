@@ -8,7 +8,7 @@ import RankingKPIAction from 'actions/KPI/RankingKPIAction.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
-import RankHistory from '../Single/RankHistory.jsx';
+// import RankHistory from '../Single/RankHistory.jsx';
 
 var customerId;
 export default class Ranking extends Component {
@@ -174,20 +174,18 @@ export default class Ranking extends Component {
               {this._renderKpiRanking()}
               {this._renderUpRanking()}
               <FlatButton
-                    style={{border:'1px solid #e4e7e9',marginTop:"30px"}}
+                    style={{width:'88px',border:'1px solid #e4e7e9',marginTop:"30px"}}
                     label={I18N.Common.Button.Save}
                     onTouchTap={this._onSave}
                      />
-                   <RankHistory/>
             </article>
           </div>
         )
       }
       else{
         return(
-          <div className="noContent flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>
+          <div className="noContent flex-center"><CircularProgress  mode="indeterminate" size={80}/></div>
         )
       }
-
     }
 }

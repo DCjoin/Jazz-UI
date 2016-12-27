@@ -2,6 +2,7 @@
 
 import React from "react";
 import ReactDom from 'react-dom';
+import TextField from 'material-ui/TextField';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
@@ -16,9 +17,37 @@ let ListItem = React.createClass({
     onClick: React.PropTypes.func,
     isSelected: React.PropTypes.bool,
   },
+  getInitialState(){
+    return{
+      isEdit:false,
+      value:this.props.data.get('DataValue')
+    }
+  },
+  _onClick(){
+    this.setState({
+      isEdit:true,
+    },()=>{
+      if(!this.props.isSelected){
+        this.props.onClick();
+      }
+    })
+    // if(this.props.isSelected){
+    //   this.setState({
+    //     isEdit:true,
+    //   })
+    // }else {
+    //   this.setState({
+    //     isEdit:false,
+    //   },()=>{
+    //     this.props.onClick();
+    //   })
+    //   e.stopPropagation();
+    // }
+  },
   render: function() {
     let color,
-      time = this.props.time;
+      time = this.props.time,
+      value;
     if (this.props.data.get('DataQuality') === 9) {
       color = '#f46a58'
     } else {
@@ -29,22 +58,63 @@ let ListItem = React.createClass({
       }
     }
 
+    if(this.state.isEdit){
+      value=<TextField
+              id={`${this.props.time}_${this.state.value}`}
+              value={this.state.value}
+              style={{
+                color:color
+              }}
+              underlineShow={this.props.isSelected}
+              onChange={(event)=>{
+                this.setState({
+                  value:event.target.value
+                })
+              }}
+              onBlur={()=>{
+                console.log('***wyh***onBlur***');
+              }}
+              />
+    }else {
+      value=(
+        <div style={{
+        color: color
+      }}>{this.props.data.get('DataValue')}</div>
+
+      )
+    }
+
+    // value=<TextField
+    //         id={`${this.props.time}_${this.state.value}`}
+    //         value={this.state.value}
+    //         style={{
+    //           color:color
+    //         }}
+    //         underlineShow={this.state.isEdit}
+    //         onChange={(event)=>{
+    //           this.setState({
+    //             value:event.target.value
+    //           })
+    //         }}
+    //         onBlur={()=>{
+    //           console.log('***wyh***onBlur***');
+    //         }}
+    //         />
 
     return (
       <div className={classnames({
         "jazz-ptag-rawdata-list-item": true,
         "selected": this.props.isSelected
-      })} onClick={this.props.onClick}>
+      })} onClick={this._onClick}>
         <div style={{
         width: '122px'
       }}>{time}</div>
-        <div style={{
-        color: color
-      }}>{this.props.data.get('DataValue')}</div>
-      </div>
+    {value}
+        </div>
       )
   },
 });
+
 let RawDataList = React.createClass({
   propTypes: {
     isRawData: React.PropTypes.bool,
@@ -92,7 +162,7 @@ let RawDataList = React.createClass({
       }
       currentDate = date;
       Items.push(
-        <ListItem time={time} data={data} isSelected={this.state.selectedId === nId} pId={pId} onClick={that._onItemClick.bind(this, {
+        <ListItem key={`${time}+${data}+${new Date()}`} time={time} data={data} isSelected={this.state.selectedId === nId} pId={pId} onClick={that._onItemClick.bind(this, {
           data,
           nId
         })}/>

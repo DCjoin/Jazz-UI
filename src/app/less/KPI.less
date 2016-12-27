@@ -1,3 +1,24 @@
+@-webkit-keyframes fadeInRight {
+	0% {
+		opacity: 0;
+		-webkit-transform: translateX(5px);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: translateX(0);
+	}
+}
+
+@keyframes fadeInRight {
+	0% {
+		opacity: 0;
+		transform: translateX(20px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
 .jazz-kpi-tag{
   display: flex;
   flex-direction: row;
@@ -418,7 +439,7 @@
 
   &-header {
     width: 280px;
-    margin-top: 30px;    
+    margin-top: 30px;
   }
 
   &-content {
@@ -469,7 +490,7 @@
 
     &-number {
       font-size: 40px;
-      margin-right: 20px;      
+      margin-right: 20px;
     }
   }
 
@@ -508,7 +529,7 @@
   }
 }
 .noContent{
-  margin-top:-16px;
+  margin-top: -16px;
   background-color: #ffffff;
   position: relative;
 }
@@ -519,6 +540,14 @@
   .menu{
     background-color: #ffffff;
     margin-top:-16px;
+  }
+  .content{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    animation:fadeInRight 0.5s 1;
+    -webkit-animation:fadeInRight 0.5s 1;
   }
 }
 .jazz-kpi-rank-history{
