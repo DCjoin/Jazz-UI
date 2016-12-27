@@ -326,6 +326,7 @@ var UserStore = assign({}, PrototypeStore, {
     getUserCustomers() {
       return _userCustomers;
     },
+
     getUpdatingUserCustomers() {
       return _updatingUserCustomers;
     },
