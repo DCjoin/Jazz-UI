@@ -1,11 +1,10 @@
 import React, { Component} from 'react';
 import FontIcon from 'material-ui/FontIcon';
-import { RankType} from 'constants/actionType/KPI.jsx';
+import { RankType,UnitType} from 'constants/actionType/KPI.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import RankingKPIStore from 'stores/KPI/RankingKPIStore.jsx';
 import RankingKPIAction from 'actions/KPI/RankingKPIAction.jsx';
 import Dialog from 'controls/NewDialog.jsx';
-import GroupKPIStore from "stores/KPI/GroupKPIStore.jsx";
 import CommonFuns from 'util/Util.jsx';
 
 export default class RankHistory extends Component {
@@ -48,23 +47,24 @@ export default class RankHistory extends Component {
 
   _renderTable(){
     var header,content;
+    var type=this.state.record.getIn([0,'UnitType']),
+      uom=type===UnitType.MonthRatio?'%':CommonFuns.getUomById(this.state.record.getIn([0,'UomId'])).Code;
     header=(
       <div className="jazz-kpi-rank-history-header">
             <div>{I18N.Setting.Calendar.Time}</div>
             <div>{I18N.Common.Glossary.Rank}</div>
             <div>{I18N.Setting.KPI.Group.Ranking.History.Ratio}</div>
-            {this.props.rankType===RankType.TopRank && <div>{I18N.Setting.KPI.Group.Ranking.History.Value}</div>}
+            {this.props.rankType===RankType.TopRank && <div>{`${RankingKPIStore.getUnitType(type)} (${uom})`}</div>}
       </div>
     );
     content=(
       <div className="jazz-kpi-rank-history-body">
           {this.state.record.map(record=>{
-            var {Date,Index,DIndex,Count,Value,CommodityId}=record.toJS()
+            var {Date,Index,DIndex,Count,RankValue}=record.toJS()
             var date=RankingKPIStore.getDate(Date),
-                rank=`${Index}/${Count}`,
-                ratio=this._getRatio(DIndex),
-                uom=CommonFuns.getUomById(GroupKPIStore.getUomByCommodityId(CommodityId)).Code,
-                value=`${Value} ${uom}`;
+                rank=Index?`${Index}/${Count}`:'-',
+                ratio=DIndex?this._getRatio(DIndex):'-',
+                value=RankValue?RankValue:'-';
             return(
               <div>
                 <span>{date}</span>
