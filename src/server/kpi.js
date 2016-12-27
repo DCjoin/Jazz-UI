@@ -378,91 +378,105 @@ exports.register = function(server, options, next) {
                       Index:1,
                       DIndex:2,
                       Count:25,
-                      Value:245000,
-                      CommodityId:1
+                      RankValue:245000,
+                      CommodityId:1,
+                      UnitType:2,
+                      UomId:1,
                     },{
                       Date:'/Date(' + new Date(2016, 7, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
-                      CommodityId:1
+                      RankValue:245000,
+                      CommodityId:1,
+                      UomId:1,
                     },{
                       Date:'/Date(' + new Date(2016, 6, 1).getTime() + ')/',
                       Index:2,
-                      DIndex:-2,
+                      DIndex:0,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2016, 5, 1).getTime() + ')/',
-                      Index:2,
-                      DIndex:-2,
+                      Index:null,
+                      DIndex:null,
                       Count:25,
-                      Value:245000,
+                      RankValue:null,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2016, 4, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2016, 3, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2016, 2, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2016, 1, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2015, 12, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2015, 11, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2015, 10, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2015, 9, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     },{
                       Date:'/Date(' + new Date(2015, 8, 1).getTime() + ')/',
                       Index:2,
                       DIndex:-2,
                       Count:25,
-                      Value:245000,
+                      RankValue:245000,
+                      UomId:1,
                       CommodityId:1
                     }]
                 }).type("application/json");

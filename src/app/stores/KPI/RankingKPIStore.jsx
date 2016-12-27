@@ -83,6 +83,11 @@ const RankingKPIStore = assign({}, PrototypeStore, {
       ])
   },
 
+  getUnitType(type){
+    var units=Immutable.fromJS(this.getAlgorithmList());
+    return units.find(item=>(item.get('Id')===type)).get('Name')
+  },
+
   getKpiList(){
     return _allKpis.map(kpi=>({
               payload: kpi.get('Id'),

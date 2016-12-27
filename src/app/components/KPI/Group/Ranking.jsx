@@ -8,6 +8,7 @@ import RankingKPIAction from 'actions/KPI/RankingKPIAction.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
+import RankHistory from '../Single/RankHistory.jsx';
 
 var customerId;
 export default class Ranking extends Component {
@@ -177,6 +178,7 @@ export default class Ranking extends Component {
                     label={I18N.Common.Button.Save}
                     onTouchTap={this._onSave}
                      />
+                   <RankHistory/>
             </article>
           </div>
         )
