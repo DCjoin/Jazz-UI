@@ -12,8 +12,10 @@ export default class ConfigMenu extends Component {
       <div className="jazz-kpi-group-config">
       <div className="menu">
       <ColumnMenu title={I18N.Setting.KPI.Group.Config} items={GroupKPIStore.getConfigMenu()}/>
-      </div>        
+      </div>
+      <div className="content">
         {this.props.children}
+      </div>
       </div>
     )
   }

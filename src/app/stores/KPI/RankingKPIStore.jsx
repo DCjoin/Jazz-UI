@@ -134,6 +134,9 @@ RankingKPIStore.dispatchToken = AppDispatcher.register(function(action) {
          RankingKPIStore.setRankRecord(action.data);
          RankingKPIStore.emitChange();
          break;
+    case Action.SET_GROUP_RANKING:
+         RankingKPIStore.emitChange();
+         break;
     default:
   }
 });
