@@ -137,7 +137,6 @@ class ActualityContent extends Component {
 	}
 }
 
-
 const TipMessage = (props, context, updater) => {
 	return (<div className='jazz-kpi-actuality flex-center'><b>{props.message}</b></div>)
 }
@@ -149,7 +148,7 @@ export default class Actuality extends Component {
 		this._onChange = this._onChange.bind(this);
 		this._reload = this._reload.bind(this);
 		this._cancleRefreshDialog = this._cancleRefreshDialog.bind(this);
-		this._onGetBuildingList = this._onGetBuildingList.bind(this);
+		this._onPreAction = this._onPreAction.bind(this);
 		this._getKPIRank = this._getKPIRank.bind(this);
 		this.state = this._getInitialState();
 	}
@@ -160,8 +159,8 @@ export default class Actuality extends Component {
 			HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
 			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 		}
-		HierarchyStore.addBuildingListListener(this._onGetBuildingList);
-		UserStore.addChangeListener(this._onGetBuildingList);
+		HierarchyStore.addBuildingListListener(this._onPreAction);
+		UserStore.addChangeListener(this._onPreAction);
 		SingleKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
@@ -173,8 +172,8 @@ export default class Actuality extends Component {
 		});
 	}
 	componentWillUnmount() {
-		HierarchyStore.removeBuildingListListener(this._onGetBuildingList);
-		UserStore.removeChangeListener(this._onGetBuildingList);
+		HierarchyStore.removeBuildingListListener(this._onPreAction);
+		UserStore.removeChangeListener(this._onPreAction);
 		SingleKPIStore.removeChangeListener(this._onChange);
 	}
 	_getInitialState() {
@@ -185,7 +184,7 @@ export default class Actuality extends Component {
 			kpiId: null,
 			kpiIdFromGroup: null,
 			year: null,
-			hierarchyId: null
+			hierarchyId: this._getBuildingId()
 		}
 	}
 	_onChange() {
@@ -197,11 +196,37 @@ export default class Actuality extends Component {
 	_privilegedCustomer() {
 		return getCustomerPrivilageById( this._getCustomerId() ) && getCustomerPrivilageById( this._getCustomerId() ).get('WholeCustomer');
 	}
-	_onGetBuildingList() {
+	_getBuildingId() {
+		let buildingId = this.props.router.location.query.buildingId;
+		if( util.isNumeric(buildingId) ) return buildingId * 1;
+		return null;
+	}
+	_getGroupKpiId() {
+		return this.props.router.location.query.groupKpiId;
+	}
+	_validBuilding(buildingId) {
+		return !!find(HierarchyStore.getBuildingList(), building => building.Id === buildingId).length === 1;
+	}
+	_onPreAction() {
 
 		if( UserStore.getUserCustomers().size > 0 && HierarchyStore.getBuildingList() ) {
+			let hierarchyId;
+			if(this.state.hierarchyId) {
+				if(this._validBuilding(this.state.hierarchyId) && this._getGroupKpiId()) {
+					hierarchyId = this.state.hierarchyId;
+					this.setState({
+						year: null,
+						hierarchyId,
+					});
+					SingleKPIAction.getKPIConfigured(
+						this._getCustomerId(), 
+						null, 
+						hierarchyId,
+						this._getKPIRank(hierarchyId));
+					return;
+				}
+			}
 			if( isOnlyView() ) {
-				let hierarchyId;
 				if( !this._privilegedCustomer() ) {
 					if( isSingleBuilding() ) {
 						hierarchyId = HierarchyStore.getBuildingList()[0].Id;
@@ -220,7 +245,7 @@ export default class Actuality extends Component {
 						hierarchyId,
 						this._getKPIRank(hierarchyId));
 					return;
-				}				
+				}
 			}
 			this.setState({
 				loading: false
@@ -252,6 +277,15 @@ export default class Actuality extends Component {
 			loading: true,
 		});
 	}
+	_preCheckThisYear(callRank) {
+		return function(year) {
+			if(year === new Date().getFullYear()) {
+				callRank(year);
+			} else {
+				SingleKPIAction.notNeedRank();
+			}
+		}
+	}
 	_getKPIRank(hierarchyId) {
 		let isGroup = !!getCustomerById(hierarchyId);
 		if(isGroup) {
@@ -260,9 +294,9 @@ export default class Actuality extends Component {
 			let customerId = this.props.router.params.customerId;
 			let kpiIdFromRank = this.state.kpiIdFromRank;
 			if(this.state.kpiIdFromRank) {
-				return SingleKPIAction.getGroupKPIBuildingRank.bind(SingleKPIAction, customerId, kpiIdFromRank, hierarchyId);
+				return this._preCheckThisYear(SingleKPIAction.getGroupKPIBuildingRank.bind(SingleKPIAction, customerId, kpiIdFromRank, hierarchyId));
 			}
-			return SingleKPIAction.getBuildingRank.bind(SingleKPIAction, customerId, hierarchyId);
+			return this._preCheckThisYear(SingleKPIAction.getBuildingRank.bind(SingleKPIAction, customerId, hierarchyId));
 		}
 	}
 	_getData(customerId, year, hierarchyId) {

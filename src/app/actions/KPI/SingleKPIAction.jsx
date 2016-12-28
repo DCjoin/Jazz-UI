@@ -56,6 +56,11 @@ const SingleKPIAction = {
 			error: function() {}
 		});
   },
+  notNeedRank() {
+    AppDispatcher.dispatch({
+      type: Action.NOT_NEED_RANK,
+    });
+  },
   getGroupKPIBuildingRank(customerId, kpiId, buildingId, year) {
     Ajax.get(
       util.replacePathParams(
@@ -90,7 +95,7 @@ const SingleKPIAction = {
   getCustomerRank(customerId, year, month) {
     console.log('getCustomerRank');
     AppDispatcher.dispatch({
-      type: Action.GET_BUILDING_RANK,
+      type: Action.NOT_NEED_RANK,
     });
     // Ajax.get(
     //   util.replacePathParams(

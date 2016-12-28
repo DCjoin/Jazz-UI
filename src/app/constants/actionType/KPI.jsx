@@ -30,6 +30,7 @@ module.exports = {
     SET_MONTH_KPI_INFO:null,
     MERGE_MONTH_KPI_INFO:null,
     GET_GROUP_CLAC_SUM_VALUE:null,
+    NOT_NEED_RANK:null,
     GET_GROUP_KPI_BUILDING_RANK:null,
     GET_BUILDING_RANK:null,
     GET_GROUP_RANK:null,
