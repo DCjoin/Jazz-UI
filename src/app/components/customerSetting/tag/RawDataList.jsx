@@ -7,6 +7,7 @@ import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import classnames from "classnames";
+import { List} from 'immutable';
 let j2d = CommonFuns.DataConverter.JsonToDateTime;
 let dateItem = [],
   indexItem = [];
@@ -116,7 +117,11 @@ let RawDataList = React.createClass({
   },
   _onDataChange(data,index){
     var orgRawData=TagStore.getRawData();
-    var newRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData',index,'DataValue'],data);
+    var editRawData=orgRawData.getIn(['TargetEnergyData', 0, 'EnergyData',index]);
+    orgRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
+    editRawData=editRawData.set('DataValue',data);
+
+    var newRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
     this.props.onRawDataChange(newRawData.toJS(),orgRawData.toJS());
   },
   _renderCalendarItems: function(energyData) {
