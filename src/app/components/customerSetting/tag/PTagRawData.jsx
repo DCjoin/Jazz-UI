@@ -36,6 +36,11 @@ let PTagRawData = React.createClass({
       endTime: this._getInitDate().endTime
     })
   },
+  _setLoading:function(){
+    this.setState({
+      isLoading:true
+    })
+  },
   _getInitDate: function() {
     let date = new Date();
     date.setHours(0, 0, 0, 0);
