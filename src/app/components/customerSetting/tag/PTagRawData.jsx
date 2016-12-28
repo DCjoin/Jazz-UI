@@ -18,6 +18,7 @@ let PTagRawData = React.createClass({
     onSwitchRawDataListView: React.PropTypes.func,
     showLeft: React.PropTypes.bool,
     showRawDataList: React.PropTypes.bool,
+    rollBack:React.PropTypes.func,
   },
   getInitialState: function() {
     return ({
@@ -143,6 +144,14 @@ let PTagRawData = React.createClass({
   _onSwitchListView: function() {
     this.props.onSwitchRawDataListView(true, this.state.isRawData);
   },
+  _onRollBack:function(){
+    let d2j = CommonFuns.DataConverter.DatetimeToJson,
+      start = d2j(this.state.start, false),
+      end = d2j(this.state.end, false),
+      tagId=this.props.selectedTag.get('Id');
+      this.props.rollBack(tagId,start,end);
+
+  },
   _renderDialog: function() {
     var that = this;
     var closeDialog = function() {
@@ -239,7 +248,8 @@ let PTagRawData = React.createClass({
         border: '1px solid #e4e7e9',
         height: '34px',
         width: '92px',
-        backgroundColor: '#fbfbfb'
+        backgroundColor: '#fbfbfb',
+        marginLeft:'10px'
       },
       listBtnStyle = {
         fontSize: '36px',
@@ -251,6 +261,9 @@ let PTagRawData = React.createClass({
       };
     var pauseBtn = <FlatButton label={I18N.Setting.Tag.PTagRawData.PauseMonitor}
     style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onPauseDialogShow}/>;
+
+  var rollbackBtn= <FlatButton label={I18N.Setting.Tag.PTagRawData.RollBack}
+  style={pauseBtnStyle} labelStyle={labelStyle} onClick={this._onRollBack}/>
 
     var label = this.state.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
     return (
@@ -268,6 +281,7 @@ let PTagRawData = React.createClass({
       endTime={this.state.endTime}  _onDateSelectorChanged={this._onDateSelectorChanged}/>
         </div>
         <div className='rightside'>
+          {rollbackBtn}
           {this.state.veeTagStatus.size === 0 ? null : pauseBtn}
            <FontIcon className='icon-taglist-fold' style={listBtnStyle} ref="listBtn" onClick={this._onSwitchListView}/>
         </div>

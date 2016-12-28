@@ -4,6 +4,9 @@ module.exports = {
     Hierarchy: {
         GetBuildingList: '/Hierarchy/GetBuildingList/{customerId}'
     },
+    RawData:{
+      RollBack:'/energy/rollback/{tagId}'
+    },
     KPI:{
 		getKPIPeriod: '/kpi/getkpiperiod/{customerid}',
 		setKPIPeriod: '/kpi/setkpiperiod',

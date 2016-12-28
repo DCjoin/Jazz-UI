@@ -12,10 +12,12 @@ let dateItem = [],
   indexItem = [];
 let ListItem = React.createClass({
   propTypes: {
+    isRawData:React.PropTypes.bool,
     time: React.PropTypes.string,
     data: React.PropTypes.object,
     onClick: React.PropTypes.func,
     isSelected: React.PropTypes.bool,
+    onDataChange:React.PropTypes.func,
   },
   getInitialState(){
     return{
@@ -31,19 +33,8 @@ let ListItem = React.createClass({
         this.props.onClick();
       }
     })
-    // if(this.props.isSelected){
-    //   this.setState({
-    //     isEdit:true,
-    //   })
-    // }else {
-    //   this.setState({
-    //     isEdit:false,
-    //   },()=>{
-    //     this.props.onClick();
-    //   })
-    //   e.stopPropagation();
-    // }
   },
+
   render: function() {
     let color,
       time = this.props.time,
@@ -58,7 +49,7 @@ let ListItem = React.createClass({
       }
     }
 
-    if(this.state.isEdit){
+    if(this.state.isEdit && this.props.isRawData){
       value=<TextField
               id={`${this.props.time}_${this.state.value}`}
               value={this.state.value}
@@ -72,7 +63,9 @@ let ListItem = React.createClass({
                 })
               }}
               onBlur={()=>{
-                console.log('***wyh***onBlur***');
+                if(this.state.value!==this.props.data.get('DataValue')){
+                  this.props.onDataChange(this.state.value)
+                }
               }}
               />
     }else {
@@ -80,26 +73,8 @@ let ListItem = React.createClass({
         <div style={{
         color: color
       }}>{this.props.data.get('DataValue')}</div>
-
       )
     }
-
-    // value=<TextField
-    //         id={`${this.props.time}_${this.state.value}`}
-    //         value={this.state.value}
-    //         style={{
-    //           color:color
-    //         }}
-    //         underlineShow={this.state.isEdit}
-    //         onChange={(event)=>{
-    //           this.setState({
-    //             value:event.target.value
-    //           })
-    //         }}
-    //         onBlur={()=>{
-    //           console.log('***wyh***onBlur***');
-    //         }}
-    //         />
 
     return (
       <div className={classnames({
@@ -118,7 +93,8 @@ let ListItem = React.createClass({
 let RawDataList = React.createClass({
   propTypes: {
     isRawData: React.PropTypes.bool,
-    step: React.PropTypes.number
+    step: React.PropTypes.number,
+    onRawDataChange:React.PropTypes.func,
   },
   getInitialState: function() {
     return {
@@ -137,6 +113,11 @@ let RawDataList = React.createClass({
     this.setState({
       selectedId: item.nId
     })
+  },
+  _onDataChange(data,index){
+    var orgRawData=TagStore.getRawData();
+    var newRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData',index,'DataValue'],data);
+    this.props.onRawDataChange(newRawData.toJS(),orgRawData.toJS());
   },
   _renderCalendarItems: function(energyData) {
     var Items = [],
@@ -162,10 +143,12 @@ let RawDataList = React.createClass({
       }
       currentDate = date;
       Items.push(
-        <ListItem key={`${time}+${data}+${new Date()}`} time={time} data={data} isSelected={this.state.selectedId === nId} pId={pId} onClick={that._onItemClick.bind(this, {
+        <ListItem key={`${time}+${data}`} isRawData={this.props.isRawData} time={time} data={data} isSelected={this.state.selectedId === nId} pId={pId}
+          onClick={that._onItemClick.bind(this, {
           data,
           nId
-        })}/>
+        })}
+        onDataChange={(data)=>{this._onDataChange(data,index)}}/>
       )
       indexItem[pId] = index;
       pId++;
@@ -202,10 +185,11 @@ let RawDataList = React.createClass({
       let str = CommonFuns.formatDateValueForRawData(j2d(data.get('LocalTime')), this.props.step);
 
       Items.push(
-        <ListItem time={str} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
+        <ListItem key={`${str}+${data}`} isRawData={this.props.isRawData} time={str} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
           data,
           nId
-        })}/>
+        })}
+        onDataChange={(data)=>{this._onDataChange(index,data)}}/>
       )
       indexItem[nId] = index;
       nId++;
