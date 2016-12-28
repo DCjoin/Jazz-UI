@@ -2,6 +2,7 @@
 
 import React from "react";
 import ReactDom from 'react-dom';
+import CircularProgress from 'material-ui/CircularProgress';
 import TextField from 'material-ui/TextField';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
@@ -99,8 +100,14 @@ let RawDataList = React.createClass({
   },
   getInitialState: function() {
     return {
-      selectedId: -1
+      selectedId: -1,
+      isLoading:false
     }
+  },
+  _setLoading:function(){
+    this.setState({
+      isLoading:true
+    })
   },
   _onScroll: function() {
     var el = ReactDom.findDOMNode(this.refs.list),
@@ -122,7 +129,11 @@ let RawDataList = React.createClass({
     editRawData=editRawData.set('DataValue',data);
 
     var newRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
-    this.props.onRawDataChange(newRawData.toJS(),orgRawData.toJS());
+    this.setState({
+      isLoading:true
+    },()=>{
+        this.props.onRawDataChange(newRawData.toJS(),orgRawData.toJS());
+    })
   },
   _renderCalendarItems: function(energyData) {
     var Items = [],
@@ -230,9 +241,15 @@ let RawDataList = React.createClass({
         el.scrollTop = 0;
       }
       this.setState({
-        selectedId: -1
+        selectedId: -1,
+        isLoading:false
       })
       this.forceUpdate();
+    }
+    else {
+      this.setState({
+        isLoading:false
+      })
     }
 
   },
@@ -276,21 +293,26 @@ let RawDataList = React.createClass({
     var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
       uom = data.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
     var label = this.props.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
-    return (
-      <div className='jazz-ptag-rawdata-list'>
-        <div className='title'>
-          <div>{I18N.RawData.Time}</div>
-          <div style={{
-        marginLeft: '90px'
-      }}>{label + '(' + uom + ')'}</div>
+    if(this.state.isLoading){
+      return (<div className="jazz-ptag-rawdata-list flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
+    }else {
+      return (
+        <div className='jazz-ptag-rawdata-list'>
+          <div className='title'>
+            <div>{I18N.RawData.Time}</div>
+            <div style={{
+          marginLeft: '90px'
+        }}>{label + '(' + uom + ')'}</div>
+          </div>
+          <div className="date" ref='header' style={{
+          display: 'none'
+        }}>
+             </div>
+               {this._renderListItems()}
         </div>
-        <div className="date" ref='header' style={{
-        display: 'none'
-      }}>
-           </div>
-             {this._renderListItems()}
-      </div>
-      )
+        )
+    }
+
   },
 });
 module.exports = RawDataList;

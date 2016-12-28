@@ -502,34 +502,32 @@ let Tag = React.createClass({
   },
 
   _onRawDataChange:function(newData,orgData){
-    this.setState({
-      isLoading: true
-    },()=>{
+      this.refs.tagDetail._setLoading();
       TagAction.modifyTagRawData(newData,orgData);
-    });
+
   },
 
-  _onTagDataChanged(){
-    this.setState({
-      isLoading:false
-    })
-  },
+  // _onTagDataChanged(){
+  //   this.setState({
+  //     isLoading:false
+  //   })
+  // },
   _onRawDataRollBack(tagId,start,end){
-    this.setState({
-      isLoading: true
-    },()=>{
-      TagAction.rollBack(tagId,start,end);
-    })
+    this.refs.tagDetail._setLoading();
+    if(this.refs.rawDataList){
+      this.refs.rawDataList._setLoading();
+    }
+    TagAction.rollBack(tagId,start,end);
   },
   componentDidMount: function() {
     this.getTagList();
-    TagStore.addTagDatasChangeListener(this._onTagDataChanged);
+    //TagStore.addTagDatasChangeListener(this._onTagDataChanged);
     TagStore.addTagListChangeListener(this._onTagListChange);
     TagStore.addSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
-    TagStore.removeTagDatasChangeListener(this._onTagDataChanged);
+    //TagStore.removeTagDatasChangeListener(this._onTagDataChanged);
     TagStore.removeTagListChangeListener(this._onTagListChange);
     TagStore.removeSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.removeErrorChangeListener(this._onError);
@@ -637,6 +635,7 @@ let Tag = React.createClass({
     var RawDataListPanel = null;
     if (this.state.selectedTag !== null && this.props.tagType === 1) {
       var listProps = {
+        ref:'rawDataList',
         isRawData: this.state.isRawData,
         step: this.state.selectedTag.get('CalculationStep'),
         onRawDataChange:this._onRawDataChange

@@ -39,6 +39,11 @@ var TagDetail = React.createClass({
     return {
     };
   },
+  _setLoading(){
+    if(this.refs.pTagRawData){
+      this.refs.pTagRawData._setLoading();
+    }
+  },
   _onSwitchTab: function(event) {
     this.props.onSwitchTab(event);
   },
