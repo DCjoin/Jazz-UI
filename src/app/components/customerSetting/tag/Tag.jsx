@@ -500,13 +500,36 @@ let Tag = React.createClass({
   getTagList: function() {
     TagAction.getTagListByType(customerId,this.props.tagType, this.state.curPageNum, this.state.filterObj);
   },
+
+  _onRawDataChange:function(newData,orgData){
+    this.setState({
+      isLoading: true
+    },()=>{
+      TagAction.modifyTagRawData(newData,orgData);
+    });
+  },
+
+  _onTagDataChanged(){
+    this.setState({
+      isLoading:false
+    })
+  },
+  _onRawDataRollBack(tagId,start,end){
+    this.setState({
+      isLoading: true
+    },()=>{
+      TagAction.rollBack(tagId,start,end);
+    })
+  },
   componentDidMount: function() {
     this.getTagList();
+    TagStore.addTagDatasChangeListener(this._onTagDataChanged);
     TagStore.addTagListChangeListener(this._onTagListChange);
     TagStore.addSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.addErrorChangeListener(this._onError);
   },
   componentWillUnmount: function() {
+    TagStore.removeTagDatasChangeListener(this._onTagDataChanged);
     TagStore.removeTagListChangeListener(this._onTagListChange);
     TagStore.removeSelectedTagChangeListener(this._onSelectedTagChange);
     TagStore.removeErrorChangeListener(this._onError);
@@ -562,7 +585,8 @@ let Tag = React.createClass({
         mergeTag: this._mergeTag,
         enableSave: this.state.enableSave,
         onSwitchRawDataListView: this._onSwitchRawDataListView,
-        showRawDataList: this.state.showRawDataList
+        showRawDataList: this.state.showRawDataList,
+        onRawDataRollBack:this._onRawDataRollBack
       };
       rightPanel = <TagDetail {...rightProps}/>;
     }
@@ -614,7 +638,8 @@ let Tag = React.createClass({
     if (this.state.selectedTag !== null && this.props.tagType === 1) {
       var listProps = {
         isRawData: this.state.isRawData,
-        step: this.state.selectedTag.get('CalculationStep')
+        step: this.state.selectedTag.get('CalculationStep'),
+        onRawDataChange:this._onRawDataChange
       };
       RawDataListPanel = (me.state.showRawDataList) ? <div style={{
         display: 'flex'
