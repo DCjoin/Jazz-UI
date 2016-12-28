@@ -57,7 +57,6 @@ function RankNumber(props) {
 
 function getRanlLabelDate() {
 	let lastMonth = new moment().subtract('month', 1);
-	console.log(lastMonth);
 	return util.replacePathParams(I18N.Kpi.YearMonth, lastMonth.get('year'), lastMonth.get('month') + 1);
 }
 
