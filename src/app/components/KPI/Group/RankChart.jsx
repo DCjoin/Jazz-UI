@@ -67,10 +67,10 @@ function getRank(props) {
 	flag = '--';
 
 	if(DIndex > 0) {
-		flag = '&uarr; ' + DIndex;
+		flag = '↑ ' + DIndex;
 	}
 	if(DIndex < 0) {
-		flag = '&darr; ' + DIndex * -1;
+		flag = '↓ ' + DIndex * -1;
 	}
 
 	return `${Index}/${Count}<span class='rank-flag' style='margin-left: 2px'>${flag}</span>`;

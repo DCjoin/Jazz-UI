@@ -614,6 +614,9 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
         content: action.content
       });
       break;
+    case Action.NOT_NEED_RANK:
+      SingleKPIStore.setKPIRank(null);
+      break;
     case Action.GET_GROUP_KPI_BUILDING_RANK:
     case Action.GET_BUILDING_RANK:
     case Action.GET_GROUP_RANK:
