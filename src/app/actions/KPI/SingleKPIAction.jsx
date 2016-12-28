@@ -118,7 +118,7 @@ const SingleKPIAction = {
     let getKPIPeriodByYear = this.getKPIPeriodByYear;
     let emptyKPIChartData = this.emptyKPIChartData;
     this.initKPIChartData();
-    Ajax.get(util.replacePathParams(Path.KPI.getKPIConfigured, HierarchyId), {
+    Ajax.get(util.replacePathParams(Path.KPI.getKPIConfigured, HierarchyId, null), {
       success: function(resBody) {
         if(resBody && resBody.length > 0) {
           AppDispatcher.dispatch({
@@ -138,7 +138,7 @@ const SingleKPIAction = {
     });
   },
   getKPIChart(CustomerId, Year, HierarchyId) {
-    Ajax.get(util.replacePathParams(Path.KPI.getKPIChart, CustomerId, Year, HierarchyId), {
+    Ajax.get(util.replacePathParams(Path.KPI.getKPIChart, null, Year, HierarchyId), {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.GET_KPI_CHART,
@@ -162,7 +162,7 @@ const SingleKPIAction = {
     //       type: Action.GET_KPI_CHART_SUMMARY,
     //       data: result
     //     });
-    Ajax.get(util.replacePathParams(Path.KPI.getKPIChartSummary, CustomerId, Year, HierarchyId), {
+    Ajax.get(util.replacePathParams(Path.KPI.getKPIChartSummary, CustomerId, Year, HierarchyId, null), {
       success: function(resBody) {
         AppDispatcher.dispatch({
           type: Action.GET_KPI_CHART_SUMMARY,

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {find} from 'lodash/collection';
 
 import KPIReport from './KPIReport.jsx';
+import RankChart from './Group/RankChart.jsx';
 
 /*export default class CustomerChartPanel extends Component {
 	render() {

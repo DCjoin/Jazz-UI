@@ -34,6 +34,8 @@ import BuildingChartPanel from './BuildingChartPanel.jsx';
 import CreateKPI from './single/KPI.jsx';
 import UpdatePrediction from './single/UpdatePrediction.jsx';
 
+import RankChart from './Group/RankChart.jsx';
+
 function canView() {
 	return privilegeUtil.canView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
