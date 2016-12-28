@@ -12,6 +12,8 @@ import LinkButton from 'controls/LinkButton.jsx';
 import KPIReport from './KPIReport.jsx';
 import RankHistory from './Single/RankHistory.jsx';
 
+import UOMStore from 'stores/UOMStore.jsx';
+
 const KPI_RANK_TYPE = 1,
 TOP_RANK_TYPE = 2;
 
@@ -28,9 +30,10 @@ function safeValue(safe) {
 	}
 }
 
-const safeArray = safeValue([]);
-const safeImmuArray = safeValue(Immutable.fromJS([]));
-const safeImmuObject = safeValue(Immutable.fromJS({}));
+const safeObj = safeValue({});
+const safeArr = safeValue([]);
+const safeImmuArr = safeValue(Immutable.fromJS([]));
+const safeImmuObj = safeValue(Immutable.fromJS({}));
 
 function RankNumber(props) {
 	if(!props) {
@@ -40,10 +43,10 @@ function RankNumber(props) {
 	flag = '--';
 
 	if(DIndex > 0) {
-		flag = '&uarr; ' + DIndex;
+		flag = '↑ ' + DIndex;
 	}
 	if(DIndex < 0) {
-		flag = '&darr; ' + DIndex * -1;
+		flag = '↓ ' + DIndex * -1;
 	}
 
 	return (
@@ -75,12 +78,12 @@ export default class BuildingChartPanel extends Component {
 		let {period, tags, isGroup, summaryData, ranks, buildingId, onRefresh, year} = this.props,
 		selectedRank = this.state.selectedRank,
 		isThisYear = year === new Date().getFullYear(),
-		KPIRank = safeArray(ranks).filter( rank => rank.RankType === KPI_RANK_TYPE),
-		topRank = safeArray(ranks).find( rank => rank.RankType === TOP_RANK_TYPE);
+		KPIRank = safeArr(ranks).filter( rank => safeObj(rank).RankType === KPI_RANK_TYPE),
+		topRank = find(safeArr(ranks), rank => safeObj(rank).RankType === TOP_RANK_TYPE);
 
 		// test data
-		// KPIRank = safeArray(ranks);
-		// topRank = safeArray(ranks).find( (rank, i) => !i);
+		// KPIRank = safeArr(ranks);
+		// topRank = safeArr(ranks).find( (rank, i) => !i);
 		return (
 			<div>
 				{isThisYear && topRank && 
@@ -103,15 +106,15 @@ export default class BuildingChartPanel extends Component {
 						<div>{I18N.Setting.KPI.Rank.UsageAmount}</div>
 						<div className='jazz-building-top-rank-total'>
 							<span className='jazz-building-top-rank-total-number hiddenEllipsis'>{util.getLabelData(topRank.RankValue)}</span>
-							<span>{noValue(topRank.RankValue) && UOMStore.getUomById(topRank.UomId)}</span>
+							<span>{!noValue(topRank.RankValue) && UOMStore.getUomById(topRank.UomId)}</span>
 						</div>
 					</div>
 				</div>}
-				{(safeArray(period).length > 0 && safeImmuArray(tags).size > 0) ?
+				{(safeArr(period).length > 0 && safeImmuArr(tags).size > 0) ?
 					tags.map( (tag, i) => {
-						let currentTag = safeImmuObject(tag),
+						let currentTag = safeImmuObj(tag),
 						currentKPIId = currentTag.get('id'),
-						currentSummaryData = find(safeArray(summaryData), sum => sum.KpiId === currentKPIId),
+						currentSummaryData = find(safeArr(summaryData), sum => sum.KpiId === currentKPIId),
 						currentRank = find(KPIRank, rank => rank.KpiId === currentKPIId);
 					if( !isThisYear ) {
 						return (
@@ -153,7 +156,7 @@ export default class BuildingChartPanel extends Component {
 				{selectedRank && <RankHistory
 					name={selectedRank.RankType === TOP_RANK_TYPE 
 						? selectedRank.RankName
-						: safeImmuObject(tags.find(tag => tag.get('id') === selectedRank.KpiId)).get('name')}
+						: safeImmuObj(tags.find(tag => tag.get('id') === selectedRank.KpiId)).get('name')}
 					rankType={selectedRank.RankType}
 					groupKpiId={selectedRank.GroupKpiId}
 					customerId={this.context.router.params.customerId}
