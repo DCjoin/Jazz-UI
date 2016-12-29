@@ -969,6 +969,7 @@ I18N.Setting.Tag.PTagRawData.DifferenceValue = 'Difference';
 I18N.Setting.Tag.PTagRawData.normal = 'Normal';
 I18N.Setting.Tag.PTagRawData.abnormal = 'Abnormal';
 I18N.Setting.Tag.PTagRawData.repair = 'Modify';
+I18N.Setting.Tag.PTagRawData.RollBack = '撤销修复';
 
 I18N.ServerError = {};
 I18N.ServerError.BtnLabel = 'OK';

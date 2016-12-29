@@ -3,10 +3,13 @@ import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
 import { Action } from '../../constants/actionType/customerSetting/Tag.jsx';
 import Ajax from '../../ajax/ajax.jsx';
 import assign from "object-assign";
+import Path from 'constants/Path.jsx';
+import util from 'util/Util.jsx';
 
 
 var search = null;
 var formulaSearch = null;
+var lastTagParams={};
 let TagAction = {
   getTagListByType: function(customerId,type, page, filterObj) {
     var obj = {
@@ -142,6 +145,7 @@ let TagAction = {
   },
   getTagsData: function(tagId, step, StartTime, EndTime, refreshTagStatus) {
     var that = this;
+    lastTagParams={tagId, step, StartTime, EndTime, refreshTagStatus};
     Ajax.post('/Energy/GetTagsData', {
       avoidDuplicate:true,
       tag:tagId,
@@ -251,6 +255,37 @@ let TagAction = {
     AppDispatcher.dispatch({
       type: Action.SET_LIST_TO_POINT,
       nId: nId
+    });
+  },
+  modifyTagRawData:function(newEnergyData,orgEnergyData ){
+    var that=this;
+    Ajax.post('/Energy/ModifyTagRawData', {
+      params: {
+        newEnergyData : newEnergyData,
+        orgEnergyData:orgEnergyData
+      },
+      success: function() {
+        var {tagId, step, StartTime, EndTime, refreshTagStatus}=lastTagParams;
+        that.getTagsData(tagId, step, StartTime, EndTime, refreshTagStatus);
+      },
+      error: function(err, res) {
+      }
+    });
+  },
+  rollBack:function(tagId,start,end){
+    var url=util.replacePathParams(Path.RawData.RollBack, tagId),
+        that=this;
+    Ajax.post(url, {
+      params: {
+        StartTime : start,
+        EndTime:end
+      },
+      success: function() {
+        var {tagId, step, StartTime, EndTime, refreshTagStatus}=lastTagParams;
+        that.getTagsData(tagId, step, StartTime, EndTime, refreshTagStatus);
+      },
+      error: function(err, res) {
+      }
     });
   },
 };

@@ -2,20 +2,24 @@
 
 import React from "react";
 import ReactDom from 'react-dom';
+import CircularProgress from 'material-ui/CircularProgress';
 import TextField from 'material-ui/TextField';
 import TagStore from '../../../stores/customerSetting/TagStore.jsx';
 import CommonFuns from '../../../util/Util.jsx';
 import TagAction from '../../../actions/customerSetting/TagAction.jsx';
 import classnames from "classnames";
+import { List} from 'immutable';
 let j2d = CommonFuns.DataConverter.JsonToDateTime;
 let dateItem = [],
   indexItem = [];
 let ListItem = React.createClass({
   propTypes: {
+    isRawData:React.PropTypes.bool,
     time: React.PropTypes.string,
     data: React.PropTypes.object,
     onClick: React.PropTypes.func,
     isSelected: React.PropTypes.bool,
+    onDataChange:React.PropTypes.func,
   },
   getInitialState(){
     return{
@@ -31,19 +35,8 @@ let ListItem = React.createClass({
         this.props.onClick();
       }
     })
-    // if(this.props.isSelected){
-    //   this.setState({
-    //     isEdit:true,
-    //   })
-    // }else {
-    //   this.setState({
-    //     isEdit:false,
-    //   },()=>{
-    //     this.props.onClick();
-    //   })
-    //   e.stopPropagation();
-    // }
   },
+
   render: function() {
     let color,
       time = this.props.time,
@@ -58,7 +51,7 @@ let ListItem = React.createClass({
       }
     }
 
-    if(this.state.isEdit){
+    if(this.state.isEdit && this.props.isRawData){
       value=<TextField
               id={`${this.props.time}_${this.state.value}`}
               value={this.state.value}
@@ -72,7 +65,9 @@ let ListItem = React.createClass({
                 })
               }}
               onBlur={()=>{
-                console.log('***wyh***onBlur***');
+                if(this.state.value!==this.props.data.get('DataValue')){
+                  this.props.onDataChange(this.state.value)
+                }
               }}
               />
     }else {
@@ -80,26 +75,8 @@ let ListItem = React.createClass({
         <div style={{
         color: color
       }}>{this.props.data.get('DataValue')}</div>
-
       )
     }
-
-    // value=<TextField
-    //         id={`${this.props.time}_${this.state.value}`}
-    //         value={this.state.value}
-    //         style={{
-    //           color:color
-    //         }}
-    //         underlineShow={this.state.isEdit}
-    //         onChange={(event)=>{
-    //           this.setState({
-    //             value:event.target.value
-    //           })
-    //         }}
-    //         onBlur={()=>{
-    //           console.log('***wyh***onBlur***');
-    //         }}
-    //         />
 
     return (
       <div className={classnames({
@@ -118,12 +95,19 @@ let ListItem = React.createClass({
 let RawDataList = React.createClass({
   propTypes: {
     isRawData: React.PropTypes.bool,
-    step: React.PropTypes.number
+    step: React.PropTypes.number,
+    onRawDataChange:React.PropTypes.func,
   },
   getInitialState: function() {
     return {
-      selectedId: -1
+      selectedId: -1,
+      isLoading:false
     }
+  },
+  _setLoading:function(){
+    this.setState({
+      isLoading:true
+    })
   },
   _onScroll: function() {
     var el = ReactDom.findDOMNode(this.refs.list),
@@ -136,6 +120,19 @@ let RawDataList = React.createClass({
     TagAction.selectListToPonit(item.nId);
     this.setState({
       selectedId: item.nId
+    })
+  },
+  _onDataChange(data,index){
+    var orgRawData=TagStore.getRawData();
+    var editRawData=orgRawData.getIn(['TargetEnergyData', 0, 'EnergyData',index]);
+    orgRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
+    editRawData=editRawData.set('DataValue',data);
+
+    var newRawData=orgRawData.setIn(['TargetEnergyData', 0, 'EnergyData'],List.of(editRawData));
+    this.setState({
+      isLoading:true
+    },()=>{
+        this.props.onRawDataChange(newRawData.toJS(),orgRawData.toJS());
     })
   },
   _renderCalendarItems: function(energyData) {
@@ -162,10 +159,12 @@ let RawDataList = React.createClass({
       }
       currentDate = date;
       Items.push(
-        <ListItem key={`${time}+${data}+${new Date()}`} time={time} data={data} isSelected={this.state.selectedId === nId} pId={pId} onClick={that._onItemClick.bind(this, {
+        <ListItem key={`${time}+${data}`} isRawData={this.props.isRawData} time={time} data={data} isSelected={this.state.selectedId === nId} pId={pId}
+          onClick={that._onItemClick.bind(this, {
           data,
           nId
-        })}/>
+        })}
+        onDataChange={(data)=>{this._onDataChange(data,index)}}/>
       )
       indexItem[pId] = index;
       pId++;
@@ -202,10 +201,11 @@ let RawDataList = React.createClass({
       let str = CommonFuns.formatDateValueForRawData(j2d(data.get('LocalTime')), this.props.step);
 
       Items.push(
-        <ListItem time={str} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
+        <ListItem key={`${str}+${data}`} isRawData={this.props.isRawData} time={str} data={data} isSelected={this.state.selectedId === nId} onClick={that._onItemClick.bind(this, {
           data,
           nId
-        })}/>
+        })}
+        onDataChange={(data)=>{this._onDataChange(index,data)}}/>
       )
       indexItem[nId] = index;
       nId++;
@@ -241,9 +241,15 @@ let RawDataList = React.createClass({
         el.scrollTop = 0;
       }
       this.setState({
-        selectedId: -1
+        selectedId: -1,
+        isLoading:false
       })
       this.forceUpdate();
+    }
+    else {
+      this.setState({
+        isLoading:false
+      })
     }
 
   },
@@ -287,21 +293,26 @@ let RawDataList = React.createClass({
     var data = this.props.isRawData ? TagStore.getRawData() : TagStore.getDifferenceData(),
       uom = data.getIn(['TargetEnergyData', 0, 'Target', 'Uom']);
     var label = this.props.isRawData ? I18N.EM.Ratio.RawValue : I18N.Setting.Tag.PTagRawData.DifferenceValue;
-    return (
-      <div className='jazz-ptag-rawdata-list'>
-        <div className='title'>
-          <div>{I18N.RawData.Time}</div>
-          <div style={{
-        marginLeft: '90px'
-      }}>{label + '(' + uom + ')'}</div>
+    if(this.state.isLoading){
+      return (<div className="jazz-ptag-rawdata-list flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
+    }else {
+      return (
+        <div className='jazz-ptag-rawdata-list'>
+          <div className='title'>
+            <div>{I18N.RawData.Time}</div>
+            <div style={{
+          marginLeft: '90px'
+        }}>{label + '(' + uom + ')'}</div>
+          </div>
+          <div className="date" ref='header' style={{
+          display: 'none'
+        }}>
+             </div>
+               {this._renderListItems()}
         </div>
-        <div className="date" ref='header' style={{
-        display: 'none'
-      }}>
-           </div>
-             {this._renderListItems()}
-      </div>
-      )
+        )
+    }
+
   },
 });
 module.exports = RawDataList;

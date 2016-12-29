@@ -33,10 +33,16 @@ var TagDetail = React.createClass({
     enableSave: React.PropTypes.bool,
     onSwitchRawDataListView: React.PropTypes.func,
     showRawDataList: React.PropTypes.bool,
+    onRawDataRollBack:React.PropTypes.func,
   },
   getInitialState: function() {
     return {
     };
+  },
+  _setLoading(){
+    if(this.refs.pTagRawData){
+      this.refs.pTagRawData._setLoading();
+    }
   },
   _onSwitchTab: function(event) {
     this.props.onSwitchTab(event);
@@ -120,7 +126,9 @@ var TagDetail = React.createClass({
       if (this.props.showBasic) {
         content = <div><PTagBasic ref='pTagBasic' selectedTag={this.props.selectedTag} mergeTag={this.props.mergeTag} isViewStatus={isView}/></div>;
       } else {
-        content = <PTagRawData ref='pTagRawData' showLeft={this.props.showLeft} showRawDataList={this.props.showRawDataList} selectedTag={this.props.selectedTag} onSwitchRawDataListView={this._onSwitchRawDataListView}/>;
+        content = <PTagRawData ref='pTagRawData' showLeft={this.props.showLeft} showRawDataList={this.props.showRawDataList} selectedTag={this.props.selectedTag}
+                               onSwitchRawDataListView={this._onSwitchRawDataListView}
+                               rollBack={this.props.onRawDataRollBack}/>;
       }
     } else {
       if (this.props.showBasic) {
