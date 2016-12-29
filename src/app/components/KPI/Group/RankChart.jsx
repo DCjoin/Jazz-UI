@@ -127,7 +127,7 @@ export default class RankChart extends Component {
 	_jumpToSingle(index) {
 		let {BuildingId, GroupKpiId} = this._getRankByIndex(index);
 		window.open(
-			window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '') + '#' + RoutePath.KPIActuality(this.context.router.params)
+			window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params)
 			 + '?buildingId='+(BuildingId)+'&groupKpiId='+GroupKpiId
 		);
 	}
