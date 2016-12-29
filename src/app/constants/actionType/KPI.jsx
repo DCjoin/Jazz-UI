@@ -183,7 +183,7 @@ module.exports = {
   }
   }
   },
-  Unit:{
+  UnitType:{
     TotalPersonUnit:2,
     TotalAreaUnit:3,
     CoolingAreaUnit:4,
@@ -194,7 +194,10 @@ module.exports = {
     TotalBedUnit:9,
     UsedBedUnit:10,
     MonthRatio:11,
-    None:12
+    None:12,
+    /// 逐月使用量
+    /// </summary>
+    MonthScale: 13,
   },
   RankType:{
     GroupRank:1,

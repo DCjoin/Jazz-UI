@@ -34,8 +34,6 @@ import BuildingChartPanel from './BuildingChartPanel.jsx';
 import CreateKPI from './single/KPI.jsx';
 import UpdatePrediction from './single/UpdatePrediction.jsx';
 
-import RankChart from './Group/RankChart.jsx';
-
 function canView() {
 	return privilegeUtil.canView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
@@ -86,15 +84,15 @@ function groupProjectMenuItems(customerId) {
     }].concat( getCustomerById(customerId) );
 }
 
-class ActualityHeader extends Component {
-	render() {
-		return (
-			<div className='header-bar'>
-				<div>{I18N.Kpi.KPIActual}</div>
-				{isFull() && <ViewableDropDownMenu {...this.props.buildingProps}/>}
-			</div>
-		);
-	}
+function ActualityHeader(props) {
+	let {buildingProps, prefixTitle} = props;
+
+	return (
+		<div className='header-bar'>
+			<div>{prefixTitle + I18N.Kpi.KPIActual}</div>
+			{!prefixTitle && isFull() && <ViewableDropDownMenu {...buildingProps}/>}
+		</div>
+	);
 }
 
 class ActualityContent extends Component {
@@ -202,15 +200,16 @@ export default class Actuality extends Component {
 		return null;
 	}
 	_getGroupKpiId() {
-		return this.props.router.location.query.groupKpiId;
+		return this.props.router.location.query.groupKpiId || null;
 	}
 	_validBuilding(buildingId) {
-		return !!find(HierarchyStore.getBuildingList(), building => building.Id === buildingId).length === 1;
+		return !!find(HierarchyStore.getBuildingList(), building => building.Id === buildingId);
 	}
 	_onPreAction() {
 
 		if( UserStore.getUserCustomers().size > 0 && HierarchyStore.getBuildingList() ) {
 			let hierarchyId;
+			// 从多项目点入单项目时，url记录参数，优先查询kpiid
 			if(this.state.hierarchyId) {
 				if(this._validBuilding(this.state.hierarchyId) && this._getGroupKpiId()) {
 					hierarchyId = this.state.hierarchyId;
@@ -222,6 +221,7 @@ export default class Actuality extends Component {
 						this._getCustomerId(), 
 						null, 
 						hierarchyId,
+						this._getGroupKpiId(),
 						this._getKPIRank(hierarchyId));
 					return;
 				}
@@ -243,6 +243,7 @@ export default class Actuality extends Component {
 						this._getCustomerId(), 
 						null, 
 						hierarchyId,
+						this._getGroupKpiId(),
 						this._getKPIRank(hierarchyId));
 					return;
 				}
@@ -269,6 +270,7 @@ export default class Actuality extends Component {
 			this.props.router.params.customerId, 
 			year, 
 			hierarchyId,
+			this._getGroupKpiId(),
 			this._getKPIRank(hierarchyId));
 		this.setState({
 			showRefreshDialog: false,
@@ -288,13 +290,13 @@ export default class Actuality extends Component {
 	}
 	_getKPIRank(hierarchyId) {
 		let isGroup = !!getCustomerById(hierarchyId);
+		let customerId = this.props.router.params.customerId;
 		if(isGroup) {
-			return SingleKPIAction.getCustomerRank;
+			return SingleKPIAction.getCustomerRank.bind(SingleKPIAction, customerId);
 		} else {
-			let customerId = this.props.router.params.customerId;
-			let kpiIdFromRank = this.state.kpiIdFromRank;
-			if(this.state.kpiIdFromRank) {
-				return this._preCheckThisYear(SingleKPIAction.getGroupKPIBuildingRank.bind(SingleKPIAction, customerId, kpiIdFromRank, hierarchyId));
+			let groupKPIId = this._getGroupKpiId();
+			if(groupKPIId) {
+				return this._preCheckThisYear(SingleKPIAction.getGroupKPIBuildingRank.bind(SingleKPIAction, customerId, groupKPIId, hierarchyId));
 			}
 			return this._preCheckThisYear(SingleKPIAction.getBuildingRank.bind(SingleKPIAction, customerId, hierarchyId));
 		}
@@ -302,8 +304,8 @@ export default class Actuality extends Component {
 	_getData(customerId, year, hierarchyId) {
 		SingleKPIAction.initKPIChartData();
 		SingleKPIAction.getKPIPeriodByYear(customerId, year);
-		SingleKPIAction.getKPIChart(customerId, year, hierarchyId);
-		SingleKPIAction.getKPIChartSummary(customerId, year, hierarchyId);
+		SingleKPIAction.getKPIChart(this._getGroupKpiId(), year, hierarchyId);
+		SingleKPIAction.getKPIChartSummary(customerId, year, hierarchyId, this._getGroupKpiId());
 		this._getKPIRank(hierarchyId)(year);
 	}
 	_getCustomerId() {
@@ -341,7 +343,7 @@ export default class Actuality extends Component {
 				year={this.state.year || new Date().getFullYear()}/>);
 		} else {
 			let buildingProps = {
-		        ref: 'commodity',
+		        // ref: 'commodity',
 		        isViewStatus: false,
 		        defaultValue: this.state.hierarchyId,
 		        style: {
@@ -353,6 +355,7 @@ export default class Actuality extends Component {
 		        		this.props.router.params.customerId, 
 		        		null, 
 		        		hierarchyId,
+						this._getGroupKpiId(),
 		        		this._getKPIRank(hierarchyId));
 					this.setState({year: null,hierarchyId});
 		        },
@@ -366,18 +369,31 @@ export default class Actuality extends Component {
 		        }].concat(groupProjectMenuItems(this.props.params.customerId))
 		        .concat(singleProjectMenuItems()),
 		    };
+		    let showTitle = true,
+		    prefixTitle = '',
+		    chartData = SingleKPIStore.getKPIChart();
+		    if( this._getGroupKpiId()) {
+		    	if( chartData && chartData.get('data').size === 1 ) {
+		    		prefixTitle = 
+		    			I18N.Setting.KPI.Building + 
+		    			getHierarchyNameById(this.state.hierarchyId) + '-' + 
+		    			chartData.getIn(['data', 0, 'name']) + '-';
+		    	} else {
+		    		showTitle = false;
+		    	}
+		    }
 			return (
 				<div className='jazz-kpi-actuality'>
-					<ActualityHeader
-						hierarchyId={this.state.hierarchyId}
+					{showTitle && <ActualityHeader
+						prefixTitle={prefixTitle}
 						buildingProps={buildingProps}
-						goCreate={this._goCreate}/>
+						goCreate={this._goCreate}/> }
 					{disabledSelectedProject ? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
 					(<ActualityContent
 						chartReady={SingleKPIStore.chartReady()}
 						period={SingleKPIStore.getYearQuotaperiod()}
 						hierarchyId={this.state.hierarchyId}
-						data={SingleKPIStore.getKPIChart()}
+						data={chartData}
 						year={this.state.year}
 						summaryData={SingleKPIStore.getKPIChartSummary()}
 						onChangeYear={(year) => {
