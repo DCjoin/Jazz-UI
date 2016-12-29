@@ -1960,6 +1960,7 @@ I18N.Setting.Cost.OtherCommodities = '其他成本属性';
 I18N.Setting.Cost.CostCommodity = '成本属性';
 
 I18N.Setting.KPI = {};
+I18N.Setting.KPI.Building='建筑';
 I18N.Setting.KPI.create='新建指标';
 I18N.Setting.KPI.Prolong='延续往年指标';
 I18N.Setting.KPI.edit='编辑指标';

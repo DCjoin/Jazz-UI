@@ -81,9 +81,6 @@ export default class BuildingChartPanel extends Component {
 		KPIRank = safeArr(ranks).filter( rank => safeObj(rank).RankType === KPI_RANK_TYPE),
 		topRank = find(safeArr(ranks), rank => safeObj(rank).RankType === TOP_RANK_TYPE);
 
-		// test data
-		// KPIRank = safeArr(ranks);
-		// topRank = safeArr(ranks).find( (rank, i) => !i);
 		return (
 			<div>
 				{isThisYear && topRank && 
@@ -116,7 +113,7 @@ export default class BuildingChartPanel extends Component {
 						currentKPIId = currentTag.get('id'),
 						currentSummaryData = find(safeArr(summaryData), sum => sum.KpiId === currentKPIId),
 						currentRank = find(KPIRank, rank => rank.KpiId === currentKPIId);
-					if( !isThisYear ) {
+					if( !isThisYear || !currentRank ) {
 						return (
 							<KPIReport
 								isGroup={false}

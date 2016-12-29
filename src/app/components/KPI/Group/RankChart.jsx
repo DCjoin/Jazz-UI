@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
+import {slice, fill} from 'lodash/array';
+import {isNull, isUndefined} from 'lodash/lang';
 
+import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
 
 import Highcharts from '../../highcharts/Highcharts.jsx';
-const KPI_RANK_TYPE = 1,
-TOP_RANK_TYPE = 2,
-DEFAULT_OPTIONS = {
+
+import UOMStore from 'stores/UOMStore.jsx';
+
+function noValue(value) {
+	return isUndefined(value) || isNull(value);
+}
+
+const DEFAULT_OPTIONS = {
     credits: {
         enabled: false
     },
@@ -40,7 +48,7 @@ DEFAULT_OPTIONS = {
     	type: 'column',
     	title: {
     		y: -20,
-    		offset: 0,
+    		offset: 15,
     		align: 'high',
     		rotation: 0,
     	}
@@ -76,6 +84,31 @@ function getRank(props) {
 	return `${Index}/${Count}<span class='rank-flag' style='margin-left: 2px'>${flag}</span>`;
 }
 
+function fillArrayToTen(arr) {
+	while(arr.length < 10) {
+		arr.push('');
+	}
+	return arr;
+}
+
+function isScale(UnitType) {
+	return UnitType === KPIType.UnitType.MonthRatio || UnitType === KPIType.UnitType.MonthScale;
+}
+
+function getUnitLabel({UnitType, UomId}) {
+	if( isScale(UnitType) ) {
+		return '%';
+	}
+	return UOMStore.getUomById(UomId);
+}
+
+function getValueLabel(value, data) {
+	if( noValue(value) ) {
+		return '';
+	}
+	return (isScale(data.UnitType) ? value.toFixed(1)*1 : util.getLabelData(value)) + getUnitLabel(data);
+}
+
 export default class RankChart extends Component {
 	static contextTypes = {
 		router: React.PropTypes.object
@@ -87,67 +120,71 @@ export default class RankChart extends Component {
 		this._getDataLabel = this._getDataLabel.bind(this);
 		this._jumpToSingle = this._jumpToSingle.bind(this);
 		this.state = {
-			date: new moment().subtract('month', 1),
-			baseRankNum: 1,
+			monthIndex: props.MonthRank.length - 1,
+			rankIndex: 0,
 		}
 	}
 	_jumpToSingle(index) {
+		let {BuildingId, GroupKpiId} = this._getRankByIndex(index);
 		window.open(
 			window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '') + '#' + RoutePath.KPIActuality(this.context.router.params)
+			 + '?buildingId='+(BuildingId)+'&groupKpiId='+GroupKpiId
 		);
 	}
-	_getDateByIndex() {
-
+	_getCurrentMonthRank() {
+		return this.props.MonthRank[this.state.monthIndex];
 	}
-	_getDateLabel(momentDate) {
-		return util.replacePathParams(I18N.Kpi.YearMonth, momentDate.get('year'), momentDate.get('month') + 1);
+	_getCurrentAllBuildingRank() {
+		return this._getCurrentMonthRank().BuildingRank;
+	}
+	_getCurrentRangeBuildingRank() {
+		return slice(this._getCurrentAllBuildingRank(), this.state.rankIndex, 10);
+	}
+	_getRankByIndex(index) {
+		return this._getCurrentAllBuildingRank()[this.state.rankIndex + index];
 	}
 	_getTooltip(index) {
-		let {date, baseRankNum} = this.state;
+		let {BuildingName, DIndex, Index, Count, RankValue} = this._getRankByIndex(index);
 		let tooltip = `
-		<b>${this._getDateLabel(date)}</b><br/>
-		${'建筑XXX'}: ${'75%'}<br/>
-		${'排名'}: ${getRank({DIndex: 2, Index: 5, Count:25})}
+		<b>${this._getDateLabel()}</b><br/>
+		${I18N.Setting.KPI.Building + BuildingName}: ${getValueLabel(RankValue, this.props)}<br/>
+		${I18N.Setting.KPI.Rank.Name}: ${getRank({DIndex, Index, Count})}
 		`;
 		return tooltip;
 	}
+	_getDateLabel() {
+		let jsonstring = this._getCurrentMonthRank().Date,
+		date = new Date(parseInt(jsonstring.substr(6, jsonstring.length - 8)));
+		return util.replacePathParams(I18N.Kpi.YearMonth, date.getFullYear(), date.getMonth() + 1);
+	}
+	_getRankLabel() {
+		let rankIndex = this.state.rankIndex;
+		return (rankIndex + 1) + '-' + Math.min(rankIndex + 10, this._getCurrentAllBuildingRank().length) + '名';
+	}
 	_getDataLabel(index) {
-		return index + this.state.baseRankNum;
+		return index + this.state.rankIndex + 1;
 	}
 	_getCategories() {
-		return [
-	        '建筑XXX',
-	        '建筑XXX',
-	        '建筑XXX',
-	        '建筑XXX',
-	        '建筑XXX',
-	        '建筑XXX',
-	        '建筑XXX',
-	        '建筑XXX',
-	        '建筑XXX',
-	        '建筑XXX',
-	    ];
+		return fillArrayToTen(this._getCurrentRangeBuildingRank()
+						.map(rank => rank.BuildingName));
 	}
 	_getSeries() {
-		let series = [];
-		for(let i = 0; i < 10; i++) {
-			// series[i] = (Math.random() * 100).toFixed() * 1;
-			if( i < 9 ) {
-				series[i] = 50
-			} else {
-				series[i] = 100
-			}
-		}
-		return [{data: series}];
+		return [{data: fillArrayToTen(this._getCurrentRangeBuildingRank()
+						.map(rank => rank.RankValue))}];
 	}
 	_generatorOptions() {
-		let {name, type} = this.props,
-		{baseRankNum} = this.state,
+		let {RankName, RankType} = this.props,
+		{rankIndex} = this.state,
 		{_getTooltip, _getDataLabel, _jumpToSingle} = this,
 		options = util.merge(true, {}, DEFAULT_OPTIONS, {
 			series: this._getSeries(),
 		    xAxis: {
 			    categories: this._getCategories(),
+		    },
+		    yAxis: {
+		    	title:{ 
+		    		text: getUnitLabel(this.props),
+		    	},
 		    },
 		    tooltip: {
 		    	useHTML: true,
@@ -165,7 +202,7 @@ export default class RankChart extends Component {
 		        }
 		    },
 		});
-		if( type === KPI_RANK_TYPE ) {
+		if( RankType === KPIType.RankType.GroupRank ) {
 			options.plotOptions.series.cursor = 'pointer';
 			options.plotOptions.series.events = {				
 				click: function (event) {
@@ -178,41 +215,60 @@ export default class RankChart extends Component {
 
 	render() {
 		let {
-			name, 
-			type,
-			data,
+			RankName, 
+			RankType,
+			MonthRank,
 		} = this.props,
 		{
-			date,
-			baseRankNum,
+			monthIndex,
+			rankIndex,
 		} = this.state,
 		onLastMonth, onNextMonth, onLastRank, onNextRank;
 
-		if(baseRankNum > 10) {
+		if(monthIndex > 0) {
+			onLastMonth = () => {
+				this.setState({
+					monthIndex: --monthIndex,
+					rankIndex: 0,
+				});
+			};
+		}
+		if(monthIndex + 1 < MonthRank.length) {
+			onNextMonth = () => {
+				this.setState({
+					monthIndex: ++monthIndex,
+					rankIndex: 0,
+				});
+			};
+		}
+		if(rankIndex > 10) {
 			onLastRank = () => {
 				this.setState({
-					baseRankNum: baseRankNum - 10
+					rankIndex: rankIndex - 10
 				});
 			};
 		}
 
-		if( baseRankNum + 10 < 100 ) {
+		if( rankIndex + 10 < this._getCurrentAllBuildingRank().length ) {
 			onNextRank = () => {
 				this.setState({
-					baseRankNum: baseRankNum + 10
+					rankIndex: rankIndex + 10
 				});
 			};			
 		}
 
         return (
         	<div className='kpi-rank-chart'>
-        		<div className='kpi-rank-chart-title'>用水量</div>
+        		<div className='kpi-rank-chart-title'>{RankName}</div>
         		<SwitchBar 
         			className='switch-month'
-        			label={this._getDateLabel(date)}/>
+        			label={this._getDateLabel()}
+        			onLeft={onLastMonth}
+        			onRight={onNextMonth}
+        		/>
         		<SwitchBar 
         			className='switch-range'
-        			label={baseRankNum + '-' + (baseRankNum + 9) + '名'}
+        			label={this._getRankLabel()}
         			onLeft={onLastRank}
         			onRight={onNextRank}
         			/>
