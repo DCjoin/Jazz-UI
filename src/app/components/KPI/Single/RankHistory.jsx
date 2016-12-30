@@ -29,12 +29,12 @@ export default class RankHistory extends Component {
   }
 
   _getRatio(dIndex){
-    let ratio='--',
-        style={
+    let style={
           fontSize:'12px'
         };
+    let ratio=<FontIcon className="icon-arrow-left" style={style}/>;
     if(dIndex===null){
-      ratio=''
+      ratio='-'
     }
     else if(dIndex>0){
       ratio=<FontIcon className="icon-arrow-up" style={style}>{dIndex}</FontIcon>
@@ -64,7 +64,7 @@ export default class RankHistory extends Component {
             var date=RankingKPIStore.getDate(Date),
                 rank=Index?`${Index}/${Count}`:'-',
                 ratio=DIndex?this._getRatio(DIndex):'-',
-                value=RankValue?RankValue:'-';
+                value=RankValue?RankValue:I18N.Setting.KPI.Group.Ranking.History.NoValue;
             return(
               <div>
                 <span>{date}</span>

@@ -2,7 +2,8 @@
 'use strict';
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
-import { Action,DataStatus,Unit} from 'constants/actionType/KPI.jsx';
+import { Action,DataStatus,UnitType as Unit} from 'constants/actionType/KPI.jsx';
+// import {UnitType as Unit } from 'constants/actionType/KPI.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';

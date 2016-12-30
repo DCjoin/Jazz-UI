@@ -2060,6 +2060,7 @@ I18N.Setting.KPI.Group.Ranking.History = {};
 I18N.Setting.KPI.Group.Ranking.History.Name='{0}-排名历史';
 I18N.Setting.KPI.Group.Ranking.History.Ratio='对比上月';
 I18N.Setting.KPI.Group.Ranking.History.Value='用量';
+I18N.Setting.KPI.Group.Ranking.History.NoValue='无数据';
 
 I18N.Setting.KPI.Rank = {};
 I18N.Setting.KPI.Rank.Name = '排名';
