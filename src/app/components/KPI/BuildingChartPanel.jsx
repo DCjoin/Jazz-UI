@@ -5,6 +5,7 @@ import {first} from 'lodash/array';
 import {find} from 'lodash/collection';
 import {isNull, isUndefined} from 'lodash/lang';
 
+import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
@@ -34,6 +35,24 @@ const safeObj = safeValue({});
 const safeArr = safeValue([]);
 const safeImmuArr = safeValue(Immutable.fromJS([]));
 const safeImmuObj = safeValue(Immutable.fromJS({}));
+
+function isScale(UnitType) {
+	return UnitType === KPIType.UnitType.MonthRatio || UnitType === KPIType.UnitType.MonthScale;
+}
+
+function getUnitLabel({UnitType, UomId}) {
+	if( isScale(UnitType) ) {
+		return '%';
+	}
+	return UOMStore.getUomById(UomId) + util.getPerByUnitType(UnitType);
+}
+
+function getValueLabel(value, data) {
+	if( noValue(value) ) {
+		return '';
+	}
+	return (isScale(data.UnitType) ? value.toFixed(1)*1 : util.getLabelData(value)) + getUnitLabel(data);
+}
 
 function RankNumber(props) {
 	if(!props) {
@@ -105,8 +124,8 @@ export default class BuildingChartPanel extends Component {
 					<div className='top-rank-item'>
 						<div>{I18N.Setting.KPI.Rank.UsageAmount}</div>
 						<div className='jazz-building-top-rank-total'>
-							<span className='jazz-building-top-rank-total-number hiddenEllipsis'>{util.getLabelData(topRank.RankValue)}</span>
-							<span>{!noValue(topRank.RankValue) && UOMStore.getUomById(topRank.UomId)}</span>
+							<span className='jazz-building-top-rank-total-number hiddenEllipsis'>{getValueLabel(topRank.RankValue, topRank)}</span>
+							
 						</div>
 					</div>
 				</div>}

@@ -102,7 +102,7 @@ function getUnitLabel({UnitType, UomId}) {
 	if( isScale(UnitType) ) {
 		return '%';
 	}
-	return UOMStore.getUomById(UomId);
+	return UOMStore.getUomById(UomId) + util.getPerByUnitType(UnitType);
 }
 
 function getValueLabel(value, data) {
