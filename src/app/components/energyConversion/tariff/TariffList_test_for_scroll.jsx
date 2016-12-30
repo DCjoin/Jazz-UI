@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import ReactDom from 'react-dom';
 import classnames from "classnames";
 import Item from '../../../controls/SelectableItem.jsx';
 import SelectablePanel from '../../../controls/SelectablePanel.jsx';
@@ -35,8 +36,8 @@ var TariffList = React.createClass({
     return items;
   },
   onScroll: function() {
-    var el = this.refs.list.getDOMNode(),
-      head = this.refs.header.getDOMNode();
+    var el = ReactDom.findDOMNode(this.refs.list),
+      head = ReactDom.findDOMNode(this.refs.header);
     var scrollIndex = parseInt((el.scrollTop - 1) / 58);
     //set scrollTop to scroll el.scrollTop=500
     head.innerText = tem_items[scrollIndex];
