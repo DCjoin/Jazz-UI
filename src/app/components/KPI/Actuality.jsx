@@ -202,6 +202,9 @@ export default class Actuality extends Component {
 	_getGroupKpiId() {
 		return this.props.router.location.query.groupKpiId || null;
 	}
+	_getKpiId() {
+		return this.props.router.location.query.kpiId || null;
+	}
 	_validBuilding(buildingId) {
 		return !!find(HierarchyStore.getBuildingList(), building => building.Id === buildingId);
 	}
@@ -211,7 +214,7 @@ export default class Actuality extends Component {
 			let hierarchyId;
 			// 从多项目点入单项目时，url记录参数，优先查询kpiid
 			if(this.state.hierarchyId) {
-				if(this._validBuilding(this.state.hierarchyId) && this._getGroupKpiId()) {
+				if(this._validBuilding(this.state.hierarchyId) && this._getKpiId()) {
 					hierarchyId = this.state.hierarchyId;
 					this.setState({
 						year: null,
@@ -221,7 +224,7 @@ export default class Actuality extends Component {
 						this._getCustomerId(), 
 						null, 
 						hierarchyId,
-						this._getGroupKpiId(),
+						this._getKpiId(),
 						this._getKPIRank(hierarchyId));
 					return;
 				}
@@ -243,7 +246,7 @@ export default class Actuality extends Component {
 						this._getCustomerId(), 
 						null, 
 						hierarchyId,
-						this._getGroupKpiId(),
+						this._getKpiId(),
 						this._getKPIRank(hierarchyId));
 					return;
 				}
@@ -270,7 +273,7 @@ export default class Actuality extends Component {
 			this.props.router.params.customerId, 
 			year, 
 			hierarchyId,
-			this._getGroupKpiId(),
+			this._getKpiId(),
 			this._getKPIRank(hierarchyId));
 		this.setState({
 			showRefreshDialog: false,
@@ -304,8 +307,8 @@ export default class Actuality extends Component {
 	_getData(customerId, year, hierarchyId) {
 		SingleKPIAction.initKPIChartData();
 		SingleKPIAction.getKPIPeriodByYear(customerId, year);
-		SingleKPIAction.getKPIChart(this._getGroupKpiId(), year, hierarchyId);
-		SingleKPIAction.getKPIChartSummary(customerId, year, hierarchyId, this._getGroupKpiId());
+		SingleKPIAction.getKPIChart(this._getKpiId(), year, hierarchyId);
+		SingleKPIAction.getKPIChartSummary(customerId, year, hierarchyId, this._getKpiId());
 		this._getKPIRank(hierarchyId)(year);
 	}
 	_getCustomerId() {
@@ -355,7 +358,7 @@ export default class Actuality extends Component {
 		        		this.props.router.params.customerId, 
 		        		null, 
 		        		hierarchyId,
-						this._getGroupKpiId(),
+						this._getKpiId(),
 		        		this._getKPIRank(hierarchyId));
 					this.setState({year: null,hierarchyId});
 		        },

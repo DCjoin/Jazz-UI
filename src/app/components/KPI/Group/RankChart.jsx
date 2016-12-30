@@ -74,6 +74,9 @@ function getRank(props) {
 	let {DIndex, Index, Count} = props,
 	flag = '--';
 
+	if(DIndex === 0) {
+		flag = '→';
+	}
 	if(DIndex > 0) {
 		flag = '↑ ' + DIndex;
 	}
@@ -125,10 +128,12 @@ export default class RankChart extends Component {
 		}
 	}
 	_jumpToSingle(index) {
-		let {BuildingId, GroupKpiId} = this._getRankByIndex(index);
+		let {BuildingId, GroupKpiId, KpiId} = this._getRankByIndex(index);
 		window.open(
 			window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params)
-			 + '?buildingId='+(BuildingId)+'&groupKpiId='+GroupKpiId
+			 + '?buildingId='+BuildingId
+			 + '&groupKpiId='+GroupKpiId
+			 + '&kpiId='+KpiId
 		);
 	}
 	_getCurrentMonthRank() {
