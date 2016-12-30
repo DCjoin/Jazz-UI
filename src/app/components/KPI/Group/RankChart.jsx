@@ -167,7 +167,11 @@ export default class RankChart extends Component {
 		return (rankIndex + 1) + '-' + Math.min(rankIndex + 10, this._getCurrentAllBuildingRank().length) + '名';
 	}
 	_getDataLabel(index) {
-		return index + this.state.rankIndex + 1;
+		let rank = this._getRankByIndex(index);
+		if( rank ) {
+			return rank.Index
+		}
+		return '';
 	}
 	_getCategories() {
 		return fillArrayToTen(this._getCurrentRangeBuildingRank()
