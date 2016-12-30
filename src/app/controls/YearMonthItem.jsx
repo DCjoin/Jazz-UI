@@ -109,7 +109,7 @@ var YearMonthItem = React.createClass({
       title: '',
       textField: 'text',
       style: {
-        width: '100px'
+        width: '110px'
       },
       didChanged: value => {
         this._onDateChange(value, yearItems, 'Year')
