@@ -122,7 +122,7 @@ export default class BuildingChartPanel extends Component {
 						{RankNumber(topRank)}
 					</div>
 					<div className='top-rank-item'>
-						<div>{I18N.Setting.KPI.Rank.UsageAmount}</div>
+						<div>{isScale(topRank.UnitType) ? '%' : I18N.Setting.KPI.Rank.UsageAmount}</div>
 						<div className='jazz-building-top-rank-total'>
 							<span className='jazz-building-top-rank-total-number hiddenEllipsis'>{getValueLabel(topRank.RankValue, topRank)}</span>
 							
