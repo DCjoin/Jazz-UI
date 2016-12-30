@@ -71,9 +71,9 @@ const SingleKPIAction = {
     Ajax.get(
       util.replacePathParams(
         Path.KPI.Rank.getGroupKPIBuildingRank,
+        customerId,
         GroupKpiId,
         buildingId,
-        customerId,
         year), {
       success: (resBody) => {
         AppDispatcher.dispatch({
