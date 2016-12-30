@@ -201,6 +201,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     _KPIRank = data;
   },
   getKPIRank() {
+    if( !(_KPIRank instanceof Array) ) {
+      return [_KPIRank];
+    }
     return _KPIRank;
   },
   _initKpiChartData() {

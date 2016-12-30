@@ -42,6 +42,9 @@ function RankNumber(props) {
 	let {DIndex, Index, Count} = props,
 	flag = '--';
 
+	if(DIndex === 0) {
+		flag = '→';
+	}
 	if(DIndex > 0) {
 		flag = '↑ ' + DIndex;
 	}
