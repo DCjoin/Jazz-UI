@@ -37,6 +37,7 @@ module.exports = {
     Rank: {
       getBuildingRank: '/rank/buildingrank/{customerId}/{buildingId}/{year}',
       getGroupKPIBuildingRank: '/rank/groupkpibuildingrank/{customerId}/{groupKpiId}/{buildingId}/{year}',
+      getGroupRank: '/rank/grouprank/{customerId}/{year}',
       getRank:'/rank/getrank/{customerId}',
       setRank:'/rank/setrank',
       rankRecord:'/rank/rankrecord/{customerId}/{groupKpiId}/{rankType}/{buildingId}',
