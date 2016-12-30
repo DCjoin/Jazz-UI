@@ -32,15 +32,15 @@ export default class RankHistory extends Component {
     let style={
           fontSize:'12px'
         };
-    let ratio=<FontIcon className="icon-arrow-left" style={style}/>;
+    let ratio=<FontIcon className="icon-rank-right" style={style}/>;
     if(dIndex===null){
       ratio='-'
     }
     else if(dIndex>0){
-      ratio=<FontIcon className="icon-arrow-up" style={style}>{dIndex}</FontIcon>
+      ratio=<FontIcon className="icon-rank-up" style={style}>{dIndex}</FontIcon>
     }
     else if(dIndex<0){
-      ratio=<FontIcon className="icon-arrow-down" style={style}>{dIndex}</FontIcon>
+      ratio=<FontIcon className="icon-rank-down" style={style}>{-dIndex}</FontIcon>
     }
     return ratio
   }

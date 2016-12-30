@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "fontcustom";
-  src: url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.eot");
-  src: url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.eot?#iefix") format("embedded-opentype"),
-       url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.woff") format("woff"),
-       url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.ttf") format("truetype"),
-       url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.svg#fontcustom") format("svg");
+  src: url("./fontcustom_903bcf3d43c20ae6744c1b48d45dade4.eot");
+  src: url("./fontcustom_903bcf3d43c20ae6744c1b48d45dade4.eot?#iefix") format("embedded-opentype"),
+       url("./fontcustom_903bcf3d43c20ae6744c1b48d45dade4.woff") format("woff"),
+       url("./fontcustom_903bcf3d43c20ae6744c1b48d45dade4.ttf") format("truetype"),
+       url("./fontcustom_903bcf3d43c20ae6744c1b48d45dade4.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "fontcustom";
-    src: url("./fontcustom_7dfd5a93a6e0377232b60cdd33f8ca05.svg#fontcustom") format("svg");
+    src: url("./fontcustom_903bcf3d43c20ae6744c1b48d45dade4.svg#fontcustom") format("svg");
   }
 }
 
@@ -27,10 +27,13 @@
 .icon-add:before,
 .icon-alarm:before,
 .icon-alarm-notification:before,
+.icon-alarm-ticket:before,
 .icon-arrow-down:before,
+.icon-arrow-fold:before,
 .icon-arrow-left:before,
 .icon-arrow-right:before,
 .icon-arrow-trail:before,
+.icon-arrow-unfold:before,
 .icon-arrow-up:before,
 .icon-assignment:before,
 .icon-battery-empty:before,
@@ -50,6 +53,7 @@
 .icon-column:before,
 .icon-column-fold:before,
 .icon-connected-position:before,
+.icon-copy:before,
 .icon-current:before,
 .icon-customer:before,
 .icon-delete:before,
@@ -87,20 +91,29 @@
 .icon-log:before,
 .icon-mainline:before,
 .icon-map:before,
+.icon-marker:before,
 .icon-menu:before,
 .icon-model:before,
 .icon-myalarm:before,
 .icon-next-arrow-right:before,
 .icon-orgnization:before,
+.icon-overdue:before,
+.icon-oxygen:before,
 .icon-panel:before,
 .icon-panel-box:before,
 .icon-photo:before,
 .icon-pie:before,
+.icon-platform-logo:before,
+.icon-pm25-humidity:before,
+.icon-pm25-temperature:before,
 .icon-pole:before,
 .icon-post:before,
 .icon-power:before,
 .icon-qrcode:before,
 .icon-quickview:before,
+.icon-rank-down:before,
+.icon-rank-right:before,
+.icon-rank-up:before,
 .icon-ranking:before,
 .icon-raw-data:before,
 .icon-return:before,
@@ -116,11 +129,18 @@
 .icon-set-alarm:before,
 .icon-setalarm:before,
 .icon-setting:before,
+.icon-signal1:before,
+.icon-signal2:before,
+.icon-signal3:before,
+.icon-signal4:before,
+.icon-signal5:before,
 .icon-site:before,
 .icon-spring-compression:before,
 .icon-spring-tension:before,
 .icon-stack:before,
 .icon-sync:before,
+.icon-sync-fail:before,
+.icon-sync-ok:before,
 .icon-taglist-fold:before,
 .icon-temperature:before,
 .icon-test-position:before,
@@ -129,9 +149,20 @@
 .icon-tickets-processing:before,
 .icon-time-ration:before,
 .icon-unit-index:before,
+.icon-uploading:before,
 .icon-user:before,
 .icon-voltage:before,
-.icon-wear-rate:before {
+.icon-wear-rate:before,
+.icon-weather-cloudy:before,
+.icon-weather-haze:before,
+.icon-weather-overcast:before,
+.icon-weather-rainy:before,
+.icon-weather-sand:before,
+.icon-weather-snowy:before,
+.icon-weather-sunny:before,
+.icon-weather-sunny-cloudy:before,
+.icon-weather-thunder:before,
+.icon-weather-wind:before {
   display: inline-block;
   font-family: "fontcustom";
   font-style: normal;
@@ -150,10 +181,13 @@
 .icon-add:before { content: "\f100"; }
 .icon-alarm:before { content: "\f133"; }
 .icon-alarm-notification:before { content: "\f101"; }
+.icon-alarm-ticket:before { content: "\f187"; }
 .icon-arrow-down:before { content: "\f102"; }
+.icon-arrow-fold:before { content: "\f183"; }
 .icon-arrow-left:before { content: "\f103"; }
 .icon-arrow-right:before { content: "\f104"; }
 .icon-arrow-trail:before { content: "\f105"; }
+.icon-arrow-unfold:before { content: "\f184"; }
 .icon-arrow-up:before { content: "\f106"; }
 .icon-assignment:before { content: "\f16b"; }
 .icon-battery-empty:before { content: "\f108"; }
@@ -173,6 +207,7 @@
 .icon-column:before { content: "\f154"; }
 .icon-column-fold:before { content: "\f110"; }
 .icon-connected-position:before { content: "\f162"; }
+.icon-copy:before { content: "\f178"; }
 .icon-current:before { content: "\f135"; }
 .icon-customer:before { content: "\f111"; }
 .icon-delete:before { content: "\f112"; }
@@ -210,20 +245,29 @@
 .icon-log:before { content: "\f13a"; }
 .icon-mainline:before { content: "\f120"; }
 .icon-map:before { content: "\f121"; }
+.icon-marker:before { content: "\f18f"; }
 .icon-menu:before { content: "\f123"; }
 .icon-model:before { content: "\f124"; }
 .icon-myalarm:before { content: "\f166"; }
 .icon-next-arrow-right:before { content: "\f16d"; }
 .icon-orgnization:before { content: "\f125"; }
+.icon-overdue:before { content: "\f186"; }
+.icon-oxygen:before { content: "\f174"; }
 .icon-panel:before { content: "\f126"; }
 .icon-panel-box:before { content: "\f127"; }
 .icon-photo:before { content: "\f128"; }
 .icon-pie:before { content: "\f15a"; }
+.icon-platform-logo:before { content: "\f185"; }
+.icon-pm25-humidity:before { content: "\f175"; }
+.icon-pm25-temperature:before { content: "\f176"; }
 .icon-pole:before { content: "\f13b"; }
 .icon-post:before { content: "\f144"; }
 .icon-power:before { content: "\f129"; }
 .icon-qrcode:before { content: "\f12a"; }
 .icon-quickview:before { content: "\f13c"; }
+.icon-rank-down:before { content: "\f190"; }
+.icon-rank-right:before { content: "\f191"; }
+.icon-rank-up:before { content: "\f192"; }
 .icon-ranking:before { content: "\f15b"; }
 .icon-raw-data:before { content: "\f15c"; }
 .icon-return:before { content: "\f169"; }
@@ -239,11 +283,18 @@
 .icon-set-alarm:before { content: "\f152"; }
 .icon-setalarm:before { content: "\f12e"; }
 .icon-setting:before { content: "\f12f"; }
+.icon-signal1:before { content: "\f188"; }
+.icon-signal2:before { content: "\f189"; }
+.icon-signal3:before { content: "\f18a"; }
+.icon-signal4:before { content: "\f18b"; }
+.icon-signal5:before { content: "\f18c"; }
 .icon-site:before { content: "\f130"; }
 .icon-spring-compression:before { content: "\f13e"; }
 .icon-spring-tension:before { content: "\f13f"; }
 .icon-stack:before { content: "\f15e"; }
 .icon-sync:before { content: "\f167"; }
+.icon-sync-fail:before { content: "\f18d"; }
+.icon-sync-ok:before { content: "\f18e"; }
 .icon-taglist-fold:before { content: "\f131"; }
 .icon-temperature:before { content: "\f140"; }
 .icon-test-position:before { content: "\f164"; }
@@ -252,6 +303,17 @@
 .icon-tickets-processing:before { content: "\f171"; }
 .icon-time-ration:before { content: "\f15f"; }
 .icon-unit-index:before { content: "\f160"; }
+.icon-uploading:before { content: "\f179"; }
 .icon-user:before { content: "\f132"; }
 .icon-voltage:before { content: "\f14f"; }
 .icon-wear-rate:before { content: "\f141"; }
+.icon-weather-cloudy:before { content: "\f17a"; }
+.icon-weather-haze:before { content: "\f17b"; }
+.icon-weather-overcast:before { content: "\f17c"; }
+.icon-weather-rainy:before { content: "\f177"; }
+.icon-weather-sand:before { content: "\f17d"; }
+.icon-weather-snowy:before { content: "\f17e"; }
+.icon-weather-sunny:before { content: "\f17f"; }
+.icon-weather-sunny-cloudy:before { content: "\f180"; }
+.icon-weather-thunder:before { content: "\f181"; }
+.icon-weather-wind:before { content: "\f182"; }
