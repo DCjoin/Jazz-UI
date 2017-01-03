@@ -119,6 +119,8 @@ export default class RankChart extends Component {
 	constructor(props) {
 		super(props);
 
+		this._getCategories = this._getCategories.bind(this);
+		this._getSeries = this._getSeries.bind(this);
 		this._getTooltip = this._getTooltip.bind(this);
 		this._getDataLabel = this._getDataLabel.bind(this);
 		this._jumpToSingle = this._jumpToSingle.bind(this);
@@ -184,11 +186,15 @@ export default class RankChart extends Component {
 	_generatorOptions() {
 		let {RankName, RankType} = this.props,
 		{rankIndex} = this.state,
-		{_getTooltip, _getDataLabel, _jumpToSingle} = this,
+		{_getTooltip, 
+		_getDataLabel, 
+		_jumpToSingle, 
+		_getSeries,
+		_getCategories} = this,
 		options = util.merge(true, {}, DEFAULT_OPTIONS, {
-			series: this._getSeries(),
+			series: _getSeries(),
 		    xAxis: {
-			    categories: this._getCategories(),
+			    categories: _getCategories(),
 		    },
 		    yAxis: {
 		    	title:{ 
