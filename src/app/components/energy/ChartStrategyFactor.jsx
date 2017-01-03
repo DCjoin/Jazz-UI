@@ -2823,7 +2823,7 @@ let ChartStrategyFactor = {
       var labelStyle={fontSize:'12px',lineHeight:'32px',paddingRight:'0'};
       var carbonDest = <div className='jazz-energy-carbon-dest'><DropDownMenu style={{
         width: '90px'
-      }} labelStyle={labelStyle} value={value} onChange={menuItemChange} />{menuItems}</div>;
+      }} labelStyle={labelStyle} value={value} onChange={menuItemChange}>{menuItems}</DropDownMenu></div>;
 
       if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
         toolElement = <div style={{

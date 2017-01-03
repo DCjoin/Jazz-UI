@@ -1686,10 +1686,10 @@ let CommonFuns = {
     }
   },
   setSelectedIndexByValue(combo, value) {
-    let menuItems = combo.props.menuItems;
+    let menuItems = combo.props.children;
     let valueIndex = 0;
     menuItems.forEach((item, index) => {
-      if (item.value === value) {
+      if (item.props.value === value) {
         valueIndex = index;
         return valueIndex;
       }
