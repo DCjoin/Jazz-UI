@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDom from 'react-dom';
 import assign from 'object-assign';
 import _ from 'lodash';
 import Immutable from 'immutable';
@@ -158,16 +159,16 @@ let LabelChartComponent = React.createClass({
   componentDidMount() {
     var me = this;
     this.setState({
-      ctHeight: this.refs.jazz_energy_view.getDOMNode().clientHeight,
-      ctWidth: this.refs.jazz_energy_view.getDOMNode().clientWidth
+      ctHeight: ReactDom.findDOMNode(this.refs.jazz_energy_view).clientHeight,
+      ctWidth: ReactDom.findDOMNode(this.refs.jazz_energy_view).clientWidth
     }, () => {
       this.createChart();
     });
 
     window.onresize = function() {
       me.setState({
-        ctHeight: me.refs.jazz_energy_view.getDOMNode().clientHeight,
-        ctWidth: me.refs.jazz_energy_view.getDOMNode().clientWidth
+        ctHeight: ReactDom.findDOMNode(me.refs.jazz_energy_view).clientHeight,
+        ctWidth: ReactDom.findDOMNode(me.refs.jazz_energy_view).clientWidth
       }, () => {
         me.createChart();
       });
@@ -190,7 +191,7 @@ let LabelChartComponent = React.createClass({
       me.chartRenderer.destroy();
     }
     me.chartRenderer = new Highcharts.Renderer(
-      me.refs.jazz_energy_view.getDOMNode(),
+      ReactDom.findDOMNode(me.refs.jazz_energy_view),
       me.state.ctWidth,
       me.state.ctHeight - (isDashboard ? 15 : 30)
     );

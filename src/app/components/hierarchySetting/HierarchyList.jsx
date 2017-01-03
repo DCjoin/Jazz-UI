@@ -1,6 +1,7 @@
 'use strict';
 
 import React from "react";
+import ReactDom from 'react-dom';
 import { CircularProgress } from 'material-ui';
 import { formStatus } from '../../constants/FormStatus.jsx';
 import { treeSource } from '../../constants/TreeSource.jsx';
@@ -224,7 +225,7 @@ var HierarchyList = React.createClass({
       display: 'none'
     }, iframe.contentDocument.body);
 
-    var input = this.refs.fileInput.getDOMNode();
+    var input = ReactDom.findDOMNode(this.refs.fileInput);
     form.appendChild(input);
     var customerInput = createElement('input', {
       type: 'hidden',
@@ -244,7 +245,7 @@ var HierarchyList = React.createClass({
 
     form.submit();
     discardElement(form);
-    var label = me.refs.fileInputLabel.getDOMNode();
+    var label = ReactDom.findDOMNode(me.refs.fileInputLabel);
     var tempForm = document.createElement('form');
     document.body.appendChild(tempForm);
     tempForm.appendChild(input);

@@ -472,8 +472,26 @@ let CommonFuns = {
       }
 
       return mydate;
+    },
+    D2JNoTimezone: function(datetime) {
+      var l = datetime.getTime();
+      return '\/Date(' + l + ')\/';
+    },
+    J2DNoTimezone: function(jsonstring, outintval) {
+      outintval = typeof (outintval) === 'boolean' ? outintval : true;
+      jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+      var mydate;
+      if (outintval) {
+        mydate = parseInt(jsonstring);
+      } else {
+        mydate = parseInt(jsonstring);
+        mydate = new Date(mydate);
+      }
+
+      return mydate;
     }
   },
+
   numberToTime: function(num) {
     var h = Math.floor(num / 60),
       m = num % 60,
@@ -1668,10 +1686,10 @@ let CommonFuns = {
     }
   },
   setSelectedIndexByValue(combo, value) {
-    let menuItems = combo.props.menuItems;
+    let menuItems = combo.props.children;
     let valueIndex = 0;
     menuItems.forEach((item, index) => {
-      if (item.value === value) {
+      if (item.props.value === value) {
         valueIndex = index;
         return valueIndex;
       }

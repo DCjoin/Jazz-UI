@@ -29,18 +29,18 @@ export default class RankHistory extends Component {
   }
 
   _getRatio(dIndex){
-    let ratio='--',
-        style={
+    let style={
           fontSize:'12px'
         };
+    let ratio=<FontIcon className="icon-rank-right" style={style}/>;
     if(dIndex===null){
-      ratio=''
+      ratio='-'
     }
     else if(dIndex>0){
-      ratio=<FontIcon className="icon-arrow-up" style={style}>{dIndex}</FontIcon>
+      ratio=<FontIcon className="icon-rank-up" style={style}>{dIndex}</FontIcon>
     }
     else if(dIndex<0){
-      ratio=<FontIcon className="icon-arrow-down" style={style}>{dIndex}</FontIcon>
+      ratio=<FontIcon className="icon-rank-down" style={style}>{-dIndex}</FontIcon>
     }
     return ratio
   }
@@ -48,7 +48,7 @@ export default class RankHistory extends Component {
   _renderTable(){
     var header,content;
     var type=this.state.record.getIn([0,'UnitType']),
-      uom=type===UnitType.MonthRatio?'%':CommonFuns.getUomById(this.state.record.getIn([0,'UomId'])).Code;
+      uom=this.props.uomLabel;
     header=(
       <div className="jazz-kpi-rank-history-header">
             <div>{I18N.Setting.Calendar.Time}</div>
@@ -64,7 +64,7 @@ export default class RankHistory extends Component {
             var date=RankingKPIStore.getDate(Date),
                 rank=Index?`${Index}/${Count}`:'-',
                 ratio=DIndex?this._getRatio(DIndex):'-',
-                value=RankValue?RankValue:'-';
+                value=RankValue?RankValue:I18N.Setting.KPI.Group.Ranking.History.NoValue;
             return(
               <div>
                 <span>{date}</span>
@@ -122,7 +122,8 @@ RankHistory.propTypes={
   rankType:React.PropTypes.number,
   groupKpiId:React.PropTypes.number,
   buildingId:React.PropTypes.number,
-  onClose:React.PropTypes.func
+  onClose:React.PropTypes.func,
+  uomLabel:React.PropTypes.string,
 }
 
 // RankHistory.defaultProps = {

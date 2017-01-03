@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { DataStatus,Unit} from 'constants/actionType/KPI.jsx';
+import { DataStatus,UnitType as Unit} from 'constants/actionType/KPI.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import Checkbox from 'material-ui/Checkbox';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';

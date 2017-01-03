@@ -2,7 +2,8 @@
 'use strict';
 
 import AppDispatcher from '../../dispatcher/AppDispatcher.jsx';
-import { Action,DataStatus,Unit} from 'constants/actionType/KPI.jsx';
+import { Action,DataStatus,UnitType as Unit} from 'constants/actionType/KPI.jsx';
+// import {UnitType as Unit } from 'constants/actionType/KPI.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
@@ -104,7 +105,7 @@ const RankingKPIStore = assign({}, PrototypeStore, {
   },
 
   getDate(date){
-    var j2d=CommonFuns.DataConverter.JsonToDateTime;
+    var j2d=CommonFuns.DataConverter.J2DNoTimezone;
     return moment(j2d(date)).format(I18N.DateTimeFormat.IntervalFormat.Month)
   },
 
