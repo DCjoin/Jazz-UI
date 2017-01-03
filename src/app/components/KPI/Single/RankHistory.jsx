@@ -48,7 +48,7 @@ export default class RankHistory extends Component {
   _renderTable(){
     var header,content;
     var type=this.state.record.getIn([0,'UnitType']),
-      uom=type===UnitType.MonthRatio?'%':CommonFuns.getUomById(this.state.record.getIn([0,'UomId'])).Code;
+      uom=this.props.uomLabel;
     header=(
       <div className="jazz-kpi-rank-history-header">
             <div>{I18N.Setting.Calendar.Time}</div>
@@ -122,7 +122,8 @@ RankHistory.propTypes={
   rankType:React.PropTypes.number,
   groupKpiId:React.PropTypes.number,
   buildingId:React.PropTypes.number,
-  onClose:React.PropTypes.func
+  onClose:React.PropTypes.func,
+  uomLabel:React.PropTypes.string,
 }
 
 // RankHistory.defaultProps = {
