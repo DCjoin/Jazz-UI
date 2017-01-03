@@ -16,6 +16,8 @@ export default class RankHistory extends Component {
   constructor(props) {
     super(props);
     this._onChange = this._onChange.bind(this);
+    this._renderTable = this._renderTable.bind(this);
+
   }
 
   state={
