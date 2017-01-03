@@ -49,7 +49,7 @@ function getUnitLabel({UnitType, UomId}) {
 
 function getValueLabel(value, data) {
 	if( noValue(value) ) {
-		return '';
+		return I18N.Setting.KPI.Group.Ranking.History.NoValue;
 	}
 	return (isScale(data.UnitType) ? value.toFixed(1)*1 : util.getLabelData(value)) + getUnitLabel(data);
 }
