@@ -65,7 +65,7 @@ export default class RankHistory extends Component {
             var {Date,Index,DIndex,Count,RankValue}=record.toJS()
             var date=RankingKPIStore.getDate(Date),
                 rank=Index?`${Index}/${Count}`:'-',
-                ratio=DIndex?this._getRatio(DIndex):'-',
+                ratio=this._getRatio(DIndex),
                 value=RankValue?RankValue:I18N.Setting.KPI.Group.Ranking.History.NoValue;
             return(
               <div>
