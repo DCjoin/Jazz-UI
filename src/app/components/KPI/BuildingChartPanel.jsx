@@ -176,6 +176,7 @@ export default class BuildingChartPanel extends Component {
 					name={selectedRank.RankType === TOP_RANK_TYPE 
 						? selectedRank.RankName
 						: safeImmuObj(tags.find(tag => tag.get('id') === selectedRank.KpiId)).get('name')}
+					uonLabel={getUnitLabel(selectedRank)}
 					rankType={selectedRank.RankType}
 					groupKpiId={selectedRank.GroupKpiId}
 					customerId={this.context.router.params.customerId}
