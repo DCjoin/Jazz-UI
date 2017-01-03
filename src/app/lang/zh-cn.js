@@ -2068,5 +2068,6 @@ I18N.Setting.KPI.Rank.UsageAmount = '用量';
 I18N.Setting.KPI.Rank.ShowHistory = '查看排名历史';
 I18N.Setting.KPI.Rank.UsageAmountRank = '指标使用量排名';
 I18N.Setting.KPI.Rank.RatioMonthSavingRank = '同比节能率排名';
+I18N.Setting.KPI.Rank.LastRank = '最新排名';
 
 module.exports = I18N;
