@@ -13,6 +13,7 @@ import LinkButton from 'controls/LinkButton.jsx';
 import KPIReport from './KPIReport.jsx';
 import RankHistory from './Single/RankHistory.jsx';
 
+import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 import RankingKPIStore from 'stores/KPI/RankingKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 
@@ -100,7 +101,7 @@ export default class BuildingChartPanel extends Component {
 	render() {
 		let {period, tags, isGroup, summaryData, ranks, buildingId, onRefresh, year} = this.props,
 		selectedRank = this.state.selectedRank,
-		isThisYear = year === new Date().getFullYear(),
+		isThisYear = year === SingleKPIStore.getCustomerCurrentYear(),
 		KPIRank = safeArr(ranks).filter( rank => safeObj(rank).RankType === KPI_RANK_TYPE),
 		topRank = find(safeArr(ranks), rank => safeObj(rank).RankType === TOP_RANK_TYPE);
 

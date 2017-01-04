@@ -4,6 +4,7 @@ module.exports = {
 
   Action: keyMirror({
     GET_QUOTAPERIOD:null,
+    CUSTOMER_CURRENT_YEAR:null,
     GET_KPI_DIMENSION_SUCCESS:null,
     GET_KPI_TAGS_SUCCESS:null,
     GET_KPI_INFO_SUCCESS:null,
