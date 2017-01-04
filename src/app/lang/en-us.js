@@ -1083,6 +1083,7 @@ I18N.Message.M02810 = 'The area of the selected tag does not support the weather
  * Carbon
  ******/
 I18N.Message.M03005 = 'The conversion factor is the same as before, and the page will be refreshed.';
+I18N.Message.M03006 = '未配置碳排放转换因子，无法绘图。';
 I18N.Message.M03008 = 'This conversion is not in line with the target,and the conversion factor cannot be saved.';
 
 /******
