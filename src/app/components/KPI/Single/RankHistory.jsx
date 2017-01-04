@@ -62,11 +62,12 @@ export default class RankHistory extends Component {
     content=(
       <div className="jazz-kpi-rank-history-body">
           {this.state.record.map(record=>{
-            var {Date,Index,DIndex,Count,RankValue}=record.toJS()
+            var {Date,Index,DIndex,Count,RankValue}=record.toJS();
+            RankValue=10000000.1;
             var date=RankingKPIStore.getDate(Date),
                 rank=Index?`${Index}/${Count}`:'-',
                 ratio=this._getRatio(DIndex),
-                value=RankValue?RankValue:I18N.Setting.KPI.Group.Ranking.History.NoValue;
+                value=RankValue!==null?CommonFuns.getLabelData(RankValue):I18N.Setting.KPI.Group.Ranking.History.NoValue;
             return(
               <div>
                 <span>{date}</span>
