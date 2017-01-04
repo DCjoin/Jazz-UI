@@ -73,7 +73,7 @@ function getRank(props) {
 		return null;
 	}
 	let {DIndex, Index, Count} = props,
-	flag = '--';
+	flag = '-';
 
 	if(DIndex === 0) {
 		flag = '→';
@@ -158,7 +158,7 @@ export default class RankChart extends Component {
 		return this._getCurrentMonthRank().BuildingRank;
 	}
 	_getCurrentRangeBuildingRank() {
-		return slice(this._getCurrentAllBuildingRank(), this.state.rankIndex, 10);
+		return slice(this._getCurrentAllBuildingRank(), this.state.rankIndex, this.state.rankIndex + 10);
 	}
 	_getRankByIndex(index) {
 		return this._getCurrentAllBuildingRank()[this.state.rankIndex + index];
@@ -269,7 +269,7 @@ export default class RankChart extends Component {
 				});
 			};
 		}
-		if(rankIndex > 10) {
+		if(rankIndex >= 10) {
 			onLastRank = () => {
 				this.setState({
 					rankIndex: rankIndex - 10
