@@ -153,25 +153,22 @@ export default class Actuality extends Component {
 	componentWillMount() {
 		document.title = I18N.MainMenu.KPI;
 
-		if( canView() ) {
-			HierarchyAction.getBuildingListByCustomerId(this.props.router.params.customerId);
-			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
-		}
+		this._preAction(this.props.router.params.customerId);
+
 		HierarchyStore.addBuildingListListener(this._onPreAction);
 		UserStore.addChangeListener(this._onPreAction);
+		SingleKPIStore.addPreListener(this._onPreAction);
 		SingleKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState(assign({}, this._getInitialState()), () => {
-			if( canView() ) {
-				HierarchyAction.getBuildingListByCustomerId(nextProps.router.params.customerId);
-				UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
-			}
+			this._preAction(nextProps.router.params.customerId);
 		});
 	}
 	componentWillUnmount() {
 		HierarchyStore.removeBuildingListListener(this._onPreAction);
 		UserStore.removeChangeListener(this._onPreAction);
+		SingleKPIStore.removePreListener(this._onChange);
 		SingleKPIStore.removeChangeListener(this._onChange);
 	}
 	_getInitialState() {
@@ -208,9 +205,16 @@ export default class Actuality extends Component {
 	_validBuilding(buildingId) {
 		return !!find(HierarchyStore.getBuildingList(), building => building.Id === buildingId);
 	}
+	_preAction(customerId) {
+		if( canView() ) {
+			HierarchyAction.getBuildingListByCustomerId(customerId);
+			SingleKPIAction.customerCurrentYear(customerId);
+			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
+		}
+	}
 	_onPreAction() {
 
-		if( UserStore.getUserCustomers().size > 0 && HierarchyStore.getBuildingList() ) {
+		if( UserStore.getUserCustomers().size > 0 && HierarchyStore.getBuildingList() && SingleKPIStore.getCustomerCurrentYear() ) {
 			let hierarchyId;
 			// 从多项目点入单项目时，url记录参数，优先查询kpiid
 			if(this.state.hierarchyId) {
@@ -284,7 +288,7 @@ export default class Actuality extends Component {
 	}
 	_preCheckThisYear(callRank) {
 		return function(year) {
-			if(year === new Date().getFullYear()) {
+			if(year === SingleKPIStore.getCustomerCurrentYear() ) {
 				callRank(year);
 			} else {
 				SingleKPIAction.notNeedRank();
@@ -343,7 +347,7 @@ export default class Actuality extends Component {
 				isCreate={!this.state.kpiId}
 				onSave={this._reload}
 				onCancel={this._reload}
-				year={this.state.year || new Date().getFullYear()}/>);
+				year={this.state.year || SingleKPIStore.getCustomerCurrentYear()}/>);
 		} else {
 			let buildingProps = {
 		        // ref: 'commodity',

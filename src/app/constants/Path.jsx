@@ -23,6 +23,7 @@ module.exports = {
     createKpiReportSettings:'/kpi/settings/create',
     updateKpiReportSettings:'/kpi/settings/update',
     updatePredictionSetting:'/kpi/PredictionSetting/update',
+    customerCurrentYear:'/kpi/customercurrentyear/{customerId}',
     Group:{
       groupSettingsList: '/kpi/groupsettings/list/{customerId}',
       groupcontinuous:'/kpi/groupcontinuous/{KpiId}/{year}',
