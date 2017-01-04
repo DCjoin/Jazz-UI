@@ -2014,7 +2014,6 @@ let CommonFuns = {
         }
         break;
       }
-
     }
     return value + label;
   },
