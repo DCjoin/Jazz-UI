@@ -2021,21 +2021,14 @@ let CommonFuns = {
 
   getPerByUnitType(unitType) {
     switch(unitType) {
-      case 1:
+      case 2:
         return I18N.Common.Per.Person;
         break;
-      case 2:
       case 3:
-      case 4:
         return I18N.Common.Per.m2;
         break;
-      case 8:
-      case 9:
+      case 7:
         return I18N.Common.Per.Room;
-        break;
-      case 10:
-      case 11:
-        return I18N.Common.Per.Bed;
         break;
       default:
         return '';

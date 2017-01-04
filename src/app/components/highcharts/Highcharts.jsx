@@ -41,7 +41,7 @@ let Highstock = React.createClass({
 
     componentWillReceiveProps (nextProps) {
         this.setState({
-            options: this.props.options//JSON.stringify(nextProps.options)
+            options: nextProps.options//JSON.stringify(nextProps.options)
         });
     },
 
@@ -54,7 +54,6 @@ let Highstock = React.createClass({
     },
 
     _draw () {
-
         let that = this,
             _tempOptions = that.state.options,
             options = assign({}, _tempOptions, {
