@@ -1,16 +1,13 @@
 'use strict';
 
 import React from 'react';
-import { Link, Navigation, State, RouteHandler } from 'react-router';
 import FlatButton from 'material-ui/FlatButton';
 import FontIcon from 'material-ui/FontIcon';
-import TextField from 'material-ui/TextField';
 import classnames from "classnames";
 import { assign, get, set } from "lodash/object";
 import { isObject } from "lodash/lang";
 import SelectCustomer from './SelectCustomer.jsx';
 import lang from '../lang/lang.jsx';
-import ButtonMenu from '../controls/ButtonMenu.jsx';
 import MainMenu from '../controls/MainMenu.jsx';
 import SideNav from '../controls/SideNav.jsx';
 import NewDialog from '../controls/NewDialog.jsx';
@@ -21,20 +18,16 @@ import CustomFlatButton from '../controls/FlatButton.jsx';
 import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import CurrentUserStore from '../stores/CurrentUserStore.jsx';
 import CurrentUserAction from '../actions/CurrentUserAction.jsx';
-import LanguageAction from '../actions/LanguageAction.jsx';
 import Regex from '../constants/Regex.jsx';
 import MailConfirmDialog from '../controls/OperationTemplate/BlankDialog.jsx';
 import MailStore from '../stores/MailStore.jsx';
 import FolderAction from '../actions/FolderAction.jsx';
 import FolderStore from '../stores/FolderStore.jsx';
 import Config from 'config';
-import { getCookie } from '../util/Util.jsx';
 import LoginActionCreator from '../actions/LoginActionCreator.jsx';
-import MainApp from './MainApp.jsx';
 import RoutePath from '../util/RoutePath.jsx';
 import privilegeUtil from '../util/privilegeUtil.jsx';
 
-let MenuItem = require('material-ui/MenuItem');
 var f = lang.f;
 const MAX_LENGTH = 200;
 let lastLink = null;
@@ -329,7 +322,7 @@ var MainAppBar = React.createClass({
     let {params, location, push} = this.context.router;
     let {protocol, host, pathname, hash} = document.location;
     push(
-      location.pathname.replace(/(\w)+(-)?(\w)*/, 
+      location.pathname.replace(/(\w)+(-)?(\w)*/,
         (params.lang === 'en-us') ? 'zh-cn' : 'en-us')
       + location.search);
     document.location.reload();
