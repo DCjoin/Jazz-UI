@@ -163,7 +163,12 @@ export default class Ranking extends Component {
     render(){
       if(this.state.allKpis && this.state.allKpis.size===0){
         return(
-          <div className="noContent flex-center">{I18N.Setting.KPI.Group.Ranking.NoKpi}</div>
+          <div className="jazz-margin-up-main jazz-kpi-group-ranking">
+            <header className="header-bar">{I18N.Setting.KPI.Group.Ranking.Title}</header>
+            <article className="content" style={{display:'flex'}}>
+          <div className="flex-center">{I18N.Setting.KPI.Group.Ranking.NoKpi}</div>
+          </article>
+        </div>
         )
       }
       else if(this.state.config){
