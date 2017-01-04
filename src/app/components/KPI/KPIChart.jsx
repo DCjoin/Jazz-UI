@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {find} from 'lodash/collection';
-import {findLastIndex, fill} from 'lodash/array';
+import {last, findLastIndex, fill} from 'lodash/array';
 
 import util from 'util/Util.jsx';
 
@@ -116,7 +116,10 @@ export default class KPIChart extends Component {
 	_generatorOptions() {
 		let {data, period, LastMonthRatio} = this.props;
 		let currentMonthIndex = findLastIndex(period,  date => date.isBefore(new Date()) );
-		let tooltipIndex =  data.get('actual') && findLastIndex(data.get('actual').toJS(), (val, index) => index < currentMonthIndex && val);
+		if(last(period).month(1).isBefore(new Date())) {
+			currentMonthIndex = 12;
+		}
+
 		let ratioMonth = data.get('ratioMonth');
 
 		let options = util.merge(true, {}, DEFAULT_OPTIONS, {
