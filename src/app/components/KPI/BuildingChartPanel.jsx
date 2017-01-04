@@ -13,6 +13,7 @@ import LinkButton from 'controls/LinkButton.jsx';
 import KPIReport from './KPIReport.jsx';
 import RankHistory from './Single/RankHistory.jsx';
 
+import RankingKPIStore from 'stores/KPI/RankingKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
 
 const KPI_RANK_TYPE = 1,
@@ -122,7 +123,7 @@ export default class BuildingChartPanel extends Component {
 						{RankNumber(topRank)}
 					</div>
 					<div className='top-rank-item'>
-						<div>{isScale(topRank.UnitType) ? I18N.Setting.KPI.Group.Ranking.MonthRatio : I18N.Setting.KPI.Rank.Amount}</div>
+						<div>{RankingKPIStore.getUnitType(topRank.UnitType)}</div>
 						<div className='jazz-building-top-rank-total'>
 							<span className='jazz-building-top-rank-total-number hiddenEllipsis'>{getValueLabel(topRank.RankValue, topRank)}</span>
 							
