@@ -6,6 +6,7 @@ import {isNull, isUndefined} from 'lodash/lang';
 
 import KPIType from 'constants/actionType/KPI.jsx';
 import util from 'util/Util.jsx';
+import CustomForm from 'util/CustomForm.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 
 import LinkButton from 'controls/LinkButton.jsx';
@@ -130,13 +131,25 @@ export default class RankChart extends Component {
 		}
 	}
 	_jumpToSingle(index) {
-		let {BuildingId, GroupKpiId, KpiId} = this._getRankByIndex(index);
-		window.open(
-			window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params)
-			 + '?buildingId='+BuildingId
-			 + '&groupKpiId='+GroupKpiId
-			 + '&kpiId='+KpiId
-		);
+		let {BuildingId, GroupKpiId, KpiId} = this._getRankByIndex(index),
+		action = window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params)
+					 + '?buildingId='+BuildingId
+					 + '&groupKpiId='+GroupKpiId
+					 + '&kpiId='+KpiId;
+		if(action) {
+			let form = new CustomForm({
+				method: 'get',
+				target: '_blank',
+				action: action
+			});
+			form.submit();
+		}
+		// window.open(
+		// 	window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params)
+		// 	 + '?buildingId='+BuildingId
+		// 	 + '&groupKpiId='+GroupKpiId
+		// 	 + '&kpiId='+KpiId
+		// );
 	}
 	_getCurrentMonthRank() {
 		return this.props.MonthRank[this.state.monthIndex];
