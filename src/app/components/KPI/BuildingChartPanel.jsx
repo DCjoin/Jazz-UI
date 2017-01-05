@@ -42,7 +42,10 @@ function isScale(UnitType) {
 	return UnitType === KPIType.UnitType.MonthRatio || UnitType === KPIType.UnitType.MonthScale;
 }
 
-function getUnitLabel({UnitType, UomId}) {
+function getUnitLabel({RankValue, UnitType, UomId}) {
+	if( noValue(RankValue) ) {
+		return '';
+	}
 	if( isScale(UnitType) ) {
 		return '';
 	}

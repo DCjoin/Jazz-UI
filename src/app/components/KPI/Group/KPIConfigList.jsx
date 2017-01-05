@@ -139,19 +139,19 @@ class KPIConfigItem extends Component {
 		this.props.onChangeState(assign({}, data, {refYear: Year}));
 	}
 	render() {
-		let {Year, GroupKpiItems, onChangeState} = this.props;
+		let {Year, GroupKpiItems, onChangeState, add} = this.props;
 		return (
 			<section className='year-item'>
 				<header className='year-item-header'>
 					<span>{util.replacePathParams(I18N.Setting.KPI.Group.HeaderYear, Year)}</span>
-					<LinkButton ref='add_icon'
+					{add && <LinkButton ref='add_icon'
 						className={classnames('fa icon-add btn-icon', {
 							opened: this.state.opened
 						})} onClick={() => {
 						this.setState({
 							opened: true
 						});
-					}}/>
+					}}/>}
 					<Popover
           				open={this.state.opened}
           				anchorEl={this.state.opened && ReactDOM.findDOMNode(this.refs.add_icon)}
@@ -185,6 +185,7 @@ class KPIConfigItem extends Component {
 	}
 }
 KPIConfigItem.defaultProps = {
+	add: PropTypes.boolean,
 	Year: PropTypes.number.isRequired,
 	GroupKpiItems: PropTypes.array.isRequired,
 	onChangeState: PropTypes.func.isRequired,

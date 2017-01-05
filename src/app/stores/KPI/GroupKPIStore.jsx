@@ -105,7 +105,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     for( let i = nextYear; i > nextYear - 2; i--) {
       let currentDataIndex = findIndex(data, setting => setting.Year === i);
       if( currentDataIndex > -1 ) {
-        data[currentDataIndex].add = true;
+        // data[currentDataIndex].add = true;
         convertedData.push(data[currentDataIndex]);
         remove( data, (setting, i) => {i === currentDataIndex} );
       } else {

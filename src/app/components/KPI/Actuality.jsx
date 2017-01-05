@@ -45,8 +45,7 @@ function isFull() {
 	return privilegeUtil.isFull(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
 function isSingleBuilding() {
-	return (HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length === 1)
-		&& isOnlyView();
+	return (HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length === 1);
 }
 
 function getHierarchyNameById(Id) {
@@ -220,41 +219,52 @@ export default class Actuality extends Component {
 			if(this.state.hierarchyId) {
 				if(this._validBuilding(this.state.hierarchyId) && this._getKpiId()) {
 					hierarchyId = this.state.hierarchyId;
-					this.setState({
-						year: null,
-						hierarchyId,
-					});
-					SingleKPIAction.getKPIConfigured(
-						this._getCustomerId(), 
-						null, 
-						hierarchyId,
-						this._getKpiId(),
-						this._getKPIRank(hierarchyId));
-					return;
+					// this.setState({
+					// 	year: null,
+					// 	hierarchyId,
+					// });
+					// SingleKPIAction.getKPIConfigured(
+					// 	this._getCustomerId(), 
+					// 	null, 
+					// 	hierarchyId,
+					// 	this._getKpiId(),
+					// 	this._getKPIRank(hierarchyId));
+					// return;
 				}
 			}
-			if( isOnlyView() ) {
+			if( !hierarchyId ) {
+				// 无全客户 & 单楼 显示单楼图标
 				if( !this._privilegedCustomer() ) {
 					if( isSingleBuilding() ) {
 						hierarchyId = HierarchyStore.getBuildingList()[0].Id;
 					}
-				} else {
+				// 有全客户 & 仅查看 (能源经理) 显示多项目图标
+				} else if( isOnlyView() ) {
 					hierarchyId = this._getCustomerId();
-				}
-				if( hierarchyId ) {
-					this.setState({
-						year: null,
-						hierarchyId,
-					});
-					SingleKPIAction.getKPIConfigured(
-						this._getCustomerId(), 
-						null, 
-						hierarchyId,
-						this._getKpiId(),
-						this._getKPIRank(hierarchyId));
-					return;
-				}
+				}				
 			}
+			// if( isOnlyView() ) {
+			// 	if( !this._privilegedCustomer() ) {
+			// 		if( isSingleBuilding() ) {
+			// 			hierarchyId = HierarchyStore.getBuildingList()[0].Id;
+			// 		}
+			// 	} else {
+			// 		hierarchyId = this._getCustomerId();
+			// 	}
+			if( hierarchyId ) {
+				this.setState({
+					year: null,
+					hierarchyId,
+				});
+				SingleKPIAction.getKPIConfigured(
+					this._getCustomerId(), 
+					null, 
+					hierarchyId,
+					this._getKpiId(),
+					this._getKPIRank(hierarchyId));
+				return;
+			}
+			// }
 			this.setState({
 				loading: false
 			});
@@ -395,7 +405,7 @@ export default class Actuality extends Component {
 						prefixTitle={prefixTitle}
 						buildingProps={buildingProps}
 						goCreate={this._goCreate}/> }
-					{disabledSelectedProject ? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
+					{(disabledSelectedProject && !isSingleBuilding()) ? (<div className='flex-center'><b>{I18N.Kpi.Error.KPIConguredNotAnyBuilding}</b></div>) :
 					(<ActualityContent
 						chartReady={SingleKPIStore.chartReady()}
 						period={SingleKPIStore.getYearQuotaperiod()}
