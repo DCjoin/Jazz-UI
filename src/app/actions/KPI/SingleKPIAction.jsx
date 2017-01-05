@@ -7,6 +7,18 @@ import SingleKPIStore from 'stores/KPI/SingleKPIStore.jsx';
 
 
 const SingleKPIAction = {
+    customerCurrentYear(customerId) {
+      Ajax.get(util.replacePathParams(Path.KPI.customerCurrentYear, customerId),
+      {
+        success: function(resBody) {
+          AppDispatcher.dispatch({
+            type: Action.CUSTOMER_CURRENT_YEAR,
+            data: resBody
+          });
+        },
+        error: function() {}
+      });
+    },
   	getKPIPeriod(customerId) {
 		Ajax.get(util.replacePathParams(Path.KPI.getKPIPeriod, customerId),
 		{

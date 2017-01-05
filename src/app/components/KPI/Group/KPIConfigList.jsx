@@ -23,6 +23,7 @@ import GroupKPIAction from 'actions/KPI/GroupKPIAction.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import GroupKPIStore from 'stores/KPI/GroupKPIStore.jsx';
 import UOMStore from 'stores/UOMStore.jsx';
+import UserStore from 'stores/UserStore.jsx';
 
 function getAnnualQuotaForUnit(data) {
 	if(typeof data.AnnualQuota === 'number') {
@@ -51,6 +52,13 @@ function getConfigSummary(item) {
 		typeof item.AnnualSavingRate === 'number' ? I18N.Setting.KPI.GroupSavingRateType : '',
 		typeof item.AnnualSavingRate === 'number' ? item.AnnualSavingRate.toFixed(1) * 1 + '%' : ''
 	].join(' ');
+}
+
+function getCustomerPrivilageById(customerId) {
+	return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
+}
+function privilegedCustomer(customerId) {
+	return getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
 }
 
 class KPIItem extends Component {
@@ -217,7 +225,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 		GroupKPIStore.removeChangeListener(this._onChange);
 	}
 	_onGetBuildingList() {
-		if(HierarchyStore.getBuildingList() && HierarchyStore.getBuildingList().length > 1) {
+		if(privilegedCustomer(this.props.router.params.customerId)) {
 			return GroupKPIAction.getGroupSettingsList(this.props.router.params.customerId);
 		}
 		this._onChange();
@@ -264,7 +272,7 @@ export default class KPIConfigList extends Component<void, Props, State> {
 						id={refId}
 						name={GroupKPIStore.findKPISettingByKPISettingId(refId).IndicatorName || ''}/>)
 		}
-		if( !HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length <= 1) {
+		if( !privilegedCustomer(this.props.router.params.customerId) ) {
 			return (<div className='jazz-margin-up-main flex-center'>{I18N.Kpi.Error.KPINonMoreBuilding}</div>);
 		}
 		return (

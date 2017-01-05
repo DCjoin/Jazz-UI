@@ -81,6 +81,7 @@ function coverageRawToHighChartData(data) {
 
 let kpiInfo = emptyMap();
 let _KPIPeriod = null,
+  _customerCurrentYear = null,
   _KPIConfigured = null,
   _KPIChart = null,
   _KPIChartSummary = null,
@@ -94,6 +95,7 @@ let _KPIPeriod = null,
 function _init() {
   kpiInfo = emptyMap();
   _KPIPeriod = null;
+  _customerCurrentYear = null;
   _KPIConfigured = null;
   _KPIChart = null;
   _KPIChartSummary = null;
@@ -106,7 +108,8 @@ function _init() {
 }
 
 let KPI_SUCCESS_EVENT = 'kpisuccess',
-  KPI_ERROR_EVENT = 'kpierror';
+  KPI_ERROR_EVENT = 'kpierror',
+  KPI_PRE_EVENT = 'kpipreevent';
 const SingleKPIStore = assign({}, PrototypeStore, {
 
   DatetimeToJson(datetime) {
@@ -162,7 +165,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     if (years.length === 1) {
       return years[0];
     }
-    let thisYear = new Date().getFullYear();
+    let thisYear = this.getCustomerCurrentYear();
     if (years[0] * 1 > thisYear) {
       return years[0];
     }
@@ -233,6 +236,15 @@ const SingleKPIStore = assign({}, PrototypeStore, {
 
   getYearQuotaperiod() {
     return _quotaperiodYear;
+  },
+
+
+  setCustomerCurrentYear(data) {
+    _customerCurrentYear = data;
+  },
+
+  getCustomerCurrentYear() {
+    return _customerCurrentYear;
   },
 
   clearParam() {
@@ -549,6 +561,17 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     this.removeListener(KPI_ERROR_EVENT, callback);
     this.dispose();
   },
+  emitPreChange: function (args) {
+    this.emit(KPI_PRE_EVENT, args);
+  },
+  addPreListener: function (callback) {
+    this.on(KPI_PRE_EVENT, callback);
+  },
+
+  removePreListener: function (callback) {
+    this.removeListener(KPI_PRE_EVENT, callback);
+    this.dispose();
+  },
 
 });
 
@@ -619,6 +642,10 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
       break;
     case Action.NOT_NEED_RANK:
       SingleKPIStore.setKPIRank(null);
+      break;
+    case Action.CUSTOMER_CURRENT_YEAR:
+      SingleKPIStore.setCustomerCurrentYear(action.data);
+      SingleKPIStore.emitPreChange(action.year);
       break;
     case Action.GET_GROUP_KPI_BUILDING_RANK:
     case Action.GET_BUILDING_RANK:
