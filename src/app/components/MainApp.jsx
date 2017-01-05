@@ -137,13 +137,14 @@ let MainApp = React.createClass({
     MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onChange);
     CurrentUserCustomerStore.addChangeListener(this._onChange);
+    CurrentUserStore.addCurrentUserListener(this._onChange);
   },
   componentWillUnmount: function() {
     UOMStore.removeChangeListener(this._onAllUOMSChange);
     AllCommodityStore.removeChangeListener(this._onAllCommoditiesChange);
     CurrentUserStore.removeCurrentrivilegeListener(this._onChange);
-
     CurrentUserCustomerStore.removeChangeListener(this._onChange);
+    CurrentUserStore.removeCurrentUserListener(this._onChange);
   }
 });
 
