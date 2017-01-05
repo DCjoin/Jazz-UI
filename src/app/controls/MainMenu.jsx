@@ -32,7 +32,7 @@ var ListMenu = React.createClass({
       width: this.props.isActive ? '120px' : '110px'
     };
     var menuItems = this.props.menuItems.map((item) => {
-      return <MenuItem primaryText={item.title} key={item.title} name={item.name} style={menuStyle} onTouchTap={() => {
+      return <MenuItem primaryText={item.title} key={item.name} name={item.name} style={menuStyle} onTouchTap={() => {
         push(item.getPath(params));
       }}/>;
       // return <Link key={item.title} to={item.getPath(this.context.currentRoute.params)}>{item.title}</Link>
