@@ -42,8 +42,8 @@ function isScale(UnitType) {
 	return UnitType === KPIType.UnitType.MonthRatio || UnitType === KPIType.UnitType.MonthScale;
 }
 
-function getUnitLabel({RankValue, UnitType, UomId}) {
-	if( noValue(RankValue) ) {
+function getUnitLabel({RankValue, UnitType, UomId}, byValue) {
+	if( byValue && noValue(RankValue) ) {
 		return '';
 	}
 	if( isScale(UnitType) ) {
@@ -139,7 +139,7 @@ export default class BuildingChartPanel extends Component {
 						<div>{RankingKPIStore.getUnitType(topRank.UnitType)}</div>
 						<div className='jazz-building-top-rank-total'>
 							<span className='jazz-building-top-rank-total-number hiddenEllipsis'>{getValue(topRank)}</span>
-							<span>{getUnitLabel(topRank)}</span>
+							<span>{getUnitLabel(topRank, true)}</span>
 						</div>
 					</div>
 				</div>}
