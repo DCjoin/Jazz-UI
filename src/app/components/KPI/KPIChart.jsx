@@ -116,7 +116,7 @@ export default class KPIChart extends Component {
 	_generatorOptions() {
 		let {data, period, LastMonthRatio} = this.props;
 		let currentMonthIndex = findLastIndex(period,  date => date.isBefore(new Date()) );
-		if(last(period).month(1).isBefore(new Date())) {
+		if(last(period).clone().add(1, 'months').isBefore(new Date())) {
 			currentMonthIndex = 12;
 		}
 
