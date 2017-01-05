@@ -44,17 +44,26 @@ function isScale(UnitType) {
 
 function getUnitLabel({UnitType, UomId}) {
 	if( isScale(UnitType) ) {
-		return '%';
+		return '';
 	}
 	return UOMStore.getUomById(UomId) + util.getPerByUnitType(UnitType);
 }
-
-function getValueLabel(value, data) {
-	if( noValue(value) ) {
+function getValue(data) {
+	if( noValue(data.RankValue) ) {
 		return I18N.Setting.KPI.Group.Ranking.History.NoValue;
 	}
-	return (isScale(data.UnitType) ? value.toFixed(1)*1 : util.getLabelData(value)) + getUnitLabel(data);
+	if( isScale(data.UnitType) ) {
+		return data.RankValue.toFixed(1) + '%';
+	}
+	return util.getLabelData(data.RankValue);
 }
+
+// function getValueLabel(value, data) {
+// 	if( noValue(value) ) {
+// 		return I18N.Setting.KPI.Group.Ranking.History.NoValue;
+// 	}
+// 	return (isScale(data.UnitType) ? value.toFixed(1)*1 : util.getLabelData(value)) + getUnitLabel(data);
+// }
 
 function RankNumber(props) {
 	if(!props) {
@@ -126,8 +135,8 @@ export default class BuildingChartPanel extends Component {
 					<div className='top-rank-item'>
 						<div>{RankingKPIStore.getUnitType(topRank.UnitType)}</div>
 						<div className='jazz-building-top-rank-total'>
-							<span className='jazz-building-top-rank-total-number hiddenEllipsis'>{getValueLabel(topRank.RankValue, topRank)}</span>
-							
+							<span className='jazz-building-top-rank-total-number hiddenEllipsis'>{getValue(topRank)}</span>
+							<span>{getUnitLabel(topRank)}</span>
 						</div>
 					</div>
 				</div>}
