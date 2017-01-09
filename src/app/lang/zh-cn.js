@@ -2071,4 +2071,9 @@ I18N.Setting.KPI.Rank.UsageAmountRank = '指标使用量排名';
 I18N.Setting.KPI.Rank.RatioMonthSavingRank = '同比节能率排名';
 I18N.Setting.KPI.Rank.LastRank = '最新排名';
 
+I18N.Setting.KPI.Report = {};
+I18N.Setting.KPI.Report.ConfigTitle= '{0}-报表设置';
+I18N.Setting.KPI.Report.TitleHint= '输入报表名称';
+I18N.Setting.KPI.Report.TemplateManagement= '管理模板';
+
 module.exports = I18N;
