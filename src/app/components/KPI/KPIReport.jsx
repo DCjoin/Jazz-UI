@@ -44,12 +44,15 @@ export default class KPIReport extends Component {
 	}
 	/*预测值*/
 	getPredictSummaryItem() {
-		let {data, summaryData} = this.props;
+		let {data, summaryData, currentYearDone} = this.props;
 		let isIndex = data.get('type') === 1;
 		let overproof = summaryData.PredictSum && summaryData.IndexValue && summaryData.IndexValue < summaryData.PredictSum ;
 		return (
 		<div className={classnames('summary-item', {overproof: overproof})}>
-			<div className='summary-title'>{isIndex ? I18N.Kpi.PredictSum : I18N.Kpi.PredictSaving}</div>
+			<div className='summary-title'>{
+				isIndex ? 
+					(currentYearDone ? I18N.Kpi.ActualSum : I18N.Kpi.PredictSum) :
+					(currentYearDone ? I18N.Kpi.ActualSaving : I18N.Kpi.PredictSaving)}</div>
 			{isIndex ?/*定额预测值*/
 			(<div className='summary-value'>
 				<span>{util.getLabelData(summaryData.PredictSum)}</span>

@@ -2033,6 +2033,34 @@ let CommonFuns = {
         return '';
         break;
     }
+  },
+
+  openTab(path) {
+    let fullPath = window.location.href.split('#')[0] + '#';
+    if( path ) {
+      fullPath += path;
+    }
+    var link = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
+    link.href = fullPath;
+    link.target = '_blank';
+    document.body.appendChild(link);
+
+    var event = null;
+    if(window.ActiveXObject || "ActiveXObject" in window) { 
+        event = document.createEvent("MouseEvent");
+        event.initEvent('click', false, true);
+    } else {
+      event = new MouseEvent('click', {
+        'view': window,
+        'bubbles': false,
+        'cancelable': true
+      });
+
+    }
+
+    link.dispatchEvent(event);
+
+    document.body.removeChild(link);
   }
 };
 
