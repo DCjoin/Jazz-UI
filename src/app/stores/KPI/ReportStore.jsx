@@ -34,6 +34,14 @@ const ReportStore = assign({}, PrototypeStore, {
   });
   return Items
   },
+  deleteTemplateById: function(id) {
+    var index = _templateList.findIndex((item) => {
+      if (item.get('Id') === id) {
+        return true;
+      }
+    });
+    _templateList = _templateList.delete(index);
+  },
   dispose(){
     _templateList=null;
   }
@@ -48,6 +56,10 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.GET_REPORT_TEMPLATE_LIST_ERROR:
       ReportStore.setTemplateList([]);
+      ReportStore.emitChange();
+      break;
+    case Action.DELETE_TEMPLATE_SUCCESS:
+      ReportStore.deleteTemplateById(action.id);
       ReportStore.emitChange();
       break;
     default:

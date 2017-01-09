@@ -28,6 +28,22 @@ const ReportAction = {
       }
     });
   },
+  deleteTemplateById(id) {
+    Ajax.post('/DataReport/DeleteTemplateById', {
+      params: {
+        id: id
+      },
+      success: function() {
+        AppDispatcher.dispatch({
+          type: Action.DELETE_TEMPLATE_SUCCESS,
+          id: id
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
 }
 
 export default ReportAction;
