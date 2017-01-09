@@ -210,6 +210,11 @@ export default class RankChart extends Component {
 			    categories: _getCategories(),
 		    },
 		    yAxis: {
+		    	labels: {
+			    	formatter: function() {
+			    		return util.getLabelData(this.value)
+			    	},
+		    	},
 		    	title:{ 
 		    		text: getUnitLabel(this.props),
 		    	},
