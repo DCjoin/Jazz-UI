@@ -131,19 +131,28 @@ export default class RankChart extends Component {
 		}
 	}
 	_jumpToSingle(index) {
-		let {BuildingId, GroupKpiId, KpiId} = this._getRankByIndex(index),
-		action = window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params)
-					 + '?buildingId='+BuildingId
-					 + '&groupKpiId='+GroupKpiId
-					 + '&kpiId='+KpiId;
-		if(action) {
-			let form = new CustomForm({
-				method: 'get',
-				target: '_blank',
-				action: action
-			});
-			form.submit();
-		}
+		let {BuildingId, GroupKpiId, KpiId} = this._getRankByIndex(index);
+
+		util.openTab(RoutePath.KPIActuality(this.context.router.params)
+						+ '?buildingId='+BuildingId
+						+ '&groupKpiId='+GroupKpiId
+						+ '&kpiId='+KpiId);
+
+		// action = window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params);
+		// 			 // + '?buildingId='+BuildingId
+		// 			 // + '&groupKpiId='+GroupKpiId
+		// 			 // + '&kpiId='+KpiId;
+		// if(action) {
+		// 	let form = new CustomForm({
+		// 		method: 'get',
+		// 		target: '_blank',
+		// 		action: action
+		// 	});
+		// 	// form.setParam({buildingId: BuildingId});
+		// 	// form.setParam({groupKpiId: GroupKpiId});
+		// 	// form.setParam({kpiId: KpiId});
+		// 	form.submit();
+		// }
 		// window.open(
 		// 	window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params)
 		// 	 + '?buildingId='+BuildingId
