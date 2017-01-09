@@ -2076,5 +2076,8 @@ I18N.Setting.KPI.Report.ConfigTitle= '{0}-报表设置';
 I18N.Setting.KPI.Report.TitleHint= '输入报表名称';
 I18N.Setting.KPI.Report.TemplateManagement= '管理模板';
 I18N.Setting.KPI.Report.TemplateComment= '注：删除已引用的模板需先删除引用该模板的报表';
-
+I18N.Setting.KPI.Report.Data= '表格数据';
+I18N.Setting.KPI.Report.DataComment= '注：至少配置一组表格数据';
+I18N.Setting.KPI.Report.CalcData= '计算数据';
+I18N.Setting.KPI.Report.Hierarchy= '所属层级';
 module.exports = I18N;
