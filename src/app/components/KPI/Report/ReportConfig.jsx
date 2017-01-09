@@ -50,7 +50,7 @@ export default class ReportConfig extends Component {
 
   _onTemplateOpen(){
     var params = this.context.currentRoute.params;
-    var path = RoutePath.report.template(params);
+    var path = RoutePath.KPITemplate(params);
 		var action = window.location.href.split('#')[0] + '#' + path;
 		if(action) {
 			let form = new CustomForm({
@@ -262,7 +262,8 @@ export default class ReportConfig extends Component {
 
       var uploadButton = (<div><label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
               <FlatButton label={I18N.EM.Report.UploadTemplate} secondary={true} style={{
-                background: 'transparent'
+                background: 'transparent',
+								border:'1px solid #abafae'
               }} onClick={()=>{
                 this.refs.fileInput.click()
               }}/>
@@ -275,7 +276,7 @@ export default class ReportConfig extends Component {
             <div>
               <ViewableTextField {...titleProps}/>
             </div>
-          <div>
+          <div style={{fontSize:'14px'}}>
             <span>{I18N.EM.Report.Template}</span>
             <span className="templateMsg" onClick={this._onTemplateOpen}>{I18N.Setting.KPI.Report.TemplateManagement}</span>
           </div>

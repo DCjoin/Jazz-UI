@@ -24,6 +24,7 @@ import KPI from './components/KPI/Actuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
 import KPIRanking from './components/KPI/Group/Ranking.jsx';
+import KPITemplate from './components/KPI/Report/Template.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
@@ -270,6 +271,10 @@ ReactDom.render(<Router history={hashHistory} routes={{
                  path: 'rankconfig',
                  component: KPIRanking
              }]
+          },
+          {
+            path: 'template',
+            component: KPITemplate
           }]
       }, {
         path: 'map',

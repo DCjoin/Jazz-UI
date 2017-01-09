@@ -39,6 +39,9 @@ module.exports = {
     GET_GROUP_RANKING:null,
     SET_GROUP_RANKING:null,
     GET_RANK_RECORD:null,
+    GET_REPORT_TEMPLATE_LIST_SUCCESS:null,
+    GET_REPORT_TEMPLATE_LIST_ERROR:null,
+    DELETE_TEMPLATE_SUCCESS:null
   }),
 
   Type:{
