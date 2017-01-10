@@ -226,8 +226,9 @@
     display: flex;
     align-items: center;
     position: absolute;
-    width: 100%;
+    width: calc(~'100% - 20px');
     background-color: #fff;
+    border-bottom: 2px solid #9A9A9A;
 
     &>div {
       padding: 5px;
@@ -239,6 +240,15 @@
     background-color: #000;
     color: #fff;
     border-radius: 4px;
+  }
+
+  &-table-wrapper {
+    margin-right: 20px;
+    border: 2px solid #9A9A9A;
+
+    &>iframe {
+      border: 0;
+    }
   }
 }
 .jazz-kpi-actuality {
