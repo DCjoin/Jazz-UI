@@ -24,11 +24,14 @@ import Actuality from './components/KPI/Actuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
 import KPIRanking from './components/KPI/Group/Ranking.jsx';
+import KPITemplate from './components/KPI/Report/Template.jsx';
 import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
 import Mail from './components/mail/Mail.jsx';
-import Report from './components/report/Report.jsx';
+// import Report from './components/report/Report.jsx';
+//for Test
+import Report from './components/KPI/Report/ReportConfig.jsx';
 import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import RoutePath from './util/RoutePath.jsx';
@@ -67,6 +70,8 @@ import HierarchyLog from './components/hierarchySetting/importLog/HierarchyLog.j
 // var theme = new ThemeManager();
 import './less/main.less';
 let {Route, DefaultRoute, Redirect, RouteHandler, Link, Navigation, State} = Router;
+
+
 
 // window._tempUserInfo = getCookie('UserInfo');
 // if(window._tempUserInfo){
@@ -266,6 +271,10 @@ ReactDom.render(<Router history={hashHistory} routes={{
                  path: 'rankconfig',
                  component: KPIRanking
              }]
+          },
+          {
+            path: 'template',
+            component: KPITemplate
           }]
       }, {
         path: 'map',

@@ -14,6 +14,7 @@ export default {
 	KPIGroupConfig: p => `/${p.lang}/${p.customerId}/kpi/config`,
 	KPIConfig: p => `/${p.lang}/${p.customerId}/kpi/config/kpiconfig`,
 	KPIRankConfig: p => `/${p.lang}/${p.customerId}/kpi/config/rankconfig`,
+	KPITemplate:p => `/${p.lang}/${p.customerId}/kpi/template`,
 	setting: p => `/${p.lang}/${p.customerId}/setting`,
 	alarm: p => `/${p.lang}/${p.customerId}/alarm`,
 	map: p => `/${p.lang}/${p.customerId}/map`,

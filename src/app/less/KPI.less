@@ -690,3 +690,52 @@
     background: #fff;
   }
 }
+.kpi-report{
+	&-commnet{
+		font-size: 14px;
+		color:@schneiderGray;
+	}
+	&-info{
+		>div{
+			margin-bottom: 20px;
+		}
+		.templateMsg{
+			margin-left: 10px;
+			color:@schneiderGray;
+			&:hover{
+				color:@schneiderBlue;
+				cursor: pointer;
+			}
+		}
+	}
+	&-add{
+		padding: 15px 0px;
+		display: flex;
+		flex-direction: row;
+		margin: 0 auto;
+		border-top: 1px solid #ececec;
+		align-items: center;
+		>div{
+			padding-top: 5px;
+		}
+		&-text{
+			font-size: 14px;
+		}
+		&-button{
+			margin-left: 15px;
+			> button{
+			 border: none !important;
+			 background-color: transparent!important;
+			 &:hover{
+				 color:@schneiderBlue!important;
+				 background-color: '#e1fcff'!important;
+			 }
+			}
+		}
+	}
+	&-data{
+		display: flex;
+		flex-direction: column;
+		margin-left: -20px
+	}
+}
