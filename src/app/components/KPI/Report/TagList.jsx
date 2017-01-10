@@ -57,7 +57,8 @@ let TagList = React.createClass({
           onTagItemUnselected: me._onTagItemUnselected,
           onTagItemSelected: me._onTagItemSelected,
           leftPanel: me.props.leftPanel,
-          index: i
+          index: i,
+          tag:item
         };
         return (
           <TagItem {...props}></TagItem>

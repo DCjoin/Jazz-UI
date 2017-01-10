@@ -59,7 +59,7 @@ let ReportAction = {
     });
   },
   saveCustomerReport(data) {
-    Ajax.post('/DataReport/SaveCustomerReport', {
+    Ajax.post('/DataReport/SaveReport', {
       params: {
         dto: data
       },

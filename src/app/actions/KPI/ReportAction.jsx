@@ -96,7 +96,27 @@ const ReportAction = {
         console.log(err, res);
       }
     });
-  }
+  },
+  saveCustomerReport(data) {
+    Ajax.post('/DataReport/SaveReport', {
+      params: {
+        dto: data
+      },
+      success: function(curReport) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_REPORT_SUCCESS,
+          curReport: curReport
+        });
+      },
+      error: function(err, res) {
+        AppDispatcher.dispatch({
+          type: Action.SAVE_REPORT_ERROR,
+          errorText: res.text,
+          errorReport: data
+        });
+      }
+    });
+  },
 }
 
 export default ReportAction;

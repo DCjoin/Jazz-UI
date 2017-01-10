@@ -2,6 +2,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
+import moment from 'moment';
 import CommonFuns from 'util/Util.jsx';
 import Regex from 'constants/Regex.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
@@ -15,6 +16,17 @@ import Immutable from 'immutable';
 import LinkButton from 'controls/LinkButton.jsx';
 
 var dateTypeChanged = false;
+var d2j = CommonFuns.DataConverter.DatetimeToJson;
+
+function formatDate(time,settingYear){
+  var currentYear=(new Date()).getFullYear();
+  var date=time.add(currentYear-settingYear, 'y');
+  if(date.month()!==time.month()){
+    date=date.add(-1,'d');
+  }
+  return date._d
+}
+
 let ReportDataItem = React.createClass({
   getInitialState: function() {
     var stepItems = [{
@@ -129,10 +141,18 @@ let ReportDataItem = React.createClass({
     dateTypeChanged = true;
     var dateSelector = this.refs.dateTimeSelector;
 
-    if (value !== 11) {
+    if (value === 7 || value === 8) {
+      //ThisYear or LastYear
       var dateType = CommonFuns.GetStrDateType(value);
       var timeregion = CommonFuns.GetDateRegion(dateType);
       dateSelector.setDateField(timeregion.start, timeregion.end);
+    }
+    if(value>20 && value<33){
+      //January ,February ...December
+      var month=value-21,
+          start=moment().month(month).date(1)._d,
+          end=moment().month(month).date(CommonFuns.getDaysOfMonth(month))._d;
+          dateSelector.setDateField(start, end);
     }
     this._handleStepDisabled(value);
   },
@@ -150,6 +170,18 @@ let ReportDataItem = React.createClass({
         break;
       case 5: //ThisMonth
       case 6: //LastMonth
+      case 21://January
+      case 22:
+      case 23:
+      case 24:
+      case 25:
+      case 26:
+      case 27:
+      case 28:
+      case 29:
+      case 30:
+      case 31:
+      case 32://December
         step = [0, 1, 2, 5, 3]; //can raw & hour & day & week & month
         break;
       case 7: //ThisYear
@@ -166,7 +198,7 @@ let ReportDataItem = React.createClass({
       var newDateType = CommonFuns.GetStrDateType(dateType);
       timeregion = CommonFuns.GetDateRegion(newDateType);
       list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
-    } else if (dateType === 11) {
+    } else if (dateType === 33) {
       list = CommonFuns.getInterval(startTime, endTime).stepList;
       // if (!init) {
       //   var dateSelector = this.refs.dateTimeSelector;
@@ -197,20 +229,26 @@ let ReportDataItem = React.createClass({
     var timeRange, startTime, endTime,
       customizedStart = null,
       customizedEnd = null;
-    var d2j = CommonFuns.DataConverter.DatetimeToJson;
 
-    if (dateType === 11) {
+    if (dateType === 33) {
       timeRange = this.refs.dateTimeSelector.getDateTime();
       customizedStart = timeRange.start;
       customizedEnd = timeRange.end;
       startTime = d2j(timeRange.start);
       endTime = d2j(timeRange.end);
-    } else {
+    } else if(dateType===7 || dateType===8){
       var newDateType = CommonFuns.GetStrDateType(dateType);
       timeRange = CommonFuns.GetDateRegion(newDateType);
       startTime = d2j(timeRange.start);
       endTime = d2j(timeRange.end);
+    }else {
+      //January ,February ...December
+      var month=dateType-21,
+          year=moment().year();
+          startTime=d2j(moment([year,month,1,0,0,0,0])._d);
+          endTime=d2j(moment([year,month,CommonFuns.getDaysOfMonth(month),24,0,0,0])._d);
     }
+
     var stepItems = this._getDisabledStepItems(dateType, this.state.stepItems, customizedStart, customizedEnd);
     for (var i = 0; i < stepItems.size; i++) {
       if (stepItems.getIn([i, 'payload']) === this.props.step && !stepItems.getIn([i, 'disabled'])) {
@@ -255,20 +293,16 @@ let ReportDataItem = React.createClass({
     this._updateReportData('StartCell', value);
   },
   _onDateSelectorChanged() {
-    this._handleStepDisabled(11);
+    this._handleStepDisabled(33);
   },
   _onTagDataChange() {
     var tagList = this.refs.tagListWindow._getSelectedTagList();
     this._handleDialogDismiss();
     this._updateReportData('TagsList', tagList);
   },
-  _onTimeOrderChange(name, e, selected) {
-    var value = this.displayToData(selected);
-    this._updateReportData(name, value);
-  },
   _displayTimeRange() {
     var str = '';
-    if (this.props.dateType !== 11) {
+    if (this.props.dateType !== 33) {
       var dateType = CommonFuns.GetStrDateType(this.props.dateType);
       var timeregion = CommonFuns.GetDateRegion(dateType);
       str = this.getDisplayDate(timeregion.start, false) + '-' + this.getDisplayDate(timeregion.end, true);
@@ -341,10 +375,21 @@ let ReportDataItem = React.createClass({
   componentDidUpdate: function() {
     if (!this.props.disabled) {
       var dateSelector = this.refs.dateTimeSelector;
-      if (this.props.dateType !== 11) {
-        var dateType = CommonFuns.GetStrDateType(this.props.dateType);
-        var timeregion = CommonFuns.GetDateRegion(dateType);
-        dateSelector.setDateField(timeregion.start, timeregion.end);
+      if (this.props.dateType !== 33) {
+        var startTime,endTime;
+        if(this.props.dateType===7 || this.props.dateType===8){
+          var newDateType = CommonFuns.GetStrDateType(this.props.dateType),
+          timeRange = CommonFuns.GetDateRegion(newDateType);
+          startTime = timeRange.start;
+          endTime = timeRange.end;
+        }else {
+          //January ,February ...December
+          var month=this.props.dateType-21,
+              year=moment().year();
+              startTime=moment([year,month,1,0,0,0,0])._d,
+              endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),0,0,0,0])._d;
+        }
+        dateSelector.setDateField(startTime, endTime);
       } else {
         if (dateTypeChanged) {
           dateTypeChanged = false;
@@ -354,18 +399,37 @@ let ReportDataItem = React.createClass({
           dateSelector.setDateField(startTime, endTime);
         }
       }
+
     }
   },
   componentDidMount: function() {
     if (!this.props.disabled) {
       var dateSelector = this.refs.dateTimeSelector;
-      if (this.props.dateType !== 11) {
-        var dateType = CommonFuns.GetStrDateType(this.props.dateType);
-        var timeregion = CommonFuns.GetDateRegion(dateType);
-        dateSelector.setDateField(timeregion.start, timeregion.end);
+      if (this.props.dateType !== 33) {
+        var startTime,endTime;
+        if(this.props.dateType===7 || this.props.dateType===8){
+          var newDateType = CommonFuns.GetStrDateType(this.props.dateType),
+          timeRange = CommonFuns.GetDateRegion(newDateType);
+          startTime = timeRange.start;
+          endTime = timeRange.end;
+        }else {
+          //January ,February ...December
+          var month=this.props.dateType-21,
+              year=moment().year();
+          startTime=moment([year,month,1,0,0,0,0])._d,
+          endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),0,0,0,0])._d;
+        }
+        dateSelector.setDateField(startTime, endTime);
       } else {
-        var startTime = this.getRealTime(this.props.startTime);
-        var endTime = this.getRealTime(this.props.endTime);
+        var startTime = moment(this.getRealTime(this.props.startTime));
+        var endTime = moment(this.getRealTime(this.props.endTime));
+        // var currentYear=(new Date()).getFullYear();
+        // var settingYear=this.props.settingYear;
+        // startTime=startTime.add(currentYear-settingYear, 'y');
+        // endTime=endTime.add(currentYear-settingYear, 'y');
+
+        startTime=formatDate(startTime,this.props.settingYear);
+        endTime=formatDate(endTime,this.props.settingYear)
         dateSelector.setDateField(startTime, endTime);
       }
     }
@@ -379,42 +443,53 @@ let ReportDataItem = React.createClass({
       payload: 1,
       text: I18N.EM.Report.Original
     }];
-    var dateTypeItems = [{
-      payload: 11,
-      text: I18N.Common.DateRange.Customerize
-    }, {
-      payload: 0,
-      text: I18N.Common.DateRange.Last7Day
-    }, {
-      payload: 9,
-      text: I18N.Common.DateRange.Last30Day
-    }, {
-      payload: 10,
-      text: I18N.Common.DateRange.Last12Month
-    }, {
-      payload: 1,
-      text: I18N.Common.DateRange.Today
-    }, {
-      payload: 2,
-      text: I18N.Common.DateRange.Yesterday
-    }, {
-      payload: 3,
-      text: I18N.Common.DateRange.ThisWeek
-    }, {
-      payload: 4,
-      text: I18N.Common.DateRange.LastWeek
-    }, {
-      payload: 5,
-      text: I18N.Common.DateRange.ThisMonth
-    }, {
-      payload: 6,
-      text: I18N.Common.DateRange.LastMonth
-    }, {
+    var dateTypeItems = [
+      {
       payload: 7,
       text: I18N.Common.DateRange.ThisYear
     }, {
       payload: 8,
       text: I18N.Common.DateRange.LastYear
+    },{
+      payload: 21,
+      text: I18N.Common.Glossary.MonthName.January
+    }, {
+      payload: 22,
+      text: I18N.Common.Glossary.MonthName.February
+    }, {
+      payload: 23,
+      text: I18N.Common.Glossary.MonthName.March
+    }, {
+      payload: 24,
+      text: I18N.Common.Glossary.MonthName.April
+    }, {
+      payload: 25,
+      text: I18N.Common.Glossary.MonthName.May
+    }, {
+      payload: 26,
+      text: I18N.Common.Glossary.MonthName.June
+    }, {
+      payload: 27,
+      text: I18N.Common.Glossary.MonthName.July
+    }, {
+      payload: 28,
+      text:I18N.Common.Glossary.MonthName.August
+    }, {
+      payload: 29,
+      text: I18N.Common.Glossary.MonthName.September
+    }, {
+      payload: 30,
+      text: I18N.Common.Glossary.MonthName.October
+    }, {
+      payload: 31,
+      text: I18N.Common.Glossary.MonthName.November
+    }, {
+      payload: 32,
+      text: I18N.Common.Glossary.MonthName.December
+    },
+    {
+      payload: 33,
+      text: I18N.Common.DateRange.Customerize
     }];
     var numberRuleItems = [{
       payload: 0,
@@ -435,7 +510,7 @@ let ReportDataItem = React.createClass({
         <LinkButton iconName={ "icon-delete" } onClick={me._deleteReportData} style={{marginRight:'15px'}}/>
         </div>;
       dataSourceButton =<FlatButton secondary={true} style={{border:'1px solid #abafae',width:'150px'}} label={this.props.tagList.size===0 ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={me._showTagsDialog}/>;
-      dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged} showTime={true}/>;
+      dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged} showTime={false}/>;
     } else {
       dataSourceButton = <div className='jazz-report-data-datasource-button'><FlatButton secondary={true} onClick={me._showTagsDialog} label={I18N.EM.Report.ViewTag}/></div>;
       dateTimeSelector = <div style={{
@@ -508,14 +583,6 @@ let ReportDataItem = React.createClass({
       regex: Regex.ExcelCell,
       errorMessage: I18N.Common.Label.ExcelColumnError
     };
-    var orderAscRadioButton = null,
-      orderDescRadioButton = null;
-    if ((me.props.disabled && me.props.timeOrder === 0) || !me.props.disabled) {
-      orderAscRadioButton = <RadioButton value='orderAsc' disabled={me.props.disabled} label={I18N.EM.Report.OrderAsc} checked={me.props.timeOrder === 0} onCheck={me._onTimeOrderChange.bind(null, 'ExportTimeOrder')} />;
-    }
-    if ((me.props.disabled && me.props.timeOrder === 1) || !me.props.disabled) {
-      orderDescRadioButton = <RadioButton value='orderDesc' disabled={me.props.disabled} label={I18N.EM.Report.OrderDesc}  checked={me.props.timeOrder === 1} onCheck={me._onTimeOrderChange.bind(null, 'ExportTimeOrder')} />;
-    }
     var directTime = null,
       directTag = null;
     if ((me.props.disabled && me.props.exportLayoutDirection === 0) || !me.props.disabled) {
@@ -559,7 +626,11 @@ let ReportDataItem = React.createClass({
           {dataSourceButton}
         </div>
         <div className='jazz-report-data-container'>
-          <span>{I18N.EM.Report.TimeRange}</span>
+          <div>
+            <span>{I18N.EM.Report.TimeRange}</span>
+            <span className="kpi-report-commnet" style={{marginLeft:'10px'}}>{I18N.format(I18N.Setting.KPI.Report.TimeRangeComment,(new Date()).getFullYear())}</span>
+          </div>
+
           <div className='jazz-report-data-timerange'>
             <ViewableDropDownMenu  {...dateTypeProps}></ViewableDropDownMenu>
             {dateTimeSelector}
@@ -567,13 +638,6 @@ let ReportDataItem = React.createClass({
         </div>
         <div className='jazz-report-data-container'>
           {diplayCom}
-        </div>
-        <div className='jazz-report-data-container'>
-          <span>{I18N.EM.Report.Order}</span>
-          <div className='jazz-report-data-radiobutton'>
-            {orderAscRadioButton}
-            {orderDescRadioButton}
-          </div>
         </div>
         <div className='jazz-report-data-container'>
           <ViewableDropDownMenu  {...targetSheetProps}></ViewableDropDownMenu>
