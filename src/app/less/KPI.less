@@ -188,10 +188,60 @@
   }
 }
 
-.jazz-kpi-actuality {
+.jazz-actuality {
   position: relative;
   margin-top: -16px;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  &-content {
+    margin: 0 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  &-item {
+    // margin: 20px;
+
+    &-title {
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    & .fa {
+      font-size: 16px;
+    }
+  }
+}
+
+.jazz-report-chart {
+  
+  margin-top: 20px;
+  position: relative;
+
+  &-header {
+    height: 90px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+
+    &>div {
+      padding: 5px;
+      margin-right: 20px;
+    }
+  }
+
+  &-table-header {
+    background-color: #000;
+    color: #fff;
+    border-radius: 4px;
+  }
+}
+.jazz-kpi-actuality {
   display: flex;
   flex-direction: column;
   flex: 1;
