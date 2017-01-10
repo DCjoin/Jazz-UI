@@ -162,8 +162,8 @@ let DimButton = React.createClass({
               <Popover
                 open={this.state.open}
                 anchorEl={this.state.anchorEl}
-                anchorOrigin={{horizontal: 'center', vertical: 'bottom'}}
-                targetOrigin={{horizontal: 'center', vertical: 'top'}}
+                anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
+                targetOrigin={{horizontal: 'middle', vertical: 'top'}}
                 onRequestClose={this.props.handleClickAway}
               >
                 {dropdownPaper}

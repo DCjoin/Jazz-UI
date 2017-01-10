@@ -13,6 +13,8 @@ import FlatButton from 'controls/FlatButton.jsx';
 import CommonFuns from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import CustomForm from 'util/CustomForm.jsx';
+import LinkButton from 'controls/LinkButton.jsx';
+import ReportDataItem from './ReportDataItem.jsx';
 
 var customerId=null;
 export default class ReportConfig extends Component {
@@ -30,7 +32,9 @@ export default class ReportConfig extends Component {
 		this._onExistTemplateChange = this._onExistTemplateChange.bind(this);
 		this._downloadTemplate = this._downloadTemplate.bind(this);
 		this._handleFileSelect = this._handleFileSelect.bind(this);
-
+		this._addReportData = this._addReportData.bind(this);
+		this._deleteReportData = this._deleteReportData.bind(this);
+		this._updateReportData = this._updateReportData.bind(this);
 	}
 
 	state={
@@ -226,6 +230,75 @@ export default class ReportConfig extends Component {
     })
   }
 
+	_addReportData(){
+	var reportItem = this.state.reportItem;
+	var reportData = reportItem.get('data');
+	var imSheetNames = this.state.sheetNames;
+	var sheetNames = imSheetNames !== null ? imSheetNames.toJS() : null;
+	var dateType = CommonFuns.GetStrDateType(0);
+	var timeRange = CommonFuns.GetDateRegion(dateType);
+	var d2j = CommonFuns.DataConverter.DatetimeToJson;
+	var startTime = d2j(timeRange.start);
+	var endTime = d2j(timeRange.end);
+	var newReportData = {
+		DataStartTime: startTime,
+		DataEndTime: endTime,
+		DateType: 0,
+		ExportLayoutDirection: 0,
+		ExportStep: 0,
+		ExportTimeOrder: 0,
+		IsExportTagName: false,
+		IsExportTimestamp: false,
+		NumberRule: 0,
+		ReportType: 0,
+		StartCell: '',
+		TagsList: [],
+		TargetSheet: sheetNames !== null ? sheetNames[0] : null
+	};
+	reportData = reportData.unshift(Immutable.fromJS(newReportData));
+	reportData = reportData.map((item, i) => {
+		return item.set('Index', i);
+	});
+	reportItem = reportItem.set('data', reportData);
+	this.setState({
+		reportItem: reportItem,
+		saveDisabled: true
+	});
+	}
+
+	_updateReportData(name, value, index, stepValue, startTime, endTime) {
+	var me = this;
+	var reportItem = this.state.reportItem;
+	var reportData = reportItem.get('data');
+	reportData = reportData.setIn([index, name], value);
+	if (name === 'DateType') {
+		reportData = reportData.setIn([index, 'ExportStep'], stepValue);
+		reportData = reportData.setIn([index, 'DataStartTime'], startTime);
+		reportData = reportData.setIn([index, 'DataEndTime'], endTime);
+	}
+	reportItem = reportItem.set('data', reportData);
+	this.setState({
+		reportItem: reportItem
+	}, () => {
+		this.setState({
+			saveDisabled: !me._isValid()
+		});
+	});
+	}
+
+	_deleteReportData(index) {
+	var reportItem = this.state.reportItem;
+	var reportData = reportItem.get('data');
+	reportData = reportData.delete(index);
+	reportData = reportData.map((item, i) => {
+		return item.set('Index', i);
+	});
+	reportItem = reportItem.set('data', reportData);
+	this.setState({
+		reportItem: reportItem
+	});
+	}
+
   _renderReportInfo(){
     var {reportItem,templateList}=this.state;
     var titleProps = {
@@ -294,6 +367,59 @@ export default class ReportConfig extends Component {
       )
   }
 
+	_renderReportData(){
+		var addReportDataButton = (<div className="kpi-report-add-button">
+				<LinkButton iconName={ "icon-hierarchy-fold" } onClick={this._addReportData}/>
+															</div>);
+		var dataLength = this.state.reportItem.get('data').size;
+		var reportData = this.state.reportItem.get('data').map((item, index)=>{
+		let props = {
+		key: dataLength - index,
+		ref: 'reportData' + (index + 1),
+		disabled: false,
+		startTime: item.get('DataStartTime'),
+		endTime: item.get('DataEndTime'),
+		reportType: item.get('ReportType'),
+		dateType: item.get('DateType'),
+		step: item.get('ExportStep'),
+		numberRule: item.get('NumberRule'),
+		timeOrder: item.get('ExportTimeOrder'),
+		targetSheet: item.get('TargetSheet'),
+		isExportTagName: item.get('IsExportTagName'),
+		isExportTimestamp: item.get('IsExportTimestamp'),
+		startCell: item.get('StartCell'),
+		exportLayoutDirection: item.get('ExportLayoutDirection'),
+		sheetNames: this.state.sheetNames,
+		updateReportData: this._updateReportData,
+		deleteReportData: this._deleteReportData,
+		showStep: item.get('ReportType') === 1 ? false : true,
+		index: index,
+		dataLength: dataLength,
+		id: item.get('Id'),
+		tagList: item.get('TagsList'),
+		addReport: this.state.reportItem.get('id') === 0 ? true : false
+	};
+	return (
+		<ReportDataItem {...props}></ReportDataItem>
+		);
+});
+		return(
+			<div>
+				<div className="kpi-report-add">
+					<div className="kpi-report-add-text">{I18N.Setting.KPI.Report.Data}</div>
+					{addReportDataButton}
+				</div>
+				<div className="kpi-report-commnet">
+					{I18N.Setting.KPI.Report.DataComment}
+				</div>
+				<div className="kpi-report-data">
+					{reportData}
+				</div>
+			</div>
+
+		)
+	}
+
   _renderUploadDialog() {
     if (!this.state.showUploadDialog) {
     return null;
@@ -335,12 +461,13 @@ export default class ReportConfig extends Component {
 					},
 					className:'jazz-kpi-config-wrap',
 					style:{
-						paddingLeft:'30px'
+						paddingLeft:'50px'
 					}
 				};
 				return (
 					<TitleComponent {...titleProps}>
             {this._renderReportInfo()}
+						{this._renderReportData()}
             {this._renderUploadDialog()}
 					</TitleComponent>
 				);
