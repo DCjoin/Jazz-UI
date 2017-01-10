@@ -434,7 +434,7 @@ let ReportDataItem = React.createClass({
       deleteButton = <div className='jazz-report-data-delete-button'>
         <LinkButton iconName={ "icon-delete" } onClick={me._deleteReportData} style={{marginRight:'15px'}}/>
         </div>;
-      dataSourceButton = <div className='jazz-report-data-datasource-button'><FlatButton secondary={true} style={{border:'1px solid #abafae'}} label={this.props.tagList.size===0 ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={me._showTagsDialog}/></div>;
+      dataSourceButton =<FlatButton secondary={true} style={{border:'1px solid #abafae',width:'150px'}} label={this.props.tagList.size===0 ? I18N.EM.Report.SelectTag : I18N.EM.Report.EditTag} onClick={me._showTagsDialog}/>;
       dateTimeSelector = <DateTimeSelector ref='dateTimeSelector' _onDateSelectorChanged={me._onDateSelectorChanged} showTime={true}/>;
     } else {
       dataSourceButton = <div className='jazz-report-data-datasource-button'><FlatButton secondary={true} onClick={me._showTagsDialog} label={I18N.EM.Report.ViewTag}/></div>;
