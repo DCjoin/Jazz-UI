@@ -102,6 +102,7 @@ const ReportAction = {
       params: {
         dto: data
       },
+      commonErrorHandling:false,
       success: function(curReport) {
         AppDispatcher.dispatch({
           type: Action.SAVE_REPORT_SUCCESS,
