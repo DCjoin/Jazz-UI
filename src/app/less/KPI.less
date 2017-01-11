@@ -204,6 +204,8 @@
     height: 100%;
     background-color: #fff;
     z-index: 2;
+		overflow-y: auto;
+		display: flex
   }
 
   &-content {
@@ -232,7 +234,7 @@
 }
 
 .jazz-report-chart {
-  
+
   margin-top: 20px;
   position: relative;
 
@@ -268,11 +270,11 @@
     &-wrapper {
       margin-right: 20px;
       border: 2px solid #9A9A9A;
-      position: relative; 
+      position: relative;
 
       &>iframe {
         border: 0;
-      }    
+      }
     }
 
     &-header {
@@ -289,7 +291,7 @@
 
       &-action {
         display: flex;
-        list-style: none; 
+        list-style: none;
         width: 220px;
         justify-content: space-between;
       }
