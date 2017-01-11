@@ -4,10 +4,10 @@ import { Action } from '../constants/actionType/Report.jsx';
 import Ajax from '../ajax/ajax.jsx';
 let ReportAction = {
   getReportListByCustomerId(customerId, sortBy, order) {
-    Ajax.post('/DataReport/GetExportByCustomerId', {
+    Ajax.post('/DataReport/GetExportByHierarchyId', {
       params: {
         dto: {
-          customerId: customerId,
+          hierarchyId: customerId,
           sortBy: sortBy,
           order: order
         }
@@ -63,6 +63,7 @@ let ReportAction = {
       params: {
         dto: data
       },
+      commonErrorHandling:false,
       success: function(curReport) {
         AppDispatcher.dispatch({
           type: Action.SAVE_REPORT_SUCCESS,
