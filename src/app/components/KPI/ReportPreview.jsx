@@ -27,7 +27,7 @@ export default class ReportPreview extends Component {
 		this._onSetFirst = this._onSetFirst.bind(this);
 		this._onDownload = this._onDownload.bind(this);
 
-		this._preAction(this.props.router.params.customerId);
+		this._preAction();
 
 		ReportStore.addReportListChangeListener(this._onPreActopn);
 		ReportStore.addSelctedPreviewUrlChange(this._onGetPreviewUrl);
@@ -35,8 +35,8 @@ export default class ReportPreview extends Component {
 	}
 	componentWillReceiveProps(nextProps) {
 		if( !util.shallowEqual(nextProps.router.params, this.props.router.params)
-		 || !util.shallowEqual(nextProps.router.location.query, this.props.router.location.query) ) {
-			this._preAction(nextProps.router.params.customerId);
+		 || this.props.hierarchyId !== nextProps.hierarchyId ) {
+			this._preAction(nextProps.hierarchyId);
 		}
 	}
 	componentWillUnmount() {
@@ -59,9 +59,9 @@ export default class ReportPreview extends Component {
 			url: null,
 		});
 	}
-	_preAction() {
+	_preAction(hierarchyId = this.props.hierarchyId) {
 		this.setState(this._getInitialState());
-		ReportAction.getReportListByCustomerId(this.props.hierarchyId, 'createTime', 'asc');
+		ReportAction.getReportListByCustomerId(hierarchyId, 'createTime', 'asc');
 	}
 	_onPreActopn() {
 		if( ReportStore.getReportList().size > 0 ) {
@@ -136,7 +136,11 @@ export default class ReportPreview extends Component {
 	render() {
 		let onLastMonth, onNextMonth, currentYear = new Date().getFullYear();
 		let selectedReport = this._getSelectedReportById();
+
 		if( !ReportStore.getReportList() || !selectedReport ) {
+			if( ReportStore.getReportList().size === 0 ) {
+				return (<div className='flex-center'>{'暂无报表，点击上方"+"按钮开始新建吧～'}</div>);
+			}
 			return (<div className='flex-center'><CircularProgress mode="indeterminate" size={80} /></div>);
 		}
 		if(this.state.year > currentYear - 3 ){

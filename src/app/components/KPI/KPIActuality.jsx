@@ -160,6 +160,10 @@ export default class Actuality extends Component {
 		SingleKPIStore.addChangeListener(this._onChange);
 	}
 	componentWillReceiveProps(nextProps) {
+		if( !util.shallowEqual(nextProps.router.params, this.props.router.params)
+		 || this.props.hierarchyId !== nextProps.hierarchyId ) {
+			this._preAction(nextProps.hierarchyId);
+		}
 		// this.setState(assign({}, this._getInitialState()), () => {
 		// 	this._preAction(nextProps.router.params.customerId);
 		// });
