@@ -5,11 +5,11 @@ import Ajax from '../ajax/ajax.jsx';
 import util from 'util/Util.jsx'
 import CustomForm from 'util/CustomForm.jsx'
 let ReportAction = {
-  getReportListByCustomerId(customerId, sortBy, order) {
+  getReportListByCustomerId(hierarchyId, sortBy, order) {
     Ajax.post('/DataReport/GetExportByHierarchyId', {
       params: {
         dto: {
-          HierarchyId: customerId,
+          HierarchyId: hierarchyId,
           sortBy: sortBy,
           order: order
         }
@@ -61,10 +61,11 @@ let ReportAction = {
     });
   },
   saveCustomerReport(data) {
-    Ajax.post('/DataReport/SaveCustomerReport', {
+    Ajax.post('/DataReport/SaveReport', {
       params: {
         dto: data
       },
+      commonErrorHandling:false,
       success: function(curReport) {
         AppDispatcher.dispatch({
           type: Action.SAVE_REPORT_SUCCESS,

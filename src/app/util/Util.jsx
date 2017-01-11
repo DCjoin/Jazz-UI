@@ -23,8 +23,8 @@ const FIXEDTIMES = {
   hour: 3600 * 1000,
   day: 24 * 3600 * 1000,
   week: 7 * 24 * 3600 * 1000,
-  month: 31 * 24 * 3600 * 1000,
-  year: 366 * 24 * 3600 * 1000
+  month: 30 * 24 * 3600 * 1000,
+  year: 365 * 24 * 3600 * 1000
 };
 
 let CommonFuns = {
@@ -707,7 +707,7 @@ let CommonFuns = {
     var interval = {};
     var i;
     for (i = 0; i < lvs.length; i++) {
-      if (diff <= lvs[i]) {
+      if (diff < lvs[i]) {
         break;
       }
     }
@@ -736,14 +736,14 @@ let CommonFuns = {
         gridList = [0, 1, 2, 3, 5]; //can raw & hour & day & month & week
         display = 3; //default month
         break;
-      case 4: //<=1year
-        list = [1, 2, 3, 5]; //can hour & day & month & week
+      case 4: //<1year
+        list = [0,1, 2, 3, 5]; //can hour & day & month & week
         gridList = [1, 2, 3, 5]; //can hour & day & month & week
         display = 3; //default month
         break;
-      case 5: //<=2year
+      case 5: //<2year
       case 6: //<=10year
-        list = [2, 3, 4, 5]; //can day & month & year & week
+        list = [1,2, 3, 4, 5]; //can day & month & year & week
         gridList = [2, 3, 4, 5]; //can day & month & year & week
         display = 3; //default month
         break;
@@ -2059,6 +2059,40 @@ let CommonFuns = {
         return '';
         break;
     }
+  },
+  getDaysOfMonth(month){
+    if(month===11){
+      return 31
+    }else {
+      return Momment().month(month+1).date(1).add(-1,'day').dates()
+    }
+  },
+  openTab(path) {
+    let fullPath = window.location.href.split('#')[0] + '#';
+    if( path ) {
+      fullPath += path;
+    }
+    var link = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
+    link.href = fullPath;
+    link.target = '_blank';
+    document.body.appendChild(link);
+
+    var event = null;
+    if(window.ActiveXObject || "ActiveXObject" in window) {
+        event = document.createEvent("MouseEvent");
+        event.initEvent('click', false, true);
+    } else {
+      event = new MouseEvent('click', {
+        'view': window,
+        'bubbles': false,
+        'cancelable': true
+      });
+
+    }
+
+    link.dispatchEvent(event);
+
+    document.body.removeChild(link);
   }
 };
 

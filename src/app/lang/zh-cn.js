@@ -1620,9 +1620,11 @@ I18N.Kpi = {
   SingleProject: '单项目',
   GroupProject: '多项目',
   IndexValue: '全年定额指标值',
-  PredictSum: '全年用量预测值',
   SavingValue: '全年节能率指标值',
-  PredictSaving: '全年实际节能率',
+  ActualSum: '全年用量实际值',
+  PredictSum: '全年用量预测值',
+  ActualSaving: '全年节能率实际值',
+  PredictSaving: '全年节能率预测值',
   Error:{
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
@@ -2080,4 +2082,5 @@ I18N.Setting.KPI.Report.Data= '表格数据';
 I18N.Setting.KPI.Report.DataComment= '注：至少配置一组表格数据';
 I18N.Setting.KPI.Report.CalcData= '计算数据';
 I18N.Setting.KPI.Report.Hierarchy= '所属层级';
+I18N.Setting.KPI.Report.TimeRangeComment= '注：当前年为{0}年，只需配置当前年份对应的时间范围，其余年份会根据配置自动计算';
 module.exports = I18N;

@@ -16,7 +16,7 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import KPIActuality from './KPIActuality.jsx';
 import ReportPreview from './ReportPreview.jsx';
 import ConfigMenu from './Group/ConfigMenu.jsx';
-import ReportConfig from './Group/ReportConfig.jsx';
+import ReportConfig from './Report/ReportConfig.jsx';
 
 import UserAction from 'actions/UserAction.jsx';
 import HierarchyAction from 'actions/HierarchyAction.jsx';
@@ -102,6 +102,10 @@ export default class Actuality extends Component {
 	_getHierarchyId(props) {
 		return +props.router.location.query.hierarchyId || null;
 	}
+	_getSelectedHierarchy() {
+		let selectedHierarchyId = this._getHierarchyId(this.props);
+		return find(HierarchyStore.getBuildingList().concat(getCustomerById(this.props.router.params.customerId)), building => building.Id === selectedHierarchyId);
+	}
 	_routerPush(path) {
 		this.props.router.push(path);
 	}
@@ -133,7 +137,7 @@ export default class Actuality extends Component {
 	}
 	_renderEditPage() {
 		if(this.state.edit) {
-			let {type, data} = this.state.edit;
+			let {type, data} = this.state.edit,
 			content = null;
 			if( type === 'kpi' ) {
 				content = (<ConfigMenu {...this.props.router}>
@@ -141,7 +145,7 @@ export default class Actuality extends Component {
 			}
 			if( type === 'report' ) {
 				content = (<ReportConfig 
-								hierarchyName={''} 
+								hierarchyName={this._getSelectedHierarchy().Name} 
 								report={data} 
 								onSave={() => {}} 
 								onCancel={this._removeEditPage}/>);
