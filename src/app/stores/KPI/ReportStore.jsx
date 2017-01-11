@@ -12,16 +12,50 @@ import CommonFuns from 'util/Util.jsx';
 
 let _templateList=null,
     _tagList=null,
+    _errorCode = null,
+    _errorMessage = null,
+    _errorReport = null,
     _selectedTagList=null;
 var CHANGE_TAG_LIST_EVENT = 'changetaglist';
 var CHANGE_SELECTED_TAG_LIST_EVENT = 'changeselectedtaglist';
+var CHANGE_SAVE_SUCCESS_EVENT = 'changesavesuccess';
+var CHANGE_SAVE_ERROR_EVENT = 'changesaveerror';
+
 const ReportStore = assign({}, PrototypeStore, {
+  getDefalutReport(report){
+    var reportItem = {
+      id: report.Id,
+      createUser: report.CreateUser,
+      version: report.Version,
+      templateId: report.TemplateId,
+      name: report.Name,
+      data: report.CriteriaList,
+      year:report.Year,
+    };
+    return Immutable.fromJS(reportItem)
+  },
   getTemplateList() {
     return _templateList;
   },
   setTemplateList(templateList) {
       _templateList = Immutable.fromJS(templateList);
   },
+  getSheetNamesByTemplateId(templateId) {
+    var templateList = _templateList;
+    var sheetNames = null;
+    var template = null;
+    if (templateList !== null && templateList.size !== 0 && templateId !== null) {
+      template = templateList.find((item) => {
+      if (templateId === item.get('Id')) {
+        return true;
+      }
+    });
+    if (template) {
+      sheetNames = template.get('SheetNames');
+    }
+  }
+  return sheetNames;
+},
   getTemplateItems: function(templateList) {
     var Items=[];
   if (templateList && templateList.size !== 0) {
@@ -52,17 +86,36 @@ const ReportStore = assign({}, PrototypeStore, {
   setSelctedTagData(tagData) {
     _selectedTagList = Immutable.fromJS(tagData.Data);
   },
-  getHierarchyNameByTagId(id){
-    var tag=_tagList.find(item=>item.get('Id')===id);
-    var HierName=_.last(tag.get('HierarchyName').split('\\')),
-        AreaName=_.last(tag.get('AreaDimensionName').split('\\'));
-    return `${HierName}-${AreaName}`
+  getHierarchyNameByTagId(id,tag){
+    var HierName=_.last(tag.get('HierarchyName').split('\\'));
+    if(tag.get('AreaDimensionName')){
+        var  AreaName=_.last(tag.get('AreaDimensionName').split('\\'));
+        return `${HierName}-${AreaName}`
+    }else {
+      return HierName
+    }
   },
   getTagList() {
     return _tagList;
   },
   getSelectedTagList() {
     return _selectedTagList;
+  },
+  _initErrorText(errorText, errorReport) {
+    let error = JSON.parse(errorText).error;
+    let errorCode = CommonFuns.processErrorCode(error.Code).errorCode;
+    _errorCode = errorCode;
+    _errorMessage = error.Messages;
+    _errorReport = errorReport;
+  },
+  getErrorMessage() {
+    return _errorMessage;
+  },
+  getErrorCode() {
+    return _errorCode;
+  },
+  getErrorReport() {
+    return _errorReport;
   },
   dispose(){
     _templateList=null;
@@ -85,7 +138,24 @@ const ReportStore = assign({}, PrototypeStore, {
   removeSelectedTagListChangeListener: function(callback) {
     this.removeListener(CHANGE_SELECTED_TAG_LIST_EVENT, callback);
   },
-
+  emitSaveSuccessChange: function() {
+    this.emit(CHANGE_SAVE_SUCCESS_EVENT);
+  },
+  addSaveSuccessChangeListener: function(callback) {
+    this.on(CHANGE_SAVE_SUCCESS_EVENT, callback);
+  },
+  removeSaveSuccessChangeListener: function(callback) {
+    this.removeListener(CHANGE_SAVE_SUCCESS_EVENT, callback);
+  },
+  emitSaveErrorChange: function() {
+    this.emit(CHANGE_SAVE_ERROR_EVENT);
+  },
+  addSaveErrorChangeListener: function(callback) {
+    this.on(CHANGE_SAVE_ERROR_EVENT, callback);
+  },
+  removeSaveErrorChangeListener: function(callback) {
+    this.removeListener(CHANGE_SAVE_ERROR_EVENT, callback);
+  },
 });
 
 ReportStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -109,6 +179,14 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS:
       ReportStore.setSelctedTagData(action.tagData);
       ReportStore.emitSelectedTagListChange();
+      break;
+    case Action.SAVE_REPORT_SUCCESS:
+      //ReportStore.updateReportItem(action.curReport);
+      ReportStore.emitSaveErrorChange();
+      break;
+    case Action.SAVE_REPORT_SUCCESS:
+      ReportStore._initErrorText(action.errorText, action.errorReport);
+      ReportStore.emitSaveErrorChange();
       break;
     default:
   }

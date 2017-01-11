@@ -384,7 +384,7 @@ var ReportRightPanel = React.createClass({
     var sendData = {
       CreateUser: reportItem.get('createUser'),
       CriteriaList: reportItem.get('data').toJS(),
-      CustomerId: parseInt(this.context.currentRoute.params.customerId),
+      HierarchyId: parseInt(this.context.currentRoute.params.customerId),
       Id: reportItem.get('id'),
       Name: reportItem.get('name'),
       TemplateId: reportItem.get('templateId'),

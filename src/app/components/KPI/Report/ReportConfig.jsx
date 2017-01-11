@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import { CircularProgress,Dialog } from 'material-ui';
 import TitleComponent from 'controls/TitleComponent.jsx';
-import FormBottomBar from 'controls/FormBottomBar.jsx';
-import { formStatus } from 'constants/FormStatus.jsx';
 import Immutable from 'immutable';
 import ReportAction from 'actions/KPI/ReportAction.jsx';
 import ReportStore from 'stores/KPI/ReportStore.jsx';
@@ -15,6 +13,9 @@ import RoutePath from 'util/RoutePath.jsx';
 import CustomForm from 'util/CustomForm.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
 import ReportDataItem from './ReportDataItem.jsx';
+import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
+import FormBottomBar from 'controls/FormBottomBar.jsx';
+import { formStatus } from 'constants/FormStatus.jsx';
 
 var customerId=null;
 export default class ReportConfig extends Component {
@@ -35,12 +36,14 @@ export default class ReportConfig extends Component {
 		this._addReportData = this._addReportData.bind(this);
 		this._deleteReportData = this._deleteReportData.bind(this);
 		this._updateReportData = this._updateReportData.bind(this);
+		this._saveReport = this._saveReport.bind(this);
+
 	}
 
 	state={
     saveDisabled: false,
     templateList:null,
-    reportItem:this.props.report===null?this.newReportItem():this.props.report,
+    reportItem:this.props.report===null?this.newReportItem():ReportStore.getDefalutReport(this.props.report.toJS()),
     showUploadDialog: false,
     fileName: ''
 	};
@@ -48,22 +51,14 @@ export default class ReportConfig extends Component {
 	_onChange(){
 		this.setState({
       templateList:ReportStore.getTemplateList(),
-      sheetNames:this._getSheetNamesByTemplateId(this.state.reportItem.get('templateId'))
+      sheetNames:ReportStore.getSheetNamesByTemplateId(this.state.reportItem.get('templateId'))
 		})
 	}
 
   _onTemplateOpen(){
     var params = this.context.currentRoute.params;
     var path = RoutePath.KPITemplate(params);
-		var action = window.location.href.split('#')[0] + '#' + path;
-		if(action) {
-			let form = new CustomForm({
-				method: 'get',
-				target: '_blank',
-				action: action
-			});
-			form.submit();
-  }
+		CommonFuns.openTab(path);
 }
 
   _onNameChange(value) {
@@ -82,7 +77,7 @@ export default class ReportConfig extends Component {
   _onExistTemplateChange(value) {
     var reportItem = this.state.reportItem;
     reportItem = reportItem.set('templateId', value);
-    var sheetNames = this._getSheetNamesByTemplateId(value);
+    var sheetNames = ReportStore.getSheetNamesByTemplateId(value);
     var me = this;
     this.setState({
       reportItem: reportItem,
@@ -93,6 +88,14 @@ export default class ReportConfig extends Component {
     });
   });
   }
+
+	_clearAllErrorText() {
+	this.refs.reportTitleId.clearErrorText();
+	var dataLength = this.state.reportItem.get('data').size;
+	for (var i = 0; i < dataLength; i++) {
+		this.refs['reportData' + (i + 1)]._clearErrorText();
+	}
+	}
 
   _isValid() {
     var isValid = this.refs.reportTitleId.isValid();
@@ -106,23 +109,6 @@ export default class ReportConfig extends Component {
     return isValid;
   }
 
-  _getSheetNamesByTemplateId(templateId) {
-    var templateList = this.state.templateList;
-    var sheetNames = null;
-    var template = null;
-    if (templateList !== null && templateList.size !== 0 && templateId !== null) {
-      template = templateList.find((item) => {
-      if (templateId === item.get('Id')) {
-        return true;
-      }
-    });
-    if (template) {
-      sheetNames = template.get('SheetNames');
-    }
-  }
-  return sheetNames;
-  }
-
   _downloadTemplate() {
     var templateId = this.state.reportItem.get('templateId');
     var iframe = document.createElement('iframe');
@@ -134,7 +120,7 @@ export default class ReportConfig extends Component {
     document.body.appendChild(iframe);
     }
 
-    _handleFileSelect(event) {
+  _handleFileSelect(event) {
       var me = this;
       var file = event.target.files[0];
       var fileName = file.name;
@@ -235,7 +221,7 @@ export default class ReportConfig extends Component {
 	var reportData = reportItem.get('data');
 	var imSheetNames = this.state.sheetNames;
 	var sheetNames = imSheetNames !== null ? imSheetNames.toJS() : null;
-	var dateType = CommonFuns.GetStrDateType(0);
+	var dateType = CommonFuns.GetStrDateType(7);//this year
 	var timeRange = CommonFuns.GetDateRegion(dateType);
 	var d2j = CommonFuns.DataConverter.DatetimeToJson;
 	var startTime = d2j(timeRange.start);
@@ -243,10 +229,9 @@ export default class ReportConfig extends Component {
 	var newReportData = {
 		DataStartTime: startTime,
 		DataEndTime: endTime,
-		DateType: 0,
+		DateType: 7,
 		ExportLayoutDirection: 0,
-		ExportStep: 0,
-		ExportTimeOrder: 0,
+		ExportStep: 1,
 		IsExportTagName: false,
 		IsExportTimestamp: false,
 		NumberRule: 0,
@@ -298,6 +283,83 @@ export default class ReportConfig extends Component {
 		reportItem: reportItem
 	});
 	}
+
+	_onSave(){
+	this.props.onSave();
+	}
+
+	_saveReport() {
+	this._clearAllErrorText();
+	var reportItem = this.state.reportItem;
+	var sendData = {
+		CreateUser: reportItem.get('createUser'),
+		CriteriaList: reportItem.get('data').toJS(),
+		HierarchyId: parseInt(this.context.currentRoute.params.customerId),
+		Id: reportItem.get('id'),
+		Name: reportItem.get('name'),
+		TemplateId: reportItem.get('templateId'),
+		Version: reportItem.get('version')
+	};
+	ReportAction.saveCustomerReport(sendData);
+	}
+
+	_onErrorHandle() {
+    let code = ReportStore.getErrorCode(),
+      message = ReportStore.getErrorMessage(),
+      errorReport = ReportStore.getErrorReport();
+
+    if (!code) {
+      return;
+    } else if (code === '21708'.toString()) {
+      this.stepErrorHandle(message, errorReport);
+
+    } else {
+      let errorMsg = CommonFuns.getErrorMessage(code);
+      setTimeout(() => {
+        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code);
+      }, 0);
+      return null;
+    }
+  }
+
+  stepErrorHandle(message, data) {
+    var index = parseInt(message[0]);
+    var errorMessage;
+    var reportData = data.CriteriaList[index];
+    var j2d = CommonFuns.DataConverter.JsonToDateTime;
+    var list;
+    if (reportData.DateType !== 11) {
+      var dateType = CommonFuns.GetStrDateType(reportData.DateType);
+      var timeregion = CommonFuns.GetDateRegion(dateType);
+      list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
+    } else {
+      var startTime = j2d(reportData.DataStartTime, false);
+      var endTime = j2d(reportData.DataEndTime, false);
+      list = CommonFuns.getInterval(startTime, endTime).stepList;
+    }
+    var map = {
+      'Hourly': 1,
+      'Daily': 2,
+      'Weekly': 3,
+      'Monthly': 4,
+      'Yearly': 5
+    };
+    var stepList = [I18N.Common.AggregationStep.Minute, I18N.Common.AggregationStep.Hourly, I18N.Common.AggregationStep.Daily, I18N.Common.AggregationStep.Monthly, I18N.Common.AggregationStep.Yearly, I18N.Common.AggregationStep.Weekly];
+    var curStep = stepList[reportData.ExportStep];
+    var start = map[message[1]];
+    var ret = [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] >= start) {
+        ret.push('"' + stepList[list[i]] + '"');
+      }
+    }
+    if (ret.length > 0) {
+      errorMessage = I18N.format(I18N.EM.Report.StepError, curStep, ret.join(','));
+    } else {
+      errorMessage = I18N.format(I18N.EM.Report.StepError2, curStep);
+    }
+    CommonFuns.popupErrorMessage(errorMessage, '', true);
+  }
 
   _renderReportInfo(){
     var {reportItem,templateList}=this.state;
@@ -383,7 +445,6 @@ export default class ReportConfig extends Component {
 		dateType: item.get('DateType'),
 		step: item.get('ExportStep'),
 		numberRule: item.get('NumberRule'),
-		timeOrder: item.get('ExportTimeOrder'),
 		targetSheet: item.get('TargetSheet'),
 		isExportTagName: item.get('IsExportTagName'),
 		isExportTimestamp: item.get('IsExportTimestamp'),
@@ -397,7 +458,8 @@ export default class ReportConfig extends Component {
 		dataLength: dataLength,
 		id: item.get('Id'),
 		tagList: item.get('TagsList'),
-		addReport: this.state.reportItem.get('id') === 0 ? true : false
+		addReport: this.state.reportItem.get('id') === 0 ? true : false,
+		settingYear:this.state.reportItem.get('year')
 	};
 	return (
 		<ReportDataItem {...props}></ReportDataItem>
@@ -415,6 +477,17 @@ export default class ReportConfig extends Component {
 				<div className="kpi-report-data">
 					{reportData}
 				</div>
+			</div>
+
+		)
+	}
+
+	_renderFooter(){
+		return(
+			<div className="kpi-report-footer">
+				<FormBottomBar isShow={true} allowDelete={false} allowEdit={false} enableSave={!this.state.saveDisabled}
+					ref="actionBar" status={formStatus.EDIT} onSave={this._saveReport} onCancel={this.props.onCancel}
+					cancelBtnProps={{label:I18N.Common.Button.Cancel2}}/>
 			</div>
 
 		)
@@ -439,10 +512,14 @@ export default class ReportConfig extends Component {
 
 	componentDidMount(){
 		ReportStore.addChangeListener(this._onChange);
+		ReportStore.addSaveSuccessChangeListener(this._onSave);
+		ReportStore.addSaveErrorChangeListener(this._onErrorHandle);
 	}
 
 	componentWillUnmount(){
 		ReportStore.removeChangeListener(this._onChange);
+		ReportStore.removeSaveSuccessChangeListener(this._onSave);
+		ReportStore.removeSaveErrorChangeListener(this._onErrorHandle);
 	}
 
 	render() {
@@ -468,6 +545,7 @@ export default class ReportConfig extends Component {
 					<TitleComponent {...titleProps}>
             {this._renderReportInfo()}
 						{this._renderReportData()}
+						{this._renderFooter()}
             {this._renderUploadDialog()}
 					</TitleComponent>
 				);
@@ -478,10 +556,34 @@ ReportConfig.propTypes = {
   // hierarchyId:React.PropTypes.number,
   hierarchyName:React.PropTypes.string,
   report:React.PropTypes.object,
+	onSave:React.PropTypes.object,
+	onCancel:React.PropTypes.object,
 };
-
-ReportConfig.defaultProps = {
-  // hierarchyId:React.PropTypes.number,
-  hierarchyName:'SOHO China',
-  report:null,
-};
+//
+// ReportConfig.defaultProps = {
+//   // hierarchyId:React.PropTypes.number,
+//   hierarchyName:'SOHO China',
+//   report:Immutable.fromJS({
+// 		"CreateUser":"",
+// 		"CriteriaList":[
+// 			{"ExportStep":1,
+// 				"ExportLayoutDirection":0,
+// 				"StartCell":"a1",
+// 				"DataStartTime":"/Date(1454284800000)/",
+// 				"NumberRule":0,
+// 				"IsExportTagName":true,
+// 				"DateType":33,
+// 				"TargetSheet":"DataExport",
+// 				"ReportType":0,
+// 				"Index":0,
+// 				"TagsList":[{"TagId":100021,"TagIndex":0}],
+// 				"IsExportTimestamp":false,
+// 				"DataEndTime":"/Date(1456790400000)/"}
+// 			],
+// 				"HierarchyId":100002,
+// 				"Id":0,
+// 				"Name":"1",
+// 				"TemplateId":112,
+// 				"Year":2016
+// 			}),
+// };

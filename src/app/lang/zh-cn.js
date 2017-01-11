@@ -2082,4 +2082,5 @@ I18N.Setting.KPI.Report.Data= '表格数据';
 I18N.Setting.KPI.Report.DataComment= '注：至少配置一组表格数据';
 I18N.Setting.KPI.Report.CalcData= '计算数据';
 I18N.Setting.KPI.Report.Hierarchy= '所属层级';
+I18N.Setting.KPI.Report.TimeRangeComment= '注：当前年为{0}年，只需配置当前年份对应的时间范围，其余年份会根据配置自动计算';
 module.exports = I18N;
