@@ -84,6 +84,8 @@ export default class Actuality extends Component {
 
 	componentWillMount() {
 		this._loadInitData(this.props, this.context);
+		this._showReportEdit = this._showReportEdit.bind(this);
+		this._removeEditPage = this._removeEditPage.bind(this);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( nextProps.router.params !== this.props.router.params ) {
@@ -120,7 +122,7 @@ export default class Actuality extends Component {
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
 			      }}/>}
-				{/*<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>*/}
+				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
 			</div>
 			<div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
@@ -129,6 +131,7 @@ export default class Actuality extends Component {
 			      	this._showReportEdit();
 			      }}/>}
 				<ReportPreview 
+					ref={'report_preview'}
 					showReportEdit={this._showReportEdit}
 					router={this.props.router} 
 					hierarchyId={this._getHierarchyId(this.props)}/>
@@ -147,7 +150,10 @@ export default class Actuality extends Component {
 				content = (<ReportConfig 
 								hierarchyName={this._getSelectedHierarchy().Name} 
 								report={data} 
-								onSave={() => {}} 
+								onSave={() => {
+									data && data.get('Id') && this.refs.report_preview.update(data.get('Id'));
+									this._removeEditPage();
+								}} 
 								onCancel={this._removeEditPage}/>);
 			}
 			return (<div className='jazz-actuality-edit'>{content}</div>);
@@ -163,7 +169,7 @@ export default class Actuality extends Component {
 		this.setState({
 			edit: {
 				type: 'report',
-				data: data,
+				data: data || null,
 			}
 		});
 	}

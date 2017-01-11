@@ -186,7 +186,8 @@ let ReportAction = {
   },
   download(hierarchyId, reportId) {
     let form = new CustomForm({
-      target: '_blank'
+      target: '_blank',
+      action: 'API/DataReport/DownloadExportTemplate'
     });
     form.submit();
   }

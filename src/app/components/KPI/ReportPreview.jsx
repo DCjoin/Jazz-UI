@@ -4,6 +4,8 @@ import CircularProgress from 'material-ui/CircularProgress';
 
 import util from 'util/Util.jsx';
 import SwitchBar from 'controls/SwitchBar.jsx';
+import FlatButton from 'controls/FlatButton.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
 
 import ReportChart from './ReportChart.jsx';
 
@@ -46,14 +48,24 @@ export default class ReportPreview extends Component {
 			year: new Date().getFullYear(),
 			selectedReprotId: null,
 			url: null,
+			showDeleteDialog: false,
 		}
 	}
+	update(selectedReprotId) {
+		this._preAction();
+		this.setState({
+			year: this.state.year,
+			selectedReprotId: selectedReprotId || null,
+			url: null,
+		});
+	}
 	_preAction() {
+		this.setState(this._getInitialState());
 		ReportAction.getReportListByCustomerId(this.props.hierarchyId, 'createTime', 'asc');
 	}
 	_onPreActopn() {
 		if( ReportStore.getReportList().size > 0 ) {
-			this._selectReport(ReportStore.getReportList().getIn([0, 'Id']));
+			this._selectReport( this.state.selectedReprotId || ReportStore.getReportList().getIn([0, 'Id']) );
 		}
 	}
 	_selectYear(year) {
@@ -74,14 +86,19 @@ export default class ReportPreview extends Component {
 	_getDateLabel() {
 		return this.state.year;
 	}
+	_getReportById(reprotId) {
+		return ReportStore.getReportList().find( report => report.get('Id') === reprotId );
+	}
 	_getSelectedReportById() {
-		return ReportStore.getReportList().find( report => report.get('Id') === this.state.selectedReprotId );
+		return this._getReportById(this.state.selectedReprotId);
 	}
 	_onEdit(reportId) {
 		this.props.showReportEdit(this._getSelectedReportById());
 	}
 	_onDelete(reportId) {
-		
+		this.setState({
+			showDeleteDialog: true
+		});
 	}
 	_onSetFirst(reportId) {
 		this.setState({selectedReprotId: null}, () => {
@@ -90,6 +107,31 @@ export default class ReportPreview extends Component {
 	}
 	_onDownload(reportId) {
 		ReportAction.download(this.props.hierarchyId, reportId);
+	}
+	_renderDeleteDialog() {
+		let {showDeleteDialog, selectedReprotId} = this.state,
+		actions = [
+			(<FlatButton 
+				label={I18N.Common.Button.Delete}
+				inDialog={true}
+      			primary={true}
+      			onClick={() => {
+      				let currentIndex = ReportStore.getReportList()
+      									.findIndex(report => report.get('Id') === selectedReprotId);
+	      			this.setState({
+	      				showDeleteDialog: false,
+	      				selectedReprotId: currentIndex < ReportStore.getReportList().length - 1 ?
+	      									ReportStore.getReportList().get(currentIndex + 1).get('Id') :
+	      									ReportStore.getReportList().get(currentIndex - 1).get('Id')
+	      			}, () => ReportAction.deleteReportById(selectedReprotId) )
+	      		}}/>),
+			(<FlatButton label={I18N.Common.Button.Cancel2} onClick={() => this.setState({showDeleteDialog: false})}/>)
+		];
+		return (<NewDialog 
+					title={`删除报表“${this._getSelectedReportById().get('Name')}”吗?`}
+					open={showDeleteDialog} 
+					modal='false' 
+					actions={actions}/>);
 	}
 	render() {
 		let onLastMonth, onNextMonth, currentYear = new Date().getFullYear();
@@ -130,6 +172,7 @@ export default class ReportPreview extends Component {
 						data={selectedReport}
 						/>
 				</div>
+				{this._renderDeleteDialog()}
 			</div>
 		);
 	}
