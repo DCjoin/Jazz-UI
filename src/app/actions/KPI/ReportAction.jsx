@@ -98,6 +98,7 @@ const ReportAction = {
     });
   },
   saveCustomerReport(data) {
+    data.IsNew=true;
     Ajax.post('/DataReport/SaveReport', {
       params: {
         dto: data
