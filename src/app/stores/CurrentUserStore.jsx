@@ -160,21 +160,22 @@ var CurrentUserStore = assign({}, PrototypeStore, {
     if (this.permit(PermissionCode.INDEX_AND_REPORT.READONLY) || this.permit(PermissionCode.INDEX_AND_REPORT.FULL)) {
       menuItems.push(
         {
+          getPath: RoutePath.Actuality,
           title: I18N.MainMenu.KPI,
-          children: [{
-            list: [{
-              getPath: RoutePath.KPIActuality,
-              title: I18N.MainMenu.KPIActuality
-            }]
-          }]
+          // children: [{
+          //   list: [{
+          //     getPath: RoutePath.KPIActuality,
+          //     title: I18N.MainMenu.KPIActuality
+          //   }]
+          // }]
         }
       );
-      if( this.permit(PermissionCode.INDEX_AND_REPORT.FULL) ) {
-        menuItems[menuItems.length - 1].children[0].list.push({
-            getPath: RoutePath.KPIGroupConfig,
-            title: I18N.MainMenu.KPIConfig
-        });
-      }
+      // if( this.permit(PermissionCode.INDEX_AND_REPORT.FULL) ) {
+      //   menuItems[menuItems.length - 1].children[0].list.push({
+      //       getPath: RoutePath.KPIGroupConfig,
+      //       title: I18N.MainMenu.KPIConfig
+      //   });
+      // }
     }
     if (this.permit(PermissionCode.MAP_VIEW.READONLY)) {
       menuItems.push(

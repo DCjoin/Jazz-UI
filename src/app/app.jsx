@@ -252,27 +252,27 @@ ReactDom.render(<Router history={hashHistory} routes={{
             component: Actuality,
           },
           childRoutes: [{
-            path: 'actuality',
-            component: Actuality
-          }, {
-            path: 'config',
-            component: KPIConfig,
-            indexRoute: {
-                onEnter: (router, replaceState) => {
-                  replaceState(RoutePath.KPIConfig(router.params));
-                },
-            },
-            childRoutes: [
-              {
-                 path: 'kpiconfig',
-                 component: KPIConfigList
-               },
-               {
-                 path: 'rankconfig',
-                 component: KPIRanking
-             }]
-          },
-          {
+          //   path: 'actuality',
+          //   component: Actuality
+          // }, {
+          //   path: 'config',
+          //   component: KPIConfig,
+          //   indexRoute: {
+          //       onEnter: (router, replaceState) => {
+          //         replaceState(RoutePath.KPIConfig(router.params));
+          //       },
+          //   },
+          //   childRoutes: [
+          //     {
+          //        path: 'kpiconfig',
+          //        component: KPIConfigList
+          //      },
+          //      {
+          //        path: 'rankconfig',
+          //        component: KPIRanking
+          //    }]
+          // },
+          // {
             path: 'template',
             component: KPITemplate
           }]

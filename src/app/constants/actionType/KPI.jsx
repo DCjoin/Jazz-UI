@@ -10,6 +10,7 @@ module.exports = {
     GET_KPI_INFO_SUCCESS:null,
     GET_KPI_CONFIGURED:null,
     GET_KPI_CHART:null,
+    GET_KPI_CHART_SUMMARY:null,
     INIT_KPI_CHART_DATA:null,
     EMPTY_KPI_CHART_DATA:null,
     MERGE_KPI_SINGLE_INFO:null,

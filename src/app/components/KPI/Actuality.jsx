@@ -15,6 +15,8 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 
 import KPIActuality from './KPIActuality.jsx';
 import ReportPreview from './ReportPreview.jsx';
+import ConfigMenu from './Group/ConfigMenu.jsx';
+import ReportConfig from './Group/ReportConfig.jsx';
 
 import UserAction from 'actions/UserAction.jsx';
 import HierarchyAction from 'actions/HierarchyAction.jsx';
@@ -114,17 +116,52 @@ export default class Actuality extends Component {
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
 			      }}/>}
-				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
+				{/*<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>*/}
 			</div>
 			<div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
 				{isFull() &&
 		    	<IconButton iconClassName="fa icon-add" onClick={() => {
-			      	// onRefresh(data.get('id'));
+			      	this._showReportEdit();
 			      }}/>}
-				<ReportPreview router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
+				<ReportPreview 
+					showReportEdit={this._showReportEdit}
+					router={this.props.router} 
+					hierarchyId={this._getHierarchyId(this.props)}/>
 			</div>
 		</div>);
+	}
+	_renderEditPage() {
+		if(this.state.edit) {
+			let {type, data} = this.state.edit;
+			content = null;
+			if( type === 'kpi' ) {
+				content = (<ConfigMenu {...this.props.router}>
+				</ConfigMenu>);
+			}
+			if( type === 'report' ) {
+				content = (<ReportConfig 
+								hierarchyName={''} 
+								report={data} 
+								onSave={() => {}} 
+								onCancel={this._removeEditPage}/>);
+			}
+			return (<div className='jazz-actuality-edit'>{content}</div>);
+		}
+		return null;
+	}
+	_removeEditPage() {
+		this.setState({
+			edit: null
+		});
+	}
+	_showReportEdit(data) {
+		this.setState({
+			edit: {
+				type: 'report',
+				data: data,
+			}
+		});
 	}
 	render() {
 		let {buildingList, userCustomers} = this.state;
@@ -161,6 +198,7 @@ export default class Actuality extends Component {
 				{isFull() && <ViewableDropDownMenu {...buildingProps}/>}
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
+				{this._renderEditPage()}
 			</div>
 		);
 	}

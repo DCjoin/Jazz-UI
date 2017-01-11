@@ -5,7 +5,7 @@ import PrototypeStore from './PrototypeStore.jsx';
 import assign from 'object-assign';
 import Immutable from 'immutable';
 import CommonFuns from '../util/Util.jsx';
-import { Action } from '../constants/actionType/Report.jsx';
+import { Action } from 'constants/actionType/Report.jsx';
 
 let _reportList = Immutable.fromJS([]),
   _templateList = Immutable.fromJS([]),
@@ -15,6 +15,7 @@ let _reportList = Immutable.fromJS([]),
   _tagList = Immutable.fromJS([]),
   _selectedTagList = Immutable.fromJS([]),
   _total = 0,
+  _previewUrl = null,
   _reportItem = null;
 
 let CHANGE_REPORT_LIST_EVENT = 'changereportlist';
@@ -23,6 +24,7 @@ var CHANGE_SELECTED_REPORT_ITEM = 'changereportitem';
 var CHANGE_TAG_LIST_EVENT = 'changetaglist';
 var CHANGE_SELECTED_TAG_LIST_EVENT = 'changeselectedtaglist';
 var REPORT_DATA_SAVE_ERROR_EVENT = 'reportdatasaveerror';
+var REPORT_PREVIEW_URL_EVENT = 'PreviewUrl';
 var ReportStore = assign({}, PrototypeStore, {
   getReportList() {
     return _reportList;
@@ -39,6 +41,12 @@ var ReportStore = assign({}, PrototypeStore, {
     if (templateList) {
       _templateList = Immutable.fromJS(templateList);
     }
+  },
+  getSelctedPreviewUrl() {
+    return _previewUrl;
+  },
+  setSelctedPreviewUrl(url) {
+    _previewUrl = url;
   },
   getTagList() {
     return _tagList;
@@ -186,6 +194,15 @@ var ReportStore = assign({}, PrototypeStore, {
   addSaveReportErrorListener: function(callback) {
     this.on(REPORT_DATA_SAVE_ERROR_EVENT, callback);
   },
+  emitSelctedPreviewUrlChange: function(callback) {
+    this.emit(REPORT_PREVIEW_URL_EVENT);
+  },
+  removeSelctedPreviewUrlChange: function(callback) {
+    this.removeListener(REPORT_PREVIEW_URL_EVENT, callback);
+  },
+  addSelctedPreviewUrlChange: function(callback) {
+    this.on(REPORT_PREVIEW_URL_EVENT, callback);
+  },
 });
 
 ReportStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -242,6 +259,10 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS:
       ReportStore.setSelctedTagData(action.tagData);
       ReportStore.emitSelectedTagListChange();
+      break;
+    case Action.GET_SELECTED_REPORT_PREVIEW_URL_SUCCESS:
+      ReportStore.setSelctedPreviewUrl(action.data);
+      ReportStore.emitSelctedPreviewUrlChange();
       break;
   }
 });

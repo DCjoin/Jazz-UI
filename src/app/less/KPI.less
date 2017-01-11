@@ -196,6 +196,16 @@
   flex-direction: column;
   flex: 1;
 
+  &-edit {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    z-index: 2;
+  }
+
   &-content {
     margin: 0 20px;
     overflow-x: hidden;
@@ -222,33 +232,64 @@
   position: relative;
 
   &-header {
-    height: 90px;
+    height: 40px;
     display: flex;
     align-items: center;
     position: absolute;
     width: calc(~'100% - 20px');
     background-color: #fff;
     border-bottom: 2px solid #9A9A9A;
+    z-index: 1;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-    &>div {
-      padding: 5px;
+    &>.tab {
+      cursor: pointer;
+      background-color: #fff;
+      color: #000;
+      border-radius: 4px;
+      flex: none;
+      padding: 5px 20px;
+
+      &.selected {
+        background-color: #000;
+        color: #fff;
+      }
+    }
+  }
+
+  &-table {
+
+    &-wrapper {
       margin-right: 20px;
+      border: 2px solid #9A9A9A;
+      position: relative; 
+
+      &>iframe {
+        border: 0;
+      }    
     }
-  }
 
-  &-table-header {
-    background-color: #000;
-    color: #fff;
-    border-radius: 4px;
-  }
+    &-header {
+      position: absolute;
+      z-index: 2;
+      height: 50px;
+      top: 40px;
+      display: flex;
+      width: calc(~'100% - 20px');
+      background-color: #fff;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
 
-  &-table-wrapper {
-    margin-right: 20px;
-    border: 2px solid #9A9A9A;
-
-    &>iframe {
-      border: 0;
+      &-action {
+        display: flex;
+        list-style: none; 
+        width: 220px;
+        justify-content: space-between;
+      }
     }
+
   }
 }
 .jazz-kpi-actuality {
