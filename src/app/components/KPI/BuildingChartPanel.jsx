@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Immutable from 'immutable';
 import moment from 'moment';
-import {first} from 'lodash/array';
+import {first, last} from 'lodash/array';
 import {find} from 'lodash/collection';
 import {isNull, isUndefined} from 'lodash/lang';
 
@@ -152,6 +152,7 @@ export default class BuildingChartPanel extends Component {
 					if( !isThisYear || !currentRank ) {
 						return (
 							<KPIReport
+								currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
 								isGroup={false}
 								period={period}
 								onRefresh={onRefresh}
@@ -177,6 +178,7 @@ export default class BuildingChartPanel extends Component {
 						</div>
 						<div className='jazz-building-kpi-rank-report'>
 							<KPIReport
+								currentYearDone={last(period).clone().add(1, 'months').isBefore(new Date())}
 								isGroup={false}
 								period={period}
 								onRefresh={onRefresh}
