@@ -50,7 +50,7 @@ function singleProjectMenuItems() {
 	return [{
     	Id: -2,
     	disabled: true,
-    	Name: I18N.Kpi.SingleProject
+    	Name: I18N.Setting.KPI.Building
     }].concat(HierarchyStore.getBuildingList());
 }
 function groupProjectMenuItems(customerId) {
@@ -132,6 +132,7 @@ export default class Actuality extends Component {
 			      }}/>}
 				<ReportPreview 
 					ref={'report_preview'}
+					preview={true}
 					showReportEdit={this._showReportEdit}
 					router={this.props.router} 
 					hierarchyId={this._getHierarchyId(this.props)}/>

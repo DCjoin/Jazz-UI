@@ -21,6 +21,7 @@ import demoLoginApp from './components/DemoLogin.jsx';
 import initChangePSWApp from './components/initChangePSW.jsx';
 import contactusApp from './components/ContactUS.jsx';
 import Actuality from './components/KPI/Actuality.jsx';
+import ReportActuality from './components/KPI/ReportActuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
 import KPIRanking from './components/KPI/Group/Ranking.jsx';
@@ -252,6 +253,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
             component: Actuality,
           },
           childRoutes: [{
+            path: 'report',
+            component: ReportActuality,
+          },
           //   path: 'actuality',
           //   component: Actuality
           // }, {
@@ -272,7 +276,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
           //        component: KPIRanking
           //    }]
           // },
-          // {
+          {
             path: 'template',
             component: KPITemplate
           }]
