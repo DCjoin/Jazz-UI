@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import { CircularProgress,Dialog } from 'material-ui';
+import { CircularProgress} from 'material-ui';
+import Dialog from 'controls/NewDialog.jsx';
 import TitleComponent from 'controls/TitleComponent.jsx';
 import Immutable from 'immutable';
 import ReportAction from 'actions/KPI/ReportAction.jsx';
@@ -10,10 +11,8 @@ import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import CommonFuns from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
-import CustomForm from 'util/CustomForm.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
 import ReportDataItem from './ReportDataItem.jsx';
-import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
 import FormBottomBar from 'controls/FormBottomBar.jsx';
 import { formStatus } from 'constants/FormStatus.jsx';
 
@@ -37,7 +36,8 @@ export default class ReportConfig extends Component {
 		this._deleteReportData = this._deleteReportData.bind(this);
 		this._updateReportData = this._updateReportData.bind(this);
 		this._saveReport = this._saveReport.bind(this);
-
+		this._onSave = this._onSave.bind(this);
+		this._onErrorHandle = this._onErrorHandle.bind(this);
 	}
 
 	state={
@@ -45,7 +45,8 @@ export default class ReportConfig extends Component {
     templateList:null,
     reportItem:this.props.report===null?this.newReportItem():ReportStore.getDefalutReport(this.props.report.toJS()),
     showUploadDialog: false,
-    fileName: ''
+    fileName: '',
+		errorMsg:null
 	};
 
 	_onChange(){
@@ -285,7 +286,12 @@ export default class ReportConfig extends Component {
 	}
 
 	_onSave(){
-	this.props.onSave();
+		this.setState({
+			errorMsg:null
+		},()=>{
+			this.props.onSave();
+		})
+
 	}
 
 	_saveReport() {
@@ -311,14 +317,14 @@ export default class ReportConfig extends Component {
     if (!code) {
       return;
     } else if (code === '21708'.toString()) {
-      this.stepErrorHandle(message, errorReport);
+			this.setState({
+				errorMsg:this.stepErrorHandle(message, errorReport)
+			})
 
     } else {
-      let errorMsg = CommonFuns.getErrorMessage(code);
-      setTimeout(() => {
-        GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code);
-      }, 0);
-      return null;
+			this.setState({
+				errorMsg : CommonFuns.getErrorMessage(code)
+			})
     }
   }
 
@@ -499,11 +505,33 @@ export default class ReportConfig extends Component {
     }
     return (<Dialog
     ref="uploadDialog"
-    openImmediately={true}
+    open={true}
     modal={true}>
       {I18N.format(I18N.EM.Report.UploadingTemplate, this.state.fileName)}
     </Dialog>);
   }
+
+	_renderErrorMsg(){
+		var that = this;
+		var onClose = function() {
+			that.setState({
+				errorMsg: null,
+			});
+		};
+		if (this.state.errorMsg!==null) {
+			return (<Dialog
+				ref = "_dialog"
+				title={I18N.Platform.ServiceProvider.ErrorNotice}
+				modal={false}
+				open={!!this.state.errorMsg}
+				onRequestClose={onClose}
+				>
+				{this.state.errorMsg}
+			</Dialog>);
+		} else {
+			return null;
+		}
+	}
 
 	componentWillMount(){
 	 customerId=parseInt(this.context.router.params.customerId);
@@ -547,6 +575,7 @@ export default class ReportConfig extends Component {
 						{this._renderReportData()}
 						{this._renderFooter()}
             {this._renderUploadDialog()}
+						{this._renderErrorMsg()}
 					</TitleComponent>
 				);
 		}
@@ -559,31 +588,32 @@ ReportConfig.propTypes = {
 	onSave:React.PropTypes.object,
 	onCancel:React.PropTypes.object,
 };
-//
-// ReportConfig.defaultProps = {
-//   // hierarchyId:React.PropTypes.number,
-//   hierarchyName:'SOHO China',
-//   report:Immutable.fromJS({
-// 		"CreateUser":"",
-// 		"CriteriaList":[
-// 			{"ExportStep":1,
-// 				"ExportLayoutDirection":0,
-// 				"StartCell":"a1",
-// 				"DataStartTime":"/Date(1454284800000)/",
-// 				"NumberRule":0,
-// 				"IsExportTagName":true,
-// 				"DateType":33,
-// 				"TargetSheet":"DataExport",
-// 				"ReportType":0,
-// 				"Index":0,
-// 				"TagsList":[{"TagId":100021,"TagIndex":0}],
-// 				"IsExportTimestamp":false,
-// 				"DataEndTime":"/Date(1456790400000)/"}
-// 			],
-// 				"HierarchyId":100002,
-// 				"Id":0,
-// 				"Name":"1",
-// 				"TemplateId":112,
-// 				"Year":2016
-// 			}),
-// };
+
+ReportConfig.defaultProps = {
+  // hierarchyId:React.PropTypes.number,
+  hierarchyName:'SOHO China',
+  report:null,
+	// Immutable.fromJS({
+	// 	"CreateUser":"",
+	// 	"CriteriaList":[
+	// 		{"ExportStep":1,
+	// 			"ExportLayoutDirection":0,
+	// 			"StartCell":"a1",
+	// 			"DataStartTime":"/Date(1454284800000)/",
+	// 			"NumberRule":0,
+	// 			"IsExportTagName":true,
+	// 			"DateType":33,
+	// 			"TargetSheet":"DataExport",
+	// 			"ReportType":0,
+	// 			"Index":0,
+	// 			"TagsList":[{"TagId":100021,"TagIndex":0}],
+	// 			"IsExportTimestamp":false,
+	// 			"DataEndTime":"/Date(1456790400000)/"}
+	// 		],
+	// 			"HierarchyId":100002,
+	// 			"Id":0,
+	// 			"Name":"1",
+	// 			"TemplateId":112,
+	// 			"Year":2016
+	// 		}),
+};
