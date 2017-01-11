@@ -87,7 +87,7 @@ let MainApp = React.createClass({
   _dataReady: function() {
     if( MainApp.prepareShow() ) {
       let defaultReplace = MainApp.needDefaultReplace(this.props.router);
-      if(defaultReplace) {
+      if(defaultReplace && !this.props.router.isActive(defaultReplace)) {
         this.props.router.replace(defaultReplace);
       } else {
         this.forceUpdate();

@@ -58,15 +58,7 @@ export default class ReportConfig extends Component {
   _onTemplateOpen(){
     var params = this.context.currentRoute.params;
     var path = RoutePath.KPITemplate(params);
-		var action = window.location.href.split('#')[0] + '#' + path;
-		if(action) {
-			let form = new CustomForm({
-				method: 'get',
-				target: '_blank',
-				action: action
-			});
-			form.submit();
-  }
+		CommonFuns.openTab(path);
 }
 
   _onNameChange(value) {
@@ -565,33 +557,33 @@ ReportConfig.propTypes = {
   hierarchyName:React.PropTypes.string,
   report:React.PropTypes.object,
 	onSave:React.PropTypes.object,
-	oncancel:React.PropTypes.object,
+	onCancel:React.PropTypes.object,
 };
-
-ReportConfig.defaultProps = {
-  // hierarchyId:React.PropTypes.number,
-  hierarchyName:'SOHO China',
-  report:Immutable.fromJS({
-		"CreateUser":"",
-		"CriteriaList":[
-			{"ExportStep":1,
-				"ExportLayoutDirection":0,
-				"StartCell":"a1",
-				"DataStartTime":"/Date(1454284800000)/",
-				"NumberRule":0,
-				"IsExportTagName":true,
-				"DateType":33,
-				"TargetSheet":"DataExport",
-				"ReportType":0,
-				"Index":0,
-				"TagsList":[{"TagId":100021,"TagIndex":0}],
-				"IsExportTimestamp":false,
-				"DataEndTime":"/Date(1456790400000)/"}
-			],
-				"HierarchyId":100002,
-				"Id":0,
-				"Name":"1",
-				"TemplateId":112,
-				"Year":2016
-			}),
-};
+//
+// ReportConfig.defaultProps = {
+//   // hierarchyId:React.PropTypes.number,
+//   hierarchyName:'SOHO China',
+//   report:Immutable.fromJS({
+// 		"CreateUser":"",
+// 		"CriteriaList":[
+// 			{"ExportStep":1,
+// 				"ExportLayoutDirection":0,
+// 				"StartCell":"a1",
+// 				"DataStartTime":"/Date(1454284800000)/",
+// 				"NumberRule":0,
+// 				"IsExportTagName":true,
+// 				"DateType":33,
+// 				"TargetSheet":"DataExport",
+// 				"ReportType":0,
+// 				"Index":0,
+// 				"TagsList":[{"TagId":100021,"TagIndex":0}],
+// 				"IsExportTimestamp":false,
+// 				"DataEndTime":"/Date(1456790400000)/"}
+// 			],
+// 				"HierarchyId":100002,
+// 				"Id":0,
+// 				"Name":"1",
+// 				"TemplateId":112,
+// 				"Year":2016
+// 			}),
+// };
