@@ -20,7 +20,7 @@ import resetPSWApp from './components/resetPSWApp.jsx';
 import demoLoginApp from './components/DemoLogin.jsx';
 import initChangePSWApp from './components/initChangePSW.jsx';
 import contactusApp from './components/ContactUS.jsx';
-import KPI from './components/KPI/Actuality.jsx';
+import Actuality from './components/KPI/Actuality.jsx';
 import KPIConfig from './components/KPI/Group/ConfigMenu.jsx';
 import KPIConfigList from './components/KPI/Group/KPIConfigList.jsx';
 import KPIRanking from './components/KPI/Group/Ranking.jsx';
@@ -247,32 +247,32 @@ ReactDom.render(<Router history={hashHistory} routes={{
           path: 'blankPage',
           component: BlankPage
         },{
-          path: 'kpi',
+          path: 'actuality',
           indexRoute: {
-            component: KPI,
+            component: Actuality,
           },
           childRoutes: [{
-            path: 'actuality',
-            component: KPI
-          }, {
-            path: 'config',
-            component: KPIConfig,
-            indexRoute: {
-                onEnter: (router, replaceState) => {
-                  replaceState(RoutePath.KPIConfig(router.params));
-                },
-            },
-            childRoutes: [
-              {
-                 path: 'kpiconfig',
-                 component: KPIConfigList
-               },
-               {
-                 path: 'rankconfig',
-                 component: KPIRanking
-             }]
-          },
-          {
+          //   path: 'actuality',
+          //   component: Actuality
+          // }, {
+          //   path: 'config',
+          //   component: KPIConfig,
+          //   indexRoute: {
+          //       onEnter: (router, replaceState) => {
+          //         replaceState(RoutePath.KPIConfig(router.params));
+          //       },
+          //   },
+          //   childRoutes: [
+          //     {
+          //        path: 'kpiconfig',
+          //        component: KPIConfigList
+          //      },
+          //      {
+          //        path: 'rankconfig',
+          //        component: KPIRanking
+          //    }]
+          // },
+          // {
             path: 'template',
             component: KPITemplate
           }]

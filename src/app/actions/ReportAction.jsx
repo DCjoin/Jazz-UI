@@ -2,12 +2,14 @@
 import AppDispatcher from '../dispatcher/AppDispatcher.jsx';
 import { Action } from '../constants/actionType/Report.jsx';
 import Ajax from '../ajax/ajax.jsx';
+import util from 'util/Util.jsx'
+import CustomForm from 'util/CustomForm.jsx'
 let ReportAction = {
-  getReportListByCustomerId(customerId, sortBy, order) {
+  getReportListByCustomerId(hierarchyId, sortBy, order) {
     Ajax.post('/DataReport/GetExportByHierarchyId', {
       params: {
         dto: {
-          hierarchyId: customerId,
+          HierarchyId: hierarchyId,
           sortBy: sortBy,
           order: order
         }
@@ -162,6 +164,32 @@ let ReportAction = {
         console.log(err, res);
       }
     });
+  },
+  getPreviewUrl(reportId, year) {
+    return Ajax.get( util.replacePathParams('/datareport/previewurl/{reportId}/{year}', reportId, year), {
+      success: function(res) {
+        AppDispatcher.dispatch({
+          type: Action.GET_SELECTED_REPORT_PREVIEW_URL_SUCCESS,
+          data: res
+        });
+
+      }
+    })
+  },
+  setFirst(hierarchyId, reportId) {
+    let getReportListByCustomerId = this.getReportListByCustomerId.bind(this);
+    return Ajax.post( util.replacePathParams('/datareport/first/{hierarchyId}/{reportId}', hierarchyId, reportId), {
+      success: function(res) {
+        getReportListByCustomerId(hierarchyId, 'createTime', 'asc');
+      }
+    })
+  },
+  download(hierarchyId, reportId) {
+    let form = new CustomForm({
+      target: '_blank',
+      action: 'API/DataReport/DownloadExportTemplate'
+    });
+    form.submit();
   }
 };
 module.exports = ReportAction;

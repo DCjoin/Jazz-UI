@@ -43,5 +43,8 @@ module.exports = {
       setRank:'/rank/setrank',
       rankRecord:'/rank/rankrecord/{customerId}/{groupKpiId}/{rankType}/{buildingId}',
     }
-	}
+	},
+  DataReport: {
+    getExportByHierarchyId: '/DataReport/GetExportByHierarchyId',
+  },
 };
