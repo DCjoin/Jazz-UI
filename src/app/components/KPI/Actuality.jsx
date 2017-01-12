@@ -140,7 +140,7 @@ export default class Actuality extends Component {
 		</div>);
 	}
 	_renderEditPage() {
-		if(this.state.edit) {
+		if(this.state.edit && this._getHierarchyId(this.props)) {
 			let {type, data} = this.state.edit,
 			content = null;
 			if( type === 'kpi' ) {
