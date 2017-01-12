@@ -106,7 +106,7 @@ export default class Actuality extends Component {
 	}
 	_getSelectedHierarchy() {
 		let selectedHierarchyId = this._getHierarchyId(this.props);
-		return find(HierarchyStore.getBuildingList().concat(getCustomerById(this.props.router.params.customerId)), building => building.Id === selectedHierarchyId);
+		return find(HierarchyStore.getBuildingList().concat(getCustomerById(this.props.router.params.customerId)), building => building.Id === selectedHierarchyId) || null;
 	}
 	_routerPush(path) {
 		this.props.router.push(path);
@@ -140,7 +140,7 @@ export default class Actuality extends Component {
 		</div>);
 	}
 	_renderEditPage() {
-		if(this.state.edit) {
+		if(this.state.edit && this._getHierarchyId(this.props)) {
 			let {type, data} = this.state.edit,
 			content = null;
 			if( type === 'kpi' ) {
