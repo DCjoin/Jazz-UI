@@ -579,6 +579,7 @@ let ReportDataItem = React.createClass({
       didChanged: me._onStartCellChange,
       defaultValue: me.props.startCell,
       title: I18N.EM.Report.StartCell,
+      hintText:I18N.Setting.KPI.Report.StartCellHintText,
       isRequired: true,
       regex: Regex.ExcelCell,
       errorMessage: I18N.Common.Label.ExcelColumnError
@@ -622,12 +623,12 @@ let ReportDataItem = React.createClass({
             <ViewableDropDownMenu {...reportTypeProps}></ViewableDropDownMenu>
         </div>
         <div className='jazz-report-data-container'>
-          <span>{I18N.EM.Report.DataSource}</span>
+          <span>{I18N.Setting.Tag.Tag}</span>
           {dataSourceButton}
         </div>
         <div className='jazz-report-data-container'>
           <div>
-            <span>{I18N.EM.Report.TimeRange}</span>
+            <span style={{fontSize:'14px',color:'#464949'}}>{I18N.EM.Report.TimeRange}</span>
             <span className="kpi-report-commnet" style={{marginLeft:'10px'}}>{I18N.format(I18N.Setting.KPI.Report.TimeRangeComment,(new Date()).getFullYear())}</span>
           </div>
 

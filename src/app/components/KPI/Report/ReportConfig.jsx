@@ -162,7 +162,7 @@ export default class ReportConfig extends Component {
           var errorCode = obj.UploadResponse.ErrorCode,
             errorMessage;
           if (errorCode === -1) {
-            errorMessage = I18N.EM.Report.DuplicatedName;
+            errorMessage = I18N.format(I18N.Setting.KPI.Report.DuplicatedName,fileName);
           }
           if (errorMessage) {
             CommonFuns.popupErrorMessage(errorMessage, '', true);

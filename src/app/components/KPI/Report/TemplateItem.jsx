@@ -58,7 +58,7 @@ let TemplateItem = React.createClass({
         <div className="jazz-template-item-right-user">
           <div className="jazz-template-user-info jazz-template-item-right-user-info">
               <span>{me.props.createUser}</span>
-            <span>{I18N.EM.Report.UploadAt + displayTime}</span>
+            <span style={{marginLeft:'10px'}}>{I18N.EM.Report.UploadAt + displayTime}</span>
           </div>
         </div>
       </div>
