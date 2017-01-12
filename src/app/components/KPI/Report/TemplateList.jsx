@@ -47,7 +47,7 @@ let TemplateList = React.createClass({
       open={true}
       actions={dialogActions}
       modal={true}>
-        {I18N.format(I18N.EM.Report.DeleteTemplateMessage, this.state.name)}
+        {I18N.format(I18N.Setting.KPI.Report.DeleteTemplateMessage, this.state.name)}
       </NewDialog>);
   },
   _deleteTemplate: function() {

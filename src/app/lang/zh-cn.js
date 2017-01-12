@@ -2082,4 +2082,7 @@ I18N.Setting.KPI.Report.DataComment= '注：至少配置一组表格数据';
 I18N.Setting.KPI.Report.CalcData= '计算数据';
 I18N.Setting.KPI.Report.Hierarchy= '所属层级';
 I18N.Setting.KPI.Report.TimeRangeComment= '注：当前年为{0}年，只需配置当前年份对应的时间范围，其余年份会根据配置自动计算';
+I18N.Setting.KPI.Report.DuplicatedName = '已经存在名称为“{0}”的模板，请更改名称后重新上传。';
+I18N.Setting.KPI.Report.DeleteTemplateMessage = '模板“{0}”将被删除。';
+I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
 module.exports = I18N;
