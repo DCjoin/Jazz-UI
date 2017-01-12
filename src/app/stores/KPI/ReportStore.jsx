@@ -87,12 +87,17 @@ const ReportStore = assign({}, PrototypeStore, {
     _selectedTagList = Immutable.fromJS(tagData.Data);
   },
   getHierarchyNameByTagId(id,tag){
-    var HierName=_.last(tag.get('HierarchyName').split('\\'));
-    if(tag.get('AreaDimensionName')){
-        var  AreaName=_.last(tag.get('AreaDimensionName').split('\\'));
-        return `${HierName}-${AreaName}`
-    }else {
-      return HierName
+    if(tag.get('HierarchyName')){
+      var HierName=_.last(tag.get('HierarchyName').split('\\'));
+      if(tag.get('AreaDimensionName')){
+          var  AreaName=_.last(tag.get('AreaDimensionName').split('\\'));
+          return `${HierName}-${AreaName}`
+      }else {
+        return HierName
+      }
+    }
+    else {
+      return ''
     }
   },
   getTagList() {
