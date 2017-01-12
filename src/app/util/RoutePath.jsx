@@ -19,6 +19,7 @@ export default {
 	alarm: p => `/${p.lang}/${p.customerId}/alarm`,
 	map: p => `/${p.lang}/${p.customerId}/map`,
 	report:{
+		actualityReport: p => `/${p.lang}/${p.customerId}/actuality/report`,
 		dailyReport: p => `/${p.lang}/${p.customerId}/dailyReport`,
 		template: p => `/${p.lang}/${p.customerId}/template`,
 	},

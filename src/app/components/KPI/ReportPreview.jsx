@@ -3,7 +3,9 @@ import classnames from 'classnames';
 import CircularProgress from 'material-ui/CircularProgress';
 
 import util from 'util/Util.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 import SwitchBar from 'controls/SwitchBar.jsx';
+import LinkButton from 'controls/LinkButton.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import NewDialog from 'controls/NewDialog.jsx';
 
@@ -136,10 +138,11 @@ export default class ReportPreview extends Component {
 	render() {
 		let onLastMonth, onNextMonth, currentYear = new Date().getFullYear();
 		let selectedReport = this._getSelectedReportById();
+		let {preview} = this.props;
 
 		if( !ReportStore.getReportList() || !selectedReport ) {
 			if( ReportStore.getReportList().size === 0 ) {
-				return (<div className='flex-center'>{'暂无报表，点击上方"+"按钮开始新建吧～'}</div>);
+				return (<div className='flex-center' style={{height: 200}}>{preview ? '暂无报表，点击上方"+"按钮开始新建吧～' : '当前建筑没有报表'}</div>);
 			}
 			return (<div className='flex-center'><CircularProgress mode="indeterminate" size={80} /></div>);
 		}
@@ -154,12 +157,18 @@ export default class ReportPreview extends Component {
 			}
 		}
 		return (
-			<div>
+			<div className='jazz-report-preview'>
 				<SwitchBar 
 					className='switch-year'
         			label={this._getDateLabel()}
         			onLeft={onLastMonth}
         			onRight={onNextMonth}/>
+        		{preview && <LinkButton 
+        						className={'show-full-report'} 
+        						label={'查看各建筑报表 >>'}
+        						onClick={() => {
+        							util.openTab(RoutePath.report.actualityReport(this.props.router.params));
+        						}}/>}
 				<div className='jazz-report-chart'>
 					<div className='jazz-report-chart-header'>
 						{ReportStore.getReportList().map(report => 
