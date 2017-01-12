@@ -79,6 +79,7 @@ module.exports = function(options) {
             fs.mkdirSync(buildPath);
           }
           fs.writeFileSync(path.join(buildPath, "index.html"), html);
+          fs.writeFileSync(path.join(buildPath,"UpdateBrowserTip.html"), fs.readFileSync(path.join(appRoot, "UpdateBrowserTip.html"), "utf-8"));
           console.log("ok");
         });
 
