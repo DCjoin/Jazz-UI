@@ -44,6 +44,16 @@ server.state('UserInfo', {
 		//isSecure: false
 });
 
+function returnUpdateBrowserHtml(request,reply){
+  var html = fs.readFileSync(path.resolve(__dirname, "../app/UpdateBrowserTip.html"), "utf-8");
+  html = html.replace('APP_URL',APP_URL);
+  html = html.replace('VENDOR_URL',VENDOR_URL);
+  html = html.replace('STYLE_URL',STYLE_URL);
+  var res = reply(html).type("text/html");
+  return res;
+}
+
+
 function returnIndexHtml(request,reply){
 	var html = fs.readFileSync(path.resolve(__dirname, "../app/index.html"), "utf-8");
 	html = html.replace('APP_URL',APP_URL);
@@ -97,6 +107,11 @@ server.route([{
   }
 }]);
 
+server.route({
+  method: 'GET',
+  path: '/need-to-update-browser',
+  handler: returnUpdateBrowserHtml
+});
 server.route({
   method: 'GET',
   path: '/{path*}',
