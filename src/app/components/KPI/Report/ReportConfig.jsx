@@ -46,7 +46,8 @@ export default class ReportConfig extends Component {
     reportItem:this.props.report===null?this.newReportItem():ReportStore.getDefalutReport(this.props.report.toJS()),
     showUploadDialog: false,
     fileName: '',
-		errorMsg:null
+		errorMsg:null,
+		isLoading:false
 	};
 
 	_onChange(){
@@ -161,7 +162,7 @@ export default class ReportConfig extends Component {
           var errorCode = obj.UploadResponse.ErrorCode,
             errorMessage;
           if (errorCode === -1) {
-            errorMessage = I18N.EM.Report.DuplicatedName;
+            errorMessage = I18N.format(I18N.Setting.KPI.Report.DuplicatedName,fileName);
           }
           if (errorMessage) {
             CommonFuns.popupErrorMessage(errorMessage, '', true);
@@ -287,7 +288,8 @@ export default class ReportConfig extends Component {
 
 	_onSave(){
 		this.setState({
-			errorMsg:null
+			errorMsg:null,
+			isLoading:false
 		},()=>{
 			this.props.onSave();
 		})
@@ -306,7 +308,11 @@ export default class ReportConfig extends Component {
 		TemplateId: reportItem.get('templateId'),
 		Version: reportItem.get('version')
 	};
-	ReportAction.saveCustomerReport(sendData);
+	this.setState({
+		isLoading:true
+	},()=>{
+		ReportAction.saveCustomerReport(sendData);
+	})
 	}
 
 	_onErrorHandle() {
@@ -318,12 +324,14 @@ export default class ReportConfig extends Component {
       return;
     } else if (code === '21708'.toString()) {
 			this.setState({
-				errorMsg:this.stepErrorHandle(message, errorReport)
+				errorMsg:this.stepErrorHandle(message, errorReport),
+				isLoading:false
 			})
 
     } else {
 			this.setState({
-				errorMsg : CommonFuns.getErrorMessage(code)
+				errorMsg : CommonFuns.getErrorMessage(code),
+				isLoading:false
 			})
     }
   }
@@ -552,7 +560,7 @@ export default class ReportConfig extends Component {
 
 	render() {
 		var {hierarchyName}=this.props;
-		if(this.state.templateList===null){
+		if(this.state.templateList===null || this.state.isLoading){
 			return (<div className="noContent flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>)
 		}
 		else {
@@ -566,7 +574,8 @@ export default class ReportConfig extends Component {
 					},
 					className:'jazz-kpi-config-wrap',
 					style:{
-						paddingLeft:'50px'
+						paddingLeft:'50px',
+						marginTop:'0px'
 					}
 				};
 				return (
