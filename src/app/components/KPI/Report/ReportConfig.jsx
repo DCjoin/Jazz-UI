@@ -76,19 +76,28 @@ export default class ReportConfig extends Component {
     });
   }
 
+	_updateReportItem(reportItem,sheetNames){
+		reportItem.get('data').forEach((report,id)=>{
+			reportItem=reportItem.setIn(['data',id,'TargetSheet'],sheetNames.getIn([0]))
+		})
+		this.setState({
+			reportItem: reportItem,
+			sheetNames: sheetNames
+		})
+	}
+
   _onExistTemplateChange(value) {
     var reportItem = this.state.reportItem;
     reportItem = reportItem.set('templateId', value);
     var sheetNames = ReportStore.getSheetNamesByTemplateId(value);
     var me = this;
-    this.setState({
-      reportItem: reportItem,
-      sheetNames: sheetNames
-    }, () => {
+
       this.setState({
       saveDisabled: !me._isValid()
-    });
-  });
+    },()=>{
+			this._updateReportItem(reportItem,sheetNames)
+		});
+
   }
 
 	_clearAllErrorText() {
@@ -145,15 +154,14 @@ export default class ReportConfig extends Component {
         if (obj.success === true) {
           reportItem = reportItem.set('templateId', obj.TemplateId);
           ReportAction.getTemplateListByCustomerId(customerId, 'Name', 'asc');
-          me.setState({
-            reportItem: reportItem,
-            sheetNames: Immutable.fromJS(obj.SheetList),
-            showUploadDialog: false
-          }, () => {
+
             me.setState({
-              saveDisabled: !me._isValid()
-            });
-          });
+              saveDisabled: !me._isValid(),
+							showUploadDialog: false
+            },()=>{
+							me._updateReportItem(reportItem,Immutable.fromJS(obj.SheetList))
+						});
+
         } else {
           me.setState({
             showUploadDialog: false,
