@@ -45,7 +45,7 @@ let TagItem = React.createClass({
         deleteButton = <div><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onTagItemUnselected} style={cleanIconStyle}></FontIcon></div>;
       }
       displayIndex = <div>{me.props.index + 1}</div>;
-      let name=ReportStore.getHierarchyNameByTagId(this.props.id,this.props.tag);
+      let name=ReportStore.getHierarchyName(this.props.tag);
       hierarchyName=<div title={name}>{name}</div>
     }
 
