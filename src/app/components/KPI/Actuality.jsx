@@ -90,12 +90,17 @@ export default class Actuality extends Component {
 		this._removeEditPage = this._removeEditPage.bind(this);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( nextProps.router.params !== this.props.router.params ) {
+		if( nextProps.params !== this.props.params ) {
 			this._loadInitData(nextProps, nextContext);
 		}
 	}
 	_loadInitData(props, context) {
 		if( canView() ) {
+			this.setState({
+				buildingList: null,
+				userCustomers: null,
+				allBuildingsExistence: null,
+			});
 			HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
 			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 			ReportAction.allBuildingsExistence(CurrentUserStore.getCurrentUser().Id);
@@ -124,6 +129,7 @@ export default class Actuality extends Component {
 				{isFull() &&
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
+			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
 			      }}/>}
 				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
 			</div>
@@ -147,10 +153,10 @@ export default class Actuality extends Component {
 		if(this.state.edit && this._getHierarchyId(this.props)) {
 			let {type, data} = this.state.edit,
 			content = null;
-			if( type === 'kpi' ) {
-				content = (<ConfigMenu {...this.props.router}>
-				</ConfigMenu>);
-			}
+			// if( type === 'kpi' ) {
+			// 	content = (<ConfigMenu {...this.props.router}>
+			// 	</ConfigMenu>);
+			// }
 			if( type === 'report' ) {
 				content = (<ReportConfig 
 								hierarchyId={this._getHierarchyId(this.props)}
