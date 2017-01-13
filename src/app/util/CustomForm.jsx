@@ -30,6 +30,13 @@ var CustomForm = function(_options) {
 			param： 以{name:"***", value:"***"}形式接收提交时的参数值，如传入值包含key，则进行更新
 			返回值： 传入参数值，增加/更新 key与 node属性
 		*/
+		setParams: function(params) {
+			Object.keys(params).forEach( key => this.setParam({
+				name: key,
+				value: params[key]
+			}) );
+		},
+
 		setParam: function(param) {
 
 			var _param	= _.assign({}, param),

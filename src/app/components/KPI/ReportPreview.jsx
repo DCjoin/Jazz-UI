@@ -115,7 +115,7 @@ export default class ReportPreview extends Component {
 		});
 	}
 	_onDownload(reportId) {
-		ReportAction.download(this.props.hierarchyId, reportId);
+		ReportAction.download(reportId, this.state.year);
 	}
 	_renderDeleteDialog() {
 		let {showDeleteDialog, selectedReprotId} = this.state,

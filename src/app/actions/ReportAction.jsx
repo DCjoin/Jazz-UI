@@ -187,10 +187,22 @@ let ReportAction = {
       }
     })
   },
-  download(hierarchyId, reportId) {
+  download(Id, Year) {
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = `API/DataReport/ExportEnergyUsageDataAccordingToTemplate?Id=${Id}&Year=${Year}`;
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
+
     let form = new CustomForm({
       target: '_blank',
-      action: 'API/DataReport/DownloadExportTemplate'
+      action: window.location.href.split('#')[0] + 'API/DataReport/ExportEnergyUsageDataAccordingToTemplate'
+    });
+    form.setParams({
+      Id,
+      Year
     });
     form.submit();
   }
