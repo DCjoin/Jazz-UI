@@ -51,6 +51,22 @@ let HierarchyAction = {
     });
   },
 
+  getAvailableDataReportBuildingListByCustomerId(customerId) {
+    Ajax.get(util.replacePathParams('/datareport/availablebuildings/{customerid}', customerId), {
+      params: {customerId},
+      success: function(buildingList) {
+
+        AppDispatcher.dispatch({
+          type: Action.GET_BUILDING_LIST_BY_CUSTOMER_ID,
+          data: buildingList
+        });
+      },
+      error: function(err, res) {
+        console.log(err, res);
+      }
+    });
+  },
+
 };
 
 module.exports = HierarchyAction;

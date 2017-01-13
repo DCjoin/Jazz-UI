@@ -36,7 +36,7 @@ export default class ReportActuality extends Component {
 		});
 	}
 	_loadInitData(props, context) {
-		HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
+		HierarchyAction.getAvailableDataReportBuildingListByCustomerId(props.router.params.customerId);
 	}
 	_showReportEdit(data) {
 		this.setState({
@@ -103,6 +103,7 @@ export default class ReportActuality extends Component {
 			let data = edit.data;
 			return (<div className='jazz-actuality-edit'>
 				<ReportConfig 
+					hierarchyId={this.state.hierarchyId} 
 					hierarchyName={this._getSelectedHierarchy().Name} 
 					report={data} 
 					onSave={() => {

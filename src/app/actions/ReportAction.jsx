@@ -172,22 +172,47 @@ let ReportAction = {
           type: Action.GET_SELECTED_REPORT_PREVIEW_URL_SUCCESS,
           data: res
         });
-
       }
     })
   },
   setFirst(hierarchyId, reportId) {
-    let getReportListByCustomerId = this.getReportListByCustomerId.bind(this);
+    AppDispatcher.dispatch({
+      type: Action.SET_FIRST,
+      data: reportId
+    });
+    // let getReportListByCustomerId = this.getReportListByCustomerId.bind(this);
     return Ajax.post( util.replacePathParams('/datareport/first/{hierarchyId}/{reportId}', hierarchyId, reportId), {
       success: function(res) {
-        getReportListByCustomerId(hierarchyId, 'createTime', 'asc');
+        // getReportListByCustomerId(hierarchyId, 'createTime', 'asc');
       }
     })
   },
-  download(hierarchyId, reportId) {
+  allBuildingsExistence(customerid) {
+    return Ajax.get( util.replacePathParams('/datareport/allbuildings/existence/{customerid}', customerid), {
+      success: function(res) {
+        AppDispatcher.dispatch({
+          type: Action.ALL_BUILDINGS_EXISTENCE,
+          data: reportId
+        });
+      }
+    })
+  },
+  download(Id, Year) {
+    // var iframe = document.createElement('iframe');
+    // iframe.style.display = 'none';
+    // iframe.src = `API/DataReport/ExportEnergyUsageDataAccordingToTemplate?Id=${Id}&Year=${Year}`;
+    // iframe.onload = function() {
+    //   document.body.removeChild(iframe);
+    // };
+    // document.body.appendChild(iframe);
+
     let form = new CustomForm({
       target: '_blank',
-      action: 'API/DataReport/DownloadExportTemplate'
+      action: window.location.href.split('#')[0] + 'API/DataReport/ExportEnergyUsageDataAccordingToTemplate'
+    });
+    form.setParams({
+      Id,
+      Year
     });
     form.submit();
   }
