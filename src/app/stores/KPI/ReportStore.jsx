@@ -86,7 +86,7 @@ const ReportStore = assign({}, PrototypeStore, {
   setSelctedTagData(tagData) {
     _selectedTagList = Immutable.fromJS(tagData.Data);
   },
-  getHierarchyNameByTagId(id,tag){
+  getHierarchyName(tag){
     if(tag.get('HierarchyName')){
       var HierName=_.last(tag.get('HierarchyName').split('\\'));
       if(tag.get('AreaDimensionName')){
@@ -187,7 +187,7 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SAVE_REPORT_SUCCESS:
       //ReportStore.updateReportItem(action.curReport);
-      ReportStore.emitSaveErrorChange();
+      ReportStore.emitSaveSuccessChange();
       break;
     case Action.SAVE_REPORT_ERROR:
       ReportStore._initErrorText(action.errorText, action.errorReport);
