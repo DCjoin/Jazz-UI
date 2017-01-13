@@ -20,12 +20,13 @@ import ReportConfig from './Report/ReportConfig.jsx';
 
 import UserAction from 'actions/UserAction.jsx';
 import HierarchyAction from 'actions/HierarchyAction.jsx';
-// import SingleKPIAction from 'actions/KPI/SingleKPIAction.jsx';
+import ReportAction from 'actions/ReportAction.jsx';
 
 import HierarchyStore from 'stores/HierarchyStore.jsx';
 import UserStore from 'stores/UserStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
+import ReportStore from 'stores/ReportStore.jsx';
 
 function privilegeWithIndexAndReport( privilegeCheck ) {
 	return privilegeCheck(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
@@ -72,13 +73,14 @@ export default class Actuality extends Component {
 			store: HierarchyStore,
 			add: ['addBuildingListListener'],
 			remove: ['removeBuildingListListener'],
-		}, UserStore];
+		}, UserStore, ReportStore];
 	}
 
 	static calculateState(prevState) {
 		return {
 			buildingList: HierarchyStore.getBuildingList(),
 			userCustomers: UserStore.getUserCustomers(),
+			allBuildingsExistence: ReportStore.getAllBuildingsExistence(),
 		};
 	}
 
@@ -96,6 +98,7 @@ export default class Actuality extends Component {
 		if( canView() ) {
 			HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
 			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
+			ReportAction.allBuildingsExistence(CurrentUserStore.getCurrentUser().Id);
 		}
 	}
 	_getParams(props) {
@@ -133,6 +136,7 @@ export default class Actuality extends Component {
 				<ReportPreview 
 					ref={'report_preview'}
 					preview={true}
+					hasAll={this.state.allBuildingsExistence}
 					showReportEdit={this._showReportEdit}
 					router={this.props.router} 
 					hierarchyId={this._getHierarchyId(this.props)}/>

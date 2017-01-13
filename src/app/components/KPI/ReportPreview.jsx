@@ -170,6 +170,7 @@ export default class ReportPreview extends Component {
         			onLeft={onLastMonth}
         			onRight={onNextMonth}/>
         		{preview && <LinkButton 
+        						disabled={!this.props.hasAll}
         						className={'show-full-report'} 
         						label={'查看各建筑报表 >>'}
         						onClick={() => {
