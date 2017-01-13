@@ -134,6 +134,7 @@ export default class ReportConfig extends Component {
   _handleFileSelect(event) {
       var me = this;
       var file = event.target.files[0];
+			if(!file) return;
       var fileName = file.name;
 
       if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
