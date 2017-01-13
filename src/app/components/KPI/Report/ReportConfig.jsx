@@ -350,7 +350,7 @@ export default class ReportConfig extends Component {
     var reportData = data.CriteriaList[index];
     var j2d = CommonFuns.DataConverter.JsonToDateTime;
     var list;
-    if (reportData.DateType !== 11) {
+    if (reportData.DateType !== 33) {
       var dateType = CommonFuns.GetStrDateType(reportData.DateType);
       var timeregion = CommonFuns.GetDateRegion(dateType);
       list = CommonFuns.getInterval(timeregion.start, timeregion.end).stepList;
