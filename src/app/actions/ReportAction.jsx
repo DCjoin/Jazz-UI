@@ -187,6 +187,16 @@ let ReportAction = {
       }
     })
   },
+  allBuildingsExistence(customerid) {
+    return Ajax.get( util.replacePathParams('/datareport/allbuildings/existence/{customerid}', customerid), {
+      success: function(res) {
+        AppDispatcher.dispatch({
+          type: Action.ALL_BUILDINGS_EXISTENCE,
+          data: reportId
+        });
+      }
+    })
+  },
   download(Id, Year) {
     // var iframe = document.createElement('iframe');
     // iframe.style.display = 'none';
