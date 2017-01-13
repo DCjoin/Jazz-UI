@@ -90,12 +90,17 @@ export default class Actuality extends Component {
 		this._removeEditPage = this._removeEditPage.bind(this);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( nextProps.router.params !== this.props.router.params ) {
+		if( nextProps.params !== this.props.params ) {
 			this._loadInitData(nextProps, nextContext);
 		}
 	}
 	_loadInitData(props, context) {
 		if( canView() ) {
+			this.setState({
+				buildingList: null,
+				userCustomers: null,
+				allBuildingsExistence: null,
+			});
 			HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
 			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 			ReportAction.allBuildingsExistence(CurrentUserStore.getCurrentUser().Id);
