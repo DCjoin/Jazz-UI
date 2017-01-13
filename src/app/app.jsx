@@ -255,27 +255,27 @@ ReactDom.render(<Router history={hashHistory} routes={{
           childRoutes: [{
             path: 'report',
             component: ReportActuality,
-          },
+          // },
           //   path: 'actuality',
           //   component: Actuality
-          // }, {
-          //   path: 'config',
-          //   component: KPIConfig,
-          //   indexRoute: {
-          //       onEnter: (router, replaceState) => {
-          //         replaceState(RoutePath.KPIConfig(router.params));
-          //       },
-          //   },
-          //   childRoutes: [
-          //     {
-          //        path: 'kpiconfig',
-          //        component: KPIConfigList
-          //      },
-          //      {
-          //        path: 'rankconfig',
-          //        component: KPIRanking
-          //    }]
-          // },
+          }, {
+            path: 'config',
+            component: KPIConfig,
+            indexRoute: {
+                onEnter: (router, replaceState) => {
+                  replaceState(RoutePath.KPIConfig(router.params));
+                },
+            },
+            childRoutes: [
+              {
+                 path: 'kpiconfig',
+                 component: KPIConfigList
+               },
+               {
+                 path: 'rankconfig',
+                 component: KPIRanking
+             }]
+          },
           {
             path: 'template',
             component: KPITemplate
