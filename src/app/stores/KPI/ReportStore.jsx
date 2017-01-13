@@ -86,7 +86,7 @@ const ReportStore = assign({}, PrototypeStore, {
   setSelctedTagData(tagData) {
     _selectedTagList = Immutable.fromJS(tagData.Data);
   },
-  getHierarchyNameByTagId(id,tag){
+  getHierarchyName(tag){
     if(tag.get('HierarchyName')){
       var HierName=_.last(tag.get('HierarchyName').split('\\'));
       if(tag.get('AreaDimensionName')){
