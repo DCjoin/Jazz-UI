@@ -126,7 +126,7 @@ export default class RankChart extends Component {
 		this._getDataLabel = this._getDataLabel.bind(this);
 		this._jumpToSingle = this._jumpToSingle.bind(this);
 		this.state = {
-			monthIndex: props.MonthRank.length - 1,
+			monthIndex: props.MonthRank && (props.MonthRank.length - 1),
 			rankIndex: 0,
 		}
 	}
@@ -161,6 +161,9 @@ export default class RankChart extends Component {
 		// );
 	}
 	_getCurrentMonthRank() {
+		if( !this.props.MonthRank ) {
+			return {};
+		}
 		return this.props.MonthRank[this.state.monthIndex];
 	}
 	_getCurrentAllBuildingRank() {
@@ -266,7 +269,9 @@ export default class RankChart extends Component {
 			rankIndex,
 		} = this.state,
 		onLastMonth, onNextMonth, onLastRank, onNextRank;
-
+		if( !MonthRank ) {
+			return null;
+		}
 		if(monthIndex > 0) {
 			onLastMonth = () => {
 				this.setState({

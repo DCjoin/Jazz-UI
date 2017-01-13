@@ -140,6 +140,18 @@ var ReportStore = assign({}, PrototypeStore, {
   getSelectedReportItem: function() {
     return _reportItem;
   },
+  setFirst: function(reportId) {
+
+    // this.setReportList(
+    let newlist =  this.getReportList()
+        .filter( report => report.get('Id') !== reportId )
+        // .sortBy( (first, second) => /((-)?(\d)+)/.exec(second.get('CreateTime'))[0] - /((-)?(\d)+)/.exec(first.get('CreateTime'))[0]
+        .unshift( this.getReportList().find(  report => report.get('Id') === reportId ) )
+    // );
+
+    console.log(newlist.toJS());
+    _reportList = newlist;
+  },
   emitReportListChange: function() {
     this.emit(CHANGE_REPORT_LIST_EVENT);
   },
@@ -263,6 +275,9 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
     case Action.GET_SELECTED_REPORT_PREVIEW_URL_SUCCESS:
       ReportStore.setSelctedPreviewUrl(action.data);
       ReportStore.emitSelctedPreviewUrlChange();
+      break;
+    case Action.SET_FIRST:
+      ReportStore.setFirst(action.data);
       break;
   }
 });
