@@ -172,15 +172,18 @@ let ReportAction = {
           type: Action.GET_SELECTED_REPORT_PREVIEW_URL_SUCCESS,
           data: res
         });
-
       }
     })
   },
   setFirst(hierarchyId, reportId) {
-    let getReportListByCustomerId = this.getReportListByCustomerId.bind(this);
+    AppDispatcher.dispatch({
+      type: Action.SET_FIRST,
+      data: reportId
+    });
+    // let getReportListByCustomerId = this.getReportListByCustomerId.bind(this);
     return Ajax.post( util.replacePathParams('/datareport/first/{hierarchyId}/{reportId}', hierarchyId, reportId), {
       success: function(res) {
-        getReportListByCustomerId(hierarchyId, 'createTime', 'asc');
+        // getReportListByCustomerId(hierarchyId, 'createTime', 'asc');
       }
     })
   },

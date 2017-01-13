@@ -109,8 +109,9 @@ export default class ReportPreview extends Component {
 		});
 	}
 	_onSetFirst(reportId) {
-		this.setState({selectedReprotId: null}, () => {
-			ReportAction.setFirst(this.props.hierarchyId, reportId);
+		ReportAction.setFirst(this.props.hierarchyId, reportId);
+		this.setState({
+			reportList: ReportStore.getReportList()
 		});
 	}
 	_onDownload(reportId) {
