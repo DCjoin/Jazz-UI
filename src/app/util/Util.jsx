@@ -697,7 +697,7 @@ let CommonFuns = {
     var lvs = [];
     lvs.push(ft.day); // 1day
     lvs.push(ft.week); //1week
-    lvs.push(31 * ft.day); //1month 31day
+    lvs.push(28 * ft.day); //1month 31day
     lvs.push(31 * 3 * ft.day); //3month 93day
     lvs.push(ft.year); // 1year
     lvs.push(2 * ft.year); // 2year
