@@ -149,6 +149,7 @@ export default class Actuality extends Component {
 			}
 			if( type === 'report' ) {
 				content = (<ReportConfig 
+								hierarchyId={this._getHierarchyId(this.props)}
 								hierarchyName={this._getSelectedHierarchy().Name} 
 								report={data} 
 								onSave={() => {

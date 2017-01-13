@@ -103,6 +103,7 @@ export default class ReportActuality extends Component {
 			let data = edit.data;
 			return (<div className='jazz-actuality-edit'>
 				<ReportConfig 
+					hierarchyId={this.state.hierarchyId} 
 					hierarchyName={this._getSelectedHierarchy().Name} 
 					report={data} 
 					onSave={() => {
