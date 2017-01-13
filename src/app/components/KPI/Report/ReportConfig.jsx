@@ -310,7 +310,7 @@ export default class ReportConfig extends Component {
 	var sendData = {
 		CreateUser: reportItem.get('createUser'),
 		CriteriaList: reportItem.get('data').toJS(),
-		HierarchyId: parseInt(this.context.currentRoute.params.customerId),
+		HierarchyId: this.props.hierarchyId,
 		Id: reportItem.get('id'),
 		Name: reportItem.get('name'),
 		TemplateId: reportItem.get('templateId'),
@@ -599,7 +599,7 @@ export default class ReportConfig extends Component {
 	}
 }
 ReportConfig.propTypes = {
-  // hierarchyId:React.PropTypes.number,
+  hierarchyId:React.PropTypes.number,
   hierarchyName:React.PropTypes.string,
   report:React.PropTypes.object,
 	onSave:React.PropTypes.object,
