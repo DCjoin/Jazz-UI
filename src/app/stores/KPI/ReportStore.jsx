@@ -187,7 +187,7 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SAVE_REPORT_SUCCESS:
       //ReportStore.updateReportItem(action.curReport);
-      ReportStore.emitSaveErrorChange();
+      ReportStore.emitSaveSuccessChange();
       break;
     case Action.SAVE_REPORT_ERROR:
       ReportStore._initErrorText(action.errorText, action.errorReport);
