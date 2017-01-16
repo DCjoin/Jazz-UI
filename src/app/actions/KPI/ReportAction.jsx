@@ -60,7 +60,7 @@ const ReportAction = {
         limit: 20*10000,
         page: 1,
         size: 20*10000,
-        start: 1
+        start: 0
       },
       success: function(tagData) {
         AppDispatcher.dispatch({
