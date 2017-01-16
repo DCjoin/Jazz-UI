@@ -283,6 +283,7 @@ export default class ReportConfig extends Component {
 	}
 
 	_deleteReportData(index) {
+		var me=this;
 	var reportItem = this.state.reportItem;
 	var reportData = reportItem.get('data');
 	reportData = reportData.delete(index);
@@ -292,6 +293,10 @@ export default class ReportConfig extends Component {
 	reportItem = reportItem.set('data', reportData);
 	this.setState({
 		reportItem: reportItem
+	},()=>{
+		this.setState({
+			saveDisabled: !me._isValid()
+		})
 	});
 	}
 

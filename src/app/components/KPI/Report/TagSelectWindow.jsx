@@ -18,7 +18,7 @@ let TagSelectWindow = React.createClass({
     },
   getInitialState: function() {
     return {
-      isLeftLoading: null,
+      isLeftLoading: true,
       isRightLoading: true,
       checkAll: false,
       checkAllDisabled: true,
