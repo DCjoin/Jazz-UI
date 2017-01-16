@@ -61,9 +61,10 @@ let HierAndDimHeader = React.createClass({
   },
   getInitialState: function() {
     return {
-      hierId: null,
+      hierId: this.props.hierarchyId || null,
+      dimParentNode:this.props.hierarchyId?{Id:this.props.hierarchyId}:null,
       HierarchyShow: false,
-      dimActive:false,
+      dimActive:this.props.hierarchyId?true:false,
       dimId: null,
       DimShow: false,
     };

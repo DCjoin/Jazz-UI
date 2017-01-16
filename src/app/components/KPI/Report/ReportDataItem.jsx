@@ -336,7 +336,7 @@ let ReportDataItem = React.createClass({
       label={I18N.Common.Button.Cancel}
       onClick={this._handleDialogDismiss} />
     ];
-    var tagWindow = <TagSelectWindow ref='tagListWindow' type={this.props.reportType} disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
+    var tagWindow = <TagSelectWindow ref='tagListWindow' hierarchyId={this.props.hierarchyId} type={this.props.reportType} disabled={this.props.disabled} selectedTagList={this.props.tagList}></TagSelectWindow>;
 
     return (<div className='jazz-data-tag-select-window'><NewDialog
       ref="tagSelectDialog"
