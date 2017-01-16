@@ -68,7 +68,8 @@ const ReportStore = assign({}, PrototypeStore, {
   }
   Items.unshift({
     payload: -1,
-    text:I18N.EM.Report.Select
+    text:I18N.EM.Report.Select,
+    disabled:true
   });
   return Items
   },
