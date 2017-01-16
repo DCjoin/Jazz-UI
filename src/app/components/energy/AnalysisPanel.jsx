@@ -512,7 +512,7 @@ let AnalysisPanel = React.createClass({
           energyData: null
         });
       } else {
-        this.state.chartStrategy.onSearchDataButtonClickFn(this);
+        //this.state.chartStrategy.onSearchDataButtonClickFn(this);
       }
     }
   },

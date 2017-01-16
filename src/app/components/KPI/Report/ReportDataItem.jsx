@@ -387,7 +387,7 @@ let ReportDataItem = React.createClass({
           var month=this.props.dateType-21,
               year=moment().year();
               startTime=moment([year,month,1,0,0,0,0])._d,
-              endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),0,0,0,0])._d;
+              endTime=moment([year,month,CommonFuns.getDaysOfMonth(month),1,0,0,0])._d;
         }
         dateSelector.setDateField(startTime, endTime);
       } else {

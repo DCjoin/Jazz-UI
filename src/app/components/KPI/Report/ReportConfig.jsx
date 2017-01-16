@@ -134,6 +134,7 @@ export default class ReportConfig extends Component {
   _handleFileSelect(event) {
       var me = this;
       var file = event.target.files[0];
+			if(!file) return;
       var fileName = file.name;
 
       if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
@@ -366,13 +367,14 @@ export default class ReportConfig extends Component {
       'Monthly': 4,
       'Yearly': 5
     };
+		var stepNumList=[0,1,2,5,3,4];
     var stepList = [I18N.Common.AggregationStep.Minute, I18N.Common.AggregationStep.Hourly, I18N.Common.AggregationStep.Daily, I18N.Common.AggregationStep.Monthly, I18N.Common.AggregationStep.Yearly, I18N.Common.AggregationStep.Weekly];
     var curStep = stepList[reportData.ExportStep];
     var start = map[message[1]];
     var ret = [];
-    for (var i = 0; i < list.length; i++) {
-      if (list[i] >= start) {
-        ret.push('"' + stepList[list[i]] + '"');
+    for (var i = start; i <= 5; i++) {
+      if (list.indexOf(stepNumList[i])>-1) {
+        ret.push('"' + stepList[stepNumList[i]] + '"');
       }
     }
     if (ret.length > 0) {
