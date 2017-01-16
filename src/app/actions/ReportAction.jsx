@@ -84,7 +84,7 @@ let ReportAction = {
   deleteReportById(id) {
     Ajax.post('/DataReport/DeleteReportById', {
       params: {
-        id: id
+        Id: id
       },
       success: function() {
         AppDispatcher.dispatch({
