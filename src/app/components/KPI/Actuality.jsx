@@ -127,9 +127,19 @@ export default class Actuality extends Component {
 			return null;
 		}
 		let singleKPI = this._isSingleKPI();
+		let title = I18N.Kpi.KPIActual;
+		let prefixTitle = '';
+		if(singleKPI) {
+		    // chartData = SingleKPIStore.getKPIChart();
+    		prefixTitle = 
+    			I18N.Setting.KPI.Building + 
+    			this._getSelectedHierarchy().Name + '-' + 
+    			this.props.router.location.query.kpiName + '-';
+			// title = this._getSelectedHierarchy().Name + '-' +  + '-' + I18N.Kpi.KPIActual;
+		}
 		return (<div className='jazz-actuality-content'>
 			<div className='jazz-actuality-item'>
-				<div className='jazz-actuality-item-title'>{I18N.Kpi.KPIActual}</div>
+				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
 				{isFull() &&
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
