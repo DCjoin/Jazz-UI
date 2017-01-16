@@ -85,13 +85,32 @@ export default class Actuality extends Component {
 	}
 
 	componentWillMount() {
+		this._onCheckSingleOnly = this._onCheckSingleOnly.bind(this);
 		this._loadInitData(this.props, this.context);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
+		HierarchyStore.addBuildingListListener(this._onCheckSingleOnly);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
 			this._loadInitData(nextProps, nextContext);
+		}
+	}
+	componentWillUnmount() {		
+		HierarchyStore.removeBuildingListListener(this._onCheckSingleOnly);
+	}
+	// componentWillUpdate(lastProps, lastState) {
+	// 	console.log(this.state.buildingList && this.state.buildingList.length);
+	// 	if( this.state.buildingList && this.state.buildingList.length === 1 && isOnlyView() &&
+	// 		+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
+	// 		console.log('componentWillUpdate');
+	// 	}
+		
+	// }
+	_onCheckSingleOnly() {
+		if( this.state.buildingList && this.state.buildingList.length === 1 && isOnlyView() &&
+			+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
+			this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
 		}
 	}
 	_loadInitData(props, context) {
