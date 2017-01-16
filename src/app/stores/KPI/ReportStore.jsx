@@ -165,31 +165,31 @@ const ReportStore = assign({}, PrototypeStore, {
 
 ReportStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
-    case Action.GET_REPORT_TEMPLATE_LIST_SUCCESS:
+    case Action.GET_KPI_REPORT_TEMPLATE_LIST_SUCCESS:
       ReportStore.setTemplateList(action.templateList);
       ReportStore.emitChange();
       break;
-    case Action.GET_REPORT_TEMPLATE_LIST_ERROR:
+    case Action.GET_KPI_REPORT_TEMPLATE_LIST_ERROR:
       ReportStore.setTemplateList([]);
       ReportStore.emitChange();
       break;
-    case Action.DELETE_TEMPLATE_SUCCESS:
+    case Action.DELETE_KPI_TEMPLATE_SUCCESS:
       ReportStore.deleteTemplateById(action.id);
       ReportStore.emitChange();
       break;
-    case Action.GET_REPORT_TAG_DATA_SUCCESS:
+    case Action.GET_KPI_REPORT_TAG_DATA_SUCCESS:
       ReportStore.setTagData(action.tagData);
       ReportStore.emitTagListChange();
       break;
-    case Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS:
+    case Action.GET_SELECTED_KPI_REPORT_TAG_DATA_SUCCESS:
       ReportStore.setSelctedTagData(action.tagData);
       ReportStore.emitSelectedTagListChange();
       break;
-    case Action.SAVE_REPORT_SUCCESS:
+    case Action.SAVE_KPI_REPORT_SUCCESS:
       //ReportStore.updateReportItem(action.curReport);
       ReportStore.emitSaveSuccessChange();
       break;
-    case Action.SAVE_REPORT_ERROR:
+    case Action.SAVE_KPI_REPORT_ERROR:
       ReportStore._initErrorText(action.errorText, action.errorReport);
       ReportStore.emitSaveErrorChange();
       break;

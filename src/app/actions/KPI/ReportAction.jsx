@@ -17,13 +17,13 @@ const ReportAction = {
       },
       success: function(templateList) {
         AppDispatcher.dispatch({
-          type: Action.GET_REPORT_TEMPLATE_LIST_SUCCESS,
+          type: Action.GET_KPI_REPORT_TEMPLATE_LIST_SUCCESS,
           templateList: templateList
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
-          type: Action.GET_REPORT_TEMPLATE_LIST_ERROR
+          type: Action.GET_KPI_REPORT_TEMPLATE_LIST_ERROR
         });
       }
     });
@@ -35,7 +35,7 @@ const ReportAction = {
       },
       success: function() {
         AppDispatcher.dispatch({
-          type: Action.DELETE_TEMPLATE_SUCCESS,
+          type: Action.DELETE_KPI_TEMPLATE_SUCCESS,
           id: id
         });
       },
@@ -64,7 +64,7 @@ const ReportAction = {
       },
       success: function(tagData) {
         AppDispatcher.dispatch({
-          type: Action.GET_REPORT_TAG_DATA_SUCCESS,
+          type: Action.GET_KPI_REPORT_TAG_DATA_SUCCESS,
           tagData: tagData
         });
       },
@@ -88,7 +88,7 @@ const ReportAction = {
       },
       success: function(tagData) {
         AppDispatcher.dispatch({
-          type: Action.GET_SELECTED_REPORT_TAG_DATA_SUCCESS,
+          type: Action.GET_SELECTED_KPI_REPORT_TAG_DATA_SUCCESS,
           tagData: tagData
         });
       },
@@ -106,13 +106,13 @@ const ReportAction = {
       commonErrorHandling:false,
       success: function(curReport) {
         AppDispatcher.dispatch({
-          type: Action.SAVE_REPORT_SUCCESS,
+          type: Action.SAVE_KPI_REPORT_SUCCESS,
           curReport: curReport
         });
       },
       error: function(err, res) {
         AppDispatcher.dispatch({
-          type: Action.SAVE_REPORT_ERROR,
+          type: Action.SAVE_KPI_REPORT_ERROR,
           errorText: res.text,
           errorReport: data
         });
