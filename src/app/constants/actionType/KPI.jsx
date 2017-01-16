@@ -45,7 +45,8 @@ module.exports = {
     DELETE_TEMPLATE_SUCCESS:null,
     GET_REPORT_TAG_DATA_SUCCESS:null,
     SAVE_REPORT_SUCCESS:null,
-    SAVE_REPORT_ERROR:null
+    SAVE_REPORT_ERROR:null,
+    CLEAN_ACTUALITY:null,
   }),
 
   Type:{

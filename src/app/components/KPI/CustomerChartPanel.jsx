@@ -34,7 +34,7 @@ export default function CustomerChartPanel(props) {
 					isGroup={true}
 					period={period}
 					data={tag}
-					summaryData={find(summaryData, sum => sum.KpiId === tag.get('id'))}
+					summaryData={find(summaryData, sum => sum.KpiId === tag.get('id')) || {}}
 					key={tag.get('id')}/> ) :
 			<div className='jazz-kpi-report flex-center' style={{height: 400}}>{I18N.Kpi.Error.NonKPIConguredInThisYear}</div>}
 			{safeArr(ranks).map(rank => rank && (<RankChart {...rank}/>) )}

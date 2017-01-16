@@ -171,7 +171,8 @@ export default class Actuality extends Component {
 	componentWillUnmount() {
 		// HierarchyStore.removeBuildingListListener(this._onPreAction);
 		// UserStore.removeChangeListener(this._onPreAction);
-		SingleKPIStore.removePreListener(this._onChange);
+		SingleKPIAction.cleanActuality();
+		SingleKPIStore.removePreListener(this._onPreAction);
 		SingleKPIStore.removeChangeListener(this._onChange);
 	}
 	_getInitialState() {
@@ -326,7 +327,7 @@ export default class Actuality extends Component {
 		return this.props.router.params.customerId;
 	}
 	_getHierarchyId() {
-		return this.props.hierarchyId || null;
+		return +this.props.router.location.query.hierarchyId || null;
 	}
 	render() {
 		if( this.state.loading ) {

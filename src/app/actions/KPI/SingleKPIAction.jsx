@@ -328,6 +328,13 @@ const SingleKPIAction = {
       }
     });
   },
+
+  cleanActuality() {
+    AppDispatcher.dispatch({
+      type: Action.CLEAN_ACTUALITY,
+    });
+    this.initKPIChartData();
+  }
 }
 
 export default SingleKPIAction;
