@@ -164,7 +164,7 @@ export default class RankChart extends Component {
 		if( !this.props.MonthRank ) {
 			return {};
 		}
-		return this.props.MonthRank[this.state.monthIndex];
+		return this.props.MonthRank[this.state.monthIndex] || {};
 	}
 	_getCurrentAllBuildingRank() {
 		return this._getCurrentMonthRank().BuildingRank;

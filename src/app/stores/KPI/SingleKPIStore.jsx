@@ -535,6 +535,11 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     return param
   },
 
+  cleanActuality() {
+    // this.setCustomerCurrentYear(null);
+    _init();
+  },
+
   dispose() {
     kpiInfo = Immutable.fromJS({});
     _KPIPeriod = null;
@@ -652,6 +657,9 @@ SingleKPIStore.dispatchToken = AppDispatcher.register(function (action) {
     case Action.GET_GROUP_RANK:
       SingleKPIStore.setKPIRank(action.data);
       SingleKPIStore.emitChange();
+      break;
+    case Action.CLEAN_ACTUALITY:
+      SingleKPIStore.cleanActuality();
       break;
 
     default:
