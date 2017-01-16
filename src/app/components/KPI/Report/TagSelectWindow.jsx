@@ -179,6 +179,9 @@ let TagSelectWindow = React.createClass({
           break;
         }
       }
+      if(selectedTagList.size===0){
+        checkAll = false;
+      }
       this.setState({
         selectedTagList: selectedTagList,
         checkAll: checkAll
