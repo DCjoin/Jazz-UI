@@ -103,7 +103,7 @@ export default class Actuality extends Component {
 			});
 			HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
 			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
-			ReportAction.allBuildingsExistence(CurrentUserStore.getCurrentUser().Id);
+			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
 	}
 	_getParams(props) {
@@ -116,6 +116,9 @@ export default class Actuality extends Component {
 		let selectedHierarchyId = this._getHierarchyId(this.props);
 		return find(HierarchyStore.getBuildingList().concat(getCustomerById(this.props.router.params.customerId)), building => building.Id === selectedHierarchyId) || null;
 	}
+	_isSingleKPI() {
+		return this.props.router.location.query.kpiId;
+	}
 	_routerPush(path) {
 		this.props.router.push(path);
 	}
@@ -123,6 +126,7 @@ export default class Actuality extends Component {
 		if( !this._getHierarchyId(this.props) ) {
 			return null;
 		}
+		let singleKPI = this._isSingleKPI();
 		return (<div className='jazz-actuality-content'>
 			<div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{I18N.Kpi.KPIActual}</div>
@@ -133,7 +137,7 @@ export default class Actuality extends Component {
 			      }}/>}
 				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
 			</div>
-			<div className='jazz-actuality-item'>
+			{!singleKPI && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
 				{isFull() &&
 		    	<IconButton iconClassName="fa icon-add" onClick={() => {
@@ -146,7 +150,7 @@ export default class Actuality extends Component {
 					showReportEdit={this._showReportEdit}
 					router={this.props.router} 
 					hierarchyId={this._getHierarchyId(this.props)}/>
-			</div>
+			</div>}
 		</div>);
 	}
 	_renderEditPage() {
@@ -217,7 +221,7 @@ export default class Actuality extends Component {
 	    };
 		return (
 			<div className='jazz-actuality'>
-				{isFull() && <ViewableDropDownMenu {...buildingProps}/>}
+				{!this._isSingleKPI() && isFull() && <ViewableDropDownMenu {...buildingProps}/>}
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
 				{this._renderEditPage()}
