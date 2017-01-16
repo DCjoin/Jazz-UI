@@ -65,7 +65,7 @@ export default class ReportPreview extends Component {
 	}
 	_preAction(hierarchyId = this.props.hierarchyId) {
 		this.setState(this._getInitialState());
-		ReportAction.getReportListByCustomerId(hierarchyId, 'createTime', 'asc');
+		ReportAction.getReportListByCustomerId(hierarchyId, 'CreateTime', 'desc');
 	}
 	_onPreActopn() {
 		this.setState({
