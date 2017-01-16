@@ -462,6 +462,7 @@ export default class ReportConfig extends Component {
 		let props = {
 		key: dataLength - index,
 		ref: 'reportData' + (index + 1),
+		hierarchyId:this.props.hierarchyId,
 		disabled: false,
 		startTime: item.get('DataStartTime'),
 		endTime: item.get('DataEndTime'),

@@ -246,6 +246,7 @@ let TagSelectWindow = React.createClass({
         isRightLoading: false
       });
     }
+    ReportAction.getTagData(customerId,this.props.hierarchyId, 2, null,this.props.type);
     ReportStore.addTagListChangeListener(this._onTagListChange);
     ReportStore.addSelectedTagListChangeListener(this._onSelectedTagListChange);
   },
@@ -303,7 +304,7 @@ let TagSelectWindow = React.createClass({
       <div className='jazz-report-taglist-container-left'>
         <div className="jazz-report-taglist-tagselect" >
           <div className="header">
-            <Header onHierachyTreeClick={this._onHierachyTreeClick}/>
+            <Header hierarchyId={this.props.hierarchyId} onHierachyTreeClick={this._onHierachyTreeClick}/>
           </div>
           <div className='filter'>
             <SearchBar ref='searchBar' value={this.state.searchValue} onSearch={this._onSearch} onSearchCleanButtonClick={this._onSearchCleanButtonClick}/>
