@@ -192,7 +192,7 @@ let ReportAction = {
       success: function(res) {
         AppDispatcher.dispatch({
           type: Action.ALL_BUILDINGS_EXISTENCE,
-          data: reportId
+          data: res
         });
       }
     })

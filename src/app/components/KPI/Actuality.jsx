@@ -90,7 +90,7 @@ export default class Actuality extends Component {
 		this._removeEditPage = this._removeEditPage.bind(this);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( nextProps.params !== this.props.params ) {
+		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
 			this._loadInitData(nextProps, nextContext);
 		}
 	}
