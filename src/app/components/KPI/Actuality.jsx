@@ -85,13 +85,32 @@ export default class Actuality extends Component {
 	}
 
 	componentWillMount() {
+		this._onCheckSingleOnly = this._onCheckSingleOnly.bind(this);
 		this._loadInitData(this.props, this.context);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
+		HierarchyStore.addBuildingListListener(this._onCheckSingleOnly);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
 			this._loadInitData(nextProps, nextContext);
+		}
+	}
+	componentWillUnmount() {		
+		HierarchyStore.removeBuildingListListener(this._onCheckSingleOnly);
+	}
+	// componentWillUpdate(lastProps, lastState) {
+	// 	console.log(this.state.buildingList && this.state.buildingList.length);
+	// 	if( this.state.buildingList && this.state.buildingList.length === 1 && isOnlyView() &&
+	// 		+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
+	// 		console.log('componentWillUpdate');
+	// 	}
+		
+	// }
+	_onCheckSingleOnly() {
+		if( this.state.buildingList && this.state.buildingList.length === 1 && isOnlyView() &&
+			+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
+			this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
 		}
 	}
 	_loadInitData(props, context) {
@@ -103,7 +122,7 @@ export default class Actuality extends Component {
 			});
 			HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
 			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
-			ReportAction.allBuildingsExistence(CurrentUserStore.getCurrentUser().Id);
+			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
 	}
 	_getParams(props) {
@@ -116,6 +135,9 @@ export default class Actuality extends Component {
 		let selectedHierarchyId = this._getHierarchyId(this.props);
 		return find(HierarchyStore.getBuildingList().concat(getCustomerById(this.props.router.params.customerId)), building => building.Id === selectedHierarchyId) || null;
 	}
+	_isSingleKPI() {
+		return this.props.router.location.query.kpiId;
+	}
 	_routerPush(path) {
 		this.props.router.push(path);
 	}
@@ -123,9 +145,20 @@ export default class Actuality extends Component {
 		if( !this._getHierarchyId(this.props) ) {
 			return null;
 		}
+		let singleKPI = this._isSingleKPI();
+		let title = I18N.Kpi.KPIActual;
+		let prefixTitle = '';
+		if(singleKPI) {
+		    // chartData = SingleKPIStore.getKPIChart();
+    		prefixTitle = 
+    			I18N.Setting.KPI.Building + 
+    			this._getSelectedHierarchy().Name + '-' + 
+    			this.props.router.location.query.kpiName + '-';
+			// title = this._getSelectedHierarchy().Name + '-' +  + '-' + I18N.Kpi.KPIActual;
+		}
 		return (<div className='jazz-actuality-content'>
 			<div className='jazz-actuality-item'>
-				<div className='jazz-actuality-item-title'>{I18N.Kpi.KPIActual}</div>
+				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
 				{isFull() &&
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
@@ -133,7 +166,7 @@ export default class Actuality extends Component {
 			      }}/>}
 				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
 			</div>
-			<div className='jazz-actuality-item'>
+			{!singleKPI && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
 				{isFull() &&
 		    	<IconButton iconClassName="fa icon-add" onClick={() => {
@@ -146,7 +179,7 @@ export default class Actuality extends Component {
 					showReportEdit={this._showReportEdit}
 					router={this.props.router} 
 					hierarchyId={this._getHierarchyId(this.props)}/>
-			</div>
+			</div>}
 		</div>);
 	}
 	_renderEditPage() {
@@ -163,7 +196,7 @@ export default class Actuality extends Component {
 								hierarchyName={this._getSelectedHierarchy().Name} 
 								report={data} 
 								onSave={() => {
-									data && data.get('Id') && this.refs.report_preview.update(data.get('Id'));
+									this.refs.report_preview.update(data && data.get('Id'));
 									this._removeEditPage();
 								}} 
 								onCancel={this._removeEditPage}/>);
@@ -217,7 +250,7 @@ export default class Actuality extends Component {
 	    };
 		return (
 			<div className='jazz-actuality'>
-				{isFull() && <ViewableDropDownMenu {...buildingProps}/>}
+				{!this._isSingleKPI() && isFull() && <ViewableDropDownMenu {...buildingProps}/>}
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
 				{this._renderEditPage()}

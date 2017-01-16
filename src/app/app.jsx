@@ -252,6 +252,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
           indexRoute: {
             component: Actuality,
           },
+          onEnter: () => {
+            document.title = I18N.MainMenu.KPI;
+          },
           childRoutes: [{
             path: 'report',
             component: ReportActuality,

@@ -135,7 +135,9 @@ export default class RankChart extends Component {
 
 		util.openTab(RoutePath.KPIActuality(this.context.router.params)
 						+ '?buildingId='+BuildingId
+						+ '&hierarchyId='+BuildingId
 						+ '&groupKpiId='+GroupKpiId
+						+ '&kpiName='+this.props.RankName.split('-')[0]
 						+ '&kpiId='+KpiId);
 
 		// action = window.location.href.split('#')[0] + '#' + RoutePath.KPIActuality(this.context.router.params);
