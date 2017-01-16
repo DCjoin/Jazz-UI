@@ -4,8 +4,8 @@ import React from 'react';
 import NewDialog from 'controls/NewDialog.jsx';
 import FlatButton from 'controls/FlatButton.jsx';
 import TemplateItem from './TemplateItem.jsx';
-import ReportAction from 'actions/ReportAction.jsx';
-import ReportStore from 'stores/ReportStore.jsx';
+import ReportAction from 'actions/KPI/ReportAction.jsx';
+import ReportStore from 'stores/KPI/ReportStore.jsx';
 
 
 let TemplateList = React.createClass({
