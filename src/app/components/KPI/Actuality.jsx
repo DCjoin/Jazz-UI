@@ -44,6 +44,11 @@ function isFull() {
 function getCustomerById(customerId) {
 	return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
 }
+function getCustomerPrivilageById(customerId) {
+	let customer = UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
+	return customer && customer.get('WholeCustomer')
+}
+
 function singleProjectMenuItems() {
 	if( !HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0 ) {
 		return [];
@@ -86,10 +91,12 @@ export default class Actuality extends Component {
 
 	componentWillMount() {
 		this._onCheckSingleOnly = this._onCheckSingleOnly.bind(this);
+		this._onGetCustomerByUser = this._onGetCustomerByUser.bind(this);
 		this._loadInitData(this.props, this.context);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
 		HierarchyStore.addBuildingListListener(this._onCheckSingleOnly);
+		UserStore.addChangeListener(this._onGetCustomerByUser);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
@@ -98,6 +105,7 @@ export default class Actuality extends Component {
 	}
 	componentWillUnmount() {		
 		HierarchyStore.removeBuildingListListener(this._onCheckSingleOnly);
+		UserStore.removeChangeListener(this._onGetCustomerByUser);
 	}
 	// componentWillUpdate(lastProps, lastState) {
 	// 	console.log(this.state.buildingList && this.state.buildingList.length);
@@ -111,6 +119,12 @@ export default class Actuality extends Component {
 		if( this.state.buildingList && this.state.buildingList.length === 1 && isOnlyView() &&
 			+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
 			this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
+		}
+
+	}
+	_onGetCustomerByUser() {
+		if( this._privilegedCustomer() && isFull() ) {
+			this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
 		}
 	}
 	_loadInitData(props, context) {
@@ -128,12 +142,18 @@ export default class Actuality extends Component {
 	_getParams(props) {
 		return props.router.params;
 	}
+	_getCustomerId() {
+		return this.props.router.params.customerId;
+	}
 	_getHierarchyId(props) {
 		return +props.router.location.query.hierarchyId || null;
 	}
 	_getSelectedHierarchy() {
 		let selectedHierarchyId = this._getHierarchyId(this.props);
 		return find(HierarchyStore.getBuildingList().concat(getCustomerById(this.props.router.params.customerId)), building => building.Id === selectedHierarchyId) || null;
+	}
+	_privilegedCustomer() {
+		return getCustomerPrivilageById( this._getCustomerId() );
 	}
 	_isSingleKPI() {
 		return this.props.router.location.query.kpiId;
