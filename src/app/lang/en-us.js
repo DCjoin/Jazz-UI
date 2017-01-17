@@ -1320,6 +1320,7 @@ I18N.Message.M21707 = 'Report {0} is deleted. Will refresh report list soon.';
 I18N.Message.M21705 = 'Duplicate report title  ';
 I18N.Message.M21702 = 'The report has been modified and the page will be refreshed immediately.';
 I18N.Message.M21706 = 'The report has duplicate Tag, please check it.';
+I18N.Message.M21709 = '模板格式有误，请重新上传。';
 I18N.Message.M21802 = 'Selected tag include vtag, cannot support raw data view, please select again.';
 
 I18N.Message.M28001 = '"{0}"{1}已存在，请修改名称后再保存。';
