@@ -342,7 +342,8 @@ let HierarchyTree = React.createClass({
       this.setState({
         initialTree: true,
         searchList: false,
-        searchTree: false
+        searchTree: false,
+        searchValue: ''
       });
     }
   },
