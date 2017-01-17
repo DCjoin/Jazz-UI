@@ -347,6 +347,15 @@
        }
        .jazz-hierarchybutton{
          position: static !important;
+         .tree-node {
+           &.selected {
+             background-color: @hoverGray !important;
+           }
+           &:hover {
+             background-color: @hoverGray !important;
+             // color:#d9d9da !important;
+           }
+         }
        }
      }
      .filter{
