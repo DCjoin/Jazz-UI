@@ -44,6 +44,11 @@ function isFull() {
 function getCustomerById(customerId) {
 	return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
 }
+function getCustomerPrivilageById(customerId) {
+	let customer = UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
+	return customer && customer.get('WholeCustomer')
+}
+
 function singleProjectMenuItems() {
 	if( !HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0 ) {
 		return [];
@@ -65,6 +70,11 @@ function groupProjectMenuItems(customerId) {
     }].concat( getCustomerById(customerId) );
 }
 
+const TipMessage = (props, context, updater) => {
+	return (<div className='jazz-actuality flex-center'><b>{props.message}</b></div>)
+}
+
+
 @ReduxDecorator
 export default class Actuality extends Component {
 
@@ -78,6 +88,10 @@ export default class Actuality extends Component {
 
 	static calculateState(prevState) {
 		return {
+			show: isFull() ? {
+				kpi: true,
+				report: true,
+			} : {},
 			buildingList: HierarchyStore.getBuildingList(),
 			userCustomers: UserStore.getUserCustomers(),
 			allBuildingsExistence: ReportStore.getAllBuildingsExistence(),
@@ -85,11 +99,15 @@ export default class Actuality extends Component {
 	}
 
 	componentWillMount() {
+		this._configCB = this._configCB.bind(this);
+		this._onPreActopn = this._onPreActopn.bind(this);
 		this._onCheckSingleOnly = this._onCheckSingleOnly.bind(this);
+		this._onGetCustomerByUser = this._onGetCustomerByUser.bind(this);
 		this._loadInitData(this.props, this.context);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
-		HierarchyStore.addBuildingListListener(this._onCheckSingleOnly);
+		HierarchyStore.addBuildingListListener(this._onPreActopn);
+		UserStore.addChangeListener(this._onPreActopn);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
@@ -97,20 +115,31 @@ export default class Actuality extends Component {
 		}
 	}
 	componentWillUnmount() {		
-		HierarchyStore.removeBuildingListListener(this._onCheckSingleOnly);
+		HierarchyStore.removeBuildingListListener(this._onPreActopn);
+		UserStore.removeChangeListener(this._onPreActopn);
 	}
-	// componentWillUpdate(lastProps, lastState) {
-	// 	console.log(this.state.buildingList && this.state.buildingList.length);
-	// 	if( this.state.buildingList && this.state.buildingList.length === 1 && isOnlyView() &&
-	// 		+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
-	// 		console.log('componentWillUpdate');
-	// 	}
-		
-	// }
+	_onPreActopn() {
+		if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList ) {
+			if(this._privilegedCustomer()) {
+				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
+			} else if(this.state.buildingList.length === 1){
+				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
+			}
+		}
+	}
 	_onCheckSingleOnly() {
-		if( this.state.buildingList && this.state.buildingList.length === 1 && isOnlyView() &&
-			+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
-			this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
+		if( this.state.userCustomers && this.state.userCustomers.size > 0 && !this._privilegedCustomer()) {
+			if( this.state.buildingList && this.state.buildingList.length === 1 
+				&& !this._privilegedCustomer() &&
+				+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
+				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
+			}
+		}
+
+	}
+	_onGetCustomerByUser() {
+		if( this._privilegedCustomer() ) {
+			this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
 		}
 	}
 	_loadInitData(props, context) {
@@ -125,8 +154,20 @@ export default class Actuality extends Component {
 			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
 	}
+	_configCB(type, value) {
+		if( this.state.show[type] !== value ) {
+			this.setState({
+				show: {...this.state.show, ...{
+					[type]: value
+				}}
+			});			
+		}
+	}
 	_getParams(props) {
 		return props.router.params;
+	}
+	_getCustomerId() {
+		return this.props.router.params.customerId;
 	}
 	_getHierarchyId(props) {
 		return +props.router.location.query.hierarchyId || null;
@@ -134,6 +175,9 @@ export default class Actuality extends Component {
 	_getSelectedHierarchy() {
 		let selectedHierarchyId = this._getHierarchyId(this.props);
 		return find(HierarchyStore.getBuildingList().concat(getCustomerById(this.props.router.params.customerId)), building => building.Id === selectedHierarchyId) || null;
+	}
+	_privilegedCustomer() {
+		return getCustomerPrivilageById( this._getCustomerId() );
 	}
 	_isSingleKPI() {
 		return this.props.router.location.query.kpiId;
@@ -148,6 +192,11 @@ export default class Actuality extends Component {
 		let singleKPI = this._isSingleKPI();
 		let title = I18N.Kpi.KPIActual;
 		let prefixTitle = '';
+		let kpiHide = this.state.show.kpi === false;
+		let reportHide = this.state.show.report === false;
+		let hasEdit = (this.state.buildingList.length !== 1 
+					|| (this.state.buildingList && this.state.buildingList[0].Id !== this._getHierarchyId(this.props) ) )
+					&& isFull();
 		if(singleKPI) {
 		    // chartData = SingleKPIStore.getKPIChart();
     		prefixTitle = 
@@ -157,24 +206,26 @@ export default class Actuality extends Component {
 			// title = this._getSelectedHierarchy().Name + '-' +  + '-' + I18N.Kpi.KPIActual;
 		}
 		return (<div className='jazz-actuality-content'>
-			<div className='jazz-actuality-item'>
+			{!kpiHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
-				{isFull() &&
+				{hasEdit &&
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
 			      }}/>}
-				<KPIActuality router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
-			</div>
-			{!singleKPI && <div className='jazz-actuality-item'>
+				<KPIActuality configCB={isOnlyView() && this._configCB} router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
+			</div>}
+			{!singleKPI && !reportHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
-				{isFull() &&
+				{hasEdit &&
 		    	<IconButton iconClassName="fa icon-add" onClick={() => {
 			      	this._showReportEdit();
 			      }}/>}
 				<ReportPreview 
+					configCB={isOnlyView() && this._configCB}
 					ref={'report_preview'}
 					preview={true}
+					showAll={this.props.params.customerId === this.props.location.query.hierarchyId}
 					hasAll={this.state.allBuildingsExistence}
 					showReportEdit={this._showReportEdit}
 					router={this.props.router} 
@@ -205,6 +256,9 @@ export default class Actuality extends Component {
 		}
 		return null;
 	}
+	_renderOverlay() {
+		return (<div className='jazz-actuality-overlay flex-center'><CircularProgress mode="indeterminate" size={80} /></div>)
+	}
 	_removeEditPage() {
 		this.setState({
 			edit: null
@@ -219,9 +273,38 @@ export default class Actuality extends Component {
 		});
 	}
 	render() {
-		let {buildingList, userCustomers} = this.state;
-		if( !buildingList || !userCustomers ) {
+		let {buildingList, userCustomers, show} = this.state,
+		message;
+		if( !buildingList || !userCustomers || userCustomers.size === 0 ) {
 			return (<div className='jazz-actuality flex-center'><CircularProgress mode="indeterminate" size={80} /></div>); 
+		}
+		if( buildingList.length !== 1 ) {			
+			if( this._privilegedCustomer() ) {
+				if( !buildingList.length ) {
+					if( isOnlyView() ) {
+						message = I18N.Kpi.Error.KPINonBuilding;
+					} else {
+						message = I18N.Kpi.Error.KPINonBuildingAdmin;
+					}
+				}
+			} else {
+				if( buildingList.length > 1 ) {
+					message = I18N.Kpi.Error.KPIConguredMoreBuilding;
+				} else {
+					if( isOnlyView() ) {
+						message = I18N.Kpi.Error.KPIConguredNotAnyBuilding;
+					} else {
+						message = I18N.Kpi.Error.KPIConguredNotAnyBuildingAdmin;
+					}
+					
+				}				
+			}
+		}
+		if( show.kpi === false && show.report === false ) {
+			message = I18N.Kpi.Error.NonKPIConguredSingleBuilding;
+		}
+		if( message ) {
+			return (<TipMessage message={message}/>);
 		}
 		let {router} = this.props,
 		hierarchyId = this._getHierarchyId(this.props),
@@ -238,7 +321,7 @@ export default class Actuality extends Component {
 	        		+ '?hierarchyId=' + hierarchyId
 	        	);
 	        },
-	        disabled: false,
+	        disabled: !this._privilegedCustomer() && this.state.buildingList.length === 1,
 	        textField: 'Name',
 	        valueField: 'Id',
 	        dataItems: [{
@@ -254,6 +337,7 @@ export default class Actuality extends Component {
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
 				{this._renderEditPage()}
+				{ (!show || Object.keys(show).length !== 2) && this._renderOverlay()}
 			</div>
 		);
 	}
