@@ -1,7 +1,7 @@
 'use strict';
 import React from "react";
 import ReactDom from 'react-dom';
-import { CircularProgress, FontIcon, SelectField, TextField, RadioButton, Dialog } from 'material-ui';
+import { CircularProgress, FontIcon, SelectField, TextField, RadioButton} from 'material-ui';
 import classSet from 'classnames';
 import CommonFuns from '../../util/Util.jsx';
 import FlatButton from '../../controls/FlatButton.jsx';
@@ -12,6 +12,7 @@ import ReportDataItem from './ReportDataItem.jsx';
 import ReportStore from '../../stores/ReportStore.jsx';
 import GlobalErrorMessageAction from '../../actions/GlobalErrorMessageAction.jsx';
 import Immutable from 'immutable';
+import Dialog from '../../controls/NewDialog.jsx';
 
 
 var ReportRightPanel = React.createClass({
@@ -418,7 +419,7 @@ var ReportRightPanel = React.createClass({
 
     return (<Dialog
       ref="deleteDialog"
-      openImmediately={true}
+      open={true}
       actions={dialogActions}
       modal={true}>
         {I18N.format(I18N.EM.Report.DeleteReportMessage, this.state.reportItem.get('name'))}
