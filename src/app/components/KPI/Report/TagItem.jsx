@@ -42,7 +42,7 @@ let TagItem = React.createClass({
       checkBox = <div><Checkbox checked={me.props.checked} onCheck={me._onTagItemChecked} disabled={me.props.disabled}></Checkbox></div>;
     } else {
       if (!me.props.disabled) {
-        deleteButton = <div><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onTagItemUnselected} style={cleanIconStyle}></FontIcon></div>;
+        deleteButton = <div className="jazz-kpi-tag-deleteBtn"><FontIcon className="icon-clean" hoverColor='#6b6b6b' color="#939796" onClick={me._onTagItemUnselected} style={cleanIconStyle}></FontIcon></div>;
       }
       displayIndex = <div>{me.props.index + 1}</div>;
       let name=ReportStore.getHierarchyName(this.props.tag);
