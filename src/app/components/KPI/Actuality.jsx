@@ -109,6 +109,7 @@ export default class Actuality extends Component {
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
+			this.setState({edit: null});
 			this._loadInitData(nextProps, nextContext);
 		}
 	}
