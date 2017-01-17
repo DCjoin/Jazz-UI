@@ -1978,6 +1978,7 @@ I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对�
 I18N.Setting.KPI.Tag.Select = '选择';
 I18N.Setting.KPI.Tag.SelectAgain = '重新选择';
 I18N.Setting.KPI.SelectProject = '选择项目';
+I18N.Setting.KPI.SelectBuilding = '选择建筑';
 I18N.Setting.KPI.Basic = {};
 I18N.Setting.KPI.Basic.Title= '第一步:基础配置';
 I18N.Setting.KPI.Basic.Name= '指标名称';

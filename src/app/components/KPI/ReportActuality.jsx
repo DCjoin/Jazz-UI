@@ -82,10 +82,10 @@ export default class ReportActuality extends Component {
 	        dataItems: [{
 	        	Id: null,
 	        	disabled: true,
-	        	Name: I18N.Setting.KPI.SelectProject
+	        	Name: I18N.Setting.KPI.SelectBuilding
 	        }].concat(buildingList),
 	    };
-		return (<div style={{marginLeft: 20}}>
+		return (<div style={{marginLeft: 20,paddingTop: 20,position: 'relative'}}>
 			<span>{'建筑报表'}</span>
 			<ViewableDropDownMenu {...buildingProps}/>
 		</div>)
@@ -127,7 +127,7 @@ export default class ReportActuality extends Component {
 			return (<div className='jazz-margin-up-main flex-center'><CircularProgress mode="indeterminate" size={80} /></div>);
 		}
 		return (
-			<div className='jazz-margin-up-main'>
+			<div className='jazz-margin-up-main jazz-report-actuality'>
 				{this._renderHeader()}
 				{this._renderContent()}
 				{this._renderEdit()}
