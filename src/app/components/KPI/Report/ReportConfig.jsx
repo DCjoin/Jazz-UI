@@ -425,12 +425,10 @@ export default class ReportConfig extends Component {
         </div>);
 
       var uploadButton = (<div><label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
-              <FlatButton label={I18N.EM.Report.UploadTemplate} secondary={true} style={{
-                background: 'transparent',
-								border:'1px solid #abafae'
-              }} onClick={()=>{
-                this.refs.fileInput.click()
-              }}/>
+					<FlatButton label={I18N.EM.Report.UploadTemplate} secondary={true} style={{
+						background: 'transparent',
+						border:'1px solid #abafae'
+					}}/>
             <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/>
           </label>
           </div>);
