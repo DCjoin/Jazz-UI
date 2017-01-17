@@ -101,8 +101,6 @@ export default class Actuality extends Component {
 	componentWillMount() {
 		this._configCB = this._configCB.bind(this);
 		this._onPreActopn = this._onPreActopn.bind(this);
-		this._onCheckSingleOnly = this._onCheckSingleOnly.bind(this);
-		this._onGetCustomerByUser = this._onGetCustomerByUser.bind(this);
 		this._loadInitData(this.props, this.context);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
