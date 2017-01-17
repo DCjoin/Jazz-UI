@@ -197,7 +197,7 @@ export default class Actuality extends Component {
 		let prefixTitle = '';
 		let kpiHide = this.state.show.kpi === false;
 		let reportHide = this.state.show.report === false;
-		let hasEdit = this._isCustomer() && isFull();
+		let hasKPIEdit = this._isCustomer() && isFull();
 		if(singleKPI) {
 		    // chartData = SingleKPIStore.getKPIChart();
     		prefixTitle = 
@@ -209,7 +209,7 @@ export default class Actuality extends Component {
 		return (<div className='jazz-actuality-content'>
 			{!kpiHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
-				{hasEdit &&
+				{hasKPIEdit &&
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
@@ -218,7 +218,7 @@ export default class Actuality extends Component {
 			</div>}
 			{!singleKPI && !reportHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
-				{hasEdit &&
+				{isFull() &&
 		    	<IconButton iconClassName="fa icon-add" onClick={() => {
 			      	this._showReportEdit();
 			      }}/>}
