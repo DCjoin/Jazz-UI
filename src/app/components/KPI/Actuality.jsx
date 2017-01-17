@@ -182,6 +182,9 @@ export default class Actuality extends Component {
 	_isSingleKPI() {
 		return this.props.router.location.query.kpiId;
 	}
+	_isCustomer() {
+		return this.props.router.params.customerId === this.props.router.location.query.hierarchyId;
+	}
 	_routerPush(path) {
 		this.props.router.push(path);
 	}
@@ -194,9 +197,7 @@ export default class Actuality extends Component {
 		let prefixTitle = '';
 		let kpiHide = this.state.show.kpi === false;
 		let reportHide = this.state.show.report === false;
-		let hasEdit = (this.state.buildingList.length !== 1 
-					|| (this.state.buildingList && this.state.buildingList[0].Id !== this._getHierarchyId(this.props) ) )
-					&& isFull();
+		let hasEdit = this._isCustomer() && isFull();
 		if(singleKPI) {
 		    // chartData = SingleKPIStore.getKPIChart();
     		prefixTitle = 
