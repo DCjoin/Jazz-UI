@@ -138,7 +138,9 @@ export default class ReportConfig extends Component {
       var fileName = file.name;
 
       if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
-        CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
+				me.setState({
+					errorMsg:I18N.EM.Report.WrongExcelFile
+				})
         return;
       }
       var createElement = window.Highcharts.createElement,
@@ -164,18 +166,19 @@ export default class ReportConfig extends Component {
 						});
 
         } else {
-          me.setState({
-            showUploadDialog: false,
-            fileName: ''
-          });
           var errorCode = obj.UploadResponse.ErrorCode,
-            errorMessage;
+            errorMessage=null;
           if (errorCode === -1) {
             errorMessage = I18N.format(I18N.Setting.KPI.Report.DuplicatedName,fileName);
           }
-          if (errorMessage) {
-            CommonFuns.popupErrorMessage(errorMessage, '', true);
-          }
+					me.setState({
+						showUploadDialog: false,
+						fileName: '',
+						errorMsg:errorMessage
+					});
+          // if (errorMessage) {
+          //   CommonFuns.popupErrorMessage(errorMessage, '', true);
+          // }
         }
       };
 
@@ -425,7 +428,6 @@ export default class ReportConfig extends Component {
         </div>);
 
       var uploadButton = (<div><label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
-
 					<div style={{width:'100px',height:'30px'}} className="jazz-kpi-report-btn">{I18N.EM.Report.UploadTemplate}</div>
             <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/>
           </label>
