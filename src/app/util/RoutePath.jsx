@@ -10,7 +10,7 @@ export default {
 	main: p => `/${p.lang}/${p.customerId||''}`,
 	kpi: p => `/${p.lang}/${p.customerId}/kpi`,
 	Actuality: p => `/${p.lang}/${p.customerId}/actuality`,
-	KPIActuality: p => `/${p.lang}/${p.customerId}/kpi/actuality`,
+	KPIActuality: p => `/${p.lang}/${p.customerId}/actuality`,
 	KPIGroupConfig: p => `/${p.lang}/${p.customerId}/actuality/config`,
 	KPIConfig: p => `/${p.lang}/${p.customerId}/actuality/config/kpiconfig`,
 	KPIRankConfig: p => `/${p.lang}/${p.customerId}/actuality/config/rankconfig`,
