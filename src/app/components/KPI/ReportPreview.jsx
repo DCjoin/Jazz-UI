@@ -68,6 +68,15 @@ export default class ReportPreview extends Component {
 		ReportAction.getReportListByCustomerId(hierarchyId, 'CreateTime', 'asc');
 	}
 	_onPreActopn() {
+
+		let configCB = this.props.configCB;
+		if( configCB ) {
+			if( ReportStore.getReportList().size == 0 ) {
+				configCB('report', false);
+			} else {
+				configCB('report', true);
+			}
+		}
 		this.setState({
 			reportList: ReportStore.getReportList()
 		}, () => {
@@ -145,7 +154,7 @@ export default class ReportPreview extends Component {
 	render() {
 		let onLastMonth, onNextMonth, currentYear = new Date().getFullYear();
 		let selectedReport = this._getSelectedReportById();
-		let {preview} = this.props;
+		let {preview, showAll} = this.props;
 		if( this.state.reportList && this.state.reportList.size === 0 ) {
 			return (<div className='flex-center' style={{height: 400, border: '1px solid #000', marginRight: 20, marginBottom: 20}}>{preview ? '暂无报表，点击上方"+"按钮开始新建吧～' : '当前建筑没有报表'}</div>);
 		}
@@ -169,7 +178,7 @@ export default class ReportPreview extends Component {
         			label={this._getDateLabel()}
         			onLeft={onLastMonth}
         			onRight={onNextMonth}/>
-        		{preview && <LinkButton 
+        		{preview && showAll && <LinkButton 
         						disabled={!this.props.hasAll}
         						className={'show-full-report'} 
         						label={'查看各建筑报表 >>'}

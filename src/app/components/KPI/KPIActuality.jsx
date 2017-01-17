@@ -100,17 +100,22 @@ function ActualityHeader(props) {
 
 class ActualityContent extends Component {
 	render() {
-		let {data, summaryData, period, year, onChangeYear, hierarchyId, onEdit, onRefresh, chartReady} = this.props;
+		let {data, summaryData, period, year, onChangeYear, customerId, hierarchyId, onEdit, onRefresh, chartReady} = this.props,
+		message;
 		if( !chartReady ) {
 			return (<div className="content flex-center"><CircularProgress  mode="indeterminate" size={80} /></div>);
 		}
 		if( isFull() ) {
-			// if( !hierarchyId ) {
-			// 	return (<div className="content flex-center"><b>{I18N.Kpi.Error.SelectBuilding}</b></div>);
-			// }
 			if( !data ) {
-				return (<div className="content flex-center"><b>{I18N.Kpi.Error.NonKPICongured}</b></div>);
+				if( hierarchyId === customerId ) {
+					message = I18N.Kpi.Error.NonKPICongured;
+				} else {
+					message = I18N.Kpi.Error.NonKPIConguredInBuilding;
+				}
 			}
+		}
+		if( message ) {
+			return (<TipMessage message={message}/>);
 		}
 		let tags = data.get('data');
 		let isGroup = !!getCustomerById(hierarchyId);
@@ -158,8 +163,6 @@ export default class Actuality extends Component {
 
 		this._preAction(this.props.router.params.customerId);
 
-		// HierarchyStore.addBuildingListListener(this._onPreAction);
-		// UserStore.addChangeListener(this._onPreAction);
 		SingleKPIStore.addPreListener(this._onPreAction);
 		SingleKPIStore.addChangeListener(this._onChange);
 	}
@@ -168,13 +171,8 @@ export default class Actuality extends Component {
 		 || this.props.hierarchyId !== nextProps.hierarchyId ) {
 			this._preAction(nextProps.hierarchyId);
 		}
-		// this.setState(assign({}, this._getInitialState()), () => {
-		// 	this._preAction(nextProps.router.params.customerId);
-		// });
 	}
 	componentWillUnmount() {
-		// HierarchyStore.removeBuildingListListener(this._onPreAction);
-		// UserStore.removeChangeListener(this._onPreAction);
 		SingleKPIAction.cleanActuality();
 		SingleKPIStore.removePreListener(this._onPreAction);
 		SingleKPIStore.removeChangeListener(this._onChange);
@@ -187,10 +185,17 @@ export default class Actuality extends Component {
 			kpiId: null,
 			kpiIdFromGroup: null,
 			year: null,
-			// hierarchyId: this._getBuildingId()
 		}
 	}
 	_onChange() {
+		let configCB = this.props.configCB;
+		if( configCB ) {
+			if( SingleKPIStore.chartReady() && !SingleKPIStore.getKPIChart() ) {
+				configCB('kpi', false);
+			} else {
+				configCB('kpi', true);
+			}
+		}
 		this.setState({
 			year: this.state.year || SingleKPIStore.getKPIDefaultYear(),
 			loading: false
@@ -215,9 +220,7 @@ export default class Actuality extends Component {
 	}
 	_preAction(customerId) {
 		if( canView() ) {
-			// HierarchyAction.getBuildingListByCustomerId(customerId);
 			SingleKPIAction.customerCurrentYear(customerId);
-			// UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 		}
 	}
 	_loadInitData() {
@@ -349,7 +352,7 @@ export default class Actuality extends Component {
 			}
 
 			if( SingleKPIStore.chartReady() && !SingleKPIStore.getKPIChart() ) {
-				return (<TipMessage message={I18N.Kpi.Error.NonKPIConguredSingleBuilding}/>);
+				// return (<TipMessage message={I18N.Kpi.Error.NonKPIConguredSingleBuilding}/>);
 			}
 		}
 		// let disabledSelectedProject = isFull() && !wholeCustomer;
@@ -409,6 +412,7 @@ export default class Actuality extends Component {
 					<ActualityContent
 						chartReady={SingleKPIStore.chartReady()}
 						period={SingleKPIStore.getYearQuotaperiod()}
+						customerId={+this._getCustomerId()}
 						hierarchyId={this._getHierarchyId()}
 						data={SingleKPIStore.getKPIChart()}
 						year={this.state.year}

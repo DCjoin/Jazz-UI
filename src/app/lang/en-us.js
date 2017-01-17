@@ -1627,11 +1627,14 @@ I18N.Kpi = {
   Error:{
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
-    NonKPIConguredSingleBuilding: '未配置指标现状，请联系您的咨询顾问',
-    NonKPICongured: '暂未配置指标现状，请点击导航菜单中的“指标现状配置”',
-    KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的管理员',
-    KPIConguredMoreBuilding: '指标现状暂不支持多项目，请持续关注',
+    NonKPIConguredSingleBuilding: '未配置指标现状，请联系您的咨询顾问。',
+    NonKPICongured: '暂未配置指标现状，请点击导航菜单中的“指标现状配置”。',
+    KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的管理员。',
+    KPIConguredNotAnyBuildingAdmin: '未配置任何数据权限，请配置您的数据权限。',
+    KPIConguredMoreBuilding: '指标报表暂不支持多项目，请持续关注。',
     KPINonMoreBuilding: '楼宇数据权限不足，请联系您的管理员。',
+    KPINonBuilding: '未配置任何建筑，请联系您的咨询顾问。',
+    KPINonBuildingAdmin: '未配置任何建筑，请新建您的层级。',
   }
 };
 
