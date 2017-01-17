@@ -347,6 +347,15 @@
        }
        .jazz-hierarchybutton{
          position: static !important;
+         .tree-node {
+           &.selected {
+             background-color: @hoverGray !important;
+           }
+           &:hover {
+             background-color: @hoverGray !important;
+             // color:#d9d9da !important;
+           }
+         }
        }
      }
      .filter{
@@ -414,8 +423,8 @@
     }
   }
   >div:nth-of-type(2){
-    width: 150px;
-    max-width: 150px;
+    //width: 150px;
+    max-width: 300px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

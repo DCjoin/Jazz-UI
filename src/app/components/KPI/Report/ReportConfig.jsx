@@ -41,7 +41,7 @@ export default class ReportConfig extends Component {
 	}
 
 	state={
-    saveDisabled: false,
+    saveDisabled: true,
     templateList:null,
     reportItem:this.props.report===null?this.newReportItem():ReportStore.getDefalutReport(this.props.report.toJS()),
     showUploadDialog: false,
@@ -425,10 +425,8 @@ export default class ReportConfig extends Component {
         </div>);
 
       var uploadButton = (<div><label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
-					<FlatButton label={I18N.EM.Report.UploadTemplate} secondary={true} style={{
-						background: 'transparent',
-						border:'1px solid #abafae'
-					}}/>
+
+					<div style={{width:'100px',height:'30px'}} className="jazz-kpi-report-btn">{I18N.EM.Report.UploadTemplate}</div>
             <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/>
           </label>
           </div>);

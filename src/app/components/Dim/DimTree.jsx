@@ -1,5 +1,6 @@
 'use strict';
 import React from "react";
+import ReactDom from 'react-dom';
 import classNames from 'classnames';
 import { Paper, FontIcon, TextField } from 'material-ui';
 import { Link, Navigation, State, RouteHandler } from 'react-router';
@@ -321,7 +322,7 @@ let DimTree = React.createClass({
     var value = e.target.value;
 
     if (value) {
-      React.findDOMNode(this.refs.cleanIcon).style.display = 'block';
+      ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'block';
       this.setState({
         initialTree: false,
         searchList: true,
@@ -329,24 +330,25 @@ let DimTree = React.createClass({
         searchValue: value
       })
     } else {
-      React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+      ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
       this.setState({
         initialTree: true,
         searchList: false,
-        searchTree: false
+        searchTree: false,
+        searchValue:''
       })
     }
   },
   _onSearchClick: function() {
-    React.findDOMNode(this.refs.searchIcon).style.display = 'none';
+    ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'none';
   },
   _onSearchBlur: function(e) {
     if (!e.target.value) {
-      React.findDOMNode(this.refs.searchIcon).style.display = 'block';
+      ReactDom.findDOMNode(this.refs.searchIcon).style.display = 'block';
     }
   },
   _onCleanButtonClick: function() {
-    React.findDOMNode(this.refs.cleanIcon).style.display = 'none';
+    ReactDom.findDOMNode(this.refs.cleanIcon).style.display = 'none';
     this.refs.searchText.setValue("");
     this.setState({
       initialTree: true,
