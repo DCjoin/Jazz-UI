@@ -119,27 +119,12 @@ export default class Actuality extends Component {
 		UserStore.removeChangeListener(this._onPreActopn);
 	}
 	_onPreActopn() {
-		if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList ) {
+		if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList && !this.props.router.location.query.hierarchyId ) {
 			if(this._privilegedCustomer()) {
 				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
 			} else if(this.state.buildingList.length === 1){
 				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
 			}
-		}
-	}
-	_onCheckSingleOnly() {
-		if( this.state.userCustomers && this.state.userCustomers.size > 0 && !this._privilegedCustomer()) {
-			if( this.state.buildingList && this.state.buildingList.length === 1 
-				&& !this._privilegedCustomer() &&
-				+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
-				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
-			}
-		}
-
-	}
-	_onGetCustomerByUser() {
-		if( this._privilegedCustomer() ) {
-			this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
 		}
 	}
 	_loadInitData(props, context) {
