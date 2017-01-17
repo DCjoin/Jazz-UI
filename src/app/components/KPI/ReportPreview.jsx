@@ -86,7 +86,7 @@ export default class ReportPreview extends Component {
 		});
 	}
 	_selectYear(year) {
-		this.setState({year}, () => this._selectReport(this.state.reportList.getIn([0, 'Id'])));
+		this.setState({year}, () => this._selectReport(this.state.selectedReprotId));
 	}
 	_selectReport(selectedReprotId) {
 		this.setState({selectedReprotId, url: null}, ()=>{

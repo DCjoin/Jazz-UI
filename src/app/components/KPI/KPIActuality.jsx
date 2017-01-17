@@ -169,7 +169,7 @@ export default class Actuality extends Component {
 	componentWillReceiveProps(nextProps) {
 		if( !util.shallowEqual(nextProps.router.params, this.props.router.params)
 		 || this.props.hierarchyId !== nextProps.hierarchyId ) {
-			this._preAction(nextProps.hierarchyId);
+			this._preAction(nextProps.router.params.customerId);
 		}
 	}
 	componentWillUnmount() {

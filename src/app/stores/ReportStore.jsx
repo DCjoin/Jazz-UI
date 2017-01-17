@@ -281,6 +281,10 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       ReportStore.setSelctedPreviewUrl(action.data);
       ReportStore.emitSelctedPreviewUrlChange();
       break;
+    case Action.GET_SELECTED_REPORT_PREVIEW_URL_ERROR:
+      ReportStore.setSelctedPreviewUrl(false);
+      ReportStore.emitSelctedPreviewUrlChange();
+      break;
     case Action.SET_FIRST:
       ReportStore.setFirst(action.data);
       break;

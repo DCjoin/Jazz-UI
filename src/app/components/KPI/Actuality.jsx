@@ -101,8 +101,6 @@ export default class Actuality extends Component {
 	componentWillMount() {
 		this._configCB = this._configCB.bind(this);
 		this._onPreActopn = this._onPreActopn.bind(this);
-		this._onCheckSingleOnly = this._onCheckSingleOnly.bind(this);
-		this._onGetCustomerByUser = this._onGetCustomerByUser.bind(this);
 		this._loadInitData(this.props, this.context);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
@@ -111,6 +109,7 @@ export default class Actuality extends Component {
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
+			this.setState({edit: null});
 			this._loadInitData(nextProps, nextContext);
 		}
 	}
@@ -119,27 +118,12 @@ export default class Actuality extends Component {
 		UserStore.removeChangeListener(this._onPreActopn);
 	}
 	_onPreActopn() {
-		if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList ) {
+		if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList && !this.props.router.location.query.hierarchyId ) {
 			if(this._privilegedCustomer()) {
 				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
 			} else if(this.state.buildingList.length === 1){
 				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
 			}
-		}
-	}
-	_onCheckSingleOnly() {
-		if( this.state.userCustomers && this.state.userCustomers.size > 0 && !this._privilegedCustomer()) {
-			if( this.state.buildingList && this.state.buildingList.length === 1 
-				&& !this._privilegedCustomer() &&
-				+this.props.router.location.query.hierarchyId !== this.state.buildingList[0].Id ) {
-				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
-			}
-		}
-
-	}
-	_onGetCustomerByUser() {
-		if( this._privilegedCustomer() ) {
-			this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
 		}
 	}
 	_loadInitData(props, context) {
@@ -182,6 +166,9 @@ export default class Actuality extends Component {
 	_isSingleKPI() {
 		return this.props.router.location.query.kpiId;
 	}
+	_isCustomer() {
+		return this.props.router.params.customerId === this.props.router.location.query.hierarchyId;
+	}
 	_routerPush(path) {
 		this.props.router.push(path);
 	}
@@ -194,9 +181,7 @@ export default class Actuality extends Component {
 		let prefixTitle = '';
 		let kpiHide = this.state.show.kpi === false;
 		let reportHide = this.state.show.report === false;
-		let hasEdit = (this.state.buildingList.length !== 1 
-					|| (this.state.buildingList && this.state.buildingList[0].Id !== this._getHierarchyId(this.props) ) )
-					&& isFull();
+		let hasKPIEdit = this._isCustomer() && isFull();
 		if(singleKPI) {
 		    // chartData = SingleKPIStore.getKPIChart();
     		prefixTitle = 
@@ -208,7 +193,7 @@ export default class Actuality extends Component {
 		return (<div className='jazz-actuality-content'>
 			{!kpiHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{prefixTitle + I18N.Kpi.KPIActual}</div>
-				{hasEdit &&
+				{hasKPIEdit &&
 		    	<IconButton iconClassName="fa icon-edit" onClick={() => {
 			      	// onRefresh(data.get('id'));
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
@@ -217,7 +202,7 @@ export default class Actuality extends Component {
 			</div>}
 			{!singleKPI && !reportHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
-				{hasEdit &&
+				{isFull() &&
 		    	<IconButton iconClassName="fa icon-add" onClick={() => {
 			      	this._showReportEdit();
 			      }}/>}
@@ -324,12 +309,7 @@ export default class Actuality extends Component {
 	        disabled: !this._privilegedCustomer() && this.state.buildingList.length === 1,
 	        textField: 'Name',
 	        valueField: 'Id',
-	        dataItems: [{
-	        	Id: null,
-	        	disabled: true,
-	        	Name: I18N.Setting.KPI.SelectProject
-	        }].concat(groupProjectMenuItems(router.params.customerId))
-	        .concat(singleProjectMenuItems()),
+	        dataItems: groupProjectMenuItems(router.params.customerId).concat(singleProjectMenuItems()),
 	    };
 		return (
 			<div className='jazz-actuality'>

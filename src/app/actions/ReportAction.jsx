@@ -172,6 +172,12 @@ let ReportAction = {
           type: Action.GET_SELECTED_REPORT_PREVIEW_URL_SUCCESS,
           data: res
         });
+      },
+      error: function(err, res) {
+        util.popupErrorMessage(util.getErrorMessageByRes(res.text), '', false);
+        AppDispatcher.dispatch({
+          type: Action.GET_SELECTED_REPORT_PREVIEW_URL_ERROR,
+        });
       }
     })
   },

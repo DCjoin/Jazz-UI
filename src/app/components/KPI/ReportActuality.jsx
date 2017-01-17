@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CircularProgress from 'material-ui/CircularProgress';
+import {find} from 'lodash/collection';
 
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 
@@ -8,7 +9,12 @@ import ReportConfig from './Report/ReportConfig.jsx';
 
 import HierarchyAction from 'actions/HierarchyAction.jsx';
 
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
+
+function getCustomerById(customerId) {
+	return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
+}
 
 export default class ReportActuality extends Component {
 	constructor(props) {
@@ -16,6 +22,7 @@ export default class ReportActuality extends Component {
 
 		this._onChange = this._onChange.bind(this);
 		this._showReportEdit = this._showReportEdit.bind(this);
+		this._removeEditPage = this._removeEditPage.bind(this);
 
 		HierarchyStore.addBuildingListListener(this._onChange);
 
@@ -51,7 +58,7 @@ export default class ReportActuality extends Component {
 		});
 	}
 	_getHierarchyId(props) {
-		return +props.router.location.query.hierarchyId || null;
+		return this.state.hierarchyId;
 	}
 	_getSelectedHierarchy() {
 		let selectedHierarchyId = this._getHierarchyId(this.props);
@@ -75,10 +82,10 @@ export default class ReportActuality extends Component {
 	        dataItems: [{
 	        	Id: null,
 	        	disabled: true,
-	        	Name: I18N.Setting.KPI.SelectProject
+	        	Name: I18N.Setting.KPI.SelectBuilding
 	        }].concat(buildingList),
 	    };
-		return (<div style={{marginLeft: 20}}>
+		return (<div style={{marginLeft: 20,paddingTop: 20,position: 'relative'}}>
 			<span>{'建筑报表'}</span>
 			<ViewableDropDownMenu {...buildingProps}/>
 		</div>)
@@ -120,7 +127,7 @@ export default class ReportActuality extends Component {
 			return (<div className='jazz-margin-up-main flex-center'><CircularProgress mode="indeterminate" size={80} /></div>);
 		}
 		return (
-			<div className='jazz-margin-up-main'>
+			<div className='jazz-margin-up-main jazz-report-actuality'>
 				{this._renderHeader()}
 				{this._renderContent()}
 				{this._renderEdit()}

@@ -1320,6 +1320,7 @@ I18N.Message.M21707 = '报表"{0}"已被删除，马上为您刷新';
 I18N.Message.M21705 = '报表名称重复';
 I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
+I18N.Message.M21709 = '模板格式有误，请重新上传。';
 I18N.Message.M21802 = '所选数据点包含计量数据V类型的数据点，不支持原始数据功能，请重新选择。';
 
 I18N.Message.M28001 = '"{0}"{1}已存在，请修改名称后再保存。';
@@ -1617,7 +1618,7 @@ I18N.Kpi = {
   UpdatePrediction: '更新预测值',
   ActualityFractionalEnergySaving: '截止上月节能率',
   KPIActual: '指标现状',
-  GroupProject: '客户',
+  GroupProject: '集团',
   IndexValue: '全年定额指标值',
   SavingValue: '全年节能率指标值',
   ActualSum: '全年用量实际值',
@@ -1978,6 +1979,7 @@ I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对�
 I18N.Setting.KPI.Tag.Select = '选择';
 I18N.Setting.KPI.Tag.SelectAgain = '重新选择';
 I18N.Setting.KPI.SelectProject = '选择项目';
+I18N.Setting.KPI.SelectBuilding = '选择建筑';
 I18N.Setting.KPI.Basic = {};
 I18N.Setting.KPI.Basic.Title= '第一步:基础配置';
 I18N.Setting.KPI.Basic.Name= '指标名称';

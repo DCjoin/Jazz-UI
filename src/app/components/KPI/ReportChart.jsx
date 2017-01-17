@@ -14,8 +14,11 @@ export default class ReportChart extends Component {
 	render() {
 		let {data, url, onEdit, onDelete, onSetFirst, onDownload} = this.props,
 		id = data.get('Id');
-		if( !url ) {
+		if( url === null ) {
 			return (<div className='jazz-report-chart-table-wrapper flex-center' style={{height: 600}}><CircularProgress mode="indeterminate" size={80} /></div>);
+		}
+		if( url === false ) {
+			return (<div className='jazz-report-chart-table-wrapper flex-center' style={{height: 600}}>{'无效模板'}</div>);
 		}
 
 		return (
