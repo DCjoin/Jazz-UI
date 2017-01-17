@@ -34,6 +34,10 @@ import BuildingChartPanel from './BuildingChartPanel.jsx';
 import CreateKPI from './single/KPI.jsx';
 import UpdatePrediction from './single/UpdatePrediction.jsx';
 
+import minHeightHOC from '../../decorator/minHeightHOC.jsx';
+
+const MinHeight400 = minHeightHOC('div', 400);
+
 function canView() {
 	return privilegeUtil.canView(PermissionCode.INDEX_AND_REPORT, CurrentUserStore.getCurrentPrivilege());
 }
@@ -135,7 +139,7 @@ class ActualityContent extends Component {
 }
 
 const TipMessage = (props, context, updater) => {
-	return (<div className='jazz-kpi-actuality flex-center'><b>{props.message}</b></div>)
+	return (<MinHeight400 className='jazz-kpi-actuality flex-center'><b>{props.message}</b></MinHeight400>)
 }
 
 export default class Actuality extends Component {
@@ -332,7 +336,7 @@ export default class Actuality extends Component {
 	render() {
 		if( this.state.loading ) {
 			return (
-				<div className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></div>
+				<MinHeight400 className='jazz-kpi-actuality flex-center'><CircularProgress  mode="indeterminate" size={80} /></MinHeight400>
 			);
 		}
 		if( !canView() ) {
@@ -401,7 +405,7 @@ export default class Actuality extends Component {
 		    // 	}
 		    // }
 			return (
-				<div className='jazz-kpi-actuality'>
+				<MinHeight400 className='jazz-kpi-actuality'>
 					<ActualityContent
 						chartReady={SingleKPIStore.chartReady()}
 						period={SingleKPIStore.getYearQuotaperiod()}
@@ -434,7 +438,7 @@ export default class Actuality extends Component {
 						onSave={this._reload}
 						onCancel={this._cancleRefreshDialog}
 						year={this.state.year}/>}
-				</div>
+				</MinHeight400>
 			);
 		// }
 	}
