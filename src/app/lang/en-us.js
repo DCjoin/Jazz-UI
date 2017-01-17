@@ -1618,7 +1618,7 @@ I18N.Kpi = {
   UpdatePrediction: '更新预测值',
   ActualityFractionalEnergySaving: '截止上月节能率',
   KPIActual: '指标现状',
-  GroupProject: '客户',
+  GroupProject: '集团',
   IndexValue: '全年定额指标值',
   SavingValue: '全年节能率指标值',
   ActualSum: '全年用量实际值',

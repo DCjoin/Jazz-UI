@@ -309,12 +309,7 @@ export default class Actuality extends Component {
 	        disabled: !this._privilegedCustomer() && this.state.buildingList.length === 1,
 	        textField: 'Name',
 	        valueField: 'Id',
-	        dataItems: [{
-	        	Id: null,
-	        	disabled: true,
-	        	Name: I18N.Setting.KPI.SelectProject
-	        }].concat(groupProjectMenuItems(router.params.customerId))
-	        .concat(singleProjectMenuItems()),
+	        dataItems: groupProjectMenuItems(router.params.customerId).concat(singleProjectMenuItems()),
 	    };
 		return (
 			<div className='jazz-actuality'>
