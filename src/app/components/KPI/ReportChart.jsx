@@ -27,7 +27,7 @@ export default class ReportChart extends Component {
 					<ul className='jazz-report-chart-table-header-action'>
 						{isFull() && <li><LinkButton onClick={() => onEdit(id)} label={'设置'}/></li>}{isFull() && '|'}
 						{isFull() && <li><LinkButton onClick={() => onDelete(id)} label={'删除'}/></li>}{isFull() && '|'}
-						<li><LinkButton onClick={() => onSetFirst(id)} label={'设置为首个报表'}/></li>
+						<li><LinkButton onClick={() => onSetFirst(id)} label={'设为首个报表'}/></li>
 					</ul>
 					<div>{data.get('Name')}</div>
 					<LinkButton onClick={() => onDownload(id)} iconName='download-icon' label={'下载'}/>
