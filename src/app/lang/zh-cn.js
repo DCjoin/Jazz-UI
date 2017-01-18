@@ -1320,6 +1320,7 @@ I18N.Message.M21707 = '报表"{0}"已被删除，马上为您刷新';
 I18N.Message.M21705 = '报表名称重复';
 I18N.Message.M21702 = '该报表已被修改，马上为您刷新。';
 I18N.Message.M21706 = '报表中存在重复的Tag，请检查。';
+I18N.Message.M21709 = '模板格式有误，请重新上传。';
 I18N.Message.M21802 = '所选数据点包含计量数据V类型的数据点，不支持原始数据功能，请重新选择。';
 
 I18N.Message.M28001 = '"{0}"{1}已存在，请修改名称后再保存。';
@@ -1617,7 +1618,7 @@ I18N.Kpi = {
   UpdatePrediction: '更新预测值',
   ActualityFractionalEnergySaving: '截止上月节能率',
   KPIActual: '指标现状',
-  GroupProject: '客户',
+  GroupProject: '集团',
   IndexValue: '全年定额指标值',
   SavingValue: '全年节能率指标值',
   ActualSum: '全年用量实际值',
@@ -1627,11 +1628,15 @@ I18N.Kpi = {
   Error:{
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
-    NonKPIConguredSingleBuilding: '未配置指标现状，请联系您的咨询顾问',
-    NonKPICongured: '暂未配置指标现状，请点击导航菜单中的“指标现状配置”',
-    KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的管理员',
-    KPIConguredMoreBuilding: '指标现状暂不支持多项目，请持续关注',
+    NonKPIConguredSingleBuilding: '未配置指标报表，请联系您的咨询顾问。',
+    NonKPICongured: '暂无指标，点击上方编辑按钮，开始配置吧~',
+    NonKPIConguredInBuilding: '暂无指标，选择集团节点并配置吧~',
+    KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的管理员。',
+    KPIConguredNotAnyBuildingAdmin: '未配置任何数据权限，请配置您的数据权限。',
+    KPIConguredMoreBuilding: '指标报表暂不支持多项目，请持续关注。',
     KPINonMoreBuilding: '楼宇数据权限不足，请联系您的管理员。',
+    KPINonBuilding: '未配置任何建筑，请联系您的咨询顾问。',
+    KPINonBuildingAdmin: '未配置任何建筑，请新建您的层级。',
   }
 };
 
@@ -1974,6 +1979,7 @@ I18N.Setting.KPI.Tag.NoTags = '请先在左侧选择维度节点，再选择对�
 I18N.Setting.KPI.Tag.Select = '选择';
 I18N.Setting.KPI.Tag.SelectAgain = '重新选择';
 I18N.Setting.KPI.SelectProject = '选择项目';
+I18N.Setting.KPI.SelectBuilding = '选择建筑';
 I18N.Setting.KPI.Basic = {};
 I18N.Setting.KPI.Basic.Title= '第一步:基础配置';
 I18N.Setting.KPI.Basic.Name= '指标名称';

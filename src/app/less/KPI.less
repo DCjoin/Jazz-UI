@@ -196,7 +196,7 @@
   flex-direction: column;
   flex: 1;
 
-  &-edit {
+  &-edit, &-overlay {
     position: absolute;
     left: 0;
     top: 0;
@@ -230,6 +230,22 @@
       height: 40px;
       align-items: center;
     }
+  }
+}
+.jazz-report-actuality {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  & .pop-viewableDropDownMenu {
+    position: absolute;
+    top: 0;
+  }
+
+  & .jazz-report-preview {
+    margin: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
 .jazz-report-preview {
