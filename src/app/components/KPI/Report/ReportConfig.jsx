@@ -275,6 +275,17 @@ export default class ReportConfig extends Component {
 		reportData = reportData.setIn([index, 'DataStartTime'], startTime);
 		reportData = reportData.setIn([index, 'DataEndTime'], endTime);
 	}
+	if(name==='ReportType'){
+		if(value===1){
+			reportData = reportData.setIn([index, 'ExportStep'], 0);
+		}
+		else {
+			if(reportData.getIn([index, 'DateType'])===7){
+				reportData = reportData.setIn([index, 'ExportStep'], 1);
+			}
+		}
+
+	}
 	reportItem = reportItem.set('data', reportData);
 	this.setState({
 		reportItem: reportItem
@@ -427,7 +438,7 @@ export default class ReportConfig extends Component {
           }} disabled={reportItem.get('templateId')===null}/>
         </div>);
 
-      var uploadButton = (<div><label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
+      var uploadButton = (<div style={{width:'100px'}}><label ref="fileInputLabel" className="jazz-template-upload-label" htmlFor="fileInput">
 					<div style={{width:'100px',height:'30px'}} className="jazz-kpi-report-btn">{I18N.EM.Report.UploadTemplate}</div>
             <input type="file" ref="fileInput" id='fileInput' name='templateFile' onChange={this._handleFileSelect} style={fileInputStyle}/>
           </label>
@@ -535,7 +546,10 @@ export default class ReportConfig extends Component {
 
 	_renderErrorMsg(){
 		var that = this;
-		var onClose = function() {
+		var onClose = ()=> {
+			if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
+				this.refs.fileInput.value='';
+			}
 			that.setState({
 				errorMsg: null,
 			});
