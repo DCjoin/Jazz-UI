@@ -144,8 +144,8 @@ const ReportStore = assign({}, PrototypeStore, {
   removeSelectedTagListChangeListener: function(callback) {
     this.removeListener(CHANGE_SELECTED_TAG_LIST_EVENT, callback);
   },
-  emitSaveSuccessChange: function() {
-    this.emit(CHANGE_SAVE_SUCCESS_EVENT);
+  emitSaveSuccessChange: function(args) {
+    this.emit(CHANGE_SAVE_SUCCESS_EVENT,args);
   },
   addSaveSuccessChangeListener: function(callback) {
     this.on(CHANGE_SAVE_SUCCESS_EVENT, callback);
@@ -188,7 +188,7 @@ ReportStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case Action.SAVE_KPI_REPORT_SUCCESS:
       //ReportStore.updateReportItem(action.curReport);
-      ReportStore.emitSaveSuccessChange();
+      ReportStore.emitSaveSuccessChange(action.curReport.Id);
       break;
     case Action.SAVE_KPI_REPORT_ERROR:
       ReportStore._initErrorText(action.errorText, action.errorReport);

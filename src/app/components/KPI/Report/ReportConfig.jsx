@@ -314,12 +314,12 @@ export default class ReportConfig extends Component {
 	});
 	}
 
-	_onSave(){
+	_onSave(Id){
 		this.setState({
 			errorMsg:null,
 			isLoading:false
 		},()=>{
-			this.props.onSave();
+			this.props.onSave(Id);
 		})
 
 	}
