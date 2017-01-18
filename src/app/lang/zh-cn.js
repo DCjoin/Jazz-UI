@@ -1631,7 +1631,7 @@ I18N.Kpi = {
     NonKPIConguredSingleBuilding: '未配置指标报表，请联系您的咨询顾问。',
     NonKPICongured: '暂无指标，点击上方编辑按钮，开始配置吧~',
     NonKPIConguredInBuilding: '暂无指标，选择集团节点并配置吧~',
-    KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的管理员。',
+    KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的咨询顾问。',
     KPIConguredNotAnyBuildingAdmin: '未配置任何数据权限，请配置您的数据权限。',
     KPIConguredMoreBuilding: '指标报表暂不支持多项目，请持续关注。',
     KPINonMoreBuilding: '楼宇数据权限不足，请联系您的管理员。',
