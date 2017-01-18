@@ -231,8 +231,8 @@ export default class Actuality extends Component {
 								hierarchyId={this._getHierarchyId(this.props)}
 								hierarchyName={this._getSelectedHierarchy().Name} 
 								report={data} 
-								onSave={() => {
-									this.refs.report_preview.update(data && data.get('Id'));
+								onSave={(id) => {
+									this.refs.report_preview.update(id);
 									this._removeEditPage();
 								}} 
 								onCancel={this._removeEditPage}/>);
