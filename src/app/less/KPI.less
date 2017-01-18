@@ -263,9 +263,15 @@
   position: relative;
 
   &-header {
+    
+    // IE滚动条位置
+    .ie & {
+      height: 50px;
+    }
+
     height: 40px;
     display: flex;
-    align-items: center;
+    // align-items: center;
     position: absolute;
     width: calc(~'100% - 20px');
     background-color: #fff;
@@ -275,6 +281,7 @@
     overflow-y: hidden;
 
     &>.tab {
+      height: 24px;
       cursor: pointer;
       background-color: #fff;
       color: #000;
@@ -302,6 +309,13 @@
     }
 
     &-header {
+    
+      // IE滚动条位置
+      .ie & {
+        height: 40px;
+        top: 50px;
+      }
+
       position: absolute;
       z-index: 2;
       height: 50px;
