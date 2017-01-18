@@ -111,6 +111,8 @@ export default class Actuality extends Component {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
 			this.setState({edit: null});
 			this._loadInitData(nextProps, nextContext);
+		} else if(!this._getHierarchyId(nextProps)) {
+			this._onPreActopn();
 		}
 	}
 	componentWillUnmount() {		
