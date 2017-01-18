@@ -24,7 +24,9 @@ let TagSelectWindow = React.createClass({
       checkAllDisabled: true,
       tagList: Immutable.fromJS([]),
       selectedTagList: Immutable.fromJS([]),
-      searchValue:''
+      searchValue:'',
+      nodeId:this.props.hierarchyId,
+      optionType:2
     };
   },
   _getSelectedTagList() {
