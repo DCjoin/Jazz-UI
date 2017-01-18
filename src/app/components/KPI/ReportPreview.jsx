@@ -156,7 +156,7 @@ export default class ReportPreview extends Component {
 		let selectedReport = this._getSelectedReportById();
 		let {preview, showAll} = this.props;
 		if( this.state.reportList && this.state.reportList.size === 0 ) {
-			return (<div className='flex-center' style={{height: 400, border: '1px solid #000', marginRight: 20, marginBottom: 20}}>{preview ? '暂无报表，点击上方"+"按钮开始新建吧～' : '当前建筑没有报表'}</div>);
+			return (<div className='flex-center' style={{height: 400, border: '1px solid #000', marginRight: 20, marginBottom: 20}}><b>{preview ? '暂无报表，点击上方"+"按钮开始新建吧～' : '当前建筑没有报表'}</b></div>);
 		}
 		if( !this.state.reportList || !selectedReport ) {
 			return (<div className='flex-center'><CircularProgress mode="indeterminate" size={80} /></div>);
