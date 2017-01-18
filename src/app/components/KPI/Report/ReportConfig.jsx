@@ -41,7 +41,7 @@ export default class ReportConfig extends Component {
 	}
 
 	state={
-    saveDisabled: true,
+    saveDisabled: this.props.report===null?true:false,
     templateList:null,
     reportItem:this.props.report===null?this.newReportItem():ReportStore.getDefalutReport(this.props.report.toJS()),
     showUploadDialog: false,
