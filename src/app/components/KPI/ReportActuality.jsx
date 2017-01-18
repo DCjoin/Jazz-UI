@@ -85,7 +85,7 @@ export default class ReportActuality extends Component {
 	        	Name: I18N.Setting.KPI.SelectBuilding
 	        }].concat(buildingList),
 	    };
-		return (<div style={{marginLeft: 20,paddingTop: 20,position: 'relative'}}>
+		return (<div className='jazz-report-actuality-header' style={{marginLeft: 20,paddingTop: 20,position: 'relative'}}>
 			<span>{'建筑报表'}</span>
 			<ViewableDropDownMenu {...buildingProps}/>
 		</div>)
