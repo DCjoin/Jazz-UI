@@ -36,7 +36,7 @@ export default function CustomerChartPanel(props) {
 					data={tag}
 					summaryData={find(summaryData, sum => sum.KpiId === tag.get('id')) || {}}
 					key={tag.get('id')}/> ) :
-			<div className='jazz-kpi-report flex-center' style={{height: 400}}>{I18N.Kpi.Error.NonKPIConguredInThisYear}</div>}
+			<div className='jazz-kpi-report flex-center' style={{height: 400}}><b>{I18N.Kpi.Error.NonKPIConguredInThisYear}</b></div>}
 			{safeArr(ranks).map(rank => rank && (<RankChart {...rank}/>) )}
 		</div>
 	);
