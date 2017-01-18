@@ -191,6 +191,7 @@ let Tag = React.createClass({
         kl = I18N.Setting.Tag.KPI,
         hl = I18N.Setting.Tag.PanelTitle,
         rl=I18N.Setting.KPI.Report.Name,
+        il=I18N.Setting.KPI.Name,
         br = '<br/>',
         divStart = '<div>',
         divEnd = '</div>';
@@ -212,7 +213,8 @@ let Tag = React.createClass({
           vtags = [],
           kpis = [],
           hierarchys = [],
-          reports=[];
+          reports=[],
+          indicators=[];
         for (var i = 0, len = messages.length; i < len; i++) {
           message = messages[i];
           if (message && messages.length > 1) {
@@ -233,6 +235,9 @@ let Tag = React.createClass({
                 break;
               case 'R':
                 reports.push(name);
+                break;
+              case 'I':
+                indicators.push(name);
                 break;
             }
           }
@@ -256,6 +261,11 @@ let Tag = React.createClass({
         if (reports.length) {
           associateItems.push((hd ? ' ; ' : divStart) + (rl + colon));
           associateItems.push(reports.join(','));
+          hd = true;
+        }
+        if (indicators.length) {
+          associateItems.push((hd ? ' ; ' : divStart) + (il + colon));
+          associateItems.push(indicators.join(','));
         }
         associateItems.push(divEnd);
         errorMsg = I18N.format(I18N.Message.M06182, deleteLabel, deleteName, associateItems.join(''));
