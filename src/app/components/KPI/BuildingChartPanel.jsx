@@ -47,7 +47,7 @@ function getUnitLabel({RankValue, UnitType, UomId}, byValue) {
 		return '';
 	}
 	if( isScale(UnitType) ) {
-		return '';
+		return byValue ? '' : '%';
 	}
 	return UOMStore.getUomById(UomId) + util.getPerByUnitType(UnitType);
 }
