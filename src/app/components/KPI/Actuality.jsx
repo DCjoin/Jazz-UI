@@ -88,10 +88,6 @@ export default class Actuality extends Component {
 
 	static calculateState(prevState) {
 		return {
-			show: isFull() ? {
-				kpi: true,
-				report: true,
-			} : {},
 			buildingList: HierarchyStore.getBuildingList(),
 			userCustomers: UserStore.getUserCustomers(),
 			allBuildingsExistence: ReportStore.getAllBuildingsExistence(),
@@ -101,15 +97,19 @@ export default class Actuality extends Component {
 	componentWillMount() {
 		this._configCB = this._configCB.bind(this);
 		this._onPreActopn = this._onPreActopn.bind(this);
-		this._loadInitData(this.props, this.context);
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
+
 		HierarchyStore.addBuildingListListener(this._onPreActopn);
 		UserStore.addChangeListener(this._onPreActopn);
+
+		this._getInitialState();
+		this._loadInitData(this.props, this.context);
+
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
-			this.setState({edit: null});
+			this._getInitialState();
 			this._loadInitData(nextProps, nextContext);
 		} else if(!this._getHierarchyId(nextProps)) {
 			this._onPreActopn();
@@ -118,6 +118,15 @@ export default class Actuality extends Component {
 	componentWillUnmount() {		
 		HierarchyStore.removeBuildingListListener(this._onPreActopn);
 		UserStore.removeChangeListener(this._onPreActopn);
+	}
+	_getInitialState() {
+		this.setState({
+			edit: null,
+			show: isFull() ? {
+					kpi: true,
+					report: true,
+				} : {},
+		});
 	}
 	_onPreActopn() {
 		if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList && !this.props.router.location.query.hierarchyId ) {
@@ -233,8 +242,8 @@ export default class Actuality extends Component {
 								hierarchyId={this._getHierarchyId(this.props)}
 								hierarchyName={this._getSelectedHierarchy().Name} 
 								report={data} 
-								onSave={() => {
-									this.refs.report_preview.update(data && data.get('Id'));
+								onSave={(id) => {
+									this.refs.report_preview.update(id);
 									this._removeEditPage();
 								}} 
 								onCancel={this._removeEditPage}/>);
