@@ -546,7 +546,10 @@ export default class ReportConfig extends Component {
 
 	_renderErrorMsg(){
 		var that = this;
-		var onClose = function() {
+		var onClose = ()=> {
+			if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
+				this.refs.fileInput.value='';
+			}
 			that.setState({
 				errorMsg: null,
 			});
