@@ -20,7 +20,7 @@ var User = React.createClass({
       showFilter: false,
       infoTab: true,
       //allCustomers: [],
-      allRoles: [],
+      allRoles: null,
       selectedUserId: null,
       isLoading: false,
       resetPasswordDone: false,
@@ -283,7 +283,7 @@ var User = React.createClass({
     if (this.state.showFilter) {
       filterPanel = <UserFilter ref="pop_user_filter_side_nav" {...filterProps}/>;
     }
-    if (this.state.isLoading) {
+    if (this.state.isLoading || this.state.allRoles===null) {
       return (
         <div style={{
           display: 'flex',

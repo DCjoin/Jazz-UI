@@ -184,14 +184,16 @@ let Tag = React.createClass({
       var associateItems = [],
         deleteLabel = '',
         deleteName,
-        colon = ':',
+        colon = ' : ',
         deleteType = this.props.tagType,
         pl = I18N.Setting.Tag.PTagManagement,
         vl = I18N.Setting.Tag.VTagManagement,
         kl = I18N.Setting.Tag.KPI,
         hl = I18N.Setting.Tag.PanelTitle,
+        rl=I18N.Setting.KPI.Report.Name,
+        il=I18N.Setting.KPI.Name,
         br = '<br/>',
-        divStart = '<div style="margin-left:60px; width:190px;">',
+        divStart = '<div>',
         divEnd = '</div>';
       switch (deleteType) {
         case 1:
@@ -210,7 +212,9 @@ let Tag = React.createClass({
           name,
           vtags = [],
           kpis = [],
-          hierarchys = [];
+          hierarchys = [],
+          reports=[],
+          indicators=[];
         for (var i = 0, len = messages.length; i < len; i++) {
           message = messages[i];
           if (message && messages.length > 1) {
@@ -229,23 +233,39 @@ let Tag = React.createClass({
               case 'H':
                 hierarchys.push(name);
                 break;
+              case 'R':
+                reports.push(name);
+                break;
+              case 'I':
+                indicators.push(name);
+                break;
             }
           }
         }
         var hd = false;
         if (vtags.length) {
-          associateItems.push(vl + colon + br);
-          associateItems.push(divStart + vtags.join(br));
+          associateItems.push(br+divStart+vl + colon);
+          associateItems.push(vtags.join(','));
           hd = true;
         }
         if (kpis.length) {
-          associateItems.push((hd ? br : '') + (kl + colon + br));
-          associateItems.push((hd ? '' : divStart) + kpis.join(br));
+          associateItems.push((hd ? ' ; ' : divStart) + (kl + colon));
+          associateItems.push( kpis.join(','));
           hd = true;
         }
         if (hierarchys.length) {
-          associateItems.push((hd ? br : '') + (hl + colon + br));
-          associateItems.push((hd ? '' : divStart) + hierarchys.join(br));
+          associateItems.push((hd ? ' ; ' : divStart) + (hl + colon));
+          associateItems.push( hierarchys.join(','));
+          hd = true;
+        }
+        if (reports.length) {
+          associateItems.push((hd ? ' ; ' : divStart) + (rl + colon));
+          associateItems.push(reports.join(','));
+          hd = true;
+        }
+        if (indicators.length) {
+          associateItems.push((hd ? ' ; ' : divStart) + (il + colon));
+          associateItems.push(indicators.join(','));
         }
         associateItems.push(divEnd);
         errorMsg = I18N.format(I18N.Message.M06182, deleteLabel, deleteName, associateItems.join(''));

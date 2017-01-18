@@ -164,14 +164,14 @@ var UserDetail = React.createClass({
     var that = this,
       isView = that.props.formStatus === formStatus.VIEW,
       roleSelectedIndex = 0,
-      roleItems = (that.props.userRoleList.size === 0 || !that.props.userRoleList) ? Immutable.from([]) : that.props.userRoleList.map((item, index) => {
+      roleItems = (that.props.userRoleList.size === 0 || that.props.userRoleList.length === 0 || !that.props.userRoleList) ? Immutable.fromJS([]) : that.props.userRoleList.map((item, index) => {
         if (item.get("Id") === that.props.user.get("UserType")) {
           roleSelectedIndex = index;
         }
-        return {
+        return Immutable.fromJS({
           text: item.get("Name"),
           id: item.get("Id")
-        };
+        });
       }),
       isSuperAdmin = that.props.user.get("UserType") === -1,
       titleSelectedIndex = 0,
