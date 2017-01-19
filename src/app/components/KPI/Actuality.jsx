@@ -103,13 +103,13 @@ export default class Actuality extends Component {
 		HierarchyStore.addBuildingListListener(this._onPreActopn);
 		UserStore.addChangeListener(this._onPreActopn);
 
-		this._getInitialState();
+		this._getInitialState(this.props);
 		this._loadInitData(this.props, this.context);
 
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
-			this._getInitialState();
+			this._getInitialState(nextProps);
 			this._loadInitData(nextProps, nextContext);
 		} else if(!this._getHierarchyId(nextProps)) {
 			this._onPreActopn();
@@ -119,13 +119,17 @@ export default class Actuality extends Component {
 		HierarchyStore.removeBuildingListListener(this._onPreActopn);
 		UserStore.removeChangeListener(this._onPreActopn);
 	}
-	_getInitialState() {
+	_getInitialState(props) {
 		this.setState({
 			edit: null,
 			show: isFull() ? {
 					kpi: true,
 					report: true,
-				} : {},
+				} : (
+					props.router.location.query.kpiId ? {
+						report: false,
+					} : {}
+				),
 		});
 	}
 	_onPreActopn() {
