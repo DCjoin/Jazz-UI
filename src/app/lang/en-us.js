@@ -2081,6 +2081,7 @@ I18N.Setting.KPI.Rank.LastRank = '最新排名';
 
 I18N.Setting.KPI.Report = {};
 I18N.Setting.KPI.Report.Name = '报表';
+I18N.Setting.KPI.Report.Sheet = '模板Sheet';
 I18N.Setting.KPI.Report.ConfigTitle= '{0}-报表设置';
 I18N.Setting.KPI.Report.TitleHint= '输入报表名称';
 I18N.Setting.KPI.Report.TemplateManagement= '管理模板';
