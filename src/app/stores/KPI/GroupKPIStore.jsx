@@ -173,6 +173,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
   },
 
   clearParam(type){
+    _annualSum='-';
     let values=_KpiSettings.getIn(['AdvanceSettings','TargetMonthValues']).toJS();
     _kpiInfo=_kpiInfo.set('AnnualQuota',null);
     _kpiInfo=_kpiInfo.set('AnnualSavingRate',null);
@@ -458,10 +459,10 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     return([
       {
           getPath: RoutePath.KPIConfig,
-          title: I18N.Setting.KPI.GroupList.Header 
+          title: I18N.Setting.KPI.GroupList.Header
       },{
           getPath: RoutePath.KPIRankConfig,
-          title: I18N.Setting.KPI.Group.Ranking.Title 
+          title: I18N.Setting.KPI.Group.Ranking.Title
       }
     ])
   },
