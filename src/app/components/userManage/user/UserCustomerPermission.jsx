@@ -91,6 +91,7 @@ let UserCustomerPermission = React.createClass({
       selectedId: null,
       customer: new Map(),
       open: false,
+      WholeCustomer: false,
       selectedNode: []
     };
   },
@@ -255,6 +256,7 @@ let UserCustomerPermission = React.createClass({
       });
     }
     this.setState({
+      WholeCustomer: customer.get("WholeCustomer"),
       customer,
       selectedNode
     });
@@ -271,6 +273,7 @@ let UserCustomerPermission = React.createClass({
       ;
 
       this.setState({
+        WholeCustomer: _selectedNode.length === _getChildren(this.state.customer.getIn(["dataPrivilege", "Children"])).length + 1,
         selectedNode: _selectedNode
       });
     },
@@ -290,10 +293,12 @@ let UserCustomerPermission = React.createClass({
           Id: this.state.selectedId
         })
         this.setState({
+          WholeCustomer: isCheckedAll,
           selectedNode
         });
       } else {
         this.setState({
+          WholeCustomer: isCheckedAll,
           selectedNode: []
         });
       }
@@ -301,21 +306,21 @@ let UserCustomerPermission = React.createClass({
 
     isCheckedAll: function() {
 
-  		var {customer, selectedNode, selectedId} = this.state,
+  		var {customer, selectedNode, selectedId, WholeCustomer} = this.state,
   			children = customer.getIn( ["dataPrivilege", "Children"] ),
   			checkedAll = false;
 
-  		if( !children ) {
-  			return ;
-  		}
-  		if( selectedNode.length && _getChildren( children ).length < selectedNode.length ) {
-  			checkedAll = true;
-  		}
-  		return checkedAll;
+  		// if( !children ) {
+  			return WholeCustomer;
+  		// }
+  		// if( selectedNode.length && _getChildren( children ).length < selectedNode.length ) {
+  		// 	checkedAll = true;
+  		// }
+  		// return checkedAll;
   	},
     
     _save: function() {
-      var {customer, selectedNode, selectedId} = this.state,
+      var {customer, selectedNode, selectedId, WholeCustomer} = this.state,
         hierarchyIds = /*_.filter(*/ selectedNode.map(node => node.Id) /*, Id => Id !== selectedId)*/ ,
         selectedAll = false;
 
@@ -325,7 +330,7 @@ let UserCustomerPermission = React.createClass({
           hierarchyIds = [];
           selectedAll = true;
         }
-        this.props.saveCustomerPermission(selectedId, hierarchyIds, selectedAll);
+        this.props.saveCustomerPermission(selectedId, hierarchyIds, WholeCustomer || selectedAll);
       }
       this._close();
     },
@@ -352,6 +357,7 @@ let UserCustomerPermission = React.createClass({
         });
       }
       this.setState({
+        WholeCustomer: customer.get("WholeCustomer"),
         selectedId,
         open: true,
         customer,
