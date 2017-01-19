@@ -273,7 +273,9 @@ var Benchmark = React.createClass({
         }
         displayZones.push(
           <li className="jazz-benchmark-content-zone-list-item" style={liStyle}>
-            <div className="jazz-benchmark-content-zone-list-item-left" id={zone.get('Id')} onClick={this._handleZoneClick}>
+            <div className="jazz-benchmark-content-zone-list-item-left" id={zone.get('Id')} onClick={(e)=>{
+                if(isView) return;
+                this._handleZoneClick(e)}}>
               <Checkbox
           defaultChecked={checked}
           disabled={isView}
