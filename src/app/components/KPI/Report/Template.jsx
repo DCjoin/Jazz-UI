@@ -25,6 +25,7 @@ var Template = React.createClass({
       showUploadDialog: false,
       sortBy: 'Name',
       fileName: '',
+      errorMsg:false
     };
   },
   _onChange() {
@@ -55,7 +56,9 @@ var Template = React.createClass({
     var fileName = file.name;
 
     if (!CommonFuns.endsWith(fileName.toLowerCase(), '.xlsx') && !CommonFuns.endsWith(fileName.toLowerCase(), '.xls')) {
-      CommonFuns.popupErrorMessage(I18N.EM.Report.WrongExcelFile, '', true);
+      me.setState({
+        errorMsg:I18N.EM.Report.WrongExcelFile
+      })
       return;
     }
     var createElement = window.Highcharts.createElement,
@@ -75,18 +78,16 @@ var Template = React.createClass({
           showUploadDialog: false
         });
       } else {
-        me.setState({
-          showUploadDialog: false,
-          fileName: ''
-        });
         var errorCode = obj.UploadResponse.ErrorCode,
-          errorMessage;
+          errorMessage=null;
         if (errorCode === -1) {
           errorMessage = I18N.format(I18N.Setting.KPI.Report.DuplicatedName,fileName);
         }
-        if (errorMessage) {
-          CommonFuns.popupErrorMessage(errorMessage, '', true);
-        }
+        me.setState({
+          showUploadDialog: false,
+          fileName: '',
+          errorMsg:errorMessage
+        });
       }
     };
 
@@ -137,6 +138,30 @@ var Template = React.createClass({
       modal={true}>
         {I18N.format(I18N.EM.Report.UploadingTemplate, this.state.fileName)}
       </NewDialog>);
+  },
+  _renderErrorMsg(){
+    var that = this;
+    var onClose = ()=> {
+      if(this.state.errorMsg===I18N.EM.Report.WrongExcelFile){
+        this.refs.fileInput.value='';
+      }
+      that.setState({
+        errorMsg: null,
+      });
+    };
+    if (this.state.errorMsg!==null) {
+      return (<NewDialog
+        ref = "_dialog"
+        title={I18N.Platform.ServiceProvider.ErrorNotice}
+        modal={false}
+        open={!!this.state.errorMsg}
+        onRequestClose={onClose}
+        >
+        {this.state.errorMsg}
+      </NewDialog>);
+    } else {
+      return null;
+    }
   },
   componentWillMount: function() {
     document.title = I18N.MainMenu.Report;
@@ -208,6 +233,7 @@ var Template = React.createClass({
 
       </div>
         {uploadDialog}
+        {this._renderErrorMsg()}
       </div>
       );
   }
