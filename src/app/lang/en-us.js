@@ -1628,8 +1628,9 @@ I18N.Kpi = {
   Error:{
     SelectBuilding: '请点击上方按钮，选择要查看或配置项目吧～',
     NonKPIConguredInThisYear: '本年度未配置指标，切换其他年份看看～',
-    NonKPIConguredSingleBuilding: '未配置指标现状，请联系您的咨询顾问。',
-    NonKPICongured: '暂未配置指标现状，请点击导航菜单中的“指标现状配置”。',
+    NonKPIConguredSingleBuilding: '未配置指标报表，请联系您的咨询顾问。',
+    NonKPICongured: '暂无指标，点击上方编辑按钮，开始配置吧~',
+    NonKPIConguredInBuilding: '暂无指标，选择集团节点并配置吧~',
     KPIConguredNotAnyBuilding: '未配置任何数据权限，请联系您的咨询顾问。',
     KPIConguredNotAnyBuildingAdmin: '未配置任何数据权限，请配置您的数据权限。',
     KPIConguredMoreBuilding: '指标报表暂不支持多项目，请持续关注。',
@@ -1827,7 +1828,7 @@ I18N.Setting.CarbonFactor.DeleteContent = 'Conversion factor “{0}” will be d
 I18N.Setting.CarbonFactor.Source = 'Conversion object';
 I18N.Setting.CarbonFactor.Target = 'Conversion target';
 I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
-I18N.Setting.CarbonFactor.EffectiveYear = 'Effective date';
+I18N.Setting.CarbonFactor.ErrorContent = '请输入小于1000000000的正数，小数点后最多保留6位';
 I18N.Setting.CarbonFactor.Conflict = 'Timespan overlapped, please select again';
 
 I18N.Setting.TOUTariff = {};
@@ -1966,6 +1967,7 @@ I18N.Setting.Cost.OtherCommodities = 'Other cost property';
 I18N.Setting.Cost.CostCommodity = 'Cost';
 
 I18N.Setting.KPI = {};
+I18N.Setting.KPI.Name = '指标';
 I18N.Setting.KPI.Building='建筑';
 I18N.Setting.KPI.create='新建指标';
 I18N.Setting.KPI.edit='编辑指标';
@@ -2077,4 +2079,18 @@ I18N.Setting.KPI.Rank.UsageAmountRank = '指标使用量排名';
 I18N.Setting.KPI.Rank.RatioMonthSavingRank = '同比节能率排名';
 I18N.Setting.KPI.Rank.LastRank = '最新排名';
 
+I18N.Setting.KPI.Report = {};
+I18N.Setting.KPI.Report.Name = '报表';
+I18N.Setting.KPI.Report.ConfigTitle= '{0}-报表设置';
+I18N.Setting.KPI.Report.TitleHint= '输入报表名称';
+I18N.Setting.KPI.Report.TemplateManagement= '管理模板';
+I18N.Setting.KPI.Report.TemplateComment= '注：删除已引用的模板需先删除引用该模板的报表';
+I18N.Setting.KPI.Report.Data= '表格数据';
+I18N.Setting.KPI.Report.DataComment= '注：至少配置一组表格数据';
+I18N.Setting.KPI.Report.CalcData= '计算数据';
+I18N.Setting.KPI.Report.Hierarchy= '所属层级';
+I18N.Setting.KPI.Report.TimeRangeComment= '注：当前年为{0}年，只需配置当前年份对应的时间范围，其余年份会根据配置自动计算';
+I18N.Setting.KPI.Report.DuplicatedName = '已经存在名称为“{0}”的模板，请更改名称后重新上传。';
+I18N.Setting.KPI.Report.DeleteTemplateMessage = '模板“{0}”将被删除。';
+I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
 module.exports = I18N;
