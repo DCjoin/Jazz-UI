@@ -131,9 +131,9 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     // //   mydate = new Date(mydate);
     // // }
     //
-    // return parseInt(jsonstring);
+  // return parseInt(jsonstring);
     //
-    return moment(jsonstring).valueOf();
+    return moment.utc(jsonstring).valueOf();
   },
 
   setKpiInfo(data) {
