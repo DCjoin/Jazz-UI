@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import { withRouter } from 'react-router';
 import { DataStatus,UnitType as Unit} from 'constants/actionType/KPI.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import Checkbox from 'material-ui/Checkbox';
@@ -11,7 +12,8 @@ import FlatButton from 'controls/FlatButton.jsx';
 // import RankHistory from '../Single/RankHistory.jsx';
 
 var customerId;
-export default class Ranking extends Component {
+var ntLocation=null;
+class Ranking extends Component {
 
   	static contextTypes = {
   		router: React.PropTypes.object,
@@ -21,11 +23,14 @@ export default class Ranking extends Component {
   		super(props);
       this._onChange = this._onChange.bind(this);
       this._onSave = this._onSave.bind(this);
+      this.routerWillLeave = this.routerWillLeave.bind(this);
+
   	}
 
     state={
           allKpis:null,
-          config:null
+          config:null,
+          isSaved:false
         };
 
     _onChange(){
@@ -150,10 +155,20 @@ export default class Ranking extends Component {
       )
     }
 
+    routerWillLeave(nextLocation){
+      console.log(nextLocation);
+      ntLocation=nextLocation;
+      return this.state.isSaved
+    }
+
     componentDidMount(){
       customerId=parseInt(this.context.router.params.customerId);
       RankingKPIStore.addChangeListener(this._onChange);
       RankingKPIAction.getGroupKpis(customerId);
+      this.props.router.setRouteLeaveHook(
+        this.props.route,
+        this.routerWillLeave
+      )
     }
 
     componentWillUnmount(){
@@ -174,6 +189,14 @@ export default class Ranking extends Component {
       else if(this.state.config){
         return(
           <div className="jazz-margin-up-main jazz-kpi-group-ranking">
+            <FlatButton label='xxx' onClick={()=>{
+                this.setState({
+                  isSaved:true
+                },()=>{
+                  this.props.router.replace(ntLocation.pathname)
+                })
+
+              }}/>
             <header className="header-bar">{I18N.Setting.KPI.Group.Ranking.Title}</header>
             <article className="content">
               {this._renderKpiRanking()}
@@ -194,3 +217,4 @@ export default class Ranking extends Component {
       }
     }
 }
+export default withRouter(Ranking)

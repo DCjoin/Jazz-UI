@@ -456,12 +456,13 @@ let CommonFuns = {
     DatetimeToJson: function(datetime) {
       var timezoneoffset = new Date().getTimezoneOffset() * 60000;
       var l = datetime.getTime() - timezoneoffset;
-      return '\/Date(' + l + ')\/';
+      // return '\/Date(' + l + ')\/';
+      return Momment(l).format('YYYY-MM-DDTHH:mm:ss')
     },
     JsonToDateTime: function(jsonstring, outintval) {
       outintval = typeof (outintval) === 'boolean' ? outintval : true;
-      jsonstring = jsonstring.substr(6, jsonstring.length - 8);
-
+      //jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+      jsonstring = Momment(jsonstring).valueOf();
       var timezoneoffset = new Date().getTimezoneOffset() * 60000;
       var mydate;
       if (outintval) {
