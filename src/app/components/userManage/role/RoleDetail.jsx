@@ -281,7 +281,6 @@ var RoleDetail = React.createClass({
             privilegeList={privilegeUtil.getRolePrivilegeList()} 
             currentPrivilegeCodes={role.get('PrivilegeCodes').toJS()}
             handleChange={(value) => {
-              console.log(value);
               RoleAction.merge({
                 value,
                 path: "PrivilegeCodes"

@@ -123,14 +123,6 @@ const PermissionCode = function() {
 		FULL: 1311,
 	},
 
-	BASIC_DATA_ANALYSE: {
-		FULL: 1313,
-	},
-
-	SENIOR_DATA_ANALYSE: {
-		FULL: 1315,
-	},
-
 	INTERLLIGENCE_DIAGNOSE: {
 		FULL: 1317,
 	},

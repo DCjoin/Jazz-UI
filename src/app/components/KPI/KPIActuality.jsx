@@ -334,7 +334,7 @@ export default class Actuality extends Component {
 		return this.props.router.params.customerId;
 	}
 	_getHierarchyId() {
-		return +this.props.router.location.query.hierarchyId || null;
+		return +this.props.hierarchyId || null;
 	}
 	render() {
 		if( this.state.loading ) {
@@ -350,63 +350,7 @@ export default class Actuality extends Component {
 			if( !wholeCustomer && !isSingleBuilding() ) {
 				return (<TipMessage message={I18N.Kpi.Error.KPIConguredMoreBuilding}/>);
 			}
-
-			if( SingleKPIStore.chartReady() && !SingleKPIStore.getKPIChart() ) {
-				// return (<TipMessage message={I18N.Kpi.Error.NonKPIConguredSingleBuilding}/>);
-			}
 		}
-		// let disabledSelectedProject = isFull() && !wholeCustomer;
-
-		// if( this.state.showCreate ) {
-		// 	return (<CreateKPI
-		// 		hierarchyId={this.state.hierarchyId}
-		// 		hierarchyName={getHierarchyNameById(this.state.hierarchyId)}
-		// 		kpiId={this.state.kpiId}
-		// 		isCreate={!this.state.kpiId}
-		// 		onSave={this._reload}
-		// 		onCancel={this._reload}
-		// 		year={this.state.year || SingleKPIStore.getCustomerCurrentYear()}/>);
-		// } else {
-			// let buildingProps = {
-		 //        // ref: 'commodity',
-		 //        isViewStatus: false,
-		 //        defaultValue: this.state.hierarchyId,
-		 //        style: {
-		 //        	width: 240,
-		 //        	margin: '0 20px',
-		 //        },
-		 //        didChanged: (hierarchyId) => {
-		 //        	SingleKPIAction.getKPIConfigured(
-		 //        		this.props.router.params.customerId, 
-		 //        		null, 
-		 //        		hierarchyId,
-			// 			this._getKpiId(),
-		 //        		this._getKPIRank(hierarchyId));
-			// 		this.setState({year: null,hierarchyId});
-		 //        },
-		 //        disabled: disabledSelectedProject,
-		 //        textField: 'Name',
-		 //        valueField: 'Id',
-		 //        dataItems: [{
-		 //        	Id: null,
-		 //        	disabled: true,
-		 //        	Name: I18N.Setting.KPI.SelectProject
-		 //        }].concat(groupProjectMenuItems(this._getCustomerId()))
-		 //        .concat(singleProjectMenuItems()),
-		 //    };
-		    // let showTitle = true,
-		    // prefixTitle = '',
-		    // chartData = SingleKPIStore.getKPIChart();
-		    // if( this._getGroupKpiId()) {
-		    // 	if( chartData && chartData.get('data').size === 1 ) {
-		    // 		prefixTitle = 
-		    // 			I18N.Setting.KPI.Building + 
-		    // 			getHierarchyNameById(this.state.hierarchyId) + '-' + 
-		    // 			chartData.getIn(['data', 0, 'name']) + '-';
-		    // 	} else {
-		    // 		showTitle = false;
-		    // 	}
-		    // }
 			return (
 				<MinHeight400 className='jazz-kpi-actuality'>
 					<ActualityContent
