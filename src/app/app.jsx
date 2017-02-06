@@ -30,10 +30,11 @@ import MapPanel from './components/map/MapPanel.jsx';
 import Alarm from './components/alarm/Alarm.jsx';
 import Setting from './components/setting/Setting.jsx';
 import Mail from './components/mail/Mail.jsx';
+
 import Report from './components/report/Report.jsx';
 import DataAnalysis from './components/report/DataAnalysis/AnalysisPanel.jsx';
 //for Test
-// import Report from './components/KPI/Report/ReportConfig.jsx';
+//import Report from './components/DataAnalysis/AnalysisPanel.jsx';
 import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import RoutePath from './util/RoutePath.jsx';

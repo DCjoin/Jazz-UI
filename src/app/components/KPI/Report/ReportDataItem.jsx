@@ -569,7 +569,7 @@ let ReportDataItem = React.createClass({
       dataItems: me._getSheetItems(),
       isViewStatus: me.props.disabled,
       defaultValue: me.props.targetSheet,
-      title: I18N.EM.Report.TargetSheet,
+      title: I18N.Setting.KPI.Report.Sheet,
       textField: 'text',
       didChanged: me._handleSelectValueChange.bind(null, 'TargetSheet')
     };
