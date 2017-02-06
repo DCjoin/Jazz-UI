@@ -90,6 +90,16 @@ const PermissionCode = function() {
 		FULL: 1301,
 	},
 
+	BASIC_DATA_ANALYSE: {
+		getLabel: () => I18N.Privilege.Role.BasicDataAnalyse,
+		FULL: 1313,
+	},
+	
+	SENIOR_DATA_ANALYSE: {
+		getLabel: () => I18N.Privilege.Role.SeniorDataAnalyse,
+		FULL: 1313,
+	},
+
 	PUSH_SOLUTION: {
 		READONLY: 1302,
 		FULL: 1303,

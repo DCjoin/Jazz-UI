@@ -196,6 +196,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
             component: KPITemplate
           }]
       }, {
+        onEnter: () => {
+          document.title = I18N.MainMenu.DataAnalysis;
+        },
         path: 'data_analysis',
         component: DataAnalysis
       }, {

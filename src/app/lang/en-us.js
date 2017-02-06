@@ -46,6 +46,7 @@ I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
 I18N.MainMenu.KPI = '指标·报表';
+I18N.MainMenu.DataAnalysis = '数据分析';
 I18N.MainMenu.KPIActuality = '指标现状';
 I18N.MainMenu.KPIConfig = '指标现状配置';
 I18N.MainMenu.Map = 'Map';
@@ -1801,6 +1802,8 @@ I18N.Privilege.Role.CustomLabeling = 'Customized labeling';
 I18N.Privilege.Role.NewCustomLabeling = '自定义配置';
 I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline setting';
 I18N.Privilege.Role.IndexAndReport = '指标&报表';
+I18N.Privilege.Role.BasicDataAnalyse = '基本数据分析';
+I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';
