@@ -1,23 +1,33 @@
 'use strict';
 import React from "react";
+import _ from 'lodash';
 import HierarchyButton from '../components/Hierarchy/HierarchyButton.jsx';
 import DimButton from '../components/Dim/DimButton.jsx';
+import {nodeType} from 'constants/TreeConstants.jsx';
 
 let HierAndDimHeader = React.createClass({
   propTypes: {
+    isBuilding:React.PropTypes.bool,
     onHierachyTreeClick: React.PropTypes.func,
-    onDimTreeClick: React.PropTypes.func, //node.Id==0 为‘全部维度’
   },
   //mixins: [Navigation, State],
   _onHierachyTreeClick: function(node) {
+    var dimNameShow=true;
+    if(node.Type!==nodeType.Building && _.isBoolean(this.props.isBuilding)){
+      dimNameShow=false
+    }
     this.props.onHierachyTreeClick(node,2);
-    this.refs.dimButton.resetButtonName();
+    if(this.refs.dimButton){
+      this.refs.dimButton.resetButtonName();
+    }
+
     this.setState({
       dimActive: true,
       hierId: node.Id,
       HierarchyShow: false,
       dimParentNode: node,
       dimId: null,
+      dimNameShow:dimNameShow
     });
   },
   _onDimTreeClick: function(node) {
@@ -67,6 +77,7 @@ let HierAndDimHeader = React.createClass({
       dimActive:this.props.hierarchyId?true:false,
       dimId: null,
       DimShow: false,
+      dimNameShow:_.isBoolean(this.props.isBuilding)?this.props.isBuilding:true
     };
   },
   render: function() {
@@ -78,9 +89,14 @@ let HierAndDimHeader = React.createClass({
       show={this.state.HierarchyShow}
       handleClickAway={this.handleHierClickAway}
       isDimTreeShow={false}/>
+    {this.state.dimNameShow?
       <div style={{
           color: '#ffffff'
         }}>-</div>
+      :null
+    }
+
+      {this.state.dimNameShow?
         <DimButton ref={'dimButton'}
           active={this.state.dimActive}
           onTreeClick={this._onDimTreeClick}
@@ -88,7 +104,9 @@ let HierAndDimHeader = React.createClass({
           onButtonClick={this._onDimButtonClick}
           show={this.state.DimShow}
           handleClickAway={this.handleDimClickAway}
-          dimId={this.state.dimId}/>
+          dimId={this.state.dimId}/>:
+        null}
+
       </div>
       )
   },
