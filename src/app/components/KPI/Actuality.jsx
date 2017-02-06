@@ -312,8 +312,17 @@ export default class Actuality extends Component {
 	        isViewStatus: false,
 	        defaultValue: hierarchyId,
 	        style: {
-	        	width: 240,
+	        	width: 200,
 	        	margin: '0 20px',
+	        },
+	        labelStyle: {
+	        	color: '#fff',
+	        },
+	        listStyle: {
+	        	width: 200,
+	        },
+	        underlineStyle: {
+	        	display: 'none',
 	        },
 	        didChanged: (hierarchyId) => {
 	        	this._routerPush(
@@ -328,7 +337,7 @@ export default class Actuality extends Component {
 	    };
 		return (
 			<div className='jazz-actuality'>
-				{!this._isSingleKPI() && isFull() && <ViewableDropDownMenu {...buildingProps}/>}
+				{!this._isSingleKPI() && isFull() && <div className='jazz-top-select-hierarchy'><ViewableDropDownMenu {...buildingProps}/></div>}
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
 				{this._renderEditPage()}

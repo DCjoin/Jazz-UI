@@ -32,7 +32,7 @@ import Setting from './components/setting/Setting.jsx';
 import Mail from './components/mail/Mail.jsx';
 
 import Report from './components/report/Report.jsx';
-import DataAnalysis from './components/report/DataAnalysis/AnalysisPanel.jsx';
+import DataAnalysis from './components/DataAnalysis/Basic/AnalysisPanel.jsx';
 //for Test
 //import Report from './components/DataAnalysis/AnalysisPanel.jsx';
 import Template from './components/report/Template.jsx';
