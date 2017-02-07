@@ -706,7 +706,7 @@ var MainAppBar = React.createClass({
     return (
       <div className="jazz-mainmenu">
         <div className="jazz-logo" style={{
-          left: topSelectHierarchy && 0
+          left: topSelectHierarchy && 20
         }}>
             {logo}
             {title}
