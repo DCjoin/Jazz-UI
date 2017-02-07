@@ -195,7 +195,7 @@ let TagSelectWindow = React.createClass({
     if (node.Id === this.state.nodeId && optionType === this.state.optionType) {
       return;
     }
-    //this.refs.searchBar.clearSearchText();
+
     filters = null;
 
     ReportAction.getTagData(customerId,node.Id, optionType, filters,this.props.type);
