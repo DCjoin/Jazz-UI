@@ -454,25 +454,25 @@ let CommonFuns = {
   },
   DataConverter: {
     DatetimeToJson: function(datetime) {
-      var timezoneoffset = new Date().getTimezoneOffset() * 60000;
-      var l = datetime.getTime() - timezoneoffset;
+      // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+      // var l = datetime.getTime() - timezoneoffset;
       // return '\/Date(' + l + ')\/';
-      return Momment(l).format('YYYY-MM-DDTHH:mm:ss')
+      return Momment.utc(datetime).format('YYYY-MM-DDTHH:mm:ss')
     },
     JsonToDateTime: function(jsonstring, outintval) {
       outintval = typeof (outintval) === 'boolean' ? outintval : true;
       //jsonstring = jsonstring.substr(6, jsonstring.length - 8);
-      jsonstring = Momment(jsonstring).valueOf();
-      var timezoneoffset = new Date().getTimezoneOffset() * 60000;
-      var mydate;
-      if (outintval) {
-        mydate = parseInt(jsonstring) + timezoneoffset;
-      } else {
-        mydate = parseInt(jsonstring) + timezoneoffset;
-        mydate = new Date(mydate);
-      }
+      jsonstring = Momment.utc(jsonstring).valueOf();
+      // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+      // var mydate;
+      // if (outintval) {
+      //   mydate = parseInt(jsonstring) + timezoneoffset;
+      // } else {
+      //   mydate = parseInt(jsonstring) + timezoneoffset;
+      //   mydate = new Date(mydate);
+      // }
 
-      return mydate;
+      return jsonstring;
     },
     D2JNoTimezone: function(datetime) {
       var l = datetime.getTime();

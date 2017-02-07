@@ -56,6 +56,7 @@ const GroupKPIStore = assign({}, PrototypeStore, {
     else {
       _kpiInfo=Immutable.fromJS(info);
     }
+
     _info=null;
   },
 
