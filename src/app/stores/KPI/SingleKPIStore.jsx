@@ -116,7 +116,7 @@ const SingleKPIStore = assign({}, PrototypeStore, {
     // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
     // var l = datetime.getTime();
     // return '\/Date(' + l + ')\/';
-    return moment(datetime).format('YYYY-MM-DDTHH:mm:ss')
+    return moment.utc(datetime).format('YYYY-MM-DDTHH:mm:ss')
   },
   JsonToDateTime(jsonstring, outintval) {
     // outintval = typeof (outintval) === 'boolean' ? outintval : true;
