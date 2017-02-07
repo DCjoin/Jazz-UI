@@ -49,11 +49,15 @@ export default class DataAnalysis extends Component {
 
 		this._onFolderTreeLoad = this._onFolderTreeLoad.bind(this);
 		this._handleWidgetSelectChange = this._handleWidgetSelectChange.bind(this);
+		this._onCreateFolderOrWidgetChange = this._onCreateFolderOrWidgetChange.bind(this);
+
 		this._onSelectNode = this._onSelectNode.bind(this);
+		this._createFolderOrWidget = this._createFolderOrWidget.bind(this);
 		this._onOperationSelect = this._onOperationSelect.bind(this);
 
 		FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.addChangeListener(this._handleWidgetSelectChange);
+		FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
 
 		this.setState({
 			treeLoading: true
@@ -77,6 +81,7 @@ export default class DataAnalysis extends Component {
 	componentWillUnmount() {		
 		FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
+		FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
 	}
 
 	_getHierarchyId(context) {
@@ -93,6 +98,13 @@ export default class DataAnalysis extends Component {
 		FolderAction.getFolderTreeByHierarchyId( this._getHierarchyId(context) );
 	}
 
+	_onFolderTreeLoad() {
+		this.setState({
+			treeLoading: false,
+			selectedNode: FolderStore.getSelectedNode()
+		});
+	}
+
 	_handleWidgetSelectChange() {
 		if( widgetLoaded(this.state.selectedNode) ) {
 			this.setState({
@@ -101,9 +113,9 @@ export default class DataAnalysis extends Component {
 		}
 	}
 
-	_onFolderTreeLoad() {
+
+	_onCreateFolderOrWidgetChange() {
 		this.setState({
-			treeLoading: false,
 			selectedNode: FolderStore.getSelectedNode()
 		});
 	}
@@ -115,6 +127,18 @@ export default class DataAnalysis extends Component {
 		if( isWidget(node) ) {
 			FolderAction.GetWidgetDtos([node.get('Id')], node);
 		}
+	}
+
+	_createFolderOrWidget(formatStr, nodeType, widgetType) {
+		let {selectedNode} = this.state;
+		// console.log(FolderStore.getDefaultName(formatStr, selectedNode, nodeType));
+		FolderAction.createWidgetOrFolder(
+			selectedNode, 
+			FolderStore.getDefaultName(formatStr, selectedNode, nodeType), 
+			nodeType, 
+			this.props.params.customerId, 
+			widgetType,
+			this._getHierarchyId(this.context), true);
 	}
 
 	_onOperationSelect(index, widgetDto) {
@@ -168,6 +192,7 @@ export default class DataAnalysis extends Component {
 					tree={FolderStore.getFolderTree()}
 					selectedNode={this.state.selectedNode}
 					onSelectNode={this._onSelectNode}
+					createWidgetOrFolder={this._createFolderOrWidget}
 					/>
 				{this._renderContent()}
 			</div>

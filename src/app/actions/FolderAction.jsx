@@ -21,12 +21,13 @@ let FolderAction = {
       }
     });
   },
-  createWidgetOrFolder(parentNode, name, type, customerId, widgetType) {
+  createWidgetOrFolder(parentNode, name, type, customerId, widgetType, HierarchyId = customerId, isNew = false) {
     var dto = {
       ParentId: parentNode.get("Id"),
       Name: name,
       Type: type,
       CustomerId: customerId,
+      HierarchyId,
       WidgetType: widgetType
     };
     Ajax.post('/Dashboard/CreateWidgetOrFolder', {
@@ -37,7 +38,8 @@ let FolderAction = {
         AppDispatcher.dispatch({
           type: Action.CREATE_FOLDER_OR_WIDGET,
           newNode: newNode,
-          parentNode: parentNode
+          parentNode: parentNode, 
+          isNew
         });
       },
       error: function(err, res) {
