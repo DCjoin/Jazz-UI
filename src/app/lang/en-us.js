@@ -1338,7 +1338,9 @@ I18N.Folder.NewWidget.DefaultName = 'Last 7 Days {0}';
 I18N.Folder.NewFolder = 'New folder';
 I18N.Folder.FolderName = 'Folder';
 I18N.Folder.WidgetName = 'Chart';
+I18N.Folder.DataAnalysisWidget = '分析图表';
 I18N.Folder.WidgetSaveSuccess = 'The chart has been saved successfully.';
+I18N.Folder.EmptyFolder = '文件夹为空，点击左侧“+文件夹/+分析图表”按钮进行添加';
 
 I18N.Folder.SaveNameError = {};
 I18N.Folder.SaveNameError.E032 = '{1} named "{0}" already exists. Please choose another name.';

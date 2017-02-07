@@ -6,9 +6,9 @@ import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
 let FolderAction = {
   getFolderTreeByHierarchyId(hierarchyId) {
-    Ajax.post('/Dashboard/GetWdigetFolderTreeByHierarchyId', {
+    Ajax.post('/Dashboard/GetWdigetFolderTreeByCustomerId', {
       params: {
-        hierarchyId: hierarchyId
+        customerId: hierarchyId
       },
       success: function(treeNode) {
         AppDispatcher.dispatch({

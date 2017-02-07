@@ -21,8 +21,6 @@ import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 import { treeSource } from '../../constants/TreeSource.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
-
-
 import Immutable from 'immutable';
 
 function currentUser() {

@@ -152,7 +152,7 @@ let MainApp = React.createClass({
 
   _renderTopSelectHierarchy: function() {
     let customerId = this.props.params.customerId;
-    if(false
+    if(true
       // privilegeUtil.isFull
       // && privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege())
       ) {
