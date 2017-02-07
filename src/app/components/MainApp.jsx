@@ -2,33 +2,36 @@
 
 import React from 'react';
 import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'react-router';
-import MainAppBar from './MainAppBar.jsx';
-import SelectCustomer from './SelectCustomer.jsx';
-import util from '../util/Util.jsx';
-
-import SelectCustomerActionCreator from '../actions/SelectCustomerActionCreator.jsx';
-import { viewState } from '../constants/MainAppStatus.jsx';
-import CookieUtil from '../util/cookieUtil.jsx';
-import { getCookie } from '../util/Util.jsx';
-
-import lang from '../lang/lang.jsx';
 import keyMirror from 'keymirror';
 import { LeftNav, CircularProgress } from 'material-ui';
 import assign from 'object-assign';
-import UOMStore from '../stores/UOMStore.jsx';
-import AllCommodityStore from '../stores/AllCommodityStore.jsx';
-import MainAction from '../actions/MainAction.jsx';
-import NetworkChecker from '../controls/NetworkChecker.jsx';
-import ExportChart from './energy/ExportChart.jsx';
-import CurrentUserStore from '../stores/CurrentUserStore.jsx';
-import CurrentUserCustomerStore from '../stores/CurrentUserCustomerStore.jsx';
-import LoginStore from '../stores/LoginStore.jsx';
-import CurrentUserAction from '../actions/CurrentUserAction.jsx';
-import LoginActionCreator from '../actions/LoginActionCreator.jsx';
-import CusFlatButton from '../controls/FlatButton.jsx';
-import Dialog from '../controls/NewDialog.jsx';
+import {find} from 'lodash/collection';
 
-import RoutePath from '../util/RoutePath.jsx';
+import { viewState } from 'constants/MainAppStatus.jsx';
+
+import CookieUtil from 'util/cookieUtil.jsx';
+import util, { getCookie } from 'util/Util.jsx';
+import RoutePath from 'util/RoutePath.jsx';
+
+import NetworkChecker from 'controls/NetworkChecker.jsx';
+import CusFlatButton from 'controls/FlatButton.jsx';
+import Dialog from 'controls/NewDialog.jsx';
+import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
+
+import lang from '../lang/lang.jsx';
+import ExportChart from './energy/ExportChart.jsx';
+import MainAppBar from './MainAppBar.jsx';
+import SelectCustomer from './SelectCustomer.jsx';
+
+import MainAction from 'actions/MainAction.jsx';
+import HierarchyAction from 'actions/HierarchyAction.jsx';
+
+import UOMStore from 'stores/UOMStore.jsx';
+import AllCommodityStore from 'stores/AllCommodityStore.jsx';
+import CurrentUserStore from 'stores/CurrentUserStore.jsx';
+import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
+import HierarchyStore from 'stores/HierarchyStore.jsx';
+import LoginStore from 'stores/LoginStore.jsx';
 
 function getFirstMenuPathFunc(menu) {
   let firstMenu = menu[0];
@@ -46,10 +49,40 @@ function getFirstMenuPathFunc(menu) {
   return  firstMenu.getPath;
 }
 
+function getCustomerById(customerId) {
+  return find(CurrentUserCustomerStore.getAll(), customer => customer.Id === customerId * 1 );
+}
+
+function singleProjectMenuItems() {
+  if( !HierarchyStore.getBuildingList() || HierarchyStore.getBuildingList().length === 0 ) {
+    return [];
+  }
+  return [{
+      Id: -2,
+      disabled: true,
+      Name: I18N.Setting.KPI.Building
+    }].concat(HierarchyStore.getBuildingList());
+}
+function groupProjectMenuItems(customerId) {
+  if( !CurrentUserCustomerStore.getAll() || CurrentUserCustomerStore.getAll().length === 0 ) {
+    return [];
+  }
+  return [{
+      Id: -1,
+      disabled: true,
+      Name: I18N.Kpi.GroupProject
+    }].concat( getCustomerById(customerId) );
+}
+
 let MainApp = React.createClass({
   statics: {
-    prepareShow: () => {
-      return UOMStore.getUoms() && AllCommodityStore.getAllCommodities() && CurrentUserCustomerStore.getAll() && CurrentUserStore.getCurrentPrivilege() && CurrentUserStore.getCurrentUser();
+    prepareShow: (customerId) => {
+      return UOMStore.getUoms() && 
+        AllCommodityStore.getAllCommodities() && 
+        CurrentUserCustomerStore.getAll() && 
+        CurrentUserStore.getCurrentPrivilege() && 
+        CurrentUserStore.getCurrentUser() &&
+        ( !customerId || HierarchyStore.getBuildingList() );
     },
     needDefaultReplace: (router) => {
       if(CurrentUserStore.getCurrentUser().Id === 1) {
@@ -75,6 +108,14 @@ let MainApp = React.createClass({
       return false;
     },
   },
+  childContextTypes: {
+    hierarchyId: React.PropTypes.string,
+  },
+  getChildContext() {
+    return {
+      hierarchyId: this.state.hierarchyId,
+    };
+  },
   _onAllUOMSChange() {
     window.uoms = UOMStore.getUoms();
     this._onChange();
@@ -85,7 +126,7 @@ let MainApp = React.createClass({
   },
 
   _dataReady: function() {
-    if( MainApp.prepareShow() ) {
+    if( MainApp.prepareShow(this.props.params.customerId) ) {
       let defaultReplace = MainApp.needDefaultReplace(this.props.router);
       if(defaultReplace && !this.props.router.isActive(defaultReplace)) {
         this.props.router.replace(defaultReplace);
@@ -98,14 +139,61 @@ let MainApp = React.createClass({
     this._dataReady();
   },
 
+  _getCustomerId: function(customerId) {
+    HierarchyAction.getBuildingListByCustomerId(customerId);
+    this._setHierarchyId(+customerId);
+  },
+
+  _setHierarchyId: function(hierarchyId) {
+    this.setState({
+      hierarchyId
+    });
+  },
+
+  _renderTopSelectHierarchy: function() {
+    let customerId = this.props.params.customerId;
+    if(true
+      // privilegeUtil.isFull
+      // && privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege())
+      ) {
+      return (<div className='jazz-top-select-hierarchy'>
+        <ViewableDropDownMenu
+              isViewStatus={false}
+              defaultValue={this.state.hierarchyId}
+              style={{
+                width: 200,
+                margin: '0 20px'
+              }}
+              labelStyle={{
+                color: '#fff',
+              }}
+              listStyle={{
+                width: 200,
+              }}
+              underlineStyle={{
+                display: 'none',
+              }}
+              didChanged={this._setHierarchyId}
+              disabled={!HierarchyStore.getBuildingList() 
+                || HierarchyStore.getBuildingList().length === 0
+                || +customerId !== HierarchyStore.getBuildingList()[0].CustomerId}
+              textField={'Name'}
+              valueField={'Id'}
+              dataItems={groupProjectMenuItems(customerId).concat(singleProjectMenuItems())}/>
+      </div>);
+    }
+    return null;
+  },
+
   render: function() {
-    if(MainApp.prepareShow()) {
-      let customerId = this.props.router.params.customerId;
+    let customerId = this.props.params.customerId;
+    if(MainApp.prepareShow(customerId)) {
       if( customerId ) {
         return (
           <div className='jazz-main'>
             <MainAppBar
-              disabledSelectCustomer={MainApp.prepareShow() && MainApp.needDefaultReplace(this.props.router)}
+              topSelectHierarchy={this._renderTopSelectHierarchy()}
+              disabledSelectCustomer={MainApp.needDefaultReplace(this.props.router)}
               items={CurrentUserStore.getMainMenuItems()}
               logoUrl={customerId && 'Logo.aspx?hierarchyId=' + customerId}/>
             {customerId && this.props.children}
@@ -130,6 +218,9 @@ let MainApp = React.createClass({
         </div>
       );
   },
+  componentWillMount() {
+    this.state = {};
+  },
   componentDidMount() {
     UOMStore.addChangeListener(this._onAllUOMSChange);
     AllCommodityStore.addChangeListener(this._onAllCommoditiesChange);
@@ -138,6 +229,15 @@ let MainApp = React.createClass({
     CurrentUserStore.addCurrentrivilegeListener(this._onChange);
     CurrentUserCustomerStore.addChangeListener(this._onChange);
     CurrentUserStore.addCurrentUserListener(this._onChange);
+    HierarchyStore.addBuildingListListener(this._onChange);
+    if(this.props.params.customerId) {
+      this._getCustomerId(this.props.params.customerId);
+    }
+  },
+  componentWillReceiveProps(nextProps) {
+    if( nextProps.params.customerId && nextProps.params.customerId !== this.props.params.customerId ) {
+      this._getCustomerId(nextProps.params.customerId);
+    }
   },
   componentWillUnmount: function() {
     UOMStore.removeChangeListener(this._onAllUOMSChange);
@@ -145,6 +245,7 @@ let MainApp = React.createClass({
     CurrentUserStore.removeCurrentrivilegeListener(this._onChange);
     CurrentUserCustomerStore.removeChangeListener(this._onChange);
     CurrentUserStore.removeCurrentUserListener(this._onChange);
+    HierarchyStore.removeCurrentUserListener(this._onChange);
   }
 });
 

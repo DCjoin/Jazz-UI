@@ -46,6 +46,7 @@ I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
 I18N.MainMenu.KPI = '指标·报表';
+I18N.MainMenu.DataAnalysis = '数据分析';
 I18N.MainMenu.KPIActuality = '指标现状';
 I18N.MainMenu.KPIConfig = '指标现状配置';
 I18N.MainMenu.Map = 'Map';
@@ -1338,7 +1339,9 @@ I18N.Folder.NewWidget.DefaultName = 'Last 7 Days {0}';
 I18N.Folder.NewFolder = 'New folder';
 I18N.Folder.FolderName = 'Folder';
 I18N.Folder.WidgetName = 'Chart';
+I18N.Folder.DataAnalysisWidget = '分析图表';
 I18N.Folder.WidgetSaveSuccess = 'The chart has been saved successfully.';
+I18N.Folder.EmptyFolder = '文件夹为空，点击左侧“+文件夹/+分析图表”按钮进行添加';
 
 I18N.Folder.SaveNameError = {};
 I18N.Folder.SaveNameError.E032 = '{1} named "{0}" already exists. Please choose another name.';
@@ -1803,6 +1806,8 @@ I18N.Privilege.Role.CustomLabeling = 'Customized labeling';
 I18N.Privilege.Role.NewCustomLabeling = '自定义配置';
 I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline setting';
 I18N.Privilege.Role.IndexAndReport = '指标&报表';
+I18N.Privilege.Role.BasicDataAnalyse = '基本数据分析';
+I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';

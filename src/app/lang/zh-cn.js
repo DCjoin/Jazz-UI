@@ -46,6 +46,7 @@ I18N.MainMenu.DeviceTemplate = '台账模板';
 I18N.MainMenu.ParameterTemplate = '参数模板';
 
 I18N.MainMenu.KPI = '指标·报表';
+I18N.MainMenu.DataAnalysis = '数据分析';
 I18N.MainMenu.KPIActuality = '指标现状';
 I18N.MainMenu.KPIConfig = '指标现状配置';
 I18N.MainMenu.Map = '地图';
@@ -1338,7 +1339,9 @@ I18N.Folder.NewWidget.DefaultName = '最近7天{0}';
 I18N.Folder.NewFolder = '新建文件夹';
 I18N.Folder.FolderName = '文件夹';
 I18N.Folder.WidgetName = '图表';
+I18N.Folder.DataAnalysisWidget = '分析图表';
 I18N.Folder.WidgetSaveSuccess = '图表保存成功';
+I18N.Folder.EmptyFolder = '文件夹为空，点击左侧“+文件夹/+分析图表”按钮进行添加';
 
 I18N.Folder.SaveNameError = {};
 I18N.Folder.SaveNameError.E032 = '名称为“{0}”的{1}已存在，请选取其他名称。';
@@ -1803,6 +1806,8 @@ I18N.Privilege.Role.CustomLabeling = '自定义能效标识';
 I18N.Privilege.Role.NewCustomLabeling = '自定义配置';
 I18N.Privilege.Role.BaselineConfiguration = '能耗分析基准值配置';
 I18N.Privilege.Role.IndexAndReport = '指标&报表';
+I18N.Privilege.Role.BasicDataAnalyse = '基本数据分析';
+I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
 
 I18N.Remark = {};
 I18N.Remark.Label = '备注';

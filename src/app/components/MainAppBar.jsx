@@ -631,6 +631,7 @@ var MainAppBar = React.createClass({
     var leftNav = null,
       dialog = null;
     var {sidebarType, dialogType, customError} = this.state;
+    var {topSelectHierarchy} = this.props;
     // render side bar
     switch (sidebarType) {
       case SIDE_BAR_TYPE.USER_INFO:
@@ -646,12 +647,6 @@ var MainAppBar = React.createClass({
 
     // render dialog
     switch (dialogType) {
-      // case DIALOG_TYPE.MODIIFY_PASSWORD:
-      //   dialog = this._getEditPasswordDialog(customError);
-      //   break;
-      // case DIALOG_TYPE.MODIIFY_INFO:
-      //   dialog = this._getEditUserDialog();
-      //   break;
       case DIALOG_TYPE.MAIL_CONFIRM:
         dialog = this._getMailConfigDialog();
         break;
@@ -710,10 +705,13 @@ var MainAppBar = React.createClass({
         </div>) : null;
     return (
       <div className="jazz-mainmenu">
-        <div className="jazz-logo">
+        <div className="jazz-logo" style={{
+          left: topSelectHierarchy && 20
+        }}>
             {logo}
             {title}
         </div>
+        {topSelectHierarchy}
         {mainmenu}
         <div className="jazz-mainmenu-info">
             {mail}

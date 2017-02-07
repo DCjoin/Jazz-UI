@@ -29,6 +29,7 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.CUSTOM_LABELING.FULL,
   PermissionCode.BASELINE_CONFIG.FULL,
   PermissionCode.INDEX_AND_REPORT.FULL,
+  PermissionCode.SENIOR_DATA_ANALYSE.FULL,
 ].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
@@ -162,21 +163,19 @@ var CurrentUserStore = assign({}, PrototypeStore, {
         {
           getPath: RoutePath.Actuality,
           title: I18N.MainMenu.KPI,
-          // children: [{
-          //   list: [{
-          //     getPath: RoutePath.KPIActuality,
-          //     title: I18N.MainMenu.KPIActuality
-          //   }]
-          // }]
         }
       );
-      // if( this.permit(PermissionCode.INDEX_AND_REPORT.FULL) ) {
-      //   menuItems[menuItems.length - 1].children[0].list.push({
-      //       getPath: RoutePath.KPIGroupConfig,
-      //       title: I18N.MainMenu.KPIConfig
-      //   });
-      // }
     }
+
+    if ( this.permit(PermissionCode.BASIC_DATA_ANALYSE.FULL) || this.permit(PermissionCode.SENIOR_DATA_ANALYSE.FULL) ) {
+      menuItems.push(
+        {
+          getPath: RoutePath.dataAnalysis,
+          title: I18N.MainMenu.DataAnalysis
+        }
+      );
+    }
+
     if (this.permit(PermissionCode.MAP_VIEW.READONLY)) {
       menuItems.push(
         {

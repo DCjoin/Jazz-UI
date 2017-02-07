@@ -1,7 +1,6 @@
 'use strict';
 import React from "react";
 import ReactDOM from 'react-dom';
-import { Navigation, State } from 'react-router';
 import { FontIcon, TextField } from 'material-ui';
 import Search from './FolderSearchPaper.jsx';
 import FolderStore from '../../stores/FolderStore.jsx';
