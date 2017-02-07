@@ -2,7 +2,10 @@ import React, { Component, PropTypes } from 'react';
 
 import PermissionCode from 'constants/PermissionCode.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
+import util from 'util/Util.jsx';
 
+import Dialog from 'controls/Dialog.jsx';
+// import FaltButton from 'controls/FaltButton.jsx';
 import ViewableDropDownMenu from 'controls/ViewableDropDownMenu.jsx';
 
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -14,6 +17,8 @@ function isSenior() {
 	return privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege());
 }
 
+let ntLocation;
+
 export default class DataAnalysis extends Component {
 
 	static contextTypes = {
@@ -22,6 +27,10 @@ export default class DataAnalysis extends Component {
 
 	componentWillMount() {
 		this._loadInitData(this.props, this.context);
+		this.props.router.setRouteLeaveHook(
+			this.props.route, 
+			this.routerWillLeave
+		);
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
@@ -34,6 +43,11 @@ export default class DataAnalysis extends Component {
 
 	_loadInitData(props, context) {
 
+	}
+
+	routerWillLeave(nextLocation) {
+		ntLocation = nextLocation;
+		return false;
 	}
 
 	render() {
