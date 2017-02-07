@@ -27,10 +27,10 @@ export default class DataAnalysis extends Component {
 
 	componentWillMount() {
 		this._loadInitData(this.props, this.context);
-		this.props.router.setRouteLeaveHook(
-			this.props.route, 
-			this.routerWillLeave
-		);
+		// this.props.router.setRouteLeaveHook(
+		// 	this.props.route, 
+		// 	this.routerWillLeave
+		// );
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {

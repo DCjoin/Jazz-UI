@@ -43,7 +43,7 @@ var WidgetSaveWindow = React.createClass({
   componentDidMount: function() {
     FolderStore.addWidgetSaveErrorListener(this._onWidgetSaveError);
     FolderStore.addWidgetSaveSuccessListener(this._onWidgetSaveSuccess);
-    FolderAction.getFolderTreeByCustomerId(this.context.currentRoute.params.customerId);
+    FolderAction.getFolderTreeByHierarchyId(this.context.currentRoute.params.customerId);
     FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
     this.setState({
       treeLoading: true

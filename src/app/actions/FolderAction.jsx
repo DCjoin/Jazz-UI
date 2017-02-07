@@ -5,10 +5,10 @@ import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
 let FolderAction = {
-  getFolderTreeByCustomerId(customerId) {
-    Ajax.post('/Dashboard/GetWdigetFolderTreeByCustomerId', {
+  getFolderTreeByHierarchyId(hierarchyId) {
+    Ajax.post('/Dashboard/GetWdigetFolderTreeByHierarchyId', {
       params: {
-        customerId: customerId
+        hierarchyId: hierarchyId
       },
       success: function(treeNode) {
         AppDispatcher.dispatch({
