@@ -1,5 +1,6 @@
 'use strict';
 import React, { Component }  from "react";
+import assign from "object-assign";
 import FlatButton from 'controls/FlatButton.jsx';
 import TagDrawer from './TagDrawer.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
@@ -19,6 +20,7 @@ import ExportChartAction from 'actions/ExportChartAction.jsx';
 import ConstStore from 'stores/ConstStore.jsx';
 import TagStore from 'stores/TagStore.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
+import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -60,6 +62,87 @@ export default class AnalysisPanel extends Component {
     });
   }
 
+  _onLoadingStatusChange() {
+    let isLoading = EnergyStore.getLoadingStatus(),
+      paramsObj = EnergyStore.getParamsObj(),
+      // tagOption = EnergyStore.getTagOpions()[0],
+      obj = assign({}, paramsObj);
+
+      obj.isLoading = isLoading;
+      // obj.tagName = tagOption.tagName;
+      // obj.dashboardOpenImmediately = false;
+      // obj.tagOption = tagOption;
+      obj.energyData = null;
+
+      this.setState(obj);
+  }
+
+  _onEnergyDataChange(isError, errorObj, args) {
+    let isLoading = EnergyStore.getLoadingStatus(),
+        energyData = EnergyStore.getEnergyData(),
+        energyRawData = EnergyStore.getEnergyRawData(),
+        paramsObj = assign({}, EnergyStore.getParamsObj()),
+    state = {
+      isLoading: isLoading,
+      energyData: energyData,
+      energyRawData: energyRawData,
+      paramsObj: paramsObj,
+      isCalendarInited: false
+    };
+  if (isError === true) {
+    state.step = null;
+    state.errorObj = errorObj;
+    if (!!args && args.length && args[0] === '') {
+
+    }
+  }
+    this.setState(state);
+  }
+
+  _onGetEnergyDataError() {
+    let errorObj = this.errorProcess(EnergyStore);
+    this._onEnergyDataChange(true, errorObj);
+  }
+
+  _onGetEnergyDataErrors() {
+    let errorObj = this.errorsProcess(EnergyStore);
+    this._onEnergyDataChange(false, errorObj);
+  }
+
+  errorProcess(EnergyStore) {
+    let code = EnergyStore.getErrorCode(),
+        messages = EnergyStore.getErrorMessage();
+
+        if (!code) {
+          return;
+        } else if (code === '02004'.toString()) {
+          let errorObj = this.showStepError(messages[0], EnergyStore);
+          return errorObj;
+        } else {
+          let errorMsg = CommonFuns.getErrorMessage(code);
+          setTimeout(() => {
+            GlobalErrorMessageAction.fireGlobalErrorMessage(errorMsg, code);
+          }, 0);
+          return null;
+        }
+      }
+
+  errorsProcess(EnergyStore) {
+    let codes = EnergyStore.getErrorCodes();
+    var errorMsg,
+        textArray = [];
+        if (!!codes && codes.length) {
+          for (var i = 0; i < codes.length; i++) {
+            errorMsg = CommonFuns.getErrorMessage(codes[i]);
+            textArray.push(errorMsg);
+          }
+          setTimeout(() => {
+            GlobalErrorMessageAction.fireGlobalErrorMessage(textArray.join('\n'));
+          }, 0);
+        }
+        return null;
+      }
+      
   _handleSave(isSave=true){
     let chartType = this.state.selectedChartType;
     let tagOptions = EnergyStore.getTagOpions();
@@ -422,10 +505,18 @@ export default class AnalysisPanel extends Component {
   componentDidMount(){
     this.getInitParam();
     FolderStore.addDialogListener(this._onDialogChanged);
+    EnergyStore.addEnergyDataLoadingListener(this._onLoadingStatusChange);
+    EnergyStore.addEnergyDataLoadedListener(this._onEnergyDataChange);
+    EnergyStore.addEnergyDataLoadErrorListener(this._onGetEnergyDataError);
+    EnergyStore.addEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
   }
 
   componentWillUnmount(){
     FolderStore.removeDialogListener(this._onDialogChanged);
+    EnergyStore.removeEnergyDataLoadingListener(this._onLoadingStatusChange);
+    EnergyStore.removeEnergyDataLoadedListener(this._onEnergyDataChange);
+    EnergyStore.removeEnergyDataLoadErrorListener(this._onGetEnergyDataError);
+    EnergyStore.removeEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
   }
 
   render(){

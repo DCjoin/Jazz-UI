@@ -7,7 +7,7 @@ import {nodeType} from 'constants/TreeConstants.jsx';
 import { FontIcon, TextField,CircularProgress} from 'material-ui';
 import TagStore from 'stores/TagStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
-import TagMenu from 'components/tag/TagMenu.jsx';
+import TagMenu from '../../tag/TagMenu.jsx';
 import Pagination from 'controls/paging/Pagination.jsx';
 
 var filters = null;
