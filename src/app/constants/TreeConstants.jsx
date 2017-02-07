@@ -11,6 +11,8 @@ module.exports = {
     Device: 5,
     Folder: 6,
     Widget: 7,
-    Area: 101
+    Area: 101,
+    Hierarchy:2,
+    Dimension:6
   }
 };

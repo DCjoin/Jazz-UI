@@ -326,6 +326,7 @@ I18N.Common.Button.ClearAll = '全部清空';
 I18N.Common.Button.Send = '发送';
 I18N.Common.Button.GoOn = '继续';
 I18N.Common.Button.Confirmed = '已确认';
+I18N.Common.Button.More = '更多';
 
 I18N.Common.CarbonUomType = {};
 I18N.Common.CarbonUomType.StandardCoal = '标煤';
@@ -1385,6 +1386,7 @@ I18N.Folder.Detail.WidgetMenu.Menu2 = '发送';
 I18N.Folder.Detail.WidgetMenu.Menu3 = '共享';
 I18N.Folder.Detail.WidgetMenu.Menu4 = '导出';
 I18N.Folder.Detail.WidgetMenu.Menu5 = '删除';
+I18N.Folder.Detail.WidgetMenu.Menu6 = '分享';
 
 I18N.Folder.Widget = {};
 I18N.Folder.Widget.Leave = '离开提示';
@@ -2099,4 +2101,8 @@ I18N.Setting.KPI.Report.TimeRangeComment= '注：当前年为{0}年，只需配�
 I18N.Setting.KPI.Report.DuplicatedName = '已经存在名称为“{0}”的模板，请更改名称后重新上传。';
 I18N.Setting.KPI.Report.DeleteTemplateMessage = '模板“{0}”将被删除。';
 I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
+
+I18N.Setting.DataAnalysis = {};
+I18N.Setting.DataAnalysis.Scheme = '生成方案';
+
 module.exports = I18N;

@@ -326,6 +326,7 @@ I18N.Common.Button.ClearAll = 'Clear all';
 I18N.Common.Button.Send = 'Send';
 I18N.Common.Button.GoOn = 'Continue';
 I18N.Common.Button.Confirmed = 'OK';
+I18N.Common.Button.More = '更多';
 
 
 I18N.Common.CarbonUomType = {};
@@ -1385,6 +1386,7 @@ I18N.Folder.Detail.WidgetMenu.Menu2 = 'Send';
 I18N.Folder.Detail.WidgetMenu.Menu3 = 'Share';
 I18N.Folder.Detail.WidgetMenu.Menu4 = 'Export';
 I18N.Folder.Detail.WidgetMenu.Menu5 = 'Delete';
+I18N.Folder.Detail.WidgetMenu.Menu6 = '分享';
 
 I18N.Folder.Widget = {};
 I18N.Folder.Widget.Leave = 'Leave tip';
