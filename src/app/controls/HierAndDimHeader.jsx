@@ -69,6 +69,9 @@ let HierAndDimHeader = React.createClass({
     DimShow: false
   });
   },
+  getCurrentHierarchyId:function(){
+    return this.state.hierId
+  },
   getInitialState: function() {
     return {
       hierId: this.props.hierarchyId || null,

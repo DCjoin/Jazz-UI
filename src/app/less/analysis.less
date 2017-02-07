@@ -1,6 +1,6 @@
 .jazz-analysis{
   &-tag{
-    width: 380px;
+    width: 320px;
     display: flex;
     flex-direction: column;
     .header{
@@ -40,7 +40,7 @@
         flex-flow:row nowrap;
         min-height:26px;
         border:1px solid #e4e7e6;
-        margin:9px 0px 9px 20px;
+        margin:9px 20px;
         .input{
           width:auto !important;
           margin-left: 5px;
@@ -49,6 +49,47 @@
           }
         }
       }
+    }
+  }
+
+  &-panel{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    background-color:#fbfbfb;
+    margin-top:-16px;
+    position: relative;
+    .head{
+      height:78px;
+      min-height:78px;
+      background-color:#ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      .title{
+        font-size: 22px;
+        color:#464949;
+        max-width: 282px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .description{
+        margin-left:10px;
+        height:14px;
+        font-size:14px;
+        color:#abafae;
+      }
+      .operation{
+        display: flex;
+        flex-direction: row;
+      }
+    }
+    .content{
+      padding:0 30px;
     }
   }
 }
