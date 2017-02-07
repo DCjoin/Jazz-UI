@@ -135,7 +135,7 @@ export default class DataAnalysis extends Component {
 								chartTitle={selectedNode.get('Name')}
 								sourceUserName={selectedNode.get('SourceUserName')}
 								onOperationSelect={this._onOperationSelect}
-								widgetDto={this.state.widgetDto} 
+								widgetDto={this.state.widgetDto.toJS()} 
 								IsNew={false}/>);
 				}
 			} else {
