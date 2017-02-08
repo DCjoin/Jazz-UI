@@ -472,7 +472,7 @@ let CommonFuns = {
         mydate = new Date(mydate);
       }
 
-      return jsonstring;
+      return mydate;
     },
     D2JNoTimezone: function(datetime) {
       var l = datetime.getTime();
