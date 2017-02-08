@@ -1459,6 +1459,7 @@ I18N.Template.Copy = {};
 I18N.Template.Copy.DestinationFolder = '目标文件夹';
 I18N.Template.Copy.Cancel = '放弃';
 I18N.Template.Copy.DefaultName = '{0}-副本';
+I18N.Template.Copy.DefaultNameNew = '{0}-';
 I18N.Template.Delete = {};
 I18N.Template.Delete.Delete = '删除';
 I18N.Template.Delete.Cancel = '放弃';

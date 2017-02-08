@@ -1459,6 +1459,7 @@ I18N.Template.Copy = {};
 I18N.Template.Copy.DestinationFolder = 'Target folder';
 I18N.Template.Copy.Cancel = 'Quit';
 I18N.Template.Copy.DefaultName = '{0} - copy';
+I18N.Template.Copy.DefaultNameNew = '{0} - ';
 I18N.Template.Delete = {};
 I18N.Template.Delete.Delete = 'Delete';
 I18N.Template.Delete.Cancel = 'Quit';

@@ -192,10 +192,11 @@ export default class DataAnalysis extends Component {
 
 	_onSelectNode(node) {
 		// this._changeNodeId(node.get('Id'));
-		this.setState({
-			selectedNode: node,
+    FolderAction.setSelectedNode(node);
+    this.setState({
+      selectedNode: node,
       treeList: FolderStore.getFolderTree(),
-		}, () => {
+    }, () => {
 			this._changeNodeId(node.get('Id'));
 		});
 		if( isWidget(node) ) {
@@ -219,7 +220,7 @@ export default class DataAnalysis extends Component {
 		let {selectedNode} = this.state;
 		FolderAction.createWidgetOrFolder(
 			selectedNode, 
-			FolderStore.getDefaultName(formatStr, selectedNode, nodeType), 
+			FolderStore.getDefaultName(formatStr, selectedNode, nodeType, true), 
 			nodeType, 
 			this.props.params.customerId, 
 			widgetType,
