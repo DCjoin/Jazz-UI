@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import { nodeType } from 'constants/TreeConstants.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
+import RoutePath from 'util/RoutePath.jsx';
 import util from 'util/Util.jsx';
 
 import Dialog from 'controls/Dialog.jsx';
@@ -37,8 +38,6 @@ function widgetLoaded(selectedNode) {
 			selectedNode.get('Id') === WidgetStore.getWidgetDto().Id
 }
 
-let ntLocation;
-
 export default class DataAnalysis extends Component {
 
 	static contextTypes = {
@@ -65,10 +64,6 @@ export default class DataAnalysis extends Component {
 
 		this._loadInitData(this.props, this.context);
 		
-		// this.props.router.setRouteLeaveHook(
-		// 	this.props.route, 
-		// 	this.routerWillLeave
-		// );
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
@@ -82,6 +77,10 @@ export default class DataAnalysis extends Component {
 		FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
 		FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
+	}
+
+	_changeNodeId(nodeId) {
+		this.props.router.push(RoutePath.dataAnalysis(this.props.params) + '/' + nodeId);
 	}
 
 	_getHierarchyId(context) {
@@ -102,7 +101,10 @@ export default class DataAnalysis extends Component {
 		this.setState({
 			treeLoading: false,
 			selectedNode: FolderStore.getSelectedNode()
+		}, () => {
+			this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
 		});
+		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
 	}
 
 	_handleWidgetSelectChange() {
@@ -115,14 +117,19 @@ export default class DataAnalysis extends Component {
 
 
 	_onCreateFolderOrWidgetChange() {
-		this.setState({
-			selectedNode: FolderStore.getSelectedNode()
-		});
+		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
+		// this.setState({
+		// 	selectedNode: FolderStore.getSelectedNode()
+		// });
+		this._onSelectNode(FolderStore.getSelectedNode());
 	}
 
 	_onSelectNode(node) {
+		// this._changeNodeId(node.get('Id'));
 		this.setState({
 			selectedNode: node
+		}, () => {
+			this._changeNodeId(node.get('Id'));
 		});
 		if( isWidget(node) ) {
 			FolderAction.GetWidgetDtos([node.get('Id')], node);
@@ -174,10 +181,6 @@ export default class DataAnalysis extends Component {
 				}}>{content}</div>);
 	}
 
-	routerWillLeave(nextLocation) {
-		ntLocation = nextLocation;
-		return false;
-	}
 
 	render() {
 		let {treeLoading} = this.state;
