@@ -99,6 +99,11 @@ const PermissionCode = function() {
 		getLabel: () => I18N.Privilege.Role.SeniorDataAnalyse,
 		FULL: 1313,
 	},
+	
+	BUILDING_LIST: {
+		getLabel: () => I18N.Privilege.Role.BuildingList,
+		FULL: 1314,
+	},
 
 	PUSH_SOLUTION: {
 		READONLY: 1302,

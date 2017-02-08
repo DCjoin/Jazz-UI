@@ -87,7 +87,9 @@ export default class DataAnalysis extends Component {
 
 		this.state = this._getInitialState();
 
-		this._loadInitData(this.props, this.context);
+    if(this._getHierarchyId(this.context)) {
+		  this._loadInitData(this.props, this.context);
+    }
 		
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
@@ -317,8 +319,8 @@ export default class DataAnalysis extends Component {
 	}
 
 	render() {
-		let {treeLoading} = this.state;
-		if( treeLoading ) {
+		let {treeLoading, selectedNode} = this.state;
+		if( treeLoading || !selectedNode ) {
 			return (<div className="content flex-center">
 					<CircularProgress  mode="indeterminate" size={80} />
 				</div>);

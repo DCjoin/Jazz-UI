@@ -1809,6 +1809,7 @@ I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline settin
 I18N.Privilege.Role.IndexAndReport = '指标&报表';
 I18N.Privilege.Role.BasicDataAnalyse = '基本数据分析';
 I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
+I18N.Privilege.Role.BuildingList = '建筑列表';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';

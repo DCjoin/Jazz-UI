@@ -5,13 +5,16 @@ import { Route, DefaultRoute, RouteHandler, Link, Navigation, State } from 'reac
 import keyMirror from 'keymirror';
 import { LeftNav, CircularProgress } from 'material-ui';
 import assign from 'object-assign';
+import {remove} from 'lodash/array';
 import {find} from 'lodash/collection';
 
 import { viewState } from 'constants/MainAppStatus.jsx';
+import PermissionCode from 'constants/PermissionCode.jsx';
 
 import CookieUtil from 'util/cookieUtil.jsx';
 import util, { getCookie } from 'util/Util.jsx';
 import RoutePath from 'util/RoutePath.jsx';
+import PrivilegeUtil from 'util/PrivilegeUtil.jsx';
 
 import NetworkChecker from 'controls/NetworkChecker.jsx';
 import CusFlatButton from 'controls/FlatButton.jsx';
@@ -24,10 +27,12 @@ import MainAppBar from './MainAppBar.jsx';
 import SelectCustomer from './SelectCustomer.jsx';
 
 import MainAction from 'actions/MainAction.jsx';
+import UserAction from 'actions/UserAction.jsx';
 import HierarchyAction from 'actions/HierarchyAction.jsx';
 
 import UOMStore from 'stores/UOMStore.jsx';
 import AllCommodityStore from 'stores/AllCommodityStore.jsx';
+import UserStore from 'stores/UserStore.jsx';
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
 import CurrentUserCustomerStore from 'stores/CurrentUserCustomerStore.jsx';
 import HierarchyStore from 'stores/HierarchyStore.jsx';
@@ -74,6 +79,10 @@ function groupProjectMenuItems(customerId) {
     }].concat( getCustomerById(customerId) );
 }
 
+function getCustomerPrivilageById(customerId) {
+  return UserStore.getUserCustomers().find(customer => customer.get('CustomerId') === customerId * 1 );
+}
+
 let MainApp = React.createClass({
   statics: {
     prepareShow: (customerId) => {
@@ -82,6 +91,7 @@ let MainApp = React.createClass({
         CurrentUserCustomerStore.getAll() && 
         CurrentUserStore.getCurrentPrivilege() && 
         CurrentUserStore.getCurrentUser() &&
+        UserStore.getUserCustomers() &&
         ( !customerId || HierarchyStore.getBuildingList() );
     },
     needDefaultReplace: (router) => {
@@ -126,12 +136,24 @@ let MainApp = React.createClass({
   },
 
   _dataReady: function() {
-    if( MainApp.prepareShow(this.props.params.customerId) ) {
+    let {customerId} = this.props.params;
+    if( MainApp.prepareShow(customerId) ) {
       let defaultReplace = MainApp.needDefaultReplace(this.props.router);
       if(defaultReplace && !this.props.router.isActive(defaultReplace)) {
         this.props.router.replace(defaultReplace);
       } else {
         this.forceUpdate();
+      }
+
+      let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
+      if( WholeCustomer ) {     
+        this.setState({
+          hierarchyId: customerId * 1
+        });
+      } else {
+        this.setState({
+          hierarchyId: HierarchyStore.getBuildingList()[0].Id
+        });
       }
     }
   },
@@ -141,7 +163,6 @@ let MainApp = React.createClass({
 
   _getCustomerId: function(customerId) {
     HierarchyAction.getBuildingListByCustomerId(customerId);
-    this._setHierarchyId(+customerId);
   },
 
   _setHierarchyId: function(hierarchyId) {
@@ -152,49 +173,54 @@ let MainApp = React.createClass({
 
   _renderTopSelectHierarchy: function() {
     let customerId = this.props.params.customerId;
-    if(true
-      // privilegeUtil.isFull
-      // && privilegeUtil.isFull(PermissionCode.SENIOR_DATA_ANALYSE, CurrentUserStore.getCurrentPrivilege())
-      ) {
-      return (<div className='jazz-top-select-hierarchy'>
-        <ViewableDropDownMenu
-              isViewStatus={false}
-              defaultValue={this.state.hierarchyId}
-              style={{
-                width: 200,
-                margin: '0 20px'
-              }}
-              labelStyle={{
-                color: '#fff',
-              }}
-              listStyle={{
-                width: 200,
-              }}
-              underlineStyle={{
-                display: 'none',
-              }}
-              didChanged={this._setHierarchyId}
-              disabled={!HierarchyStore.getBuildingList() 
-                || HierarchyStore.getBuildingList().length === 0
-                || +customerId !== HierarchyStore.getBuildingList()[0].CustomerId}
-              textField={'Name'}
-              valueField={'Id'}
-              dataItems={groupProjectMenuItems(customerId).concat(singleProjectMenuItems())}/>
-      </div>);
-    }
-    return null;
+    let isFull = PrivilegeUtil.isFull(PermissionCode.BUILDING_LIST, CurrentUserStore.getCurrentPrivilege());
+    return (<div className='jazz-top-select-hierarchy' style={{
+          marginTop: isFull ? 10 : 20,
+          color: '#fff'
+        }}>
+      <ViewableDropDownMenu
+            isViewStatus={!isFull}
+            defaultValue={this.state.hierarchyId}
+            style={{
+              width: 200,
+              margin: '0 20px'
+            }}
+            labelStyle={{
+              color: '#fff',
+            }}
+            listStyle={{
+              width: 200,
+            }}
+            underlineStyle={{
+              display: 'none',
+            }}
+            didChanged={this._setHierarchyId}
+            disabled={!HierarchyStore.getBuildingList() 
+              || HierarchyStore.getBuildingList().length === 0
+              || +customerId !== HierarchyStore.getBuildingList()[0].CustomerId}
+            textField={'Name'}
+            valueField={'Id'}
+            dataItems={groupProjectMenuItems(customerId).concat(singleProjectMenuItems())}/>
+    </div>);
   },
 
   render: function() {
     let customerId = this.props.params.customerId;
+    let hierarchyId = this.state.hierarchyId;
     if(MainApp.prepareShow(customerId)) {
       if( customerId ) {
+        let menuItems = CurrentUserStore.getMainMenuItems();
+        if( customerId != hierarchyId ) {
+          remove(menuItems, (item) => {
+            menuItems.title === I18N.MainMenu.Map
+          });
+        }
         return (
           <div className='jazz-main'>
             <MainAppBar
               topSelectHierarchy={this._renderTopSelectHierarchy()}
               disabledSelectCustomer={MainApp.needDefaultReplace(this.props.router)}
-              items={CurrentUserStore.getMainMenuItems()}
+              items={menuItems}
               logoUrl={customerId && 'Logo.aspx?hierarchyId=' + customerId}/>
             {customerId && this.props.children}
             <NetworkChecker />
@@ -223,13 +249,17 @@ let MainApp = React.createClass({
   },
   componentDidMount() {
     UOMStore.addChangeListener(this._onAllUOMSChange);
+    UserStore.addChangeListener(this._onChange);
     AllCommodityStore.addChangeListener(this._onAllCommoditiesChange);
-    MainAction.getAllUoms();
-    MainAction.getAllCommodities();
     CurrentUserStore.addCurrentrivilegeListener(this._onChange);
     CurrentUserCustomerStore.addChangeListener(this._onChange);
     CurrentUserStore.addCurrentUserListener(this._onChange);
     HierarchyStore.addBuildingListListener(this._onChange);
+
+    MainAction.getAllUoms();
+    MainAction.getAllCommodities();
+    UserAction.getCustomerByUser(LoginStore.getCurrentUserId());
+
     if(this.props.params.customerId) {
       this._getCustomerId(this.props.params.customerId);
     }
@@ -245,7 +275,7 @@ let MainApp = React.createClass({
     CurrentUserStore.removeCurrentrivilegeListener(this._onChange);
     CurrentUserCustomerStore.removeChangeListener(this._onChange);
     CurrentUserStore.removeCurrentUserListener(this._onChange);
-    HierarchyStore.removeCurrentUserListener(this._onChange);
+    HierarchyStore.removeBuildingListListener(this._onChange);
   }
 });
 
