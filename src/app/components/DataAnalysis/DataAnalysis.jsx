@@ -16,6 +16,13 @@ import Left from './Left.jsx';
 import FolderPanel from './Basic/FolderPanel.jsx';
 import AnalysisPanel from './Basic/AnalysisPanel.jsx';
 
+import CopyView from '../folder/operationView/CopyView.jsx';
+import DeleteView from '../folder/operationView/DeleteView.jsx';
+import ShareView from '../folder/operationView/ShareView.jsx';
+import SendView from '../folder/operationView/SendView.jsx';
+import SaveAsView from '../folder/operationView/SaveAsView.jsx';
+import ExportView from '../folder/operationView/ExportView.jsx';
+
 import FolderAction from 'actions/FolderAction.jsx';
 
 import CurrentUserStore from 'stores/CurrentUserStore.jsx';
@@ -36,6 +43,10 @@ function isWidget(node) {
 function widgetLoaded(selectedNode) {
 	return !WidgetStore.getLoadingStatus() && WidgetStore.getWidgetDto() &&
 			selectedNode.get('Id') === WidgetStore.getWidgetDto().Id
+}
+
+function getNodeId(props) {
+	return +props.params.nodeId;
 }
 
 export default class DataAnalysis extends Component {
@@ -98,12 +109,18 @@ export default class DataAnalysis extends Component {
 	}
 
 	_onFolderTreeLoad() {
+		let selectedNode = FolderStore.getNodeById(getNodeId(this.props));
 		this.setState({
 			treeLoading: false,
-			selectedNode: FolderStore.getSelectedNode()
+			selectedNode: selectedNode || FolderStore.getSelectedNode()
 		}, () => {
-			this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
+			if( !selectedNode ) {
+				this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
+			}
 		});
+		if( selectedNode && isWidget(selectedNode) ) {
+			FolderAction.GetWidgetDtos([selectedNode.get('Id')], selectedNode);
+		}
 		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
 	}
 
@@ -138,7 +155,6 @@ export default class DataAnalysis extends Component {
 
 	_createFolderOrWidget(formatStr, nodeType, widgetType) {
 		let {selectedNode} = this.state;
-		// console.log(FolderStore.getDefaultName(formatStr, selectedNode, nodeType));
 		FolderAction.createWidgetOrFolder(
 			selectedNode, 
 			FolderStore.getDefaultName(formatStr, selectedNode, nodeType), 
@@ -181,6 +197,57 @@ export default class DataAnalysis extends Component {
 				}}>{content}</div>);
 	}
 
+	_renderTemplate() {
+		let {selectedNode} = this.state,
+		template;
+		//for operation template
+		// if (selectedNode) {
+		if ( isWidget(selectedNode) ) {
+			switch (this.state.templateId) {
+				case 1:
+					template = <CopyView onDismiss={this._onTemplateDismiss} copyNode={selectedNode}/>;
+					break;
+				case 2:
+					template = <SendView onDismiss={this._onTemplateDismiss} sendNode={selectedNode}/>;
+					break;
+				case 3:
+					template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={selectedNode} isLoadByWidget={isDelete}/>;
+			break;
+		}
+		// } else {
+		// 	switch (this.state.templateId) {
+		// 		case 1:
+		// 			template = <CopyView onDismiss={this._onTemplateDismiss} copyNode={selectedNode}/>;
+		// 			break;
+		// 		case 2:
+		// 			template = <SendView onDismiss={this._onTemplateDismiss} sendNode={selectedNode}/>;
+		// 			break;
+		// 		case 3:
+		// 			template = <ShareView onDismiss={this._onTemplateDismiss} shareNode={selectedNode}/>;
+		// 			break;
+		// 		case 4:
+		// 			let path = '/Dashboard/ExportWidget';
+		// 			let params = {
+		// 				widgetId: selectedNode.get('Id')
+		// 			};
+		// 			template = <ExportView onDismiss={this._onTemplateDismiss} params={params} path={path}/>;
+		// 		//ExportChartAction.getTagsData4Export(params, path);
+
+		// 			break;
+		// 		case 5:
+		// 			template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={selectedNode} isLoadByWidget={false}/>;
+		// 			break;
+		// 		case 6:
+		// 			template = <SaveAsView onDismiss={this._onTemplateDismiss} saveAsNode={selectedNode} widgetDto={this.state.templateWidgetDto}/>;
+		// 			break;
+		// 		case 7:
+		// 			template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={selectedNode} isLoadByWidget={true}/>;
+		// 			break;
+		// 		}
+		// 	}
+		// }
+		return template;
+	}
 
 	render() {
 		let {treeLoading} = this.state;

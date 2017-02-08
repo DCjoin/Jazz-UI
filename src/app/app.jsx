@@ -199,7 +199,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         onEnter: () => {
           document.title = I18N.MainMenu.DataAnalysis;
         },
-        path: 'data_analysis(/:noedId)',
+        path: 'data_analysis(/:nodeId)',
         component: DataAnalysis
       }, {
         path: 'map',
