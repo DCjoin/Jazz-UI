@@ -17,7 +17,7 @@ import Left from './Left.jsx';
 import FolderPanel from './Basic/FolderPanel.jsx';
 import AnalysisPanel from './Basic/AnalysisPanel.jsx';
 
-import CopyView from '../folder/operationView/CopyView.jsx';
+// import CopyView from '../folder/operationView/CopyView.jsx';
 import DeleteView from '../folder/operationView/DeleteView.jsx';
 import ShareView from '../folder/operationView/ShareView.jsx';
 import SendView from '../folder/operationView/SendView.jsx';
@@ -280,9 +280,9 @@ export default class DataAnalysis extends Component {
 		let {dialogType, dialogData, selectedNode} = this.state,
 		dialog;
 		switch (dialogType) {
-			case MenuAction.Copy:
-				dialog = <CopyView isNew={true} onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
-				break;
+			// case MenuAction.Copy:
+			// 	dialog = <CopyView isNew={true} onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
+			// 	break;
 			case MenuAction.Send:
 				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
 				break;
