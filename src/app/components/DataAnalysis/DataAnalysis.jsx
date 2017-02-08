@@ -117,7 +117,7 @@ export default class DataAnalysis extends Component {
 	}
 
 	_changeNodeId(nodeId) {
-    if( nodeId !== this.props.params.nodeId ) {
+    if( nodeId !== getNodeId(this.props) ) {
 		  this.props.router.push(RoutePath.dataAnalysis(this.props.params) + '/' + nodeId);
     }
 	}
@@ -138,19 +138,19 @@ export default class DataAnalysis extends Component {
 
 	_onFolderTreeLoad() {
 		let selectedNode = FolderStore.getNodeById(getNodeId(this.props));
-		this.setState({
-			treeLoading: false,
-			selectedNode: selectedNode || FolderStore.getSelectedNode(),
-      treeList: FolderStore.getFolderTree(),
-		}, () => {
-			if( !selectedNode ) {
-				this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
-			}
-		});
-		if( selectedNode && isWidget(selectedNode) ) {
-			FolderAction.GetWidgetDtos([selectedNode.get('Id')], selectedNode);
-		}
-		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
+    this._onSelectNode(selectedNode || FolderStore.getSelectedNode());
+		// this.setState({
+		// 	treeLoading: false,
+		// 	selectedNode: selectedNode || FolderStore.getSelectedNode(),
+  //     treeList: FolderStore.getFolderTree(),
+		// }, () => {
+		// 	if( !selectedNode ) {
+		// 		this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
+		// 	}
+		// });
+		// if( selectedNode && isWidget(selectedNode) ) {
+		// 	FolderAction.GetWidgetDtos([selectedNode.get('Id')], selectedNode);
+		// }
 	}
 
 	_handleWidgetSelectChange() {
@@ -191,16 +191,21 @@ export default class DataAnalysis extends Component {
   }
 
 	_onSelectNode(node) {
-		// this._changeNodeId(node.get('Id'));
     FolderAction.setSelectedNode(node);
     this.setState({
+      treeLoading: false,
       selectedNode: node,
       treeList: FolderStore.getFolderTree(),
     }, () => {
-			this._changeNodeId(node.get('Id'));
+      this._changeNodeId(node.get('Id'));
 		});
-		if( isWidget(node) ) {
-			FolderAction.GetWidgetDtos([node.get('Id')], node);
+		if( node ) {
+      if( isWidget(node) ) {
+        FolderAction.GetWidgetDtos([node.get('Id')], node);
+      }
+			if (node.get('IsSenderCopy') && !node.get('IsRead')) {
+        FolderAction.modifyFolderReadStatus(node);
+      }
 		}
 	}
 
