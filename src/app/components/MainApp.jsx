@@ -212,7 +212,7 @@ let MainApp = React.createClass({
         let menuItems = CurrentUserStore.getMainMenuItems();
         if( customerId != hierarchyId ) {
           remove(menuItems, (item) => {
-            menuItems.title === I18N.MainMenu.Map
+            return item.title === I18N.MainMenu.Map
           });
         }
         return (
