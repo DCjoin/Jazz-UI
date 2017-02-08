@@ -66,6 +66,7 @@ export default class DataAnalysis extends Component {
 		this._onSendStatusChange = this._onSendStatusChange.bind(this);
     this._onShareStatusChange = this._onShareStatusChange.bind(this);
     this._onDeleteNode = this._onDeleteNode.bind(this);
+    this._didDrag = this._didDrag.bind(this);
 
 		this._onSelectNode = this._onSelectNode.bind(this);
 		this._createFolderOrWidget = this._createFolderOrWidget.bind(this);
@@ -81,6 +82,8 @@ export default class DataAnalysis extends Component {
     FolderStore.addShareStatusListener(this._onShareStatusChange);
     FolderStore.addModifyNameSuccessListener(this._onSelectedNodeChange);
     FolderStore.addDeleteItemSuccessListener(this._onDeleteNode);
+    FolderStore.addMoveItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
 
 		this.state = this._getInitialState();
 
@@ -103,6 +106,8 @@ export default class DataAnalysis extends Component {
 		FolderStore.removeShareStatusListener(this._onShareStatusChange);
     FolderStore.removeModifyNameSuccessListener(this._onSelectedNodeChange);
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteNode);
+    FolderStore.removeMoveItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
 	}
 
 	_getInitialState() {
@@ -139,18 +144,6 @@ export default class DataAnalysis extends Component {
 	_onFolderTreeLoad() {
 		let selectedNode = FolderStore.getNodeById(getNodeId(this.props));
     this._onSelectNode(selectedNode || FolderStore.getSelectedNode());
-		// this.setState({
-		// 	treeLoading: false,
-		// 	selectedNode: selectedNode || FolderStore.getSelectedNode(),
-  //     treeList: FolderStore.getFolderTree(),
-		// }, () => {
-		// 	if( !selectedNode ) {
-		// 		this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
-		// 	}
-		// });
-		// if( selectedNode && isWidget(selectedNode) ) {
-		// 	FolderAction.GetWidgetDtos([selectedNode.get('Id')], selectedNode);
-		// }
 	}
 
 	_handleWidgetSelectChange() {
@@ -162,10 +155,6 @@ export default class DataAnalysis extends Component {
 	}
 
 	_onSelectedNodeChange() {
-		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
-		// this.setState({
-		// 	selectedNode: FolderStore.getSelectedNode()
-		// });
 		this._onSelectNode(FolderStore.getSelectedNode());
 	}
 
@@ -211,13 +200,30 @@ export default class DataAnalysis extends Component {
 
   _onDeleteNode() {
     if( !FolderStore.getSelectedNode() || this.state.selectedNode.get('Id') === FolderStore.getSelectedNode().get('Id') ) {
-      // this.forceUpdate();
       this.setState({
         treeList: FolderStore.getFolderTree(),
         selectedNode: FolderStore.getNodeById(getNodeId(this.props))
       });
     } else {
       this._onSelectedNodeChange()
+    }
+  }
+
+  _didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId) {
+    if (collapsedId) {
+      let node = FolderStore.getNodeById(collapsedId);
+      if (node.get('HasChildren')) {
+        let nextNode = node.get('Children').getIn([0]);
+        FolderAction.moveItem(sourceNode.toJSON(), node.toJS(), null, nextNode.toJS())
+      } else {
+        FolderAction.moveItem(sourceNode.toJSON(), node.toJS(), null, null)
+      }
+    } else {
+      if (isPre) {
+        FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), targetNode.toJSON(), null)
+      } else {
+        FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), null, targetNode.toJSON())
+      }
     }
   }
 
@@ -324,6 +330,7 @@ export default class DataAnalysis extends Component {
 					selectedNode={this.state.selectedNode}
 					onSelectNode={this._onSelectNode}
 					createWidgetOrFolder={this._createFolderOrWidget}
+          didDrag={this._didDrag}
 					/>
 				{this._renderContent()}
 				{this._renderDialog()}
