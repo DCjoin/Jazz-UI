@@ -32,7 +32,7 @@ export default class FolderPanel extends Component {
       		<IconMenu {...iconMenuProps}>
 	            <MenuItem key={MenuAction.Copy} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
 	            {!isFolder(node) && <MenuItem key={MenuAction.Export} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle}/>}
-	            <MenuItem key={MenuAction.Send} primaryText={I18N.Folder.Detail.Title.Menu2} style={menuStyle}/>
+	            <MenuItem key={MenuAction.Share} primaryText={I18N.Folder.Detail.Title.Menu2} style={menuStyle}/>
 	            <MenuItem key={MenuAction.Delete} primaryText={I18N.Folder.Detail.Title.Menu3} style={menuStyle}/>
 	        </IconMenu>);
 	}

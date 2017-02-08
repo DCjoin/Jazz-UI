@@ -126,7 +126,7 @@ export default class DataAnalysis extends Component {
 		this.setState({
 			treeLoading: true
 		});
-		FolderAction.getFolderTreeByHierarchyId( this._getHierarchyId(context) );
+		FolderAction.getFolderTreeByHierarchyId( this._getHierarchyId(context), true );
 	}
 
 	_onFolderTreeLoad() {
@@ -260,10 +260,13 @@ export default class DataAnalysis extends Component {
 		dialog;
 		switch (dialogType) {
 			case MenuAction.Copy:
-				dialog = <CopyView onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
+				dialog = <CopyView isNew={true} onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
 				break;
 			case MenuAction.Send:
-				dialog = <SendView onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
+				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
+				break;
+			case MenuAction.Share:
+				dialog = <ShareView isNew={true} onDismiss={this._onDialogDismiss} shareNode={dialogData}/>;
 				break;
 			case MenuAction.Delete:
 				dialog = <DeleteView isLoadByWidget={false} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;
@@ -274,7 +277,7 @@ export default class DataAnalysis extends Component {
 				}} path={'/Dashboard/ExportWidget'}/>;
 				break;
 			case MenuAction.SaveAs:
-				dialog = <SaveAsView onDismiss={this._onDialogDismiss} saveAsNode={selectedNode} widgetDto={dialogData}/>;
+				dialog = <SaveAsView isNew={true} onDismiss={this._onDialogDismiss} saveAsNode={selectedNode} widgetDto={dialogData}/>;
 				break;
 		}
 		return dialog;

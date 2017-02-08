@@ -5,10 +5,11 @@ import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
 let FolderAction = {
-  getFolderTreeByHierarchyId(hierarchyId) {
-    Ajax.post('/Dashboard/GetWdigetFolderTreeByCustomerId', {
+  getFolderTreeByHierarchyId(hierarchyId, isNew = false) {
+    Ajax.post('/Dashboard/GetWdigetFolderTreeByHierarchyId', {
       params: {
-        customerId: hierarchyId
+        hierarchyId,
+        isNew
       },
       success: function(treeNode) {
         AppDispatcher.dispatch({
@@ -77,12 +78,13 @@ let FolderAction = {
       selectedNode: selectedNode
     });
   },
-  copyItem: function(sourceItem, destItem, newName) {
+  copyItem: function(sourceItem, destItem, newName, isNew = false) {
     Ajax.post('/Dashboard/CopyItem', {
       params: {
         sourceTreeNode: sourceItem.toJSON(),
         desFolder: destItem.toJSON(),
         newName: newName,
+        isNew,
       },
       commonErrorHandling: false,
       success: function(newNode) {
@@ -138,11 +140,12 @@ let FolderAction = {
     });
 
   },
-  sendFolderCopy: function(sourceTreeNode, userIds) {
+  sendFolderCopy: function(sourceTreeNode, userIds, isNew = false) {
     Ajax.post('/Dashboard/SendItemCopy', {
       params: {
         sourceTreeNode: sourceTreeNode.toJSON(),
-        userIds: userIds
+        userIds: userIds,
+        isNew,
       },
       success: function(userIds) {
         AppDispatcher.dispatch({
@@ -153,11 +156,12 @@ let FolderAction = {
       },
     });
   },
-  shareItemCopy: function(sourceTreeNode, userIds) {
+  shareItemCopy: function(sourceTreeNode, userIds, isNew = false) {
     Ajax.post('/CollaborativeWidget/ShareCollaborativeWidget', {
       params: {
         widget: sourceTreeNode.toJSON(),
-        userIds: userIds
+        userIds: userIds,
+        isNew,
       },
       success: function(userIds) {
         AppDispatcher.dispatch({
@@ -221,11 +225,12 @@ let FolderAction = {
       },
     });
   },
-  updateWidgetDtos(widgetDto, menuIndex) {
+  updateWidgetDtos(widgetDto, menuIndex, isNew = false) {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard/CreateWidget', {
       params: {
-        widgetDto: widgetDto
+        widgetDto: widgetDto,
+        isNew,
       },
       success: function(Dto) {
         if (!menuIndex) {
@@ -267,12 +272,13 @@ let FolderAction = {
       },
     });
   },
-  WidgetSave(widgetDto, customerId) {
+  WidgetSave(widgetDto, customerId, isNew = false) {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard/CreateWidget', {
       params: {
         widgetDto: widgetDto,
-        customerId: customerId
+        customerId: customerId,
+        isNew,
       },
       success: function(widgetDto) {
         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
@@ -287,7 +293,7 @@ let FolderAction = {
       },
     });
   },
-  SaveAsItem(sourceTreeNode, desFolder, newName, widgetDto) {
+  SaveAsItem(sourceTreeNode, desFolder, newName, widgetDto, isNew = false) {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard/SaveAsItem', {
       params: {
@@ -295,6 +301,7 @@ let FolderAction = {
         desFolder: desFolder,
         newName: newName,
         widgetDto: widgetDto,
+        isNew,
       },
       success: function(newNode) {
         AppDispatcher.dispatch({
