@@ -10,6 +10,12 @@ import Tree from 'controls/tree/Tree.jsx';
 import NodeContent from '../folder/TreeNodeContent.jsx';
 import SearchBox from '../folder/FolderSearchBox.jsx';
 
+import { nodeType } from 'constants/TreeConstants.jsx';
+
+function isWidget(node) {
+	return node.get('Type') === nodeType.Widget;
+}
+
 export default class Left extends Component {
 	componentWillMount() {
 		this._onNewWidget = this._onNewWidget.bind(this);
@@ -18,10 +24,10 @@ export default class Left extends Component {
 		this._generateNodeConent = this._generateNodeConent.bind(this);
 	}
 	_onNewWidget() {
-		console.log('_onNewWidget');
+		this.props.createWidgetOrFolder(I18N.Folder.NewWidget.Menu1, nodeType.Widget);
 	}
 	_onNewFolder() {
-		console.log('_onNewFolder');
+		this.props.createWidgetOrFolder(I18N.Folder.NewFolder, nodeType.Folder);
 	}
 	_onGragulaNode() {
 		console.log('_onGragulaNode');
@@ -63,40 +69,28 @@ export default class Left extends Component {
 		buttonStyle = {
 			backgroundColor: 'transparent',
 			height: '32px'
-		};
+		},
+		disabledButton = isWidget(this.props.selectedNode);
 
-		let energyAnalysisIcon = <FontIcon className="icon-energy-analysis" style={iconStyle}/>,
-			unitIndexIcon = <FontIcon className="icon-unit-index" style={iconStyle}/>,
-			timeRationIcon = <FontIcon className="icon-dust-concentration" style={iconStyle}/>,
-			labelingIcon = <FontIcon className="icon-labeling" style={iconStyle}/>,
-			rankingIcon = <FontIcon className="icon-ranking" style={iconStyle}/>;
-		let filterOptions = [
-			<MenuItem key={1} value={1} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu1} leftIcon={energyAnalysisIcon}/>,
-			<MenuItem key={2} value={2} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu2} leftIcon={unitIndexIcon}/>,
-			<MenuItem key={3} value={3} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu3} leftIcon={timeRationIcon}/>,
-			<MenuItem key={4} value={4} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu4} leftIcon={labelingIcon}/>,
-			<MenuItem key={5} value={5} innerDivStyle={itemStyle} primaryText={I18N.Folder.NewWidget.Menu5} leftIcon={rankingIcon}/>
-		];
-      	let newWidgetProps = {
-	        type: "Add",
-	        text: I18N.Folder.DataAnalysisWidget,
-	        menuItems: filterOptions,
-	        onItemClick: this._onNewWidget,
-	        disabled: true,
-	        buttonIcon: 'icon-add'
-      	};
 	    return (
 	      <div className="jazz-folder-leftpanel-container">
 	        <div className="jazz-folder-leftpanel-header">
 	          <div className={classnames('se-dropdownbutton btn-container', {
-	          	'btn-container-active': false
+	          	'btn-container-active': !disabledButton
 	          })}>
-	            <FlatButton disabled={true} onClick={this._onNewFolder} style={buttonStyle}>
+	            <FlatButton disabled={disabledButton} onClick={this._onNewFolder} style={buttonStyle}>
 	              <FontIcon className="fa icon-add btn-icon"/>
 	              <span className="mui-flat-button-label btn-text">{I18N.Folder.FolderName}</span>
 	            </FlatButton>
 	          </div>
-	          <DropdownButton {...newWidgetProps}/>
+	          <div className={classnames('se-dropdownbutton btn-container', {
+	          	'btn-container-active': !disabledButton
+	          })}>
+	            <FlatButton disabled={disabledButton} onClick={this._onNewWidget} style={buttonStyle}>
+	              <FontIcon className="fa icon-add btn-icon"/>
+	              <span className="mui-flat-button-label btn-text">{I18N.Folder.DataAnalysisWidget}</span>
+	            </FlatButton>
+	          </div>
 	        </div>
 
 	        <div className="jazz-folder-leftpanel-search">

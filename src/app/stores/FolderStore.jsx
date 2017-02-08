@@ -106,14 +106,16 @@ var FolderStore = assign({}, PrototypeStore, {
         return false;
       }
     },
-    createFolderOrWidget: function(parentNode, newNode) {
+    createFolderOrWidget: function(parentNode, newNode, isNew) {
       _parentId = parentNode.get('Id');
       _changedNode = parentNode;
       _newNode = Immutable.fromJS(newNode);
       _newCreateNode = newNode;
 
       if (_changedNode.get('Children')) {
-        let children = _changedNode.get('Children').push(_newNode);
+        let children = isNew ?
+          _changedNode.get('Children').unshift(_newNode) :
+          _changedNode.get('Children').push(_newNode);
         _changedNode = _changedNode.set('Children', children);
       } else {
         let children = Immutable.List([]);
@@ -627,7 +629,7 @@ var FolderStore = assign({}, PrototypeStore, {
         FolderStore.emitFolderTreeChange();
         break;
       case FolderAction.CREATE_FOLDER_OR_WIDGET:
-        FolderStore.createFolderOrWidget(action.parentNode, action.newNode);
+        FolderStore.createFolderOrWidget(action.parentNode, action.newNode, action.isNew);
         FolderStore.emitCreateFolderOrWidgetChange();
         FolderStore.emitSelectedNodeChange();
         break;
