@@ -445,6 +445,9 @@ I18N.EM.Tool.Benchmark = '行业基准值';
 I18N.EM.Tool.HistoryCompare = '历史对比';
 I18N.EM.Tool.BenchmarkSetting = '基准值设置';
 I18N.EM.Tool.DataSum = '数据求和';
+I18N.EM.Tool.DataStatistics = '数据统计';
+I18N.EM.Tool.YaxisConfig = 'Y轴设置';
+I18N.EM.Tool.MoreAnalysis = '更多分析';
 
 I18N.EM.KpiModeEM = '能耗';
 I18N.EM.KpiModeCarbon = '碳排放';

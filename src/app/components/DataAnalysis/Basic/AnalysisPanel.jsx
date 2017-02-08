@@ -21,6 +21,16 @@ import ConstStore from 'stores/ConstStore.jsx';
 import TagStore from 'stores/TagStore.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import GlobalErrorMessageAction from 'actions/GlobalErrorMessageAction.jsx';
+import AlarmTagStore from 'stores/AlarmTagStore.jsx';
+import MultiTimespanAction from 'actions/MultiTimespanAction.jsx';
+import EnergyAction from 'actions/EnergyAction.jsx';
+import ErrorStepDialog from '../../alarm/ErrorStepDialog.jsx';
+import ChartStatusAction from 'actions/ChartStatusAction.jsx';
+import ChartSubToolbar from './ChartSubToolbar.jsx';
+import CalendarManager from '../../energy/CalendarManager.jsx';
+import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
+import CircularProgress from 'material-ui/CircularProgress';
+import ChartComponent from './ChartComponent.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -38,6 +48,20 @@ export default class AnalysisPanel extends Component {
     super(props);
     this._onRelativeDateChange = this._onRelativeDateChange.bind(this);
     this._onDateSelectorChanged = this._onDateSelectorChanged.bind(this);
+    this._onTagChanged = this._onTagChanged.bind(this);
+    this.setFitStepAndGetData = this.setFitStepAndGetData.bind(this);
+    this._onSearchDataButtonClick = this._onSearchDataButtonClick.bind(this);
+    this._onEnergyDataChange = this._onEnergyDataChange.bind(this);
+    this._onLoadingStatusChange = this._onLoadingStatusChange.bind(this);
+    this._onGetEnergyDataError = this._onGetEnergyDataError.bind(this);
+    this._onGetEnergyDataErrors = this._onGetEnergyDataErrors.bind(this);
+    this._onErrorDialogAction = this._onErrorDialogAction.bind(this);
+    this._onSearchBtnItemTouchTap = this._onSearchBtnItemTouchTap.bind(this);
+    this._handleEnergyStepChange = this._handleEnergyStepChange.bind(this);
+    this._initYaxisDialog = this._initYaxisDialog.bind(this);
+    this._onYaxisSelectorDialogSubmit = this._onYaxisSelectorDialogSubmit.bind(this);
+    this._handleCalendarChange = this._handleCalendarChange.bind(this);
+
   }
 
   searchDate=MultipleTimespanStore.getRelativeItems();
@@ -49,11 +73,182 @@ export default class AnalysisPanel extends Component {
       energyData: null,
       energyRawData: null,
       submitParams: null,
+      step: null,
+      yaxisConfig: null,
       selectedChartType: 'line',
       remarkText: '',
       remarkDisplay: false,
       relativeDate:'Last7Day',
-      operationMenuOpen:false
+      operationMenuOpen:false,
+      timeRanges:this.getInitTimeRanges()
+  }
+
+  getInitTimeRanges(){
+    let date = new Date();
+    date.setHours(0, 0, 0);
+    let last7Days = CommonFuns.dateAdd(date, -6, 'days');
+    let endDate = CommonFuns.dateAdd(date, 1, 'days');
+    return CommonFuns.getTimeRangesByDate(last7Days,endDate);
+  }
+
+  energyDataLoad(timeRanges, step, tagOptions, relativeDate, weatherOption) {
+    EnergyAction.getEnergyTrendChartData(timeRanges, step, tagOptions, relativeDate, weatherOption);
+  }
+
+  pieEnergyDataLoad(timeRanges, step, tagOptions, relativeDate) {
+    EnergyAction.getPieEnergyData(timeRanges, step, tagOptions, relativeDate);
+  }
+
+  getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize) {
+    EnergyAction.getEnergyRawData(timeRanges, step, tagOptions, relativeDate, pageNum, pageSize);
+  }
+
+  initEnergyStoreByBizChartType() {
+  let chartType = this.state.selectedChartType;
+  switch (chartType) {
+    case 'line':
+    case 'column':
+    case 'stack':
+      EnergyStore.initReaderStrategy('EnergyTrendReader');
+      break;
+    case 'pie':
+      EnergyStore.initReaderStrategy('EnergyPieReader');
+      break;
+    case 'rawdata': EnergyStore.initReaderStrategy('EnergyRawGridReader');
+      break;
+  }
+  }
+
+  setFitStepAndGetData(startDate, endDate, tagOptions, relativeDate) {
+  let timeRanges,
+    weather;
+  if (tagOptions.length > 1) {
+    MultiTimespanAction.clearMultiTimespan('both');
+    timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+  } else {
+    timeRanges = MultipleTimespanStore.getSubmitTimespans();
+    if (timeRanges === null) {
+      timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+    }
+  }
+
+  let step = this.state.step,
+    limitInterval = CommonFuns.getLimitInterval(timeRanges),
+    stepList = limitInterval.stepList;
+  if (stepList.indexOf(step) === -1) {
+    step = limitInterval.display;
+  }
+  this.setState({
+    isCalendarInited: false
+  });
+
+  this.energyDataLoad(timeRanges, step, tagOptions, relativeDate, weather);
+  }
+
+  _onSearchDataButtonClick(invokeFromMultiTime){
+    //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
+    let dateSelector = this.refs.dateTimeSelector;
+    let dateRange = dateSelector.getDateTime(),
+        startDate = dateRange.start,
+        endDate = dateRange.end;
+    if (this.state.selectedChartType === 'rawdata' && (endDate - startDate > 604800000)) {
+        FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
+      } else {
+        this.initEnergyStoreByBizChartType();
+
+        // deal with multi time submit
+        if (!!invokeFromMultiTime) {
+
+          let multiRelativeType = MultipleTimespanStore.getOriginalType();
+          let relativeDateValue = this.state.relativeDate;
+
+          if (multiRelativeType === 'Customerize') {
+            let multiDateRange = MultipleTimespanStore.getMainDateRange();
+            if (multiDateRange[0].getTime() !== startDate.getTime() || multiDateRange[1].getTime() !== endDate.getTime()) {
+              dateSelector.setDateField(multiDateRange[0], multiDateRange[1]);
+            }
+            if (relativeDateValue !== 'Customerize') {
+              this._onRelativeDateChange(null,null,multiRelativeType);
+            }
+          } else {
+
+            if (relativeDateValue !== multiRelativeType) {
+              this._onRelativeDateChange(null,null,multiRelativeType);
+            }
+          }
+        } else {
+          let timeRanges = MultipleTimespanStore.getSubmitTimespans();
+          if (timeRanges !== null && timeRanges.length !== 1) {
+            let multiRelativeType = MultipleTimespanStore.getOriginalType();
+            let relativeDateValue = this.state.relativeDate;
+            if (multiRelativeType !== 'Customerize' && multiRelativeType === relativeDateValue) {
+
+            } else {
+              MultipleTimespanStore.initData(relativeDateValue, startDate, endDate);
+            }
+          }
+        }
+
+        var nodeOptions;
+
+      if (startDate.getTime() >= endDate.getTime()) {
+          GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.EM.ErrorNeedValidTimeRange);
+          return;
+        }
+
+      nodeOptions = AlarmTagStore.getSearchTagList();
+      if (!nodeOptions || nodeOptions.length === 0) {
+        this.setState({
+          energyData: null
+        });
+        return;
+      }
+
+      let relativeDateValue = this.state.relativeDate;
+
+      let chartType = this.state.selectedChartType;
+        if (chartType === 'line' || chartType === 'column' || chartType === 'stack') {
+            this.setFitStepAndGetData(startDate, endDate, nodeOptions, relativeDateValue);
+          } else {
+            if (chartType === 'pie') {
+              let timeRanges;
+              if (nodeOptions.length > 1) {
+                MultiTimespanAction.clearMultiTimespan('both');
+                timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+              } else {
+                timeRanges = MultipleTimespanStore.getSubmitTimespans();
+                if (timeRanges === null) {
+                  timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+                }
+              }
+              this.pieEnergyDataLoad(timeRanges, 2, nodeOptions, relativeDateValue);
+            } else if (chartType === 'rawdata') {
+              MultiTimespanAction.clearMultiTimespan('both');
+              let timeRanges = CommonFuns.getTimeRangesByDate(startDate, endDate);
+              this.getEnergyRawData(timeRanges, 0, nodeOptions, relativeDateValue);
+            }
+          }
+      }
+  }
+
+  _onErrorDialogAction(step, stepBtnList) {
+  this.setState({
+    errorObj: null
+  });
+  if (step !== 'cancel') {
+    this._handleEnergyStepChange(step);
+  } else {
+    if (stepBtnList.length === 0) {
+      this.setState({
+        energyData: null
+      });
+    } else {
+      //this.state.chartStrategy.onSearchDataButtonClickFn(this);
+    }
+  }
+  }
+  _onTagChanged(){
+    this._onSearchDataButtonClick();
   }
 
   _onDialogChanged() {
@@ -109,6 +304,60 @@ export default class AnalysisPanel extends Component {
     this._onEnergyDataChange(false, errorObj);
   }
 
+  showStepError(step, EnergyStore) {
+  let btns = [],
+  msgs=['UseRaw','UseHour','UseDay','UseMonth','','UseWeek'],
+    msg = [],
+    map = {
+      Hour: 1,
+      Day: 2,
+      Week: 5,
+      Month: 3,
+      Year: 4
+    },
+    paramsObj = EnergyStore.getParamsObj(),
+    timeRanges = paramsObj.timeRanges,
+    limitInterval = CommonFuns.getLimitInterval(timeRanges),
+    availableList = limitInterval.stepList;
+    msg = [msgs[paramsObj.step]];
+  switch (step) {
+    case 'Hourly':
+      btns = ['Hour', 'Day', 'Week'];
+      break;
+    case 'Daily':
+      btns = ['Day', 'Week', 'Month'];
+      break;
+    case 'Weekly':
+      btns = ['Week', 'Month', 'Year'];
+      break;
+    case 'Monthly':
+      btns = ['Month', 'Year'];
+      break;
+    case 'Yearly':
+      btns = ['Year'];
+      break;
+  }
+  var newBtns = [];
+  btns.forEach(btn => {
+    let code = map[btn];
+    if (availableList.indexOf(code) !== -1) {
+      newBtns.push({
+        text: btn,
+        code: code
+      });
+    }
+  });
+  btns = newBtns;
+  var msg1 = [];
+  msg.forEach(item => {
+    msg1.push('"' + I18N.EM[item] + '"');
+  });
+  return {
+    stepBtnList: btns,
+    errorMessage: I18N.format(I18N.EM.StepError, msg1.join(','))
+  };
+  }
+
   errorProcess(EnergyStore) {
     let code = EnergyStore.getErrorCode(),
         messages = EnergyStore.getErrorMessage();
@@ -142,7 +391,7 @@ export default class AnalysisPanel extends Component {
         }
         return null;
       }
-      
+
   _handleSave(isSave=true){
     let chartType = this.state.selectedChartType;
     let tagOptions = EnergyStore.getTagOpions();
@@ -201,7 +450,7 @@ export default class AnalysisPanel extends Component {
         };
         viewOption.DataOption = dataOption;
 
-        let pagingObj = this.refs.ChartComponent.getPageObj();
+        let pagingObj = this.refs.ChartComponent.refs.chart.getPageObj();
         let pagingOrder = {
           PageSize: 20,
           PageIdx: pagingObj.pageIdx,
@@ -255,6 +504,18 @@ export default class AnalysisPanel extends Component {
 
   }
 
+  _handleEnergyStepChange(step) {
+    let tagOptions = EnergyStore.getTagOpions(),
+      paramsObj = EnergyStore.getParamsObj(),
+      timeRanges = paramsObj.timeRanges;
+
+  this.setState({
+    step: step,
+    isCalendarInited: false,
+  });
+
+  this.energyDataLoad(timeRanges, step, tagOptions, false);
+  }
   exportChart() {
     if (!this.state.energyData) {
       return;
@@ -346,8 +607,8 @@ export default class AnalysisPanel extends Component {
       }
     };
 
-    let selectedWidget = FolderStore.getSelectedNode();
-    let buttonDisabled = (!this.state.energyData || !selectedWidget.get('ChartType'));
+    //let selectedWidget = FolderStore.getSelectedNode();
+    let buttonDisabled = !this.state.energyData;
 
     var   handleTouchTap = (event) => {
     // This prevents ghost click.
@@ -453,6 +714,65 @@ export default class AnalysisPanel extends Component {
     });
   }
 
+  canShareDataWith(curChartType, nextChartType) {
+    if ((curChartType === 'line' || curChartType === 'column' || curChartType === 'stack') && (nextChartType === 'line' || nextChartType === 'column' || nextChartType === 'stack')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  _onSearchBtnItemTouchTap(value) {
+  let dateSelector = this.refs.dateTimeSelector;
+  let dateRange = dateSelector.getDateTime(),
+    startDate = dateRange.start,
+    endDate = dateRange.end;
+
+  if (value=== 'rawdata' && endDate - startDate > 604800000) {
+    FolderAction.setDisplayDialog('errornotice', null, I18N.EM.RawData.ErrorForEnergy);
+  } else {
+    var curChartType=this.state.selectedChartType,nextChartType=value;
+    if (this.canShareDataWith(curChartType, nextChartType) && !!this.state.energyData) {
+        ChartStatusAction.modifyChartType(nextChartType);
+        this.setState({
+          selectedChartType: nextChartType
+        });
+      } else { //if(nextChartType === 'pie'){
+      ChartStatusAction.clearStatus();
+      this.setState({
+        selectedChartType: nextChartType,
+        energyData: null
+      }, ()=> {
+        this._onSearchDataButtonClick();
+      });
+    }
+  }
+
+ }
+
+ _onYaxisSelectorDialogSubmit(config) {
+   this.setState({
+     yaxisConfig: config
+   });
+ }
+
+ _handleCalendarChange(calendarType) {
+   var chartCmp = this.refs.ChartComponent.refs.chart,
+    chartObj = chartCmp.refs.highstock;
+
+    if (!CalendarManager.getShowType()) {
+      CalendarManager.showCalendar(chartObj, calendarType);
+    } else if (CalendarManager.getShowType() === calendarType) {
+      CalendarManager.hideCalendar(chartObj);
+    } else {
+      CalendarManager.hideCalendar(chartObj);
+      CalendarManager.showCalendar(chartObj, calendarType);
+    }
+    this.setState({
+      calendarType: CalendarManager.getShowType()
+    });
+  }
+
   _renderSearchBar(){
     var relativeDate=this.state.relativeDate;
     var styles={
@@ -492,6 +812,25 @@ export default class AnalysisPanel extends Component {
     )
   }
 
+  _renderChartCmp(){
+      if(this.state.isLoading){
+        return(
+          <div style={{
+         margin: 'auto',
+         width: '100px'
+       }}>
+           <CircularProgress  mode="indeterminate" size={80} />
+         </div>
+        )
+      }
+      else if(!!this.state.energyData){
+        return <ChartComponent ref="ChartComponent" AnalysisPanel={this}/>
+        }else {
+          return null
+        }
+
+  }
+
   getInitParam(analysisPanel) {
     let date = new Date();
     date.setHours(0, 0, 0);
@@ -502,6 +841,17 @@ export default class AnalysisPanel extends Component {
     });
     this.refs.dateTimeSelector.setDateField(last7Days, endDate);
   }
+
+  resetCalendarType() {
+    CalendarManager.resetShowType();
+  }
+
+  _initYaxisDialog() {
+  var chartCmp = this.refs.ChartComponent.refs.chart,
+    chartObj = chartCmp.refs.highstock.getPaper();
+
+  return chartObj;
+  }
   componentDidMount(){
     this.getInitParam();
     FolderStore.addDialogListener(this._onDialogChanged);
@@ -509,7 +859,29 @@ export default class AnalysisPanel extends Component {
     EnergyStore.addEnergyDataLoadedListener(this._onEnergyDataChange);
     EnergyStore.addEnergyDataLoadErrorListener(this._onGetEnergyDataError);
     EnergyStore.addEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
+    AlarmTagStore.addChangeListener(this._onTagChanged);
   }
+
+  componentDidUpdate() {
+      if(DataAnalysisStore.getCalendarDisabled()){
+      }
+      else if (this.state.energyRawData && !this.state.isCalendarInited) {
+        let paramsObj = EnergyStore.getParamsObj(),
+          step = paramsObj.step,
+          timeRanges = paramsObj.timeRanges,
+          as = this.state;
+
+        if (this.refs.ChartComponent) {
+          var chartCmp = this.refs.ChartComponent.refs.chart,
+            chartObj = chartCmp.refs.highstock;
+
+          CalendarManager.init(as.selectedChartType, step, as.energyRawData.Calendars, chartObj, timeRanges);
+          this.setState({
+            isCalendarInited: true
+          });
+        }
+      }
+    }
 
   componentWillUnmount(){
     FolderStore.removeDialogListener(this._onDialogChanged);
@@ -517,16 +889,40 @@ export default class AnalysisPanel extends Component {
     EnergyStore.removeEnergyDataLoadedListener(this._onEnergyDataChange);
     EnergyStore.removeEnergyDataLoadErrorListener(this._onGetEnergyDataError);
     EnergyStore.removeEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
+    AlarmTagStore.removeChangeListener(this._onTagChanged);
+    this.resetCalendarType();
   }
 
   render(){
+    var errorDialog;
+    var props={
+      subToolBar:{
+        selectedChartType:this.state.selectedChartType,
+        onSearchBtnItemTouchTap:this._onSearchBtnItemTouchTap,
+        hasTagData:!(this.state.energyData===null),
+        timeRanges:this.state.timeRanges,
+        step:this.state.step,
+        onStepChange:this._handleEnergyStepChange,
+        yaxisConfig:this.state.yaxisConfig,
+        initYaxisDialog:this._initYaxisDialog,
+        onYaxisSelectorDialogSubmit:this._onYaxisSelectorDialogSubmit,
+        handleCalendarChange:this._handleCalendarChange,
+        analysisPanel:this
+      }
+    }
+    if (this.state.errorObj) {
+      errorDialog = <ErrorStepDialog {...this.state.errorObj} onErrorDialogAction={this._onErrorDialogAction}></ErrorStepDialog>;
+      }
     return(
       <div className="jazz-analysis-panel">
         {this._renderHeader()}
         <div className="content">
           {this._renderSearchBar()}
+          <ChartSubToolbar {...props.subToolBar}/>
+          {this._renderChartCmp()}
         </div>
         {this.state.tagShow?<TagDrawer {...this.props} customerId={this.context.router.params.customerId}/>:null}
+        {errorDialog}
         {this._renderDialog()}
       </div>
     )

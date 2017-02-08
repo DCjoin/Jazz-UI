@@ -445,6 +445,9 @@ I18N.EM.Tool.Benchmark = 'Industry benchmark';
 I18N.EM.Tool.HistoryCompare = 'History comparison';
 I18N.EM.Tool.BenchmarkSetting = 'Baseline setting';
 I18N.EM.Tool.DataSum = 'Data Sum';
+I18N.EM.Tool.DataStatistics = '数据统计';
+I18N.EM.Tool.YaxisConfig = 'Y轴设置';
+I18N.EM.Tool.MoreAnalysis = '更多分析';
 
 I18N.EM.KpiModeEM = 'Energy';
 I18N.EM.KpiModeCarbon = 'Carbon';

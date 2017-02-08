@@ -257,6 +257,7 @@ export default class TagDrawer extends Component {
         width={320}
         open={this.state.open}
         onRequestChange={(open) => this.setState({open})}
+        overlayStyle={{opacity:'0'}}
         containerStyle={{display:'flex',overflow:'hidden'}}>
         <div className="jazz-analysis-tag">
           <div className="header">
