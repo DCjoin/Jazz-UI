@@ -1459,6 +1459,7 @@ I18N.Template.Copy = {};
 I18N.Template.Copy.DestinationFolder = '目标文件夹';
 I18N.Template.Copy.Cancel = '放弃';
 I18N.Template.Copy.DefaultName = '{0}-副本';
+I18N.Template.Copy.DefaultNameNew = '{0}-';
 I18N.Template.Delete = {};
 I18N.Template.Delete.Delete = '删除';
 I18N.Template.Delete.Cancel = '放弃';
@@ -1808,6 +1809,7 @@ I18N.Privilege.Role.BaselineConfiguration = '能耗分析基准值配置';
 I18N.Privilege.Role.IndexAndReport = '指标&报表';
 I18N.Privilege.Role.BasicDataAnalyse = '基本数据分析';
 I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
+I18N.Privilege.Role.BuildingList = '建筑列表';
 
 I18N.Remark = {};
 I18N.Remark.Label = '备注';

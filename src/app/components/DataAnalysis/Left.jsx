@@ -3,6 +3,7 @@ import { CircularProgress, FlatButton, FontIcon, IconButton, IconMenu, MenuItem 
 import classnames from 'classnames';
 
 import { treeSource } from 'constants/TreeSource.jsx';
+import { nodeType } from 'constants/TreeConstants.jsx';
 
 import DropdownButton from 'controls/DropdownButton.jsx';
 import Tree from 'controls/tree/Tree.jsx';
@@ -10,7 +11,7 @@ import Tree from 'controls/tree/Tree.jsx';
 import NodeContent from '../folder/TreeNodeContent.jsx';
 import SearchBox from '../folder/FolderSearchBox.jsx';
 
-import { nodeType } from 'constants/TreeConstants.jsx';
+import FolderStore from 'stores/FolderStore.jsx';
 
 function isWidget(node) {
 	return node.get('Type') === nodeType.Widget;
@@ -29,8 +30,19 @@ export default class Left extends Component {
 	_onNewFolder() {
 		this.props.createWidgetOrFolder(I18N.Folder.NewFolder, nodeType.Folder);
 	}
-	_onGragulaNode() {
-		console.log('_onGragulaNode');
+	_onGragulaNode(targetId, sourceId, pre, collapsedNodeId) {
+	    let targetNode = FolderStore.getNodeById(parseInt(targetId));
+	    let sourceNode = FolderStore.getNodeById(parseInt(sourceId));
+	    let parentNode = FolderStore.getParent(targetNode);
+	    let isPre = pre;
+	    let collapsedId = collapsedNodeId;
+
+	    let {selectedNode} = this.props;
+	    if( isWidget(selectedNode) && !selectedNode.get('ChartType') ) {
+	    	alert('未保存');
+	    } else {
+	    	this.props.didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId)
+	    }
 	}
 	_generateNodeConent(nodeData, panel) {
 		return (<NodeContent nodeData={nodeData}

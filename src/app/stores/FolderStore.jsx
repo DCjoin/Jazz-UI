@@ -300,7 +300,7 @@ var FolderStore = assign({}, PrototypeStore, {
     getSelectedNode: function() {
       return _selectedNode;
     },
-    getDefaultName: function(nodeName, parentNode, type) {
+    getDefaultName: function(nodeName, parentNode, type, isNew) {
       var nameArray = [];
       if (parentNode.get('Children')) {
         parentNode.get('Children').forEach(function(child) {
@@ -323,7 +323,9 @@ var FolderStore = assign({}, PrototypeStore, {
         if (!has) {
           return name;
         } else {
-          name = I18N.format(I18N.Template.Copy.DefaultName, nodeName) + i;
+          name = I18N.format(
+            isNew ? I18N.Template.Copy.DefaultNameNew : I18N.Template.Copy.DefaultName, 
+            nodeName) + i;
         }
       }
       return name;

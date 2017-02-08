@@ -199,8 +199,9 @@ ReactDom.render(<Router history={hashHistory} routes={{
         onEnter: () => {
           document.title = I18N.MainMenu.DataAnalysis;
         },
-        path: 'data_analysis(/:nodeId)',
-        component: DataAnalysis
+        path: 'data_analysis',
+        component: DataAnalysis,
+        childRoutes: [{path:':nodeId'}]
       }, {
         path: 'map',
         component: MapPanel

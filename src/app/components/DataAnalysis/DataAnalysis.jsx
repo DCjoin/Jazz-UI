@@ -17,7 +17,7 @@ import Left from './Left.jsx';
 import FolderPanel from './Basic/FolderPanel.jsx';
 import AnalysisPanel from './Basic/AnalysisPanel.jsx';
 
-import CopyView from '../folder/operationView/CopyView.jsx';
+// import CopyView from '../folder/operationView/CopyView.jsx';
 import DeleteView from '../folder/operationView/DeleteView.jsx';
 import ShareView from '../folder/operationView/ShareView.jsx';
 import SendView from '../folder/operationView/SendView.jsx';
@@ -60,11 +60,13 @@ export default class DataAnalysis extends Component {
 
 		this._onFolderTreeLoad = this._onFolderTreeLoad.bind(this);
 		this._handleWidgetSelectChange = this._handleWidgetSelectChange.bind(this);
-		this._onCreateFolderOrWidgetChange = this._onCreateFolderOrWidgetChange.bind(this);
+		this._onSelectedNodeChange = this._onSelectedNodeChange.bind(this);
 		this._onModifyNameError = this._onModifyNameError.bind(this);
 		this._onMoveItemError = this._onMoveItemError.bind(this);
 		this._onSendStatusChange = this._onSendStatusChange.bind(this);
-		this._onShareStatusChange = this._onShareStatusChange.bind(this);
+    this._onShareStatusChange = this._onShareStatusChange.bind(this);
+    this._onDeleteNode = this._onDeleteNode.bind(this);
+    this._didDrag = this._didDrag.bind(this);
 
 		this._onSelectNode = this._onSelectNode.bind(this);
 		this._createFolderOrWidget = this._createFolderOrWidget.bind(this);
@@ -73,15 +75,21 @@ export default class DataAnalysis extends Component {
 
 		FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.addChangeListener(this._handleWidgetSelectChange);
-		FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
+		FolderStore.addCreateFolderOrWidgetListener(this._onSelectedNodeChange);
     FolderStore.addModifyNameErrorListener(this._onModifyNameError);
     FolderStore.addMoveItemErrorListener(this._onMoveItemError);
     FolderStore.addSendStatusListener(this._onSendStatusChange);
     FolderStore.addShareStatusListener(this._onShareStatusChange);
+    FolderStore.addModifyNameSuccessListener(this._onSelectedNodeChange);
+    FolderStore.addDeleteItemSuccessListener(this._onDeleteNode);
+    FolderStore.addMoveItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
 
 		this.state = this._getInitialState();
 
-		this._loadInitData(this.props, this.context);
+    if(this._getHierarchyId(this.context)) {
+		  this._loadInitData(this.props, this.context);
+    }
 		
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
@@ -93,11 +101,15 @@ export default class DataAnalysis extends Component {
 	componentWillUnmount() {		
 		FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
-		FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
-    FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
-    FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
-    FolderStore.removeSendStatusListener(this._onSendStatusChange);
-    FolderStore.removeShareStatusListener(this._onShareStatusChange);
+		FolderStore.removeCreateFolderOrWidgetListener(this._onSelectedNodeChange);
+		FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
+		FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
+		FolderStore.removeSendStatusListener(this._onSendStatusChange);
+		FolderStore.removeShareStatusListener(this._onShareStatusChange);
+    FolderStore.removeModifyNameSuccessListener(this._onSelectedNodeChange);
+    FolderStore.removeDeleteItemSuccessListener(this._onDeleteNode);
+    FolderStore.removeMoveItemSuccessListener(this._onSelectedNodeChange);
+    FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
 	}
 
 	_getInitialState() {
@@ -112,7 +124,9 @@ export default class DataAnalysis extends Component {
 	}
 
 	_changeNodeId(nodeId) {
-		this.props.router.push(RoutePath.dataAnalysis(this.props.params) + '/' + nodeId);
+    if( nodeId !== getNodeId(this.props) ) {
+		  this.props.router.push(RoutePath.dataAnalysis(this.props.params) + '/' + nodeId);
+    }
 	}
 
 	_getHierarchyId(context) {
@@ -131,18 +145,7 @@ export default class DataAnalysis extends Component {
 
 	_onFolderTreeLoad() {
 		let selectedNode = FolderStore.getNodeById(getNodeId(this.props));
-		this.setState({
-			treeLoading: false,
-			selectedNode: selectedNode || FolderStore.getSelectedNode()
-		}, () => {
-			if( !selectedNode ) {
-				this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
-			}
-		});
-		if( selectedNode && isWidget(selectedNode) ) {
-			FolderAction.GetWidgetDtos([selectedNode.get('Id')], selectedNode);
-		}
-		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
+    this._onSelectNode(selectedNode || FolderStore.getSelectedNode());
 	}
 
 	_handleWidgetSelectChange() {
@@ -153,11 +156,7 @@ export default class DataAnalysis extends Component {
 		}
 	}
 
-	_onCreateFolderOrWidgetChange() {
-		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
-		// this.setState({
-		// 	selectedNode: FolderStore.getSelectedNode()
-		// });
+	_onSelectedNodeChange() {
 		this._onSelectNode(FolderStore.getSelectedNode());
 	}
 
@@ -183,22 +182,58 @@ export default class DataAnalysis extends Component {
   }
 
 	_onSelectNode(node) {
-		// this._changeNodeId(node.get('Id'));
-		this.setState({
-			selectedNode: node
-		}, () => {
-			this._changeNodeId(node.get('Id'));
+    FolderAction.setSelectedNode(node);
+    this.setState({
+      treeLoading: false,
+      selectedNode: node,
+      treeList: FolderStore.getFolderTree(),
+    }, () => {
+      this._changeNodeId(node.get('Id'));
 		});
-		if( isWidget(node) ) {
-			FolderAction.GetWidgetDtos([node.get('Id')], node);
+		if( node ) {
+      if( isWidget(node) ) {
+        FolderAction.GetWidgetDtos([node.get('Id')], node);
+      }
+			if (node.get('IsSenderCopy') && !node.get('IsRead')) {
+        FolderAction.modifyFolderReadStatus(node);
+      }
 		}
 	}
+
+  _onDeleteNode() {
+    if( !FolderStore.getSelectedNode() || this.state.selectedNode.get('Id') === FolderStore.getSelectedNode().get('Id') ) {
+      this.setState({
+        treeList: FolderStore.getFolderTree(),
+        selectedNode: FolderStore.getNodeById(getNodeId(this.props))
+      });
+    } else {
+      this._onSelectedNodeChange()
+    }
+  }
+
+  _didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId) {
+    if (collapsedId) {
+      let node = FolderStore.getNodeById(collapsedId);
+      if (node.get('HasChildren')) {
+        let nextNode = node.get('Children').getIn([0]);
+        FolderAction.moveItem(sourceNode.toJSON(), node.toJS(), null, nextNode.toJS())
+      } else {
+        FolderAction.moveItem(sourceNode.toJSON(), node.toJS(), null, null)
+      }
+    } else {
+      if (isPre) {
+        FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), targetNode.toJSON(), null)
+      } else {
+        FolderAction.moveItem(sourceNode.toJSON(), parentNode.toJSON(), null, targetNode.toJSON())
+      }
+    }
+  }
 
 	_createFolderOrWidget(formatStr, nodeType, widgetType) {
 		let {selectedNode} = this.state;
 		FolderAction.createWidgetOrFolder(
 			selectedNode, 
-			FolderStore.getDefaultName(formatStr, selectedNode, nodeType), 
+			FolderStore.getDefaultName(formatStr, selectedNode, nodeType, true), 
 			nodeType, 
 			this.props.params.customerId, 
 			widgetType,
@@ -259,9 +294,9 @@ export default class DataAnalysis extends Component {
 		let {dialogType, dialogData, selectedNode} = this.state,
 		dialog;
 		switch (dialogType) {
-			case MenuAction.Copy:
-				dialog = <CopyView isNew={true} onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
-				break;
+			// case MenuAction.Copy:
+			// 	dialog = <CopyView isNew={true} onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
+			// 	break;
 			case MenuAction.Send:
 				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
 				break;
@@ -269,7 +304,7 @@ export default class DataAnalysis extends Component {
 				dialog = <ShareView isNew={true} onDismiss={this._onDialogDismiss} shareNode={dialogData}/>;
 				break;
 			case MenuAction.Delete:
-				dialog = <DeleteView isLoadByWidget={false} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;
+				dialog = <DeleteView isLoadByWidget={selectedNode.get('Id') === dialogData.get('Id')} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;
 				break;
 			case MenuAction.Export:
 				dialog = <ExportView onDismiss={this._onDialogDismiss} params={{
@@ -284,8 +319,8 @@ export default class DataAnalysis extends Component {
 	}
 
 	render() {
-		let {treeLoading} = this.state;
-		if( treeLoading ) {
+		let {treeLoading, selectedNode} = this.state;
+		if( treeLoading || !selectedNode ) {
 			return (<div className="content flex-center">
 					<CircularProgress  mode="indeterminate" size={80} />
 				</div>);
@@ -293,14 +328,15 @@ export default class DataAnalysis extends Component {
 		return (
 			<div style={{display: 'flex', flex: 1}}>
 				<Left 
-					tree={FolderStore.getFolderTree()}
+					tree={this.state.treeList}
 					selectedNode={this.state.selectedNode}
 					onSelectNode={this._onSelectNode}
 					createWidgetOrFolder={this._createFolderOrWidget}
+          didDrag={this._didDrag}
 					/>
 				{this._renderContent()}
 				{this._renderDialog()}
-				<Snackbar ref='snackbar' open={this.state.errorText} onRequestClose={this._setErrorText.bind(this, null)} message={this.state.errorText}/>
+				<Snackbar ref='snackbar' open={!!this.state.errorText} onRequestClose={this._setErrorText.bind(this, null)} message={this.state.errorText}/>
 			</div>
 		);
 	}

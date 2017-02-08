@@ -30,6 +30,7 @@ const PRIVILEGE_ADMIN = [
   PermissionCode.BASELINE_CONFIG.FULL,
   PermissionCode.INDEX_AND_REPORT.FULL,
   PermissionCode.SENIOR_DATA_ANALYSE.FULL,
+  PermissionCode.BUILDING_LIST.FULL,
 ].map( code => '' + code );
 
 var CurrentUserStore = assign({}, PrototypeStore, {
