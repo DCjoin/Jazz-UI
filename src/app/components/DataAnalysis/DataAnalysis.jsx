@@ -60,11 +60,12 @@ export default class DataAnalysis extends Component {
 
 		this._onFolderTreeLoad = this._onFolderTreeLoad.bind(this);
 		this._handleWidgetSelectChange = this._handleWidgetSelectChange.bind(this);
-		this._onCreateFolderOrWidgetChange = this._onCreateFolderOrWidgetChange.bind(this);
+		this._onSelectedNodeChange = this._onSelectedNodeChange.bind(this);
 		this._onModifyNameError = this._onModifyNameError.bind(this);
 		this._onMoveItemError = this._onMoveItemError.bind(this);
 		this._onSendStatusChange = this._onSendStatusChange.bind(this);
-		this._onShareStatusChange = this._onShareStatusChange.bind(this);
+    this._onShareStatusChange = this._onShareStatusChange.bind(this);
+    this._onDeleteNode = this._onDeleteNode.bind(this);
 
 		this._onSelectNode = this._onSelectNode.bind(this);
 		this._createFolderOrWidget = this._createFolderOrWidget.bind(this);
@@ -73,11 +74,13 @@ export default class DataAnalysis extends Component {
 
 		FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.addChangeListener(this._handleWidgetSelectChange);
-		FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
+		FolderStore.addCreateFolderOrWidgetListener(this._onSelectedNodeChange);
     FolderStore.addModifyNameErrorListener(this._onModifyNameError);
     FolderStore.addMoveItemErrorListener(this._onMoveItemError);
     FolderStore.addSendStatusListener(this._onSendStatusChange);
     FolderStore.addShareStatusListener(this._onShareStatusChange);
+    FolderStore.addModifyNameSuccessListener(this._onSelectedNodeChange);
+    FolderStore.addDeleteItemSuccessListener(this._onDeleteNode);
 
 		this.state = this._getInitialState();
 
@@ -93,11 +96,13 @@ export default class DataAnalysis extends Component {
 	componentWillUnmount() {		
 		FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
-		FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
-    FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
-    FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
-    FolderStore.removeSendStatusListener(this._onSendStatusChange);
-    FolderStore.removeShareStatusListener(this._onShareStatusChange);
+		FolderStore.removeCreateFolderOrWidgetListener(this._onSelectedNodeChange);
+		FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
+		FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
+		FolderStore.removeSendStatusListener(this._onSendStatusChange);
+		FolderStore.removeShareStatusListener(this._onShareStatusChange);
+    FolderStore.removeModifyNameSuccessListener(this._onSelectedNodeChange);
+    FolderStore.removeDeleteItemSuccessListener(this._onDeleteNode);
 	}
 
 	_getInitialState() {
@@ -112,7 +117,9 @@ export default class DataAnalysis extends Component {
 	}
 
 	_changeNodeId(nodeId) {
-		this.props.router.push(RoutePath.dataAnalysis(this.props.params) + '/' + nodeId);
+    if( nodeId !== this.props.params.nodeId ) {
+		  this.props.router.push(RoutePath.dataAnalysis(this.props.params) + '/' + nodeId);
+    }
 	}
 
 	_getHierarchyId(context) {
@@ -133,7 +140,8 @@ export default class DataAnalysis extends Component {
 		let selectedNode = FolderStore.getNodeById(getNodeId(this.props));
 		this.setState({
 			treeLoading: false,
-			selectedNode: selectedNode || FolderStore.getSelectedNode()
+			selectedNode: selectedNode || FolderStore.getSelectedNode(),
+      treeList: FolderStore.getFolderTree(),
 		}, () => {
 			if( !selectedNode ) {
 				this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
@@ -153,7 +161,7 @@ export default class DataAnalysis extends Component {
 		}
 	}
 
-	_onCreateFolderOrWidgetChange() {
+	_onSelectedNodeChange() {
 		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
 		// this.setState({
 		// 	selectedNode: FolderStore.getSelectedNode()
@@ -185,7 +193,8 @@ export default class DataAnalysis extends Component {
 	_onSelectNode(node) {
 		// this._changeNodeId(node.get('Id'));
 		this.setState({
-			selectedNode: node
+			selectedNode: node,
+      treeList: FolderStore.getFolderTree(),
 		}, () => {
 			this._changeNodeId(node.get('Id'));
 		});
@@ -193,6 +202,18 @@ export default class DataAnalysis extends Component {
 			FolderAction.GetWidgetDtos([node.get('Id')], node);
 		}
 	}
+
+  _onDeleteNode() {
+    if( !FolderStore.getSelectedNode() || this.state.selectedNode.get('Id') === FolderStore.getSelectedNode().get('Id') ) {
+      // this.forceUpdate();
+      this.setState({
+        treeList: FolderStore.getFolderTree(),
+        selectedNode: FolderStore.getNodeById(getNodeId(this.props))
+      });
+    } else {
+      this._onSelectedNodeChange()
+    }
+  }
 
 	_createFolderOrWidget(formatStr, nodeType, widgetType) {
 		let {selectedNode} = this.state;
@@ -269,7 +290,7 @@ export default class DataAnalysis extends Component {
 				dialog = <ShareView isNew={true} onDismiss={this._onDialogDismiss} shareNode={dialogData}/>;
 				break;
 			case MenuAction.Delete:
-				dialog = <DeleteView isLoadByWidget={false} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;
+				dialog = <DeleteView isLoadByWidget={selectedNode.get('Id') === dialogData.get('Id')} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;
 				break;
 			case MenuAction.Export:
 				dialog = <ExportView onDismiss={this._onDialogDismiss} params={{
@@ -293,14 +314,14 @@ export default class DataAnalysis extends Component {
 		return (
 			<div style={{display: 'flex', flex: 1}}>
 				<Left 
-					tree={FolderStore.getFolderTree()}
+					tree={this.state.treeList}
 					selectedNode={this.state.selectedNode}
 					onSelectNode={this._onSelectNode}
 					createWidgetOrFolder={this._createFolderOrWidget}
 					/>
 				{this._renderContent()}
 				{this._renderDialog()}
-				<Snackbar ref='snackbar' open={this.state.errorText} onRequestClose={this._setErrorText.bind(this, null)} message={this.state.errorText}/>
+				<Snackbar ref='snackbar' open={!!this.state.errorText} onRequestClose={this._setErrorText.bind(this, null)} message={this.state.errorText}/>
 			</div>
 		);
 	}
