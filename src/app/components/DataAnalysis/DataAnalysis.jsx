@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import CircularProgress from 'material-ui/CircularProgress';
+import {Snackbar, CircularProgress} from 'material-ui';
 import Immutable from 'immutable';
 
 import { nodeType } from 'constants/TreeConstants.jsx';
 import PermissionCode from 'constants/PermissionCode.jsx';
+import { MenuAction } from 'constants/AnalysisConstants.jsx';
 import privilegeUtil from 'util/privilegeUtil.jsx';
 import RoutePath from 'util/RoutePath.jsx';
 import util from 'util/Util.jsx';
@@ -60,34 +61,54 @@ export default class DataAnalysis extends Component {
 		this._onFolderTreeLoad = this._onFolderTreeLoad.bind(this);
 		this._handleWidgetSelectChange = this._handleWidgetSelectChange.bind(this);
 		this._onCreateFolderOrWidgetChange = this._onCreateFolderOrWidgetChange.bind(this);
+		this._onModifyNameError = this._onModifyNameError.bind(this);
+		this._onMoveItemError = this._onMoveItemError.bind(this);
+		this._onSendStatusChange = this._onSendStatusChange.bind(this);
+		this._onShareStatusChange = this._onShareStatusChange.bind(this);
 
 		this._onSelectNode = this._onSelectNode.bind(this);
 		this._createFolderOrWidget = this._createFolderOrWidget.bind(this);
 		this._onOperationSelect = this._onOperationSelect.bind(this);
+		this._onDialogDismiss = this._onDialogDismiss.bind(this);
 
 		FolderStore.addFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.addChangeListener(this._handleWidgetSelectChange);
 		FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
+    FolderStore.addModifyNameErrorListener(this._onModifyNameError);
+    FolderStore.addMoveItemErrorListener(this._onMoveItemError);
+    FolderStore.addSendStatusListener(this._onSendStatusChange);
+    FolderStore.addShareStatusListener(this._onShareStatusChange);
 
-		this.setState({
-			treeLoading: true
-		});
+		this.state = this._getInitialState();
 
 		this._loadInitData(this.props, this.context);
 		
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
-			// this._getInitialState(nextProps);
+			this._getInitialState(nextProps);
 			this._loadInitData(nextProps, nextContext);
-		}/* else if(!this._getHierarchyId(nextContext)) {
-			this._onPreActopn();
-		}*/
+		}
 	}
 	componentWillUnmount() {		
 		FolderStore.removeFolderTreeListener(this._onFolderTreeLoad);
 		WidgetStore.removeChangeListener(this._handleWidgetSelectChange);
 		FolderStore.removeCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
+    FolderStore.removeModifyNameErrorListener(this._onModifyNameError);
+    FolderStore.removeMoveItemErrorListener(this._onMoveItemError);
+    FolderStore.removeSendStatusListener(this._onSendStatusChange);
+    FolderStore.removeShareStatusListener(this._onShareStatusChange);
+	}
+
+	_getInitialState() {
+		return {
+			treeLoading: false,
+			selectedNode: null,
+			widgetDto: null,
+			errorText: null,
+			dialogType: null,
+			dialogData: null,
+		};
 	}
 
 	_changeNodeId(nodeId) {
@@ -132,7 +153,6 @@ export default class DataAnalysis extends Component {
 		}
 	}
 
-
 	_onCreateFolderOrWidgetChange() {
 		// this._changeNodeId(FolderStore.getSelectedNode().get('Id'));
 		// this.setState({
@@ -140,6 +160,27 @@ export default class DataAnalysis extends Component {
 		// });
 		this._onSelectNode(FolderStore.getSelectedNode());
 	}
+
+  _onModifyNameError() {
+    this.setState({
+      errorText: FolderStore.GetModifyNameError(),
+    });
+  }
+  _onMoveItemError() {
+    this.setState({
+      errorText: FolderStore.getMoveItemError(),
+    });
+  }
+  _onSendStatusChange() {
+    this.setState({
+      errorText: FolderStore.getSendStatus()
+    });
+  }
+  _onShareStatusChange() {
+    this.setState({
+      errorText: FolderStore.getShareStatus()
+    });
+  }
 
 	_onSelectNode(node) {
 		// this._changeNodeId(node.get('Id'));
@@ -164,8 +205,24 @@ export default class DataAnalysis extends Component {
 			this._getHierarchyId(this.context), true);
 	}
 
-	_onOperationSelect(index, widgetDto) {
-		console.log('另存为', idx, widgetDto);
+	_onOperationSelect(dialogType, dialogData = this.state.selectedNode) {
+		this.setState({
+			dialogType,
+			dialogData,
+		});
+	}
+
+	_onDialogDismiss() {
+		this.setState({
+			dialogType: null,
+			dialogData: null,
+		});
+	}
+
+	_setErrorText(errorText) {
+		this.setState({
+			errorText
+		});
 	}
 
 	_renderContent() {
@@ -188,7 +245,8 @@ export default class DataAnalysis extends Component {
 			} else {
 				content = (<FolderPanel 
 					node={selectedNode}
-					onSelectNode={this._onSelectNode}/>);
+					onSelectNode={this._onSelectNode}
+					onOperationSelect={this._onOperationSelect}/>);
 			}
 		}
 		return (<div className='jazz-framework-right-fold' style={{
@@ -197,56 +255,29 @@ export default class DataAnalysis extends Component {
 				}}>{content}</div>);
 	}
 
-	_renderTemplate() {
-		let {selectedNode} = this.state,
-		template;
-		//for operation template
-		// if (selectedNode) {
-		if ( isWidget(selectedNode) ) {
-			switch (this.state.templateId) {
-				case 1:
-					template = <CopyView onDismiss={this._onTemplateDismiss} copyNode={selectedNode}/>;
-					break;
-				case 2:
-					template = <SendView onDismiss={this._onTemplateDismiss} sendNode={selectedNode}/>;
-					break;
-				case 3:
-					template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={selectedNode} isLoadByWidget={isDelete}/>;
-			break;
+	_renderDialog() {
+		let {dialogType, dialogData, selectedNode} = this.state,
+		dialog;
+		switch (dialogType) {
+			case MenuAction.Copy:
+				dialog = <CopyView onDismiss={this._onDialogDismiss} copyNode={dialogData}/>;
+				break;
+			case MenuAction.Send:
+				dialog = <SendView onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
+				break;
+			case MenuAction.Delete:
+				dialog = <DeleteView isLoadByWidget={false} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;
+				break;
+			case MenuAction.Export:
+				dialog = <ExportView onDismiss={this._onDialogDismiss} params={{
+					widgetId: dialogData.get('Id')
+				}} path={'/Dashboard/ExportWidget'}/>;
+				break;
+			case MenuAction.SaveAs:
+				dialog = <SaveAsView onDismiss={this._onDialogDismiss} saveAsNode={selectedNode} widgetDto={dialogData}/>;
+				break;
 		}
-		// } else {
-		// 	switch (this.state.templateId) {
-		// 		case 1:
-		// 			template = <CopyView onDismiss={this._onTemplateDismiss} copyNode={selectedNode}/>;
-		// 			break;
-		// 		case 2:
-		// 			template = <SendView onDismiss={this._onTemplateDismiss} sendNode={selectedNode}/>;
-		// 			break;
-		// 		case 3:
-		// 			template = <ShareView onDismiss={this._onTemplateDismiss} shareNode={selectedNode}/>;
-		// 			break;
-		// 		case 4:
-		// 			let path = '/Dashboard/ExportWidget';
-		// 			let params = {
-		// 				widgetId: selectedNode.get('Id')
-		// 			};
-		// 			template = <ExportView onDismiss={this._onTemplateDismiss} params={params} path={path}/>;
-		// 		//ExportChartAction.getTagsData4Export(params, path);
-
-		// 			break;
-		// 		case 5:
-		// 			template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={selectedNode} isLoadByWidget={false}/>;
-		// 			break;
-		// 		case 6:
-		// 			template = <SaveAsView onDismiss={this._onTemplateDismiss} saveAsNode={selectedNode} widgetDto={this.state.templateWidgetDto}/>;
-		// 			break;
-		// 		case 7:
-		// 			template = <DeleteView onDismiss={this._onTemplateDismiss} deleteNode={selectedNode} isLoadByWidget={true}/>;
-		// 			break;
-		// 		}
-		// 	}
-		// }
-		return template;
+		return dialog;
 	}
 
 	render() {
@@ -265,6 +296,8 @@ export default class DataAnalysis extends Component {
 					createWidgetOrFolder={this._createFolderOrWidget}
 					/>
 				{this._renderContent()}
+				{this._renderDialog()}
+				<Snackbar ref='snackbar' open={this.state.errorText} onRequestClose={this._setErrorText.bind(this, null)} message={this.state.errorText}/>
 			</div>
 		);
 	}

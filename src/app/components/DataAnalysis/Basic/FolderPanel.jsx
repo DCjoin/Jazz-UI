@@ -3,9 +3,13 @@ import { IconMenu, IconButton, MenuItem } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import { nodeType } from 'constants/TreeConstants.jsx';
+import { MenuAction } from 'constants/AnalysisConstants.jsx';
 
 function isFolder(node) {
 	return node.get('Type') === nodeType.Folder;
+}
+function isBase(node) {
+	return node.get('Id') === -1;
 }
 
 export default class FolderPanel extends Component {
@@ -14,8 +18,10 @@ export default class FolderPanel extends Component {
 		this._renderChildrenItem = this._renderChildrenItem.bind(this);
 		this._onMenuSelect = this._onMenuSelect.bind(this);
 	}
-	_onMenuSelect() {
-		console.log('_onMenuSelect');
+	_onMenuSelect(node) {
+		return (e, item) => {
+			this.props.onOperationSelect(item.key, node);
+		}
 	}
 	_renderMenu(node, iconMenuProps) {
 		let menuStyle = {
@@ -24,10 +30,10 @@ export default class FolderPanel extends Component {
 		};
       	return (
       		<IconMenu {...iconMenuProps}>
-	            <MenuItem key={1} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
-	            {!isFolder(node) && <MenuItem key={4} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle}/>}
-	            <MenuItem key={2} primaryText={I18N.Folder.Detail.Title.Menu2} style={menuStyle}/>
-	            <MenuItem key={3} primaryText={I18N.Folder.Detail.Title.Menu3} style={menuStyle}/>
+	            <MenuItem key={MenuAction.Copy} primaryText={I18N.Folder.Detail.Title.Menu1} style={menuStyle}/>
+	            {!isFolder(node) && <MenuItem key={MenuAction.Export} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={menuStyle}/>}
+	            <MenuItem key={MenuAction.Send} primaryText={I18N.Folder.Detail.Title.Menu2} style={menuStyle}/>
+	            <MenuItem key={MenuAction.Delete} primaryText={I18N.Folder.Detail.Title.Menu3} style={menuStyle}/>
 	        </IconMenu>);
 	}
 	_renderHeader() {
@@ -42,10 +48,10 @@ export default class FolderPanel extends Component {
 				iconButtonElement: (<IconButton iconStyle={iconStyle}><MoreVertIcon /></IconButton>),
 				anchorOrigin:{horizontal: 'left', vertical: 'top'},
 				targetOrigin:{horizontal: 'left', vertical: 'top'},
-				onItemTouchTap: this._onMenuSelect
+				onItemTouchTap: this._onMenuSelect(node)
 		    };
 			action = (<div>
-				{this._renderMenu(node, iconMenuProps)}
+				{!isBase(node) && this._renderMenu(node, iconMenuProps)}
 			</div>)
 		}
 		return (
@@ -96,7 +102,7 @@ export default class FolderPanel extends Component {
 			iconButtonElement: (<IconButton iconStyle={iconStyle}><MoreVertIcon /></IconButton>),
 			anchorOrigin:{horizontal: 'left', vertical: 'top'},
 			targetOrigin:{horizontal: 'left', vertical: 'top'},
-			onItemTouchTap: this._onMenuSelect
+			onItemTouchTap: this._onMenuSelect(child)
 	    };
 		return (<li className='jazz-folder-detail-item'>		
 	        <div className='title' title={child.get('Name')}>
