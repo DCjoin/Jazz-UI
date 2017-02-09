@@ -609,7 +609,7 @@ let ChartCmpStrategyFactor = {
             }
           }
         }
-        yList.push({
+        yList.unshift({
           'yname': name,
           showLastLabel: true,
           min: min,
@@ -628,8 +628,8 @@ let ChartCmpStrategyFactor = {
             x: -6 * sign,
             formatter: dataLabelFormatter
           },
-          offset: yList.length >= 3 ? -10000 : count != 2 ? 0 : offset,
-          opposite: (count !== 0) //,
+          offset: yList.length > 2 ? -10000 :0,
+          opposite: data.length>1?count===0:false //,
         //gridLineWidth: count == 0 ? 1 : 0//for contour 等高线对齐，要使用此属性
         });
         count++;

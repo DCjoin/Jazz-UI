@@ -548,8 +548,6 @@ var TagAction = Tag.Action,
 TagStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
     case TagAction.LOAD_TAG_NODE:
-      console.log('LOAD_TAG_NODE_tagList=');
-      console.log(action.tagList);
       TagStore.setData(action.tagList);
       TagStore.emitTagNodeChange();
       break;

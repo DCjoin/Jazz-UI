@@ -1185,12 +1185,12 @@ AnalysisPanel.propTypes = {
   isNew:React.PropTypes.bool,
 };
 
-// AnalysisPanel.defaultProps={
-//   hierarchyId:100016,
-//   isBuilding:true,
-//   chartTitle:'冷机COP',
-//   sourceUserName:'Uxteam',
-//   isNew:true
-// }
+AnalysisPanel.defaultProps={
+  hierarchyId:100016,
+  isBuilding:true,
+  chartTitle:'冷机COP',
+  sourceUserName:'Uxteam',
+  isNew:true
+}
 
 export default withRouter(AnalysisPanel)
