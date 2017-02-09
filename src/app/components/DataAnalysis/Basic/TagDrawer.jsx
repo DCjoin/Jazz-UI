@@ -7,7 +7,7 @@ import {nodeType} from 'constants/TreeConstants.jsx';
 import { FontIcon, TextField,CircularProgress} from 'material-ui';
 import TagStore from 'stores/TagStore.jsx';
 import TagAction from 'actions/TagAction.jsx';
-import TagMenu from 'components/tag/TagMenu.jsx';
+import TagMenu from '../../tag/TagMenu.jsx';
 import Pagination from 'controls/paging/Pagination.jsx';
 
 var filters = null;
@@ -34,7 +34,6 @@ export default class TagDrawer extends Component {
 	}
 
   state={
-    open:true,
     isLoading:this.props.hierarchyId?true:false,
     searchValue:'',
     tagList: [],
@@ -225,9 +224,9 @@ export default class TagDrawer extends Component {
   }
 
   componentWillReceiveProps(){
-      this.setState({
-        open:true
-      })
+      // this.setState({
+      //   open:true
+      // })
   }
 
   componentWillUnmount(){
@@ -255,8 +254,9 @@ export default class TagDrawer extends Component {
       <Drawer
         docked={false}
         width={320}
-        open={this.state.open}
-        onRequestChange={(open) => this.setState({open})}
+        open={this.props.open}
+        onRequestChange={this.props.onClose}
+        overlayStyle={{opacity:'0'}}
         containerStyle={{display:'flex',overflow:'hidden'}}>
         <div className="jazz-analysis-tag">
           <div className="header">

@@ -311,6 +311,7 @@ I18N.Common.Button.Add = '添加';
 I18N.Common.Button.Comparation = '比较';
 I18N.Common.Button.Confirm = '确定';
 I18N.Common.Button.Save = '保存';
+I18N.Common.Button.NotSave = '不保存';
 I18N.Common.Button.SaveExport = '保存并导出';
 I18N.Common.Button.Import = '导入';
 I18N.Common.Button.Export = '导出';
@@ -446,6 +447,9 @@ I18N.EM.Tool.Benchmark = '行业基准值';
 I18N.EM.Tool.HistoryCompare = '历史对比';
 I18N.EM.Tool.BenchmarkSetting = '基准值设置';
 I18N.EM.Tool.DataSum = '数据求和';
+I18N.EM.Tool.DataStatistics = '数据统计';
+I18N.EM.Tool.YaxisConfig = 'Y轴设置';
+I18N.EM.Tool.MoreAnalysis = '更多分析';
 
 I18N.EM.KpiModeEM = '能耗';
 I18N.EM.KpiModeCarbon = '碳排放';
@@ -2106,5 +2110,8 @@ I18N.Setting.KPI.Report.StartCellHintText = '填写起始单元格';
 
 I18N.Setting.DataAnalysis = {};
 I18N.Setting.DataAnalysis.Scheme = '生成方案';
-
+I18N.Setting.DataAnalysis.To = '至';
+I18N.Setting.DataAnalysis.NotagRecommend = '点击“+数据点”按钮，选择要查看的数据点';
+I18N.Setting.DataAnalysis.SaveTip = '图表未保存，是否保存图表并离开？';
+I18N.Setting.DataAnalysis.LeaveTip = '图表为空，离开将直接删除该图表，是否离开？';
 module.exports = I18N;

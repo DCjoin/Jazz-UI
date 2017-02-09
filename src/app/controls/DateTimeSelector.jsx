@@ -15,11 +15,13 @@ let DateTimeSelector = React.createClass({
     endDate: React.PropTypes.object,
     startTime: React.PropTypes.number,
     endTime: React.PropTypes.number,
-    showTime: React.PropTypes.bool
+    showTime: React.PropTypes.bool,
+    isTimeFixed:React.PropTypes.bool,
   },
   getDefaultProps(){
     return {
       showTime: true,
+      isTimeFixed:false
     };
   },
   setDateField(startDate, endDate, callback) {
@@ -195,6 +197,7 @@ let DateTimeSelector = React.createClass({
   },
   render() {
     var me = this;
+    var {showTime,isTimeFixed}=this.props;
     var dateStyle = {
       width: '112px',
       height: '32px',
@@ -216,6 +219,7 @@ let DateTimeSelector = React.createClass({
       selectedTime:this.state.startTime,
       onTimeChange:(e, selectedIndex, value)=>{this._onChangeDateTime(null, value, null, null)},
       timeType: 0,
+      isView:isTimeFixed
     };
     var endDateProps = {
       datePickerClassName:'jazz-energy-date-picker',
@@ -233,11 +237,12 @@ let DateTimeSelector = React.createClass({
       selectedTime:this.state.endTime,
       onTimeChange:(e, selectedIndex, value)=>{this._onChangeDateTime(null, null, null, value)},
       timeType: 1,
+      isView:isTimeFixed
     };
     return <div className='jazz-full-border-datepicker'>
       <div className='jazz-full-border-datepicker-container'>
         <ViewableDatePicker {...startDateProps}/>
-        {this.props.showTime && <CalendarTime ref='startTime' {...startTimeProps}/>}
+        {showTime &&  <CalendarTime ref='startTime' {...startTimeProps}/>}
       </div>
       <span>{I18N.EM.To}</span>
       <div className='jazz-full-border-datepicker-container'>

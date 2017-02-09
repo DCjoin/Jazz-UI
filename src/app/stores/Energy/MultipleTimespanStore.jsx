@@ -315,7 +315,11 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
       }
       _tempRelativeList = _tempRelativeList.push(me.generateTimespanItem(false, relativeType, null, null, null, 1));
     } else {
-      _tempRelativeList = _tempRelativeList.set(compareIndex, me.generateTimespanItem(false, relativeType, null, null, null, compareIndex));
+       let _tempRelative=_tempRelativeList.get(0),
+           start=_tempRelative.get('startDate'),
+           end=_tempRelative.get('endDate');
+
+      _tempRelativeList = _tempRelativeList.set(compareIndex, me.generateTimespanItem(false, relativeType, null, start, end, compareIndex));
     }
   },
   handleRelativeValueChange(relativeValue, compareIndex) {
@@ -339,9 +343,9 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
     } else {
       //当第一次修改自定义时间的时候，默认将另一个修改为相应的数值
       let oldItem = _tempRelativeList.get(compareIndex);
-      if (oldItem.get('startDate')) {
-
-      } else {
+      // if (oldItem.get('startDate')) {
+      //
+      // } else {
         let mainRange = this.getMainDateRange();
         let mainInteval = mainRange[1].getTime() - mainRange[0].getTime();
         // if (endDate.getTime() - startDate.getTime() === 3600000) {
@@ -355,7 +359,7 @@ let MultipleTimespanStore = assign({}, PrototypeStore, {
         } else {
           startDate = new Date(endDate.getTime() - mainInteval);
         }
-      }
+      // }
       item = me.generateTimespanItem(false, 'Customerize', null, startDate, endDate, compareIndex);
       _tempRelativeList = _tempRelativeList.set(compareIndex, item);
     }
@@ -528,6 +532,7 @@ MultipleTimespanStore.dispatchToken = PopAppDispatcher.register(function(action)
   switch (action.type) {
     case Action.INIT_MULTITIMESPAN_DATA:
       MultipleTimespanStore.initData(action.relativeType, action.startDate, action.endDate);
+      MultipleTimespanStore.emitChange();
       break;
     case Action.ADD_MULTITIMESPAN_DATA:
       MultipleTimespanStore.addNewCompareDate();

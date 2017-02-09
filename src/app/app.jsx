@@ -34,7 +34,7 @@ import Mail from './components/mail/Mail.jsx';
 import Report from './components/report/Report.jsx';
 import DataAnalysis from './components/DataAnalysis';
 //for Test
-//import Report from './components/DataAnalysis/AnalysisPanel.jsx';
+// import Report from './components/DataAnalysis/Basic/AnalysisPanel.jsx';
 import Template from './components/report/Template.jsx';
 import { getCookie } from './util/Util.jsx';
 import RoutePath from './util/RoutePath.jsx';
