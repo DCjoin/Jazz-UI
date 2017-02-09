@@ -157,6 +157,7 @@ export default class ChartSubToolbar extends Component {
 
   _renderYaxisConfigDialog(){
     return <YaxisSelector
+      showDialog={this.state.showYaxisDialog}
       initYaxisDialog={this.props.initYaxisDialog}
       onYaxisSelectorDialogSubmit={this.props.onYaxisSelectorDialogSubmit}
       yaxisConfig={this.props.yaxisConfig}

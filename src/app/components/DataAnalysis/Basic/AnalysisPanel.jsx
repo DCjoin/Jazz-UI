@@ -37,6 +37,7 @@ import CalendarManager from '../../energy/CalendarManager.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import ChartComponent from './ChartComponent.jsx';
+import {MenuAction} from 'constants/AnalysisConstants.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -648,7 +649,7 @@ class AnalysisPanel extends Component {
         case 0:
               //另存为
               let widgetDto=this._handleSave(false);
-              this.props.onOperationSelect(index, widgetDto);
+              this.props.onOperationSelect(menuItem.key, widgetDto);
               break;
         case 1:
               //导出
@@ -658,7 +659,7 @@ class AnalysisPanel extends Component {
               //分享
               this._handleSave(true);
         case 3:
-              this.props.onOperationSelect(index);
+              this.props.onOperationSelect(menuItem.key);
             }
 
     };
@@ -674,10 +675,10 @@ class AnalysisPanel extends Component {
           onRequestClose={handleRequestClose}
         >
       <Menu onItemTouchTap={handleMenuItemClick}>
-        <MenuItem primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} style={styles.label} disabled={buttonDisabled}/>
-        <MenuItem primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={styles.label} disabled={buttonDisabled}/>
-        <MenuItem primaryText={I18N.Folder.Detail.WidgetMenu.Menu6} style={styles.label} disabled={buttonDisabled}/>
-        <MenuItem primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={styles.label} disabled={buttonDisabled}/>
+        <MenuItem key={MenuAction.SaveAs} primaryText={I18N.Folder.Detail.WidgetMenu.Menu1} style={styles.label} disabled={buttonDisabled}/>
+        <MenuItem key={MenuAction.Export} primaryText={I18N.Folder.Detail.WidgetMenu.Menu4} style={styles.label} disabled={buttonDisabled}/>
+        <MenuItem key={MenuAction.Share} primaryText={I18N.Folder.Detail.WidgetMenu.Menu6} style={styles.label} disabled={buttonDisabled}/>
+        <MenuItem key={MenuAction.Delete} primaryText={I18N.Folder.Detail.WidgetMenu.Menu5} style={styles.label} disabled={buttonDisabled}/>
       </Menu>
     </Popover>
   </div>
@@ -1157,7 +1158,15 @@ class AnalysisPanel extends Component {
           <ChartSubToolbar {...props.subToolBar}/>
           {this._renderChartCmp()}
         </div>
-        {this.state.tagShow?<TagDrawer {...this.props} customerId={this.context.router.params.customerId}/>:null}
+        {<TagDrawer hierarchyId={this.props.hierarchyId}
+                    isBuilding={this.props.isBuilding}
+                    customerId={this.context.router.params.customerId}
+                    open={this.state.tagShow}
+                    onClose={(open)=>{
+                      this.setState({
+                        tagShow:open
+                      })
+                    }}/>}
         {errorDialog}
         {this._renderDialog()}
         {this.state.showLeaveDialog && this._renderLeaveDialog()}

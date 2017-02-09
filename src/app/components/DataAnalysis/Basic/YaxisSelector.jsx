@@ -24,7 +24,6 @@ let YaxisSelector = React.createClass({
       this.setState({
         yaxisConfig: config,
         storedConfig: _storedConfig,
-        showDialog: true
       });
     }
   },
@@ -32,7 +31,7 @@ let YaxisSelector = React.createClass({
     return _storedConfig;
   },
   componentDidUpdate() {
-    if (this.state.showDialog) {
+    if (this.props.showDialog) {
       this.refs.yaxisDialog.show();
     //  this.refs.yaxisDialog.initDefaultValues();
     }
@@ -60,9 +59,6 @@ let YaxisSelector = React.createClass({
     return config;
   },
   onYaxisDialogDismiss() {
-    this.setState({
-      showDialog: false
-    });
     this.props.onYaxisDialogDismiss()
   },
   _onDialogSubmit(ret) {
@@ -157,7 +153,7 @@ var YaxisDialog = React.createClass({
     this.hide();
   },
   _onDialogCancel() {
-    this.hide();
+    this.onYaxisDialogDismiss();
   },
   _onRemoveAllClick() {
     var yaxisConfig = this.props.yaxisConfig;
