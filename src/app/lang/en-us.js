@@ -310,6 +310,7 @@ I18N.Common.Button.Add = 'Add';
 I18N.Common.Button.Comparation = 'Compare';
 I18N.Common.Button.Confirm = 'Confirm';
 I18N.Common.Button.Save = 'Save';
+I18N.Common.Button.NotSave = '不保存';
 I18N.Common.Button.SaveExport = 'Save and export';
 I18N.Common.Button.Import = 'Import';
 I18N.Common.Button.Export = 'Export';

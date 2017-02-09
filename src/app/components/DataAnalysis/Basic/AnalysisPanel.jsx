@@ -1,16 +1,22 @@
 'use strict';
 import React, { Component }  from "react";
+import Immutable from 'immutable';
+import { withRouter } from 'react-router';
 import assign from "object-assign";
+import classNames from 'classnames';
 import FlatButton from 'controls/FlatButton.jsx';
 import TagDrawer from './TagDrawer.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 import Dialog from 'controls/OperationTemplate/BlankDialog.jsx';
+import NewDialog from 'controls/NewDialog.jsx';
 import MultipleTimespanStore from 'stores/energy/MultipleTimespanStore.jsx';
 import FontIcon from 'material-ui/FontIcon';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import DropDownMenu from 'material-ui/DropDownMenu';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 import _ from 'lodash';
 import EnergyStore from 'stores/energy/EnergyStore.jsx';
 import CommonFuns from 'util/Util.jsx';
@@ -38,7 +44,9 @@ const DIALOG_TYPE = {
   ERROR_NOTICE: 'errornotice'
 };
 
-export default class AnalysisPanel extends Component {
+var ntLocation=null;
+
+class AnalysisPanel extends Component {
 
   static contextTypes = {
     router: React.PropTypes.object,
@@ -61,6 +69,8 @@ export default class AnalysisPanel extends Component {
     this._initYaxisDialog = this._initYaxisDialog.bind(this);
     this._onYaxisSelectorDialogSubmit = this._onYaxisSelectorDialogSubmit.bind(this);
     this._handleCalendarChange = this._handleCalendarChange.bind(this);
+    this.routerWillLeave  = this.routerWillLeave.bind(this);
+    this.getCurrentWidgetDto  = this.getCurrentWidgetDto.bind(this);
 
   }
 
@@ -80,7 +90,9 @@ export default class AnalysisPanel extends Component {
       remarkDisplay: false,
       relativeDate:'Last7Day',
       operationMenuOpen:false,
-      timeRanges:this.getInitTimeRanges()
+      timeRanges:this.getInitTimeRanges(),
+      willLeave:false,
+      showLeaveDialog:false
   }
 
   getInitTimeRanges(){
@@ -393,6 +405,14 @@ export default class AnalysisPanel extends Component {
       }
 
   _handleSave(isSave=true){
+    var widgetDto=this.getCurrentWidgetDto();
+    if (!isSave) {
+        return widgetDto;
+      } else {
+        FolderAction.updateWidgetDtos(widgetDto);
+      }
+  }
+  getCurrentWidgetDto(){
     let chartType = this.state.selectedChartType;
     let tagOptions = EnergyStore.getTagOpions();
     let tagIds = CommonFuns.getTagIdsFromTagOptions(tagOptions);
@@ -496,11 +516,7 @@ export default class AnalysisPanel extends Component {
       widgetDto.ContentSyntax = JSON.stringify(contentSyntax);
       widgetDto.Comment = this.state.remarkText;
 
-      if (!isSave) {
-          return widgetDto;
-        } else {
-          FolderAction.updateWidgetDtos(widgetDto);
-        }
+      return widgetDto
 
   }
 
@@ -684,7 +700,9 @@ export default class AnalysisPanel extends Component {
           <div className="description">{`(${I18N.format(I18N.Folder.Detail.SubTitile,this.props.sourceUserName)})`}</div>
         </div>
         <div className="operation">
-          <FlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label} icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}/>
+          <FlatButton label={I18N.Common.Button.Save} disabled={!this.state.energyData} labelstyle={styles.label}
+            icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}
+            onClick={()=>{this._handleSave()}}/>
           <FlatButton label={I18N.Setting.DataAnalysis.Scheme} labelstyle={styles.label} icon={<FontIcon className="icon-save" style={styles.label}/>} style={styles.button}/>
           {this._renderMoreOperation()}
       </div>
@@ -815,20 +833,116 @@ export default class AnalysisPanel extends Component {
   _renderChartCmp(){
       if(this.state.isLoading){
         return(
-          <div style={{
-         margin: 'auto',
-         width: '100px'
-       }}>
+          <div className="flex-center">
            <CircularProgress  mode="indeterminate" size={80} />
          </div>
         )
       }
       else if(!!this.state.energyData){
-        return <ChartComponent ref="ChartComponent" AnalysisPanel={this}/>
+        return(
+          <div style={{display:'flex',flex:1}}>
+            <ChartComponent ref="ChartComponent" AnalysisPanel={this}/>
+            {this._renderRemark()}
+          </div>
+        )
+
         }else {
-          return null
+          return (
+            <div className="flex-center">
+              {I18N.Setting.DataAnalysis.NotagRecommend}
+            </div>
+          )
         }
 
+  }
+
+  _renderRemark(){
+    var remarkTextArea = null;
+      if (this.state.remarkDisplay) {
+        remarkTextArea = <div className='jazz-energy-remark-text'><TextField hintText={I18N.Remark.DefaultText} value={this.state.remarkText} onChange={this.getRemarck} hintStyle={{
+            color: '#abafae'
+          }} multiLine={true} underlineShow={false}></TextField></div>;
+        }
+    var remarkDiv = null;
+        remarkDiv = <div className={classNames(
+            {
+              'jazz-energy-remark-container': true,
+              'jazz-energy-remark-expand': true
+            }
+          )}>
+          <div style={{
+                textAlign: 'center'
+              }}>
+              <div className='jazz-energy-remark-button'>
+                <RaisedButton label={I18N.Remark.Label} onClick={()=>{
+                    this.setState({
+                      remarkDisplay: !this.state.remarkDisplay
+                    })}
+                  }/>
+              </div>
+            </div>
+            {remarkTextArea}
+          </div>;
+      return remarkDiv;
+        }
+
+  _renderLeaveDialog(){
+    var _buttonActions=[],content=null;
+    if(!!this.state.energyData){
+      content=I18N.Setting.DataAnalysis.SaveTip;
+       _buttonActions = [<FlatButton
+                              label={I18N.Common.Button.Save}
+                              onClick={()=>{
+                                this._handleSave(true);
+                                this.setState({
+                                  willLeave:true,
+                                  showLeaveDialog:false
+                                },()=>{
+                                  this.props.router.replace(ntLocation.pathname)
+                                })
+                              }} />,
+                            <FlatButton
+                              label={I18N.Common.Button.NotSave}
+                              style={{
+                                marginLeft: '10px'
+                                }}
+                                onClick={()=>{
+                                  this.setState({
+                                    willLeave:true,
+                                    showLeaveDialog:false
+                                  },()=>{
+                                    this.props.router.replace(ntLocation.pathname)
+                                  })
+                                }} />];
+    }else {
+      content=I18N.Setting.DataAnalysis.LeaveTip;
+      _buttonActions = [<FlatButton
+                              label={I18N.Folder.Widget.LeaveButton}
+                              onClick={()=>{
+                                this.setState({
+                                  willLeave:true,
+                                  showLeaveDialog:false
+                                },()=>{
+                                  this.props.router.replace(ntLocation.pathname)
+                                })
+                              }} />,
+                            <FlatButton
+                              label={I18N.Common.Button.Cancel2}
+                              style={{
+                                marginLeft: '10px'
+                                }}
+                                onClick={()=>{
+                                  this.setState({
+                                    showLeaveDialog:false
+                                  })
+                                }} />];
+    }
+
+    return(
+      <NewDialog actions={_buttonActions} modal={true} open={true}>
+        {content}
+      </NewDialog>
+    )
   }
 
   getInitParam(analysisPanel) {
@@ -846,12 +960,127 @@ export default class AnalysisPanel extends Component {
     CalendarManager.resetShowType();
   }
 
+  setCalendarTypeFromWidget(widgetDto) {
+  if (widgetDto && widgetDto.WidgetStatus && widgetDto.WidgetStatus !== "") {
+    let wss = JSON.parse(widgetDto.WidgetStatus);
+    let calcType = "";
+    for (var i = 0, len = wss.length; i < len; i++) {
+      if (wss[i].WidgetStatusKey === "calendar") {
+        if (wss[i].WidgetStatusValue === "hc") {
+          calcType = "hc";
+          break;
+        } else if (wss[i].WidgetStatusValue === "work") {
+          calcType = "work";
+          break;
+        }
+      }
+    }
+
+    CalendarManager.calendarShowType = calcType;
+    this.setState({
+      calendarType: calcType
+    });
+  }
+  }
+
   _initYaxisDialog() {
   var chartCmp = this.refs.ChartComponent.refs.chart,
     chartObj = chartCmp.refs.highstock.getPaper();
 
   return chartObj;
   }
+
+  _initChartPanelByWidgetDto(){
+    let j2d = CommonFuns.DataConverter.JsonToDateTime;
+    let widgetDto = this.props.widgetDto,
+      WidgetStatusArray = widgetDto.WidgetStatusArray,
+      contentSyntax = widgetDto.ContentSyntax,
+      contentObj = JSON.parse(contentSyntax),
+      viewOption = contentObj.viewOption,
+      step = viewOption.Step,
+      timeRanges = viewOption.TimeRanges,
+      chartType = widgetDto.ChartType,
+      remarkText = widgetDto.Comment;
+
+    var remarkDisplay = false;
+    if (remarkText !== '' && remarkText !== null) {
+      remarkDisplay = true;
+    }
+
+
+    let typeMap = {
+      Line: 'line',
+      Column: 'column',
+      Stack: 'stack',
+      Pie: 'pie',
+      DataTable: 'rawdata',
+      original: 'rawdata'
+    };
+
+    let initPanelDate = function(timeRange) {
+      if (timeRange.relativeDate) {
+        this._onRelativeDateChange(null,null,timeRange.relativeDate);
+      } else {
+        this._onRelativeDateChange(null,null,'Customerize');
+        let start = j2d(timeRange.StartTime, false);
+        let end = j2d(timeRange.EndTime, false);
+        if (this.refs.dateTimeSelector) {
+          this.refs.dateTimeSelector.setDateField(start, end);
+        }
+      }
+    };
+
+    //init timeRange
+    let timeRange = timeRanges[0];
+    initPanelDate(timeRange);
+    if (timeRanges.length !== 1) {
+      MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
+    }
+
+    let yaxisConfig = null;
+    if (WidgetStatusArray) {
+      yaxisConfig = CommonFuns.getYaxisConfig(WidgetStatusArray);
+    }
+    //init selected tags is done in the other part
+    this.setState({
+      remarkText: remarkText,
+      remarkDisplay: remarkDisplay,
+      selectedChartType: typeMap[chartType],
+      yaxisConfig: yaxisConfig,
+      step: step,
+    }, () => {
+      this._onSearchDataButtonClick();
+    });
+    ChartStatusAction.setWidgetDto(widgetDto, 'Energy', 'Energy', this.state.selectedChartType);
+    this.setCalendarTypeFromWidget(widgetDto);
+  }
+
+  routerWillLeave(nextLocation){
+      // console.log(nextLocation);
+      ntLocation=nextLocation;
+      if(!!this.state.energyData){
+        var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
+        var originalWidgetDto=Immutable.fromJS(this.props.widgetDto);
+        if(Immutable.is(currentWidgetDto),originalWidgetDto){
+          return true
+        }
+        else {
+          this.setState({
+            showLeaveDialog:true
+          })
+          return this.state.willLeave
+        }
+      }
+      else {
+        this.setState({
+          showLeaveDialog:true
+        })
+        return this.state.willLeave
+      }
+
+
+    }
+
   componentDidMount(){
     this.getInitParam();
     FolderStore.addDialogListener(this._onDialogChanged);
@@ -860,6 +1089,13 @@ export default class AnalysisPanel extends Component {
     EnergyStore.addEnergyDataLoadErrorListener(this._onGetEnergyDataError);
     EnergyStore.addEnergyDataLoadErrorsListener(this._onGetEnergyDataErrors);
     AlarmTagStore.addChangeListener(this._onTagChanged);
+    if(!this.props.isNew){
+      this._initChartPanelByWidgetDto()
+    }
+    this.props.router.setRouteLeaveHook(
+         this.props.route,
+         this.routerWillLeave
+       )
   }
 
   componentDidUpdate() {
@@ -924,6 +1160,7 @@ export default class AnalysisPanel extends Component {
         {this.state.tagShow?<TagDrawer {...this.props} customerId={this.context.router.params.customerId}/>:null}
         {errorDialog}
         {this._renderDialog()}
+        {this.state.showLeaveDialog && this._renderLeaveDialog()}
       </div>
     )
   }
@@ -946,3 +1183,5 @@ AnalysisPanel.defaultProps={
   sourceUserName:'Uxteam',
   isNew:true
 }
+
+export default withRouter(AnalysisPanel)

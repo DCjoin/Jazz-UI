@@ -11,7 +11,7 @@ import TagStore from 'stores/TagStore.jsx';
 import CalendarManager from '../../energy/CalendarManager.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import ExtendableMenuItem from 'controls/ExtendableMenuItem.jsx';
-import AddIntervalWindow from '../../energy/energy/AddIntervalWindow.jsx';
+import AddIntervalWindow from './HistoryWindow.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
 
 export default class ChartSubToolbar extends Component {
@@ -169,6 +169,7 @@ export default class ChartSubToolbar extends Component {
 
   _renderHistoryCompareDialog(){
     var props={
+      openImmediately:true,
       analysisPanel:this.props.analysisPanel,
       onCancel:()=>{
         this.setState({
@@ -176,7 +177,7 @@ export default class ChartSubToolbar extends Component {
         })
       }
     }
-      return <AddIntervalWindow openImmediately={true} analysisPanel={this}/>
+      return <AddIntervalWindow {...props}/>
   }
 
   render(){
