@@ -79,12 +79,12 @@ const TipMessage = (props, context, updater) => {
 export default class Actuality extends Component {
 
 	static getStores() {
-		return [{
+		return [/*{
 			store: HierarchyStore,
 			add: ['addBuildingListListener'],
 			remove: ['removeBuildingListListener'],
-		}, UserStore, ReportStore];
-	}
+		},*/ UserStore, ReportStore];
+	};
 
 	static calculateState(prevState) {
 		return {
@@ -92,7 +92,11 @@ export default class Actuality extends Component {
 			userCustomers: UserStore.getUserCustomers(),
 			allBuildingsExistence: ReportStore.getAllBuildingsExistence(),
 		};
-	}
+	};
+
+	static contextTypes = {
+		hierarchyId: React.PropTypes.string
+	};
 
 	componentWillMount() {
 		this._configCB = this._configCB.bind(this);
@@ -100,7 +104,7 @@ export default class Actuality extends Component {
 		this._showReportEdit = this._showReportEdit.bind(this);
 		this._removeEditPage = this._removeEditPage.bind(this);
 
-		HierarchyStore.addBuildingListListener(this._onPreActopn);
+		// HierarchyStore.addBuildingListListener(this._onPreActopn);
 		UserStore.addChangeListener(this._onPreActopn);
 
 		this._getInitialState(this.props);
@@ -108,15 +112,15 @@ export default class Actuality extends Component {
 
 	}
 	componentWillReceiveProps(nextProps, nextContext) {
-		if( !util.shallowEqual(nextProps.params, this.props.params) ) {
+		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
 			this._getInitialState(nextProps);
 			this._loadInitData(nextProps, nextContext);
-		} else if(!this._getHierarchyId(nextProps)) {
+		} else if(!this._getHierarchyId(nextContext)) {
 			this._onPreActopn();
 		}
 	}
 	componentWillUnmount() {		
-		HierarchyStore.removeBuildingListListener(this._onPreActopn);
+		// HierarchyStore.removeBuildingListListener(this._onPreActopn);
 		UserStore.removeChangeListener(this._onPreActopn);
 	}
 	_getInitialState(props) {
@@ -133,13 +137,13 @@ export default class Actuality extends Component {
 		});
 	}
 	_onPreActopn() {
-		if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList && !this.props.router.location.query.hierarchyId ) {
-			if(this._privilegedCustomer()) {
-				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
-			} else if(this.state.buildingList.length === 1){
-				this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
-			}
-		}
+		// if( this.state.userCustomers && this.state.userCustomers.size > 0 && this.state.buildingList ) {
+		// 	if(this._privilegedCustomer()) {
+		// 		this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this._getCustomerId());
+		// 	} else if(this.state.buildingList.length === 1){
+		// 		this.props.router.push( this.props.router.location.pathname + '?hierarchyId=' + this.state.buildingList[0].Id);
+		// 	}
+		// }
 	}
 	_loadInitData(props, context) {
 		if( canView() ) {
@@ -148,7 +152,7 @@ export default class Actuality extends Component {
 				userCustomers: null,
 				allBuildingsExistence: null,
 			});
-			HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
+			// HierarchyAction.getBuildingListByCustomerId(props.router.params.customerId);
 			UserAction.getCustomerByUser(CurrentUserStore.getCurrentUser().Id);
 			ReportAction.allBuildingsExistence(props.router.params.customerId);
 		}
@@ -168,11 +172,11 @@ export default class Actuality extends Component {
 	_getCustomerId() {
 		return this.props.router.params.customerId;
 	}
-	_getHierarchyId(props) {
-		return +props.router.location.query.hierarchyId || null;
+	_getHierarchyId(context) {
+		return +context.hierarchyId || null;
 	}
 	_getSelectedHierarchy() {
-		let selectedHierarchyId = this._getHierarchyId(this.props);
+		let selectedHierarchyId = this._getHierarchyId(this.context);
 		return find(HierarchyStore.getBuildingList().concat(getCustomerById(this.props.router.params.customerId)), building => building.Id === selectedHierarchyId) || null;
 	}
 	_privilegedCustomer() {
@@ -182,13 +186,13 @@ export default class Actuality extends Component {
 		return this.props.router.location.query.kpiId;
 	}
 	_isCustomer() {
-		return this.props.router.params.customerId === this.props.router.location.query.hierarchyId;
+		return this.props.router.params.customerId === this.context.hierarchyId;
 	}
 	_routerPush(path) {
 		this.props.router.push(path);
 	}
 	_renderActuality() {
-		if( !this._getHierarchyId(this.props) ) {
+		if( !this._getHierarchyId(this.context) ) {
 			return null;
 		}
 		let singleKPI = this._isSingleKPI();
@@ -196,7 +200,8 @@ export default class Actuality extends Component {
 		let prefixTitle = '';
 		let kpiHide = this.state.show.kpi === false;
 		let reportHide = this.state.show.report === false;
-		let hasKPIEdit = this._isCustomer() && isFull();
+		let isCustomer = this._isCustomer();
+		let hasKPIEdit = reportHide && isFull();
 		if(singleKPI) {
 		    // chartData = SingleKPIStore.getKPIChart();
     		prefixTitle = 
@@ -213,7 +218,7 @@ export default class Actuality extends Component {
 			      	// onRefresh(data.get('id'));
 			      	this.props.router.push(RoutePath.KPIGroupConfig(this.props.router.params));
 			      }}/>}
-				<KPIActuality configCB={isOnlyView() && this._configCB} router={this.props.router} hierarchyId={this._getHierarchyId(this.props)}/>
+				<KPIActuality configCB={isOnlyView() && this._configCB} router={this.props.router} hierarchyId={this._getHierarchyId(this.context)}/>
 			</div>}
 			{!singleKPI && !reportHide && <div className='jazz-actuality-item'>
 				<div className='jazz-actuality-item-title'>{'报表'}</div>
@@ -225,16 +230,16 @@ export default class Actuality extends Component {
 					configCB={isOnlyView() && this._configCB}
 					ref={'report_preview'}
 					preview={true}
-					showAll={this.props.params.customerId === this.props.location.query.hierarchyId}
+					showAll={isCustomer}
 					hasAll={this.state.allBuildingsExistence}
 					showReportEdit={this._showReportEdit}
 					router={this.props.router} 
-					hierarchyId={this._getHierarchyId(this.props)}/>
+					hierarchyId={this._getHierarchyId(this.context)}/>
 			</div>}
 		</div>);
 	}
 	_renderEditPage() {
-		if(this.state.edit && this._getHierarchyId(this.props)) {
+		if(this.state.edit && this._getHierarchyId(this.context)) {
 			let {type, data} = this.state.edit,
 			content = null;
 			// if( type === 'kpi' ) {
@@ -243,7 +248,7 @@ export default class Actuality extends Component {
 			// }
 			if( type === 'report' ) {
 				content = (<ReportConfig 
-								hierarchyId={this._getHierarchyId(this.props)}
+								hierarchyId={this._getHierarchyId(this.context)}
 								hierarchyName={this._getSelectedHierarchy().Name} 
 								report={data} 
 								onSave={(id) => {
@@ -307,13 +312,22 @@ export default class Actuality extends Component {
 			return (<TipMessage message={message}/>);
 		}
 		let {router} = this.props,
-		hierarchyId = this._getHierarchyId(this.props),
+		hierarchyId = this._getHierarchyId(this.context),
 		buildingProps = {
 	        isViewStatus: false,
 	        defaultValue: hierarchyId,
 	        style: {
-	        	width: 240,
+	        	width: 200,
 	        	margin: '0 20px',
+	        },
+	        labelStyle: {
+	        	color: '#fff',
+	        },
+	        listStyle: {
+	        	width: 200,
+	        },
+	        underlineStyle: {
+	        	display: 'none',
 	        },
 	        didChanged: (hierarchyId) => {
 	        	this._routerPush(
@@ -328,7 +342,7 @@ export default class Actuality extends Component {
 	    };
 		return (
 			<div className='jazz-actuality'>
-				{!this._isSingleKPI() && isFull() && <ViewableDropDownMenu {...buildingProps}/>}
+				{/*!this._isSingleKPI() && isFull() && <div className='jazz-top-select-hierarchy'><ViewableDropDownMenu {...buildingProps}/></div>*/}
 				{!hierarchyId && (<div className='flex-center'><b>{I18N.Kpi.Error.SelectBuilding}</b></div>)}
 				{this._renderActuality()}
 				{this._renderEditPage()}

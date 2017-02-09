@@ -13,7 +13,7 @@ var CopyView = React.createClass({
     copyNode: React.PropTypes.object,
   },
   _onCopyItem: function(destNode, newName) {
-    FolderAction.copyItem(this.props.copyNode, destNode, newName);
+    FolderAction.copyItem(this.props.copyNode, destNode, newName, this.props.isNew);
     this.setState({
       loading: true
     });
