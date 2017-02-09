@@ -33,7 +33,8 @@ let FolderAction = {
     };
     Ajax.post('/Dashboard/CreateWidgetOrFolder', {
       params: {
-        dto: dto
+        dto: dto,
+        isNew,
       },
       success: function(newNode) {
         AppDispatcher.dispatch({
