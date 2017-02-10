@@ -125,7 +125,7 @@ export default class DataAnalysis extends Component {
 
 	_changeNodeId(nodeId) {
     if( nodeId !== getNodeId(this.props) ) {
-		  this.props.router.push(RoutePath.dataAnalysis(this.props.params) + '/' + nodeId);
+		  this.props.router.push(RoutePath.dataAnalysis(this.props.params) + nodeId);
     }
 	}
 
@@ -192,7 +192,7 @@ export default class DataAnalysis extends Component {
 		});
 		if( node ) {
       if( isWidget(node) ) {
-        FolderAction.GetWidgetDtos([node.get('Id')], node);
+        FolderAction.GetWidgetDtos([node.get('Id')], node, true);
       }
 			if (node.get('IsSenderCopy') && !node.get('IsRead')) {
         FolderAction.modifyFolderReadStatus(node);
