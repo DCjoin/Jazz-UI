@@ -22,6 +22,7 @@ module.exports = function(options) {
     controls: path.join(__dirname, "src/app/controls/"),
     util: path.join(__dirname, "src/app/util/"),
     constants: path.join(__dirname, "src/app/constants/"),
+    components: path.join(__dirname, "src/app/components/"),
   };
   var aliasLoader = {
 

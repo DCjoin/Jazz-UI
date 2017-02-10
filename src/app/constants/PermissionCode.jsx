@@ -90,6 +90,21 @@ const PermissionCode = function() {
 		FULL: 1301,
 	},
 
+	BASIC_DATA_ANALYSE: {
+		getLabel: () => I18N.Privilege.Role.BasicDataAnalyse,
+		FULL: 1313,
+	},
+	
+	SENIOR_DATA_ANALYSE: {
+		getLabel: () => I18N.Privilege.Role.SeniorDataAnalyse,
+		FULL: 1313,
+	},
+	
+	BUILDING_LIST: {
+		getLabel: () => I18N.Privilege.Role.BuildingList,
+		FULL: 1314,
+	},
+
 	PUSH_SOLUTION: {
 		READONLY: 1302,
 		FULL: 1303,
@@ -111,14 +126,6 @@ const PermissionCode = function() {
 	MULTIPLE_PROJECT_ENERGY: {
 		READONLY: 1310,
 		FULL: 1311,
-	},
-
-	BASIC_DATA_ANALYSE: {
-		FULL: 1313,
-	},
-
-	SENIOR_DATA_ANALYSE: {
-		FULL: 1315,
 	},
 
 	INTERLLIGENCE_DIAGNOSE: {

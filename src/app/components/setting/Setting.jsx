@@ -473,7 +473,6 @@ let Setting = React.createClass({
       case DIALOG_TYPE.ERROR_NOTICE:
         dialog = this._getErrorNoticeDialog();
         break;
-
     }
 
     let bizTypeMap = {

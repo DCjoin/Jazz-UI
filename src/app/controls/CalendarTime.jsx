@@ -12,29 +12,41 @@ var CalendarTime = React.createClass({
     onTimeChange: React.PropTypes.func,
     timeType: React.PropTypes.number,
     height: React.PropTypes.number,
+    isView:React.PropTypes.bool,
   },
 
+  _renderTime(){
+    let timeArray = Immutable.fromJS(this._getTimeArray()),
+     index=timeArray.findIndex(time=>(time.get('value')===this.props.selectedTime));
+     return timeArray.getIn([index,'text'])
+  },
 
   render:function() {
-    let style = {
-      autoWidth:false,
-      style:{
-      width: '90px',
-      height: '32px'
-      },
-      labelStyle:{
-      lineHeight:'32px',
-      textOverflow:'clip'
-      },
-      onChange:this._onTimeTouchTap
-    };
+    if(this.props.isView){
+      return <div style={{marginLeft:'10px'}}>{this._renderTime()}</div>
+    }
+    else {
+      let style = {
+        autoWidth:false,
+        style:{
+        width: '90px',
+        height: '32px'
+        },
+        labelStyle:{
+        lineHeight:'32px',
+        textOverflow:'clip'
+        },
+        onChange:this._onTimeTouchTap
+      };
 
-    return (
-      <DropDownMenu underlineStyle={{display:'none'}} iconStyle={{display:'none'}} value={this._getSelectedTimeIndex()} {...style}>
-          {this._getTimeItems()}
-      </DropDownMenu>
+      return (
+        <DropDownMenu underlineStyle={{display:'none'}} iconStyle={{display:'none'}} value={this._getSelectedTimeIndex()} {...style}>
+            {this._getTimeItems()}
+        </DropDownMenu>
 
-    );
+      );
+    }
+
   },
 
   _getTimeItems() {

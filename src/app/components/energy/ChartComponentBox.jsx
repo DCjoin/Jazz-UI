@@ -17,6 +17,7 @@ import ChartStatusAction from '../../actions/ChartStatusAction.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 import { getCookie } from '../../util/Util.jsx';
 import PermissionCode from '../../constants/PermissionCode.jsx';
+import AlarmTagStore from 'stores/AlarmTagStore.jsx';
 
 let yAxisOffset = 70;
 
@@ -699,6 +700,17 @@ let ChartComponentBox = React.createClass({
     }
     newConfig.series = newConfig.series.concat(flagSeries);
     newConfig.series = newConfig.series.concat(alarmSeries);
+
+    //多时间段，添加legend title
+    if(newConfig.series.length>1 && newConfig.series[0].name.indexOf('<br/>')>-1){
+      var nodeOptions = AlarmTagStore.getSearchTagList();
+      newConfig.legend.title={
+        text:nodeOptions[0].tagName
+      }
+    }
+    else {
+      newConfig.legend.title={}
+    }
   }
 });
 

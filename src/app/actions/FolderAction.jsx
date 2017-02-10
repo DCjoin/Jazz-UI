@@ -5,10 +5,11 @@ import GlobalErrorMessageAction from '../actions/GlobalErrorMessageAction.jsx';
 import Ajax from '../ajax/ajax.jsx';
 import Immutable from 'immutable';
 let FolderAction = {
-  getFolderTreeByCustomerId(customerId) {
-    Ajax.post('/Dashboard/GetWdigetFolderTreeByCustomerId', {
+  getFolderTreeByHierarchyId(hierarchyId, isNew = false) {
+    Ajax.post('/Dashboard/GetWdigetFolderTreeByHierarchyId', {
       params: {
-        customerId: customerId
+        hierarchyId,
+        isNew
       },
       success: function(treeNode) {
         AppDispatcher.dispatch({
@@ -21,23 +22,27 @@ let FolderAction = {
       }
     });
   },
-  createWidgetOrFolder(parentNode, name, type, customerId, widgetType) {
+  createWidgetOrFolder(parentNode, name, type, customerId, widgetType, HierarchyId = customerId, isNew = false) {
     var dto = {
       ParentId: parentNode.get("Id"),
       Name: name,
       Type: type,
       CustomerId: customerId,
+      HierarchyId,
       WidgetType: widgetType
     };
     Ajax.post('/Dashboard/CreateWidgetOrFolder', {
       params: {
-        dto: dto
+        dto: {...dto, ...{
+          isNew
+        }},
       },
       success: function(newNode) {
         AppDispatcher.dispatch({
           type: Action.CREATE_FOLDER_OR_WIDGET,
           newNode: newNode,
-          parentNode: parentNode
+          parentNode: parentNode, 
+          isNew
         });
       },
       error: function(err, res) {
@@ -75,12 +80,13 @@ let FolderAction = {
       selectedNode: selectedNode
     });
   },
-  copyItem: function(sourceItem, destItem, newName) {
+  copyItem: function(sourceItem, destItem, newName, isNew = false) {
     Ajax.post('/Dashboard/CopyItem', {
       params: {
         sourceTreeNode: sourceItem.toJSON(),
         desFolder: destItem.toJSON(),
         newName: newName,
+        isNew,
       },
       commonErrorHandling: false,
       success: function(newNode) {
@@ -136,11 +142,12 @@ let FolderAction = {
     });
 
   },
-  sendFolderCopy: function(sourceTreeNode, userIds) {
+  sendFolderCopy: function(sourceTreeNode, userIds, isNew = false) {
     Ajax.post('/Dashboard/SendItemCopy', {
       params: {
         sourceTreeNode: sourceTreeNode.toJSON(),
-        userIds: userIds
+        userIds: userIds,
+        isNew,
       },
       success: function(userIds) {
         AppDispatcher.dispatch({
@@ -151,11 +158,12 @@ let FolderAction = {
       },
     });
   },
-  shareItemCopy: function(sourceTreeNode, userIds) {
+  shareItemCopy: function(sourceTreeNode, userIds, isNew = false) {
     Ajax.post('/CollaborativeWidget/ShareCollaborativeWidget', {
       params: {
         widget: sourceTreeNode.toJSON(),
-        userIds: userIds
+        userIds: userIds,
+        isNew,
       },
       success: function(userIds) {
         AppDispatcher.dispatch({
@@ -193,7 +201,7 @@ let FolderAction = {
       },
     });
   },
-  GetWidgetDtos(widgetIds, selectedNode) {
+  GetWidgetDtos(widgetIds, selectedNode, isNew = false) {
     setTimeout(() => {
       AppDispatcher.dispatch({
         type: Action.GET_WIDGETDTOS_LOADING,
@@ -203,7 +211,8 @@ let FolderAction = {
 
     Ajax.post('/Dashboard/GetWidgetDtos', {
       params: {
-        widgetIds: widgetIds
+        widgetIds: widgetIds,
+        isNew
       },
       success: function(widgetDto) {
         AppDispatcher.dispatch({
@@ -219,11 +228,12 @@ let FolderAction = {
       },
     });
   },
-  updateWidgetDtos(widgetDto, menuIndex) {
+  updateWidgetDtos(widgetDto, menuIndex, isNew = false) {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard/CreateWidget', {
       params: {
-        widgetDto: widgetDto
+        widgetDto: widgetDto,
+        isNew,
       },
       success: function(Dto) {
         if (!menuIndex) {
@@ -265,12 +275,13 @@ let FolderAction = {
       },
     });
   },
-  WidgetSave(widgetDto, customerId) {
+  WidgetSave(widgetDto, customerId, isNew = false) {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard/CreateWidget', {
       params: {
         widgetDto: widgetDto,
-        customerId: customerId
+        customerId: customerId,
+        isNew,
       },
       success: function(widgetDto) {
         GlobalErrorMessageAction.fireGlobalErrorMessage(I18N.Folder.WidgetSaveSuccess);
@@ -285,7 +296,7 @@ let FolderAction = {
       },
     });
   },
-  SaveAsItem(sourceTreeNode, desFolder, newName, widgetDto) {
+  SaveAsItem(sourceTreeNode, desFolder, newName, widgetDto, isNew = false) {
     let originWidgetDto = widgetDto;
     Ajax.post('/Dashboard/SaveAsItem', {
       params: {
@@ -293,6 +304,7 @@ let FolderAction = {
         desFolder: desFolder,
         newName: newName,
         widgetDto: widgetDto,
+        isNew,
       },
       success: function(newNode) {
         AppDispatcher.dispatch({

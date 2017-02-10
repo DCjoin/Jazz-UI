@@ -6,13 +6,14 @@ import { FontIcon, IconButton, DropDownMenu, Dialog, RaisedButton, CircularProgr
 
 let StepItem = React.createClass({
   _onStepClick() {
-    if (this.props.onStepChange) {
+    if (this.props.onStepChange && !this.props.disabled) {
       this.props.onStepChange(this.props.step);
     }
   },
   render: function() {
     var me = this;
-    var className = 'jazz-energy-step-item ' + (this.props.selected ? 'jazz-energy-step-item-selected' : '');
+    var className = 'jazz-energy-step-item ' + (this.props.selected && !this.props.disabled? 'jazz-energy-step-item-selected' : '')+''
+                    +(this.props.disabled?'jazz-energy-step-item-disable':'');
     return <div className={className} onClick={me._onStepClick}> {this.props.text}</div>;
   }
 
@@ -70,7 +71,8 @@ let StepSelector = React.createClass({
   },
   getDefaultProps() {
     return {
-      timeRanges: []
+      timeRanges: [],
+      disabled:false
     };
   },
   getInitialState() {
@@ -112,6 +114,7 @@ let StepSelector = React.createClass({
           obj.selected = false;
         }
 
+        obj.disabled=this.props.disabled;
         stepElementList.push(<StepItem {...obj} onStepChange={me._onStepChange}></StepItem>);
       }
     }

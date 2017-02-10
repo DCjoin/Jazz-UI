@@ -14,7 +14,7 @@ var SaveAsView = React.createClass({
     widgetDto: React.PropTypes.object,
   },
   _onCopyItem: function(destNode, newName) {
-    FolderAction.SaveAsItem(this.props.saveAsNode, destNode, newName, this.props.widgetDto);
+    FolderAction.SaveAsItem(this.props.saveAsNode, destNode, newName, this.props.widgetDto, this.props.isNew);
     this.setState({
       loading: true
     });

@@ -21,8 +21,6 @@ import Dialog from '../../controls/OperationTemplate/BlankDialog.jsx';
 import { treeSource } from '../../constants/TreeSource.jsx';
 import CurrentUserStore from '../../stores/CurrentUserStore.jsx';
 
-
-
 import Immutable from 'immutable';
 
 function currentUser() {
@@ -256,7 +254,7 @@ var FolderLeftPanel = React.createClass({
   _getSwitchWidgetDialog: function() {
     var that = this;
     var _onConfirm = function() {
-      FolderAction.getFolderTreeByCustomerId(this.context.currentRoute.params.customerId);
+      FolderAction.getFolderTreeByHierarchyId(this.context.currentRoute.params.customerId);
       that.didDrag();
     };
     var _onCancel = function() {
@@ -292,7 +290,7 @@ var FolderLeftPanel = React.createClass({
 
     FolderStore.addFolderTreeListener(this._onFolderTreeChange);
     FolderStore.addCreateFolderOrWidgetListener(this._onCreateFolderOrWidgetChange);
-    FolderAction.getFolderTreeByCustomerId(this.context.currentRoute.params.customerId);
+    FolderAction.getFolderTreeByHierarchyId(this.context.currentRoute.params.customerId);
 
     FolderStore.addDeleteItemSuccessListener(this._onDeleteItem);
     FolderStore.addCopyItemSuccessListener(this._onCopyItem);

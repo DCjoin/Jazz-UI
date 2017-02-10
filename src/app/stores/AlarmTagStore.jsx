@@ -213,12 +213,15 @@ AlarmTagStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
     case TagAction.SET_TAGSTATUS_TAG:
       AlarmTagStore.searchTagChange(action.node, action.selected);
+      AlarmTagStore.emitChange();
       break;
     case TagAction.SET_TAGSTATUS_TAGLIST:
       AlarmTagStore.searchTagListChange(action.tagList, action.add);
+      AlarmTagStore.emitChange();
       break;
     case TagAction.CLEAR_ALARM_SEARCH_TAGLIST:
       AlarmTagStore.clearSearchTagList();
+      AlarmTagStore.emitChange();
       break;
     // case CommodityAction.SET_COMMODITY_STATUS:
     //     AlarmTagStore.CommodityDataChange(action.commodityId,action.commodityName,action.selected);

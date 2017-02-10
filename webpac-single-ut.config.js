@@ -2,7 +2,7 @@ var path = require('path');
 var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-	
+
 	target: 'node',
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
@@ -17,6 +17,7 @@ module.exports = {
 			constants: path.join(__dirname, 'src/app/constants/'),
 			dispatcher: path.join(__dirname, 'src/app/dispatcher/'),
 			mockData: path.join(__dirname, 'mockData/'),
+			components: path.join(__dirname, "src/app/components/"),
         }
     },
 	externals: [nodeExternals()],

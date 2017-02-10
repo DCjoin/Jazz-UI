@@ -46,6 +46,7 @@ I18N.MainMenu.DeviceTemplate = 'Ledger template ';
 I18N.MainMenu.ParameterTemplate = 'Parameter template';
 
 I18N.MainMenu.KPI = '指标·报表';
+I18N.MainMenu.DataAnalysis = '数据分析';
 I18N.MainMenu.KPIActuality = '指标现状';
 I18N.MainMenu.KPIConfig = '指标现状配置';
 I18N.MainMenu.Map = 'Map';
@@ -310,6 +311,7 @@ I18N.Common.Button.Add = 'Add';
 I18N.Common.Button.Comparation = 'Compare';
 I18N.Common.Button.Confirm = 'Confirm';
 I18N.Common.Button.Save = 'Save';
+I18N.Common.Button.NotSave = '不保存';
 I18N.Common.Button.SaveExport = 'Save and export';
 I18N.Common.Button.Import = 'Import';
 I18N.Common.Button.Export = 'Export';
@@ -325,6 +327,7 @@ I18N.Common.Button.ClearAll = 'Clear all';
 I18N.Common.Button.Send = 'Send';
 I18N.Common.Button.GoOn = 'Continue';
 I18N.Common.Button.Confirmed = 'OK';
+I18N.Common.Button.More = '更多';
 
 
 I18N.Common.CarbonUomType = {};
@@ -444,6 +447,9 @@ I18N.EM.Tool.Benchmark = 'Industry benchmark';
 I18N.EM.Tool.HistoryCompare = 'History comparison';
 I18N.EM.Tool.BenchmarkSetting = 'Baseline setting';
 I18N.EM.Tool.DataSum = 'Data Sum';
+I18N.EM.Tool.DataStatistics = '数据统计';
+I18N.EM.Tool.YaxisConfig = 'Y轴设置';
+I18N.EM.Tool.MoreAnalysis = '更多分析';
 
 I18N.EM.KpiModeEM = 'Energy';
 I18N.EM.KpiModeCarbon = 'Carbon';
@@ -1337,7 +1343,9 @@ I18N.Folder.NewWidget.DefaultName = 'Last 7 Days {0}';
 I18N.Folder.NewFolder = 'New folder';
 I18N.Folder.FolderName = 'Folder';
 I18N.Folder.WidgetName = 'Chart';
+I18N.Folder.DataAnalysisWidget = '分析图表';
 I18N.Folder.WidgetSaveSuccess = 'The chart has been saved successfully.';
+I18N.Folder.EmptyFolder = '文件夹为空，点击左侧“+文件夹/+分析图表”按钮进行添加';
 
 I18N.Folder.SaveNameError = {};
 I18N.Folder.SaveNameError.E032 = '{1} named "{0}" already exists. Please choose another name.';
@@ -1382,6 +1390,7 @@ I18N.Folder.Detail.WidgetMenu.Menu2 = 'Send';
 I18N.Folder.Detail.WidgetMenu.Menu3 = 'Share';
 I18N.Folder.Detail.WidgetMenu.Menu4 = 'Export';
 I18N.Folder.Detail.WidgetMenu.Menu5 = 'Delete';
+I18N.Folder.Detail.WidgetMenu.Menu6 = '分享';
 
 I18N.Folder.Widget = {};
 I18N.Folder.Widget.Leave = 'Leave tip';
@@ -1454,6 +1463,7 @@ I18N.Template.Copy = {};
 I18N.Template.Copy.DestinationFolder = 'Target folder';
 I18N.Template.Copy.Cancel = 'Quit';
 I18N.Template.Copy.DefaultName = '{0} - copy';
+I18N.Template.Copy.DefaultNameNew = '{0} - ';
 I18N.Template.Delete = {};
 I18N.Template.Delete.Delete = 'Delete';
 I18N.Template.Delete.Cancel = 'Quit';
@@ -1801,6 +1811,9 @@ I18N.Privilege.Role.CustomLabeling = 'Customized labeling';
 I18N.Privilege.Role.NewCustomLabeling = '自定义配置';
 I18N.Privilege.Role.BaselineConfiguration = 'Energy analysis and baseline setting';
 I18N.Privilege.Role.IndexAndReport = '指标&报表';
+I18N.Privilege.Role.BasicDataAnalyse = '基本数据分析';
+I18N.Privilege.Role.SeniorDataAnalyse = '高级数据分析';
+I18N.Privilege.Role.BuildingList = '建筑列表';
 
 I18N.Remark = {};
 I18N.Remark.Label = 'Comment';

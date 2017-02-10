@@ -197,7 +197,7 @@ let Alarm = React.createClass({
   componentDidMount: function() {
     EnergyStore.addTagDataLoadingListener(this._onLoadingStatusChange);
     if (FolderStore.getFolderTree() == Immutable.fromJS()) {
-      FolderAction.getFolderTreeByCustomerId(this.context.currentRoute.params.customerId);
+      FolderAction.getFolderTreeByHierarchyId(this.context.currentRoute.params.customerId);
     }
   },
   componentWillUnmount: function() {

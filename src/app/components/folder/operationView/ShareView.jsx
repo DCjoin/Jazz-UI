@@ -14,7 +14,7 @@ var ShareView = React.createClass({
     shareNode:React.PropTypes.object,
   },
   _onShareItem:function(){
-    FolderAction.shareItemCopy(this.props.shareNode,UserStore.getUserIds());
+    FolderAction.shareItemCopy(this.props.shareNode,UserStore.getUserIds(), this.props.isNew);
   },
   render:function(){
     let Props={
