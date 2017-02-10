@@ -92,6 +92,7 @@ export default class DataAnalysis extends Component {
     }
 		
 	}
+
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
 			this._getInitialState(nextProps);
@@ -268,14 +269,23 @@ export default class DataAnalysis extends Component {
 		if( selectedNode ) {
 			if( isWidget(selectedNode) ) {
 				if( widgetLoaded(selectedNode) ) {
-					content = (<AnalysisPanel 
-								hierarchyId={this._getHierarchyId(this.context)}
-								isBuilding={!this._isCustomer()}
-								chartTitle={selectedNode.get('Name')}
-								sourceUserName={selectedNode.get('SourceUserName')}
-								onOperationSelect={this._onOperationSelect}
-								widgetDto={this.state.widgetDto.toJS()} 
-								IsNew={false}/>);
+          content = React.cloneElement(this.props.children, {
+            hierarchyId: this._getHierarchyId(this.context),
+            isBuilding: !this._isCustomer(),
+            chartTitle: selectedNode.get('Name'),
+            sourceUserName: selectedNode.get('SourceUserName'),
+            onOperationSelect: this._onOperationSelect,
+            widgetDto: this.state.widgetDto.toJS(),
+            isNew: !this.state.widgetDto.get('ChartType'),
+          });
+					// content = (<AnalysisPanel 
+					// 			hierarchyId={this._getHierarchyId(this.context)}
+					// 			isBuilding={!this._isCustomer()}
+					// 			chartTitle={selectedNode.get('Name')}
+					// 			sourceUserName={selectedNode.get('SourceUserName')}
+					// 			onOperationSelect={this._onOperationSelect}
+					// 			widgetDto={this.state.widgetDto.toJS()} 
+					// 			IsNew={false}/>);
 				}
 			} else {
 				content = (<FolderPanel 
