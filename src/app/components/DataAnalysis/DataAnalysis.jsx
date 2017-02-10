@@ -183,22 +183,29 @@ export default class DataAnalysis extends Component {
   }
 
 	_onSelectNode(node) {
-    FolderAction.setSelectedNode(node);
-    this.setState({
-      treeLoading: false,
-      selectedNode: node,
-      treeList: FolderStore.getFolderTree(),
-    }, () => {
-      this._changeNodeId(node.get('Id'));
-		});
-		if( node ) {
-      if( isWidget(node) ) {
-        FolderAction.GetWidgetDtos([node.get('Id')], node, true);
+    let callback = () => {      
+      FolderAction.setSelectedNode(node);
+      this.setState({
+        treeLoading: false,
+        selectedNode: node,
+        treeList: FolderStore.getFolderTree(),
+      }, () => {
+        this._changeNodeId(node.get('Id'));
+      });
+      if( node ) {
+        if( isWidget(node) ) {
+          FolderAction.GetWidgetDtos([node.get('Id')], node, true);
+        }
+        if (node.get('IsSenderCopy') && !node.get('IsRead')) {
+          FolderAction.modifyFolderReadStatus(node);
+        }
       }
-			if (node.get('IsSenderCopy') && !node.get('IsRead')) {
-        FolderAction.modifyFolderReadStatus(node);
-      }
-		}
+    };
+    if( this.state.selectedNode && isWidget(this.state.selectedNode) ) {
+      FolderAction.checkWidgetUpdate(callback);
+    } else {
+      callback();
+    }
 	}
 
   _onDeleteNode() {
