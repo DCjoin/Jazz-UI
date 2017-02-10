@@ -47,4 +47,7 @@ module.exports = {
   DataReport: {
     getExportByHierarchyId: '/DataReport/GetExportByHierarchyId',
   },
+  DataAnalysis:{
+    getWidgetGatherInfo:'/Widget/GetWidgetGatherInfo'
+  }
 };

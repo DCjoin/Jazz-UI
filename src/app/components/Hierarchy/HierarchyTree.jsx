@@ -82,7 +82,10 @@ var TreeNode = React.createClass({
   handleClickNode: function() {
     //var node = assign({}, this.props);
     //HierarchyActionCreator.selectNode(node);
-    this.props.onSelectedNode(this.props.nodeData);
+    if (!this.props.disabled) {
+      this.props.onSelectedNode(this.props.nodeData);
+    }
+
   },
 
   operateCollapse: function(nodes, callbackName) {
@@ -149,11 +152,15 @@ var TreeNode = React.createClass({
     );
 
     var text = (
-    <div className="node-content-text" title={nodeData.Name}>{nodeData.Name}</div>
+    <div className={classNames({
+        "node-content-text": true,
+        "tree-node-content-no-privilege": this.props.disabled
+      })}
+      title={nodeData.Name}>{nodeData.Name}</div>
     );
 
     return (
-      <div className="tree-node-content">
+      <div className="tree-node-content" style={{color:'black'}}>
         {icon}
         {text}
       </div>
@@ -190,7 +197,8 @@ var TreeNode = React.createClass({
           onSelectedNode: this.props.onSelectedNode,
           indent: this.props.indent + 1,
           id: childNodeData.Id,
-          ref: childNodeData.Id
+          ref: childNodeData.Id,
+          disabled:!childNodeData.HasDataPrivilege,
         });
         return (
           <TreeNode {...nodeProps}/>
@@ -274,12 +282,12 @@ var TreeView = React.createClass({
     // if(this.props.status == formStatus.ADD) code = '';
     var drawTree = (dataSource, parentNode, parentIndent) => {
       if (dataSource !== null) {
-
         // node properties, map response data to props
         var props = {
           indent: parentIndent || 0,
           nodeData: dataSource,
           selectedNode: this.state.selectedNode || this.props.selectedNode,
+          disabled:!dataSource.HasDataPrivilege,
           onSelectedNode: this._onSelectNode,
           id: dataSource.Id,
           ref: dataSource.Id

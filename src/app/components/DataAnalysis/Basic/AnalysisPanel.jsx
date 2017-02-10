@@ -75,8 +75,6 @@ class AnalysisPanel extends Component {
 
   }
 
-  searchDate=MultipleTimespanStore.getRelativeItems();
-
   state={
       tagShow:false,
       dialogType:'',
@@ -95,6 +93,8 @@ class AnalysisPanel extends Component {
       willLeave:false,
       showLeaveDialog:false
   }
+
+  isMultiTime=false;
 
   getInitTimeRanges(){
     let date = new Date();
@@ -158,8 +158,9 @@ class AnalysisPanel extends Component {
   this.energyDataLoad(timeRanges, step, tagOptions, relativeDate, weather);
   }
 
-  _onSearchDataButtonClick(invokeFromMultiTime){
+  _onSearchDataButtonClick(invokeFromMultiTime=false){
     //invokeFromMultiTime 来判断是不是点击多时间段的绘制按钮进行查看。
+    if(invokeFromMultiTime!==null)this.isMultiTime=invokeFromMultiTime;
     let dateSelector = this.refs.dateTimeSelector;
     let dateRange = dateSelector.getDateTime(),
         startDate = dateRange.start,
@@ -1035,6 +1036,7 @@ class AnalysisPanel extends Component {
     let timeRange = timeRanges[0];
     initPanelDate(timeRange);
     if (timeRanges.length !== 1) {
+      this.isMultiTime=true;
       MultipleTimespanStore.initDataByWidgetTimeRanges(timeRanges);
     }
 
@@ -1050,7 +1052,7 @@ class AnalysisPanel extends Component {
       yaxisConfig: yaxisConfig,
       step: step,
     }, () => {
-      this._onSearchDataButtonClick();
+      this._onSearchDataButtonClick(null);
     });
     ChartStatusAction.setWidgetDto(widgetDto, 'Energy', 'Energy', this.state.selectedChartType);
     this.setCalendarTypeFromWidget(widgetDto);
@@ -1185,12 +1187,12 @@ AnalysisPanel.propTypes = {
   isNew:React.PropTypes.bool,
 };
 
-// AnalysisPanel.defaultProps={
-//   hierarchyId:100016,
-//   isBuilding:true,
-//   chartTitle:'冷机COP',
-//   sourceUserName:'Uxteam',
-//   isNew:true
-// }
+AnalysisPanel.defaultProps={
+  hierarchyId:100016,
+  isBuilding:true,
+  chartTitle:'冷机COP',
+  sourceUserName:'Uxteam',
+  isNew:true
+}
 
 export default withRouter(AnalysisPanel)
