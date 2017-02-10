@@ -235,7 +235,7 @@ export default class DataAnalysis extends Component {
 			selectedNode, 
 			FolderStore.getDefaultName(formatStr, selectedNode, nodeType, true), 
 			nodeType, 
-			this.props.params.customerId, 
+			this.props.params.customerId*1, 
 			widgetType,
 			this._getHierarchyId(this.context), true);
 	}
