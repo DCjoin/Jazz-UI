@@ -6,8 +6,17 @@ import { Action } from 'constants/actionType/DataAnalysis.jsx';
 import PrototypeStore from '../PrototypeStore.jsx';
 import assign from 'object-assign';
 import EnergyStore from 'stores/energy/EnergyStore.jsx';
+import CommonFuns from 'util/Util.jsx';
+import Immutable from 'immutable';
 
+var _gatherInfo=null;
 const DataAnalysisStore = assign({}, PrototypeStore, {
+  setGatherInfo(data){
+    _gatherInfo=data
+  },
+  getGatherInfo(){
+    return _gatherInfo
+  },
   getCalendarDisabled(chartType) {
     let tagOptions = EnergyStore.getTagOpions();
     if (!tagOptions) {
@@ -35,13 +44,32 @@ const DataAnalysisStore = assign({}, PrototypeStore, {
     disabled = true;
   }
   return disabled;
+},
+
+  getDisplayDate(time, isEndTime) {
+    if (time !== null) {
+      var hour = time.getHours();
+      if (hour === 0 && isEndTime) {
+        time = CommonFuns.dateAdd(time, -1, 'days');
+        hour = 24;
+      }
+      var year = time.getFullYear();
+      var month = time.getMonth() + 1;
+      var day = time.getDate();
+
+      return year + '/' + month + '/' + day + ' ' + hour + ':00';
+    } else {
+      return '';
+    }
   }
 
 });
 
 DataAnalysisStore.dispatchToken = AppDispatcher.register(function(action) {
   switch (action.type) {
-    case Action.XX:
+    case Action.GET_WIDGET_GATHER_INFO:
+          DataAnalysisStore.setGatherInfo(action.data);
+          DataAnalysisStore.emitChange()
       break;
     default:
   }

@@ -1,16 +1,13 @@
 'use strict';
 import React, { Component }  from "react";
-import {Dialog, DropDownMenu, FlatButton, IconButton} from 'material-ui';
+import {DropDownMenu, FlatButton, IconButton} from 'material-ui';
 import MenuItem from 'material-ui/MenuItem';
 import NewDialog from 'controls/NewDialog.jsx';
-import classSet from 'classnames';
 import MultipleTimespanStore from 'stores/energy/MultipleTimespanStore.jsx';
 import DateTimeSelector from 'controls/DateTimeSelector.jsx';
 import LinkButton from 'controls/LinkButton.jsx';
 import MultiTimespanAction from 'actions/MultiTimespanAction.jsx';
-import Immutable from 'immutable';
-import moment from 'moment';
-import CommonFuns from 'util/Util.jsx';
+import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 
 class TimespanItem extends Component{
 
@@ -81,22 +78,7 @@ class TimespanItem extends Component{
                 </div>;
       }
     }
-    getDisplayDate(time, isEndTime) {
-      if (time !== null) {
-        var hour = time.getHours();
-        if (hour === 0 && isEndTime) {
-          time = CommonFuns.dateAdd(time, -1, 'days');
-          hour = 24;
-        }
-        var year = time.getFullYear();
-        var month = time.getMonth() + 1;
-        var day = time.getDate();
 
-        return year + '/' + month + '/' + day + ' ' + hour + ':00';
-      } else {
-        return '';
-      }
-    }
     render(){
         let me = this,
         dateEl = null,
@@ -113,7 +95,7 @@ class TimespanItem extends Component{
 
         if (this.props.isOriginalDate) {
             //dateEl = <DateTimeSelector ref='dateTimeSelector' showTime={true} startDate={startDate} endDate={endDate} _onDateSelectorChanged={me._onDateSelectorChanged}/> ;
-            dateEl=this.getDisplayDate(startDate,false)+I18N.Setting.DataAnalysis.To+this.getDisplayDate(endDate,true)
+            dateEl=DataAnalysisStore.getDisplayDate(startDate,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(endDate,true)
           } else {
             dateEl = me.getCompareDatePart();
             deleteBtn = <IconButton iconClassName='icon-delete' iconStyle={{

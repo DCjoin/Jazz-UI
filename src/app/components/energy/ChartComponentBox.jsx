@@ -91,7 +91,7 @@ let defaultConfig = {
     events: {
       load: function() {
         var offset = yAxisOffset;
-        for (var i = 0, len = this.yAxis.length; i < len && i < 3; ++i) {
+        for (var i = 0, len = this.yAxis.length; i < len && i < 2; ++i) {
           var y = this.yAxis[i];
           var left,
             top = y.top - 6 - 10;
@@ -110,7 +110,7 @@ let defaultConfig = {
       },
       redraw: function() {
         var offset = yAxisOffset;
-        for (var i = 0, len = this.yAxis.length; i < len && i < 3; ++i) {
+        for (var i = 0, len = this.yAxis.length; i < len && i < 2; ++i) {
           var y = this.yAxis[i];
           var title = y.yTitle;
           var left,
