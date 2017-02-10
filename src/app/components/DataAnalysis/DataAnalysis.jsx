@@ -125,7 +125,7 @@ export default class DataAnalysis extends Component {
 
 	_changeNodeId(nodeId) {
     if( nodeId !== getNodeId(this.props) ) {
-		  this.props.router.push(RoutePath.dataAnalysis(this.props.params) + nodeId);
+		  this.props.router.push(RoutePath.dataAnalysis(this.props.params) + '/' + nodeId);
     }
 	}
 
