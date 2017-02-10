@@ -33,7 +33,9 @@ let FolderAction = {
     };
     Ajax.post('/Dashboard/CreateWidgetOrFolder', {
       params: {
-        dto: dto
+        dto: {...dto, ...{
+          isNew
+        }},
       },
       success: function(newNode) {
         AppDispatcher.dispatch({
@@ -199,7 +201,7 @@ let FolderAction = {
       },
     });
   },
-  GetWidgetDtos(widgetIds, selectedNode) {
+  GetWidgetDtos(widgetIds, selectedNode, isNew = false) {
     setTimeout(() => {
       AppDispatcher.dispatch({
         type: Action.GET_WIDGETDTOS_LOADING,
@@ -209,7 +211,8 @@ let FolderAction = {
 
     Ajax.post('/Dashboard/GetWidgetDtos', {
       params: {
-        widgetIds: widgetIds
+        widgetIds: widgetIds,
+        isNew
       },
       success: function(widgetDto) {
         AppDispatcher.dispatch({
