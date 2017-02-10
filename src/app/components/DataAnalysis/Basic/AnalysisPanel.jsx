@@ -1062,7 +1062,7 @@ class AnalysisPanel extends Component {
       if(!!this.state.energyData){
         var currentWidgetDto=Immutable.fromJS(this.getCurrentWidgetDto());
         var originalWidgetDto=Immutable.fromJS(this.props.widgetDto);
-        if(Immutable.is(currentWidgetDto),originalWidgetDto){
+        if(Immutable.is(currentWidgetDto,originalWidgetDto)){
           return true
         }
         else {

@@ -192,7 +192,7 @@ export default class DataAnalysis extends Component {
 		});
 		if( node ) {
       if( isWidget(node) ) {
-        FolderAction.GetWidgetDtos([node.get('Id')], node);
+        FolderAction.GetWidgetDtos([node.get('Id')], node, true);
       }
 			if (node.get('IsSenderCopy') && !node.get('IsRead')) {
         FolderAction.modifyFolderReadStatus(node);
