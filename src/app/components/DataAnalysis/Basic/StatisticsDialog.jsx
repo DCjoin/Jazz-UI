@@ -14,7 +14,7 @@ class ItemComponent extends Component{
   render(){
     return(
       <div style={this.props.style}>
-        <div style={{fontSize:'16px',color:'#464949',marginBottom:'15px'}}>
+        <div style={{fontSize:'16px',color:'#464949',marginBottom:'15px',fontWeight:'bold'}}>
           {this.props.title}
         </div>
         {this.props.children}
@@ -32,7 +32,7 @@ class TableHeader extends Component{
   render(){
     return(
       <div style={{'borderBottom':'1px solid #464949',display:'flex',fontSize:'14px',color:'#abafae'}}>
-        <div style={{width:'150px'}}>{this.props.columnName}</div>
+        <div style={{width:'300px'}}>{this.props.columnName}</div>
         <div style={{width:'150px'}}>{this.props.hasTime?I18N.Setting.Calendar.Time:''}</div>
         <div>
           {this.props.typeName}
@@ -61,7 +61,7 @@ class TableRow extends Component{
     var style=assign({},defaultStyle,this.props.style);
     return(
       <div style={style}>
-        <div style={{width:'150px'}}>{this.props.columnValue}</div>
+        <div style={{width:'300px'}}>{this.props.columnValue}</div>
           <div style={{width:'150px'}}>{this.props.time}</div>
           <div>
             {this.props.typeValue}
@@ -111,8 +111,9 @@ export default class StatisticsDialog extends Component {
         var {UomName,TimeRange,ItemGatherValue}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
+        var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
-          columnValue:DataAnalysisStore.getDisplayDate(j2d(StartTime),false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(j2d(EndTime),true),
+          columnValue:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true),
           typeValue:ItemGatherValue+''+UomName,
           time:null,
         };
@@ -181,8 +182,9 @@ export default class StatisticsDialog extends Component {
         var {UomName,TimeRange,ItemGatherValue}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
+        var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
-          columnValue:DataAnalysisStore.getDisplayDate(j2d(StartTime),false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(j2d(EndTime),true),
+          columnValue:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true),
           typeValue:ItemGatherValue+''+UomName,
           time:null,
         };
@@ -206,7 +208,7 @@ export default class StatisticsDialog extends Component {
       })
     }
     return(
-      <ItemComponent title={I18N.Common.CaculationType.Avg}>
+      <ItemComponent title={I18N.Common.CaculationType.Avg} style={{marginTop:'30px'}}>
         <TableHeader {...header}/>
         {content}
       </ItemComponent>
@@ -227,10 +229,11 @@ export default class StatisticsDialog extends Component {
         var {UomName,TimeRange,ItemGatherValue,ItemTime}=item;
         var {StartTime,EndTime}=TimeRange;
         var j2d = CommonFuns.DataConverter.JsonToDateTime;
+        var start=new Date(j2d(StartTime)),end=new Date(j2d(EndTime));
         let props={
-          columnValue:DataAnalysisStore.getDisplayDate(j2d(StartTime),false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(j2d(EndTime),true),
+          columnValue:DataAnalysisStore.getDisplayDate(start,false)+I18N.Setting.DataAnalysis.To+DataAnalysisStore.getDisplayDate(end,true),
           typeValue:ItemGatherValue+''+UomName,
-          time:DataAnalysisStore.getDisplayDate(j2d(ItemTime),false),
+          time:DataAnalysisStore.getDisplayDate(new Date(j2d(ItemTime)),false),
         };
         return <TableRow {...props}/>
       })
@@ -243,16 +246,17 @@ export default class StatisticsDialog extends Component {
       };
       content=MaxGroup.map(item=>{
         var {UomName,TagName,ItemGatherValue,ItemTime}=item;
+        var j2d = CommonFuns.DataConverter.JsonToDateTime;
         let props={
           columnValue:TagName,
           typeValue:ItemGatherValue+''+UomName,
-          time:DataAnalysisStore.getDisplayDate(j2d(ItemTime),false),
+          time:DataAnalysisStore.getDisplayDate(new Date(j2d(ItemTime)),false),
         };
         return <TableRow {...props}/>
       })
     }
     return(
-      <ItemComponent title={I18N.Common.CaculationType.Max}>
+      <ItemComponent title={I18N.Common.CaculationType.Max} style={{marginTop:'30px'}}>
         <TableHeader {...header}/>
         {content}
       </ItemComponent>
@@ -260,9 +264,10 @@ export default class StatisticsDialog extends Component {
   }
 
   _renderContent(){
-    var isMultiTime=this.props.analysisPanel.isMultiTime;
+    //var isMultiTime=this.props.analysisPanel.isMultiTime;
+    var isMultiTime=false;
     return(
-      <div>
+      <div style={{overflow:'auto'}}>
         {this._renderSum(isMultiTime)}
         {this._renderAverage(isMultiTime)}
         {this._renderMax(isMultiTime)}
@@ -271,8 +276,9 @@ export default class StatisticsDialog extends Component {
   }
 
   getTitle(){
-    var isMultiTime=this.props.analysisPanel.isMultiTime;
-    if(!isMultiTime){
+    //var isMultiTime=this.props.analysisPanel.isMultiTime;
+    var isMultiTime=false;
+    if(isMultiTime){
       var tagName=AlarmTagStore.getSearchTagList()[0].tagName;
       return I18N.EM.Tool.DataStatistics+' '+tagName
     }else {
