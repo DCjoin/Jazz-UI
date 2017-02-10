@@ -113,24 +113,27 @@ let KPI_SUCCESS_EVENT = 'kpisuccess',
 const SingleKPIStore = assign({}, PrototypeStore, {
 
   DatetimeToJson(datetime) {
-    var timezoneoffset = new Date().getTimezoneOffset() * 60000;
-    var l = datetime.getTime();
-    return '\/Date(' + l + ')\/';
+    // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+    // var l = datetime.getTime();
+    // return '\/Date(' + l + ')\/';
+    return moment.utc(datetime).format('YYYY-MM-DDTHH:mm:ss')
   },
   JsonToDateTime(jsonstring, outintval) {
     // outintval = typeof (outintval) === 'boolean' ? outintval : true;
-    jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+    // jsonstring = jsonstring.substr(6, jsonstring.length - 8);
+    // //
+    // // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
+    // // var mydate;
+    // // if (outintval) {
+    // //   mydate = parseInt(jsonstring) + timezoneoffset;
+    // // } else {
+    // //   mydate = parseInt(jsonstring) + timezoneoffset;
+    // //   mydate = new Date(mydate);
+    // // }
     //
-    // var timezoneoffset = new Date().getTimezoneOffset() * 60000;
-    // var mydate;
-    // if (outintval) {
-    //   mydate = parseInt(jsonstring) + timezoneoffset;
-    // } else {
-    //   mydate = parseInt(jsonstring) + timezoneoffset;
-    //   mydate = new Date(mydate);
-    // }
-
-    return parseInt(jsonstring);
+  // return parseInt(jsonstring);
+    //
+    return moment.utc(jsonstring).valueOf();
   },
 
   setKpiInfo(data) {
