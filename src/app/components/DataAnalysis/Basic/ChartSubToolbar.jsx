@@ -13,6 +13,7 @@ import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import ExtendableMenuItem from 'controls/ExtendableMenuItem.jsx';
 import AddIntervalWindow from './HistoryWindow.jsx';
 import YaxisSelector from './YaxisSelector.jsx';
+import StatisticsDialog from './StatisticsDialog.jsx';
 
 export default class ChartSubToolbar extends Component {
 
@@ -24,7 +25,8 @@ export default class ChartSubToolbar extends Component {
 
   state={
     showAddIntervalDialog:false,
-    showYaxisDialog:false
+    showYaxisDialog:false,
+    showSumDialog:false
   }
 
   _onChartTypeChanged(e, selectedIndex, value){
@@ -181,6 +183,19 @@ export default class ChartSubToolbar extends Component {
       return <AddIntervalWindow {...props}/>
   }
 
+  _renderStatisticsDialog(){
+    var props={
+      timeRanges:this.props.timeRanges,
+      analysisPanel:this.props.analysisPanel,
+      onCloseDialog:()=>{
+        this.setState({
+          showSumDialog:false
+        })
+      }
+    }
+      return <StatisticsDialog {...props}/>
+  }
+
   render(){
     var styles={
       label:{
@@ -207,6 +222,7 @@ export default class ChartSubToolbar extends Component {
         </div>
         {this.state.showAddIntervalDialog && this._renderHistoryCompareDialog()}
         {this.state.showYaxisDialog && this._renderYaxisConfigDialog()}
+        {this.state.showSumDialog && this._renderStatisticsDialog()}
         </div>
     )
   }

@@ -585,6 +585,7 @@ let ChartCmpStrategyFactor = {
   initYaxisFnStrategy: {
     empty: function() {},
     initYaxis(data, config, yAxisOffset, cmpBox) {
+      console.log('initYaxis');
       if (!isArray(data)) return;
       var yList = [],
         dic = {},
@@ -629,7 +630,7 @@ let ChartCmpStrategyFactor = {
             formatter: dataLabelFormatter
           },
           offset: yList.length > 2 ? -10000 :0,
-          opposite: data.length>1?count===0:false //,
+          opposite:data.length>1?count===data.length-2:false //,
         //gridLineWidth: count == 0 ? 1 : 0//for contour 等高线对齐，要使用此属性
         });
         count++;

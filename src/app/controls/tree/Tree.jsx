@@ -280,7 +280,7 @@ var Tree = React.createClass({
 
           enabledChangeDataPrivilege: this.props.enabledChangeDataPrivilege,
           allDisabled: this.props.allDisabled,
-          disabled: this.props.allDisabled,
+          disabled: this.props.allDisabled || !dataSource.get("HasDataPrivilege"),
           allHasCheckBox: this.props.allHasCheckBox,
           hasCheckBox: this.props.allHasCheckBox && dataSource.get("hasCheckBox"),
           hasBubble: this.props.hasBubble,
