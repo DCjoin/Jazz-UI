@@ -84,6 +84,7 @@ export default class DataAnalysis extends Component {
     FolderStore.addDeleteItemSuccessListener(this._onDeleteNode);
     FolderStore.addMoveItemSuccessListener(this._onSelectedNodeChange);
     FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
+    FolderStore.addCopyItemSuccessListener(this._onSelectedNodeChange);
 
 		this.state = this._getInitialState();
 
@@ -111,6 +112,7 @@ export default class DataAnalysis extends Component {
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteNode);
     FolderStore.removeMoveItemSuccessListener(this._onSelectedNodeChange);
     FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
+    FolderStore.removeCopyItemSuccessListener(this._onSelectedNodeChange);
 	}
 
 	_getInitialState() {
