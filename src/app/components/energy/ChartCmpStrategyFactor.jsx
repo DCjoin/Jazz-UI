@@ -585,7 +585,7 @@ let ChartCmpStrategyFactor = {
   initYaxisFnStrategy: {
     empty: function() {},
     initYaxis(data, config, yAxisOffset, cmpBox) {
-      console.log('initYaxis');
+      // console.log('initYaxis');
       if (!isArray(data)) return;
       var yList = [],
         dic = {},
