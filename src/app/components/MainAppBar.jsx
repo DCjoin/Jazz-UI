@@ -120,11 +120,14 @@ var MainAppBar = React.createClass({
   },
   _showCustomerList: function() {
     // this.props.showCustomerList();
-    if( !this.props.disabledSelectCustomer ) {
-      this.setState({
-        showCustomerList: true
-      });
-    }
+
+    FolderAction.checkWidgetUpdate(() => {
+      if( !this.props.disabledSelectCustomer ) {
+        this.setState({
+          showCustomerList: true
+        });
+      }
+    });
   },
 
   _savePassword: function() {
@@ -161,7 +164,7 @@ var MainAppBar = React.createClass({
     GlobalErrorMessageAction.ClearGlobalErrorMessage();
     if (lastLink === null || lastLink == I18N.MainMenu.Energy) {
       let selectedWidget = FolderStore.getSelectedNode();
-      if (selectedWidget !== null) {
+      if (selectedWidget !== null && !selectedWidget.get('IsNew')) {
         if (selectedWidget.get('Type') == 7 && selectedWidget.get('ChartType') === null) {
           FolderAction.deleteItem(selectedWidget, true);
         }
@@ -203,9 +206,11 @@ var MainAppBar = React.createClass({
     }));
   },
   _showLogout: function() {
-    this.setState(assign({}, this.getInitialState(), {
-      dialogType: DIALOG_TYPE.LOGOUT
-    }));
+    FolderAction.checkWidgetUpdate(() => {
+      this.setState(assign({}, this.getInitialState(), {
+        dialogType: DIALOG_TYPE.LOGOUT
+      }));
+    });
   },
   // ************* Change State End *************
   // ************* Render Component Start *************

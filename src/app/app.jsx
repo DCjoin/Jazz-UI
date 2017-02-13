@@ -33,6 +33,7 @@ import Mail from './components/mail/Mail.jsx';
 
 // import Report from './components/report/Report.jsx';
 import DataAnalysis from './components/DataAnalysis';
+import AnalysisPanel from './components/DataAnalysis/Basic/AnalysisPanel.jsx';
 //for Test
 import Report from './components/DataAnalysis/Basic/AnalysisPanel.jsx';
 import Template from './components/report/Template.jsx';
@@ -201,7 +202,7 @@ ReactDom.render(<Router history={hashHistory} routes={{
         },
         path: 'data_analysis',
         component: DataAnalysis,
-        childRoutes: [{path:':nodeId'}]
+        childRoutes: [{path:':nodeId', component: AnalysisPanel} ]
       }, {
         path: 'map',
         component: MapPanel

@@ -22,6 +22,7 @@ var EditNode = null;
 var ifGragulaInvalid = null;
 var ifGragulaInvalid = null;
 var drake;
+var version = 0;
 
 //  = dragula({
 //   moves: function(el, source, handle) {
@@ -260,6 +261,10 @@ var Tree = React.createClass({
     }
 
   },
+  _forceUpdate: function() {
+    version = new Date() * 1;
+    this.forceUpdate();
+  },
   componentWillUnmount: function() {
     drake.destroy();
   },
@@ -270,7 +275,7 @@ var Tree = React.createClass({
       if (dataSource !== null) {
         var props = {
           ref: dataSource.get("Id"),
-          key: dataSource.get("Id"),
+          key: dataSource.get("Id") + '-' + version,
           treeNodeClass: this.props.treeNodeClass,
           nodeOriginPaddingLeft: this.props.nodeOriginPaddingLeft,
           indentUnit: this.props.indentUnit,
