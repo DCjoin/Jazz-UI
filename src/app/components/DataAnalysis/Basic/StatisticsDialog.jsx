@@ -4,11 +4,12 @@ import assign from "object-assign";
 import Dialog from 'controls/NewDialog.jsx';
 import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import CommonFuns from 'util/Util.jsx';
-import {calculationType} from 'constants/actionType/DataAnalysis.jsx';
+// import {calculationType} from 'constants/actionType/DataAnalysis.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 import AlarmTagStore from 'stores/AlarmTagStore.jsx';
-import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
+import EnergyStore from 'stores/energy/EnergyStore.jsx';
+// import {GatherInfo} from '../../../../../mockData/DataAnalysis.js';
 
 class ItemComponent extends Component{
   render(){
@@ -87,8 +88,8 @@ export default class StatisticsDialog extends Component {
   }
 
   state={
-    //gatherInfo:null
-    gatherInfo:GatherInfo
+    gatherInfo:null
+    // gatherInfo:GatherInfo
   }
 
   _onChange(){
@@ -290,8 +291,10 @@ export default class StatisticsDialog extends Component {
 
   componentDidMount(){
     DataAnalysisStore.addChangeListener(this._onChange);
-    var widgetDto=this.props.analysisPanel.getCurrentWidgetDto();
-    BasicAnalysisAction.getWidgetGatherInfo(widgetDto);
+    let tagOptions = EnergyStore.getTagOpions(),
+      paramsObj = EnergyStore.getParamsObj(),
+      timeRanges = paramsObj.timeRanges;
+    BasicAnalysisAction.getWidgetGatherInfo(timeRanges,this.props.analysisPanel.state.step,tagOptions);
   }
 
   componentWillUnmount(){
