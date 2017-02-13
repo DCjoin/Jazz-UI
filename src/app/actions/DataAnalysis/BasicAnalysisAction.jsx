@@ -44,6 +44,12 @@ const BasicAnalysisAction = {
       }
     });
   },
+  setInitialWidgetDto(dto){
+    AppDispatcher.dispatch({
+      type: Action.SET_INITIAL_WIDGET_DTO,
+      dto
+    });
+  }
 }
 
 export default BasicAnalysisAction;

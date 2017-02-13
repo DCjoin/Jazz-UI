@@ -9,7 +9,7 @@ import EnergyStore from 'stores/energy/EnergyStore.jsx';
 import CommonFuns from 'util/Util.jsx';
 import Immutable from 'immutable';
 
-var _gatherInfo=null;
+var _gatherInfo=null,_widgetDto=null;
 const DataAnalysisStore = assign({}, PrototypeStore, {
   setGatherInfo(data){
     _gatherInfo=data
@@ -61,6 +61,16 @@ const DataAnalysisStore = assign({}, PrototypeStore, {
     } else {
       return '';
     }
+  },
+  setInitialWidgetDto(dto){
+    _widgetDto=Immutable.fromJS(dto);
+  },
+  getInitialWidgetDto(){
+    return _widgetDto;
+  },
+  dispose(){
+    _gatherInfo=null;
+    _widgetDto=null;
   }
 
 });
@@ -71,6 +81,8 @@ DataAnalysisStore.dispatchToken = AppDispatcher.register(function(action) {
           DataAnalysisStore.setGatherInfo(action.data);
           DataAnalysisStore.emitChange()
       break;
+    case Action.SET_INITIAL_WIDGET_DTO:
+          DataAnalysisStore.setInitialWidgetDto(action.dto);
     default:
   }
 });
