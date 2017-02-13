@@ -225,8 +225,6 @@ export default class HistoryWindow extends Component {
     let analysisPanel=this.props.analysisPanel;
     let relativeType = analysisPanel.state.relativeDate;
     let timeRange = analysisPanel.refs.dateTimeSelector.getDateTime();
-    console.log(timeRange.start);
-    console.log(timeRange.end);
     MultiTimespanAction.initMultiTimespanData(relativeType, timeRange.start, timeRange.end);
   }
 
