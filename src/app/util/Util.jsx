@@ -1839,8 +1839,8 @@ let CommonFuns = {
       }
     },
     firstValueTime: function(startTime, step) {
-      var ticks = parseInt(startTime.substr(6, startTime.length - 8)),
-        time = new Date(ticks),
+      var time = new Date(startTime),
+        ticks = time.valueOf(),
         dp = CommonFuns.DateComputer, //JazzCommon.DateComputer,
         fixed = dp.FixedTimes;
 

@@ -145,15 +145,17 @@ let MainApp = React.createClass({
         this.forceUpdate();
       }
 
-      let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
-      if( WholeCustomer ) {     
-        this.setState({
-          hierarchyId: customerId * 1
-        });
-      } else {
-        this.setState({
-          hierarchyId: HierarchyStore.getBuildingList()[0].Id
-        });
+      if( customerId ) {
+        let WholeCustomer = getCustomerPrivilageById( customerId ) && getCustomerPrivilageById( customerId ).get('WholeCustomer');
+        if( WholeCustomer ) {     
+          this.setState({
+            hierarchyId: customerId * 1
+          });
+        } else {
+          this.setState({
+            hierarchyId: HierarchyStore.getBuildingList()[0].Id
+          });
+        }        
       }
     }
   },
