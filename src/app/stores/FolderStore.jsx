@@ -325,7 +325,7 @@ var FolderStore = assign({}, PrototypeStore, {
           return name;
         } else {
           name = I18N.format(
-            isNew ? I18N.Template.Copy.DefaultNameNew : I18N.Template.Copy.DefaultName, 
+            isNew ? I18N.Template.Copy.DefaultNameNew : I18N.Template.Copy.DefaultName,
             nodeName) + i;
         }
       }
@@ -708,7 +708,7 @@ var FolderStore = assign({}, PrototypeStore, {
         break;
       case FolderAction.UPDATE_WIDGETDTOS_SUCCESS:
         FolderStore.updateWidgetDtosSuccess(action.widgetDto);
-        FolderStore.emitFolderTreeChange();
+        //FolderStore.emitFolderTreeChange();
         //FolderStore.emitSelectedNodeChange();
         break;
       case FolderAction.DISPLAY_DIALOG:

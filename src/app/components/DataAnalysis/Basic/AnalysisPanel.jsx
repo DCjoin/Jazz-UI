@@ -38,6 +38,7 @@ import DataAnalysisStore from 'stores/DataAnalysis/DataAnalysisStore.jsx';
 import CircularProgress from 'material-ui/CircularProgress';
 import ChartComponent from './ChartComponent.jsx';
 import {MenuAction} from 'constants/AnalysisConstants.jsx';
+import BasicAnalysisAction from 'actions/DataAnalysis/BasicAnalysisAction.jsx';
 
 const DIALOG_TYPE = {
   SWITCH_WIDGET: "switchwidget",
@@ -52,6 +53,8 @@ class AnalysisPanel extends Component {
   static contextTypes = {
     router: React.PropTypes.object,
   };
+
+  isInitial=false;
 
   constructor(props) {
     super(props);
@@ -307,7 +310,16 @@ class AnalysisPanel extends Component {
 
     }
   }
-    this.setState(state);
+    this.setState(state,()=>{
+      if(this.isInitial){
+        var dto=this.getCurrentWidgetDto();
+        //console.log(dto);
+        BasicAnalysisAction.setInitialWidgetDto(dto);
+        this.isInitial=false;
+      }
+    });
+
+
   }
 
   _onGetEnergyDataError() {
@@ -537,7 +549,7 @@ class AnalysisPanel extends Component {
         config: config,
         calendar: this.state.calendarType
       };
-      if (this.state.yaxisConfig !== null) {
+      if (this.state.yaxisConfig !== null && this.state.yaxisConfig.length>0) {
         params.yaxisConfig = this.state.yaxisConfig;
       }
       let contentSyntax = {
@@ -1133,13 +1145,13 @@ class AnalysisPanel extends Component {
     if( this.state.energyData &&
       Immutable.is(
         Immutable.fromJS(this.getCurrentWidgetDto()),
-        Immutable.fromJS(this.props.widgetDto)
+        DataAnalysisStore.getInitialWidgetDto()
       )
     ) {
         return true;
     }
     if( !this.state.willLeave ) {
-      FolderAction.checkWidgetUpdate(() => {  
+      FolderAction.checkWidgetUpdate(() => {
         this.props.router.replace(nextLocation.pathname);
       });
     }
@@ -1170,6 +1182,7 @@ class AnalysisPanel extends Component {
     }
 
   componentDidMount(){
+    this.isInitial=true;
     this.getInitParam();
     FolderStore.addDialogListener(this._onDialogChanged);
     EnergyStore.addEnergyDataLoadingListener(this._onLoadingStatusChange);
@@ -1179,7 +1192,10 @@ class AnalysisPanel extends Component {
     AlarmTagStore.addChangeListener(this._onTagChanged);
     FolderStore.addCheckWidgetUpdateChangeListener(this._onCheckWidgetUpdate);
     if(!this.props.isNew){
-      this._initChartPanelByWidgetDto()
+      this._initChartPanelByWidgetDto();
+      //var dto=this.getCurrentWidgetDto();
+      //console.log(dto);
+      //BasicAnalysisAction.setInitialWidgetDto(dto);
     }
     this.props.router.setRouteLeaveHook(
          this.props.route,
