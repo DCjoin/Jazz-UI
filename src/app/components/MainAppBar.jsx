@@ -213,11 +213,18 @@ var MainAppBar = React.createClass({
     }));
   },
   _showLogout: function() {
+    let doned = false   
     FolderAction.checkWidgetUpdate(() => {
       this.setState(assign({}, this.getInitialState(), {
         dialogType: DIALOG_TYPE.LOGOUT
       }));
-    });
+    }, null, () => {doned = true});
+    if( !doned ) {
+      this.setState(assign({}, this.getInitialState(), {
+        dialogType: DIALOG_TYPE.LOGOUT
+      }));
+    }
+
   },
   // ************* Change State End *************
   // ************* Render Component Start *************
