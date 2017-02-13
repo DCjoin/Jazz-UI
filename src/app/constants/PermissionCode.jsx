@@ -102,7 +102,7 @@ const PermissionCode = function() {
 	
 	BUILDING_LIST: {
 		getLabel: () => I18N.Privilege.Role.BuildingList,
-		FULL: 1314,
+		FULL: 1319,
 	},
 
 	PUSH_SOLUTION: {

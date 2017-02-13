@@ -84,6 +84,7 @@ export default class DataAnalysis extends Component {
     FolderStore.addDeleteItemSuccessListener(this._onDeleteNode);
     FolderStore.addMoveItemSuccessListener(this._onSelectedNodeChange);
     FolderStore.addModfiyReadingStatusListener(this._onSelectedNodeChange);
+    FolderStore.addCopyItemSuccessListener(this._onSelectedNodeChange);
 
 		this.state = this._getInitialState();
 
@@ -92,6 +93,7 @@ export default class DataAnalysis extends Component {
     }
 		
 	}
+
 	componentWillReceiveProps(nextProps, nextContext) {
 		if( !util.shallowEqual(nextContext.hierarchyId, this.context.hierarchyId) ) {
 			this._getInitialState(nextProps);
@@ -110,6 +112,7 @@ export default class DataAnalysis extends Component {
     FolderStore.removeDeleteItemSuccessListener(this._onDeleteNode);
     FolderStore.removeMoveItemSuccessListener(this._onSelectedNodeChange);
     FolderStore.removeModfiyReadingStatusListener(this._onSelectedNodeChange);
+    FolderStore.removeCopyItemSuccessListener(this._onSelectedNodeChange);
 	}
 
 	_getInitialState() {
@@ -182,22 +185,29 @@ export default class DataAnalysis extends Component {
   }
 
 	_onSelectNode(node) {
-    FolderAction.setSelectedNode(node);
-    this.setState({
-      treeLoading: false,
-      selectedNode: node,
-      treeList: FolderStore.getFolderTree(),
-    }, () => {
-      this._changeNodeId(node.get('Id'));
-		});
-		if( node ) {
-      if( isWidget(node) ) {
-        FolderAction.GetWidgetDtos([node.get('Id')], node, true);
+    let callback = () => {      
+      FolderAction.setSelectedNode(node);
+      this.setState({
+        treeLoading: false,
+        selectedNode: node,
+        treeList: FolderStore.getFolderTree(),
+      }, () => {
+        this._changeNodeId(node.get('Id'));
+      });
+      if( node ) {
+        if( isWidget(node) ) {
+          FolderAction.GetWidgetDtos([node.get('Id')], node, true);
+        }
+        if (node.get('IsSenderCopy') && !node.get('IsRead')) {
+          FolderAction.modifyFolderReadStatus(node);
+        }
       }
-			if (node.get('IsSenderCopy') && !node.get('IsRead')) {
-        FolderAction.modifyFolderReadStatus(node);
-      }
-		}
+    };
+    if( this.state.selectedNode && isWidget(this.state.selectedNode) ) {
+      FolderAction.checkWidgetUpdate(callback);
+    } else {
+      callback();
+    }
 	}
 
   _onDeleteNode() {
@@ -268,14 +278,23 @@ export default class DataAnalysis extends Component {
 		if( selectedNode ) {
 			if( isWidget(selectedNode) ) {
 				if( widgetLoaded(selectedNode) ) {
-					content = (<AnalysisPanel 
-								hierarchyId={this._getHierarchyId(this.context)}
-								isBuilding={!this._isCustomer()}
-								chartTitle={selectedNode.get('Name')}
-								sourceUserName={selectedNode.get('SourceUserName')}
-								onOperationSelect={this._onOperationSelect}
-								widgetDto={this.state.widgetDto.toJS()} 
-								IsNew={false}/>);
+          content = React.cloneElement(this.props.children, {
+            hierarchyId: this._getHierarchyId(this.context),
+            isBuilding: !this._isCustomer(),
+            chartTitle: selectedNode.get('Name'),
+            sourceUserName: selectedNode.get('SourceUserName'),
+            onOperationSelect: this._onOperationSelect,
+            widgetDto: this.state.widgetDto.toJS(),
+            isNew: !this.state.widgetDto.get('ChartType'),
+          });
+					// content = (<AnalysisPanel 
+					// 			hierarchyId={this._getHierarchyId(this.context)}
+					// 			isBuilding={!this._isCustomer()}
+					// 			chartTitle={selectedNode.get('Name')}
+					// 			sourceUserName={selectedNode.get('SourceUserName')}
+					// 			onOperationSelect={this._onOperationSelect}
+					// 			widgetDto={this.state.widgetDto.toJS()} 
+					// 			IsNew={false}/>);
 				}
 			} else {
 				content = (<FolderPanel 
@@ -301,7 +320,7 @@ export default class DataAnalysis extends Component {
 				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
 				break;
 			case MenuAction.Share:
-				dialog = <ShareView isNew={true} onDismiss={this._onDialogDismiss} shareNode={dialogData}/>;
+				dialog = <SendView isNew={true} onDismiss={this._onDialogDismiss} sendNode={dialogData}/>;
 				break;
 			case MenuAction.Delete:
 				dialog = <DeleteView isLoadByWidget={selectedNode.get('Id') === dialogData.get('Id')} onDismiss={this._onDialogDismiss} deleteNode={dialogData}/>;

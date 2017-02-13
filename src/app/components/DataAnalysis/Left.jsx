@@ -11,6 +11,7 @@ import Tree from 'controls/tree/Tree.jsx';
 import NodeContent from '../folder/TreeNodeContent.jsx';
 import SearchBox from '../folder/FolderSearchBox.jsx';
 
+import FolderAction from 'actions/FolderAction.jsx';
 import FolderStore from 'stores/FolderStore.jsx';
 
 function isWidget(node) {
@@ -38,8 +39,12 @@ export default class Left extends Component {
 	    let collapsedId = collapsedNodeId;
 
 	    let {selectedNode} = this.props;
-	    if( isWidget(selectedNode) && !selectedNode.get('ChartType') ) {
-	    	alert('未保存');
+	    if( isWidget(selectedNode) ) {
+	    	FolderAction.checkWidgetUpdate(() => {
+	    		this.props.didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId)
+	    	}, () => {
+	    		this.refs.foldertree && this.refs.foldertree._forceUpdate();
+	    	});
 	    } else {
 	    	this.props.didDrag(targetNode, sourceNode, parentNode, isPre, collapsedId)
 	    }
@@ -52,6 +57,7 @@ export default class Left extends Component {
 	}
 	_renderTree() {
 	    var treeProps = {
+	        ref: 'foldertree',
 	        key: 'foldertree',
 	        collapsedLevel: 0,
 	        allNode: this.props.tree,

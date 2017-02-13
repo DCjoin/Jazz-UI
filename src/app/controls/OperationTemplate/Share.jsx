@@ -34,13 +34,13 @@ var Share = React.createClass({
 
   },
   _onFirstActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    // this.refs.dialog.dismiss();
     if (this.props.onFirstActionTouchTap) {
       this.props.onFirstActionTouchTap();
     }
   },
   _onSecondActionTouchTap: function() {
-    this.refs.dialog.dismiss();
+    // this.refs.dialog.dismiss();
     if (this.props.onSecondActionTouchTap) {
       this.props.onSecondActionTouchTap();
     }
@@ -88,7 +88,7 @@ var Share = React.createClass({
       title: I18N.Template.Share.Title,
       actions: actions,
       modal: true,
-      openImmediately: true,
+      open: true,
       onDismiss: this.props.onDismiss,
       titleStyle: titleStyle
     };

@@ -335,6 +335,12 @@ let FolderAction = {
     });
 
   },
+  checkWidgetUpdate: function(done, cancel) {
+    AppDispatcher.dispatch({
+      type: Action.CHECK_WIDGET_UPDATE,
+      done, cancel
+    });
+  }
 };
 
 module.exports = FolderAction;
