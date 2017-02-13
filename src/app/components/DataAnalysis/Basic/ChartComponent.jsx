@@ -16,8 +16,10 @@ export default class ChartComponent extends Component {
   constructor(props) {
      super(props);
      this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
-    // this._onConfigBtnItemTouchTap = this._onConfigBtnItemTouchTap.bind(this);
+     this._onNavigatorChanged = this._onNavigatorChanged.bind(this);
   }
+
+  me=this;
 
   _onDeleteButtonClick(obj) {
   let uid = obj.uid;
@@ -87,7 +89,7 @@ export default class ChartComponent extends Component {
 
   _afterChartCreated(chartObj) {
   if (chartObj.options.scrollbar && chartObj.options.scrollbar.enabled) {
-      chartObj.xAxis[0].bind('setExtremes', this._onNavigatorChanged);
+      chartObj.xAxis[0].bind('setExtremes', (obj) => this._onNavigatorChanged(obj));
     }
   }
 
@@ -138,9 +140,7 @@ export default class ChartComponent extends Component {
       endTime = dateAdd(startTime, 1, 'hours');
     }
   }
-  if (this.state.chartStrategy.handleNavigatorChangeTimeFn) {
-    this.state.chartStrategy.handleNavigatorChangeTimeFn(startTime, endTime);
-  }
+
   this.handleNavigatorChangeTime(startTime, endTime);
   this.dateChanged(chart, startTime, endTime, type);
   }
@@ -248,7 +248,10 @@ export default class ChartComponent extends Component {
                   marginBottom: '0px',
                   marginLeft: '9px'
                 }}>
-                 <ChartComponentBox {...analysisPanel.state.paramsObj} {...chartCmpObj} afterChartCreated={this._afterChartCreated}/>
+                 <ChartComponentBox
+                    {...analysisPanel.state.paramsObj}
+                    {...chartCmpObj}
+                    afterChartCreated={(chartObj) => this._afterChartCreated(chartObj)}/>
                </div>;
              }
              return energyPart;
